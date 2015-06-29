@@ -30,18 +30,18 @@
 namespace opendnp3
 {
 
-class OState;
+class OContext;
 
 class OutstationUnsolicitedStateBase : openpal::Uncopyable
 {
 
 public:		
 
-	virtual OutstationUnsolicitedStateBase* OnConfirm(OState&, const APDUHeader& header) = 0;
+	virtual OutstationUnsolicitedStateBase* OnConfirm(OContext&, const APDUHeader& header) = 0;
 
-	virtual OutstationUnsolicitedStateBase* OnSendResult(OState&, bool isSucccess) = 0;
+	virtual OutstationUnsolicitedStateBase* OnSendResult(OContext&, bool isSucccess) = 0;
 
-	virtual OutstationUnsolicitedStateBase* OnConfirmTimeout(OState&) = 0;
+	virtual OutstationUnsolicitedStateBase* OnConfirmTimeout(OContext&) = 0;
 
 };
 
@@ -55,11 +55,11 @@ public:
 
 	static OutstationUnsolicitedStateBase& Inst() { return instance;  }
 
-	virtual OutstationUnsolicitedStateBase* OnConfirm(OState&, const APDUHeader& header) override;
+	virtual OutstationUnsolicitedStateBase* OnConfirm(OContext&, const APDUHeader& header) override;
 
-	virtual OutstationUnsolicitedStateBase* OnSendResult(OState&, bool isSucccess) override;
+	virtual OutstationUnsolicitedStateBase* OnSendResult(OContext&, bool isSucccess) override;
 
-	virtual OutstationUnsolicitedStateBase* OnConfirmTimeout(OState&) override;
+	virtual OutstationUnsolicitedStateBase* OnConfirmTimeout(OContext&) override;
 
 protected:
 
@@ -78,9 +78,9 @@ public:
 
 	static OutstationUnsolicitedStateBase& Inst() { return instance; }
 
-	virtual OutstationUnsolicitedStateBase* OnConfirm(OState&, const APDUHeader& header) override;
+	virtual OutstationUnsolicitedStateBase* OnConfirm(OContext&, const APDUHeader& header) override;
 
-	virtual OutstationUnsolicitedStateBase* OnConfirmTimeout(OState&) override;
+	virtual OutstationUnsolicitedStateBase* OnConfirmTimeout(OContext&) override;
 
 private:
 

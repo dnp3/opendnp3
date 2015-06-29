@@ -44,25 +44,25 @@ void OutstationAuthWrapper::Reset()
 	}
 }
 	
-void OutstationAuthWrapper::CheckState(OState& ostate)
+void OutstationAuthWrapper::CheckState(OContext& ocontext)
 {
 	if (pProvider)
 	{
-		pProvider->CheckState(ostate);
+		pProvider->CheckState(ocontext);
 	}
 }
 
 	
-void OutstationAuthWrapper::OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthWrapper::OnReceive(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (pProvider)
 	{
-		pProvider->OnReceive(ostate, fragment, header, objects);
+		pProvider->OnReceive(ocontext, fragment, header, objects);
 	}
 	else
 	{
 		// no auth provider just skips any authentication and goes directly to processing
-		OActions::ProcessHeaderAndObjects(ostate, header, objects);
+		OActions::ProcessHeaderAndObjects(ocontext, header, objects);
 	}
 }
 

@@ -24,7 +24,7 @@
 #include <openpal/container/Pair.h>
 #include <openpal/util/Uncopyable.h>
 
-#include "opendnp3/outstation/OutstationState.h"
+#include "opendnp3/outstation/OutstationContext.h"
 
 namespace opendnp3
 {
@@ -37,29 +37,29 @@ class OFunctions : private openpal::StaticOnly
 
 	/// Handles non-read function codes that require a response. builds the response using the supplied writer.
 	/// @return An IIN field indicating the validity of the request, and to be returned in the response.
-	static IINField HandleNonReadResponse(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleNonReadResponse(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer);
 	
 	/// Handles read function codes. May trigger an unsolicited response	
 	/// @return an IIN field and a partial AppControlField (missing sequence info)
-	static openpal::Pair<IINField, AppControlField> HandleRead(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static openpal::Pair<IINField, AppControlField> HandleRead(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer);
 
 	/// Handles no-response function codes.
-	static void ProcessRequestNoAck(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static void ProcessRequestNoAck(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	private:
 
 	// ------ Function Handlers ------
 
-	static IINField HandleWrite(OState& ostate, const openpal::ReadBufferView& objects);
-	static IINField HandleSelect(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleDirectOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter* pWriter);
-	static IINField HandleDelayMeasure(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleRestart(OState& ostate, const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter);
-	static IINField HandleAssignClass(OState& ostate, const openpal::ReadBufferView& objects);
-	static IINField HandleDisableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleEnableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleCommandWithConstant(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
+	static IINField HandleWrite(OContext& ocontext, const openpal::ReadBufferView& objects);
+	static IINField HandleSelect(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleOperate(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleDirectOperate(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter* pWriter);
+	static IINField HandleDelayMeasure(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleRestart(OContext& ocontext, const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter);
+	static IINField HandleAssignClass(OContext& ocontext, const openpal::ReadBufferView& objects);
+	static IINField HandleDisableUnsolicited(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleEnableUnsolicited(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleCommandWithConstant(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
 };
 
 

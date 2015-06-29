@@ -23,7 +23,7 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include <opendnp3/outstation/OutstationState.h>
+#include <opendnp3/outstation/OutstationContext.h>
 
 #include <opendnp3/objects/Group120.h>
 
@@ -37,13 +37,13 @@ namespace secauth
 	{
 		public:
 								
-			static void ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
+			static void ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
 
-			static void ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
+			static void ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
 
-			static void ProcessAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply);
+			static void ProcessAuthReply(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply);
 			
-			static bool TransmitChallenge(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header);			
+			static bool TransmitChallenge(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header);			
 			
 
 		private:
@@ -53,7 +53,7 @@ namespace secauth
 			static void RespondWithAuthError(
 				const opendnp3::APDUHeader& header,
 				SecurityState& sstate,
-				opendnp3::OState& ostate,
+				opendnp3::OContext& ocontext,
 				uint32_t seqNum,
 				const User& user,
 				opendnp3::AuthErrorCode code

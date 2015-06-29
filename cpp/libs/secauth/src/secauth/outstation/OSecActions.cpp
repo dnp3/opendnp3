@@ -35,13 +35,13 @@ using namespace opendnp3;
 
 namespace secauth
 {
-	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
+	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
 		User user(change.userNum);
 
 		if (!sstate.keyChangeState.CheckUserAndKSQMatches(user, change.keyChangeSeqNum))
 		{			
-			OSecActions::RespondWithAuthError(header, sstate, ostate, change.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
+			OSecActions::RespondWithAuthError(header, sstate, ocontext, change.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
 			return;
 		}
 
@@ -50,8 +50,8 @@ namespace secauth
 		
 		if (!sstate.pUserDatabase->GetUpdateKey(user, updateKeyType, updateKey))
 		{
-			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring session key change request for unknown user %u", change.userNum);
-			OSecActions::RespondWithAuthError(header, sstate, ostate, change.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
+			FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring session key change request for unknown user %u", change.userNum);
+			OSecActions::RespondWithAuthError(header, sstate, ocontext, change.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
 			return;
 		}
 				
@@ -63,19 +63,19 @@ namespace secauth
 			updateKey,
 			change.keyWrapData,
 			unwrapped,
-			&ostate.logger
+			&ocontext.logger
 		);
 
 		if (!unwrapSuccess)
 		{
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Failed to unwrap key data");
-			OSecActions::RespondWithAuthError(header, sstate, ostate, change.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
+			SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Failed to unwrap key data");
+			OSecActions::RespondWithAuthError(header, sstate, ocontext, change.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
 			return;
 		}
 	
 		if (!sstate.keyChangeState.EqualsLastStatusResponse(unwrapped.keyStatusObject))
 		{			
-			OSecActions::RespondWithAuthError(header, sstate, ostate, change.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
+			OSecActions::RespondWithAuthError(header, sstate, ocontext, change.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
 			return;
 		}		
 
@@ -87,25 +87,25 @@ namespace secauth
 
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, ec.message().c_str());
 			return;
 		}
 		
 		/*
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::INFO, "control key: ");
-		FORMAT_HEX_BLOCK(ostate.logger, flags::INFO, unwrapped.keys.controlKey, 17, 17);		
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::INFO, "monitor key: ");
-		FORMAT_HEX_BLOCK(ostate.logger, flags::INFO, unwrapped.keys.monitorKey, 17, 17);
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::INFO, "");
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::INFO, "Authenication, plain text");
-		FORMAT_HEX_BLOCK(ostate.logger, flags::INFO, fragment, 17, 17);
-		FORMAT_LOG_BLOCK(ostate.logger, flags::INFO, "Authenication, hased text %u", hmac.Size());
-		FORMAT_HEX_BLOCK(ostate.logger, flags::INFO, hmac, 17, 17);		
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "control key: ");
+		FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, unwrapped.keys.controlKey, 17, 17);		
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "monitor key: ");
+		FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, unwrapped.keys.monitorKey, 17, 17);
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "");
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "Authenication, plain text");
+		FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, fragment, 17, 17);
+		FORMAT_LOG_BLOCK(ocontext.logger, flags::INFO, "Authenication, hased text %u", hmac.Size());
+		FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, hmac, 17, 17);		
 		*/
 
 		sstate.sessions.SetSessionKeys(user, unwrapped.keys);
 		
-		auto rsp = sstate.StartResponse(ostate);
+		auto rsp = sstate.StartResponse(ocontext);
 		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 		rsp.SetControl(header.control);
 		auto writer = rsp.GetWriter();
@@ -122,24 +122,24 @@ namespace secauth
 
 		if (success)
 		{
-			OActions::BeginTx(ostate, rsp.ToReadOnly());
+			OActions::BeginTx(ocontext, rsp.ToReadOnly());
 		}
 	}
 	
-	void OSecActions::ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
+	void OSecActions::ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
 	{
 		User user(status.userNum);
 		UpdateKeyMode type;
 		if (!sstate.pUserDatabase->GetUpdateKeyType(user, type))
 		{
 			// TODO  - the spec appears to just say "ignore users that don't exist". Confirm this.
-			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "User %u does not exist", user.GetId());
+			FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "User %u does not exist", user.GetId());
 			return;
 		}
 		
 		auto keyStatus = sstate.sessions.GetSessionKeyStatus(user);
 			
-		auto rsp = sstate.StartResponse(ostate);
+		auto rsp = sstate.StartResponse(ocontext);
 		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 		rsp.SetControl(header.control);
 		auto writer = rsp.GetWriter();
@@ -156,28 +156,28 @@ namespace secauth
 
 		if (!success)
 		{
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Unable to format key status response");
+			SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Unable to format key status response");
 			return;
 		}
 				
-		OActions::BeginTx(ostate, rsp.ToReadOnly());		
+		OActions::BeginTx(ocontext, rsp.ToReadOnly());		
 	}	
 
-	void OSecActions::ProcessAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
+	void OSecActions::ProcessAuthReply(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
 	{
 		// first look-up the session for the specified user
 		User user(reply.userNum);
 		SessionKeysView view;
 		if (sstate.sessions.GetSessionKeys(user, view) != KeyStatus::OK)
 		{
-			OSecActions::RespondWithAuthError(header, sstate, ostate, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED); // TODO - check this code
+			OSecActions::RespondWithAuthError(header, sstate, ocontext, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED); // TODO - check this code
 			return;
 		}
 
-		if (!sstate.challenge.VerifyAuthenticity(view.controlKey, sstate.hmac, reply.hmacValue, ostate.logger))
+		if (!sstate.challenge.VerifyAuthenticity(view.controlKey, sstate.hmac, reply.hmacValue, ocontext.logger))
 		{
 			// TODO  - log an auth failure
-			OSecActions::RespondWithAuthError(header, sstate, ostate, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
+			OSecActions::RespondWithAuthError(header, sstate, ocontext, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
 			return;
 		}
 			
@@ -186,22 +186,22 @@ namespace secauth
 		if (sstate.pUserDatabase->IsAuthorized(user, criticalHeader.function))
 		{
 			auto objects = sstate.challenge.GetCriticalASDU().Skip(APDU_REQUEST_HEADER_SIZE);
-			OActions::ProcessHeaderAndObjects(ostate, criticalHeader, objects);			
+			OActions::ProcessHeaderAndObjects(ocontext, criticalHeader, objects);			
 		}
 		else
 		{
-			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Verified user %u is not authorized for function %s", user.GetId(), FunctionCodeToString(criticalHeader.function));
-			OSecActions::RespondWithAuthError(header, sstate, ostate, reply.challengeSeqNum, user, AuthErrorCode::AUTHORIZATION_FAILED);			
+			FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "Verified user %u is not authorized for function %s", user.GetId(), FunctionCodeToString(criticalHeader.function));
+			OSecActions::RespondWithAuthError(header, sstate, ocontext, reply.challengeSeqNum, user, AuthErrorCode::AUTHORIZATION_FAILED);			
 		}				
 	}
 
-	bool OSecActions::TransmitChallenge(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header)
+	bool OSecActions::TransmitChallenge(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header)
 	{
-		auto response = sstate.StartResponse(ostate);
-		auto success = sstate.challenge.WriteChallenge(fragment, header, response, sstate.hmac.GetType(), *sstate.pCrypto, &ostate.logger);
+		auto response = sstate.StartResponse(ocontext);
+		auto success = sstate.challenge.WriteChallenge(fragment, header, response, sstate.hmac.GetType(), *sstate.pCrypto, &ocontext.logger);
 		if (success)
 		{
-			OActions::BeginTx(ostate, response.ToReadOnly());
+			OActions::BeginTx(ocontext, response.ToReadOnly());
 		}
 		return success;
 	}		
@@ -220,13 +220,13 @@ namespace secauth
 	void OSecActions::RespondWithAuthError(
 		const opendnp3::APDUHeader& header,
 		SecurityState& sstate,
-		opendnp3::OState& ostate,
+		opendnp3::OContext& ocontext,
 		uint32_t seqNum,
 		const User& user,
 		AuthErrorCode code
 		)
 	{
-		auto rsp = sstate.StartResponse(ostate);
+		auto rsp = sstate.StartResponse(ocontext);
 		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 		rsp.SetControl(header.control);
 		auto writer = rsp.GetWriter();
@@ -240,7 +240,7 @@ namespace secauth
 
 		writer.WriteFreeFormat(error);
 		
-		OActions::BeginTx(ostate, rsp.ToReadOnly());
+		OActions::BeginTx(ocontext, rsp.ToReadOnly());
 	}
 
 

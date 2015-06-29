@@ -19,14 +19,14 @@
  * to you under the terms of the License.
  */
 
-#include "OutstationState.h"
+#include "OutstationContext.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-	OState::OState(
+	OContext::OContext(
 		const OutstationConfig& config,
 		const DatabaseTemplate& dbTemplate,
 		openpal::Logger logger_,				
@@ -55,7 +55,7 @@ namespace opendnp3
 	
 }
 
-void OState::Reset()
+void OContext::Reset()
 {	
 	isOnline = false;
 	isTransmitting = false;	
@@ -70,7 +70,7 @@ void OState::Reset()
 	auth.Reset();
 }
 
-bool OState::CanTransmit() const
+bool OContext::CanTransmit() const
 {
 	return isOnline && !isTransmitting;
 }

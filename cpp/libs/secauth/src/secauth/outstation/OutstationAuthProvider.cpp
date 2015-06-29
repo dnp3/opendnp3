@@ -27,7 +27,7 @@
 #include "opendnp3/LogLevels.h"
 
 #include "opendnp3/app/parsing/APDUParser.h"
-#include "opendnp3/outstation/OutstationState.h"
+#include "opendnp3/outstation/OutstationContext.h"
 
 #include "secauth/AggressiveModeParser.h"
 
@@ -59,13 +59,13 @@ void OutstationAuthProvider::Reset()
 	sstate.Reset();
 }
 
-void OutstationAuthProvider::CheckState(OState& ostate)
+void OutstationAuthProvider::CheckState(OContext& ocontext)
 {
-	if (ostate.CanTransmit() && sstate.deferred.IsSet())
+	if (ocontext.CanTransmit() && sstate.deferred.IsSet())
 	{
-		auto handler = [&ostate, this](const openpal::ReadBufferView& fragment, const APDUHeader& header, const ReadBufferView& objects)
+		auto handler = [&ocontext, this](const openpal::ReadBufferView& fragment, const APDUHeader& header, const ReadBufferView& objects)
 		{
-			this->Process(ostate, fragment, header, objects);
+			this->Process(ocontext, fragment, header, objects);
 			return true;
 		};
 
@@ -73,11 +73,11 @@ void OutstationAuthProvider::CheckState(OState& ostate)
 	}	
 }
 		
-void OutstationAuthProvider::OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::OnReceive(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	if (ostate.CanTransmit())
+	if (ocontext.CanTransmit())
 	{
-		this->Process(ostate, fragment, header, objects);		
+		this->Process(ocontext, fragment, header, objects);		
 	}
 	else
 	{
@@ -85,76 +85,76 @@ void OutstationAuthProvider::OnReceive(OState& ostate, const openpal::ReadBuffer
 	}
 }
 
-void OutstationAuthProvider::Process(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::Process(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	// examine the function code to determine what kind of ASDU it is
 	switch (header.function)
 	{
 		case(FunctionCode::AUTH_REQUEST) :
-			this->OnAuthRequest(ostate, fragment, header, objects);
+			this->OnAuthRequest(ocontext, fragment, header, objects);
 			break;
 		case(FunctionCode::AUTH_RESPONSE) :
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthResponse not valid for outstation");
+			SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "AuthResponse not valid for outstation");
 			break;
 		case(FunctionCode::AUTH_REQUEST_NO_ACK) :
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
+			SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "AuthRequestNoAck not supported");
 			break;
 		default:
-			this->OnUnknownRequest(ostate, fragment, header, objects);
+			this->OnUnknownRequest(ocontext, fragment, header, objects);
 			break;
 	}
 }
 
-void OutstationAuthProvider::OnAuthRequest(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::OnAuthRequest(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (header.control.UNS)
 	{
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring AuthRequest with UNS bit set");
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring AuthRequest with UNS bit set");
 	}
 	else
 	{
-		AuthRequestHandler handler(fragment, header, ostate, *this);
-		APDUParser::Parse(objects, handler, &ostate.logger);
+		AuthRequestHandler handler(fragment, header, ocontext, *this);
+		APDUParser::Parse(objects, handler, &ocontext.logger);
 	}
 }
 
-void OutstationAuthProvider::OnUnknownRequest(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::OnUnknownRequest(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	/// We have to determine if this is a regular request or an aggressive mode request
-	AggModeResult result = AggressiveModeParser::IsAggressiveMode(objects, &ostate.logger);
+	AggModeResult result = AggressiveModeParser::IsAggressiveMode(objects, &ocontext.logger);
 	if (result.result == ParseResult::OK)
 	{
 		if (result.isAggMode)
 		{
 			// it's an aggressive mode request
-			sstate.pState = sstate.pState->OnAggModeRequest(sstate, ostate, header, objects, result.request);
+			sstate.pState = sstate.pState->OnAggModeRequest(sstate, ocontext, header, objects, result.request);
 		}
 		else
 		{
 			// it's a normal DNP3 request
-			sstate.pState = sstate.pState->OnRegularRequest(sstate, ostate, fragment, header, objects);
+			sstate.pState = sstate.pState->OnRegularRequest(sstate, ocontext, fragment, header, objects);
 		}
 	}	
 }
 
-void OutstationAuthProvider::OnAuthChallenge(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var1& challenge)
+void OutstationAuthProvider::OnAuthChallenge(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var1& challenge)
 {	
-	sstate.pState = sstate.pState->OnAuthChallenge(sstate, ostate, header, challenge);
+	sstate.pState = sstate.pState->OnAuthChallenge(sstate, ocontext, header, challenge);
 }
 
-void OutstationAuthProvider::OnAuthReply(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var2& reply)
+void OutstationAuthProvider::OnAuthReply(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var2& reply)
 {	
-	sstate.pState = sstate.pState->OnAuthReply(sstate, ostate, header, reply);
+	sstate.pState = sstate.pState->OnAuthReply(sstate, ocontext, header, reply);
 }
 
-void OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var4& status)
+void OutstationAuthProvider::OnRequestKeyStatus(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var4& status)
 {	
-	sstate.pState = sstate.pState->OnRequestKeyStatus(sstate, ostate, header, status);	
+	sstate.pState = sstate.pState->OnRequestKeyStatus(sstate, ocontext, header, status);	
 }
 
-void OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var6& change)
+void OutstationAuthProvider::OnChangeSessionKeys(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var6& change)
 {
-	sstate.pState = sstate.pState->OnChangeSessionKeys(sstate, ostate, fragment, header, change);	
+	sstate.pState = sstate.pState->OnChangeSessionKeys(sstate, ocontext, fragment, header, change);	
 }
 
 }

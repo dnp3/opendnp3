@@ -23,7 +23,7 @@
 
 #include <opendnp3/objects/Group120.h>
 
-#include <opendnp3/outstation/OutstationState.h>
+#include <opendnp3/outstation/OutstationContext.h>
 
 #include "SecurityState.h"
 
@@ -35,13 +35,13 @@ class IOAuthState
 {
 	public:
 
-		virtual IOAuthState* OnRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
-		virtual IOAuthState* OnAggModeRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest) = 0;
-		virtual IOAuthState* OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
-		virtual IOAuthState* OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) = 0;
-		virtual IOAuthState* OnRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) = 0;
-		virtual IOAuthState* OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
-		virtual IOAuthState* OnChallengeTimeout(SecurityState& sstate, opendnp3::OState& ostate) = 0;
+		virtual IOAuthState* OnRegularRequest(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
+		virtual IOAuthState* OnAggModeRequest(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest) = 0;
+		virtual IOAuthState* OnAuthChallenge(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
+		virtual IOAuthState* OnAuthReply(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) = 0;
+		virtual IOAuthState* OnRequestKeyStatus(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) = 0;
+		virtual IOAuthState* OnChangeSessionKeys(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
+		virtual IOAuthState* OnChallengeTimeout(SecurityState& sstate, opendnp3::OContext& ocontext) = 0;
 
 		virtual const char* GetName() = 0;
 

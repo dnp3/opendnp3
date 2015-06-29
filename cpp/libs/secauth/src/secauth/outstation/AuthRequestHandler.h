@@ -22,7 +22,7 @@
 #define SECAUTH_AUTHREQUESTHANDLER_H
 
 #include <opendnp3/app/parsing/IAPDUHandler.h>
-#include <opendnp3/outstation/OutstationState.h>
+#include <opendnp3/outstation/OutstationContext.h>
 
 #include "IAuthRequestHandler.h"
 
@@ -33,7 +33,7 @@ class AuthRequestHandler : public opendnp3::IAPDUHandler, private openpal::Uncop
 {
 	public:
 
-		AuthRequestHandler(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, opendnp3::OState& ostate, IAuthRequestHandler& handler);
+		AuthRequestHandler(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, opendnp3::OContext& ocontext, IAuthRequestHandler& handler);
 
 		virtual opendnp3::IINField ProcessHeader(const opendnp3::CountHeader& header, const opendnp3::ICollection<opendnp3::Group120Var4>& values) override final;
 		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var1& value) override final;
@@ -48,7 +48,7 @@ class AuthRequestHandler : public opendnp3::IAPDUHandler, private openpal::Uncop
 		openpal::Logger logger;
 		openpal::ReadBufferView fragment;
 		opendnp3::APDUHeader apduheader;
-		opendnp3::OState* pOState;
+		opendnp3::OContext* pOContext;
 		IAuthRequestHandler* pHandler;
 };
 

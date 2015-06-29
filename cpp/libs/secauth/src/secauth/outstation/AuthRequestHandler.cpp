@@ -30,11 +30,11 @@ namespace secauth
 {
 
 
-AuthRequestHandler::AuthRequestHandler(const openpal::ReadBufferView& fragment_, const APDUHeader& header_, OState& ostate, IAuthRequestHandler& handler) :
-	logger(ostate.logger),
+AuthRequestHandler::AuthRequestHandler(const openpal::ReadBufferView& fragment_, const APDUHeader& header_, OContext& ocontext, IAuthRequestHandler& handler) :
+	logger(ocontext.logger),
 	fragment(fragment_),
 	apduheader(header_),
-	pOState(&ostate),
+	pOContext(&ocontext),
 	pHandler(&handler)
 {
 	
@@ -64,19 +64,19 @@ bool AuthRequestHandler::IsAllowed(uint32_t count, GroupVariation gv, QualifierC
 
 IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var1& value)
 {
-	pHandler->OnAuthChallenge(*pOState, fragment, apduheader, value);
+	pHandler->OnAuthChallenge(*pOContext, fragment, apduheader, value);
 	return IINField::Empty();
 }
 
 IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var2& value)
 {
-	pHandler->OnAuthReply(*pOState, fragment, apduheader, value);
+	pHandler->OnAuthReply(*pOContext, fragment, apduheader, value);
 	return IINField::Empty();
 }
 
 IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var6& value)
 {
-	pHandler->OnChangeSessionKeys(*pOState, fragment, apduheader, value);
+	pHandler->OnChangeSessionKeys(*pOContext, fragment, apduheader, value);
 	return IINField::Empty();
 }
 
@@ -85,12 +85,12 @@ IINField AuthRequestHandler::ProcessHeader(const opendnp3::CountHeader& record, 
 	Group120Var4 value;
 	if (values.ReadOnlyValue(value))
 	{
-		pHandler->OnRequestKeyStatus(*pOState, fragment, apduheader, value);
+		pHandler->OnRequestKeyStatus(*pOContext, fragment, apduheader, value);
 		return IINField::Empty();
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(pOState->logger, flags::WARN, "Unexpected count in key status request");
+		SIMPLE_LOG_BLOCK(pOContext->logger, flags::WARN, "Unexpected count in key status request");
 		return IINBit::PARAM_ERROR;
 	}
 }

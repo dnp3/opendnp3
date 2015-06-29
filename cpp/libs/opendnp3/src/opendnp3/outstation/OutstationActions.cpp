@@ -43,19 +43,19 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IINField OActions::GetResponseIIN(OState& ostate)
+IINField OActions::GetResponseIIN(OContext& ocontext)
 {
-	return ostate.staticIIN | GetDynamicIIN(ostate) | ostate.pApplication->GetApplicationIIN().ToIIN();
+	return ocontext.staticIIN | GetDynamicIIN(ocontext) | ocontext.pApplication->GetApplicationIIN().ToIIN();
 }
 
-void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu)
+void OActions::OnReceiveAPDU(OContext& ocontext, const openpal::ReadBufferView& apdu)
 {	
-	FORMAT_HEX_BLOCK(ostate.logger, flags::APP_HEX_RX, apdu, 18, 18);
+	FORMAT_HEX_BLOCK(ocontext.logger, flags::APP_HEX_RX, apdu, 18, 18);
 
 	APDUHeader header;	
-	if (APDUHeaderParser::ParseRequest(apdu, header, &ostate.logger))
+	if (APDUHeaderParser::ParseRequest(apdu, header, &ocontext.logger))
 	{
-		FORMAT_LOG_BLOCK(ostate.logger, flags::APP_HEADER_RX,
+		FORMAT_LOG_BLOCK(ocontext.logger, flags::APP_HEADER_RX,
 			"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
 			header.control.FIR,
 			header.control.FIN,
@@ -68,160 +68,160 @@ void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu
 		if (header.control.IsFirAndFin() && !header.control.CON)
 		{
 			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
-			ostate.auth.OnReceive(ostate, apdu, header, objects);			
+			ocontext.auth.OnReceive(ocontext, apdu, header, objects);			
 		}
 		else
 		{
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring fragment. Requst must be FIR/FIN/!CON");
+			SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring fragment. Requst must be FIR/FIN/!CON");
 		}
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "ignoring malformed request header");
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "ignoring malformed request header");
 	}	
 }
 
-void OActions::ProcessHeaderAndObjects(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OActions::ProcessHeaderAndObjects(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	if (Functions::IsNoAckFuncCode(header.function))
 	{
 		// this is the only request we process while we are transmitting
 		// because it doesn't require a response of any kind
-		OFunctions::ProcessRequestNoAck(ostate, header, objects);
+		OFunctions::ProcessRequestNoAck(ocontext, header, objects);
 	}
 	else
 	{
-		if (ostate.isTransmitting)
+		if (ocontext.isTransmitting)
 		{			
-			ostate.deferred.Set(header, objects);
+			ocontext.deferred.Set(header, objects);
 		}
 		else
 		{
 			if (header.function == FunctionCode::CONFIRM)
 			{
-				OActions::ProcessConfirm(ostate, header);				
+				OActions::ProcessConfirm(ocontext, header);				
 			}
 			else
 			{
-				OActions::ProcessRequest(ostate, header, objects);				
+				OActions::ProcessRequest(ocontext, header, objects);				
 			}
 		}
 	}
 }
 
-void OActions::OnSendResult(OState& ostate, bool isSuccess)
+void OActions::OnSendResult(OContext& ocontext, bool isSuccess)
 {
-	if (ostate.isTransmitting)
+	if (ocontext.isTransmitting)
 	{
-		ostate.isTransmitting = false;
-		OActions::CheckForTaskStart(ostate);
+		ocontext.isTransmitting = false;
+		OActions::CheckForTaskStart(ocontext);
 	}	
 }
 
-void OActions::ProcessRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OActions::ProcessRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (header.control.UNS)
 	{		
-		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));		
+		FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));		
 	}
 	else
 	{		
-		ostate.sol.pState = OActions::OnReceiveSolRequest(ostate, header, objects);		
+		ocontext.sol.pState = OActions::OnReceiveSolRequest(ocontext, header, objects);		
 	}
 }
 
-void OActions::ProcessConfirm(OState& ostate, const APDUHeader& header)
+void OActions::ProcessConfirm(OContext& ocontext, const APDUHeader& header)
 {
 	if (header.control.UNS)
 	{
-		OActions::ProcessUnsolicitedConfirm(ostate, header);
+		OActions::ProcessUnsolicitedConfirm(ocontext, header);
 	}
 	else
 	{
-		OActions::ProcessSolicitedConfirm(ostate, header);
+		OActions::ProcessSolicitedConfirm(ocontext, header);
 	}
 }
 
-OutstationSolicitedStateBase* OActions::OnReceiveSolRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OActions::OnReceiveSolRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {			
 	// analyze this request to see how it compares to the last request
-	if (ostate.history.HasLastRequest())
+	if (ocontext.history.HasLastRequest())
 	{		
-		if (ostate.sol.seq.num.Equals(header.control.SEQ))
+		if (ocontext.sol.seq.num.Equals(header.control.SEQ))
 		{			
-			if (ostate.history.FullyEqualsLastRequest(header, objects))
+			if (ocontext.history.FullyEqualsLastRequest(header, objects))
 			{
 				if (header.function == FunctionCode::READ)
 				{
-					SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring repeat read request");
-					return ostate.sol.pState;
+					SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring repeat read request");
+					return ocontext.sol.pState;
 				}
 				else
 				{
-					return ostate.sol.pState->OnRepeatNonReadRequest(ostate, header, objects);
+					return ocontext.sol.pState->OnRepeatNonReadRequest(ocontext, header, objects);
 				}
 			}
 			else // new operation with same SEQ
 			{
-				return ProcessNewRequest(ostate, header, objects);
+				return ProcessNewRequest(ocontext, header, objects);
 			}
 		}
 		else  // completely new sequence #
 		{
-			return ProcessNewRequest(ostate, header, objects);
+			return ProcessNewRequest(ocontext, header, objects);
 		}		
 	}
 	else
 	{		
-		return ProcessNewRequest(ostate, header, objects);
+		return ProcessNewRequest(ocontext, header, objects);
 	}	
 }
 
-OutstationSolicitedStateBase* OActions::ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OActions::ProcessNewRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ostate.sol.seq.num = header.control.SEQ;
+	ocontext.sol.seq.num = header.control.SEQ;
 
 	if (header.function == FunctionCode::READ)
 	{
-		return ostate.sol.pState->OnNewReadRequest(ostate, header, objects);
+		return ocontext.sol.pState->OnNewReadRequest(ocontext, header, objects);
 	}
 	else
 	{
-		return ostate.sol.pState->OnNewNonReadRequest(ostate, header, objects);
+		return ocontext.sol.pState->OnNewNonReadRequest(ocontext, header, objects);
 	}
 }
 
-OutstationSolicitedStateBase* OActions::RespondToNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OActions::RespondToNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ostate.history.RecordLastProcessedRequest(header, objects);
+	ocontext.history.RecordLastProcessedRequest(header, objects);
 
-	auto response = ostate.sol.tx.Start();
+	auto response = ocontext.sol.tx.Start();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
-	auto iin = OFunctions::HandleNonReadResponse(ostate, header, objects, writer);
-	response.SetIIN(iin | GetResponseIIN(ostate));
-	OActions::BeginResponseTx(ostate, response.ToReadOnly());
+	auto iin = OFunctions::HandleNonReadResponse(ocontext, header, objects, writer);
+	response.SetIIN(iin | GetResponseIIN(ocontext));
+	OActions::BeginResponseTx(ocontext, response.ToReadOnly());
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
-OutstationSolicitedStateBase* OActions::RespondToReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OActions::RespondToReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ostate.history.RecordLastProcessedRequest(header, objects);
+	ocontext.history.RecordLastProcessedRequest(header, objects);
 
-	auto response = ostate.sol.tx.Start();
+	auto response = ocontext.sol.tx.Start();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
-	auto result = OFunctions::HandleRead(ostate, objects, writer);
+	auto result = OFunctions::HandleRead(ocontext, objects, writer);
 	result.second.SEQ = header.control.SEQ;
-	ostate.sol.seq.confirmNum = header.control.SEQ;
+	ocontext.sol.seq.confirmNum = header.control.SEQ;
 	response.SetControl(result.second);
-	response.SetIIN(result.first | OActions::GetResponseIIN(ostate));		
-	OActions::BeginResponseTx(ostate, response.ToReadOnly());
+	response.SetIIN(result.first | OActions::GetResponseIIN(ocontext));		
+	OActions::BeginResponseTx(ocontext, response.ToReadOnly());
 
 	if (result.second.CON)
 	{
-		OActions::StartSolicitedConfirmTimer(ostate);
+		OActions::StartSolicitedConfirmTimer(ocontext);
 		return &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	else
@@ -230,52 +230,52 @@ OutstationSolicitedStateBase* OActions::RespondToReadRequest(OState& ostate, con
 	}	
 }
 
-void OActions::BeginResponseTx(OState& ostate, const ReadBufferView& response)
+void OActions::BeginResponseTx(OContext& ocontext, const ReadBufferView& response)
 {	
-	ostate.sol.tx.Record(response);
-	BeginTx(ostate, response);	
+	ocontext.sol.tx.Record(response);
+	BeginTx(ocontext, response);	
 }
 
-void OActions::BeginUnsolTx(OState& ostate, const ReadBufferView& response)
+void OActions::BeginUnsolTx(OContext& ocontext, const ReadBufferView& response)
 {				
-	ostate.unsol.tx.Record(response);
-	ostate.unsol.seq.confirmNum = ostate.unsol.seq.num;
-	ostate.unsol.seq.num.Increment();
-	BeginTx(ostate, response);	
+	ocontext.unsol.tx.Record(response);
+	ocontext.unsol.seq.confirmNum = ocontext.unsol.seq.num;
+	ocontext.unsol.seq.num.Increment();
+	BeginTx(ocontext, response);	
 }
 
-void OActions::BeginTx(OState& ostate, const openpal::ReadBufferView& response)
+void OActions::BeginTx(OContext& ocontext, const openpal::ReadBufferView& response)
 {
-	logging::ParseAndLogResponseTx(ostate.logger, response);
-	ostate.isTransmitting = true;
-	ostate.pLower->BeginTransmit(response);
+	logging::ParseAndLogResponseTx(ocontext.logger, response);
+	ocontext.isTransmitting = true;
+	ocontext.pLower->BeginTransmit(response);
 }
 
-void OActions::ProcessSolicitedConfirm(OState& ostate, const APDUHeader& header)
+void OActions::ProcessSolicitedConfirm(OContext& ocontext, const APDUHeader& header)
 {
-	ostate.sol.pState = ostate.sol.pState->OnConfirm(ostate, header);
+	ocontext.sol.pState = ocontext.sol.pState->OnConfirm(ocontext, header);
 }
 
-void OActions::ProcessUnsolicitedConfirm(OState& ostate, const APDUHeader& header)
+void OActions::ProcessUnsolicitedConfirm(OContext& ocontext, const APDUHeader& header)
 {
-	ostate.unsol.pState = ostate.unsol.pState->OnConfirm(ostate, header);
+	ocontext.unsol.pState = ocontext.unsol.pState->OnConfirm(ocontext, header);
 }
 
-OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate, const AppSeqNum& seq)
+OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OContext& ocontext, const AppSeqNum& seq)
 {	
-	auto response = ostate.sol.tx.Start();	
+	auto response = ocontext.sol.tx.Start();	
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
-	auto control = ostate.rspContext.LoadResponse(writer);
+	auto control = ocontext.rspContext.LoadResponse(writer);
 	control.SEQ = seq;
-	ostate.sol.seq.confirmNum = seq;
+	ocontext.sol.seq.confirmNum = seq;
 	response.SetControl(control);
-	response.SetIIN(GetResponseIIN(ostate));
-	OActions::BeginResponseTx(ostate, response.ToReadOnly());
+	response.SetIIN(GetResponseIIN(ocontext));
+	OActions::BeginResponseTx(ocontext, response.ToReadOnly());
 	
 	if (control.CON)
 	{
-		OActions::StartSolicitedConfirmTimer(ostate);
+		OActions::StartSolicitedConfirmTimer(ocontext);
 		return &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	else
@@ -284,40 +284,40 @@ OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate
 	}	
 }
 
-void OActions::CheckForTaskStart(OState& ostate)
+void OActions::CheckForTaskStart(OContext& ocontext)
 {		
 	// do these checks in order of priority
-	ostate.auth.CheckState(ostate);
-	OActions::CheckForDeferredRequest(ostate);
-	OActions::CheckForUnsolicited(ostate);
+	ocontext.auth.CheckState(ocontext);
+	OActions::CheckForDeferredRequest(ocontext);
+	OActions::CheckForUnsolicited(ocontext);
 }
 
-void OActions::CheckForDeferredRequest(OState& ostate)
+void OActions::CheckForDeferredRequest(OContext& ocontext)
 {
-	if (ostate.CanTransmit() && ostate.deferred.IsSet())
+	if (ocontext.CanTransmit() && ocontext.deferred.IsSet())
 	{		
-		auto handler = [&ostate](const APDUHeader& header, const ReadBufferView& objects)
+		auto handler = [&ocontext](const APDUHeader& header, const ReadBufferView& objects)
 		{
-			return OActions::ProcessDeferredRequest(ostate, header, objects);
+			return OActions::ProcessDeferredRequest(ocontext, header, objects);
 		};
-		ostate.deferred.Process(handler);
+		ocontext.deferred.Process(handler);
 	}
 }
 
-bool OActions::ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects)
+bool OActions::ProcessDeferredRequest(OContext& ocontext, APDUHeader header, openpal::ReadBufferView objects)
 {
 	if (header.function == FunctionCode::CONFIRM)
 	{
-		OActions::ProcessConfirm(ostate, header);
+		OActions::ProcessConfirm(ocontext, header);
 		return true;
 	}
 	else
 	{
 		if (header.function == FunctionCode::READ)
 		{
-			if (ostate.unsol.IsIdle())
+			if (ocontext.unsol.IsIdle())
 			{
-				OActions::ProcessRequest(ostate, header, objects);
+				OActions::ProcessRequest(ocontext, header, objects);
 				return true;
 			}
 			else
@@ -327,76 +327,76 @@ bool OActions::ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal
 		}
 		else
 		{
-			OActions::ProcessRequest(ostate, header, objects);
+			OActions::ProcessRequest(ocontext, header, objects);
 			return true;
 		}
 	}
 }
 
-void OActions::CheckForUnsolicited(OState& ostate)
+void OActions::CheckForUnsolicited(OContext& ocontext)
 {
-	if (ostate.CanTransmit() && ostate.unsol.IsIdle() && ostate.params.allowUnsolicited)
+	if (ocontext.CanTransmit() && ocontext.unsol.IsIdle() && ocontext.params.allowUnsolicited)
 	{
-		if (ostate.unsol.completedNull)
+		if (ocontext.unsol.completedNull)
 		{				
 			// are there events to be reported?
-			if (ostate.params.unsolClassMask.Intersects(ostate.eventBuffer.UnwrittenClassField()))
+			if (ocontext.params.unsolClassMask.Intersects(ocontext.eventBuffer.UnwrittenClassField()))
 			{			
 				
-				auto response = ostate.unsol.tx.Start();
+				auto response = ocontext.unsol.tx.Start();
 				auto writer = response.GetWriter();
 										
-				ostate.eventBuffer.Unselect();
-				ostate.eventBuffer.SelectAllByClass(ostate.params.unsolClassMask);
-				ostate.eventBuffer.Load(writer);					
+				ocontext.eventBuffer.Unselect();
+				ocontext.eventBuffer.SelectAllByClass(ocontext.params.unsolClassMask);
+				ocontext.eventBuffer.Load(writer);					
 				
-				build::NullUnsolicited(response, ostate.unsol.seq.num, GetResponseIIN(ostate));				
-				OActions::StartUnsolicitedConfirmTimer(ostate);
-				ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
-				OActions::BeginUnsolTx(ostate, response.ToReadOnly());
+				build::NullUnsolicited(response, ocontext.unsol.seq.num, GetResponseIIN(ocontext));				
+				OActions::StartUnsolicitedConfirmTimer(ocontext);
+				ocontext.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
+				OActions::BeginUnsolTx(ocontext, response.ToReadOnly());
 			}			
 		}
 		else
 		{
 			// send a NULL unsolcited message									
-			auto response = ostate.unsol.tx.Start();
-			build::NullUnsolicited(response, ostate.unsol.seq.num, GetResponseIIN(ostate));
-			OActions::StartUnsolicitedConfirmTimer(ostate);
-			ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
-			OActions::BeginUnsolTx(ostate, response.ToReadOnly());
+			auto response = ocontext.unsol.tx.Start();
+			build::NullUnsolicited(response, ocontext.unsol.seq.num, GetResponseIIN(ocontext));
+			OActions::StartUnsolicitedConfirmTimer(ocontext);
+			ocontext.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
+			OActions::BeginUnsolTx(ocontext, response.ToReadOnly());
 		}
 	}	
 }
 
-bool OActions::StartSolicitedConfirmTimer(OState& ostate)
+bool OActions::StartSolicitedConfirmTimer(OContext& ocontext)
 {
 	auto timeout = [&]()
 	{ 
-		ostate.sol.pState = ostate.sol.pState->OnConfirmTimeout(ostate);
-		OActions::CheckForTaskStart(ostate);
+		ocontext.sol.pState = ocontext.sol.pState->OnConfirmTimeout(ocontext);
+		OActions::CheckForTaskStart(ocontext);
 	};
-	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, timeout);
+	return ocontext.confirmTimer.Start(ocontext.params.unsolConfirmTimeout, timeout);
 }
 
-bool OActions::StartUnsolicitedConfirmTimer(OState& ostate)
+bool OActions::StartUnsolicitedConfirmTimer(OContext& ocontext)
 {
 	auto timeout = [&]()
 	{ 
-		ostate.unsol.pState = ostate.unsol.pState->OnConfirmTimeout(ostate);
-		OActions::CheckForTaskStart(ostate);
+		ocontext.unsol.pState = ocontext.unsol.pState->OnConfirmTimeout(ocontext);
+		OActions::CheckForTaskStart(ocontext);
 	};
-	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, timeout);
+	return ocontext.confirmTimer.Start(ocontext.params.unsolConfirmTimeout, timeout);
 }
 
-IINField OActions::GetDynamicIIN(OState& ostate)
+IINField OActions::GetDynamicIIN(OContext& ocontext)
 {
-	auto classField = ostate.eventBuffer.UnwrittenClassField();
+	auto classField = ocontext.eventBuffer.UnwrittenClassField();
 
 	IINField ret;
 	ret.SetBitToValue(IINBit::CLASS1_EVENTS, classField.HasClass1());
 	ret.SetBitToValue(IINBit::CLASS2_EVENTS, classField.HasClass2());
 	ret.SetBitToValue(IINBit::CLASS3_EVENTS, classField.HasClass3());
-	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, ostate.eventBuffer.IsOverflown());
+	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, ocontext.eventBuffer.IsOverflown());
 
 	return ret;
 }

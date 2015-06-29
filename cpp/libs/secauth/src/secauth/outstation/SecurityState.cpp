@@ -60,10 +60,10 @@ namespace secauth
 		pState = OAuthStateIdle::Instance();
 	}
 
-	APDUResponse SecurityState::StartResponse(OState& ostate)
+	APDUResponse SecurityState::StartResponse(OContext& ocontext)
 	{
 		auto response = txBuffer.Start();
-		response.SetIIN(OActions::GetResponseIIN(ostate));
+		response.SetIIN(OActions::GetResponseIIN(ocontext));
 		return response;
 	}
 }

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_OUTSTATIONSTATE_H
-#define OPENDNP3_OUTSTATIONSTATE_H
+#ifndef OPENDNP3_OUTSTATIONCONTEXT_H
+#define OPENDNP3_OUTSTATIONCONTEXT_H
 
 #include "opendnp3/LayerInterfaces.h"
 
@@ -46,12 +46,12 @@ namespace opendnp3
 ///
 /// Represent all of the mutable state in an outstation
 ///
-class OState
+class OContext
 {
 	
 	public:		
 
-	OState(	const OutstationConfig& config,	
+	OContext(	const OutstationConfig& config,	
 			const DatabaseTemplate& dbTemplate,
 			openpal::Logger logger,						
 			openpal::IExecutor& executor,			

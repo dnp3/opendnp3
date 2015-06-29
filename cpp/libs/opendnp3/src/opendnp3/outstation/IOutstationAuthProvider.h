@@ -30,7 +30,7 @@
 namespace opendnp3
 {
 
-class OState;
+class OContext;
 
 ///
 /// @summary Interface used inside the outstation to provide multiple forms of authentication like NULL or SAv5
@@ -45,10 +45,10 @@ class IOutstationAuthProvider
 	virtual void Reset() = 0;	
 
 	/// See if any progress can be made
-	virtual void CheckState(OState& ostate) = 0;
+	virtual void CheckState(OContext& ocontext) = 0;
 
 	/// Receive a new request
-	virtual void OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
+	virtual void OnReceive(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
 
 };
 

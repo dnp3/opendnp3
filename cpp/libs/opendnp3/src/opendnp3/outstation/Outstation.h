@@ -23,7 +23,7 @@
 
 #include "opendnp3/LayerInterfaces.h"
 
-#include "opendnp3/outstation/OutstationState.h"
+#include "opendnp3/outstation/OutstationContext.h"
 #include "opendnp3/outstation/DatabaseConfigView.h"
 
 namespace opendnp3
@@ -65,7 +65,7 @@ class Outstation : public IUpperLayer
 		
 	private:			
 
-	OState ostate;
+	OContext ocontext;
 
 };
 

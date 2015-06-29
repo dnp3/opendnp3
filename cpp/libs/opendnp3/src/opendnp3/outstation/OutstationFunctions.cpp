@@ -46,110 +46,110 @@ using namespace openpal;
 namespace opendnp3
 {
 
-void OFunctions::ProcessRequestNoAck(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OFunctions::ProcessRequestNoAck(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	switch (header.function)
 	{
 		case(FunctionCode::DIRECT_OPERATE_NR) :
-			OFunctions::HandleDirectOperate(ostate, objects, nullptr); // no object writer, this is a no ack code
+			OFunctions::HandleDirectOperate(ocontext, objects, nullptr); // no object writer, this is a no ack code
 			break;
 		default:
-			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
+			FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
 			break;
 	}
 }
 
-IINField OFunctions::HandleNonReadResponse(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OFunctions::HandleNonReadResponse(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	switch (header.function)
 	{				
 		case(FunctionCode::WRITE) :
-			return HandleWrite(ostate, objects);
+			return HandleWrite(ocontext, objects);
 		case(FunctionCode::SELECT) :
-			return HandleSelect(ostate, objects, writer);
+			return HandleSelect(ocontext, objects, writer);
 		case(FunctionCode::OPERATE) :
-			return HandleOperate(ostate, objects, writer);
+			return HandleOperate(ocontext, objects, writer);
 		case(FunctionCode::DIRECT_OPERATE) :
-			return HandleDirectOperate(ostate, objects, &writer);
+			return HandleDirectOperate(ocontext, objects, &writer);
 		case(FunctionCode::COLD_RESTART) :
-			return HandleRestart(ostate, objects, false, &writer);
+			return HandleRestart(ocontext, objects, false, &writer);
 		case(FunctionCode::WARM_RESTART) :
-			return HandleRestart(ostate, objects, true, &writer);
+			return HandleRestart(ocontext, objects, true, &writer);
 		case(FunctionCode::ASSIGN_CLASS) :
-			return HandleAssignClass(ostate, objects);
+			return HandleAssignClass(ocontext, objects);
 		case(FunctionCode::DELAY_MEASURE) :
-			return HandleDelayMeasure(ostate, objects, writer);
+			return HandleDelayMeasure(ocontext, objects, writer);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
-			return ostate.params.allowUnsolicited ? HandleDisableUnsolicited(ostate, objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
+			return ocontext.params.allowUnsolicited ? HandleDisableUnsolicited(ocontext, objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
 		case(FunctionCode::ENABLE_UNSOLICITED) :
-			return ostate.params.allowUnsolicited ? HandleEnableUnsolicited(ostate, objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
+			return ocontext.params.allowUnsolicited ? HandleEnableUnsolicited(ocontext, objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
 		default:
 			return	IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 
-Pair<IINField, AppControlField> OFunctions::HandleRead(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+Pair<IINField, AppControlField> OFunctions::HandleRead(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
-	ostate.rspContext.Reset();	
-	ostate.eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
-	ostate.database.Unselect();
+	ocontext.rspContext.Reset();	
+	ocontext.eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
+	ocontext.database.Unselect();
 
-	ReadHandler handler(ostate.logger, ostate.database.GetSelector(), ostate.eventBuffer);
-	auto result = APDUParser::Parse(objects, handler, &ostate.logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
+	ReadHandler handler(ocontext.logger, ocontext.database.GetSelector(), ocontext.eventBuffer);
+	auto result = APDUParser::Parse(objects, handler, &ocontext.logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 	if (result == ParseResult::OK)
 	{				
-		auto control = ostate.rspContext.LoadResponse(writer);
+		auto control = ocontext.rspContext.LoadResponse(writer);
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
 	}
 	else
 	{
-		ostate.rspContext.Reset();
+		ocontext.rspContext.Reset();
 		return Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
 	}
 }
 
-IINField OFunctions::HandleWrite(OState& ostate, const openpal::ReadBufferView& objects)
+IINField OFunctions::HandleWrite(OContext& ocontext, const openpal::ReadBufferView& objects)
 {
-	WriteHandler handler(ostate.logger, *ostate.pApplication, &ostate.staticIIN);
-	auto result = APDUParser::Parse(objects, handler, &ostate.logger);
+	WriteHandler handler(ocontext.logger, *ocontext.pApplication, &ocontext.staticIIN);
+	auto result = APDUParser::Parse(objects, handler, &ocontext.logger);
 	return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
 
-IINField OFunctions::HandleDirectOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter* pWriter)
+IINField OFunctions::HandleDirectOperate(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter* pWriter)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (pWriter && (objects.Size() > pWriter->Remaining()))
 	{
-		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Igonring command request due to oversized payload size of %u", objects.Size());
+		FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "Igonring command request due to oversized payload size of %u", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
 	{
-		CommandActionAdapter adapter(ostate.pCommandHandler, false);
-		CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, pWriter);
-		auto result = APDUParser::Parse(objects, handler, &ostate.logger);
+		CommandActionAdapter adapter(ocontext.pCommandHandler, false);
+		CommandResponseHandler handler(ocontext.logger, ocontext.params.maxControlsPerRequest, &adapter, pWriter);
+		auto result = APDUParser::Parse(objects, handler, &ocontext.logger);
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
 }
 
-IINField OFunctions::HandleSelect(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OFunctions::HandleSelect(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
 	{
-		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Igonring command request due to oversized payload size of %i", objects.Size());
+		FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "Igonring command request due to oversized payload size of %i", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
 	{
-		CommandActionAdapter adapter(ostate.pCommandHandler, true);
-		CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, &writer);
-		auto result = APDUParser::Parse(objects, handler, &ostate.logger);
+		CommandActionAdapter adapter(ocontext.pCommandHandler, true);
+		CommandResponseHandler handler(ocontext.logger, ocontext.params.maxControlsPerRequest, &adapter, &writer);
+		auto result = APDUParser::Parse(objects, handler, &ocontext.logger);
 		if (result == ParseResult::OK)
 		{
 			if (handler.AllCommandsSuccessful())
 			{						
-				ostate.control.Select(ostate.sol.seq.num, ostate.pExecutor->GetTime(), objects);
+				ocontext.control.Select(ocontext.sol.seq.num, ocontext.pExecutor->GetTime(), objects);
 			}
 			
 			return handler.Errors();
@@ -161,34 +161,34 @@ IINField OFunctions::HandleSelect(OState& ostate, const openpal::ReadBufferView&
 	}
 }
 
-IINField OFunctions::HandleOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OFunctions::HandleOperate(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
 	{
-		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Igonring command request due to oversized payload size of %i", objects.Size());
+		FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "Igonring command request due to oversized payload size of %i", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
 	{
-		auto now = ostate.pExecutor->GetTime();
-		auto result = ostate.control.ValidateSelection(ostate.sol.seq.num, now, ostate.params.selectTimeout, objects);
+		auto now = ocontext.pExecutor->GetTime();
+		auto result = ocontext.control.ValidateSelection(ocontext.sol.seq.num, now, ocontext.params.selectTimeout, objects);
 
 		if (result == CommandStatus::SUCCESS)
 		{
-			CommandActionAdapter adapter(ostate.pCommandHandler, false);
-			CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, &writer);
-			auto result = APDUParser::Parse(objects, handler, &ostate.logger);
+			CommandActionAdapter adapter(ocontext.pCommandHandler, false);
+			CommandResponseHandler handler(ocontext.logger, ocontext.params.maxControlsPerRequest, &adapter, &writer);
+			auto result = APDUParser::Parse(objects, handler, &ocontext.logger);
 			return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 		}
 		else
 		{
-			return HandleCommandWithConstant(ostate, objects, writer, result);
+			return HandleCommandWithConstant(ocontext, objects, writer, result);
 		}
 	}
 }
 
-IINField OFunctions::HandleDelayMeasure(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OFunctions::HandleDelayMeasure(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	if (objects.IsEmpty())
 	{		
@@ -203,11 +203,11 @@ IINField OFunctions::HandleDelayMeasure(OState& ostate, const openpal::ReadBuffe
 	}
 }
 
-IINField OFunctions::HandleRestart(OState& ostate, const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter)
+IINField OFunctions::HandleRestart(OContext& ocontext, const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter)
 {
 	if (objects.IsEmpty())
 	{
-		auto mode = isWarmRestart ? ostate.pApplication->WarmRestartSupport() : ostate.pApplication->ColdRestartSupport();
+		auto mode = isWarmRestart ? ocontext.pApplication->WarmRestartSupport() : ocontext.pApplication->ColdRestartSupport();
 
 		switch (mode)
 		{
@@ -215,7 +215,7 @@ IINField OFunctions::HandleRestart(OState& ostate, const openpal::ReadBufferView
 				return IINField(IINBit::FUNC_NOT_SUPPORTED);
 			case(RestartMode::SUPPORTED_DELAY_COARSE) :
 			{
-				auto delay = isWarmRestart ? ostate.pApplication->WarmRestart() : ostate.pApplication->ColdRestart();
+				auto delay = isWarmRestart ? ocontext.pApplication->WarmRestart() : ocontext.pApplication->ColdRestart();
 				if (pWriter)
 				{
 					Group52Var1 coarse = { delay };
@@ -225,7 +225,7 @@ IINField OFunctions::HandleRestart(OState& ostate, const openpal::ReadBufferView
 			}
 			default:
 			{
-				auto delay = isWarmRestart ? ostate.pApplication->WarmRestart() : ostate.pApplication->ColdRestart();
+				auto delay = isWarmRestart ? ocontext.pApplication->WarmRestart() : ocontext.pApplication->ColdRestart();
 				if (pWriter)
 				{
 					Group52Var2 fine = { delay };
@@ -242,12 +242,12 @@ IINField OFunctions::HandleRestart(OState& ostate, const openpal::ReadBufferView
 	}
 }
 
-IINField OFunctions::HandleAssignClass(OState& ostate, const openpal::ReadBufferView& objects)
+IINField OFunctions::HandleAssignClass(OContext& ocontext, const openpal::ReadBufferView& objects)
 {
-	if (ostate.pApplication->SupportsAssignClass())
+	if (ocontext.pApplication->SupportsAssignClass())
 	{		
-		AssignClassHandler handler(ostate.logger, *ostate.pExecutor, *ostate.pApplication, ostate.database.GetClassAssigner());		
-		auto result = APDUParser::Parse(objects, handler, &ostate.logger, ParserSettings::NoContents());
+		AssignClassHandler handler(ocontext.logger, *ocontext.pExecutor, *ocontext.pApplication, ocontext.database.GetClassAssigner());		
+		auto result = APDUParser::Parse(objects, handler, &ocontext.logger, ParserSettings::NoContents());
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
 	else
@@ -256,13 +256,13 @@ IINField OFunctions::HandleAssignClass(OState& ostate, const openpal::ReadBuffer
 	}	
 }
 
-IINField OFunctions::HandleDisableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OFunctions::HandleDisableUnsolicited(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
-	ClassBasedRequestHandler handler(ostate.logger);
-	auto result = APDUParser::Parse(objects, handler, &ostate.logger);
+	ClassBasedRequestHandler handler(ocontext.logger);
+	auto result = APDUParser::Parse(objects, handler, &ocontext.logger);
 	if (result == ParseResult::OK)
 	{
-		ostate.params.unsolClassMask.Clear(handler.GetClassField());
+		ocontext.params.unsolClassMask.Clear(handler.GetClassField());
 		return handler.Errors();
 	}
 	else
@@ -271,13 +271,13 @@ IINField OFunctions::HandleDisableUnsolicited(OState& ostate, const openpal::Rea
 	}
 }
 
-IINField OFunctions::HandleEnableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OFunctions::HandleEnableUnsolicited(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {	
-	ClassBasedRequestHandler handler(ostate.logger);
-	auto result = APDUParser::Parse(objects, handler, &ostate.logger);
+	ClassBasedRequestHandler handler(ocontext.logger);
+	auto result = APDUParser::Parse(objects, handler, &ocontext.logger);
 	if (result == ParseResult::OK)
 	{
-		ostate.params.unsolClassMask.Set(handler.GetClassField());
+		ocontext.params.unsolClassMask.Set(handler.GetClassField());
 		return handler.Errors();
 	}
 	else
@@ -286,11 +286,11 @@ IINField OFunctions::HandleEnableUnsolicited(OState& ostate, const openpal::Read
 	}
 }
 
-IINField OFunctions::HandleCommandWithConstant(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status)
+IINField OFunctions::HandleCommandWithConstant(OContext& ocontext, const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
-	CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &constant, &writer);
-	auto result = APDUParser::Parse(objects, handler, &ostate.logger);
+	CommandResponseHandler handler(ocontext.logger, ocontext.params.maxControlsPerRequest, &constant, &writer);
+	auto result = APDUParser::Parse(objects, handler, &ocontext.logger);
 	return IINFromParseResult(result);
 }
 

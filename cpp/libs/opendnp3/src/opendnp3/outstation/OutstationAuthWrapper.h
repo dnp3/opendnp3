@@ -45,10 +45,10 @@ class OutstationAuthWrapper : private openpal::Uncopyable
 	void Reset();
 
 	/// See if any progress can be made
-	void CheckState(OState& ostate);
+	void CheckState(OContext& ocontext);
 
 	/// Receive a new request
-	void OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	void OnReceive(OContext& ocontext, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	private:
 

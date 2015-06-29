@@ -23,7 +23,7 @@
 
 #include <opendnp3/gen/KeyStatus.h>
 #include <opendnp3/app/TxBuffer.h>
-#include <opendnp3/outstation/OutstationState.h>
+#include <opendnp3/outstation/OutstationContext.h>
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/crypto/ICryptoProvider.h>
@@ -73,7 +73,7 @@ class SecurityState
 	KeyChangeState keyChangeState;
 	SessionStore sessions;
 
-	opendnp3::APDUResponse StartResponse(opendnp3::OState& ostate);
+	opendnp3::APDUResponse StartResponse(opendnp3::OContext& ocontext);
 	
 private:
 	opendnp3::TxBuffer txBuffer;

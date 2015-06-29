@@ -40,84 +40,84 @@ Outstation::Outstation(
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application) :
-		ostate(config, dbTemplate, logger, executor, lower, commandHandler, application)
+		ocontext(config, dbTemplate, logger, executor, lower, commandHandler, application)
 {
 	
 }
 	
 void Outstation::OnLowerLayerUp()
 {
-	if (ostate.isOnline)
+	if (ocontext.isOnline)
 	{
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "already online");
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "already online");
 	}
 	else
 	{
-		ostate.isOnline = true;
-		OActions::CheckForTaskStart(ostate);
+		ocontext.isOnline = true;
+		OActions::CheckForTaskStart(ocontext);
 	}
 }
 	
 void Outstation::OnLowerLayerDown()
 {
-	if (ostate.isOnline)
+	if (ocontext.isOnline)
 	{
-		ostate.Reset();		
+		ocontext.Reset();		
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "not online");
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "not online");
 	}
 }
 
 void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
-	if (ostate.isOnline)
+	if (ocontext.isOnline)
 	{		
-		OActions::OnReceiveAPDU(ostate, fragment);
-		OActions::CheckForTaskStart(ostate);
+		OActions::OnReceiveAPDU(ocontext, fragment);
+		OActions::CheckForTaskStart(ocontext);
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "ignoring received data while offline");
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "ignoring received data while offline");
 	}
 }
 
 void Outstation::OnSendResult(bool isSuccess)
 {	
-	if (ostate.isOnline)
+	if (ocontext.isOnline)
 	{		
-		OActions::OnSendResult(ostate, isSuccess);
+		OActions::OnSendResult(ocontext, isSuccess);
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "Unexpected send callback");
+		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "Unexpected send callback");
 	}	
 }
 
 void Outstation::SetRestartIIN()
 {
-	ostate.staticIIN.SetBit(IINBit::DEVICE_RESTART);
+	ocontext.staticIIN.SetBit(IINBit::DEVICE_RESTART);
 }
 
 void Outstation::CheckForUpdates()
 {
-	OActions::CheckForTaskStart(ostate);
+	OActions::CheckForTaskStart(ocontext);
 }
 
 IDatabase& Outstation::GetDatabase()
 {
-	return ostate.database;
+	return ocontext.database;
 }
 
 DatabaseConfigView Outstation::GetConfigView()
 {
-	return ostate.database.GetConfigView();
+	return ocontext.database.GetConfigView();
 }
 
 void Outstation::SetAuthProvider(IOutstationAuthProvider& provider)
 {
-	ostate.auth.SetProvider(provider);
+	ocontext.auth.SetProvider(provider);
 }
 	
 }

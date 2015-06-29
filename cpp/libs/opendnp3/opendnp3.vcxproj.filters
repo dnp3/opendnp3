@@ -759,9 +759,6 @@
     <ClInclude Include="src\opendnp3\outstation\RequestHistory.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationState.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationSeqNum.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -914,6 +911,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterContext.h">
       <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationContext.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1274,9 +1274,6 @@
     <ClCompile Include="src\opendnp3\outstation\RequestHistory.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\OutstationState.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DeferredRequest.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1354,6 +1351,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\MasterContext.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\OutstationContext.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

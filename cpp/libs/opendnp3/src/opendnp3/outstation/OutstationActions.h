@@ -24,7 +24,7 @@
 #include <openpal/container/Pair.h>
 #include <openpal/util/Uncopyable.h>
 
-#include "opendnp3/outstation/OutstationState.h"
+#include "opendnp3/outstation/OutstationContext.h"
 
 namespace opendnp3
 {
@@ -35,63 +35,63 @@ class OActions : private openpal::StaticOnly
 	
 	public:				
 
-	static void OnNewEventData(OState& ostate);
+	static void OnNewEventData(OContext& ocontext);
 
-	static IINField GetResponseIIN(OState& ostate);	
+	static IINField GetResponseIIN(OContext& ocontext);	
 
-	static void CheckForTaskStart(OState& ostate);	
+	static void CheckForTaskStart(OContext& ocontext);	
 
-	static void OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu);	
+	static void OnReceiveAPDU(OContext& ocontext, const openpal::ReadBufferView& apdu);	
 
-	static void OnSendResult(OState& ostate, bool isSuccess);	
+	static void OnSendResult(OContext& ocontext, bool isSuccess);	
 
 	/// ---- Processing functions --------
 
-	static void ProcessHeaderAndObjects(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static void ProcessHeaderAndObjects(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	static void ProcessRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);	
+	static void ProcessRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);	
 
-	static void ProcessConfirm(OState& ostate, const APDUHeader& header);
+	static void ProcessConfirm(OContext& ocontext, const APDUHeader& header);
 
-	static void ProcessSolicitedConfirm(OState& ostate, const APDUHeader& header);
+	static void ProcessSolicitedConfirm(OContext& ocontext, const APDUHeader& header);
 
-	static void ProcessUnsolicitedConfirm(OState& ostate, const APDUHeader& header);
+	static void ProcessUnsolicitedConfirm(OContext& ocontext, const APDUHeader& header);
 
 	/// ---- Helper functions for begining solicited and unsolcited transmissions ----
 
-	static void BeginResponseTx(OState& ostate, const openpal::ReadBufferView& response);
+	static void BeginResponseTx(OContext& ocontext, const openpal::ReadBufferView& response);
 
-	static void BeginUnsolTx(OState& ostate, const openpal::ReadBufferView& response);
+	static void BeginUnsolTx(OContext& ocontext, const openpal::ReadBufferView& response);
 
-	static void BeginTx(OState& ostate, const openpal::ReadBufferView& response);
+	static void BeginTx(OContext& ocontext, const openpal::ReadBufferView& response);
 		
 
 	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
 
-	static OutstationSolicitedStateBase* OnReceiveSolRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static OutstationSolicitedStateBase* OnReceiveSolRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	static OutstationSolicitedStateBase* ContinueMultiFragResponse(OState& ostate, const AppSeqNum& seq);
+	static OutstationSolicitedStateBase* ContinueMultiFragResponse(OContext& ocontext, const AppSeqNum& seq);
 	
-	static OutstationSolicitedStateBase* RespondToNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static OutstationSolicitedStateBase* RespondToNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	static OutstationSolicitedStateBase* RespondToReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static OutstationSolicitedStateBase* RespondToReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	static OutstationSolicitedStateBase* ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static OutstationSolicitedStateBase* ProcessNewRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
 	
 
 	private:	
 
-	static void CheckForDeferredRequest(OState& ostate);
+	static void CheckForDeferredRequest(OContext& ocontext);
 
-	static bool ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects);
+	static bool ProcessDeferredRequest(OContext& ocontext, APDUHeader header, openpal::ReadBufferView objects);
 
-	static bool StartSolicitedConfirmTimer(OState& ostate);
+	static bool StartSolicitedConfirmTimer(OContext& ocontext);
 
-	static bool StartUnsolicitedConfirmTimer(OState& ostate);	
+	static bool StartUnsolicitedConfirmTimer(OContext& ocontext);	
 
-	static void CheckForUnsolicited(OState& ostate);
+	static void CheckForUnsolicited(OContext& ocontext);
 
-	static IINField GetDynamicIIN(OState& ostate);
+	static IINField GetDynamicIIN(OContext& ocontext);
 };
 
 
