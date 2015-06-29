@@ -22,8 +22,8 @@
 
 #include <asiopal/PhysicalLayerBase.h>
 
-#include "MasterAuthStack.h"
 #include "OutstationAuthStack.h"
+#include "MasterStackImpl.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -162,7 +162,7 @@ IMaster* DNP3Channel::AddMaster(	char const* id,
 	{
 		auto factory = [&]() -> MasterBase*
 		{
-			return new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, user, *pCrypto);			
+			return new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, user, *pCrypto);			
 		};
 
 		return this->AddStack<MasterBase>(config.link, factory);

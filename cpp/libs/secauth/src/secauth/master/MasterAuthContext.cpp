@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "MasterAuthProvider.h"
+#include "MasterAuthContext.h"
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/master/MasterContext.h>
@@ -38,31 +38,43 @@ using namespace opendnp3;
 namespace secauth
 {
 
-MasterAuthProvider::MasterAuthProvider(
-	opendnp3::IMasterApplication& application,
-	openpal::IExecutor& executor,
-	openpal::Logger logger,
-	openpal::ICryptoProvider& crypto,
-	IMasterUser& user
+MAuthContext::MAuthContext(
+		openpal::IExecutor& executor,
+		openpal::LogRoot& root,
+		opendnp3::ILowerLayer& lower,
+		opendnp3::ISOEHandler& SOEHandler,
+		opendnp3::IMasterApplication& application,
+		const opendnp3::MasterParams& params,
+		opendnp3::ITaskLock& taskLock,
+		openpal::ICryptoProvider& crypto,
+		IMasterUser& user
 	) : 
+	MContext(executor, root, lower, SOEHandler, application, params, taskLock),
 	msstate(application, executor, crypto, user),
 	sessionKeyTask(application, TimeDuration::Seconds(5), logger, user.GetUser(), msstate)
 {
 
 }
 
-void MasterAuthProvider::GoOnline()
+bool MAuthContext::GoOnline()
 {
-	// add the session key task to the scheduler
-	pMContext->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(&sessionKeyTask));
+	auto ret = MContext::GoOnline();
+
+	if (ret)
+	{
+		// add the session key task to the scheduler
+		this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(&sessionKeyTask));
+	}
+		
+	return ret;
 }
 
-void MasterAuthProvider::GoOffline()
+bool MAuthContext::GoOffline()
 {
-	// TODO reset the sessions?
+	return MContext::GoOffline();
 }
 
-void MasterAuthProvider::OnReceive(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MAuthContext::OnReceive(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {	
 	switch (header.function)
 	{
@@ -70,57 +82,57 @@ void MasterAuthProvider::OnReceive(const openpal::ReadBufferView& apdu, const op
 		this->OnReceiveAuthResponse(apdu, header, objects);
 		break;
 	case(FunctionCode::RESPONSE) :
-		pMContext->ProcessResponse(header, objects);
+		this->ProcessResponse(header, objects);
 		break;
 	case(FunctionCode::UNSOLICITED_RESPONSE) :
-		pMContext->ProcessUnsolicitedResponse(header, objects);
+		this->ProcessUnsolicitedResponse(header, objects);
 		break;
 	default:
-		FORMAT_LOG_BLOCK(pMContext->logger, opendnp3::flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
+		FORMAT_LOG_BLOCK(this->logger, opendnp3::flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
 		break;
 	}	
 }
 
-void MasterAuthProvider::RecordLastRequest(const openpal::ReadBufferView& apdu)
+void MAuthContext::RecordLastRequest(const openpal::ReadBufferView& apdu)
 {
 	this->lastRequest = apdu;
 }
 
-void MasterAuthProvider::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	// need to determine the context of the auth response
 	
-	if (pMContext->pState->ExpectingResponse())
+	if (this->pState->ExpectingResponse())
 	{
 		// an auth-based task is running and needs to receive this directly
-		if (pMContext->pActiveTask->AcceptsFunction(FunctionCode::AUTH_RESPONSE))
+		if (this->pActiveTask->AcceptsFunction(FunctionCode::AUTH_RESPONSE))
 		{
-			pMContext->ProcessResponse(header, objects);
+			this->ProcessResponse(header, objects);
 		}
 		else
 		{
 			AuthResponseHandler handler(apdu, header, *this);
-			APDUParser::Parse(objects, handler, pMContext->logger);
+			APDUParser::Parse(objects, handler, this->logger);
 		}		
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(pMContext->logger, flags::WARN, "Ignoring AuthResponse"); // TODO - better error message?
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring AuthResponse"); // TODO - better error message?
 	}
 
 }
 
-void  MasterAuthProvider::OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
+void  MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 {
-	if (pMContext->isSending)
+	if (this->isSending)
 	{
-		SIMPLE_LOG_BLOCK(pMContext->logger, flags::WARN, "Ignoring authentication challenge while transmitting");
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring authentication challenge while transmitting");
 		return;
 	}
 
 	if (!AuthConstants::ChallengeDataSizeWithinLimits(challenge.Size()))
 	{
-		FORMAT_LOG_BLOCK(pMContext->logger, flags::WARN, "Challenge data size outside of limits: %u", challenge.Size());
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Challenge data size outside of limits: %u", challenge.Size());
 		return;
 	}
 
@@ -128,14 +140,14 @@ void  MasterAuthProvider::OnAuthChallenge(const openpal::ReadBufferView& apdu, c
 	SessionKeysView keys;
 	if (msstate.session.GetKeys(keys) != KeyStatus::OK)
 	{		
-		SIMPLE_LOG_BLOCK(pMContext->logger, flags::WARN, "Session for default user is not valid");
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Session for default user is not valid");
 		return;
 	}
 
 	HMACMode hmacMode;
 	if (!Crypto::TryGetHMACMode(challenge.hmacAlgo, hmacMode))
 	{
-		FORMAT_LOG_BLOCK(pMContext->logger, flags::WARN, "Outstation requested unsupported HMAC type: %s", HMACTypeToString(challenge.hmacAlgo));
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Outstation requested unsupported HMAC type: %s", HMACTypeToString(challenge.hmacAlgo));
 		return;
 	}	
 
@@ -146,7 +158,7 @@ void  MasterAuthProvider::OnAuthChallenge(const openpal::ReadBufferView& apdu, c
 
 	if (ec)
 	{
-		SIMPLE_LOG_BLOCK(pMContext->logger, flags::ERR, "Unable to calculate HMAC value");
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Unable to calculate HMAC value");
 		return;
 	}
 		
@@ -161,16 +173,16 @@ void  MasterAuthProvider::OnAuthChallenge(const openpal::ReadBufferView& apdu, c
 	
 	if (!reply.GetWriter().WriteFreeFormat(challengeReply))
 	{
-		SIMPLE_LOG_BLOCK(pMContext->logger, flags::ERR, "Unable to write challenge reply");
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Unable to write challenge reply");
 		return;
 	}
 
-	pMContext->Transmit(reply.ToReadOnly());
+	this->Transmit(reply.ToReadOnly());
 }
 
-void MasterAuthProvider::OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error)
+void MAuthContext::OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error)
 {
-	FORMAT_LOG_BLOCK(pMContext->logger, flags::WARN,
+	FORMAT_LOG_BLOCK(this->logger, flags::WARN,
 		"Received auth error from outstation w/ code: %s",
 		AuthErrorCodeToString(error.errorCode)
 	);		

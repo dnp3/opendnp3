@@ -50,9 +50,7 @@ class Master : public IUpperLayer
 
 	/// ----- Misc public members -------
 	
-	ICommandProcessor& GetCommandProcessor();
-
-	void SetAuthProvider(IMasterAuthProvider& provider);
+	ICommandProcessor& GetCommandProcessor();	
 
 	/// ---- Permanently bound scans ----
 

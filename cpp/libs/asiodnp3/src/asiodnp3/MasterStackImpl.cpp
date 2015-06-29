@@ -22,6 +22,8 @@
 
 #include <opendnp3/app/APDUBuilders.h>
 
+#include <secauth/master/MasterAuthContext.h>
+
 #include <asiopal/ASIOExecutor.h>
 
 using namespace openpal;
@@ -42,10 +44,31 @@ MasterStackImpl::MasterStackImpl(
 		root(root_, id),		
 		pLifecycle(&lifecycle),
 		stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
-		mcontext(executor, root, stack.transport, SOEHandler, application,  config.master, taskLock),
-		master(mcontext)
+		mcontext(new MContext(executor, root, stack.transport, SOEHandler, application,  config.master, taskLock)),
+		master(*mcontext)
 {
 	stack.transport.SetAppLayer(&master);
+}
+
+MasterStackImpl::MasterStackImpl(
+	const char* id,
+	openpal::LogRoot& root_,
+	asiopal::ASIOExecutor& executor,
+	opendnp3::ISOEHandler& SOEHandler,
+	opendnp3::IMasterApplication& application,
+	const opendnp3::MasterStackConfig& config,
+	IStackLifecycle& lifecycle,
+	opendnp3::ITaskLock& taskLock,
+	secauth::IMasterUser& user,
+	openpal::ICryptoProvider& crypto
+) :
+	root(root_, id),
+	pLifecycle(&lifecycle),
+	stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
+	mcontext(new secauth::MAuthContext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, crypto, user)),
+	master(*mcontext)
+{
+
 }
 
 ICommandProcessor* MasterStackImpl::GetCommandProcessor()

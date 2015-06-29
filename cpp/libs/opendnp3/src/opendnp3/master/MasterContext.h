@@ -34,7 +34,6 @@
 #include "opendnp3/master/IMasterState.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
-#include "opendnp3/master/MasterAuthWrapper.h"
 
 #include <deque>
 
@@ -43,19 +42,20 @@ namespace opendnp3
 	/*
 		All of the mutable state and configuration for a master
 	*/
-	class MContext : private IScheduleCallback
+	class MContext : private IScheduleCallback, private openpal::Uncopyable
 	{
 
 	public:
 
-		MContext(openpal::IExecutor& executor,
+		MContext(
+			openpal::IExecutor& executor,
 			openpal::LogRoot& root,
 			ILowerLayer& lower,
 			ISOEHandler& SOEHandler,
 			opendnp3::IMasterApplication& application,			
 			const MasterParams& params,
 			ITaskLock& taskLock
-			);	
+		);
 
 		openpal::Logger logger;
 		openpal::IExecutor* pExecutor;
@@ -65,8 +65,7 @@ namespace opendnp3
 		MasterParams params;
 		ISOEHandler* pSOEHandler;
 		ITaskLock* pTaskLock;
-		IMasterApplication* pApplication;		
-		MasterAuthWrapper auth;
+		IMasterApplication* pApplication;				
 
 
 		// ------- dynamic state ---------
@@ -81,16 +80,19 @@ namespace opendnp3
 		std::deque<APDUHeader> confirmQueue;
 		openpal::Buffer txBuffer;
 		IMasterState* pState;	
+	
 
+		/// virtual methods that can be overriden to implement secure authentication		
 
-	public:
+		virtual bool GoOnline();
 
+		virtual bool GoOffline();
+
+		virtual void OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+
+		virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) {}
 
 		/// public state manipulation actions
-
-		bool GoOnline();
-
-		bool GoOffline();		
 
 		bool BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
 
@@ -100,9 +102,7 @@ namespace opendnp3
 
 		void QueueConfirm(const APDUHeader& header);
 
-		void StartResponseTimer();
-
-		void OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		void StartResponseTimer();		
 
 		void ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
@@ -122,13 +122,9 @@ namespace opendnp3
 
 		virtual void OnPendingTask() override { this->PostCheckForTask(); }
 
-		void ProcessIIN(const IINField& iin);
-
-		/// private state manipulation actions used from the public actions
+		void ProcessIIN(const IINField& iin);		
 							
-		void OnResponseTimeout();		
-
-		
+		void OnResponseTimeout();				
 	};
 
 }

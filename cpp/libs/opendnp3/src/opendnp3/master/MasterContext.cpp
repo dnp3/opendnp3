@@ -94,7 +94,7 @@ namespace opendnp3
 
 	void MContext::OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
-		auth.OnReceive(*this, apdu, header, objects);
+		this->ProcessAPDU(header, objects);
 	}
 
 	void MContext::ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
@@ -223,9 +223,7 @@ namespace opendnp3
 
 			pState = &MasterStateIdle::Instance();
 
-			pTaskLock->OnLayerDown();
-
-			auth.GoOffline();
+			pTaskLock->OnLayerDown();			
 
 			scheduler.OnLowerLayerDown();
 
@@ -251,8 +249,7 @@ namespace opendnp3
 		else
 		{
 			isOnline = true;
-			pTaskLock->OnLayerUp();
-			auth.GoOnline();
+			pTaskLock->OnLayerUp();			
 			tasks.Initialize(scheduler);
 			scheduler.OnLowerLayerUp();
 			return true;
@@ -275,7 +272,7 @@ namespace opendnp3
 			this->pActiveTask->BuildRequest(request, this->solSeq);
 			this->StartResponseTimer();
 			auto apdu = request.ToReadOnly();
-			auth.RecordLastRequest(apdu);
+			this->RecordLastRequest(apdu);			
 			this->Transmit(apdu);
 			return true;
 		}

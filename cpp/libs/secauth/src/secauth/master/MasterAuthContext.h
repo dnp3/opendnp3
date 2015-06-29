@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_MASTERAUTHPROVIDER_H
-#define SECAUTH_MASTERAUTHPROVIDER_H
+#ifndef SECAUTH_MASTERAUTHCONTEXT_H
+#define SECAUTH_MASTERAUTHCONTEXT_H
 
-#include <opendnp3/master/IMasterAuthProvider.h>
+#include <opendnp3/master/MasterContext.h>
 
 #include <openpal/util/Uncopyable.h>
 
@@ -32,15 +32,19 @@
 namespace secauth
 {
 
-class MasterAuthProvider final : public opendnp3::IMasterAuthProvider, private IAuthResponseReceiver, private openpal::Uncopyable
+class MAuthContext final : public opendnp3::MContext, private IAuthResponseReceiver
 {	
 
 public:	
 
-	MasterAuthProvider(
-		opendnp3::IMasterApplication& application,
+	MAuthContext(
 		openpal::IExecutor& executor,
-		openpal::Logger logger,		
+		openpal::LogRoot& root,
+		opendnp3::ILowerLayer& lower,
+		opendnp3::ISOEHandler& SOEHandler,
+		opendnp3::IMasterApplication& application,
+		const opendnp3::MasterParams& params,
+		opendnp3::ITaskLock& taskLock,
 		openpal::ICryptoProvider& crypto,
 		IMasterUser& user
 	);
@@ -48,9 +52,9 @@ public:
 
 	// ------ Implement IMasterAuthProvider ------		
 
-	virtual void GoOnline() override final;	
+	virtual bool GoOnline() override;
 
-	virtual void GoOffline() override final;
+	virtual bool GoOffline() override;
 
 	virtual void OnReceive(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
 

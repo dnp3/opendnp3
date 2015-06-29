@@ -29,7 +29,10 @@
 #include <opendnp3/master/Master.h>
 #include <opendnp3/transport/TransportStack.h>
 
+#include <secauth/master/IMasterUser.h>
+
 #include <openpal/executor/IUTCTimeSource.h>
+#include <openpal/crypto/ICryptoProvider.h>
 
 namespace asiodnp3
 {
@@ -40,6 +43,7 @@ class MasterStackImpl : public MasterBase
 {
 public:
 
+	// constructor for normal DNP3
 	MasterStackImpl(
 		const char* id,
 		openpal::LogRoot& root,
@@ -49,6 +53,20 @@ public:
 		const opendnp3::MasterStackConfig& config,		
 		IStackLifecycle& lifecycle,
 		opendnp3::ITaskLock& taskLock
+	);
+
+	//constructor for secure DNP3
+	MasterStackImpl(
+		const char* id,
+		openpal::LogRoot& root,
+		asiopal::ASIOExecutor& executor,
+		opendnp3::ISOEHandler& SOEHandler,
+		opendnp3::IMasterApplication& application,
+		const opendnp3::MasterStackConfig& config,
+		IStackLifecycle& lifecycle,
+		opendnp3::ITaskLock& taskLock,
+		secauth::IMasterUser& user,
+		openpal::ICryptoProvider& crypto
 	);
 
 	virtual bool Enable() override final;
@@ -104,7 +122,7 @@ protected:
 	opendnp3::StackStatistics statistics;
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;
-	opendnp3::MContext mcontext;
+	std::unique_ptr<opendnp3::MContext> mcontext;
 	opendnp3::Master master;
 };
 

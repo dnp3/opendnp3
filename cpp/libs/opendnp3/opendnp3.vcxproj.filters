@@ -894,12 +894,6 @@
     <ClInclude Include="src\opendnp3\master\MasterCommandProcessor.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IMasterAuthProvider.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterAuthWrapper.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\TaskComparison.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -1350,9 +1344,6 @@
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\MasterCommandProcessor.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterAuthWrapper.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\TaskComparison.cpp">

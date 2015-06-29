@@ -97,11 +97,6 @@ ICommandProcessor& Master::GetCommandProcessor()
 	return commandProcessor;
 }
 
-void Master::SetAuthProvider(IMasterAuthProvider& provider)
-{
-	this->pMContext->auth.SetProvider(*pMContext, provider);
-}
-
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
 	auto pTask = new UserPollTask(builder, true, period, pMContext->params.taskRetryPeriod, *pMContext->pApplication, *pMContext->pSOEHandler, pCallback, userId, pMContext->logger);

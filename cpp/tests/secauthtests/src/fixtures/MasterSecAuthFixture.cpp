@@ -33,13 +33,12 @@ namespace opendnp3
 		meas(),
 		lower(log.root),
 		application(),
-		context(exe, log.root, lower, meas, application, params, lock),
-		master(context),
 		crypto(),
 		user(user_),
-		auth(application, exe, log.GetLogger(), crypto, user)
+		context(exe, log.root, lower, meas, application, params, lock, crypto, user),
+		master(context)				
 	{
-		master.SetAuthProvider(auth);
+		
 	}
 
 	void MasterSecAuthFixture::SendToMaster(const std::string& hex)

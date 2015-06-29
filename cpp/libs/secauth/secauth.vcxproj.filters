@@ -23,9 +23,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\secauth\master\MasterAuthProvider.h">
-      <Filter>Header Files\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\secauth\master\MasterSecurityState.h">
       <Filter>Header Files\master</Filter>
     </ClInclude>
@@ -131,11 +128,11 @@
     <ClInclude Include="src\secauth\outstation\Permissions.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\master\MasterAuthContext.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp">
-      <Filter>Source Files\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\secauth\master\MasterSecurityState.cpp">
       <Filter>Source Files\master</Filter>
     </ClCompile>
@@ -219,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="src\secauth\outstation\Permissions.cpp">
       <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\master\MasterAuthContext.cpp">
+      <Filter>Source Files\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
