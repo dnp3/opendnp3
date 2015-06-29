@@ -72,7 +72,7 @@ void OActions::OnReceiveAPDU(OContext& ocontext, const openpal::ReadBufferView& 
 		}
 		else
 		{
-			SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring fragment. Requst must be FIR/FIN/!CON");
+			SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring fragment. Request must be FIR/FIN/!CON");
 		}
 	}
 	else

@@ -59,6 +59,8 @@ class OContext
 				ICommandHandler& commandHandler,
 				IOutstationApplication& application);
 
+	public:
+
 	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
 
 	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
@@ -71,12 +73,17 @@ class OContext
 
 	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 
+	virtual bool GoOnline();
 
-	// reset important variables to their initial state
-	void Reset();	
+	virtual bool GoOffline();
 
 	// returns true if the layer is online and not transmitting
 	bool CanTransmit() const;
+
+	protected:
+		
+
+	public:
 
 	// ------ resources --------
 	openpal::Logger logger;

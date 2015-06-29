@@ -34,9 +34,7 @@ class OActions : private openpal::StaticOnly
 {
 	
 	public:				
-
-	static void OnNewEventData(OContext& ocontext);
-
+	
 	static IINField GetResponseIIN(OContext& ocontext);	
 
 	static void CheckForTaskStart(OContext& ocontext);	

@@ -47,27 +47,12 @@ Outstation::Outstation(
 	
 void Outstation::OnLowerLayerUp()
 {
-	if (ocontext.isOnline)
-	{
-		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "already online");
-	}
-	else
-	{
-		ocontext.isOnline = true;
-		OActions::CheckForTaskStart(ocontext);
-	}
+	ocontext.GoOnline();
 }
 	
 void Outstation::OnLowerLayerDown()
 {
-	if (ocontext.isOnline)
-	{
-		ocontext.Reset();		
-	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "not online");
-	}
+	ocontext.GoOffline();
 }
 
 void Outstation::OnReceive(const openpal::ReadBufferView& fragment)

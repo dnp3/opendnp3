@@ -32,31 +32,31 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	OContext::OContext(
-		const OutstationConfig& config,
-		const DatabaseTemplate& dbTemplate,
-		openpal::Logger logger_,				
-		openpal::IExecutor& executor,		
-		ILowerLayer& lower,
-		ICommandHandler& commandHandler,
-		IOutstationApplication& application) :
+OContext::OContext(
+	const OutstationConfig& config,
+	const DatabaseTemplate& dbTemplate,
+	openpal::Logger logger_,				
+	openpal::IExecutor& executor,		
+	ILowerLayer& lower,
+	ICommandHandler& commandHandler,
+	IOutstationApplication& application) :
 	
-	logger(logger_),
-	pExecutor(&executor),
-	pLower(&lower),	
-	pCommandHandler(&commandHandler),
-	pApplication(&application),
-	eventBuffer(config.eventBufferConfig),
-	database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
-	rspContext(database.GetStaticLoader(), eventBuffer),
-	params(config.params),	
-	isOnline(false),
-	isTransmitting(false),	
-	staticIIN(IINBit::DEVICE_RESTART),	
-	confirmTimer(executor),
-	deferred(config.params.maxRxFragSize),
-	sol(config.params.maxTxFragSize),
-	unsol(config.params.maxTxFragSize)
+		logger(logger_),
+		pExecutor(&executor),
+		pLower(&lower),	
+		pCommandHandler(&commandHandler),
+		pApplication(&application),
+		eventBuffer(config.eventBufferConfig),
+		database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
+		rspContext(database.GetStaticLoader(), eventBuffer),
+		params(config.params),	
+		isOnline(false),
+		isTransmitting(false),	
+		staticIIN(IINBit::DEVICE_RESTART),	
+		confirmTimer(executor),
+		deferred(config.params.maxRxFragSize),
+		sol(config.params.maxTxFragSize),
+		unsol(config.params.maxTxFragSize)
 {	
 	
 }
@@ -172,10 +172,29 @@ OutstationSolicitedStateBase* OContext::ContinueMultiFragResponse(const AppSeqNu
 	}
 }
 
-void OContext::Reset()
-{	
+bool OContext::GoOnline()
+{
+	if (isOnline)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "already online");
+		return false;
+	}
+
+	isOnline = true;
+	OActions::CheckForTaskStart(*this);
+	return true;
+}
+
+bool OContext::GoOffline()
+{
+	if (!isOnline)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "already offline");
+		return false;
+	}
+
 	isOnline = false;
-	isTransmitting = false;	
+	isTransmitting = false;
 
 	sol.Reset();
 	unsol.Reset();
@@ -185,6 +204,8 @@ void OContext::Reset()
 	rspContext.Reset();
 	confirmTimer.Cancel();
 	auth.Reset();
+
+	return true;
 }
 
 bool OContext::CanTransmit() const
