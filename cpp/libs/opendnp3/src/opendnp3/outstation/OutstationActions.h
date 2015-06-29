@@ -33,13 +33,7 @@ namespace opendnp3
 class OActions : private openpal::StaticOnly
 {
 	
-	public:					
-
-	static void CheckForTaskStart(OContext& ocontext);	
-
-	static void OnReceiveAPDU(OContext& ocontext, const openpal::ReadBufferView& apdu);	
-
-	static void OnSendResult(OContext& ocontext, bool isSuccess);	
+	public:						
 
 	/// ---- Processing functions --------
 

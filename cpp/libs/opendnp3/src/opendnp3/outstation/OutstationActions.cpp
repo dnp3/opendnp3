@@ -43,39 +43,6 @@ using namespace openpal;
 namespace opendnp3
 {
 
-void OActions::OnReceiveAPDU(OContext& ocontext, const openpal::ReadBufferView& apdu)
-{	
-	FORMAT_HEX_BLOCK(ocontext.logger, flags::APP_HEX_RX, apdu, 18, 18);
-
-	APDUHeader header;	
-	if (APDUHeaderParser::ParseRequest(apdu, header, &ocontext.logger))
-	{
-		FORMAT_LOG_BLOCK(ocontext.logger, flags::APP_HEADER_RX,
-			"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-			header.control.FIR,
-			header.control.FIN,
-			header.control.CON,
-			header.control.UNS,
-			header.control.SEQ,
-			FunctionCodeToString(header.function));
-
-		// outstations should only process single fragment messages that don't request confirmation
-		if (header.control.IsFirAndFin() && !header.control.CON)
-		{
-			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
-			ocontext.auth.OnReceive(ocontext, apdu, header, objects);			
-		}
-		else
-		{
-			SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring fragment. Request must be FIR/FIN/!CON");
-		}
-	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "ignoring malformed request header");
-	}	
-}
-
 void OActions::ProcessHeaderAndObjects(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	if (Functions::IsNoAckFuncCode(header.function))
@@ -104,14 +71,7 @@ void OActions::ProcessHeaderAndObjects(OContext& ocontext, const APDUHeader& hea
 	}
 }
 
-void OActions::OnSendResult(OContext& ocontext, bool isSuccess)
-{
-	if (ocontext.isTransmitting)
-	{
-		ocontext.isTransmitting = false;
-		OActions::CheckForTaskStart(ocontext);
-	}	
-}
+
 
 void OActions::ProcessRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
@@ -166,14 +126,6 @@ void OActions::ProcessSolicitedConfirm(OContext& ocontext, const APDUHeader& hea
 void OActions::ProcessUnsolicitedConfirm(OContext& ocontext, const APDUHeader& header)
 {
 	ocontext.unsol.pState = ocontext.unsol.pState->OnConfirm(ocontext, header);
-}
-
-void OActions::CheckForTaskStart(OContext& ocontext)
-{		
-	// do these checks in order of priority
-	ocontext.auth.CheckState(ocontext);
-	OActions::CheckForDeferredRequest(ocontext);
-	OActions::CheckForUnsolicited(ocontext);
 }
 
 void OActions::CheckForDeferredRequest(OContext& ocontext)
@@ -257,7 +209,7 @@ bool OActions::StartSolicitedConfirmTimer(OContext& ocontext)
 	auto timeout = [&]()
 	{ 
 		ocontext.sol.pState = ocontext.sol.pState->OnConfirmTimeout(ocontext);
-		OActions::CheckForTaskStart(ocontext);
+		ocontext.CheckForTaskStart();
 	};
 	return ocontext.confirmTimer.Start(ocontext.params.unsolConfirmTimeout, timeout);
 }
@@ -267,7 +219,7 @@ bool OActions::StartUnsolicitedConfirmTimer(OContext& ocontext)
 	auto timeout = [&]()
 	{ 
 		ocontext.unsol.pState = ocontext.unsol.pState->OnConfirmTimeout(ocontext);
-		OActions::CheckForTaskStart(ocontext);
+		ocontext.CheckForTaskStart();
 	};
 	return ocontext.confirmTimer.Start(ocontext.params.unsolConfirmTimeout, timeout);
 }

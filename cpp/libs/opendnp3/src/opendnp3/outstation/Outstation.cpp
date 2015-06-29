@@ -59,8 +59,8 @@ void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
 	if (ocontext.isOnline)
 	{		
-		OActions::OnReceiveAPDU(ocontext, fragment);
-		OActions::CheckForTaskStart(ocontext);
+		ocontext.OnReceiveAPDU(fragment);
+		ocontext.CheckForTaskStart();
 	}
 	else
 	{
@@ -72,7 +72,7 @@ void Outstation::OnSendResult(bool isSuccess)
 {	
 	if (ocontext.isOnline)
 	{		
-		OActions::OnSendResult(ocontext, isSuccess);
+		ocontext.OnSendResult(isSuccess);
 	}
 	else
 	{
@@ -87,7 +87,7 @@ void Outstation::SetRestartIIN()
 
 void Outstation::CheckForUpdates()
 {
-	OActions::CheckForTaskStart(ocontext);
+	ocontext.CheckForTaskStart();
 }
 
 IDatabase& Outstation::GetDatabase()

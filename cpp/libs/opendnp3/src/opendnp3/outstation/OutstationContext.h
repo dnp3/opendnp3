@@ -82,6 +82,12 @@ class OContext
 	IINField GetResponseIIN();		
 
 	IINField GetDynamicIIN();
+
+	void CheckForTaskStart();
+
+	void OnReceiveAPDU(const openpal::ReadBufferView& apdu);
+
+	void OnSendResult(bool isSuccess);
 	
 
 	// ------ resources --------

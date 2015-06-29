@@ -22,6 +22,7 @@
 #include "OutstationContext.h"
 
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/outstation/OutstationActions.h"
 #include "opendnp3/outstation/OutstationFunctions.h"
 
@@ -181,7 +182,7 @@ bool OContext::GoOnline()
 	}
 
 	isOnline = true;
-	OActions::CheckForTaskStart(*this);
+	this->CheckForTaskStart();	
 	return true;
 }
 
@@ -229,6 +230,54 @@ IINField OContext::GetDynamicIIN()
 	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, this->eventBuffer.IsOverflown());
 
 	return ret;
+}
+
+void OContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
+{
+	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, apdu, 18, 18);
+
+	APDUHeader header;
+	if (!APDUHeaderParser::ParseRequest(apdu, header, &this->logger))
+	{		
+		return;
+	}
+
+
+	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
+		"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
+		header.control.FIR,
+		header.control.FIN,
+		header.control.CON,
+		header.control.UNS,
+		header.control.SEQ,
+		FunctionCodeToString(header.function));
+
+	// outstations should only process single fragment messages that don't request confirmation
+	if (!header.control.IsFirAndFin() || header.control.CON)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Request must be FIR/FIN/!CON");
+		return;
+	}	
+
+	auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
+	this->auth.OnReceive(*this, apdu, header, objects);
+}
+
+void OContext::OnSendResult(bool isSuccess)
+{
+	if (this->isTransmitting)
+	{
+		this->isTransmitting = false;
+		this->CheckForTaskStart();		
+	}
+}
+
+void OContext::CheckForTaskStart()
+{
+	// do these checks in order of priority
+	this->auth.CheckState(*this);
+	OActions::CheckForDeferredRequest(*this);
+	OActions::CheckForUnsolicited(*this);
 }
 
 
