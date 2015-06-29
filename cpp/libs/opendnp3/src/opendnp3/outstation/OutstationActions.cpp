@@ -126,7 +126,7 @@ void OActions::ProcessRequest(OContext& ocontext, const APDUHeader& header, cons
 	}
 	else
 	{		
-		ocontext.sol.pState = OActions::OnReceiveSolRequest(ocontext, header, objects);		
+		ocontext.sol.pState = ocontext.OnReceiveSolRequest(header, objects);		
 	}
 }
 
@@ -140,94 +140,6 @@ void OActions::ProcessConfirm(OContext& ocontext, const APDUHeader& header)
 	{
 		OActions::ProcessSolicitedConfirm(ocontext, header);
 	}
-}
-
-OutstationSolicitedStateBase* OActions::OnReceiveSolRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{			
-	// analyze this request to see how it compares to the last request
-	if (ocontext.history.HasLastRequest())
-	{		
-		if (ocontext.sol.seq.num.Equals(header.control.SEQ))
-		{			
-			if (ocontext.history.FullyEqualsLastRequest(header, objects))
-			{
-				if (header.function == FunctionCode::READ)
-				{
-					SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring repeat read request");
-					return ocontext.sol.pState;
-				}
-				else
-				{
-					return ocontext.sol.pState->OnRepeatNonReadRequest(ocontext, header, objects);
-				}
-			}
-			else // new operation with same SEQ
-			{
-				return ProcessNewRequest(ocontext, header, objects);
-			}
-		}
-		else  // completely new sequence #
-		{
-			return ProcessNewRequest(ocontext, header, objects);
-		}		
-	}
-	else
-	{		
-		return ProcessNewRequest(ocontext, header, objects);
-	}	
-}
-
-OutstationSolicitedStateBase* OActions::ProcessNewRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	ocontext.sol.seq.num = header.control.SEQ;
-
-	if (header.function == FunctionCode::READ)
-	{
-		return ocontext.sol.pState->OnNewReadRequest(ocontext, header, objects);
-	}
-	else
-	{
-		return ocontext.sol.pState->OnNewNonReadRequest(ocontext, header, objects);
-	}
-}
-
-OutstationSolicitedStateBase* OActions::RespondToNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	ocontext.history.RecordLastProcessedRequest(header, objects);
-
-	auto response = ocontext.sol.tx.Start();
-	auto writer = response.GetWriter();
-	response.SetFunction(FunctionCode::RESPONSE);
-	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
-	auto iin = OFunctions::HandleNonReadResponse(ocontext, header, objects, writer);
-	response.SetIIN(iin | GetResponseIIN(ocontext));
-	OActions::BeginResponseTx(ocontext, response.ToReadOnly());
-	return &OutstationSolicitedStateIdle::Inst();
-}
-
-OutstationSolicitedStateBase* OActions::RespondToReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	ocontext.history.RecordLastProcessedRequest(header, objects);
-
-	auto response = ocontext.sol.tx.Start();
-	auto writer = response.GetWriter();
-	response.SetFunction(FunctionCode::RESPONSE);
-	auto result = OFunctions::HandleRead(ocontext, objects, writer);
-	result.second.SEQ = header.control.SEQ;
-	ocontext.sol.seq.confirmNum = header.control.SEQ;
-	response.SetControl(result.second);
-	response.SetIIN(result.first | OActions::GetResponseIIN(ocontext));		
-	OActions::BeginResponseTx(ocontext, response.ToReadOnly());
-
-	if (result.second.CON)
-	{
-		OActions::StartSolicitedConfirmTimer(ocontext);
-		return &OutstationStateSolicitedConfirmWait::Inst();
-	}
-	else
-	{
-		return  &OutstationSolicitedStateIdle::Inst();
-	}	
 }
 
 void OActions::BeginResponseTx(OContext& ocontext, const ReadBufferView& response)
@@ -259,29 +171,6 @@ void OActions::ProcessSolicitedConfirm(OContext& ocontext, const APDUHeader& hea
 void OActions::ProcessUnsolicitedConfirm(OContext& ocontext, const APDUHeader& header)
 {
 	ocontext.unsol.pState = ocontext.unsol.pState->OnConfirm(ocontext, header);
-}
-
-OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OContext& ocontext, const AppSeqNum& seq)
-{	
-	auto response = ocontext.sol.tx.Start();	
-	auto writer = response.GetWriter();
-	response.SetFunction(FunctionCode::RESPONSE);
-	auto control = ocontext.rspContext.LoadResponse(writer);
-	control.SEQ = seq;
-	ocontext.sol.seq.confirmNum = seq;
-	response.SetControl(control);
-	response.SetIIN(GetResponseIIN(ocontext));
-	OActions::BeginResponseTx(ocontext, response.ToReadOnly());
-	
-	if (control.CON)
-	{
-		OActions::StartSolicitedConfirmTimer(ocontext);
-		return &OutstationStateSolicitedConfirmWait::Inst();
-	}
-	else
-	{
-		return &OutstationSolicitedStateIdle::Inst();
-	}	
 }
 
 void OActions::CheckForTaskStart(OContext& ocontext)

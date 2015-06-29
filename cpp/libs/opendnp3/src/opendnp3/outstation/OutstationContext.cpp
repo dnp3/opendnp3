@@ -21,6 +21,12 @@
 
 #include "OutstationContext.h"
 
+#include "opendnp3/LogLevels.h"
+#include "opendnp3/outstation/OutstationActions.h"
+#include "opendnp3/outstation/OutstationFunctions.h"
+
+#include <openpal/logging/LogMacros.h>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -53,6 +59,117 @@ namespace opendnp3
 	unsol(config.params.maxTxFragSize)
 {	
 	
+}
+
+OutstationSolicitedStateBase* OContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	// analyze this request to see how it compares to the last request
+	if (this->history.HasLastRequest())
+	{
+		if (this->sol.seq.num.Equals(header.control.SEQ))
+		{
+			if (this->history.FullyEqualsLastRequest(header, objects))
+			{
+				if (header.function == FunctionCode::READ)
+				{
+					SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring repeat read request");
+					return this->sol.pState;
+				}
+				else
+				{
+					return this->sol.pState->OnRepeatNonReadRequest(*this, header, objects);
+				}
+			}
+			else // new operation with same SEQ
+			{
+				return this->ProcessNewRequest(header, objects);
+			}
+		}
+		else  // completely new sequence #
+		{
+			return this->ProcessNewRequest(header, objects);
+		}
+	}
+	else
+	{
+		return this->ProcessNewRequest(header, objects);
+	}
+}
+
+OutstationSolicitedStateBase* OContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	this->sol.seq.num = header.control.SEQ;
+
+	if (header.function == FunctionCode::READ)
+	{
+		return this->sol.pState->OnNewReadRequest(*this, header, objects);
+	}
+	else
+	{
+		return this->sol.pState->OnNewNonReadRequest(*this, header, objects);
+	}
+}
+
+OutstationSolicitedStateBase* OContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	this->history.RecordLastProcessedRequest(header, objects);
+
+	auto response = this->sol.tx.Start();
+	auto writer = response.GetWriter();
+	response.SetFunction(FunctionCode::RESPONSE);
+	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
+	auto iin = OFunctions::HandleNonReadResponse(*this, header, objects, writer);
+	response.SetIIN(iin | OActions::GetResponseIIN(*this));
+	OActions::BeginResponseTx(*this, response.ToReadOnly());
+	return &OutstationSolicitedStateIdle::Inst();
+}
+
+OutstationSolicitedStateBase* OContext::RespondToReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	this->history.RecordLastProcessedRequest(header, objects);
+
+	auto response = this->sol.tx.Start();
+	auto writer = response.GetWriter();
+	response.SetFunction(FunctionCode::RESPONSE);
+	auto result = OFunctions::HandleRead(*this, objects, writer);
+	result.second.SEQ = header.control.SEQ;
+	this->sol.seq.confirmNum = header.control.SEQ;
+	response.SetControl(result.second);
+	response.SetIIN(result.first | OActions::GetResponseIIN(*this));
+	OActions::BeginResponseTx(*this, response.ToReadOnly());
+
+	if (result.second.CON)
+	{
+		OActions::StartSolicitedConfirmTimer(*this);
+		return &OutstationStateSolicitedConfirmWait::Inst();
+	}
+	else
+	{
+		return  &OutstationSolicitedStateIdle::Inst();
+	}
+}
+
+OutstationSolicitedStateBase* OContext::ContinueMultiFragResponse(const AppSeqNum& seq)
+{
+	auto response = this->sol.tx.Start();
+	auto writer = response.GetWriter();
+	response.SetFunction(FunctionCode::RESPONSE);
+	auto control = this->rspContext.LoadResponse(writer);
+	control.SEQ = seq;
+	this->sol.seq.confirmNum = seq;
+	response.SetControl(control);
+	response.SetIIN(OActions::GetResponseIIN(*this));
+	OActions::BeginResponseTx(*this, response.ToReadOnly());
+
+	if (control.CON)
+	{
+		OActions::StartSolicitedConfirmTimer(*this);
+		return &OutstationStateSolicitedConfirmWait::Inst();
+	}
+	else
+	{
+		return &OutstationSolicitedStateIdle::Inst();
+	}
 }
 
 void OContext::Reset()

@@ -52,12 +52,25 @@ class OContext
 	public:		
 
 	OContext(	const OutstationConfig& config,	
-			const DatabaseTemplate& dbTemplate,
-			openpal::Logger logger,						
-			openpal::IExecutor& executor,			
-			ILowerLayer& lower,
-			ICommandHandler& commandHandler,
-			IOutstationApplication& application);
+				const DatabaseTemplate& dbTemplate,
+				openpal::Logger logger,						
+				openpal::IExecutor& executor,			
+				ILowerLayer& lower,
+				ICommandHandler& commandHandler,
+				IOutstationApplication& application);
+
+	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
+
+	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	OutstationSolicitedStateBase* ContinueMultiFragResponse(const AppSeqNum& seq);
+
+	OutstationSolicitedStateBase* RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	OutstationSolicitedStateBase* RespondToReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+
 
 	// reset important variables to their initial state
 	void Reset();	

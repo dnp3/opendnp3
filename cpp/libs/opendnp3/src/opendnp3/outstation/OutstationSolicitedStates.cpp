@@ -83,7 +83,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OCo
 {
 	if (ocontext.unsol.IsIdle())
 	{
-		return OActions::RespondToReadRequest(ocontext, header, objects);
+		return ocontext.RespondToReadRequest(header, objects);
 	}
 	else
 	{
@@ -94,7 +94,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OCo
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	return OActions::RespondToNonReadRequest(ocontext, header, objects);			
+	return ocontext.RespondToNonReadRequest(header, objects);
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
@@ -136,7 +136,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OCo
 
 		if (ocontext.rspContext.HasSelection())
 		{						
-			return OActions::ContinueMultiFragResponse(ocontext, AppSeqNum(header.control.SEQ).Next());
+			return ocontext.ContinueMultiFragResponse(AppSeqNum(header.control.SEQ).Next());
 		}
 		else 
 		{

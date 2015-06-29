@@ -64,22 +64,7 @@ class OActions : private openpal::StaticOnly
 	static void BeginUnsolTx(OContext& ocontext, const openpal::ReadBufferView& response);
 
 	static void BeginTx(OContext& ocontext, const openpal::ReadBufferView& response);
-		
-
-	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
-
-	static OutstationSolicitedStateBase* OnReceiveSolRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
-
-	static OutstationSolicitedStateBase* ContinueMultiFragResponse(OContext& ocontext, const AppSeqNum& seq);
-	
-	static OutstationSolicitedStateBase* RespondToNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
-
-	static OutstationSolicitedStateBase* RespondToReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
-
-	static OutstationSolicitedStateBase* ProcessNewRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
-	
-
-	private:	
+				
 
 	static void CheckForDeferredRequest(OContext& ocontext);
 
