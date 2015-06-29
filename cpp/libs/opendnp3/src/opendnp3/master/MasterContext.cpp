@@ -87,7 +87,7 @@ namespace opendnp3
 				this->pActiveTask.Release();
 			}
 
-			pTaskLock->Release(*pScheduleCallback);
+			pTaskLock->Release(*this);
 			this->PostCheckForTask();
 		}		
 	}
@@ -269,7 +269,7 @@ namespace opendnp3
 
 	bool MContext::ResumeActiveTask()
 	{		
-		if (this->pTaskLock->Acquire(*pScheduleCallback))
+		if (this->pTaskLock->Acquire(*this))
 		{
 			APDURequest request(this->txBuffer.GetWriteBufferView());
 			this->pActiveTask->BuildRequest(request, this->solSeq);

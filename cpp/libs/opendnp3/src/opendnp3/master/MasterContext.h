@@ -65,8 +65,7 @@ namespace opendnp3
 		MasterParams params;
 		ISOEHandler* pSOEHandler;
 		ITaskLock* pTaskLock;
-		IMasterApplication* pApplication;
-		IScheduleCallback* pScheduleCallback;
+		IMasterApplication* pApplication;		
 		MasterAuthWrapper auth;
 
 
