@@ -119,7 +119,7 @@ OutstationSolicitedStateBase* OContext::RespondToNonReadRequest(const APDUHeader
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
 	auto iin = OFunctions::HandleNonReadResponse(*this, header, objects, writer);
-	response.SetIIN(iin | OActions::GetResponseIIN(*this));
+	response.SetIIN(iin | this->GetResponseIIN());
 	OActions::BeginResponseTx(*this, response.ToReadOnly());
 	return &OutstationSolicitedStateIdle::Inst();
 }
@@ -135,7 +135,7 @@ OutstationSolicitedStateBase* OContext::RespondToReadRequest(const APDUHeader& h
 	result.second.SEQ = header.control.SEQ;
 	this->sol.seq.confirmNum = header.control.SEQ;
 	response.SetControl(result.second);
-	response.SetIIN(result.first | OActions::GetResponseIIN(*this));
+	response.SetIIN(result.first | this->GetResponseIIN());
 	OActions::BeginResponseTx(*this, response.ToReadOnly());
 
 	if (result.second.CON)
@@ -158,7 +158,7 @@ OutstationSolicitedStateBase* OContext::ContinueMultiFragResponse(const AppSeqNu
 	control.SEQ = seq;
 	this->sol.seq.confirmNum = seq;
 	response.SetControl(control);
-	response.SetIIN(OActions::GetResponseIIN(*this));
+	response.SetIIN(this->GetResponseIIN());
 	OActions::BeginResponseTx(*this, response.ToReadOnly());
 
 	if (control.CON)
@@ -211,6 +211,24 @@ bool OContext::GoOffline()
 bool OContext::CanTransmit() const
 {
 	return isOnline && !isTransmitting;
+}
+
+IINField OContext::GetResponseIIN()
+{
+	return this->staticIIN | this->GetDynamicIIN() | this->pApplication->GetApplicationIIN().ToIIN();
+}
+
+IINField OContext::GetDynamicIIN()
+{
+	auto classField = this->eventBuffer.UnwrittenClassField();
+
+	IINField ret;
+	ret.SetBitToValue(IINBit::CLASS1_EVENTS, classField.HasClass1());
+	ret.SetBitToValue(IINBit::CLASS2_EVENTS, classField.HasClass2());
+	ret.SetBitToValue(IINBit::CLASS3_EVENTS, classField.HasClass3());
+	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, this->eventBuffer.IsOverflown());
+
+	return ret;
 }
 
 

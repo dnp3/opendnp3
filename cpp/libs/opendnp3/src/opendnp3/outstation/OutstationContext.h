@@ -58,8 +58,7 @@ class OContext
 				ILowerLayer& lower,
 				ICommandHandler& commandHandler,
 				IOutstationApplication& application);
-
-	public:
+	
 
 	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
 
@@ -80,10 +79,10 @@ class OContext
 	// returns true if the layer is online and not transmitting
 	bool CanTransmit() const;
 
-	protected:
-		
+	IINField GetResponseIIN();		
 
-	public:
+	IINField GetDynamicIIN();
+	
 
 	// ------ resources --------
 	openpal::Logger logger;

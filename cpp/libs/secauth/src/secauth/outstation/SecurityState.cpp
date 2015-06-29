@@ -63,7 +63,7 @@ namespace secauth
 	APDUResponse SecurityState::StartResponse(OContext& ocontext)
 	{
 		auto response = txBuffer.Start();
-		response.SetIIN(OActions::GetResponseIIN(ocontext));
+		response.SetIIN(ocontext.GetResponseIIN());
 		return response;
 	}
 }

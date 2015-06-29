@@ -43,11 +43,6 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IINField OActions::GetResponseIIN(OContext& ocontext)
-{
-	return ocontext.staticIIN | GetDynamicIIN(ocontext) | ocontext.pApplication->GetApplicationIIN().ToIIN();
-}
-
 void OActions::OnReceiveAPDU(OContext& ocontext, const openpal::ReadBufferView& apdu)
 {	
 	FORMAT_HEX_BLOCK(ocontext.logger, flags::APP_HEX_RX, apdu, 18, 18);
@@ -239,7 +234,7 @@ void OActions::CheckForUnsolicited(OContext& ocontext)
 				ocontext.eventBuffer.SelectAllByClass(ocontext.params.unsolClassMask);
 				ocontext.eventBuffer.Load(writer);					
 				
-				build::NullUnsolicited(response, ocontext.unsol.seq.num, GetResponseIIN(ocontext));				
+				build::NullUnsolicited(response, ocontext.unsol.seq.num, ocontext.GetResponseIIN());				
 				OActions::StartUnsolicitedConfirmTimer(ocontext);
 				ocontext.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
 				OActions::BeginUnsolTx(ocontext, response.ToReadOnly());
@@ -249,7 +244,7 @@ void OActions::CheckForUnsolicited(OContext& ocontext)
 		{
 			// send a NULL unsolcited message									
 			auto response = ocontext.unsol.tx.Start();
-			build::NullUnsolicited(response, ocontext.unsol.seq.num, GetResponseIIN(ocontext));
+			build::NullUnsolicited(response, ocontext.unsol.seq.num, ocontext.GetResponseIIN());
 			OActions::StartUnsolicitedConfirmTimer(ocontext);
 			ocontext.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
 			OActions::BeginUnsolTx(ocontext, response.ToReadOnly());
@@ -275,19 +270,6 @@ bool OActions::StartUnsolicitedConfirmTimer(OContext& ocontext)
 		OActions::CheckForTaskStart(ocontext);
 	};
 	return ocontext.confirmTimer.Start(ocontext.params.unsolConfirmTimeout, timeout);
-}
-
-IINField OActions::GetDynamicIIN(OContext& ocontext)
-{
-	auto classField = ocontext.eventBuffer.UnwrittenClassField();
-
-	IINField ret;
-	ret.SetBitToValue(IINBit::CLASS1_EVENTS, classField.HasClass1());
-	ret.SetBitToValue(IINBit::CLASS2_EVENTS, classField.HasClass2());
-	ret.SetBitToValue(IINBit::CLASS3_EVENTS, classField.HasClass3());
-	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, ocontext.eventBuffer.IsOverflown());
-
-	return ret;
 }
 
 }

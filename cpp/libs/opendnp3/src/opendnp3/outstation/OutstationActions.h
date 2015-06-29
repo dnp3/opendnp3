@@ -33,9 +33,7 @@ namespace opendnp3
 class OActions : private openpal::StaticOnly
 {
 	
-	public:				
-	
-	static IINField GetResponseIIN(OContext& ocontext);	
+	public:					
 
 	static void CheckForTaskStart(OContext& ocontext);	
 
@@ -73,8 +71,7 @@ class OActions : private openpal::StaticOnly
 	static bool StartUnsolicitedConfirmTimer(OContext& ocontext);	
 
 	static void CheckForUnsolicited(OContext& ocontext);
-
-	static IINField GetDynamicIIN(OContext& ocontext);
+	
 };
 
 
