@@ -22,7 +22,6 @@
 #include "SecurityState.h"
 
 #include "OAuthStates.h"
-#include <opendnp3/outstation/OutstationActions.h>
 
 using namespace opendnp3;
 

@@ -26,8 +26,6 @@
 
 #include <openpal/logging/LogMacros.h>
 
-#include "opendnp3/outstation/OutstationActions.h"
-
 
 using namespace openpal;
 using namespace opendnp3;

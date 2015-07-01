@@ -23,7 +23,6 @@
 
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/outstation/OutstationActions.h"
 
 #include <openpal/logging/LogMacros.h>
 

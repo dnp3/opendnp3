@@ -24,7 +24,9 @@
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/Functions.h"
-#include "opendnp3/outstation/OutstationActions.h"
+#include "opendnp3/app/APDULogging.h"
+#include "opendnp3/app/APDUBuilders.h"
+
 #include "opendnp3/outstation/OutstationFunctions.h"
 
 #include <openpal/logging/LogMacros.h>
@@ -166,6 +168,123 @@ void OContext::ProcessConfirm(const APDUHeader& header)
 	}
 }
 
+void OContext::BeginResponseTx(const ReadBufferView& response)
+{
+	this->sol.tx.Record(response);
+	this->BeginTx(response);
+}
+
+void OContext::BeginUnsolTx(const ReadBufferView& response)
+{
+	this->unsol.tx.Record(response);
+	this->unsol.seq.confirmNum = this->unsol.seq.num;
+	this->unsol.seq.num.Increment();
+	this->BeginTx(response);
+}
+
+void OContext::BeginTx(const openpal::ReadBufferView& response)
+{
+	logging::ParseAndLogResponseTx(this->logger, response);
+	this->isTransmitting = true;
+	this->pLower->BeginTransmit(response);
+}
+
+void OContext::CheckForDeferredRequest()
+{
+	if (this->CanTransmit() && this->deferred.IsSet())
+	{
+		auto handler = [this](const APDUHeader& header, const ReadBufferView& objects)
+		{
+			return this->ProcessDeferredRequest(header, objects);
+		};
+		this->deferred.Process(handler);
+	}
+}
+
+bool OContext::ProcessDeferredRequest(APDUHeader header, openpal::ReadBufferView objects)
+{
+	if (header.function == FunctionCode::CONFIRM)
+	{
+		this->ProcessConfirm(header);
+		return true;
+	}
+	else
+	{
+		if (header.function == FunctionCode::READ)
+		{
+			if (this->unsol.IsIdle())
+			{
+				this->ProcessRequest(header, objects);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			this->ProcessRequest(header, objects);
+			return true;
+		}
+	}
+}
+
+void OContext::CheckForUnsolicited()
+{
+	if (this->CanTransmit() && this->unsol.IsIdle() && this->params.allowUnsolicited)
+	{
+		if (this->unsol.completedNull)
+		{
+			// are there events to be reported?
+			if (this->params.unsolClassMask.Intersects(this->eventBuffer.UnwrittenClassField()))
+			{
+
+				auto response = this->unsol.tx.Start();
+				auto writer = response.GetWriter();
+
+				this->eventBuffer.Unselect();
+				this->eventBuffer.SelectAllByClass(this->params.unsolClassMask);
+				this->eventBuffer.Load(writer);
+
+				build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
+				this->StartUnsolicitedConfirmTimer();
+				this->unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
+				this->BeginUnsolTx(response.ToReadOnly());
+			}
+		}
+		else
+		{
+			// send a NULL unsolcited message									
+			auto response = this->unsol.tx.Start();
+			build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
+			this->StartUnsolicitedConfirmTimer();
+			this->unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
+			this->BeginUnsolTx(response.ToReadOnly());
+		}
+	}
+}
+
+bool OContext::StartSolicitedConfirmTimer()
+{
+	auto timeout = [&]()
+	{
+		this->sol.pState = this->sol.pState->OnConfirmTimeout(*this);
+		this->CheckForTaskStart();
+	};
+	return this->confirmTimer.Start(this->params.unsolConfirmTimeout, timeout);
+}
+
+bool OContext::StartUnsolicitedConfirmTimer()
+{
+	auto timeout = [this]()
+	{
+		this->unsol.pState = this->unsol.pState->OnConfirmTimeout(*this);
+		this->CheckForTaskStart();
+	};
+	return this->confirmTimer.Start(this->params.unsolConfirmTimeout, timeout);
+}
+
 OutstationSolicitedStateBase* OContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	this->history.RecordLastProcessedRequest(header, objects);
@@ -176,7 +295,7 @@ OutstationSolicitedStateBase* OContext::RespondToNonReadRequest(const APDUHeader
 	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
 	auto iin = OFunctions::HandleNonReadResponse(*this, header, objects, writer);
 	response.SetIIN(iin | this->GetResponseIIN());
-	OActions::BeginResponseTx(*this, response.ToReadOnly());
+	this->BeginResponseTx(response.ToReadOnly());
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
@@ -192,11 +311,11 @@ OutstationSolicitedStateBase* OContext::RespondToReadRequest(const APDUHeader& h
 	this->sol.seq.confirmNum = header.control.SEQ;
 	response.SetControl(result.second);
 	response.SetIIN(result.first | this->GetResponseIIN());
-	OActions::BeginResponseTx(*this, response.ToReadOnly());
+	this->BeginResponseTx(response.ToReadOnly());
 
 	if (result.second.CON)
 	{
-		OActions::StartSolicitedConfirmTimer(*this);
+		this->StartSolicitedConfirmTimer();
 		return &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	else
@@ -215,11 +334,11 @@ OutstationSolicitedStateBase* OContext::ContinueMultiFragResponse(const AppSeqNu
 	this->sol.seq.confirmNum = seq;
 	response.SetControl(control);
 	response.SetIIN(this->GetResponseIIN());
-	OActions::BeginResponseTx(*this, response.ToReadOnly());
+	this->BeginResponseTx(response.ToReadOnly());
 
 	if (control.CON)
 	{
-		OActions::StartSolicitedConfirmTimer(*this);
+		this->StartSolicitedConfirmTimer();
 		return &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	else
@@ -331,8 +450,8 @@ void OContext::CheckForTaskStart()
 {
 	// do these checks in order of priority
 	this->auth.CheckState(*this);
-	OActions::CheckForDeferredRequest(*this);
-	OActions::CheckForUnsolicited(*this);
+	this->CheckForDeferredRequest();
+	this->CheckForUnsolicited();
 }
 
 

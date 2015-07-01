@@ -22,7 +22,6 @@
 #include "OutstationSolicitedStates.h"
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/outstation/OutstationActions.h"
 #include "opendnp3/outstation/OutstationFunctions.h"
 
 
@@ -99,7 +98,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {					
-	OActions::BeginResponseTx(ocontext, ocontext.sol.tx.GetLastResponse());
+	ocontext.BeginResponseTx(ocontext.sol.tx.GetLastResponse());
 	return this;			
 }
 

@@ -80,11 +80,23 @@ class OContext
 
 	void ProcessConfirm(const APDUHeader& header);
 
-	/*
-	void ProcessSolicitedConfirm(const APDUHeader& header);
+	/// ---- Helper functions for begining solicited and unsolcited transmissions ----
 
-	void ProcessUnsolicitedConfirm(const APDUHeader& header);
-	*/
+	void BeginResponseTx(const openpal::ReadBufferView& response);
+
+	void BeginUnsolTx(const openpal::ReadBufferView& response);
+
+	void BeginTx(const openpal::ReadBufferView& response);
+
+	void CheckForDeferredRequest();
+
+	bool ProcessDeferredRequest(APDUHeader header, openpal::ReadBufferView objects);
+
+	bool StartSolicitedConfirmTimer();
+
+	bool StartUnsolicitedConfirmTimer();
+
+	void CheckForUnsolicited();
 
 	/// ----- method overridable for implementing SA or other extensions ----
 

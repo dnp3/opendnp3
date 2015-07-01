@@ -25,7 +25,6 @@
 #include "secauth/Crypto.h"
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/outstation/OutstationActions.h>
 #include <opendnp3/objects/Group120.h>
 
 #include <openpal/logging/LogMacros.h>
@@ -122,7 +121,7 @@ namespace secauth
 
 		if (success)
 		{
-			OActions::BeginTx(ocontext, rsp.ToReadOnly());
+			ocontext.BeginTx(rsp.ToReadOnly());
 		}
 	}
 	
@@ -160,7 +159,7 @@ namespace secauth
 			return;
 		}
 				
-		OActions::BeginTx(ocontext, rsp.ToReadOnly());		
+		ocontext.BeginTx(rsp.ToReadOnly());		
 	}	
 
 	void OSecActions::ProcessAuthReply(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
@@ -201,7 +200,7 @@ namespace secauth
 		auto success = sstate.challenge.WriteChallenge(fragment, header, response, sstate.hmac.GetType(), *sstate.pCrypto, &ocontext.logger);
 		if (success)
 		{
-			OActions::BeginTx(ocontext, response.ToReadOnly());
+			ocontext.BeginTx(response.ToReadOnly());
 		}
 		return success;
 	}		
@@ -240,7 +239,7 @@ namespace secauth
 
 		writer.WriteFreeFormat(error);
 		
-		OActions::BeginTx(ocontext, rsp.ToReadOnly());
+		ocontext.BeginTx(rsp.ToReadOnly());
 	}
 
 
