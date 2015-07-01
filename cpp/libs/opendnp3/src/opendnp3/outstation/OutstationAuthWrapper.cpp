@@ -21,7 +21,7 @@
 
 #include "OutstationAuthWrapper.h"
 
-#include "opendnp3/outstation/OutstationFunctions.h"
+#include <opendnp3/outstation/OutstationContext.h>
 
 namespace opendnp3
 {

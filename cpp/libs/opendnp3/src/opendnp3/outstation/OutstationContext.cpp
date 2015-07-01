@@ -22,12 +22,24 @@
 #include "OutstationContext.h"
 
 #include "opendnp3/LogLevels.h"
+
+#include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
+
 #include "opendnp3/app/Functions.h"
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/app/APDUBuilders.h"
 
-#include "opendnp3/outstation/OutstationFunctions.h"
+#include "opendnp3/outstation/ReadHandler.h"
+#include "opendnp3/outstation/WriteHandler.h"
+#include "opendnp3/outstation/IINHelpers.h"
+#include "opendnp3/outstation/CommandActionAdapter.h"
+#include "opendnp3/outstation/CommandResponseHandler.h"
+#include "opendnp3/outstation/ConstantCommandAction.h"
+#include "opendnp3/outstation/EventWriter.h"
+
+#include "opendnp3/outstation/ClassBasedRequestHandler.h"
+#include "opendnp3/outstation/AssignClassHandler.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -120,7 +132,7 @@ void OContext::ProcessHeaderAndObjects(const APDUHeader& header, const openpal::
 	{
 		// this is the only request we process while we are transmitting
 		// because it doesn't require a response of any kind
-		OFunctions::ProcessRequestNoAck(*this, header, objects);
+		this->ProcessRequestNoAck(header, objects);
 	}
 	else
 	{
@@ -293,7 +305,7 @@ OutstationSolicitedStateBase* OContext::RespondToNonReadRequest(const APDUHeader
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
-	auto iin = OFunctions::HandleNonReadResponse(*this, header, objects, writer);
+	auto iin = this->HandleNonReadResponse(header, objects, writer);
 	response.SetIIN(iin | this->GetResponseIIN());
 	this->BeginResponseTx(response.ToReadOnly());
 	return &OutstationSolicitedStateIdle::Inst();
@@ -306,7 +318,7 @@ OutstationSolicitedStateBase* OContext::RespondToReadRequest(const APDUHeader& h
 	auto response = this->sol.tx.Start();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
-	auto result = OFunctions::HandleRead(*this, objects, writer);
+	auto result = this->HandleRead(objects, writer);
 	result.second.SEQ = header.control.SEQ;
 	this->sol.seq.confirmNum = header.control.SEQ;
 	response.SetControl(result.second);
@@ -452,6 +464,256 @@ void OContext::CheckForTaskStart()
 	this->auth.CheckState(*this);
 	this->CheckForDeferredRequest();
 	this->CheckForUnsolicited();
+}
+
+//// ----------------------------- function handlers -----------------------------
+
+void OContext::ProcessRequestNoAck(const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	switch (header.function)
+	{
+	case(FunctionCode::DIRECT_OPERATE_NR) :
+		this->HandleDirectOperate(objects, nullptr); // no object writer, this is a no ack code
+		break;
+	default:
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
+		break;
+	}
+}
+
+IINField OContext::HandleNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+{
+	switch (header.function)
+	{
+	case(FunctionCode::WRITE) :
+		return this->HandleWrite(objects);
+	case(FunctionCode::SELECT) :
+		return this->HandleSelect(objects, writer);
+	case(FunctionCode::OPERATE) :
+		return this->HandleOperate(objects, writer);
+	case(FunctionCode::DIRECT_OPERATE) :
+		return this->HandleDirectOperate(objects, &writer);
+	case(FunctionCode::COLD_RESTART) :
+		return this->HandleRestart(objects, false, &writer);
+	case(FunctionCode::WARM_RESTART) :
+		return this->HandleRestart(objects, true, &writer);
+	case(FunctionCode::ASSIGN_CLASS) :
+		return this->HandleAssignClass(objects);
+	case(FunctionCode::DELAY_MEASURE) :
+		return this->HandleDelayMeasure(objects, writer);
+	case(FunctionCode::DISABLE_UNSOLICITED) :
+		return this->params.allowUnsolicited ? this->HandleDisableUnsolicited(objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
+	case(FunctionCode::ENABLE_UNSOLICITED) :
+		return this->params.allowUnsolicited ? this->HandleEnableUnsolicited(objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
+	default:
+		return	IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
+}
+
+Pair<IINField, AppControlField> OContext::HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+{
+	this->rspContext.Reset();
+	this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
+	this->database.Unselect();
+
+	ReadHandler handler(this->logger, this->database.GetSelector(), this->eventBuffer);
+	auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
+	if (result == ParseResult::OK)
+	{
+		auto control = this->rspContext.LoadResponse(writer);
+		return Pair<IINField, AppControlField>(handler.Errors(), control);
+	}
+	else
+	{
+		this->rspContext.Reset();
+		return Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
+	}
+}
+
+IINField OContext::HandleWrite(const openpal::ReadBufferView& objects)
+{
+	WriteHandler handler(this->logger, *this->pApplication, &this->staticIIN);
+	auto result = APDUParser::Parse(objects, handler, &this->logger);
+	return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
+}
+
+IINField OContext::HandleDirectOperate(const openpal::ReadBufferView& objects, HeaderWriter* pWriter)
+{
+	// since we're echoing, make sure there's enough size before beginning
+	if (pWriter && (objects.Size() > pWriter->Remaining()))
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %u", objects.Size());
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		CommandActionAdapter adapter(this->pCommandHandler, false);
+		CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, pWriter);
+		auto result = APDUParser::Parse(objects, handler, &this->logger);
+		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
+	}
+}
+
+IINField OContext::HandleSelect(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+{
+	// since we're echoing, make sure there's enough size before beginning
+	if (objects.Size() > writer.Remaining())
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %i", objects.Size());
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		CommandActionAdapter adapter(this->pCommandHandler, true);
+		CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, &writer);
+		auto result = APDUParser::Parse(objects, handler, &this->logger);
+		if (result == ParseResult::OK)
+		{
+			if (handler.AllCommandsSuccessful())
+			{
+				this->control.Select(this->sol.seq.num, this->pExecutor->GetTime(), objects);
+			}
+
+			return handler.Errors();
+		}
+		else
+		{
+			return IINFromParseResult(result);
+		}
+	}
+}
+
+IINField OContext::HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+{
+	// since we're echoing, make sure there's enough size before beginning
+	if (objects.Size() > writer.Remaining())
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %i", objects.Size());
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		auto now = this->pExecutor->GetTime();
+		auto result = this->control.ValidateSelection(this->sol.seq.num, now, this->params.selectTimeout, objects);
+
+		if (result == CommandStatus::SUCCESS)
+		{
+			CommandActionAdapter adapter(this->pCommandHandler, false);
+			CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, &writer);
+			auto result = APDUParser::Parse(objects, handler, &this->logger);
+			return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
+		}
+		else
+		{
+			return this->HandleCommandWithConstant(objects, writer, result);
+		}
+	}
+}
+
+IINField OContext::HandleDelayMeasure(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+{
+	if (objects.IsEmpty())
+	{
+		Group52Var2 value = { 0 }; 	// respond with 0 time delay
+		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
+		return IINField::Empty();
+	}
+	else
+	{
+		// there shouldn't be any trailing headers in delay measure request, no need to even parse
+		return IINField(IINBit::PARAM_ERROR);
+	}
+}
+
+IINField OContext::HandleRestart(const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter)
+{
+	if (objects.IsEmpty())
+	{
+		auto mode = isWarmRestart ? this->pApplication->WarmRestartSupport() : this->pApplication->ColdRestartSupport();
+
+		switch (mode)
+		{
+		case(RestartMode::UNSUPPORTED) :
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);
+		case(RestartMode::SUPPORTED_DELAY_COARSE) :
+		{
+			auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
+			if (pWriter)
+			{
+				Group52Var1 coarse = { delay };
+				pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
+			}
+			return IINField::Empty();
+		}
+		default:
+		{
+			auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
+			if (pWriter)
+			{
+				Group52Var2 fine = { delay };
+				pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
+			}
+			return IINField::Empty();
+		}
+		}
+	}
+	else
+	{
+		// there shouldn't be any trailing headers in restart requests, no need to even parse
+		return IINField(IINBit::PARAM_ERROR);
+	}
+}
+
+IINField OContext::HandleAssignClass(const openpal::ReadBufferView& objects)
+{
+	if (this->pApplication->SupportsAssignClass())
+	{
+		AssignClassHandler handler(this->logger, *this->pExecutor, *this->pApplication, this->database.GetClassAssigner());
+		auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
+		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
+	}
+	else
+	{
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
+}
+
+IINField OContext::HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+{
+	ClassBasedRequestHandler handler(this->logger);
+	auto result = APDUParser::Parse(objects, handler, &this->logger);
+	if (result == ParseResult::OK)
+	{
+		this->params.unsolClassMask.Clear(handler.GetClassField());
+		return handler.Errors();
+	}
+	else
+	{
+		return IINFromParseResult(result);
+	}
+}
+
+IINField OContext::HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+{
+	ClassBasedRequestHandler handler(this->logger);
+	auto result = APDUParser::Parse(objects, handler, &this->logger);
+	if (result == ParseResult::OK)
+	{
+		this->params.unsolClassMask.Set(handler.GetClassField());
+		return handler.Errors();
+	}
+	else
+	{
+		return IINFromParseResult(result);
+	}
+}
+
+IINField OContext::HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status)
+{
+	ConstantCommandAction constant(status);
+	CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &constant, &writer);
+	auto result = APDUParser::Parse(objects, handler, &this->logger);
+	return IINFromParseResult(result);
 }
 
 

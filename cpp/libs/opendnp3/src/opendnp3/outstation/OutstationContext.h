@@ -39,6 +39,7 @@
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/LogRoot.h>
+#include <openpal/container/Pair.h>
 
 namespace opendnp3
 {
@@ -117,6 +118,36 @@ class OContext
 
 	void OnSendResult(bool isSuccess);
 	
+
+private:
+
+	/// --- methods for handling app-layer functions ---
+
+	/// Handles non-read function codes that require a response. builds the response using the supplied writer.
+	/// @return An IIN field indicating the validity of the request, and to be returned in the response.
+	IINField HandleNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+
+	/// Handles read function codes. May trigger an unsolicited response	
+	/// @return an IIN field and a partial AppControlField (missing sequence info)
+	openpal::Pair<IINField, AppControlField> HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer);
+
+	/// Handles no-response function codes.
+	void ProcessRequestNoAck(const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	// ------ Function Handlers ------
+
+	IINField HandleWrite(const openpal::ReadBufferView& objects);
+	IINField HandleSelect(const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	IINField HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	IINField HandleDirectOperate(const openpal::ReadBufferView& objects, HeaderWriter* pWriter);
+	IINField HandleDelayMeasure(const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	IINField HandleRestart(const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter);
+	IINField HandleAssignClass(const openpal::ReadBufferView& objects);
+	IINField HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	IINField HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
+	
+public:
 
 	// ------ resources --------
 	openpal::Logger logger;
