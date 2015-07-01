@@ -186,7 +186,7 @@ namespace secauth
 		if (sstate.pUserDatabase->IsAuthorized(user, criticalHeader.function))
 		{
 			auto objects = sstate.challenge.GetCriticalASDU().Skip(APDU_REQUEST_HEADER_SIZE);
-			OActions::ProcessHeaderAndObjects(ocontext, criticalHeader, objects);			
+			ocontext.ProcessHeaderAndObjects(criticalHeader, objects);			
 		}
 		else
 		{

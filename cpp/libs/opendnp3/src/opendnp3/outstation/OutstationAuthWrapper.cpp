@@ -62,7 +62,7 @@ void OutstationAuthWrapper::OnReceive(OContext& ocontext, const openpal::ReadBuf
 	else
 	{
 		// no auth provider just skips any authentication and goes directly to processing
-		OActions::ProcessHeaderAndObjects(ocontext, header, objects);
+		ocontext.ProcessHeaderAndObjects(header, objects);				
 	}
 }
 

@@ -72,6 +72,22 @@ class OContext
 
 	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 
+	/// ---- Processing functions --------
+
+	void ProcessHeaderAndObjects(const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	void ProcessRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	void ProcessConfirm(const APDUHeader& header);
+
+	/*
+	void ProcessSolicitedConfirm(const APDUHeader& header);
+
+	void ProcessUnsolicitedConfirm(const APDUHeader& header);
+	*/
+
+	/// ----- method overridable for implementing SA or other extensions ----
+
 	virtual bool GoOnline();
 
 	virtual bool GoOffline();

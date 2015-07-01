@@ -43,60 +43,6 @@ using namespace openpal;
 namespace opendnp3
 {
 
-void OActions::ProcessHeaderAndObjects(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{	
-	if (Functions::IsNoAckFuncCode(header.function))
-	{
-		// this is the only request we process while we are transmitting
-		// because it doesn't require a response of any kind
-		OFunctions::ProcessRequestNoAck(ocontext, header, objects);
-	}
-	else
-	{
-		if (ocontext.isTransmitting)
-		{			
-			ocontext.deferred.Set(header, objects);
-		}
-		else
-		{
-			if (header.function == FunctionCode::CONFIRM)
-			{
-				OActions::ProcessConfirm(ocontext, header);				
-			}
-			else
-			{
-				OActions::ProcessRequest(ocontext, header, objects);				
-			}
-		}
-	}
-}
-
-
-
-void OActions::ProcessRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	if (header.control.UNS)
-	{		
-		FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));		
-	}
-	else
-	{		
-		ocontext.sol.pState = ocontext.OnReceiveSolRequest(header, objects);		
-	}
-}
-
-void OActions::ProcessConfirm(OContext& ocontext, const APDUHeader& header)
-{
-	if (header.control.UNS)
-	{
-		OActions::ProcessUnsolicitedConfirm(ocontext, header);
-	}
-	else
-	{
-		OActions::ProcessSolicitedConfirm(ocontext, header);
-	}
-}
-
 void OActions::BeginResponseTx(OContext& ocontext, const ReadBufferView& response)
 {	
 	ocontext.sol.tx.Record(response);
@@ -118,16 +64,6 @@ void OActions::BeginTx(OContext& ocontext, const openpal::ReadBufferView& respon
 	ocontext.pLower->BeginTransmit(response);
 }
 
-void OActions::ProcessSolicitedConfirm(OContext& ocontext, const APDUHeader& header)
-{
-	ocontext.sol.pState = ocontext.sol.pState->OnConfirm(ocontext, header);
-}
-
-void OActions::ProcessUnsolicitedConfirm(OContext& ocontext, const APDUHeader& header)
-{
-	ocontext.unsol.pState = ocontext.unsol.pState->OnConfirm(ocontext, header);
-}
-
 void OActions::CheckForDeferredRequest(OContext& ocontext)
 {
 	if (ocontext.CanTransmit() && ocontext.deferred.IsSet())
@@ -144,7 +80,7 @@ bool OActions::ProcessDeferredRequest(OContext& ocontext, APDUHeader header, ope
 {
 	if (header.function == FunctionCode::CONFIRM)
 	{
-		OActions::ProcessConfirm(ocontext, header);
+		ocontext.ProcessConfirm(header);		
 		return true;
 	}
 	else
@@ -153,7 +89,7 @@ bool OActions::ProcessDeferredRequest(OContext& ocontext, APDUHeader header, ope
 		{
 			if (ocontext.unsol.IsIdle())
 			{
-				OActions::ProcessRequest(ocontext, header, objects);
+				ocontext.ProcessRequest(header, objects);				
 				return true;
 			}
 			else
@@ -163,7 +99,7 @@ bool OActions::ProcessDeferredRequest(OContext& ocontext, APDUHeader header, ope
 		}
 		else
 		{
-			OActions::ProcessRequest(ocontext, header, objects);
+			ocontext.ProcessRequest(header, objects);
 			return true;
 		}
 	}

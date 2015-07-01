@@ -64,7 +64,7 @@ namespace secauth
 		else
 		{
 			// no authentication required, just process it
-			OActions::ProcessHeaderAndObjects(ocontext, header, objects);
+			ocontext.ProcessHeaderAndObjects(header, objects);			
 			return this;
 		}		
 	}

@@ -23,6 +23,7 @@
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
+#include "opendnp3/app/Functions.h"
 #include "opendnp3/outstation/OutstationActions.h"
 #include "opendnp3/outstation/OutstationFunctions.h"
 
@@ -108,6 +109,60 @@ OutstationSolicitedStateBase* OContext::ProcessNewRequest(const APDUHeader& head
 	else
 	{
 		return this->sol.pState->OnNewNonReadRequest(*this, header, objects);
+	}
+}
+
+void OContext::ProcessHeaderAndObjects(const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	if (Functions::IsNoAckFuncCode(header.function))
+	{
+		// this is the only request we process while we are transmitting
+		// because it doesn't require a response of any kind
+		OFunctions::ProcessRequestNoAck(*this, header, objects);
+	}
+	else
+	{
+		if (this->isTransmitting)
+		{
+			this->deferred.Set(header, objects);
+		}
+		else
+		{
+			if (header.function == FunctionCode::CONFIRM)
+			{
+				this->ProcessConfirm(header);				
+			}
+			else
+			{
+				this->ProcessRequest(header, objects);				
+			}
+		}
+	}
+}
+
+
+
+void OContext::ProcessRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	if (header.control.UNS)
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));
+	}
+	else
+	{
+		this->sol.pState = this->OnReceiveSolRequest(header, objects);
+	}
+}
+
+void OContext::ProcessConfirm(const APDUHeader& header)
+{
+	if (header.control.UNS)
+	{
+		this->unsol.pState = this->unsol.pState->OnConfirm(*this, header);
+	}
+	else
+	{
+		this->sol.pState = this->sol.pState->OnConfirm(*this, header);		
 	}
 }
 

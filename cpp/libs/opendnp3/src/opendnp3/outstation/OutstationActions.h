@@ -35,17 +35,7 @@ class OActions : private openpal::StaticOnly
 	
 	public:						
 
-	/// ---- Processing functions --------
-
-	static void ProcessHeaderAndObjects(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);
-
-	static void ProcessRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects);	
-
-	static void ProcessConfirm(OContext& ocontext, const APDUHeader& header);
-
-	static void ProcessSolicitedConfirm(OContext& ocontext, const APDUHeader& header);
-
-	static void ProcessUnsolicitedConfirm(OContext& ocontext, const APDUHeader& header);
+	
 
 	/// ---- Helper functions for begining solicited and unsolcited transmissions ----
 
