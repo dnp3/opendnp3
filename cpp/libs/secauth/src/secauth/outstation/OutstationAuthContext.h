@@ -63,21 +63,21 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	private:
 
-	void ProcessAuthAPDU(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	void ProcessAuthAPDU(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void OnAuthRequest(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	void OnAuthRequest(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void OnUnknownRequest(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	void OnUnknownRequest(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	//// --- IAuthRequestHandler ----
 
-	virtual void OnAuthChallenge(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
+	virtual void OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
 
-	virtual void OnAuthReply(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) override final;
+	virtual void OnAuthReply(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) override final;
 
-	virtual void OnRequestKeyStatus(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) override final;
+	virtual void OnRequestKeyStatus(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) override final;
 
-	virtual void OnChangeSessionKeys(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) override final;
+	virtual void OnChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) override final;
 
 	/// --- Helper methods ----
 	
@@ -92,11 +92,11 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	public:
 
-	bool TransmitChallenge(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header);
+	bool TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header);
 
 	void ProcessRequestKeyStatus(const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
 
-	void ProcessChangeSessionKeys(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
+	void ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
 
 	void ProcessAuthReply(const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply);
 

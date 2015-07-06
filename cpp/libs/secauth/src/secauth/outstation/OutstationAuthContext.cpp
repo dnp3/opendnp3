@@ -75,9 +75,9 @@ void OAuthContext::CheckForTaskStart()
 {
 	if (this->CanTransmit() && sstate.deferred.IsSet())
 	{
-		auto handler = [this](const openpal::ReadBufferView& fragment, const APDUHeader& header, const ReadBufferView& objects)
+		auto handler = [this](const openpal::ReadBufferView& apdu, const APDUHeader& header, const ReadBufferView& objects)
 		{
-			this->ProcessAuthAPDU(fragment, header, objects);
+			this->ProcessAuthAPDU(apdu, header, objects);
 			return true;
 		};
 
@@ -87,24 +87,24 @@ void OAuthContext::CheckForTaskStart()
 
 }
 		
-void OAuthContext::ReceiveAPDU(const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OAuthContext::ReceiveAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	if (this->CanTransmit())
 	{
-		this->ProcessAuthAPDU(fragment, header, objects);
+		this->ProcessAuthAPDU(apdu, header, objects);
 	}
 	else
 	{
-		sstate.deferred.SetASDU(header, fragment);
+		sstate.deferred.SetASDU(header, apdu);
 	}
 }
 
-void OAuthContext::ProcessAuthAPDU(const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OAuthContext::ProcessAuthAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	switch (header.function)
 	{
 	case(FunctionCode::AUTH_REQUEST) :
-		this->OnAuthRequest(fragment, header, objects);
+		this->OnAuthRequest(apdu, header, objects);
 		break;
 	case(FunctionCode::AUTH_RESPONSE) :
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "AuthResponse not valid for outstation");
@@ -113,12 +113,12 @@ void OAuthContext::ProcessAuthAPDU(const openpal::ReadBufferView& fragment, cons
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "AuthRequestNoAck not supported");
 		break;
 	default:
-		this->OnUnknownRequest(fragment, header, objects);
+		this->OnUnknownRequest(apdu, header, objects);
 		break;
 	}
 }
 
-void OAuthContext::OnAuthRequest(const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OAuthContext::OnAuthRequest(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (header.control.UNS)
 	{
@@ -126,12 +126,12 @@ void OAuthContext::OnAuthRequest(const openpal::ReadBufferView& fragment, const 
 	}
 	else
 	{
-		AuthRequestHandler handler(fragment, header, *this, this->logger);
+		AuthRequestHandler handler(apdu, header, *this, this->logger);
 		APDUParser::Parse(objects, handler, &this->logger);
 	}
 }
 
-void OAuthContext::OnUnknownRequest(const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OAuthContext::OnUnknownRequest(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	/// We have to determine if this is a regular request or an aggressive mode request
 	AggModeResult result = AggressiveModeParser::IsAggressiveMode(objects, &this->logger);
@@ -145,32 +145,32 @@ void OAuthContext::OnUnknownRequest(const openpal::ReadBufferView& fragment, con
 		else
 		{
 			// it's a normal DNP3 request
-			sstate.pState = sstate.pState->OnRegularRequest(*this, fragment, header, objects);
+			sstate.pState = sstate.pState->OnRegularRequest(*this, apdu, header, objects);
 		}
 	}	
 }
 
-void OAuthContext::OnAuthChallenge(const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var1& challenge)
+void OAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var1& challenge)
 {	
 	sstate.pState = sstate.pState->OnAuthChallenge(*this, header, challenge);
 }
 
-void OAuthContext::OnAuthReply(const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var2& reply)
+void OAuthContext::OnAuthReply(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var2& reply)
 {	
 	sstate.pState = sstate.pState->OnAuthReply(*this, header, reply);
 }
 
-void OAuthContext::OnRequestKeyStatus(const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var4& status)
+void OAuthContext::OnRequestKeyStatus(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var4& status)
 {	
 	sstate.pState = sstate.pState->OnRequestKeyStatus(*this, header, status);
 }
 
-void OAuthContext::OnChangeSessionKeys(const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var6& change)
+void OAuthContext::OnChangeSessionKeys(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var6& change)
 {
-	sstate.pState = sstate.pState->OnChangeSessionKeys(*this, fragment, header, change);
+	sstate.pState = sstate.pState->OnChangeSessionKeys(*this, apdu, header, change);
 }
 
-void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
+void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 {
 	User user(change.userNum);
 
@@ -218,7 +218,7 @@ void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& fragm
 	// We compute the HMAC based on the full ASDU and the monitoring direction session key		
 
 	std::error_code ec;
-	auto hmac = sstate.hmac.Compute(unwrapped.keys.monitorKey, { fragment }, ec);
+	auto hmac = sstate.hmac.Compute(unwrapped.keys.monitorKey, { apdu }, ec);
 
 	if (ec)
 	{
@@ -233,7 +233,7 @@ void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& fragm
 	FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, unwrapped.keys.monitorKey, 17, 17);
 	SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "");
 	SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "Authenication, plain text");
-	FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, fragment, 17, 17);
+	FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, apdu, 17, 17);
 	FORMAT_LOG_BLOCK(ocontext.logger, flags::INFO, "Authenication, hased text %u", hmac.Size());
 	FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, hmac, 17, 17);
 	*/
@@ -331,10 +331,10 @@ void OAuthContext::ProcessAuthReply(const opendnp3::APDUHeader& header, const op
 	}
 }
 
-bool OAuthContext::TransmitChallenge(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header)
+bool OAuthContext::TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header)
 {
 	auto response = sstate.StartResponse(*this);
-	auto success = sstate.challenge.WriteChallenge(fragment, header, response, sstate.hmac.GetType(), *sstate.pCrypto, &this->logger);
+	auto success = sstate.challenge.WriteChallenge(apdu, header, response, sstate.hmac.GetType(), *sstate.pCrypto, &this->logger);
 	if (success)
 	{
 		this->BeginTx(response.ToReadOnly());
