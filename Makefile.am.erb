@@ -1,0 +1,68 @@
+#copyright (c) 2013 Automatak, LLC
+
+ACLOCAL_AMFLAGS = -I m4
+
+ASIO_CONFIG = -I $(ASIO_HOME) -DASIO_STANDALONE
+
+OPENPAL_INCLUDE = $(top_srcdir)/cpp/libs/openpal/src
+OPENDNP3_INCLUDE = $(top_srcdir)/cpp/libs/opendnp3/src
+ASIOPAL_INCLUDE = $(top_srcdir)/cpp/libs/asiopal/src
+ASIODNP3_INCLUDE = $(top_srcdir)/cpp/libs/asiodnp3/src
+CATCH_INCLUDE = $(top_srcdir)/cpp/tests/catch
+
+bin_PROGRAMS = masterdemo outstationdemo
+
+lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
+
+# libopenpal
+libopenpal_la_LDFLAGS = -version-info 1:1:0
+libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
+libopenpal_la_SOURCES = \
+<%= openpal_sources %>
+
+# libasiopal
+libasiopal_la_LDFLAGS = -version-info 1:1:0
+libasiopal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) $(ASIO_CONFIG)
+libasiopal_la_SOURCES = \
+<%= asiopal_sources %>
+
+# libopendnp3
+libopendnp3_la_LDFLAGS = -version-info 2:0:0
+libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
+libopendnp3_la_SOURCES = \
+<%= opendnp3_sources %>
+
+# libasiodnp3
+libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
+libasiodnp3_la_LDFLAGS = -version-info 1:1:0
+libasiodnp3_la_SOURCES = \
+<%= asiodnp3_sources %>
+
+# master demo
+masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
+masterdemo_LDFLAGS = -pthread
+masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
+masterdemo_SOURCES = cpp/examples/master/DemoMain.cpp
+
+# outstation demo
+outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
+outstationdemo_LDFLAGS = -pthread
+outstationdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
+outstationdemo_SOURCES = cpp/examples/outstation/DemoMain.cpp
+
+check_PROGRAMS = openpaltest dnp3test
+
+#ls cpp/tests/openpaltests/src/*.cpp -1 | awk '{print $0" \\"}'
+openpaltest_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(CATCH_INCLUDE)
+openpaltest_LDFLAGS = -pthread
+openpaltest_LDADD = libopenpal.la
+openpaltest_SOURCES = \
+<%= openpal_test_sources %>
+
+#ls cpp/tests/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
+dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) -I$(CATCH_INCLUDE) $(ASIO_CONFIG)
+dnp3test_LDFLAGS = -pthread
+dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
+dnp3test_SOURCES = \
+<%= opendnp3_test_sources %>
+
