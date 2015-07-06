@@ -20,7 +20,6 @@
  */
 
 #include "OAuthStates.h"
-#include "OSecActions.h"
 
 #include <opendnp3/LogLevels.h>
 
@@ -36,21 +35,20 @@ namespace secauth
 
 	OAuthStateIdle OAuthStateIdle::instance;
 
-	IOAuthState* OAuthStateIdle::OnRegularRequest(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+	IOAuthState* OAuthStateIdle::OnRegularRequest(OAuthContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 	{
-		if (sstate.settings.functions.IsCritical(header.function))
+		if (ocontext.sstate.settings.functions.IsCritical(header.function))
 		{
-			if (OSecActions::TransmitChallenge(sstate, ocontext, fragment, header))
-			{
-				SecurityState* psstate = &sstate;
-				OContext* pocontext = &ocontext;
+			if (ocontext.TransmitChallenge(fragment, header))
+			{				
+				OAuthContext* pocontext = &ocontext;
 
-				auto timeout = [psstate, pocontext]() 
+				auto timeout = [pocontext]() 
 				{
-					psstate->pState = psstate->pState->OnChallengeTimeout(*psstate, *pocontext);
+					pocontext->sstate.pState = pocontext->sstate.pState->OnChallengeTimeout(*pocontext);
 				};
 
-				sstate.challengeTimer.Restart(sstate.settings.challengeTimeout, timeout);
+				pocontext->sstate.challengeTimer.Restart(pocontext->sstate.settings.challengeTimeout, timeout);
 
 				return OAuthStateWaitForReply::Instance();
 			}
@@ -67,37 +65,37 @@ namespace secauth
 		}		
 	}
 
-	IOAuthState* OAuthStateIdle::OnAggModeRequest(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest)
+	IOAuthState* OAuthStateIdle::OnAggModeRequest(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest)
 	{
 		// TODO
 		return this->IgnoreAggModeRequest(ocontext.logger);
 	}
 
-	IOAuthState* OAuthStateIdle::OnAuthChallenge(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
+	IOAuthState* OAuthStateIdle::OnAuthChallenge(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 	{	
 		// TODO
 		return this->IgnoreAuthChallenge(ocontext.logger);
 	}
 	
-	IOAuthState* OAuthStateIdle::OnAuthReply(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
+	IOAuthState* OAuthStateIdle::OnAuthReply(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
 	{
 		// TODO
 		return this->IgnoreAuthReply(ocontext.logger);
 	}
 	
-	IOAuthState* OAuthStateIdle::OnRequestKeyStatus(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
+	IOAuthState* OAuthStateIdle::OnRequestKeyStatus(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
 	{
-		OSecActions::ProcessRequestKeyStatus(sstate, ocontext, header, status);
+		ocontext.ProcessRequestKeyStatus(header, status);
 		return this;
 	}
 
-	IOAuthState* OAuthStateIdle::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
+	IOAuthState* OAuthStateIdle::OnChangeSessionKeys(OAuthContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
-		OSecActions::ProcessChangeSessionKeys(sstate, ocontext, fragment, header, change);		
+		ocontext.ProcessChangeSessionKeys(fragment, header, change);		
 		return this;
 	}
 
-	IOAuthState* OAuthStateIdle::OnChallengeTimeout(SecurityState& sstate, opendnp3::OContext& ocontext)
+	IOAuthState* OAuthStateIdle::OnChallengeTimeout(OAuthContext& ocontext)
 	{
 		return this->IgnoreChallengeTimeout(ocontext.logger);
 	}
@@ -106,39 +104,39 @@ namespace secauth
 
 	OAuthStateWaitForReply OAuthStateWaitForReply::instance;
 
-	IOAuthState* OAuthStateWaitForReply::OnRegularRequest(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+	IOAuthState* OAuthStateWaitForReply::OnRegularRequest(OAuthContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 	{
 		return this->IgnoreRegularRequest(ocontext.logger);
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnAggModeRequest(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest)
+	IOAuthState* OAuthStateWaitForReply::OnAggModeRequest(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest)
 	{
 		return this->IgnoreAggModeRequest(ocontext.logger);
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnAuthChallenge(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
+	IOAuthState* OAuthStateWaitForReply::OnAuthChallenge(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 	{
 		return this->IgnoreAuthChallenge(ocontext.logger);
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnAuthReply(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
+	IOAuthState* OAuthStateWaitForReply::OnAuthReply(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
 	{
-		sstate.challengeTimer.Cancel();
-		OSecActions::ProcessAuthReply(sstate, ocontext, header, reply);		
+		ocontext.sstate.challengeTimer.Cancel();
+		ocontext.ProcessAuthReply(header, reply);
 		return OAuthStateIdle::Instance(); // no matter what, we return to idle
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnRequestKeyStatus(SecurityState& sstate, opendnp3::OContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
+	IOAuthState* OAuthStateWaitForReply::OnRequestKeyStatus(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
 	{
 		return this->IgnoreRequestKeyStatus(ocontext.logger, status.userNum);
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
+	IOAuthState* OAuthStateWaitForReply::OnChangeSessionKeys(OAuthContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
 		return this->IgnoreChangeSessionKeys(ocontext.logger, change.userNum);
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnChallengeTimeout(SecurityState& sstate, opendnp3::OContext& ocontext)
+	IOAuthState* OAuthStateWaitForReply::OnChallengeTimeout(OAuthContext& ocontext)
 	{
 		SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Timeout while waiting for challenge response");
 		return OAuthStateIdle::Instance();

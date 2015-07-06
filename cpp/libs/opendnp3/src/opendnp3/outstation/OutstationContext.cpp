@@ -431,7 +431,6 @@ void OContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 		return;
 	}
 
-
 	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
 		"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
 		header.control.FIR,

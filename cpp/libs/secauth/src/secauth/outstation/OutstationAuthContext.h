@@ -79,6 +79,27 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	virtual void OnChangeSessionKeys(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) override final;
 
+	/// --- Helper methods ----
+	
+	static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, opendnp3::UpdateKeyMode type);
+
+	void RespondWithAuthError(
+		const opendnp3::APDUHeader& header,		
+		uint32_t seqNum,
+		const User& user,
+		opendnp3::AuthErrorCode code
+	);
+
+	public:
+
+	bool TransmitChallenge(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header);
+
+	void ProcessRequestKeyStatus(const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
+
+	void ProcessChangeSessionKeys(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
+
+	void ProcessAuthReply(const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply);
+
 	/// --- State ---
 
 	SecurityState sstate;
