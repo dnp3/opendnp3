@@ -47,6 +47,7 @@ test-suite.log
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
+install_manifest.txt
 libasiodnp3.so
 libasiopal.so
 libopendnp3.so
