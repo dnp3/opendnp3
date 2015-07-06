@@ -33,13 +33,7 @@ class Outstation : public IUpperLayer
 {
 	public:
 
-	Outstation(		const OutstationConfig& config,
-					const DatabaseTemplate& dbTemplate,
-					openpal::Logger logger,					
-					openpal::IExecutor& executor, 					
-					ILowerLayer& lower,
-					ICommandHandler& commandHandler,
-					IOutstationApplication& application);
+	Outstation(OContext& ocontext);
 	
 	/// ----- Implement IUpperLayer ------
 
@@ -59,13 +53,11 @@ class Outstation : public IUpperLayer
 
 	IDatabase& GetDatabase();
 
-	DatabaseConfigView GetConfigView();
-
-	void SetAuthProvider(IOutstationAuthProvider& provider);
+	DatabaseConfigView GetConfigView();	
 		
 	private:			
 
-	OContext ocontext;
+	OContext* m_ocontext;
 
 };
 

@@ -80,6 +80,11 @@ public:
 	MockLowerLayer lower;	
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
+
+private:
+	OContext context;
+
+public:
 	Outstation outstation;	
 };
 

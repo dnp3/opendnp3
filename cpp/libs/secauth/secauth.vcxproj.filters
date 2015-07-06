@@ -53,9 +53,6 @@
     <ClInclude Include="src\secauth\outstation\OSecActions.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\secauth\outstation\OutstationAuthProvider.h">
-      <Filter>Header Files\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\secauth\outstation\OutstationAuthSettings.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
@@ -131,6 +128,9 @@
     <ClInclude Include="src\secauth\master\MasterAuthContext.h">
       <Filter>Header Files\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\outstation\OutstationAuthContext.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\MasterSecurityState.cpp">
@@ -158,9 +158,6 @@
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\secauth\outstation\OSecActions.cpp">
-      <Filter>Source Files\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\secauth\outstation\OutstationAuthProvider.cpp">
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\secauth\outstation\OutstationAuthSettings.cpp">
@@ -219,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="src\secauth\master\MasterAuthContext.cpp">
       <Filter>Source Files\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\OutstationAuthContext.cpp">
+      <Filter>Source Files\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

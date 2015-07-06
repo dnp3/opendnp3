@@ -248,10 +248,8 @@
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h" />
     <ClInclude Include="src\opendnp3\outstation\IndexSearch.h" />
     <ClInclude Include="src\opendnp3\outstation\IOutstationApplication.h" />
-    <ClInclude Include="src\opendnp3\outstation\IOutstationAuthProvider.h" />
     <ClInclude Include="src\opendnp3\outstation\IResponseLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h" />
-    <ClInclude Include="src\opendnp3\outstation\OutstationAuthWrapper.h" />
     <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationChannelStates.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
@@ -407,7 +405,6 @@
     <ClCompile Include="src\opendnp3\outstation\EventWriter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\OutstationAuthWrapper.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationParams.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationSolicitedStates.cpp" />

@@ -34,8 +34,6 @@
 #include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
-#include "opendnp3/outstation/IOutstationAuthProvider.h"
-#include "opendnp3/outstation/OutstationAuthWrapper.h"
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/LogRoot.h>
@@ -75,7 +73,9 @@ class OContext
 
 	/// ---- Processing functions --------
 
-	void ProcessHeaderAndObjects(const APDUHeader& header, const openpal::ReadBufferView& objects);
+	virtual void ReceiveAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	void ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	void ProcessRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 
@@ -112,7 +112,7 @@ class OContext
 
 	IINField GetDynamicIIN();
 
-	void CheckForTaskStart();
+	virtual void CheckForTaskStart();
 
 	void OnReceiveAPDU(const openpal::ReadBufferView& apdu);
 
@@ -154,8 +154,7 @@ public:
 	openpal::IExecutor* const pExecutor;
 	ILowerLayer* const pLower;	
 	ICommandHandler* const pCommandHandler;
-	IOutstationApplication* const pApplication;
-	OutstationAuthWrapper auth;	
+	IOutstationApplication* const pApplication;	
 
 	// ------ Database, event buffer, and response tracking
 	EventBuffer eventBuffer;

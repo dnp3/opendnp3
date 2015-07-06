@@ -31,77 +31,64 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Outstation::Outstation(
-		const OutstationConfig& config,
-		const DatabaseTemplate& dbTemplate,
-		openpal::Logger logger,		
-		IExecutor& executor,		
-		ILowerLayer& lower,
-		ICommandHandler& commandHandler,
-		IOutstationApplication& application) :
-		ocontext(config, dbTemplate, logger, executor, lower, commandHandler, application)
+Outstation::Outstation(OContext& ocontext) : m_ocontext(&ocontext)
 {
 	
 }
 	
 void Outstation::OnLowerLayerUp()
 {
-	ocontext.GoOnline();
+	m_ocontext->GoOnline();
 }
 	
 void Outstation::OnLowerLayerDown()
 {
-	ocontext.GoOffline();
+	m_ocontext->GoOffline();
 }
 
 void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
-	if (ocontext.isOnline)
+	if (m_ocontext->isOnline)
 	{		
-		ocontext.OnReceiveAPDU(fragment);
-		ocontext.CheckForTaskStart();
+		m_ocontext->OnReceiveAPDU(fragment);
+		m_ocontext->CheckForTaskStart();
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "ignoring received data while offline");
+		SIMPLE_LOG_BLOCK(m_ocontext->logger, flags::ERR, "ignoring received data while offline");
 	}
 }
 
 void Outstation::OnSendResult(bool isSuccess)
 {	
-	if (ocontext.isOnline)
+	if (m_ocontext->isOnline)
 	{		
-		ocontext.OnSendResult(isSuccess);
+		m_ocontext->OnSendResult(isSuccess);
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(ocontext.logger, flags::ERR, "Unexpected send callback");
+		SIMPLE_LOG_BLOCK(m_ocontext->logger, flags::ERR, "Unexpected send callback");
 	}	
 }
 
 void Outstation::SetRestartIIN()
 {
-	ocontext.staticIIN.SetBit(IINBit::DEVICE_RESTART);
+	m_ocontext->staticIIN.SetBit(IINBit::DEVICE_RESTART);
 }
 
 void Outstation::CheckForUpdates()
 {
-	ocontext.CheckForTaskStart();
+	m_ocontext->CheckForTaskStart();
 }
 
 IDatabase& Outstation::GetDatabase()
 {
-	return ocontext.database;
+	return m_ocontext->database;
 }
 
 DatabaseConfigView Outstation::GetConfigView()
 {
-	return ocontext.database.GetConfigView();
-}
-
-void Outstation::SetAuthProvider(IOutstationAuthProvider& provider)
-{
-	ocontext.auth.SetProvider(provider);
+	return m_ocontext->database.GetConfigView();
 }
 	
 }

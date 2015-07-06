@@ -45,7 +45,7 @@
     <ClInclude Include="src\secauth\outstation\KeyUnwrap.h" />
     <ClInclude Include="src\secauth\outstation\OAuthStates.h" />
     <ClInclude Include="src\secauth\outstation\OSecActions.h" />
-    <ClInclude Include="src\secauth\outstation\OutstationAuthProvider.h" />
+    <ClInclude Include="src\secauth\outstation\OutstationAuthContext.h" />
     <ClInclude Include="src\secauth\outstation\OutstationAuthSettings.h" />
     <ClInclude Include="src\secauth\outstation\SecurityState.h" />
     <ClInclude Include="src\secauth\outstation\SimpleOutstationUserDatabase.h" />
@@ -77,7 +77,7 @@
     <ClCompile Include="src\secauth\outstation\KeyUnwrap.cpp" />
     <ClCompile Include="src\secauth\outstation\OAuthStates.cpp" />
     <ClCompile Include="src\secauth\outstation\OSecActions.cpp" />
-    <ClCompile Include="src\secauth\outstation\OutstationAuthProvider.cpp" />
+    <ClCompile Include="src\secauth\outstation\OutstationAuthContext.cpp" />
     <ClCompile Include="src\secauth\outstation\OutstationAuthSettings.cpp" />
     <ClCompile Include="src\secauth\outstation\SecurityState.cpp" />
     <ClCompile Include="src\secauth\outstation\SimpleOutstationUserDatabase.cpp" />

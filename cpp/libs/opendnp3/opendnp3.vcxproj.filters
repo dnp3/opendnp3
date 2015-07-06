@@ -753,9 +753,6 @@
     <ClInclude Include="src\opendnp3\objects\Group43.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IOutstationAuthProvider.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\RequestHistory.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -812,9 +809,6 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\ITransactable.h">
       <Filter>Source\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationAuthWrapper.h">
-      <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\objects\Group121.h">
       <Filter>Header\objects</Filter>
@@ -1300,9 +1294,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\parsing\FreeFormatParser.cpp">
       <Filter>Source\app\parsing</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\OutstationAuthWrapper.cpp">
-      <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group121.cpp">
       <Filter>Source\objects</Filter>

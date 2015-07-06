@@ -22,8 +22,8 @@
 
 #include <asiopal/PhysicalLayerBase.h>
 
-#include "OutstationAuthStack.h"
 #include "MasterStackImpl.h"
+#include "OutstationStackImpl.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -202,9 +202,9 @@ IOutstation* DNP3Channel::AddOutstation(char const* id,
 
 	auto add = [&]() -> IOutstation*
 	{
-		auto factory = [&]() -> OutstationBase* 
+		auto factory = [&]() -> OutstationBase*
 		{
-			return new OutstationAuthStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, authSettings, timeSource, userDB, *pCrypto);
+			return new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, authSettings, timeSource, userDB, *pCrypto);
 		};
 
 		return this->AddStack<OutstationBase>(config.link, factory);

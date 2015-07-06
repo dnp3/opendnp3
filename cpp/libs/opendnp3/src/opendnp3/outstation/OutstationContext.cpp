@@ -126,7 +126,12 @@ OutstationSolicitedStateBase* OContext::ProcessNewRequest(const APDUHeader& head
 	}
 }
 
-void OContext::ProcessHeaderAndObjects(const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OContext::ReceiveAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	this->ProcessAPDU(apdu, header, objects);
+}
+
+void OContext::ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (Functions::IsNoAckFuncCode(header.function))
 	{
@@ -144,16 +149,15 @@ void OContext::ProcessHeaderAndObjects(const APDUHeader& header, const openpal::
 		{
 			if (header.function == FunctionCode::CONFIRM)
 			{
-				this->ProcessConfirm(header);				
+				this->ProcessConfirm(header);
 			}
 			else
 			{
-				this->ProcessRequest(header, objects);				
+				this->ProcessRequest(header, objects);
 			}
 		}
 	}
 }
-
 
 
 void OContext::ProcessRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
@@ -389,8 +393,7 @@ bool OContext::GoOffline()
 	deferred.Reset();
 	eventBuffer.Unselect();
 	rspContext.Reset();
-	confirmTimer.Cancel();
-	auth.Reset();
+	confirmTimer.Cancel();	
 
 	return true;
 }
@@ -446,7 +449,9 @@ void OContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 	}	
 
 	auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
-	this->auth.OnReceive(*this, apdu, header, objects);
+
+	// this method is virtual, and the implementation may vary for SA
+	this->ReceiveAPDU(apdu, header, objects);	
 }
 
 void OContext::OnSendResult(bool isSuccess)
@@ -460,8 +465,7 @@ void OContext::OnSendResult(bool isSuccess)
 
 void OContext::CheckForTaskStart()
 {
-	// do these checks in order of priority
-	this->auth.CheckState(*this);
+	// do these checks in order of priority	
 	this->CheckForDeferredRequest();
 	this->CheckForUnsolicited();
 }

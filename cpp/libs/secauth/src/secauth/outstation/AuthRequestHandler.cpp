@@ -30,11 +30,10 @@ namespace secauth
 {
 
 
-AuthRequestHandler::AuthRequestHandler(const openpal::ReadBufferView& fragment_, const APDUHeader& header_, OContext& ocontext, IAuthRequestHandler& handler) :
-	logger(ocontext.logger),
+AuthRequestHandler::AuthRequestHandler(const openpal::ReadBufferView& fragment_, const APDUHeader& header_, IAuthRequestHandler& handler, openpal::Logger logger_) :
+	logger(logger_),
 	fragment(fragment_),
-	apduheader(header_),
-	pOContext(&ocontext),
+	apduheader(header_),	
 	pHandler(&handler)
 {
 	
@@ -64,19 +63,19 @@ bool AuthRequestHandler::IsAllowed(uint32_t count, GroupVariation gv, QualifierC
 
 IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var1& value)
 {
-	pHandler->OnAuthChallenge(*pOContext, fragment, apduheader, value);
+	pHandler->OnAuthChallenge(fragment, apduheader, value);
 	return IINField::Empty();
 }
 
 IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var2& value)
 {
-	pHandler->OnAuthReply(*pOContext, fragment, apduheader, value);
+	pHandler->OnAuthReply(fragment, apduheader, value);
 	return IINField::Empty();
 }
 
 IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var6& value)
 {
-	pHandler->OnChangeSessionKeys(*pOContext, fragment, apduheader, value);
+	pHandler->OnChangeSessionKeys(fragment, apduheader, value);
 	return IINField::Empty();
 }
 
@@ -85,12 +84,12 @@ IINField AuthRequestHandler::ProcessHeader(const opendnp3::CountHeader& record, 
 	Group120Var4 value;
 	if (values.ReadOnlyValue(value))
 	{
-		pHandler->OnRequestKeyStatus(*pOContext, fragment, apduheader, value);
+		pHandler->OnRequestKeyStatus(fragment, apduheader, value);
 		return IINField::Empty();
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(pOContext->logger, flags::WARN, "Unexpected count in key status request");
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unexpected count in key status request");
 		return IINBit::PARAM_ERROR;
 	}
 }

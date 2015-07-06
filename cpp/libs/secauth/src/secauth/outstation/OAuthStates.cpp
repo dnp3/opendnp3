@@ -62,7 +62,7 @@ namespace secauth
 		else
 		{
 			// no authentication required, just process it
-			ocontext.ProcessHeaderAndObjects(header, objects);			
+			ocontext.ProcessAPDU(fragment, header, objects);			
 			return this;
 		}		
 	}

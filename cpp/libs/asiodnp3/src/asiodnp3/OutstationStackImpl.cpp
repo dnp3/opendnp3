@@ -22,7 +22,10 @@
 
 #include <asiopal/ASIOExecutor.h>
 
+#include <secauth/outstation/OutstationAuthContext.h>
+
 using namespace opendnp3;
+using namespace secauth;
 
 namespace asiodnp3
 {
@@ -39,9 +42,34 @@ OutstationStackImpl::OutstationStackImpl(
 	root(root_, id),
 	pLifecycle(&lifecycle),	
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
-	outstation(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application)   
+	ocontext(std::unique_ptr<OContext>(new OContext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application))),
+	outstation(*ocontext)   
 {
 	stack.transport.SetAppLayer(&outstation);
+}
+
+OutstationStackImpl::OutstationStackImpl(
+	const char* id,
+	openpal::LogRoot& root_,
+	openpal::IExecutor& executor,
+	opendnp3::ICommandHandler& commandHandler,
+	opendnp3::IOutstationApplication& application,
+	const opendnp3::OutstationStackConfig& config,
+	IStackLifecycle& lifecycle,
+	const secauth::OutstationAuthSettings& authSettings,
+	openpal::IUTCTimeSource& timeSource,
+	secauth::IOutstationUserDatabase& userDB,
+	openpal::ICryptoProvider& crypto) :
+
+	root(root_, id),
+	pLifecycle(&lifecycle),
+	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),
+	ocontext(std::unique_ptr<OContext>(
+		new OAuthContext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, authSettings, timeSource, userDB, crypto)
+	)),
+	outstation(*ocontext)
+{
+
 }
 
 opendnp3::DatabaseConfigView OutstationStackImpl::GetConfigView()

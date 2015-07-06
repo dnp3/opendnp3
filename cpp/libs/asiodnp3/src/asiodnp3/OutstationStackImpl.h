@@ -28,6 +28,12 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
+#include <secauth/outstation/OutstationAuthSettings.h>
+#include <secauth/outstation/IOutstationUserDatabase.h>
+
+#include <openpal/executor/IUTCTimeSource.h>
+#include <openpal/crypto/ICryptoProvider.h>
+
 #include "OutstationBase.h"
 #include "IStackLifecycle.h"
 
@@ -43,6 +49,7 @@ class OutstationStackImpl : public OutstationBase
 {
 public:
 
+	/// standard DNP3 constructor
 	OutstationStackImpl(
 		const char* id,
 	    openpal::LogRoot&,
@@ -51,6 +58,20 @@ public:
 		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,		
 		IStackLifecycle& lifecycle);
+
+	/// SA DNP3 constructor
+	OutstationStackImpl(
+		const char* id,
+		openpal::LogRoot&,
+		openpal::IExecutor& executor,
+		opendnp3::ICommandHandler& commandHandler,
+		opendnp3::IOutstationApplication& application,
+		const opendnp3::OutstationStackConfig& config,
+		IStackLifecycle& lifecycle,
+		const secauth::OutstationAuthSettings& authSettings,
+		openpal::IUTCTimeSource& timeSource,
+		secauth::IOutstationUserDatabase& userDB,
+		openpal::ICryptoProvider& crypto);
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
 
@@ -82,6 +103,7 @@ protected:
 	opendnp3::StackStatistics statistics;	
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;	
+	std::unique_ptr<opendnp3::OContext> ocontext;
 	opendnp3::Outstation outstation;
 };
 

@@ -24,7 +24,6 @@
 #include <openpal/logging/LogRoot.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
-#include <opendnp3/outstation/IOutstationAuthProvider.h>
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 

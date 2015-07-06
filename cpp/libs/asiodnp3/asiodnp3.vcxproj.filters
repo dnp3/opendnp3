@@ -71,9 +71,6 @@
     <ClCompile Include="src\asiodnp3\ChangeSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\asiodnp3\OutstationAuthStack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\asiodnp3\StackLifecycle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -140,9 +137,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\ChangeSet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\asiodnp3\OutstationAuthStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\IStackLifecycle.h">

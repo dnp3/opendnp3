@@ -39,11 +39,10 @@ namespace opendnp3
 		utc(),
 		users(),
 		crypto(),		
-		auth(authConfig, log.GetLogger(), exe, utc, users, crypto),
-		outstation(config, DatabaseTemplate::BinaryOnly(1), log.GetLogger(), exe, lower, cmdHandler, application)
+		context(config, DatabaseTemplate::BinaryOnly(1), log.GetLogger(), exe, lower, cmdHandler, application, authConfig, utc, users, crypto),
+		outstation(context)
 	{
 		lower.SetUpperLayer(outstation);
-		outstation.SetAuthProvider(auth);
 	}
 
 	void OutstationSecAuthFixture::AddUser(secauth::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat, const Permissions& permissions)

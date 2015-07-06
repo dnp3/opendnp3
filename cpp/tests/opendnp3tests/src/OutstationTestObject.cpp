@@ -36,8 +36,9 @@ OutstationTestObject::OutstationTestObject(
 	exe(),
 	lower(log.root),
 	cmdHandler(CommandStatus::SUCCESS),
-	application(),	
-	outstation(config, dbTemplate, log.root.GetLogger(), exe, lower, cmdHandler, application)
+	application(),
+	context(config, dbTemplate, log.root.GetLogger(), exe, lower, cmdHandler, application),
+	outstation(context)
 {
 	lower.SetUpperLayer(outstation);
 }

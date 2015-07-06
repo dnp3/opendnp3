@@ -184,8 +184,9 @@ namespace secauth
 
 		if (sstate.pUserDatabase->IsAuthorized(user, criticalHeader.function))
 		{
-			auto objects = sstate.challenge.GetCriticalASDU().Skip(APDU_REQUEST_HEADER_SIZE);
-			ocontext.ProcessHeaderAndObjects(criticalHeader, objects);			
+			auto asdu = sstate.challenge.GetCriticalASDU();
+			auto objects = asdu.Skip(APDU_REQUEST_HEADER_SIZE);
+			ocontext.ProcessAPDU(asdu, criticalHeader, objects); // process as normal
 		}
 		else
 		{

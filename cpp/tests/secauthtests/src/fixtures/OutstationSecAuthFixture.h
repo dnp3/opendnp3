@@ -26,7 +26,7 @@
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include <secauth/outstation/OutstationAuthContext.h>
 #include <secauth/outstation/SimpleOutstationUserDatabase.h>
 
 #include <functional>
@@ -77,7 +77,7 @@ public:
 	testlib::MockUTCTimeSource utc;
 	secauth::SimpleOutstationUserDatabase users;
 	MockCryptoProvider crypto;	
-	secauth::OutstationAuthProvider auth;
+	secauth::OAuthContext context;
 	Outstation outstation;	
 };
 

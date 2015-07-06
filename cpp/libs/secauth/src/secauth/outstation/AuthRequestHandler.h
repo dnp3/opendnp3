@@ -33,7 +33,7 @@ class AuthRequestHandler : public opendnp3::IAPDUHandler, private openpal::Uncop
 {
 	public:
 
-		AuthRequestHandler(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, opendnp3::OContext& ocontext, IAuthRequestHandler& handler);
+		AuthRequestHandler(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, IAuthRequestHandler& handler, openpal::Logger logger);
 
 		virtual opendnp3::IINField ProcessHeader(const opendnp3::CountHeader& header, const opendnp3::ICollection<opendnp3::Group120Var4>& values) override final;
 		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var1& value) override final;
@@ -47,8 +47,7 @@ class AuthRequestHandler : public opendnp3::IAPDUHandler, private openpal::Uncop
 	private:
 		openpal::Logger logger;
 		openpal::ReadBufferView fragment;
-		opendnp3::APDUHeader apduheader;
-		opendnp3::OContext* pOContext;
+		opendnp3::APDUHeader apduheader;		
 		IAuthRequestHandler* pHandler;
 };
 
