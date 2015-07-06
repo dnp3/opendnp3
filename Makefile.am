@@ -14,7 +14,7 @@ bin_PROGRAMS = masterdemo outstationdemo
 
 lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 
-# ls cpp/libs/openpal/src/openpal/**/*.cpp -1 | awk '{print $0" \\"}'
+# libopenpal
 libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
@@ -32,9 +32,9 @@ cpp/libs/openpal/src/openpal/logging/StringFormatting.cpp \
 cpp/libs/openpal/src/openpal/serialization/ByteSerialization.cpp \
 cpp/libs/openpal/src/openpal/serialization/UInt48LE.cpp \
 cpp/libs/openpal/src/openpal/util/Limits.cpp \
-cpp/libs/openpal/src/openpal/util/ToHex.cpp
+cpp/libs/openpal/src/openpal/util/ToHex.cpp \
 
-#ls cpp/libs/asiopal/src/asiopal/*.cpp -1 | awk '{print $0" \\"}'
+# libasiopal
 libasiopal_la_LDFLAGS = -version-info 1:1:0
 libasiopal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) $(ASIO_CONFIG)
 libasiopal_la_SOURCES = \
@@ -49,9 +49,9 @@ cpp/libs/asiopal/src/asiopal/PhysicalLayerTCPClient.cpp \
 cpp/libs/asiopal/src/asiopal/PhysicalLayerTCPServer.cpp \
 cpp/libs/asiopal/src/asiopal/SerialTypes.cpp \
 cpp/libs/asiopal/src/asiopal/TimerASIO.cpp \
-cpp/libs/asiopal/src/asiopal/UTCTimeSource.cpp
+cpp/libs/asiopal/src/asiopal/UTCTimeSource.cpp \
 
-# ls cpp/libs/opendnp3/src/opendnp3/**/*.cpp -1 | awk '{print $0" \\"}'
+# libopendnp3
 libopendnp3_la_LDFLAGS = -version-info 2:0:0
 libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
 libopendnp3_la_SOURCES = \
@@ -176,15 +176,12 @@ cpp/libs/opendnp3/src/opendnp3/outstation/WriteHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportStack.cpp \
-cpp/libs/opendnp3/src/opendnp3/transport/TransportTx.cpp
+cpp/libs/opendnp3/src/opendnp3/transport/TransportTx.cpp \
 
-#ls cpp/libs/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
+# libasiodnp3
 libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
 libasiodnp3_la_LDFLAGS = -version-info 1:1:0
 libasiodnp3_la_SOURCES = \
-cpp/libs/asiodnp3/src/asiodnp3/impl/LinkLayerRouter.cpp \
-cpp/libs/asiodnp3/src/asiodnp3/impl/PhysicalLayerMonitor.cpp \
-cpp/libs/asiodnp3/src/asiodnp3/impl/PhysicalLayerMonitorStates.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/BlockingCommandCallback.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/ChangeSet.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/ChannelSet.cpp \
@@ -194,26 +191,26 @@ cpp/libs/asiodnp3/src/asiodnp3/DestructorHook.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Channel.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Manager.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/HeaderTypes.cpp \
-cpp/libs/asiodnp3/src/asiodnp3/MeasUpdate.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MasterStackImpl.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/MeasUpdate.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MultidropTaskLock.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/OutstationStackImpl.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/PrintingSOEHandler.cpp \
-cpp/libs/asiodnp3/src/asiodnp3/StackActionHandler.cpp
+cpp/libs/asiodnp3/src/asiodnp3/StackActionHandler.cpp \
 
-
+# master demo
 masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 masterdemo_LDFLAGS = -pthread
 masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 masterdemo_SOURCES = cpp/examples/master/DemoMain.cpp
 
+# outstation demo
 outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 outstationdemo_LDFLAGS = -pthread
 outstationdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 outstationdemo_SOURCES = cpp/examples/outstation/DemoMain.cpp
 
 check_PROGRAMS = openpaltest dnp3test
-#TESTS = openpaltest dnp3test
 
 #ls cpp/tests/openpaltests/src/*.cpp -1 | awk '{print $0" \\"}'
 openpaltest_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(CATCH_INCLUDE)
@@ -223,7 +220,7 @@ openpaltest_SOURCES = \
 cpp/tests/openpaltests/src/CatchTestStart.cpp \
 cpp/tests/openpaltests/src/FunctionalTestSuite.cpp \
 cpp/tests/openpaltests/src/LinkedListTestSuite.cpp \
-cpp/tests/openpaltests/src/ManagedPointerTestSuite.cpp
+cpp/tests/openpaltests/src/ManagedPointerTestSuite.cpp \
 
 #ls cpp/tests/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
 dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) -I$(CATCH_INCLUDE) $(ASIO_CONFIG)
@@ -306,6 +303,5 @@ cpp/tests/opendnp3tests/src/TransportIntegrationStack.cpp \
 cpp/tests/opendnp3tests/src/TransportLoopbackTestObject.cpp \
 cpp/tests/opendnp3tests/src/TransportScalabilityTestObject.cpp \
 cpp/tests/opendnp3tests/src/TransportStackPair.cpp \
-cpp/tests/opendnp3tests/src/TransportTestObject.cpp
-
+cpp/tests/opendnp3tests/src/TransportTestObject.cpp \
 
