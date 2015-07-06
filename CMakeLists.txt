@@ -53,15 +53,12 @@ else()
 endif()
 
 # include paths for all the local libraries
-include_directories(./cpp/libs/secauth/src)
 include_directories(./cpp/libs/openpal/src)
 include_directories(./cpp/libs/opendnp3/src)
 include_directories(./cpp/libs/asiopal/src)
 include_directories(./cpp/libs/asiodnp3/src)
-include_directories(./cpp/tests/testlib/src)
-include_directories(./cpp/tests/dnp3mocks/src)
 include_directories(./cpp/tests/catch)
-include_directories(./cpp/libs/osslcrypto/src)
+
 
 # required for ASIO in C++11 only mode
 add_definitions(-DASIO_STANDALONE)
@@ -93,17 +90,9 @@ install(DIRECTORY ./cpp/libs/asiopal/src/asiopal/ DESTINATION include/asiopal ${
 file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 opendnp3)
-target_link_libraries(asiodnp3 secauth)
 target_link_libraries(asiodnp3 asiopal)
 install(TARGETS asiodnp3 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/asiodnp3/src/asiodnp3/ DESTINATION include/asiodnp3 ${INSTALL_ARGS})
-
-# ---- secauth library ----
-file(GLOB_RECURSE secauth_SRC ./cpp/libs/secauth/src/secauth/*.cpp)
-add_library(secauth ${LIB_TYPE} ${secauth_SRC})
-target_link_libraries(secauth opendnp3)
-install(TARGETS secauth DESTINATION lib)
-install(DIRECTORY ./cpp/libs/secauth/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
 
 if(DEMO)
 
@@ -122,7 +111,7 @@ if(TEST)
   # ----- openpal tests -----
   file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp)
   add_executable (testopenpal ${openpal_TESTSRC})
-  target_link_libraries (testopenpal LINK_PUBLIC pthread)
+  target_link_libraries (testopenpal LINK_PUBLIC openpal pthread)
 
   # ----- opendnp3 tests -----
   file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp)
