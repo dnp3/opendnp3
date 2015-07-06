@@ -38,6 +38,10 @@ libasiodnp3_la_LDFLAGS = -version-info 1:1:0
 libasiodnp3_la_SOURCES = \
 <%= asiodnp3_sources %>
 
+#installed headers
+pkginclude_HEADERS = \
+<%= installed_includes %>
+
 # master demo
 masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 masterdemo_LDFLAGS = -pthread
