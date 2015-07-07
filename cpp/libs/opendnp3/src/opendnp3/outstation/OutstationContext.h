@@ -48,7 +48,7 @@ namespace opendnp3
 class OContext
 {
 	
-	public:		
+public:		
 
 	OContext(	const OutstationConfig& config,	
 				const DatabaseTemplate& dbTemplate,
@@ -56,12 +56,11 @@ class OContext
 				openpal::IExecutor& executor,			
 				ILowerLayer& lower,
 				ICommandHandler& commandHandler,
-				IOutstationApplication& application);
-	
+				IOutstationApplication& application);	
 
 	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
 
-	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+public:
 
 	OutstationSolicitedStateBase* ContinueMultiFragResponse(const AppSeqNum& seq);
 
@@ -71,9 +70,19 @@ class OContext
 
 	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	/// ---- Processing functions --------
+	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	/// ----- method overridable for implementing SA or other extensions ----
+
+	virtual bool GoOnline();
+
+	virtual bool GoOffline();
 
 	virtual void ReceiveAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	virtual void CheckForTaskStart();
+
+	/// ---- Processing functions --------
 
 	void ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
@@ -81,9 +90,13 @@ class OContext
 
 	void ProcessConfirm(const APDUHeader& header);
 
-	/// ---- Helper functions for begining solicited and unsolcited transmissions ----
+	/// ---- common helper methods ----
 
 	void BeginResponseTx(const openpal::ReadBufferView& response);
+
+	void OnReceiveAPDU(const openpal::ReadBufferView& apdu);
+
+	void OnSendResult(bool isSuccess);
 
 	void BeginUnsolTx(const openpal::ReadBufferView& response);
 
@@ -97,29 +110,13 @@ class OContext
 
 	bool StartUnsolicitedConfirmTimer();
 
-	void CheckForUnsolicited();
-
-	/// ----- method overridable for implementing SA or other extensions ----
-
-	virtual bool GoOnline();
-
-	virtual bool GoOffline();
-
-	// returns true if the layer is online and not transmitting
+	void CheckForUnsolicited();	
+	
 	bool CanTransmit() const;
 
 	IINField GetResponseIIN();		
 
 	IINField GetDynamicIIN();
-
-	virtual void CheckForTaskStart();
-
-	void OnReceiveAPDU(const openpal::ReadBufferView& apdu);
-
-	void OnSendResult(bool isSuccess);
-	
-
-private:
 
 	/// --- methods for handling app-layer functions ---
 
@@ -147,8 +144,6 @@ private:
 	IINField HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
 	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
 	
-public:
-
 	// ------ resources --------
 	openpal::Logger logger;
 	openpal::IExecutor* const pExecutor;

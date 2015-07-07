@@ -39,12 +39,10 @@ namespace secauth
 		challenge(settings.challengeSize, settings.maxRxASDUSize),
 		challengeTimer(executor),
 		hmac(crypto, settings_.hmacMode),
-		deferred(settings_.maxRxASDUSize),
-		pExecutor(&executor),
+		deferred(settings_.maxRxASDUSize),		
 		pTimeSource(&timeSource),
 		pUserDatabase(&userdb),
-		pCrypto(&crypto),
-		keyStatus(KeyStatus::NOT_INIT),
+		pCrypto(&crypto),		
 		pState(OAuthStateIdle::Instance()),
 		keyChangeState(1, 4, logger, crypto),
 		sessions(executor),
@@ -52,19 +50,7 @@ namespace secauth
 	{
 				
 	}
-
-	void SecurityState::Reset()
-	{		
-		keyStatus = KeyStatus::NOT_INIT;
-		pState = OAuthStateIdle::Instance();
-	}
-
-	APDUResponse SecurityState::StartResponse(OContext& ocontext)
-	{
-		auto response = txBuffer.Start();
-		response.SetIIN(ocontext.GetResponseIIN());
-		return response;
-	}
+	
 }
 
 

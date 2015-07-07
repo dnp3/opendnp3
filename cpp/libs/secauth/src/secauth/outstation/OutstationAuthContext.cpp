@@ -31,6 +31,7 @@
 
 #include "secauth/AggressiveModeParser.h"
 #include "secauth/outstation/KeyUnwrap.h"
+#include "secauth/outstation/OAuthStates.h"
 #include "secauth/Crypto.h"
 
 #include "AuthRequestHandler.h"
@@ -66,7 +67,7 @@ bool OAuthContext::GoOffline()
 {
 	if (this->isOnline)
 	{
-		sstate.Reset();
+		this->Reset();
 	}
 	return OContext::GoOffline();
 }
@@ -148,6 +149,18 @@ void OAuthContext::OnUnknownRequest(const openpal::ReadBufferView& apdu, const A
 			sstate.pState = sstate.pState->OnRegularRequest(*this, apdu, header, objects);
 		}
 	}	
+}
+
+void OAuthContext::Reset()
+{		
+	this->sstate.pState = OAuthStateIdle::Instance();			
+}
+
+opendnp3::APDUResponse OAuthContext::StartResponse()
+{
+	auto response = sstate.txBuffer.Start();
+	response.SetIIN(this->GetResponseIIN());
+	return response;
 }
 
 void OAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var1& challenge)
@@ -240,7 +253,7 @@ void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu,
 
 	sstate.sessions.SetSessionKeys(user, unwrapped.keys);
 
-	auto rsp = sstate.StartResponse(*this);
+	auto rsp = this->StartResponse();
 	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 	rsp.SetControl(header.control);
 	auto writer = rsp.GetWriter();
@@ -274,7 +287,7 @@ void OAuthContext::ProcessRequestKeyStatus(const opendnp3::APDUHeader& header, c
 
 	auto keyStatus = sstate.sessions.GetSessionKeyStatus(user);
 
-	auto rsp = sstate.StartResponse(*this);
+	auto rsp = this->StartResponse();
 	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 	rsp.SetControl(header.control);
 	auto writer = rsp.GetWriter();
@@ -333,7 +346,7 @@ void OAuthContext::ProcessAuthReply(const opendnp3::APDUHeader& header, const op
 
 bool OAuthContext::TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header)
 {
-	auto response = sstate.StartResponse(*this);
+	auto response = this->StartResponse();
 	auto success = sstate.challenge.WriteChallenge(apdu, header, response, sstate.hmac.GetType(), *sstate.pCrypto, &this->logger);
 	if (success)
 	{
@@ -360,7 +373,7 @@ void OAuthContext::RespondWithAuthError(
 	AuthErrorCode code
 	)
 {
-	auto rsp = sstate.StartResponse(*this);
+	auto rsp = this->StartResponse();
 	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 	rsp.SetControl(header.control);
 	auto writer = rsp.GetWriter();

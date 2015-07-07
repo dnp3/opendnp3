@@ -69,6 +69,10 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	void OnUnknownRequest(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
+	void Reset();
+
+	opendnp3::APDUResponse StartResponse();
+
 	//// --- IAuthRequestHandler ----
 
 	virtual void OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;

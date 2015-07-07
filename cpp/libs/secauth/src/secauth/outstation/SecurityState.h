@@ -55,27 +55,19 @@ class SecurityState
 		openpal::IUTCTimeSource& timeSource, 
 		IOutstationUserDatabase& userdb, 
 		openpal::ICryptoProvider& crypto
-	);
-
-	void Reset();
+	);	
 	
 	OutstationAuthSettings settings;
 	ChallengeState challenge;
 	openpal::TimerRef challengeTimer;
 	HMACProvider hmac;
-	DeferredASDU deferred;
-	openpal::IExecutor* pExecutor;
+	DeferredASDU deferred;	
 	openpal::IUTCTimeSource* pTimeSource;
 	IOutstationUserDatabase* pUserDatabase;
-	openpal::ICryptoProvider* pCrypto;
-	opendnp3::KeyStatus keyStatus;
+	openpal::ICryptoProvider* pCrypto;	
 	IOAuthState* pState;
 	KeyChangeState keyChangeState;
 	SessionStore sessions;
-
-	opendnp3::APDUResponse StartResponse(opendnp3::OContext& ocontext);
-	
-private:
 	opendnp3::TxBuffer txBuffer;
 
 };
