@@ -189,8 +189,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 IOutstation* DNP3Channel::AddOutstation(char const* id,
 	opendnp3::ICommandHandler& commandHandler,
 	opendnp3::IOutstationApplication& application,
-	const opendnp3::OutstationStackConfig& config,
-	const secauth::OutstationAuthSettings& authSettings,
+	const secauth::OutstationAuthStackConfig& config,	
 	openpal::IUTCTimeSource& timeSource,
 	secauth::IOutstationUserDatabase& userDB)
 {
@@ -204,7 +203,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id,
 	{
 		auto factory = [&]() -> OutstationBase*
 		{
-			return new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, authSettings, timeSource, userDB, *pCrypto);
+			return new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, timeSource, userDB, *pCrypto);
 		};
 
 		return this->AddStack<OutstationBase>(config.link, factory);

@@ -49,6 +49,7 @@ class SecurityState
 	public:
 
 	SecurityState(
+		const opendnp3::OutstationParams& params,
 		const OutstationAuthSettings& settings, 
 		openpal::Logger logger, 
 		openpal::IExecutor& executor,

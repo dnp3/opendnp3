@@ -58,7 +58,7 @@ OAuthContext::OAuthContext(
 			openpal::ICryptoProvider& crypto
 		) :
 		OContext(config, dbTemplate, logger, executor, lower, commandHandler, application),
-		sstate(settings, logger, executor, timeSource, userDatabase, crypto)
+		sstate(config.params, settings, logger, executor, timeSource, userDatabase, crypto)
 {
 	
 }

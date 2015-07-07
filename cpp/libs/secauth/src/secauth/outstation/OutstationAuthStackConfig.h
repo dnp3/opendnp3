@@ -18,40 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_OUTSTATIONAUTHSTACKCONFIG_H
+#define SECAUTH_OUTSTATIONAUTHSTACKCONFIG_H
 
-#include "SecurityState.h"
+#include <opendnp3/outstation/OutstationStackConfig.h>
 
-#include "OAuthStates.h"
-
-using namespace opendnp3;
+#include "secauth/outstation/OutstationAuthSettings.h"
 
 namespace secauth
 {
-	SecurityState::SecurityState(
-			const OutstationParams& params,
-			const OutstationAuthSettings& settings_, 
-			openpal::Logger logger, 
-			openpal::IExecutor& executor, 
-			openpal::IUTCTimeSource& timeSource, 
-			IOutstationUserDatabase& userdb,
-			openpal::ICryptoProvider& crypto) :
 
-		settings(settings_),
-		challenge(settings.challengeSize, params.maxRxFragSize),
-		challengeTimer(executor),
-		hmac(crypto, settings_.hmacMode),
-		deferred(params.maxRxFragSize),		
-		pTimeSource(&timeSource),
-		pUserDatabase(&userdb),
-		pCrypto(&crypto),		
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		sessions(executor),
-		txBuffer(params.maxTxFragSize)
-	{
-				
-	}
+/** 
+	A composite configuration struct that contains all the config
+	information for a dnp3 outstation stack
+*/
+struct OutstationAuthStackConfig : public opendnp3::OutstationStackConfig
+{
 	
+	OutstationAuthSettings auth;
+
+};
+
 }
 
+#endif
 

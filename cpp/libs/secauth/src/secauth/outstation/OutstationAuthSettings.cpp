@@ -25,20 +25,7 @@
 
 namespace secauth
 {
-
-	OutstationAuthSettings::OutstationAuthSettings(const opendnp3::OutstationParams& params) :
-		maxRxASDUSize(params.maxRxFragSize),
-		maxTxASDUSize(params.maxTxFragSize),
-		challengeTimeout(params.unsolConfirmTimeout),
-		challengeSize(4),
-		assocId(0),
-		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
-		functions(CriticalFunctions::AuthEverything())
-	{}
-
-	OutstationAuthSettings::OutstationAuthSettings() :
-		maxRxASDUSize(opendnp3::DEFAULT_MAX_APDU_SIZE),
-		maxTxASDUSize(opendnp3::DEFAULT_MAX_APDU_SIZE),
+	OutstationAuthSettings::OutstationAuthSettings() :		
 		challengeTimeout(opendnp3::DEFAULT_APP_TIMEOUT),
 		challengeSize(4),
 		assocId(0),

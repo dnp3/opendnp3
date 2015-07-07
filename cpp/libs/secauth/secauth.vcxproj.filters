@@ -128,6 +128,9 @@
     <ClInclude Include="src\secauth\outstation\OutstationAuthContext.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\outstation\OutstationAuthStackConfig.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\MasterSecurityState.cpp">

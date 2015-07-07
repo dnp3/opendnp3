@@ -103,8 +103,7 @@ public:
 	virtual IOutstation* AddOutstation(char const* id,
 								opendnp3::ICommandHandler& commandHandler,
 								opendnp3::IOutstationApplication& application,
-								const opendnp3::OutstationStackConfig& config,
-								const secauth::OutstationAuthSettings& authSettings,
+								const secauth::OutstationAuthStackConfig& config,								
 								openpal::IUTCTimeSource& timeSource,
 								secauth::IOutstationUserDatabase& userDB) override final;
 

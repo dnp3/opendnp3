@@ -28,7 +28,7 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include <secauth/outstation/OutstationAuthStackConfig.h>
 #include <secauth/outstation/IOutstationUserDatabase.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
@@ -66,9 +66,8 @@ public:
 		openpal::IExecutor& executor,
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,
-		const opendnp3::OutstationStackConfig& config,
-		IStackLifecycle& lifecycle,
-		const secauth::OutstationAuthSettings& authSettings,
+		const secauth::OutstationAuthStackConfig& config,
+		IStackLifecycle& lifecycle,		
 		openpal::IUTCTimeSource& timeSource,
 		secauth::IOutstationUserDatabase& userDB,
 		openpal::ICryptoProvider& crypto);

@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 
 	// The main object for a outstation. The defaults are use-able, 
 	// but understanding the options are important.
-	OutstationStackConfig config;	
+	OutstationAuthStackConfig config;	
 	
 	// You must specify the shape of your database and the size of the event buffers
 	config.dbTemplate = DatabaseTemplate::AllTypes(10);
@@ -112,13 +112,10 @@ int main(int argc, char* argv[])
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
 	config.link.LocalAddr = 10;
-	config.link.RemoteAddr = 1;
-
-	// configure the authentication settings based on the outstation settings (buffer sizes, etc)
-	secauth::OutstationAuthSettings authSettings(config.outstation.params);
+	config.link.RemoteAddr = 1;	
 
 	// don't challenge confirms, as the master can't authenticate these yet
-	authSettings.functions.authConfirm = false;
+	config.auth.functions.authConfirm = false;
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
@@ -127,8 +124,7 @@ int main(int argc, char* argv[])
 		"outstation",
 		SuccessCommandHandler::Instance(),
 		DefaultOutstationApplication::Instance(),
-		config,
-		authSettings,
+		config,		
 		asiopal::UTCTimeSource::Instance(),
 		userDatabase);	
 

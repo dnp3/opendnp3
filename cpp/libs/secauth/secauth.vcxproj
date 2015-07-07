@@ -36,6 +36,7 @@
     <ClInclude Include="src\secauth\master\SessionKeyTask.h" />
     <ClInclude Include="src\secauth\master\SimpleMasterUser.h" />
     <ClInclude Include="src\secauth\outstation\AuthRequestHandler.h" />
+    <ClInclude Include="src\secauth\outstation\OutstationAuthStackConfig.h" />
     <ClInclude Include="src\secauth\outstation\Permissions.h" />
     <ClInclude Include="src\secauth\outstation\ChallengeState.h" />
     <ClInclude Include="src\secauth\outstation\IAuthRequestHandler.h" />
