@@ -22,11 +22,6 @@ option(TEST "Build tests" ${DEFAULT_ENABLE})
 option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
-option(FUZZCOV "Builds openpal and opendnp3 with clang coverage flags" OFF)
-
-# only used for opendnp3/openpal when FUZZCOV=ON
-set(FUZZ_LINK_FLAGS "-fsanitize=address")
-set(FUZZ_COMPILE_FLAGS "${FUZZ_LINK_FLAGS} -fsanitize-coverage=4")
 
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 
@@ -80,9 +75,6 @@ file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp)
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
 install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
-if(FUZZCOV)
-  set_target_properties(openpal PROPERTIES COMPILE_FLAGS ${FUZZ_COMPILE_FLAGS})
-endif()
 
 # ---- opendnp3 library ----
 file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
@@ -90,9 +82,7 @@ add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(opendnp3 openpal)
 install(TARGETS opendnp3 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/opendnp3/src/opendnp3/ DESTINATION include/opendnp3 ${INSTALL_ARGS})
-if(FUZZCOV)
-  set_target_properties(openpal PROPERTIES COMPILE_FLAGS ${FUZZ_COMPILE_FLAGS})
-endif()
+
 
 # ---- asiopal library ----
 file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp)
@@ -180,6 +170,10 @@ if(TEST)
   file(GLOB_RECURSE secauth_TESTSRC ./cpp/tests/secauthtests/src/*.cpp)
   add_executable (testsecauth ${secauth_TESTSRC})
   target_link_libraries (testsecauth LINK_PUBLIC secauth dnp3mocks)
+  
+  # ------ afl fuzzer exe -----
+  add_executable (aflfuzzer ./cpp/tests/afl-fuzzer/main.cpp)
+  target_link_libraries (aflfuzzer LINK_PUBLIC opendnp3)
 
   # ----- opensslcrypto tests -----
   if(OSSL)
@@ -190,20 +184,6 @@ if(TEST)
 
 endif()
 
-if(FUZZCOV)
-
-  # ------ libfuzzer coverage -------
-  file(GLOB fuzzer_TESTSRC ../Fuzzer/*.cpp)
-  add_library (clangfuzzer ${fuzzer_TESTSRC})		
-
-  # ------ fuzzer executable -------
-  file(GLOB bindings_TESTSRC ./cpp/tests/fuzzer/Bindings.cpp)
-  add_executable (dnp3fuzzer ${bindings_TESTSRC})
-  target_link_libraries (dnp3fuzzer LINK_PUBLIC clangfuzzer opendnp3 openpal)
-  set_target_properties(dnp3fuzzer PROPERTIES COMPILE_FLAGS ${FUZZ_COMPILE_FLAGS})
-  set_target_properties(dnp3fuzzer PROPERTIES LINK_FLAGS ${FUZZ_LINK_FLAGS})
-
-endif()
 
 
 

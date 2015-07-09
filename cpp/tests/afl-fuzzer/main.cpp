@@ -18,15 +18,18 @@ public:
 	}
 };
 
-static ConsoleLogger handler;
-
-static LogRoot root(&handler, "logger", LogFilters(~0));
-
-extern "C" void TestOneInput(const unsigned char *data, size_t size) 
+int main(int argc, char* argv[])
 {
-
-  ReadBufferView input(data, size);
-  auto logger = root.GetLogger();
-  //APDUParser::ParseAndLogAll(input, &logger);
-  APDUParser::ParseAndLogAll(input, nullptr);
+	std::cout << "argc: " << argc << std::endl;
+  
+  
+	uint8_t buffer[4096];
+	ReadBufferView view(buffer, 4096);
+	
+	ConsoleLogger handler;
+	LogRoot root(&handler, "log", ~0);
+	auto logger = root.GetLogger();
+	APDUParser::ParseAndLogAll(view, &logger);	
 }
+
+
