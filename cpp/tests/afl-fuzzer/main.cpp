@@ -6,6 +6,12 @@
 #include <opendnp3/app/parsing/APDUParser.h>
 #include <openpal/logging/LogRoot.h>
 
+#include <opendnp3/outstation/OutstationContext.h>
+#include <opendnp3/outstation/Outstation.h>
+#include <opendnp3/outstation/ICommandHandler.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
+
+
 using namespace openpal;
 using namespace opendnp3;
 
@@ -15,27 +21,77 @@ class ConsoleLogger : public openpal::ILogHandler
 public:	
 	virtual void Log(const openpal::LogEntry& entry) override final
 	{
-		std::cout << entry.GetMessage() << std::endl;
+		//std::cout << entry.GetMessage() << std::endl;
 	}
 };
 
-int main(int argc, char* argv[])
+class Timer : public openpal::ITimer
+{      
+	virtual void Cancel() override {}
+	virtual MonotonicTimestamp ExpiresAt() override { return MonotonicTimestamp(0); }  
+};
+
+class Executor : public openpal::IExecutor
 {
-	std::cout << "argc: " << argc << std::endl;	
+  public:
+    
+	Timer m_timer;
   
+	Executor() : m_timer() {}	
+	virtual MonotonicTimestamp GetTime() override { return MonotonicTimestamp(0); }
+	virtual ITimer* Start(const TimeDuration& duration, const Action0& action) override { return &m_timer; }	
+	virtual ITimer* Start(const MonotonicTimestamp& expiration, const Action0& action) override { return &m_timer; }	
+	virtual void Post(const Action0& action) override {}  
+};
+
+class LowerLayer : public ILowerLayer
+{
+  public:
+    
+    virtual void BeginTransmit(const openpal::ReadBufferView& buffer) override 
+    {
+	  fwrite(buffer, 1, buffer.Size(), stdout);
+	  fflush(stdout);
+    }
+     
+};
+
+int main(int argc, char* argv[])
+{	  
 	uint8_t buffer[4096];
 		
 	//try to read from stdin
 	size_t num = fread(buffer, 1, 4096, stdin);
 	
-	std::cout << "read: " << num << std::endl;
-	
-	ReadBufferView view(buffer, static_cast<uint32_t>(num));
+	ReadBufferView input(buffer, num);
 	
 	ConsoleLogger handler;
 	LogRoot root(&handler, "log", ~0);
 	auto logger = root.GetLogger();
+	
+	OutstationConfig config;
+	config.params.allowUnsolicited = false;
+	DatabaseTemplate db = DatabaseTemplate::AllTypes(10);
+	
+	Executor exe;
+	LowerLayer lower;
+	
+	OContext context(config, db, logger, exe, lower, SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance());
+	
+	Outstation outstation(context);
+	
+	outstation.OnLowerLayerUp();
+	
+	outstation.OnReceive(ReadBufferView(buffer, num));
+	/*
+	
+	std::cout << "read: " << num << std::endl;
+	
+	ReadBufferView view(buffer, static_cast<uint32_t>(num));
+	
+	
 	APDUParser::ParseAndLogAll(view, &logger);	
+	*/
 }
 
 
