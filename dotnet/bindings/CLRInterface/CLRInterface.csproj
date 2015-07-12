@@ -87,6 +87,7 @@
     <Compile Include="gen\IINField.cs" />
     <Compile Include="gen\IndexMode.cs" />
     <Compile Include="gen\IntervalUnits.cs" />
+    <Compile Include="gen\LinkStatus.cs" />
     <Compile Include="gen\MasterTaskType.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\QualifierCode.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="IChannel.cs" />
     <Compile Include="ICommandProcessor.cs" />
     <Compile Include="IFuture.cs" />
+    <Compile Include="ILinkStatusListener.cs" />
     <Compile Include="ILogHandler.cs" />
     <Compile Include="IMaster.cs">
       <SubType>Code</SubType>

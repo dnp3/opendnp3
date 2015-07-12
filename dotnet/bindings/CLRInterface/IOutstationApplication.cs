@@ -30,7 +30,7 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// Outstation application code implements this interface to interface with the stack
     /// </summary>
-    public interface IOutstationApplication
+    public interface IOutstationApplication : ILinkStatusListener
     {
         bool SupportsWriteAbsoluteTime { get; }
 
@@ -81,6 +81,10 @@ namespace Automatak.DNP3.Interface
         }
 
         private DefaultOutstationApplication() { }
+
+        void ILinkStatusListener.OnStateChange(LinkStatus value)
+        {
+        }
 
         bool IOutstationApplication.SupportsWriteAbsoluteTime
         {
