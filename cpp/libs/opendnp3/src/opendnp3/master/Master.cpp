@@ -58,13 +58,7 @@ void Master::OnReceive(const openpal::ReadBufferView& apdu)
 
 void Master::OnSendResult(bool isSucccess)
 {
-	if (pMContext->isOnline && pMContext->isSending)
-	{
-		pMContext->isSending = false;
-
-		pMContext->CheckConfirmTransmit();
-		pMContext->CheckForTask();
-	}
+	pMContext->OnSendResult(isSucccess);
 }
 
 ICommandProcessor& Master::GetCommandProcessor()

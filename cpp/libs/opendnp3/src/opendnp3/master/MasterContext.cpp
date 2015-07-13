@@ -124,6 +124,17 @@ namespace opendnp3
 		this->OnParsedHeader(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 	}
 
+	void MContext::OnSendResult(bool isSucccess)
+	{
+		if (this->isOnline && this->isSending)
+		{
+			this->isSending = false;
+
+			this->CheckConfirmTransmit();
+			this->CheckForTask();
+		}
+	}
+
 	void MContext::OnParsedHeader(const ReadBufferView& apdu, const APDUResponseHeader& header, const ReadBufferView& objects)
 	{
 		// Note: this looks silly, but OnParsedHeader() is virtual and can be overriden to do SA

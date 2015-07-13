@@ -89,8 +89,11 @@ namespace opendnp3
 		std::deque<APDUHeader> confirmQueue;
 		openpal::Buffer txBuffer;
 		TaskState tstate;
-	
+
+		
 		void OnReceive(const openpal::ReadBufferView& apdu);
+
+		void OnSendResult(bool isSucccess);
 
 		/// virtual methods that can be overriden to implement secure authentication		
 
