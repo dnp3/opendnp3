@@ -46,7 +46,7 @@ namespace opendnp3
 
 	protected:
 
-		enum class MasterState
+		enum class TaskState
 		{
 			IDLE,
 			TASK_READY,
@@ -87,7 +87,7 @@ namespace opendnp3
 		MasterScheduler scheduler;
 		std::deque<APDUHeader> confirmQueue;
 		openpal::Buffer txBuffer;
-		MasterState state;
+		TaskState tstate;
 	
 
 		/// virtual methods that can be overriden to implement secure authentication		
@@ -137,17 +137,17 @@ namespace opendnp3
 	protected:
 				
 		/// state switch lookups
-		MasterState OnStartEvent();
-		MasterState OnResponseEvent(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
-		MasterState OnResponseTimeoutEvent();
+		TaskState OnStartEvent();
+		TaskState OnResponseEvent(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		TaskState OnResponseTimeoutEvent();
 
 		/// --- state handling functions ----
 
-		MasterState StartTask_Idle();
-		MasterState StartTask_TaskReady();
+		TaskState StartTask_Idle();
+		TaskState StartTask_TaskReady();
 
-		MasterState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
-		MasterState OnResponseTimeout_WaitForResponse();
+		TaskState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		TaskState OnResponseTimeout_WaitForResponse();
 	};
 
 }

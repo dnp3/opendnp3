@@ -67,7 +67,7 @@ public:
 	* 
 	* Overridable for auth tasks
 	*/
-	virtual bool AcceptsFunction(FunctionCode fc) const { return fc == FunctionCode::RESPONSE; }
+	virtual bool IsAuthTask() const { return false; }
 
 	/**	
 	*

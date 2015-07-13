@@ -102,24 +102,22 @@ void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, co
 {
 	// need to determine the context of the auth response
 	
-	if (state == MasterState::WAIT_FOR_RESPONSE)
+	if (tstate != TaskState::WAIT_FOR_RESPONSE)
 	{
-		// an auth-based task is running and needs to receive this directly
-		if (this->pActiveTask->AcceptsFunction(FunctionCode::AUTH_RESPONSE))
-		{
-			this->ProcessResponse(header, objects);
-		}
-		else
-		{
-			AuthResponseHandler handler(apdu, header, *this);
-			APDUParser::Parse(objects, handler, this->logger);
-		}		
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring AuthResponse"); // TODO - better error message?
+		return;
+	}
+
+	// an auth-based task is running and needs to receive this directly
+	if (this->pActiveTask->IsAuthTask())
+	{
+		this->ProcessResponse(header, objects);
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring AuthResponse"); // TODO - better error message?
-	}
-
+		AuthResponseHandler handler(apdu, header, *this);
+		APDUParser::Parse(objects, handler, this->logger);
+	}		
 }
 
 void  MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)

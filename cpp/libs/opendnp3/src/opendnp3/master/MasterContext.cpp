@@ -55,14 +55,14 @@ namespace opendnp3
 		tasks(params, logger, application, SOEHandler, application),
 		scheduler(executor, *this),
 		txBuffer(params.maxTxFragSize),
-		state(MasterState::IDLE)		
+		tstate(TaskState::IDLE)
 	{}
 
 	void MContext::CheckForTask()
 	{
 		if (isOnline)
 		{
-			this->state = this->OnStartEvent();
+			this->tstate = this->OnStartEvent();
 		}
 	}
 
@@ -70,7 +70,7 @@ namespace opendnp3
 	{
 		if (isOnline)
 		{
-			this->state = this->OnResponseTimeoutEvent();
+			this->tstate = this->OnResponseTimeoutEvent();
 		}
 	}
 
@@ -163,8 +163,8 @@ namespace opendnp3
 
 	void MContext::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{				
-		this->state = this->OnResponseEvent(header, objects);		
-		this->ProcessIIN(header.IIN);
+		this->tstate = this->OnResponseEvent(header, objects);		
+		this->ProcessIIN(header.IIN); // TODO - should we process IIN bits for unexpected responses?
 	}
 
 	void MContext::QueueConfirm(const APDUHeader& header)
@@ -221,7 +221,7 @@ namespace opendnp3
 				pActiveTask.Release();
 			}
 
-			state = MasterState::IDLE;
+			tstate = TaskState::IDLE;
 
 			pTaskLock->OnLayerDown();			
 
@@ -284,90 +284,80 @@ namespace opendnp3
 
 	//// --- State tables ---
 
-	MContext::MasterState MContext::OnResponseEvent(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
-		switch (state)
+		switch (tstate)
 		{			
-			case(MasterState::WAIT_FOR_RESPONSE) :
+			case(TaskState::WAIT_FOR_RESPONSE) :
 				return OnResponse_WaitForResponse(header, objects);
 			default:
 				FORMAT_LOG_BLOCK(logger, flags::WARN, "Not expecting a response, sequence: %u", header.control.SEQ);
-				return state;
+				return tstate;
 		}
 	}
 	
-	MContext::MasterState MContext::OnStartEvent()
+	MContext::TaskState MContext::OnStartEvent()
 	{
-		switch (state)
+		switch (tstate)
 		{
-			case(MasterState::IDLE) :
+			case(TaskState::IDLE) :
 				return StartTask_Idle();
-			case(MasterState::TASK_READY) :
+			case(TaskState::TASK_READY) :
 				return StartTask_TaskReady();
 			default:
-				return state;
+				return tstate;
 		}
 	}
 	
-	MContext::MasterState MContext::OnResponseTimeoutEvent()
+	MContext::TaskState MContext::OnResponseTimeoutEvent()
 	{
-		switch (state)
+		switch (tstate)
 		{
-			case(MasterState::WAIT_FOR_RESPONSE) :
+			case(TaskState::WAIT_FOR_RESPONSE) :
 				return OnResponseTimeout_WaitForResponse();
 			default:
 				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unexpected response timeout");
-				return state;
+				return tstate;
 		}
 	}
 
 	//// --- State actions ----
 
-	MContext::MasterState MContext::StartTask_Idle()
+	MContext::TaskState MContext::StartTask_Idle()
 	{
 		if (this->isSending)
 		{
-			return state;
+			return TaskState::IDLE;
 		}
 
 		auto task = this->scheduler.Start();
 
 		if (!task.IsDefined())
 		{
-			return state;
+			return TaskState::IDLE;
 		}
 
-		return this->BeginNewTask(task) ? MasterState::WAIT_FOR_RESPONSE : MasterState::TASK_READY;
+		return this->BeginNewTask(task) ? TaskState::WAIT_FOR_RESPONSE : TaskState::TASK_READY;
 	}
 
-	MContext::MasterState MContext::StartTask_TaskReady()
+	MContext::TaskState MContext::StartTask_TaskReady()
 	{
 		if (this->isSending)
 		{
-			return MasterState::TASK_READY;
+			return TaskState::TASK_READY;
 		}
 
-		return this->ResumeActiveTask() ? MasterState::WAIT_FOR_RESPONSE : MasterState::TASK_READY;		
+		return this->ResumeActiveTask() ? TaskState::WAIT_FOR_RESPONSE : TaskState::TASK_READY;
 	}
 
-	MContext::MasterState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
 		if (header.control.SEQ != this->solSeq)
 		{
 			FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Response with bad sequence: %u", header.control.SEQ);
-			return state;
+			return TaskState::WAIT_FOR_RESPONSE;
 		}
-
-		if (!this->pActiveTask->AcceptsFunction(header.function))
-		{
-			FORMAT_LOG_BLOCK(this->logger, flags::WARN,
-				"Task %s does not accept function code in responses: %s",
-				this->pActiveTask->Name(),
-				FunctionCodeToString(header.function));
-
-			return state;
-		}
-
+		
 		this->responseTimer.Cancel();
 
 		this->solSeq.Increment();
@@ -385,23 +375,23 @@ namespace opendnp3
 		{
 			case(IMasterTask::ResponseResult::OK_CONTINUE) :
 				this->StartResponseTimer();
-				return MasterState::WAIT_FOR_RESPONSE;
+				return TaskState::WAIT_FOR_RESPONSE;
 			case(IMasterTask::ResponseResult::OK_REPEAT) :
 				return StartTask_TaskReady();
 			default:
 				// task completed or failed, either way go back to idle			
 				this->CompleteActiveTask();
-				return MasterState::IDLE;
+				return TaskState::IDLE;
 		}
 	}
 
-	MContext::MasterState MContext::OnResponseTimeout_WaitForResponse()
+	MContext::TaskState MContext::OnResponseTimeout_WaitForResponse()
 	{
 		auto now = this->pExecutor->GetTime();
 		this->pActiveTask->OnResponseTimeout(now);
 		this->solSeq.Increment();
 		this->CompleteActiveTask();
-		return MasterState::IDLE;
+		return TaskState::IDLE;
 	}
 }
 
