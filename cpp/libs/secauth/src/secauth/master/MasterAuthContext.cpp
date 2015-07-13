@@ -125,7 +125,7 @@ void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, co
 	}		
 }
 
-void  MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
+void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 {
 	if (this->isSending)
 	{

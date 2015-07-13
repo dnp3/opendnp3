@@ -42,9 +42,7 @@ namespace secauth
 
 		SessionStore(			
 			openpal::IMonotonicTimeSource& timeSource			
-		);
-
-		void DefineUser(const User& user);
+		);		
 
 		void SetSessionKeys(const User& user, const SessionKeysView& view);
 
