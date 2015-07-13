@@ -102,7 +102,7 @@ void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, co
 {
 	// need to determine the context of the auth response
 	
-	if (this->pState->ExpectingResponse())
+	if (state == MasterState::WAIT_FOR_RESPONSE)
 	{
 		// an auth-based task is running and needs to receive this directly
 		if (this->pActiveTask->AcceptsFunction(FunctionCode::AUTH_RESPONSE))

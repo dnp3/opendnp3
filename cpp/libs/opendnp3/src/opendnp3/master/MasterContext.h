@@ -31,7 +31,6 @@
 #include "opendnp3/app/AppSeqNum.h"
 #include "opendnp3/master/MasterScheduler.h"
 #include "opendnp3/master/MasterTasks.h"
-#include "opendnp3/master/IMasterState.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
 
@@ -44,6 +43,15 @@ namespace opendnp3
 	*/
 	class MContext : private IScheduleCallback, private openpal::Uncopyable
 	{
+
+	protected:
+
+		enum class MasterState
+		{
+			IDLE,
+			TASK_READY,
+			WAIT_FOR_RESPONSE
+		};
 
 	public:
 
@@ -79,7 +87,7 @@ namespace opendnp3
 		MasterScheduler scheduler;
 		std::deque<APDUHeader> confirmQueue;
 		openpal::Buffer txBuffer;
-		IMasterState* pState;	
+		MasterState state;
 	
 
 		/// virtual methods that can be overriden to implement secure authentication		
@@ -118,13 +126,28 @@ namespace opendnp3
 
 		void Transmit(const openpal::ReadBufferView& data);
 
-	private:
+	private:		
 
 		virtual void OnPendingTask() override { this->PostCheckForTask(); }
 
 		void ProcessIIN(const IINField& iin);		
 							
-		void OnResponseTimeout();				
+		void OnResponseTimeout();		
+
+	protected:
+				
+		/// state switch lookups
+		MasterState OnStartEvent();
+		MasterState OnResponseEvent(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		MasterState OnResponseTimeoutEvent();
+
+		/// --- state handling functions ----
+
+		MasterState StartTask_Idle();
+		MasterState StartTask_TaskReady();
+
+		MasterState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		MasterState OnResponseTimeout_WaitForResponse();
 	};
 
 }

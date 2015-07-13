@@ -55,14 +55,14 @@ namespace opendnp3
 		tasks(params, logger, application, SOEHandler, application),
 		scheduler(executor, *this),
 		txBuffer(params.maxTxFragSize),
-		pState(&MasterStateIdle::Instance())
+		state(MasterState::IDLE)		
 	{}
 
 	void MContext::CheckForTask()
 	{
 		if (isOnline)
 		{
-			this->pState = pState->OnStart(*this);
+			this->state = this->OnStartEvent();
 		}
 	}
 
@@ -70,7 +70,7 @@ namespace opendnp3
 	{
 		if (isOnline)
 		{
-			this->pState = pState->OnResponseTimeout(*this);
+			this->state = this->OnResponseTimeoutEvent();
 		}
 	}
 
@@ -162,8 +162,8 @@ namespace opendnp3
 	}
 
 	void MContext::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
-	{
-		this->pState = pState->OnResponse(*this, header, objects);
+	{				
+		this->state = this->OnResponseEvent(header, objects);		
 		this->ProcessIIN(header.IIN);
 	}
 
@@ -221,7 +221,7 @@ namespace opendnp3
 				pActiveTask.Release();
 			}
 
-			pState = &MasterStateIdle::Instance();
+			state = MasterState::IDLE;
 
 			pTaskLock->OnLayerDown();			
 
@@ -280,6 +280,128 @@ namespace opendnp3
 		{
 			return false;
 		}
+	}
+
+	//// --- State tables ---
+
+	MContext::MasterState MContext::OnResponseEvent(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	{
+		switch (state)
+		{			
+			case(MasterState::WAIT_FOR_RESPONSE) :
+				return OnResponse_WaitForResponse(header, objects);
+			default:
+				FORMAT_LOG_BLOCK(logger, flags::WARN, "Not expecting a response, sequence: %u", header.control.SEQ);
+				return state;
+		}
+	}
+	
+	MContext::MasterState MContext::OnStartEvent()
+	{
+		switch (state)
+		{
+			case(MasterState::IDLE) :
+				return StartTask_Idle();
+			case(MasterState::TASK_READY) :
+				return StartTask_TaskReady();
+			default:
+				return state;
+		}
+	}
+	
+	MContext::MasterState MContext::OnResponseTimeoutEvent()
+	{
+		switch (state)
+		{
+			case(MasterState::WAIT_FOR_RESPONSE) :
+				return OnResponseTimeout_WaitForResponse();
+			default:
+				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unexpected response timeout");
+				return state;
+		}
+	}
+
+	//// --- State actions ----
+
+	MContext::MasterState MContext::StartTask_Idle()
+	{
+		if (this->isSending)
+		{
+			return state;
+		}
+
+		auto task = this->scheduler.Start();
+
+		if (!task.IsDefined())
+		{
+			return state;
+		}
+
+		return this->BeginNewTask(task) ? MasterState::WAIT_FOR_RESPONSE : MasterState::TASK_READY;
+	}
+
+	MContext::MasterState MContext::StartTask_TaskReady()
+	{
+		if (this->isSending)
+		{
+			return MasterState::TASK_READY;
+		}
+
+		return this->ResumeActiveTask() ? MasterState::WAIT_FOR_RESPONSE : MasterState::TASK_READY;		
+	}
+
+	MContext::MasterState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	{
+		if (header.control.SEQ != this->solSeq)
+		{
+			FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Response with bad sequence: %u", header.control.SEQ);
+			return state;
+		}
+
+		if (!this->pActiveTask->AcceptsFunction(header.function))
+		{
+			FORMAT_LOG_BLOCK(this->logger, flags::WARN,
+				"Task %s does not accept function code in responses: %s",
+				this->pActiveTask->Name(),
+				FunctionCodeToString(header.function));
+
+			return state;
+		}
+
+		this->responseTimer.Cancel();
+
+		this->solSeq.Increment();
+
+		auto now = this->pExecutor->GetTime();
+
+		auto result = this->pActiveTask->OnResponse(header, objects, now);
+
+		if (header.control.CON)
+		{
+			this->QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
+		}
+
+		switch (result)
+		{
+			case(IMasterTask::ResponseResult::OK_CONTINUE) :
+				this->StartResponseTimer();
+				return MasterState::WAIT_FOR_RESPONSE;
+			case(IMasterTask::ResponseResult::OK_REPEAT) :
+				return StartTask_TaskReady();
+			default:
+				// task completed or failed, either way go back to idle			
+				this->CompleteActiveTask();
+				return MasterState::IDLE;
+		}
+	}
+
+	MContext::MasterState MContext::OnResponseTimeout_WaitForResponse()
+	{
+		auto now = this->pExecutor->GetTime();
+		this->pActiveTask->OnResponseTimeout(now);
+		this->solSeq.Increment();
+		this->CompleteActiveTask();
+		return MasterState::IDLE;
 	}
 }
 
