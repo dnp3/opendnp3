@@ -30,6 +30,7 @@
 
 #include "opendnp3/app/AppSeqNum.h"
 #include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/ITaskFilter.h"
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -41,7 +42,7 @@ namespace opendnp3
 	/*
 		All of the mutable state and configuration for a master
 	*/
-	class MContext : private IScheduleCallback, private openpal::Uncopyable
+	class MContext : private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
 	{
 
 	protected:
@@ -102,6 +103,8 @@ namespace opendnp3
 		virtual bool GoOffline();
 		
 		virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+
+		virtual bool CanRun(const IMasterTask& task) override { return true; }
 
 		virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) {}
 

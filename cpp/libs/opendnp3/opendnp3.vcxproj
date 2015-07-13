@@ -170,6 +170,7 @@
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />
     <ClInclude Include="src\opendnp3\master\ITaskCallback.h" />
+    <ClInclude Include="src\opendnp3\master\ITaskFilter.h" />
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\Master.h" />
     <ClInclude Include="src\opendnp3\master\MasterCommandProcessor.h" />

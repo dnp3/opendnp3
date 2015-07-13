@@ -18,38 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKCOMPARISON_H
-#define OPENDNP3_TASKCOMPARISON_H
 
-#include <openpal/util/Uncopyable.h>
-#include <openpal/executor/MonotonicTimestamp.h>
+#ifndef OPENDNP3_ITASKFILTER_H
+#define OPENDNP3_ITASKFILTER_H
 
-#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/ITaskFilter.h"
-
 
 namespace opendnp3
 {
 
-	class TaskComparison : private openpal::StaticOnly
-	{
-		public:
+/**
+*	Evaluates a task to determine if it can run based on additional state information not available in the scheduler
+*/
+class ITaskFilter
+{		
 
-		enum class Result : uint8_t
-		{
-			Left,
-			Right,
-			Same
-		};
+public:			
+	
+	virtual bool CanRun(const IMasterTask& task) = 0;
 
-		static Result SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs, ITaskFilter& filter);
-
-		private:
-
-		static Result HigherPriority(const IMasterTask& lhs, const IMasterTask& rhs);
-
-		static bool Enabled(const IMasterTask& task, ITaskFilter& filter);
-	};
+};
 
 }
 

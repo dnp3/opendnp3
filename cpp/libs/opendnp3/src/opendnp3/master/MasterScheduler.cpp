@@ -34,21 +34,21 @@ namespace opendnp3
 
 void MasterScheduler::Schedule(openpal::ManagedPtr<IMasterTask> pTask)
 {
-	tasks.push_back(std::move(pTask));
+	m_tasks.push_back(std::move(pTask));
 }
 
 std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
 {
-	auto runningBest = tasks.begin();
+	auto runningBest = m_tasks.begin();
 	
-	if (!tasks.empty())	
+	if (!m_tasks.empty())
 	{		
-		auto current = tasks.begin();
+		auto current = m_tasks.begin();
 		++current;
 
-		for (; current != tasks.end(); ++current)
+		for (; current != m_tasks.end(); ++current)
 		{
-			auto result = TaskComparison::SelectHigherPriority(now, **runningBest, **current);
+			auto result = TaskComparison::SelectHigherPriority(now, **runningBest, **current, *m_filter);
 			if (result == TaskComparison::Result::Right)
 			{
 				runningBest = current;
@@ -63,16 +63,19 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimesta
 {		
 	auto elem = GetNextTask(now);	
 
-	if (elem == tasks.end())
+	if (elem == m_tasks.end())
 	{
 		return ManagedPtr<IMasterTask>();
 	}
 	else
 	{
-		if ((*elem)->ExpirationTime().milliseconds <= now.milliseconds) 
+		const bool EXPIRED = (*elem)->ExpirationTime().milliseconds <= now.milliseconds;
+		const bool CAN_RUN = this->m_filter->CanRun(**elem);
+
+		if (EXPIRED && CAN_RUN) 
 		{
 			ManagedPtr<IMasterTask> ret(std::move(*elem));
-			tasks.erase(elem);
+			m_tasks.erase(elem);
 			return ret;
 		}
 		else
@@ -85,12 +88,12 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimesta
 
 void MasterScheduler::Shutdown(const MonotonicTimestamp& now)
 {			
-	for (auto& pTask : tasks)
+	for (auto& pTask : m_tasks)
 	{
 		pTask->OnTaskDiscarded(now);
 	}
 		
-	tasks.clear();
+	m_tasks.clear();
 }
 
 }

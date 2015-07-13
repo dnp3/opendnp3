@@ -30,6 +30,7 @@
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/IScheduleCallback.h"
+#include "opendnp3/master/ITaskFilter.h"
 
 #include <vector>
 #include <functional>
@@ -40,7 +41,10 @@ namespace opendnp3
 class MasterScheduler
 {		
 
-public:		
+public:
+
+	MasterScheduler(ITaskFilter& filter) : m_filter(&filter)
+	{}
 
 	/*
 	* Add a task to the scheduler
@@ -62,7 +66,8 @@ private:
 
 	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);		
 
-	std::vector<openpal::ManagedPtr<IMasterTask>> tasks;
+	ITaskFilter* m_filter;
+	std::vector<openpal::ManagedPtr<IMasterTask>> m_tasks;
 };
 
 }

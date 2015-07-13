@@ -56,7 +56,8 @@ namespace opendnp3
 		isSending(false),		
 		responseTimer(executor),
 		scheduleTimer(executor),
-		tasks(params, logger, application, SOEHandler, application),		
+		tasks(params, logger, application, SOEHandler, application),	
+		scheduler(*this),
 		txBuffer(params.maxTxFragSize),
 		tstate(TaskState::IDLE)
 	{}
