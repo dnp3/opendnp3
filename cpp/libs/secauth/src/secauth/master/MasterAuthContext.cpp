@@ -56,7 +56,7 @@ MAuthContext::MAuthContext(
 	pUser(&user),
 	sessions(executor),	
 	challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE),
-	sessionKeyTask(application, TimeDuration::Seconds(5), logger, user.GetUser(), crypto, user, sessions)
+	sessionKeyTask(application, params.taskRetryPeriod, logger, user.GetUser(), crypto, user, sessions)
 {
 
 }
@@ -75,10 +75,15 @@ bool MAuthContext::GoOnline()
 }
 
 bool MAuthContext::GoOffline()
-{
-	this->sessions.Clear();
+{	
+	auto ret = MContext::GoOffline();
 
-	return MContext::GoOffline();
+	if (ret)
+	{
+		this->sessions.Clear();
+	}
+
+	return ret;
 }
 
 void MAuthContext::OnParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
