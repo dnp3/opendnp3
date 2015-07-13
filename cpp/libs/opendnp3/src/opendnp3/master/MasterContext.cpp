@@ -30,11 +30,13 @@
 
 #include <assert.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 	MContext::MContext(
-		openpal::IExecutor& executor,
-		openpal::LogRoot& root,
+		IExecutor& executor,
+		LogRoot& root,
 		ILowerLayer& lower,
 		ISOEHandler& SOEHandler,
 		opendnp3::IMasterApplication& application,		
@@ -52,8 +54,8 @@ namespace opendnp3
 		isOnline(false),
 		isSending(false),		
 		responseTimer(executor),
-		tasks(params, logger, application, SOEHandler, application),
-		scheduler(executor, *this),
+		scheduleTimer(executor),
+		tasks(params, logger, application, SOEHandler, application),		
 		txBuffer(params.maxTxFragSize),
 		tstate(TaskState::IDLE)
 	{}
@@ -92,12 +94,12 @@ namespace opendnp3
 		}		
 	}
 
-	void MContext::OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::OnReceive(const ReadBufferView& apdu, const APDUResponseHeader& header, const ReadBufferView& objects)
 	{
 		this->ProcessAPDU(header, objects);
 	}
 
-	void MContext::ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::ProcessAPDU(const APDUResponseHeader& header, const ReadBufferView& objects)
 	{
 		switch (header.function)
 		{
@@ -143,7 +145,7 @@ namespace opendnp3
 		this->pApplication->OnReceiveIIN(iin);
 	}
 
-	void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
 	{
 		if (!header.control.UNS)
 		{
@@ -161,7 +163,7 @@ namespace opendnp3
 		this->ProcessIIN(header.IIN);
 	}
 
-	void MContext::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::ProcessResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
 	{				
 		this->tstate = this->OnResponseEvent(header, objects);		
 		this->ProcessIIN(header.IIN); // TODO - should we process IIN bits for unexpected responses?
@@ -189,7 +191,7 @@ namespace opendnp3
 		return true;
 	}
 
-	void MContext::Transmit(const openpal::ReadBufferView& data)
+	void MContext::Transmit(const ReadBufferView& data)
 	{
 		logging::ParseAndLogRequestTx(this->logger, data);
 		assert(!this->isSending);
@@ -214,6 +216,7 @@ namespace opendnp3
 		if (isOnline)
 		{
 			auto now = pExecutor->GetTime();
+			scheduler.Shutdown(now);
 
 			if (pActiveTask.IsDefined())
 			{
@@ -224,8 +227,6 @@ namespace opendnp3
 			tstate = TaskState::IDLE;
 
 			pTaskLock->OnLayerDown();			
-
-			scheduler.OnLowerLayerDown();
 
 			responseTimer.Cancel();
 
@@ -250,13 +251,13 @@ namespace opendnp3
 		{
 			isOnline = true;
 			pTaskLock->OnLayerUp();			
-			tasks.Initialize(scheduler);
-			scheduler.OnLowerLayerUp();
+			tasks.Initialize(scheduler);	
+			this->PostCheckForTask();
 			return true;
 		}
 	}
 
-	bool MContext::BeginNewTask(openpal::ManagedPtr<IMasterTask>& task)
+	bool MContext::BeginNewTask(ManagedPtr<IMasterTask>& task)
 	{
 		this->pActiveTask = std::move(task);				
 		this->pActiveTask->OnStart();
@@ -284,7 +285,7 @@ namespace opendnp3
 
 	//// --- State tables ---
 
-	MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, const ReadBufferView& objects)
 	{
 		switch (tstate)
 		{			
@@ -330,14 +331,22 @@ namespace opendnp3
 			return TaskState::IDLE;
 		}
 
-		auto task = this->scheduler.Start();
+		MonotonicTimestamp next;
+		auto task = this->scheduler.GetNext(pExecutor->GetTime(), next);
 
-		if (!task.IsDefined())
+		if (task.IsDefined())
 		{
-			return TaskState::IDLE;
+			return this->BeginNewTask(task) ? TaskState::WAIT_FOR_RESPONSE : TaskState::TASK_READY;
 		}
-
-		return this->BeginNewTask(task) ? TaskState::WAIT_FOR_RESPONSE : TaskState::TASK_READY;
+		else
+		{
+			// restart the task timer			
+			if (!next.IsMax())
+			{
+				scheduleTimer.Restart(next, [this](){this->CheckForTask(); });
+			}
+			return TaskState::IDLE;
+		}		
 	}
 
 	MContext::TaskState MContext::StartTask_TaskReady()
@@ -350,7 +359,7 @@ namespace opendnp3
 		return this->ResumeActiveTask() ? TaskState::WAIT_FOR_RESPONSE : TaskState::TASK_READY;
 	}
 
-	MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
 	{
 		if (header.control.SEQ != this->solSeq)
 		{

@@ -32,23 +32,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::MasterScheduler(openpal::IExecutor& executor, IScheduleCallback& callback) :	
-	pExecutor(&executor),
-	pCallback(&callback),	
-	isOnline(false),	
-	timer(executor)
-{
-
-}
-
 void MasterScheduler::Schedule(openpal::ManagedPtr<IMasterTask> pTask)
 {
 	tasks.push_back(std::move(pTask));
-}
-
-openpal::ManagedPtr<IMasterTask> MasterScheduler::Start()
-{		
-	return PopNextTask();	
 }
 
 std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
@@ -73,9 +59,8 @@ std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNext
 	return runningBest;	
 }
 
-openpal::ManagedPtr<IMasterTask> MasterScheduler::PopNextTask()
-{	
-	auto now = pExecutor->GetTime();
+openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimestamp& now, MonotonicTimestamp& next)
+{		
 	auto elem = GetNextTask(now);	
 
 	if (elem == tasks.end())
@@ -92,48 +77,20 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::PopNextTask()
 		}
 		else
 		{
-			if (!(*elem)->ExpirationTime().IsMax())
-			{
-				this->RestartTimer((*elem)->ExpirationTime());
-			}	
-
+			next = (*elem)->ExpirationTime();
 			return ManagedPtr<IMasterTask>();
 		}		
 	}	
 }
 
-void MasterScheduler::OnLowerLayerUp()
-{
-	if (!isOnline)
+void MasterScheduler::Shutdown(const MonotonicTimestamp& now)
+{			
+	for (auto& pTask : tasks)
 	{
-		isOnline = true;
-		pCallback->OnPendingTask();
-	}	
-}
-
-void MasterScheduler::OnLowerLayerDown()
-{
-	if (isOnline)
-	{
-		isOnline = false;
-		timer.Cancel();		
-
-		auto now = pExecutor->GetTime();			
+		pTask->OnTaskDiscarded(now);
+	}
 		
-		for (auto& pTask : tasks)
-		{
-			pTask->OnTaskDiscarded(now);
-		}
-		
-		tasks.clear();
-	}	
-}
-
-void MasterScheduler::RestartTimer(const openpal::MonotonicTimestamp& expiration)
-{
-	auto pCallback = this->pCallback;
-	auto callback = [pCallback](){ pCallback->OnPendingTask(); };
-	timer.Restart(expiration, callback);
+	tasks.clear();
 }
 
 }

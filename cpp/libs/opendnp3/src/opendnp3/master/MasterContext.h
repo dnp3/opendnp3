@@ -83,6 +83,7 @@ namespace opendnp3
 		AppSeqNum unsolSeq;
 		openpal::ManagedPtr<IMasterTask> pActiveTask;		
 		openpal::TimerRef responseTimer;
+		openpal::TimerRef scheduleTimer;
 		MasterTasks tasks;
 		MasterScheduler scheduler;
 		std::deque<APDUHeader> confirmQueue;
