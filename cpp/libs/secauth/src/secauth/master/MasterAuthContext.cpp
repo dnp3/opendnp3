@@ -93,6 +93,11 @@ void MAuthContext::OnParsedHeader(const openpal::ReadBufferView& apdu, const ope
 	}	
 }
 
+bool MAuthContext::CanRun(const opendnp3::IMasterTask& task)
+{
+	return task.IsAuthTask() || (this->msstate.session.GetKeyStatus() == KeyStatus::OK);
+}
+
 void MAuthContext::RecordLastRequest(const openpal::ReadBufferView& apdu)
 {
 	this->lastRequest = apdu;

@@ -57,7 +57,7 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 
 void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
-	if (state == State::GetStatus)
+	if (state == TaskState::GetStatus)
 	{
 		this->BuildStatusRequest(request, seq);
 	}
@@ -69,14 +69,14 @@ void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 
 void SessionKeyTask::Initialize()
 {
-	this->state = State::GetStatus;
+	this->state = TaskState::GetStatus;
 }
 
 IMasterTask::ResponseResult SessionKeyTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (ValidateSingleResponse(header))
 	{
-		return (state == State::GetStatus) ? OnStatusResponse(header, objects) : OnChangeResponse(header, objects);
+		return (state == TaskState::GetStatus) ? OnStatusResponse(header, objects) : OnChangeResponse(header, objects);
 	}
 	else
 	{
@@ -190,7 +190,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 	// The wrapped key data is now stored in the keyWrapBuffer until we can send it out
 
-	this->state = State::ChangeKey; // we're now ready to try changing the key itself
+	this->state = TaskState::ChangeKey; // we're now ready to try changing the key itself
 
 	return ResponseResult::OK_REPEAT;
  }

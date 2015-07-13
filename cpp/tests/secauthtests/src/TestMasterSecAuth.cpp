@@ -89,6 +89,24 @@ TEST_CASE(SUITE("Master authenticates using configured user"))
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::IntegrityPoll(3));
 }
 
+TEST_CASE(SUITE("Other tasks are blocked if their user has no session keys"))
+{
+	MasterParams params;
+	User user(7);
+	MasterSecAuthFixture fixture(params, user);
+
+	fixture.master.OnLowerLayerUp();
+
+	REQUIRE(fixture.exe.RunMany() > 0);
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::RequestKeyStatus(0, user.GetId()));
+	fixture.master.OnSendResult(true);
+
+	// explicitly reject the session key status message
+	fixture.SendToMaster("C0 83 00 00");
+	REQUIRE(fixture.exe.RunMany() > 0);
+	REQUIRE(fixture.lower.PopWriteAsHex() == "");	
+}
+
 void TestSessionKeyExchange(MasterSecAuthFixture& fixture, User user)
 {
 	fixture.crypto.aes128.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data

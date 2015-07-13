@@ -50,13 +50,15 @@ public:
 	);
 
 
-	// ------ Implement IMasterAuthProvider ------		
+	// ------ override the necessary MContext methods ------		
 
 	virtual bool GoOnline() override;
 
 	virtual bool GoOffline() override;
 
 	virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+
+	virtual bool CanRun(const opendnp3::IMasterTask& task) override final;
 
 	virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) override final;
 

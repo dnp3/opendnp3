@@ -38,7 +38,7 @@ namespace secauth
 	*/
 	class SessionKeyTask : public opendnp3::IMasterTask
 	{
-		enum State
+		enum TaskState
 		{
 			GetStatus,
 			ChangeKey
@@ -63,14 +63,14 @@ namespace secauth
 
 		virtual int Priority() const override final { return opendnp3::priority::SESSION_KEY; }		
 
-		virtual bool BlocksLowerPriority() const { return true; }	
+		virtual bool BlocksLowerPriority() const override final { return false; }
 
 	private:	
 
 		openpal::TimeDuration retryPeriod;
 		User user;
 		MSState* pmsstate;
-		State state;
+		TaskState state;
 		SessionKeys keys;
 		uint32_t keyChangeSeqNum;
 		KeyWrapBuffer keyWrapBuffer;
