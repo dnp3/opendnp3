@@ -62,7 +62,7 @@ public:
 	*/
 	void Shutdown(const openpal::MonotonicTimestamp& now);
 
-private:
+private:	
 
 	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);		
 

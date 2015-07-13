@@ -33,9 +33,9 @@ namespace opendnp3
 class ITaskFilter
 {		
 
-public:			
+public:	
 	
-	virtual bool CanRun(const IMasterTask& task) = 0;
+	virtual bool CanRun(const IMasterTask& task) = 0;	
 
 };
 
