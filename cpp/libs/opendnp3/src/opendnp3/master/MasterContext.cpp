@@ -22,6 +22,7 @@
 #include "MasterContext.h"
 
 #include "opendnp3/app/APDULogging.h"
+#include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/master/MeasurementHandler.h"
 
@@ -94,8 +95,38 @@ namespace opendnp3
 		}		
 	}
 
-	void MContext::OnReceive(const ReadBufferView& apdu, const APDUResponseHeader& header, const ReadBufferView& objects)
+	void MContext::OnReceive(const openpal::ReadBufferView& apdu)
 	{
+		if (!this->isOnline)
+		{
+			SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Ignorning rx data while offline");
+			return;
+		}
+
+		APDUResponseHeader header;
+		if (!APDUHeaderParser::ParseResponse(apdu, header, &this->logger))
+		{
+			return;
+		}
+
+
+		FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
+			"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+			header.control.FIR,
+			header.control.FIN,
+			header.control.CON,
+			header.control.UNS,
+			header.control.SEQ,
+			FunctionCodeToString(header.function),
+			header.IIN.LSB,
+			header.IIN.MSB);
+
+		this->OnParsedHeader(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+	}
+
+	void MContext::OnParsedHeader(const ReadBufferView& apdu, const APDUResponseHeader& header, const ReadBufferView& objects)
+	{
+		// Note: this looks silly, but OnParsedHeader() is virtual and can be overriden to do SA
 		this->ProcessAPDU(header, objects);
 	}
 

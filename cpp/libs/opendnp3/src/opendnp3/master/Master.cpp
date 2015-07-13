@@ -53,32 +53,7 @@ void Master::OnLowerLayerDown()
 
 void Master::OnReceive(const openpal::ReadBufferView& apdu)
 {
-	if (!pMContext->isOnline)
-	{
-		SIMPLE_LOG_BLOCK(pMContext->logger, flags::ERR, "Ignorning rx data while offline");
-		return;
-	}
-
-	APDUResponseHeader header;
-	if (!APDUHeaderParser::ParseResponse(apdu, header, &pMContext->logger))
-	{
-		return;
-	}
-
-
-	FORMAT_LOG_BLOCK(pMContext->logger, flags::APP_HEADER_RX,
-		"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-		header.control.FIR,
-		header.control.FIN,
-		header.control.CON,
-		header.control.UNS,
-		header.control.SEQ,
-		FunctionCodeToString(header.function),
-		header.IIN.LSB,
-		header.IIN.MSB);
-
-
-	pMContext->OnReceive(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+	pMContext->OnReceive(apdu);
 }
 
 void Master::OnSendResult(bool isSucccess)

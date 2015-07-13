@@ -56,7 +56,7 @@ public:
 
 	virtual bool GoOffline() override;
 
-	virtual void OnReceive(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) override final;
 

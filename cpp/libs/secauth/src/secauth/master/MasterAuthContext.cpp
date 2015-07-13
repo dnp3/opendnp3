@@ -74,7 +74,7 @@ bool MAuthContext::GoOffline()
 	return MContext::GoOffline();
 }
 
-void MAuthContext::OnReceive(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MAuthContext::OnParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {	
 	switch (header.function)
 	{

@@ -90,14 +90,15 @@ namespace opendnp3
 		openpal::Buffer txBuffer;
 		TaskState tstate;
 	
+		void OnReceive(const openpal::ReadBufferView& apdu);
 
 		/// virtual methods that can be overriden to implement secure authentication		
 
 		virtual bool GoOnline();
 
 		virtual bool GoOffline();
-
-		virtual void OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		
+		virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
 		virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) {}
 
@@ -127,7 +128,7 @@ namespace opendnp3
 
 		void Transmit(const openpal::ReadBufferView& data);
 
-	private:		
+	private:	
 
 		virtual void OnPendingTask() override { this->PostCheckForTask(); }
 
