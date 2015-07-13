@@ -33,7 +33,12 @@ namespace secauth
 	{
 		
 		
-	}	
+	}
+
+	void SessionStore::Clear()
+	{
+		sessionMap.clear();
+	}
 
 	opendnp3::KeyStatus SessionStore::IncrementAuthCount(const User& user)
 	{

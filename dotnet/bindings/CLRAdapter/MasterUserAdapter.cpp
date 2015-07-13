@@ -29,9 +29,9 @@ opendnp3::UpdateKeyMode MasterUserAdapter::GetUpdateKey(openpal::ReadBufferView&
 	return (opendnp3::UpdateKeyMode) keyInfo->keyMode;	
 }
 
-secauth::User MasterUserAdapter::GetUser()
+opendnp3::User MasterUserAdapter::GetUser()
 {
-	return secauth::User(proxy->UserNumber->Number);
+	return opendnp3::User(proxy->UserNumber->Number);
 }
 	
 }}} //end ns

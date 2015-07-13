@@ -73,9 +73,13 @@ private:
 	virtual void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) override final;
 
 	
-	MSState msstate;
-	SessionKeyTask sessionKeyTask;
-	openpal::ReadBufferView lastRequest;
+	openpal::IUTCTimeSource*	pTimeSource;
+	openpal::ICryptoProvider*	pCrypto;
+	IMasterUser*				pUser;
+	SessionStore				sessions;
+	openpal::Buffer				challengeReplyBuffer;	
+	openpal::ReadBufferView		lastRequest;
+	SessionKeyTask				sessionKeyTask;
 
 };
 

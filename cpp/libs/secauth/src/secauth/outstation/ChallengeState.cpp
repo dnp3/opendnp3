@@ -25,8 +25,8 @@
 #include <openpal/crypto/SecureCompare.h>
 
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/app/User.h>
 
-#include "secauth/User.h"
 
 using namespace openpal;
 using namespace opendnp3;

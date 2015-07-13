@@ -39,7 +39,7 @@ class SimpleMasterUser : public IMasterUser
 {
 	public:
 
-		SimpleMasterUser(User user_) : user(user_)			
+		SimpleMasterUser(opendnp3::User user_) : user(user_)			
 		{}
 
 		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) override final
@@ -48,7 +48,7 @@ class SimpleMasterUser : public IMasterUser
 			return this->key.GetKeyMode();			
 		}
 
-		virtual User GetUser() override final
+		virtual opendnp3::User GetUser() override final
 		{
 			return user;
 		}
@@ -60,7 +60,7 @@ class SimpleMasterUser : public IMasterUser
 
 	private:
 
-		User user;
+		opendnp3::User user;
 		UpdateKey key;
 };
 

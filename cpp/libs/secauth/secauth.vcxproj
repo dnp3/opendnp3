@@ -54,7 +54,6 @@
     <ClInclude Include="src\secauth\SessionKeysView.h" />
     <ClInclude Include="src\secauth\SessionStore.h" />
     <ClInclude Include="src\secauth\UpdateKey.h" />
-    <ClInclude Include="src\secauth\User.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\AggressiveModeParser.cpp" />

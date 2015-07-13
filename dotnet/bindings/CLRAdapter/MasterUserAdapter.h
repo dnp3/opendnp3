@@ -28,7 +28,7 @@ namespace Automatak
 				
 				virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) sealed;
 
-				virtual secauth::User GetUser() sealed;
+				virtual opendnp3::User GetUser() sealed;
 
 			private:
 

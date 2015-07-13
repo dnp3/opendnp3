@@ -49,9 +49,14 @@ MAuthContext::MAuthContext(
 		openpal::ICryptoProvider& crypto,
 		IMasterUser& user
 	) : 
-	MContext(executor, root, lower, SOEHandler, application, params, taskLock),
-	msstate(application, executor, crypto, user),
-	sessionKeyTask(application, TimeDuration::Seconds(5), logger, user.GetUser(), msstate)
+	MContext(executor, root, lower, SOEHandler, application, params, taskLock),	
+	
+	pTimeSource(&application),
+	pCrypto(&crypto),
+	pUser(&user),
+	sessions(executor),	
+	challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE),
+	sessionKeyTask(application, TimeDuration::Seconds(5), logger, user.GetUser(), crypto, user, sessions)
 {
 
 }
@@ -71,6 +76,8 @@ bool MAuthContext::GoOnline()
 
 bool MAuthContext::GoOffline()
 {
+	this->sessions.Clear();
+
 	return MContext::GoOffline();
 }
 
@@ -95,7 +102,16 @@ void MAuthContext::OnParsedHeader(const openpal::ReadBufferView& apdu, const ope
 
 bool MAuthContext::CanRun(const opendnp3::IMasterTask& task)
 {
-	return task.IsAuthTask() || (this->msstate.session.GetKeyStatus() == KeyStatus::OK);
+	if (task.IsAuthTask())
+	{
+		return true;
+	}
+
+	// is there an active session for the task's user?
+
+	auto status = this->sessions.GetSessionKeyStatus(task.GetUser());
+
+	return status == KeyStatus::OK;
 }
 
 void MAuthContext::RecordLastRequest(const openpal::ReadBufferView& apdu)
@@ -139,11 +155,19 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 		return;
 	}
 
+	if (!pActiveTask.IsDefined())
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "No active task to challenge");
+		return;
+	}
+
+	auto user = pActiveTask->GetUser();
+
 	// lookup the session keys
 	SessionKeysView keys;
-	if (msstate.session.GetKeys(keys) != KeyStatus::OK)
+	if (this->sessions.GetSessionKeys(pActiveTask->GetUser(), keys) != KeyStatus::OK)
 	{		
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Session for default user is not valid");
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Session is not valid for user: %u", user.GetId());
 		return;
 	}
 
@@ -154,7 +178,7 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 		return;
 	}	
 
-	HMACProvider hmacProvider(*msstate.pCrypto, hmacMode);
+	HMACProvider hmacProvider(*pCrypto, hmacMode);
 
 	std::error_code ec;
 	auto hmacValue = hmacProvider.Compute(keys.controlKey, { apdu, lastRequest }, ec);
@@ -167,10 +191,10 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 		
 	Group120Var2 challengeReply;
 	challengeReply.challengeSeqNum = challenge.challengeSeqNum;
-	challengeReply.userNum = msstate.pUser->GetUser().GetId();
+	challengeReply.userNum = user.GetId();
 	challengeReply.hmacValue = hmacValue;
 	
-	APDURequest reply(msstate.challengeReplyBuffer.GetWriteBufferView());
+	APDURequest reply(this->challengeReplyBuffer.GetWriteBufferView());
 	reply.SetFunction(FunctionCode::AUTH_REQUEST);
 	reply.SetControl(AppControlField::Request(header.control.SEQ));
 	

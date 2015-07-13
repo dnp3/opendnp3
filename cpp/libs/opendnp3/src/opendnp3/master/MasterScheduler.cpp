@@ -57,7 +57,7 @@ std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNext
 	}	
 	
 	return runningBest;	
-}
+} 
 
 openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimestamp& now, MonotonicTimestamp& next)
 {		
@@ -65,6 +65,7 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimesta
 
 	if (elem == m_tasks.end())
 	{
+		next = MonotonicTimestamp::Max();
 		return ManagedPtr<IMasterTask>();
 	}
 	else
@@ -79,8 +80,8 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimesta
 			return ret;
 		}
 		else
-		{
-			next = (*elem)->ExpirationTime();
+		{			
+			next = CAN_RUN ? (*elem)->ExpirationTime() : MonotonicTimestamp::Max();
 			return ManagedPtr<IMasterTask>();
 		}		
 	}	

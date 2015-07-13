@@ -21,10 +21,9 @@
 #ifndef SECAUTH_IOUTSTATIONUSERDATABASE_H
 #define SECAUTH_IOUTSTATIONUSERDATABASE_H
 
-#include "secauth/User.h"
-
 #include <opendnp3/gen/UpdateKeyMode.h>
 #include <opendnp3/gen/FunctionCode.h>
+#include <opendnp3/app/User.h>
 
 #include <openpal/container/ReadBufferView.h>
 
@@ -43,13 +42,13 @@ class IOutstationUserDatabase
 {
 	public:		
 
-		virtual bool GetUpdateKeyType(const User& user, opendnp3::UpdateKeyMode& type) const = 0;
+		virtual bool GetUpdateKeyType(const opendnp3::User& user, opendnp3::UpdateKeyMode& type) const = 0;
 
-		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const = 0;
+		virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const = 0;
 		
-		virtual bool GetUpdateKey(const User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
+		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
 
-		virtual bool UserExists(const User& user) const = 0;
+		virtual bool UserExists(const opendnp3::User& user) const = 0;
 };
 
 }

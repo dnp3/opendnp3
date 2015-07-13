@@ -56,17 +56,17 @@ class SimpleOutstationUserDatabase : public IOutstationUserDatabase
 
 	public:		
 		
-		virtual bool GetUpdateKey(const User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
+		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
 
-		virtual bool GetUpdateKeyType(const User& user, opendnp3::UpdateKeyMode& type) const override final;
+		virtual bool GetUpdateKeyType(const opendnp3::User& user, opendnp3::UpdateKeyMode& type) const override final;
 
-		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const override final;
+		virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const override final;
 
-		virtual bool UserExists(const User& user) const override final;
+		virtual bool UserExists(const opendnp3::User& user) const override final;
 
 		// copies the update key into the key store permanently
 		// fails if the update key is invalid
-		bool ConfigureUser(const User& user, const UpdateKey& key, const Permissions& permissions);
+		bool ConfigureUser(const opendnp3::User& user, const UpdateKey& key, const Permissions& permissions);
 
 	private:		
 

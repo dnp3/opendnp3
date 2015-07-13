@@ -42,7 +42,7 @@ void TestSessionKeyExchange(MasterSecAuthFixture& fixture, User user);
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 {		
 	MasterParams params;
-	User user(5);
+	User user = User::Default();
 	MasterSecAuthFixture fixture(params, user);
 		
 	fixture.master.OnLowerLayerUp();
@@ -57,7 +57,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 TEST_CASE(SUITE("Master authenticates using configured user"))
 {
 	MasterParams params;
-	User user(7);
+	User user = User::Default();
 	MasterSecAuthFixture fixture(params, user);
 
 	fixture.master.OnLowerLayerUp();
@@ -89,7 +89,7 @@ TEST_CASE(SUITE("Master authenticates using configured user"))
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::IntegrityPoll(3));
 }
 
-TEST_CASE(SUITE("Other tasks are blocked if their user has no session keys"))
+TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))
 {
 	MasterParams params;
 	User user(7);

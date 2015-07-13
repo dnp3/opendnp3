@@ -80,6 +80,7 @@
     <ClInclude Include="src\opendnp3\app\SequenceInfo.h" />
     <ClInclude Include="src\opendnp3\app\TimeAndInterval.h" />
     <ClInclude Include="src\opendnp3\app\TxBuffer.h" />
+    <ClInclude Include="src\opendnp3\app\User.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />

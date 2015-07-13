@@ -27,7 +27,7 @@ using namespace testlib;
 
 namespace opendnp3
 {	
-	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, secauth::User user_, ITaskLock& lock) :
+	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, opendnp3::User user_, ITaskLock& lock) :
 		log(),
 		exe(),
 		meas(),

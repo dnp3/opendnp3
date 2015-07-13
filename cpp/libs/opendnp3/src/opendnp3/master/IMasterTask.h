@@ -27,6 +27,7 @@
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
+#include "opendnp3/app/User.h"
 
 #include "opendnp3/master/ITaskCallback.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -131,6 +132,11 @@ public:
 	* Demand that the task run immediately by setting the expiration to 0
 	*/
 	void Demand() { expiration = 0; }
+
+	/**
+	*	TODO - make the user configurable
+	*/
+	User GetUser() const { return User::DEFAULT_ID; }
 	
 	protected:
 
