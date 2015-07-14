@@ -72,7 +72,7 @@
     <ClInclude Include="CollectionAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MasterUserAdapter.h">
+    <ClInclude Include="MasterUserDatabaseAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -34,7 +34,7 @@ namespace opendnp3
 			User() : id(UNKNOWN_ID)
 			{}
 
-			User(uint16_t id_) : id(id_)
+			explicit User(uint16_t id_) : id(id_)
 			{}
 
 			uint16_t GetId() const

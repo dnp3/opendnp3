@@ -18,48 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_SIMPLEMASTERUSERDATABASE_H
+#define SECAUTH_SIMPLEMASTERUSERDATABASE_H
 
-#ifndef SECAUTH_MASTERSECURITYSTATE_H
-#define SECAUTH_MASTERSECURITYSTATE_H
+#include "IMasterUserDatabase.h"
+#include "secauth/UpdateKey.h"
 
-
-#include <openpal/util/Uncopyable.h>
-
-#include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/executor/IUTCTimeSource.h>
-#include <openpal/executor/IExecutor.h>
 #include <openpal/container/Buffer.h>
 
-
-#include "secauth/SessionStore.h"
-
-#include "IMasterUser.h"
-
+#include <map>
+#include <memory>
 
 namespace secauth
 {
 
-class MSState : private openpal::Uncopyable
-{	
+/**
+	A very simple update key store for the default user
+*/
+class SimpleMasterUserDatabase : public IMasterUserDatabase
+{
 
-public:	
+public:
 
-	MSState(
-		openpal::IUTCTimeSource& timeSource,
-		openpal::IExecutor& executor,
-		openpal::ICryptoProvider& crypto,
-		IMasterUser& masterUser
-	);
+	virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const override final;
 
-	openpal::IUTCTimeSource*	pTimeSource;
-	openpal::ICryptoProvider*	pCrypto;
-	IMasterUser*				pUser;
-	Session						session;
-	openpal::Buffer				challengeReplyBuffer;
+	virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;	
 
+	virtual bool UserExists(const opendnp3::User& user) const override final;
+
+	// copies the update key into the key store permanently
+	// fails if the update key is invalid
+	bool ConfigureUser(const opendnp3::User& user, const UpdateKey& key);
+
+private:
+
+	std::map<uint16_t, std::unique_ptr<UpdateKey>> userMap;
+		
 };
-
 
 }
 
 #endif
+

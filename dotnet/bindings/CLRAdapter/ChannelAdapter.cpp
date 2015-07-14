@@ -10,7 +10,7 @@
 #include "MasterAdapter.h"
 #include "OutstationAdapter.h"
 #include "EventConverter.h"
-#include "MasterUserAdapter.h"
+#include "MasterUserDatabaseAdapter.h"
 
 #include <opendnp3/outstation/Database.h>
 
@@ -90,21 +90,21 @@ namespace Automatak
 
 				auto pSOEHandler = new SOEHandlerAdapter(handler);
 				auto pApplication = new MasterApplicationAdapter(application);
-				auto pMasterUser = new MasterUserAdapter(masterUser);
+				auto pMasterUserDB = new MasterUserDatabaseAdapter(masterUser);
 
-				auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg, *pMasterUser);
+				auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg, *pMasterUserDB);
 				if (pMaster == nullptr)
 				{
 					delete pSOEHandler;
 					delete pApplication;
-					delete pMasterUser;
+					delete pMasterUserDB;
 					return nullptr;
 				}
 				else
 				{
 					pMaster->DeleteOnDestruct(pSOEHandler);
 					pMaster->DeleteOnDestruct(pApplication);
-					pMaster->DeleteOnDestruct(pMasterUser);
+					pMaster->DeleteOnDestruct(pMasterUserDB);
 					return gcnew MasterAdapter(pMaster);
 				}
 			}

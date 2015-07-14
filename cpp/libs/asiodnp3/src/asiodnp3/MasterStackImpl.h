@@ -29,7 +29,7 @@
 #include <opendnp3/master/Master.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <secauth/master/IMasterUser.h>
+#include <secauth/master/IMasterUserDatabase.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/crypto/ICryptoProvider.h>
@@ -65,7 +65,7 @@ public:
 		const opendnp3::MasterStackConfig& config,
 		IStackLifecycle& lifecycle,
 		opendnp3::ITaskLock& taskLock,
-		secauth::IMasterUser& user,
+		secauth::IMasterUserDatabase& userDB,
 		openpal::ICryptoProvider& crypto
 	);
 

@@ -23,9 +23,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\secauth\master\MasterSecurityState.h">
-      <Filter>Header Files\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\secauth\master\SessionKeyTask.h">
       <Filter>Header Files\master</Filter>
     </ClInclude>
@@ -107,12 +104,6 @@
     <ClInclude Include="src\secauth\Session.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\secauth\master\IMasterUser.h">
-      <Filter>Header Files\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\secauth\master\SimpleMasterUser.h">
-      <Filter>Header Files\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\secauth\UpdateKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -128,11 +119,14 @@
     <ClInclude Include="src\secauth\outstation\OutstationAuthStackConfig.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\master\IMasterUserDatabase.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\master\SimpleMasterUserDatabase.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\secauth\master\MasterSecurityState.cpp">
-      <Filter>Source Files\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\secauth\master\SessionKeyTask.cpp">
       <Filter>Source Files\master</Filter>
     </ClCompile>
@@ -213,6 +207,9 @@
     </ClCompile>
     <ClCompile Include="src\secauth\outstation\OutstationAuthContext.cpp">
       <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\master\SimpleMasterUserDatabase.cpp">
+      <Filter>Source Files\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

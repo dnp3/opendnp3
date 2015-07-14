@@ -27,15 +27,15 @@ using namespace testlib;
 
 namespace opendnp3
 {	
-	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, opendnp3::User user_, ITaskLock& lock) :
+	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, ITaskLock& lock) :
 		log(),
 		exe(),
 		meas(),
 		lower(log.root),
 		application(),
 		crypto(),
-		user(user_),
-		context(exe, log.root, lower, meas, application, params, lock, crypto, user),
+		userDB(),
+		context(exe, log.root, lower, meas, application, params, lock, crypto, userDB),
 		master(context)				
 	{
 		
@@ -45,6 +45,12 @@ namespace opendnp3
 	{
 		HexSequence hs(hex);
 		master.OnReceive(hs.ToReadOnly());
+	}
+
+	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, UpdateKeyMode mode, uint8_t keyRepeat)
+	{
+		secauth::UpdateKey key(keyRepeat, mode);
+		return userDB.ConfigureUser(user, key);
 	}
 
 }

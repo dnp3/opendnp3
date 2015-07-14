@@ -19,24 +19,54 @@
  * to you under the terms of the License.
  */
 
-#include "MasterSecurityState.h"
+#include "SimpleMasterUserDatabase.h"
+
+using namespace opendnp3;
 
 namespace secauth
 {
+	void SimpleMasterUserDatabase::EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const
+	{
+		for (auto& pair : userMap)
+		{
+			fun(User(pair.first));
+		}
+	}
 
-	MSState::MSState(
-			openpal::IUTCTimeSource& timeSource,
-			openpal::IExecutor& executor,
-			openpal::ICryptoProvider& crypto,		
-			IMasterUser& user
-		) :
-		pTimeSource(&timeSource),
-		pCrypto(&crypto),
-		pUser(&user),
-		session(executor),
-		challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE)
-	{}
+	bool SimpleMasterUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
+	{
+		auto iter = this->userMap.find(user.GetId());
+		if (iter == userMap.end())
+		{
+			return false;
+		}
+		else
+		{
+			type = iter->second->GetKeyMode();
+			key = iter->second->GetKeyView();
+			return true;
+		}
+	}	
 
+	bool SimpleMasterUserDatabase::UserExists(const User& user) const
+	{
+		auto iter = this->userMap.find(user.GetId());
+		return iter != userMap.end();
+	}
+
+	bool SimpleMasterUserDatabase::ConfigureUser(const User& user, const UpdateKey& key)
+	{
+		if (key.IsValid())
+		{
+			userMap[user.GetId()] = std::unique_ptr<UpdateKey>(new UpdateKey(key));
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
+
 
 

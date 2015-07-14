@@ -47,16 +47,16 @@ MAuthContext::MAuthContext(
 		const opendnp3::MasterParams& params,
 		opendnp3::ITaskLock& taskLock,
 		openpal::ICryptoProvider& crypto,
-		IMasterUser& user
+		IMasterUserDatabase& userDB
 	) : 
 	MContext(executor, root, lower, SOEHandler, application, params, taskLock),	
 	
 	pTimeSource(&application),
 	pCrypto(&crypto),
-	pUser(&user),
+	pUserDB(&userDB),
 	sessions(executor),	
 	challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE),
-	sessionKeyTask(application, params.taskRetryPeriod, logger, user.GetUser(), crypto, user, sessions)
+	sessionKeyTask(application, params.taskRetryPeriod, logger, User::Default(), crypto, userDB, sessions)
 {
 
 }

@@ -25,7 +25,6 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include "MasterSecurityState.h"
 #include "SessionKeyTask.h"
 #include "IAuthResponseReceiver.h"
 
@@ -46,7 +45,7 @@ public:
 		const opendnp3::MasterParams& params,
 		opendnp3::ITaskLock& taskLock,
 		openpal::ICryptoProvider& crypto,
-		IMasterUser& user
+		IMasterUserDatabase& userDB
 	);
 
 
@@ -75,7 +74,7 @@ private:
 	
 	openpal::IUTCTimeSource*	pTimeSource;
 	openpal::ICryptoProvider*	pCrypto;
-	IMasterUser*				pUser;
+	IMasterUserDatabase*		pUserDB;
 	SessionStore				sessions;
 	openpal::Buffer				challengeReplyBuffer;	
 	openpal::ReadBufferView		lastRequest;

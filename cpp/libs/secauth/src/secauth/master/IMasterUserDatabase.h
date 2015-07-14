@@ -19,29 +19,31 @@
  * to you under the terms of the License.
  */
 
-#ifndef SECAUTH_IMASTERUSER_H
-#define SECAUTH_IMASTERUSER_H
+#ifndef SECAUTH_IMASTERUSERDATABASE_H
+#define SECAUTH_IMASTERUSERDATABASE_H
 
 #include <opendnp3/gen/UpdateKeyMode.h>
 #include <opendnp3/app/User.h>
 
 #include <openpal/container/ReadBufferView.h>
 
+#include <functional>
+
 namespace secauth
 {	
 
 /** 
-	An interface for retrieving info the configured user on the master
-
-	TODO: make this a multi-user interface	
+	An interface for retrieving info about configured users on the master	
 */
-class IMasterUser
+class IMasterUserDatabase
 {
-	public:				
+	public:		
 
-		virtual opendnp3::User GetUser() = 0;
-		
-		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) = 0;		
+		virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const = 0;
+
+		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
+
+		virtual bool UserExists(const opendnp3::User& user) const = 0;
 };
 
 }

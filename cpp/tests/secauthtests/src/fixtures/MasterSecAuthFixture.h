@@ -33,7 +33,7 @@
 #include <dnp3mocks/MockCryptoProvider.h>
 
 #include <secauth/master/MasterAuthContext.h>
-#include <secauth/master/SimpleMasterUser.h>
+#include <secauth/master/SimpleMasterUserDatabase.h>
 
 namespace opendnp3
 {
@@ -44,9 +44,11 @@ namespace opendnp3
 	{
 	public:
 
-		MasterSecAuthFixture(const MasterParams& params, opendnp3::User user = opendnp3::User::Default(), ITaskLock& lock = NullTaskLock::Instance());
+		MasterSecAuthFixture(const MasterParams& params, ITaskLock& lock = NullTaskLock::Instance());
 
 		void SendToMaster(const std::string& hex);		
+
+		bool ConfigureUser(opendnp3::User user, UpdateKeyMode mode = UpdateKeyMode::AES128, uint8_t keyRepeat = 0xFF);
 
 		testlib::MockLogHandler log;
 		testlib::MockExecutor exe;
@@ -54,7 +56,7 @@ namespace opendnp3
 		MockLowerLayer lower;
 		MockMasterApplication application;
 		MockCryptoProvider crypto;
-		secauth::SimpleMasterUser user;
+		secauth::SimpleMasterUserDatabase userDB;
 		secauth::MAuthContext context;
 		Master master;
 

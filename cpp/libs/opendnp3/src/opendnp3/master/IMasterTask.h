@@ -136,7 +136,7 @@ public:
 	/**
 	*	TODO - make the user configurable
 	*/
-	User GetUser() const { return User::DEFAULT_ID; }
+	User GetUser() const { return User::Default(); }
 	
 	protected:
 

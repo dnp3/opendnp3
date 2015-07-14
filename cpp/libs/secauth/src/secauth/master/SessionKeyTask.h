@@ -24,9 +24,11 @@
 #include <opendnp3/master/IMasterTask.h>
 #include <opendnp3/master/TaskPriority.h>
 
-#include "secauth/SessionKeys.h"
-#include "secauth/master/MasterSecurityState.h"
+#include <openpal/crypto/ICryptoProvider.h>
+
+#include "secauth/SessionStore.h"
 #include "secauth/master/KeyWrap.h"
+#include "secauth/master/IMasterUserDatabase.h"
 
 
 namespace secauth
@@ -52,7 +54,7 @@ namespace secauth
 			openpal::Logger logger,
 			const opendnp3::User& user,
 			openpal::ICryptoProvider& crypto,
-			IMasterUser& userDB,			
+			IMasterUserDatabase& userDB,			
 			SessionStore& sessionStore);
 
 		virtual bool IsAuthTask() const override final { return true; }
@@ -72,7 +74,7 @@ namespace secauth
 		openpal::TimeDuration retryPeriod;
 		opendnp3::User user;
 		openpal::ICryptoProvider* pCrypto;
-		IMasterUser* pUserDB;
+		IMasterUserDatabase* pUserDB;
 		SessionStore* pSessionStore;
 		TaskState state;
 		SessionKeys keys;

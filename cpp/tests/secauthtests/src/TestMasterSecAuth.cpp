@@ -39,11 +39,14 @@ auto MOCK_HMAC_VALUE = "FFFFFFFFFFFFFFFFFFFF";
 
 void TestSessionKeyExchange(MasterSecAuthFixture& fixture, User user);
 
+
+
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 {		
 	MasterParams params;
 	User user = User::Default();
-	MasterSecAuthFixture fixture(params, user);
+	MasterSecAuthFixture fixture(params);
+	REQUIRE(fixture.ConfigureUser(User::Default()));
 		
 	fixture.master.OnLowerLayerUp();
 
@@ -58,7 +61,8 @@ TEST_CASE(SUITE("Master authenticates using configured user"))
 {
 	MasterParams params;
 	User user = User::Default();
-	MasterSecAuthFixture fixture(params, user);
+	MasterSecAuthFixture fixture(params);
+	fixture.ConfigureUser(user);
 
 	fixture.master.OnLowerLayerUp();
 
@@ -93,7 +97,8 @@ TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))
 {
 	MasterParams params;
 	User user(7);
-	MasterSecAuthFixture fixture(params, user);
+	MasterSecAuthFixture fixture(params);
+	fixture.ConfigureUser(user);
 
 	fixture.master.OnLowerLayerUp();
 

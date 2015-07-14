@@ -45,7 +45,7 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 								openpal::Logger logger,
 								const User& user_,
 								ICryptoProvider& crypto,
-								IMasterUser& userDB,
+								IMasterUserDatabase& userDB,
 								SessionStore& sessionStore) :
 
 							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, nullptr, -1),
@@ -176,9 +176,15 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 		return ResponseResult::ERROR_BAD_RESPONSE; // TODO - add a different return code or is this good enough?
 	}
 
-	// get the users update key
+	// get a view of the users update key
 	openpal::ReadBufferView updateKey;
-	auto mode = pUserDB->GetUpdateKey(updateKey);
+	UpdateKeyMode mode;	
+
+	if (!pUserDB->GetUpdateKey(this->user, mode, updateKey))
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unable to get update key for user: %u", user.GetId());
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
 	
 	if (!Crypto::KeyLengthMatchesRequestedAlgorithm(status.keyWrapAlgo, updateKey.Size()))
 	{
