@@ -54,8 +54,7 @@ MAuthContext::MAuthContext(
 	pTimeSource(&application),
 	pCrypto(&crypto),
 	pUserDB(&userDB),
-	sessions(executor),	
-	challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE)	
+	sessions(executor)	
 {
 
 }
@@ -210,7 +209,7 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 	challengeReply.userNum = user.GetId();
 	challengeReply.hmacValue = hmacValue;
 	
-	APDURequest reply(this->challengeReplyBuffer.GetWriteBufferView());
+	APDURequest reply(this->challengeReplyBuffer.GetWriteBuffer());
 	reply.SetFunction(FunctionCode::AUTH_REQUEST);
 	reply.SetControl(AppControlField::Request(header.control.SEQ));
 	
