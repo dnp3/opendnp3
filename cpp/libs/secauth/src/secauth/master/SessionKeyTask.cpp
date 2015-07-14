@@ -48,7 +48,7 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 								IMasterUserDatabase& userDB,
 								SessionStore& sessionStore) :
 
-							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, nullptr, -1),
+							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, TaskConfig::Default()),
 							retryPeriod(retryPeriod_),
 							user(user_),
 							pCrypto(&crypto),

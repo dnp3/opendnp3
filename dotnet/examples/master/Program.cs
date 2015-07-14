@@ -58,9 +58,9 @@ namespace DotNetMasterDemo
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config, user);            
             
             // you a can optionally add various kinds of polls
-            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1));            
-            var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20));
-            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5));                                   
+            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1), TaskConfig.Default);
+            var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20), TaskConfig.Default);
+            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5), TaskConfig.Default);                                   
             
             /* you can also do very custom scans
             var headers = new Header[] { Header.Range8(1, 2, 7, 8), Header.Count8(2, 3, 7) };
@@ -77,7 +77,7 @@ namespace DotNetMasterDemo
                 { 
                     case "a":
                         // perform an ad-hoc scan of all analogs
-                        master.ScanAllObjects(30, 0);
+                        master.ScanAllObjects(30, 0, TaskConfig.Default);
                         break;
                     case "c":
                         var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);

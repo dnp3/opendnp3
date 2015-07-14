@@ -131,7 +131,7 @@ TEST_CASE(SUITE("TimeoutDuringStartup"))
 TEST_CASE(SUITE("SolicitedResponseTimeout"))
 {	
 	MasterTestObject t(NoStartupTasks());
-	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5), nullptr, -1);
+	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
 	
 	t.exe.RunMany();
@@ -507,7 +507,7 @@ TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
 	MasterTestObject t(params);
 
 	MockTaskCallback callback;
-	t.master.ScanClasses(ClassField::AllEventClasses(), &callback);
+	t.master.ScanClasses(ClassField::AllEventClasses(), TaskConfig::With(callback));
 
 	REQUIRE(callback.numStart == 0);
 	REQUIRE(callback.results.size() == 1);
@@ -523,7 +523,7 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
 
 	MockTaskCallback callback;
 
-	t.master.Write(TimeAndInterval(DNPTime(3), 4, IntervalUnits::Days), 7, &callback);
+	t.master.Write(TimeAndInterval(DNPTime(3), 4, IntervalUnits::Days), 7, TaskConfig::With(callback));
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 02 32 04 28 01 00 07 00 03 00 00 00 00 00 04 00 00 00 05");
 	t.master.OnSendResult(true);	

@@ -23,6 +23,7 @@
 
 #include "opendnp3/app/HeaderWriter.h"
 
+#include "opendnp3/master/TaskConfig.h"
 #include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/MasterCommandProcessor.h"
 #include "opendnp3/master/MasterScan.h"
@@ -54,27 +55,27 @@ class Master : public IUpperLayer
 
 	/// ---- Permanently bound scans ----
 
-	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
+	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, TaskConfig config = TaskConfig::Default());
 
-	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
+	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
-	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
+	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
-	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
+	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
 	/// ---- Single shot immediate scans ----
 	
-	void Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void Scan(const std::function<void(HeaderWriter&)>& builder, TaskConfig config = TaskConfig::Default());
 
-	void ScanAllObjects(GroupVariationID gvId, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void ScanAllObjects(GroupVariationID gvId, TaskConfig config = TaskConfig::Default());
 
-	void ScanClasses(const ClassField& field, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void ScanClasses(const ClassField& field, TaskConfig config = TaskConfig::Default());
 
-	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config = TaskConfig::Default());
 
 	/// ---- Write tasks -----
 
-	void Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
 
 	
 	private:	

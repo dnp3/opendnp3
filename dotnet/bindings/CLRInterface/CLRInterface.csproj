@@ -148,6 +148,10 @@
     <Compile Include="config\SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
     <Compile Include="StackStatistics.cs" />
+    <Compile Include="TaskConfig.cs" />
+    <Compile Include="TaskId.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup />

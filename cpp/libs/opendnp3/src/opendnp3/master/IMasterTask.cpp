@@ -29,20 +29,19 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration_, openpal::Logger logger_, ITaskCallback* pCallback_, int userId_) :
+IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration_, openpal::Logger logger_, TaskConfig config_) :
 	pApplication(&app),
 	disabled(false),
 	expiration(expiration_),
 	logger(logger_),
-	pCallback(pCallback_),
-	userId(userId_)
+	config(config_)
 {}
 
 IMasterTask::~IMasterTask()
 {
-	if (pCallback)
+	if (config.pCallback)
 	{
-		pCallback->OnDestroyed();
+		config.pCallback->OnDestroyed();
 	}
 }
 
@@ -86,22 +85,22 @@ void IMasterTask::OnLowerLayerClose(openpal::MonotonicTimestamp now)
 
 void IMasterTask::NotifyResult(TaskCompletion result)
 {
-	if (pCallback)
+	if (config.pCallback)
 	{
-		pCallback->OnComplete(result);
+		config.pCallback->OnComplete(result);
 	}
 
-	pApplication->OnTaskComplete(this->GetTaskType(), result, userId);
+	pApplication->OnTaskComplete(this->GetTaskType(), result, config.taskId);
 }
 	
 void IMasterTask::OnStart()
 {
-	if (pCallback)
+	if (config.pCallback)
 	{
-		pCallback->OnStart();
+		config.pCallback->OnStart();
 	}
 
-	pApplication->OnTaskStart(this->GetTaskType(), userId);
+	pApplication->OnTaskStart(this->GetTaskType(), config.taskId);
 
 	this->Initialize();
 }

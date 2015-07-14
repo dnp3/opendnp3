@@ -70,16 +70,17 @@ private:
 	virtual void OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
 
 	virtual void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) override final;
-
+	
 	typedef std::map<uint16_t, std::unique_ptr<SessionKeyTask>> SessionKeyTaskMap;
 	
 	openpal::IUTCTimeSource*	pTimeSource;
 	openpal::ICryptoProvider*	pCrypto;
 	IMasterUserDatabase*		pUserDB;
-	SessionStore				sessions;
-	openpal::Buffer				challengeReplyBuffer;	
+	SessionStore				sessions;		
 	openpal::ReadBufferView		lastRequest;
 	SessionKeyTaskMap			sessionKeyTaskMap;
+
+	openpal::StaticBuffer<AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE> challengeReplyBuffer;
 
 };
 

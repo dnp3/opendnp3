@@ -32,12 +32,11 @@ UserPollTask::UserPollTask(
 	openpal::TimeDuration period_,
 	openpal::TimeDuration retryDelay_,
 	IMasterApplication& app,
-	ISOEHandler& soeHandler,
-	ITaskCallback* pCallback,
-	int userId,
-	openpal::Logger logger
+	ISOEHandler& soeHandler,	
+	openpal::Logger logger,
+	TaskConfig config
 ) :
-	PollTaskBase(app, soeHandler, 0, logger, pCallback, userId),	
+	PollTaskBase(app, soeHandler, 0, logger, config),	
 	builder(builder_),
 	recurring(recurring_),
 	period(period_),

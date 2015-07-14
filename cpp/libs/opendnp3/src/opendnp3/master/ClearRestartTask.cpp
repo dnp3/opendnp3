@@ -33,7 +33,7 @@ namespace opendnp3
 {
 
 ClearRestartTask::ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
-	IMasterTask(application, MonotonicTimestamp::Max(), logger, nullptr, -1),
+	IMasterTask(application, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
 	retryPeriod(retryPeriod_)	
 {
 

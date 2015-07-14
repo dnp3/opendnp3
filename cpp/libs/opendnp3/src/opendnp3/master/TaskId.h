@@ -18,53 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-
-#include "WriteTask.h"
-
-using namespace openpal;
+#ifndef OPENDNP3_TASKID_H
+#define OPENDNP3_TASKID_H
 
 namespace opendnp3
 {
 
-WriteTask::WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, TaskConfig config) :
-	IMasterTask(app, 0, logger, config),	
-	format(format_)
+/** 
+* @desc Interface that represents a running master.
+*/
+class TaskId
 {
+public:		
+
+	static TaskId Defined(int id) { return TaskId(id, true); }
+	static TaskId Undefined() { return TaskId(-1, false); }
+
+	int GetId() const { return id; }
+	bool IsDefined() const { return isDefined; }
+
+private:
+
+	TaskId() = delete;
+
+	TaskId(int id_, bool isDefined_) : id(id_), isDefined(isDefined_) {}
+
+	int id;
+	bool isDefined;
+};
 
 }
 
-void WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
-{
-	request.SetFunction(FunctionCode::WRITE);
-	request.SetControl(AppControlField::Request(seq));
-	auto writer = request.GetWriter();
-	format(writer);
-}
-
-IMasterTask::ResponseResult WriteTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
-{
-	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
-}
-
-void WriteTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
-{
-	
-}
-
-void WriteTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
-{
-	
-}
-
-void WriteTask::OnResponseOK(openpal::MonotonicTimestamp now)
-{
-	
-}
-
-void WriteTask::OnResponseError(openpal::MonotonicTimestamp now)
-{
-	
-}
-
-} //end ns
+#endif
 
