@@ -59,16 +59,25 @@ public:
 	};	
 	
 
-	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback, int userId);
+	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
 
 	virtual ~IMasterTask();
 
-	/**
-	* 
-	* Overridable for auth tasks
+	/**	
+	*	Overridable for auth tasks
 	*/
 	virtual bool IsAuthTask() const { return false; }
+
+	/**
+	*	The SA user requesting the task. always the default user unless overridden.
+	*/
+	User GetUser() const { return user; }
+
+	/**
+	* Override the default user to some other user
+	*/
+	void SetUser(const User& user) { this->user = user; }
 
 	/**	
 	*
@@ -131,12 +140,7 @@ public:
 	/**
 	* Demand that the task run immediately by setting the expiration to 0
 	*/
-	void Demand() { expiration = 0; }
-
-	/**
-	*	TODO - make the user configurable
-	*/
-	User GetUser() const { return User::Default(); }
+	void Demand() { expiration = 0; }	
 	
 	protected:
 
@@ -177,7 +181,8 @@ public:
 	IMasterTask();
 
 	ITaskCallback* pCallback;
-	int userId;
+	User user;
+	UserTaskId id;
 };
 
 }

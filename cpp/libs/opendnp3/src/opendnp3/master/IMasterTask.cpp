@@ -29,13 +29,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration_, openpal::Logger logger_, ITaskCallback* pCallback_, int userId_) :
+IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration_, openpal::Logger logger_, ITaskCallback* pCallback_, UserTaskId id_) :
 	pApplication(&app),
 	disabled(false),
 	expiration(expiration_),
 	logger(logger_),
 	pCallback(pCallback_),
-	userId(userId_)
+	user(User::Default()),
+	id(id_)
 {}
 
 IMasterTask::~IMasterTask()
@@ -91,7 +92,7 @@ void IMasterTask::NotifyResult(TaskCompletion result)
 		pCallback->OnComplete(result);
 	}
 
-	pApplication->OnTaskComplete(this->GetTaskType(), result, userId);
+	pApplication->OnTaskComplete(this->GetTaskType(), result, id);
 }
 	
 void IMasterTask::OnStart()
@@ -101,7 +102,7 @@ void IMasterTask::OnStart()
 		pCallback->OnStart();
 	}
 
-	pApplication->OnTaskStart(this->GetTaskType(), userId);
+	pApplication->OnTaskStart(this->GetTaskType(), id);
 
 	this->Initialize();
 }

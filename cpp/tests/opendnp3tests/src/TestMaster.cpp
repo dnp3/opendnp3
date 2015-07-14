@@ -131,7 +131,7 @@ TEST_CASE(SUITE("TimeoutDuringStartup"))
 TEST_CASE(SUITE("SolicitedResponseTimeout"))
 {	
 	MasterTestObject t(NoStartupTasks());
-	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5), nullptr, -1);
+	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
 	
 	t.exe.RunMany();

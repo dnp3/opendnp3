@@ -38,7 +38,7 @@ namespace opendnp3
 {
 
 	EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes_, TimeDuration retryPeriod_, openpal::Logger logger) :
-		PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger, nullptr, -1),
+		PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger, nullptr, UserTaskId::Undefined()),
 		classes(classes_.OnlyEventClasses()),
 		retryPeriod(retryPeriod_)
 	{

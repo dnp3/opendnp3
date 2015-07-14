@@ -47,12 +47,12 @@ public:
 		rxIIN.push_back(iin);
 	}
 
-	virtual void OnTaskStart(MasterTaskType type, int userId) override final
+	virtual void OnTaskStart(MasterTaskType type, UserTaskId id) override final
 	{
 		taskStartEvents.push_back(type);		
 	}
 
-	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion result, int userId) override final
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion result, UserTaskId id) override final
 	{
 		taskCompletionEvents.push_back(std::pair<MasterTaskType, TaskCompletion>(type, result));
 	}

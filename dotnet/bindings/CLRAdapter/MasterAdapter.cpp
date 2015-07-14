@@ -47,55 +47,55 @@ namespace Automatak
 			IMasterScan^ MasterAdapter::AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, ITaskCallback^ callback, int userId)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				auto scan = pMaster->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period), CreateTaskCallback(callback), userId);
+				auto scan = pMaster->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period), CreateTaskCallback(callback), opendnp3::UserTaskId::Defined(userId));
 				return gcnew MasterScanAdapter(scan);
 			}
 
 			IMasterScan^ MasterAdapter::AddClassScan(ClassField field, System::TimeSpan period, ITaskCallback^ callback, int userId)
 			{
-				auto scan = pMaster->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period), CreateTaskCallback(callback), userId);
+				auto scan = pMaster->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period), CreateTaskCallback(callback), opendnp3::UserTaskId::Defined(userId));
 				return gcnew MasterScanAdapter(scan);
 			}
 
 			IMasterScan^ MasterAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, ITaskCallback^ callback, int userId)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), CreateTaskCallback(callback), userId);
+				auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), CreateTaskCallback(callback), opendnp3::UserTaskId::Defined(userId));
 				return gcnew MasterScanAdapter(scan);
 			}
 
 			IMasterScan^ MasterAdapter::AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, ITaskCallback^ callback, int userId)
 			{
 				auto vec = ConvertToVectorOfHeaders(headers);
-				auto scan = pMaster->AddScan(Conversions::ConvertTimespan(period), vec, CreateTaskCallback(callback), userId);
+				auto scan = pMaster->AddScan(Conversions::ConvertTimespan(period), vec, CreateTaskCallback(callback), opendnp3::UserTaskId::Defined(userId));
 				return gcnew MasterScanAdapter(scan);
 			}
 
 			void MasterAdapter::Scan(IEnumerable<Header^>^ headers, ITaskCallback^ callback, int userId)
 			{
 				auto vec = ConvertToVectorOfHeaders(headers);
-				pMaster->Scan(vec, CreateTaskCallback(callback), userId);
+				pMaster->Scan(vec, CreateTaskCallback(callback), opendnp3::UserTaskId::Defined(userId));
 			}
 
 			void MasterAdapter::ScanAllObjects(System::Byte group, System::Byte variation, ITaskCallback^ callback, int userId)
 			{				
-				pMaster->ScanAllObjects(opendnp3::GroupVariationID(group, variation), CreateTaskCallback(callback), userId);
+				pMaster->ScanAllObjects(opendnp3::GroupVariationID(group, variation), CreateTaskCallback(callback), opendnp3::UserTaskId::Defined(userId));
 			}
 
 			void MasterAdapter::ScanClasses(ClassField field, ITaskCallback^ callback, int userId)
 			{
-				pMaster->ScanClasses(Conversions::ConvertClassField(field), CreateTaskCallback(callback), userId);
+				pMaster->ScanClasses(Conversions::ConvertClassField(field), CreateTaskCallback(callback), opendnp3::UserTaskId::Defined(userId));
 			}
 
 			void MasterAdapter::ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, ITaskCallback^ callback, int userId)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				pMaster->ScanRange(gvid, start, stop, CreateTaskCallback(callback), userId);
+				pMaster->ScanRange(gvid, start, stop, CreateTaskCallback(callback), opendnp3::UserTaskId::Defined(userId));
 			}
 
 			void MasterAdapter::Write(TimeAndInterval^ value, System::UInt16 index, ITaskCallback^ callback, int userId)
 			{				
-				pMaster->Write(Conversions::ConvertMeas(value), index, CreateTaskCallback(callback), userId);
+				pMaster->Write(Conversions::ConvertMeas(value), index, CreateTaskCallback(callback), opendnp3::UserTaskId::Defined(userId));
 			}
 
 			std::vector<asiodnp3::Header> MasterAdapter::ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers)

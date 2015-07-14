@@ -18,43 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_POLLTASKBASE_H
-#define OPENDNP3_POLLTASKBASE_H
-
-#include "opendnp3/master/IMasterTask.h"
-
-#include <string>
+#ifndef OPENDNP3_USERTASKID_H
+#define OPENDNP3_USERTASKID_H
 
 namespace opendnp3
 {
 
-class ISOEHandler;
-
-/**
- * Base class for measurement polls
- */
-class PollTaskBase : public IMasterTask, openpal::Uncopyable
-{	
-
+/** 
+* @desc Interface that represents a running master.
+*/
+class UserTaskId
+{
 public:		
 
-	PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback, UserTaskId id);
+	static UserTaskId Defined(int id) { return UserTaskId(id, true); }
+	static UserTaskId Undefined() { return UserTaskId(-1, false); }
 
-	virtual const char* Name() const override final { return "Application Poll"; };
-	
-protected:	
+	int GetId() const { return id; }
+	bool IsDefined() const { return isDefined; }
 
-	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
+private:
 
-	ResponseResult ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+	UserTaskId() = delete;
 
-	virtual void Initialize() override final;		
+	UserTaskId(int id_, bool isDefined_) : id(id_), isDefined(isDefined_) {}
 
-	uint16_t rxCount;		
-	ISOEHandler* pSOEHandler;
+	int id;
+	bool isDefined;
 };
 
-} //end ns
-
+}
 
 #endif
+

@@ -32,8 +32,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback, int userId) :
-	IMasterTask(application, expiration, logger, pCallback, userId),
+PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback, UserTaskId id) :
+	IMasterTask(application, expiration, logger, pCallback, id),
 	rxCount(0),
 	pSOEHandler(&soeHandler)
 {

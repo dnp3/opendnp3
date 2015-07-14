@@ -49,7 +49,7 @@ public:
 		IMasterApplication& app,
 		ISOEHandler& soeHandler,
 		ITaskCallback* pCallback,
-		int userId,
+		UserTaskId id,
 		openpal::Logger logger		
 		);	
 

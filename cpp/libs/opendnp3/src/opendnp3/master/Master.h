@@ -23,6 +23,7 @@
 
 #include "opendnp3/app/HeaderWriter.h"
 
+#include "opendnp3/master/UserTaskId.h"
 #include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/MasterCommandProcessor.h"
 #include "opendnp3/master/MasterScan.h"
@@ -54,27 +55,27 @@ class Master : public IUpperLayer
 
 	/// ---- Permanently bound scans ----
 
-	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
+	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
-	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
+	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
-	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
+	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
-	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
+	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
 	/// ---- Single shot immediate scans ----
 	
-	void Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
-	void ScanAllObjects(GroupVariationID gvId, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void ScanAllObjects(GroupVariationID gvId, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
-	void ScanClasses(const ClassField& field, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void ScanClasses(const ClassField& field, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
-	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
 	/// ---- Write tasks -----
 
-	void Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* pCallback = nullptr, UserTaskId id = UserTaskId::Undefined());
 
 	
 	private:	

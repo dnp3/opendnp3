@@ -31,7 +31,7 @@ namespace opendnp3
 {
 
 DisableUnsolicitedTask::DisableUnsolicitedTask(IMasterApplication& application, bool enabled_, TimeDuration retryPeriod_, openpal::Logger logger) :
-	IMasterTask(application, MonotonicTimestamp::Min(), logger, nullptr, -1),
+	IMasterTask(application, MonotonicTimestamp::Min(), logger),
 	enabled(enabled_),
 	retryPeriod(retryPeriod_)
 {
