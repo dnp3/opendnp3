@@ -191,7 +191,7 @@
     <ClInclude Include="MasterAdapter.h" />
     <ClInclude Include="MasterApplicationAdapter.h" />
     <ClInclude Include="MasterScanAdapter.h" />
-    <ClInclude Include="MasterUserAdapter.h" />
+    <ClInclude Include="MasterUserDatabaseAdapter.h" />
     <ClInclude Include="OutstationAdapter.h" />
     <ClInclude Include="OutstationApplicationAdapter.h" />
     <ClInclude Include="OutstationCommandHandlerAdapter.h" />

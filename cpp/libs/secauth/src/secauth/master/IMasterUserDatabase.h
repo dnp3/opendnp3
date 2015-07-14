@@ -19,47 +19,34 @@
  * to you under the terms of the License.
  */
 
-#ifndef SECAUTH_MASTERSECURITYSTATE_H
-#define SECAUTH_MASTERSECURITYSTATE_H
+#ifndef SECAUTH_IMASTERUSERDATABASE_H
+#define SECAUTH_IMASTERUSERDATABASE_H
 
+#include <opendnp3/gen/UpdateKeyMode.h>
+#include <opendnp3/app/User.h>
 
-#include <openpal/util/Uncopyable.h>
+#include <openpal/container/ReadBufferView.h>
 
-#include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/executor/IUTCTimeSource.h>
-#include <openpal/executor/IExecutor.h>
-#include <openpal/container/Buffer.h>
-
-
-#include "secauth/SessionStore.h"
-
-#include "IMasterUser.h"
-
+#include <functional>
 
 namespace secauth
-{
-
-class MSState : private openpal::Uncopyable
 {	
 
-public:	
+/** 
+	An interface for retrieving info about configured users on the master	
+*/
+class IMasterUserDatabase
+{
+	public:		
 
-	MSState(
-		openpal::IUTCTimeSource& timeSource,
-		openpal::IExecutor& executor,
-		openpal::ICryptoProvider& crypto,
-		IMasterUser& masterUser
-	);
+		virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const = 0;
 
-	openpal::IUTCTimeSource*	pTimeSource;
-	openpal::ICryptoProvider*	pCrypto;
-	IMasterUser*				pUser;
-	Session						session;
-	openpal::Buffer				challengeReplyBuffer;
+		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
 
+		virtual bool UserExists(const opendnp3::User& user) const = 0;
 };
-
 
 }
 
 #endif
+

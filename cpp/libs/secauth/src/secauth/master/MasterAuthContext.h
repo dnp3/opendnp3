@@ -25,7 +25,6 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include "MasterSecurityState.h"
 #include "SessionKeyTask.h"
 #include "IAuthResponseReceiver.h"
 
@@ -46,17 +45,19 @@ public:
 		const opendnp3::MasterParams& params,
 		opendnp3::ITaskLock& taskLock,
 		openpal::ICryptoProvider& crypto,
-		IMasterUser& user
+		IMasterUserDatabase& userDB
 	);
 
 
-	// ------ Implement IMasterAuthProvider ------		
+	// ------ override the necessary MContext methods ------		
 
 	virtual bool GoOnline() override;
 
 	virtual bool GoOffline() override;
 
-	virtual void OnReceive(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+
+	virtual bool CanRun(const opendnp3::IMasterTask& task) override final;
 
 	virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) override final;
 
@@ -70,10 +71,15 @@ private:
 
 	virtual void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) override final;
 
+	typedef std::map<uint16_t, std::unique_ptr<SessionKeyTask>> SessionKeyTaskMap;
 	
-	MSState msstate;
-	SessionKeyTask sessionKeyTask;
-	openpal::ReadBufferView lastRequest;
+	openpal::IUTCTimeSource*	pTimeSource;
+	openpal::ICryptoProvider*	pCrypto;
+	IMasterUserDatabase*		pUserDB;
+	SessionStore				sessions;
+	openpal::Buffer				challengeReplyBuffer;	
+	openpal::ReadBufferView		lastRequest;
+	SessionKeyTaskMap			sessionKeyTaskMap;
 
 };
 

@@ -26,14 +26,17 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs)
+TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs, ITaskFilter& filter)
 {
 	// if one of the tasks is disabled, pick the enabled one
+
+	bool leftEnabled = TaskComparison::Enabled(lhs, filter);
+	bool rightEnabled = TaskComparison::Enabled(rhs, filter);
 	
-	if (!TaskComparison::Enabled(lhs) || !TaskComparison::Enabled(rhs))
+	if (!leftEnabled || !rightEnabled)
 	{
-		// always prefer the enabled task over the one that isn't
-		return Enabled(rhs) ? Result::Right : Result::Left;
+		// always prefer the enabled task over the one that is disabled
+		return rightEnabled ? Result::Right : Result::Left;
 	}
 
 	if ((lhs.Priority() > rhs.Priority()) && rhs.BlocksLowerPriority())
@@ -62,7 +65,7 @@ TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::Monot
 			{
 				return Result::Left;
 			}
-			else if (trhs.milliseconds < tlhs.milliseconds)
+			else if (tlhs.milliseconds > trhs.milliseconds)
 			{
 				return Result::Right;
 			}
@@ -73,6 +76,11 @@ TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::Monot
 			}
 		}
 	}	
+}
+
+bool TaskComparison::Enabled(const IMasterTask& task, ITaskFilter& filter)
+{ 
+	return !task.ExpirationTime().IsMax() && filter.CanRun(task);
 }
 
 TaskComparison::Result TaskComparison::HigherPriority(const IMasterTask& lhs, const IMasterTask& rhs)

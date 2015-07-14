@@ -19,33 +19,54 @@
  * to you under the terms of the License.
  */
 
-#ifndef SECAUTH_IMASTERUSER_H
-#define SECAUTH_IMASTERUSER_H
+#include "SimpleMasterUserDatabase.h"
 
-#include "secauth/User.h"
-
-#include <opendnp3/gen/UpdateKeyMode.h>
-
-#include <openpal/container/ReadBufferView.h>
+using namespace opendnp3;
 
 namespace secauth
-{	
-
-/** 
-	An interface for retrieving info the configured user on the master
-
-	TODO: make this a multi-user interface	
-*/
-class IMasterUser
 {
-	public:				
+	void SimpleMasterUserDatabase::EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const
+	{
+		for (auto& pair : userMap)
+		{
+			fun(User(pair.first));
+		}
+	}
 
-		virtual User GetUser() = 0;
-		
-		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) = 0;		
-};
+	bool SimpleMasterUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
+	{
+		auto iter = this->userMap.find(user.GetId());
+		if (iter == userMap.end())
+		{
+			return false;
+		}
+		else
+		{
+			type = iter->second->GetKeyMode();
+			key = iter->second->GetKeyView();
+			return true;
+		}
+	}	
 
+	bool SimpleMasterUserDatabase::UserExists(const User& user) const
+	{
+		auto iter = this->userMap.find(user.GetId());
+		return iter != userMap.end();
+	}
+
+	bool SimpleMasterUserDatabase::ConfigureUser(const User& user, const UpdateKey& key)
+	{
+		if (key.IsValid())
+		{
+			userMap[user.GetId()] = std::unique_ptr<UpdateKey>(new UpdateKey(key));
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
 
-#endif
+
 

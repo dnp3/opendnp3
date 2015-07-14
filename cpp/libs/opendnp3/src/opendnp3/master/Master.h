@@ -84,7 +84,7 @@ class Master : public IUpperLayer
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 	void ScheduleAdhocTask(IMasterTask* pTask);
 
-	MContext* pMContext;
+	MContext* context;
 	MasterCommandProcessor commandProcessor;
 };
 

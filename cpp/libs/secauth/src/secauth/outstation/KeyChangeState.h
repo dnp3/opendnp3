@@ -27,9 +27,9 @@
 
 #include <opendnp3/objects/Group120.h>
 #include <opendnp3/app/APDUResponse.h>
+#include <opendnp3/app/User.h>
 
 #include "secauth/AuthConstants.h"
-#include "secauth/User.h"
 
 namespace secauth
 {
@@ -43,7 +43,7 @@ class KeyChangeState
 	// Formats the key status response	
 	bool FormatKeyStatusResponse(
 		opendnp3::HeaderWriter& writer,
-		const User& user,
+		const opendnp3::User& user,
 		opendnp3::HMACType hmacType,
 		opendnp3::KeyWrapAlgorithm keyWrapAlgo,
 		opendnp3::KeyStatus status,	
@@ -54,11 +54,11 @@ class KeyChangeState
 	// of the last status response
 	bool EqualsLastStatusResponse(const openpal::ReadBufferView& object);
 
-	bool CheckUserAndKSQMatches(const User& user, uint32_t keyChangeSeq);
+	bool CheckUserAndKSQMatches(const opendnp3::User& user, uint32_t keyChangeSeq);
 
 	private:
 
-	User lastUser;
+	opendnp3::User lastUser;
 	uint16_t challengeSize;
 	openpal::Logger logger;
 	openpal::ICryptoProvider* pProvider;

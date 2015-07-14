@@ -90,7 +90,7 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 	void RespondWithAuthError(
 		const opendnp3::APDUHeader& header,		
 		uint32_t seqNum,
-		const User& user,
+		const opendnp3::User& user,
 		opendnp3::AuthErrorCode code
 	);
 

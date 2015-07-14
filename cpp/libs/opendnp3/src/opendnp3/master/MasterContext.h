@@ -30,8 +30,8 @@
 
 #include "opendnp3/app/AppSeqNum.h"
 #include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/ITaskFilter.h"
 #include "opendnp3/master/MasterTasks.h"
-#include "opendnp3/master/IMasterState.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
 
@@ -42,8 +42,17 @@ namespace opendnp3
 	/*
 		All of the mutable state and configuration for a master
 	*/
-	class MContext : private IScheduleCallback, private openpal::Uncopyable
+	class MContext : private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
 	{
+
+	protected:
+
+		enum class TaskState
+		{
+			IDLE,
+			TASK_READY,
+			WAIT_FOR_RESPONSE
+		};
 
 	public:
 
@@ -75,20 +84,27 @@ namespace opendnp3
 		AppSeqNum unsolSeq;
 		openpal::ManagedPtr<IMasterTask> pActiveTask;		
 		openpal::TimerRef responseTimer;
+		openpal::TimerRef scheduleTimer;
 		MasterTasks tasks;
 		MasterScheduler scheduler;
 		std::deque<APDUHeader> confirmQueue;
 		openpal::Buffer txBuffer;
-		IMasterState* pState;	
-	
+		TaskState tstate;
+
+		
+		void OnReceive(const openpal::ReadBufferView& apdu);
+
+		void OnSendResult(bool isSucccess);
 
 		/// virtual methods that can be overriden to implement secure authentication		
 
 		virtual bool GoOnline();
 
 		virtual bool GoOffline();
+		
+		virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
-		virtual void OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		virtual bool CanRun(const IMasterTask& task) override { return true; }
 
 		virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) {}
 
@@ -118,13 +134,28 @@ namespace opendnp3
 
 		void Transmit(const openpal::ReadBufferView& data);
 
-	private:
+	private:	
 
 		virtual void OnPendingTask() override { this->PostCheckForTask(); }
 
 		void ProcessIIN(const IINField& iin);		
 							
-		void OnResponseTimeout();				
+		void OnResponseTimeout();		
+
+	protected:
+				
+		/// state switch lookups
+		TaskState OnStartEvent();
+		TaskState OnResponseEvent(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		TaskState OnResponseTimeoutEvent();
+
+		/// --- state handling functions ----
+
+		TaskState StartTask_Idle();
+		TaskState StartTask_TaskReady();
+
+		TaskState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		TaskState OnResponseTimeout_WaitForResponse();
 	};
 
 }

@@ -93,7 +93,7 @@ public:
 								opendnp3::ISOEHandler& SOEHandler,
 								opendnp3::IMasterApplication& application,
 								const opendnp3::MasterStackConfig& config,
-								secauth::IMasterUser& user) override final;
+								secauth::IMasterUserDatabase& userDB) override final;
 
 	virtual IOutstation* AddOutstation(char const* id,
 								opendnp3::ICommandHandler& commandHandler,

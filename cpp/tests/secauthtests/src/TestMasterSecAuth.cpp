@@ -39,11 +39,14 @@ auto MOCK_HMAC_VALUE = "FFFFFFFFFFFFFFFFFFFF";
 
 void TestSessionKeyExchange(MasterSecAuthFixture& fixture, User user);
 
+
+
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 {		
 	MasterParams params;
-	User user(5);
-	MasterSecAuthFixture fixture(params, user);
+	User user = User::Default();
+	MasterSecAuthFixture fixture(params);
+	REQUIRE(fixture.ConfigureUser(User::Default()));
 		
 	fixture.master.OnLowerLayerUp();
 
@@ -57,8 +60,9 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 TEST_CASE(SUITE("Master authenticates using configured user"))
 {
 	MasterParams params;
-	User user(7);
-	MasterSecAuthFixture fixture(params, user);
+	User user = User::Default();
+	MasterSecAuthFixture fixture(params);
+	fixture.ConfigureUser(user);
 
 	fixture.master.OnLowerLayerUp();
 
@@ -87,6 +91,25 @@ TEST_CASE(SUITE("Master authenticates using configured user"))
 
 	// next task should be integrity poll
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::IntegrityPoll(3));
+}
+
+TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))
+{
+	MasterParams params;
+	User user(7);
+	MasterSecAuthFixture fixture(params);
+	fixture.ConfigureUser(user);
+
+	fixture.master.OnLowerLayerUp();
+
+	REQUIRE(fixture.exe.RunMany() > 0);
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::RequestKeyStatus(0, user.GetId()));
+	fixture.master.OnSendResult(true);
+
+	// explicitly reject the session key status message
+	fixture.SendToMaster("C0 83 00 00");
+	REQUIRE(fixture.exe.RunMany() > 0);
+	REQUIRE(fixture.lower.PopWriteAsHex() == "");	
 }
 
 void TestSessionKeyExchange(MasterSecAuthFixture& fixture, User user)

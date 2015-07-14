@@ -22,6 +22,7 @@
 #include "MasterContext.h"
 
 #include "opendnp3/app/APDULogging.h"
+#include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/master/MeasurementHandler.h"
 
@@ -30,11 +31,13 @@
 
 #include <assert.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 	MContext::MContext(
-		openpal::IExecutor& executor,
-		openpal::LogRoot& root,
+		IExecutor& executor,
+		LogRoot& root,
 		ILowerLayer& lower,
 		ISOEHandler& SOEHandler,
 		opendnp3::IMasterApplication& application,		
@@ -52,17 +55,18 @@ namespace opendnp3
 		isOnline(false),
 		isSending(false),		
 		responseTimer(executor),
-		tasks(params, logger, application, SOEHandler, application),
-		scheduler(executor, *this),
+		scheduleTimer(executor),
+		tasks(params, logger, application, SOEHandler, application),	
+		scheduler(*this),
 		txBuffer(params.maxTxFragSize),
-		pState(&MasterStateIdle::Instance())
+		tstate(TaskState::IDLE)
 	{}
 
 	void MContext::CheckForTask()
 	{
 		if (isOnline)
 		{
-			this->pState = pState->OnStart(*this);
+			this->tstate = this->OnStartEvent();
 		}
 	}
 
@@ -70,7 +74,7 @@ namespace opendnp3
 	{
 		if (isOnline)
 		{
-			this->pState = pState->OnResponseTimeout(*this);
+			this->tstate = this->OnResponseTimeoutEvent();
 		}
 	}
 
@@ -92,12 +96,53 @@ namespace opendnp3
 		}		
 	}
 
-	void MContext::OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::OnReceive(const openpal::ReadBufferView& apdu)
 	{
+		if (!this->isOnline)
+		{
+			SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Ignorning rx data while offline");
+			return;
+		}
+
+		APDUResponseHeader header;
+		if (!APDUHeaderParser::ParseResponse(apdu, header, &this->logger))
+		{
+			return;
+		}
+
+
+		FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
+			"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+			header.control.FIR,
+			header.control.FIN,
+			header.control.CON,
+			header.control.UNS,
+			header.control.SEQ,
+			FunctionCodeToString(header.function),
+			header.IIN.LSB,
+			header.IIN.MSB);
+
+		this->OnParsedHeader(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+	}
+
+	void MContext::OnSendResult(bool isSucccess)
+	{
+		if (this->isOnline && this->isSending)
+		{
+			this->isSending = false;
+
+			this->CheckConfirmTransmit();
+			this->CheckForTask();
+		}
+	}
+
+	void MContext::OnParsedHeader(const ReadBufferView& apdu, const APDUResponseHeader& header, const ReadBufferView& objects)
+	{
+		// Note: this looks silly, but OnParsedHeader() is virtual and can be overriden to do SA
 		this->ProcessAPDU(header, objects);
 	}
 
-	void MContext::ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::ProcessAPDU(const APDUResponseHeader& header, const ReadBufferView& objects)
 	{
 		switch (header.function)
 		{
@@ -143,7 +188,7 @@ namespace opendnp3
 		this->pApplication->OnReceiveIIN(iin);
 	}
 
-	void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
 	{
 		if (!header.control.UNS)
 		{
@@ -161,10 +206,10 @@ namespace opendnp3
 		this->ProcessIIN(header.IIN);
 	}
 
-	void MContext::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
-	{
-		this->pState = pState->OnResponse(*this, header, objects);
-		this->ProcessIIN(header.IIN);
+	void MContext::ProcessResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
+	{				
+		this->tstate = this->OnResponseEvent(header, objects);		
+		this->ProcessIIN(header.IIN); // TODO - should we process IIN bits for unexpected responses?
 	}
 
 	void MContext::QueueConfirm(const APDUHeader& header)
@@ -189,7 +234,7 @@ namespace opendnp3
 		return true;
 	}
 
-	void MContext::Transmit(const openpal::ReadBufferView& data)
+	void MContext::Transmit(const ReadBufferView& data)
 	{
 		logging::ParseAndLogRequestTx(this->logger, data);
 		assert(!this->isSending);
@@ -214,6 +259,7 @@ namespace opendnp3
 		if (isOnline)
 		{
 			auto now = pExecutor->GetTime();
+			scheduler.Shutdown(now);
 
 			if (pActiveTask.IsDefined())
 			{
@@ -221,11 +267,9 @@ namespace opendnp3
 				pActiveTask.Release();
 			}
 
-			pState = &MasterStateIdle::Instance();
+			tstate = TaskState::IDLE;
 
 			pTaskLock->OnLayerDown();			
-
-			scheduler.OnLowerLayerDown();
 
 			responseTimer.Cancel();
 
@@ -250,13 +294,13 @@ namespace opendnp3
 		{
 			isOnline = true;
 			pTaskLock->OnLayerUp();			
-			tasks.Initialize(scheduler);
-			scheduler.OnLowerLayerUp();
+			tasks.Initialize(scheduler);	
+			this->PostCheckForTask();
 			return true;
 		}
 	}
 
-	bool MContext::BeginNewTask(openpal::ManagedPtr<IMasterTask>& task)
+	bool MContext::BeginNewTask(ManagedPtr<IMasterTask>& task)
 	{
 		this->pActiveTask = std::move(task);				
 		this->pActiveTask->OnStart();
@@ -280,6 +324,126 @@ namespace opendnp3
 		{
 			return false;
 		}
+	}
+
+	//// --- State tables ---
+
+	MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, const ReadBufferView& objects)
+	{
+		switch (tstate)
+		{			
+			case(TaskState::WAIT_FOR_RESPONSE) :
+				return OnResponse_WaitForResponse(header, objects);
+			default:
+				FORMAT_LOG_BLOCK(logger, flags::WARN, "Not expecting a response, sequence: %u", header.control.SEQ);
+				return tstate;
+		}
+	}
+	
+	MContext::TaskState MContext::OnStartEvent()
+	{
+		switch (tstate)
+		{
+			case(TaskState::IDLE) :
+				return StartTask_Idle();
+			case(TaskState::TASK_READY) :
+				return StartTask_TaskReady();
+			default:
+				return tstate;
+		}
+	}
+	
+	MContext::TaskState MContext::OnResponseTimeoutEvent()
+	{
+		switch (tstate)
+		{
+			case(TaskState::WAIT_FOR_RESPONSE) :
+				return OnResponseTimeout_WaitForResponse();
+			default:
+				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unexpected response timeout");
+				return tstate;
+		}
+	}
+
+	//// --- State actions ----
+
+	MContext::TaskState MContext::StartTask_Idle()
+	{
+		if (this->isSending)
+		{
+			return TaskState::IDLE;
+		}
+
+		MonotonicTimestamp next;
+		auto task = this->scheduler.GetNext(pExecutor->GetTime(), next);
+
+		if (task.IsDefined())
+		{
+			return this->BeginNewTask(task) ? TaskState::WAIT_FOR_RESPONSE : TaskState::TASK_READY;
+		}
+		else
+		{
+			// restart the task timer			
+			if (!next.IsMax())
+			{
+				scheduleTimer.Restart(next, [this](){this->CheckForTask(); });
+			}
+			return TaskState::IDLE;
+		}		
+	}
+
+	MContext::TaskState MContext::StartTask_TaskReady()
+	{
+		if (this->isSending)
+		{
+			return TaskState::TASK_READY;
+		}
+
+		return this->ResumeActiveTask() ? TaskState::WAIT_FOR_RESPONSE : TaskState::TASK_READY;
+	}
+
+	MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
+	{
+		if (header.control.SEQ != this->solSeq)
+		{
+			FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Response with bad sequence: %u", header.control.SEQ);
+			return TaskState::WAIT_FOR_RESPONSE;
+		}
+		
+		this->responseTimer.Cancel();
+
+		this->solSeq.Increment();
+
+		auto now = this->pExecutor->GetTime();
+
+		auto result = this->pActiveTask->OnResponse(header, objects, now);
+
+		if (header.control.CON)
+		{
+			this->QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
+		}
+
+		switch (result)
+		{
+			case(IMasterTask::ResponseResult::OK_CONTINUE) :
+				this->StartResponseTimer();
+				return TaskState::WAIT_FOR_RESPONSE;
+			case(IMasterTask::ResponseResult::OK_REPEAT) :
+				return StartTask_TaskReady();
+			default:
+				// task completed or failed, either way go back to idle			
+				this->CompleteActiveTask();
+				return TaskState::IDLE;
+		}
+	}
+
+	MContext::TaskState MContext::OnResponseTimeout_WaitForResponse()
+	{
+		auto now = this->pExecutor->GetTime();
+		this->pActiveTask->OnResponseTimeout(now);
+		this->solSeq.Increment();
+		this->CompleteActiveTask();
+		return TaskState::IDLE;
 	}
 }
 

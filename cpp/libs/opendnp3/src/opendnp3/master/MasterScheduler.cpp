@@ -32,37 +32,23 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::MasterScheduler(openpal::IExecutor& executor, IScheduleCallback& callback) :	
-	pExecutor(&executor),
-	pCallback(&callback),	
-	isOnline(false),	
-	timer(executor)
-{
-
-}
-
 void MasterScheduler::Schedule(openpal::ManagedPtr<IMasterTask> pTask)
 {
-	tasks.push_back(std::move(pTask));
-}
-
-openpal::ManagedPtr<IMasterTask> MasterScheduler::Start()
-{		
-	return PopNextTask();	
+	m_tasks.push_back(std::move(pTask));
 }
 
 std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
 {
-	auto runningBest = tasks.begin();
+	auto runningBest = m_tasks.begin();
 	
-	if (!tasks.empty())	
+	if (!m_tasks.empty())
 	{		
-		auto current = tasks.begin();
+		auto current = m_tasks.begin();
 		++current;
 
-		for (; current != tasks.end(); ++current)
+		for (; current != m_tasks.end(); ++current)
 		{
-			auto result = TaskComparison::SelectHigherPriority(now, **runningBest, **current);
+			auto result = TaskComparison::SelectHigherPriority(now, **runningBest, **current, *m_filter);
 			if (result == TaskComparison::Result::Right)
 			{
 				runningBest = current;
@@ -71,69 +57,44 @@ std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNext
 	}	
 	
 	return runningBest;	
-}
+} 
 
-openpal::ManagedPtr<IMasterTask> MasterScheduler::PopNextTask()
-{	
-	auto now = pExecutor->GetTime();
+openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimestamp& now, MonotonicTimestamp& next)
+{		
 	auto elem = GetNextTask(now);	
 
-	if (elem == tasks.end())
+	if (elem == m_tasks.end())
 	{
+		next = MonotonicTimestamp::Max();
 		return ManagedPtr<IMasterTask>();
 	}
 	else
 	{
-		if ((*elem)->ExpirationTime().milliseconds <= now.milliseconds) 
+		const bool EXPIRED = (*elem)->ExpirationTime().milliseconds <= now.milliseconds;
+		const bool CAN_RUN = this->m_filter->CanRun(**elem);
+
+		if (EXPIRED && CAN_RUN) 
 		{
 			ManagedPtr<IMasterTask> ret(std::move(*elem));
-			tasks.erase(elem);
+			m_tasks.erase(elem);
 			return ret;
 		}
 		else
-		{
-			if (!(*elem)->ExpirationTime().IsMax())
-			{
-				this->RestartTimer((*elem)->ExpirationTime());
-			}	
-
+		{			
+			next = CAN_RUN ? (*elem)->ExpirationTime() : MonotonicTimestamp::Max();
 			return ManagedPtr<IMasterTask>();
 		}		
 	}	
 }
 
-void MasterScheduler::OnLowerLayerUp()
-{
-	if (!isOnline)
+void MasterScheduler::Shutdown(const MonotonicTimestamp& now)
+{			
+	for (auto& pTask : m_tasks)
 	{
-		isOnline = true;
-		pCallback->OnPendingTask();
-	}	
-}
-
-void MasterScheduler::OnLowerLayerDown()
-{
-	if (isOnline)
-	{
-		isOnline = false;
-		timer.Cancel();		
-
-		auto now = pExecutor->GetTime();			
+		pTask->OnTaskDiscarded(now);
+	}
 		
-		for (auto& pTask : tasks)
-		{
-			pTask->OnTaskDiscarded(now);
-		}
-		
-		tasks.clear();
-	}	
-}
-
-void MasterScheduler::RestartTimer(const openpal::MonotonicTimestamp& expiration)
-{
-	auto pCallback = this->pCallback;
-	auto callback = [pCallback](){ pCallback->OnPendingTask(); };
-	timer.Restart(expiration, callback);
+	m_tasks.clear();
 }
 
 }

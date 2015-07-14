@@ -33,7 +33,12 @@ namespace secauth
 	{
 		
 		
-	}	
+	}
+
+	void SessionStore::Clear()
+	{
+		sessionMap.clear();
+	}
 
 	opendnp3::KeyStatus SessionStore::IncrementAuthCount(const User& user)
 	{
@@ -47,17 +52,7 @@ namespace secauth
 			return iter->second->IncrementAuthCount();
 		}
 	}
-
-	void SessionStore::DefineUser(const User& user)
-	{
-		auto iter = sessionMap.find(user.GetId());
-		if (iter == sessionMap.end())
-		{
-			// initialize new session info
-			sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session(*pTimeSource));			
-		}
-	}
-
+	
 	void SessionStore::SetSessionKeys(const User& user, const SessionKeysView& view)
 	{
 		auto iter = sessionMap.find(user.GetId());

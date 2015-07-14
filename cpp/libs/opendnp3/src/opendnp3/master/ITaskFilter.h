@@ -18,53 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SIMPLEMASTERUSER_H
-#define SECAUTH_SIMPLEMASTERUSER_H
 
-#include "IMasterUser.h"
-#include "secauth/UpdateKey.h"
+#ifndef OPENDNP3_ITASKFILTER_H
+#define OPENDNP3_ITASKFILTER_H
 
-#include <openpal/container/Buffer.h>
+#include "opendnp3/master/ITaskFilter.h"
 
-#include <map>
-#include <memory>
-
-namespace secauth
+namespace opendnp3
 {
 
 /**
-	A very simple update key store for the default user
+*	Evaluates a task to determine if it can run based on additional state information not available in the scheduler
 */
-class SimpleMasterUser : public IMasterUser
-{
-	public:
+class ITaskFilter
+{		
 
-		SimpleMasterUser(User user_) : user(user_)			
-		{}
+public:	
+	
+	virtual bool CanRun(const IMasterTask& task) = 0;	
 
-		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) override final
-		{
-			key = this->key.GetKeyView();
-			return this->key.GetKeyMode();			
-		}
-
-		virtual User GetUser() override final
-		{
-			return user;
-		}
-		
-		bool SetUpdateKey(const openpal::ReadBufferView& key)
-		{
-			return this->key.Initialize(key);
-		}
-
-	private:
-
-		User user;
-		UpdateKey key;
 };
 
 }
 
 #endif
-

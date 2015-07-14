@@ -56,7 +56,7 @@ void AddDefaultUser(SimpleOutstationUserDatabase& db)
 	UpdateKey key(data.ToReadOnly());
 
 	db.ConfigureUser(
-		secauth::User::Default(),
+		opendnp3::User::Default(),
 		key,
 		Permissions::AllowAll()		
 	);

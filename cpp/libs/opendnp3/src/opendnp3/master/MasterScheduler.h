@@ -30,6 +30,7 @@
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/IScheduleCallback.h"
+#include "opendnp3/master/ITaskFilter.h"
 
 #include <vector>
 #include <functional>
@@ -40,11 +41,10 @@ namespace opendnp3
 class MasterScheduler
 {		
 
-public:	
+public:
 
-	MasterScheduler(openpal::IExecutor& executor, IScheduleCallback& callback);	
-	
-	// ---------- other public functions ----------------
+	MasterScheduler(ITaskFilter& filter) : m_filter(&filter)
+	{}
 
 	/*
 	* Add a task to the scheduler
@@ -53,37 +53,21 @@ public:
 
 	/**
 	* @return Task to start or undefined pointer if no task to start
+	* If there is no task to start, 'next' is set to the timestamp when the scheduler should be re-evaluated
 	*/
-	openpal::ManagedPtr<IMasterTask> Start();
-
-	/*
-	* Startup
-	*/
-	void OnLowerLayerUp();
+	openpal::ManagedPtr<IMasterTask> GetNext(const openpal::MonotonicTimestamp& now, openpal::MonotonicTimestamp& next);
 
 	/**
 	* Cleanup all existing tasks & cancel any timers
 	*/
-	void OnLowerLayerDown();	
+	void Shutdown(const openpal::MonotonicTimestamp& now);
 
-private:
+private:	
 
-	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);
+	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);		
 
-	openpal::ManagedPtr<IMasterTask> PopNextTask();
-	
-	void RestartTimer(const openpal::MonotonicTimestamp& expiration);		
-
-	// ----------- static configuration ---------
-
-	openpal::IExecutor* pExecutor;
-	IScheduleCallback* pCallback;
-
-	// ----------- dynamic state -----------
-
-	bool isOnline;	
-	openpal::TimerRef timer;
-	std::vector<openpal::ManagedPtr<IMasterTask>> tasks;
+	ITaskFilter* m_filter;
+	std::vector<openpal::ManagedPtr<IMasterTask>> m_tasks;
 };
 
 }

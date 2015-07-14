@@ -37,59 +37,28 @@ namespace opendnp3
 {
 
 Master::Master(MContext& mcontext) : 
-	pMContext(&mcontext),
+	context(&mcontext),
 	commandProcessor(mcontext)
 {}
 	
 void Master::OnLowerLayerUp()
 {
-	pMContext->GoOnline();
+	context->GoOnline();
 }
 
 void Master::OnLowerLayerDown()
 {
-	pMContext->GoOffline();
+	context->GoOffline();
 }
 
 void Master::OnReceive(const openpal::ReadBufferView& apdu)
 {
-	if (!pMContext->isOnline)
-	{
-		SIMPLE_LOG_BLOCK(pMContext->logger, flags::ERR, "Ignorning rx data while offline");
-		return;
-	}
-
-	APDUResponseHeader header;
-	if (!APDUHeaderParser::ParseResponse(apdu, header, &pMContext->logger))
-	{
-		return;
-	}
-
-
-	FORMAT_LOG_BLOCK(pMContext->logger, flags::APP_HEADER_RX,
-		"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-		header.control.FIR,
-		header.control.FIN,
-		header.control.CON,
-		header.control.UNS,
-		header.control.SEQ,
-		FunctionCodeToString(header.function),
-		header.IIN.LSB,
-		header.IIN.MSB);
-
-
-	pMContext->OnReceive(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+	context->OnReceive(apdu);
 }
 
 void Master::OnSendResult(bool isSucccess)
 {
-	if (pMContext->isOnline && pMContext->isSending)
-	{
-		pMContext->isSending = false;
-
-		pMContext->CheckConfirmTransmit();
-		pMContext->CheckForTask();
-	}
+	context->OnSendResult(isSucccess);
 }
 
 ICommandProcessor& Master::GetCommandProcessor()
@@ -99,10 +68,10 @@ ICommandProcessor& Master::GetCommandProcessor()
 
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
-	auto pTask = new UserPollTask(builder, true, period, pMContext->params.taskRetryPeriod, *pMContext->pApplication, *pMContext->pSOEHandler, pCallback, userId, pMContext->logger);
+	auto pTask = new UserPollTask(builder, true, period, context->params.taskRetryPeriod, *context->pApplication, *context->pSOEHandler, pCallback, userId, context->logger);
 	this->ScheduleRecurringPollTask(pTask);	
-	auto callback = [this]() { this->pMContext->PostCheckForTask(); };
-	return MasterScan(*pMContext->pExecutor, pTask, callback);
+	auto callback = [this]() { this->context->PostCheckForTask(); };
+	return MasterScan(*context->pExecutor, pTask, callback);
 }
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback, int userId)
@@ -134,7 +103,7 @@ MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t 
 
 void Master::Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
-	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), pMContext->params.taskRetryPeriod, *pMContext->pApplication, *pMContext->pSOEHandler, pCallback, userId, pMContext->logger);
+	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), context->params.taskRetryPeriod, *context->pApplication, *context->pSOEHandler, pCallback, userId, context->logger);
 	this->ScheduleAdhocTask(pTask);	
 }
 
@@ -172,7 +141,7 @@ void Master::Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* 
 		writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto pTask = new WriteTask(*pMContext->pApplication, format, pMContext->logger, pCallback, userId);
+	auto pTask = new WriteTask(*context->pApplication, format, context->logger, pCallback, userId);
 	this->ScheduleAdhocTask(pTask);
 }
 
@@ -180,27 +149,27 @@ void Master::Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* 
 
 void Master::ScheduleRecurringPollTask(IMasterTask* pTask)
 {
-	pMContext->tasks.BindTask(pTask);
+	context->tasks.BindTask(pTask);
 
-	if (pMContext->isOnline)
+	if (context->isOnline)
 	{
-		pMContext->scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
-		pMContext->PostCheckForTask();
+		context->scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
+		context->PostCheckForTask();
 	}
 }
 
 void Master::ScheduleAdhocTask(IMasterTask* pTask)
 {
 	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
-	if (pMContext->isOnline)
+	if (context->isOnline)
 	{
-		pMContext->scheduler.Schedule(std::move(task));
-		pMContext->PostCheckForTask();
+		context->scheduler.Schedule(std::move(task));
+		context->PostCheckForTask();
 	}
 	else
 	{
 		// can't run this task since we're offline so fail it immediately
-		pTask->OnLowerLayerClose(pMContext->pExecutor->GetTime());
+		pTask->OnLowerLayerClose(context->pExecutor->GetTime());
 	}
 }
 	

@@ -18,25 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_SIMPLEMASTERUSERDATABASE_H
+#define SECAUTH_SIMPLEMASTERUSERDATABASE_H
 
-#include "MasterSecurityState.h"
+#include "IMasterUserDatabase.h"
+#include "secauth/UpdateKey.h"
+
+#include <openpal/container/Buffer.h>
+
+#include <map>
+#include <memory>
 
 namespace secauth
 {
 
-	MSState::MSState(
-			openpal::IUTCTimeSource& timeSource,
-			openpal::IExecutor& executor,
-			openpal::ICryptoProvider& crypto,		
-			IMasterUser& user
-		) :
-		pTimeSource(&timeSource),
-		pCrypto(&crypto),
-		pUser(&user),
-		session(executor),
-		challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE)
-	{}
+/**
+	A very simple update key store for the default user
+*/
+class SimpleMasterUserDatabase : public IMasterUserDatabase
+{
+
+public:
+
+	virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const override final;
+
+	virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;	
+
+	virtual bool UserExists(const opendnp3::User& user) const override final;
+
+	// copies the update key into the key store permanently
+	// fails if the update key is invalid
+	bool ConfigureUser(const opendnp3::User& user, const UpdateKey& key);
+
+private:
+
+	std::map<uint16_t, std::unique_ptr<UpdateKey>> userMap;
+		
+};
 
 }
 
+#endif
 

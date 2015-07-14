@@ -45,14 +45,14 @@ namespace opendnp3
 		lower.SetUpperLayer(outstation);
 	}
 
-	void OutstationSecAuthFixture::AddUser(secauth::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat, const Permissions& permissions)
+	void OutstationSecAuthFixture::AddUser(opendnp3::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat, const Permissions& permissions)
 	{
 		auto keySize = (mode == UpdateKeyMode::AES128) ? 16 : 32;
 		openpal::Buffer buffer(keySize);
 		buffer.GetWriteBufferView().SetAllTo(keyRepeat);
 				
 		users.ConfigureUser(
-			secauth::User::Default(),
+			opendnp3::User::Default(),
 			UpdateKey(buffer.ToReadOnly()),
 			permissions			
 		);		

@@ -24,10 +24,11 @@
 #include <opendnp3/master/IMasterTask.h>
 #include <opendnp3/master/TaskPriority.h>
 
-#include "secauth/User.h"
-#include "secauth/SessionKeys.h"
-#include "secauth/master/MasterSecurityState.h"
+#include <openpal/crypto/ICryptoProvider.h>
+
+#include "secauth/SessionStore.h"
 #include "secauth/master/KeyWrap.h"
+#include "secauth/master/IMasterUserDatabase.h"
 
 
 namespace secauth
@@ -38,7 +39,7 @@ namespace secauth
 	*/
 	class SessionKeyTask : public opendnp3::IMasterTask
 	{
-		enum State
+		enum TaskState
 		{
 			GetStatus,
 			ChangeKey
@@ -47,13 +48,16 @@ namespace secauth
 
 	public:
 
-		SessionKeyTask(	opendnp3::IMasterApplication& application, 
-						openpal::TimeDuration retryPeriod, 
-						openpal::Logger logger, 
-						const User& user, 
-						MSState& msstate);
+		SessionKeyTask(
+			opendnp3::IMasterApplication& application,
+			openpal::TimeDuration retryPeriod,
+			openpal::Logger logger,
+			const opendnp3::User& user,
+			openpal::ICryptoProvider& crypto,
+			IMasterUserDatabase& userDB,			
+			SessionStore& sessionStore);
 
-		virtual bool AcceptsFunction(opendnp3::FunctionCode fc) const override final { return fc == opendnp3::FunctionCode::AUTH_RESPONSE; }
+		virtual bool IsAuthTask() const override final { return true; }
 
 		virtual char const* Name() const override final { return "Change Session Keys"; }
 		
@@ -63,14 +67,16 @@ namespace secauth
 
 		virtual int Priority() const override final { return opendnp3::priority::SESSION_KEY; }		
 
-		virtual bool BlocksLowerPriority() const { return true; }	
+		virtual bool BlocksLowerPriority() const override final { return false; }
 
 	private:	
 
 		openpal::TimeDuration retryPeriod;
-		User user;
-		MSState* pmsstate;
-		State state;
+		opendnp3::User user;
+		openpal::ICryptoProvider* pCrypto;
+		IMasterUserDatabase* pUserDB;
+		SessionStore* pSessionStore;
+		TaskState state;
 		SessionKeys keys;
 		uint32_t keyChangeSeqNum;
 		KeyWrapBuffer keyWrapBuffer;

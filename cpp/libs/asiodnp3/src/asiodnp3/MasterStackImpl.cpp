@@ -59,13 +59,13 @@ MasterStackImpl::MasterStackImpl(
 	const opendnp3::MasterStackConfig& config,
 	IStackLifecycle& lifecycle,
 	opendnp3::ITaskLock& taskLock,
-	secauth::IMasterUser& user,
+	secauth::IMasterUserDatabase& userDB,
 	openpal::ICryptoProvider& crypto
 ) :
 	root(root_, id),
 	pLifecycle(&lifecycle),
 	stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
-	mcontext(new secauth::MAuthContext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, crypto, user)),
+	mcontext(new secauth::MAuthContext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, crypto, userDB)),
 	master(*mcontext)
 {
 

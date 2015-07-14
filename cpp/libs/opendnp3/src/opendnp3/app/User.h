@@ -19,12 +19,12 @@
 * to you under the terms of the License.
 */
 
-#ifndef SECAUTH_USER_H
-#define SECAUTH_USER_H
+#ifndef OPENDNP3_USER_H
+#define OPENDNP3_USER_H
 
 #include <cstdint>
 
-namespace secauth
+namespace opendnp3
 {
 	/// A user in SA is just a uint16. This is just a type-safe wrapper with helpers
 	class User
@@ -34,7 +34,7 @@ namespace secauth
 			User() : id(UNKNOWN_ID)
 			{}
 
-			User(uint16_t id_) : id(id_)
+			explicit User(uint16_t id_) : id(id_)
 			{}
 
 			uint16_t GetId() const

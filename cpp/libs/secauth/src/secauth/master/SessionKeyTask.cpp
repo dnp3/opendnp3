@@ -44,12 +44,16 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 								openpal::TimeDuration retryPeriod_,
 								openpal::Logger logger,
 								const User& user_,
-								MSState& msstate) :
+								ICryptoProvider& crypto,
+								IMasterUserDatabase& userDB,
+								SessionStore& sessionStore) :
 
 							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, nullptr, -1),
 							retryPeriod(retryPeriod_),
 							user(user_),
-							pmsstate(&msstate),
+							pCrypto(&crypto),
+							pUserDB(&userDB),
+							pSessionStore(&sessionStore),
 							keyChangeSeqNum(0)
 {
 
@@ -57,7 +61,7 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 
 void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
-	if (state == State::GetStatus)
+	if (state == TaskState::GetStatus)
 	{
 		this->BuildStatusRequest(request, seq);
 	}
@@ -69,14 +73,14 @@ void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 
 void SessionKeyTask::Initialize()
 {
-	this->state = State::GetStatus;
+	this->state = TaskState::GetStatus;
 }
 
 IMasterTask::ResponseResult SessionKeyTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (ValidateSingleResponse(header))
 	{
-		return (state == State::GetStatus) ? OnStatusResponse(header, objects) : OnChangeResponse(header, objects);
+		return (state == TaskState::GetStatus) ? OnStatusResponse(header, objects) : OnChangeResponse(header, objects);
 	}
 	else
 	{
@@ -156,7 +160,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 	}
 
 	// before we derive keys, make sure we support the specified key wrap algorithm
-	const auto pKeyWrapAlgo = Crypto::TryGetKeyWrap(*pmsstate->pCrypto, status.keyWrapAlgo);
+	const auto pKeyWrapAlgo = Crypto::TryGetKeyWrap(*pCrypto, status.keyWrapAlgo);
 	if (!pKeyWrapAlgo)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unsupported key wrap algorithm: %s", KeyWrapAlgorithmToString(status.keyWrapAlgo));
@@ -165,17 +169,23 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 	std::error_code ec;
 	
-	keys.DeriveFrom(*(pmsstate->pCrypto), AuthConstants::MIN_SESSION_KEY_SIZE_BYTES, ec); // TODO - make the session key size configurable	
+	keys.DeriveFrom(*pCrypto, AuthConstants::MIN_SESSION_KEY_SIZE_BYTES, ec); // TODO - make the session key size configurable	
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unable to derive session keys: %s", ec.message().c_str());
 		return ResponseResult::ERROR_BAD_RESPONSE; // TODO - add a different return code or is this good enough?
 	}
 
-	// get the users update key
+	// get a view of the users update key
 	openpal::ReadBufferView updateKey;
-	this->pmsstate->pUser->GetUpdateKey(updateKey);
+	UpdateKeyMode mode;	
 
+	if (!pUserDB->GetUpdateKey(this->user, mode, updateKey))
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unable to get update key for user: %u", user.GetId());
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+	
 	if (!Crypto::KeyLengthMatchesRequestedAlgorithm(status.keyWrapAlgo, updateKey.Size()))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Update key length does not match outstation KeyWrapAlgorithm");
@@ -190,7 +200,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 	// The wrapped key data is now stored in the keyWrapBuffer until we can send it out
 
-	this->state = State::ChangeKey; // we're now ready to try changing the key itself
+	this->state = TaskState::ChangeKey; // we're now ready to try changing the key itself
 
 	return ResponseResult::OK_REPEAT;
  }
@@ -219,7 +229,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseH
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
-	HMACProvider hmac(*pmsstate->pCrypto, hmacMode);
+	HMACProvider hmac(*pCrypto, hmacMode);
 	std::error_code ec;
 	auto hmacValue = hmac.Compute(keys.GetView().monitorKey, { this->txKeyWrapASDU }, ec);
 	if (ec)
@@ -235,7 +245,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseH
 	}
 
 	// Set the session keys and return!
-	pmsstate->session.SetKeys(keys.GetView());
+	this->pSessionStore->SetSessionKeys(user, keys.GetView());
 
 	return ResponseResult::OK_FINAL;
 }
