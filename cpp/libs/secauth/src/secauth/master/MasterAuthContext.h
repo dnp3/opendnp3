@@ -71,6 +71,7 @@ private:
 
 	virtual void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) override final;
 
+	typedef std::map<uint16_t, std::unique_ptr<SessionKeyTask>> SessionKeyTaskMap;
 	
 	openpal::IUTCTimeSource*	pTimeSource;
 	openpal::ICryptoProvider*	pCrypto;
@@ -78,7 +79,7 @@ private:
 	SessionStore				sessions;
 	openpal::Buffer				challengeReplyBuffer;	
 	openpal::ReadBufferView		lastRequest;
-	SessionKeyTask				sessionKeyTask;
+	SessionKeyTaskMap			sessionKeyTaskMap;
 
 };
 

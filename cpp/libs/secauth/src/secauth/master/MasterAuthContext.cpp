@@ -55,8 +55,7 @@ MAuthContext::MAuthContext(
 	pCrypto(&crypto),
 	pUserDB(&userDB),
 	sessions(executor),	
-	challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE),
-	sessionKeyTask(application, params.taskRetryPeriod, logger, User::Default(), crypto, userDB, sessions)
+	challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE)	
 {
 
 }
@@ -67,8 +66,19 @@ bool MAuthContext::GoOnline()
 
 	if (ret)
 	{
-		// add the session key task to the scheduler
-		this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(&sessionKeyTask));
+		// create a session key task for every user
+		auto createSessionKeyTask = [this](const User& user)
+		{				
+			auto task = std::unique_ptr<SessionKeyTask>(
+				new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, this->logger, user, *this->pCrypto, *this->pUserDB, this->sessions)
+			);			
+			
+			this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(task.get()));
+
+			this->sessionKeyTaskMap[user.GetId()] = std::move(task);
+		};
+
+		this->pUserDB->EnumerateUsers(createSessionKeyTask);
 	}
 		
 	return ret;
@@ -80,6 +90,7 @@ bool MAuthContext::GoOffline()
 
 	if (ret)
 	{
+		this->sessionKeyTaskMap.clear();
 		this->sessions.Clear();
 	}
 
