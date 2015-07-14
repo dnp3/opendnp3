@@ -24,7 +24,7 @@
 
 #include <openpal/executor/IUTCTimeSource.h>
 
-#include "opendnp3/master/UserTaskId.h"
+#include "opendnp3/master/TaskId.h"
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/HeaderWriter.h"
 
@@ -48,10 +48,10 @@ class IMasterApplication : public openpal::IUTCTimeSource
 	virtual void OnReceiveIIN(const IINField& iin) = 0;
 
 	/// Task start notification
-	virtual void OnTaskStart(MasterTaskType type, UserTaskId id) = 0;
+	virtual void OnTaskStart(MasterTaskType type, TaskId id) = 0;
 
 	/// Task completion notification
-	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, UserTaskId id) = 0;
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, TaskId id) = 0;
 
 	/// @return true if the master should do an assign class task during startup handshaking
 	virtual bool AssignClassDuringStartup() = 0;

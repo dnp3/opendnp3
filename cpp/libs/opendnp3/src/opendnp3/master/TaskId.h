@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_USERTASKID_H
-#define OPENDNP3_USERTASKID_H
+#ifndef OPENDNP3_TASKID_H
+#define OPENDNP3_TASKID_H
 
 namespace opendnp3
 {
@@ -27,21 +27,21 @@ namespace opendnp3
 /** 
 * @desc Interface that represents a running master.
 */
-class UserTaskId
+class TaskId
 {
 public:		
 
-	static UserTaskId Defined(int id) { return UserTaskId(id, true); }
-	static UserTaskId Undefined() { return UserTaskId(-1, false); }
+	static TaskId Defined(int id) { return TaskId(id, true); }
+	static TaskId Undefined() { return TaskId(-1, false); }
 
 	int GetId() const { return id; }
 	bool IsDefined() const { return isDefined; }
 
 private:
 
-	UserTaskId() = delete;
+	TaskId() = delete;
 
-	UserTaskId(int id_, bool isDefined_) : id(id_), isDefined(isDefined_) {}
+	TaskId(int id_, bool isDefined_) : id(id_), isDefined(isDefined_) {}
 
 	int id;
 	bool isDefined;

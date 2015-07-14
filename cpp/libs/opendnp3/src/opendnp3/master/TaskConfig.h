@@ -18,53 +18,53 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_TASKCONFIG_H
+#define OPENDNP3_TASKCONFIG_H
 
-#include "WriteTask.h"
-
-using namespace openpal;
+#include "TaskId.h"
+#include "ITaskCallback.h"
+#include "opendnp3/app/User.h"
 
 namespace opendnp3
 {
 
-WriteTask::WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, TaskConfig config) :
-	IMasterTask(app, 0, logger, config),	
-	format(format_)
+/**
+*	Object containing multiple fields for configuring tasks
+*/
+class TaskConfig
 {
+public:
+
+	TaskConfig(TaskId taskId_, ITaskCallback* pCallback_, User user_) :
+		taskId(taskId_),
+		user(user_),
+		pCallback(pCallback_)
+	{}	
+
+	static TaskConfig Default()
+	{
+		return TaskConfig(TaskId::Undefined(), nullptr, User::Default());
+	}
+
+	///  --- syntax sugar for building configs -----
+
+	static TaskConfig With(ITaskCallback& callback)
+	{
+		return TaskConfig(TaskId::Undefined(), &callback, User::Default());
+	}
+
+private:
+
+	TaskConfig() = delete;
+
+public:
+
+	TaskId taskId;		
+	ITaskCallback* pCallback;
+	User user;
+};
 
 }
 
-void WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
-{
-	request.SetFunction(FunctionCode::WRITE);
-	request.SetControl(AppControlField::Request(seq));
-	auto writer = request.GetWriter();
-	format(writer);
-}
-
-IMasterTask::ResponseResult WriteTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
-{
-	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
-}
-
-void WriteTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
-{
-	
-}
-
-void WriteTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
-{
-	
-}
-
-void WriteTask::OnResponseOK(openpal::MonotonicTimestamp now)
-{
-	
-}
-
-void WriteTask::OnResponseError(openpal::MonotonicTimestamp now)
-{
-	
-}
-
-} //end ns
+#endif
 

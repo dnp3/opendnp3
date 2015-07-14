@@ -37,7 +37,7 @@ class WriteTask : public IMasterTask
 
 public:	
 
-	WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback, UserTaskId id);
+	WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, TaskConfig config);
 
 	virtual char const* Name() const override final { return "Write Task"; }
 

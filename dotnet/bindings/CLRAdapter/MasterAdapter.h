@@ -30,23 +30,23 @@ namespace Automatak
 
 				virtual void Shutdown();
 			
-				virtual void Scan(IEnumerable<Header^>^ headers, ITaskCallback^ callback, int userId);
+				virtual void Scan(IEnumerable<Header^>^ headers, TaskConfig^ config);
 
-				virtual void ScanAllObjects(System::Byte group, System::Byte variation, ITaskCallback^ callback, int userId);
+				virtual void ScanAllObjects(System::Byte group, System::Byte variation, TaskConfig^ config);
 
-				virtual void ScanClasses(ClassField field, ITaskCallback^ callback, int userId);
+				virtual void ScanClasses(ClassField field, TaskConfig^ config);
 				
-				virtual void ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, ITaskCallback^ callback, int userId);
+				virtual void ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, TaskConfig^ config);
 
-				virtual IMasterScan^ AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, ITaskCallback^ callback, int userId);
+				virtual IMasterScan^ AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, TaskConfig^ config);
 
-				virtual IMasterScan^ AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, ITaskCallback^ callback, int userId);
+				virtual IMasterScan^ AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, TaskConfig^ config);
 
-				virtual IMasterScan^ AddClassScan(ClassField field, System::TimeSpan period, ITaskCallback^ callback, int userId);
+				virtual IMasterScan^ AddClassScan(ClassField field, System::TimeSpan period, TaskConfig^ config);
 
-				virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, ITaskCallback^ callback, int userId);
+				virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, TaskConfig^ config);
 				
-				virtual void Write(TimeAndInterval^ value, System::UInt16 index, ITaskCallback^ callback, int userId);
+				virtual void Write(TimeAndInterval^ value, System::UInt16 index, TaskConfig^ config);
 
 			private:
 
@@ -60,7 +60,10 @@ namespace Automatak
 				static asiodnp3::Header ConvertRange8(RangeHeader^ header);
 				static asiodnp3::Header ConvertRange16(RangeHeader^ header);
 
+				static opendnp3::TaskConfig Convert(TaskConfig^ config);
+				static opendnp3::TaskId Convert(TaskId^ taskId);
 				static opendnp3::ITaskCallback* CreateTaskCallback(ITaskCallback^ callback);
+				
 
 				asiodnp3::IMaster* pMaster;
 				ICommandProcessor^ commandAdapter;

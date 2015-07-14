@@ -27,9 +27,9 @@ namespace Automatak
 
 				virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final;
 
-				virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::UserTaskId id) override final;
+				virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override final;
 
-				virtual void OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, opendnp3::UserTaskId id) override final;
+				virtual void OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, opendnp3::TaskId id) override final;
 
 				virtual bool AssignClassDuringStartup() override final;
 

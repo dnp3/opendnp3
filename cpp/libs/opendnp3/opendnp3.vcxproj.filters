@@ -906,7 +906,10 @@
     <ClInclude Include="src\opendnp3\app\User.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\UserTaskId.h">
+    <ClInclude Include="src\opendnp3\master\TaskConfig.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\TaskId.h">
       <Filter>Header\master</Filter>
     </ClInclude>
   </ItemGroup>

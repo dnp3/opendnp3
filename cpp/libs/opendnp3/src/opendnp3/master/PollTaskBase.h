@@ -38,7 +38,7 @@ class PollTaskBase : public IMasterTask, openpal::Uncopyable
 
 public:		
 
-	PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback, UserTaskId id);
+	PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config);
 
 	virtual const char* Name() const override final { return "Application Poll"; };
 	

@@ -47,10 +47,9 @@ public:
 		openpal::TimeDuration period,	
 		openpal::TimeDuration retryDelay,
 		IMasterApplication& app,
-		ISOEHandler& soeHandler,
-		ITaskCallback* pCallback,
-		UserTaskId id,
-		openpal::Logger logger		
+		ISOEHandler& soeHandler,		
+		openpal::Logger logger,
+		TaskConfig config
 		);	
 
 	virtual int Priority() const override final { return priority::USER_POLL; }

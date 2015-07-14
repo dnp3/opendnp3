@@ -81,31 +81,31 @@ public:
 
 	// ------- Periodic scan API ---------
 
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final;
 
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config) override final;
 
-	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final;
 
-	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final;
 
-	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final;
 
 	// ------- Adhoc scan API ---------
 
-	virtual void Scan(const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual void Scan(const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final;
 	
-	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config) override final;
 
-	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config) override final;
 
-	virtual void ScanClasses(const opendnp3::ClassField& field, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual void ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config) override final;
 
-	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id) override final;
+	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const opendnp3::TaskConfig& config) override final;
 
 	// ------- Other adhoc methods -------
 
-	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, opendnp3::ITaskCallback* pCallback, opendnp3::UserTaskId id)  override final;
+	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config)  override final;
 
 	// ------- implement ILinkBind ---------
 

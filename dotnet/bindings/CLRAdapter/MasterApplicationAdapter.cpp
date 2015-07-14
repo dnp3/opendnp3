@@ -28,12 +28,12 @@ namespace Automatak
 				proxy->OnReceiveIIN(iinField);
 			}
 
-			void MasterApplicationAdapter::OnTaskStart(opendnp3::MasterTaskType type, opendnp3::UserTaskId id)
+			void MasterApplicationAdapter::OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id)
 			{
 				proxy->OnTaskStart((MasterTaskType)type, id.GetId());
 			}
 
-			void MasterApplicationAdapter::OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, opendnp3::UserTaskId id)
+			void MasterApplicationAdapter::OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, opendnp3::TaskId id)
 			{
 				proxy->OnTaskComplete((MasterTaskType)type, (TaskCompletion)result, id.GetId());
 			}
