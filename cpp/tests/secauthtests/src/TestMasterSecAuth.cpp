@@ -57,7 +57,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
 }
 
-TEST_CASE(SUITE("Master authenticates using configured user"))
+TEST_CASE(SUITE("Master authenticates using default user"))
 {
 	MasterParams params;
 	User user = User::Default();
@@ -96,9 +96,10 @@ TEST_CASE(SUITE("Master authenticates using configured user"))
 TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))
 {
 	MasterParams params;
-	User user(7);
+	User user = User::Default();	
 	MasterSecAuthFixture fixture(params);
-	fixture.ConfigureUser(user);
+	
+	fixture.ConfigureUser(user);	
 
 	fixture.master.OnLowerLayerUp();
 
