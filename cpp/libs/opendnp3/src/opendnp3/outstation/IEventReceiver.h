@@ -24,6 +24,7 @@
 
 #include "opendnp3/outstation/Event.h"
 #include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/SecurityStat.h"
 
 namespace opendnp3
 {
@@ -50,6 +51,8 @@ public:
 	virtual void Update(const Event<BinaryOutputStatus>& evt) = 0;
 
 	virtual void Update(const Event<AnalogOutputStatus>& evt) = 0;
+
+	virtual void Update(const Event<SecurityStat>& evt) = 0;
 
 };
 

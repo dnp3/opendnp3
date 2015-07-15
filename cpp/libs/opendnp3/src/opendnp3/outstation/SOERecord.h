@@ -24,6 +24,7 @@
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/SecurityStat.h"
 
 #include <openpal/serialization/UInt48Type.h>
 
@@ -60,6 +61,7 @@ union EventValue
 	ValueAndVariation<FrozenCounter> frozenCounter;
 	ValueAndVariation<Analog> analog;
 	ValueAndVariation<AnalogOutputStatus> analogOutputStatus;
+	ValueAndVariation<SecurityStat> securityStat;
 };
 
 class SOERecord
@@ -75,6 +77,7 @@ public:
 	SOERecord(const FrozenCounter& meas, uint16_t index, EventClass clazz, EventFrozenCounterVariation var);
 	SOERecord(const Analog& meas, uint16_t index, EventClass clazz, EventAnalogVariation var);
 	SOERecord(const AnalogOutputStatus& meas, uint16_t index, EventClass clazz, EventAnalogOutputStatusVariation var);
+	SOERecord(const SecurityStat& meas, uint16_t index, EventClass clazz, EventSecurityStatVariation var);
 
 	template <class T>
 	EventInstance<T> ReadEvent()
@@ -94,6 +97,7 @@ public:
 	void Select(EventFrozenCounterVariation var);
 	void Select(EventAnalogVariation var);
 	void Select(EventAnalogOutputStatusVariation var);
+	void Select(EventSecurityStatVariation var);
 	
 	EventType type;	
 	EventClass clazz;

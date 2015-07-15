@@ -35,7 +35,7 @@ namespace opendnp3
 class EventCount
 {
 	static const uint16_t NUM_CLASSES = 3;
-	static const uint16_t NUM_TYPES = 7;
+	static const uint16_t NUM_TYPES = 8;
 	
 public:
 

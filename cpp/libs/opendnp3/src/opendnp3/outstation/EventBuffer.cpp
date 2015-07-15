@@ -162,6 +162,14 @@ IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum)
 			return this->SelectByClass(ClassField(PointClass::Class2), maximum);
 		case(GroupVariation::Group60Var4):
 			return this->SelectByClass(ClassField(PointClass::Class3), maximum);
+
+		case(GroupVariation::Group122Var0) :
+			return this->SelectByType<SecurityStat>(maximum);
+		case(GroupVariation::Group122Var1) :
+			return this->SelectByType<SecurityStat>(maximum, EventSecurityStatVariation::Group122Var1);
+		case(GroupVariation::Group122Var2) :
+			return this->SelectByType<SecurityStat>(maximum, EventSecurityStatVariation::Group122Var2);
+		
 		default:
 			return IINBit::FUNC_NOT_SUPPORTED;
 	}

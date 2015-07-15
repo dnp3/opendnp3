@@ -62,6 +62,7 @@ public:
 	virtual void Update(const Event<FrozenCounter>&  evt) override final { this->UpdateAny(evt); }	
 	virtual void Update(const Event<BinaryOutputStatus>& evt) override final { this->UpdateAny(evt); }	
 	virtual void Update(const Event<AnalogOutputStatus>& evt) override final { this->UpdateAny(evt); }
+	virtual void Update(const Event<SecurityStat>& evt) override final { this->UpdateAny(evt); }
 
 	// ------- IEventSelector ------ 
 
