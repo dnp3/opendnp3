@@ -49,6 +49,7 @@ void DatabaseBuffers::Unselect()
 	this->Deselect<BinaryOutputStatus>();
 	this->Deselect<AnalogOutputStatus>();
 	this->Deselect<TimeAndInterval>();
+	this->Deselect<SecurityStat>();
 }
 
 IINField DatabaseBuffers::SelectAll(GroupVariation gv)
