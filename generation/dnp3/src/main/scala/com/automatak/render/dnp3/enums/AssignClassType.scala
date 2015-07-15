@@ -10,7 +10,7 @@ object AssignClassType {
   )
 
   def apply(): EnumModel = EnumModel("AssignClassType", comments, EnumModel.UInt8, codes, None, Hex)
-  
+
   private val codes = EnumValues.from(List(
     "BinaryInput",
     "DoubleBinaryInput",
