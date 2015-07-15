@@ -43,10 +43,10 @@ namespace secauth
 		1,
 		3		
 	};
-
-	uint32_t StatThresholds::GetDefault(opendnp3::SecurityStatIndex index)
+	
+	uint32_t StatThresholds::GetDeadband(uint16_t index)
 	{
-		return THRESHOLDS[static_cast<uint8_t>(index)];
+		return (index >= NUM_STATS) ? 0 : (THRESHOLDS[index] - 1);	// deadband is always 1 less than the threshold	
 	}
 
 

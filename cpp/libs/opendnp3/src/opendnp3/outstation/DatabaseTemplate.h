@@ -73,8 +73,6 @@ struct DatabaseTemplate
 		return DatabaseTemplate(count, count, count, count, count, count, count);
 	}
 
-	
-
 	DatabaseTemplate(uint16_t numBinary_ = 0,
 		uint16_t numDoubleBinary_ = 0,
 		uint16_t numAnalog_ = 0,
@@ -92,7 +90,7 @@ struct DatabaseTemplate
 		numBinaryOutputStatus(numBinaryOutputStatus_),
 		numAnalogOutputStatus(numAnalogOutputStatus_),
 		numTimeAndInterval(numTimeAndInterval_),
-		numSecurityStat(0)
+		numSecurityStats(0)
 	{}
 
 	uint16_t numBinary;
@@ -102,8 +100,9 @@ struct DatabaseTemplate
 	uint16_t numFrozenCounter;
 	uint16_t numBinaryOutputStatus;
 	uint16_t numAnalogOutputStatus;
-	uint16_t numTimeAndInterval;
-	uint16_t numSecurityStat;
+	uint16_t numTimeAndInterval;	
+	uint16_t numSecurityStats;
+
 };
 
 }

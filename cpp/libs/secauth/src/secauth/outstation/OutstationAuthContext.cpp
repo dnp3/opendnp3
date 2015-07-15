@@ -36,6 +36,7 @@
 
 #include "AuthRequestHandler.h"
 #include "IOAuthState.h"
+#include "secauth/StatThresholds.h"
 
 
 using namespace openpal;
@@ -43,6 +44,23 @@ using namespace opendnp3;
 
 namespace secauth
 {
+
+DatabaseTemplate OAuthContext::EnableSecStats(const DatabaseTemplate& dbTemplate)
+{
+	DatabaseTemplate copy(dbTemplate);
+	copy.numSecurityStats = StatThresholds::NUM_STATS;
+	return copy;
+}
+
+void OAuthContext::ConfigureSecStats()
+{
+	auto stats = this->database.buffers.buffers.GetArrayView<SecurityStat>();
+	for (uint16_t i = 0; i < StatThresholds::NUM_STATS; ++i)
+	{
+		stats[i].value.quality = 0x01;
+		uint32_t deadband = StatThresholds::GetDeadband(i);
+	}
+}
 
 OAuthContext::OAuthContext(
 			const OutstationConfig& config,
@@ -57,10 +75,10 @@ OAuthContext::OAuthContext(
 			IOutstationUserDatabase& userDatabase,
 			openpal::ICryptoProvider& crypto
 		) :
-		OContext(config, dbTemplate, logger, executor, lower, commandHandler, application),
+		OContext(config, EnableSecStats(dbTemplate), logger, executor, lower, commandHandler, application),
 		sstate(config.params, settings, logger, executor, timeSource, userDatabase, crypto)
 {
-	
+	this->ConfigureSecStats();
 }
 
 bool OAuthContext::GoOffline()

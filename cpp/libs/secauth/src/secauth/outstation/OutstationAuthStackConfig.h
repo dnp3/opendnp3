@@ -33,8 +33,8 @@ namespace secauth
 	information for a dnp3 outstation stack
 */
 struct OutstationAuthStackConfig : public opendnp3::OutstationStackConfig
-{
-	
+{	
+
 	OutstationAuthSettings auth;
 
 };

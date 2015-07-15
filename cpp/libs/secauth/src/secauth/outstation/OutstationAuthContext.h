@@ -39,6 +39,10 @@ namespace secauth
 */
 class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandler
 {
+	static opendnp3::DatabaseTemplate EnableSecStats(const opendnp3::DatabaseTemplate& dbTemplate);
+
+	void ConfigureSecStats();
+
 	public:
 
 	OAuthContext(

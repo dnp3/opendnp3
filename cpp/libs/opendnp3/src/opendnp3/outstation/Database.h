@@ -85,13 +85,14 @@ public:
 	// used to clear the static selection for a new read
 	void Unselect() { buffers.Unselect(); }
 
+	// stores the most recent values, selected values, and metadata
+	DatabaseBuffers buffers;
+
 private:	
 
 	template <class T>
 	uint16_t GetRawIndex(uint16_t index);
-	
-	// stores the most recent values, selected values, and metadata
-	DatabaseBuffers buffers;
+		
 	IEventReceiver* pEventReceiver;	
 	IndexMode indexMode;
 			

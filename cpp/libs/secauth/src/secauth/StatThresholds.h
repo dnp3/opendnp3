@@ -34,7 +34,8 @@ public:
 
 	static const uint8_t NUM_STATS = 18;
 
-	static uint32_t GetDefault(opendnp3::SecurityStatIndex index);
+	// returns MAX_UINT32 if the index is undefined
+	static uint32_t GetDeadband(uint16_t index);	
 
 private:
 

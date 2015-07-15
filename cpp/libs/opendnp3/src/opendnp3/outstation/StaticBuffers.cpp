@@ -33,7 +33,7 @@ StaticBuffers::StaticBuffers(const DatabaseTemplate& dbTemplate) :
 	binaryOutputStatii(dbTemplate.numBinaryOutputStatus),
 	analogOutputStatii(dbTemplate.numAnalogOutputStatus),
 	timeAndIntervals(dbTemplate.numTimeAndInterval),
-	securityStats(dbTemplate.numSecurityStat)
+	securityStats(dbTemplate.numSecurityStats)
 {
 	this->SetDefaultIndices<Binary>();
 	this->SetDefaultIndices<DoubleBitBinary>();
