@@ -90,6 +90,10 @@ bool Database::Update(const TimeAndInterval& value, uint16_t index)
 	}
 }
 
+bool Database::Update(const SecurityStat& value, uint16_t index)
+{
+	return this->UpdateEvent(value, index, EventMode::Detect);
+}
 
 bool Database::Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode)
 {

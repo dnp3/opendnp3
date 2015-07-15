@@ -57,6 +57,8 @@ public:
 
 	SecurityStat(uint8_t quality, uint16_t assocId, uint32_t count, DNPTime time);
 
+	bool IsEvent(const SecurityStat& newValue, uint32_t deadband) const;
+
 	uint8_t quality;	//	bitfield that stores type specific quality flags
 	Value value;		//	assocId and count
 	DNPTime time;		//	timestamp associated with the measurement (may not be set)

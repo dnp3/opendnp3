@@ -23,10 +23,14 @@
 
 #include "QualityFlags.h"
 
+#include "opendnp3/app/EventTriggers.h"
+
 namespace opendnp3
 {
 
-	SecurityStat::SecurityStat() : quality(flags::RESTART)
+	SecurityStat::SecurityStat() : 
+		quality(flags::RESTART),
+		value({0,0})
 	{}
 
 	SecurityStat::SecurityStat(Value value_, uint8_t quality_, DNPTime time_) :
@@ -49,6 +53,19 @@ namespace opendnp3
 		value({ assocId, count }),
 		time(time_)
 	{}
+
+
+	bool SecurityStat::IsEvent(const SecurityStat& newValue, uint32_t deadband) const
+	{
+		if (quality != newValue.quality)
+		{
+			return true;
+		}
+		else
+		{
+			return measurements::IsEvent<uint32_t, uint64_t>(this->value.count, newValue.value.count, deadband);
+		}
+	}
 
 }
 

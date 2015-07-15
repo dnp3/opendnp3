@@ -28,8 +28,11 @@
 namespace openpal
 {
 	/**
-	* A provider of cryptographic services. All function are assumed to be thread-safe
-	* such that multiple threads can safely share a single instance of this class.
+	* An abstract provider of cryptographic services. All function are assumed 
+	* to  be thread-safe such that multiple threads can safely share a single 
+	* instance of this class.
+	*
+	* The default implementation of this class is based on libcrypto (openssl).			
 	*/
 	class ICryptoProvider : public ISecureRandom
 	{
