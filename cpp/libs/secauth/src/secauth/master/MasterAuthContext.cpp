@@ -100,18 +100,18 @@ void MAuthContext::OnParsedHeader(const openpal::ReadBufferView& apdu, const ope
 {	
 	switch (header.function)
 	{
-	case(FunctionCode::AUTH_RESPONSE) :
-		this->OnReceiveAuthResponse(apdu, header, objects);
-		break;
-	case(FunctionCode::RESPONSE) :
-		this->ProcessResponse(header, objects);
-		break;
-	case(FunctionCode::UNSOLICITED_RESPONSE) :
-		this->ProcessUnsolicitedResponse(header, objects);
-		break;
-	default:
-		FORMAT_LOG_BLOCK(this->logger, opendnp3::flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
-		break;
+		case(FunctionCode::AUTH_RESPONSE) :
+			this->OnReceiveAuthResponse(apdu, header, objects);
+			break;
+		case(FunctionCode::RESPONSE) :
+			this->ProcessResponse(header, objects);
+			break;
+		case(FunctionCode::UNSOLICITED_RESPONSE) :
+			this->ProcessUnsolicitedResponse(header, objects);
+			break;
+		default:
+			FORMAT_LOG_BLOCK(this->logger, opendnp3::flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
+			break;
 	}	
 }
 
