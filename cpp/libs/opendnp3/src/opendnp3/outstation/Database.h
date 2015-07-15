@@ -67,21 +67,6 @@ public:
 	*/
 	DatabaseConfigView GetConfigView() { return buffers.buffers.GetView(); }
 
-	/**
-	* @returns Selector interface for marking values to be read
-	*/
-	IStaticSelector& GetSelector() { return buffers;  }
-
-	/**
-	* @returns Loader interface used for creating static responses
-	*/
-	IResponseLoader& GetStaticLoader() { return buffers; }
-
-	/**
-	* @returns Interface used to process class assignments
-	*/
-	IClassAssigner& GetClassAssigner() { return buffers;  }
-
 	// used to clear the static selection for a new read
 	void Unselect() { buffers.Unselect(); }
 

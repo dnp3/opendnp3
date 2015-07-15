@@ -26,6 +26,7 @@
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/SecurityStat.h"
 #include "opendnp3/outstation/Cell.h"
 
 #include <openpal/container/ArrayView.h>
@@ -54,6 +55,8 @@ StaticWriter<AnalogOutputStatus>::Function GetStaticWriter(StaticAnalogOutputSta
 StaticWriter<BinaryOutputStatus>::Function GetStaticWriter(StaticBinaryOutputStatusVariation variation);
 
 StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalVariation variation);
+
+StaticWriter<SecurityStat>::Function GetStaticWriter(StaticSecurityStatVariation variation);
 
 template <class Target, class IndexType>
 bool LoadWithRangeIterator(openpal::ArrayView<Cell<Target>, uint16_t>& view, RangeWriteIterator<IndexType, Target>& iterator, Range& range)

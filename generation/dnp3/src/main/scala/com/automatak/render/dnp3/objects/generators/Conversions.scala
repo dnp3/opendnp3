@@ -8,6 +8,7 @@ object ConversionHeaders {
 
   val dataTypes = quoted("opendnp3/app/MeasurementTypes.h")
   val timeAndInterval = quoted("opendnp3/app/TimeAndInterval.h")
+  val securityStat = quoted("opendnp3/app/SecurityStat.h")
   val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
   val ao = quoted("opendnp3/app/AnalogOutput.h")
   val binaryCommandEvent = quoted("opendnp3/app/BinaryCommandEvent.h")
@@ -157,3 +158,7 @@ trait ConversionToAnalogCommandEvent extends Conversion {
   def convHeaderIncludes = List(analogCommandEvent)
 }
 
+trait ConversionToSecurityStat extends Conversion {
+  def target = "SecurityStat"
+  def convHeaderIncludes = List(securityStat)
+}

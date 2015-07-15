@@ -21,6 +21,10 @@
 
 #include "SelectedRanges.h"
 
+#include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/SecurityStat.h"
+
 namespace opendnp3
 {	
 
@@ -34,7 +38,8 @@ bool SelectedRanges::HasAnySelection() const
 		frozenCounters.IsValid() ||
 		binaryOutputStatii.IsValid() ||
 		analogOutputStatii.IsValid() ||
-		timeAndIntervals.IsValid();
+		timeAndIntervals.IsValid() ||
+		securityStats.IsValid();
 }
 	
 template <>
@@ -60,6 +65,9 @@ Range& SelectedRanges::GetRangeRef<AnalogOutputStatus>() { return analogOutputSt
 
 template <>
 Range& SelectedRanges::GetRangeRef<TimeAndInterval>() { return timeAndIntervals; }
+
+template <>
+Range& SelectedRanges::GetRangeRef<SecurityStat>() { return securityStats; }
 
 }
 

@@ -28,6 +28,7 @@
 #include "opendnp3/app/AnalogCommandEvent.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
+#include "opendnp3/app/SecurityStat.h"
 
 namespace opendnp3
 {
@@ -186,6 +187,19 @@ struct AnalogCommandEventFactory : private openpal::StaticOnly
 	inline static AnalogCommandEvent From(uint8_t status, double value, DNPTime time)
 	{
 		return AnalogCommandEvent(value, CommandStatusFromType(status), time);
+	}
+};
+
+struct SecurityStatFactory : private openpal::StaticOnly
+{
+	inline static SecurityStat From(uint8_t flags, uint16_t assocId, uint32_t value)
+	{
+		return SecurityStat(flags, assocId, value);
+	}	
+
+	inline static SecurityStat From(uint8_t flags, uint16_t assocId, uint32_t value, DNPTime time)
+	{
+		return SecurityStat(flags, assocId, value, time);
 	}
 };
 

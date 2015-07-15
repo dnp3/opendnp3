@@ -64,7 +64,7 @@ OContext::OContext(
 		pApplication(&application),
 		eventBuffer(config.eventBufferConfig),
 		database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
-		rspContext(database.GetStaticLoader(), eventBuffer),
+		rspContext(database.buffers, eventBuffer),
 		params(config.params),	
 		isOnline(false),
 		isTransmitting(false),	
@@ -535,7 +535,7 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::ReadBufferVi
 	this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
 	this->database.Unselect();
 
-	ReadHandler handler(this->logger, this->database.GetSelector(), this->eventBuffer);
+	ReadHandler handler(this->logger, this->database.buffers, this->eventBuffer);
 	auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 	if (result == ParseResult::OK)
 	{
@@ -687,7 +687,7 @@ IINField OContext::HandleAssignClass(const openpal::ReadBufferView& objects)
 {
 	if (this->pApplication->SupportsAssignClass())
 	{
-		AssignClassHandler handler(this->logger, *this->pExecutor, *this->pApplication, this->database.GetClassAssigner());
+		AssignClassHandler handler(this->logger, *this->pExecutor, *this->pApplication, this->database.buffers);
 		auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}

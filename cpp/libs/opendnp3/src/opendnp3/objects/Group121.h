@@ -25,8 +25,16 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 #include "opendnp3/Types.h"
+#include "opendnp3/app/DNP3Serializer.h"
+#include "opendnp3/app/SecurityStat.h"
 
 namespace opendnp3 {
+
+// Security statistic - Any Variation
+struct Group121Var0
+{
+  static GroupVariationID ID() { return GroupVariationID(121,0); }
+};
 
 // Security statistic - 32-bit With Flag
 struct Group121Var1
@@ -40,6 +48,11 @@ struct Group121Var1
   uint8_t flags;
   uint16_t assocId;
   uint32_t value;
+
+  typedef SecurityStat Target;
+  static bool ReadTarget(openpal::ReadBufferView&, SecurityStat&);
+  static bool WriteTarget(const SecurityStat&, openpal::WriteBufferView&);
+  static DNP3Serializer<SecurityStat> Inst() { return DNP3Serializer<SecurityStat>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 

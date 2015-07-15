@@ -22,6 +22,8 @@
 
 #include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
+#include "opendnp3/app/MeasurementFactory.h"
+#include "opendnp3/app/WriteConversions.h"
 
 using namespace openpal;
 
@@ -37,6 +39,25 @@ bool Group121Var1::Read(ReadBufferView& buffer, Group121Var1& output)
 bool Group121Var1::Write(const Group121Var1& arg, openpal::WriteBufferView& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.assocId, arg.value);
+}
+
+bool Group121Var1::ReadTarget(ReadBufferView& buff, SecurityStat& output)
+{
+  Group121Var1 value;
+  if(Read(buff, value))
+  {
+    output = SecurityStatFactory::From(value.flags, value.assocId, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool Group121Var1::WriteTarget(const SecurityStat& value, openpal::WriteBufferView& buff)
+{
+  return Group121Var1::Write(ConvertGroup121Var1::Apply(value), buff);
 }
 
 

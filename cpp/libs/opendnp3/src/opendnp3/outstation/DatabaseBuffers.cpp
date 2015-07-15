@@ -63,6 +63,7 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 		this->SelectAllClass0<BinaryOutputStatus>();
 		this->SelectAllClass0<AnalogOutputStatus>();
 		this->SelectAllClass0<TimeAndInterval>();
+		this->SelectAllClass0<SecurityStat>();
 
 		return IINField::Empty();
 	}
@@ -141,6 +142,11 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 
 			case(GroupVariation::Group50Var4) :
 				return this->SelectAllUsing<TimeAndInterval>(StaticTimeAndIntervalVariation::Group50Var4);
+
+			case(GroupVariation::Group121Var0) :
+				return this->SelectAll<SecurityStat>();
+			case(GroupVariation::Group121Var1) :
+				return this->SelectAllUsing<SecurityStat>(StaticSecurityStatVariation::Group121Var1);
 
 			default:
 				return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -223,6 +229,11 @@ IINField DatabaseBuffers::SelectRange(GroupVariation gv, const Range& range)
 
 	case(GroupVariation::Group50Var4) :
 		return this->SelectRangeUsing<TimeAndInterval>(range, StaticTimeAndIntervalVariation::Group50Var4);
+		
+	case(GroupVariation::Group121Var0) :
+		return this->SelectRange<SecurityStat>(range);
+	case(GroupVariation::Group121Var1) :
+		return this->SelectRangeUsing<SecurityStat>(range, StaticSecurityStatVariation::Group121Var1);
 
 	default:
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -233,7 +244,7 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
 {
 	typedef bool (DatabaseBuffers::*LoadFun)(HeaderWriter& writer);	
 
-	LoadFun functions[8]= {
+	LoadFun functions[9]= {
 			&DatabaseBuffers::LoadType<Binary>,
 			&DatabaseBuffers::LoadType<DoubleBitBinary>,
 			&DatabaseBuffers::LoadType<Counter>,
@@ -241,10 +252,11 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
 			&DatabaseBuffers::LoadType<Analog>,
 			&DatabaseBuffers::LoadType<BinaryOutputStatus>,
 			&DatabaseBuffers::LoadType<AnalogOutputStatus>,
-			&DatabaseBuffers::LoadType<TimeAndInterval>
+			&DatabaseBuffers::LoadType<TimeAndInterval>,
+			&DatabaseBuffers::LoadType<SecurityStat>
 	};
 
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < 9; ++i)
 	{
 		if (!(this->*functions[i])(writer))
 		{
@@ -274,6 +286,8 @@ Range DatabaseBuffers::AssignClassToAll(AssignClassType type, PointClass clazz)
 			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinaryOutputStatus>().Size()));
 		case(AssignClassType::AnalogOutputStatus) :
 			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogOutputStatus>().Size()));
+		case(AssignClassType::SecurityStat) :
+			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<SecurityStat>().Size()));
 		default:
 			return Range::Invalid();
 	}
@@ -297,6 +311,8 @@ Range DatabaseBuffers::AssignClassToRange(AssignClassType type, PointClass clazz
 			return AssignClassTo<BinaryOutputStatus>(clazz, range);
 		case(AssignClassType::AnalogOutputStatus) :
 			return AssignClassTo<AnalogOutputStatus>(clazz, range);
+		case(AssignClassType::SecurityStat) :
+			return AssignClassTo<SecurityStat>(clazz, range);
 		default:
 			return Range::Invalid();
 	}

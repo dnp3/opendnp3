@@ -43,6 +43,8 @@
 #include "opendnp3/objects/Group42.h"
 #include "opendnp3/objects/Group43.h"
 #include "opendnp3/objects/Group50.h"
+#include "opendnp3/objects/Group121.h"
+#include "opendnp3/objects/Group122.h"
 
 namespace opendnp3
 {
@@ -245,6 +247,46 @@ struct ConvertGroup50Var4 : private openpal::StaticOnly
 		return ret;
 	}
 };
+
+// Group 121
+struct ConvertGroup121Var1 : private openpal::StaticOnly
+{
+	static Group121Var1 Apply(const SecurityStat& value)
+	{
+		Group121Var1 ret;
+		ret.flags = value.quality;
+		ret.assocId = value.assocId;
+		ret.value = value.count;
+		return ret;
+	}
+};
+
+// Group 122
+struct ConvertGroup122Var1 : private openpal::StaticOnly
+{
+	static Group122Var1 Apply(const SecurityStat& value)
+	{
+		Group122Var1 ret;
+		ret.flags = value.quality;
+		ret.assocId = value.assocId;
+		ret.value = value.count;		
+		return ret;
+	}
+};
+
+struct ConvertGroup122Var2 : private openpal::StaticOnly
+{
+	static Group122Var2 Apply(const SecurityStat& value)
+	{
+		Group122Var2 ret;
+		ret.flags = value.quality;
+		ret.assocId = value.assocId;
+		ret.value = value.count;
+		ret.time = value.time;
+		return ret;
+	}
+};
+
 
 }
 

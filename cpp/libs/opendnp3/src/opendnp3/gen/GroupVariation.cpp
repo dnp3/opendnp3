@@ -284,8 +284,12 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::Group120Var14;
     case(0x780F):
       return GroupVariation::Group120Var15;
+    case(0x7900):
+      return GroupVariation::Group121Var0;
     case(0x7901):
       return GroupVariation::Group121Var1;
+    case(0x7A00):
+      return GroupVariation::Group122Var0;
     case(0x7A01):
       return GroupVariation::Group122Var1;
     case(0x7A02):
@@ -552,8 +556,12 @@ char const* GroupVariationToString(GroupVariation arg)
       return "Authentication - Update Key Change Signature";
     case(GroupVariation::Group120Var15):
       return "Authentication - Update Key Change Confirmation";
+    case(GroupVariation::Group121Var0):
+      return "Security statistic - Any Variation";
     case(GroupVariation::Group121Var1):
       return "Security statistic - 32-bit With Flag";
+    case(GroupVariation::Group122Var0):
+      return "Security Statistic event - Any Variation";
     case(GroupVariation::Group122Var1):
       return "Security Statistic event - 32-bit With Flag";
     case(GroupVariation::Group122Var2):

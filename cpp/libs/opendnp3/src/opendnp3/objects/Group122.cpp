@@ -22,6 +22,8 @@
 
 #include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
+#include "opendnp3/app/MeasurementFactory.h"
+#include "opendnp3/app/WriteConversions.h"
 
 using namespace openpal;
 
@@ -39,6 +41,25 @@ bool Group122Var1::Write(const Group122Var1& arg, openpal::WriteBufferView& buff
   return Format::Many(buffer, arg.flags, arg.assocId, arg.value);
 }
 
+bool Group122Var1::ReadTarget(ReadBufferView& buff, SecurityStat& output)
+{
+  Group122Var1 value;
+  if(Read(buff, value))
+  {
+    output = SecurityStatFactory::From(value.flags, value.assocId, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool Group122Var1::WriteTarget(const SecurityStat& value, openpal::WriteBufferView& buff)
+{
+  return Group122Var1::Write(ConvertGroup122Var1::Apply(value), buff);
+}
+
 // ------- Group122Var2 -------
 
 bool Group122Var2::Read(ReadBufferView& buffer, Group122Var2& output)
@@ -49,6 +70,25 @@ bool Group122Var2::Read(ReadBufferView& buffer, Group122Var2& output)
 bool Group122Var2::Write(const Group122Var2& arg, openpal::WriteBufferView& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.assocId, arg.value, arg.time);
+}
+
+bool Group122Var2::ReadTarget(ReadBufferView& buff, SecurityStat& output)
+{
+  Group122Var2 value;
+  if(Read(buff, value))
+  {
+    output = SecurityStatFactory::From(value.flags, value.assocId, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool Group122Var2::WriteTarget(const SecurityStat& value, openpal::WriteBufferView& buff)
+{
+  return Group122Var2::Write(ConvertGroup122Var2::Apply(value), buff);
 }
 
 

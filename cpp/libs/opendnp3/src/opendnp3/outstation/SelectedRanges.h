@@ -24,9 +24,6 @@
 #include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/app/Range.h"
-#include "opendnp3/app/TimeAndInterval.h"
-#include "opendnp3/app/MeasurementTypes.h"
-
 
 namespace opendnp3
 {
@@ -74,6 +71,7 @@ private:
 	Range binaryOutputStatii;
 	Range analogOutputStatii;
 	Range timeAndIntervals;
+	Range securityStats;
 };
 
 }

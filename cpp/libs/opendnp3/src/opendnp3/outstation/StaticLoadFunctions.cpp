@@ -28,6 +28,7 @@
 #include "opendnp3/objects/Group30.h"
 #include "opendnp3/objects/Group40.h"
 #include "opendnp3/objects/Group50.h"
+#include "opendnp3/objects/Group121.h"
 
 using namespace openpal;
 
@@ -121,6 +122,11 @@ StaticWriter<AnalogOutputStatus>::Function GetStaticWriter(StaticAnalogOutputSta
 StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalVariation variation)
 {
 	return &WriteWithSerializer<Group50Var4>;	
+}
+
+StaticWriter<SecurityStat>::Function GetStaticWriter(StaticSecurityStatVariation variation)
+{
+	return &WriteWithSerializer < Group121Var1 > ;
 }
 
 }
