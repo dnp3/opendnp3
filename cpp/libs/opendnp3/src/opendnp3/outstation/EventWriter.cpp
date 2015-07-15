@@ -29,6 +29,7 @@
 #include "opendnp3/objects/Group32.h"
 #include "opendnp3/objects/Group42.h"
 #include "opendnp3/objects/Group51.h"
+#include "opendnp3/objects/Group122.h"
 
 using namespace openpal;
 
@@ -216,6 +217,21 @@ namespace opendnp3
 				return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var8::Inst(), variation);
 			default:
 				return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var1::Inst(), variation);		
+		}
+	}
+
+	EventWriter::Result EventWriter::LoadHeaderSecurityStat(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+		auto variation = pLocation->value.GetValue<SecurityStat>().selectedVariation;
+
+		switch (variation)
+		{
+			case(EventSecurityStatVariation::Group122Var1) :
+				return WriteTypeWithSerializer<SecurityStat>(writer, recorder, pLocation, Group122Var1::Inst(), variation);
+			case(EventSecurityStatVariation::Group122Var2) :
+				return WriteTypeWithSerializer<SecurityStat>(writer, recorder, pLocation, Group122Var2::Inst(), variation);		
+			default:
+				return WriteTypeWithSerializer<SecurityStat>(writer, recorder, pLocation, Group122Var1::Inst(), variation);
 		}
 	}
 

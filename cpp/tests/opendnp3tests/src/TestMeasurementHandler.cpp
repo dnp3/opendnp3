@@ -61,8 +61,8 @@ TEST_CASE(SUITE("parses g121v1 correctly"))
 
 		REQUIRE(stat.info.tsmode == TimestampMode::INVALID);
 		REQUIRE(stat.info.gv == GroupVariation::Group121Var1);
-		REQUIRE(stat.meas.count == 8);
-		REQUIRE(stat.meas.assocId == 7);
+		REQUIRE(stat.meas.value.count == 8);
+		REQUIRE(stat.meas.value.assocId == 7);
 	};
 
 	// g121v1 - 1 byte start/stop - 2->2 - flags: 0x01, assoc = 0x0007, count = 0x00000008
@@ -81,8 +81,8 @@ TEST_CASE(SUITE("parses g122v1 correctly"))
 
 		REQUIRE(stat.info.tsmode == TimestampMode::INVALID);
 		REQUIRE(stat.info.gv == GroupVariation::Group122Var1);
-		REQUIRE(stat.meas.count == 8);
-		REQUIRE(stat.meas.assocId == 7);
+		REQUIRE(stat.meas.value.count == 8);
+		REQUIRE(stat.meas.value.assocId == 7);
 	};
 
 	// g122v1 - 1 byte count and prefix - 1 count - index: 3, flags: 0x01, assoc = 7, count = 8
@@ -101,8 +101,8 @@ TEST_CASE(SUITE("parses g122v2 correctly"))
 
 		REQUIRE(stat.info.tsmode == TimestampMode::SYNCHRONIZED);
 		REQUIRE(stat.info.gv == GroupVariation::Group122Var2);
-		REQUIRE(stat.meas.count == 8);
-		REQUIRE(stat.meas.assocId == 7);
+		REQUIRE(stat.meas.value.count == 8);
+		REQUIRE(stat.meas.value.assocId == 7);
 		REQUIRE(stat.meas.time == 9);
 	};
 

@@ -33,6 +33,8 @@
 namespace opendnp3
 {
 
+
+
 /**
 	SA security statistic object as used by the API.
 */
@@ -40,15 +42,23 @@ class SecurityStat
 {
 public:
 
+	// this is the easiest way to make the SecurityStats look like other types
+	struct Value
+	{			
+		uint16_t assocId;
+		uint32_t count;
+	};
+
 	SecurityStat();
+
+	SecurityStat(Value value, uint8_t quality, DNPTime time);
 
 	SecurityStat(uint8_t quality, uint16_t assocId, uint32_t count);
 
 	SecurityStat(uint8_t quality, uint16_t assocId, uint32_t count, DNPTime time);
 
 	uint8_t quality;	//	bitfield that stores type specific quality flags
-	uint16_t assocId;	//	the association that the stat came from
-	uint32_t count;		//	the actualy value of the statistic
+	Value value;		//	assocId and count
 	DNPTime time;		//	timestamp associated with the measurement (may not be set)
 
 	const static EventType EventTypeEnum = EventType::SecurityStat;
@@ -56,7 +66,7 @@ public:
 	const static EventSecurityStatVariation DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
 	const static StaticSecurityStatVariation DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
 		
-	typedef uint32_t ValueType;
+	typedef Value ValueType;
 	typedef EventSecurityStatVariation EventVariation;
 	typedef StaticSecurityStatVariation StaticVariation;	
 	typedef DeadbandMetadata<SecurityStat, uint32_t> MetadataType;

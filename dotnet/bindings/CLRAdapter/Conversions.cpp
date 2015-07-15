@@ -192,7 +192,7 @@ namespace Automatak
 
 			SecurityStat^ Conversions::ConvertMeas(const opendnp3::SecurityStat& meas)
 			{
-				return gcnew SecurityStat(meas.count, meas.assocId, meas.quality, TimeStamp::Convert(meas.time));
+				return gcnew SecurityStat(meas.value.count, meas.value.assocId, meas.quality, TimeStamp::Convert(meas.time));
 			}
 
 			opendnp3::Binary Conversions::ConvertMeas(Binary^ meas)

@@ -117,9 +117,9 @@ void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Index
 		std::cout << "SecurityStat: " <<
 			"[" << pair.index << "] : " <<
 			pair.value.time << " : " <<
-			pair.value.count << " : " <<
+			pair.value.value.count << " : " <<
 			static_cast<int>(pair.value.quality) << " : " <<
-			pair.value.assocId << std::endl;
+			pair.value.value.assocId << std::endl;
 	};
 
 	values.ForeachItem(print);

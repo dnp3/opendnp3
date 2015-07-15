@@ -119,7 +119,7 @@ SOERecord::SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass
 SOERecord::SOERecord(const SecurityStat& meas, uint16_t index_, EventClass clazz_, EventSecurityStatVariation var) :
 	SOERecord(EventType::SecurityStat, clazz_, index_, meas.time, meas.quality)
 {
-	this->value.securityStat = ValueAndVariation < SecurityStat > { meas.count, var, var };
+	this->value.securityStat = ValueAndVariation < SecurityStat > { meas.value, var, var };
 }
 
 void SOERecord::Select(EventBinaryVariation var)
@@ -191,6 +191,7 @@ const ValueAndVariation<BinaryOutputStatus>& SOERecord::GetValue() { return valu
 template <>
 const ValueAndVariation<AnalogOutputStatus>& SOERecord::GetValue() { return value.analogOutputStatus; }
 
-
+template <>
+const ValueAndVariation<SecurityStat>& SOERecord::GetValue() { return value.securityStat; }
 
 }
