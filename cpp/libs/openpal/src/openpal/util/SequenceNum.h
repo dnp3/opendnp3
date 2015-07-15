@@ -28,10 +28,10 @@ namespace openpal
 */
 template <class T, T Modulus>
 class SequenceNum
-{
+{	
 	inline static T Next(T seq) { return (seq + 1) % Modulus; }
 
-public:	
+public:		
 
 	uint8_t Get() const
 	{

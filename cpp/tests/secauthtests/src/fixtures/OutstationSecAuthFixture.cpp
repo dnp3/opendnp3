@@ -29,6 +29,7 @@ namespace opendnp3
 {
 	OutstationSecAuthFixture::OutstationSecAuthFixture(
 		const secauth::OutstationAuthSettings& authConfig,
+		const DatabaseTemplate& dbTemplate,
 		const OutstationConfig& config
 	) : 
 		log(),
@@ -39,7 +40,7 @@ namespace opendnp3
 		utc(),
 		users(),
 		crypto(),		
-		context(config, DatabaseTemplate::BinaryOnly(1), log.GetLogger(), exe, lower, cmdHandler, application, authConfig, utc, users, crypto),
+		context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, utc, users, crypto),
 		outstation(context)
 	{
 		lower.SetUpperLayer(outstation);

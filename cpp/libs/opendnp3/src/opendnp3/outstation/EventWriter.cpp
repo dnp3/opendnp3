@@ -74,6 +74,8 @@ namespace opendnp3
 				return LoadHeaderBinaryOutputStatus(writer, recorder, pLocation);
 			case(EventType::AnalogOutputStatus) :
 				return LoadHeaderAnalogOutputStatus(writer, recorder, pLocation);
+			case(EventType::SecurityStat) :
+				return LoadHeaderSecurityStat(writer, recorder, pLocation);
 			default:				
 				return Result(false, LinkedListIterator<SOERecord>::Undefined());
 		}

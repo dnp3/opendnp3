@@ -50,6 +50,7 @@ class OutstationSecAuthFixture
 public:
 	OutstationSecAuthFixture(
 		const secauth::OutstationAuthSettings& authConfig = secauth::OutstationAuthSettings(),
+		const DatabaseTemplate& dbTemplate = DatabaseTemplate::BinaryOnly(1),
 		const OutstationConfig& config = OutstationConfig()		
 	);
 
