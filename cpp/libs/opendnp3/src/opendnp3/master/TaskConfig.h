@@ -37,8 +37,8 @@ public:
 
 	TaskConfig(TaskId taskId_, ITaskCallback* pCallback_, User user_) :
 		taskId(taskId_),
-		user(user_),
-		pCallback(pCallback_)
+		pCallback(pCallback_),
+		user(user_)		
 	{}	
 
 	static TaskConfig Default()
