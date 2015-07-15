@@ -24,6 +24,7 @@
 
 #include "opendnp3/Types.h"
 #include "opendnp3/app/EventType.h"
+#include "opendnp3/app/EventMetadata.h"
 #include "opendnp3/gen/StaticSecurityStatVariation.h"
 #include "opendnp3/gen/EventSecurityStatVariation.h"
 
@@ -58,6 +59,7 @@ public:
 	typedef uint32_t ValueType;
 	typedef EventSecurityStatVariation EventVariation;
 	typedef StaticSecurityStatVariation StaticVariation;	
+	typedef DeadbandMetadata<SecurityStat, uint32_t> MetadataType;
 };
 
 }

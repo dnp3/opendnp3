@@ -46,12 +46,12 @@
     <ClInclude Include="src\secauth\outstation\OAuthStates.h" />
     <ClInclude Include="src\secauth\outstation\OutstationAuthContext.h" />
     <ClInclude Include="src\secauth\outstation\OutstationAuthSettings.h" />
-    <ClInclude Include="src\secauth\outstation\SecurityState.h" />
     <ClInclude Include="src\secauth\outstation\SimpleOutstationUserDatabase.h" />
     <ClInclude Include="src\secauth\Session.h" />
     <ClInclude Include="src\secauth\SessionKeys.h" />
     <ClInclude Include="src\secauth\SessionKeysView.h" />
     <ClInclude Include="src\secauth\SessionStore.h" />
+    <ClInclude Include="src\secauth\StatThresholds.h" />
     <ClInclude Include="src\secauth\UpdateKey.h" />
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +82,7 @@
     <ClCompile Include="src\secauth\SessionKeys.cpp" />
     <ClCompile Include="src\secauth\SessionKeysView.cpp" />
     <ClCompile Include="src\secauth\SessionStore.cpp" />
+    <ClCompile Include="src\secauth\StatThresholds.cpp" />
     <ClCompile Include="src\secauth\UpdateKey.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

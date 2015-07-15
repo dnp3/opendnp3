@@ -120,6 +120,7 @@
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h" />
     <ClInclude Include="src\opendnp3\gen\RestartMode.h" />
+    <ClInclude Include="src\opendnp3\gen\SecurityStatIndex.h" />
     <ClInclude Include="src\opendnp3\gen\StaticAnalogOutputStatusVariation.h" />
     <ClInclude Include="src\opendnp3\gen\StaticAnalogVariation.h" />
     <ClInclude Include="src\opendnp3\gen\StaticBinaryOutputStatusVariation.h" />

@@ -50,9 +50,6 @@
     <ClInclude Include="src\secauth\outstation\OutstationAuthSettings.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\secauth\outstation\SecurityState.h">
-      <Filter>Header Files\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\secauth\AggressiveModeParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -124,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="src\secauth\master\SimpleMasterUserDatabase.h">
       <Filter>Header Files\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\StatThresholds.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +210,9 @@
     </ClCompile>
     <ClCompile Include="src\secauth\master\SimpleMasterUserDatabase.cpp">
       <Filter>Source Files\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\StatThresholds.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

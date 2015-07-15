@@ -32,7 +32,8 @@ StaticBuffers::StaticBuffers(const DatabaseTemplate& dbTemplate) :
 	frozenCounters(dbTemplate.numFrozenCounter),
 	binaryOutputStatii(dbTemplate.numBinaryOutputStatus),
 	analogOutputStatii(dbTemplate.numAnalogOutputStatus),
-	timeAndIntervals(dbTemplate.numTimeAndInterval)
+	timeAndIntervals(dbTemplate.numTimeAndInterval),
+	securityStats(dbTemplate.numSecurityStat)
 {
 	this->SetDefaultIndices<Binary>();
 	this->SetDefaultIndices<DoubleBitBinary>();
@@ -42,6 +43,7 @@ StaticBuffers::StaticBuffers(const DatabaseTemplate& dbTemplate) :
 	this->SetDefaultIndices<BinaryOutputStatus>();
 	this->SetDefaultIndices<AnalogOutputStatus>();	
 	this->SetDefaultIndices<TimeAndInterval>();
+	this->SetDefaultIndices<SecurityStat>();
 }	
 
 DatabaseConfigView StaticBuffers::GetView() const
@@ -81,6 +83,9 @@ openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> StaticBuffers::GetArrayVi
 
 template <>
 openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> StaticBuffers::GetArrayView() { return timeAndIntervals.ToView(); }
+
+template <>
+openpal::ArrayView<Cell<SecurityStat>, uint16_t> StaticBuffers::GetArrayView() { return securityStats.ToView(); }
 
 }
 
