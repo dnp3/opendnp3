@@ -126,9 +126,24 @@ OutstationSolicitedStateBase* OContext::ProcessNewRequest(const APDUHeader& head
 	}
 }
 
-void OContext::ReceiveAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
+	// this look strange, but this method is overridable for SA
 	this->ProcessAPDU(apdu, header, objects);
+}
+
+void OContext::OnReceive(const openpal::ReadBufferView& fragment)
+{
+	if (this->isOnline)
+	{
+		this->Increment(SecurityStatIndex::TOTAL_MESSAGES_RX);
+		this->ParseHeader(fragment);
+		this->CheckForTaskStart();
+	}
+	else
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "ignoring received data while offline");
+	}
 }
 
 void OContext::ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
@@ -200,9 +215,10 @@ void OContext::BeginUnsolTx(const ReadBufferView& response)
 
 void OContext::BeginTx(const openpal::ReadBufferView& response)
 {
-	logging::ParseAndLogResponseTx(this->logger, response);
+	logging::ParseAndLogResponseTx(this->logger, response);	
 	this->isTransmitting = true;
 	this->pLower->BeginTransmit(response);
+	this->Increment(SecurityStatIndex::TOTAL_MESSAGES_TX);
 }
 
 void OContext::CheckForDeferredRequest()
@@ -421,8 +437,8 @@ IINField OContext::GetDynamicIIN()
 	return ret;
 }
 
-void OContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
-{
+void OContext::ParseHeader(const openpal::ReadBufferView& apdu)
+{	
 	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, apdu, 18, 18);
 
 	APDUHeader header;
@@ -450,7 +466,7 @@ void OContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 	auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
 
 	// this method is virtual, and the implementation may vary for SA
-	this->ReceiveAPDU(apdu, header, objects);	
+	this->ReceiveParsedHeader(apdu, header, objects);	
 }
 
 void OContext::OnSendResult(bool isSuccess)

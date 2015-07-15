@@ -48,15 +48,7 @@ void Outstation::OnLowerLayerDown()
 
 void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
-	if (m_ocontext->isOnline)
-	{		
-		m_ocontext->OnReceiveAPDU(fragment);
-		m_ocontext->CheckForTaskStart();
-	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(m_ocontext->logger, flags::ERR, "ignoring received data while offline");
-	}
+	m_ocontext->OnReceive(fragment);
 }
 
 void Outstation::OnSendResult(bool isSuccess)

@@ -23,6 +23,8 @@
 
 #include "opendnp3/LayerInterfaces.h"
 
+#include "opendnp3/gen/SecurityStatIndex.h"
+
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/RequestHistory.h"
 #include "opendnp3/outstation/DeferredRequest.h"
@@ -78,11 +80,15 @@ public:
 
 	virtual bool GoOffline();
 
-	virtual void ReceiveAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	virtual void ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	virtual void CheckForTaskStart();
 
+	virtual void Increment(SecurityStatIndex index) {}
+
 	/// ---- Processing functions --------
+
+	void OnReceive(const openpal::ReadBufferView& fragment);
 
 	void ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
@@ -92,9 +98,9 @@ public:
 
 	/// ---- common helper methods ----
 
-	void BeginResponseTx(const openpal::ReadBufferView& response);
+	void ParseHeader(const openpal::ReadBufferView& apdu);
 
-	void OnReceiveAPDU(const openpal::ReadBufferView& apdu);
+	void BeginResponseTx(const openpal::ReadBufferView& response);	
 
 	void OnSendResult(bool isSuccess);
 

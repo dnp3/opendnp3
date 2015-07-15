@@ -63,7 +63,7 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	virtual void CheckForTaskStart() override final;
 		
-	virtual void ReceiveAPDU(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	private:
 
