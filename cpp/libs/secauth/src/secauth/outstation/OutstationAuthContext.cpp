@@ -27,7 +27,9 @@
 #include "opendnp3/LogLevels.h"
 
 #include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/app/QualityFlags.h"
 #include "opendnp3/outstation/OutstationContext.h"
+
 
 #include "secauth/AggressiveModeParser.h"
 #include "secauth/outstation/KeyUnwrap.h"
@@ -48,17 +50,19 @@ namespace secauth
 DatabaseTemplate OAuthContext::EnableSecStats(const DatabaseTemplate& dbTemplate)
 {
 	DatabaseTemplate copy(dbTemplate);
-	copy.numSecurityStats = StatThresholds::NUM_STATS;
+	copy.numSecurityStats = AuthConstants::NUM_SECURITY_STATS;
 	return copy;
 }
 
 void OAuthContext::ConfigureSecStats()
 {
 	auto stats = this->database.buffers.buffers.GetArrayView<SecurityStat>();
-	for (uint16_t i = 0; i < StatThresholds::NUM_STATS; ++i)
-	{
-		stats[i].value.quality = 0x01;
-		uint32_t deadband = StatThresholds::GetDeadband(i);
+	SecurityStat zero(opendnp3::flags::ONLINE, sstate.settings.assocId, 0, DNPTime(0));
+
+	for (uint16_t i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
+	{		
+		stats[i].SetInitialValue(zero);
+		stats[i].metadata.deadband = StatThresholds::GetDeadband(i);
 	}
 }
 
@@ -114,6 +118,17 @@ void OAuthContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, cons
 	{
 		sstate.deferred.SetASDU(header, apdu);
 	}
+}
+
+void OAuthContext::Increment(SecurityStatIndex index)
+{
+	auto count = this->sstate.statistics.Increment(index);
+
+	DNPTime time(this->sstate.pTimeSource->Now().msSinceEpoch);
+
+	SecurityStat stat(opendnp3::flags::ONLINE, this->sstate.settings.assocId, count, time);
+
+	this->database.Update(stat, static_cast<uint16_t>(index));
 }
 
 void OAuthContext::ProcessAuthAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)

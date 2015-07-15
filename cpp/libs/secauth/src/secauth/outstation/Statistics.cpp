@@ -18,33 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_STAT_THRESHOLDS_H
-#define SECAUTH_STAT_THRESHOLDS_H
 
-#include <opendnp3/gen/SecurityStatIndex.h>
-#include <openpal/util/Uncopyable.h>
-
-#include "secauth/AuthConstants.h"
+#include "Statistics.h"
 
 namespace secauth
 {
+	
+	Statistics::Statistics()
+	{		
+		for (int i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
+		{
+			statistics[i] = 0;
+		}	
+	}
+	
 
-struct StatThresholds : openpal::StaticOnly
-{	
+	uint32_t Statistics::Increment(opendnp3::SecurityStatIndex index)
+	{
+		return ++statistics[static_cast<uint8_t>(index)];
+	}
 
-public:
-
-
-	// returns MAX_UINT32 if the index is undefined
-	static uint32_t GetDeadband(uint16_t index);	
-
-private:
-
-	static const uint8_t THRESHOLDS[AuthConstants::NUM_SECURITY_STATS];
-
-};
+	
+	uint32_t Statistics::GetValue(opendnp3::SecurityStatIndex index) const
+	{
+		return statistics[static_cast<uint8_t>(index)];
+	}
 
 }
 
-#endif
+
 

@@ -65,6 +65,8 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 		
 	virtual void ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
+	virtual void Increment(opendnp3::SecurityStatIndex index) override final;
+
 	private:
 
 	void ProcessAuthAPDU(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);

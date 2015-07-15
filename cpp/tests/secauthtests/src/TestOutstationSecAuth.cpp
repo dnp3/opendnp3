@@ -37,12 +37,24 @@ using namespace testlib;
 void TestSessionKeyChange(OutstationSecAuthFixture& fixture, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode);
 void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& lastStatusRsp);
 
+TEST_CASE(SUITE("ReadSecurityStats"))
+{
+	OutstationAuthSettings settings;
+	settings.functions.authRead = false;
+
+	OutstationSecAuthFixture fixture(settings);
+	fixture.LowerLayerUp();
+
+	fixture.SendToOutstation("C0 01 79 00 00 01 01");
+	REQUIRE(fixture.lower.PopWriteAsHex() == "C0 81 80 00 79 01 00 01 01 01 00 00 00 00 00 00");
+}
+
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {	
 	OutstationSecAuthFixture fixture;	
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	fixture.LowerLayerUp();
-	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_128,HMACMode::SHA256_TRUNC_16);
+	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))

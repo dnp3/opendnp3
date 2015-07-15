@@ -23,7 +23,7 @@
 
 namespace secauth
 {
-	const uint8_t StatThresholds::THRESHOLDS[18] = {
+	const uint8_t StatThresholds::THRESHOLDS[AuthConstants::NUM_SECURITY_STATS] = {
 		3,
 		5,
 		5,
@@ -46,7 +46,7 @@ namespace secauth
 	
 	uint32_t StatThresholds::GetDeadband(uint16_t index)
 	{
-		return (index >= NUM_STATS) ? 0 : (THRESHOLDS[index] - 1);	// deadband is always 1 less than the threshold	
+		return (index >= AuthConstants::NUM_SECURITY_STATS) ? 0 : (THRESHOLDS[index] - 1);	// deadband is always 1 less than the threshold	
 	}
 
 

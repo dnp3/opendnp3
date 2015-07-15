@@ -125,6 +125,9 @@
     <ClInclude Include="src\secauth\StatThresholds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\outstation\Statistics.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\SessionKeyTask.cpp">
@@ -213,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="src\secauth\StatThresholds.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\Statistics.cpp">
+      <Filter>Source Files\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

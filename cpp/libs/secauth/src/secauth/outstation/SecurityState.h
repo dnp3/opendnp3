@@ -38,6 +38,7 @@
 #include "KeyChangeState.h"
 #include "OutstationAuthSettings.h"
 #include "ChallengeState.h"
+#include "Statistics.h"
 
 namespace secauth
 {
@@ -70,6 +71,7 @@ class SecurityState
 	KeyChangeState keyChangeState;
 	SessionStore sessions;
 	opendnp3::TxBuffer txBuffer;
+	Statistics statistics;
 
 };
 

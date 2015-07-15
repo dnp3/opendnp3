@@ -47,6 +47,7 @@
     <ClInclude Include="src\secauth\outstation\OutstationAuthContext.h" />
     <ClInclude Include="src\secauth\outstation\OutstationAuthSettings.h" />
     <ClInclude Include="src\secauth\outstation\SimpleOutstationUserDatabase.h" />
+    <ClInclude Include="src\secauth\outstation\Statistics.h" />
     <ClInclude Include="src\secauth\Session.h" />
     <ClInclude Include="src\secauth\SessionKeys.h" />
     <ClInclude Include="src\secauth\SessionKeysView.h" />
@@ -78,6 +79,7 @@
     <ClCompile Include="src\secauth\outstation\OutstationAuthSettings.cpp" />
     <ClCompile Include="src\secauth\outstation\SecurityState.cpp" />
     <ClCompile Include="src\secauth\outstation\SimpleOutstationUserDatabase.cpp" />
+    <ClCompile Include="src\secauth\outstation\Statistics.cpp" />
     <ClCompile Include="src\secauth\Session.cpp" />
     <ClCompile Include="src\secauth\SessionKeys.cpp" />
     <ClCompile Include="src\secauth\SessionKeysView.cpp" />

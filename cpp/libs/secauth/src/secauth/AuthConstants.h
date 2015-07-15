@@ -40,6 +40,8 @@ private:
 
 public:
 
+	static const uint8_t NUM_SECURITY_STATS = 18;
+
 	const static uint32_t MIN_CHALLENGE_DATA_SIZE = 4;
 	const static uint32_t MAX_CHALLENGE_DATA_SIZE = 16;
 
