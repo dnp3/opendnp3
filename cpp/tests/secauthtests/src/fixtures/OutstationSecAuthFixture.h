@@ -70,6 +70,10 @@ public:
 
 	uint32_t AdvanceTime(const openpal::TimeDuration& td);
 
+	void SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data);
+
+	void TestSessionKeyChange(User user, opendnp3::KeyWrapAlgorithm keyWrap, secauth::HMACMode hmacMode);
+
 	testlib::MockLogHandler log;
 	testlib::MockExecutor exe;
 	MockLowerLayer lower;

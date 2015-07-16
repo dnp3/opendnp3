@@ -63,7 +63,7 @@ TEST_CASE(SUITE("ReadSecurityStatEvents"))
 	settings.functions.authRead = false;
 	settings.functions.authConfirm = false;
 	
-	/// override the defaults
+	/// override the default thresholds to make testing easier
 	settings.statThresholds.Set(SecurityStatIndex::TOTAL_MESSAGES_TX, 2);
 	settings.statThresholds.Set(SecurityStatIndex::TOTAL_MESSAGES_RX, 2);
 	

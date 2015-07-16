@@ -21,9 +21,15 @@
 
 #include "OutstationSecAuthFixture.h"
 
+#include <catch.hpp>
+
+#include <dnp3mocks/APDUHexBuilders.h>
+
 #include <testlib/BufferHelpers.h>
+#include <testlib/HexConversions.h>
 
 using namespace secauth;
+using namespace testlib;
 
 namespace opendnp3
 {
@@ -105,6 +111,65 @@ namespace opendnp3
 	{
 		exe.AdvanceTime(td);
 		return exe.RunMany();
+	}
+
+	void OutstationSecAuthFixture::SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data)
+	{
+		switch (keyWrap)
+		{
+		case(KeyWrapAlgorithm::AES_128) :
+			crypto.aes128.hexOutput = hex::KeyWrapData(16, 0xBB, data);
+			break;
+		case(KeyWrapAlgorithm::AES_256) :
+			crypto.aes256.hexOutput = hex::KeyWrapData(32, 0xBB, data);
+			break;
+		default:
+			throw std::logic_error("bad param");
+		}
+	}
+
+	void OutstationSecAuthFixture::TestSessionKeyChange(User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
+	{
+		REQUIRE(this->lower.HasNoData());
+
+		this->SendToOutstation(hex::RequestKeyStatus(0, 1));
+
+		auto keyStatusRsp = hex::KeyStatusResponse(
+			IINBit::DEVICE_RESTART,
+			0, // seq
+			1, // ksq
+			user.GetId(),
+			keyWrap,
+			KeyStatus::NOT_INIT,
+			HMACType::NO_MAC_VALUE,
+			hex::repeat(0xAA, 4), // challenge
+			"");  // no hmac
+
+
+		REQUIRE(this->lower.PopWriteAsHex() == keyStatusRsp);
+		this->outstation.OnSendResult(true);
+		REQUIRE(this->lower.HasNoData());
+
+		this->SetMockKeyWrapData(keyWrap, SkipBytesHex(keyStatusRsp, 10));
+
+		// --- session key change request ---	
+		// the key wrap data doesn't matter b/c we've mocked the unwrap call above
+		this->SendToOutstation(hex::KeyChangeRequest(0, 1, 1, "DE AD BE EF"));
+
+		auto keyStatusRspFinal = hex::KeyStatusResponse(
+			IINBit::DEVICE_RESTART,
+			0, // seq
+			2, // ksq
+			user.GetId(), // user
+			keyWrap,
+			KeyStatus::OK,
+			ToHMACType(hmacMode),
+			hex::repeat(0xAA, 4), // challenge
+			RepeatHex(0xFF, GetTruncationSize(hmacMode)));  // fixed value from hmac mock
+
+		REQUIRE(this->lower.PopWriteAsHex() == keyStatusRspFinal);
+		this->outstation.OnSendResult(true);
+		REQUIRE(this->lower.HasNoData());
 	}
 }
 

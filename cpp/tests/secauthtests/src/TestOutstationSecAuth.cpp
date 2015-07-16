@@ -34,15 +34,12 @@ using namespace testlib;
 
 #define SUITE(name) "OutstationSecAuthSuite - " name
 
-void TestSessionKeyChange(OutstationSecAuthFixture& fixture, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode);
-void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& lastStatusRsp);
-
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {	
 	OutstationSecAuthFixture fixture;	
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	fixture.LowerLayerUp();
-	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
+	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
@@ -50,7 +47,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 	OutstationSecAuthFixture fixture;	
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	fixture.LowerLayerUp();
-	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
@@ -61,7 +58,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 	OutstationSecAuthFixture fixture(settings);
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	fixture.LowerLayerUp();
-	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA1_TRUNC_8);
+	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA1_TRUNC_8);
 }
 
 TEST_CASE(SUITE("Critical requests are challenged when session keys are not initialized"))
@@ -109,7 +106,7 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 	
 	fixture.LowerLayerUp();
 
-	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 
 	fixture.SendToOutstation(hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
 
@@ -142,7 +139,7 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 
 	fixture.LowerLayerUp();
 
-	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 
 	fixture.SendToOutstation(hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
 
@@ -175,61 +172,4 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 	REQUIRE(fixture.lower.PopWriteAsHex() == error);
 }
 
-void TestSessionKeyChange(OutstationSecAuthFixture& fixture, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
-{
-	REQUIRE(fixture.lower.HasNoData());
 
-	fixture.SendToOutstation(hex::RequestKeyStatus(0, 1));
-
-	auto keyStatusRsp = hex::KeyStatusResponse(
-		IINBit::DEVICE_RESTART,
-		0, // seq
-		1, // ksq
-		user.GetId(),
-		keyWrap,
-		KeyStatus::NOT_INIT,
-		HMACType::NO_MAC_VALUE,
-		hex::repeat(0xAA, 4), // challenge
-		"");  // no hmac
-
-
-	REQUIRE(fixture.lower.PopWriteAsHex() == keyStatusRsp);
-	fixture.outstation.OnSendResult(true);
-	REQUIRE(fixture.lower.HasNoData());	
-
-	SetMockKeyWrapData(fixture.crypto, keyWrap, SkipBytesHex(keyStatusRsp, 10));
-
-	// --- session key change request ---	
-	// the key wrap data doesn't matter b/c we've mocked the unwrap call above
-	fixture.SendToOutstation(hex::KeyChangeRequest(0, 1, 1, "DE AD BE EF"));
-
-	auto keyStatusRspFinal = hex::KeyStatusResponse(
-		IINBit::DEVICE_RESTART,
-		0, // seq
-		2, // ksq
-		user.GetId(), // user
-		keyWrap,
-		KeyStatus::OK,
-		ToHMACType(hmacMode),
-		hex::repeat(0xAA, 4), // challenge
-		RepeatHex(0xFF, GetTruncationSize(hmacMode)));  // fixed value from hmac mock
-
-	REQUIRE(fixture.lower.PopWriteAsHex() == keyStatusRspFinal);
-	fixture.outstation.OnSendResult(true);
-	REQUIRE(fixture.lower.HasNoData());
-}
-
-void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& statusData)
-{
-	switch (keyWrap)
-	{
-	case(KeyWrapAlgorithm::AES_128) :
-		crypto.aes128.hexOutput = hex::KeyWrapData(16, 0xBB, statusData);
-		break;
-	case(KeyWrapAlgorithm::AES_256) :
-		crypto.aes256.hexOutput = hex::KeyWrapData(32, 0xBB, statusData);
-		break;
-	default:
-		throw std::logic_error("bad param");
-	}
-}
