@@ -36,7 +36,7 @@ namespace secauth
 			IOutstationUserDatabase& userdb,
 			openpal::ICryptoProvider& crypto) :
 
-		settings(settings),
+		settings(settings_),
 		challenge(settings.challengeSize, params.maxRxFragSize),
 		challengeTimer(executor),
 		hmac(crypto, settings.hmacMode),

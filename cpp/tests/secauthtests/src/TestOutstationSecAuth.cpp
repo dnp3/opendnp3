@@ -273,8 +273,7 @@ TEST_CASE(SUITE("ReadSecurityStatEvents"))
 
 	// the default reporting thresholds for total rx / total tx is 100 (opendnp3 deadband of 99)
 	for (int i = 0; i < 99; ++i)
-	{
-		
+	{		
 		fixture.SendToOutstation(hex::EventPoll(seq.Get(), ClassField::AllEventClasses()));
 		REQUIRE(fixture.lower.PopWriteAsHex() == hex::EmptyResponse(seq.Get(), IINBit::DEVICE_RESTART));
 		fixture.OnSendResult(true);		

@@ -63,9 +63,9 @@ MAuthContext::MAuthContext(
 
 bool MAuthContext::GoOnline()
 {
-	auto ret = MContext::GoOnline();
+	bool online = MContext::GoOnline();
 
-	if (ret)
+	if (online)
 	{
 		// create a session key task for every user
 		auto createSessionKeyTask = [this](const User& user)
@@ -82,7 +82,7 @@ bool MAuthContext::GoOnline()
 		this->pUserDB->EnumerateUsers(createSessionKeyTask);
 	}
 		
-	return ret;
+	return online;
 }
 
 bool MAuthContext::GoOffline()
