@@ -44,17 +44,18 @@ TEST_CASE(SUITE("ReadStaticSecurityStats"))
 
 	// The totalTx (index 5) and totalRx (index 6) are easy to test
 	// The rx event gets processed when the request arrives, but the tx event isn't processed until after the repsonse is formatted
+	{
+		auto read = "C0 01 79 00 00 05 06";
+		auto response = "C0 81 80 00 79 01 00 05 06 01 00 00 00 00 00 00 01 00 00 01 00 00 00";
+		REQUIRE(fixture.SendAndReceive(read) == response);
+	}
 
-	fixture.SendToOutstation("C0 01 79 00 00 05 06");
-
-
-	REQUIRE(fixture.lower.PopWriteAsHex() == "C0 81 80 00 79 01 00 05 06 01 00 00 00 00 00 00 01 00 00 01 00 00 00");
-	fixture.OnSendResult(true);
-
-	fixture.SendToOutstation("C1 01 79 00 00 05 06");
-
-	// both counts are incremented by 1
-	REQUIRE(fixture.lower.PopWriteAsHex() == "C1 81 80 00 79 01 00 05 06 01 00 00 01 00 00 00 01 00 00 02 00 00 00");
+	{
+		auto read = "C1 01 79 00 00 05 06";
+		auto response = "C1 81 80 00 79 01 00 05 06 01 00 00 01 00 00 00 01 00 00 02 00 00 00"; // both counts are incremented by 1
+		REQUIRE(fixture.SendAndReceive(read) == response);
+	}
+	
 }
 
 TEST_CASE(SUITE("ReadSecurityStatEvents"))
@@ -70,27 +71,35 @@ TEST_CASE(SUITE("ReadSecurityStatEvents"))
 
 	OutstationConfig config;
 	config.eventBufferConfig.maxSecurityStatisticEvents = 100;
-	
+
 	OutstationSecAuthFixture fixture(settings, DatabaseTemplate(), config);
 	fixture.LowerLayerUp();
 		
 	AppSeqNum seq;
 
 	// should get no statistics reports on the first poll		
-	fixture.SendToOutstation(hex::EventPoll(seq.Get(), ClassField::AllEventClasses()));
-	REQUIRE(fixture.lower.PopWriteAsHex() == hex::EmptyResponse(seq.Get(), IINBit::DEVICE_RESTART));
-	fixture.OnSendResult(true);		
-	seq.Increment();
+	{
+		auto poll = hex::EventPoll(seq.Get(), ClassField::AllEventClasses());
+		auto response = hex::EmptyResponse(seq.Get(), IINBit::DEVICE_RESTART);
+		REQUIRE(fixture.SendAndReceive(poll) == response);
+	}
 	
-	fixture.SendToOutstation(hex::EventPoll(seq.Get(), ClassField::AllEventClasses()));
-	REQUIRE(fixture.lower.PopWriteAsHex() == "E1 81 80 00 7A 01 28 01 00 06 00 01 00 00 02 00 00 00"); // total rx == 2
-	fixture.OnSendResult(true);
+	seq.Increment();
+
+	{
+		auto poll = hex::EventPoll(seq.Get(), ClassField::AllEventClasses());
+		auto response = "E1 81 80 00 7A 01 28 01 00 06 00 01 00 00 02 00 00 00"; // total rx == 2
+		REQUIRE(fixture.SendAndReceive(poll) == response);
+	}
 	
 	// confirm the event
 	fixture.SendToOutstation(hex::Confirm(seq.Get(), false));
-	seq.Increment();
+	REQUIRE(fixture.lower.HasNoData());
 
-	fixture.SendToOutstation(hex::EventPoll(seq.Get(), ClassField::AllEventClasses()));
-	// total tx == 2, total rx == 4
-	REQUIRE(fixture.lower.PopWriteAsHex() == "E2 81 80 00 7A 01 28 02 00 05 00 01 00 00 02 00 00 00 06 00 01 00 00 04 00 00 00"); 
+	seq.Increment();
+	
+	auto poll = hex::EventPoll(seq.Get(), ClassField::AllEventClasses());
+	auto response = "E2 81 80 00 7A 01 28 02 00 05 00 01 00 00 02 00 00 00 06 00 01 00 00 04 00 00 00"; // total tx == 2, total rx == 4
+	REQUIRE(fixture.SendAndReceive(poll) == response);	
+	REQUIRE(fixture.lower.HasNoData());
 }
