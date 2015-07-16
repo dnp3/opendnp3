@@ -86,7 +86,12 @@ namespace Automatak
 			{
 				std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
-				opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
+				auto baseCfg = Conversions::ConvertConfig(config);
+
+				// TODO - define master auth stuff in C#
+				secauth::MasterAuthStackConfig cfg;
+				cfg.link = baseCfg.link;
+				cfg.master = baseCfg.master;
 
 				auto pSOEHandler = new SOEHandlerAdapter(handler);
 				auto pApplication = new MasterApplicationAdapter(application);

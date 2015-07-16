@@ -30,6 +30,7 @@
 #include <opendnp3/transport/TransportStack.h>
 
 #include <secauth/master/IMasterUserDatabase.h>
+#include <secauth/master/MasterAuthStackConfig.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/crypto/ICryptoProvider.h>
@@ -62,7 +63,7 @@ public:
 		asiopal::ASIOExecutor& executor,
 		opendnp3::ISOEHandler& SOEHandler,
 		opendnp3::IMasterApplication& application,
-		const opendnp3::MasterStackConfig& config,
+		const secauth::MasterAuthStackConfig& config,
 		IStackLifecycle& lifecycle,
 		opendnp3::ITaskLock& taskLock,
 		secauth::IMasterUserDatabase& userDB,

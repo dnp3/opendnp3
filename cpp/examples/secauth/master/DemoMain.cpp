@@ -80,9 +80,9 @@ int main(int argc, char* argv[])
 		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
 	});
 
-	// The master config object for a master. The default are
+	// The config object for a SA master. The default are
 	// useable, but understanding the options are important.
-	MasterStackConfig stackConfig;
+	secauth::MasterAuthStackConfig stackConfig;
 
 	// you can override application layer settings for the master here
 	// in this example, we've change the application layer timeout to 2 seconds

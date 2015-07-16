@@ -32,6 +32,8 @@
     <ClInclude Include="src\secauth\master\KeyStatusHandler.h" />
     <ClInclude Include="src\secauth\master\KeyWrap.h" />
     <ClInclude Include="src\secauth\master\MasterAuthContext.h" />
+    <ClInclude Include="src\secauth\master\MasterAuthSettings.h" />
+    <ClInclude Include="src\secauth\master\MasterAuthStackConfig.h" />
     <ClInclude Include="src\secauth\master\SessionKeyTask.h" />
     <ClInclude Include="src\secauth\master\SimpleMasterUserDatabase.h" />
     <ClInclude Include="src\secauth\outstation\AuthRequestHandler.h" />
@@ -46,6 +48,7 @@
     <ClInclude Include="src\secauth\outstation\OAuthStates.h" />
     <ClInclude Include="src\secauth\outstation\OutstationAuthContext.h" />
     <ClInclude Include="src\secauth\outstation\OutstationAuthSettings.h" />
+    <ClInclude Include="src\secauth\outstation\SecurityState.h" />
     <ClInclude Include="src\secauth\outstation\SimpleOutstationUserDatabase.h" />
     <ClInclude Include="src\secauth\outstation\Statistics.h" />
     <ClInclude Include="src\secauth\Session.h" />
@@ -66,6 +69,7 @@
     <ClCompile Include="src\secauth\master\KeyStatusHandler.cpp" />
     <ClCompile Include="src\secauth\master\KeyWrap.cpp" />
     <ClCompile Include="src\secauth\master\MasterAuthContext.cpp" />
+    <ClCompile Include="src\secauth\master\MasterAuthSettings.cpp" />
     <ClCompile Include="src\secauth\master\SessionKeyTask.cpp" />
     <ClCompile Include="src\secauth\master\SimpleMasterUserDatabase.cpp" />
     <ClCompile Include="src\secauth\outstation\AuthRequestHandler.cpp" />

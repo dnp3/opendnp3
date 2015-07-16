@@ -41,6 +41,7 @@
 #include <secauth/outstation/IOutstationUserDatabase.h>
 
 #include <secauth/master/IMasterUserDatabase.h>
+#include <secauth/master/MasterAuthStackConfig.h>
 
 #include "IMaster.h"
 #include "IOutstation.h"
@@ -107,7 +108,7 @@ public:
 	virtual IMaster* AddMaster(		char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
-									const opendnp3::MasterStackConfig& config,
+									const secauth::MasterAuthStackConfig& config,
 									secauth::IMasterUserDatabase& userDB) = 0;
 
 	/**

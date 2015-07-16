@@ -148,7 +148,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 IMaster* DNP3Channel::AddMaster(	char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
-									const opendnp3::MasterStackConfig& config,
+									const secauth::MasterAuthStackConfig& config,
 									secauth::IMasterUserDatabase& userDB)
 {	
 	if (!pCrypto)

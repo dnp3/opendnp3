@@ -25,8 +25,9 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include "SessionKeyTask.h"
-#include "IAuthResponseReceiver.h"
+#include "secauth/master/SessionKeyTask.h"
+#include "secauth/master/MasterAuthSettings.h"
+#include "secauth/master/IAuthResponseReceiver.h"
 
 namespace secauth
 {
@@ -44,6 +45,7 @@ public:
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterParams& params,
 		opendnp3::ITaskLock& taskLock,
+		const secauth::MasterAuthSettings& authSettings,
 		openpal::ICryptoProvider& crypto,
 		IMasterUserDatabase& userDB
 	);
@@ -73,6 +75,7 @@ private:
 	
 	typedef std::map<uint16_t, std::unique_ptr<SessionKeyTask>> SessionKeyTaskMap;
 	
+	MasterAuthSettings			settings;
 	openpal::IUTCTimeSource*	pTimeSource;
 	openpal::ICryptoProvider*	pCrypto;
 	IMasterUserDatabase*		pUserDB;

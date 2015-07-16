@@ -40,7 +40,9 @@ namespace secauth
 		public:
 
 		SessionStore(			
-			openpal::IMonotonicTimeSource& timeSource			
+			openpal::IMonotonicTimeSource& timeSource,
+			openpal::TimeDuration sessionKeyValidity,
+			uint32_t maxAuthMessageCount
 		);		
 
 		void SetSessionKeys(const opendnp3::User& user, const SessionKeysView& view);
@@ -61,6 +63,8 @@ namespace secauth
 		private:		
 				
 		openpal::IMonotonicTimeSource* pTimeSource;
+		openpal::TimeDuration sessionKeyValidity;
+		uint32_t maxAuthMessageCount;
 
 		std::map<uint16_t, std::unique_ptr<Session>> sessionMap;
 	};

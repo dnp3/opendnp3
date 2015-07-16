@@ -19,42 +19,21 @@
  * to you under the terms of the License.
  */
 
-#include "MasterSecAuthFixture.h"
+#include "MasterAuthSettings.h"
 
-#include <testlib/BufferHelpers.h>
+#include <opendnp3/app/AppConstants.h>
 
-using namespace testlib;
-using namespace secauth;
+#include "secauth/AuthConstants.h"
 
-namespace opendnp3
-{	
-	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, const MasterAuthSettings& authSettings, ITaskLock& lock) :
-		log(),
-		exe(),
-		meas(),
-		lower(log.root),
-		application(),
-		crypto(),
-		userDB(),
-		context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto, userDB),
-		master(context)				
-	{
-		
-	}
-
-	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
-	{
-		HexSequence hs(hex);
-		master.OnReceive(hs.ToReadOnly());
-	}
-
-	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, UpdateKeyMode mode, uint8_t keyRepeat)
-	{
-		secauth::UpdateKey key(keyRepeat, mode);
-		return userDB.ConfigureUser(user, key);
-	}
+namespace secauth
+{
+	MasterAuthSettings::MasterAuthSettings() :
+		challengeTimeout(opendnp3::DEFAULT_APP_TIMEOUT),
+		challengeSize(AuthConstants::MIN_CHALLENGE_DATA_SIZE),		
+		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default		
+		maxAuthMsgCount(AuthConstants::DEFAULT_SESSION_KEY_MAX_AUTH_COUNT),
+		sessionKeyChangeInterval(openpal::TimeDuration::Minutes(AuthConstants::DEFAULT_SESSION_KEY_CHANGE_MINUTES))
+	{}
 
 }
-
-
 

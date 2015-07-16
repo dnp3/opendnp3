@@ -23,14 +23,18 @@
 
 #include <opendnp3/app/AppConstants.h>
 
+#include "secauth/AuthConstants.h"
+
 namespace secauth
 {
 	OutstationAuthSettings::OutstationAuthSettings() :		
 		challengeTimeout(opendnp3::DEFAULT_APP_TIMEOUT),
-		challengeSize(4),
+		challengeSize(AuthConstants::MIN_CHALLENGE_DATA_SIZE),
 		assocId(0),
 		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
-		functions(CriticalFunctions::AuthEverything())
+		functions(CriticalFunctions::AuthEverything()),
+		maxAuthMsgCount(AuthConstants::DEFAULT_SESSION_KEY_MAX_AUTH_COUNT),
+		sessionKeyChangeInterval(openpal::TimeDuration::Minutes(AuthConstants::DEFAULT_SESSION_KEY_CHANGE_MINUTES))
 	{}
 
 }

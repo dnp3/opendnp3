@@ -18,43 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_MASTERAUTHSETTINGS_H
+#define SECAUTH_MASTERAUTHSETTINGS_H
 
-#include "MasterSecAuthFixture.h"
+#include "secauth/HMACMode.h"
+#include "secauth/CriticalFunctions.h"
 
-#include <testlib/BufferHelpers.h>
+#include <openpal/executor/TimeDuration.h>
 
-using namespace testlib;
-using namespace secauth;
+namespace secauth
+{
 
-namespace opendnp3
+/**
+	SAv5 outstation authentication provider
+*/
+struct MasterAuthSettings
 {	
-	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, const MasterAuthSettings& authSettings, ITaskLock& lock) :
-		log(),
-		exe(),
-		meas(),
-		lower(log.root),
-		application(),
-		crypto(),
-		userDB(),
-		context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto, userDB),
-		master(context)				
-	{
-		
-	}
-
-	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
-	{
-		HexSequence hs(hex);
-		master.OnReceive(hs.ToReadOnly());
-	}
-
-	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, UpdateKeyMode mode, uint8_t keyRepeat)
-	{
-		secauth::UpdateKey key(keyRepeat, mode);
-		return userDB.ConfigureUser(user, key);
-	}
+	MasterAuthSettings();
+	
+	/// response timeout period for challenges
+	openpal::TimeDuration challengeTimeout;	
+	/// the number of bytes in a challenge
+	uint16_t challengeSize;				
+	/// The hmac mode to request when challenging
+	HMACMode hmacMode;	
+	/// The maximum number of auth-ed messages before a session key change is required
+	uint32_t maxAuthMsgCount;
+	/// The maximum time between session key changes
+	openpal::TimeDuration sessionKeyChangeInterval;
+	
+};
 
 }
 
-
+#endif
 

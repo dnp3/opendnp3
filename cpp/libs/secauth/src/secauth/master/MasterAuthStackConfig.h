@@ -18,43 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_MASTERAUTHSTACKCONFIG_H
+#define SECAUTH_MASTERAUTHSTACKCONFIG_H
 
-#include "MasterSecAuthFixture.h"
+#include <opendnp3/master/MasterStackConfig.h>
 
-#include <testlib/BufferHelpers.h>
+#include "secauth/master/MasterAuthSettings.h"
 
-using namespace testlib;
-using namespace secauth;
+namespace secauth
+{
 
-namespace opendnp3
-{	
-	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, const MasterAuthSettings& authSettings, ITaskLock& lock) :
-		log(),
-		exe(),
-		meas(),
-		lower(log.root),
-		application(),
-		crypto(),
-		userDB(),
-		context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto, userDB),
-		master(context)				
-	{
-		
-	}
+/** A composite configuration struct that contains all the config
+	information for a dnp3 master stack
+*/
+struct MasterAuthStackConfig : public opendnp3::MasterStackConfig
+{
+	MasterAuthStackConfig() : MasterStackConfig()
+	{}
 
-	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
-	{
-		HexSequence hs(hex);
-		master.OnReceive(hs.ToReadOnly());
-	}
-
-	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, UpdateKeyMode mode, uint8_t keyRepeat)
-	{
-		secauth::UpdateKey key(keyRepeat, mode);
-		return userDB.ConfigureUser(user, key);
-	}
+	/// authentication configuration
+	MasterAuthSettings auth;	
+};
 
 }
 
-
+#endif
 

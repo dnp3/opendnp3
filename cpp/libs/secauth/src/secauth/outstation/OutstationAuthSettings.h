@@ -21,10 +21,10 @@
 #ifndef SECAUTH_OUTSTATIONAUTHSETTINGS_H
 #define SECAUTH_OUTSTATIONAUTHSETTINGS_H
 
-#include <opendnp3/outstation/OutstationParams.h>
-
 #include "secauth/HMACMode.h"
 #include "secauth/CriticalFunctions.h"
+
+#include <openpal/executor/TimeDuration.h>
 
 namespace secauth
 {
@@ -36,12 +36,21 @@ struct OutstationAuthSettings
 {	
 	OutstationAuthSettings();	
 	
-	openpal::TimeDuration challengeTimeout;
-	uint16_t challengeSize;
-	uint16_t assocId;
+	/// response timeout period for challenges
+	openpal::TimeDuration challengeTimeout;	
+	/// the number of bytes in a challenge
+	uint16_t challengeSize;			
+	/// the association Id reported in tranmissions
+	uint16_t assocId;					
+	/// The hmac mode to request when challenging
 	HMACMode hmacMode;
+	/// A datastructure that defines what function codes are deemed 'critical'
 	CriticalFunctions functions;
-
+	/// The maximum number of auth-ed messages before a session key change is required
+	uint32_t maxAuthMsgCount;
+	/// The maximum time between session key changes
+	openpal::TimeDuration sessionKeyChangeInterval;
+	
 };
 
 }

@@ -27,9 +27,13 @@ using namespace openpal;
 namespace secauth
 {				
 	SessionStore::SessionStore(
-			IMonotonicTimeSource& timeSource			
+			IMonotonicTimeSource& timeSource,
+			openpal::TimeDuration sessionKeyValidity_,
+			uint32_t maxAuthMessageCount_
 	) :		
-		pTimeSource(&timeSource)
+		pTimeSource(&timeSource),
+		sessionKeyValidity(sessionKeyValidity_),
+		maxAuthMessageCount(maxAuthMessageCount_)
 	{
 		
 		

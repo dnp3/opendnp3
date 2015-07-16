@@ -36,17 +36,17 @@ namespace secauth
 			IOutstationUserDatabase& userdb,
 			openpal::ICryptoProvider& crypto) :
 
-		settings(settings_),
+		settings(settings),
 		challenge(settings.challengeSize, params.maxRxFragSize),
 		challengeTimer(executor),
-		hmac(crypto, settings_.hmacMode),
+		hmac(crypto, settings.hmacMode),
 		deferred(params.maxRxFragSize),		
 		pTimeSource(&timeSource),
 		pUserDatabase(&userdb),
 		pCrypto(&crypto),		
 		pState(OAuthStateIdle::Instance()),
 		keyChangeState(1, 4, logger, crypto),
-		sessions(executor),
+		sessions(executor, settings.sessionKeyChangeInterval, settings.maxAuthMsgCount),
 		txBuffer(params.maxTxFragSize)
 	{
 				

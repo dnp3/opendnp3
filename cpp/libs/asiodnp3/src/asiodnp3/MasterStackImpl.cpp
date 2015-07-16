@@ -56,7 +56,7 @@ MasterStackImpl::MasterStackImpl(
 	asiopal::ASIOExecutor& executor,
 	opendnp3::ISOEHandler& SOEHandler,
 	opendnp3::IMasterApplication& application,
-	const opendnp3::MasterStackConfig& config,
+	const secauth::MasterAuthStackConfig& config,
 	IStackLifecycle& lifecycle,
 	opendnp3::ITaskLock& taskLock,
 	secauth::IMasterUserDatabase& userDB,
@@ -65,7 +65,7 @@ MasterStackImpl::MasterStackImpl(
 	root(root_, id),
 	pLifecycle(&lifecycle),
 	stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
-	mcontext(new secauth::MAuthContext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, crypto, userDB)),
+	mcontext(new secauth::MAuthContext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto, userDB)),
 	master(*mcontext)
 {
 
