@@ -118,7 +118,7 @@ TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
 	REQUIRE(fixture.lower.HasNoData());
 }
 
-TEST_CASE(SUITE("Sessions keys time-out after configured period"))
+TEST_CASE(SUITE("Sessions keys are invalidated after configured period"))
 {
 	OutstationAuthSettings settings;
 	settings.sessionKeyChangeInterval = TimeDuration::Minutes(5); // set to some known value	
@@ -139,6 +139,45 @@ TEST_CASE(SUITE("Sessions keys time-out after configured period"))
 	auto challengeReply = hex::ChallengeReply(seq, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
 	auto errorResp = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, 1, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
 	REQUIRE(fixture.SendAndReceive(challengeReply) == errorResp);
+
+	REQUIRE(fixture.lower.HasNoData());
+}
+
+TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authenticated messages"))
+{
+	OutstationAuthSettings settings;
+	settings.maxAuthMsgCount = 1; // only allow a single authenticated message before invalidating keys
+	OutstationSecAuthFixture fixture(settings);
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	fixture.LowerLayerUp();
+
+	AppSeqNum seq;
+	uint32_t csq = 1;
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
+
+	{
+		auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
+		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+		REQUIRE(fixture.SendAndReceive(poll) == challenge);
+
+		auto challengeReply = hex::ChallengeReply(seq, csq, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+		auto response = hex::EmptyResponse(seq, IINBit::DEVICE_RESTART);
+		REQUIRE(fixture.SendAndReceive(challengeReply) == response);
+	}
+
+	seq.Increment();
+	++csq;
+
+	{
+		auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
+		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+		REQUIRE(fixture.SendAndReceive(poll) == challenge);
+
+		auto challengeReply = hex::ChallengeReply(seq, csq, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+		auto error = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, csq, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
+		REQUIRE(fixture.SendAndReceive(challengeReply) == error);
+	}
+		
 
 	REQUIRE(fixture.lower.HasNoData());
 }
