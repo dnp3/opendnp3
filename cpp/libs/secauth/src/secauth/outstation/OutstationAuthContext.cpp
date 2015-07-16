@@ -54,7 +54,7 @@ DatabaseTemplate OAuthContext::EnableSecStats(const DatabaseTemplate& dbTemplate
 	return copy;
 }
 
-void OAuthContext::ConfigureSecStats()
+void OAuthContext::ConfigureSecStats(const StatThresholds& thresholds)
 {
 	auto stats = this->database.buffers.buffers.GetArrayView<SecurityStat>();
 	SecurityStat zero(opendnp3::flags::ONLINE, sstate.settings.assocId, 0, DNPTime(0));
@@ -62,7 +62,7 @@ void OAuthContext::ConfigureSecStats()
 	for (uint16_t i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
 	{		
 		stats[i].SetInitialValue(zero);
-		stats[i].metadata.deadband = StatThresholds::GetDeadband(i);
+		stats[i].metadata.deadband = thresholds.GetDeadband(i);
 	}
 }
 
@@ -82,7 +82,7 @@ OAuthContext::OAuthContext(
 		OContext(config, EnableSecStats(dbTemplate), logger, executor, lower, commandHandler, application),
 		sstate(config.params, settings, logger, executor, timeSource, userDatabase, crypto)
 {
-	this->ConfigureSecStats();
+	this->ConfigureSecStats(sstate.settings.statThresholds);
 }
 
 bool OAuthContext::GoOffline()

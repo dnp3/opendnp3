@@ -22,25 +22,29 @@
 #define SECAUTH_STAT_THRESHOLDS_H
 
 #include <opendnp3/gen/SecurityStatIndex.h>
-#include <openpal/util/Uncopyable.h>
 
 #include "secauth/AuthConstants.h"
 
 namespace secauth
 {
 
-struct StatThresholds : openpal::StaticOnly
-{	
-
+class StatThresholds
+{		
+	
 public:
 
+	StatThresholds();	
 
 	// returns MAX_UINT32 if the index is undefined
-	static uint32_t GetDeadband(uint16_t index);	
+	uint32_t GetDeadband(uint16_t index) const;
 
-private:
+	void Set(opendnp3::SecurityStatIndex index, uint32_t threshold);
 
-	static const uint8_t THRESHOLDS[AuthConstants::NUM_SECURITY_STATS];
+private:	
+
+	uint32_t thresholds[AuthConstants::NUM_SECURITY_STATS];
+
+	static const uint32_t DEFAULTS[AuthConstants::NUM_SECURITY_STATS];
 
 };
 

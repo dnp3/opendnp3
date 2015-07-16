@@ -23,7 +23,7 @@
 
 namespace secauth
 {
-	const uint8_t StatThresholds::THRESHOLDS[AuthConstants::NUM_SECURITY_STATS] = {
+	const uint32_t StatThresholds::DEFAULTS[AuthConstants::NUM_SECURITY_STATS] = {
 		3,
 		5,
 		5,
@@ -44,9 +44,23 @@ namespace secauth
 		3		
 	};
 	
-	uint32_t StatThresholds::GetDeadband(uint16_t index)
+	StatThresholds::StatThresholds()
 	{
-		return (index >= AuthConstants::NUM_SECURITY_STATS) ? 0 : (THRESHOLDS[index] - 1);	// deadband is always 1 less than the threshold	
+		for (auto i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
+		{
+			thresholds[i] = DEFAULTS[i];
+		}
+	}
+
+	void StatThresholds::Set(opendnp3::SecurityStatIndex index, uint32_t threshold)
+	{
+		thresholds[static_cast<int>(index)] = threshold;
+	}
+	
+	uint32_t StatThresholds::GetDeadband(uint16_t index) const
+	{
+		// deadband is always 1 less than the threshold	
+		return (index < AuthConstants::NUM_SECURITY_STATS && thresholds[index] > 0) ? (thresholds[index] - 1) : 0;
 	}
 
 

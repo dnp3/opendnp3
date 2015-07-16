@@ -23,6 +23,7 @@
 
 #include "secauth/HMACMode.h"
 #include "secauth/CriticalFunctions.h"
+#include "secauth/StatThresholds.h"
 
 #include <openpal/executor/TimeDuration.h>
 
@@ -50,6 +51,9 @@ struct OutstationAuthSettings
 	uint32_t maxAuthMsgCount;
 	/// The maximum time between session key changes
 	openpal::TimeDuration sessionKeyChangeInterval;
+	/// Thresholds for various security statistics
+	StatThresholds statThresholds;
+
 	
 };
 

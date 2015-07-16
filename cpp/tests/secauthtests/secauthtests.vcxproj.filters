@@ -41,6 +41,9 @@
     <ClCompile Include="src\TestPermissions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestOutstationSecurityStats.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\fixtures\OutstationSecAuthFixture.h">

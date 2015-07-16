@@ -175,6 +175,7 @@
     <ClCompile Include="src\TestAggressiveModeParsing.cpp" />
     <ClCompile Include="src\TestMasterSecAuth.cpp" />
     <ClCompile Include="src\TestOutstationSecAuth.cpp" />
+    <ClCompile Include="src\TestOutstationSecurityStats.cpp" />
     <ClCompile Include="src\TestPermissions.cpp" />
   </ItemGroup>
   <ItemGroup>

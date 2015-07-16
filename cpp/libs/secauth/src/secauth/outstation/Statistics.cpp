@@ -25,11 +25,11 @@ namespace secauth
 {
 	
 	Statistics::Statistics()
-	{		
+	{				
 		for (int i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
 		{
 			statistics[i] = 0;
-		}	
+		}		
 	}
 	
 
