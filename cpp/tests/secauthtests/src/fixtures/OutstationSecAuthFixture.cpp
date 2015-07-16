@@ -90,6 +90,17 @@ namespace opendnp3
 		return exe.RunMany();
 	}
 
+	std::string OutstationSecAuthFixture::SendAndReceive(const std::string& hex)
+	{
+		this->SendToOutstation(hex);		
+		auto ret = this->lower.PopWriteAsHex();
+		if (!ret.empty())
+		{
+			this->OnSendResult(true);
+		}
+		return ret;
+	}
+
 	size_t OutstationSecAuthFixture::NumPendingTimers() const
 	{
 		return exe.NumPendingTimers();
@@ -128,15 +139,14 @@ namespace opendnp3
 		}
 	}
 
-	void OutstationSecAuthFixture::TestSessionKeyChange(User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
+	void OutstationSecAuthFixture::TestSessionKeyChange(User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode, uint8_t appSeq)
 	{
-		REQUIRE(this->lower.HasNoData());
+		REQUIRE(this->lower.HasNoData());		
 
-		this->SendToOutstation(hex::RequestKeyStatus(0, 1));
-
+		auto keyStatusRequest = hex::RequestKeyStatus(appSeq, user.GetId());
 		auto keyStatusRsp = hex::KeyStatusResponse(
 			IINBit::DEVICE_RESTART,
-			0, // seq
+			appSeq,
 			1, // ksq
 			user.GetId(),
 			keyWrap,
@@ -145,20 +155,15 @@ namespace opendnp3
 			hex::repeat(0xAA, 4), // challenge
 			"");  // no hmac
 
-
-		REQUIRE(this->lower.PopWriteAsHex() == keyStatusRsp);
-		this->outstation.OnSendResult(true);
+		REQUIRE(this->SendAndReceive(keyStatusRequest) == keyStatusRsp);	
 		REQUIRE(this->lower.HasNoData());
 
 		this->SetMockKeyWrapData(keyWrap, SkipBytesHex(keyStatusRsp, 10));
 
-		// --- session key change request ---	
-		// the key wrap data doesn't matter b/c we've mocked the unwrap call above
-		this->SendToOutstation(hex::KeyChangeRequest(0, 1, 1, "DE AD BE EF"));
-
+		auto keyChangeRequest = hex::KeyChangeRequest(appSeq, 1, 1, "DE AD BE EF");
 		auto keyStatusRspFinal = hex::KeyStatusResponse(
 			IINBit::DEVICE_RESTART,
-			0, // seq
+			appSeq, // seq
 			2, // ksq
 			user.GetId(), // user
 			keyWrap,
@@ -167,8 +172,9 @@ namespace opendnp3
 			hex::repeat(0xAA, 4), // challenge
 			RepeatHex(0xFF, GetTruncationSize(hmacMode)));  // fixed value from hmac mock
 
-		REQUIRE(this->lower.PopWriteAsHex() == keyStatusRspFinal);
-		this->outstation.OnSendResult(true);
+		// --- session key change request ---	
+		// the key wrap data doesn't matter b/c we've mocked the unwrap call above
+		REQUIRE(this->SendAndReceive(keyChangeRequest) == keyStatusRspFinal);				
 		REQUIRE(this->lower.HasNoData());
 	}
 }

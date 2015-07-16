@@ -182,7 +182,7 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 
 	// lookup the session keys
 	SessionKeysView keys;
-	if (this->sessions.GetSessionKeys(pActiveTask->GetUser(), keys) != KeyStatus::OK)
+	if (this->sessions.TryGetSessionKeys(user, keys) != KeyStatus::OK)
 	{		
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Session is not valid for user: %u", user.GetId());
 		return;
@@ -202,7 +202,7 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 
 	if (ec)
 	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Unable to calculate HMAC value");
+		FORMAT_LOG_BLOCK(this->logger, flags::ERR, "Error calculating HMAC: %s", ec.message().c_str());
 		return;
 	}
 		

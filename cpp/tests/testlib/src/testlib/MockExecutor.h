@@ -77,14 +77,16 @@ public:
 
 	openpal::MonotonicTimestamp NextTimerExpiration();
 
-	void AdvanceTime(openpal::TimeDuration aDuration);
+	size_t AdvanceTime(openpal::TimeDuration aDuration);
+
+	// doesn't check timers
+	void AddTime(openpal::TimeDuration aDuration);
 
 	bool AdvanceToNextTimer();
 
-
 private:
 
-	void CheckForExpiredTimers();
+	size_t CheckForExpiredTimers();
 
 	bool FindExpiredTimer();
 

@@ -346,32 +346,37 @@ void OAuthContext::ProcessAuthReply(const opendnp3::APDUHeader& header, const op
 	// first look-up the session for the specified user
 	User user(reply.userNum);
 	SessionKeysView view;
-	if (sstate.sessions.GetSessionKeys(user, view) != KeyStatus::OK)
+
+	if (sstate.sessions.TryGetSessionKeys(user, view) != KeyStatus::OK)
 	{
+		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "No valid session keys for user %u", user.GetId());
 		this->RespondWithAuthError(header, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED); // TODO - check this error code
 		return;
 	}
 
 	if (!sstate.challenge.VerifyAuthenticity(view.controlKey, sstate.hmac, reply.hmacValue, this->logger))
 	{
-		// TODO  - log an auth failure
+		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Authentication failure for user %u", user.GetId());
 		this->RespondWithAuthError(header, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
 		return;
 	}
 
 	auto criticalHeader = sstate.challenge.GetCriticalHeader();
 
-	if (sstate.pUserDatabase->IsAuthorized(user, criticalHeader.function))
+	if (!sstate.pUserDatabase->IsAuthorized(user, criticalHeader.function))
 	{
-		auto asdu = sstate.challenge.GetCriticalASDU();
-		auto objects = asdu.Skip(APDU_REQUEST_HEADER_SIZE);
-		this->ProcessAPDU(asdu, criticalHeader, objects); // process as normal
-	}
-	else
-	{
+		this->Increment(SecurityStatIndex::AUTHORIZATION_FAILURES);
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Verified user %u is not authorized for function %s", user.GetId(), FunctionCodeToString(criticalHeader.function));
 		this->RespondWithAuthError(header, reply.challengeSeqNum, user, AuthErrorCode::AUTHORIZATION_FAILED);
+		return;
 	}
+
+
+	auto asdu = sstate.challenge.GetCriticalASDU();
+	auto objects = asdu.Skip(APDU_REQUEST_HEADER_SIZE);
+	this->ProcessAPDU(asdu, criticalHeader, objects); // process as normal	
 }
 
 bool OAuthContext::TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header)

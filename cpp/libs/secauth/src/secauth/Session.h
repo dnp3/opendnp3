@@ -24,23 +24,25 @@
 #include "secauth/SessionKeys.h"
 
 #include <opendnp3/gen/KeyStatus.h>
+
 #include <openpal/executor/IMonotonicTimeSource.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace secauth
 {
 	// All the info for a session
-	class Session
+	class Session : private openpal::Uncopyable
 	{
 		public:
 
 		// construct an uninitialized session
-		Session(openpal::IMonotonicTimeSource& timeSource);
+		Session(openpal::IMonotonicTimeSource& timeSource, const openpal::TimeDuration& duration, uint32_t maxAuthCount);
 
 		void SetKeys(const SessionKeysView& view);
 
 		opendnp3::KeyStatus GetKeyStatus();
 
-		opendnp3::KeyStatus GetKeys(SessionKeysView& view);
+		opendnp3::KeyStatus TryGetKeyView(SessionKeysView& view);
 
 		opendnp3::KeyStatus IncrementAuthCount();
 
@@ -48,16 +50,15 @@ namespace secauth
 
 		opendnp3::KeyStatus CheckTimeValidity();
 
-		// TODO - make these configurable and change them
-		static const uint32_t AUTH_COUNT_MAX = 100;
-		static const uint8_t SESSION_KEY_EXP_MINUTES = 10;
-
+		
 		openpal::IMonotonicTimeSource* pTimeSource;
 
+		const openpal::TimeDuration DURATION;
+		const uint32_t MAX_AUTH_COUNT;
 
 		opendnp3::KeyStatus status;
 		SessionKeys keys;
-		openpal::MonotonicTimestamp expirationTime;
+		openpal::MonotonicTimestamp expirationTime;		
 		uint32_t authCount;
 	};
 

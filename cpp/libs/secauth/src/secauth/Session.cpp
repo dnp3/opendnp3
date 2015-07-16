@@ -27,11 +27,11 @@ using namespace openpal;
 using namespace opendnp3;
 
 namespace secauth
-{	
-	
-
-	Session::Session(openpal::IMonotonicTimeSource& timeSource) :
+{		
+	Session::Session(openpal::IMonotonicTimeSource& timeSource, const openpal::TimeDuration& duration, uint32_t maxAuthCount) :
 		pTimeSource(&timeSource),
+		DURATION(duration),
+		MAX_AUTH_COUNT(maxAuthCount),
 		status(KeyStatus::NOT_INIT),
 		authCount(0)
 	{
@@ -43,7 +43,7 @@ namespace secauth
 		if (this->status == KeyStatus::OK)
 		{
 			++this->authCount;
-			if (this->authCount > AUTH_COUNT_MAX)
+			if (this->authCount > MAX_AUTH_COUNT)
 			{
 				this->status = KeyStatus::COMM_FAIL;
 			}
@@ -54,7 +54,7 @@ namespace secauth
 
 	opendnp3::KeyStatus Session::CheckTimeValidity()
 	{
-		if (this->status == KeyStatus::OK && (this->expirationTime < pTimeSource->GetTime()))
+		if ((this->status == KeyStatus::OK) && (this->expirationTime < pTimeSource->GetTime()))
 		{
 			this->status = KeyStatus::COMM_FAIL;			
 		}
@@ -65,7 +65,7 @@ namespace secauth
 	void Session::SetKeys(const SessionKeysView& view)
 	{
 		this->authCount = 0;
-		this->expirationTime = pTimeSource->GetTime().Add(TimeDuration::Minutes(SESSION_KEY_EXP_MINUTES));
+		this->expirationTime = pTimeSource->GetTime().Add(this->DURATION);
 		this->keys.SetKeys(view);		
 		this->status = KeyStatus::OK;
 	}
@@ -75,7 +75,7 @@ namespace secauth
 		return this->CheckTimeValidity();
 	}
 
-	opendnp3::KeyStatus Session::GetKeys(SessionKeysView& view)
+	opendnp3::KeyStatus Session::TryGetKeyView(SessionKeysView& view)
 	{
 		auto result = this->CheckTimeValidity();
 		if (result == KeyStatus::OK)

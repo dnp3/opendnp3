@@ -54,9 +54,14 @@ openpal::MonotonicTimestamp MockExecutor::NextTimerExpiration()
 	}	
 }
 
-void MockExecutor::CheckForExpiredTimers()
+size_t MockExecutor::CheckForExpiredTimers()
 {
-	while (FindExpiredTimer());
+	size_t count = 0;	
+	while (FindExpiredTimer())
+	{
+		++count;
+	}
+	return count;
 }
 
 bool MockExecutor::FindExpiredTimer()
@@ -76,10 +81,16 @@ bool MockExecutor::FindExpiredTimer()
 	}
 }
 
-void MockExecutor::AdvanceTime(TimeDuration aDuration)
+size_t MockExecutor::AdvanceTime(TimeDuration aDuration)
+{
+	this->AddTime(aDuration);
+	return this->CheckForExpiredTimers();
+}
+
+// doesn't check timers
+void MockExecutor::AddTime(openpal::TimeDuration aDuration)
 {
 	mCurrentTime = mCurrentTime.Add(aDuration);
-	this->CheckForExpiredTimers();
 }
 
 bool MockExecutor::AdvanceToNextTimer()

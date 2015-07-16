@@ -62,7 +62,9 @@ namespace secauth
 		auto iter = sessionMap.find(user.GetId());
 		if (iter == sessionMap.end())
 		{			
-			auto session = std::unique_ptr<Session>(new Session(*pTimeSource));
+			auto session = std::unique_ptr<Session>(
+					new Session(*pTimeSource, sessionKeyValidity, maxAuthMessageCount)
+			);
 			session->SetKeys(view);
 			sessionMap[user.GetId()] = std::move(session);
 		}
@@ -72,17 +74,10 @@ namespace secauth
 		}		
 	}
 
-	opendnp3::KeyStatus SessionStore::GetSessionKeys(const User& user, SessionKeysView& view)
+	opendnp3::KeyStatus SessionStore::TryGetSessionKeys(const User& user, SessionKeysView& view)
 	{
 		auto iter = sessionMap.find(user.GetId());
-		if (iter == sessionMap.end())
-		{			
-			return KeyStatus::UNDEFINED;
-		}
-		else
-		{
-			return iter->second->GetKeys(view);			
-		}
+		return (iter == sessionMap.end()) ? KeyStatus::UNDEFINED : iter->second->TryGetKeyView(view);
 	}
 
 	opendnp3::KeyStatus SessionStore::GetSessionKeyStatus(const User& user)
@@ -91,7 +86,7 @@ namespace secauth
 		if (iter == sessionMap.end())
 		{			
 			// initialize new session info
-			sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session(*pTimeSource));
+			sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session(*pTimeSource, sessionKeyValidity, maxAuthMessageCount));
 			return KeyStatus::NOT_INIT;			
 		}
 		else

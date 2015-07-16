@@ -48,7 +48,7 @@ namespace secauth
 		void SetSessionKeys(const opendnp3::User& user, const SessionKeysView& view);
 
 		// Session keys are only set if KeyStatus == OK
-		opendnp3::KeyStatus GetSessionKeys(const opendnp3::User& user, SessionKeysView& view);
+		opendnp3::KeyStatus TryGetSessionKeys(const opendnp3::User& user, SessionKeysView& view);
 		
 		// Retrieves the session key status for a user. Creates a new session if no info exists.
 		opendnp3::KeyStatus GetSessionKeyStatus(const opendnp3::User& user);

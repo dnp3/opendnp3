@@ -70,7 +70,7 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 	
 	fixture.LowerLayerUp();
 
-	fixture.SendToOutstation(hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	auto request = hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses());
 
 	auto challenge = hex::ChallengeResponse(
 		IINBit::DEVICE_RESTART,
@@ -82,7 +82,57 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 		"AA AA AA AA AA"
 	);
 
-	REQUIRE(fixture.lower.PopWriteAsHex() == challenge);
+	REQUIRE(fixture.SendAndReceive(request) == challenge);
+
+	REQUIRE(fixture.lower.HasNoData());
+}
+
+TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
+{
+	OutstationAuthSettings settings;
+	settings.sessionKeyChangeInterval = TimeDuration::Minutes(5); // set to some known value	
+	OutstationSecAuthFixture fixture(settings);
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	fixture.LowerLayerUp();
+
+	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
+	
+	auto readRequest = hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses());
+	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, 1, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+	REQUIRE(fixture.SendAndReceive(readRequest) == challenge);
+		
+	// Advance the time source past the key timeout period
+	fixture.exe.AddTime(openpal::TimeDuration::Minutes(6));
+
+	auto challengeReply = hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+	auto errorResponse = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, 1, 1, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
+	REQUIRE(fixture.SendAndReceive(challengeReply) == errorResponse);
+
+	REQUIRE(fixture.lower.HasNoData());
+}
+
+TEST_CASE(SUITE("Sessions keys time-out after configured period"))
+{
+	OutstationAuthSettings settings;
+	settings.sessionKeyChangeInterval = TimeDuration::Minutes(5); // set to some known value	
+	OutstationSecAuthFixture fixture(settings);
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	fixture.LowerLayerUp();
+
+	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
+	
+	auto poll = hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses());
+	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, 1, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+	REQUIRE(fixture.SendAndReceive(poll) == challenge);
+
+	// Advance the time
+	fixture.exe.AddTime(openpal::TimeDuration::Minutes(6));
+
+	auto challengeReply = hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+	auto errorResp = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, 1, 1, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
+	REQUIRE(fixture.SendAndReceive(challengeReply) == errorResp);
+
+	REQUIRE(fixture.lower.HasNoData());
 }
 
 TEST_CASE(SUITE("Non-critical requests are not challenged"))
@@ -101,15 +151,12 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 {
 	OutstationAuthSettings settings;	
 	OutstationSecAuthFixture fixture(settings);	
-
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
-	
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);	
 	fixture.LowerLayerUp();
 
 	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 
-	fixture.SendToOutstation(hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
-
+	auto poll = hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(
 		IINBit::DEVICE_RESTART,
 		1, // app-seq
@@ -117,32 +164,28 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 		User::DEFAULT_ID,
 		HMACType::HMAC_SHA256_TRUNC_16,
 		ChallengeReason::CRITICAL,
-		hex::repeat(0xAA, 4)
-	);
+		hex::repeat(0xAA, 4));
 
-	REQUIRE(fixture.lower.PopWriteAsHex() == challenge);
-	fixture.outstation.OnSendResult(true);
+	REQUIRE(fixture.SendAndReceive(poll) == challenge);
 	
-	fixture.SendToOutstation(hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16)));
 
-	REQUIRE(fixture.lower.PopWriteAsHex() == hex::EmptyResponse(1, IINField(IINBit::DEVICE_RESTART)));
+	auto challengeReply = hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+	auto response = hex::EmptyResponse(1, IINBit::DEVICE_RESTART);
+	REQUIRE(fixture.SendAndReceive(challengeReply) == response);	
+
+
+	REQUIRE(fixture.lower.HasNoData());
 }
 
 TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
-{
-	OutstationAuthSettings settings;
-	OutstationSecAuthFixture fixture(settings);
-
-	auto permissions = Permissions::Allowed(FunctionCode::WRITE);
-
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF, permissions);
-
+{	
+	OutstationSecAuthFixture fixture;	
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF, Permissions::Allowed(FunctionCode::WRITE));
 	fixture.LowerLayerUp();
 
 	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 
-	fixture.SendToOutstation(hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
-
+	auto poll = hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(
 		IINBit::DEVICE_RESTART,
 		1, // app-seq
@@ -153,11 +196,9 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 		hex::repeat(0xAA, 4)
 		);
 
-	REQUIRE(fixture.lower.PopWriteAsHex() == challenge);
-	fixture.outstation.OnSendResult(true);
+	REQUIRE(fixture.SendAndReceive(poll) == challenge);
 
-	fixture.SendToOutstation(hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16)));
-
+	auto challengeReply = hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
 	auto error = hex::AuthErrorResponse(
 		IINBit::DEVICE_RESTART,
 		1,
@@ -169,7 +210,8 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 		""
 	);
 
-	REQUIRE(fixture.lower.PopWriteAsHex() == error);
+	REQUIRE(fixture.SendAndReceive(challengeReply) == error);
+	REQUIRE(fixture.lower.HasNoData());
 }
 
 

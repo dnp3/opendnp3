@@ -56,7 +56,9 @@ public:
 
 	void AddUser(opendnp3::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat, const secauth::Permissions& permissions = secauth::Permissions::AllowAll());
 														
-	uint32_t SendToOutstation(const std::string& hex);
+	uint32_t SendToOutstation(const std::string& hex);	
+
+	std::string SendAndReceive(const std::string& hex);
 
 	uint32_t LowerLayerUp();
 
@@ -70,9 +72,14 @@ public:
 
 	uint32_t AdvanceTime(const openpal::TimeDuration& td);
 
-	void SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data);
+	
 
-	void TestSessionKeyChange(User user, opendnp3::KeyWrapAlgorithm keyWrap, secauth::HMACMode hmacMode);
+
+
+	void SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data);
+	void TestSessionKeyChange(User user, opendnp3::KeyWrapAlgorithm keyWrap, secauth::HMACMode hmacMode, uint8_t appSeq = 0);
+
+
 
 	testlib::MockLogHandler log;
 	testlib::MockExecutor exe;
