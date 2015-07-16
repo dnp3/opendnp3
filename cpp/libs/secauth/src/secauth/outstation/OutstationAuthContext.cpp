@@ -87,11 +87,15 @@ OAuthContext::OAuthContext(
 
 bool OAuthContext::GoOffline()
 {
-	if (this->isOnline)
+	auto ret = OContext::GoOffline();
+
+	if (ret)
 	{
-		this->Reset();
+		this->sstate.pState = OAuthStateIdle::Instance();
+		this->sstate.sessions.Clear();
 	}
-	return OContext::GoOffline();
+
+	return ret;
 }
 
 void OAuthContext::CheckForTaskStart()
@@ -182,12 +186,7 @@ void OAuthContext::OnUnknownRequest(const openpal::ReadBufferView& apdu, const A
 	}	
 }
 
-void OAuthContext::Reset()
-{		
-	this->sstate.pState = OAuthStateIdle::Instance();			
-}
-
-opendnp3::APDUResponse OAuthContext::StartResponse()
+opendnp3::APDUResponse OAuthContext::StartAuthResponse()
 {
 	auto response = sstate.txBuffer.Start();
 	response.SetIIN(this->GetResponseIIN());
@@ -284,7 +283,7 @@ void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu,
 
 	sstate.sessions.SetSessionKeys(user, unwrapped.keys);
 
-	auto rsp = this->StartResponse();
+	auto rsp = this->StartAuthResponse();
 	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 	rsp.SetControl(header.control);
 	auto writer = rsp.GetWriter();
@@ -318,7 +317,7 @@ void OAuthContext::ProcessRequestKeyStatus(const opendnp3::APDUHeader& header, c
 
 	auto keyStatus = sstate.sessions.GetSessionKeyStatus(user);
 
-	auto rsp = this->StartResponse();
+	auto rsp = this->StartAuthResponse();
 	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 	rsp.SetControl(header.control);
 	auto writer = rsp.GetWriter();
@@ -377,7 +376,7 @@ void OAuthContext::ProcessAuthReply(const opendnp3::APDUHeader& header, const op
 
 bool OAuthContext::TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header)
 {
-	auto response = this->StartResponse();
+	auto response = this->StartAuthResponse();
 	auto success = sstate.challenge.WriteChallenge(apdu, header, response, sstate.hmac.GetType(), *sstate.pCrypto, &this->logger);
 	if (success)
 	{
@@ -401,20 +400,26 @@ void OAuthContext::RespondWithAuthError(
 	const opendnp3::APDUHeader& header,	
 	uint32_t seqNum,
 	const User& user,
-	AuthErrorCode code
+	AuthErrorCode code	
 	)
 {
-	auto rsp = this->StartResponse();
+	auto rsp = this->StartAuthResponse();
 	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 	rsp.SetControl(header.control);
 	auto writer = rsp.GetWriter();
 
-	Group120Var7 error;
-	error.challengeSeqNum = seqNum;
-	error.userNum = user.GetId();
-	error.assocId = sstate.settings.assocId;
-	error.errorCode = code;
-	error.time = openpal::UInt48Type(sstate.pTimeSource->Now().msSinceEpoch);
+	DNPTime time(sstate.pTimeSource->Now().msSinceEpoch);
+
+	Group120Var7 error(
+		seqNum,
+		user.GetId(),
+		sstate.settings.assocId,
+		code,
+		DNPTime(sstate.pTimeSource->Now().msSinceEpoch),
+		ReadBufferView::Empty()
+	);
+	
+	this->Increment(SecurityStatIndex::ERROR_MESSAGES_TX);
 
 	writer.WriteFreeFormat(error);
 

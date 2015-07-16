@@ -73,11 +73,9 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	void OnAuthRequest(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void OnUnknownRequest(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	void OnUnknownRequest(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);	
 
-	void Reset();
-
-	opendnp3::APDUResponse StartResponse();
+	opendnp3::APDUResponse StartAuthResponse();
 
 	//// --- IAuthRequestHandler ----
 
@@ -97,10 +95,12 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 		const opendnp3::APDUHeader& header,		
 		uint32_t seqNum,
 		const opendnp3::User& user,
-		opendnp3::AuthErrorCode code
+		opendnp3::AuthErrorCode code	
 	);
 
 	public:
+
+	
 
 	bool TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header);
 
