@@ -139,14 +139,14 @@ namespace opendnp3
 		}
 	}
 
-	void OutstationSecAuthFixture::TestSessionKeyChange(User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode, uint8_t appSeq)
+	void OutstationSecAuthFixture::TestSessionKeyChange(AppSeqNum& seq, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
 	{
 		REQUIRE(this->lower.HasNoData());		
 
-		auto keyStatusRequest = hex::RequestKeyStatus(appSeq, user.GetId());
+		auto keyStatusRequest = hex::RequestKeyStatus(seq, user.GetId());
 		auto keyStatusRsp = hex::KeyStatusResponse(
 			IINBit::DEVICE_RESTART,
-			appSeq,
+			seq,
 			1, // ksq
 			user.GetId(),
 			keyWrap,
@@ -160,10 +160,10 @@ namespace opendnp3
 
 		this->SetMockKeyWrapData(keyWrap, SkipBytesHex(keyStatusRsp, 10));
 
-		auto keyChangeRequest = hex::KeyChangeRequest(appSeq, 1, 1, "DE AD BE EF");
+		auto keyChangeRequest = hex::KeyChangeRequest(seq, 1, 1, "DE AD BE EF");
 		auto keyStatusRspFinal = hex::KeyStatusResponse(
 			IINBit::DEVICE_RESTART,
-			appSeq, // seq
+			seq, // seq
 			2, // ksq
 			user.GetId(), // user
 			keyWrap,

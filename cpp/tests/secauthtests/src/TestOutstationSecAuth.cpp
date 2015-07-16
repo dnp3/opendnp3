@@ -39,7 +39,9 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 	OutstationSecAuthFixture fixture;	
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	fixture.LowerLayerUp();
-	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
+
+	AppSeqNum seq;
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
@@ -47,7 +49,9 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 	OutstationSecAuthFixture fixture;	
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	fixture.LowerLayerUp();
-	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+	
+	AppSeqNum seq;
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
@@ -58,7 +62,9 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 	OutstationSecAuthFixture fixture(settings);
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	fixture.LowerLayerUp();
-	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA1_TRUNC_8);
+
+	AppSeqNum seq;
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA1_TRUNC_8);
 }
 
 TEST_CASE(SUITE("Critical requests are challenged when session keys are not initialized"))
@@ -95,17 +101,18 @@ TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	fixture.LowerLayerUp();
 
-	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
+	AppSeqNum seq;
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
 	
-	auto readRequest = hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses());
-	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, 1, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+	auto readRequest = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
+	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
 	REQUIRE(fixture.SendAndReceive(readRequest) == challenge);
 		
 	// Advance the time source past the key timeout period
 	fixture.exe.AddTime(openpal::TimeDuration::Minutes(6));
 
-	auto challengeReply = hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
-	auto errorResponse = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, 1, 1, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
+	auto challengeReply = hex::ChallengeReply(seq, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+	auto errorResponse = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, 1, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
 	REQUIRE(fixture.SendAndReceive(challengeReply) == errorResponse);
 
 	REQUIRE(fixture.lower.HasNoData());
@@ -119,17 +126,18 @@ TEST_CASE(SUITE("Sessions keys time-out after configured period"))
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	fixture.LowerLayerUp();
 
-	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
+	AppSeqNum seq;
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
 	
-	auto poll = hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses());
-	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, 1, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+	auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
+	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
 	REQUIRE(fixture.SendAndReceive(poll) == challenge);
 
 	// Advance the time
 	fixture.exe.AddTime(openpal::TimeDuration::Minutes(6));
 
-	auto challengeReply = hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
-	auto errorResp = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, 1, 1, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
+	auto challengeReply = hex::ChallengeReply(seq, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+	auto errorResp = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, 1, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
 	REQUIRE(fixture.SendAndReceive(challengeReply) == errorResp);
 
 	REQUIRE(fixture.lower.HasNoData());
@@ -154,12 +162,14 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);	
 	fixture.LowerLayerUp();
 
-	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+	AppSeqNum seq;
 
-	auto poll = hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses());
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+
+	auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(
 		IINBit::DEVICE_RESTART,
-		1, // app-seq
+		seq,
 		1, // csq
 		User::DEFAULT_ID,
 		HMACType::HMAC_SHA256_TRUNC_16,
@@ -169,8 +179,8 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 	REQUIRE(fixture.SendAndReceive(poll) == challenge);
 	
 
-	auto challengeReply = hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
-	auto response = hex::EmptyResponse(1, IINBit::DEVICE_RESTART);
+	auto challengeReply = hex::ChallengeReply(seq, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+	auto response = hex::EmptyResponse(seq, IINBit::DEVICE_RESTART);
 	REQUIRE(fixture.SendAndReceive(challengeReply) == response);	
 
 
@@ -183,12 +193,13 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF, Permissions::Allowed(FunctionCode::WRITE));
 	fixture.LowerLayerUp();
 
-	fixture.TestSessionKeyChange(User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+	AppSeqNum seq;
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 
-	auto poll = hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses());
+	auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(
 		IINBit::DEVICE_RESTART,
-		1, // app-seq
+		seq,
 		1, // csq
 		User::DEFAULT_ID,
 		HMACType::HMAC_SHA256_TRUNC_16,
@@ -198,10 +209,10 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 
 	REQUIRE(fixture.SendAndReceive(poll) == challenge);
 
-	auto challengeReply = hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+	auto challengeReply = hex::ChallengeReply(seq, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
 	auto error = hex::AuthErrorResponse(
 		IINBit::DEVICE_RESTART,
-		1,
+		seq,
 		1,
 		User::DEFAULT_ID,
 		0,
