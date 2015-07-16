@@ -67,7 +67,7 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	virtual void Increment(opendnp3::SecurityStatIndex index) override final;
 
-	private:
+	private:		
 
 	void ProcessAuthAPDU(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
@@ -97,6 +97,8 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 		const opendnp3::User& user,
 		opendnp3::AuthErrorCode code	
 	);
+
+	void IncrementSessionAuthCount(const opendnp3::User& user);
 
 	public:
 

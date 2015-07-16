@@ -431,6 +431,11 @@ void OAuthContext::RespondWithAuthError(
 	this->BeginTx(rsp.ToReadOnly());
 }
 
+void OAuthContext::IncrementSessionAuthCount(const opendnp3::User& user)
+{
+	this->sstate.sessions.IncrementAuthCount(user);	
+}
+
 }
 
 
