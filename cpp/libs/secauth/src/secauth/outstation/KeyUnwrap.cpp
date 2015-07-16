@@ -56,7 +56,7 @@ namespace secauth
 
 		uint16_t keyLength = UInt16::ReadBuffer(unwrapped);
 		
-		if (!AuthConstants::SessionKeySizeWithinLimits(keyLength))
+		if (!AuthSizes::SessionKeySizeWithinLimits(keyLength))
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Session key size of %u not within limits");
 			return false;

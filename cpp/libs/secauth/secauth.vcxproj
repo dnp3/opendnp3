@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="src\secauth\AggressiveModeParser.h" />
     <ClInclude Include="src\secauth\AuthConstants.h" />
+    <ClInclude Include="src\secauth\AuthSizes.h" />
     <ClInclude Include="src\secauth\CriticalFunctions.h" />
     <ClInclude Include="src\secauth\Crypto.h" />
     <ClInclude Include="src\secauth\DeferredASDU.h" />

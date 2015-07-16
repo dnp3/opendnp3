@@ -29,7 +29,7 @@
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/User.h>
 
-#include "secauth/AuthConstants.h"
+#include "secauth/AuthSizes.h"
 
 namespace secauth
 {
@@ -63,7 +63,7 @@ class KeyChangeState
 	openpal::Logger logger;
 	openpal::ICryptoProvider* pProvider;
 	uint32_t keyChangeSeqNum;
-	openpal::StaticBuffer<AuthConstants::MAX_CHALLENGE_DATA_SIZE> challengeData;
+	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> challengeData;
 	opendnp3::Group120Var5 statusRsp;
 	
 	

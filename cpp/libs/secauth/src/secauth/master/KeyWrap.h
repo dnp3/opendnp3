@@ -26,7 +26,7 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/StaticBuffer.h>
 
-#include "secauth/AuthConstants.h"
+#include "secauth/AuthSizes.h"
 #include "secauth/SessionKeysView.h"
 
 
@@ -49,7 +49,7 @@ namespace secauth
 	private:
 		
 		openpal::ReadBufferView data;
-		openpal::StaticBuffer<AuthConstants::MAX_KEY_WRAP_BUFFER_SIZE> buffer;		
+		openpal::StaticBuffer<AuthSizes::MAX_KEY_WRAP_BUFFER_SIZE> buffer;		
 	};
 
 }

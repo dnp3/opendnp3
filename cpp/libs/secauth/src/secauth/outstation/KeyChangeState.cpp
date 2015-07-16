@@ -34,7 +34,7 @@ namespace secauth
 {
 
 	KeyChangeState::KeyChangeState(uint16_t userNum, uint16_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :		
-		challengeSize(AuthConstants::GetBoundedChallengeSize(challengeSize_)),
+		challengeSize(AuthSizes::GetBoundedChallengeSize(challengeSize_)),
 		logger(logger_),
 		pProvider(&provider),
 		keyChangeSeqNum(0)
@@ -79,7 +79,7 @@ namespace secauth
 		Group120Var5 copy(statusRsp);
 		copy.hmacValue = ReadBufferView::Empty(); // exclude the HMAC from the comparison
 
-		const uint32_t MAX_SIZE = Group120Var5::MIN_SIZE + AuthConstants::MAX_CHALLENGE_DATA_SIZE;
+		const uint32_t MAX_SIZE = Group120Var5::MIN_SIZE + AuthSizes::MAX_CHALLENGE_DATA_SIZE;
 		openpal::StaticBuffer<MAX_SIZE> buffer;
 		
 		auto dest = buffer.GetWriteBuffer();

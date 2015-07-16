@@ -22,8 +22,6 @@
 #define SECAUTH_AUTHCONSTANTS_H
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/util/Comparisons.h>
-#include <opendnp3/objects/Group120.h>
 
 #include <cstdint>
 
@@ -34,58 +32,13 @@ namespace secauth
 
 struct AuthConstants : openpal::StaticOnly
 {	
-private:
-
-	static uint32_t WithModuloEightPadding(uint32_t size);
 
 public:
 
 	static const uint8_t NUM_SECURITY_STATS = 18;
 
-	static const uint16_t DEFAULT_SESSION_KEY_MAX_AUTH_COUNT = 1000; // 1815 - pg 243
-	static const uint8_t DEFAULT_SESSION_KEY_CHANGE_MINUTES = 15;	
-
-	const static uint32_t MIN_CHALLENGE_DATA_SIZE = 4;
-	const static uint32_t MAX_CHALLENGE_DATA_SIZE = 16;
-
-	const static uint32_t MIN_SESSION_KEY_SIZE_BYTES = 16;
-	const static uint32_t MAX_SESSION_KEY_SIZE_BYTES = 32;
-
-	const static uint16_t MAX_HMAC_TRUNC_SIZE = 16;  // SHA256 Trunc 16 has the longest length
-	const static uint16_t MAX_HMAC_OUTPUT_SIZE = 32; // SHA256 output is 32 bytes
-
-	// the maximum size of an outstation challenge response
-	// 4 bytes header + 6 bytes obj header  = 10	
-	const static uint32_t MAX_OUTSTATION_CHALLENGE_RESPONSE_FRAGMENT_SIZE = 10 + opendnp3::Group120Var1::MIN_SIZE + MAX_CHALLENGE_DATA_SIZE;
-
-	// the maximum size of a master challenge reply
-	// 2 bytes header + 6 bytes obj header = 8
-	const static uint32_t MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE = 8 + opendnp3::Group120Var2::MIN_SIZE + MAX_HMAC_TRUNC_SIZE;
-
-#define MACRO_MAX_KEY_WRAP_BUFFER (2 + 2 * AuthConstants::MAX_SESSION_KEY_SIZE_BYTES + opendnp3::Group120Var5::MIN_SIZE + AuthConstants::MAX_CHALLENGE_DATA_SIZE)
-#define MACRO_MAX_KEY_WRAP_BUFFER_MOD8 (MACRO_MAX_KEY_WRAP_BUFFER % 8)	
-
-	const static uint32_t MAX_KEY_WRAP_BUFFER_SIZE = (MACRO_MAX_KEY_WRAP_BUFFER_MOD8 == 0) ? MACRO_MAX_KEY_WRAP_BUFFER : (MACRO_MAX_KEY_WRAP_BUFFER + (8 - MACRO_MAX_KEY_WRAP_BUFFER_MOD8));
-		
-	static uint32_t GetBoundedSessionKeySize(uint32_t size)
-	{
-		return openpal::Bounded(size, MIN_SESSION_KEY_SIZE_BYTES, MAX_SESSION_KEY_SIZE_BYTES);
-	}
-
-	static bool SessionKeySizeWithinLimits(uint32_t size)
-	{
-		return openpal::WithinLimits(size, MIN_SESSION_KEY_SIZE_BYTES, MAX_SESSION_KEY_SIZE_BYTES);
-	}
-
-	static bool ChallengeDataSizeWithinLimits(uint32_t size)
-	{
-		return openpal::WithinLimits(size, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
-	}
-
-	static uint32_t GetBoundedChallengeSize(uint32_t size)
-	{
-		return openpal::Bounded(size, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
-	}
+	static const uint16_t DEFAULT_SESSION_KEY_MAX_AUTH_COUNT = 1000;	// 1815 - pg 243
+	static const uint8_t DEFAULT_SESSION_KEY_CHANGE_MINUTES = 15;		
 };
 
 }

@@ -21,7 +21,7 @@
 
 #include "SessionKeysView.h"
 
-#include "secauth/AuthConstants.h"
+#include "secauth/AuthSizes.h"
 
 namespace secauth
 {	
@@ -38,8 +38,8 @@ namespace secauth
 		bool SessionKeysView::IsValid() const
 		{
 			return (controlKey.Size() == monitorKey.Size()) &&
-				   AuthConstants::SessionKeySizeWithinLimits(controlKey.Size()) &&
-				   AuthConstants::SessionKeySizeWithinLimits(monitorKey.Size());
+				   AuthSizes::SessionKeySizeWithinLimits(controlKey.Size()) &&
+				   AuthSizes::SessionKeySizeWithinLimits(monitorKey.Size());
 		}	
 
 		uint32_t SessionKeysView::TotalSize() const

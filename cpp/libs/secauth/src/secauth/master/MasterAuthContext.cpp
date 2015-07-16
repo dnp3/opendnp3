@@ -166,7 +166,7 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 		return;
 	}
 
-	if (!AuthConstants::ChallengeDataSizeWithinLimits(challenge.Size()))
+	if (!AuthSizes::ChallengeDataSizeWithinLimits(challenge.Size()))
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Challenge data size outside of limits: %u", challenge.Size());
 		return;

@@ -35,7 +35,7 @@ namespace secauth
 {
 
 	ChallengeState::ChallengeState(uint16_t challengeSize, uint32_t maxRxASDUSize) : 
-		CHALLENGE_SIZE(AuthConstants::GetBoundedChallengeSize(challengeSize)),
+		CHALLENGE_SIZE(AuthSizes::GetBoundedChallengeSize(challengeSize)),
 		criticalASDU(maxRxASDUSize),
 		seqNumber(0)
 	{}

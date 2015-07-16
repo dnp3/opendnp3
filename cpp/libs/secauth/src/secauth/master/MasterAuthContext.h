@@ -83,7 +83,7 @@ private:
 	openpal::ReadBufferView		lastRequest;
 	SessionKeyTaskMap			sessionKeyTaskMap;
 
-	openpal::StaticBuffer<AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE> challengeReplyBuffer;
+	openpal::StaticBuffer<AuthSizes::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE> challengeReplyBuffer;
 
 };
 

@@ -24,7 +24,7 @@
 #include "KeyStatusHandler.h"
 #include "KeyWrap.h"
 
-#include "secauth/AuthConstants.h"
+#include "secauth/AuthSizes.h"
 
 #include "secauth/Crypto.h"
 #include "secauth/HMACProvider.h"
@@ -153,7 +153,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 	// save the KSQ
 	this->keyChangeSeqNum = status.keyChangeSeqNum;
 
-	if (!AuthConstants::ChallengeDataSizeWithinLimits(status.challengeData.Size()))
+	if (!AuthSizes::ChallengeDataSizeWithinLimits(status.challengeData.Size()))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Bad challenge data size");
 		return ResponseResult::ERROR_BAD_RESPONSE;
@@ -169,7 +169,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 	std::error_code ec;
 	
-	keys.DeriveFrom(*pCrypto, AuthConstants::MIN_SESSION_KEY_SIZE_BYTES, ec); // TODO - make the session key size configurable	
+	keys.DeriveFrom(*pCrypto, AuthSizes::MIN_SESSION_KEY_SIZE_BYTES, ec); // TODO - make the session key size configurable	
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unable to derive session keys: %s", ec.message().c_str());

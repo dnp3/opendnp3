@@ -21,7 +21,7 @@
 #ifndef SECAUTH_SESSIONKEYS_H
 #define SECAUTH_SESSIONKEYS_H
 
-#include "AuthConstants.h"
+#include "AuthSizes.h"
 #include "SessionKeysView.h"
 
 #include <openpal/crypto/ISecureRandom.h>
@@ -36,7 +36,7 @@ namespace secauth
 		public:
 
 		SessionKeySize(uint32_t size_) : 
-			size(AuthConstants::GetBoundedSessionKeySize(size_))
+			size(AuthSizes::GetBoundedSessionKeySize(size_))
 		{}
 
 		operator uint32_t() const { return size; }
@@ -61,8 +61,8 @@ namespace secauth
 			openpal::ReadBufferView controlKey;
 			openpal::ReadBufferView monitorKey;
 
-			openpal::SecureStaticBuffer<AuthConstants::MAX_SESSION_KEY_SIZE_BYTES> controlBuffer;
-			openpal::SecureStaticBuffer<AuthConstants::MAX_SESSION_KEY_SIZE_BYTES> monitorBuffer;
+			openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_SIZE_BYTES> controlBuffer;
+			openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_SIZE_BYTES> monitorBuffer;
 	};
 }
 

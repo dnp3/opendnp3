@@ -24,7 +24,7 @@
 #include <cstdint>
 
 #include "HMACMode.h"
-#include "AuthConstants.h"
+#include "AuthSizes.h"
 
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/container/StaticBuffer.h>
@@ -49,7 +49,7 @@ namespace secauth
 			HMACMode mode;
 			openpal::IHMACAlgo* pHMAC;
 			const uint32_t TRUNC_SIZE;
-			openpal::StaticBuffer<AuthConstants::MAX_HMAC_OUTPUT_SIZE> buffer;
+			openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> buffer;
 	};
 }
 
