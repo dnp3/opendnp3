@@ -22,6 +22,7 @@ option(TEST "Build tests" ${DEFAULT_ENABLE})
 option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
+option(DOTNET "ADDS the .NET bindings to the generated solution file")
 
 
 if(WIN32)
@@ -47,7 +48,7 @@ if(WIN32)
     #set (CMAKE_REQUIRED_INCLUDES $ENV{ASIO_HOME})
   #else()
     #message(FATAL_ERROR "You must define OSSL_HOME to point to your openssl include subdirectory")
-  #endif()
+  #endif() 
 
 else()
 
@@ -232,5 +233,25 @@ if(TEST)
 
 endif()
 
+if(WIN32)
 
+	
+	include_external_msproject(
+		CLRInterface
+		${CMAKE_SOURCE_DIR}/dotnet/bindings/CLRInterface/CLRInterface.csproj
+		TYPE FAE04EC0-301F-11D3-BF4B-00C04F79EFBC
+		PLATFORM "Any CPU"
+	)
+	set_target_properties(CLRInterface PROPERTIES FOLDER dotnet/bindings)
+	
+	include_external_msproject(
+		DNP3CLRAdapter
+		${CMAKE_SOURCE_DIR}/dotnet/bindings/CLRAdapter/DNP3CLRAdapter.vcxproj
+		TYPE 8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942		
+	)
+
+	set_target_properties(DNP3CLRAdapter PROPERTIES FOLDER dotnet/bindings)
+	#target_link_libraries (DNP3CLRAdapter CLRInterface)
+
+endif()
 
