@@ -233,25 +233,3 @@ if(TEST)
 
 endif()
 
-if(WIN32)
-
-	
-	include_external_msproject(
-		CLRInterface
-		${CMAKE_SOURCE_DIR}/dotnet/bindings/CLRInterface/CLRInterface.csproj
-		TYPE FAE04EC0-301F-11D3-BF4B-00C04F79EFBC
-		PLATFORM "Any CPU"
-	)
-	set_target_properties(CLRInterface PROPERTIES FOLDER dotnet/bindings)
-	
-	include_external_msproject(
-		DNP3CLRAdapter
-		${CMAKE_SOURCE_DIR}/dotnet/bindings/CLRAdapter/DNP3CLRAdapter.vcxproj
-		TYPE 8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942		
-	)
-
-	set_target_properties(DNP3CLRAdapter PROPERTIES FOLDER dotnet/bindings)
-	#target_link_libraries (DNP3CLRAdapter CLRInterface)
-
-endif()
-
