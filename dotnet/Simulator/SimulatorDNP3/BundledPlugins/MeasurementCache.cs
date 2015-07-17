@@ -40,7 +40,7 @@ namespace Automatak.Simulator.DNP3
 
         public MeasurementCache(DatabaseTemplate template)
         {
-            var info = new HeaderInfo(GroupVariation.UNKNOWN, QualifierCode.UNDEFINED, TimestampMode.SYNCHRONIZED);
+            var info = new HeaderInfo(GroupVariation.UNKNOWN, QualifierCode.UNDEFINED, TimestampMode.SYNCHRONIZED, 0);
 
             ISOEHandler handler = this;
 
@@ -201,72 +201,76 @@ namespace Automatak.Simulator.DNP3
         void IDatabase.Update(TimeAndInterval update, ushort index)
         {
             timeAndIntervals.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));            
-        }        
+        }
 
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             binaries.Update(converted);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<DoubleBitBinary>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<DoubleBitBinary>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             doubleBinaries.Update(converted);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             analogs.Update(converted);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Counter>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<Counter>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             counters.Update(converted);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<FrozenCounter>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<FrozenCounter>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             frozenCounters.Update(converted);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryOutputStatus>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<BinaryOutputStatus>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             binaryOutputStatii.Update(converted);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogOutputStatus>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<AnalogOutputStatus>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             analogOutputStatii.Update(converted);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<OctetString>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<OctetString>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             octetStrings.Update(converted);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             octetStrings.Update(converted);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryCommandEvent>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<BinaryCommandEvent>> values)
         {
             // TODO
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogCommandEvent>> values)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<AnalogCommandEvent>> values)
         {
             // TODO
+        }      
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<SecurityStat>> values)
+        {
+           
         }
-       
     }
 }

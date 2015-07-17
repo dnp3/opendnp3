@@ -157,11 +157,23 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\folder_diskette.png" />
+    <None Include="resources\info.png" />
+    <None Include="resources\add.png" />
+    <None Include="resources\satellite_dish_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\opendnp3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="automatak.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Commons\Commons.csproj">
       <Project>{67c09f7a-3dd4-4c02-aa3b-6882fb6ea816}</Project>
       <Name>Commons</Name>
     </ProjectReference>
-    <ProjectReference Include="..\simulatorAPI\SimulatorAPI.csproj">
+    <ProjectReference Include="..\SimulatorAPI\SimulatorAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>SimulatorAPI</Name>
     </ProjectReference>
@@ -173,18 +185,6 @@
       <Project>{428ddb1f-13f8-401c-aa0e-f0b80af1fc00}</Project>
       <Name>SimulatorUI</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\folder_diskette.png" />
-    <None Include="resources\info.png" />
-    <None Include="resources\add.png" />
-    <None Include="resources\satellite_dish_add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\opendnp3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="automatak.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

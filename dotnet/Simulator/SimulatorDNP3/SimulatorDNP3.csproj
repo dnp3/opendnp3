@@ -301,8 +301,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\bindings\CLRAdapter\DNP3CLRAdapter.vcxproj">
-      <Project>{7ce83e8a-7dd6-4731-9024-967df7cf60af}</Project>
+    <ProjectReference Include="..\..\bindings\CLRAdapter\CLRAdapter.vcxproj">
+      <Project>{107979a7-ba8c-43df-9a54-520ec96f3a7f}</Project>
       <Name>CLRAdapter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\bindings\CLRInterface\CLRInterface.csproj">
@@ -313,7 +313,7 @@
       <Project>{67c09f7a-3dd4-4c02-aa3b-6882fb6ea816}</Project>
       <Name>Commons</Name>
     </ProjectReference>
-    <ProjectReference Include="..\simulatorAPI\SimulatorAPI.csproj">
+    <ProjectReference Include="..\SimulatorAPI\SimulatorAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>SimulatorAPI</Name>
     </ProjectReference>

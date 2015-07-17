@@ -91,8 +91,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\bindings\CLRAdapter\DNP3CLRAdapter.vcxproj">
-      <Project>{7ce83e8a-7dd6-4731-9024-967df7cf60af}</Project>
+    <ProjectReference Include="..\..\bindings\CLRAdapter\CLRAdapter.vcxproj">
+      <Project>{107979a7-ba8c-43df-9a54-520ec96f3a7f}</Project>
       <Name>CLRAdapter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\bindings\CLRInterface\CLRInterface.csproj">
