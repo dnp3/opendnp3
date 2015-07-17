@@ -33,6 +33,20 @@ if(WIN32)
 
   set(LIB_TYPE STATIC) #default to static on MSVC
 
+  find_package(OpenSSL REQUIRED)
+
+  include_directories(${OPENSSL_INCLUDE_DIR})
+
+  message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+
+  #if (DEFINED ENV{OSSL_HOME})
+	#message("OSSL_HOME defined: $ENV{OSSL_HOME}")
+    #include_directories($ENV{OSSL_HOME})
+    #set (CMAKE_REQUIRED_INCLUDES $ENV{ASIO_HOME})
+  #else()
+    #message(FATAL_ERROR "You must define OSSL_HOME to point to your openssl include subdirectory")
+  #endif()
+
 else()
 
   set(PTHREAD pthread)
@@ -125,8 +139,6 @@ install(TARGETS secauth DESTINATION lib)
 install(DIRECTORY ./cpp/libs/secauth/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
 set_target_properties(secauth PROPERTIES FOLDER libs)
 
-
-
 if(DEMO)
 
   # ----- master demo executable -----
@@ -141,32 +153,34 @@ if(DEMO)
 
 endif()
 
-#[[
-
 if(OSSL)
 
   # ---- osslcrypto library ----
   file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
   add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
   target_link_libraries(osslcrypto openpal)
-  target_link_libraries(osslcrypto crypto)
-  target_link_libraries(osslcrypto pthread)
+  target_link_libraries(osslcrypto ${OPENSSL_LIBRARIES})  
   install(TARGETS osslcrypto DESTINATION lib)
   install(DIRECTORY ./cpp/libs/osslcrypto/src/osslcrypto/ DESTINATION include/osslcrypto ${INSTALL_ARGS})
+  set_target_properties(osslcrypto PROPERTIES FOLDER libs)
 
   if(DEMO)
 
   # ----- outstation SAv5 demo executable -----
   add_executable (outstationdemoSA ./cpp/examples/secauth/outstation/DemoMain.cpp)
   target_link_libraries (outstationdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto)
+  set_target_properties(outstationdemoSA PROPERTIES FOLDER demos/secauth)
 
   # ----- master SAv5 demo executable -----
   add_executable (masterdemoSA ./cpp/examples/secauth/master/DemoMain.cpp)
   target_link_libraries (masterdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto)
+  set_target_properties(masterdemoSA PROPERTIES FOLDER demos/secauth)
 
   endif()
 
 endif()
+
+#[[
 
 if(TEST)
 
