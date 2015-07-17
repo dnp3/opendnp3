@@ -180,47 +180,55 @@ if(OSSL)
 
 endif()
 
-#[[
-
 if(TEST)
 
   # ----- testlib library ------
   file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp)
   add_library(testlib ${testlib_SRC})
   target_link_libraries(testlib openpal)
+  set_target_properties(testlib PROPERTIES FOLDER tests/mocks)
 
   # ----- dnp3mocks library ------
   file(GLOB_RECURSE dnp3mocks_SRC ./cpp/tests/dnp3mocks/src/dnp3mocks/*.cpp)
   add_library(dnp3mocks ${dnp3mocks_SRC})
   target_link_libraries(dnp3mocks opendnp3 testlib)
+  set_target_properties(dnp3mocks PROPERTIES FOLDER tests/mocks)
 
   # ----- openpal tests -----
   file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp)
   add_executable (testopenpal ${openpal_TESTSRC})
-  target_link_libraries (testopenpal LINK_PUBLIC testlib pthread)
+  target_link_libraries (testopenpal LINK_PUBLIC testlib ${PTHREAD})
+  set_target_properties(testopenpal PROPERTIES FOLDER tests)
 
   # ----- opendnp3 tests -----
   file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})
-  target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks pthread)
+  target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks ${PTHREAD})
+  set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
 
   # ----- sa tests -----
   file(GLOB_RECURSE secauth_TESTSRC ./cpp/tests/secauthtests/src/*.cpp)
   add_executable (testsecauth ${secauth_TESTSRC})
   target_link_libraries (testsecauth LINK_PUBLIC secauth dnp3mocks)
-  
-  # ------ afl fuzzer exe -----
-  add_executable (aflfuzzer ./cpp/tests/afl-fuzzer/main.cpp)
-  target_link_libraries (aflfuzzer LINK_PUBLIC opendnp3)
+  set_target_properties(testsecauth PROPERTIES FOLDER tests)  
+
+  if(NOT WIN32)
+    # ------ afl fuzzer exe -----
+    add_executable (aflfuzzer ./cpp/tests/afl-fuzzer/main.cpp)
+    target_link_libraries (aflfuzzer LINK_PUBLIC opendnp3)
+    set_target_properties(masterdemoSA PROPERTIES FOLDER tests)
+  endif()
+
 
   # ----- opensslcrypto tests -----
   if(OSSL)
     file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp)
     add_executable (testosslcrypto ${osslcrypto_TESTSRC})
     target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto)
+	set_target_properties(testosslcrypto PROPERTIES FOLDER tests)
   endif()
 
 endif()
-]]
+
 
 
