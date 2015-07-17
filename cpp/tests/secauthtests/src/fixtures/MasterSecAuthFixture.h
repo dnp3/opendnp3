@@ -42,6 +42,8 @@ namespace opendnp3
 
 	class MasterSecAuthFixture
 	{
+		const static std::string MOCK_KEY_WRAP_DATA; // "DEADBEEF"		
+
 	public:
 
 		MasterSecAuthFixture(const MasterParams& params, const secauth::MasterAuthSettings& authSettings = secauth::MasterAuthSettings(), ITaskLock& lock = NullTaskLock::Instance());
@@ -49,6 +51,10 @@ namespace opendnp3
 		void SendToMaster(const std::string& hex);		
 
 		bool ConfigureUser(opendnp3::User user, UpdateKeyMode mode = UpdateKeyMode::AES128, uint8_t keyRepeat = 0xFF);
+
+		void TestRequestAndReply(const std::string& request, const std::string& response);
+
+		void TestSessionKeyExchange(User user);		
 
 		testlib::MockLogHandler log;
 		testlib::MockExecutor exe;

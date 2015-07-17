@@ -21,13 +21,18 @@
 
 #include "MasterSecAuthFixture.h"
 
+#include <catch.hpp>
+
 #include <testlib/BufferHelpers.h>
+#include <dnp3mocks/APDUHexBuilders.h>
 
 using namespace testlib;
 using namespace secauth;
 
 namespace opendnp3
 {	
+	const std::string MasterSecAuthFixture::MOCK_KEY_WRAP_DATA("DEADBEEF");
+
 	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, const MasterAuthSettings& authSettings, ITaskLock& lock) :
 		log(),
 		exe(),
@@ -52,6 +57,52 @@ namespace opendnp3
 	{
 		secauth::UpdateKey key(keyRepeat, mode);
 		return userDB.ConfigureUser(user, key);
+	}
+
+	void MasterSecAuthFixture::TestRequestAndReply(const std::string& request, const std::string& response)
+	{
+		this->exe.RunMany();
+		auto asdu = this->lower.PopWriteAsHex();
+		REQUIRE(asdu == request);
+		this->master.OnSendResult(true);
+		this->SendToMaster(response);
+		this->exe.RunMany();
+	}
+
+	void MasterSecAuthFixture::TestSessionKeyExchange(User user)
+	{
+		this->crypto.aes128.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
+
+		
+		auto requestKeyStatus = hex::RequestKeyStatus(0, user.GetId());
+		auto keyStatusResponse = hex::KeyStatusResponse(
+			IINField::Empty(),
+			0, // seq
+			0, // ksq
+			user.GetId(),
+			KeyWrapAlgorithm::AES_128,
+			KeyStatus::NOT_INIT,
+			HMACType::HMAC_SHA1_TRUNC_10,
+			hex::repeat(0xFF, 4), // challenge
+			"" // no hmac
+			);
+
+		this->TestRequestAndReply(requestKeyStatus, keyStatusResponse);
+
+		auto keyChangeRequest = hex::KeyChangeRequest(1, 0, user.GetId(), MOCK_KEY_WRAP_DATA);
+		auto finalKeyStatusResponse = hex::KeyStatusResponse(
+			IINField::Empty(),
+			1, // seq
+			0, // ksq
+			user.GetId(),
+			KeyWrapAlgorithm::AES_128,
+			KeyStatus::OK,
+			HMACType::HMAC_SHA1_TRUNC_10,
+			hex::repeat(0xFF, 4),	// challenge
+			hex::repeat(0xFF, 10) // hmac
+		);
+
+		this->TestRequestAndReply(keyChangeRequest, finalKeyStatusResponse);
 	}
 
 }

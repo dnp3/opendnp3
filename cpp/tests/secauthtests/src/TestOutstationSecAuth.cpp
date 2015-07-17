@@ -179,10 +179,8 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authen
 		REQUIRE(fixture.SendAndReceive(challengeReply) == error);
 	}
 
-	REQUIRE(fixture.context.sstate.otherStats.authFailuresDueToExpiredKeys == 1);
-		
-
 	REQUIRE(fixture.lower.HasNoData());
+	REQUIRE(fixture.context.sstate.otherStats.authFailuresDueToExpiredKeys == 1);		
 }
 
 TEST_CASE(SUITE("Non-critical requests are not challenged"))

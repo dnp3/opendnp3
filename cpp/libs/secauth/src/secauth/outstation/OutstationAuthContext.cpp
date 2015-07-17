@@ -110,6 +110,8 @@ void OAuthContext::CheckForTaskStart()
 
 		sstate.deferred.Process(handler);
 	}
+
+	OContext::CheckForTaskStart();
 }
 		
 void OAuthContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
