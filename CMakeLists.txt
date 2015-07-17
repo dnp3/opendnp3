@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.0)
 project (opendnp3)
 set(OPENDNP3_MAJOR_VERSION 2)
 set(OPENDNP3_MINOR_VERSION 0)
@@ -23,27 +23,41 @@ option(LIBCPP "manually link with libc++ (required for clang in some configurati
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
 
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 
-if(STATICLIBS)
-  set(LIB_TYPE STATIC)
+if(WIN32)
+
+  set_property(GLOBAL PROPERTY USE_FOLDERS ON) #allows the creation of solution folders
+
+  add_definitions(-D_WIN32_WINNT=0x0501) # for ASIO
+  add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)  
+
+  set(LIB_TYPE STATIC) #default to static on MSVC
+
 else()
-  set(LIB_TYPE SHARED)
+
+  set(PTHREAD pthread)
+
+  if(STATICLIBS)
+	set(LIB_TYPE STATIC)
+  else()
+	set(LIB_TYPE SHARED)
+  endif()
+
+  set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+
+  # different release and debug flags
+  set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+  set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+
+  if (WERROR)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+  endif()
+
 endif()
 
-if (WERROR)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
-endif()
 
-if (LIBCPP)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
-
-# different release and debug flags
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
 if (DEFINED ENV{ASIO_HOME})
   message("ASIO_HOME defined: $ENV{ASIO_HOME}")
@@ -75,14 +89,15 @@ file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp)
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
 install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
+set_target_properties(openpal PROPERTIES FOLDER libs)
 
 # ---- opendnp3 library ----
 file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
 add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
-target_link_libraries(opendnp3 openpal)
+target_link_libraries(openpal)
 install(TARGETS opendnp3 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/opendnp3/src/opendnp3/ DESTINATION include/opendnp3 ${INSTALL_ARGS})
-
+set_target_properties(opendnp3 PROPERTIES FOLDER libs)
 
 # ---- asiopal library ----
 file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp)
@@ -90,6 +105,7 @@ add_library(asiopal ${LIB_TYPE} ${asiopal_SRC})
 target_link_libraries(asiopal openpal)
 install(TARGETS asiopal DESTINATION lib)
 install(DIRECTORY ./cpp/libs/asiopal/src/asiopal/ DESTINATION include/asiopal ${INSTALL_ARGS})
+set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
 file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
@@ -99,6 +115,7 @@ target_link_libraries(asiodnp3 secauth)
 target_link_libraries(asiodnp3 asiopal)
 install(TARGETS asiodnp3 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/asiodnp3/src/asiodnp3/ DESTINATION include/asiodnp3 ${INSTALL_ARGS})
+set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
 
 # ---- secauth library ----
 file(GLOB_RECURSE secauth_SRC ./cpp/libs/secauth/src/secauth/*.cpp)
@@ -106,18 +123,25 @@ add_library(secauth ${LIB_TYPE} ${secauth_SRC})
 target_link_libraries(secauth opendnp3)
 install(TARGETS secauth DESTINATION lib)
 install(DIRECTORY ./cpp/libs/secauth/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
+set_target_properties(secauth PROPERTIES FOLDER libs)
+
+
 
 if(DEMO)
 
   # ----- master demo executable -----
   add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
-  target_link_libraries (masterdemo LINK_PUBLIC asiodnp3 pthread)
+  target_link_libraries (masterdemo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  set_target_properties(masterdemo PROPERTIES FOLDER demos)
 
   # ----- outstation demo executable -----
   add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
-  target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
+  target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  set_target_properties(outstationdemo PROPERTIES FOLDER demos)
 
 endif()
+
+#[[
 
 if(OSSL)
 
@@ -183,8 +207,6 @@ if(TEST)
   endif()
 
 endif()
-
-
-
+]]
 
 
