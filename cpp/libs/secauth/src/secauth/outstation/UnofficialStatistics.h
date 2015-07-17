@@ -18,37 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_STATISTICS_H
-#define SECAUTH_STATISTICS_H
+#ifndef SECAUTH_UNOFFICIALSTATISTICS_H
+#define SECAUTH_UNOFFICIALSTATISTICS_H
 
-#include <opendnp3/gen/SecurityStatIndex.h>
 #include <openpal/util/Uncopyable.h>
 
-#include "secauth/AuthConstants.h"
+#include <cstdint>
 
 namespace secauth
 {
 
 /**
-* Class for tracking security statistics as defined in 1815-2012
+* Class for tracking security statistics NOT defined in 1815-2012
 */
-struct Statistics : openpal::Uncopyable
+struct UnofficialStatistics : openpal::Uncopyable
 {	
 
 public:	
 
-	Statistics();
+	UnofficialStatistics() : authFailuresDueToExpiredKeys(0)
+	{}
 
-	/// Increment and return the value of the specified stat
-	uint32_t Increment(opendnp3::SecurityStatIndex index);
-
-	// Get the value of the specified stat
-	uint32_t GetValue(opendnp3::SecurityStatIndex index) const;
-
-private:
-
-	uint32_t statistics[AuthConstants::NUM_SECURITY_STATS];
-
+	uint32_t authFailuresDueToExpiredKeys;
 };
 
 }

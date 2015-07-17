@@ -52,6 +52,7 @@
     <ClInclude Include="src\secauth\outstation\SecurityState.h" />
     <ClInclude Include="src\secauth\outstation\SimpleOutstationUserDatabase.h" />
     <ClInclude Include="src\secauth\outstation\Statistics.h" />
+    <ClInclude Include="src\secauth\outstation\UnofficialStatistics.h" />
     <ClInclude Include="src\secauth\Session.h" />
     <ClInclude Include="src\secauth\SessionKeys.h" />
     <ClInclude Include="src\secauth\SessionKeysView.h" />

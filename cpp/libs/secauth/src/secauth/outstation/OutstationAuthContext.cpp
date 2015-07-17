@@ -126,7 +126,7 @@ void OAuthContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, cons
 
 void OAuthContext::Increment(SecurityStatIndex index)
 {
-	auto count = this->sstate.statistics.Increment(index);
+	auto count = this->sstate.stats.Increment(index);
 
 	DNPTime time(this->sstate.pTimeSource->Now().msSinceEpoch);
 
@@ -345,17 +345,18 @@ void OAuthContext::ProcessAuthReply(const opendnp3::APDUHeader& header, const op
 {
 	// first look-up the session for the specified user
 	User user(reply.userNum);
-	SessionKeysView view;
+	SessionKeysView keys;
 
-	if (sstate.sessions.TryGetSessionKeys(user, view) != KeyStatus::OK)
+	if (sstate.sessions.TryGetSessionKeys(user, keys) != KeyStatus::OK)
 	{
+		++(this->sstate.otherStats.authFailuresDueToExpiredKeys);
 		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "No valid session keys for user %u", user.GetId());
-		this->RespondWithAuthError(header, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED); // TODO - check this error code
+		this->RespondWithAuthError(header, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
 		return;
 	}
 
-	if (!sstate.challenge.VerifyAuthenticity(view.controlKey, sstate.hmac, reply.hmacValue, this->logger))
+	if (!sstate.challenge.VerifyAuthenticity(keys.controlKey, sstate.hmac, reply.hmacValue, this->logger))
 	{
 		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Authentication failure for user %u", user.GetId());
@@ -373,6 +374,8 @@ void OAuthContext::ProcessAuthReply(const opendnp3::APDUHeader& header, const op
 		return;
 	}
 
+	// this increments both the security statistic and the count on the key
+	this->IncrementSessionAuthCount(user);
 
 	auto asdu = sstate.challenge.GetCriticalASDU();
 	auto objects = asdu.Skip(APDU_REQUEST_HEADER_SIZE);

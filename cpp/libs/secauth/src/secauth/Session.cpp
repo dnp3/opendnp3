@@ -43,7 +43,7 @@ namespace secauth
 		if (this->status == KeyStatus::OK)
 		{
 			++this->authCount;
-			if (this->authCount > MAX_AUTH_COUNT)
+			if (this->authCount >= MAX_AUTH_COUNT)
 			{
 				this->status = KeyStatus::COMM_FAIL;
 			}

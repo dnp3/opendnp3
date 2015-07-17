@@ -139,11 +139,12 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured period"))
 	auto challengeReply = hex::ChallengeReply(seq, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
 	auto errorResp = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, 1, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
 	REQUIRE(fixture.SendAndReceive(challengeReply) == errorResp);
-
 	REQUIRE(fixture.lower.HasNoData());
+
+	REQUIRE(fixture.context.sstate.otherStats.authFailuresDueToExpiredKeys == 1);
 }
 
-TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authenticated messages"))
+TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authenticated messages for a user"))
 {
 	OutstationAuthSettings settings;
 	settings.maxAuthMsgCount = 1; // only allow a single authenticated message before invalidating keys
@@ -177,6 +178,8 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authen
 		auto error = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, csq, User::DEFAULT_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
 		REQUIRE(fixture.SendAndReceive(challengeReply) == error);
 	}
+
+	REQUIRE(fixture.context.sstate.otherStats.authFailuresDueToExpiredKeys == 1);
 		
 
 	REQUIRE(fixture.lower.HasNoData());

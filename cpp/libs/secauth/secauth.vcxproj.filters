@@ -140,6 +140,9 @@
     <ClInclude Include="src\secauth\AuthConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\outstation\UnofficialStatistics.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\SessionKeyTask.cpp">
