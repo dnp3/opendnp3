@@ -43,10 +43,41 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 		
 	fixture.master.OnLowerLayerUp();
 
-	fixture.TestSessionKeyExchange(user);
+	AppSeqNum seq;
+
+	fixture.TestSessionKeyExchange(seq, user);
 
 	// next task should be diable unsol w/ this configuration	
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
+}
+
+TEST_CASE(SUITE("Session keys are refreshed at the cofigured interval"))
+{
+	MasterParams params;
+	params.disableUnsolOnStartup = false;
+	params.unsolClassMask = ClassField();
+	params.startupIntegrityClassMask = ClassField();
+
+	User user = User::Default();
+	MasterAuthSettings settings;
+	settings.sessionChangeInterval = TimeDuration::Seconds(5);
+
+	MasterSecAuthFixture fixture(params, settings);
+	REQUIRE(fixture.ConfigureUser(User::Default()));
+
+	fixture.master.OnLowerLayerUp();
+
+
+	AppSeqNum seq;
+	fixture.TestSessionKeyExchange(seq, user);
+
+	REQUIRE(fixture.lower.HasNoData());
+
+	// check that advancing the timer starts up the next session key change
+	REQUIRE(fixture.exe.AdvanceToNextTimer());	
+	REQUIRE(fixture.exe.GetTime().milliseconds == 5000);
+	
+	fixture.TestSessionKeyExchange(seq, user);
 }
 
 TEST_CASE(SUITE("Master authenticates using default user"))
@@ -58,7 +89,8 @@ TEST_CASE(SUITE("Master authenticates using default user"))
 
 	fixture.master.OnLowerLayerUp();
 
-	fixture.TestSessionKeyExchange(user);
+	AppSeqNum seq;
+	fixture.TestSessionKeyExchange(seq, user);
 
 	// next task should be diable unsol w/ this configuration
 	auto disableUnsol = hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 2, ClassField::AllEventClasses());
@@ -73,13 +105,15 @@ TEST_CASE(SUITE("Master authenticates using default user"))
 
 	fixture.TestRequestAndReply(disableUnsol, challenge);
 
-	auto challengeReply = hex::ChallengeReply(2, 0, user.GetId(), hex::repeat(0xFF, 10));
-	auto response = hex::EmptyResponse(2);
+	auto challengeReply = hex::ChallengeReply(seq, 0, user.GetId(), hex::repeat(0xFF, 10));
+	auto response = hex::EmptyResponse(seq);
 
 	fixture.TestRequestAndReply(challengeReply, response);
 
+	seq.Increment();
+
 	// next task should be integrity poll
-	REQUIRE(fixture.lower.PopWriteAsHex() == hex::IntegrityPoll(3));
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::IntegrityPoll(seq));
 }
 
 TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))

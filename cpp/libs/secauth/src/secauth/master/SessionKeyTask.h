@@ -51,6 +51,7 @@ namespace secauth
 		SessionKeyTask(
 			opendnp3::IMasterApplication& application,
 			openpal::TimeDuration retryPeriod,
+			openpal::TimeDuration changeInterval,
 			openpal::Logger logger,
 			const opendnp3::User& user,
 			openpal::ICryptoProvider& crypto,
@@ -72,6 +73,7 @@ namespace secauth
 	private:	
 
 		openpal::TimeDuration retryPeriod;
+		openpal::TimeDuration changeInterval;
 		opendnp3::User user;
 		openpal::ICryptoProvider* pCrypto;
 		IMasterUserDatabase* pUserDB;

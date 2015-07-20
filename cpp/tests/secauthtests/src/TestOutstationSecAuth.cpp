@@ -96,7 +96,7 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
 {
 	OutstationAuthSettings settings;
-	settings.sessionKeyChangeInterval = TimeDuration::Minutes(5); // set to some known value	
+	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value	
 	OutstationSecAuthFixture fixture(settings);
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	fixture.LowerLayerUp();
@@ -121,7 +121,7 @@ TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
 TEST_CASE(SUITE("Sessions keys are invalidated after configured period"))
 {
 	OutstationAuthSettings settings;
-	settings.sessionKeyChangeInterval = TimeDuration::Minutes(5); // set to some known value	
+	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value	
 	OutstationSecAuthFixture fixture(settings);
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	fixture.LowerLayerUp();

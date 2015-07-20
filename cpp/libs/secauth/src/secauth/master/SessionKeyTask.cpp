@@ -42,6 +42,7 @@ namespace secauth
 
 SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 								openpal::TimeDuration retryPeriod_,
+								openpal::TimeDuration changeInterval_,
 								openpal::Logger logger,
 								const User& user_,
 								ICryptoProvider& crypto,
@@ -50,6 +51,7 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 
 							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, TaskConfig::Default()),
 							retryPeriod(retryPeriod_),
+							changeInterval(changeInterval_),
 							user(user_),
 							pCrypto(&crypto),
 							pUserDB(&userDB),
@@ -95,7 +97,7 @@ void SessionKeyTask::OnResponseError(openpal::MonotonicTimestamp now)
 
 void SessionKeyTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {
-	expiration = MonotonicTimestamp::Max();
+	expiration = now.Add(this->changeInterval);
 }
 
 void SessionKeyTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)

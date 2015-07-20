@@ -71,7 +71,7 @@ bool MAuthContext::GoOnline()
 		auto createSessionKeyTask = [this](const User& user)
 		{				
 			auto task = std::unique_ptr<SessionKeyTask>(
-				new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, this->logger, user, *this->pCrypto, *this->pUserDB, this->sessions)
+				new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, this->settings.sessionChangeInterval, this->logger, user, *this->pCrypto, *this->pUserDB, this->sessions)
 			);			
 			
 			this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(task.get()));

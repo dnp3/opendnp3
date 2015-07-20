@@ -69,15 +69,15 @@ namespace opendnp3
 		this->exe.RunMany();
 	}
 
-	void MasterSecAuthFixture::TestSessionKeyExchange(User user)
+	void MasterSecAuthFixture::TestSessionKeyExchange(AppSeqNum& seq, User user)
 	{
 		this->crypto.aes128.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
 
 		
-		auto requestKeyStatus = hex::RequestKeyStatus(0, user.GetId());
+		auto requestKeyStatus = hex::RequestKeyStatus(seq, user.GetId());
 		auto keyStatusResponse = hex::KeyStatusResponse(
 			IINField::Empty(),
-			0, // seq
+			seq,
 			0, // ksq
 			user.GetId(),
 			KeyWrapAlgorithm::AES_128,
@@ -89,10 +89,12 @@ namespace opendnp3
 
 		this->TestRequestAndReply(requestKeyStatus, keyStatusResponse);
 
-		auto keyChangeRequest = hex::KeyChangeRequest(1, 0, user.GetId(), MOCK_KEY_WRAP_DATA);
+		seq.Increment();
+
+		auto keyChangeRequest = hex::KeyChangeRequest(seq, 0, user.GetId(), MOCK_KEY_WRAP_DATA);
 		auto finalKeyStatusResponse = hex::KeyStatusResponse(
 			IINField::Empty(),
-			1, // seq
+			seq,
 			0, // ksq
 			user.GetId(),
 			KeyWrapAlgorithm::AES_128,
@@ -100,9 +102,11 @@ namespace opendnp3
 			HMACType::HMAC_SHA1_TRUNC_10,
 			hex::repeat(0xFF, 4),	// challenge
 			hex::repeat(0xFF, 10) // hmac
-		);
+		);		
 
 		this->TestRequestAndReply(keyChangeRequest, finalKeyStatusResponse);
+
+		seq.Increment();
 	}
 
 }

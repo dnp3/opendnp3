@@ -45,7 +45,9 @@ struct MasterAuthSettings
 	/// The maximum number of auth-ed messages before a session key change is required
 	uint32_t maxAuthMsgCount;
 	/// The maximum time allowed before a session key expires 
-	openpal::TimeDuration sessionKeyTimeout;	
+	openpal::TimeDuration sessionKeyTimeout;
+	/// The interval at which session keys are refreshed. You want this to be less than the key timeout by some margin.
+	openpal::TimeDuration sessionChangeInterval;
 
 	
 };

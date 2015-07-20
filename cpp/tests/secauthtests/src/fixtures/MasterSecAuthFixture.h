@@ -54,7 +54,7 @@ namespace opendnp3
 
 		void TestRequestAndReply(const std::string& request, const std::string& response);
 
-		void TestSessionKeyExchange(User user);		
+		void TestSessionKeyExchange(AppSeqNum& seq, User user);		
 
 		testlib::MockLogHandler log;
 		testlib::MockExecutor exe;
