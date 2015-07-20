@@ -32,7 +32,7 @@ if(WIN32)
   add_definitions(-D_WIN32_WINNT=0x0501) # for ASIO
   add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)  
 
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP")
 
   set(LIB_TYPE STATIC) #default to static on MSVC
 
