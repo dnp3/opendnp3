@@ -48,12 +48,13 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 	fixture.TestSessionKeyExchange(seq, user);
 
 	// next task should be diable unsol w/ this configuration	
-	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, seq, ClassField::AllEventClasses()));
 }
 
 TEST_CASE(SUITE("Session keys are refreshed at the cofigured interval"))
 {
 	MasterParams params;
+	// don't do any other tasks after the key exchange
 	params.disableUnsolOnStartup = false;
 	params.unsolClassMask = ClassField();
 	params.startupIntegrityClassMask = ClassField();
