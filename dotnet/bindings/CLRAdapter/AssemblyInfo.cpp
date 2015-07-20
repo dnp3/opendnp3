@@ -11,12 +11,12 @@ using namespace System::Security::Permissions;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly:AssemblyTitleAttribute(L"DNP3CLRAdapter")];
+[assembly:AssemblyTitleAttribute(L"CLRAdapter")];
 [assembly:AssemblyDescriptionAttribute(L"")];
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"DNP3CLRAdapter")];
-[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  Automatak LLC 2014-2014")];
+[assembly:AssemblyProductAttribute(L"CLRAdapter")];
+[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2015")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];
 
@@ -31,7 +31,7 @@ using namespace System::Security::Permissions;
 // You can specify all the value or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly:AssemblyVersionAttribute("2.0.0.2")];
+[assembly:AssemblyVersionAttribute("1.0.*")];
 
 [assembly:ComVisible(false)];
 

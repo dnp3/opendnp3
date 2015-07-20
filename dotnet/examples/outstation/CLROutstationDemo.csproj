@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\bindings\CLRAdapter\CLRAdapter.vcxproj">
-      <Project>{107979a7-ba8c-43df-9a54-520ec96f3a7f}</Project>
+      <Project>{95903db4-9de7-4e41-b990-6995108a8495}</Project>
       <Name>CLRAdapter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\bindings\CLRInterface\CLRInterface.csproj">
