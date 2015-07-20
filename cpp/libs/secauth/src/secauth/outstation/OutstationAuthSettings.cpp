@@ -35,7 +35,7 @@ namespace secauth
 		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
 		functions(CriticalFunctions::AuthEverything()),
 		maxAuthMsgCount(AuthConstants::DEFAULT_SESSION_KEY_MAX_AUTH_COUNT),
-		sessionKeyChangeInterval(openpal::TimeDuration::Minutes(AuthConstants::DEFAULT_SESSION_KEY_CHANGE_MINUTES))
+		sessionKeyTimeout(openpal::TimeDuration::Minutes(AuthConstants::DEFAULT_SESSION_KEY_CHANGE_MINUTES))
 	{}
 
 }

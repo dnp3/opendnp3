@@ -49,8 +49,8 @@ struct OutstationAuthSettings
 	CriticalFunctions functions;
 	/// The maximum number of auth-ed messages before a session key change is required
 	uint32_t maxAuthMsgCount;
-	/// The maximum time between session key changes
-	openpal::TimeDuration sessionKeyChangeInterval;
+	/// The maximum time allowed before a session key expires 
+	openpal::TimeDuration sessionKeyTimeout;
 	/// Thresholds for various security statistics
 	StatThresholds statThresholds;
 

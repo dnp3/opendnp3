@@ -56,7 +56,7 @@ MAuthContext::MAuthContext(
 	pTimeSource(&application),
 	pCrypto(&crypto),
 	pUserDB(&userDB),
-	sessions(executor, settings.sessionKeyChangeInterval, settings.maxAuthMsgCount)	
+	sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount)
 {
 
 }

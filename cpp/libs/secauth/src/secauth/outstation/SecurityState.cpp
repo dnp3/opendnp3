@@ -46,7 +46,7 @@ namespace secauth
 		pCrypto(&crypto),		
 		pState(OAuthStateIdle::Instance()),
 		keyChangeState(1, 4, logger, crypto),
-		sessions(executor, settings.sessionKeyChangeInterval, settings.maxAuthMsgCount),
+		sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount),
 		txBuffer(params.maxTxFragSize)
 	{
 				
