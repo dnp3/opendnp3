@@ -53,6 +53,9 @@ if(WIN32)
 else()
 
   set(PTHREAD pthread)
+  
+  find_package(OpenSSL REQUIRED)
+  message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 
   if(STATICLIBS)
 	set(LIB_TYPE STATIC)
@@ -171,12 +174,12 @@ if(OSSL)
 
   # ----- outstation SAv5 demo executable -----
   add_executable (outstationdemoSA ./cpp/examples/secauth/outstation/DemoMain.cpp)
-  target_link_libraries (outstationdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto)
+  target_link_libraries (outstationdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
   set_target_properties(outstationdemoSA PROPERTIES FOLDER demos/secauth)
 
   # ----- master SAv5 demo executable -----
   add_executable (masterdemoSA ./cpp/examples/secauth/master/DemoMain.cpp)
-  target_link_libraries (masterdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto)
+  target_link_libraries (masterdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
   set_target_properties(masterdemoSA PROPERTIES FOLDER demos/secauth)
 
   endif()
@@ -215,13 +218,14 @@ if(TEST)
   target_link_libraries (testsecauth LINK_PUBLIC secauth dnp3mocks)
   set_target_properties(testsecauth PROPERTIES FOLDER tests)  
 
+  #[[
   if(NOT WIN32)
     # ------ afl fuzzer exe -----
     add_executable (aflfuzzer ./cpp/tests/afl-fuzzer/main.cpp)
     target_link_libraries (aflfuzzer LINK_PUBLIC opendnp3)
-    set_target_properties(masterdemoSA PROPERTIES FOLDER tests)
+    set_target_properties(aflfuzzer PROPERTIES FOLDER tests)
   endif()
-
+  #]]
 
   # ----- opensslcrypto tests -----
   if(OSSL)
