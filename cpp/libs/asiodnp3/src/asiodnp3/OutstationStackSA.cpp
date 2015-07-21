@@ -41,72 +41,17 @@ OutstationStackSA::OutstationStackSA(
 	openpal::IUTCTimeSource& timeSource,
 	openpal::ICryptoProvider& crypto) :
 	
-	root(root_, id),
-	pLifecycle(&lifecycle),	
-	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
+	OutstationStackBase<IOutstationSA>(id, root_, executor, config, lifecycle),
 	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, timeSource, crypto),
 	outstation(ocontext)   
 {
 	stack.transport.SetAppLayer(&outstation);
 }
 
-opendnp3::DatabaseConfigView OutstationStackSA::GetConfigView()
-{
-	return outstation.GetConfigView();
-}
-
-void OutstationStackSA::SetRestartIIN()
-{
-	// this doesn't need to be synchronous, just post it
-	auto lambda = [this]() { outstation.SetRestartIIN(); };
-	pLifecycle->GetExecutor().strand.post(lambda);	
-}
-
-bool OutstationStackSA::Enable()
-{
-	return pLifecycle->EnableRoute(&stack.link);
-}
-
-bool OutstationStackSA::Disable()
-{
-	return pLifecycle->DisableRoute(&stack.link);
-}
-
-void OutstationStackSA::Shutdown()
-{
-	pLifecycle->Shutdown(&stack.link, this);	
-}
-
-StackStatistics OutstationStackSA::GetStackStatistics()
-{	
-	auto get = [this]() { return statistics; };
-	return pLifecycle->GetExecutor().ReturnBlockFor<StackStatistics>(get);	
-}
-
 void OutstationStackSA::AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
 {
 	auto add = [=]() { this->ocontext.AddUser(user, key, permissions); };
 	pLifecycle->GetExecutor().BlockFor(add);
-}
-
-void OutstationStackSA::SetLinkRouter(opendnp3::ILinkRouter& router)
-{
-	stack.link.SetRouter(router);
-}
-
-opendnp3::ILinkSession& OutstationStackSA::GetLinkContext()
-{
-	return stack.link;
-}
-
-openpal::IExecutor& OutstationStackSA::GetExecutor()
-{
-	return pLifecycle->GetExecutor();
-}
-
-void OutstationStackSA::CheckForUpdates()
-{
-	outstation.CheckForUpdates();
 }
 
 }

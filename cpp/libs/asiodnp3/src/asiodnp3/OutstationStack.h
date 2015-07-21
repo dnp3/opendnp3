@@ -21,21 +21,7 @@
 #ifndef ASIODNP3_OUTSTATIONSTACK_H
 #define ASIODNP3_OUTSTATIONSTACK_H
 
-#include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/Outstation.h>
-#include <opendnp3/outstation/IOutstationApplication.h>
-#include <opendnp3/link/ILinkRouter.h>
-#include <opendnp3/transport/TransportStack.h>
-
-#include <openpal/executor/IUTCTimeSource.h>
-#include <openpal/crypto/ICryptoProvider.h>
-
-#include "IStackLifecycle.h"
-#include "IOutstation.h"
-#include "ILinkBind.h"
-
-#include <memory>
+#include "OutstationStackBase.h"
 
 namespace asiodnp3
 {
@@ -43,7 +29,7 @@ namespace asiodnp3
 class ILinkSession;
 
 /** @section desc A stack object for a master */
-class OutstationStack: public IOutstation, public ILinkBind
+class OutstationStack: public OutstationStackBase<IOutstation>
 {
 public:
 
@@ -56,40 +42,13 @@ public:
 		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,		
 		IStackLifecycle& lifecycle);
-	
-
-	// ------- implement IOutstation -------
-
-	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
-
-	virtual void SetRestartIIN() override final;
-	
-	virtual bool Enable() override final;
-	
-	virtual bool Disable() override final;
-
-	virtual void Shutdown() override final;
-
-	virtual opendnp3::StackStatistics GetStackStatistics() override final;	
-
-	// ------- implement ILinkBind ---------
-
-	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final;
-
-	virtual opendnp3::ILinkSession& GetLinkContext() override final;
-
-private:		
-
-	virtual opendnp3::IDatabase& GetDatabase() override final { return outstation.GetDatabase(); }
-	virtual openpal::IExecutor& GetExecutor() override final;
-	virtual void CheckForUpdates() override final;
+		
 
 protected:
 
-	openpal::LogRoot root;	
-	opendnp3::StackStatistics statistics;	
-	IStackLifecycle* pLifecycle;
-	opendnp3::TransportStack stack;	
+	virtual opendnp3::Outstation& GetOutstation() override final { return outstation; }
+	virtual opendnp3::OContext& GetContext() override final { return ocontext; }
+	
 	opendnp3::OContext ocontext;
 	opendnp3::Outstation outstation;
 };

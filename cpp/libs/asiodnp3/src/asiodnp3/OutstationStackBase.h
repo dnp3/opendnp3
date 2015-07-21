@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONSTACK_H
-#define ASIODNP3_OUTSTATIONSTACK_H
+#ifndef ASIODNP3_OUTSTATIONSTACKBASE_H
+#define ASIODNP3_OUTSTATIONSTACKBASE_H
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
@@ -28,70 +28,107 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <openpal/executor/IUTCTimeSource.h>
-#include <openpal/crypto/ICryptoProvider.h>
-
 #include "IStackLifecycle.h"
 #include "IOutstation.h"
 #include "ILinkBind.h"
 
-#include <memory>
-
 namespace asiodnp3
 {
 
-class ILinkSession;
-
-template <class T, class U>
-class OutstationStackBase : public U, public ILinkBind
+/** @section desc A stack object for a master */
+template <class Interface>
+class OutstationStackBase : public Interface, public ILinkBind
 {
 public:
-
-	/// standard DNP3 constructor
+	
 	OutstationStackBase(
 		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,		
-		IStackLifecycle& lifecycle);
+		openpal::LogRoot& root_,
+		openpal::IExecutor& executor,
+		const opendnp3::OutstationStackConfig& config,
+		IStackLifecycle& lifecycle
+	) :
+		root(root_, id),
+		pLifecycle(&lifecycle),
+		stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link)
+	{}
 	
 
-	// ------- implement the base portion of the outstation interface -------
+	// ------- implement IOutstation -------
 
-	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
+	virtual opendnp3::DatabaseConfigView GetConfigView() override final
+	{
+		return this->GetOutstation().GetConfigView();
+	}
 
-	virtual void SetRestartIIN() override final;
+	virtual void SetRestartIIN() override final
+	{
+		// this doesn't need to be synchronous, just post it
+		auto lambda = [this]() { this->GetOutstation().SetRestartIIN(); };
+		pLifecycle->GetExecutor().strand.post(lambda);
+	}
 	
-	virtual bool Enable() override final;
+	virtual bool Enable() override final
+	{
+		return pLifecycle->EnableRoute(&stack.link);
+	}
 	
-	virtual bool Disable() override final;
+	virtual bool Disable() override final
+	{
+		return pLifecycle->DisableRoute(&stack.link);
+	}
 
-	virtual void Shutdown() override final;
+	virtual void Shutdown() override final
+	{
+		pLifecycle->Shutdown(&stack.link, this);
+	}
 
-	virtual opendnp3::StackStatistics GetStackStatistics() override final;	
+	virtual opendnp3::StackStatistics GetStackStatistics() override final
+	{
+		auto get = [this]() { return statistics; };
+		return pLifecycle->GetExecutor().ReturnBlockFor<StackStatistics>(get);
+	}
 
 	// ------- implement ILinkBind ---------
 
-	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final;
+	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final
+	{
+		stack.link.SetRouter(router);
+	}
 
-	virtual opendnp3::ILinkSession& GetLinkContext() override final;
+	virtual opendnp3::ILinkSession& GetLinkContext() override final
+	{
+		return stack.link;
+	}
 
 private:		
 
-	virtual opendnp3::IDatabase& GetDatabase() override final { return outstation.GetDatabase(); }
-	virtual openpal::IExecutor& GetExecutor() override final;
-	virtual void CheckForUpdates() override final;
+	virtual opendnp3::IDatabase& GetDatabase() override final
+	{
+		return this->GetOutstation().GetDatabase();
+	}
+
+	virtual openpal::IExecutor& GetExecutor() override final
+	{
+		return pLifecycle->GetExecutor();
+	}
+	
+	virtual void CheckForUpdates() override final
+	{
+		this->GetOutstation().CheckForUpdates();
+	}
 
 protected:
+
+	// functions that inheriting classes must implement
+
+	virtual opendnp3::Outstation& GetOutstation() = 0;
+	virtual opendnp3::OContext& GetContext() = 0;
 
 	openpal::LogRoot root;	
 	opendnp3::StackStatistics statistics;	
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;	
-	opendnp3::OContext ocontext;
-	opendnp3::Outstation outstation;
 };
 
 }
