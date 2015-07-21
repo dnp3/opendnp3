@@ -30,7 +30,7 @@
 namespace secauth
 {	
 
-class IUserSink
+class IOutstationUserSink
 {
 public:
 
@@ -50,7 +50,7 @@ class ISecAuthOutstationApplication : public opendnp3::IOutstationApplication
 		*
 		*	The sink is invoked for every user that the outstation has persisted in non-volatile memory
 		*/
-		virtual void LoadUsers(IUserSink& sink) = 0;
+		virtual void LoadUsers(IOutstationUserSink& sink) = 0;
 				
 };
 

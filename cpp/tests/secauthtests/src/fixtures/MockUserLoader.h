@@ -36,7 +36,7 @@ public:
 
 	void AddUser(User user, uint8_t keyRepeat, UpdateKeyMode mode, secauth::Permissions permissions = secauth::Permissions::AllowAll())
 	{
-		auto apply = [=](secauth::IUserSink& sink)
+		auto apply = [=](secauth::IOutstationUserSink& sink)
 		{
 			sink.Load(user, secauth::UpdateKey(keyRepeat, mode), permissions);
 		};
@@ -44,7 +44,7 @@ public:
 		users.push_back(apply);
 	}
 														
-	void LoadUsers(secauth::IUserSink& sink)
+	void LoadUsers(secauth::IOutstationUserSink& sink)
 	{
 		for (auto& fun : users)
 		{
@@ -54,7 +54,7 @@ public:
 
 private:
 
-	std::vector<std::function<void(secauth::IUserSink&)>> users;
+	std::vector<std::function<void(secauth::IOutstationUserSink&)>> users;
 };
 
 

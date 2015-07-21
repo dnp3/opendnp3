@@ -48,9 +48,9 @@ using namespace secauth;
 
 
 class Application : public ISecAuthOutstationApplication
-{
+{	
 	// Hard-wired configuration of the default user update key to all 0xFF for demo purposes
-	virtual void LoadUsers(IUserSink& sink) override
+	virtual void LoadUsers(IOutstationUserSink& sink) override
 	{				
 		sink.Load(
 			opendnp3::User::Default(),

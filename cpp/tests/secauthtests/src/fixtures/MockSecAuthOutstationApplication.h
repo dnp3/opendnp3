@@ -40,7 +40,7 @@ public:
 	MockSecAuthOutstationApplication(MockUserLoader& loader) : pLoader(&loader)
 	{}
 														
-	virtual void LoadUsers(secauth::IUserSink& sink)
+	virtual void LoadUsers(secauth::IOutstationUserSink& sink)
 	{
 		pLoader->LoadUsers(sink);
 	}
