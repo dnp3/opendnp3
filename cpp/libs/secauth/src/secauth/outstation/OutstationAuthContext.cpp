@@ -81,10 +81,12 @@ OAuthContext::OAuthContext(
 		OContext(config, EnableSecStats(dbTemplate), logger, executor, lower, commandHandler, application),
 		sstate(config.params, settings, logger, executor, timeSource, application, crypto)
 {
-	this->ConfigureSecStats(sstate.settings.statThresholds);
+	this->ConfigureSecStats(sstate.settings.statThresholds);	
+}
 
-	//ask the application to load user info
-	application.LoadUsers(sstate.userDB);
+void OAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
+{
+	sstate.userDB.AddUser(user, key, permissions);
 }
 
 bool OAuthContext::GoOffline()

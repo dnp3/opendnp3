@@ -48,8 +48,7 @@ class OutstationSecAuthFixture
 {
 
 public:
-	OutstationSecAuthFixture(
-		MockUserLoader& loader,
+	OutstationSecAuthFixture(		
 		const secauth::OutstationAuthSettings& authConfig = secauth::OutstationAuthSettings(),
 		const DatabaseTemplate& dbTemplate = DatabaseTemplate::BinaryOnly(1),
 		const OutstationConfig& config = OutstationConfig()		
@@ -70,6 +69,11 @@ public:
 	bool AdvanceToNextTimer();
 
 	uint32_t AdvanceTime(const openpal::TimeDuration& td);
+
+	void AddUser(User user, uint8_t keyRepeat, UpdateKeyMode mode, secauth::Permissions permissions = secauth::Permissions::AllowAll())
+	{
+		context.AddUser(user, secauth::UpdateKey(keyRepeat, mode), permissions);
+	}
 
 	
 	void SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data);

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONSTACKIMPL_H
-#define ASIODNP3_OUTSTATIONSTACKIMPL_H
+#ifndef ASIODNP3_OUTSTATIONSTACK_H
+#define ASIODNP3_OUTSTATIONSTACK_H
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
@@ -27,9 +27,6 @@
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
-
-#include <secauth/outstation/OutstationAuthStackConfig.h>
-#include <secauth/outstation/IOutstationApplicationSA.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/crypto/ICryptoProvider.h>
@@ -45,13 +42,13 @@ namespace asiodnp3
 
 class ILinkSession;
 
-/** @section desc A stack object for a master */
-class OutstationStackImpl : public IOutstation, public ILinkBind
+template <class T, class U>
+class OutstationStackBase : public U, public ILinkBind
 {
 public:
 
 	/// standard DNP3 constructor
-	OutstationStackImpl(
+	OutstationStackBase(
 		const char* id,
 	    openpal::LogRoot&,
 		openpal::IExecutor& executor,		
@@ -59,18 +56,9 @@ public:
 		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,		
 		IStackLifecycle& lifecycle);
+	
 
-	/// SA DNP3 constructor
-	OutstationStackImpl(
-		const char* id,
-		openpal::LogRoot&,
-		openpal::IExecutor& executor,
-		opendnp3::ICommandHandler& commandHandler,
-		secauth::IOutstationApplicationSA& application,
-		const secauth::OutstationAuthStackConfig& config,
-		IStackLifecycle& lifecycle,		
-		openpal::IUTCTimeSource& timeSource,		
-		openpal::ICryptoProvider& crypto);
+	// ------- implement the base portion of the outstation interface -------
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
 
@@ -102,7 +90,7 @@ protected:
 	opendnp3::StackStatistics statistics;	
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;	
-	std::unique_ptr<opendnp3::OContext> ocontext;
+	opendnp3::OContext ocontext;
 	opendnp3::Outstation outstation;
 };
 

@@ -35,12 +35,11 @@ using namespace testlib;
 #define SUITE(name) "OutstationSecurityStatsTestSuite - " name
 
 TEST_CASE(SUITE("ReadStaticSecurityStats"))
-{
-	MockUserLoader loader;
+{	
 	OutstationAuthSettings settings;
 	settings.functions.authRead = false;
 
-	OutstationSecAuthFixture fixture(loader, settings);
+	OutstationSecAuthFixture fixture(settings);
 	fixture.LowerLayerUp();
 
 	// The totalTx (index 5) and totalRx (index 6) are easy to test
@@ -60,8 +59,7 @@ TEST_CASE(SUITE("ReadStaticSecurityStats"))
 }
 
 TEST_CASE(SUITE("ReadSecurityStatEvents"))
-{
-	MockUserLoader loader;
+{	
 	OutstationAuthSettings settings;	
 	settings.functions.authRead = false;
 	settings.functions.authConfirm = false;
@@ -74,7 +72,7 @@ TEST_CASE(SUITE("ReadSecurityStatEvents"))
 	OutstationConfig config;
 	config.eventBufferConfig.maxSecurityStatisticEvents = 100;
 
-	OutstationSecAuthFixture fixture(loader, settings, DatabaseTemplate(), config);
+	OutstationSecAuthFixture fixture(settings, DatabaseTemplate(), config);
 	fixture.LowerLayerUp();
 		
 	AppSeqNum seq;

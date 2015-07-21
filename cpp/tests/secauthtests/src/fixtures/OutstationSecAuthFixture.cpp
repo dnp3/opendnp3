@@ -33,8 +33,7 @@ using namespace testlib;
 
 namespace opendnp3
 {
-	OutstationSecAuthFixture::OutstationSecAuthFixture(
-		MockUserLoader& loader,
+	OutstationSecAuthFixture::OutstationSecAuthFixture(		
 		const secauth::OutstationAuthSettings& authConfig,
 		const DatabaseTemplate& dbTemplate,
 		const OutstationConfig& config
@@ -43,7 +42,7 @@ namespace opendnp3
 		exe(),
 		lower(log.root),
 		cmdHandler(),
-		application(loader),
+		application(),
 		utc(),		
 		crypto(),		
 		context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, utc, crypto),

@@ -38,7 +38,7 @@ namespace secauth
 /** 
 	A very simple update key store for the default user
 */
-class OutstationUserDatabase : public IOutstationUserDatabase, public IOutstationUserSink
+class OutstationUserDatabase : public IOutstationUserDatabase
 {
 	struct UserData
 	{
@@ -65,8 +65,8 @@ class OutstationUserDatabase : public IOutstationUserDatabase, public IOutstatio
 
 		virtual bool UserExists(const opendnp3::User& user) const override final;
 
-		// --- implement IOutstationUserSink ---
-		virtual void Load(opendnp3::User user, const UpdateKey& key, Permissions permissions) override final;
+		
+		void AddUser(opendnp3::User user, const UpdateKey& key, Permissions permissions);
 
 	private:		
 

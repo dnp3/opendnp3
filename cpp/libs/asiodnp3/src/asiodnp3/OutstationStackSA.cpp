@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OutstationStackImpl.h"
+#include "OutstationStackSA.h"
 
 #include <asiopal/ASIOExecutor.h>
 
@@ -30,95 +30,81 @@ using namespace secauth;
 namespace asiodnp3
 {
 
-OutstationStackImpl::OutstationStackImpl(
-	const char* id,
-	openpal::LogRoot& root_,
-    openpal::IExecutor& executor,	
-	opendnp3::ICommandHandler& commandHandler,
-	IOutstationApplication& application,	
-    const OutstationStackConfig& config,
-	IStackLifecycle& lifecycle) :
-	
-	root(root_, id),
-	pLifecycle(&lifecycle),	
-	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
-	ocontext(std::unique_ptr<OContext>(new OContext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application))),
-	outstation(*ocontext)   
-{
-	stack.transport.SetAppLayer(&outstation);
-}
-
-OutstationStackImpl::OutstationStackImpl(
+OutstationStackSA::OutstationStackSA(
 	const char* id,
 	openpal::LogRoot& root_,
 	openpal::IExecutor& executor,
 	opendnp3::ICommandHandler& commandHandler,
 	secauth::IOutstationApplicationSA& application,
 	const secauth::OutstationAuthStackConfig& config,
-	IStackLifecycle& lifecycle,	
-	openpal::IUTCTimeSource& timeSource,	
+	IStackLifecycle& lifecycle,
+	openpal::IUTCTimeSource& timeSource,
 	openpal::ICryptoProvider& crypto) :
-
+	
 	root(root_, id),
-	pLifecycle(&lifecycle),
-	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),
-	ocontext(std::unique_ptr<OContext>(
-		new OAuthContext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, timeSource, crypto)
-	)),
-	outstation(*ocontext)
+	pLifecycle(&lifecycle),	
+	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
+	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, timeSource, crypto),
+	outstation(ocontext)   
 {
-
+	stack.transport.SetAppLayer(&outstation);
 }
 
-opendnp3::DatabaseConfigView OutstationStackImpl::GetConfigView()
+opendnp3::DatabaseConfigView OutstationStackSA::GetConfigView()
 {
 	return outstation.GetConfigView();
 }
 
-void OutstationStackImpl::SetRestartIIN()
+void OutstationStackSA::SetRestartIIN()
 {
 	// this doesn't need to be synchronous, just post it
 	auto lambda = [this]() { outstation.SetRestartIIN(); };
 	pLifecycle->GetExecutor().strand.post(lambda);	
 }
 
-bool OutstationStackImpl::Enable()
+bool OutstationStackSA::Enable()
 {
 	return pLifecycle->EnableRoute(&stack.link);
 }
 
-bool OutstationStackImpl::Disable()
+bool OutstationStackSA::Disable()
 {
 	return pLifecycle->DisableRoute(&stack.link);
 }
 
-void OutstationStackImpl::Shutdown()
+void OutstationStackSA::Shutdown()
 {
 	pLifecycle->Shutdown(&stack.link, this);	
 }
 
-StackStatistics OutstationStackImpl::GetStackStatistics()
+StackStatistics OutstationStackSA::GetStackStatistics()
 {	
 	auto get = [this]() { return statistics; };
 	return pLifecycle->GetExecutor().ReturnBlockFor<StackStatistics>(get);	
 }
 
-void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
+void OutstationStackSA::AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
+{
+	auto add = [=]() { this->ocontext.AddUser(user, key, permissions); };
+	pLifecycle->GetExecutor().BlockFor(add);
+}
+
+void OutstationStackSA::SetLinkRouter(opendnp3::ILinkRouter& router)
 {
 	stack.link.SetRouter(router);
 }
 
-opendnp3::ILinkSession& OutstationStackImpl::GetLinkContext()
+opendnp3::ILinkSession& OutstationStackSA::GetLinkContext()
 {
 	return stack.link;
 }
 
-openpal::IExecutor& OutstationStackImpl::GetExecutor()
+openpal::IExecutor& OutstationStackSA::GetExecutor()
 {
 	return pLifecycle->GetExecutor();
 }
 
-void OutstationStackImpl::CheckForUpdates()
+void OutstationStackSA::CheckForUpdates()
 {
 	outstation.CheckForUpdates();
 }

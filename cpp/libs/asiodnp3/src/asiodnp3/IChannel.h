@@ -43,7 +43,7 @@
 #include <secauth/master/MasterAuthStackConfig.h>
 
 #include "IMaster.h"
-#include "IOutstation.h"
+#include "IOutstationSA.h"
 #include "DestructorHook.h"
 
 #include <memory>
@@ -127,11 +127,11 @@ public:
 	/**
 	* Add an SA-enabled outstation to the channel
 	*/
-	virtual IOutstation* AddOutstation(	char const* id,
-										opendnp3::ICommandHandler& commandHandler,
-										secauth::IOutstationApplicationSA& application,
-										const secauth::OutstationAuthStackConfig& config,										
-										openpal::IUTCTimeSource& timeSource) = 0;
+	virtual IOutstationSA* AddOutstation(	char const* id,
+											opendnp3::ICommandHandler& commandHandler,
+											secauth::IOutstationApplicationSA& application,
+											const secauth::OutstationAuthStackConfig& config,										
+											openpal::IUTCTimeSource& timeSource) = 0;
 };
 
 }

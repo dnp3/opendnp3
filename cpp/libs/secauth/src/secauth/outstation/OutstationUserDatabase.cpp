@@ -75,7 +75,7 @@ bool OutstationUserDatabase::UserExists(const User& user) const
 	return iter != userMap.end();
 }
 
-void OutstationUserDatabase::Load(opendnp3::User user, const UpdateKey& key, Permissions permissions)
+void OutstationUserDatabase::AddUser(opendnp3::User user, const UpdateKey& key, Permissions permissions)
 {
 	if (key.IsValid())
 	{

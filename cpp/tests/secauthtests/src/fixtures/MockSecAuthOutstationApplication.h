@@ -23,10 +23,6 @@
 
 #include "secauth/outstation/IOutstationApplicationSA.h"
 
-#include "MockUserLoader.h"
-
-#include <vector>
-
 namespace opendnp3
 {
 
@@ -35,19 +31,7 @@ class MockSecAuthOutstationApplication : public secauth::IOutstationApplicationS
 
 public:
 
-	MockSecAuthOutstationApplication(MockUserLoader& loader) : pLoader(&loader)
-	{}
-														
-	virtual void LoadUsers(secauth::IOutstationUserSink& sink)
-	{
-		pLoader->LoadUsers(sink);
-	}
-
-private:
-
-	MockSecAuthOutstationApplication() = delete;	
 	
-	MockUserLoader* pLoader;
 };
 
 

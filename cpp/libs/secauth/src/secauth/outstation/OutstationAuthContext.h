@@ -58,6 +58,11 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 		openpal::ICryptoProvider& crypto
 	);
 
+
+	void AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions);
+
+	//// --- methods overriden in base class -----
+
 	virtual bool GoOffline() override final;
 
 	virtual void CheckForTaskStart() override final;

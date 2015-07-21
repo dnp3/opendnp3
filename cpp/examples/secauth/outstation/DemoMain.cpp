@@ -47,27 +47,14 @@ using namespace asiodnp3;
 using namespace secauth;
 
 
-class Application : public IOutstationApplicationSA
-{	
-	// Hard-wired configuration of the default user update key to all 0xFF for demo purposes
-	virtual void LoadUsers(IOutstationUserSink& sink) override
-	{				
-		sink.Load(
-			opendnp3::User::Default(),
-			UpdateKey(0xFF, UpdateKeyMode::AES128),
-			Permissions::AllowAll()
-		);
-	}
-};
-
 int main(int argc, char* argv[])
 {
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the communication logging by uncommenting below.
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
 	
-	// demo application interface
-	Application application;
+	// don't modify the defaults
+	IOutstationApplicationSA application;
 
 	// crypto provider we will use to create the outstation
 	// clean this up last since everything running in the manager depends on it
@@ -120,6 +107,13 @@ int main(int argc, char* argv[])
 		application,
 		config,		
 		asiopal::UTCTimeSource::Instance());	
+
+	// add a user to the outstation w/ a key of all 0xFF
+	pOutstation->AddUser(
+		opendnp3::User::Default(),
+		UpdateKey(0xFF, UpdateKeyMode::AES128),
+		Permissions::AllowAll()
+	);
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

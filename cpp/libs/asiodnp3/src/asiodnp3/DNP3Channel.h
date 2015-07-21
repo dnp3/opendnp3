@@ -98,7 +98,7 @@ public:
 								opendnp3::IOutstationApplication& application,
 								const opendnp3::OutstationStackConfig& config) override final;
 
-	virtual IOutstation* AddOutstation(char const* id,
+	virtual IOutstationSA* AddOutstation(char const* id,
 								opendnp3::ICommandHandler& commandHandler,
 								secauth::IOutstationApplicationSA& application,
 								const secauth::OutstationAuthStackConfig& config,								

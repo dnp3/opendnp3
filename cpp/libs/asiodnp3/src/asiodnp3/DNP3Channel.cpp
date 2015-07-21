@@ -23,7 +23,9 @@
 #include <asiopal/PhysicalLayerBase.h>
 
 #include "MasterStackImpl.h"
-#include "OutstationStackImpl.h"
+
+#include "OutstationStack.h"
+#include "OutstationStackSA.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -177,16 +179,16 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 	{ 				
 		auto factory = [&]()
 		{
-			return new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks);
+			return new OutstationStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks);
 		};
 
-		return this->AddStack<OutstationStackImpl>(config.link, factory);
+		return this->AddStack<OutstationStack>(config.link, factory);
 	};
 
 	return pExecutor->ReturnBlockFor<IOutstation*>(add);
 }
 
-IOutstation* DNP3Channel::AddOutstation(char const* id,
+IOutstationSA* DNP3Channel::AddOutstation(char const* id,
 	opendnp3::ICommandHandler& commandHandler,
 	secauth::IOutstationApplicationSA& application,
 	const secauth::OutstationAuthStackConfig& config,	
@@ -198,17 +200,17 @@ IOutstation* DNP3Channel::AddOutstation(char const* id,
 		return nullptr;
 	}
 
-	auto add = [&]() -> IOutstation*
+	auto add = [&]() -> IOutstationSA*
 	{
 		auto factory = [&]()
 		{
-			return new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, timeSource, *pCrypto);
+			return new OutstationStackSA(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, timeSource, *pCrypto);
 		};
 
-		return this->AddStack<OutstationStackImpl>(config.link, factory);
+		return this->AddStack<OutstationStackSA>(config.link, factory);
 	};
 
-	return pExecutor->ReturnBlockFor<IOutstation*>(add);
+	return pExecutor->ReturnBlockFor<IOutstationSA*>(add);
 }
 
 void DNP3Channel::SetShutdownHandler(const openpal::Action0& action)

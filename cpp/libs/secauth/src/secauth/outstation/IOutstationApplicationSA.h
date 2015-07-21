@@ -30,13 +30,6 @@
 namespace secauth
 {	
 
-class IOutstationUserSink
-{
-public:
-
-	virtual void Load(opendnp3::User, const UpdateKey&, Permissions) = 0;
-};
-
 /** 
 	Extends the outstation application interface for vanilla DNP3 with additional methods required for secure authentication
 */
@@ -45,12 +38,6 @@ class IOutstationApplicationSA : public opendnp3::IOutstationApplication
 	public:	
 		
 
-		/**
-		*	Called once during initialization	
-		*
-		*	The sink is invoked for every user that the outstation has persisted in non-volatile memory
-		*/
-		virtual void LoadUsers(IOutstationUserSink& sink) = 0;
 				
 };
 

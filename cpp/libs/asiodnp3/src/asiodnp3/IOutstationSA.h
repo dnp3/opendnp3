@@ -18,45 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_MOCKUSERLOADER_H
-#define SECAUTH_MOCKUSERLOADER_H
+#ifndef ASIODNP3_IOUTSTATIONSA_H
+#define ASIODNP3_IOUTSTATIONSA_H
 
-#include "secauth/outstation/IOutstationApplicationSA.h"
+#include "IOutstation.h"
 
-#include <vector>
-#include <functional>
+#include <opendnp3/app/User.h>
+#include <secauth/UpdateKey.h>
+#include <secauth/outstation/Permissions.h>
 
-namespace opendnp3
+namespace asiodnp3
 {
 
-class MockUserLoader
+/**
+Extend the normal IOutstation interface w/ SA features
+*/
+class IOutstationSA : public IOutstation
 {
-
-public:
-
-	void AddUser(User user, uint8_t keyRepeat, UpdateKeyMode mode, secauth::Permissions permissions = secauth::Permissions::AllowAll())
-	{
-		auto apply = [=](secauth::IOutstationUserSink& sink)
-		{
-			sink.Load(user, secauth::UpdateKey(keyRepeat, mode), permissions);
-		};
-
-		users.push_back(apply);
-	}
-														
-	void LoadUsers(secauth::IOutstationUserSink& sink)
-	{
-		for (auto& fun : users)
-		{
-			fun(sink);
-		}
-	}
-
-private:
-
-	std::vector<std::function<void(secauth::IOutstationUserSink&)>> users;
+	public:	
+	
+	/**
+	* Add a user to the outstation. This is normally only done during initialization.
+	*/
+	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions) = 0;
 };
-
 
 }
 
