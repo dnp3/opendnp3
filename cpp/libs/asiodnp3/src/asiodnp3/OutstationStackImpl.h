@@ -29,7 +29,7 @@
 #include <opendnp3/transport/TransportStack.h>
 
 #include <secauth/outstation/OutstationAuthStackConfig.h>
-#include <secauth/outstation/IOutstationUserDatabase.h>
+#include <secauth/outstation/ISecAuthOutstationApplication.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/crypto/ICryptoProvider.h>
@@ -65,11 +65,10 @@ public:
 		openpal::LogRoot&,
 		openpal::IExecutor& executor,
 		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,
+		secauth::ISecAuthOutstationApplication& application,
 		const secauth::OutstationAuthStackConfig& config,
 		IStackLifecycle& lifecycle,		
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IOutstationUserDatabase& userDB,
+		openpal::IUTCTimeSource& timeSource,		
 		openpal::ICryptoProvider& crypto);
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	

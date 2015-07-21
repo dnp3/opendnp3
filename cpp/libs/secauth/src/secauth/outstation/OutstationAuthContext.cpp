@@ -73,16 +73,18 @@ OAuthContext::OAuthContext(
 			openpal::IExecutor& executor,
 			ILowerLayer& lower,
 			ICommandHandler& commandHandler,
-			IOutstationApplication& application,
+			ISecAuthOutstationApplication& application,
 			const OutstationAuthSettings& settings,
-			openpal::IUTCTimeSource& timeSource,
-			IOutstationUserDatabase& userDatabase,
+			openpal::IUTCTimeSource& timeSource,			
 			openpal::ICryptoProvider& crypto
 		) :
 		OContext(config, EnableSecStats(dbTemplate), logger, executor, lower, commandHandler, application),
-		sstate(config.params, settings, logger, executor, timeSource, userDatabase, crypto)
+		sstate(config.params, settings, logger, executor, timeSource, application, crypto)
 {
 	this->ConfigureSecStats(sstate.settings.statThresholds);
+
+	//ask the application to load user info
+	application.LoadUsers(sstate.userDB);
 }
 
 bool OAuthContext::GoOffline()
@@ -228,7 +230,7 @@ void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu,
 	UpdateKeyMode updateKeyType;
 	ReadBufferView updateKey;
 
-	if (!sstate.pUserDatabase->GetUpdateKey(user, updateKeyType, updateKey))
+	if (!sstate.userDB.GetUpdateKey(user, updateKeyType, updateKey))
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring session key change request for unknown user %u", change.userNum);
 		this->RespondWithAuthError(header, change.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
@@ -310,7 +312,7 @@ void OAuthContext::ProcessRequestKeyStatus(const opendnp3::APDUHeader& header, c
 {
 	User user(status.userNum);
 	UpdateKeyMode type;
-	if (!sstate.pUserDatabase->GetUpdateKeyType(user, type))
+	if (!sstate.userDB.GetUpdateKeyType(user, type))
 	{
 		// TODO  - the spec appears to just say "ignore users that don't exist". Confirm this.
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "User %u does not exist", user.GetId());
@@ -368,7 +370,7 @@ void OAuthContext::ProcessAuthReply(const opendnp3::APDUHeader& header, const op
 
 	auto criticalHeader = sstate.challenge.GetCriticalHeader();
 
-	if (!sstate.pUserDatabase->IsAuthorized(user, criticalHeader.function))
+	if (!sstate.userDB.IsAuthorized(user, criticalHeader.function))
 	{
 		this->Increment(SecurityStatIndex::AUTHORIZATION_FAILURES);
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Verified user %u is not authorized for function %s", user.GetId(), FunctionCodeToString(criticalHeader.function));

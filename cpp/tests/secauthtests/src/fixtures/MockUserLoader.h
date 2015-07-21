@@ -18,40 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_MOCKUSERLOADER_H
+#define SECAUTH_MOCKUSERLOADER_H
 
-#include "SecurityState.h"
+#include "secauth/outstation/ISecAuthOutstationApplication.h"
 
-#include "OAuthStates.h"
+#include <vector>
+#include <functional>
 
-using namespace opendnp3;
-
-namespace secauth
+namespace opendnp3
 {
-	SecurityState::SecurityState(
-			const OutstationParams& params,
-			const OutstationAuthSettings& settings_, 
-			openpal::Logger logger, 
-			openpal::IExecutor& executor, 
-			openpal::IUTCTimeSource& timeSource, 
-			ISecAuthOutstationApplication& application,
-			openpal::ICryptoProvider& crypto) :
 
-		settings(settings_),
-		challenge(settings.challengeSize, params.maxRxFragSize),
-		challengeTimer(executor),
-		hmac(crypto, settings.hmacMode),
-		deferred(params.maxRxFragSize),		
-		pTimeSource(&timeSource),
-		pApplication(&application),
-		pCrypto(&crypto),		
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount),
-		txBuffer(params.maxTxFragSize)
+class MockUserLoader
+{
+
+public:
+
+	void AddUser(User user, uint8_t keyRepeat, UpdateKeyMode mode, secauth::Permissions permissions = secauth::Permissions::AllowAll())
 	{
-				
+		auto apply = [=](secauth::IUserSink& sink)
+		{
+			sink.Load(user, secauth::UpdateKey(keyRepeat, mode), permissions);
+		};
+
+		users.push_back(apply);
 	}
-	
+														
+	void LoadUsers(secauth::IUserSink& sink)
+	{
+		for (auto& fun : users)
+		{
+			fun(sink);
+		}
+	}
+
+private:
+
+	std::vector<std::function<void(secauth::IUserSink&)>> users;
+};
+
+
 }
 
-
+#endif

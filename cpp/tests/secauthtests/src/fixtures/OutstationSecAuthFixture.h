@@ -27,7 +27,6 @@
 #include <opendnp3/outstation/Database.h>
 
 #include <secauth/outstation/OutstationAuthContext.h>
-#include <secauth/outstation/SimpleOutstationUserDatabase.h>
 
 #include <functional>
 
@@ -38,7 +37,8 @@
 #include <dnp3mocks/MockCommandHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockCryptoProvider.h>
-#include <dnp3mocks/MockOutstationApplication.h>
+
+#include "MockSecAuthOutstationApplication.h"
 
 
 namespace opendnp3
@@ -49,12 +49,11 @@ class OutstationSecAuthFixture
 
 public:
 	OutstationSecAuthFixture(
+		MockUserLoader& loader,
 		const secauth::OutstationAuthSettings& authConfig = secauth::OutstationAuthSettings(),
 		const DatabaseTemplate& dbTemplate = DatabaseTemplate::BinaryOnly(1),
 		const OutstationConfig& config = OutstationConfig()		
-	);
-
-	void AddUser(opendnp3::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat, const secauth::Permissions& permissions = secauth::Permissions::AllowAll());
+	);	
 														
 	uint32_t SendToOutstation(const std::string& hex);	
 
@@ -73,21 +72,15 @@ public:
 	uint32_t AdvanceTime(const openpal::TimeDuration& td);
 
 	
-
-
-
 	void SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data);
 	void TestSessionKeyChange(AppSeqNum& seq, User user, opendnp3::KeyWrapAlgorithm keyWrap, secauth::HMACMode hmacMode);
-
-
 
 	testlib::MockLogHandler log;
 	testlib::MockExecutor exe;
 	MockLowerLayer lower;
 	MockCommandHandler cmdHandler;
-	MockOutstationApplication application;
-	testlib::MockUTCTimeSource utc;
-	secauth::SimpleOutstationUserDatabase users;
+	MockSecAuthOutstationApplication application;
+	testlib::MockUTCTimeSource utc;	
 	MockCryptoProvider crypto;	
 	secauth::OAuthContext context;
 	Outstation outstation;	

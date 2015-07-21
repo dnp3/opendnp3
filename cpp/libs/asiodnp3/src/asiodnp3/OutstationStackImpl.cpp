@@ -53,18 +53,17 @@ OutstationStackImpl::OutstationStackImpl(
 	openpal::LogRoot& root_,
 	openpal::IExecutor& executor,
 	opendnp3::ICommandHandler& commandHandler,
-	opendnp3::IOutstationApplication& application,
+	secauth::ISecAuthOutstationApplication& application,
 	const secauth::OutstationAuthStackConfig& config,
 	IStackLifecycle& lifecycle,	
-	openpal::IUTCTimeSource& timeSource,
-	secauth::IOutstationUserDatabase& userDB,
+	openpal::IUTCTimeSource& timeSource,	
 	openpal::ICryptoProvider& crypto) :
 
 	root(root_, id),
 	pLifecycle(&lifecycle),
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),
 	ocontext(std::unique_ptr<OContext>(
-		new OAuthContext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, timeSource, userDB, crypto)
+		new OAuthContext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, timeSource, crypto)
 	)),
 	outstation(*ocontext)
 {

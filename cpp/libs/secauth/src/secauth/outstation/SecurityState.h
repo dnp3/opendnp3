@@ -34,12 +34,12 @@
 #include "secauth/DeferredASDU.h"
 #include "secauth/SessionStore.h"
 
-#include "IOutstationUserDatabase.h"
-#include "KeyChangeState.h"
-#include "OutstationAuthSettings.h"
-#include "ChallengeState.h"
-#include "Statistics.h"
-#include "UnofficialStatistics.h"
+#include "secauth/outstation/OutstationUserDatabase.h"
+#include "secauth/outstation/KeyChangeState.h"
+#include "secauth/outstation/OutstationAuthSettings.h"
+#include "secauth/outstation/ChallengeState.h"
+#include "secauth/outstation/Statistics.h"
+#include "secauth/outstation/UnofficialStatistics.h"
 
 namespace secauth
 {
@@ -56,7 +56,7 @@ class SecurityState
 		openpal::Logger logger, 
 		openpal::IExecutor& executor,
 		openpal::IUTCTimeSource& timeSource, 
-		IOutstationUserDatabase& userdb, 
+		ISecAuthOutstationApplication& application,
 		openpal::ICryptoProvider& crypto
 	);	
 	
@@ -66,7 +66,8 @@ class SecurityState
 	HMACProvider hmac;
 	DeferredASDU deferred;	
 	openpal::IUTCTimeSource* pTimeSource;
-	IOutstationUserDatabase* pUserDatabase;
+	ISecAuthOutstationApplication* pApplication;
+	OutstationUserDatabase userDB;
 	openpal::ICryptoProvider* pCrypto;	
 	IOAuthState* pState;
 	KeyChangeState keyChangeState;

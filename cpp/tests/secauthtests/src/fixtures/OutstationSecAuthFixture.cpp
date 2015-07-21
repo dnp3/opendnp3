@@ -34,6 +34,7 @@ using namespace testlib;
 namespace opendnp3
 {
 	OutstationSecAuthFixture::OutstationSecAuthFixture(
+		MockUserLoader& loader,
 		const secauth::OutstationAuthSettings& authConfig,
 		const DatabaseTemplate& dbTemplate,
 		const OutstationConfig& config
@@ -42,27 +43,13 @@ namespace opendnp3
 		exe(),
 		lower(log.root),
 		cmdHandler(),
-		application(),
-		utc(),
-		users(),
+		application(loader),
+		utc(),		
 		crypto(),		
-		context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, utc, users, crypto),
+		context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, utc, crypto),
 		outstation(context)
 	{
 		lower.SetUpperLayer(outstation);
-	}
-
-	void OutstationSecAuthFixture::AddUser(opendnp3::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat, const Permissions& permissions)
-	{
-		auto keySize = (mode == UpdateKeyMode::AES128) ? 16 : 32;
-		openpal::Buffer buffer(keySize);
-		buffer.GetWriteBufferView().SetAllTo(keyRepeat);
-				
-		users.ConfigureUser(
-			opendnp3::User::Default(),
-			UpdateKey(buffer.ToReadOnly()),
-			permissions			
-		);		
 	}
 
 	uint32_t OutstationSecAuthFixture::LowerLayerUp()

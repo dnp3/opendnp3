@@ -18,40 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_ISECAUTHOUTSTATIONAPPLICATION_H
+#define SECAUTH_ISECAUTHOUTSTATIONAPPLICATION_H
 
-#include "SecurityState.h"
+#include <opendnp3/outstation/IOutstationApplication.h>
+#include <opendnp3/app/User.h>
 
-#include "OAuthStates.h"
-
-using namespace opendnp3;
+#include "secauth/UpdateKey.h"
+#include "secauth/outstation/Permissions.h"
 
 namespace secauth
-{
-	SecurityState::SecurityState(
-			const OutstationParams& params,
-			const OutstationAuthSettings& settings_, 
-			openpal::Logger logger, 
-			openpal::IExecutor& executor, 
-			openpal::IUTCTimeSource& timeSource, 
-			ISecAuthOutstationApplication& application,
-			openpal::ICryptoProvider& crypto) :
+{	
 
-		settings(settings_),
-		challenge(settings.challengeSize, params.maxRxFragSize),
-		challengeTimer(executor),
-		hmac(crypto, settings.hmacMode),
-		deferred(params.maxRxFragSize),		
-		pTimeSource(&timeSource),
-		pApplication(&application),
-		pCrypto(&crypto),		
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount),
-		txBuffer(params.maxTxFragSize)
-	{
+class IUserSink
+{
+public:
+
+	virtual void Load(opendnp3::User, const UpdateKey&, Permissions) = 0;
+};
+
+/** 
+	Extends the normal outstation application interface with hooks required for secure authentication support.
+*/
+class ISecAuthOutstationApplication : public opendnp3::IOutstationApplication
+{
+	public:	
+		
+
+		/**
+		*	Called once during initialization	
+		*
+		*	The sink is invoked for every user that the outstation has persisted in non-volatile memory
+		*/
+		virtual void LoadUsers(IUserSink& sink) = 0;
 				
-	}
-	
+};
+
 }
 
+#endif
 

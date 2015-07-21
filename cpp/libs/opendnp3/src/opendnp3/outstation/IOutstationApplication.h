@@ -22,6 +22,8 @@
 #ifndef OPENDNP3_IOUTSTATIONAPPLICATION_H
 #define OPENDNP3_IOUTSTATIONAPPLICATION_H
 
+#include <openpal/executor/UTCTimestamp.h>
+
 #include "opendnp3/gen/PointClass.h"
 #include "opendnp3/gen/RestartMode.h"
 #include "opendnp3/gen/AssignClassType.h"
@@ -46,57 +48,57 @@ class IOutstationApplication
 	/// Queries whether the the outstation supports absolute time writes
 	/// If this function returns false, WriteAbsoluteTime will never be called
 	/// and the outstation will return IIN 2.1 (FUNC_NOT_SUPPORTED)
-	virtual bool SupportsWriteAbsoluteTime() = 0;
+	virtual bool SupportsWriteAbsoluteTime() { return false; } 
 
 	/// Write the time to outstation, only called if SupportsWriteAbsoluteTime return true
 	/// @return boolean value indicating if the time value supplied was accepted. Returning
 	/// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.
 	/// The outstation should clear its NEED_TIME field when handling this response
-	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) = 0;
+	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) { return false; }
 
 	/// Queries whether the outstation supports the writing of TimeAndInterval
 	/// If this function returns false, WriteTimeAndInterval will never be called
 	/// and the outstation will return IIN 2.1 (FUNC_NOT_SUPPORTED) when it receives this request
-	virtual bool SupportsWriteTimeAndInterval() = 0;
+	virtual bool SupportsWriteTimeAndInterval() { return false; }
 
 	/// Write one or more TimeAndInterval values. Only called if SupportsWriteTimeAndInterval returns true.
 	/// The outstation application code is reponsible for updating TimeAndInterval values in the database if this behavior
 	/// is desired
 	/// @return boolean value indicating if the values supplied were accepted. Returning
 	/// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.	
-	virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values) = 0;
+	virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values) { return false; }
 
 	/// True if the outstation supports the assign class function code
 	/// If this function returns false, the assign class callbacks will never be called
 	/// and the outstation will return IIN 2.1 (FUNC_NOT_SUPPORTED) when it receives this function code
-	virtual bool SupportsAssignClass() = 0;
+	virtual bool SupportsAssignClass() { return false; }
 
 	/// Called if SupportsAssignClass returns true
 	/// The type and range are pre-validated against the outstation's database
 	/// and class assignments are automatically applied internally.
 	/// This callback allows user code to persist the changes to non-volatile memory	
-	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) = 0;
+	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) {}
 
 	/// Returns the application-controlled IIN field
-	virtual ApplicationIIN GetApplicationIIN() const = 0;
+	virtual ApplicationIIN GetApplicationIIN() const { return ApplicationIIN(); }
 
 	/// Query the outstation for the cold restart mode it supports
-	virtual RestartMode ColdRestartSupport() const = 0;
+	virtual RestartMode ColdRestartSupport() const { return RestartMode::UNSUPPORTED; }
 
 	/// Query the outstation for the warm restart mode it supports
-	virtual RestartMode WarmRestartSupport() const = 0;
+	virtual RestartMode WarmRestartSupport() const { return RestartMode::UNSUPPORTED; }
 
 	/// The outstation should perform a complete restart.
 	/// See the DNP3 specification for a complete descripton of normal behavior
 	/// @return number of seconds or milliseconds until restart is complete. The value
 	/// is interpreted based on the Restart Mode returned from ColdRestartSupport()
-	virtual uint16_t ColdRestart() = 0;
+	virtual uint16_t ColdRestart() { return 65535; }
 
 	/// The outstation should perform a partial restart of only the DNP3 application.
 	/// See the DNP3 specification for a complete descripton of normal behavior
 	/// @return number of seconds or milliseconds until restart is complete. The value
 	/// is interpreted based on the Restart Mode returned from WarmRestartSupport()
-	virtual uint16_t WarmRestart() = 0;
+	virtual uint16_t WarmRestart() { return 65535; }
 
 	
 	virtual ~IOutstationApplication() {}	
@@ -104,35 +106,11 @@ class IOutstationApplication
 
 class DefaultOutstationApplication : public IOutstationApplication
 {
-	public:
+	public:	
 
-
-
-	virtual bool SupportsWriteAbsoluteTime() override final { return false; }
-
-	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final { return false; }
+	static IOutstationApplication& Instance();	
 	
-	virtual bool SupportsWriteTimeAndInterval() override final { return false; }
-	
-	virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values) override final { return false; }
-
-	virtual bool SupportsAssignClass() override final { return false; }
-	
-	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final { }
-
-	static IOutstationApplication& Instance();
-
-	virtual ApplicationIIN GetApplicationIIN() const override final { return ApplicationIIN(); };
-
-	virtual RestartMode ColdRestartSupport() const override final { return RestartMode::UNSUPPORTED; }
-	
-	virtual RestartMode WarmRestartSupport() const override final { return RestartMode::UNSUPPORTED; }
-	
-	virtual uint16_t ColdRestart() override final { return 65535; }
-	
-	virtual uint16_t WarmRestart() override final { return 65535; }
-	
-	private:
+	protected:
 
 	DefaultOutstationApplication() {}
 

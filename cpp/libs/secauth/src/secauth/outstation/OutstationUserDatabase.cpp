@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "SimpleOutstationUserDatabase.h"
+#include "OutstationUserDatabase.h"
 
 using namespace openpal;
 using namespace opendnp3;
@@ -27,7 +27,7 @@ using namespace opendnp3;
 namespace secauth
 {
 		
-bool SimpleOutstationUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
+bool OutstationUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	if (iter == userMap.end())
@@ -42,7 +42,7 @@ bool SimpleOutstationUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode&
 	}
 }
 
-bool SimpleOutstationUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& type) const
+bool OutstationUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& type) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	if (iter == userMap.end())
@@ -56,7 +56,7 @@ bool SimpleOutstationUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyM
 	}
 }
 
-bool SimpleOutstationUserDatabase::IsAuthorized(const User& user, opendnp3::FunctionCode code) const
+bool OutstationUserDatabase::IsAuthorized(const User& user, opendnp3::FunctionCode code) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	if (iter == userMap.end())
@@ -69,22 +69,17 @@ bool SimpleOutstationUserDatabase::IsAuthorized(const User& user, opendnp3::Func
 	}	
 }
 
-bool SimpleOutstationUserDatabase::UserExists(const User& user) const
+bool OutstationUserDatabase::UserExists(const User& user) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	return iter != userMap.end();
 }
 
-bool SimpleOutstationUserDatabase::ConfigureUser(const User& user, const UpdateKey& key, const Permissions& permissions)
+void OutstationUserDatabase::Load(opendnp3::User user, const UpdateKey& key, Permissions permissions)
 {
 	if (key.IsValid())
 	{
-		userMap[user.GetId()] = UserData(key, permissions);
-		return true;
-	}
-	else
-	{
-		return false;
+		userMap[user.GetId()] = UserData(key, permissions);		
 	}
 }
 

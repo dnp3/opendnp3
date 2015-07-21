@@ -36,8 +36,10 @@ using namespace testlib;
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {	
-	OutstationSecAuthFixture fixture;	
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	MockUserLoader loader;
+	loader.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES128);
+
+	OutstationSecAuthFixture fixture(loader);	
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -46,8 +48,10 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 {
-	OutstationSecAuthFixture fixture;	
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	MockUserLoader loader;
+	loader.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES256);
+
+	OutstationSecAuthFixture fixture(loader);
 	fixture.LowerLayerUp();
 	
 	AppSeqNum seq;
@@ -56,11 +60,13 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 {
+	MockUserLoader loader;
+	loader.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES256);
+
 	OutstationAuthSettings settings;
 	settings.hmacMode = HMACMode::SHA1_TRUNC_8; // use a non-default HMAC mode
 
-	OutstationSecAuthFixture fixture(settings);
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	OutstationSecAuthFixture fixture(loader, settings);	
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -69,10 +75,11 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 
 TEST_CASE(SUITE("Critical requests are challenged when session keys are not initialized"))
 {
+	MockUserLoader loader;
 	OutstationAuthSettings settings;
 	settings.challengeSize = 5; // try a non-default challenge size
 
-	OutstationSecAuthFixture fixture(settings);
+	OutstationSecAuthFixture fixture(loader, settings);
 	
 	fixture.LowerLayerUp();
 
@@ -95,10 +102,12 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 
 TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
 {
+	MockUserLoader loader;
+	loader.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES128);
+
 	OutstationAuthSettings settings;
 	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value	
-	OutstationSecAuthFixture fixture(settings);
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	OutstationSecAuthFixture fixture(loader, settings);	
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -120,10 +129,12 @@ TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
 
 TEST_CASE(SUITE("Sessions keys are invalidated after configured period"))
 {
+	MockUserLoader loader;
+	loader.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES128);
+
 	OutstationAuthSettings settings;
 	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value	
-	OutstationSecAuthFixture fixture(settings);
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	OutstationSecAuthFixture fixture(loader, settings);	
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -146,10 +157,12 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured period"))
 
 TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authenticated messages for a user"))
 {
+	MockUserLoader loader;
+	loader.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES128);
+
 	OutstationAuthSettings settings;
 	settings.maxAuthMsgCount = 1; // only allow a single authenticated message before invalidating keys
-	OutstationSecAuthFixture fixture(settings);
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	OutstationSecAuthFixture fixture(loader, settings);	
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -185,10 +198,11 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authen
 
 TEST_CASE(SUITE("Non-critical requests are not challenged"))
 {
+	MockUserLoader loader;
 	OutstationAuthSettings settings;
 	settings.functions.authRead = false;
 
-	OutstationSecAuthFixture fixture(settings);
+	OutstationSecAuthFixture fixture(loader, settings);
 	fixture.LowerLayerUp();
 
 	fixture.SendToOutstation(hex::EventPoll(0));
@@ -197,9 +211,10 @@ TEST_CASE(SUITE("Non-critical requests are not challenged"))
 
 TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 {
+	MockUserLoader loader;
+	loader.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES256);
 	OutstationAuthSettings settings;	
-	OutstationSecAuthFixture fixture(settings);	
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);	
+	OutstationSecAuthFixture fixture(loader, settings);	
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -229,8 +244,10 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 
 TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 {	
-	OutstationSecAuthFixture fixture;	
-	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF, Permissions::Allowed(FunctionCode::WRITE));
+	MockUserLoader loader;
+	loader.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES256, Permissions::Allowed(FunctionCode::WRITE));
+
+	OutstationSecAuthFixture fixture(loader);	
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;

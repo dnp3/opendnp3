@@ -33,7 +33,7 @@
 #include <openpal/container/StaticBuffer.h>
 
 #include <osslcrypto/CryptoProvider.h>
-#include <secauth/outstation/SimpleOutstationUserDatabase.h>
+#include <secauth/outstation/ISecAuthOutstationApplication.h>
 
 #include <string>
 #include <thread>
@@ -46,21 +46,19 @@ using namespace asiopal;
 using namespace asiodnp3;
 using namespace secauth;
 
-// Hard-wired configuration of the default user update key for demo purposes
-void AddDefaultUser(SimpleOutstationUserDatabase& db)
+
+class Application : public ISecAuthOutstationApplication
 {
-	// add a 128-bit demo key of all 0xFF
-	openpal::StaticBuffer<16> data;
-	data.GetWriteBuffer().SetAllTo(0xFF);
-
-	UpdateKey key(data.ToReadOnly());
-
-	db.ConfigureUser(
-		opendnp3::User::Default(),
-		key,
-		Permissions::AllowAll()		
-	);
-}
+	// Hard-wired configuration of the default user update key to all 0xFF for demo purposes
+	virtual void LoadUsers(IUserSink& sink) override
+	{				
+		sink.Load(
+			opendnp3::User::Default(),
+			UpdateKey(0xFF, UpdateKeyMode::AES128),
+			Permissions::AllowAll()
+		);
+	}
+};
 
 int main(int argc, char* argv[])
 {
@@ -68,12 +66,8 @@ int main(int argc, char* argv[])
 	// You can add all the communication logging by uncommenting below.
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
 	
-	
-
-	// Create a user database
-	secauth::SimpleOutstationUserDatabase userDatabase;
-	// setup the default user
-	AddDefaultUser(userDatabase);
+	// demo application interface
+	Application application;
 
 	// crypto provider we will use to create the outstation
 	// clean this up last since everything running in the manager depends on it
@@ -123,10 +117,9 @@ int main(int argc, char* argv[])
 	auto pOutstation = pChannel->AddOutstation(
 		"outstation",
 		SuccessCommandHandler::Instance(),
-		DefaultOutstationApplication::Instance(),
+		application,
 		config,		
-		asiopal::UTCTimeSource::Instance(),
-		userDatabase);	
+		asiopal::UTCTimeSource::Instance());	
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

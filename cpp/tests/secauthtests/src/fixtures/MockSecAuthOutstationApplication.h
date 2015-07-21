@@ -18,40 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_MOCKSECAUTHOUTSTATIONAPPLICATION_H
+#define SECAUTH_MOCKSECAUTHOUTSTATIONAPPLICATION_H
 
-#include "SecurityState.h"
+#include "secauth/outstation/ISecAuthOutstationApplication.h"
 
-#include "OAuthStates.h"
+#include "MockUserLoader.h"
 
-using namespace opendnp3;
+#include <vector>
 
-namespace secauth
+namespace opendnp3
 {
-	SecurityState::SecurityState(
-			const OutstationParams& params,
-			const OutstationAuthSettings& settings_, 
-			openpal::Logger logger, 
-			openpal::IExecutor& executor, 
-			openpal::IUTCTimeSource& timeSource, 
-			ISecAuthOutstationApplication& application,
-			openpal::ICryptoProvider& crypto) :
 
-		settings(settings_),
-		challenge(settings.challengeSize, params.maxRxFragSize),
-		challengeTimer(executor),
-		hmac(crypto, settings.hmacMode),
-		deferred(params.maxRxFragSize),		
-		pTimeSource(&timeSource),
-		pApplication(&application),
-		pCrypto(&crypto),		
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount),
-		txBuffer(params.maxTxFragSize)
+
+
+class MockSecAuthOutstationApplication : public secauth::ISecAuthOutstationApplication
+{
+
+public:
+
+	MockSecAuthOutstationApplication(MockUserLoader& loader) : pLoader(&loader)
+	{}
+														
+	virtual void LoadUsers(secauth::IUserSink& sink)
 	{
-				
+		pLoader->LoadUsers(sink);
 	}
+
+private:
+
+	MockSecAuthOutstationApplication() = delete;	
 	
+	MockUserLoader* pLoader;
+};
+
+
 }
 
-
+#endif

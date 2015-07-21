@@ -18,13 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SIMPLEOUTSTATIONUSERDATABASE_H
-#define SECAUTH_SIMPLEOUTSTATIONUSERDATABASE_H
+#ifndef SECAUTH_OUTSTATIONUSERDATABASE_H
+#define SECAUTH_OUTSTATIONUSERDATABASE_H
 
 #include "IOutstationUserDatabase.h"
 
 #include "secauth/UpdateKey.h"
 #include "secauth/outstation/Permissions.h"
+#include "secauth/outstation/ISecAuthOutstationApplication.h"
 
 #include <openpal/container/Buffer.h>
 
@@ -37,7 +38,7 @@ namespace secauth
 /** 
 	A very simple update key store for the default user
 */
-class SimpleOutstationUserDatabase : public IOutstationUserDatabase
+class OutstationUserDatabase : public IOutstationUserDatabase, public IUserSink
 {
 	struct UserData
 	{
@@ -64,9 +65,8 @@ class SimpleOutstationUserDatabase : public IOutstationUserDatabase
 
 		virtual bool UserExists(const opendnp3::User& user) const override final;
 
-		// copies the update key into the key store permanently
-		// fails if the update key is invalid
-		bool ConfigureUser(const opendnp3::User& user, const UpdateKey& key, const Permissions& permissions);
+		// --- implement ISecAuthOutstationApplication::IUserSink ---
+		virtual void Load(opendnp3::User user, const UpdateKey& key, Permissions permissions) override final;
 
 	private:		
 
