@@ -105,14 +105,14 @@ add_definitions(-DASIO_STANDALONE)
 set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
 
 # ---- openpal library ----
-file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp)
+file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp ./cpp/libs/openpal/src/openpal/*.h)
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
 install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
 set_target_properties(openpal PROPERTIES FOLDER libs)
 
 # ---- opendnp3 library ----
-file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
+file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp ./cpp/libs/opendnp3/src/opendnp3/*.h)
 add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(openpal)
 install(TARGETS opendnp3 DESTINATION lib)
@@ -120,7 +120,7 @@ install(DIRECTORY ./cpp/libs/opendnp3/src/opendnp3/ DESTINATION include/opendnp3
 set_target_properties(opendnp3 PROPERTIES FOLDER libs)
 
 # ---- asiopal library ----
-file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp)
+file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp ./cpp/libs/asiopal/src/asiopal/*.h)
 add_library(asiopal ${LIB_TYPE} ${asiopal_SRC})
 target_link_libraries(asiopal openpal)
 install(TARGETS asiopal DESTINATION lib)
@@ -128,7 +128,7 @@ install(DIRECTORY ./cpp/libs/asiopal/src/asiopal/ DESTINATION include/asiopal ${
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
-file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
+file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp ./cpp/libs/asiodnp3/src/asiodnp3/*.h)
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 opendnp3)
 target_link_libraries(asiodnp3 secauth)
@@ -138,7 +138,7 @@ install(DIRECTORY ./cpp/libs/asiodnp3/src/asiodnp3/ DESTINATION include/asiodnp3
 set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
 
 # ---- secauth library ----
-file(GLOB_RECURSE secauth_SRC ./cpp/libs/secauth/src/secauth/*.cpp)
+file(GLOB_RECURSE secauth_SRC ./cpp/libs/secauth/src/secauth/*.cpp ./cpp/libs/secauth/src/secauth/*.h)
 add_library(secauth ${LIB_TYPE} ${secauth_SRC})
 target_link_libraries(secauth opendnp3)
 install(TARGETS secauth DESTINATION lib)
@@ -162,7 +162,7 @@ endif()
 if(OSSL)
 
   # ---- osslcrypto library ----
-  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
+  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp ./cpp/libs/osslcrypto/src/osslcrypto/*.h)
   add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
   target_link_libraries(osslcrypto openpal)
   target_link_libraries(osslcrypto ${OPENSSL_LIBRARIES})  
@@ -189,31 +189,31 @@ endif()
 if(TEST)
 
   # ----- testlib library ------
-  file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp)
+  file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp ./cpp/tests/testlib/src/testlib/*.h)
   add_library(testlib ${testlib_SRC})
   target_link_libraries(testlib openpal)
   set_target_properties(testlib PROPERTIES FOLDER tests/mocks)
 
   # ----- dnp3mocks library ------
-  file(GLOB_RECURSE dnp3mocks_SRC ./cpp/tests/dnp3mocks/src/dnp3mocks/*.cpp)
+  file(GLOB_RECURSE dnp3mocks_SRC ./cpp/tests/dnp3mocks/src/dnp3mocks/*.cpp ./cpp/tests/dnp3mocks/src/dnp3mocks/*.h)
   add_library(dnp3mocks ${dnp3mocks_SRC})
   target_link_libraries(dnp3mocks opendnp3 testlib)
   set_target_properties(dnp3mocks PROPERTIES FOLDER tests/mocks)
 
   # ----- openpal tests -----
-  file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp)
+  file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp ./cpp/tests/openpaltests/src/*.h)
   add_executable (testopenpal ${openpal_TESTSRC})
   target_link_libraries (testopenpal LINK_PUBLIC testlib ${PTHREAD})
   set_target_properties(testopenpal PROPERTIES FOLDER tests)
 
   # ----- opendnp3 tests -----
-  file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp)
+  file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp ./cpp/tests/opendnp3tests/src/*.h)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})
   target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks ${PTHREAD})
   set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
 
   # ----- sa tests -----
-  file(GLOB_RECURSE secauth_TESTSRC ./cpp/tests/secauthtests/src/*.cpp)
+  file(GLOB_RECURSE secauth_TESTSRC ./cpp/tests/secauthtests/src/*.cpp ./cpp/tests/secauthtests/src/*.h)
   add_executable (testsecauth ${secauth_TESTSRC})
   target_link_libraries (testsecauth LINK_PUBLIC secauth dnp3mocks)
   set_target_properties(testsecauth PROPERTIES FOLDER tests)  
@@ -229,7 +229,7 @@ if(TEST)
 
   # ----- opensslcrypto tests -----
   if(OSSL)
-    file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp)
+    file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp ./cpp/tests/osslcryptotests/*.h)
     add_executable (testosslcrypto ${osslcrypto_TESTSRC})
     target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto)
 	set_target_properties(testosslcrypto PROPERTIES FOLDER tests)
