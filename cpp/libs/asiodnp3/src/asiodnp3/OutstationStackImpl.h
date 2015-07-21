@@ -34,8 +34,9 @@
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
-#include "OutstationBase.h"
 #include "IStackLifecycle.h"
+#include "IOutstation.h"
+#include "ILinkBind.h"
 
 #include <memory>
 
@@ -45,7 +46,7 @@ namespace asiodnp3
 class ILinkSession;
 
 /** @section desc A stack object for a master */
-class OutstationStackImpl : public OutstationBase
+class OutstationStackImpl : public IOutstation, public ILinkBind
 {
 public:
 

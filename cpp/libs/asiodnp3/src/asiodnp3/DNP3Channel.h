@@ -33,8 +33,6 @@
 #include "IChannel.h"
 #include "MultidropTaskLock.h"
 #include "StackLifecycle.h"
-#include "OutstationBase.h"
-#include "MasterBase.h"
 
 #include "asiodnp3/impl/LinkLayerRouter.h"
 #include <memory>

@@ -22,19 +22,30 @@
 #ifndef SECAUTH_IMASTERAPPLICATIONSA_H
 #define SECAUTH_IMASTERAPPLICATIONSA_H
 
+#include <opendnp3/app/User.h>
 #include <opendnp3/master/IMasterApplication.h>
+
+#include "secauth/UpdateKey.h"
 
 namespace secauth
 {	
+
+class IMasterUserSink
+{
+public:
+
+	virtual void Load(opendnp3::User, const UpdateKey&) = 0;
+};
+
 
 /** 
 	Extends the master application interface for vanilla DNP3 with additional methods required for secure authentication
 */
 class IMasterApplicationSA : public opendnp3::IMasterApplication
 {
-	public:		
+	
 
-		
+	
 };
 
 }

@@ -134,12 +134,12 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 {
 	auto add = [&]() -> IMaster*
 	{
-		auto factory = [&]() -> MasterBase*
+		auto factory = [&]()
 		{
 			return new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock);
 		};
 
-		return this->AddStack<MasterBase>(config.link, factory);
+		return this->AddStack<MasterStackImpl>(config.link, factory);
 	};
 
 	return pExecutor->ReturnBlockFor<IMaster*>(add);	
@@ -160,12 +160,12 @@ IMaster* DNP3Channel::AddMaster(	char const* id,
 
 	auto add = [&]() -> IMaster*
 	{
-		auto factory = [&]() -> MasterBase*
+		auto factory = [&]()
 		{
 			return new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, userDB, *pCrypto);			
 		};
 
-		return this->AddStack<MasterBase>(config.link, factory);
+		return this->AddStack<MasterStackImpl>(config.link, factory);
 	};
 	
 	return pExecutor->ReturnBlockFor<IMaster*>(add);
@@ -175,12 +175,12 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 {
 	auto add = [this, id, &commandHandler, &application, config]() -> IOutstation*
 	{ 				
-		auto factory = [&]() -> OutstationBase*
+		auto factory = [&]()
 		{
 			return new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks);
 		};
 
-		return this->AddStack<OutstationBase>(config.link, factory);
+		return this->AddStack<OutstationStackImpl>(config.link, factory);
 	};
 
 	return pExecutor->ReturnBlockFor<IOutstation*>(add);
@@ -200,12 +200,12 @@ IOutstation* DNP3Channel::AddOutstation(char const* id,
 
 	auto add = [&]() -> IOutstation*
 	{
-		auto factory = [&]() -> OutstationBase*
+		auto factory = [&]()
 		{
 			return new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, timeSource, *pCrypto);
 		};
 
-		return this->AddStack<OutstationBase>(config.link, factory);
+		return this->AddStack<OutstationStackImpl>(config.link, factory);
 	};
 
 	return pExecutor->ReturnBlockFor<IOutstation*>(add);

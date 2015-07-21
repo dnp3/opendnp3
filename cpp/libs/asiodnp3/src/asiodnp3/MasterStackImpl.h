@@ -21,8 +21,9 @@
 #ifndef ASIODNP3_MASTERSTACKIMPL_H
 #define ASIODNP3_MASTERSTACKIMPL_H
 
-#include "MasterBase.h"
 #include "IStackLifecycle.h"
+#include "IMaster.h"
+#include "ILinkBind.h"
 
 #include <opendnp3/link/ILinkSession.h>
 #include <opendnp3/master/MasterStackConfig.h>
@@ -40,7 +41,7 @@ namespace asiodnp3
 
 
 /** @section desc A stack object for a master */
-class MasterStackImpl : public MasterBase
+class MasterStackImpl : public IMaster, public ILinkBind
 {
 public:
 
@@ -123,7 +124,10 @@ protected:
 	opendnp3::StackStatistics statistics;
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;
+
 	std::unique_ptr<opendnp3::MContext> mcontext;
+
+
 	opendnp3::Master master;
 };
 
