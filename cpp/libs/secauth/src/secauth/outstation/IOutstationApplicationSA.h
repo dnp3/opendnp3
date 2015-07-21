@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_ISECAUTHOUTSTATIONAPPLICATION_H
-#define SECAUTH_ISECAUTHOUTSTATIONAPPLICATION_H
+#ifndef SECAUTH_IOUTSTATIONAPPLICATIONSA_H
+#define SECAUTH_IOUTSTATIONAPPLICATIONSA_H
 
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/app/User.h>
@@ -38,9 +38,9 @@ public:
 };
 
 /** 
-	Extends the normal outstation application interface with hooks required for secure authentication support.
+	Extends the outstation application interface for vanilla DNP3 with additional methods required for secure authentication
 */
-class ISecAuthOutstationApplication : public opendnp3::IOutstationApplication
+class IOutstationApplicationSA : public opendnp3::IOutstationApplication
 {
 	public:	
 		

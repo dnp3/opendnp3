@@ -73,7 +73,7 @@ OAuthContext::OAuthContext(
 			openpal::IExecutor& executor,
 			ILowerLayer& lower,
 			ICommandHandler& commandHandler,
-			ISecAuthOutstationApplication& application,
+			IOutstationApplicationSA& application,
 			const OutstationAuthSettings& settings,
 			openpal::IUTCTimeSource& timeSource,			
 			openpal::ICryptoProvider& crypto

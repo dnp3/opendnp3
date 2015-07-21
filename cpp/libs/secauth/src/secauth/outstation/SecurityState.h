@@ -56,7 +56,7 @@ class SecurityState
 		openpal::Logger logger, 
 		openpal::IExecutor& executor,
 		openpal::IUTCTimeSource& timeSource, 
-		ISecAuthOutstationApplication& application,
+		IOutstationApplicationSA& application,
 		openpal::ICryptoProvider& crypto
 	);	
 	
@@ -66,7 +66,7 @@ class SecurityState
 	HMACProvider hmac;
 	DeferredASDU deferred;	
 	openpal::IUTCTimeSource* pTimeSource;
-	ISecAuthOutstationApplication* pApplication;
+	IOutstationApplicationSA* pApplication;
 	OutstationUserDatabase userDB;
 	openpal::ICryptoProvider* pCrypto;	
 	IOAuthState* pState;

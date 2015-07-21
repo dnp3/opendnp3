@@ -25,7 +25,7 @@
 
 #include "secauth/UpdateKey.h"
 #include "secauth/outstation/Permissions.h"
-#include "secauth/outstation/ISecAuthOutstationApplication.h"
+#include "secauth/outstation/IOutstationApplicationSA.h"
 
 #include <openpal/container/Buffer.h>
 

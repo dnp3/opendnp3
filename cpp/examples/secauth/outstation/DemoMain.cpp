@@ -33,7 +33,7 @@
 #include <openpal/container/StaticBuffer.h>
 
 #include <osslcrypto/CryptoProvider.h>
-#include <secauth/outstation/ISecAuthOutstationApplication.h>
+#include <secauth/outstation/IOutstationApplicationSA.h>
 
 #include <string>
 #include <thread>
@@ -47,7 +47,7 @@ using namespace asiodnp3;
 using namespace secauth;
 
 
-class Application : public ISecAuthOutstationApplication
+class Application : public IOutstationApplicationSA
 {	
 	// Hard-wired configuration of the default user update key to all 0xFF for demo purposes
 	virtual void LoadUsers(IOutstationUserSink& sink) override

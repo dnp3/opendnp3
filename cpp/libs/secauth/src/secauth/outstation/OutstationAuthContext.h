@@ -26,7 +26,7 @@
 #include "secauth/outstation/SecurityState.h"
 #include "secauth/outstation/OutstationAuthSettings.h"
 #include "secauth/outstation/IAuthRequestHandler.h"
-#include "secauth/outstation/ISecAuthOutstationApplication.h"
+#include "secauth/outstation/IOutstationApplicationSA.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/executor/IUTCTimeSource.h>
@@ -52,7 +52,7 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 		openpal::IExecutor& executor,
 		opendnp3::ILowerLayer& lower,
 		opendnp3::ICommandHandler& commandHandler,
-		ISecAuthOutstationApplication& application,
+		IOutstationApplicationSA& application,
 		const OutstationAuthSettings& settings,				
 		openpal::IUTCTimeSource& timeSource,		
 		openpal::ICryptoProvider& crypto

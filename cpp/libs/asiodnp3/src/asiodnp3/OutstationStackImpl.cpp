@@ -53,7 +53,7 @@ OutstationStackImpl::OutstationStackImpl(
 	openpal::LogRoot& root_,
 	openpal::IExecutor& executor,
 	opendnp3::ICommandHandler& commandHandler,
-	secauth::ISecAuthOutstationApplication& application,
+	secauth::IOutstationApplicationSA& application,
 	const secauth::OutstationAuthStackConfig& config,
 	IStackLifecycle& lifecycle,	
 	openpal::IUTCTimeSource& timeSource,	

@@ -188,7 +188,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 
 IOutstation* DNP3Channel::AddOutstation(char const* id,
 	opendnp3::ICommandHandler& commandHandler,
-	secauth::ISecAuthOutstationApplication& application,
+	secauth::IOutstationApplicationSA& application,
 	const secauth::OutstationAuthStackConfig& config,	
 	openpal::IUTCTimeSource& timeSource)
 {

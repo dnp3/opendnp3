@@ -21,7 +21,7 @@
 #ifndef SECAUTH_MOCKSECAUTHOUTSTATIONAPPLICATION_H
 #define SECAUTH_MOCKSECAUTHOUTSTATIONAPPLICATION_H
 
-#include "secauth/outstation/ISecAuthOutstationApplication.h"
+#include "secauth/outstation/IOutstationApplicationSA.h"
 
 #include "MockUserLoader.h"
 
@@ -30,9 +30,7 @@
 namespace opendnp3
 {
 
-
-
-class MockSecAuthOutstationApplication : public secauth::ISecAuthOutstationApplication
+class MockSecAuthOutstationApplication : public secauth::IOutstationApplicationSA
 {
 
 public:

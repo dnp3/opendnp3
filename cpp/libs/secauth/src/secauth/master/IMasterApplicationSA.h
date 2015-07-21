@@ -18,46 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_MOCKUSERLOADER_H
-#define SECAUTH_MOCKUSERLOADER_H
 
-#include "secauth/outstation/IOutstationApplicationSA.h"
+#ifndef SECAUTH_IMASTERAPPLICATIONSA_H
+#define SECAUTH_IMASTERAPPLICATIONSA_H
 
-#include <vector>
-#include <functional>
+#include <opendnp3/master/IMasterApplication.h>
 
-namespace opendnp3
+namespace secauth
+{	
+
+/** 
+	Extends the master application interface for vanilla DNP3 with additional methods required for secure authentication
+*/
+class IMasterApplicationSA : public opendnp3::IMasterApplication
 {
+	public:		
 
-class MockUserLoader
-{
-
-public:
-
-	void AddUser(User user, uint8_t keyRepeat, UpdateKeyMode mode, secauth::Permissions permissions = secauth::Permissions::AllowAll())
-	{
-		auto apply = [=](secauth::IOutstationUserSink& sink)
-		{
-			sink.Load(user, secauth::UpdateKey(keyRepeat, mode), permissions);
-		};
-
-		users.push_back(apply);
-	}
-														
-	void LoadUsers(secauth::IOutstationUserSink& sink)
-	{
-		for (auto& fun : users)
-		{
-			fun(sink);
-		}
-	}
-
-private:
-
-	std::vector<std::function<void(secauth::IOutstationUserSink&)>> users;
+		
 };
-
 
 }
 
 #endif
+

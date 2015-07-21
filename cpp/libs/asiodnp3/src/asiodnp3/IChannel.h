@@ -37,7 +37,7 @@
 #include <openpal/crypto/ICryptoProvider.h>
 
 #include <secauth/outstation/OutstationAuthStackConfig.h>
-#include <secauth/outstation/ISecAuthOutstationApplication.h>
+#include <secauth/outstation/IOutstationApplicationSA.h>
 
 #include <secauth/master/IMasterUserDatabase.h>
 #include <secauth/master/MasterAuthStackConfig.h>
@@ -129,7 +129,7 @@ public:
 	*/
 	virtual IOutstation* AddOutstation(	char const* id,
 										opendnp3::ICommandHandler& commandHandler,
-										secauth::ISecAuthOutstationApplication& application,
+										secauth::IOutstationApplicationSA& application,
 										const secauth::OutstationAuthStackConfig& config,										
 										openpal::IUTCTimeSource& timeSource) = 0;
 };

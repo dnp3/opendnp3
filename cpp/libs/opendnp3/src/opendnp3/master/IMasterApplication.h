@@ -45,21 +45,21 @@ class IMasterApplication : public openpal::IUTCTimeSource
 	virtual ~IMasterApplication() {}
 
 	/// Called when a response or unsolicited response is receive from the outstation
-	virtual void OnReceiveIIN(const IINField& iin) = 0;
+	virtual void OnReceiveIIN(const IINField& iin) {}
 
 	/// Task start notification
-	virtual void OnTaskStart(MasterTaskType type, TaskId id) = 0;
+	virtual void OnTaskStart(MasterTaskType type, TaskId id) {}
 
 	/// Task completion notification
-	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, TaskId id) = 0;
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, TaskId id) {}
 
 	/// @return true if the master should do an assign class task during startup handshaking
-	virtual bool AssignClassDuringStartup() = 0;
+	virtual bool AssignClassDuringStartup() { return false; }
 
 	/// Configure the request headers for assign class. Only called if
 	/// "AssignClassDuringStartup" returns true
 	/// The user only needs to write the object headers
-	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) = 0;
+	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) {}
 };
 
 }
