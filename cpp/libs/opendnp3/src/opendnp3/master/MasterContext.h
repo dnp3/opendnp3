@@ -34,6 +34,7 @@
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
+#include "opendnp3/master/MasterScan.h"
 
 #include <deque>
 
@@ -90,7 +91,6 @@ namespace opendnp3
 		std::deque<APDUHeader> confirmQueue;
 		openpal::Buffer txBuffer;
 		TaskState tstate;
-
 		
 		void OnReceive(const openpal::ReadBufferView& apdu);
 
@@ -108,6 +108,47 @@ namespace opendnp3
 
 		virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) {}
 
+		/// methods for initiating command sequences
+
+		void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback);
+		void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback);
+
+		void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback);
+		void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback);
+
+		void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback);
+		void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback);
+
+		void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback);
+		void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback);
+
+		void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback);
+		void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback);
+
+		/// -----  public methods used to add tasks -----
+
+		MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, TaskConfig config = TaskConfig::Default());
+
+		MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+
+		MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+
+		MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+
+		/// ---- Single shot immediate scans ----
+
+		void Scan(const std::function<void(HeaderWriter&)>& builder, TaskConfig config = TaskConfig::Default());
+
+		void ScanAllObjects(GroupVariationID gvId, TaskConfig config = TaskConfig::Default());
+
+		void ScanClasses(const ClassField& field, TaskConfig config = TaskConfig::Default());
+
+		void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config = TaskConfig::Default());
+
+		/// ---- Write tasks -----
+
+		void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
+	
 		/// public state manipulation actions
 
 		bool BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
@@ -136,11 +177,23 @@ namespace opendnp3
 
 	private:	
 
+
+		void ScheduleRecurringPollTask(IMasterTask* pTask);
+		void ScheduleAdhocTask(IMasterTask* pTask);
+
 		virtual void OnPendingTask() override { this->PostCheckForTask(); }
 
 		void ProcessIIN(const IINField& iin);		
 							
-		void OnResponseTimeout();		
+		void OnResponseTimeout();
+
+		// -------- helpers for command requests --------	
+
+		template <class T>
+		void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
+
+		template <class T>
+		void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);		
 
 	protected:
 				
@@ -158,6 +211,33 @@ namespace opendnp3
 		TaskState OnResponseTimeout_WaitForResponse();
 	};
 
+	template <class T>
+	void MContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
+	{
+		if (this->isOnline)
+		{
+			this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, *pApplication, callback, serializer, logger)));
+			this->CheckForTask();
+		}
+		else
+		{
+			callback.OnComplete(CommandResponse(TaskCompletion::FAILURE_NO_COMMS));
+		}
+	}
+
+	template <class T>
+	void MContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
+	{
+		if (this->isOnline)
+		{
+			this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, *pApplication, callback, serializer, logger)));
+			this->CheckForTask();
+		}
+		else
+		{
+			callback.OnComplete(CommandResponse(TaskCompletion::FAILURE_NO_COMMS));
+		}
+	}
 }
 
 #endif

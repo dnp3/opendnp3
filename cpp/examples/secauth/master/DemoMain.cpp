@@ -113,9 +113,7 @@ int main(int argc, char* argv[])
 	auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(5));
 
 	// Enable the master. This will start communications.
-	pMaster->Enable();
-
-	auto pCommandProcessor = pMaster->GetCommandProcessor();
+	pMaster->Enable();	
 
 	do
 	{
@@ -147,7 +145,7 @@ int main(int argc, char* argv[])
 					// This is an example of synchronously doing a control operation
 					ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
 					BlockingCommandCallback handler;
-					pCommandProcessor->SelectAndOperate(crob, 0, handler);
+					pMaster->SelectAndOperate(crob, 0, handler);
 					auto response = handler.WaitForResult();
 					std::cout << "Result: " << TaskCompletionToString(response.GetResult()) <<
 								 " Status: " << CommandStatusToString(response.GetStatus()) << std::endl;

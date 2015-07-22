@@ -21,15 +21,18 @@
 
 #include "MasterContext.h"
 
+
+#include "opendnp3/LogLevels.h"
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/master/MeasurementHandler.h"
+#include "opendnp3/master/WriteTask.h"
+#include "opendnp3/objects/Group12.h"
+#include "opendnp3/objects/Group41.h"
 
 #include <openpal/logging/LogMacros.h>
 
-
-#include <assert.h>
 
 using namespace openpal;
 
@@ -140,6 +143,58 @@ namespace opendnp3
 	{
 		// Note: this looks silly, but OnParsedHeader() is virtual and can be overriden to do SA
 		this->ProcessAPDU(header, objects);
+	}
+
+	/// --- command handlers ----
+
+	void MContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->SelectAndOperateT(command, index, callback, Group12Var1::Inst());
+	}
+
+	void MContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->DirectOperateT(command, index, callback, Group12Var1::Inst());
+	}
+
+	void MContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->SelectAndOperateT(command, index, callback, Group41Var2::Inst());
+	}
+
+	void MContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->DirectOperateT(command, index, callback, Group41Var2::Inst());
+	}
+
+	void MContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->SelectAndOperateT(command, index, callback, Group41Var1::Inst());
+	}
+
+	void MContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->DirectOperateT(command, index, callback, Group41Var1::Inst());
+	}
+
+	void MContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->SelectAndOperateT(command, index, callback, Group41Var3::Inst());
+	}
+
+	void MContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->DirectOperateT(command, index, callback, Group41Var3::Inst());
+	}
+
+	void MContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->SelectAndOperateT(command, index, callback, Group41Var4::Inst());
+	}
+
+	void MContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
+	{
+		this->DirectOperateT(command, index, callback, Group41Var4::Inst());
 	}
 
 	void MContext::ProcessAPDU(const APDUResponseHeader& header, const ReadBufferView& objects)
@@ -297,6 +352,113 @@ namespace opendnp3
 			tasks.Initialize(scheduler);	
 			this->PostCheckForTask();
 			return true;
+		}
+	}
+
+	MasterScan MContext::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, TaskConfig config)
+	{
+		auto pTask = new UserPollTask(builder, true, period, params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
+		this->ScheduleRecurringPollTask(pTask);
+		auto callback = [this]() { this->PostCheckForTask(); };
+		return MasterScan(*pExecutor, pTask, callback);
+	}
+
+	MasterScan MContext::AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config)
+	{
+		auto configure = [field](HeaderWriter& writer)
+		{
+			build::WriteClassHeaders(writer, field);
+		};
+		return this->AddScan(period, configure, config);
+	}
+
+	MasterScan MContext::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config)
+	{
+		auto configure = [gvId](HeaderWriter& writer)
+		{
+			writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
+		};
+		return this->AddScan(period, configure, config);
+	}
+
+	MasterScan MContext::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config)
+	{
+		auto configure = [gvId, start, stop](HeaderWriter& writer)
+		{
+			writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
+		};
+		return this->AddScan(period, configure, config);
+	}
+
+	void MContext::Scan(const std::function<void(HeaderWriter&)>& builder, TaskConfig config)
+	{
+		auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
+		this->ScheduleAdhocTask(pTask);
+	}
+
+	void MContext::ScanClasses(const ClassField& field, TaskConfig config)
+	{
+		auto configure = [field](HeaderWriter& writer)
+		{
+			build::WriteClassHeaders(writer, field);
+		};
+		this->Scan(configure, config);
+	}
+
+	void MContext::ScanAllObjects(GroupVariationID gvId, TaskConfig config)
+	{
+		auto configure = [gvId](HeaderWriter& writer)
+		{
+			writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
+		};
+		this->Scan(configure, config);
+	}
+
+	void MContext::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config)
+	{
+		auto configure = [gvId, start, stop](HeaderWriter& writer)
+		{
+			writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
+		};
+		this->Scan(configure, config);
+	}
+
+	void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig config)
+	{
+		auto format = [value, index](HeaderWriter& writer)
+		{
+			writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
+		};
+
+		auto pTask = new WriteTask(*pApplication, format, logger, config);
+		this->ScheduleAdhocTask(pTask);
+	}
+
+	/// ------ private helpers ----------
+
+	void MContext::ScheduleRecurringPollTask(IMasterTask* pTask)
+	{
+		this->tasks.BindTask(pTask);
+
+		if (this->isOnline)
+		{
+			this->scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
+			this->PostCheckForTask();
+		}
+	}
+
+	void MContext::ScheduleAdhocTask(IMasterTask* pTask)
+	{
+		auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
+		if (this->isOnline)
+		{
+			this->scheduler.Schedule(std::move(task));
+			this->PostCheckForTask();
+		}
+		else
+		{
+			// can't run this task since we're offline so fail it immediately
+			pTask->OnLowerLayerClose(this->pExecutor->GetTime());
 		}
 	}
 

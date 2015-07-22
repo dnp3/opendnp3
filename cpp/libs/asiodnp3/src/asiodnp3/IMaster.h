@@ -41,7 +41,7 @@ namespace asiodnp3
 /** 
 * @desc Interface that represents a running master.
 */
-class IMaster : public IStack
+class IMaster : public opendnp3::ICommandProcessor, public IStack
 {
 public:		
 
@@ -110,12 +110,7 @@ public:
 	* Write a time and interval object to a specific index
 	*/
 	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
-
-	/**
-	* Get a command processor interface to execute controls on the master
-	* @return Interface used to invoke commands
-	*/
-	virtual opendnp3::ICommandProcessor* GetCommandProcessor() = 0;
+	
 };
 
 }

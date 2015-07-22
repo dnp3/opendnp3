@@ -21,14 +21,7 @@
 #ifndef ASIODNP3_MASTERSTACKIMPL_H
 #define ASIODNP3_MASTERSTACKIMPL_H
 
-#include "IStackLifecycle.h"
-#include "IMaster.h"
-#include "ILinkBind.h"
-
-#include <opendnp3/link/ILinkSession.h>
-#include <opendnp3/master/MasterStackConfig.h>
-#include <opendnp3/master/Master.h>
-#include <opendnp3/transport/TransportStack.h>
+#include "MasterStackBase.h"
 
 #include <secauth/master/IMasterUserDatabase.h>
 #include <secauth/master/MasterAuthStackConfig.h>
@@ -40,8 +33,7 @@ namespace asiodnp3
 {
 
 
-/** @section desc A stack object for a master */
-class MasterStackImpl : public IMaster, public ILinkBind
+class MasterStackImpl : public MasterStackBase<IMaster>
 {
 public:
 
@@ -70,64 +62,13 @@ public:
 		secauth::IMasterUserDatabase& userDB,
 		openpal::ICryptoProvider& crypto
 	);
-
-	virtual bool Enable() override final;
-
-	virtual bool Disable() override final;
-
-	virtual void Shutdown() override final;
-
-	virtual opendnp3::StackStatistics GetStackStatistics() override final;		
-
-	virtual opendnp3::ICommandProcessor* GetCommandProcessor()  override final;
-
-	// ------- Periodic scan API ---------
-
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final;
-
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config) override final;
-
-	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final;
-
-	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final;
-
-	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final;
-
-	// ------- Adhoc scan API ---------
-
-	virtual void Scan(const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final;
 	
-	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config) override final;
-
-	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config) override final;
-
-	virtual void ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config) override final;
-
-	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const opendnp3::TaskConfig& config) override final;
-
-	// ------- Other adhoc methods -------
-
-	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config)  override final;
-
-	// ------- implement ILinkBind ---------
-
-	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final;
-
-	virtual opendnp3::ILinkSession& GetLinkContext() override final;
-
-
 protected:
 
-	static std::function<void(opendnp3::HeaderWriter&)> ConvertToLambda(const std::vector<Header>& headers);	
-
-	openpal::LogRoot root;	
-	opendnp3::StackStatistics statistics;
-	IStackLifecycle* pLifecycle;
-	opendnp3::TransportStack stack;
+	virtual opendnp3::MContext& GetContext() override { return *mcontext; }	
+	
 
 	std::unique_ptr<opendnp3::MContext> mcontext;
-
-
 	opendnp3::Master master;
 };
 

@@ -18,35 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef ASIODNP3_CONVERSIONS_H
+#define ASIODNP3_CONVERSIONS_H
 
-#include "Master.h"
+#include <functional>
+#include <vector>
 
-using namespace openpal;
+#include <opendnp3/app/HeaderWriter.h>
 
-namespace opendnp3
+#include "HeaderTypes.h"
+
+namespace asiodnp3
 {
 
-Master::Master(MContext& mcontext) : context(&mcontext)
-{}
-	
-void Master::OnLowerLayerUp()
-{
-	context->GoOnline();
+std::function<void(opendnp3::HeaderWriter&)> ConvertToLambda(const std::vector<Header>& headers);
+
 }
 
-void Master::OnLowerLayerDown()
-{
-	context->GoOffline();
-}
+#endif
 
-void Master::OnReceive(const openpal::ReadBufferView& apdu)
-{
-	context->OnReceive(apdu);
-}
-
-void Master::OnSendResult(bool isSucccess)
-{
-	context->OnSendResult(isSucccess);
-}
-	
-}

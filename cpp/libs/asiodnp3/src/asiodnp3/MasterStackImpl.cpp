@@ -34,16 +34,14 @@ namespace asiodnp3
 
 MasterStackImpl::MasterStackImpl(   
 	const char* id,
-	LogRoot& root_,
+	LogRoot& root,
 	asiopal::ASIOExecutor& executor,
 	opendnp3::ISOEHandler& SOEHandler,                                    
 	opendnp3::IMasterApplication& application,
     const MasterStackConfig& config,	
 	IStackLifecycle& lifecycle,
 	opendnp3::ITaskLock& taskLock) :
-		root(root_, id),		
-		pLifecycle(&lifecycle),
-		stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
+		MasterStackBase<IMaster>(id, root, executor, config, lifecycle),		
 		mcontext(new MContext(executor, root, stack.transport, SOEHandler, application,  config.master, taskLock)),
 		master(*mcontext)
 {
@@ -62,125 +60,11 @@ MasterStackImpl::MasterStackImpl(
 	secauth::IMasterUserDatabase& userDB,
 	openpal::ICryptoProvider& crypto
 ) :
-	root(root_, id),
-	pLifecycle(&lifecycle),
-	stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
+	MasterStackBase<IMaster>(id, root, executor, config, lifecycle),
 	mcontext(new secauth::MAuthContext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto, userDB)),
 	master(*mcontext)
 {
 
-}
-
-ICommandProcessor* MasterStackImpl::GetCommandProcessor()
-{
-	return &master.GetCommandProcessor();
-}
-
-bool MasterStackImpl::Enable()
-{
-	return pLifecycle->EnableRoute(&stack.link);
-}
-
-bool MasterStackImpl::Disable()
-{
-	return pLifecycle->DisableRoute(&stack.link);
-}
-
-void MasterStackImpl::Shutdown()
-{
-	return pLifecycle->Shutdown(&stack.link, this);	
-}
-
-StackStatistics MasterStackImpl::GetStackStatistics()
-{	
-	auto get = [this]() { return this->statistics; };
-	return pLifecycle->GetExecutor().ReturnBlockFor<StackStatistics>(get);
-}
-
-void MasterStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
-{
-	stack.link.SetRouter(router);
-}
-
-opendnp3::ILinkSession& MasterStackImpl::GetLinkContext()
-{
-	return stack.link;
-}
-
-opendnp3::MasterScan MasterStackImpl::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
-{
-	auto func = ConvertToLambda(headers);
-	return this->AddScan(period, func, config);
-}
-
-MasterScan MasterStackImpl::AddScan(TimeDuration period, const std::function<void(HeaderWriter&)>& builder, const TaskConfig& config)
-{
-	auto add = [this, period, builder, config]() { return master.AddScan(period, builder, config); };
-	return pLifecycle->GetExecutor().ReturnBlockFor<MasterScan>(add);	
-}
-
-MasterScan MasterStackImpl::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
-{
-	auto add = [this, gvId, period, config]() { return master.AddAllObjectsScan(gvId, period, config); };
-	return pLifecycle->GetExecutor().ReturnBlockFor<MasterScan>(add);
-}
-
-MasterScan MasterStackImpl::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
-{	
-	auto add = [this, field, period, config]() { return master.AddClassScan(field, period, config); };
-	return pLifecycle->GetExecutor().ReturnBlockFor<MasterScan>(add);
-}
-
-MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
-{	
-	auto add = [this, gvId, start, stop, period, config]() { return master.AddRangeScan(gvId, start, stop, period, config); };
-	return pLifecycle->GetExecutor().ReturnBlockFor<MasterScan>(add);
-}
-
-void MasterStackImpl::Scan(const std::vector<Header>& headers, const TaskConfig& config)
-{
-	auto func = ConvertToLambda(headers);
-	this->Scan(func, config);
-}
-
-void MasterStackImpl::Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, const TaskConfig& config)
-{
-	auto add = [this, builder, config]() { master.Scan(builder, config); };
-	return pLifecycle->GetExecutor().BlockFor(add);
-}
-
-void MasterStackImpl::ScanAllObjects(opendnp3::GroupVariationID gvId, const TaskConfig& config)
-{
-	auto add = [this, gvId, config]() { master.ScanAllObjects(gvId, config); };
-	return pLifecycle->GetExecutor().BlockFor(add);
-}
-
-void MasterStackImpl::ScanClasses(const opendnp3::ClassField& field, const TaskConfig& config)
-{
-	auto add = [this, field, config]() { master.ScanClasses(field, config); };
-	return pLifecycle->GetExecutor().BlockFor(add);
-}
-
-void MasterStackImpl::ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config)
-{
-	auto add = [this, gvId, start, stop, config]() { master.ScanRange(gvId, start, stop, config); };
-	return pLifecycle->GetExecutor().BlockFor(add);
-}
-
-void MasterStackImpl::Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config)
-{
-	auto add = [this, value, index, config]() { master.Write(value, index, config); };
-	return pLifecycle->GetExecutor().BlockFor(add);
-}
-
-std::function<void(opendnp3::HeaderWriter&)> MasterStackImpl::ConvertToLambda(const std::vector<Header>& headers)
-{
-	return[headers](opendnp3::HeaderWriter& writer){
-		for (auto header : headers)
-		{
-			header.WriteTo(writer);
-		}
-	};
 }
 
 }

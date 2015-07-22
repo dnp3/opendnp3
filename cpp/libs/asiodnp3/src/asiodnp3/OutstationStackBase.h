@@ -35,7 +35,7 @@
 namespace asiodnp3
 {
 
-/** @section desc A stack object for a master */
+/// templated base class so that things can be shared between vanilla and SA interfaces
 template <class Interface>
 class OutstationStackBase : public Interface, public ILinkBind
 {

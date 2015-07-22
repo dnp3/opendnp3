@@ -19,34 +19,22 @@
  * to you under the terms of the License.
  */
 
-#include "Master.h"
+#include "Conversions.h"
 
-using namespace openpal;
-
-namespace opendnp3
+namespace asiodnp3
 {
 
-Master::Master(MContext& mcontext) : context(&mcontext)
-{}
-	
-void Master::OnLowerLayerUp()
+std::function<void(opendnp3::HeaderWriter&)> ConvertToLambda(const std::vector<Header>& headers)
 {
-	context->GoOnline();
+	return[headers](opendnp3::HeaderWriter& writer) {
+		for (auto header : headers)
+		{
+			header.WriteTo(writer);
+		}
+	};
 }
 
-void Master::OnLowerLayerDown()
-{
-	context->GoOffline();
 }
 
-void Master::OnReceive(const openpal::ReadBufferView& apdu)
-{
-	context->OnReceive(apdu);
-}
 
-void Master::OnSendResult(bool isSucccess)
-{
-	context->OnSendResult(isSucccess);
-}
-	
-}
+

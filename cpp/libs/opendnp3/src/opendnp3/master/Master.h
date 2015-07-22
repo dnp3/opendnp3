@@ -25,7 +25,6 @@
 
 #include "opendnp3/master/TaskConfig.h"
 #include "opendnp3/master/MasterContext.h"
-#include "opendnp3/master/MasterCommandProcessor.h"
 #include "opendnp3/master/MasterScan.h"
 #include "opendnp3/master/IMasterApplication.h"
 
@@ -37,8 +36,7 @@ class Master : public IUpperLayer
 	public:
 
 	Master(MContext& mcontext);
-	
-	
+		
 	/// ----- Implement IUpperLayer ------
 
 	virtual void OnLowerLayerUp() override final;
@@ -47,46 +45,11 @@ class Master : public IUpperLayer
 
 	virtual void OnReceive(const openpal::ReadBufferView&) override final;
 	
-	virtual void OnSendResult(bool isSucccess) override final;
-
-	/// ----- Misc public members -------
-	
-	ICommandProcessor& GetCommandProcessor();	
-
-	/// ---- Permanently bound scans ----
-
-	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, TaskConfig config = TaskConfig::Default());
-
-	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
-
-	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
-
-	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
-
-	/// ---- Single shot immediate scans ----
-	
-	void Scan(const std::function<void(HeaderWriter&)>& builder, TaskConfig config = TaskConfig::Default());
-
-	void ScanAllObjects(GroupVariationID gvId, TaskConfig config = TaskConfig::Default());
-
-	void ScanClasses(const ClassField& field, TaskConfig config = TaskConfig::Default());
-
-	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config = TaskConfig::Default());
-
-	/// ---- Write tasks -----
-
-	void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
-
+	virtual void OnSendResult(bool isSucccess) override final;	
 	
 	private:	
 
-	/// --- internal events ----
-
-	void ScheduleRecurringPollTask(IMasterTask* pTask);
-	void ScheduleAdhocTask(IMasterTask* pTask);
-
-	MContext* context;
-	MasterCommandProcessor commandProcessor;
+	MContext* context;	
 };
 
 }

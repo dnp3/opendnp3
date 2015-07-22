@@ -131,7 +131,7 @@ TEST_CASE(SUITE("TimeoutDuringStartup"))
 TEST_CASE(SUITE("SolicitedResponseTimeout"))
 {	
 	MasterTestObject t(NoStartupTasks());
-	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
+	auto scan = t.context.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
 	
 	t.exe.RunMany();
@@ -152,7 +152,7 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 TEST_CASE(SUITE("AllObjectsScan"))
 {
 	MasterTestObject t(NoStartupTasks());
-	auto scan = t.master.AddAllObjectsScan(GroupVariationID(110, 0), TimeDuration::Seconds(1));
+	auto scan = t.context.AddAllObjectsScan(GroupVariationID(110, 0), TimeDuration::Seconds(1));
 	t.master.OnLowerLayerUp();
 
 	t.exe.RunMany();
@@ -169,7 +169,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 	
 	t.exe.RunMany();
 
-	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));
+	auto scan = t.context.AddClassScan(~0, TimeDuration::Seconds(10));
 
 	REQUIRE(t.exe.RunMany() > 0);
 
@@ -190,7 +190,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 {
 	MasterTestObject t(NoStartupTasks());
-	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
+	auto scan = t.context.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();	
 	
 	t.exe.RunMany();
@@ -232,8 +232,8 @@ TEST_CASE(SUITE("EventPoll"))
 {	
 	MasterTestObject t(NoStartupTasks());
 
-	auto class12 = t.master.AddClassScan(ClassField(ClassField::CLASS_1 | ClassField::CLASS_2), TimeDuration::Milliseconds(10));
-	auto class3 = t.master.AddClassScan(ClassField(ClassField::CLASS_3), TimeDuration::Milliseconds(20));
+	auto class12 = t.context.AddClassScan(ClassField(ClassField::CLASS_1 | ClassField::CLASS_2), TimeDuration::Milliseconds(10));
+	auto class3 = t.context.AddClassScan(ClassField(ClassField::CLASS_3), TimeDuration::Milliseconds(20));
 
 	t.master.OnLowerLayerUp();		
 	
@@ -270,7 +270,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 {			
 	MasterTestObject t(NoStartupTasks());
-	t.master.AddClassScan(~0, TimeDuration::Seconds(1));
+	t.context.AddClassScan(~0, TimeDuration::Seconds(1));
 	t.master.OnLowerLayerUp();
 	
 	REQUIRE(t.exe.RunMany() > 0);
@@ -430,7 +430,7 @@ TEST_CASE(SUITE("ReceiveIINinResponses"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	auto scan = t.master.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));
+	auto scan = t.context.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);
@@ -490,7 +490,7 @@ TEST_CASE(SUITE("AdhocScanWorksWithUnsolicitedDisabled"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	t.master.ScanClasses(ClassField::AllEventClasses());
+	t.context.ScanClasses(ClassField::AllEventClasses());
 
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
@@ -507,7 +507,7 @@ TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
 	MasterTestObject t(params);
 
 	MockTaskCallback callback;
-	t.master.ScanClasses(ClassField::AllEventClasses(), TaskConfig::With(callback));
+	t.context.ScanClasses(ClassField::AllEventClasses(), TaskConfig::With(callback));
 
 	REQUIRE(callback.numStart == 0);
 	REQUIRE(callback.results.size() == 1);
@@ -523,7 +523,7 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
 
 	MockTaskCallback callback;
 
-	t.master.Write(TimeAndInterval(DNPTime(3), 4, IntervalUnits::Days), 7, TaskConfig::With(callback));
+	t.context.Write(TimeAndInterval(DNPTime(3), 4, IntervalUnits::Days), 7, TaskConfig::With(callback));
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 02 32 04 28 01 00 07 00 03 00 00 00 00 00 04 00 00 00 05");
 	t.master.OnSendResult(true);	
