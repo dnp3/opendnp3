@@ -37,34 +37,33 @@ OutstationTestObject::OutstationTestObject(
 	lower(log.root),
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
-	context(config, dbTemplate, log.root.GetLogger(), exe, lower, cmdHandler, application),
-	outstation(context)
+	context(config, dbTemplate, log.root.GetLogger(), exe, lower, cmdHandler, application)	
 {
-	lower.SetUpperLayer(outstation);
+	lower.SetUpperLayer(context);
 }
 
 uint32_t OutstationTestObject::LowerLayerUp()
 {
-	outstation.OnLowerLayerUp();
+	context.OnLowerLayerUp();
 	return exe.RunMany();
 }
 
 uint32_t OutstationTestObject::LowerLayerDown()
 {
-	outstation.OnLowerLayerDown();
+	context.OnLowerLayerDown();
 	return exe.RunMany();
 }
 
 uint32_t OutstationTestObject::OnSendResult(bool isSuccess)
 {
-	outstation.OnSendResult(isSuccess);
+	context.OnSendResult(isSuccess);
 	return exe.RunMany();
 }
 
 uint32_t OutstationTestObject::SendToOutstation(const std::string& hex)
 {
 	HexSequence hs(hex);
-	outstation.OnReceive(hs.ToReadOnly());
+	context.OnReceive(hs.ToReadOnly());
 	return exe.RunMany();
 }
 

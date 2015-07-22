@@ -88,9 +88,9 @@ void OAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key, c
 	sstate.userDB.AddUser(user, key, permissions);
 }
 
-bool OAuthContext::GoOffline()
+bool OAuthContext::OnLowerLayerDown()
 {
-	auto ret = OContext::GoOffline();
+	auto ret = OContext::OnLowerLayerDown();
 
 	if (ret)
 	{

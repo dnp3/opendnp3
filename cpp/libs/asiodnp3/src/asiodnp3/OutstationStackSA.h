@@ -56,8 +56,7 @@ public:
 
 private:
 		
-	secauth::OAuthContext ocontext;
-	opendnp3::Outstation outstation;
+	secauth::OAuthContext ocontext;	
 };
 
 }

@@ -47,7 +47,7 @@ namespace opendnp3
 ///
 /// Represent all of the mutable state in an outstation
 ///
-class OContext
+class OContext : public IUpperLayer
 {
 	
 public:		
@@ -58,11 +58,21 @@ public:
 				openpal::IExecutor& executor,			
 				ILowerLayer& lower,
 				ICommandHandler& commandHandler,
-				IOutstationApplication& application);	
+				IOutstationApplication& application);		
+
+public:	
+
+	/// ----- Implement IUpperLayer ------
+
+	virtual bool OnLowerLayerUp() override;
+
+	virtual bool OnLowerLayerDown() override;
+
+	virtual bool OnSendResult(bool isSuccess) override final;
+
+	virtual bool OnReceive(const openpal::ReadBufferView& fragment) override final;
 
 	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
-
-public:
 
 	OutstationSolicitedStateBase* ContinueMultiFragResponse(const AppSeqNum& seq);
 
@@ -75,10 +85,6 @@ public:
 	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	/// ----- method overridable for implementing SA or other extensions ----
-
-	virtual bool GoOnline();
-
-	virtual bool GoOffline();
 
 	virtual void ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
@@ -96,7 +102,7 @@ public:
 
 	/// ---- Processing functions --------
 
-	bool OnReceive(const openpal::ReadBufferView& fragment);
+	
 
 	void ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
@@ -108,9 +114,7 @@ public:
 
 	void ParseHeader(const openpal::ReadBufferView& apdu);
 
-	void BeginResponseTx(const openpal::ReadBufferView& response);	
-
-	bool OnSendResult(bool isSuccess);
+	void BeginResponseTx(const openpal::ReadBufferView& response);		
 
 	void BeginUnsolTx(const openpal::ReadBufferView& response);
 

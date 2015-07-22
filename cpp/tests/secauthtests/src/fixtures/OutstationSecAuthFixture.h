@@ -23,7 +23,6 @@
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/ITransactable.h>
-#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
 
 #include <secauth/outstation/OutstationAuthContext.h>
@@ -84,8 +83,7 @@ public:
 	MockCommandHandler cmdHandler;
 	MockOutstationApplicationSA application;	
 	MockCryptoProvider crypto;	
-	secauth::OAuthContext context;
-	Outstation outstation;	
+	secauth::OAuthContext context;	
 };
 
 

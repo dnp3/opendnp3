@@ -77,6 +77,68 @@ OContext::OContext(
 	
 }
 
+bool OContext::OnLowerLayerUp()
+{
+	if (isOnline)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "already online");
+		return false;
+	}
+
+	isOnline = true;
+	this->CheckForTaskStart();
+	return true;
+}
+
+bool OContext::OnLowerLayerDown()
+{
+	if (!isOnline)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "already offline");
+		return false;
+	}
+
+	isOnline = false;
+	isTransmitting = false;
+
+	sol.Reset();
+	unsol.Reset();
+	history.Reset();
+	deferred.Reset();
+	eventBuffer.Unselect();
+	rspContext.Reset();
+	confirmTimer.Cancel();
+
+	return true;
+}
+
+bool OContext::OnSendResult(bool isSuccess)
+{
+	if (!isOnline || !isTransmitting)
+	{
+		return false;
+	}
+
+	this->isTransmitting = false;
+	this->CheckForTaskStart();
+	return true;
+}
+
+bool OContext::OnReceive(const openpal::ReadBufferView& fragment)
+{
+	if (!this->isOnline)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "ignoring received data while offline");
+		return false;
+	}
+
+
+	this->Increment(SecurityStatIndex::TOTAL_MESSAGES_RX);
+	this->ParseHeader(fragment);
+	this->CheckForTaskStart();
+	return true;
+}
+
 OutstationSolicitedStateBase* OContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	// analyze this request to see how it compares to the last request
@@ -130,21 +192,6 @@ void OContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const AP
 {
 	// this look strange, but this method is overridable for SA
 	this->ProcessAPDU(apdu, header, objects);
-}
-
-bool OContext::OnReceive(const openpal::ReadBufferView& fragment)
-{
-	if (!this->isOnline)
-	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "ignoring received data while offline");
-		return false;
-	}
-
-
-	this->Increment(SecurityStatIndex::TOTAL_MESSAGES_RX);
-	this->ParseHeader(fragment);
-	this->CheckForTaskStart();
-	return true;
 }
 
 void OContext::ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
@@ -380,41 +427,6 @@ OutstationSolicitedStateBase* OContext::ContinueMultiFragResponse(const AppSeqNu
 	}
 }
 
-bool OContext::GoOnline()
-{
-	if (isOnline)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "already online");
-		return false;
-	}
-
-	isOnline = true;
-	this->CheckForTaskStart();	
-	return true;
-}
-
-bool OContext::GoOffline()
-{
-	if (!isOnline)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "already offline");
-		return false;
-	}
-
-	isOnline = false;
-	isTransmitting = false;
-
-	sol.Reset();
-	unsol.Reset();
-	history.Reset();
-	deferred.Reset();
-	eventBuffer.Unselect();
-	rspContext.Reset();
-	confirmTimer.Cancel();	
-
-	return true;
-}
-
 bool OContext::CanTransmit() const
 {
 	return isOnline && !isTransmitting;
@@ -468,18 +480,6 @@ void OContext::ParseHeader(const openpal::ReadBufferView& apdu)
 
 	// this method is virtual, and the implementation may vary for SA
 	this->ReceiveParsedHeader(apdu, header, objects);	
-}
-
-bool OContext::OnSendResult(bool isSuccess)
-{	
-	if (!isOnline || !isTransmitting)
-	{
-		return false;		
-	}
-
-	this->isTransmitting = false;
-	this->CheckForTaskStart();
-	return true;
 }
 
 void OContext::CheckForTaskStart()

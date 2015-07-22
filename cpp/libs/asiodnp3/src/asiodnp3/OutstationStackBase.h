@@ -23,8 +23,9 @@
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
+#include <opendnp3/outstation/OutstationContext.h>
+
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
@@ -124,6 +125,7 @@ protected:
 
 	void SetContext(opendnp3::OContext& context)
 	{
+		this->stack.transport.SetAppLayer(&context);
 		this->pContext = &context;
 	}
 

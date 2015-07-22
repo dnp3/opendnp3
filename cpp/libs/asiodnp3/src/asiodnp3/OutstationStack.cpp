@@ -40,10 +40,8 @@ OutstationStack::OutstationStack(
 	IStackLifecycle& lifecycle) :
 	
 	OutstationStackBase(id, root_, executor, config, lifecycle),
-	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application),
-	outstation(ocontext)   
-{
-	stack.transport.SetAppLayer(&outstation);
+	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application)	 
+{	
 	this->SetContext(ocontext);
 }
 

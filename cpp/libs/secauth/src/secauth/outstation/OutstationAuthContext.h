@@ -62,7 +62,7 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	//// --- methods overriden in base class -----
 
-	virtual bool GoOffline() override final;
+	virtual bool OnLowerLayerDown() override final;
 
 	virtual void CheckForTaskStart() override final;
 		

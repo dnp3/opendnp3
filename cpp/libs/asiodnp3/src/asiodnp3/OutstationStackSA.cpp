@@ -41,10 +41,8 @@ OutstationStackSA::OutstationStackSA(
 	openpal::ICryptoProvider& crypto) :
 	
 	OutstationStackBase<IOutstationSA>(id, root_, executor, config, lifecycle),
-	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, crypto),
-	outstation(ocontext)   
-{
-	stack.transport.SetAppLayer(&outstation);
+	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, crypto)	
+{	
 	this->SetContext(ocontext);
 }
 

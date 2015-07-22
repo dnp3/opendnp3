@@ -23,7 +23,6 @@
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/ITransactable.h>
-#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/OutstationContext.h>
 
@@ -81,8 +80,7 @@ public:
 	MockLowerLayer lower;	
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
-	OContext context;
-	Outstation outstation;	
+	OContext context;	
 };
 
 

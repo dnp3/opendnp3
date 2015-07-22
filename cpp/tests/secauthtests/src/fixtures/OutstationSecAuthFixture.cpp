@@ -44,34 +44,33 @@ namespace opendnp3
 		cmdHandler(),
 		application(),		
 		crypto(),		
-		context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, crypto),
-		outstation(context)
+		context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, crypto)		
 	{
-		lower.SetUpperLayer(outstation);
+		lower.SetUpperLayer(context);
 	}
 
 	uint32_t OutstationSecAuthFixture::LowerLayerUp()
 	{
-		outstation.OnLowerLayerUp();
+		context.OnLowerLayerUp();
 		return exe.RunMany();
 	}
 
 	uint32_t OutstationSecAuthFixture::LowerLayerDown()
 	{
-		outstation.OnLowerLayerDown();
+		context.OnLowerLayerDown();
 		return exe.RunMany();
 	}
 
 	uint32_t OutstationSecAuthFixture::OnSendResult(bool isSuccess)
 	{
-		outstation.OnSendResult(isSuccess);
+		context.OnSendResult(isSuccess);
 		return exe.RunMany();
 	}
 
 	uint32_t OutstationSecAuthFixture::SendToOutstation(const std::string& hex)
 	{
 		testlib::HexSequence hs(hex);
-		outstation.OnReceive(hs.ToReadOnly());
+		context.OnReceive(hs.ToReadOnly());
 		return exe.RunMany();
 	}
 

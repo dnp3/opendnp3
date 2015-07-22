@@ -49,8 +49,7 @@ public:
 private:
 	
 	
-	opendnp3::OContext ocontext;
-	opendnp3::Outstation outstation;
+	opendnp3::OContext ocontext;	
 };
 
 }
