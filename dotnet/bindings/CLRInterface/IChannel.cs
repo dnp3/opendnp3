@@ -64,7 +64,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Adds an SA-enabled master to the channel
         /// </summary>       
-        IMaster AddMaster(String id, ISOEHandler publisher, IMasterApplication application, MasterStackConfig config, IMasterUser masterUser);
+        IMasterSA AddMasterSA(String id, ISOEHandler publisher, IMasterApplicationSA application, MasterStackConfig config);
 
         /// <summary>
         /// Adds an outstation to the channel

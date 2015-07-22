@@ -35,6 +35,21 @@ namespace Automatak.DNP3.Interface
             this.key = key;            
         }
 
+        /// <summary>
+        /// Only for demo purposes
+        /// </summary>
+        /// <param name="repeat"></param>
+        /// <param name="mode"></param>
+        static public UpdateKey Demo(byte repeat, UpdateKeyMode mode)
+        {            
+            var bytes = (mode == UpdateKeyMode.AES128) ? new byte[16] : new byte[32];
+            for (int i = 0; i < bytes.Length; ++i)
+            {
+                bytes[i] = repeat;
+            }
+            return new UpdateKey(bytes);
+        }
+
         static UpdateKeyMode GetModeFromKeyLength(int length)
         {
             switch (length)
@@ -50,46 +65,5 @@ namespace Automatak.DNP3.Interface
         
         public readonly UpdateKeyMode keyMode;
         public readonly byte[] key;        
-    };
-
-
-    /// <summary>
-    /// Straw-man interface for a single-user SA enabled master
-    /// </summary>
-    public interface IMasterUser
-    {
-        User UserNumber
-        {
-            get;
-        }
-
-        UpdateKey UpdateKey
-        {
-            get;
-        }
-    }
-
-    public class SimpleMasterUser : IMasterUser
-    {
-        readonly UpdateKey key;
-        readonly User user;
-
-        public SimpleMasterUser(User user, byte[] key)
-        {
-            this.user = user;
-            this.key = new UpdateKey(key);
-        }
-
-        UpdateKey IMasterUser.UpdateKey
-        {
-            get { return key; }
-        }     
-
-        User IMasterUser.UserNumber
-        {
-            get { return user; }
-        }
-    }
-
-   
+    };   
 }

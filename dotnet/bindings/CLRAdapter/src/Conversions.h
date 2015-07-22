@@ -20,6 +20,7 @@
 #include <opendnp3/app/AnalogCommandEvent.h>
 #include <opendnp3/app/SecurityStat.h>
 #include <opendnp3/app/parsing/ICollection.h>
+#include <opendnp3/app/GroupVariationID.h>
 
 #include <opendnp3/master/CommandResponse.h>
 #include <opendnp3/master/MasterStackConfig.h>
@@ -129,6 +130,8 @@ namespace Automatak
 				static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);
 
 				static opendnp3::DatabaseTemplate ConvertConfig(DatabaseTemplate^ config);
+
+				static opendnp3::GroupVariationID Convert(PointClass clazz);
 
 
 				template <class Target, class Source>

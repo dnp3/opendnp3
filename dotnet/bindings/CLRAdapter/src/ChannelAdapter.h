@@ -35,7 +35,7 @@ namespace Automatak
 
 				virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplication^ application, MasterStackConfig^ config) sealed;
 
-				virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplication^ application, MasterStackConfig^ config, IMasterUser^ masterUser) sealed;
+				virtual IMasterSA^ AddMasterSA(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplicationSA^ application, MasterStackConfig^ config) sealed;
 
 				virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config) sealed;
 

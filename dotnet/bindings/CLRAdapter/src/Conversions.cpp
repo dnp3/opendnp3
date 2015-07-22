@@ -3,6 +3,8 @@
 #include <msclr\marshal_cppstd.h>
 #include "Conversions.h"
 
+#include <opendnp3/objects/Group60.h>
+
 using namespace Automatak::DNP3::Interface;
 
 #ifdef ERROR
@@ -365,6 +367,21 @@ namespace Automatak
 					config->analogOutputStatii->Count,
 					config->timeAndIntervals->Count
 				);								
+			}
+
+			opendnp3::GroupVariationID Conversions::Convert(PointClass clazz)
+			{
+				switch (clazz)
+				{
+				case(PointClass::Class1) :
+					return opendnp3::Group60Var2::ID();
+				case(PointClass::Class2) :
+					return opendnp3::Group60Var3::ID();
+				case(PointClass::Class3) :
+					return opendnp3::Group60Var4::ID();
+				default:
+					return opendnp3::Group60Var1::ID();
+				}
 			}
 
 		}

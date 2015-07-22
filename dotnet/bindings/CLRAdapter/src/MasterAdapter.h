@@ -6,6 +6,10 @@ using namespace System::Collections::Generic;
 
 #include <asiodnp3/IMaster.h>
 
+#include "CommandCallbackAdapter.h"
+#include "MasterConversions.h"
+#include "MasterScanAdapter.h"
+
 using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
@@ -13,14 +17,12 @@ namespace Automatak
 	namespace DNP3
 	{
 		namespace Adapter
-		{
-			private ref class MasterAdapter : IMaster
+		{			
+			private ref class MasterAdapter abstract
 			{
 			public:
 
 				MasterAdapter(asiodnp3::IMaster* apMaster);
-
-				virtual ICommandProcessor^ GetCommandProcessor();
 
 				virtual IStackStatistics^ GetStackStatistics();
 
@@ -47,26 +49,43 @@ namespace Automatak
 				virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, TaskConfig^ config);
 				
 				virtual void Write(TimeAndInterval^ value, System::UInt16 index, TaskConfig^ config);
+				
+
+				virtual IFuture<CommandResponse>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
+				virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index);				
+				virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index);
+				virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index);
+				virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index);
+
+				virtual IFuture<CommandResponse>^ DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
+				virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputInt32^ command, System::UInt32 index);
+				virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputInt16^ command, System::UInt32 index);
+				virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index);
+				virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index);
 
 			private:
 
-				static std::vector<asiodnp3::Header> ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers);
+				template <class T>
+				IFuture<CommandResponse>^ SelectAndOperateT(T^ command, System::UInt32 index)
+				{
+					auto future = gcnew Future<CommandResponse>();
+					auto cmd = Conversions::ConvertCommand(command);
+					auto pCallback = new CommandCallbackAdapter(future, true);
+					pMaster->SelectAndOperate(cmd, index, *pCallback);
+					return future;
+				}
 
-				static bool Convert(Header^ header, asiodnp3::Header& output);
-
-				static asiodnp3::Header Convert(Header^ header);
-				static asiodnp3::Header ConvertCount8(CountHeader^ header);
-				static asiodnp3::Header ConvertCount16(CountHeader^ header);
-				static asiodnp3::Header ConvertRange8(RangeHeader^ header);
-				static asiodnp3::Header ConvertRange16(RangeHeader^ header);
-
-				static opendnp3::TaskConfig Convert(TaskConfig^ config);
-				static opendnp3::TaskId Convert(TaskId^ taskId);
-				static opendnp3::ITaskCallback* CreateTaskCallback(ITaskCallback^ callback);
+				template <class T>
+				IFuture<CommandResponse>^ DirectOperateT(T^ command, System::UInt32 index)
+				{
+					auto future = gcnew Future<CommandResponse>();
+					auto cmd = Conversions::ConvertCommand(command);
+					auto pCallback = new CommandCallbackAdapter(future, true);
+					pMaster->DirectOperate(cmd, index, *pCallback);
+					return future;
+				}			
 				
-
-				asiodnp3::IMaster* pMaster;
-				ICommandProcessor^ commandAdapter;
+				asiodnp3::IMaster* pMaster;				
 			};
 
 		}

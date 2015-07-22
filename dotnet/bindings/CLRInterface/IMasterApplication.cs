@@ -88,7 +88,7 @@ namespace Automatak.DNP3.Interface
             }
         }
 
-        private DefaultMasterApplication() { }
+        protected DefaultMasterApplication() { }
 
         UInt64 IMasterApplication.GetMillisecondsSinceEpoch()
         {

@@ -6,11 +6,14 @@
 #include "SOEHandlerAdapter.h"
 #include "OutstationCommandHandlerAdapter.h"
 #include "OutstationApplicationAdapter.h"
-#include "MasterApplicationAdapter.h"
-#include "MasterAdapter.h"
+
+#include "MasterApplicationAdapterSA.h"
+
+#include "MasterAdapterSA.h"
 #include "OutstationAdapter.h"
+
 #include "EventConverter.h"
-#include "MasterUserDatabaseAdapter.h"
+
 
 #include <opendnp3/outstation/Database.h>
 
@@ -65,7 +68,7 @@ namespace Automatak
 				opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
 
 				auto pSOEHandler = new SOEHandlerAdapter(handler);
-				auto pApplication = new MasterApplicationAdapter(application);
+				auto pApplication = new MasterApplicationAdapter<opendnp3::IMasterApplication>(application);
 
 				auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg);
 				if (pMaster == nullptr)
@@ -78,11 +81,11 @@ namespace Automatak
 				{
 					pMaster->DeleteOnDestruct(pSOEHandler);
 					pMaster->DeleteOnDestruct(pApplication);
-					return gcnew MasterAdapter(pMaster);
+					return gcnew MasterAdapterStandard(pMaster);
 				}
 			}
 
-			IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handler, IMasterApplication^ application, MasterStackConfig^ config, IMasterUser^ masterUser)
+			IMasterSA^ ChannelAdapter::AddMasterSA(System::String^ loggerId, ISOEHandler^ handler, IMasterApplicationSA^ application, MasterStackConfig^ config)
 			{
 				std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
@@ -94,23 +97,20 @@ namespace Automatak
 				cfg.master = baseCfg.master;
 
 				auto pSOEHandler = new SOEHandlerAdapter(handler);
-				auto pApplication = new MasterApplicationAdapter(application);
-				auto pMasterUserDB = new MasterUserDatabaseAdapter(masterUser);
-
-				auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg, *pMasterUserDB);
+				auto pApplication = new MasterApplicationAdapterSA(application);
+				
+				auto pMaster = pChannel->AddMasterSA(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg);
 				if (pMaster == nullptr)
 				{
 					delete pSOEHandler;
-					delete pApplication;
-					delete pMasterUserDB;
+					delete pApplication;					
 					return nullptr;
 				}
 				else
 				{
 					pMaster->DeleteOnDestruct(pSOEHandler);
-					pMaster->DeleteOnDestruct(pApplication);
-					pMaster->DeleteOnDestruct(pMasterUserDB);
-					return gcnew MasterAdapter(pMaster);
+					pMaster->DeleteOnDestruct(pApplication);					
+					return gcnew MasterAdapterSA(pMaster);
 				}
 			}
 

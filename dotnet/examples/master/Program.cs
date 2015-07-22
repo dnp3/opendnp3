@@ -27,12 +27,21 @@ using System.Text;
 using Automatak.DNP3.Adapter;
 using Automatak.DNP3.Interface;
 
+class MasterApplicatonSA : DefaultMasterApplication, IMasterApplicationSA
+{
+    public MasterApplicatonSA()
+    { }
+    
+}
+
 namespace DotNetMasterDemo
 {
     class Program
     {        
         static int Main(string[] args)
         {
+            var application = new MasterApplicatonSA();
+
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();            
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPClient("client", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
@@ -52,10 +61,10 @@ namespace DotNetMasterDemo
                 key[i] = 0xFF;
             }
 
-            // configure the user that the master will use
-            var user = new SimpleMasterUser(User.Default, GetHardwiredUpdateKey(0xFF));
+            var master = channel.AddMasterSA("master", PrintingSOEHandler.Instance, application, config);
 
-            var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config, user);            
+            // define a user on the outstation
+            master.AddUser(User.Default, UpdateKey.Demo(0xFF, UpdateKeyMode.AES128));
             
             // you a can optionally add various kinds of polls
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1), TaskConfig.Default);
@@ -81,7 +90,7 @@ namespace DotNetMasterDemo
                         break;
                     case "c":
                         var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
-                        var future = master.GetCommandProcessor().SelectAndOperate(crob, 0);
+                        var future = master.SelectAndOperate(crob, 0);
                         future.Listen((result) => Console.WriteLine("Result: " + result));
                         break;
                     case "l":

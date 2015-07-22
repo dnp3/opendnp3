@@ -30,19 +30,12 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// Interface representing a master station
     /// </summary>
-    public interface IMaster: IStack
-    {
+    public interface IMaster : IStack, ICommandProcessor
+    {       
         /// <summary>
-        /// 
+        /// Perform an adhoc scan with the designated request headers
         /// </summary>
-        /// <returns> Interface used to dispatch command requests </returns>
-        ICommandProcessor GetCommandProcessor();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="headers"></param>
-        
+        /// <param name="headers"></param>        
         void Scan(IEnumerable<Header> headers, TaskConfig config);
 
         /// <summary>
