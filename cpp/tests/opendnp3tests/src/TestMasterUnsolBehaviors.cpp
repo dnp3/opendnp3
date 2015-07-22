@@ -40,14 +40,14 @@ TEST_CASE(SUITE("ReceiveUnsolBeforeTransmit"))
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
 	MasterTestObject t(params);
-	t.master.OnLowerLayerUp();
+	t.context.OnLowerLayerUp();
 	
 	t.SendToMaster(hex::NullUnsolicited(0, IINField::Empty()));
 
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::UnsolConfirm(0));
-	t.master.OnSendResult(true);
+	t.context.OnSendResult(true);
 
 	t.exe.RunMany();
 

@@ -40,8 +40,7 @@ namespace opendnp3
 		lower(log.root),
 		application(),
 		crypto(),		
-		context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto),
-		master(context)				
+		context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto)					
 	{
 		
 	}
@@ -49,7 +48,7 @@ namespace opendnp3
 	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
 	{
 		HexSequence hs(hex);
-		master.OnReceive(hs.ToReadOnly());
+		context.OnReceive(hs.ToReadOnly());
 	}
 
 	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, UpdateKeyMode mode, uint8_t keyRepeat)
@@ -62,7 +61,7 @@ namespace opendnp3
 		this->exe.RunMany();
 		auto asdu = this->lower.PopWriteAsHex();
 		REQUIRE(asdu == request);
-		this->master.OnSendResult(true);
+		this->context.OnSendResult(true);
 		this->SendToMaster(response);
 		this->exe.RunMany();
 	}

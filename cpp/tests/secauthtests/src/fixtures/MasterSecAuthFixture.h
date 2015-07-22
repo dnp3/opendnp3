@@ -24,7 +24,6 @@
 #include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
 
-#include <opendnp3/master/Master.h>
 #include <opendnp3/LogLevels.h>
 
 #include <dnp3mocks/MockLowerLayer.h>
@@ -63,8 +62,6 @@ namespace opendnp3
 		MockMasterApplicationSA application;
 		MockCryptoProvider crypto;		
 		secauth::MAuthContext context;
-		Master master;
-
 		
 	};
 

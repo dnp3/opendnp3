@@ -41,7 +41,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 	MasterSecAuthFixture fixture(params);
 	REQUIRE(fixture.ConfigureUser(User::Default()));
 		
-	fixture.master.OnLowerLayerUp();
+	fixture.context.OnLowerLayerUp();
 
 	AppSeqNum seq;
 
@@ -66,7 +66,7 @@ TEST_CASE(SUITE("Session keys are refreshed at the cofigured interval"))
 	MasterSecAuthFixture fixture(params, settings);
 	REQUIRE(fixture.ConfigureUser(User::Default()));
 
-	fixture.master.OnLowerLayerUp();
+	fixture.context.OnLowerLayerUp();
 
 
 	AppSeqNum seq;
@@ -88,7 +88,7 @@ TEST_CASE(SUITE("Master authenticates using default user"))
 	MasterSecAuthFixture fixture(params);
 	fixture.ConfigureUser(user);
 
-	fixture.master.OnLowerLayerUp();
+	fixture.context.OnLowerLayerUp();
 
 	AppSeqNum seq;
 	fixture.TestSessionKeyExchange(seq, user);
@@ -123,7 +123,7 @@ TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))
 	User user = User::Default();	
 	MasterSecAuthFixture fixture(params);	
 	fixture.ConfigureUser(user);
-	fixture.master.OnLowerLayerUp();
+	fixture.context.OnLowerLayerUp();
 
 	auto requestKeys = hex::RequestKeyStatus(0, user.GetId());
 	auto badResponse = "C0 83 00 00";

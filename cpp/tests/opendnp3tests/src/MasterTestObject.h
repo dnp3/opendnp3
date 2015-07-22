@@ -24,7 +24,6 @@
 #include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
 
-#include <opendnp3/master/Master.h>
 #include <opendnp3/master/MasterContext.h>
 #include <opendnp3/LogLevels.h>
 #include <deque>
@@ -51,8 +50,7 @@ namespace opendnp3
 		MockSOEHandler meas;
 		MockLowerLayer lower;
 		MockMasterApplication application;
-		MContext context;
-		Master master;
+		MContext context;		
 	};
 
 }

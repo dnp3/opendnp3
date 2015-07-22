@@ -43,7 +43,7 @@ namespace opendnp3
 	/*
 		All of the mutable state and configuration for a master
 	*/
-	class MContext : private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
+	class MContext : public IUpperLayer, private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
 	{
 
 	protected:
@@ -91,16 +91,18 @@ namespace opendnp3
 		std::deque<APDUHeader> confirmQueue;
 		openpal::Buffer txBuffer;
 		TaskState tstate;
+
+		/// --- implement  IUpperLayer ------
 		
-		bool OnReceive(const openpal::ReadBufferView& apdu);
+		virtual bool OnLowerLayerUp() override;
 
-		bool OnSendResult(bool isSucccess);
+		virtual bool OnLowerLayerDown() override;
+		
+		virtual bool OnReceive(const openpal::ReadBufferView& apdu) override final;
 
-		/// virtual methods that can be overriden to implement secure authentication		
+		virtual bool OnSendResult(bool isSucccess) override final;
 
-		virtual bool GoOnline();
-
-		virtual bool GoOffline();
+		/// additional virtual methods that can be overriden to implement secure authentication				
 		
 		virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 

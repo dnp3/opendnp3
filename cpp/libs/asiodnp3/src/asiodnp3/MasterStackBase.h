@@ -23,7 +23,7 @@
 
 #include <opendnp3/link/ILinkSession.h>
 #include <opendnp3/master/MasterStackConfig.h>
-#include <opendnp3/master/Master.h>
+#include <opendnp3/master/MasterContext.h>
 #include <opendnp3/transport/TransportStack.h>
 
 #include <asiopal/ASIOExecutor.h>
@@ -88,25 +88,25 @@ public:
 
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config) override final
 	{
-		auto add = [this, period, builder, config]() { return this->GetContext().AddScan(period, builder, config); };
+		auto add = [this, period, builder, config]() { return this->pContext->AddScan(period, builder, config); };
 		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);
 	}
 
 	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final
 	{
-		auto add = [this, gvId, period, config]() { return this->GetContext().AddAllObjectsScan(gvId, period, config); };
+		auto add = [this, gvId, period, config]() { return this->pContext->AddAllObjectsScan(gvId, period, config); };
 		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);
 	}
 
 	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final
 	{
-		auto add = [this, field, period, config]() { return this->GetContext().AddClassScan(field, period, config); };
+		auto add = [this, field, period, config]() { return this->pContext->AddClassScan(field, period, config); };
 		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);
 	}
 
 	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final
 	{
-		auto add = [this, gvId, start, stop, period, config]() { return this->GetContext().AddRangeScan(gvId, start, stop, period, config); };
+		auto add = [this, gvId, start, stop, period, config]() { return this->pContext->AddRangeScan(gvId, start, stop, period, config); };
 		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);
 	}
 
@@ -120,25 +120,25 @@ public:
 	
 	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config) override final
 	{
-		auto add = [this, builder, config]() { this->GetContext().Scan(builder, config); };
+		auto add = [this, builder, config]() { this->pContext->Scan(builder, config); };
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
 
 	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config) override final
 	{
-		auto add = [this, gvId, config]() { this->GetContext().ScanAllObjects(gvId, config); };
+		auto add = [this, gvId, config]() { this->pContext->ScanAllObjects(gvId, config); };
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
 
 	virtual void ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config) override final
 	{
-		auto add = [this, field, config]() { this->GetContext().ScanClasses(field, config); };
+		auto add = [this, field, config]() { this->pContext->ScanClasses(field, config); };
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
 
 	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const opendnp3::TaskConfig& config) override final
 	{
-		auto add = [this, gvId, start, stop, config]() { this->GetContext().ScanRange(gvId, start, stop, config); };
+		auto add = [this, gvId, start, stop, config]() { this->pContext->ScanRange(gvId, start, stop, config); };
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
 
@@ -146,7 +146,7 @@ public:
 
 	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config)  override final
 	{
-		auto add = [this, value, index, config]() { this->GetContext().Write(value, index, config); };
+		auto add = [this, value, index, config]() { this->pContext->Write(value, index, config); };
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
 
@@ -218,32 +218,38 @@ protected:
 
 	template <class T>
 	void SelectAndOperateT(const T& command, uint16_t index, opendnp3::ICommandCallback& callback)
-	{
-		auto context = &this->GetContext();
-		auto action = [context, command, index, &callback]()
+	{		
+		auto action = [this, command, index, &callback]()
 		{
-			context->SelectAndOperate(command, index, callback);
+			this->pContext->SelectAndOperate(command, index, callback);
 		};
-		context->pExecutor->PostLambda(action);
+		this->pContext->pExecutor->PostLambda(action);
 	}
 
 	template <class T>
 	void DirectOperateT(const T& command, uint16_t index, opendnp3::ICommandCallback& callback)
-	{
-		auto context = &this->GetContext();
-		auto action = [context, command, index, &callback]()
+	{		
+		auto action = [this, command, index, &callback]()
 		{
-			context->DirectOperate(command, index, callback);
+			this->pContext->DirectOperate(command, index, callback);
 		};
-		context->pExecutor->PostLambda(action);
+		this->pContext->pExecutor->PostLambda(action);
 	}
 
-	virtual opendnp3::MContext& GetContext() = 0;		
+	void SetContext(opendnp3::MContext& context)
+	{
+		this->pContext = &context;
+		this->stack.transport.SetAppLayer(&context);
+	}
 	
 	openpal::LogRoot root;	
 	opendnp3::StackStatistics statistics;
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;	
+
+	private:
+
+	opendnp3::MContext* pContext;
 };
 
 }

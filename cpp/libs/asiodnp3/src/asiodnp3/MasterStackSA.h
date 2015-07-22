@@ -49,15 +49,12 @@ public:
 		opendnp3::ITaskLock& taskLock,		
 		openpal::ICryptoProvider& crypto
 	);	
-	
-protected:
 
 	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key) override final;
-
-	virtual opendnp3::MContext& GetContext() override { return mcontext; }	
 	
-	secauth::MAuthContext mcontext;
-	opendnp3::Master master;
+private:	
+	
+	secauth::MAuthContext mcontext;	
 };
 
 }

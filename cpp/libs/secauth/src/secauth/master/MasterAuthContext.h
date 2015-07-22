@@ -55,9 +55,9 @@ public:
 
 	// ------ override the necessary MContext methods ------		
 
-	virtual bool GoOnline() override;
+	virtual bool OnLowerLayerUp() override;
 
-	virtual bool GoOffline() override;
+	virtual bool OnLowerLayerDown() override;
 
 	virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
 

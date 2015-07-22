@@ -44,13 +44,10 @@ public:
 		opendnp3::ITaskLock& taskLock
 	);	
 	
-protected:
-
-	virtual opendnp3::MContext& GetContext() override { return mcontext; }	
+protected:	
 	
 
-	opendnp3::MContext mcontext;
-	opendnp3::Master master;
+	opendnp3::MContext mcontext;	
 };
 
 }

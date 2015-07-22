@@ -65,38 +65,46 @@ namespace opendnp3
 		tstate(TaskState::IDLE)
 	{}
 
-	void MContext::CheckForTask()
+	bool MContext::OnLowerLayerUp()
 	{
 		if (isOnline)
 		{
-			this->tstate = this->OnStartEvent();
+			return false;
 		}
+		
+		isOnline = true;
+		pTaskLock->OnLayerUp();
+		tasks.Initialize(scheduler);
+		this->PostCheckForTask();
+		return true;		
 	}
 
-	void MContext::OnResponseTimeout()
+	bool MContext::OnLowerLayerDown()
 	{
-		if (isOnline)
+		if (!isOnline)
 		{
-			this->tstate = this->OnResponseTimeoutEvent();
+			return false;
 		}
-	}
 
-	void MContext::CompleteActiveTask()
-	{
-		if (this->pActiveTask.IsDefined())
+		auto now = pExecutor->GetTime();
+		scheduler.Shutdown(now);
+
+		if (pActiveTask.IsDefined())
 		{
-			if (this->pActiveTask->IsRecurring())
-			{
-				this->scheduler.Schedule(std::move(this->pActiveTask));
-			}
-			else
-			{
-				this->pActiveTask.Release();
-			}
+			pActiveTask->OnLowerLayerClose(now);
+			pActiveTask.Release();
+		}
 
-			pTaskLock->Release(*this);
-			this->PostCheckForTask();
-		}		
+		tstate = TaskState::IDLE;
+
+		pTaskLock->OnLayerDown();
+
+		responseTimer.Cancel();
+
+		solSeq = unsolSeq = 0;
+		isOnline = isSending = false;
+
+		return true;
 	}
 
 	bool MContext::OnReceive(const openpal::ReadBufferView& apdu)
@@ -141,6 +149,40 @@ namespace opendnp3
 		this->CheckForTask();
 		return true;
 	}
+
+	void MContext::CheckForTask()
+	{
+		if (isOnline)
+		{
+			this->tstate = this->OnStartEvent();
+		}
+	}
+
+	void MContext::OnResponseTimeout()
+	{
+		if (isOnline)
+		{
+			this->tstate = this->OnResponseTimeoutEvent();
+		}
+	}
+
+	void MContext::CompleteActiveTask()
+	{
+		if (this->pActiveTask.IsDefined())
+		{
+			if (this->pActiveTask->IsRecurring())
+			{
+				this->scheduler.Schedule(std::move(this->pActiveTask));
+			}
+			else
+			{
+				this->pActiveTask.Release();
+			}
+
+			pTaskLock->Release(*this);
+			this->PostCheckForTask();
+		}		
+	}	
 
 	void MContext::OnParsedHeader(const ReadBufferView& apdu, const APDUResponseHeader& header, const ReadBufferView& objects)
 	{
@@ -310,53 +352,7 @@ namespace opendnp3
 	{
 		auto callback = [this]() { this->CheckForTask(); };
 		this->pExecutor->PostLambda(callback);
-	}
-
-	bool MContext::GoOffline()
-	{
-		if (isOnline)
-		{
-			auto now = pExecutor->GetTime();
-			scheduler.Shutdown(now);
-
-			if (pActiveTask.IsDefined())
-			{
-				pActiveTask->OnLowerLayerClose(now);
-				pActiveTask.Release();
-			}
-
-			tstate = TaskState::IDLE;
-
-			pTaskLock->OnLayerDown();			
-
-			responseTimer.Cancel();
-
-			solSeq = unsolSeq = 0;
-			isOnline = isSending = false;
-
-			return true;			
-		}
-		else
-		{
-			return false;
-		}		
-	}
-
-	bool MContext::GoOnline()
-	{
-		if (isOnline)
-		{
-			return false;
-		}
-		else
-		{
-			isOnline = true;
-			pTaskLock->OnLayerUp();			
-			tasks.Initialize(scheduler);	
-			this->PostCheckForTask();
-			return true;
-		}
-	}
+	}	
 
 	MasterScan MContext::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, TaskConfig config)
 	{

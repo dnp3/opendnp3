@@ -59,11 +59,11 @@ MAuthContext::MAuthContext(
 
 }
 
-bool MAuthContext::GoOnline()
+bool MAuthContext::OnLowerLayerUp()
 {
-	bool online = MContext::GoOnline();
+	bool ret = MContext::OnLowerLayerUp();
 
-	if (online)
+	if (ret)
 	{
 		// create a session key task for every user
 		auto createSessionKeyTask = [this](const User& user)
@@ -80,12 +80,12 @@ bool MAuthContext::GoOnline()
 		this->userDB.EnumerateUsers(createSessionKeyTask);
 	}
 		
-	return online;
+	return ret;
 }
 
-bool MAuthContext::GoOffline()
+bool MAuthContext::OnLowerLayerDown()
 {	
-	auto ret = MContext::GoOffline();
+	auto ret = MContext::OnLowerLayerDown();
 
 	if (ret)
 	{

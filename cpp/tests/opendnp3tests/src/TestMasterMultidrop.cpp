@@ -42,8 +42,8 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 	MasterTestObject t1(params, taskLock);
 	MasterTestObject t2(params, taskLock);
 
-	t1.master.OnLowerLayerUp();
-	t2.master.OnLowerLayerUp();
+	t1.context.OnLowerLayerUp();
+	t2.context.OnLowerLayerUp();
 
 	t1.exe.RunMany();
 	t2.exe.RunMany();
@@ -51,7 +51,7 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 	REQUIRE(t1.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	REQUIRE(t2.lower.PopWriteAsHex() == "");
 
-	t1.master.OnSendResult(true);
+	t1.context.OnSendResult(true);
 	t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
 
 	t1.exe.RunMany();
@@ -60,7 +60,7 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 	REQUIRE(t1.lower.PopWriteAsHex() == "");
 	REQUIRE(t2.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 
-	t2.master.OnSendResult(true);
+	t2.context.OnSendResult(true);
 	t2.SendToMaster(hex::EmptyResponse(0));
 
 	t1.exe.RunMany();

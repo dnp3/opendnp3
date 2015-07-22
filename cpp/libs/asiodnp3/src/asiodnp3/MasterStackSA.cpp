@@ -40,10 +40,9 @@ MasterStackSA::MasterStackSA(
 	openpal::ICryptoProvider& crypto
 ) :
 	MasterStackBase<IMasterSA>(id, root, executor, config, lifecycle),
-	mcontext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto),
-	master(mcontext)
+	mcontext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto)	
 {
-
+	this->SetContext(mcontext);
 }
 
 void MasterStackSA::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
