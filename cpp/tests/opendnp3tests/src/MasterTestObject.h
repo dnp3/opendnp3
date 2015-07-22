@@ -25,6 +25,7 @@
 #include <testlib/MockLogHandler.h>
 
 #include <opendnp3/master/Master.h>
+#include <opendnp3/master/MasterContext.h>
 #include <opendnp3/LogLevels.h>
 #include <deque>
 

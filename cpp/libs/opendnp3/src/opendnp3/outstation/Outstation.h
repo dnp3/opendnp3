@@ -23,17 +23,17 @@
 
 #include "opendnp3/LayerInterfaces.h"
 
-#include "opendnp3/outstation/OutstationContext.h"
-#include "opendnp3/outstation/DatabaseConfigView.h"
-
 namespace opendnp3
 {
+
+class OContext;
 
 class Outstation : public IUpperLayer
 {
 	public:
 
-	Outstation(OContext& ocontext);
+	Outstation(OContext& ocontext) : m_ocontext(&ocontext)
+	{}
 	
 	/// ----- Implement IUpperLayer ------
 
@@ -45,15 +45,6 @@ class Outstation : public IUpperLayer
 	
 	virtual void OnSendResult(bool isSucccess) override final;	
 	
-	/// ---- Other public members
-
-	void SetRestartIIN();
-
-	void CheckForUpdates(); //force a check for updates
-
-	IDatabase& GetDatabase();
-
-	DatabaseConfigView GetConfigView();	
 		
 	private:			
 

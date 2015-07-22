@@ -21,15 +21,12 @@
 #ifndef OPENDNP3_MASTER_H
 #define OPENDNP3_MASTER_H
 
-#include "opendnp3/app/HeaderWriter.h"
-
-#include "opendnp3/master/TaskConfig.h"
-#include "opendnp3/master/MasterContext.h"
-#include "opendnp3/master/MasterScan.h"
-#include "opendnp3/master/IMasterApplication.h"
+#include <opendnp3/LayerInterfaces.h>
 
 namespace opendnp3
 {
+
+class MContext;
 
 class Master : public IUpperLayer
 {

@@ -34,22 +34,6 @@ using namespace testlib;
 
 #define SUITE(name) "OutstationTestSuite - " name
 
-TEST_CASE(SUITE("InitialState"))
-{
-	OutstationConfig config;
-	OutstationTestObject test(config);
-	
-	test.LowerLayerDown();
-	REQUIRE(flags::ERR == test.log.PopFilter());
-
-	test.SendToOutstation("");
-	REQUIRE(flags::ERR == test.log.PopFilter());
-
-	test.OnSendResult(true);
-	REQUIRE(flags::ERR == test.log.PopFilter());
-}
-
-
 TEST_CASE(SUITE("UnsupportedFunction"))
 {
 	OutstationConfig config;
@@ -269,7 +253,7 @@ TEST_CASE(SUITE("MixedVariationAssignments"))
 	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(2));
 
 	{	// configure two different default variations
-		auto view = t.outstation.GetConfigView();
+		auto view = t.context.GetConfigView();
 		view.analogs[0].variation = StaticAnalogVariation::Group30Var1;
 		view.analogs[1].variation = StaticAnalogVariation::Group30Var2;
 	}
@@ -501,7 +485,7 @@ std::string QueryDiscontiguousBinary(const std::string& request)
 	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(3));
 
 	// assign virtual indices to the database specified above
-	auto view = t.outstation.GetConfigView();
+	auto view = t.context.GetConfigView();
 	view.binaries[0].vIndex = 2;
 	view.binaries[1].vIndex = 4;
 	view.binaries[2].vIndex = 5;
@@ -576,7 +560,7 @@ void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp,
 {
 	OutstationTestObject t(config, tmp);	
 
-	auto view = t.outstation.GetConfigView();
+	auto view = t.context.GetConfigView();
 	configure(view);
 
 	t.LowerLayerUp();
@@ -605,7 +589,7 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(10));
 
 	{
-		auto view = t.outstation.GetConfigView();
+		auto view = t.context.GetConfigView();
 		view.binaries.foreach([](Cell<Binary>& cell){ 
 			cell.SetInitialValue(Binary(false));
 			cell.variation = StaticBinaryVariation::Group1Var1; 
@@ -625,7 +609,7 @@ TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(2));
 
 	{
-		auto view = t.outstation.GetConfigView();
+		auto view = t.context.GetConfigView();
 		view.binaries.foreach([](Cell<Binary>& cell)
 		{			
 			cell.variation = StaticBinaryVariation::Group1Var1;

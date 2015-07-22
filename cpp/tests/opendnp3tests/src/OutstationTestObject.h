@@ -25,6 +25,7 @@
 #include <opendnp3/app/ITransactable.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
+#include <opendnp3/outstation/OutstationContext.h>
 
 #include <functional>
 
@@ -66,9 +67,9 @@ public:
 	
 	void Transaction(const std::function<void (IDatabase&)>& apply)
 	{		
-		auto& db = outstation.GetDatabase();			
+		auto& db = context.GetDatabase();
 		apply(db);
-		outstation.CheckForUpdates();	
+		context.CheckForTaskStart();
 	}
 
 private:
@@ -80,11 +81,7 @@ public:
 	MockLowerLayer lower;	
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
-
-private:
 	OContext context;
-
-public:
 	Outstation outstation;	
 };
 

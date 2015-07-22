@@ -23,6 +23,8 @@
 
 #include "OutstationStackBase.h"
 
+#include <opendnp3/outstation/OutstationContext.h>
+
 namespace asiodnp3
 {
 
@@ -44,10 +46,8 @@ public:
 		IStackLifecycle& lifecycle);
 		
 
-protected:
-
-	virtual opendnp3::Outstation& GetOutstation() override final { return outstation; }
-	virtual opendnp3::OContext& GetContext() override final { return ocontext; }
+private:
+	
 	
 	opendnp3::OContext ocontext;
 	opendnp3::Outstation outstation;

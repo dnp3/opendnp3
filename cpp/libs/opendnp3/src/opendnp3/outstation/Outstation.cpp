@@ -21,21 +21,13 @@
 
 #include "Outstation.h"
 
-#include "opendnp3/app/APDUResponse.h"
-#include "opendnp3/LogLevels.h"
-
-#include <openpal/logging/LogMacros.h>
+#include "opendnp3/outstation/OutstationContext.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-Outstation::Outstation(OContext& ocontext) : m_ocontext(&ocontext)
-{
-	
-}
-	
 void Outstation::OnLowerLayerUp()
 {
 	m_ocontext->GoOnline();
@@ -53,34 +45,7 @@ void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 
 void Outstation::OnSendResult(bool isSuccess)
 {	
-	if (m_ocontext->isOnline)
-	{		
-		m_ocontext->OnSendResult(isSuccess);
-	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(m_ocontext->logger, flags::ERR, "Unexpected send callback");
-	}	
-}
-
-void Outstation::SetRestartIIN()
-{
-	m_ocontext->staticIIN.SetBit(IINBit::DEVICE_RESTART);
-}
-
-void Outstation::CheckForUpdates()
-{
-	m_ocontext->CheckForTaskStart();
-}
-
-IDatabase& Outstation::GetDatabase()
-{
-	return m_ocontext->database;
-}
-
-DatabaseConfigView Outstation::GetConfigView()
-{
-	return m_ocontext->database.GetConfigView();
+	m_ocontext->OnSendResult(isSuccess);
 }
 	
 }

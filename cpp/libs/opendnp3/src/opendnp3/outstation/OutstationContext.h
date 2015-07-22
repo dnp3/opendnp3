@@ -86,6 +86,14 @@ public:
 
 	virtual void Increment(SecurityStatIndex index) {}
 
+	/// ---- External helpers ----
+
+	void SetRestartIIN();	
+
+	IDatabase& GetDatabase();
+
+	DatabaseConfigView GetConfigView();
+
 	/// ---- Processing functions --------
 
 	void OnReceive(const openpal::ReadBufferView& fragment);

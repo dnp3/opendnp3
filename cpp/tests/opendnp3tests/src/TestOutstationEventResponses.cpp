@@ -135,7 +135,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
 	t.LowerLayerUp();
 
-	auto view = t.outstation.GetConfigView();
+	auto view = t.context.GetConfigView();
 
 	view.binaries[0].metadata.clazz = PointClass::Class1;
 	view.analogs[0].metadata.clazz = PointClass::Class2;
@@ -184,7 +184,7 @@ void TestEventRead(	const std::string& request,
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(5));
 
-	auto view = t.outstation.GetConfigView();
+	auto view = t.context.GetConfigView();
 	configure(view);
 
 	t.LowerLayerUp();

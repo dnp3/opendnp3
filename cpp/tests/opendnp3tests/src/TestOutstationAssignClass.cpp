@@ -71,7 +71,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
 
-	auto view = t.outstation.GetConfigView();
+	auto view = t.context.GetConfigView();
 	for (uint16_t i = 0; i < NUM_BINARY; ++i)
 	{
 		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class2);
@@ -96,7 +96,7 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
 
 	//despite the invalid range, the outstation should assign the values that it does have
-	auto view = t.outstation.GetConfigView();
+	auto view = t.context.GetConfigView();
 	for (uint16_t i = 0; i < NUM_BINARY; ++i)
 	{
 		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class2);
@@ -118,7 +118,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
 	t.SendToOutstation("C0 16 3C 03 06 01 00 01 02 00 03 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
 
-	auto view = t.outstation.GetConfigView();
+	auto view = t.context.GetConfigView();
 
 	REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class1);
 	for (uint16_t i = 2; i < 3; ++i)

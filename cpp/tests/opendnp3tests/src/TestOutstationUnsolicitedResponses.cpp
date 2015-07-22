@@ -68,7 +68,7 @@ TEST_CASE(SUITE("UnsolData"))
 	cfg.eventBufferConfig = EventBufferConfig::AllTypes(5);
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(3));
 				
-	auto view = t.outstation.GetConfigView();
+	auto view = t.context.GetConfigView();
 	view.binaries[0].metadata.clazz = PointClass::Class1;
 	view.binaries[1].metadata.clazz = PointClass::Class2;
 	view.binaries[2].metadata.clazz = PointClass::Class3;

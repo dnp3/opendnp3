@@ -470,8 +470,8 @@ void OContext::ParseHeader(const openpal::ReadBufferView& apdu)
 }
 
 void OContext::OnSendResult(bool isSuccess)
-{
-	if (this->isTransmitting)
+{	
+	if (isOnline && isTransmitting)
 	{
 		this->isTransmitting = false;
 		this->CheckForTaskStart();		
@@ -483,6 +483,21 @@ void OContext::CheckForTaskStart()
 	// do these checks in order of priority	
 	this->CheckForDeferredRequest();
 	this->CheckForUnsolicited();
+}
+
+void OContext::SetRestartIIN()
+{
+	this->staticIIN.SetBit(IINBit::DEVICE_RESTART);
+}
+
+IDatabase& OContext::GetDatabase()
+{
+	return this->database;
+}
+
+DatabaseConfigView OContext::GetConfigView()
+{
+	return this->database.GetConfigView();
 }
 
 //// ----------------------------- function handlers -----------------------------

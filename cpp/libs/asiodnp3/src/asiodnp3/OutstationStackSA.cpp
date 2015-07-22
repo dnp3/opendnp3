@@ -45,6 +45,7 @@ OutstationStackSA::OutstationStackSA(
 	outstation(ocontext)   
 {
 	stack.transport.SetAppLayer(&outstation);
+	this->SetContext(ocontext);
 }
 
 void OutstationStackSA::AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions)

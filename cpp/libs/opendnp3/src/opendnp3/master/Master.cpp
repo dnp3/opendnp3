@@ -21,6 +21,8 @@
 
 #include "Master.h"
 
+#include "opendnp3/master/MasterContext.h"
+
 using namespace openpal;
 
 namespace opendnp3

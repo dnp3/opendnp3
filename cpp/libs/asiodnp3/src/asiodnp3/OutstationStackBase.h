@@ -60,13 +60,13 @@ public:
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final
 	{
-		return this->GetOutstation().GetConfigView();
+		return this->pContext->GetConfigView();
 	}
 
 	virtual void SetRestartIIN() override final
 	{
 		// this doesn't need to be synchronous, just post it
-		auto lambda = [this]() { this->GetOutstation().SetRestartIIN(); };
+		auto lambda = [this]() { this->pContext->SetRestartIIN(); };
 		pLifecycle->GetExecutor().strand.post(lambda);
 	}
 	
@@ -107,7 +107,7 @@ private:
 
 	virtual opendnp3::IDatabase& GetDatabase() override final
 	{
-		return this->GetOutstation().GetDatabase();
+		return this->pContext->GetDatabase();
 	}
 
 	virtual openpal::IExecutor& GetExecutor() override final
@@ -117,20 +117,24 @@ private:
 	
 	virtual void CheckForUpdates() override final
 	{
-		this->GetOutstation().CheckForUpdates();
+		this->pContext->CheckForTaskStart();
 	}
 
 protected:
 
-	// functions that inheriting classes must implement
-
-	virtual opendnp3::Outstation& GetOutstation() = 0;
-	virtual opendnp3::OContext& GetContext() = 0;
+	void SetContext(opendnp3::OContext& context)
+	{
+		this->pContext = &context;
+	}
 
 	openpal::LogRoot root;	
 	opendnp3::StackStatistics statistics;	
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;	
+
+private:
+
+	opendnp3::OContext* pContext;
 };
 
 }

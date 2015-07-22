@@ -44,6 +44,7 @@ OutstationStack::OutstationStack(
 	outstation(ocontext)   
 {
 	stack.transport.SetAppLayer(&outstation);
+	this->SetContext(ocontext);
 }
 
 }

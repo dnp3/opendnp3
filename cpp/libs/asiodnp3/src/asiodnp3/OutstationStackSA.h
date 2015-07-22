@@ -54,10 +54,7 @@ public:
 
 	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions) override final;	
 
-protected:
-
-	virtual opendnp3::Outstation& GetOutstation() override final { return outstation; }
-	virtual opendnp3::OContext& GetContext() override final { return ocontext; }
+private:
 		
 	secauth::OAuthContext ocontext;
 	opendnp3::Outstation outstation;
