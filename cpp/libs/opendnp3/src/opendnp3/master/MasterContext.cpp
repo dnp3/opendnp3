@@ -99,18 +99,18 @@ namespace opendnp3
 		}		
 	}
 
-	void MContext::OnReceive(const openpal::ReadBufferView& apdu)
+	bool MContext::OnReceive(const openpal::ReadBufferView& apdu)
 	{
 		if (!this->isOnline)
 		{
 			SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Ignorning rx data while offline");
-			return;
+			return false;
 		}
 
 		APDUResponseHeader header;
 		if (!APDUHeaderParser::ParseResponse(apdu, header, &this->logger))
 		{
-			return;
+			return true;
 		}
 
 
@@ -126,17 +126,20 @@ namespace opendnp3
 			header.IIN.MSB);
 
 		this->OnParsedHeader(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+		return true;
 	}
 
-	void MContext::OnSendResult(bool isSucccess)
+	bool MContext::OnSendResult(bool isSucccess)
 	{
-		if (this->isOnline && this->isSending)
+		if (!this->isOnline || !this->isSending)
 		{
-			this->isSending = false;
-
-			this->CheckConfirmTransmit();
-			this->CheckForTask();
+			return false;
 		}
+
+		this->isSending = false;
+		this->CheckConfirmTransmit();
+		this->CheckForTask();
+		return true;
 	}
 
 	void MContext::OnParsedHeader(const ReadBufferView& apdu, const APDUResponseHeader& header, const ReadBufferView& objects)

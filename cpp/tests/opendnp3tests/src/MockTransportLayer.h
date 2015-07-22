@@ -88,10 +88,10 @@ public:
 	}
 
 	// these are the NVII delegates
-	virtual void OnReceive(const openpal::ReadBufferView& buffer) override final;
-	virtual void OnSendResult(bool isSuccess) override final;
-	virtual void OnLowerLayerUp() override final;
-	virtual void OnLowerLayerDown() override final;
+	virtual bool OnReceive(const openpal::ReadBufferView& buffer) override final;
+	virtual bool OnSendResult(bool isSuccess) override final;
+	virtual bool OnLowerLayerUp() override final;
+	virtual bool OnLowerLayerDown() override final;
 
 	std::deque<std::string> receivedQueue;
 

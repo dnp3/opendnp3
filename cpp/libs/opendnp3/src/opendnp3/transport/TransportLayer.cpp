@@ -95,7 +95,7 @@ void TransportLayer::BeginTransmit(const ReadBufferView& apdu)
 // IUpperLayer
 ///////////////////////////////////////
 
-void TransportLayer::OnReceive(const ReadBufferView& tpdu)
+bool TransportLayer::OnReceive(const ReadBufferView& tpdu)
 {
 	if (isOnline)
 	{
@@ -104,35 +104,37 @@ void TransportLayer::OnReceive(const ReadBufferView& tpdu)
 		{
 			pUpperLayer->OnReceive(apdu);
 		}
+		return true;
 	}
 	else
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
+		return false;
 	}
 }
 
-void TransportLayer::OnSendResult(bool isSuccess)
+bool TransportLayer::OnSendResult(bool isSuccess)
 {
-	if (isOnline)
-	{
-		if (isSending)
-		{
-			isSending = false;
-
-			if (pUpperLayer)
-			{
-				pUpperLayer->OnSendResult(isSuccess);
-			}
-		}
-		else
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid send callback");
-		}		
-	}
-	else
+	if (!isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
+		return false;
 	}
+
+	if (!isSending)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid send callback");
+		return false;
+	}
+
+	isSending = false;
+
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnSendResult(isSuccess);
+	}
+
+	return true;	
 }
 
 void TransportLayer::SetAppLayer(IUpperLayer* pUpperLayer_)
@@ -149,39 +151,40 @@ void TransportLayer::SetLinkLayer(ILinkLayer* pLinkLayer_)
 	pLinkLayer = pLinkLayer_;
 }
 
-void TransportLayer::OnLowerLayerUp()
+bool TransportLayer::OnLowerLayerUp()
 {
 	if (isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
+		return false;
 	}
-	else
+	
+	isOnline = true;
+	if (pUpperLayer)
 	{
-		isOnline = true;
-		if (pUpperLayer)
-		{
-			pUpperLayer->OnLowerLayerUp();
-		}
+		pUpperLayer->OnLowerLayerUp();
 	}
+	return true;
 }
 
-void TransportLayer::OnLowerLayerDown()
+bool TransportLayer::OnLowerLayerDown()
 {
-	if (isOnline)
-	{
-		isOnline = false;
-		isSending = false;
-		receiver.Reset();
-		
-		if (pUpperLayer)
-		{
-			pUpperLayer->OnLowerLayerDown();
-		}
-	}
-	else
+	if (!isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already offline");
+		return true;
 	}
+
+	isOnline = false;
+	isSending = false;
+	receiver.Reset();
+		
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnLowerLayerDown();
+	}
+	
+	return true;
 }
 
 ///////////////////////////////////////

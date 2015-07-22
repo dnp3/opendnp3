@@ -43,10 +43,12 @@ public:
 	virtual ~IUpDown() {}
 
 	// Called by a lower Layer when it is available to this layer
-	virtual void OnLowerLayerUp() = 0;
+	// return false if the layer is already up
+	virtual bool OnLowerLayerUp() = 0;
 
 	// Called by a lower layer when it is no longer available to this layer
-	virtual void OnLowerLayerDown() = 0;
+	// return false if the layer is already down
+	virtual bool OnLowerLayerDown() = 0;
 };
 
 
@@ -60,13 +62,14 @@ public:
 	virtual ~IUpperLayer() {}
 
 	// Called by the lower layer when data arrives
-
-	virtual void OnReceive(const openpal::ReadBufferView&) = 0;
+	// return false if the layer is down
+	virtual bool OnReceive(const openpal::ReadBufferView&) = 0;
 
 	// Called by lower layer when a previously requested send operation succeeds or fails.
 	// Layers can only have 1 outstanding send operation. The callback is guaranteed
 	// unless the the OnLowerLayerDown() function is called beforehand
-	virtual void OnSendResult(bool isSucccess) = 0;
+	// return false if the layer is down or wasn't transmitting
+	virtual bool OnSendResult(bool isSucccess) = 0;
 
 };
 
@@ -119,6 +122,7 @@ protected:
 
 	IUpperLayer* pUpperLayer;
 };
+
 
 }
 

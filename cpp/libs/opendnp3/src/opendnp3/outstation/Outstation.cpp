@@ -28,24 +28,24 @@ using namespace openpal;
 namespace opendnp3
 {
 
-void Outstation::OnLowerLayerUp()
+bool Outstation::OnLowerLayerUp()
 {
-	m_ocontext->GoOnline();
+	return m_ocontext->GoOnline();
 }
 	
-void Outstation::OnLowerLayerDown()
+bool Outstation::OnLowerLayerDown()
 {
-	m_ocontext->GoOffline();
+	return m_ocontext->GoOffline();
 }
 
-void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
+bool Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
-	m_ocontext->OnReceive(fragment);
+	return m_ocontext->OnReceive(fragment);
 }
 
-void Outstation::OnSendResult(bool isSuccess)
+bool Outstation::OnSendResult(bool isSuccess)
 {	
-	m_ocontext->OnSendResult(isSuccess);
+	return m_ocontext->OnSendResult(isSuccess);
 }
 	
 }

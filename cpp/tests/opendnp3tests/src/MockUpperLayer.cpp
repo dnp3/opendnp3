@@ -38,7 +38,7 @@ MockUpperLayer::MockUpperLayer() : isOnline(false)
 
 }
 
-void MockUpperLayer::OnReceive(const openpal::ReadBufferView& input)
+bool MockUpperLayer::OnReceive(const openpal::ReadBufferView& input)
 {
 	this->WriteToBuffer(input);
 
@@ -46,9 +46,11 @@ void MockUpperLayer::OnReceive(const openpal::ReadBufferView& input)
 	{
 		mOnReceiveHandler(input);
 	}
+
+	return true;
 }
 
-void MockUpperLayer::OnSendResult(bool isSuccess)
+bool MockUpperLayer::OnSendResult(bool isSuccess)
 {
 	if (isSuccess)
 	{
@@ -58,18 +60,22 @@ void MockUpperLayer::OnSendResult(bool isSuccess)
 	{
 		++mState.mFailureCnt;
 	}
+
+	return true;
 }
 
-void MockUpperLayer::OnLowerLayerUp()
+bool MockUpperLayer::OnLowerLayerUp()
 {
 	isOnline = true;
 	++mState.mNumLayerUp;
+	return true;
 }
 
-void MockUpperLayer::OnLowerLayerDown()
+bool MockUpperLayer::OnLowerLayerDown()
 {
 	isOnline = false;
 	++mState.mNumLayerDown;
+	return true;
 }
 
 void MockUpperLayer::SendDown(const openpal::ReadBufferView& buffer)

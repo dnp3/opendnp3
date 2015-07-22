@@ -132,18 +132,19 @@ void OContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const AP
 	this->ProcessAPDU(apdu, header, objects);
 }
 
-void OContext::OnReceive(const openpal::ReadBufferView& fragment)
+bool OContext::OnReceive(const openpal::ReadBufferView& fragment)
 {
-	if (this->isOnline)
-	{
-		this->Increment(SecurityStatIndex::TOTAL_MESSAGES_RX);
-		this->ParseHeader(fragment);
-		this->CheckForTaskStart();
-	}
-	else
+	if (!this->isOnline)
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "ignoring received data while offline");
+		return false;
 	}
+
+
+	this->Increment(SecurityStatIndex::TOTAL_MESSAGES_RX);
+	this->ParseHeader(fragment);
+	this->CheckForTaskStart();
+	return true;
 }
 
 void OContext::ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
@@ -469,13 +470,16 @@ void OContext::ParseHeader(const openpal::ReadBufferView& apdu)
 	this->ReceiveParsedHeader(apdu, header, objects);	
 }
 
-void OContext::OnSendResult(bool isSuccess)
+bool OContext::OnSendResult(bool isSuccess)
 {	
-	if (isOnline && isTransmitting)
+	if (!isOnline || !isTransmitting)
 	{
-		this->isTransmitting = false;
-		this->CheckForTaskStart();		
+		return false;		
 	}
+
+	this->isTransmitting = false;
+	this->CheckForTaskStart();
+	return true;
 }
 
 void OContext::CheckForTaskStart()

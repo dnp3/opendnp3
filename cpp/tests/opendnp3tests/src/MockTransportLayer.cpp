@@ -40,12 +40,13 @@ void MockTransportLayer::SendDown(ITransportSegment& segments)
 	pLinkLayer->Send(segments);
 }
 
-void MockTransportLayer::OnReceive(const openpal::ReadBufferView& buffer)
+bool MockTransportLayer::OnReceive(const openpal::ReadBufferView& buffer)
 {
 	receivedQueue.push_back(ToHex(buffer));
+	return true;
 }
 
-void MockTransportLayer::OnSendResult(bool isSuccess)
+bool MockTransportLayer::OnSendResult(bool isSuccess)
 {
 	if (isSuccess)
 	{
@@ -55,20 +56,24 @@ void MockTransportLayer::OnSendResult(bool isSuccess)
 	{
 		++state.failureCnt;
 	}
+
+	return true;
 }
 
-void MockTransportLayer::OnLowerLayerUp()
+bool MockTransportLayer::OnLowerLayerUp()
 {
 	assert(!isOnline);
 	isOnline = true;
 	++state.numLayerUp;
+	return true;
 }
 
-void MockTransportLayer::OnLowerLayerDown()
+bool MockTransportLayer::OnLowerLayerDown()
 {
 	assert(isOnline);
 	isOnline = false;
 	++state.numLayerDown;
+	return true;
 }
 
 }

@@ -96,7 +96,7 @@ public:
 
 	/// ---- Processing functions --------
 
-	void OnReceive(const openpal::ReadBufferView& fragment);
+	bool OnReceive(const openpal::ReadBufferView& fragment);
 
 	void ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
@@ -110,7 +110,7 @@ public:
 
 	void BeginResponseTx(const openpal::ReadBufferView& response);	
 
-	void OnSendResult(bool isSuccess);
+	bool OnSendResult(bool isSuccess);
 
 	void BeginUnsolTx(const openpal::ReadBufferView& response);
 

@@ -31,24 +31,24 @@ namespace opendnp3
 Master::Master(MContext& mcontext) : context(&mcontext)
 {}
 	
-void Master::OnLowerLayerUp()
+bool Master::OnLowerLayerUp()
 {
-	context->GoOnline();
+	return context->GoOnline();
 }
 
-void Master::OnLowerLayerDown()
+bool Master::OnLowerLayerDown()
 {
-	context->GoOffline();
+	return context->GoOffline();
 }
 
-void Master::OnReceive(const openpal::ReadBufferView& apdu)
+bool Master::OnReceive(const openpal::ReadBufferView& apdu)
 {
-	context->OnReceive(apdu);
+	return context->OnReceive(apdu);
 }
 
-void Master::OnSendResult(bool isSucccess)
+bool Master::OnSendResult(bool isSucccess)
 {
-	context->OnSendResult(isSucccess);
+	return context->OnSendResult(isSucccess);
 }
 	
 }

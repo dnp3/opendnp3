@@ -36,13 +36,13 @@ class Master : public IUpperLayer
 		
 	/// ----- Implement IUpperLayer ------
 
-	virtual void OnLowerLayerUp() override final;
+	virtual bool OnLowerLayerUp() override final;
 	
-	virtual void OnLowerLayerDown() override final;
+	virtual bool OnLowerLayerDown() override final;
 
-	virtual void OnReceive(const openpal::ReadBufferView&) override final;
+	virtual bool OnReceive(const openpal::ReadBufferView&) override final;
 	
-	virtual void OnSendResult(bool isSucccess) override final;	
+	virtual bool OnSendResult(bool isSucccess) override final;
 	
 	private:	
 

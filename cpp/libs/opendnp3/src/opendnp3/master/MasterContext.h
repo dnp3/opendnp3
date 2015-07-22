@@ -92,9 +92,9 @@ namespace opendnp3
 		openpal::Buffer txBuffer;
 		TaskState tstate;
 		
-		void OnReceive(const openpal::ReadBufferView& apdu);
+		bool OnReceive(const openpal::ReadBufferView& apdu);
 
-		void OnSendResult(bool isSucccess);
+		bool OnSendResult(bool isSucccess);
 
 		/// virtual methods that can be overriden to implement secure authentication		
 
