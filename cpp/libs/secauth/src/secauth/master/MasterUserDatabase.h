@@ -18,55 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_MASTERUSERDATABASE_H
+#define SECAUTH_MASTERUSERDATABASE_H
 
-#include "SimpleMasterUserDatabase.h"
+#include "IMasterUserDatabase.h"
+#include "secauth/UpdateKey.h"
 
-using namespace opendnp3;
+#include <openpal/container/Buffer.h>
+
+#include <map>
+#include <memory>
 
 namespace secauth
 {
-	void SimpleMasterUserDatabase::EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const
-	{
-		for (auto& pair : userMap)
-		{
-			fun(User(pair.first));
-		}
-	}
 
-	bool SimpleMasterUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
-	{
-		auto iter = this->userMap.find(user.GetId());
-		if (iter == userMap.end())
-		{
-			return false;
-		}
-		else
-		{
-			type = iter->second->GetKeyMode();
-			key = iter->second->GetKeyView();
-			return true;
-		}
-	}	
+/**
+	A very simple update key store for the default user
+*/
+class MasterUserDatabase : public IMasterUserDatabase
+{
 
-	bool SimpleMasterUserDatabase::UserExists(const User& user) const
-	{
-		auto iter = this->userMap.find(user.GetId());
-		return iter != userMap.end();
-	}
+public:
 
-	bool SimpleMasterUserDatabase::ConfigureUser(const User& user, const UpdateKey& key)
-	{
-		if (key.IsValid())
-		{
-			userMap[user.GetId()] = std::unique_ptr<UpdateKey>(new UpdateKey(key));
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+	virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const override final;
+
+	virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;	
+
+	virtual bool UserExists(const opendnp3::User& user) const override final;
+
+	// copies the update key into the key store permanently
+	// fails if the update key is invalid
+	bool AddUser(const opendnp3::User& user, const UpdateKey& key);
+
+private:
+
+	std::map<uint16_t, std::unique_ptr<UpdateKey>> userMap;
+		
+};
+
 }
 
-
+#endif
 

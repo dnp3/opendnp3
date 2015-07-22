@@ -33,7 +33,6 @@
 #include <dnp3mocks/MockCryptoProvider.h>
 
 #include <secauth/master/MasterAuthContext.h>
-#include <secauth/master/SimpleMasterUserDatabase.h>
 
 namespace opendnp3
 {
@@ -54,15 +53,14 @@ namespace opendnp3
 
 		void TestRequestAndReply(const std::string& request, const std::string& response);
 
-		void TestSessionKeyExchange(AppSeqNum& seq, User user);		
+		void TestSessionKeyExchange(AppSeqNum& seq, User user);				
 
 		testlib::MockLogHandler log;
 		testlib::MockExecutor exe;
 		MockSOEHandler meas;
 		MockLowerLayer lower;
 		MockMasterApplication application;
-		MockCryptoProvider crypto;
-		secauth::SimpleMasterUserDatabase userDB;
+		MockCryptoProvider crypto;		
 		secauth::MAuthContext context;
 		Master master;
 

@@ -32,7 +32,6 @@
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 
 #include <osslcrypto/CryptoProvider.h>
-#include <secauth/master/SimpleMasterUserDatabase.h>
 
 using namespace std;
 using namespace openpal;
@@ -41,22 +40,8 @@ using namespace asiodnp3;
 using namespace opendnp3;
 using namespace secauth;
 
-void ConfigureUsers(secauth::SimpleMasterUserDatabase& userDB)
-{
-	// add a 128-bit demo key of all 0xFF
-	openpal::StaticBuffer<16> key;
-	key.GetWriteBuffer().SetAllTo(0xFF);
-	userDB.ConfigureUser(User::Default(), key.ToReadOnly());
-}
-
 int main(int argc, char* argv[])
-{
-	
-
-	// The user interface for the master
-	SimpleMasterUserDatabase userDB;
-	ConfigureUsers(userDB);
-
+{			
 	// The cryptography provider we'll use 
 	osslcrypto::CryptoProvider crypto;
 
@@ -101,9 +86,11 @@ int main(int argc, char* argv[])
 	                   "master",										// id for logging
 	                   PrintingSOEHandler::Instance(),					// callback for data processing                
 					   asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
-	                   stackConfig,										// stack configuration
-					   userDB				   
+	                   stackConfig										// stack configuration					   			   
 	               );
+
+	// configure a user with a trivial update key for demo purposes
+	pMaster->AddUser(User::Default(), UpdateKey(0xFF, UpdateKeyMode::AES128));
 	
 	
 	// do an integrity poll (Class 3/2/1/0) once per minute

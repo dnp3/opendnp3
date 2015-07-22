@@ -151,8 +151,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 IMasterSA* DNP3Channel::AddMaster(	char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
-									const secauth::MasterAuthStackConfig& config,
-									secauth::IMasterUserDatabase& userDB)
+									const secauth::MasterAuthStackConfig& config)
 {	
 	if (!pCrypto)
 	{
@@ -165,7 +164,7 @@ IMasterSA* DNP3Channel::AddMaster(	char const* id,
 	{
 		auto factory = [&]()
 		{
-			return new MasterStackSA(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, userDB, *pCrypto);			
+			return new MasterStackSA(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, *pCrypto);			
 		};
 
 		return this->AddStack<MasterStackSA>(config.link, factory);

@@ -90,8 +90,7 @@ public:
 	virtual IMasterSA* AddMaster(	char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
-									const secauth::MasterAuthStackConfig& config,
-									secauth::IMasterUserDatabase& userDB) override final;
+									const secauth::MasterAuthStackConfig& config) override final;
 
 	virtual IOutstation* AddOutstation(char const* id,
 								opendnp3::ICommandHandler& commandHandler,

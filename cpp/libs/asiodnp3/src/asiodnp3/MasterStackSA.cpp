@@ -36,15 +36,20 @@ MasterStackSA::MasterStackSA(
 	opendnp3::IMasterApplication& application,
 	const secauth::MasterAuthStackConfig& config,
 	IStackLifecycle& lifecycle,
-	opendnp3::ITaskLock& taskLock,
-	secauth::IMasterUserDatabase& userDB,
+	opendnp3::ITaskLock& taskLock,	
 	openpal::ICryptoProvider& crypto
 ) :
 	MasterStackBase<IMasterSA>(id, root, executor, config, lifecycle),
-	mcontext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto, userDB),
+	mcontext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto),
 	master(mcontext)
 {
 
+}
+
+void MasterStackSA::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
+{
+	auto action = [this, user, key]() { mcontext.AddUser(user, key); };
+	mcontext.pExecutor->PostLambda(action);
 }
 
 

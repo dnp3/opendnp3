@@ -39,9 +39,8 @@ namespace opendnp3
 		meas(),
 		lower(log.root),
 		application(),
-		crypto(),
-		userDB(),
-		context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto, userDB),
+		crypto(),		
+		context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto),
 		master(context)				
 	{
 		
@@ -54,9 +53,8 @@ namespace opendnp3
 	}
 
 	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, UpdateKeyMode mode, uint8_t keyRepeat)
-	{
-		secauth::UpdateKey key(keyRepeat, mode);
-		return userDB.ConfigureUser(user, key);
+	{		
+		return context.AddUser(user, secauth::UpdateKey(keyRepeat, mode));
 	}
 
 	void MasterSecAuthFixture::TestRequestAndReply(const std::string& request, const std::string& response)

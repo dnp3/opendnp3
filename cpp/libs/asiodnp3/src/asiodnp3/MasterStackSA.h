@@ -26,7 +26,6 @@
 
 #include <secauth/master/MasterAuthContext.h>
 #include <secauth/master/MasterAuthStackConfig.h>
-#include <secauth/master/IMasterUserDatabase.h>
 
 #include <openpal/crypto/ICryptoProvider.h>
 
@@ -46,12 +45,13 @@ public:
 		opendnp3::IMasterApplication& application,
 		const secauth::MasterAuthStackConfig& config,
 		IStackLifecycle& lifecycle,
-		opendnp3::ITaskLock& taskLock,
-		secauth::IMasterUserDatabase& userDB,
+		opendnp3::ITaskLock& taskLock,		
 		openpal::ICryptoProvider& crypto
 	);	
 	
 protected:
+
+	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key) override final;
 
 	virtual opendnp3::MContext& GetContext() override { return mcontext; }	
 	

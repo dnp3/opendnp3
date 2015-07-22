@@ -38,8 +38,6 @@
 
 #include <secauth/outstation/OutstationAuthStackConfig.h>
 #include <secauth/outstation/IOutstationApplicationSA.h>
-
-#include <secauth/master/IMasterUserDatabase.h>
 #include <secauth/master/MasterAuthStackConfig.h>
 
 #include "IMasterSA.h"
@@ -104,11 +102,10 @@ public:
 	/**
 	* SA enabled version of the master
 	*/
-	virtual IMasterSA* AddMaster(		char const* id,
+	virtual IMasterSA* AddMaster(	char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
-									const secauth::MasterAuthStackConfig& config,
-									secauth::IMasterUserDatabase& userDB) = 0;
+									const secauth::MasterAuthStackConfig& config) = 0;
 
 	/**
 	* Add an outstation to the channel

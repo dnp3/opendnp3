@@ -18,45 +18,55 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SIMPLEMASTERUSERDATABASE_H
-#define SECAUTH_SIMPLEMASTERUSERDATABASE_H
 
-#include "IMasterUserDatabase.h"
-#include "secauth/UpdateKey.h"
+#include "MasterUserDatabase.h"
 
-#include <openpal/container/Buffer.h>
-
-#include <map>
-#include <memory>
+using namespace opendnp3;
 
 namespace secauth
 {
+	void MasterUserDatabase::EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const
+	{
+		for (auto& pair : userMap)
+		{
+			fun(User(pair.first));
+		}
+	}
 
-/**
-	A very simple update key store for the default user
-*/
-class SimpleMasterUserDatabase : public IMasterUserDatabase
-{
+	bool MasterUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
+	{
+		auto iter = this->userMap.find(user.GetId());
+		if (iter == userMap.end())
+		{
+			return false;
+		}
+		else
+		{
+			type = iter->second->GetKeyMode();
+			key = iter->second->GetKeyView();
+			return true;
+		}
+	}	
 
-public:
+	bool MasterUserDatabase::UserExists(const User& user) const
+	{
+		auto iter = this->userMap.find(user.GetId());
+		return iter != userMap.end();
+	}
 
-	virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const override final;
-
-	virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;	
-
-	virtual bool UserExists(const opendnp3::User& user) const override final;
-
-	// copies the update key into the key store permanently
-	// fails if the update key is invalid
-	bool ConfigureUser(const opendnp3::User& user, const UpdateKey& key);
-
-private:
-
-	std::map<uint16_t, std::unique_ptr<UpdateKey>> userMap;
-		
-};
-
+	bool MasterUserDatabase::AddUser(const User& user, const UpdateKey& key)
+	{
+		if (key.IsValid())
+		{
+			userMap[user.GetId()] = std::unique_ptr<UpdateKey>(new UpdateKey(key));
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
 
-#endif
+
 

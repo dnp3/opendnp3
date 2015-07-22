@@ -47,15 +47,13 @@ MAuthContext::MAuthContext(
 		const opendnp3::MasterParams& params,
 		opendnp3::ITaskLock& taskLock,
 		const secauth::MasterAuthSettings& authSettings,
-		openpal::ICryptoProvider& crypto,
-		IMasterUserDatabase& userDB
+		openpal::ICryptoProvider& crypto		
 	) : 
 	MContext(executor, root, lower, SOEHandler, application, params, taskLock),	
 	
 	settings(authSettings),
 	pTimeSource(&application),
-	pCrypto(&crypto),
-	pUserDB(&userDB),
+	pCrypto(&crypto),	
 	sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount)
 {
 
@@ -71,7 +69,7 @@ bool MAuthContext::GoOnline()
 		auto createSessionKeyTask = [this](const User& user)
 		{				
 			auto task = std::unique_ptr<SessionKeyTask>(
-				new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, this->settings.sessionChangeInterval, this->logger, user, *this->pCrypto, *this->pUserDB, this->sessions)
+				new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, this->settings.sessionChangeInterval, this->logger, user, *this->pCrypto, this->userDB, this->sessions)
 			);			
 			
 			this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(task.get()));
@@ -79,7 +77,7 @@ bool MAuthContext::GoOnline()
 			this->sessionKeyTaskMap[user.GetId()] = std::move(task);
 		};
 
-		this->pUserDB->EnumerateUsers(createSessionKeyTask);
+		this->userDB.EnumerateUsers(createSessionKeyTask);
 	}
 		
 	return online;
@@ -134,6 +132,11 @@ bool MAuthContext::CanRun(const opendnp3::IMasterTask& task)
 void MAuthContext::RecordLastRequest(const openpal::ReadBufferView& apdu)
 {
 	this->lastRequest = apdu;
+}
+
+bool MAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
+{
+	return this->userDB.AddUser(user, key);
 }
 
 void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)

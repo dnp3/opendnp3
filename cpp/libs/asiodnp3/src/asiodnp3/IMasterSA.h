@@ -23,6 +23,8 @@
 
 #include "IMaster.h"
 
+#include <opendnp3/app/User.h>
+#include <secauth/UpdateKey.h>
 
 namespace asiodnp3
 {
@@ -36,6 +38,10 @@ public:
 
 	virtual ~IMasterSA() {}
 	
+	/**
+	* Add a user to the outstation. This is normally only done during initialization.
+	*/
+	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key) = 0;
 };
 
 }

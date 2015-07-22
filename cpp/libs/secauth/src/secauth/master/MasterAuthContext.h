@@ -25,9 +25,11 @@
 
 #include <openpal/util/Uncopyable.h>
 
+#include "secauth/UpdateKey.h"
 #include "secauth/master/SessionKeyTask.h"
 #include "secauth/master/MasterAuthSettings.h"
 #include "secauth/master/IAuthResponseReceiver.h"
+#include "secauth/master/MasterUserDatabase.h"
 
 namespace secauth
 {
@@ -46,8 +48,7 @@ public:
 		const opendnp3::MasterParams& params,
 		opendnp3::ITaskLock& taskLock,
 		const secauth::MasterAuthSettings& authSettings,
-		openpal::ICryptoProvider& crypto,
-		IMasterUserDatabase& userDB
+		openpal::ICryptoProvider& crypto		
 	);
 
 
@@ -62,6 +63,10 @@ public:
 	virtual bool CanRun(const opendnp3::IMasterTask& task) override final;
 
 	virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) override final;
+
+	// --- public helpers ----
+
+	bool AddUser(opendnp3::User user, const secauth::UpdateKey& key);
 
 private:
 
@@ -78,7 +83,7 @@ private:
 	MasterAuthSettings			settings;
 	openpal::IUTCTimeSource*	pTimeSource;
 	openpal::ICryptoProvider*	pCrypto;
-	IMasterUserDatabase*		pUserDB;
+	MasterUserDatabase		    userDB;
 	SessionStore				sessions;		
 	openpal::ReadBufferView		lastRequest;
 	SessionKeyTaskMap			sessionKeyTaskMap;
