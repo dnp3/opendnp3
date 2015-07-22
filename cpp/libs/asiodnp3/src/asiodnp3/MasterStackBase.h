@@ -26,6 +26,8 @@
 #include <opendnp3/master/Master.h>
 #include <opendnp3/transport/TransportStack.h>
 
+#include <asiopal/ASIOExecutor.h>
+
 #include "IStackLifecycle.h"
 #include "IMaster.h"
 #include "ILinkBind.h"
@@ -71,7 +73,7 @@ public:
 	virtual opendnp3::StackStatistics GetStackStatistics() override final
 	{
 		auto get = [this]() { return this->statistics; };
-		return pLifecycle->GetExecutor().ReturnBlockFor<StackStatistics>(get);
+		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::StackStatistics>(get);
 	}	
 
 	// ------- Periodic scan API ---------
@@ -85,25 +87,25 @@ public:
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config) override final
 	{
 		auto add = [this, period, builder, config]() { return this->GetContext().AddScan(period, builder, config); };
-		return pLifecycle->GetExecutor().ReturnBlockFor<MasterScan>(add);
+		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);
 	}
 
 	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final
 	{
 		auto add = [this, gvId, period, config]() { return this->GetContext().AddAllObjectsScan(gvId, period, config); };
-		return pLifecycle->GetExecutor().ReturnBlockFor<MasterScan>(add);
+		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);
 	}
 
 	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final
 	{
 		auto add = [this, field, period, config]() { return this->GetContext().AddClassScan(field, period, config); };
-		return pLifecycle->GetExecutor().ReturnBlockFor<MasterScan>(add);
+		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);
 	}
 
 	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final
 	{
 		auto add = [this, gvId, start, stop, period, config]() { return this->GetContext().AddRangeScan(gvId, start, stop, period, config); };
-		return pLifecycle->GetExecutor().ReturnBlockFor<MasterScan>(add);
+		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);
 	}
 
 	// ------- Adhoc scan API ---------
@@ -167,7 +169,7 @@ public:
 	
 	virtual void DirectOperate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index, opendnp3::ICommandCallback& callback) override final
 	{
-		
+		this->DirectOperateT(command, index, callback);
 	}
 
 	virtual void SelectAndOperate(const opendnp3::AnalogOutputInt16& command, uint16_t index, opendnp3::ICommandCallback& callback) override final
@@ -177,37 +179,37 @@ public:
 
 	virtual void DirectOperate(const opendnp3::AnalogOutputInt16& command, uint16_t index, opendnp3::ICommandCallback& callback) override final
 	{
-		
+		this->DirectOperateT(command, index, callback);
 	}
 
 	virtual void SelectAndOperate(const opendnp3::AnalogOutputInt32& command, uint16_t index, opendnp3::ICommandCallback& callback) override final
 	{
-		
+		this->SelectAndOperateT(command, index, callback);
 	}
 
 	virtual void DirectOperate(const opendnp3::AnalogOutputInt32& command, uint16_t index, opendnp3::ICommandCallback& callback) override final
 	{
-		
+		this->DirectOperateT(command, index, callback);
 	}
 
 	virtual void SelectAndOperate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, opendnp3::ICommandCallback& callback) override final
 	{
-		
+		this->SelectAndOperateT(command, index, callback);
 	}
 
 	virtual void DirectOperate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, opendnp3::ICommandCallback& callback) override final
 	{
-		
+		this->DirectOperateT(command, index, callback);
 	}
 	
 	virtual void SelectAndOperate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, opendnp3::ICommandCallback& callback) override final
 	{
-		
+		this->SelectAndOperateT(command, index, callback);
 	}
 
 	virtual void DirectOperate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, opendnp3::ICommandCallback& callback) override final
 	{
-		
+		this->DirectOperateT(command, index, callback);
 	}
 
 protected:

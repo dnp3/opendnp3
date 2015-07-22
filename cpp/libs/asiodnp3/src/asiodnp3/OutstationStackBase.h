@@ -28,6 +28,8 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
+#include <asiopal/ASIOExecutor.h>
+
 #include "IStackLifecycle.h"
 #include "IOutstation.h"
 #include "ILinkBind.h"
@@ -86,7 +88,7 @@ public:
 	virtual opendnp3::StackStatistics GetStackStatistics() override final
 	{
 		auto get = [this]() { return statistics; };
-		return pLifecycle->GetExecutor().ReturnBlockFor<StackStatistics>(get);
+		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::StackStatistics>(get);
 	}
 
 	// ------- implement ILinkBind ---------
