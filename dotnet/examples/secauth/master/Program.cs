@@ -27,51 +27,63 @@ using System.Text;
 using Automatak.DNP3.Adapter;
 using Automatak.DNP3.Interface;
 
+class MasterApplicatonSA : DefaultMasterApplication, IMasterApplicationSA
+{
+    public MasterApplicatonSA()
+    { }
+
+}
+
 namespace DotNetMasterDemo
 {
     class Program
-    {        
+    {
         static int Main(string[] args)
-        {            
-            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();            
+        {
+            var application = new MasterApplicatonSA();
+
+            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPClient("client", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
-            
-            //optionally, add a listener for the channel state
-            channel.AddStateListener(state => Console.WriteLine("channel state: " + state));            
 
-            var config = new MasterStackConfig();                      
+            //optionally, add a listener for the channel state
+            channel.AddStateListener(state => Console.WriteLine("channel state: " + state));
+
+            var config = new MasterStackConfig();
 
             //setup your stack configuration here.
             config.link.localAddr = 1;
             config.link.remoteAddr = 10;
 
             var key = new byte[16];
-            for(int i=0; i < key.Length; ++i)
+            for (int i = 0; i < key.Length; ++i)
             {
                 key[i] = 0xFF;
             }
 
-            var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);
-            
+            var master = channel.AddMasterSA("master", PrintingSOEHandler.Instance, application, config);
+
+            // define a user on the outstation
+            master.AddUser(User.Default, UpdateKey.Demo(0xFF, UpdateKeyMode.AES128));
+
             // you a can optionally add various kinds of polls
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1), TaskConfig.Default);
             var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20), TaskConfig.Default);
-            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5), TaskConfig.Default);                                   
-            
+            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5), TaskConfig.Default);
+
             /* you can also do very custom scans
             var headers = new Header[] { Header.Range8(1, 2, 7, 8), Header.Count8(2, 3, 7) };
             var weirdPoll = master.AddScan(headers, TimeSpan.FromSeconds(20));
             */
-            
+
             master.Enable(); // enable communications
 
             Console.WriteLine("Enter a command");
 
             while (true)
-            {                
+            {
                 switch (Console.ReadLine())
-                { 
+                {
                     case "a":
                         // perform an ad-hoc scan of all analogs
                         master.ScanAllObjects(30, 0, TaskConfig.Default);
@@ -93,14 +105,14 @@ namespace DotNetMasterDemo
                         rangePoll.Demand();
                         break;
                     case "e":
-                        classPoll.Demand();                        
-                        break;                   
+                        classPoll.Demand();
+                        break;
                     case "x":
-                        return 0;                        
+                        return 0;
                     default:
                         break;
-                }                           
-            }                            
-        }
+                }
+            }
+        }        
     }
 }

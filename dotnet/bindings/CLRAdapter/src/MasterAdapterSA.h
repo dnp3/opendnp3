@@ -41,7 +41,7 @@ namespace Automatak
 						buffer[i] = key->key[i];
 					}
 
-					pMasterSA->AddUser(opendnp3::User(user->Number), secauth::UpdateKey(buffer.ToReadOnly()));
+ 					pMasterSA->AddUser(opendnp3::User(user->Number), secauth::UpdateKey(buffer.ToReadOnly()));
 
 					// TODO use a secure buffer class instead of having to manually zero
 					for (int i = 0; i < key->key->Length; ++i)
