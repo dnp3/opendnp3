@@ -148,7 +148,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	return pExecutor->ReturnBlockFor<IMaster*>(add);	
 }
 
-IMaster* DNP3Channel::AddMaster(	char const* id,
+IMasterSA* DNP3Channel::AddMaster(	char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
 									const secauth::MasterAuthStackConfig& config,

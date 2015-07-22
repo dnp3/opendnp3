@@ -42,7 +42,7 @@
 #include <secauth/master/IMasterUserDatabase.h>
 #include <secauth/master/MasterAuthStackConfig.h>
 
-#include "IMaster.h"
+#include "IMasterSA.h"
 #include "IOutstationSA.h"
 #include "DestructorHook.h"
 
@@ -104,7 +104,7 @@ public:
 	/**
 	* SA enabled version of the master
 	*/
-	virtual IMaster* AddMaster(		char const* id,
+	virtual IMasterSA* AddMaster(		char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
 									const secauth::MasterAuthStackConfig& config,
