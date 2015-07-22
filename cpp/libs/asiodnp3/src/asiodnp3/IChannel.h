@@ -31,7 +31,6 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/ICommandHandler.h>
 
-#include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/crypto/ICryptoProvider.h>
@@ -129,8 +128,7 @@ public:
 	virtual IOutstationSA* AddOutstationSA(	char const* id,
 											opendnp3::ICommandHandler& commandHandler,
 											secauth::IOutstationApplicationSA& application,
-											const secauth::OutstationAuthStackConfig& config,										
-											openpal::IUTCTimeSource& timeSource) = 0;
+											const secauth::OutstationAuthStackConfig& config) = 0;
 };
 
 }

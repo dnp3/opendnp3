@@ -23,6 +23,8 @@
 
 #include "secauth/outstation/IOutstationApplicationSA.h"
 
+#include <testlib/MockUTCTimeSource.h>
+
 namespace opendnp3
 {
 
@@ -31,7 +33,9 @@ class MockOutstationApplicationSA : public secauth::IOutstationApplicationSA
 
 public:
 
-	
+	virtual openpal::UTCTimestamp Now() override { return utc.Now(); }
+
+	testlib::MockUTCTimeSource utc;
 };
 
 

@@ -74,12 +74,11 @@ OAuthContext::OAuthContext(
 			ILowerLayer& lower,
 			ICommandHandler& commandHandler,
 			IOutstationApplicationSA& application,
-			const OutstationAuthSettings& settings,
-			openpal::IUTCTimeSource& timeSource,			
+			const OutstationAuthSettings& settings,					
 			openpal::ICryptoProvider& crypto
 		) :
 		OContext(config, EnableSecStats(dbTemplate), logger, executor, lower, commandHandler, application),
-		sstate(config.params, settings, logger, executor, timeSource, application, crypto)
+		sstate(config.params, settings, logger, executor, application, crypto)
 {
 	this->ConfigureSecStats(sstate.settings.statThresholds);	
 }
@@ -134,7 +133,7 @@ void OAuthContext::Increment(SecurityStatIndex index)
 {
 	auto count = this->sstate.stats.Increment(index);
 
-	DNPTime time(this->sstate.pTimeSource->Now().msSinceEpoch);
+	DNPTime time(this->sstate.pApplication->Now().msSinceEpoch);
 
 	SecurityStat stat(opendnp3::flags::ONLINE, this->sstate.settings.assocId, count, time);
 
@@ -420,16 +419,14 @@ void OAuthContext::RespondWithAuthError(
 	auto rsp = this->StartAuthResponse();
 	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 	rsp.SetControl(header.control);
-	auto writer = rsp.GetWriter();
-
-	DNPTime time(sstate.pTimeSource->Now().msSinceEpoch);
+	auto writer = rsp.GetWriter();	
 
 	Group120Var7 error(
 		seqNum,
 		user.GetId(),
 		sstate.settings.assocId,
 		code,
-		DNPTime(sstate.pTimeSource->Now().msSinceEpoch),
+		DNPTime(sstate.pApplication->Now().msSinceEpoch),
 		ReadBufferView::Empty()
 	);
 	

@@ -53,8 +53,7 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 		opendnp3::ILowerLayer& lower,
 		opendnp3::ICommandHandler& commandHandler,
 		IOutstationApplicationSA& application,
-		const OutstationAuthSettings& settings,				
-		openpal::IUTCTimeSource& timeSource,		
+		const OutstationAuthSettings& settings,			
 		openpal::ICryptoProvider& crypto
 	);
 

@@ -37,12 +37,11 @@ OutstationStackSA::OutstationStackSA(
 	opendnp3::ICommandHandler& commandHandler,
 	secauth::IOutstationApplicationSA& application,
 	const secauth::OutstationAuthStackConfig& config,
-	IStackLifecycle& lifecycle,
-	openpal::IUTCTimeSource& timeSource,
+	IStackLifecycle& lifecycle,	
 	openpal::ICryptoProvider& crypto) :
 	
 	OutstationStackBase<IOutstationSA>(id, root_, executor, config, lifecycle),
-	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, timeSource, crypto),
+	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, crypto),
 	outstation(ocontext)   
 {
 	stack.transport.SetAppLayer(&outstation);

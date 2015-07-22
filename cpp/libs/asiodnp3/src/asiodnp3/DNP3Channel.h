@@ -100,8 +100,7 @@ public:
 	virtual IOutstationSA* AddOutstationSA(char const* id,
 								opendnp3::ICommandHandler& commandHandler,
 								secauth::IOutstationApplicationSA& application,
-								const secauth::OutstationAuthStackConfig& config,								
-								openpal::IUTCTimeSource& timeSource) override final;
+								const secauth::OutstationAuthStackConfig& config) override final;
 
 	// -----------------------------------------------------------------------
 

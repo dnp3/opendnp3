@@ -42,10 +42,9 @@ namespace opendnp3
 		exe(),
 		lower(log.root),
 		cmdHandler(),
-		application(),
-		utc(),		
+		application(),		
 		crypto(),		
-		context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, utc, crypto),
+		context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, crypto),
 		outstation(context)
 	{
 		lower.SetUpperLayer(outstation);

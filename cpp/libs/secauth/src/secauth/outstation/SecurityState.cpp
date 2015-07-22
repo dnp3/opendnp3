@@ -31,8 +31,7 @@ namespace secauth
 			const OutstationParams& params,
 			const OutstationAuthSettings& settings_, 
 			openpal::Logger logger, 
-			openpal::IExecutor& executor, 
-			openpal::IUTCTimeSource& timeSource, 
+			openpal::IExecutor& executor, 			
 			IOutstationApplicationSA& application,
 			openpal::ICryptoProvider& crypto) :
 
@@ -40,8 +39,7 @@ namespace secauth
 		challenge(settings.challengeSize, params.maxRxFragSize),
 		challengeTimer(executor),
 		hmac(crypto, settings.hmacMode),
-		deferred(params.maxRxFragSize),		
-		pTimeSource(&timeSource),
+		deferred(params.maxRxFragSize),				
 		pApplication(&application),
 		pCrypto(&crypto),		
 		pState(OAuthStateIdle::Instance()),

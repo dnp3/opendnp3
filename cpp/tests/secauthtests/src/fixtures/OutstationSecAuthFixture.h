@@ -32,7 +32,6 @@
 
 #include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
-#include <testlib/MockUTCTimeSource.h>
 
 #include <dnp3mocks/MockCommandHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
@@ -83,8 +82,7 @@ public:
 	testlib::MockExecutor exe;
 	MockLowerLayer lower;
 	MockCommandHandler cmdHandler;
-	MockOutstationApplicationSA application;
-	testlib::MockUTCTimeSource utc;	
+	MockOutstationApplicationSA application;	
 	MockCryptoProvider crypto;	
 	secauth::OAuthContext context;
 	Outstation outstation;	

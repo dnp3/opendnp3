@@ -22,18 +22,18 @@
 #define SECAUTH_IOUTSTATIONAPPLICATIONSA_H
 
 #include <opendnp3/outstation/IOutstationApplication.h>
-#include <opendnp3/app/User.h>
-
-#include "secauth/UpdateKey.h"
-#include "secauth/outstation/Permissions.h"
+#include <openpal/executor/IUTCTimeSource.h>
 
 namespace secauth
 {	
 
 /** 
-	Extends the outstation application interface for vanilla DNP3 with additional methods required for secure authentication
+	Extends the outstation application interface for vanilla DNP3 with additional methods required for secure authentication.
+
+	A UTC time source is required so that the outstation can timestamp authentication error objects internally, whereas in vanilla DNP3
+	the application code sets the timestamps on all measurement values before loading.
 */
-class IOutstationApplicationSA : public opendnp3::IOutstationApplication
+class IOutstationApplicationSA : public opendnp3::IOutstationApplication, public openpal::IUTCTimeSource
 {
 	public:	
 		

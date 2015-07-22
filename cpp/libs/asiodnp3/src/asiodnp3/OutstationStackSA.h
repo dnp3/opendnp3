@@ -25,7 +25,6 @@
 #include <secauth/outstation/IOutstationApplicationSA.h>
 #include <secauth/outstation/OutstationAuthContext.h>
 
-#include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
 #include "IOutstationSA.h"
@@ -47,8 +46,7 @@ public:
 		opendnp3::ICommandHandler& commandHandler,
 		secauth::IOutstationApplicationSA& application,		
 		const secauth::OutstationAuthStackConfig& config,		
-		IStackLifecycle& lifecycle,
-		openpal::IUTCTimeSource& timeSource,
+		IStackLifecycle& lifecycle,		
 		openpal::ICryptoProvider& crypto);
 	
 

@@ -47,7 +47,8 @@ class MasterApplication final : public IMasterApplicationSA
 };
 
 int main(int argc, char* argv[])
-{				
+{		
+	// application instance the master session runs against
 	MasterApplication application;
 
 	// The cryptography provider we'll use 

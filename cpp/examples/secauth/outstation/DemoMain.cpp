@@ -46,15 +46,21 @@ using namespace asiopal;
 using namespace asiodnp3;
 using namespace secauth;
 
+// don't modify the defaults
+class OutstationApplication final : public IOutstationApplicationSA
+{
+	virtual UTCTimestamp Now() override { return UTCTimeSource::Instance().Now(); }
+};
+
 
 int main(int argc, char* argv[])
 {
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the communication logging by uncommenting below.
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
-	
-	// don't modify the defaults
-	IOutstationApplicationSA application;
+		
+	// application instance the outstation session runs against
+	OutstationApplication application;
 
 	// crypto provider we will use to create the outstation
 	// clean this up last since everything running in the manager depends on it
@@ -105,8 +111,7 @@ int main(int argc, char* argv[])
 		"outstation",
 		SuccessCommandHandler::Instance(),
 		application,
-		config,		
-		asiopal::UTCTimeSource::Instance());	
+		config);	
 
 	// add a user to the outstation w/ a key of all 0xFF
 	pOutstation->AddUser(

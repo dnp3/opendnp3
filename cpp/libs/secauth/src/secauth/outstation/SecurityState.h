@@ -54,8 +54,7 @@ class SecurityState
 		const opendnp3::OutstationParams& params,
 		const OutstationAuthSettings& settings, 
 		openpal::Logger logger, 
-		openpal::IExecutor& executor,
-		openpal::IUTCTimeSource& timeSource, 
+		openpal::IExecutor& executor,		
 		IOutstationApplicationSA& application,
 		openpal::ICryptoProvider& crypto
 	);	
@@ -64,8 +63,7 @@ class SecurityState
 	ChallengeState challenge;
 	openpal::TimerRef challengeTimer;
 	HMACProvider hmac;
-	DeferredASDU deferred;	
-	openpal::IUTCTimeSource* pTimeSource;
+	DeferredASDU deferred;		
 	IOutstationApplicationSA* pApplication;
 	OutstationUserDatabase userDB;
 	openpal::ICryptoProvider* pCrypto;	
