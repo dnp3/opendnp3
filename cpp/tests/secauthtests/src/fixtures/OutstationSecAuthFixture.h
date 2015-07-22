@@ -38,7 +38,7 @@
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockCryptoProvider.h>
 
-#include "MockSecAuthOutstationApplication.h"
+#include "MockOutstationApplicationSA.h"
 
 
 namespace opendnp3
@@ -83,7 +83,7 @@ public:
 	testlib::MockExecutor exe;
 	MockLowerLayer lower;
 	MockCommandHandler cmdHandler;
-	MockSecAuthOutstationApplication application;
+	MockOutstationApplicationSA application;
 	testlib::MockUTCTimeSource utc;	
 	MockCryptoProvider crypto;	
 	secauth::OAuthContext context;

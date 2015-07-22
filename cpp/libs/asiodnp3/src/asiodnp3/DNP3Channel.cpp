@@ -148,9 +148,9 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	return pExecutor->ReturnBlockFor<IMaster*>(add);	
 }
 
-IMasterSA* DNP3Channel::AddMaster(	char const* id,
+IMasterSA* DNP3Channel::AddMasterSA(	char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
-									opendnp3::IMasterApplication& application,
+									secauth::IMasterApplicationSA& application,
 									const secauth::MasterAuthStackConfig& config)
 {	
 	if (!pCrypto)
@@ -188,7 +188,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 	return pExecutor->ReturnBlockFor<IOutstation*>(add);
 }
 
-IOutstationSA* DNP3Channel::AddOutstation(char const* id,
+IOutstationSA* DNP3Channel::AddOutstationSA(char const* id,
 	opendnp3::ICommandHandler& commandHandler,
 	secauth::IOutstationApplicationSA& application,
 	const secauth::OutstationAuthStackConfig& config,	

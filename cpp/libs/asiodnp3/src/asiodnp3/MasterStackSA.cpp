@@ -33,7 +33,7 @@ MasterStackSA::MasterStackSA(
 	openpal::LogRoot& root,
 	asiopal::ASIOExecutor& executor,
 	opendnp3::ISOEHandler& SOEHandler,
-	opendnp3::IMasterApplication& application,
+	secauth::IMasterApplicationSA& application,
 	const secauth::MasterAuthStackConfig& config,
 	IStackLifecycle& lifecycle,
 	opendnp3::ITaskLock& taskLock,	

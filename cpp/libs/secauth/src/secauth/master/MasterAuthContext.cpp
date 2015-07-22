@@ -43,7 +43,7 @@ MAuthContext::MAuthContext(
 		openpal::LogRoot& root,
 		opendnp3::ILowerLayer& lower,
 		opendnp3::ISOEHandler& SOEHandler,
-		opendnp3::IMasterApplication& application,
+		secauth::IMasterApplicationSA& application,
 		const opendnp3::MasterParams& params,
 		opendnp3::ITaskLock& taskLock,
 		const secauth::MasterAuthSettings& authSettings,
@@ -51,8 +51,8 @@ MAuthContext::MAuthContext(
 	) : 
 	MContext(executor, root, lower, SOEHandler, application, params, taskLock),	
 	
-	settings(authSettings),
-	pTimeSource(&application),
+	settings(authSettings),	
+	pApplicationSA(&application),
 	pCrypto(&crypto),	
 	sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount)
 {

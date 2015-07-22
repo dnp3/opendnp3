@@ -18,49 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_MASTERSTACKSA_H
-#define ASIODNP3_MASTERSTACKSA_H
+#ifndef SECAUTH_MOCKMASTERAPPLICATIONSA_H
+#define SECAUTH_MOCKMASTERAPPLICATIONSA_H
 
-#include "MasterStackBase.h"
-#include "IMasterSA.h"
+#include "secauth/master/IMasterApplicationSA.h"
 
-#include <secauth/master/MasterAuthContext.h>
-#include <secauth/master/MasterAuthStackConfig.h>
-#include <secauth/master/IMasterApplicationSA.h>
+#include <testlib/MockUTCTimeSource.h>
 
-#include <openpal/crypto/ICryptoProvider.h>
-
-namespace asiodnp3
+namespace opendnp3
 {
 
-
-class MasterStackSA : public MasterStackBase<IMasterSA>
+class MockMasterApplicationSA : public secauth::IMasterApplicationSA
 {
+
 public:
-		
-	MasterStackSA(
-		const char* id,
-		openpal::LogRoot& root,
-		asiopal::ASIOExecutor& executor,
-		opendnp3::ISOEHandler& SOEHandler,
-		secauth::IMasterApplicationSA& application,
-		const secauth::MasterAuthStackConfig& config,
-		IStackLifecycle& lifecycle,
-		opendnp3::ITaskLock& taskLock,		
-		openpal::ICryptoProvider& crypto
-	);	
-	
-protected:
 
-	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key) override final;
+	virtual openpal::UTCTimestamp Now() override 
+	{ 
+		return utc.Now();
+	}
 
-	virtual opendnp3::MContext& GetContext() override { return mcontext; }	
-	
-	secauth::MAuthContext mcontext;
-	opendnp3::Master master;
+	testlib::MockUTCTimeSource utc;
 };
+
 
 }
 
 #endif
-

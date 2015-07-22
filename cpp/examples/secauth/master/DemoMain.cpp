@@ -40,8 +40,16 @@ using namespace asiodnp3;
 using namespace opendnp3;
 using namespace secauth;
 
+// don't modify the defaults
+class MasterApplication final : public IMasterApplicationSA
+{
+	virtual UTCTimestamp Now() override { return UTCTimeSource::Instance().Now(); }
+};
+
 int main(int argc, char* argv[])
-{			
+{				
+	MasterApplication application;
+
 	// The cryptography provider we'll use 
 	osslcrypto::CryptoProvider crypto;
 
@@ -82,17 +90,16 @@ int main(int argc, char* argv[])
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
-	auto pMaster = pChannel->AddMaster(
+	auto pMaster = pChannel->AddMasterSA(
 	                   "master",										// id for logging
 	                   PrintingSOEHandler::Instance(),					// callback for data processing                
-					   asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
+					   application,										// master application instance for SA
 	                   stackConfig										// stack configuration					   			   
 	               );
 
 	// configure a user with a trivial update key for demo purposes
 	pMaster->AddUser(User::Default(), UpdateKey(0xFF, UpdateKeyMode::AES128));
-	
-	
+		
 	// do an integrity poll (Class 3/2/1/0) once per minute
 	auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
 	

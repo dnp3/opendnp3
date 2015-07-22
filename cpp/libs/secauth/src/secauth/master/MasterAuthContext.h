@@ -30,6 +30,7 @@
 #include "secauth/master/MasterAuthSettings.h"
 #include "secauth/master/IAuthResponseReceiver.h"
 #include "secauth/master/MasterUserDatabase.h"
+#include "secauth/master/IMasterApplicationSA.h"
 
 namespace secauth
 {
@@ -44,10 +45,10 @@ public:
 		openpal::LogRoot& root,
 		opendnp3::ILowerLayer& lower,
 		opendnp3::ISOEHandler& SOEHandler,
-		opendnp3::IMasterApplication& application,
+		IMasterApplicationSA& application,
 		const opendnp3::MasterParams& params,
 		opendnp3::ITaskLock& taskLock,
-		const secauth::MasterAuthSettings& authSettings,
+		const MasterAuthSettings& authSettings,
 		openpal::ICryptoProvider& crypto		
 	);
 
@@ -66,7 +67,7 @@ public:
 
 	// --- public helpers ----
 
-	bool AddUser(opendnp3::User user, const secauth::UpdateKey& key);
+	bool AddUser(opendnp3::User user, const UpdateKey& key);
 
 private:
 
@@ -80,13 +81,14 @@ private:
 	
 	typedef std::map<uint16_t, std::unique_ptr<SessionKeyTask>> SessionKeyTaskMap;
 	
-	MasterAuthSettings			settings;
-	openpal::IUTCTimeSource*	pTimeSource;
+	MasterAuthSettings			settings;	
+	IMasterApplicationSA*		pApplicationSA;
 	openpal::ICryptoProvider*	pCrypto;
-	MasterUserDatabase		    userDB;
+	MasterUserDatabase			userDB;
 	SessionStore				sessions;		
 	openpal::ReadBufferView		lastRequest;
 	SessionKeyTaskMap			sessionKeyTaskMap;
+	
 
 	openpal::StaticBuffer<AuthSizes::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE> challengeReplyBuffer;
 

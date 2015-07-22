@@ -29,10 +29,11 @@
 
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockSOEHandler.h>
-#include <dnp3mocks/MockMasterApplication.h>
 #include <dnp3mocks/MockCryptoProvider.h>
 
 #include <secauth/master/MasterAuthContext.h>
+
+#include "MockMasterApplicationSA.h"
 
 namespace opendnp3
 {
@@ -59,7 +60,7 @@ namespace opendnp3
 		testlib::MockExecutor exe;
 		MockSOEHandler meas;
 		MockLowerLayer lower;
-		MockMasterApplication application;
+		MockMasterApplicationSA application;
 		MockCryptoProvider crypto;		
 		secauth::MAuthContext context;
 		Master master;

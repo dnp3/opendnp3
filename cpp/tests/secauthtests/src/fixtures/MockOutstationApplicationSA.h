@@ -18,15 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_MOCKSECAUTHOUTSTATIONAPPLICATION_H
-#define SECAUTH_MOCKSECAUTHOUTSTATIONAPPLICATION_H
+#ifndef SECAUTH_MOCKOUTSTATIONAPPLICATIONSA_H
+#define SECAUTH_MOCKOUTSTATIONAPPLICATIONSA_H
 
 #include "secauth/outstation/IOutstationApplicationSA.h"
 
 namespace opendnp3
 {
 
-class MockSecAuthOutstationApplication : public secauth::IOutstationApplicationSA
+class MockOutstationApplicationSA : public secauth::IOutstationApplicationSA
 {
 
 public:

@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.	
-	auto pOutstation = pChannel->AddOutstation(
+	auto pOutstation = pChannel->AddOutstationSA(
 		"outstation",
 		SuccessCommandHandler::Instance(),
 		application,
