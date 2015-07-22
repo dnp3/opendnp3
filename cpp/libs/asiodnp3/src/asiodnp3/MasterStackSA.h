@@ -18,39 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_MASTERSTACKIMPL_H
-#define ASIODNP3_MASTERSTACKIMPL_H
+#ifndef ASIODNP3_MASTERSTACKSA_H
+#define ASIODNP3_MASTERSTACKSA_H
 
 #include "MasterStackBase.h"
+#include "IMasterSA.h"
 
-#include <secauth/master/IMasterUserDatabase.h>
+#include <secauth/master/MasterAuthContext.h>
 #include <secauth/master/MasterAuthStackConfig.h>
+#include <secauth/master/IMasterUserDatabase.h>
 
-#include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
 namespace asiodnp3
 {
 
 
-class MasterStackImpl : public MasterStackBase<IMaster>
+class MasterStackSA : public MasterStackBase<IMasterSA>
 {
 public:
-
-	// constructor for normal DNP3
-	MasterStackImpl(
-		const char* id,
-		openpal::LogRoot& root,
-	    asiopal::ASIOExecutor& executor,
-		opendnp3::ISOEHandler& SOEHandler,	    
-		opendnp3::IMasterApplication& application,
-		const opendnp3::MasterStackConfig& config,		
-		IStackLifecycle& lifecycle,
-		opendnp3::ITaskLock& taskLock
-	);
-
-	//constructor for secure DNP3
-	MasterStackImpl(
+		
+	MasterStackSA(
 		const char* id,
 		openpal::LogRoot& root,
 		asiopal::ASIOExecutor& executor,
@@ -61,14 +49,13 @@ public:
 		opendnp3::ITaskLock& taskLock,
 		secauth::IMasterUserDatabase& userDB,
 		openpal::ICryptoProvider& crypto
-	);
+	);	
 	
 protected:
 
-	virtual opendnp3::MContext& GetContext() override { return *mcontext; }	
+	virtual opendnp3::MContext& GetContext() override { return mcontext; }	
 	
-
-	std::unique_ptr<opendnp3::MContext> mcontext;
+	secauth::MAuthContext mcontext;
 	opendnp3::Master master;
 };
 

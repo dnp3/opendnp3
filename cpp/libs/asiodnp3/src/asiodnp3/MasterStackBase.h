@@ -54,6 +54,8 @@ public:
 	{
 	
 	}
+
+	virtual ~MasterStackBase() {}
 	
 	virtual bool Enable() override final
 	{

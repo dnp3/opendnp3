@@ -18,11 +18,11 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MasterStackImpl.h"
+#include "MasterStack.h"
 
 #include <opendnp3/app/APDUBuilders.h>
 
-#include <secauth/master/MasterAuthContext.h>
+#include <opendnp3/master/MasterContext.h>
 
 #include <asiopal/ASIOExecutor.h>
 
@@ -32,7 +32,7 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-MasterStackImpl::MasterStackImpl(   
+MasterStack::MasterStack(   
 	const char* id,
 	LogRoot& root,
 	asiopal::ASIOExecutor& executor,
@@ -42,29 +42,10 @@ MasterStackImpl::MasterStackImpl(
 	IStackLifecycle& lifecycle,
 	opendnp3::ITaskLock& taskLock) :
 		MasterStackBase<IMaster>(id, root, executor, config, lifecycle),		
-		mcontext(new MContext(executor, root, stack.transport, SOEHandler, application,  config.master, taskLock)),
-		master(*mcontext)
+		mcontext(executor, root, stack.transport, SOEHandler, application,  config.master, taskLock),
+		master(mcontext)
 {
 	stack.transport.SetAppLayer(&master);
-}
-
-MasterStackImpl::MasterStackImpl(
-	const char* id,
-	openpal::LogRoot& root_,
-	asiopal::ASIOExecutor& executor,
-	opendnp3::ISOEHandler& SOEHandler,
-	opendnp3::IMasterApplication& application,
-	const secauth::MasterAuthStackConfig& config,
-	IStackLifecycle& lifecycle,
-	opendnp3::ITaskLock& taskLock,
-	secauth::IMasterUserDatabase& userDB,
-	openpal::ICryptoProvider& crypto
-) :
-	MasterStackBase<IMaster>(id, root, executor, config, lifecycle),
-	mcontext(new secauth::MAuthContext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto, userDB)),
-	master(*mcontext)
-{
-
 }
 
 }

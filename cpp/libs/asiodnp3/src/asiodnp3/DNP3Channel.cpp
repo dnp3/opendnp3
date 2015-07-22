@@ -22,7 +22,8 @@
 
 #include <asiopal/PhysicalLayerBase.h>
 
-#include "MasterStackImpl.h"
+#include "MasterStack.h"
+#include "MasterStackSA.h"
 
 #include "OutstationStack.h"
 #include "OutstationStackSA.h"
@@ -138,10 +139,10 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	{
 		auto factory = [&]()
 		{
-			return new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock);
+			return new MasterStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock);
 		};
 
-		return this->AddStack<MasterStackImpl>(config.link, factory);
+		return this->AddStack<MasterStack>(config.link, factory);
 	};
 
 	return pExecutor->ReturnBlockFor<IMaster*>(add);	
@@ -160,17 +161,17 @@ IMaster* DNP3Channel::AddMaster(	char const* id,
 	}
 
 
-	auto add = [&]() -> IMaster*
+	auto add = [&]() -> IMasterSA*
 	{
 		auto factory = [&]()
 		{
-			return new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, userDB, *pCrypto);			
+			return new MasterStackSA(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, userDB, *pCrypto);			
 		};
 
-		return this->AddStack<MasterStackImpl>(config.link, factory);
+		return this->AddStack<MasterStackSA>(config.link, factory);
 	};
 	
-	return pExecutor->ReturnBlockFor<IMaster*>(add);
+	return pExecutor->ReturnBlockFor<IMasterSA*>(add);
 }
 
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
