@@ -106,7 +106,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(OPENDNP3_LIB_DIR)\asiodnp3.lib;$(OPENDNP3_LIB_DIR)\asiopal.lib;$(OPENDNP3_LIB_DIR)\opendnp3.lib;$(OPENDNP3_LIB_DIR)\openpal.lib;$(OPENDNP3_LIB_DIR)\osslcrypto.lib;$(OPENDNP3_LIB_DIR)\secauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib; shell32.lib; advapi32.lib; gdi32.lib; User32.lib; $(OPENDNP3_LIB_DIR)\asiodnp3.lib;$(OPENDNP3_LIB_DIR)\asiopal.lib;$(OPENDNP3_LIB_DIR)\opendnp3.lib;$(OPENDNP3_LIB_DIR)\openpal.lib;$(OPENDNP3_LIB_DIR)\osslcrypto.lib;$(OPENDNP3_LIB_DIR)\secauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,7 +129,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(OPENDNP3_LIB_DIR)\asiodnp3.lib;$(OPENDNP3_LIB_DIR)\asiopal.lib;$(OPENDNP3_LIB_DIR)\opendnp3.lib;$(OPENDNP3_LIB_DIR)\openpal.lib;$(OPENDNP3_LIB_DIR)\osslcrypto.lib;$(OPENDNP3_LIB_DIR)\secauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib; shell32.lib; advapi32.lib; gdi32.lib; User32.lib; $(OPENDNP3_LIB_DIR)\asiodnp3.lib;$(OPENDNP3_LIB_DIR)\asiopal.lib;$(OPENDNP3_LIB_DIR)\opendnp3.lib;$(OPENDNP3_LIB_DIR)\openpal.lib;$(OPENDNP3_LIB_DIR)\osslcrypto.lib;$(OPENDNP3_LIB_DIR)\secauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
