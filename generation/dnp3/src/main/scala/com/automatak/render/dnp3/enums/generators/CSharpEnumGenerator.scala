@@ -38,7 +38,9 @@ object CSharpEnumGenerator {
       GroupVariationEnum(),
       EventMode(),
       IndexMode(),
-      UpdateKeyMode()
+      UpdateKeyMode(),
+      UserOperation(),
+      UserRole()
     ).map(e => EnumConfig.apply(e, dir)) ::: events ::: qualityMasks
 
     implicit val indent = CppIndentation()

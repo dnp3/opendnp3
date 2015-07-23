@@ -37,7 +37,8 @@ object CppEnumGenerator {
       AuthErrorCode(),
       CertificateType(),
       KeyChangeMethod(),
-      UserOperation()
+      UserOperation(),
+      UserRole()
     ).map(x => EnumConfig(x, true, true))
 
     def simpleEnums = (List(
