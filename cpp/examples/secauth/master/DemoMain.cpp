@@ -54,6 +54,8 @@ int main(int argc, char* argv[])
 	// The cryptography provider we'll use 
 	osslcrypto::CryptoProvider crypto;
 
+	std::cout << "Using openssl: " << crypto.Version() << std::endl;
+
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;

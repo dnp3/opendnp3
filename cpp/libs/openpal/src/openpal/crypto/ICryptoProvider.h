@@ -38,7 +38,7 @@ namespace openpal
 	{
 	public:
 		
-		virtual ~ICryptoProvider() {}
+		virtual ~ICryptoProvider() {}		
 		
 		/// --- Getters for HMAC algorithms ----
 

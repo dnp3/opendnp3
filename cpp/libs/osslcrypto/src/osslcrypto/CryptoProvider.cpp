@@ -62,6 +62,11 @@ bool CryptoProvider::ConfigureMultithreading()
 	return true;
 }
 
+const char* CryptoProvider::Version() const
+{
+	return SSLeay_version(SSLEAY_VERSION);
+}
+
 void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line)
 {
 	assert(n > 0);

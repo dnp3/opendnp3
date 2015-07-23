@@ -54,6 +54,8 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 
 	virtual openpal::IHMACAlgo& GetSHA1HMAC() override final { return hmacSHA1;  }
 	virtual openpal::IHMACAlgo& GetSHA256HMAC() override final { return hmacSHA256; }
+
+	const char* Version() const;
 	
 	private:
 
