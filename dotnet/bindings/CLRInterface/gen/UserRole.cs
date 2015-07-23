@@ -23,7 +23,7 @@ namespace Automatak.DNP3.Interface
   /// <summary>
   /// Enumerates pre-defined rules in secure authentication
   /// </summary>
-  public enum UserRole : byte
+  public enum UserRole : ushort
   {
     VIEWER = 0,
     OPERATOR = 1,

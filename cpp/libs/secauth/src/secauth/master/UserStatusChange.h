@@ -23,14 +23,20 @@
 
 #include <opendnp3/gen/KeyChangeMethod.h>
 #include <opendnp3/gen/UserOperation.h>
+#include <opendnp3/gen/UserRole.h>
 
 #include <openpal/container/Buffer.h>
 
 #include <string>
 
+namespace opendnp3
+{
+	struct Group120Var10;
+}
+
 namespace secauth
 {
-
+	
 /**
 	The object is part of the external master API. It used to initiate the UserStatusChange 
 	operation for both symmetric and assymetric keys.
@@ -41,6 +47,23 @@ class UserStatusChange
 {	
 
 public:
+	
+	/**
+		constructor for symmetric key update
+		doesn't include the public key as there 
+		is no public key in this mode
+	*/
+	UserStatusChange(
+		opendnp3::KeyChangeMethod keyChangeMethod,
+		opendnp3::UserOperation userOperation,
+		uint32_t statusChangeSeqNum,
+		uint16_t userRole,
+		uint16_t userRoleExpDays,
+		const std::string& userName,
+		openpal::ReadBufferView certificationData
+	);
+
+	opendnp3::Group120Var10 Convert() const;
 
 	opendnp3::KeyChangeMethod keyChangeMethod;
 	opendnp3::UserOperation userOperation;

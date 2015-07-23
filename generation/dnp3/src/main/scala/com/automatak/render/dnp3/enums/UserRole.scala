@@ -7,7 +7,7 @@ object UserRole {
   private val comments = List("Enumerates pre-defined rules in secure authentication")
   private val defaultValue = EnumValue("UNDEFINED", 32767)
 
-  def apply(): EnumModel = EnumModel("UserRole", comments, EnumModel.UInt8, codes, Some(defaultValue), Base10)
+  def apply(): EnumModel = EnumModel("UserRole", comments, EnumModel.UInt16, codes, Some(defaultValue), Base10)
 
   private val codes = List(
     EnumValue("VIEWER", 0),

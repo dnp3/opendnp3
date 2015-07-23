@@ -22,11 +22,11 @@
 
 namespace opendnp3 {
 
-uint8_t UserRoleToType(UserRole arg)
+uint16_t UserRoleToType(UserRole arg)
 {
-  return static_cast<uint8_t>(arg);
+  return static_cast<uint16_t>(arg);
 }
-UserRole UserRoleFromType(uint8_t arg)
+UserRole UserRoleFromType(uint16_t arg)
 {
   switch(arg)
   {
