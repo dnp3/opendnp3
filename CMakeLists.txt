@@ -186,6 +186,13 @@ if(OSSL)
 
 endif()
 
+ if(CMAKE_COMPILER_IS_GNUCXX)      
+    if(CMAKE_CXX_COMPILER_VERSION MATCHES 4.8.*)
+      message("Adding pthread workaround for GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
+      SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-as-needed" )            
+    endif()
+endif()
+
 if(TEST)
 
   # ----- testlib library ------
@@ -232,7 +239,7 @@ if(TEST)
     file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp ./cpp/tests/osslcryptotests/*.h)
     add_executable (testosslcrypto ${osslcrypto_TESTSRC})
     target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto ${PTHREAD})
-    set_target_properties(testosslcrypto PROPERTIES FOLDER tests)
+    set_target_properties(testosslcrypto PROPERTIES FOLDER tests)          
   endif()
 
 endif()
