@@ -75,7 +75,14 @@ else()
 
 endif()
 
-
+# There's problem with detecting usage of pthread with gcc 4.8.x
+# http://ubuntuforums.org/showthread.php?t=2183408
+if(CMAKE_COMPILER_IS_GNUCXX)      
+  if(CMAKE_CXX_COMPILER_VERSION MATCHES 4.8.*)
+    message("Adding pthread workaround for GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
+    SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-as-needed" )            
+  endif()
+endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
@@ -186,12 +193,6 @@ if(OSSL)
 
 endif()
 
- if(CMAKE_COMPILER_IS_GNUCXX)      
-    if(CMAKE_CXX_COMPILER_VERSION MATCHES 4.8.*)
-      message("Adding pthread workaround for GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
-      SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-as-needed" )            
-    endif()
-endif()
 
 if(TEST)
 
