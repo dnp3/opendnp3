@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bindings", "bindings", "{DB6D1D7E-C26B-45B2-9189-480985D8927B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLRInterface", "bindings\CLRInterface\CLRInterface.csproj", "{5F06C7BE-3107-4B3E-8559-E5E1BB4008B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3CLRInterface", "bindings\CLRInterface\DNP3CLRInterface.csproj", "{5F06C7BE-3107-4B3E-8559-E5E1BB4008B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{B32D7246-5305-415B-A289-7DB7349915E6}"
 EndProject
@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatorDNP3", "simulator\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatorUI", "simulator\SimulatorUI\SimulatorUI.csproj", "{428DDB1F-13F8-401C-AA0E-F0B80AF1FC00}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CLRAdapter", "bindings\CLRAdapter\CLRAdapter.vcxproj", "{95903DB4-9DE7-4E41-B990-6995108A8495}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DNP3CLRAdapter", "bindings\CLRAdapter\CLRAdapter.vcxproj", "{95903DB4-9DE7-4E41-B990-6995108A8495}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLRMasterDemoSA", "examples\secauth\master\CLRMasterDemoSA.csproj", "{070106DC-9726-4735-AEB3-13806C5FF3A7}"
 EndProject

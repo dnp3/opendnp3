@@ -93,11 +93,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\bindings\CLRAdapter\CLRAdapter.vcxproj">
       <Project>{95903db4-9de7-4e41-b990-6995108a8495}</Project>
-      <Name>CLRAdapter</Name>
+      <Name>DNP3CLRAdapter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\bindings\CLRInterface\CLRInterface.csproj">
+    <ProjectReference Include="..\..\bindings\CLRInterface\DNP3CLRInterface.csproj">
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
-      <Name>CLRInterface</Name>
+      <Name>DNP3CLRInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
