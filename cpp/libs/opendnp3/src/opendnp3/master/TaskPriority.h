@@ -27,6 +27,8 @@ namespace opendnp3
 	{
 		const int SESSION_KEY = 50;
 
+		const int USER_STATUS_CHANGE = 60;
+
 		const int COMMAND = 100;
 
 		const int USER_WRITE = 110;

@@ -33,6 +33,8 @@
 #include "ILinkBind.h"
 #include "Conversions.h"
 
+#include <assert.h>
+
 namespace asiodnp3
 {
 
@@ -50,7 +52,9 @@ public:
 		) : 
 			root(root_, id),
 			pLifecycle(&lifecycle),
-			stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link)
+			stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
+			pASIOExecutor(&executor),
+			pContext(nullptr)
 	{
 	
 	}
@@ -238,14 +242,16 @@ protected:
 
 	void SetContext(opendnp3::MContext& context)
 	{
+		assert(pContext == nullptr);
 		this->pContext = &context;
 		this->stack.transport.SetAppLayer(&context);
 	}
 	
 	openpal::LogRoot root;	
 	opendnp3::StackStatistics statistics;
-	IStackLifecycle* pLifecycle;
-	opendnp3::TransportStack stack;	
+	IStackLifecycle* pLifecycle;	
+	opendnp3::TransportStack stack;
+	asiopal::ASIOExecutor* pASIOExecutor;
 
 	private:
 

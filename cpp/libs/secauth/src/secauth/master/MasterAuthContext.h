@@ -31,6 +31,7 @@
 #include "secauth/master/IAuthResponseReceiver.h"
 #include "secauth/master/MasterUserDatabase.h"
 #include "secauth/master/IMasterApplicationSA.h"
+#include "secauth/master/UserStatusChange.h"
 
 namespace secauth
 {
@@ -68,6 +69,8 @@ public:
 	// --- public helpers ----
 
 	bool AddUser(opendnp3::User user, const UpdateKey& key);
+
+	void BeginUserStatusChange(const UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config);
 
 private:
 

@@ -181,8 +181,7 @@ namespace opendnp3
 
 
 		void ScheduleRecurringPollTask(IMasterTask* pTask);
-		void ScheduleAdhocTask(IMasterTask* pTask);
-
+		
 		virtual void OnPendingTask() override { this->PostCheckForTask(); }
 
 		void ProcessIIN(const IINField& iin);		
@@ -198,6 +197,8 @@ namespace opendnp3
 		void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);		
 
 	protected:
+
+		void ScheduleAdhocTask(IMasterTask* pTask);
 				
 		/// state switch lookups
 		TaskState OnStartEvent();

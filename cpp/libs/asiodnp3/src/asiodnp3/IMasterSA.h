@@ -25,6 +25,7 @@
 
 #include <opendnp3/app/User.h>
 #include <secauth/UpdateKey.h>
+#include <secauth/master/UserStatusChange.h>
 
 namespace asiodnp3
 {
@@ -37,6 +38,11 @@ class IMasterSA : public IMaster
 public:		
 
 	virtual ~IMasterSA() {}
+
+	/**
+	* Begins a users status change operation. The master just acts as a pass through for this operation
+	*/
+	virtual void BeginUserStatusChange(const secauth::UserStatusChange& userStatusChange,  const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 	
 	/**
 	* Add a user to the outstation. This is normally only done during initialization.

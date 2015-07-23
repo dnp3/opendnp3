@@ -51,6 +51,8 @@ public:
 	);	
 
 	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key) override final;
+
+	virtual void BeginUserStatusChange(const secauth::UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) override final;
 	
 private:	
 	

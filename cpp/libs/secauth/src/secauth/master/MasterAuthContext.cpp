@@ -27,10 +27,12 @@
 #include <openpal/logging/LogMacros.h>
 
 #include "secauth/master/AuthResponseHandler.h"
+#include "secauth/master/UserStatusChangeTask.h"
 #include "opendnp3/app/parsing/APDUParser.h"
 
 #include "secauth/Crypto.h"
 #include "secauth/HMACProvider.h"
+
 
 using namespace openpal;
 using namespace opendnp3;
@@ -137,6 +139,12 @@ void MAuthContext::RecordLastRequest(const openpal::ReadBufferView& apdu)
 bool MAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
 {
 	return this->userDB.AddUser(user, key);
+}
+
+void MAuthContext::BeginUserStatusChange(const UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config)
+{
+	auto task = new UserStatusChangeTask(userStatusChange, *pApplication, logger, config);
+	this->ScheduleAdhocTask(task);
 }
 
 void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
