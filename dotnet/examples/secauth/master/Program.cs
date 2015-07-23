@@ -43,6 +43,10 @@ namespace DotNetMasterDemo
             var application = new MasterApplicatonSA();
 
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();
+
+            Console.WriteLine(String.Format("Crypto: {0}", mgr.SSLVersion()));
+
+
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPClient("client", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
 

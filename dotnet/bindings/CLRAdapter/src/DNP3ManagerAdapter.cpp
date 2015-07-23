@@ -47,6 +47,12 @@ namespace Automatak
 				pManager->Shutdown();
 			}
 
+			String^ DNP3ManagerAdapter::SSLVersion()
+			{
+				std::string version(pCrypto->Version());
+				return Conversions::ConvertString(version);
+			}
+
 			IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 filters, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String^ address, System::UInt16 port)
 			{
 
