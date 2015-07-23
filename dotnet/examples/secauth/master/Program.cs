@@ -88,8 +88,8 @@ namespace DotNetMasterDemo
                         break;
                     case "c":
                         var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
-                        var future = master.SelectAndOperate(crob, 0);
-                        future.Listen((result) => Console.WriteLine("Result: " + result));
+                        var task = master.SelectAndOperate(crob, 0);
+                        task.ContinueWith((result) => Console.WriteLine("Result: " + result.Result));
                         break;
                     case "l":
                         // add interpretation to the current logging level

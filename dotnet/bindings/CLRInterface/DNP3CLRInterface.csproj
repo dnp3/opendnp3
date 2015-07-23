@@ -113,7 +113,6 @@
     <Compile Include="IDNP3Manager.cs" />
     <Compile Include="IChannel.cs" />
     <Compile Include="ICommandProcessor.cs" />
-    <Compile Include="IFuture.cs" />
     <Compile Include="ILogHandler.cs" />
     <Compile Include="IMaster.cs">
       <SubType>Code</SubType>

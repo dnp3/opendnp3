@@ -51,38 +51,38 @@ namespace Automatak
 				virtual void Write(TimeAndInterval^ value, System::UInt16 index, TaskConfig^ config);
 				
 
-				virtual IFuture<CommandResponse>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
-				virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index);				
-				virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index);
-				virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index);
-				virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index);
 
-				virtual IFuture<CommandResponse>^ DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
-				virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputInt32^ command, System::UInt32 index);
-				virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputInt16^ command, System::UInt32 index);
-				virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index);
-				virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputInt32^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputInt16^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index);
 
 			private:
 
 				template <class T>
-				IFuture<CommandResponse>^ SelectAndOperateT(T^ command, System::UInt32 index)
+				Task<CommandResponse>^ SelectAndOperateT(T^ command, System::UInt32 index)
 				{
-					auto future = gcnew Future<CommandResponse>();
+					auto tcs = gcnew TaskCompletionSource<CommandResponse>();
 					auto cmd = Conversions::ConvertCommand(command);
-					auto pCallback = new CommandCallbackAdapter(future, true);
+					auto pCallback = new CommandCallbackAdapter(tcs, true);
 					pMaster->SelectAndOperate(cmd, index, *pCallback);
-					return future;
+					return tcs->Task;
 				}
 
 				template <class T>
-				IFuture<CommandResponse>^ DirectOperateT(T^ command, System::UInt32 index)
+				Task<CommandResponse>^ DirectOperateT(T^ command, System::UInt32 index)
 				{
-					auto future = gcnew Future<CommandResponse>();
+					auto tcs = gcnew TaskCompletionSource<CommandResponse>();
 					auto cmd = Conversions::ConvertCommand(command);
-					auto pCallback = new CommandCallbackAdapter(future, true);
+					auto pCallback = new CommandCallbackAdapter(tcs, true);
 					pMaster->DirectOperate(cmd, index, *pCallback);
-					return future;
+					return tcs->Task;
 				}			
 				
 				asiodnp3::IMaster* pMaster;				

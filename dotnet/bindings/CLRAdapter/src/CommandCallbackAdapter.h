@@ -2,6 +2,7 @@
 #define __COMMAND_CALLBACK_ADAPTER_H_
 
 using namespace System::Collections::ObjectModel;
+using namespace System::Threading::Tasks;
 
 #include <vcclr.h>
 
@@ -22,7 +23,9 @@ namespace Automatak
 			class CommandCallbackAdapter : public opendnp3::ICommandCallback, openpal::Uncopyable
 			{
 			public:
-				CommandCallbackAdapter(Future<CommandResponse>^ future, bool autoDelete_) : autoDelete(autoDelete_), root(future)
+				CommandCallbackAdapter(TaskCompletionSource<CommandResponse>^ taskCompletionSource, bool autoDelete_) : 
+					autoDelete(autoDelete_),
+					root(taskCompletionSource)
 				{}
 
 				virtual void OnStart() sealed
@@ -34,7 +37,7 @@ namespace Automatak
 				{
 					auto result = Conversions::ConvertCommandResponse(response);
 
-					root->Set(result);
+					root->SetResult(result);
 					if (autoDelete)
 					{
 						delete this;
@@ -42,7 +45,7 @@ namespace Automatak
 				}
 
 				bool autoDelete;
-				gcroot < Future<CommandResponse> ^ > root;
+				gcroot < TaskCompletionSource<CommandResponse>^ > root;
 			};			
 
 		}
