@@ -59,12 +59,6 @@ namespace DotNetMasterDemo
             config.link.localAddr = 1;
             config.link.remoteAddr = 10;
 
-            var key = new byte[16];
-            for (int i = 0; i < key.Length; ++i)
-            {
-                key[i] = 0xFF;
-            }
-
             var master = channel.AddMasterSA("master", PrintingSOEHandler.Instance, application, config);
 
             // define a user on the outstation
