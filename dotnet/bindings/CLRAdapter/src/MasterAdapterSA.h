@@ -6,6 +6,9 @@ using namespace System::Collections::Generic;
 
 #include "MasterAdapter.h"
 
+#include "SAConversions.h"
+#include "MasterConversions.h"
+
 #include <asiodnp3/IMasterSA.h>
 #include <openpal/container/Buffer.h>
 
@@ -48,6 +51,13 @@ namespace Automatak
 					{
 						buffer[i] = 0;
 					}
+				}
+
+				virtual Task<TaskCompletion>^ BeginUserStatusChange(UserStatusChange^ statusChange, TaskConfig^ config) sealed
+				{
+					auto proxy = gcnew TaskCompletionProxy(config->callback);
+					pMasterSA->BeginUserStatusChange(SAConversions::Convert(statusChange), MasterConversions::Convert(config, proxy));
+					return proxy->CompletionTask;
 				}
 				
 			private:

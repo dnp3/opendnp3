@@ -34,6 +34,7 @@ UserStatusChange::UserStatusChange(
 	uint16_t userRole_,
 	uint16_t userRoleExpDays_,
 	const std::string& userName_,
+	openpal::ReadBufferView userPublicKey_,
 	openpal::ReadBufferView certificationData_
 ) : 
 	keyChangeMethod(keyChangeMethod_),
@@ -42,7 +43,7 @@ UserStatusChange::UserStatusChange(
 	userRole(userRole_),
 	userRoleExpDays(userRoleExpDays_),
 	userName(userName_),
-	userPublicKey(0),
+	userPublicKey(userPublicKey_),
 	certificationData(certificationData_)
 {}
 

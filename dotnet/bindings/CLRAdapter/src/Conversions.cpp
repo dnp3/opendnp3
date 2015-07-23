@@ -384,6 +384,23 @@ namespace Automatak
 				}
 			}
 
+			openpal::Buffer Conversions::Convert(array<System::Byte>^ bytes)
+			{
+				if (bytes == nullptr)
+				{
+					return openpal::Buffer(0);
+				}
+
+				openpal::Buffer buffer(bytes->Length);
+
+				for (int i = 0; i < bytes->Length; ++i)
+				{
+					buffer[i] = bytes[i];
+				}
+
+				return buffer;
+			}
+
 		}
 	}
 }

@@ -18,30 +18,21 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_MASTERTASKTYPE_H
-#define OPENDNP3_MASTERTASKTYPE_H
-
-#include <cstdint>
-
-namespace opendnp3 {
-
-/**
-  Enumeration of internal tasks
-*/
-enum class MasterTaskType : uint8_t
+namespace Automatak.DNP3.Interface
 {
-  CLEAR_RESTART = 0,
-  DISABLE_UNSOLICITED = 1,
-  ASSIGN_CLASS = 2,
-  STARTUP_INTEGRITY_POLL = 3,
-  SERIAL_TIME_SYNC = 4,
-  ENABLE_UNSOLICITED = 5,
-  AUTO_EVENT_SCAN = 6,
-  USER_TASK = 7,
-  SET_SESSION_KEYS = 8
-};
-
-
+  /// <summary>
+  /// Enumerates possible algorithms for changing the update key
+  /// </summary>
+  public enum KeyChangeMethod : byte
+  {
+    AES_128_SHA1_HMAC = 0x3,
+    AES_256_SHA256_HMAC = 0x4,
+    AES_256_AES_GMAC = 0x5,
+    RSA_1024_DSA_SHA1_HMAC_SHA1 = 0x43,
+    RSA_2048_DSA_SHA256_HMAC_SHA256 = 0x44,
+    RSA_3072_DSA_SHA256_HMAC_SHA256 = 0x45,
+    RSA_2048_DSA_SHA256_AES_GMAC = 0x46,
+    RSA_3072_DSA_SHA256_AES_GMAC = 0x47,
+    UNDEFINED = 0x0
+  }
 }
-
-#endif

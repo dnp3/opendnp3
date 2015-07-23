@@ -169,6 +169,7 @@
     <ClInclude Include="src\OutstationAdapter.h" />
     <ClInclude Include="src\OutstationApplicationAdapter.h" />
     <ClInclude Include="src\OutstationCommandHandlerAdapter.h" />
+    <ClInclude Include="src\SAConversions.h" />
     <ClInclude Include="src\SOEHandlerAdapter.h" />
     <ClInclude Include="src\TaskCallbackAdapter.h" />
     <ClInclude Include="Stdafx.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="src\OutstationAdapter.cpp" />
     <ClCompile Include="src\OutstationApplicationAdapter.cpp" />
     <ClCompile Include="src\OutstationCommandHandlerAdapter.cpp" />
+    <ClCompile Include="src\SAConversions.cpp" />
     <ClCompile Include="src\SOEHandlerAdapter.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

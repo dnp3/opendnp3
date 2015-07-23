@@ -115,8 +115,13 @@ namespace Automatak
 				return asiodnp3::Header::Range16(header->group, header->variation, header->start, header->stop);
 			}
 
-			opendnp3::TaskConfig MasterConversions::Convert(TaskConfig^ config)
+			opendnp3::TaskConfig MasterConversions::Convert(TaskConfig^ config, ITaskCallback^ wrapper)
 			{			
+				return opendnp3::TaskConfig(Convert(config->taskId), CreateTaskCallback(wrapper), opendnp3::User(config->user->Number));
+			}
+
+			opendnp3::TaskConfig MasterConversions::Convert(TaskConfig^ config)
+			{
 				return opendnp3::TaskConfig(Convert(config->taskId), CreateTaskCallback(config->callback), opendnp3::User(config->user->Number));
 			}
 

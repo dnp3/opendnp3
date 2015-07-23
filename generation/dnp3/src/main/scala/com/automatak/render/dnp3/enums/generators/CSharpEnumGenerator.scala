@@ -40,7 +40,8 @@ object CSharpEnumGenerator {
       IndexMode(),
       UpdateKeyMode(),
       UserOperation(),
-      UserRole()
+      UserRole(),
+      KeyChangeMethod()
     ).map(e => EnumConfig.apply(e, dir)) ::: events ::: qualityMasks
 
     implicit val indent = CppIndentation()

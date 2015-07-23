@@ -31,13 +31,7 @@ namespace Automatak.DNP3.Interface
     /// Interface representing a master station
     /// </summary>
     public interface IMaster : IStack, ICommandProcessor
-    {       
-        /// <summary>
-        /// Perform an adhoc scan with the designated request headers
-        /// </summary>
-        /// <param name="headers"></param>        
-        void Scan(IEnumerable<Header> headers, TaskConfig config);
-
+    {               
         /// <summary>
         /// Adds a periodic all objects scan that uses the 0x06 qualifier
         /// </summary>
@@ -79,14 +73,14 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="group"></param>
         /// <param name="variation"></param>                
-        void ScanAllObjects(byte group, byte variation, TaskConfig config);
+        Task<TaskCompletion> ScanAllObjects(byte group, byte variation, TaskConfig config);
 
         /// <summary>
         /// Perform an immediate adhoc class scan
         /// </summary>
         /// <param name="field">bitfield of class values</param>
         /// <param name="period">period, negative for non-periodic</param>                
-        void ScanClasses(ClassField field, TaskConfig config);
+        Task<TaskCompletion> ScanClasses(ClassField field, TaskConfig config);
 
         /// <summary>
         /// Perform an immediate adhoc range-based (start/stop) scan
@@ -96,14 +90,13 @@ namespace Automatak.DNP3.Interface
         /// <param name="start"></param>
         /// <param name="stop"></param>
         /// <param name="callback"></param>
-        void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TaskConfig config);
+        Task<TaskCompletion> ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TaskConfig config);
 
         /// <summary>
-        /// 
+        /// Perform an adhoc scan with the designated request headers
         /// </summary>
-        /// <param name="callback"></param>
-        /// <param name="headers">A collection of Headers to add</param>
-        //void Scan(IEnumerable<Header> headers, ITaskCallback callback = null);
+        /// <param name="headers"></param>        
+        Task<TaskCompletion> Scan(IEnumerable<Header> headers, TaskConfig config);
 
         /// <summary>
         /// 
@@ -111,6 +104,8 @@ namespace Automatak.DNP3.Interface
         /// <param name="value"></param>
         /// <param name="index"></param>
         /// <param name="callback"></param>
-        void Write(TimeAndInterval value, System.UInt16 index, TaskConfig config);
+        Task<TaskCompletion> Write(TimeAndInterval value, System.UInt16 index, TaskConfig config);
+
+        
     }
 }

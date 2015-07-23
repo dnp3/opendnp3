@@ -34,6 +34,7 @@ namespace Automatak
 				static asiodnp3::Header ConvertRange8(RangeHeader^ header);
 				static asiodnp3::Header ConvertRange16(RangeHeader^ header);
 
+				static opendnp3::TaskConfig Convert(TaskConfig^ config, ITaskCallback^ wrapper);
 				static opendnp3::TaskConfig Convert(TaskConfig^ config);
 				static opendnp3::TaskId Convert(TaskId^ taskId);
 				static opendnp3::ITaskCallback* CreateTaskCallback(ITaskCallback^ callback);

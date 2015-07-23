@@ -60,6 +60,7 @@ public:
 		uint16_t userRole,
 		uint16_t userRoleExpDays,
 		const std::string& userName,
+		openpal::ReadBufferView userPublicKey,
 		openpal::ReadBufferView certificationData
 	);
 

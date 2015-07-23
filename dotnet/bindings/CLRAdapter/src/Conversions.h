@@ -4,6 +4,7 @@
 #include <string>
 
 #include <openpal/executor/TimeDuration.h>
+#include <openpal/container/Buffer.h>
 
 #include <opendnp3/StackStatistics.h>
 #include <opendnp3/LogLevels.h>
@@ -132,6 +133,8 @@ namespace Automatak
 				static opendnp3::DatabaseTemplate ConvertConfig(DatabaseTemplate^ config);
 
 				static opendnp3::GroupVariationID Convert(PointClass clazz);
+
+				static openpal::Buffer Convert(array<System::Byte>^ bytes);
 
 
 				template <class Target, class Source>

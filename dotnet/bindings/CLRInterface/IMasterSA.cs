@@ -33,5 +33,7 @@ namespace Automatak.DNP3.Interface
     public interface IMasterSA : IMaster
     {
         void AddUser(User user, UpdateKey key);
+
+        Task<TaskCompletion> BeginUserStatusChange(UserStatusChange change, TaskConfig config);
     }
 }

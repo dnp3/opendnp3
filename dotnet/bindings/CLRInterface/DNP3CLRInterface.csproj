@@ -85,6 +85,7 @@
     <Compile Include="gen\IINField.cs" />
     <Compile Include="gen\IndexMode.cs" />
     <Compile Include="gen\IntervalUnits.cs" />
+    <Compile Include="gen\KeyChangeMethod.cs" />
     <Compile Include="gen\MasterTaskType.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\QualifierCode.cs" />
@@ -102,6 +103,8 @@
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
     <Compile Include="gen\UpdateKeyMode.cs" />
+    <Compile Include="gen\UserOperation.cs" />
+    <Compile Include="gen\UserRole.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="IChannelStatistics.cs" />
     <Compile Include="ICommandHandler.cs">
@@ -150,12 +153,16 @@
     <Compile Include="config\SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
     <Compile Include="StackStatistics.cs" />
+    <Compile Include="TaskCompletionProxy.cs" />
     <Compile Include="TaskConfig.cs" />
     <Compile Include="TaskId.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UpdateKey.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="User.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserStatusChange.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -35,26 +35,41 @@ namespace Automatak
 					pMaster->Shutdown();
 				}
 			
-				void MasterAdapter::Scan(IEnumerable<Header^>^ headers, TaskConfig^ config)
+				Task<TaskCompletion>^ MasterAdapter::Scan(IEnumerable<Header^>^ headers, TaskConfig^ config)
 				{
+					auto proxy = gcnew TaskCompletionProxy(config->callback);
 					auto vec = MasterConversions::ConvertToVectorOfHeaders(headers);
-					pMaster->Scan(vec, MasterConversions::Convert(config));
+					pMaster->Scan(vec, MasterConversions::Convert(config, proxy));
+					return proxy->CompletionTask;
 				}
 
-				void MasterAdapter::ScanAllObjects(System::Byte group, System::Byte variation, TaskConfig^ config)
+				Task<TaskCompletion>^ MasterAdapter::ScanAllObjects(System::Byte group, System::Byte variation, TaskConfig^ config)
 				{
-					pMaster->ScanAllObjects(opendnp3::GroupVariationID(group, variation), MasterConversions::Convert(config));
+					auto proxy = gcnew TaskCompletionProxy(config->callback);
+					pMaster->ScanAllObjects(opendnp3::GroupVariationID(group, variation), MasterConversions::Convert(config, proxy));
+					return proxy->CompletionTask;
 				}
 
-				void MasterAdapter::ScanClasses(ClassField field, TaskConfig^ config)
+				Task<TaskCompletion>^ MasterAdapter::ScanClasses(ClassField field, TaskConfig^ config)
 				{
-					pMaster->ScanClasses(Conversions::ConvertClassField(field), MasterConversions::Convert(config));
+					auto proxy = gcnew TaskCompletionProxy(config->callback);
+					pMaster->ScanClasses(Conversions::ConvertClassField(field), MasterConversions::Convert(config, proxy));
+					return proxy->CompletionTask;
 				}
 				
-				void MasterAdapter::ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, TaskConfig^ config)
+				Task<TaskCompletion>^ MasterAdapter::ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, TaskConfig^ config)
 				{
 					opendnp3::GroupVariationID gvid(group, variation);
-					pMaster->ScanRange(gvid, start, stop, MasterConversions::Convert(config));
+					auto proxy = gcnew TaskCompletionProxy(config->callback);
+					pMaster->ScanRange(gvid, start, stop, MasterConversions::Convert(config, proxy));
+					return proxy->CompletionTask;
+				}
+
+				Task<TaskCompletion>^ MasterAdapter::Write(TimeAndInterval^ value, System::UInt16 index, TaskConfig^ config)
+				{
+					auto proxy = gcnew TaskCompletionProxy(config->callback);
+					pMaster->Write(Conversions::ConvertMeas(value), index, MasterConversions::Convert(config, proxy));
+					return proxy->CompletionTask;
 				}
 
 				IMasterScan^ MasterAdapter::AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, TaskConfig^ config)
@@ -83,13 +98,7 @@ namespace Automatak
 					auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
 					return gcnew MasterScanAdapter(scan);
 				}
-				
-				void MasterAdapter::Write(TimeAndInterval^ value, System::UInt16 index, TaskConfig^ config)
-				{
-					pMaster->Write(Conversions::ConvertMeas(value), index, MasterConversions::Convert(config));
-				}
-				
-
+												
 				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index)
 				{
 					return this->SelectAndOperateT(command, index);
