@@ -61,7 +61,7 @@ namespace DotNetMasterDemo
 
             var master = channel.AddMasterSA("master", PrintingSOEHandler.Instance, application, config);
 
-            // define a user on the outstation
+            // define users on the master
             master.AddUser(User.Default, UpdateKey.Demo(0xFF, UpdateKeyMode.AES128));
 
             // you a can optionally add various kinds of polls
@@ -88,7 +88,7 @@ namespace DotNetMasterDemo
                         break;
                     case "c":
                         var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
-                        var task = master.SelectAndOperate(crob, 0);
+                        var task = master.SelectAndOperate(crob, 0, TaskConfig.With(User.Default));
                         task.ContinueWith((result) => Console.WriteLine("Result: " + result.Result));
                         break;
                     case "l":

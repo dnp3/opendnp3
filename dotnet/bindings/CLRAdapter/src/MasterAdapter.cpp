@@ -99,54 +99,54 @@ namespace Automatak
 					return gcnew MasterScanAdapter(scan);
 				}
 												
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->SelectAndOperateT(command, index);
+					return this->SelectAndOperateT(command, index, config);
 				}
 
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->SelectAndOperateT(command, index);
+					return this->SelectAndOperateT(command, index, config);
 				}
 				
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->SelectAndOperateT(command, index);
+					return this->SelectAndOperateT(command, index, config);
 				}
 
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->SelectAndOperateT(command, index);
+					return this->SelectAndOperateT(command, index, config);
 				}
 
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->SelectAndOperateT(command, index);
+					return this->SelectAndOperateT(command, index, config);
 				}
 
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->DirectOperateT(command, index);
+					return this->DirectOperateT(command, index, config);
 				}
 
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputInt32^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputInt32^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->DirectOperateT(command, index);
+					return this->DirectOperateT(command, index, config);
 				}
 
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputInt16^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputInt16^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->DirectOperateT(command, index);
+					return this->DirectOperateT(command, index, config);
 				}
 
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->DirectOperateT(command, index);
+					return this->DirectOperateT(command, index, config);
 				}
 
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index)
+				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index, TaskConfig^ config)
 				{
-					return this->DirectOperateT(command, index);
+					return this->DirectOperateT(command, index, config);
 				}			
 		}
 	}

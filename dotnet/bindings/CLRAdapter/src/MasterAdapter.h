@@ -50,37 +50,37 @@ namespace Automatak
 
 				virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, TaskConfig^ config);												
 
-				virtual Task<CommandResponse>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
-				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index);
-				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index);
-				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index);
-				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index, TaskConfig^ config);
+				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index, TaskConfig^ config);
+				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index, TaskConfig^ config);
+				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index, TaskConfig^ config);
+				virtual Task<CommandResponse>^ SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index, TaskConfig^ config);
 
-				virtual Task<CommandResponse>^ DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
-				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputInt32^ command, System::UInt32 index);
-				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputInt16^ command, System::UInt32 index);
-				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index);
-				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index);
+				virtual Task<CommandResponse>^ DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index, TaskConfig^ config);
+				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputInt32^ command, System::UInt32 index, TaskConfig^ config);
+				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputInt16^ command, System::UInt32 index, TaskConfig^ config);
+				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index, TaskConfig^ config);
+				virtual Task<CommandResponse>^ DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index, TaskConfig^ config);
 
 			private:
 
 				template <class T>
-				Task<CommandResponse>^ SelectAndOperateT(T^ command, System::UInt32 index)
+				Task<CommandResponse>^ SelectAndOperateT(T^ command, System::UInt32 index, TaskConfig^ config)
 				{
 					auto tcs = gcnew TaskCompletionSource<CommandResponse>();
 					auto cmd = Conversions::ConvertCommand(command);
 					auto pCallback = new CommandCallbackAdapter(tcs, true);
-					pMaster->SelectAndOperate(cmd, index, *pCallback);
+					pMaster->SelectAndOperate(cmd, index, *pCallback, MasterConversions::Convert(config));
 					return tcs->Task;
 				}
 
 				template <class T>
-				Task<CommandResponse>^ DirectOperateT(T^ command, System::UInt32 index)
+				Task<CommandResponse>^ DirectOperateT(T^ command, System::UInt32 index, TaskConfig^ config)
 				{
 					auto tcs = gcnew TaskCompletionSource<CommandResponse>();
 					auto cmd = Conversions::ConvertCommand(command);
 					auto pCallback = new CommandCallbackAdapter(tcs, true);
-					pMaster->DirectOperate(cmd, index, *pCallback);
+					pMaster->DirectOperate(cmd, index, *pCallback, MasterConversions::Convert(config));
 					return tcs->Task;
 				}			
 				

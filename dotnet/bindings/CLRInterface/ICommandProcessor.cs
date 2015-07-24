@@ -39,7 +39,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(ControlRelayOutputBlock command, System.UInt32 index);
+        Task<CommandResponse> SelectAndOperate(ControlRelayOutputBlock command, System.UInt32 index, TaskConfig config);
 
         /// <summary>
         /// Select and operate a 32-bit AnalogOutput (Group 41 Var1)
@@ -47,7 +47,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(AnalogOutputInt32 command, System.UInt32 index);
+        Task<CommandResponse> SelectAndOperate(AnalogOutputInt32 command, System.UInt32 index, TaskConfig config);
 
         /// <summary>
         /// Select and operate a 16-bit AnalogOutput (Group 41 Var2)
@@ -55,7 +55,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(AnalogOutputInt16 command, System.UInt32 index);
+        Task<CommandResponse> SelectAndOperate(AnalogOutputInt16 command, System.UInt32 index, TaskConfig config);
 
         /// <summary>
         /// Select and operate a single precision AnalogOutput (Group 41 Var3)
@@ -63,7 +63,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(AnalogOutputFloat32 command, System.UInt32 index);
+        Task<CommandResponse> SelectAndOperate(AnalogOutputFloat32 command, System.UInt32 index, TaskConfig config);
 
         /// <summary>
         /// Select and operate a double precision AnalogOutput (Group 41 Var4)
@@ -71,7 +71,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(AnalogOutputDouble64 command, System.UInt32 index);
+        Task<CommandResponse> SelectAndOperate(AnalogOutputDouble64 command, System.UInt32 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a ControlRelayOutputBlock
@@ -79,7 +79,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(ControlRelayOutputBlock command, System.UInt32 index);
+        Task<CommandResponse> DirectOperate(ControlRelayOutputBlock command, System.UInt32 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a 32-bit AnalogOutput (Group 41 Var1)
@@ -87,7 +87,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(AnalogOutputInt32 command, System.UInt32 index);
+        Task<CommandResponse> DirectOperate(AnalogOutputInt32 command, System.UInt32 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a 16-bit AnalogOutput (Group 41 Var2)
@@ -95,7 +95,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(AnalogOutputInt16 command, System.UInt32 index);
+        Task<CommandResponse> DirectOperate(AnalogOutputInt16 command, System.UInt32 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a single precision AnalogOutput (Group 41 Var3)
@@ -103,7 +103,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(AnalogOutputFloat32 command, System.UInt32 index);
+        Task<CommandResponse> DirectOperate(AnalogOutputFloat32 command, System.UInt32 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a double precision AnalogOutput (Group 41 Var4)
@@ -111,6 +111,6 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(AnalogOutputDouble64 command, System.UInt32 index);
+        Task<CommandResponse> DirectOperate(AnalogOutputDouble64 command, System.UInt32 index, TaskConfig config);
     }
 }

@@ -36,6 +36,11 @@ namespace Automatak.DNP3.Interface
            this.user = user;
        }
 
+       public static TaskConfig With(User user)
+       {
+           return new TaskConfig(TaskId.Undefined, null, user);
+       }
+
        public static TaskConfig Default
        {
            get
