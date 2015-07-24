@@ -18,38 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKPRIORITY_H
-#define OPENDNP3_TASKPRIORITY_H
+#ifndef SECAUTH_AUTHERRORHANDLER_H
+#define SECAUTH_AUTHERRORHANDLER_H
 
-namespace opendnp3
+#include <opendnp3/app/parsing/IAPDUHandler.h>
+#include <opendnp3/master/MasterContext.h>
+
+namespace secauth
 {
-	namespace priority
-	{
-		const int USER_STATUS_CHANGE = 40;
 
-		const int SESSION_KEY = 50;		
+class AuthErrorHandler : public opendnp3::IAPDUHandler, private openpal::Uncopyable
+{
+	public:		
 
-		const int COMMAND = 100;
-
-		const int USER_WRITE = 110;
+		AuthErrorHandler();
 		
-		const int CLEAR_RESTART = 120;
+		bool GetError(opendnp3::Group120Var7& error) const;
+
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var7& value) override final;
+
+		virtual bool IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc) override final;				
+
+	protected:
 		
-		const int DISABLE_UNSOLICITED = 130;
-
-		const int ASSIGN_CLASS = 140;
-				
-		const int INTEGRITY_POLL = 150;
-
-		const int TIME_SYNC = 160;		
-
-		const int ENABLE_UNSOLICITED = 170;
-
-		const int EVENT_SCAN = 180;
-
-		const int USER_POLL = 190;
-	}
+		bool hasError;
+		opendnp3::Group120Var7 error;
+};
 
 }
 
 #endif
+

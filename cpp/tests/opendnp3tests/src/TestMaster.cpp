@@ -23,7 +23,7 @@
 #include "MasterTestObject.h"
 #include "MeasurementComparisons.h"
 #include <testlib/HexConversions.h>
-#include "MockTaskCallback.h"
+#include <dnp3mocks/MockTaskCallback.h>
 #include <dnp3mocks/APDUHexBuilders.h>
 
 

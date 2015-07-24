@@ -21,7 +21,12 @@
 
 #include "UserStatusChangeTask.h"
 
+#include "secauth/AuthErrorHandler.h"
+
+#include <opendnp3/app/parsing/APDUParser.h>
 #include <opendnp3/objects/Group120.h>
+
+#include <openpal/logging/LogMacros.h>
 
 using namespace opendnp3;
 
@@ -30,7 +35,7 @@ namespace secauth
 
 	UserStatusChangeTask::UserStatusChangeTask(
 			const UserStatusChange& userStatusChange,
-			opendnp3::IMasterApplication& application,
+			IMasterApplicationSA& application,
 			openpal::Logger logger,
 			const opendnp3::TaskConfig& config
 		) :
@@ -46,9 +51,34 @@ namespace secauth
 	}
 	
 
-	opendnp3::IMasterTask::ResponseResult UserStatusChangeTask::_OnResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+	opendnp3::IMasterTask::ResponseResult UserStatusChangeTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
-		/// TODO, actually parse the response
+		if (!this->ValidateSingleResponse(header) || !this->ValidateInternalIndications(header))
+		{
+			return ResponseResult::ERROR_BAD_RESPONSE;
+		}
+
+		if (objects.IsEmpty())
+		{			
+			return ResponseResult::OK_FINAL;
+		}
+
+		AuthErrorHandler handler;
+		auto result = APDUParser::Parse(objects, handler, &logger);
+		if (result == ParseResult::OK)
+		{
+			Group120Var7 error;
+			if (handler.GetError(error))
+			{
+				FORMAT_LOG_BLOCK(
+					logger, 
+					flags::WARN, 
+					"User status change error received: %s", 
+					AuthErrorCodeToString(error.errorCode)
+				)
+			}
+		}
+	
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}	
 

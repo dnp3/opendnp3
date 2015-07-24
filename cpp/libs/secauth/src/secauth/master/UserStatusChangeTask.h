@@ -24,6 +24,7 @@
 #include <opendnp3/master/IMasterTask.h>
 #include <opendnp3/master/TaskPriority.h>
 
+#include "secauth/master/IMasterApplicationSA.h"
 #include "secauth/master/UserStatusChange.h"
 
 namespace secauth
@@ -39,7 +40,7 @@ namespace secauth
 
 		UserStatusChangeTask(
 			const UserStatusChange& userStatusChange,
-			opendnp3::IMasterApplication& application,
+			IMasterApplicationSA& application,
 			openpal::Logger logger,
 			const opendnp3::TaskConfig& config);
 			
@@ -48,7 +49,7 @@ namespace secauth
 
 		virtual char const* Name() const override final { return "User Status Change"; }
 		
-		virtual bool IsRecurring() const override final { return true; }
+		virtual bool IsRecurring() const override final { return false; }
 
 		virtual void BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
 

@@ -33,13 +33,13 @@ namespace opendnp3
 */
 class TaskConfig
 {
-public:
+public:	
 
 	TaskConfig(TaskId taskId_, ITaskCallback* pCallback_, User user_) :
 		taskId(taskId_),
 		pCallback(pCallback_),
-		user(user_)		
-	{}	
+		user(user_)
+	{}
 
 	static TaskConfig Default()
 	{
@@ -51,9 +51,7 @@ public:
 	static TaskConfig With(ITaskCallback& callback)
 	{
 		return TaskConfig(TaskId::Undefined(), &callback, User::Default());
-	}
-
-private:
+	}	
 
 	TaskConfig() = delete;
 

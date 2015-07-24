@@ -18,38 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKPRIORITY_H
-#define OPENDNP3_TASKPRIORITY_H
 
-namespace opendnp3
+#include "AuthErrorHandler.h"
+
+using namespace opendnp3;
+
+namespace secauth
 {
-	namespace priority
+	AuthErrorHandler::AuthErrorHandler() : hasError(false)
 	{
-		const int USER_STATUS_CHANGE = 40;
-
-		const int SESSION_KEY = 50;		
-
-		const int COMMAND = 100;
-
-		const int USER_WRITE = 110;
 		
-		const int CLEAR_RESTART = 120;
-		
-		const int DISABLE_UNSOLICITED = 130;
-
-		const int ASSIGN_CLASS = 140;
-				
-		const int INTEGRITY_POLL = 150;
-
-		const int TIME_SYNC = 160;		
-
-		const int ENABLE_UNSOLICITED = 170;
-
-		const int EVENT_SCAN = 180;
-
-		const int USER_POLL = 190;
 	}
+
+	bool AuthErrorHandler::GetError(opendnp3::Group120Var7& errorOut) const
+	{
+		if (hasError)
+		{
+			errorOut = this->error;
+		}
+
+		return hasError;
+	}
+
+	opendnp3::IINField AuthErrorHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var7& value)
+	{
+		hasError = true;
+		this->error = value;
+		return IINField::Empty();
+	}
+
+	bool AuthErrorHandler::IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc)
+	{
+		return (headerCount == 0) && (gv == GroupVariation::Group120Var7) && (qc == QualifierCode::UINT16_FREE_FORMAT);
+	}
+
 
 }
 
-#endif
+
+

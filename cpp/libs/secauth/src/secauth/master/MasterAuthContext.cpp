@@ -143,7 +143,7 @@ bool MAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
 
 void MAuthContext::BeginUserStatusChange(const UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config)
 {
-	auto task = new UserStatusChangeTask(userStatusChange, *pApplication, logger, config);
+	auto task = new UserStatusChangeTask(userStatusChange, *pApplicationSA, logger, config);
 	this->ScheduleAdhocTask(task);
 }
 

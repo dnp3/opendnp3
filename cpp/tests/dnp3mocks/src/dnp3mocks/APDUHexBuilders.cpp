@@ -283,6 +283,44 @@ namespace hex
 		return ToHex(apdu.ToReadOnly());
 	}
 
+	std::string UserStatusChangeRequest(
+		uint8_t seq,
+		opendnp3::KeyChangeMethod keyChangeMethod,
+		opendnp3::UserOperation userOperation,
+		uint32_t statusChangeSeqNum,
+		uint16_t userRole,
+		uint16_t userRoleExpDays,
+		const std::string& userName,
+		const std::string& userPublicKeyHex,
+		const std::string& certificationDataHex
+		)
+	{
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest apdu(buffer.GetWriteBufferView());
+		apdu.SetControl(AppControlField(true, true, false, false, seq));
+		apdu.SetFunction(FunctionCode::AUTH_REQUEST);
+
+		ReadBufferView name(reinterpret_cast<const uint8_t*>(userName.c_str()), userName.size());
+		HexSequence userPublicKeyBuffer(userPublicKeyHex);
+		HexSequence certificationDataBuffer(certificationDataHex);
+
+		Group120Var10 statusChange(
+			keyChangeMethod,
+			userOperation,
+			statusChangeSeqNum,
+			userRole,
+			userRoleExpDays,
+			name,
+			userPublicKeyBuffer.ToReadOnly(),
+			certificationDataBuffer.ToReadOnly()
+		);
+
+		
+		apdu.GetWriter().WriteFreeFormat(statusChange);
+
+		return ToHex(apdu.ToReadOnly());
+	}
+
 
 	std::string KeyWrapData(
 		uint16_t keyLengthBytes,

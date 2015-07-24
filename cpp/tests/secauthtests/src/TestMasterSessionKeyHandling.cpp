@@ -32,7 +32,7 @@ using namespace secauth;
 using namespace openpal;
 using namespace testlib;
 
-#define SUITE(name) "MasterSecAuthSuite - " name
+#define SUITE(name) "MasterSessionKeySuite - " name
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 {		

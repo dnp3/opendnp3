@@ -36,6 +36,9 @@
 #include <opendnp3/gen/HMACType.h>
 #include <opendnp3/gen/ChallengeReason.h>
 #include <opendnp3/gen/AuthErrorCode.h>
+#include <opendnp3/gen/KeyChangeMethod.h>
+#include <opendnp3/gen/UserOperation.h>
+#include <opendnp3/gen/UserRole.h>
 
 
 namespace hex
@@ -120,6 +123,18 @@ namespace hex
 		uint32_t ksq,
 		uint16_t user,		
 		const std::string& keyWrapData		
+	);
+
+	std::string UserStatusChangeRequest(
+		uint8_t seq,
+		opendnp3::KeyChangeMethod keyChangeMethod,
+		opendnp3::UserOperation userOperation,
+		uint32_t statusChangeSeqNum,
+		uint16_t userRole,
+		uint16_t userRoleExpDays,
+		const std::string& userName,
+		const std::string& userPublicKeyHex,
+		const std::string& certificationDataHex
 	);
 
 	std::string KeyWrapData(	
