@@ -88,6 +88,11 @@ void OAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key, c
 	sstate.userDB.AddUser(user, key, permissions);
 }
 
+void OAuthContext::ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key)
+{
+	sstate.credentials.Configure(statusChangeSeqNumber, key);
+}
+
 bool OAuthContext::OnLowerLayerDown()
 {
 	auto ret = OContext::OnLowerLayerDown();

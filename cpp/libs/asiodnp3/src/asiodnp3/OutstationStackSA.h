@@ -53,6 +53,8 @@ public:
 	// ------- implement IOutstationSA -------
 
 	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions) override final;	
+	
+	virtual void ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key) override final;
 
 private:
 		

@@ -18,38 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_IOUTSTATIONSA_H
-#define ASIODNP3_IOUTSTATIONSA_H
+#ifndef SECAUTH_AUTHORITY_CREDENTIALS_H
+#define SECAUTH_AUTHORITY_CREDENTIALS_H
 
-#include "IOutstation.h"
+#include "secauth/AuthorityKey.h"
 
-#include <opendnp3/app/User.h>
-#include <secauth/UpdateKey.h>
-#include <secauth/AuthorityKey.h>
-#include <secauth/outstation/Permissions.h>
-
-namespace asiodnp3
+namespace secauth
 {
 
-/**
-Extend the normal IOutstation interface w/ SA features
-*/
-class IOutstationSA : public IOutstation
+class AuthorityCredentials
 {
-	public:	
+	public:
+
+	AuthorityCredentials();
+
+	void Configure(uint32_t statusChangeSeqNumber, const AuthorityKey& key);
+
+	bool GetSymmetricKey(uint32_t& statusChangeSeqNumber, openpal::ReadBufferView& keyView) const;
 	
-	/**
-	* Add a user to the outstation. This is normally only done during initialization.
-	*/
-	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions) = 0;
+	private:
 
-	/**
-	* Set persisted value of the status change seq number, and the authority symmetric key used to validate UserStatusChange requests.
-	*/
-	virtual void ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key) = 0;
+	bool m_valid;
+	uint32_t m_statusChangeSeqNum;
+	AuthorityKey m_authorityKey;
+
 
 };
 
 }
 
 #endif
+

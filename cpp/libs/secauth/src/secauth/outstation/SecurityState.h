@@ -40,6 +40,7 @@
 #include "secauth/outstation/ChallengeState.h"
 #include "secauth/outstation/Statistics.h"
 #include "secauth/outstation/UnofficialStatistics.h"
+#include "secauth/outstation/AuthorityCredentials.h"
 
 namespace secauth
 {
@@ -72,8 +73,8 @@ class SecurityState
 	SessionStore sessions;
 	opendnp3::TxBuffer txBuffer;
 	Statistics stats;
-	UnofficialStatistics otherStats;
-
+	UnofficialStatistics otherStats;	
+	AuthorityCredentials credentials;
 };
 
 }

@@ -23,6 +23,7 @@
 
 #include <opendnp3/outstation/OutstationContext.h>
 
+#include "secauth/AuthorityKey.h"
 #include "secauth/outstation/SecurityState.h"
 #include "secauth/outstation/OutstationAuthSettings.h"
 #include "secauth/outstation/IAuthRequestHandler.h"
@@ -57,8 +58,11 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 		openpal::ICryptoProvider& crypto
 	);
 
+	//// --- external methods ----
 
 	void AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions);
+
+	void ConfigureAuthority(uint32_t statusChangeSeqNumber, const AuthorityKey& key);
 
 	//// --- methods overriden in base class -----
 

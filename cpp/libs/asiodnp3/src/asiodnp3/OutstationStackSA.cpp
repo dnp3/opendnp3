@@ -52,5 +52,11 @@ void OutstationStackSA::AddUser(opendnp3::User user, const secauth::UpdateKey& k
 	pLifecycle->GetExecutor().BlockFor(add);
 }
 
+void OutstationStackSA::ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key)
+{
+	auto add = [=]() { this->ocontext.ConfigureAuthority(statusChangeSeqNumber, key); };
+	pLifecycle->GetExecutor().BlockFor(add);
+}
+
 }
 
