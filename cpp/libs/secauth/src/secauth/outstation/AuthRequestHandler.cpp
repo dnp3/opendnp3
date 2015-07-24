@@ -55,6 +55,7 @@ bool AuthRequestHandler::IsAllowed(uint32_t count, GroupVariation gv, QualifierC
 	case(GroupVariation::Group120Var1) :
 	case(GroupVariation::Group120Var2) :
 	case(GroupVariation::Group120Var6) :
+	case(GroupVariation::Group120Var10) :
 		return qc == QualifierCode::UINT16_FREE_FORMAT;
 	default:
 		return false;
@@ -76,6 +77,12 @@ IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& hea
 IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var6& value)
 {
 	pHandler->OnChangeSessionKeys(fragment, apduheader, value);
+	return IINField::Empty();
+}
+
+opendnp3::IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var10& value)
+{
+	pHandler->OnUserStatusChange(fragment, apduheader, value);
 	return IINField::Empty();
 }
 

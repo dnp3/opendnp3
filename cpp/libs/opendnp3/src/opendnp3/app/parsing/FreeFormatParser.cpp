@@ -87,6 +87,9 @@ namespace opendnp3
 		case(GroupVariation::Group120Var7) :
 			return ParseFreeFormat(ParseAny<Group120Var7>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
+		case(GroupVariation::Group120Var10) :
+			return ParseFreeFormat(ParseAny<Group120Var10>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
 		default:
 			FORMAT_LOGGER_BLOCK(
 				pLogger, flags::WARN,

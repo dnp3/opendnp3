@@ -94,6 +94,8 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	virtual void OnChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) override final;
 
+	virtual void OnUserStatusChange(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change) override final;
+
 	/// --- Helper methods ----
 	
 	static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, opendnp3::UpdateKeyMode type);

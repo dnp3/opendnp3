@@ -173,7 +173,7 @@ void OAuthContext::OnAuthRequest(const openpal::ReadBufferView& apdu, const APDU
 	else
 	{
 		AuthRequestHandler handler(apdu, header, *this, this->logger);
-		APDUParser::Parse(objects, handler, &this->logger);
+		APDUParser::Parse(objects, handler, &this->logger);		
 	}
 }
 
@@ -221,6 +221,21 @@ void OAuthContext::OnRequestKeyStatus(const openpal::ReadBufferView& apdu, const
 void OAuthContext::OnChangeSessionKeys(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var6& change)
 {
 	sstate.pState = sstate.pState->OnChangeSessionKeys(*this, apdu, header, change);
+}
+
+void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
+{
+	ReadBufferView key;
+	uint32_t statusChangeSeq = 0;
+
+	if (!sstate.credentials.GetSymmetricKey(statusChangeSeq, key))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Cannot process user status change because no authority credentials have been defined");
+		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
+		return;
+	}
+
+
 }
 
 void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)

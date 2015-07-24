@@ -35,6 +35,13 @@ public:
 
 	virtual openpal::UTCTimestamp Now() override { return utc.Now(); }
 
+	virtual void WriteStatusChangeSeqNum(uint32_t userStatusSeqNum) override
+	{
+		this->userStatusSeqNums.push_back(userStatusSeqNum);
+	}
+
+	std::vector<uint32_t> userStatusSeqNums;
+
 	testlib::MockUTCTimeSource utc;
 };
 

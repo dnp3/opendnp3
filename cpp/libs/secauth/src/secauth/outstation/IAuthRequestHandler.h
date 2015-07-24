@@ -38,6 +38,7 @@ class IAuthRequestHandler
 		virtual void OnAuthReply(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) = 0;
 		virtual void OnRequestKeyStatus(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) = 0;
 		virtual void OnChangeSessionKeys(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
+		virtual void OnUserStatusChange(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change) = 0;
 };
 
 }
