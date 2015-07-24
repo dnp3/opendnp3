@@ -247,6 +247,7 @@ void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, c
 	// Verify the integrity of the message
 	openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> hmacBuffer;
 
+	/*
 	std::error_code ec;
 	auto output = this->sstate.pCrypto->GetSHA256HMAC().Calculate(key, {}, hmacBuffer.GetWriteBuffer(), ec);
 	if (ec)
@@ -254,6 +255,7 @@ void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, c
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating HMAC value: ", KeyChangeMethodToString(change.keyChangeMethod));
 		return;
 	}
+	*/
 	
 
 }

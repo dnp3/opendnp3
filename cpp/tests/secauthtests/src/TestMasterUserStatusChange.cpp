@@ -39,7 +39,6 @@ using namespace testlib;
 TEST_CASE(SUITE("test"))
 {		
 	MasterParams params;
-	User user = User::Default();
 	MasterSecAuthFixture fixture(params);
 
 	fixture.context.OnLowerLayerUp();	

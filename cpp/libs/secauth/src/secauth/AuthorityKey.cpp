@@ -53,7 +53,8 @@ namespace secauth
 			return false;
 		}
 		
-		key.CopyTo(this->m_buffer.GetWriteBuffer());
+		auto dest = this->m_buffer.GetWriteBuffer();
+		key.CopyTo(dest);
 		return true;
 	}
 
