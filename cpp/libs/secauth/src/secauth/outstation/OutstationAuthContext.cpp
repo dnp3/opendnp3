@@ -23,6 +23,8 @@
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/Logger.h>
+#include <openpal/crypto/SecureCompare.h>
+#include <openpal/serialization/Format.h>
 
 #include "opendnp3/LogLevels.h"
 
@@ -244,20 +246,51 @@ void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, c
 		return;
 	}
 
+	
+	/**
+	 * A static buffer to hold some of the values for the HMAC (pg 743)
+	 * 
+	 * Operation
+	 * Status Change Sequennce Number
+	 * User Role
+	 * User Role Expiry Interval
+	 * User Name Length
+	 * User Name
+	 */
+	openpal::StaticBuffer<1+4+2+2+2> fields;
+	
+	{
+	  auto dest = fields.GetWriteBuffer();
+	  Format::Many(
+	    dest,
+	    UserOperationToType(change.userOperation), 		// 1
+	    change.statusChangeSeqNum,		     		// 4
+	    change.userRole,                           		// 2
+	    change.userRoleExpDays,                    		// 2
+	    static_cast<uint16_t>(change.userName.Size())	// 2
+	  );
+	}
+	
 	// Verify the integrity of the message
 	openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> hmacBuffer;
 
-	/*
 	std::error_code ec;
-	auto output = this->sstate.pCrypto->GetSHA256HMAC().Calculate(key, {}, hmacBuffer.GetWriteBuffer(), ec);
+	auto dest = hmacBuffer.GetWriteBuffer();
+	auto output = this->sstate.pCrypto->GetSHA256HMAC().Calculate(key, {fields.ToReadOnly(), change.userName}, dest, ec);
 	if (ec)
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating HMAC value: ", KeyChangeMethodToString(change.keyChangeMethod));
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating HMAC value: %s", ec.message().c_str());
 		return;
 	}
-	*/
 	
-
+	if(!openpal::SecureEquals(output, change.certificationData))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
+		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::AUTHENTICATION_FAILED);
+		return;
+	}
+	
+	//finally we have a successful authenication
 }
 
 void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
