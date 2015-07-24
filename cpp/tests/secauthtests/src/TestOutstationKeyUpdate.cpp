@@ -76,10 +76,12 @@ TEST_CASE(SUITE("Rejects user status change with incorrect HMAC"))
 		365,
 		"Jim",
 		"",
-		"DEADBEEF"
+		hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
 		);
 
 	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
+	
+	fixture.crypto.sha256.fillByte = 0xBB;
 
 	REQUIRE(fixture.SendAndReceive(userStatusChangeRequest) == response);
 }
