@@ -228,6 +228,7 @@ void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, c
 	ReadBufferView key;
 	uint32_t statusChangeSeq = 0;
 
+	/// check if the outstation is even configured for user status changes
 	if (!sstate.credentials.GetSymmetricKey(statusChangeSeq, key))
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Cannot process user status change because no authority credentials have been defined");
@@ -235,6 +236,25 @@ void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, c
 		return;
 	}
 
+	// only supported key change method for the time being
+	if(change.keyChangeMethod != KeyChangeMethod::AES_256_SHA256_HMAC)
+	{				
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported key change method: %s", KeyChangeMethodToString(change.keyChangeMethod));
+		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
+		return;
+	}
+
+	// Verify the integrity of the message
+	openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> hmacBuffer;
+
+	std::error_code ec;
+	auto output = this->sstate.pCrypto->GetSHA256HMAC().Calculate(key, {}, hmacBuffer.GetWriteBuffer(), ec);
+	if (ec)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating HMAC value: ", KeyChangeMethodToString(change.keyChangeMethod));
+		return;
+	}
+	
 
 }
 
@@ -292,19 +312,7 @@ void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu,
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());
 		return;
-	}
-
-	/*
-	SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "control key: ");
-	FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, unwrapped.keys.controlKey, 17, 17);
-	SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "monitor key: ");
-	FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, unwrapped.keys.monitorKey, 17, 17);
-	SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "");
-	SIMPLE_LOG_BLOCK(ocontext.logger, flags::INFO, "Authenication, plain text");
-	FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, apdu, 17, 17);
-	FORMAT_LOG_BLOCK(ocontext.logger, flags::INFO, "Authenication, hased text %u", hmac.Size());
-	FORMAT_HEX_BLOCK(ocontext.logger, flags::INFO, hmac, 17, 17);
-	*/
+	}	
 
 	sstate.sessions.SetSessionKeys(user, unwrapped.keys);
 

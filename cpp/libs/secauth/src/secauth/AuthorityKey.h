@@ -34,15 +34,8 @@ namespace secauth
 class AuthorityKey
 {
 	public:
-
-		enum class KeySize
-		{
-			S128,
-			S256
-		};
-
-		static const uint8_t MIN_KEY_SIZE_128 = 16;
-		static const uint8_t MAX_KEY_SIZE_256 = 32;
+		
+		static const uint8_t KEY_SIZE_256 = 32;		
 		
 		/**
 		* Construct an invalid default key
@@ -52,7 +45,7 @@ class AuthorityKey
 		/**
 		* Test constructor that initializes a key with the same value for every byte
 		*/
-		AuthorityKey(uint8_t repeat, AuthorityKey::KeySize size);
+		AuthorityKey(uint8_t repeat);
 
 		/**
 		* Initialize the key base on a view
@@ -76,14 +69,11 @@ class AuthorityKey
 		*/
 		bool Initialize(const openpal::ReadBufferView& key);
 
-	private:		
+	private:	
 
-		static uint32_t NumBytes(KeySize size);
-
-		static bool IsValidKeySize(uint32_t count);
-	 		
-		uint32_t m_size;
-		openpal::SecureStaticBuffer<MAX_KEY_SIZE_256> m_buffer;
+		bool m_valid;
+	 				
+		openpal::SecureStaticBuffer<KEY_SIZE_256> m_buffer;
 };
 
 }

@@ -22,56 +22,37 @@
 #include "AuthorityKey.h"
 
 namespace secauth
-{
-	uint32_t AuthorityKey::NumBytes(KeySize size)
-	{
-		return (size == KeySize::S128) ? MIN_KEY_SIZE_128 : MAX_KEY_SIZE_256;
-	}
-
-	bool AuthorityKey::IsValidKeySize(uint32_t count)
-	{
-		switch (count)
-		{
-		case(MIN_KEY_SIZE_128) :			
-			return true;
-		case(MAX_KEY_SIZE_256) :			
-			return true;
-		default:
-			return false;
-		}
-	}
-		
-	AuthorityKey::AuthorityKey() : m_size(0)
+{			
+	AuthorityKey::AuthorityKey() : m_valid(false)
 	{}
 	
-	AuthorityKey::AuthorityKey(uint8_t repeat, KeySize size) : m_size(NumBytes(size))
+	AuthorityKey::AuthorityKey(uint8_t repeat) : m_valid(true)
 	{
-		this->m_buffer.GetWriteBuffer(m_size).SetAllTo(repeat);
+		this->m_buffer.GetWriteBuffer().SetAllTo(repeat);
 	}
 	
-	AuthorityKey::AuthorityKey(const openpal::ReadBufferView& key) : m_size(0)
+	AuthorityKey::AuthorityKey(const openpal::ReadBufferView& key) : m_valid(false)
 	{
 		this->Initialize(key);
 	}
 
 	openpal::ReadBufferView AuthorityKey::GetKeyView() const
 	{
-		return m_buffer.ToReadOnly(m_size);
+		return m_buffer.ToReadOnly();
 	}
 
 	bool AuthorityKey::IsValid() const
 	{		
-		return IsValidKeySize(m_size);
+		return m_valid;
 	}
 
 	bool AuthorityKey::Initialize(const openpal::ReadBufferView& key)
 	{		
-		if (!IsValidKeySize(key.Size()))
+		if (!(key.Size() == KEY_SIZE_256))
 		{
 			return false;
 		}
-
-		this->m_size = key.Size();
+		
 		key.CopyTo(this->m_buffer.GetWriteBuffer());
 		return true;
 	}

@@ -35,8 +35,7 @@ using namespace testlib;
 
 TEST_CASE(SUITE("Rejects user status change when authority is not configured"))
 {		
-	OutstationSecAuthFixture fixture;
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES128);
+	OutstationSecAuthFixture fixture;	
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -55,6 +54,32 @@ TEST_CASE(SUITE("Rejects user status change when authority is not configured"))
 		);
 
 	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED, DNPTime(0), "");
+
+	REQUIRE(fixture.SendAndReceive(userStatusChangeRequest) == response);
+}
+
+TEST_CASE(SUITE("Rejects user status change with incorrect HMAC"))
+{
+	OutstationSecAuthFixture fixture;	
+	fixture.context.ConfigureAuthority(0, AuthorityKey(0xFF));
+	fixture.LowerLayerUp();
+
+	AppSeqNum seq;
+	uint16_t statusChangeSeq = 0;
+
+	auto userStatusChangeRequest = hex::UserStatusChangeRequest(
+		seq,
+		KeyChangeMethod::AES_256_SHA256_HMAC,
+		UserOperation::OP_ADD,
+		statusChangeSeq,
+		UserRoleToType(UserRole::OPERATOR),
+		365,
+		"Jim",
+		"",
+		"DEADBEEF"
+		);
+
+	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
 
 	REQUIRE(fixture.SendAndReceive(userStatusChangeRequest) == response);
 }
