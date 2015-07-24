@@ -30,8 +30,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-CommandTask::CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger) :
-	IMasterTask(app, MonotonicTimestamp::Min(), logger, TaskConfig::Default()),
+CommandTask::CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, const TaskConfig& config, openpal::Logger logger) :
+	IMasterTask(app, MonotonicTimestamp::Min(), logger, config),
 	pCommandCallback(&callback),
 	pSequence(pSequence_)
 {

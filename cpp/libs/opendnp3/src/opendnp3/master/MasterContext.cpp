@@ -192,54 +192,54 @@ namespace opendnp3
 
 	/// --- command handlers ----
 
-	void MContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
+	void MContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->SelectAndOperateT(command, index, callback, Group12Var1::Inst());
+		this->SelectAndOperateT(command, index, callback, config, Group12Var1::Inst());
 	}
 
-	void MContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
+	void MContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->DirectOperateT(command, index, callback, Group12Var1::Inst());
+		this->DirectOperateT(command, index, callback, config, Group12Var1::Inst());
 	}
 
-	void MContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
+	void MContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->SelectAndOperateT(command, index, callback, Group41Var2::Inst());
+		this->SelectAndOperateT(command, index, callback, config, Group41Var2::Inst());
 	}
 
-	void MContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
+	void MContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->DirectOperateT(command, index, callback, Group41Var2::Inst());
+		this->DirectOperateT(command, index, callback, config, Group41Var2::Inst());
 	}
 
-	void MContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
+	void MContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->SelectAndOperateT(command, index, callback, Group41Var1::Inst());
+		this->SelectAndOperateT(command, index, callback, config, Group41Var1::Inst());
 	}
 
-	void MContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
+	void MContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->DirectOperateT(command, index, callback, Group41Var1::Inst());
+		this->DirectOperateT(command, index, callback, config, Group41Var1::Inst());
 	}
 
-	void MContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
+	void MContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->SelectAndOperateT(command, index, callback, Group41Var3::Inst());
+		this->SelectAndOperateT(command, index, callback, config, Group41Var3::Inst());
 	}
 
-	void MContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
+	void MContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->DirectOperateT(command, index, callback, Group41Var3::Inst());
+		this->DirectOperateT(command, index, callback, config, Group41Var3::Inst());
 	}
 
-	void MContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
+	void MContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->SelectAndOperateT(command, index, callback, Group41Var4::Inst());
+		this->SelectAndOperateT(command, index, callback, config, Group41Var4::Inst());
 	}
 
-	void MContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
+	void MContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config)
 	{
-		this->DirectOperateT(command, index, callback, Group41Var4::Inst());
+		this->DirectOperateT(command, index, callback, config, Group41Var4::Inst());
 	}
 
 	void MContext::ProcessAPDU(const APDUResponseHeader& header, const ReadBufferView& objects)

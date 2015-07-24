@@ -50,10 +50,10 @@ class CommandTask : public IMasterTask
 public:	
 	
 	template <class T>
-	static IMasterTask* FDirectOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger);
+	static IMasterTask* FDirectOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger);
 
 	template <class T>
-	static IMasterTask* FSelectAndOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger);
+	static IMasterTask* FSelectAndOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger);
 
 	virtual char const* Name() const override final { return "Command Task"; }	
 
@@ -83,7 +83,7 @@ private:
 
 	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
 
-	CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger);
+	CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, const TaskConfig& config, openpal::Logger logger);
 
 	ResponseResult ProcessResponse(const openpal::ReadBufferView& objects);
 
@@ -100,19 +100,19 @@ private:
 };
 
 template <class T>
-IMasterTask* CommandTask::FDirectOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger)
+IMasterTask* CommandTask::FDirectOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger)
 {
 	auto pSequence = new CommandSequence<T>(serializer, command, index);
-	auto pCommand = new CommandTask(app, pSequence, callback, logger);
+	auto pCommand = new CommandTask(app, pSequence, callback, config, logger);
 	pCommand->LoadDirectOperate();
 	return pCommand;
 }
 
 template <class T>
-IMasterTask* CommandTask::FSelectAndOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger)
+IMasterTask* CommandTask::FSelectAndOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger)
 {
 	auto pSequence = new CommandSequence<T>(serializer, command, index);
-	auto pCommand = new CommandTask(app, pSequence, callback, logger);
+	auto pCommand = new CommandTask(app, pSequence, callback, config, logger);
 	pCommand->LoadSelectAndOperate();
 	return pCommand;
 }
