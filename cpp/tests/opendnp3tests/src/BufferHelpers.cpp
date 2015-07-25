@@ -29,6 +29,7 @@
 #include <assert.h>
 #include <algorithm>
 #include <exception>
+#include <stdexcept>
 
 using namespace std;
 using namespace openpal;
