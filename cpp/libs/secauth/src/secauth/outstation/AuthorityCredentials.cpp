@@ -27,6 +27,11 @@ namespace secauth
 	AuthorityCredentials::AuthorityCredentials() : m_statusChangeSeqNum(0)
 	{}
 
+	void AuthorityCredentials::SetSCSN(uint32_t statusChangeSeqNumber)
+	{
+		this->m_statusChangeSeqNum = statusChangeSeqNumber;
+	}
+
 	void AuthorityCredentials::Configure(uint32_t statusChangeSeqNumber, const AuthorityKey& key)
 	{		
 		this->m_statusChangeSeqNum = statusChangeSeqNumber;

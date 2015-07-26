@@ -227,6 +227,39 @@ void OAuthContext::OnChangeSessionKeys(const openpal::ReadBufferView& apdu, cons
 
 void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
 {
+	if (!this->AuthenticateUserStatusChange(header, change))
+	{
+		return;
+	}
+
+	// only supported key change method for the time being
+	if (change.keyChangeMethod != KeyChangeMethod::AES_256_SHA256_HMAC)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported key change method: %s", KeyChangeMethodToString(change.keyChangeMethod));
+		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
+		return;
+	}
+
+	switch (change.userOperation)
+	{
+		case(UserOperation::OP_ADD) :
+			this->ProcessUserStatusChange_Add(change);
+			break;
+		case(UserOperation::OP_CHANGE) :
+			this->ProcessUserStatusChange_Change(change);
+			break;
+		case(UserOperation::OP_DELETE) :
+			this->ProcessUserStatusChange_Delete(change);
+			break;
+		default:
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
+			//  TODO just ignore this for now			
+			return;
+	}
+}
+
+bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
+{
 	ReadBufferView key;
 	uint32_t statusChangeSeq = 0;
 
@@ -235,73 +268,67 @@ void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, c
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Cannot process user status change because no authority credentials have been defined");
 		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
-		return;
+		return false;
 	}
 
-	// only supported key change method for the time being
-	if(change.keyChangeMethod != KeyChangeMethod::AES_256_SHA256_HMAC)
-	{				
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported key change method: %s", KeyChangeMethodToString(change.keyChangeMethod));
-		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
-		return;
-	}
-
-	
 	/**
-	 * A static buffer to hold some of the values for the HMAC (pg 743)
-	 * 
-	 * Operation
-	 * Status Change Sequennce Number
-	 * User Role
-	 * User Role Expiry Interval
-	 * User Name Length
-	 * User Name
-	 */
-	openpal::StaticBuffer<1+4+2+2+2> fields;
-	
+	* A static buffer to hold some of the values for the HMAC (pg 743)
+	*
+	* Operation
+	* Status Change Sequennce Number
+	* User Role
+	* User Role Expiry Interval
+	* User Name Length
+	* User Name
+	*/
+	openpal::StaticBuffer<1 + 4 + 2 + 2 + 2> fields;
+
 	{
-	  auto dest = fields.GetWriteBuffer();
-	  Format::Many(
-	    dest,
-	    UserOperationToType(change.userOperation), 		// 1
-	    change.statusChangeSeqNum,		     		// 4
-	    change.userRole,                           		// 2
-	    change.userRoleExpDays,                    		// 2
-	    static_cast<uint16_t>(change.userName.Size())	// 2
-	  );
+		auto dest = fields.GetWriteBuffer();
+		Format::Many(
+			dest,
+			UserOperationToType(change.userOperation), 		// 1
+			change.statusChangeSeqNum,		     			// 4
+			change.userRole,                           		// 2
+			change.userRoleExpDays,                    		// 2
+			static_cast<uint16_t>(change.userName.Size())	// 2
+			);
 	}
-	
+
 	// Verify the integrity of the message
 	openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> hmacBuffer;
 
 	std::error_code ec;
 	auto dest = hmacBuffer.GetWriteBuffer();
-	auto output = this->sstate.pCrypto->GetSHA256HMAC().Calculate(key, {fields.ToReadOnly(), change.userName}, dest, ec);
+	auto output = this->sstate.pCrypto->GetSHA256HMAC().Calculate(key, { fields.ToReadOnly(), change.userName }, dest, ec);
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating HMAC value: %s", ec.message().c_str());
-		return;
+		return false;
 	}
-	
-	if(!openpal::SecureEquals(output, change.certificationData))
+
+	if (!openpal::SecureEquals(output, change.certificationData))
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
 		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::INVALID_CERTIFICATION_DATA);
 		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
-		return;
+		return false;
 	}
-	
+
 	if (change.statusChangeSeqNum < statusChangeSeq)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");		
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
 		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::INVALID_CERTIFICATION_DATA); // TODO - Is this the right error code?
 		// TODO update an official stats?
 		this->sstate.otherStats.badStatusChangeSeqNum++;
-		return;
+		return false;
 	}
-	
-	
-	//finally we have a successful authenication
+
+	/// Now that we've authenticated a new SCSN, tell the application to persist this count to non-volatile
+	auto nextSCSN = change.statusChangeSeqNum + 1;
+	this->sstate.credentials.SetSCSN(nextSCSN);
+	this->sstate.pApplication->WriteStatusChangeSeqNum(nextSCSN);
+	return true;
 }
 
 void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
@@ -514,6 +541,21 @@ void OAuthContext::RespondWithAuthError(
 void OAuthContext::IncrementSessionAuthCount(const opendnp3::User& user)
 {
 	this->sstate.sessions.IncrementAuthCount(user);	
+}
+
+void OAuthContext::ProcessUserStatusChange_Add(const opendnp3::Group120Var10& change)
+{
+
+}
+
+void OAuthContext::ProcessUserStatusChange_Change(const opendnp3::Group120Var10& change)
+{
+
+}
+
+void OAuthContext::ProcessUserStatusChange_Delete(const opendnp3::Group120Var10& change)
+{
+
 }
 
 }
