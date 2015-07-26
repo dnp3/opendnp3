@@ -66,6 +66,7 @@ TEST_CASE(SUITE("Rejects user status change with incorrect HMAC"))
 
 	AppSeqNum seq;
 	uint16_t statusChangeSeq = 0;
+	fixture.crypto.sha256.fillByte = 0xBB; // force the HMACS to be different
 
 	auto userStatusChangeRequest = hex::UserStatusChangeRequest(
 		seq,
@@ -79,12 +80,44 @@ TEST_CASE(SUITE("Rejects user status change with incorrect HMAC"))
 		hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
 		);
 
-	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
+	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::INVALID_CERTIFICATION_DATA, DNPTime(0), "");
 	
-	fixture.crypto.sha256.fillByte = 0xBB;
-
+	
 	REQUIRE(fixture.SendAndReceive(userStatusChangeRequest) == response);
+	REQUIRE(fixture.context.sstate.stats.GetValue(SecurityStatIndex::AUTHENTICATION_FAILURES) == 1);
+	REQUIRE(fixture.context.sstate.otherStats.badStatusChangeSeqNum == 0);
 }
+
+TEST_CASE(SUITE("Rejects authenticated message w/ bad SCSN"))
+{
+	OutstationSecAuthFixture fixture;
+	fixture.context.ConfigureAuthority(1, AuthorityKey(0xFF)); // expecitng SCSN >= 1
+	fixture.LowerLayerUp();
+
+	AppSeqNum seq;
+	uint16_t statusChangeSeq = 0;
+	fixture.crypto.sha256.fillByte = 0xAA;
+
+	auto userStatusChangeRequest = hex::UserStatusChangeRequest(
+		seq,
+		KeyChangeMethod::AES_256_SHA256_HMAC,
+		UserOperation::OP_ADD,
+		statusChangeSeq,
+		UserRoleToType(UserRole::OPERATOR),
+		365,
+		"Jim",
+		"",
+		hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
+		);
+
+	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::INVALID_CERTIFICATION_DATA, DNPTime(0), "");
+	
+	REQUIRE(fixture.SendAndReceive(userStatusChangeRequest) == response);
+	REQUIRE(fixture.context.sstate.stats.GetValue(SecurityStatIndex::AUTHENTICATION_FAILURES) == 0);
+	REQUIRE(fixture.context.sstate.otherStats.badStatusChangeSeqNum == 1);
+}
+
+
 
 
 

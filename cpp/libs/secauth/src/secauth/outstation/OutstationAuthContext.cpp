@@ -286,9 +286,20 @@ void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, c
 	if(!openpal::SecureEquals(output, change.certificationData))
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
-		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::AUTHENTICATION_FAILED);
+		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::INVALID_CERTIFICATION_DATA);
+		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
 		return;
 	}
+	
+	if (change.statusChangeSeqNum < statusChangeSeq)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");		
+		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::INVALID_CERTIFICATION_DATA); // TODO - Is this the right error code?
+		// TODO update an official stats?
+		this->sstate.otherStats.badStatusChangeSeqNum++;
+		return;
+	}
+	
 	
 	//finally we have a successful authenication
 }

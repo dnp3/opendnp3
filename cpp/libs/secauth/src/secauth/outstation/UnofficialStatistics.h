@@ -36,10 +36,13 @@ struct UnofficialStatistics : openpal::Uncopyable
 
 public:	
 
-	UnofficialStatistics() : authFailuresDueToExpiredKeys(0)
+	UnofficialStatistics() : 
+		authFailuresDueToExpiredKeys(0),
+		badStatusChangeSeqNum(0)
 	{}
 
 	uint32_t authFailuresDueToExpiredKeys;
+	uint32_t badStatusChangeSeqNum;				// indicates a possible replay attack
 };
 
 }
