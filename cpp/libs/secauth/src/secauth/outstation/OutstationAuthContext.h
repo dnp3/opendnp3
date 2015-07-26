@@ -60,7 +60,7 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	//// --- external methods ----
 
-	void AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions);
+	void AddUser(opendnp3::User user, const std::string& userName, const secauth::UpdateKey& key, const secauth::Permissions& permissions);
 
 	void ConfigureAuthority(uint32_t statusChangeSeqNumber, const AuthorityKey& key);
 

@@ -75,11 +75,11 @@ bool OutstationUserDatabase::UserExists(const User& user) const
 	return iter != userMap.end();
 }
 
-void OutstationUserDatabase::AddUser(opendnp3::User user, const UpdateKey& key, Permissions permissions)
+void OutstationUserDatabase::AddUser(opendnp3::User user, const std::string& userName, const UpdateKey& key, Permissions permissions)
 {
 	if (key.IsValid())
 	{
-		userMap[user.GetId()] = UserData(key, permissions);		
+		userMap[user.GetId()] = UserData(key, userName, permissions);		
 	}
 }
 

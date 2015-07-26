@@ -119,8 +119,9 @@ int main(int argc, char* argv[])
 		config);	
 
 	// add a user to the outstation w/ a key of all 0xFF
-	pOutstation->AddUser(
+	pOutstation->ConfigureUser(
 		opendnp3::User::Default(),
+		"bob",
 		UpdateKey(0xFF, UpdateKeyMode::AES128),
 		Permissions::AllowAll()
 	);

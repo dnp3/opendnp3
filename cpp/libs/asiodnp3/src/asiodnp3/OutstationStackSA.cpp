@@ -46,9 +46,9 @@ OutstationStackSA::OutstationStackSA(
 	this->SetContext(ocontext);
 }
 
-void OutstationStackSA::AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
+void OutstationStackSA::ConfigureUser(opendnp3::User user, const std::string& userName, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
 {
-	auto add = [=]() { this->ocontext.AddUser(user, key, permissions); };
+	auto add = [=]() { this->ocontext.AddUser(user, userName, key, permissions); };
 	pLifecycle->GetExecutor().BlockFor(add);
 }
 

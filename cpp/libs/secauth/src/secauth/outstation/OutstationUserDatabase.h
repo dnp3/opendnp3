@@ -43,8 +43,9 @@ class OutstationUserDatabase : public IOutstationUserDatabase
 	struct UserData
 	{
 	
-		UserData(const UpdateKey& key_, const Permissions& permissions_) :
+		UserData(const UpdateKey& key_, const std::string& userName_, const Permissions& permissions_) :
 			key(key_),
+			userName(userName_),
 			permissions(permissions_)
 		{}
 
@@ -52,6 +53,7 @@ class OutstationUserDatabase : public IOutstationUserDatabase
 		{}
 
 		UpdateKey key;
+		std::string userName;
 		Permissions permissions;
 	};
 
@@ -66,7 +68,7 @@ class OutstationUserDatabase : public IOutstationUserDatabase
 		virtual bool UserExists(const opendnp3::User& user) const override final;
 
 		
-		void AddUser(opendnp3::User user, const UpdateKey& key, Permissions permissions);
+		void AddUser(opendnp3::User user, const std::string& userName, const UpdateKey& key, Permissions permissions);
 
 	private:		
 

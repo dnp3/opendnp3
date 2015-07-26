@@ -41,7 +41,7 @@ class IOutstationSA : public IOutstation
 	/**
 	* Add a user to the outstation. This is normally only done during initialization.
 	*/
-	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions) = 0;
+	virtual void ConfigureUser(opendnp3::User user, const std::string& userName, const secauth::UpdateKey& key, const secauth::Permissions& permissions) = 0;
 
 	/**
 	* Set persisted value of the status change seq number, and the authority symmetric key used to validate UserStatusChange requests.

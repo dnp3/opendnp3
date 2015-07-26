@@ -37,7 +37,7 @@ using namespace testlib;
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {		
 	OutstationSecAuthFixture fixture;
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES128);
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES128);
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -47,7 +47,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 {	
 	OutstationSecAuthFixture fixture;
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES256);
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256);
 	fixture.LowerLayerUp();
 	
 	AppSeqNum seq;
@@ -60,7 +60,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 	settings.hmacMode = HMACMode::SHA1_TRUNC_8; // use a non-default HMAC mode
 
 	OutstationSecAuthFixture fixture(settings);	
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES256);
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256);
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -73,7 +73,7 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 	settings.challengeSize = 5; // try a non-default challenge size
 
 	OutstationSecAuthFixture fixture(settings);
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES256);
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256);
 	fixture.LowerLayerUp();
 
 	auto request = hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses());
@@ -98,7 +98,7 @@ TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
 	OutstationAuthSettings settings;
 	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value	
 	OutstationSecAuthFixture fixture(settings);	
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES128);
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES128);
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -123,7 +123,7 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured period"))
 	OutstationAuthSettings settings;
 	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value	
 	OutstationSecAuthFixture fixture(settings);	
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES128);
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES128);
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -149,7 +149,7 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authen
 	OutstationAuthSettings settings;
 	settings.maxAuthMsgCount = 1; // only allow a single authenticated message before invalidating keys
 	OutstationSecAuthFixture fixture(settings);	
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES128);
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES128);
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -199,7 +199,7 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 {		
 	OutstationAuthSettings settings;	
 	OutstationSecAuthFixture fixture(settings);	
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES256);
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256);
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
@@ -230,7 +230,7 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 {			
 	OutstationSecAuthFixture fixture;
-	fixture.AddUser(User::Default(), 0xFF, UpdateKeyMode::AES256, Permissions::Allowed(FunctionCode::WRITE));
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256, Permissions::Allowed(FunctionCode::WRITE));
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;

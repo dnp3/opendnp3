@@ -85,9 +85,9 @@ OAuthContext::OAuthContext(
 	this->ConfigureSecStats(sstate.settings.statThresholds);	
 }
 
-void OAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
+void OAuthContext::AddUser(opendnp3::User user, const std::string& userName, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
 {
-	sstate.userDB.AddUser(user, key, permissions);
+	sstate.userDB.AddUser(user, userName, key, permissions);
 }
 
 void OAuthContext::ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key)
