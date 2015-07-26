@@ -41,6 +41,7 @@
 #include "secauth/outstation/Statistics.h"
 #include "secauth/outstation/UnofficialStatistics.h"
 #include "secauth/outstation/AuthorityCredentials.h"
+#include "secauth/outstation/PendingUserStatusChange.h"
 
 namespace secauth
 {
@@ -75,6 +76,7 @@ class SecurityState
 	Statistics stats;
 	UnofficialStatistics otherStats;	
 	AuthorityCredentials credentials;
+	PendingUserStatusChange statusChange;
 };
 
 }

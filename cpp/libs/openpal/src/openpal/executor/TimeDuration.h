@@ -78,11 +78,15 @@ public:
 
 	static TimeDuration Zero();
 
-	static TimeDuration Milliseconds(int64_t aMilliseconds);
+	static TimeDuration Milliseconds(int64_t milliseconds);
 
-	static TimeDuration Seconds(int64_t aSeconds);
+	static TimeDuration Seconds(int64_t seconds);
 
-	static TimeDuration Minutes(int64_t aMinutes);
+	static TimeDuration Minutes(int64_t minutes);
+
+	static TimeDuration Hours(int64_t hours);
+
+	static TimeDuration Days(int64_t days);
 
 private:
 	TimeDuration(int64_t aMilliseconds);

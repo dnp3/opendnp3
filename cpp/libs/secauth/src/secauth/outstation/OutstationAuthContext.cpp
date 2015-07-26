@@ -243,13 +243,13 @@ void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, c
 	switch (change.userOperation)
 	{
 		case(UserOperation::OP_ADD) :
-			this->ProcessUserStatusChange_Add(change);
+			this->ProcessUserStatusChange_Add(header, change);
 			break;
 		case(UserOperation::OP_CHANGE) :
-			this->ProcessUserStatusChange_Change(change);
+			this->ProcessUserStatusChange_Change(header, change);
 			break;
 		case(UserOperation::OP_DELETE) :
-			this->ProcessUserStatusChange_Delete(change);
+			this->ProcessUserStatusChange_Delete(header, change);
 			break;
 		default:
 			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
@@ -543,19 +543,38 @@ void OAuthContext::IncrementSessionAuthCount(const opendnp3::User& user)
 	this->sstate.sessions.IncrementAuthCount(user);	
 }
 
-void OAuthContext::ProcessUserStatusChange_Add(const opendnp3::Group120Var10& change)
+void OAuthContext::ProcessUserStatusChange_Add(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
 {
+	auto expirationTimestamp = this->pExecutor->GetTime().Add(TimeDuration::Days(change.userRoleExpDays));
+
+	std::string userName;
+	const uint8_t* buffer = change.userName;
+	userName.append(reinterpret_cast<const char*>(buffer), change.userName.Size());
+
+	this->sstate.statusChange.SetUserStatusChange(
+		change.keyChangeMethod,
+		PendingUserStatusChange::Operation::ADD,
+		change.statusChangeSeqNum,
+		UserRoleFromType(change.userRole),
+		expirationTimestamp,
+		userName
+	);
+
 
 }
 
-void OAuthContext::ProcessUserStatusChange_Change(const opendnp3::Group120Var10& change)
+void OAuthContext::ProcessUserStatusChange_Change(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
 {
-
+	SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "user change not implemented");
+	this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);
+	return;
 }
 
-void OAuthContext::ProcessUserStatusChange_Delete(const opendnp3::Group120Var10& change)
+void OAuthContext::ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
 {
-
+	SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "user deletion not implemented");
+	this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);
+	return;
 }
 
 }

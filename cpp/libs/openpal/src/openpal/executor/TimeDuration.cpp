@@ -40,19 +40,29 @@ TimeDuration TimeDuration::Zero()
 	return TimeDuration(0);
 }
 
-TimeDuration TimeDuration::Milliseconds(int64_t aMilliseconds)
+TimeDuration TimeDuration::Milliseconds(int64_t milliseconds)
 {
-	return TimeDuration(aMilliseconds);
+	return TimeDuration(milliseconds);
 }
 
-TimeDuration TimeDuration::Seconds(int64_t aSeconds)
+TimeDuration TimeDuration::Seconds(int64_t seconds)
 {
-	return TimeDuration(1000 * aSeconds);
+	return TimeDuration(1000 * seconds);
 }
 
-TimeDuration TimeDuration::Minutes(int64_t aMinutes)
+TimeDuration TimeDuration::Minutes(int64_t minutes)
 {
-	return TimeDuration(static_cast<int64_t>(1000) * static_cast<int64_t>(60) * aMinutes);
+	return TimeDuration(static_cast<int64_t>(1000*60) * minutes);
+}
+
+TimeDuration TimeDuration::Hours(int64_t hours)
+{
+	return TimeDuration(static_cast<int64_t>(1000*60*60) * hours);
+}
+
+TimeDuration TimeDuration::Days(int64_t days)
+{
+	return TimeDuration(static_cast<int64_t>(1000*60*60*24) * days);
 }
 
 TimeDuration::TimeDuration() : TimeDurationBase(0) {}

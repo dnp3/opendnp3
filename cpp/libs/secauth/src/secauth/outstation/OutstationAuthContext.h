@@ -113,9 +113,9 @@ class OAuthContext final : public opendnp3::OContext, private IAuthRequestHandle
 
 	bool AuthenticateUserStatusChange(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);
 
-	void ProcessUserStatusChange_Add(const opendnp3::Group120Var10& change);
-	void ProcessUserStatusChange_Change(const opendnp3::Group120Var10& change);
-	void ProcessUserStatusChange_Delete(const opendnp3::Group120Var10& change);
+	void ProcessUserStatusChange_Add(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);
+	void ProcessUserStatusChange_Change(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);
+	void ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);
 
 	public:
 
