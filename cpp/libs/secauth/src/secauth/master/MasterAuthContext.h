@@ -25,12 +25,11 @@
 
 #include "secauth/master/MasterSecurity.h"
 #include "secauth/master/UserStatusChange.h"
-#include "secauth/master/IAuthResponseReceiver.h"
 
 namespace secauth
 {
 
-class MAuthContext final : public opendnp3::MContext, private IAuthResponseReceiver
+class MAuthContext final : public opendnp3::MContext
 {	
 
 public:	
@@ -70,11 +69,9 @@ private:
 
 	void OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
-	// ------ Implement IAuthResponseReceiver ------	
+	void OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	virtual void OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
-
-	virtual void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) override final;
+	void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);	
 	
 	MasterSecurity security;
 

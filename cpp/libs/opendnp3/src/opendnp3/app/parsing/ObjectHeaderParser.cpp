@@ -23,6 +23,7 @@
 
 #include "opendnp3/ErrorCodes.h"
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/app/GroupVariationRecord.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/serialization/Serialization.h>
@@ -49,6 +50,20 @@ ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header, ReadBuff
 		header.qualifier = UInt8::ReadBuffer(buffer);
 		return ParseResult::OK;
 	}
+}
+
+bool ObjectHeaderParser::ReadFirstGroupVariation(const openpal::ReadBufferView& objects, GroupVariation& gv)
+{
+	ReadBufferView copy(objects);
+	ObjectHeader oheader;
+	if (ObjectHeaderParser::ParseObjectHeader(oheader, copy, nullptr) != ParseResult::OK)
+	{
+		return false;
+	}
+
+	gv = GroupVariationRecord::GetRecord(oheader.group, oheader.variation).enumeration;
+
+	return true;
 }
 
 }

@@ -21,12 +21,24 @@
 #ifndef SECAUTH_SIMPLE_REQUEST_HANDLERS_H
 #define SECAUTH_SIMPLE_REQUEST_HANDLERS_H
 
-#include "SingleValueHandler.h"
+#include "secauth/SingleValueHandler.h"
 
 #include "opendnp3/objects/Group120.h"
 
 namespace secauth
 {
+
+class ChallengeHandler : public SingleValueHandler<opendnp3::Group120Var1, opendnp3::GroupVariation::Group120Var1, opendnp3::QualifierCode::UINT16_FREE_FORMAT>
+{
+public:
+
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var1& object) override final
+	{
+		this->value = object;
+		this->m_valid = true;
+		return opendnp3::IINField();
+	}
+};
 
 class ChallengeReplyHandler : public SingleValueHandler<opendnp3::Group120Var2, opendnp3::GroupVariation::Group120Var2, opendnp3::QualifierCode::UINT16_FREE_FORMAT>
 {
@@ -68,6 +80,18 @@ class UserStatusChangeHandler : public SingleValueHandler<opendnp3::Group120Var1
 public:
 
 	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var10& object) override final
+	{
+		this->value = object;
+		this->m_valid = true;
+		return opendnp3::IINField();
+	}
+};
+
+class ErrorHandler : public SingleValueHandler<opendnp3::Group120Var7, opendnp3::GroupVariation::Group120Var7, opendnp3::QualifierCode::UINT16_FREE_FORMAT>
+{
+public:
+
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var7& object) override final
 	{
 		this->value = object;
 		this->m_valid = true;

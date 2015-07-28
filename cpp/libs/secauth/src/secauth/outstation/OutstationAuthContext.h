@@ -118,9 +118,7 @@ class OAuthContext final : public opendnp3::OContext
 
 	bool TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header);
 
-	static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, opendnp3::UpdateKeyMode type);
-
-	static bool ReadFirstGroupVariation(const openpal::ReadBufferView& objects, opendnp3::GroupVariation& gv);
+	static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, opendnp3::UpdateKeyMode type);	
 
 	static opendnp3::DatabaseTemplate EnableSecStats(const opendnp3::DatabaseTemplate& dbTemplate);
 

@@ -37,7 +37,7 @@
 
 #include "secauth/AggressiveModeParser.h"
 #include "secauth/outstation/KeyUnwrap.h"
-#include "secauth/outstation/SimpleRequestHandlers.h"
+#include "secauth/SimpleRequestHandlers.h"
 #include "secauth/outstation/OutstationErrorCodes.h"
 #include "secauth/Crypto.h"
 
@@ -175,7 +175,7 @@ OAuthContext::APDUResult OAuthContext::ProcessAuthRequest(const openpal::ReadBuf
 	// the actual parsing much easier to constrain with dedicated handlers for each semantic path.	
 
 	GroupVariation gv = GroupVariation::UNKNOWN;
-	if (!ReadFirstGroupVariation(objects, gv))
+	if (!ObjectHeaderParser::ReadFirstGroupVariation(objects, gv))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Discarding AuthRequest w/ empty or malformed first object header");
 		return APDUResult::DISCARDED;
@@ -674,20 +674,6 @@ void OAuthContext::Increment(SecurityStatIndex index)
 	SecurityStat stat(opendnp3::flags::ONLINE, this->security.settings.assocId, count, time);
 
 	this->database.Update(stat, static_cast<uint16_t>(index));
-}
-
-bool OAuthContext::ReadFirstGroupVariation(const openpal::ReadBufferView& objects, GroupVariation& gv)
-{
-	ReadBufferView copy(objects);
-	ObjectHeader oheader;
-	if (ObjectHeaderParser::ParseObjectHeader(oheader, copy, nullptr) != ParseResult::OK)
-	{
-		return false;
-	}
-
-	gv = GroupVariationRecord::GetRecord(oheader.group, oheader.variation).enumeration;
-
-	return true;
 }
 
 }

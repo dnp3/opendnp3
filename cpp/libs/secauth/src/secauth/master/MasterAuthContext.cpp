@@ -26,12 +26,16 @@
 
 #include <openpal/logging/LogMacros.h>
 
-#include "secauth/master/AuthResponseHandler.h"
-#include "secauth/master/UserStatusChangeTask.h"
-#include "opendnp3/app/parsing/APDUParser.h"
-
 #include "secauth/Crypto.h"
 #include "secauth/HMACProvider.h"
+#include "secauth/SimpleRequestHandlers.h"
+
+#include "secauth/master/UserStatusChangeTask.h"
+
+#include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/app/parsing/ObjectHeaderParser.h"
+
+
 
 
 using namespace openpal;
@@ -147,9 +151,9 @@ void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, co
 {
 	// need to determine the context of the auth response
 	
-	if (tstate != TaskState::WAIT_FOR_RESPONSE)
+	if (this->tstate != TaskState::WAIT_FOR_RESPONSE)
 	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring AuthResponse"); // TODO - better error message?
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unexpected AuthResponse");
 		return;
 	}
 
@@ -157,15 +161,31 @@ void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, co
 	if (this->pActiveTask->IsAuthTask())
 	{
 		this->ProcessResponse(header, objects);
+		return;
 	}
-	else
+
+	auto gv = GroupVariation::UNKNOWN;
+	if (!ObjectHeaderParser::ReadFirstGroupVariation(objects, gv))
 	{
-		AuthResponseHandler handler(apdu, header, *this);
-		APDUParser::Parse(objects, handler, this->logger);
-	}		
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring AuthResponse with bad first header");
+		return;
+	}
+
+	switch (gv)
+	{
+		case(GroupVariation::Group120Var1) : // a challenge
+			this->OnAuthChallenge(apdu, header, objects);
+			return;
+		case(GroupVariation::Group120Var7) : // an error
+			this->OnAuthError(apdu, header, objects); 
+			return;
+		default:
+			FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unknown AuthResponse type: %s", GroupVariationToString(gv));
+			return;
+	}	
 }
 
-void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
+void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (this->isSending)
 	{
@@ -173,9 +193,19 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 		return;
 	}
 
-	if (!AuthSizes::ChallengeDataSizeWithinLimits(challenge.Size()))
+	ChallengeHandler handler;
+	auto result = APDUParser::Parse(objects, handler, this->logger);
+	if (!(result == ParseResult::OK && handler.IsValid()))
 	{
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Challenge data size outside of limits: %u", challenge.Size());
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring malformed challenge");
+		return;
+	}
+
+	auto& challengeData = handler.value.challengeData;
+
+	if (!AuthSizes::ChallengeDataSizeWithinLimits(challengeData.Size()))
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Challenge data size outside of limits: %u", challengeData.Size());
 		return;
 	}
 
@@ -196,9 +226,9 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 	}
 
 	HMACMode hmacMode;
-	if (!Crypto::TryGetHMACMode(challenge.hmacAlgo, hmacMode))
+	if (!Crypto::TryGetHMACMode(handler.value.hmacAlgo, hmacMode))
 	{
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Outstation requested unsupported HMAC type: %s", HMACTypeToString(challenge.hmacAlgo));
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Outstation requested unsupported HMAC type: %s", HMACTypeToString(handler.value.hmacAlgo));
 		return;
 	}	
 
@@ -214,7 +244,7 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 	}
 		
 	Group120Var2 challengeReply;
-	challengeReply.challengeSeqNum = challenge.challengeSeqNum;
+	challengeReply.challengeSeqNum = handler.value.challengeSeqNum;
 	challengeReply.userNum = user.GetId();
 	challengeReply.hmacValue = hmacValue;
 	
@@ -231,11 +261,19 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 	this->Transmit(reply.ToReadOnly());
 }
 
-void MAuthContext::OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error)
+void MAuthContext::OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 {
+	ErrorHandler handler;
+	auto result = APDUParser::Parse(objects, handler, this->logger);
+	if (!(result == ParseResult::OK && handler.IsValid()))
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring malformed error");
+		return;
+	}
+
 	FORMAT_LOG_BLOCK(this->logger, flags::WARN,
 		"Received auth error from outstation w/ code: %s",
-		AuthErrorCodeToString(error.errorCode)
+		AuthErrorCodeToString(handler.value.errorCode)
 	);		
 
 	// TODO - invalidate the session keys for the user?

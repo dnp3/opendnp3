@@ -27,6 +27,8 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/logging/Logger.h>
 
+#include <opendnp3/gen/GroupVariation.h>
+
 namespace opendnp3
 {
 
@@ -45,6 +47,10 @@ class ObjectHeaderParser : private openpal::StaticOnly
 public:
 
 	static ParseResult ParseObjectHeader(ObjectHeader& header, openpal::ReadBufferView& buffer, openpal::Logger* pLogger);
+
+	// Provides stateless inspection of the first object header, provided that it exists
+	// return false on failure (e.g. < 3 bytes)
+	static bool ReadFirstGroupVariation(const openpal::ReadBufferView& objects, GroupVariation& gv);
 };
 
 }
