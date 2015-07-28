@@ -79,9 +79,15 @@ private:
 
 	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
 
+	virtual void OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+
+	/*
 	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
 
 	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
+
+	virtual void _OnNoUser(openpal::MonotonicTimestamp now) override final;
+	*/
 
 	CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, const TaskConfig& config, openpal::Logger logger);
 

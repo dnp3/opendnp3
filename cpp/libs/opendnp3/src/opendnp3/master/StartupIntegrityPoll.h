@@ -59,9 +59,7 @@ private:
 
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::STARTUP_INTEGRITY_POLL; }
 
-	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
-
-	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
+	virtual void OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now) override final;	
 
 	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
 

@@ -74,9 +74,7 @@ namespace secauth
 
 		virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final {}
 
-		virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final {}
-
-		virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final {}
+		virtual void OnFailure(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final {}
 		
 	};
 

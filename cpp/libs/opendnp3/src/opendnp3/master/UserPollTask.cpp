@@ -52,14 +52,19 @@ void UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
 	builder(writer);
 }
 
-void UserPollTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
+void UserPollTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	expiration = 0;
-}
-
-void UserPollTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
-{
-	expiration = period.IsNegative() ? MonotonicTimestamp::Max() : now.Add(period);
+	switch (result)
+	{
+		case(TaskCompletion::FAILURE_NO_COMMS) :
+			expiration = 0;
+			break;
+		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+			expiration = period.IsNegative() ? MonotonicTimestamp::Max() : now.Add(period);
+			break;
+		default:
+			break;
+	}
 }
 
 void UserPollTask::OnResponseOK(openpal::MonotonicTimestamp now)

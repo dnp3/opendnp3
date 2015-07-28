@@ -73,14 +73,23 @@ IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& re
 
 void IMasterTask::OnResponseTimeout(openpal::MonotonicTimestamp now)
 {
-	this->_OnResponseTimeout(now);
+	//this->_OnResponseTimeout(now);
+	this->OnFailure(TaskCompletion::FAILURE_RESPONSE_TIMEOUT, now);
 	this->NotifyResult(TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
 }
 
 void IMasterTask::OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {
-	this->_OnLowerLayerClose(now);
+	//this->_OnLowerLayerClose(now);
+	this->OnFailure(TaskCompletion::FAILURE_NO_COMMS , now);
 	this->NotifyResult(TaskCompletion::FAILURE_NO_COMMS);
+}
+
+void IMasterTask::OnNoUser(openpal::MonotonicTimestamp now)
+{
+	//this->_OnNoUser(now);
+	this->OnFailure(TaskCompletion::FAILURE_NO_USER, now);
+	this->NotifyResult(TaskCompletion::FAILURE_NO_USER);
 }
 
 void IMasterTask::NotifyResult(TaskCompletion result)

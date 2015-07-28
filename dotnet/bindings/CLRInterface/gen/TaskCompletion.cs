@@ -38,8 +38,12 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     FAILURE_RESPONSE_TIMEOUT = 2,
     /// <summary>
+    /// The task could not run because the specified user was not defined on the master (SA only)
+    /// </summary>
+    FAILURE_NO_USER = 3,
+    /// <summary>
     /// There is no communication with the outstation, so the task was not attempted
     /// </summary>
-    FAILURE_NO_COMMS = 3
+    FAILURE_NO_COMMS = 255
   }
 }

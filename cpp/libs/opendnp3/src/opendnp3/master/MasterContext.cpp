@@ -451,8 +451,16 @@ namespace opendnp3
 		auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
 		if (this->isOnline)
 		{
-			this->scheduler.Schedule(std::move(task));
-			this->PostCheckForTask();
+			if (this->MeetsUserRequirements(*pTask))
+			{
+				this->scheduler.Schedule(std::move(task));
+				this->PostCheckForTask();
+			}
+			else
+			{
+				// task is failed because an SA user doesn't exist
+				pTask->OnNoUser(this->pExecutor->GetTime());
+			}			
 		}
 		else
 		{

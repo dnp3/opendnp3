@@ -60,21 +60,23 @@ namespace opendnp3
 		expiration = MonotonicTimestamp::Max();
 	}
 
-	void EventScanTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+	void EventScanTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
 	{
-		expiration = now.Add(retryPeriod);
-	}
+		switch (result)
+		{
+			case(TaskCompletion::FAILURE_NO_COMMS):
+				expiration = MonotonicTimestamp::Max();
+				break;
+			case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+				expiration = now.Add(retryPeriod);
+				break;
+		}
+	}	
 
 	void EventScanTask::OnResponseError(openpal::MonotonicTimestamp)
 	{
 		disabled = true;
 		expiration = MonotonicTimestamp::Max();
 	}
-
-	void EventScanTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
-	{
-		expiration = MonotonicTimestamp::Max();
-	}
-
-
+	
 } //end ns

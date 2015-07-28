@@ -123,6 +123,11 @@ public:
 	void OnLowerLayerClose(openpal::MonotonicTimestamp now);
 
 	/**
+	* Called when a task is discared because it's user doesn't exist
+	*/
+	void OnNoUser(openpal::MonotonicTimestamp now);
+
+	/**
 	* Called when a task is discared before it can run b/c the session went offline
 	*/
 	virtual void OnTaskDiscarded(openpal::MonotonicTimestamp now) {}
@@ -150,9 +155,15 @@ public:
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) = 0;
 
+	virtual void OnFailure(TaskCompletion completion, openpal::MonotonicTimestamp now) {}
+
+	/*
 	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) = 0;
 
 	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) = 0;
+
+	virtual void _OnNoUser(openpal::MonotonicTimestamp now) = 0;
+	*/
 
 	virtual bool IsEnabled() const = 0;
 

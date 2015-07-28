@@ -85,6 +85,12 @@ void CommandTask::OnResponseOK(openpal::MonotonicTimestamp now)
 	this->Callback(response);
 }
 
+void CommandTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
+{
+	this->Callback(CommandResponse(result));
+}
+
+/*
 void CommandTask::_OnResponseTimeout(openpal::MonotonicTimestamp)
 {
 	this->Callback(CommandResponse(TaskCompletion::FAILURE_RESPONSE_TIMEOUT));
@@ -94,6 +100,9 @@ void CommandTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
 {	
 	this->Callback(CommandResponse::NoResponse(TaskCompletion::FAILURE_NO_COMMS));
 }
+
+void CommandTask::_OnNoUser(openpal::MonotonicTimestamp now)
+*/
 
 void CommandTask::Initialize()
 {

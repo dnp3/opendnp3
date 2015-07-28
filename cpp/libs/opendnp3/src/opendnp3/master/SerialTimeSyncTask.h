@@ -56,9 +56,7 @@ private:
 
 	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
 
-	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
-
-	void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
+	virtual void OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now) override final;	
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 

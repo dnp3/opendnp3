@@ -110,6 +110,8 @@ namespace opendnp3
 
 		virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) {}
 
+		virtual bool MeetsUserRequirements(const IMasterTask& task) { return true; }
+
 		/// methods for initiating command sequences
 
 		void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config);

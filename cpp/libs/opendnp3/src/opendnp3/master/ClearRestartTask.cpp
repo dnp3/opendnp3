@@ -44,11 +44,6 @@ void ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 	build::ClearRestartIIN(request, seq);
 }
 
-void ClearRestartTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
-{
-	expiration = now.Add(retryPeriod);
-}
-
 IMasterTask::ResponseResult ClearRestartTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
 	// we only care that the response to this has FIR/FIN
@@ -77,12 +72,22 @@ void ClearRestartTask::OnResponseError(openpal::MonotonicTimestamp now)
 	expiration = MonotonicTimestamp::Max();
 }
 
-void ClearRestartTask::OnResponseOK(openpal::MonotonicTimestamp now)
+void ClearRestartTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	expiration = MonotonicTimestamp::Max();
+	switch (result)
+	{
+		case(TaskCompletion::FAILURE_NO_COMMS):
+			expiration = MonotonicTimestamp::Max();
+			break;
+		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
+			expiration = now.Add(retryPeriod);
+			break;
+		default:
+			break;
+	}
 }
 
-void ClearRestartTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
+void ClearRestartTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {
 	expiration = MonotonicTimestamp::Max();
 }

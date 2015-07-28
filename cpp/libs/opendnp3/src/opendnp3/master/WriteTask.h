@@ -59,9 +59,7 @@ private:
 
 	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
 
-	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
-
-	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;	
+	virtual void OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
 	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
 

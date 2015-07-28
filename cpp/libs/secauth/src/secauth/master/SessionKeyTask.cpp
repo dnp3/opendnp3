@@ -100,14 +100,19 @@ void SessionKeyTask::OnResponseOK(openpal::MonotonicTimestamp now)
 	expiration = now.Add(this->changeInterval);
 }
 
-void SessionKeyTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+void SessionKeyTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	expiration = now.Add(this->retryPeriod);
-}
-
-void SessionKeyTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
-{
-	expiration = 0;
+	switch (result)
+	{
+		case(TaskCompletion::FAILURE_NO_COMMS):
+			expiration = 0;
+			break;
+		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
+			expiration = now.Add(this->retryPeriod);
+			break;
+		default:
+			break;
+	}
 }
 
 void SessionKeyTask::BuildStatusRequest(opendnp3::APDURequest& request, uint8_t seq)

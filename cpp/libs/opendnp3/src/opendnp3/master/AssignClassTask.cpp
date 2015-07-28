@@ -50,17 +50,22 @@ IMasterTask::ResponseResult AssignClassTask::_OnResponse(const opendnp3::APDURes
 {	
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
-	
-void AssignClassTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
-{
-	expiration = 0;
-}
- 
-void AssignClassTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
-{
-	expiration = now.Add(retryPeriod);
-}
 
+void AssignClassTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
+{
+	switch (result)
+	{
+		case(TaskCompletion::FAILURE_NO_COMMS) :
+			expiration = 0;
+			break;
+		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+			expiration = now.Add(retryPeriod);
+			break;
+		default:
+			break;
+	}
+}
+	
 void AssignClassTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {
 	expiration = MonotonicTimestamp::Max();

@@ -59,15 +59,21 @@ void DisableUnsolicitedTask::OnResponseOK(openpal::MonotonicTimestamp now)
 	expiration = MonotonicTimestamp::Max();
 }
 
-void DisableUnsolicitedTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+void DisableUnsolicitedTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	expiration = now.Add(retryPeriod);
+	switch (result)
+	{
+		case(TaskCompletion::FAILURE_NO_COMMS):
+			expiration = 0;
+			break;
+		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+			expiration = now.Add(retryPeriod);
+			break;
+		default:
+			break;
+	}
 }
 
-void DisableUnsolicitedTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
-{
-	expiration = 0;
-}
 
 } //end ns
 

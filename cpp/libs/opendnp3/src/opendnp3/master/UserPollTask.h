@@ -62,15 +62,13 @@ public:
 
 	virtual bool IsEnabled() const { return true; }
 		
-private:	
-
-	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;	
-
-	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
+private:		
 
 	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
 	
 	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
+
+	virtual void OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK;  }
 

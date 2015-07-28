@@ -62,14 +62,19 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
-void SerialTimeSyncTask::_OnResponseTimeout(openpal::MonotonicTimestamp)
+void SerialTimeSyncTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	expiration = MonotonicTimestamp::Max();
-}
-
-void SerialTimeSyncTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
-{
-	expiration = MonotonicTimestamp::Max();
+	switch (result)
+	{
+		case(TaskCompletion::FAILURE_NO_COMMS):
+			expiration = MonotonicTimestamp::Max();
+			break;
+		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+			expiration = MonotonicTimestamp::Max();
+			break;
+		default:
+			break;
+	}
 }
 
 void SerialTimeSyncTask::OnResponseError(openpal::MonotonicTimestamp)

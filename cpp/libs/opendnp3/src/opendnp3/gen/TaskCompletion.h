@@ -36,8 +36,10 @@ enum class TaskCompletion : uint8_t
   FAILURE_BAD_RESPONSE = 1,
   /// The task request did not receive a response within the timeout
   FAILURE_RESPONSE_TIMEOUT = 2,
+  /// The task could not run because the specified user was not defined on the master (SA only)
+  FAILURE_NO_USER = 3,
   /// There is no communication with the outstation, so the task was not attempted
-  FAILURE_NO_COMMS = 3
+  FAILURE_NO_COMMS = 255
 };
 
 char const* TaskCompletionToString(TaskCompletion arg);

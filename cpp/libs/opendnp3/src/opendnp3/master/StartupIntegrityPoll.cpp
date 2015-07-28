@@ -57,9 +57,19 @@ bool StartupIntegrityPoll::IsEnabled() const
 	return classes.HasAnyClass();
 }
 
-void StartupIntegrityPoll::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+void StartupIntegrityPoll::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	expiration = now.Add(retryPeriod);
+	switch (result)
+	{
+		case(TaskCompletion::FAILURE_NO_COMMS) :
+			expiration = 0;
+			break;
+		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+			expiration = now.Add(retryPeriod);
+			break;
+		default:
+			break;
+	}
 }
 
 void StartupIntegrityPoll::OnResponseError(openpal::MonotonicTimestamp now)
@@ -71,11 +81,5 @@ void StartupIntegrityPoll::OnResponseOK(openpal::MonotonicTimestamp now)
 {
 	expiration = MonotonicTimestamp::Max();
 }
-
-void StartupIntegrityPoll::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
-{
-	expiration = 0;
-}
-
 
 } //end ns
