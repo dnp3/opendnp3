@@ -24,7 +24,7 @@
 #include <opendnp3/outstation/OutstationContext.h>
 
 #include "secauth/AuthorityKey.h"
-#include "secauth/outstation/SecurityContext.h"
+#include "secauth/outstation/OutstationSecurity.h"
 #include "secauth/outstation/OutstationAuthSettings.h"
 #include "secauth/outstation/IOutstationApplicationSA.h"
 
@@ -71,7 +71,7 @@ class OAuthContext final : public opendnp3::OContext
 
 	//// ---- public state for testing purposes only ----
 
-	SecurityContext security;
+	OutstationSecurity security;
 
 	private:		
 

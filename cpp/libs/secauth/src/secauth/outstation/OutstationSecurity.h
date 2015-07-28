@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SECURITYCONTEXT_H
-#define SECAUTH_SECURITYCONTEXT_H
+#ifndef SECAUTH_OUTSTATIONSECURITY_H
+#define SECAUTH_OUTSTATIONSECURITY_H
 
 #include <opendnp3/gen/KeyStatus.h>
 #include <opendnp3/app/TxBuffer.h>
@@ -52,11 +52,11 @@ enum class SecurityState
 	WAIT_FOR_REPLY
 };
 
-class SecurityContext
+class OutstationSecurity
 {
 	public:
 
-	SecurityContext(
+	OutstationSecurity(
 		const opendnp3::OutstationParams& params,
 		const OutstationAuthSettings& settings, 
 		openpal::Logger logger, 

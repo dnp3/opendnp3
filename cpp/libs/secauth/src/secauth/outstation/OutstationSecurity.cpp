@@ -19,13 +19,13 @@
  * to you under the terms of the License.
  */
 
-#include "SecurityContext.h"
+#include "OutstationSecurity.h"
 
 using namespace opendnp3;
 
 namespace secauth
 {
-	SecurityContext::SecurityContext(
+	OutstationSecurity::OutstationSecurity(
 			const OutstationParams& params,
 			const OutstationAuthSettings& settings_, 
 			openpal::Logger logger, 
