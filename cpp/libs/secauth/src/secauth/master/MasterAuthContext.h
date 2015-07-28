@@ -23,15 +23,9 @@
 
 #include <opendnp3/master/MasterContext.h>
 
-#include <openpal/util/Uncopyable.h>
-
-#include "secauth/UpdateKey.h"
-#include "secauth/master/SessionKeyTask.h"
-#include "secauth/master/MasterAuthSettings.h"
-#include "secauth/master/IAuthResponseReceiver.h"
-#include "secauth/master/MasterUserDatabase.h"
-#include "secauth/master/IMasterApplicationSA.h"
+#include "secauth/master/MasterSecurity.h"
 #include "secauth/master/UserStatusChange.h"
+#include "secauth/master/IAuthResponseReceiver.h"
 
 namespace secauth
 {
@@ -82,18 +76,7 @@ private:
 
 	virtual void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) override final;
 	
-	typedef std::map<uint16_t, std::unique_ptr<SessionKeyTask>> SessionKeyTaskMap;
-	
-	MasterAuthSettings			settings;	
-	IMasterApplicationSA*		pApplicationSA;
-	openpal::ICryptoProvider*	pCrypto;
-	MasterUserDatabase			userDB;
-	SessionStore				sessions;		
-	openpal::ReadBufferView		lastRequest;
-	SessionKeyTaskMap			sessionKeyTaskMap;
-	
-
-	openpal::StaticBuffer<AuthSizes::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE> challengeReplyBuffer;
+	MasterSecurity security;
 
 };
 

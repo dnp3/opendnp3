@@ -52,11 +52,7 @@ MAuthContext::MAuthContext(
 		openpal::ICryptoProvider& crypto		
 	) : 
 	MContext(executor, root, lower, SOEHandler, application, params, taskLock),	
-	
-	settings(authSettings),	
-	pApplicationSA(&application),
-	pCrypto(&crypto),	
-	sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount)
+	security(executor, application, authSettings, crypto)
 {
 
 }
@@ -71,15 +67,15 @@ bool MAuthContext::OnLowerLayerUp()
 		auto createSessionKeyTask = [this](const User& user)
 		{				
 			auto task = std::unique_ptr<SessionKeyTask>(
-				new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, this->settings.sessionChangeInterval, this->logger, user, *this->pCrypto, this->userDB, this->sessions)
+				new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, security.settings.sessionChangeInterval, this->logger, user, *security.pCrypto, security.userDB, security.sessions)
 			);			
 			
 			this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(task.get()));
 
-			this->sessionKeyTaskMap[user.GetId()] = std::move(task);
+			security.sessionKeyTaskMap[user.GetId()] = std::move(task);
 		};
 
-		this->userDB.EnumerateUsers(createSessionKeyTask);
+		security.userDB.EnumerateUsers(createSessionKeyTask);
 	}
 		
 	return ret;
@@ -91,8 +87,8 @@ bool MAuthContext::OnLowerLayerDown()
 
 	if (ret)
 	{
-		this->sessionKeyTaskMap.clear();
-		this->sessions.Clear();
+		security.sessionKeyTaskMap.clear();
+		security.sessions.Clear();
 	}
 
 	return ret;
@@ -126,24 +122,24 @@ bool MAuthContext::CanRun(const opendnp3::IMasterTask& task)
 
 	// is there an active session for the task's user?
 
-	auto status = this->sessions.GetSessionKeyStatus(task.GetUser());
+	auto status = security.sessions.GetSessionKeyStatus(task.GetUser());
 
 	return status == KeyStatus::OK;
 }
 
 void MAuthContext::RecordLastRequest(const openpal::ReadBufferView& apdu)
 {
-	this->lastRequest = apdu;
+	security.lastRequest = apdu;
 }
 
 bool MAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
 {
-	return this->userDB.AddUser(user, key);
+	return security.userDB.AddUser(user, key);
 }
 
 void MAuthContext::BeginUserStatusChange(const UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config)
 {
-	auto task = new UserStatusChangeTask(userStatusChange, *pApplicationSA, logger, config);
+	auto task = new UserStatusChangeTask(userStatusChange, *security.pApplicationSA, logger, config);
 	this->ScheduleAdhocTask(task);
 }
 
@@ -193,7 +189,7 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 
 	// lookup the session keys
 	SessionKeysView keys;
-	if (this->sessions.TryGetSessionKeys(user, keys) != KeyStatus::OK)
+	if (security.sessions.TryGetSessionKeys(user, keys) != KeyStatus::OK)
 	{		
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Session is not valid for user: %u", user.GetId());
 		return;
@@ -206,10 +202,10 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 		return;
 	}	
 
-	HMACProvider hmacProvider(*pCrypto, hmacMode);
+	HMACProvider hmacProvider(*security.pCrypto, hmacMode);
 
 	std::error_code ec;
-	auto hmacValue = hmacProvider.Compute(keys.controlKey, { apdu, lastRequest }, ec);
+	auto hmacValue = hmacProvider.Compute(keys.controlKey, { apdu, security.lastRequest }, ec);
 
 	if (ec)
 	{
@@ -222,7 +218,7 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 	challengeReply.userNum = user.GetId();
 	challengeReply.hmacValue = hmacValue;
 	
-	APDURequest reply(this->challengeReplyBuffer.GetWriteBuffer());
+	APDURequest reply(security.challengeReplyBuffer.GetWriteBuffer());
 	reply.SetFunction(FunctionCode::AUTH_REQUEST);
 	reply.SetControl(AppControlField::Request(header.control.SEQ));
 	
