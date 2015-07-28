@@ -52,20 +52,16 @@ void UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
 	builder(writer);
 }
 
-void UserPollTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
+IMasterTask::TaskState UserPollTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
-	{
-		case(TaskCompletion::FAILURE_NO_COMMS) :
-			expiration = 0;
-			break;
+	{		
 		case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-			disabled = true;
-			expiration = MonotonicTimestamp::Max();
-			break;
+			return TaskState::Disabled();
+		case(TaskCompletion::FAILURE_NO_COMMS) :
+			return TaskState::Immediately();
 		default:
-			expiration = period.IsNegative() ? MonotonicTimestamp::Max() : now.Add(period);
-			break;
+			return period.IsNegative() ? TaskState::Infinite() : TaskState::Retry(now.Add(period));
 	}
 }
 

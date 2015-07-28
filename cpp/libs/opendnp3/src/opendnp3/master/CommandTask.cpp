@@ -76,15 +76,16 @@ IMasterTask::ResponseResult CommandTask::_OnResponse(const APDUResponseHeader& h
 	return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-void CommandTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
+IMasterTask::TaskState CommandTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
 	{
 		case(TaskCompletion::SUCCESS):
 			this->Callback(CommandResponse::OK(this->statusResult));
-			break;
+			return TaskState::Infinite();
 		default:
 			this->Callback(CommandResponse(result));
+			return TaskState::Infinite();
 	}
 	
 }

@@ -62,17 +62,14 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
-void SerialTimeSyncTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
+IMasterTask::TaskState SerialTimeSyncTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
 	{
-		case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-			this->disabled = true;
-			this->expiration = MonotonicTimestamp::Max();
-			break;		
+		case(TaskCompletion::FAILURE_BAD_RESPONSE) :			
+			return TaskState::Disabled();
 		default:
-			expiration = MonotonicTimestamp::Max();
-			break;
+			return TaskState::Infinite();
 	}
 }
 

@@ -52,7 +52,7 @@ private:
 
 	virtual bool IsEnabled() const override final { return true; }	
 
-	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;	
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 

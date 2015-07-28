@@ -40,7 +40,32 @@ namespace opendnp3
  */
 class IMasterTask
 {
-	
+
+protected:
+
+	class TaskState
+	{
+		public:
+
+		TaskState(openpal::MonotonicTimestamp expiration_, bool disabled_ = false) : disabled(disabled_), expiration(expiration_)
+		{}
+
+		static TaskState Immediately() { return TaskState(0, false); }
+
+		static TaskState Infinite() { return TaskState(openpal::MonotonicTimestamp::Max(), false); }
+
+		static TaskState Retry(openpal::MonotonicTimestamp exp) { return TaskState(exp, false); }
+
+		static TaskState Disabled() { return TaskState(openpal::MonotonicTimestamp::Max(), true); }
+
+		bool disabled;
+		openpal::MonotonicTimestamp expiration;
+
+	private:
+		TaskState() = delete;
+	};
+
+
 public:	
 
 	enum class ResponseResult : uint8_t
@@ -140,7 +165,7 @@ public:
 	/**
 	* Demand that the task run immediately by setting the expiration to 0
 	*/
-	void Demand() { expiration = 0; }	
+	void Demand();
 	
 	protected:
 
@@ -149,15 +174,13 @@ public:
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) = 0;
 
-	virtual void OnTaskComplete(TaskCompletion completion, openpal::MonotonicTimestamp now) {}
+	virtual TaskState OnTaskComplete(TaskCompletion completion, openpal::MonotonicTimestamp now) = 0;
 
 	virtual bool IsEnabled() const = 0;
 
 	virtual MasterTaskType GetTaskType() const = 0;
 
-	IMasterApplication* pApplication;
-	bool disabled;
-	openpal::MonotonicTimestamp expiration;
+	IMasterApplication* pApplication;	
 	openpal::Logger logger;
 
 	// Validation helpers for various behaviors to avoid deep inheritance
@@ -172,6 +195,7 @@ public:
 
 	IMasterTask();
 
+	TaskState state;
 	TaskConfig config;
 };
 

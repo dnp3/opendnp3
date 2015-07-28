@@ -56,6 +56,7 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 							pCrypto(&crypto),
 							pUserDB(&userDB),
 							pSessionStore(&sessionStore),
+							state(ChangeState::GetStatus),
 							keyChangeSeqNum(0)
 {
 
@@ -63,7 +64,7 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 
 void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
-	if (state == TaskState::GetStatus)
+	if (state == ChangeState::GetStatus)
 	{
 		this->BuildStatusRequest(request, seq);
 	}
@@ -75,14 +76,14 @@ void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 
 void SessionKeyTask::Initialize()
 {
-	this->state = TaskState::GetStatus;
+	this->state = ChangeState::GetStatus;
 }
 
 IMasterTask::ResponseResult SessionKeyTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (ValidateSingleResponse(header))
 	{
-		return (state == TaskState::GetStatus) ? OnStatusResponse(header, objects) : OnChangeResponse(header, objects);
+		return (state == ChangeState::GetStatus) ? OnStatusResponse(header, objects) : OnChangeResponse(header, objects);
 	}
 	else
 	{
@@ -90,19 +91,16 @@ IMasterTask::ResponseResult SessionKeyTask::_OnResponse(const APDUResponseHeader
 	}
 }
 
-void SessionKeyTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
+IMasterTask::TaskState SessionKeyTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
 	{
 		case(TaskCompletion::SUCCESS) :
-			expiration = now.Add(this->changeInterval);
-			break;
-		case(TaskCompletion::FAILURE_NO_COMMS):
-			expiration = 0;
-			break;		
+			return TaskState::Retry(now.Add(this->changeInterval));		
+		case(TaskCompletion::FAILURE_NO_COMMS) :
+			return TaskState::Immediately();
 		default:
-			expiration = now.Add(this->retryPeriod);
-			break;
+			return TaskState::Retry(now.Add(this->retryPeriod));
 	}
 }
 
@@ -198,7 +196,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 	// The wrapped key data is now stored in the keyWrapBuffer until we can send it out
 
-	this->state = TaskState::ChangeKey; // we're now ready to try changing the key itself
+	this->state = ChangeState::ChangeKey; // we're now ready to try changing the key itself
 
 	return ResponseResult::OK_REPEAT;
  }

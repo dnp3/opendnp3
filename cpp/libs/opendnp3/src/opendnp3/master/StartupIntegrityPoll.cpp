@@ -57,19 +57,18 @@ bool StartupIntegrityPoll::IsEnabled() const
 	return classes.HasAnyClass();
 }
 
-void StartupIntegrityPoll::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
+IMasterTask::TaskState StartupIntegrityPoll::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
 	{		
 		case(TaskCompletion::FAILURE_NO_COMMS) :
-			expiration = 0;
-			break;
+			return TaskState::Immediately();
+		
 		case(TaskCompletion::SUCCESS) :
-			expiration = MonotonicTimestamp::Max();
-			break;
+			return TaskState::Infinite();
+
 		default:
-			expiration = now.Add(retryPeriod);
-			break;
+			return TaskState::Infinite();
 	}
 }
 

@@ -55,20 +55,18 @@ namespace opendnp3
 		return classes.HasEventClass();
 	}
 
-	void EventScanTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
+	IMasterTask::TaskState EventScanTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 	{
 		switch (result)
 		{		
 			case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-				disabled = true;
-				expiration = MonotonicTimestamp::Max();
-				break;
+				return TaskState::Disabled();		
+
 			case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-				expiration = now.Add(retryPeriod);
-				break;
+				return TaskState::Retry(now.Add(retryPeriod));
+
 			default:
-				expiration = MonotonicTimestamp::Max();
-				break;
+				return TaskState::Infinite();
 		}
 	}	
 	

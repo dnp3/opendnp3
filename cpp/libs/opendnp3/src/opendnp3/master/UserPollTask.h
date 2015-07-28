@@ -64,7 +64,7 @@ public:
 		
 private:			
 
-	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK;  }
 

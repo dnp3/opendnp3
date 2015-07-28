@@ -70,7 +70,10 @@ namespace secauth
 
 		virtual opendnp3::IMasterTask::ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;		
 
-		virtual void OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final {}
+		virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final
+		{
+			return TaskState::Infinite();
+		}
 		
 	};
 

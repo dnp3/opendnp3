@@ -47,15 +47,13 @@ public:
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
 
-	virtual void Schedule() { expiration = 0; }
-
 private:
 
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK; }
 
 	virtual bool IsEnabled() const override final { return true; }
 
-	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 	
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;	
 

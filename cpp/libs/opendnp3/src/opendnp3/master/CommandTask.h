@@ -75,7 +75,7 @@ private:
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;	
 
-	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;	
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
 	CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, const TaskConfig& config, openpal::Logger logger);
 

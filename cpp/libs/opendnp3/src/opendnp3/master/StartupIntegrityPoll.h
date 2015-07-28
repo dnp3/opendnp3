@@ -59,7 +59,7 @@ private:
 
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::STARTUP_INTEGRITY_POLL; }
 
-	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 	
 };
 

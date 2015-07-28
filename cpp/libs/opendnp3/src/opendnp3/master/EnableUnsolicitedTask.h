@@ -68,7 +68,7 @@ private:
 
 	virtual bool IsEnabled() const override final;
 
-	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 	
 };
 

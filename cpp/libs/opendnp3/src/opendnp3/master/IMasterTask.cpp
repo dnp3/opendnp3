@@ -29,10 +29,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration_, openpal::Logger logger_, TaskConfig config_) :
+IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger_, TaskConfig config_) :
 	pApplication(&app),
-	disabled(false),
-	expiration(expiration_),
+	state(expiration),	
 	logger(logger_),
 	config(config_)
 {}
@@ -47,7 +46,7 @@ IMasterTask::~IMasterTask()
 
 openpal::MonotonicTimestamp IMasterTask::ExpirationTime() const
 {
-	return (!disabled && this->IsEnabled()) ? expiration : MonotonicTimestamp::Max();
+	return (!state.disabled && this->IsEnabled()) ? state.expiration : MonotonicTimestamp::Max();
 }
 
 IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects, openpal::MonotonicTimestamp now)
@@ -57,11 +56,11 @@ IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& re
 	switch (result)
 	{
 		case(ResponseResult::ERROR_BAD_RESPONSE) :
-			this->OnTaskComplete(TaskCompletion::FAILURE_BAD_RESPONSE, now);		
+			this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_RESPONSE, now);		
 			this->NotifyResult(TaskCompletion::FAILURE_BAD_RESPONSE);
 			break;
 		case(ResponseResult::OK_FINAL) :
-			this->OnTaskComplete(TaskCompletion::SUCCESS, now);		
+			this->state = this->OnTaskComplete(TaskCompletion::SUCCESS, now);
 			this->NotifyResult(TaskCompletion::SUCCESS);
 			break;
 		default:
@@ -73,19 +72,19 @@ IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& re
 
 void IMasterTask::OnResponseTimeout(openpal::MonotonicTimestamp now)
 {
-	this->OnTaskComplete(TaskCompletion::FAILURE_RESPONSE_TIMEOUT, now);
+	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_RESPONSE_TIMEOUT, now);
 	this->NotifyResult(TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
 }
 
 void IMasterTask::OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {	
-	this->OnTaskComplete(TaskCompletion::FAILURE_NO_COMMS, now);
+	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NO_COMMS, now);
 	this->NotifyResult(TaskCompletion::FAILURE_NO_COMMS);
 }
 
 void IMasterTask::OnNoUser(openpal::MonotonicTimestamp now)
 {	
-	this->OnTaskComplete(TaskCompletion::FAILURE_NO_USER, now);
+	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NO_USER, now);
 	this->NotifyResult(TaskCompletion::FAILURE_NO_USER);
 }
 
@@ -109,6 +108,11 @@ void IMasterTask::OnStart()
 	pApplication->OnTaskStart(this->GetTaskType(), config.taskId);
 
 	this->Initialize();
+}
+
+void IMasterTask::Demand()
+{
+	this->state = TaskState::Immediately();
 }
 
 bool IMasterTask::ValidateSingleResponse(const APDUResponseHeader& header)

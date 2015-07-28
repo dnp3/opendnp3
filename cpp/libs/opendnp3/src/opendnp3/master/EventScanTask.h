@@ -58,7 +58,7 @@ namespace opendnp3
 
 		virtual bool IsEnabled() const override final;		
 
-		virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+		virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 		
 	};
 
