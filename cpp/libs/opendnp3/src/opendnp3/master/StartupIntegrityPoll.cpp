@@ -57,29 +57,20 @@ bool StartupIntegrityPoll::IsEnabled() const
 	return classes.HasAnyClass();
 }
 
-void StartupIntegrityPoll::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
+void StartupIntegrityPoll::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
-	{
+	{		
 		case(TaskCompletion::FAILURE_NO_COMMS) :
 			expiration = 0;
 			break;
-		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-			expiration = now.Add(retryPeriod);
+		case(TaskCompletion::SUCCESS) :
+			expiration = MonotonicTimestamp::Max();
 			break;
 		default:
+			expiration = now.Add(retryPeriod);
 			break;
 	}
-}
-
-void StartupIntegrityPoll::OnResponseError(openpal::MonotonicTimestamp now)
-{
-	expiration = now.Add(retryPeriod);
-}
-
-void StartupIntegrityPoll::OnResponseOK(openpal::MonotonicTimestamp now)
-{
-	expiration = MonotonicTimestamp::Max();
 }
 
 } //end ns

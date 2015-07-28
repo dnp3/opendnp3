@@ -46,17 +46,7 @@ IMasterTask::ResponseResult WriteTask::_OnResponse(const opendnp3::APDUResponseH
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-void WriteTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	
-}
-
-void WriteTask::OnResponseOK(openpal::MonotonicTimestamp now)
-{
-	
-}
-
-void WriteTask::OnResponseError(openpal::MonotonicTimestamp now)
+void WriteTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	
 }

@@ -55,13 +55,9 @@ private:
 
 	virtual bool IsEnabled() const override final { return true; }
 
-	virtual void OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 	
-	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
-
-	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
-
-	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;	
 
 	openpal::TimeDuration retryPeriod;	
 };

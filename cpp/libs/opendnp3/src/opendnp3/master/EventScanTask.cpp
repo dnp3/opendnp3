@@ -55,28 +55,22 @@ namespace opendnp3
 		return classes.HasEventClass();
 	}
 
-	void EventScanTask::OnResponseOK(openpal::MonotonicTimestamp)
-	{
-		expiration = MonotonicTimestamp::Max();
-	}
-
-	void EventScanTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
+	void EventScanTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 	{
 		switch (result)
-		{
-			case(TaskCompletion::FAILURE_NO_COMMS):
+		{		
+			case(TaskCompletion::FAILURE_BAD_RESPONSE) :
+				disabled = true;
 				expiration = MonotonicTimestamp::Max();
 				break;
 			case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
 				expiration = now.Add(retryPeriod);
 				break;
+			default:
+				expiration = MonotonicTimestamp::Max();
+				break;
 		}
 	}	
-
-	void EventScanTask::OnResponseError(openpal::MonotonicTimestamp)
-	{
-		disabled = true;
-		expiration = MonotonicTimestamp::Max();
-	}
+	
 	
 } //end ns

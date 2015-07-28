@@ -54,21 +54,14 @@ IMasterTask::ResponseResult EnableUnsolicitedTask::_OnResponse(const opendnp3::A
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-void EnableUnsolicitedTask::OnResponseOK(openpal::MonotonicTimestamp)
-{
-	expiration = MonotonicTimestamp::Max();
-}
-
-void EnableUnsolicitedTask::OnResponseError(openpal::MonotonicTimestamp now)
-{
-	disabled = true;
-	expiration = MonotonicTimestamp::Max();
-}
-
-void EnableUnsolicitedTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
+void EnableUnsolicitedTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
 	{
+		case(TaskCompletion::FAILURE_BAD_RESPONSE) :
+			disabled = true;
+			expiration = MonotonicTimestamp::Max();
+			break;
 		case(TaskCompletion::FAILURE_NO_COMMS):
 			expiration = 0;
 			break;
@@ -76,6 +69,7 @@ void EnableUnsolicitedTask::OnFailure(TaskCompletion result, openpal::MonotonicT
 			expiration = now.Add(retryPeriod);
 			break;
 		default:
+			expiration = MonotonicTimestamp::Max();
 			break;
 	}
 }

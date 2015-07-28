@@ -62,30 +62,18 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
-void SerialTimeSyncTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
+void SerialTimeSyncTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
 	{
-		case(TaskCompletion::FAILURE_NO_COMMS):
-			expiration = MonotonicTimestamp::Max();
-			break;
-		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-			expiration = MonotonicTimestamp::Max();
-			break;
+		case(TaskCompletion::FAILURE_BAD_RESPONSE) :
+			this->disabled = true;
+			this->expiration = MonotonicTimestamp::Max();
+			break;		
 		default:
+			expiration = MonotonicTimestamp::Max();
 			break;
 	}
-}
-
-void SerialTimeSyncTask::OnResponseError(openpal::MonotonicTimestamp)
-{
-	disabled = true;
-	expiration = MonotonicTimestamp::Max();	
-}
-
-void SerialTimeSyncTask::OnResponseOK(openpal::MonotonicTimestamp now)
-{
-	expiration = MonotonicTimestamp::Max();
 }
 
 IMasterTask::ResponseResult SerialTimeSyncTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)

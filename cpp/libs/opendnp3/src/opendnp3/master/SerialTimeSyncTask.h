@@ -50,13 +50,9 @@ private:
 
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::SERIAL_TIME_SYNC; }
 
-	virtual bool IsEnabled() const override final { return true; }
+	virtual bool IsEnabled() const override final { return true; }	
 
-	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
-
-	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
-
-	virtual void OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now) override final;	
+	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;	
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 

@@ -145,25 +145,11 @@ public:
 	protected:
 
 	// called during OnStart() to initialize any state for a new run
-	virtual void Initialize() {}
-
-	// called when _OnResponse() returns ERROR. Use this to reconfigure the state.
-	virtual void OnResponseError(openpal::MonotonicTimestamp now) = 0;
-
-	// called when _OnResponse() returns OK_FINAL. Use this to reconfigure the state.
-	virtual void OnResponseOK(openpal::MonotonicTimestamp now) = 0;
+	virtual void Initialize() {}		
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) = 0;
 
-	virtual void OnFailure(TaskCompletion completion, openpal::MonotonicTimestamp now) {}
-
-	/*
-	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) = 0;
-
-	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) = 0;
-
-	virtual void _OnNoUser(openpal::MonotonicTimestamp now) = 0;
-	*/
+	virtual void OnTaskComplete(TaskCompletion completion, openpal::MonotonicTimestamp now) {}
 
 	virtual bool IsEnabled() const = 0;
 

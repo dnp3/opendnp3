@@ -66,16 +66,14 @@ IMasterTask::ResponseResult ClearRestartTask::_OnResponse(const APDUResponseHead
 	}
 }
 
-void ClearRestartTask::OnResponseError(openpal::MonotonicTimestamp now)
-{
-	disabled = true;
-	expiration = MonotonicTimestamp::Max();
-}
-
-void ClearRestartTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
+void ClearRestartTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
 	{
+		case(TaskCompletion::FAILURE_BAD_RESPONSE):
+			disabled = true;
+			expiration = MonotonicTimestamp::Max();
+			break;
 		case(TaskCompletion::FAILURE_NO_COMMS):
 			expiration = MonotonicTimestamp::Max();
 			break;
@@ -83,13 +81,9 @@ void ClearRestartTask::OnFailure(TaskCompletion result, openpal::MonotonicTimest
 			expiration = now.Add(retryPeriod);
 			break;
 		default:
+			expiration = MonotonicTimestamp::Max();
 			break;
 	}
-}
-
-void ClearRestartTask::OnResponseOK(openpal::MonotonicTimestamp now)
-{
-	expiration = MonotonicTimestamp::Max();
 }
 
 } //end ns

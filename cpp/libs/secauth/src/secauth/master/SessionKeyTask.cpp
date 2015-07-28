@@ -90,27 +90,18 @@ IMasterTask::ResponseResult SessionKeyTask::_OnResponse(const APDUResponseHeader
 	}
 }
 
-void SessionKeyTask::OnResponseError(openpal::MonotonicTimestamp now)
-{
-	expiration = now.Add(this->retryPeriod);
-}
-
-void SessionKeyTask::OnResponseOK(openpal::MonotonicTimestamp now)
-{
-	expiration = now.Add(this->changeInterval);
-}
-
-void SessionKeyTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
+void SessionKeyTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
 	{
+		case(TaskCompletion::SUCCESS) :
+			expiration = now.Add(this->changeInterval);
+			break;
 		case(TaskCompletion::FAILURE_NO_COMMS):
 			expiration = 0;
-			break;
-		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
-			expiration = now.Add(this->retryPeriod);
-			break;
+			break;		
 		default:
+			expiration = now.Add(this->retryPeriod);
 			break;
 	}
 }

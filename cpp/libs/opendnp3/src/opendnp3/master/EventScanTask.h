@@ -56,13 +56,9 @@ namespace opendnp3
 
 		virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::AUTO_EVENT_SCAN; }
 
-		virtual bool IsEnabled() const override final;
+		virtual bool IsEnabled() const override final;		
 
-		virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
-
-		virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
-
-		virtual void OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+		virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 		
 	};
 

@@ -32,6 +32,7 @@ namespace opendnp3
 
 CommandTask::CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, const TaskConfig& config, openpal::Logger logger) :
 	IMasterTask(app, MonotonicTimestamp::Min(), logger, config),
+	statusResult(CommandStatus::UNDEFINED),
 	pCommandCallback(&callback),
 	pSequence(pSequence_)
 {
@@ -75,38 +76,22 @@ IMasterTask::ResponseResult CommandTask::_OnResponse(const APDUResponseHeader& h
 	return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-void CommandTask::OnResponseError(openpal::MonotonicTimestamp now)
+void CommandTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	this->Callback(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE));
+	switch (result)
+	{
+		case(TaskCompletion::SUCCESS):
+			this->Callback(CommandResponse::OK(this->statusResult));
+			break;
+		default:
+			this->Callback(CommandResponse(result));
+	}
+	
 }
-
-void CommandTask::OnResponseOK(openpal::MonotonicTimestamp now)
-{
-	this->Callback(response);
-}
-
-void CommandTask::OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	this->Callback(CommandResponse(result));
-}
-
-/*
-void CommandTask::_OnResponseTimeout(openpal::MonotonicTimestamp)
-{
-	this->Callback(CommandResponse(TaskCompletion::FAILURE_RESPONSE_TIMEOUT));
-}
-
-void CommandTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
-{	
-	this->Callback(CommandResponse::NoResponse(TaskCompletion::FAILURE_NO_COMMS));
-}
-
-void CommandTask::_OnNoUser(openpal::MonotonicTimestamp now)
-*/
 
 void CommandTask::Initialize()
 {
-	response = CommandResponse::NoResponse(TaskCompletion::FAILURE_BAD_RESPONSE);
+	statusResult = CommandStatus::UNDEFINED;
 }
 
 IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::ReadBufferView& objects)
@@ -114,7 +99,9 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::ReadBuff
 	auto result = APDUParser::Parse(objects, *pSequence.get(), &logger);
 	if(result == ParseResult::OK)
 	{
-		response = pSequence->Validate();
+		auto response = pSequence->Validate();
+
+		this->statusResult = response.GetStatus();
 
 		if(functionCodes.empty())
 		{						

@@ -52,13 +52,9 @@ private:
 
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::ASSIGN_CLASS; }
 
-	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;	
 
-	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
-
-	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
-
-	virtual void OnFailure(TaskCompletion result, openpal::MonotonicTimestamp now) override final;	
+	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;	
 
 	virtual bool IsEnabled() const override final;
 	
