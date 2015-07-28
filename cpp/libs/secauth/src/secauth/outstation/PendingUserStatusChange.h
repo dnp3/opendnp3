@@ -43,7 +43,7 @@ public:
 		CHANGE
 	};
 
-	PendingUserStatusChange::PendingUserStatusChange();
+	PendingUserStatusChange();
 
 	void SetUserStatusChange(
 		opendnp3::KeyChangeMethod keyChangeMethod,
