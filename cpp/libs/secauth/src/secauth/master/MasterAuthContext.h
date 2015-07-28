@@ -57,6 +57,8 @@ public:
 
 	virtual bool CanRun(const opendnp3::IMasterTask& task) override final;
 
+	virtual bool MeetsUserRequirements(const opendnp3::IMasterTask& task) override final;
+
 	virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) override final;
 
 	// --- public helpers ----

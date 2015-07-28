@@ -131,6 +131,16 @@ bool MAuthContext::CanRun(const opendnp3::IMasterTask& task)
 	return status == KeyStatus::OK;
 }
 
+bool MAuthContext::MeetsUserRequirements(const IMasterTask& task)
+{
+	if (task.IsAuthTask())
+	{
+		return true;
+	}
+
+	return security.userDB.UserExists(task.GetUser());
+}
+
 void MAuthContext::RecordLastRequest(const openpal::ReadBufferView& apdu)
 {
 	security.lastRequest = apdu;

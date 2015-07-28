@@ -23,6 +23,7 @@
 #include "fixtures/MasterSecAuthFixture.h"
 
 #include <dnp3mocks/APDUHexBuilders.h>
+#include <dnp3mocks/MockCommandCallback.h>
 
 #include <testlib/HexConversions.h>
 
@@ -134,4 +135,21 @@ TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))
 	REQUIRE(fixture.lower.PopWriteAsHex() == "");	
 }
 
+TEST_CASE(SUITE("Tasks for non-existant users are immediately failed"))
+{
+	MasterParams params;
+	User user = User::Default();
+	MasterSecAuthFixture fixture(params);
+	fixture.ConfigureUser(user);
+
+	fixture.context.OnLowerLayerUp();
+
+	MockCommandCallback callback;
+	/// start a command request on some user that doesn't exist
+	fixture.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::LATCH_ON), 1, callback, TaskConfig(TaskId::Undefined(), nullptr, User(42)));
+
+	REQUIRE(callback.responses.size() == 1);
+	auto result = callback.responses.front();
+	REQUIRE(result.GetResult() == TaskCompletion::FAILURE_NO_USER);
+}
 

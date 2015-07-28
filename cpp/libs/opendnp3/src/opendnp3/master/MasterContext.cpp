@@ -454,7 +454,7 @@ namespace opendnp3
 			if (this->MeetsUserRequirements(*pTask))
 			{
 				this->scheduler.Schedule(std::move(task));
-				this->PostCheckForTask();
+				this->CheckForTask();
 			}
 			else
 			{

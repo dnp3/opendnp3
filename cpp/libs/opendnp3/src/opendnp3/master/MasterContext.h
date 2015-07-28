@@ -219,29 +219,13 @@ namespace opendnp3
 	template <class T>
 	void MContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
 	{
-		if (this->isOnline)
-		{
-			this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, *pApplication, callback, config, serializer, logger)));
-			this->CheckForTask();
-		}
-		else
-		{
-			callback.OnComplete(CommandResponse(TaskCompletion::FAILURE_NO_COMMS));
-		}
+		this->ScheduleAdhocTask(CommandTask::FSelectAndOperate(command, index, *pApplication, callback, config, serializer, logger));
 	}
 
 	template <class T>
 	void MContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
 	{
-		if (this->isOnline)
-		{
-			this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, *pApplication, callback, config, serializer, logger)));
-			this->CheckForTask();
-		}
-		else
-		{
-			callback.OnComplete(CommandResponse(TaskCompletion::FAILURE_NO_COMMS));
-		}
+		this->ScheduleAdhocTask(CommandTask::FDirectOperate(command, index, *pApplication, callback, config, serializer, logger));
 	}
 }
 
