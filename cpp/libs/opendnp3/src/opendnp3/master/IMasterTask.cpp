@@ -30,9 +30,9 @@ namespace opendnp3
 {
 
 IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger_, TaskConfig config_) :
-	pApplication(&app),
-	state(expiration),	
+	pApplication(&app),		
 	logger(logger_),
+	state(expiration),
 	config(config_)
 {}
 
