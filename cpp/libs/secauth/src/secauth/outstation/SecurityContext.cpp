@@ -19,15 +19,13 @@
  * to you under the terms of the License.
  */
 
-#include "SecurityState.h"
-
-#include "OAuthStates.h"
+#include "SecurityContext.h"
 
 using namespace opendnp3;
 
 namespace secauth
 {
-	SecurityState::SecurityState(
+	SecurityContext::SecurityContext(
 			const OutstationParams& params,
 			const OutstationAuthSettings& settings_, 
 			openpal::Logger logger, 
@@ -35,14 +33,14 @@ namespace secauth
 			IOutstationApplicationSA& application,
 			openpal::ICryptoProvider& crypto) :
 
+		state(SecurityState::IDLE),
 		settings(settings_),
 		challenge(settings.challengeSize, params.maxRxFragSize),
 		challengeTimer(executor),
 		hmac(crypto, settings.hmacMode),
 		deferred(params.maxRxFragSize),				
 		pApplication(&application),
-		pCrypto(&crypto),		
-		pState(OAuthStateIdle::Instance()),
+		pCrypto(&crypto),				
 		keyChangeState(1, 4, logger, crypto),
 		sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount),
 		txBuffer(params.maxTxFragSize)

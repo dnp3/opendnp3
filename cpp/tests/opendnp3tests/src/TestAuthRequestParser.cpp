@@ -29,7 +29,6 @@
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/parsing/APDUParser.h>
-#include <secauth/outstation/AuthRequestHandler.h>
 
 #include <asiodnp3/ConsoleLogger.h>
 
@@ -41,7 +40,6 @@ using namespace openpal;
 using namespace opendnp3;
 using namespace asiodnp3;
 using namespace testlib;
-using namespace secauth;
 
 #define SUITE(name) "AuthRequestParserTestSuite - " name
 

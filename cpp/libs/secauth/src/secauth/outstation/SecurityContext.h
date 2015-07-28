@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SECURITYSTATE_H
-#define SECAUTH_SECURITYSTATE_H
+#ifndef SECAUTH_SECURITYCONTEXT_H
+#define SECAUTH_SECURITYCONTEXT_H
 
 #include <opendnp3/gen/KeyStatus.h>
 #include <opendnp3/app/TxBuffer.h>
@@ -46,13 +46,17 @@
 namespace secauth
 {
 
-class IOAuthState;
+enum class SecurityState
+{
+	IDLE,
+	WAIT_FOR_REPLY
+};
 
-class SecurityState
+class SecurityContext
 {
 	public:
 
-	SecurityState(
+	SecurityContext(
 		const opendnp3::OutstationParams& params,
 		const OutstationAuthSettings& settings, 
 		openpal::Logger logger, 
@@ -61,6 +65,7 @@ class SecurityState
 		openpal::ICryptoProvider& crypto
 	);	
 	
+	SecurityState state;
 	OutstationAuthSettings settings;
 	ChallengeState challenge;
 	openpal::TimerRef challengeTimer;
@@ -68,8 +73,7 @@ class SecurityState
 	DeferredASDU deferred;		
 	IOutstationApplicationSA* pApplication;
 	OutstationUserDatabase userDB;
-	openpal::ICryptoProvider* pCrypto;	
-	IOAuthState* pState;
+	openpal::ICryptoProvider* pCrypto;		
 	KeyChangeState keyChangeState;
 	SessionStore sessions;
 	opendnp3::TxBuffer txBuffer;

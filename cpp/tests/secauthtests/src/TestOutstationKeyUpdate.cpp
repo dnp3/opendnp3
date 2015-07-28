@@ -84,8 +84,8 @@ TEST_CASE(SUITE("Rejects user status change with incorrect HMAC"))
 	
 	
 	REQUIRE(fixture.SendAndReceive(userStatusChangeRequest) == response);
-	REQUIRE(fixture.context.sstate.stats.GetValue(SecurityStatIndex::AUTHENTICATION_FAILURES) == 1);
-	REQUIRE(fixture.context.sstate.otherStats.badStatusChangeSeqNum == 0);
+	REQUIRE(fixture.context.security.stats.GetValue(SecurityStatIndex::AUTHENTICATION_FAILURES) == 1);
+	REQUIRE(fixture.context.security.otherStats.badStatusChangeSeqNum == 0);
 }
 
 TEST_CASE(SUITE("Rejects authenticated message w/ bad SCSN"))
@@ -113,8 +113,8 @@ TEST_CASE(SUITE("Rejects authenticated message w/ bad SCSN"))
 	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::INVALID_CERTIFICATION_DATA, DNPTime(0), "");
 	
 	REQUIRE(fixture.SendAndReceive(userStatusChangeRequest) == response);
-	REQUIRE(fixture.context.sstate.stats.GetValue(SecurityStatIndex::AUTHENTICATION_FAILURES) == 0);
-	REQUIRE(fixture.context.sstate.otherStats.badStatusChangeSeqNum == 1);
+	REQUIRE(fixture.context.security.stats.GetValue(SecurityStatIndex::AUTHENTICATION_FAILURES) == 0);
+	REQUIRE(fixture.context.security.otherStats.badStatusChangeSeqNum == 1);
 }
 
 TEST_CASE(SUITE("Accepts authenticated message w/ good SCSN"))
@@ -147,7 +147,7 @@ TEST_CASE(SUITE("Accepts authenticated message w/ good SCSN"))
 	REQUIRE(fixture.application.userStatusSeqNums.size() == 1);
 	REQUIRE(fixture.application.userStatusSeqNums.front() == 3);	
 
-	REQUIRE(response == hex::EmptyResponse(seq, IINBit::DEVICE_RESTART));
+	REQUIRE(response == "C0 83 80 00");
 }
 
 

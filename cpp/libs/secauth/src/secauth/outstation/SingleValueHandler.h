@@ -18,28 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_IAUTHREQUESTHANDLER_H
-#define SECAUTH_IAUTHREQUESTHANDLER_H
+#ifndef SECAUTH_SINGLE_VALUE_HANDLER_H
+#define SECAUTH_SINGLE_VALUE_HANDLER_H
 
-#include <opendnp3/app/APDUHeader.h>
-#include <opendnp3/outstation/OutstationContext.h>
-
-#include <opendnp3/objects/Group120.h>
+#include <opendnp3/app/parsing/IAPDUHandler.h>
 
 namespace secauth
 {
 
-// handles auth request types
-class IAuthRequestHandler
+template <class ValueType, opendnp3::GroupVariation GV, opendnp3::QualifierCode QC>
+class SingleValueHandler: public opendnp3::IAPDUHandler, private openpal::Uncopyable
 {
 	public:
 
-		virtual void OnAuthChallenge(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
-		virtual void OnAuthReply(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) = 0;
-		virtual void OnRequestKeyStatus(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) = 0;
-		virtual void OnChangeSessionKeys(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
-		virtual void OnUserStatusChange(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change) = 0;
+		SingleValueHandler() : m_valid(false)
+		{}	
+
+		ValueType value;
+
+		bool IsValid() const
+		{			
+			return m_valid;
+		}
+		
+		virtual bool IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc) override final
+		{
+			return (headerCount == 0) && (gv == GV) && (qc == QC);
+		}		
+
+	protected:
+		bool m_valid;
+			
 };
+
 
 }
 

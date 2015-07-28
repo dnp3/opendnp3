@@ -29,16 +29,18 @@
 #include "opendnp3/LogLevels.h"
 
 #include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/app/parsing/ObjectHeaderParser.h"
 #include "opendnp3/app/QualityFlags.h"
 #include "opendnp3/outstation/OutstationContext.h"
+#include "opendnp3/outstation/IINHelpers.h"
 
 
 #include "secauth/AggressiveModeParser.h"
 #include "secauth/outstation/KeyUnwrap.h"
-#include "secauth/outstation/OAuthStates.h"
+#include "secauth/outstation/SimpleRequestHandlers.h"
+#include "secauth/outstation/OutstationErrorCodes.h"
 #include "secauth/Crypto.h"
 
-#include "AuthRequestHandler.h"
 #include "IOAuthState.h"
 #include "secauth/StatThresholds.h"
 
@@ -59,7 +61,7 @@ DatabaseTemplate OAuthContext::EnableSecStats(const DatabaseTemplate& dbTemplate
 void OAuthContext::ConfigureSecStats(const StatThresholds& thresholds)
 {
 	auto stats = this->database.buffers.buffers.GetArrayView<SecurityStat>();
-	SecurityStat zero(opendnp3::flags::ONLINE, sstate.settings.assocId, 0, DNPTime(0));
+	SecurityStat zero(opendnp3::flags::ONLINE, security.settings.assocId, 0, DNPTime(0));
 
 	for (uint16_t i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
 	{		
@@ -80,19 +82,19 @@ OAuthContext::OAuthContext(
 			openpal::ICryptoProvider& crypto
 		) :
 		OContext(config, EnableSecStats(dbTemplate), logger, executor, lower, commandHandler, application),
-		sstate(config.params, settings, logger, executor, application, crypto)
+		security(config.params, settings, logger, executor, application, crypto)
 {
-	this->ConfigureSecStats(sstate.settings.statThresholds);	
+	this->ConfigureSecStats(security.settings.statThresholds);
 }
 
 void OAuthContext::AddUser(opendnp3::User user, const std::string& userName, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
 {
-	sstate.userDB.AddUser(user, userName, key, permissions);
+	security.userDB.AddUser(user, userName, key, permissions);
 }
 
 void OAuthContext::ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key)
 {
-	sstate.credentials.Configure(statusChangeSeqNumber, key);
+	security.credentials.Configure(statusChangeSeqNumber, key);
 }
 
 bool OAuthContext::OnLowerLayerDown()
@@ -101,8 +103,9 @@ bool OAuthContext::OnLowerLayerDown()
 
 	if (ret)
 	{
-		this->sstate.pState = OAuthStateIdle::Instance();
-		this->sstate.sessions.Clear();
+		this->security.state = SecurityState::IDLE;
+		this->security.challengeTimer.Cancel();
+		this->security.sessions.Clear();
 	}
 
 	return ret;
@@ -110,7 +113,7 @@ bool OAuthContext::OnLowerLayerDown()
 
 void OAuthContext::CheckForTaskStart()
 {
-	if (this->CanTransmit() && sstate.deferred.IsSet())
+	if (this->CanTransmit() && security.deferred.IsSet())
 	{
 		auto handler = [this](const openpal::ReadBufferView& apdu, const APDUHeader& header, const ReadBufferView& objects)
 		{
@@ -118,7 +121,7 @@ void OAuthContext::CheckForTaskStart()
 			return true;
 		};
 
-		sstate.deferred.Process(handler);
+		security.deferred.Process(handler);
 	}
 
 	OContext::CheckForTaskStart();
@@ -128,134 +131,401 @@ void OAuthContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, cons
 {	
 	if (this->CanTransmit())
 	{
-		this->ProcessAuthAPDU(apdu, header, objects);
+		if (this->ProcessAuthAPDU(apdu, header, objects) == APDUResult::DISCARDED)
+		{
+			this->Increment(SecurityStatIndex::DISCARED_MESSAGES);
+		}
 	}
 	else
 	{
-		sstate.deferred.SetASDU(header, apdu);
+		security.deferred.SetASDU(header, apdu);
 	}
 }
 
-void OAuthContext::Increment(SecurityStatIndex index)
-{
-	auto count = this->sstate.stats.Increment(index);
-
-	DNPTime time(this->sstate.pApplication->Now().msSinceEpoch);
-
-	SecurityStat stat(opendnp3::flags::ONLINE, this->sstate.settings.assocId, count, time);
-
-	this->database.Update(stat, static_cast<uint16_t>(index));
-}
-
-void OAuthContext::ProcessAuthAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OAuthContext::APDUResult OAuthContext::ProcessAuthAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	switch (header.function)
 	{
-	case(FunctionCode::AUTH_REQUEST) :
-		this->OnAuthRequest(apdu, header, objects);
-		break;
-	case(FunctionCode::AUTH_RESPONSE) :
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "AuthResponse not valid for outstation");
-		break;
-	case(FunctionCode::AUTH_REQUEST_NO_ACK) :
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "AuthRequestNoAck not supported");
-		break;
-	default:
-		this->OnUnknownRequest(apdu, header, objects);
-		break;
+		case(FunctionCode::AUTH_REQUEST) :
+			return this->ProcessAuthRequest(apdu, header, objects);
+		case(FunctionCode::AUTH_RESPONSE) :
+			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "AuthResponse not valid for outstation");
+			return APDUResult::DISCARDED;
+		case(FunctionCode::AUTH_REQUEST_NO_ACK) :
+			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "AuthRequestNoAck not supported");
+			return APDUResult::DISCARDED;
+		default:
+			return this->ProcessNormalFunction(apdu, header, objects);			
 	}
 }
 
-void OAuthContext::OnAuthRequest(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OAuthContext::APDUResult OAuthContext::ProcessAuthRequest(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (header.control.UNS)
 	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring AuthRequest with UNS bit set");
-	}
-	else
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Discarding AuthRequest with UNS bit set");
+		return APDUResult::DISCARDED;
+	}	
+	
+	// the AUTH_REQUEST function code is massively overloaded and does many different things, which makes it
+	// particularly hard to handle with a stream parser like the one opendnp3 uses. You only don't respond to 
+	// every message you receive.
+	//
+	// We can, however, figure out the intent of the request by examing the first object header. This makes 
+	// the actual parsing much easier to constrain with dedicated handlers for each semantic path.	
+
+	GroupVariation gv = GroupVariation::UNKNOWN;
+	if (!ReadFirstGroupVariation(objects, gv))
 	{
-		AuthRequestHandler handler(apdu, header, *this, this->logger);
-		APDUParser::Parse(objects, handler, &this->logger);		
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Discarding AuthRequest w/ empty or malformed first object header");
+		return APDUResult::DISCARDED;
+	}
+
+	switch (gv)
+	{
+		case(GroupVariation::Group120Var2) : // authentication reply
+			return this->ProcessChallengeReply(apdu, header, objects);
+		case(GroupVariation::Group120Var4) :
+			return this->ProcessRequestKeyStatus(apdu, header, objects);
+		case(GroupVariation::Group120Var6) :
+			return this->ProcessChangeSessionKeys(apdu, header, objects);
+		case(GroupVariation::Group120Var10) :
+			return this->ProcessUserStatusChange(apdu, header, objects);
+		default:
+			// this function/object combination not supported
+			return APDUResult::DISCARDED;
 	}
 }
 
-void OAuthContext::OnUnknownRequest(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+
+
+OAuthContext::APDUResult OAuthContext::ProcessChallengeReply(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	/// We have to determine if this is a regular request or an aggressive mode request
-	AggModeResult result = AggressiveModeParser::IsAggressiveMode(objects, &this->logger);
-	if (result.result == ParseResult::OK)
+	if (security.state == SecurityState::IDLE)
+	{		
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Discarding unexpected challenge reply");
+		return APDUResult::DISCARDED;
+	}
+
+	// we're waiting for a response so we need to authenticate it
+	ChallengeReplyHandler handler;
+	auto result = APDUParser::Parse(objects, handler, this->logger);
+
+	if (!(result == ParseResult::OK && handler.IsValid()))
 	{
-		if (result.isAggMode)
-		{
-			// it's an aggressive mode request
-			sstate.pState = sstate.pState->OnAggModeRequest(*this, header, objects, result.request);
-		}
-		else
-		{
-			// it's a normal DNP3 request
-			sstate.pState = sstate.pState->OnRegularRequest(*this, apdu, header, objects);
-		}
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Discarding malformed challenge reply");
+		return APDUResult::DISCARDED;
+	}
+
+	auto& reply = handler.value;
+
+	// no matter what happens with the autentication at this point, we return to the Idle state
+	this->security.state = SecurityState::IDLE;
+	this->security.challengeTimer.Cancel();
+
+	// first look-up the session for the specified user	
+	User user(reply.userNum);
+	SessionKeysView keys;
+
+	if (security.sessions.TryGetSessionKeys(user, keys) != KeyStatus::OK)
+	{
+		++(this->security.otherStats.authFailuresDueToExpiredKeys);
+		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "No valid session keys for user %u", user.GetId());
+		return this->TryRespondWithAuthError(header.control.SEQ, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);		
+	}
+	
+	if (!security.challenge.VerifyAuthenticity(keys.controlKey, security.hmac, reply.hmacValue, this->logger))
+	{
+		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Authentication failure for user %u", user.GetId());
+		return this->TryRespondWithAuthError(header.control.SEQ, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
+	}
+
+	// this increments both the security statistic and the count on the key
+	this->IncrementSessionAuthCount(user);
+
+	auto criticalHeader = security.challenge.GetCriticalHeader();
+	
+	if (!security.userDB.IsAuthorized(user, criticalHeader.function))
+	{
+		this->Increment(SecurityStatIndex::AUTHORIZATION_FAILURES);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Verified user %u is not authorized for function %s", user.GetId(), FunctionCodeToString(criticalHeader.function));
+		return this->TryRespondWithAuthError(header.control.SEQ, reply.challengeSeqNum, user, AuthErrorCode::AUTHORIZATION_FAILED);
+	}
+
+	auto asdu = security.challenge.GetCriticalASDU();
+	
+	this->ProcessAPDU(asdu, criticalHeader, asdu.Skip(APDU_REQUEST_HEADER_SIZE)); // process as normal
+	return APDUResult::PROCESSED;
+}
+
+OAuthContext::APDUResult OAuthContext::ProcessRequestKeyStatus(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	if (this->security.state == SecurityState::WAIT_FOR_REPLY)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Discarding key status request while waiting for challenge reply");
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	RequestKeyStatusHandler handler;
+	auto result = APDUParser::Parse(objects, handler, this->logger);
+	if (!(result == ParseResult::OK && handler.IsValid()))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Discarding bad key status request");
+		return APDUResult::DISCARDED;
+	}
+
+	User user(handler.value.userNum);
+	UpdateKeyMode type;
+	if (!security.userDB.GetUpdateKeyType(user, type))
+	{		
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Discarding key status request for unknown user: %u", user.GetId());
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	auto keyStatus = security.sessions.GetSessionKeyStatus(user);
+
+	auto response = this->StartAuthResponse(header.control.SEQ);
+	auto writer = response.GetWriter();
+	auto hmacType = HMACType::NO_MAC_VALUE;
+
+	auto success = security.keyChangeState.FormatKeyStatusResponse(
+		writer,
+		user,
+		hmacType,
+		Crypto::ToKeyWrapAlgorithm(type),
+		keyStatus,
+		ReadBufferView::Empty()
+	);
+
+	if (!success)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to format key status response");
+		return APDUResult::DISCARDED;
+	}
+	
+	this->BeginTx(response.ToReadOnly());
+	return APDUResult::PROCESSED;
+}
+
+OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	// TODO - this isn't quite right, but it's harmless for now, and possibly better behavior
+	if (security.state == SecurityState::WAIT_FOR_REPLY)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Discarding session key change request while waiting for challenge response");
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	// First we need to determine if this is valid or not
+	ChangeSessionKeysHandler handler;
+	auto result = APDUParser::Parse(objects, handler, this->logger);
+	if (!(result == ParseResult::OK && handler.IsValid()))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Discarding bad session key change request");		
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;		
+	}
+
+	User user(handler.value.userNum);
+
+	if (!security.keyChangeState.CheckUserAndKSQMatches(user, handler.value.keyChangeSeqNum))
+	{
+		return this->TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
+	}
+
+	UpdateKeyMode updateKeyType;
+	ReadBufferView updateKey;
+
+	if (!security.userDB.GetUpdateKey(user, updateKeyType, updateKey))
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring session key change request for unknown user %u", user.GetId());
+		return TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
+	}
+
+	UnwrappedKeyData unwrapped;
+	KeyUnwrapBuffer buffer;
+
+	auto unwrapSuccess = buffer.Unwrap(
+		GetKeyWrapAlgo(*security.pCrypto, updateKeyType),
+		updateKey,
+		handler.value.keyWrapData,
+		unwrapped,
+		&this->logger
+	);
+
+	if (!unwrapSuccess)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Failed to unwrap key data");
+		return this->TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);		
+	}
+
+	if (!security.keyChangeState.EqualsLastStatusResponse(unwrapped.keyStatusObject))
+	{
+		return this->TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);		
+	}
+
+	// At this point, we've successfully authenticated the session key change for this user
+	// We compute the HMAC based on the full ASDU and the monitoring direction session key		
+
+	std::error_code ec;
+	auto hmac = security.hmac.Compute(unwrapped.keys.monitorKey, { apdu }, ec);
+
+	if (ec)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());
+		return APDUResult::DISCARDED;
+	}
+
+	security.sessions.SetSessionKeys(user, unwrapped.keys);
+
+	auto response = this->StartAuthResponse(header.control.SEQ);
+	
+	auto writer = response.GetWriter();
+	auto hmacType = security.hmac.GetType();
+
+	if (!security.keyChangeState.FormatKeyStatusResponse(
+					writer,
+					user,
+					hmacType,
+					Crypto::ToKeyWrapAlgorithm(updateKeyType),
+					KeyStatus::OK,
+					hmac)
+		)
+	{
+		return APDUResult::DISCARDED;
+	}
+
+
+	this->BeginTx(response.ToReadOnly());
+	return APDUResult::PROCESSED;
+}
+
+OAuthContext::APDUResult OAuthContext::ProcessNormalFunction(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{	
+	const bool IS_CRITICAL = security.settings.functions.IsCritical(header.function);
+
+	if (security.settings.functions.IsCritical(header.function))
+	{
+		this->Increment(SecurityStatIndex::CRITICAL_MESSAGES_RX);
+	}
+
+	if (security.state == SecurityState::WAIT_FOR_REPLY)
+	{
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+	
+	if (!IS_CRITICAL)
+	{
+		// no authentication required, just process it
+		this->ProcessAPDU(apdu, header, objects);
+		return APDUResult::PROCESSED;
+	}
+
+
+	if (!this->TransmitChallenge(apdu, header)) // this could fail because of the PRNG
+	{
+		return APDUResult::DISCARDED;
+	}
+
+	this->security.state = SecurityState::WAIT_FOR_REPLY;	
+
+	security.challengeTimer.Restart(security.settings.challengeTimeout, [this]() { this->OnChallengeTimeout(); });
+	
+	return APDUResult::PROCESSED;
+}
+
+OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	if (security.state == SecurityState::WAIT_FOR_REPLY)
+	{		
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	UserStatusChangeHandler handler;
+	auto result = APDUParser::Parse(objects, handler, this->logger);
+	if (!(result == ParseResult::OK && handler.IsValid()))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Discarding bad user status change request");
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	if (!this->AuthenticateUserStatusChange(header, handler.value))
+	{
+		return APDUResult::DISCARDED;
+	}
+	
+	// only supported key change method for the time being
+	if (handler.value.keyChangeMethod != KeyChangeMethod::AES_256_SHA256_HMAC)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported key change method: %s", KeyChangeMethodToString(handler.value.keyChangeMethod));
+		return this->TryRespondWithAuthError(header.control.SEQ, handler.value.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);		
+	}
+
+	switch (handler.value.userOperation)
+	{
+		case(UserOperation::OP_ADD) :
+			return this->ProcessUserStatusChange_Add(header, handler.value);			
+		case(UserOperation::OP_CHANGE) :
+			return this->ProcessUserStatusChange_Change(header, handler.value);			
+		case(UserOperation::OP_DELETE) :
+			return this->ProcessUserStatusChange_Delete(header, handler.value);			
+		default:
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported user operation: %s", UserOperationToString(handler.value.userOperation));
+			//  TODO just ignore this for now
+			return APDUResult::DISCARDED;
 	}	
 }
 
-opendnp3::APDUResponse OAuthContext::StartAuthResponse()
+OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Add(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
 {
-	auto response = sstate.txBuffer.Start();
-	response.SetIIN(this->GetResponseIIN());
-	return response;
+	auto expirationTimestamp = this->pExecutor->GetTime().Add(TimeDuration::Days(change.userRoleExpDays));
+
+	std::string userName;
+	const uint8_t* buffer = change.userName;
+	userName.append(reinterpret_cast<const char*>(buffer), change.userName.Size());
+
+	this->security.statusChange.SetUserStatusChange(
+		change.keyChangeMethod,
+		PendingUserStatusChange::Operation::ADD,
+		change.statusChangeSeqNum,
+		UserRoleFromType(change.userRole),
+		expirationTimestamp,
+		userName
+	);
+
+	auto response = this->StartAuthResponse(header.control.SEQ);	
+	this->BeginTx(response.ToReadOnly());
+	return APDUResult::PROCESSED;
 }
 
-void OAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var1& challenge)
-{	
-	sstate.pState = sstate.pState->OnAuthChallenge(*this, header, challenge);
-}
-
-void OAuthContext::OnAuthReply(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var2& reply)
-{	
-	sstate.pState = sstate.pState->OnAuthReply(*this, header, reply);
-}
-
-void OAuthContext::OnRequestKeyStatus(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var4& status)
-{	
-	sstate.pState = sstate.pState->OnRequestKeyStatus(*this, header, status);
-}
-
-void OAuthContext::OnChangeSessionKeys(const openpal::ReadBufferView& apdu, const APDUHeader& header, const Group120Var6& change)
+OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Change(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
 {
-	sstate.pState = sstate.pState->OnChangeSessionKeys(*this, apdu, header, change);
+	SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "user change not implemented");
+	return this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);	
 }
 
-void OAuthContext::OnUserStatusChange(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
+OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
 {
-	if (!this->AuthenticateUserStatusChange(header, change))
-	{
-		return;
-	}
+	SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "user deletion not implemented");
+	return this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);	
+}
 
-	// only supported key change method for the time being
-	if (change.keyChangeMethod != KeyChangeMethod::AES_256_SHA256_HMAC)
+void OAuthContext::OnChallengeTimeout()
+{
+	if (this->security.state == SecurityState::WAIT_FOR_REPLY)
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported key change method: %s", KeyChangeMethodToString(change.keyChangeMethod));
-		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
-		return;
-	}
-
-	switch (change.userOperation)
-	{
-		case(UserOperation::OP_ADD) :
-			this->ProcessUserStatusChange_Add(header, change);
-			break;
-		case(UserOperation::OP_CHANGE) :
-			this->ProcessUserStatusChange_Change(header, change);
-			break;
-		case(UserOperation::OP_DELETE) :
-			this->ProcessUserStatusChange_Delete(header, change);
-			break;
-		default:
-			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
-			//  TODO just ignore this for now			
-			return;
-	}
+		this->security.state = SecurityState::IDLE;
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Timeout while waiting for challenge response");
+		this->Increment(SecurityStatIndex::DISCARED_MESSAGES);
+	}	
 }
 
 bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
@@ -264,10 +534,10 @@ bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& head
 	uint32_t statusChangeSeq = 0;
 
 	/// check if the outstation is even configured for user status changes
-	if (!sstate.credentials.GetSymmetricKey(statusChangeSeq, key))
+	if (!security.credentials.GetSymmetricKey(statusChangeSeq, key))
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Cannot process user status change because no authority credentials have been defined");
-		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
+		this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
 		return false;
 	}
 
@@ -300,7 +570,7 @@ bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& head
 
 	std::error_code ec;
 	auto dest = hmacBuffer.GetWriteBuffer();
-	auto output = this->sstate.pCrypto->GetSHA256HMAC().Calculate(key, { fields.ToReadOnly(), change.userName }, dest, ec);
+	auto output = this->security.pCrypto->GetSHA256HMAC().Calculate(key, { fields.ToReadOnly(), change.userName }, dest, ec);
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating HMAC value: %s", ec.message().c_str());
@@ -310,7 +580,7 @@ bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& head
 	if (!openpal::SecureEquals(output, change.certificationData))
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
-		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::INVALID_CERTIFICATION_DATA);
+		this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::INVALID_CERTIFICATION_DATA);
 		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
 		return false;
 	}
@@ -318,185 +588,29 @@ bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& head
 	if (change.statusChangeSeqNum < statusChangeSeq)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
-		this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::INVALID_CERTIFICATION_DATA); // TODO - Is this the right error code?
+		this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::INVALID_CERTIFICATION_DATA); // TODO - Is this the right error code?
 		// TODO update an official stats?
-		this->sstate.otherStats.badStatusChangeSeqNum++;
+		this->security.otherStats.badStatusChangeSeqNum++;
 		return false;
 	}
 
 	/// Now that we've authenticated a new SCSN, tell the application to persist this count to non-volatile
 	auto nextSCSN = change.statusChangeSeqNum + 1;
-	this->sstate.credentials.SetSCSN(nextSCSN);
-	this->sstate.pApplication->WriteStatusChangeSeqNum(nextSCSN);
+	this->security.credentials.SetSCSN(nextSCSN);
+	this->security.pApplication->WriteStatusChangeSeqNum(nextSCSN);
 	return true;
 }
 
-void OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
-{
-	User user(change.userNum);
-
-	if (!sstate.keyChangeState.CheckUserAndKSQMatches(user, change.keyChangeSeqNum))
-	{
-		this->RespondWithAuthError(header, change.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
-		return;
-	}
-
-	UpdateKeyMode updateKeyType;
-	ReadBufferView updateKey;
-
-	if (!sstate.userDB.GetUpdateKey(user, updateKeyType, updateKey))
-	{
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring session key change request for unknown user %u", change.userNum);
-		this->RespondWithAuthError(header, change.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
-		return;
-	}
-
-	UnwrappedKeyData unwrapped;
-	KeyUnwrapBuffer buffer;
-
-	auto unwrapSuccess = buffer.Unwrap(
-		GetKeyWrapAlgo(*sstate.pCrypto, updateKeyType),
-		updateKey,
-		change.keyWrapData,
-		unwrapped,
-		&this->logger
-		);
-
-	if (!unwrapSuccess)
-	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Failed to unwrap key data");
-		this->RespondWithAuthError(header, change.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
-		return;
-	}
-
-	if (!sstate.keyChangeState.EqualsLastStatusResponse(unwrapped.keyStatusObject))
-	{
-		this->RespondWithAuthError(header, change.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
-		return;
-	}
-
-	// At this point, we've successfully authenticated the session key change for this user
-	// We compute the HMAC based on the full ASDU and the monitoring direction session key		
-
-	std::error_code ec;
-	auto hmac = sstate.hmac.Compute(unwrapped.keys.monitorKey, { apdu }, ec);
-
-	if (ec)
-	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());
-		return;
-	}	
-
-	sstate.sessions.SetSessionKeys(user, unwrapped.keys);
-
-	auto rsp = this->StartAuthResponse();
-	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
-	rsp.SetControl(header.control);
-	auto writer = rsp.GetWriter();
-	auto hmacType = sstate.hmac.GetType();
-
-	auto success = sstate.keyChangeState.FormatKeyStatusResponse(
-		writer,
-		user,
-		hmacType,
-		Crypto::ToKeyWrapAlgorithm(updateKeyType),
-		KeyStatus::OK,
-		hmac
-		);
-
-	if (success)
-	{
-		this->BeginTx(rsp.ToReadOnly());
-	}
-}
-
-void OAuthContext::ProcessRequestKeyStatus(const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
-{
-	User user(status.userNum);
-	UpdateKeyMode type;
-	if (!sstate.userDB.GetUpdateKeyType(user, type))
-	{
-		// TODO  - the spec appears to just say "ignore users that don't exist". Confirm this.
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "User %u does not exist", user.GetId());
-		return;
-	}
-
-	auto keyStatus = sstate.sessions.GetSessionKeyStatus(user);
-
-	auto rsp = this->StartAuthResponse();
-	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
-	rsp.SetControl(header.control);
-	auto writer = rsp.GetWriter();
-	auto hmacType = HMACType::NO_MAC_VALUE;
-
-	auto success = sstate.keyChangeState.FormatKeyStatusResponse(
-		writer,
-		user,
-		hmacType,
-		Crypto::ToKeyWrapAlgorithm(type),
-		keyStatus,
-		ReadBufferView::Empty()
-		);
-
-	if (!success)
-	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to format key status response");
-		return;
-	}
-
-	this->BeginTx(rsp.ToReadOnly());
-}
-
-void OAuthContext::ProcessAuthReply(const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
-{
-	// first look-up the session for the specified user
-	User user(reply.userNum);
-	SessionKeysView keys;
-
-	if (sstate.sessions.TryGetSessionKeys(user, keys) != KeyStatus::OK)
-	{
-		++(this->sstate.otherStats.authFailuresDueToExpiredKeys);
-		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "No valid session keys for user %u", user.GetId());
-		this->RespondWithAuthError(header, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
-		return;
-	}
-
-	if (!sstate.challenge.VerifyAuthenticity(keys.controlKey, sstate.hmac, reply.hmacValue, this->logger))
-	{
-		this->Increment(SecurityStatIndex::AUTHENTICATION_FAILURES);
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Authentication failure for user %u", user.GetId());
-		this->RespondWithAuthError(header, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
-		return;
-	}
-
-	auto criticalHeader = sstate.challenge.GetCriticalHeader();
-
-	if (!sstate.userDB.IsAuthorized(user, criticalHeader.function))
-	{
-		this->Increment(SecurityStatIndex::AUTHORIZATION_FAILURES);
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Verified user %u is not authorized for function %s", user.GetId(), FunctionCodeToString(criticalHeader.function));
-		this->RespondWithAuthError(header, reply.challengeSeqNum, user, AuthErrorCode::AUTHORIZATION_FAILED);
-		return;
-	}
-
-	// this increments both the security statistic and the count on the key
-	this->IncrementSessionAuthCount(user);
-
-	auto asdu = sstate.challenge.GetCriticalASDU();
-	auto objects = asdu.Skip(APDU_REQUEST_HEADER_SIZE);
-	this->ProcessAPDU(asdu, criticalHeader, objects); // process as normal	
-}
-
 bool OAuthContext::TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header)
-{
-	auto response = this->StartAuthResponse();
-	auto success = sstate.challenge.WriteChallenge(apdu, header, response, sstate.hmac.GetType(), *sstate.pCrypto, &this->logger);
+{	
+	auto response = this->StartAuthResponse(header.control.SEQ);
+	auto success = security.challenge.WriteChallenge(apdu, header, response, security.hmac.GetType(), *security.pCrypto, &this->logger);
 	if (success)
 	{
 		this->BeginTx(response.ToReadOnly());
 	}
 	return success;
+	
 }
 
 openpal::IKeyWrapAlgo& OAuthContext::GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyMode type)
@@ -510,71 +624,70 @@ openpal::IKeyWrapAlgo& OAuthContext::GetKeyWrapAlgo(openpal::ICryptoProvider& cr
 	}
 }
 
-void OAuthContext::RespondWithAuthError(
-	const opendnp3::APDUHeader& header,	
-	uint32_t seqNum,
-	const User& user,
-	AuthErrorCode code	
+OAuthContext::APDUResult OAuthContext::TryRespondWithAuthError(
+	AppSeqNum seq,
+	uint32_t authSeqNum,
+	const opendnp3::User& user,
+	opendnp3::AuthErrorCode code
 	)
 {
-	auto rsp = this->StartAuthResponse();
-	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
-	rsp.SetControl(header.control);
-	auto writer = rsp.GetWriter();	
-
+	auto response = this->StartAuthResponse(seq);
+	
 	Group120Var7 error(
-		seqNum,
+		authSeqNum,
 		user.GetId(),
-		sstate.settings.assocId,
+		security.settings.assocId,
 		code,
-		DNPTime(sstate.pApplication->Now().msSinceEpoch),
+		DNPTime(security.pApplication->Now().msSinceEpoch),
 		ReadBufferView::Empty()
 	);
-	
+
+	response.GetWriter().WriteFreeFormat(error);	
+
 	this->Increment(SecurityStatIndex::ERROR_MESSAGES_TX);
+	
 
-	writer.WriteFreeFormat(error);
-
-	this->BeginTx(rsp.ToReadOnly());
+	this->BeginTx(response.ToReadOnly());
+	return APDUResult::PROCESSED;
 }
 
 void OAuthContext::IncrementSessionAuthCount(const opendnp3::User& user)
 {
-	this->sstate.sessions.IncrementAuthCount(user);	
+	this->security.sessions.IncrementAuthCount(user);	
 }
 
-void OAuthContext::ProcessUserStatusChange_Add(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
+APDUResponse OAuthContext::StartAuthResponse(uint8_t seq)
 {
-	auto expirationTimestamp = this->pExecutor->GetTime().Add(TimeDuration::Days(change.userRoleExpDays));
-
-	std::string userName;
-	const uint8_t* buffer = change.userName;
-	userName.append(reinterpret_cast<const char*>(buffer), change.userName.Size());
-
-	this->sstate.statusChange.SetUserStatusChange(
-		change.keyChangeMethod,
-		PendingUserStatusChange::Operation::ADD,
-		change.statusChangeSeqNum,
-		UserRoleFromType(change.userRole),
-		expirationTimestamp,
-		userName
-	);
-
-
+	auto response = security.txBuffer.Start();
+	response.SetFunction(FunctionCode::AUTH_RESPONSE);
+	response.SetControl(AppControlField(true, true, false, false, seq));
+	response.SetIIN(this->GetResponseIIN());
+	return response;
 }
 
-void OAuthContext::ProcessUserStatusChange_Change(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
+void OAuthContext::Increment(SecurityStatIndex index)
 {
-	SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "user change not implemented");
-	this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);
-	return;
+	auto count = this->security.stats.Increment(index);
+
+	DNPTime time(this->security.pApplication->Now().msSinceEpoch);
+
+	SecurityStat stat(opendnp3::flags::ONLINE, this->security.settings.assocId, count, time);
+
+	this->database.Update(stat, static_cast<uint16_t>(index));
 }
 
-void OAuthContext::ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
+bool OAuthContext::ReadFirstGroupVariation(const openpal::ReadBufferView& objects, GroupVariation& gv)
 {
-	SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "user deletion not implemented");
-	this->RespondWithAuthError(header, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);
-	return;
+	ReadBufferView copy(objects);
+	ObjectHeader oheader;
+	if (ObjectHeaderParser::ParseObjectHeader(oheader, copy, nullptr) != ParseResult::OK)
+	{
+		return false;
+	}
+
+	gv = GroupVariationRecord::GetRecord(oheader.group, oheader.variation).enumeration;
+
+	return true;
 }
 
 }
