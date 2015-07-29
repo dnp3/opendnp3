@@ -137,6 +137,43 @@ TEST_CASE(SUITE("Master authenticates using default user"))
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::IntegrityPoll(seq));
 }
 
+TEST_CASE(SUITE("Non-default user can initiate scan prior to the key change"))
+{
+	MasterParams params;
+	params.disableUnsolOnStartup = false;
+	params.startupIntegrityClassMask = ClassField();
+	params.unsolClassMask = ClassField();
+	
+	User joe(42);
+
+	MasterSecAuthFixture fixture(params);
+
+	fixture.ConfigureUser(User::Default());
+	fixture.ConfigureUser(joe);	
+
+	fixture.context.OnLowerLayerUp();
+
+	fixture.context.ScanRange(GroupVariationID(30, 1), 1, 2, TaskConfig::With(joe));
+
+	AppSeqNum seq;
+	fixture.TestSessionKeyExchange(seq, User::Default());
+	fixture.TestSessionKeyExchange(seq, joe);	
+
+	fixture.application.completions.clear();
+
+	auto request = "C4 01 1E 01 01 01 00 02 00";
+	auto reply = "C4 81 00 00";
+
+	fixture.TestRequestAndReply(request, reply);
+
+	REQUIRE(fixture.application.completions.size() == 1);
+	auto info = fixture.application.completions.front();
+	REQUIRE(info.result == TaskCompletion::SUCCESS);
+	REQUIRE(info.type == MasterTaskType::USER_TASK);
+	REQUIRE(info.user.GetId() == joe.GetId());
+	
+}
+
 TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))
 {
 	MasterParams params;
