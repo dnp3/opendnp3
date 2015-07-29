@@ -28,7 +28,7 @@
 
 #include "secauth/Crypto.h"
 #include "secauth/HMACProvider.h"
-#include "secauth/SimpleRequestHandlers.h"
+#include "secauth/SingleObjectHandlers.h"
 
 #include "secauth/master/UserStatusChangeTask.h"
 

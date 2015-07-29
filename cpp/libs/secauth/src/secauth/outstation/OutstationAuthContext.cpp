@@ -37,7 +37,7 @@
 
 #include "secauth/AggressiveModeParser.h"
 #include "secauth/outstation/KeyUnwrap.h"
-#include "secauth/SimpleRequestHandlers.h"
+#include "secauth/SingleObjectHandlers.h"
 #include "secauth/outstation/OutstationErrorCodes.h"
 #include "secauth/Crypto.h"
 

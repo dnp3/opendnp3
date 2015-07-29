@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SIMPLE_REQUEST_HANDLERS_H
-#define SECAUTH_SIMPLE_REQUEST_HANDLERS_H
+#ifndef SECAUTH_SINGLE_OBJECT_HANDLERS_H
+#define SECAUTH_SINGLE_OBJECT_HANDLERS_H
 
 #include "secauth/SingleValueHandler.h"
 

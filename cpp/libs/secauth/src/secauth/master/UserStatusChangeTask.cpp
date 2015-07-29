@@ -21,7 +21,7 @@
 
 #include "UserStatusChangeTask.h"
 
-#include "secauth/SimpleRequestHandlers.h"
+#include "secauth/SingleObjectHandlers.h"
 
 #include <opendnp3/app/parsing/APDUParser.h>
 #include <opendnp3/objects/Group120.h>
