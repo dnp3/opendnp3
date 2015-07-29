@@ -79,7 +79,7 @@ void SessionKeyTask::Initialize()
 	this->state = ChangeState::GetStatus;
 }
 
-IMasterTask::ResponseResult SessionKeyTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult SessionKeyTask::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (ValidateSingleResponse(header))
 	{

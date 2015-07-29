@@ -73,7 +73,7 @@ IMasterTask::TaskState SerialTimeSyncTask::OnTaskComplete(TaskCompletion result,
 	}
 }
 
-IMasterTask::ResponseResult SerialTimeSyncTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult SerialTimeSyncTask::ProcessResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {	
 	return (delay < 0) ? OnResponseDelayMeas(response, objects) : OnResponseWriteTime(response, objects);				
 }

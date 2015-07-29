@@ -64,7 +64,7 @@ private:
 
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::ENABLE_UNSOLICITED; }
 
-	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;		
+	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	virtual bool IsEnabled() const override final;
 

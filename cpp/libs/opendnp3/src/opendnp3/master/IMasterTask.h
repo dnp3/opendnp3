@@ -172,7 +172,7 @@ public:
 	// called during OnStart() to initialize any state for a new run
 	virtual void Initialize() {}		
 
-	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) = 0;
+	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) = 0;
 
 	virtual TaskState OnTaskComplete(TaskCompletion completion, openpal::MonotonicTimestamp now) = 0;
 

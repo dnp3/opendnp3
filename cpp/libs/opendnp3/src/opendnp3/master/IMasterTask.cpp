@@ -51,7 +51,7 @@ openpal::MonotonicTimestamp IMasterTask::ExpirationTime() const
 
 IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects, openpal::MonotonicTimestamp now)
 {	
-	auto result = _OnResponse(response, objects);
+	auto result = ProcessResponse(response, objects);
 	
 	switch (result)
 	{

@@ -51,7 +51,7 @@ namespace secauth
 	}
 	
 
-	opendnp3::IMasterTask::ResponseResult UserStatusChangeTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	opendnp3::IMasterTask::ResponseResult UserStatusChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
 		if (!this->ValidateSingleResponse(header) || !this->ValidateInternalIndications(header))
 		{

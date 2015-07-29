@@ -57,7 +57,7 @@ private:
 		
 	std::function<void(HeaderWriter&)> format;
 
-	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final 
 	{
