@@ -82,7 +82,7 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 		IINBit::DEVICE_RESTART,
 		0, // app-seq
 		1, // csq
-		User::DEFAULT_ID,
+		User::UNKNOWN_ID,
 		HMACType::HMAC_SHA256_TRUNC_16,
 		ChallengeReason::CRITICAL,
 		"AA AA AA AA AA"
@@ -105,7 +105,7 @@ TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
 	
 	auto readRequest = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
-	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, 1, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
 	REQUIRE(fixture.SendAndReceive(readRequest) == challenge);
 		
 	// Advance the time source past the key timeout period
@@ -130,7 +130,7 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured period"))
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
 	
 	auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
-	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, 1, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
 	REQUIRE(fixture.SendAndReceive(poll) == challenge);
 
 	// Advance the time
@@ -158,7 +158,7 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authen
 
 	{
 		auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
-		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
 		REQUIRE(fixture.SendAndReceive(poll) == challenge);
 
 		auto challengeReply = hex::ChallengeReply(seq, csq, User::DEFAULT_ID, hex::repeat(0xFF, 16));
@@ -171,7 +171,7 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authen
 
 	{
 		auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
-		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
+		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
 		REQUIRE(fixture.SendAndReceive(poll) == challenge);
 
 		auto challengeReply = hex::ChallengeReply(seq, csq, User::DEFAULT_ID, hex::repeat(0xFF, 16));
@@ -211,7 +211,7 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 		IINBit::DEVICE_RESTART,
 		seq,
 		1, // csq
-		User::DEFAULT_ID,
+		User::UNKNOWN_ID,
 		HMACType::HMAC_SHA256_TRUNC_16,
 		ChallengeReason::CRITICAL,
 		hex::repeat(0xAA, 4));
@@ -230,18 +230,18 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 {			
 	OutstationSecAuthFixture fixture;
-	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256, Permissions::Allowed(FunctionCode::WRITE));
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256, Permissions::AllowNothing());
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
-
+		
 	auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(
 		IINBit::DEVICE_RESTART,
 		seq,
 		1, // csq
-		User::DEFAULT_ID,
+		User::UNKNOWN_ID,
 		HMACType::HMAC_SHA256_TRUNC_16,
 		ChallengeReason::CRITICAL,
 		hex::repeat(0xAA, 4)

@@ -153,3 +153,38 @@ TEST_CASE(SUITE("Tasks for non-existant users are immediately failed"))
 	REQUIRE(result.GetResult() == TaskCompletion::FAILURE_NO_USER);
 }
 
+TEST_CASE(SUITE("Tasks are failed when an authentication error occurs"))
+{
+	MasterParams params;
+	params.disableUnsolOnStartup = false;
+	params.startupIntegrityClassMask = ClassField();
+	params.unsolClassMask = ClassField();
+
+	User user = User::Default();
+	MasterSecAuthFixture fixture(params);
+	fixture.ConfigureUser(user);
+
+	fixture.context.OnLowerLayerUp();
+
+
+	AppSeqNum seq;
+	fixture.TestSessionKeyExchange(seq, user);	
+	
+	/// start a command request on some user that doesn't exist
+	fixture.context.ScanAllObjects(GroupVariationID(30,1), TaskConfig(TaskId::Defined(7), nullptr, user));
+
+	auto request = "C2 01 1E 01 06";
+	auto challenge = hex::ChallengeResponse(IINField(), seq, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, hex::repeat(0xFF, 4));
+	fixture.TestRequestAndReply(request, challenge);
+
+	auto challengeReply = hex::ChallengeReply(seq, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+	auto response = hex::AuthErrorResponse(IINField(), seq, 1, User::DEFAULT_ID, 1, AuthErrorCode::AUTHENTICATION_FAILED, DNPTime(0), "");
+
+	fixture.TestRequestAndReply(challengeReply, response);
+	
+	REQUIRE(fixture.application.completions.size() == 1);
+	auto result = fixture.application.completions.front();
+	REQUIRE(result == TaskCompletion::FAILURE_BAD_AUTHENTICATION);
+	
+}
+

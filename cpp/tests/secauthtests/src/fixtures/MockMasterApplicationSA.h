@@ -25,6 +25,8 @@
 
 #include <testlib/MockUTCTimeSource.h>
 
+#include <vector>
+
 namespace opendnp3
 {
 
@@ -37,6 +39,16 @@ public:
 	{ 
 		return utc.Now();
 	}
+
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, TaskId id)
+	{
+		if (id.IsDefined())
+		{
+			completions.push_back(value);
+		}
+	}
+
+	std::vector<TaskCompletion> completions;
 
 	testlib::MockUTCTimeSource utc;
 };

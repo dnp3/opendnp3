@@ -70,7 +70,7 @@ namespace secauth
 
 		Group120Var1 challenge(
 			seqNumber,
-			User::DEFAULT_ID,
+			User::UNKNOWN_ID,
 			hmacType,
 			ChallengeReason::CRITICAL,
 			challengeData
