@@ -53,6 +53,11 @@ public:
 		return TaskConfig(TaskId::Undefined(), &callback, User::Default());
 	}	
 
+	static TaskConfig With(User user)
+	{
+		return TaskConfig(TaskId::Undefined(), nullptr, user);
+	}
+
 	TaskConfig() = delete;
 
 public:

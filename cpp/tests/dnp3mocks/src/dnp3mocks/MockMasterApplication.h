@@ -52,7 +52,7 @@ public:
 		taskStartEvents.push_back(type);		
 	}
 
-	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion result, TaskId id) override final
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion result, TaskId id, opendnp3::User user) override final
 	{
 		taskCompletionEvents.push_back(std::pair<MasterTaskType, TaskCompletion>(type, result));
 	}

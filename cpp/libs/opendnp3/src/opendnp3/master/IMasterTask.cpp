@@ -107,7 +107,7 @@ void IMasterTask::NotifyResult(TaskCompletion result)
 		config.pCallback->OnComplete(result);
 	}
 
-	pApplication->OnTaskComplete(this->GetTaskType(), result, config.taskId);
+	pApplication->OnTaskComplete(this->GetTaskType(), result, config.taskId, this->GetUser());
 }
 	
 void IMasterTask::OnStart()

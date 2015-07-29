@@ -40,7 +40,7 @@ public:
 		return utc.Now();
 	}
 
-	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, TaskId id)
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, TaskId id, User user) override
 	{
 		if (id.IsDefined())
 		{

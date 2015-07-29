@@ -27,6 +27,7 @@
 #include "opendnp3/master/TaskId.h"
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/app/User.h"
 
 #include "opendnp3/gen/MasterTaskType.h"
 #include "opendnp3/gen/TaskCompletion.h"
@@ -51,7 +52,7 @@ class IMasterApplication : public openpal::IUTCTimeSource
 	virtual void OnTaskStart(MasterTaskType type, TaskId id) {}
 
 	/// Task completion notification
-	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, TaskId id) {}
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, TaskId id, User user) {}
 
 	/// @return true if the master should do an assign class task during startup handshaking
 	virtual bool AssignClassDuringStartup() { return false; }

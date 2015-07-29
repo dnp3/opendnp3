@@ -37,7 +37,7 @@ public:
 
 	virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override final {}
 
-	virtual void OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, opendnp3::TaskId id) override final {}
+	virtual void OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, opendnp3::TaskId id, opendnp3::User user) override final {}
 
 	virtual bool AssignClassDuringStartup() override final { return false; }
 	

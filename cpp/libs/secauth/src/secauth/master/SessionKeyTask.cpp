@@ -49,7 +49,7 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 								IMasterUserDatabase& userDB,
 								SessionStore& sessionStore) :
 
-							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, TaskConfig::Default()),
+							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, TaskConfig::With(user)),
 							retryPeriod(retryPeriod_),
 							changeInterval(changeInterval_),
 							user(user_),
