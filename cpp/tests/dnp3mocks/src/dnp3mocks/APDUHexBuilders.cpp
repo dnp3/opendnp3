@@ -26,6 +26,7 @@
 #include <opendnp3/app/APDUBuilders.h>
 #include <opendnp3/app/AppConstants.h>
 
+#include <opendnp3/objects/Group12.h>
 #include <opendnp3/objects/Group120.h>
 
 #include <openpal/container/Buffer.h>
@@ -83,6 +84,21 @@ namespace hex
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest request(buffer.GetWriteBufferView());
 		build::MeasureDelay(request, seq);
+		return ToHex(request.ToReadOnly());
+	}
+
+	std::string Control(opendnp3::FunctionCode code, uint8_t seq, const opendnp3::ControlRelayOutputBlock& crob, uint16_t index)
+	{
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest request(buffer.GetWriteBufferView());
+		
+		request.SetControl(AppControlField::Request(seq));
+		request.SetFunction(code);
+
+		auto writer = request.GetWriter();
+		writer.WriteSingleIndexedValue<UInt16, ControlRelayOutputBlock>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group12Var1::Inst(), crob, index);
+
+		
 		return ToHex(request.ToReadOnly());
 	}
 

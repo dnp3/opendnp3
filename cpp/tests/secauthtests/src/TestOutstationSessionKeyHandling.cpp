@@ -265,4 +265,59 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 	REQUIRE(fixture.lower.HasNoData());
 }
 
+TEST_CASE(SUITE("Chain of unauthorized requests is handled"))
+{
+	OutstationSecAuthFixture fixture;
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256, Permissions::AllowNothing());
+	fixture.LowerLayerUp();
+
+	AppSeqNum seq;
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+
+	uint32_t csq = 1;
+
+	for (int i = 0; i < 10; ++i)
+	{		
+		auto crob = hex::Control(FunctionCode::DIRECT_OPERATE, seq, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);		
+		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, hex::repeat(0xAA, 4));		
+		REQUIRE(fixture.SendAndReceive(crob) == challenge);
+
+		auto challengeReply = hex::ChallengeReply(seq, csq, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+		auto error = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, csq, User::DEFAULT_ID, 0, AuthErrorCode::AUTHORIZATION_FAILED, DNPTime(0), "");
+		REQUIRE(fixture.SendAndReceive(challengeReply) == error);
+
+		REQUIRE(fixture.lower.HasNoData());
+
+		++csq;
+	}		
+}
+
+TEST_CASE(SUITE("Mixture of authenticated requests and "))
+{
+	OutstationSecAuthFixture fixture;
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256, Permissions::AllowNothing());
+	fixture.LowerLayerUp();
+
+	AppSeqNum seq;
+	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+
+	uint32_t csq = 1;
+
+	for (int i = 0; i < 10; ++i)
+	{
+		auto crob = hex::Control(FunctionCode::DIRECT_OPERATE, seq, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);
+		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, hex::repeat(0xAA, 4));
+		REQUIRE(fixture.SendAndReceive(crob) == challenge);
+
+		auto challengeReply = hex::ChallengeReply(seq, csq, User::DEFAULT_ID, hex::repeat(0xFF, 16));
+		auto error = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, csq, User::DEFAULT_ID, 0, AuthErrorCode::AUTHORIZATION_FAILED, DNPTime(0), "");
+		REQUIRE(fixture.SendAndReceive(challengeReply) == error);
+
+		REQUIRE(fixture.lower.HasNoData());
+
+		++csq;
+	}
+
+}
+
 

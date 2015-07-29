@@ -27,10 +27,12 @@
 
 #include <opendnp3/Types.h>
 
-#include <opendnp3/gen/PointClass.h>
-#include <opendnp3/app/IINField.h>
-#include <opendnp3/gen/FunctionCode.h>
 #include <opendnp3/app/ClassField.h>
+#include <opendnp3/app/IINField.h>
+#include <opendnp3/app/ControlRelayOutputBlock.h>
+
+#include <opendnp3/gen/PointClass.h>
+#include <opendnp3/gen/FunctionCode.h>
 #include <opendnp3/gen/KeyWrapAlgorithm.h>
 #include <opendnp3/gen/KeyStatus.h>
 #include <opendnp3/gen/HMACType.h>
@@ -60,6 +62,8 @@ namespace hex
 	std::string ClearRestartIIN(uint8_t seq);
 
 	std::string MeasureDelay(uint8_t seq);
+
+	std::string Control(opendnp3::FunctionCode code, uint8_t seq, const opendnp3::ControlRelayOutputBlock& crob, uint16_t index);
 
 	// ----------- responses --------------
 
