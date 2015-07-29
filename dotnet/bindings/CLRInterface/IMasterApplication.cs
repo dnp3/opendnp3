@@ -50,12 +50,15 @@ namespace Automatak.DNP3.Interface
         /// <param name="id"></param>
         void OnTaskStart(MasterTaskType type, int userId);
         
+        
         /// <summary>
-        /// Task completion notification for built-in and user defined tasks        
+        /// Task completion notification for built-in and user defined tasks
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="result"></param>
-        void OnTaskComplete(MasterTaskType type, TaskCompletion result, int userId);
+        /// <param name="type">An enumeration of built-in tasks and one for a user-defined task</param>
+        /// <param name="result">An enumeration defining the success or failure of the task</param>
+        /// <param name="taskid">An optional user-defined id provided when the task was created</param>
+        /// <param name="user">The user associated with the task </param>
+        void OnTaskComplete(MasterTaskType type, TaskCompletion result, TaskId taskid, User user);
         
         /// <summary>
         /// Tells the master whether to assign class on startup
@@ -117,7 +120,7 @@ namespace Automatak.DNP3.Interface
             // ignore these in the default application
         }
 
-        void IMasterApplication.OnTaskComplete(MasterTaskType type, TaskCompletion result, int userId)
+        void IMasterApplication.OnTaskComplete(MasterTaskType type, TaskCompletion result, TaskId taskId, User user)
         {
             // ignore these in the default application
         }

@@ -18,38 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_MOCKMASTERAPPLICATIONSA_H
-#define SECAUTH_MOCKMASTERAPPLICATIONSA_H
 
-#include "secauth/master/IMasterApplicationSA.h"
+#ifndef OPENDNP3_TASK_INFO_H
+#define OPENDNP3_TASK_INFO_H
 
-#include <testlib/MockUTCTimeSource.h>
+#include "opendnp3/master/TaskId.h"
+#include "opendnp3/app/User.h"
 
-#include <vector>
+#include "opendnp3/gen/MasterTaskType.h"
+#include "opendnp3/gen/TaskCompletion.h"
+
 
 namespace opendnp3
 {
 
-class MockMasterApplicationSA : public secauth::IMasterApplicationSA
+class TaskInfo
 {
 
 public:
 
-	virtual openpal::UTCTimestamp Now() override 
-	{ 
-		return utc.Now();
-	}
+	TaskInfo(
+		MasterTaskType type_,
+		TaskCompletion result_,
+		TaskId id_,
+		User user_
+	) :
+		type(type_),
+		result(result_),
+		id(id_),
+		user(user_)
+	{}
 
-	virtual void OnTaskComplete(const TaskInfo& info) override
-	{
-		completions.push_back(info);
-	}
-
-	std::vector<TaskInfo> completions;
-
-	testlib::MockUTCTimeSource utc;
+	MasterTaskType type;
+	TaskCompletion result; 
+	TaskId id; 
+	User user;
 };
-
 
 }
 

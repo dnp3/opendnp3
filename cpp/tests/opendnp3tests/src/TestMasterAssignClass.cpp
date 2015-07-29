@@ -56,7 +56,7 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	REQUIRE(t.application.taskStartEvents[0] == MasterTaskType::ASSIGN_CLASS);	
 
 	REQUIRE(t.application.taskCompletionEvents.size() == 1);	
-	REQUIRE(t.application.taskCompletionEvents[0].second == TaskCompletion::SUCCESS);
+	REQUIRE(t.application.taskCompletionEvents[0].result == TaskCompletion::SUCCESS);
 }
 
 TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))

@@ -52,9 +52,9 @@ public:
 		taskStartEvents.push_back(type);		
 	}
 
-	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion result, TaskId id, opendnp3::User user) override final
+	virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override final
 	{
-		taskCompletionEvents.push_back(std::pair<MasterTaskType, TaskCompletion>(type, result));
+		taskCompletionEvents.push_back(info);
 	}
 
 	virtual bool AssignClassDuringStartup() override final
@@ -73,7 +73,7 @@ public:
 	std::vector<IINField> rxIIN;
 
 	std::vector<MasterTaskType> taskStartEvents;
-	std::vector<std::pair<MasterTaskType, TaskCompletion>> taskCompletionEvents;
+	std::vector<TaskInfo> taskCompletionEvents;
 	
 	uint64_t time;
 };

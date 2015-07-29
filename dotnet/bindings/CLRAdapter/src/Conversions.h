@@ -22,6 +22,7 @@
 #include <opendnp3/app/SecurityStat.h>
 #include <opendnp3/app/parsing/ICollection.h>
 #include <opendnp3/app/GroupVariationID.h>
+#include <opendnp3/app/User.h>
 
 #include <opendnp3/master/CommandResponse.h>
 #include <opendnp3/master/MasterStackConfig.h>
@@ -135,6 +136,8 @@ namespace Automatak
 				static opendnp3::GroupVariationID Convert(PointClass clazz);
 
 				static openpal::Buffer Convert(array<System::Byte>^ bytes);
+
+				static User^ Convert(const opendnp3::User& user);
 
 
 				template <class Target, class Source>

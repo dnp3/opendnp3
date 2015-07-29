@@ -130,6 +130,11 @@ namespace Automatak
 				return id->IsValid ? opendnp3::TaskId::Defined(id->Value) : opendnp3::TaskId::Undefined();
 			}
 
+			TaskId^ MasterConversions::Convert(const opendnp3::TaskId& id)
+			{
+				return id.IsDefined() ? TaskId::Defined(id.GetId()) : TaskId::Undefined;
+			}
+
 			opendnp3::ITaskCallback* MasterConversions::CreateTaskCallback(ITaskCallback^ callback)
 			{
 				return (callback == nullptr) ? nullptr : TaskCallbackAdapter::Create(callback);

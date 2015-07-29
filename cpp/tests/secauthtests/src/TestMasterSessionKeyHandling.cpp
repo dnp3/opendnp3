@@ -82,6 +82,25 @@ TEST_CASE(SUITE("Session keys are refreshed at the cofigured interval"))
 	fixture.TestSessionKeyExchange(seq, user);
 }
 
+TEST_CASE(SUITE("Master calls back application with result of session key change"))
+{
+	MasterParams params;
+	User user = User(7);
+	MasterSecAuthFixture fixture(params);
+	fixture.ConfigureUser(user);
+
+	fixture.context.OnLowerLayerUp();
+
+	AppSeqNum seq;
+	fixture.TestSessionKeyExchange(seq, user);
+
+	REQUIRE(fixture.application.completions.size() == 1);
+	auto info = fixture.application.completions.front();
+	REQUIRE(info.result == TaskCompletion::SUCCESS);
+	REQUIRE(info.type == MasterTaskType::SET_SESSION_KEYS);
+	REQUIRE(info.user.GetId() == 7);
+}
+
 TEST_CASE(SUITE("Master authenticates using default user"))
 {
 	MasterParams params;
@@ -169,6 +188,8 @@ void TestTaskCompletionDueToAuthError(AuthErrorCode error, TaskCompletion comple
 	AppSeqNum seq;
 	fixture.TestSessionKeyExchange(seq, user);
 
+	fixture.application.completions.clear();
+
 	/// start a command request on some user that doesn't exist
 	fixture.context.ScanAllObjects(GroupVariationID(30, 1), TaskConfig(TaskId::Defined(7), nullptr, user));
 
@@ -182,8 +203,10 @@ void TestTaskCompletionDueToAuthError(AuthErrorCode error, TaskCompletion comple
 	fixture.TestRequestAndReply(challengeReply, response);
 
 	REQUIRE(fixture.application.completions.size() == 1);
-	auto result = fixture.application.completions.front();
-	REQUIRE(result == completion);
+	auto info = fixture.application.completions.front();
+	REQUIRE(info.result == completion);
+	REQUIRE(info.user.GetId() == User::DEFAULT_ID);
+	REQUIRE(info.type == MasterTaskType::USER_TASK);
 }
 
 TEST_CASE(SUITE("Tasks are failed when an authentication error occurs"))

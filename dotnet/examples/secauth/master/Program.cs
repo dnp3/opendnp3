@@ -29,8 +29,13 @@ using Automatak.DNP3.Interface;
 
 class MasterApplicatonSA : DefaultMasterApplication, IMasterApplicationSA
 {
-    public MasterApplicatonSA()
-    { }
+    void IMasterApplication.OnTaskComplete(MasterTaskType type, TaskCompletion result, TaskId taskId, User user)
+    {
+        if (type == MasterTaskType.SET_SESSION_KEYS)
+        {
+            Console.WriteLine(String.Format("Session key change {0} for user {1}", result, user.Number));
+        }
+    }
 
 }
 

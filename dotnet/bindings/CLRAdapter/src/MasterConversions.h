@@ -36,7 +36,11 @@ namespace Automatak
 
 				static opendnp3::TaskConfig Convert(TaskConfig^ config, ITaskCallback^ wrapper);
 				static opendnp3::TaskConfig Convert(TaskConfig^ config);
+				
+				
 				static opendnp3::TaskId Convert(TaskId^ taskId);
+				static TaskId^ Convert(const opendnp3::TaskId& id);
+
 				static opendnp3::ITaskCallback* CreateTaskCallback(ITaskCallback^ callback);
 			
 			};

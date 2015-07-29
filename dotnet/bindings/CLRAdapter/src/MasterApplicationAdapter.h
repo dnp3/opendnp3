@@ -10,6 +10,7 @@ using namespace System::Collections::ObjectModel;
 #include <opendnp3/master/IMasterApplication.h>
 
 #include "Conversions.h"
+#include "MasterConversions.h"
 
 using namespace Automatak::DNP3::Interface;
 
@@ -45,9 +46,9 @@ namespace Automatak
 					proxy->OnTaskStart((MasterTaskType)type, id.GetId());
 				}
 
-				virtual void OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, opendnp3::TaskId id) override final
+				virtual void OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, opendnp3::TaskId id, opendnp3::User user) override final
 				{
-					proxy->OnTaskComplete((MasterTaskType)type, (TaskCompletion)result, id.GetId());
+					proxy->OnTaskComplete((MasterTaskType)type, (TaskCompletion)result, MasterConversions::Convert(id), Conversions::Convert(user));
 				}
 
 				virtual bool AssignClassDuringStartup() override final
