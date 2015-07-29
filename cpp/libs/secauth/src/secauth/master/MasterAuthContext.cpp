@@ -281,12 +281,30 @@ void MAuthContext::OnAuthError(const openpal::ReadBufferView& apdu, const opendn
 		return;
 	}
 
+	auto errorCode = handler.value.errorCode;
+
 	FORMAT_LOG_BLOCK(this->logger, flags::WARN,
 		"Received auth error from outstation w/ code: %s",
-		AuthErrorCodeToString(handler.value.errorCode)
-	);		
+		AuthErrorCodeToString(errorCode)
+	);
 
-	// TODO - invalidate the session keys for the user?
+	if (this->tstate != TaskState::WAIT_FOR_RESPONSE || !this->pActiveTask.IsDefined())
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Discarding unexpected auth error");
+		return;
+	}
+
+	if (errorCode == AuthErrorCode::AUTHORIZATION_FAILED)
+	{
+		this->pActiveTask->OnAuthorizationFailure(pExecutor->GetTime());
+	}
+	else
+	{
+		/// treat all other error codes as authentication failures which could mean a lot of different things
+		this->pActiveTask->OnAuthenticationFailure(pExecutor->GetTime());
+	}
+
+	this->CompleteActiveTask();
 }
 
 }
