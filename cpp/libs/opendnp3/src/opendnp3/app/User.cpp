@@ -19,51 +19,12 @@
 * to you under the terms of the License.
 */
 
-#ifndef OPENDNP3_USER_H
-#define OPENDNP3_USER_H
 
-#include <cstdint>
+#include "User.h"
 
 namespace opendnp3
 {
-	/// A user in SA is just a uint16. This is just a type-safe wrapper with helpers
-	class User
-	{
-		public:
-		
-			User() : id(UNKNOWN_ID)
-			{}
-
-			explicit User(uint16_t id_) : id(id_)
-			{}
-
-			uint16_t GetId() const
-			{
-				return id;
-			}
-
-			bool IsDefault() const
-			{
-				return id == DEFAULT_ID;
-			}
-
-			bool IsUnknown() const
-			{
-				return id == UNKNOWN_ID;
-			}
-
-			static User Default() { return User(DEFAULT_ID); }
-
-			static User Unknown() { return User(UNKNOWN_ID); }
-
-			static const uint16_t UNKNOWN_ID;
-			static const uint16_t DEFAULT_ID;
-
-		private:			
-
-			uint16_t id;
-	};
-
+	const uint16_t User::UNKNOWN_ID = 0;
+	const uint16_t User::DEFAULT_ID = 1;	
 }
 
-#endif
