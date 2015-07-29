@@ -88,12 +88,7 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimesta
 }
 
 void MasterScheduler::Shutdown(const MonotonicTimestamp& now)
-{			
-	for (auto& pTask : m_tasks)
-	{
-		pTask->OnTaskDiscarded(now);
-	}
-		
+{						
 	m_tasks.clear();
 }
 

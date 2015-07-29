@@ -88,6 +88,18 @@ void IMasterTask::OnNoUser(openpal::MonotonicTimestamp now)
 	this->NotifyResult(TaskCompletion::FAILURE_NO_USER);
 }
 
+void IMasterTask::OnAuthenticationFailure(openpal::MonotonicTimestamp now)
+{
+	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_AUTHENTICATION, now);
+	this->NotifyResult(TaskCompletion::FAILURE_BAD_AUTHENTICATION);
+}
+
+void IMasterTask::OnAuthorizationFailure(openpal::MonotonicTimestamp now)
+{
+	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NOT_AUTHORIZED, now);
+	this->NotifyResult(TaskCompletion::FAILURE_NOT_AUTHORIZED);
+}
+
 void IMasterTask::NotifyResult(TaskCompletion result)
 {
 	if (config.pCallback)

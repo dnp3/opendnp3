@@ -153,9 +153,14 @@ public:
 	void OnNoUser(openpal::MonotonicTimestamp now);
 
 	/**
-	* Called when a task is discared before it can run b/c the session went offline
+	* Called when the request is reject due to an authentication failure
 	*/
-	virtual void OnTaskDiscarded(openpal::MonotonicTimestamp now) {}
+	void OnAuthenticationFailure(openpal::MonotonicTimestamp now);
+
+	/**
+	* Called when the request is reject due to an authorization failure
+	*/
+	void OnAuthorizationFailure(openpal::MonotonicTimestamp now);
 
 	/**
 	* Called when the task first starts, before the first request is formatted
