@@ -135,6 +135,11 @@ namespace Automatak
 				return id.IsDefined() ? TaskId::Defined(id.GetId()) : TaskId::Undefined;
 			}
 
+			TaskInfo^ MasterConversions::Convert(const opendnp3::TaskInfo& info)
+			{
+				return gcnew TaskInfo((MasterTaskType)info.type, (TaskCompletion)info.result, MasterConversions::Convert(info.id), Conversions::Convert(info.user));
+			}
+
 			opendnp3::ITaskCallback* MasterConversions::CreateTaskCallback(ITaskCallback^ callback)
 			{
 				return (callback == nullptr) ? nullptr : TaskCallbackAdapter::Create(callback);

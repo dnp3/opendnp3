@@ -46,9 +46,9 @@ namespace Automatak
 					proxy->OnTaskStart((MasterTaskType)type, id.GetId());
 				}
 
-				virtual void OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, opendnp3::TaskId id, opendnp3::User user) override final
-				{
-					proxy->OnTaskComplete((MasterTaskType)type, (TaskCompletion)result, MasterConversions::Convert(id), Conversions::Convert(user));
+				virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override final
+				{					
+					proxy->OnTaskComplete(MasterConversions::Convert(info));
 				}
 
 				virtual bool AssignClassDuringStartup() override final

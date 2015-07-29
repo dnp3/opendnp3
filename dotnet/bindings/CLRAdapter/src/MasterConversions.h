@@ -10,6 +10,7 @@ using namespace System::Collections::Generic;
 
 #include <asiodnp3/HeaderTypes.h>
 #include <opendnp3/master/TaskConfig.h>
+#include <opendnp3/master/TaskInfo.h>
 
 using namespace Automatak::DNP3::Interface;
 
@@ -40,6 +41,8 @@ namespace Automatak
 				
 				static opendnp3::TaskId Convert(TaskId^ taskId);
 				static TaskId^ Convert(const opendnp3::TaskId& id);
+
+				static TaskInfo^ Convert(const opendnp3::TaskInfo& info);
 
 				static opendnp3::ITaskCallback* CreateTaskCallback(ITaskCallback^ callback);
 			
