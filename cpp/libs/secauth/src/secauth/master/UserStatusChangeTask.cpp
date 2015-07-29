@@ -21,7 +21,7 @@
 
 #include "UserStatusChangeTask.h"
 
-#include "secauth/AuthErrorHandler.h"
+#include "secauth/SimpleRequestHandlers.h"
 
 #include <opendnp3/app/parsing/APDUParser.h>
 #include <opendnp3/objects/Group120.h>
@@ -63,18 +63,17 @@ namespace secauth
 			return ResponseResult::OK_FINAL;
 		}
 
-		AuthErrorHandler handler;
+		ErrorHandler handler;
 		auto result = APDUParser::Parse(objects, handler, &logger);
 		if (result == ParseResult::OK)
-		{
-			Group120Var7 error;
-			if (handler.GetError(error))
+		{			
+			if (handler.IsValid())
 			{
 				FORMAT_LOG_BLOCK(
 					logger, 
 					flags::WARN, 
 					"User status change error received: %s", 
-					AuthErrorCodeToString(error.errorCode)
+					AuthErrorCodeToString(handler.value.errorCode)
 				)
 			}
 		}
