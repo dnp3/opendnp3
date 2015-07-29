@@ -34,6 +34,10 @@ char const* TaskCompletionToString(TaskCompletion arg)
       return "FAILURE_RESPONSE_TIMEOUT";
     case(TaskCompletion::FAILURE_NO_USER):
       return "FAILURE_NO_USER";
+    case(TaskCompletion::FAILURE_BAD_AUTHENTICATION):
+      return "FAILURE_BAD_AUTHENTICATION";
+    case(TaskCompletion::FAILURE_NOT_AUTHORIZED):
+      return "FAILURE_NOT_AUTHORIZED";
     default:
       return "FAILURE_NO_COMMS";
   }

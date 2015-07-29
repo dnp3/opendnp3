@@ -42,6 +42,14 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     FAILURE_NO_USER = 3,
     /// <summary>
+    /// The outstation rejected the operation do to a lack of valid session keys or the user not existing on the outstation (SA only)
+    /// </summary>
+    FAILURE_BAD_AUTHENTICATION = 4,
+    /// <summary>
+    /// The outstation rejected the operation because the specified user is not authorized for the request that was made (SA only)
+    /// </summary>
+    FAILURE_NOT_AUTHORIZED = 5,
+    /// <summary>
     /// There is no communication with the outstation, so the task was not attempted
     /// </summary>
     FAILURE_NO_COMMS = 255
