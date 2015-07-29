@@ -207,6 +207,8 @@ void TestTaskCompletionDueToAuthError(AuthErrorCode error, TaskCompletion comple
 	REQUIRE(info.result == completion);
 	REQUIRE(info.user.GetId() == User::DEFAULT_ID);
 	REQUIRE(info.type == MasterTaskType::USER_TASK);
+
+	fixture.SendToMaster("C1 83 00 00");
 }
 
 TEST_CASE(SUITE("Tasks are failed when an authentication error occurs"))

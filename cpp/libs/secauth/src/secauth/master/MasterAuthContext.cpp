@@ -161,7 +161,7 @@ void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, co
 {
 	// need to determine the context of the auth response
 	
-	if (this->tstate != TaskState::WAIT_FOR_RESPONSE)
+	if (!(this->tstate == TaskState::WAIT_FOR_RESPONSE && this->pActiveTask.IsDefined()))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unexpected AuthResponse");
 		return;
@@ -293,6 +293,9 @@ void MAuthContext::OnAuthError(const openpal::ReadBufferView& apdu, const opendn
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Discarding unexpected auth error");
 		return;
 	}
+
+	// at this point, we're transitioning back to the master's idle state
+	this->tstate = TaskState::IDLE;
 
 	if (errorCode == AuthErrorCode::AUTHORIZATION_FAILED)
 	{
