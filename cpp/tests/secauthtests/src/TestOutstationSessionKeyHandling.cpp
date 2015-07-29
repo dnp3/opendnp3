@@ -267,7 +267,7 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 
 TEST_CASE(SUITE("Chain of unauthorized requests is handled"))
 {
-	OutstationSecAuthFixture fixture;
+	OutstationSecAuthFixture fixture;	
 	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256, Permissions::AllowNothing());
 	fixture.LowerLayerUp();
 
@@ -275,8 +275,9 @@ TEST_CASE(SUITE("Chain of unauthorized requests is handled"))
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 
 	uint32_t csq = 1;
+	const int ITERATIONS = 10;
 
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < ITERATIONS; ++i)
 	{		
 		auto crob = hex::Control(FunctionCode::DIRECT_OPERATE, seq, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);		
 		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, hex::repeat(0xAA, 4));		
@@ -292,19 +293,40 @@ TEST_CASE(SUITE("Chain of unauthorized requests is handled"))
 	}		
 }
 
-TEST_CASE(SUITE("Mixture of authenticated requests and "))
+void TestUnauthorizedControl(OutstationSecAuthFixture& fixture, AppSeqNum& seq, uint32_t csq)
 {
-	OutstationSecAuthFixture fixture;
-	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256, Permissions::AllowNothing());
-	fixture.LowerLayerUp();
+	
+}
 
+TEST_CASE(SUITE("Mixture of authenticated requests and unsolicited behaves as expected"))
+{
+	secauth::OutstationAuthSettings authConfig;
+	authConfig.functions.authConfirm = false;
+	auto db = DatabaseTemplate::BinaryOnly(1);
+	OutstationConfig config;
+	config.params.allowUnsolicited = true;	
+	
+		
+	OutstationSecAuthFixture fixture(authConfig, db, config);
+	//fixture.log.WriteToStdIo();
+	fixture.AddUser(User::Default(), "bob", 0xFF, UpdateKeyMode::AES256, Permissions::AllowNothing());
+	fixture.LowerLayerUp();	
+
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINBit::DEVICE_RESTART));
+	fixture.OnSendResult(true);
+	
 	AppSeqNum seq;
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 
-	uint32_t csq = 1;
+	// confirm the null unsolicited
+	fixture.SendToOutstation(hex::UnsolConfirm(0));
 
+	uint32_t csq = 1;	
+	
 	for (int i = 0; i < 10; ++i)
-	{
+	{		
+		//std::cout << i << std::endl;
+
 		auto crob = hex::Control(FunctionCode::DIRECT_OPERATE, seq, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);
 		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, hex::repeat(0xAA, 4));
 		REQUIRE(fixture.SendAndReceive(crob) == challenge);
@@ -317,7 +339,6 @@ TEST_CASE(SUITE("Mixture of authenticated requests and "))
 
 		++csq;
 	}
-
 }
 
 
