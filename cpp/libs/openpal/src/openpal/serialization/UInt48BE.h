@@ -18,44 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_SERIALIZATION_H
-#define OPENPAL_SERIALIZATION_H
+#ifndef OPENPAL_UINT48BE_H
+#define OPENPAL_UINT48BE_H
 
-#include "UInt48LE.h"
-#include "UInt48BE.h"
-#include "SerializationTemplatesLE.h"
-#include "SerializationTemplatesBE.h"
+#include <cstdint>
+#include <cstring>
 
-#include "ByteSerialization.h"
-#include "FloatSerializationTemplates.h"
+#include "UInt48Type.h"
+
+#include "openpal/container/WriteBufferView.h"
+#include "openpal/container/ReadBufferView.h"
 
 namespace openpal
 {
 
-// Opendnp3 parsing only uses these aliases. This allows
-// the endian-ness to be switched via the macro below
+class UInt48BE
+{
+public:
 
-#ifdef OPENPAL_FLIP_ENDIAN
+	static UInt48Type Read(const uint8_t* pStart);
 
-typedef Bit16BE<int16_t>	Int16;
-typedef Bit16BE<uint16_t>	UInt16;
-typedef Bit32BE<int32_t>	Int32;
-typedef Bit32BE<uint32_t>	UInt32;
-typedef UInt48BE			UInt48;
+	static void Write(uint8_t* apStart, UInt48Type aValue);
 
-#else
+	inline static UInt48Type ReadBuffer(ReadBufferView& buffer)
+	{
+		auto ret = Read(buffer);
+		buffer.Advance(SIZE);
+		return ret;
+	}
 
-typedef Bit16LE<int16_t>	Int16;
-typedef Bit16LE<uint16_t>	UInt16;
-typedef Bit32LE<int32_t>	Int32;
-typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
+	static void WriteBuffer(WriteBufferView& buffer, UInt48Type aValue)
+	{
+		Write(buffer, aValue);
+		buffer.Advance(SIZE);
+	}
 
-#endif
-
-typedef UInt8Simple			UInt8;
-typedef Float<float>		SingleFloat;
-typedef Float<double>		DoubleFloat;
+	const static uint64_t MAX = 281474976710655ULL; // 2^48 -1
+	const static size_t SIZE = 6;
+	typedef UInt48Type Type;
+};
 
 }
 
