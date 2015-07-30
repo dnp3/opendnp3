@@ -41,6 +41,7 @@ enum class MasterTaskType : uint8_t
   SET_SESSION_KEYS = 8
 };
 
+char const* MasterTaskTypeToString(MasterTaskType arg);
 
 }
 
