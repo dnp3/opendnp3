@@ -163,7 +163,15 @@ TEST_CASE(SUITE("UInt16"))
 {
 	REQUIRE(TestReadWrite<uint16_t>(0));
 	REQUIRE(TestReadWrite<uint16_t>(123));
-	REQUIRE(TestReadWrite<uint16_t>(65535));
+	REQUIRE(TestReadWrite<uint16_t>(65535));	
+}
+
+TEST_CASE(SUITE("UInt16 Endian-ness"))
+{
+	uint8_t arr[2] = { 0x01, 0x02 };
+
+	// 2*256 + 1
+	REQUIRE(UInt16::Read(arr) == 513);
 }
 
 TEST_CASE(SUITE("Int16"))
@@ -173,11 +181,27 @@ TEST_CASE(SUITE("Int16"))
 	REQUIRE(TestReadWrite<int16_t>(32767));
 }
 
+TEST_CASE(SUITE("Int16 Endian-ness"))
+{
+	uint8_t arr[2] = { 0x00, 0x80 };
+
+	// 2*256 + 1
+	REQUIRE(Int16::Read(arr) == -32768);
+}
+
 TEST_CASE(SUITE("UInt32"))
 {
 	REQUIRE(TestReadWrite<uint32_t>(0));
 	REQUIRE(TestReadWrite<uint32_t>(123));
 	REQUIRE(TestReadWrite<uint32_t>(4294967295UL));
+}
+
+TEST_CASE(SUITE("UInt32 Endian-ness"))
+{
+	uint8_t arr[4] = { 0x01, 0x02, 0x00, 0x00 };
+
+	// 2*256 + 1
+	REQUIRE(UInt32::Read(arr) == 513);
 }
 
 TEST_CASE(SUITE("Int32"))
@@ -187,12 +211,28 @@ TEST_CASE(SUITE("Int32"))
 	REQUIRE(TestReadWrite<int32_t>(0x7fffffff));
 }
 
-TEST_CASE(SUITE("UInt48LE"))
+TEST_CASE(SUITE("Int32 Endian-ness"))
+{
+	uint8_t arr[4] = { 0x00, 0x00, 0x00, 0x80 };	
+
+	REQUIRE(Int32::Read(arr) == static_cast<int32_t>(-2147483648));
+}
+
+TEST_CASE(SUITE("UInt48"))
 {	
 	REQUIRE(TestReadWrite<UInt48Type>(UInt48Type(0)));
 	REQUIRE(TestReadWrite<UInt48Type>(UInt48Type(123)));
 	REQUIRE(TestReadWrite<UInt48Type>(UInt48Type(281474976710655ULL)));
 }
+
+TEST_CASE(SUITE("UInt48 endianess"))
+{
+	uint8_t arr[6] = { 0x01, 0x02, 0x00, 0x00, 0x00, 0x00};
+
+	// 2*256 + 1
+	REQUIRE(UInt48::Read(arr) == 513);
+}
+
 
 TEST_CASE(SUITE("ParseMany"))
 {

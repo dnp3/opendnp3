@@ -18,45 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_SERIALIZATION_H
-#define OPENPAL_SERIALIZATION_H
 
-#include "UInt48LE.h"
 #include "UInt48BE.h"
-#include "SerializationTemplatesLE.h"
-#include "SerializationTemplatesBE.h"
-
-#include "ByteSerialization.h"
-#include "FloatSerializationTemplates.h"
 
 namespace openpal
 {
 
-// Opendnp3 parsing only uses these aliases. This allows
-// the endian-ness to be switched via the macro below
+	UInt48Type UInt48BE::Read(const uint8_t* pStart)
+	{
+		uint64_t ret = 0;
 
-#ifdef OPENPAL_FLIP_ENDIAN
+		ret |= static_cast<int64_t>(*(pStart)) << 40;
+		ret |= static_cast<int64_t>(*(++pStart)) << 32;
+		ret |= static_cast<int64_t>(*(++pStart)) << 24;
+		ret |= static_cast<int64_t>(*(++pStart)) << 16;
+		ret |= static_cast<int64_t>(*(++pStart)) << 8;
+		ret |= static_cast<int64_t>(*(++pStart));
 
-typedef Bit16BE<int16_t>	Int16;
-typedef Bit16BE<uint16_t>	UInt16;
-typedef Bit32BE<int32_t>	Int32;
-typedef Bit32BE<uint32_t>	UInt32;
-typedef UInt48BE			UInt48;
+		return UInt48Type(ret);
+	}
 
-#else
+	void UInt48BE::Write(uint8_t* pStart, UInt48Type value)
+	{
+		if (value > MAX)
+		{
+			value = UInt48Type(MAX);
+		}
 
-typedef Bit16LE<int16_t>	Int16;
-typedef Bit16LE<uint16_t>	UInt16;
-typedef Bit32LE<int32_t>	Int32;
-typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
-
-#endif
-
-typedef UInt8Simple			UInt8;
-typedef Float<float>		SingleFloat;
-typedef Float<double>		DoubleFloat;
+		*(pStart) = static_cast<uint8_t>((value >> 40) & 0xFF);
+		*(++pStart) = static_cast<uint8_t>((value >> 32) & 0xFF);
+		*(++pStart) = static_cast<uint8_t>((value >> 24) & 0xFF);
+		*(++pStart) = static_cast<uint8_t>((value >> 16) & 0xFF);
+		*(++pStart) = static_cast<uint8_t>((value >> 8) & 0xFF);
+		*(++pStart) = static_cast<uint8_t>(value & 0xFF);									
+	}
 
 }
-
-#endif

@@ -17,6 +17,7 @@ endif()
 option(OSSL "build the openssl crypto wrapper for SA" ${DEFAULT_ENABLE})
 option(DEMO "Build demo applications" ${DEFAULT_ENABLE})
 option(TEST "Build tests" ${DEFAULT_ENABLE})
+option(FLIP_ENDIAN "Flips the endianness of the serialization and formatting routines" OFF)
 
 # other options off-by-default that you can enable
 option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
@@ -24,6 +25,9 @@ option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
 option(DOTNET "ADDS the .NET bindings to the generated solution file")
 
+if(FLIP_ENDIAN)
+	add_definitions(-DOPENPAL_FLIP_ENDIAN)
+endif()
 
 if(WIN32)
 
