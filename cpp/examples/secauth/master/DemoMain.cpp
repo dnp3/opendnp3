@@ -44,7 +44,14 @@ using namespace secauth;
 class MasterApplication final : public IMasterApplicationSA
 {
 	virtual UTCTimestamp Now() override { return UTCTimeSource::Instance().Now(); }
+
+	virtual void OnTaskComplete(const TaskInfo& info)
+	{
+		std::cout << "Task type " << MasterTaskTypeToString(info.type) << " completed with result " << TaskCompletionToString(info.result) << std::endl;
+	}
 };
+
+void DoCommandSequence(IMaster* master);
 
 int main(int argc, char* argv[])
 {		
@@ -95,7 +102,7 @@ int main(int argc, char* argv[])
 	// returns a thread-safe interface used for sending commands.
 	auto pMaster = pChannel->AddMasterSA(
 	                   "master",										// id for logging
-	                   PrintingSOEHandler::Instance(),					// callback for data processing                
+	                   NullSOEHandler::Instance(),						// callback for data processing                
 					   application,										// master application instance for SA
 	                   stackConfig										// stack configuration					   			   
 	               );
@@ -104,10 +111,10 @@ int main(int argc, char* argv[])
 	pMaster->AddUser(User::Default(), UpdateKey(0xFF, UpdateKeyMode::AES128));
 		
 	// do an integrity poll (Class 3/2/1/0) once per minute
-	auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
+	//auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
 	
 	// do a Class 1 exception poll every 5 seconds
-	auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(5));
+	//auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(5));
 
 	// Enable the master. This will start communications.
 	pMaster->Enable();	
@@ -130,22 +137,10 @@ int main(int argc, char* argv[])
 				break;
 			case('x'):
 				// C++ destructor on DNP3Manager cleans everything up for you
-				return 0;
-			case('i'):
-				integrityScan.Demand();
-				break;
-			case('e'):
-				exceptionScan.Demand();
-				break;
+				return 0;			
 			case('c'):
 				{
-					// This is an example of synchronously doing a control operation
-					ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
-					BlockingCommandCallback handler;
-					pMaster->SelectAndOperate(crob, 0, handler);
-					auto response = handler.WaitForResult();
-					std::cout << "Result: " << TaskCompletionToString(response.GetResult()) <<
-								 " Status: " << CommandStatusToString(response.GetStatus()) << std::endl;
+					DoCommandSequence(pMaster);
 					break;
 				}
 			default:
@@ -156,5 +151,18 @@ int main(int argc, char* argv[])
 	while(true);
 
 	return 0;
+}
+
+void DoCommandSequence(IMaster* master)
+{
+	ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
+	// This is an example of synchronously doing a control operation
+
+	BlockingCommandCallback handler;
+	master->SelectAndOperate(crob, 0, handler);
+	auto response = handler.WaitForResult();
+	std::cout << "Result: " << TaskCompletionToString(response.GetResult()) <<
+		" Status: " << CommandStatusToString(response.GetStatus()) << std::endl;
+
 }
 

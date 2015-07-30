@@ -99,15 +99,15 @@ int main(int argc, char* argv[])
 	// you can override an default outstation parameters here
 	// in this example, we've enabled the outstation to use unsolicited reporting
 	// if the master enables it
-	config.outstation.params.allowUnsolicited = false;
+	config.outstation.params.allowUnsolicited = true;
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
 	config.link.LocalAddr = 10;
 	config.link.RemoteAddr = 1;	
 
-	// don't challenge confirms, as the master can't authenticate these yet
-	config.auth.functions.authConfirm = false;
+	// only challenge function codes defined to be critical by 1815
+	config.auth.functions = CriticalFunctions::AuthOptional();
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
@@ -116,14 +116,16 @@ int main(int argc, char* argv[])
 		"outstation",
 		SuccessCommandHandler::Instance(),
 		application,
-		config);	
+		config
+	);	
 
 	// add a user to the outstation w/ a key of all 0xFF
 	pOutstation->ConfigureUser(
 		opendnp3::User::Default(),
 		"bob",
 		UpdateKey(0xFF, UpdateKeyMode::AES128),
-		Permissions::AllowAll()
+		// so that the default user can do the initial startup handshaking
+		Permissions::Allowed(FunctionCode::WRITE, FunctionCode::DISABLE_UNSOLICITED, FunctionCode::ENABLE_UNSOLICITED)
 	);
 
 	// Enable the outstation and start communications
