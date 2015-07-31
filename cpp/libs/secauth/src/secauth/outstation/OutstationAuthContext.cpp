@@ -597,7 +597,7 @@ bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& head
 	/// Now that we've authenticated a new SCSN, tell the application to persist this count to non-volatile
 	auto nextSCSN = change.statusChangeSeqNum + 1;
 	this->security.credentials.SetSCSN(nextSCSN);
-	this->security.pApplication->WriteStatusChangeSeqNum(nextSCSN);
+	this->security.pApplication->OnNewSCSN(nextSCSN);
 	return true;
 }
 

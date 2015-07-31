@@ -38,7 +38,7 @@ class IOutstationApplicationSA : public opendnp3::IOutstationApplication, public
 	public:	
 	
 	/// Persist the next SCSN to non-volatile storage to be restored on reboot
-	virtual void WriteStatusChangeSeqNum(uint32_t userStatusSeqNum) = 0;
+	virtual void OnNewSCSN(uint32_t userStatusSeqNum) = 0;
 				
 };
 

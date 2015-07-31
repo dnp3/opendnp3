@@ -52,7 +52,7 @@ class OutstationApplication final : public IOutstationApplicationSA
 	virtual UTCTimestamp Now() override { return UTCTimeSource::Instance().Now(); }
 
 	// normally this needs to persist to disk
-	virtual void WriteStatusChangeSeqNum(uint32_t userStatusSeqNum) {}
+	virtual void OnNewSCSN(uint32_t userStatusSeqNum) {}
 };
 
 
