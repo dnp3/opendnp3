@@ -296,6 +296,7 @@ void MAuthContext::OnAuthError(const openpal::ReadBufferView& apdu, const opendn
 
 	// at this point, we're transitioning back to the master's idle state
 	this->tstate = TaskState::IDLE;
+	this->responseTimer.Cancel();
 
 	if (errorCode == AuthErrorCode::AUTHORIZATION_FAILED)
 	{
