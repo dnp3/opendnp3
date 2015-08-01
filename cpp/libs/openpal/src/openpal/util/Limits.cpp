@@ -46,6 +46,12 @@ float MinValue<float>() { return -FLT_MAX; }
 
 template <>
 float MaxValue<float>() { return FLT_MAX ; }
+
+template <>
+double MinValue<double>() { return -DBL_MAX; }
+
+template <>
+double MaxValue<double>() { return DBL_MAX; }
 	
 template <>
 int16_t MinValue<int16_t>() { return INT16_MIN; }

@@ -27,19 +27,34 @@ namespace openpal
 
 const FloatByteOrder::Value FloatByteOrder::ORDER(GetByteOrder());
 
+bool FloatByteOrder::IsNormalByteOrder()
+{
+	uint8_t bytes[4] = { 0x00, 0x00, 0xA0, 0xC1 };
+	float f = *reinterpret_cast<float*>(bytes);
+	return (f == -20.0f);
+}
+
+bool FloatByteOrder::IsReverseByteOrder()
+{
+	uint8_t bytes[4] = { 0xC1, 0xA0, 0x00, 0x00 };
+	float f = *reinterpret_cast<float*>(bytes);
+	return (f == -20.0f);
+}
+
 FloatByteOrder::Value FloatByteOrder::GetByteOrder()
 {
-	/// pick a really simple test vector. This should exactly equal -20 for floating representation on x86
-	uint8_t bytes[8] = { 0x00, 0x00, 0xA0, 0xC1 };
-
-	float f = *reinterpret_cast<float*>(bytes);
-
-	if (f == -20.0f)
+	if (IsNormalByteOrder())
 	{
 		return FloatByteOrder::Value::NORMAL;
 	}
-
-	return FloatByteOrder::Value::UNSUPPORTED;
+	else if (IsReverseByteOrder())
+	{
+		return FloatByteOrder::Value::REVERSE;
+	}
+	else
+	{
+		return FloatByteOrder::Value::UNSUPPORTED;
+	}
 }
 
 

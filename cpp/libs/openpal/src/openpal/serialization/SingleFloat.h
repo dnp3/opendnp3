@@ -34,7 +34,7 @@ class SingleFloat : private StaticOnly
 {
 public:
 
-	static_assert(sizeof(float) == 4, "Unexpected size of float");
+	static_assert(sizeof(float) == 4, "Unexpected size of single float");
 
 	typedef float Type;
 

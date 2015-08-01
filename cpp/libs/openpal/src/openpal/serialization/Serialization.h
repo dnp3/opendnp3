@@ -23,10 +23,10 @@
 
 #include "UInt48LE.h"
 #include "SerializationTemplatesLE.h"
-
 #include "ByteSerialization.h"
-#include "FloatSerializationTemplates.h"
+
 #include "SingleFloat.h"
+#include "DoubleFloat.h"
 
 namespace openpal
 {
@@ -36,11 +36,8 @@ typedef Bit16LE<uint16_t>	UInt16;
 typedef Bit32LE<int32_t>	Int32;
 typedef Bit32LE<uint32_t>	UInt32;
 typedef UInt48LE			UInt48;
-
 typedef UInt8Simple			UInt8;
 
-
-typedef Float<double>       DoubleFloat;
 
 }
 

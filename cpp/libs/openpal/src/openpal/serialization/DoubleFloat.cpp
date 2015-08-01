@@ -18,65 +18,60 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_FLOATSERIALIZATIONTEMPLATES_H
-#define OPENPAL_FLOATSERIALIZATIONTEMPLATES_H
 
-#include <cstdint>
-#include <cstring>
-
-#include "openpal/container/ReadBufferView.h"
-#include "openpal/container/WriteBufferView.h"
+#include "DoubleFloat.h"
 
 #include "openpal/util/Limits.h"
-#include "openpal/util/Uncopyable.h"
+#include "openpal/serialization/FloatByteOrder.h"
+
+#include <cstring>
 
 namespace openpal
 {
+	const double DoubleFloat::Max(openpal::MaxValue<double>());
+	const double DoubleFloat::Min(openpal::MinValue<double>());
 
-template <class T>
-class Float : private StaticOnly
-{
-public:
-	typedef T Type;
-
-	const static size_t SIZE = sizeof(T);
-	const static T Max;
-	const static T Min;
-
-	inline static T ReadBuffer(ReadBufferView& buffer)
+	double DoubleFloat::ReadBuffer(ReadBufferView& buffer)
 	{
 		auto ret = Read(buffer);
 		buffer.Advance(SIZE);
 		return ret;
 	}
 
-	inline static void WriteBuffer(WriteBufferView& buffer, T value)
+	void DoubleFloat::WriteBuffer(WriteBufferView& buffer, double value)
 	{
 		Write(buffer, value);
 		buffer.Advance(SIZE);
 	}
-
-	// Some platforms like ARM have WORD alignment issue when using reinterpret cast.
-	// The float/double read routines use intermediate buffer that the compiler word aligns
-	inline static T Read(const uint8_t* pStart)
+	
+	double DoubleFloat::Read(const uint8_t* data)
 	{
-		T d;
-		memcpy(&d, pStart, SIZE);
-		return d;
+		if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
+		{
+			double d;
+			memcpy(&d, data, SIZE);
+			return d;
+		}
+		else
+		{
+			uint8_t bytes[8] = { data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] };
+			return *reinterpret_cast<double*>(bytes);
+		}
 	}
 
-	inline static void Write(uint8_t* pStart, T value)
-	{
-		memcpy(pStart, &value, SIZE);
+	void DoubleFloat::Write(uint8_t* dest, double value)
+	{		
+		if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
+		{
+			memcpy(dest, &value, SIZE);
+		}
+		else
+		{
+			auto data = reinterpret_cast<uint8_t*>(&value);
+			uint8_t bytes[8] = { data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] };
+			memcpy(dest, bytes, SIZE);
+		}
 	}
-};
-
-template <class T>
-const T Float<T>::Max = openpal::MaxValue<T>();
-
-template <class T>
-const T Float<T>::Min = openpal::MinValue<T>();
-
 }
 
-#endif
+

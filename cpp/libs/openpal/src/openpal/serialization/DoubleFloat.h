@@ -18,34 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_FLOAT_BYTE_ORDER_H
-#define OPENPAL_FLOAT_BYTE_ORDER_H
+#ifndef OPENPAL_DOUBLE_FLOAT_H
+#define OPENPAL_DOUBLE_FLOAT_H
 
 #include "openpal/util/Uncopyable.h"
+#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WriteBufferView.h"
 
-#include <cstdint>
+
 
 namespace openpal
 {
 
-struct FloatByteOrder : private StaticOnly
+class DoubleFloat : private StaticOnly
 {
-	enum class Value : uint8_t
-	{
-		NORMAL,
-		REVERSE,
-		UNSUPPORTED
-	};
+public:
 
-	static const Value ORDER;
+	static_assert(sizeof(double) == 8, "Unexpected size of double float");
 
-private:
+	typedef double Type;
 
-	static Value GetByteOrder();
-
-	static bool IsNormalByteOrder();
-	static bool IsReverseByteOrder();
-
+	static double ReadBuffer(ReadBufferView& buffer);
+	static void WriteBuffer(WriteBufferView& buffer, double value);
+		
+	static double Read(const uint8_t* data);
+	static void Write(uint8_t* data, double value);
+	
+	const static size_t SIZE = sizeof(double);
+	const static double Max;
+	const static double Min;
 };
 
 }
