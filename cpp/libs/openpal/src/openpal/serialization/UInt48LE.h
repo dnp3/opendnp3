@@ -36,9 +36,9 @@ class UInt48LE
 {
 public:
 
-	static UInt48Type Read(const uint8_t* pStart);
+	static UInt48Type Read(const uint8_t* data);
 
-	static void Write(uint8_t* apStart, UInt48Type aValue);
+	static void Write(uint8_t* data, UInt48Type value);
 
 	inline static UInt48Type ReadBuffer(ReadBufferView& buffer)
 	{
@@ -47,9 +47,9 @@ public:
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBufferView& buffer, UInt48Type aValue)
+	static void WriteBuffer(WriteBufferView& buffer, UInt48Type value)
 	{
-		Write(buffer, aValue);
+		Write(buffer, value);
 		buffer.Advance(SIZE);
 	}
 

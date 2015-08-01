@@ -22,9 +22,7 @@
 #define OPENPAL_SERIALIZATION_H
 
 #include "UInt48LE.h"
-#include "UInt48BE.h"
 #include "SerializationTemplatesLE.h"
-#include "SerializationTemplatesBE.h"
 
 #include "ByteSerialization.h"
 #include "FloatSerializationTemplates.h"
@@ -32,26 +30,11 @@
 namespace openpal
 {
 
-// Opendnp3 parsing only uses these aliases. This allows
-// the endian-ness to be switched via the macro below
-
-#ifdef OPENPAL_FLIP_ENDIAN
-
-typedef Bit16BE<int16_t>	Int16;
-typedef Bit16BE<uint16_t>	UInt16;
-typedef Bit32BE<int32_t>	Int32;
-typedef Bit32BE<uint32_t>	UInt32;
-typedef UInt48BE			UInt48;
-
-#else
-
 typedef Bit16LE<int16_t>	Int16;
 typedef Bit16LE<uint16_t>	UInt16;
 typedef Bit32LE<int32_t>	Int32;
 typedef Bit32LE<uint32_t>	UInt32;
 typedef UInt48LE			UInt48;
-
-#endif
 
 typedef UInt8Simple			UInt8;
 typedef Float<float>		SingleFloat;
