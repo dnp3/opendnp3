@@ -18,30 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_SERIALIZATION_H
-#define OPENPAL_SERIALIZATION_H
 
-#include "UInt48LE.h"
-#include "SerializationTemplatesLE.h"
+#include "FloatByteOrder.h"
 
-#include "ByteSerialization.h"
-#include "FloatSerializationTemplates.h"
-#include "SingleFloat.h"
 
 namespace openpal
 {
 
-typedef Bit16LE<int16_t>	Int16;
-typedef Bit16LE<uint16_t>	UInt16;
-typedef Bit32LE<int32_t>	Int32;
-typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
+const FloatByteOrder::Value FloatByteOrder::ORDER(GetByteOrder());
 
-typedef UInt8Simple			UInt8;
+FloatByteOrder::Value FloatByteOrder::GetByteOrder()
+{
+	/// pick a really simple test vector. This should exactly equal -20 for floating representation on x86
+	uint8_t bytes[8] = { 0x00, 0x00, 0xA0, 0xC1 };
 
+	float f = *reinterpret_cast<float*>(bytes);
 
-typedef Float<double>       DoubleFloat;
+	if (f == -20.0f)
+	{
+		return FloatByteOrder::Value::NORMAL;
+	}
+
+	return FloatByteOrder::Value::UNSUPPORTED;
+}
+
 
 }
 
-#endif
+

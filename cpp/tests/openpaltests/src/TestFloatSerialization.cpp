@@ -27,6 +27,7 @@
 #include <openpal/serialization/Parse.h>
 #include <openpal/serialization/Format.h>
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/FloatByteOrder.h>
 #include <openpal/util/Comparisons.h>
 
 #include <memory>
@@ -91,6 +92,11 @@ bool TestFloatParsing(std::string hex, typename T::Type value)
 }
 
 #define SUITE(name) "FloatSerializationTestSuite - " name
+
+TEST_CASE(SUITE("Float memory byte order is IEEE 754"))
+{
+	REQUIRE(openpal::FloatByteOrder::ORDER != FloatByteOrder::Value::UNSUPPORTED);
+}
 
 TEST_CASE(SUITE("DoublePacking"))
 {

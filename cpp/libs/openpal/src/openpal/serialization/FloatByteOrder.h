@@ -18,29 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_SERIALIZATION_H
-#define OPENPAL_SERIALIZATION_H
+#ifndef OPENPAL_FLOAT_BYTE_ORDER_H
+#define OPENPAL_FLOAT_BYTE_ORDER_H
 
-#include "UInt48LE.h"
-#include "SerializationTemplatesLE.h"
+#include "openpal/util/Uncopyable.h"
 
-#include "ByteSerialization.h"
-#include "FloatSerializationTemplates.h"
-#include "SingleFloat.h"
+#include <cstdint>
 
 namespace openpal
 {
 
-typedef Bit16LE<int16_t>	Int16;
-typedef Bit16LE<uint16_t>	UInt16;
-typedef Bit32LE<int32_t>	Int32;
-typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
+struct FloatByteOrder : private StaticOnly
+{
+	enum class Value : uint8_t
+	{
+		NORMAL,
+		REVERSE,
+		UNSUPPORTED
+	};
 
-typedef UInt8Simple			UInt8;
+	static const Value ORDER;
 
+private:
 
-typedef Float<double>       DoubleFloat;
+	static Value GetByteOrder();
+
+};
 
 }
 

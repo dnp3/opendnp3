@@ -18,29 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_SERIALIZATION_H
-#define OPENPAL_SERIALIZATION_H
+#ifndef OPENPAL_SINGLE_FLOAT_H
+#define OPENPAL_SINGLE_FLOAT_H
 
-#include "UInt48LE.h"
-#include "SerializationTemplatesLE.h"
+#include "openpal/util/Uncopyable.h"
+#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WriteBufferView.h"
 
-#include "ByteSerialization.h"
-#include "FloatSerializationTemplates.h"
-#include "SingleFloat.h"
+
 
 namespace openpal
 {
 
-typedef Bit16LE<int16_t>	Int16;
-typedef Bit16LE<uint16_t>	UInt16;
-typedef Bit32LE<int32_t>	Int32;
-typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
+class SingleFloat : private StaticOnly
+{
+public:
 
-typedef UInt8Simple			UInt8;
+	static_assert(sizeof(float) == 4, "Unexpected size of float");
 
+	typedef float Type;
 
-typedef Float<double>       DoubleFloat;
+	static float ReadBuffer(ReadBufferView& buffer);	
+	static void WriteBuffer(WriteBufferView& buffer, float value);
+		
+	static float Read(const uint8_t* data);	
+	static void Write(uint8_t* data, float value);
+	
+	const static size_t SIZE = sizeof(float);
+	const static float Max;
+	const static float Min;
+};
 
 }
 
