@@ -44,7 +44,7 @@ public:
 	static float Read(const uint8_t* data);	
 	static void Write(uint8_t* data, float value);
 	
-	const static size_t SIZE = sizeof(float);
+	const static std::size_t SIZE = sizeof(float);
 	const static float Max;
 	const static float Min;
 };

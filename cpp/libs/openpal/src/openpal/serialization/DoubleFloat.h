@@ -44,7 +44,7 @@ public:
 	static double Read(const uint8_t* data);
 	static void Write(uint8_t* data, double value);
 	
-	const static size_t SIZE = sizeof(double);
+	const static std::size_t SIZE = sizeof(double);
 	const static double Max;
 	const static double Min;
 };
