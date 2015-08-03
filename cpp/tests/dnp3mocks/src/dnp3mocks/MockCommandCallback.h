@@ -21,13 +21,13 @@
 #ifndef __MOCK_COMMAND_CALLBACK_H_
 #define __MOCK_COMMAND_CALLBACK_H_
 
-#include <opendnp3/master/ITaskCallback.h>
+#include <opendnp3/master/IResultCallback.h>
 #include <queue>
 
 namespace opendnp3
 {
 
-class MockCommandCallback : public ICommandCallback
+class MockCommandCallback : public CommandCallbackT
 {
 public:	
 

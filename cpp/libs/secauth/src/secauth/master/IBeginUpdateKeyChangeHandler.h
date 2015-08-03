@@ -21,17 +21,14 @@
 #ifndef SECAUTH_IBEGIN_UPDATE_KEY_CHANGE_HANDLER_H
 #define SECAUTH_IBEGIN_UPDATE_KEY_CHANGE_HANDLER_H
 
-#include <opendnp3/master/ITaskValueCallback.h>
+#include <opendnp3/master/IResultCallback.h>
 
 #include "BeginUpdateKeyChangeResult.h"
 
 namespace secauth
 {
 
-class IBeginUpdateKeyChangeHandler : public opendnp3::ITaskValueCallback<BeginUpdateKeyChangeResult>
-{
-	
-};
+typedef opendnp3::IResultCallback<BeginUpdateKeyChangeResult> IBeginUpdateKeyChangeHandler;
 	
 }
 

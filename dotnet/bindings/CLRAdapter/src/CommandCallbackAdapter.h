@@ -7,9 +7,7 @@ using namespace System::Threading::Tasks;
 #include <vcclr.h>
 
 #include <openpal/util/Uncopyable.h>
-#include <opendnp3/master/ICommandProcessor.h>
 
-#include "Conversions.h"
 
 using namespace Automatak::DNP3::Interface;
 
@@ -19,33 +17,29 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
-
-			class CommandCallbackAdapter : public opendnp3::ICommandCallback, openpal::Uncopyable
+			template <class T, class U>
+			class TaskCallbackAdapter : public opendnp3::IResultCallback<T>, openpal::Uncopyable
 			{
 			public:
-				CommandCallbackAdapter(TaskCompletionSource<CommandResponse>^ taskCompletionSource, bool autoDelete_) : 
-					autoDelete(autoDelete_),
-					root(taskCompletionSource)
-				{}
 
-				virtual void OnStart() sealed
+				TaskCallbackAdapter(TaskCompletionSource<U>^ taskCompletionSource, System::Func<U^, T> conversion) :
+					root(taskCompletionSource),
+					conversion(conversion_)
 				{
 				
-				}
+				}				
 
-				virtual void OnComplete(const opendnp3::CommandResponse& response) sealed
+				virtual void OnComplete(const T& response) sealed
 				{
-					auto result = Conversions::ConvertCommandResponse(response);
+					auto result = conversion->Invoke(response);
 
 					root->SetResult(result);
-					if (autoDelete)
-					{
-						delete this;
-					}
-				}
 
-				bool autoDelete;
-				gcroot < TaskCompletionSource<CommandResponse>^ > root;
+					delete this;
+				}
+				
+				gcroot < TaskCompletionSource<U>^ > root;
+				gcroot < System::Func<U^, T> > conversion;
 			};			
 
 		}

@@ -32,8 +32,36 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public interface IMasterSA : IMaster
     {
+        /// <summary>
+        /// Add a user to the outstation, specifing the users update key.
+        /// If the user already exists, the user's session is immediately invalidated.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="key"></param>
         void AddUser(User user, UpdateKey key);
 
+        /// <summary>        
+        /// Begin the task of changing a user's status on the outstation.
+        /// No data is returned so the success or failure of the task can be established using the generic
+        /// TaskCompletion enumeration.        
+        /// </summary>
+        /// <param name="change"></param>
+        /// <param name="config"></param>
+        /// <returns></returns>
         Task<TaskCompletion> ChangeUserStatus(UserStatusChange change, TaskConfig config);
+
+        /// <summary>
+        /// 
+        /// Begin the process of changing a user's update keys. This first exchange does several things
+        /// 
+        /// 1) send a username and get back a user # that the outstation will assign if mutual authentication is established
+        /// 2) Specify the nonce that the master is using and retrieve the nonce that the 
+        /// 3) Get back a key change sequence number used by the outstation for this exchange
+        /// 
+        /// For now, the key change method is implicitly AES_256_SHA256_HMAC
+        /// 
+        /// </summary>
+        /// <returns>An object that represents failure or succes + data</returns>        
+        Task<BeginUpdateKeyChangeResult> BeginUpdateKeyChange(string username);
     }
 }

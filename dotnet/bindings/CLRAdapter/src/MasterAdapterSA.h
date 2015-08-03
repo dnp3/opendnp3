@@ -59,6 +59,12 @@ namespace Automatak
 					pMasterSA->ChangeUserStatus(SAConversions::Convert(statusChange), MasterConversions::Convert(config, proxy));
 					return proxy->CompletionTask;
 				}
+
+				virtual Task<BeginUpdateKeyChangeResult^>^ BeginUpdateKeyChange(System::String^ username) sealed
+				{
+					// TODO
+					return nullptr;
+				}
 				
 			private:
 				

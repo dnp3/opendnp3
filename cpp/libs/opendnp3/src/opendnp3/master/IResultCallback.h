@@ -18,26 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ITASKVALUECALLBACK_H
-#define OPENDNP3_ITASKVALUECALLBACK_H
+#ifndef OPENDNP3_IRESULT_CALLBACK_H
+#define OPENDNP3_IRESULT_CALLBACK_H
 
 #include "opendnp3/master/CommandResponse.h"
 
 namespace opendnp3
 {
 
+/**
+* A generic callback for tasks that return a value on success	
+*/
 template <class T>
-class ITaskValueCallback
+class IResultCallback
 {
 
 public:
+
 	virtual void OnComplete(const T& value) = 0;
-};
-
-class ICommandCallback : public ITaskValueCallback<CommandResponse>
-{
 
 };
+
+
+
+typedef IResultCallback<CommandResponse> CommandCallbackT;
+
 
 }
 
