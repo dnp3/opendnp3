@@ -401,6 +401,18 @@ namespace Automatak
 				return buffer;
 			}
 
+			array<System::Byte>^ Conversions::Convert(const openpal::ReadBufferView& bytes)
+			{
+				array<System::Byte>^ ret = gcnew array<System::Byte>(bytes.Size());
+
+				for (int i = 0; i < bytes.Size(); ++i)
+				{
+					ret[i] = bytes[i];
+				}
+
+				return ret;
+			}
+
 			User^ Conversions::Convert(const opendnp3::User& user)
 			{
 				return User::FromNumber(user.GetId());

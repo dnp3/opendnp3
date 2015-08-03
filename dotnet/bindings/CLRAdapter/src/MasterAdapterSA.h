@@ -9,6 +9,8 @@ using namespace System::Collections::Generic;
 #include "SAConversions.h"
 #include "MasterConversions.h"
 
+#include "BeginUpdateKeyChangeCallbackAdapter.h"
+
 #include <asiodnp3/IMasterSA.h>
 #include <openpal/container/Buffer.h>
 
@@ -60,10 +62,13 @@ namespace Automatak
 					return proxy->CompletionTask;
 				}
 
-				virtual Task<BeginUpdateKeyChangeResult^>^ BeginUpdateKeyChange(System::String^ username) sealed
+				virtual Task<BeginUpdateKeyChangeResult^>^ BeginUpdateKeyChange(System::String^ username, TaskConfig^ config) sealed
 				{
-					// TODO
-					return nullptr;
+					auto configNative = MasterConversions::Convert(config);
+					auto usernameNative = Conversions::ConvertString(username);
+					auto handler = new BeginUpdateKeyChangeCallbackAdapter();
+					pMasterSA->BeginUpdateKeyChange(opendnp3::KeyChangeMethod::AES_256_SHA256_HMAC, usernameNative, configNative, *handler);
+					return handler->GetTask();
 				}
 				
 			private:

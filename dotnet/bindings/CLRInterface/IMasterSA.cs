@@ -62,6 +62,6 @@ namespace Automatak.DNP3.Interface
         /// 
         /// </summary>
         /// <returns>An object that represents failure or succes + data</returns>        
-        Task<BeginUpdateKeyChangeResult> BeginUpdateKeyChange(string username);
+        Task<BeginUpdateKeyChangeResult> BeginUpdateKeyChange(string username, TaskConfig config);
     }
 }

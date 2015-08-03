@@ -1,6 +1,6 @@
 
-#ifndef OPENDNP3CLR_RESULT_CALLBACK_ADAPTER_H
-#define OPENDNP3CLR_RESULT_CALLBACK_ADAPTER_H
+#ifndef OPENDNP3CLR_COMMAND_CALLBACK_ADAPTER_H
+#define OPENDNP3CLR_COMMAND_CALLBACK_ADAPTER_H
 
 using namespace System::Collections::ObjectModel;
 using namespace System::Threading::Tasks;
