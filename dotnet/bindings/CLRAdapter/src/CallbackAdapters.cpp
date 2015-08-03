@@ -16,21 +16,20 @@ namespace Automatak
 																
 			opendnp3::CommandCallbackT CallbackAdapters::Get(TaskCompletionSource<CommandResponse>^ tcs)
 			{
-				auto root = new gcroot<TaskCompletionSource<CommandResponse>^>(tcs);
+				gcroot<TaskCompletionSource<CommandResponse>^> handle(tcs);
 
-				return [root](const opendnp3::CommandResponse& rsp) -> void 
+				return [handle](const opendnp3::CommandResponse& rsp) -> void
 				{
 					auto result = Conversions::ConvertCommandResponse(rsp);
-					(*root)->SetResult(result);
-					delete root;
+					handle->SetResult(result);
 				};
 			}
 
 			secauth::BeginUpdateKeyChangeCallbackT CallbackAdapters::Get(TaskCompletionSource<BeginUpdateKeyChangeResult^>^ tcs)
 			{
-				auto root = new gcroot<TaskCompletionSource<BeginUpdateKeyChangeResult^>^>(tcs);
+				gcroot<TaskCompletionSource<BeginUpdateKeyChangeResult^>^> handle(tcs);
 
-				return [root](const secauth::BeginUpdateKeyChangeResult& rsp) -> void
+				return [handle](const secauth::BeginUpdateKeyChangeResult& rsp) -> void
 				{
 					BeginUpdateKeyChangeResult^ result = gcnew BeginUpdateKeyChangeResult(
 						(TaskCompletion)  rsp.result,
@@ -41,9 +40,7 @@ namespace Automatak
 					);
 
 
-					(*root)->SetResult(result);
-
-					delete root;
+					handle->SetResult(result);
 				};
 			}
 

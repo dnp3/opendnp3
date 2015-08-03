@@ -69,7 +69,7 @@ namespace Automatak
 					
 					auto tcs = gcnew TaskCompletionSource<BeginUpdateKeyChangeResult^>();
 					
-					pMasterSA->BeginUpdateKeyChange(opendnp3::KeyChangeMethod::AES_256_SHA256_HMAC, usernameNative, configNative, CallbackAdapters::Get(tcs));
+					pMasterSA->BeginUpdateKeyChange(usernameNative, configNative, CallbackAdapters::Get(tcs));
 					
 					return tcs->Task;
 				}
