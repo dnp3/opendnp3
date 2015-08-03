@@ -56,6 +56,20 @@ namespace secauth
 			return iter->second->IncrementAuthCount();
 		}
 	}
+
+	bool SessionStore::Invalidate(const opendnp3::User& user)
+	{
+		auto iter = sessionMap.find(user.GetId());
+		if (iter == sessionMap.end())
+		{
+			return false;
+		}
+		else
+		{
+			sessionMap.erase(iter);
+			return true;
+		}
+	}
 	
 	void SessionStore::SetSessionKeys(const User& user, const SessionKeysView& view)
 	{

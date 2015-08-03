@@ -44,7 +44,7 @@ namespace secauth
 
 		opendnp3::KeyStatus TryGetKeyView(SessionKeysView& view);
 
-		opendnp3::KeyStatus IncrementAuthCount();
+		opendnp3::KeyStatus IncrementAuthCount();		
 
 		private:
 

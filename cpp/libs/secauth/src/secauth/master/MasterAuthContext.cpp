@@ -148,7 +148,13 @@ void MAuthContext::RecordLastRequest(const openpal::ReadBufferView& apdu)
 
 bool MAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
 {
-	return security.userDB.AddUser(user, key);
+	auto ret = security.userDB.AddUser(user, key);
+	if (ret) 
+	{
+		// invalidate any active sessions for this user immediately to force usage of the new update key
+		security.sessions.Invalidate(user);
+	}
+	return ret;
 }
 
 void MAuthContext::BeginUserStatusChange(const UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config)

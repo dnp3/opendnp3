@@ -57,6 +57,9 @@ namespace secauth
 		// this may invalidate the session keys
 		opendnp3::KeyStatus IncrementAuthCount(const opendnp3::User& user);
 
+		// Invalidate any active sessions for the specified user
+		bool Invalidate(const opendnp3::User& user);
+
 		// erase all sessions
 		void Clear();
 
