@@ -159,7 +159,7 @@ void DoCommandSequence(IMaster* master)
 	// This is an example of synchronously doing a control operation
 
 	BlockingCommandCallback handler;
-	master->SelectAndOperate(crob, 0, handler);
+	master->SelectAndOperate(crob, 0, handler.Callback());
 	auto response = handler.WaitForResult();
 	std::cout << "Result: " << TaskCompletionToString(response.GetResult()) <<
 		" Status: " << CommandStatusToString(response.GetStatus()) << std::endl;
