@@ -25,7 +25,9 @@ namespace opendnp3
 {
 	namespace priority
 	{
-		const int USER_STATUS_CHANGE = 40;
+		const int USER_STATUS_CHANGE = 20;
+
+		const int BEGIN_UPDATE_KEY_CHANGE = 40;
 
 		const int SESSION_KEY = 50;		
 
