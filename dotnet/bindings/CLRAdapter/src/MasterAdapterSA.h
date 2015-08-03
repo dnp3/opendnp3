@@ -9,7 +9,7 @@ using namespace System::Collections::Generic;
 #include "SAConversions.h"
 #include "MasterConversions.h"
 
-#include "BeginUpdateKeyChangeCallbackAdapter.h"
+#include "CallbackAdapters.h"
 
 #include <asiodnp3/IMasterSA.h>
 #include <openpal/container/Buffer.h>
@@ -66,9 +66,12 @@ namespace Automatak
 				{
 					auto configNative = MasterConversions::Convert(config);
 					auto usernameNative = Conversions::ConvertString(username);
-					auto handler = new BeginUpdateKeyChangeCallbackAdapter();
-					pMasterSA->BeginUpdateKeyChange(opendnp3::KeyChangeMethod::AES_256_SHA256_HMAC, usernameNative, configNative, *handler);
-					return handler->GetTask();
+					
+					auto tcs = gcnew TaskCompletionSource<BeginUpdateKeyChangeResult^>();
+					
+					pMasterSA->BeginUpdateKeyChange(opendnp3::KeyChangeMethod::AES_256_SHA256_HMAC, usernameNative, configNative, CallbackAdapters::Get(tcs));
+					
+					return tcs->Task;
 				}
 				
 			private:

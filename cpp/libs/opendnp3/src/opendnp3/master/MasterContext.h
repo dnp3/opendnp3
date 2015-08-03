@@ -114,20 +114,20 @@ namespace opendnp3
 
 		/// methods for initiating command sequences
 
-		void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
+		void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+		void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
 
-		void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const AnalogOutputInt16& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
+		void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+		void DirectOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
 
-		void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const AnalogOutputInt32& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
+		void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+		void DirectOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
 
-		void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
+		void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+		void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
 
-		void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config);
+		void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+		void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
 
 		/// -----  public methods used to add tasks -----
 
@@ -193,10 +193,10 @@ namespace opendnp3
 		// -------- helpers for command requests --------	
 
 		template <class T>
-		void SelectAndOperateT(const T& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
+		void SelectAndOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
 
 		template <class T>
-		void DirectOperateT(const T& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
+		void DirectOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
 
 	protected:
 
@@ -217,13 +217,13 @@ namespace opendnp3
 	};
 
 	template <class T>
-	void MContext::SelectAndOperateT(const T& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
+	void MContext::SelectAndOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
 	{
 		this->ScheduleAdhocTask(CommandTask::FSelectAndOperate(command, index, *pApplication, callback, config, serializer, logger));
 	}
 
 	template <class T>
-	void MContext::DirectOperateT(const T& command, uint16_t index, CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
+	void MContext::DirectOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
 	{
 		this->ScheduleAdhocTask(CommandTask::FDirectOperate(command, index, *pApplication, callback, config, serializer, logger));
 	}

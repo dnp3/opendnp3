@@ -405,7 +405,7 @@ namespace Automatak
 			{
 				array<System::Byte>^ ret = gcnew array<System::Byte>(bytes.Size());
 
-				for (int i = 0; i < bytes.Size(); ++i)
+				for (int i = 0; i < ret->Length; ++i)
 				{
 					ret[i] = bytes[i];
 				}

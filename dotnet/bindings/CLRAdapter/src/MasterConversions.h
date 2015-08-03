@@ -23,7 +23,7 @@ namespace Automatak
 
 			private class MasterConversions
 			{
-			public:
+			public:				
 
 				static std::vector<asiodnp3::Header> ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers);
 

@@ -168,52 +168,52 @@ public:
 
 	// ------- implement ICommandProcessor ---------
 	
-	virtual void SelectAndOperate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void SelectAndOperate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->SelectAndOperateT(command, index, callback, config);
 	}
 	
-	virtual void DirectOperate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void DirectOperate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->DirectOperateT(command, index, callback, config);
 	}
 
-	virtual void SelectAndOperate(const opendnp3::AnalogOutputInt16& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void SelectAndOperate(const opendnp3::AnalogOutputInt16& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->SelectAndOperateT(command, index, callback, config);
 	}
 
-	virtual void DirectOperate(const opendnp3::AnalogOutputInt16& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void DirectOperate(const opendnp3::AnalogOutputInt16& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->DirectOperateT(command, index, callback, config);
 	}
 
-	virtual void SelectAndOperate(const opendnp3::AnalogOutputInt32& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void SelectAndOperate(const opendnp3::AnalogOutputInt32& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->SelectAndOperateT(command, index, callback, config);
 	}
 
-	virtual void DirectOperate(const opendnp3::AnalogOutputInt32& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void DirectOperate(const opendnp3::AnalogOutputInt32& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->DirectOperateT(command, index, callback, config);
 	}
 
-	virtual void SelectAndOperate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void SelectAndOperate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->SelectAndOperateT(command, index, callback, config);
 	}
 
-	virtual void DirectOperate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void DirectOperate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->DirectOperateT(command, index, callback, config);
 	}
 	
-	virtual void SelectAndOperate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void SelectAndOperate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->SelectAndOperateT(command, index, callback, config);
 	}
 
-	virtual void DirectOperate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void DirectOperate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		this->DirectOperateT(command, index, callback, config);
 	}
@@ -221,23 +221,23 @@ public:
 protected:
 
 	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
+	void SelectAndOperateT(const T& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
 	{		
-		auto action = [this, command, index, config, &callback]()
+		auto action = [this, command, index, config, callback]()
 		{
 			this->pContext->SelectAndOperate(command, index, callback, config);
 		};
-		this->pContext->pExecutor->PostLambda(action);
+		this->pASIOExecutor->strand.post(action);
 	}
 
 	template <class T>
-	void DirectOperateT(const T& command, uint16_t index, opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
+	void DirectOperateT(const T& command, uint16_t index, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
 	{		
-		auto action = [this, command, index, config, &callback]()
+		auto action = [this, command, index, config, callback]()
 		{
 			this->pContext->DirectOperate(command, index, callback, config);
 		};
-		this->pContext->pExecutor->PostLambda(action);
+		this->pASIOExecutor->strand.post(action);
 	}
 
 	void SetContext(opendnp3::MContext& context)

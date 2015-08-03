@@ -81,10 +81,7 @@
     <ClInclude Include="src\SAConversions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CommandCallbackAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BeginUpdateKeyChangeCallbackAdapter.h">
+    <ClInclude Include="src\CallbackAdapters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -135,6 +132,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SAConversions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CallbackAdapters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,7 +6,7 @@ using namespace System::Collections::Generic;
 
 #include <asiodnp3/IMaster.h>
 
-#include "CommandCallbackAdapter.h"
+#include "CallbackAdapters.h"
 #include "MasterConversions.h"
 #include "MasterScanAdapter.h"
 
@@ -67,19 +67,19 @@ namespace Automatak
 				template <class T>
 				Task<CommandResponse>^ SelectAndOperateT(T^ command, System::UInt32 index, TaskConfig^ config)
 				{														
-					auto pCallback = new CommandCallbackAdapter();
+					auto tcs = gcnew TaskCompletionSource<CommandResponse>();
 					auto cmd = Conversions::ConvertCommand(command);
-					pMaster->SelectAndOperate(cmd, index, *pCallback, MasterConversions::Convert(config));
-					return pCallback->GetTask();
+					pMaster->SelectAndOperate(cmd, index, CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
+					return tcs->Task;
 				}
 
 				template <class T>
 				Task<CommandResponse>^ DirectOperateT(T^ command, System::UInt32 index, TaskConfig^ config)
 				{				
-					auto pCallback = new CommandCallbackAdapter();
+					auto tcs = gcnew TaskCompletionSource<CommandResponse>();
 					auto cmd = Conversions::ConvertCommand(command);
-					pMaster->DirectOperate(cmd, index, *pCallback, MasterConversions::Convert(config));
-					return pCallback->GetTask();
+					pMaster->DirectOperate(cmd, index, CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
+					return tcs->Task;
 				}			
 				
 				asiodnp3::IMaster* pMaster;				
