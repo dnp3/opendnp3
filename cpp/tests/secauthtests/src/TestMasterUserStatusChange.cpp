@@ -59,7 +59,7 @@ TEST_CASE(SUITE("test"))
 
 	MockTaskCallback callback;
 
-	fixture.context.BeginUserStatusChange(statusChange, TaskConfig::With(callback));	
+	fixture.context.ChangeUserStatus(statusChange, TaskConfig::With(callback));	
 
 	auto request = hex::UserStatusChangeRequest(0, KeyChangeMethod::AES_256_SHA256_HMAC, UserOperation::OP_ADD, 0, UserRoleToType(UserRole::OPERATOR), 10, "BOB", "", certData);
 	fixture.TestRequestAndReply(request, hex::EmptyResponse(0));

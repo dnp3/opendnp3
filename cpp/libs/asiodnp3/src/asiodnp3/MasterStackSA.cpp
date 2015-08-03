@@ -51,13 +51,22 @@ void MasterStackSA::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
 	mcontext.pExecutor->PostLambda(action);
 }
 
-void MasterStackSA::BeginUserStatusChange(const secauth::UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config)
+void MasterStackSA::ChangeUserStatus(const secauth::UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config)
 {
 	auto action = [this, userStatusChange, config] 
 	{
-		this->mcontext.BeginUserStatusChange(userStatusChange, config);
+		this->mcontext.ChangeUserStatus(userStatusChange, config);
 	};
 	this->pASIOExecutor->strand.post(action);	
+}
+
+void MasterStackSA::BeginUpdateKeyChange(opendnp3::KeyChangeMethod method, const std::string& username, const opendnp3::TaskConfig& config, secauth::IBeginUpdateKeyChangeHandler& handler)
+{	
+	auto action = [this, method, username, config, &handler]
+	{
+		this->mcontext.BeginUpdateKeyChange(method, username, config, handler);
+	};
+	this->pASIOExecutor->strand.post(action);
 }
 
 

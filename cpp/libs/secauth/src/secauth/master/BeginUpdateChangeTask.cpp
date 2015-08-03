@@ -31,9 +31,11 @@ namespace secauth
 BeginUpdateKeyChangeTask::BeginUpdateKeyChangeTask(
 		IMasterApplicationSA& application,
 		openpal::Logger logger,
-		const opendnp3::TaskConfig& config
+		const opendnp3::TaskConfig& config,
+		IBeginUpdateKeyChangeHandler& handler_
 	) : 
-	IMasterTask(application, MonotonicTimestamp::Min(), logger, config)
+	IMasterTask(application, MonotonicTimestamp::Min(), logger, config),
+	handler(&handler_)
 {
 
 

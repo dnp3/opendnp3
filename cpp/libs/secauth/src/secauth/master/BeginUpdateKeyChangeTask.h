@@ -25,6 +25,7 @@
 #include <opendnp3/master/TaskPriority.h>
 
 #include "secauth/master/IMasterApplicationSA.h"
+#include "secauth/master/IBeginUpdateKeyChangeHandler.h"
 
 
 namespace secauth
@@ -41,7 +42,8 @@ namespace secauth
 		BeginUpdateKeyChangeTask(
 			IMasterApplicationSA& application,
 			openpal::Logger logger,
-			const opendnp3::TaskConfig& config
+			const opendnp3::TaskConfig& config,
+			IBeginUpdateKeyChangeHandler& handler
 		);
 			
 
@@ -57,7 +59,9 @@ namespace secauth
 
 		virtual bool BlocksLowerPriority() const override final { return false; }
 
-	private:				
+	private:	
+
+		IBeginUpdateKeyChangeHandler* handler;
 
 		virtual void Initialize() override final {}
 

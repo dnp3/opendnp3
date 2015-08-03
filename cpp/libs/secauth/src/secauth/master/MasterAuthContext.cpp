@@ -157,10 +157,15 @@ bool MAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
 	return ret;
 }
 
-void MAuthContext::BeginUserStatusChange(const UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config)
+void MAuthContext::ChangeUserStatus(const UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config)
 {
 	auto task = new UserStatusChangeTask(userStatusChange, *security.pApplicationSA, logger, config);
 	this->ScheduleAdhocTask(task);
+}
+
+void MAuthContext::BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, IBeginUpdateKeyChangeHandler& handler)
+{
+	// TODO
 }
 
 void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
