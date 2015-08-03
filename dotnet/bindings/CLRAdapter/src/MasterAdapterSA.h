@@ -53,10 +53,10 @@ namespace Automatak
 					}
 				}
 
-				virtual Task<TaskCompletion>^ BeginUserStatusChange(UserStatusChange^ statusChange, TaskConfig^ config) sealed
+				virtual Task<TaskCompletion>^ ChangeUserStatus(UserStatusChange^ statusChange, TaskConfig^ config) sealed
 				{
 					auto proxy = gcnew TaskCompletionProxy(config->callback);
-					pMasterSA->BeginUserStatusChange(SAConversions::Convert(statusChange), MasterConversions::Convert(config, proxy));
+					pMasterSA->ChangeUserStatus(SAConversions::Convert(statusChange), MasterConversions::Convert(config, proxy));
 					return proxy->CompletionTask;
 				}
 				

@@ -34,6 +34,6 @@ namespace Automatak.DNP3.Interface
     {
         void AddUser(User user, UpdateKey key);
 
-        Task<TaskCompletion> BeginUserStatusChange(UserStatusChange change, TaskConfig config);
+        Task<TaskCompletion> ChangeUserStatus(UserStatusChange change, TaskConfig config);
     }
 }
