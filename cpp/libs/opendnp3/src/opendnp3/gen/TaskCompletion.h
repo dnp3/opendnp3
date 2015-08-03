@@ -38,10 +38,12 @@ enum class TaskCompletion : uint8_t
   FAILURE_RESPONSE_TIMEOUT = 2,
   /// The task could not run because the specified user was not defined on the master (SA only)
   FAILURE_NO_USER = 3,
+  /// The task failed because of some internal issue like the entropy source failing (SA only)
+  FAILURE_INTERNAL = 4,
   /// The outstation rejected the operation do to a lack of valid session keys or the user not existing on the outstation (SA only)
-  FAILURE_BAD_AUTHENTICATION = 4,
+  FAILURE_BAD_AUTHENTICATION = 5,
   /// The outstation rejected the operation because the specified user is not authorized for the request that was made (SA only)
-  FAILURE_NOT_AUTHORIZED = 5,
+  FAILURE_NOT_AUTHORIZED = 6,
   /// There is no communication with the outstation, so the task was not attempted
   FAILURE_NO_COMMS = 255
 };

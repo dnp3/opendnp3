@@ -23,6 +23,9 @@
 
 namespace openpal
 {
+	Buffer::Buffer() : Array<uint8_t, uint32_t>(0)
+	{}
+
 	Buffer::Buffer(uint32_t size) : Array<uint8_t, uint32_t>(size)
 	{}
 

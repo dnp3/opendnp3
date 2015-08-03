@@ -36,6 +36,8 @@ class Buffer : public Array<uint8_t, uint32_t>
 
 public:
 
+	Buffer();
+
 	Buffer(uint32_t size);
 
 	// initialize with the exact size and contents of the view

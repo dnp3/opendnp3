@@ -25,6 +25,7 @@
 #include <opendnp3/master/CommandResponse.h>
 #include <opendnp3/master/ITaskCallback.h>
 #include <opendnp3/master/CommandResponse.h>
+#include <opendnp3/master/ITaskValueCallback.h>
 
 #include <asiopal/Synchronized.h>
 

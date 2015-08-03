@@ -18,29 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ITASKCALLBACK_H
-#define OPENDNP3_ITASKCALLBACK_H
+#ifndef OPENDNP3_ITASKVALUECALLBACK_H
+#define OPENDNP3_ITASKVALUECALLBACK_H
 
-#include "opendnp3/gen/TaskCompletion.h"
+#include "opendnp3/master/CommandResponse.h"
 
 namespace opendnp3
 {
 
-/**
-* Callbacks for when a task starts and completes
-*/
-class ITaskCallback
+template <class T>
+class ITaskValueCallback
 {
+
 public:
+	virtual void OnComplete(const T& value) = 0;
+};
 
-	// Called when the task starts running
-	virtual void OnStart() = 0;
-	
-	// Called when the task succeeds or fails
-	virtual void OnComplete(TaskCompletion result) = 0;
+class ICommandCallback : public ITaskValueCallback<CommandResponse>
+{
 
-	// Called when the task no longer exists and no more calls will be made to OnStart/OnComplete
-	virtual void OnDestroyed() = 0;
 };
 
 }
