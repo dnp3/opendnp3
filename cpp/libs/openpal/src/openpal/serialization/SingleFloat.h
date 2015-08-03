@@ -25,7 +25,7 @@
 #include "openpal/container/ReadBufferView.h"
 #include "openpal/container/WriteBufferView.h"
 
-
+#include <cstddef>
 
 namespace openpal
 {
