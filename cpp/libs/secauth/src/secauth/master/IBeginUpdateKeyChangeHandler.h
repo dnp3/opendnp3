@@ -21,14 +21,16 @@
 #ifndef SECAUTH_IBEGIN_UPDATE_KEY_CHANGE_HANDLER_H
 #define SECAUTH_IBEGIN_UPDATE_KEY_CHANGE_HANDLER_H
 
+#include <opendnp3/master/ITaskValueCallback.h>
+
 #include "BeginUpdateKeyChangeResult.h"
 
 namespace secauth
 {
 
-class IBeginUpdateKeyChangeHandler
+class IBeginUpdateKeyChangeHandler : public opendnp3::ITaskValueCallback<BeginUpdateKeyChangeResult>
 {
-	virtual void OnCompletion(const BeginUpdateKeyChangeResult& value) = 0;
+	
 };
 	
 }
