@@ -33,7 +33,7 @@ namespace DotNetOutstationDemo
     {
         static void Main(string[] args)
         {
-            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();
+            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1);
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), "0.0.0.0", 20000);
 

@@ -32,8 +32,8 @@ namespace DotNetMasterDemo
     class Program
     {        
         static int Main(string[] args)
-        {            
-            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();            
+        {
+            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1);
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPClient("client", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
             

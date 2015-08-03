@@ -18,9 +18,9 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			IDNP3Manager^ DNP3ManagerFactory::CreateManager(System::Int32 aConcurrency)
+			IDNP3Manager^ DNP3ManagerFactory::CreateManager(System::Int32 concurrency)
 			{
-				return gcnew DNP3ManagerAdapter(aConcurrency);
+				return gcnew DNP3ManagerAdapter(concurrency);
 			}
 
 			IDNP3Manager^ DNP3ManagerFactory::CreateManager()
@@ -29,9 +29,9 @@ namespace Automatak
 			}
 
 
-			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) : 
+			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 concurrency) : 
 				pCrypto(new osslcrypto::CryptoProvider()),
-				pManager(new asiodnp3::DNP3Manager(aConcurrency, pCrypto))				
+				pManager(new asiodnp3::DNP3Manager(concurrency, pCrypto))				
 			{
 
 			}
