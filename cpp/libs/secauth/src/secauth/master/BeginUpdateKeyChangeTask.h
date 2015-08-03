@@ -24,9 +24,12 @@
 #include <opendnp3/master/IMasterTask.h>
 #include <opendnp3/master/TaskPriority.h>
 
+#include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/container/StaticBuffer.h>
+
+#include "secauth/AuthSizes.h"
 #include "secauth/master/IMasterApplicationSA.h"
 #include "secauth/master/BeginUpdateKeyChangeCallbackT.h"
-
 
 namespace secauth
 {
@@ -40,10 +43,12 @@ namespace secauth
 	public:
 
 		BeginUpdateKeyChangeTask(
+			const std::string& username,
 			IMasterApplicationSA& application,
-			openpal::Logger logger,
+			openpal::Logger logger,			
 			const opendnp3::TaskConfig& config,
-			BeginUpdateKeyChangeCallbackT& callback
+			openpal::ICryptoProvider& crypto,
+			const BeginUpdateKeyChangeCallbackT& callback
 		);
 			
 
@@ -53,15 +58,19 @@ namespace secauth
 		
 		virtual bool IsRecurring() const override final { return false; }
 
-		virtual void BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
+		virtual bool BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
 
 		virtual int Priority() const override final { return opendnp3::priority::USER_STATUS_CHANGE; }		
 
 		virtual bool BlocksLowerPriority() const override final { return false; }
 
 	private:	
+		const std::string m_username;
+		openpal::ICryptoProvider* m_crypto;
+		BeginUpdateKeyChangeCallbackT m_callback;
 
-		BeginUpdateKeyChangeCallbackT callback;
+		openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_challengeBuffer;
+		openpal::ReadBufferView m_challengeDataView;
 
 		virtual void Initialize() override final {}
 

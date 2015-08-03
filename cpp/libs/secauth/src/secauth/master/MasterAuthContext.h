@@ -68,7 +68,7 @@ public:
 
 	void ChangeUserStatus(const UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config);
 
-	void BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, const BeginUpdateKeyChangeCallbackT& callback);
+	void BeginUpdateKeyChange(const std::string& userName, const opendnp3::TaskConfig& config, const BeginUpdateKeyChangeCallbackT& callback);
 
 private:
 

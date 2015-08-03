@@ -60,11 +60,11 @@ void MasterStackSA::ChangeUserStatus(const secauth::UserStatusChange& userStatus
 	this->pASIOExecutor->strand.post(action);	
 }
 
-void MasterStackSA::BeginUpdateKeyChange(opendnp3::KeyChangeMethod method, const std::string& username, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& callback)
+void MasterStackSA::BeginUpdateKeyChange(const std::string& username, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& callback)
 {	
-	auto action = [this, method, username, config, callback]
+	auto action = [this, username, config, callback]
 	{
-		this->mcontext.BeginUpdateKeyChange(method, username, config, callback);
+		this->mcontext.BeginUpdateKeyChange(username, config, callback);
 	};
 	this->pASIOExecutor->strand.post(action);
 }

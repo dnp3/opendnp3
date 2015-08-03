@@ -43,13 +43,14 @@ UserPollTask::UserPollTask(
 	retryDelay(retryDelay_)	
 {}
 
-void UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
+bool UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	rxCount = 0;	
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
 	auto writer = request.GetWriter();
 	builder(writer);
+	return true;
 }
 
 IMasterTask::TaskState UserPollTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)

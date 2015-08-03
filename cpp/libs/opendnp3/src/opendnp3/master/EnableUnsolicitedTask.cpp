@@ -39,9 +39,10 @@ EnableUnsolicitedTask::EnableUnsolicitedTask(IMasterApplication& app, ClassField
 
 }
 
-void EnableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
+bool EnableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	build::EnableUnsolicited(request, enabledClasses.OnlyEventClasses(), seq);
+	return true;
 }
 
 bool EnableUnsolicitedTask::IsEnabled() const

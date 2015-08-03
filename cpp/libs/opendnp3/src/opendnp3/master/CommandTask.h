@@ -63,7 +63,7 @@ public:
 	
 	virtual bool IsRecurring() const override final { return false; }
 	
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;		
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 private:
 

@@ -43,7 +43,7 @@ void SerialTimeSyncTask::Initialize()
 	delay = -1;
 }
 
-void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
+bool SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (delay < 0)
 	{
@@ -60,6 +60,8 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 		auto writer = request.GetWriter();
 		writer.WriteSingleValue<UInt8, Group50Var1>(QualifierCode::UINT8_CNT, time);
 	}
+
+	return true;
 }
 
 IMasterTask::TaskState SerialTimeSyncTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)

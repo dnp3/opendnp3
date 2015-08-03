@@ -21,32 +21,58 @@
 
 #include "BeginUpdateKeyChangeTask.h"
 
+#include <openpal/logging/LogMacros.h>
+
+#include <opendnp3/objects/Group120.h>
+#include <opendnp3/LogLevels.h>
+
+
+
 using namespace openpal;
 using namespace opendnp3;
-
 
 namespace secauth
 {
 
 BeginUpdateKeyChangeTask::BeginUpdateKeyChangeTask(
+		const std::string& username,
 		IMasterApplicationSA& application,
-		openpal::Logger logger,
+		openpal::Logger logger,		
 		const opendnp3::TaskConfig& config,
-		BeginUpdateKeyChangeCallbackT& callback_
+		openpal::ICryptoProvider& crypto,
+		const BeginUpdateKeyChangeCallbackT& callback
 	) : 
 	IMasterTask(application, MonotonicTimestamp::Min(), logger, config),
-	callback(callback_)
+	m_username(username),
+	m_crypto(&crypto),
+	m_callback(callback)
 {
-
 
 }
 				
-void BeginUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
+bool BeginUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
+	request.SetControl(AppControlField::Request(seq));
+	request.SetFunction(FunctionCode::AUTH_REQUEST);
 	
+	std::error_code ec;
+	this->m_challengeDataView = m_crypto->GetSecureRandom(m_challengeBuffer.GetWriteBuffer(4), ec); // TODO - make this challenge size configurable
+	if (ec)
+	{ 
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Error creating master challenge data: %s", ec.message().c_str());
+		return false;
+	}
+
+	Group120Var11 updateKeyChangeRequest(
+		KeyChangeMethod::AES_256_SHA256_HMAC,
+		openpal::ReadBufferView(reinterpret_cast<const uint8_t*>(m_username.c_str()), m_username.size()),
+		m_challengeDataView
+	);
+
+	return request.GetWriter().WriteFreeFormat(updateKeyChangeRequest);
 }
 
-IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
 	return IMasterTask::ResponseResult::ERROR_BAD_RESPONSE;
 }

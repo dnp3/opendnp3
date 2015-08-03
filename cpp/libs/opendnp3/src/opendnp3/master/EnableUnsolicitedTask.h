@@ -51,7 +51,7 @@ public:
 
 	virtual char const* Name() const override final { return "Enable Unsolicited"; }
 
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;		
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 	virtual int Priority() const override final { return priority::ENABLE_UNSOLICITED; }	
 

@@ -45,11 +45,12 @@ StartupIntegrityPoll::StartupIntegrityPoll(IMasterApplication& app, ISOEHandler&
 	
 }
 
-void StartupIntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
+bool StartupIntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
 {	
 	build::ReadIntegrity(request, classes, seq);
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
+	return true;
 }
 
 bool StartupIntegrityPoll::IsEnabled() const

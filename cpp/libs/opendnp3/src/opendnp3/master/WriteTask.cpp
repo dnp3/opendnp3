@@ -33,12 +33,13 @@ WriteTask::WriteTask(IMasterApplication& app, const std::function<void(HeaderWri
 
 }
 
-void WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
+bool WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	request.SetFunction(FunctionCode::WRITE);
 	request.SetControl(AppControlField::Request(seq));
 	auto writer = request.GetWriter();
 	format(writer);
+	return true;
 }
 
 IMasterTask::ResponseResult WriteTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)

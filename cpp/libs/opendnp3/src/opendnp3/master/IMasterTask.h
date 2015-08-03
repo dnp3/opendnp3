@@ -129,8 +129,10 @@ public:
 
 	/**
 	 * Build a request APDU.	 
+	 *
+	 * Return false if some kind of internal error prevents the task for formatting the request.
 	 */
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) = 0;
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) = 0;
 
 	/**
 	 * Handler for responses	 

@@ -43,14 +43,13 @@ namespace secauth
 		statusChange(userStatusChange)
 	{}
 					
-	void UserStatusChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
+	bool UserStatusChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 	{		
 		request.SetControl(AppControlField::Request(seq));
 		request.SetFunction(FunctionCode::AUTH_REQUEST);
-		request.GetWriter().WriteFreeFormat(statusChange.Convert());
+		return request.GetWriter().WriteFreeFormat(statusChange.Convert());
 	}
 	
-
 	opendnp3::IMasterTask::ResponseResult UserStatusChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
 		if (!this->ValidateSingleResponse(header) || !this->ValidateInternalIndications(header))

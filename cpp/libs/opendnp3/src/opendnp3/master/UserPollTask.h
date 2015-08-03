@@ -54,7 +54,7 @@ public:
 
 	virtual int Priority() const override final { return priority::USER_POLL; }
 
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 	virtual bool BlocksLowerPriority() const override final { return false; }
 	

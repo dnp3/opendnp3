@@ -38,9 +38,10 @@ DisableUnsolicitedTask::DisableUnsolicitedTask(IMasterApplication& application, 
 
 }
 
-void DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
+bool DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	build::DisableUnsolicited(request, seq);
+	return true;
 }
 
 IMasterTask::ResponseResult DisableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)

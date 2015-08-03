@@ -33,12 +33,13 @@ AssignClassTask::AssignClassTask(IMasterApplication& application, openpal::TimeD
 	retryPeriod(retryPeriod_)
 {}
 
-void AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
+bool AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	request.SetControl(AppControlField(true, true, false, false, seq));
 	request.SetFunction(FunctionCode::ASSIGN_CLASS);
 	auto writer = request.GetWriter();
 	pApplication->ConfigureAssignClassRequest(writer);
+	return true;
 }
 
 bool AssignClassTask::IsEnabled() const

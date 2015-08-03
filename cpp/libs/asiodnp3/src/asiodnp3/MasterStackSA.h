@@ -54,7 +54,7 @@ public:
 
 	virtual void ChangeUserStatus(const secauth::UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) override final;
 
-	virtual void BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& callback) override final;
+	virtual void BeginUpdateKeyChange(const std::string& username, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& callback) override final;
 	
 private:	
 	

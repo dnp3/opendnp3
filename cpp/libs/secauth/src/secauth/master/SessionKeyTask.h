@@ -64,7 +64,7 @@ namespace secauth
 		
 		virtual bool IsRecurring() const override final { return true; }
 
-		virtual void BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
+		virtual bool BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
 
 		virtual int Priority() const override final { return opendnp3::priority::SESSION_KEY; }		
 
@@ -96,9 +96,9 @@ namespace secauth
 
 		/// ----- private helpers ------
 
-		void BuildStatusRequest(opendnp3::APDURequest& request, uint8_t seq);
+		bool BuildStatusRequest(opendnp3::APDURequest& request, uint8_t seq);
 
-		void BuildSessionKeyRequest(opendnp3::APDURequest& request, uint8_t seq);
+		bool BuildSessionKeyRequest(opendnp3::APDURequest& request, uint8_t seq);
 
 		opendnp3::IMasterTask::ResponseResult OnStatusResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 

@@ -48,8 +48,10 @@ public:
 
 	/**
 	*  Begins the first step in changing a user's update key
-	*/
-	virtual void BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& handler) = 0;
+	*
+	*  At the moment this only support symmetric with KeyChangeMethod::AES_256_SHA256_HMAC
+	*/	
+	virtual void BeginUpdateKeyChange(const std::string& userName, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& handler) = 0;
 	
 	/**
 	* Add a user to the outstation. This is normally only done during initialization.

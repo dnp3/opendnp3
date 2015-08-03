@@ -45,9 +45,10 @@ namespace opendnp3
 
 	}
 
-	void EventScanTask::BuildRequest(APDURequest& request, uint8_t seq)
+	bool EventScanTask::BuildRequest(APDURequest& request, uint8_t seq)
 	{		
 		build::ClassRequest(request, FunctionCode::READ, classes, seq);
+		return true;
 	}
 
 	bool EventScanTask::IsEnabled() const

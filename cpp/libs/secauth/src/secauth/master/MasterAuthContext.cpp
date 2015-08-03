@@ -31,6 +31,7 @@
 #include "secauth/SingleObjectHandlers.h"
 
 #include "secauth/master/UserStatusChangeTask.h"
+#include "secauth/master/BeginUpdateKeyChangeTask.h"
 
 #include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/app/parsing/ObjectHeaderParser.h"
@@ -163,9 +164,10 @@ void MAuthContext::ChangeUserStatus(const UserStatusChange& userStatusChange, co
 	this->ScheduleAdhocTask(task);
 }
 
-void MAuthContext::BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, const BeginUpdateKeyChangeCallbackT& callback)
+void MAuthContext::BeginUpdateKeyChange(const std::string& username, const opendnp3::TaskConfig& config, const BeginUpdateKeyChangeCallbackT& callback)
 {
-	// TODO
+	auto task = new BeginUpdateKeyChangeTask(username, *security.pApplicationSA, logger, config, *security.pCrypto, callback);
+	this->ScheduleAdhocTask(task);
 }
 
 void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)

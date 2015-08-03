@@ -51,7 +51,7 @@ namespace secauth
 		
 		virtual bool IsRecurring() const override final { return false; }
 
-		virtual void BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
+		virtual bool BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
 
 		virtual int Priority() const override final { return opendnp3::priority::USER_STATUS_CHANGE; }		
 

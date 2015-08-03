@@ -62,16 +62,9 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 
 }
 
-void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
+bool SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
-	if (state == ChangeState::GetStatus)
-	{
-		this->BuildStatusRequest(request, seq);
-	}
-	else
-	{
-		this->BuildSessionKeyRequest(request, seq);
-	}
+	return (state == ChangeState::GetStatus) ? this->BuildStatusRequest(request, seq) : this->BuildSessionKeyRequest(request, seq);
 }
 
 void SessionKeyTask::Initialize()
@@ -104,17 +97,17 @@ IMasterTask::TaskState SessionKeyTask::OnTaskComplete(TaskCompletion result, ope
 	}
 }
 
-void SessionKeyTask::BuildStatusRequest(opendnp3::APDURequest& request, uint8_t seq)
+bool SessionKeyTask::BuildStatusRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
 	request.ConfigureHeader(FunctionCode::AUTH_REQUEST, seq);
 
 	Group120Var4 ksrequest;
 	ksrequest.userNum = user.GetId();
 
-	request.GetWriter().WriteSingleValue<UInt8, Group120Var4>(QualifierCode::UINT8_CNT, ksrequest);
+	return request.GetWriter().WriteSingleValue<UInt8, Group120Var4>(QualifierCode::UINT8_CNT, ksrequest);
 }
 
-void SessionKeyTask::BuildSessionKeyRequest(opendnp3::APDURequest& request, uint8_t seq)
+bool SessionKeyTask::BuildSessionKeyRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
 	request.ConfigureHeader(FunctionCode::AUTH_REQUEST, seq);
 
@@ -123,10 +116,12 @@ void SessionKeyTask::BuildSessionKeyRequest(opendnp3::APDURequest& request, uint
 	sessionKeyChange.userNum = user.GetId();
 	sessionKeyChange.keyWrapData = this->keyWrapBuffer.GetWrappedData();
 
-	request.GetWriter().WriteFreeFormat(sessionKeyChange);
+	auto ret = request.GetWriter().WriteFreeFormat(sessionKeyChange);
 
 	// save a view of what we're transmitting as we'll need it to validate the HMAC
 	this->txKeyWrapASDU = request.ToReadOnly();
+
+	return ret;
 }
 
 IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseHeader& response, const ReadBufferView& objects)

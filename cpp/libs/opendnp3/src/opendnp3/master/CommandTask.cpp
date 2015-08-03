@@ -57,7 +57,7 @@ void CommandTask::LoadDirectOperate()
 	functionCodes.push_back(FunctionCode::DIRECT_OPERATE);
 }
 
-void CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
+bool CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (!functionCodes.empty())
 	{		
@@ -66,6 +66,8 @@ void CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 		request.SetControl(AppControlField::Request(seq));
 		pSequence->FormatRequestHeader(request);		
 	}
+
+	return true;
 }
 
 IMasterTask::ResponseResult CommandTask::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)

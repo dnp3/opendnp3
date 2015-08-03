@@ -39,9 +39,10 @@ ClearRestartTask::ClearRestartTask(IMasterApplication& application, openpal::Tim
 
 }	
 
-void ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
+bool ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	build::ClearRestartIIN(request, seq);
+	return true;
 }
 
 IMasterTask::ResponseResult ClearRestartTask::ProcessResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
