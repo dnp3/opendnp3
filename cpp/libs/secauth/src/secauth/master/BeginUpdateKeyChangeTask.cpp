@@ -72,9 +72,27 @@ bool BeginUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint
 	return request.GetWriter().WriteFreeFormat(updateKeyChangeRequest);
 }
 
-IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+{	
+	if (!(header.function == FunctionCode::AUTH_REQUEST && ValidateSingleResponse(header) && ValidateInternalIndications(header)))
+	{
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+		
+
+
+	return ResponseResult::ERROR_BAD_RESPONSE;
+}
+
+IMasterTask::TaskState BeginUpdateKeyChangeTask::OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	return IMasterTask::ResponseResult::ERROR_BAD_RESPONSE;
+	if (result != TaskCompletion::SUCCESS) // the success callback happens in the response routine if a valid response is received
+	{		
+		m_callback(BeginUpdateKeyChangeResult(result));
+	}
+
+	return TaskState::Infinite();
 }
 
 } //end ns
