@@ -7,7 +7,7 @@ using namespace System::Threading::Tasks;
 
 #include <openpal/util/Uncopyable.h>
 
-#include <opendnp3/master/ICommandCallback.h>
+#include <opendnp3/master/CommandCallbackT.h>
 #include <secauth/master/BeginUpdateKeyChangeCallbackT.h>
 
 using namespace Automatak::DNP3::Interface;
