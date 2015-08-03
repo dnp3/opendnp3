@@ -1,5 +1,5 @@
-#ifndef __MASTER_ADAPTER_H_
-#define __MASTER_ADAPTER_H_
+#ifndef OPENDNP3CLR_MASTER_ADAPTER_H
+#define OPENDNP3CLR_MASTER_ADAPTER_H
 
 using namespace System::Collections::ObjectModel;
 using namespace System::Collections::Generic;
@@ -66,22 +66,20 @@ namespace Automatak
 
 				template <class T>
 				Task<CommandResponse>^ SelectAndOperateT(T^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					auto tcs = gcnew TaskCompletionSource<CommandResponse>();
+				{														
+					auto pCallback = new CommandCallbackAdapter();
 					auto cmd = Conversions::ConvertCommand(command);
-					auto pCallback = new CommandCallbackAdapter(tcs, true);
 					pMaster->SelectAndOperate(cmd, index, *pCallback, MasterConversions::Convert(config));
-					return tcs->Task;
+					return pCallback->GetTask();
 				}
 
 				template <class T>
 				Task<CommandResponse>^ DirectOperateT(T^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					auto tcs = gcnew TaskCompletionSource<CommandResponse>();
+				{				
+					auto pCallback = new CommandCallbackAdapter();
 					auto cmd = Conversions::ConvertCommand(command);
-					auto pCallback = new CommandCallbackAdapter(tcs, true);
 					pMaster->DirectOperate(cmd, index, *pCallback, MasterConversions::Convert(config));
-					return tcs->Task;
+					return pCallback->GetTask();
 				}			
 				
 				asiodnp3::IMaster* pMaster;				

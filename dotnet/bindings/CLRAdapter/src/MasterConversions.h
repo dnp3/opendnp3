@@ -4,7 +4,7 @@
 using namespace System::Collections::ObjectModel;
 using namespace System::Collections::Generic;
 
-#include "CommandCallbackAdapter.h"
+#include "TaskCallbackAdapter.h"
 
 #include <vector>
 

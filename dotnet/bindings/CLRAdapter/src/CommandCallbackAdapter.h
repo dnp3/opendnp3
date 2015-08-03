@@ -1,5 +1,6 @@
-#ifndef __COMMAND_CALLBACK_ADAPTER_H_
-#define __COMMAND_CALLBACK_ADAPTER_H_
+
+#ifndef OPENDNP3CLR_RESULT_CALLBACK_ADAPTER_H
+#define OPENDNP3CLR_RESULT_CALLBACK_ADAPTER_H
 
 using namespace System::Collections::ObjectModel;
 using namespace System::Threading::Tasks;
@@ -16,30 +17,31 @@ namespace Automatak
 	namespace DNP3
 	{
 		namespace Adapter
-		{
-			template <class T, class U>
-			class TaskCallbackAdapter : public opendnp3::IResultCallback<T>, openpal::Uncopyable
+		{			
+			class CommandCallbackAdapter : public opendnp3::CommandCallbackT, openpal::Uncopyable
 			{
-			public:
 
-				TaskCallbackAdapter(TaskCompletionSource<U>^ taskCompletionSource, System::Func<U^, T> conversion) :
-					root(taskCompletionSource),
-					conversion(conversion_)
-				{
+				public:
 				
-				}				
+				CommandCallbackAdapter() : root(gcnew TaskCompletionSource<CommandResponse>()) {}
 
-				virtual void OnComplete(const T& response) sealed
+				virtual void OnComplete(const opendnp3::CommandResponse& response) sealed
 				{
-					auto result = conversion->Invoke(response);
+					auto result = Conversions::ConvertCommandResponse(response);
 
 					root->SetResult(result);
 
 					delete this;
 				}
+
+				Task<CommandResponse>^ GetTask()
+				{
+					return root->Task;
+				}
+
+				private:
 				
-				gcroot < TaskCompletionSource<U>^ > root;
-				gcroot < System::Func<U^, T> > conversion;
+				gcroot < TaskCompletionSource<CommandResponse>^ > root;				
 			};			
 
 		}

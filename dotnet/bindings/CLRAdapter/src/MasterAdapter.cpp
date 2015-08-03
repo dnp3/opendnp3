@@ -1,5 +1,7 @@
 
 #include "Stdafx.h"
+
+#include "Conversions.h"
 #include "MasterAdapter.h"
 
 using namespace Automatak::DNP3::Interface;
