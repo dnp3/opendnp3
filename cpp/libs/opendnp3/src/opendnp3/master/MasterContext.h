@@ -155,9 +155,9 @@ namespace opendnp3
 	
 		/// public state manipulation actions
 
-		bool BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
+		TaskState BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
 
-		bool ResumeActiveTask();
+		TaskState ResumeActiveTask();
 
 		void CompleteActiveTask();
 

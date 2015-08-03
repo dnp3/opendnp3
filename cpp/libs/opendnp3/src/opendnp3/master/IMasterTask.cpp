@@ -88,6 +88,12 @@ void IMasterTask::OnNoUser(openpal::MonotonicTimestamp now)
 	this->NotifyResult(TaskCompletion::FAILURE_NO_USER);
 }
 
+void IMasterTask::OnInternalError(openpal::MonotonicTimestamp now)
+{
+	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_INTERNAL_ERROR, now);
+	this->NotifyResult(TaskCompletion::FAILURE_INTERNAL_ERROR);
+}
+
 void IMasterTask::OnAuthenticationFailure(openpal::MonotonicTimestamp now)
 {
 	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_AUTHENTICATION, now);

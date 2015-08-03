@@ -42,9 +42,9 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     FAILURE_NO_USER = 3,
     /// <summary>
-    /// The task failed because of some internal issue like the entropy source failing (SA only)
+    /// The task failed because of some unexpected internal issue like bad configuration data
     /// </summary>
-    FAILURE_INTERNAL = 4,
+    FAILURE_INTERNAL_ERROR = 4,
     /// <summary>
     /// The outstation rejected the operation do to a lack of valid session keys or the user not existing on the outstation (SA only)
     /// </summary>

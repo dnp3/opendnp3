@@ -469,7 +469,7 @@ namespace opendnp3
 		}
 	}
 
-	bool MContext::BeginNewTask(ManagedPtr<IMasterTask>& task)
+	MContext::TaskState MContext::BeginNewTask(ManagedPtr<IMasterTask>& task)
 	{
 		this->pActiveTask = std::move(task);				
 		this->pActiveTask->OnStart();
@@ -477,22 +477,29 @@ namespace opendnp3
 		return this->ResumeActiveTask();
 	}
 
-	bool MContext::ResumeActiveTask()
+	MContext::TaskState MContext::ResumeActiveTask()
 	{		
-		if (this->pTaskLock->Acquire(*this))
+		if (!this->pTaskLock->Acquire(*this))
 		{
-			APDURequest request(this->txBuffer.GetWriteBufferView());
-			this->pActiveTask->BuildRequest(request, this->solSeq);
-			this->StartResponseTimer();
-			auto apdu = request.ToReadOnly();
-			this->RecordLastRequest(apdu);			
-			this->Transmit(apdu);
-			return true;
+			return TaskState::TASK_READY;
 		}
-		else
+
+		APDURequest request(this->txBuffer.GetWriteBufferView());
+
+		/// try to build a requst for the task
+		if (!this->pActiveTask->BuildRequest(request, this->solSeq))
 		{
-			return false;
+			pActiveTask->OnInternalError(pExecutor->GetTime());
+			this->CompleteActiveTask();
+			return TaskState::IDLE;
 		}
+		
+		this->StartResponseTimer();
+		auto apdu = request.ToReadOnly();
+		this->RecordLastRequest(apdu);
+		this->Transmit(apdu);
+
+		return TaskState::WAIT_FOR_RESPONSE;
 	}
 
 	//// --- State tables ---
@@ -548,7 +555,7 @@ namespace opendnp3
 
 		if (task.IsDefined())
 		{
-			return this->BeginNewTask(task) ? TaskState::WAIT_FOR_RESPONSE : TaskState::TASK_READY;
+			return this->BeginNewTask(task);
 		}
 		else
 		{
@@ -568,7 +575,7 @@ namespace opendnp3
 			return TaskState::TASK_READY;
 		}
 
-		return this->ResumeActiveTask() ? TaskState::WAIT_FOR_RESPONSE : TaskState::TASK_READY;
+		return this->ResumeActiveTask();
 	}
 
 	MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
