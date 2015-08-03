@@ -18,28 +18,18 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_COMMAND_CALLBACK_H_
-#define __MOCK_COMMAND_CALLBACK_H_
+#ifndef SECAUTH_BEGIN_UPDATE_KEY_CHANGE_CALLBACK_H
+#define SECAUTH_BEGIN_UPDATE_KEY_CHANGE_CALLBACK_H
 
-#include <opendnp3/master/IResultCallback.h>
-#include <queue>
+#include <functional>
 
-namespace opendnp3
+#include "BeginUpdateKeyChangeResult.h"
+
+namespace secauth
 {
 
-class MockCommandCallback : public CommandCallbackT
-{
-public:	
-
-	virtual void OnComplete(const CommandResponse& response) override final
-	{
-		responses.push_back(response);
-	}
-
-	std::deque<CommandResponse> responses;
-
-};
-
+typedef std::function<void (const BeginUpdateKeyChangeResult&)> BeginUpdateKeyChangeCallbackT;
+	
 }
 
 #endif

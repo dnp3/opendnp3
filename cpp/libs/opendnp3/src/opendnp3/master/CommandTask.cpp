@@ -33,7 +33,7 @@ namespace opendnp3
 CommandTask::CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger) :
 	IMasterTask(app, MonotonicTimestamp::Min(), logger, config),
 	statusResult(CommandStatus::UNDEFINED),
-	pCommandCallback(&callback),
+	commandCallback(callback),
 	pSequence(pSequence_)
 {
 
@@ -41,10 +41,7 @@ CommandTask::CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, 
 
 void CommandTask::Callback(const CommandResponse& cr)
 {
-	if (pCommandCallback)
-	{
-		pCommandCallback->OnComplete(cr);
-	}
+	commandCallback(cr);
 }
 
 void CommandTask::LoadSelectAndOperate()

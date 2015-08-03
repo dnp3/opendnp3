@@ -24,7 +24,7 @@
 #include "MeasurementComparisons.h"
 #include <testlib/HexConversions.h>
 
-#include <dnp3mocks/MockCommandCallback.h>
+#include <dnp3mocks/CallbackQueue.h>
 #include <dnp3mocks/APDUHexBuilders.h>
 
 #include <opendnp3/app/APDUResponse.h>
@@ -44,14 +44,15 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 	MasterTestObject t(params);	
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
-	MockCommandCallback callback;
+	CallbackQueue<CommandResponse> queue;
+	
 
 	for(int i = 0; i < 10; ++i)
 	{		
-		t.context.SelectAndOperate(bo, 1, callback, TaskConfig::Default());		
-		REQUIRE(1 == callback.responses.size());
-		REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == callback.responses.front()));
-		callback.responses.pop_front();
+		t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());		
+		REQUIRE(1 == queue.responses.size());
+		REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == queue.responses.front()));
+		queue.responses.pop_front();
 	}
 }
 
@@ -62,8 +63,8 @@ TEST_CASE(SUITE("SelectAndOperate"))
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 
-	MockCommandCallback callback;
-	t.context.SelectAndOperate(bo, 1, callback, TaskConfig::Default());
+	CallbackQueue<CommandResponse> queue;
+	t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
@@ -81,8 +82,8 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
-	REQUIRE(1 == callback.responses.size());
-	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == callback.responses.front()));
+	REQUIRE(1 == queue.responses.size());
+	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == queue.responses.front()));
 }
 
 TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
@@ -92,8 +93,8 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 
-	MockCommandCallback callback;
-	t.context.SelectAndOperate(bo, 1, callback, TaskConfig::Default());
+	CallbackQueue<CommandResponse> queue;
+	t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
@@ -113,8 +114,8 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
-	REQUIRE(1 == callback.responses.size());
-	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == callback.responses.front()));
+	REQUIRE(1 == queue.responses.size());
+	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == queue.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
@@ -123,8 +124,8 @@ TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	MockCommandCallback callback;
-	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, callback, TaskConfig::Default());
+	CallbackQueue<CommandResponse> queue;
+	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
@@ -132,8 +133,8 @@ TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 	t.exe.AdvanceTime(config.responseTimeout);
 	t.exe.RunMany();
 
-	REQUIRE(1 == callback.responses.size());
-	REQUIRE((CommandResponse(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) == callback.responses.front()));
+	REQUIRE(1 == queue.responses.size());
+	REQUIRE((CommandResponse(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) == queue.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
@@ -142,16 +143,16 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	MockCommandCallback callback;
-	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, callback, TaskConfig::Default());
+	CallbackQueue<CommandResponse> queue;
+	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
 
 	t.context.OnLowerLayerDown();
 
-	REQUIRE(1 == callback.responses.size());
-	REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == callback.responses.front()));
+	REQUIRE(1 == queue.responses.size());
+	REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == queue.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
@@ -160,16 +161,16 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	MockCommandCallback callback;
-	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, callback, TaskConfig::Default());
+	CallbackQueue<CommandResponse> queue;
+	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
 	
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
 	t.exe.RunMany();
 
-	REQUIRE(1 ==  callback.responses.size());
-	REQUIRE((CommandResponse::OK(CommandStatus::NOT_SUPPORTED) == callback.responses.front()));
+	REQUIRE(1 ==  queue.responses.size());
+	REQUIRE((CommandResponse::OK(CommandStatus::NOT_SUPPORTED) == queue.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
@@ -178,17 +179,17 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	MockCommandCallback callback;
+	CallbackQueue<CommandResponse> queue;
 
-	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, callback, TaskConfig::Default());
+	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
 	t.context.OnSendResult(true);
 
 	t.SendToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
 
 	t.exe.RunMany();
 
-	REQUIRE(1 ==  callback.responses.size());
-	REQUIRE((CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE) == callback.responses.front()));
+	REQUIRE(1 ==  queue.responses.size());
+	REQUIRE((CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE) == queue.responses.front()));
 }
 
 TEST_CASE(SUITE("DeferredControlExecution"))
@@ -207,8 +208,8 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	
 	//issue a command while the master is waiting for a response from the outstation
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
-	MockCommandCallback callback;
-	t.context.SelectAndOperate(bo, 1, callback, TaskConfig::Default());
+	CallbackQueue<CommandResponse> queue;
+	t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
 	
 	t.SendToMaster("C0 81 00 00"); //now master gets response to integrity
 
@@ -225,16 +226,16 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	t.context.OnLowerLayerUp();	
 
 	AnalogOutputInt16 ao(100);
-	MockCommandCallback callback;
+	CallbackQueue<CommandResponse> queue;
 
-	t.context.DirectOperate(ao, 1, callback, TaskConfig::Default());
+	t.context.DirectOperate(ao, 1, queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
-	REQUIRE(callback.responses.empty());
+	REQUIRE(queue.responses.empty());
 	t.context.OnLowerLayerDown();
-	REQUIRE(1 == callback.responses.size());		
+	REQUIRE(1 == queue.responses.size());		
 }
 
 TEST_CASE(SUITE("ResponseTimeout"))
@@ -244,21 +245,21 @@ TEST_CASE(SUITE("ResponseTimeout"))
 	t.context.OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
-	MockCommandCallback callback;
+	CallbackQueue<CommandResponse> queue;
 
-	t.context.DirectOperate(ao, 1, callback, TaskConfig::Default());
+	t.context.DirectOperate(ao, 1, queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
-	REQUIRE(callback.responses.empty());
+	REQUIRE(queue.responses.empty());
 	
 	REQUIRE(t.exe.AdvanceToNextTimer());
 
 	REQUIRE(t.exe.RunMany() > 0);
 		
-	REQUIRE(1 == callback.responses.size());
-	REQUIRE(callback.responses[0].GetResult() == TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
+	REQUIRE(1 == queue.responses.size());
+	REQUIRE(queue.responses[0].GetResult() == TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
 }
 
 TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
@@ -276,20 +277,20 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 	REQUIRE(t.exe.RunMany() > 0);
 	
 	// while we're waiting for a response to the disable unsol, initiate a command seqeunce
-	MockCommandCallback callback;
-	t.context.DirectOperate(AnalogOutputInt16(100), 1, callback, TaskConfig::Default());
+	CallbackQueue<CommandResponse> queue;
+	t.context.DirectOperate(AnalogOutputInt16(100), 1, queue.Callback(), TaskConfig::Default());
 	
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
-	REQUIRE(callback.responses.empty());
+	REQUIRE(queue.responses.empty());
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 
 	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(1 == callback.responses.size());
-	REQUIRE(callback.responses[0].GetResult() == TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
+	REQUIRE(1 == queue.responses.size());
+	REQUIRE(queue.responses[0].GetResult() == TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
 }
 
 template <class T>
@@ -299,27 +300,27 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	MockCommandCallback callback;
+	CallbackQueue<CommandResponse> queue;
 
-	t.context.SelectAndOperate(command, 1, callback, TaskConfig::Default());
+	t.context.SelectAndOperate(command, 1, queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + hex);
 	t.context.OnSendResult(true);
-	REQUIRE(callback.responses.empty());
+	REQUIRE(queue.responses.empty());
 	t.SendToMaster("C0 81 00 00 " + hex);
 
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + hex);
 	t.context.OnSendResult(true);
-	REQUIRE(callback.responses.empty());
+	REQUIRE(queue.responses.empty());
 	t.SendToMaster("C1 81 00 00 " + hex);
 
 	t.exe.RunMany();
 
-	REQUIRE(callback.responses.size() == 1);
-	REQUIRE(callback.responses.front() == CommandResponse::OK(CommandStatus::SUCCESS));
+	REQUIRE(queue.responses.size() == 1);
+	REQUIRE(queue.responses.front() == CommandResponse::OK(CommandStatus::SUCCESS));
 }
 
 

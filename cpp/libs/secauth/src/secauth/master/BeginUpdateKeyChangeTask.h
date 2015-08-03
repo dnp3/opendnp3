@@ -25,7 +25,7 @@
 #include <opendnp3/master/TaskPriority.h>
 
 #include "secauth/master/IMasterApplicationSA.h"
-#include "secauth/master/IBeginUpdateKeyChangeHandler.h"
+#include "secauth/master/BeginUpdateKeyChangeCallbackT.h"
 
 
 namespace secauth
@@ -43,7 +43,7 @@ namespace secauth
 			IMasterApplicationSA& application,
 			openpal::Logger logger,
 			const opendnp3::TaskConfig& config,
-			IBeginUpdateKeyChangeHandler& handler
+			BeginUpdateKeyChangeCallbackT& callback
 		);
 			
 
@@ -61,7 +61,7 @@ namespace secauth
 
 	private:	
 
-		IBeginUpdateKeyChangeHandler* handler;
+		BeginUpdateKeyChangeCallbackT callback;
 
 		virtual void Initialize() override final {}
 

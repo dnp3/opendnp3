@@ -163,7 +163,7 @@ void MAuthContext::ChangeUserStatus(const UserStatusChange& userStatusChange, co
 	this->ScheduleAdhocTask(task);
 }
 
-void MAuthContext::BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, IBeginUpdateKeyChangeHandler& handler)
+void MAuthContext::BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, const BeginUpdateKeyChangeCallbackT& callback)
 {
 	// TODO
 }

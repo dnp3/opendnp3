@@ -22,10 +22,8 @@
 #define ASIODNP3_BLOCKINGCOMMANDCALLBACK_H
 
 #include <openpal/util/Uncopyable.h>
+
 #include <opendnp3/master/CommandResponse.h>
-#include <opendnp3/master/ITaskCallback.h>
-#include <opendnp3/master/CommandResponse.h>
-#include <opendnp3/master/IResultCallback.h>
 
 #include <asiopal/Synchronized.h>
 
@@ -35,14 +33,22 @@ namespace asiodnp3
 /**
 * Callback when a command finishes or fails
 */
-class BlockingCommandCallback : public opendnp3::IResultCallback<opendnp3::CommandResponse>, private openpal::Uncopyable
+class BlockingCommandCallback : private openpal::Uncopyable
 {	
 	
-public:	
-	
-	virtual void OnComplete(const opendnp3::CommandResponse& response) override final;
+public:		
 
-	opendnp3::CommandResponse WaitForResult();
+	opendnp3::CommandCallbackT Callback()
+	{
+		return [this](const opendnp3::CommandResponse& rsp) -> void {
+			this->response.SetValue(rsp);
+		};
+	}
+
+	opendnp3::CommandResponse WaitForResult()
+	{
+		return response.WaitForValue();
+	}
 
 private:
 

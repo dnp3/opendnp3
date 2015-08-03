@@ -24,7 +24,7 @@
 #include "MeasurementComparisons.h"
 #include <testlib/HexConversions.h>
 
-#include <dnp3mocks/MockCommandCallback.h>
+#include <dnp3mocks/CallbackQueue.h>
 #include <dnp3mocks/APDUHexBuilders.h>
 
 #include <opendnp3/app/APDUResponse.h>

@@ -25,7 +25,7 @@
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/master/ITaskCallback.h"
 #include "opendnp3/master/CommandResponse.h"
-#include "opendnp3/master/IResultCallback.h"
+#include "opendnp3/master/ICommandCallback.h"
 #include "opendnp3/master/TaskConfig.h"
 
 namespace opendnp3

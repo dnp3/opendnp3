@@ -32,10 +32,10 @@ BeginUpdateKeyChangeTask::BeginUpdateKeyChangeTask(
 		IMasterApplicationSA& application,
 		openpal::Logger logger,
 		const opendnp3::TaskConfig& config,
-		IBeginUpdateKeyChangeHandler& handler_
+		BeginUpdateKeyChangeCallbackT& callback_
 	) : 
 	IMasterTask(application, MonotonicTimestamp::Min(), logger, config),
-	handler(&handler_)
+	callback(callback_)
 {
 
 

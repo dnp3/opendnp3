@@ -25,7 +25,7 @@
 
 #include "secauth/master/MasterSecurity.h"
 #include "secauth/master/UserStatusChange.h"
-#include "secauth/master/IBeginUpdateKeyChangeHandler.h"
+#include "secauth/master/BeginUpdateKeyChangeCallbackT.h"
 
 namespace secauth
 {
@@ -68,7 +68,7 @@ public:
 
 	void ChangeUserStatus(const UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config);
 
-	void BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, IBeginUpdateKeyChangeHandler& handler);
+	void BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, const BeginUpdateKeyChangeCallbackT& callback);
 
 private:
 

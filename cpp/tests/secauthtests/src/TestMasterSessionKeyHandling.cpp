@@ -23,7 +23,7 @@
 #include "fixtures/MasterSecAuthFixture.h"
 
 #include <dnp3mocks/APDUHexBuilders.h>
-#include <dnp3mocks/MockCommandCallback.h>
+#include <dnp3mocks/CallbackQueue.h>
 
 #include <testlib/HexConversions.h>
 
@@ -200,12 +200,12 @@ TEST_CASE(SUITE("Tasks for non-existant users are immediately failed"))
 
 	fixture.context.OnLowerLayerUp();
 
-	MockCommandCallback callback;
+	CallbackQueue<CommandResponse> queue;
 	/// start a command request on some user that doesn't exist
-	fixture.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::LATCH_ON), 1, callback, TaskConfig(TaskId::Undefined(), nullptr, User(42)));
+	fixture.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::LATCH_ON), 1, queue.Callback(), TaskConfig(TaskId::Undefined(), nullptr, User(42)));
 
-	REQUIRE(callback.responses.size() == 1);
-	auto result = callback.responses.front();
+	REQUIRE(queue.responses.size() == 1);
+	auto result = queue.responses.front();
 	REQUIRE(result.GetResult() == TaskCompletion::FAILURE_NO_USER);
 }
 

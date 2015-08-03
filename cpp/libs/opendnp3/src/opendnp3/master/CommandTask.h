@@ -89,7 +89,7 @@ private:
 	std::deque<FunctionCode> functionCodes;
 	
 	CommandStatus statusResult;
-	CommandCallbackT* pCommandCallback;	
+	CommandCallbackT commandCallback;	
 	std::unique_ptr<ICommandSequence> pSequence;	
 };
 

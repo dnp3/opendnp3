@@ -19,19 +19,18 @@
  * to you under the terms of the License.
  */
 
-#include "BlockingCommandCallback.h"
+#ifndef OPENDNP3_ICOMMAND_CALLBACK_H
+#define OPENDNP3_ICOMMAND_CALLBACK_H
 
-namespace asiodnp3
-{
-	
-opendnp3::CommandResponse BlockingCommandCallback::WaitForResult()
-{
-	return response.WaitForValue();
-}
+#include "opendnp3/master/CommandResponse.h"
 
-void BlockingCommandCallback::OnComplete(const opendnp3::CommandResponse& response)
+#include <functional>
+
+namespace opendnp3
 {
-	this->response.SetValue(response);
-}
+
+typedef std::function<void (const CommandResponse&)> CommandCallbackT;
 
 }
+
+#endif

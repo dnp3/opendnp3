@@ -18,18 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_IBEGIN_UPDATE_KEY_CHANGE_HANDLER_H
-#define SECAUTH_IBEGIN_UPDATE_KEY_CHANGE_HANDLER_H
+#ifndef DNP3MOCKS_CALLBACK_QUEUE_H
+#define DNP3MOCKS_CALLBACK_QUEUE_H
 
-#include <opendnp3/master/IResultCallback.h>
+#include <queue>
+#include <functional>
 
-#include "BeginUpdateKeyChangeResult.h"
-
-namespace secauth
+namespace opendnp3
 {
 
-typedef opendnp3::IResultCallback<BeginUpdateKeyChangeResult> IBeginUpdateKeyChangeHandler;
-	
+template <class T>	
+class CallbackQueue
+{
+public:	
+
+	std::function<void (const T&)> Callback()
+	{
+		return [this](const T& rsp) -> void {
+			responses.push_back(rsp);
+		};
+	}
+
+	std::deque<T> responses;
+
+};
+
 }
 
 #endif

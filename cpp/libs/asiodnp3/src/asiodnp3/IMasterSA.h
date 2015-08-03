@@ -27,7 +27,7 @@
 #include <secauth/UpdateKey.h>
 
 #include <secauth/master/UserStatusChange.h>
-#include <secauth/master/IBeginUpdateKeyChangeHandler.h>
+#include <secauth/master/BeginUpdateKeyChangeCallbackT.h>
 
 namespace asiodnp3
 {
@@ -49,7 +49,7 @@ public:
 	/**
 	*  Begins the first step in changing a user's update key
 	*/
-	virtual void BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, secauth::IBeginUpdateKeyChangeHandler& handler) = 0;
+	virtual void BeginUpdateKeyChange(opendnp3::KeyChangeMethod, const std::string& userName, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& handler) = 0;
 	
 	/**
 	* Add a user to the outstation. This is normally only done during initialization.
