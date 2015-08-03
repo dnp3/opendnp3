@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_ICOMMAND_CALLBACK_H
-#define OPENDNP3_ICOMMAND_CALLBACK_H
+#ifndef OPENDNP3_COMMAND_CALLBACK_T_H
+#define OPENDNP3_COMMAND_CALLBACK_T_H
 
 #include "opendnp3/master/CommandResponse.h"
 
