@@ -164,7 +164,7 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationRespon
 
 	if (!SecureEquals(handler.value.hmacValue, hmac))
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "HMAC comparison failed", ec.message().c_str());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "HMAC comparison failed: %s", ec.message().c_str());
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
