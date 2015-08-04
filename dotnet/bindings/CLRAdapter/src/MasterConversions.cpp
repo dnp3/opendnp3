@@ -1,5 +1,4 @@
 
-#include "Stdafx.h"
 #include "MasterConversions.h"
 
 #include "TaskCallbackAdapter.h"

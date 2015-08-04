@@ -1,5 +1,4 @@
 
-#include "Stdafx.h"
 #include "LogAdapter.h"
 
 #include "Conversions.h"

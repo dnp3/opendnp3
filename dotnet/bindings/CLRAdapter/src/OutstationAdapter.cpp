@@ -1,5 +1,5 @@
 
-#include "Stdafx.h"
+
 #include "OutstationAdapter.h"
 
 #include "ChangeSetAdapter.h"

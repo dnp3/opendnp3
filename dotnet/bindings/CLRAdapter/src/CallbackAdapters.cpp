@@ -1,6 +1,5 @@
 
 
-#include "Stdafx.h"
 #include "CallbackAdapters.h"
 
 #include "Conversions.h"

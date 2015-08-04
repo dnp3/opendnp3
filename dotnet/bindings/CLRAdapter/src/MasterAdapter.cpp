@@ -1,6 +1,4 @@
 
-#include "Stdafx.h"
-
 #include "Conversions.h"
 #include "MasterAdapter.h"
 

@@ -1,7 +1,7 @@
 
-#include "Stdafx.h"
-#include <msclr\marshal_cppstd.h>
 #include "Conversions.h"
+
+#include <msclr\marshal_cppstd.h>
 
 #include <opendnp3/objects/Group60.h>
 

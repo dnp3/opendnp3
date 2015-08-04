@@ -1,5 +1,4 @@
 
-#include "Stdafx.h"
 #include "OutstationApplicationAdapter.h"
 
 #include "Conversions.h"

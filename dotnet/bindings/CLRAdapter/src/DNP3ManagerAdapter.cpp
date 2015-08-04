@@ -1,5 +1,4 @@
 
-#include "Stdafx.h"
 #include "DNP3ManagerAdapter.h"
 
 #include "Conversions.h"

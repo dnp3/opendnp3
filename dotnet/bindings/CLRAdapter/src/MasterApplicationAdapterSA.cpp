@@ -1,5 +1,4 @@
 
-#include "Stdafx.h"
 #include "MasterApplicationAdapterSA.h"
 
 using namespace Automatak::DNP3::Interface;

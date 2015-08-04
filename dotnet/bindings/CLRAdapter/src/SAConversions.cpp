@@ -1,5 +1,4 @@
 
-#include "Stdafx.h"
 #include "SAConversions.h"
 
 #include "Conversions.h"

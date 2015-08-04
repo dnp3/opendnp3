@@ -1,5 +1,5 @@
 
-#include "Stdafx.h"
+
 #include "ChangeSetAdapter.h"
 #include "Conversions.h"
 

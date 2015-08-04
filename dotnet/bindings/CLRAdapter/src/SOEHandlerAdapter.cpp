@@ -1,5 +1,4 @@
 
-#include "Stdafx.h"
 #include "SOEHandlerAdapter.h"
 #include "Conversions.h"
 

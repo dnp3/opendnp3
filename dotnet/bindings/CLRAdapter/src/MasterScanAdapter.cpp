@@ -1,5 +1,5 @@
 
-#include "Stdafx.h"
+
 #include "MasterScanAdapter.h"
 
 using namespace Automatak::DNP3::Interface;
