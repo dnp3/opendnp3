@@ -78,7 +78,7 @@ bool BeginUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint
 
 IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {	
-	if (!(header.function == FunctionCode::AUTH_REQUEST && ValidateSingleResponse(header) && ValidateInternalIndications(header)))
+	if (!(header.function == FunctionCode::AUTH_RESPONSE && ValidateSingleResponse(header) && ValidateInternalIndications(header)))
 	{
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
@@ -96,7 +96,7 @@ IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessResponse(const open
 	{
 		case(GroupVariation::Group120Var7) :
 			return ProcessErrorResponse(objects);
-		case(GroupVariation::Group120Var11) :
+		case(GroupVariation::Group120Var12) :
 			return ProcessDataResponse(objects);
 		default:
 			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported object header in response: %s", GroupVariationToString(gv));

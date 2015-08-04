@@ -23,6 +23,7 @@
 #include "fixtures/MasterSecAuthFixture.h"
 
 #include <dnp3mocks/MockTaskCallback.h>
+#include <dnp3mocks/CallbackQueue.h>
 #include <dnp3mocks/APDUHexBuilders.h>
 
 
@@ -34,40 +35,37 @@ using namespace secauth;
 using namespace openpal;
 using namespace testlib;
 
-#define SUITE(name) "MasterUserStatusChangeSuite - " name
+#define SUITE(name) "MasterUpdateKeyChangeChangeSuite - " name
 
-TEST_CASE(SUITE("initiates a user status change when invoked"))
+TEST_CASE(SUITE("well-formed response results in successful callback"))
 {		
 	MasterParams params;
 	MasterSecAuthFixture fixture(params);
-
 	fixture.context.OnLowerLayerUp();	
 
-	auto certData = "DE AD BE EF";
-	HexSequence certDataBuffer(certData);
+	CallbackQueue<BeginUpdateKeyChangeResult> queue;
+	MockTaskCallback tcallback;
 
-	UserStatusChange statusChange(
-		KeyChangeMethod::AES_256_SHA256_HMAC,
-		UserOperation::OP_ADD,
-		0,
-		UserRoleToType(UserRole::OPERATOR),
-		10,
-		"BOB",
-		ReadBufferView(),
-		certDataBuffer.ToReadOnly()
-	);
+	fixture.context.BeginUpdateKeyChange("jim", TaskConfig::With(tcallback), queue.Callback());
+		
+	auto request = "C0 20 78 0B 5B 01 0C 00 04 03 00 04 00 6A 69 6D AA AA AA AA";
+	auto reply = "C0 83 00 00 78 0C 5B 01 0C 00 01 00 00 00 07 00 04 00 DE AD BE EF";
 
-	MockTaskCallback callback;
+	fixture.TestRequestAndReply(request, reply);
 
-	fixture.context.ChangeUserStatus(statusChange, TaskConfig::With(callback));	
+	REQUIRE(queue.responses.size() == 1);
+	auto& data = queue.responses.front();
 
-	auto request = hex::UserStatusChangeRequest(0, KeyChangeMethod::AES_256_SHA256_HMAC, UserOperation::OP_ADD, 0, UserRoleToType(UserRole::OPERATOR), 10, "BOB", "", certData);
-	fixture.TestRequestAndReply(request, hex::EmptyResponse(0));
+	REQUIRE(data.result == TaskCompletion::SUCCESS);
 
-	REQUIRE(callback.results.size() == 1);
-	REQUIRE(callback.numDestroyed == 1);
-	REQUIRE(callback.numStart == 1);
-	REQUIRE(callback.results.front() == TaskCompletion::SUCCESS);
+	// test all the values
+	REQUIRE(data.keyChangeSequenceNum == 1);
+	REQUIRE(data.user.GetId() == 7);
+	REQUIRE(ToHex(data.masterChallengeData.ToReadOnly()) == "AA AA AA AA");
+	REQUIRE(ToHex(data.outstationChallengeData.ToReadOnly()) == "DE AD BE EF");	
+
+	REQUIRE(tcallback.results.size() == 1);
+	REQUIRE(tcallback.results.front() == TaskCompletion::SUCCESS);
 }
 
 
