@@ -29,8 +29,12 @@
 #include "secauth/master/IMasterApplicationSA.h"
 #include "secauth/master/FinishUpdateKeyChangeArgs.h"
 
+#include <functional>
+
 namespace secauth
 {
+	typedef std::function<void (const std::string& username, opendnp3::User user, const UpdateKey& key)> ChangeUpdateKeyCallbackT;
+
 
 	/**
 	* 2nd and final step in change a user's update key
@@ -42,10 +46,11 @@ namespace secauth
 
 		FinishUpdateKeyChangeTask(
 			const FinishUpdateKeyChangeArgs& args,
-			IMasterApplicationSA& application,
+			opendnp3::IMasterApplication& application,
+			openpal::IHMACAlgo& algorithm,
 			openpal::Logger logger,			
 			const opendnp3::TaskConfig& config,
-			openpal::IHMACAlgo& algorithm
+			const ChangeUpdateKeyCallbackT& callback
 		);
 			
 
@@ -62,8 +67,10 @@ namespace secauth
 		virtual bool BlocksLowerPriority() const override final { return false; }
 
 	private:	
+
 		FinishUpdateKeyChangeArgs m_args;
 		openpal::IHMACAlgo* m_algorithm;
+		ChangeUpdateKeyCallbackT m_callback;
 		
 		virtual void Initialize() override final {}
 
@@ -73,7 +80,14 @@ namespace secauth
 
 		virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
-		virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final;		
+		virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final { return TaskState::Infinite(); }
+
+
+		/// --- helpers -----
+
+		opendnp3::IMasterTask::ResponseResult ProcessErrorResponse(const openpal::ReadBufferView& objects);
+
+		opendnp3::IMasterTask::ResponseResult ProcessConfirmationResponse(const openpal::ReadBufferView& objects);
 	};
 
 

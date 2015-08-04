@@ -35,20 +35,20 @@ namespace secauth
 /**
 	A very simple update key store for the default user
 */
-class MasterUserDatabase : public IMasterUserDatabase
+class MasterUserDatabase final : public IMasterUserDatabase
 {
 
 public:
 
-	virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const override final;
+	virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const override;
 
-	virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;	
+	virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override;
 
-	virtual bool UserExists(const opendnp3::User& user) const override final;
+	virtual bool UserExists(const opendnp3::User& user) const override;
 
 	// copies the update key into the key store permanently
 	// fails if the update key is invalid
-	bool AddUser(const opendnp3::User& user, const UpdateKey& key);
+	virtual bool AddUser(const opendnp3::User& user, const UpdateKey& key) override;
 
 private:
 

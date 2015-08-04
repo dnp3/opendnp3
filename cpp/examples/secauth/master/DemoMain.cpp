@@ -45,10 +45,12 @@ class MasterApplication final : public IMasterApplicationSA
 {
 	virtual UTCTimestamp Now() override { return UTCTimeSource::Instance().Now(); }
 
-	virtual void OnTaskComplete(const TaskInfo& info)
+	virtual void OnTaskComplete(const TaskInfo& info) override
 	{
 		std::cout << "Task type " << MasterTaskTypeToString(info.type) << " completed with result " << TaskCompletionToString(info.result) << std::endl;
 	}
+
+	virtual void PersistNewUpdateKey(const std::string& username, opendnp3::User user, const UpdateKey& key) override {}
 };
 
 void DoCommandSequence(IMaster* master);

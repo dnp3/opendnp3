@@ -63,25 +63,35 @@ MAuthContext::MAuthContext(
 
 }
 
+void MAuthContext::InitSessionKeyTaskForUser(const User& user)
+{
+	auto iter = security.sessionKeyTaskMap.find(user.GetId());
+	if (iter == security.sessionKeyTaskMap.end())
+	{
+		auto task = std::unique_ptr<SessionKeyTask>(
+			new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, security.settings.sessionChangeInterval, this->logger, user, *security.pCrypto, security.userDB, security.sessions)
+		);
+
+		this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(task.get()));
+
+		security.sessionKeyTaskMap[user.GetId()] = std::move(task);
+	}
+	else
+	{
+		iter->second->Demand();
+	}
+}
+
 bool MAuthContext::OnLowerLayerUp()
 {
 	bool ret = MContext::OnLowerLayerUp();
 
 	if (ret)
-	{
-		// create a session key task for every user
-		auto createSessionKeyTask = [this](const User& user)
-		{				
-			auto task = std::unique_ptr<SessionKeyTask>(
-				new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, security.settings.sessionChangeInterval, this->logger, user, *security.pCrypto, security.userDB, security.sessions)
-			);			
-			
-			this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(task.get()));
-
-			security.sessionKeyTaskMap[user.GetId()] = std::move(task);
-		};
-
-		security.userDB.EnumerateUsers(createSessionKeyTask);
+	{		
+		security.userDB.EnumerateUsers([this](const User& user)
+		{
+			this->InitSessionKeyTaskForUser(user);
+		});
 	}
 		
 	return ret;
@@ -173,7 +183,20 @@ void MAuthContext::BeginUpdateKeyChange(const std::string& username, const opend
 
 void MAuthContext::FinishUpdateKeyChange(const FinishUpdateKeyChangeArgs& args, const opendnp3::TaskConfig& config)
 {
-	auto task = new FinishUpdateKeyChangeTask(args, *security.pApplicationSA, logger, config, security.pCrypto->GetSHA256HMAC());
+	// the callback that is invoked if a this task succeeds and is fully authenticated
+	ChangeUpdateKeyCallbackT callback = [this](const std::string& username, opendnp3::User user, const UpdateKey& key) -> void
+	{
+		// record the new or updated key internally
+		this->AddUser(user, key);
+		
+		// create or demand session key task for this user
+		this->InitSessionKeyTaskForUser(user);
+
+		// ask the application to persist the data
+		this->security.pApplicationSA->PersistNewUpdateKey(username, user, key);
+	};
+
+	auto task = new FinishUpdateKeyChangeTask(args, *this->pApplication, security.pCrypto->GetSHA256HMAC(), logger, config, callback);
 	this->ScheduleAdhocTask(task);
 }
 

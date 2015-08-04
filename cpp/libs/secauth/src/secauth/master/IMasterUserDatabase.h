@@ -27,6 +27,8 @@
 
 #include <openpal/container/ReadBufferView.h>
 
+#include "secauth/UpdateKey.h"
+
 #include <functional>
 
 namespace secauth
@@ -44,6 +46,8 @@ class IMasterUserDatabase
 		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
 
 		virtual bool UserExists(const opendnp3::User& user) const = 0;
+
+		virtual bool AddUser(const opendnp3::User& user, const secauth::UpdateKey& key) = 0;
 };
 
 }

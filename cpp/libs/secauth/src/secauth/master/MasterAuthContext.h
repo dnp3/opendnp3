@@ -80,6 +80,8 @@ private:
 	void OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);	
+
+	void InitSessionKeyTaskForUser(const opendnp3::User& user);
 	
 	MasterSecurity security;
 

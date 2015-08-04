@@ -99,6 +99,11 @@ void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var12&
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::ReadBufferView& object)
+{
+	Record(header, this->ProcessHeader(header, value, object));
+}
+
 void IAPDUHandler::OnHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
 {
 	Record(header, this->ProcessHeader(header, values));
@@ -324,6 +329,11 @@ IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group
 }
 
 IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::ReadBufferView& object)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::ReadBufferView& object)
 {
 	return ProcessUnsupportedHeader();
 }

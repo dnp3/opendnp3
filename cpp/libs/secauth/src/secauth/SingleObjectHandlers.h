@@ -111,6 +111,19 @@ public:
 	}
 };
 
+class KeyChangeConfirmationHandler : public SingleValueHandler<opendnp3::Group120Var15, opendnp3::GroupVariation::Group120Var15, opendnp3::QualifierCode::UINT16_FREE_FORMAT>
+{
+public:
+
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var15& data, const openpal::ReadBufferView&) override final
+	{
+		this->value = data;
+		this->m_valid = true;
+		return opendnp3::IINField();
+	}
+
+};
+
 
 }
 

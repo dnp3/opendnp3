@@ -22,9 +22,15 @@
 #include "FinishUpdateKeyChangeTask.h"
 
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/app/parsing/APDUParser.h>
+#include <opendnp3/app/parsing/ObjectHeaderParser.h>
+
 #include <openpal/logging/LogMacros.h>
 
+#include <openpal/crypto/SecureCompare.h>
+
 #include "secauth/KeyChangeConfirmationHMAC.h"
+#include "secauth/SingleObjectHandlers.h"
 
 using namespace openpal;
 using namespace opendnp3;
@@ -35,14 +41,16 @@ namespace secauth
 
 FinishUpdateKeyChangeTask::FinishUpdateKeyChangeTask(
 	const FinishUpdateKeyChangeArgs& args,
-	IMasterApplicationSA& application,
+	IMasterApplication& application,
+	openpal::IHMACAlgo& algorithm,
 	openpal::Logger logger,
 	const opendnp3::TaskConfig& config,
-	openpal::IHMACAlgo& algorithm
+	const ChangeUpdateKeyCallbackT& callback
 ) :
 	IMasterTask(application, MonotonicTimestamp::Min(), logger, config),
 	m_args(args),
-	m_algorithm(&algorithm)
+	m_algorithm(&algorithm),
+	m_callback(callback)
 {}
 			
 
@@ -78,10 +86,8 @@ bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uin
 		m_args.user.GetId(),
 		m_args.encryptedKeyData.ToReadOnly()
 	);	
-
-	bool wroteAllHeaders = writer.WriteFreeFormat(updateKeyChange) && writer.WriteFreeFormat(Group120Var15(hmac));
-
-	if (!wroteAllHeaders)
+	
+	if (!(writer.WriteFreeFormat(updateKeyChange) && writer.WriteFreeFormat(Group120Var15(hmac))))
 	{		
 		return false;
 	}
@@ -89,14 +95,83 @@ bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uin
 	return true;
 }
 
-IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
-	return IMasterTask::ResponseResult::ERROR_BAD_RESPONSE;
+	if (!(header.function == FunctionCode::AUTH_RESPONSE && ValidateSingleResponse(header) && ValidateInternalIndications(header)))
+	{
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	// Do a look ahead in the ASDU and determine how to interpret it
+	GroupVariation gv = GroupVariation::UNKNOWN;
+	if (!ObjectHeaderParser::ReadFirstGroupVariation(objects, gv))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Response contains empty or malformed object data");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+
+	switch (gv)
+	{
+		case(GroupVariation::Group120Var7) :
+			return ProcessErrorResponse(objects);
+		case(GroupVariation::Group120Var15) :
+			return ProcessConfirmationResponse(objects);
+		default:
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported object header in response: %s", GroupVariationToString(gv));
+			return ResponseResult::ERROR_BAD_RESPONSE;
+	}
 }
 
-IMasterTask::TaskState FinishUpdateKeyChangeTask::OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now)
+IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessErrorResponse(const openpal::ReadBufferView& objects)
 {
-	return IMasterTask::TaskState::Infinite();
+	ErrorHandler handler;
+	if (APDUParser::Parse(objects, handler, &logger) == ParseResult::OK)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Outstation returned auth error code: %s", AuthErrorCodeToString(handler.value.errorCode));
+	}
+
+	return ResponseResult::ERROR_BAD_RESPONSE;
+}
+
+IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationResponse(const openpal::ReadBufferView& objects)
+{
+	KeyChangeConfirmationHandler handler;
+	if (APDUParser::Parse(objects, handler, &logger) != ParseResult::OK)
+	{
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	// verify the HMAC value
+	KeyChangeConfirmationHMAC calc(*m_algorithm);
+
+	std::error_code ec;
+	auto hmac = calc.Compute(
+		m_args.updateKey.GetKeyView(),
+		m_args.username,
+		m_args.outstationChallengeData.ToReadOnly(),
+		m_args.masterChallengeData.ToReadOnly(),
+		m_args.keyChangeSequenceNum,
+		m_args.user,
+		ec
+	);
+
+	if (ec)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating hmac during response: %s", ec.message().c_str());
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	if (!SecureEquals(handler.value.hmacValue, hmac))
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "HMAC comparison failed", ec.message().c_str());
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	// make the specified callback
+	m_callback(m_args.username, m_args.user, m_args.updateKey);	
+
+	return ResponseResult::OK_FINAL;
 }
 	
 

@@ -45,7 +45,14 @@ public:
 		completions.push_back(info);
 	}
 
+	virtual void PersistNewUpdateKey(const std::string& username, opendnp3::User user, const secauth::UpdateKey& key) override
+	{
+		updateKeyCallbacks.push_back(username);
+	}
+
 	std::vector<TaskInfo> completions;
+
+	std::vector<std::string> updateKeyCallbacks;
 
 	testlib::MockUTCTimeSource utc;
 };
