@@ -69,5 +69,14 @@ void MasterStackSA::BeginUpdateKeyChange(const std::string& username, const open
 	this->pASIOExecutor->strand.post(action);
 }
 
+void MasterStackSA::FinishUpdateKeyChange(const secauth::FinishUpdateKeyChangeArgs& args, const opendnp3::TaskConfig& config)
+{
+	auto action = [this, args, config]
+	{
+		this->mcontext.FinishUpdateKeyChange(args, config);
+	};
+	this->pASIOExecutor->strand.post(action);
+}
+
 
 }

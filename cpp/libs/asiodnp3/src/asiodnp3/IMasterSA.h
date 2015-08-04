@@ -28,6 +28,7 @@
 
 #include <secauth/master/UserStatusChange.h>
 #include <secauth/master/BeginUpdateKeyChangeCallbackT.h>
+#include <secauth/master/FinishUpdateKeyChangeArgs.h>
 
 namespace asiodnp3
 {
@@ -42,7 +43,12 @@ public:
 	virtual ~IMasterSA() {}
 
 	/**
-	* Begins a users status change operation. The master just acts as a pass through for this operation
+	*	Add a user to the outstation. This is normally only done during initialization.
+	*/
+	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key) = 0;
+
+	/**
+	*	Begins a users status change operation. The master just acts as a pass through for this operation
 	*/
 	virtual void ChangeUserStatus(const secauth::UserStatusChange& userStatusChange,  const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
@@ -52,11 +58,14 @@ public:
 	*  At the moment this only support symmetric with KeyChangeMethod::AES_256_SHA256_HMAC
 	*/	
 	virtual void BeginUpdateKeyChange(const std::string& userName, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& handler) = 0;
-	
+
 	/**
-	* Add a user to the outstation. This is normally only done during initialization.
+	*	Begin the 2nd and final step in change a user's update key
+	* 
 	*/
-	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key) = 0;
+	virtual void FinishUpdateKeyChange(const secauth::FinishUpdateKeyChangeArgs& args, const opendnp3::TaskConfig& config) = 0;
+	
+	
 };
 
 }

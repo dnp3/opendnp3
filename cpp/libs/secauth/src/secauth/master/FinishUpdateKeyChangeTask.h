@@ -18,60 +18,53 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef SECAUTH_BEGIN_UPDATE_KEY_CHANGE_TASK_H
-#define SECAUTH_BEGIN_UPDATE_KEY_CHANGE_TASK_H
+#ifndef SECAUTH_FINISH_UPDATE_KEY_CHANGE_TASK_H
+#define SECAUTH_FINISH_UPDATE_KEY_CHANGE_TASK_H
 
 #include <opendnp3/master/IMasterTask.h>
 #include <opendnp3/master/TaskPriority.h>
 
 #include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/container/StaticBuffer.h>
 
-#include "secauth/AuthSizes.h"
 #include "secauth/master/IMasterApplicationSA.h"
-#include "secauth/master/BeginUpdateKeyChangeCallbackT.h"
+#include "secauth/master/FinishUpdateKeyChangeArgs.h"
 
 namespace secauth
 {
 
 	/**
-	* First step in changing a user's update key
+	* 2nd and final step in change a user's update key
 	*/
-	class BeginUpdateKeyChangeTask : public opendnp3::IMasterTask
+	class FinishUpdateKeyChangeTask : public opendnp3::IMasterTask
 	{	
 
 	public:
 
-		BeginUpdateKeyChangeTask(
-			const std::string& username,
+		FinishUpdateKeyChangeTask(
+			const FinishUpdateKeyChangeArgs& args,
 			IMasterApplicationSA& application,
 			openpal::Logger logger,			
 			const opendnp3::TaskConfig& config,
-			openpal::ICryptoProvider& crypto,
-			const BeginUpdateKeyChangeCallbackT& callback
+			openpal::ICryptoProvider& crypto			
 		);
 			
 
 		virtual bool IsAuthTask() const override final { return true; }
 
-		virtual char const* Name() const override final { return "Begin Update Key Change"; }
+		virtual char const* Name() const override final { return "Finish Update Key Change"; }
 		
 		virtual bool IsRecurring() const override final { return false; }
 
 		virtual bool BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
 
-		virtual int Priority() const override final { return opendnp3::priority::USER_STATUS_CHANGE; }		
+		virtual int Priority() const override final { return opendnp3::priority::UPDATE_KEY_CHANGE; }		
 
 		virtual bool BlocksLowerPriority() const override final { return false; }
 
 	private:	
-		const std::string m_username;
-		openpal::ICryptoProvider* m_crypto;
-		BeginUpdateKeyChangeCallbackT m_callback;
-
-		openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_challengeBuffer;
-		openpal::ReadBufferView m_challengeDataView;		
-
+		FinishUpdateKeyChangeArgs m_arguments;
+		openpal::ICryptoProvider* m_crypto;		
+		
 		virtual void Initialize() override final {}
 
 		virtual opendnp3::MasterTaskType GetTaskType() const override final { return opendnp3::MasterTaskType::USER_TASK; }
@@ -80,15 +73,7 @@ namespace secauth
 
 		virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
-		virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final;
-
-
-		/// --- helpers -----
-
-		opendnp3::IMasterTask::ResponseResult ProcessErrorResponse(const openpal::ReadBufferView& objects);
-
-		opendnp3::IMasterTask::ResponseResult ProcessDataResponse(const openpal::ReadBufferView& objects);
-		
+		virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final;		
 	};
 
 

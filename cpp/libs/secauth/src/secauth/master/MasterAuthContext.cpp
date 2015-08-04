@@ -32,6 +32,7 @@
 
 #include "secauth/master/UserStatusChangeTask.h"
 #include "secauth/master/BeginUpdateKeyChangeTask.h"
+#include "secauth/master/FinishUpdateKeyChangeTask.h"
 
 #include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/app/parsing/ObjectHeaderParser.h"
@@ -167,6 +168,12 @@ void MAuthContext::ChangeUserStatus(const UserStatusChange& userStatusChange, co
 void MAuthContext::BeginUpdateKeyChange(const std::string& username, const opendnp3::TaskConfig& config, const BeginUpdateKeyChangeCallbackT& callback)
 {
 	auto task = new BeginUpdateKeyChangeTask(username, *security.pApplicationSA, logger, config, *security.pCrypto, callback);
+	this->ScheduleAdhocTask(task);
+}
+
+void MAuthContext::FinishUpdateKeyChange(const FinishUpdateKeyChangeArgs& args, const opendnp3::TaskConfig& config)
+{
+	auto task = new FinishUpdateKeyChangeTask(args, *security.pApplicationSA, logger, config, *security.pCrypto);
 	this->ScheduleAdhocTask(task);
 }
 
