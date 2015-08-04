@@ -32,7 +32,7 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public interface IMasterApplicationSA : IMasterApplication
     {
-        
+        void PersistNewUpdateKey(string username, User user, UpdateKey key);
     }
   
 }

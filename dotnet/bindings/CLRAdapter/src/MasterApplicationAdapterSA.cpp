@@ -15,6 +15,15 @@ namespace Automatak
 				saproxy(proxy)
 			{}
 
+			void MasterApplicationAdapterSA::PersistNewUpdateKey(const std::string& username, opendnp3::User user, const secauth::UpdateKey& key)
+			{
+				saproxy->PersistNewUpdateKey(
+					Conversions::ConvertString(username),
+					User::FromNumber(user.GetId()),
+					MasterConversions::Convert(key)
+				);
+			}
+
 		}
 	}
 }

@@ -34,6 +34,12 @@ class MasterApplicatonSA : DefaultMasterApplication, IMasterApplicationSA
         Console.WriteLine(String.Format("Session key change {0} for user {1}", info.result, info.user.Number));        
     }
 
+
+    void IMasterApplicationSA.PersistNewUpdateKey(string username, User user, UpdateKey key)
+    {
+        
+    }
+   
 }
 
 namespace DotNetMasterDemo

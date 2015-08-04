@@ -40,19 +40,7 @@ namespace Automatak
 
 				virtual void AddUser(Automatak::DNP3::Interface::User^ user, Automatak::DNP3::Interface::UpdateKey^ key) sealed
 				{
-					openpal::Buffer buffer(key->key->Length);
-					for (int i = 0; i < key->key->Length; ++i)
-					{
-						buffer[i] = key->key[i];
-					}
-
- 					pMasterSA->AddUser(opendnp3::User(user->Number), secauth::UpdateKey(buffer.ToReadOnly()));
-
-					// TODO use a secure buffer class instead of having to manually zero
-					for (int i = 0; i < key->key->Length; ++i)
-					{
-						buffer[i] = 0;
-					}
+					pMasterSA->AddUser(opendnp3::User(user->Number), MasterConversions::Convert(key));
 				}
 
 				virtual Task<TaskCompletion>^ ChangeUserStatus(UserStatusChange^ statusChange, TaskConfig^ config) sealed
@@ -72,6 +60,18 @@ namespace Automatak
 					pMasterSA->BeginUpdateKeyChange(usernameNative, configNative, CallbackAdapters::Get(tcs));
 					
 					return tcs->Task;
+				}
+
+				virtual Task<TaskCompletion>^ FinishUpdateKeyChange(FinishUpdateKeyChangeArgs^ args, TaskConfig^ config) sealed
+				{
+					auto configNative = MasterConversions::Convert(config);
+					auto keyChangeArgsNative = MasterConversions::Convert(args);
+
+					auto proxy = gcnew TaskCompletionProxy(config->callback);
+
+					pMasterSA->FinishUpdateKeyChange(keyChangeArgsNative, MasterConversions::Convert(config, proxy));
+
+					return proxy->CompletionTask;
 				}
 				
 			private:

@@ -136,7 +136,7 @@ namespace Automatak
 				static opendnp3::GroupVariationID Convert(PointClass clazz);
 
 				static openpal::Buffer Convert(array<System::Byte>^ bytes);
-				static array<System::Byte>^ Convert(const openpal::ReadBufferView& bytes);
+				static array<System::Byte>^ Convert(const openpal::ReadBufferView& bytes);				
 
 
 				static User^ Convert(const opendnp3::User& user);

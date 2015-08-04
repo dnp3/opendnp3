@@ -63,5 +63,19 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <returns>An object that represents failure or succes + data</returns>        
         Task<BeginUpdateKeyChangeResult> BeginUpdateKeyChange(string username, TaskConfig config);
+
+
+        /// <summary>
+        /// 
+        /// Finish the process of changing a user's update key. This exchange does several things:
+        /// 
+        /// 1) Provides the master with a previously generated update and calculates an HMAC for the outstation
+        /// 2) Sends encrypted key data to outstation + HMAC
+        /// 3) Verifies the HMAC returned from the outstation and, if successful, adds the user to the outstation.
+        /// 4) Calls back IMasterApplicationSA with the user/key data to persist to non-volatile memory
+        /// 
+        /// </summary>        
+        /// <returns></returns>
+        Task<TaskCompletion> FinishUpdateKeyChange(FinishUpdateKeyChangeArgs args, TaskConfig config);
     }
 }

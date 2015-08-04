@@ -18,42 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_BUFFER_H
-#define OPENPAL_BUFFER_H
+#ifndef OPENPAL_SECURE_BUFFER_H
+#define OPENPAL_SECURE_BUFFER_H
 
-#include "Array.h"
-
-#include "openpal/container/WriteBufferView.h"
-#include "openpal/container/ReadBufferView.h"
-
-#include <cstdint>
+#include "openpal/container/Buffer.h"
 
 namespace openpal
 {
 
-class Buffer : public Array<uint8_t, uint32_t>
+class SecureBuffer final : public Buffer
 {
 
 public:
 
-	Buffer();
+	SecureBuffer() : Buffer() {}
 
-	Buffer(uint32_t size);
+	SecureBuffer(uint32_t size) : Buffer(size) {}
 
 	// initialize with the exact size and contents of the view
-	Buffer(const ReadBufferView& input);
+	SecureBuffer(const ReadBufferView& input) : Buffer(input) {}
 
-	virtual ~Buffer(){}	
-
-	ReadBufferView ToReadOnly() const;
-
-	WriteBufferView GetWriteBufferView();
-
-	WriteBufferView GetWriteBufferView(uint32_t maxSize);
-
-	const uint8_t* operator()() const { return buffer; }
-
-	uint8_t* operator()() { return buffer; }
+	~SecureBuffer()
+	{
+		this->GetWriteBufferView().SetAllTo(0x00);
+	}
+	
 };
 
 }

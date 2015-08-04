@@ -3,6 +3,8 @@
 
 #include "TaskCallbackAdapter.h"
 
+#include <openpal/container/SecureBuffer.h>
+
 namespace Automatak
 {
 	namespace DNP3
@@ -122,6 +124,45 @@ namespace Automatak
 			opendnp3::TaskConfig MasterConversions::Convert(TaskConfig^ config)
 			{
 				return opendnp3::TaskConfig(Convert(config->taskId), CreateTaskCallback(config->callback), opendnp3::User(config->user->Number));
+			}
+
+			secauth::UpdateKey MasterConversions::Convert(UpdateKey^ key)
+			{
+				openpal::SecureBuffer buffer(key->key->Length);
+
+				for (int i = 0; i < key->key->Length; ++i)
+				{
+					buffer[i] = key->key[i];
+				}
+
+				return secauth::UpdateKey(buffer.ToReadOnly());
+			}
+
+			UpdateKey^ MasterConversions::Convert(const secauth::UpdateKey& key)
+			{
+				auto bytes = Conversions::Convert(key.GetKeyView());
+				return gcnew UpdateKey(bytes);
+			}
+
+			secauth::FinishUpdateKeyChangeArgs MasterConversions::Convert(FinishUpdateKeyChangeArgs^ args)
+			{
+				auto nativeUserName = Conversions::ConvertString(args->username);
+				auto nativeOutstationName = Conversions::ConvertString(args->outstationName);
+
+				auto masterChallenge = Conversions::Convert(args->masterChallengeData);
+				auto outstationChallenge = Conversions::Convert(args->outstationChallengeData);
+				auto encryptedKeyData = Conversions::Convert(args->encryptedKeyData);				
+			
+				return secauth::FinishUpdateKeyChangeArgs(
+					Conversions::ConvertString(args->username),
+					Conversions::ConvertString(args->outstationName),
+					opendnp3::User(args->user->Number),
+					args->keyChangeSequenceNum,
+					masterChallenge.ToReadOnly(),
+					outstationChallenge.ToReadOnly(),
+					encryptedKeyData.ToReadOnly(),
+					Convert(args->updateKey)
+				);
 			}
 
 			opendnp3::TaskId MasterConversions::Convert(TaskId^ id)

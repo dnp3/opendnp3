@@ -25,6 +25,8 @@ namespace Automatak
 			public:
 
 				MasterApplicationAdapterSA(Automatak::DNP3::Interface::IMasterApplicationSA^ proxy);
+
+				virtual void PersistNewUpdateKey(const std::string& username, opendnp3::User user, const secauth::UpdateKey& key) sealed;
 								
 			private:				
 
