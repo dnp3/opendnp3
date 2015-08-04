@@ -110,7 +110,6 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessResponse(const ope
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
-
 	switch (gv)
 	{
 		case(GroupVariation::Group120Var7) :

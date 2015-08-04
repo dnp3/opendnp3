@@ -37,7 +37,7 @@ using namespace testlib;
 
 #define SUITE(name) "MasterUpdateKeyChangeChangeSuite - " name
 
-TEST_CASE(SUITE("well-formed response results in successful callback"))
+TEST_CASE(SUITE("well-formed response to BeginUpdateKeyChange results in successful callback"))
 {		
 	MasterParams params;
 	MasterSecAuthFixture fixture(params);
@@ -68,5 +68,51 @@ TEST_CASE(SUITE("well-formed response results in successful callback"))
 	REQUIRE(tcallback.results.front() == TaskCompletion::SUCCESS);
 }
 
+TEST_CASE(SUITE("Finish update key change is completed successfully w/ valid HMAC"))
+{
+	MasterParams params;
+	MasterSecAuthFixture fixture(params);
+	fixture.context.OnLowerLayerUp();
+	
+	MockTaskCallback tcallback;
 
+	openpal::StaticBuffer<4> mockChallenge;
+	mockChallenge.GetWriteBuffer().SetAllTo(0xFF);
+
+	openpal::StaticBuffer<6> mockKeyData;
+	mockKeyData.GetWriteBuffer().SetAllTo(0xCC);
+
+	UpdateKey updateKey(0xFF, UpdateKeyMode::AES256);
+
+	FinishUpdateKeyChangeArgs args(
+		"jim", 
+		"outstation1", 
+		User(7),
+		2,
+		mockChallenge.ToReadOnly(),
+		mockChallenge.ToReadOnly(),
+		mockKeyData.ToReadOnly(),
+		updateKey
+	);
+
+	fixture.context.FinishUpdateKeyChange(args, TaskConfig::With(tcallback));
+
+	// -------------------- 120v13 ----- len - ksq ------- user, klen - key data -------
+	std::string g120v13 = " 78 0D 5B 01 0E 00 02 00 00 00 07 00 06 00 CC CC CC CC CC CC";
+	// -------------------- 120v15 ----- len ---- hmac ---------------------------------
+	std::string g120v15 = " 78 0F 5B 01 20 00 " + hex::repeat(0xFF, 32);
+
+	auto request = "C0 20" + g120v13 + g120v15;
+	auto reply = "C0 83 00 00 " + g120v15;
+
+	
+	fixture.TestRequestAndReply(request, reply);
+
+	REQUIRE(fixture.application.completions.size() == 1);
+	auto& completion = fixture.application.completions.front();
+	REQUIRE(completion.result == TaskCompletion::SUCCESS);
+	
+	REQUIRE(fixture.application.updateKeyCallbacks.size() == 1);
+	REQUIRE(fixture.application.updateKeyCallbacks.front() == "jim");
+}
 
