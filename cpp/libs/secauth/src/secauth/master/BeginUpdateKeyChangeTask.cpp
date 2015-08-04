@@ -23,9 +23,12 @@
 
 #include <openpal/logging/LogMacros.h>
 
-#include <opendnp3/objects/Group120.h>
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/objects/Group120.h>
+#include <opendnp3/app/parsing/ObjectHeaderParser.h>
+#include <opendnp3/app/parsing/APDUParser.h>
 
+#include "secauth/SingleObjectHandlers.h"
 
 
 using namespace openpal;
@@ -80,10 +83,66 @@ IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessResponse(const open
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
+	// Do a look ahead in the ASDU and determine how to interpret it
+	GroupVariation gv = GroupVariation::UNKNOWN;
+	if (!ObjectHeaderParser::ReadFirstGroupVariation(objects, gv))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Response contains empty or malformed object data");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
 		
 
+	switch (gv)
+	{
+		case(GroupVariation::Group120Var7) :
+			return ProcessErrorResponse(objects);
+		case(GroupVariation::Group120Var11) :
+			return ProcessDataResponse(objects);
+		default:
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported object header in response: %s", GroupVariationToString(gv));
+			return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+	
+}
+
+IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessErrorResponse(const openpal::ReadBufferView& objects)
+{
+	ErrorHandler handler;
+	if (APDUParser::Parse(objects, handler, &logger) == ParseResult::OK)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Outstation returned auth error code: %s", AuthErrorCodeToString(handler.value.errorCode));
+	}
 
 	return ResponseResult::ERROR_BAD_RESPONSE;
+}
+
+IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessDataResponse(const openpal::ReadBufferView& objects)
+{
+	UpdateKeyChangeReplyHandler handler;
+	if (APDUParser::Parse(objects, handler, &logger) != ParseResult::OK)
+	{
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	if (!AuthSizes::ChallengeDataSizeWithinLimits(handler.value.challengeData.Size()))
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Outstation challenge data size not within limts: %u", handler.value.challengeData.Size());
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	
+	// make the success callback
+
+	m_callback(
+		BeginUpdateKeyChangeResult(
+			User(handler.value.userNum),
+			handler.value.keyChangeSeqNum,
+			m_challengeDataView,
+			handler.value.challengeData
+		)
+	);
+
+	return ResponseResult::OK_FINAL;
 }
 
 IMasterTask::TaskState BeginUpdateKeyChangeTask::OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now)

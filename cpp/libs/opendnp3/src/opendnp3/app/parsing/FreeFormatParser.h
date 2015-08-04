@@ -49,21 +49,9 @@ class FreeFormatParser : private openpal::StaticOnly
 		static ParseResult ParseFreeFormat(FreeFormatHandler handler, const FreeFormatHeader& header, uint16_t size, openpal::ReadBufferView& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger);
 
 		// Free format handlers
-
+		
 		template <class T>
 		static bool ParseAny(const FreeFormatHeader& header, const openpal::ReadBufferView& object, IAPDUHandler* pHandler)
-		{			
-			T value;
-			auto success = value.Read(object);
-			if (success && pHandler)
-			{
-				pHandler->OnHeader(header, value);					
-			}
-			return success;
-		}
-
-		template <class T>
-		static bool ParseAnyWithRawData(const FreeFormatHeader& header, const openpal::ReadBufferView& object, IAPDUHandler* pHandler)
 		{
 			T value;
 			auto success = value.Read(object);

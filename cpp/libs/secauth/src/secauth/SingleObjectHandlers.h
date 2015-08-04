@@ -32,9 +32,9 @@ class ChallengeHandler : public SingleValueHandler<opendnp3::Group120Var1, opend
 {
 public:
 
-	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var1& object) override final
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var1& data, const openpal::ReadBufferView&) override final
 	{
-		this->value = object;
+		this->value = data;
 		this->m_valid = true;
 		return opendnp3::IINField();
 	}
@@ -44,9 +44,9 @@ class ChallengeReplyHandler : public SingleValueHandler<opendnp3::Group120Var2, 
 {
 	public:		
 
-		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var2& object) override final
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var2& data, const openpal::ReadBufferView&) override final
 		{
-			this->value = object;
+			this->value = data;
 			this->m_valid = true;
 			return opendnp3::IINField();
 		}				
@@ -56,9 +56,9 @@ class RequestKeyStatusHandler : public SingleValueHandler<opendnp3::Group120Var4
 {
 public:
 
-	virtual opendnp3::IINField ProcessHeader(const opendnp3::CountHeader& header, const opendnp3::ICollection<opendnp3::Group120Var4>& objects) override final
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::CountHeader& header, const opendnp3::ICollection<opendnp3::Group120Var4>& datas) override final
 	{
-		this->m_valid = objects.ReadOnlyValue(this->value);
+		this->m_valid = datas.ReadOnlyValue(this->value);
 		return m_valid ? opendnp3::IINField() : opendnp3::IINBit::PARAM_ERROR;
 	}
 };
@@ -67,9 +67,9 @@ class ChangeSessionKeysHandler : public SingleValueHandler<opendnp3::Group120Var
 {
 public:
 
-	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var6& object) override final
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var6& data, const openpal::ReadBufferView&) override final
 	{
-		this->value = object;
+		this->value = data;
 		this->m_valid = true;
 		return opendnp3::IINField();
 	}
@@ -79,9 +79,21 @@ class UserStatusChangeHandler : public SingleValueHandler<opendnp3::Group120Var1
 {
 public:
 
-	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var10& object) override final
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var10& data, const openpal::ReadBufferView&) override final
 	{
-		this->value = object;
+		this->value = data;
+		this->m_valid = true;
+		return opendnp3::IINField();
+	}
+};
+
+class UpdateKeyChangeReplyHandler : public SingleValueHandler<opendnp3::Group120Var12, opendnp3::GroupVariation::Group120Var12, opendnp3::QualifierCode::UINT16_FREE_FORMAT>
+{
+public:
+
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var12& data, const openpal::ReadBufferView&) override final
+	{
+		this->value = data;
 		this->m_valid = true;
 		return opendnp3::IINField();
 	}
@@ -91,9 +103,9 @@ class ErrorHandler : public SingleValueHandler<opendnp3::Group120Var7, opendnp3:
 {
 public:
 
-	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var7& object) override final
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var7& data, const openpal::ReadBufferView&) override final
 	{
-		this->value = object;
+		this->value = data;
 		this->m_valid = true;
 		return opendnp3::IINField();
 	}

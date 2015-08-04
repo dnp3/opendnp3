@@ -24,7 +24,7 @@
 #include <opendnp3/gen/KeyChangeMethod.h>
 #include <opendnp3/gen/TaskCompletion.h>
 #include <opendnp3/app/User.h>
-#include <openpal/container/Buffer.h>
+#include <openpal/container/ReadBufferView.h>
 
 #include <string>
 
@@ -59,9 +59,9 @@ public:
 	/// The KSQ specified by the outstation
 	uint32_t keyChangeSequenceNum;
 	/// The challenge data that the master chose when it initiated the request
-	openpal::Buffer masterChallengeData;
+	openpal::ReadBufferView masterChallengeData;
 	/// The challenge data that the outstation provided in its response
-	openpal::Buffer outstationChallengeData;
+	openpal::ReadBufferView outstationChallengeData;
 };
 
 }
