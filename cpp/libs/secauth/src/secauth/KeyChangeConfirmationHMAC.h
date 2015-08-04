@@ -18,36 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_KEY_CHANGE_CONFIRMATION_HMAC_H
+#define SECAUTH_KEY_CHANGE_CONFIRMATION_HMAC_H
 
-#include "FinishUpdateKeyChangeArgs.h"
+#include <cstdint>
+
+#include "AuthSizes.h"
+
+#include <openpal/crypto/IHMACAlgo.h>
+#include <openpal/container/StaticBuffer.h>
+
+#include <opendnp3/app/User.h>
 
 namespace secauth
 {
-
-	FinishUpdateKeyChangeArgs::FinishUpdateKeyChangeArgs(
-			const std::string& username_,
-			const std::string& outstationName_,
-			opendnp3::User user_,
-			uint32_t keyChangeSequenceNumber_,
-			const openpal::ReadBufferView& masterChallengeData_,
-			const openpal::ReadBufferView& outstationChallengeData_,
-			const openpal::ReadBufferView& encryptedKeyData_,
-			const UpdateKey& updateKey_
-		) :
-		username(username_),
-		outstationName(outstationName_),
-		user(user_),
-		keyChangeSequenceNum(keyChangeSequenceNumber_),
-		masterChallengeData(masterChallengeData_),
-		outstationChallengeData(outstationChallengeData_),
-		encryptedKeyData(encryptedKeyData_),
-		updateKey(updateKey_)
+	/**
+	*  Class for calculating an HMAC as defined in 1815 pg 757
+	*/
+	class KeyChangeConfirmationHMAC
 	{
-	
-	}
-
-
+		public:
+			KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm);						
+			
+			openpal::ReadBufferView Compute(
+				const openpal::ReadBufferView& key, 
+				const std::string& name,
+				const openpal::ReadBufferView& senderNonce,
+				const openpal::ReadBufferView& receiverNonce,
+				uint32_t keyChangeSeqNum,
+				opendnp3::User user,
+				std::error_code& ec
+			);
+			
+		private:
+			
+			openpal::IHMACAlgo* m_algorithm;
+			
+			openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> m_buffer;
+	};
 }
 
-
+#endif
 

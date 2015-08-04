@@ -43,6 +43,7 @@ public:
 	
 	FinishUpdateKeyChangeArgs(
 		const std::string& username,
+		const std::string& outstationName,
 		opendnp3::User user,
 		uint32_t keyChangeSequenceNumber,
 		const openpal::ReadBufferView& masterChallengeData,
@@ -53,6 +54,9 @@ public:
 				
 	/// The UTF-8 username shared by the authority and outstation
 	std::string username;
+
+	/// Organizationally unique name of the outstation
+	std::string outstationName;
 
 	/// The user # assigned by the outstation associated w/ the UTF-8 encoded name
 	opendnp3::User user;	

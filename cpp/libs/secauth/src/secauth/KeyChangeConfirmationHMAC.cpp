@@ -19,33 +19,45 @@
  * to you under the terms of the License.
  */
 
-#include "FinishUpdateKeyChangeArgs.h"
+#include "KeyChangeConfirmationHMAC.h"
+
+#include <openpal/serialization/Format.h>
+
+using namespace openpal;
+using namespace opendnp3;
 
 namespace secauth
 {
 
-	FinishUpdateKeyChangeArgs::FinishUpdateKeyChangeArgs(
-			const std::string& username_,
-			const std::string& outstationName_,
-			opendnp3::User user_,
-			uint32_t keyChangeSequenceNumber_,
-			const openpal::ReadBufferView& masterChallengeData_,
-			const openpal::ReadBufferView& outstationChallengeData_,
-			const openpal::ReadBufferView& encryptedKeyData_,
-			const UpdateKey& updateKey_
-		) :
-		username(username_),
-		outstationName(outstationName_),
-		user(user_),
-		keyChangeSequenceNum(keyChangeSequenceNumber_),
-		masterChallengeData(masterChallengeData_),
-		outstationChallengeData(outstationChallengeData_),
-		encryptedKeyData(encryptedKeyData_),
-		updateKey(updateKey_)
-	{
-	
-	}
+	KeyChangeConfirmationHMAC::KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm) : m_algorithm(&algorithm)
+	{}
 
+	openpal::ReadBufferView KeyChangeConfirmationHMAC::Compute(
+		const openpal::ReadBufferView& key,
+		const std::string& name,
+		const openpal::ReadBufferView& senderNonce,
+		const openpal::ReadBufferView& receiverNonce,
+		uint32_t keyChangeSeqNum,
+		opendnp3::User user,
+		std::error_code& ec)
+	{
+		openpal::ReadBufferView nameView(reinterpret_cast<const uint8_t*>(name.c_str()), name.size());
+
+		openpal::StaticBuffer<6> ksqAndUser;
+
+		{
+			auto dest = ksqAndUser.GetWriteBuffer();
+			Format::Many(dest, keyChangeSeqNum, user.GetId());
+		}
+
+		auto outputDest = m_buffer.GetWriteBuffer();
+
+		return m_algorithm->Calculate(key, 
+			{nameView, senderNonce, receiverNonce, ksqAndUser.ToReadOnly()},
+			outputDest,
+			ec
+		);
+	}
 
 }
 

@@ -62,7 +62,7 @@ namespace secauth
 		virtual bool BlocksLowerPriority() const override final { return false; }
 
 	private:	
-		FinishUpdateKeyChangeArgs m_arguments;
+		FinishUpdateKeyChangeArgs m_args;
 		openpal::ICryptoProvider* m_crypto;		
 		
 		virtual void Initialize() override final {}

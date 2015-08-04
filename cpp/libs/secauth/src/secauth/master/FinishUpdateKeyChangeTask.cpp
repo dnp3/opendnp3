@@ -21,6 +21,11 @@
 
 #include "FinishUpdateKeyChangeTask.h"
 
+#include <opendnp3/LogLevels.h>
+#include <openpal/logging/LogMacros.h>
+
+#include "secauth/KeyChangeConfirmationHMAC.h"
+
 using namespace openpal;
 using namespace opendnp3;
 
@@ -36,14 +41,52 @@ FinishUpdateKeyChangeTask::FinishUpdateKeyChangeTask(
 	openpal::ICryptoProvider& crypto
 ) :
 	IMasterTask(application, MonotonicTimestamp::Min(), logger, config),
-	m_arguments(args),
+	m_args(args),
 	m_crypto(&crypto)
 {}
 			
 
 bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
-	return false;
+	KeyChangeConfirmationHMAC calc(m_crypto->GetSHA256HMAC());
+
+	std::error_code ec;
+
+	auto hmac = calc.Compute(
+		m_args.updateKey.GetKeyView(),
+		m_args.outstationName,
+		m_args.masterChallengeData.ToReadOnly(),
+		m_args.outstationChallengeData.ToReadOnly(),
+		m_args.keyChangeSequenceNum,
+		m_args.user,
+		ec
+	);
+
+	if (ec)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calculating key change hmac: %s", ec.message().c_str());
+		return false;
+	}
+
+	request.SetFunction(FunctionCode::AUTH_REQUEST);
+	request.SetControl(AppControlField::Request(seq));
+
+	auto writer = request.GetWriter();
+	
+	Group120Var13 updateKeyChange(
+		m_args.keyChangeSequenceNum,
+		m_args.user.GetId(),
+		m_args.encryptedKeyData.ToReadOnly()
+	);	
+
+	bool wroteAll = writer.WriteFreeFormat(updateKeyChange) && writer.WriteFreeFormat(Group120Var15(hmac));
+
+	if (!wroteAll)
+	{		
+		return false;
+	}
+
+	return true;
 }
 
 IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects)
