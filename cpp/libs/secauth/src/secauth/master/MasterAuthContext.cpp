@@ -173,7 +173,7 @@ void MAuthContext::BeginUpdateKeyChange(const std::string& username, const opend
 
 void MAuthContext::FinishUpdateKeyChange(const FinishUpdateKeyChangeArgs& args, const opendnp3::TaskConfig& config)
 {
-	auto task = new FinishUpdateKeyChangeTask(args, *security.pApplicationSA, logger, config, *security.pCrypto);
+	auto task = new FinishUpdateKeyChangeTask(args, *security.pApplicationSA, logger, config, security.pCrypto->GetSHA256HMAC());
 	this->ScheduleAdhocTask(task);
 }
 

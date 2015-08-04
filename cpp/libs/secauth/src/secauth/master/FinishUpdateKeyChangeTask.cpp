@@ -38,17 +38,17 @@ FinishUpdateKeyChangeTask::FinishUpdateKeyChangeTask(
 	IMasterApplicationSA& application,
 	openpal::Logger logger,
 	const opendnp3::TaskConfig& config,
-	openpal::ICryptoProvider& crypto
+	openpal::IHMACAlgo& algorithm
 ) :
 	IMasterTask(application, MonotonicTimestamp::Min(), logger, config),
 	m_args(args),
-	m_crypto(&crypto)
+	m_algorithm(&algorithm)
 {}
 			
 
 bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
-	KeyChangeConfirmationHMAC calc(m_crypto->GetSHA256HMAC());
+	KeyChangeConfirmationHMAC calc(*m_algorithm);
 
 	std::error_code ec;
 
@@ -79,9 +79,9 @@ bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uin
 		m_args.encryptedKeyData.ToReadOnly()
 	);	
 
-	bool wroteAll = writer.WriteFreeFormat(updateKeyChange) && writer.WriteFreeFormat(Group120Var15(hmac));
+	bool wroteAllHeaders = writer.WriteFreeFormat(updateKeyChange) && writer.WriteFreeFormat(Group120Var15(hmac));
 
-	if (!wroteAll)
+	if (!wroteAllHeaders)
 	{		
 		return false;
 	}

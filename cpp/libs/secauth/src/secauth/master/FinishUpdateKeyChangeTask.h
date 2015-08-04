@@ -24,7 +24,7 @@
 #include <opendnp3/master/IMasterTask.h>
 #include <opendnp3/master/TaskPriority.h>
 
-#include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/crypto/IHMACAlgo.h>
 
 #include "secauth/master/IMasterApplicationSA.h"
 #include "secauth/master/FinishUpdateKeyChangeArgs.h"
@@ -45,7 +45,7 @@ namespace secauth
 			IMasterApplicationSA& application,
 			openpal::Logger logger,			
 			const opendnp3::TaskConfig& config,
-			openpal::ICryptoProvider& crypto			
+			openpal::IHMACAlgo& algorithm
 		);
 			
 
@@ -63,7 +63,7 @@ namespace secauth
 
 	private:	
 		FinishUpdateKeyChangeArgs m_args;
-		openpal::ICryptoProvider* m_crypto;		
+		openpal::IHMACAlgo* m_algorithm;
 		
 		virtual void Initialize() override final {}
 
