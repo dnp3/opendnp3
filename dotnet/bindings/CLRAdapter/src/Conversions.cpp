@@ -169,12 +169,9 @@ namespace Automatak
 				return gcnew BinaryOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
 			}
 
-			OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& arMeas)
-			{
-				auto buffer = arMeas.ToReadOnly();
-				array<System::Byte>^ bytes = gcnew array<System::Byte>(buffer.Size());
-				for (uint32_t i = 0; i < buffer.Size(); ++i) bytes[i] = buffer[i];
-				return gcnew OctetString(bytes);
+			OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& meas)
+			{				
+				return gcnew OctetString(Conversions::Convert(meas.ToRSlice()));
 			}
 
 			TimeAndInterval^ Conversions::ConvertMeas(const opendnp3::TimeAndInterval& meas)
@@ -401,7 +398,7 @@ namespace Automatak
 				return buffer;
 			}
 
-			array<System::Byte>^ Conversions::Convert(const openpal::ReadBufferView& bytes)
+			array<System::Byte>^ Conversions::Convert(const openpal::RSlice& bytes)
 			{
 				array<System::Byte>^ ret = gcnew array<System::Byte>(bytes.Size());
 

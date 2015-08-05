@@ -34,8 +34,8 @@ namespace Automatak
 						(TaskCompletion)  rsp.result,
 						User::FromNumber(rsp.user.GetId()),
 						rsp.keyChangeSequenceNum,
-						Conversions::Convert(rsp.masterChallengeData.ToReadOnly()),
-						Conversions::Convert(rsp.outstationChallengeData.ToReadOnly())
+						Conversions::Convert(rsp.masterChallengeData.ToRSlice()),
+						Conversions::Convert(rsp.outstationChallengeData.ToRSlice())
 					);
 
 

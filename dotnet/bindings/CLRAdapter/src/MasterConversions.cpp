@@ -135,7 +135,7 @@ namespace Automatak
 					buffer[i] = key->key[i];
 				}
 
-				return secauth::UpdateKey(buffer.ToReadOnly());
+				return secauth::UpdateKey(buffer.ToRSlice());
 			}
 
 			UpdateKey^ MasterConversions::Convert(const secauth::UpdateKey& key)
@@ -158,9 +158,9 @@ namespace Automatak
 					Conversions::ConvertString(args->outstationName),
 					opendnp3::User(args->user->Number),
 					args->keyChangeSequenceNum,
-					masterChallenge.ToReadOnly(),
-					outstationChallenge.ToReadOnly(),
-					encryptedKeyData.ToReadOnly(),
+					masterChallenge.ToRSlice(),
+					outstationChallenge.ToRSlice(),
+					encryptedKeyData.ToRSlice(),
 					Convert(args->updateKey)
 				);
 			}

@@ -22,8 +22,8 @@ namespace Automatak
 					sc->userRole,
 					sc->userRoleExpDays,
 					Conversions::ConvertString(sc->userName),
-					userPublicKey.ToReadOnly(),
-					certificationData.ToReadOnly()
+					userPublicKey.ToRSlice(),
+					certificationData.ToRSlice()
 				);
 			}
 
