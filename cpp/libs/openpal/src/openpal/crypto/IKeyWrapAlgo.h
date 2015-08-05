@@ -35,9 +35,9 @@ namespace openpal
 	{
 		public:	
 
-		virtual openpal::RSlice WrapKey(const RSlice& kek, const RSlice& input, WSlice& output, std::error_code& ec) const = 0;
+		virtual openpal::RSlice WrapKey(const RSlice& kek, const RSlice& input, WSlice& dest, std::error_code& ec) const = 0;
 
-		virtual openpal::RSlice UnwrapKey(const RSlice& kek, const RSlice& input, WSlice& output, std::error_code& ec) const = 0;
+		virtual openpal::RSlice UnwrapKey(const RSlice& kek, const RSlice& input, WSlice& dest, std::error_code& ec) const = 0;
 	};
 }
 

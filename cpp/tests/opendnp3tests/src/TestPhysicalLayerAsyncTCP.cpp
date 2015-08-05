@@ -54,12 +54,12 @@ TEST_CASE(SUITE("TestStateClosed"))
 	WSlice buff(b, 100);
 	WSlice empty;
 
-	t.mTCPClient.BeginWrite(empty.ToReadOnly());
+	t.mTCPClient.BeginWrite(empty.ToRSlice());
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
 	t.mTCPClient.BeginRead(empty);
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
 
-	t.mTCPClient.BeginWrite(buff.ToReadOnly());
+	t.mTCPClient.BeginWrite(buff.ToRSlice());
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
 	t.mTCPClient.BeginRead(buff);
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
@@ -136,7 +136,7 @@ TEST_CASE(SUITE("TestSendShutdown"))
 	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
 	ByteStr bs(1024, 77); //give some interesting seed value to make sure bytes are correctly written
-	t.mClientUpper.SendDown(bs.ToReadOnly());
+	t.mClientUpper.SendDown(bs.ToRSlice());
 
 	t.mTCPClient.BeginClose();
 	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
@@ -156,14 +156,14 @@ TEST_CASE(SUITE("TwoWaySend"))
 
 	//both layers are now up and reading, start them both writing
 	ByteStr bs(SEND_SIZE, 77); //give some interesting seed value to make sure bytes are correctly written
-	t.mClientUpper.SendDown(bs.ToReadOnly());
-	t.mServerUpper.SendDown(bs.ToReadOnly());
+	t.mClientUpper.SendDown(bs.ToRSlice());
+	t.mServerUpper.SendDown(bs.ToRSlice());
 
 	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &t.mServerUpper, SEND_SIZE)));
 	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &t.mClientUpper, SEND_SIZE)));
 
-	REQUIRE(t.mClientUpper.BufferEquals(bs.ToReadOnly()));
-	REQUIRE(t.mServerUpper.BufferEquals(bs.ToReadOnly()));
+	REQUIRE(t.mClientUpper.BufferEquals(bs.ToRSlice()));
+	REQUIRE(t.mServerUpper.BufferEquals(bs.ToRSlice()));
 
 	t.mTCPServer.BeginClose(); //stop one side
 	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
@@ -250,10 +250,10 @@ TEST_CASE(SUITE("Loopback"))
 	for(size_t i = 0; i < ITERATIONS; ++i)
 	{
 		rb.Randomize();
-		upper.SendDown(rb.ToReadOnly());
+		upper.SendDown(rb.ToRSlice());
 		REQUIRE(test.ProceedUntil([&]()
 		{
-			return upper.BufferEquals(rb.ToReadOnly());
+			return upper.BufferEquals(rb.ToRSlice());
 		}));
 		REQUIRE(test.ProceedUntil([&]()
 		{

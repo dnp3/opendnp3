@@ -66,7 +66,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Index
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values)
 {
 	auto print = [](const Indexed<OctetString>& pair) {
-		std::cout << "OctetString " << " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
+		std::cout << "OctetString " << " [" << pair.index << "] : Size : " << pair.value.ToRSlice().Size() << std::endl;
 	};
 
 	values.ForeachItem(print);

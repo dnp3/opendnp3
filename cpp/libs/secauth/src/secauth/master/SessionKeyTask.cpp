@@ -119,7 +119,7 @@ bool SessionKeyTask::BuildSessionKeyRequest(opendnp3::APDURequest& request, uint
 	auto ret = request.GetWriter().WriteFreeFormat(sessionKeyChange);
 
 	// save a view of what we're transmitting as we'll need it to validate the HMAC
-	this->txKeyWrapASDU = request.ToReadOnly();
+	this->txKeyWrapASDU = request.ToRSlice();
 
 	return ret;
 }

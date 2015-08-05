@@ -38,7 +38,7 @@ public:
 	OctetData();
 	OctetData(const openpal::RSlice& input);
 
-	openpal::RSlice ToReadOnly() const;	
+	openpal::RSlice ToRSlice() const;	
 
 private:
 

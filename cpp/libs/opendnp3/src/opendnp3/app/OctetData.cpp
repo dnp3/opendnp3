@@ -33,13 +33,13 @@ OctetData::OctetData() :  size(0) {}
 OctetData::OctetData(const RSlice& input) : 
 	size(openpal::Min<uint32_t>(MAX_SIZE, input.Size()))
 {	
-	auto dest = buffer.GetWriteBuffer();
+	auto dest = buffer.GetWSlice();
 	input.Take(size).CopyTo(dest);
 }
 
-openpal::RSlice OctetData::ToReadOnly() const
+openpal::RSlice OctetData::ToRSlice() const
 {
-	return buffer.ToReadOnly(size);
+	return buffer.ToRSlice(size);
 }
 
 }

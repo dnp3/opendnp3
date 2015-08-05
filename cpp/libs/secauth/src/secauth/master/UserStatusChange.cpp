@@ -58,8 +58,8 @@ opendnp3::Group120Var10 UserStatusChange::Convert() const
 		userRole,
 		userRoleExpDays,		
 		AsSlice(userName),
-		userPublicKey.ToReadOnly(),
-		certificationData.ToReadOnly()
+		userPublicKey.ToRSlice(),
+		certificationData.ToRSlice()
 	);
 }
 

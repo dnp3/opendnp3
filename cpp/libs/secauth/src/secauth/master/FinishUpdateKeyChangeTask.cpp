@@ -63,8 +63,8 @@ bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uin
 	auto hmac = calc.Compute(
 		m_args.updateKey.GetKeyView(),
 		m_args.outstationName,
-		m_args.masterChallengeData.ToReadOnly(),
-		m_args.outstationChallengeData.ToReadOnly(),
+		m_args.masterChallengeData.ToRSlice(),
+		m_args.outstationChallengeData.ToRSlice(),
 		m_args.keyChangeSequenceNum,
 		m_args.user,
 		ec
@@ -84,7 +84,7 @@ bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uin
 	Group120Var13 updateKeyChange(
 		m_args.keyChangeSequenceNum,
 		m_args.user.GetId(),
-		m_args.encryptedKeyData.ToReadOnly()
+		m_args.encryptedKeyData.ToRSlice()
 	);	
 	
 	if (!(writer.WriteFreeFormat(updateKeyChange) && writer.WriteFreeFormat(Group120Var15(hmac))))
@@ -148,8 +148,8 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationRespon
 	auto hmac = calc.Compute(
 		m_args.updateKey.GetKeyView(),
 		m_args.username,
-		m_args.outstationChallengeData.ToReadOnly(),
-		m_args.masterChallengeData.ToReadOnly(),
+		m_args.outstationChallengeData.ToRSlice(),
+		m_args.masterChallengeData.ToRSlice(),
 		m_args.keyChangeSequenceNum,
 		m_args.user,
 		ec

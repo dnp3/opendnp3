@@ -55,7 +55,7 @@ bool UpdateKey::IsValid() const
 openpal::RSlice UpdateKey::GetKeyView() const
 {
 	const auto SIZE = (updateKeyMode == UpdateKeyMode::AES128) ? UPDATE_KEY_SIZE_128 : UPDATE_KEY_SIZE_256;	
-	return buffer.ToReadOnly().Take(SIZE);	
+	return buffer.ToRSlice().Take(SIZE);	
 }
 
 opendnp3::UpdateKeyMode UpdateKey::GetKeyMode() const
@@ -82,7 +82,7 @@ void UpdateKey::Initialize(const openpal::RSlice& key, opendnp3::UpdateKeyMode m
 {
   this->isValid = true;
   this->updateKeyMode = mode;
-  auto dest = buffer.GetWriteBuffer();
+  auto dest = buffer.GetWSlice();
   key.CopyTo(dest);  
 }
 

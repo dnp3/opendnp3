@@ -39,7 +39,7 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
 	HexSequence buffer("");
 
 	Group120Var1 output;
-	REQUIRE_FALSE(output.Read(buffer.ToReadOnly()));	
+	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));	
 }
 
 TEST_CASE(SUITE("Parser correctly interprets challenge data"))
@@ -48,7 +48,7 @@ TEST_CASE(SUITE("Parser correctly interprets challenge data"))
 	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE EF");
 
 	Group120Var1 output;
-	REQUIRE(output.Read(buffer.ToReadOnly()));
+	REQUIRE(output.Read(buffer.ToRSlice()));
 	REQUIRE(output.challengeSeqNum == 1);
 	REQUIRE(output.userNum == 7);
 	REQUIRE(output.hmacAlgo == HMACType::HMAC_SHA1_TRUNC_8);
@@ -62,7 +62,7 @@ TEST_CASE(SUITE("Parser accepts empty challenge data"))
 	HexSequence buffer("01 00 00 00 07 00 05 01");
 
 	Group120Var1 output;
-	REQUIRE(output.Read(buffer.ToReadOnly()));
+	REQUIRE(output.Read(buffer.ToRSlice()));
 	REQUIRE(output.challengeData.Size() == 0);
 }
 
@@ -72,14 +72,14 @@ TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
 	HexSequence buffer("01 00 00 00 07 00 05");
 
 	Group120Var1 output;
-	REQUIRE_FALSE(output.Read(buffer.ToReadOnly()));
+	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 {
 	HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 		
-	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
+	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSlice());
 	const uint32_t SIZE = challenge.Size();	
 
 	Buffer output(64);
@@ -88,14 +88,14 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 	auto written = output.Size() - dest.Size();
 
 	REQUIRE(written == SIZE);
-	REQUIRE(ToHex(output.ToReadOnly().Take(SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
+	REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
 }
 
 TEST_CASE(SUITE("Formatter return false when insufficient space"))
 {	
 	HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 		
-	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
+	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSlice());
 	const uint32_t SIZE = challenge.Size();
 
 	Buffer output(SIZE - 1);		

@@ -54,8 +54,8 @@ void TestLoopback(TransportLoopbackTestObject* pTest, uint32_t numBytes)
 
 	ByteStr b(numBytes, 0);
 
-	pTest->mUpperA.SendDown(b.ToReadOnly());
-	pTest->mUpperB.SendDown(b.ToReadOnly());
+	pTest->mUpperA.SendDown(b.ToRSlice());
+	pTest->mUpperB.SendDown(b.ToRSlice());
 
 	REQUIRE(pTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(pTest->mUpperA), b.Size())));
 	REQUIRE(pTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(pTest->mUpperB), b.Size())));

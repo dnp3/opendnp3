@@ -39,7 +39,7 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
 	HexSequence buffer("");
 
 	Group120Var2 output;
-	REQUIRE_FALSE(output.Read(buffer.ToReadOnly()));	
+	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));	
 }
 
 TEST_CASE(SUITE("Parser identifies data field"))
@@ -47,7 +47,7 @@ TEST_CASE(SUITE("Parser identifies data field"))
 	HexSequence buffer("04 00 00 00 09 01 AB BA");
 
 	Group120Var2 output;
-	REQUIRE(output.Read(buffer.ToReadOnly()));
+	REQUIRE(output.Read(buffer.ToRSlice()));
 	REQUIRE(output.challengeSeqNum == 4);
 	REQUIRE(output.userNum == 265);
 	REQUIRE(ToHex(output.hmacValue) == "AB BA");
@@ -58,7 +58,7 @@ TEST_CASE(SUITE("Parser allows empty data field"))
 	HexSequence buffer("04 00 00 00 09 01");
 
 	Group120Var2 output;
-	REQUIRE(output.Read(buffer.ToReadOnly()));
+	REQUIRE(output.Read(buffer.ToRSlice()));
 	REQUIRE(output.challengeSeqNum == 4);
 	REQUIRE(output.userNum == 265);
 	REQUIRE(output.hmacValue.IsEmpty());
@@ -68,5 +68,5 @@ TEST_CASE(SUITE("Parser rejects one less than min length"))
 {
 	HexSequence buffer("04 00 00 00 09");
 	Group120Var2 output;
-	REQUIRE_FALSE(output.Read(buffer.ToReadOnly()));
+	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }

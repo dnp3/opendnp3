@@ -41,22 +41,22 @@ public:
 
 	virtual ~StaticBuffer() {}
 
-	RSlice ToReadOnly() const
+	RSlice ToRSlice() const
 	{
 		return RSlice(buffer, SIZE);
 	}
 
-	RSlice ToReadOnly(uint32_t maxSize) const
+	RSlice ToRSlice(uint32_t maxSize) const
 	{
 		return RSlice(buffer, openpal::Min(SIZE, maxSize));
 	}
 
-	WSlice GetWriteBuffer()
+	WSlice GetWSlice()
 	{
 		return WSlice(buffer, SIZE);
 	}
 
-	WSlice GetWriteBuffer(uint32_t maxSize)
+	WSlice GetWSlice(uint32_t maxSize)
 	{
 		return WSlice(buffer, openpal::Min(SIZE, maxSize));
 	}

@@ -28,7 +28,7 @@ namespace secauth
 	
 	AuthorityKey::AuthorityKey(uint8_t repeat) : m_valid(true)
 	{
-		this->m_buffer.GetWriteBuffer().SetAllTo(repeat);
+		this->m_buffer.GetWSlice().SetAllTo(repeat);
 	}
 	
 	AuthorityKey::AuthorityKey(const openpal::RSlice& key) : m_valid(false)
@@ -38,7 +38,7 @@ namespace secauth
 
 	openpal::RSlice AuthorityKey::GetKeyView() const
 	{
-		return m_buffer.ToReadOnly();
+		return m_buffer.ToRSlice();
 	}
 
 	bool AuthorityKey::IsValid() const
@@ -53,7 +53,7 @@ namespace secauth
 			return false;
 		}
 		
-		auto dest = this->m_buffer.GetWriteBuffer();
+		auto dest = this->m_buffer.GetWSlice();
 		key.CopyTo(dest);
 		return true;
 	}

@@ -70,7 +70,7 @@ namespace osslcrypto
 			return RSlice();
 		}
 
-		return output.ToReadOnly().Take(outputSize);
+		return output.ToRSlice().Take(outputSize);
 	}
 }
 

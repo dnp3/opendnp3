@@ -84,7 +84,7 @@ void MockLowerLayer::SendUp(const openpal::RSlice& arBuffer)
 void MockLowerLayer::SendUp(const std::string& arHexData)
 {
 	HexSequence hs(arHexData);
-	this->SendUp(hs.ToReadOnly());
+	this->SendUp(hs.ToRSlice());
 }
 
 void MockLowerLayer::SendSuccess()

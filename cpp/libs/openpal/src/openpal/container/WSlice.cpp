@@ -68,7 +68,7 @@ WSlice WSlice::Skip(uint32_t count) const
 	return WSlice(pBuffer + num, size - num);
 }
 
-RSlice WSlice::ToReadOnly() const
+RSlice WSlice::ToRSlice() const
 {
 	return RSlice(pBuffer, size);
 }

@@ -145,7 +145,7 @@ RSlice LinkFrame::FormatConfirmedUserData(WSlice& buffer, bool aIsMaster, bool a
 	assert(dataLength > 0);
 	assert(dataLength <= LPDU_MAX_USER_DATA_SIZE);
 	auto userDataSize = CalcUserDataSize(dataLength);
-	auto ret = buffer.ToReadOnly().Take(userDataSize + LPDU_HEADER_SIZE);
+	auto ret = buffer.ToRSlice().Take(userDataSize + LPDU_HEADER_SIZE);
 	FormatHeader(buffer, dataLength, aIsMaster, aFcb, true, LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc, pLogger);
 	WriteUserData(apData, buffer, dataLength);
 	buffer.Advance(userDataSize);
@@ -157,7 +157,7 @@ RSlice LinkFrame::FormatUnconfirmedUserData(WSlice& buffer, bool aIsMaster, uint
 	assert(dataLength > 0);
 	assert(dataLength <= LPDU_MAX_USER_DATA_SIZE);
 	auto userDataSize = CalcUserDataSize(dataLength);
-	auto ret = buffer.ToReadOnly().Take(userDataSize + LPDU_HEADER_SIZE);
+	auto ret = buffer.ToRSlice().Take(userDataSize + LPDU_HEADER_SIZE);
 	FormatHeader(buffer, dataLength, aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc, pLogger);
 	WriteUserData(apData, buffer, dataLength);
 	buffer.Advance(userDataSize);
@@ -177,7 +177,7 @@ RSlice LinkFrame::FormatHeader(WSlice& buffer, uint8_t aDataLength, bool aIsMast
 		aDataLength);
 
 	header.Write(buffer);
-	auto ret = buffer.ToReadOnly().Take(10);
+	auto ret = buffer.ToRSlice().Take(10);
 	buffer.Advance(10);
 	return ret;
 }

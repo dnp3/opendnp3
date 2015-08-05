@@ -97,7 +97,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	t.phys.SignalOpenSuccess();
 
 	ByteStr buffer(292);
-	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs); // puts the router in the send state
+	t.router.BeginTransmit(buffer.ToRSlice(), &mfs); // puts the router in the send state
 
 	REQUIRE(t.phys.NumWrites() ==  1);
 	t.phys.BeginClose(); //we're both reading and writing so this doesn't trigger a callback yet
@@ -118,9 +118,9 @@ TEST_CASE(SUITE("CloseBehavior"))
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
 
-	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs);
+	t.router.BeginTransmit(buffer.ToRSlice(), &mfs);
 	REQUIRE(t.phys.NumWrites() ==  2);
-	REQUIRE(t.phys.GetBufferAsHexString() == ToHex(buffer.ToReadOnly()));
+	REQUIRE(t.phys.GetBufferAsHexString() == ToHex(buffer.ToRSlice()));
 	t.phys.SignalSendSuccess();
 	REQUIRE(t.phys.NumWrites() ==  2);
 }
@@ -181,8 +181,8 @@ TEST_CASE(SUITE("MultiContextSend"))
 	Buffer buffer(292);
 
 	t.phys.SignalOpenSuccess();
-	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs1);
-	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs2);
+	t.router.BeginTransmit(buffer.ToRSlice(), &mfs1);
+	t.router.BeginTransmit(buffer.ToRSlice(), &mfs2);
 	REQUIRE(t.phys.NumWrites() ==  1);
 	t.phys.SignalSendSuccess();
 	REQUIRE(t.phys.NumWrites() ==  2);

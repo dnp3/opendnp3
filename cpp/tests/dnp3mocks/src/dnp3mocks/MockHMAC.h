@@ -51,7 +51,7 @@ namespace opendnp3
 				{
 					output[i] = fillByte;
 				}
-				auto ret = output.ToReadOnly().Take(SIZE);
+				auto ret = output.ToRSlice().Take(SIZE);
 				output.Advance(SIZE);
 				return ret;
 			}			

@@ -44,7 +44,7 @@ namespace openpal
 		virtual openpal::RSlice Calculate(
 			const RSlice& key,
 			std::initializer_list<RSlice> data,
-			WSlice& output,
+			WSlice& dest,
 			std::error_code& ec
 		) = 0;
 

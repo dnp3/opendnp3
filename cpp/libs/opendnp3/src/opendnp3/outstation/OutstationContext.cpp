@@ -330,7 +330,7 @@ void OContext::CheckForUnsolicited()
 				build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
 				this->StartUnsolicitedConfirmTimer();
 				this->unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
-				this->BeginUnsolTx(response.ToReadOnly());
+				this->BeginUnsolTx(response.ToRSlice());
 			}
 		}
 		else
@@ -340,7 +340,7 @@ void OContext::CheckForUnsolicited()
 			build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
 			this->StartUnsolicitedConfirmTimer();
 			this->unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
-			this->BeginUnsolTx(response.ToReadOnly());
+			this->BeginUnsolTx(response.ToRSlice());
 		}
 	}
 }
@@ -375,7 +375,7 @@ OutstationSolicitedStateBase* OContext::RespondToNonReadRequest(const APDUHeader
 	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
 	auto iin = this->HandleNonReadResponse(header, objects, writer);
 	response.SetIIN(iin | this->GetResponseIIN());
-	this->BeginResponseTx(response.ToReadOnly());
+	this->BeginResponseTx(response.ToRSlice());
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
@@ -391,7 +391,7 @@ OutstationSolicitedStateBase* OContext::RespondToReadRequest(const APDUHeader& h
 	this->sol.seq.confirmNum = header.control.SEQ;
 	response.SetControl(result.second);
 	response.SetIIN(result.first | this->GetResponseIIN());
-	this->BeginResponseTx(response.ToReadOnly());
+	this->BeginResponseTx(response.ToRSlice());
 
 	if (result.second.CON)
 	{
@@ -414,7 +414,7 @@ OutstationSolicitedStateBase* OContext::ContinueMultiFragResponse(const AppSeqNu
 	this->sol.seq.confirmNum = seq;
 	response.SetControl(control);
 	response.SetIIN(this->GetResponseIIN());
-	this->BeginResponseTx(response.ToReadOnly());
+	this->BeginResponseTx(response.ToRSlice());
 
 	if (control.CON)
 	{

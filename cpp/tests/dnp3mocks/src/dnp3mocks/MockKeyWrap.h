@@ -55,7 +55,7 @@ namespace opendnp3
 			}
 
 			testlib::HexSequence hex(hexOutput);
-			auto data = hex.ToReadOnly();
+			auto data = hex.ToRSlice();
 			if (output.Size() < data.Size())
 			{
 				throw std::logic_error("MockKeyWrap: Output buffer too small");

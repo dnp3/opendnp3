@@ -40,14 +40,14 @@ namespace opendnp3
 BufferSegment::BufferSegment(uint32_t segmentSize_, const std::string& hex) :
 	segmentSize(segmentSize_),
 	hs(hex),
-	remainder(hs.ToReadOnly())
+	remainder(hs.ToRSlice())
 {
 	assert(segmentSize > 0);
 }
 
 void BufferSegment::Reset()
 {
-	remainder = hs.ToReadOnly();
+	remainder = hs.ToRSlice();
 }
 
 bool BufferSegment::HasValue() const

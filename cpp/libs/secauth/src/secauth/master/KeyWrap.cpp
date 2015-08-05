@@ -53,7 +53,7 @@ bool KeyWrapBuffer::Wrap(
 
 	StaticBuffer<AuthSizes::MAX_KEY_WRAP_BUFFER_SIZE> dataToWrap;
 
-	auto dest = dataToWrap.GetWriteBuffer(WRAPPED_DATA_SIZE_WITH_PADDING);
+	auto dest = dataToWrap.GetWSlice(WRAPPED_DATA_SIZE_WITH_PADDING);
 
 	// write the fields
 	UInt16::WriteBuffer(dest, static_cast<uint16_t>(sessionKeys.controlKey.Size()));
@@ -65,8 +65,8 @@ bool KeyWrapBuffer::Wrap(
 	dest.SetAllTo(0);
 
 	// a handle to what we just wrote
-	auto input = dataToWrap.ToReadOnly().Take(WRAPPED_DATA_SIZE_WITH_PADDING);
-	auto output = this->buffer.GetWriteBuffer();
+	auto input = dataToWrap.ToRSlice().Take(WRAPPED_DATA_SIZE_WITH_PADDING);
+	auto output = this->buffer.GetWSlice();
 
 	// save the view of the wrapped data internally
 	std::error_code ec;

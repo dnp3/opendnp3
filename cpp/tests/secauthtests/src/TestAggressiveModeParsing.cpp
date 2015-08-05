@@ -36,7 +36,7 @@ using namespace testlib;
 void TestAggMode(const std::string& data, function<void(AggModeResult result)> validate)
 {
 	HexSequence objects(data);	
-	auto result = AggressiveModeParser::IsAggressiveMode(objects.ToReadOnly(), nullptr);
+	auto result = AggressiveModeParser::IsAggressiveMode(objects.ToRSlice(), nullptr);
 	validate(result);
 }
 

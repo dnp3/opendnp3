@@ -34,7 +34,7 @@ namespace testlib
 
 std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 {
-	output << "[" << ToHex(arBuff.ToReadOnly(), true) << "]";
+	output << "[" << ToHex(arBuff.ToRSlice(), true) << "]";
 	return output;
 }
 

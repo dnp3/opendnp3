@@ -60,7 +60,7 @@ bool BeginUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint
 	request.SetFunction(FunctionCode::AUTH_REQUEST);
 	
 	std::error_code ec;
-	auto dest = m_challengeBuffer.GetWriteBuffer(4); // TODO - make this challenge size configurable
+	auto dest = m_challengeBuffer.GetWSlice(4); // TODO - make this challenge size configurable
 	this->m_challengeDataView = m_crypto->GetSecureRandom(dest, ec); 
 	if (ec)
 	{ 

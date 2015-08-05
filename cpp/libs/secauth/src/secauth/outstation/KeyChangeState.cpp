@@ -49,7 +49,7 @@ namespace secauth
 			const openpal::RSlice& hmac
 		)
 	{				
-		auto dest = challengeData.GetWriteBuffer(challengeSize);
+		auto dest = challengeData.GetWSlice(challengeSize);
 
 		std::error_code ec;
 		auto challenge = pProvider->GetSecureRandom(dest, ec);
@@ -82,7 +82,7 @@ namespace secauth
 		const uint32_t MAX_SIZE = Group120Var5::MIN_SIZE + AuthSizes::MAX_CHALLENGE_DATA_SIZE;
 		openpal::StaticBuffer<MAX_SIZE> buffer;
 		
-		auto dest = buffer.GetWriteBuffer();
+		auto dest = buffer.GetWSlice();
 		if (!copy.Write(dest))
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to write last response to buffer");
@@ -90,7 +90,7 @@ namespace secauth
 		}
 		
 		// this is what we sent
-		auto sent = buffer.ToReadOnly(copy.Size());
+		auto sent = buffer.ToRSlice(copy.Size());
 		// the unwrapped data may be larger due to padding so truncate it to the length of what we're expecting before comparing
 		auto unwrappedTrunc = unwrappedKeyStatus.Take(sent.Size());
 					

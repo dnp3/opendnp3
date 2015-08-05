@@ -66,20 +66,20 @@ std::string AppendHex(std::initializer_list<std::string> segments)
 		oss << str;
 	}
 	HexSequence output(oss.str());
-	return ToHex(output.ToReadOnly());
+	return ToHex(output.ToRSlice());
 }
 
 std::string SkipBytesHex(const std::string& input, uint32_t bytes)
 {
 	HexSequence buffer(input);
-	return ToHex(buffer.ToReadOnly().Skip(bytes));
+	return ToHex(buffer.ToRSlice().Skip(bytes));
 }
 
 std::string RepeatHex(uint8_t byte, uint16_t count)
 {
 	Buffer buffer(count);
 	buffer.GetWSlice().SetAllTo(byte);
-	return ToHex(buffer.ToReadOnly());
+	return ToHex(buffer.ToRSlice());
 }
 
 }

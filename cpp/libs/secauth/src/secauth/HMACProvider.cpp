@@ -50,7 +50,7 @@ namespace secauth
 
 	openpal::RSlice HMACProvider::Compute(const openpal::RSlice& key, std::initializer_list<openpal::RSlice> buffers, std::error_code& ec)
 	{
-		auto dest = buffer.GetWriteBuffer();		
+		auto dest = buffer.GetWSlice();		
 		auto result = pHMAC->Calculate(key, buffers, dest, ec);
 
 		if (ec)

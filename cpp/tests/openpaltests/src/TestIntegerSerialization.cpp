@@ -50,7 +50,7 @@ bool TestReadWrite(T value)
 			return false;
 		}
 
-		auto written = buffer.ToReadOnly().Skip(i);		
+		auto written = buffer.ToRSlice().Skip(i);		
 		T readValue;
 		if (!(Parse::Read(written, readValue) && value == readValue))
 		{
@@ -155,7 +155,7 @@ TEST_CASE(SUITE("ParseMany"))
 	uint32_t third = 0;	
 
 	{
-		auto input = hex.ToReadOnly();		
+		auto input = hex.ToRSlice();		
 		REQUIRE(Parse::Many(input, first, second, third));
 		REQUIRE(first == 255);
 		REQUIRE(second == 0xBAAB);
@@ -164,7 +164,7 @@ TEST_CASE(SUITE("ParseMany"))
 	}
 
 	{
-		auto input = hex.ToReadOnly().Skip(2);		
+		auto input = hex.ToRSlice().Skip(2);		
 		REQUIRE_FALSE(Parse::Many(input, first, second, third));
 	}
 }
@@ -185,7 +185,7 @@ TEST_CASE(SUITE("FormatMany"))
 		auto dest = output.GetWSlice();
 		REQUIRE(Format::Many(dest, first, second, third));
 		REQUIRE(dest.Size() == (output.Size() - SIZE));
-		auto written = ToHex(output.ToReadOnly().Take(SIZE));
+		auto written = ToHex(output.ToRSlice().Take(SIZE));
 		REQUIRE(written == "FF AB BA 01 00 00 00");
 	}
 

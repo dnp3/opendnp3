@@ -120,7 +120,7 @@ TEST_CASE(SUITE("UnconfirmedDataPassedUpFromIdleUnreset"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	ByteStr bs(250, 0);
-	t.link.UnconfirmedUserData(false, 1, 1024, bs.ToReadOnly());
+	t.link.UnconfirmedUserData(false, 1, 1024, bs.ToRSlice());
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.upper.receivedQueue.front() == bs.ToHex());
 }
@@ -130,7 +130,7 @@ TEST_CASE(SUITE("ConfirmedDataIgnoredFromIdleUnreset"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	ByteStr bs(250, 0);
-	t.link.ConfirmedUserData(false, false, 1, 1024, bs.ToReadOnly());
+	t.link.ConfirmedUserData(false, false, 1, 1024, bs.ToRSlice());
 	REQUIRE(t.upper.receivedQueue.empty());
 	REQUIRE(t.log.NextErrorCode() == DLERR_UNEXPECTED_LPDU);
 }
@@ -163,7 +163,7 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 	t.link.OnTransmitResult(true);
 
 	ByteStr b(250, 0);
-	t.link.ConfirmedUserData(false, false, 1, 1024, b.ToReadOnly());
+	t.link.ConfirmedUserData(false, false, 1, 1024, b.ToRSlice());
 	t.link.OnTransmitResult(true);
 	REQUIRE(t.numWrites ==  2);
 
@@ -207,7 +207,7 @@ TEST_CASE(SUITE("SecondaryResetConfirmedUserData"))
 	t.link.OnTransmitResult(true);
 
 	ByteStr bytes(250, 0);
-	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToReadOnly());
+	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToRSlice());
 	REQUIRE(t.numWrites ==  2);
 	t.link.OnTransmitResult(true);
 
@@ -215,7 +215,7 @@ TEST_CASE(SUITE("SecondaryResetConfirmedUserData"))
 	REQUIRE(t.log.IsLogErrorFree());
 	t.upper.receivedQueue.clear();
 
-	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToReadOnly()); //send with wrong FCB
+	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToRSlice()); //send with wrong FCB
 	REQUIRE(t.numWrites ==  3); //should still get an ACK
 	REQUIRE(t.upper.receivedQueue.empty()); //but no data
 	REQUIRE(t.log.PopUntil(flags::WARN));

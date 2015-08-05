@@ -85,9 +85,9 @@ uint32_t APDUWrapper::Size() const
 	return buffer.Size() - remaining.Size();
 }
 
-openpal::RSlice APDUWrapper::ToReadOnly() const
+openpal::RSlice APDUWrapper::ToRSlice() const
 {	
-	return buffer.ToReadOnly().Take(this->Size());
+	return buffer.ToRSlice().Take(this->Size());
 }
 
 }

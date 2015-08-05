@@ -35,7 +35,7 @@ namespace opendnp3
 	openpal::RSlice MockCryptoProvider::GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec)
 	{
 		memset(buffer, secureFill, buffer.Size());
-		auto ret = buffer.ToReadOnly();
+		auto ret = buffer.ToRSlice();
 		buffer.Advance(buffer.Size());
 		return ret;		
 	}

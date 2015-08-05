@@ -27,10 +27,10 @@ namespace secauth
 {
 	void SessionKeys::SetKeys(const SessionKeysView& view)
 	{
-		auto controlDest = controlBuffer.GetWriteBuffer();
+		auto controlDest = controlBuffer.GetWSlice();
 		controlKey = view.controlKey.CopyTo(controlDest);
 
-		auto monitorDest = monitorBuffer.GetWriteBuffer();
+		auto monitorDest = monitorBuffer.GetWSlice();
 		monitorKey = view.monitorKey.CopyTo(monitorDest);
 	}
 
@@ -41,11 +41,11 @@ namespace secauth
 
 	void SessionKeys::DeriveFrom(ISecureRandom& rs, const SessionKeySize& size, std::error_code& ec)
 	{
-		auto dest1 = controlBuffer.GetWriteBuffer(size);
-		auto dest2 = monitorBuffer.GetWriteBuffer(size);
+		auto dest1 = controlBuffer.GetWSlice(size);
+		auto dest2 = monitorBuffer.GetWSlice(size);
 
-		this->controlKey = controlBuffer.ToReadOnly(size);
-		this->monitorKey = monitorBuffer.ToReadOnly(size);
+		this->controlKey = controlBuffer.ToRSlice(size);
+		this->monitorKey = monitorBuffer.ToRSlice(size);
 
 		rs.GetSecureRandom(dest1, ec);
 		rs.GetSecureRandom(dest2, ec);				

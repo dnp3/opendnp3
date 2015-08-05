@@ -51,7 +51,7 @@ void TestComplex(const std::string& hex, ParseResult expected, size_t numCalls, 
 	MockApduHeaderHandler mock;	
 	testlib::MockLogHandler log;
 	auto logger = log.GetLogger();
-	auto result = APDUParser::Parse(buffer.ToReadOnly(), mock, &logger);
+	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, &logger);
 
 	if (result != expected)
 	{
@@ -81,35 +81,35 @@ TEST_CASE(SUITE("HeaderParsingEmptySring"))
 {
 	HexSequence buffer("");
 	APDUHeader header;
-	REQUIRE(!APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), header));
+	REQUIRE(!APDUHeaderParser::ParseRequest(buffer.ToRSlice(), header));
 }
 
 TEST_CASE(SUITE("HeaderParsesReqeust"))
 {
 	HexSequence buffer("C0 02 AB CD");
 	APDUHeader header;
-	REQUIRE(APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), header));
+	REQUIRE(APDUHeaderParser::ParseRequest(buffer.ToRSlice(), header));
 	REQUIRE(header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
 	REQUIRE(header.function == FunctionCode::WRITE);
-	REQUIRE("AB CD" ==  ToHex(buffer.ToReadOnly().Skip(2)));
+	REQUIRE("AB CD" ==  ToHex(buffer.ToRSlice().Skip(2)));
 }
 
 TEST_CASE(SUITE("ResponseLessThanFour"))
 {
 	HexSequence buffer("C0 02 01");
 	APDUResponseHeader header;
-	REQUIRE(!APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), header));
+	REQUIRE(!APDUHeaderParser::ParseResponse(buffer.ToRSlice(), header));
 }
 
 TEST_CASE(SUITE("HeaderParsesResponse"))
 {
 	HexSequence buffer("C0 02 01 02 BE EF");
 	APDUResponseHeader header;
-	REQUIRE(APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), header));
+	REQUIRE(APDUHeaderParser::ParseResponse(buffer.ToRSlice(), header));
 	REQUIRE(header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
 	REQUIRE(header.function == FunctionCode::WRITE);
 	REQUIRE(header.IIN == IINField(01, 02));
-	REQUIRE("BE EF" ==  ToHex(buffer.ToReadOnly().Skip(4)));
+	REQUIRE("BE EF" ==  ToHex(buffer.ToRSlice().Skip(4)));
 }
 
 
@@ -170,7 +170,7 @@ TEST_CASE(SUITE("Group1Var2RangeAsReadRange"))
 {
 	HexSequence buffer("01 02 00 03 05");
 	MockApduHeaderHandler mock;
-	auto result = APDUParser::Parse(buffer.ToReadOnly(), mock, nullptr, ParserSettings::NoContents());
+	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, nullptr, ParserSettings::NoContents());
 	REQUIRE((result == ParseResult::OK));
 }
 
@@ -261,7 +261,7 @@ TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
 	HexSequence buffer("6E 00 00 00 FF"); // 255 + 256
 	MockApduHeaderHandler mock;
 
-	auto result = APDUParser::Parse(buffer.ToReadOnly(), mock, nullptr);
+	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, nullptr);
 
 	REQUIRE((result == ParseResult::INVALID_OBJECT));
 	REQUIRE(0 == mock.records.size());
@@ -394,9 +394,9 @@ TEST_CASE(SUITE("OctetStringEvents"))
 	{
 		REQUIRE(2 == mock.indexPrefixedOctets.size());
 		REQUIRE(4 == mock.indexPrefixedOctets[0].index);
-		REQUIRE("hello" == BufferToString(mock.indexPrefixedOctets[0].value.ToReadOnly()));
+		REQUIRE("hello" == BufferToString(mock.indexPrefixedOctets[0].value.ToRSlice()));
 		REQUIRE(255 == mock.indexPrefixedOctets[1].index);
-		REQUIRE("world" == BufferToString(mock.indexPrefixedOctets[1].value.ToReadOnly()));
+		REQUIRE("world" == BufferToString(mock.indexPrefixedOctets[1].value.ToRSlice()));
 	});
 }
 
@@ -407,9 +407,9 @@ TEST_CASE(SUITE("OctetStringStatic"))
 	{
 		REQUIRE(2 ==  mock.rangedOctets.size());
 		REQUIRE(7 ==  mock.rangedOctets[0].index);
-		REQUIRE("hello" ==  BufferToString(mock.rangedOctets[0].value.ToReadOnly()));
+		REQUIRE("hello" ==  BufferToString(mock.rangedOctets[0].value.ToRSlice()));
 		REQUIRE(8 ==  mock.rangedOctets[1].index);
-		REQUIRE("world" ==  BufferToString(mock.rangedOctets[1].value.ToReadOnly()));
+		REQUIRE("world" ==  BufferToString(mock.rangedOctets[1].value.ToRSlice()));
 	});
 }
 

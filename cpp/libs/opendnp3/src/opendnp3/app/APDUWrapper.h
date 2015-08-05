@@ -57,7 +57,7 @@ public:
 
 	uint32_t Size() const;
 
-	openpal::RSlice ToReadOnly() const;
+	openpal::RSlice ToRSlice() const;
 
 	HeaderWriter GetWriter();
 

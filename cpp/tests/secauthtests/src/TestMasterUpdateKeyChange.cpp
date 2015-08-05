@@ -61,8 +61,8 @@ TEST_CASE(SUITE("well-formed response to BeginUpdateKeyChange results in success
 	// test all the values
 	REQUIRE(data.keyChangeSequenceNum == 1);
 	REQUIRE(data.user.GetId() == 7);
-	REQUIRE(ToHex(data.masterChallengeData.ToReadOnly()) == "AA AA AA AA");
-	REQUIRE(ToHex(data.outstationChallengeData.ToReadOnly()) == "DE AD BE EF");	
+	REQUIRE(ToHex(data.masterChallengeData.ToRSlice()) == "AA AA AA AA");
+	REQUIRE(ToHex(data.outstationChallengeData.ToRSlice()) == "DE AD BE EF");	
 
 	REQUIRE(tcallback.results.size() == 1);
 	REQUIRE(tcallback.results.front() == TaskCompletion::SUCCESS);
@@ -77,10 +77,10 @@ TEST_CASE(SUITE("Finish update key change is completed successfully w/ valid HMA
 	MockTaskCallback tcallback;
 
 	openpal::StaticBuffer<4> mockChallenge;
-	mockChallenge.GetWriteBuffer().SetAllTo(0xFF);
+	mockChallenge.GetWSlice().SetAllTo(0xFF);
 
 	openpal::StaticBuffer<6> mockKeyData;
-	mockKeyData.GetWriteBuffer().SetAllTo(0xCC);
+	mockKeyData.GetWSlice().SetAllTo(0xCC);
 
 	UpdateKey updateKey(0xFF, UpdateKeyMode::AES256);
 
@@ -89,9 +89,9 @@ TEST_CASE(SUITE("Finish update key change is completed successfully w/ valid HMA
 		"outstation1", 
 		User(7),
 		2,
-		mockChallenge.ToReadOnly(),
-		mockChallenge.ToReadOnly(),
-		mockKeyData.ToReadOnly(),
+		mockChallenge.ToRSlice(),
+		mockChallenge.ToRSlice(),
+		mockKeyData.ToRSlice(),
 		updateKey
 	);
 

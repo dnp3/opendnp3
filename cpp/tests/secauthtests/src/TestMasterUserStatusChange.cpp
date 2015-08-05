@@ -54,7 +54,7 @@ TEST_CASE(SUITE("initiates a user status change when invoked"))
 		10,
 		"BOB",
 		RSlice(),
-		certDataBuffer.ToReadOnly()
+		certDataBuffer.ToRSlice()
 	);
 
 	MockTaskCallback callback;

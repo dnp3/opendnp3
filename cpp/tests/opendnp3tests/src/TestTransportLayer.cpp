@@ -43,7 +43,7 @@ TEST_CASE(SUITE("RepeatSendsDoNotLogOrChangeStatistics"))
 	StackStatistics stats;
 	TransportTx transmitter(log.GetLogger(), &stats);
 	HexSequence hs("12 34 56");
-	transmitter.Configure(hs.ToReadOnly());
+	transmitter.Configure(hs.ToRSlice());
 	
 	auto segment1 = transmitter.GetSegment();
 	REQUIRE("C0 12 34 56" == ToHex(segment1));

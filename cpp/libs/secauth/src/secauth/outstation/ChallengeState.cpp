@@ -55,7 +55,7 @@ namespace secauth
 		response.SetFunction(FunctionCode::AUTH_RESPONSE);
 		response.SetControl(header.control);		
 		
-		auto challengeDest = challengeDataBuffer.GetWriteBuffer(CHALLENGE_SIZE);
+		auto challengeDest = challengeDataBuffer.GetWSlice(CHALLENGE_SIZE);
 		std::error_code ec;
 		auto random = crypto.GetSecureRandom(challengeDest, ec);
 		if (ec)
@@ -83,8 +83,8 @@ namespace secauth
 		}		
 
 		// copy the fragment over so we can calculate the hmac later
-		auto asdu = response.ToReadOnly();
-		auto challengeFragmentDest = this->challengeFragmentBuffer.GetWriteBuffer();
+		auto asdu = response.ToRSlice();
+		auto challengeFragmentDest = this->challengeFragmentBuffer.GetWSlice();
 		this->challengeFragment = asdu.CopyTo(challengeFragmentDest);
 
 		if (this->challengeFragment.IsEmpty())

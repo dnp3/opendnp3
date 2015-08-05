@@ -68,7 +68,7 @@ namespace osslcrypto
 		const int LEN = AES_wrap_key(&key, nullptr, output, input, input.Size());
 		if (LEN > 0)
 		{
-			auto ret = output.ToReadOnly().Take(OUTPUT_SIZE);
+			auto ret = output.ToRSlice().Take(OUTPUT_SIZE);
 			output.Advance(OUTPUT_SIZE);
 			return ret;
 		}
@@ -120,7 +120,7 @@ namespace osslcrypto
 
 		if (RESULT > 0)
 		{
-			auto ret = output.ToReadOnly().Take(OUTPUT_SIZE);
+			auto ret = output.ToRSlice().Take(OUTPUT_SIZE);
 			output.Advance(OUTPUT_SIZE);
 			return ret;
 		}		

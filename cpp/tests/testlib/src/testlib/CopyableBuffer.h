@@ -56,7 +56,7 @@ public:
 		return ! (*this == other);
 	}
 
-	openpal::RSlice ToReadOnly() const
+	openpal::RSlice ToRSlice() const
 	{
 		return openpal::RSlice(mpBuff, mSize);
 	}

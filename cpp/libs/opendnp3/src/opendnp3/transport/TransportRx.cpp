@@ -105,7 +105,7 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 
 			if(last)
 			{			
-				RSlice ret = rxBuffer.ToReadOnly().Take(numBytesRead);					
+				RSlice ret = rxBuffer.ToRSlice().Take(numBytesRead);					
 				this->ClearRxBuffer();
 				return ret;
 			}

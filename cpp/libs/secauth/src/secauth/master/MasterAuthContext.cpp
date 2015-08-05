@@ -301,7 +301,7 @@ void MAuthContext::OnAuthChallenge(const openpal::RSlice& apdu, const opendnp3::
 	challengeReply.userNum = user.GetId();
 	challengeReply.hmacValue = hmacValue;
 	
-	APDURequest reply(security.challengeReplyBuffer.GetWriteBuffer());
+	APDURequest reply(security.challengeReplyBuffer.GetWSlice());
 	reply.SetFunction(FunctionCode::AUTH_REQUEST);
 	reply.SetControl(AppControlField::Request(header.control.SEQ));
 	
@@ -311,7 +311,7 @@ void MAuthContext::OnAuthChallenge(const openpal::RSlice& apdu, const opendnp3::
 		return;
 	}
 
-	this->Transmit(reply.ToReadOnly());
+	this->Transmit(reply.ToRSlice());
 }
 
 void MAuthContext::OnAuthError(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)

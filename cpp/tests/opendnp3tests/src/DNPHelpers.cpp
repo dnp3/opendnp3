@@ -68,7 +68,7 @@ std::string RepairCRC(const std::string& arData)
 	//repair the partial block
 	if (partial_size > 0) CRC::AddCrc(ptr, partial_size - 2);
 
-	return testlib::ToHex(hs.ToReadOnly(), true);
+	return testlib::ToHex(hs.ToRSlice(), true);
 }
 
 }

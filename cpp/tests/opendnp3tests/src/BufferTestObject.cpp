@@ -83,7 +83,7 @@ std::string BufferTestObject::GetBufferAsHexString(bool spaced) const
 {
 	CopyableBuffer buffer(static_cast<uint32_t>(mBuffer.size()));
 	for(size_t i = 0; i < mBuffer.size(); ++i) buffer[i] = mBuffer[i];
-	return ToHex(buffer.ToReadOnly(), spaced);
+	return ToHex(buffer.ToRSlice(), spaced);
 }
 
 

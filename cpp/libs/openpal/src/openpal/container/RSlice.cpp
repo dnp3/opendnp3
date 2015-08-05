@@ -53,7 +53,7 @@ RSlice RSlice::CopyTo(WSlice& dest) const
 		WSlice copy(dest);
 		memcpy(dest, pBuffer, size);		
 		dest.Advance(size);
-		return copy.ToReadOnly().Take(size);
+		return copy.ToRSlice().Take(size);
 	}
 }
 

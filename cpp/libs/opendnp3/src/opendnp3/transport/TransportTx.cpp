@@ -62,7 +62,7 @@ openpal::RSlice TransportTx::GetSegment()
 	{
 		uint32_t numToSend = (apdu.Size() < MAX_TPDU_PAYLOAD) ? apdu.Size() : MAX_TPDU_PAYLOAD;
 		
-		auto dest = tpduBuffer.GetWriteBuffer().Skip(1);
+		auto dest = tpduBuffer.GetWSlice().Skip(1);
 		apdu.Take(numToSend).CopyTo(dest);		
 
 		bool fir = (tpduCount == 0);
@@ -76,7 +76,7 @@ openpal::RSlice TransportTx::GetSegment()
 			++pStatistics->numTransportTx;
 		}
 
-		auto segment = tpduBuffer.ToReadOnly(numToSend + 1);
+		auto segment = tpduBuffer.ToRSlice(numToSend + 1);
 		txSegment.Set(segment);
 		return segment;
 	}

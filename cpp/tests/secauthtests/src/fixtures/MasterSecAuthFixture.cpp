@@ -48,7 +48,7 @@ namespace opendnp3
 	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
 	{
 		HexSequence hs(hex);
-		context.OnReceive(hs.ToReadOnly());
+		context.OnReceive(hs.ToRSlice());
 	}
 
 	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, UpdateKeyMode mode, uint8_t keyRepeat)

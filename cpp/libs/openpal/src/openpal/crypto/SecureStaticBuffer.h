@@ -42,12 +42,12 @@ public:
 	
 	SecureStaticBuffer(uint8_t initialValue)
 	{
-		this->GetWriteBuffer().SetAllTo(initialValue);
+		this->GetWSlice().SetAllTo(initialValue);
 	}
 
 	~SecureStaticBuffer() 
 	{
-		this->GetWriteBuffer().SetAllTo(0x00);
+		this->GetWSlice().SetAllTo(0x00);
 	}
 };
 

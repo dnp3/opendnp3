@@ -37,7 +37,7 @@ namespace secauth
 		UnwrappedKeyData& output,
 		openpal::Logger* pLogger)
 	{		
-		auto dest = buffer.GetWriteBuffer();
+		auto dest = buffer.GetWSlice();
 
 		std::error_code ec;
 		auto unwrapped = algo.UnwrapKey(updateKey, inputData, dest, ec);

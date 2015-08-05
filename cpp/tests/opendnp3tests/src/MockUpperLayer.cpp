@@ -89,7 +89,7 @@ void MockUpperLayer::SendDown(const openpal::RSlice& buffer)
 void MockUpperLayer::SendDown(const std::string& hex)
 {
 	HexSequence hs(hex);
-	this->SendDown(hs.ToReadOnly());
+	this->SendDown(hs.ToRSlice());
 }
 
 }

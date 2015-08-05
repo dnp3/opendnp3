@@ -51,7 +51,7 @@ public:
 
 	WSlice Skip(uint32_t count) const;
 
-	RSlice ToReadOnly() const;
+	RSlice ToRSlice() const;
 
 	operator uint8_t* ()
 	{

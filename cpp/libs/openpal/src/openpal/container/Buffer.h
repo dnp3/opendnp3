@@ -45,7 +45,7 @@ public:
 
 	virtual ~Buffer(){}	
 
-	RSlice ToReadOnly() const;
+	RSlice ToRSlice() const;
 
 	WSlice GetWSlice();
 

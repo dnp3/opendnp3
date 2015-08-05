@@ -329,7 +329,7 @@ namespace opendnp3
 		APDUWrapper wrapper(this->txBuffer.GetWSlice());
 		wrapper.SetFunction(confirm.function);
 		wrapper.SetControl(confirm.control);
-		this->Transmit(wrapper.ToReadOnly());	
+		this->Transmit(wrapper.ToRSlice());	
 		this->confirmQueue.pop_front();
 		return true;
 	}
@@ -495,7 +495,7 @@ namespace opendnp3
 		}
 		
 		this->StartResponseTimer();
-		auto apdu = request.ToReadOnly();
+		auto apdu = request.ToRSlice();
 		this->RecordLastRequest(apdu);
 		this->Transmit(apdu);
 

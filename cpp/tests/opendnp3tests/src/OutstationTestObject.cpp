@@ -63,7 +63,7 @@ uint32_t OutstationTestObject::OnSendResult(bool isSuccess)
 uint32_t OutstationTestObject::SendToOutstation(const std::string& hex)
 {
 	HexSequence hs(hex);
-	context.OnReceive(hs.ToReadOnly());
+	context.OnReceive(hs.ToRSlice());
 	return exe.RunMany();
 }
 

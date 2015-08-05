@@ -39,7 +39,7 @@ using namespace testlib;
 void TestAggModeHMAC(const std::string& data, uint32_t hmacSize, function<void(AggModeHMACResult result)> validate)
 {
 	HexSequence objects(data);	
-	auto result = AggressiveModeParser::ParseHMAC(objects.ToReadOnly(), hmacSize, nullptr);
+	auto result = AggressiveModeParser::ParseHMAC(objects.ToRSlice(), hmacSize, nullptr);
 	validate(result);
 }
 

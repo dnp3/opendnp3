@@ -39,7 +39,7 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
 	HexSequence buffer("");
 
 	Group120Var5 output;
-	REQUIRE_FALSE(output.Read(buffer.ToReadOnly()));
+	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Parser accepts empty challenge data and hmac"))
@@ -48,7 +48,7 @@ TEST_CASE(SUITE("Parser accepts empty challenge data and hmac"))
 	HexSequence buffer("01 00 00 00 07 00 02 01 04 00 00");
 
 	Group120Var5 output;
-	REQUIRE(output.Read(buffer.ToReadOnly()));
+	REQUIRE(output.Read(buffer.ToRSlice()));
 	REQUIRE(output.keyChangeSeqNum == 1);
 	REQUIRE(output.userNum == 7);
 	REQUIRE(output.keyWrapAlgo == KeyWrapAlgorithm::AES_256);
@@ -64,7 +64,7 @@ TEST_CASE(SUITE("Parser correctly interprets challenge data and hmac value"))
 	HexSequence buffer("01 00 00 00 07 00 02 01 04 03 00 DE AD BE EF");
 
 	Group120Var5 output;
-	REQUIRE(output.Read(buffer.ToReadOnly()));
+	REQUIRE(output.Read(buffer.ToRSlice()));
 	REQUIRE(ToHex(output.challengeData) == "DE AD BE");
 	REQUIRE(ToHex(output.hmacValue) == "EF");
 }
@@ -75,7 +75,7 @@ TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
 	HexSequence buffer("01 00 00 00 07 00 02 01 04 00");
 
 	Group120Var5 output;
-	REQUIRE_FALSE(output.Read(buffer.ToReadOnly()));
+	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Parser rejects if specified challenge data is missing"))
@@ -84,7 +84,7 @@ TEST_CASE(SUITE("Parser rejects if specified challenge data is missing"))
 	HexSequence buffer("01 00 00 00 07 00 02 01 04 01 00");
 
 	Group120Var5 output;
-	REQUIRE_FALSE(output.Read(buffer.ToReadOnly()));
+	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
@@ -104,7 +104,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 	uint32_t numWritten = output.Size() - dest.Size();
 
 	REQUIRE(numWritten == SIZE);	
-	REQUIRE(ToHex(output.ToReadOnly().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");	
+	REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");	
 }
 
 TEST_CASE(SUITE("Formatter rejects when one less than required space"))

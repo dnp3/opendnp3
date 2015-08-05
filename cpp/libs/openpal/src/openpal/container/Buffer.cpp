@@ -35,7 +35,7 @@ namespace openpal
 		input.CopyTo(dest);
 	}
 
-	RSlice Buffer::ToReadOnly() const
+	RSlice Buffer::ToRSlice() const
 	{
 		return RSlice(this->buffer, this->size);
 	}

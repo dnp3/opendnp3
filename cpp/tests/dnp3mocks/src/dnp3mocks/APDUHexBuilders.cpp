@@ -45,7 +45,7 @@ namespace hex
 	{
 		Buffer buffer(count);
 		buffer.GetWSlice().SetAllTo(value);
-		return ToHex(buffer.ToReadOnly());
+		return ToHex(buffer.ToRSlice());
 	}
 
 	std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
@@ -53,7 +53,7 @@ namespace hex
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest request(buffer.GetWSlice());
 		opendnp3::build::ClassRequest(request, fc, field, seq);
-		return ToHex(request.ToReadOnly());
+		return ToHex(request.ToRSlice());
 	}
 
 	std::string IntegrityPoll(uint8_t seq, const ClassField& field)
@@ -76,7 +76,7 @@ namespace hex
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest request(buffer.GetWSlice());
 		build::ClearRestartIIN(request, seq);
-		return ToHex(request.ToReadOnly());
+		return ToHex(request.ToRSlice());
 	}
 
 	std::string MeasureDelay(uint8_t seq)
@@ -84,7 +84,7 @@ namespace hex
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest request(buffer.GetWSlice());
 		build::MeasureDelay(request, seq);
-		return ToHex(request.ToReadOnly());
+		return ToHex(request.ToRSlice());
 	}
 
 	std::string Control(opendnp3::FunctionCode code, uint8_t seq, const opendnp3::ControlRelayOutputBlock& crob, uint16_t index)
@@ -99,7 +99,7 @@ namespace hex
 		writer.WriteSingleIndexedValue<UInt16, ControlRelayOutputBlock>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group12Var1::Inst(), crob, index);
 
 		
-		return ToHex(request.ToReadOnly());
+		return ToHex(request.ToRSlice());
 	}
 
 	std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
@@ -109,7 +109,7 @@ namespace hex
 		response.SetFunction(FunctionCode::RESPONSE);
 		response.SetControl(AppControlField(true, true, false, false, seq));
 		response.SetIIN(iin);
-		return ToHex(response.ToReadOnly());
+		return ToHex(response.ToRSlice());
 	}
 
 	std::string NullUnsolicited(uint8_t seq, const IINField& iin)
@@ -117,7 +117,7 @@ namespace hex
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDUResponse response(buffer.GetWSlice());
 		build::NullUnsolicited(response, seq, iin);
-		return ToHex(response.ToReadOnly());
+		return ToHex(response.ToRSlice());
 	}	
 
 	std::string SolicitedConfirm(uint8_t seq)
@@ -136,7 +136,7 @@ namespace hex
 		APDURequest apdu(buffer.GetWSlice());
 		apdu.SetControl(AppControlField(true, true, false, unsol, seq));
 		apdu.SetFunction(FunctionCode::CONFIRM);
-		return ToHex(apdu.ToReadOnly());
+		return ToHex(apdu.ToRSlice());
 	}
 
 	// ----------- sec auth -------------
@@ -150,7 +150,7 @@ namespace hex
 		Group120Var4 status;
 		status.userNum = user;		
 		apdu.GetWriter().WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, status);
-		return ToHex(apdu.ToReadOnly());
+		return ToHex(apdu.ToRSlice());
 	}
 
 	std::string AuthErrorResponse(
@@ -178,12 +178,12 @@ namespace hex
 			assocId,
 			code,
 			timestamp,
-			hexErrorTextBuff.ToReadOnly()
+			hexErrorTextBuff.ToRSlice()
 			);
 
 		apdu.GetWriter().WriteFreeFormat(error);
 
-		return ToHex(apdu.ToReadOnly());
+		return ToHex(apdu.ToRSlice());
 	}
 
 	std::string ChallengeResponse(
@@ -210,12 +210,12 @@ namespace hex
 			user,
 			hmacType,
 			reason,
-			challengeBuff.ToReadOnly()
+			challengeBuff.ToRSlice()
 		);
 
 		apdu.GetWriter().WriteFreeFormat(rsp);
 
-		return ToHex(apdu.ToReadOnly());
+		return ToHex(apdu.ToRSlice());
 	}
 
 	std::string ChallengeReply(
@@ -233,11 +233,11 @@ namespace hex
 
 		HexSequence hmacBuff(hmacHex);
 
-		Group120Var2 rsp(challengeSeqNum, userNum, hmacBuff.ToReadOnly());
+		Group120Var2 rsp(challengeSeqNum, userNum, hmacBuff.ToRSlice());
 			
 		apdu.GetWriter().WriteFreeFormat(rsp);
 
-		return ToHex(apdu.ToReadOnly());
+		return ToHex(apdu.ToRSlice());
 	}
 
 	std::string KeyStatusResponse(
@@ -267,12 +267,12 @@ namespace hex
 		rsp.keyWrapAlgo = keyWrap;
 		rsp.keyStatus = status;
 		rsp.hmacAlgo = hmacType;
-		rsp.challengeData = challengeBuff.ToReadOnly();
-		rsp.hmacValue = hmacBuff.ToReadOnly();
+		rsp.challengeData = challengeBuff.ToRSlice();
+		rsp.hmacValue = hmacBuff.ToRSlice();
 		
 		apdu.GetWriter().WriteFreeFormat(rsp);
 
-		return ToHex(apdu.ToReadOnly());
+		return ToHex(apdu.ToRSlice());
 	}
 
 	std::string KeyChangeRequest(
@@ -292,11 +292,11 @@ namespace hex
 		Group120Var6 rsp;
 		rsp.keyChangeSeqNum = ksq;
 		rsp.userNum = user;
-		rsp.keyWrapData = keyBuffer.ToReadOnly();		
+		rsp.keyWrapData = keyBuffer.ToRSlice();		
 
 		apdu.GetWriter().WriteFreeFormat(rsp);
 
-		return ToHex(apdu.ToReadOnly());
+		return ToHex(apdu.ToRSlice());
 	}
 
 	std::string UserStatusChangeRequest(
@@ -327,14 +327,14 @@ namespace hex
 			userRole,
 			userRoleExpDays,
 			name,
-			userPublicKeyBuffer.ToReadOnly(),
-			certificationDataBuffer.ToReadOnly()
+			userPublicKeyBuffer.ToRSlice(),
+			certificationDataBuffer.ToRSlice()
 		);
 
 		
 		apdu.GetWriter().WriteFreeFormat(statusChange);
 
-		return ToHex(apdu.ToReadOnly());
+		return ToHex(apdu.ToRSlice());
 	}
 
 
@@ -346,13 +346,13 @@ namespace hex
 	{
 		Buffer key(keyLengthBytes);
 		key.GetWSlice().SetAllTo(keyRepeatValue);			
-		auto keyHex = ToHex(key.ToReadOnly());
+		auto keyHex = ToHex(key.ToRSlice());
 		HexSequence statusBuffer(keyStatusMsg);
 
 		Buffer lengthBuff(2);
 		auto lenDest = lengthBuff.GetWSlice();
 		UInt16::WriteBuffer(lenDest, keyLengthBytes);
-		auto lengthHex = ToHex(lengthBuff.ToReadOnly());
+		auto lengthHex = ToHex(lengthBuff.ToRSlice());
 		 
 		return AppendHex({lengthHex, keyHex, keyHex, keyStatusMsg});
 	}	

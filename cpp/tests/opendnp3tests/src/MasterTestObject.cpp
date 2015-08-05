@@ -51,7 +51,7 @@ MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) 
 void MasterTestObject::SendToMaster(const std::string& hex)
 {
 	HexSequence hs(hex);
-	context.OnReceive(hs.ToReadOnly());
+	context.OnReceive(hs.ToRSlice());
 }
 	
 }

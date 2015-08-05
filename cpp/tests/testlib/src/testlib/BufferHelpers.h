@@ -49,7 +49,7 @@ public:
 
 	operator openpal::RSlice()
 	{
-		return this->ToReadOnly();
+		return this->ToRSlice();
 	}
 
 private:

@@ -63,7 +63,7 @@ bool ByteStr::operator==(const ByteStr& arRHS) const
 
 std::string ByteStr::ToHex() const
 {
-	return testlib::ToHex(ToReadOnly());
+	return testlib::ToHex(ToRSlice());
 }
 
 HexSequence::HexSequence( const std::string& aSequence) :

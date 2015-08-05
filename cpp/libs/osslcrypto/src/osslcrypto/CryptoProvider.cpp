@@ -93,7 +93,7 @@ openpal::RSlice CryptoProvider::GetSecureRandom(WSlice& buffer, std::error_code&
 	}
 
 
-	auto ret = buffer.ToReadOnly();
+	auto ret = buffer.ToRSlice();
 	buffer.Advance(buffer.Size());
 	return ret;	
 }

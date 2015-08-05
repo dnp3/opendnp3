@@ -309,7 +309,7 @@ OAuthContext::APDUResult OAuthContext::ProcessRequestKeyStatus(const openpal::RS
 		return APDUResult::DISCARDED;
 	}
 	
-	this->BeginTx(response.ToReadOnly());
+	this->BeginTx(response.ToRSlice());
 	return APDUResult::PROCESSED;
 }
 
@@ -403,7 +403,7 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 	}
 
 
-	this->BeginTx(response.ToReadOnly());
+	this->BeginTx(response.ToRSlice());
 	return APDUResult::PROCESSED;
 }
 
@@ -502,7 +502,7 @@ OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Add(const opendnp
 	);
 
 	auto response = this->StartAuthResponse(header.control.SEQ);	
-	this->BeginTx(response.ToReadOnly());
+	this->BeginTx(response.ToRSlice());
 	return APDUResult::PROCESSED;
 }
 
@@ -560,7 +560,7 @@ bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& head
 	openpal::StaticBuffer<1 + 4 + 2 + 2 + 2> fields;
 
 	{
-		auto dest = fields.GetWriteBuffer();
+		auto dest = fields.GetWSlice();
 		Format::Many(
 			dest,
 			UserOperationToType(change.userOperation), 		// 1
@@ -575,8 +575,8 @@ bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& head
 	openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> hmacBuffer;
 
 	std::error_code ec;
-	auto dest = hmacBuffer.GetWriteBuffer();
-	auto output = this->security.pCrypto->GetSHA256HMAC().Calculate(key, { fields.ToReadOnly(), change.userName }, dest, ec);
+	auto dest = hmacBuffer.GetWSlice();
+	auto output = this->security.pCrypto->GetSHA256HMAC().Calculate(key, { fields.ToRSlice(), change.userName }, dest, ec);
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating HMAC value: %s", ec.message().c_str());
@@ -613,7 +613,7 @@ bool OAuthContext::TransmitChallenge(const openpal::RSlice& apdu, const opendnp3
 	auto success = security.challenge.WriteChallenge(apdu, header, response, security.hmac.GetType(), *security.pCrypto, &this->logger);
 	if (success)
 	{
-		this->BeginTx(response.ToReadOnly());
+		this->BeginTx(response.ToRSlice());
 	}
 	return success;
 	
@@ -653,7 +653,7 @@ OAuthContext::APDUResult OAuthContext::TryRespondWithAuthError(
 	this->Increment(SecurityStatIndex::ERROR_MESSAGES_TX);
 	
 
-	this->BeginTx(response.ToReadOnly());
+	this->BeginTx(response.ToRSlice());
 	return APDUResult::PROCESSED;
 }
 

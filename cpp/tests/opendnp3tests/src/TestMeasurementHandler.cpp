@@ -120,7 +120,7 @@ ParseResult TestObjectHeaders(const std::string& objects, ParseResult expectedRe
 
 	HexSequence hex(objects);
 
-	auto result = MeasurementHandler::ProcessMeasurements(hex.ToReadOnly(), logger, &soe);
+	auto result = MeasurementHandler::ProcessMeasurements(hex.ToRSlice(), logger, &soe);
 	REQUIRE(result == expectedResult);
 	verify(soe);
 	return result;

@@ -264,7 +264,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 	// Group 111 (0x6F) Variation (length), 1 byte count / 1 byte index (4), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
 	t.SendToMaster("D0 82 00 00 6F 05 17 01 04 68 65 6C 6C 6F");	
 
-	REQUIRE("68 65 6C 6C 6F" ==  ToHex(t.meas.octetStringSOE[4].meas.ToReadOnly()));
+	REQUIRE("68 65 6C 6C 6F" ==  ToHex(t.meas.octetStringSOE[4].meas.ToRSlice()));
 }
 
 TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
@@ -282,7 +282,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 	// Group 110 (0x6E) Variation(length), start = 3, stop = 3
 	t.SendToMaster("C0 81 00 00 6E 01 00 03 03 AA");
 
-	REQUIRE("AA" ==  ToHex(t.meas.octetStringSOE[3].meas.ToReadOnly()));
+	REQUIRE("AA" ==  ToHex(t.meas.octetStringSOE[3].meas.ToRSlice()));
 }
 
 TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))

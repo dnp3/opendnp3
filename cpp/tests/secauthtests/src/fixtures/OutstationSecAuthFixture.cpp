@@ -70,7 +70,7 @@ namespace opendnp3
 	uint32_t OutstationSecAuthFixture::SendToOutstation(const std::string& hex)
 	{
 		testlib::HexSequence hs(hex);
-		context.OnReceive(hs.ToReadOnly());
+		context.OnReceive(hs.ToRSlice());
 		return exe.RunMany();
 	}
 

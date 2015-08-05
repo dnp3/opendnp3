@@ -46,14 +46,14 @@ namespace secauth
 		openpal::StaticBuffer<6> ksqAndUser;
 
 		{
-			auto dest = ksqAndUser.GetWriteBuffer();
+			auto dest = ksqAndUser.GetWSlice();
 			Format::Many(dest, keyChangeSeqNum, user.GetId());
 		}
 
-		auto outputDest = m_buffer.GetWriteBuffer();
+		auto outputDest = m_buffer.GetWSlice();
 
 		return m_algorithm->Calculate(key, 
-			{ AsSlice(name), senderNonce, receiverNonce, ksqAndUser.ToReadOnly()},
+			{ AsSlice(name), senderNonce, receiverNonce, ksqAndUser.ToRSlice()},
 			outputDest,
 			ec
 		);
