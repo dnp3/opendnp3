@@ -36,9 +36,11 @@
 
 
 #include "secauth/AggressiveModeParser.h"
-#include "secauth/outstation/KeyUnwrap.h"
+#include "secauth/outstation/SessionKeyUnwrapBuffer.h"
 #include "secauth/SingleObjectHandlers.h"
+
 #include "secauth/outstation/OutstationErrorCodes.h"
+#include "secauth/outstation/FinishUpdateKeyChangeHandler.h"
 
 #include "secauth/StringConversions.h"
 #include "secauth/Crypto.h"
@@ -196,6 +198,8 @@ OAuthContext::APDUResult OAuthContext::ProcessAuthRequest(const openpal::RSlice&
 			return this->ProcessUserStatusChange(apdu, header, objects);
 		case(GroupVariation::Group120Var11) :
 			return this->ProcessBeginUpdateKeyChange(apdu, header, objects);
+		case(GroupVariation::Group120Var13) :
+			return this->ProcessFinishUpdateKeyChange(apdu, header, objects);
 		default:
 			// this function/object combination not supported
 			return APDUResult::DISCARDED;
@@ -351,19 +355,17 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring session key change request for unknown user %u", user.GetId());
 		return TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
 	}
+	
+	SessionKeyUnwrapBuffer buffer;
 
-	UnwrappedKeyData unwrapped;
-	KeyUnwrapBuffer buffer;
-
-	auto unwrapSuccess = buffer.Unwrap(
+	auto unwrapped = buffer.Unwrap(
 		GetKeyWrapAlgo(*security.pCrypto, updateKeyType),
 		updateKey,
-		handler.value.keyWrapData,
-		unwrapped,
+		handler.value.keyWrapData,		
 		&this->logger
 	);
 
-	if (!unwrapSuccess)
+	if (!unwrapped.success)
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Failed to unwrap key data");
 		return this->TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);		
@@ -445,6 +447,36 @@ OAuthContext::APDUResult OAuthContext::ProcessBeginUpdateKeyChange(const openpal
 	}
 
 	this->BeginTx(response.ToRSlice());
+
+	return APDUResult::PROCESSED;
+}
+
+OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpal::RSlice& fragment, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)
+{
+	FinishUpdateKeyChangeHandler handler;
+	auto result = APDUParser::Parse(objects, handler, this->logger);
+	if (!(result == ParseResult::OK && handler.GetResult() != FinishUpdateKeyChangeHandler::Result::NONE))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Discarding bad final update key change request");
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	if (handler.GetResult() != FinishUpdateKeyChangeHandler::Result::HMAC)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Digital signature key change method not supported");
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	// TODO - change the freaking standard to authenticate prior to decryption =(
+
+	// first step is to try and decrypt the data
+	//handler.keyChange.encryptedUpdateKey
+	
+
+
+
 
 	return APDUResult::PROCESSED;
 }

@@ -18,13 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_KEYUNWRAP_H
-#define SECAUTH_KEYUNWRAP_H
+#ifndef SECAUTH_SESSION_KEYUNWRAP_BUFFER_H
+#define SECAUTH_SESSION_KEYUNWRAP_BUFFER_H
 
 #include <openpal/logging/Logger.h>
 #include <openpal/crypto/IKeyWrapAlgo.h>
 #include <openpal/container/RSlice.h>
-#include <openpal/container/StaticBuffer.h>
+#include <openpal/crypto/SecureStaticBuffer.h>
 #include <openpal/serialization/Serialization.h>
 
 #include <opendnp3/objects/Group120.h>
@@ -35,29 +35,36 @@
 
 
 namespace secauth
-{
-
-	class UnwrappedKeyData
-	{
-	public:
-		SessionKeysView keys;
-		openpal::RSlice keyStatusObject;			
-	};
-
-	class KeyUnwrapBuffer
+{	
+	class SessionKeyUnwrapBuffer
 	{
 	public:
 
-		bool Unwrap(
+		class Result
+		{
+		public:
+
+			static Result Failure() { return Result(); }
+			
+			Result(const SessionKeysView& keys, const openpal::RSlice& keyStatusObject);
+
+			bool success;
+			SessionKeysView keys;
+			openpal::RSlice keyStatusObject;
+
+		private:
+			Result();
+		};
+
+		Result Unwrap(
 			openpal::IKeyWrapAlgo& algo,
 			openpal::RSlice updateKey,
 			openpal::RSlice inputData,			
-			UnwrappedKeyData& output, 
 			openpal::Logger* pLogger);
 
 	private:
 		
-		openpal::StaticBuffer<AuthSizes::MAX_KEY_WRAP_BUFFER_SIZE> buffer;		
+		openpal::SecureStaticBuffer<AuthSizes::MAX_KEY_WRAP_BUFFER_SIZE> buffer;		
 	};
 
 }

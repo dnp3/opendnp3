@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "KeyUnwrap.h"
+#include "SessionKeyUnwrapBuffer.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
@@ -30,11 +30,19 @@ using namespace openpal;
 
 namespace secauth
 {
-	bool KeyUnwrapBuffer::Unwrap(
+	SessionKeyUnwrapBuffer::Result::Result() : success(false)
+	{}
+
+	SessionKeyUnwrapBuffer::Result::Result(const SessionKeysView& keys_, const openpal::RSlice& keyStatusObject_) :
+		success(true),
+		keys(keys_),
+		keyStatusObject(keyStatusObject_)
+	{}
+
+	SessionKeyUnwrapBuffer::Result SessionKeyUnwrapBuffer::Unwrap(
 		openpal::IKeyWrapAlgo& algo,
 		openpal::RSlice updateKey,
-		openpal::RSlice inputData,
-		UnwrappedKeyData& output,
+		openpal::RSlice inputData,		
 		openpal::Logger* pLogger)
 	{		
 		auto dest = buffer.GetWSlice();
@@ -45,13 +53,13 @@ namespace secauth
 		if (ec)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, ec.message().c_str());
-			return false;
+			return Result::Failure();
 		}
 
 		if (unwrapped.Size() < UInt16::SIZE)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough data for key length");
-			return false;
+			return Result::Failure();
 		}
 
 		uint16_t keyLength = UInt16::ReadBuffer(unwrapped);
@@ -59,7 +67,7 @@ namespace secauth
 		if (!AuthSizes::SessionKeySizeWithinLimits(keyLength))
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Session key size of %u not within limits");
-			return false;
+			return Result::Failure();
 		}
 
 		const uint32_t REQUIRED_KEY_SIZE = 2 * keyLength;
@@ -67,7 +75,7 @@ namespace secauth
 		if (unwrapped.Size() < REQUIRED_KEY_SIZE)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough data for session keys");
-			return false;
+			return Result::Failure();
 		}
 
 		auto controlKey = unwrapped.Take(keyLength);
@@ -76,11 +84,8 @@ namespace secauth
 		auto monitorKey = unwrapped.Take(keyLength);
 		unwrapped.Advance(keyLength);
 
-		output.keys = SessionKeysView(controlKey, monitorKey);
-		
 		// anything left over is the key status message
-		output.keyStatusObject = unwrapped;
-		return true;
+		return Result(SessionKeysView(controlKey, monitorKey), unwrapped);		
 	}
 }
 
