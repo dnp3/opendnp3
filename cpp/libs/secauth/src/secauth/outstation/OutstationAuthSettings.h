@@ -39,8 +39,10 @@ struct OutstationAuthSettings
 	
 	/// response timeout period for challenges
 	openpal::TimeDuration challengeTimeout;	
-	/// the number of bytes in a challenge
-	uint16_t challengeSize;			
+	/// the number of bytes in a standard session challenge
+	uint16_t challengeSize;	
+	/// the number of bytes in a session key change response challenge
+	uint16_t sessionKeyChangeChallengeSize;
 	/// the association Id reported in tranmissions
 	uint16_t assocId;					
 	/// The hmac mode to request when challenging
