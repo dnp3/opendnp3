@@ -146,13 +146,14 @@ TEST_CASE(SUITE("Replies with g120v12 if the user exists and assigns a user #"))
 	fixture.context.ConfigureAuthority(2, AuthorityKey(0xFF));
 	fixture.LowerLayerUp();
 
-	auto BOB = "Bob";
+	auto BOB = "bob";
+	const uint16_t EXPECTED_USER_NUM = 2; // the first un-used Id > 1
 
 	AppSeqNum seq;
 	fixture.TestAddUserStatusChange(BOB, seq, 4);
 
 	auto request = hex::BeginUpdateKeyChangeRequest(seq, KeyChangeMethod::AES_256_SHA256_HMAC, BOB, hex::repeat(0xFF, 4));
-	auto response = hex::BeginUpdateKeyChangeResponse(seq, 0, 2, hex::repeat(0xAA, 4));
+	auto response = hex::BeginUpdateKeyChangeResponse(seq, 0, EXPECTED_USER_NUM, hex::repeat(0xAA, 4));
 
 	REQUIRE(fixture.SendAndReceive(request) == response);
 }
