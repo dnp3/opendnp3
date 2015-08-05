@@ -94,6 +94,8 @@ class OAuthContext final : public opendnp3::OContext
 
 	APDUResult ProcessChangeSessionKeys(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
+	APDUResult ProcessBeginUpdateKeyChange(const openpal::RSlice& fragment, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
+
 	APDUResult ProcessUserStatusChange(const openpal::RSlice& fragment, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
 	APDUResult ProcessUserStatusChange_Add(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change);

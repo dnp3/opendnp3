@@ -32,6 +32,11 @@ ChangeData::ChangeData(
 		userRole(userRole_),
 		expiration(expiration_)
 {}
+
+bool PendingUserStatusChanges::IsPending(const std::string& userName) const
+{
+	return changeMap.find(userName) != changeMap.end();
+}
 	
 void PendingUserStatusChanges::QueueChange(const std::string& username, const ChangeData& data)
 {

@@ -194,6 +194,8 @@ OAuthContext::APDUResult OAuthContext::ProcessAuthRequest(const openpal::RSlice&
 			return this->ProcessChangeSessionKeys(apdu, header, objects);
 		case(GroupVariation::Group120Var10) :
 			return this->ProcessUserStatusChange(apdu, header, objects);
+		case(GroupVariation::Group120Var11) :
+			return this->ProcessBeginUpdateKeyChange(apdu, header, objects);
 		default:
 			// this function/object combination not supported
 			return APDUResult::DISCARDED;
@@ -405,6 +407,45 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 
 
 	this->BeginTx(response.ToRSlice());
+	return APDUResult::PROCESSED;
+}
+
+OAuthContext::APDUResult OAuthContext::ProcessBeginUpdateKeyChange(const openpal::RSlice& fragment, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)
+{
+	BeginUpdateKeyChangeRequestHandler handler;	
+	auto result = APDUParser::Parse(objects, handler, this->logger);
+	if (!(result == ParseResult::OK && handler.IsValid()))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Discarding bad update key change request");
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	if (handler.value.keyChangeMethod != KeyChangeMethod::AES_256_SHA256_HMAC)
+	{
+		return this->TryRespondWithAuthError(header.control.SEQ, 0, User::Unknown(), AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
+	}
+
+	// has there been a valid prior user status change for this user?
+	auto username = ToString(handler.value.userName);
+
+	if (!security.statusChanges.IsPending(username))
+	{
+		return this->TryRespondWithAuthError(header.control.SEQ, 0, User::Unknown(), AuthErrorCode::UNKNOWN_USER);
+	}
+
+	// try to write a response
+	auto response = this->StartAuthResponse(header.control.SEQ);
+	auto writer = response.GetWriter();
+
+	if (!security.updateKeyChangeState.WriteUpdateKeyChangeResposne(writer, username, handler.value.challengeData, security.userDB))
+	{
+		// TODO - some kind of error occured, can we respond with an error code?
+		return APDUResult::DISCARDED;
+	}
+
+	this->BeginTx(response.ToRSlice());
+
 	return APDUResult::PROCESSED;
 }
 

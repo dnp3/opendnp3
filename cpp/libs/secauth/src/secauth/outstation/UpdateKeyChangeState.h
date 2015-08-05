@@ -47,9 +47,8 @@ class UpdateKeyChangeState
 
 	void Reset();
 
-	bool RespondToUpdateKeyChangeRequest(
-		opendnp3::HeaderWriter& writer,
-		opendnp3::KeyChangeMethod method,
+	bool WriteUpdateKeyChangeResposne(
+		opendnp3::HeaderWriter& writer,		
 		const std::string& username,
 		const openpal::RSlice& masterChallengeData,
 		const IFreeUser& freeUser);

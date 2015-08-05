@@ -45,9 +45,8 @@ void UpdateKeyChangeState::Reset()
 	m_valid = false;
 }
 
-bool UpdateKeyChangeState::RespondToUpdateKeyChangeRequest(
-	HeaderWriter& writer,
-	KeyChangeMethod method,
+bool UpdateKeyChangeState::WriteUpdateKeyChangeResposne(
+	HeaderWriter& writer,	
 	const std::string& username,
 	const RSlice& masterChallengeData,
 	const IFreeUser& freeUser

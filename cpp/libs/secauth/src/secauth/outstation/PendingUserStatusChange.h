@@ -61,11 +61,11 @@ class PendingUserStatusChanges : private openpal::Uncopyable
 
 public:	
 
-	
+	bool IsPending(const std::string& userName) const;
 
 	void QueueChange(const std::string& userName, const ChangeData& data);
 
-	bool PopChange(const std::string& userName, ChangeData& data);
+	bool PopChange(const std::string& userName, ChangeData& data);	
 
 private:
 

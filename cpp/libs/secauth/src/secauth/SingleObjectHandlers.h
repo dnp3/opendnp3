@@ -87,6 +87,18 @@ public:
 	}
 };
 
+class BeginUpdateKeyChangeRequestHandler : public SingleValueHandler<opendnp3::Group120Var11, opendnp3::GroupVariation::Group120Var11, opendnp3::QualifierCode::UINT16_FREE_FORMAT>
+{
+public:
+
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var11& data, const openpal::RSlice&) override final
+	{
+		this->value = data;
+		this->m_valid = true;
+		return opendnp3::IINField();
+	}
+};
+
 class UpdateKeyChangeReplyHandler : public SingleValueHandler<opendnp3::Group120Var12, opendnp3::GroupVariation::Group120Var12, opendnp3::QualifierCode::UINT16_FREE_FORMAT>
 {
 public:
