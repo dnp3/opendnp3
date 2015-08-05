@@ -30,8 +30,9 @@ namespace secauth
 {
 	OutstationAuthSettings::OutstationAuthSettings() :		
 		challengeTimeout(opendnp3::DEFAULT_APP_TIMEOUT),
-		challengeSize(AuthSizes::MIN_CHALLENGE_DATA_SIZE),
-		sessionKeyChangeChallengeSize(AuthSizes::MAX_CHALLENGE_DATA_SIZE),
+		challengeSize(AuthSizes::DEFAULT_CHALLENGE_SIZE),
+		sessionKeyChangeChallengeSize(AuthSizes::DEFAULT_SESSION_KEY_CHALLENGE_SIZE),
+		updateKeyChangeChallengeSize(AuthSizes::DEFAULT_UPDATE_KEY_CHALLENGE_SIZE),
 		assocId(0),
 		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
 		functions(CriticalFunctions::AuthEverything()),

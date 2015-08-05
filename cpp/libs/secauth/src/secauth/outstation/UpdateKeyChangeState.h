@@ -18,55 +18,62 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SESSION_KEY_CHANGE_STATE_H
-#define SECAUTH_SESSION_KEY_CHANGE_STATE_H
+#ifndef SECAUTH_UPDATE_KEY_CHANGE_STATE_H
+#define SECAUTH_UPDATE_KEY_CHANGE_STATE_H
 
 #include <openpal/container/StaticBuffer.h>
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/logging/Logger.h>
 
-#include <opendnp3/objects/Group120.h>
-#include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/User.h>
+#include <opendnp3/app/HeaderWriter.h>
 
 #include "secauth/AuthSizes.h"
+#include "secauth/outstation/IOutstationUserDatabase.h"
+
+#include <functional>
 
 namespace secauth
 {
 
-class SessionKeyChangeState
+///  a function used to find a free user number
+typedef std::function<bool(opendnp3::User& user)> GetFreeUserFun;
+
+class UpdateKeyChangeState
 {
 	public:
 
-	SessionKeyChangeState(uint16_t challengeSize, openpal::Logger logger, openpal::ICryptoProvider& provider);
-	
-	// Formats the key status response	
-	bool FormatKeyStatusResponse(
+	UpdateKeyChangeState(uint16_t challengeSize, openpal::Logger logger, openpal::ICryptoProvider& provider);
+
+	void Reset();
+
+	bool RespondToUpdateKeyChangeRequest(
 		opendnp3::HeaderWriter& writer,
-		const opendnp3::User& user,
-		opendnp3::HMACType hmacType,
-		opendnp3::KeyWrapAlgorithm keyWrapAlgo,
-		opendnp3::KeyStatus status,	
-		const openpal::RSlice& hmac = openpal::RSlice::Empty()
-	);	
+		opendnp3::KeyChangeMethod method,
+		const std::string& username,
+		const openpal::RSlice& masterChallengeData,
+		const IFreeUser& freeUser);
 
-	// Securely compare the specified serialized object data to the serialization
-	// of the last status response
-	bool EqualsLastStatusResponse(const openpal::RSlice& object);
-
-	bool CheckUserAndKSQMatches(const opendnp3::User& user, uint32_t keyChangeSeq);
+	
+		
 
 	private:
 
-	opendnp3::User lastUser;
-	uint16_t challengeSize;
-	openpal::Logger logger;
-	openpal::ICryptoProvider* pProvider;
+	bool m_valid;
+	opendnp3::User m_assignedUser;
 	uint32_t keyChangeSeqNum;
-	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> challengeData;
-	opendnp3::Group120Var5 statusRsp;
-	
-	
+
+	const uint16_t M_CHALLENGE_SIZE;
+	openpal::Logger m_logger;
+	openpal::ICryptoProvider* m_crypto;
+
+		
+	// static buffer and slice that points to the both pieces of challenge data
+	openpal::RSlice m_masterChallenge;
+	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_masterChallengeBuffer;			
+
+	openpal::RSlice m_outstationChallenge;
+	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_outstationChallengeBuffer;
 };
 
 }

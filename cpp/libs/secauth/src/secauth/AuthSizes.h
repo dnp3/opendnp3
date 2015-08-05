@@ -30,8 +30,6 @@
 namespace secauth
 {
 
-
-
 struct AuthSizes : openpal::StaticOnly
 {	
 
@@ -40,6 +38,17 @@ public:
 	const static uint32_t MIN_CHALLENGE_DATA_SIZE = 4;
 	const static uint32_t MAX_CHALLENGE_DATA_SIZE = 16;
 
+	// TODO verify the default sizes
+	const static uint32_t DEFAULT_CHALLENGE_SIZE = 4;
+	const static uint32_t DEFAULT_SESSION_KEY_CHALLENGE_SIZE = 4;
+	const static uint32_t DEFAULT_UPDATE_KEY_CHALLENGE_SIZE = 4;
+
+#define MACRO_WITHIN_CHALLENGE_LIMITS(size) static_assert((size >= MIN_CHALLENGE_DATA_SIZE) && (size <= MAX_CHALLENGE_DATA_SIZE), "challenge size outside limits");
+
+	MACRO_WITHIN_CHALLENGE_LIMITS(DEFAULT_CHALLENGE_SIZE);
+	MACRO_WITHIN_CHALLENGE_LIMITS(DEFAULT_SESSION_KEY_CHALLENGE_SIZE);
+	MACRO_WITHIN_CHALLENGE_LIMITS(DEFAULT_UPDATE_KEY_CHALLENGE_SIZE);
+	
 	const static uint32_t MIN_SESSION_KEY_SIZE_BYTES = 16;
 	const static uint32_t MAX_SESSION_KEY_SIZE_BYTES = 32;
 

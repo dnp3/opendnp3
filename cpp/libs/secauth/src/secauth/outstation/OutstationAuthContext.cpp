@@ -105,7 +105,8 @@ bool OAuthContext::OnLowerLayerDown()
 
 	if (ret)
 	{
-		this->security.state = SecurityState::IDLE;
+		this->security.state = SecurityState::IDLE;		
+		this->security.updateKeyChangeState.Reset();
 		this->security.challengeTimer.Cancel();
 		this->security.sessions.Clear();
 	}

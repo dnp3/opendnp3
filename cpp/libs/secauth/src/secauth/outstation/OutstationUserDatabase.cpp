@@ -97,6 +97,32 @@ bool OutstationUserDatabase::Delete(const std::string& userName, opendnp3::User&
 	}
 }
 
+bool OutstationUserDatabase::FindFreeUserId(opendnp3::User& user) const
+{
+	// the lowest admissable ID
+	uint16_t lowest = 2;
+
+	for (auto iter = userMap.begin(); iter != userMap.end(); ++iter)
+	{
+		if (iter->first < lowest)
+		{
+			continue;
+		}
+
+		if (iter->first > lowest)
+		{
+			user = User(lowest); // found a gap
+			return true;
+		}
+		else
+		{
+			++lowest; // the values were equal
+		}
+	}
+
+	return false;
+}
+
 void OutstationUserDatabase::AddUser(opendnp3::User user, const std::string& userName, const UpdateKey& key, Permissions permissions)
 {
 	if (key.IsValid())

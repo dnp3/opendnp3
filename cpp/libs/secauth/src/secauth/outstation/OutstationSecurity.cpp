@@ -42,6 +42,7 @@ namespace secauth
 		pApplication(&application),
 		pCrypto(&crypto),				
 		sessionKeyChangeState(settings.sessionKeyChangeChallengeSize, logger, crypto),
+		updateKeyChangeState(settings.updateKeyChangeChallengeSize, logger, crypto),
 		sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount),
 		txBuffer(params.maxTxFragSize)
 	{

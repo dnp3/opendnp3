@@ -38,7 +38,7 @@ namespace secauth
 /** 
 	A very simple update key store for the default user
 */
-class OutstationUserDatabase : public IOutstationUserDatabase
+class OutstationUserDatabase final : public IOutstationUserDatabase
 {
 	struct UserData
 	{
@@ -59,17 +59,19 @@ class OutstationUserDatabase : public IOutstationUserDatabase
 
 	public:		
 		
-		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::RSlice& key) const override final;
+		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::RSlice& key) const override;
 
-		virtual bool GetUpdateKeyType(const opendnp3::User& user, opendnp3::UpdateKeyMode& type) const override final;
+		virtual bool GetUpdateKeyType(const opendnp3::User& user, opendnp3::UpdateKeyMode& type) const override;
 
-		virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const override final;
+		virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const override;
 
-		virtual bool UserExists(const opendnp3::User& user) const override final;
+		virtual bool UserExists(const opendnp3::User& user) const override;
 
-		virtual bool UserExists(const std::string& userName) const override final;
+		virtual bool UserExists(const std::string& userName) const override;
 
-		virtual bool Delete(const std::string& userName, opendnp3::User& userOut) override final;
+		virtual bool Delete(const std::string& userName, opendnp3::User& userOut) override;
+
+		virtual bool FindFreeUserId(opendnp3::User& user) const override;
 
 		
 		void AddUser(opendnp3::User user, const std::string& userName, const UpdateKey& key, Permissions permissions);
