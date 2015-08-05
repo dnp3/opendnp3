@@ -73,6 +73,9 @@ public:
 		/// The response was bad, the task has failed
 		ERROR_BAD_RESPONSE,
 
+		/// An internal error occured like a failure calculating an HMAC
+		ERROR_INTERNAL_FAILURE,
+
 		/// The response was good and the task is complete
 		OK_FINAL,		
 

@@ -59,6 +59,10 @@ IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& re
 			this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_RESPONSE, now);		
 			this->NotifyResult(TaskCompletion::FAILURE_BAD_RESPONSE);
 			break;
+		case(ResponseResult::ERROR_INTERNAL_FAILURE) :
+			this->state = this->OnTaskComplete(TaskCompletion::FAILURE_INTERNAL_ERROR, now);
+			this->NotifyResult(TaskCompletion::FAILURE_INTERNAL_ERROR);
+			break;
 		case(ResponseResult::OK_FINAL) :
 			this->state = this->OnTaskComplete(TaskCompletion::SUCCESS, now);
 			this->NotifyResult(TaskCompletion::SUCCESS);

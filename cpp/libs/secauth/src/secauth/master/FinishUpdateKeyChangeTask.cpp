@@ -158,7 +158,7 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationRespon
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating hmac during response: %s", ec.message().c_str());
-		return ResponseResult::ERROR_BAD_RESPONSE;
+		return ResponseResult::ERROR_INTERNAL_FAILURE;
 	}
 
 	if (!SecureEquals(handler.value.hmacValue, hmac))
