@@ -294,7 +294,7 @@ OAuthContext::APDUResult OAuthContext::ProcessRequestKeyStatus(const openpal::RS
 	auto writer = response.GetWriter();
 	auto hmacType = HMACType::NO_MAC_VALUE;
 
-	auto success = security.keyChangeState.FormatKeyStatusResponse(
+	auto success = security.sessionKeyChangeState.FormatKeyStatusResponse(
 		writer,
 		user,
 		hmacType,
@@ -335,7 +335,7 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 
 	User user(handler.value.userNum);
 
-	if (!security.keyChangeState.CheckUserAndKSQMatches(user, handler.value.keyChangeSeqNum))
+	if (!security.sessionKeyChangeState.CheckUserAndKSQMatches(user, handler.value.keyChangeSeqNum))
 	{
 		return this->TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
 	}
@@ -366,7 +366,7 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 		return this->TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);		
 	}
 
-	if (!security.keyChangeState.EqualsLastStatusResponse(unwrapped.keyStatusObject))
+	if (!security.sessionKeyChangeState.EqualsLastStatusResponse(unwrapped.keyStatusObject))
 	{
 		return this->TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);		
 	}
@@ -390,7 +390,7 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 	auto writer = response.GetWriter();
 	auto hmacType = security.hmac.GetType();
 
-	if (!security.keyChangeState.FormatKeyStatusResponse(
+	if (!security.sessionKeyChangeState.FormatKeyStatusResponse(
 					writer,
 					user,
 					hmacType,
@@ -489,33 +489,39 @@ OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange(const openpal::RS
 }
 
 OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Add(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change)
-{
-	auto expiration = this->pExecutor->GetTime().Add(TimeDuration::Days(change.userRoleExpDays));	
-
-	ChangeData data(
-		change.keyChangeMethod,
-		UserRoleFromType(change.userRole),
-		expiration
-	);
-
-	this->security.statusChanges.QueueChange(username, data);
-
-	auto response = this->StartAuthResponse(header.control.SEQ);	
-	this->BeginTx(response.ToRSlice());
-
-	return APDUResult::PROCESSED;
+{	
+	return QueueUserStatusChange(header, username, change);
 }
 
 OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Change(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change)
 {	
 	if (!security.userDB.UserExists(username))
 	{
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "User Change - user does not exist: %s", username);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "User Change - user does not exist: %s", username.c_str());
 		return this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);
 	}
 
 	// Treat changes just like adds except that the user must exist
-	return this->ProcessUserStatusChange_Add(header, username, change);
+	return QueueUserStatusChange(header, username, change);
+}
+
+OAuthContext::APDUResult OAuthContext::QueueUserStatusChange(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change)
+{
+	auto expiration = this->pExecutor->GetTime().Add(TimeDuration::Days(change.userRoleExpDays));
+
+	this->security.statusChanges.QueueChange(
+		username,
+		ChangeData(
+			change.keyChangeMethod,
+			UserRoleFromType(change.userRole),
+			expiration
+		)
+	);
+
+	auto response = this->StartAuthResponse(header.control.SEQ);
+	this->BeginTx(response.ToRSlice());
+
+	return APDUResult::PROCESSED;
 }
 
 OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change)
@@ -523,7 +529,7 @@ OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Delete(const open
 	User userid;	
 	if (security.userDB.Delete(username, userid)) // if the user exists, delete and get the associated Id
 	{
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Deleting user: %s", username);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Deleting user: %s", username.c_str());
 
 		security.sessions.Invalidate(userid); // invalidate any active sessions
 		security.pApplication->OnDeleteUser(username, userid);
@@ -535,7 +541,7 @@ OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Delete(const open
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "User Delete - user does not exist: %s", username);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "User Delete - user does not exist: %s", username.c_str());
 		return this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);
 	}	
 }

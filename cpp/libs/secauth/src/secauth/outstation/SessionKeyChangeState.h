@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_KEYCHANGESTATE_H
-#define SECAUTH_KEYCHANGESTATE_H
+#ifndef SECAUTH_SESSION_KEY_CHANGE_STATE_H
+#define SECAUTH_SESSION_KEY_CHANGE_STATE_H
 
 #include <openpal/container/StaticBuffer.h>
 #include <openpal/crypto/ICryptoProvider.h>
@@ -34,11 +34,11 @@
 namespace secauth
 {
 
-class KeyChangeState
+class SessionKeyChangeState
 {
 	public:
 
-	KeyChangeState(uint16_t userNum, uint16_t challengeSize, openpal::Logger logger, openpal::ICryptoProvider& provider);
+	SessionKeyChangeState(uint16_t challengeSize, openpal::Logger logger, openpal::ICryptoProvider& provider);
 	
 	// Formats the key status response	
 	bool FormatKeyStatusResponse(

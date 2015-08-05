@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "KeyChangeState.h"
+#include "SessionKeyChangeState.h"
 
 #include <opendnp3/gen/KeyWrapAlgorithm.h>
 #include <opendnp3/LogLevels.h>
@@ -33,14 +33,14 @@ using namespace opendnp3;
 namespace secauth
 {
 
-	KeyChangeState::KeyChangeState(uint16_t userNum, uint16_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :		
+	SessionKeyChangeState::SessionKeyChangeState(uint16_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :
 		challengeSize(AuthSizes::GetBoundedChallengeSize(challengeSize_)),
 		logger(logger_),
 		pProvider(&provider),
 		keyChangeSeqNum(0)
 	{}
 
-	bool KeyChangeState::FormatKeyStatusResponse(
+	bool SessionKeyChangeState::FormatKeyStatusResponse(
 			opendnp3::HeaderWriter& writer,
 			const User& user,
 			opendnp3::HMACType hmacType,
@@ -74,7 +74,7 @@ namespace secauth
 		return writer.WriteFreeFormat(statusRsp);		
 	}
 
-	bool KeyChangeState::EqualsLastStatusResponse(const openpal::RSlice& unwrappedKeyStatus)
+	bool SessionKeyChangeState::EqualsLastStatusResponse(const openpal::RSlice& unwrappedKeyStatus)
 	{
 		Group120Var5 copy(statusRsp);
 		copy.hmacValue = RSlice::Empty(); // exclude the HMAC from the comparison
@@ -103,7 +103,7 @@ namespace secauth
 		return true;
 	}
 
-	bool KeyChangeState::CheckUserAndKSQMatches(const User& user, uint32_t keyChangeSeq)
+	bool SessionKeyChangeState::CheckUserAndKSQMatches(const User& user, uint32_t keyChangeSeq)
 	{
 		if (lastUser.GetId() != user.GetId())
 		{

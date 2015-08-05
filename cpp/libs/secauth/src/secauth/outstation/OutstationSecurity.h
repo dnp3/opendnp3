@@ -35,7 +35,7 @@
 #include "secauth/SessionStore.h"
 
 #include "secauth/outstation/OutstationUserDatabase.h"
-#include "secauth/outstation/KeyChangeState.h"
+#include "secauth/outstation/SessionKeyChangeState.h"
 #include "secauth/outstation/OutstationAuthSettings.h"
 #include "secauth/outstation/ChallengeState.h"
 #include "secauth/outstation/Statistics.h"
@@ -74,7 +74,7 @@ class OutstationSecurity
 	IOutstationApplicationSA* pApplication;
 	OutstationUserDatabase userDB;
 	openpal::ICryptoProvider* pCrypto;		
-	KeyChangeState keyChangeState;
+	SessionKeyChangeState sessionKeyChangeState;
 	SessionStore sessions;
 	opendnp3::TxBuffer txBuffer;
 	Statistics stats;

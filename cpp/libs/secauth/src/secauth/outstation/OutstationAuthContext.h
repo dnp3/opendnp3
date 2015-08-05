@@ -102,6 +102,8 @@ class OAuthContext final : public opendnp3::OContext
 
 	APDUResult ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change);
 
+	APDUResult QueueUserStatusChange(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change);
+
 	APDUResult TryRespondWithAuthError(opendnp3::AppSeqNum seq, uint32_t authSeqNum, const opendnp3::User& user, opendnp3::AuthErrorCode code);
 	
 	void OnChallengeTimeout();	

@@ -41,7 +41,7 @@ namespace secauth
 		deferred(params.maxRxFragSize),				
 		pApplication(&application),
 		pCrypto(&crypto),				
-		keyChangeState(1, 4, logger, crypto),
+		sessionKeyChangeState(4, logger, crypto),
 		sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount),
 		txBuffer(params.maxTxFragSize)
 	{
