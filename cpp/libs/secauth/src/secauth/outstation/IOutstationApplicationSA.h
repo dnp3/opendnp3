@@ -24,6 +24,10 @@
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <openpal/executor/IUTCTimeSource.h>
 
+#include <opendnp3/app/User.h>
+
+#include <string>
+
 namespace secauth
 {	
 
@@ -38,7 +42,14 @@ class IOutstationApplicationSA : public opendnp3::IOutstationApplication, public
 	public:	
 	
 	/// Persist the next SCSN to non-volatile storage to be restored on reboot
-	virtual void OnNewSCSN(uint32_t userStatusSeqNum) = 0;
+	virtual void OnNewSCSN(uint32_t userStatusSeqNum) {}
+
+	/**	
+	*	Callback received when an authenticated user status change is received with a DELETE for an existing user
+	*
+	*	The user's update keys are automatically deleted and existing sessions are invalidated.	
+	*/
+	virtual void OnDeleteUser(const std::string& userName, const opendnp3::User& user) {}
 				
 };
 

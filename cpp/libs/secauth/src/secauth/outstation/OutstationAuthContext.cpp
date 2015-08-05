@@ -513,15 +513,27 @@ OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Change(const open
 }
 
 OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
-{
-	/*
-	User user;
-	std::string userName(change.userName, change.userName.Size());
-	if (security.userDB.Delete(change.u
-	*/
+{	
+	User userid;
+	auto userName = ToString(change.userName);
 
-	SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "user deletion not implemented");
-	return this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);	
+	if (security.userDB.Delete(userName, userid)) // if the user exists, delete and get the associated Id
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Deleting user: %s", userName);
+
+		security.sessions.Invalidate(userid); // invalidate any active sessions
+		security.pApplication->OnDeleteUser(userName, userid);
+		
+		auto response = this->StartAuthResponse(header.control.SEQ); // send empty response
+		this->BeginTx(response.ToRSlice());
+
+		return APDUResult::PROCESSED;
+	}
+	else
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Delete: user does not exist: %s", userName);
+		return this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);
+	}	
 }
 
 void OAuthContext::OnChallengeTimeout()
