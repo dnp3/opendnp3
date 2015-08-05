@@ -161,6 +161,31 @@ namespace opendnp3
 		REQUIRE(this->SendAndReceive(keyChangeRequest) == keyStatusRspFinal);				
 		REQUIRE(this->lower.HasNoData());
 	}
+
+	void OutstationSecAuthFixture::TestAddUserStatusChange(const std::string& username, AppSeqNum& seq, uint32_t scsn)
+	{		
+		this->crypto.sha256.fillByte = 0xAA;
+
+		auto userStatusChangeRequest = hex::UserStatusChangeRequest(
+			seq,
+			KeyChangeMethod::AES_256_SHA256_HMAC,
+			UserOperation::OP_ADD,
+			scsn,
+			UserRoleToType(UserRole::OPERATOR),
+			365,
+			username,
+			"",
+			hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
+		);
+
+		auto response = this->SendAndReceive(userStatusChangeRequest);
+
+		// verify that the application was asked to persist the new SCSN value 
+		REQUIRE(this->application.userStatusSeqNums.size() == 1);
+		REQUIRE(this->application.userStatusSeqNums.front() == (scsn + 1));
+
+		REQUIRE(response == hex::EmptyAuthResponse(0, IINBit::DEVICE_RESTART));
+	}
 }
 
 

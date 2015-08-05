@@ -112,6 +112,16 @@ namespace hex
 		return ToHex(response.ToRSlice());
 	}
 
+	std::string EmptyAuthResponse(uint8_t seq, const opendnp3::IINField& iin)
+	{
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDUResponse response(buffer.GetWSlice());
+		response.SetFunction(FunctionCode::AUTH_RESPONSE);
+		response.SetControl(AppControlField(true, true, false, false, seq));
+		response.SetIIN(iin);
+		return ToHex(response.ToRSlice());
+	}
+
 	std::string NullUnsolicited(uint8_t seq, const IINField& iin)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);

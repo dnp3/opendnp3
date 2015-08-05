@@ -77,6 +77,8 @@ public:
 	void SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data);
 	void TestSessionKeyChange(AppSeqNum& seq, User user, opendnp3::KeyWrapAlgorithm keyWrap, secauth::HMACMode hmacMode);
 
+	void TestAddUserStatusChange(const std::string& username, AppSeqNum& seq, uint32_t scsn);
+
 	testlib::MockLogHandler log;
 	testlib::MockExecutor exe;
 	MockLowerLayer lower;

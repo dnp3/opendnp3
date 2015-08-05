@@ -69,6 +69,8 @@ namespace hex
 
 	std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin = opendnp3::IINField::Empty());
 
+	std::string EmptyAuthResponse(uint8_t seq, const opendnp3::IINField& iin = opendnp3::IINField::Empty());
+
 	std::string NullUnsolicited(uint8_t seq, const opendnp3::IINField& iin = opendnp3::IINField(opendnp3::IINBit::DEVICE_RESTART));
 
 	// ----------- confirms --------------

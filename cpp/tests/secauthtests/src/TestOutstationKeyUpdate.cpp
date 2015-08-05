@@ -122,32 +122,9 @@ TEST_CASE(SUITE("Accepts authenticated message w/ good SCSN"))
 	OutstationSecAuthFixture fixture;
 	fixture.context.ConfigureAuthority(2, AuthorityKey(0xFF)); // expecitng SCSN >= 2
 	fixture.LowerLayerUp();
-
+	
 	AppSeqNum seq;
-	uint16_t statusChangeSeq = 2;
-	fixture.crypto.sha256.fillByte = 0xAA;
-
-	auto userStatusChangeRequest = hex::UserStatusChangeRequest(
-		seq,
-		KeyChangeMethod::AES_256_SHA256_HMAC,
-		UserOperation::OP_ADD,
-		statusChangeSeq,
-		UserRoleToType(UserRole::OPERATOR),
-		365,
-		"Jim",
-		"",
-		hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
-		);	
-
-	
-	
-	auto response = fixture.SendAndReceive(userStatusChangeRequest);
-
-	// verify that the application was asked to persist the new SCSN value 
-	REQUIRE(fixture.application.userStatusSeqNums.size() == 1);
-	REQUIRE(fixture.application.userStatusSeqNums.front() == 3);	
-
-	REQUIRE(response == "C0 83 80 00");
+	fixture.TestAddUserStatusChange("Jim", seq, 3);
 }
 
 
