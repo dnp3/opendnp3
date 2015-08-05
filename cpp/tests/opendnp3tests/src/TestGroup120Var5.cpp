@@ -99,7 +99,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 
 	Buffer output(SIZE);
 
-	auto dest = output.GetWriteBufferView();
+	auto dest = output.GetWSlice();
 	REQUIRE(status.Write(dest));
 	uint32_t numWritten = output.Size() - dest.Size();
 
@@ -119,7 +119,7 @@ TEST_CASE(SUITE("Formatter rejects when one less than required space"))
 
 	Buffer output(SIZE - 1);
 
-	auto dest = output.GetWriteBufferView();
+	auto dest = output.GetWSlice();
 	REQUIRE_FALSE(status.Write(dest));
 	REQUIRE(dest.Size() == output.Size());
 }

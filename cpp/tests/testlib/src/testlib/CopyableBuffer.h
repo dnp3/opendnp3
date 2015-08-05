@@ -25,7 +25,7 @@
 #include <memory>
 #include <sstream>
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 namespace testlib
 {
@@ -44,7 +44,7 @@ public:
 	CopyableBuffer();
 	// Construct based on starting size of buffer
 	CopyableBuffer(uint32_t aSize);
-	CopyableBuffer(const openpal::ReadBufferView&);
+	CopyableBuffer(const openpal::RSlice&);
 	CopyableBuffer(const uint8_t* apBuff, uint32_t aSize);
 	CopyableBuffer(const CopyableBuffer&);
 	CopyableBuffer& operator=(const CopyableBuffer&);
@@ -56,9 +56,9 @@ public:
 		return ! (*this == other);
 	}
 
-	openpal::ReadBufferView ToReadOnly() const
+	openpal::RSlice ToReadOnly() const
 	{
-		return openpal::ReadBufferView(mpBuff, mSize);
+		return openpal::RSlice(mpBuff, mSize);
 	}
 
 	operator const uint8_t* () const

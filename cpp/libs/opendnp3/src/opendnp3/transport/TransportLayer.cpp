@@ -51,7 +51,7 @@ TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExec
 // Actions
 ///////////////////////////////////////
 
-void TransportLayer::BeginTransmit(const ReadBufferView& apdu)
+void TransportLayer::BeginTransmit(const RSlice& apdu)
 {
 	if (isOnline)
 	{
@@ -95,7 +95,7 @@ void TransportLayer::BeginTransmit(const ReadBufferView& apdu)
 // IUpperLayer
 ///////////////////////////////////////
 
-bool TransportLayer::OnReceive(const ReadBufferView& tpdu)
+bool TransportLayer::OnReceive(const RSlice& tpdu)
 {
 	if (isOnline)
 	{

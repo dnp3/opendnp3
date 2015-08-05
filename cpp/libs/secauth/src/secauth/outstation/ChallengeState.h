@@ -43,7 +43,7 @@ class ChallengeState
 	ChallengeState(uint16_t challengeSize, uint32_t maxRxASDUSize);
 
 	bool WriteChallenge(
-		const openpal::ReadBufferView& fragment,
+		const openpal::RSlice& fragment,
 		const opendnp3::APDUHeader& header, 
 		opendnp3::APDUResponse& response, 
 		opendnp3::HMACType hmacType, 
@@ -52,13 +52,13 @@ class ChallengeState
 	);
 
 	bool VerifyAuthenticity(
-		const openpal::ReadBufferView& key,
+		const openpal::RSlice& key,
 		HMACProvider& provider, 
-		const openpal::ReadBufferView& hmac, 
+		const openpal::RSlice& hmac, 
 		openpal::Logger logger
 	);
 
-	openpal::ReadBufferView GetCriticalASDU() const { return criticalASDU.GetFragment(); }
+	openpal::RSlice GetCriticalASDU() const { return criticalASDU.GetFragment(); }
 
 	opendnp3::APDUHeader GetCriticalHeader() const { return criticalASDU.GetHeader(); }
 	
@@ -68,10 +68,10 @@ private:
 
 	DeferredASDU criticalASDU;
 
-	openpal::ReadBufferView challengeFragment;
+	openpal::RSlice challengeFragment;
 	openpal::StaticBuffer<AuthSizes::MAX_OUTSTATION_CHALLENGE_RESPONSE_FRAGMENT_SIZE> challengeFragmentBuffer;
 
-	openpal::ReadBufferView challengeData;
+	openpal::RSlice challengeData;
 	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> challengeDataBuffer;
 	
 	uint32_t seqNumber;

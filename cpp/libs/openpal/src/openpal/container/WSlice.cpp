@@ -18,43 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "WriteBufferView.h"
+#include "WSlice.h"
 
 #include "openpal/util/Comparisons.h"
-#include "ReadBufferView.h"
+#include "RSlice.h"
 
 #include <cstring>
 
 namespace openpal
 {
 
-WriteBufferView WriteBufferView::Empty()
+WSlice WSlice::Empty()
 {
-	return WriteBufferView();
+	return WSlice();
 }
 
-WriteBufferView::WriteBufferView(): 
+WSlice::WSlice(): 
 	HasSize(0),
 	pBuffer(nullptr)
 {}
 
-void WriteBufferView::SetAllTo(uint8_t value)
+void WSlice::SetAllTo(uint8_t value)
 {
 	memset(pBuffer, value, size);
 }
 
-WriteBufferView::WriteBufferView(uint8_t* pBuffer_, uint32_t size) :
+WSlice::WSlice(uint8_t* pBuffer_, uint32_t size) :
 	HasSize(size),
 	pBuffer(pBuffer_)
 {}
 
-void WriteBufferView::Clear()
+void WSlice::Clear()
 {
 	pBuffer = nullptr;
 	size = 0;
 }
 
-uint32_t WriteBufferView::Advance(uint32_t count)
+uint32_t WSlice::Advance(uint32_t count)
 {
 	auto num = openpal::Min(count, size);
 	pBuffer += num;
@@ -62,15 +62,15 @@ uint32_t WriteBufferView::Advance(uint32_t count)
 	return num;
 }
 
-WriteBufferView WriteBufferView::Skip(uint32_t count) const
+WSlice WSlice::Skip(uint32_t count) const
 {
 	auto num = openpal::Min(count, size);
-	return WriteBufferView(pBuffer + num, size - num);
+	return WSlice(pBuffer + num, size - num);
 }
 
-ReadBufferView WriteBufferView::ToReadOnly() const
+RSlice WSlice::ToReadOnly() const
 {
-	return ReadBufferView(pBuffer, size);
+	return RSlice(pBuffer, size);
 }
 
 }

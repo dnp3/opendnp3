@@ -26,8 +26,8 @@
 namespace secauth
 {	
 		SessionKeysView::SessionKeysView(
-			const openpal::ReadBufferView& controlKey_,
-			const openpal::ReadBufferView& monitorKey_
+			const openpal::RSlice& controlKey_,
+			const openpal::RSlice& monitorKey_
 			) : 
 			controlKey(controlKey_), 
 			monitorKey(monitorKey_)

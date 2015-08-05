@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_RANGEPARSER_H
 #define OPENDNP3_RANGEPARSER_H
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
 
 #include "opendnp3/app/parsing/ParseResult.h"
@@ -40,14 +40,14 @@ namespace opendnp3
 
 class RangeParser
 {
-	typedef void (*HandleFun)(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+	typedef void (*HandleFun)(const HeaderRecord& record, const Range& range, const openpal::RSlice& buffer, IAPDUHandler& handler);
 
 	
 
 public:
 	
 	static ParseResult ParseHeader(
-		openpal::ReadBufferView& buffer,
+		openpal::RSlice& buffer,
 		const NumParser& numparser,
 		const ParserSettings& settings, 
 		const HeaderRecord& record, 
@@ -58,7 +58,7 @@ public:
 private:
 
 	// Process the range against the buffer
-	ParseResult Process(const HeaderRecord& record, openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const;
+	ParseResult Process(const HeaderRecord& record, openpal::RSlice& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const;
 
 	// Create a range parser from a fixed size descriptor
 	template <class Descriptor>
@@ -74,21 +74,21 @@ private:
 	template <class Type>
 	static RangeParser FromDoubleBitfieldType(const Range& range);
 
-	static ParseResult ParseRangeOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler);
+	static ParseResult ParseRangeOfObjects(openpal::RSlice& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler);
 
-	static ParseResult ParseRangeOfOctetData(openpal::ReadBufferView& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler);	
+	static ParseResult ParseRangeOfOctetData(openpal::RSlice& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler);	
 	
 	template <class Descriptor>
-	static void InvokeRangeOf(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+	static void InvokeRangeOf(const HeaderRecord& record, const Range& range, const openpal::RSlice& buffer, IAPDUHandler& handler);
 
 	template <class Type>
-	static void InvokeRangeOfType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+	static void InvokeRangeOfType(const HeaderRecord& record, const Range& range, const openpal::RSlice& buffer, IAPDUHandler& handler);
 
 	template <class Type>
-	static void InvokeRangeBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+	static void InvokeRangeBitfieldType(const HeaderRecord& record, const Range& range, const openpal::RSlice& buffer, IAPDUHandler& handler);
 
 	template <class Type>
-	static void InvokeRangeDoubleBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+	static void InvokeRangeDoubleBitfieldType(const HeaderRecord& record, const Range& range, const openpal::RSlice& buffer, IAPDUHandler& handler);
 
 	RangeParser(const Range& range, uint32_t requiredSize, HandleFun handler);
 		
@@ -114,11 +114,11 @@ RangeParser RangeParser::FromFixedSizeType(const Range& range)
 }
 
 template <class Descriptor>
-void RangeParser::InvokeRangeOf(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
+void RangeParser::InvokeRangeOf(const HeaderRecord& record, const Range& range, const openpal::RSlice& buffer, IAPDUHandler& handler)
 {		
 	const auto COUNT = range.Count();
 
-	auto read = [range](openpal::ReadBufferView& buffer, uint32_t pos) {	
+	auto read = [range](openpal::RSlice& buffer, uint32_t pos) {	
 		typename Descriptor::Target target;
 		Descriptor::ReadTarget(buffer, target);
 		return WithIndex(target, range.start + pos);
@@ -130,11 +130,11 @@ void RangeParser::InvokeRangeOf(const HeaderRecord& record, const Range& range, 
 }
 
 template <class Type>
-void RangeParser::InvokeRangeOfType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
+void RangeParser::InvokeRangeOfType(const HeaderRecord& record, const Range& range, const openpal::RSlice& buffer, IAPDUHandler& handler)
 {	
 	const auto COUNT = range.Count();
 
-	auto read = [range](openpal::ReadBufferView& buffer, uint32_t pos) -> Indexed<Type> {
+	auto read = [range](openpal::RSlice& buffer, uint32_t pos) -> Indexed<Type> {
 		Type target;
 		Type::Read(buffer, target);
 		return WithIndex(target, range.start + pos);
@@ -154,11 +154,11 @@ RangeParser RangeParser::FromBitfieldType(const Range& range)
 }
 
 template <class Type>
-void RangeParser::InvokeRangeBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
+void RangeParser::InvokeRangeBitfieldType(const HeaderRecord& record, const Range& range, const openpal::RSlice& buffer, IAPDUHandler& handler)
 {
 	const uint32_t COUNT = range.Count();	
 	
-	auto read = [range](openpal::ReadBufferView& buffer, uint32_t pos) -> Indexed<Type> {
+	auto read = [range](openpal::RSlice& buffer, uint32_t pos) -> Indexed<Type> {
 		Type value(GetBit(buffer, pos));		
 		return WithIndex(value, range.start + pos);
 	};
@@ -176,11 +176,11 @@ RangeParser RangeParser::FromDoubleBitfieldType(const Range& range)
 }
 
 template <class Type>
-void RangeParser::InvokeRangeDoubleBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
+void RangeParser::InvokeRangeDoubleBitfieldType(const HeaderRecord& record, const Range& range, const openpal::RSlice& buffer, IAPDUHandler& handler)
 {
 	const uint32_t COUNT = range.Count();
 
-	auto read = [range](openpal::ReadBufferView& buffer, uint32_t pos) -> Indexed<Type> {
+	auto read = [range](openpal::RSlice& buffer, uint32_t pos) -> Indexed<Type> {
 		Type value(GetDoubleBit(buffer, pos));
 		return WithIndex(value, range.start + pos);
 	};

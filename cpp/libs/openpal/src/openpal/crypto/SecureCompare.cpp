@@ -23,7 +23,7 @@
 
 namespace openpal
 {
-	bool SecureEquals(const ReadBufferView& lhs, const ReadBufferView& rhs)
+	bool SecureEquals(const RSlice& lhs, const RSlice& rhs)
 	{
 		if (lhs.Size() != rhs.Size())
 		{

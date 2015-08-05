@@ -36,7 +36,7 @@ APDUWrapper::APDUWrapper() : valid(false)
 
 }
 
-APDUWrapper::APDUWrapper(const openpal::WriteBufferView& buffer_) : valid(true), buffer(buffer_), remaining(buffer_)
+APDUWrapper::APDUWrapper(const openpal::WSlice& buffer_) : valid(true), buffer(buffer_), remaining(buffer_)
 {
 	assert(buffer.Size() >= 2); // need a control & function at a minimum
 	remaining.Advance(2);
@@ -85,7 +85,7 @@ uint32_t APDUWrapper::Size() const
 	return buffer.Size() - remaining.Size();
 }
 
-openpal::ReadBufferView APDUWrapper::ToReadOnly() const
+openpal::RSlice APDUWrapper::ToReadOnly() const
 {	
 	return buffer.ToReadOnly().Take(this->Size());
 }

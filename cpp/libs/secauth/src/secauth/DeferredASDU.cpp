@@ -41,11 +41,11 @@ bool DeferredASDU::IsSet() const
 	return isSet;
 }
 
-void DeferredASDU::SetASDU(APDUHeader header_, openpal::ReadBufferView asdu_)
+void DeferredASDU::SetASDU(APDUHeader header_, openpal::RSlice asdu_)
 {
 	this->isSet = true;
 	this->header = header_;
-	auto dest = buffer.GetWriteBufferView();
+	auto dest = buffer.GetWSlice();
 	this->asdu = asdu_.CopyTo(dest);	
 }
 

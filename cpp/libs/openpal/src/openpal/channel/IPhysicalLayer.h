@@ -23,8 +23,8 @@
 
 #include "ChannelStatistics.h"
 
-#include "openpal/container/ReadBufferView.h"
-#include "openpal/container/WriteBufferView.h"
+#include "openpal/container/RSlice.h"
+#include "openpal/container/WSlice.h"
 
 namespace openpal
 {
@@ -113,20 +113,20 @@ public:
 	 *						remain available until the write callback or
 	 *                      close occurs.
 	 */
-	virtual void BeginWrite(const ReadBufferView& arBuffer) = 0;
+	virtual void BeginWrite(const RSlice& arBuffer) = 0;
 
 	/**
 	 * Starts a read operation.
 	 *
 	 * Use SetHandler to provide a callback that is called by
-	 * OnReceive(const ReadBufferView&) or a failure will
+	 * OnReceive(const RSlice&) or a failure will
 	 * result in the layer closing.
 	 *
 	 * @param arBuffer		Read into the underlying buffer
 	 *                      defined by the wrapper.  The underlying buffer
 	 *                      must remain available until the read callback
 	 */
-	virtual void BeginRead(WriteBufferView& arBuffer) = 0;
+	virtual void BeginRead(WSlice& arBuffer) = 0;
 
 	/**
 	 * Set the handler interface for callbacks. A read interface has

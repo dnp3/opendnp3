@@ -27,7 +27,7 @@ using namespace openpal;
 
 namespace osslcrypto
 {
-	ReadBufferView SHA256HMAC::Calculate(const ReadBufferView& key, std::initializer_list<ReadBufferView> data, WriteBufferView& output, std::error_code& ec)
+	RSlice SHA256HMAC::Calculate(const RSlice& key, std::initializer_list<RSlice> data, WSlice& output, std::error_code& ec)
 	{
 		return CalculateHMAC(EVP_sha256(), OUTPUT_SIZE, key, data, output, ec);
 	}

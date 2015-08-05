@@ -43,7 +43,7 @@ class ControlState
 	ControlState() : digest(0), length(0)
 	{}	
 
-	CommandStatus ValidateSelection(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout, const openpal::ReadBufferView& objects) const
+	CommandStatus ValidateSelection(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout, const openpal::RSlice& objects) const
 	{
 		if (expectedSeq.Equals(seq))
 		{
@@ -77,7 +77,7 @@ class ControlState
 		}
 	}
 
-	void Select(const AppSeqNum& currentSeqN, const openpal::MonotonicTimestamp& now, const openpal::ReadBufferView& objects)
+	void Select(const AppSeqNum& currentSeqN, const openpal::MonotonicTimestamp& now, const openpal::RSlice& objects)
 	{
 		selectTime = now;
 		expectedSeq = currentSeqN.Next();

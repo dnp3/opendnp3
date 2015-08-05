@@ -47,7 +47,7 @@ class HexSequence : public ByteStr
 public:
 	HexSequence(const std::string& aSequence);
 
-	operator openpal::ReadBufferView()
+	operator openpal::RSlice()
 	{
 		return this->ToReadOnly();
 	}

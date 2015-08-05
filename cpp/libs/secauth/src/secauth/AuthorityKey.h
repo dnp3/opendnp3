@@ -50,12 +50,12 @@ class AuthorityKey
 		/**
 		* Initialize the key base on a view
 		*/
-		AuthorityKey(const openpal::ReadBufferView& key);
+		AuthorityKey(const openpal::RSlice& key);
 
 		/**
 		* Retrieve update key view
 		*/
-		openpal::ReadBufferView GetKeyView() const;					
+		openpal::RSlice GetKeyView() const;					
 
 		/**
 		* returns true if the key is valid, false otherwise
@@ -67,7 +67,7 @@ class AuthorityKey
 		*
 		* returns true if the key was of valid size, false otherwise
 		*/
-		bool Initialize(const openpal::ReadBufferView& key);
+		bool Initialize(const openpal::RSlice& key);
 
 	private:	
 

@@ -107,7 +107,7 @@ namespace opendnp3
 		return true;
 	}
 
-	bool MContext::OnReceive(const openpal::ReadBufferView& apdu)
+	bool MContext::OnReceive(const openpal::RSlice& apdu)
 	{
 		if (!this->isOnline)
 		{
@@ -184,7 +184,7 @@ namespace opendnp3
 		}		
 	}	
 
-	void MContext::OnParsedHeader(const ReadBufferView& apdu, const APDUResponseHeader& header, const ReadBufferView& objects)
+	void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& header, const RSlice& objects)
 	{
 		// Note: this looks silly, but OnParsedHeader() is virtual and can be overriden to do SA
 		this->ProcessAPDU(header, objects);
@@ -242,7 +242,7 @@ namespace opendnp3
 		this->DirectOperateT(command, index, callback, config, Group41Var4::Inst());
 	}
 
-	void MContext::ProcessAPDU(const APDUResponseHeader& header, const ReadBufferView& objects)
+	void MContext::ProcessAPDU(const APDUResponseHeader& header, const RSlice& objects)
 	{
 		switch (header.function)
 		{
@@ -288,7 +288,7 @@ namespace opendnp3
 		this->pApplication->OnReceiveIIN(iin);
 	}
 
-	void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
+	void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const RSlice& objects)
 	{
 		if (!header.control.UNS)
 		{
@@ -306,7 +306,7 @@ namespace opendnp3
 		this->ProcessIIN(header.IIN);
 	}
 
-	void MContext::ProcessResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
+	void MContext::ProcessResponse(const APDUResponseHeader& header, const RSlice& objects)
 	{				
 		this->tstate = this->OnResponseEvent(header, objects);		
 		this->ProcessIIN(header.IIN); // TODO - should we process IIN bits for unexpected responses?
@@ -326,7 +326,7 @@ namespace opendnp3
 		}
 
 		auto confirm = this->confirmQueue.front();
-		APDUWrapper wrapper(this->txBuffer.GetWriteBufferView());
+		APDUWrapper wrapper(this->txBuffer.GetWSlice());
 		wrapper.SetFunction(confirm.function);
 		wrapper.SetControl(confirm.control);
 		this->Transmit(wrapper.ToReadOnly());	
@@ -334,7 +334,7 @@ namespace opendnp3
 		return true;
 	}
 
-	void MContext::Transmit(const ReadBufferView& data)
+	void MContext::Transmit(const RSlice& data)
 	{
 		logging::ParseAndLogRequestTx(this->logger, data);
 		assert(!this->isSending);
@@ -484,7 +484,7 @@ namespace opendnp3
 			return TaskState::TASK_READY;
 		}
 
-		APDURequest request(this->txBuffer.GetWriteBufferView());
+		APDURequest request(this->txBuffer.GetWSlice());
 
 		/// try to build a requst for the task
 		if (!this->pActiveTask->BuildRequest(request, this->solSeq))
@@ -504,7 +504,7 @@ namespace opendnp3
 
 	//// --- State tables ---
 
-	MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, const ReadBufferView& objects)
+	MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, const RSlice& objects)
 	{
 		switch (tstate)
 		{			
@@ -578,7 +578,7 @@ namespace opendnp3
 		return this->ResumeActiveTask();
 	}
 
-	MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
+	MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const RSlice& objects)
 	{
 		if (header.control.SEQ != this->solSeq)
 		{

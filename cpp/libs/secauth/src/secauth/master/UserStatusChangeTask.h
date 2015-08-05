@@ -68,7 +68,7 @@ namespace secauth
 
 		virtual bool IsEnabled() const override final { return true; }
 
-		virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
+		virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 
 		virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final
 		{

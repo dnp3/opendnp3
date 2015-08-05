@@ -66,7 +66,7 @@ TEST_CASE(SUITE("LayerNotOnline"))
 	Route route(1, 1024);
 	REQUIRE(t.router.AddContext(&mfs, route));
 	REQUIRE(t.router.Enable(&mfs));
-	ReadBufferView buffer;
+	RSlice buffer;
 	t.router.BeginTransmit(buffer, &mfs);
 	REQUIRE(t.log.PopUntil(flags::ERR));
 }
@@ -137,7 +137,7 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 	mfs.AddAction(std::bind(&asiodnp3::LinkLayerRouter::Shutdown, &t.router));
 
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	t.phys.TriggerRead(ToHex(frame));
 
@@ -210,7 +210,7 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	t.phys.SignalOpenSuccess();
 
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	t.phys.TriggerRead(ToHex(frame));
 

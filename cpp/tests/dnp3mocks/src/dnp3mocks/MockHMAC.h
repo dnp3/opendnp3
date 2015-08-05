@@ -33,17 +33,17 @@ namespace opendnp3
 
 		virtual uint16_t OutputSize() const { return SIZE; }
 
-		virtual openpal::ReadBufferView Calculate(
-			const openpal::ReadBufferView& key,
-			std::initializer_list<openpal::ReadBufferView> data,
-			openpal::WriteBufferView& output,
+		virtual openpal::RSlice Calculate(
+			const openpal::RSlice& key,
+			std::initializer_list<openpal::RSlice> data,
+			openpal::WSlice& output,
 			std::error_code& ec
 			)
 		{
 			if (output.Size() < SIZE)
 			{
 				ec = std::error_code(1, std::generic_category());
-				return openpal::ReadBufferView();
+				return openpal::RSlice();
 			}
 			else
 			{

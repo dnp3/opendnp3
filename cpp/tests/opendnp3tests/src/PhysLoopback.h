@@ -36,7 +36,7 @@ class PhysLoopback : public asiodnp3::PhysicalLayerMonitor
 public:
 	PhysLoopback(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer*);
 
-	virtual void OnReceive(const openpal::ReadBufferView&) override final;
+	virtual void OnReceive(const openpal::RSlice&) override final;
 	virtual void OnSendResult(bool isSuccess) override final;
 
 private:

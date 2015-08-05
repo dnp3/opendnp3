@@ -22,8 +22,8 @@
 #define OPENDNP3_GROUP50_H
 
 #include "opendnp3/app/GroupVariationID.h"
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/TimeAndInterval.h"
@@ -35,8 +35,8 @@ struct Group50Var1
 {
   static GroupVariationID ID() { return GroupVariationID(50,1); }
   static uint32_t Size() { return 6; }
-  static bool Read(openpal::ReadBufferView&, Group50Var1&);
-  static bool Write(const Group50Var1&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group50Var1&);
+  static bool Write(const Group50Var1&, openpal::WSlice&);
 
   DNPTime time;
 };
@@ -46,16 +46,16 @@ struct Group50Var4
 {
   static GroupVariationID ID() { return GroupVariationID(50,4); }
   static uint32_t Size() { return 11; }
-  static bool Read(openpal::ReadBufferView&, Group50Var4&);
-  static bool Write(const Group50Var4&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group50Var4&);
+  static bool Write(const Group50Var4&, openpal::WSlice&);
 
   DNPTime time;
   uint32_t interval;
   uint8_t units;
 
   typedef TimeAndInterval Target;
-  static bool ReadTarget(openpal::ReadBufferView&, TimeAndInterval&);
-  static bool WriteTarget(const TimeAndInterval&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, TimeAndInterval&);
+  static bool WriteTarget(const TimeAndInterval&, openpal::WSlice&);
   static DNP3Serializer<TimeAndInterval> Inst() { return DNP3Serializer<TimeAndInterval>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 

@@ -44,11 +44,11 @@ public:
 
 	virtual OutstationSolicitedStateBase* OnConfirmTimeout(OContext&);
 
-	virtual OutstationSolicitedStateBase* OnNewReadRequest(OContext&, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	virtual OutstationSolicitedStateBase* OnNewReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects);
 
-	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OContext&, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects);
 
-	virtual OutstationSolicitedStateBase* OnRepeatNonReadRequest(OContext&, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	virtual OutstationSolicitedStateBase* OnRepeatNonReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects);
 
 protected:
 
@@ -61,11 +61,11 @@ public:
 
 	static OutstationSolicitedStateBase& Inst();
 
-	virtual OutstationSolicitedStateBase* OnNewReadRequest(OContext&, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual OutstationSolicitedStateBase* OnNewReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects) override final;
 
-	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OContext&, const APDUHeader& header, const openpal::ReadBufferView& objects)  override final;
+	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects)  override final;
 
-	virtual OutstationSolicitedStateBase* OnRepeatNonReadRequest(OContext&, const APDUHeader& header, const openpal::ReadBufferView& objects)  override final;
+	virtual OutstationSolicitedStateBase* OnRepeatNonReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects)  override final;
 
 private:
 
@@ -86,9 +86,9 @@ public:
 
 	static OutstationSolicitedStateBase& Inst();
 
-	virtual OutstationSolicitedStateBase* OnNewReadRequest(OContext&, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual OutstationSolicitedStateBase* OnNewReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects) override final;
 
-	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OContext&, const APDUHeader& header, const openpal::ReadBufferView& objects)  override final;	
+	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects)  override final;	
 
 	virtual OutstationSolicitedStateBase* OnConfirm(OContext&, const APDUHeader& frag) override final;
 

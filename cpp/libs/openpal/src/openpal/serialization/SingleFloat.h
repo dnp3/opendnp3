@@ -22,8 +22,8 @@
 #define OPENPAL_SINGLE_FLOAT_H
 
 #include "openpal/util/Uncopyable.h"
-#include "openpal/container/ReadBufferView.h"
-#include "openpal/container/WriteBufferView.h"
+#include "openpal/container/RSlice.h"
+#include "openpal/container/WSlice.h"
 
 #include <cstddef>
 
@@ -38,8 +38,8 @@ public:
 
 	typedef float Type;
 
-	static float ReadBuffer(ReadBufferView& buffer);	
-	static void WriteBuffer(WriteBufferView& buffer, float value);
+	static float ReadBuffer(RSlice& buffer);	
+	static void WriteBuffer(WSlice& buffer, float value);
 		
 	static float Read(const uint8_t* data);	
 	static void Write(uint8_t* data, float value);

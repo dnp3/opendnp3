@@ -29,19 +29,19 @@ using namespace openpal;
 
 namespace osslcrypto
 {
-	ReadBufferView CalculateHMAC(
+	RSlice CalculateHMAC(
 		const EVP_MD* md,
 		uint32_t outputSize,
-		const openpal::ReadBufferView& key,
-		std::initializer_list<openpal::ReadBufferView> data,
-		openpal::WriteBufferView& output,
+		const openpal::RSlice& key,
+		std::initializer_list<openpal::RSlice> data,
+		openpal::WSlice& output,
 		std::error_code& ec
 		)
 	{
 		if (output.Size() < outputSize)
 		{
 			ec = make_error_code(errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
-			return ReadBufferView();
+			return RSlice();
 		}
 
 		HMAC_CTX ctx;
@@ -51,7 +51,7 @@ namespace osslcrypto
 		if (HMAC_Init_ex(&ctx, key, key.Size(), md, nullptr) == 0)
 		{
 			ec = make_error_code(errors::OPENSSL_HMAC_INIT_EX_ERROR);
-			return ReadBufferView();
+			return RSlice();
 		}
 					
 		for (auto& bytes : data)
@@ -59,7 +59,7 @@ namespace osslcrypto
 			if (HMAC_Update(&ctx, bytes, bytes.Size()) == 0)
 			{
 				ec = make_error_code(errors::OPENSSL_HMAC_UPDATE_ERROR);
-				return ReadBufferView();
+				return RSlice();
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace osslcrypto
 		if (HMAC_Final(&ctx, output, &length) == 0)
 		{
 			ec = make_error_code(errors::OPENSSL_HMAC_FINAL_ERROR);
-			return ReadBufferView();
+			return RSlice();
 		}
 
 		return output.ToReadOnly().Take(outputSize);

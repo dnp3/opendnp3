@@ -25,7 +25,7 @@
 
 #include "opendnp3/app/APDUHeader.h"
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 
 namespace opendnp3
@@ -41,11 +41,11 @@ class RequestHistory
 	bool HasLastRequest() const { return hasLast; }
 
 	void Reset();	
-	void RecordLastProcessedRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);	
+	void RecordLastProcessedRequest(const APDUHeader& header, const openpal::RSlice& objects);	
 	
 	APDUHeader GetLastHeader() const;
-	bool EqualsLastObjects(const openpal::ReadBufferView& objects) const;
-	bool FullyEqualsLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects) const;
+	bool EqualsLastObjects(const openpal::RSlice& objects) const;
+	bool FullyEqualsLastRequest(const APDUHeader& header, const openpal::RSlice& objects) const;
 
 	private:
 

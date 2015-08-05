@@ -180,7 +180,7 @@ void PhysicalLayerBase::StartClose()
 	}
 }
 
-void PhysicalLayerBase::BeginWrite(const openpal::ReadBufferView& buffer)
+void PhysicalLayerBase::BeginWrite(const openpal::RSlice& buffer)
 {
 	if (state.CanWrite())
 	{
@@ -205,7 +205,7 @@ void PhysicalLayerBase::BeginWrite(const openpal::ReadBufferView& buffer)
 	}
 }
 
-void PhysicalLayerBase::BeginRead(WriteBufferView& buffer)
+void PhysicalLayerBase::BeginRead(WSlice& buffer)
 {
 	if(state.CanRead())
 	{
@@ -219,7 +219,7 @@ void PhysicalLayerBase::BeginRead(WriteBufferView& buffer)
 			SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Client read a length of 0");
 			auto callback = [this, buffer]()
 			{
-				this->DoReadCallback(ReadBufferView());
+				this->DoReadCallback(RSlice());
 			};
 			pExecutor->PostLambda(callback);
 		}
@@ -311,7 +311,7 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuf
 
 			if (!state.isClosing)
 			{
-				ReadBufferView buffer(pBuffer, numRead);
+				RSlice buffer(pBuffer, numRead);
 				this->DoReadCallback(buffer);
 			}
 		}
@@ -376,7 +376,7 @@ void PhysicalLayerBase::DoThisLayerDown()
 	}
 }
 
-void PhysicalLayerBase::DoReadCallback(const ReadBufferView& arBuffer)
+void PhysicalLayerBase::DoReadCallback(const RSlice& arBuffer)
 {
 	if (pCallbacks)
 	{

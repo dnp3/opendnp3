@@ -65,7 +65,7 @@ class OAuthContext final : public opendnp3::OContext
 
 	virtual void CheckForTaskStart() override final;
 		
-	virtual void ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void ReceiveParsedHeader(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects) override final;
 
 	virtual void Increment(opendnp3::SecurityStatIndex index) override final;
 
@@ -82,19 +82,19 @@ class OAuthContext final : public opendnp3::OContext
 	};
 
 
-	APDUResult ProcessAuthAPDU(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	APDUResult ProcessAuthAPDU(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
-	APDUResult ProcessAuthRequest(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	APDUResult ProcessAuthRequest(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
-	APDUResult ProcessChallengeReply(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	APDUResult ProcessChallengeReply(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
-	APDUResult ProcessNormalFunction(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	APDUResult ProcessNormalFunction(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
-	APDUResult ProcessRequestKeyStatus(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	APDUResult ProcessRequestKeyStatus(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
-	APDUResult ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	APDUResult ProcessChangeSessionKeys(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
-	APDUResult ProcessUserStatusChange(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	APDUResult ProcessUserStatusChange(const openpal::RSlice& fragment, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
 	APDUResult ProcessUserStatusChange_Add(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);
 
@@ -116,7 +116,7 @@ class OAuthContext final : public opendnp3::OContext
 
 	bool AuthenticateUserStatusChange(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);	
 
-	bool TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header);
+	bool TransmitChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header);
 
 	static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, opendnp3::UpdateKeyMode type);	
 

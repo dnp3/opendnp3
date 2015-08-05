@@ -94,7 +94,7 @@ void PhysicalLayerSerial::DoOpenSuccess()
 	
 }
 
-void PhysicalLayerSerial::DoRead(openpal::WriteBufferView& buff)
+void PhysicalLayerSerial::DoRead(openpal::WSlice& buff)
 {
 	uint8_t* pBuffer = buff;
 	
@@ -106,7 +106,7 @@ void PhysicalLayerSerial::DoRead(openpal::WriteBufferView& buff)
 	port.async_read_some(buffer(pBuffer, buff.Size()), executor.strand.wrap(callback));
 }
 
-void PhysicalLayerSerial::DoWrite(const ReadBufferView& buff)
+void PhysicalLayerSerial::DoWrite(const RSlice& buff)
 {	
 	auto callback = [this](const std::error_code& error, size_t size) { this->OnWriteCallback(error, static_cast<uint32_t>(size));  };
 

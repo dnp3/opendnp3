@@ -23,8 +23,8 @@
 
 #include "Array.h"
 
-#include "openpal/container/WriteBufferView.h"
-#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WSlice.h"
+#include "openpal/container/RSlice.h"
 
 #include <cstdint>
 
@@ -41,15 +41,15 @@ public:
 	Buffer(uint32_t size);
 
 	// initialize with the exact size and contents of the view
-	Buffer(const ReadBufferView& input);
+	Buffer(const RSlice& input);
 
 	virtual ~Buffer(){}	
 
-	ReadBufferView ToReadOnly() const;
+	RSlice ToReadOnly() const;
 
-	WriteBufferView GetWriteBufferView();
+	WSlice GetWSlice();
 
-	WriteBufferView GetWriteBufferView(uint32_t maxSize);
+	WSlice GetWSlice(uint32_t maxSize);
 
 	const uint8_t* operator()() const { return buffer; }
 

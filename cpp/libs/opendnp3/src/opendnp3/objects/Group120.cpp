@@ -40,7 +40,7 @@ Group120Var1::Group120Var1(
   uint16_t userNum_,
   HMACType hmacAlgo_,
   ChallengeReason challengeReason_,
-  const openpal::ReadBufferView& challengeData_
+  const openpal::RSlice& challengeData_
 ) : 
   challengeSeqNum(challengeSeqNum_),
   userNum(userNum_),
@@ -54,14 +54,14 @@ uint32_t Group120Var1::Size() const
   return MIN_SIZE + challengeData.Size();
 }
 
-bool Group120Var1::Read(const ReadBufferView& buffer)
+bool Group120Var1::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var1::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->challengeSeqNum = UInt32::ReadBuffer(copy);
   this->userNum = UInt16::ReadBuffer(copy);
@@ -72,7 +72,7 @@ bool Group120Var1::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var1::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var1::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -97,7 +97,7 @@ Group120Var2::Group120Var2() :
 Group120Var2::Group120Var2(
   uint32_t challengeSeqNum_,
   uint16_t userNum_,
-  const openpal::ReadBufferView& hmacValue_
+  const openpal::RSlice& hmacValue_
 ) : 
   challengeSeqNum(challengeSeqNum_),
   userNum(userNum_),
@@ -109,14 +109,14 @@ uint32_t Group120Var2::Size() const
   return MIN_SIZE + hmacValue.Size();
 }
 
-bool Group120Var2::Read(const ReadBufferView& buffer)
+bool Group120Var2::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var2::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->challengeSeqNum = UInt32::ReadBuffer(copy);
   this->userNum = UInt16::ReadBuffer(copy);
@@ -125,7 +125,7 @@ bool Group120Var2::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var2::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var2::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -141,24 +141,24 @@ bool Group120Var2::Write(openpal::WriteBufferView& buffer) const
 
 // ------- Group120Var3 -------
 
-bool Group120Var3::Read(ReadBufferView& buffer, Group120Var3& output)
+bool Group120Var3::Read(RSlice& buffer, Group120Var3& output)
 {
   return Parse::Many(buffer, output.challengeSeqNum, output.userNum);
 }
 
-bool Group120Var3::Write(const Group120Var3& arg, openpal::WriteBufferView& buffer)
+bool Group120Var3::Write(const Group120Var3& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.challengeSeqNum, arg.userNum);
 }
 
 // ------- Group120Var4 -------
 
-bool Group120Var4::Read(ReadBufferView& buffer, Group120Var4& output)
+bool Group120Var4::Read(RSlice& buffer, Group120Var4& output)
 {
   return Parse::Many(buffer, output.userNum);
 }
 
-bool Group120Var4::Write(const Group120Var4& arg, openpal::WriteBufferView& buffer)
+bool Group120Var4::Write(const Group120Var4& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.userNum);
 }
@@ -175,8 +175,8 @@ Group120Var5::Group120Var5(
   KeyWrapAlgorithm keyWrapAlgo_,
   KeyStatus keyStatus_,
   HMACType hmacAlgo_,
-  const openpal::ReadBufferView& challengeData_,
-  const openpal::ReadBufferView& hmacValue_
+  const openpal::RSlice& challengeData_,
+  const openpal::RSlice& hmacValue_
 ) : 
   keyChangeSeqNum(keyChangeSeqNum_),
   userNum(userNum_),
@@ -192,14 +192,14 @@ uint32_t Group120Var5::Size() const
   return MIN_SIZE + challengeData.Size() + hmacValue.Size();
 }
 
-bool Group120Var5::Read(const ReadBufferView& buffer)
+bool Group120Var5::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var5::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->keyChangeSeqNum = UInt32::ReadBuffer(copy);
   this->userNum = UInt16::ReadBuffer(copy);
@@ -216,7 +216,7 @@ bool Group120Var5::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var5::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -253,7 +253,7 @@ Group120Var6::Group120Var6() :
 Group120Var6::Group120Var6(
   uint32_t keyChangeSeqNum_,
   uint16_t userNum_,
-  const openpal::ReadBufferView& keyWrapData_
+  const openpal::RSlice& keyWrapData_
 ) : 
   keyChangeSeqNum(keyChangeSeqNum_),
   userNum(userNum_),
@@ -265,14 +265,14 @@ uint32_t Group120Var6::Size() const
   return MIN_SIZE + keyWrapData.Size();
 }
 
-bool Group120Var6::Read(const ReadBufferView& buffer)
+bool Group120Var6::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var6::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->keyChangeSeqNum = UInt32::ReadBuffer(copy);
   this->userNum = UInt16::ReadBuffer(copy);
@@ -281,7 +281,7 @@ bool Group120Var6::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var6::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var6::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -307,7 +307,7 @@ Group120Var7::Group120Var7(
   uint16_t assocId_,
   AuthErrorCode errorCode_,
   DNPTime time_,
-  const openpal::ReadBufferView& errorText_
+  const openpal::RSlice& errorText_
 ) : 
   challengeSeqNum(challengeSeqNum_),
   userNum(userNum_),
@@ -322,14 +322,14 @@ uint32_t Group120Var7::Size() const
   return MIN_SIZE + errorText.Size();
 }
 
-bool Group120Var7::Read(const ReadBufferView& buffer)
+bool Group120Var7::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var7::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->challengeSeqNum = UInt32::ReadBuffer(copy);
   this->userNum = UInt16::ReadBuffer(copy);
@@ -341,7 +341,7 @@ bool Group120Var7::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var7::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var7::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -367,7 +367,7 @@ Group120Var8::Group120Var8() :
 Group120Var8::Group120Var8(
   KeyChangeMethod keyChangeMethod_,
   CertificateType certificateType_,
-  const openpal::ReadBufferView& certificate_
+  const openpal::RSlice& certificate_
 ) : 
   keyChangeMethod(keyChangeMethod_),
   certificateType(certificateType_),
@@ -379,14 +379,14 @@ uint32_t Group120Var8::Size() const
   return MIN_SIZE + certificate.Size();
 }
 
-bool Group120Var8::Read(const ReadBufferView& buffer)
+bool Group120Var8::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var8::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->keyChangeMethod = KeyChangeMethodFromType(UInt8::ReadBuffer(copy));
   this->certificateType = CertificateTypeFromType(UInt8::ReadBuffer(copy));
@@ -395,7 +395,7 @@ bool Group120Var8::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var8::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var8::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -415,7 +415,7 @@ Group120Var9::Group120Var9()
 {}
 
 Group120Var9::Group120Var9(
-  const openpal::ReadBufferView& hmacValue_
+  const openpal::RSlice& hmacValue_
 ) : 
   hmacValue(hmacValue_)
 {}
@@ -425,13 +425,13 @@ uint32_t Group120Var9::Size() const
   return MIN_SIZE + hmacValue.Size();
 }
 
-bool Group120Var9::Read(const ReadBufferView& buffer)
+bool Group120Var9::Read(const RSlice& buffer)
 {
   this->hmacValue = buffer; // the object is just the remainder field
   return true;
 }
 
-bool Group120Var9::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var9::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -454,9 +454,9 @@ Group120Var10::Group120Var10(
   uint32_t statusChangeSeqNum_,
   uint16_t userRole_,
   uint16_t userRoleExpDays_,
-  const openpal::ReadBufferView& userName_,
-  const openpal::ReadBufferView& userPublicKey_,
-  const openpal::ReadBufferView& certificationData_
+  const openpal::RSlice& userName_,
+  const openpal::RSlice& userPublicKey_,
+  const openpal::RSlice& certificationData_
 ) : 
   keyChangeMethod(keyChangeMethod_),
   userOperation(userOperation_),
@@ -473,14 +473,14 @@ uint32_t Group120Var10::Size() const
   return MIN_SIZE + userName.Size() + userPublicKey.Size() + certificationData.Size();
 }
 
-bool Group120Var10::Read(const ReadBufferView& buffer)
+bool Group120Var10::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var10::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->keyChangeMethod = KeyChangeMethodFromType(UInt8::ReadBuffer(copy));
   this->userOperation = UserOperationFromType(UInt8::ReadBuffer(copy));
@@ -503,7 +503,7 @@ bool Group120Var10::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var10::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var10::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -538,8 +538,8 @@ Group120Var11::Group120Var11() :
 
 Group120Var11::Group120Var11(
   KeyChangeMethod keyChangeMethod_,
-  const openpal::ReadBufferView& userName_,
-  const openpal::ReadBufferView& challengeData_
+  const openpal::RSlice& userName_,
+  const openpal::RSlice& challengeData_
 ) : 
   keyChangeMethod(keyChangeMethod_),
   userName(userName_),
@@ -551,14 +551,14 @@ uint32_t Group120Var11::Size() const
   return MIN_SIZE + userName.Size() + challengeData.Size();
 }
 
-bool Group120Var11::Read(const ReadBufferView& buffer)
+bool Group120Var11::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var11::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->keyChangeMethod = KeyChangeMethodFromType(UInt8::ReadBuffer(copy));
 
@@ -577,7 +577,7 @@ bool Group120Var11::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var11::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var11::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -609,7 +609,7 @@ Group120Var12::Group120Var12() :
 Group120Var12::Group120Var12(
   uint32_t keyChangeSeqNum_,
   uint16_t userNum_,
-  const openpal::ReadBufferView& challengeData_
+  const openpal::RSlice& challengeData_
 ) : 
   keyChangeSeqNum(keyChangeSeqNum_),
   userNum(userNum_),
@@ -621,14 +621,14 @@ uint32_t Group120Var12::Size() const
   return MIN_SIZE + challengeData.Size();
 }
 
-bool Group120Var12::Read(const ReadBufferView& buffer)
+bool Group120Var12::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var12::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->keyChangeSeqNum = UInt32::ReadBuffer(copy);
   this->userNum = UInt16::ReadBuffer(copy);
@@ -648,7 +648,7 @@ bool Group120Var12::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var12::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var12::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -681,7 +681,7 @@ Group120Var13::Group120Var13() :
 Group120Var13::Group120Var13(
   uint32_t keyChangeSeqNum_,
   uint16_t userNum_,
-  const openpal::ReadBufferView& encryptedUpdateKey_
+  const openpal::RSlice& encryptedUpdateKey_
 ) : 
   keyChangeSeqNum(keyChangeSeqNum_),
   userNum(userNum_),
@@ -693,14 +693,14 @@ uint32_t Group120Var13::Size() const
   return MIN_SIZE + encryptedUpdateKey.Size();
 }
 
-bool Group120Var13::Read(const ReadBufferView& buffer)
+bool Group120Var13::Read(const RSlice& buffer)
 {
   if(buffer.Size() < Group120Var13::MIN_SIZE)
   {
     return false;
   }
 
-  ReadBufferView copy(buffer); //mutable copy for parsing
+  RSlice copy(buffer); //mutable copy for parsing
 
   this->keyChangeSeqNum = UInt32::ReadBuffer(copy);
   this->userNum = UInt16::ReadBuffer(copy);
@@ -720,7 +720,7 @@ bool Group120Var13::Read(const ReadBufferView& buffer)
   return true;
 }
 
-bool Group120Var13::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var13::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -750,7 +750,7 @@ Group120Var14::Group120Var14()
 {}
 
 Group120Var14::Group120Var14(
-  const openpal::ReadBufferView& Signature_
+  const openpal::RSlice& Signature_
 ) : 
   Signature(Signature_)
 {}
@@ -760,13 +760,13 @@ uint32_t Group120Var14::Size() const
   return MIN_SIZE + Signature.Size();
 }
 
-bool Group120Var14::Read(const ReadBufferView& buffer)
+bool Group120Var14::Read(const RSlice& buffer)
 {
   this->Signature = buffer; // the object is just the remainder field
   return true;
 }
 
-bool Group120Var14::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var14::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {
@@ -783,7 +783,7 @@ Group120Var15::Group120Var15()
 {}
 
 Group120Var15::Group120Var15(
-  const openpal::ReadBufferView& hmacValue_
+  const openpal::RSlice& hmacValue_
 ) : 
   hmacValue(hmacValue_)
 {}
@@ -793,13 +793,13 @@ uint32_t Group120Var15::Size() const
   return MIN_SIZE + hmacValue.Size();
 }
 
-bool Group120Var15::Read(const ReadBufferView& buffer)
+bool Group120Var15::Read(const RSlice& buffer)
 {
   this->hmacValue = buffer; // the object is just the remainder field
   return true;
 }
 
-bool Group120Var15::Write(openpal::WriteBufferView& buffer) const
+bool Group120Var15::Write(openpal::WSlice& buffer) const
 {
   if(this->Size() > buffer.Size())
   {

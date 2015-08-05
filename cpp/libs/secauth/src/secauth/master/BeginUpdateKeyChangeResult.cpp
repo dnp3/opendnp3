@@ -34,8 +34,8 @@ namespace secauth
 	BeginUpdateKeyChangeResult::BeginUpdateKeyChangeResult(
 		opendnp3::User user_,
 		uint32_t keyChangeSequenceNum_,
-		const openpal::ReadBufferView& masterChallengeData_,
-		const openpal::ReadBufferView& outstationChallengeData_
+		const openpal::RSlice& masterChallengeData_,
+		const openpal::RSlice& outstationChallengeData_
 	) :
 		result(opendnp3::TaskCompletion::SUCCESS),
 		user(user_),

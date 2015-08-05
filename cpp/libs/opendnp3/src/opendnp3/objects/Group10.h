@@ -22,8 +22,8 @@
 #define OPENDNP3_GROUP10_H
 
 #include "opendnp3/app/GroupVariationID.h"
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -47,14 +47,14 @@ struct Group10Var2
 {
   static GroupVariationID ID() { return GroupVariationID(10,2); }
   static uint32_t Size() { return 1; }
-  static bool Read(openpal::ReadBufferView&, Group10Var2&);
-  static bool Write(const Group10Var2&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group10Var2&);
+  static bool Write(const Group10Var2&, openpal::WSlice&);
 
   uint8_t flags;
 
   typedef BinaryOutputStatus Target;
-  static bool ReadTarget(openpal::ReadBufferView&, BinaryOutputStatus&);
-  static bool WriteTarget(const BinaryOutputStatus&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, BinaryOutputStatus&);
+  static bool WriteTarget(const BinaryOutputStatus&, openpal::WSlice&);
   static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 

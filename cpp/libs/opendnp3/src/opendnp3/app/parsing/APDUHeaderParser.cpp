@@ -22,7 +22,7 @@
 #include "APDUHeaderParser.h"
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 #include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-bool APDUHeaderParser::ParseRequest(const openpal::ReadBufferView& apdu, APDUHeader& header, openpal::Logger* pLogger)
+bool APDUHeaderParser::ParseRequest(const openpal::RSlice& apdu, APDUHeader& header, openpal::Logger* pLogger)
 {
 	if (apdu.Size() < APDU_REQUEST_HEADER_SIZE)
 	{
@@ -46,7 +46,7 @@ bool APDUHeaderParser::ParseRequest(const openpal::ReadBufferView& apdu, APDUHea
 	}
 }
 
-bool APDUHeaderParser::ParseResponse(const openpal::ReadBufferView& apdu, APDUResponseHeader& header, openpal::Logger* pLogger)
+bool APDUHeaderParser::ParseResponse(const openpal::RSlice& apdu, APDUResponseHeader& header, openpal::Logger* pLogger)
 {
 	if (apdu.Size() < APDU_RESPONSE_HEADER_SIZE)
 	{		

@@ -32,9 +32,9 @@ class APDURequest : public APDUWrapper
 {
 public:
 
-	static APDUEquality Compare(const openpal::ReadBufferView& lhs, const openpal::ReadBufferView& rhs);
+	static APDUEquality Compare(const openpal::RSlice& lhs, const openpal::RSlice& rhs);
 
-	APDURequest(const openpal::WriteBufferView& aBuffer);
+	APDURequest(const openpal::WSlice& aBuffer);
 
 	void ConfigureHeader(FunctionCode code, uint8_t seq);
 

@@ -32,14 +32,14 @@ namespace openpal
 	const float SingleFloat::Min(openpal::MinValue<float>());
 
 
-	float SingleFloat::ReadBuffer(ReadBufferView& buffer)
+	float SingleFloat::ReadBuffer(RSlice& buffer)
 	{
 		auto ret = Read(buffer);
 		buffer.Advance(SIZE);
 		return ret;
 	}
 
-	void SingleFloat::WriteBuffer(WriteBufferView& buffer, float value)
+	void SingleFloat::WriteBuffer(WSlice& buffer, float value)
 	{
 		Write(buffer, value);
 		buffer.Advance(SIZE);

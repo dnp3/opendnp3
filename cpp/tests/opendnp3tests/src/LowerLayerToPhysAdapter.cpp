@@ -38,7 +38,7 @@ LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(const openpal::Logger& logger_,
 
 void LowerLayerToPhysAdapter::StartRead()
 {
-	WriteBufferView buffer(mpBuff, BUFFER_SIZE);
+	WSlice buffer(mpBuff, BUFFER_SIZE);
 	mpPhys->BeginRead(buffer);
 }
 
@@ -49,7 +49,7 @@ void LowerLayerToPhysAdapter::OnOpenFailure()
 }
 
 /* Implement IUpperLayer */
-void LowerLayerToPhysAdapter::OnReceive(const openpal::ReadBufferView& buffer)
+void LowerLayerToPhysAdapter::OnReceive(const openpal::RSlice& buffer)
 {
 	// process the data into another buffer *before* kicking off another call,
 	// otherwise you have a potential race condition
@@ -94,7 +94,7 @@ void LowerLayerToPhysAdapter::OnLowerLayerDown()
 }
 
 
-void LowerLayerToPhysAdapter::BeginTransmit(const openpal::ReadBufferView& buffer)
+void LowerLayerToPhysAdapter::BeginTransmit(const openpal::RSlice& buffer)
 {
 	mpPhys->BeginWrite(buffer);
 }

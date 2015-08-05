@@ -22,8 +22,8 @@
 #define OPENDNP3_GROUP11_H
 
 #include "opendnp3/app/GroupVariationID.h"
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -41,14 +41,14 @@ struct Group11Var1
 {
   static GroupVariationID ID() { return GroupVariationID(11,1); }
   static uint32_t Size() { return 1; }
-  static bool Read(openpal::ReadBufferView&, Group11Var1&);
-  static bool Write(const Group11Var1&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group11Var1&);
+  static bool Write(const Group11Var1&, openpal::WSlice&);
 
   uint8_t flags;
 
   typedef BinaryOutputStatus Target;
-  static bool ReadTarget(openpal::ReadBufferView&, BinaryOutputStatus&);
-  static bool WriteTarget(const BinaryOutputStatus&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, BinaryOutputStatus&);
+  static bool WriteTarget(const BinaryOutputStatus&, openpal::WSlice&);
   static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
@@ -57,15 +57,15 @@ struct Group11Var2
 {
   static GroupVariationID ID() { return GroupVariationID(11,2); }
   static uint32_t Size() { return 7; }
-  static bool Read(openpal::ReadBufferView&, Group11Var2&);
-  static bool Write(const Group11Var2&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group11Var2&);
+  static bool Write(const Group11Var2&, openpal::WSlice&);
 
   uint8_t flags;
   DNPTime time;
 
   typedef BinaryOutputStatus Target;
-  static bool ReadTarget(openpal::ReadBufferView&, BinaryOutputStatus&);
-  static bool WriteTarget(const BinaryOutputStatus&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, BinaryOutputStatus&);
+  static bool WriteTarget(const BinaryOutputStatus&, openpal::WSlice&);
   static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 

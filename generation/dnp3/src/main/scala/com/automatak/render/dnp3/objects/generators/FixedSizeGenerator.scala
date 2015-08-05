@@ -18,9 +18,9 @@ object FixedSizeGenerator {
 
     def sizeSignature: Iterator[String] = Iterator("static uint32_t Size() { return %d; }".format(x.size))
 
-    def readSignature: Iterator[String] = Iterator("static bool Read(openpal::ReadBufferView&, %s&);".format(x.name))
+    def readSignature: Iterator[String] = Iterator("static bool Read(openpal::RSlice&, %s&);".format(x.name))
 
-    def writeSignature: Iterator[String] = Iterator("static bool Write(const %s&, openpal::WriteBufferView&);".format(x.name))
+    def writeSignature: Iterator[String] = Iterator("static bool Write(const %s&, openpal::WSlice&);".format(x.name))
 
     sizeSignature ++
     readSignature ++
@@ -32,9 +32,9 @@ object FixedSizeGenerator {
 
   def implementation(x: FixedSize)(implicit i: Indentation): Iterator[String] = {
 
-    def readSignature: Iterator[String] = Iterator("bool %s::Read(ReadBufferView& buffer, %s& output)".format(x.name, x.name))
+    def readSignature: Iterator[String] = Iterator("bool %s::Read(RSlice& buffer, %s& output)".format(x.name, x.name))
 
-    def writeSignature: Iterator[String] = Iterator("bool %s::Write(const %s& arg, openpal::WriteBufferView& buffer)".format(x.name, x.name))
+    def writeSignature: Iterator[String] = Iterator("bool %s::Write(const %s& arg, openpal::WSlice& buffer)".format(x.name, x.name))
 
     def fieldParams(name: String) : String = {
       x.fields.map(f => f.name).map(s => "%s.%s".format(name,s)).mkString(", ")

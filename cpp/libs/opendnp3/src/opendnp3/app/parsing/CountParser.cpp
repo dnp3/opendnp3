@@ -37,7 +37,7 @@ CountParser::CountParser(uint16_t count_, uint32_t requiredSize_, HandleFun hand
 	
 }
 
-ParseResult CountParser::Process(const HeaderRecord& record, openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const
+ParseResult CountParser::Process(const HeaderRecord& record, openpal::RSlice& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const
 {
 	if (buffer.Size() < requiredSize)
 	{
@@ -55,7 +55,7 @@ ParseResult CountParser::Process(const HeaderRecord& record, openpal::ReadBuffer
 	}
 }
 
-ParseResult CountParser::ParseHeader(openpal::ReadBufferView& buffer, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult CountParser::ParseHeader(openpal::RSlice& buffer, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	uint16_t count;
 	auto result = numParser.ParseCount(buffer, count, pLogger);
@@ -89,7 +89,7 @@ ParseResult CountParser::ParseHeader(openpal::ReadBufferView& buffer, const NumP
 	}
 }
 
-ParseResult CountParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult CountParser::ParseCountOfObjects(openpal::RSlice& buffer, const HeaderRecord& record, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	switch (record.enumeration)
 	{

@@ -35,7 +35,7 @@ namespace opendnp3
 
 			MockCryptoProvider();
 
-			virtual openpal::ReadBufferView GetSecureRandom(openpal::WriteBufferView& buffer, std::error_code& ec) override final;			
+			virtual openpal::RSlice GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec) override final;			
 
 			virtual openpal::IHMACAlgo& GetSHA1HMAC() override final;
 			virtual openpal::IHMACAlgo& GetSHA256HMAC() override final;			

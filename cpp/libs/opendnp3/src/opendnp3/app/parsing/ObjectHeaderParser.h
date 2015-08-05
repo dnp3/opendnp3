@@ -24,7 +24,7 @@
 #include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/app/parsing/ParseResult.h"
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
 
 #include <opendnp3/gen/GroupVariation.h>
@@ -46,11 +46,11 @@ class ObjectHeaderParser : private openpal::StaticOnly
 {
 public:
 
-	static ParseResult ParseObjectHeader(ObjectHeader& header, openpal::ReadBufferView& buffer, openpal::Logger* pLogger);
+	static ParseResult ParseObjectHeader(ObjectHeader& header, openpal::RSlice& buffer, openpal::Logger* pLogger);
 
 	// Provides stateless inspection of the first object header, provided that it exists
 	// return false on failure (e.g. < 3 bytes)
-	static bool ReadFirstGroupVariation(const openpal::ReadBufferView& objects, GroupVariation& gv);
+	static bool ReadFirstGroupVariation(const openpal::RSlice& objects, GroupVariation& gv);
 };
 
 }

@@ -99,16 +99,16 @@ public:
 	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc) override final;
 	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
 	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadBufferView& arBuffer) override final;
-	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadBufferView& arBuffer) override final;
+	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override final;
+	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override final;
 
 	// ------------ ILinkRouter -----------------
 
-	virtual void BeginTransmit(const openpal::ReadBufferView& buffer, opendnp3::ILinkSession* pContext) override final;
+	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession* pContext) override final;
 
 	// ------------ IUpperLayer -----------------
 
-	virtual void OnReceive(const openpal::ReadBufferView&) override final;
+	virtual void OnReceive(const openpal::RSlice&) override final;
 	virtual void OnSendResult(bool success) override final;
 
 protected:
@@ -139,7 +139,7 @@ private:
 
 	struct Transmission
 	{
-		Transmission(const openpal::ReadBufferView& buffer_, opendnp3::ILinkSession* pContext_) :
+		Transmission(const openpal::RSlice& buffer_, opendnp3::ILinkSession* pContext_) :
 			buffer(buffer_),
 			pContext(pContext_)			
 		{}
@@ -147,7 +147,7 @@ private:
 		Transmission() : buffer(), pContext(nullptr)
 		{}
 
-		openpal::ReadBufferView buffer;
+		openpal::RSlice buffer;
 		opendnp3::ILinkSession* pContext;		
 	};
 

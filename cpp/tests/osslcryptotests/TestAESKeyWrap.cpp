@@ -89,7 +89,7 @@ void TestKeyWrap(
 	const uint32_t OUTPUT_SIZE = inputBuffer.Size() + 8;
 
 	Buffer out(OUTPUT_SIZE);
-	auto outputBuffer = out.GetWriteBufferView();
+	auto outputBuffer = out.GetWSlice();
 	std::error_code ec;
 	auto result = algo.WrapKey(kekBuffer, inputBuffer, outputBuffer, ec);
 	REQUIRE_FALSE(ec);	
@@ -110,7 +110,7 @@ void TestKeyUnwrap(
 	const uint32_t OUTPUT_SIZE = inputBuffer.Size() - 8;
 
 	Buffer out(OUTPUT_SIZE);
-	auto outputBuffer = out.GetWriteBufferView();
+	auto outputBuffer = out.GetWSlice();
 	std::error_code ec;
 	auto result = algo.UnwrapKey(kekBuffer, inputBuffer, outputBuffer, ec);
 	REQUIRE_FALSE(ec);

@@ -31,17 +31,17 @@ namespace opendnp3 {
 
 // ------- Group43Var1 -------
 
-bool Group43Var1::Read(ReadBufferView& buffer, Group43Var1& output)
+bool Group43Var1::Read(RSlice& buffer, Group43Var1& output)
 {
   return Parse::Many(buffer, output.status, output.value);
 }
 
-bool Group43Var1::Write(const Group43Var1& arg, openpal::WriteBufferView& buffer)
+bool Group43Var1::Write(const Group43Var1& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.status, arg.value);
 }
 
-bool Group43Var1::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
+bool Group43Var1::ReadTarget(RSlice& buff, AnalogCommandEvent& output)
 {
   Group43Var1 value;
   if(Read(buff, value))
@@ -55,24 +55,24 @@ bool Group43Var1::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
   }
 }
 
-bool Group43Var1::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group43Var1::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& buff)
 {
   return Group43Var1::Write(ConvertGroup43Var1::Apply(value), buff);
 }
 
 // ------- Group43Var2 -------
 
-bool Group43Var2::Read(ReadBufferView& buffer, Group43Var2& output)
+bool Group43Var2::Read(RSlice& buffer, Group43Var2& output)
 {
   return Parse::Many(buffer, output.status, output.value);
 }
 
-bool Group43Var2::Write(const Group43Var2& arg, openpal::WriteBufferView& buffer)
+bool Group43Var2::Write(const Group43Var2& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.status, arg.value);
 }
 
-bool Group43Var2::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
+bool Group43Var2::ReadTarget(RSlice& buff, AnalogCommandEvent& output)
 {
   Group43Var2 value;
   if(Read(buff, value))
@@ -86,24 +86,24 @@ bool Group43Var2::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
   }
 }
 
-bool Group43Var2::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group43Var2::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& buff)
 {
   return Group43Var2::Write(ConvertGroup43Var2::Apply(value), buff);
 }
 
 // ------- Group43Var3 -------
 
-bool Group43Var3::Read(ReadBufferView& buffer, Group43Var3& output)
+bool Group43Var3::Read(RSlice& buffer, Group43Var3& output)
 {
   return Parse::Many(buffer, output.status, output.value, output.time);
 }
 
-bool Group43Var3::Write(const Group43Var3& arg, openpal::WriteBufferView& buffer)
+bool Group43Var3::Write(const Group43Var3& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.status, arg.value, arg.time);
 }
 
-bool Group43Var3::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
+bool Group43Var3::ReadTarget(RSlice& buff, AnalogCommandEvent& output)
 {
   Group43Var3 value;
   if(Read(buff, value))
@@ -117,24 +117,24 @@ bool Group43Var3::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
   }
 }
 
-bool Group43Var3::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group43Var3::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& buff)
 {
   return Group43Var3::Write(ConvertGroup43Var3::Apply(value), buff);
 }
 
 // ------- Group43Var4 -------
 
-bool Group43Var4::Read(ReadBufferView& buffer, Group43Var4& output)
+bool Group43Var4::Read(RSlice& buffer, Group43Var4& output)
 {
   return Parse::Many(buffer, output.status, output.value, output.time);
 }
 
-bool Group43Var4::Write(const Group43Var4& arg, openpal::WriteBufferView& buffer)
+bool Group43Var4::Write(const Group43Var4& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.status, arg.value, arg.time);
 }
 
-bool Group43Var4::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
+bool Group43Var4::ReadTarget(RSlice& buff, AnalogCommandEvent& output)
 {
   Group43Var4 value;
   if(Read(buff, value))
@@ -148,24 +148,24 @@ bool Group43Var4::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
   }
 }
 
-bool Group43Var4::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group43Var4::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& buff)
 {
   return Group43Var4::Write(ConvertGroup43Var4::Apply(value), buff);
 }
 
 // ------- Group43Var5 -------
 
-bool Group43Var5::Read(ReadBufferView& buffer, Group43Var5& output)
+bool Group43Var5::Read(RSlice& buffer, Group43Var5& output)
 {
   return Parse::Many(buffer, output.status, output.value);
 }
 
-bool Group43Var5::Write(const Group43Var5& arg, openpal::WriteBufferView& buffer)
+bool Group43Var5::Write(const Group43Var5& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.status, arg.value);
 }
 
-bool Group43Var5::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
+bool Group43Var5::ReadTarget(RSlice& buff, AnalogCommandEvent& output)
 {
   Group43Var5 value;
   if(Read(buff, value))
@@ -179,24 +179,24 @@ bool Group43Var5::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
   }
 }
 
-bool Group43Var5::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group43Var5::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& buff)
 {
   return Group43Var5::Write(ConvertGroup43Var5::Apply(value), buff);
 }
 
 // ------- Group43Var6 -------
 
-bool Group43Var6::Read(ReadBufferView& buffer, Group43Var6& output)
+bool Group43Var6::Read(RSlice& buffer, Group43Var6& output)
 {
   return Parse::Many(buffer, output.status, output.value);
 }
 
-bool Group43Var6::Write(const Group43Var6& arg, openpal::WriteBufferView& buffer)
+bool Group43Var6::Write(const Group43Var6& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.status, arg.value);
 }
 
-bool Group43Var6::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
+bool Group43Var6::ReadTarget(RSlice& buff, AnalogCommandEvent& output)
 {
   Group43Var6 value;
   if(Read(buff, value))
@@ -210,24 +210,24 @@ bool Group43Var6::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
   }
 }
 
-bool Group43Var6::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group43Var6::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& buff)
 {
   return Group43Var6::Write(ConvertGroup43Var6::Apply(value), buff);
 }
 
 // ------- Group43Var7 -------
 
-bool Group43Var7::Read(ReadBufferView& buffer, Group43Var7& output)
+bool Group43Var7::Read(RSlice& buffer, Group43Var7& output)
 {
   return Parse::Many(buffer, output.status, output.value, output.time);
 }
 
-bool Group43Var7::Write(const Group43Var7& arg, openpal::WriteBufferView& buffer)
+bool Group43Var7::Write(const Group43Var7& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.status, arg.value, arg.time);
 }
 
-bool Group43Var7::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
+bool Group43Var7::ReadTarget(RSlice& buff, AnalogCommandEvent& output)
 {
   Group43Var7 value;
   if(Read(buff, value))
@@ -241,24 +241,24 @@ bool Group43Var7::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
   }
 }
 
-bool Group43Var7::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group43Var7::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& buff)
 {
   return Group43Var7::Write(ConvertGroup43Var7::Apply(value), buff);
 }
 
 // ------- Group43Var8 -------
 
-bool Group43Var8::Read(ReadBufferView& buffer, Group43Var8& output)
+bool Group43Var8::Read(RSlice& buffer, Group43Var8& output)
 {
   return Parse::Many(buffer, output.status, output.value, output.time);
 }
 
-bool Group43Var8::Write(const Group43Var8& arg, openpal::WriteBufferView& buffer)
+bool Group43Var8::Write(const Group43Var8& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.status, arg.value, arg.time);
 }
 
-bool Group43Var8::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
+bool Group43Var8::ReadTarget(RSlice& buff, AnalogCommandEvent& output)
 {
   Group43Var8 value;
   if(Read(buff, value))
@@ -272,7 +272,7 @@ bool Group43Var8::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
   }
 }
 
-bool Group43Var8::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group43Var8::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& buff)
 {
   return Group43Var8::Write(ConvertGroup43Var8::Apply(value), buff);
 }

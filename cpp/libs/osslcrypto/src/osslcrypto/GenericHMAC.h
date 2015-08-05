@@ -22,8 +22,8 @@
 #ifndef OSSLCRYPTO_GENERICHMAC_H
 #define OSSLCRYPTO_GENERICHMAC_H
 
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 
 #include <initializer_list>
 #include <system_error>
@@ -33,12 +33,12 @@
 
 namespace osslcrypto
 {
-	openpal::ReadBufferView CalculateHMAC(
+	openpal::RSlice CalculateHMAC(
 		const EVP_MD* md,
 		uint32_t outputSize,
-		const openpal::ReadBufferView& key,
-		std::initializer_list<openpal::ReadBufferView> data, 
-		openpal::WriteBufferView& output,
+		const openpal::RSlice& key,
+		std::initializer_list<openpal::RSlice> data, 
+		openpal::WSlice& output,
 		std::error_code& ec
 	);
 }

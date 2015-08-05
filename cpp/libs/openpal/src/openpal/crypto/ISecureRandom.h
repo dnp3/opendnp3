@@ -21,7 +21,7 @@
 #ifndef OPENPAL_ISECURERANDOM_H
 #define OPENPAL_ISECURERANDOM_H
 
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/WSlice.h>
 
 #include <system_error>
 
@@ -40,7 +40,7 @@ namespace openpal
 		/** 
 		 * Fill the specified buffer with secure random bytes		 
 		*/
-		virtual openpal::ReadBufferView GetSecureRandom(WriteBufferView& dest, std::error_code& ec) = 0;		
+		virtual openpal::RSlice GetSecureRandom(WSlice& dest, std::error_code& ec) = 0;		
 	};
 
 }

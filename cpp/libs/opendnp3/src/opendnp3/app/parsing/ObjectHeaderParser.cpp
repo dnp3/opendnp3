@@ -36,7 +36,7 @@ namespace opendnp3
 ObjectHeader::ObjectHeader() : group(0), variation(0), qualifier(0)
 {}
 
-ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header, ReadBufferView& buffer, Logger* pLogger)
+ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header, RSlice& buffer, Logger* pLogger)
 {
 	if (buffer.Size() < 3)
 	{
@@ -52,9 +52,9 @@ ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header, ReadBuff
 	}
 }
 
-bool ObjectHeaderParser::ReadFirstGroupVariation(const openpal::ReadBufferView& objects, GroupVariation& gv)
+bool ObjectHeaderParser::ReadFirstGroupVariation(const openpal::RSlice& objects, GroupVariation& gv)
 {
-	ReadBufferView copy(objects);
+	RSlice copy(objects);
 	ObjectHeader oheader;
 	if (ObjectHeaderParser::ParseObjectHeader(oheader, copy, nullptr) != ParseResult::OK)
 	{

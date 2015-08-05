@@ -70,23 +70,23 @@ public:
 
 	virtual bool OnSendResult(bool isSuccess) override final;
 
-	virtual bool OnReceive(const openpal::ReadBufferView& fragment) override final;
+	virtual bool OnReceive(const openpal::RSlice& fragment) override final;
 
 	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
 
 	OutstationSolicitedStateBase* ContinueMultiFragResponse(const AppSeqNum& seq);
 
-	OutstationSolicitedStateBase* RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+	OutstationSolicitedStateBase* RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	OutstationSolicitedStateBase* RespondToReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+	OutstationSolicitedStateBase* RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
 	/// ----- method overridable for implementing SA or other extensions ----
 
-	virtual void ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	virtual void ReceiveParsedHeader(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects);
 
 	virtual void CheckForTaskStart();
 
@@ -104,25 +104,25 @@ public:
 
 	
 
-	void ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	void ProcessAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects);
 
-	void ProcessRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+	void ProcessRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
 	void ProcessConfirm(const APDUHeader& header);
 
 	/// ---- common helper methods ----
 
-	void ParseHeader(const openpal::ReadBufferView& apdu);
+	void ParseHeader(const openpal::RSlice& apdu);
 
-	void BeginResponseTx(const openpal::ReadBufferView& response);		
+	void BeginResponseTx(const openpal::RSlice& response);		
 
-	void BeginUnsolTx(const openpal::ReadBufferView& response);
+	void BeginUnsolTx(const openpal::RSlice& response);
 
-	void BeginTx(const openpal::ReadBufferView& response);
+	void BeginTx(const openpal::RSlice& response);
 
 	void CheckForDeferredRequest();
 
-	bool ProcessDeferredRequest(APDUHeader header, openpal::ReadBufferView objects);
+	bool ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects);
 
 	bool StartSolicitedConfirmTimer();
 
@@ -140,27 +140,27 @@ public:
 
 	/// Handles non-read function codes that require a response. builds the response using the supplied writer.
 	/// @return An IIN field indicating the validity of the request, and to be returned in the response.
-	IINField HandleNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	IINField HandleNonReadResponse(const APDUHeader& header, const openpal::RSlice& objects, HeaderWriter& writer);
 
 	/// Handles read function codes. May trigger an unsolicited response	
 	/// @return an IIN field and a partial AppControlField (missing sequence info)
-	openpal::Pair<IINField, AppControlField> HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	openpal::Pair<IINField, AppControlField> HandleRead(const openpal::RSlice& objects, HeaderWriter& writer);
 
 	/// Handles no-response function codes.
-	void ProcessRequestNoAck(const APDUHeader& header, const openpal::ReadBufferView& objects);
+	void ProcessRequestNoAck(const APDUHeader& header, const openpal::RSlice& objects);
 
 	// ------ Function Handlers ------
 
-	IINField HandleWrite(const openpal::ReadBufferView& objects);
-	IINField HandleSelect(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleDirectOperate(const openpal::ReadBufferView& objects, HeaderWriter* pWriter);
-	IINField HandleDelayMeasure(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleRestart(const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter);
-	IINField HandleAssignClass(const openpal::ReadBufferView& objects);
-	IINField HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
+	IINField HandleWrite(const openpal::RSlice& objects);
+	IINField HandleSelect(const openpal::RSlice& objects, HeaderWriter& writer);
+	IINField HandleOperate(const openpal::RSlice& objects, HeaderWriter& writer);
+	IINField HandleDirectOperate(const openpal::RSlice& objects, HeaderWriter* pWriter);
+	IINField HandleDelayMeasure(const openpal::RSlice& objects, HeaderWriter& writer);
+	IINField HandleRestart(const openpal::RSlice& objects, bool isWarmRestart, HeaderWriter* pWriter);
+	IINField HandleAssignClass(const openpal::RSlice& objects);
+	IINField HandleDisableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer);
+	IINField HandleEnableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer);
+	IINField HandleCommandWithConstant(const openpal::RSlice& objects, HeaderWriter& writer, CommandStatus status);
 	
 	// ------ resources --------
 	openpal::Logger logger;

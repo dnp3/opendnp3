@@ -124,7 +124,7 @@ bool OContext::OnSendResult(bool isSuccess)
 	return true;
 }
 
-bool OContext::OnReceive(const openpal::ReadBufferView& fragment)
+bool OContext::OnReceive(const openpal::RSlice& fragment)
 {
 	if (!this->isOnline)
 	{
@@ -139,7 +139,7 @@ bool OContext::OnReceive(const openpal::ReadBufferView& fragment)
 	return true;
 }
 
-OutstationSolicitedStateBase* OContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	// analyze this request to see how it compares to the last request
 	if (this->history.HasLastRequest())
@@ -174,7 +174,7 @@ OutstationSolicitedStateBase* OContext::OnReceiveSolRequest(const APDUHeader& he
 	}
 }
 
-OutstationSolicitedStateBase* OContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OContext::ProcessNewRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	this->sol.seq.num = header.control.SEQ;
 
@@ -188,13 +188,13 @@ OutstationSolicitedStateBase* OContext::ProcessNewRequest(const APDUHeader& head
 	}
 }
 
-void OContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OContext::ReceiveParsedHeader(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	// this look strange, but this method is overridable for SA
 	this->ProcessAPDU(apdu, header, objects);
 }
 
-void OContext::ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OContext::ProcessAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (Functions::IsNoAckFuncCode(header.function))
 	{
@@ -223,7 +223,7 @@ void OContext::ProcessAPDU(const openpal::ReadBufferView& apdu, const APDUHeader
 }
 
 
-void OContext::ProcessRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OContext::ProcessRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (header.control.UNS)
 	{
@@ -247,13 +247,13 @@ void OContext::ProcessConfirm(const APDUHeader& header)
 	}
 }
 
-void OContext::BeginResponseTx(const ReadBufferView& response)
+void OContext::BeginResponseTx(const RSlice& response)
 {
 	this->sol.tx.Record(response);
 	this->BeginTx(response);
 }
 
-void OContext::BeginUnsolTx(const ReadBufferView& response)
+void OContext::BeginUnsolTx(const RSlice& response)
 {
 	this->unsol.tx.Record(response);
 	this->unsol.seq.confirmNum = this->unsol.seq.num;
@@ -261,7 +261,7 @@ void OContext::BeginUnsolTx(const ReadBufferView& response)
 	this->BeginTx(response);
 }
 
-void OContext::BeginTx(const openpal::ReadBufferView& response)
+void OContext::BeginTx(const openpal::RSlice& response)
 {
 	logging::ParseAndLogResponseTx(this->logger, response);	
 	this->isTransmitting = true;
@@ -273,7 +273,7 @@ void OContext::CheckForDeferredRequest()
 {
 	if (this->CanTransmit() && this->deferred.IsSet())
 	{
-		auto handler = [this](const APDUHeader& header, const ReadBufferView& objects)
+		auto handler = [this](const APDUHeader& header, const RSlice& objects)
 		{
 			return this->ProcessDeferredRequest(header, objects);
 		};
@@ -281,7 +281,7 @@ void OContext::CheckForDeferredRequest()
 	}
 }
 
-bool OContext::ProcessDeferredRequest(APDUHeader header, openpal::ReadBufferView objects)
+bool OContext::ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects)
 {
 	if (header.function == FunctionCode::CONFIRM)
 	{
@@ -365,7 +365,7 @@ bool OContext::StartUnsolicitedConfirmTimer()
 	return this->confirmTimer.Start(this->params.unsolConfirmTimeout, timeout);
 }
 
-OutstationSolicitedStateBase* OContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	this->history.RecordLastProcessedRequest(header, objects);
 
@@ -379,7 +379,7 @@ OutstationSolicitedStateBase* OContext::RespondToNonReadRequest(const APDUHeader
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
-OutstationSolicitedStateBase* OContext::RespondToReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OContext::RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	this->history.RecordLastProcessedRequest(header, objects);
 
@@ -450,7 +450,7 @@ IINField OContext::GetDynamicIIN()
 	return ret;
 }
 
-void OContext::ParseHeader(const openpal::ReadBufferView& apdu)
+void OContext::ParseHeader(const openpal::RSlice& apdu)
 {	
 	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, apdu, 18, 18);
 
@@ -506,7 +506,7 @@ DatabaseConfigView OContext::GetConfigView()
 
 //// ----------------------------- function handlers -----------------------------
 
-void OContext::ProcessRequestNoAck(const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OContext::ProcessRequestNoAck(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	switch (header.function)
 	{
@@ -519,7 +519,7 @@ void OContext::ProcessRequestNoAck(const APDUHeader& header, const openpal::Read
 	}
 }
 
-IINField OContext::HandleNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OContext::HandleNonReadResponse(const APDUHeader& header, const openpal::RSlice& objects, HeaderWriter& writer)
 {
 	switch (header.function)
 	{
@@ -548,7 +548,7 @@ IINField OContext::HandleNonReadResponse(const APDUHeader& header, const openpal
 	}
 }
 
-Pair<IINField, AppControlField> OContext::HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& objects, HeaderWriter& writer)
 {
 	this->rspContext.Reset();
 	this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
@@ -568,14 +568,14 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::ReadBufferVi
 	}
 }
 
-IINField OContext::HandleWrite(const openpal::ReadBufferView& objects)
+IINField OContext::HandleWrite(const openpal::RSlice& objects)
 {
 	WriteHandler handler(this->logger, *this->pApplication, &this->staticIIN);
 	auto result = APDUParser::Parse(objects, handler, &this->logger);
 	return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
 
-IINField OContext::HandleDirectOperate(const openpal::ReadBufferView& objects, HeaderWriter* pWriter)
+IINField OContext::HandleDirectOperate(const openpal::RSlice& objects, HeaderWriter* pWriter)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (pWriter && (objects.Size() > pWriter->Remaining()))
@@ -592,7 +592,7 @@ IINField OContext::HandleDirectOperate(const openpal::ReadBufferView& objects, H
 	}
 }
 
-IINField OContext::HandleSelect(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OContext::HandleSelect(const openpal::RSlice& objects, HeaderWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
@@ -621,7 +621,7 @@ IINField OContext::HandleSelect(const openpal::ReadBufferView& objects, HeaderWr
 	}
 }
 
-IINField OContext::HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OContext::HandleOperate(const openpal::RSlice& objects, HeaderWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
@@ -648,7 +648,7 @@ IINField OContext::HandleOperate(const openpal::ReadBufferView& objects, HeaderW
 	}
 }
 
-IINField OContext::HandleDelayMeasure(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OContext::HandleDelayMeasure(const openpal::RSlice& objects, HeaderWriter& writer)
 {
 	if (objects.IsEmpty())
 	{
@@ -663,7 +663,7 @@ IINField OContext::HandleDelayMeasure(const openpal::ReadBufferView& objects, He
 	}
 }
 
-IINField OContext::HandleRestart(const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter)
+IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRestart, HeaderWriter* pWriter)
 {
 	if (objects.IsEmpty())
 	{
@@ -702,7 +702,7 @@ IINField OContext::HandleRestart(const openpal::ReadBufferView& objects, bool is
 	}
 }
 
-IINField OContext::HandleAssignClass(const openpal::ReadBufferView& objects)
+IINField OContext::HandleAssignClass(const openpal::RSlice& objects)
 {
 	if (this->pApplication->SupportsAssignClass())
 	{
@@ -716,7 +716,7 @@ IINField OContext::HandleAssignClass(const openpal::ReadBufferView& objects)
 	}
 }
 
-IINField OContext::HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OContext::HandleDisableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer)
 {
 	ClassBasedRequestHandler handler(this->logger);
 	auto result = APDUParser::Parse(objects, handler, &this->logger);
@@ -731,7 +731,7 @@ IINField OContext::HandleDisableUnsolicited(const openpal::ReadBufferView& objec
 	}
 }
 
-IINField OContext::HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OContext::HandleEnableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer)
 {
 	ClassBasedRequestHandler handler(this->logger);
 	auto result = APDUParser::Parse(objects, handler, &this->logger);
@@ -746,7 +746,7 @@ IINField OContext::HandleEnableUnsolicited(const openpal::ReadBufferView& object
 	}
 }
 
-IINField OContext::HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status)
+IINField OContext::HandleCommandWithConstant(const openpal::RSlice& objects, HeaderWriter& writer, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
 	CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &constant, &writer);

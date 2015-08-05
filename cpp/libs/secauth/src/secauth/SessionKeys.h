@@ -58,8 +58,8 @@ namespace secauth
 
 		private:
 
-			openpal::ReadBufferView controlKey;
-			openpal::ReadBufferView monitorKey;
+			openpal::RSlice controlKey;
+			openpal::RSlice monitorKey;
 
 			openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_SIZE_BYTES> controlBuffer;
 			openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_SIZE_BYTES> monitorBuffer;

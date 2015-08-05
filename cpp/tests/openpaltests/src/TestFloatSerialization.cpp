@@ -44,7 +44,7 @@ bool TestReadWriteFloat(T value)
 
 	for (uint32_t i = 0; i < sizeof(T); ++i)
 	{
-		auto dest = buffer.GetWriteBufferView();
+		auto dest = buffer.GetWSlice();
 		dest.Advance(i);
 		if (!Format::Write(dest, value))
 		{
@@ -73,7 +73,7 @@ bool TestFloatParsing(std::string hex, typename T::Type value)
 
 	for (uint32_t i = 0; i < TYPE_SIZE; ++i)
 	{
-		auto dest = buffer.GetWriteBufferView();
+		auto dest = buffer.GetWSlice();
 		dest.Advance(i);
 		if (!Format::Write(dest, value))
 		{

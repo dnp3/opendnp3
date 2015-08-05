@@ -117,7 +117,7 @@ void OAuthContext::CheckForTaskStart()
 {
 	if (this->CanTransmit() && security.deferred.IsSet())
 	{
-		auto handler = [this](const openpal::ReadBufferView& apdu, const APDUHeader& header, const ReadBufferView& objects)
+		auto handler = [this](const openpal::RSlice& apdu, const APDUHeader& header, const RSlice& objects)
 		{
 			this->ProcessAuthAPDU(apdu, header, objects);
 			return true;
@@ -129,7 +129,7 @@ void OAuthContext::CheckForTaskStart()
 	OContext::CheckForTaskStart();
 }
 		
-void OAuthContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OAuthContext::ReceiveParsedHeader(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
 {	
 	if (this->CanTransmit())
 	{
@@ -144,7 +144,7 @@ void OAuthContext::ReceiveParsedHeader(const openpal::ReadBufferView& apdu, cons
 	}
 }
 
-OAuthContext::APDUResult OAuthContext::ProcessAuthAPDU(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OAuthContext::APDUResult OAuthContext::ProcessAuthAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	switch (header.function)
 	{
@@ -161,7 +161,7 @@ OAuthContext::APDUResult OAuthContext::ProcessAuthAPDU(const openpal::ReadBuffer
 	}
 }
 
-OAuthContext::APDUResult OAuthContext::ProcessAuthRequest(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OAuthContext::APDUResult OAuthContext::ProcessAuthRequest(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (header.control.UNS)
 	{
@@ -201,7 +201,7 @@ OAuthContext::APDUResult OAuthContext::ProcessAuthRequest(const openpal::ReadBuf
 
 
 
-OAuthContext::APDUResult OAuthContext::ProcessChallengeReply(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+OAuthContext::APDUResult OAuthContext::ProcessChallengeReply(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)
 {	
 	if (security.state == SecurityState::IDLE)
 	{		
@@ -262,7 +262,7 @@ OAuthContext::APDUResult OAuthContext::ProcessChallengeReply(const openpal::Read
 	return APDUResult::PROCESSED;
 }
 
-OAuthContext::APDUResult OAuthContext::ProcessRequestKeyStatus(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+OAuthContext::APDUResult OAuthContext::ProcessRequestKeyStatus(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (this->security.state == SecurityState::WAIT_FOR_REPLY)
 	{
@@ -300,7 +300,7 @@ OAuthContext::APDUResult OAuthContext::ProcessRequestKeyStatus(const openpal::Re
 		hmacType,
 		Crypto::ToKeyWrapAlgorithm(type),
 		keyStatus,
-		ReadBufferView::Empty()
+		RSlice::Empty()
 	);
 
 	if (!success)
@@ -313,7 +313,7 @@ OAuthContext::APDUResult OAuthContext::ProcessRequestKeyStatus(const openpal::Re
 	return APDUResult::PROCESSED;
 }
 
-OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)
 {
 	// TODO - this isn't quite right, but it's harmless for now, and possibly better behavior
 	if (security.state == SecurityState::WAIT_FOR_REPLY)
@@ -341,7 +341,7 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 	}
 
 	UpdateKeyMode updateKeyType;
-	ReadBufferView updateKey;
+	RSlice updateKey;
 
 	if (!security.userDB.GetUpdateKey(user, updateKeyType, updateKey))
 	{
@@ -407,7 +407,7 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 	return APDUResult::PROCESSED;
 }
 
-OAuthContext::APDUResult OAuthContext::ProcessNormalFunction(const openpal::ReadBufferView& apdu, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OAuthContext::APDUResult OAuthContext::ProcessNormalFunction(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
 {	
 	const bool IS_CRITICAL = security.settings.functions.IsCritical(header.function);
 
@@ -442,7 +442,7 @@ OAuthContext::APDUResult OAuthContext::ProcessNormalFunction(const openpal::Read
 	return APDUResult::PROCESSED;
 }
 
-OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange(const openpal::RSlice& fragment, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (security.state == SecurityState::WAIT_FOR_REPLY)
 	{		
@@ -536,7 +536,7 @@ void OAuthContext::OnChallengeTimeout()
 
 bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
 {
-	ReadBufferView key;
+	RSlice key;
 	uint32_t statusChangeSeq = 0;
 
 	/// check if the outstation is even configured for user status changes
@@ -607,7 +607,7 @@ bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& head
 	return true;
 }
 
-bool OAuthContext::TransmitChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header)
+bool OAuthContext::TransmitChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header)
 {	
 	auto response = this->StartAuthResponse(header.control.SEQ);
 	auto success = security.challenge.WriteChallenge(apdu, header, response, security.hmac.GetType(), *security.pCrypto, &this->logger);
@@ -645,7 +645,7 @@ OAuthContext::APDUResult OAuthContext::TryRespondWithAuthError(
 		security.settings.assocId,
 		code,
 		DNPTime(security.pApplication->Now().msSinceEpoch),
-		ReadBufferView::Empty()
+		RSlice::Empty()
 	);
 
 	response.GetWriter().WriteFreeFormat(error);	

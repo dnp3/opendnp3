@@ -23,8 +23,8 @@
 
 #include <cstdint>
 
-#include "openpal/container/WriteBufferView.h"
-#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WSlice.h"
+#include "openpal/container/RSlice.h"
 #include "openpal/util/Comparisons.h"
 
 namespace openpal
@@ -72,7 +72,7 @@ public:
 		 }
 	}
 	
-	volatile uint8_t GetMany(WriteBufferView& output)
+	volatile uint8_t GetMany(WSlice& output)
 	{
 		uint8_t num = openpal::Min<uint32_t>(Count(), output.Size());
 		for(uint8_t i=0; i<num; ++i)
@@ -83,7 +83,7 @@ public:
 		return num;
 	}
 	
-	volatile uint8_t PutMany(ReadBufferView& input)
+	volatile uint8_t PutMany(RSlice& input)
 	{		
 		uint8_t num = openpal::Min<uint32_t>(N - Count(), input.Size());
 		for(uint8_t i=0; i<num; ++i)

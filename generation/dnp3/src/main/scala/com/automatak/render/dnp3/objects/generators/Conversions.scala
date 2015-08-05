@@ -39,8 +39,8 @@ trait Conversion extends FixedSize {
   private def convHeaderLines : Iterator[String] = {
     Iterator(
       "typedef %s Target;".format(target),
-      "static bool ReadTarget(openpal::ReadBufferView&, %s&);".format(target),
-      "static bool WriteTarget(const %s&, openpal::WriteBufferView&);".format(target),
+      "static bool ReadTarget(openpal::RSlice&, %s&);".format(target),
+      "static bool WriteTarget(const %s&, openpal::WSlice&);".format(target),
       serializerInstance
     )
   }
@@ -57,7 +57,7 @@ trait Conversion extends FixedSize {
 
     def readFunc = {
       val args =  fs.fields.map(f => "value." + f.name).mkString(", ")
-      Iterator("bool %s::ReadTarget(ReadBufferView& buff, %s& output)".format(fs.name, target)) ++ bracket {
+      Iterator("bool %s::ReadTarget(RSlice& buff, %s& output)".format(fs.name, target)) ++ bracket {
         Iterator("%s value;".format(fs.name)) ++
         Iterator("if(Read(buff, value))") ++ bracket {
           Iterator("output = %sFactory::From(%s);".format(target, args)) ++
@@ -70,7 +70,7 @@ trait Conversion extends FixedSize {
     }
 
     def writeFunc = {
-      Iterator("bool " + fs.name + "::WriteTarget(const " + target + "& value, openpal::WriteBufferView& buff)") ++ bracket {
+      Iterator("bool " + fs.name + "::WriteTarget(const " + target + "& value, openpal::WSlice& buff)") ++ bracket {
         Iterator("return %s::Write(Convert%s::Apply(value), buff);".format(fs.name, fs.name))
       }
     }

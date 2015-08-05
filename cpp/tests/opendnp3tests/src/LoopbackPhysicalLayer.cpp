@@ -69,14 +69,14 @@ void LoopbackPhysicalLayer::DoClose()
 	}
 }
 
-void LoopbackPhysicalLayer::DoRead(openpal::WriteBufferView& arBuffer)
+void LoopbackPhysicalLayer::DoRead(openpal::WSlice& arBuffer)
 {
 	assert(mBytesForReading.IsEmpty());
 	mBytesForReading = arBuffer;
 	this->CheckForReadDispatch();
 }
 
-void LoopbackPhysicalLayer::DoWrite(const openpal::ReadBufferView& arBuffer)
+void LoopbackPhysicalLayer::DoWrite(const openpal::RSlice& arBuffer)
 {
 	for(size_t i = 0; i < arBuffer.Size(); ++i) mWritten.push_back(arBuffer[i]);
 

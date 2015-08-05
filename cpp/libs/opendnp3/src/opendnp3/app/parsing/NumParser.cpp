@@ -44,7 +44,7 @@ uint8_t NumParser::NumBytes() const
 	return size;
 }
 
-ParseResult NumParser::ParseCount(openpal::ReadBufferView& buffer, uint16_t& count, openpal::Logger* pLogger) const
+ParseResult NumParser::ParseCount(openpal::RSlice& buffer, uint16_t& count, openpal::Logger* pLogger) const
 {
 	if (this->Read(count, buffer))
 	{
@@ -65,7 +65,7 @@ ParseResult NumParser::ParseCount(openpal::ReadBufferView& buffer, uint16_t& cou
 	}
 }
 
-ParseResult NumParser::ParseRange(openpal::ReadBufferView& buffer, Range& range, openpal::Logger* pLogger) const
+ParseResult NumParser::ParseRange(openpal::RSlice& buffer, Range& range, openpal::Logger* pLogger) const
 {
 	if (buffer.Size() < (2 * static_cast<uint32_t>(size)))
 	{
@@ -89,12 +89,12 @@ ParseResult NumParser::ParseRange(openpal::ReadBufferView& buffer, Range& range,
 	}
 }
 
-uint16_t NumParser::ReadNum(openpal::ReadBufferView& buffer) const
+uint16_t NumParser::ReadNum(openpal::RSlice& buffer) const
 {
 	return pReadFun(buffer);
 }
 
-bool NumParser::Read(uint16_t& num, openpal::ReadBufferView& buffer) const
+bool NumParser::Read(uint16_t& num, openpal::RSlice& buffer) const
 {
 	if (buffer.Size() < size)
 	{
@@ -107,7 +107,7 @@ bool NumParser::Read(uint16_t& num, openpal::ReadBufferView& buffer) const
 	}
 }
 
-uint16_t NumParser::ReadByte(openpal::ReadBufferView& buffer)
+uint16_t NumParser::ReadByte(openpal::RSlice& buffer)
 {
 	return UInt8::ReadBuffer(buffer);
 }

@@ -50,7 +50,7 @@ namespace secauth
 		return request.GetWriter().WriteFreeFormat(statusChange.Convert());
 	}
 	
-	opendnp3::IMasterTask::ResponseResult UserStatusChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	opendnp3::IMasterTask::ResponseResult UserStatusChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
 	{
 		if (!this->ValidateSingleResponse(header) || !this->ValidateInternalIndications(header))
 		{

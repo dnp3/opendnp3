@@ -37,11 +37,11 @@ PhysLoopback::PhysLoopback(openpal::LogRoot& root, openpal::IExecutor& executor,
 
 void PhysLoopback::StartRead()
 {
-	WriteBufferView buffer(mBuffer, mBuffer.Size());
+	WSlice buffer(mBuffer, mBuffer.Size());
 	pPhys->BeginRead(buffer);
 }
 
-void PhysLoopback::OnReceive(const openpal::ReadBufferView& buffer)
+void PhysLoopback::OnReceive(const openpal::RSlice& buffer)
 {
 	mBytesReadWritten += buffer.Size();
 	pPhys->BeginWrite(buffer);

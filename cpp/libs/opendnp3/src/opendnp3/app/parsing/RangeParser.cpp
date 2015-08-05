@@ -53,7 +53,7 @@ RangeParser::RangeParser(const Range& range_, uint32_t requiredSize_, HandleFun 
 
 }
 
-ParseResult RangeParser::ParseHeader(openpal::ReadBufferView& buffer, const NumParser& numparser, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult RangeParser::ParseHeader(openpal::RSlice& buffer, const NumParser& numparser, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	Range range;
 	auto res = numparser.ParseRange(buffer, range, pLogger);
@@ -87,7 +87,7 @@ ParseResult RangeParser::ParseHeader(openpal::ReadBufferView& buffer, const NumP
 	}
 }
 
-ParseResult RangeParser::Process(const HeaderRecord& record, openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const
+ParseResult RangeParser::Process(const HeaderRecord& record, openpal::RSlice& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const
 {
 	if (buffer.Size() < requiredSize)
 	{
@@ -109,7 +109,7 @@ ParseResult RangeParser::Process(const HeaderRecord& record, openpal::ReadBuffer
 	case(GroupVariation::descriptor): \
 	return RangeParser::FromFixedSize<descriptor>(range).Process(record, buffer, pHandler, pLogger);	
 
-ParseResult RangeParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult RangeParser::ParseRangeOfObjects(openpal::RSlice& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	switch (record.enumeration)
 	{		
@@ -170,7 +170,7 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, co
 	}
 }
 	
-ParseResult RangeParser::ParseRangeOfOctetData(openpal::ReadBufferView& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult RangeParser::ParseRangeOfOctetData(openpal::RSlice& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	if (record.variation > 0)
 	{
@@ -185,7 +185,7 @@ ParseResult RangeParser::ParseRangeOfOctetData(openpal::ReadBufferView& buffer, 
 		{
 			if (pHandler)
 			{								
-				auto read = [range, record](openpal::ReadBufferView& buffer, uint32_t pos) -> Indexed<OctetString> {
+				auto read = [range, record](openpal::RSlice& buffer, uint32_t pos) -> Indexed<OctetString> {
 					OctetString octets(buffer.Take(record.variation));
 					buffer.Advance(record.variation);
 					return WithIndex(octets, range.start + pos);

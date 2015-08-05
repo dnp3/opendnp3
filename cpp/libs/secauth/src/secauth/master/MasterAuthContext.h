@@ -55,13 +55,13 @@ public:
 
 	virtual bool OnLowerLayerDown() override;
 
-	virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void OnParsedHeader(const openpal::RSlice& apdu, const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
 
 	virtual bool CanRun(const opendnp3::IMasterTask& task) override final;
 
 	virtual bool MeetsUserRequirements(const opendnp3::IMasterTask& task) override final;
 
-	virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) override final;
+	virtual void RecordLastRequest(const openpal::RSlice& apdu) override final;
 
 	// --- public helpers ----
 
@@ -75,11 +75,11 @@ public:
 
 private:
 
-	void OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+	void OnReceiveAuthResponse(const openpal::RSlice& apdu, const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	void OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	void OnAuthChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
-	void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);	
+	void OnAuthError(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);	
 
 	void InitSessionKeyTaskForUser(const opendnp3::User& user);
 	

@@ -43,7 +43,7 @@ public:
 		parser(log.GetLogger())
 	{}
 
-	void WriteData(const openpal::ReadBufferView& input)
+	void WriteData(const openpal::RSlice& input)
 	{
 		auto buff = parser.WriteBuff();
 		assert(input.Size() <= buff.Size());

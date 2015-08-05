@@ -45,16 +45,16 @@ public:
 		return (headerCount == 0) && (gv == opendnp3::GroupVariation::Group120Var5);
 	}
 
-	bool GetStatus(opendnp3::Group120Var5& status, openpal::ReadBufferView& rawObject) const;
+	bool GetStatus(opendnp3::Group120Var5& status, openpal::RSlice& rawObject) const;
 
 private:
 		
 	openpal::Logger logger;
 	bool valid;
 	opendnp3::Group120Var5 status;
-	openpal::ReadBufferView rawObject;
+	openpal::RSlice rawObject;
 
-	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var5& status, const openpal::ReadBufferView& rawObject) override final;
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var5& status, const openpal::RSlice& rawObject) override final;
 
 };
 

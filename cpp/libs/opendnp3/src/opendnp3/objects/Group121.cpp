@@ -31,17 +31,17 @@ namespace opendnp3 {
 
 // ------- Group121Var1 -------
 
-bool Group121Var1::Read(ReadBufferView& buffer, Group121Var1& output)
+bool Group121Var1::Read(RSlice& buffer, Group121Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.assocId, output.value);
 }
 
-bool Group121Var1::Write(const Group121Var1& arg, openpal::WriteBufferView& buffer)
+bool Group121Var1::Write(const Group121Var1& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.assocId, arg.value);
 }
 
-bool Group121Var1::ReadTarget(ReadBufferView& buff, SecurityStat& output)
+bool Group121Var1::ReadTarget(RSlice& buff, SecurityStat& output)
 {
   Group121Var1 value;
   if(Read(buff, value))
@@ -55,7 +55,7 @@ bool Group121Var1::ReadTarget(ReadBufferView& buff, SecurityStat& output)
   }
 }
 
-bool Group121Var1::WriteTarget(const SecurityStat& value, openpal::WriteBufferView& buff)
+bool Group121Var1::WriteTarget(const SecurityStat& value, openpal::WSlice& buff)
 {
   return Group121Var1::Write(ConvertGroup121Var1::Apply(value), buff);
 }

@@ -22,8 +22,8 @@
 #define OPENDNP3_GROUP4_H
 
 #include "opendnp3/app/GroupVariationID.h"
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -41,14 +41,14 @@ struct Group4Var1
 {
   static GroupVariationID ID() { return GroupVariationID(4,1); }
   static uint32_t Size() { return 1; }
-  static bool Read(openpal::ReadBufferView&, Group4Var1&);
-  static bool Write(const Group4Var1&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group4Var1&);
+  static bool Write(const Group4Var1&, openpal::WSlice&);
 
   uint8_t flags;
 
   typedef DoubleBitBinary Target;
-  static bool ReadTarget(openpal::ReadBufferView&, DoubleBitBinary&);
-  static bool WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, DoubleBitBinary&);
+  static bool WriteTarget(const DoubleBitBinary&, openpal::WSlice&);
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
@@ -57,15 +57,15 @@ struct Group4Var2
 {
   static GroupVariationID ID() { return GroupVariationID(4,2); }
   static uint32_t Size() { return 7; }
-  static bool Read(openpal::ReadBufferView&, Group4Var2&);
-  static bool Write(const Group4Var2&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group4Var2&);
+  static bool Write(const Group4Var2&, openpal::WSlice&);
 
   uint8_t flags;
   DNPTime time;
 
   typedef DoubleBitBinary Target;
-  static bool ReadTarget(openpal::ReadBufferView&, DoubleBitBinary&);
-  static bool WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, DoubleBitBinary&);
+  static bool WriteTarget(const DoubleBitBinary&, openpal::WSlice&);
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
@@ -74,15 +74,15 @@ struct Group4Var3
 {
   static GroupVariationID ID() { return GroupVariationID(4,3); }
   static uint32_t Size() { return 3; }
-  static bool Read(openpal::ReadBufferView&, Group4Var3&);
-  static bool Write(const Group4Var3&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group4Var3&);
+  static bool Write(const Group4Var3&, openpal::WSlice&);
 
   uint8_t flags;
   uint16_t time;
 
   typedef DoubleBitBinary Target;
-  static bool ReadTarget(openpal::ReadBufferView&, DoubleBitBinary&);
-  static bool WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, DoubleBitBinary&);
+  static bool WriteTarget(const DoubleBitBinary&, openpal::WSlice&);
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 

@@ -74,7 +74,7 @@ uint16_t CRC::CalcCrc(const uint8_t* input, uint32_t length)
 	return ~CRC;
 }
 
-uint16_t CRC::CalcCrc(const openpal::ReadBufferView& view)
+uint16_t CRC::CalcCrc(const openpal::RSlice& view)
 {
 	return CalcCrc(view, view.Size());
 }

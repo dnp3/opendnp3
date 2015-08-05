@@ -23,7 +23,7 @@
 #define OPENDNP3_APDULOGGING_H
 
 #include <openpal/logging/LogFilters.h>
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
 
 namespace opendnp3
@@ -31,9 +31,9 @@ namespace opendnp3
 namespace logging
 {
 
-void ParseAndLogRequestTx(openpal::Logger logger, const openpal::ReadBufferView& apdu);
+void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu);
 
-void ParseAndLogResponseTx(openpal::Logger logger, const openpal::ReadBufferView& apdu);
+void ParseAndLogResponseTx(openpal::Logger logger, const openpal::RSlice& apdu);
 	
 }
 }

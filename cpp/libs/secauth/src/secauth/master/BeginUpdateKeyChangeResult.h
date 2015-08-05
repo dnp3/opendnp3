@@ -47,8 +47,8 @@ public:
 	BeginUpdateKeyChangeResult(
 		opendnp3::User user,
 		uint32_t keyChangeSequenceNum,
-		const openpal::ReadBufferView& masterChallengeData,
-		const openpal::ReadBufferView& outstationChallengeData
+		const openpal::RSlice& masterChallengeData,
+		const openpal::RSlice& outstationChallengeData
 	);
 	
 	/// The success or failure type of the overall operation

@@ -49,19 +49,19 @@ OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(OCo
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ocontext.deferred.Set(header, objects);	
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ocontext.deferred.Set(header, objects);
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ocontext.deferred.Set(header, objects);
 	return this;
@@ -77,7 +77,7 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 	return instance;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (ocontext.unsol.IsIdle())
 	{
@@ -90,12 +90,12 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OCo
 	}
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	return ocontext.RespondToNonReadRequest(header, objects);
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {					
 	ocontext.BeginResponseTx(ocontext.sol.tx.GetLastResponse());
 	return this;			
@@ -110,7 +110,7 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 	return instance;
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {	
 	ocontext.deferred.Set(header, objects);
 	ocontext.confirmTimer.Cancel();
@@ -118,7 +118,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequ
 			
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ocontext.deferred.Set(header, objects);
 	ocontext.confirmTimer.Cancel();

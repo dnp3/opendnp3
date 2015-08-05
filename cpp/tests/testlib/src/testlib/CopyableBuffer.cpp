@@ -25,7 +25,7 @@
 #include <memory.h>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/WSlice.h>
 
 using namespace testlib;
 
@@ -52,11 +52,11 @@ CopyableBuffer::CopyableBuffer(uint32_t aSize) :
 	this->Zero();
 }
 
-CopyableBuffer::CopyableBuffer(const openpal::ReadBufferView& buffer) :
+CopyableBuffer::CopyableBuffer(const openpal::RSlice& buffer) :
 	mpBuff(new uint8_t[buffer.Size()]),
 	mSize(buffer.Size())
 {
-	openpal::WriteBufferView dest(mpBuff, mSize);
+	openpal::WSlice dest(mpBuff, mSize);
 	buffer.CopyTo(dest);
 }
 

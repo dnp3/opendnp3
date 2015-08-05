@@ -60,8 +60,8 @@ public:
 		uint16_t userRole,
 		uint16_t userRoleExpDays,
 		const std::string& userName,
-		openpal::ReadBufferView userPublicKey,
-		openpal::ReadBufferView certificationData
+		openpal::RSlice userPublicKey,
+		openpal::RSlice certificationData
 	);
 
 	opendnp3::Group120Var10 Convert() const;

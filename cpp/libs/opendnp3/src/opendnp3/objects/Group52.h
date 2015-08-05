@@ -22,8 +22,8 @@
 #define OPENDNP3_GROUP52_H
 
 #include "opendnp3/app/GroupVariationID.h"
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 
 namespace opendnp3 {
@@ -33,8 +33,8 @@ struct Group52Var1
 {
   static GroupVariationID ID() { return GroupVariationID(52,1); }
   static uint32_t Size() { return 2; }
-  static bool Read(openpal::ReadBufferView&, Group52Var1&);
-  static bool Write(const Group52Var1&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group52Var1&);
+  static bool Write(const Group52Var1&, openpal::WSlice&);
 
   uint16_t time;
 };
@@ -44,8 +44,8 @@ struct Group52Var2
 {
   static GroupVariationID ID() { return GroupVariationID(52,2); }
   static uint32_t Size() { return 2; }
-  static bool Read(openpal::ReadBufferView&, Group52Var2&);
-  static bool Write(const Group52Var2&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group52Var2&);
+  static bool Write(const Group52Var2&, openpal::WSlice&);
 
   uint16_t time;
 };

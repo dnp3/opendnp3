@@ -50,7 +50,7 @@ public:
 	openpal::ICryptoProvider*	pCrypto;
 	MasterUserDatabase			userDB;
 	SessionStore				sessions;		
-	openpal::ReadBufferView		lastRequest;
+	openpal::RSlice		lastRequest;
 	SessionKeyTaskMap			sessionKeyTaskMap;
 	
 	openpal::StaticBuffer<AuthSizes::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE> challengeReplyBuffer;

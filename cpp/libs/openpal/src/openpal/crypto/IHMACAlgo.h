@@ -21,8 +21,8 @@
 #ifndef OPENPAL_IHMACALGO_H
 #define OPENPAL_IHMACALGO_H
 
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 
 #include <initializer_list>
 #include <system_error>
@@ -41,10 +41,10 @@ namespace openpal
 		virtual uint16_t OutputSize() const = 0;
 
 		// Calculate the HMAC value, writing the result into 'output'		
-		virtual openpal::ReadBufferView Calculate(
-			const ReadBufferView& key,
-			std::initializer_list<ReadBufferView> data,
-			WriteBufferView& output,
+		virtual openpal::RSlice Calculate(
+			const RSlice& key,
+			std::initializer_list<RSlice> data,
+			WSlice& output,
 			std::error_code& ec
 		) = 0;
 

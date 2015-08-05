@@ -41,7 +41,7 @@ namespace secauth
 	{}
 	
 	bool ChallengeState::WriteChallenge(
-		const openpal::ReadBufferView& fragment,
+		const openpal::RSlice& fragment,
 		const opendnp3::APDUHeader& header,
 		opendnp3::APDUResponse& response,
 		HMACType hmacType,
@@ -96,7 +96,7 @@ namespace secauth
 		return true;
 	}
 
-	bool ChallengeState::VerifyAuthenticity(const openpal::ReadBufferView& key, HMACProvider& provider, const openpal::ReadBufferView& hmac, openpal::Logger logger)
+	bool ChallengeState::VerifyAuthenticity(const openpal::RSlice& key, HMACProvider& provider, const openpal::RSlice& hmac, openpal::Logger logger)
 	{
 		if (provider.OutputSize() != hmac.Size())
 		{

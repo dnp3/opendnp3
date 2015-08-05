@@ -50,12 +50,12 @@ class UpdateKey
 		/**
 		* Initialize the key base on a view
 		*/
-		UpdateKey(const openpal::ReadBufferView& key);
+		UpdateKey(const openpal::RSlice& key);
 
 		/**
 		* Retrieve update key view
 		*/
-		openpal::ReadBufferView GetKeyView() const;
+		openpal::RSlice GetKeyView() const;
 
 		/**
 		* Retrieve the key mode
@@ -72,11 +72,11 @@ class UpdateKey
 		*
 		* returns true if the key was of valid size, false otherwise
 		*/
-		bool Initialize(const openpal::ReadBufferView& key);
+		bool Initialize(const openpal::RSlice& key);
 
 	private:		
 	  
-		void Initialize(const openpal::ReadBufferView& key, opendnp3::UpdateKeyMode mode);
+		void Initialize(const openpal::RSlice& key, opendnp3::UpdateKeyMode mode);
 
 		bool isValid;		
 		opendnp3::UpdateKeyMode updateKeyMode;

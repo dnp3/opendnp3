@@ -32,7 +32,7 @@ namespace opendnp3
 	{}
 	
 
-	openpal::ReadBufferView MockCryptoProvider::GetSecureRandom(openpal::WriteBufferView& buffer, std::error_code& ec)
+	openpal::RSlice MockCryptoProvider::GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec)
 	{
 		memset(buffer, secureFill, buffer.Size());
 		auto ret = buffer.ToReadOnly();

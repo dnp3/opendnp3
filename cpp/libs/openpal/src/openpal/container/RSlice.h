@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_READBUFFERVIEW_H
-#define OPENPAL_READBUFFERVIEW_H
+#ifndef OPENPAL_RSLICE_H
+#define OPENPAL_RSLICE_H
 
 #include "HasSize.h"
 
@@ -28,28 +28,32 @@
 namespace openpal
 {
 
-class WriteBufferView;
+class WSlice;
 
-class ReadBufferView : public HasSize<uint32_t>
+/**
+*	Represents a readonly slice of a buffer located elsewhere. Mediates reading from the buffer
+*	to prevent overreads and other errors.
+*/
+class RSlice : public HasSize<uint32_t>
 {
 
 public:
 
-	static ReadBufferView Empty();
+	static RSlice Empty();
 
-	ReadBufferView();
+	RSlice();
 
-	ReadBufferView(uint8_t const* pBuffer, uint32_t size);
+	RSlice(uint8_t const* pBuffer, uint32_t size);
 
 	void Clear();
 
-	ReadBufferView CopyTo(WriteBufferView&) const;
+	RSlice CopyTo(WSlice&) const;
 
-	ReadBufferView Take(uint32_t count) const;
+	RSlice Take(uint32_t count) const;
 
-	ReadBufferView Skip(uint32_t count) const;	
+	RSlice Skip(uint32_t count) const;	
 
-	bool Equals(const ReadBufferView& rhs) const;
+	bool Equals(const RSlice& rhs) const;
 
 	void Advance(uint32_t count);
 

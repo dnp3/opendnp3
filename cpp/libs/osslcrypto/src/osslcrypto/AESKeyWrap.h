@@ -39,18 +39,18 @@ namespace osslcrypto
 	{
 	public:
 
-		static openpal::ReadBufferView WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec);
-		static openpal::ReadBufferView UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec);
+		static openpal::RSlice WrapKeyAES(AESKeyLength length, const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec);
+		static openpal::RSlice UnwrapKeyAES(AESKeyLength length, const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec);
 	};
 
 	class AESKeyWrap128 : public openpal::IKeyWrapAlgo
 	{
-		virtual openpal::ReadBufferView WrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const override final
+		virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override final
 		{
 			return AESKeyWrap::WrapKeyAES(AESKeyLength::L128, kek, input, output, ec);
 		}
 
-		virtual openpal::ReadBufferView UnwrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const override final
+		virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override final
 		{
 			return AESKeyWrap::UnwrapKeyAES(AESKeyLength::L128, kek, input, output, ec);
 		}
@@ -58,12 +58,12 @@ namespace osslcrypto
 
 	class AESKeyWrap256 : public openpal::IKeyWrapAlgo
 	{
-		virtual openpal::ReadBufferView WrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const override final
+		virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override final
 		{
 			return AESKeyWrap::WrapKeyAES(AESKeyLength::L256, kek, input, output, ec);
 		}
 
-		virtual openpal::ReadBufferView UnwrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const override final
+		virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override final
 		{
 			return AESKeyWrap::UnwrapKeyAES(AESKeyLength::L256, kek, input, output, ec);
 		}

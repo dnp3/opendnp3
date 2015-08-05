@@ -40,7 +40,7 @@ public:
 	CountWriteIterator() : count(0), isValid(false), pPosition(nullptr)
 	{}
 
-	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBufferView& position) :
+	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position) :
 		count(0),
 		serializer(serializer_),		
 		isValid(position.Size() >= CountType::SIZE),
@@ -87,8 +87,8 @@ private:
 
 	bool isValid;
 
-	openpal::WriteBufferView countPosition;  // make a copy to record where we write the count
-	openpal::WriteBufferView* pPosition;
+	openpal::WSlice countPosition;  // make a copy to record where we write the count
+	openpal::WSlice* pPosition;
 };
 
 }

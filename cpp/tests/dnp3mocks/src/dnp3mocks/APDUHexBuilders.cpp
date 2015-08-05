@@ -44,14 +44,14 @@ namespace hex
 	std::string repeat(uint8_t value, uint16_t count)
 	{
 		Buffer buffer(count);
-		buffer.GetWriteBufferView().SetAllTo(value);
+		buffer.GetWSlice().SetAllTo(value);
 		return ToHex(buffer.ToReadOnly());
 	}
 
 	std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
 	{		
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDURequest request(buffer.GetWriteBufferView());
+		APDURequest request(buffer.GetWSlice());
 		opendnp3::build::ClassRequest(request, fc, field, seq);
 		return ToHex(request.ToReadOnly());
 	}
@@ -74,7 +74,7 @@ namespace hex
 	std::string ClearRestartIIN(uint8_t seq)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDURequest request(buffer.GetWriteBufferView());
+		APDURequest request(buffer.GetWSlice());
 		build::ClearRestartIIN(request, seq);
 		return ToHex(request.ToReadOnly());
 	}
@@ -82,7 +82,7 @@ namespace hex
 	std::string MeasureDelay(uint8_t seq)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDURequest request(buffer.GetWriteBufferView());
+		APDURequest request(buffer.GetWSlice());
 		build::MeasureDelay(request, seq);
 		return ToHex(request.ToReadOnly());
 	}
@@ -90,7 +90,7 @@ namespace hex
 	std::string Control(opendnp3::FunctionCode code, uint8_t seq, const opendnp3::ControlRelayOutputBlock& crob, uint16_t index)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDURequest request(buffer.GetWriteBufferView());
+		APDURequest request(buffer.GetWSlice());
 		
 		request.SetControl(AppControlField::Request(seq));
 		request.SetFunction(code);
@@ -105,7 +105,7 @@ namespace hex
 	std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDUResponse response(buffer.GetWriteBufferView());
+		APDUResponse response(buffer.GetWSlice());
 		response.SetFunction(FunctionCode::RESPONSE);
 		response.SetControl(AppControlField(true, true, false, false, seq));
 		response.SetIIN(iin);
@@ -115,7 +115,7 @@ namespace hex
 	std::string NullUnsolicited(uint8_t seq, const IINField& iin)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDUResponse response(buffer.GetWriteBufferView());
+		APDUResponse response(buffer.GetWSlice());
 		build::NullUnsolicited(response, seq, iin);
 		return ToHex(response.ToReadOnly());
 	}	
@@ -133,7 +133,7 @@ namespace hex
 	std::string Confirm(uint8_t seq, bool unsol)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDURequest apdu(buffer.GetWriteBufferView());
+		APDURequest apdu(buffer.GetWSlice());
 		apdu.SetControl(AppControlField(true, true, false, unsol, seq));
 		apdu.SetFunction(FunctionCode::CONFIRM);
 		return ToHex(apdu.ToReadOnly());
@@ -144,7 +144,7 @@ namespace hex
 	std::string RequestKeyStatus(uint8_t seq, uint16_t user)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDURequest apdu(buffer.GetWriteBufferView());
+		APDURequest apdu(buffer.GetWSlice());
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
 		apdu.SetFunction(FunctionCode::AUTH_REQUEST);		
 		Group120Var4 status;
@@ -164,7 +164,7 @@ namespace hex
 		std::string hexErrorText)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDUResponse apdu(buffer.GetWriteBufferView());
+		APDUResponse apdu(buffer.GetWSlice());
 
 		apdu.SetControl(AppControlField(true, true, false, false, appSeq));
 		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
@@ -197,7 +197,7 @@ namespace hex
 		)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDUResponse apdu(buffer.GetWriteBufferView());
+		APDUResponse apdu(buffer.GetWSlice());
 
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
 		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
@@ -226,7 +226,7 @@ namespace hex
 		)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDURequest apdu(buffer.GetWriteBufferView());
+		APDURequest apdu(buffer.GetWSlice());
 
 		apdu.SetControl(AppControlField(true, true, false, false, appSeq));
 		apdu.SetFunction(FunctionCode::AUTH_REQUEST);
@@ -253,7 +253,7 @@ namespace hex
 		)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDUResponse apdu(buffer.GetWriteBufferView());
+		APDUResponse apdu(buffer.GetWSlice());
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
 		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
 		apdu.SetIIN(iin);
@@ -283,7 +283,7 @@ namespace hex
 		)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDURequest apdu(buffer.GetWriteBufferView());
+		APDURequest apdu(buffer.GetWSlice());
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
 		apdu.SetFunction(FunctionCode::AUTH_REQUEST);
 
@@ -312,11 +312,11 @@ namespace hex
 		)
 	{
 		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-		APDURequest apdu(buffer.GetWriteBufferView());
+		APDURequest apdu(buffer.GetWSlice());
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
 		apdu.SetFunction(FunctionCode::AUTH_REQUEST);
 
-		ReadBufferView name(reinterpret_cast<const uint8_t*>(userName.c_str()), userName.size());
+		RSlice name(reinterpret_cast<const uint8_t*>(userName.c_str()), userName.size());
 		HexSequence userPublicKeyBuffer(userPublicKeyHex);
 		HexSequence certificationDataBuffer(certificationDataHex);
 
@@ -345,12 +345,12 @@ namespace hex
 		)
 	{
 		Buffer key(keyLengthBytes);
-		key.GetWriteBufferView().SetAllTo(keyRepeatValue);			
+		key.GetWSlice().SetAllTo(keyRepeatValue);			
 		auto keyHex = ToHex(key.ToReadOnly());
 		HexSequence statusBuffer(keyStatusMsg);
 
 		Buffer lengthBuff(2);
-		auto lenDest = lengthBuff.GetWriteBufferView();
+		auto lenDest = lengthBuff.GetWSlice();
 		UInt16::WriteBuffer(lenDest, keyLengthBytes);
 		auto lengthHex = ToHex(lengthBuff.ToReadOnly());
 		 

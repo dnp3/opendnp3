@@ -23,7 +23,7 @@
 
 #include <openpal/logging/Logger.h>
 #include <openpal/crypto/IKeyWrapAlgo.h>
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 #include <openpal/container/StaticBuffer.h>
 #include <openpal/serialization/Serialization.h>
 
@@ -41,7 +41,7 @@ namespace secauth
 	{
 	public:
 		SessionKeysView keys;
-		openpal::ReadBufferView keyStatusObject;			
+		openpal::RSlice keyStatusObject;			
 	};
 
 	class KeyUnwrapBuffer
@@ -50,8 +50,8 @@ namespace secauth
 
 		bool Unwrap(
 			openpal::IKeyWrapAlgo& algo,
-			openpal::ReadBufferView updateKey,
-			openpal::ReadBufferView inputData,			
+			openpal::RSlice updateKey,
+			openpal::RSlice inputData,			
 			UnwrappedKeyData& output, 
 			openpal::Logger* pLogger);
 

@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_COUNTPARSER_H
 #define OPENDNP3_COUNTPARSER_H
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
 
 #include "opendnp3/app/parsing/Functions.h"
@@ -37,12 +37,12 @@ namespace opendnp3
 
 class CountParser
 {
-	typedef void (*HandleFun)(const HeaderRecord& record, uint16_t count, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+	typedef void (*HandleFun)(const HeaderRecord& record, uint16_t count, const openpal::RSlice& buffer, IAPDUHandler& handler);
 
 public:
 	
 	static ParseResult ParseHeader(
-		openpal::ReadBufferView& buffer,
+		openpal::RSlice& buffer,
 		const NumParser& numparser,
 		const ParserSettings& settings, 
 		const HeaderRecord& record, 
@@ -53,16 +53,16 @@ public:
 private:
 
 	// Process the count handler against the buffer
-	ParseResult Process(const HeaderRecord& record, openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const;
+	ParseResult Process(const HeaderRecord& record, openpal::RSlice& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const;
 
 	// Create a count handler from a fixed size descriptor
 	template <class Descriptor>
 	static CountParser From(uint16_t count);
 
-	static ParseResult ParseCountOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler);		
+	static ParseResult ParseCountOfObjects(openpal::RSlice& buffer, const HeaderRecord& record, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler);		
 	
 	template <class Descriptor>
-	static void InvokeCountOf(const HeaderRecord& record, uint16_t count, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+	static void InvokeCountOf(const HeaderRecord& record, uint16_t count, const openpal::RSlice& buffer, IAPDUHandler& handler);
 
 	CountParser(uint16_t count, uint32_t requiredSize, HandleFun handler);
 		
@@ -81,9 +81,9 @@ CountParser CountParser::From(uint16_t count)
 }
 
 template <class T>
-void CountParser::InvokeCountOf(const HeaderRecord& record, uint16_t count, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
+void CountParser::InvokeCountOf(const HeaderRecord& record, uint16_t count, const openpal::RSlice& buffer, IAPDUHandler& handler)
 {	
-	auto read = [](openpal::ReadBufferView& buffer, uint32_t) -> T {
+	auto read = [](openpal::RSlice& buffer, uint32_t) -> T {
 		T value;
 		T::Read(buffer, value);
 		return value;

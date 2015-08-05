@@ -110,7 +110,7 @@ bool MAuthContext::OnLowerLayerDown()
 	return ret;
 }
 
-void MAuthContext::OnParsedHeader(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MAuthContext::OnParsedHeader(const openpal::RSlice& apdu, const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
 {	
 	switch (header.function)
 	{
@@ -153,7 +153,7 @@ bool MAuthContext::MeetsUserRequirements(const IMasterTask& task)
 	return security.userDB.UserExists(task.GetUser());
 }
 
-void MAuthContext::RecordLastRequest(const openpal::ReadBufferView& apdu)
+void MAuthContext::RecordLastRequest(const openpal::RSlice& apdu)
 {
 	security.lastRequest = apdu;
 }
@@ -200,7 +200,7 @@ void MAuthContext::FinishUpdateKeyChange(const FinishUpdateKeyChangeArgs& args, 
 	this->ScheduleAdhocTask(task);
 }
 
-void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MAuthContext::OnReceiveAuthResponse(const openpal::RSlice& apdu, const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	// need to determine the context of the auth response
 	
@@ -238,7 +238,7 @@ void MAuthContext::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, co
 	}	
 }
 
-void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+void MAuthContext::OnAuthChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (this->isSending)
 	{
@@ -314,7 +314,7 @@ void MAuthContext::OnAuthChallenge(const openpal::ReadBufferView& apdu, const op
 	this->Transmit(reply.ToReadOnly());
 }
 
-void MAuthContext::OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+void MAuthContext::OnAuthError(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)
 {
 	ErrorHandler handler;
 	auto result = APDUParser::Parse(objects, handler, this->logger);

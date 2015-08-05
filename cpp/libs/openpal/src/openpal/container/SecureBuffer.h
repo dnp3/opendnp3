@@ -36,11 +36,11 @@ public:
 	SecureBuffer(uint32_t size) : Buffer(size) {}
 
 	// initialize with the exact size and contents of the view
-	SecureBuffer(const ReadBufferView& input) : Buffer(input) {}
+	SecureBuffer(const RSlice& input) : Buffer(input) {}
 
 	~SecureBuffer()
 	{
-		this->GetWriteBufferView().SetAllTo(0x00);
+		this->GetWSlice().SetAllTo(0x00);
 	}
 	
 };

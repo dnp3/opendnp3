@@ -38,10 +38,10 @@ using namespace openpal;
 using namespace osslcrypto;
 using namespace testlib;
 
-void TestHMACSuccess(IHMACAlgo& algo, const openpal::ReadBufferView& key, const openpal::ReadBufferView& data, const std::string& expected)
+void TestHMACSuccess(IHMACAlgo& algo, const openpal::RSlice& key, const openpal::RSlice& data, const std::string& expected)
 {
 	Buffer output(algo.OutputSize());
-	auto dest = output.GetWriteBufferView();
+	auto dest = output.GetWSlice();
 	error_code ec;
 	auto result = algo.Calculate(key, { data }, dest, ec);
 	REQUIRE_FALSE(ec);
@@ -52,9 +52,9 @@ void TestHMACSuccess(IHMACAlgo& algo, const openpal::ReadBufferView& key, const 
 void TestInsufficientOutputSizeFails(IHMACAlgo& algo)
 {	
 	Buffer buffer(algo.OutputSize() - 1);
-	auto dest = buffer.GetWriteBufferView();
+	auto dest = buffer.GetWSlice();
 	error_code ec;
-	auto output = algo.Calculate(ReadBufferView(), { ReadBufferView() }, dest, ec);
+	auto output = algo.Calculate(RSlice(), { RSlice() }, dest, ec);
 	REQUIRE(ec == make_error_code(errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE));
 	REQUIRE(output.IsEmpty());
 }
@@ -70,8 +70,8 @@ TEST_CASE(SUITE("SHA1-SHA256-SHORTKEY"))
 	std::string HMAC_SHA1 = "DE7C9B85B8B78AA6BC8A7A36F70A90701C9DB4D9";
 	std::string HMAC_SHA256 = "F7BC83F430538424B13298E6AA6FB143EF4D59A14946175997479DBC2D1A3CD8";
 
-	auto keyView = ReadBufferView(reinterpret_cast<const uint8_t*>(key.c_str()), key.size());
-	auto dataView = ReadBufferView(reinterpret_cast<const uint8_t*>(data.c_str()), data.size());
+	auto keyView = RSlice(reinterpret_cast<const uint8_t*>(key.c_str()), key.size());
+	auto dataView = RSlice(reinterpret_cast<const uint8_t*>(data.c_str()), data.size());
 
 	CryptoProvider crypto;
 
@@ -90,8 +90,8 @@ TEST_CASE(SUITE("SHA1-SHA256-LONGKEY"))
 	std::string HMAC_SHA1 = "DDD7B3A61B6E05A6E62CF9E0F8E28348E6CC51E2";
 	std::string HMAC_SHA256 = "C3700B96B699F9092A40EBA4EC98C2523A945ACF6D488B7B80455BB5A00753F9";
 
-	auto keyView = ReadBufferView(reinterpret_cast<const uint8_t*>(key.c_str()), key.size());
-	auto dataView = ReadBufferView(reinterpret_cast<const uint8_t*>(data.c_str()), data.size());
+	auto keyView = RSlice(reinterpret_cast<const uint8_t*>(key.c_str()), key.size());
+	auto dataView = RSlice(reinterpret_cast<const uint8_t*>(data.c_str()), data.size());
 
 	CryptoProvider crypto;
 

@@ -42,7 +42,7 @@ public:
 
 	virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const override;
 
-	virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override;
+	virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::RSlice& key) const override;
 
 	virtual bool UserExists(const opendnp3::User& user) const override;
 

@@ -31,17 +31,17 @@ namespace opendnp3 {
 
 // ------- Group40Var1 -------
 
-bool Group40Var1::Read(ReadBufferView& buffer, Group40Var1& output)
+bool Group40Var1::Read(RSlice& buffer, Group40Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
 }
 
-bool Group40Var1::Write(const Group40Var1& arg, openpal::WriteBufferView& buffer)
+bool Group40Var1::Write(const Group40Var1& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.value);
 }
 
-bool Group40Var1::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
+bool Group40Var1::ReadTarget(RSlice& buff, AnalogOutputStatus& output)
 {
   Group40Var1 value;
   if(Read(buff, value))
@@ -55,24 +55,24 @@ bool Group40Var1::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
   }
 }
 
-bool Group40Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
+bool Group40Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& buff)
 {
   return Group40Var1::Write(ConvertGroup40Var1::Apply(value), buff);
 }
 
 // ------- Group40Var2 -------
 
-bool Group40Var2::Read(ReadBufferView& buffer, Group40Var2& output)
+bool Group40Var2::Read(RSlice& buffer, Group40Var2& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
 }
 
-bool Group40Var2::Write(const Group40Var2& arg, openpal::WriteBufferView& buffer)
+bool Group40Var2::Write(const Group40Var2& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.value);
 }
 
-bool Group40Var2::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
+bool Group40Var2::ReadTarget(RSlice& buff, AnalogOutputStatus& output)
 {
   Group40Var2 value;
   if(Read(buff, value))
@@ -86,24 +86,24 @@ bool Group40Var2::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
   }
 }
 
-bool Group40Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
+bool Group40Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& buff)
 {
   return Group40Var2::Write(ConvertGroup40Var2::Apply(value), buff);
 }
 
 // ------- Group40Var3 -------
 
-bool Group40Var3::Read(ReadBufferView& buffer, Group40Var3& output)
+bool Group40Var3::Read(RSlice& buffer, Group40Var3& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
 }
 
-bool Group40Var3::Write(const Group40Var3& arg, openpal::WriteBufferView& buffer)
+bool Group40Var3::Write(const Group40Var3& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.value);
 }
 
-bool Group40Var3::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
+bool Group40Var3::ReadTarget(RSlice& buff, AnalogOutputStatus& output)
 {
   Group40Var3 value;
   if(Read(buff, value))
@@ -117,24 +117,24 @@ bool Group40Var3::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
   }
 }
 
-bool Group40Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
+bool Group40Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& buff)
 {
   return Group40Var3::Write(ConvertGroup40Var3::Apply(value), buff);
 }
 
 // ------- Group40Var4 -------
 
-bool Group40Var4::Read(ReadBufferView& buffer, Group40Var4& output)
+bool Group40Var4::Read(RSlice& buffer, Group40Var4& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
 }
 
-bool Group40Var4::Write(const Group40Var4& arg, openpal::WriteBufferView& buffer)
+bool Group40Var4::Write(const Group40Var4& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.value);
 }
 
-bool Group40Var4::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
+bool Group40Var4::ReadTarget(RSlice& buff, AnalogOutputStatus& output)
 {
   Group40Var4 value;
   if(Read(buff, value))
@@ -148,7 +148,7 @@ bool Group40Var4::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
   }
 }
 
-bool Group40Var4::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
+bool Group40Var4::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& buff)
 {
   return Group40Var4::Write(ConvertGroup40Var4::Apply(value), buff);
 }

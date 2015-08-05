@@ -22,8 +22,8 @@
 #define OPENDNP3_GROUP12_H
 
 #include "opendnp3/app/GroupVariationID.h"
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
@@ -41,8 +41,8 @@ struct Group12Var1
 {
   static GroupVariationID ID() { return GroupVariationID(12,1); }
   static uint32_t Size() { return 11; }
-  static bool Read(openpal::ReadBufferView&, Group12Var1&);
-  static bool Write(const Group12Var1&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group12Var1&);
+  static bool Write(const Group12Var1&, openpal::WSlice&);
 
   uint8_t code;
   uint8_t count;
@@ -51,8 +51,8 @@ struct Group12Var1
   uint8_t status;
 
   typedef ControlRelayOutputBlock Target;
-  static bool ReadTarget(openpal::ReadBufferView&, ControlRelayOutputBlock&);
-  static bool WriteTarget(const ControlRelayOutputBlock&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, ControlRelayOutputBlock&);
+  static bool WriteTarget(const ControlRelayOutputBlock&, openpal::WSlice&);
   static DNP3Serializer<ControlRelayOutputBlock> Inst() { return DNP3Serializer<ControlRelayOutputBlock>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 

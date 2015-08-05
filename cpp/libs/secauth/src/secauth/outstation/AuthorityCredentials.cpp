@@ -38,7 +38,7 @@ namespace secauth
 		this->m_authorityKey = key;
 	}
 
-	bool AuthorityCredentials::GetSymmetricKey(uint32_t& statusChangeSeqNumber, openpal::ReadBufferView& keyView) const
+	bool AuthorityCredentials::GetSymmetricKey(uint32_t& statusChangeSeqNumber, openpal::RSlice& keyView) const
 	{
 		if (!m_authorityKey.IsValid())
 		{

@@ -20,7 +20,7 @@
  */
 #include "OctetData.h"
 
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/WSlice.h>
 #include <openpal/util/Comparisons.h>
 
 using namespace openpal;
@@ -30,14 +30,14 @@ namespace opendnp3
 
 OctetData::OctetData() :  size(0) {}
 
-OctetData::OctetData(const ReadBufferView& input) : 
+OctetData::OctetData(const RSlice& input) : 
 	size(openpal::Min<uint32_t>(MAX_SIZE, input.Size()))
 {	
 	auto dest = buffer.GetWriteBuffer();
 	input.Take(size).CopyTo(dest);
 }
 
-openpal::ReadBufferView OctetData::ToReadOnly() const
+openpal::RSlice OctetData::ToReadOnly() const
 {
 	return buffer.ToReadOnly(size);
 }

@@ -14,7 +14,7 @@ object AuthVariableSizeGenerator {
 
     def getFieldString(x: FixedSizeField): String = "%s %s;".format(x.cppType, x.name)
 
-    def getVariableFieldString(name: String): String = "openpal::ReadBufferView %s;".format(name)
+    def getVariableFieldString(name: String): String = "openpal::RSlice %s;".format(name)
 
     def members: Iterator[String] =  {
       x.fixedFields.map(f => getFieldString(f)).iterator ++
@@ -43,9 +43,9 @@ object AuthVariableSizeGenerator {
 
     def sizeSignature: Iterator[String] = Iterator("virtual uint32_t Size() const override final;")
 
-    def readSignature: Iterator[String] = Iterator("virtual bool Read(const openpal::ReadBufferView&) override final;")
+    def readSignature: Iterator[String] = Iterator("virtual bool Read(const openpal::RSlice&) override final;")
 
-    def writeSignature: Iterator[String] = Iterator("virtual bool Write(openpal::WriteBufferView&) const override final;")
+    def writeSignature: Iterator[String] = Iterator("virtual bool Write(openpal::WSlice&) const override final;")
 
     space ++
     Id ++
@@ -96,9 +96,9 @@ object AuthVariableSizeGenerator {
       Iterator("{}")
     }
 
-    def readSignature: Iterator[String] = Iterator("bool %s::Read(const ReadBufferView& buffer)".format(x.name))
+    def readSignature: Iterator[String] = Iterator("bool %s::Read(const RSlice& buffer)".format(x.name))
 
-    def writeSignature: Iterator[String] = Iterator("bool %s::Write(openpal::WriteBufferView& buffer) const".format(x.name))
+    def writeSignature: Iterator[String] = Iterator("bool %s::Write(openpal::WSlice& buffer) const".format(x.name))
 
     def fieldParams(name: String) : String = {
       x.fixedFields.map(f => f.name).map(s => "%s.%s".format(name,s)).mkString(", ")
@@ -116,7 +116,7 @@ object AuthVariableSizeGenerator {
 
       def minSizeBailout = bailoutIf("buffer.Size() < %s::MIN_SIZE".format(x.name))
 
-      def copy = Iterator("ReadBufferView copy(buffer); //mutable copy for parsing")
+      def copy = Iterator("RSlice copy(buffer); //mutable copy for parsing")
 
       def fixedReads : Iterator[String] = {
 

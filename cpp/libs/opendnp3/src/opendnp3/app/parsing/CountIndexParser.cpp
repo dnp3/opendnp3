@@ -52,7 +52,7 @@ CountIndexParser::CountIndexParser(uint16_t count_, uint32_t requiredSize_, cons
 {}
 
 ParseResult CountIndexParser::ParseHeader(
-	openpal::ReadBufferView& buffer,
+	openpal::RSlice& buffer,
 	const NumParser& numparser,
 	const ParserSettings& settings,
 	const HeaderRecord& record,
@@ -79,7 +79,7 @@ ParseResult CountIndexParser::ParseHeader(
 	}
 }
 
-ParseResult CountIndexParser::Process(const HeaderRecord& record, openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const
+ParseResult CountIndexParser::Process(const HeaderRecord& record, openpal::RSlice& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const
 {
 	if (buffer.Size() < requiredSize)
 	{
@@ -98,7 +98,7 @@ ParseResult CountIndexParser::Process(const HeaderRecord& record, openpal::ReadB
 }
 
 
-ParseResult CountIndexParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, const NumParser& numparser, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const HeaderRecord& record, const NumParser& numparser, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	switch (record.enumeration)
 	{
@@ -227,7 +227,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::ReadBufferView& buffe
 	}
 }
 
-ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::ReadBufferView& buffer, const HeaderRecord& record, const NumParser& numparser, uint32_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::RSlice& buffer, const HeaderRecord& record, const NumParser& numparser, uint32_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	if (record.variation == 0)
 	{
@@ -245,7 +245,7 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::ReadBufferVie
 	
 	if (pHandler)
 	{
-		auto read = [&numparser, record](ReadBufferView& buffer, uint32_t pos) -> Indexed<OctetString> {
+		auto read = [&numparser, record](RSlice& buffer, uint32_t pos) -> Indexed<OctetString> {
 			auto index = numparser.ReadNum(buffer);
 			OctetString octets(buffer.Take(record.variation));
 			buffer.Advance(record.variation);

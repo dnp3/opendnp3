@@ -41,9 +41,9 @@ class DeferredASDU : private openpal::Uncopyable
 
 	bool IsSet() const;	
 
-	void SetASDU(opendnp3::APDUHeader header, openpal::ReadBufferView asdu);
+	void SetASDU(opendnp3::APDUHeader header, openpal::RSlice asdu);
 
-	openpal::ReadBufferView GetFragment() const { return asdu; }
+	openpal::RSlice GetFragment() const { return asdu; }
 
 	opendnp3::APDUHeader GetHeader() const { return header; }
 	
@@ -56,7 +56,7 @@ class DeferredASDU : private openpal::Uncopyable
 
 	bool isSet;	
 	opendnp3::APDUHeader header;
-	openpal::ReadBufferView asdu;
+	openpal::RSlice asdu;
 	openpal::Buffer buffer;
 	
 };

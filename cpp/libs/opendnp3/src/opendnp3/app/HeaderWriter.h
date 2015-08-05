@@ -91,13 +91,13 @@ public:
 
 private:
 
-	HeaderWriter(openpal::WriteBufferView* position_);
+	HeaderWriter(openpal::WSlice* position_);
 
 	bool WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve);
 
-	openpal::WriteBufferView* position;
+	openpal::WSlice* position;
 
-	openpal::Settable<openpal::WriteBufferView> mark;
+	openpal::Settable<openpal::WSlice> mark;
 };
 
 template <class IndexType>
@@ -135,7 +135,7 @@ bool HeaderWriter::WriteSingleValue(QualifierCode qc, const DNP3Serializer<Value
 	auto reserveSize = CountType::SIZE + serializer.Size();
 	if(this->WriteHeaderWithReserve(ValueType::ID, qc, reserveSize))
 	{
-		CountType::WriteBufferView(*position, 1); //write the count
+		CountType::WSlice(*position, 1); //write the count
 		serializer.Write(value, *position);
 		return true;
 	}

@@ -26,8 +26,8 @@
 
 #include "UInt48Type.h"
 
-#include "openpal/container/WriteBufferView.h"
-#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WSlice.h"
+#include "openpal/container/RSlice.h"
 
 namespace openpal
 {
@@ -40,14 +40,14 @@ public:
 
 	static void Write(uint8_t* data, UInt48Type value);
 
-	inline static UInt48Type ReadBuffer(ReadBufferView& buffer)
+	inline static UInt48Type ReadBuffer(RSlice& buffer)
 	{
 		auto ret = Read(buffer);
 		buffer.Advance(SIZE);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBufferView& buffer, UInt48Type value)
+	static void WriteBuffer(WSlice& buffer, UInt48Type value)
 	{
 		Write(buffer, value);
 		buffer.Advance(SIZE);

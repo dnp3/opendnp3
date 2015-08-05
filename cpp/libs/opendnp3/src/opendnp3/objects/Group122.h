@@ -22,8 +22,8 @@
 #define OPENDNP3_GROUP122_H
 
 #include "opendnp3/app/GroupVariationID.h"
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/SecurityStat.h"
@@ -41,8 +41,8 @@ struct Group122Var1
 {
   static GroupVariationID ID() { return GroupVariationID(122,1); }
   static uint32_t Size() { return 7; }
-  static bool Read(openpal::ReadBufferView&, Group122Var1&);
-  static bool Write(const Group122Var1&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group122Var1&);
+  static bool Write(const Group122Var1&, openpal::WSlice&);
 
   typedef uint32_t ValueType;
   uint8_t flags;
@@ -50,8 +50,8 @@ struct Group122Var1
   uint32_t value;
 
   typedef SecurityStat Target;
-  static bool ReadTarget(openpal::ReadBufferView&, SecurityStat&);
-  static bool WriteTarget(const SecurityStat&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, SecurityStat&);
+  static bool WriteTarget(const SecurityStat&, openpal::WSlice&);
   static DNP3Serializer<SecurityStat> Inst() { return DNP3Serializer<SecurityStat>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
@@ -60,8 +60,8 @@ struct Group122Var2
 {
   static GroupVariationID ID() { return GroupVariationID(122,2); }
   static uint32_t Size() { return 13; }
-  static bool Read(openpal::ReadBufferView&, Group122Var2&);
-  static bool Write(const Group122Var2&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group122Var2&);
+  static bool Write(const Group122Var2&, openpal::WSlice&);
 
   typedef uint32_t ValueType;
   uint8_t flags;
@@ -70,8 +70,8 @@ struct Group122Var2
   DNPTime time;
 
   typedef SecurityStat Target;
-  static bool ReadTarget(openpal::ReadBufferView&, SecurityStat&);
-  static bool WriteTarget(const SecurityStat&, openpal::WriteBufferView&);
+  static bool ReadTarget(openpal::RSlice&, SecurityStat&);
+  static bool WriteTarget(const SecurityStat&, openpal::WSlice&);
   static DNP3Serializer<SecurityStat> Inst() { return DNP3Serializer<SecurityStat>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 

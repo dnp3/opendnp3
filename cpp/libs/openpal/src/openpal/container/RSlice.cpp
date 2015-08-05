@@ -18,63 +18,63 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "ReadBufferView.h"
+#include "RSlice.h"
 
 #include "openpal/util/Comparisons.h"
 
-#include "WriteBufferView.h"
+#include "WSlice.h"
 
 #include <cstring>
 
 namespace openpal
 {
 
-ReadBufferView ReadBufferView::Empty()
+RSlice RSlice::Empty()
 {
-	return ReadBufferView();
+	return RSlice();
 }
 
-ReadBufferView::ReadBufferView(): HasSize(0), pBuffer(nullptr)
+RSlice::RSlice(): HasSize(0), pBuffer(nullptr)
 {}
 
-ReadBufferView::ReadBufferView(uint8_t const* pBuffer, uint32_t size) :
+RSlice::RSlice(uint8_t const* pBuffer, uint32_t size) :
 	HasSize(size),
 	pBuffer(pBuffer)
 {}
 
-ReadBufferView ReadBufferView::CopyTo(WriteBufferView& dest) const
+RSlice RSlice::CopyTo(WSlice& dest) const
 {
 	if (dest.Size() < size)
 	{
-		return ReadBufferView::Empty();
+		return RSlice::Empty();
 	}
 	else
 	{
-		WriteBufferView copy(dest);
+		WSlice copy(dest);
 		memcpy(dest, pBuffer, size);		
 		dest.Advance(size);
 		return copy.ToReadOnly().Take(size);
 	}
 }
 
-ReadBufferView ReadBufferView::Take(uint32_t count) const
+RSlice RSlice::Take(uint32_t count) const
 {	
-	return ReadBufferView(pBuffer, openpal::Min(size, count));
+	return RSlice(pBuffer, openpal::Min(size, count));
 }
 
-ReadBufferView ReadBufferView::Skip(uint32_t count) const
+RSlice RSlice::Skip(uint32_t count) const
 {
 	auto num = openpal::Min(size, count);
-	return ReadBufferView(pBuffer + num, size - num);
+	return RSlice(pBuffer + num, size - num);
 }
 
-void ReadBufferView::Clear()
+void RSlice::Clear()
 {
 	pBuffer = nullptr;
 	size = 0;
 }
 
-bool ReadBufferView::Equals(const ReadBufferView& rhs) const
+bool RSlice::Equals(const RSlice& rhs) const
 {
 	if (this->Size() == rhs.Size())
 	{
@@ -86,7 +86,7 @@ bool ReadBufferView::Equals(const ReadBufferView& rhs) const
 	}
 }
 
-void ReadBufferView::Advance(uint32_t count)
+void RSlice::Advance(uint32_t count)
 {
 	auto num = openpal::Min(size, count);
 	pBuffer += num;

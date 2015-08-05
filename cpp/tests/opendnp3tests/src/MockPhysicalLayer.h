@@ -91,13 +91,13 @@ private:
 		++mNumOpenFailure;
 	}
 
-	void DoRead(openpal::WriteBufferView& arBuffer)
+	void DoRead(openpal::WSlice& arBuffer)
 	{
 		mpWriteBuff = arBuffer;
 		mNumToRead = arBuffer.Size();
 	}
 
-	void DoWrite(const openpal::ReadBufferView& arBuffer)
+	void DoWrite(const openpal::RSlice& arBuffer)
 	{
 		mNumToWrite = arBuffer.Size();
 		++mNumWrites;

@@ -22,7 +22,7 @@
 #define OPENDNP3_FREEFORMATPARSER_H
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
 
 #include "opendnp3/app/parsing/ObjectHeaderParser.h"
@@ -40,18 +40,18 @@ class FreeFormatParser : private openpal::StaticOnly
 {
 	public:		
 
-		static ParseResult ParseHeader(openpal::ReadBufferView& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler);
+		static ParseResult ParseHeader(openpal::RSlice& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler);
 
 	private:
 
-		typedef bool(&FreeFormatHandler)(const FreeFormatHeader& header, const openpal::ReadBufferView& objects, IAPDUHandler* pHandler);
+		typedef bool(&FreeFormatHandler)(const FreeFormatHeader& header, const openpal::RSlice& objects, IAPDUHandler* pHandler);
 
-		static ParseResult ParseFreeFormat(FreeFormatHandler handler, const FreeFormatHeader& header, uint16_t size, openpal::ReadBufferView& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger);
+		static ParseResult ParseFreeFormat(FreeFormatHandler handler, const FreeFormatHeader& header, uint16_t size, openpal::RSlice& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger);
 
 		// Free format handlers
 		
 		template <class T>
-		static bool ParseAny(const FreeFormatHeader& header, const openpal::ReadBufferView& object, IAPDUHandler* pHandler)
+		static bool ParseAny(const FreeFormatHeader& header, const openpal::RSlice& object, IAPDUHandler* pHandler)
 		{
 			T value;
 			auto success = value.Read(object);

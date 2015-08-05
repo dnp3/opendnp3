@@ -51,8 +51,8 @@ TEST_CASE(SUITE("TestStateClosed"))
 	PhysTestObject t;
 
 	uint8_t b[100];
-	WriteBufferView buff(b, 100);
-	WriteBufferView empty;
+	WSlice buff(b, 100);
+	WSlice empty;
 
 	t.mTCPClient.BeginWrite(empty.ToReadOnly());
 	REQUIRE(t.log.PopOneEntry(flags::ERR));

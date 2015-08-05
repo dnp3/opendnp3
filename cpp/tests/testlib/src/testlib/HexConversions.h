@@ -24,7 +24,7 @@
 #include <cstdint>
 #include <string>
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 namespace testlib
 {
@@ -33,7 +33,7 @@ std::string ByteToHex(uint8_t b);
 
 std::string ToHex(const uint8_t* pBuff, size_t length, bool spaced = false);
 
-std::string ToHex(const openpal::ReadBufferView& buffer, bool spaced = true);
+std::string ToHex(const openpal::RSlice& buffer, bool spaced = true);
 
 std::string AppendHex(std::initializer_list<std::string> segments);
 

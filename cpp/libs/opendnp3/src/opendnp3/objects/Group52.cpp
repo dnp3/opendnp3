@@ -29,24 +29,24 @@ namespace opendnp3 {
 
 // ------- Group52Var1 -------
 
-bool Group52Var1::Read(ReadBufferView& buffer, Group52Var1& output)
+bool Group52Var1::Read(RSlice& buffer, Group52Var1& output)
 {
   return Parse::Many(buffer, output.time);
 }
 
-bool Group52Var1::Write(const Group52Var1& arg, openpal::WriteBufferView& buffer)
+bool Group52Var1::Write(const Group52Var1& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.time);
 }
 
 // ------- Group52Var2 -------
 
-bool Group52Var2::Read(ReadBufferView& buffer, Group52Var2& output)
+bool Group52Var2::Read(RSlice& buffer, Group52Var2& output)
 {
   return Parse::Many(buffer, output.time);
 }
 
-bool Group52Var2::Write(const Group52Var2& arg, openpal::WriteBufferView& buffer)
+bool Group52Var2::Write(const Group52Var2& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.time);
 }

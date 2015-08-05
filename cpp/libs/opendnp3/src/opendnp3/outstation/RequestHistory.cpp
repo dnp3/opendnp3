@@ -39,7 +39,7 @@ void RequestHistory::Reset()
 	hasLast = false;
 }
 
-void RequestHistory::RecordLastProcessedRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+void RequestHistory::RecordLastProcessedRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	hasLast = true;
 	lastHeader = header;
@@ -47,7 +47,7 @@ void RequestHistory::RecordLastProcessedRequest(const APDUHeader& header, const 
 	lastDigest = CRC::CalcCrc(objects);
 }
 
-bool RequestHistory::FullyEqualsLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects) const
+bool RequestHistory::FullyEqualsLastRequest(const APDUHeader& header, const openpal::RSlice& objects) const
 {
 	return lastHeader.Equals(header) && EqualsLastObjects(objects);
 }
@@ -57,7 +57,7 @@ APDUHeader RequestHistory::GetLastHeader() const
 	return hasLast ? lastHeader : APDUHeader();
 }
 
-bool RequestHistory::EqualsLastObjects(const openpal::ReadBufferView& objects) const
+bool RequestHistory::EqualsLastObjects(const openpal::RSlice& objects) const
 {
 	
 	return	hasLast && 

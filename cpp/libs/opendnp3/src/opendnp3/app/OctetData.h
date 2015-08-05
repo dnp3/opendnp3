@@ -23,7 +23,7 @@
 
 #include <cstdint>
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 #include <openpal/container/StaticBuffer.h>
 
 namespace opendnp3
@@ -36,13 +36,13 @@ public:
 	const static uint8_t MAX_SIZE = 255;
 
 	OctetData();
-	OctetData(const openpal::ReadBufferView& input);
+	OctetData(const openpal::RSlice& input);
 
-	openpal::ReadBufferView ToReadOnly() const;	
+	openpal::RSlice ToReadOnly() const;	
 
 private:
 
-	void Initialize(const openpal::ReadBufferView& buffer);
+	void Initialize(const openpal::RSlice& buffer);
 
 	openpal::StaticBuffer<MAX_SIZE> buffer;	
 	uint8_t size;

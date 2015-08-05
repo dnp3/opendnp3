@@ -102,8 +102,8 @@ sealed case class FixedSizeField(name: String, typ: FixedSizeFieldType) extends 
 
 }
 sealed case class VariableField(name: String) extends Field {
-  def cppType: String = "openpal::ReadBufferView"
-  override def cppArgument = "const openpal::ReadBufferView&"
+  def cppType: String = "openpal::RSlice"
+  override def cppArgument = "const openpal::RSlice&"
 }
 
 

@@ -36,7 +36,7 @@ class AuthorityCredentials
 
 	void Configure(uint32_t statusChangeSeqNumber, const AuthorityKey& key);
 
-	bool GetSymmetricKey(uint32_t& statusChangeSeqNumber, openpal::ReadBufferView& keyView) const;
+	bool GetSymmetricKey(uint32_t& statusChangeSeqNumber, openpal::RSlice& keyView) const;
 	
 	private:
 	

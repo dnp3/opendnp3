@@ -22,7 +22,7 @@
 #define OPENPAL_PARSE_H
 
 #include "openpal/serialization/UInt48Type.h"
-#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/RSlice.h"
 #include "openpal/util/Uncopyable.h"
 
 namespace openpal
@@ -31,28 +31,28 @@ namespace openpal
 	{
 		public:
 
-			static bool Read(ReadBufferView& input, uint8_t& output);
-			static bool Read(ReadBufferView& input, uint16_t& output);
+			static bool Read(RSlice& input, uint8_t& output);
+			static bool Read(RSlice& input, uint16_t& output);
 			
-			static bool Read(ReadBufferView& input, uint32_t& output);
-			static bool Read(ReadBufferView& input, UInt48Type& output);
+			static bool Read(RSlice& input, uint32_t& output);
+			static bool Read(RSlice& input, UInt48Type& output);
 
-			static bool Read(ReadBufferView& input, int16_t& output);
-			static bool Read(ReadBufferView& input, int32_t& output);
+			static bool Read(RSlice& input, int16_t& output);
+			static bool Read(RSlice& input, int32_t& output);
 
 
-			static bool Read(ReadBufferView& input, double& output);
-			static bool Read(ReadBufferView& input, float& output);
+			static bool Read(RSlice& input, double& output);
+			static bool Read(RSlice& input, float& output);
 
 			template <typename T, typename... Args>
-			static bool Many(ReadBufferView& input, T& output, Args&... args)
+			static bool Many(RSlice& input, T& output, Args&... args)
 			{
 				return Read(input, output) && Many(input, args...);
 			}
 
 		private:
 
-			static bool Many(ReadBufferView& input) { return true; }
+			static bool Many(RSlice& input) { return true; }
 	};
 
 }

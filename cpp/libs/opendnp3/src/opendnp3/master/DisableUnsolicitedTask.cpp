@@ -44,7 +44,7 @@ bool DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 	return true;
 }
 
-IMasterTask::ResponseResult DisableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult DisableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }

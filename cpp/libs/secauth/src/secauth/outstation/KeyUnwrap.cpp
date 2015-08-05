@@ -32,8 +32,8 @@ namespace secauth
 {
 	bool KeyUnwrapBuffer::Unwrap(
 		openpal::IKeyWrapAlgo& algo,
-		openpal::ReadBufferView updateKey,
-		openpal::ReadBufferView inputData,
+		openpal::RSlice updateKey,
+		openpal::RSlice inputData,
 		UnwrappedKeyData& output,
 		openpal::Logger* pLogger)
 	{		

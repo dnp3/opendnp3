@@ -98,17 +98,17 @@ namespace opendnp3
 
 		virtual bool OnLowerLayerDown() override;
 		
-		virtual bool OnReceive(const openpal::ReadBufferView& apdu) override final;
+		virtual bool OnReceive(const openpal::RSlice& apdu) override final;
 
 		virtual bool OnSendResult(bool isSucccess) override final;
 
 		/// additional virtual methods that can be overriden to implement secure authentication				
 		
-		virtual void OnParsedHeader(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		virtual void OnParsedHeader(const openpal::RSlice& apdu, const APDUResponseHeader& header, const openpal::RSlice& objects);
 
 		virtual bool CanRun(const IMasterTask& task) override { return true; }
 
-		virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) {}
+		virtual void RecordLastRequest(const openpal::RSlice& apdu) {}
 
 		virtual bool MeetsUserRequirements(const IMasterTask& task) { return true; }
 
@@ -165,7 +165,7 @@ namespace opendnp3
 
 		void StartResponseTimer();		
 
-		void ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		void ProcessAPDU(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
 		void CheckForTask();
 
@@ -173,11 +173,11 @@ namespace opendnp3
 
 		void PostCheckForTask();
 
-		void ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		void ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-		void ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		void ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-		void Transmit(const openpal::ReadBufferView& data);
+		void Transmit(const openpal::RSlice& data);
 
 	private:	
 
@@ -204,7 +204,7 @@ namespace opendnp3
 				
 		/// state switch lookups
 		TaskState OnStartEvent();
-		TaskState OnResponseEvent(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		TaskState OnResponseEvent(const APDUResponseHeader& header, const openpal::RSlice& objects);
 		TaskState OnResponseTimeoutEvent();
 
 		/// --- state handling functions ----
@@ -212,7 +212,7 @@ namespace opendnp3
 		TaskState StartTask_Idle();
 		TaskState StartTask_TaskReady();
 
-		TaskState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		TaskState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
 		TaskState OnResponseTimeout_WaitForResponse();
 	};
 

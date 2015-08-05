@@ -31,12 +31,12 @@ namespace secauth
 		this->m_buffer.GetWriteBuffer().SetAllTo(repeat);
 	}
 	
-	AuthorityKey::AuthorityKey(const openpal::ReadBufferView& key) : m_valid(false)
+	AuthorityKey::AuthorityKey(const openpal::RSlice& key) : m_valid(false)
 	{
 		this->Initialize(key);
 	}
 
-	openpal::ReadBufferView AuthorityKey::GetKeyView() const
+	openpal::RSlice AuthorityKey::GetKeyView() const
 	{
 		return m_buffer.ToReadOnly();
 	}
@@ -46,7 +46,7 @@ namespace secauth
 		return m_valid;
 	}
 
-	bool AuthorityKey::Initialize(const openpal::ReadBufferView& key)
+	bool AuthorityKey::Initialize(const openpal::RSlice& key)
 	{		
 		if (!(key.Size() == KEY_SIZE_256))
 		{

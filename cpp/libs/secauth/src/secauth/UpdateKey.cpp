@@ -42,7 +42,7 @@ UpdateKey::UpdateKey(uint8_t repeat, UpdateKeyMode mode) :
 
 }
 
-UpdateKey::UpdateKey(const openpal::ReadBufferView& key) : UpdateKey()
+UpdateKey::UpdateKey(const openpal::RSlice& key) : UpdateKey()
 {
 	this->Initialize(key);
 }
@@ -52,7 +52,7 @@ bool UpdateKey::IsValid() const
 	return isValid;
 }
 
-openpal::ReadBufferView UpdateKey::GetKeyView() const
+openpal::RSlice UpdateKey::GetKeyView() const
 {
 	const auto SIZE = (updateKeyMode == UpdateKeyMode::AES128) ? UPDATE_KEY_SIZE_128 : UPDATE_KEY_SIZE_256;	
 	return buffer.ToReadOnly().Take(SIZE);	
@@ -63,7 +63,7 @@ opendnp3::UpdateKeyMode UpdateKey::GetKeyMode() const
 	return updateKeyMode;
 }
 				
-bool UpdateKey::Initialize(const openpal::ReadBufferView& key)
+bool UpdateKey::Initialize(const openpal::RSlice& key)
 {
 	switch (key.Size())
 	{
@@ -78,7 +78,7 @@ bool UpdateKey::Initialize(const openpal::ReadBufferView& key)
 	}
 }
 
-void UpdateKey::Initialize(const openpal::ReadBufferView& key, opendnp3::UpdateKeyMode mode)
+void UpdateKey::Initialize(const openpal::RSlice& key, opendnp3::UpdateKeyMode mode)
 {
   this->isValid = true;
   this->updateKeyMode = mode;

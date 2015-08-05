@@ -46,9 +46,9 @@ public:
 		const std::string& outstationName,
 		opendnp3::User user,
 		uint32_t keyChangeSequenceNumber,
-		const openpal::ReadBufferView& masterChallengeData,
-		const openpal::ReadBufferView& outstationChallengeData,		
-		const openpal::ReadBufferView& encryptedKeyData,
+		const openpal::RSlice& masterChallengeData,
+		const openpal::RSlice& outstationChallengeData,		
+		const openpal::RSlice& encryptedKeyData,
 		const UpdateKey& key
 	);
 				

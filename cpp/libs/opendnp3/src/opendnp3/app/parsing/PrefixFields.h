@@ -22,7 +22,7 @@
 #ifndef OPENDNP3_PREFIXFIELDS_H
 #define OPENDNP3_PREFIXFIELDS_H
 
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/WSlice.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
@@ -33,7 +33,7 @@ namespace opendnp3
 		public:
 
 		template <typename... Args>
-		static bool Read(openpal::ReadBufferView& input, Args&... fields)
+		static bool Read(openpal::RSlice& input, Args&... fields)
 		{						
 			if (input.Size() < (sizeof...(Args)*openpal::UInt16::SIZE))
 			{
@@ -67,7 +67,7 @@ namespace opendnp3
 		}
 
 		template <typename... Args>
-		static bool Write(openpal::WriteBufferView& dest, const Args&... fields)
+		static bool Write(openpal::WSlice& dest, const Args&... fields)
 		{			
 			const uint32_t TOTAL_SIZE = (sizeof...(Args)*openpal::UInt16::SIZE) + SumSizes(fields...);
 
@@ -83,7 +83,7 @@ namespace opendnp3
 		}
 
 		template <typename... Args>
-		static bool LengthFitsInUInt16(const openpal::ReadBufferView& arg1, Args&... fields)
+		static bool LengthFitsInUInt16(const openpal::RSlice& arg1, Args&... fields)
 		{
 			return (arg1.Size() <= openpal::MaxValue<uint16_t>()) && LengthFitsInUInt16(fields...);
 		}
@@ -91,7 +91,7 @@ namespace opendnp3
 		private:
 
 		template <typename... Args>
-		static uint32_t SumSizes(const openpal::ReadBufferView& arg1, Args&... fields)
+		static uint32_t SumSizes(const openpal::RSlice& arg1, Args&... fields)
 		{
 			return arg1.Size() + SumSizes(fields...);
 		}		
@@ -101,32 +101,32 @@ namespace opendnp3
 		static uint32_t SumSizes() { return 0; }
 		
 		template <typename... Args>
-		static void ReadFields(openpal::ReadBufferView& input, uint16_t* pLength, openpal::ReadBufferView& output, Args&... fields)
+		static void ReadFields(openpal::RSlice& input, uint16_t* pLength, openpal::RSlice& output, Args&... fields)
 		{			
 			output = input.Take(*pLength);
 			input.Advance(*pLength);
 			ReadFields(input, ++pLength, fields...);
 		}
 		
-		static void ReadFields(openpal::ReadBufferView& input, uint16_t* pLength) {}
+		static void ReadFields(openpal::RSlice& input, uint16_t* pLength) {}
 		
 		template <typename... Args>
-		static void WriteLengths(openpal::WriteBufferView& dest, const openpal::ReadBufferView& arg1, Args&... fields)
+		static void WriteLengths(openpal::WSlice& dest, const openpal::RSlice& arg1, Args&... fields)
 		{
 			openpal::UInt16::WriteBuffer(dest, static_cast<uint16_t>(arg1.Size()));
 			WriteLengths(dest, fields...);
 		}
 
-		static void WriteLengths(openpal::WriteBufferView& dest) {}
+		static void WriteLengths(openpal::WSlice& dest) {}
 
 		template <typename... Args>
-		static void WriteFields(openpal::WriteBufferView& dest, const openpal::ReadBufferView& arg1, Args&... fields)
+		static void WriteFields(openpal::WSlice& dest, const openpal::RSlice& arg1, Args&... fields)
 		{
 			arg1.CopyTo(dest);
 			WriteFields(dest, fields...);
 		}
 
-		static void WriteFields(openpal::WriteBufferView& dest) {}
+		static void WriteFields(openpal::WSlice& dest) {}
 		
 		
 	};

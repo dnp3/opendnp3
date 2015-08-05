@@ -25,7 +25,7 @@
 #include <opendnp3/gen/UpdateKeyMode.h>
 #include <opendnp3/app/User.h>
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 #include "secauth/UpdateKey.h"
 
@@ -43,7 +43,7 @@ class IMasterUserDatabase
 
 		virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const = 0;
 
-		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
+		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::RSlice& key) const = 0;
 
 		virtual bool UserExists(const opendnp3::User& user) const = 0;
 

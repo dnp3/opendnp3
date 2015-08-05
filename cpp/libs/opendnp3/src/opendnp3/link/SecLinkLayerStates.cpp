@@ -52,7 +52,7 @@ void SLLS_NotReset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "TestLinkStatus ignored");
 }
 
-void SLLS_NotReset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadBufferView&)
+void SLLS_NotReset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::RSlice&)
 {
 	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "ConfirmedUserData ignored");
 }
@@ -92,7 +92,7 @@ void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 	}
 }
 
-void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadBufferView& arBuffer)
+void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::RSlice& arBuffer)
 {
 	apLL->QueueAck();
 

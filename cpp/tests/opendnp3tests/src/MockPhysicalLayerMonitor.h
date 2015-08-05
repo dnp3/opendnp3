@@ -50,7 +50,7 @@ public:
 	uint32_t mLastWriteSize;
 
 	CopyableBuffer mReadBuffer;
-	CopyableBuffer mWriteBufferView;
+	CopyableBuffer mWSlice;
 	CopyableBuffer mExpectReadBuffer;
 
 	void OnPhysicalLayerOpenSuccessCallback();

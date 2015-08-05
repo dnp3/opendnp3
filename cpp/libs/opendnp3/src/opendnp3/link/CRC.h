@@ -23,7 +23,7 @@
 
 #include <cstdint>
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 namespace opendnp3
 {
@@ -34,7 +34,7 @@ public:
 
 	static uint16_t CalcCrc(const uint8_t* input, uint32_t length);
 
-	static uint16_t CalcCrc(const openpal::ReadBufferView& view);
+	static uint16_t CalcCrc(const openpal::RSlice& view);
 
 	static void AddCrc(uint8_t* input, uint32_t length);
 

@@ -36,23 +36,23 @@ class TxBuffer
 	
 	APDUResponse Start()
 	{
-		APDUResponse response(buffer.GetWriteBufferView());
+		APDUResponse response(buffer.GetWSlice());
 		return response;
 	}
 	
-	void Record(const openpal::ReadBufferView& view)
+	void Record(const openpal::RSlice& view)
 	{
 		lastResponse = view;
 	}
 
-	openpal::ReadBufferView GetLastResponse()
+	openpal::RSlice GetLastResponse()
 	{
 		return lastResponse;
 	}
 	
 	private:
 			
-	openpal::ReadBufferView lastResponse;	
+	openpal::RSlice lastResponse;	
 	openpal::Buffer buffer;	
 };
 

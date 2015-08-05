@@ -21,8 +21,8 @@
 #ifndef OPENPAL_IKEYWRAPALGO_H
 #define OPENPAL_IKEYWRAPALGO_H
 
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 
 #include <system_error>
 
@@ -35,9 +35,9 @@ namespace openpal
 	{
 		public:	
 
-		virtual openpal::ReadBufferView WrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, std::error_code& ec) const = 0;
+		virtual openpal::RSlice WrapKey(const RSlice& kek, const RSlice& input, WSlice& output, std::error_code& ec) const = 0;
 
-		virtual openpal::ReadBufferView UnwrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, std::error_code& ec) const = 0;
+		virtual openpal::RSlice UnwrapKey(const RSlice& kek, const RSlice& input, WSlice& output, std::error_code& ec) const = 0;
 	};
 }
 

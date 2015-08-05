@@ -70,7 +70,7 @@ namespace secauth
 		BeginUpdateKeyChangeCallbackT m_callback;
 
 		openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_challengeBuffer;
-		openpal::ReadBufferView m_challengeDataView;		
+		openpal::RSlice m_challengeDataView;		
 
 		virtual void Initialize() override final {}
 
@@ -78,16 +78,16 @@ namespace secauth
 
 		virtual bool IsEnabled() const override final { return true; }
 
-		virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
+		virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 
 		virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
 
 		/// --- helpers -----
 
-		opendnp3::IMasterTask::ResponseResult ProcessErrorResponse(const openpal::ReadBufferView& objects);
+		opendnp3::IMasterTask::ResponseResult ProcessErrorResponse(const openpal::RSlice& objects);
 
-		opendnp3::IMasterTask::ResponseResult ProcessDataResponse(const openpal::ReadBufferView& objects);
+		opendnp3::IMasterTask::ResponseResult ProcessDataResponse(const openpal::RSlice& objects);
 		
 	};
 

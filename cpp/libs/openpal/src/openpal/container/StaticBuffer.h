@@ -21,8 +21,8 @@
 #ifndef OPENPAL_STATICBUFFER_H
 #define OPENPAL_STATICBUFFER_H
 
-#include "openpal/container/WriteBufferView.h"
-#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WSlice.h"
+#include "openpal/container/RSlice.h"
 #include "openpal/util/Comparisons.h"
 
 #include <cstdint>
@@ -41,24 +41,24 @@ public:
 
 	virtual ~StaticBuffer() {}
 
-	ReadBufferView ToReadOnly() const
+	RSlice ToReadOnly() const
 	{
-		return ReadBufferView(buffer, SIZE);
+		return RSlice(buffer, SIZE);
 	}
 
-	ReadBufferView ToReadOnly(uint32_t maxSize) const
+	RSlice ToReadOnly(uint32_t maxSize) const
 	{
-		return ReadBufferView(buffer, openpal::Min(SIZE, maxSize));
+		return RSlice(buffer, openpal::Min(SIZE, maxSize));
 	}
 
-	WriteBufferView GetWriteBuffer()
+	WSlice GetWriteBuffer()
 	{
-		return WriteBufferView(buffer, SIZE);
+		return WSlice(buffer, SIZE);
 	}
 
-	WriteBufferView GetWriteBuffer(uint32_t maxSize)
+	WSlice GetWriteBuffer(uint32_t maxSize)
 	{
-		return WriteBufferView(buffer, openpal::Min(SIZE, maxSize));
+		return WSlice(buffer, openpal::Min(SIZE, maxSize));
 	}
 
 	const uint8_t* operator()() const { return buffer; }

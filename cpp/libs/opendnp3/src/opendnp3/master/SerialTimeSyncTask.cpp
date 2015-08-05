@@ -75,12 +75,12 @@ IMasterTask::TaskState SerialTimeSyncTask::OnTaskComplete(TaskCompletion result,
 	}
 }
 
-IMasterTask::ResponseResult SerialTimeSyncTask::ProcessResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult SerialTimeSyncTask::ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects)
 {	
 	return (delay < 0) ? OnResponseDelayMeas(response, objects) : OnResponseWriteTime(response, objects);				
 }
 
-IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::RSlice& objects)
 {	
 	if (ValidateSingleResponse(response))
 	{
@@ -115,7 +115,7 @@ IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDURe
 	}	
 }
 
-IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }

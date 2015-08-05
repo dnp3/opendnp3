@@ -33,7 +33,7 @@ using namespace openpal;
 
 namespace opendnp3
 {
-	ParseResult FreeFormatParser::ParseHeader(openpal::ReadBufferView& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+	ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 	{
 		if (buffer.Size() < 3)
 		{
@@ -65,7 +65,7 @@ namespace opendnp3
 			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}
 	
-		ReadBufferView copy(buffer.Take(FREE_FORMAT_SIZE));
+		RSlice copy(buffer.Take(FREE_FORMAT_SIZE));
 		buffer.Advance(FREE_FORMAT_SIZE);
 
 		FreeFormatHeader header(record, FREE_FORMAT_COUNT);
@@ -112,7 +112,7 @@ namespace opendnp3
 		
 	}
 
-	ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser, const FreeFormatHeader& header, uint16_t size, openpal::ReadBufferView& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger)
+	ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser, const FreeFormatHeader& header, uint16_t size, openpal::RSlice& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger)
 	{				
 		if (parser(header, objects, pHandler))
 		{

@@ -31,7 +31,7 @@ namespace opendnp3
 namespace logging
 {
 
-void ParseAndLogRequestTx(openpal::Logger logger, const openpal::ReadBufferView& apdu)
+void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu)
 {
 
 #ifndef OPENPAL_STRIP_LOGGING
@@ -64,7 +64,7 @@ void ParseAndLogRequestTx(openpal::Logger logger, const openpal::ReadBufferView&
 
 }
 
-void ParseAndLogResponseTx(openpal::Logger logger, const openpal::ReadBufferView& apdu)
+void ParseAndLogResponseTx(openpal::Logger logger, const openpal::RSlice& apdu)
 {
 
 #ifndef OPENPAL_STRIP_LOGGING	

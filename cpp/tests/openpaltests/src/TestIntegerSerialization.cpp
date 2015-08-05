@@ -43,7 +43,7 @@ bool TestReadWrite(T value)
 
 	for (uint32_t i = 0; i < sizeof(T); ++i)
 	{
-		auto dest = buffer.GetWriteBufferView();
+		auto dest = buffer.GetWSlice();
 		dest.Advance(i);
 		if (!Format::Write(dest, value))
 		{
@@ -182,7 +182,7 @@ TEST_CASE(SUITE("FormatMany"))
 	Buffer output(SIZE + 3);
 
 	{
-		auto dest = output.GetWriteBufferView();
+		auto dest = output.GetWSlice();
 		REQUIRE(Format::Many(dest, first, second, third));
 		REQUIRE(dest.Size() == (output.Size() - SIZE));
 		auto written = ToHex(output.ToReadOnly().Take(SIZE));
@@ -190,7 +190,7 @@ TEST_CASE(SUITE("FormatMany"))
 	}
 
 	{
-		auto dest = output.GetWriteBufferView(SIZE - 1);
+		auto dest = output.GetWSlice(SIZE - 1);
 		REQUIRE_FALSE(Format::Many(dest, first, second, third));
 	}
 }

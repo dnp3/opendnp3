@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_BITREADER_H
 #define OPENDNP3_BITREADER_H
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 #include "opendnp3/gen/DoubleBit.h"
 
@@ -29,10 +29,10 @@ namespace opendnp3
 {
 
 uint32_t NumBytesInBits(uint32_t numBits);
-bool GetBit(const openpal::ReadBufferView& buffer, uint32_t position);
+bool GetBit(const openpal::RSlice& buffer, uint32_t position);
 
 uint32_t NumBytesInDoubleBits(uint32_t numBits);
-DoubleBit GetDoubleBit(const openpal::ReadBufferView& buffer, uint32_t position);
+DoubleBit GetDoubleBit(const openpal::RSlice& buffer, uint32_t position);
 
 }
 

@@ -44,7 +44,7 @@ public:
 		pPosition(nullptr)
 	{}
 
-	PrefixedWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBufferView& position) :
+	PrefixedWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position) :
 		serializer(serializer_),
 		sizeOfTypePlusIndex(serializer.Size() + PrefixType::SIZE),
 		count(0),		
@@ -95,8 +95,8 @@ private:
 
 	bool isValid;
 
-	openpal::WriteBufferView countPosition;  // make a copy to record where we write the count
-	openpal::WriteBufferView* pPosition;
+	openpal::WSlice countPosition;  // make a copy to record where we write the count
+	openpal::WSlice* pPosition;
 };
 
 }

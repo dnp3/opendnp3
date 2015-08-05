@@ -31,29 +31,29 @@ namespace opendnp3 {
 
 // ------- Group50Var1 -------
 
-bool Group50Var1::Read(ReadBufferView& buffer, Group50Var1& output)
+bool Group50Var1::Read(RSlice& buffer, Group50Var1& output)
 {
   return Parse::Many(buffer, output.time);
 }
 
-bool Group50Var1::Write(const Group50Var1& arg, openpal::WriteBufferView& buffer)
+bool Group50Var1::Write(const Group50Var1& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.time);
 }
 
 // ------- Group50Var4 -------
 
-bool Group50Var4::Read(ReadBufferView& buffer, Group50Var4& output)
+bool Group50Var4::Read(RSlice& buffer, Group50Var4& output)
 {
   return Parse::Many(buffer, output.time, output.interval, output.units);
 }
 
-bool Group50Var4::Write(const Group50Var4& arg, openpal::WriteBufferView& buffer)
+bool Group50Var4::Write(const Group50Var4& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.time, arg.interval, arg.units);
 }
 
-bool Group50Var4::ReadTarget(ReadBufferView& buff, TimeAndInterval& output)
+bool Group50Var4::ReadTarget(RSlice& buff, TimeAndInterval& output)
 {
   Group50Var4 value;
   if(Read(buff, value))
@@ -67,7 +67,7 @@ bool Group50Var4::ReadTarget(ReadBufferView& buff, TimeAndInterval& output)
   }
 }
 
-bool Group50Var4::WriteTarget(const TimeAndInterval& value, openpal::WriteBufferView& buff)
+bool Group50Var4::WriteTarget(const TimeAndInterval& value, openpal::WSlice& buff)
 {
   return Group50Var4::Write(ConvertGroup50Var4::Apply(value), buff);
 }

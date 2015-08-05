@@ -50,9 +50,9 @@ void LinkLayerParser::Reset()
 	buffer.Reset();
 }
 
-WriteBufferView LinkLayerParser::WriteBuff() const
+WSlice LinkLayerParser::WriteBuff() const
 {
-	return WriteBufferView(buffer.WriteBuff(), buffer.NumWriteBytes());	
+	return WSlice(buffer.WriteBuff(), buffer.NumWriteBytes());	
 }
 
 void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink* pSink)
@@ -195,7 +195,7 @@ void LinkLayerParser::TransferUserData()
 {
 	uint32_t len = header.GetLength() - LPDU_MIN_LENGTH;
 	LinkFrame::ReadUserData(buffer.ReadBuffer() + LPDU_HEADER_SIZE, rxBuffer, len);
-	userData = ReadBufferView(rxBuffer, len);
+	userData = RSlice(rxBuffer, len);
 }
 
 bool LinkLayerParser::ReadHeader()

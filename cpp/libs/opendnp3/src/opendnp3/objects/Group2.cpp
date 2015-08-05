@@ -31,17 +31,17 @@ namespace opendnp3 {
 
 // ------- Group2Var1 -------
 
-bool Group2Var1::Read(ReadBufferView& buffer, Group2Var1& output)
+bool Group2Var1::Read(RSlice& buffer, Group2Var1& output)
 {
   return Parse::Many(buffer, output.flags);
 }
 
-bool Group2Var1::Write(const Group2Var1& arg, openpal::WriteBufferView& buffer)
+bool Group2Var1::Write(const Group2Var1& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags);
 }
 
-bool Group2Var1::ReadTarget(ReadBufferView& buff, Binary& output)
+bool Group2Var1::ReadTarget(RSlice& buff, Binary& output)
 {
   Group2Var1 value;
   if(Read(buff, value))
@@ -55,24 +55,24 @@ bool Group2Var1::ReadTarget(ReadBufferView& buff, Binary& output)
   }
 }
 
-bool Group2Var1::WriteTarget(const Binary& value, openpal::WriteBufferView& buff)
+bool Group2Var1::WriteTarget(const Binary& value, openpal::WSlice& buff)
 {
   return Group2Var1::Write(ConvertGroup2Var1::Apply(value), buff);
 }
 
 // ------- Group2Var2 -------
 
-bool Group2Var2::Read(ReadBufferView& buffer, Group2Var2& output)
+bool Group2Var2::Read(RSlice& buffer, Group2Var2& output)
 {
   return Parse::Many(buffer, output.flags, output.time);
 }
 
-bool Group2Var2::Write(const Group2Var2& arg, openpal::WriteBufferView& buffer)
+bool Group2Var2::Write(const Group2Var2& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.time);
 }
 
-bool Group2Var2::ReadTarget(ReadBufferView& buff, Binary& output)
+bool Group2Var2::ReadTarget(RSlice& buff, Binary& output)
 {
   Group2Var2 value;
   if(Read(buff, value))
@@ -86,24 +86,24 @@ bool Group2Var2::ReadTarget(ReadBufferView& buff, Binary& output)
   }
 }
 
-bool Group2Var2::WriteTarget(const Binary& value, openpal::WriteBufferView& buff)
+bool Group2Var2::WriteTarget(const Binary& value, openpal::WSlice& buff)
 {
   return Group2Var2::Write(ConvertGroup2Var2::Apply(value), buff);
 }
 
 // ------- Group2Var3 -------
 
-bool Group2Var3::Read(ReadBufferView& buffer, Group2Var3& output)
+bool Group2Var3::Read(RSlice& buffer, Group2Var3& output)
 {
   return Parse::Many(buffer, output.flags, output.time);
 }
 
-bool Group2Var3::Write(const Group2Var3& arg, openpal::WriteBufferView& buffer)
+bool Group2Var3::Write(const Group2Var3& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.time);
 }
 
-bool Group2Var3::ReadTarget(ReadBufferView& buff, Binary& output)
+bool Group2Var3::ReadTarget(RSlice& buff, Binary& output)
 {
   Group2Var3 value;
   if(Read(buff, value))
@@ -117,7 +117,7 @@ bool Group2Var3::ReadTarget(ReadBufferView& buff, Binary& output)
   }
 }
 
-bool Group2Var3::WriteTarget(const Binary& value, openpal::WriteBufferView& buff)
+bool Group2Var3::WriteTarget(const Binary& value, openpal::WSlice& buff)
 {
   return Group2Var3::Write(ConvertGroup2Var3::Apply(value), buff);
 }

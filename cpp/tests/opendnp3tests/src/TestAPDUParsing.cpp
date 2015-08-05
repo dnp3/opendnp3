@@ -69,7 +69,7 @@ void TestSimple(const std::string& hex, ParseResult expected, size_t numCalls)
 	TestComplex(hex, expected, numCalls, [](MockApduHeaderHandler&) {});
 }
 
-std::string BufferToString(const ReadBufferView& buff)
+std::string BufferToString(const RSlice& buff)
 {
 	const uint8_t* pBuffer = buff;
 	return std::string(reinterpret_cast<const char*>(pBuffer), buff.Size());

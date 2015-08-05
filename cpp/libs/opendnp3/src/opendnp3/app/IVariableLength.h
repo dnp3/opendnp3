@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_IVARIABLELENGTH_H
 #define OPENDNP3_IVARIABLELENGTH_H
 
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/WSlice.h>
 
 #include "opendnp3/app/GroupVariationID.h"
 
@@ -41,10 +41,10 @@ public:
 	virtual uint32_t Size() const = 0;
 
 	// attempt to write the object to the destination buffer
-	virtual bool Write(openpal::WriteBufferView& dest) const = 0;
+	virtual bool Write(openpal::WSlice& dest) const = 0;
 
 	// attempt to read the object from the input buffer
-	virtual bool Read(const openpal::ReadBufferView& input) = 0;
+	virtual bool Read(const openpal::RSlice& input) = 0;
 
 };
 

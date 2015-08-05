@@ -33,7 +33,7 @@ namespace secauth
 		}
 	}
 
-	bool MasterUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
+	bool MasterUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::RSlice& key) const
 	{
 		auto iter = this->userMap.find(user.GetId());
 		if (iter == userMap.end())

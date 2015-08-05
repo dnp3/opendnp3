@@ -23,7 +23,7 @@
 
 namespace secauth
 {
-	std::string ToString(const openpal::ReadBufferView& rslice)
+	std::string ToString(const openpal::RSlice& rslice)
 	{
 		std::string str;	
 		const uint8_t* buffer = rslice;
@@ -31,9 +31,9 @@ namespace secauth
 		return str;
 	}
 
-	openpal::ReadBufferView AsSlice(const std::string& str)
+	openpal::RSlice AsSlice(const std::string& str)
 	{
-		return openpal::ReadBufferView(reinterpret_cast<const uint8_t*>(str.c_str()), str.size());
+		return openpal::RSlice(reinterpret_cast<const uint8_t*>(str.c_str()), str.size());
 	}
 
 }

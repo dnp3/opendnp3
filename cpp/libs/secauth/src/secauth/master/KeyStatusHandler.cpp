@@ -30,7 +30,7 @@ KeyStatusHandler::KeyStatusHandler(openpal::Logger logger_) : logger(logger_), v
 {}	
 
 
-bool KeyStatusHandler::GetStatus(Group120Var5& status, openpal::ReadBufferView& rawObject) const
+bool KeyStatusHandler::GetStatus(Group120Var5& status, openpal::RSlice& rawObject) const
 {
 	if (valid)
 	{
@@ -41,7 +41,7 @@ bool KeyStatusHandler::GetStatus(Group120Var5& status, openpal::ReadBufferView& 
 	return valid;
 }
 
-IINField KeyStatusHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& status, const openpal::ReadBufferView& rawObject)
+IINField KeyStatusHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& status, const openpal::RSlice& rawObject)
 {							
 	this->valid = true;
 	this->status = status;

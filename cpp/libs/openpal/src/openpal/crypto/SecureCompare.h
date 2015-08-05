@@ -21,12 +21,12 @@
 #ifndef OPENPAL_SECURECOMPARE_H
 #define OPENPAL_SECURECOMPARE_H
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 namespace openpal
 {
 	// A buffer comparison function that doesn't leak timing info
-	bool SecureEquals(const ReadBufferView& lhs, const ReadBufferView& rhs);	
+	bool SecureEquals(const RSlice& lhs, const RSlice& rhs);	
 }
 
 #endif

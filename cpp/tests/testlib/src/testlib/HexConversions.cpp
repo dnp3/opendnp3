@@ -46,7 +46,7 @@ std::string ToHex(const uint8_t* apBuff, size_t aLength, bool spaced)
 	return oss.str();
 }
 
-std::string ToHex(const ReadBufferView& buffer, bool spaced)
+std::string ToHex(const RSlice& buffer, bool spaced)
 {
 	return ToHex(buffer, buffer.Size(), spaced);
 }
@@ -78,7 +78,7 @@ std::string SkipBytesHex(const std::string& input, uint32_t bytes)
 std::string RepeatHex(uint8_t byte, uint16_t count)
 {
 	Buffer buffer(count);
-	buffer.GetWriteBufferView().SetAllTo(byte);
+	buffer.GetWSlice().SetAllTo(byte);
 	return ToHex(buffer.ToReadOnly());
 }
 

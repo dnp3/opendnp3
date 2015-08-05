@@ -25,7 +25,7 @@
 #include <opendnp3/gen/FunctionCode.h>
 #include <opendnp3/app/User.h>
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 #include <functional>
 
@@ -46,7 +46,7 @@ class IOutstationUserDatabase
 
 		virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const = 0;
 		
-		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
+		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::RSlice& key) const = 0;
 
 		virtual bool UserExists(const opendnp3::User& user) const = 0;
 

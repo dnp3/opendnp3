@@ -83,7 +83,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 	const uint32_t SIZE = challenge.Size();	
 
 	Buffer output(64);
-	auto dest = output.GetWriteBufferView();
+	auto dest = output.GetWSlice();
 	REQUIRE(challenge.Write(dest));
 	auto written = output.Size() - dest.Size();
 
@@ -99,6 +99,6 @@ TEST_CASE(SUITE("Formatter return false when insufficient space"))
 	const uint32_t SIZE = challenge.Size();
 
 	Buffer output(SIZE - 1);		
-	auto dest = output.GetWriteBufferView();
+	auto dest = output.GetWSlice();
 	REQUIRE_FALSE(challenge.Write(dest));
 }

@@ -22,7 +22,7 @@
 #define OPENDNP3_NUMPARSER_H
 
 #include <openpal/logging/Logger.h>
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/Range.h"
@@ -34,16 +34,16 @@ namespace opendnp3
 class NumParser
 {
 	// a function that consumes bytes from a buffer and returns a uint16_t count
-	typedef uint16_t(*ReadFun)(openpal::ReadBufferView& buffer);
+	typedef uint16_t(*ReadFun)(openpal::RSlice& buffer);
 
 public:
 	
 	uint8_t NumBytes() const;
 
-	ParseResult ParseCount(openpal::ReadBufferView& buffer, uint16_t& count, openpal::Logger* pLogger) const;
-	ParseResult ParseRange(openpal::ReadBufferView& buffer, Range& range, openpal::Logger* pLogger) const;
+	ParseResult ParseCount(openpal::RSlice& buffer, uint16_t& count, openpal::Logger* pLogger) const;
+	ParseResult ParseRange(openpal::RSlice& buffer, Range& range, openpal::Logger* pLogger) const;
 
-	uint16_t ReadNum(openpal::ReadBufferView& buffer) const;
+	uint16_t ReadNum(openpal::RSlice& buffer) const;
 	
 	static NumParser OneByte();
 	static NumParser TwoByte();
@@ -52,9 +52,9 @@ private:
 
 	// read the number, consuming from the buffer
 	// return true if there is enough bytes, false otherwise
-	bool Read(uint16_t& num, openpal::ReadBufferView& buffer) const;
+	bool Read(uint16_t& num, openpal::RSlice& buffer) const;
 
-	static uint16_t ReadByte(openpal::ReadBufferView& buffer);
+	static uint16_t ReadByte(openpal::RSlice& buffer);
 
 	NumParser(ReadFun pReadFun, uint8_t size);
 

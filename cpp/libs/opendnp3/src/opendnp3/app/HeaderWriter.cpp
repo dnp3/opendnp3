@@ -30,7 +30,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-HeaderWriter::HeaderWriter(openpal::WriteBufferView* position_) : position(position_)
+HeaderWriter::HeaderWriter(openpal::WSlice* position_) : position(position_)
 {}
 
 uint32_t  HeaderWriter::Remaining() const

@@ -95,7 +95,7 @@ bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uin
 	return true;
 }
 
-IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	if (!(header.function == FunctionCode::AUTH_RESPONSE && ValidateSingleResponse(header) && ValidateInternalIndications(header)))
 	{
@@ -122,7 +122,7 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessResponse(const ope
 	}
 }
 
-IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessErrorResponse(const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessErrorResponse(const openpal::RSlice& objects)
 {
 	ErrorHandler handler;
 	if (APDUParser::Parse(objects, handler, &logger) == ParseResult::OK)
@@ -133,7 +133,7 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessErrorResponse(cons
 	return ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationResponse(const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationResponse(const openpal::RSlice& objects)
 {
 	KeyChangeConfirmationHandler handler;
 	if (APDUParser::Parse(objects, handler, &logger) != ParseResult::OK)

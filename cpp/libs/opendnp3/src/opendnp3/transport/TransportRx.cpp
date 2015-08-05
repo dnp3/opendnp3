@@ -53,18 +53,18 @@ void TransportRx::ClearRxBuffer()
 	numBytesRead = 0;
 }
 
-openpal::WriteBufferView TransportRx::GetAvailable()
+openpal::WSlice TransportRx::GetAvailable()
 {
-	return rxBuffer.GetWriteBufferView().Skip(numBytesRead);
+	return rxBuffer.GetWSlice().Skip(numBytesRead);
 }
 
-ReadBufferView TransportRx::ProcessReceive(const ReadBufferView& input)
+RSlice TransportRx::ProcessReceive(const RSlice& input)
 {
 	if (input.Size() == 0)
 	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_HEADER, "Received tpdu with no header");
 		if (pStatistics) ++pStatistics->numTransportErrorRx;
-		return ReadBufferView::Empty();
+		return RSlice::Empty();
 	}	
 	else
 	{
@@ -80,7 +80,7 @@ ReadBufferView TransportRx::ProcessReceive(const ReadBufferView& input)
 		if (!this->ValidateHeader(first, last, seq))
 		{
 			if (pStatistics) ++pStatistics->numTransportErrorRx;
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 
 		auto available = this->GetAvailable();
@@ -90,7 +90,7 @@ ReadBufferView TransportRx::ProcessReceive(const ReadBufferView& input)
 			if (pStatistics) ++pStatistics->numTransportErrorRx;
 			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
 			this->ClearRxBuffer();
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 		else   //passed all validation
 		{
@@ -105,13 +105,13 @@ ReadBufferView TransportRx::ProcessReceive(const ReadBufferView& input)
 
 			if(last)
 			{			
-				ReadBufferView ret = rxBuffer.ToReadOnly().Take(numBytesRead);					
+				RSlice ret = rxBuffer.ToReadOnly().Take(numBytesRead);					
 				this->ClearRxBuffer();
 				return ret;
 			}
 			else
 			{
-				return ReadBufferView::Empty();
+				return RSlice::Empty();
 			}
 		}		
 	}

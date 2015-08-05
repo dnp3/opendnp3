@@ -37,7 +37,7 @@ public:
 
 	virtual bool HasValue() const override final;
 
-	virtual openpal::ReadBufferView GetSegment() override final;
+	virtual openpal::RSlice GetSegment() override final;
 
 	virtual bool Advance() override final;
 
@@ -46,7 +46,7 @@ public:
 private:
 	uint32_t segmentSize;
 	testlib::HexSequence hs;
-	openpal::ReadBufferView remainder;
+	openpal::RSlice remainder;
 };
 
 

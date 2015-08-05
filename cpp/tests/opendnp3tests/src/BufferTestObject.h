@@ -25,7 +25,7 @@
 #include <vector>
 #include <cstdint>
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 namespace opendnp3
 {
@@ -38,7 +38,7 @@ public:
 	BufferTestObject();
 	~BufferTestObject();
 
-	bool BufferEquals(const openpal::ReadBufferView& arBuffer) const;
+	bool BufferEquals(const openpal::RSlice& arBuffer) const;
 	bool BufferEquals(const uint8_t*, size_t) const;
 	bool BufferEqualsHex(const std::string& arData) const;
 	bool BufferEqualsString(const std::string& arData) const;
@@ -65,7 +65,7 @@ public:
 	}
 
 protected:
-	void WriteToBuffer(const openpal::ReadBufferView& arBuffer);
+	void WriteToBuffer(const openpal::RSlice& arBuffer);
 
 private:
 	size_t mNumWrites;

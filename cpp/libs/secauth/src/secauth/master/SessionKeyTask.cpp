@@ -72,7 +72,7 @@ void SessionKeyTask::Initialize()
 	this->state = ChangeState::GetStatus;
 }
 
-IMasterTask::ResponseResult SessionKeyTask::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult SessionKeyTask::ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	if (ValidateSingleResponse(header))
 	{
@@ -124,7 +124,7 @@ bool SessionKeyTask::BuildSessionKeyRequest(opendnp3::APDURequest& request, uint
 	return ret;
 }
 
-IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseHeader& response, const ReadBufferView& objects)
+IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseHeader& response, const RSlice& objects)
 {
 	KeyStatusHandler handler(this->logger);
 	if (IsFailure(APDUParser::Parse(objects, handler, this->logger)))
@@ -133,7 +133,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 	}
 
 	Group120Var5 status;
-	ReadBufferView rawObject;
+	RSlice rawObject;
 
 	if (!handler.GetStatus(status, rawObject))
 	{
@@ -168,7 +168,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 	}
 
 	// get a view of the users update key
-	openpal::ReadBufferView updateKey;
+	openpal::RSlice updateKey;
 	UpdateKeyMode mode;	
 
 	if (!pUserDB->GetUpdateKey(this->user, mode, updateKey))
@@ -196,7 +196,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 	return ResponseResult::OK_REPEAT;
  }
 
-IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseHeader& response, const ReadBufferView& objects)
+IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseHeader& response, const RSlice& objects)
 {
 	KeyStatusHandler handler(this->logger);
 	if (IsFailure(APDUParser::Parse(objects, handler, this->logger)))
@@ -205,7 +205,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseH
 	}
 
 	Group120Var5 status;
-	ReadBufferView rawObject;
+	RSlice rawObject;
 
 	if (!handler.GetStatus(status, rawObject))
 	{

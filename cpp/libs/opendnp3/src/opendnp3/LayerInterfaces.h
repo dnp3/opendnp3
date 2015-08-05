@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_LAYERINTERFACES_H
 #define OPENDNP3_LAYERINTERFACES_H
 
-#include <openpal/container/WriteBufferView.h>
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WSlice.h>
+#include <openpal/container/RSlice.h>
 
 #include "Route.h"
 
@@ -63,7 +63,7 @@ public:
 
 	// Called by the lower layer when data arrives
 	// return false if the layer is down
-	virtual bool OnReceive(const openpal::ReadBufferView&) = 0;
+	virtual bool OnReceive(const openpal::RSlice&) = 0;
 
 	// Called by lower layer when a previously requested send operation succeeds or fails.
 	// Layers can only have 1 outstanding send operation. The callback is guaranteed
@@ -80,7 +80,7 @@ public:
 
 	virtual ~ILowerLayer() {}		
 	
-	virtual void BeginTransmit(const openpal::ReadBufferView&) = 0;
+	virtual void BeginTransmit(const openpal::RSlice&) = 0;
 };
 
 class HasLowerLayer

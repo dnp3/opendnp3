@@ -31,17 +31,17 @@ namespace opendnp3 {
 
 // ------- Group11Var1 -------
 
-bool Group11Var1::Read(ReadBufferView& buffer, Group11Var1& output)
+bool Group11Var1::Read(RSlice& buffer, Group11Var1& output)
 {
   return Parse::Many(buffer, output.flags);
 }
 
-bool Group11Var1::Write(const Group11Var1& arg, openpal::WriteBufferView& buffer)
+bool Group11Var1::Write(const Group11Var1& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags);
 }
 
-bool Group11Var1::ReadTarget(ReadBufferView& buff, BinaryOutputStatus& output)
+bool Group11Var1::ReadTarget(RSlice& buff, BinaryOutputStatus& output)
 {
   Group11Var1 value;
   if(Read(buff, value))
@@ -55,24 +55,24 @@ bool Group11Var1::ReadTarget(ReadBufferView& buff, BinaryOutputStatus& output)
   }
 }
 
-bool Group11Var1::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBufferView& buff)
+bool Group11Var1::WriteTarget(const BinaryOutputStatus& value, openpal::WSlice& buff)
 {
   return Group11Var1::Write(ConvertGroup11Var1::Apply(value), buff);
 }
 
 // ------- Group11Var2 -------
 
-bool Group11Var2::Read(ReadBufferView& buffer, Group11Var2& output)
+bool Group11Var2::Read(RSlice& buffer, Group11Var2& output)
 {
   return Parse::Many(buffer, output.flags, output.time);
 }
 
-bool Group11Var2::Write(const Group11Var2& arg, openpal::WriteBufferView& buffer)
+bool Group11Var2::Write(const Group11Var2& arg, openpal::WSlice& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.time);
 }
 
-bool Group11Var2::ReadTarget(ReadBufferView& buff, BinaryOutputStatus& output)
+bool Group11Var2::ReadTarget(RSlice& buff, BinaryOutputStatus& output)
 {
   Group11Var2 value;
   if(Read(buff, value))
@@ -86,7 +86,7 @@ bool Group11Var2::ReadTarget(ReadBufferView& buff, BinaryOutputStatus& output)
   }
 }
 
-bool Group11Var2::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBufferView& buff)
+bool Group11Var2::WriteTarget(const BinaryOutputStatus& value, openpal::WSlice& buff)
 {
   return Group11Var2::Write(ConvertGroup11Var2::Apply(value), buff);
 }

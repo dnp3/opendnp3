@@ -33,12 +33,12 @@ class IOAuthState
 {
 	public:
 
-		virtual IOAuthState* OnRegularRequest(OAuthContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
-		virtual IOAuthState* OnAggModeRequest(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest) = 0;
+		virtual IOAuthState* OnRegularRequest(OAuthContext& ocontext, const openpal::RSlice& fragment, const opendnp3::APDUHeader& header, const openpal::RSlice& objects) = 0;
+		virtual IOAuthState* OnAggModeRequest(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const openpal::RSlice& objects, const opendnp3::Group120Var3& aggModeRequest) = 0;
 		virtual IOAuthState* OnAuthChallenge(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
 		virtual IOAuthState* OnAuthReply(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) = 0;
 		virtual IOAuthState* OnRequestKeyStatus(OAuthContext& ocontext, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) = 0;
-		virtual IOAuthState* OnChangeSessionKeys(OAuthContext& ocontext, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
+		virtual IOAuthState* OnChangeSessionKeys(OAuthContext& ocontext, const openpal::RSlice& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
 		virtual IOAuthState* OnChallengeTimeout(OAuthContext& ocontext) = 0;
 
 		virtual const char* GetName() = 0;

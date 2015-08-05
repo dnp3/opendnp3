@@ -52,7 +52,7 @@ private:
 
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::ASSIGN_CLASS; }
 
-	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;	
+	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;	
 
 	virtual TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;	
 

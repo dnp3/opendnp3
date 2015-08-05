@@ -70,7 +70,7 @@ bool CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 	return true;
 }
 
-IMasterTask::ResponseResult CommandTask::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult CommandTask::ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR_BAD_RESPONSE;
 }
@@ -94,7 +94,7 @@ void CommandTask::Initialize()
 	statusResult = CommandStatus::UNDEFINED;
 }
 
-IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::RSlice& objects)
 {
 	auto result = APDUParser::Parse(objects, *pSequence.get(), &logger);
 	if(result == ParseResult::OK)

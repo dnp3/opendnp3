@@ -3,8 +3,8 @@ package com.automatak.render.dnp3.objects.generators
 object GroupVariationIncludes {
 
    def headerReadWrite : Iterator[String] = Iterator(
-     "<openpal/container/ReadBufferView.h>",
-     "<openpal/container/WriteBufferView.h>",
+     "<openpal/container/RSlice.h>",
+     "<openpal/container/WSlice.h>",
      """"opendnp3/Types.h""""
    )
 

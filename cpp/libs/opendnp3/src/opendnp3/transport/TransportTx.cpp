@@ -39,7 +39,7 @@ TransportTx::TransportTx(const openpal::Logger& logger_, StackStatistics* pStati
 	tpduCount(0)
 {}
 
-void TransportTx::Configure(const openpal::ReadBufferView& output)
+void TransportTx::Configure(const openpal::RSlice& output)
 {
 	assert(output.IsNotEmpty());
 	txSegment.Clear();
@@ -52,7 +52,7 @@ bool TransportTx::HasValue() const
 	return apdu.Size() > 0;
 }
 
-openpal::ReadBufferView TransportTx::GetSegment()
+openpal::RSlice TransportTx::GetSegment()
 {	
 	if (txSegment.IsSet())
 	{

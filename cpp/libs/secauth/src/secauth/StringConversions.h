@@ -22,17 +22,17 @@
 #define SECAUTH_STRING_CONVERSIONS_H
 
 #include <string>
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 namespace secauth
 {
 	// -- Routines for going from UTF-8 uint8_t* slices in memory to std::string and back again
 
 	/// Makes a copy of the data and stores it in std::string
-	std::string ToString(const openpal::ReadBufferView& rslice);
+	std::string ToString(const openpal::RSlice& rslice);
 
 	/// Produces an unsigned byte view of the string w/o copying the source data
-	openpal::ReadBufferView AsSlice(const std::string& str);
+	openpal::RSlice AsSlice(const std::string& str);
 }
 
 #endif

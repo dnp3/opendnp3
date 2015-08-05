@@ -26,7 +26,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDURequest::APDURequest(const openpal::WriteBufferView& aBuffer) : APDUWrapper(aBuffer)
+APDURequest::APDURequest(const openpal::WSlice& aBuffer) : APDUWrapper(aBuffer)
 {
 
 }

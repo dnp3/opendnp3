@@ -31,14 +31,14 @@ namespace openpal
 	const double DoubleFloat::Max(openpal::MaxValue<double>());
 	const double DoubleFloat::Min(openpal::MinValue<double>());
 
-	double DoubleFloat::ReadBuffer(ReadBufferView& buffer)
+	double DoubleFloat::ReadBuffer(RSlice& buffer)
 	{
 		auto ret = Read(buffer);
 		buffer.Advance(SIZE);
 		return ret;
 	}
 
-	void DoubleFloat::WriteBuffer(WriteBufferView& buffer, double value)
+	void DoubleFloat::WriteBuffer(WSlice& buffer, double value)
 	{
 		Write(buffer, value);
 		buffer.Advance(SIZE);

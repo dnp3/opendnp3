@@ -48,7 +48,7 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 
 	for (int i = 0; i < NUM_RAND_FETCH; ++i)
 	{
-		auto dest = buffer.GetWriteBufferView();
+		auto dest = buffer.GetWSlice();
 		auto output = provider.GetSecureRandom(dest, ec);
 		if (!ec && output.IsNotEmpty())
 		{
@@ -75,7 +75,7 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 		Buffer buffer(100);
 		for (int i = 0; i < NUM_RAND_FETCH; ++i)
 		{
-			auto dest = buffer.GetWriteBufferView();
+			auto dest = buffer.GetWSlice();
 			auto output = provider.GetSecureRandom(dest, ec);
 			if (!ec && output.IsNotEmpty())
 			{

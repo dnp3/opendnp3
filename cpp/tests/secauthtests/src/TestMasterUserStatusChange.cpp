@@ -53,7 +53,7 @@ TEST_CASE(SUITE("initiates a user status change when invoked"))
 		UserRoleToType(UserRole::OPERATOR),
 		10,
 		"BOB",
-		ReadBufferView(),
+		RSlice(),
 		certDataBuffer.ToReadOnly()
 	);
 

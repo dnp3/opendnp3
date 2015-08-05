@@ -33,12 +33,12 @@ namespace opendnp3
 	{
 	public:				
 
-		virtual openpal::ReadBufferView WrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const
+		virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const
 		{
 			return WrapOrUnwrap(kek, input, output, ec);
 		}
 		
-		virtual openpal::ReadBufferView UnwrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const
+		virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const
 		{
 			return WrapOrUnwrap(kek, input, output, ec);
 		}
@@ -47,7 +47,7 @@ namespace opendnp3
 
 	private:
 
-		openpal::ReadBufferView WrapOrUnwrap(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const
+		openpal::RSlice WrapOrUnwrap(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const
 		{
 			if (!(kek.Size() == 16 || kek.Size() == 32))
 			{

@@ -58,14 +58,14 @@ public:
 	virtual void OnOpenFailure() override final;
 
 	// --------  IUpperLayer ---------
-	virtual void OnReceive(const openpal::ReadBufferView& buffer) override final;
+	virtual void OnReceive(const openpal::RSlice& buffer) override final;
 	virtual void OnSendResult(bool isSuccess) override final;
 
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
 
 	// --------  ILowerLayer ---------
-	virtual void BeginTransmit(const openpal::ReadBufferView& buffer)  override final;
+	virtual void BeginTransmit(const openpal::RSlice& buffer)  override final;
 
 
 private:

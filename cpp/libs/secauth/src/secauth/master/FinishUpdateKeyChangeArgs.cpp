@@ -29,9 +29,9 @@ namespace secauth
 			const std::string& outstationName_,
 			opendnp3::User user_,
 			uint32_t keyChangeSequenceNumber_,
-			const openpal::ReadBufferView& masterChallengeData_,
-			const openpal::ReadBufferView& outstationChallengeData_,
-			const openpal::ReadBufferView& encryptedKeyData_,
+			const openpal::RSlice& masterChallengeData_,
+			const openpal::RSlice& outstationChallengeData_,
+			const openpal::RSlice& encryptedKeyData_,
 			const UpdateKey& updateKey_
 		) :
 		username(username_),

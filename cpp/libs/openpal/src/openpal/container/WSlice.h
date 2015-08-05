@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_WriteBufferView_H
-#define OPENPAL_WriteBufferView_H
+#ifndef OPENPAL_WSLICE_H
+#define OPENPAL_WSLICE_H
 
 #include "HasSize.h"
 
@@ -28,26 +28,30 @@
 namespace openpal
 {
 
-class ReadBufferView;
+class RSlice;
 
-class WriteBufferView : public HasSize<uint32_t>
+/**
+*	Represents a write-able slice of a buffer located elsewhere. Mediates writing to the buffer
+*	to prevent overruns and other errors.
+*/
+class WSlice : public HasSize<uint32_t>
 {
 public:
 
-	static WriteBufferView Empty();
+	static WSlice Empty();
 
 	void SetAllTo(uint8_t value);
 
-	WriteBufferView();	
-	WriteBufferView(uint8_t* pBuffer, uint32_t size);
+	WSlice();	
+	WSlice(uint8_t* pBuffer, uint32_t size);
 
 	void Clear();
 
 	uint32_t Advance(uint32_t count);
 
-	WriteBufferView Skip(uint32_t count) const;
+	WSlice Skip(uint32_t count) const;
 
-	ReadBufferView ToReadOnly() const;
+	RSlice ToReadOnly() const;
 
 	operator uint8_t* ()
 	{

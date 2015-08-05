@@ -140,7 +140,7 @@ public:
 	/**
 	 * Handler for responses	 
 	 */	
-	ResponseResult OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects, openpal::MonotonicTimestamp now);
+	ResponseResult OnResponse(const APDUResponseHeader& response, const openpal::RSlice& objects, openpal::MonotonicTimestamp now);
 	
 	/**
 	 * Called when a response times out	 
@@ -187,7 +187,7 @@ public:
 	// called during OnStart() to initialize any state for a new run
 	virtual void Initialize() {}		
 
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) = 0;
+	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) = 0;
 
 	virtual TaskState OnTaskComplete(TaskCompletion completion, openpal::MonotonicTimestamp now) = 0;
 
@@ -200,8 +200,8 @@ public:
 
 	// Validation helpers for various behaviors to avoid deep inheritance
 	bool ValidateSingleResponse(const APDUResponseHeader& header);
-	bool ValidateNullResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);	
-	bool ValidateNoObjects(const openpal::ReadBufferView& objects);
+	bool ValidateNullResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);	
+	bool ValidateNoObjects(const openpal::RSlice& objects);
 	bool ValidateInternalIndications(const APDUResponseHeader& header);
 
 	void NotifyResult(TaskCompletion result);

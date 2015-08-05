@@ -22,14 +22,14 @@
 #ifndef OPENDNP3_FUNCTIONS_H
 #define OPENDNP3_FUNCTIONS_H
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 namespace opendnp3
 {
 
 // a function that reads a type from a buffer and returns true if successful
 template <class T>
-using ReadFunction = bool(*)(openpal::ReadBufferView& buffer, T& output);
+using ReadFunction = bool(*)(openpal::RSlice& buffer, T& output);
 
 }
 

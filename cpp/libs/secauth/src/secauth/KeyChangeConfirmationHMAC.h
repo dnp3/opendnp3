@@ -40,11 +40,11 @@ namespace secauth
 		public:
 			KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm);						
 			
-			openpal::ReadBufferView Compute(
-				const openpal::ReadBufferView& key, 
+			openpal::RSlice Compute(
+				const openpal::RSlice& key, 
 				const std::string& name,
-				const openpal::ReadBufferView& senderNonce,
-				const openpal::ReadBufferView& receiverNonce,
+				const openpal::RSlice& senderNonce,
+				const openpal::RSlice& receiverNonce,
 				uint32_t keyChangeSeqNum,
 				opendnp3::User user,
 				std::error_code& ec

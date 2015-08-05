@@ -23,7 +23,7 @@
 
 #include <openpal/logging/Logger.h>
 #include <openpal/crypto/IKeyWrapAlgo.h>
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 #include <openpal/container/StaticBuffer.h>
 
 #include "secauth/AuthSizes.h"
@@ -38,17 +38,17 @@ namespace secauth
 
 		bool Wrap(
 							openpal::IKeyWrapAlgo& algo,
-							const openpal::ReadBufferView& updateKey,
+							const openpal::RSlice& updateKey,
 							const SessionKeysView& sessionKeys,
-							const openpal::ReadBufferView& keyStatus,									
+							const openpal::RSlice& keyStatus,									
 							const openpal::Logger logger
 				);
 
-		openpal::ReadBufferView GetWrappedData() const { return data; }
+		openpal::RSlice GetWrappedData() const { return data; }
 
 	private:
 		
-		openpal::ReadBufferView data;
+		openpal::RSlice data;
 		openpal::StaticBuffer<AuthSizes::MAX_KEY_WRAP_BUFFER_SIZE> buffer;		
 	};
 

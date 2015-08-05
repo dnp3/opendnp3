@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_IFRAMESINK_H
 #define OPENDNP3_IFRAMESINK_H
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 #include <stddef.h>
 #include <cstdint>
@@ -49,8 +49,8 @@ public:
 	virtual void TestLinkStatus(bool isMaster, bool aFcb, uint16_t dest, uint16_t source) = 0;
 	virtual void ResetLinkStates(bool isMaster, uint16_t dest, uint16_t source) = 0;
 	virtual void RequestLinkStatus(bool isMaster, uint16_t dest, uint16_t source) = 0;
-	virtual void ConfirmedUserData(bool isMaster, bool aFcb, uint16_t dest, uint16_t source, const openpal::ReadBufferView& buffer) = 0;
-	virtual void UnconfirmedUserData(bool isMaster, uint16_t dest, uint16_t source, const openpal::ReadBufferView& buffer) = 0;
+	virtual void ConfirmedUserData(bool isMaster, bool aFcb, uint16_t dest, uint16_t source, const openpal::RSlice& buffer) = 0;
+	virtual void UnconfirmedUserData(bool isMaster, uint16_t dest, uint16_t source, const openpal::RSlice& buffer) = 0;
 };
 
 }

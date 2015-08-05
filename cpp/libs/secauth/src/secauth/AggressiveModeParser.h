@@ -39,13 +39,13 @@ struct AggModeResult
 	AggModeResult(opendnp3::ParseResult result_);
 
 	// success constructor
-	AggModeResult(const opendnp3::Group120Var3& request, const openpal::ReadBufferView& remainder);
+	AggModeResult(const opendnp3::Group120Var3& request, const openpal::RSlice& remainder);
 	
 
 	opendnp3::ParseResult result;
 	bool isAggMode;
 	opendnp3::Group120Var3 request;
-	openpal::ReadBufferView remainder;
+	openpal::RSlice remainder;
 
 	AggModeResult() = delete;
 };
@@ -56,12 +56,12 @@ struct AggModeHMACResult
 	AggModeHMACResult(opendnp3::ParseResult result_);
 
 	// success constructor
-	AggModeHMACResult(const opendnp3::Group120Var9& hmac, const openpal::ReadBufferView& objects);
+	AggModeHMACResult(const opendnp3::Group120Var9& hmac, const openpal::RSlice& objects);
 
 
 	opendnp3::ParseResult result;	
 	opendnp3::Group120Var9 hmac;
-	openpal::ReadBufferView objects;
+	openpal::RSlice objects;
 
 	AggModeHMACResult() = delete;
 };
@@ -69,9 +69,9 @@ struct AggModeHMACResult
 
 struct AggressiveModeParser : openpal::StaticOnly
 {	
-	static AggModeResult IsAggressiveMode(openpal::ReadBufferView objects, openpal::Logger* pLogger);
+	static AggModeResult IsAggressiveMode(openpal::RSlice objects, openpal::Logger* pLogger);
 		
-	static AggModeHMACResult ParseHMAC(openpal::ReadBufferView remainder, uint32_t HMACSize, openpal::Logger* pLogger);
+	static AggModeHMACResult ParseHMAC(openpal::RSlice remainder, uint32_t HMACSize, openpal::Logger* pLogger);
 };
 
 }

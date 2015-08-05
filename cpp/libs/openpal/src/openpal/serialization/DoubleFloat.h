@@ -22,8 +22,8 @@
 #define OPENPAL_DOUBLE_FLOAT_H
 
 #include "openpal/util/Uncopyable.h"
-#include "openpal/container/ReadBufferView.h"
-#include "openpal/container/WriteBufferView.h"
+#include "openpal/container/RSlice.h"
+#include "openpal/container/WSlice.h"
 
 #include <cstddef>
 
@@ -38,8 +38,8 @@ public:
 
 	typedef double Type;
 
-	static double ReadBuffer(ReadBufferView& buffer);
-	static void WriteBuffer(WriteBufferView& buffer, double value);
+	static double ReadBuffer(RSlice& buffer);
+	static void WriteBuffer(WSlice& buffer, double value);
 		
 	static double Read(const uint8_t* data);
 	static void Write(uint8_t* data, double value);

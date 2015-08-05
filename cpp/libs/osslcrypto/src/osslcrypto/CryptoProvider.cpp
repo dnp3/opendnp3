@@ -82,14 +82,14 @@ void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line
 	}
 }
 
-openpal::ReadBufferView CryptoProvider::GetSecureRandom(WriteBufferView& buffer, std::error_code& ec)
+openpal::RSlice CryptoProvider::GetSecureRandom(WSlice& buffer, std::error_code& ec)
 {	
 	int result  = RAND_bytes(buffer, buffer.Size()) > 0;	
 
 	if (!result)
 	{
 		ec = make_error_code(errors::OPENSSL_RAND_BYTES_ERROR);
-		return ReadBufferView();
+		return RSlice();
 	}
 
 

@@ -51,7 +51,7 @@ MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
 	mBytesWritten(0),
 	mLastWriteSize(0),
 	mReadBuffer(512),
-	mWriteBufferView(0),
+	mWSlice(0),
 	mExpectReadBuffer(0)
 {
 
@@ -61,7 +61,7 @@ MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
 void MockPhysicalLayerMonitor::OnPhysicalLayerOpenSuccessCallback()
 {
 	mOpens++;
-	WriteBufferView buffer(mReadBuffer, mReadBuffer.Size());
+	WSlice buffer(mReadBuffer, mReadBuffer.Size());
 	pPhys->BeginRead(buffer);
 }
 
@@ -88,7 +88,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 		throw std::invalid_argument(oss.str());
 	}
 	mBytesRead += static_cast<uint32_t>(aNumBytes);	
-	WriteBufferView buffer(mReadBuffer, mReadBuffer.Size());
+	WSlice buffer(mReadBuffer, mReadBuffer.Size());
 	pPhys->BeginRead(buffer);
 }
 
@@ -103,7 +103,7 @@ void MockPhysicalLayerMonitor::WriteData(const CopyableBuffer& arData)
 {
 	REQUIRE(pPhys->CanWrite());
 	mBytesWritten = 0;
-	mWriteBufferView = arData;
+	mWSlice = arData;
 	this->TransmitNext();
 }
 
@@ -141,11 +141,11 @@ bool MockPhysicalLayerMonitor::AllExpectedDataHasBeenReceived()
 
 void MockPhysicalLayerMonitor::TransmitNext()
 {
-	if(mWriteBufferView.Size() > this->mBytesWritten)
+	if(mWSlice.Size() > this->mBytesWritten)
 	{
-		uint32_t remaining = mWriteBufferView.Size() - mBytesWritten;
+		uint32_t remaining = mWSlice.Size() - mBytesWritten;
 		uint32_t toWrite = Min<uint32_t>(4096, remaining);
-		ReadBufferView buff(mWriteBufferView + mBytesWritten, toWrite);
+		RSlice buff(mWSlice + mBytesWritten, toWrite);
 		pPhys->BeginWrite(buff);
 		this->mLastWriteSize = toWrite;
 	}

@@ -46,7 +46,7 @@ namespace secauth
 			opendnp3::HMACType hmacType,
 			opendnp3::KeyWrapAlgorithm keyWrapAlgo,
 			opendnp3::KeyStatus status, 
-			const openpal::ReadBufferView& hmac
+			const openpal::RSlice& hmac
 		)
 	{				
 		auto dest = challengeData.GetWriteBuffer(challengeSize);
@@ -74,10 +74,10 @@ namespace secauth
 		return writer.WriteFreeFormat(statusRsp);		
 	}
 
-	bool KeyChangeState::EqualsLastStatusResponse(const openpal::ReadBufferView& unwrappedKeyStatus)
+	bool KeyChangeState::EqualsLastStatusResponse(const openpal::RSlice& unwrappedKeyStatus)
 	{
 		Group120Var5 copy(statusRsp);
-		copy.hmacValue = ReadBufferView::Empty(); // exclude the HMAC from the comparison
+		copy.hmacValue = RSlice::Empty(); // exclude the HMAC from the comparison
 
 		const uint32_t MAX_SIZE = Group120Var5::MIN_SIZE + AuthSizes::MAX_CHALLENGE_DATA_SIZE;
 		openpal::StaticBuffer<MAX_SIZE> buffer;

@@ -35,9 +35,9 @@ namespace secauth
 
 bool KeyWrapBuffer::Wrap(
 	openpal::IKeyWrapAlgo& algo,
-	const openpal::ReadBufferView& updateKey,
+	const openpal::RSlice& updateKey,
 	const SessionKeysView& sessionKeys,
-	const openpal::ReadBufferView& keyStatus,
+	const openpal::RSlice& keyStatus,
 	openpal::Logger logger
 	)
 {

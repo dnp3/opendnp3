@@ -29,31 +29,31 @@ namespace openpal
 	Buffer::Buffer(uint32_t size) : Array<uint8_t, uint32_t>(size)
 	{}
 
-	Buffer::Buffer(const ReadBufferView& input) : Array<uint8_t, uint32_t>(input.Size())
+	Buffer::Buffer(const RSlice& input) : Array<uint8_t, uint32_t>(input.Size())
 	{
-		auto dest = this->GetWriteBufferView();
+		auto dest = this->GetWSlice();
 		input.CopyTo(dest);
 	}
 
-	ReadBufferView Buffer::ToReadOnly() const
+	RSlice Buffer::ToReadOnly() const
 	{
-		return ReadBufferView(this->buffer, this->size);
+		return RSlice(this->buffer, this->size);
 	}
 
-	WriteBufferView Buffer::GetWriteBufferView()
+	WSlice Buffer::GetWSlice()
 	{
-		return WriteBufferView(this->buffer, this->Size());
+		return WSlice(this->buffer, this->Size());
 	}
 
-	WriteBufferView Buffer::GetWriteBufferView(uint32_t maxSize)
+	WSlice Buffer::GetWSlice(uint32_t maxSize)
 	{		
 		if (maxSize <= this->Size())
 		{
-			return WriteBufferView(this->buffer, maxSize);
+			return WSlice(this->buffer, maxSize);
 		}
 		else
 		{
-			return GetWriteBufferView();
+			return GetWSlice();
 		}
 	}
 }

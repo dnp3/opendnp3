@@ -34,11 +34,11 @@ public:
 
 	static BitfieldRangeWriteIterator Null()
 	{
-		auto buffer = openpal::WriteBufferView::Empty();
+		auto buffer = openpal::WSlice::Empty();
 		return BitfieldRangeWriteIterator(0, buffer);
 	}
 
-	BitfieldRangeWriteIterator(typename IndexType::Type start_, openpal::WriteBufferView& position_) :
+	BitfieldRangeWriteIterator(typename IndexType::Type start_, openpal::WSlice& position_) :
 		start(start_),
 		count(0),
 		maxCount(0),
@@ -112,8 +112,8 @@ private:
 
 	bool isValid;
 
-	openpal::WriteBufferView range;  // make a copy to record where we write the range
-	openpal::WriteBufferView* pPosition;
+	openpal::WSlice range;  // make a copy to record where we write the range
+	openpal::WSlice* pPosition;
 };
 
 }

@@ -32,7 +32,7 @@ class APDUResponse : public APDUWrapper
 {
 public:
 
-	APDUResponse(const openpal::WriteBufferView& aBuffer);
+	APDUResponse(const openpal::WSlice& aBuffer);
 
 	void SetIIN(const IINField& indications);
 

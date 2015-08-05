@@ -59,47 +59,47 @@ void IAPDUHandler::OnHeader(const CountHeader& header)
 	Record(header, this->ProcessHeader(header));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::ReadBufferView& object)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var2& value, const openpal::ReadBufferView& object)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var2& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::ReadBufferView& object)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var6& value, const openpal::ReadBufferView& object)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var6& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var7& value, const openpal::ReadBufferView& object)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var7& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::ReadBufferView& object)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::ReadBufferView& object)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::ReadBufferView& object)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::ReadBufferView& object)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
 }
@@ -293,47 +293,47 @@ IINField IAPDUHandler::ProcessHeader(const CountHeader& header)
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::ReadBufferView& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var2& value, const openpal::ReadBufferView& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var2& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::ReadBufferView& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var6& value, const openpal::ReadBufferView& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var6& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var7& value, const openpal::ReadBufferView& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var7& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::ReadBufferView& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::ReadBufferView& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::ReadBufferView& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::ReadBufferView& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }

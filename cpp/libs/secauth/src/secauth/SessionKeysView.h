@@ -21,7 +21,7 @@
 #ifndef SECAUTH_SESSIONKEYSVIEW_H
 #define SECAUTH_SESSIONKEYSVIEW_H
 
-#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/RSlice.h>
 
 namespace secauth
 {	
@@ -32,16 +32,16 @@ namespace secauth
 		SessionKeysView() {}
 
 		SessionKeysView(
-			const openpal::ReadBufferView& controlKey,
-			const openpal::ReadBufferView& monitorKey
+			const openpal::RSlice& controlKey,
+			const openpal::RSlice& monitorKey
 		);
 
 		uint32_t TotalSize() const;
 
 		bool IsValid() const;
 
-		openpal::ReadBufferView controlKey;
-		openpal::ReadBufferView monitorKey;		
+		openpal::RSlice controlKey;
+		openpal::RSlice monitorKey;		
 	};
 }
 

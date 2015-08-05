@@ -31,7 +31,7 @@ class BufferedCollection : public ICollection<T>
 {
 public:
 
-	BufferedCollection(const openpal::ReadBufferView& buffer_, uint32_t count, const ReadFunc& readFunc_) :	
+	BufferedCollection(const openpal::RSlice& buffer_, uint32_t count, const ReadFunc& readFunc_) :	
 		buffer(buffer_),
 		COUNT(count),
 		readFunc(readFunc_)
@@ -42,7 +42,7 @@ public:
 
 	virtual void Foreach(IVisitor<T>& visitor) const final
 	{
-		openpal::ReadBufferView copy(buffer);
+		openpal::RSlice copy(buffer);
 
 		for (uint32_t pos = 0; pos < COUNT; ++pos)
 		{
@@ -52,13 +52,13 @@ public:
 
 private:
 
-	openpal::ReadBufferView buffer;
+	openpal::RSlice buffer;
 	const uint32_t COUNT;
 	ReadFunc readFunc;
 };
 
 template <class T, class ReadFunc>
-BufferedCollection<T, ReadFunc> CreateBufferedCollection(const openpal::ReadBufferView& buffer, uint32_t count, const ReadFunc& readFunc)
+BufferedCollection<T, ReadFunc> CreateBufferedCollection(const openpal::RSlice& buffer, uint32_t count, const ReadFunc& readFunc)
 {
 	return BufferedCollection<T, ReadFunc>(buffer, count, readFunc);
 }

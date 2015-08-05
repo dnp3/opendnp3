@@ -47,12 +47,12 @@ class KeyChangeState
 		opendnp3::HMACType hmacType,
 		opendnp3::KeyWrapAlgorithm keyWrapAlgo,
 		opendnp3::KeyStatus status,	
-		const openpal::ReadBufferView& hmac = openpal::ReadBufferView::Empty()
+		const openpal::RSlice& hmac = openpal::RSlice::Empty()
 	);
 
 	// Securely compare the specified serialized object data to the serialization
 	// of the last status response
-	bool EqualsLastStatusResponse(const openpal::ReadBufferView& object);
+	bool EqualsLastStatusResponse(const openpal::RSlice& object);
 
 	bool CheckUserAndKSQMatches(const opendnp3::User& user, uint32_t keyChangeSeq);
 

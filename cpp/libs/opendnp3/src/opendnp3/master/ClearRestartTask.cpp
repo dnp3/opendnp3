@@ -45,7 +45,7 @@ bool ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 	return true;
 }
 
-IMasterTask::ResponseResult ClearRestartTask::ProcessResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult ClearRestartTask::ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects)
 {
 	// we only care that the response to this has FIR/FIN
 	if (ValidateSingleResponse(response))

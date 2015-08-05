@@ -54,11 +54,11 @@ private:
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
+	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 
-	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	ResponseResult OnResponseWriteTime(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+	ResponseResult OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
 	virtual void Initialize() override final;
 

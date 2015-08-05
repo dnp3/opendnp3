@@ -29,7 +29,7 @@ using namespace openpal;
 
 namespace osslcrypto
 {		
-	openpal::ReadBufferView AESKeyWrap::WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec)
+	openpal::RSlice AESKeyWrap::WrapKeyAES(AESKeyLength length, const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec)
 	{
 		const uint32_t KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;
 		const int KEY_SIZE_BITS = static_cast<int>(KEY_SIZE_BYTES*8);
@@ -38,14 +38,14 @@ namespace osslcrypto
 		if (kek.Size() != KEY_SIZE_BYTES)
 		{
 			ec =   make_error_code(errors::AES_WRAPKEY_KEK_SIZE_MISMATCH);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 
 		// can only wrap things pre-padded into 8-byte blocks
 		if (input.Size() % 8 != 0)
 		{
 			ec = make_error_code(errors::AES_WRAPKEY_INPUT_NOT_DIV8);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 
 		const uint32_t OUTPUT_SIZE = input.Size() + 8;
@@ -54,14 +54,14 @@ namespace osslcrypto
 		if (output.Size() < OUTPUT_SIZE)
 		{
 			ec = make_error_code(errors::AES_WRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 
 		AES_KEY key;
 		if (AES_set_encrypt_key(kek, KEY_SIZE_BITS, &key))
 		{
 			ec = make_error_code(errors::AES_WRAPKEY_AES_SET_ENCRYPT_KEY_ERROR);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 
 		// If iv is null, the default IV is used
@@ -75,11 +75,11 @@ namespace osslcrypto
 		else
 		{
 			ec = make_error_code(errors::AES_WRAPKEY_AES_WRAP_KEY_ERROR);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}		
 	}
 	
-	openpal::ReadBufferView AESKeyWrap::UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec)
+	openpal::RSlice AESKeyWrap::UnwrapKeyAES(AESKeyLength length, const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec)
 	{
 		const uint32_t KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;	
 		const int KEY_SIZE_BITS = static_cast<int>(KEY_SIZE_BYTES*8);	
@@ -88,14 +88,14 @@ namespace osslcrypto
 		if (kek.Size() != KEY_SIZE_BYTES)
 		{
 			ec = make_error_code(errors::AES_UNWRAPKEY_KEK_SIZE_MISMATCH);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 
 		// can only unwrap things pre-padded into 64-bit blocks
 		if ((input.Size() < 8) && input.Size() % 8 != 0)
 		{
 			ec = make_error_code(errors::AES_UNWRAPKEY_INPUT_NOT_DIV8);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 
 		// the wrapped data is always 8 bytes larger than what is output
@@ -104,14 +104,14 @@ namespace osslcrypto
 		if (output.Size() < OUTPUT_SIZE)
 		{
 			ec = make_error_code(errors::AES_UNWRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 
 		AES_KEY key;
 		if (AES_set_decrypt_key(kek, KEY_SIZE_BITS, &key))
 		{
 			ec = make_error_code(errors::AES_UNWRAPKEY_AES_SET_DECRYPT_KEY_ERROR);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}
 
 		// If iv is null, the default IV is used
@@ -128,7 +128,7 @@ namespace osslcrypto
 		{
 			auto code = (RESULT == 0) ? errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_IV_ERROR : errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_PARAM_ERROR;
 			ec = make_error_code(code);
-			return ReadBufferView::Empty();
+			return RSlice::Empty();
 		}				
 	}
 }

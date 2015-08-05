@@ -22,8 +22,8 @@
 #define OPENDNP3_GROUP120_H
 
 #include "opendnp3/app/GroupVariationID.h"
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/IVariableLength.h"
 #include "opendnp3/gen/HMACType.h"
@@ -51,12 +51,12 @@ struct Group120Var1 : public IVariableLength
     uint16_t userNum,
     HMACType hmacAlgo,
     ChallengeReason challengeReason,
-    const openpal::ReadBufferView& challengeData
+    const openpal::RSlice& challengeData
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 8;
 
@@ -65,7 +65,7 @@ struct Group120Var1 : public IVariableLength
   uint16_t userNum;
   HMACType hmacAlgo;
   ChallengeReason challengeReason;
-  openpal::ReadBufferView challengeData;
+  openpal::RSlice challengeData;
 };
 
 // Authentication - Reply
@@ -80,19 +80,19 @@ struct Group120Var2 : public IVariableLength
   Group120Var2(
     uint32_t challengeSeqNum,
     uint16_t userNum,
-    const openpal::ReadBufferView& hmacValue
+    const openpal::RSlice& hmacValue
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 6;
 
   // member variables
   uint32_t challengeSeqNum;
   uint16_t userNum;
-  openpal::ReadBufferView hmacValue;
+  openpal::RSlice hmacValue;
 };
 
 // Authentication - Aggressive Mode Request
@@ -100,8 +100,8 @@ struct Group120Var3
 {
   static GroupVariationID ID() { return GroupVariationID(120,3); }
   static uint32_t Size() { return 6; }
-  static bool Read(openpal::ReadBufferView&, Group120Var3&);
-  static bool Write(const Group120Var3&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group120Var3&);
+  static bool Write(const Group120Var3&, openpal::WSlice&);
 
   uint32_t challengeSeqNum;
   uint16_t userNum;
@@ -112,8 +112,8 @@ struct Group120Var4
 {
   static GroupVariationID ID() { return GroupVariationID(120,4); }
   static uint32_t Size() { return 2; }
-  static bool Read(openpal::ReadBufferView&, Group120Var4&);
-  static bool Write(const Group120Var4&, openpal::WriteBufferView&);
+  static bool Read(openpal::RSlice&, Group120Var4&);
+  static bool Write(const Group120Var4&, openpal::WSlice&);
 
   uint16_t userNum;
 };
@@ -133,13 +133,13 @@ struct Group120Var5 : public IVariableLength
     KeyWrapAlgorithm keyWrapAlgo,
     KeyStatus keyStatus,
     HMACType hmacAlgo,
-    const openpal::ReadBufferView& challengeData,
-    const openpal::ReadBufferView& hmacValue
+    const openpal::RSlice& challengeData,
+    const openpal::RSlice& hmacValue
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 11;
 
@@ -149,8 +149,8 @@ struct Group120Var5 : public IVariableLength
   KeyWrapAlgorithm keyWrapAlgo;
   KeyStatus keyStatus;
   HMACType hmacAlgo;
-  openpal::ReadBufferView challengeData;
-  openpal::ReadBufferView hmacValue;
+  openpal::RSlice challengeData;
+  openpal::RSlice hmacValue;
 };
 
 // Authentication - Session Key Change
@@ -165,19 +165,19 @@ struct Group120Var6 : public IVariableLength
   Group120Var6(
     uint32_t keyChangeSeqNum,
     uint16_t userNum,
-    const openpal::ReadBufferView& keyWrapData
+    const openpal::RSlice& keyWrapData
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 6;
 
   // member variables
   uint32_t keyChangeSeqNum;
   uint16_t userNum;
-  openpal::ReadBufferView keyWrapData;
+  openpal::RSlice keyWrapData;
 };
 
 // Authentication - Error
@@ -195,12 +195,12 @@ struct Group120Var7 : public IVariableLength
     uint16_t assocId,
     AuthErrorCode errorCode,
     DNPTime time,
-    const openpal::ReadBufferView& errorText
+    const openpal::RSlice& errorText
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 15;
 
@@ -210,7 +210,7 @@ struct Group120Var7 : public IVariableLength
   uint16_t assocId;
   AuthErrorCode errorCode;
   DNPTime time;
-  openpal::ReadBufferView errorText;
+  openpal::RSlice errorText;
 };
 
 // Authentication - User Certificate
@@ -225,19 +225,19 @@ struct Group120Var8 : public IVariableLength
   Group120Var8(
     KeyChangeMethod keyChangeMethod,
     CertificateType certificateType,
-    const openpal::ReadBufferView& certificate
+    const openpal::RSlice& certificate
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 2;
 
   // member variables
   KeyChangeMethod keyChangeMethod;
   CertificateType certificateType;
-  openpal::ReadBufferView certificate;
+  openpal::RSlice certificate;
 };
 
 // Authentication - HMAC
@@ -250,17 +250,17 @@ struct Group120Var9 : public IVariableLength
   Group120Var9();
 
   Group120Var9(
-    const openpal::ReadBufferView& hmacValue
+    const openpal::RSlice& hmacValue
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 0;
 
   // member variables
-  openpal::ReadBufferView hmacValue;
+  openpal::RSlice hmacValue;
 };
 
 // Authentication - User Status Change
@@ -278,14 +278,14 @@ struct Group120Var10 : public IVariableLength
     uint32_t statusChangeSeqNum,
     uint16_t userRole,
     uint16_t userRoleExpDays,
-    const openpal::ReadBufferView& userName,
-    const openpal::ReadBufferView& userPublicKey,
-    const openpal::ReadBufferView& certificationData
+    const openpal::RSlice& userName,
+    const openpal::RSlice& userPublicKey,
+    const openpal::RSlice& certificationData
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 16;
 
@@ -295,9 +295,9 @@ struct Group120Var10 : public IVariableLength
   uint32_t statusChangeSeqNum;
   uint16_t userRole;
   uint16_t userRoleExpDays;
-  openpal::ReadBufferView userName;
-  openpal::ReadBufferView userPublicKey;
-  openpal::ReadBufferView certificationData;
+  openpal::RSlice userName;
+  openpal::RSlice userPublicKey;
+  openpal::RSlice certificationData;
 };
 
 // Authentication - Update Key Change Request
@@ -311,20 +311,20 @@ struct Group120Var11 : public IVariableLength
 
   Group120Var11(
     KeyChangeMethod keyChangeMethod,
-    const openpal::ReadBufferView& userName,
-    const openpal::ReadBufferView& challengeData
+    const openpal::RSlice& userName,
+    const openpal::RSlice& challengeData
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 5;
 
   // member variables
   KeyChangeMethod keyChangeMethod;
-  openpal::ReadBufferView userName;
-  openpal::ReadBufferView challengeData;
+  openpal::RSlice userName;
+  openpal::RSlice challengeData;
 };
 
 // Authentication - Update Key Change Reply
@@ -339,19 +339,19 @@ struct Group120Var12 : public IVariableLength
   Group120Var12(
     uint32_t keyChangeSeqNum,
     uint16_t userNum,
-    const openpal::ReadBufferView& challengeData
+    const openpal::RSlice& challengeData
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 8;
 
   // member variables
   uint32_t keyChangeSeqNum;
   uint16_t userNum;
-  openpal::ReadBufferView challengeData;
+  openpal::RSlice challengeData;
 };
 
 // Authentication - Update Key Change
@@ -366,19 +366,19 @@ struct Group120Var13 : public IVariableLength
   Group120Var13(
     uint32_t keyChangeSeqNum,
     uint16_t userNum,
-    const openpal::ReadBufferView& encryptedUpdateKey
+    const openpal::RSlice& encryptedUpdateKey
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 8;
 
   // member variables
   uint32_t keyChangeSeqNum;
   uint16_t userNum;
-  openpal::ReadBufferView encryptedUpdateKey;
+  openpal::RSlice encryptedUpdateKey;
 };
 
 // Authentication - Update Key Change Signature
@@ -391,17 +391,17 @@ struct Group120Var14 : public IVariableLength
   Group120Var14();
 
   Group120Var14(
-    const openpal::ReadBufferView& Signature
+    const openpal::RSlice& Signature
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 0;
 
   // member variables
-  openpal::ReadBufferView Signature;
+  openpal::RSlice Signature;
 };
 
 // Authentication - Update Key Change Confirmation
@@ -414,17 +414,17 @@ struct Group120Var15 : public IVariableLength
   Group120Var15();
 
   Group120Var15(
-    const openpal::ReadBufferView& hmacValue
+    const openpal::RSlice& hmacValue
   );
 
   virtual uint32_t Size() const override final;
-  virtual bool Read(const openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
+  virtual bool Read(const openpal::RSlice&) override final;
+  virtual bool Write(openpal::WSlice&) const override final;
 
   static const uint32_t MIN_SIZE = 0;
 
   // member variables
-  openpal::ReadBufferView hmacValue;
+  openpal::RSlice hmacValue;
 };
 
 

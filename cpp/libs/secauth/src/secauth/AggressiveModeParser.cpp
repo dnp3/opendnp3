@@ -42,7 +42,7 @@ namespace secauth
 	
 	}
 	
-	AggModeResult::AggModeResult(const opendnp3::Group120Var3& request_, const openpal::ReadBufferView& remainder_) :
+	AggModeResult::AggModeResult(const opendnp3::Group120Var3& request_, const openpal::RSlice& remainder_) :
 		result(ParseResult::OK),
 		isAggMode(true),
 		request(request_),
@@ -58,7 +58,7 @@ namespace secauth
 	}
 
 	// success constructor
-	AggModeHMACResult::AggModeHMACResult(const opendnp3::Group120Var9& hmac_, const openpal::ReadBufferView& objects_) :
+	AggModeHMACResult::AggModeHMACResult(const opendnp3::Group120Var9& hmac_, const openpal::RSlice& objects_) :
 		result(ParseResult::OK),
 		hmac(hmac_),
 		objects(objects_)
@@ -66,7 +66,7 @@ namespace secauth
 	
 	}
 
-	AggModeResult AggressiveModeParser::IsAggressiveMode(openpal::ReadBufferView objects, openpal::Logger* pLogger)
+	AggModeResult AggressiveModeParser::IsAggressiveMode(openpal::RSlice objects, openpal::Logger* pLogger)
 	{		
 		if (objects.IsEmpty())
 		{
@@ -119,7 +119,7 @@ namespace secauth
 		}	
 	}
 
-	AggModeHMACResult AggressiveModeParser::ParseHMAC(openpal::ReadBufferView remainder, uint32_t hmacSize, openpal::Logger* pLogger)
+	AggModeHMACResult AggressiveModeParser::ParseHMAC(openpal::RSlice remainder, uint32_t hmacSize, openpal::Logger* pLogger)
 	{
 		// given the hmac size, how many bytes would be required for the header + HMAC
 		// 0x 78 09 5F 01 SS SS [HMACSize]

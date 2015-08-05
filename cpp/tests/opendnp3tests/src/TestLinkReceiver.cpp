@@ -143,7 +143,7 @@ TEST_CASE(SUITE("ReadACK"))
 {
 	Buffer buffer(292);
 
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -156,7 +156,7 @@ TEST_CASE(SUITE("ReadACK"))
 TEST_CASE(SUITE("ReadNACK"))
 {
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatNack(writeTo, false, true, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -169,7 +169,7 @@ TEST_CASE(SUITE("ReadNACK"))
 TEST_CASE(SUITE("LinkStatus"))
 {
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -182,7 +182,7 @@ TEST_CASE(SUITE("LinkStatus"))
 TEST_CASE(SUITE("NotSupported"))
 {
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatNotSupported(writeTo, true, false, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -199,7 +199,7 @@ TEST_CASE(SUITE("NotSupported"))
 TEST_CASE(SUITE("TestLinkStates"))
 {
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatTestLinkStatus(writeTo, false, true, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -212,7 +212,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 TEST_CASE(SUITE("ResetLinkStates"))
 {
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatResetLinkStates(writeTo, false, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -225,7 +225,7 @@ TEST_CASE(SUITE("ResetLinkStates"))
 TEST_CASE(SUITE("RequestLinkStatus"))
 {
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -240,7 +240,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 	ByteStr data(250, 0); //initializes a buffer with increasing value
 
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatUnconfirmedUserData(writeTo, true, 1, 2, data, data.Size(), nullptr);
 
 	LinkParserTest t;
@@ -256,7 +256,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 	ByteStr data(250, 0); //initializes a buffer with increasing value
 
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1, 2, data, data.Size(), nullptr);
 
 	LinkParserTest t;
@@ -305,7 +305,7 @@ TEST_CASE(SUITE("ManyReceives"))
 {
 
 	Buffer buffer(292);
-	auto writeTo = buffer.GetWriteBufferView();
+	auto writeTo = buffer.GetWSlice();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
 	LinkParserTest t;

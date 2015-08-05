@@ -24,8 +24,8 @@
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/LinkFunction.h"
 
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace openpal
@@ -45,20 +45,20 @@ public:
 	//	Functions for formatting outgoing Sec to Pri frames
 	////////////////////////////////////////////////
 
-	static openpal::ReadBufferView FormatAck(openpal::WriteBufferView& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadBufferView FormatNack(openpal::WriteBufferView& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadBufferView FormatLinkStatus(openpal::WriteBufferView& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadBufferView FormatNotSupported(openpal::WriteBufferView& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::RSlice FormatAck(openpal::WSlice& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::RSlice FormatNack(openpal::WSlice& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::RSlice FormatLinkStatus(openpal::WSlice& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::RSlice FormatNotSupported(openpal::WSlice& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
 
 	////////////////////////////////////////////////
 	//	Functions for formatting outgoing Pri to Sec frames
 	////////////////////////////////////////////////
 
-	static openpal::ReadBufferView FormatTestLinkStatus(openpal::WriteBufferView& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadBufferView FormatResetLinkStates(openpal::WriteBufferView& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadBufferView FormatRequestLinkStatus(openpal::WriteBufferView& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadBufferView FormatConfirmedUserData(openpal::WriteBufferView& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
-	static openpal::ReadBufferView FormatUnconfirmedUserData(openpal::WriteBufferView& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
+	static openpal::RSlice FormatTestLinkStatus(openpal::WSlice& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::RSlice FormatResetLinkStates(openpal::WSlice& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::RSlice FormatRequestLinkStatus(openpal::WSlice& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::RSlice FormatConfirmedUserData(openpal::WSlice& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
+	static openpal::RSlice FormatUnconfirmedUserData(openpal::WSlice& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
 
 	////////////////////////////////////////////////
 	//	Reusable static formatting functions to any buffer
@@ -93,7 +93,7 @@ private:
 	static void WriteUserData(const uint8_t* pSrc, uint8_t* pDest, uint8_t length);
 
 	/** Write 10 header bytes to to buffer including 0x0564, all fields, and CRC */
-	static openpal::ReadBufferView FormatHeader(openpal::WriteBufferView& output, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::RSlice FormatHeader(openpal::WSlice& output, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
 
 };
 

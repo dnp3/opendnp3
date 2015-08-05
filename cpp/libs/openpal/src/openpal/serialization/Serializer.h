@@ -23,8 +23,8 @@
 
 #include <cstdint>
 
-#include "openpal/container/ReadBufferView.h"
-#include "openpal/container/WriteBufferView.h"
+#include "openpal/container/RSlice.h"
+#include "openpal/container/WSlice.h"
 
 namespace openpal
 {
@@ -34,8 +34,8 @@ class Serializer
 {
 public:
 
-	typedef bool (*ReadFunc)(ReadBufferView& buffer, T& output);
-	typedef bool (*WriteFunc)(const T& value, WriteBufferView& buffer);
+	typedef bool (*ReadFunc)(RSlice& buffer, T& output);
+	typedef bool (*WriteFunc)(const T& value, WSlice& buffer);
 
 	Serializer() : size(0), pReadFunc(nullptr), pWriteFunc(nullptr)
 	{}
@@ -55,7 +55,7 @@ public:
 	/**
 	* reads the value and advances the read buffer
 	*/
-	bool Read(ReadBufferView& buffer, T& output) const
+	bool Read(RSlice& buffer, T& output) const
 	{
 		return (*pReadFunc)(buffer, output);
 	}
@@ -63,7 +63,7 @@ public:
 	/**
 	* writes the value and advances the write buffer
 	*/
-	bool Write(const T& value, WriteBufferView& buffer) const
+	bool Write(const T& value, WSlice& buffer) const
 	{
 		return (*pWriteFunc)(value, buffer);
 	}

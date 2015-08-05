@@ -24,8 +24,8 @@
 #include <cstdint>
 #include <cstring>
 
-#include "openpal/container/ReadBufferView.h"
-#include "openpal/container/WriteBufferView.h"
+#include "openpal/container/RSlice.h"
+#include "openpal/container/WSlice.h"
 
 #include "openpal/util/Limits.h"
 
@@ -48,13 +48,13 @@ public:
 		data[1] = static_cast<uint8_t>((value >> 8) & 0xFF);
 	}
 
-	static void WriteBuffer(WriteBufferView& buffer, T aValue)
+	static void WriteBuffer(WSlice& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(SIZE);
 	}
 
-	inline static T ReadBuffer(ReadBufferView& arBuffer)
+	inline static T ReadBuffer(RSlice& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(SIZE);
@@ -100,13 +100,13 @@ public:
 		data[3] = static_cast<uint8_t>((value >> 24) & 0xFF);
 	}
 
-	static void WriteBuffer(WriteBufferView& buffer, T aValue)
+	static void WriteBuffer(WSlice& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(SIZE);
 	}
 
-	inline static T ReadBuffer(ReadBufferView& buffer)
+	inline static T ReadBuffer(RSlice& buffer)
 	{
 		auto ret = Read(buffer);
 		buffer.Advance(SIZE);

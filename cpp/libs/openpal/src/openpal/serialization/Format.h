@@ -22,7 +22,7 @@
 #define OPENPAL_FORMAT_H
 
 #include "openpal/serialization/UInt48Type.h"
-#include "openpal/container/WriteBufferView.h"
+#include "openpal/container/WSlice.h"
 #include "openpal/util/Uncopyable.h"
 
 namespace openpal
@@ -31,27 +31,27 @@ namespace openpal
 	{
 		public:
 
-			static bool Write(WriteBufferView& dest, const uint8_t& value);
-			static bool Write(WriteBufferView& dest, const uint16_t& value);
+			static bool Write(WSlice& dest, const uint8_t& value);
+			static bool Write(WSlice& dest, const uint16_t& value);
 			
-			static bool Write(WriteBufferView& dest, const uint32_t& value);
-			static bool Write(WriteBufferView& dest, const UInt48Type& value);
+			static bool Write(WSlice& dest, const uint32_t& value);
+			static bool Write(WSlice& dest, const UInt48Type& value);
 
-			static bool Write(WriteBufferView& dest, const int16_t& value);
-			static bool Write(WriteBufferView& dest, const int32_t& value);
+			static bool Write(WSlice& dest, const int16_t& value);
+			static bool Write(WSlice& dest, const int32_t& value);
 
-			static bool Write(WriteBufferView& dest, const double& value);
-			static bool Write(WriteBufferView& dest, const float& value);
+			static bool Write(WSlice& dest, const double& value);
+			static bool Write(WSlice& dest, const float& value);
 
 			template <typename T, typename... Args>
-			static bool Many(WriteBufferView& dest, const T& value, const Args &... args)
+			static bool Many(WSlice& dest, const T& value, const Args &... args)
 			{
 				return Write(dest, value) && Many(dest, args...);
 			}
 
 		private:
 
-			static bool Many(WriteBufferView& input) { return true; }
+			static bool Many(WSlice& input) { return true; }
 	};
 
 }

@@ -32,7 +32,7 @@ TEST_CASE(SUITE("Conversion from slice to string makes a copy of the data"))
 	auto getJim = []() -> std::string 
 	{
 		uint8_t jim[3] = { 0x6A, 0x69, 0x6D };
-		ReadBufferView slice(jim, 3);
+		RSlice slice(jim, 3);
 		return ToString(slice);		
 	};
 
