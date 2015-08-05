@@ -391,7 +391,7 @@ struct Group120Var14 : public IVariableLength
   Group120Var14();
 
   Group120Var14(
-    const openpal::RSlice& Signature
+    const openpal::RSlice& digitalSignature
   );
 
   virtual uint32_t Size() const override final;
@@ -401,7 +401,7 @@ struct Group120Var14 : public IVariableLength
   static const uint32_t MIN_SIZE = 0;
 
   // member variables
-  openpal::RSlice Signature;
+  openpal::RSlice digitalSignature;
 };
 
 // Authentication - Update Key Change Confirmation

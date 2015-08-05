@@ -99,6 +99,16 @@ void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var12&
 	Record(header, this->ProcessHeader(header, value, object));
 }
 
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var13& value, const openpal::RSlice& object)
+{
+	Record(header, this->ProcessHeader(header, value, object));
+}
+
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var14& value, const openpal::RSlice& object)
+{
+	Record(header, this->ProcessHeader(header, value, object));
+}
+
 void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object)
 {
 	Record(header, this->ProcessHeader(header, value, object));
@@ -329,6 +339,16 @@ IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group
 }
 
 IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::RSlice& object)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var13& value, const openpal::RSlice& object)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var14& value, const openpal::RSlice& object)
 {
 	return ProcessUnsupportedHeader();
 }

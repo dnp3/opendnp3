@@ -750,19 +750,19 @@ Group120Var14::Group120Var14()
 {}
 
 Group120Var14::Group120Var14(
-  const openpal::RSlice& Signature_
+  const openpal::RSlice& digitalSignature_
 ) : 
-  Signature(Signature_)
+  digitalSignature(digitalSignature_)
 {}
 
 uint32_t Group120Var14::Size() const
 {
-  return MIN_SIZE + Signature.Size();
+  return MIN_SIZE + digitalSignature.Size();
 }
 
 bool Group120Var14::Read(const RSlice& buffer)
 {
-  this->Signature = buffer; // the object is just the remainder field
+  this->digitalSignature = buffer; // the object is just the remainder field
   return true;
 }
 
@@ -773,7 +773,7 @@ bool Group120Var14::Write(openpal::WSlice& buffer) const
     return false;
   }
 
-  Signature.CopyTo(buffer);
+  digitalSignature.CopyTo(buffer);
   return true;
 }
 

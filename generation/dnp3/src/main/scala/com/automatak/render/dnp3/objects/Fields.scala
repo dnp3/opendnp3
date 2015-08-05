@@ -76,7 +76,7 @@ object VariableFields {
   val userPublicKey = VariableField("userPublicKey")
   val certificationData = VariableField("certificationData")
   val encryptedUpdateKey = VariableField("encryptedUpdateKey")
-  val signature = VariableField("Signature")
+  val signature = VariableField("digitalSignature")
 }
 
 sealed trait Field {

@@ -74,6 +74,8 @@ public:
 	void OnHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::RSlice& object);
 	void OnHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::RSlice& object);
 	void OnHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::RSlice& object);
+	void OnHeader(const FreeFormatHeader& header, const Group120Var13& value, const openpal::RSlice& object);
+	void OnHeader(const FreeFormatHeader& header, const Group120Var14& value, const openpal::RSlice& object);
 	void OnHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object);
 
 	void OnHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
@@ -150,6 +152,8 @@ protected:
 	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::RSlice& object);
 	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::RSlice& object);
 	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::RSlice& object);
+	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var13& value, const openpal::RSlice& object);
+	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var14& value, const openpal::RSlice& object);
 	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object);
 
 	
