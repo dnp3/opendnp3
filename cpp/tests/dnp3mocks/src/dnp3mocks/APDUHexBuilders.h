@@ -143,6 +143,20 @@ namespace hex
 		const std::string& certificationDataHex
 	);
 
+	std::string BeginUpdateKeyChangeRequest(
+		uint8_t seq,
+		opendnp3::KeyChangeMethod keyChangeMethod,
+		const std::string& username,
+		const std::string& masterChallenge
+	);
+
+	std::string BeginUpdateKeyChangeResponse(
+		uint8_t seq,
+		uint32_t ksq,
+		uint16_t user,		
+		const std::string& outstationChallenge
+	);
+
 	std::string KeyWrapData(	
 		uint16_t keyLengthBytes,
 		uint8_t keyRepeatValue,

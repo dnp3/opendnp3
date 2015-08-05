@@ -110,14 +110,21 @@ bool OutstationUserDatabase::FindFreeUserId(opendnp3::User& user) const
 		}
 
 		if (iter->first > lowest)
-		{
-			user = User(lowest); // found a gap
-			return true;
+		{			
+			break; // found a gap
 		}
 		else
 		{
+			// ids are equal
+
 			++lowest; // the values were equal
 		}
+	}
+	
+	if (userMap.find(lowest) == userMap.end())
+	{
+		user = User(lowest);
+		return true;
 	}
 
 	return false;

@@ -347,6 +347,47 @@ namespace hex
 		return ToHex(apdu.ToRSlice());
 	}
 
+	std::string BeginUpdateKeyChangeRequest(
+		uint8_t seq,
+		opendnp3::KeyChangeMethod method,
+		const std::string& username,
+		const std::string& masterChallenge
+		)
+	{
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest apdu(buffer.GetWSlice());
+		apdu.SetControl(AppControlField(true, true, false, false, seq));
+		apdu.SetFunction(FunctionCode::AUTH_REQUEST);
+
+		RSlice name(reinterpret_cast<const uint8_t*>(username.c_str()), username.size());
+		HexSequence challenge(masterChallenge);
+
+		apdu.GetWriter().WriteFreeFormat(Group120Var11(method, name, challenge));
+
+		return ToHex(apdu.ToRSlice());
+	}
+
+	std::string BeginUpdateKeyChangeResponse(
+		uint8_t seq,
+		uint32_t ksq,
+		uint16_t user,
+		const std::string& outstationChallenge
+	)
+	{
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDUResponse apdu(buffer.GetWSlice());
+		apdu.SetControl(AppControlField(true, true, false, false, seq));
+		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
+		apdu.SetIIN(IINBit::DEVICE_RESTART);
+		
+		HexSequence challenge(outstationChallenge);
+
+		apdu.GetWriter().WriteFreeFormat(Group120Var12(ksq, user, challenge));
+
+		return ToHex(apdu.ToRSlice());
+	}
+
+
 
 	std::string KeyWrapData(
 		uint16_t keyLengthBytes,

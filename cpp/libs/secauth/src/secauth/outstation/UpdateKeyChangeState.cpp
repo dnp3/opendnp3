@@ -76,7 +76,7 @@ bool UpdateKeyChangeState::WriteUpdateKeyChangeResposne(
 	// next, produce the challenge data for our side
 	std::error_code ec;
 	{
-		auto dest = m_outstationChallengeBuffer.GetWSlice();
+		auto dest = m_outstationChallengeBuffer.GetWSlice(this->M_CHALLENGE_SIZE);
 		this->m_outstationChallenge = m_crypto->GetSecureRandom(dest, ec);
 	}
 	

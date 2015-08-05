@@ -127,6 +127,36 @@ TEST_CASE(SUITE("Accepts authenticated message w/ good SCSN"))
 	fixture.TestAddUserStatusChange("Jim", seq, 3);
 }
 
+TEST_CASE(SUITE("Replies with auth error if now prior status change before begin update key change"))
+{
+	OutstationSecAuthFixture fixture;
+	fixture.context.ConfigureAuthority(2, AuthorityKey(0xFF));
+	fixture.LowerLayerUp();
+
+	AppSeqNum seq;
+	auto request = hex::BeginUpdateKeyChangeRequest(seq, KeyChangeMethod::AES_256_SHA256_HMAC, "Jim", hex::repeat(0xFF, 4));
+	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, 0, User::UNKNOWN_ID, 0, AuthErrorCode::UNKNOWN_USER, DNPTime(0), "");
+	
+	REQUIRE(fixture.SendAndReceive(request) == response);
+}
+
+TEST_CASE(SUITE("Replies with g120v12 if the user exists and assigns a user #"))
+{
+	OutstationSecAuthFixture fixture;
+	fixture.context.ConfigureAuthority(2, AuthorityKey(0xFF));
+	fixture.LowerLayerUp();
+
+	auto BOB = "Bob";
+
+	AppSeqNum seq;
+	fixture.TestAddUserStatusChange(BOB, seq, 4);
+
+	auto request = hex::BeginUpdateKeyChangeRequest(seq, KeyChangeMethod::AES_256_SHA256_HMAC, BOB, hex::repeat(0xFF, 4));
+	auto response = hex::BeginUpdateKeyChangeResponse(seq, 0, 2, hex::repeat(0xAA, 4));
+
+	REQUIRE(fixture.SendAndReceive(request) == response);
+}
+
 
 
 
