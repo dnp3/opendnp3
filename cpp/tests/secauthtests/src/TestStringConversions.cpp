@@ -18,48 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include <catch.hpp>
 
-#include "KeyChangeConfirmationHMAC.h"
-
-#include <openpal/serialization/Format.h>
-
-#include "secauth/StringConversions.h"
+#include <secauth/StringConversions.h>
 
 using namespace openpal;
-using namespace opendnp3;
+using namespace secauth;
 
-namespace secauth
-{
+#define SUITE(name) "StringConversionTestSuite - " name
 
-	KeyChangeConfirmationHMAC::KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm) : m_algorithm(&algorithm)
-	{}
+TEST_CASE(SUITE("Conversion from slice to string makes a copy of the data"))
+{		
+	auto getJim = []() -> std::string 
+	{
+		uint8_t jim[3] = { 0x6A, 0x69, 0x6D };
+		ReadBufferView slice(jim, 3);
+		return ToString(slice);		
+	};
 
-	openpal::ReadBufferView KeyChangeConfirmationHMAC::Compute(
-		const openpal::ReadBufferView& key,
-		const std::string& name,
-		const openpal::ReadBufferView& senderNonce,
-		const openpal::ReadBufferView& receiverNonce,
-		uint32_t keyChangeSeqNum,
-		opendnp3::User user,
-		std::error_code& ec)
-	{		
-		openpal::StaticBuffer<6> ksqAndUser;
-
-		{
-			auto dest = ksqAndUser.GetWriteBuffer();
-			Format::Many(dest, keyChangeSeqNum, user.GetId());
-		}
-
-		auto outputDest = m_buffer.GetWriteBuffer();
-
-		return m_algorithm->Calculate(key, 
-			{ AsSlice(name), senderNonce, receiverNonce, ksqAndUser.ToReadOnly()},
-			outputDest,
-			ec
-		);
-	}
-
+	auto name = getJim();
+	REQUIRE(name == "jim");
 }
 
+TEST_CASE(SUITE("Conversion from string to slice provides a UTF-8 view of the underlying byte array"))
+{
+	std::string jim("jim");
+	
+	auto slice = AsSlice(jim);
 
+	REQUIRE(slice.Size() == 3);
+	REQUIRE(slice[0] == 0x6A);
+	REQUIRE(slice[1] == 0x69);
+	REQUIRE(slice[2] == 0x6D);
+}
 

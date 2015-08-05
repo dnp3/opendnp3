@@ -18,48 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_STRING_CONVERSIONS_H
+#define SECAUTH_STRING_CONVERSIONS_H
 
-#include "KeyChangeConfirmationHMAC.h"
-
-#include <openpal/serialization/Format.h>
-
-#include "secauth/StringConversions.h"
-
-using namespace openpal;
-using namespace opendnp3;
+#include <string>
+#include <openpal/container/ReadBufferView.h>
 
 namespace secauth
 {
+	// -- Routines for going from UTF-8 uint8_t* slices in memory to std::string and back again
 
-	KeyChangeConfirmationHMAC::KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm) : m_algorithm(&algorithm)
-	{}
+	/// Makes a copy of the data and stores it in std::string
+	std::string ToString(const openpal::ReadBufferView& rslice);
 
-	openpal::ReadBufferView KeyChangeConfirmationHMAC::Compute(
-		const openpal::ReadBufferView& key,
-		const std::string& name,
-		const openpal::ReadBufferView& senderNonce,
-		const openpal::ReadBufferView& receiverNonce,
-		uint32_t keyChangeSeqNum,
-		opendnp3::User user,
-		std::error_code& ec)
-	{		
-		openpal::StaticBuffer<6> ksqAndUser;
-
-		{
-			auto dest = ksqAndUser.GetWriteBuffer();
-			Format::Many(dest, keyChangeSeqNum, user.GetId());
-		}
-
-		auto outputDest = m_buffer.GetWriteBuffer();
-
-		return m_algorithm->Calculate(key, 
-			{ AsSlice(name), senderNonce, receiverNonce, ksqAndUser.ToReadOnly()},
-			outputDest,
-			ec
-		);
-	}
-
+	/// Produces an unsigned byte view of the string w/o copying the source data
+	openpal::ReadBufferView AsSlice(const std::string& str);
 }
 
-
+#endif
 

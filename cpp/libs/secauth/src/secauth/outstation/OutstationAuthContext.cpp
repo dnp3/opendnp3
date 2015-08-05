@@ -39,6 +39,8 @@
 #include "secauth/outstation/KeyUnwrap.h"
 #include "secauth/SingleObjectHandlers.h"
 #include "secauth/outstation/OutstationErrorCodes.h"
+
+#include "secauth/StringConversions.h"
 #include "secauth/Crypto.h"
 
 #include "IOAuthState.h"
@@ -488,9 +490,7 @@ OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Add(const opendnp
 {
 	auto expirationTimestamp = this->pExecutor->GetTime().Add(TimeDuration::Days(change.userRoleExpDays));
 
-	std::string userName;
-	const uint8_t* buffer = change.userName;
-	userName.append(reinterpret_cast<const char*>(buffer), change.userName.Size());
+	std::string userName = ToString(change.userName);
 
 	this->security.statusChange.SetUserStatusChange(
 		change.keyChangeMethod,
@@ -514,6 +514,12 @@ OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Change(const open
 
 OAuthContext::APDUResult OAuthContext::ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change)
 {
+	/*
+	User user;
+	std::string userName(change.userName, change.userName.Size());
+	if (security.userDB.Delete(change.u
+	*/
+
 	SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "user deletion not implemented");
 	return this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::UNKNOWN_USER);	
 }

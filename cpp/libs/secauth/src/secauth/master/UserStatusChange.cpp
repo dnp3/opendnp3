@@ -23,6 +23,8 @@
 
 #include <opendnp3/objects/Group120.h>
 
+#include "secauth/StringConversions.h"
+
 namespace secauth
 {
 	
@@ -54,8 +56,8 @@ opendnp3::Group120Var10 UserStatusChange::Convert() const
 		userOperation,
 		statusChangeSeqNum,
 		userRole,
-		userRoleExpDays,
-		openpal::ReadBufferView(reinterpret_cast<const uint8_t*>(userName.c_str()), userName.size()),
+		userRoleExpDays,		
+		AsSlice(userName),
 		userPublicKey.ToReadOnly(),
 		certificationData.ToReadOnly()
 	);

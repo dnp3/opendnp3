@@ -67,12 +67,16 @@ class OutstationUserDatabase : public IOutstationUserDatabase
 
 		virtual bool UserExists(const opendnp3::User& user) const override final;
 
+		virtual bool Delete(const std::string& userName, opendnp3::User& userOut) override final;
+
 		
 		void AddUser(opendnp3::User user, const std::string& userName, const UpdateKey& key, Permissions permissions);
 
 	private:		
 
-		std::map<uint16_t, UserData> userMap;
+		typedef std::map<uint16_t, UserData> UserMap;
+
+		UserMap userMap;
 };
 
 }

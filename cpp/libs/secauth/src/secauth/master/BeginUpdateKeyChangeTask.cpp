@@ -29,6 +29,7 @@
 #include <opendnp3/app/parsing/APDUParser.h>
 
 #include "secauth/SingleObjectHandlers.h"
+#include "secauth/StringConversions.h"
 
 
 using namespace openpal;
@@ -69,7 +70,7 @@ bool BeginUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint
 
 	Group120Var11 updateKeyChangeRequest(
 		KeyChangeMethod::AES_256_SHA256_HMAC,
-		openpal::ReadBufferView(reinterpret_cast<const uint8_t*>(m_username.c_str()), m_username.size()),
+		AsSlice(m_username),		
 		m_challengeDataView
 	);
 

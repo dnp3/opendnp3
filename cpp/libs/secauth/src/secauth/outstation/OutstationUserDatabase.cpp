@@ -21,6 +21,8 @@
 
 #include "OutstationUserDatabase.h"
 
+#include <algorithm>
+
 using namespace openpal;
 using namespace opendnp3;
 
@@ -73,6 +75,22 @@ bool OutstationUserDatabase::UserExists(const User& user) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	return iter != userMap.end();
+}
+
+bool OutstationUserDatabase::Delete(const std::string& userName, opendnp3::User& userOut)
+{
+	auto byName = [&](const UserMap::value_type& value) { return value.second.userName == userName; };
+	auto iter = std::find_if(userMap.begin(), userMap.end(), byName);
+	if (iter == userMap.end())
+	{
+		return false;
+	}
+	else
+	{
+		userOut = User(iter->first);
+		userMap.erase(iter);
+		return true;
+	}
 }
 
 void OutstationUserDatabase::AddUser(opendnp3::User user, const std::string& userName, const UpdateKey& key, Permissions permissions)

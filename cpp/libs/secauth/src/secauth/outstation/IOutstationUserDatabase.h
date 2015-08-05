@@ -49,6 +49,8 @@ class IOutstationUserDatabase
 		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
 
 		virtual bool UserExists(const opendnp3::User& user) const = 0;
+
+		virtual bool Delete(const std::string& userName, opendnp3::User& userOut) = 0;
 };
 
 }

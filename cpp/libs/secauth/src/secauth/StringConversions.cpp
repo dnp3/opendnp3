@@ -19,44 +19,21 @@
  * to you under the terms of the License.
  */
 
-#include "KeyChangeConfirmationHMAC.h"
-
-#include <openpal/serialization/Format.h>
-
-#include "secauth/StringConversions.h"
-
-using namespace openpal;
-using namespace opendnp3;
+#include "StringConversions.h"
 
 namespace secauth
 {
+	std::string ToString(const openpal::ReadBufferView& rslice)
+	{
+		std::string str;	
+		const uint8_t* buffer = rslice;
+		str.append(reinterpret_cast<const char*>(buffer), rslice.Size());
+		return str;
+	}
 
-	KeyChangeConfirmationHMAC::KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm) : m_algorithm(&algorithm)
-	{}
-
-	openpal::ReadBufferView KeyChangeConfirmationHMAC::Compute(
-		const openpal::ReadBufferView& key,
-		const std::string& name,
-		const openpal::ReadBufferView& senderNonce,
-		const openpal::ReadBufferView& receiverNonce,
-		uint32_t keyChangeSeqNum,
-		opendnp3::User user,
-		std::error_code& ec)
-	{		
-		openpal::StaticBuffer<6> ksqAndUser;
-
-		{
-			auto dest = ksqAndUser.GetWriteBuffer();
-			Format::Many(dest, keyChangeSeqNum, user.GetId());
-		}
-
-		auto outputDest = m_buffer.GetWriteBuffer();
-
-		return m_algorithm->Calculate(key, 
-			{ AsSlice(name), senderNonce, receiverNonce, ksqAndUser.ToReadOnly()},
-			outputDest,
-			ec
-		);
+	openpal::ReadBufferView AsSlice(const std::string& str)
+	{
+		return openpal::ReadBufferView(reinterpret_cast<const uint8_t*>(str.c_str()), str.size());
 	}
 
 }
