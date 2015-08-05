@@ -96,11 +96,11 @@ class OAuthContext final : public opendnp3::OContext
 
 	APDUResult ProcessUserStatusChange(const openpal::RSlice& fragment, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
-	APDUResult ProcessUserStatusChange_Add(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);
+	APDUResult ProcessUserStatusChange_Add(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change);
 
-	APDUResult ProcessUserStatusChange_Change(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);
+	APDUResult ProcessUserStatusChange_Change(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change);
 
-	APDUResult ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);
+	APDUResult ProcessUserStatusChange_Delete(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change);
 
 	APDUResult TryRespondWithAuthError(opendnp3::AppSeqNum seq, uint32_t authSeqNum, const opendnp3::User& user, opendnp3::AuthErrorCode code);
 	

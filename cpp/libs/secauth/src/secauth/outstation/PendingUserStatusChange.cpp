@@ -21,36 +21,38 @@
 
 #include "PendingUserStatusChange.h"
 
-using namespace openpal;
-using namespace opendnp3;
-
-
 namespace secauth {
 
+ChangeData::ChangeData(
+	opendnp3::KeyChangeMethod keyChangeMethod_,
+	opendnp3::UserRole userRole_,
+	openpal::MonotonicTimestamp expiration_
+	) :
+		keyChangeMethod(keyChangeMethod_),
+		userRole(userRole_),
+		expiration(expiration_)
+{}
 	
-	PendingUserStatusChange::PendingUserStatusChange() :
-		keyChangeMethod(KeyChangeMethod::UNDEFINED),
-		operation(Operation::ADD),
-		statusChangeSeqNum(0),
-		userRole(UserRole::UNDEFINED),
-		expiration(MonotonicTimestamp::Min())
-	{}
+void PendingUserStatusChanges::QueueChange(const std::string& username, const ChangeData& data)
+{
+	changeMap[username] = data;
+}
 
-	void PendingUserStatusChange::SetUserStatusChange(
-		opendnp3::KeyChangeMethod keyChangeMethod_,
-		Operation operation_,
-		uint32_t statusChangeSeqNum_,
-		UserRole userRole_,
-		openpal::MonotonicTimestamp expiration_,
-		std::string userName_)
+bool PendingUserStatusChanges::PopChange(const std::string& username, ChangeData& data)
+{
+	auto iter = changeMap.find(username);
+	if (iter == changeMap.end())
 	{
-		this->keyChangeMethod = keyChangeMethod_;
-		this->operation = operation_;
-		this->statusChangeSeqNum = statusChangeSeqNum_;
-		this->userRole = userRole_;
-		this->expiration = expiration_;
-		this->userName = userName_;
+		return false;
 	}
+	else
+	{
+		data = iter->second;
+		changeMap.erase(iter);
+		return true;
+	}
+}
+
 
 
 }

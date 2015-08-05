@@ -77,10 +77,14 @@ bool OutstationUserDatabase::UserExists(const User& user) const
 	return iter != userMap.end();
 }
 
+bool OutstationUserDatabase::UserExists(const std::string& userName) const
+{
+	return FindByName(userName) != userMap.end();
+}
+
 bool OutstationUserDatabase::Delete(const std::string& userName, opendnp3::User& userOut)
 {
-	auto byName = [&](const UserMap::value_type& value) { return value.second.userName == userName; };
-	auto iter = std::find_if(userMap.begin(), userMap.end(), byName);
+	auto iter = FindByName(userName);
 	if (iter == userMap.end())
 	{
 		return false;
@@ -99,6 +103,18 @@ void OutstationUserDatabase::AddUser(opendnp3::User user, const std::string& use
 	{
 		userMap[user.GetId()] = UserData(key, userName, permissions);		
 	}
+}
+
+OutstationUserDatabase::UserMap::const_iterator OutstationUserDatabase::FindByName(const std::string& userName) const
+{
+	auto byName = [&](const UserMap::value_type& value) { return value.second.userName == userName; };
+	return std::find_if(userMap.begin(), userMap.end(), byName);
+}
+
+OutstationUserDatabase::UserMap::iterator OutstationUserDatabase::FindByName(const std::string& userName)
+{
+	auto byName = [&](const UserMap::value_type& value) { return value.second.userName == userName; };
+	return std::find_if(userMap.begin(), userMap.end(), byName);
 }
 
 }

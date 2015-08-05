@@ -50,6 +50,8 @@ class IOutstationUserDatabase
 
 		virtual bool UserExists(const opendnp3::User& user) const = 0;
 
+		virtual bool UserExists(const std::string& userName) const = 0;
+
 		virtual bool Delete(const std::string& userName, opendnp3::User& userOut) = 0;
 };
 

@@ -80,7 +80,7 @@ class OutstationSecurity
 	Statistics stats;
 	UnofficialStatistics otherStats;	
 	AuthorityCredentials credentials;
-	PendingUserStatusChange statusChange;
+	PendingUserStatusChanges statusChanges;
 };
 
 }

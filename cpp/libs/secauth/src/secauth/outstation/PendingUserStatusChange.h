@@ -29,42 +29,50 @@
 #include <openpal/util/Uncopyable.h>
 
 #include <string>
+#include <map>
 
 namespace secauth {
 
 
-class PendingUserStatusChange : private openpal::Uncopyable
+class ChangeData
 {
 
 public:
 
-	enum Operation {
-		ADD,
-		CHANGE
-	};
+	ChangeData() :
+		keyChangeMethod(opendnp3::KeyChangeMethod::UNDEFINED),
+		userRole(opendnp3::UserRole::UNDEFINED),
+		expiration(openpal::MonotonicTimestamp::Min())
+	{}
 
-	PendingUserStatusChange();
-
-	void SetUserStatusChange(
+	ChangeData(
 		opendnp3::KeyChangeMethod keyChangeMethod,
-		Operation operation,
-		uint32_t statusChangeSeqNum,
 		opendnp3::UserRole userRole,
-		openpal::MonotonicTimestamp expiration,
-		std::string userName
+		openpal::MonotonicTimestamp expiration
 	);
 
+	opendnp3::KeyChangeMethod keyChangeMethod;
+	opendnp3::UserRole userRole;
+	openpal::MonotonicTimestamp expiration;
+};
+
+class PendingUserStatusChanges : private openpal::Uncopyable
+{
+
+public:	
+
+	
+
+	void QueueChange(const std::string& userName, const ChangeData& data);
+
+	bool PopChange(const std::string& userName, ChangeData& data);
 
 private:
 
-	// member variables
-	opendnp3::KeyChangeMethod keyChangeMethod;
-	Operation operation;
-	uint32_t statusChangeSeqNum;
-	opendnp3::UserRole userRole;
-	openpal::MonotonicTimestamp expiration;
-	std::string userName;
-  
+	typedef std::map<std::string, ChangeData> ChangeMap;
+
+	ChangeMap changeMap;
+	  
 };
 
 
