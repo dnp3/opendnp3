@@ -38,8 +38,8 @@ bool OutstationUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type,
 	}
 	else
 	{
-		type = iter->second.key.GetKeyMode();
-		key = iter->second.key.GetKeyView();
+		type = iter->second.updateKey.GetKeyMode();
+		key = iter->second.updateKey.GetKeyView();
 		return true;
 	}
 }
@@ -53,7 +53,7 @@ bool OutstationUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& t
 	}
 	else
 	{
-		type = iter->second.key.GetKeyMode();
+		type = iter->second.updateKey.GetKeyMode();
 		return true;
 	}
 }
@@ -130,23 +130,23 @@ bool OutstationUserDatabase::FindFreeUserId(opendnp3::User& user) const
 	return false;
 }
 
-void OutstationUserDatabase::AddUser(opendnp3::User user, const std::string& userName, const UpdateKey& key, Permissions permissions)
+void OutstationUserDatabase::AddUser(const OutstationUserInfo& info)
 {
-	if (key.IsValid())
+	if (info.updateKey.IsValid())
 	{
-		userMap[user.GetId()] = UserData(key, userName, permissions);		
+		userMap[info.user.GetId()] = info;
 	}
 }
 
 OutstationUserDatabase::UserMap::const_iterator OutstationUserDatabase::FindByName(const std::string& userName) const
 {
-	auto byName = [&](const UserMap::value_type& value) { return value.second.userName == userName; };
+	auto byName = [&](const UserMap::value_type& value) { return value.second.username == userName; };
 	return std::find_if(userMap.begin(), userMap.end(), byName);
 }
 
 OutstationUserDatabase::UserMap::iterator OutstationUserDatabase::FindByName(const std::string& userName)
 {
-	auto byName = [&](const UserMap::value_type& value) { return value.second.userName == userName; };
+	auto byName = [&](const UserMap::value_type& value) { return value.second.username == userName; };
 	return std::find_if(userMap.begin(), userMap.end(), byName);
 }
 

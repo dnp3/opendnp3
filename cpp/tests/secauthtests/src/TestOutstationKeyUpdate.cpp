@@ -159,6 +159,46 @@ TEST_CASE(SUITE("Replies with g120v12 if the user exists and assigns a user #"))
 	REQUIRE(fixture.SendAndReceive(request) == response);
 }
 
+TEST_CASE(SUITE("Correctly adds a user if the update key change authenticates"))
+{
+	OutstationSecAuthFixture fixture;
+	fixture.context.ConfigureAuthority(2, AuthorityKey(0xFF));
+	fixture.LowerLayerUp();
+
+	AppSeqNum seq;
+	auto BOB = "bob";
+	const uint16_t EXPECTED_USER_NUM = 2; // the first un-used Id > 1
+	const uint32_t SCSN = 4;
+
+	fixture.TestAddUserStatusChange(BOB, seq, SCSN);
+
+	{
+ 		auto request = hex::BeginUpdateKeyChangeRequest(seq, KeyChangeMethod::AES_256_SHA256_HMAC, BOB, hex::repeat(0xFF, 4));
+		auto response = hex::BeginUpdateKeyChangeResponse(seq, 0, EXPECTED_USER_NUM, hex::repeat(0xAA, 4));
+		REQUIRE(fixture.SendAndReceive(request) == response);
+	}
+
+	seq.Increment();
+	uint32_t KSQ = 0;
+	
+	// The mock data for the key unwrap - "bob" followed by the update key, followed by the outstation challenge data + padding
+	fixture.crypto.aes256.hexOutput = std::string("62 6F 62") + hex::repeat(0xBB, 32) + hex::repeat(0xAA, 4);
+
+	auto request = hex::FinishUpdateKeyChangeRequest(seq, KSQ, EXPECTED_USER_NUM, "DE AD BE EF", hex::repeat(0xAA, 32));
+	auto response = hex::FinishUpdateKeyChangeResponse(seq, hex::repeat(0xAA, 32));
+	REQUIRE(fixture.SendAndReceive(request) == response);
+
+	// now verify that the user was added with the correct credentials
+	REQUIRE(fixture.application.modifiedUsers.size() == 1);
+
+	auto& info = fixture.application.modifiedUsers.front();
+	REQUIRE(info.user.GetId() == 2);
+	REQUIRE(info.username == BOB);
+	REQUIRE(info.permissions.IsAllowed(FunctionCode::DIRECT_OPERATE));
+	REQUIRE(ToHex(info.updateKey.GetKeyView()) == hex::repeat(0xBB, 32));
+	
+}
+
 
 
 

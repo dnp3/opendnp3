@@ -121,11 +121,13 @@ int main(int argc, char* argv[])
 
 	// add a user to the outstation w/ a key of all 0xFF
 	pOutstation->ConfigureUser(
-		opendnp3::User::Default(),
-		"bob",
-		UpdateKey(0xFF, UpdateKeyMode::AES128),
-		// so that the default user can do the initial startup handshaking
-		Permissions::Allowed(FunctionCode::WRITE, FunctionCode::DISABLE_UNSOLICITED, FunctionCode::ENABLE_UNSOLICITED)
+		OutstationUserInfo(
+			opendnp3::User::Default(),
+			"bob",			
+			// so that the default user can do the initial startup handshaking
+			Permissions::Allowed(FunctionCode::WRITE, FunctionCode::DISABLE_UNSOLICITED, FunctionCode::ENABLE_UNSOLICITED),
+			UpdateKey(0xFF, UpdateKeyMode::AES128)
+		)
 	);
 
 	// Enable the outstation and start communications

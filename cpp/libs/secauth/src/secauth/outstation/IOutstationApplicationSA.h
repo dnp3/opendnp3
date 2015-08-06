@@ -24,10 +24,7 @@
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <openpal/executor/IUTCTimeSource.h>
 
-#include <opendnp3/app/User.h>
-
-#include "secauth/UpdateKey.h"
-#include "secauth/outstation/Permissions.h"
+#include "secauth/outstation/OutstationUserInfo.h"
 
 #include <string>
 
@@ -63,7 +60,7 @@ class IOutstationApplicationSA : public opendnp3::IOutstationApplication, public
 	*
 	*	Application code is expected to persist this data to secure non-volatile memory so that it can be loaded on the next reboot.
 	*/
-	virtual void AddOrUpdateUser(opendnp3::User user, const std::string& username, const secauth::UpdateKey& key, const secauth::Permissions& permissions) {}
+	virtual void AddOrUpdateUser(const OutstationUserInfo& info) {}
 				
 };
 

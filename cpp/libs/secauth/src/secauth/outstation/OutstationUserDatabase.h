@@ -25,6 +25,7 @@
 
 #include "secauth/UpdateKey.h"
 #include "secauth/outstation/Permissions.h"
+#include "secauth/outstation/OutstationUserInfo.h"
 #include "secauth/outstation/IOutstationApplicationSA.h"
 
 #include <openpal/container/Buffer.h>
@@ -40,23 +41,6 @@ namespace secauth
 */
 class OutstationUserDatabase final : public IOutstationUserDatabase
 {
-	struct UserData
-	{
-	
-		UserData(const UpdateKey& key_, const std::string& userName_, const Permissions& permissions_) :
-			key(key_),
-			userName(userName_),
-			permissions(permissions_)
-		{}
-
-		UserData() : key(), permissions(Permissions::AllowNothing())
-		{}
-
-		UpdateKey key;
-		std::string userName;
-		Permissions permissions;
-	};
-
 	public:		
 		
 		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::RSlice& key) const override;
@@ -74,11 +58,11 @@ class OutstationUserDatabase final : public IOutstationUserDatabase
 		virtual bool FindFreeUserId(opendnp3::User& user) const override;
 
 		
-		void AddUser(opendnp3::User user, const std::string& userName, const UpdateKey& key, Permissions permissions);
+		void AddUser(const OutstationUserInfo& info);
 
 	private:	
 
-		typedef std::map<uint16_t, UserData> UserMap;
+		typedef std::map<uint16_t, OutstationUserInfo> UserMap;
 
 		UserMap::const_iterator FindByName(const std::string& userName) const;
 

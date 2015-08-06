@@ -27,6 +27,7 @@
 #include "secauth/outstation/OutstationSecurity.h"
 #include "secauth/outstation/OutstationAuthSettings.h"
 #include "secauth/outstation/IOutstationApplicationSA.h"
+#include "secauth/outstation/OutstationUserInfo.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/executor/IUTCTimeSource.h>
@@ -55,7 +56,7 @@ class OAuthContext final : public opendnp3::OContext
 
 	//// --- external methods ----
 
-	void AddUser(opendnp3::User user, const std::string& userName, const secauth::UpdateKey& key, const secauth::Permissions& permissions);
+	void AddUser(const OutstationUserInfo& userInfo);
 
 	void ConfigureAuthority(uint32_t statusChangeSeqNumber, const AuthorityKey& key);
 

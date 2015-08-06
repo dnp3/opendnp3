@@ -23,10 +23,9 @@
 
 #include "IOutstation.h"
 
-#include <opendnp3/app/User.h>
-#include <secauth/UpdateKey.h>
 #include <secauth/AuthorityKey.h>
-#include <secauth/outstation/Permissions.h>
+#include <secauth/outstation/OutstationUserInfo.h>
+
 
 namespace asiodnp3
 {
@@ -41,7 +40,7 @@ class IOutstationSA : public IOutstation
 	/**
 	* Add a user to the outstation. This is normally only done during initialization.
 	*/
-	virtual void ConfigureUser(opendnp3::User user, const std::string& userName, const secauth::UpdateKey& key, const secauth::Permissions& permissions) = 0;
+	virtual void ConfigureUser(const secauth::OutstationUserInfo& info) = 0;
 
 	/**
 	* Set persisted value of the status change seq number, and the authority symmetric key used to validate UserStatusChange requests.

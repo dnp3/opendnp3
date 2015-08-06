@@ -157,6 +157,19 @@ namespace hex
 		const std::string& outstationChallenge
 	);
 
+	std::string FinishUpdateKeyChangeRequest(
+		uint8_t seq,
+		uint32_t ksq,		
+		uint16_t user,
+		const std::string& encryptedData,
+		const std::string& hmac
+	);
+
+	std::string FinishUpdateKeyChangeResponse(
+		uint8_t seq,		
+		const std::string& hmac
+	);
+
 	std::string KeyWrapData(	
 		uint16_t keyLengthBytes,
 		uint8_t keyRepeatValue,

@@ -95,10 +95,10 @@ OAuthContext::OAuthContext(
 	this->ConfigureSecStats(security.settings.statThresholds);
 }
 
-void OAuthContext::AddUser(opendnp3::User user, const std::string& userName, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
+void OAuthContext::AddUser(const OutstationUserInfo& info)
 {
-	security.userDB.AddUser(user, userName, key, permissions);
-	security.sessions.Invalidate(user); // invalidate any active sessions for the user
+	security.userDB.AddUser(info);
+	security.sessions.Invalidate(info.user); // invalidate any active sessions for the user
 }
 
 void OAuthContext::ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key)
@@ -584,8 +584,11 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 
 	////  ----- Now we can actually add the user to the outstation  ---- ////
 	auto permissions = RoleBasedPermissions::From(userChangeData.userRole);
-	this->AddUser(verification.user, verification.username, updateKey, permissions);
-	this->security.pApplication->AddOrUpdateUser(verification.user, verification.username, updateKey, permissions);
+
+	OutstationUserInfo info(verification.user, verification.username, RoleBasedPermissions::From(userChangeData.userRole), updateKey);
+
+	this->AddUser(info);
+	this->security.pApplication->AddOrUpdateUser(info);
 	
 	auto response = this->StartAuthResponse(header.control.SEQ);
 	response.GetWriter().WriteFreeFormat(Group120Var15(hmacResponse));
@@ -614,7 +617,6 @@ OAuthContext::APDUResult OAuthContext::ProcessNormalFunction(const openpal::RSli
 		this->ProcessAPDU(apdu, header, objects);
 		return APDUResult::PROCESSED;
 	}
-
 
 	if (!this->TransmitChallenge(apdu, header)) // this could fail because of the PRNG
 	{

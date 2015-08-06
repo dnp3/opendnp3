@@ -18,41 +18,47 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_MOCKOUTSTATIONAPPLICATIONSA_H
-#define SECAUTH_MOCKOUTSTATIONAPPLICATIONSA_H
+#ifndef SECAUTH_OUTSTATION_USER_INFO_H
+#define SECAUTH_OUTSTATION_USER_INFO_H
 
-#include "secauth/outstation/IOutstationApplicationSA.h"
+#include <opendnp3/app/User.h>
 
-#include <testlib/MockUTCTimeSource.h>
+#include "secauth/UpdateKey.h"
+#include "secauth/outstation/Permissions.h"
 
-namespace opendnp3
+#include <string>
+
+namespace secauth
 {
 
-class MockOutstationApplicationSA : public secauth::IOutstationApplicationSA
-{
-
-public:
-
-	virtual openpal::UTCTimestamp Now() override { return utc.Now(); }
-
-	virtual void OnNewSCSN(uint32_t statusChangeSeqNum) override
+	class OutstationUserInfo
 	{
-		this->userStatusSeqNums.push_back(statusChangeSeqNum);
-	}
 
-	virtual void AddOrUpdateUser(const secauth::OutstationUserInfo& info)
-	{
-		this->modifiedUsers.push_back(info);
-	}
+	public:
 
-	std::vector<uint32_t> userStatusSeqNums;
+		OutstationUserInfo() {}
+			
+		OutstationUserInfo(
+			opendnp3::User user_,
+			const std::string& username_,
+			const secauth::Permissions& permissions_,
+			const secauth::UpdateKey& updateKey_
+		) :
+			user(user_),
+			username(username_),
+			permissions(permissions_),
+			updateKey(updateKey_)
+		{
+			
+		}
 
-	std::vector<secauth::OutstationUserInfo> modifiedUsers;
-
-	testlib::MockUTCTimeSource utc;
-};
-
-
+		opendnp3::User user;
+		std::string username;
+		secauth::Permissions permissions;
+		secauth::UpdateKey updateKey;
+	};
+	
 }
 
 #endif
+

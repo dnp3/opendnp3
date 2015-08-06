@@ -58,7 +58,7 @@ class FinishUpdateKeyChangeHandler final : public opendnp3::IAPDUHandler, privat
 		openpal::RSlice authData;
 
 	private:
-
+		
 		Result m_result;
 			
 };

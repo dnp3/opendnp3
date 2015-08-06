@@ -387,7 +387,47 @@ namespace hex
 		return ToHex(apdu.ToRSlice());
 	}
 
+	std::string FinishUpdateKeyChangeRequest(
+		uint8_t seq,
+		uint32_t ksq,
+		uint16_t user,
+		const std::string& encryptedData,
+		const std::string& hmac
+	)
+	{
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest apdu(buffer.GetWSlice());
+		apdu.SetControl(AppControlField(true, true, false, false, seq));
+		apdu.SetFunction(FunctionCode::AUTH_REQUEST);
+		
+		HexSequence encryptedBuffer(encryptedData);
+		HexSequence hmacBuffer(hmac);
 
+		auto writer = apdu.GetWriter();
+		
+		writer.WriteFreeFormat(Group120Var13(ksq, user, encryptedBuffer.ToRSlice()));
+		writer.WriteFreeFormat(Group120Var15(hmacBuffer.ToRSlice()));
+		
+		return ToHex(apdu.ToRSlice());
+	}
+
+	std::string FinishUpdateKeyChangeResponse(
+		uint8_t seq,
+		const std::string& hmac
+		)
+	{
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDUResponse apdu(buffer.GetWSlice());
+		apdu.SetControl(AppControlField(true, true, false, false, seq));
+		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
+		apdu.SetIIN(IINBit::DEVICE_RESTART);
+
+		HexSequence hmacBuffer(hmac);
+
+		apdu.GetWriter().WriteFreeFormat(Group120Var15(hmacBuffer.ToRSlice()));
+
+		return ToHex(apdu.ToRSlice());
+	}
 
 	std::string KeyWrapData(
 		uint16_t keyLengthBytes,

@@ -70,7 +70,11 @@ public:
 
 	void AddUser(User user, const std::string& userName, uint8_t keyRepeat, UpdateKeyMode mode, secauth::Permissions permissions = secauth::Permissions::AllowAll())
 	{
-		context.AddUser(user, userName, secauth::UpdateKey(keyRepeat, mode), permissions);
+		context.AddUser(
+			secauth::OutstationUserInfo(
+				user, userName, permissions, secauth::UpdateKey(keyRepeat, mode)
+			)			
+		);
 	}
 
 	
