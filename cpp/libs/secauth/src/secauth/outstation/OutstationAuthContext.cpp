@@ -468,18 +468,21 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 		return APDUResult::DISCARDED;
 	}
 
+	const User user(handler.keyChange.userNum);
+
 	if (handler.GetResult() != FinishUpdateKeyChangeHandler::Result::HMAC)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Digital signature key change method not supported");
+		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);
 		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
 		return APDUResult::DISCARDED;
-	}
-
-	const User user(handler.keyChange.userNum);
+	}	
 
 	UpdateKeyChangeState::VerificationData verification;
 	if (!security.updateKeyChangeState.VerifyUserAndKSQ(handler.keyChange.keyChangeSeqNum, user, verification))
 	{
+		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED); // TODO - correct code?
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
 		return APDUResult::DISCARDED;
 	}
 
@@ -487,6 +490,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 	if (authorityKey.IsEmpty())
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Unable to obtain authority key for decryption");
+		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED);		
 		return APDUResult::DISCARDED;
 	}	
 	
@@ -506,12 +510,14 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error verifying new update key: %s", ec.message().c_str());
+		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED); // TODO
 		return APDUResult::DISCARDED;
 	}
 
 	if (!updateKey.IsValid())
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid decrypted update key");
+		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED); // TODO
 		return APDUResult::DISCARDED;
 	}
 	
@@ -533,6 +539,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error verifying master confirmation HMAC: %s", ec.message().c_str());
+		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::INVALID_SIGNATURE); // TODO
 		return APDUResult::DISCARDED;
 	}
 
@@ -542,6 +549,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 	if (!security.statusChanges.PopChange(verification.username, userChangeData))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "No queued user status change for user: %s", verification.username);
+		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER); // TODO
 		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
 		return APDUResult::DISCARDED;
 	}
@@ -550,6 +558,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 	if (pExecutor->GetTime() > userChangeData.expiration)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "User role expired for user: %s", verification.username);
+		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER); // TODO
 		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
 		return APDUResult::DISCARDED;
 	}
@@ -569,7 +578,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 	
 	if (ec)
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error computing verification HMAC: %s", ec.message().c_str());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error computing verification HMAC: %s", ec.message().c_str());		
 		return APDUResult::DISCARDED;
 	}
 
