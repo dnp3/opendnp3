@@ -548,7 +548,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 
 	if (!security.statusChanges.PopChange(verification.username, userChangeData))
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "No queued user status change for user: %s", verification.username);
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "No queued user status change for user: %s", verification.username.c_str());
 		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER); // TODO
 		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
 		return APDUResult::DISCARDED;
@@ -557,7 +557,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 	// has the user role expired?	
 	if (pExecutor->GetTime() > userChangeData.expiration)
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "User role expired for user: %s", verification.username);
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "User role expired for user: %s", verification.username.c_str());
 		this->TryRespondWithAuthError(header.control.SEQ, handler.keyChange.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER); // TODO
 		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
 		return APDUResult::DISCARDED;
@@ -582,9 +582,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 		return APDUResult::DISCARDED;
 	}
 
-	////  ----- Now we can actually add the user to the outstation  ---- ////
-	auto permissions = RoleBasedPermissions::From(userChangeData.userRole);
-
+	////  ----- Now we can actually add the user to the outstation  ---- ////	
 	OutstationUserInfo info(verification.user, verification.username, RoleBasedPermissions::From(userChangeData.userRole), updateKey);
 
 	this->AddUser(info);
