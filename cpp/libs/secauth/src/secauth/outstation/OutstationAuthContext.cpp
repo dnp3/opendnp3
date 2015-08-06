@@ -41,9 +41,13 @@
 
 #include "secauth/outstation/OutstationErrorCodes.h"
 #include "secauth/outstation/FinishUpdateKeyChangeHandler.h"
+#include "secauth/outstation/EncryptedUpdateKey.h"
+#include "secauth/outstation/RoleBasedPermissions.h"
 
-#include "secauth/StringConversions.h"
 #include "secauth/Crypto.h"
+#include "secauth/StringConversions.h"
+#include "secauth/KeyChangeConfirmationHMAC.h"
+
 
 #include "IOAuthState.h"
 #include "secauth/StatThresholds.h"
@@ -94,6 +98,7 @@ OAuthContext::OAuthContext(
 void OAuthContext::AddUser(opendnp3::User user, const std::string& userName, const secauth::UpdateKey& key, const secauth::Permissions& permissions)
 {
 	security.userDB.AddUser(user, userName, key, permissions);
+	security.sessions.Invalidate(user); // invalidate any active sessions for the user
 }
 
 void OAuthContext::ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key)
@@ -440,7 +445,8 @@ OAuthContext::APDUResult OAuthContext::ProcessBeginUpdateKeyChange(const openpal
 	auto response = this->StartAuthResponse(header.control.SEQ);
 	auto writer = response.GetWriter();
 
-	if (!security.updateKeyChangeState.WriteUpdateKeyChangeResposne(writer, username, handler.value.challengeData, security.userDB))
+	// TODO use a KSQ other than 0
+	if (!security.updateKeyChangeState.WriteUpdateKeyChangeResposne(writer, 0, username, handler.value.challengeData, security.userDB))
 	{
 		// TODO - some kind of error occured, can we respond with an error code?
 		return APDUResult::DISCARDED;
@@ -469,15 +475,112 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 		return APDUResult::DISCARDED;
 	}
 
-	// TODO - change the freaking standard to authenticate prior to decryption =(
+	const User user(handler.keyChange.userNum);
 
-	// first step is to try and decrypt the data
-	//handler.keyChange.encryptedUpdateKey
+	UpdateKeyChangeState::VerificationData verification;
+	if (!security.updateKeyChangeState.VerifyUserAndKSQ(handler.keyChange.keyChangeSeqNum, user, verification))
+	{
+		return APDUResult::DISCARDED;
+	}
+
+	auto authorityKey = security.credentials.GetSymmetricKey();
+	if (authorityKey.IsEmpty())
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Unable to obtain authority key for decryption");
+		return APDUResult::DISCARDED;
+	}	
 	
+	UpdateKey updateKey;
+	std::error_code ec;
 
+	EncryptedUpdateKey::DecryptAndVerify(
+		security.pCrypto->GetAES256KeyWrap(),
+		authorityKey,
+		handler.keyChange.encryptedUpdateKey,
+		verification.username,
+		verification.outstationChallenge,
+		updateKey, 
+		ec
+	);
+	
+	if (ec)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error verifying new update key: %s", ec.message().c_str());
+		return APDUResult::DISCARDED;
+	}
 
+	if (!updateKey.IsValid())
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid decrypted update key");
+		return APDUResult::DISCARDED;
+	}
+	
+	// at this point, we have an update key, but we still need to check the HMAC from the master
+	KeyChangeConfirmationHMAC::ComputeAndCompare(
+		updateKey.GetKeyView(),
+		KeyChangeHMACData(
+			security.settings.outstationName,
+			verification.masterChallenge,
+			verification.outstationChallenge,
+			handler.keyChange.keyChangeSeqNum,
+			user
+		),
+		security.pCrypto->GetSHA256HMAC(),
+		handler.authData,
+		ec
+	);
 
+	if (ec)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error verifying master confirmation HMAC: %s", ec.message().c_str());
+		return APDUResult::DISCARDED;
+	}
 
+	// we're fully authenticated, so let's see if there's a pending user status change for this user
+	ChangeData userChangeData;
+
+	if (!security.statusChanges.PopChange(verification.username, userChangeData))
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "No queued user status change for user: %s", verification.username);
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	// has the user role expired?	
+	if (pExecutor->GetTime() > userChangeData.expiration)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "User role expired for user: %s", verification.username);
+		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
+		return APDUResult::DISCARDED;
+	}
+
+	KeyChangeConfirmationHMAC calc(security.pCrypto->GetSHA256HMAC());
+	auto hmacResponse = calc.Compute(
+		updateKey.GetKeyView(),
+		KeyChangeHMACData(
+			verification.username,
+			verification.outstationChallenge,
+			verification.masterChallenge,
+			verification.keyChangeSeqNum,
+			verification.user
+		),
+		ec
+	);
+	
+	if (ec)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error computing verification HMAC: %s", ec.message().c_str());
+		return APDUResult::DISCARDED;
+	}
+
+	////  ----- Now we can actually add the user to the outstation  ---- ////
+	auto permissions = RoleBasedPermissions::From(userChangeData.userRole);
+	this->AddUser(verification.user, verification.username, updateKey, permissions);
+	this->security.pApplication->AddOrUpdateUser(verification.user, verification.username, updateKey, permissions);
+	
+	auto response = this->StartAuthResponse(header.control.SEQ);
+	response.GetWriter().WriteFreeFormat(Group120Var15(hmacResponse));
+	this->BeginTx(response.ToRSlice());
 	return APDUResult::PROCESSED;
 }
 

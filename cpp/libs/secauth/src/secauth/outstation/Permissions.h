@@ -43,7 +43,7 @@ public:
 		return Permissions(GetBitfield(args...));
 	}
 	
-	Permissions operator|(const Permissions& other)
+	Permissions operator|(const Permissions& other) const
 	{
 	  return Permissions(this->permissions | other.permissions); 
 	}

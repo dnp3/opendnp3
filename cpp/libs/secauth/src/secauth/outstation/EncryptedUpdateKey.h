@@ -18,54 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SESSION_KEYUNWRAP_BUFFER_H
-#define SECAUTH_SESSION_KEYUNWRAP_BUFFER_H
 
-#include <openpal/logging/Logger.h>
-#include <openpal/crypto/IKeyWrapAlgo.h>
-#include <openpal/container/RSlice.h>
+#ifndef SECAUTH_ENCRYPTED_UPDATE_KEY_H
+#define SECAUTH_ENCRYPTED_UPDATE_KEY_H
+
 #include <openpal/crypto/SecureStaticBuffer.h>
-#include <openpal/serialization/Serialization.h>
-
-#include <opendnp3/objects/Group120.h>
+#include <openpal/crypto/IKeyWrapAlgo.h>
+#include <openpal/util/Uncopyable.h>
 
 #include "secauth/AuthSizes.h"
-#include "secauth/SessionKeysView.h"
+#include "secauth/UpdateKey.h"
 
-
+#include <string>
+#include <system_error>
 
 namespace secauth
+{
+
+/**
+	SAv5 outstation authentication provider
+*/
+class EncryptedUpdateKey : private openpal::Uncopyable
 {	
-	class SessionKeyUnwrapBuffer
-	{
-	public:
+	public:	
 
-		class Result
-		{
-		public:
-
-			static Result Failure() { return Result(); }
-			
-			Result(const SessionKeysView& keys, const openpal::RSlice& keyStatusObject);
-
-			bool success;
-			SessionKeysView keys;
-			openpal::RSlice keyStatusObject;
-
-		private:
-			Result();
-		};
-
-		Result Unwrap(
-			openpal::IKeyWrapAlgo& algo,
-			openpal::RSlice updateKey,
-			openpal::RSlice inputData,			
-			openpal::Logger* pLogger);
-
-	private:
-		
-		openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_WRAP_BUFFER_SIZE> buffer;
-	};
+	static bool DecryptAndVerify(
+		openpal::IKeyWrapAlgo& algorithm,
+		const openpal::RSlice& key,
+		const openpal::RSlice& encryptedData,
+		const std::string& username, 
+		const openpal::RSlice& outstationChallengeData, 
+		UpdateKey& updateKey,
+		std::error_code& ec
+	);	
+};
 
 }
 

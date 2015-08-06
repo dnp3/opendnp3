@@ -24,36 +24,75 @@
 #include <openpal/serialization/Format.h>
 
 #include "secauth/StringConversions.h"
+#include "secauth/outstation/OutstationErrorCodes.h"
+
+#include <openpal/crypto/SecureCompare.h>
 
 using namespace openpal;
 using namespace opendnp3;
 
 namespace secauth
 {
+	KeyChangeHMACData::KeyChangeHMACData(
+		const std::string& name_,
+		const openpal::RSlice& senderNonce_,
+		const openpal::RSlice& receiverNonce_,
+		uint32_t keyChangeSeqNum_,
+		opendnp3::User user_
+		) :
+		name(name_),
+		senderNonce(senderNonce_),
+		receiverNonce(receiverNonce_),
+		keyChangeSeqNum(keyChangeSeqNum_),
+		user(user_)
+	{}
 
 	KeyChangeConfirmationHMAC::KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm) : m_algorithm(&algorithm)
 	{}
 
+	bool KeyChangeConfirmationHMAC::ComputeAndCompare(
+			const openpal::RSlice& key,
+			const KeyChangeHMACData& data,
+			openpal::IHMACAlgo& algorithm,
+			const openpal::RSlice& expectedHMAC,
+			std::error_code& ec
+		)
+	{
+		// verify the HMAC value
+		KeyChangeConfirmationHMAC calc(algorithm);
+		
+		auto hmac = calc.Compute(key, data, ec);
+
+		if (ec)
+		{			
+			return false;
+		}
+
+		if (!SecureEquals(hmac, expectedHMAC))
+		{
+			ec = make_error_code(OutstationError::KEY_CHANGE_CONFIRMATION_HMAC_MISMATCH);
+			return false;
+		}
+
+		return true;
+	}
+
 	openpal::RSlice KeyChangeConfirmationHMAC::Compute(
 		const openpal::RSlice& key,
-		const std::string& name,
-		const openpal::RSlice& senderNonce,
-		const openpal::RSlice& receiverNonce,
-		uint32_t keyChangeSeqNum,
-		opendnp3::User user,
+		const KeyChangeHMACData& data,
 		std::error_code& ec)
 	{		
 		openpal::StaticBuffer<6> ksqAndUser;
 
 		{
 			auto dest = ksqAndUser.GetWSlice();
-			Format::Many(dest, keyChangeSeqNum, user.GetId());
+			Format::Many(dest, data.keyChangeSeqNum, data.user.GetId());
 		}
 
 		auto outputDest = m_buffer.GetWSlice();
 
 		return m_algorithm->Calculate(key, 
-			{ AsSlice(name), senderNonce, receiverNonce, ksqAndUser.ToRSlice()},
+		{	AsSlice(data.name), data.senderNonce, data.receiverNonce, ksqAndUser.ToRSlice() },
 			outputDest,
 			ec
 		);

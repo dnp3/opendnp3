@@ -18,56 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SESSION_KEYUNWRAP_BUFFER_H
-#define SECAUTH_SESSION_KEYUNWRAP_BUFFER_H
 
-#include <openpal/logging/Logger.h>
-#include <openpal/crypto/IKeyWrapAlgo.h>
-#include <openpal/container/RSlice.h>
-#include <openpal/crypto/SecureStaticBuffer.h>
-#include <openpal/serialization/Serialization.h>
+#include "RoleBasedPermissions.h"
 
-#include <opendnp3/objects/Group120.h>
-
-#include "secauth/AuthSizes.h"
-#include "secauth/SessionKeysView.h"
-
-
+using namespace opendnp3;
 
 namespace secauth
-{	
-	class SessionKeyUnwrapBuffer
+{
+
+const Permissions RoleBasedPermissions::OPERATE_CONTROLS(
+	Permissions::Allowed(FunctionCode::SELECT, FunctionCode::OPERATE, FunctionCode::DIRECT_OPERATE)
+);
+
+const Permissions RoleBasedPermissions::MONITOR_DATA(
+	Permissions::Allowed(FunctionCode::READ)
+);
+
+Permissions RoleBasedPermissions::From(opendnp3::UserRole role)
+{
+	switch (role)
 	{
-	public:
-
-		class Result
-		{
-		public:
-
-			static Result Failure() { return Result(); }
-			
-			Result(const SessionKeysView& keys, const openpal::RSlice& keyStatusObject);
-
-			bool success;
-			SessionKeysView keys;
-			openpal::RSlice keyStatusObject;
-
-		private:
-			Result();
-		};
-
-		Result Unwrap(
-			openpal::IKeyWrapAlgo& algo,
-			openpal::RSlice updateKey,
-			openpal::RSlice inputData,			
-			openpal::Logger* pLogger);
-
-	private:
-		
-		openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_WRAP_BUFFER_SIZE> buffer;
-	};
+		case(UserRole::VIEWER) :
+			return MONITOR_DATA;
+		case(UserRole::OPERATOR) :
+			return MONITOR_DATA | OPERATE_CONTROLS;
+		case(UserRole::SINGLE_USER) :
+			return Permissions::AllowAll();
+		default:
+			return Permissions::AllowNothing();
+	}
+}
 
 }
 
-#endif
+
 

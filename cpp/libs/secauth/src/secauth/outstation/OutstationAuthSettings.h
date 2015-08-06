@@ -27,6 +27,8 @@
 
 #include <openpal/executor/TimeDuration.h>
 
+#include <string>
+
 namespace secauth
 {
 
@@ -36,6 +38,10 @@ namespace secauth
 struct OutstationAuthSettings
 {	
 	OutstationAuthSettings();	
+
+	/// TODO - this is an important organizationally unique security parameter
+	/// this shouldn't be default-constructable
+	std::string outstationName;
 	
 	/// response timeout period for challenges
 	openpal::TimeDuration challengeTimeout;	

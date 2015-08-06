@@ -118,7 +118,7 @@ class OAuthContext final : public opendnp3::OContext
 
 	void ConfigureSecStats(const StatThresholds& thresholds);
 
-	opendnp3::APDUResponse StartAuthResponse(uint8_t seq);	
+	opendnp3::APDUResponse StartAuthResponse(uint8_t seq);		
 
 	bool AuthenticateUserStatusChange(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);	
 

@@ -27,6 +27,9 @@
 
 #include <cstdint>
 
+// an expression of a size padded to an even multiple of 8 bytes
+#define MACRO_PADDED_MODULO(mod, size) (((size % mod) == 0) ? size : (size + (mod - (size % 8))))
+
 namespace secauth
 {
 
@@ -34,6 +37,9 @@ struct AuthSizes : openpal::StaticOnly
 {	
 
 public:
+
+	// Although the specification does name one we define one and enforce it to allow static buffer allocation
+	const static uint32_t MAX_USER_NAME_SIZE = 32;
 	
 	const static uint32_t MIN_CHALLENGE_DATA_SIZE = 4;
 	const static uint32_t MAX_CHALLENGE_DATA_SIZE = 16;
@@ -52,6 +58,9 @@ public:
 	const static uint32_t MIN_SESSION_KEY_SIZE_BYTES = 16;
 	const static uint32_t MAX_SESSION_KEY_SIZE_BYTES = 32;
 
+	const static uint32_t MIN_UPDATE_KEY_SIZE_BYTES = 16;
+	const static uint32_t MAX_UPDATE_KEY_SIZE_BYTES = 32;
+
 	const static uint16_t MAX_HMAC_TRUNC_SIZE = 16;  // SHA256 Trunc 16 has the longest length
 	const static uint16_t MAX_HMAC_OUTPUT_SIZE = 32; // SHA256 output is 32 bytes
 
@@ -65,10 +74,15 @@ public:
 	// the maximum size of a master challenge reply	
 	const static uint32_t MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE = FREE_FORMAT_HEADER_SIZE + opendnp3::Group120Var2::MIN_SIZE + MAX_HMAC_TRUNC_SIZE;
 
-#define MACRO_MAX_KEY_WRAP_BUFFER (2 + 2 * MAX_SESSION_KEY_SIZE_BYTES + opendnp3::Group120Var5::MIN_SIZE + MAX_CHALLENGE_DATA_SIZE)
-#define MACRO_MAX_KEY_WRAP_BUFFER_MOD8 (MACRO_MAX_KEY_WRAP_BUFFER % 8)	
+	const static uint32_t MAX_SESSION_KEY_WRAP_BUFFER_SIZE = MACRO_PADDED_MODULO(
+		8, // AES key wrap requires data to be padded modulo 8
+		(2 + 2 * MAX_SESSION_KEY_SIZE_BYTES + opendnp3::Group120Var5::MIN_SIZE + MAX_CHALLENGE_DATA_SIZE) // the maximum unpadded space required to unwrap the session key
+	);
 
-	const static uint32_t MAX_KEY_WRAP_BUFFER_SIZE = (MACRO_MAX_KEY_WRAP_BUFFER_MOD8 == 0) ? MACRO_MAX_KEY_WRAP_BUFFER : (MACRO_MAX_KEY_WRAP_BUFFER + (8 - MACRO_MAX_KEY_WRAP_BUFFER_MOD8));
+	const static uint32_t MAX_UPDATE_KEY_UNWRAP_BUFFER_SIZE = MACRO_PADDED_MODULO(
+		8, // AES key wrap requires data to be padded modulo 8
+		(8 + MAX_USER_NAME_SIZE + MAX_UPDATE_KEY_SIZE_BYTES + MAX_CHALLENGE_DATA_SIZE)	 // the maximum unpadded space required to unwrap the update key
+	);
 		
 	static uint32_t GetBoundedSessionKeySize(uint32_t size)
 	{

@@ -49,7 +49,7 @@ namespace secauth
 	private:
 		
 		openpal::RSlice data;
-		openpal::StaticBuffer<AuthSizes::MAX_KEY_WRAP_BUFFER_SIZE> buffer;		
+		openpal::StaticBuffer<AuthSizes::MAX_SESSION_KEY_WRAP_BUFFER_SIZE> buffer;
 	};
 
 }

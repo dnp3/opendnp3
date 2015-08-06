@@ -62,11 +62,13 @@ bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uin
 
 	auto hmac = calc.Compute(
 		m_args.updateKey.GetKeyView(),
-		m_args.outstationName,
-		m_args.masterChallengeData.ToRSlice(),
-		m_args.outstationChallengeData.ToRSlice(),
-		m_args.keyChangeSequenceNum,
-		m_args.user,
+		KeyChangeHMACData(
+			m_args.outstationName,
+			m_args.masterChallengeData.ToRSlice(),
+			m_args.outstationChallengeData.ToRSlice(),
+			m_args.keyChangeSequenceNum,
+			m_args.user
+		),
 		ec
 	);
 
@@ -140,31 +142,27 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationRespon
 	{
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
-
-	// verify the HMAC value
-	KeyChangeConfirmationHMAC calc(*m_algorithm);
-
+	
 	std::error_code ec;
-	auto hmac = calc.Compute(
+
+	KeyChangeConfirmationHMAC::ComputeAndCompare(
 		m_args.updateKey.GetKeyView(),
-		m_args.username,
-		m_args.outstationChallengeData.ToRSlice(),
-		m_args.masterChallengeData.ToRSlice(),
-		m_args.keyChangeSequenceNum,
-		m_args.user,
+		KeyChangeHMACData(
+			m_args.username,
+			m_args.outstationChallengeData.ToRSlice(),
+			m_args.masterChallengeData.ToRSlice(),
+			m_args.keyChangeSequenceNum,
+			m_args.user
+		),
+		*m_algorithm,
+		handler.value.hmacValue,
 		ec
 	);
 
 	if (ec)
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error calculating hmac during response: %s", ec.message().c_str());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error verifying outstation HMAC: %s", ec.message().c_str());
 		return ResponseResult::ERROR_INTERNAL_FAILURE;
-	}
-
-	if (!SecureEquals(handler.value.hmacValue, hmac))
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "HMAC comparison failed: %s", ec.message().c_str());
-		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
 	// make the specified callback

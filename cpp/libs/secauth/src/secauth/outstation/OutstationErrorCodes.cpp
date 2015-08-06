@@ -28,13 +28,15 @@ namespace secauth
 	std::string OutstationErrorCategory::message(int ev) const
 	{
 		switch (ev)
-		{
-		case(static_cast<int>(OutstationError::UNEXPECTED_CHALLENGE_REPLY)) :
-			return "Unexpected challenge response in IDLE state";
-		case(static_cast<int>(OutstationError::MALFORMED_AUTH_REQUEST)) :
-			return "Malformed auth request";
-		case(static_cast<int>(OutstationError::MAX_ERROR_MESSAGES_EXCEEDED)) :
-			return "Max auth error messages exceeded";
+		{			
+		case(static_cast<int>(OutstationError::BAD_UNWRAPPPED_UPDATE_KEY_DATA_SIZE)) :
+			return "Unwrapped update key data doesn't meet size requirements";		
+		case(static_cast<int>(OutstationError::DECRYPTED_USERNAME_MISMATCH)) :
+			return "The decrypted username did not match the expected username";
+		case(static_cast<int>(OutstationError::CHALLENGE_DATA_MISMATCH)) :
+			return "Decrypted challenge data did not match what was sent";
+		case(static_cast<int>(OutstationError::KEY_CHANGE_CONFIRMATION_HMAC_MISMATCH)) :
+			return "The confirmation HMAC on a g120v15 did not match the expected value";
 		default:
 			return "unknown outstation error";
 		}

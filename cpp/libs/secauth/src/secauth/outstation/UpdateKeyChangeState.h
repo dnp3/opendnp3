@@ -29,6 +29,7 @@
 #include <opendnp3/app/HeaderWriter.h>
 
 #include "secauth/AuthSizes.h"
+#include "secauth/UpdateKey.h"
 #include "secauth/outstation/IOutstationUserDatabase.h"
 
 #include <functional>
@@ -43,35 +44,57 @@ class UpdateKeyChangeState
 {
 	public:
 
+	class VerificationData
+	{	
+		public:
+
+		VerificationData() {}
+
+		VerificationData(
+			std::string username_,
+			openpal::RSlice masterChallenge_,
+			openpal::RSlice outstationChallenge_,
+			uint32_t keyChangeSeqNum_,
+			opendnp3::User user_
+			) :
+				username(username_),
+				masterChallenge(masterChallenge_),
+				outstationChallenge(outstationChallenge_),
+				keyChangeSeqNum(keyChangeSeqNum_),
+				user(user_)
+		{}
+
+		std::string username;
+		openpal::RSlice masterChallenge;
+		openpal::RSlice outstationChallenge;
+		uint32_t keyChangeSeqNum;
+		opendnp3::User user;
+	};
+
 	UpdateKeyChangeState(uint16_t challengeSize, openpal::Logger logger, openpal::ICryptoProvider& provider);
 
 	void Reset();
 
 	bool WriteUpdateKeyChangeResposne(
-		opendnp3::HeaderWriter& writer,		
+		opendnp3::HeaderWriter& writer,	
+		uint32_t ksq,
 		const std::string& username,
 		const openpal::RSlice& masterChallengeData,
 		const IFreeUser& freeUser);
 
-	
-		
+	bool VerifyUserAndKSQ(uint32_t ksq, opendnp3::User user, VerificationData& data);
 
 	private:
 
 	bool m_valid;
-	opendnp3::User m_assignedUser;
-	uint32_t keyChangeSeqNum;
+	VerificationData m_data;	
 
 	const uint16_t M_CHALLENGE_SIZE;
 	openpal::Logger m_logger;
 	openpal::ICryptoProvider* m_crypto;
-
 		
-	// static buffer and slice that points to the both pieces of challenge data
-	openpal::RSlice m_masterChallenge;
-	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_masterChallengeBuffer;			
-
-	openpal::RSlice m_outstationChallenge;
+	// static buffers for both nonces
+	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_masterChallengeBuffer;				
 	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_outstationChallengeBuffer;
 };
 

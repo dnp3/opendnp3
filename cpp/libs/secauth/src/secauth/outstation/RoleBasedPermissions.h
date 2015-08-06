@@ -18,54 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SESSION_KEYUNWRAP_BUFFER_H
-#define SECAUTH_SESSION_KEYUNWRAP_BUFFER_H
+#ifndef SECAUTH_ROLE_BASED_PERMISSIONS_H
+#define SECAUTH_ROLE_BASED_PERMISSIONS_H
 
-#include <openpal/logging/Logger.h>
-#include <openpal/crypto/IKeyWrapAlgo.h>
-#include <openpal/container/RSlice.h>
-#include <openpal/crypto/SecureStaticBuffer.h>
-#include <openpal/serialization/Serialization.h>
+#include "secauth/outstation/Permissions.h"
 
-#include <opendnp3/objects/Group120.h>
+#include <opendnp3/gen/UserRole.h>
 
-#include "secauth/AuthSizes.h"
-#include "secauth/SessionKeysView.h"
-
-
+#include <openpal/util/Uncopyable.h>
 
 namespace secauth
+{
+
+/**
+*	Creates permission sets based on roles
+*
+*	This is a VERY crude mapping to DNP3 function codes, but hey, the SA 
+*	definitions of these roles leaving a lot to the imagination.
+*
+*   Currently only the VIEWER, OPERATOR, and SINGLE_USER roles have permissions mapped
+*	
+*/
+class RoleBasedPermissions : openpal::StaticOnly
 {	
-	class SessionKeyUnwrapBuffer
-	{
-	public:
+public:
 
-		class Result
-		{
-		public:
+	static Permissions From(opendnp3::UserRole role);
 
-			static Result Failure() { return Result(); }
-			
-			Result(const SessionKeysView& keys, const openpal::RSlice& keyStatusObject);
+private:
 
-			bool success;
-			SessionKeysView keys;
-			openpal::RSlice keyStatusObject;
-
-		private:
-			Result();
-		};
-
-		Result Unwrap(
-			openpal::IKeyWrapAlgo& algo,
-			openpal::RSlice updateKey,
-			openpal::RSlice inputData,			
-			openpal::Logger* pLogger);
-
-	private:
-		
-		openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_WRAP_BUFFER_SIZE> buffer;
-	};
+	static const Permissions OPERATE_CONTROLS;
+	static const Permissions MONITOR_DATA;	
+};
 
 }
 

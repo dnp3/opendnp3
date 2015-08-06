@@ -29,6 +29,7 @@
 namespace secauth
 {
 	OutstationAuthSettings::OutstationAuthSettings() :		
+		outstationName("outstation"),
 		challengeTimeout(opendnp3::DEFAULT_APP_TIMEOUT),
 		challengeSize(AuthSizes::DEFAULT_CHALLENGE_SIZE),
 		sessionKeyChangeChallengeSize(AuthSizes::DEFAULT_SESSION_KEY_CHALLENGE_SIZE),

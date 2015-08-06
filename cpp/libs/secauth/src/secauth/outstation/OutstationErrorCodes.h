@@ -34,11 +34,10 @@ namespace secauth
 {	  	
 	enum class OutstationError : int
 	{
-		// --- unexpected messages ---
-
-		UNEXPECTED_CHALLENGE_REPLY,		// the outstation receives g120v2 in the security Idle state
-		MALFORMED_AUTH_REQUEST,			// can't transmit a reponse b/c an auth request is unparsable
-		MAX_ERROR_MESSAGES_EXCEEDED		// can't transmit an error message b/c max error count is exceeded		
+		BAD_UNWRAPPPED_UPDATE_KEY_DATA_SIZE,
+		DECRYPTED_USERNAME_MISMATCH,
+		CHALLENGE_DATA_MISMATCH,
+		KEY_CHANGE_CONFIRMATION_HMAC_MISMATCH
 	};
 
 	class OutstationErrorCategory final : public std::error_category

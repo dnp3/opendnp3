@@ -51,7 +51,7 @@ bool KeyWrapBuffer::Wrap(
 	const uint32_t WRAPPED_DATA_SIZE_MOD8 = WRAPPED_DATA_SIZE % 8;
 	const uint32_t WRAPPED_DATA_SIZE_WITH_PADDING = (WRAPPED_DATA_SIZE_MOD8 == 0) ? WRAPPED_DATA_SIZE : (WRAPPED_DATA_SIZE + (8 - WRAPPED_DATA_SIZE_MOD8));
 
-	StaticBuffer<AuthSizes::MAX_KEY_WRAP_BUFFER_SIZE> dataToWrap;
+	StaticBuffer<AuthSizes::MAX_SESSION_KEY_WRAP_BUFFER_SIZE> dataToWrap;
 
 	auto dest = dataToWrap.GetWSlice(WRAPPED_DATA_SIZE_WITH_PADDING);
 
