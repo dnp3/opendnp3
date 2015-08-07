@@ -76,6 +76,21 @@ TEST_CASE(SUITE("TestKeyWrapUnWrap-256KEK-128Data"))
 	TestKeyUnwrap(kek, input, ciphertext, crypto.GetAES256KeyWrap());
 }
 
+/*
+From a C# key wrap implementation
+*/
+TEST_CASE(SUITE("TestKeyUnWrap-VerifyCSharp"))
+{
+	std::string jim("6A696D"); // hte utf-8 encoding of "jim"
+
+	auto kek = RepeatHex(0xFF, 32); // a 256-bit aes key of all 0xFF
+	std::string input = "6A696D" + RepeatHex(0xAA, 32, false) + "DEADBEEFFF";
+	auto ciphertext = "DC 9C B0 3A 63 17 A5 08 6C 66 B4 85 24 80 B7 C9 9D 87 BB 5D 7E FE 10 2A 28 06 5A AC CA 41 3D EB 89 5E AF 3B 5F 86 F9 12 3F B1 C8 CE CB 92 16 36";
+
+	CryptoProvider crypto;
+	TestKeyUnwrap(kek, input, ciphertext, crypto.GetAES256KeyWrap());
+}
+
 void TestKeyWrap(
 	const std::string& kek,
 	const std::string& input,

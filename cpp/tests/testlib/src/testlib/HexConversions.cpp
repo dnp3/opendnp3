@@ -75,11 +75,11 @@ std::string SkipBytesHex(const std::string& input, uint32_t bytes)
 	return ToHex(buffer.ToRSlice().Skip(bytes));
 }
 
-std::string RepeatHex(uint8_t byte, uint16_t count)
+std::string RepeatHex(uint8_t byte, uint16_t count, bool spaced)
 {
 	Buffer buffer(count);
 	buffer.GetWSlice().SetAllTo(byte);
-	return ToHex(buffer.ToRSlice());
+	return ToHex(buffer.ToRSlice(), spaced);
 }
 
 }

@@ -39,7 +39,7 @@ std::string AppendHex(std::initializer_list<std::string> segments);
 
 std::string SkipBytesHex(const std::string& input, uint32_t bytes);
 
-std::string RepeatHex(uint8_t byte, uint16_t count);
+std::string RepeatHex(uint8_t byte, uint16_t count, bool spaced = true);
 
 }
 
