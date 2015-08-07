@@ -38,7 +38,6 @@ object CSharpEnumGenerator {
       GroupVariationEnum(),
       EventMode(),
       IndexMode(),
-      UpdateKeyMode(),
       UserOperation(),
       UserRole(),
       KeyChangeMethod()

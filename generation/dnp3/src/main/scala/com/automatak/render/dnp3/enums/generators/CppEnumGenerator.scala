@@ -51,7 +51,6 @@ object CppEnumGenerator {
       EventMode(),
       IndexMode(),
       ConfigAuthMode(),
-      UpdateKeyMode(),
       SecurityStatIndex()
     ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, false, false))
 
