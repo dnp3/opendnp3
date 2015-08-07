@@ -56,6 +56,7 @@ TEST_CASE(SUITE("CatchesBadKeySize"))
 	std::error_code ec;
 	auto result = crypto.GetAESKeyWrap().WrapKey(kek.ToRSlice(), input.ToRSlice(), dest, ec);
 	REQUIRE(ec);
+	REQUIRE(result.IsEmpty());
 }
 
 /*
