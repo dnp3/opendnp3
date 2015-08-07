@@ -22,7 +22,8 @@
 #define SECAUTH_UPDATEKEY_H
 
 #include <openpal/crypto/SecureStaticBuffer.h>
-#include <opendnp3/gen/UpdateKeyMode.h>
+
+#include <opendnp3/gen/KeyWrapAlgorithm.h>
 
 namespace secauth
 {
@@ -34,8 +35,29 @@ class UpdateKey
 {
 	public:
 
+		// a view of the underlying key
+		class View
+		{
+			
+		public:
+
+			View() : algorithm(opendnp3::KeyWrapAlgorithm::UNDEFINED)
+			{}
+			
+			View(
+				opendnp3::KeyWrapAlgorithm algorithm_,
+				openpal::RSlice key_
+				) : 
+				algorithm(algorithm_), data(key_)
+			{}
+
+			opendnp3::KeyWrapAlgorithm algorithm;
+			openpal::RSlice data;
+		};		
+	
 		static const uint8_t UPDATE_KEY_SIZE_128 = 16;
-		static const uint8_t UPDATE_KEY_SIZE_256 = 32;
+		static const uint8_t UPDATE_KEY_SIZE_256 = 32;		
+
 		
 		/**
 		* Construct an invalid default key
@@ -45,7 +67,7 @@ class UpdateKey
 		/**
 		* Test constructor that initializes a key with the same value for every byte
 		*/
-		UpdateKey(uint8_t repeat, opendnp3::UpdateKeyMode mode);
+		UpdateKey(uint8_t repeat, opendnp3::KeyWrapAlgorithm algorithm);
 
 		/**
 		* Initialize the key base on a view
@@ -55,17 +77,12 @@ class UpdateKey
 		/**
 		* Retrieve update key view
 		*/
-		openpal::RSlice GetKeyView() const;
+		View GetView() const;	
 
 		/**
-		* Retrieve the key mode
+		* Checks the length for validity
 		*/
-		opendnp3::UpdateKeyMode GetKeyMode() const;					
-
-		/**
-		* returns true if the key is valid, false otherwise
-		*/
-		bool IsValid() const;
+		bool IsValid() const { return m_algorithm != opendnp3::KeyWrapAlgorithm::UNDEFINED; }
 
 		/**
 		* Only accepts 128 or 256 bit update keys
@@ -74,13 +91,17 @@ class UpdateKey
 		*/
 		bool Initialize(const openpal::RSlice& key);
 
-	private:		
-	  
-		void Initialize(const openpal::RSlice& key, opendnp3::UpdateKeyMode mode);
+	private:
 
-		bool isValid;		
-		opendnp3::UpdateKeyMode updateKeyMode;
-		openpal::SecureStaticBuffer<UPDATE_KEY_SIZE_256> buffer;		
+		static uint32_t GetSize(opendnp3::KeyWrapAlgorithm);
+		static opendnp3::KeyWrapAlgorithm UpdateKey::GetKeyWrapAlgorithm(uint32_t size);
+		
+	  
+		void Copy(const openpal::RSlice& key);
+
+			
+		opendnp3::KeyWrapAlgorithm m_algorithm;
+		openpal::SecureStaticBuffer<UPDATE_KEY_SIZE_256> m_buffer;		
 };
 
 }

@@ -30,6 +30,9 @@ namespace openpal
 {
 	/**
 	* Provides an abstract interface for a key wrapping algorithm
+	*
+	*	Must work with any valid AES key size: 128, 192, or 256 bits
+	*   Input must be pre-padded into 8-byte blocks and larger than at least
 	*/
 	class IKeyWrapAlgo
 	{

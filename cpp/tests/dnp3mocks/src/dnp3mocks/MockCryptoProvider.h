@@ -38,10 +38,9 @@ namespace opendnp3
 			virtual openpal::RSlice GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec) override final;			
 
 			virtual openpal::IHMACAlgo& GetSHA1HMAC() override final;
-			virtual openpal::IHMACAlgo& GetSHA256HMAC() override final;			
+			virtual openpal::IHMACAlgo& GetSHA256HMAC() override final;
 
-			virtual openpal::IKeyWrapAlgo& GetAES256KeyWrap() override final;
-			virtual openpal::IKeyWrapAlgo& GetAES128KeyWrap() override final;
+			virtual openpal::IKeyWrapAlgo& GetAESKeyWrap() override final;		
 
 			/// -- fixed fill data, defaults to 0xAA --
 			uint8_t secureFill;
@@ -50,8 +49,7 @@ namespace opendnp3
 
 			MockHMAC sha1;
 			MockHMAC sha256;
-			MockKeyWrap aes128;
-			MockKeyWrap aes256;			
+			MockKeyWrap keyWrap;						
 	};
 }
 

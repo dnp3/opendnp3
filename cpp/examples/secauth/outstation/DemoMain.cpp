@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 			"bob",			
 			// so that the default user can do the initial startup handshaking
 			Permissions::Allowed(FunctionCode::WRITE, FunctionCode::DISABLE_UNSOLICITED, FunctionCode::ENABLE_UNSOLICITED),
-			UpdateKey(0xFF, UpdateKeyMode::AES128)
+			UpdateKey(0xFF, KeyWrapAlgorithm::AES_128)
 		)
 	);
 

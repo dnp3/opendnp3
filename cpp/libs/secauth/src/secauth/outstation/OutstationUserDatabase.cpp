@@ -28,33 +28,17 @@ using namespace opendnp3;
 
 namespace secauth
 {
-		
-bool OutstationUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::RSlice& key) const
-{
-	auto iter = this->userMap.find(user.GetId());
-	if (iter == userMap.end())
-	{
-		return false;
-	}
-	else
-	{
-		type = iter->second.updateKey.GetKeyMode();
-		key = iter->second.updateKey.GetKeyView();
-		return true;
-	}
-}
 
-bool OutstationUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& type) const
+UpdateKey::View OutstationUserDatabase::GetUpdateKeyView(const opendnp3::User& user) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	if (iter == userMap.end())
 	{
-		return false;
+		return UpdateKey::View();
 	}
 	else
-	{
-		type = iter->second.updateKey.GetKeyMode();
-		return true;
+	{		
+		return iter->second.updateKey.GetView();
 	}
 }
 

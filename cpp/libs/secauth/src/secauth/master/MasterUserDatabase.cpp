@@ -33,18 +33,16 @@ namespace secauth
 		}
 	}
 
-	bool MasterUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::RSlice& key) const
+	UpdateKey::View MasterUserDatabase::GetUpdateKeyView(const opendnp3::User& user) const
 	{
 		auto iter = this->userMap.find(user.GetId());
 		if (iter == userMap.end())
 		{
-			return false;
+			return UpdateKey::View();
 		}
 		else
-		{
-			type = iter->second->GetKeyMode();
-			key = iter->second->GetKeyView();
-			return true;
+		{			
+			return iter->second->GetView();			
 		}
 	}	
 
@@ -56,7 +54,7 @@ namespace secauth
 
 	bool MasterUserDatabase::AddUser(const User& user, const UpdateKey& key)
 	{
-		if (key.IsValid())
+		if (key.GetView().algorithm != KeyWrapAlgorithm::UNDEFINED)
 		{
 			userMap[user.GetId()] = std::unique_ptr<UpdateKey>(new UpdateKey(key));
 			return true;

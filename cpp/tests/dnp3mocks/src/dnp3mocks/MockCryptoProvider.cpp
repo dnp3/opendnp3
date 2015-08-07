@@ -50,15 +50,12 @@ namespace opendnp3
 		return sha256;
 	}
 
-	openpal::IKeyWrapAlgo& MockCryptoProvider::GetAES256KeyWrap()
+	openpal::IKeyWrapAlgo& MockCryptoProvider::GetAESKeyWrap()
 	{
-		return aes256;
+		return keyWrap;
 	}
 	
-	openpal::IKeyWrapAlgo& MockCryptoProvider::GetAES128KeyWrap()
-	{
-		return aes128;
-	}	
+		
 }
 
 

@@ -43,9 +43,7 @@ class OutstationUserDatabase final : public IOutstationUserDatabase
 {
 	public:		
 		
-		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::RSlice& key) const override;
-
-		virtual bool GetUpdateKeyType(const opendnp3::User& user, opendnp3::UpdateKeyMode& type) const override;
+		virtual UpdateKey::View GetUpdateKeyView(const opendnp3::User& user) const override;		
 
 		virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const override;
 

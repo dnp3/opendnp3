@@ -43,9 +43,9 @@ openpal::IKeyWrapAlgo* Crypto::TryGetKeyWrap(openpal::ICryptoProvider& crypto, o
 	switch (algorithm)
 	{
 		case(KeyWrapAlgorithm::AES_128) :
-			return &crypto.GetAES128KeyWrap();
+			return &crypto.GetAESKeyWrap();
 		case(KeyWrapAlgorithm::AES_256) :
-			return &crypto.GetAES256KeyWrap();
+			return &crypto.GetAESKeyWrap();
 		default:
 			return nullptr;
 	}

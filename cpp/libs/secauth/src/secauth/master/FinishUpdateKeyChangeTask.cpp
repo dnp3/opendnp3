@@ -56,12 +56,12 @@ FinishUpdateKeyChangeTask::FinishUpdateKeyChangeTask(
 
 bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
-	KeyChangeConfirmationHMAC calc(*m_algorithm);
+	KeyChangeConfirmationHMAC calc(*m_algorithm);	
 
 	std::error_code ec;
 
 	auto hmac = calc.Compute(
-		m_args.updateKey.GetKeyView(),
+		m_args.updateKey.GetView().data,
 		KeyChangeHMACData(
 			m_args.outstationName,
 			m_args.masterChallengeData.ToRSlice(),
@@ -146,7 +146,7 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationRespon
 	std::error_code ec;
 
 	KeyChangeConfirmationHMAC::ComputeAndCompare(
-		m_args.updateKey.GetKeyView(),
+		m_args.updateKey.GetView().data,
 		KeyChangeHMACData(
 			m_args.username,
 			m_args.outstationChallengeData.ToRSlice(),

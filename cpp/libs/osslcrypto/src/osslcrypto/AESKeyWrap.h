@@ -27,47 +27,16 @@
 #include <openpal/crypto/IKeyWrapAlgo.h>
 
 namespace osslcrypto
-{
-
-	enum class AESKeyLength : uint8_t
+{		
+	class AESKeyWrap final : public openpal::IKeyWrapAlgo
 	{
-		L128,
-		L256
-	};
 
-	class AESKeyWrap : openpal::Uncopyable
-	{
 	public:
 
-		static openpal::RSlice WrapKeyAES(AESKeyLength length, const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec);
-		static openpal::RSlice UnwrapKeyAES(AESKeyLength length, const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec);
-	};
+		virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override;
+		virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override;
 
-	class AESKeyWrap128 : public openpal::IKeyWrapAlgo
-	{
-		virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override final
-		{
-			return AESKeyWrap::WrapKeyAES(AESKeyLength::L128, kek, input, output, ec);
-		}
-
-		virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override final
-		{
-			return AESKeyWrap::UnwrapKeyAES(AESKeyLength::L128, kek, input, output, ec);
-		}
-	};
-
-	class AESKeyWrap256 : public openpal::IKeyWrapAlgo
-	{
-		virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override final
-		{
-			return AESKeyWrap::WrapKeyAES(AESKeyLength::L256, kek, input, output, ec);
-		}
-
-		virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override final
-		{
-			return AESKeyWrap::UnwrapKeyAES(AESKeyLength::L256, kek, input, output, ec);
-		}
-	};
+	};	
 }
 
 #endif

@@ -26,20 +26,13 @@ using namespace opendnp3;
 namespace secauth
 {
 
-UpdateKey::UpdateKey() :
-	isValid(false),
-	updateKeyMode(UpdateKeyMode::AES128),			
-	buffer(0xFF)	
+UpdateKey::UpdateKey() : m_algorithm (KeyWrapAlgorithm::UNDEFINED), m_buffer(0xFF)
 {
 	
 }
 
-UpdateKey::UpdateKey(uint8_t repeat, UpdateKeyMode mode) :
-	isValid(true),
-	updateKeyMode(mode),
-	buffer(repeat)
+UpdateKey::UpdateKey(uint8_t repeat, KeyWrapAlgorithm algorithm) : m_algorithm(algorithm), m_buffer(0xFF)
 {
-
 }
 
 UpdateKey::UpdateKey(const openpal::RSlice& key) : UpdateKey()
@@ -47,43 +40,56 @@ UpdateKey::UpdateKey(const openpal::RSlice& key) : UpdateKey()
 	this->Initialize(key);
 }
 
-bool UpdateKey::IsValid() const
-{
-	return isValid;
+UpdateKey::View UpdateKey::GetView() const
+{	
+	return View(m_algorithm, m_buffer.ToRSlice(GetSize(m_algorithm)));
 }
 
-openpal::RSlice UpdateKey::GetKeyView() const
+uint32_t UpdateKey::GetSize(opendnp3::KeyWrapAlgorithm algorithm)
 {
-	const auto SIZE = (updateKeyMode == UpdateKeyMode::AES128) ? UPDATE_KEY_SIZE_128 : UPDATE_KEY_SIZE_256;	
-	return buffer.ToRSlice().Take(SIZE);	
+	switch (algorithm)
+	{
+		case(KeyWrapAlgorithm::AES_128) :
+			return UPDATE_KEY_SIZE_128;
+		case(KeyWrapAlgorithm::AES_256) :
+			return UPDATE_KEY_SIZE_256;
+		default:
+			return 0;
+	}
 }
 
-opendnp3::UpdateKeyMode UpdateKey::GetKeyMode() const
+opendnp3::KeyWrapAlgorithm UpdateKey::GetKeyWrapAlgorithm(uint32_t size)
 {
-	return updateKeyMode;
+	switch (size)
+	{
+		case(UPDATE_KEY_SIZE_128) :
+			return KeyWrapAlgorithm::AES_128;
+		case(UPDATE_KEY_SIZE_256) :
+			return KeyWrapAlgorithm::AES_256;
+		default:
+			return KeyWrapAlgorithm::UNDEFINED;
+	}
 }
-				
+
+
 bool UpdateKey::Initialize(const openpal::RSlice& key)
 {
 	switch (key.Size())
 	{
-	case(UPDATE_KEY_SIZE_128) :
-		this->Initialize(key, opendnp3::UpdateKeyMode::AES128);
-		return true;
-	case(UPDATE_KEY_SIZE_256):
-		this->Initialize(key, opendnp3::UpdateKeyMode::AES256);
-		return true;
-	default:		
-		return false;
+		case(UPDATE_KEY_SIZE_128) :
+		case(UPDATE_KEY_SIZE_256) :
+			this->Copy(key);
+			return true;
+		default:		
+			return false;
 	}
 }
 
-void UpdateKey::Initialize(const openpal::RSlice& key, opendnp3::UpdateKeyMode mode)
-{
-  this->isValid = true;
-  this->updateKeyMode = mode;
-  auto dest = buffer.GetWSlice();
-  key.CopyTo(dest);  
+void UpdateKey::Copy(const openpal::RSlice& key)
+{  
+	auto dest = m_buffer.GetWSlice();
+	key.CopyTo(dest);  
+	this->m_algorithm = GetKeyWrapAlgorithm(key.Size());
 }
 
 }

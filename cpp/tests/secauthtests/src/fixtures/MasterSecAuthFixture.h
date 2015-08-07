@@ -49,7 +49,7 @@ namespace opendnp3
 
 		void SendToMaster(const std::string& hex);		
 
-		bool ConfigureUser(opendnp3::User user, UpdateKeyMode mode = UpdateKeyMode::AES128, uint8_t keyRepeat = 0xFF);
+		bool ConfigureUser(opendnp3::User user, opendnp3::KeyWrapAlgorithm mode = opendnp3::KeyWrapAlgorithm::AES_128, uint8_t keyRepeat = 0xFF);
 
 		void TestRequestAndReply(const std::string& request, const std::string& response);
 

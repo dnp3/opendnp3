@@ -68,11 +68,11 @@ public:
 
 	uint32_t AdvanceTime(const openpal::TimeDuration& td);
 
-	void AddUser(User user, const std::string& userName, uint8_t keyRepeat, UpdateKeyMode mode, secauth::Permissions permissions = secauth::Permissions::AllowAll())
+	void AddUser(User user, const std::string& userName, uint8_t keyRepeat, KeyWrapAlgorithm keyWrap, secauth::Permissions permissions = secauth::Permissions::AllowAll())
 	{
 		context.AddUser(
 			secauth::OutstationUserInfo(
-				user, userName, permissions, secauth::UpdateKey(keyRepeat, mode)
+			user, userName, permissions, secauth::UpdateKey(keyRepeat, keyWrap)
 			)			
 		);
 	}

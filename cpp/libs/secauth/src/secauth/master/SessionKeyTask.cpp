@@ -168,22 +168,21 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 	}
 
 	// get a view of the users update key
-	openpal::RSlice updateKey;
-	UpdateKeyMode mode;	
+	auto key = this->pUserDB->GetUpdateKeyView(this->user);
 
-	if (!pUserDB->GetUpdateKey(this->user, mode, updateKey))
+	if (key.algorithm == KeyWrapAlgorithm::UNDEFINED)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unable to get update key for user: %u", user.GetId());
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 	
-	if (!Crypto::KeyLengthMatchesRequestedAlgorithm(status.keyWrapAlgo, updateKey.Size()))
+	if (status.keyWrapAlgo != key.algorithm)
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Update key length does not match outstation KeyWrapAlgorithm");
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
-	if (!this->keyWrapBuffer.Wrap(*pKeyWrapAlgo, updateKey, this->keys.GetView(), rawObject, this->logger))
+	if (!this->keyWrapBuffer.Wrap(*pKeyWrapAlgo, key.data, this->keys.GetView(), rawObject, this->logger))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to wrap session keys");
 		return ResponseResult::ERROR_BAD_RESPONSE;

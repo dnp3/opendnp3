@@ -49,8 +49,7 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 
 	virtual openpal::RSlice GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec) override final;
 	
-	virtual openpal::IKeyWrapAlgo& GetAES128KeyWrap() override final { return keywrap128; }
-	virtual openpal::IKeyWrapAlgo& GetAES256KeyWrap() override final { return keywrap256; }
+	virtual openpal::IKeyWrapAlgo& GetAESKeyWrap() override final { return keywrap; }	
 
 	virtual openpal::IHMACAlgo& GetSHA1HMAC() override final { return hmacSHA1;  }
 	virtual openpal::IHMACAlgo& GetSHA256HMAC() override final { return hmacSHA256; }
@@ -63,9 +62,8 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 	SHA1HMAC hmacSHA1;
 	SHA256HMAC hmacSHA256;	
 
-	// state-less key-wrap algorithms
-	AESKeyWrap128 keywrap128;
-	AESKeyWrap256 keywrap256;
+	// state-less key-wrap algorithm
+	AESKeyWrap keywrap;	
 
 	static void LockingFunction(int mode, int n, const char *file, int line);
 			

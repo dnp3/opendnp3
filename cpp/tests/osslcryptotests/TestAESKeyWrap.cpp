@@ -23,6 +23,7 @@
 #include <osslcrypto/CryptoProvider.h>
 
 #include <openpal/container/Buffer.h>
+#include <openpal/container/StaticBuffer.h>
 
 #include <testlib/HexConversions.h>
 #include <testlib/BufferHelpers.h>
@@ -41,6 +42,22 @@ using namespace testlib;
 void TestKeyWrap(const std::string& kek, const std::string& input, const std::string& ciphertext, IKeyWrapAlgo& algo);
 void TestKeyUnwrap(const std::string& kek, const std::string& input, const std::string& ciphertext, IKeyWrapAlgo& algo);
 
+TEST_CASE(SUITE("CatchesBadKeySize"))
+{
+	StaticBuffer<255> kek;
+	StaticBuffer<64> input;
+
+	StaticBuffer<128> buffer;
+	auto dest = buffer.GetWSlice();
+	
+
+	CryptoProvider crypto;
+	
+	std::error_code ec;
+	auto result = crypto.GetAESKeyWrap().WrapKey(kek.ToRSlice(), input.ToRSlice(), dest, ec);
+	REQUIRE(ec);
+}
+
 /*
 From rfc3394		- 128 bits of Key Data with a 128 - bit KEK
 KEK:				000102030405060708090A0B0C0D0E0F
@@ -54,8 +71,8 @@ TEST_CASE(SUITE("TestKeyWrapUnWrap-128KEK-128Data"))
 	auto ciphertext = "1FA68B0A8112B447AEF34BD8FB5A7B829D3E862371D2CFE5";
 
 	CryptoProvider crypto;
-	TestKeyWrap(kek, input, ciphertext, crypto.GetAES128KeyWrap());
-	TestKeyUnwrap(kek, input, ciphertext, crypto.GetAES128KeyWrap());
+	TestKeyWrap(kek, input, ciphertext, crypto.GetAESKeyWrap());
+	TestKeyUnwrap(kek, input, ciphertext, crypto.GetAESKeyWrap());
 }
 
 /*
@@ -72,8 +89,8 @@ TEST_CASE(SUITE("TestKeyWrapUnWrap-256KEK-128Data"))
 	auto ciphertext = "64E8C3F9CE0F5BA263E9777905818A2A93C8191E7D6E8AE7";
 
 	CryptoProvider crypto;
-	TestKeyWrap(kek, input, ciphertext, crypto.GetAES256KeyWrap());
-	TestKeyUnwrap(kek, input, ciphertext, crypto.GetAES256KeyWrap());
+	TestKeyWrap(kek, input, ciphertext, crypto.GetAESKeyWrap());
+	TestKeyUnwrap(kek, input, ciphertext, crypto.GetAESKeyWrap());
 }
 
 /*
@@ -88,7 +105,7 @@ TEST_CASE(SUITE("TestKeyUnWrap-VerifyCSharp"))
 	auto ciphertext = "DC 9C B0 3A 63 17 A5 08 6C 66 B4 85 24 80 B7 C9 9D 87 BB 5D 7E FE 10 2A 28 06 5A AC CA 41 3D EB 89 5E AF 3B 5F 86 F9 12 3F B1 C8 CE CB 92 16 36";
 
 	CryptoProvider crypto;
-	TestKeyUnwrap(kek, input, ciphertext, crypto.GetAES256KeyWrap());
+	TestKeyUnwrap(kek, input, ciphertext, crypto.GetAESKeyWrap());
 }
 
 void TestKeyWrap(

@@ -291,9 +291,10 @@ OAuthContext::APDUResult OAuthContext::ProcessRequestKeyStatus(const openpal::RS
 		return APDUResult::DISCARDED;
 	}
 
-	User user(handler.value.userNum);
-	UpdateKeyMode type;
-	if (!security.userDB.GetUpdateKeyType(user, type))
+	User user(handler.value.userNum);	
+	auto key = security.userDB.GetUpdateKeyView(user);
+
+	if (key.algorithm == KeyWrapAlgorithm::UNDEFINED)
 	{		
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Discarding key status request for unknown user: %u", user.GetId());
 		this->Increment(SecurityStatIndex::UNEXPECTED_MESSAGES);
@@ -310,7 +311,7 @@ OAuthContext::APDUResult OAuthContext::ProcessRequestKeyStatus(const openpal::RS
 		writer,
 		user,
 		hmacType,
-		Crypto::ToKeyWrapAlgorithm(type),
+		key.algorithm,
 		keyStatus,
 		RSlice::Empty()
 	);
@@ -351,11 +352,10 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 	{
 		return this->TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
 	}
+	
+	auto key = security.userDB.GetUpdateKeyView(user);
 
-	UpdateKeyMode updateKeyType;
-	RSlice updateKey;
-
-	if (!security.userDB.GetUpdateKey(user, updateKeyType, updateKey))
+	if (key.algorithm == KeyWrapAlgorithm::UNDEFINED)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring session key change request for unknown user %u", user.GetId());
 		return TryRespondWithAuthError(header.control.SEQ, handler.value.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
@@ -364,8 +364,8 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 	SessionKeyUnwrapBuffer buffer;
 
 	auto unwrapped = buffer.Unwrap(
-		GetKeyWrapAlgo(*security.pCrypto, updateKeyType),
-		updateKey,
+		security.pCrypto->GetAESKeyWrap(),
+		key.data,
 		handler.value.keyWrapData,		
 		&this->logger
 	);
@@ -404,7 +404,7 @@ OAuthContext::APDUResult OAuthContext::ProcessChangeSessionKeys(const openpal::R
 					writer,
 					user,
 					hmacType,
-					Crypto::ToKeyWrapAlgorithm(updateKeyType),
+					key.algorithm,
 					KeyStatus::OK,
 					hmac)
 		)
@@ -498,7 +498,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 	std::error_code ec;
 
 	EncryptedUpdateKey::DecryptAndVerify(
-		security.pCrypto->GetAES256KeyWrap(),
+		security.pCrypto->GetAESKeyWrap(),
 		authorityKey,
 		handler.keyChange.encryptedUpdateKey,
 		verification.username,
@@ -523,7 +523,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 	
 	// at this point, we have an update key, but we still need to check the HMAC from the master
 	KeyChangeConfirmationHMAC::ComputeAndCompare(
-		updateKey.GetKeyView(),
+		updateKey.GetView().data,
 		KeyChangeHMACData(
 			security.settings.outstationName,
 			verification.masterChallenge,
@@ -565,7 +565,7 @@ OAuthContext::APDUResult OAuthContext::ProcessFinishUpdateKeyChange(const openpa
 
 	KeyChangeConfirmationHMAC calc(security.pCrypto->GetSHA256HMAC());
 	auto hmacResponse = calc.Compute(
-		updateKey.GetKeyView(),
+		updateKey.GetView().data,
 		KeyChangeHMACData(
 			verification.username,
 			verification.outstationChallenge,
@@ -825,17 +825,6 @@ bool OAuthContext::TransmitChallenge(const openpal::RSlice& apdu, const opendnp3
 	}
 	return success;
 	
-}
-
-openpal::IKeyWrapAlgo& OAuthContext::GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyMode type)
-{
-	switch (type)
-	{
-	case(UpdateKeyMode::AES128) :
-		return crypto.GetAES128KeyWrap();
-	default:
-		return crypto.GetAES256KeyWrap();
-	}
 }
 
 OAuthContext::APDUResult OAuthContext::TryRespondWithAuthError(

@@ -82,7 +82,7 @@ TEST_CASE(SUITE("Finish update key change is completed successfully w/ valid HMA
 	openpal::StaticBuffer<6> mockKeyData;
 	mockKeyData.GetWSlice().SetAllTo(0xCC);
 
-	UpdateKey updateKey(0xFF, UpdateKeyMode::AES256);
+	UpdateKey updateKey(0xFF, KeyWrapAlgorithm::AES_256);
 
 	FinishUpdateKeyChangeArgs args(
 		"jim", 

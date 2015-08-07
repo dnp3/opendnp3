@@ -113,10 +113,10 @@ namespace opendnp3
 		switch (keyWrap)
 		{
 		case(KeyWrapAlgorithm::AES_128) :
-			crypto.aes128.hexOutput = hex::KeyWrapData(16, 0xBB, data);
+			crypto.keyWrap.hexOutput = hex::KeyWrapData(16, 0xBB, data);
 			break;
 		case(KeyWrapAlgorithm::AES_256) :
-			crypto.aes256.hexOutput = hex::KeyWrapData(32, 0xBB, data);
+			crypto.keyWrap.hexOutput = hex::KeyWrapData(32, 0xBB, data);
 			break;
 		default:
 			throw std::logic_error("bad param");

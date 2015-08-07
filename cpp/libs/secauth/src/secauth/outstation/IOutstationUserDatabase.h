@@ -21,13 +21,15 @@
 #ifndef SECAUTH_IOUTSTATIONUSERDATABASE_H
 #define SECAUTH_IOUTSTATIONUSERDATABASE_H
 
-#include <opendnp3/gen/UpdateKeyMode.h>
 #include <opendnp3/gen/FunctionCode.h>
+#include <opendnp3/gen/KeyWrapAlgorithm.h>
 #include <opendnp3/app/User.h>
 
 #include <openpal/container/RSlice.h>
 
 #include <functional>
+
+#include "secauth/UpdateKey.h"
 
 namespace secauth
 {
@@ -49,12 +51,10 @@ public:
 class IOutstationUserDatabase : public IFreeUser
 {
 	public:		
-
-		virtual bool GetUpdateKeyType(const opendnp3::User& user, opendnp3::UpdateKeyMode& type) const = 0;
-
+		
 		virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const = 0;
 		
-		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::RSlice& key) const = 0;
+		virtual UpdateKey::View GetUpdateKeyView(const opendnp3::User& user) const = 0;
 
 		virtual bool UserExists(const opendnp3::User& user) const = 0;
 

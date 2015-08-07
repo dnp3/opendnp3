@@ -43,7 +43,7 @@ class IMasterUserDatabase
 
 		virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const = 0;
 
-		virtual bool GetUpdateKey(const opendnp3::User& user, opendnp3::UpdateKeyMode& type, openpal::RSlice& key) const = 0;
+		virtual UpdateKey::View GetUpdateKeyView(const opendnp3::User& user) const = 0;
 
 		virtual bool UserExists(const opendnp3::User& user) const = 0;
 

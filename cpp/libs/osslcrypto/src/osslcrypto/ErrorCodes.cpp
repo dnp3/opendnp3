@@ -40,26 +40,22 @@ namespace osslcrypto
 
 			case(errors::OPENSSL_RAND_BYTES_ERROR) :
 				return "openssl: failure calling RAND_bytes()";
+			
+			case(errors::AES_WRAPKEY_AES_SET_KEY_ERROR) :
+				return "openssl: error settings the AES key. Is your AES key length correct?";
 
-			case(errors::AES_WRAPKEY_KEK_SIZE_MISMATCH) :
-				return "unexpected KEK in WrapKeyAES()";
 			case(errors::AES_WRAPKEY_INPUT_NOT_DIV8) :
 				return "input to WrapKeyAES() not divisible by 8";
 			case(errors::AES_WRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE):
-				return "insufficient output buffer size for WrapKey()";
-			case(errors::AES_WRAPKEY_AES_SET_ENCRYPT_KEY_ERROR) :
-				return "openssl: failure calling AES_set_encrypt_key()";
+				return "insufficient output buffer size for WrapKey()";			
 			case(errors::AES_WRAPKEY_AES_WRAP_KEY_ERROR) :
 				return "openssl: failure calling AES_wrap_key()";
-
-			case(errors::AES_UNWRAPKEY_KEK_SIZE_MISMATCH):
-				return "unexpected KEK in UnwrapKeyAES()";			
+			
 			case(errors::AES_UNWRAPKEY_INPUT_NOT_DIV8) :
 				return  "Input to UnwrapKeyAES() not divisible by 8";
 			case(errors::AES_UNWRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE) :
 				return "insufficient output buffer size for UnwrapKey()";
-			case(errors::AES_UNWRAPKEY_AES_SET_DECRYPT_KEY_ERROR) :
-				return "openssl: failure calling AES_set_decrypt_key()";
+			
 			case(errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_IV_ERROR) :
 				return "openssl: decryption of key data failed in aes_key_unwrap(). Do you have the right KEK?";
 			case(errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_PARAM_ERROR) :

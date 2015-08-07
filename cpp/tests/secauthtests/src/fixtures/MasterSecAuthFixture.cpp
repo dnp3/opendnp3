@@ -51,7 +51,7 @@ namespace opendnp3
 		context.OnReceive(hs.ToRSlice());
 	}
 
-	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, UpdateKeyMode mode, uint8_t keyRepeat)
+	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, KeyWrapAlgorithm mode, uint8_t keyRepeat)
 	{		
 		return context.AddUser(user, secauth::UpdateKey(keyRepeat, mode));
 	}
@@ -68,7 +68,7 @@ namespace opendnp3
 
 	void MasterSecAuthFixture::TestSessionKeyExchange(AppSeqNum& seq, User user)
 	{
-		this->crypto.aes128.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
+		this->crypto.keyWrap.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
 
 		
 		auto requestKeyStatus = hex::RequestKeyStatus(seq, user.GetId());

@@ -47,8 +47,7 @@ namespace openpal
 		
 		/// --- Getters for key wrap algorithms ----
 
-		virtual IKeyWrapAlgo& GetAES256KeyWrap() = 0;
-		virtual IKeyWrapAlgo& GetAES128KeyWrap() = 0;		
+		virtual IKeyWrapAlgo& GetAESKeyWrap() = 0;		
 	};
 
 }

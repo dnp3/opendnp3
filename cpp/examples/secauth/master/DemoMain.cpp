@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 	               );
 
 	// configure a user with a trivial update key for demo purposes
-	pMaster->AddUser(User::Default(), UpdateKey(0xFF, UpdateKeyMode::AES128));
+	pMaster->AddUser(User::Default(), UpdateKey(0xFF, KeyWrapAlgorithm::AES_128));
 		
 	// do an integrity poll (Class 3/2/1/0) once per minute
 	//auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));

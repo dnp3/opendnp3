@@ -123,9 +123,7 @@ class OAuthContext final : public opendnp3::OContext
 
 	bool AuthenticateUserStatusChange(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);	
 
-	bool TransmitChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header);
-
-	static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, opendnp3::UpdateKeyMode type);	
+	bool TransmitChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header);	
 
 	static opendnp3::DatabaseTemplate EnableSecStats(const opendnp3::DatabaseTemplate& dbTemplate);
 
