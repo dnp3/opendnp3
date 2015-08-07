@@ -27,7 +27,6 @@
 
 #include <opendnp3/gen/KeyWrapAlgorithm.h>
 #include <opendnp3/gen/HMACType.h>
-#include <opendnp3/gen/UpdateKeyMode.h>
 
 #include "SessionKeysView.h"
 
@@ -41,14 +40,8 @@ namespace secauth
 	class Crypto : private openpal::StaticOnly
 	{
 		public:
-
-			static opendnp3::KeyWrapAlgorithm ToKeyWrapAlgorithm(opendnp3::UpdateKeyMode keyType);
-								
-			// return nullptr if the specified KeyWrapAlgorithm isn't supported
-			static openpal::IKeyWrapAlgo* TryGetKeyWrap(openpal::ICryptoProvider& crypto, opendnp3::KeyWrapAlgorithm algorithm);
+											
 			
-
-			static bool KeyLengthMatchesRequestedAlgorithm(opendnp3::KeyWrapAlgorithm algorithm, uint32_t updateKeyLength);
 
 			static bool TryGetHMACMode(opendnp3::HMACType type, HMACMode& mode);
 

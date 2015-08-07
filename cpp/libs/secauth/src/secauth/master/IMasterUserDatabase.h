@@ -22,7 +22,7 @@
 #ifndef SECAUTH_IMASTERUSERDATABASE_H
 #define SECAUTH_IMASTERUSERDATABASE_H
 
-#include <opendnp3/gen/UpdateKeyMode.h>
+
 #include <opendnp3/app/User.h>
 
 #include <openpal/container/RSlice.h>

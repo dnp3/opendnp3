@@ -23,8 +23,6 @@
 
 #include <openpal/crypto/SecureStaticBuffer.h>
 
-#include <opendnp3/gen/UpdateKeyMode.h>
-
 namespace secauth
 {
 

@@ -150,9 +150,8 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
-	// before we derive keys, make sure we support the specified key wrap algorithm
-	const auto pKeyWrapAlgo = Crypto::TryGetKeyWrap(*pCrypto, status.keyWrapAlgo);
-	if (!pKeyWrapAlgo)
+	// before we derive keys, make sure we support the specified key wrap algorithm	
+	if (status.keyWrapAlgo == KeyWrapAlgorithm::UNDEFINED)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unsupported key wrap algorithm: %s", KeyWrapAlgorithmToString(status.keyWrapAlgo));
 		return ResponseResult::ERROR_BAD_RESPONSE;
@@ -182,7 +181,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
-	if (!this->keyWrapBuffer.Wrap(*pKeyWrapAlgo, key.data, this->keys.GetView(), rawObject, this->logger))
+	if (!this->keyWrapBuffer.Wrap(pCrypto->GetAESKeyWrap(), key.data, this->keys.GetView(), rawObject, this->logger))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to wrap session keys");
 		return ResponseResult::ERROR_BAD_RESPONSE;

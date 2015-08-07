@@ -26,44 +26,6 @@ using namespace opendnp3;
 namespace secauth
 {
 	
-
-opendnp3::KeyWrapAlgorithm Crypto::ToKeyWrapAlgorithm(UpdateKeyMode keyType)
-{
-	switch (keyType)
-	{
-	case(UpdateKeyMode::AES128) :
-		return opendnp3::KeyWrapAlgorithm::AES_128;
-	default:
-		return opendnp3::KeyWrapAlgorithm::AES_256;
-	}
-}
-
-openpal::IKeyWrapAlgo* Crypto::TryGetKeyWrap(openpal::ICryptoProvider& crypto, opendnp3::KeyWrapAlgorithm algorithm)
-{
-	switch (algorithm)
-	{
-		case(KeyWrapAlgorithm::AES_128) :
-			return &crypto.GetAESKeyWrap();
-		case(KeyWrapAlgorithm::AES_256) :
-			return &crypto.GetAESKeyWrap();
-		default:
-			return nullptr;
-	}
-}
-
-bool Crypto::KeyLengthMatchesRequestedAlgorithm(opendnp3::KeyWrapAlgorithm algorithm, uint32_t updateKeyLength)
-{
-	switch (algorithm)
-	{
-	case(KeyWrapAlgorithm::AES_128) :
-		return updateKeyLength == 16;
-	case(KeyWrapAlgorithm::AES_256) :
-		return updateKeyLength == 32;
-	default:
-		return false;
-	}
-}
-
 bool Crypto::TryGetHMACMode(HMACType type, HMACMode& mode)
 {
 	switch (type)
