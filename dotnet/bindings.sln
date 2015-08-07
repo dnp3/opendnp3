@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bindings", "bindings", "{DB6D1D7E-C26B-45B2-9189-480985D8927B}"
 EndProject
@@ -227,10 +227,10 @@ Global
 		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Win32.ActiveCfg = Debug|x86
-		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Win32.Build.0 = Debug|x86
+		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Mixed Platforms.Build.0 = Release|x86
+		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Win32.ActiveCfg = Release|x86
+		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|Win32.Build.0 = Release|x86
 		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|x64.ActiveCfg = Release|Any CPU
 		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|x86.ActiveCfg = Release|x86
 		{070106DC-9726-4735-AEB3-13806C5FF3A7}.Release|x86.Build.0 = Release|x86
