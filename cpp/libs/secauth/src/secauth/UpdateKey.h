@@ -94,7 +94,7 @@ class UpdateKey
 	private:
 
 		static uint32_t GetSize(opendnp3::KeyWrapAlgorithm);
-		static opendnp3::KeyWrapAlgorithm UpdateKey::GetKeyWrapAlgorithm(uint32_t size);
+		static opendnp3::KeyWrapAlgorithm GetKeyWrapAlgorithm(uint32_t size);
 		
 	  
 		void Copy(const openpal::RSlice& key);
