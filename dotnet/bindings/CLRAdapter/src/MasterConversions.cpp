@@ -140,7 +140,7 @@ namespace Automatak
 
 			UpdateKey^ MasterConversions::Convert(const secauth::UpdateKey& key)
 			{
-				auto bytes = Conversions::Convert(key.GetKeyView());
+				auto bytes = Conversions::Convert(key.GetView().data);
 				return gcnew UpdateKey(bytes);
 			}
 

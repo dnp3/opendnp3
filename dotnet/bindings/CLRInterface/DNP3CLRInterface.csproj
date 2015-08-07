@@ -88,6 +88,7 @@
     <Compile Include="gen\IndexMode.cs" />
     <Compile Include="gen\IntervalUnits.cs" />
     <Compile Include="gen\KeyChangeMethod.cs" />
+    <Compile Include="gen\KeyWrapAlgorithm.cs" />
     <Compile Include="gen\MasterTaskType.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\QualifierCode.cs" />
@@ -104,7 +105,6 @@
     <Compile Include="gen\TaskCompletion.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
-    <Compile Include="gen\UpdateKeyMode.cs" />
     <Compile Include="gen\UserOperation.cs" />
     <Compile Include="gen\UserRole.cs" />
     <Compile Include="Header.cs" />

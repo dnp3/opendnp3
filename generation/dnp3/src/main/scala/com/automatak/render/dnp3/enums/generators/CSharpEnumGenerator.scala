@@ -40,6 +40,7 @@ object CSharpEnumGenerator {
       IndexMode(),
       UserOperation(),
       UserRole(),
+      KeyWrapAlgorithm(),
       KeyChangeMethod()
     ).map(e => EnumConfig.apply(e, dir)) ::: events ::: qualityMasks
 

@@ -70,7 +70,7 @@ namespace DotNetMasterDemo
             var master = channel.AddMasterSA("master", PrintingSOEHandler.Instance, application, config);
 
             // define users on the master
-            master.AddUser(User.Default, UpdateKey.Demo(0xFF, UpdateKeyMode.AES128));
+            master.AddUser(User.Default, UpdateKey.Demo(0xFF, KeyWrapAlgorithm.AES_128));
 
             // you a can optionally add various kinds of polls
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1), TaskConfig.Default);

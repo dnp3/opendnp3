@@ -21,11 +21,18 @@
 namespace Automatak.DNP3.Interface
 {
   /// <summary>
-  /// Enumerates types of update keys
+  /// Enumerates possible key-wrap algorithms
   /// </summary>
-  public enum UpdateKeyMode : byte
+  public enum KeyWrapAlgorithm : byte
   {
-    AES128 = 0x0,
-    AES256 = 0x1
+    /// <summary>
+    /// AES 128 Key Wrap Algorithm
+    /// </summary>
+    AES_128 = 0x1,
+    /// <summary>
+    /// AES 256 Key Wrap Algorithm
+    /// </summary>
+    AES_256 = 0x2,
+    UNDEFINED = 0x0
   }
 }

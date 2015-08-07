@@ -40,9 +40,9 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="repeat"></param>
         /// <param name="mode"></param>
-        static public UpdateKey Demo(byte repeat, UpdateKeyMode mode)
-        {            
-            var bytes = (mode == UpdateKeyMode.AES128) ? new byte[16] : new byte[32];
+        static public UpdateKey Demo(byte repeat, KeyWrapAlgorithm mode)
+        {
+            var bytes = GetBuffer(mode);
             for (int i = 0; i < bytes.Length; ++i)
             {
                 bytes[i] = repeat;
@@ -50,20 +50,34 @@ namespace Automatak.DNP3.Interface
             return new UpdateKey(bytes);
         }
 
-        static UpdateKeyMode GetModeFromKeyLength(int length)
+        static byte[] GetBuffer(KeyWrapAlgorithm mode)
+        {
+            switch (mode)
+            { 
+                case(KeyWrapAlgorithm.AES_128):
+                    return new byte[16];
+                case (KeyWrapAlgorithm.AES_256):
+                    return new byte[32];
+                default:
+                    throw new ArgumentException(String.Format("Invalid update key mode: {0}", mode));
+            }
+        }
+
+        static KeyWrapAlgorithm GetModeFromKeyLength(int length)
         {
             switch (length)
             { 
                 case(16):
-                    return UpdateKeyMode.AES128;
+                    return KeyWrapAlgorithm.AES_128;
                 case(32):
-                    return UpdateKeyMode.AES128;
+                    return KeyWrapAlgorithm.AES_256;
                 default:
                     throw new ArgumentException(String.Format("Invalid update key length: {0}", length));
             }
         }
-        
-        public readonly UpdateKeyMode keyMode;
+
+        public readonly KeyWrapAlgorithm keyMode;
         public readonly byte[] key;        
     };   
 }
+
