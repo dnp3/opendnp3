@@ -83,6 +83,7 @@ class UpdateKey
 		* Checks the length for validity
 		*/
 		bool IsValid() const { return m_algorithm != opendnp3::KeyWrapAlgorithm::UNDEFINED; }
+		
 
 		/**
 		* Only accepts 128 or 256 bit update keys

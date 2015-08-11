@@ -63,6 +63,9 @@ TEST_CASE(SUITE("well-formed response to BeginUpdateKeyChange results in success
 	REQUIRE(data.user.GetId() == 7);
 	REQUIRE(ToHex(data.masterChallengeData.ToRSlice()) == "AA AA AA AA");
 	REQUIRE(ToHex(data.outstationChallengeData.ToRSlice()) == "DE AD BE EF");	
+	REQUIRE(data.updateKey.IsValid());
+	REQUIRE(data.updateKey.GetView().algorithm == KeyWrapAlgorithm::AES_256);
+	REQUIRE(ToHex(data.updateKey.GetView().data) == hex::repeat(0xAA, 32));
 
 	REQUIRE(tcallback.results.size() == 1);
 	REQUIRE(tcallback.results.front() == TaskCompletion::SUCCESS);

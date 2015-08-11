@@ -131,15 +131,25 @@ IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessDataResponse(const 
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
+	// derive an update key that the authority will have to sign
+	openpal::SecureStaticBuffer<AuthSizes::MAX_UPDATE_KEY_SIZE_BYTES> keyBuffer; // TDDO, support other update key sizes
 	
-	// make the success callback
+	std::error_code ec;
+	auto dest = keyBuffer.GetWSlice();
+	auto keyView = m_crypto->GetSecureRandom(dest, ec);
+	if (ec)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unable to derive update key: %s", ec.message().c_str());
+		return ResponseResult::ERROR_INTERNAL_FAILURE;
+	}
 
 	m_callback(
 		BeginUpdateKeyChangeResult(
 			User(handler.value.userNum),
 			handler.value.keyChangeSeqNum,
 			m_challengeDataView,
-			handler.value.challengeData
+			handler.value.challengeData,
+			UpdateKey(keyView)
 		)
 	);
 
