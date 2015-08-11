@@ -35,7 +35,8 @@ namespace Automatak
 						User::FromNumber(rsp.user.GetId()),
 						rsp.keyChangeSequenceNum,
 						Conversions::Convert(rsp.masterChallengeData.ToRSlice()),
-						Conversions::Convert(rsp.outstationChallengeData.ToRSlice())
+						Conversions::Convert(rsp.outstationChallengeData.ToRSlice()),
+						gcnew UpdateKey(Conversions::Convert(rsp.updateKey.GetView().data))
 					);
 
 

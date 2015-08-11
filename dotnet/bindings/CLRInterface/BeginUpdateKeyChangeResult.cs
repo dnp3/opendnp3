@@ -35,7 +35,8 @@ namespace Automatak.DNP3.Interface
              User user,
              System.UInt32 keyChangeSequenceNum,
              byte[] masterChallengeData,
-             byte[] outstationChallengeData
+             byte[] outstationChallengeData,
+             UpdateKey updateKey
         )
         {
             this.result = result;
@@ -43,6 +44,7 @@ namespace Automatak.DNP3.Interface
             this.keyChangeSequenceNum = keyChangeSequenceNum;
             this.masterChallengeData = masterChallengeData;
             this.outstationChallengeData = outstationChallengeData;
+            this.updateKey = updateKey;
         }
 
         public readonly TaskCompletion result;
@@ -50,5 +52,6 @@ namespace Automatak.DNP3.Interface
         public readonly System.UInt32 keyChangeSequenceNum;
         public readonly byte[] masterChallengeData;
         public readonly byte[] outstationChallengeData;
+        public readonly UpdateKey updateKey;
     }
 }
