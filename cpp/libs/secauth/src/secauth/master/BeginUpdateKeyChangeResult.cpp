@@ -35,15 +35,13 @@ namespace secauth
 		opendnp3::User user_,
 		uint32_t keyChangeSequenceNum_,
 		const openpal::RSlice& masterChallengeData_,
-		const openpal::RSlice& outstationChallengeData_,		
-		UpdateKey updateKey_
+		const openpal::RSlice& outstationChallengeData_		
 	) :
 		result(opendnp3::TaskCompletion::SUCCESS),
 		user(user_),
 		keyChangeSequenceNum(keyChangeSequenceNum_),
 		masterChallengeData(masterChallengeData_),
-		outstationChallengeData(outstationChallengeData_),
-		updateKey(updateKey_)
+		outstationChallengeData(outstationChallengeData_)		
 	{}
 	
 }
