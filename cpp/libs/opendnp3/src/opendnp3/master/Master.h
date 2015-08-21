@@ -31,6 +31,8 @@
 namespace opendnp3
 {
 
+typedef std::function<void(HeaderWriter&)> HeaderBuilder;
+
 class Master : public IUpperLayer
 {
 	public:
@@ -70,7 +72,7 @@ class Master : public IUpperLayer
 
 	/// ---- Single shot immediate scans ----
 	
-	void Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
+	void Scan(const HeaderBuilder& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
 
 	void ScanAllObjects(GroupVariationID gvId, ITaskCallback* pCallback = nullptr, int userId = -1);
 
@@ -81,6 +83,8 @@ class Master : public IUpperLayer
 	/// ---- Write tasks -----
 
 	void Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* pCallback = nullptr, int userId = -1);
+
+	void EmptyResponseTask(const std::string& name, FunctionCode fc, const HeaderBuilder& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
 
 	
 	private:

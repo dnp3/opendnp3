@@ -48,6 +48,8 @@ namespace Automatak
 				
 				virtual void Write(TimeAndInterval^ value, System::UInt16 index, ITaskCallback^ callback, int userId);
 
+				virtual void PerformFunction(FunctionCode fc, System::String^ name, ITaskCallback^ callback, int userId);
+
 			private:
 
 				static std::vector<asiodnp3::Header> ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers);

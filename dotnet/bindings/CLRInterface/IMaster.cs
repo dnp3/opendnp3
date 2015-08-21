@@ -119,5 +119,13 @@ namespace Automatak.DNP3.Interface
         /// <param name="index"></param>
         /// <param name="callback"></param>
         void Write(TimeAndInterval value, System.UInt16 index, ITaskCallback callback = null, int userId = -1);
+
+        /// <summary>
+        /// Performs an arbtrary function code with no headers that expects an empty response
+        /// </summary>
+        /// <param name="fc"></param>
+        /// <param name="callback"></param>
+        /// <param name="userId"></param>
+        void PerformFunction(FunctionCode fc, string name, ITaskCallback callback = null, int userId = -1);
     }
 }

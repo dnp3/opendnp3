@@ -26,7 +26,7 @@
 #include "opendnp3/LogLevels.h"
 
 #include "opendnp3/master/UserPollTask.h"
-#include "opendnp3/master/WriteTask.h"
+#include "opendnp3/master/EmptyResponseTask.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -143,12 +143,18 @@ void Master::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, ITa
 
 void Master::Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* pCallback, int userId)
 {
-	auto format = [value, index](HeaderWriter& writer)
+	auto builder = [value, index](HeaderWriter& writer)
 	{
 		writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto pTask = new WriteTask(*context.pApplication, format, context.logger, pCallback, userId);
+	auto pTask = new opendnp3::EmptyResponseTask(*context.pApplication, "write time and interval", FunctionCode::WRITE, builder, context.logger, pCallback, userId);
+	context.ScheduleAdhocTask(pTask);
+}
+
+void Master::EmptyResponseTask(const std::string& name, FunctionCode fc, const HeaderBuilder& builder, ITaskCallback* pCallback, int userId)
+{
+	auto pTask = new opendnp3::EmptyResponseTask(*context.pApplication, name, fc, builder, context.logger, pCallback, userId);
 	context.ScheduleAdhocTask(pTask);
 }
 	

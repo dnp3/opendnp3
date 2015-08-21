@@ -88,6 +88,8 @@ public:
 
 	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, opendnp3::ITaskCallback* pCallback, int userId)  override final;
 
+	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, opendnp3::ITaskCallback* pCallback, int userId) override final;
+
 	// ------- Non-interface public members ---------
 
 	void SetLinkRouter(opendnp3::ILinkRouter& router);

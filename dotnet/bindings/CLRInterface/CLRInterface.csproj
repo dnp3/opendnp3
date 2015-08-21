@@ -83,6 +83,7 @@
     <Compile Include="gen\EventDoubleBinaryVariation.cs" />
     <Compile Include="gen\EventFrozenCounterVariation.cs" />
     <Compile Include="gen\EventMode.cs" />
+    <Compile Include="gen\FunctionCode.cs" />
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
     <Compile Include="gen\IndexMode.cs" />
