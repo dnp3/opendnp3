@@ -143,6 +143,7 @@
     <ClInclude Include="src\opendnp3\master\CommandSequence.h" />
     <ClInclude Include="src\opendnp3\master\CommandTask.h" />
     <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h" />
+    <ClInclude Include="src\opendnp3\master\EmptyResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\EventScanTask.h" />
     <ClInclude Include="src\opendnp3\master\HeaderInfo.h" />
@@ -300,6 +301,7 @@
     <ClCompile Include="src\opendnp3\master\CommandResponse.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandTask.cpp" />
     <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp" />
+    <ClCompile Include="src\opendnp3\master\EmptyResponseTask.cpp" />
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp" />
     <ClCompile Include="src\opendnp3\master\EventScanTask.cpp" />
     <ClCompile Include="src\opendnp3\master\IMasterState.cpp" />
@@ -317,7 +319,6 @@
     <ClCompile Include="src\opendnp3\master\Master.cpp" />
     <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterTasks.cpp" />
-    <ClCompile Include="src\opendnp3\master\WriteTask.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group11.cpp" />

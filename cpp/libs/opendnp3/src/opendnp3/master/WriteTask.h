@@ -21,52 +21,22 @@
 #ifndef OPENDNP3_WRITETASK_H
 #define OPENDNP3_WRITETASK_H
 
-#include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/TaskPriority.h"
-
-#include <string>
-#include <functional>
+#include "EmptyResponseTask.h"
 
 namespace opendnp3
 {
 
 class IMasterApplication;
 
-class WriteTask : public IMasterTask
+class WriteTask : public EmptyResponseTask
 {	
 
 public:	
 
-	WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback, int userId);
-
-	virtual char const* Name() const override final { return "Write Task"; }
-
-	virtual bool IsRecurring() const override final { return false; }
-
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-
-	virtual int Priority(void) const override final { return priority::USER_WRITE; }	
-
-	virtual bool BlocksLowerPriority() const { return false; }		
-
-private:
-
-	virtual  bool IsEnabled() const override final { return true; }
-
-	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK; }
+	WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format, openpal::Logger logger, ITaskCallback* pCallback, int userId)
+		: EmptyResponseTask(app, "write", FunctionCode::WRITE, format, logger, pCallback, userId)
+	{}
 		
-	std::function<void(HeaderWriter&)> format;
-
-	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
-
-	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
-
-	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;	
-
-	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
-
-	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;	
-
 };
 
 

@@ -732,6 +732,9 @@
     <ClInclude Include="src\opendnp3\link\ILinkStatusListener.h">
       <Filter>Header\link</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\master\EmptyResponseTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1055,9 +1058,6 @@
     <ClCompile Include="src\opendnp3\master\EventScanTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\WriteTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
@@ -1099,6 +1099,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\LinkStatus.cpp">
       <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\EmptyResponseTask.cpp">
+      <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

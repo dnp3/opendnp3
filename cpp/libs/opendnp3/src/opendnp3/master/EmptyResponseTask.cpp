@@ -19,49 +19,51 @@
  * to you under the terms of the License.
  */
 
-#include "WriteTask.h"
+#include "EmptyResponseTask.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-WriteTask::WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback, int userId) :
-	IMasterTask(app, 0, logger, pCallback, userId),	
+EmptyResponseTask::EmptyResponseTask(IMasterApplication& app, const std::string& name_, FunctionCode func_, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback, int userId) :
+	IMasterTask(app, 0, logger, pCallback, userId),
+	name(name_),
+	func(func_),
 	format(format_)
 {
 
 }
 
-void WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
+void EmptyResponseTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	request.SetFunction(FunctionCode::WRITE);
+	request.SetFunction(func);
 	request.SetControl(AppControlField::Request(seq));
 	auto writer = request.GetWriter();
 	format(writer);
 }
 
-IMasterTask::ResponseResult WriteTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+IMasterTask::ResponseResult EmptyResponseTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-void WriteTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
+void EmptyResponseTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {
 	
 }
 
-void WriteTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+void EmptyResponseTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
 {
 	
 }
 
-void WriteTask::OnResponseOK(openpal::MonotonicTimestamp now)
+void EmptyResponseTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {
 	
 }
 
-void WriteTask::OnResponseError(openpal::MonotonicTimestamp now)
+void EmptyResponseTask::OnResponseError(openpal::MonotonicTimestamp now)
 {
 	
 }
