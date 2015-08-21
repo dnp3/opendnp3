@@ -95,6 +95,30 @@ namespace Automatak.Simulator.DNP3
             );
 
         }
+
+        private void buttonColdRestart_Click(object sender, EventArgs e)
+        {
+            this.toolStripStatusLabel.Text = "Result: ... ";
+            var callback = new StringCallback();
+            this.master.PerformFunction(FunctionCode.COLD_RESTART, "cold restart", callback);  
+            callback.Task.ContinueWith(task =>
+                this.BeginInvoke(new Action(() =>
+                   this.toolStripStatusLabel.Text += task.Result.ToString()
+                ))
+            );
+        }
+
+        private void buttonWarmRestart_Click(object sender, EventArgs e)
+        {
+            this.toolStripStatusLabel.Text = "Result: ... ";
+            var callback = new StringCallback();
+            this.master.PerformFunction(FunctionCode.WARM_RESTART, "warm restart", callback);
+            callback.Task.ContinueWith(task =>
+                this.BeginInvoke(new Action(() =>
+                   this.toolStripStatusLabel.Text += task.Result.ToString()
+                ))
+            );
+        }
         
     }
 }

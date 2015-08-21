@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BundledPlugins\StringCallback.cs" />
     <Compile Include="Components\AnalogOutputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

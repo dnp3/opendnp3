@@ -45,6 +45,9 @@
             this.measurementView = new Automatak.Simulator.DNP3.Commons.MeasurementView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.buttonWarmRestart = new System.Windows.Forms.Button();
+            this.buttonColdRestart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -54,6 +57,7 @@
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -85,6 +89,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(5, 32);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
@@ -98,7 +103,7 @@
             this.tabPage1.Location = new System.Drawing.Point(23, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(260, 494);
+            this.tabPage1.Size = new System.Drawing.Size(259, 470);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Scans";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -108,7 +113,7 @@
             this.masterScanControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.masterScanControl1.Location = new System.Drawing.Point(3, 3);
             this.masterScanControl1.Name = "masterScanControl1";
-            this.masterScanControl1.Size = new System.Drawing.Size(254, 488);
+            this.masterScanControl1.Size = new System.Drawing.Size(253, 464);
             this.masterScanControl1.TabIndex = 2;
             // 
             // tabPage2
@@ -119,7 +124,7 @@
             this.tabPage2.Location = new System.Drawing.Point(23, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(260, 494);
+            this.tabPage2.Size = new System.Drawing.Size(259, 470);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "CROB";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -226,6 +231,38 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.buttonWarmRestart);
+            this.tabPage4.Controls.Add(this.buttonColdRestart);
+            this.tabPage4.Location = new System.Drawing.Point(23, 4);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(259, 470);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Restart";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // buttonWarmRestart
+            // 
+            this.buttonWarmRestart.Location = new System.Drawing.Point(141, 22);
+            this.buttonWarmRestart.Name = "buttonWarmRestart";
+            this.buttonWarmRestart.Size = new System.Drawing.Size(104, 47);
+            this.buttonWarmRestart.TabIndex = 8;
+            this.buttonWarmRestart.Text = "Warm Restart";
+            this.buttonWarmRestart.UseVisualStyleBackColor = true;
+            this.buttonWarmRestart.Click += new System.EventHandler(this.buttonWarmRestart_Click);
+            // 
+            // buttonColdRestart
+            // 
+            this.buttonColdRestart.Location = new System.Drawing.Point(20, 22);
+            this.buttonColdRestart.Name = "buttonColdRestart";
+            this.buttonColdRestart.Size = new System.Drawing.Size(95, 47);
+            this.buttonColdRestart.TabIndex = 7;
+            this.buttonColdRestart.Text = "Cold Restart";
+            this.buttonColdRestart.UseVisualStyleBackColor = true;
+            this.buttonColdRestart.Click += new System.EventHandler(this.buttonColdRestart_Click);
+            // 
             // MasterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -248,6 +285,7 @@
             this.tabPage3.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -271,6 +309,9 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private Components.AnalogOutputControl analogOutputControl;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Button buttonWarmRestart;
+        private System.Windows.Forms.Button buttonColdRestart;
 
     }
 }
