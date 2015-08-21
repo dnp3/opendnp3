@@ -29,6 +29,8 @@ namespace Automatak.Simulator.DNP3
             this.Text = String.Format("DNP3 Master ({0})", alias);
 
             this.masterScanControl1.Master = master;
+
+            this.comboBoxFunctionCode.DataSource = Enum.GetValues(typeof(FunctionCode));
         }                       
      
         void GUIMasterForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -96,29 +98,19 @@ namespace Automatak.Simulator.DNP3
 
         }
 
-        private void buttonColdRestart_Click(object sender, EventArgs e)
+        private void buttonSendFunction_Click(object sender, EventArgs e)
         {
             this.toolStripStatusLabel.Text = "Result: ... ";
-            var callback = new StringCallback();
-            this.master.PerformFunction(FunctionCode.COLD_RESTART, "cold restart", callback);  
-            callback.Task.ContinueWith(task =>
-                this.BeginInvoke(new Action(() =>
-                   this.toolStripStatusLabel.Text += task.Result.ToString()
-                ))
-            );
-        }
+            var function = (FunctionCode)this.comboBoxFunctionCode.SelectedValue;
 
-        private void buttonWarmRestart_Click(object sender, EventArgs e)
-        {
-            this.toolStripStatusLabel.Text = "Result: ... ";
             var callback = new StringCallback();
-            this.master.PerformFunction(FunctionCode.WARM_RESTART, "warm restart", callback);
+            this.master.PerformFunction(function, function.ToString(), callback);  
             callback.Task.ContinueWith(task =>
                 this.BeginInvoke(new Action(() =>
                    this.toolStripStatusLabel.Text += task.Result.ToString()
                 ))
             );
-        }
+        }      
         
     }
 }

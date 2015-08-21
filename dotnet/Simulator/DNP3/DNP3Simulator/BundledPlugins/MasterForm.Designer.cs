@@ -41,13 +41,13 @@
             this.analogOutputControl = new Automatak.Simulator.DNP3.Components.AnalogOutputControl();
             this.buttonSBOAO = new System.Windows.Forms.Button();
             this.buttonDOAO = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.comboBoxFunctionCode = new System.Windows.Forms.ComboBox();
+            this.buttonSendFunction = new System.Windows.Forms.Button();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
             this.measurementView = new Automatak.Simulator.DNP3.Commons.MeasurementView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.buttonWarmRestart = new System.Windows.Forms.Button();
-            this.buttonColdRestart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -56,8 +56,8 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -196,6 +196,37 @@
             this.buttonDOAO.UseVisualStyleBackColor = true;
             this.buttonDOAO.Click += new System.EventHandler(this.buttonDOAO_Click);
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.comboBoxFunctionCode);
+            this.tabPage4.Controls.Add(this.buttonSendFunction);
+            this.tabPage4.Location = new System.Drawing.Point(23, 4);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(259, 470);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Custom";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxFunctionCode
+            // 
+            this.comboBoxFunctionCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxFunctionCode.FormattingEnabled = true;
+            this.comboBoxFunctionCode.Location = new System.Drawing.Point(26, 29);
+            this.comboBoxFunctionCode.Name = "comboBoxFunctionCode";
+            this.comboBoxFunctionCode.Size = new System.Drawing.Size(203, 21);
+            this.comboBoxFunctionCode.TabIndex = 8;
+            // 
+            // buttonSendFunction
+            // 
+            this.buttonSendFunction.Location = new System.Drawing.Point(26, 83);
+            this.buttonSendFunction.Name = "buttonSendFunction";
+            this.buttonSendFunction.Size = new System.Drawing.Size(203, 47);
+            this.buttonSendFunction.TabIndex = 7;
+            this.buttonSendFunction.Text = "Send";
+            this.buttonSendFunction.UseVisualStyleBackColor = true;
+            this.buttonSendFunction.Click += new System.EventHandler(this.buttonSendFunction_Click);
+            // 
             // comboBoxTypes
             // 
             this.comboBoxTypes.Dock = System.Windows.Forms.DockStyle.Top;
@@ -231,38 +262,6 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.buttonWarmRestart);
-            this.tabPage4.Controls.Add(this.buttonColdRestart);
-            this.tabPage4.Location = new System.Drawing.Point(23, 4);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(259, 470);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Restart";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // buttonWarmRestart
-            // 
-            this.buttonWarmRestart.Location = new System.Drawing.Point(141, 22);
-            this.buttonWarmRestart.Name = "buttonWarmRestart";
-            this.buttonWarmRestart.Size = new System.Drawing.Size(104, 47);
-            this.buttonWarmRestart.TabIndex = 8;
-            this.buttonWarmRestart.Text = "Warm Restart";
-            this.buttonWarmRestart.UseVisualStyleBackColor = true;
-            this.buttonWarmRestart.Click += new System.EventHandler(this.buttonWarmRestart_Click);
-            // 
-            // buttonColdRestart
-            // 
-            this.buttonColdRestart.Location = new System.Drawing.Point(20, 22);
-            this.buttonColdRestart.Name = "buttonColdRestart";
-            this.buttonColdRestart.Size = new System.Drawing.Size(95, 47);
-            this.buttonColdRestart.TabIndex = 7;
-            this.buttonColdRestart.Text = "Cold Restart";
-            this.buttonColdRestart.UseVisualStyleBackColor = true;
-            this.buttonColdRestart.Click += new System.EventHandler(this.buttonColdRestart_Click);
-            // 
             // MasterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,9 +282,9 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -310,8 +309,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private Components.AnalogOutputControl analogOutputControl;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.Button buttonWarmRestart;
-        private System.Windows.Forms.Button buttonColdRestart;
+        private System.Windows.Forms.Button buttonSendFunction;
+        private System.Windows.Forms.ComboBox comboBoxFunctionCode;
 
     }
 }
