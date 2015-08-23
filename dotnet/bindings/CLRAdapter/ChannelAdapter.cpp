@@ -77,6 +77,7 @@ namespace Automatak
 				{
 					pMaster->DeleteOnDestruct(pSOEHandler);
 					pMaster->DeleteOnDestruct(pApplication);
+					AddLinkStatusListener(pMaster, application);
 					return gcnew MasterAdapter(pMaster);
 				}
 			}
@@ -102,8 +103,19 @@ namespace Automatak
 					pOutstation->DeleteOnDestruct(pCommand);
 					pOutstation->DeleteOnDestruct(pApplication);
 					ApplyDatabaseSettings(pOutstation->GetConfigView(), config->databaseTemplate);
+					AddLinkStatusListener(pOutstation, application);
 					return gcnew OutstationAdapter(pOutstation);
 				}
+			}
+
+			void ChannelAdapter::AddLinkStatusListener(asiodnp3::IStack* pStack, ILinkStatusListener^ listener)
+			{
+				System::Action<LinkStatus>^ callback = gcnew System::Action<LinkStatus>(listener, &ILinkStatusListener::OnStateChange);
+				auto convert = std::bind(&Conversions::ConvertLinkStatus, std::placeholders::_1);
+				auto pConverter = new EventConverter<opendnp3::LinkStatus, Automatak::DNP3::Interface::LinkStatus>(convert, callback);
+				std::function<void(opendnp3::LinkStatus)> trigger = pConverter->GetTrigger();
+				pStack->AddLinkStatusListener(trigger);
+				pStack->DeleteOnDestruct(pConverter);
 			}
 
 			void ChannelAdapter::ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate)
