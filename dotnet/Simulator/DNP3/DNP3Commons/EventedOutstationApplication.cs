@@ -108,6 +108,10 @@ namespace Automatak.Simulator.DNP3.Commons
         public event OnRestartRequested ColdRestart;
         public event OnRestartRequested WarmRestart;
 
+        void ILinkStatusListener.OnStateChange(LinkStatus value)
+        {
+        }
+
         bool IOutstationApplication.SupportsWriteAbsoluteTime
         {
             get { return supportsWriteAbsoluteTime; }
@@ -177,6 +181,5 @@ namespace Automatak.Simulator.DNP3.Commons
 
             return warmRestartTime; 
         }
-        
     }
 }

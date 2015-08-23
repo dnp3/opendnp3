@@ -9,6 +9,7 @@
 #include <opendnp3/LogLevels.h>
 
 #include <opendnp3/gen/ChannelState.h>
+#include <opendnp3/gen/LinkStatus.h>
 
 #include <opendnp3/app/MeasurementTypes.h>
 #include <opendnp3/app/TimeAndInterval.h>
@@ -54,6 +55,8 @@ namespace Automatak
 
 				// Converting channel state enumeration
 				static ChannelState ConvertChannelState(opendnp3::ChannelState aState);
+
+				static LinkStatus ConvertLinkStatus(opendnp3::LinkStatus aState);
 
 				static IChannelStatistics^ ConvertChannelStats(const opendnp3::LinkChannelStatistics& statistics);
 

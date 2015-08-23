@@ -30,7 +30,7 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// Master application code implements this interface to interface with stack
     /// </summary>
-    public interface IMasterApplication
+    public interface IMasterApplication : ILinkStatusListener
     {
         /// <summary>
         /// Get a count of milliseconds since Unix epoch for the purposes of time syncing
@@ -89,6 +89,11 @@ namespace Automatak.DNP3.Interface
         }
 
         private DefaultMasterApplication() { }
+
+        void ILinkStatusListener.OnStateChange(LinkStatus value)
+        {
+            // ignore these in the default application 
+        }
 
         UInt64 IMasterApplication.GetMillisecondsSinceEpoch()
         {

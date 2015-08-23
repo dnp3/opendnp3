@@ -38,7 +38,8 @@ object CSharpEnumGenerator {
       GroupVariation(),
       EventMode(),
       IndexMode(),
-      FunctionCode()
+      FunctionCode(),
+      LinkStatus()
     ).map(e => EnumConfig.apply(e, dir)) ::: events ::: qualityMasks
 
     implicit val indent = CppIndentation()

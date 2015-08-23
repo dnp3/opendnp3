@@ -43,6 +43,8 @@ namespace Automatak
 
 				asiodnp3::IChannel* pChannel;
 
+				static void AddLinkStatusListener(asiodnp3::IStack* pStack, ILinkStatusListener^ listener);
+
 				static void ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate);
 
 				static void ApplySettings(IReadOnlyList<BinaryRecord^>^ list, openpal::ArrayView < opendnp3::Cell<opendnp3::Binary>, uint16_t>& view);
