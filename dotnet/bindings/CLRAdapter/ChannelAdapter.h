@@ -41,9 +41,7 @@ namespace Automatak
 
 			private:
 
-				asiodnp3::IChannel* pChannel;
-
-				static void AddLinkStatusListener(asiodnp3::IStack* pStack, ILinkStatusListener^ listener);
+				asiodnp3::IChannel* pChannel;				
 
 				static void ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate);
 

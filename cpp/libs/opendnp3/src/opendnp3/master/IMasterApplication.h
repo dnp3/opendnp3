@@ -24,6 +24,8 @@
 
 #include <openpal/executor/IUTCTimeSource.h>
 
+#include "opendnp3/link/ILinkListener.h"
+
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/HeaderWriter.h"
 
@@ -37,7 +39,7 @@ namespace opendnp3
 ///
 /// @summary Interface for all master application callback info except for measurements
 ///
-class IMasterApplication : public openpal::IUTCTimeSource
+class IMasterApplication : public ILinkListener, public openpal::IUTCTimeSource
 {
 	public:
 	
@@ -59,6 +61,7 @@ class IMasterApplication : public openpal::IUTCTimeSource
 	/// "AssignClassDuringStartup" returns true
 	/// The user only needs to write the object headers
 	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) = 0;
+	
 };
 
 }

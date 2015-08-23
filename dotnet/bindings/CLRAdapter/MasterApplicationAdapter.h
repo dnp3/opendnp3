@@ -23,6 +23,8 @@ namespace Automatak
 			public:
 				MasterApplicationAdapter(Automatak::DNP3::Interface::IMasterApplication^ proxy);
 
+				virtual void OnStateChange(opendnp3::LinkStatus value) override final;
+
 				virtual openpal::UTCTimestamp Now() override final;
 
 				virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final;

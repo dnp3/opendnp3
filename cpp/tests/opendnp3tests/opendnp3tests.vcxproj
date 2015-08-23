@@ -179,6 +179,7 @@
   <ItemGroup>
     <ClInclude Include="src\APDUHelpers.h" />
     <ClInclude Include="src\APDUHexBuilders.h" />
+    <ClInclude Include="src\MockLinkListener.h" />
     <ClInclude Include="src\MockMasterApplication.h" />
     <ClInclude Include="src\MockTaskCallback.h" />
     <ClInclude Include="src\PhysBaseTest.h" />

@@ -24,11 +24,11 @@
 namespace opendnp3
 {
 
-DefaultOutstationApplication DefaultOutstationApplication::instance;
+DefaultOutstationApplication DefaultOutstationApplication::m_instance;
 
 IOutstationApplication& DefaultOutstationApplication::Instance()
 {
-	return instance;
+	return m_instance;
 }
 
 }

@@ -38,13 +38,13 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, const LinkConfig& config_) :
+LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opendnp3::ILinkListener& linkListener, const LinkConfig& config_) :
 	logger(root.GetLogger()),
 	config(config_),
 	pSegments(nullptr),
 	txMode(TransmitMode::Idle),
 	numRetryRemaining(0),
-	pExecutor(pExecutor_),
+	pExecutor(&executor),
 	pTimer(nullptr),
 	nextReadFCB(false),
 	nextWriteFCB(false),
@@ -52,7 +52,7 @@ LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, con
 	pRouter(nullptr),
 	pPriState(PLLS_SecNotReset::Inst()),
 	pSecState(SLLS_NotReset::Inst()),
-	pStatusCallback(nullptr)
+	pListener(&linkListener)
 {}
 
 void LinkLayer::SetRouter(ILinkRouter& router)
@@ -71,15 +71,9 @@ void LinkLayer::ChangeState(SecStateBase* pState)
 	pSecState = pState;
 }
 
-void LinkLayer::SetLinkStatusListener(opendnp3::ILinkStatusListener* Listener)
-{
-	pStatusCallback = Listener;
-}
-
 void LinkLayer::CallStatusCallback(opendnp3::LinkStatus status)
-{
-	if(pStatusCallback != nullptr)
-		pStatusCallback->OnStateChange(status);
+{	
+	this->pListener->OnStateChange(status);
 }
 
 void LinkLayer::PostSendResult(bool isSuccess)

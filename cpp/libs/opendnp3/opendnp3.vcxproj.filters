@@ -726,11 +726,11 @@
     <ClInclude Include="src\opendnp3\gen\LinkStatus.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\link\ILinkStatusListener.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\EmptyResponseTask.h">
       <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ILinkListener.h">
+      <Filter>Header\link</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1013,9 +1013,6 @@
     <ClCompile Include="src\opendnp3\gen\PointClass.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
@@ -1099,6 +1096,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\EmptyResponseTask.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

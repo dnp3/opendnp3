@@ -39,11 +39,10 @@ OutstationStackImpl::OutstationStackImpl(
 		
 	root(root_, id),
 	handler(handler_),
-	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
+	stack(root, executor, application, config.outstation.params.maxRxFragSize, &statistics, config.link),		
 	outstation(config.outstation, config.dbTemplate, executor, root, stack.transport, commandHandler, application)
 {
-	stack.transport.SetAppLayer(&outstation);
-	stack.link.SetLinkStatusListener(this);
+	stack.transport.SetAppLayer(&outstation);	
 }
 
 opendnp3::DatabaseConfigView OutstationStackImpl::GetConfigView()

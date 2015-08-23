@@ -24,6 +24,7 @@
 #include "LogTester.h"
 #include "MockTransportLayer.h"
 #include "MockExecutor.h"
+#include "MockLinkListener.h"
 
 #include <opendnp3/link/LinkLayer.h>
 #include <opendnp3/link/ILinkRouter.h>
@@ -47,6 +48,7 @@ public:
 
 	LogTester log;
 	MockExecutor exe;
+	MockLinkListener listener;
 	LinkLayer link;
 	MockTransportLayer upper;
 

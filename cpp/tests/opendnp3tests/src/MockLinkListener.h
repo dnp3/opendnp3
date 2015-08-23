@@ -18,41 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_MOCK_LINK_LISTENER_H_
+#define OPENDNP3_MOCK_LINK_LISTENER_H_
 
-#ifndef ASIODNP3_DEFAULTMASTERAPPLICATION_H
-#define ASIODNP3_DEFAULTMASTERAPPLICATION_H
+#include <opendnp3/link/ILinkListener.h>
 
-#include <opendnp3/master/IMasterApplication.h>
+#include <vector>
 
-namespace asiodnp3
+namespace opendnp3
 {
 
-class DefaultMasterApplication : public opendnp3::IMasterApplication
+
+class MockLinkListener final : public ILinkListener
 {
 public:
 
-	static IMasterApplication& Instance();
+	virtual void OnStateChange(LinkStatus value) override
+	{
+		statusValues.push_back(value);
+	}
 
-	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final {}
-
-	virtual void OnTaskStart(opendnp3::MasterTaskType type, int userId) override final {}
-
-	virtual void OnTaskComplete(opendnp3::MasterTaskType type, opendnp3::TaskCompletion result, int userId) override final {}
-
-	virtual bool AssignClassDuringStartup() override final { return false; }
+	std::vector< LinkStatus > statusValues;
 	
-	virtual void ConfigureAssignClassRequest(opendnp3::HeaderWriter& writer) override final {}
-
-	virtual openpal::UTCTimestamp Now() override final;
-
-	virtual void OnStateChange(opendnp3::LinkStatus value) override final {}
-
-private:
-	DefaultMasterApplication() {}
-
-	static DefaultMasterApplication instance;
 };
 
 }
 
 #endif
+

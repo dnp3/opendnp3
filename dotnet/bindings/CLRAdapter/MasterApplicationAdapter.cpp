@@ -16,6 +16,11 @@ namespace Automatak
 			MasterApplicationAdapter::MasterApplicationAdapter(Automatak::DNP3::Interface::IMasterApplication^ proxy_) : proxy(proxy_)
 			{}
 
+			void MasterApplicationAdapter::OnStateChange(opendnp3::LinkStatus value)
+			{
+				proxy->OnStateChange((LinkStatus)value);
+			}
+
 			openpal::UTCTimestamp MasterApplicationAdapter::Now()
 			{
 				auto milliseconds = proxy->GetMillisecondsSinceEpoch();

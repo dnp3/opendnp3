@@ -42,11 +42,10 @@ MasterStackImpl::MasterStackImpl(
 	opendnp3::ITaskLock& taskLock) :
 		root(root_, id),
 		handler(handler_),
-		stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
+		stack(root, executor, application, config.master.maxRxFragSize, &statistics, config.link),
 		master(executor, root, stack.transport, SOEHandler, application, config.master, taskLock)
 {
-	stack.transport.SetAppLayer(&master);
-	stack.link.SetLinkStatusListener(this);
+	stack.transport.SetAppLayer(&master);	
 }
 
 ICommandProcessor* MasterStackImpl::GetCommandProcessor()

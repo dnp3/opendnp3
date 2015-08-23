@@ -23,6 +23,8 @@ namespace Automatak
 			public:
 				OutstationApplicationAdapter(Automatak::DNP3::Interface::IOutstationApplication^ proxy);
 
+				virtual void OnStateChange(opendnp3::LinkStatus value) override final;
+
 				virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final;
 
 				virtual bool SupportsWriteAbsoluteTime() override final;

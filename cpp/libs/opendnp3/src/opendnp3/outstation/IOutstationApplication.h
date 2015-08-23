@@ -28,6 +28,8 @@
 #include "opendnp3/gen/RestartMode.h"
 #include "opendnp3/gen/AssignClassType.h"
 
+#include "opendnp3/link/ILinkListener.h"
+
 #include "opendnp3/app/IndexedValue.h"
 #include "opendnp3/app/IterableBuffer.h"
 #include "opendnp3/app/TimeAndInterval.h"
@@ -41,7 +43,7 @@ namespace opendnp3
 ///
 /// @summary Interface for all outstation application callback info except for control requests
 ///
-class IOutstationApplication
+class IOutstationApplication : public opendnp3::ILinkListener
 {
 	public:
 
@@ -108,35 +110,35 @@ class DefaultOutstationApplication : public IOutstationApplication
 {
 	public:
 
-	virtual bool SupportsWriteAbsoluteTime() override final { return false; }
+	static IOutstationApplication& DefaultOutstationApplication::Instance();
 
-	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final { return false; }
-	
-	virtual bool SupportsWriteTimeAndInterval() override final { return false; }
-	
-	virtual bool WriteTimeAndInterval(const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final { return false; }
+	virtual bool SupportsWriteAbsoluteTime() override { return false; }
 
-	virtual bool SupportsAssignClass() override final { return false; }
+	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override { return false; }
 	
-	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final { }
-
-	static IOutstationApplication& Instance();
-
-	virtual ApplicationIIN GetApplicationIIN() const override final { return ApplicationIIN(); };
-
-	virtual RestartMode ColdRestartSupport() const override final { return RestartMode::UNSUPPORTED; }
+	virtual bool SupportsWriteTimeAndInterval() override { return false; }
 	
-	virtual RestartMode WarmRestartSupport() const override final { return RestartMode::UNSUPPORTED; }
-	
-	virtual uint16_t ColdRestart() override final { return 65535; }
-	
-	virtual uint16_t WarmRestart() override final { return 65535; }
-	
-	private:
+	virtual bool WriteTimeAndInterval(const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override { return false; }
 
-	DefaultOutstationApplication() {}
+	virtual bool SupportsAssignClass() override { return false; }
+	
+	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override { }	
 
-	static DefaultOutstationApplication instance;
+	virtual ApplicationIIN GetApplicationIIN() const override { return ApplicationIIN(); };
+
+	virtual RestartMode ColdRestartSupport() const override { return RestartMode::UNSUPPORTED; }
+	
+	virtual RestartMode WarmRestartSupport() const override { return RestartMode::UNSUPPORTED; }
+	
+	virtual uint16_t ColdRestart() override { return 65535; }
+	
+	virtual uint16_t WarmRestart() override { return 65535; }
+
+	virtual void OnStateChange(opendnp3::LinkStatus value) override {}
+		
+private:
+
+	static DefaultOutstationApplication m_instance;
 };
 
 }

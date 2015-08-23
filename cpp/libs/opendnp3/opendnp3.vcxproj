@@ -109,7 +109,7 @@
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
     <ClInclude Include="src\opendnp3\LayerInterfaces.h" />
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
-    <ClInclude Include="src\opendnp3\link\ILinkStatusListener.h" />
+    <ClInclude Include="src\opendnp3\link\ILinkListener.h" />
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />
     <ClInclude Include="src\opendnp3\gen\ChannelState.h" />

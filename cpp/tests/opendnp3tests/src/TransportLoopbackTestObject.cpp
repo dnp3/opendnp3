@@ -44,12 +44,13 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
     uint32_t filters) :
 
 	TestObjectASIO(service),
+	listener(),
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
-	mLinkA(root, &executor, aCfgA),
-	mLinkB(root, &executor, aCfgB),
-	mTransA(root, &executor, DEFAULT_MAX_APDU_SIZE),
-	mTransB(root, &executor, DEFAULT_MAX_APDU_SIZE),
+	mLinkA(root, executor, listener, aCfgA),
+	mLinkB(root, executor, listener, aCfgB),
+	mTransA(root, executor, DEFAULT_MAX_APDU_SIZE),
+	mTransB(root, executor, DEFAULT_MAX_APDU_SIZE),
 	mRouter(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1))
 {
 	Route routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);

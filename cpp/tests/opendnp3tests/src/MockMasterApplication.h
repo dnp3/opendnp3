@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-class MockMasterApplication : public IMasterApplication
+class MockMasterApplication final : public IMasterApplication
 {
 
 public:
@@ -37,32 +37,35 @@ public:
 	MockMasterApplication() : time(0)
 	{}
 
-	virtual openpal::UTCTimestamp Now() override final
+	virtual void OnStateChange(LinkStatus value) override
+	{}
+
+	virtual openpal::UTCTimestamp Now() override
 	{
 		return openpal::UTCTimestamp(time);
 	}
 
-	virtual void OnReceiveIIN(const IINField& iin) override final
+	virtual void OnReceiveIIN(const IINField& iin) override
 	{
 		rxIIN.push_back(iin);
 	}
 
-	virtual void OnTaskStart(MasterTaskType type, int userId) override final
+	virtual void OnTaskStart(MasterTaskType type, int userId) override
 	{
 		taskStartEvents.push_back(type);		
 	}
 
-	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion result, int userId) override final
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion result, int userId) override
 	{
 		taskCompletionEvents.push_back(std::pair<MasterTaskType, TaskCompletion>(type, result));
 	}
 
-	virtual bool AssignClassDuringStartup() override final
+	virtual bool AssignClassDuringStartup() override
 	{
 		return assignClass ? true : false;
 	}
 	
-	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) override final
+	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) override
 	{
 		return assignClass(writer);
 	}

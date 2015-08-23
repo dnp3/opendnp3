@@ -176,6 +176,9 @@
     <ClInclude Include="src\MockTaskCallback.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
+    <ClInclude Include="src\MockLinkListener.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BufferHelpers.cpp">
