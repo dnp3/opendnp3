@@ -30,8 +30,10 @@ char const* LinkStatusToString(LinkStatus arg)
       return "UNRESET";
     case(LinkStatus::RESET):
       return "RESET";
+	case(LinkStatus::TIMEOUT) :
+		return "TIMEOUT";
   }
-  return "RESET";
+  return "TIMEOUT";
 }
 
 }

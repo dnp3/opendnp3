@@ -51,6 +51,8 @@ class Outstation : public IUpperLayer
 	
 	virtual void OnSendResult(bool isSucccess) override final;
 
+	virtual bool OnLowerSend() override final;
+
 	
 	/// ---- Other public members
 

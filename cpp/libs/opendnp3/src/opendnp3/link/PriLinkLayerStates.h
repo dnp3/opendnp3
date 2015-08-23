@@ -23,6 +23,7 @@
 
 #include "opendnp3/link/Singleton.h"
 #include "opendnp3/link/LinkLayer.h"
+#include "opendnp3/LogLevels.h"
 
 namespace opendnp3
 {
@@ -40,6 +41,7 @@ public:
 	virtual void Nack(LinkLayer*, bool receiveBuffFull);
 	virtual void LinkStatus(LinkLayer*, bool receiveBuffFull);
 	virtual void NotSupported(LinkLayer*, bool receiveBuffFull);
+	virtual void OtherFunction(LinkLayer*);
 
 	virtual void OnTransmitResult(LinkLayer*, bool success);
 
@@ -63,7 +65,7 @@ class PLLS_SecNotReset : public PriStateBase
 
 
 /////////////////////////////////////////////////////////////////////////////
-//  template wait state for send unconfirmed sata
+//  template wait state for send unconfirmed data
 /////////////////////////////////////////////////////////////////////////////
 
 template <class ReturnToState>
@@ -102,6 +104,106 @@ class PLLS_LinkResetTransmitWait : public PriStateBase
 
 	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
 };
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//  Wait for the link layer to transmit the request link status, and wait for response
+/////////////////////////////////////////////////////////////////////////////
+
+template <class ReturnToState>
+class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait<ReturnToState>);
+
+	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+};
+
+//	@section desc As soon as we get a link status, return to base state
+template <class ReturnToState>
+class PLLS_LinkStatusWait : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkStatusWait<ReturnToState>);
+
+	void Ack(LinkLayer* apLL, bool)
+	{
+		Failure(apLL);
+	}
+	void Nack(LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
+	void LinkStatus(LinkLayer* apLL, bool);
+	void NotSupported (LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
+	void OtherFunction (LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
+
+	void OnTimeout(LinkLayer*);
+
+private:
+	void Failure(LinkLayer*);
+};
+
+template <class ReturnToState>
+PLLS_RequestLinkStatusTransmitWait<ReturnToState> PLLS_RequestLinkStatusTransmitWait<ReturnToState>::instance;
+
+template <class ReturnToState>
+PLLS_LinkStatusWait<ReturnToState> PLLS_LinkStatusWait<ReturnToState>::instance;
+
+template <class ReturnToState>
+void PLLS_RequestLinkStatusTransmitWait<ReturnToState>::OnTransmitResult(LinkLayer* pLinkLayer, bool success)
+{
+	if (success)
+	{
+		// now we're waiting for a link status response
+		pLinkLayer->StartTimer();
+		pLinkLayer->ChangeState(PLLS_LinkStatusWait<ReturnToState>::Inst());
+	}
+	else
+	{
+		pLinkLayer->ChangeState(ReturnToState::Inst());
+		pLinkLayer->DoSendResult(success);
+	}
+}
+
+template <class ReturnToState>
+void PLLS_LinkStatusWait<ReturnToState>::LinkStatus(LinkLayer* pLinkLayer, bool receiveBuffFull)
+{
+	pLinkLayer->CancelTimer();
+	pLinkLayer->ChangeState(ReturnToState::Inst());
+	pLinkLayer->DoSendResult(true);
+}
+
+template <class ReturnToState>
+void PLLS_LinkStatusWait<ReturnToState>::Failure(LinkLayer* pLinkLayer)
+{
+	pLinkLayer->CancelTimer();
+	pLinkLayer->ChangeState(ReturnToState::Inst());
+	pLinkLayer->DoSendResult(false);
+}
+
+template <class ReturnToState>
+void PLLS_LinkStatusWait<ReturnToState>::OnTimeout(LinkLayer* pLinkLayer)
+{
+	if (pLinkLayer->Retry())
+	{
+		FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "%s: Request link status timeout, retrying %i remaining", Name(), pLinkLayer->RetryRemaining());
+		pLinkLayer->QueueRequestLinkStatus();
+		pLinkLayer->ChangeState(PLLS_RequestLinkStatusTransmitWait<ReturnToState>::Inst());
+	}
+	else
+	{
+		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::TIMEOUT);
+		FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "%s: Request link status final timeout, no retries remain", Name());
+		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
+		pLinkLayer->DoSendResult(false);
+	}
+}
 
 /////////////////////////////////////////////////////////////////////////////
 //  Wait for the link layer to transmit confirmed user data
@@ -145,6 +247,10 @@ class PLLS_ResetLinkWait : public PriStateBase
 	{
 		Failure(apLL);
 	}
+	void OtherFunction (LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
 
 	void OnTimeout(LinkLayer*);
 
@@ -166,6 +272,10 @@ class PLLS_ConfDataWait : public PriStateBase
 	void NotSupported (LinkLayer* apLL, bool)
 	{
 		Failure(apLL);
+	}
+	void OtherFunction(LinkLayer* pLinkLayer)
+	{
+		Failure(pLinkLayer);
 	}
 	void OnTimeout(LinkLayer*);
 

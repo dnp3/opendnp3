@@ -27,6 +27,7 @@
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/master/ISOEHandler.h>
+#include <asiodnp3/MeasUpdate.h>
 
 #include <asiopal/UTCTimeSource.h>
 
@@ -113,7 +114,124 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 	}
 }
 
+TEST_CASE(SUITE("StackLinkStatus"))
+{
+	DNP3Manager manager(1);
 
+	auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(1), TimeDuration::Seconds(1), "127.0.0.1", "", 20000);
+	auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(1), TimeDuration::Seconds(1), "0.0.0.0", 20000);
+
+	auto mconf = MasterStackConfig();
+	mconf.master.disableUnsolOnStartup = false;
+	mconf.master.unsolClassMask = opendnp3::ClassField::AllClasses();
+	mconf.link.KeepAlive = openpal::TimeDuration::Milliseconds(10);
+	mconf.link.Timeout = openpal::TimeDuration::Milliseconds(10);
+	mconf.link.NumRetry = 0;
+
+	auto db = DatabaseTemplate();
+	db.numAnalog = 1;
+
+	auto oconf = OutstationStackConfig(db);
+	oconf.outstation.params.allowUnsolicited = true;
+	oconf.outstation.params.unsolClassMask = opendnp3::ClassField::AllClasses();
+
+	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), oconf);
+	oconf.link.LocalAddr = 3;
+	auto pOutstation2 = pServer->AddOutstation("outstation2", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), oconf);
+	auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), asiodnp3::DefaultMasterApplication::Instance(), mconf);
+
+	opendnp3::LinkStatus cstatus;
+	auto lambda = [&](opendnp3::LinkStatus lstatus) {
+		cstatus = lstatus;
+	};
+
+	pMaster->AddLinkStatusListener(lambda);
+	REQUIRE(cstatus == opendnp3::LinkStatus::TIMEOUT);
+	
+	pOutstation->Enable();
+	pOutstation2->Enable();
+	pMaster->Enable();
+	{//trasaction scope
+		asiodnp3::MeasUpdate tx(pOutstation);
+		tx.Update(opendnp3::Analog(123.4), 0);
+	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::UNRESET);
+	
+	pOutstation->Disable();
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::TIMEOUT);
+
+	pOutstation->Enable();
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::UNRESET);
+	pMaster->ScanClasses(ClassField::AllClasses());
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::UNRESET);
+
+	pOutstation->Shutdown();
+	pMaster->Shutdown();
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::TIMEOUT);
+}
+
+TEST_CASE(SUITE("StackLinkStatusConfirms"))
+{
+	DNP3Manager manager(1);
+
+	auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(1), TimeDuration::Seconds(1), "127.0.0.1", "", 20000);
+	auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(1), TimeDuration::Seconds(1), "0.0.0.0", 20000);
+
+	auto mconf = MasterStackConfig();
+	mconf.master.disableUnsolOnStartup = false;
+	mconf.master.unsolClassMask = opendnp3::ClassField::AllClasses();
+	mconf.link.UseConfirms = true;
+	mconf.link.KeepAlive = openpal::TimeDuration::Milliseconds(10);
+	mconf.link.Timeout = openpal::TimeDuration::Milliseconds(10);
+	mconf.link.NumRetry = 0;
+
+	auto db = DatabaseTemplate();
+	db.numAnalog = 1;
+
+	auto oconf = OutstationStackConfig(db);
+	oconf.outstation.params.allowUnsolicited = true;
+	oconf.outstation.params.unsolClassMask = opendnp3::ClassField::AllClasses();
+	oconf.link.UseConfirms = true;
+
+	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), oconf);
+	oconf.link.LocalAddr = 3;
+	auto pOutstation2 = pServer->AddOutstation("outstation2", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), oconf);
+	auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), asiodnp3::DefaultMasterApplication::Instance(), mconf);
+
+	opendnp3::LinkStatus cstatus;
+	auto lambda = [&](opendnp3::LinkStatus lstatus) {
+		cstatus = lstatus;
+	};
+
+	pMaster->AddLinkStatusListener(lambda);
+
+	pOutstation->Enable();
+	pOutstation2->Enable();
+	pMaster->Enable();
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::RESET);
+
+	pOutstation->Disable();
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::TIMEOUT);
+
+	pOutstation->Enable();
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::UNRESET);
+	pMaster->ScanClasses(ClassField::AllClasses());
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::RESET);
+
+	pOutstation->Shutdown();
+	pMaster->Shutdown();
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	REQUIRE(cstatus == opendnp3::LinkStatus::TIMEOUT);
+}
 
 
 

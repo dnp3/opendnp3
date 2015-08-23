@@ -197,6 +197,17 @@ void MasterContext::OnSendResult(bool isSucccess)
 	}
 }
 
+bool MasterContext::OnLowerSend()
+{
+	if (isSending)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Lower layer send blocked - send request already in progress");
+		return false;
+	}
+	isSending = true;
+	return isSending;
+}
+
 void MasterContext::OnReceive(const ReadBufferView& apdu)
 {
 	if (isOnline)

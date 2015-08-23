@@ -68,6 +68,11 @@ void Master::OnSendResult(bool isSucccess)
 	context.OnSendResult(isSucccess);	
 }
 
+bool Master::OnLowerSend()
+{
+	return context.OnLowerSend();
+}
+
 ICommandProcessor& Master::GetCommandProcessor()
 {
 	return commandMarshaller;

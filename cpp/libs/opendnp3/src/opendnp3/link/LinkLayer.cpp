@@ -46,9 +46,11 @@ LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, con
 	numRetryRemaining(0),
 	pExecutor(pExecutor_),
 	pTimer(nullptr),
+    pKeepAliveTimer(nullptr),
 	nextReadFCB(false),
 	nextWriteFCB(false),
 	isOnline(false),
+	TimedOut(true),
 	pRouter(nullptr),
 	pPriState(PLLS_SecNotReset::Inst()),
 	pSecState(SLLS_NotReset::Inst()),
@@ -64,6 +66,11 @@ void LinkLayer::SetRouter(ILinkRouter& router)
 void LinkLayer::ChangeState(PriStateBase* pState)
 {
 	pPriState = pState;
+	// Keep alive only when in an idle state
+	if ((pPriState == PLLS_SecNotReset::Inst()) || (pPriState == PLLS_SecReset::Inst()))
+	{
+		ResetKeepAlive();
+	}
 }
 
 void LinkLayer::ChangeState(SecStateBase* pState)
@@ -78,6 +85,12 @@ void LinkLayer::SetLinkStatusListener(opendnp3::ILinkStatusListener* Listener)
 
 void LinkLayer::CallStatusCallback(opendnp3::LinkStatus status)
 {
+	if (status == opendnp3::LinkStatus::TIMEOUT)
+	{
+		if (TimedOut)
+			return;
+		TimedOut = true;
+	}
 	if(pStatusCallback != nullptr)
 		pStatusCallback->OnStateChange(status);
 }
@@ -105,6 +118,12 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 			{
 				if (aSrc == config.RemoteAddr)
 				{
+					ResetKeepAlive();
+					if (TimedOut)
+					{
+						TimedOut = false;
+						CallStatusCallback(opendnp3::LinkStatus::UNRESET);
+					}
 					return true;
 				}
 				else
@@ -163,12 +182,12 @@ void LinkLayer::OnLowerLayerUp()
 	else
 	{
 		isOnline = true;
+        this->ResetKeepAlive();
 
 		if (pUpperLayer)
 		{
 			pUpperLayer->OnLowerLayerUp();
 		}
-		CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
 }
 
@@ -186,6 +205,11 @@ void LinkLayer::OnLowerLayerDown()
 			this->CancelTimer();
 		}
 
+		if (pKeepAliveTimer)
+		{
+			this->CancelKeepAlive();
+		}
+
 		pPriState = PLLS_SecNotReset::Inst();
 		pSecState = SLLS_NotReset::Inst();
 
@@ -194,7 +218,7 @@ void LinkLayer::OnLowerLayerDown()
 			pUpperLayer->OnLowerLayerDown();
 		}
 
-		CallStatusCallback(opendnp3::LinkStatus::UNRESET);
+		CallStatusCallback(opendnp3::LinkStatus::TIMEOUT);
 	}
 	else
 	{
@@ -283,6 +307,14 @@ void LinkLayer::QueueAck()
 	this->QueueTransmit(buffer, false);
 }
 
+void LinkLayer::QueueRequestLinkStatus()
+{
+    auto writeTo = WriteBufferView(secTxBuffer, LPDU_HEADER_SIZE);
+    auto buffer = LinkFrame::FormatRequestLinkStatus(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+    FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
+    this->QueueTransmit(buffer, true);
+}
+    
 void LinkLayer::QueueLinkStatus()
 {
 	auto writeTo = WriteBufferView(secTxBuffer, LPDU_HEADER_SIZE);
@@ -330,7 +362,45 @@ bool LinkLayer::Retry()
 		return false;
 	}
 }
-
+    
+void LinkLayer::ResetKeepAlive()
+{
+	this->CancelKeepAlive();
+	if(!config.KeepAlive) return;
+	auto lambda = [this]()
+	{
+		pKeepAliveTimer = nullptr;
+		// Keep alive only when in an idle state, and get the OK from upper layers
+		if (pPriState == PLLS_SecNotReset::Inst())
+		{
+			if(!DoLowerSend())
+				return;
+			this->ResetRetry();
+			this->QueueRequestLinkStatus();
+			this->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecNotReset>::Inst());
+		}
+		else if (pPriState == PLLS_SecReset::Inst())
+		{
+			if(!DoLowerSend())
+				return;
+			this->ResetRetry();
+			this->QueueRequestLinkStatus();
+			this->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecReset>::Inst());
+		}
+	};
+	pKeepAliveTimer = this->pExecutor->Start(TimeDuration(config.KeepAlive), Action0::Bind(lambda));
+}
+    
+void LinkLayer::CancelKeepAlive()
+{
+	if (pKeepAliveTimer == nullptr)
+	{
+		return;
+	}
+	pKeepAliveTimer->Cancel();
+	pKeepAliveTimer = nullptr;
+}
+    
 ////////////////////////////////
 // IFrameSink
 ////////////////////////////////
@@ -372,6 +442,7 @@ void LinkLayer::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
 		pSecState->TestLinkStatus(this, aFcb);
+		pPriState->OtherFunction(this);
 	}
 }
 
@@ -380,6 +451,7 @@ void LinkLayer::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
 		pSecState->ResetLinkStates(this);
+		pPriState->OtherFunction(this);
 	}
 }
 
@@ -388,6 +460,7 @@ void LinkLayer::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
 		pSecState->RequestLinkStatus(this);
+		pPriState->OtherFunction(this);
 	}
 }
 
@@ -396,6 +469,7 @@ void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uin
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
 		pSecState->ConfirmedUserData(this, aFcb, input);
+		pPriState->OtherFunction(this);
 	}
 }
 
@@ -403,6 +477,7 @@ void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSr
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
+		pPriState->OtherFunction(this);
 		this->DoDataUp(input);
 	}
 }

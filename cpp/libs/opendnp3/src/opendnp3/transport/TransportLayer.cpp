@@ -135,6 +135,20 @@ void TransportLayer::OnSendResult(bool isSuccess)
 	}
 }
 
+bool TransportLayer::OnLowerSend()
+{
+	if (isSending)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Lower layer send blocked - send request already in progress");
+		return false;
+	}
+	if(this->pUpperLayer->OnLowerSend())
+	{
+		isSending = true;
+		return isSending;
+	}
+}
+
 void TransportLayer::SetAppLayer(IUpperLayer* pUpperLayer_)
 {
 	assert(pUpperLayer_ != nullptr);
