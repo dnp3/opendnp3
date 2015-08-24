@@ -49,6 +49,7 @@
     <Compile Include="ApplicationIIN.cs" />
     <Compile Include="BaseMeasurementTypes.cs" />
     <Compile Include="BeginUpdateKeyChangeResult.cs" />
+    <Compile Include="ChangeSet.cs" />
     <Compile Include="ChannelStatistics.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -83,12 +84,15 @@
     <Compile Include="gen\EventDoubleBinaryVariation.cs" />
     <Compile Include="gen\EventFrozenCounterVariation.cs" />
     <Compile Include="gen\EventMode.cs" />
+    <Compile Include="gen\FunctionCode.cs" />
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
+    <Compile Include="gen\ILinkStatusListener.cs" />
     <Compile Include="gen\IndexMode.cs" />
     <Compile Include="gen\IntervalUnits.cs" />
     <Compile Include="gen\KeyChangeMethod.cs" />
     <Compile Include="gen\KeyWrapAlgorithm.cs" />
+    <Compile Include="gen\LinkStatus.cs" />
     <Compile Include="gen\MasterTaskType.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\QualifierCode.cs" />
