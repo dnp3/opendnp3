@@ -85,15 +85,10 @@ else()
 endif()
 
 # include paths for all the local libraries
-include_directories(./cpp/libs/secauth/src)
-include_directories(./cpp/libs/openpal/src)
-include_directories(./cpp/libs/opendnp3/src)
-include_directories(./cpp/libs/asiopal/src)
-include_directories(./cpp/libs/asiodnp3/src)
+include_directories(./cpp/libs/src)
 include_directories(./cpp/tests/testlib/src)
 include_directories(./cpp/tests/dnp3mocks/src)
 include_directories(./cpp/tests/catch)
-include_directories(./cpp/libs/osslcrypto/src)
 
 # required for ASIO in C++11 only mode
 add_definitions(-DASIO_STANDALONE)
@@ -102,44 +97,44 @@ add_definitions(-DASIO_STANDALONE)
 set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
 
 # ---- openpal library ----
-file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp ./cpp/libs/openpal/src/openpal/*.h)
+file(GLOB_RECURSE openpal_SRC ./cpp/libs/src/openpal/*.cpp ./cpp/libs/src/openpal/*.h)
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
-install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
+install(DIRECTORY ./cpp/libs/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
 set_target_properties(openpal PROPERTIES FOLDER libs)
 
 # ---- opendnp3 library ----
-file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp ./cpp/libs/opendnp3/src/opendnp3/*.h)
+file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/src/opendnp3/*.cpp ./cpp/libs/src/opendnp3/*.h)
 add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(openpal)
 install(TARGETS opendnp3 DESTINATION lib)
-install(DIRECTORY ./cpp/libs/opendnp3/src/opendnp3/ DESTINATION include/opendnp3 ${INSTALL_ARGS})
+install(DIRECTORY ./cpp/libs/src/opendnp3/ DESTINATION include/opendnp3 ${INSTALL_ARGS})
 set_target_properties(opendnp3 PROPERTIES FOLDER libs)
 
 # ---- asiopal library ----
-file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp ./cpp/libs/asiopal/src/asiopal/*.h)
+file(GLOB_RECURSE asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h)
 add_library(asiopal ${LIB_TYPE} ${asiopal_SRC})
 target_link_libraries(asiopal openpal)
 install(TARGETS asiopal DESTINATION lib)
-install(DIRECTORY ./cpp/libs/asiopal/src/asiopal/ DESTINATION include/asiopal ${INSTALL_ARGS})
+install(DIRECTORY ./cpp/libs/src/asiopal/ DESTINATION include/asiopal ${INSTALL_ARGS})
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
-file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp ./cpp/libs/asiodnp3/src/asiodnp3/*.h)
+file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h)
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 opendnp3)
 target_link_libraries(asiodnp3 secauth)
 target_link_libraries(asiodnp3 asiopal)
 install(TARGETS asiodnp3 DESTINATION lib)
-install(DIRECTORY ./cpp/libs/asiodnp3/src/asiodnp3/ DESTINATION include/asiodnp3 ${INSTALL_ARGS})
+install(DIRECTORY ./cpp/libs/src/asiodnp3/ DESTINATION include/asiodnp3 ${INSTALL_ARGS})
 set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
 
 # ---- secauth library ----
-file(GLOB_RECURSE secauth_SRC ./cpp/libs/secauth/src/secauth/*.cpp ./cpp/libs/secauth/src/secauth/*.h)
+file(GLOB_RECURSE secauth_SRC ./cpp/libs/src/secauth/*.cpp ./cpp/libs/src/secauth/*.h)
 add_library(secauth ${LIB_TYPE} ${secauth_SRC})
 target_link_libraries(secauth opendnp3)
 install(TARGETS secauth DESTINATION lib)
-install(DIRECTORY ./cpp/libs/secauth/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
+install(DIRECTORY ./cpp/libs/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
 set_target_properties(secauth PROPERTIES FOLDER libs)
 
 if(DEMO)
@@ -159,12 +154,12 @@ endif()
 if(OSSL)
 
   # ---- osslcrypto library ----
-  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp ./cpp/libs/osslcrypto/src/osslcrypto/*.h)
+  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/src/osslcrypto/*.cpp ./cpp/libs/src/osslcrypto/*.h)
   add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
   target_link_libraries(osslcrypto openpal)
   target_link_libraries(osslcrypto ${OPENSSL_LIBRARIES})  
   install(TARGETS osslcrypto DESTINATION lib)
-  install(DIRECTORY ./cpp/libs/osslcrypto/src/osslcrypto/ DESTINATION include/osslcrypto ${INSTALL_ARGS})
+  install(DIRECTORY ./cpp/libs/src/osslcrypto/ DESTINATION include/osslcrypto ${INSTALL_ARGS})
   set_target_properties(osslcrypto PROPERTIES FOLDER libs)
 
   if(DEMO)
@@ -214,16 +209,7 @@ if(TEST)
   file(GLOB_RECURSE secauth_TESTSRC ./cpp/tests/secauthtests/src/*.cpp ./cpp/tests/secauthtests/src/*.h)
   add_executable (testsecauth ${secauth_TESTSRC})
   target_link_libraries (testsecauth LINK_PUBLIC secauth dnp3mocks)
-  set_target_properties(testsecauth PROPERTIES FOLDER tests)  
-
-  #[[
-  if(NOT WIN32)
-    # ------ afl fuzzer exe -----
-    add_executable (aflfuzzer ./cpp/tests/afl-fuzzer/main.cpp)
-    target_link_libraries (aflfuzzer LINK_PUBLIC opendnp3)
-    set_target_properties(aflfuzzer PROPERTIES FOLDER tests)
-  endif()
-  #]]
+  set_target_properties(testsecauth PROPERTIES FOLDER tests)   
 
   # ----- opensslcrypto tests -----
   if(OSSL)
