@@ -110,7 +110,7 @@ class DefaultOutstationApplication : public IOutstationApplication
 {
 	public:
 
-	static IOutstationApplication& DefaultOutstationApplication::Instance();
+	static IOutstationApplication& Instance();
 
 	virtual bool SupportsWriteAbsoluteTime() override { return false; }
 
