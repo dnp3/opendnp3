@@ -23,7 +23,7 @@
 
 #include <opendnp3/LogLevels.h>
 
-#include <asiodnp3/impl/PhysicalLayerMonitor.h>
+#include <asiodnp3/PhysicalLayerMonitor.h>
 
 #include "MockPhysicalLayer.h"
 

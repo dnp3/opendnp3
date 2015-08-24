@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_LINKLAYERROUTER_H
 #define ASIODNP3_LINKLAYERROUTER_H
 
-#include "asiodnp3/impl/PhysicalLayerMonitor.h"
+#include "asiodnp3/PhysicalLayerMonitor.h"
 
 #include <opendnp3/Route.h>
 #include <opendnp3/link/LinkLayerParser.h>

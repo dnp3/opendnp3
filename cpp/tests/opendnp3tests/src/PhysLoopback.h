@@ -21,7 +21,7 @@
 #ifndef __PHYS_LOOPBACK_H_
 #define __PHYS_LOOPBACK_H_
 
-#include <asiodnp3/impl/PhysicalLayerMonitor.h>
+#include <asiodnp3/PhysicalLayerMonitor.h>
 
 #include <testlib/CopyableBuffer.h>
 

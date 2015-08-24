@@ -16,6 +16,10 @@ if(FULL)
 	set(DEMO ON)
 	set(TEST ON)
 endif()
+
+if(SECAUTH)
+	 add_definitions(-DOPENDNP3_USE_SECAUTH)
+endif()
  
 # other options off-by-default that you can enable
 option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
@@ -31,7 +35,8 @@ if(WIN32)
 
   set_property(GLOBAL PROPERTY USE_FOLDERS ON) #allows the creation of solution folders
 
-  add_definitions(-D_WIN32_WINNT=0x0501) # for ASIO
+   # for ASIO
+  add_definitions(-D_WIN32_WINNT=0x0501)
   add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)  
 
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP")
@@ -200,8 +205,12 @@ if(TEST)
 
   # ----- opendnp3 tests -----
   file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp ./cpp/tests/opendnp3tests/src/*.h)
-  add_executable (testopendnp3 ${opendnp3_TESTSRC})
-  target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks ${PTHREAD})
+  add_executable (testopendnp3 ${opendnp3_TESTSRC})  
+  if(SECAUTH)
+   target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks ${PTHREAD})
+  else()
+   target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
+  endif()
   set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
 
   if(SECAUTH)

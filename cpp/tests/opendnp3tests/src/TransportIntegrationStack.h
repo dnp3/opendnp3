@@ -24,7 +24,7 @@
 #include <opendnp3/link/LinkLayer.h>
 #include <opendnp3/transport/TransportLayer.h>
 
-#include <asiodnp3/impl/LinkLayerRouter.h>
+#include <asiodnp3/LinkLayerRouter.h>
 
 #include "MockUpperLayer.h"
 #include "MockLinkListener.h"

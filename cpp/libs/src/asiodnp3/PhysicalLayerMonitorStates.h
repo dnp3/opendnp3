@@ -24,7 +24,7 @@
 #include <opendnp3/link/Singleton.h>
 #include <opendnp3/gen/ChannelState.h>
 
-#include "asiodnp3/impl/PhysicalLayerMonitor.h"
+#include "asiodnp3/PhysicalLayerMonitor.h"
 
 
 #define MACRO_MONITOR_SINGLETON(type, state, shuttingDown) \

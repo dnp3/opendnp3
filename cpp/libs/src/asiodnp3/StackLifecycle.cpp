@@ -24,7 +24,7 @@
 #include <openpal/executor/IExecutor.h>
 #include <asiopal/ASIOExecutor.h>
 
-#include "asiodnp3/impl/LinkLayerRouter.h"
+#include "asiodnp3/LinkLayerRouter.h"
 
 #include <vector>
 

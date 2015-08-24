@@ -34,7 +34,7 @@
 #include "MultidropTaskLock.h"
 #include "StackLifecycle.h"
 
-#include "asiodnp3/impl/LinkLayerRouter.h"
+#include "asiodnp3/LinkLayerRouter.h"
 #include <memory>
 
 namespace openpal

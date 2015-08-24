@@ -26,7 +26,7 @@
 
 #include "MockPhysicalLayer.h"
 
-#include <asiodnp3/impl/LinkLayerRouter.h>
+#include <asiodnp3/LinkLayerRouter.h>
 #include <opendnp3/LogLevels.h>
 
 namespace opendnp3

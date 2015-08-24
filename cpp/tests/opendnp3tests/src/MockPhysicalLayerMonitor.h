@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <asiodnp3/impl/PhysicalLayerMonitor.h>
+#include <asiodnp3/PhysicalLayerMonitor.h>
 #include <testlib/CopyableBuffer.h>
 
 #include <queue>
