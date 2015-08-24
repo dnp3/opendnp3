@@ -114,17 +114,14 @@ int main(int argc, char* argv[])
 			case('a') :
 				pMaster->ScanRange(GroupVariationID(1, 2), 0, 3);				
 				break;
-			case('d') :
-			{
-				auto headers = { Header::AllObjects(60, 2), Header::AllObjects(60, 3), Header::AllObjects(60, 4) };
-				pMaster->EmptyResponseTask("disable unsol", FunctionCode::DISABLE_UNSOLICITED, headers);
-				break;
-			}
-			case('r') :
-			{				
+			case('d') :					
+				pMaster->EmptyResponseTask("disable unsol", FunctionCode::DISABLE_UNSOLICITED,
+					{ Header::AllObjects(60, 2), Header::AllObjects(60, 3), Header::AllObjects(60, 4) }
+				);					
+				break;			
+			case('r') :			
 				pMaster->EmptyResponseTask("cold restart", FunctionCode::COLD_RESTART, {});
-				break;
-			}
+				break;			
 			case('x'):
 				// C++ destructor on DNP3Manager cleans everything up for you
 				return 0;
