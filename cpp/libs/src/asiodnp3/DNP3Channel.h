@@ -87,20 +87,25 @@ public:
 								opendnp3::IMasterApplication& application,
 								const opendnp3::MasterStackConfig& config) override final;
 
-	virtual IMasterSA* AddMasterSA(	char const* id,
-									opendnp3::ISOEHandler& SOEHandler,
-									secauth::IMasterApplicationSA& application,
-									const secauth::MasterAuthStackConfig& config) override final;
+	
 
 	virtual IOutstation* AddOutstation(char const* id,
 								opendnp3::ICommandHandler& commandHandler,
 								opendnp3::IOutstationApplication& application,
 								const opendnp3::OutstationStackConfig& config) override final;
 
-	virtual IOutstationSA* AddOutstationSA(char const* id,
-								opendnp3::ICommandHandler& commandHandler,
-								secauth::IOutstationApplicationSA& application,
-								const secauth::OutstationAuthStackConfig& config) override final;
+#ifdef OPENDNP3_USE_SECAUTH
+
+	virtual IMasterSA* AddMasterSA(	char const* id,
+									opendnp3::ISOEHandler& SOEHandler,
+									secauth::IMasterApplicationSA& application,
+									const secauth::MasterAuthStackConfig& config) override final;
+
+	virtual IOutstationSA* AddOutstationSA(	char const* id,
+											opendnp3::ICommandHandler& commandHandler,
+											secauth::IOutstationApplicationSA& application,
+											const secauth::OutstationAuthStackConfig& config) override final;
+#endif
 
 	// -----------------------------------------------------------------------
 

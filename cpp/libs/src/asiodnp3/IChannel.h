@@ -30,12 +30,16 @@
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/ICommandHandler.h>
+#include <opendnp3/outstation/IOutstationApplication.h>
 
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
+#include "IMaster.h"
+#include "IOutstation.h"
 #include "DestructorHook.h"
+#include <memory>
 
 #ifdef OPENDNP3_USE_SECAUTH
 
@@ -50,7 +54,7 @@
 
 #endif
 
-#include <memory>
+
 
 namespace asiodnp3
 {
@@ -103,15 +107,7 @@ public:
 	virtual IMaster* AddMaster(		char const* id,
 									opendnp3::ISOEHandler& SOEHandler,							   
 									opendnp3::IMasterApplication& application,
-									const opendnp3::MasterStackConfig& config) = 0;
-
-	/**
-	* SA enabled version of the master
-	*/
-	virtual IMasterSA* AddMasterSA(	char const* id,
-									opendnp3::ISOEHandler& SOEHandler,
-									secauth::IMasterApplicationSA& application,
-									const secauth::MasterAuthStackConfig& config) = 0;
+									const opendnp3::MasterStackConfig& config) = 0;	
 
 	/**
 	* Add an outstation to the channel
@@ -127,6 +123,16 @@ public:
 										opendnp3::IOutstationApplication& application,
 										const opendnp3::OutstationStackConfig& config) = 0;
 
+#ifdef OPENDNP3_USE_SECAUTH
+
+	/**
+	* SA enabled version of the master
+	*/
+	virtual IMasterSA* AddMasterSA(	char const* id,
+									opendnp3::ISOEHandler& SOEHandler,
+									secauth::IMasterApplicationSA& application,
+									const secauth::MasterAuthStackConfig& config) = 0;
+
 	/**
 	* Add an SA-enabled outstation to the channel
 	*/
@@ -134,6 +140,9 @@ public:
 											opendnp3::ICommandHandler& commandHandler,
 											secauth::IOutstationApplicationSA& application,
 											const secauth::OutstationAuthStackConfig& config) = 0;
+
+#endif
+
 };
 
 }

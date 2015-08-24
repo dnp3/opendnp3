@@ -151,31 +151,6 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	return pExecutor->ReturnBlockFor<IMaster*>(add);	
 }
 
-IMasterSA* DNP3Channel::AddMasterSA(	char const* id,
-									opendnp3::ISOEHandler& SOEHandler,
-									secauth::IMasterApplicationSA& application,
-									const secauth::MasterAuthStackConfig& config)
-{	
-	if (!pCrypto)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Manager was not initialized with a crypto provider");
-		return nullptr;
-	}
-
-
-	auto add = [&]() -> IMasterSA*
-	{
-		auto factory = [&]()
-		{
-			return new MasterStackSA(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, *pCrypto);			
-		};
-
-		return this->AddStack<MasterStackSA>(config.link, factory);
-	};
-	
-	return pExecutor->ReturnBlockFor<IMasterSA*>(add);
-}
-
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
 {
 	auto add = [this, id, &commandHandler, &application, config]() -> IOutstation*
@@ -189,6 +164,57 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 	};
 
 	return pExecutor->ReturnBlockFor<IOutstation*>(add);
+}
+
+void DNP3Channel::SetShutdownHandler(const openpal::Action0& action)
+{
+	shutdownHandler = action;
+}
+
+template <class T>
+T* DNP3Channel::AddStack(const opendnp3::LinkConfig& link, const std::function<T* ()>& factory)
+{
+	Route route(link.RemoteAddr, link.LocalAddr);
+	if (router.IsRouteInUse(route))
+	{
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
+		return nullptr;
+	}
+	else
+	{
+		auto pStack = factory();
+		stacks.Add(pStack);
+		pStack->SetLinkRouter(router);
+		router.AddContext(&pStack->GetLinkContext(), route);
+		return pStack;
+	}
+}
+
+#ifdef OPENDNP3_USE_SECAUTH
+
+IMasterSA* DNP3Channel::AddMasterSA(char const* id,
+	opendnp3::ISOEHandler& SOEHandler,
+	secauth::IMasterApplicationSA& application,
+	const secauth::MasterAuthStackConfig& config)
+{
+	if (!pCrypto)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Manager was not initialized with a crypto provider");
+		return nullptr;
+	}
+
+
+	auto add = [&]() -> IMasterSA*
+	{
+		auto factory = [&]()
+		{
+			return new MasterStackSA(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, *pCrypto);
+		};
+
+		return this->AddStack<MasterStackSA>(config.link, factory);
+	};
+
+	return pExecutor->ReturnBlockFor<IMasterSA*>(add);
 }
 
 IOutstationSA* DNP3Channel::AddOutstationSA(char const* id,
@@ -215,28 +241,6 @@ IOutstationSA* DNP3Channel::AddOutstationSA(char const* id,
 	return pExecutor->ReturnBlockFor<IOutstationSA*>(add);
 }
 
-void DNP3Channel::SetShutdownHandler(const openpal::Action0& action)
-{
-	shutdownHandler = action;
-}
-
-template <class T>
-T* DNP3Channel::AddStack(const opendnp3::LinkConfig& link, const std::function<T* ()>& factory)
-{
-	Route route(link.RemoteAddr, link.LocalAddr);
-	if (router.IsRouteInUse(route))
-	{
-		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
-		return nullptr;
-	}
-	else
-	{
-		auto pStack = factory();
-		stacks.Add(pStack);
-		pStack->SetLinkRouter(router);
-		router.AddContext(&pStack->GetLinkContext(), route);
-		return pStack;
-	}
-}
+#endif
 
 }

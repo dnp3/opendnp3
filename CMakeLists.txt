@@ -122,7 +122,12 @@ install(DIRECTORY ./cpp/libs/src/asiopal/ DESTINATION include/asiopal ${INSTALL_
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
-file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h)
+if(SECAUTH)
+	file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h)
+else()
+	file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h)
+endif()
+
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 opendnp3)
 target_link_libraries(asiodnp3 asiopal)
