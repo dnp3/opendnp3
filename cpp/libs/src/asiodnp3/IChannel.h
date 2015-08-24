@@ -35,15 +35,20 @@
 #include <openpal/executor/IExecutor.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
+#include "DestructorHook.h"
+
+#ifdef OPENDNP3_USE_SECAUTH
+
 #include <secauth/outstation/OutstationAuthStackConfig.h>
 #include <secauth/outstation/IOutstationApplicationSA.h>
 
 #include <secauth/master/MasterAuthStackConfig.h>
 #include <secauth/master/IMasterApplicationSA.h>
 
-#include "IMasterSA.h"
-#include "IOutstationSA.h"
-#include "DestructorHook.h"
+#include "asiodnp3/auth/IMasterSA.h"
+#include "asiodnp3/auth/IOutstationSA.h"
+
+#endif
 
 #include <memory>
 

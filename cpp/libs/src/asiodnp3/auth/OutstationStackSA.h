@@ -28,7 +28,7 @@
 #include <openpal/crypto/ICryptoProvider.h>
 
 #include "IOutstationSA.h"
-#include "OutstationStackBase.h"
+#include "asiodnp3/OutstationStackBase.h"
 
 namespace asiodnp3
 {

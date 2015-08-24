@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_IMASTERSA_H
 #define ASIODNP3_IMASTERSA_H
 
-#include "IMaster.h"
+#include "asiodnp3/IMaster.h"
 
 #include <opendnp3/app/User.h>
 #include <secauth/UpdateKey.h>

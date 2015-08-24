@@ -22,15 +22,18 @@
 
 #include <asiopal/PhysicalLayerBase.h>
 
-#include "MasterStack.h"
-#include "MasterStackSA.h"
-
-#include "OutstationStack.h"
-#include "OutstationStackSA.h"
-
 #include <openpal/logging/LogMacros.h>
-
 #include <opendnp3/LogLevels.h>
+
+#include "MasterStack.h"
+#include "OutstationStack.h"
+
+#ifdef OPENDNP3_USE_SECAUTH
+
+#include "asiodnp3/auth/MasterStackSA.h"
+#include "asiodnp3/auth/OutstationStackSA.h"
+
+#endif
 
 using namespace openpal;
 using namespace opendnp3;

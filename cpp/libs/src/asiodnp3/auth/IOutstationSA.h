@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_IOUTSTATIONSA_H
 #define ASIODNP3_IOUTSTATIONSA_H
 
-#include "IOutstation.h"
+#include "asiodnp3/IOutstation.h"
 
 #include <secauth/AuthorityKey.h>
 #include <secauth/outstation/OutstationUserInfo.h>
