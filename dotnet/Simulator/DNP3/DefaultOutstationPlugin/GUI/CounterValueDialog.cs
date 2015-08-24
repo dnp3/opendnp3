@@ -45,11 +45,17 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
                 var changes = new ChangeSet();            
                 if (isCounter)
                 {
-                    indices.Each(i => changes.Update(new Counter(value, quality, timestamp), i));
+                    foreach(var i in indices)
+                    {
+                        changes.Update(new Counter(value, quality, timestamp), i);
+                    }
                 }
                 else
                 {
-                    indices.Each(i => changes.Update(new FrozenCounter(value, quality, timestamp), i));
+                    foreach(var i in indices)
+                    {
+                        changes.Update(new FrozenCounter(value, quality, timestamp), i);
+                    }
                 }
                 return changes;
             }

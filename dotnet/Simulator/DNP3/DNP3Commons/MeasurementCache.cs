@@ -25,7 +25,7 @@ namespace Automatak.Simulator.DNP3
         }
     }
 
-    class MeasurementCache: ISOEHandler, IMeasurementCache, IDatabase
+    public class MeasurementCache: ISOEHandler, IDatabase, IMeasurementCache, IMeasurementLoader
     {
         readonly Object mutex = new Object();
 
@@ -272,6 +272,11 @@ namespace Automatak.Simulator.DNP3
         void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<SecurityStat>> values)
         {
            
+        }
+
+        void IMeasurementLoader.Load(IChangeSet updates)
+        {
+            updates.Apply(this);
         }
     }
 }

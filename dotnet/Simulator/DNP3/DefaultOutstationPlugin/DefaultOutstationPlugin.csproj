@@ -73,9 +73,9 @@
     <Compile Include="GUI\QualitySelector.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\bindings\CLRInterface\CLRInterface.csproj">
+    <ProjectReference Include="..\..\..\bindings\CLRInterface\DNP3CLRInterface.csproj">
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
-      <Name>CLRInterface</Name>
+      <Name>DNP3CLRInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SimulatorAPI\ModuleAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
