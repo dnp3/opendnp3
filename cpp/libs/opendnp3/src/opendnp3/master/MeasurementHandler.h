@@ -120,8 +120,7 @@ private:
 	bool txInitiated;
 	ISOEHandler* pSOEHandler;
 
-	TimestampMode ctoMode;
-	uint32_t ctoHeader;
+	TimestampMode ctoMode;	
 	uint64_t commonTimeOccurence;
 
 	void CheckForTxStart();
@@ -141,7 +140,7 @@ private:
 template <class T>
 IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const ICollection<Indexed<T>>& values)
 {	
-	if (ctoMode == TimestampMode::INVALID || ((ctoHeader + 1) != GetCurrentHeader()))
+	if (ctoMode == TimestampMode::INVALID)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior CTO objects for %s", GroupVariationToString(record.enumeration));
 		return IINField(IINBit::PARAM_ERROR);

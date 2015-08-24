@@ -39,8 +39,7 @@ MeasurementHandler::MeasurementHandler(const openpal::Logger& logger_, ISOEHandl
 	logger(logger_),
 	txInitiated(false),
 	pSOEHandler(pSOEHandler_),
-	ctoMode(TimestampMode::INVALID),
-	ctoHeader(0),
+	ctoMode(TimestampMode::INVALID),	
 	commonTimeOccurence(0)
 {
 	
@@ -75,8 +74,7 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICol
 	if (values.ReadOnlyValue(cto))
 	{
 		ctoMode = TimestampMode::SYNCHRONIZED;
-		commonTimeOccurence = cto.time;
-		ctoHeader = this->GetCurrentHeader();		
+		commonTimeOccurence = cto.time;		
 	}
 	return IINField::Empty();
 }
@@ -87,8 +85,7 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICol
 	if (values.ReadOnlyValue(cto))
 	{
 		ctoMode = TimestampMode::UNSYNCHRONIZED;
-		commonTimeOccurence = cto.time;
-		ctoHeader = this->GetCurrentHeader();
+		commonTimeOccurence = cto.time;		
 	}
 
 	return IINField::Empty();
