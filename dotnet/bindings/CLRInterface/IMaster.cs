@@ -63,9 +63,7 @@ namespace Automatak.DNP3.Interface
 
         /// <summary>
         /// Adds a custom scan to the master.
-        /// </summary>
-        /// <param name="header">A collection of Headers to add</param>
-        /// <returns>>a new master scan interface</returns>
+        /// </summary>                
         IMasterScan AddScan(IEnumerable<Header> headers, TimeSpan period, TaskConfig config);
 
         /// <summary>
@@ -77,35 +75,27 @@ namespace Automatak.DNP3.Interface
 
         /// <summary>
         /// Perform an immediate adhoc class scan
-        /// </summary>
-        /// <param name="field">bitfield of class values</param>
-        /// <param name="period">period, negative for non-periodic</param>                
+        /// </summary>                   
         Task<TaskCompletion> ScanClasses(ClassField field, TaskConfig config);
 
         /// <summary>
         /// Perform an immediate adhoc range-based (start/stop) scan
-        /// </summary>
-        /// <param name="group"></param>
-        /// <param name="variation"></param>
-        /// <param name="start"></param>
-        /// <param name="stop"></param>
-        /// <param name="callback"></param>
+        /// </summary>        
         Task<TaskCompletion> ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TaskConfig config);
 
         /// <summary>
         /// Perform an adhoc scan with the designated request headers
-        /// </summary>
-        /// <param name="headers"></param>        
+        /// </summary>        
         Task<TaskCompletion> Scan(IEnumerable<Header> headers, TaskConfig config);
 
         /// <summary>
-        /// 
+        /// Write a time and value object
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="index"></param>
-        /// <param name="callback"></param>
         Task<TaskCompletion> Write(TimeAndInterval value, System.UInt16 index, TaskConfig config);
 
-        
+        /// <summary>
+        /// Perform an arbitrary function that doesn't expect a response
+        /// </summary>        
+        Task<TaskCompletion> PerformFunction(string name, FunctionCode func, IEnumerable<Header> headers, TaskConfig config);
     }
 }

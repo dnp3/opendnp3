@@ -72,6 +72,15 @@ namespace Automatak
 					return proxy->CompletionTask;
 				}
 
+				Task<TaskCompletion>^ MasterAdapter::PerformFunction(System::String^ name, FunctionCode func, IEnumerable<Header^>^ headers, TaskConfig^ config)
+				{
+					auto proxy = gcnew TaskCompletionProxy(config->callback);
+					auto vec = MasterConversions::ConvertToVectorOfHeaders(headers);
+					auto nativeName = Conversions::ConvertString(name);
+					pMaster->PerformFunction(nativeName, (opendnp3::FunctionCode) func, vec, MasterConversions::Convert(config, proxy));
+					return proxy->CompletionTask;
+				}
+
 				IMasterScan^ MasterAdapter::AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, TaskConfig^ config)
 				{
 					auto vec = MasterConversions::ConvertToVectorOfHeaders(headers);
