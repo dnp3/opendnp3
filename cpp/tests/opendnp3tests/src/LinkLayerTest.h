@@ -21,10 +21,10 @@
 #ifndef __LINK_LAYER_TEST_H_
 #define __LINK_LAYER_TEST_H_
 
-#include <testlib/MockLogHandler.h>
-#include <testlib/MockExecutor.h>
-
+#include "LogTester.h"
 #include "MockTransportLayer.h"
+#include "MockExecutor.h"
+#include "MockLinkListener.h"
 
 #include <opendnp3/link/LinkLayer.h>
 #include <opendnp3/link/ILinkRouter.h>
@@ -42,16 +42,17 @@ public:
 	LinkLayerTest(LinkConfig arCfg = DefaultConfig());
 
 	//ILinkRouter interface
-	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext) override final;
+	virtual void BeginTransmit(const openpal::ReadBufferView& buffer, ILinkSession* pContext) override final;
 
 	static LinkConfig DefaultConfig();
 
-	testlib::MockLogHandler log;
-	testlib::MockExecutor exe;
+	LogTester log;
+	MockExecutor exe;
+	MockLinkListener listener;
 	LinkLayer link;
 	MockTransportLayer upper;
 
-	openpal::RSlice lastWrite;
+	openpal::ReadBufferView lastWrite;
 	uint32_t numWrites;
 };
 

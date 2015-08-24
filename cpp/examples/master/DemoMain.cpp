@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 	auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
 	
 	// do a Class 1 exception poll every 5 seconds
-	auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(5));
+	auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(2));
 
 	// Enable the master. This will start communications.
 	pMaster->Enable();	
@@ -99,6 +99,8 @@ int main(int argc, char* argv[])
 		std::cout << "a - performs and ad-hoc range scan" << std::endl;
 		std::cout << "i - integrity demand scan" << std::endl;
 		std::cout << "e - exception demand scan" << std::endl;
+		std::cout << "d - diable unsolcited" << std::endl;
+		std::cout << "r - cold restart" << std::endl;
 		std::cout << "c - send crob" << std::endl;
 	
 		char cmd;
@@ -108,6 +110,14 @@ int main(int argc, char* argv[])
 			case('a') :
 				pMaster->ScanRange(GroupVariationID(1, 2), 0, 3);				
 				break;
+			case('d') :					
+				pMaster->EmptyResponseTask("disable unsol", FunctionCode::DISABLE_UNSOLICITED,
+					{ Header::AllObjects(60, 2), Header::AllObjects(60, 3), Header::AllObjects(60, 4) }
+				);					
+				break;			
+			case('r') :			
+				pMaster->EmptyResponseTask("cold restart", FunctionCode::COLD_RESTART, {});
+				break;			
 			case('x'):
 				// C++ destructor on DNP3Manager cleans everything up for you
 				return 0;

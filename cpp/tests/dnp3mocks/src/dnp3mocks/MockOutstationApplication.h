@@ -43,6 +43,9 @@ public:
 		coldRestartTimeDelay(0)
 	{}
 
+	virtual void OnStateChange(LinkStatus value) override final
+	{}
+
 	virtual bool SupportsWriteAbsoluteTime() override final
 	{
 		return supportsTimeWrite;

@@ -27,6 +27,7 @@
 #include <asiodnp3/impl/LinkLayerRouter.h>
 
 #include "MockUpperLayer.h"
+#include "MockLinkListener.h"
 
 namespace openpal
 {
@@ -41,6 +42,7 @@ class TransportIntegrationStack
 public:
 	TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer*, LinkConfig);
 
+	MockLinkListener listener;
 	asiodnp3::LinkLayerRouter router;
 	LinkLayer link;
 	TransportLayer transport;

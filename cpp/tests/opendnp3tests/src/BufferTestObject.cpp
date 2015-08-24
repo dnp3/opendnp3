@@ -23,6 +23,7 @@
 #include <testlib/BufferHelpers.h>
 
 #include <memory>
+#include <stdexcept>
 
 #include <testlib/HexConversions.h>
 

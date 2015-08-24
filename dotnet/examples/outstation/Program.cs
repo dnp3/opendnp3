@@ -66,11 +66,12 @@ namespace DotNetOutstationDemo
                 ++analogValue;
                 System.Console.WriteLine("Change Binary 0 to: " + binaryValue);
                 System.Console.WriteLine("Change Analog 9 to: " + analogValue);
-                outstation.LoadChanges(db => 
-                {
-                    db.Update(new Binary(binaryValue, 1, DateTime.Now), 0);
-                    db.Update(new Analog(analogValue, 1, DateTime.Now), 0);
-                });                
+
+                // create a changeset and load it 
+                var changeset = new ChangeSet();
+                changeset.Update(new Binary(binaryValue, 1, DateTime.Now), 0);
+                changeset.Update(new Analog(analogValue, 1, DateTime.Now), 0);
+                outstation.Load(changeset);
             }
         }
     }

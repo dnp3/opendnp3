@@ -45,6 +45,8 @@ public:
 
 	virtual openpal::UTCTimestamp Now() override final;
 
+	virtual void OnStateChange(opendnp3::LinkStatus value) override final {}
+
 private:
 	DefaultMasterApplication() {}
 

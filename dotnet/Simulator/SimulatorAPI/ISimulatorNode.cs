@@ -52,12 +52,7 @@ namespace Automatak.Simulator.API
         string Alias
         {
             get;
-        }
-
-        Guid UniqueID
-        {
-            get;
-        }
+        }       
 
         IEnumerable<Metric> Metrics
         {

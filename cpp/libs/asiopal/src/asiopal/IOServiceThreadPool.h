@@ -28,6 +28,8 @@
 #include <functional>
 #include <thread>
 
+#include <asiopal/SteadyClock.h>
+
 namespace asiopal
 {
 
@@ -62,7 +64,7 @@ private:
 	void Run();
 
 	asio::io_service ioservice;
-	asio::basic_waitable_timer< std::chrono::steady_clock > infiniteTimer;
+	asio::basic_waitable_timer< asiopal::asiopal_steady_clock > infiniteTimer;
 	std::vector<std::thread*> threads;
 };
 

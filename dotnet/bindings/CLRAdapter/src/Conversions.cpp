@@ -33,6 +33,11 @@ namespace Automatak
 				return (ChannelState)aState;
 			}
 
+			LinkStatus Conversions::ConvertLinkStatus(opendnp3::LinkStatus aState)
+			{
+				return (LinkStatus)aState;
+			}
+
 			IChannelStatistics^ Conversions::ConvertChannelStats(const opendnp3::LinkChannelStatistics& stats)
 			{
 				ChannelStatistics^ ret = gcnew ChannelStatistics();

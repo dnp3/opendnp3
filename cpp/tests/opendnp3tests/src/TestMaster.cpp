@@ -297,13 +297,22 @@ TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 
-	// g51v1, t = 3, g2v3, index 7, t = 2, true/online
-	t.SendToMaster("C0 81 00 00 33 01 07 01 03 00 00 00 00 00 02 03 17 01 07 81 02 00");
+	// g51v1, t = 3, 
+	// g2v3, index 7, t = 2, true/online
+	// g2v3, index 8, t = 3, true/online 
+	t.SendToMaster("C0 81 00 00 33 01 07 01 03 00 00 00 00 00 02 03 17 01 07 81 02 00 02 03 17 01 08 81 03 00");
 
-	REQUIRE(t.meas.binarySOE.size() == 1);
-	auto record = t.meas.binarySOE[7];
-	REQUIRE(record.meas.time == 5);
-	REQUIRE(record.info.gv == GroupVariation::Group2Var3);	
+	REQUIRE(t.meas.binarySOE.size() == 2);
+	{
+		auto record = t.meas.binarySOE[7];
+		REQUIRE(record.meas.time == 5);
+		REQUIRE(record.info.gv == GroupVariation::Group2Var3);
+	}
+	{
+		auto record = t.meas.binarySOE[8];
+		REQUIRE(record.meas.time == 6);
+		REQUIRE(record.info.gv == GroupVariation::Group2Var3);
+	}
 }
 
 TEST_CASE(SUITE("ParsesGroup50Var4"))

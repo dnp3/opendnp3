@@ -34,13 +34,13 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
+TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
 	logger(root.GetLogger()),
 	pUpperLayer(nullptr),
 	pLinkLayer(nullptr),
 	isOnline(false),
 	isSending(false),
-	pExecutor(pExecutor_),	
+	pExecutor(&executor),	
 	receiver(logger, maxRxFragSize, pStatistics),
 	transmitter(logger, pStatistics)
 {

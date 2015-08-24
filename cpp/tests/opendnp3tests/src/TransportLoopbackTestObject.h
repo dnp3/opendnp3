@@ -24,6 +24,7 @@
 #include "TestObjectASIO.h"
 #include <testlib/MockLogHandler.h>
 #include "MockUpperLayer.h"
+#include "MockLinkListener.h"
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/link/LinkLayer.h>
@@ -53,6 +54,8 @@ public:
 	void Start();
 
 private:
+
+	MockLinkListener listener;
 
 	LinkConfig mCfgA;
 	LinkConfig mCfgB;

@@ -1,3 +1,13 @@
+### 2.0.1-RC3 ###
+* Workaround for broken std::chrono::steady_clock impl thanks to Liam MacIsaac.
+* Based on user feedback, the .NET outstation API now uses a more intuitive "ChangeSet" to update values in the outstation.
+* The .NET "simulator" has been restored with more features surfaced and outstation plugins can now be written to simulate devices.
+
+### 2.0.1-RC2 ###
+* DNPManager.AddTCPClient now takes an additional parameter for the local adapter address (0.0.0.0 == all adapters)
+* Overloaded CROB constructor allows for non-standard control codes to be specified.
+* Fixed a thread-safety issue in the outstation on data update. The API has shifted for updating the outstation database to accomodate this fix.
+* Fixed an uninitialized control code variable in the CROB introduced in 2.0.1-RC1.
 
 ### 2.0.1-RC1 ###
 * Added support for Group50Var4 (Time and Interval) objects. These are static only objects (no events) that can are read/write.

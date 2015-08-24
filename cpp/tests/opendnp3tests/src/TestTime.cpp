@@ -46,17 +46,6 @@ TEST_CASE(SUITE("TimeoutCorrectlyNotExpired"))
 	REQUIRE(to.Remaining() > milliseconds(1));
 }
 
-TEST_CASE(SUITE("TimeoutCorrectlyExpires"))
-{
-	//create a timeout of 1 millisecond
-	Timeout to(milliseconds(1));
-
-	std::this_thread::sleep_for(milliseconds(10));
-
-	//check that the timeout starts out unexpired
-	REQUIRE(to.IsExpired());
-}
-
 TEST_CASE(SUITE("StopWatchBasicTest"))
 {
 	StopWatch sw;

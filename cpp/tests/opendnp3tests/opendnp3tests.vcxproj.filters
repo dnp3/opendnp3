@@ -149,6 +149,9 @@
     <ClInclude Include="src\MockKeyWrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MockLinkListener.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BufferTestObject.cpp">

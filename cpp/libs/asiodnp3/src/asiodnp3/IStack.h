@@ -26,6 +26,10 @@
 #include <openpal/executor/IExecutor.h>
 
 #include <opendnp3/StackStatistics.h>
+#include <opendnp3/link/ILinkListener.h>
+
+#include <vector>
+#include <functional>
 
 
 namespace asiodnp3
@@ -53,7 +57,7 @@ public:
 	/**
 	* Synchronously shutdown the endpoint. No more calls are allowed after this call.
 	*/
-	virtual void Shutdown() = 0;
+	virtual void Shutdown() = 0;	
 
 };
 

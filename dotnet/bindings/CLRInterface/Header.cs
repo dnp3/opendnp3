@@ -19,6 +19,11 @@ namespace Automatak.DNP3.Interface
             this.qualifier = qualifier;
         }
 
+        public override string ToString()
+        {
+            return String.Format("g{0}v{1} - {2}", group, variation, qualifier);
+        }
+
         /// <summary>
         /// Header requesting all objects of the given type or class (in the case of Group 60 objects) are returned.
         /// </summary>
@@ -85,6 +90,11 @@ namespace Automatak.DNP3.Interface
         {
             this.count = count;
         }
+
+        public override string ToString()
+        {
+            return String.Format("{0} - count: {1}", base.ToString(), count);
+        }
     }   
 
     public class RangeHeader : Header
@@ -97,6 +107,11 @@ namespace Automatak.DNP3.Interface
         {
             this.start = start;
             this.stop = stop;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} - start: {1} stop {2}", base.ToString(), start, stop);
         }
     }
 }

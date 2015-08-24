@@ -65,6 +65,18 @@ test-suite.log
 *~
 *.dirstamp
 
+#cmake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+libasiodnp3.so
+libasiopal.so
+libopendnp3.so
+libopenpal.so
+testopendnp3
+testopenpal
+
 #doxygen
 doc
 
@@ -96,6 +108,9 @@ cpp/demos/outstation/Debug
 cpp/demos/outstation/Release
 *vcxproj.user
 cpp/unittest.log
+
+#installer
+dotnet/simulator/setup*
 
 #atmel studio
 *jlink*

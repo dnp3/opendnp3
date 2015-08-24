@@ -38,23 +38,22 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, const LinkConfig& config_) :
+LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opendnp3::ILinkListener& linkListener, const LinkConfig& config_) :
 	logger(root.GetLogger()),
 	config(config_),
 	pSegments(nullptr),
 	txMode(TransmitMode::Idle),
 	numRetryRemaining(0),
-	pExecutor(pExecutor_),
+	pExecutor(&executor),
 	pTimer(nullptr),
 	nextReadFCB(false),
 	nextWriteFCB(false),
 	isOnline(false),
 	pRouter(nullptr),
 	pPriState(PLLS_SecNotReset::Inst()),
-	pSecState(SLLS_NotReset::Inst())
-{
-
-}
+	pSecState(SLLS_NotReset::Inst()),
+	pListener(&linkListener)
+{}
 
 void LinkLayer::SetRouter(ILinkRouter& router)
 {
@@ -70,6 +69,11 @@ void LinkLayer::ChangeState(PriStateBase* pState)
 void LinkLayer::ChangeState(SecStateBase* pState)
 {
 	pSecState = pState;
+}
+
+void LinkLayer::CallStatusCallback(opendnp3::LinkStatus status)
+{	
+	this->pListener->OnStateChange(status);
 }
 
 void LinkLayer::PostSendResult(bool isSuccess)
@@ -158,6 +162,7 @@ void LinkLayer::OnLowerLayerUp()
 		{
 			pUpperLayer->OnLowerLayerUp();
 		}
+		CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
 }
 
@@ -182,6 +187,8 @@ void LinkLayer::OnLowerLayerDown()
 		{
 			pUpperLayer->OnLowerLayerDown();
 		}
+
+		CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
 	else
 	{

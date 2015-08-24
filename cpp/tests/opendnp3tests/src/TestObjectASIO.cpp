@@ -21,8 +21,6 @@
 #include "TestObjectASIO.h"
 
 #include <asio.hpp>
-
-#include <thread>
 #include <chrono>
 
 using namespace openpal;
@@ -55,12 +53,8 @@ void TestObjectASIO::Next()
 void TestObjectASIO::Next(asio::io_service& service, openpal::TimeDuration aSleep)
 {
 	std::error_code ec;
-	size_t num = service.poll_one(ec);
+	service.poll_one(ec);
 	if(ec) throw std::logic_error(ec.message());
-	if(num == 0)
-	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(aSleep.GetMilliseconds()));
-	}
 	service.reset();
 }
 

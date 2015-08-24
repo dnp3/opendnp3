@@ -59,12 +59,7 @@ public:
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
-	* Add a recurring user-defined scan (via a lambda)
-	* @ return A proxy class used to manipulate the scan
-	*/
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
-
-	/**
 	* Add a scan that requests all objects using qualifier code 0x06
 	* @ return A proxy class used to manipulate the scan
 	*/
@@ -88,11 +83,7 @@ public:
 	virtual void Scan(const std::vector<Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
-	* Initiate a single user defined scan via a lambda	
-	*/
 	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
-
-	/**
 	* Initiate a single scan that requests all objects (0x06 qualifier code) for a certain group and variation
 	*/
 	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
@@ -110,6 +101,11 @@ public:
 	* Write a time and interval object to a specific index
 	*/
 	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+
+	/**
+	* Perform any operation that requires just a function code
+	*/
+	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
 	
 };
 

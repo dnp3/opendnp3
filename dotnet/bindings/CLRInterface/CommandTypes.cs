@@ -74,7 +74,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="count">How many times to repeat the operation</param>
         /// <param name="onTime">How long to set the output active></param>
         /// <param name="offTime">How long to set the output inactive></param>
-        public ControlRelayOutputBlock(ControlCode code, byte count, System.UInt16 onTime, System.UInt16 offTime)
+        public ControlRelayOutputBlock(ControlCode code, byte count, System.UInt32 onTime, System.UInt32 offTime)
         {
             this.code = code;
             this.count = count;
@@ -84,8 +84,8 @@ namespace Automatak.DNP3.Interface
     
         public readonly ControlCode code;
         public readonly byte count;
-        public readonly System.UInt16 onTime;
-        public readonly System.UInt16 offTime;
+        public readonly System.UInt32 onTime;
+        public readonly System.UInt32 offTime;
     }
 
     /// <summary>

@@ -22,6 +22,7 @@
 #define OPENDNP3_TRANSPORTSTACK_H
 
 #include "opendnp3/link/LinkLayer.h"
+#include "opendnp3/link/ILinkListener.h"
 #include "opendnp3/transport/TransportLayer.h"
 
 namespace opendnp3
@@ -30,7 +31,7 @@ namespace opendnp3
 class TransportStack
 {
 public:
-	TransportStack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config);
+	TransportStack(openpal::LogRoot& root, openpal::IExecutor& executor, ILinkListener& listener, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config);
 
 	LinkLayer link;
 	TransportLayer transport;	
