@@ -93,9 +93,7 @@ endif()
 
 # include paths for all the local libraries
 include_directories(./cpp/libs/src)
-include_directories(./cpp/tests/testlib/src)
-include_directories(./cpp/tests/dnp3mocks/src)
-include_directories(./cpp/tests/catch)
+include_directories(./cpp/tests/libs/src)
 
 # required for ASIO in C++11 only mode
 add_definitions(-DASIO_STANDALONE)
@@ -144,7 +142,7 @@ install(TARGETS secauth DESTINATION lib)
 install(DIRECTORY ./cpp/libs/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
 set_target_properties(secauth PROPERTIES FOLDER libs)
 
-if(FULL)
+if(DEMO)
 
   # ----- master demo executable -----
   add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
@@ -189,13 +187,13 @@ endif()
 if(TEST)
 
   # ----- testlib library ------
-  file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp ./cpp/tests/testlib/src/testlib/*.h)
+  file(GLOB_RECURSE testlib_SRC ./cpp/tests/libs/src/testlib/*.cpp ./cpp/tests/libs/src/testlib/*.h)
   add_library(testlib ${testlib_SRC})
   target_link_libraries(testlib openpal)
   set_target_properties(testlib PROPERTIES FOLDER tests/mocks)
 
   # ----- dnp3mocks library ------
-  file(GLOB_RECURSE dnp3mocks_SRC ./cpp/tests/dnp3mocks/src/dnp3mocks/*.cpp ./cpp/tests/dnp3mocks/src/dnp3mocks/*.h)
+  file(GLOB_RECURSE dnp3mocks_SRC ./cpp/tests/libs/src/dnp3mocks/*.cpp ./cpp/tests/libs/src/dnp3mocks/*.h)
   add_library(dnp3mocks ${dnp3mocks_SRC})
   target_link_libraries(dnp3mocks opendnp3 testlib)
   set_target_properties(dnp3mocks PROPERTIES FOLDER tests/mocks)
