@@ -1,28 +1,19 @@
 cmake_minimum_required (VERSION 3.0)
 project (opendnp3)
 set(OPENDNP3_MAJOR_VERSION 2)
-set(OPENDNP3_MINOR_VERSION 0)
-set(OPENDNP3_MICRO_VERSION 1)
+set(OPENDNP3_MINOR_VERSION 1)
+set(OPENDNP3_MICRO_VERSION 0)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
 
-# options off-by-default that you can enable
-option(DNP3_LIB_ONLY  "build only the core libraries" OFF)
-
-set(DEFAULT_ENABLE ON)
-
-if(DNP3_LIB_ONLY)
-  set(DEFAULT_ENABLE OFF)
-endif()
-
-option(OSSL "build the openssl crypto wrapper for SA" ${DEFAULT_ENABLE})
-option(DEMO "Build demo applications" ${DEFAULT_ENABLE})
-option(TEST "Build tests" ${DEFAULT_ENABLE})
+# various optional libraries and projects
+option(OSSL "build the openssl crypto wrapper for SA" OFF)
+option(DEMO "Build demo applications" OFF)
+option(TEST "Build tests" OFF)
 
 # other options off-by-default that you can enable
 option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
-option(DOTNET "ADDS the .NET bindings to the generated solution file")
 
 if(WIN32)
 
