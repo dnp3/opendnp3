@@ -433,9 +433,9 @@ namespace opendnp3
 		this->ScheduleAdhocTask(pTask);
 	}
 
-	void MContext::PerformEmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const HeaderBuilderT& builder, TaskConfig config)
+	void MContext::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config)
 	{
-		auto pTask = new EmptyResponseTask(*this->pApplication, name, fc, builder, this->logger, config);
+		auto pTask = new EmptyResponseTask(*this->pApplication, name, func, builder, this->logger, config);
 		this->ScheduleAdhocTask(pTask);
 	}
 

@@ -154,7 +154,7 @@ namespace opendnp3
 
 		void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
 
-		void PerformEmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+		void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 	
 		/// public state manipulation actions
 

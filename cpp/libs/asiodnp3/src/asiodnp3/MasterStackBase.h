@@ -145,10 +145,10 @@ public:
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
 
-	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final
+	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final
 	{
 		auto builder = ConvertToLambda(headers);
-		auto add = [this, name, fc, builder, config]() { this->pContext->PerformEmptyResponseTask(name, fc, builder, config); };
+		auto add = [this, name, fc, builder, config]() { this->pContext->PerformFunction(name, fc, builder, config); };
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
 

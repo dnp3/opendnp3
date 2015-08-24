@@ -111,12 +111,12 @@ int main(int argc, char* argv[])
 				pMaster->ScanRange(GroupVariationID(1, 2), 0, 3);				
 				break;
 			case('d') :					
-				pMaster->EmptyResponseTask("disable unsol", FunctionCode::DISABLE_UNSOLICITED,
+				pMaster->PerformFunction("disable unsol", FunctionCode::DISABLE_UNSOLICITED,
 					{ Header::AllObjects(60, 2), Header::AllObjects(60, 3), Header::AllObjects(60, 4) }
 				);					
 				break;			
 			case('r') :			
-				pMaster->EmptyResponseTask("cold restart", FunctionCode::COLD_RESTART, {});
+				pMaster->PerformFunction("cold restart", FunctionCode::COLD_RESTART, {});
 				break;			
 			case('x'):
 				// C++ destructor on DNP3Manager cleans everything up for you

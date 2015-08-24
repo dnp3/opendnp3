@@ -24,7 +24,6 @@
 #include "IStack.h"
 #include "HeaderTypes.h"
 
-
 #include <opendnp3/app/ClassField.h>
 #include <opendnp3/app/TimeAndInterval.h>
 
@@ -105,7 +104,7 @@ public:
 	/**
 	* Perform any operation that requires just a function code
 	*/
-	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 	
 };
 
