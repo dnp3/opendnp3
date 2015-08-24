@@ -54,13 +54,7 @@ public:
 	* Add a recurring user-defined scan from a vector of headers
 	* @ return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
-
-	/**
-	* Add a recurring user-defined scan (via a lambda)
-	* @ return A proxy class used to manipulate the scan
-	*/
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;	
 
 	/**
 	* Add a scan that requests all objects using qualifier code 0x06
@@ -86,11 +80,6 @@ public:
 	virtual void Scan(const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
 
 	/**
-	* Initiate a single user defined scan via a lambda	
-	*/
-	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
-
-	/**
 	* Initiate a single scan that requests all objects (0x06 qualifier code) for a certain group and variation
 	*/
 	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
@@ -113,7 +102,7 @@ public:
 	/**
 	* Perform any operation that requires just a function code
 	*/
-	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, opendnp3::ITaskCallback* pCallback, int userId) = 0;
+	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId) = 0;
 
 	/**
 	* Get a command processor interface to execute controls on the master

@@ -21,6 +21,8 @@
 
 #include "HeaderTypes.h"
 
+#include <opendnp3/app/HeaderWriter.h>
+
 using namespace opendnp3;
 
 namespace asiodnp3
@@ -32,34 +34,44 @@ namespace asiodnp3
 
 	Header Header::Range8(uint8_t group, uint8_t variation, uint8_t start, uint8_t stop)
 	{
-		return Header(group, variation, HeaderType::Ranged8, start, stop);
+		return Header(group, variation, start, stop);
 	}
 
 	Header Header::Range16(uint8_t group, uint8_t variation, uint16_t start, uint16_t stop)
 	{
-		return Header(group, variation, HeaderType::Ranged16, start, stop);
+		return Header(group, variation, start, stop);
 	}
 
 	Header Header::Count8(uint8_t group, uint8_t variation, uint8_t count)
 	{
-		return Header(group, variation, HeaderType::LimitedCount8, count);
+		return Header(group, variation, count);
 	}
 
 	Header Header::Count16(uint8_t group, uint8_t variation, uint16_t count)
 	{
-		return Header(group, variation, HeaderType::LimitedCount16, count);
+		return Header(group, variation, count);
 	}
 
 	Header::Header(uint8_t group, uint8_t var) : id(group, var), type(HeaderType::AllObjects) {}
 
-	Header::Header(uint8_t group, uint8_t var, HeaderType type_, uint16_t start, uint16_t stop) : id(group, var), type(type_)
+	Header::Header(uint8_t group, uint8_t var, uint8_t start, uint8_t stop) : id(group, var), type(HeaderType::Ranged8)
 	{
-		value.range = { start, stop };
+		value.range8 = { start, stop };
 	}
 
-	Header::Header(uint8_t group, uint8_t var, HeaderType type_, uint16_t count) : id(group, var), type(type_)
+	Header::Header(uint8_t group, uint8_t var, uint16_t start, uint16_t stop) : id(group, var), type(HeaderType::Ranged16)
 	{
-		value.count = count;
+		value.range16 = { start, stop };
+	}
+
+	Header::Header(uint8_t group, uint8_t var, uint8_t count) : id(group, var), type(HeaderType::LimitedCount8)
+	{
+		value.count8.value = count;
+	}
+
+	Header::Header(uint8_t group, uint8_t var, uint16_t count) : id(group, var), type(HeaderType::LimitedCount16)
+	{
+		value.count16.value = count;
 	}
 
 	bool Header::WriteTo(opendnp3::HeaderWriter& writer)
@@ -69,17 +81,13 @@ namespace asiodnp3
 			case(HeaderType::AllObjects) :
 				return writer.WriteHeader(id, QualifierCode::ALL_OBJECTS);
 			case(HeaderType::Ranged8) :
-				return writer.WriteRangeHeader<openpal::UInt8>(
-					QualifierCode::UINT8_START_STOP, id, 
-					static_cast<uint8_t>(value.range.start), 
-					static_cast<uint8_t>(value.range.stop)
-				);
+				return writer.WriteRangeHeader<openpal::UInt8>(QualifierCode::UINT8_START_STOP, id, value.range8.start, value.range8.stop);				
 			case(HeaderType::Ranged16) :
-				return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, id, value.range.start, value.range.stop);
+				return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, id, value.range16.start, value.range16.stop);
 			case(HeaderType::LimitedCount8) :
-				return writer.WriteCountHeader<openpal::UInt8>(QualifierCode::UINT8_CNT, id, static_cast<uint8_t>(value.count));
+				return writer.WriteCountHeader<openpal::UInt8>(QualifierCode::UINT8_CNT, id, value.count8.value);
 			case(HeaderType::LimitedCount16) :
-				return writer.WriteCountHeader<openpal::UInt16>(QualifierCode::UINT16_CNT, id, value.count);
+				return writer.WriteCountHeader<openpal::UInt16>(QualifierCode::UINT16_CNT, id, value.count16.value);
 			default:
 				return false;
 		}

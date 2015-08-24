@@ -62,7 +62,7 @@ class Master : public IUpperLayer
 
 	/// ---- Permanently bound scans ----
 
-	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
+	MasterScan AddScan(openpal::TimeDuration period, const HeaderBuilder& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
 
 	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
 

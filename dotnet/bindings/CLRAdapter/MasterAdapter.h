@@ -48,7 +48,7 @@ namespace Automatak
 				
 				virtual void Write(TimeAndInterval^ value, System::UInt16 index, ITaskCallback^ callback, int userId);
 
-				virtual void PerformFunction(FunctionCode fc, System::String^ name, ITaskCallback^ callback, int userId);
+				virtual void PerformFunction(FunctionCode fc, IEnumerable<Header^>^ headers, System::String^ name, ITaskCallback^ callback, int userId);
 
 			private:
 

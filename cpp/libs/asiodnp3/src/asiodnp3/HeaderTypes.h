@@ -25,7 +25,11 @@
 
 #include <opendnp3/gen/QualifierCode.h>
 #include <opendnp3/app/GroupVariationID.h>
-#include <opendnp3/app/HeaderWriter.h>
+
+namespace opendnp3
+{
+	class HeaderWriter;
+}
 
 namespace asiodnp3
 {
@@ -39,16 +43,25 @@ enum class HeaderType : uint8_t
 	LimitedCount16
 };
 
+template <class T>
 struct StartStopRange
 {	
-	uint16_t start;
-	uint16_t stop;
+	T start;
+	T stop;
+};
+
+template <class T>
+struct Count
+{
+	T value;
 };
 
 union HeaderUnion
 {	
-	StartStopRange range;
-	uint16_t count;
+	StartStopRange<uint8_t> range8;
+	StartStopRange<uint16_t> range16;
+	Count<uint8_t> count8;
+	Count<uint16_t> count16;
 };
 
 class Header
@@ -78,9 +91,13 @@ class Header
 	
 	Header(uint8_t group, uint8_t var);
 
-	Header(uint8_t group, uint8_t var, HeaderType type, uint16_t start, uint16_t stop);
+	Header(uint8_t group, uint8_t var, uint8_t start, uint8_t stop);
 
-	Header(uint8_t group, uint8_t var, HeaderType type, uint16_t count);
+	Header(uint8_t group, uint8_t var, uint16_t start, uint16_t stop);
+
+	Header(uint8_t group, uint8_t var, uint8_t count);
+
+	Header(uint8_t group, uint8_t var, uint16_t count);
 };
 
 

@@ -64,8 +64,6 @@ public:
 
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId) override final;
 
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback, int userId) override final;
-
 	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback, int userId) override final;
 
 	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback, int userId) override final;
@@ -74,9 +72,7 @@ public:
 
 	// ------- Adhoc scan API ---------
 
-	virtual void Scan(const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId) override final;
-	
-	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback, int userId) override final;
+	virtual void Scan(const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId) override final;	
 
 	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, opendnp3::ITaskCallback* pCallback, int userId) override final;
 
@@ -88,7 +84,7 @@ public:
 
 	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, opendnp3::ITaskCallback* pCallback, int userId)  override final;
 
-	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, opendnp3::ITaskCallback* pCallback, int userId) override final;
+	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId) override final;
 
 	// ------- Non-interface public members ---------
 
@@ -100,6 +96,10 @@ public:
 
 
 private:
+
+	void Scan(const opendnp3::HeaderBuilder& builder, opendnp3::ITaskCallback* pCallback, int userId);
+
+	opendnp3::MasterScan AddScan(openpal::TimeDuration period, const opendnp3::HeaderBuilder& builder, opendnp3::ITaskCallback* pCallback, int userId);
 
 	static std::function<void(opendnp3::HeaderWriter&)> ConvertToLambda(const std::vector<Header>& headers);	
 

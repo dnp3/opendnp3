@@ -98,10 +98,11 @@ namespace Automatak
 				pMaster->Write(Conversions::ConvertMeas(value), index, CreateTaskCallback(callback), userId);
 			}
 
-			void MasterAdapter::PerformFunction(FunctionCode fc, System::String^ name, ITaskCallback^ callback, int userId)
+			void MasterAdapter::PerformFunction(FunctionCode fc, IEnumerable<Header^>^ headers, System::String^ name, ITaskCallback^ callback, int userId)
 			{
 				auto nameNative = Conversions::ConvertString(name);
-				pMaster->EmptyResponseTask(nameNative, (opendnp3::FunctionCode) fc, CreateTaskCallback(callback), userId);
+				auto vec = ConvertToVectorOfHeaders(headers);
+				pMaster->EmptyResponseTask(nameNative, (opendnp3::FunctionCode) fc, vec, CreateTaskCallback(callback), userId);
 			}
 
 			std::vector<asiodnp3::Header> MasterAdapter::ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers)

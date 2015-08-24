@@ -103,14 +103,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="start"></param>
         /// <param name="stop"></param>
         /// <param name="callback"></param>
-        void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, ITaskCallback callback = null, int userId = -1);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="callback"></param>
-        /// <param name="headers">A collection of Headers to add</param>
-        //void Scan(IEnumerable<Header> headers, ITaskCallback callback = null);
+        void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, ITaskCallback callback = null, int userId = -1);        
 
         /// <summary>
         /// 
@@ -121,11 +114,13 @@ namespace Automatak.DNP3.Interface
         void Write(TimeAndInterval value, System.UInt16 index, ITaskCallback callback = null, int userId = -1);
 
         /// <summary>
-        /// Performs an arbtrary function code with no headers that expects an empty response
+        /// Performs an arbtrary function code with the specified headers that expects an empty response
         /// </summary>
         /// <param name="fc"></param>
+        /// <param name="headers"></param>
+        /// <param name="name"></param>
         /// <param name="callback"></param>
         /// <param name="userId"></param>
-        void PerformFunction(FunctionCode fc, string name, ITaskCallback callback = null, int userId = -1);
+        void PerformFunction(FunctionCode fc, IEnumerable<Header> headers, string name, ITaskCallback callback = null, int userId = -1);
     }
 }

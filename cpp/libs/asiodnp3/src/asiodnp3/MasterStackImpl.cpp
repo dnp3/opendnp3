@@ -96,7 +96,7 @@ opendnp3::MasterScan MasterStackImpl::AddScan(openpal::TimeDuration period, cons
 	return this->AddScan(period, func, pCallback, userId);
 }
 
-MasterScan MasterStackImpl::AddScan(TimeDuration period, const std::function<void(HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback, int userId)
+MasterScan MasterStackImpl::AddScan(TimeDuration period, const HeaderBuilder& builder, opendnp3::ITaskCallback* pCallback, int userId)
 {
 	auto add = [this, period, builder, pCallback, userId]() { return master.AddScan(period, builder, pCallback, userId); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
@@ -156,7 +156,7 @@ void MasterStackImpl::Write(const TimeAndInterval& value, uint16_t index, opendn
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 
-void MasterStackImpl::EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, opendnp3::ITaskCallback* pCallback, int userId)
+void MasterStackImpl::EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId)
 {
 	auto add = [this, name, fc, pCallback, userId]() { master.EmptyResponseTask(name, fc, [](HeaderWriter&){}, pCallback, userId); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);

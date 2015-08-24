@@ -104,7 +104,7 @@ namespace Automatak.Simulator.DNP3
             var function = (FunctionCode)this.comboBoxFunctionCode.SelectedValue;
 
             var callback = new StringCallback();
-            this.master.PerformFunction(function, function.ToString(), callback);  
+            this.master.PerformFunction(function, Enumerable.Empty<Header>(), function.ToString(), callback);  
             callback.Task.ContinueWith(task =>
                 this.BeginInvoke(new Action(() =>
                    this.toolStripStatusLabel.Text += task.Result.ToString()
