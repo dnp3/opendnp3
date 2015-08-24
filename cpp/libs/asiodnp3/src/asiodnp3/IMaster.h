@@ -102,7 +102,7 @@ public:
 	/**
 	* Perform any operation that requires just a function code
 	*/
-	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId) = 0;
+	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
 
 	/**
 	* Get a command processor interface to execute controls on the master

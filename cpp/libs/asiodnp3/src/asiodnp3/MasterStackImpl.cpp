@@ -158,7 +158,8 @@ void MasterStackImpl::Write(const TimeAndInterval& value, uint16_t index, opendn
 
 void MasterStackImpl::EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId)
 {
-	auto add = [this, name, fc, pCallback, userId]() { master.EmptyResponseTask(name, fc, [](HeaderWriter&){}, pCallback, userId); };
+	auto func = ConvertToLambda(headers);
+	auto add = [this, name, fc, func, pCallback, userId]() { master.EmptyResponseTask(name, fc, func, pCallback, userId); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 
