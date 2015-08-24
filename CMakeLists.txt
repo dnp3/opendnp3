@@ -9,7 +9,14 @@ set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPEND
 option(OSSL "build the openssl crypto wrapper for SA" OFF)
 option(DEMO "Build demo applications" OFF)
 option(TEST "Build tests" OFF)
+option(FULL "Build all optional projects (secauth, demos, tests)" OFF)
 
+if(FULL)
+	set(OSSL ON)
+	set(DEMO ON)
+	set(TEST ON)
+endif()
+ 
 # other options off-by-default that you can enable
 option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
 option(WERROR "Set all warnings to errors" OFF)
@@ -137,7 +144,7 @@ install(TARGETS secauth DESTINATION lib)
 install(DIRECTORY ./cpp/libs/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
 set_target_properties(secauth PROPERTIES FOLDER libs)
 
-if(DEMO)
+if(FULL)
 
   # ----- master demo executable -----
   add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
