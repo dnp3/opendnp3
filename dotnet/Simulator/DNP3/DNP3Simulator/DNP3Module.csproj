@@ -60,17 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BundledPlugins\StringCallback.cs" />
     <Compile Include="Components\AnalogOutputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Components\AnalogOutputControl.Designer.cs">
       <DependentUpon>AnalogOutputControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Components\CROBControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\CROBControl.Designer.cs">
-      <DependentUpon>CROBControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\EventBufferConfigControl.cs">
       <SubType>UserControl</SubType>
@@ -84,7 +79,9 @@
     <Compile Include="Components\MasterScanControl.Designer.cs">
       <DependentUpon>MasterScanControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\OutstationModuleDialog.cs" />
+    <Compile Include="Components\OutstationModuleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Components\OutstationModuleDialog.Designer.cs">
       <DependentUpon>OutstationModuleDialog.cs</DependentUpon>
     </Compile>
@@ -93,6 +90,13 @@
     </Compile>
     <Compile Include="Components\ScanDialog.Designer.cs">
       <DependentUpon>ScanDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\ScanInfo.cs" />
+    <Compile Include="Components\CROBControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\CROBControl.Designer.cs">
+      <DependentUpon>CROBControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\TemplateItemDialog.cs">
       <SubType>Form</SubType>
@@ -196,14 +200,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ScanInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BundledPlugins\MasterForm.resx">
       <DependentUpon>MasterForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Components\AnalogOutputControl.resx">
+      <DependentUpon>AnalogOutputControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Components\EventBufferConfigControl.resx">
       <DependentUpon>EventBufferConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MasterScanControl.resx">
+      <DependentUpon>MasterScanControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MasterConfigControl.resx">
+      <DependentUpon>MasterConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\OutstationModuleDialog.resx">
+      <DependentUpon>OutstationModuleDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\ScanDialog.resx">
+      <DependentUpon>ScanDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\TemplateItemDialog.resx">
       <DependentUpon>TemplateItemDialog.cs</DependentUpon>
@@ -235,6 +253,9 @@
     <EmbeddedResource Include="Components\ResponseTypeControl.resx">
       <DependentUpon>ResponseTypeControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Components\CROBControl.resx">
+      <DependentUpon>CROBControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -247,7 +268,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\bindings\CLRInterface\DNP3CLRInterface.csproj">
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
-      <Name>DNP3CLRInterface</Name>
+      <Name>CLRInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Commons\Commons.csproj">
       <Project>{67c09f7a-3dd4-4c02-aa3b-6882fb6ea816}</Project>
@@ -255,7 +276,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\SimulatorAPI\ModuleAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
-      <Name>SimulatorAPI</Name>
+      <Name>ModuleAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\DefaultOutstationPlugin\DefaultOutstationPlugin.csproj">
       <Project>{1abc9a1a-6026-4803-bab4-c1190375a531}</Project>

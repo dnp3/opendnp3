@@ -50,7 +50,7 @@ namespace Automatak.Simulator.DNP3.Components
                         return (ICommandProcessor cp) => cp.DirectOperate(new AnalogOutputDouble64(SafeConvert.ToDouble(value)), index, TaskConfig.Default);
                 }                
             }
-        }      
+        }
 
         public Func<ICommandProcessor, Task<CommandResponse>> SelectAndOperateAction
         {

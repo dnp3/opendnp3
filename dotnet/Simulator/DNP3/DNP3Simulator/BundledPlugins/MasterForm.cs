@@ -5,12 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
 using Automatak.Simulator.DNP3.Commons;
-
 
 namespace Automatak.Simulator.DNP3
 {    
@@ -91,7 +90,8 @@ namespace Automatak.Simulator.DNP3
         private void DoCommandAction(Func<ICommandProcessor, Task<CommandResponse>> func)
         {
             this.toolStripStatusLabel.Text = "Result: ... ";
-            func(this.master).ContinueWith(cr =>            
+            var task = func(this.master);
+            task.ContinueWith(cr =>
                 this.BeginInvoke(new Action(() =>
                    this.toolStripStatusLabel.Text += cr.Result.ToString()
                 ))
@@ -111,7 +111,7 @@ namespace Automatak.Simulator.DNP3
                    this.toolStripStatusLabel.Text += task.Result.ToString()
                 ))
             );
-             */
+             * */
         }      
         
     }

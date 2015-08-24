@@ -54,7 +54,7 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
                 var quality = qualitySelector.Quality;
                 var timestamp = DateTime.Now;
                 var changes = new ChangeSet();
-                foreach(var i in indices) changes.Update(new DoubleBitBinary(value, quality, timestamp), i);               
+                indices.Each(i => changes.Update(new DoubleBitBinary(value, quality, timestamp), i));               
                 return changes;
             }
         } 

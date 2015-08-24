@@ -67,11 +67,11 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
                 var changes = new ChangeSet();            
                 if (isAnalog)
                 {
-                    foreach(var i in indices) changes.Update(new Analog(value, quality, timestamp), i);
+                    indices.Each(i => changes.Update(new Analog(value, quality, timestamp), i));
                 }
                 else
                 {
-                    foreach(var i in indices) changes.Update(new AnalogOutputStatus(value, quality, timestamp), i);
+                    indices.Each(i => changes.Update(new AnalogOutputStatus(value, quality, timestamp), i));
                 }
                 return changes;
             }
