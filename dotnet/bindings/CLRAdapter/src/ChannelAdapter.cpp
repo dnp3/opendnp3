@@ -13,7 +13,7 @@
 
 #include "EventConverter.h"
 
-
+#include <secauth/master/MasterAuthStackConfig.h>
 #include <opendnp3/outstation/Database.h>
 
 #include <asiopal/UTCTimeSource.h>

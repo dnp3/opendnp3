@@ -11,7 +11,7 @@ using namespace System::Collections::Generic;
 
 #include "CallbackAdapters.h"
 
-#include <asiodnp3/IMasterSA.h>
+#include <asiodnp3/auth/IMasterSA.h>
 #include <openpal/container/Buffer.h>
 
 using namespace Automatak::DNP3::Interface;
