@@ -27,7 +27,7 @@ namespace opendnp3
 {
 
 UserPollTask::UserPollTask(	
-	const std::function<void(HeaderWriter&)>& builder_,
+	const HeaderBuilderT& builder_,
 	bool recurring_,
 	openpal::TimeDuration period_,
 	openpal::TimeDuration retryDelay_,
@@ -49,8 +49,7 @@ bool UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
 	auto writer = request.GetWriter();
-	builder(writer);
-	return true;
+	return builder(writer);	
 }
 
 IMasterTask::TaskState UserPollTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)

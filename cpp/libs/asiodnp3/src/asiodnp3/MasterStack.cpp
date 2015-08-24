@@ -41,7 +41,7 @@ MasterStack::MasterStack(
     const MasterStackConfig& config,	
 	IStackLifecycle& lifecycle,
 	opendnp3::ITaskLock& taskLock) :
-		MasterStackBase<IMaster>(id, root, executor, config, lifecycle),		
+		MasterStackBase<IMaster>(id, root, executor, application, config, lifecycle),		
 		mcontext(executor, root, stack.transport, SOEHandler, application,  config.master, taskLock)		
 {
 	this->SetContext(mcontext);

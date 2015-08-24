@@ -35,6 +35,7 @@
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/MasterScan.h"
+#include "opendnp3/master/HeaderBuilder.h"
 
 #include <deque>
 
@@ -131,7 +132,7 @@ namespace opendnp3
 
 		/// -----  public methods used to add tasks -----
 
-		MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, TaskConfig config = TaskConfig::Default());
+		MasterScan AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 
 		MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
@@ -141,7 +142,7 @@ namespace opendnp3
 
 		/// ---- Single shot immediate scans ----
 
-		void Scan(const std::function<void(HeaderWriter&)>& builder, TaskConfig config = TaskConfig::Default());
+		void Scan(const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 
 		void ScanAllObjects(GroupVariationID gvId, TaskConfig config = TaskConfig::Default());
 
@@ -152,6 +153,8 @@ namespace opendnp3
 		/// ---- Write tasks -----
 
 		void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
+
+		void PerformEmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 	
 		/// public state manipulation actions
 

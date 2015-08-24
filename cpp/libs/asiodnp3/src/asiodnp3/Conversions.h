@@ -21,17 +21,16 @@
 #ifndef ASIODNP3_CONVERSIONS_H
 #define ASIODNP3_CONVERSIONS_H
 
-#include <functional>
-#include <vector>
+#include <opendnp3/master/HeaderBuilder.h>
 
-#include <opendnp3/app/HeaderWriter.h>
+#include <vector>
 
 #include "HeaderTypes.h"
 
 namespace asiodnp3
 {
 
-std::function<void(opendnp3::HeaderWriter&)> ConvertToLambda(const std::vector<Header>& headers);
+opendnp3::HeaderBuilderT ConvertToLambda(const std::vector<Header>& headers);
 
 }
 

@@ -24,6 +24,7 @@
 #include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/TaskPriority.h"
 #include "opendnp3/master/ITaskCallback.h"
+#include "opendnp3/master/HeaderBuilder.h"
 
 #include <functional>
 
@@ -42,7 +43,7 @@ class UserPollTask : public PollTaskBase
 public:	
 
 	UserPollTask(		
-		const std::function<void(HeaderWriter&)>& builder,		
+		const HeaderBuilderT& builder,
 		bool recurring,			
 		openpal::TimeDuration period,	
 		openpal::TimeDuration retryDelay,
@@ -69,7 +70,7 @@ private:
 	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK;  }
 
 			
-	std::function<void(HeaderWriter&)> builder;	
+	HeaderBuilderT builder;
 	bool recurring;
 	openpal::TimeDuration period;
 	openpal::TimeDuration retryDelay;	

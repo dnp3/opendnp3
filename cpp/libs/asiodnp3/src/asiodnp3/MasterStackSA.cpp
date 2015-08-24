@@ -39,7 +39,7 @@ MasterStackSA::MasterStackSA(
 	opendnp3::ITaskLock& taskLock,	
 	openpal::ICryptoProvider& crypto
 ) :
-	MasterStackBase<IMasterSA>(id, root, executor, config, lifecycle),
+	MasterStackBase<IMasterSA>(id, root, executor, application, config, lifecycle),
 	mcontext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto)	
 {
 	this->SetContext(mcontext);

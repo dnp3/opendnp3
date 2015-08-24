@@ -18,29 +18,19 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_HEADERBUILDER_H
+#define OPENDNP3_HEADERBUILDER_H
 
-#include "Conversions.h"
+#include <functional>
 
-namespace asiodnp3
+#include <opendnp3/app/HeaderWriter.h>
+
+namespace opendnp3
 {
 
-opendnp3::HeaderBuilderT ConvertToLambda(const std::vector<Header>& headers)
-{
-	return[headers](opendnp3::HeaderWriter& writer) -> bool {
-		
-		for (auto& header : headers)
-		{
-			if (!header.WriteTo(writer))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	};
-}
+typedef std::function<bool (HeaderWriter&)> HeaderBuilderT;
 
 }
 
-
+#endif
 

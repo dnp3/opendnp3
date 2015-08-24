@@ -68,7 +68,7 @@ class Header
 {		
 	public:
 
-	bool WriteTo(opendnp3::HeaderWriter& writer);
+	bool WriteTo(opendnp3::HeaderWriter& writer) const;
 
 	static Header AllObjects(uint8_t group, uint8_t variation);
 

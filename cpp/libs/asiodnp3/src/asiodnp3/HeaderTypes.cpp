@@ -74,7 +74,7 @@ namespace asiodnp3
 		value.count16.value = count;
 	}
 
-	bool Header::WriteTo(opendnp3::HeaderWriter& writer)
+	bool Header::WriteTo(opendnp3::HeaderWriter& writer) const
 	{
 		switch (type)
 		{

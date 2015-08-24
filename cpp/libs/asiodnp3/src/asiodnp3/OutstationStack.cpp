@@ -39,7 +39,7 @@ OutstationStack::OutstationStack(
     const OutstationStackConfig& config,
 	IStackLifecycle& lifecycle) :
 	
-	OutstationStackBase(id, root_, executor, config, lifecycle),
+	OutstationStackBase(id, root_, executor, application, config, lifecycle),
 	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application)	 
 {	
 	this->SetContext(ocontext);

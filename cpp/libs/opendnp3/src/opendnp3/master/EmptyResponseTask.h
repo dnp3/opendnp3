@@ -18,54 +18,55 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_WRITETASK_H
-#define OPENDNP3_WRITETASK_H
+#ifndef OPENDNP3_EMPTY_RESPONSE_TASK_H
+#define OPENDNP3_EMPTY_RESPONSE_TASK_H
 
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
+#include "opendnp3/master/HeaderBuilder.h"
 
 #include <string>
-#include <functional>
 
 namespace opendnp3
 {
 
-class IMasterApplication;
+	class IMasterApplication;
 
-class WriteTask : public IMasterTask
-{	
-
-public:	
-
-	WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, TaskConfig config);
-
-	virtual char const* Name() const override final { return "Write Task"; }
-
-	virtual bool IsRecurring() const override final { return false; }
-
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
-
-	virtual int Priority(void) const override final { return priority::USER_WRITE; }	
-
-	virtual bool BlocksLowerPriority() const { return false; }		
-
-private:
-
-	virtual  bool IsEnabled() const override final { return true; }
-
-	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK; }
-		
-	std::function<void(HeaderWriter&)> format;
-
-	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
-
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final 
+	class EmptyResponseTask : public IMasterTask
 	{
-		return TaskState::Infinite();
-	}
 
-};
+	public:
 
+		EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func_, const HeaderBuilderT& format_, openpal::Logger logger, const TaskConfig& config);
+
+		virtual char const* Name() const override final { return name.c_str(); }
+
+		virtual bool IsRecurring() const override final { return false; }
+
+		virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;		
+
+		virtual int Priority(void) const override final { return priority::USER_WRITE; }
+
+		virtual bool BlocksLowerPriority() const override final { return false; }
+
+	private:
+
+		std::string name;
+		FunctionCode func;
+		std::function<bool(HeaderWriter&)> format;
+
+		IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
+
+		virtual  bool IsEnabled() const override final { return true; }
+
+		virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK; }
+		
+		virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final
+		{
+			return TaskState::Infinite();
+		}		
+
+	};
 
 } //end ns
 

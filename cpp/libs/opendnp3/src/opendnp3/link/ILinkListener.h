@@ -14,7 +14,8 @@ class ILinkListener
 {
 	public:
 
-	virtual void OnStateChange(LinkStatus value) = 0;
+	/// overridable
+	virtual void OnStateChange(LinkStatus value) {}
 };
 
 }

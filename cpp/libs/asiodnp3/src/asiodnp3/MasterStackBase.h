@@ -46,13 +46,14 @@ public:
 	MasterStackBase(
 		const char* id,
 		openpal::LogRoot& root_,
-		asiopal::ASIOExecutor& executor,		
+		asiopal::ASIOExecutor& executor,
+		opendnp3::ILinkListener& listener,
 		const opendnp3::MasterStackConfig& config,
 		IStackLifecycle& lifecycle		
 		) : 
 			root(root_, id),
 			pLifecycle(&lifecycle),
-			stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
+			stack(root, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
 			pASIOExecutor(&executor),
 			pContext(nullptr)
 	{
@@ -86,14 +87,9 @@ public:
 
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final
 	{
-		auto func = ConvertToLambda(headers);
-		return this->AddScan(period, func, config);
-	}
-
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config) override final
-	{
-		auto add = [this, period, builder, config]() { return this->pContext->AddScan(period, builder, config); };
-		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);
+		auto builder = ConvertToLambda(headers);
+		auto add = [this, builder, period, config]() { return this->pContext->AddScan(period, builder, config); };
+		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::MasterScan>(add);		
 	}
 
 	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override final
@@ -118,15 +114,10 @@ public:
 
 	virtual void Scan(const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final
 	{
-		auto func = ConvertToLambda(headers);
-		this->Scan(func, config);
-	}
-	
-	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config) override final
-	{
-		auto add = [this, builder, config]() { this->pContext->Scan(builder, config); };
+		auto builder = ConvertToLambda(headers);
+		auto add = [this, builder, config]() { return this->pContext->Scan(builder, config); };
 		return pLifecycle->GetExecutor().BlockFor(add);
-	}
+	}	
 
 	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config) override final
 	{
@@ -151,6 +142,13 @@ public:
 	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config)  override final
 	{
 		auto add = [this, value, index, config]() { this->pContext->Write(value, index, config); };
+		return pLifecycle->GetExecutor().BlockFor(add);
+	}
+
+	virtual void EmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final
+	{
+		auto builder = ConvertToLambda(headers);
+		auto add = [this, name, fc, builder, config]() { this->pContext->PerformEmptyResponseTask(name, fc, builder, config); };
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
 

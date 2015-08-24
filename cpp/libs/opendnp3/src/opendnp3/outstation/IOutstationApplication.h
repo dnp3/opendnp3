@@ -28,6 +28,8 @@
 #include "opendnp3/gen/RestartMode.h"
 #include "opendnp3/gen/AssignClassType.h"
 
+#include "opendnp3/link/ILinkListener.h"
+
 #include "opendnp3/app/Indexed.h"
 #include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/parsing/ICollection.h"
@@ -40,7 +42,7 @@ namespace opendnp3
 ///
 /// @summary Interface for all outstation application callback info except for control requests
 ///
-class IOutstationApplication
+class IOutstationApplication : public ILinkListener
 {
 	public:
 
@@ -114,7 +116,7 @@ class DefaultOutstationApplication : public IOutstationApplication
 
 	DefaultOutstationApplication() {}
 
-	static DefaultOutstationApplication instance;
+	static DefaultOutstationApplication m_instance;
 };
 
 }

@@ -53,24 +53,38 @@ void ClassRequest(APDURequest& request, FunctionCode fc, const ClassField& class
 	WriteClassHeaders(writer, classes);	
 }
 
-void WriteClassHeaders(HeaderWriter& writer, const ClassField& classes)
+bool WriteClassHeaders(HeaderWriter& writer, const ClassField& classes)
 {	
 	if (classes.HasClass1())
 	{
-		writer.WriteHeader(Group60Var2::ID(), QualifierCode::ALL_OBJECTS);
+		if (!writer.WriteHeader(Group60Var2::ID(), QualifierCode::ALL_OBJECTS))
+		{
+			return false;
+		}
 	}
 	if (classes.HasClass2())
 	{
-		writer.WriteHeader(Group60Var3::ID(), QualifierCode::ALL_OBJECTS);
+		if (!writer.WriteHeader(Group60Var3::ID(), QualifierCode::ALL_OBJECTS))
+		{
+			return false;
+		}
 	}
 	if (classes.HasClass3())
 	{
-		writer.WriteHeader(Group60Var4::ID(), QualifierCode::ALL_OBJECTS);
+		if (!writer.WriteHeader(Group60Var4::ID(), QualifierCode::ALL_OBJECTS))
+		{
+			return false;
+		}
 	}
 	if (classes.HasClass0())
 	{
-		writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS);
+		if (!writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS))
+		{
+			return false;
+		}
 	}
+
+	return true;
 }
 
 void DisableUnsolicited(APDURequest& request, uint8_t seq)

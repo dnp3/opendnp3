@@ -27,7 +27,7 @@
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/master/MeasurementHandler.h"
-#include "opendnp3/master/WriteTask.h"
+#include "opendnp3/master/EmptyResponseTask.h"
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"
 
@@ -354,7 +354,7 @@ namespace opendnp3
 		this->pExecutor->PostLambda(callback);
 	}	
 
-	MasterScan MContext::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, TaskConfig config)
+	MasterScan MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
 	{
 		auto pTask = new UserPollTask(builder, true, period, params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
 		this->ScheduleRecurringPollTask(pTask);
@@ -364,32 +364,32 @@ namespace opendnp3
 
 	MasterScan MContext::AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config)
 	{
-		auto configure = [field](HeaderWriter& writer)
+		auto build = [field](HeaderWriter& writer) -> bool
 		{
-			build::WriteClassHeaders(writer, field);
+			return build::WriteClassHeaders(writer, field);
 		};
-		return this->AddScan(period, configure, config);
+		return this->AddScan(period, build, config);
 	}
 
 	MasterScan MContext::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config)
 	{
-		auto configure = [gvId](HeaderWriter& writer)
+		auto build = [gvId](HeaderWriter& writer) -> bool
 		{
-			writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
+			return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
 		};
-		return this->AddScan(period, configure, config);
+		return this->AddScan(period, build, config);
 	}
 
 	MasterScan MContext::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config)
 	{
-		auto configure = [gvId, start, stop](HeaderWriter& writer)
+		auto build = [gvId, start, stop](HeaderWriter& writer) -> bool
 		{
-			writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
+			return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
 		};
-		return this->AddScan(period, configure, config);
+		return this->AddScan(period, build, config);
 	}
 
-	void MContext::Scan(const std::function<void(HeaderWriter&)>& builder, TaskConfig config)
+	void MContext::Scan(const HeaderBuilderT& builder, TaskConfig config)
 	{
 		auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
 		this->ScheduleAdhocTask(pTask);
@@ -397,39 +397,45 @@ namespace opendnp3
 
 	void MContext::ScanClasses(const ClassField& field, TaskConfig config)
 	{
-		auto configure = [field](HeaderWriter& writer)
+		auto configure = [field](HeaderWriter& writer) -> bool
 		{
-			build::WriteClassHeaders(writer, field);
+			return build::WriteClassHeaders(writer, field);
 		};
 		this->Scan(configure, config);
 	}
 
 	void MContext::ScanAllObjects(GroupVariationID gvId, TaskConfig config)
 	{
-		auto configure = [gvId](HeaderWriter& writer)
+		auto configure = [gvId](HeaderWriter& writer) -> bool
 		{
-			writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
+			return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
 		};
 		this->Scan(configure, config);
 	}
 
 	void MContext::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config)
 	{
-		auto configure = [gvId, start, stop](HeaderWriter& writer)
+		auto configure = [gvId, start, stop](HeaderWriter& writer) -> bool
 		{
-			writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
+			return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
 		};
 		this->Scan(configure, config);
 	}
 
 	void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig config)
 	{
-		auto format = [value, index](HeaderWriter& writer)
+		auto builder = [value, index](HeaderWriter& writer) -> bool
 		{
-			writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
+			return writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 		};
+		
+		auto pTask = new EmptyResponseTask(*this->pApplication, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, this->logger, config);
+		this->ScheduleAdhocTask(pTask);
+	}
 
-		auto pTask = new WriteTask(*pApplication, format, logger, config);
+	void MContext::PerformEmptyResponseTask(const std::string& name, opendnp3::FunctionCode fc, const HeaderBuilderT& builder, TaskConfig config)
+	{
+		auto pTask = new EmptyResponseTask(*this->pApplication, name, fc, builder, this->logger, config);
 		this->ScheduleAdhocTask(pTask);
 	}
 

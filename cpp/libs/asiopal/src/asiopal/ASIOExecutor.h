@@ -24,6 +24,7 @@
 #include <openpal/executor/IExecutor.h>
 
 #include "Synchronized.h"
+#include "SteadyClock.h"
 
 #include <asio.hpp>
 #include <queue>
@@ -68,6 +69,8 @@ namespace asiopal
 		Synchronized<bool>* pShutdownSignal;
 
 		TimerASIO* GetTimer();
+
+		openpal::ITimer* Start(const asiopal_steady_clock::time_point& tp, const openpal::Action0& runnable);
 
 		void StartTimer(TimerASIO*, const openpal::Action0& runnable);
 

@@ -27,6 +27,7 @@
 #include <opendnp3/outstation/OutstationContext.h>
 
 #include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/ILinkListener.h>
 #include <opendnp3/transport/TransportStack.h>
 
 #include <asiopal/ASIOExecutor.h>
@@ -48,12 +49,13 @@ public:
 		const char* id,
 		openpal::LogRoot& root_,
 		openpal::IExecutor& executor,
+		opendnp3::ILinkListener& listener,
 		const opendnp3::OutstationStackConfig& config,
 		IStackLifecycle& lifecycle
 	) :
 		root(root_, id),
 		pLifecycle(&lifecycle),
-		stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link)
+		stack(root, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link)
 	{}
 	
 
