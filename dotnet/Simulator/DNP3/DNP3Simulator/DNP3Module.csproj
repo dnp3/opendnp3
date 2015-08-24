@@ -60,49 +60,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BundledPlugins\DoubleBinaryValueDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\DoubleBinaryValueDialog.Designer.cs">
-      <DependentUpon>DoubleBinaryValueDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\CounterValueDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\CounterValueDialog.Designer.cs">
-      <DependentUpon>CounterValueDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\AnalogValueDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\AnalogValueDialog.Designer.cs">
-      <DependentUpon>AnalogValueDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\MeasActions.cs" />
-    <Compile Include="BundledPlugins\MeasurementConversion.cs" />
-    <Compile Include="BundledPlugins\OutstationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\OutstationForm.Designer.cs">
-      <DependentUpon>OutstationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\BinaryValueDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\BinaryValueDialog.Designer.cs">
-      <DependentUpon>BinaryValueDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\QualitySelector.cs">
+    <Compile Include="Components\AnalogOutputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BundledPlugins\QualitySelector.Designer.cs">
-      <DependentUpon>QualitySelector.cs</DependentUpon>
+    <Compile Include="Components\AnalogOutputControl.Designer.cs">
+      <DependentUpon>AnalogOutputControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\CommandHandlerControl.cs">
+    <Compile Include="Components\CROBControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\CommandHandlerControl.Designer.cs">
-      <DependentUpon>CommandHandlerControl.cs</DependentUpon>
+    <Compile Include="Components\CROBControl.Designer.cs">
+      <DependentUpon>CROBControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\EventBufferConfigControl.cs">
       <SubType>UserControl</SubType>
@@ -110,7 +78,22 @@
     <Compile Include="Components\EventBufferConfigControl.Designer.cs">
       <DependentUpon>EventBufferConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProxyCommandHandler.cs" />
+    <Compile Include="Components\MasterScanControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MasterScanControl.Designer.cs">
+      <DependentUpon>MasterScanControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\OutstationModuleDialog.cs" />
+    <Compile Include="Components\OutstationModuleDialog.Designer.cs">
+      <DependentUpon>OutstationModuleDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\ScanDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\ScanDialog.Designer.cs">
+      <DependentUpon>ScanDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\TemplateItemDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,34 +144,15 @@
     </Compile>
     <Compile Include="DNP3Config.cs" />
     <Compile Include="IDNP3Config.cs" />
-    <Compile Include="IMeasurementCache.cs" />
-    <Compile Include="ListviewDatabaseAdapter.cs" />
-    <Compile Include="MultiplexedDatabase.cs" />
     <Compile Include="OutstationNode.cs" />
     <Compile Include="NodeAction.cs" />
     <Compile Include="ActionNodeFactory.cs" />
-    <Compile Include="BundledPlugins\DBListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\DBListView.Designer.cs">
-      <DependentUpon>DBListView.cs</DependentUpon>
-    </Compile>
     <Compile Include="BundledPlugins\MasterForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BundledPlugins\MasterForm.Designer.cs">
       <DependentUpon>MasterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="BundledPlugins\Measurement.cs" />
-    <Compile Include="BundledPlugins\MeasurementCollection.cs" />
-    <Compile Include="BundledPlugins\MeasurementPoco.cs" />
-    <Compile Include="BundledPlugins\MeasurementView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\MeasurementView.Designer.cs">
-      <DependentUpon>MeasurementView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\MeasurementCache.cs" />
     <Compile Include="ChannelNode.cs" />
     <Compile Include="Components\ChannelDialog.cs">
       <SubType>Form</SubType>
@@ -232,35 +196,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="EventedOutstationApplication.cs" />
+    <Compile Include="ScanInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BundledPlugins\DoubleBinaryValueDialog.resx">
-      <DependentUpon>DoubleBinaryValueDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\CounterValueDialog.resx">
-      <DependentUpon>CounterValueDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\AnalogValueDialog.resx">
-      <DependentUpon>AnalogValueDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\OutstationForm.resx">
-      <DependentUpon>OutstationForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\MasterForm.resx">
       <DependentUpon>MasterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
-      <DependentUpon>MeasurementView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\BinaryValueDialog.resx">
-      <DependentUpon>BinaryValueDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\QualitySelector.resx">
-      <DependentUpon>QualitySelector.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Components\CommandHandlerControl.resx">
-      <DependentUpon>CommandHandlerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\EventBufferConfigControl.resx">
       <DependentUpon>EventBufferConfigControl.cs</DependentUpon>
@@ -301,21 +241,37 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\bindings\CLRAdapter\CLRAdapter.vcxproj">
+    <ProjectReference Include="..\..\..\bindings\CLRAdapter\CLRAdapter.vcxproj">
       <Project>{95903db4-9de7-4e41-b990-6995108a8495}</Project>
       <Name>DNP3CLRAdapter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\bindings\CLRInterface\DNP3CLRInterface.csproj">
+    <ProjectReference Include="..\..\..\bindings\CLRInterface\DNP3CLRInterface.csproj">
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
       <Name>DNP3CLRInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Commons\Commons.csproj">
+    <ProjectReference Include="..\..\Commons\Commons.csproj">
       <Project>{67c09f7a-3dd4-4c02-aa3b-6882fb6ea816}</Project>
       <Name>Commons</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SimulatorAPI\SimulatorAPI.csproj">
+    <ProjectReference Include="..\..\SimulatorAPI\ModuleAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>SimulatorAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DefaultOutstationPlugin\DefaultOutstationPlugin.csproj">
+      <Project>{1abc9a1a-6026-4803-bab4-c1190375a531}</Project>
+      <Name>DefaultOutstationPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNP3Commons\DNP3Commons.csproj">
+      <Project>{bf90d749-22fb-49fd-b840-4ff875d12cc6}</Project>
+      <Name>DNP3Commons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DNP3PluginAPI\DNP3PluginAPI.csproj">
+      <Project>{a392b2a4-f62e-442c-813e-6b7f4bf63459}</Project>
+      <Name>DNP3PluginAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RelayOutstationPlugin\RelayOutstationPlugin.csproj">
+      <Project>{2026d7bf-fb7c-49a8-882f-46122b2a5d7d}</Project>
+      <Name>RelayOutstationPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

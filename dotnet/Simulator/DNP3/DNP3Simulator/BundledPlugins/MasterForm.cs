@@ -5,10 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Automatak.DNP3.Interface;
 using Automatak.Simulator.DNP3.Commons;
+
 
 namespace Automatak.Simulator.DNP3
 {    
@@ -86,13 +88,12 @@ namespace Automatak.Simulator.DNP3
             DoCommandAction(this.analogOutputControl.SelectAndOperateAction);
         }
 
-        private void DoCommandAction(Func<ICommandProcessor, IFuture<CommandResponse>> func)
+        private void DoCommandAction(Func<ICommandProcessor, Task<CommandResponse>> func)
         {
             this.toolStripStatusLabel.Text = "Result: ... ";
-            var future = func(this.master.GetCommandProcessor());
-            future.Listen(cr =>
+            func(this.master).ContinueWith(cr =>            
                 this.BeginInvoke(new Action(() =>
-                   this.toolStripStatusLabel.Text += cr.ToString()
+                   this.toolStripStatusLabel.Text += cr.Result.ToString()
                 ))
             );
 
@@ -103,13 +104,14 @@ namespace Automatak.Simulator.DNP3
             this.toolStripStatusLabel.Text = "Result: ... ";
             var function = (FunctionCode)this.comboBoxFunctionCode.SelectedValue;
 
-            var callback = new StringCallback();
+            /* TODO
             this.master.PerformFunction(function, Enumerable.Empty<Header>(), function.ToString(), callback);  
             callback.Task.ContinueWith(task =>
                 this.BeginInvoke(new Action(() =>
                    this.toolStripStatusLabel.Text += task.Result.ToString()
                 ))
             );
+             */
         }      
         
     }

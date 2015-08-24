@@ -29,7 +29,7 @@ namespace Automatak.Simulator.DNP3.Components
 
         private void buttonOnce_Click(object sender, EventArgs e)
         {            
-            master.Scan(GetClassHeaders(classFieldControlScan.ClassFieldValue));
+            master.Scan(GetClassHeaders(classFieldControlScan.ClassFieldValue), TaskConfig.Default);
         }
 
         private static IEnumerable<Header> GetClassHeaders(ClassField classes)
@@ -76,7 +76,7 @@ namespace Automatak.Simulator.DNP3.Components
             var period = TimeSpan.FromMilliseconds(Convert.ToDouble(this.numericUpDownPeriod.Value));
             var classes = classFieldControlScan.ClassFieldValue;
             var headers = GetClassHeaders(classes);            
-            var info = new ScanInfo(master.AddScan(headers, period), ClassDescription(classes), period, DetailedDescription(headers));
+            var info = new ScanInfo(master.AddScan(headers, period, TaskConfig.Default), ClassDescription(classes), period, DetailedDescription(headers));
             this.scans.Add(info);
             this.DialogResult = DialogResult.OK;
             this.Close();

@@ -30,7 +30,7 @@ namespace Automatak.Simulator.DNP3.Components
             comboBoxType.DataSource = Enum.GetValues(typeof(AOType));
         }
 
-        public Func<ICommandProcessor, IFuture<CommandResponse>> DirectOperateAction
+        public Func<ICommandProcessor, Task<CommandResponse>> DirectOperateAction
         {
             get
             {
@@ -41,18 +41,18 @@ namespace Automatak.Simulator.DNP3.Components
                 switch (type)
                 { 
                     case(AOType.Integer16):
-                        return (ICommandProcessor cp) => cp.DirectOperate(new AnalogOutputInt16(SafeConvert.ToInt16(value)) , index);
+                        return (ICommandProcessor cp) => cp.DirectOperate(new AnalogOutputInt16(SafeConvert.ToInt16(value)) , index, TaskConfig.Default);
                     case (AOType.Integer32):
-                        return (ICommandProcessor cp) => cp.DirectOperate(new AnalogOutputInt32(SafeConvert.ToInt32(value)), index);
+                        return (ICommandProcessor cp) => cp.DirectOperate(new AnalogOutputInt32(SafeConvert.ToInt32(value)), index, TaskConfig.Default);
                     case(AOType.Float32):
-                        return (ICommandProcessor cp) => cp.DirectOperate(new AnalogOutputFloat32(SafeConvert.ToSingle(value)), index);
+                        return (ICommandProcessor cp) => cp.DirectOperate(new AnalogOutputFloat32(SafeConvert.ToSingle(value)), index, TaskConfig.Default);
                     default:
-                        return (ICommandProcessor cp) => cp.DirectOperate(new AnalogOutputDouble64(SafeConvert.ToDouble(value)), index);
+                        return (ICommandProcessor cp) => cp.DirectOperate(new AnalogOutputDouble64(SafeConvert.ToDouble(value)), index, TaskConfig.Default);
                 }                
             }
         }      
 
-        public Func<ICommandProcessor, IFuture<CommandResponse>> SelectAndOperateAction
+        public Func<ICommandProcessor, Task<CommandResponse>> SelectAndOperateAction
         {
             get
             {
@@ -63,13 +63,13 @@ namespace Automatak.Simulator.DNP3.Components
                 switch (type)
                 {
                     case (AOType.Integer16):
-                        return (ICommandProcessor cp) => cp.SelectAndOperate(new AnalogOutputInt16(Convert.ToInt16(value)), index);
+                        return (ICommandProcessor cp) => cp.SelectAndOperate(new AnalogOutputInt16(Convert.ToInt16(value)), index, TaskConfig.Default);
                     case (AOType.Integer32):
-                        return (ICommandProcessor cp) => cp.SelectAndOperate(new AnalogOutputInt32(Convert.ToInt32(value)), index);
+                        return (ICommandProcessor cp) => cp.SelectAndOperate(new AnalogOutputInt32(Convert.ToInt32(value)), index, TaskConfig.Default);
                     case (AOType.Float32):
-                        return (ICommandProcessor cp) => cp.SelectAndOperate(new AnalogOutputFloat32(Convert.ToSingle(value)), index);
+                        return (ICommandProcessor cp) => cp.SelectAndOperate(new AnalogOutputFloat32(Convert.ToSingle(value)), index, TaskConfig.Default);
                     default:
-                        return (ICommandProcessor cp) => cp.SelectAndOperate(new AnalogOutputDouble64(Convert.ToDouble(value)), index);
+                        return (ICommandProcessor cp) => cp.SelectAndOperate(new AnalogOutputDouble64(Convert.ToDouble(value)), index, TaskConfig.Default);
                 }
             }
         }

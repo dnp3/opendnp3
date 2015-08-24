@@ -35,20 +35,20 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        public Func<ICommandProcessor, IFuture<CommandResponse>> DirectOperateAction
+        public Func<ICommandProcessor, Task<CommandResponse>> DirectOperateAction
         { 
             get {
                 var crob = ControlValue;
-                return (ICommandProcessor cp) => cp.DirectOperate(crob.Value, crob.Index);
+                return (ICommandProcessor cp) => cp.DirectOperate(crob.Value, crob.Index, TaskConfig.Default);
             }
         }
 
-        public Func<ICommandProcessor, IFuture<CommandResponse>>  SelectAndOperateAction
+        public Func<ICommandProcessor, Task<CommandResponse>>  SelectAndOperateAction
         {
             get
             {
                 var crob = ControlValue;
-                return (ICommandProcessor cp) => cp.SelectAndOperate(crob.Value, crob.Index);
+                return (ICommandProcessor cp) => cp.SelectAndOperate(crob.Value, crob.Index, TaskConfig.Default);
             }
         }
     }
