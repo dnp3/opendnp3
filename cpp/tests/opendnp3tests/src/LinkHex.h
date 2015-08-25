@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_LINK_FORMATTER_H
-#define OPENDNP3_LINK_FORMATTER_H
+#ifndef OPENDNP3_LINK_HEX_H
+#define OPENDNP3_LINK_HEX_H
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/LinkFunction.h"
@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-class LinkFormatter : private openpal::StaticOnly
+class LinkHex : private openpal::StaticOnly
 {
 
 public:	  

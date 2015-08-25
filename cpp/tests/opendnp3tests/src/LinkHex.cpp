@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "LinkFormatter.h"
+#include "LinkHex.h"
 
 #include <openpal/container/StaticBuffer.h>
 #include <opendnp3/link/LinkFrame.h>
@@ -32,56 +32,56 @@ using namespace testlib;
 
 namespace opendnp3
 {
-	std::string LinkFormatter::Ack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
+	std::string LinkHex::Ack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
 	{
 		StaticBuffer<292> buffer;
 		auto ouput = buffer.GetWSlice();
 		return ToHex(LinkFrame::FormatAck(ouput, master, isRxBuffFull, dest, src, nullptr));
 	}
 	
-	std::string LinkFormatter::Nack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
+	std::string LinkHex::Nack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
 	{
 		StaticBuffer<292> buffer;
 		auto ouput = buffer.GetWSlice();
 		return ToHex(LinkFrame::FormatNack(ouput, master, isRxBuffFull, dest, src, nullptr));
 	}
 	
-	std::string LinkFormatter::LinkStatus(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
+	std::string LinkHex::LinkStatus(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
 	{
 		StaticBuffer<292> buffer;
 		auto ouput = buffer.GetWSlice();
 		return ToHex(LinkFrame::FormatLinkStatus(ouput, master, isRxBuffFull, dest, src, nullptr));
 	}
 	
-	std::string LinkFormatter::NotSupported(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
+	std::string LinkHex::NotSupported(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
 	{
 		StaticBuffer<292> buffer;
 		auto ouput = buffer.GetWSlice();
 		return ToHex(LinkFrame::FormatNotSupported(ouput, master, isRxBuffFull, dest, src, nullptr));
 	}
 	
-	std::string LinkFormatter::TestLinkStatus(bool master, bool fcb, uint16_t dest, uint16_t src)
+	std::string LinkHex::TestLinkStatus(bool master, bool fcb, uint16_t dest, uint16_t src)
 	{
 		StaticBuffer<292> buffer;
 		auto ouput = buffer.GetWSlice();
 		return ToHex(LinkFrame::FormatTestLinkStatus(ouput, master, fcb, dest, src, nullptr));
 	}
 	
-	std::string LinkFormatter::ResetLinkStates(bool master, uint16_t dest, uint16_t src)
+	std::string LinkHex::ResetLinkStates(bool master, uint16_t dest, uint16_t src)
 	{
 		StaticBuffer<292> buffer;
 		auto ouput = buffer.GetWSlice();
 		return ToHex(LinkFrame::FormatResetLinkStates(ouput, master, dest, src, nullptr));
 	}
 	
-	std::string LinkFormatter::RequestLinkStatus(bool master, uint16_t dest, uint16_t src)
+	std::string LinkHex::RequestLinkStatus(bool master, uint16_t dest, uint16_t src)
 	{
 		StaticBuffer<292> buffer;
 		auto ouput = buffer.GetWSlice();
 		return ToHex(LinkFrame::FormatRequestLinkStatus(ouput, master, dest, src, nullptr));
 	}
 	
-	std::string LinkFormatter::ConfirmedUserData(bool master, bool fcb, uint16_t dest, uint16_t src, const std::string& userDataHex)
+	std::string LinkHex::ConfirmedUserData(bool master, bool fcb, uint16_t dest, uint16_t src, const std::string& userDataHex)
 	{
 		HexSequence hs(userDataHex);
 		auto data = hs.ToRSlice();
@@ -91,7 +91,7 @@ namespace opendnp3
 		return ToHex(LinkFrame::FormatConfirmedUserData(ouput, master, fcb, dest, src, data, data.Size(), nullptr));
 	}
 	
-	std::string LinkFormatter::UnconfirmedUserData(bool master, uint16_t dest, uint16_t src, const std::string& userDataHex)
+	std::string LinkHex::UnconfirmedUserData(bool master, uint16_t dest, uint16_t src, const std::string& userDataHex)
 	{
 		HexSequence hs(userDataHex);
 		auto data = hs.ToRSlice();

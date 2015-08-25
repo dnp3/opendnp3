@@ -28,7 +28,7 @@
 
 #include "BufferSegment.h"
 #include "LinkLayerTest.h"
-#include "LinkFormatter.h"
+#include "LinkHex.h"
 
 #include <testlib/HexConversions.h>
 
@@ -70,7 +70,7 @@ TEST_CASE(SUITE("SendsKeepAliveAfterExpiration"))
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);	
 
-	REQUIRE(ToHex(t.lastWrite) == LinkFormatter::Ack(true, false, 1024, 1));
+	REQUIRE(ToHex(t.lastWrite) == LinkHex::Ack(true, false, 1024, 1));
 }
 
 
