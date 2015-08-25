@@ -50,6 +50,7 @@ LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opend
 	nextReadFCB(false),
 	nextWriteFCB(false),
 	isOnline(false),
+	keepAliveTimeout(false),
 	lastMessageTimestamp(executor.GetTime()),
 	pRouter(nullptr),
 	pPriState(&PLLS_SecNotReset::Instance()),
@@ -73,8 +74,10 @@ void LinkLayer::PostStatusCallback(opendnp3::LinkStatus status)
 	pExecutor->PostLambda(callback);	
 }
 
-void LinkLayer::PostSendResult(bool success)
+void LinkLayer::CompleteSendOperation(bool success)
 {
+	this->pSegments = nullptr;
+
 	if (pUpperLayer)
 	{		
 		auto callback = [this, success]() 
@@ -123,21 +126,28 @@ bool LinkLayer::Validate(bool isMaster, uint16_t src, uint16_t dest)
 
 void LinkLayer::Send(ITransportSegment& segments)
 {
-	if (isOnline)
-	{
-		if (config.UseConfirms)
-		{
-			pPriState = &pPriState->OnSendConfirmed(*this, segments);
-		}
-		else
-		{
-			pPriState = &pPriState->OnSendUnconfirmed(*this, segments);
-		}
-	}
-	else
+	if (!isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
+		return;
 	}
+
+	if (pSegments)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Already transmitting a segment");
+		return;
+	}
+
+	this->pSegments = &segments;
+	this->TryStartTransmission();
+}
+
+void LinkLayer::TryStartTransmission()
+{
+	if (pSegments)
+	{		
+		pPriState = (config.UseConfirms) ? &pPriState->TrySendConfirmed(*this, *pSegments) : &pPriState->TrySendUnconfirmed(*this, *pSegments);
+	}		
 }
 
 ////////////////////////////////
@@ -173,6 +183,8 @@ void LinkLayer::OnLowerLayerDown()
 	if (isOnline)
 	{
 		isOnline = false;
+		keepAliveTimeout = false;
+		pSegments = nullptr;
 		txMode = TransmitMode::Idle;
 		pendingPriTx.Clear();
 		pendingSecTx.Clear();
@@ -201,26 +213,27 @@ void LinkLayer::OnTransmitResult(bool success)
 	if (txMode == TransmitMode::Idle)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unknown transmission callback");
+		return;
+	}
+	
+	auto isPrimary = (txMode == TransmitMode::Primary);
+	this->txMode = TransmitMode::Idle;
+
+	// before we dispatch the transmit result, give any pending transmissions access first
+	this->CheckPendingTx(pendingSecTx, false);
+	this->CheckPendingTx(pendingPriTx, true);
+
+	// now dispatch the completion event to the correct state handler
+	if (isPrimary)
+	{
+		pPriState = &pPriState->OnTransmitResult(*this, success);
 	}
 	else
 	{
-		auto isPrimary = (txMode == TransmitMode::Primary);
-		this->txMode = TransmitMode::Idle;
+		pSecState = &pSecState->OnTransmitResult(*this, success);
+	}	
 
-		// before we dispatch the transmit result, give any pending transmissions access first
-		this->CheckPendingTx(pendingSecTx, false);
-		this->CheckPendingTx(pendingPriTx, true);
-
-		// now dispatch the completion event to the correct state handler
-		if (isPrimary)
-		{
-			pPriState = &pPriState->OnTransmitResult(*this, success);
-		}
-		else
-		{
-			pSecState = &pSecState->OnTransmitResult(*this, success);
-		}		
-	}			
+	this->TryStartTransmission();	
 }
 
 void LinkLayer::CheckPendingTx(openpal::Settable<RSlice>& pending, bool primary)
@@ -242,12 +255,20 @@ void LinkLayer::OnKeepAliveTimeout()
 	if (elapsed >= this->config.KeepAliveTimeout.GetMilliseconds())
 	{
 		this->lastMessageTimestamp = now;
+		this->keepAliveTimeout = true;
 		this->pListener->OnKeepAliveTimeout();
 	}
 	
 	// No matter what, reschedule the timer based on last message timestamp
 	MonotonicTimestamp expiration(this->lastMessageTimestamp.milliseconds + config.KeepAliveTimeout);
 	this->keepAliveTimer.Start(expiration, [this]() { this->OnKeepAliveTimeout(); });
+}
+
+void LinkLayer::OnResponseTimeout()
+{
+	this->pPriState = &(this->pPriState->OnTimeout(*this));
+
+	this->TryStartTransmission();
 }
 
 openpal::RSlice LinkLayer::FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB)
@@ -310,13 +331,21 @@ void LinkLayer::QueueResetLinks()
 	this->QueueTransmit(buffer, true);
 }
 
+void LinkLayer::QueueRequestLinkStatus()
+{
+	auto writeTo = WSlice(priTxBuffer, LPDU_MAX_FRAME_SIZE);
+	auto buffer = LinkFrame::FormatRequestLinkStatus(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
+	this->QueueTransmit(buffer, true);
+}
+
 void LinkLayer::StartTimer()
 {		
 	rspTimeoutTimer.Start(
 		TimeDuration(config.Timeout), 
 		[this]() 
 		{ 
-			this->pPriState = &(this->pPriState->OnTimeout(*this));
+			this->OnResponseTimeout();
 		}
 	);	
 }
@@ -350,6 +379,13 @@ bool LinkLayer::Retry()
 
 bool LinkLayer::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
 {
+	auto ret = this->OnFrameImpl(func, isMaster, fcb, fcvdfc, dest, source, userdata);
+	this->TryStartTransmission();
+	return ret;
+}
+
+bool LinkLayer::OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
+{	
 	if (!this->Validate(isMaster, source, dest))
 	{
 		return false;

@@ -45,9 +45,10 @@ public:
 
 	virtual PriStateBase& OnTimeout(LinkLayer&);
 
-	// Upper layer events to handle
-	virtual PriStateBase& OnSendConfirmed(LinkLayer&, ITransportSegment& segments);
-	virtual PriStateBase& OnSendUnconfirmed(LinkLayer&, ITransportSegment& segments);
+	// transmission events to handle
+	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments);
+	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments);
+	//virtual PriStateBase& TrySendRequestLinkStatus(LinkLayer&);
 
 	//every concrete state implements this for logging purposes
 	virtual char const* Name() const = 0;
@@ -58,13 +59,14 @@ class PLLS_SecNotReset final : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecNotReset);
 
-	virtual PriStateBase& OnSendUnconfirmed(LinkLayer&, ITransportSegment& segments) override;
-	virtual PriStateBase& OnSendConfirmed(LinkLayer&, ITransportSegment& segments) override;
+	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments) override;
+	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments) override;
+	//virtual PriStateBase& TrySendRequestLinkStatus(LinkLayer&) override;
 };
 
 
 /////////////////////////////////////////////////////////////////////////////
-//  template wait state for send unconfirmed sata
+//  template wait state for send unconfirmed data
 /////////////////////////////////////////////////////////////////////////////
 
 template <class ReturnToState>
@@ -89,7 +91,7 @@ PriStateBase& PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(
 	}
 	else // we're done
 	{		
-		link.PostSendResult(success);
+		link.CompleteSendOperation(success);
 		return ReturnToState::Instance();
 	}	
 }
@@ -125,8 +127,8 @@ class PLLS_SecReset final : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecReset);
 
-	virtual PriStateBase& OnSendUnconfirmed(LinkLayer&, ITransportSegment& segments) override;
-	virtual PriStateBase& OnSendConfirmed(LinkLayer&, ITransportSegment& segments) override;
+	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments) override;
+	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments) override;	
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame

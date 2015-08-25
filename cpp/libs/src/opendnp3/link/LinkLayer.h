@@ -70,7 +70,8 @@ public:
 
 	// Functions called by the primary and secondary station states	
 	void PostStatusCallback(opendnp3::LinkStatus status);	
-	void PostSendResult(bool success);
+	void CompleteSendOperation(bool success);
+	void TryStartTransmission();
 
 	openpal::Logger& GetLogger()
 	{
@@ -119,6 +120,7 @@ public:
 	void QueueAck();
 	void QueueLinkStatus();
 	void QueueResetLinks();
+	void QueueRequestLinkStatus();
 
 	void StartTimer();
 	void CancelTimer();
@@ -141,7 +143,6 @@ public:
 	uint8_t priTxBuffer[LPDU_MAX_FRAME_SIZE];
 	uint8_t secTxBuffer[LPDU_HEADER_SIZE];
 	
-
 	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu);
 
 	openpal::RSlice FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB);
@@ -150,6 +151,8 @@ public:
 
 private:	
 
+	bool OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata);
+
 	TransmitMode txMode;
 	openpal::Settable<openpal::RSlice> pendingPriTx;
 	openpal::Settable<openpal::RSlice> pendingSecTx;
@@ -157,6 +160,7 @@ private:
 	void CheckPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
 
 	void OnKeepAliveTimeout();
+	void OnResponseTimeout();
 
 	uint32_t numRetryRemaining;
 
@@ -167,7 +171,8 @@ private:
 	bool nextReadFCB;
 	bool nextWriteFCB;
 	bool isOnline;
-	openpal::MonotonicTimestamp lastMessageTimestamp;
+	bool keepAliveTimeout;
+	openpal::MonotonicTimestamp lastMessageTimestamp;	
 
 	bool Validate(bool isMaster, uint16_t src, uint16_t dest);	
 
