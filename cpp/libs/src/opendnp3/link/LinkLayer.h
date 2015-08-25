@@ -85,8 +85,8 @@ public:
 	{
 		return logger;
 	}
-
-	void DoDataUp(const openpal::RSlice& data)
+	
+	void PushDataUp(const openpal::RSlice& data)
 	{
 		if (pUpperLayer)
 		{

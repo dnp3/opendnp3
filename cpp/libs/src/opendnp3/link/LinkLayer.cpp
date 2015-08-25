@@ -391,7 +391,7 @@ void LinkLayer::UnconfirmedUserData(bool isMaster, uint16_t dest, uint16_t src, 
 {
 	if (this->Validate(isMaster, src, dest))
 	{
-		this->DoDataUp(input);
+		this->PushDataUp(input);
 	}
 }
 

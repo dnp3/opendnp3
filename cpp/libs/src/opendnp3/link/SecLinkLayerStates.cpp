@@ -96,14 +96,14 @@ SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkLayer& link, bool aFcb)
 	}
 }
 
-SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice& arBuffer)
+SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkLayer& link, bool fcb, const openpal::RSlice& data)
 {
 	link.QueueAck();
 
-	if (link.NextReadFCB() == aFcb)
+	if (link.NextReadFCB() == fcb)
 	{
 		link.ToggleReadFCB();
-		link.DoDataUp(arBuffer);
+		link.PushDataUp(data);
 	}
 	else
 	{
