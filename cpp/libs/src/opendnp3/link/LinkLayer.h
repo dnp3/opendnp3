@@ -25,6 +25,7 @@
 #include <openpal/logging/LogRoot.h>
 #include <openpal/container/Settable.h>
 #include <openpal/executor/TimerRef.h>
+#include <openpal/container/StaticBuffer.h>
 
 #include "opendnp3/gen/LinkStatus.h"
 
@@ -140,8 +141,8 @@ public:
 	void QueueTransmit(const openpal::RSlice& buffer, bool primary);	
 
 	// buffers used for primary and secondary requests	
-	uint8_t priTxBuffer[LPDU_MAX_FRAME_SIZE];
-	uint8_t secTxBuffer[LPDU_HEADER_SIZE];
+	openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> priTxBuffer;
+	openpal::StaticBuffer<LPDU_HEADER_SIZE> secTxBuffer;
 	
 	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu);
 

@@ -275,16 +275,16 @@ void LinkLayer::OnResponseTimeout()
 
 openpal::RSlice LinkLayer::FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB)
 {
-	auto buffer = WSlice(priTxBuffer, LPDU_MAX_FRAME_SIZE);
-	auto output = LinkFrame::FormatConfirmedUserData(buffer, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
+	auto dest = priTxBuffer.GetWSlice();
+	auto output = LinkFrame::FormatConfirmedUserData(dest, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;	
 }
 
 RSlice LinkLayer::FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu)
 {
-	auto buffer = WSlice(priTxBuffer, LPDU_MAX_FRAME_SIZE);
-	auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
+	auto dest = priTxBuffer.GetWSlice();
+	auto output = LinkFrame::FormatUnconfirmedUserData(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;
 }
@@ -311,32 +311,32 @@ void LinkLayer::QueueTransmit(const RSlice& buffer, bool primary)
 
 void LinkLayer::QueueAck()
 {
-	auto writeTo = WSlice(secTxBuffer, LPDU_HEADER_SIZE);
-	auto buffer = LinkFrame::FormatAck(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
+	auto dest = secTxBuffer.GetWSlice();
+	auto buffer = LinkFrame::FormatAck(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
 }
 
 void LinkLayer::QueueLinkStatus()
 {
-	auto writeTo = WSlice(secTxBuffer, LPDU_HEADER_SIZE);
-	auto buffer = LinkFrame::FormatLinkStatus(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
+	auto dest = secTxBuffer.GetWSlice();
+	auto buffer = LinkFrame::FormatLinkStatus(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
 }
 
 void LinkLayer::QueueResetLinks()
 {
-	auto writeTo = WSlice(priTxBuffer, LPDU_MAX_FRAME_SIZE);
-	auto buffer = LinkFrame::FormatResetLinkStates(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+	auto dest = priTxBuffer.GetWSlice();
+	auto buffer = LinkFrame::FormatResetLinkStates(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);
 }
 
 void LinkLayer::QueueRequestLinkStatus()
 {
-	auto writeTo = WSlice(priTxBuffer, LPDU_MAX_FRAME_SIZE);
-	auto buffer = LinkFrame::FormatRequestLinkStatus(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+	auto dest = priTxBuffer.GetWSlice();
+	auto buffer = LinkFrame::FormatRequestLinkStatus(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);
 }
