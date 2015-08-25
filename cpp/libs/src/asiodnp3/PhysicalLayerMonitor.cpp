@@ -85,7 +85,7 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState& state)
 
 void PhysicalLayerMonitor::OnOpenFailure()
 {
-	if (mpState->OnOpenFailure(this))
+	if (mpState->OnOpenFailure(*this))
 	{
 		this->OnPhysicalLayerOpenFailureCallback();
 		this->currentRetry = pOpenStrategy->GetNextDelay(currentRetry, maxOpenRetry);
@@ -94,7 +94,7 @@ void PhysicalLayerMonitor::OnOpenFailure()
 
 void PhysicalLayerMonitor::OnLowerLayerUp()
 {
-	if (mpState->OnLayerOpen(this))
+	if (mpState->OnLayerOpen(*this))
 	{
 		isOnline = true;
 		this->currentRetry = minOpenRetry;
@@ -104,7 +104,7 @@ void PhysicalLayerMonitor::OnLowerLayerUp()
 
 void PhysicalLayerMonitor::OnLowerLayerDown()
 {
-	if (mpState->OnLayerClose(this))
+	if (mpState->OnLayerClose(*this))
 	{
 		isOnline = false;
 		this->OnPhysicalLayerCloseCallback();
@@ -115,34 +115,34 @@ void PhysicalLayerMonitor::OnLowerLayerDown()
 
 void PhysicalLayerMonitor::Start()
 {	
-	mpState->OnStartRequest(this);
+	mpState->OnStartRequest(*this);
 }
 
 void PhysicalLayerMonitor::StartOne()
 {
-	mpState->OnStartOneRequest(this);
+	mpState->OnStartOneRequest(*this);
 }
 
 void PhysicalLayerMonitor::Close()
 {
-	mpState->OnCloseRequest(this);
+	mpState->OnCloseRequest(*this);
 }
 
 void PhysicalLayerMonitor::Suspend()
 {	
-	mpState->OnSuspendRequest(this);
+	mpState->OnSuspendRequest(*this);
 }
 
 void PhysicalLayerMonitor::Shutdown()
 {
-	mpState->OnShutdownRequest(this);
+	mpState->OnShutdownRequest(*this);
 }
 
 /* ------- External events that occurs ------- */
 
 void PhysicalLayerMonitor::OnOpenTimerExpiration()
 {
-	if (mpState->OnOpenTimeout(this))
+	if (mpState->OnOpenTimeout(*this))
 	{
 		assert(mpOpenTimer != nullptr);
 		mpOpenTimer = nullptr;
