@@ -23,7 +23,8 @@
 
 #include <openpal/container/RSlice.h>
 
-#include <stddef.h>
+#include "opendnp3/gen/LinkFunction.h"
+
 #include <cstdint>
 
 namespace opendnp3
@@ -34,23 +35,8 @@ class IFrameSink
 {
 public:
 
-	virtual ~IFrameSink() {}
-
-	//	Sec to Pri
-
-	virtual void Ack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t source) = 0;
-	virtual void Nack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t source) = 0;
-	virtual void LinkStatus(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t source) = 0;
-	virtual void NotSupported(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t source) = 0;
-
-
-	//	Pri to Sec
-
-	virtual void TestLinkStatus(bool isMaster, bool fcb, uint16_t dest, uint16_t source) = 0;
-	virtual void ResetLinkStates(bool isMaster, uint16_t dest, uint16_t source) = 0;
-	virtual void RequestLinkStatus(bool isMaster, uint16_t dest, uint16_t source) = 0;
-	virtual void ConfirmedUserData(bool isMaster, bool fcb, uint16_t dest, uint16_t source, const openpal::RSlice& buffer) = 0;
-	virtual void UnconfirmedUserData(bool isMaster, uint16_t dest, uint16_t source, const openpal::RSlice& buffer) = 0;
+	virtual bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata) = 0;
+	
 };
 
 }

@@ -200,7 +200,7 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	REQUIRE(t.router.Enable(&mfs));
 	t.phys.SignalOpenSuccess();
 	t.phys.TriggerRead("05 64 D5 C4 00 04 01 00 F0 BC C0 C0 01 3C 01 06 FF 50");
-	REQUIRE(0 ==  mfs.mNumFrames);
+	REQUIRE(0 ==  mfs.m_num_frames);
 	t.phys.SignalReadFailure(); // closes the layer
 
 	t.exe.AdvanceTime(TimeDuration::Milliseconds(100));
@@ -214,6 +214,6 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	t.phys.TriggerRead(ToHex(frame));
 
-	REQUIRE(1 ==  mfs.mNumFrames);
+	REQUIRE(1 ==  mfs.m_num_frames);
 }
 

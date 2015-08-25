@@ -226,50 +226,17 @@ ILinkSession* LinkLayerRouter::GetDestination(uint16_t dest, uint16_t src)
 // IFrameSink Implementation
 //////////////////////////////////////////////////////
 
-void LinkLayerRouter::Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+bool LinkLayerRouter::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
 {
-	ILinkSession* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->Ack(aIsMaster, aIsRcvBuffFull, aDest, aSrc);
-}
-void LinkLayerRouter::Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
-{
-	ILinkSession* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->Nack(aIsMaster, aIsRcvBuffFull, aDest, aSrc);
-}
-void LinkLayerRouter::LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
-{
-	ILinkSession* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->LinkStatus(aIsMaster, aIsRcvBuffFull, aDest, aSrc);
-}
-void LinkLayerRouter::NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
-{
-	ILinkSession* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->NotSupported(aIsMaster, aIsRcvBuffFull, aDest, aSrc);
-}
-void LinkLayerRouter::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
-{
-	ILinkSession* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->TestLinkStatus(aIsMaster, aFcb, aDest, aSrc);
-}
-void LinkLayerRouter::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
-{
-	ILinkSession* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->ResetLinkStates(aIsMaster, aDest, aSrc);
-}
-void LinkLayerRouter::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
-{
-	ILinkSession* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->RequestLinkStatus(aIsMaster, aDest, aSrc);
-}
-void LinkLayerRouter::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const RSlice& arBuffer)
-{
-	ILinkSession* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->ConfirmedUserData(aIsMaster, aFcb, aDest, aSrc, arBuffer);
-}
-void LinkLayerRouter::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const RSlice& arBuffer)
-{
-	ILinkSession* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->UnconfirmedUserData(aIsMaster, aDest, aSrc, arBuffer);
+	ILinkSession* pDest = GetDestination(dest, source);
+	if (pDest)
+	{
+		return pDest->OnFrame(func, isMaster, fcb, fcvdfc, dest, source, userdata);
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void LinkLayerRouter::OnReceive(const openpal::RSlice& input)

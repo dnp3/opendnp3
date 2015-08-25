@@ -323,75 +323,44 @@ bool LinkLayer::Retry()
 // IFrameSink
 ////////////////////////////////
 
-void LinkLayer::Ack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src)
+bool LinkLayer::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
 {
-	if (this->Validate(isMaster, src, dest))
+	if (!this->Validate(isMaster, source, dest))
 	{
-		pPriState = &pPriState->OnAck(*this, rxBuffFull);
+		return false;
 	}
-}
 
-void LinkLayer::Nack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src)
-{
-	if (this->Validate(isMaster, src, dest))
+	switch (func)
 	{
-		pPriState = &pPriState->OnNack(*this, rxBuffFull);
-	}
-}
-
-void LinkLayer::LinkStatus(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src)
-{
-	if (this->Validate(isMaster, src, dest))
-	{
-		pPriState = &pPriState->OnLinkStatus(*this, rxBuffFull);
-	}
-}
-
-void LinkLayer::NotSupported (bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src)
-{
-	if (this->Validate(isMaster, src, dest))
-	{
-		pPriState = &pPriState->OnNotSupported(*this, rxBuffFull);
-	}
-}
-
-void LinkLayer::TestLinkStatus(bool isMaster, bool aFcb, uint16_t dest, uint16_t src)
-{
-	if (this->Validate(isMaster, src, dest))
-	{
-		pSecState = &pSecState->OnTestLinkStatus(*this, aFcb);
-	}
-}
-
-void LinkLayer::ResetLinkStates(bool isMaster, uint16_t dest, uint16_t src)
-{
-	if (this->Validate(isMaster, src, dest))
-	{
-		pSecState = &pSecState->OnResetLinkStates(*this);
-	}
-}
-
-void LinkLayer::RequestLinkStatus(bool isMaster, uint16_t dest, uint16_t src)
-{
-	if (this->Validate(isMaster, src, dest))
-	{
-		pSecState = &pSecState->OnRequestLinkStatus(*this);
-	}
-}
-
-void LinkLayer::ConfirmedUserData(bool isMaster, bool aFcb, uint16_t dest, uint16_t src, const RSlice& input)
-{
-	if (this->Validate(isMaster, src, dest))
-	{
-		pSecState = &pSecState->OnConfirmedUserData(*this, aFcb, input);
-	}
-}
-
-void LinkLayer::UnconfirmedUserData(bool isMaster, uint16_t dest, uint16_t src, const RSlice& input)
-{
-	if (this->Validate(isMaster, src, dest))
-	{
-		this->PushDataUp(input);
+		case(LinkFunction::SEC_ACK) :
+			pPriState = &pPriState->OnAck(*this, fcvdfc);
+			return true;
+		case(LinkFunction::SEC_NACK) :
+			pPriState = &pPriState->OnNack(*this, fcvdfc);
+			return true;
+		case(LinkFunction::SEC_LINK_STATUS) :
+			pPriState = &pPriState->OnLinkStatus(*this, fcvdfc);
+			return true;
+		case(LinkFunction::SEC_NOT_SUPPORTED) :
+			pPriState = &pPriState->OnNotSupported(*this, fcvdfc);
+			return true;
+		case(LinkFunction::PRI_TEST_LINK_STATES) :
+			pSecState = &pSecState->OnTestLinkStatus(*this, fcb);
+			return true;
+		case(LinkFunction::PRI_RESET_LINK_STATES) :
+			pSecState = &pSecState->OnResetLinkStates(*this);
+			return true;
+		case(LinkFunction::PRI_REQUEST_LINK_STATUS) :
+			pSecState = &pSecState->OnRequestLinkStatus(*this);
+			return true;
+		case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
+			pSecState = &pSecState->OnConfirmedUserData(*this, fcb, userdata);
+			return true;
+		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
+			this->PushDataUp(userdata);
+			return true;
+		default:
+			return false;
 	}
 }
 

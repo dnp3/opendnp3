@@ -63,16 +63,7 @@ public:
 	virtual void OnTransmitResult(bool success) override;
 
 	// IFrameSink interface
-
-	virtual void Ack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src) override;
-	virtual void Nack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src) override;
-	virtual void LinkStatus(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src) override;
-	virtual void NotSupported(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src) override;
-	virtual void TestLinkStatus(bool isMaster, bool aFcb, uint16_t dest, uint16_t src) override;
-	virtual void ResetLinkStates(bool isMaster, uint16_t dest, uint16_t src) override;
-	virtual void RequestLinkStatus(bool isMaster, uint16_t dest, uint16_t src) override;
-	virtual void ConfirmedUserData(bool isMaster, bool aFcb, uint16_t dest, uint16_t src, const openpal::RSlice& data) override;
-	virtual void UnconfirmedUserData(bool isMaster, uint16_t dest, uint16_t src, const openpal::RSlice& data) override;
+	virtual bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata = openpal::RSlice()) override;
 
 	// ------------- ILinkLayer --------------------
 	virtual void Send(ITransportSegment& segments) override;
@@ -157,7 +148,7 @@ public:
 
 	ITransportSegment* pSegments;
 
-private:
+private:	
 
 	TransmitMode txMode;
 	openpal::Settable<openpal::RSlice> pendingPriTx;

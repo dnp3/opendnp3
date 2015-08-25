@@ -52,7 +52,7 @@ namespace asiodnp3
 // Implements the parsing and de-multiplexing portion of
 // of DNP 3 Data Link Layer. PhysicalLayerMonitor inherits
 // from IHandler, which inherits from IUpperLayer
-	class LinkLayerRouter : public asiodnp3::PhysicalLayerMonitor, public opendnp3::ILinkRouter, private opendnp3::IFrameSink
+class LinkLayerRouter : public asiodnp3::PhysicalLayerMonitor, public opendnp3::ILinkRouter, private opendnp3::IFrameSink
 {
 public:
 
@@ -91,16 +91,7 @@ public:
 	bool Remove(opendnp3::ILinkSession* pContext);
 
 	// ------------ IFrameSink -----------------
-
-	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void NotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override final;
-	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override final;
+	virtual bool OnFrame(opendnp3::LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata) override final;
 
 	// ------------ ILinkRouter -----------------
 

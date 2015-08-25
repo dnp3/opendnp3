@@ -154,40 +154,9 @@ LinkLayerParser::State LinkLayerParser::ParseBody()
 
 
 void LinkLayerParser::PushFrame(IFrameSink* pSink)
-{	
-	switch(header.GetFuncEnum())
-	{
-		case(LinkFunction::PRI_RESET_LINK_STATES):
-			pSink->ResetLinkStates(header.IsFromMaster(), header.GetDest(), header.GetSrc());
-			break;
-		case(LinkFunction::PRI_TEST_LINK_STATES):
-			pSink->TestLinkStatus(header.IsFromMaster(), header.IsFcbSet(), header.GetDest(), header.GetSrc());
-			break;
-		case(LinkFunction::PRI_CONFIRMED_USER_DATA):
-			pSink->ConfirmedUserData(header.IsFromMaster(), header.IsFcbSet(), header.GetDest(), header.GetSrc(), userData);
-			break;
-		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
-			pSink->UnconfirmedUserData(header.IsFromMaster(), header.GetDest(), header.GetSrc(), userData);
-			break;
-		case(LinkFunction::PRI_REQUEST_LINK_STATUS):
-			pSink->RequestLinkStatus(header.IsFromMaster(), header.GetDest(), header.GetSrc());
-			break;
-		case(LinkFunction::SEC_ACK):
-			pSink->Ack(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
-			break;
-		case(LinkFunction::SEC_NACK):
-			pSink->Nack(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
-			break;
-		case(LinkFunction::SEC_LINK_STATUS):
-			pSink->LinkStatus(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
-			break;
-		case(LinkFunction::SEC_NOT_SUPPORTED):
-			pSink->NotSupported(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
-			break;
-		default:
-			break;
-	}
-	
+{
+	pSink->OnFrame(header.GetFuncEnum(), header.IsFromMaster(), header.IsFcbSet(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc(), userData);
+
 	buffer.AdvanceRead(frameSize);
 }
 

@@ -25,7 +25,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockFrameSink::MockFrameSink() : mNumFrames(0), mLowerOnline(false)
+MockFrameSink::MockFrameSink() : m_num_frames(0), mLowerOnline(false)
 {}
 
 void MockFrameSink::OnLowerLayerUp()
@@ -41,22 +41,22 @@ void MockFrameSink::OnLowerLayerDown()
 void MockFrameSink::Reset()
 {
 	this->ClearBuffer();
-	mNumFrames = 0;
+	m_num_frames = 0;
 }
 
 bool MockFrameSink::CheckLast(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
-	return (mCode == aCode) && (aIsMaster == mIsMaster) && (mSrc == aSrc) && (mDest == aDest);
+	return (m_code == aCode) && (aIsMaster == m_master) && (m_src == aSrc) && (m_dest == aDest);
 }
 
 bool MockFrameSink::CheckLastWithFCB(LinkFunction aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
 {
-	return (mFcb == aFcb) && CheckLast(aCode, aIsMaster, aDest, aSrc);
+	return (m_fcb == aFcb) && CheckLast(aCode, aIsMaster, aDest, aSrc);
 }
 
 bool MockFrameSink::CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	return  (mIsRcvBuffFull == aIsRcvBuffFull) && CheckLast(aCode, aIsMaster, aDest, aSrc);
+	return  (m_fcvdfc == aIsRcvBuffFull) && CheckLast(aCode, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::OnTransmitResult(bool success)
@@ -64,86 +64,38 @@ void MockFrameSink::OnTransmitResult(bool success)
 
 }
 
-//	Sec to Pri
-
-void MockFrameSink::Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+bool MockFrameSink::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
 {
-	mIsRcvBuffFull = aIsRcvBuffFull;
-	this->Update(LinkFunction::SEC_ACK, aIsMaster, aDest, aSrc);
+	++m_num_frames;
+
+	this->m_code = func;
+	this->m_master = isMaster;
+	this->m_fcb = fcb;
+	this->m_fcvdfc = fcvdfc;
+	this->m_dest = dest;
+	this->m_src = source;
+	
+	if (userdata.IsNotEmpty())
+	{		
+		this->WriteToBuffer(userdata);
+	}
+
+	return true;
 }
 
-void MockFrameSink::Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+void MockFrameSink::AddAction(std::function<void ()> fun)
 {
-	mIsRcvBuffFull = aIsRcvBuffFull;
-	this->Update(LinkFunction::SEC_NACK, aIsMaster, aDest, aSrc);
-}
-
-void MockFrameSink::LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
-{
-	mIsRcvBuffFull = aIsRcvBuffFull;
-	this->Update(LinkFunction::SEC_LINK_STATUS, aIsMaster, aDest, aSrc);
-}
-
-void MockFrameSink::NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
-{
-	mIsRcvBuffFull = aIsRcvBuffFull;
-	this->Update(LinkFunction::SEC_NOT_SUPPORTED, aIsMaster, aDest, aSrc);
-}
-
-//	Pri to Sec
-
-void MockFrameSink::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
-{
-	mFcb = aFcb;
-	this->Update(LinkFunction::PRI_TEST_LINK_STATES, aIsMaster, aDest, aSrc);
-}
-
-void MockFrameSink::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
-{
-	this->Update(LinkFunction::PRI_RESET_LINK_STATES, aIsMaster, aDest, aSrc);
-}
-
-void MockFrameSink::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
-{
-	this->Update(LinkFunction::PRI_REQUEST_LINK_STATUS, aIsMaster, aDest, aSrc);
-}
-
-void MockFrameSink::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer)
-{
-	mFcb = aFcb;
-	this->WriteToBuffer(arBuffer);
-	this->Update(LinkFunction::PRI_CONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
-}
-
-void MockFrameSink::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer)
-{
-	this->WriteToBuffer(arBuffer);
-	this->Update(LinkFunction::PRI_UNCONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
-}
-
-void MockFrameSink::AddAction(std::function<void ()> aFunc)
-{
-	mActions.push_back(aFunc);
+	m_actions.push_back(fun);
 }
 
 void MockFrameSink::ExecuteAction()
 {
-	if(mActions.size() > 0)
+	if(m_actions.size() > 0)
 	{
-		auto f = mActions.front();
-		mActions.pop_front();
+		auto f = m_actions.front();
+		m_actions.pop_front();
 		f();
 	}
-}
-
-void MockFrameSink::Update(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc)
-{
-	++mNumFrames;
-	mCode = aCode;
-	mIsMaster = aIsMaster;
-	mDest = aDest;
-	mSrc = aSrc;
-	this->ExecuteAction();
 }
 
 }

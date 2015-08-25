@@ -47,48 +47,36 @@ public:
 
 	void OnTransmitResult(bool success);
 
-	//	Sec to Pri
-	void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-
-	//	Pri to Sec
-
-	void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-	void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::RSlice&);
-	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::RSlice&);
+	virtual bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata) override final;
 
 	void Reset();
-
-	size_t mNumFrames;
+	
 
 	bool CheckLast(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
 	bool CheckLastWithFCB(LinkFunction aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
 	bool CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
 
 	// Last frame information
-	LinkFunction mCode;
-	bool mIsMaster;
-	bool mIsRcvBuffFull;
-	uint16_t mSrc;
-	uint16_t mDest;
-	bool mFcb;
-
+	size_t m_num_frames;
+	LinkFunction m_code;
+	bool m_master;
+	bool m_fcvdfc;
+	bool m_fcb;
+	uint16_t m_src;
+	uint16_t m_dest;
+	
 	bool mLowerOnline;
 
 	// Add a function to execute the next time a frame is received
 	// This allows us to test re-entrant behaviors
-	void AddAction(std::function<void ()> aFunc);
+	void AddAction(std::function<void ()> fun);
 
 private:
 
 	// Executes one action, if one is available
 	void ExecuteAction();
 
-	std::deque< std::function<void ()> > mActions;
+	std::deque< std::function<void ()> > m_actions;
 
 	void Update(LinkFunction aCode, bool aIsMaster, uint16_t aSrc, uint16_t aDest);
 };

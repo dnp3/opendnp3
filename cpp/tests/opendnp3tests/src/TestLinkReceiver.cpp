@@ -37,7 +37,7 @@ using namespace testlib;
 TEST_CASE(SUITE("InitializationState"))
 {
 	LinkParserTest t;
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames ==  0);
 }
 
 //////////////////////////////////////////
@@ -48,7 +48,7 @@ TEST_CASE(SUITE("HeaderCRCError"))
 {
 	LinkParserTest t;
 	t.WriteData("05 64 05 C0 01 00 00 04 E9 20");
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames == 0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_CRC);
 }
 
@@ -56,7 +56,7 @@ TEST_CASE(SUITE("BodyCRCError"))
 {
 	LinkParserTest t;
 	t.WriteData("05 64 14 F3 01 00 00 04 0A 3B C0 C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06 9A 11");
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames == 0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_CRC);
 }
 
@@ -70,7 +70,7 @@ TEST_CASE(SUITE("BadLengthError"))
 {
 	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 01 C0 01 00 00 04 E9 21"));
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames == 0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_INVALID_LENGTH);
 }
 
@@ -79,7 +79,7 @@ TEST_CASE(SUITE("UnexpectedData"))
 {
 	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 08 C0 01 00 00 04 E9 21"));
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames == 0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_DATA);
 }
 
@@ -89,7 +89,7 @@ TEST_CASE(SUITE("AbsenceOfData"))
 {
 	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 73 00 04 01 00 03 FC"));
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames == 0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_NO_DATA);
 }
 
@@ -99,7 +99,7 @@ TEST_CASE(SUITE("UnknownFunction"))
 {
 	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 C6 01 00 00 04 E9 21"));
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames == 0);
 	REQUIRE(t.log.NextErrorCode() ==   DLERR_UNKNOWN_FUNC);
 }
 
@@ -109,7 +109,7 @@ TEST_CASE(SUITE("UnexpectedFCV"))
 {
 	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 D0 01 00 00 04 E9 21"));
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames == 0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FCV);
 }
 
@@ -119,7 +119,7 @@ TEST_CASE(SUITE("UnexpectedFCB"))
 {
 	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 20 00 04 01 00 19 A6"));
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames == 0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FCB);
 }
 
@@ -130,7 +130,7 @@ TEST_CASE(SUITE("CombinedFailures"))
 	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 20 00 04 01 00 19 A6")
 	            + " " + RepairCRC("05 64 05 D0 01 00 00 04 E9 21"));
-	REQUIRE(t.sink.mNumFrames ==  0);
+	REQUIRE(t.sink.m_num_frames == 0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FCB);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FCV);
 }
@@ -149,7 +149,7 @@ TEST_CASE(SUITE("ReadACK"))
 	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLastWithDFC(LinkFunction::SEC_ACK, true, false, 1, 2));
 }
 
@@ -162,7 +162,7 @@ TEST_CASE(SUITE("ReadNACK"))
 	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLastWithDFC(LinkFunction::SEC_NACK, false, true, 1, 2));
 }
 
@@ -175,7 +175,7 @@ TEST_CASE(SUITE("LinkStatus"))
 	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLastWithDFC(LinkFunction::SEC_LINK_STATUS, true, true, 1, 2));
 }
 
@@ -188,7 +188,7 @@ TEST_CASE(SUITE("NotSupported"))
 	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLastWithDFC(LinkFunction::SEC_NOT_SUPPORTED, true, false, 1, 2));
 }
 
@@ -205,7 +205,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLastWithFCB(LinkFunction::PRI_TEST_LINK_STATES, false, true, 1, 2));
 }
 
@@ -218,7 +218,7 @@ TEST_CASE(SUITE("ResetLinkStates"))
 	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLast(LinkFunction::PRI_RESET_LINK_STATES, false, 1, 2));
 }
 
@@ -231,7 +231,7 @@ TEST_CASE(SUITE("RequestLinkStatus"))
 	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLast(LinkFunction::PRI_REQUEST_LINK_STATUS, true, 1, 2));
 }
 
@@ -246,7 +246,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLast(LinkFunction::PRI_UNCONFIRMED_USER_DATA, true, 1, 2));
 	REQUIRE(t.sink.BufferEquals(data, data.Size()));
 }
@@ -262,7 +262,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLastWithFCB(LinkFunction::PRI_CONFIRMED_USER_DATA, true, true, 1, 2));
 	REQUIRE(t.sink.BufferEquals(data, data.Size()));
 }
@@ -277,7 +277,7 @@ TEST_CASE(SUITE("TestTwoPackets"))
 	// back to back reset link
 	t.WriteData("05 64 05 C0 01 00 00 04 E9 21 05 64 05 C0 01 00 00 04 E9 21");
 	REQUIRE(t.log.IsLogErrorFree());
-	REQUIRE(t.sink.mNumFrames ==  2);
+	REQUIRE(t.sink.m_num_frames == 2);
 	REQUIRE(t.sink.CheckLast(LinkFunction::PRI_RESET_LINK_STATES, true, 1, 1024));
 }
 
@@ -291,7 +291,7 @@ TEST_CASE(SUITE("Resync0564"))
 	LinkParserTest t;
 	t.WriteData("05 64 05 64 05 C0 01 00 00 04 E9 21");
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_CRC);
-	REQUIRE(t.sink.mNumFrames ==  1);
+	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLast(LinkFunction::PRI_RESET_LINK_STATES, true, 1, 1024));
 }
 
@@ -314,7 +314,7 @@ TEST_CASE(SUITE("ManyReceives"))
 	{
 		t.WriteData(frame);
 		REQUIRE(t.log.IsLogErrorFree());
-		REQUIRE(t.sink.mNumFrames ==  i);
+		REQUIRE(t.sink.m_num_frames == i);
 		REQUIRE(t.sink.CheckLastWithDFC(LinkFunction::SEC_ACK, true, false, 1, 2));
 	}
 }
