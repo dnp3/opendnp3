@@ -86,22 +86,54 @@ PriStateBase& PriStateBase::TrySendUnconfirmed(LinkLayer& link, ITransportSegmen
 //	Class PLLS_SecNotResetIdle
 ////////////////////////////////////////////////////////
 
-PLLS_SecNotReset PLLS_SecNotReset::instance;
+PLLS_Idle PLLS_Idle::instance;
 
-PriStateBase& PLLS_SecNotReset::TrySendUnconfirmed(LinkLayer& link, ITransportSegment& segments)
+PriStateBase& PLLS_Idle::TrySendUnconfirmed(LinkLayer& link, ITransportSegment& segments)
 {	
 	auto first = segments.GetSegment();
 	auto output = link.FormatPrimaryBufferWithUnconfirmed(first);	
 	link.QueueTransmit(output, true);
-	return PLLS_SendUnconfirmedTransmitWait<PLLS_SecNotReset>::Instance();	
+	return PLLS_SendUnconfirmedTransmitWait::Instance();	
 }
 
-PriStateBase& PLLS_SecNotReset::TrySendConfirmed(LinkLayer& link, ITransportSegment& segments)
+PriStateBase& PLLS_Idle::TrySendConfirmed(LinkLayer& link, ITransportSegment& segments)
 {
-	link.ResetRetry();
-	link.QueueResetLinks();
-	return PLLS_LinkResetTransmitWait::Instance();
+	if (link.isRemoteReset)
+	{
+		link.ResetRetry();
+		auto buffer = link.FormatPrimaryBufferWithConfirmed(segments.GetSegment(), link.NextWriteFCB());
+		link.QueueTransmit(buffer, true);
+		return PLLS_ConfUserDataTransmitWait::Instance();
+	}
+	else
+	{
+		link.ResetRetry();
+		link.QueueResetLinks();
+		return PLLS_LinkResetTransmitWait::Instance();
+	}	
 }
+
+////////////////////////////////////////////////////////
+//	Class SendUnconfirmedTransmitWait
+////////////////////////////////////////////////////////
+
+PLLS_SendUnconfirmedTransmitWait PLLS_SendUnconfirmedTransmitWait::instance;
+
+PriStateBase& PLLS_SendUnconfirmedTransmitWait::OnTransmitResult(LinkLayer& link, bool success)
+{
+	if (link.pSegments->Advance())
+	{
+		auto output = link.FormatPrimaryBufferWithUnconfirmed(link.pSegments->GetSegment());
+		link.QueueTransmit(output, true);
+		return *this;
+	}
+	else // we're done
+	{
+		link.CompleteSendOperation(success);
+		return PLLS_Idle::Instance();
+	}
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 //  Wait for the link layer to transmit the reset links
@@ -120,7 +152,7 @@ PriStateBase& PLLS_LinkResetTransmitWait::OnTransmitResult(LinkLayer& link, bool
 	else
 	{		
 		link.CompleteSendOperation(success);
-		return PLLS_SecNotReset::Instance();
+		return PLLS_Idle::Instance();
 	}
 }
 
@@ -141,32 +173,10 @@ PriStateBase& PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer& link, b
 	else
 	{		
 		link.CompleteSendOperation(false);
-		return PLLS_SecReset::Instance();
+		return PLLS_Idle::Instance();
 	}
 }
 
-
-////////////////////////////////////////////////////////
-//	Class PLLS_SecReset
-////////////////////////////////////////////////////////
-
-PLLS_SecReset PLLS_SecReset::instance;
-
-PriStateBase& PLLS_SecReset::TrySendUnconfirmed(LinkLayer& link, ITransportSegment& segments)
-{		
-	auto first = segments.GetSegment();
-	auto output = link.FormatPrimaryBufferWithUnconfirmed(first);	
-	link.QueueTransmit(output, true);
-	return PLLS_SendUnconfirmedTransmitWait<PLLS_SecReset>::Instance();	
-}
-
-PriStateBase& PLLS_SecReset::TrySendConfirmed(LinkLayer& link, ITransportSegment& segments)
-{
-	link.ResetRetry();
-	auto buffer = link.FormatPrimaryBufferWithConfirmed(segments.GetSegment(), link.NextWriteFCB());
-	link.QueueTransmit(buffer, true);
-	return PLLS_ConfUserDataTransmitWait::Instance();
-}
 
 ////////////////////////////////////////////////////////
 //	Class PLLS_ResetLinkWait
@@ -176,6 +186,7 @@ PLLS_ResetLinkWait PLLS_ResetLinkWait::instance;
 
 PriStateBase& PLLS_ResetLinkWait::OnAck(LinkLayer& link, bool receiveBuffFull)
 {
+	link.isRemoteReset = true;
 	link.ResetWriteFCB();
 	link.CancelTimer();
 	auto buffer = link.FormatPrimaryBufferWithConfirmed(link.pSegments->GetSegment(), link.NextWriteFCB());
@@ -196,7 +207,7 @@ PriStateBase& PLLS_ResetLinkWait::OnTimeout(LinkLayer& link)
 	{
 		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Link reset final timeout, no retries remain");		
 		link.CompleteSendOperation(false);
-		return PLLS_SecNotReset::Instance();
+		return PLLS_Idle::Instance();
 	}
 }
 
@@ -204,7 +215,7 @@ PriStateBase& PLLS_ResetLinkWait::Failure(LinkLayer& link)
 {
 	link.CancelTimer();	
 	link.CompleteSendOperation(false);
-	return PLLS_SecNotReset::Instance();
+	return PLLS_Idle::Instance();
 }
 
 ////////////////////////////////////////////////////////
@@ -227,7 +238,7 @@ PriStateBase& PLLS_ConfDataWait::OnAck(LinkLayer& link, bool receiveBuffFull)
 	else //we're done!
 	{		
 		link.CompleteSendOperation(true);
-		return PLLS_SecReset::Instance();
+		return PLLS_Idle::Instance();
 	}
 }
 
@@ -253,7 +264,7 @@ PriStateBase& PLLS_ConfDataWait::Failure(LinkLayer& link)
 {
 	link.CancelTimer();	
 	link.CompleteSendOperation(false);
-	return PLLS_SecNotReset::Instance();
+	return PLLS_Idle::Instance();
 }
 
 PriStateBase& PLLS_ConfDataWait::OnTimeout(LinkLayer& link)
@@ -270,7 +281,7 @@ PriStateBase& PLLS_ConfDataWait::OnTimeout(LinkLayer& link)
 		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Confirmed data final timeout, no retries remain");
 		link.PostStatusCallback(opendnp3::LinkStatus::UNRESET);
 		link.CompleteSendOperation(false);
-		return PLLS_SecNotReset::Instance();
+		return PLLS_Idle::Instance();
 	}
 }
 

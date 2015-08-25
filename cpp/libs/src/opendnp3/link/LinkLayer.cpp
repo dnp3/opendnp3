@@ -51,9 +51,10 @@ LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opend
 	nextWriteFCB(false),
 	isOnline(false),
 	keepAliveTimeout(false),
+	isRemoteReset(false),
 	lastMessageTimestamp(executor.GetTime()),
 	pRouter(nullptr),
-	pPriState(&PLLS_SecNotReset::Instance()),
+	pPriState(&PLLS_Idle::Instance()),
 	pSecState(&SLLS_NotReset::Instance()),
 	pListener(&linkListener)
 {}
@@ -184,6 +185,7 @@ void LinkLayer::OnLowerLayerDown()
 	{
 		isOnline = false;
 		keepAliveTimeout = false;
+		isRemoteReset = false;
 		pSegments = nullptr;
 		txMode = TransmitMode::Idle;
 		pendingPriTx.Clear();
@@ -192,7 +194,7 @@ void LinkLayer::OnLowerLayerDown()
 		rspTimeoutTimer.Cancel();
 		keepAliveTimer.Cancel();
 
-		pPriState = &PLLS_SecNotReset::Instance();
+		pPriState = &PLLS_Idle::Instance();
 		pSecState = &SLLS_NotReset::Instance();
 
 		if (pUpperLayer)

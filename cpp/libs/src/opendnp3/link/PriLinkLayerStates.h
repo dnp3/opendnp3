@@ -47,21 +47,19 @@ public:
 
 	// transmission events to handle
 	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments);
-	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments);
-	//virtual PriStateBase& TrySendRequestLinkStatus(LinkLayer&);
+	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments);	
 
 	//every concrete state implements this for logging purposes
 	virtual char const* Name() const = 0;
 };
 
 //	@section desc Entry state for primary station
-class PLLS_SecNotReset final : public PriStateBase
+class PLLS_Idle final : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecNotReset);
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_Idle);
 
 	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments) override;
-	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments) override;
-	//virtual PriStateBase& TrySendRequestLinkStatus(LinkLayer&) override;
+	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments) override;	
 };
 
 
@@ -69,32 +67,13 @@ class PLLS_SecNotReset final : public PriStateBase
 //  template wait state for send unconfirmed data
 /////////////////////////////////////////////////////////////////////////////
 
-template <class ReturnToState>
 class PLLS_SendUnconfirmedTransmitWait : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait<ReturnToState>);
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait);
 
 	virtual PriStateBase& OnTransmitResult(LinkLayer& link, bool success);
 };
 
-template <class ReturnToState>
-PLLS_SendUnconfirmedTransmitWait<ReturnToState> PLLS_SendUnconfirmedTransmitWait<ReturnToState>::instance;
-
-template <class ReturnToState>
-PriStateBase& PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(LinkLayer& link, bool success)
-{
-	if (link.pSegments->Advance())
-	{
-		auto output = link.FormatPrimaryBufferWithUnconfirmed(link.pSegments->GetSegment());
-		link.QueueTransmit(output, true);
-		return *this;
-	}
-	else // we're done
-	{		
-		link.CompleteSendOperation(success);
-		return ReturnToState::Instance();
-	}	
-}
 
 /////////////////////////////////////////////////////////////////////////////
 //  Wait for the link layer to transmit the reset links
@@ -121,15 +100,6 @@ class PLLS_ConfUserDataTransmitWait : public PriStateBase
 /////////////////////////////////////////////////////////////////////////////
 //  idle state when the secondary is reset
 /////////////////////////////////////////////////////////////////////////////
-
-//	@section desc for reset state
-class PLLS_SecReset final : public PriStateBase
-{
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecReset);
-
-	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments) override;
-	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments) override;	
-};
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
 class PLLS_ResetLinkWait final : public PriStateBase

@@ -148,39 +148,31 @@ public:
 	openpal::RSlice FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB);
 
 	ITransportSegment* pSegments;
+	bool isRemoteReset;
 
 private:	
 
 	bool OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata);
+	void CheckPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
+	void OnKeepAliveTimeout();
+	void OnResponseTimeout();
+	bool Validate(bool isMaster, uint16_t src, uint16_t dest);
 
 	TransmitMode txMode;
 	openpal::Settable<openpal::RSlice> pendingPriTx;
 	openpal::Settable<openpal::RSlice> pendingSecTx;
-
-	void CheckPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
-
-	void OnKeepAliveTimeout();
-	void OnResponseTimeout();
-
 	uint32_t numRetryRemaining;
-
 	openpal::IExecutor* pExecutor;
 	openpal::TimerRef rspTimeoutTimer;
 	openpal::TimerRef keepAliveTimer;
-
 	bool nextReadFCB;
 	bool nextWriteFCB;
 	bool isOnline;
-	bool keepAliveTimeout;
-	openpal::MonotonicTimestamp lastMessageTimestamp;	
-
-	bool Validate(bool isMaster, uint16_t src, uint16_t dest);	
-
+	bool keepAliveTimeout;	
+	openpal::MonotonicTimestamp lastMessageTimestamp;		
 	ILinkRouter* pRouter;
 	PriStateBase* pPriState;
-	SecStateBase* pSecState;
-
-	/// callback for listening to the status of the link
+	SecStateBase* pSecState;	
 	ILinkListener* pListener;
 };
 
