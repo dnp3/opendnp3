@@ -24,13 +24,15 @@
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
 #include <openpal/container/Settable.h>
-#include <opendnp3/gen/LinkStatus.h>
-#include <opendnp3/link/ILinkListener.h>
+#include <openpal/executor/TimerRef.h>
+
+#include "opendnp3/gen/LinkStatus.h"
 
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/link/ILinkSession.h"
 #include "opendnp3/link/LinkLayerConstants.h"
 #include "opendnp3/link/LinkConfig.h"
+#include "opendnp3/link/ILinkListener.h"
 
 namespace opendnp3
 {
@@ -176,7 +178,7 @@ private:
 	uint32_t numRetryRemaining;
 
 	openpal::IExecutor* pExecutor;
-	openpal::ITimer* pTimer;
+	openpal::TimerRef timer;
 
 	// callback from the active timer
 	void OnTimeout();

@@ -37,9 +37,9 @@ namespace opendnp3
 // SecStateBase
 ////////////////////////////////////////
 
-void SecStateBase::OnTransmitResult(LinkLayer* apLL, bool success)
+void SecStateBase::OnTransmitResult(LinkLayer& link, bool success)
 {
-	FORMAT_LOG_BLOCK(apLL->GetLogger(), flags::ERR, "Invalid event for state: %s", this->Name());
+	FORMAT_LOG_BLOCK(link.GetLogger(), flags::ERR, "Invalid event for state: %s", this->Name());
 }
 
 ////////////////////////////////////////////////////////
@@ -47,27 +47,27 @@ void SecStateBase::OnTransmitResult(LinkLayer* apLL, bool success)
 ////////////////////////////////////////////////////////
 SLLS_NotReset SLLS_NotReset::instance;
 
-void SLLS_NotReset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
+void SLLS_NotReset::TestLinkStatus(LinkLayer& link, bool aFcb)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "TestLinkStatus ignored");
+	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "TestLinkStatus ignored");
 }
 
-void SLLS_NotReset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::RSlice&)
+void SLLS_NotReset::ConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice&)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "ConfirmedUserData ignored");
+	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "ConfirmedUserData ignored");
 }
 
-void SLLS_NotReset::ResetLinkStates(LinkLayer* apLL)
+void SLLS_NotReset::ResetLinkStates(LinkLayer& link)
 {
-	apLL->QueueAck();
-	apLL->ResetReadFCB();
-	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
+	link.QueueAck();
+	link.ResetReadFCB();
+	link.ChangeState(SLLS_TransmitWaitReset::Inst());
 }
 
-void SLLS_NotReset::RequestLinkStatus(LinkLayer* apLL)
+void SLLS_NotReset::RequestLinkStatus(LinkLayer& link)
 {
-	apLL->QueueLinkStatus();
-	apLL->ChangeState(SLLS_TransmitWaitNotReset::Inst());
+	link.QueueLinkStatus();
+	link.ChangeState(SLLS_TransmitWaitNotReset::Inst());
 }
 
 ////////////////////////////////////////////////////////
@@ -75,51 +75,51 @@ void SLLS_NotReset::RequestLinkStatus(LinkLayer* apLL)
 ////////////////////////////////////////////////////////
 SLLS_Reset SLLS_Reset::instance;
 
-void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
+void SLLS_Reset::TestLinkStatus(LinkLayer& link, bool aFcb)
 {
-	if(apLL->NextReadFCB() == aFcb)
+	if(link.NextReadFCB() == aFcb)
 	{
-		apLL->QueueAck();
-		apLL->ToggleReadFCB();
-		apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
+		link.QueueAck();
+		link.ToggleReadFCB();
+		link.ChangeState(SLLS_TransmitWaitReset::Inst());
 	}
 	else
 	{
 		// "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
 		// This is a PITA implement
 		// TODO - see if this function is deprecated or not
-		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Received TestLinkStatus with invalid FCB");
+		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Received TestLinkStatus with invalid FCB");
 	}
 }
 
-void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::RSlice& arBuffer)
+void SLLS_Reset::ConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice& arBuffer)
 {
-	apLL->QueueAck();
+	link.QueueAck();
 
-	if (apLL->NextReadFCB() == aFcb)
+	if (link.NextReadFCB() == aFcb)
 	{
-		apLL->ToggleReadFCB();
-		apLL->DoDataUp(arBuffer);
+		link.ToggleReadFCB();
+		link.DoDataUp(arBuffer);
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Confirmed data w/ wrong FCB");
+		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Confirmed data w/ wrong FCB");
 	}
 
-	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
+	link.ChangeState(SLLS_TransmitWaitReset::Inst());
 }
 
-void SLLS_Reset::ResetLinkStates(LinkLayer* apLL)
+void SLLS_Reset::ResetLinkStates(LinkLayer& link)
 {
-	apLL->QueueAck();
-	apLL->ResetReadFCB();
-	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
+	link.QueueAck();
+	link.ResetReadFCB();
+	link.ChangeState(SLLS_TransmitWaitReset::Inst());
 }
 
-void SLLS_Reset::RequestLinkStatus(LinkLayer* apLL)
+void SLLS_Reset::RequestLinkStatus(LinkLayer& link)
 {
-	apLL->QueueLinkStatus();
-	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
+	link.QueueLinkStatus();
+	link.ChangeState(SLLS_TransmitWaitReset::Inst());
 }
 
 ////////////////////////////////////////////////////////

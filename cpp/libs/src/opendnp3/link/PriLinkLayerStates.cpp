@@ -36,44 +36,44 @@ namespace opendnp3
 // PriStateBase
 ////////////////////////////////////////
 
-void PriStateBase::Ack(LinkLayer* pLinkLayer, bool receiveBuffFull)
+void PriStateBase::Ack(LinkLayer& link, bool receiveBuffFull)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(pLinkLayer->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
+	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
 }
 
-void PriStateBase::Nack(LinkLayer* pLinkLayer, bool receiveBuffFull)
+void PriStateBase::Nack(LinkLayer& link, bool receiveBuffFull)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(pLinkLayer->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
+	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
 }
 
-void PriStateBase::LinkStatus(LinkLayer* pLinkLayer, bool receiveBuffFull)
+void PriStateBase::LinkStatus(LinkLayer& link, bool receiveBuffFull)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(pLinkLayer->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
+	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
 }
 
-void PriStateBase::NotSupported (LinkLayer* pLinkLayer, bool receiveBuffFull)
+void PriStateBase::NotSupported (LinkLayer& link, bool receiveBuffFull)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(pLinkLayer->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
+	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
 }
 
-void PriStateBase::OnTransmitResult(LinkLayer* pLinkLayer, bool success)
+void PriStateBase::OnTransmitResult(LinkLayer& link, bool success)
 {
-	FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());	
+	FORMAT_LOG_BLOCK(link.GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());	
 }
 
-void PriStateBase::OnTimeout(LinkLayer* pLinkLayer)
+void PriStateBase::OnTimeout(LinkLayer& link)
 {
-	FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
+	FORMAT_LOG_BLOCK(link.GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 }
 
-void PriStateBase::SendConfirmed(LinkLayer* pLinkLayer, ITransportSegment&)
+void PriStateBase::SendConfirmed(LinkLayer& link, ITransportSegment&)
 {
-	FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
+	FORMAT_LOG_BLOCK(link.GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 }
 
-void PriStateBase::SendUnconfirmed(LinkLayer* pLinkLayer, ITransportSegment&)
+void PriStateBase::SendUnconfirmed(LinkLayer& link, ITransportSegment&)
 {
-	FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
+	FORMAT_LOG_BLOCK(link.GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 }
 
 ////////////////////////////////////////////////////////
@@ -82,21 +82,21 @@ void PriStateBase::SendUnconfirmed(LinkLayer* pLinkLayer, ITransportSegment&)
 
 PLLS_SecNotReset PLLS_SecNotReset::instance;
 
-void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* pLinkLayer, ITransportSegment& segments)
+void PLLS_SecNotReset::SendUnconfirmed(LinkLayer& link, ITransportSegment& segments)
 {
-	pLinkLayer->pSegments = &segments;
+	link.pSegments = &segments;
 	auto first = segments.GetSegment();
-	auto output = pLinkLayer->FormatPrimaryBufferWithUnconfirmed(first);	
-	pLinkLayer->QueueTransmit(output, true);
-	pLinkLayer->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecNotReset>::Inst());	
+	auto output = link.FormatPrimaryBufferWithUnconfirmed(first);	
+	link.QueueTransmit(output, true);
+	link.ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecNotReset>::Inst());	
 }
 
-void PLLS_SecNotReset::SendConfirmed(LinkLayer* pLinkLayer, ITransportSegment& segments)
+void PLLS_SecNotReset::SendConfirmed(LinkLayer& link, ITransportSegment& segments)
 {
-	pLinkLayer->ResetRetry();
-	pLinkLayer->pSegments = &segments;
-	pLinkLayer->QueueResetLinks();
-	pLinkLayer->ChangeState(PLLS_LinkResetTransmitWait::Inst());
+	link.ResetRetry();
+	link.pSegments = &segments;
+	link.QueueResetLinks();
+	link.ChangeState(PLLS_LinkResetTransmitWait::Inst());
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -105,18 +105,18 @@ void PLLS_SecNotReset::SendConfirmed(LinkLayer* pLinkLayer, ITransportSegment& s
 
 PLLS_LinkResetTransmitWait PLLS_LinkResetTransmitWait::instance;
 
-void PLLS_LinkResetTransmitWait::OnTransmitResult(LinkLayer* pLinkLayer, bool success)
+void PLLS_LinkResetTransmitWait::OnTransmitResult(LinkLayer& link, bool success)
 {
 	if (success)
 	{
 		// now we're waiting for an ACK
-		pLinkLayer->StartTimer();
-		pLinkLayer->ChangeState(PLLS_ResetLinkWait::Inst());
+		link.StartTimer();
+		link.ChangeState(PLLS_ResetLinkWait::Inst());
 	}
 	else
 	{
-		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
-		pLinkLayer->DoSendResult(success);
+		link.ChangeState(PLLS_SecNotReset::Inst());
+		link.DoSendResult(success);
 	}
 }
 
@@ -126,18 +126,18 @@ void PLLS_LinkResetTransmitWait::OnTransmitResult(LinkLayer* pLinkLayer, bool su
 
 PLLS_ConfUserDataTransmitWait PLLS_ConfUserDataTransmitWait::instance;
 
-void PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer* pLinkLayer, bool success)
+void PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer& link, bool success)
 {
 	if (success)
 	{
 		// now we're waiting on an ACK
-		pLinkLayer->StartTimer();
-		pLinkLayer->ChangeState(PLLS_ConfDataWait::Inst());
+		link.StartTimer();
+		link.ChangeState(PLLS_ConfDataWait::Inst());
 	}
 	else
 	{
-		pLinkLayer->ChangeState(PLLS_SecReset::Inst());
-		pLinkLayer->DoSendResult(false);
+		link.ChangeState(PLLS_SecReset::Inst());
+		link.DoSendResult(false);
 	}
 }
 
@@ -148,21 +148,21 @@ void PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer* pLinkLayer, bool
 
 PLLS_SecReset PLLS_SecReset::instance;
 
-void PLLS_SecReset::SendUnconfirmed(LinkLayer* pLinkLayer, ITransportSegment& segments)
+void PLLS_SecReset::SendUnconfirmed(LinkLayer& link, ITransportSegment& segments)
 {
-	pLinkLayer->pSegments = &segments;
-	auto output = pLinkLayer->FormatPrimaryBufferWithUnconfirmed(segments.GetSegment());	
-	pLinkLayer->QueueTransmit(output, true);
-	pLinkLayer->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecReset>::Inst());	
+	link.pSegments = &segments;
+	auto output = link.FormatPrimaryBufferWithUnconfirmed(segments.GetSegment());	
+	link.QueueTransmit(output, true);
+	link.ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecReset>::Inst());	
 }
 
-void PLLS_SecReset::SendConfirmed(LinkLayer* pLinkLayer, ITransportSegment& segments)
+void PLLS_SecReset::SendConfirmed(LinkLayer& link, ITransportSegment& segments)
 {
-	pLinkLayer->ResetRetry();
-	pLinkLayer->pSegments = &segments;
-	auto buffer = pLinkLayer->FormatPrimaryBufferWithConfirmed(segments.GetSegment(), pLinkLayer->NextWriteFCB());
-	pLinkLayer->QueueTransmit(buffer, true);
-	pLinkLayer->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
+	link.ResetRetry();
+	link.pSegments = &segments;
+	auto buffer = link.FormatPrimaryBufferWithConfirmed(segments.GetSegment(), link.NextWriteFCB());
+	link.QueueTransmit(buffer, true);
+	link.ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
 
 }
 
@@ -172,37 +172,37 @@ void PLLS_SecReset::SendConfirmed(LinkLayer* pLinkLayer, ITransportSegment& segm
 
 PLLS_ResetLinkWait PLLS_ResetLinkWait::instance;
 
-void PLLS_ResetLinkWait::Ack(LinkLayer* pLinkLayer, bool receiveBuffFull)
+void PLLS_ResetLinkWait::Ack(LinkLayer& link, bool receiveBuffFull)
 {
-	pLinkLayer->ResetWriteFCB();
-	pLinkLayer->CancelTimer();
-	auto buffer = pLinkLayer->FormatPrimaryBufferWithConfirmed(pLinkLayer->pSegments->GetSegment(), pLinkLayer->NextWriteFCB());
-	pLinkLayer->QueueTransmit(buffer, true);
-	pLinkLayer->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
-	pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::RESET);
+	link.ResetWriteFCB();
+	link.CancelTimer();
+	auto buffer = link.FormatPrimaryBufferWithConfirmed(link.pSegments->GetSegment(), link.NextWriteFCB());
+	link.QueueTransmit(buffer, true);
+	link.ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
+	link.CallStatusCallback(opendnp3::LinkStatus::RESET);
 }
 
-void PLLS_ResetLinkWait::OnTimeout(LinkLayer* pLinkLayer)
+void PLLS_ResetLinkWait::OnTimeout(LinkLayer& link)
 {
-	if(pLinkLayer->Retry())
+	if(link.Retry())
 	{
-		FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Link reset timeout, retrying %i remaining", pLinkLayer->RetryRemaining());
-		pLinkLayer->QueueResetLinks();
-		pLinkLayer->ChangeState(PLLS_LinkResetTransmitWait::Inst());
+		FORMAT_LOG_BLOCK(link.GetLogger(), flags::WARN, "Link reset timeout, retrying %i remaining", link.RetryRemaining());
+		link.QueueResetLinks();
+		link.ChangeState(PLLS_LinkResetTransmitWait::Inst());
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Link reset final timeout, no retries remain");
-		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
-		pLinkLayer->DoSendResult(false);
+		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Link reset final timeout, no retries remain");
+		link.ChangeState(PLLS_SecNotReset::Inst());
+		link.DoSendResult(false);
 	}
 }
 
-void PLLS_ResetLinkWait::Failure(LinkLayer* pLinkLayer)
+void PLLS_ResetLinkWait::Failure(LinkLayer& link)
 {
-	pLinkLayer->CancelTimer();
-	pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
-	pLinkLayer->DoSendResult(false);
+	link.CancelTimer();
+	link.ChangeState(PLLS_SecNotReset::Inst());
+	link.DoSendResult(false);
 }
 
 ////////////////////////////////////////////////////////
@@ -211,62 +211,62 @@ void PLLS_ResetLinkWait::Failure(LinkLayer* pLinkLayer)
 
 PLLS_ConfDataWait PLLS_ConfDataWait::instance;
 
-void PLLS_ConfDataWait::Ack(LinkLayer* pLinkLayer, bool receiveBuffFull)
+void PLLS_ConfDataWait::Ack(LinkLayer& link, bool receiveBuffFull)
 {
-	pLinkLayer->ToggleWriteFCB();
-	pLinkLayer->CancelTimer();
+	link.ToggleWriteFCB();
+	link.CancelTimer();
 
-	if (pLinkLayer->pSegments->Advance())
+	if (link.pSegments->Advance())
 	{
-		auto buffer = pLinkLayer->FormatPrimaryBufferWithConfirmed(pLinkLayer->pSegments->GetSegment(), pLinkLayer->NextWriteFCB());
-		pLinkLayer->QueueTransmit(buffer, true);
-		pLinkLayer->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
+		auto buffer = link.FormatPrimaryBufferWithConfirmed(link.pSegments->GetSegment(), link.NextWriteFCB());
+		link.QueueTransmit(buffer, true);
+		link.ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
 	}
 	else //we're done!
 	{
-		pLinkLayer->ChangeState(PLLS_SecReset::Inst());
-		pLinkLayer->DoSendResult(true);
+		link.ChangeState(PLLS_SecReset::Inst());
+		link.DoSendResult(true);
 	}
 }
 
-void PLLS_ConfDataWait::Nack(LinkLayer* pLinkLayer, bool receiveBuffFull)
+void PLLS_ConfDataWait::Nack(LinkLayer& link, bool receiveBuffFull)
 {
 	if (receiveBuffFull)
 	{
-		Failure(pLinkLayer);
+		Failure(link);
 	}
 	else
 	{
-		pLinkLayer->ResetRetry();
-		pLinkLayer->CancelTimer();
-		pLinkLayer->ChangeState(PLLS_LinkResetTransmitWait::Inst());
-		pLinkLayer->QueueResetLinks();
+		link.ResetRetry();
+		link.CancelTimer();
+		link.ChangeState(PLLS_LinkResetTransmitWait::Inst());
+		link.QueueResetLinks();
 	}
-	pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::UNRESET);
+	link.CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 }
 
-void PLLS_ConfDataWait::Failure(LinkLayer* pLinkLayer)
+void PLLS_ConfDataWait::Failure(LinkLayer& link)
 {
-	pLinkLayer->CancelTimer();
-	pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
-	pLinkLayer->DoSendResult(false);
+	link.CancelTimer();
+	link.ChangeState(PLLS_SecNotReset::Inst());
+	link.DoSendResult(false);
 }
 
-void PLLS_ConfDataWait::OnTimeout(LinkLayer* pLinkLayer)
+void PLLS_ConfDataWait::OnTimeout(LinkLayer& link)
 {
-	if(pLinkLayer->Retry())
+	if(link.Retry())
 	{
-		FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "confirmed data timeout, retrying %u remaining", pLinkLayer->RetryRemaining());
-		auto buffer = pLinkLayer->FormatPrimaryBufferWithConfirmed(pLinkLayer->pSegments->GetSegment(), pLinkLayer->NextWriteFCB());
-		pLinkLayer->QueueTransmit(buffer, true);
-		pLinkLayer->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
+		FORMAT_LOG_BLOCK(link.GetLogger(), flags::WARN, "confirmed data timeout, retrying %u remaining", link.RetryRemaining());
+		auto buffer = link.FormatPrimaryBufferWithConfirmed(link.pSegments->GetSegment(), link.NextWriteFCB());
+		link.QueueTransmit(buffer, true);
+		link.ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Confirmed data final timeout, no retries remain");
-		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
-		pLinkLayer->DoSendResult(false);
-		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::UNRESET);
+		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Confirmed data final timeout, no retries remain");
+		link.ChangeState(PLLS_SecNotReset::Inst());
+		link.DoSendResult(false);
+		link.CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
 }
 

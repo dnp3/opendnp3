@@ -36,18 +36,18 @@ class PriStateBase
 public:
 
 	// Incoming messages for primary station
-	virtual void Ack(LinkLayer*, bool receiveBuffFull);
-	virtual void Nack(LinkLayer*, bool receiveBuffFull);
-	virtual void LinkStatus(LinkLayer*, bool receiveBuffFull);
-	virtual void NotSupported(LinkLayer*, bool receiveBuffFull);
+	virtual void Ack(LinkLayer&, bool receiveBuffFull);
+	virtual void Nack(LinkLayer&, bool receiveBuffFull);
+	virtual void LinkStatus(LinkLayer&, bool receiveBuffFull);
+	virtual void NotSupported(LinkLayer&, bool receiveBuffFull);
 
-	virtual void OnTransmitResult(LinkLayer*, bool success);
+	virtual void OnTransmitResult(LinkLayer&, bool success);
 
-	virtual void OnTimeout(LinkLayer*);
+	virtual void OnTimeout(LinkLayer&);
 
-	/*Upper layer events to handle */
-	virtual void SendConfirmed(LinkLayer*, ITransportSegment& segments);
-	virtual void SendUnconfirmed(LinkLayer*, ITransportSegment& segments);
+	// Upper layer events to handle
+	virtual void SendConfirmed(LinkLayer&, ITransportSegment& segments);
+	virtual void SendUnconfirmed(LinkLayer&, ITransportSegment& segments);
 
 	//every concrete state implements this for logging purposes
 	virtual char const* Name() const = 0;
@@ -57,8 +57,9 @@ public:
 class PLLS_SecNotReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecNotReset);
-	virtual void SendUnconfirmed(LinkLayer*, ITransportSegment& segments) override final;
-	virtual void SendConfirmed(LinkLayer*, ITransportSegment& segments) override final;
+
+	virtual void SendUnconfirmed(LinkLayer&, ITransportSegment& segments) override final;
+	virtual void SendConfirmed(LinkLayer&, ITransportSegment& segments) override final;
 };
 
 
@@ -71,24 +72,24 @@ class PLLS_SendUnconfirmedTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait<ReturnToState>);
 
-	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+	virtual void OnTransmitResult(LinkLayer& apLL, bool success);
 };
 
 template <class ReturnToState>
 PLLS_SendUnconfirmedTransmitWait<ReturnToState> PLLS_SendUnconfirmedTransmitWait<ReturnToState>::instance;
 
 template <class ReturnToState>
-void PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(LinkLayer* apLL, bool success)
+void PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(LinkLayer& link, bool success)
 {
-	if (apLL->pSegments->Advance())
+	if (link.pSegments->Advance())
 	{
-		auto output = apLL->FormatPrimaryBufferWithUnconfirmed(apLL->pSegments->GetSegment());
-		apLL->QueueTransmit(output, true);		
+		auto output = link.FormatPrimaryBufferWithUnconfirmed(link.pSegments->GetSegment());
+		link.QueueTransmit(output, true);
 	}
 	else // we're done
 	{
-		apLL->ChangeState(ReturnToState::Inst());
-		apLL->DoSendResult(success);
+		link.ChangeState(ReturnToState::Inst());
+		link.DoSendResult(success);
 	}	
 }
 
@@ -100,7 +101,7 @@ class PLLS_LinkResetTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkResetTransmitWait);
 
-	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+	virtual void OnTransmitResult(LinkLayer& apLL, bool success);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -111,7 +112,7 @@ class PLLS_ConfUserDataTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfUserDataTransmitWait);
 
-	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+	virtual void OnTransmitResult(LinkLayer& apLL, bool success);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -123,8 +124,8 @@ class PLLS_SecReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecReset);
 
-	virtual void SendUnconfirmed(LinkLayer*, ITransportSegment& segments) override final;
-	virtual void SendConfirmed(LinkLayer*, ITransportSegment& segments) override final;
+	virtual void SendUnconfirmed(LinkLayer&, ITransportSegment& segments) override final;
+	virtual void SendConfirmed(LinkLayer&, ITransportSegment& segments) override final;
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
@@ -132,24 +133,24 @@ class PLLS_ResetLinkWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ResetLinkWait);
 
-	void Ack(LinkLayer*, bool aIsRcvBuffFull);
-	void Nack(LinkLayer*  apLL, bool)
+	void Ack(LinkLayer&, bool aIsRcvBuffFull);
+	void Nack(LinkLayer&  apLL, bool)
 	{
 		Failure(apLL);
 	}
-	void LinkStatus(LinkLayer* apLL, bool)
+	void LinkStatus(LinkLayer& apLL, bool)
 	{
 		Failure(apLL);
 	}
-	void NotSupported (LinkLayer*  apLL, bool)
+	void NotSupported (LinkLayer&  apLL, bool)
 	{
 		Failure(apLL);
 	}
 
-	void OnTimeout(LinkLayer*);
+	void OnTimeout(LinkLayer&);
 
 private:
-	void Failure(LinkLayer*);
+	void Failure(LinkLayer&);
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
@@ -157,20 +158,20 @@ class PLLS_ConfDataWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfDataWait);
 
-	void Ack(LinkLayer*, bool aIsRcvBuffFull);
-	void Nack(LinkLayer* apLL, bool);
-	void LinkStatus(LinkLayer* apLL, bool)
+	void Ack(LinkLayer&, bool aIsRcvBuffFull);
+	void Nack(LinkLayer& apLL, bool);
+	void LinkStatus(LinkLayer& apLL, bool)
 	{
 		Failure(apLL);
 	}
-	void NotSupported (LinkLayer* apLL, bool)
+	void NotSupported (LinkLayer& apLL, bool)
 	{
 		Failure(apLL);
 	}
-	void OnTimeout(LinkLayer*);
+	void OnTimeout(LinkLayer&);
 
 private:
-	void Failure(LinkLayer*);
+	void Failure(LinkLayer&);
 };
 
 } //end namepsace
