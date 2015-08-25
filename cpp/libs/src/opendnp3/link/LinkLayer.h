@@ -63,22 +63,23 @@ public:
 	virtual void OnTransmitResult(bool success) override;
 
 	// IFrameSink interface
-	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override;
-	virtual void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override;
-	virtual void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override;
-	virtual void NotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override;
-	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc) override;
-	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override;
-	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override;
-	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override;
-	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override;
+
+	virtual void Ack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src) override;
+	virtual void Nack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src) override;
+	virtual void LinkStatus(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src) override;
+	virtual void NotSupported(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src) override;
+	virtual void TestLinkStatus(bool isMaster, bool aFcb, uint16_t dest, uint16_t src) override;
+	virtual void ResetLinkStates(bool isMaster, uint16_t dest, uint16_t src) override;
+	virtual void RequestLinkStatus(bool isMaster, uint16_t dest, uint16_t src) override;
+	virtual void ConfirmedUserData(bool isMaster, bool aFcb, uint16_t dest, uint16_t src, const openpal::RSlice& data) override;
+	virtual void UnconfirmedUserData(bool isMaster, uint16_t dest, uint16_t src, const openpal::RSlice& data) override;
 
 	// ------------- ILinkLayer --------------------
 	virtual void Send(ITransportSegment& segments) override;
 
 	// Functions called by the primary and secondary station states	
-	void CallStatusCallback(opendnp3::LinkStatus status);	
-	void DoSendResult(bool success);
+	void PostStatusCallback(opendnp3::LinkStatus status);	
+	void PostSendResult(bool success);
 
 	openpal::Logger& GetLogger()
 	{

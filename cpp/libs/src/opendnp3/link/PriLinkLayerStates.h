@@ -89,7 +89,7 @@ PriStateBase& PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(
 	}
 	else // we're done
 	{		
-		link.DoSendResult(success);
+		link.PostSendResult(success);
 		return ReturnToState::Instance();
 	}	
 }

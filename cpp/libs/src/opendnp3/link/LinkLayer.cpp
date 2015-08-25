@@ -61,7 +61,7 @@ void LinkLayer::SetRouter(ILinkRouter& router)
 	pRouter = &router;
 }
 
-void LinkLayer::CallStatusCallback(opendnp3::LinkStatus status)
+void LinkLayer::PostStatusCallback(opendnp3::LinkStatus status)
 {	
 	auto callback = [this, status]()
 	{
@@ -71,7 +71,7 @@ void LinkLayer::CallStatusCallback(opendnp3::LinkStatus status)
 	pExecutor->PostLambda(callback);	
 }
 
-void LinkLayer::DoSendResult(bool success)
+void LinkLayer::PostSendResult(bool success)
 {
 	if (pUpperLayer)
 	{		
@@ -84,22 +84,22 @@ void LinkLayer::DoSendResult(bool success)
 	}	
 }
 
-bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
+bool LinkLayer::Validate(bool isMaster, uint16_t src, uint16_t dest)
 {
 	if (isOnline)
 	{
-		if (aIsMaster == config.IsMaster)
+		if (isMaster == config.IsMaster)
 		{			
 			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
-				(aIsMaster ? "Master frame received for master" : "Outstation frame received for outstation"));			            
+				(isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));			            
 			
 			return false;
 		}
 		else
 		{
-			if (aDest == config.LocalAddr)
+			if (dest == config.LocalAddr)
 			{
-				if (aSrc == config.RemoteAddr)
+				if (src == config.RemoteAddr)
 				{
 					return true;
 				}
@@ -164,7 +164,8 @@ void LinkLayer::OnLowerLayerUp()
 		{
 			pUpperLayer->OnLowerLayerUp();
 		}
-		CallStatusCallback(opendnp3::LinkStatus::UNRESET);
+
+		this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
 }
 
@@ -187,7 +188,7 @@ void LinkLayer::OnLowerLayerDown()
 			pUpperLayer->OnLowerLayerDown();
 		}
 
-		CallStatusCallback(opendnp3::LinkStatus::UNRESET);
+		this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
 	else
 	{
@@ -330,73 +331,73 @@ bool LinkLayer::Retry()
 // IFrameSink
 ////////////////////////////////
 
-void LinkLayer::Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+void LinkLayer::Ack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src)
 {
-	if (this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(isMaster, src, dest))
 	{
-		pPriState = &pPriState->OnAck(*this, aIsRcvBuffFull);
+		pPriState = &pPriState->OnAck(*this, rxBuffFull);
 	}
 }
 
-void LinkLayer::Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+void LinkLayer::Nack(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src)
 {
-	if (this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(isMaster, src, dest))
 	{
-		pPriState = &pPriState->OnNack(*this, aIsRcvBuffFull);
+		pPriState = &pPriState->OnNack(*this, rxBuffFull);
 	}
 }
 
-void LinkLayer::LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+void LinkLayer::LinkStatus(bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src)
 {
-	if (this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(isMaster, src, dest))
 	{
-		pPriState = &pPriState->OnLinkStatus(*this, aIsRcvBuffFull);
+		pPriState = &pPriState->OnLinkStatus(*this, rxBuffFull);
 	}
 }
 
-void LinkLayer::NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+void LinkLayer::NotSupported (bool isMaster, bool rxBuffFull, uint16_t dest, uint16_t src)
 {
-	if (this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(isMaster, src, dest))
 	{
-		pPriState = &pPriState->OnNotSupported(*this, aIsRcvBuffFull);
+		pPriState = &pPriState->OnNotSupported(*this, rxBuffFull);
 	}
 }
 
-void LinkLayer::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
+void LinkLayer::TestLinkStatus(bool isMaster, bool aFcb, uint16_t dest, uint16_t src)
 {
-	if (this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(isMaster, src, dest))
 	{
 		pSecState = &pSecState->OnTestLinkStatus(*this, aFcb);
 	}
 }
 
-void LinkLayer::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
+void LinkLayer::ResetLinkStates(bool isMaster, uint16_t dest, uint16_t src)
 {
-	if (this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(isMaster, src, dest))
 	{
 		pSecState = &pSecState->OnResetLinkStates(*this);
 	}
 }
 
-void LinkLayer::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
+void LinkLayer::RequestLinkStatus(bool isMaster, uint16_t dest, uint16_t src)
 {
-	if (this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(isMaster, src, dest))
 	{
 		pSecState = &pSecState->OnRequestLinkStatus(*this);
 	}
 }
 
-void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const RSlice& input)
+void LinkLayer::ConfirmedUserData(bool isMaster, bool aFcb, uint16_t dest, uint16_t src, const RSlice& input)
 {
-	if (this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(isMaster, src, dest))
 	{
 		pSecState = &pSecState->OnConfirmedUserData(*this, aFcb, input);
 	}
 }
 
-void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const RSlice& input)
+void LinkLayer::UnconfirmedUserData(bool isMaster, uint16_t dest, uint16_t src, const RSlice& input)
 {
-	if (this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(isMaster, src, dest))
 	{
 		this->DoDataUp(input);
 	}
