@@ -86,41 +86,33 @@ void LinkLayer::PostSendResult(bool success)
 
 bool LinkLayer::Validate(bool isMaster, uint16_t src, uint16_t dest)
 {
-	if (isOnline)
-	{
-		if (isMaster == config.IsMaster)
-		{			
-			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
-				(isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));			            
-			
-			return false;
-		}
-		else
-		{
-			if (dest == config.LocalAddr)
-			{
-				if (src == config.RemoteAddr)
-				{
-					return true;
-				}
-				else
-				{
-					SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_SOURCE, "Frame from unknwon source");
-					return false;
-				}
-			}
-			else
-			{
-				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_DESTINATION, "Frame for unknown destintation");
-				return false;
-			}
-		}
-	}
-	else
+	if (!isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
 		return false;
 	}
+
+	if (isMaster == config.IsMaster)
+	{			
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
+			(isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));			            
+			
+		return false;
+	}
+	
+	if (dest != config.LocalAddr)
+	{
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_DESTINATION, "Frame for unknown destintation");
+		return false;
+	}
+
+	if (src != config.RemoteAddr)
+	{
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_SOURCE, "Frame from unknwon source");
+		return false;		
+	}
+
+	return true;
 }
 
 ////////////////////////////////
