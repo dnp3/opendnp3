@@ -65,7 +65,7 @@ class MonitorStateActions
 {
 public:
 
-	static void ChangeState(PhysicalLayerMonitor* apContext, IMonitorState* apState);
+	static void ChangeState(PhysicalLayerMonitor* apContext, IMonitorState& state);
 	static void StartOpenTimer(PhysicalLayerMonitor* apContext);
 	static void CancelOpenTimer(PhysicalLayerMonitor* apContext);
 	static void Close(PhysicalLayerMonitor* apContext);
@@ -353,7 +353,7 @@ class MonitorStateShutingDown : public virtual IMonitorState,
 template <class T>
 bool OpenFailureGoesToState<T>::OnOpenFailure(PhysicalLayerMonitor* apContext)
 {
-	MonitorStateActions::ChangeState(apContext, T::Inst());
+	MonitorStateActions::ChangeState(apContext, T::Instance());
 	return true;
 }
 

@@ -42,7 +42,7 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public ILinkLayer, public ILinkSession, public HasUpperLayer
+class LinkLayer final : public ILinkLayer, public ILinkSession, public HasUpperLayer
 {
 	enum class TransmitMode : uint8_t
 	{
@@ -58,51 +58,40 @@ public:
 	void SetRouter(ILinkRouter&);
 
 	// ILinkSession interface
-	virtual void OnLowerLayerUp() override final;
-	virtual void OnLowerLayerDown() override final;
-	virtual void OnTransmitResult(bool success) override final;
+	virtual void OnLowerLayerUp() override;
+	virtual void OnLowerLayerDown() override;
+	virtual void OnTransmitResult(bool success) override;
 
 	// IFrameSink interface
-	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void NotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override final;
-	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override final;
+	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override;
+	virtual void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override;
+	virtual void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override;
+	virtual void NotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override;
+	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc) override;
+	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override;
+	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override;
+	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override;
+	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::RSlice& arBuffer) override;
 
 	// ------------- ILinkLayer --------------------
-	virtual void Send(ITransportSegment& segments) override final;
+	virtual void Send(ITransportSegment& segments) override;
 
-	// Functions called by the primary and secondary station states
-	void ChangeState(PriStateBase*);
-	void ChangeState(SecStateBase*);
+	// Functions called by the primary and secondary station states	
 	void CallStatusCallback(opendnp3::LinkStatus status);	
+	void DoSendResult(bool success);
 
 	openpal::Logger& GetLogger()
 	{
 		return logger;
 	}
 
-	void DoDataUp(const openpal::RSlice& arBuffer)
+	void DoDataUp(const openpal::RSlice& data)
 	{
 		if (pUpperLayer)
 		{
-			pUpperLayer->OnReceive(arBuffer);
+			pUpperLayer->OnReceive(data);
 		}
-	}
-
-	void DoSendResult(bool isSuccess)
-	{
-		if (pUpperLayer)
-		{
-			pUpperLayer->OnSendResult(isSuccess);
-		}
-	}
-
-	void PostSendResult(bool isSuccess);
+	}	
 
 	void ResetReadFCB()
 	{
@@ -178,10 +167,7 @@ private:
 	uint32_t numRetryRemaining;
 
 	openpal::IExecutor* pExecutor;
-	openpal::TimerRef timer;
-
-	// callback from the active timer
-	void OnTimeout();
+	openpal::TimerRef timer;	
 
 	bool nextReadFCB;
 	bool nextWriteFCB;

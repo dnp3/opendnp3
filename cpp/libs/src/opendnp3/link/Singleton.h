@@ -27,7 +27,7 @@
 	protected: \
 		type(){}; \
 	public:\
-		static type* Inst(){ return &instance; }
+		static type& Instance(){ return instance; }
 
 #define MACRO_NAME_SINGLETON_INSTANCE(type) \
 	MACRO_SINGLETON_INSTANCE(type) \

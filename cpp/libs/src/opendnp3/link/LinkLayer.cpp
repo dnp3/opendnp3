@@ -50,8 +50,8 @@ LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opend
 	nextWriteFCB(false),
 	isOnline(false),
 	pRouter(nullptr),
-	pPriState(PLLS_SecNotReset::Inst()),
-	pSecState(SLLS_NotReset::Inst()),
+	pPriState(&PLLS_SecNotReset::Instance()),
+	pSecState(&SLLS_NotReset::Instance()),
 	pListener(&linkListener)
 {}
 
@@ -61,25 +61,27 @@ void LinkLayer::SetRouter(ILinkRouter& router)
 	pRouter = &router;
 }
 
-void LinkLayer::ChangeState(PriStateBase* pState)
-{
-	pPriState = pState;
-}
-
-void LinkLayer::ChangeState(SecStateBase* pState)
-{
-	pSecState = pState;
-}
-
 void LinkLayer::CallStatusCallback(opendnp3::LinkStatus status)
 {	
-	this->pListener->OnStateChange(status);
+	auto callback = [this, status]()
+	{
+		this->pListener->OnStateChange(status);
+	};
+
+	pExecutor->PostLambda(callback);	
 }
 
-void LinkLayer::PostSendResult(bool isSuccess)
+void LinkLayer::DoSendResult(bool success)
 {
-	auto lambda = [this, isSuccess]() { this->DoSendResult(isSuccess); };
-	pExecutor->PostLambda(lambda);
+	if (pUpperLayer)
+	{		
+		auto callback = [this, success]() 
+		{
+			this->pUpperLayer->OnSendResult(success);
+		};
+
+		pExecutor->PostLambda(callback);		
+	}	
 }
 
 bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
@@ -131,11 +133,11 @@ void LinkLayer::Send(ITransportSegment& segments)
 	{
 		if (config.UseConfirms)
 		{
-			pPriState->SendConfirmed(*this, segments);
+			pPriState = &pPriState->OnSendConfirmed(*this, segments);
 		}
 		else
 		{
-			pPriState->SendUnconfirmed(*this, segments);
+			pPriState = &pPriState->OnSendUnconfirmed(*this, segments);
 		}
 	}
 	else
@@ -177,8 +179,8 @@ void LinkLayer::OnLowerLayerDown()
 
 		timer.Cancel();
 
-		pPriState = PLLS_SecNotReset::Inst();
-		pSecState = SLLS_NotReset::Inst();
+		pPriState = &PLLS_SecNotReset::Instance();
+		pSecState = &SLLS_NotReset::Instance();
 
 		if (pUpperLayer)
 		{
@@ -211,11 +213,11 @@ void LinkLayer::OnTransmitResult(bool success)
 		// now dispatch the completion event to the correct state handler
 		if (isPrimary)
 		{
-			pPriState->OnTransmitResult(*this, success);
+			pPriState = &pPriState->OnTransmitResult(*this, success);
 		}
 		else
 		{
-			pSecState->OnTransmitResult(*this, success);
+			pSecState = &pSecState->OnTransmitResult(*this, success);
 		}		
 	}			
 }
@@ -296,7 +298,7 @@ void LinkLayer::StartTimer()
 		TimeDuration(config.Timeout), 
 		[this]() 
 		{ 
-			this->OnTimeout(); 
+			this->pPriState = &(this->pPriState->OnTimeout(*this));
 		}
 	);	
 }
@@ -332,7 +334,7 @@ void LinkLayer::Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		pPriState->Ack(*this, aIsRcvBuffFull);
+		pPriState = &pPriState->OnAck(*this, aIsRcvBuffFull);
 	}
 }
 
@@ -340,7 +342,7 @@ void LinkLayer::Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		pPriState->Nack(*this, aIsRcvBuffFull);
+		pPriState = &pPriState->OnNack(*this, aIsRcvBuffFull);
 	}
 }
 
@@ -348,7 +350,7 @@ void LinkLayer::LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, 
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		pPriState->LinkStatus(*this, aIsRcvBuffFull);
+		pPriState = &pPriState->OnLinkStatus(*this, aIsRcvBuffFull);
 	}
 }
 
@@ -356,7 +358,7 @@ void LinkLayer::NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDes
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		pPriState->NotSupported(*this, aIsRcvBuffFull);
+		pPriState = &pPriState->OnNotSupported(*this, aIsRcvBuffFull);
 	}
 }
 
@@ -364,7 +366,7 @@ void LinkLayer::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		pSecState->TestLinkStatus(*this, aFcb);
+		pSecState = &pSecState->OnTestLinkStatus(*this, aFcb);
 	}
 }
 
@@ -372,7 +374,7 @@ void LinkLayer::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		pSecState->ResetLinkStates(*this);
+		pSecState = &pSecState->OnResetLinkStates(*this);
 	}
 }
 
@@ -380,7 +382,7 @@ void LinkLayer::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		pSecState->RequestLinkStatus(*this);
+		pSecState = &pSecState->OnRequestLinkStatus(*this);
 	}
 }
 
@@ -388,7 +390,7 @@ void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uin
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		pSecState->ConfirmedUserData(*this, aFcb, input);
+		pSecState = &pSecState->OnConfirmedUserData(*this, aFcb, input);
 	}
 }
 
@@ -398,11 +400,6 @@ void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSr
 	{
 		this->DoDataUp(input);
 	}
-}
-
-void LinkLayer::OnTimeout()
-{	
-	pPriState->OnTimeout(*this);
 }
 
 }

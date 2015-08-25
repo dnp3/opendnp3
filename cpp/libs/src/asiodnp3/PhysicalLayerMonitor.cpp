@@ -47,7 +47,7 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(
 	pExecutor(&executor),
 	isOnline(false),
 	mpOpenTimer(nullptr),
-	mpState(MonitorStateInit::Inst()),
+	mpState(&MonitorStateInit::Instance()),
 	mFinalShutdown(false),
 	minOpenRetry(minOpenRetry_),
 	maxOpenRetry(maxOpenRetry_),
@@ -63,13 +63,13 @@ ChannelState PhysicalLayerMonitor::GetState()
 	return mpState->GetState();
 }
 
-void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
+void PhysicalLayerMonitor::ChangeState(IMonitorState& state)
 {
-	FORMAT_LOG_BLOCK(logger, flags::DBG, "%s -> %s", mpState->Name(), apState->Name());
+	FORMAT_LOG_BLOCK(logger, flags::DBG, "%s -> %s", mpState->Name(), state.Name());
 	IMonitorState* pLast = mpState;
-	mpState = apState;
+	mpState = &state;
 
-	if(pLast->GetState() != apState->GetState())
+	if(pLast->GetState() != state.GetState())
 	{
 		this->OnStateChange(mpState->GetState());
 	}

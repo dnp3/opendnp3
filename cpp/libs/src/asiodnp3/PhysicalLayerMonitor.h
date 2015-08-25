@@ -116,7 +116,7 @@ private:
 	/* --- Actions for the states to call --- */
 
 	/// Internal function used to change the state
-	void ChangeState(IMonitorState* apState);
+	void ChangeState(IMonitorState& state);
 
 	/// Internal callback when open timer expires
 	void OnOpenTimerExpiration();

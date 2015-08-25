@@ -276,6 +276,8 @@ TEST_CASE(SUITE("SendUnconfirmed"))
 	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.lastWrite.Size() ==  292);
+	
+	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.upper.GetState().successCnt ==  1);
 	REQUIRE(t.numWrites ==  1);
@@ -291,6 +293,8 @@ TEST_CASE(SUITE("CloseBehavior"))
 	BufferSegment segments(250, bytes.ToHex());
 	t.link.Send(segments);
 	t.link.OnTransmitResult(true);
+
+	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.upper.CountersEqual(1, 0));
 	t.link.OnLowerLayerDown(); //take it down during the middle of a send
@@ -319,6 +323,8 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 	REQUIRE(t.numWrites ==  1);
 	t.link.OnTransmitResult(true); // reset link
 
+	REQUIRE(t.exe.RunMany() > 0);
+
 	Buffer buffer(292);
 	auto writeTo = buffer.GetWSlice();
 	auto result = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
@@ -327,7 +333,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne()); // trigger the timeout callback
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(0, 1));
 	REQUIRE(t.log.PopOneEntry(flags::WARN));
 }
@@ -347,7 +353,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	REQUIRE(t.numWrites == 1);
 	t.link.OnTransmitResult(true);
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne()); // timeout the wait for Ack
+	REQUIRE(t.exe.RunMany() > 0); // timeout the wait for Ack
 	
 	REQUIRE(t.upper.CountersEqual(0, 0)); //check that the send is still occuring
 	REQUIRE(t.numWrites == 2);
@@ -370,7 +376,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	t.link.OnTransmitResult(true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne()); //timeout the ACK	
+	REQUIRE(t.exe.RunMany() > 0); //timeout the ACK	
 	REQUIRE(t.upper.CountersEqual(0, 1));
 
 	// Test retry reset
@@ -381,7 +387,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne());	
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(0, 1)); //check that the send is still occuring
 }
 
@@ -403,6 +409,8 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	REQUIRE(t.numWrites == 2);
 	t.link.OnTransmitResult(true);
 	t.link.Ack(false, false, 1, 1024);
+
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(1, 0));
 
 	segments.Reset();
@@ -418,6 +426,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	t.link.OnTransmitResult(true);
 
 	t.link.Ack(false, false, 1, 1024);
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(2, 0));
 
 	// Test retry reset
@@ -452,7 +461,7 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	t.link.OnTransmitResult(true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne()); //timeout the ConfData, check that it retransmits	
+	REQUIRE(t.exe.RunMany() > 0); //timeout the ConfData, check that it retransmits	
 	REQUIRE(t.numWrites ==  3);
 
 	Buffer buffer(292);
@@ -463,6 +472,7 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	t.link.OnTransmitResult(true);
 
 	t.link.Ack(false, false, 1, 1024);
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.numWrites ==  3);
 	REQUIRE(t.upper.CountersEqual(1, 0));
 }
@@ -488,7 +498,7 @@ TEST_CASE(SUITE("ResetLinkRetries"))
 		REQUIRE(ToHex(t.lastWrite) == ToHex(frame));
 		t.link.OnTransmitResult(true);
 		t.exe.AdvanceTime(cfg.Timeout);
-		REQUIRE(t.exe.RunOne()); //timeout
+		REQUIRE(t.exe.RunMany() > 0); //timeout
 	}
 
 	REQUIRE(t.numWrites ==  4);
@@ -544,7 +554,7 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 	t.link.OnTransmitResult(true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne()); //trigger the timeout callback
+	REQUIRE(t.exe.RunMany() > 0); //trigger the timeout callback
 	REQUIRE(t.upper.CountersEqual(0, 1));
 }
 
@@ -564,6 +574,7 @@ TEST_CASE(SUITE("SendDataSuccess"))
 	t.link.Ack(false, false, 1, 1024);
 	t.link.OnTransmitResult(true);
 	t.link.Ack(false, false, 1, 1024);
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(1, 0));
 
 	segments.Reset();

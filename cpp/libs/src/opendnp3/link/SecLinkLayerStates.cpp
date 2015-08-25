@@ -37,9 +37,10 @@ namespace opendnp3
 // SecStateBase
 ////////////////////////////////////////
 
-void SecStateBase::OnTransmitResult(LinkLayer& link, bool success)
+SecStateBase& SecStateBase::OnTransmitResult(LinkLayer& link, bool success)
 {
-	FORMAT_LOG_BLOCK(link.GetLogger(), flags::ERR, "Invalid event for state: %s", this->Name());
+	FORMAT_LOG_BLOCK(link.GetLogger(), flags::ERR, "Invalid event for state: %s", this->Name());	
+	return *this;
 }
 
 ////////////////////////////////////////////////////////
@@ -47,27 +48,29 @@ void SecStateBase::OnTransmitResult(LinkLayer& link, bool success)
 ////////////////////////////////////////////////////////
 SLLS_NotReset SLLS_NotReset::instance;
 
-void SLLS_NotReset::TestLinkStatus(LinkLayer& link, bool aFcb)
+SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkLayer& link, bool aFcb)
 {
 	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "TestLinkStatus ignored");
+	return *this;
 }
 
-void SLLS_NotReset::ConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice&)
+SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice&)
 {
 	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "ConfirmedUserData ignored");
+	return *this;
 }
 
-void SLLS_NotReset::ResetLinkStates(LinkLayer& link)
+SecStateBase& SLLS_NotReset::OnResetLinkStates(LinkLayer& link)
 {
 	link.QueueAck();
 	link.ResetReadFCB();
-	link.ChangeState(SLLS_TransmitWaitReset::Inst());
+	return SLLS_TransmitWaitReset::Instance();
 }
 
-void SLLS_NotReset::RequestLinkStatus(LinkLayer& link)
+SecStateBase& SLLS_NotReset::OnRequestLinkStatus(LinkLayer& link)
 {
 	link.QueueLinkStatus();
-	link.ChangeState(SLLS_TransmitWaitNotReset::Inst());
+	return SLLS_TransmitWaitNotReset::Instance();
 }
 
 ////////////////////////////////////////////////////////
@@ -75,13 +78,13 @@ void SLLS_NotReset::RequestLinkStatus(LinkLayer& link)
 ////////////////////////////////////////////////////////
 SLLS_Reset SLLS_Reset::instance;
 
-void SLLS_Reset::TestLinkStatus(LinkLayer& link, bool aFcb)
+SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkLayer& link, bool aFcb)
 {
 	if(link.NextReadFCB() == aFcb)
 	{
 		link.QueueAck();
 		link.ToggleReadFCB();
-		link.ChangeState(SLLS_TransmitWaitReset::Inst());
+		return SLLS_TransmitWaitReset::Instance();
 	}
 	else
 	{
@@ -89,10 +92,11 @@ void SLLS_Reset::TestLinkStatus(LinkLayer& link, bool aFcb)
 		// This is a PITA implement
 		// TODO - see if this function is deprecated or not
 		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Received TestLinkStatus with invalid FCB");
+		return *this;
 	}
 }
 
-void SLLS_Reset::ConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice& arBuffer)
+SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice& arBuffer)
 {
 	link.QueueAck();
 
@@ -106,20 +110,20 @@ void SLLS_Reset::ConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RS
 		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Confirmed data w/ wrong FCB");
 	}
 
-	link.ChangeState(SLLS_TransmitWaitReset::Inst());
+	return SLLS_TransmitWaitReset::Instance();
 }
 
-void SLLS_Reset::ResetLinkStates(LinkLayer& link)
+SecStateBase& SLLS_Reset::OnResetLinkStates(LinkLayer& link)
 {
 	link.QueueAck();
 	link.ResetReadFCB();
-	link.ChangeState(SLLS_TransmitWaitReset::Inst());
+	return SLLS_TransmitWaitReset::Instance();
 }
 
-void SLLS_Reset::RequestLinkStatus(LinkLayer& link)
+SecStateBase& SLLS_Reset::OnRequestLinkStatus(LinkLayer& link)
 {
 	link.QueueLinkStatus();
-	link.ChangeState(SLLS_TransmitWaitReset::Inst());
+	return SLLS_TransmitWaitReset::Instance();
 }
 
 ////////////////////////////////////////////////////////
