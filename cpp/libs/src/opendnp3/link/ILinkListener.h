@@ -19,6 +19,9 @@ class ILinkListener
 
 	/// Called when the keep alive timer elapses. This doesn't denote a keep-alive failure, it's just a notification
 	virtual void OnKeepAliveTimeout() {}
+
+	/// Called when a keep alive message (request link status) receives no response
+	virtual void OnKeepAliveFailure() {}
 };
 
 }

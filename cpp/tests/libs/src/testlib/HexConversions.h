@@ -41,6 +41,8 @@ std::string SkipBytesHex(const std::string& input, uint32_t bytes);
 
 std::string RepeatHex(uint8_t byte, uint16_t count, bool spaced = true);
 
+std::string IncrementHex(uint8_t start, uint16_t count, bool spaced = true);
+
 }
 
 #endif

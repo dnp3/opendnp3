@@ -145,10 +145,30 @@ void LinkLayer::Send(ITransportSegment& segments)
 
 void LinkLayer::TryStartTransmission()
 {
+	if (keepAliveTimeout)
+	{
+		pPriState = &pPriState->TrySendRequestLinkStatus(*this);
+	}
+
 	if (pSegments)
 	{		
 		pPriState = (config.UseConfirms) ? &pPriState->TrySendConfirmed(*this, *pSegments) : &pPriState->TrySendUnconfirmed(*this, *pSegments);
 	}		
+}
+
+void LinkLayer::FailKeepAlive(bool timeout)
+{
+	this->keepAliveTimeout = false;
+
+	if (timeout)
+	{
+		this->pListener->OnKeepAliveFailure();
+	}
+}
+
+void LinkLayer::CompleteKeepAlive()
+{
+	this->keepAliveTimeout = false;
 }
 
 ////////////////////////////////

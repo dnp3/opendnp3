@@ -82,5 +82,18 @@ std::string RepeatHex(uint8_t byte, uint16_t count, bool spaced)
 	return ToHex(buffer.ToRSlice(), spaced);
 }
 
+std::string IncrementHex(uint8_t start, uint16_t count, bool spaced)
+{
+	Buffer buffer(count);	
+
+	for (uint16_t i = 0; i < count; ++i)
+	{
+		buffer[i] = start;
+		++start;
+	}
+
+	return ToHex(buffer.ToRSlice(), spaced);
+}
+
 }
 

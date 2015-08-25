@@ -33,7 +33,7 @@ class MockLinkListener final : public ILinkListener
 {
 public:
 
-	MockLinkListener() : numKeepAliveTimeout(0)
+	MockLinkListener() : numKeepAliveTimeout(0), numKeepAliveFailure(0)
 	{}
 
 	virtual void OnStateChange(LinkStatus value) override
@@ -46,7 +46,13 @@ public:
 		++numKeepAliveTimeout;
 	}
 
+	virtual void OnKeepAliveFailure() override
+	{
+		++numKeepAliveFailure;
+	}
+
 	uint32_t numKeepAliveTimeout;
+	uint32_t numKeepAliveFailure;
 
 	std::vector< LinkStatus > statusValues;
 	

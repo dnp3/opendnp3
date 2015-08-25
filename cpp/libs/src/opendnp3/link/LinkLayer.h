@@ -73,6 +73,8 @@ public:
 	void PostStatusCallback(opendnp3::LinkStatus status);	
 	void CompleteSendOperation(bool success);
 	void TryStartTransmission();
+	void FailKeepAlive(bool timeout);
+	void CompleteKeepAlive();
 
 	openpal::Logger& GetLogger()
 	{

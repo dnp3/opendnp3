@@ -82,6 +82,11 @@ PriStateBase& PriStateBase::TrySendUnconfirmed(LinkLayer& link, ITransportSegmen
 	return *this;
 }
 
+PriStateBase& PriStateBase::TrySendRequestLinkStatus(LinkLayer&)
+{
+	return *this;
+}
+
 ////////////////////////////////////////////////////////
 //	Class PLLS_SecNotResetIdle
 ////////////////////////////////////////////////////////
@@ -111,6 +116,12 @@ PriStateBase& PLLS_Idle::TrySendConfirmed(LinkLayer& link, ITransportSegment& se
 		link.QueueResetLinks();
 		return PLLS_LinkResetTransmitWait::Instance();
 	}	
+}
+
+PriStateBase& PLLS_Idle::TrySendRequestLinkStatus(LinkLayer& link)
+{
+	link.QueueRequestLinkStatus();
+	return PLLS_RequestLinkStatusTransmitWait::Instance();
 }
 
 ////////////////////////////////////////////////////////
@@ -173,6 +184,27 @@ PriStateBase& PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer& link, b
 	else
 	{		
 		link.CompleteSendOperation(false);
+		return PLLS_Idle::Instance();
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//  Wait for the link layer to transmit the request link status
+/////////////////////////////////////////////////////////////////////////////
+
+PLLS_RequestLinkStatusTransmitWait PLLS_RequestLinkStatusTransmitWait::instance;
+
+PriStateBase& PLLS_RequestLinkStatusTransmitWait::OnTransmitResult(LinkLayer& link, bool success)
+{
+	if (success)
+	{
+		// now we're waiting on a LINK_STATUS
+		link.StartTimer();
+		return PLLS_RequestLinkStatusWait::Instance();
+	}
+	else
+	{
+		link.FailKeepAlive(false);
 		return PLLS_Idle::Instance();
 	}
 }
@@ -283,6 +315,40 @@ PriStateBase& PLLS_ConfDataWait::OnTimeout(LinkLayer& link)
 		link.CompleteSendOperation(false);
 		return PLLS_Idle::Instance();
 	}
+}
+
+////////////////////////////////////////////////////////
+//	Class PLLS_RequestLinkStatusWait
+////////////////////////////////////////////////////////
+
+PLLS_RequestLinkStatusWait PLLS_RequestLinkStatusWait::instance;
+
+PriStateBase& PLLS_RequestLinkStatusWait::OnNack(LinkLayer& link, bool)
+{
+	link.CancelTimer();
+	link.FailKeepAlive(false);
+	return PLLS_Idle::Instance();
+}
+
+PriStateBase& PLLS_RequestLinkStatusWait::OnLinkStatus(LinkLayer& link, bool)
+{
+	link.CancelTimer();
+	link.CompleteKeepAlive();
+	return PLLS_Idle::Instance();
+}
+
+PriStateBase& PLLS_RequestLinkStatusWait::OnNotSupported(LinkLayer& link, bool)
+{
+	link.CancelTimer();
+	link.FailKeepAlive(false);
+	return PLLS_Idle::Instance();
+}
+
+PriStateBase& PLLS_RequestLinkStatusWait::OnTimeout(LinkLayer& link)
+{
+	SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Link status request - response timeout");
+	link.FailKeepAlive(true);
+	return PLLS_Idle::Instance();
 }
 
 } //end namepsace

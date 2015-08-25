@@ -48,6 +48,7 @@ public:
 	// transmission events to handle
 	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments);
 	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments);	
+	virtual PriStateBase& TrySendRequestLinkStatus(LinkLayer&);
 
 	//every concrete state implements this for logging purposes
 	virtual char const* Name() const = 0;
@@ -60,6 +61,7 @@ class PLLS_Idle final : public PriStateBase
 
 	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments) override;
 	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments) override;	
+	virtual PriStateBase& TrySendRequestLinkStatus(LinkLayer&) override;
 };
 
 
@@ -98,7 +100,18 @@ class PLLS_ConfUserDataTransmitWait : public PriStateBase
 };
 
 /////////////////////////////////////////////////////////////////////////////
-//  idle state when the secondary is reset
+//  Wait for the link layer to transmit confirmed user data
+/////////////////////////////////////////////////////////////////////////////
+
+class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait);
+
+	virtual PriStateBase& OnTransmitResult(LinkLayer& link, bool success);
+};
+
+/////////////////////////////////////////////////////////////////////////////
+//  Waiting for a ACK to reset the link
 /////////////////////////////////////////////////////////////////////////////
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
@@ -118,6 +131,10 @@ private:
 	PriStateBase& Failure(LinkLayer&);
 };
 
+/////////////////////////////////////////////////////////////////////////////
+//  Waiting for a ACK to user data
+/////////////////////////////////////////////////////////////////////////////
+
 //	@section desc As soon as we get an ACK, send the delayed pri frame
 class PLLS_ConfDataWait final : public PriStateBase
 {
@@ -132,6 +149,21 @@ class PLLS_ConfDataWait final : public PriStateBase
 
 private:
 	PriStateBase& Failure(LinkLayer&);
+};
+
+/////////////////////////////////////////////////////////////////////////////
+//  Waiting for a link status response
+/////////////////////////////////////////////////////////////////////////////
+
+//	@section desc As soon as we get an ACK, send the delayed pri frame
+class PLLS_RequestLinkStatusWait final : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusWait);
+	
+	PriStateBase& OnNack(LinkLayer& link, bool) override;
+	PriStateBase& OnLinkStatus(LinkLayer& link, bool) override;
+	PriStateBase& OnNotSupported(LinkLayer& link, bool)  override;
+	PriStateBase& OnTimeout(LinkLayer&) override;
 };
 
 } //end namepsace
