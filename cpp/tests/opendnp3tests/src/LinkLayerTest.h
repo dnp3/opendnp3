@@ -40,7 +40,7 @@ class LinkLayerTest : public ILinkRouter
 {
 public:
 
-	LinkLayerTest(LinkConfig arCfg = DefaultConfig());
+	LinkLayerTest(LinkConfig config = DefaultConfig());
 
 	//ILinkRouter interface
 	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext) override final;

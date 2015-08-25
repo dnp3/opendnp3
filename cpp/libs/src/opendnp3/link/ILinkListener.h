@@ -14,8 +14,11 @@ class ILinkListener
 {
 	public:
 
-	/// overridable
+	/// Called when a the reset/unreset status of the link layer changes
 	virtual void OnStateChange(LinkStatus value) {}
+
+	/// Called when the keep alive timer elapses. This doesn't denote a keep-alive failure, it's just a notification
+	virtual void OnKeepAliveTimeout() {}
 };
 
 }

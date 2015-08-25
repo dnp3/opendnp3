@@ -65,6 +65,23 @@ TEST_CASE(SUITE("ForwardsOnLowerLayerUp"))
 	REQUIRE(t.log.PopUntil(flags::ERR));
 }
 
+// Prove that the upper layer is notified when the lower layer comes online
+TEST_CASE(SUITE("ForwardsKeepAliveTimeouts"))
+{
+	LinkConfig config(true, false);
+	config.KeepAliveTimeout = TimeDuration::Seconds(5);
+	LinkLayerTest t(config);
+	
+	t.link.OnLowerLayerUp();
+
+	REQUIRE(t.exe.NumPendingTimers() == 1);
+	REQUIRE(t.listener.numKeepAliveTimeout == 0);
+
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.listener.numKeepAliveTimeout == 1);
+}
+
 // Check that once the layer comes up, validation errors can occur
 TEST_CASE(SUITE("ValidatesMasterOutstationBit"))
 {

@@ -32,31 +32,34 @@ namespace opendnp3
 struct LinkConfig
 {
 	LinkConfig(
-	    bool aIsMaster,
-	    bool aUseConfirms,
-	    uint32_t aNumRetry,
-	    uint16_t aLocalAddr,
-	    uint16_t aRemoteAddr,
-	    openpal::TimeDuration aTimeout) :
+	    bool isMaster,
+	    bool useConfirms,
+	    uint32_t numRetry,
+	    uint16_t localAddr,
+	    uint16_t remoteAddr,
+	    openpal::TimeDuration timeout,
+		openpal::TimeDuration keepAliveTimeout) :
 
-		IsMaster(aIsMaster),
-		UseConfirms(aUseConfirms),
-		NumRetry(aNumRetry),
-		LocalAddr(aLocalAddr),
-		RemoteAddr(aRemoteAddr),
-		Timeout(aTimeout)
+		IsMaster(isMaster),
+		UseConfirms(useConfirms),
+		NumRetry(numRetry),
+		LocalAddr(localAddr),
+		RemoteAddr(remoteAddr),
+		Timeout(timeout),
+		KeepAliveTimeout(keepAliveTimeout)
 	{}
 
 	LinkConfig(
-	    bool aIsMaster,
-	    bool aUseConfirms) :
+	    bool isMaster,
+	    bool useConfirms) :
 
-		IsMaster(aIsMaster),
-		UseConfirms(aUseConfirms),
+		IsMaster(isMaster),
+		UseConfirms(useConfirms),
 		NumRetry(0),
-		LocalAddr(aIsMaster ? 1 : 1024),
-		RemoteAddr(aIsMaster ? 1024 : 1),
-		Timeout(openpal::TimeDuration::Seconds(1))
+		LocalAddr(isMaster ? 1 : 1024),
+		RemoteAddr(isMaster ? 1024 : 1),
+		Timeout(openpal::TimeDuration::Seconds(1)),
+		KeepAliveTimeout(openpal::TimeDuration::Minutes(1))
 	{}
 
 	/// The master/outstation bit set on all messages
@@ -76,6 +79,9 @@ struct LinkConfig
 
 	/// the response timeout in milliseconds for confirmed requests
 	openpal::TimeDuration Timeout;
+
+	/// the interval for keep-alive messages (link status requests)
+	openpal::TimeDuration KeepAliveTimeout;
 
 private:
 

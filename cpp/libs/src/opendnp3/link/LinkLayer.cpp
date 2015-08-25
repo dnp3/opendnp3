@@ -45,10 +45,12 @@ LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opend
 	txMode(TransmitMode::Idle),
 	numRetryRemaining(0),
 	pExecutor(&executor),
-	timer(executor),
+	rspTimeoutTimer(executor),
+	keepAliveTimer(executor),
 	nextReadFCB(false),
 	nextWriteFCB(false),
 	isOnline(false),
+	lastMessageTimestamp(executor.GetTime()),
 	pRouter(nullptr),
 	pPriState(&PLLS_SecNotReset::Instance()),
 	pSecState(&SLLS_NotReset::Instance()),
@@ -152,6 +154,11 @@ void LinkLayer::OnLowerLayerUp()
 	{
 		isOnline = true;
 
+		// no reason to trigger a keep-alive until we've actually expired
+		lastMessageTimestamp = this->pExecutor->GetTime();
+
+		keepAliveTimer.Start(config.KeepAliveTimeout, [this]() { this->OnKeepAliveTimeout(); });
+
 		if (pUpperLayer)
 		{
 			pUpperLayer->OnLowerLayerUp();
@@ -170,7 +177,8 @@ void LinkLayer::OnLowerLayerDown()
 		pendingPriTx.Clear();
 		pendingSecTx.Clear();
 
-		timer.Cancel();
+		rspTimeoutTimer.Cancel();
+		keepAliveTimer.Cancel();
 
 		pPriState = &PLLS_SecNotReset::Instance();
 		pSecState = &SLLS_NotReset::Instance();
@@ -223,6 +231,23 @@ void LinkLayer::CheckPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 		pending.Clear();
 		this->txMode = primary ? TransmitMode::Primary : TransmitMode::Secondary;
 	}
+}
+
+void LinkLayer::OnKeepAliveTimeout()
+{
+	auto now = this->pExecutor->GetTime();
+
+	auto elapsed = this->pExecutor->GetTime().milliseconds - this->lastMessageTimestamp.milliseconds;
+
+	if (elapsed >= this->config.KeepAliveTimeout.GetMilliseconds())
+	{
+		this->lastMessageTimestamp = now;
+		this->pListener->OnKeepAliveTimeout();
+	}
+	
+	// No matter what, reschedule the timer based on last message timestamp
+	MonotonicTimestamp expiration(this->lastMessageTimestamp.milliseconds + config.KeepAliveTimeout);
+	this->keepAliveTimer.Start(expiration, [this]() { this->OnKeepAliveTimeout(); });
 }
 
 openpal::RSlice LinkLayer::FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB)
@@ -287,7 +312,7 @@ void LinkLayer::QueueResetLinks()
 
 void LinkLayer::StartTimer()
 {		
-	timer.Start(
+	rspTimeoutTimer.Start(
 		TimeDuration(config.Timeout), 
 		[this]() 
 		{ 
@@ -298,7 +323,7 @@ void LinkLayer::StartTimer()
 
 void LinkLayer::CancelTimer()
 {
-	timer.Cancel();
+	rspTimeoutTimer.Cancel();
 }
 
 void LinkLayer::ResetRetry()
@@ -329,6 +354,9 @@ bool LinkLayer::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc,
 	{
 		return false;
 	}
+
+	// reset the keep-alive timestamp
+	this->lastMessageTimestamp = this->pExecutor->GetTime();
 
 	switch (func)
 	{

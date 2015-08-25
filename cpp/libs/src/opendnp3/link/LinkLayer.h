@@ -156,14 +156,18 @@ private:
 
 	void CheckPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
 
+	void OnKeepAliveTimeout();
+
 	uint32_t numRetryRemaining;
 
 	openpal::IExecutor* pExecutor;
-	openpal::TimerRef timer;	
+	openpal::TimerRef rspTimeoutTimer;
+	openpal::TimerRef keepAliveTimer;
 
 	bool nextReadFCB;
 	bool nextWriteFCB;
 	bool isOnline;
+	openpal::MonotonicTimestamp lastMessageTimestamp;
 
 	bool Validate(bool isMaster, uint16_t src, uint16_t dest);	
 
