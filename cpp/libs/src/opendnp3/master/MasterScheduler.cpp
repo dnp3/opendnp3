@@ -145,7 +145,11 @@ void MasterScheduler::StartTimer()
 		return;
 	}
 	
-	m_startTimer.Start(min, [this]() { });
+	m_startTimer.Restart(min, [this]()
+		{ 
+			this->OnStartTimerElapsed(); 
+		}
+	);
 }
 
 }

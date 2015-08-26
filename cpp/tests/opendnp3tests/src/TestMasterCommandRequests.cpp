@@ -41,19 +41,47 @@ std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 TEST_CASE(SUITE("ControlExecutionClosedState"))
 {
 	MasterParams params;
-	MasterTestObject t(params);	
+	MasterTestObject t(params);
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 	CallbackQueue<CommandResponse> queue;
-	
 
-	for(int i = 0; i < 10; ++i)
-	{		
-		t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());		
+
+	for (int i = 0; i < 10; ++i)
+	{
+		t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
 		REQUIRE(1 == queue.responses.size());
 		REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == queue.responses.front()));
 		queue.responses.pop_front();
 	}
+}
+
+TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
+{
+	MasterParams params;
+	params.taskStartTimeout = TimeDuration::Milliseconds(100); // set to an intentionally value so that is < response timeout
+	MasterTestObject t(params);	
+	
+	t.context.OnLowerLayerUp();
+
+	REQUIRE(t.exe.RunMany() > 0);	
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+
+	// while we're waiting for a reponse, submit a control	
+	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
+	CallbackQueue<CommandResponse> queue;
+	
+	for(int i = 0; i < 5; ++i)
+	{		
+		t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
+		t.exe.AdvanceTime(params.taskStartTimeout);
+		REQUIRE(t.exe.RunMany() > 0);
+		REQUIRE(1 == queue.responses.size());
+		REQUIRE((CommandResponse(TaskCompletion::FAILURE_START_TIMEOUT) == queue.responses.front()));
+		queue.responses.pop_front();
+	}
+	
+
 }
 
 TEST_CASE(SUITE("SelectAndOperate"))

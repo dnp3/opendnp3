@@ -456,7 +456,6 @@ namespace opendnp3
 	{
 		const auto NOW = this->pExecutor->GetTime();
 		
-
 		pTask->ConfigureStartExpiration(NOW.milliseconds + params.taskStartTimeout.GetMilliseconds());
 
 		auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
