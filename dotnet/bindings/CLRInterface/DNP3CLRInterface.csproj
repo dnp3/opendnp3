@@ -88,7 +88,6 @@
     <Compile Include="gen\FunctionCode.cs" />
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
-    <Compile Include="gen\ILinkStatusListener.cs" />
     <Compile Include="gen\IndexMode.cs" />
     <Compile Include="gen\IntervalUnits.cs" />
     <Compile Include="gen\KeyChangeMethod.cs" />
@@ -123,6 +122,7 @@
     <Compile Include="IDNP3Manager.cs" />
     <Compile Include="IChannel.cs" />
     <Compile Include="ICommandProcessor.cs" />
+    <Compile Include="ILinkListener.cs" />
     <Compile Include="ILogHandler.cs" />
     <Compile Include="IMaster.cs">
       <SubType>Code</SubType>

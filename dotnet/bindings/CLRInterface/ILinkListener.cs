@@ -22,8 +22,21 @@
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// Various callbacks that can be received from the link layer
+    /// </summary>
     public interface ILinkStatusListener
     {
+        /// Called when a the reset/unreset status of the link layer changes
         void OnStateChange(LinkStatus value);
+
+        /// Called when a keep alive message is transmitted
+        void OnKeepAliveInitiated();
+
+        /// Called when a keep alive message (request link status) receives no response
+        void OnKeepAliveFailure();
+
+        /// Called when a keep alive message receives a valid response
+        void OnKeepAliveSuccess();
     }
 }

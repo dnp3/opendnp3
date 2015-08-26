@@ -29,6 +29,26 @@ namespace Automatak
 				MasterApplicationAdapter(Automatak::DNP3::Interface::IMasterApplication^ proxy) : proxy(proxy)
 				{}
 
+				virtual void OnStateChange(opendnp3::LinkStatus value) override
+				{
+					proxy->OnStateChange((LinkStatus)value);
+				}
+				
+				virtual void OnKeepAliveInitiated() override
+				{
+					proxy->OnKeepAliveInitiated();
+				}
+
+				virtual void OnKeepAliveFailure() override
+				{
+					proxy->OnKeepAliveFailure();
+				}
+
+				virtual void OnKeepAliveSuccess() override
+				{
+					proxy->OnKeepAliveSuccess();
+				}
+
 				virtual openpal::UTCTimestamp Now() override final
 				{
 					auto milliseconds = proxy->GetMillisecondsSinceEpoch();

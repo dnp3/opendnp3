@@ -82,9 +82,13 @@ namespace Automatak.DNP3.Interface
 
         private DefaultOutstationApplication() { }
 
-        void ILinkStatusListener.OnStateChange(LinkStatus value)
-        {
-        }
+        void ILinkStatusListener.OnStateChange(LinkStatus value) {}
+
+        void ILinkStatusListener.OnKeepAliveInitiated() {}
+
+        void ILinkStatusListener.OnKeepAliveFailure() {}
+
+        void ILinkStatusListener.OnKeepAliveSuccess() {}
 
         bool IOutstationApplication.SupportsWriteAbsoluteTime
         {

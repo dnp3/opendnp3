@@ -25,6 +25,12 @@ namespace Automatak
 
 				virtual void OnStateChange(opendnp3::LinkStatus value) override final;
 
+				virtual void OnKeepAliveInitiated() override final;
+
+				virtual void OnKeepAliveFailure() override final;
+
+				virtual void OnKeepAliveSuccess() override final;				
+
 				virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final;
 
 				virtual bool SupportsWriteAbsoluteTime() override final;

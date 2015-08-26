@@ -22,7 +22,7 @@
 
 namespace Automatak.DNP3.Interface
 {
-    public interface ILinkStatusListener
+    public interface ILinkListener
     {
         void OnStateChange(LinkStatus value);
     }

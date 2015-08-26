@@ -20,12 +20,14 @@ namespace Automatak.DNP3.Interface
         /// <param name="localAddr">dnp3 address of the local device</param>
         /// <param name="remoteAddr">dnp3 address of the remote device</param>
         /// <param name="timeout">the response timeout in milliseconds for confirmed requests</param>
+        /// <param name="keepAliveTimeoutMs">the keep-alive timeout interval</param>
         public LinkConfig(  bool isMaster,
                             bool useConfirms,
                             System.UInt32 numRetry,
                             System.UInt16 localAddr,
                             System.UInt16 remoteAddr,
-                            System.UInt32 timeoutMs)
+                            System.UInt32 timeoutMs,
+                            System.UInt32 keepAliveTimeoutMs)
         {
             this.isMaster = isMaster;
             this.useConfirms = useConfirms;
@@ -33,6 +35,7 @@ namespace Automatak.DNP3.Interface
             this.localAddr = localAddr;
             this.remoteAddr = remoteAddr;
             this.timeoutMs = timeoutMs;
+            this.keepAliveTimeoutMs = keepAliveTimeoutMs;
         }
 
         /// <summary>
@@ -41,7 +44,15 @@ namespace Automatak.DNP3.Interface
         /// <param name="isMaster">true if this layer will be used with a master, false otherwise</param>
         /// <param name="useConfirms">true to use link layer confirmations for all data, false otherwise</param>
         public LinkConfig(bool isMaster, bool useConfirms)
-            : this(isMaster, useConfirms, DefaultNumRetries, GetDefaultSourceAddress(isMaster), GetDefaultDestinationAddress(isMaster), DefaultTimeoutMillisconds)
+            : this(
+                isMaster,
+                useConfirms,
+                DefaultNumRetries,
+                GetDefaultSourceAddress(isMaster),
+                GetDefaultDestinationAddress(isMaster),
+                DefaultTimeoutMillisconds,
+                DefaultKeepAliveTimeoutMillisconds
+            )
         {
 
         }
@@ -102,6 +113,14 @@ namespace Automatak.DNP3.Interface
             }
         }
 
+        public static System.UInt32 DefaultKeepAliveTimeoutMillisconds
+        {
+            get
+            {
+                return 1000*60;
+            }
+        }
+
         /// <summary>
         /// The master/outstation bit set on all messages
         /// </summary>
@@ -131,5 +150,10 @@ namespace Automatak.DNP3.Interface
         /// the response timeout for confirmed requests
         /// </summary>
         public System.UInt32 timeoutMs;
+
+        /// <summary>
+        /// the keep-alive timer timeout interval
+        /// </summary>
+        public System.UInt32 keepAliveTimeoutMs;
     }
 }

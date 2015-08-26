@@ -21,6 +21,21 @@ namespace Automatak
 			void OutstationApplicationAdapter::OnStateChange(opendnp3::LinkStatus value)
 			{
 				proxy->OnStateChange((LinkStatus)value);
+			}			
+
+			void OutstationApplicationAdapter::OnKeepAliveInitiated()
+			{
+				proxy->OnKeepAliveInitiated();
+			}
+
+			void OutstationApplicationAdapter::OnKeepAliveFailure()
+			{
+				proxy->OnKeepAliveFailure();
+			}
+
+			void OutstationApplicationAdapter::OnKeepAliveSuccess()
+			{
+				proxy->OnKeepAliveSuccess();
 			}
 
 			bool OutstationApplicationAdapter::WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp)

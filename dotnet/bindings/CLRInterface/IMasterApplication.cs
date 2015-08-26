@@ -88,11 +88,14 @@ namespace Automatak.DNP3.Interface
         }
 
         protected DefaultMasterApplication() { }
+        
+        void ILinkStatusListener.OnStateChange(LinkStatus value) { }
 
-        void ILinkStatusListener.OnStateChange(LinkStatus value)
-        {
-            // ignore these in the default application 
-        }
+        void ILinkStatusListener.OnKeepAliveInitiated() { }
+
+        void ILinkStatusListener.OnKeepAliveFailure() { }
+
+        void ILinkStatusListener.OnKeepAliveSuccess() { }
 
         UInt64 IMasterApplication.GetMillisecondsSinceEpoch()
         {

@@ -278,7 +278,15 @@ namespace Automatak
 
 			opendnp3::LinkConfig Conversions::ConvertConfig(LinkConfig^ config)
 			{
-				return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, ConvertMilliseconds(config->timeoutMs));
+				return opendnp3::LinkConfig(
+					config->isMaster,
+					config->useConfirms,
+					config->numRetry,
+					config->localAddr,
+					config->remoteAddr,
+					ConvertMilliseconds(config->timeoutMs),
+					ConvertMilliseconds(config->keepAliveTimeoutMs)
+				);
 			}
 
 			opendnp3::EventBufferConfig Conversions::ConvertConfig(EventBufferConfig^ cm)
@@ -319,7 +327,6 @@ namespace Automatak
 				params.unsolConfirmTimeout = ConvertTimespan(config->unsolicitedConfirmTimeout);
 				params.unsolRetryTimeout = ConvertTimespan(config->unsolicitedRetryPeriod);
 				
-
 				return params;
 			}
 
