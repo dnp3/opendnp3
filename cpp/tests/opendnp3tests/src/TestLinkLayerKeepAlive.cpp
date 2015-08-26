@@ -70,7 +70,7 @@ TEST_CASE(SUITE("SendsKeepAliveAfterExpiration"))
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);	
 
-	REQUIRE(ToHex(t.lastWrite) == LinkHex::Ack(true, false, 1024, 1));
+	REQUIRE(ToHex(t.lastWrite) == LinkHex::RequestLinkStatus(true, 1024, 1));
 }
 
 

@@ -92,7 +92,8 @@ public:
 	void TryStartTransmission();
 	void OnKeepAliveTimeout();
 	void OnResponseTimeout();
-	void StartTimer();
+	void StartResponseTimer();
+	void StartKeepAliveTimer();
 	void CancelTimer();	
 	void FailKeepAlive(bool timeout);
 	void CompleteKeepAlive();

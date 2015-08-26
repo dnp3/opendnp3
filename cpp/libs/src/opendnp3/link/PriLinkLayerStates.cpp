@@ -157,7 +157,7 @@ PriStateBase& PLLS_LinkResetTransmitWait::OnTransmitResult(LinkContext& ctx, boo
 	if (success)
 	{
 		// now we're waiting for an ACK
-		ctx.StartTimer();
+		ctx.StartResponseTimer();
 		return PLLS_ResetLinkWait::Instance();
 	}
 	else
@@ -178,7 +178,7 @@ PriStateBase& PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkContext& ctx, 
 	if (success)
 	{
 		// now we're waiting on an ACK
-		ctx.StartTimer();
+		ctx.StartResponseTimer();
 		return PLLS_ConfDataWait::Instance();
 	}
 	else
@@ -199,7 +199,7 @@ PriStateBase& PLLS_RequestLinkStatusTransmitWait::OnTransmitResult(LinkContext& 
 	if (success)
 	{
 		// now we're waiting on a LINK_STATUS
-		ctx.StartTimer();
+		ctx.StartResponseTimer();
 		return PLLS_RequestLinkStatusWait::Instance();
 	}
 	else
