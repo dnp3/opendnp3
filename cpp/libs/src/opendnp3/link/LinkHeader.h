@@ -22,9 +22,8 @@
 #define OPENDNP3_LINKHEADER_H
 
 #include "LinkLayerConstants.h"
-#include "../gen/LinkFunction.h"
 
-
+#include "opendnp3/gen/LinkFunction.h"
 
 namespace opendnp3
 {
@@ -34,11 +33,11 @@ struct LinkHeader
 {
 	LinkHeader();
 
-	LinkHeader(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode);
+	LinkHeader(uint8_t len, uint16_t src, uint16_t dest, bool isFromMaster, bool fcvdfc, bool fcb, LinkFunction func);
 
 	// Setter
 
-	void Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode);
+	void Set(uint8_t len, uint16_t src, uint16_t dest, bool isFromMaster, bool fcvdfc, bool fcb, LinkFunction func);
 
 	void ChangeFCB(bool aFCB);
 
@@ -92,13 +91,13 @@ struct LinkHeader
 
 	/** Reads the header, setting all the fields. Does NOT validate 0x0564 or CRC
 	@param apBuff Buffer of at least 10 bytes */
-	void Read(const uint8_t* apBuff);
+	void Read(const uint8_t* data);
 
 	/** Writes header to buffer including, 0x0564 and CRC
 	@param apBuff Buffer of at least 10 bytes */
-	void Write(uint8_t* apBuff) const;	
+	void Write(uint8_t* dest) const;	
 
-	static uint8_t ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFunc);
+	static uint8_t ControlByte(bool isMaster, bool fcb, bool fcvdfc, LinkFunction func);	
 
 private:
 
