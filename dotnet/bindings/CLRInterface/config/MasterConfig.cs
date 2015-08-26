@@ -27,6 +27,7 @@ namespace Automatak.DNP3.Interface
             eventScanOnEventsAvailableClassMask = ClassField.None;
             responseTimeout = TimeSpan.FromSeconds(5);
             taskRetryPeriod = TimeSpan.FromSeconds(5);
+            taskStartTimeout = TimeSpan.FromSeconds(10);
         }
         
         /// <summary>
@@ -72,6 +73,13 @@ namespace Automatak.DNP3.Interface
         [XmlIgnore]
         public TimeSpan taskRetryPeriod;
 
+        /// <summary>
+        /// Time delay beforce retrying a failed task
+        /// </summary>
+        [XmlIgnore]
+        public TimeSpan taskStartTimeout;
+
+
         [XmlElement]
         public long TaskResponseTimeoutMilliseconds
         {
@@ -96,6 +104,19 @@ namespace Automatak.DNP3.Interface
             set
             {
                 taskRetryPeriod = TimeSpan.FromMilliseconds(value);
+            }
+        }
+
+        [XmlElement]
+        public long TaskStartTimeoutMilliseconds
+        {
+            get
+            {
+                return (taskStartTimeout.Ticks / TimeSpan.TicksPerMillisecond);
+            }
+            set
+            {
+                taskStartTimeout = TimeSpan.FromMilliseconds(value);
             }
         }
     }

@@ -340,6 +340,7 @@ namespace Automatak
 				mp.startupIntegrityClassMask = ConvertClassField(config->startupIntegrityClassMask);
 				mp.eventScanOnEventsAvailableClassMask = ConvertClassField(config->eventScanOnEventsAvailableClassMask);
 				mp.taskRetryPeriod = ConvertTimespan(config->taskRetryPeriod);
+				mp.taskStartTimeout = ConvertTimespan(config->taskStartTimeout);
 				mp.timeSyncMode = (opendnp3::TimeSyncMode) config->timeSyncMode;
 				mp.unsolClassMask = ConvertClassField(config->unsolClassMask);
 
