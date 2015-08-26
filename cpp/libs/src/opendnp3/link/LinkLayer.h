@@ -27,33 +27,29 @@ namespace opendnp3
 {
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer final : public ILinkLayer, public ILinkSession, public HasUpperLayer
+class LinkLayer final : public ILinkLayer, public ILinkSession
 {
 
 public:
 
 	LinkLayer(openpal::LogRoot&, openpal::IExecutor&, opendnp3::ILinkListener&, const LinkConfig&);
 
+	void SetUpperLayer(IUpperLayer& upperLayer);
 	void SetRouter(ILinkRouter&);
 
-	// ILinkSession interface
+	// ---- ILinkSession / IFrameSink interface ----
 	virtual bool OnLowerLayerUp() override;
 	virtual bool OnLowerLayerDown() override;
 	virtual bool OnTransmitResult(bool success) override;
-
-	// IFrameSink interface
 	virtual bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata = openpal::RSlice()) override;
-
-	// ------------- ILinkLayer --------------------
+	
+	// ---- ILinkLayer ----
 	virtual void Send(ITransportSegment& segments) override;
 
-	// Functions called by the primary and secondary station states	
-	void PostStatusCallback(opendnp3::LinkStatus status);	
-	void CompleteSendOperation(bool success);
+	// Functions called by the primary and secondary station states		
 	void TryStartTransmission();
 	void FailKeepAlive(bool timeout);
-	void CompleteKeepAlive();		
-	void PushDataUp(const openpal::RSlice& data);
+	void CompleteKeepAlive();			
 
 	// The full state
 	LinkContext ctx;

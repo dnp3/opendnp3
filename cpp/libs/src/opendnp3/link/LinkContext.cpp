@@ -61,12 +61,19 @@ bool LinkContext::OnLowerLayerUp()
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
 		return false;
-	}
+	}	
 
 	this->isOnline = true;
 
 	// no reason to trigger a keep-alive until we've actually expired
 	this->lastMessageTimestamp = this->pExecutor->GetTime();
+
+	this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
+
+	if (pUpperLayer)
+	{
+		this->pUpperLayer->OnLowerLayerUp();
+	}
 	
 	return true;
 }
@@ -92,6 +99,14 @@ bool LinkContext::OnLowerLayerDown()
 
 	pPriState = &PLLS_Idle::Instance();
 	pSecState = &SLLS_NotReset::Instance();
+
+	this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
+
+	if (pUpperLayer)
+	{
+		this->pUpperLayer->OnLowerLayerDown();
+	}
+
 	return true;
 }
 
@@ -180,6 +195,40 @@ bool LinkContext::Retry()
 		return false;
 	}
 }
+
+void LinkContext::PushDataUp(const openpal::RSlice& data)
+{
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnReceive(data);
+	}
+}
+
+void LinkContext::PostStatusCallback(opendnp3::LinkStatus status)
+{
+	auto callback = [this, status]()
+	{
+		this->pListener->OnStateChange(status);
+	};
+
+	pExecutor->PostLambda(callback);
+}
+
+void LinkContext::CompleteSendOperation(bool success)
+{
+	this->pSegments = nullptr;
+
+	if (pUpperLayer)
+	{
+		auto callback = [this, success]()
+		{
+			this->pUpperLayer->OnSendResult(success);
+		};
+
+		pExecutor->PostLambda(callback);
+	}
+}
+
 
 }
 

@@ -42,35 +42,15 @@ LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opend
 	ctx(root, executor, listener, config)
 {}
 
+void LinkLayer::SetUpperLayer(IUpperLayer& upperLayer)
+{
+	ctx.SetUpperLayer(upperLayer);
+}
+
 void LinkLayer::SetRouter(ILinkRouter& router)
 {
 	assert(ctx.pRouter == nullptr);
 	ctx.pRouter = &router;
-}
-
-void LinkLayer::PostStatusCallback(opendnp3::LinkStatus status)
-{	
-	auto callback = [this, status]()
-	{
-		this->ctx.pListener->OnStateChange(status);
-	};
-
-	ctx.pExecutor->PostLambda(callback);
-}
-
-void LinkLayer::CompleteSendOperation(bool success)
-{
-	this->ctx.pSegments = nullptr;
-
-	if (pUpperLayer)
-	{		
-		auto callback = [this, success]() 
-		{
-			this->pUpperLayer->OnSendResult(success);
-		};
-
-		ctx.pExecutor->PostLambda(callback);
-	}	
 }
 
 bool LinkLayer::Validate(bool isMaster, uint16_t src, uint16_t dest)
@@ -154,14 +134,6 @@ void LinkLayer::CompleteKeepAlive()
 	this->ctx.keepAliveTimeout = false;
 }
 
-void LinkLayer::PushDataUp(const openpal::RSlice& data)
-{
-	if (pUpperLayer)
-	{
-		pUpperLayer->OnReceive(data);
-	}
-}
-
 ////////////////////////////////
 // ILinkSession
 ////////////////////////////////
@@ -171,33 +143,14 @@ bool LinkLayer::OnLowerLayerUp()
 	auto ret = ctx.OnLowerLayerUp();
 	if (ret)
 	{
-		ctx.keepAliveTimer.Start(ctx.config.KeepAliveTimeout, [this]() { this->OnKeepAliveTimeout(); });
-
-		if (pUpperLayer)
-		{
-			pUpperLayer->OnLowerLayerUp();
-		}
-
-		this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
+		ctx.keepAliveTimer.Start(ctx.config.KeepAliveTimeout, [this]() { this->OnKeepAliveTimeout(); });				
 	}
 	return ret;	
 }
 
 bool LinkLayer::OnLowerLayerDown()
 {
-	auto ret = ctx.OnLowerLayerDown();
-	
-	if (ret)
-	{
-		if (pUpperLayer)
-		{
-			pUpperLayer->OnLowerLayerDown();
-		}
-
-		this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
-	}
-
-	return ret;
+	return ctx.OnLowerLayerDown();	
 }
 
 bool LinkLayer::OnTransmitResult(bool success)
@@ -225,7 +178,8 @@ bool LinkLayer::OnTransmitResult(bool success)
 		ctx.pSecState = &ctx.pSecState->OnTransmitResult(*this, success);
 	}	
 
-	this->TryStartTransmission();	
+	this->TryStartTransmission();
+	return true;
 }
 
 void LinkLayer::CheckPendingTx(openpal::Settable<RSlice>& pending, bool primary)
@@ -327,7 +281,7 @@ bool LinkLayer::OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcv
 			ctx.pSecState = &ctx.pSecState->OnConfirmedUserData(*this, fcb, userdata);
 			return true;
 		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
-			this->PushDataUp(userdata);
+			this->ctx.PushDataUp(userdata);
 			return true;
 		default:
 			return false;

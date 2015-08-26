@@ -49,13 +49,13 @@ enum class LinkTransmitMode : uint8_t
 };
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkContext
+class LinkContext : public HasUpperLayer
 {
 		
 
 public:
 
-	LinkContext(openpal::LogRoot&, openpal::IExecutor&, opendnp3::ILinkListener&, const LinkConfig&);
+	LinkContext(openpal::LogRoot&, openpal::IExecutor&, opendnp3::ILinkListener&, const LinkConfig&);	
 
 
 	/// ---- helpers for dealing with the FCB bits ----
@@ -84,6 +84,9 @@ public:
 
 	void ResetRetry();
 	bool Retry();
+	void PushDataUp(const openpal::RSlice& data);
+	void PostStatusCallback(opendnp3::LinkStatus status);
+	void CompleteSendOperation(bool success);
 
 	// buffers used for primary and secondary requests	
 	openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> priTxBuffer;

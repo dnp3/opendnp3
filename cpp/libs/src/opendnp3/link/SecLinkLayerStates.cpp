@@ -103,7 +103,7 @@ SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkLayer& link, bool fcb, const o
 	if (link.ctx.nextReadFCB == fcb)
 	{
 		link.ctx.ToggleReadFCB();
-		link.PushDataUp(data);
+		link.ctx.PushDataUp(data);
 	}
 	else
 	{
