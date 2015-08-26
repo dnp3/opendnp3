@@ -40,6 +40,16 @@ using namespace testlib;
 
 #define SUITE(name) "LinkLayerKeepAliveTestSuite - " name
 
+TEST_CASE(SUITE("Timers activated and canceled in response to layer up/down"))
+{
+	LinkLayerTest t;
+	REQUIRE(t.exe.NumPendingTimers() == 0);
+	t.link.OnLowerLayerUp();
+	REQUIRE(t.exe.NumPendingTimers() == 1);
+	t.link.OnLowerLayerDown();
+	REQUIRE(t.exe.NumPendingTimers() == 0);
+}
+
 TEST_CASE(SUITE("ForwardsKeepAliveTimeouts"))
 {
 	LinkConfig config(true, false);
