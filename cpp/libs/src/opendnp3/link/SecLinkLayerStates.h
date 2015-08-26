@@ -80,28 +80,28 @@ SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTransmitResult(LinkLayer& link
 template <class NextState>
 SecStateBase& SLLS_TransmitWaitBase<NextState>::OnResetLinkStates(LinkLayer& link)
 {
-	SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
+	SIMPLE_LOG_BLOCK(link.ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
 	return *this;
 }
 
 template <class NextState>
 SecStateBase& SLLS_TransmitWaitBase<NextState>::OnRequestLinkStatus(LinkLayer& link)
 {
-	SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
+	SIMPLE_LOG_BLOCK(link.ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
 	return *this;
 }
 
 template <class NextState>
 SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTestLinkStatus(LinkLayer& link, bool aFcb)
 {
-	SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
+	SIMPLE_LOG_BLOCK(link.ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
 	return *this;
 }
 
 template <class NextState>
 SecStateBase& SLLS_TransmitWaitBase<NextState>::OnConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice&)
 {
-	SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
+	SIMPLE_LOG_BLOCK(link.ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
 	return *this;
 }
 

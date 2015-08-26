@@ -39,7 +39,7 @@ namespace opendnp3
 
 SecStateBase& SecStateBase::OnTransmitResult(LinkLayer& link, bool success)
 {
-	FORMAT_LOG_BLOCK(link.GetLogger(), flags::ERR, "Invalid event for state: %s", this->Name());	
+	FORMAT_LOG_BLOCK(link.ctx.logger, flags::ERR, "Invalid event for state: %s", this->Name());	
 	return *this;
 }
 
@@ -50,26 +50,26 @@ SLLS_NotReset SLLS_NotReset::instance;
 
 SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkLayer& link, bool aFcb)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "TestLinkStatus ignored");
+	SIMPLE_LOG_BLOCK_WITH_CODE(link.ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "TestLinkStatus ignored");
 	return *this;
 }
 
 SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice&)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(link.GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "ConfirmedUserData ignored");
+	SIMPLE_LOG_BLOCK_WITH_CODE(link.ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "ConfirmedUserData ignored");
 	return *this;
 }
 
 SecStateBase& SLLS_NotReset::OnResetLinkStates(LinkLayer& link)
 {
-	link.QueueAck();
-	link.ResetReadFCB();
+	link.ctx.QueueAck(link);
+	link.ctx.ResetReadFCB();
 	return SLLS_TransmitWaitReset::Instance();
 }
 
 SecStateBase& SLLS_NotReset::OnRequestLinkStatus(LinkLayer& link)
 {
-	link.QueueLinkStatus();
+	link.ctx.QueueLinkStatus(link);
 	return SLLS_TransmitWaitNotReset::Instance();
 }
 
@@ -78,12 +78,12 @@ SecStateBase& SLLS_NotReset::OnRequestLinkStatus(LinkLayer& link)
 ////////////////////////////////////////////////////////
 SLLS_Reset SLLS_Reset::instance;
 
-SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkLayer& link, bool aFcb)
+SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkLayer& link, bool fcb)
 {
-	if(link.NextReadFCB() == aFcb)
+	if(link.ctx.nextReadFCB == fcb)
 	{
-		link.QueueAck();
-		link.ToggleReadFCB();
+		link.ctx.QueueAck(link);
+		link.ctx.ToggleReadFCB();
 		return SLLS_TransmitWaitReset::Instance();
 	}
 	else
@@ -91,23 +91,23 @@ SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkLayer& link, bool aFcb)
 		// "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
 		// This is a PITA implement
 		// TODO - see if this function is deprecated or not
-		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Received TestLinkStatus with invalid FCB");
+		SIMPLE_LOG_BLOCK(link.ctx.logger, flags::WARN, "Received TestLinkStatus with invalid FCB");
 		return *this;
 	}
 }
 
 SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkLayer& link, bool fcb, const openpal::RSlice& data)
 {
-	link.QueueAck();
+	link.ctx.QueueAck(link);
 
-	if (link.NextReadFCB() == fcb)
+	if (link.ctx.nextReadFCB == fcb)
 	{
-		link.ToggleReadFCB();
+		link.ctx.ToggleReadFCB();
 		link.PushDataUp(data);
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(link.GetLogger(), flags::WARN, "Confirmed data w/ wrong FCB");
+		SIMPLE_LOG_BLOCK(link.ctx.logger, flags::WARN, "Confirmed data w/ wrong FCB");
 	}
 
 	return SLLS_TransmitWaitReset::Instance();
@@ -115,14 +115,14 @@ SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkLayer& link, bool fcb, const o
 
 SecStateBase& SLLS_Reset::OnResetLinkStates(LinkLayer& link)
 {
-	link.QueueAck();
-	link.ResetReadFCB();
+	link.ctx.QueueAck(link);
+	link.ctx.ResetReadFCB();
 	return SLLS_TransmitWaitReset::Instance();
 }
 
 SecStateBase& SLLS_Reset::OnRequestLinkStatus(LinkLayer& link)
 {
-	link.QueueLinkStatus();
+	link.ctx.QueueLinkStatus(link);
 	return SLLS_TransmitWaitReset::Instance();
 }
 

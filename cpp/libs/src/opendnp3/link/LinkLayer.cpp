@@ -38,46 +38,29 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opendnp3::ILinkListener& linkListener, const LinkConfig& config_) :
-	logger(root.GetLogger()),
-	config(config_),
-	pSegments(nullptr),
-	txMode(TransmitMode::Idle),
-	numRetryRemaining(0),
-	pExecutor(&executor),
-	rspTimeoutTimer(executor),
-	keepAliveTimer(executor),
-	nextReadFCB(false),
-	nextWriteFCB(false),
-	isOnline(false),
-	keepAliveTimeout(false),
-	isRemoteReset(false),
-	lastMessageTimestamp(executor.GetTime()),
-	pRouter(nullptr),
-	pPriState(&PLLS_Idle::Instance()),
-	pSecState(&SLLS_NotReset::Instance()),
-	pListener(&linkListener)
+LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opendnp3::ILinkListener& listener, const LinkConfig& config) :
+	ctx(root, executor, listener, config)
 {}
 
 void LinkLayer::SetRouter(ILinkRouter& router)
 {
-	assert(pRouter == nullptr);
-	pRouter = &router;
+	assert(ctx.pRouter == nullptr);
+	ctx.pRouter = &router;
 }
 
 void LinkLayer::PostStatusCallback(opendnp3::LinkStatus status)
 {	
 	auto callback = [this, status]()
 	{
-		this->pListener->OnStateChange(status);
+		this->ctx.pListener->OnStateChange(status);
 	};
 
-	pExecutor->PostLambda(callback);	
+	ctx.pExecutor->PostLambda(callback);
 }
 
 void LinkLayer::CompleteSendOperation(bool success)
 {
-	this->pSegments = nullptr;
+	this->ctx.pSegments = nullptr;
 
 	if (pUpperLayer)
 	{		
@@ -86,35 +69,35 @@ void LinkLayer::CompleteSendOperation(bool success)
 			this->pUpperLayer->OnSendResult(success);
 		};
 
-		pExecutor->PostLambda(callback);		
+		ctx.pExecutor->PostLambda(callback);
 	}	
 }
 
 bool LinkLayer::Validate(bool isMaster, uint16_t src, uint16_t dest)
 {
-	if (!isOnline)
+	if (!ctx.isOnline)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
+		SIMPLE_LOG_BLOCK(ctx.logger, flags::ERR, "Layer is not online");
 		return false;
 	}
 
-	if (isMaster == config.IsMaster)
+	if (isMaster == ctx.config.IsMaster)
 	{			
-		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
+		SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
 			(isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));			            
 			
 		return false;
 	}
 	
-	if (dest != config.LocalAddr)
+	if (dest != ctx.config.LocalAddr)
 	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_DESTINATION, "Frame for unknown destintation");
+		SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNKNOWN_DESTINATION, "Frame for unknown destintation");
 		return false;
 	}
 
-	if (src != config.RemoteAddr)
+	if (src != ctx.config.RemoteAddr)
 	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_SOURCE, "Frame from unknwon source");
+		SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNKNOWN_SOURCE, "Frame from unknwon source");
 		return false;		
 	}
 
@@ -127,68 +110,68 @@ bool LinkLayer::Validate(bool isMaster, uint16_t src, uint16_t dest)
 
 void LinkLayer::Send(ITransportSegment& segments)
 {
-	if (!isOnline)
+	if (!ctx.isOnline)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
+		SIMPLE_LOG_BLOCK(ctx.logger, flags::ERR, "Layer is not online");
 		return;
 	}
 
-	if (pSegments)
+	if (ctx.pSegments)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Already transmitting a segment");
+		SIMPLE_LOG_BLOCK(ctx.logger, flags::ERR, "Already transmitting a segment");
 		return;
 	}
 
-	this->pSegments = &segments;
+	this->ctx.pSegments = &segments;
 	this->TryStartTransmission();
 }
 
 void LinkLayer::TryStartTransmission()
 {
-	if (keepAliveTimeout)
+	if (ctx.keepAliveTimeout)
 	{
-		pPriState = &pPriState->TrySendRequestLinkStatus(*this);
+		ctx.pPriState = &ctx.pPriState->TrySendRequestLinkStatus(*this);
 	}
 
-	if (pSegments)
+	if (ctx.pSegments)
 	{		
-		pPriState = (config.UseConfirms) ? &pPriState->TrySendConfirmed(*this, *pSegments) : &pPriState->TrySendUnconfirmed(*this, *pSegments);
+		ctx.pPriState = (ctx.config.UseConfirms) ? &ctx.pPriState->TrySendConfirmed(*this, *ctx.pSegments) : &ctx.pPriState->TrySendUnconfirmed(*this, *ctx.pSegments);
 	}		
 }
 
 void LinkLayer::FailKeepAlive(bool timeout)
 {
-	this->keepAliveTimeout = false;
+	this->ctx.keepAliveTimeout = false;
 
 	if (timeout)
 	{
-		this->pListener->OnKeepAliveFailure();
+		this->ctx.pListener->OnKeepAliveFailure();
 	}
 }
 
 void LinkLayer::CompleteKeepAlive()
 {
-	this->keepAliveTimeout = false;
+	this->ctx.keepAliveTimeout = false;
+}
+
+void LinkLayer::PushDataUp(const openpal::RSlice& data)
+{
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnReceive(data);
+	}
 }
 
 ////////////////////////////////
 // ILinkSession
 ////////////////////////////////
 
-void LinkLayer::OnLowerLayerUp()
+bool LinkLayer::OnLowerLayerUp()
 {
-	if (isOnline)
+	auto ret = ctx.OnLowerLayerUp();
+	if (ret)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
-	}
-	else
-	{
-		isOnline = true;
-
-		// no reason to trigger a keep-alive until we've actually expired
-		lastMessageTimestamp = this->pExecutor->GetTime();
-
-		keepAliveTimer.Start(config.KeepAliveTimeout, [this]() { this->OnKeepAliveTimeout(); });
+		ctx.keepAliveTimer.Start(ctx.config.KeepAliveTimeout, [this]() { this->OnKeepAliveTimeout(); });
 
 		if (pUpperLayer)
 		{
@@ -197,26 +180,15 @@ void LinkLayer::OnLowerLayerUp()
 
 		this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
+	return ret;	
 }
 
-void LinkLayer::OnLowerLayerDown()
+bool LinkLayer::OnLowerLayerDown()
 {
-	if (isOnline)
+	auto ret = ctx.OnLowerLayerDown();
+	
+	if (ret)
 	{
-		isOnline = false;
-		keepAliveTimeout = false;
-		isRemoteReset = false;
-		pSegments = nullptr;
-		txMode = TransmitMode::Idle;
-		pendingPriTx.Clear();
-		pendingSecTx.Clear();
-
-		rspTimeoutTimer.Cancel();
-		keepAliveTimer.Cancel();
-
-		pPriState = &PLLS_Idle::Instance();
-		pSecState = &SLLS_NotReset::Instance();
-
 		if (pUpperLayer)
 		{
 			pUpperLayer->OnLowerLayerDown();
@@ -224,35 +196,33 @@ void LinkLayer::OnLowerLayerDown()
 
 		this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
-	}
+
+	return ret;
 }
 
-void LinkLayer::OnTransmitResult(bool success)
+bool LinkLayer::OnTransmitResult(bool success)
 {
-	if (txMode == TransmitMode::Idle)
+	if (ctx.txMode == LinkTransmitMode::Idle)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unknown transmission callback");
-		return;
+		SIMPLE_LOG_BLOCK(ctx.logger, flags::ERR, "Unknown transmission callback");
+		return false;
 	}
 	
-	auto isPrimary = (txMode == TransmitMode::Primary);
-	this->txMode = TransmitMode::Idle;
+	auto isPrimary = (ctx.txMode == LinkTransmitMode::Primary);
+	ctx.txMode = LinkTransmitMode::Idle;
 
 	// before we dispatch the transmit result, give any pending transmissions access first
-	this->CheckPendingTx(pendingSecTx, false);
-	this->CheckPendingTx(pendingPriTx, true);
+	this->CheckPendingTx(ctx.pendingSecTx, false);
+	this->CheckPendingTx(ctx.pendingPriTx, true);
 
 	// now dispatch the completion event to the correct state handler
 	if (isPrimary)
 	{
-		pPriState = &pPriState->OnTransmitResult(*this, success);
+		ctx.pPriState = &ctx.pPriState->OnTransmitResult(*this, success);
 	}
 	else
 	{
-		pSecState = &pSecState->OnTransmitResult(*this, success);
+		ctx.pSecState = &ctx.pSecState->OnTransmitResult(*this, success);
 	}	
 
 	this->TryStartTransmission();	
@@ -260,111 +230,43 @@ void LinkLayer::OnTransmitResult(bool success)
 
 void LinkLayer::CheckPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 {
-	if (txMode == TransmitMode::Idle && pending.IsSet())
+	if (ctx.txMode == LinkTransmitMode::Idle && pending.IsSet())
 	{
-		pRouter->BeginTransmit(pending.Get(), this);
+		ctx.pRouter->BeginTransmit(pending.Get(), this);
 		pending.Clear();
-		this->txMode = primary ? TransmitMode::Primary : TransmitMode::Secondary;
+		this->ctx.txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
 	}
 }
 
 void LinkLayer::OnKeepAliveTimeout()
 {
-	auto now = this->pExecutor->GetTime();
+	auto now = this->ctx.pExecutor->GetTime();
 
-	auto elapsed = this->pExecutor->GetTime().milliseconds - this->lastMessageTimestamp.milliseconds;
+	auto elapsed = this->ctx.pExecutor->GetTime().milliseconds - this->ctx.lastMessageTimestamp.milliseconds;
 
-	if (elapsed >= this->config.KeepAliveTimeout.GetMilliseconds())
+	if (elapsed >= this->ctx.config.KeepAliveTimeout.GetMilliseconds())
 	{
-		this->lastMessageTimestamp = now;
-		this->keepAliveTimeout = true;
-		this->pListener->OnKeepAliveTimeout();
+		this->ctx.lastMessageTimestamp = now;
+		this->ctx.keepAliveTimeout = true;
+		this->ctx.pListener->OnKeepAliveTimeout();
 	}
 	
 	// No matter what, reschedule the timer based on last message timestamp
-	MonotonicTimestamp expiration(this->lastMessageTimestamp.milliseconds + config.KeepAliveTimeout);
-	this->keepAliveTimer.Start(expiration, [this]() { this->OnKeepAliveTimeout(); });
+	MonotonicTimestamp expiration(this->ctx.lastMessageTimestamp.milliseconds + ctx.config.KeepAliveTimeout);
+	this->ctx.keepAliveTimer.Start(expiration, [this]() { this->OnKeepAliveTimeout(); });
 }
 
 void LinkLayer::OnResponseTimeout()
 {
-	this->pPriState = &(this->pPriState->OnTimeout(*this));
+	this->ctx.pPriState = &(this->ctx.pPriState->OnTimeout(*this));
 
 	this->TryStartTransmission();
 }
 
-openpal::RSlice LinkLayer::FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB)
-{
-	auto dest = priTxBuffer.GetWSlice();
-	auto output = LinkFrame::FormatConfirmedUserData(dest, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
-	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
-	return output;	
-}
-
-RSlice LinkLayer::FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu)
-{
-	auto dest = priTxBuffer.GetWSlice();
-	auto output = LinkFrame::FormatUnconfirmedUserData(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
-	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
-	return output;
-}
-
-void LinkLayer::QueueTransmit(const RSlice& buffer, bool primary)
-{	
-	if (txMode == TransmitMode::Idle)
-	{
-		txMode = primary ? TransmitMode::Primary : TransmitMode::Secondary;
-		pRouter->BeginTransmit(buffer, this);
-	}
-	else
-	{
-		if (primary)
-		{
-			pendingPriTx.Set(buffer);
-		}
-		else
-		{
-			pendingSecTx.Set(buffer);
-		}
-	}
-}
-
-void LinkLayer::QueueAck()
-{
-	auto dest = secTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatAck(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
-	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
-	this->QueueTransmit(buffer, false);
-}
-
-void LinkLayer::QueueLinkStatus()
-{
-	auto dest = secTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatLinkStatus(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
-	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
-	this->QueueTransmit(buffer, false);
-}
-
-void LinkLayer::QueueResetLinks()
-{
-	auto dest = priTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatResetLinkStates(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
-	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
-	this->QueueTransmit(buffer, true);
-}
-
-void LinkLayer::QueueRequestLinkStatus()
-{
-	auto dest = priTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatRequestLinkStatus(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
-	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
-	this->QueueTransmit(buffer, true);
-}
-
 void LinkLayer::StartTimer()
 {		
-	rspTimeoutTimer.Start(
-		TimeDuration(config.Timeout), 
+	ctx.rspTimeoutTimer.Start(
+		TimeDuration(ctx.config.Timeout),
 		[this]() 
 		{ 
 			this->OnResponseTimeout();
@@ -374,25 +276,7 @@ void LinkLayer::StartTimer()
 
 void LinkLayer::CancelTimer()
 {
-	rspTimeoutTimer.Cancel();
-}
-
-void LinkLayer::ResetRetry()
-{
-	this->numRetryRemaining = config.NumRetry;
-}
-
-bool LinkLayer::Retry()
-{
-	if(numRetryRemaining > 0)
-	{
-		--numRetryRemaining;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	ctx.rspTimeoutTimer.Cancel();
 }
 
 ////////////////////////////////
@@ -414,33 +298,33 @@ bool LinkLayer::OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcv
 	}
 
 	// reset the keep-alive timestamp
-	this->lastMessageTimestamp = this->pExecutor->GetTime();
+	this->ctx.lastMessageTimestamp = this->ctx.pExecutor->GetTime();
 
 	switch (func)
 	{
 		case(LinkFunction::SEC_ACK) :
-			pPriState = &pPriState->OnAck(*this, fcvdfc);
+			ctx.pPriState = &ctx.pPriState->OnAck(*this, fcvdfc);
 			return true;
 		case(LinkFunction::SEC_NACK) :
-			pPriState = &pPriState->OnNack(*this, fcvdfc);
+			ctx.pPriState = &ctx.pPriState->OnNack(*this, fcvdfc);
 			return true;
 		case(LinkFunction::SEC_LINK_STATUS) :
-			pPriState = &pPriState->OnLinkStatus(*this, fcvdfc);
+			ctx.pPriState = &ctx.pPriState->OnLinkStatus(*this, fcvdfc);
 			return true;
 		case(LinkFunction::SEC_NOT_SUPPORTED) :
-			pPriState = &pPriState->OnNotSupported(*this, fcvdfc);
+			ctx.pPriState = &ctx.pPriState->OnNotSupported(*this, fcvdfc);
 			return true;
 		case(LinkFunction::PRI_TEST_LINK_STATES) :
-			pSecState = &pSecState->OnTestLinkStatus(*this, fcb);
+			ctx.pSecState = &ctx.pSecState->OnTestLinkStatus(*this, fcb);
 			return true;
 		case(LinkFunction::PRI_RESET_LINK_STATES) :
-			pSecState = &pSecState->OnResetLinkStates(*this);
+			ctx.pSecState = &ctx.pSecState->OnResetLinkStates(*this);
 			return true;
 		case(LinkFunction::PRI_REQUEST_LINK_STATUS) :
-			pSecState = &pSecState->OnRequestLinkStatus(*this);
+			ctx.pSecState = &ctx.pSecState->OnRequestLinkStatus(*this);
 			return true;
 		case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
-			pSecState = &pSecState->OnConfirmedUserData(*this, fcb, userdata);
+			ctx.pSecState = &ctx.pSecState->OnConfirmedUserData(*this, fcb, userdata);
 			return true;
 		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
 			this->PushDataUp(userdata);

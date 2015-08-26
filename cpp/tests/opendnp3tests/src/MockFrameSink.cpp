@@ -28,14 +28,16 @@ namespace opendnp3
 MockFrameSink::MockFrameSink() : m_num_frames(0), mLowerOnline(false)
 {}
 
-void MockFrameSink::OnLowerLayerUp()
+bool MockFrameSink::OnLowerLayerUp()
 {
 	mLowerOnline = true;
+	return true;
 }
 
-void MockFrameSink::OnLowerLayerDown()
+bool MockFrameSink::OnLowerLayerDown()
 {
 	mLowerOnline = false;
+	return true;
 }
 
 void MockFrameSink::Reset()
@@ -59,9 +61,9 @@ bool MockFrameSink::CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aI
 	return  (m_fcvdfc == aIsRcvBuffFull) && CheckLast(aCode, aIsMaster, aDest, aSrc);
 }
 
-void MockFrameSink::OnTransmitResult(bool success)
+bool MockFrameSink::OnTransmitResult(bool success)
 {
-
+	return true;
 }
 
 bool MockFrameSink::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)

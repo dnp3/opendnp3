@@ -42,10 +42,9 @@ public:
 	MockFrameSink();
 
 	// ILinkSession members
-	void OnLowerLayerUp();
-	void OnLowerLayerDown();
-
-	void OnTransmitResult(bool success);
+	bool OnLowerLayerUp() override;
+	bool OnLowerLayerDown() override;
+	bool OnTransmitResult(bool success) override;
 
 	virtual bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata) override final;
 

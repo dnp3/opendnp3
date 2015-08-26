@@ -21,36 +21,14 @@
 #ifndef OPENDNP3_LINKLAYER_H
 #define OPENDNP3_LINKLAYER_H
 
-#include <openpal/executor/IExecutor.h>
-#include <openpal/logging/LogRoot.h>
-#include <openpal/container/Settable.h>
-#include <openpal/executor/TimerRef.h>
-#include <openpal/container/StaticBuffer.h>
-
-#include "opendnp3/gen/LinkStatus.h"
-
-#include "opendnp3/link/ILinkLayer.h"
-#include "opendnp3/link/ILinkSession.h"
-#include "opendnp3/link/LinkLayerConstants.h"
-#include "opendnp3/link/LinkConfig.h"
-#include "opendnp3/link/ILinkListener.h"
+#include "LinkContext.h"
 
 namespace opendnp3
 {
 
-class ILinkRouter;
-class PriStateBase;
-class SecStateBase;
-
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
 class LinkLayer final : public ILinkLayer, public ILinkSession, public HasUpperLayer
 {
-	enum class TransmitMode : uint8_t
-	{
-		Idle,
-		Primary,
-		Secondary
-	};	
 
 public:
 
@@ -59,9 +37,9 @@ public:
 	void SetRouter(ILinkRouter&);
 
 	// ILinkSession interface
-	virtual void OnLowerLayerUp() override;
-	virtual void OnLowerLayerDown() override;
-	virtual void OnTransmitResult(bool success) override;
+	virtual bool OnLowerLayerUp() override;
+	virtual bool OnLowerLayerDown() override;
+	virtual bool OnTransmitResult(bool success) override;
 
 	// IFrameSink interface
 	virtual bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata = openpal::RSlice()) override;
@@ -74,109 +52,22 @@ public:
 	void CompleteSendOperation(bool success);
 	void TryStartTransmission();
 	void FailKeepAlive(bool timeout);
-	void CompleteKeepAlive();
+	void CompleteKeepAlive();		
+	void PushDataUp(const openpal::RSlice& data);
 
-	openpal::Logger& GetLogger()
-	{
-		return logger;
-	}
-	
-	void PushDataUp(const openpal::RSlice& data)
-	{
-		if (pUpperLayer)
-		{
-			pUpperLayer->OnReceive(data);
-		}
-	}	
-
-	void ResetReadFCB()
-	{
-		nextReadFCB = true;
-	}
-
-	void ToggleReadFCB()
-	{
-		nextReadFCB = !nextReadFCB;
-	}
-
-	bool NextReadFCB()
-	{
-		return nextReadFCB;
-	}
-
-	void ResetWriteFCB()
-	{
-		nextWriteFCB = true;
-	}
-
-	void ToggleWriteFCB()
-	{
-		nextWriteFCB = !nextWriteFCB;
-	}
-
-	bool NextWriteFCB() const
-	{
-		return nextWriteFCB;
-	}
-
-	// Helpers for sending frames
-	void QueueAck();
-	void QueueLinkStatus();
-	void QueueResetLinks();
-	void QueueRequestLinkStatus();
+	// The full state
+	LinkContext ctx;
 
 	void StartTimer();
 	void CancelTimer();
 
-	openpal::Logger logger;
-	const LinkConfig config;
-
-	//Retry Count
-	void ResetRetry();
-	bool Retry();
-
-	uint32_t RetryRemaining() const
-	{
-		return numRetryRemaining;
-	}
-
-	void QueueTransmit(const openpal::RSlice& buffer, bool primary);	
-
-	// buffers used for primary and secondary requests	
-	openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> priTxBuffer;
-	openpal::StaticBuffer<LPDU_HEADER_SIZE> secTxBuffer;
-	
-	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu);
-
-	openpal::RSlice FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB);
-
-	ITransportSegment* pSegments;
-	bool isRemoteReset;
-
-private:	
-
+private:
+		
 	bool OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata);
 	void CheckPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
 	void OnKeepAliveTimeout();
 	void OnResponseTimeout();
-	bool Validate(bool isMaster, uint16_t src, uint16_t dest);
-
-	TransmitMode txMode;
-	openpal::Settable<openpal::RSlice> pendingPriTx;
-	openpal::Settable<openpal::RSlice> pendingSecTx;
-	uint32_t numRetryRemaining;
-	openpal::IExecutor* pExecutor;
-	openpal::TimerRef rspTimeoutTimer;
-	openpal::TimerRef keepAliveTimer;
-	bool nextReadFCB;
-	bool nextWriteFCB;
-	bool isOnline;
-	bool keepAliveTimeout;	
-	openpal::MonotonicTimestamp lastMessageTimestamp;		
-	ILinkRouter* pRouter;
-	PriStateBase* pPriState;
-	SecStateBase* pSecState;	
-	ILinkListener* pListener;
+	bool Validate(bool isMaster, uint16_t src, uint16_t dest);	
 };
 
 }

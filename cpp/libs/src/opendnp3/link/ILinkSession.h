@@ -33,10 +33,9 @@ public:
 
 	virtual ~ILinkSession() {}
 
-	virtual void OnTransmitResult(bool success) = 0;
-
-	virtual void OnLowerLayerUp() = 0;
-	virtual void OnLowerLayerDown() = 0;
+	virtual bool OnTransmitResult(bool success) = 0;
+	virtual bool OnLowerLayerUp() = 0;
+	virtual bool OnLowerLayerDown() = 0;
 };
 
 }
