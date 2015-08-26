@@ -68,6 +68,8 @@ public:
 	/// --- helpers for dealing with layer state transitations ---
 	bool OnLowerLayerUp();
 	bool OnLowerLayerDown();
+	bool OnTransmitResult(bool success);
+	bool SetTxSegment(ITransportSegment& segments);
 
 	/// --- helpers for formatting user data messages ---
 	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu);

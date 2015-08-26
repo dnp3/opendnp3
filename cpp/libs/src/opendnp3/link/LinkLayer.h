@@ -46,6 +46,8 @@ public:
 	// ---- ILinkLayer ----
 	virtual void Send(ITransportSegment& segments) override;	
 
+private:
+
 	// The full state
 	LinkContext ctx;		
 	

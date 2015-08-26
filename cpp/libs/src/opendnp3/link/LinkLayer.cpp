@@ -20,20 +20,7 @@
  */
 #include "LinkLayer.h"
 
-#include <assert.h>
-
-#include <openpal/logging/LogMacros.h>
-
-#include "opendnp3/ErrorCodes.h"
-#include "opendnp3/link/ILinkRouter.h"
-#include "opendnp3/link/LinkFrame.h"
-#include "opendnp3/LogLevels.h"
-
-#include "PriLinkLayerStates.h"
-#include "SecLinkLayerStates.h"
-
 using namespace openpal;
-
 
 namespace opendnp3
 {
@@ -59,20 +46,10 @@ void LinkLayer::SetRouter(ILinkRouter& router)
 
 void LinkLayer::Send(ITransportSegment& segments)
 {
-	if (!ctx.isOnline)
+	if (ctx.SetTxSegment(segments))
 	{
-		SIMPLE_LOG_BLOCK(ctx.logger, flags::ERR, "Layer is not online");
-		return;
+		ctx.TryStartTransmission();
 	}
-
-	if (ctx.pSegments)
-	{
-		SIMPLE_LOG_BLOCK(ctx.logger, flags::ERR, "Already transmitting a segment");
-		return;
-	}
-
-	this->ctx.pSegments = &segments;
-	this->ctx.TryStartTransmission();
 }
 
 ////////////////////////////////
@@ -91,30 +68,13 @@ bool LinkLayer::OnLowerLayerDown()
 
 bool LinkLayer::OnTransmitResult(bool success)
 {
-	if (ctx.txMode == LinkTransmitMode::Idle)
+	auto ret = ctx.OnTransmitResult(success);
+
+	if (ret)
 	{
-		SIMPLE_LOG_BLOCK(ctx.logger, flags::ERR, "Unknown transmission callback");
-		return false;
+		ctx.TryStartTransmission();
 	}
 	
-	auto isPrimary = (ctx.txMode == LinkTransmitMode::Primary);
-	ctx.txMode = LinkTransmitMode::Idle;
-
-	// before we dispatch the transmit result, give any pending transmissions access first
-	ctx.TryPendingTx(ctx.pendingSecTx, false);
-	ctx.TryPendingTx(ctx.pendingPriTx, true);
-
-	// now dispatch the completion event to the correct state handler
-	if (isPrimary)
-	{
-		ctx.pPriState = &ctx.pPriState->OnTransmitResult(ctx, success);
-	}
-	else
-	{
-		ctx.pSecState = &ctx.pSecState->OnTransmitResult(ctx, success);
-	}	
-
-	this->ctx.TryStartTransmission();
 	return true;
 }
 
@@ -125,7 +85,12 @@ bool LinkLayer::OnTransmitResult(bool success)
 bool LinkLayer::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
 {
 	auto ret = this->ctx.OnFrame(func, isMaster, fcb, fcvdfc, dest, source, userdata);
-	this->ctx.TryStartTransmission();
+
+	if (ret)
+	{
+		this->ctx.TryStartTransmission();
+	}
+
 	return ret;
 }
 

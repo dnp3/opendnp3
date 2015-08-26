@@ -112,6 +112,52 @@ bool LinkContext::OnLowerLayerDown()
 	return true;
 }
 
+bool LinkContext::SetTxSegment(ITransportSegment& segments)
+{
+	if (!this->isOnline)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Layer is not online");
+		return false;
+	}
+
+	if (this->pSegments)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Already transmitting a segment");
+		return false;
+	}
+
+	this->pSegments = &segments;
+	return true;
+}
+
+bool LinkContext::OnTransmitResult(bool success)
+{
+	if (this->txMode == LinkTransmitMode::Idle)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Unknown transmission callback");
+		return false;
+	}
+
+	auto isPrimary = (this->txMode == LinkTransmitMode::Primary);
+	this->txMode = LinkTransmitMode::Idle;
+
+	// before we dispatch the transmit result, give any pending transmissions access first
+	this->TryPendingTx(this->pendingSecTx, false);
+	this->TryPendingTx(this->pendingPriTx, true);
+
+	// now dispatch the completion event to the correct state handler
+	if (isPrimary)
+	{
+		this->pPriState = &this->pPriState->OnTransmitResult(*this, success);
+	}
+	else
+	{
+		this->pSecState = &this->pSecState->OnTransmitResult(*this, success);
+	}
+	
+	return true;
+}
+
 openpal::RSlice LinkContext::FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB)
 {
 	auto dest = this->priTxBuffer.GetWSlice();
