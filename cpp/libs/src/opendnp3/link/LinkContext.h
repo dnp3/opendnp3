@@ -96,6 +96,7 @@ public:
 	void CompleteKeepAlive();
 	bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata);
 	bool Validate(bool isMaster, uint16_t src, uint16_t dest);
+	bool TryPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
 
 	// buffers used for primary and secondary requests	
 	openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> priTxBuffer;

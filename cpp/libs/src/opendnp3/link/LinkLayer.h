@@ -47,11 +47,7 @@ public:
 	virtual void Send(ITransportSegment& segments) override;	
 
 	// The full state
-	LinkContext ctx;	
-
-private:
-			
-	void CheckPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
+	LinkContext ctx;		
 	
 };
 

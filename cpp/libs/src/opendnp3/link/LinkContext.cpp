@@ -376,6 +376,20 @@ bool LinkContext::Validate(bool isMaster, uint16_t src, uint16_t dest)
 }
 
 
+bool LinkContext::TryPendingTx(openpal::Settable<RSlice>& pending, bool primary)
+{
+	if (this->txMode == LinkTransmitMode::Idle && pending.IsSet())
+	{
+		this->pRouter->BeginTransmit(pending.Get(), pSession);
+		pending.Clear();
+		this->txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
+		return true;
+	}
+
+	return false;
+}
+
+
 
 }
 

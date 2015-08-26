@@ -101,8 +101,8 @@ bool LinkLayer::OnTransmitResult(bool success)
 	ctx.txMode = LinkTransmitMode::Idle;
 
 	// before we dispatch the transmit result, give any pending transmissions access first
-	this->CheckPendingTx(ctx.pendingSecTx, false);
-	this->CheckPendingTx(ctx.pendingPriTx, true);
+	ctx.TryPendingTx(ctx.pendingSecTx, false);
+	ctx.TryPendingTx(ctx.pendingPriTx, true);
 
 	// now dispatch the completion event to the correct state handler
 	if (isPrimary)
@@ -116,16 +116,6 @@ bool LinkLayer::OnTransmitResult(bool success)
 
 	this->ctx.TryStartTransmission();
 	return true;
-}
-
-void LinkLayer::CheckPendingTx(openpal::Settable<RSlice>& pending, bool primary)
-{
-	if (ctx.txMode == LinkTransmitMode::Idle && pending.IsSet())
-	{
-		ctx.pRouter->BeginTransmit(pending.Get(), this);
-		pending.Clear();
-		this->ctx.txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
-	}
 }
 
 ////////////////////////////////
