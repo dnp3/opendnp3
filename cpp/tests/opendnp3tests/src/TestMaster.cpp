@@ -70,7 +70,7 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
-	REQUIRE(t.exe.NumPendingTimers() == 1);
+	REQUIRE(t.exe.NumPendingTimers() == 2);
 	t.SendToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
 	REQUIRE(t.meas.TotalReceived() == 1);
 	REQUIRE((Binary(true, 0x01) == t.meas.binarySOE[2].meas));
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 
 	t.exe.RunMany();
 
-	REQUIRE(t.exe.NumPendingTimers() == 0);	
+	REQUIRE(t.exe.NumPendingTimers() == 1);	
 }
 
 TEST_CASE(SUITE("TimeoutDuringStartup"))
@@ -143,7 +143,7 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(t.exe.NumPendingTimers() == 1);
+	REQUIRE(t.exe.NumPendingTimers() == 2);
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
@@ -180,7 +180,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 	t.exe.RunMany();
 
 	// 2nd poll
-	REQUIRE(t.exe.NumPendingTimers() == 1);
+	REQUIRE(t.exe.NumPendingTimers() == 2);
 	REQUIRE(t.exe.NextTimerExpiration().milliseconds == 10000);
 	t.exe.AdvanceTime(TimeDuration::Seconds(10));
 	REQUIRE(t.exe.RunMany() > 0);

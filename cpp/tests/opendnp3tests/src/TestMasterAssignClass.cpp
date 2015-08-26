@@ -49,7 +49,7 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	t.SendToMaster("C0 81 00 00");
 	
 	t.exe.RunMany();
-	REQUIRE(!t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.NumPendingTimers() == 1);
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
 	REQUIRE(t.application.taskStartEvents.size() == 1);

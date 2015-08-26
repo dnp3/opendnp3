@@ -131,6 +131,16 @@ public:
 	openpal::MonotonicTimestamp ExpirationTime() const;		
 
 	/**
+	* Configure the start expiration time
+	*/
+	void ConfigureStartExpiration(openpal::MonotonicTimestamp time);
+
+	/**
+	* The time when this task expires if it is unable to start
+	*/
+	openpal::MonotonicTimestamp StartExpirationTime() const;
+
+	/**
 	 * Build a request APDU.	 
 	 *
 	 * Return false if some kind of internal error prevents the task for formatting the request.
@@ -151,6 +161,11 @@ public:
 	* Called when the layer closes while the task is executing.	
 	*/
 	void OnLowerLayerClose(openpal::MonotonicTimestamp now);
+
+	/**
+	* The start timeout expired before the task could be run
+	*/
+	void OnStartTimeout(openpal::MonotonicTimestamp now);
 
 	/**
 	* Called when a task is discared because it's user doesn't exist
@@ -212,6 +227,7 @@ public:
 
 	TaskState state;
 	TaskConfig config;
+	openpal::MonotonicTimestamp taskStartExpiration;
 };
 
 }

@@ -59,8 +59,11 @@ struct MasterParams
 	/// Which classes should be requested in an event scan when detecting corresponding events available IIN
 	ClassField eventScanOnEventsAvailableClassMask;
 
-	/// Time delay beforce retrying a failed task
+	/// Time delay before retrying a failed task
 	openpal::TimeDuration taskRetryPeriod;
+
+	/// Time delay before failing a non-recurring task (e.g. commands) that cannot start
+	openpal::TimeDuration taskStartTimeout;
 
 	/// maximum APDU tx size in bytes
 	uint32_t maxTxFragSize;

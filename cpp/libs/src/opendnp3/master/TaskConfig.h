@@ -37,33 +37,30 @@ class TaskConfig
 {
 public:	
 
-	static const openpal::TimeDuration DEFAULT_START_TIMEOUT;
-
-	TaskConfig(TaskId taskId, openpal::TimeDuration startTimeout, ITaskCallback* pCallback, User user);
+	TaskConfig(TaskId taskId, ITaskCallback* pCallback, User user);
 
 	static TaskConfig Default()
 	{
-		return TaskConfig(TaskId::Undefined(), DEFAULT_START_TIMEOUT, nullptr, User::Default());
+		return TaskConfig(TaskId::Undefined(), nullptr, User::Default());
 	}
 
 	///  --- syntax sugar for building configs -----
 
 	static TaskConfig With(ITaskCallback& callback)
 	{
-		return TaskConfig(TaskId::Undefined(), DEFAULT_START_TIMEOUT, &callback, User::Default());
+		return TaskConfig(TaskId::Undefined(), &callback, User::Default());
 	}	
 
 	static TaskConfig With(User user)
 	{
-		return TaskConfig(TaskId::Undefined(), DEFAULT_START_TIMEOUT, nullptr, user);
+		return TaskConfig(TaskId::Undefined(), nullptr, user);
 	}
 
 	TaskConfig() = delete;
 
 public:
 
-	TaskId taskId;		
-	openpal::TimeDuration startTimeout;
+	TaskId taskId;			
 	ITaskCallback* pCallback;	
 	User user;
 };

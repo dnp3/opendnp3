@@ -33,7 +33,8 @@ IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp ex
 	pApplication(&app),		
 	logger(logger_),
 	state(expiration),
-	config(config_)
+	config(config_),
+	taskStartExpiration(MonotonicTimestamp::Max())
 {}
 
 IMasterTask::~IMasterTask()
@@ -47,6 +48,16 @@ IMasterTask::~IMasterTask()
 openpal::MonotonicTimestamp IMasterTask::ExpirationTime() const
 {
 	return (!state.disabled && this->IsEnabled()) ? state.expiration : MonotonicTimestamp::Max();
+}
+
+void IMasterTask::ConfigureStartExpiration(openpal::MonotonicTimestamp time)
+{
+	this->taskStartExpiration = time;
+}
+
+openpal::MonotonicTimestamp IMasterTask::StartExpirationTime() const
+{
+	return taskStartExpiration;
 }
 
 IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& response, const openpal::RSlice& objects, openpal::MonotonicTimestamp now)
@@ -84,6 +95,12 @@ void IMasterTask::OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {	
 	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NO_COMMS, now);
 	this->NotifyResult(TaskCompletion::FAILURE_NO_COMMS);
+}
+
+void IMasterTask::OnStartTimeout(openpal::MonotonicTimestamp now)
+{
+	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_START_TIMEOUT, now);
+	this->NotifyResult(TaskCompletion::FAILURE_START_TIMEOUT);
 }
 
 void IMasterTask::OnNoUser(openpal::MonotonicTimestamp now)

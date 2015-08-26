@@ -22,13 +22,9 @@
 #include "TaskConfig.h"
 
 namespace opendnp3
-{
-
-	const openpal::TimeDuration TaskConfig::DEFAULT_START_TIMEOUT(openpal::TimeDuration::Seconds(10));
-
-	TaskConfig::TaskConfig(TaskId taskId_, openpal::TimeDuration startTimeout_, ITaskCallback* pCallback_, User user_) :
-		taskId(taskId_),
-		startTimeout(startTimeout_),
+{	
+	TaskConfig::TaskConfig(TaskId taskId_, ITaskCallback* pCallback_, User user_) :
+		taskId(taskId_),		
 		pCallback(pCallback_),		
 		user(user_)
 	{}

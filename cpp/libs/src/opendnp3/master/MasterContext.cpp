@@ -60,7 +60,7 @@ namespace opendnp3
 		responseTimer(executor),
 		scheduleTimer(executor),
 		tasks(params, logger, application, SOEHandler, application),	
-		scheduler(*this),
+		scheduler(executor, *this),
 		txBuffer(params.maxTxFragSize),
 		tstate(TaskState::IDLE)
 	{}
@@ -454,6 +454,11 @@ namespace opendnp3
 
 	void MContext::ScheduleAdhocTask(IMasterTask* pTask)
 	{
+		const auto NOW = this->pExecutor->GetTime();
+		
+
+		pTask->ConfigureStartExpiration(NOW.milliseconds + params.taskStartTimeout.GetMilliseconds());
+
 		auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
 		if (this->isOnline)
 		{
@@ -465,13 +470,13 @@ namespace opendnp3
 			else
 			{
 				// task is failed because an SA user doesn't exist
-				pTask->OnNoUser(this->pExecutor->GetTime());
+				pTask->OnNoUser(NOW);
 			}			
 		}
 		else
 		{
 			// can't run this task since we're offline so fail it immediately
-			pTask->OnLowerLayerClose(this->pExecutor->GetTime());
+			pTask->OnLowerLayerClose(NOW);
 		}
 	}
 
