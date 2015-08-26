@@ -50,9 +50,9 @@ public:
 	testlib::MockLogHandler log;
 	testlib::MockExecutor exe;
 	MockLinkListener listener;
-	LinkLayer link;
 	MockTransportLayer upper;
-
+	LinkLayer link;
+	
 	openpal::RSlice lastWrite;
 	uint32_t numWrites;
 };

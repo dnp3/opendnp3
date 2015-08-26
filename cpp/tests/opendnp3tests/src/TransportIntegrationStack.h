@@ -44,8 +44,8 @@ public:
 
 	MockLinkListener listener;
 	asiodnp3::LinkLayerRouter router;
-	LinkLayer link;
 	TransportLayer transport;
+	LinkLayer link;	
 	MockUpperLayer upper;
 };
 

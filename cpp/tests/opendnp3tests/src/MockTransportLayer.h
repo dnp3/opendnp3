@@ -55,7 +55,9 @@ public:
 		}
 	};
 
-	MockTransportLayer(ILinkLayer* pLinkLayer);
+	MockTransportLayer();
+
+	void SetLinkLayer(ILinkLayer& linkLayer);
 
 	void SendDown(ITransportSegment& segments);
 

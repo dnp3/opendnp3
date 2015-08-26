@@ -60,12 +60,12 @@ private:
 	LinkConfig mCfgA;
 	LinkConfig mCfgB;
 
-	LinkLayer mLinkA;
-	LinkLayer mLinkB;
-
 	TransportLayer mTransA;
 	TransportLayer mTransB;
 
+	LinkLayer mLinkA;
+	LinkLayer mLinkB;
+	
 	asiodnp3::LinkLayerRouter mRouter;
 
 public:

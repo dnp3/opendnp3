@@ -25,14 +25,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opendnp3::ILinkListener& listener, const LinkConfig& config) :
-	ctx(root, executor, listener, *this, config)
+LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& listener, const LinkConfig& config) :
+	ctx(root, executor, upper, listener, *this, config)
 {}
-
-void LinkLayer::SetUpperLayer(IUpperLayer& upperLayer)
-{
-	ctx.SetUpperLayer(upperLayer);
-}
 
 void LinkLayer::SetRouter(ILinkRouter& router)
 {

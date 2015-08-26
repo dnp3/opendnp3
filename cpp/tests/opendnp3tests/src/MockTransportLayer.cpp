@@ -32,8 +32,13 @@ using namespace testlib;
 namespace opendnp3
 {
 
-MockTransportLayer::MockTransportLayer(ILinkLayer* pLinkLayer_) : pLinkLayer(pLinkLayer_), isOnline(false)
+MockTransportLayer::MockTransportLayer() : pLinkLayer(nullptr), isOnline(false)
 {}
+
+void MockTransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
+{
+	this->pLinkLayer = &linkLayer;
+}
 
 void MockTransportLayer::SendDown(ITransportSegment& segments)
 {

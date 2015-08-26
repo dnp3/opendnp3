@@ -29,11 +29,11 @@ LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	log(),
 	exe(),
 	listener(),
-	link(log.root, exe, listener, config),
-	upper(&link),
+	upper(),
+	link(log.root, exe, upper, listener, config),	
 	numWrites(0)
-{
-	link.SetUpperLayer(upper);
+{	
+	upper.SetLinkLayer(link);
 	link.SetRouter(*this);
 }
 

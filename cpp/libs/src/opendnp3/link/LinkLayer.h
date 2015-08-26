@@ -32,9 +32,8 @@ class LinkLayer final : public ILinkLayer, public ILinkSession
 
 public:
 
-	LinkLayer(openpal::LogRoot&, openpal::IExecutor&, opendnp3::ILinkListener&, const LinkConfig&);
-
-	void SetUpperLayer(IUpperLayer& upperLayer);
+	LinkLayer(openpal::LogRoot&, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, const LinkConfig&);
+	
 	void SetRouter(ILinkRouter&);
 
 	// ---- ILinkSession / IFrameSink interface ----

@@ -49,13 +49,13 @@ enum class LinkTransmitMode : uint8_t
 };
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkContext : public HasUpperLayer
+class LinkContext
 {
 		
 
 public:
 
-	LinkContext(openpal::LogRoot&, openpal::IExecutor&, opendnp3::ILinkListener&, ILinkSession& session, const LinkConfig&);	
+	LinkContext(openpal::LogRoot&, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, ILinkSession& session, const LinkConfig&);
 
 
 	/// ---- helpers for dealing with the FCB bits ----
@@ -126,6 +126,7 @@ public:
 	SecStateBase* pSecState;	
 	ILinkListener* pListener;
 	ILinkSession* pSession;
+	IUpperLayer* pUpperLayer;
 };
 
 }

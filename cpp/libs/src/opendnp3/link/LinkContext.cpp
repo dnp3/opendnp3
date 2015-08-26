@@ -34,7 +34,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkContext::LinkContext(openpal::LogRoot& root, openpal::IExecutor& executor, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config_) :
+LinkContext::LinkContext(openpal::LogRoot& root, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config_) :
 	logger(root.GetLogger()),
 	config(config_),
 	pSegments(nullptr),
@@ -53,7 +53,8 @@ LinkContext::LinkContext(openpal::LogRoot& root, openpal::IExecutor& executor, o
 	pPriState(&PLLS_Idle::Instance()),
 	pSecState(&SLLS_NotReset::Instance()),
 	pListener(&linkListener),
-	pSession(&session)
+	pSession(&session),
+	pUpperLayer(&upper)
 {}
 
 bool LinkContext::OnLowerLayerUp()
