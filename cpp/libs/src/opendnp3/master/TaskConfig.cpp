@@ -18,57 +18,21 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKCONFIG_H
-#define OPENDNP3_TASKCONFIG_H
 
-#include "TaskId.h"
-#include "ITaskCallback.h"
-#include "opendnp3/app/User.h"
-
-#include <openpal/executor/TimeDuration.h>
+#include "TaskConfig.h"
 
 namespace opendnp3
 {
 
-/**
-*	Object containing multiple fields for configuring tasks
-*/
-class TaskConfig
-{
-public:	
+	const openpal::TimeDuration TaskConfig::DEFAULT_START_TIMEOUT(openpal::TimeDuration::Seconds(10));
 
-	static const openpal::TimeDuration DEFAULT_START_TIMEOUT;
-
-	TaskConfig(TaskId taskId, openpal::TimeDuration startTimeout, ITaskCallback* pCallback, User user);
-
-	static TaskConfig Default()
-	{
-		return TaskConfig(TaskId::Undefined(), DEFAULT_START_TIMEOUT, nullptr, User::Default());
-	}
-
-	///  --- syntax sugar for building configs -----
-
-	static TaskConfig With(ITaskCallback& callback)
-	{
-		return TaskConfig(TaskId::Undefined(), DEFAULT_START_TIMEOUT, &callback, User::Default());
-	}	
-
-	static TaskConfig With(User user)
-	{
-		return TaskConfig(TaskId::Undefined(), DEFAULT_START_TIMEOUT, nullptr, user);
-	}
-
-	TaskConfig() = delete;
-
-public:
-
-	TaskId taskId;		
-	openpal::TimeDuration startTimeout;
-	ITaskCallback* pCallback;	
-	User user;
-};
+	TaskConfig::TaskConfig(TaskId taskId_, openpal::TimeDuration startTimeout_, ITaskCallback* pCallback_, User user_) :
+		taskId(taskId_),
+		startTimeout(startTimeout_),
+		pCallback(pCallback_),		
+		user(user_)
+	{}
 
 }
 
-#endif
 

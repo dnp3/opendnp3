@@ -202,7 +202,7 @@ TEST_CASE(SUITE("Tasks for non-existant users are immediately failed"))
 
 	CallbackQueue<CommandResponse> queue;
 	/// start a command request on some user that doesn't exist
-	fixture.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::LATCH_ON), 1, queue.Callback(), TaskConfig(TaskId::Undefined(), nullptr, User(42)));
+	fixture.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::LATCH_ON), 1, queue.Callback(), TaskConfig::With(User(42)));
 
 	REQUIRE(queue.responses.size() == 1);
 	auto result = queue.responses.front();
@@ -228,7 +228,7 @@ void TestTaskCompletionDueToAuthError(AuthErrorCode error, TaskCompletion comple
 	fixture.application.completions.clear();
 
 	/// start a command request on some user that doesn't exist
-	fixture.context.ScanAllObjects(GroupVariationID(30, 1), TaskConfig(TaskId::Defined(7), nullptr, user));
+	fixture.context.ScanAllObjects(GroupVariationID(30, 1), TaskConfig(TaskId::Defined(7), TimeDuration::Seconds(60), nullptr, user));
 
 	auto request = "C2 01 1E 01 06";
 	auto challenge = hex::ChallengeResponse(IINField(), seq, 1, User::DEFAULT_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, hex::repeat(0xFF, 4));
