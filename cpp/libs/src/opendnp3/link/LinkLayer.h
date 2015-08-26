@@ -50,10 +50,9 @@ public:
 	LinkContext ctx;	
 
 private:
-		
-	bool OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata);
+			
 	void CheckPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
-	bool Validate(bool isMaster, uint16_t src, uint16_t dest);	
+	
 };
 
 }

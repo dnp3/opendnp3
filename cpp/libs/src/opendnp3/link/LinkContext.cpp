@@ -300,6 +300,82 @@ void LinkContext::CompleteKeepAlive()
 	this->keepAliveTimeout = false;
 }
 
+bool LinkContext::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
+{
+	if (!isOnline)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
+		return false;
+	}
+
+	if (!this->Validate(isMaster, source, dest))
+	{
+		return false;
+	}
+
+	// reset the keep-alive timestamp
+	this->lastMessageTimestamp = this->pExecutor->GetTime();
+
+	switch (func)
+	{
+	case(LinkFunction::SEC_ACK) :
+		pPriState = &pPriState->OnAck(*this, fcvdfc);
+		return true;
+	case(LinkFunction::SEC_NACK) :
+		pPriState = &pPriState->OnNack(*this, fcvdfc);
+		return true;
+	case(LinkFunction::SEC_LINK_STATUS) :
+		pPriState = &pPriState->OnLinkStatus(*this, fcvdfc);
+		return true;
+	case(LinkFunction::SEC_NOT_SUPPORTED) :
+		pPriState = &pPriState->OnNotSupported(*this, fcvdfc);
+		return true;
+	case(LinkFunction::PRI_TEST_LINK_STATES) :
+		pSecState = &pSecState->OnTestLinkStatus(*this, fcb);
+		return true;
+	case(LinkFunction::PRI_RESET_LINK_STATES) :
+		pSecState = &pSecState->OnResetLinkStates(*this);
+		return true;
+	case(LinkFunction::PRI_REQUEST_LINK_STATUS) :
+		pSecState = &pSecState->OnRequestLinkStatus(*this);
+		return true;
+	case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
+		pSecState = &pSecState->OnConfirmedUserData(*this, fcb, userdata);
+		return true;
+	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
+		this->PushDataUp(userdata);
+		return true;
+	default:
+		return false;
+	}
+}
+
+bool LinkContext::Validate(bool isMaster, uint16_t src, uint16_t dest)
+{
+	if (isMaster == config.IsMaster)
+	{
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
+			(isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));
+
+		return false;
+	}
+
+	if (dest != config.LocalAddr)
+	{
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_DESTINATION, "Frame for unknown destintation");
+		return false;
+	}
+
+	if (src != config.RemoteAddr)
+	{
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_SOURCE, "Frame from unknwon source");
+		return false;
+	}
+
+	return true;
+}
+
+
 
 }
 

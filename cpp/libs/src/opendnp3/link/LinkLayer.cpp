@@ -53,37 +53,6 @@ void LinkLayer::SetRouter(ILinkRouter& router)
 	ctx.pRouter = &router;
 }
 
-bool LinkLayer::Validate(bool isMaster, uint16_t src, uint16_t dest)
-{
-	if (!ctx.isOnline)
-	{
-		SIMPLE_LOG_BLOCK(ctx.logger, flags::ERR, "Layer is not online");
-		return false;
-	}
-
-	if (isMaster == ctx.config.IsMaster)
-	{			
-		SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
-			(isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));			            
-			
-		return false;
-	}
-	
-	if (dest != ctx.config.LocalAddr)
-	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNKNOWN_DESTINATION, "Frame for unknown destintation");
-		return false;
-	}
-
-	if (src != ctx.config.RemoteAddr)
-	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNKNOWN_SOURCE, "Frame from unknwon source");
-		return false;		
-	}
-
-	return true;
-}
-
 ////////////////////////////////
 // ILowerLayer
 ////////////////////////////////
@@ -165,53 +134,9 @@ void LinkLayer::CheckPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 
 bool LinkLayer::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
 {
-	auto ret = this->OnFrameImpl(func, isMaster, fcb, fcvdfc, dest, source, userdata);
+	auto ret = this->ctx.OnFrame(func, isMaster, fcb, fcvdfc, dest, source, userdata);
 	this->ctx.TryStartTransmission();
 	return ret;
-}
-
-bool LinkLayer::OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
-{	
-	if (!this->Validate(isMaster, source, dest))
-	{
-		return false;
-	}
-
-	// reset the keep-alive timestamp
-	this->ctx.lastMessageTimestamp = this->ctx.pExecutor->GetTime();
-
-	switch (func)
-	{
-		case(LinkFunction::SEC_ACK) :
-			ctx.pPriState = &ctx.pPriState->OnAck(ctx, fcvdfc);
-			return true;
-		case(LinkFunction::SEC_NACK) :
-			ctx.pPriState = &ctx.pPriState->OnNack(ctx, fcvdfc);
-			return true;
-		case(LinkFunction::SEC_LINK_STATUS) :
-			ctx.pPriState = &ctx.pPriState->OnLinkStatus(ctx, fcvdfc);
-			return true;
-		case(LinkFunction::SEC_NOT_SUPPORTED) :
-			ctx.pPriState = &ctx.pPriState->OnNotSupported(ctx, fcvdfc);
-			return true;
-		case(LinkFunction::PRI_TEST_LINK_STATES) :
-			ctx.pSecState = &ctx.pSecState->OnTestLinkStatus(ctx, fcb);
-			return true;
-		case(LinkFunction::PRI_RESET_LINK_STATES) :
-			ctx.pSecState = &ctx.pSecState->OnResetLinkStates(ctx);
-			return true;
-		case(LinkFunction::PRI_REQUEST_LINK_STATUS) :
-			ctx.pSecState = &ctx.pSecState->OnRequestLinkStatus(ctx);
-			return true;
-		case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
-			ctx.pSecState = &ctx.pSecState->OnConfirmedUserData(ctx, fcb, userdata);
-			return true;
-		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
-			this->ctx.PushDataUp(userdata);
-			return true;
-		default:
-			return false;
-	}
 }
 
 }
