@@ -54,9 +54,15 @@ public:
 	MockLinkListener listener;
 	MockTransportLayer upper;
 	LinkLayer link;
-	
-	openpal::RSlice lastWrite;
-	uint32_t numWrites;
+
+	std::string PopLastWriteAsHex();
+	uint32_t NumTotalWrites();
+
+private:
+
+	uint32_t numTotalWrites;
+
+	std::deque<std::string> writeQueue;		
 };
 
 }

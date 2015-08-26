@@ -20,6 +20,9 @@
  */
 #include "LinkLayerTest.h"
 
+#include <testlib/HexConversions.h>
+
+using namespace testlib;
 using namespace openpal;
 
 namespace opendnp3
@@ -30,8 +33,8 @@ LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	exe(),
 	listener(),
 	upper(),
-	link(log.root, exe, upper, listener, config),	
-	numWrites(0)
+	link(log.root, exe, upper, listener, config),
+	numTotalWrites(0)
 {	
 	upper.SetLinkLayer(link);
 	link.SetRouter(*this);
@@ -43,10 +46,32 @@ bool LinkLayerTest::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcv
 	return link.OnFrame(fields, userdata);
 }
 
+std::string LinkLayerTest::PopLastWriteAsHex()
+{
+	if (writeQueue.empty())
+	{
+		return "";
+	}
+
+	while (writeQueue.size() > 1)
+	{
+		writeQueue.pop_front();
+	}
+
+	auto ret = writeQueue.front();
+	writeQueue.pop_front();
+	return ret;
+}
+
+uint32_t LinkLayerTest::NumTotalWrites()
+{
+	return numTotalWrites;
+}
+
 void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext)
 {
-	lastWrite = buffer;
-	++numWrites;
+	++numTotalWrites;
+	this->writeQueue.push_back(ToHex(buffer));
 }
 
 LinkConfig LinkLayerTest::DefaultConfig()
