@@ -351,6 +351,8 @@ void LinkContext::FailKeepAlive(bool timeout)
 void LinkContext::CompleteKeepAlive()
 {
 	this->keepAliveTimeout = false;
+
+	this->pListener->OnKeepAliveSuccess();
 }
 
 bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
