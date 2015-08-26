@@ -36,14 +36,16 @@ enum class TaskCompletion : uint8_t
   FAILURE_BAD_RESPONSE = 1,
   /// The task request did not receive a response within the timeout
   FAILURE_RESPONSE_TIMEOUT = 2,
+  /// The start timeout expired before the task could begin running
+  FAILURE_START_TIMEOUT = 3,
   /// The task could not run because the specified user was not defined on the master (SA only)
-  FAILURE_NO_USER = 3,
+  FAILURE_NO_USER = 4,
   /// The task failed because of some unexpected internal issue like bad configuration data
-  FAILURE_INTERNAL_ERROR = 4,
+  FAILURE_INTERNAL_ERROR = 5,
   /// The outstation rejected the operation do to a lack of valid session keys or the user not existing on the outstation (SA only)
-  FAILURE_BAD_AUTHENTICATION = 5,
+  FAILURE_BAD_AUTHENTICATION = 6,
   /// The outstation rejected the operation because the specified user is not authorized for the request that was made (SA only)
-  FAILURE_NOT_AUTHORIZED = 6,
+  FAILURE_NOT_AUTHORIZED = 7,
   /// There is no communication with the outstation, so the task was not attempted
   FAILURE_NO_COMMS = 255
 };

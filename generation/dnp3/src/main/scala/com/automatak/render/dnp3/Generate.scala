@@ -6,8 +6,8 @@ import com.automatak.render.dnp3.objects.generators.GroupVariationFileGenerator
 
 object Generate {
 
-  val dnp3GenPath = FileSystems.getDefault.getPath("../cpp/libs/opendnp3/src/opendnp3/gen")
-  val dnp3ObjectPath = FileSystems.getDefault.getPath("../cpp/libs/opendnp3/src/opendnp3/objects")
+  val dnp3GenPath = FileSystems.getDefault.getPath("../cpp/libs/src/opendnp3/gen")
+  val dnp3ObjectPath = FileSystems.getDefault.getPath("../cpp/libs/src/opendnp3/objects")
 
   val csharpGenPath = FileSystems.getDefault.getPath("../dotnet/bindings/CLRInterface/gen")
 

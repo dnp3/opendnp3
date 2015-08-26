@@ -32,6 +32,8 @@ char const* TaskCompletionToString(TaskCompletion arg)
       return "FAILURE_BAD_RESPONSE";
     case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
       return "FAILURE_RESPONSE_TIMEOUT";
+    case(TaskCompletion::FAILURE_START_TIMEOUT):
+      return "FAILURE_START_TIMEOUT";
     case(TaskCompletion::FAILURE_NO_USER):
       return "FAILURE_NO_USER";
     case(TaskCompletion::FAILURE_INTERNAL_ERROR):

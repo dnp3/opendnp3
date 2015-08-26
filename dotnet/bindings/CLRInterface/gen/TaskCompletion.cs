@@ -38,21 +38,25 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     FAILURE_RESPONSE_TIMEOUT = 2,
     /// <summary>
+    /// The start timeout expired before the task could begin running
+    /// </summary>
+    FAILURE_START_TIMEOUT = 3,
+    /// <summary>
     /// The task could not run because the specified user was not defined on the master (SA only)
     /// </summary>
-    FAILURE_NO_USER = 3,
+    FAILURE_NO_USER = 4,
     /// <summary>
     /// The task failed because of some unexpected internal issue like bad configuration data
     /// </summary>
-    FAILURE_INTERNAL_ERROR = 4,
+    FAILURE_INTERNAL_ERROR = 5,
     /// <summary>
     /// The outstation rejected the operation do to a lack of valid session keys or the user not existing on the outstation (SA only)
     /// </summary>
-    FAILURE_BAD_AUTHENTICATION = 5,
+    FAILURE_BAD_AUTHENTICATION = 6,
     /// <summary>
     /// The outstation rejected the operation because the specified user is not authorized for the request that was made (SA only)
     /// </summary>
-    FAILURE_NOT_AUTHORIZED = 6,
+    FAILURE_NOT_AUTHORIZED = 7,
     /// <summary>
     /// There is no communication with the outstation, so the task was not attempted
     /// </summary>
