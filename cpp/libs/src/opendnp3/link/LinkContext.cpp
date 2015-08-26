@@ -34,7 +34,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkContext::LinkContext(openpal::LogRoot& root, openpal::IExecutor& executor, opendnp3::ILinkListener& linkListener, const LinkConfig& config_) :
+LinkContext::LinkContext(openpal::LogRoot& root, openpal::IExecutor& executor, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config_) :
 	logger(root.GetLogger()),
 	config(config_),
 	pSegments(nullptr),
@@ -52,7 +52,8 @@ LinkContext::LinkContext(openpal::LogRoot& root, openpal::IExecutor& executor, o
 	pRouter(nullptr),
 	pPriState(&PLLS_Idle::Instance()),
 	pSecState(&SLLS_NotReset::Instance()),
-	pListener(&linkListener)
+	pListener(&linkListener),
+	pSession(&session)
 {}
 
 bool LinkContext::OnLowerLayerUp()
@@ -67,6 +68,7 @@ bool LinkContext::OnLowerLayerUp()
 
 	// no reason to trigger a keep-alive until we've actually expired
 	this->lastMessageTimestamp = this->pExecutor->GetTime();
+	this->keepAliveTimer.Start(config.KeepAliveTimeout, [this]() { this->OnKeepAliveTimeout(); });
 
 	this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
 
@@ -126,12 +128,12 @@ RSlice LinkContext::FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tp
 	return output;
 }
 
-void LinkContext::QueueTransmit(const RSlice& buffer, bool primary, ILinkSession& session)
+void LinkContext::QueueTransmit(const RSlice& buffer, bool primary)
 {
 	if (txMode == LinkTransmitMode::Idle)
 	{
 		txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
-		pRouter->BeginTransmit(buffer, &session);
+		pRouter->BeginTransmit(buffer, pSession);
 	}
 	else
 	{
@@ -146,36 +148,36 @@ void LinkContext::QueueTransmit(const RSlice& buffer, bool primary, ILinkSession
 	}
 }
 
-void LinkContext::QueueAck(ILinkSession& session)
+void LinkContext::QueueAck()
 {
 	auto dest = secTxBuffer.GetWSlice();
 	auto buffer = LinkFrame::FormatAck(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
-	this->QueueTransmit(buffer, false, session);
+	this->QueueTransmit(buffer, false);
 }
 
-void LinkContext::QueueLinkStatus(ILinkSession& session)
+void LinkContext::QueueLinkStatus()
 {
 	auto dest = secTxBuffer.GetWSlice();
 	auto buffer = LinkFrame::FormatLinkStatus(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
-	this->QueueTransmit(buffer, false, session);
+	this->QueueTransmit(buffer, false);
 }
 
-void LinkContext::QueueResetLinks(ILinkSession& session)
+void LinkContext::QueueResetLinks()
 {
 	auto dest = priTxBuffer.GetWSlice();
 	auto buffer = LinkFrame::FormatResetLinkStates(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
-	this->QueueTransmit(buffer, true, session);
+	this->QueueTransmit(buffer, true);
 }
 
-void LinkContext::QueueRequestLinkStatus(ILinkSession& session)
+void LinkContext::QueueRequestLinkStatus()
 {
 	auto dest = priTxBuffer.GetWSlice();
 	auto buffer = LinkFrame::FormatRequestLinkStatus(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
-	this->QueueTransmit(buffer, true, session);
+	this->QueueTransmit(buffer, true);
 }
 
 void LinkContext::ResetRetry()
@@ -227,6 +229,75 @@ void LinkContext::CompleteSendOperation(bool success)
 
 		pExecutor->PostLambda(callback);
 	}
+}
+
+void LinkContext::TryStartTransmission()
+{
+	if (this->keepAliveTimeout)
+	{
+		this->pPriState = &pPriState->TrySendRequestLinkStatus(*this);
+	}
+
+	if (this->pSegments)
+	{
+		this->pPriState = (this->config.UseConfirms) ? &pPriState->TrySendConfirmed(*this, *pSegments) : &pPriState->TrySendUnconfirmed(*this, *pSegments);
+	}
+}
+
+void LinkContext::OnKeepAliveTimeout()
+{
+	auto now = this->pExecutor->GetTime();
+
+	auto elapsed = this->pExecutor->GetTime().milliseconds - this->lastMessageTimestamp.milliseconds;
+
+	if (elapsed >= this->config.KeepAliveTimeout.GetMilliseconds())
+	{
+		this->lastMessageTimestamp = now;
+		this->keepAliveTimeout = true;
+		this->pListener->OnKeepAliveTimeout();
+	}
+
+	// No matter what, reschedule the timer based on last message timestamp
+	MonotonicTimestamp expiration(this->lastMessageTimestamp.milliseconds + config.KeepAliveTimeout);
+	this->keepAliveTimer.Start(expiration, [this]() { this->OnKeepAliveTimeout(); });
+}
+
+void LinkContext::OnResponseTimeout()
+{
+	this->pPriState = &(this->pPriState->OnTimeout(*this));
+
+	this->TryStartTransmission();
+}
+
+void LinkContext::StartTimer()
+{
+	rspTimeoutTimer.Start(
+		TimeDuration(config.Timeout),
+		[this]()
+	{
+		this->OnResponseTimeout();
+	}
+	);
+}
+
+void LinkContext::CancelTimer()
+{
+	rspTimeoutTimer.Cancel();
+}
+
+void LinkContext::FailKeepAlive(bool timeout)
+{
+	this->keepAliveTimeout = false;
+
+	if (timeout)
+	{
+		this->pListener->OnKeepAliveFailure();
+	}
+}
+
+void LinkContext::CompleteKeepAlive()
+{
+	this->keepAliveTimeout = false;
 }
 
 

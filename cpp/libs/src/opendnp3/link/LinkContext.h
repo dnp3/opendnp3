@@ -55,7 +55,7 @@ class LinkContext : public HasUpperLayer
 
 public:
 
-	LinkContext(openpal::LogRoot&, openpal::IExecutor&, opendnp3::ILinkListener&, const LinkConfig&);	
+	LinkContext(openpal::LogRoot&, openpal::IExecutor&, opendnp3::ILinkListener&, ILinkSession& session, const LinkConfig&);	
 
 
 	/// ---- helpers for dealing with the FCB bits ----
@@ -74,11 +74,11 @@ public:
 	openpal::RSlice FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB);
 
 	/// --- Helpers for queueing frames ---	
-	void QueueAck(ILinkSession& session);
-	void QueueLinkStatus(ILinkSession& session);
-	void QueueResetLinks(ILinkSession& session);
-	void QueueRequestLinkStatus(ILinkSession& session);
-	void QueueTransmit(const openpal::RSlice& buffer, bool primary, ILinkSession& session);
+	void QueueAck();
+	void QueueLinkStatus();
+	void QueueResetLinks();
+	void QueueRequestLinkStatus();
+	void QueueTransmit(const openpal::RSlice& buffer, bool primary);
 
 	/// --- public members ----
 
@@ -87,6 +87,13 @@ public:
 	void PushDataUp(const openpal::RSlice& data);
 	void PostStatusCallback(opendnp3::LinkStatus status);
 	void CompleteSendOperation(bool success);
+	void TryStartTransmission();
+	void OnKeepAliveTimeout();
+	void OnResponseTimeout();
+	void StartTimer();
+	void CancelTimer();	
+	void FailKeepAlive(bool timeout);
+	void CompleteKeepAlive();
 
 	// buffers used for primary and secondary requests	
 	openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> priTxBuffer;
@@ -113,6 +120,7 @@ public:
 	PriStateBase* pPriState;
 	SecStateBase* pSecState;	
 	ILinkListener* pListener;
+	ILinkSession* pSession;
 };
 
 }

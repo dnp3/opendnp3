@@ -22,13 +22,12 @@
 #define OPENDNP3_PRILINKLAYERSTATES_H
 
 #include "opendnp3/link/Singleton.h"
-#include "opendnp3/link/LinkLayer.h"
 
 namespace opendnp3
 {
 
-class LinkLayer;
-
+class LinkContext;
+class ITransportSegment;
 
 
 class PriStateBase
@@ -36,19 +35,19 @@ class PriStateBase
 public:
 
 	// Incoming messages for primary station
-	virtual PriStateBase& OnAck(LinkLayer&, bool receiveBuffFull);
-	virtual PriStateBase& OnNack(LinkLayer&, bool receiveBuffFull);
-	virtual PriStateBase& OnLinkStatus(LinkLayer&, bool receiveBuffFull);
-	virtual PriStateBase& OnNotSupported(LinkLayer&, bool receiveBuffFull);
+	virtual PriStateBase& OnAck(LinkContext&, bool receiveBuffFull);
+	virtual PriStateBase& OnNack(LinkContext&, bool receiveBuffFull);
+	virtual PriStateBase& OnLinkStatus(LinkContext&, bool receiveBuffFull);
+	virtual PriStateBase& OnNotSupported(LinkContext&, bool receiveBuffFull);
 
-	virtual PriStateBase& OnTransmitResult(LinkLayer&, bool success);
+	virtual PriStateBase& OnTransmitResult(LinkContext&, bool success);
 
-	virtual PriStateBase& OnTimeout(LinkLayer&);
+	virtual PriStateBase& OnTimeout(LinkContext&);
 
 	// transmission events to handle
-	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments);
-	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments);	
-	virtual PriStateBase& TrySendRequestLinkStatus(LinkLayer&);
+	virtual PriStateBase& TrySendConfirmed(LinkContext&, ITransportSegment& segments);
+	virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments);	
+	virtual PriStateBase& TrySendRequestLinkStatus(LinkContext&);
 
 	//every concrete state implements this for logging purposes
 	virtual char const* Name() const = 0;
@@ -59,9 +58,9 @@ class PLLS_Idle final : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_Idle);
 
-	virtual PriStateBase& TrySendUnconfirmed(LinkLayer&, ITransportSegment& segments) override;
-	virtual PriStateBase& TrySendConfirmed(LinkLayer&, ITransportSegment& segments) override;	
-	virtual PriStateBase& TrySendRequestLinkStatus(LinkLayer&) override;
+	virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments) override;
+	virtual PriStateBase& TrySendConfirmed(LinkContext&, ITransportSegment& segments) override;	
+	virtual PriStateBase& TrySendRequestLinkStatus(LinkContext&) override;
 };
 
 
@@ -73,7 +72,7 @@ class PLLS_SendUnconfirmedTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkLayer& link, bool success);
+	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success);
 };
 
 
@@ -85,7 +84,7 @@ class PLLS_LinkResetTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkResetTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkLayer& link, bool success);
+	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -96,7 +95,7 @@ class PLLS_ConfUserDataTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfUserDataTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkLayer& link, bool success);
+	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -107,7 +106,7 @@ class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkLayer& link, bool success);
+	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -119,16 +118,16 @@ class PLLS_ResetLinkWait final : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ResetLinkWait);
 
-	PriStateBase& OnAck(LinkLayer&, bool aIsRcvBuffFull) override;
+	PriStateBase& OnAck(LinkContext&, bool aIsRcvBuffFull) override;
 
-	PriStateBase& OnNack(LinkLayer&  link, bool)  override { return Failure(link); }
-	PriStateBase& OnLinkStatus(LinkLayer& link, bool) override { return Failure(link); }
-	PriStateBase& OnNotSupported(LinkLayer&  link, bool)  override { return Failure(link); }
+	PriStateBase& OnNack(LinkContext&  link, bool)  override { return Failure(link); }
+	PriStateBase& OnLinkStatus(LinkContext& link, bool) override { return Failure(link); }
+	PriStateBase& OnNotSupported(LinkContext&  link, bool)  override { return Failure(link); }
 
-	PriStateBase& OnTimeout(LinkLayer&) override;
+	PriStateBase& OnTimeout(LinkContext&) override;
 
 private:
-	PriStateBase& Failure(LinkLayer&);
+	PriStateBase& Failure(LinkContext&);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -140,15 +139,15 @@ class PLLS_ConfDataWait final : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfDataWait);
 
-	PriStateBase& OnAck(LinkLayer&, bool aIsRcvBuffFull) override;
-	PriStateBase& OnNack(LinkLayer& link, bool) override;
-	PriStateBase& OnLinkStatus(LinkLayer& link, bool) override { return Failure(link); }
-	PriStateBase& OnNotSupported(LinkLayer& link, bool)  override { return Failure(link); }
+	PriStateBase& OnAck(LinkContext&, bool aIsRcvBuffFull) override;
+	PriStateBase& OnNack(LinkContext& link, bool) override;
+	PriStateBase& OnLinkStatus(LinkContext& link, bool) override { return Failure(link); }
+	PriStateBase& OnNotSupported(LinkContext& link, bool)  override { return Failure(link); }
 	
-	PriStateBase& OnTimeout(LinkLayer&) override;
+	PriStateBase& OnTimeout(LinkContext&) override;
 
 private:
-	PriStateBase& Failure(LinkLayer&);
+	PriStateBase& Failure(LinkContext&);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -160,10 +159,10 @@ class PLLS_RequestLinkStatusWait final : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusWait);
 	
-	PriStateBase& OnNack(LinkLayer& link, bool) override;
-	PriStateBase& OnLinkStatus(LinkLayer& link, bool) override;
-	PriStateBase& OnNotSupported(LinkLayer& link, bool)  override;
-	PriStateBase& OnTimeout(LinkLayer&) override;
+	PriStateBase& OnNack(LinkContext& link, bool) override;
+	PriStateBase& OnLinkStatus(LinkContext& link, bool) override;
+	PriStateBase& OnNotSupported(LinkContext& link, bool)  override;
+	PriStateBase& OnTimeout(LinkContext&) override;
 };
 
 } //end namepsace

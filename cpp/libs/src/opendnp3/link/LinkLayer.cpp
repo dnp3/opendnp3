@@ -39,7 +39,7 @@ namespace opendnp3
 {
 
 LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, opendnp3::ILinkListener& listener, const LinkConfig& config) :
-	ctx(root, executor, listener, config)
+	ctx(root, executor, listener, *this, config)
 {}
 
 void LinkLayer::SetUpperLayer(IUpperLayer& upperLayer)
@@ -103,35 +103,7 @@ void LinkLayer::Send(ITransportSegment& segments)
 	}
 
 	this->ctx.pSegments = &segments;
-	this->TryStartTransmission();
-}
-
-void LinkLayer::TryStartTransmission()
-{
-	if (ctx.keepAliveTimeout)
-	{
-		ctx.pPriState = &ctx.pPriState->TrySendRequestLinkStatus(*this);
-	}
-
-	if (ctx.pSegments)
-	{		
-		ctx.pPriState = (ctx.config.UseConfirms) ? &ctx.pPriState->TrySendConfirmed(*this, *ctx.pSegments) : &ctx.pPriState->TrySendUnconfirmed(*this, *ctx.pSegments);
-	}		
-}
-
-void LinkLayer::FailKeepAlive(bool timeout)
-{
-	this->ctx.keepAliveTimeout = false;
-
-	if (timeout)
-	{
-		this->ctx.pListener->OnKeepAliveFailure();
-	}
-}
-
-void LinkLayer::CompleteKeepAlive()
-{
-	this->ctx.keepAliveTimeout = false;
+	this->ctx.TryStartTransmission();
 }
 
 ////////////////////////////////
@@ -140,12 +112,7 @@ void LinkLayer::CompleteKeepAlive()
 
 bool LinkLayer::OnLowerLayerUp()
 {
-	auto ret = ctx.OnLowerLayerUp();
-	if (ret)
-	{
-		ctx.keepAliveTimer.Start(ctx.config.KeepAliveTimeout, [this]() { this->OnKeepAliveTimeout(); });				
-	}
-	return ret;	
+	return ctx.OnLowerLayerUp();	
 }
 
 bool LinkLayer::OnLowerLayerDown()
@@ -171,14 +138,14 @@ bool LinkLayer::OnTransmitResult(bool success)
 	// now dispatch the completion event to the correct state handler
 	if (isPrimary)
 	{
-		ctx.pPriState = &ctx.pPriState->OnTransmitResult(*this, success);
+		ctx.pPriState = &ctx.pPriState->OnTransmitResult(ctx, success);
 	}
 	else
 	{
-		ctx.pSecState = &ctx.pSecState->OnTransmitResult(*this, success);
+		ctx.pSecState = &ctx.pSecState->OnTransmitResult(ctx, success);
 	}	
 
-	this->TryStartTransmission();
+	this->ctx.TryStartTransmission();
 	return true;
 }
 
@@ -192,47 +159,6 @@ void LinkLayer::CheckPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 	}
 }
 
-void LinkLayer::OnKeepAliveTimeout()
-{
-	auto now = this->ctx.pExecutor->GetTime();
-
-	auto elapsed = this->ctx.pExecutor->GetTime().milliseconds - this->ctx.lastMessageTimestamp.milliseconds;
-
-	if (elapsed >= this->ctx.config.KeepAliveTimeout.GetMilliseconds())
-	{
-		this->ctx.lastMessageTimestamp = now;
-		this->ctx.keepAliveTimeout = true;
-		this->ctx.pListener->OnKeepAliveTimeout();
-	}
-	
-	// No matter what, reschedule the timer based on last message timestamp
-	MonotonicTimestamp expiration(this->ctx.lastMessageTimestamp.milliseconds + ctx.config.KeepAliveTimeout);
-	this->ctx.keepAliveTimer.Start(expiration, [this]() { this->OnKeepAliveTimeout(); });
-}
-
-void LinkLayer::OnResponseTimeout()
-{
-	this->ctx.pPriState = &(this->ctx.pPriState->OnTimeout(*this));
-
-	this->TryStartTransmission();
-}
-
-void LinkLayer::StartTimer()
-{		
-	ctx.rspTimeoutTimer.Start(
-		TimeDuration(ctx.config.Timeout),
-		[this]() 
-		{ 
-			this->OnResponseTimeout();
-		}
-	);	
-}
-
-void LinkLayer::CancelTimer()
-{
-	ctx.rspTimeoutTimer.Cancel();
-}
-
 ////////////////////////////////
 // IFrameSink
 ////////////////////////////////
@@ -240,7 +166,7 @@ void LinkLayer::CancelTimer()
 bool LinkLayer::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
 {
 	auto ret = this->OnFrameImpl(func, isMaster, fcb, fcvdfc, dest, source, userdata);
-	this->TryStartTransmission();
+	this->ctx.TryStartTransmission();
 	return ret;
 }
 
@@ -257,28 +183,28 @@ bool LinkLayer::OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcv
 	switch (func)
 	{
 		case(LinkFunction::SEC_ACK) :
-			ctx.pPriState = &ctx.pPriState->OnAck(*this, fcvdfc);
+			ctx.pPriState = &ctx.pPriState->OnAck(ctx, fcvdfc);
 			return true;
 		case(LinkFunction::SEC_NACK) :
-			ctx.pPriState = &ctx.pPriState->OnNack(*this, fcvdfc);
+			ctx.pPriState = &ctx.pPriState->OnNack(ctx, fcvdfc);
 			return true;
 		case(LinkFunction::SEC_LINK_STATUS) :
-			ctx.pPriState = &ctx.pPriState->OnLinkStatus(*this, fcvdfc);
+			ctx.pPriState = &ctx.pPriState->OnLinkStatus(ctx, fcvdfc);
 			return true;
 		case(LinkFunction::SEC_NOT_SUPPORTED) :
-			ctx.pPriState = &ctx.pPriState->OnNotSupported(*this, fcvdfc);
+			ctx.pPriState = &ctx.pPriState->OnNotSupported(ctx, fcvdfc);
 			return true;
 		case(LinkFunction::PRI_TEST_LINK_STATES) :
-			ctx.pSecState = &ctx.pSecState->OnTestLinkStatus(*this, fcb);
+			ctx.pSecState = &ctx.pSecState->OnTestLinkStatus(ctx, fcb);
 			return true;
 		case(LinkFunction::PRI_RESET_LINK_STATES) :
-			ctx.pSecState = &ctx.pSecState->OnResetLinkStates(*this);
+			ctx.pSecState = &ctx.pSecState->OnResetLinkStates(ctx);
 			return true;
 		case(LinkFunction::PRI_REQUEST_LINK_STATUS) :
-			ctx.pSecState = &ctx.pSecState->OnRequestLinkStatus(*this);
+			ctx.pSecState = &ctx.pSecState->OnRequestLinkStatus(ctx);
 			return true;
 		case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
-			ctx.pSecState = &ctx.pSecState->OnConfirmedUserData(*this, fcb, userdata);
+			ctx.pSecState = &ctx.pSecState->OnConfirmedUserData(ctx, fcb, userdata);
 			return true;
 		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
 			this->ctx.PushDataUp(userdata);

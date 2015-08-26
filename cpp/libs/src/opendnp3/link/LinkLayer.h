@@ -44,25 +44,15 @@ public:
 	virtual bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata = openpal::RSlice()) override;
 	
 	// ---- ILinkLayer ----
-	virtual void Send(ITransportSegment& segments) override;
-
-	// Functions called by the primary and secondary station states		
-	void TryStartTransmission();
-	void FailKeepAlive(bool timeout);
-	void CompleteKeepAlive();			
+	virtual void Send(ITransportSegment& segments) override;	
 
 	// The full state
-	LinkContext ctx;
-
-	void StartTimer();
-	void CancelTimer();
+	LinkContext ctx;	
 
 private:
 		
 	bool OnFrameImpl(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata);
 	void CheckPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
-	void OnKeepAliveTimeout();
-	void OnResponseTimeout();
 	bool Validate(bool isMaster, uint16_t src, uint16_t dest);	
 };
 

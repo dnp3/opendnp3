@@ -37,9 +37,9 @@ namespace opendnp3
 // SecStateBase
 ////////////////////////////////////////
 
-SecStateBase& SecStateBase::OnTransmitResult(LinkLayer& link, bool success)
+SecStateBase& SecStateBase::OnTransmitResult(LinkContext& ctx, bool success)
 {
-	FORMAT_LOG_BLOCK(link.ctx.logger, flags::ERR, "Invalid event for state: %s", this->Name());	
+	FORMAT_LOG_BLOCK(ctx.logger, flags::ERR, "Invalid event for state: %s", this->Name());	
 	return *this;
 }
 
@@ -48,28 +48,28 @@ SecStateBase& SecStateBase::OnTransmitResult(LinkLayer& link, bool success)
 ////////////////////////////////////////////////////////
 SLLS_NotReset SLLS_NotReset::instance;
 
-SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkLayer& link, bool aFcb)
+SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkContext& ctx, bool aFcb)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(link.ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "TestLinkStatus ignored");
+	SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "TestLinkStatus ignored");
 	return *this;
 }
 
-SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkLayer& link, bool aFcb, const openpal::RSlice&)
+SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkContext& ctx, bool aFcb, const openpal::RSlice&)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(link.ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "ConfirmedUserData ignored");
+	SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "ConfirmedUserData ignored");
 	return *this;
 }
 
-SecStateBase& SLLS_NotReset::OnResetLinkStates(LinkLayer& link)
+SecStateBase& SLLS_NotReset::OnResetLinkStates(LinkContext& ctx)
 {
-	link.ctx.QueueAck(link);
-	link.ctx.ResetReadFCB();
+	ctx.QueueAck();
+	ctx.ResetReadFCB();
 	return SLLS_TransmitWaitReset::Instance();
 }
 
-SecStateBase& SLLS_NotReset::OnRequestLinkStatus(LinkLayer& link)
+SecStateBase& SLLS_NotReset::OnRequestLinkStatus(LinkContext& ctx)
 {
-	link.ctx.QueueLinkStatus(link);
+	ctx.QueueLinkStatus();
 	return SLLS_TransmitWaitNotReset::Instance();
 }
 
@@ -78,12 +78,12 @@ SecStateBase& SLLS_NotReset::OnRequestLinkStatus(LinkLayer& link)
 ////////////////////////////////////////////////////////
 SLLS_Reset SLLS_Reset::instance;
 
-SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkLayer& link, bool fcb)
+SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkContext& ctx, bool fcb)
 {
-	if(link.ctx.nextReadFCB == fcb)
+	if(ctx.nextReadFCB == fcb)
 	{
-		link.ctx.QueueAck(link);
-		link.ctx.ToggleReadFCB();
+		ctx.QueueAck();
+		ctx.ToggleReadFCB();
 		return SLLS_TransmitWaitReset::Instance();
 	}
 	else
@@ -91,38 +91,38 @@ SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkLayer& link, bool fcb)
 		// "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
 		// This is a PITA implement
 		// TODO - see if this function is deprecated or not
-		SIMPLE_LOG_BLOCK(link.ctx.logger, flags::WARN, "Received TestLinkStatus with invalid FCB");
+		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Received TestLinkStatus with invalid FCB");
 		return *this;
 	}
 }
 
-SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkLayer& link, bool fcb, const openpal::RSlice& data)
+SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkContext& ctx, bool fcb, const openpal::RSlice& data)
 {
-	link.ctx.QueueAck(link);
+	ctx.QueueAck();
 
-	if (link.ctx.nextReadFCB == fcb)
+	if (ctx.nextReadFCB == fcb)
 	{
-		link.ctx.ToggleReadFCB();
-		link.ctx.PushDataUp(data);
+		ctx.ToggleReadFCB();
+		ctx.PushDataUp(data);
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(link.ctx.logger, flags::WARN, "Confirmed data w/ wrong FCB");
+		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Confirmed data w/ wrong FCB");
 	}
 
 	return SLLS_TransmitWaitReset::Instance();
 }
 
-SecStateBase& SLLS_Reset::OnResetLinkStates(LinkLayer& link)
+SecStateBase& SLLS_Reset::OnResetLinkStates(LinkContext& ctx)
 {
-	link.ctx.QueueAck(link);
-	link.ctx.ResetReadFCB();
+	ctx.QueueAck();
+	ctx.ResetReadFCB();
 	return SLLS_TransmitWaitReset::Instance();
 }
 
-SecStateBase& SLLS_Reset::OnRequestLinkStatus(LinkLayer& link)
+SecStateBase& SLLS_Reset::OnRequestLinkStatus(LinkContext& ctx)
 {
-	link.ctx.QueueLinkStatus(link);
+	ctx.QueueLinkStatus();
 	return SLLS_TransmitWaitReset::Instance();
 }
 
