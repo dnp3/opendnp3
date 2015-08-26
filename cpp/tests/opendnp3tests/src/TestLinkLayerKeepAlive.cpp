@@ -49,11 +49,11 @@ TEST_CASE(SUITE("ForwardsKeepAliveTimeouts"))
 	t.link.OnLowerLayerUp();
 
 	REQUIRE(t.exe.NumPendingTimers() == 1);
-	REQUIRE(t.listener.numKeepAliveTimeout == 0);
+	REQUIRE(t.listener.numKeepAliveTransmissions == 0);
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
-	REQUIRE(t.listener.numKeepAliveTimeout == 1);
+	REQUIRE(t.listener.numKeepAliveTransmissions == 1);
 }
 
 TEST_CASE(SUITE("KeepAliveFailureCallbackIsInvokedOnTimeout"))
@@ -65,7 +65,7 @@ TEST_CASE(SUITE("KeepAliveFailureCallbackIsInvokedOnTimeout"))
 	t.link.OnLowerLayerUp();
 
 	REQUIRE(t.exe.NumPendingTimers() == 1);
-	REQUIRE(t.listener.numKeepAliveTimeout == 0);
+	REQUIRE(t.listener.numKeepAliveTransmissions == 0);
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);	

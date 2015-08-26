@@ -300,8 +300,7 @@ void LinkContext::OnKeepAliveTimeout()
 	if (elapsed >= this->config.KeepAliveTimeout.GetMilliseconds())
 	{
 		this->lastMessageTimestamp = now;
-		this->keepAliveTimeout = true;
-		this->pListener->OnKeepAliveTimeout();
+		this->keepAliveTimeout = true;		
 	}
 
 	// No matter what, reschedule the timer based on last message timestamp
