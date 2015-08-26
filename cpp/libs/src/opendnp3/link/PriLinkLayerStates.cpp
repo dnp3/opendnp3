@@ -120,6 +120,7 @@ PriStateBase& PLLS_Idle::TrySendConfirmed(LinkContext& ctx, ITransportSegment& s
 
 PriStateBase& PLLS_Idle::TrySendRequestLinkStatus(LinkContext& ctx)
 {	
+	ctx.keepAliveTimeout = false;
 	ctx.QueueRequestLinkStatus();
 	ctx.pListener->OnKeepAliveInitiated();
 	return PLLS_RequestLinkStatusTransmitWait::Instance();

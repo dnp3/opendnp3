@@ -339,9 +339,7 @@ void LinkContext::CancelTimer()
 }
 
 void LinkContext::FailKeepAlive(bool timeout)
-{
-	this->keepAliveTimeout = false;
-
+{	
 	if (timeout)
 	{
 		this->pListener->OnKeepAliveFailure();
@@ -349,9 +347,7 @@ void LinkContext::FailKeepAlive(bool timeout)
 }
 
 void LinkContext::CompleteKeepAlive()
-{
-	this->keepAliveTimeout = false;
-
+{	
 	this->pListener->OnKeepAliveSuccess();
 }
 
