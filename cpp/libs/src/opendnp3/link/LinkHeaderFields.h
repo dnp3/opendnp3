@@ -36,8 +36,8 @@ struct LinkHeaderFields
 	bool isFromMaster;
 	bool fcb;
 	bool fcvdfc;
-	uint16_t src;
-	uint16_t dest;		
+	uint16_t dest;
+	uint16_t src;		
 };
 
 }

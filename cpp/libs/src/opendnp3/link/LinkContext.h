@@ -110,8 +110,7 @@ public:
 
 	openpal::Logger logger;
 	const LinkConfig config;
-	ITransportSegment* pSegments;
-	bool isRemoteReset;
+	ITransportSegment* pSegments;	
 	LinkTransmitMode txMode;	
 	uint32_t numRetryRemaining;
 	openpal::IExecutor* pExecutor;
@@ -120,6 +119,7 @@ public:
 	bool nextReadFCB;
 	bool nextWriteFCB;
 	bool isOnline;
+	bool isRemoteReset;
 	bool keepAliveTimeout;	
 	openpal::MonotonicTimestamp lastMessageTimestamp;		
 	ILinkRouter* pRouter;
