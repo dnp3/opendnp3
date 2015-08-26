@@ -56,7 +56,7 @@ TEST_CASE(SUITE("ForwardsKeepAliveTimeouts"))
 	REQUIRE(t.listener.numKeepAliveTimeout == 1);
 }
 
-TEST_CASE(SUITE("SendsKeepAliveAfterExpiration"))
+TEST_CASE(SUITE("KeepAliveFailureCallbackIsInvokedOnTimeout"))
 {
 	LinkConfig config(true, false);
 	config.KeepAliveTimeout = TimeDuration::Seconds(5);
@@ -70,7 +70,13 @@ TEST_CASE(SUITE("SendsKeepAliveAfterExpiration"))
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);	
 
-	REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
+	REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));	
+	REQUIRE(t.exe.NumPendingTimers() == 1);
+	t.link.OnTransmitResult(true);
+	REQUIRE(t.exe.NumPendingTimers() == 2);
+	t.exe.AdvanceTime(config.Timeout);
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.listener.numKeepAliveFailure == 1);
 }
 
 
