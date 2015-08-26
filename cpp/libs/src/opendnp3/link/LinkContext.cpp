@@ -347,7 +347,7 @@ void LinkContext::CompleteKeepAlive()
 	this->keepAliveTimeout = false;
 }
 
-bool LinkContext::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
+bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
 	if (!isOnline)
 	{
@@ -355,7 +355,7 @@ bool LinkContext::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdf
 		return false;
 	}
 
-	if (!this->Validate(isMaster, source, dest))
+	if (!this->Validate(header.isFromMaster, header.src, header.dest))
 	{
 		return false;
 	}
@@ -363,22 +363,22 @@ bool LinkContext::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdf
 	// reset the keep-alive timestamp
 	this->lastMessageTimestamp = this->pExecutor->GetTime();
 
-	switch (func)
+	switch (header.func)
 	{
 	case(LinkFunction::SEC_ACK) :
-		pPriState = &pPriState->OnAck(*this, fcvdfc);
+		pPriState = &pPriState->OnAck(*this, header.fcvdfc);
 		return true;
 	case(LinkFunction::SEC_NACK) :
-		pPriState = &pPriState->OnNack(*this, fcvdfc);
+		pPriState = &pPriState->OnNack(*this, header.fcvdfc);
 		return true;
 	case(LinkFunction::SEC_LINK_STATUS) :
-		pPriState = &pPriState->OnLinkStatus(*this, fcvdfc);
+		pPriState = &pPriState->OnLinkStatus(*this, header.fcvdfc);
 		return true;
 	case(LinkFunction::SEC_NOT_SUPPORTED) :
-		pPriState = &pPriState->OnNotSupported(*this, fcvdfc);
+		pPriState = &pPriState->OnNotSupported(*this, header.fcvdfc);
 		return true;
 	case(LinkFunction::PRI_TEST_LINK_STATES) :
-		pSecState = &pSecState->OnTestLinkStatus(*this, fcb);
+		pSecState = &pSecState->OnTestLinkStatus(*this, header.fcb);
 		return true;
 	case(LinkFunction::PRI_RESET_LINK_STATES) :
 		pSecState = &pSecState->OnResetLinkStates(*this);
@@ -387,7 +387,7 @@ bool LinkContext::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdf
 		pSecState = &pSecState->OnRequestLinkStatus(*this);
 		return true;
 	case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
-		pSecState = &pSecState->OnConfirmedUserData(*this, fcb, userdata);
+		pSecState = &pSecState->OnConfirmedUserData(*this, header.fcb, userdata);
 		return true;
 	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
 		this->PushDataUp(userdata);

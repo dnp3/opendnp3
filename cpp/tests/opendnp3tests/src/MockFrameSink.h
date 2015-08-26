@@ -46,7 +46,7 @@ public:
 	bool OnLowerLayerDown() override;
 	bool OnTransmitResult(bool success) override;
 
-	virtual bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata) override final;
+	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
 	void Reset();
 	
@@ -57,12 +57,7 @@ public:
 
 	// Last frame information
 	size_t m_num_frames;
-	LinkFunction m_code;
-	bool m_master;
-	bool m_fcvdfc;
-	bool m_fcb;
-	uint16_t m_src;
-	uint16_t m_dest;
+	LinkHeaderFields m_last_header;
 	
 	bool mLowerOnline;
 

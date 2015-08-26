@@ -91,7 +91,7 @@ public:
 	bool Remove(opendnp3::ILinkSession* pContext);
 
 	// ------------ IFrameSink -----------------
-	virtual bool OnFrame(opendnp3::LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata) override final;
+	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
 	// ------------ ILinkRouter -----------------
 

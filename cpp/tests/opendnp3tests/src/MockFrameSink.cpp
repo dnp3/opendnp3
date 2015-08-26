@@ -46,19 +46,19 @@ void MockFrameSink::Reset()
 	m_num_frames = 0;
 }
 
-bool MockFrameSink::CheckLast(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc)
+bool MockFrameSink::CheckLast(LinkFunction func, bool isMaster, uint16_t dest, uint16_t src)
 {
-	return (m_code == aCode) && (aIsMaster == m_master) && (m_src == aSrc) && (m_dest == aDest);
+	return (m_last_header.func == func) && (isMaster == m_last_header.isFromMaster) && (m_last_header.src == src) && (m_last_header.dest == dest);
 }
 
-bool MockFrameSink::CheckLastWithFCB(LinkFunction aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
+bool MockFrameSink::CheckLastWithFCB(LinkFunction func, bool isMaster, bool aFcb, uint16_t dest, uint16_t src)
 {
-	return (m_fcb == aFcb) && CheckLast(aCode, aIsMaster, aDest, aSrc);
+	return (m_last_header.fcb == aFcb) && CheckLast(func, isMaster, dest, src);
 }
 
-bool MockFrameSink::CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+bool MockFrameSink::CheckLastWithDFC(LinkFunction func, bool isMaster, bool aIsRcvBuffFull, uint16_t dest, uint16_t src)
 {
-	return  (m_fcvdfc == aIsRcvBuffFull) && CheckLast(aCode, aIsMaster, aDest, aSrc);
+	return  (m_last_header.fcvdfc == aIsRcvBuffFull) && CheckLast(func, isMaster, dest, src);
 }
 
 bool MockFrameSink::OnTransmitResult(bool success)
@@ -66,16 +66,11 @@ bool MockFrameSink::OnTransmitResult(bool success)
 	return true;
 }
 
-bool MockFrameSink::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
+bool MockFrameSink::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
 	++m_num_frames;
 
-	this->m_code = func;
-	this->m_master = isMaster;
-	this->m_fcb = fcb;
-	this->m_fcvdfc = fcvdfc;
-	this->m_dest = dest;
-	this->m_src = source;
+	this->m_last_header = header;
 	
 	if (userdata.IsNotEmpty())
 	{		

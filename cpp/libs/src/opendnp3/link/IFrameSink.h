@@ -23,7 +23,7 @@
 
 #include <openpal/container/RSlice.h>
 
-#include "opendnp3/gen/LinkFunction.h"
+#include "opendnp3/link/LinkHeaderFields.h"
 
 #include <cstdint>
 
@@ -35,7 +35,7 @@ class IFrameSink
 {
 public:
 
-	virtual bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata) = 0;
+	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) = 0;
 	
 };
 

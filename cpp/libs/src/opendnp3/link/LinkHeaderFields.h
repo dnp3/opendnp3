@@ -18,40 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_LINKLAYER_H
-#define OPENDNP3_LINKLAYER_H
+#ifndef OPENDNP3_LINK_HEADER_FIELDS_H
+#define OPENDNP3_LINK_HEADER_FIELDS_H
 
-#include "LinkContext.h"
+#include "opendnp3/gen/LinkFunction.h"
 
 namespace opendnp3
 {
 
-//	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer final : public ILinkLayer, public ILinkSession
-{
+struct LinkHeaderFields
+{	
+	LinkHeaderFields();
 
-public:
-
-	LinkLayer(openpal::LogRoot&, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, const LinkConfig&);
+	LinkHeaderFields(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source);
 	
-	void SetRouter(ILinkRouter&);
-
-	// ---- Events from below: ILinkSession / IFrameSink  ----
-
-	virtual bool OnLowerLayerUp() override;
-	virtual bool OnLowerLayerDown() override;
-	virtual bool OnTransmitResult(bool success) override;
-	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
-	
-	// ---- Events from above: ILinkLayer ----
-
-	virtual void Send(ITransportSegment& segments) override;	
-
-private:
-
-	// The full state
-	LinkContext ctx;		
-	
+	LinkFunction func;
+	bool isFromMaster;
+	bool fcb;
+	bool fcvdfc;
+	uint16_t src;
+	uint16_t dest;		
 };
 
 }

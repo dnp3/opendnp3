@@ -37,6 +37,12 @@ LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	link.SetRouter(*this);
 }
 
+bool LinkLayerTest::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
+{
+	LinkHeaderFields fields(func, isMaster, fcb, fcvdfc, dest, source);
+	return link.OnFrame(fields, userdata);
+}
+
 void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext)
 {
 	lastWrite = buffer;

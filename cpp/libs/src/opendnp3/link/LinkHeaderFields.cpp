@@ -18,43 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_LINKLAYER_H
-#define OPENDNP3_LINKLAYER_H
 
-#include "LinkContext.h"
+#include "LinkHeaderFields.h"
 
 namespace opendnp3
-{
+{		
+	LinkHeaderFields::LinkHeaderFields() :
+		func(LinkFunction::INVALID),
+		isFromMaster(false),
+		fcb(false),
+		fcvdfc(false),
+		dest(0),
+		src(0)		
+	{}
 
-//	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer final : public ILinkLayer, public ILinkSession
-{
-
-public:
-
-	LinkLayer(openpal::LogRoot&, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, const LinkConfig&);
-	
-	void SetRouter(ILinkRouter&);
-
-	// ---- Events from below: ILinkSession / IFrameSink  ----
-
-	virtual bool OnLowerLayerUp() override;
-	virtual bool OnLowerLayerDown() override;
-	virtual bool OnTransmitResult(bool success) override;
-	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
-	
-	// ---- Events from above: ILinkLayer ----
-
-	virtual void Send(ITransportSegment& segments) override;	
-
-private:
-
-	// The full state
-	LinkContext ctx;		
-	
-};
-
+	LinkHeaderFields::LinkHeaderFields(LinkFunction func_, bool isMaster_, bool fcb_, bool fcvdfc_, uint16_t dest_, uint16_t src_) :
+		func(func_),
+		isFromMaster(isMaster_),
+		fcb(fcb_),
+		fcvdfc(fcvdfc_),
+		dest(dest_),
+		src(src_)
+	{}
 }
 
-#endif
+
 

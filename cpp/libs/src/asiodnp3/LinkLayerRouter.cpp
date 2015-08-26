@@ -226,12 +226,12 @@ ILinkSession* LinkLayerRouter::GetDestination(uint16_t dest, uint16_t src)
 // IFrameSink Implementation
 //////////////////////////////////////////////////////
 
-bool LinkLayerRouter::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
+bool LinkLayerRouter::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
-	ILinkSession* pDest = GetDestination(dest, source);
+	ILinkSession* pDest = GetDestination(header.dest, header.src);
 	if (pDest)
 	{
-		return pDest->OnFrame(func, isMaster, fcb, fcvdfc, dest, source, userdata);
+		return pDest->OnFrame(header, userdata);
 	}
 	else
 	{

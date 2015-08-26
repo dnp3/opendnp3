@@ -77,9 +77,9 @@ bool LinkLayer::OnTransmitResult(bool success)
 // IFrameSink
 ////////////////////////////////
 
-bool LinkLayer::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
+bool LinkLayer::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
-	auto ret = this->ctx.OnFrame(func, isMaster, fcb, fcvdfc, dest, source, userdata);
+	auto ret = this->ctx.OnFrame(header, userdata);
 
 	if (ret)
 	{
