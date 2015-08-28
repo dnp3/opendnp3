@@ -40,10 +40,8 @@ public:
 	{
 		return numRequests == numSuccess;
 	}
-
-
-	// TODO - make this more restrictive?
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
+	
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final;
 
 private:
 

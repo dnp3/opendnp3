@@ -40,6 +40,26 @@ CommandResponseHandler::CommandResponseHandler(openpal::Logger logger_, uint8_t 
 	
 }
 
+bool CommandResponseHandler::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
+{
+	if (!(qc == QualifierCode::UINT8_CNT_UINT8_INDEX || qc == QualifierCode::UINT16_CNT_UINT16_INDEX))
+	{
+		return false;
+	}
+
+	switch (gv)
+	{
+	case(GroupVariation::Group12Var1) : //	CROB
+	case(GroupVariation::Group41Var1) : //	4 kinds of AO
+	case(GroupVariation::Group41Var2) : 
+	case(GroupVariation::Group41Var3) :
+	case(GroupVariation::Group41Var4) :
+		return true;
+	default:
+		return false;
+	}
+}
+
 IINField CommandResponseHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas)
 {
 	return this->ProcessAny(header, meas);
