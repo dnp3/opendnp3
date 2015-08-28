@@ -7,7 +7,7 @@ Licensed under the terms of the [Apache 2.0 License](http://www.apache.org/licen
 Documentation
 =============
 
-All documentation is indexed [here](http://dnp3.github.io)
+The documentation can be found [here](http://www.automatak.com/opendnp3)
   
   
 Overview
@@ -15,7 +15,7 @@ Overview
 
 Opendnp3 is a portable, scalable, and rigorously tested implementation 
 of the DNP3 (www.dnp.org) protocol stack written in C++11. The library 
-can handle the largest front end processor loads, but can also be
-ported to run on various microcontrollers.
+is designed for high-performance applications like many concurrent TCP
+sessions or huge device simulations. It also embeds very nicely on Linux.
 
-Langauge bindings are available. Consult the documentation.
+Language bindings are available. Consult the documentation.

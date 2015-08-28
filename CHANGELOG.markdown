@@ -1,3 +1,18 @@
+### 2.1.0 ###
+* Add an ILinkListener interface inherited by IMasterApplication/IOutstationApplication that allows you to monitor link-layer activity.
+* Implemented the RequestLinkStates/LinkStatus heartbeat functionality in 1815.
+* :beetle: Fixed a bug in the way CTO objects were handled w/ Group2Var3 and Group4Var3
+* Modified the IMaster interface to inherit from ICommandProcessor.
+* C# bindings now use .NET Task[T] instead of custom Future[T]
+* Introduced an experimental version of SAv5 (not intended for production use)
+ * Significantly refactored the master/outstation internals to accommodate adding SA via inheritance.
+ * Added parser/formatter generators for variable-length objects in Group120
+
+
+
+### 2.0.1 ###
+No changes to 2.0.1-RC3 for final 2.0.1 release
+
 ### 2.0.1-RC3 ###
 * Workaround for broken std::chrono::steady_clock impl thanks to Liam MacIsaac.
 * Based on user feedback, the .NET outstation API now uses a more intuitive "ChangeSet" to update values in the outstation.
