@@ -1,4 +1,4 @@
-### 2.1.0 ###
+### 2.1.0-RC1 (pending) ###
 * Add an ILinkListener interface inherited by IMasterApplication/IOutstationApplication that allows you to monitor link-layer activity.
 * Implemented the RequestLinkStates/LinkStatus heartbeat functionality in 1815.
 * :beetle: Fixed a bug in the way CTO objects were handled w/ Group2Var3 and Group4Var3
