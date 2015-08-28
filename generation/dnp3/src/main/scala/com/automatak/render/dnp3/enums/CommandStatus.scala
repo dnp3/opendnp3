@@ -15,7 +15,7 @@ object CommandStatus {
   private val defaultValue = EnumValue("UNDEFINED", 127, "10 to 126 are currently reserved")
 
   private val codes = List(
-    EnumValue("SUCCESS", 0, "command was successfully received and handled"),
+    EnumValue("SUCCESS", 0, "command was accepted, initiated, or queued"),
     EnumValue("TIMEOUT", 1, "command timed out before completing"),
     EnumValue("NO_SELECT", 2, "command requires being selected before operate, configuration issue"),
     EnumValue("FORMAT_ERROR", 3, "bad control code or timing values"),

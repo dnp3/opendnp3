@@ -31,7 +31,7 @@ namespace opendnp3 {
 */
 enum class CommandStatus : uint8_t
 {
-  /// command was successfully received and handled
+  /// command was accepted, initiated, or queued
   SUCCESS = 0,
   /// command timed out before completing
   TIMEOUT = 1,

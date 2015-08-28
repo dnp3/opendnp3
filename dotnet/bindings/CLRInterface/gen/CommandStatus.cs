@@ -27,7 +27,7 @@ namespace Automatak.DNP3.Interface
   public enum CommandStatus : byte
   {
     /// <summary>
-    /// command was successfully received and handled
+    /// command was accepted, initiated, or queued
     /// </summary>
     SUCCESS = 0,
     /// <summary>
