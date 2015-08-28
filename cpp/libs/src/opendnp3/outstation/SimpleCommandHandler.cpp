@@ -23,7 +23,7 @@
 namespace opendnp3
 {
 
-SimpleCommandHandler::SimpleCommandHandler(CommandStatus status_) : status(status_), numOperate(0), numSelect(0)
+SimpleCommandHandler::SimpleCommandHandler(CommandStatus status_) : status(status_), numOperate(0), numSelect(0), numStart(0), numEnd(0)
 {
 
 }
@@ -81,6 +81,16 @@ CommandStatus SimpleCommandHandler::Operate(const AnalogOutputDouble64& arComman
 {
 	++numOperate;
 	return status;
+}
+
+void SimpleCommandHandler::Start()
+{
+	++numStart;
+}
+
+void SimpleCommandHandler::End()
+{
+	++numEnd;
 }
 
 SuccessCommandHandler::SuccessCommandHandler() : SimpleCommandHandler(CommandStatus::SUCCESS)

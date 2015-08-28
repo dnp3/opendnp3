@@ -38,30 +38,39 @@ public:
 	*/
 	SimpleCommandHandler(CommandStatus status);
 
-	CommandStatus Select(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) override final;
-	CommandStatus Operate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) override final;
+	CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index) override final;
 
 
-	CommandStatus Select(const AnalogOutputInt16& arCommand, uint16_t aIndex) override final;
-	CommandStatus Operate(const AnalogOutputInt16& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const AnalogOutputInt16& command, uint16_t index) override final;
+	CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index) override final;
 
 
-	CommandStatus Select(const AnalogOutputInt32& arCommand, uint16_t aIndex) override final;
-	CommandStatus Operate(const AnalogOutputInt32& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const AnalogOutputInt32& command, uint16_t index) override final;
+	CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index) override final;
 
 
-	CommandStatus Select(const AnalogOutputFloat32& arCommand, uint16_t aIndex) override final;
-	CommandStatus Operate(const AnalogOutputFloat32& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const AnalogOutputFloat32& command, uint16_t index) override final;
+	CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index) override final;
 
 
-	CommandStatus Select(const AnalogOutputDouble64& arCommand, uint16_t aIndex) override final;
-	CommandStatus Operate(const AnalogOutputDouble64& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const AnalogOutputDouble64& command, uint16_t index) override final;
+	CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index) override final;
 
 
 protected:
+	
+	virtual void Start() override final;
+	virtual void End() override final;
+
 	CommandStatus status;
+
+public:
+
 	uint32_t numOperate;
 	uint32_t numSelect;
+	uint32_t numStart;
+	uint32_t numEnd;
 	
 };
 

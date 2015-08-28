@@ -23,14 +23,17 @@
 
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
+#include "opendnp3/app/ITransactable.h"
 
 namespace opendnp3
 {
 
 /**
 * Interface used to dispatch SELECT / OPERATE / DIRECT OPERATE (Binary/Analog output) from the outstation to application code.
+*
+* The ITransactable sub-interface is used to determine the start and end of an ASDU containing commands.
 */
-class ICommandHandler
+class ICommandHandler : public ITransactable
 {
 public:
 	virtual ~ICommandHandler() {}

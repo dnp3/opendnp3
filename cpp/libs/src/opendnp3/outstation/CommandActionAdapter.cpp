@@ -21,37 +21,57 @@
 
 #include "CommandActionAdapter.h"
 
+#include "opendnp3/app/ITransactable.h"
+
 namespace opendnp3
 {
 
-CommandActionAdapter::CommandActionAdapter(ICommandHandler* pHandler_, bool isSelect_) :
-	pHandler(pHandler_),
-	isSelect(isSelect_)
+CommandActionAdapter::CommandActionAdapter(ICommandHandler* handler, bool isSelect) :
+	m_handler(handler),
+	m_isSelect(isSelect),
+	m_isStarted(false)
 {}
+
+CommandActionAdapter::~CommandActionAdapter()
+{
+	if (m_isStarted)
+	{
+		Transaction::End(m_handler);
+	}
+}
+
+void CommandActionAdapter::CheckStart()
+{
+	if (!m_isStarted)
+	{
+		m_isStarted = true;
+		Transaction::Start(m_handler);
+	}
+}
 
 CommandStatus CommandActionAdapter::Action(const ControlRelayOutputBlock& command, uint16_t index)
 {
-	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
+	return this->ActionT(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputInt16& command, uint16_t index)
 {
-	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
+	return this->ActionT(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputInt32& command, uint16_t index)
 {
-	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
+	return this->ActionT(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputFloat32& command, uint16_t index)
 {
-	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
+	return this->ActionT(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputDouble64& command, uint16_t index)
 {
-	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
+	return this->ActionT(command, index);
 }
 
 }

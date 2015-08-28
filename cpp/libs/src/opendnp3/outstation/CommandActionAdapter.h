@@ -36,7 +36,9 @@ class CommandActionAdapter : public ICommandAction
 
 public:
 
-	CommandActionAdapter(ICommandHandler* pHandler_, bool isSelect_);
+	CommandActionAdapter(ICommandHandler* handler, bool isSelect);
+
+	~CommandActionAdapter();
 
 	virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t index) final;
 
@@ -50,8 +52,18 @@ public:
 
 private:
 
-	ICommandHandler* pHandler;
-	bool isSelect;
+	template <class T>
+	CommandStatus ActionT(const T& command, uint16_t index)
+	{
+		this->CheckStart();
+		return m_isSelect ? m_handler->Select(command, index) : m_handler->Operate(command, index);
+	}
+
+	void CheckStart();
+	
+	ICommandHandler* m_handler;
+	bool m_isSelect;
+	bool m_isStarted;
 
 };
 
