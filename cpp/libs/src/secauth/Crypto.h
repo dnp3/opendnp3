@@ -21,18 +21,11 @@
 #ifndef SECAUTH_CRYPTO_H
 #define SECAUTH_CRYPTO_H
 
-#include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/util/Uncopyable.h>
-#include <openpal/container/Buffer.h>
 
-#include <opendnp3/gen/KeyWrapAlgorithm.h>
 #include <opendnp3/gen/HMACType.h>
 
-#include "SessionKeysView.h"
-
-#include "HMACMode.h"
-
-#include <memory>
+#include "secauth/HMACMode.h"
 
 namespace secauth
 {

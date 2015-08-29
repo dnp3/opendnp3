@@ -23,8 +23,8 @@
 
 #include <cstdint>
 
-#include "HMACMode.h"
-#include "AuthSizes.h"
+#include "secauth/HMACMode.h"
+#include "secauth/AuthSizes.h"
 
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/container/StaticBuffer.h>

@@ -8,7 +8,7 @@ using namespace System::Collections::Generic;
 
 #include <vector>
 
-#include <asiodnp3/HeaderTypes.h>
+#include <opendnp3/master/HeaderTypes.h>
 #include <opendnp3/master/TaskConfig.h>
 #include <opendnp3/master/TaskInfo.h>
 
@@ -27,15 +27,15 @@ namespace Automatak
 			{
 			public:				
 
-				static std::vector<asiodnp3::Header> ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers);
+				static std::vector<opendnp3::Header> ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers);
 
-				static bool Convert(Header^ header, asiodnp3::Header& output);
+				static bool Convert(Header^ header, opendnp3::Header& output);
 
-				static asiodnp3::Header Convert(Header^ header);
-				static asiodnp3::Header ConvertCount8(CountHeader^ header);
-				static asiodnp3::Header ConvertCount16(CountHeader^ header);
-				static asiodnp3::Header ConvertRange8(RangeHeader^ header);
-				static asiodnp3::Header ConvertRange16(RangeHeader^ header);
+				static opendnp3::Header Convert(Header^ header);
+				static opendnp3::Header ConvertCount8(CountHeader^ header);
+				static opendnp3::Header ConvertCount16(CountHeader^ header);
+				static opendnp3::Header ConvertRange8(RangeHeader^ header);
+				static opendnp3::Header ConvertRange16(RangeHeader^ header);
 
 				static opendnp3::TaskConfig Convert(TaskConfig^ config, ITaskCallback^ wrapper);
 				static opendnp3::TaskConfig Convert(TaskConfig^ config);

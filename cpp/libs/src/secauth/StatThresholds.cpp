@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "StatThresholds.h"
+#include "secauth/StatThresholds.h"
 
 namespace secauth
 {

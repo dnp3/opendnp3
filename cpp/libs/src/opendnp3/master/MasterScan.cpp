@@ -22,6 +22,8 @@
 
 #include <openpal/executor/IExecutor.h>
 
+#include "opendnp3/master/IMasterTask.h"
+
 namespace opendnp3
 {
 

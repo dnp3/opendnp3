@@ -23,12 +23,12 @@
 
 #include <openpal/executor/IExecutor.h>
 
-#include "opendnp3/master/IMasterTask.h"
-
 #include <functional>
 
 namespace opendnp3
 {
+
+class IMasterTask;
 
 class MasterScan
 {

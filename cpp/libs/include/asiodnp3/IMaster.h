@@ -23,13 +23,16 @@
 
 #include "IStack.h"
 
-#include <opendnp3/master/HeaderTypes.h>
 #include <opendnp3/app/ClassField.h>
 #include <opendnp3/app/TimeAndInterval.h>
 
+#include <opendnp3/master/HeaderTypes.h>
 #include <opendnp3/master/TaskConfig.h>
 #include <opendnp3/master/MasterScan.h>
 #include <opendnp3/master/ICommandProcessor.h>
+
+#include <opendnp3/gen/FunctionCode.h>
+
 #include <openpal/executor/TimeDuration.h>
 
 #include <vector>

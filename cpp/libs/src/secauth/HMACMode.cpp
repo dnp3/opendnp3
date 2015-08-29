@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "HMACMode.h"
+#include "secauth/HMACMode.h"
 
 using namespace opendnp3;
 
