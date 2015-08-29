@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "FinishUpdateKeyChangeArgs.h"
+#include "secauth/master/FinishUpdateKeyChangeArgs.h"
 
 namespace secauth
 {

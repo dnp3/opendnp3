@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "OutstationAuthSettings.h"
+#include "secauth/outstation/OutstationAuthSettings.h"
 
 #include <opendnp3/app/AppConstants.h>
 

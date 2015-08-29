@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "Permissions.h"
+#include "secauth/outstation/Permissions.h"
 
 using namespace opendnp3;
 

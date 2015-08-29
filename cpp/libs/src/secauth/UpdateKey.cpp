@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "UpdateKey.h"
+#include "secauth/UpdateKey.h"
 
 using namespace opendnp3;
 

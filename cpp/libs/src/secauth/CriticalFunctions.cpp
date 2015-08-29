@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "CriticalFunctions.h"
+#include "secauth/CriticalFunctions.h"
 
 using namespace opendnp3;
 

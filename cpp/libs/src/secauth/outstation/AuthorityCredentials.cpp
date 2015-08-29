@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "AuthorityCredentials.h"
+#include "secauth/outstation/AuthorityCredentials.h"
 
 namespace secauth
 {
