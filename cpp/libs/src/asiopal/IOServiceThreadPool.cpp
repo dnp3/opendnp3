@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "IOServiceThreadPool.h"
+#include "asiopal/IOServiceThreadPool.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>

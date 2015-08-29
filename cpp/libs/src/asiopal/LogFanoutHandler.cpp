@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "LogFanoutHandler.h"
+#include "asiopal/LogFanoutHandler.h"
 
 using namespace std;
 using namespace openpal;

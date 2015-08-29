@@ -18,14 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "ASIOExecutor.h"
+#include "asiopal/ASIOExecutor.h"
 
-#include "TimerASIO.h"
+#include "asiopal/TimerASIO.h"
+#include "asiopal/SteadyClock.h"
 
 #include <asio.hpp>
 #include <functional>
-
-#include "SteadyClock.h"
 
 using namespace std;
 
