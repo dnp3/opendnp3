@@ -110,7 +110,7 @@ install(TARGETS opendnp3 DESTINATION lib)
 set_target_properties(opendnp3 PROPERTIES FOLDER libs)
 
 # ---- asiopal library ----
-file(GLOB_RECURSE asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h)
+file(GLOB_RECURSE asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)
 add_library(asiopal ${LIB_TYPE} ${asiopal_SRC})
 target_link_libraries(asiopal openpal)
 install(TARGETS asiopal DESTINATION lib)
@@ -118,9 +118,9 @@ set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
 if(SECAUTH)
-	file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h)
+	file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiopal/*.h)
 else()
-	file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h)
+	file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiopal/*.h)
 endif()
 
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
@@ -136,14 +136,14 @@ set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
 if(SECAUTH)
   
   # ---- secauth library ----
-  file(GLOB_RECURSE secauth_SRC ./cpp/libs/src/secauth/*.cpp ./cpp/libs/src/secauth/*.h)
+  file(GLOB_RECURSE secauth_SRC ./cpp/libs/src/secauth/*.cpp ./cpp/libs/src/secauth/*.h ./cpp/libs/include/secauth/*.h)
   add_library(secauth ${LIB_TYPE} ${secauth_SRC})
   target_link_libraries(secauth opendnp3)
   install(TARGETS secauth DESTINATION lib)  
   set_target_properties(secauth PROPERTIES FOLDER libs)
 
   # ---- osslcrypto library ----
-  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/src/osslcrypto/*.cpp ./cpp/libs/src/osslcrypto/*.h)
+  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/src/osslcrypto/*.cpp ./cpp/libs/src/osslcrypto/*.h ./cpp/libs/include/osslcrypto/*.h)
   add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
   target_link_libraries(osslcrypto openpal)
   target_link_libraries(osslcrypto ${OPENSSL_LIBRARIES})  
