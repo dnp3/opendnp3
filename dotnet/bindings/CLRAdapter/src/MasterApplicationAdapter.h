@@ -76,20 +76,18 @@ namespace Automatak
 					return proxy->AssignClassDuringStartup();
 				}
 
-				virtual void ConfigureAssignClassRequest(opendnp3::HeaderWriter& writer) override final
+				virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& writer) override final
 				{
 					auto assignments = proxy->GetClassAssignments();
 					for each(auto a in assignments)
-					{
-						writer.WriteHeader(Conversions::Convert(a.clazz), opendnp3::QualifierCode::ALL_OBJECTS);
-						opendnp3::GroupVariationID id(a.group, a.variation);
+					{												
 						if (a.range.IsAllObjects())
-						{
-							writer.WriteHeader(id, opendnp3::QualifierCode::ALL_OBJECTS);
+						{							
+							writer(opendnp3::Header::AllObjects(a.group, a.variation));
 						}
 						else
 						{
-							writer.WriteRangeHeader<openpal::UInt16>(opendnp3::QualifierCode::UINT16_START_STOP, id, a.range.start, a.range.stop);
+							writer(opendnp3::Header::Range16(a.group, a.variation, a.range.start, a.range.stop));							
 						}
 					}
 				}
