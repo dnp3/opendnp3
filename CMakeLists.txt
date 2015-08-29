@@ -103,7 +103,6 @@ set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".
 file(GLOB_RECURSE openpal_SRC ./cpp/libs/src/openpal/*.cpp ./cpp/libs/src/openpal/*.h ./cpp/libs/include/openpal/*.h)
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
-install(DIRECTORY ./cpp/libs/include/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
 set_target_properties(openpal PROPERTIES FOLDER libs)
 
 # ---- opendnp3 library ----
@@ -111,7 +110,6 @@ file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/src/opendnp3/*.cpp ./cpp/libs/src/open
 add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(openpal)
 install(TARGETS opendnp3 DESTINATION lib)
-install(DIRECTORY ./cpp/libs/src/opendnp3/ DESTINATION include/opendnp3 ${INSTALL_ARGS})
 set_target_properties(opendnp3 PROPERTIES FOLDER libs)
 
 # ---- asiopal library ----
@@ -119,7 +117,6 @@ file(GLOB_RECURSE asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopa
 add_library(asiopal ${LIB_TYPE} ${asiopal_SRC})
 target_link_libraries(asiopal openpal)
 install(TARGETS asiopal DESTINATION lib)
-install(DIRECTORY ./cpp/libs/src/asiopal/ DESTINATION include/asiopal ${INSTALL_ARGS})
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
@@ -137,7 +134,6 @@ if(SECAUTH)
 endif()
 
 install(TARGETS asiodnp3 DESTINATION lib)
-install(DIRECTORY ./cpp/libs/src/asiodnp3/ DESTINATION include/asiodnp3 ${INSTALL_ARGS})
 set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
 
 if(SECAUTH)
@@ -146,8 +142,7 @@ if(SECAUTH)
   file(GLOB_RECURSE secauth_SRC ./cpp/libs/src/secauth/*.cpp ./cpp/libs/src/secauth/*.h)
   add_library(secauth ${LIB_TYPE} ${secauth_SRC})
   target_link_libraries(secauth opendnp3)
-  install(TARGETS secauth DESTINATION lib)
-  install(DIRECTORY ./cpp/libs/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
+  install(TARGETS secauth DESTINATION lib)  
   set_target_properties(secauth PROPERTIES FOLDER libs)
 
   # ---- osslcrypto library ----
@@ -155,11 +150,16 @@ if(SECAUTH)
   add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
   target_link_libraries(osslcrypto openpal)
   target_link_libraries(osslcrypto ${OPENSSL_LIBRARIES})  
-  install(TARGETS osslcrypto DESTINATION lib)
-  install(DIRECTORY ./cpp/libs/src/osslcrypto/ DESTINATION include/osslcrypto ${INSTALL_ARGS})
+  install(TARGETS osslcrypto DESTINATION lib)  
   set_target_properties(osslcrypto PROPERTIES FOLDER libs)  
 
 endif()
+
+
+# ----- install -----
+install(DIRECTORY ./cpp/libs/include/ DESTINATION include ${INSTALL_ARGS})
+
+
 
 if(DEMO)
 
