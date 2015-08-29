@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "BinaryCommandEvent.h"
+#include "opendnp3/app/BinaryCommandEvent.h"
 
 using namespace openpal;
 

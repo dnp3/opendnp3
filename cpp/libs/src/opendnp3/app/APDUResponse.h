@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_APDURESPONSE_H
 #define OPENDNP3_APDURESPONSE_H
 
-#include "APDUWrapper.h"
-#include "IINField.h"
+#include "opendnp3/app/APDUWrapper.h"
+#include "opendnp3/app/IINField.h"
 
 namespace opendnp3
 {

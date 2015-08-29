@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "TimeAndInterval.h"
+#include "opendnp3/app/TimeAndInterval.h"
 
 namespace opendnp3
 {

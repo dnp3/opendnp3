@@ -21,9 +21,8 @@
 #ifndef OPENDNP3_MEASUREMENTTYPES_H
 #define OPENDNP3_MEASUREMENTTYPES_H
 
-#include "QualityMasks.h"
-#include "EventTriggers.h"
-
+#include "opendnp3/app/QualityMasks.h"
+#include "opendnp3/app/EventTriggers.h"
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/EventMetadata.h"
 

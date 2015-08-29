@@ -19,8 +19,7 @@
 * to you under the terms of the License.
 */
 
-
-#include "User.h"
+#include "opendnp3/app/User.h"
 
 namespace opendnp3
 {

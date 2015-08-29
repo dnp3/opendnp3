@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_BUFFEREDCOLLECTION_H
 #define OPENDNP3_BUFFEREDCOLLECTION_H
 
-#include "ICollection.h"
+#include "opendnp3/app/parsing/ICollection.h"
 
 namespace opendnp3
 {

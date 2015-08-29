@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "AnalogCommandEvent.h"
+#include "opendnp3/app/AnalogCommandEvent.h"
 
 namespace opendnp3
 {

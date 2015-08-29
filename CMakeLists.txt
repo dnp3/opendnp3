@@ -107,7 +107,7 @@ install(DIRECTORY ./cpp/libs/include/openpal/ DESTINATION include/openpal ${INST
 set_target_properties(openpal PROPERTIES FOLDER libs)
 
 # ---- opendnp3 library ----
-file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/src/opendnp3/*.cpp ./cpp/libs/src/opendnp3/*.h)
+file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/src/opendnp3/*.cpp ./cpp/libs/src/opendnp3/*.h ./cpp/libs/include/opendnp3/*.h)
 add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(openpal)
 install(TARGETS opendnp3 DESTINATION lib)

@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "LogLevels.h"
+#include "opendnp3/LogLevels.h"
 
 namespace opendnp3
 {

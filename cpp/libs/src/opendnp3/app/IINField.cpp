@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "IINField.h"
+#include "opendnp3/app/IINField.h"
 
 #include <openpal/util/ToHex.h>
 

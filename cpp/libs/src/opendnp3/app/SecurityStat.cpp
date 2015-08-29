@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "SecurityStat.h"
+#include "opendnp3/app/SecurityStat.h"
 
 #include "QualityFlags.h"
 

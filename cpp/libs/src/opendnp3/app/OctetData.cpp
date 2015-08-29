@@ -18,7 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OctetData.h"
+
+#include "opendnp3/app/OctetData.h"
 
 #include <openpal/container/WSlice.h>
 #include <openpal/util/Comparisons.h>

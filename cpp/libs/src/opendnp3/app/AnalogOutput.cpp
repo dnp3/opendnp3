@@ -18,11 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AnalogOutput.h"
+#include "opendnp3/app/AnalogOutput.h"
 
-#include <math.h>
-
-using namespace std;
 
 namespace opendnp3
 {
