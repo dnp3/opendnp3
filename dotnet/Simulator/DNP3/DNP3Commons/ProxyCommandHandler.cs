@@ -227,5 +227,15 @@ namespace Automatak.Simulator.DNP3.Commons
                 return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Operate(command, index));
             }
         }
+
+        void ICommandHandler.Start()
+        {
+            
+        }
+
+        void ICommandHandler.End()
+        {
+            
+        }
     }
 }

@@ -33,6 +33,16 @@ namespace Automatak.DNP3.Interface
     public interface ICommandHandler
     {
         /// <summary>
+        /// Called when an ASDU containing commands begins
+        /// </summary>
+        void Start();
+
+        /// <summary>
+        /// Called when an ASDU containing commands is complete
+        /// </summary>
+        void End();
+
+        /// <summary>
         /// Query application if it supports a ControlRelayOutputBlock (Group12Var1)
         /// </summary>
         /// <param name="command">Command to operate</param>

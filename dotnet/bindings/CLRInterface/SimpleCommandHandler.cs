@@ -110,6 +110,16 @@ namespace Automatak.DNP3.Interface
         CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, ushort index)
         {
             return status();
-        }      
+        }
+
+        void ICommandHandler.Start()
+        {
+           
+        }
+
+        void ICommandHandler.End()
+        {
+           
+        }
     }
 }

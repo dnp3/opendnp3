@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "IOpenDelayStrategy.h"
+#include "opendnp3/link/IOpenDelayStrategy.h"
 
 
 

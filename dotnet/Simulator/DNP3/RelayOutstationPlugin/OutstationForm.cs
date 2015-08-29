@@ -235,6 +235,16 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         {
             this.UpdateValues();
         }
-       
+
+
+        void ICommandHandler.Start()
+        {
+            
+        }
+
+        void ICommandHandler.End()
+        {
+            
+        }
     }
 }
