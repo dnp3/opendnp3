@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "OutstationParams.h"
+#include "opendnp3/outstation/OutstationParams.h"
 
 #include "opendnp3/app/AppConstants.h"
 

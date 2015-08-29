@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "DatabaseConfigView.h"
+#include "opendnp3/outstation/DatabaseConfigView.h"
 
 namespace opendnp3
 {

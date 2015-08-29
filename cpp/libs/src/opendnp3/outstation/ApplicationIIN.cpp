@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "ApplicationIIN.h"
+#include "opendnp3/outstation/ApplicationIIN.h"
 
 namespace opendnp3
 {

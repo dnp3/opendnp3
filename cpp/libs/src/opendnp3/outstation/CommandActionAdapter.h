@@ -23,7 +23,7 @@
 
 #include "ICommandAction.h"
 
-#include "ICommandHandler.h"
+#include "opendnp3/outstation/ICommandHandler.h"
 
 namespace opendnp3
 {

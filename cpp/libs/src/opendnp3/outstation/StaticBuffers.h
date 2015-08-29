@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_STATICBUFFERS_H
 #define OPENDNP3_STATICBUFFERS_H
 
-#include "DatabaseConfigView.h"
+#include "opendnp3/outstation/DatabaseConfigView.h"
 
 #include "opendnp3/outstation/Cell.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
