@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "LinkFunction.h"
+#include "opendnp3/gen/LinkFunction.h"
 
 namespace opendnp3 {
 

@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "FunctionCode.h"
+#include "opendnp3/gen/FunctionCode.h"
 
 namespace opendnp3 {
 

@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "KeyWrapAlgorithm.h"
+#include "opendnp3/gen/KeyWrapAlgorithm.h"
 
 namespace opendnp3 {
 

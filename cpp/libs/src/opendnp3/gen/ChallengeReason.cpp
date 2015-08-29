@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "ChallengeReason.h"
+#include "opendnp3/gen/ChallengeReason.h"
 
 namespace opendnp3 {
 

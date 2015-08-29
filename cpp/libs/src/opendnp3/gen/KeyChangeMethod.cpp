@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "KeyChangeMethod.h"
+#include "opendnp3/gen/KeyChangeMethod.h"
 
 namespace opendnp3 {
 

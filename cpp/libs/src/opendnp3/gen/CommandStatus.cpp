@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "CommandStatus.h"
+#include "opendnp3/gen/CommandStatus.h"
 
 namespace opendnp3 {
 

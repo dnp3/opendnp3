@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "GroupVariation.h"
+#include "opendnp3/gen/GroupVariation.h"
 
 namespace opendnp3 {
 

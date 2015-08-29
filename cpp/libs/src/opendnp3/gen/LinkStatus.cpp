@@ -18,40 +18,20 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "opendnp3/gen/UserOperation.h"
+#include "opendnp3/gen/LinkStatus.h"
 
 namespace opendnp3 {
 
-uint8_t UserOperationToType(UserOperation arg)
-{
-  return static_cast<uint8_t>(arg);
-}
-UserOperation UserOperationFromType(uint8_t arg)
+char const* LinkStatusToString(LinkStatus arg)
 {
   switch(arg)
   {
-    case(0x1):
-      return UserOperation::OP_ADD;
-    case(0x2):
-      return UserOperation::OP_DELETE;
-    case(0x3):
-      return UserOperation::OP_CHANGE;
+    case(LinkStatus::UNRESET):
+      return "UNRESET";
+    case(LinkStatus::RESET):
+      return "RESET";
     default:
-      return UserOperation::OP_UNDEFINED;
-  }
-}
-char const* UserOperationToString(UserOperation arg)
-{
-  switch(arg)
-  {
-    case(UserOperation::OP_ADD):
-      return "OP_ADD";
-    case(UserOperation::OP_DELETE):
-      return "OP_DELETE";
-    case(UserOperation::OP_CHANGE):
-      return "OP_CHANGE";
-    default:
-      return "OP_UNDEFINED";
+      return "UNDEFINED";
   }
 }
 

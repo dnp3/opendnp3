@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "AuthErrorCode.h"
+#include "opendnp3/gen/AuthErrorCode.h"
 
 namespace opendnp3 {
 

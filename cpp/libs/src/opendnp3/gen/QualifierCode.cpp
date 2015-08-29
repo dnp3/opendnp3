@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "QualifierCode.h"
+#include "opendnp3/gen/QualifierCode.h"
 
 namespace opendnp3 {
 

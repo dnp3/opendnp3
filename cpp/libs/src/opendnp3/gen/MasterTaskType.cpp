@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "MasterTaskType.h"
+#include "opendnp3/gen/MasterTaskType.h"
 
 namespace opendnp3 {
 

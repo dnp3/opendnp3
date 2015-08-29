@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "IntervalUnits.h"
+#include "opendnp3/gen/IntervalUnits.h"
 
 namespace opendnp3 {
 

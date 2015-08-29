@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "TaskCompletion.h"
+#include "opendnp3/gen/TaskCompletion.h"
 
 namespace opendnp3 {
 

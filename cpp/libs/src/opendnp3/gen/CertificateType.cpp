@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "CertificateType.h"
+#include "opendnp3/gen/CertificateType.h"
 
 namespace opendnp3 {
 

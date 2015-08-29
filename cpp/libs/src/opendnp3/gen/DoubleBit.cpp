@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "DoubleBit.h"
+#include "opendnp3/gen/DoubleBit.h"
 
 namespace opendnp3 {
 

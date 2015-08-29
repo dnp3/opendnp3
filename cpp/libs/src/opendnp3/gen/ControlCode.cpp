@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "ControlCode.h"
+#include "opendnp3/gen/ControlCode.h"
 
 namespace opendnp3 {
 

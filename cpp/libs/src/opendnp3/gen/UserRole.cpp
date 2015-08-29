@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "UserRole.h"
+#include "opendnp3/gen/UserRole.h"
 
 namespace opendnp3 {
 

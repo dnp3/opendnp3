@@ -54,7 +54,7 @@ object CppEnumGenerator {
       SecurityStatIndex()
     ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, false, false))
 
-    def stringOnlyEnums = List(MasterTaskType(), TaskCompletion(), ChannelState()).map(x => EnumConfig(x, false, true))
+    def stringOnlyEnums = List(MasterTaskType(), TaskCompletion(), ChannelState(), LinkStatus()).map(x => EnumConfig(x, false, true))
 
     def enums = List(fullEnums, simpleEnums, stringOnlyEnums).flatten
 
@@ -79,7 +79,7 @@ object CppEnumGenerator {
       def writeImpl() {
         def license = commented(LicenseHeader())
         def funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
-        def inc = quoted(cfg.headerName)
+        def inc = quoted(String.format("opendnp3/gen/%s", cfg.headerName))
         def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(nsopendnp3)(funcs)
 
         if(cfg.conversions || cfg.stringConv)
