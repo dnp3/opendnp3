@@ -19,14 +19,14 @@
  * to you under the terms of the License.
  */
 
-#include "LogRoot.h"
+#include "openpal/logging/LogRoot.h"
 
-#include "LogEntry.h"
-#include "LogMacros.h"
-#include "ILogHandler.h"
-#include "LogMacros.h"
+#include "openpal/logging/LogEntry.h"
+#include "openpal/logging/LogMacros.h"
+#include "openpal/logging/ILogHandler.h"
+#include "openpal/logging/LogMacros.h"
 
-#include "StringFormatting.h"
+#include "openpal/logging/StringFormatting.h"
 
 namespace openpal
 {

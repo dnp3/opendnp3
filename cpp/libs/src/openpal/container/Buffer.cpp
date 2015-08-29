@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "Buffer.h"
+#include "openpal/container/Buffer.h"
 
 namespace openpal
 {

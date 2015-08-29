@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "SingleFloat.h"
+#include "openpal/serialization/SingleFloat.h"
 
 #include "openpal/util/Limits.h"
 #include "openpal/serialization/FloatByteOrder.h"

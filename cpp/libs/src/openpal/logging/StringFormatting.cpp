@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "StringFormatting.h"
+#include "openpal/logging/StringFormatting.h"
 
 #include "openpal/util/ToHex.h"
 #include "openpal/container/RSlice.h"

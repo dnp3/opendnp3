@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "SecureCompare.h"
+#include "openpal/crypto/SecureCompare.h"
 
 namespace openpal
 {

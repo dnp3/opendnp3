@@ -19,9 +19,9 @@
  * to you under the terms of the License.
  */
 
-#include "Format.h"
+#include "openpal/serialization/Format.h"
 
-#include "Serialization.h"
+#include "openpal/serialization/Serialization.h"
 
 namespace openpal
 {	

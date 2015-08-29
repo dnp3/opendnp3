@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "Erasure.h"
+#include "openpal/executor/Erasure.h"
 
 #include <cstring>
 

@@ -100,10 +100,10 @@ add_definitions(-DASIO_STANDALONE)
 set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
 
 # ---- openpal library ----
-file(GLOB_RECURSE openpal_SRC ./cpp/libs/src/openpal/*.cpp ./cpp/libs/src/openpal/*.h)
+file(GLOB_RECURSE openpal_SRC ./cpp/libs/src/openpal/*.cpp ./cpp/libs/src/openpal/*.h ./cpp/libs/include/openpal/*.h)
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
-install(DIRECTORY ./cpp/libs/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
+install(DIRECTORY ./cpp/libs/include/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
 set_target_properties(openpal PROPERTIES FOLDER libs)
 
 # ---- opendnp3 library ----

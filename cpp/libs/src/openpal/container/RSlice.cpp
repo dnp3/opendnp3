@@ -18,11 +18,11 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "RSlice.h"
+#include "openpal/container/RSlice.h"
 
 #include "openpal/util/Comparisons.h"
 
-#include "WSlice.h"
+#include "openpal/container/WSlice.h"
 
 #include <cstring>
 
