@@ -3,8 +3,6 @@
 
 #include <msclr\marshal_cppstd.h>
 
-#include <opendnp3/objects/Group60.h>
-
 using namespace Automatak::DNP3::Interface;
 
 #ifdef ERROR
@@ -384,13 +382,13 @@ namespace Automatak
 				switch (clazz)
 				{
 				case(PointClass::Class1) :
-					return opendnp3::Group60Var2::ID();
+					return opendnp3::GroupVariationID(60, 1);
 				case(PointClass::Class2) :
-					return opendnp3::Group60Var3::ID();
+					return opendnp3::GroupVariationID(60, 2);
 				case(PointClass::Class3) :
-					return opendnp3::Group60Var4::ID();
+					return opendnp3::GroupVariationID(60, 3);
 				default:
-					return opendnp3::Group60Var1::ID();
+					return opendnp3::GroupVariationID(60, 4);
 				}
 			}
 

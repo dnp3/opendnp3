@@ -23,7 +23,7 @@
 
 #include <openpal/serialization/Serializer.h>
 
-#include "GroupVariationID.h"
+#include "opendnp3/app/GroupVariationID.h"
 
 namespace opendnp3
 {

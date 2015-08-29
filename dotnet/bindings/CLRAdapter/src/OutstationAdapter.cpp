@@ -5,8 +5,6 @@
 #include "ChangeSetAdapter.h"
 #include "Conversions.h"
 
-#include <opendnp3/outstation/Database.h>
-
 namespace Automatak
 {
 	namespace DNP3

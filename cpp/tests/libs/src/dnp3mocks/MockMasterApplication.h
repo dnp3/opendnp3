@@ -59,16 +59,19 @@ public:
 
 	virtual bool AssignClassDuringStartup() override final
 	{
-		return assignClass ? true : false;
+		return !assignClassHeaders.empty();
 	}
 	
-	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) override final
+	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override final
 	{
-		return assignClass(writer);
+		for (auto& header : assignClassHeaders)
+		{
+			fun(header);
+		}
 	}
 	
 
-	std::function<void(HeaderWriter&)> assignClass;
+	std::vector<opendnp3::Header> assignClassHeaders;
 
 	std::vector<IINField> rxIIN;
 

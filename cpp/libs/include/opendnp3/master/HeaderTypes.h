@@ -18,21 +18,18 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_HEADERTYPES_H
-#define ASIODNP3_HEADERTYPES_H
+#ifndef OPENDNP3_HEADERTYPES_H
+#define OPENDNP3_HEADERTYPES_H
 
 #include <cstdint>
 
-#include <opendnp3/gen/QualifierCode.h>
-#include <opendnp3/app/GroupVariationID.h>
+#include "opendnp3/gen/QualifierCode.h"
+#include "opendnp3/app/GroupVariationID.h"
 
 namespace opendnp3
 {
-	class HeaderWriter;
-}
 
-namespace asiodnp3
-{
+class HeaderWriter;
 
 enum class HeaderType : uint8_t
 {

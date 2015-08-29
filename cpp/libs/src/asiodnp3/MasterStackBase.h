@@ -86,7 +86,7 @@ public:
 
 	// ------- Periodic scan API ---------
 
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override final
 	{
 		auto builder = ConvertToLambda(headers);
 		auto add = [this, builder, period, config]() { return this->pContext->AddScan(period, builder, config); };
@@ -113,7 +113,7 @@ public:
 
 	// ------- Adhoc scan API ---------
 
-	virtual void Scan(const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final
+	virtual void Scan(const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override final
 	{
 		auto builder = ConvertToLambda(headers);
 		auto add = [this, builder, config]() { return this->pContext->Scan(builder, config); };
@@ -146,7 +146,7 @@ public:
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
 
-	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode fc, const std::vector<Header>& headers, const opendnp3::TaskConfig& config) override final
+	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode fc, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override final
 	{
 		auto builder = ConvertToLambda(headers);
 		auto add = [this, name, fc, builder, config]() { this->pContext->PerformFunction(name, fc, builder, config); };

@@ -19,13 +19,12 @@
  * to you under the terms of the License.
  */
 
-#include "asiodnp3/HeaderTypes.h"
+#include "opendnp3/master/HeaderTypes.h"
 
 #include <opendnp3/app/HeaderWriter.h>
 
-using namespace opendnp3;
 
-namespace asiodnp3
+namespace opendnp3
 {
 	Header Header::AllObjects(uint8_t group, uint8_t variation)
 	{

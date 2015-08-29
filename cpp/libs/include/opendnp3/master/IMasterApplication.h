@@ -25,18 +25,20 @@
 #include <openpal/executor/IUTCTimeSource.h>
 
 #include "opendnp3/master/TaskInfo.h"
+#include "opendnp3/master/HeaderTypes.h"
 
 #include "opendnp3/app/IINField.h"
-#include "opendnp3/app/HeaderWriter.h"
-
 #include "opendnp3/link/ILinkListener.h"
 
 #include "opendnp3/gen/MasterTaskType.h"
 #include "opendnp3/gen/TaskCompletion.h"
 
+#include <functional>
 
 namespace opendnp3
 {
+
+typedef std::function<void(const Header&)> WriteHeaderFunT;
 
 ///
 /// @summary Interface for all master application callback info except for measurements
@@ -61,8 +63,8 @@ class IMasterApplication : public ILinkListener, public openpal::IUTCTimeSource
 
 	/// Configure the request headers for assign class. Only called if
 	/// "AssignClassDuringStartup" returns true
-	/// The user only needs to write the object headers
-	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) {}
+	/// The user only needs to call the function for each header type to be written
+	virtual void ConfigureAssignClassRequest(const WriteHeaderFunT& fun) {}
 	
 };
 

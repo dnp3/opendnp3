@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "UserStatusChange.h"
+#include "secauth/master/UserStatusChange.h"
 
 #include <opendnp3/objects/Group120.h>
 

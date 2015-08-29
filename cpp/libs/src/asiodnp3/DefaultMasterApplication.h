@@ -41,7 +41,7 @@ public:
 
 	virtual bool AssignClassDuringStartup() override final { return false; }
 	
-	virtual void ConfigureAssignClassRequest(opendnp3::HeaderWriter& writer) override final {}
+	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override final {}
 
 	virtual openpal::UTCTimestamp Now() override final;
 

@@ -35,10 +35,8 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	MasterTestObject t(NoStartupTasks());
 
 	// configure the mock application to do assign class on startup
-	t.application.assignClass = [](HeaderWriter& writer) {
-		writer.WriteHeader(GroupVariationID(60,2), QualifierCode::ALL_OBJECTS);
-		writer.WriteHeader(GroupVariationID(3,0), QualifierCode::ALL_OBJECTS);
-	};
+	t.application.assignClassHeaders.push_back(Header::AllObjects(60, 2));
+	t.application.assignClassHeaders.push_back(Header::AllObjects(3, 0));	
 		
 	t.context.OnLowerLayerUp();
 
@@ -66,10 +64,8 @@ TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))
 	MasterTestObject t(params);
 
 	// configure the mock application to do assign class on startup
-	t.application.assignClass = [](HeaderWriter& writer) {
-		writer.WriteHeader(GroupVariationID(60, 2), QualifierCode::ALL_OBJECTS);
-		writer.WriteHeader(GroupVariationID(3, 0), QualifierCode::ALL_OBJECTS);
-	};
+	t.application.assignClassHeaders.push_back(Header::AllObjects(60, 2));
+	t.application.assignClassHeaders.push_back(Header::AllObjects(3, 0));
 
 	t.context.OnLowerLayerUp();
 

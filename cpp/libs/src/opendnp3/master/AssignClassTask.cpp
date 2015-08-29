@@ -23,6 +23,8 @@
 
 #include "opendnp3/master/IMasterApplication.h"
 
+#include "opendnp3/app/HeaderWriter.h"
+
 using namespace openpal;
 
 namespace opendnp3
@@ -38,8 +40,15 @@ bool AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 	request.SetControl(AppControlField(true, true, false, false, seq));
 	request.SetFunction(FunctionCode::ASSIGN_CLASS);
 	auto writer = request.GetWriter();
-	pApplication->ConfigureAssignClassRequest(writer);
-	return true;
+
+	bool success = true;
+	auto writeFun = [&](const Header& header)
+	{
+		success &= header.WriteTo(writer);
+	};
+
+	pApplication->ConfigureAssignClassRequest(writeFun);
+	return success;
 }
 
 bool AssignClassTask::IsEnabled() const

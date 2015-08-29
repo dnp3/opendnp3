@@ -22,8 +22,8 @@
 #define ASIODNP3_IMASTER_H
 
 #include "IStack.h"
-#include "HeaderTypes.h"
 
+#include <opendnp3/master/HeaderTypes.h>
 #include <opendnp3/app/ClassField.h>
 #include <opendnp3/app/TimeAndInterval.h>
 
@@ -55,7 +55,7 @@ public:
 	* Add a recurring user-defined scan from a vector of headers
 	* @ return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
@@ -79,7 +79,7 @@ public:
 	/**
 	* Initiate a single user defined scan via a vector of headers
 	*/
-	virtual void Scan(const std::vector<Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+	virtual void Scan(const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
 	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
@@ -104,7 +104,7 @@ public:
 	/**
 	* Perform any operation that requires just a function code
 	*/
-	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 	
 };
 

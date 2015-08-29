@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "EventBufferConfig.h"
+#include "opendnp3/outstation/EventBufferConfig.h"
 
 namespace opendnp3
 {

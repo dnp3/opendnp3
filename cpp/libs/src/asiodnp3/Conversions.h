@@ -25,12 +25,12 @@
 
 #include <vector>
 
-#include "asiodnp3/HeaderTypes.h"
+#include "opendnp3/master/HeaderTypes.h"
 
 namespace asiodnp3
 {
 
-opendnp3::HeaderBuilderT ConvertToLambda(const std::vector<Header>& headers);
+opendnp3::HeaderBuilderT ConvertToLambda(const std::vector<opendnp3::Header>& headers);
 
 }
 
