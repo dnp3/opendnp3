@@ -8,7 +8,7 @@ import com.automatak.render.cpp._
 
 object CppEnumGenerator {
 
-  def apply(directory: Path): Unit = {
+  def apply(incDirectory: Path, implDirectory: Path): Unit = {
 
     case class EnumConfig(model: EnumModel, conversions: Boolean, stringConv: Boolean) {
 
@@ -72,8 +72,8 @@ object CppEnumGenerator {
         def enum = EnumModelRenderer.render(cfg.model).toIterator
         def signatures = renders.map(c => c.header.render(cfg.model)).flatten.toIterator
         def lines = license ++ space ++ includeGuards(cfg.model.name)(cstdint ++ space ++ namespace(nsopendnp3)(enum ++ space ++ signatures))
-        writeTo(cfg.headerPath(directory))(lines)
-        println("Wrote: " + cfg.headerPath(directory))
+        writeTo(cfg.headerPath(incDirectory))(lines)
+        println("Wrote: " + cfg.headerPath(incDirectory))
       }
 
       def writeImpl() {
@@ -84,8 +84,8 @@ object CppEnumGenerator {
 
         if(cfg.conversions || cfg.stringConv)
         {
-          writeTo(cfg.implPath(directory))(lines)
-          println("Wrote: " + cfg.implPath(directory))
+          writeTo(cfg.implPath(implDirectory))(lines)
+          println("Wrote: " + cfg.implPath(implDirectory))
         }
       }
 

@@ -6,7 +6,9 @@ import com.automatak.render.dnp3.objects.generators.GroupVariationFileGenerator
 
 object Generate {
 
-  val dnp3GenPath = FileSystems.getDefault.getPath("../cpp/libs/src/opendnp3/gen")
+  val dnp3GenHeaderPath = FileSystems.getDefault.getPath("../cpp/libs/include/opendnp3/gen")
+  val dnp3GenImplPath = FileSystems.getDefault.getPath("../cpp/libs/src/opendnp3/gen")
+
   val dnp3ObjectPath = FileSystems.getDefault.getPath("../cpp/libs/src/opendnp3/objects")
 
   val csharpGenPath = FileSystems.getDefault.getPath("../dotnet/bindings/CLRInterface/gen")
@@ -14,7 +16,7 @@ object Generate {
   def main(args: Array[String]): Unit = {
 
     // generate all the required filter items
-    CppEnumGenerator(dnp3GenPath)
+    CppEnumGenerator(dnp3GenHeaderPath, dnp3GenImplPath)
     CSharpEnumGenerator("Automatak.DNP3.Interface", csharpGenPath)
     GroupVariationFileGenerator(dnp3ObjectPath)
   }
