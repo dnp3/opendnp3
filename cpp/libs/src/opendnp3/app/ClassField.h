@@ -23,7 +23,7 @@
 
 #include <cstdint>
 
-#include "EventType.h"
+#include "opendnp3/app/EventType.h"
 #include "opendnp3/gen/PointClass.h"
 
 namespace opendnp3

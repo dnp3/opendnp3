@@ -96,9 +96,6 @@ include_directories(./cpp/tests/libs/src)
 # required for ASIO in C++11 only mode
 add_definitions(-DASIO_STANDALONE)
 
-# common pattern and exludes for all installed headers
-set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
-
 # ---- openpal library ----
 file(GLOB_RECURSE openpal_SRC ./cpp/libs/src/openpal/*.cpp ./cpp/libs/src/openpal/*.h ./cpp/libs/include/openpal/*.h)
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
@@ -157,6 +154,9 @@ endif()
 
 
 # ----- install -----
+
+# common pattern and exludes for all installed headers
+set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
 install(DIRECTORY ./cpp/libs/include/ DESTINATION include ${INSTALL_ARGS})
 
 

@@ -22,6 +22,7 @@
 #include "opendnp3/app/MeasurementTypes.h"
 
 #include "opendnp3/app/QualityFlags.h"
+#include "opendnp3/app/EventTriggers.h"
 
 namespace opendnp3
 {
