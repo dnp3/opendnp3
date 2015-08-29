@@ -90,6 +90,7 @@ endif()
 
 # include paths for all the local libraries
 include_directories(./cpp/libs/src)
+include_directories(./cpp/libs/include)
 include_directories(./cpp/tests/libs/src)
 
 # required for ASIO in C++11 only mode
