@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "TaskConfig.h"
+#include "opendnp3/master/TaskConfig.h"
 
 namespace opendnp3
 {	

@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "MasterParams.h"
+#include "opendnp3/master/MasterParams.h"
 
 #include "opendnp3/app/AppConstants.h"
 
