@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_MASTERSTACKSA_H
 #define ASIODNP3_MASTERSTACKSA_H
 
-#include "IMasterSA.h"
+#include "asiodnp3/auth/IMasterSA.h"
 
 #include "asiodnp3/MasterStackBase.h"
 
