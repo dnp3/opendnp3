@@ -28,9 +28,10 @@
 
 #include <asiopal/ASIOExecutor.h>
 
-#include "IStackLifecycle.h"
-#include "IMaster.h"
-#include "ILinkBind.h"
+#include "asiodnp3/IStackLifecycle.h"
+#include "asiodnp3/IMaster.h"
+#include "asiodnp3/ILinkBind.h"
+
 #include "Conversions.h"
 
 #include <assert.h>

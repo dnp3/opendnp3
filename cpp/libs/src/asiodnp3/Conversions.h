@@ -25,7 +25,7 @@
 
 #include <vector>
 
-#include "HeaderTypes.h"
+#include "asiodnp3/HeaderTypes.h"
 
 namespace asiodnp3
 {

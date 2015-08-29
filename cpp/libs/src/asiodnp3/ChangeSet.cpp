@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "ChangeSet.h"
+#include "asiodnp3/ChangeSet.h"
 
 namespace asiodnp3
 {	

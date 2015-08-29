@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "MeasUpdate.h"
+#include "asiodnp3/MeasUpdate.h"
 
 using namespace openpal;
 using namespace opendnp3;

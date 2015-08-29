@@ -30,11 +30,11 @@
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/Synchronized.h>
 
-#include "IChannel.h"
-#include "MultidropTaskLock.h"
-#include "StackLifecycle.h"
-
+#include "asiodnp3/IChannel.h"
+#include "asiodnp3/MultidropTaskLock.h"
+#include "asiodnp3/StackLifecycle.h"
 #include "asiodnp3/LinkLayerRouter.h"
+
 #include <memory>
 
 namespace openpal

@@ -32,9 +32,9 @@
 
 #include <asiopal/ASIOExecutor.h>
 
-#include "IStackLifecycle.h"
-#include "IOutstation.h"
-#include "ILinkBind.h"
+#include "asiodnp3/IStackLifecycle.h"
+#include "asiodnp3/IOutstation.h"
+#include "asiodnp3/ILinkBind.h"
 
 namespace asiodnp3
 {

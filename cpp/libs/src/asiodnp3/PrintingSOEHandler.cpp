@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "PrintingSOEHandler.h"
+#include "asiodnp3/PrintingSOEHandler.h"
 
 using namespace std;
 

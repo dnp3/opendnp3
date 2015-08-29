@@ -21,7 +21,8 @@
 #ifndef ASIODNP3_ISTACKLIFECYCLE_H
 #define ASIODNP3_ISTACKLIFECYCLE_H
 
-#include "IStack.h"
+#include "asiodnp3/IStack.h"
+
 #include <opendnp3/link/ILinkSession.h>
 
 namespace asiopal { class ASIOExecutor; }

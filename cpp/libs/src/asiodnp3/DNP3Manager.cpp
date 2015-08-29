@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "DNP3Manager.h"
+#include "asiodnp3/DNP3Manager.h"
 
 #include "ChannelSet.h"
 
