@@ -19,11 +19,11 @@
 * to you under the terms of the License.
 */
 
-#include "AESKeyWrap.h"
+#include "osslcrypto/AESKeyWrap.h"
 
 #include <openssl/aes.h>
 
-#include "ErrorCodes.h"
+#include "osslcrypto/ErrorCodes.h"
 
 using namespace openpal;
 

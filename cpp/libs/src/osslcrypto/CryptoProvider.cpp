@@ -19,11 +19,11 @@
 * to you under the terms of the License.
 */
 
-#include "CryptoProvider.h"
+#include "osslcrypto/CryptoProvider.h"
 
-#include "SHA1HMAC.h"
-#include "SHA256HMAC.h"
-#include "ErrorCodes.h"
+#include "osslcrypto/SHA1HMAC.h"
+#include "osslcrypto/SHA256HMAC.h"
+#include "osslcrypto/ErrorCodes.h"
 
 #include <openssl/rand.h>
 #include <openssl/crypto.h>

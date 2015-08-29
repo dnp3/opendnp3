@@ -19,11 +19,11 @@
 * to you under the terms of the License.
 */
 
-#include "GenericHMAC.h"
+#include "osslcrypto/GenericHMAC.h"
 
 #include <openpal/util/Finally.h>
 
-#include "ErrorCodes.h"
+#include "osslcrypto/ErrorCodes.h"
 
 using namespace openpal;
 

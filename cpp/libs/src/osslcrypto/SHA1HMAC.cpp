@@ -19,9 +19,9 @@
 * to you under the terms of the License.
 */
 
-#include "SHA1HMAC.h"
+#include "osslcrypto/SHA1HMAC.h"
 
-#include "GenericHMAC.h"
+#include "osslcrypto/GenericHMAC.h"
 
 using namespace openpal;
 
