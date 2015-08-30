@@ -21,20 +21,22 @@
 #ifndef ASIODNP3_MEASUPDATE_H
 #define ASIODNP3_MEASUPDATE_H
 
-#include "ChangeSet.h"
 #include "IOutstation.h"
 
 #include <openpal/util/Uncopyable.h>
-#include <memory>
-
 
 namespace asiodnp3
 {
+  
+class ChangeSet;  
 
+/*
+ *
+ */  
 class MeasUpdate : private openpal::Uncopyable
 {
 public:
-	MeasUpdate(IOutstation* pOutstation);
+	MeasUpdate(IOutstation* outstation);
 
 	~MeasUpdate();
 
@@ -68,25 +70,7 @@ private:
 	ChangeSet* pChanges;
 };
 
-template <class T>
-void MeasUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode)
-{
-	auto update = [ = ](opendnp3::IDatabase & db)
-	{
-		db.Update(meas, index, mode);
-	};
-	pChanges->Add(update);
-}
 
-template <class T>
-void MeasUpdate::ModifyAny(const openpal::Function1<const T&, T>& modify, uint16_t index, opendnp3::EventMode mode)
-{
-	auto update = [ = ](opendnp3::IDatabase & db)
-	{
-		db.Modify(modify, index, mode);
-	};
-	pChanges->Add(update);
-}
 
 }
 

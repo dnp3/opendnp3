@@ -21,13 +21,38 @@
 
 #include "asiodnp3/MeasUpdate.h"
 
-using namespace openpal;
-using namespace opendnp3;
+#include "asiodnp3/ChangeSet.h"
 
 #include <memory>
 
+using namespace openpal;
+using namespace opendnp3;
+
+
+
 namespace asiodnp3
 {
+  
+template <class T>
+void MeasUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	auto update = [ = ](opendnp3::IDatabase & db)
+	{
+		db.Update(meas, index, mode);
+	};
+	pChanges->Add(update);
+}
+
+template <class T>
+void MeasUpdate::ModifyAny(const openpal::Function1<const T&, T>& modify, uint16_t index, opendnp3::EventMode mode)
+{
+	auto update = [ = ](opendnp3::IDatabase & db)
+	{
+		db.Modify(modify, index, mode);
+	};
+	pChanges->Add(update);
+}  
+  
 MeasUpdate::MeasUpdate(IOutstation* pOutstation_) :
 	pOutstation(pOutstation_),
 	pChanges(new ChangeSet())
