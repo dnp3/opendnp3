@@ -65,7 +65,7 @@ public:
 	*	Construct a manger
 	* 
 	*	@param concurrencyHint How many threads to allocate in the thread pool
-	*	@crypto Optional cryptography interface for secure authentication
+	*	@param crypto Optional cryptography interface for secure authentication
 	*	@param onThreadStart Action to run when a thread pool thread starts
 	*	@param onThreadExit Action to run just before a thread pool thread exits
 	*/
@@ -139,6 +139,7 @@ public:
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
+	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param settings settings object that fully parameterizes the serial port
 	* @param strategy Reconnection delay strategy, default to exponential
