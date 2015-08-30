@@ -39,9 +39,9 @@
 namespace opendnp3
 {
 
-///
-/// @summary Interface for all outstation application callback info except for control requests
-///
+/**
+* Interface for all outstation application callback info except for control requests
+*/
 class IOutstationApplication : public ILinkListener
 {
 	public:
