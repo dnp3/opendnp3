@@ -59,8 +59,7 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 {
 	MasterParams params;
-	params.taskStartTimeout = TimeDuration::Milliseconds(100); // set to an intentionally value so that is < response timeout
-	params.taskStartTimeoutCheckInterval = TimeDuration::Milliseconds(100);
+	params.taskStartTimeout = TimeDuration::Milliseconds(100); // set to an intentionally value so that is < response timeout	
 	MasterTestObject t(params);	
 	
 	t.context.OnLowerLayerUp();
@@ -268,10 +267,8 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 }
 
 TEST_CASE(SUITE("ResponseTimeout"))
-{
-	auto params = NoStartupTasks();
-	params.taskStartTimeoutCheckInterval = TimeDuration::Max();
-	MasterTestObject t(params);
+{	
+	MasterTestObject t(NoStartupTasks());
 	t.context.OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
@@ -294,8 +291,7 @@ TEST_CASE(SUITE("ResponseTimeout"))
 
 TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 {
-	auto params = NoStartupTasks();
-	params.taskStartTimeoutCheckInterval = TimeDuration::Max();
+	auto params = NoStartupTasks();	
 	params.disableUnsolOnStartup = true;
 	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();

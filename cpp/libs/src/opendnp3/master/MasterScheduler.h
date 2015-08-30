@@ -69,6 +69,8 @@ public:
 private:
 
 	bool IsTimedOut(const openpal::MonotonicTimestamp& now, openpal::ManagedPtr<IMasterTask>& task);	
+
+	void RecalculateTaskStartTimeout();
 	
 
 	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);		

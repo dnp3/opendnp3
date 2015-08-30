@@ -106,13 +106,17 @@ namespace opendnp3
 
 		/// additional virtual methods that can be overriden to implement secure authentication				
 		
-		virtual void OnParsedHeader(const openpal::RSlice& apdu, const APDUResponseHeader& header, const openpal::RSlice& objects);
-
-		virtual bool CanRun(const IMasterTask& task) override { return true; }
+		virtual void OnParsedHeader(const openpal::RSlice& apdu, const APDUResponseHeader& header, const openpal::RSlice& objects);		
 
 		virtual void RecordLastRequest(const openpal::RSlice& apdu) {}
 
 		virtual bool MeetsUserRequirements(const IMasterTask& task) { return true; }
+
+		/// ITaskFilter
+
+		virtual bool CanRun(const IMasterTask& task) override { return true; }
+
+		virtual void SetTaskStartTimeout(const openpal::MonotonicTimestamp& time) override final;
 
 		/// methods for initiating command sequences
 
@@ -183,10 +187,7 @@ namespace opendnp3
 
 		void Transmit(const openpal::RSlice& data);
 
-	private:
-
-		void StartTaskStartTimeoutTimer();
-
+	private:	
 
 		void ScheduleRecurringPollTask(IMasterTask* pTask);
 		

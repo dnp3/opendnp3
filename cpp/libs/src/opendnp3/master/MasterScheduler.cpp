@@ -41,6 +41,7 @@ MasterScheduler::MasterScheduler(ITaskFilter& filter) :
 void MasterScheduler::Schedule(openpal::ManagedPtr<IMasterTask> pTask)
 {
 	m_tasks.push_back(std::move(pTask));	
+	this->RecalculateTaskStartTimeout();
 }
 
 std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
@@ -119,6 +120,21 @@ void MasterScheduler::CheckTaskStartTimeout(const openpal::MonotonicTimestamp& n
 	
 	// erase-remove idion (https://en.wikipedia.org/wiki/Erase-remove_idiom)
 	m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), timedOut), m_tasks.end());	
+}
+
+void MasterScheduler::RecalculateTaskStartTimeout()
+{
+	auto min = MonotonicTimestamp::Max();
+
+	for(auto& task : m_tasks)
+	{
+		if (!task->IsRecurring() && (task->StartExpirationTime() < min))
+		{
+			min = task->StartExpirationTime();
+		}
+	}
+
+	this->m_filter->SetTaskStartTimeout(min);
 }
 
 }

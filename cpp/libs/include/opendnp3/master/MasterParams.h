@@ -63,10 +63,7 @@ struct MasterParams
 	openpal::TimeDuration taskRetryPeriod;
 
 	/// Time delay before failing a non-recurring task (e.g. commands) that cannot start
-	openpal::TimeDuration taskStartTimeout;
-
-	/// How often the task start timeout is evaluated (defaults to 1 sec)
-	openpal::TimeDuration taskStartTimeoutCheckInterval;
+	openpal::TimeDuration taskStartTimeout;	
 
 	/// maximum APDU tx size in bytes
 	uint32_t maxTxFragSize;

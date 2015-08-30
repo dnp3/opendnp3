@@ -76,8 +76,7 @@ namespace opendnp3
 		isOnline = true;
 		pTaskLock->OnLayerUp();
 		tasks.Initialize(scheduler);
-		this->PostCheckForTask();
-		this->StartTaskStartTimeoutTimer();
+		this->PostCheckForTask();		
 		return true;		
 	}
 
@@ -443,18 +442,17 @@ namespace opendnp3
 		this->ScheduleAdhocTask(pTask);
 	}
 
-	/// ------ private helpers ----------
-
-	void MContext::StartTaskStartTimeoutTimer()
+	void MContext::SetTaskStartTimeout(const openpal::MonotonicTimestamp& time)
 	{
 		auto action = [this]()
 		{
-			this->scheduler.CheckTaskStartTimeout(pExecutor->GetTime());
-			this->StartTaskStartTimeoutTimer();
+			this->scheduler.CheckTaskStartTimeout(pExecutor->GetTime());			
 		};
 
-		this->taskStartTimeoutTimer.Start(params.taskStartTimeoutCheckInterval, action);
+		this->taskStartTimeoutTimer.Restart(time, action);
 	}
+
+	/// ------ private helpers ----------	
 
 	void MContext::ScheduleRecurringPollTask(IMasterTask* pTask)
 	{

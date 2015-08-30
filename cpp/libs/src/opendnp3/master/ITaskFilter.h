@@ -22,7 +22,9 @@
 #ifndef OPENDNP3_ITASKFILTER_H
 #define OPENDNP3_ITASKFILTER_H
 
-#include "opendnp3/master/ITaskFilter.h"
+#include "opendnp3/master/IMasterTask.h"
+
+#include <openpal/executor/TimeDuration.h>
 
 namespace opendnp3
 {
@@ -36,6 +38,8 @@ class ITaskFilter
 public:	
 	
 	virtual bool CanRun(const IMasterTask& task) = 0;	
+
+	virtual void SetTaskStartTimeout(const openpal::MonotonicTimestamp& time) = 0;
 
 };
 
