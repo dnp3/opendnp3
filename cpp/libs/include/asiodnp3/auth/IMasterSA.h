@@ -34,7 +34,7 @@ namespace asiodnp3
 {
 
 /** 
-* @desc Extends the vanilla DNP3 master interface for secure authentication
+* Extends the vanilla DNP3 master interface with secure authentication features.
 */
 class IMasterSA : public IMaster
 {

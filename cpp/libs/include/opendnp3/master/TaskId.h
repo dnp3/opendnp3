@@ -25,7 +25,7 @@ namespace opendnp3
 {
 
 /** 
-* @desc Interface that represents a running master.
+* Interface that represents a running master.
 */
 class TaskId
 {

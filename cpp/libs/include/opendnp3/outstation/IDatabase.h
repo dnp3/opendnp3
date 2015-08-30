@@ -32,23 +32,8 @@ namespace opendnp3
 {
 
 /**
-@desc IDatabase is the interface used to load measurements into an outstation.
-
-The outstation application is responsible for measuring or
-calculating data and then pushing it into this interface when it is ready
-to publish it. As with all ITransactable objects it should be used with the
-exception-safe Transaction object.
-
-\code
-{
-	Transaction t(pDatabase);
-	pDatabase->Update(Analog(12), 3);
-	pDatabase->Update(Binary(true), 1);
-}
-\endcode
-
+* An interface used to update measurement values.
 */
-
 class IDatabase
 {
 public:
@@ -56,7 +41,7 @@ public:
 	virtual ~IDatabase() {}
 
 	/**
-	* Update a Binary measurement, must have transaction started
+	* Update a Binary measurement
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -65,7 +50,7 @@ public:
 	virtual bool Update(const Binary& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Update a DoubleBitBinary measurement, must have transaction started
+	* Update a DoubleBitBinary measurement
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -74,7 +59,7 @@ public:
 	virtual bool Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Update an Analog measurement, must have transaction started
+	* Update an Analog measurement
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -83,7 +68,7 @@ public:
 	virtual bool Update(const Analog& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Update a Counter measurement, must have transaction started
+	* Update a Counter measurement
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -92,7 +77,7 @@ public:
 	virtual bool Update(const Counter& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Update a FrozenCounter measurement, must have transaction started
+	* Update a FrozenCounter measurement
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -101,7 +86,7 @@ public:
 	virtual bool Update(const FrozenCounter& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Update a BinaryOutputStatus measurement, must have transaction started
+	* Update a BinaryOutputStatus measurement
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -110,7 +95,7 @@ public:
 	virtual bool Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Update a AnalogOutputStatus measurement, must have transaction started
+	* Update a AnalogOutputStatus measurement
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -119,7 +104,7 @@ public:
 	virtual bool Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Update a TimeAndInterval value, must have transaction started
+	* Update a TimeAndInterval valueindex
 	* @param meas measurement to be processed
 	* @param index index of the measurement	
 	* @return true if the value exists and it was updated
@@ -127,7 +112,7 @@ public:
 	virtual bool Update(const TimeAndInterval& meas, uint16_t index) = 0;
 
 	/**
-	* Modify a value using the current value, must have transaction started
+	* Modify a value using the current valueindex
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -136,7 +121,7 @@ public:
 	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Modify a value using the current value, must have transaction started
+	* Modify a value using the current valueindex
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -145,7 +130,7 @@ public:
 	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Modify a value using the current value, must have transaction started
+	* Modify a value using the current valueindex
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -154,7 +139,7 @@ public:
 	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Modify a value using the current value, must have transaction started
+	* Modify a value using the current valueindex
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -163,7 +148,7 @@ public:
 	virtual bool Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Modify a value using the current value, must have transaction started
+	* Modify a value using the current valueindex
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -172,7 +157,7 @@ public:
 	virtual bool Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Modify a value using the current value, must have transaction started
+	* Modify a value using the current valueindex
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -181,7 +166,7 @@ public:
 	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Modify a value using the current value, must have transaction started
+	* Modify a value using the current valueindex
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
 	* @param mode Describes how event generation is handled for this method
@@ -190,7 +175,7 @@ public:
 	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
-	* Modify a value using the current value, must have transaction started
+	* Modify a value using the current valueindex
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement	
 	* @return true if the value exists and it was updated

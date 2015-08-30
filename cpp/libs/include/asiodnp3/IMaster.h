@@ -41,7 +41,7 @@ namespace asiodnp3
 {
 
 /** 
-* @desc Interface that represents a running master.
+* Interface that represents a running master session.
 */
 class IMaster : public opendnp3::ICommandProcessor, public IStack
 {
