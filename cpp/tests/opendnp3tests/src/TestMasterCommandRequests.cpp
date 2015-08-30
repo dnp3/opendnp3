@@ -60,6 +60,7 @@ TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 {
 	MasterParams params;
 	params.taskStartTimeout = TimeDuration::Milliseconds(100); // set to an intentionally value so that is < response timeout
+	params.taskStartTimeoutCheckInterval = TimeDuration::Milliseconds(100);
 	MasterTestObject t(params);	
 	
 	t.context.OnLowerLayerUp();
@@ -268,8 +269,9 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 
 TEST_CASE(SUITE("ResponseTimeout"))
 {
-	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	auto params = NoStartupTasks();
+	params.taskStartTimeoutCheckInterval = TimeDuration::Max();
+	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
@@ -292,9 +294,10 @@ TEST_CASE(SUITE("ResponseTimeout"))
 
 TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 {
-	auto config = NoStartupTasks();
-	config.disableUnsolOnStartup = true;
-	MasterTestObject t(config);
+	auto params = NoStartupTasks();
+	params.taskStartTimeoutCheckInterval = TimeDuration::Max();
+	params.disableUnsolOnStartup = true;
+	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
 	
 	REQUIRE(t.exe.RunMany() > 0);

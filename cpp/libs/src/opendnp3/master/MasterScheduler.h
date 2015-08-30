@@ -43,7 +43,7 @@ class MasterScheduler
 
 public:
 
-	MasterScheduler(openpal::IExecutor& executor, ITaskFilter& filter);
+	MasterScheduler(ITaskFilter& filter);
 
 	/*
 	* Add a task to the scheduler
@@ -61,18 +61,18 @@ public:
 	*/
 	void Shutdown(const openpal::MonotonicTimestamp& now);
 
+	/**
+	* Check if any tasks have exceeded their start timeout
+	*/
+	void CheckTaskStartTimeout(const openpal::MonotonicTimestamp& now);
+
 private:
 
-	bool IsTimedOut(const openpal::MonotonicTimestamp& now, openpal::ManagedPtr<IMasterTask>& task);
-
-	void OnStartTimerElapsed();
-
-	void StartTimer();	
+	bool IsTimedOut(const openpal::MonotonicTimestamp& now, openpal::ManagedPtr<IMasterTask>& task);	
+	
 
 	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);		
-
-	openpal::IExecutor* m_executor;
-	openpal::TimerRef m_startTimer;
+		
 	ITaskFilter* m_filter;
 	std::vector<openpal::ManagedPtr<IMasterTask>> m_tasks;
 };

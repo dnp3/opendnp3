@@ -87,6 +87,7 @@ namespace opendnp3
 		openpal::ManagedPtr<IMasterTask> pActiveTask;		
 		openpal::TimerRef responseTimer;
 		openpal::TimerRef scheduleTimer;
+		openpal::TimerRef taskStartTimeoutTimer;
 		MasterTasks tasks;
 		MasterScheduler scheduler;
 		std::deque<APDUHeader> confirmQueue;
@@ -182,7 +183,9 @@ namespace opendnp3
 
 		void Transmit(const openpal::RSlice& data);
 
-	private:	
+	private:
+
+		void StartTaskStartTimeoutTimer();
 
 
 		void ScheduleRecurringPollTask(IMasterTask* pTask);

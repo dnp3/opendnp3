@@ -59,8 +59,9 @@ namespace opendnp3
 		isSending(false),		
 		responseTimer(executor),
 		scheduleTimer(executor),
+		taskStartTimeoutTimer(executor),
 		tasks(params, logger, application, SOEHandler, application),	
-		scheduler(executor, *this),
+		scheduler(*this),
 		txBuffer(params.maxTxFragSize),
 		tstate(TaskState::IDLE)
 	{}
@@ -76,6 +77,7 @@ namespace opendnp3
 		pTaskLock->OnLayerUp();
 		tasks.Initialize(scheduler);
 		this->PostCheckForTask();
+		this->StartTaskStartTimeoutTimer();
 		return true;		
 	}
 
@@ -100,6 +102,8 @@ namespace opendnp3
 		pTaskLock->OnLayerDown();
 
 		responseTimer.Cancel();
+		taskStartTimeoutTimer.Cancel();
+		scheduleTimer.Cancel();
 
 		solSeq = unsolSeq = 0;
 		isOnline = isSending = false;
@@ -440,6 +444,17 @@ namespace opendnp3
 	}
 
 	/// ------ private helpers ----------
+
+	void MContext::StartTaskStartTimeoutTimer()
+	{
+		auto action = [this]()
+		{
+			this->scheduler.CheckTaskStartTimeout(pExecutor->GetTime());
+			this->StartTaskStartTimeoutTimer();
+		};
+
+		this->taskStartTimeoutTimer.Start(params.taskStartTimeoutCheckInterval, action);
+	}
 
 	void MContext::ScheduleRecurringPollTask(IMasterTask* pTask)
 	{

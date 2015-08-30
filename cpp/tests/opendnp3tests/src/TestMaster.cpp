@@ -109,6 +109,7 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 TEST_CASE(SUITE("TimeoutDuringStartup"))
 {
 	MasterParams params;
+	params.taskStartTimeoutCheckInterval = TimeDuration::Max();
 	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
 
@@ -130,7 +131,9 @@ TEST_CASE(SUITE("TimeoutDuringStartup"))
 
 TEST_CASE(SUITE("SolicitedResponseTimeout"))
 {	
-	MasterTestObject t(NoStartupTasks());
+	MasterParams params = NoStartupTasks();
+	params.taskStartTimeoutCheckInterval = TimeDuration::Max();
+	MasterTestObject t(params);
 	auto scan = t.context.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
 	t.context.OnLowerLayerUp();
 	
@@ -164,7 +167,9 @@ TEST_CASE(SUITE("AllObjectsScan"))
 
 TEST_CASE(SUITE("ClassScanCanRepeat"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterParams params = NoStartupTasks();
+	params.taskStartTimeoutCheckInterval = TimeDuration::Max();
+	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
 	
 	t.exe.RunMany();

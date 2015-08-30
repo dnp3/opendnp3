@@ -38,6 +38,7 @@ MasterParams::MasterParams() :
 	eventScanOnEventsAvailableClassMask(ClassField::None()),
 	taskRetryPeriod(TimeDuration::Seconds(5)),
 	taskStartTimeout(TimeDuration::Seconds(10)),
+	taskStartTimeoutCheckInterval(TimeDuration::Seconds(1)),
 	maxTxFragSize(DEFAULT_MAX_APDU_SIZE),
 	maxRxFragSize(DEFAULT_MAX_APDU_SIZE)
 {}

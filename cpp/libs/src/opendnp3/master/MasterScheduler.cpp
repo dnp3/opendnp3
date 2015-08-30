@@ -32,9 +32,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::MasterScheduler(openpal::IExecutor& executor, ITaskFilter& filter) :
-	m_executor(&executor),
-	m_startTimer(executor),
+MasterScheduler::MasterScheduler(ITaskFilter& filter) :		
 	m_filter(&filter)
 {
 	
@@ -42,8 +40,7 @@ MasterScheduler::MasterScheduler(openpal::IExecutor& executor, ITaskFilter& filt
 
 void MasterScheduler::Schedule(openpal::ManagedPtr<IMasterTask> pTask)
 {
-	m_tasks.push_back(std::move(pTask));
-	this->StartTimer();
+	m_tasks.push_back(std::move(pTask));	
 }
 
 std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
@@ -97,8 +94,7 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimesta
 }
 
 void MasterScheduler::Shutdown(const MonotonicTimestamp& now)
-{		
-	m_startTimer.Cancel();
+{			
 	m_tasks.clear();
 }
 
@@ -114,42 +110,15 @@ bool MasterScheduler::IsTimedOut(const MonotonicTimestamp& now, openpal::Managed
 	return true;
 }
 
-void MasterScheduler::OnStartTimerElapsed()
-{
-	const auto NOW = this->m_executor->GetTime();
-	auto timedOut = [this, NOW](openpal::ManagedPtr<IMasterTask>& task) {		
-		return this->IsTimedOut(NOW, task);	
-	};
-	auto predicate = std::remove_if(m_tasks.begin(), m_tasks.end(), timedOut);
-
-	m_tasks.erase(predicate, m_tasks.end());
-
-	this->StartTimer();
-}
-
-void MasterScheduler::StartTimer()
-{
-	MonotonicTimestamp min = MonotonicTimestamp::Max();
-
-	for (auto& task : m_tasks)
+void MasterScheduler::CheckTaskStartTimeout(const openpal::MonotonicTimestamp& now)
+{	
+	auto timedOut = [this, now](openpal::ManagedPtr<IMasterTask>& task) 
 	{		
-		if (!task->IsRecurring() && (task->StartExpirationTime() < min))
-		{
-			min = task->StartExpirationTime();
-		}		
-	}
-
-	if (m_startTimer.IsActive() && (m_startTimer.ExpiresAt() < min))
-	{
-		// no need to restart
-		return;
-	}
+		return this->IsTimedOut(now, task);	
+	};
 	
-	m_startTimer.Restart(min, [this]()
-		{ 
-			this->OnStartTimerElapsed(); 
-		}
-	);
+	// erase-remove idion (https://en.wikipedia.org/wiki/Erase-remove_idiom)
+	m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), timedOut), m_tasks.end());	
 }
 
 }
