@@ -52,11 +52,23 @@ namespace asiodnp3
 class DNP3Channel;
 class ChannelSet;
 
+
+/**
+*	Root DNP3 object used to create channels and sessions.
+*/
 class DNP3Manager
 {
 
 public:
 	
+	/**
+	*	Construct a manger
+	* 
+	*	@param concurrencyHint How many threads to allocate in the thread pool
+	*	@crypto Optional cryptography interface for secure authentication
+	*	@param onThreadStart Action to run when a thread pool thread starts
+	*	@param onThreadExit Action to run just before a thread pool thread exits
+	*/
 	DNP3Manager(
 	    uint32_t concurrencyHint,
 		openpal::ICryptoProvider* crypto = nullptr,
@@ -68,9 +80,9 @@ public:
 
 	/**
 	* Add a callback to receive log messages
-	* @param pHandler Pointer to a callback object
+	* @param handler pointer to a log handling interface
 	*/
-	void AddLogSubscriber(openpal::ILogHandler* pHandler);	
+	void AddLogSubscriber(openpal::ILogHandler* handler);	
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop
@@ -81,13 +93,15 @@ public:
 	/**
 	* Add a tcp client channel
 	*
-	* @param logger Logger that will be used for all log messages
+	* @param id Alias that will be used for logging purposes with this channel
+	* @param levels Bitfield that describes the logging level for this channel and associated sessions
 	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
-	* @param strategy Reconnection delay strategy, default to exponential
+	* @param strategy Reconnection delay strategy, default to exponential backoff
+	* @return A channel interface
 	*/
 	IChannel* AddTCPClient(
 		char const* id,
@@ -102,12 +116,14 @@ public:
 	/**
 	* Add a tcp server channel
 	*
-	* @param logger Logger that will be used for all log messages
+	* @param id Alias that will be used for logging purposes with this channel
+	* @param levels Bitfield that describes the logging level for this channel and associated sessions
 	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param strategy Reconnection delay strategy, default to exponential
+	* @return A channel interface
 	*/
 	IChannel* AddTCPServer(
 		char const* id,
@@ -121,11 +137,12 @@ public:
 	/**
 	* Add a serial channel
 	*
-	* @param logger Logger that will be used for all log messages
-	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param id Alias that will be used for logging purposes with this channel
+	* @param levels Bitfield that describes the logging level for this channel and associated sessions
 	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param settings settings object that fully parameterizes the serial port
 	* @param strategy Reconnection delay strategy, default to exponential
+	* @return A channel interface
 	*/
 	IChannel* AddSerial(
 		char const* id,
