@@ -34,7 +34,7 @@ class SimpleCommandHandler : public ICommandHandler
 public:
 
 	/**
-	* @param aStatusFunc functor used to retrieve that next CommandStatus enumeration
+	* @param status The status value to return in response to all commands
 	*/
 	SimpleCommandHandler(CommandStatus status);
 

@@ -78,7 +78,7 @@ public:
 	* Select and operate a 32 bit analog output
 	* @param command command to operate
 	* @param index index of the command
-	* @param aCallback callback that will be invoked upon completion or failure
+	* @param callback callback that will be invoked upon completion or failure
 	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
 	*/
 	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
