@@ -118,7 +118,7 @@ set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
 if(SECAUTH)
-	file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiopal/*.h)
+	file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiodnp3/*.h)
 else()
 	file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiopal/*.h)
 endif()
