@@ -40,9 +40,9 @@ namespace opendnp3
 
 typedef std::function<void(const Header&)> WriteHeaderFunT;
 
-///
-/// @summary Interface for all master application callback info except for measurements
-///
+/**
+* Interface for all master application callback info except for measurement values.
+*/
 class IMasterApplication : public ILinkListener, public openpal::IUTCTimeSource
 {
 	public:
