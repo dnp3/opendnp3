@@ -29,7 +29,7 @@ namespace opendnp3
 
 class IEventRecorder
 {
-	public:
+public:
 
 	virtual bool HasMoreUnwrittenEvents() const = 0;
 

@@ -40,8 +40,8 @@ public:
 
 	Action0& operator=(const Action0& other);
 
-	void Apply() const;	
-	
+	void Apply() const;
+
 	bool IsSet() const;
 
 	template <class Lambda>
@@ -56,11 +56,14 @@ public:
 	template <class T>
 	static Action0 BindDelete(T* pPointer)
 	{
-		auto lambda = [pPointer]() { delete pPointer; };
+		auto lambda = [pPointer]()
+		{
+			delete pPointer;
+		};
 		return Bind(lambda);
 	}
 
-protected:	
+protected:
 
 	template <class Lambda>
 	static void RunLambda(const uint8_t* pBuffer)

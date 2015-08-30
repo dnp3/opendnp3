@@ -32,27 +32,27 @@ namespace secauth
 {
 
 class MasterSecurity : private openpal::Uncopyable
-{	
+{
 
-public:	
+public:
 
 	MasterSecurity(
-		openpal::IExecutor& executor,		
-		IMasterApplicationSA& application,				
-		const MasterAuthSettings& authSettings,
-		openpal::ICryptoProvider& crypto		
+	    openpal::IExecutor& executor,
+	    IMasterApplicationSA& application,
+	    const MasterAuthSettings& authSettings,
+	    openpal::ICryptoProvider& crypto
 	);
-	
+
 	typedef std::map<uint16_t, std::unique_ptr<SessionKeyTask>> SessionKeyTaskMap;
-	
-	MasterAuthSettings			settings;	
+
+	MasterAuthSettings			settings;
 	IMasterApplicationSA*		pApplicationSA;
 	openpal::ICryptoProvider*	pCrypto;
 	MasterUserDatabase			userDB;
-	SessionStore				sessions;		
+	SessionStore				sessions;
 	openpal::RSlice		lastRequest;
 	SessionKeyTaskMap			sessionKeyTaskMap;
-	
+
 	openpal::StaticBuffer<AuthSizes::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE> challengeReplyBuffer;
 };
 

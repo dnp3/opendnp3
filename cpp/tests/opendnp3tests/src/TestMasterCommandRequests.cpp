@@ -59,20 +59,20 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 {
 	MasterParams params;
-	params.taskStartTimeout = TimeDuration::Milliseconds(100); // set to an intentionally value so that is < response timeout	
-	MasterTestObject t(params);	
-	
+	params.taskStartTimeout = TimeDuration::Milliseconds(100); // set to an intentionally value so that is < response timeout
+	MasterTestObject t(params);
+
 	t.context.OnLowerLayerUp();
 
-	REQUIRE(t.exe.RunMany() > 0);	
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 
-	// while we're waiting for a reponse, submit a control	
+	// while we're waiting for a reponse, submit a control
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 	CallbackQueue<CommandResponse> queue;
-	
+
 	for(int i = 0; i < 5; ++i)
-	{		
+	{
 		t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
 		t.exe.AdvanceTime(params.taskStartTimeout);
 		REQUIRE(t.exe.RunMany() > 0);
@@ -80,12 +80,12 @@ TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 		REQUIRE((CommandResponse(TaskCompletion::FAILURE_START_TIMEOUT) == queue.responses.front()));
 		queue.responses.pop_front();
 	}
-	
+
 
 }
 
 TEST_CASE(SUITE("SelectAndOperate"))
-{	
+{
 	MasterTestObject t(NoStartupTasks());
 	t.context.OnLowerLayerUp();
 
@@ -191,7 +191,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 
 	CallbackQueue<CommandResponse> queue;
 	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
-	
+
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
@@ -233,16 +233,16 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	// check that a read request was made on startup
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
-	
+
 	//issue a command while the master is waiting for a response from the outstation
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 	CallbackQueue<CommandResponse> queue;
 	t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
-	
+
 	t.SendToMaster("C0 81 00 00"); //now master gets response to integrity
 
 	t.exe.RunMany();
-	
+
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 03 " + crob); //select
 }
 
@@ -251,7 +251,7 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 {
 	auto config = NoStartupTasks();
 	MasterTestObject t(config);
-	t.context.OnLowerLayerUp();	
+	t.context.OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
 	CallbackQueue<CommandResponse> queue;
@@ -263,11 +263,11 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
 	REQUIRE(queue.responses.empty());
 	t.context.OnLowerLayerDown();
-	REQUIRE(1 == queue.responses.size());		
+	REQUIRE(1 == queue.responses.size());
 }
 
 TEST_CASE(SUITE("ResponseTimeout"))
-{	
+{
 	MasterTestObject t(NoStartupTasks());
 	t.context.OnLowerLayerUp();
 
@@ -280,33 +280,33 @@ TEST_CASE(SUITE("ResponseTimeout"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
 	REQUIRE(queue.responses.empty());
-	
+
 	REQUIRE(t.exe.AdvanceToNextTimer());
 
 	REQUIRE(t.exe.RunMany() > 0);
-		
+
 	REQUIRE(1 == queue.responses.size());
 	REQUIRE(queue.responses[0].GetResult() == TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
 }
 
 TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 {
-	auto params = NoStartupTasks();	
+	auto params = NoStartupTasks();
 	params.disableUnsolOnStartup = true;
 	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
-	
+
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.context.OnSendResult(true);
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
-	
+
 	// while we're waiting for a response to the disable unsol, initiate a command seqeunce
 	CallbackQueue<CommandResponse> queue;
 	t.context.DirectOperate(AnalogOutputInt16(100), 1, queue.Callback(), TaskConfig::Default());
-	
+
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets

@@ -12,7 +12,7 @@ namespace opendnp3
 */
 class ILinkListener
 {
-	public:
+public:
 
 	/// Called when a the reset/unreset status of the link layer changes
 	virtual void OnStateChange(LinkStatus value) {}

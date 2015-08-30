@@ -42,34 +42,37 @@ namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
-	LogRoot* pLogRoot_,
-	asiopal::ASIOExecutor& executor,	
+    LogRoot* pLogRoot_,
+    asiopal::ASIOExecutor& executor,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy& strategy,
     openpal::IPhysicalLayer* pPhys_,
-	openpal::ICryptoProvider* pCrypto_) :
-		
-		pPhys(pPhys_),
-		pCrypto(pCrypto_),
-		pLogRoot(pLogRoot_),
-		pExecutor(&executor),		
-		logger(pLogRoot->GetLogger()),		
-		pShutdownHandler(nullptr),
-		channelState(ChannelState::CLOSED),
-		router(*pLogRoot, executor, pPhys.get(), minOpenRetry, maxOpenRetry, this, strategy, &statistics),
-		stacks(router, executor)
+    openpal::ICryptoProvider* pCrypto_) :
+
+	pPhys(pPhys_),
+	pCrypto(pCrypto_),
+	pLogRoot(pLogRoot_),
+	pExecutor(&executor),
+	logger(pLogRoot->GetLogger()),
+	pShutdownHandler(nullptr),
+	channelState(ChannelState::CLOSED),
+	router(*pLogRoot, executor, pPhys.get(), minOpenRetry, maxOpenRetry, this, strategy, &statistics),
+	stacks(router, executor)
 {
 	pPhys->SetChannelStatistics(&statistics);
 
-	auto onShutdown = [this]() { this->CheckForFinalShutdown(); };
+	auto onShutdown = [this]()
+	{
+		this->CheckForFinalShutdown();
+	};
 	router.SetShutdownHandler(Action0::Bind(onShutdown));
 }
 
 void DNP3Channel::OnStateChange(ChannelState state)
 {
 	channelState = state;
-	for (auto& cb : callbacks)
+	for (auto & cb : callbacks)
 	{
 		cb(state);
 	}
@@ -93,7 +96,10 @@ void DNP3Channel::Shutdown()
 
 	// shutdown router
 	asiopal::Synchronized<bool> blocking;
-	auto initiate = [this, &blocking]() { this->InitiateShutdown(blocking); };
+	auto initiate = [this, &blocking]()
+	{
+		this->InitiateShutdown(blocking);
+	};
 	pExecutor->strand.post(initiate);
 	blocking.WaitForValue();
 
@@ -104,8 +110,11 @@ void DNP3Channel::Shutdown()
 }
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()
-{	
-	auto get = [this]() { return statistics; };
+{
+	auto get = [this]()
+	{
+		return statistics;
+	};
 	return pExecutor->ReturnBlockFor<LinkChannelStatistics>(get);
 }
 
@@ -113,11 +122,11 @@ void DNP3Channel::InitiateShutdown(asiopal::Synchronized<bool>& handler)
 {
 	this->pShutdownHandler = &handler;
 	router.Shutdown();
-	this->CheckForFinalShutdown();	
+	this->CheckForFinalShutdown();
 }
 
 void DNP3Channel::CheckForFinalShutdown()
-{	
+{
 	if (pShutdownHandler && (router.GetState() == ChannelState::SHUTDOWN))
 	{
 		pShutdownHandler->SetValue(true);
@@ -126,14 +135,20 @@ void DNP3Channel::CheckForFinalShutdown()
 
 openpal::LogFilters DNP3Channel::GetLogFilters() const
 {
-	auto get = [this](){ return pLogRoot->GetFilters(); };
+	auto get = [this]()
+	{
+		return pLogRoot->GetFilters();
+	};
 	return pExecutor->ReturnBlockFor<LogFilters>(get);
 }
 
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
-{	
-	auto set = [this, filters]() { this->pLogRoot->SetFilters(filters); };
-	pExecutor->BlockFor(set);	
+{
+	auto set = [this, filters]()
+	{
+		this->pLogRoot->SetFilters(filters);
+	};
+	pExecutor->BlockFor(set);
 }
 
 IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMasterApplication& application, const MasterStackConfig& config)
@@ -148,13 +163,13 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 		return this->AddStack<MasterStack>(config.link, factory);
 	};
 
-	return pExecutor->ReturnBlockFor<IMaster*>(add);	
+	return pExecutor->ReturnBlockFor<IMaster*>(add);
 }
 
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
 {
 	auto add = [this, id, &commandHandler, &application, config]() -> IOutstation*
-	{ 				
+	{
 		auto factory = [&]()
 		{
 			return new OutstationStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks);
@@ -193,9 +208,9 @@ T* DNP3Channel::AddStack(const opendnp3::LinkConfig& link, const std::function<T
 #ifdef OPENDNP3_USE_SECAUTH
 
 IMasterSA* DNP3Channel::AddMasterSA(char const* id,
-	opendnp3::ISOEHandler& SOEHandler,
-	secauth::IMasterApplicationSA& application,
-	const secauth::MasterAuthStackConfig& config)
+                                    opendnp3::ISOEHandler& SOEHandler,
+                                    secauth::IMasterApplicationSA& application,
+                                    const secauth::MasterAuthStackConfig& config)
 {
 	if (!pCrypto)
 	{
@@ -218,9 +233,9 @@ IMasterSA* DNP3Channel::AddMasterSA(char const* id,
 }
 
 IOutstationSA* DNP3Channel::AddOutstationSA(char const* id,
-	opendnp3::ICommandHandler& commandHandler,
-	secauth::IOutstationApplicationSA& application,
-	const secauth::OutstationAuthStackConfig& config)
+        opendnp3::ICommandHandler& commandHandler,
+        secauth::IOutstationApplicationSA& application,
+        const secauth::OutstationAuthStackConfig& config)
 {
 	if (!pCrypto)
 	{

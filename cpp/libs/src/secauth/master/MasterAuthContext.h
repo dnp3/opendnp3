@@ -32,24 +32,24 @@ namespace secauth
 {
 
 class MAuthContext final : public opendnp3::MContext
-{	
+{
 
-public:	
+public:
 
 	MAuthContext(
-		openpal::IExecutor& executor,
-		openpal::LogRoot& root,
-		opendnp3::ILowerLayer& lower,
-		opendnp3::ISOEHandler& SOEHandler,
-		IMasterApplicationSA& application,
-		const opendnp3::MasterParams& params,
-		opendnp3::ITaskLock& taskLock,
-		const MasterAuthSettings& authSettings,
-		openpal::ICryptoProvider& crypto		
+	    openpal::IExecutor& executor,
+	    openpal::LogRoot& root,
+	    opendnp3::ILowerLayer& lower,
+	    opendnp3::ISOEHandler& SOEHandler,
+	    IMasterApplicationSA& application,
+	    const opendnp3::MasterParams& params,
+	    opendnp3::ITaskLock& taskLock,
+	    const MasterAuthSettings& authSettings,
+	    openpal::ICryptoProvider& crypto
 	);
 
 
-	// ------ override the necessary MContext methods ------		
+	// ------ override the necessary MContext methods ------
 
 	virtual bool OnLowerLayerUp() override;
 
@@ -79,10 +79,10 @@ private:
 
 	void OnAuthChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
-	void OnAuthError(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);	
+	void OnAuthError(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects);
 
 	void InitSessionKeyTaskForUser(const opendnp3::User& user);
-	
+
 	MasterSecurity security;
 
 };

@@ -30,7 +30,7 @@
 
 namespace asiodnp3
 {
-	
+
 class ChangeSet : private openpal::Uncopyable
 {
 
@@ -43,7 +43,7 @@ public:
 	void ApplyAll(opendnp3::IDatabase&);
 
 	bool IsEmpty() const;
-	
+
 private:
 
 	std::vector<UpdateFun> updates;

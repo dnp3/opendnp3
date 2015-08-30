@@ -34,7 +34,7 @@ BinaryCommandEvent::BinaryCommandEvent() :
 
 BinaryCommandEvent::BinaryCommandEvent(uint8_t value_) :
 	value(GetValueFromFlags(value_)),
-	status(GetStatusFromFlags(value_))	
+	status(GetStatusFromFlags(value_))
 {}
 
 BinaryCommandEvent::BinaryCommandEvent(uint8_t value_, UInt48Type time_) :
@@ -45,7 +45,7 @@ BinaryCommandEvent::BinaryCommandEvent(uint8_t value_, UInt48Type time_) :
 
 BinaryCommandEvent::BinaryCommandEvent(bool value_, CommandStatus status_) :
 	value(value_),
-	status(status_)	
+	status(status_)
 {}
 
 BinaryCommandEvent::BinaryCommandEvent(bool value_, CommandStatus status_, DNPTime time_) :

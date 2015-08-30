@@ -35,8 +35,8 @@ class Indexed
 public:
 	Indexed(const T& value_, uint16_t index_) :
 		value(value_),
-		index(index_)		
-	{}	
+		index(index_)
+	{}
 
 	Indexed(): value(), index(0)
 	{}

@@ -30,41 +30,41 @@ namespace opendnp3
 {
 
 /**
-	Interface used in multi-drop configurations (multiple masters on same channel) 
-	to control task execution such that only 1 master is running a task at a time.	
+	Interface used in multi-drop configurations (multiple masters on same channel)
+	to control task execution such that only 1 master is running a task at a time.
 */
 class ITaskLock
 {
-	public:
-	
-		/// Acquire a lock
-		virtual bool Acquire(IScheduleCallback&) = 0;
+public:
 
-		/// Release a lock
-		virtual void Release(IScheduleCallback&) = 0;
+	/// Acquire a lock
+	virtual bool Acquire(IScheduleCallback&) = 0;
 
-		/// channel online
-		virtual void OnLayerUp() = 0;
+	/// Release a lock
+	virtual void Release(IScheduleCallback&) = 0;
 
-		/// channel offline
-		virtual void OnLayerDown() = 0;
+	/// channel online
+	virtual void OnLayerUp() = 0;
+
+	/// channel offline
+	virtual void OnLayerDown() = 0;
 };
 
 class NullTaskLock : public ITaskLock, private openpal::Uncopyable
-{	
-	public:
+{
+public:
 
 	virtual bool Acquire(IScheduleCallback&) override final;
-	
+
 	virtual void Release(IScheduleCallback&) override final;
 
 	virtual void OnLayerUp() override final;
-	
+
 	virtual void OnLayerDown() override final;
 
 	static ITaskLock& Instance();
 
-	private:
+private:
 
 	NullTaskLock();
 

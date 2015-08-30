@@ -26,26 +26,26 @@
 
 namespace openpal
 {
-	struct ChannelStatistics
-	{
-		ChannelStatistics() : numOpen(0), numOpenFail(0), numClose(0), numBytesRx(0), numBytesTx(0)
-		{}
+struct ChannelStatistics
+{
+	ChannelStatistics() : numOpen(0), numOpenFail(0), numClose(0), numBytesRx(0), numBytesTx(0)
+	{}
 
-		/// The number of times the channel has successfully opened
-		uint32_t numOpen;
+	/// The number of times the channel has successfully opened
+	uint32_t numOpen;
 
-		/// The number of times the channel has failed to open
-		uint32_t numOpenFail;
+	/// The number of times the channel has failed to open
+	uint32_t numOpenFail;
 
-		/// The number of times the channel has closed either due to user intervention or an error
-		uint32_t numClose;
+	/// The number of times the channel has closed either due to user intervention or an error
+	uint32_t numClose;
 
-		/// The number of bytes received
-		uint32_t numBytesRx;
+	/// The number of bytes received
+	uint32_t numBytesRx;
 
-		/// The number of bytes transmitted
-		uint32_t numBytesTx;
-	};
+	/// The number of bytes transmitted
+	uint32_t numBytesTx;
+};
 }
 
 #endif

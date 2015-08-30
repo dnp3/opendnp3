@@ -36,7 +36,7 @@ protected:
 	Erasure(uint32_t size_);
 
 	void CopyErasure(const Erasure& erasure);
-	
+
 	uint32_t size;
 	uint8_t bytes[sizes::MAX_ERASURE_SIZE];
 };

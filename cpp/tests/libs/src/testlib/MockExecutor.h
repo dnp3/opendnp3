@@ -40,7 +40,7 @@ class MockExecutor : public openpal::IExecutor
 
 public:
 	MockExecutor();
-	~MockExecutor();	
+	~MockExecutor();
 
 	// Implement IExecutor
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Action0& runnable) override;
@@ -92,13 +92,13 @@ private:
 
 	void Cancel(openpal::ITimer* apTimer);
 
-	typedef std::deque<openpal::Action0> PostQueue;	
+	typedef std::deque<openpal::Action0> PostQueue;
 	typedef std::vector<MockTimer*> TimerVector;
 
 	bool mPostIsSynchronous;
 	openpal::MonotonicTimestamp mCurrentTime;
-	
-	PostQueue postQueue;		
+
+	PostQueue postQueue;
 	TimerVector timers;
 };
 

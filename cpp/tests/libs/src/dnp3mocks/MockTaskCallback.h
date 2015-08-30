@@ -29,7 +29,7 @@ namespace opendnp3
 
 class MockTaskCallback : public ITaskCallback
 {
-public:	
+public:
 
 	virtual void OnStart() override final
 	{

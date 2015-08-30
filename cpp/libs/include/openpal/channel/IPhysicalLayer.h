@@ -60,7 +60,7 @@ public:
 	virtual bool IsOpening() const = 0;
 
 	/** @return True if the layer is open for read/write */
-	virtual bool IsOpen() const = 0;	
+	virtual bool IsOpen() const = 0;
 };
 
 
@@ -80,9 +80,9 @@ public:
 	* Tell the layer where to update its channel statistics
 	*/
 	void SetChannelStatistics(ChannelStatistics* pChannelStatistics_)
-	{		
+	{
 		pChannelStatistics = pChannelStatistics_;
-	}	
+	}
 
 	/**
 	 * Starts an open operation.

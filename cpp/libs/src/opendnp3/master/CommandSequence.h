@@ -33,7 +33,7 @@ namespace opendnp3
 */
 class ICommandSequence : public IAPDUHandler
 {
-public:		
+public:
 
 	// Given an APDU and function code, configure the request
 	virtual void FormatRequestHeader(APDURequest& request) = 0;
@@ -46,21 +46,24 @@ template <class CommandType>
 class CommandSequence : public ICommandSequence
 {
 public:
-	CommandSequence(const DNP3Serializer<CommandType>& serializer_, const CommandType& value, uint16_t index) :		
+	CommandSequence(const DNP3Serializer<CommandType>& serializer_, const CommandType& value, uint16_t index) :
 		ICommandSequence(),
 		serializer(serializer_),
 		command(value, index),
 		response(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE))
-	{}	
+	{}
 
 	// TODO - make this restrictive to the type in use?
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+	{
+		return true;
+	}
 
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<CommandType>>& meas) override final
 	{
 		Indexed<CommandType> received;
 		if (this->IsFirstHeader() && meas.ReadOnlyValue(received))
-		{			
+		{
 			if(received.index == command.index && received.value.ValuesEqual(command.value))
 			{
 				response = CommandResponse(TaskCompletion::SUCCESS, received.value.status);
@@ -69,7 +72,7 @@ public:
 			else
 			{
 				return IINBit::PARAM_ERROR;
-			}			
+			}
 		}
 		else
 		{
@@ -79,7 +82,7 @@ public:
 
 
 	virtual void FormatRequestHeader(APDURequest& request) final
-	{		
+	{
 		auto writer = request.GetWriter();
 		writer.WriteSingleIndexedValue<openpal::UInt16, CommandType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, command.value, command.index);
 	}
@@ -103,7 +106,7 @@ public:
 private:
 	DNP3Serializer<CommandType> serializer;
 	Indexed<CommandType> command;
-	CommandResponse response;	
+	CommandResponse response;
 };
 
 

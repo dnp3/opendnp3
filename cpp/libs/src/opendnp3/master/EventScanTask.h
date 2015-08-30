@@ -28,39 +28,51 @@
 
 namespace opendnp3
 {
-	class ISOEHandler;
+class ISOEHandler;
 
-	/**
-	* An auto event scan task that happens when the master sees the event IIN bits
-	*/
-	class EventScanTask : public PollTaskBase
+/**
+* An auto event scan task that happens when the master sees the event IIN bits
+*/
+class EventScanTask : public PollTaskBase
+{
+
+public:
+
+	EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+
+	virtual bool IsRecurring() const override final
 	{
+		return true;
+	}
 
-	public:
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-		EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+	virtual int Priority() const override final
+	{
+		return priority::EVENT_SCAN;
+	}
 
-		virtual bool IsRecurring() const override final { return true; }
+	virtual bool BlocksLowerPriority() const
+	{
+		return true;
+	}
 
-		virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+private:
 
-		virtual int Priority() const override final { return priority::EVENT_SCAN; }		
+	ClassField classes;
 
-		virtual bool BlocksLowerPriority() const { return true; }	
+	openpal::TimeDuration retryPeriod;
 
-	private:	
+	virtual MasterTaskType GetTaskType() const override final
+	{
+		return MasterTaskType::AUTO_EVENT_SCAN;
+	}
 
-		ClassField classes;
+	virtual bool IsEnabled() const override final;
 
-		openpal::TimeDuration retryPeriod;
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
-		virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::AUTO_EVENT_SCAN; }
-
-		virtual bool IsEnabled() const override final;		
-
-		virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
-		
-	};
+};
 
 
 } //end ns

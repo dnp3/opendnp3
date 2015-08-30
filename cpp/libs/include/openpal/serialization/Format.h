@@ -27,32 +27,35 @@
 
 namespace openpal
 {
-	class Format : private StaticOnly
+class Format : private StaticOnly
+{
+public:
+
+	static bool Write(WSlice& dest, const uint8_t& value);
+	static bool Write(WSlice& dest, const uint16_t& value);
+
+	static bool Write(WSlice& dest, const uint32_t& value);
+	static bool Write(WSlice& dest, const UInt48Type& value);
+
+	static bool Write(WSlice& dest, const int16_t& value);
+	static bool Write(WSlice& dest, const int32_t& value);
+
+	static bool Write(WSlice& dest, const double& value);
+	static bool Write(WSlice& dest, const float& value);
+
+	template <typename T, typename... Args>
+	static bool Many(WSlice& dest, const T& value, const Args& ... args)
 	{
-		public:
+		return Write(dest, value) && Many(dest, args...);
+	}
 
-			static bool Write(WSlice& dest, const uint8_t& value);
-			static bool Write(WSlice& dest, const uint16_t& value);
-			
-			static bool Write(WSlice& dest, const uint32_t& value);
-			static bool Write(WSlice& dest, const UInt48Type& value);
+private:
 
-			static bool Write(WSlice& dest, const int16_t& value);
-			static bool Write(WSlice& dest, const int32_t& value);
-
-			static bool Write(WSlice& dest, const double& value);
-			static bool Write(WSlice& dest, const float& value);
-
-			template <typename T, typename... Args>
-			static bool Many(WSlice& dest, const T& value, const Args &... args)
-			{
-				return Write(dest, value) && Many(dest, args...);
-			}
-
-		private:
-
-			static bool Many(WSlice& input) { return true; }
-	};
+	static bool Many(WSlice& input)
+	{
+		return true;
+	}
+};
 
 }
 

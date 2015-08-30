@@ -22,22 +22,22 @@
 #include "asiodnp3/ChangeSet.h"
 
 namespace asiodnp3
-{	
-	void ChangeSet::Add(const UpdateFun& fun)
-	{
-		updates.push_back(fun);
-	}
+{
+void ChangeSet::Add(const UpdateFun& fun)
+{
+	updates.push_back(fun);
+}
 
-	void ChangeSet::ApplyAll(opendnp3::IDatabase& db)
+void ChangeSet::ApplyAll(opendnp3::IDatabase& db)
+{
+	for (auto & update : updates)
 	{
-		for (auto& update : updates)
-		{
-			update(db);
-		}
+		update(db);
 	}
+}
 
-	bool ChangeSet::IsEmpty() const
-	{
-		return updates.empty();
-	}
+bool ChangeSet::IsEmpty() const
+{
+	return updates.empty();
+}
 }

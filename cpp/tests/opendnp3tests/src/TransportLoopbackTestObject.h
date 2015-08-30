@@ -40,8 +40,8 @@ class TransportLoopbackTestObject :  public TestObjectASIO
 public:
 	TransportLoopbackTestObject(
 	    openpal::LogRoot& root,
-		asio::io_service& service,
-		openpal::IExecutor& executor,
+	    asio::io_service& service,
+	    openpal::IExecutor& executor,
 	    openpal::IPhysicalLayer*,
 	    LinkConfig,
 	    LinkConfig,
@@ -65,7 +65,7 @@ private:
 
 	LinkLayer mLinkA;
 	LinkLayer mLinkB;
-	
+
 	asiodnp3::LinkLayerRouter mRouter;
 
 public:

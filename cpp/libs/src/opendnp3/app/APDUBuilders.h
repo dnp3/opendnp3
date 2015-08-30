@@ -27,31 +27,31 @@
 
 namespace opendnp3
 {
-namespace build 
+namespace build
 {
-	// -------- requests -------------
+// -------- requests -------------
 
-	void ClassRequest(APDURequest& request, FunctionCode code, const ClassField& classes, uint8_t seq);
+void ClassRequest(APDURequest& request, FunctionCode code, const ClassField& classes, uint8_t seq);
 
-	bool WriteClassHeaders(HeaderWriter& writer, const ClassField& classes);
+bool WriteClassHeaders(HeaderWriter& writer, const ClassField& classes);
 
-	void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
+void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
 
-	void ReadAllObjects(APDURequest& request, GroupVariationID gvId, uint8_t seq = 0);
+void ReadAllObjects(APDURequest& request, GroupVariationID gvId, uint8_t seq = 0);
 
-	void DisableUnsolicited(APDURequest& request, uint8_t seq = 0);
+void DisableUnsolicited(APDURequest& request, uint8_t seq = 0);
 
-	void EnableUnsolicited(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
+void EnableUnsolicited(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
 
-	void ClearRestartIIN(APDURequest& request, uint8_t seq = 0);
+void ClearRestartIIN(APDURequest& request, uint8_t seq = 0);
 
-	void MeasureDelay(APDURequest& request, uint8_t seq = 0);
+void MeasureDelay(APDURequest& request, uint8_t seq = 0);
 
-	// -------- responses -------------
+// -------- responses -------------
 
-	void NullUnsolicited(APDUResponse& response, uint8_t seq, const IINField& iin);
-	
-}	
+void NullUnsolicited(APDUResponse& response, uint8_t seq, const IINField& iin);
+
+}
 }
 
 #endif

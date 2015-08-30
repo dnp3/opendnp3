@@ -41,51 +41,78 @@ StaticBuffers::StaticBuffers(const DatabaseTemplate& dbTemplate) :
 	this->SetDefaultIndices<FrozenCounter>();
 	this->SetDefaultIndices<Analog>();
 	this->SetDefaultIndices<BinaryOutputStatus>();
-	this->SetDefaultIndices<AnalogOutputStatus>();	
+	this->SetDefaultIndices<AnalogOutputStatus>();
 	this->SetDefaultIndices<TimeAndInterval>();
 	this->SetDefaultIndices<SecurityStat>();
-}	
+}
 
 DatabaseConfigView StaticBuffers::GetView() const
 {
 	return DatabaseConfigView(
-		binaries.ToView(),
-		doubleBinaries.ToView(),
-		analogs.ToView(),
-		counters.ToView(),
-		frozenCounters.ToView(),
-		binaryOutputStatii.ToView(),
-		analogOutputStatii.ToView(),
-		timeAndIntervals.ToView()
-	);
-}	
+	           binaries.ToView(),
+	           doubleBinaries.ToView(),
+	           analogs.ToView(),
+	           counters.ToView(),
+	           frozenCounters.ToView(),
+	           binaryOutputStatii.ToView(),
+	           analogOutputStatii.ToView(),
+	           timeAndIntervals.ToView()
+	       );
+}
 
 template <>
-openpal::ArrayView<Cell<Binary>, uint16_t> StaticBuffers::GetArrayView() { return binaries.ToView(); }
+openpal::ArrayView<Cell<Binary>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return binaries.ToView();
+}
 
 template <>
-openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> StaticBuffers::GetArrayView() { return doubleBinaries.ToView(); }
+openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return doubleBinaries.ToView();
+}
 
 template <>
-openpal::ArrayView<Cell<Counter>, uint16_t> StaticBuffers::GetArrayView() { return counters.ToView(); }
+openpal::ArrayView<Cell<Counter>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return counters.ToView();
+}
 
 template <>
-openpal::ArrayView<Cell<FrozenCounter>, uint16_t> StaticBuffers::GetArrayView() { return frozenCounters.ToView(); }
+openpal::ArrayView<Cell<FrozenCounter>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return frozenCounters.ToView();
+}
 
 template <>
-openpal::ArrayView<Cell<Analog>, uint16_t> StaticBuffers::GetArrayView() { return analogs.ToView(); }
+openpal::ArrayView<Cell<Analog>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return analogs.ToView();
+}
 
 template <>
-openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> StaticBuffers::GetArrayView() { return binaryOutputStatii.ToView(); }
+openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return binaryOutputStatii.ToView();
+}
 
 template <>
-openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> StaticBuffers::GetArrayView() { return analogOutputStatii.ToView(); }
+openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return analogOutputStatii.ToView();
+}
 
 template <>
-openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> StaticBuffers::GetArrayView() { return timeAndIntervals.ToView(); }
+openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return timeAndIntervals.ToView();
+}
 
 template <>
-openpal::ArrayView<Cell<SecurityStat>, uint16_t> StaticBuffers::GetArrayView() { return securityStats.ToView(); }
+openpal::ArrayView<Cell<SecurityStat>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return securityStats.ToView();
+}
 
 }
 

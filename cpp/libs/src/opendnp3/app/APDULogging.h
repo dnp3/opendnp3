@@ -34,7 +34,7 @@ namespace logging
 void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu);
 
 void ParseAndLogResponseTx(openpal::Logger logger, const openpal::RSlice& apdu);
-	
+
 }
 }
 

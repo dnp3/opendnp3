@@ -36,19 +36,19 @@ namespace secauth
 
 class SessionKeyChangeState
 {
-	public:
+public:
 
 	SessionKeyChangeState(uint16_t challengeSize, openpal::Logger logger, openpal::ICryptoProvider& provider);
-	
-	// Formats the key status response	
+
+	// Formats the key status response
 	bool FormatKeyStatusResponse(
-		opendnp3::HeaderWriter& writer,
-		const opendnp3::User& user,
-		opendnp3::HMACType hmacType,
-		opendnp3::KeyWrapAlgorithm keyWrapAlgo,
-		opendnp3::KeyStatus status,	
-		const openpal::RSlice& hmac = openpal::RSlice::Empty()
-	);	
+	    opendnp3::HeaderWriter& writer,
+	    const opendnp3::User& user,
+	    opendnp3::HMACType hmacType,
+	    opendnp3::KeyWrapAlgorithm keyWrapAlgo,
+	    opendnp3::KeyStatus status,
+	    const openpal::RSlice& hmac = openpal::RSlice::Empty()
+	);
 
 	// Securely compare the specified serialized object data to the serialization
 	// of the last status response
@@ -56,7 +56,7 @@ class SessionKeyChangeState
 
 	bool CheckUserAndKSQMatches(const opendnp3::User& user, uint32_t keyChangeSeq);
 
-	private:
+private:
 
 	opendnp3::User lastUser;
 	uint16_t challengeSize;
@@ -65,8 +65,8 @@ class SessionKeyChangeState
 	uint32_t keyChangeSeqNum;
 	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> challengeData;
 	opendnp3::Group120Var5 statusRsp;
-	
-	
+
+
 };
 
 }

@@ -33,14 +33,14 @@ namespace secauth
 /**
 *	Creates permission sets based on roles
 *
-*	This is a VERY crude mapping to DNP3 function codes, but hey, the SA 
+*	This is a VERY crude mapping to DNP3 function codes, but hey, the SA
 *	definitions of these roles leaving a lot to the imagination.
 *
 *   Currently only the VIEWER, OPERATOR, and SINGLE_USER roles have permissions mapped
-*	
+*
 */
 class RoleBasedPermissions : openpal::StaticOnly
-{	
+{
 public:
 
 	static Permissions From(opendnp3::UserRole role);
@@ -48,7 +48,7 @@ public:
 private:
 
 	static const Permissions OPERATE_CONTROLS;
-	static const Permissions MONITOR_DATA;	
+	static const Permissions MONITOR_DATA;
 };
 
 }

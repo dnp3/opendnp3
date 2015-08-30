@@ -46,7 +46,7 @@ void DeferredASDU::SetASDU(APDUHeader header_, openpal::RSlice asdu_)
 	this->isSet = true;
 	this->header = header_;
 	auto dest = buffer.GetWSlice();
-	this->asdu = asdu_.CopyTo(dest);	
+	this->asdu = asdu_.CopyTo(dest);
 }
 
 }

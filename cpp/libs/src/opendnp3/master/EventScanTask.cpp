@@ -37,39 +37,39 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes_, TimeDuration retryPeriod_, openpal::Logger logger) :
-		PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
-		classes(classes_.OnlyEventClasses()),
-		retryPeriod(retryPeriod_)
+EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes_, TimeDuration retryPeriod_, openpal::Logger logger) :
+	PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
+	classes(classes_.OnlyEventClasses()),
+	retryPeriod(retryPeriod_)
+{
+
+}
+
+bool EventScanTask::BuildRequest(APDURequest& request, uint8_t seq)
+{
+	build::ClassRequest(request, FunctionCode::READ, classes, seq);
+	return true;
+}
+
+bool EventScanTask::IsEnabled() const
+{
+	return classes.HasEventClass();
+}
+
+IMasterTask::TaskState EventScanTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
+{
+	switch (result)
 	{
+	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
+		return TaskState::Disabled();
 
+	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+		return TaskState::Retry(now.Add(retryPeriod));
+
+	default:
+		return TaskState::Infinite();
 	}
+}
 
-	bool EventScanTask::BuildRequest(APDURequest& request, uint8_t seq)
-	{		
-		build::ClassRequest(request, FunctionCode::READ, classes, seq);
-		return true;
-	}
 
-	bool EventScanTask::IsEnabled() const
-	{
-		return classes.HasEventClass();
-	}
-
-	IMasterTask::TaskState EventScanTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
-	{
-		switch (result)
-		{		
-			case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-				return TaskState::Disabled();		
-
-			case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-				return TaskState::Retry(now.Add(retryPeriod));
-
-			default:
-				return TaskState::Infinite();
-		}
-	}	
-	
-	
 } //end ns

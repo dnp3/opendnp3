@@ -35,7 +35,7 @@ namespace opendnp3
 class ObjectHeader
 {
 public:
-	ObjectHeader();	
+	ObjectHeader();
 
 	uint8_t group;
 	uint8_t variation;

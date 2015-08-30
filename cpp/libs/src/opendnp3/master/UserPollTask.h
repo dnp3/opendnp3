@@ -38,42 +38,57 @@ class ISOEHandler;
  */
 
 class UserPollTask : public PollTaskBase
-{	
+{
 
-public:	
+public:
 
-	UserPollTask(		
-		const HeaderBuilderT& builder,
-		bool recurring,			
-		openpal::TimeDuration period,	
-		openpal::TimeDuration retryDelay,
-		IMasterApplication& app,
-		ISOEHandler& soeHandler,		
-		openpal::Logger logger,
-		TaskConfig config
-		);	
+	UserPollTask(
+	    const HeaderBuilderT& builder,
+	    bool recurring,
+	    openpal::TimeDuration period,
+	    openpal::TimeDuration retryDelay,
+	    IMasterApplication& app,
+	    ISOEHandler& soeHandler,
+	    openpal::Logger logger,
+	    TaskConfig config
+	);
 
-	virtual int Priority() const override final { return priority::USER_POLL; }
+	virtual int Priority() const override final
+	{
+		return priority::USER_POLL;
+	}
 
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual bool BlocksLowerPriority() const override final { return false; }
-	
-	virtual bool IsRecurring() const override final { return recurring; }	
+	virtual bool BlocksLowerPriority() const override final
+	{
+		return false;
+	}
 
-	virtual bool IsEnabled() const { return true; }
-		
-private:			
+	virtual bool IsRecurring() const override final
+	{
+		return recurring;
+	}
+
+	virtual bool IsEnabled() const
+	{
+		return true;
+	}
+
+private:
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
-	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK;  }
+	virtual MasterTaskType GetTaskType() const override final
+	{
+		return MasterTaskType::USER_TASK;
+	}
 
-			
+
 	HeaderBuilderT builder;
 	bool recurring;
 	openpal::TimeDuration period;
-	openpal::TimeDuration retryDelay;	
+	openpal::TimeDuration retryDelay;
 };
 
 

@@ -33,13 +33,13 @@ class PrefixedWriteIterator
 public:
 
 	static PrefixedWriteIterator Null()
-	{		
+	{
 		return PrefixedWriteIterator();
 	}
 
-	PrefixedWriteIterator() :		
+	PrefixedWriteIterator() :
 		sizeOfTypePlusIndex(0),
-		count(0),		
+		count(0),
 		isValid(false),
 		pPosition(nullptr)
 	{}
@@ -47,9 +47,9 @@ public:
 	PrefixedWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position) :
 		serializer(serializer_),
 		sizeOfTypePlusIndex(serializer.Size() + PrefixType::SIZE),
-		count(0),		
+		count(0),
 		isValid(position.Size() >= PrefixType::SIZE),
-		countPosition(position),		
+		countPosition(position),
 		pPosition(&position)
 	{
 		if(isValid)
@@ -62,9 +62,9 @@ public:
 	{
 		if (isValid)
 		{
-			PrefixType::Write(countPosition, count);			
+			PrefixType::Write(countPosition, count);
 		}
-	}	
+	}
 
 	bool Write(const WriteType& value, typename PrefixType::Type index)
 	{
@@ -73,7 +73,7 @@ public:
 			PrefixType::WriteBuffer(*pPosition, index);
 			serializer.Write(value, *pPosition);
 			++count;
-			return true;			
+			return true;
 		}
 		else
 		{

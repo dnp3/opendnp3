@@ -32,19 +32,19 @@ namespace openpal
 {
 
 LogRoot::LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters_) :
-	pHandler(pHandler_), 
+	pHandler(pHandler_),
 	filters(filters_),
 	alias(AllocateCopy(alias_))
-{			
-	
+{
+
 }
 
 LogRoot::LogRoot(const LogRoot& copy, char const* alias_) :
 	pHandler(copy.pHandler),
 	filters(copy.filters),
 	alias(AllocateCopy(alias_))
-{ 
-	
+{
+
 }
 
 LogRoot::~LogRoot()
@@ -58,7 +58,7 @@ void LogRoot::Log(const LogFilters& filters, char const* location, char const* m
 	{
 		LogEntry le(alias, filters, location, message, errorCode);
 		pHandler->Log(le);
-	}	
+	}
 }
 
 Logger LogRoot::GetLogger()

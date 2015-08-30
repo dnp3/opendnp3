@@ -33,76 +33,79 @@ namespace secauth
 */
 class UpdateKey
 {
+public:
+
+	// a view of the underlying key
+	class View
+	{
+
 	public:
 
-		// a view of the underlying key
-		class View
-		{
-			
-		public:
+		View() : algorithm(opendnp3::KeyWrapAlgorithm::UNDEFINED)
+		{}
 
-			View() : algorithm(opendnp3::KeyWrapAlgorithm::UNDEFINED)
-			{}
-			
-			View(
-				opendnp3::KeyWrapAlgorithm algorithm_,
-				openpal::RSlice key_
-				) : 
-				algorithm(algorithm_), data(key_)
-			{}
+		View(
+		    opendnp3::KeyWrapAlgorithm algorithm_,
+		    openpal::RSlice key_
+		) :
+			algorithm(algorithm_), data(key_)
+		{}
 
-			opendnp3::KeyWrapAlgorithm algorithm;
-			openpal::RSlice data;
-		};		
-	
-		static const uint8_t UPDATE_KEY_SIZE_128 = 16;
-		static const uint8_t UPDATE_KEY_SIZE_256 = 32;		
+		opendnp3::KeyWrapAlgorithm algorithm;
+		openpal::RSlice data;
+	};
 
-		
-		/**
-		* Construct an invalid default key
-		*/
-		UpdateKey();
+	static const uint8_t UPDATE_KEY_SIZE_128 = 16;
+	static const uint8_t UPDATE_KEY_SIZE_256 = 32;
 
-		/**
-		* Test constructor that initializes a key with the same value for every byte
-		*/
-		UpdateKey(uint8_t repeat, opendnp3::KeyWrapAlgorithm algorithm);
 
-		/**
-		* Initialize the key base on a view
-		*/
-		UpdateKey(const openpal::RSlice& key);
+	/**
+	* Construct an invalid default key
+	*/
+	UpdateKey();
 
-		/**
-		* Retrieve update key view
-		*/
-		View GetView() const;	
+	/**
+	* Test constructor that initializes a key with the same value for every byte
+	*/
+	UpdateKey(uint8_t repeat, opendnp3::KeyWrapAlgorithm algorithm);
 
-		/**
-		* Checks the length for validity
-		*/
-		bool IsValid() const { return m_algorithm != opendnp3::KeyWrapAlgorithm::UNDEFINED; }
-		
+	/**
+	* Initialize the key base on a view
+	*/
+	UpdateKey(const openpal::RSlice& key);
 
-		/**
-		* Only accepts 128 or 256 bit update keys
-		*
-		* returns true if the key was of valid size, false otherwise
-		*/
-		bool Initialize(const openpal::RSlice& key);
+	/**
+	* Retrieve update key view
+	*/
+	View GetView() const;
 
-	private:
+	/**
+	* Checks the length for validity
+	*/
+	bool IsValid() const
+	{
+		return m_algorithm != opendnp3::KeyWrapAlgorithm::UNDEFINED;
+	}
 
-		static uint32_t GetSize(opendnp3::KeyWrapAlgorithm);
-		static opendnp3::KeyWrapAlgorithm GetKeyWrapAlgorithm(uint32_t size);
-		
-	  
-		void Copy(const openpal::RSlice& key);
 
-			
-		opendnp3::KeyWrapAlgorithm m_algorithm;
-		openpal::SecureStaticBuffer<UPDATE_KEY_SIZE_256> m_buffer;		
+	/**
+	* Only accepts 128 or 256 bit update keys
+	*
+	* returns true if the key was of valid size, false otherwise
+	*/
+	bool Initialize(const openpal::RSlice& key);
+
+private:
+
+	static uint32_t GetSize(opendnp3::KeyWrapAlgorithm);
+	static opendnp3::KeyWrapAlgorithm GetKeyWrapAlgorithm(uint32_t size);
+
+
+	void Copy(const openpal::RSlice& key);
+
+
+	opendnp3::KeyWrapAlgorithm m_algorithm;
+	openpal::SecureStaticBuffer<UPDATE_KEY_SIZE_256> m_buffer;
 };
 
 }

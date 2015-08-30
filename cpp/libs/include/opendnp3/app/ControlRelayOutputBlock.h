@@ -48,11 +48,11 @@ public:
 
 	// overloaded constructor that allows the user to set a raw control code for non-standard codes
 	ControlRelayOutputBlock(
-		uint8_t rawCode,
-		uint8_t count = 1,
-		uint32_t onTime = 100,
-		uint32_t offTime = 100,
-		CommandStatus status = CommandStatus::SUCCESS);
+	    uint8_t rawCode,
+	    uint8_t count = 1,
+	    uint32_t onTime = 100,
+	    uint32_t offTime = 100,
+	    CommandStatus status = CommandStatus::SUCCESS);
 
 	/// allows matching of exact code
 	ControlCode functionCode;

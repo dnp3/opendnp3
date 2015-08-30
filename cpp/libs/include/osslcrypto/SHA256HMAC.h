@@ -27,17 +27,20 @@
 namespace osslcrypto
 {
 
-	class SHA256HMAC : public openpal::IHMACAlgo, private openpal::Uncopyable
+class SHA256HMAC : public openpal::IHMACAlgo, private openpal::Uncopyable
+{
+public:
+
+	virtual uint16_t OutputSize() const override final
 	{
-		public:
-		
-		virtual uint16_t OutputSize() const override final { return OUTPUT_SIZE; }
-		virtual openpal::RSlice Calculate(const openpal::RSlice& key, std::initializer_list<openpal::RSlice> data, openpal::WSlice& output, std::error_code& ec) override final;
+		return OUTPUT_SIZE;
+	}
+	virtual openpal::RSlice Calculate(const openpal::RSlice& key, std::initializer_list<openpal::RSlice> data, openpal::WSlice& output, std::error_code& ec) override final;
 
-		private:
+private:
 
-		static const uint16_t OUTPUT_SIZE = 32;
-	};
+	static const uint16_t OUTPUT_SIZE = 32;
+};
 }
 
 #endif

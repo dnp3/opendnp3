@@ -31,26 +31,29 @@
 
 namespace secauth
 {
-	class HMACProvider
+class HMACProvider
+{
+public:
+	HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode);
+
+	opendnp3::HMACType GetType() const;
+
+	openpal::RSlice Compute(const openpal::RSlice& key, std::initializer_list<openpal::RSlice> buffers, std::error_code& ec);
+
+	uint32_t OutputSize() const
 	{
-		public:
-			HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode);
-			
-			opendnp3::HMACType GetType() const;
-			
-			openpal::RSlice Compute(const openpal::RSlice& key, std::initializer_list<openpal::RSlice> buffers, std::error_code& ec);
+		return TRUNC_SIZE;
+	}
 
-			uint32_t OutputSize() const { return TRUNC_SIZE; }
+private:
 
-		private:
+	static openpal::IHMACAlgo& GetHMAC(openpal::ICryptoProvider& provider, HMACMode mode);
 
-			static openpal::IHMACAlgo& GetHMAC(openpal::ICryptoProvider& provider, HMACMode mode);
-
-			HMACMode mode;
-			openpal::IHMACAlgo* pHMAC;
-			const uint32_t TRUNC_SIZE;
-			openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> buffer;
-	};
+	HMACMode mode;
+	openpal::IHMACAlgo* pHMAC;
+	const uint32_t TRUNC_SIZE;
+	openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> buffer;
+};
 }
 
 #endif

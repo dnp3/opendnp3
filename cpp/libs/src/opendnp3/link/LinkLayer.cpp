@@ -53,12 +53,12 @@ void LinkLayer::Send(ITransportSegment& segments)
 
 bool LinkLayer::OnLowerLayerUp()
 {
-	return ctx.OnLowerLayerUp();	
+	return ctx.OnLowerLayerUp();
 }
 
 bool LinkLayer::OnLowerLayerDown()
 {
-	return ctx.OnLowerLayerDown();	
+	return ctx.OnLowerLayerDown();
 }
 
 bool LinkLayer::OnTransmitResult(bool success)
@@ -69,7 +69,7 @@ bool LinkLayer::OnTransmitResult(bool success)
 	{
 		ctx.TryStartTransmission();
 	}
-	
+
 	return true;
 }
 

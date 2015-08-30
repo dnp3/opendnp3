@@ -34,33 +34,33 @@ namespace opendnp3
 {
 
 /**
-	Parser for free format (0x5B) 
+	Parser for free format (0x5B)
 */
 class FreeFormatParser : private openpal::StaticOnly
 {
-	public:		
+public:
 
-		static ParseResult ParseHeader(openpal::RSlice& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler);
+	static ParseResult ParseHeader(openpal::RSlice& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler);
 
-	private:
+private:
 
-		typedef bool(&FreeFormatHandler)(const FreeFormatHeader& header, const openpal::RSlice& objects, IAPDUHandler* pHandler);
+	typedef bool(&FreeFormatHandler)(const FreeFormatHeader& header, const openpal::RSlice& objects, IAPDUHandler* pHandler);
 
-		static ParseResult ParseFreeFormat(FreeFormatHandler handler, const FreeFormatHeader& header, uint16_t size, openpal::RSlice& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger);
+	static ParseResult ParseFreeFormat(FreeFormatHandler handler, const FreeFormatHeader& header, uint16_t size, openpal::RSlice& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger);
 
-		// Free format handlers
-		
-		template <class T>
-		static bool ParseAny(const FreeFormatHeader& header, const openpal::RSlice& object, IAPDUHandler* pHandler)
+	// Free format handlers
+
+	template <class T>
+	static bool ParseAny(const FreeFormatHeader& header, const openpal::RSlice& object, IAPDUHandler* pHandler)
+	{
+		T value;
+		auto success = value.Read(object);
+		if (success && pHandler)
 		{
-			T value;
-			auto success = value.Read(object);
-			if (success && pHandler)
-			{
-				pHandler->OnHeader(header, value, object);
-			}
-			return success;
+			pHandler->OnHeader(header, value, object);
 		}
+		return success;
+	}
 };
 
 }

@@ -50,10 +50,11 @@ TEST_CASE(SUITE("ReadDiscontiguousEvent"))
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig(5);
 	config.params.indexMode = IndexMode::Discontiguous;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1));	
+	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1));
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase& db) {
+	t.Transaction([](IDatabase & db)
+	{
 		db.Update(Binary(true), 0);
 	});
 
@@ -68,7 +69,10 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1));
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase& db) { db.Update(Binary(true, 0x01), 0); });
+	t.Transaction([](IDatabase & db)
+	{
+		db.Update(Binary(true, 0x01), 0);
+	});
 
 	t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
 	REQUIRE(t.lower.PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
@@ -86,7 +90,8 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase& db) {
+	t.Transaction([](IDatabase & db)
+	{
 		db.Update(Analog(0x1234, 0x01), 0x17); // 0x 12 34 00 00 in little endian
 		db.Update(Binary(true, 0x01), 0x10);
 		db.Update(Analog(0x2222, 0x01), 0x17); // 0x 22 22 00 00 in little endian
@@ -109,7 +114,8 @@ TEST_CASE(SUITE("EventBufferOverflowAndClear"))
 
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase& db) {
+	t.Transaction([](IDatabase & db)
+	{
 		db.Update(Binary(true, 0x01), 0);  // this event is lost in the overflow
 		db.Update(Binary(true, 0x01), 1);
 		db.Update(Binary(true, 0x01), 2);
@@ -119,7 +125,7 @@ TEST_CASE(SUITE("EventBufferOverflowAndClear"))
 	REQUIRE("C0 81 82 08" == t.lower.PopWriteAsHex());
 	t.OnSendResult(true);
 
-	t.SendToOutstation("C1 01 3C 02 07 01"); // class 1, count of 1	
+	t.SendToOutstation("C1 01 3C 02 07 01"); // class 1, count of 1
 	REQUIRE("E1 81 82 08 02 01 28 01 00 01 00 81" == t.lower.PopWriteAsHex());
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::SolicitedConfirm(1));
@@ -141,12 +147,12 @@ TEST_CASE(SUITE("MultipleClasses"))
 	view.analogs[0].metadata.clazz = PointClass::Class2;
 	view.counters[0].metadata.clazz = PointClass::Class3;
 
-	t.Transaction([](IDatabase& db) 
-	{		
+	t.Transaction([](IDatabase & db)
+	{
 		db.Update(Binary(true), 0);
 		db.Update(Analog(3), 0);
 		db.Update(Counter(7), 0);
-	});	
+	});
 
 	t.SendToOutstation("C0 01"); // empty READ
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 8E 00"); // all event bits set + restart
@@ -173,11 +179,11 @@ TEST_CASE(SUITE("MultipleClasses"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C4 81 80 00"); // restart only
 }
 
-void TestEventRead(	const std::string& request, 
-					const std::string& response, 
-					const std::function<void(IDatabase& db)>& loadFun, 
-					const std::function<void(DatabaseConfigView& db)>& configure = [](DatabaseConfigView& view){}
-				  )
+void TestEventRead(	const std::string& request,
+                    const std::string& response,
+                    const std::function<void(IDatabase& db)>& loadFun,
+const std::function<void(DatabaseConfigView& db)>& configure = [](DatabaseConfigView& view) {}
+                  )
 {
 
 	OutstationConfig config;
@@ -189,15 +195,18 @@ void TestEventRead(	const std::string& request,
 
 	t.LowerLayerUp();
 
-	t.Transaction([&](IDatabase& db){ loadFun(db); });
-	
+	t.Transaction([&](IDatabase & db)
+	{
+		loadFun(db);
+	});
+
 	t.SendToOutstation(request);
-	REQUIRE(t.lower.PopWriteAsHex() ==  response);	
+	REQUIRE(t.lower.PopWriteAsHex() ==  response);
 }
 
 TEST_CASE(SUITE("Class1"))
 {
-	auto update = [](IDatabase& db)
+	auto update = [](IDatabase & db)
 	{
 		db.Update(Binary(false, 0x01), 0);
 	};
@@ -207,7 +216,7 @@ TEST_CASE(SUITE("Class1"))
 
 TEST_CASE(SUITE("Class1OneByteLimitedCount"))
 {
-	auto update = [](IDatabase& db)
+	auto update = [](IDatabase & db)
 	{
 		db.Update(Binary(false, 0x01), 2);
 		db.Update(Binary(true, 0x01), 1);
@@ -219,7 +228,7 @@ TEST_CASE(SUITE("Class1OneByteLimitedCount"))
 
 TEST_CASE(SUITE("Class1TwoByteLimitedCount"))
 {
-	auto update = [](IDatabase& db)
+	auto update = [](IDatabase & db)
 	{
 		db.Update(Binary(false, 0x01), 2);
 		db.Update(Binary(true, 0x01), 1);
@@ -232,17 +241,17 @@ TEST_CASE(SUITE("Class1TwoByteLimitedCount"))
 
 TEST_CASE(SUITE("MixedClassLimitedCount"))
 {
-	auto configure = [](DatabaseConfigView& view)
+	auto configure = [](DatabaseConfigView & view)
 	{
 		view.binaries[0].metadata.clazz = PointClass::Class1;
 		view.binaries[1].metadata.clazz = PointClass::Class2;
 		view.binaries[2].metadata.clazz = PointClass::Class3;
 	};
 
-	auto update = [](IDatabase& db)
+	auto update = [](IDatabase & db)
 	{
 		db.Update(Binary(false, 0x01), 0);
-		
+
 		db.Update(Binary(true, 0x01), 1);
 		db.Update(Binary(false, 0x01), 1);
 
@@ -257,7 +266,7 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
 
 TEST_CASE(SUITE("ReadGrp2Var0"))
 {
-	auto update = [](IDatabase& db)
+	auto update = [](IDatabase & db)
 	{
 		db.Update(Binary(false, 0x01), 0);
 	};
@@ -312,7 +321,7 @@ TEST_CASE(SUITE("ReadGrp2Var1LimitedCount"))
 TEST_CASE(SUITE("ReadGrp2Var2"))
 {
 	auto update = [](IDatabase & db)
-	{		
+	{
 		db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
 	};
 

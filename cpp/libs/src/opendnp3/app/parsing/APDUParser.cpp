@@ -49,11 +49,11 @@ ParseResult APDUParser::Parse(const openpal::RSlice& buffer, IAPDUHandler& handl
 }
 
 ParseResult APDUParser::Parse(const openpal::RSlice& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings)
-{	
+{
 	// do two state parsing process with logging and white-listing first but no handling on the first pass
 	auto result = ParseSinglePass(buffer, pLogger, nullptr, &handler, settings);
 	// if the first pass was successful, do a 2nd pass with the handler but no logging or white-list
-	return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, &handler, nullptr, settings) : result;			
+	return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, &handler, nullptr, settings) : result;
 }
 
 ParseResult APDUParser::ParseAndLogAll(const openpal::RSlice& buffer, openpal::Logger* pLogger, ParserSettings settings)
@@ -91,27 +91,27 @@ ParseResult APDUParser::ParseHeader(RSlice& buffer, openpal::Logger* pLogger, ui
 			return ParseResult::UNKNOWN_OBJECT;
 		}
 		else
-		{						
+		{
 			// if a white-list is defined and it doesn't validate, exit early
 			if (pWhiteList && !pWhiteList->IsAllowed(count, gv.enumeration, QualifierCodeFromType(header.qualifier)))
-			{				
+			{
 				FORMAT_LOGGER_BLOCK(
-					pLogger,
-					flags::WARN,
-					"Header (%i) w/ Object (%i,%i) and qualifier (%i) failed whitelist",
-					count,
-					header.group,
-					header.variation,
-					header.qualifier);
+				    pLogger,
+				    flags::WARN,
+				    "Header (%i) w/ Object (%i,%i) and qualifier (%i) failed whitelist",
+				    count,
+				    header.group,
+				    header.variation,
+				    header.qualifier);
 
 				return ParseResult::NOT_ON_WHITELIST;
 			}
 			else
 			{
 				return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier, count), settings, pHandler);
-			}					
+			}
 		}
-	}	
+	}
 	else
 	{
 		return result;
@@ -122,44 +122,44 @@ ParseResult APDUParser::ParseQualifier(RSlice& buffer, openpal::Logger* pLogger,
 {
 	switch (record.GetQualifierCode())
 	{
-		case(QualifierCode::ALL_OBJECTS) :
-			return HandleAllObjectsHeader(pLogger, record, settings, pHandler);			 
-			 
-		case(QualifierCode::UINT8_CNT) :
-			return CountParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
+	case(QualifierCode::ALL_OBJECTS) :
+		return HandleAllObjectsHeader(pLogger, record, settings, pHandler);
 
-		case(QualifierCode::UINT16_CNT) :
-			return CountParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
+	case(QualifierCode::UINT8_CNT) :
+		return CountParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
 
-		case(QualifierCode::UINT8_START_STOP) :
-			return RangeParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
+	case(QualifierCode::UINT16_CNT) :
+		return CountParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
 
-		case(QualifierCode::UINT16_START_STOP) :
-			return RangeParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
+	case(QualifierCode::UINT8_START_STOP) :
+		return RangeParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
 
-		case(QualifierCode::UINT8_CNT_UINT8_INDEX) :
-			return CountIndexParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
+	case(QualifierCode::UINT16_START_STOP) :
+		return RangeParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
 
-		case(QualifierCode::UINT16_CNT_UINT16_INDEX) :
-			return CountIndexParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
+	case(QualifierCode::UINT8_CNT_UINT8_INDEX) :
+		return CountIndexParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
 
-		case(QualifierCode::UINT16_FREE_FORMAT) :
-			return FreeFormatParser::ParseHeader(buffer, settings, record, pLogger, pHandler);
+	case(QualifierCode::UINT16_CNT_UINT16_INDEX) :
+		return CountIndexParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
 
-		default:
-			FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", record.qualifier);
-			return ParseResult::UNKNOWN_QUALIFIER;
+	case(QualifierCode::UINT16_FREE_FORMAT) :
+		return FreeFormatParser::ParseHeader(buffer, settings, record, pLogger, pHandler);
+
+	default:
+		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", record.qualifier);
+		return ParseResult::UNKNOWN_QUALIFIER;
 	}
 }
 
 ParseResult APDUParser::HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler)
 {
 	FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-		"%03u,%03u - %s - %s",
-		record.group,		
-		record.variation,
-		GroupVariationToString(record.enumeration),
-		QualifierCodeToString(QualifierCode::ALL_OBJECTS));
+	                    "%03u,%03u - %s - %s",
+	                    record.group,
+	                    record.variation,
+	                    GroupVariationToString(record.enumeration),
+	                    QualifierCodeToString(QualifierCode::ALL_OBJECTS));
 
 	if (pHandler)
 	{

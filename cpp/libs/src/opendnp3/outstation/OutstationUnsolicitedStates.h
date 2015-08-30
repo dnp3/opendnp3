@@ -35,7 +35,7 @@ class OContext;
 class OutstationUnsolicitedStateBase : openpal::Uncopyable
 {
 
-public:		
+public:
 
 	virtual OutstationUnsolicitedStateBase* OnConfirm(OContext&, const APDUHeader& header) = 0;
 
@@ -53,7 +53,10 @@ class OutstationUnsolicitedStateIdle : public OutstationUnsolicitedStateBase
 
 public:
 
-	static OutstationUnsolicitedStateBase& Inst() { return instance;  }
+	static OutstationUnsolicitedStateBase& Inst()
+	{
+		return instance;
+	}
 
 	virtual OutstationUnsolicitedStateBase* OnConfirm(OContext&, const APDUHeader& header) override;
 
@@ -76,7 +79,10 @@ class OutstationUnsolicitedStateConfirmWait : public OutstationUnsolicitedStateI
 
 public:
 
-	static OutstationUnsolicitedStateBase& Inst() { return instance; }
+	static OutstationUnsolicitedStateBase& Inst()
+	{
+		return instance;
+	}
 
 	virtual OutstationUnsolicitedStateBase* OnConfirm(OContext&, const APDUHeader& header) override;
 

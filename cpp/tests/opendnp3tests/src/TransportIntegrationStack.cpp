@@ -34,13 +34,13 @@ TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, ope
 	listener(),
 	router(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1)),
 	transport(root, executor, DEFAULT_MAX_APDU_SIZE),
-	link(root, executor, transport, listener, aCfg)	
+	link(root, executor, transport, listener, aCfg)
 {
 	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
 	router.AddContext(&link, route);
 	router.Enable(&link);
 	link.SetRouter(router);
-	
+
 	transport.SetLinkLayer(&link);
 
 	transport.SetAppLayer(&upper);

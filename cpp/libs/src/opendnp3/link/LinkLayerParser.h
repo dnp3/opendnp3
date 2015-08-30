@@ -43,27 +43,27 @@ class LinkLayerParser
 {
 	enum class State
 	{
-		FindSync,
-		ReadHeader,
-		ReadBody,
-		Complete
-	};	
+	    FindSync,
+	    ReadHeader,
+	    ReadBody,
+	    Complete
+	};
 
 public:
-	
+
 	/// @param logger_ Logger that the receiver is to use.
-	/// @param pSink_ Completely parsed frames are sent to this interface	
+	/// @param pSink_ Completely parsed frames are sent to this interface
 	LinkLayerParser(const openpal::Logger& logger, LinkChannelStatistics* pStatistics_ = nullptr);
-	
+
 	/// Called when valid data has been written to the current buffer write position
 	/// Parses the new data and calls the specified frame sink
-	/// @param numBytes Number of bytes written	
-	void OnRead(uint32_t numBytes, IFrameSink* pSink);	
-	
-	/// @return Buffer that can currently be used for writing	
+	/// @param numBytes Number of bytes written
+	void OnRead(uint32_t numBytes, IFrameSink* pSink);
+
+	/// @return Buffer that can currently be used for writing
 	openpal::WSlice WriteBuff() const;
 
-	/// Resets the state of parser	
+	/// Resets the state of parser
 	void Reset();
 
 private:
@@ -75,7 +75,7 @@ private:
 	State ParseBody();
 
 	void PushFrame(IFrameSink* pSink);
-	
+
 	bool ReadHeader();
 	bool ValidateBody();
 	bool ValidateHeaderParameters();
@@ -86,7 +86,7 @@ private:
 
 	openpal::Logger logger;
 	LinkChannelStatistics* pStatistics;
-	
+
 	LinkHeader header;
 
 	State state;

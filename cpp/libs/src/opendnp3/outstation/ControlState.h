@@ -37,11 +37,11 @@ namespace opendnp3
 ///
 class ControlState
 {
-	
-	public:	
-	
+
+public:
+
 	ControlState() : digest(0), length(0)
-	{}	
+	{}
 
 	CommandStatus ValidateSelection(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout, const openpal::RSlice& objects) const
 	{
@@ -85,13 +85,13 @@ class ControlState
 		length = objects.Size();
 	}
 
-	private:
-	
+private:
+
 	AppSeqNum expectedSeq;
 	openpal::MonotonicTimestamp selectTime;
 	uint16_t digest;
 	uint32_t length;
-	
+
 };
 
 

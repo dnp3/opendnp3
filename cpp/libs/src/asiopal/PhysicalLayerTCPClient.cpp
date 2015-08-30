@@ -36,10 +36,10 @@ namespace asiopal
 {
 
 PhysicalLayerTCPClient::PhysicalLayerTCPClient(
-	openpal::LogRoot& root,
-	asio::io_service& service,
+    openpal::LogRoot& root,
+    asio::io_service& service,
     const std::string& host_,
-	const std::string& localAddress_,
+    const std::string& localAddress_,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
@@ -62,7 +62,10 @@ void PhysicalLayerTCPClient::DoOpen()
 	this->BindToLocalAddress(ec);
 	if (ec)
 	{
-		auto callback = [this, ec]() { this->OnOpenCallback(ec); };
+		auto callback = [this, ec]()
+		{
+			this->OnOpenCallback(ec);
+		};
 		executor.strand.post(callback);
 	}
 	else
@@ -80,14 +83,17 @@ void PhysicalLayerTCPClient::DoOpen()
 		else
 		{
 			remoteEndpoint.address(address);
-			auto callback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
+			auto callback = [this](const std::error_code & code)
+			{
+				this->OnOpenCallback(code);
+			};
 			socket.async_connect(remoteEndpoint, executor.strand.wrap(callback));
 		}
-	}			
+	}
 }
 
 void PhysicalLayerTCPClient::BindToLocalAddress(std::error_code& ec)
-{	
+{
 	auto string = localAddress.empty() ? "0.0.0.0" : localAddress;
 	auto addr = asio::ip::address::from_string(string, ec);
 	if (!ec)
@@ -113,7 +119,7 @@ void PhysicalLayerTCPClient::HandleResolve(const std::error_code& code, asio::ip
 		auto callback = [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
 		{
 			this->OnOpenCallback(code);
-		};		
+		};
 
 		asio::async_connect(socket, endpoints, condition, executor.strand.wrap(callback));
 	}

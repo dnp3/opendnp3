@@ -37,21 +37,21 @@ public:
 	template <class T>
 	class Record
 	{
-		public:
+	public:
 
-			Record() : sequence(0)
-			{}
-		
-			Record(const T& meas_, const HeaderInfo& info_, uint32_t sequence_) :
-				meas(meas_),				
-				info(info_),
-				sequence(sequence_)
-			{}
-				
-	
-			T meas;			
-			HeaderInfo info;			
-			uint32_t sequence;
+		Record() : sequence(0)
+		{}
+
+		Record(const T& meas_, const HeaderInfo& info_, uint32_t sequence_) :
+			meas(meas_),
+			info(info_),
+			sequence(sequence_)
+		{}
+
+
+		T meas;
+		HeaderInfo info;
+		uint32_t sequence;
 	};
 
 	MockSOEHandler() : soeCount(0)
@@ -60,13 +60,13 @@ public:
 	uint32_t TotalReceived() const
 	{
 		return soeCount;
-	}		
+	}
 
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override final
 	{
 		this->RecordAny(info, values, this->binarySOE);
 	}
-	
+
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override final
 	{
 		this->RecordAny(info, values, this->doubleBinarySOE);
@@ -82,7 +82,7 @@ public:
 		this->RecordAny(info, values, this->counterSOE);
 	}
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override final 
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override final
 	{
 		this->RecordAny(info, values, this->frozenCounterSOE);
 	}
@@ -138,7 +138,7 @@ public:
 		binaryCommandEventSOE.clear();
 		analogCommandEventSOE.clear();
 		securityStatSOE.clear();
-	}	
+	}
 
 	std::map<uint16_t, Record<Binary>> binarySOE;
 	std::map<uint16_t, Record<DoubleBitBinary>> doubleBinarySOE;
@@ -164,8 +164,9 @@ private:
 
 	template <class T>
 	void RecordAny(const HeaderInfo& info, const ICollection<Indexed<T>>& values, std::map<uint16_t, Record<T> >& records)
-	{		
-		auto process = [this, info, &records](const Indexed<T>& pair) {
+	{
+		auto process = [this, info, &records](const Indexed<T>& pair)
+		{
 			Record<T> record(pair.value, info, soeCount);
 			records[pair.index] = record;
 			++this->soeCount;
@@ -175,7 +176,7 @@ private:
 	}
 
 
-	
+
 
 };
 

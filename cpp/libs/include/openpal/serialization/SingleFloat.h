@@ -38,12 +38,12 @@ public:
 
 	typedef float Type;
 
-	static float ReadBuffer(RSlice& buffer);	
+	static float ReadBuffer(RSlice& buffer);
 	static void WriteBuffer(WSlice& buffer, float value);
-		
-	static float Read(const uint8_t* data);	
+
+	static float Read(const uint8_t* data);
 	static void Write(uint8_t* data, float value);
-	
+
 	const static std::size_t SIZE = sizeof(float);
 	const static float Max;
 	const static float Min;

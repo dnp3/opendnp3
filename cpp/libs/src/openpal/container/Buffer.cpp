@@ -23,38 +23,38 @@
 
 namespace openpal
 {
-	Buffer::Buffer() : Array<uint8_t, uint32_t>(0)
-	{}
+Buffer::Buffer() : Array<uint8_t, uint32_t>(0)
+{}
 
-	Buffer::Buffer(uint32_t size) : Array<uint8_t, uint32_t>(size)
-	{}
+Buffer::Buffer(uint32_t size) : Array<uint8_t, uint32_t>(size)
+{}
 
-	Buffer::Buffer(const RSlice& input) : Array<uint8_t, uint32_t>(input.Size())
+Buffer::Buffer(const RSlice& input) : Array<uint8_t, uint32_t>(input.Size())
+{
+	auto dest = this->GetWSlice();
+	input.CopyTo(dest);
+}
+
+RSlice Buffer::ToRSlice() const
+{
+	return RSlice(this->buffer, this->size);
+}
+
+WSlice Buffer::GetWSlice()
+{
+	return WSlice(this->buffer, this->Size());
+}
+
+WSlice Buffer::GetWSlice(uint32_t maxSize)
+{
+	if (maxSize <= this->Size())
 	{
-		auto dest = this->GetWSlice();
-		input.CopyTo(dest);
+		return WSlice(this->buffer, maxSize);
 	}
-
-	RSlice Buffer::ToRSlice() const
+	else
 	{
-		return RSlice(this->buffer, this->size);
+		return GetWSlice();
 	}
-
-	WSlice Buffer::GetWSlice()
-	{
-		return WSlice(this->buffer, this->Size());
-	}
-
-	WSlice Buffer::GetWSlice(uint32_t maxSize)
-	{		
-		if (maxSize <= this->Size())
-		{
-			return WSlice(this->buffer, maxSize);
-		}
-		else
-		{
-			return GetWSlice();
-		}
-	}
+}
 }
 

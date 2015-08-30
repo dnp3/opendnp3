@@ -40,7 +40,7 @@ public:
 	IndexType Size() const
 	{
 		return count;
-	}	
+	}
 
 	IndexType Capacity() const
 	{
@@ -65,7 +65,7 @@ public:
 	void Clear()
 	{
 		count = first = nextInsert = 0;
-	}	
+	}
 
 	ValueType* Peek()
 	{
@@ -76,7 +76,7 @@ public:
 		else
 		{
 			return &buffer[first];
-		}		
+		}
 	}
 
 	ValueType* Pop()
@@ -91,7 +91,7 @@ public:
 			first = (first + 1) % buffer.Size();
 			--count;
 			return &buffer[ret];
-		}		
+		}
 	}
 
 	bool Enqueue(const ValueType& value)
@@ -114,7 +114,7 @@ private:
 	IndexType count;
 	IndexType first;
 	IndexType nextInsert;
-	
+
 	openpal::DynamicArray<ValueType, IndexType> buffer;
 };
 

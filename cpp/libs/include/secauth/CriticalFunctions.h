@@ -27,9 +27,9 @@ namespace secauth
 {
 
 class CriticalFunctions
-{	
+{
 public:
-	
+
 	static CriticalFunctions AuthOptional();
 	static CriticalFunctions AuthEverything();
 
@@ -45,7 +45,7 @@ public:
 	bool authAssignClass;
 	bool authDelayMeasure;
 	bool authResponse;
-	bool authUnsolicited;	
+	bool authUnsolicited;
 
 	bool IsCritical(opendnp3::FunctionCode code) const;
 

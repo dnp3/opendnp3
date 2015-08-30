@@ -25,90 +25,90 @@ using namespace opendnp3;
 using namespace openpal;
 
 namespace secauth
-{				
-	SessionStore::SessionStore(
-			IMonotonicTimeSource& timeSource,
-			openpal::TimeDuration sessionKeyValidity_,
-			uint32_t maxAuthMessageCount_
-	) :		
-		pTimeSource(&timeSource),
-		sessionKeyValidity(sessionKeyValidity_),
-		maxAuthMessageCount(maxAuthMessageCount_)
-	{
-		
-		
-	}
+{
+SessionStore::SessionStore(
+    IMonotonicTimeSource& timeSource,
+    openpal::TimeDuration sessionKeyValidity_,
+    uint32_t maxAuthMessageCount_
+) :
+	pTimeSource(&timeSource),
+	sessionKeyValidity(sessionKeyValidity_),
+	maxAuthMessageCount(maxAuthMessageCount_)
+{
 
-	void SessionStore::Clear()
-	{
-		sessionMap.clear();
-	}
 
-	opendnp3::KeyStatus SessionStore::IncrementAuthCount(const User& user)
-	{
-		auto iter = sessionMap.find(user.GetId());
-		if (iter == sessionMap.end())
-		{
-			return KeyStatus::UNDEFINED;
-		}
-		else
-		{
-			return iter->second->IncrementAuthCount();
-		}
-	}
+}
 
-	bool SessionStore::Invalidate(const opendnp3::User& user)
-	{
-		auto iter = sessionMap.find(user.GetId());
-		if (iter == sessionMap.end())
-		{
-			return false;
-		}
-		else
-		{
-			sessionMap.erase(iter);
-			return true;
-		}
-	}
-	
-	void SessionStore::SetSessionKeys(const User& user, const SessionKeysView& view)
-	{
-		auto iter = sessionMap.find(user.GetId());
-		if (iter == sessionMap.end())
-		{			
-			auto session = std::unique_ptr<Session>(
-					new Session(*pTimeSource, sessionKeyValidity, maxAuthMessageCount)
-			);
-			session->SetKeys(view);
-			sessionMap[user.GetId()] = std::move(session);
-		}
-		else
-		{
-			iter->second->SetKeys(view);			
-		}		
-	}
+void SessionStore::Clear()
+{
+	sessionMap.clear();
+}
 
-	opendnp3::KeyStatus SessionStore::TryGetSessionKeys(const User& user, SessionKeysView& view)
+opendnp3::KeyStatus SessionStore::IncrementAuthCount(const User& user)
+{
+	auto iter = sessionMap.find(user.GetId());
+	if (iter == sessionMap.end())
 	{
-		auto iter = sessionMap.find(user.GetId());
-		return (iter == sessionMap.end()) ? KeyStatus::UNDEFINED : iter->second->TryGetKeyView(view);
+		return KeyStatus::UNDEFINED;
 	}
+	else
+	{
+		return iter->second->IncrementAuthCount();
+	}
+}
 
-	opendnp3::KeyStatus SessionStore::GetSessionKeyStatus(const User& user)
+bool SessionStore::Invalidate(const opendnp3::User& user)
+{
+	auto iter = sessionMap.find(user.GetId());
+	if (iter == sessionMap.end())
 	{
-		auto iter = sessionMap.find(user.GetId());
-		if (iter == sessionMap.end())
-		{			
-			// initialize new session info
-			sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session(*pTimeSource, sessionKeyValidity, maxAuthMessageCount));
-			return KeyStatus::NOT_INIT;			
-		}
-		else
-		{
-			return iter->second->GetKeyStatus();			
-		}
+		return false;
 	}
-				
+	else
+	{
+		sessionMap.erase(iter);
+		return true;
+	}
+}
+
+void SessionStore::SetSessionKeys(const User& user, const SessionKeysView& view)
+{
+	auto iter = sessionMap.find(user.GetId());
+	if (iter == sessionMap.end())
+	{
+		auto session = std::unique_ptr<Session>(
+		                   new Session(*pTimeSource, sessionKeyValidity, maxAuthMessageCount)
+		               );
+		session->SetKeys(view);
+		sessionMap[user.GetId()] = std::move(session);
+	}
+	else
+	{
+		iter->second->SetKeys(view);
+	}
+}
+
+opendnp3::KeyStatus SessionStore::TryGetSessionKeys(const User& user, SessionKeysView& view)
+{
+	auto iter = sessionMap.find(user.GetId());
+	return (iter == sessionMap.end()) ? KeyStatus::UNDEFINED : iter->second->TryGetKeyView(view);
+}
+
+opendnp3::KeyStatus SessionStore::GetSessionKeyStatus(const User& user)
+{
+	auto iter = sessionMap.find(user.GetId());
+	if (iter == sessionMap.end())
+	{
+		// initialize new session info
+		sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session(*pTimeSource, sessionKeyValidity, maxAuthMessageCount));
+		return KeyStatus::NOT_INIT;
+	}
+	else
+	{
+		return iter->second->GetKeyStatus();
+	}
+}
+
 }
 
 

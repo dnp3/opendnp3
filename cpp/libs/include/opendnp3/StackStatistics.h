@@ -26,23 +26,23 @@
 
 namespace opendnp3
 {
-	struct StackStatistics
-	{
-		StackStatistics() : 
-			numTransportRx(0),
-			numTransportTx(0),
-			numTransportErrorRx(0)
-		{}
-		
-		/// Number of valid TPDU's received
-		uint32_t numTransportRx;
+struct StackStatistics
+{
+	StackStatistics() :
+		numTransportRx(0),
+		numTransportTx(0),
+		numTransportErrorRx(0)
+	{}
 
-		/// Number of TPDUs transmitted
-		uint32_t numTransportTx;	
+	/// Number of valid TPDU's received
+	uint32_t numTransportRx;
 
-		/// Number of TPDUs dropped due to malformed contents, bad seq, etc
-		uint32_t numTransportErrorRx;
-	};
+	/// Number of TPDUs transmitted
+	uint32_t numTransportTx;
+
+	/// Number of TPDUs dropped due to malformed contents, bad seq, etc
+	uint32_t numTransportErrorRx;
+};
 }
 
 #endif

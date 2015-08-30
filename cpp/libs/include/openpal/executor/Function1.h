@@ -56,18 +56,18 @@ public:
 	}
 
 	template <class Lambda>
-	static Function1<A,R> Bind(Lambda& lambda)
+	static Function1<A, R> Bind(Lambda& lambda)
 	{
-		static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for erasure");		
+		static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for erasure");
 		Function1<A, R> function(&RunLambda<Lambda>, sizeof(lambda));
 		new(function.bytes) Lambda(lambda); // use placement new
 		return function;
-	}	
+	}
 
 	R Apply(const A& arg) const
 	{
 		assert(pInvoke);
-		return (*pInvoke)(bytes, arg);		
+		return (*pInvoke)(bytes, arg);
 	}
 
 private:
@@ -75,13 +75,13 @@ private:
 	template <class Lambda>
 	static R RunLambda(const uint8_t* pBuffer, const A& arg)
 	{
-		return (*reinterpret_cast<const Lambda*>(pBuffer))(arg);		
+		return (*reinterpret_cast<const Lambda*>(pBuffer))(arg);
 	}
 
 	Function1(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
 	{}
 
-	Invoke pInvoke;	
+	Invoke pInvoke;
 };
 
 }

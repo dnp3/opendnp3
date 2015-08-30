@@ -32,7 +32,7 @@ class TransportStack
 {
 public:
 	TransportStack(openpal::LogRoot& root, openpal::IExecutor& executor, ILinkListener& listener, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config);
-	
+
 	TransportLayer transport;
 	LinkLayer link;
 };

@@ -33,52 +33,52 @@ using namespace opendnp3;
 namespace secauth
 {
 
-	UserStatusChangeTask::UserStatusChangeTask(
-			const UserStatusChange& userStatusChange,
-			IMasterApplicationSA& application,
-			openpal::Logger logger,
-			const opendnp3::TaskConfig& config
-		) :
-		IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, config),
-		statusChange(userStatusChange)
-	{}
-					
-	bool UserStatusChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
-	{		
-		request.SetControl(AppControlField::Request(seq));
-		request.SetFunction(FunctionCode::AUTH_REQUEST);
-		return request.GetWriter().WriteFreeFormat(statusChange.Convert());
-	}
-	
-	opendnp3::IMasterTask::ResponseResult UserStatusChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
+UserStatusChangeTask::UserStatusChangeTask(
+    const UserStatusChange& userStatusChange,
+    IMasterApplicationSA& application,
+    openpal::Logger logger,
+    const opendnp3::TaskConfig& config
+) :
+	IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, config),
+	statusChange(userStatusChange)
+{}
+
+bool UserStatusChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
+{
+	request.SetControl(AppControlField::Request(seq));
+	request.SetFunction(FunctionCode::AUTH_REQUEST);
+	return request.GetWriter().WriteFreeFormat(statusChange.Convert());
+}
+
+opendnp3::IMasterTask::ResponseResult UserStatusChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
+{
+	if (!this->ValidateSingleResponse(header) || !this->ValidateInternalIndications(header))
 	{
-		if (!this->ValidateSingleResponse(header) || !this->ValidateInternalIndications(header))
-		{
-			return ResponseResult::ERROR_BAD_RESPONSE;
-		}
-
-		if (objects.IsEmpty())
-		{			
-			return ResponseResult::OK_FINAL;
-		}
-
-		ErrorHandler handler;
-		auto result = APDUParser::Parse(objects, handler, &logger);
-		if (result == ParseResult::OK)
-		{			
-			if (handler.IsValid())
-			{
-				FORMAT_LOG_BLOCK(
-					logger, 
-					flags::WARN, 
-					"User status change error received: %s", 
-					AuthErrorCodeToString(handler.value.errorCode)
-				)
-			}
-		}
-	
 		return ResponseResult::ERROR_BAD_RESPONSE;
-	}	
+	}
+
+	if (objects.IsEmpty())
+	{
+		return ResponseResult::OK_FINAL;
+	}
+
+	ErrorHandler handler;
+	auto result = APDUParser::Parse(objects, handler, &logger);
+	if (result == ParseResult::OK)
+	{
+		if (handler.IsValid())
+		{
+			FORMAT_LOG_BLOCK(
+			    logger,
+			    flags::WARN,
+			    "User status change error received: %s",
+			    AuthErrorCodeToString(handler.value.errorCode)
+			)
+		}
+	}
+
+	return ResponseResult::ERROR_BAD_RESPONSE;
+}
 
 } //end ns
 

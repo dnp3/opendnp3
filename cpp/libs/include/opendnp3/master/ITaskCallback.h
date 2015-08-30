@@ -35,7 +35,7 @@ public:
 
 	// Called when the task starts running
 	virtual void OnStart() = 0;
-	
+
 	// Called when the task succeeds or fails
 	virtual void OnComplete(TaskCompletion result) = 0;
 

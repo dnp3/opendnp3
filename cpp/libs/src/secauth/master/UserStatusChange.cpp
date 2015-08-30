@@ -27,18 +27,18 @@
 
 namespace secauth
 {
-	
-	
+
+
 UserStatusChange::UserStatusChange(
-	opendnp3::KeyChangeMethod keyChangeMethod_,
-	opendnp3::UserOperation userOperation_,
-	uint32_t statusChangeSeqNum_,
-	uint16_t userRole_,
-	uint16_t userRoleExpDays_,
-	const std::string& userName_,
-	openpal::RSlice userPublicKey_,
-	openpal::RSlice certificationData_
-) : 
+    opendnp3::KeyChangeMethod keyChangeMethod_,
+    opendnp3::UserOperation userOperation_,
+    uint32_t statusChangeSeqNum_,
+    uint16_t userRole_,
+    uint16_t userRoleExpDays_,
+    const std::string& userName_,
+    openpal::RSlice userPublicKey_,
+    openpal::RSlice certificationData_
+) :
 	keyChangeMethod(keyChangeMethod_),
 	userOperation(userOperation_),
 	statusChangeSeqNum(statusChangeSeqNum_),
@@ -50,17 +50,17 @@ UserStatusChange::UserStatusChange(
 {}
 
 opendnp3::Group120Var10 UserStatusChange::Convert() const
-{			
+{
 	return opendnp3::Group120Var10(
-		keyChangeMethod,
-		userOperation,
-		statusChangeSeqNum,
-		userRole,
-		userRoleExpDays,		
-		AsSlice(userName),
-		userPublicKey.ToRSlice(),
-		certificationData.ToRSlice()
-	);
+	           keyChangeMethod,
+	           userOperation,
+	           statusChangeSeqNum,
+	           userRole,
+	           userRoleExpDays,
+	           AsSlice(userName),
+	           userPublicKey.ToRSlice(),
+	           certificationData.ToRSlice()
+	       );
 }
 
 

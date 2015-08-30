@@ -60,7 +60,7 @@ private:
 	}
 
 	void CheckStart();
-	
+
 	ICommandHandler* m_handler;
 	bool m_isSelect;
 	bool m_isStarted;

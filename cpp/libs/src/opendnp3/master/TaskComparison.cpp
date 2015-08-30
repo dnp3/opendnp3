@@ -32,7 +32,7 @@ TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::Monot
 
 	bool leftEnabled = TaskComparison::Enabled(lhs, filter);
 	bool rightEnabled = TaskComparison::Enabled(rhs, filter);
-	
+
 	if (!leftEnabled || !rightEnabled)
 	{
 		// always prefer the enabled task over the one that is disabled
@@ -56,7 +56,7 @@ TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::Monot
 
 		if (lhsExpired && rhsExpired)
 		{
-			// both expired, compare based on priority				
+			// both expired, compare based on priority
 			return HigherPriority(lhs, rhs);
 		}
 		else
@@ -75,11 +75,11 @@ TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::Monot
 				return HigherPriority(lhs, rhs);
 			}
 		}
-	}	
+	}
 }
 
 bool TaskComparison::Enabled(const IMasterTask& task, ITaskFilter& filter)
-{ 
+{
 	return !task.ExpirationTime().IsMax() && filter.CanRun(task);
 }
 

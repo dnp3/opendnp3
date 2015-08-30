@@ -42,26 +42,26 @@ typedef std::function<bool(opendnp3::User& user)> GetFreeUserFun;
 
 class UpdateKeyChangeState
 {
-	public:
+public:
 
 	class VerificationData
-	{	
-		public:
+	{
+	public:
 
 		VerificationData() {}
 
 		VerificationData(
-			std::string username_,
-			openpal::RSlice masterChallenge_,
-			openpal::RSlice outstationChallenge_,
-			uint32_t keyChangeSeqNum_,
-			opendnp3::User user_
-			) :
-				username(username_),
-				masterChallenge(masterChallenge_),
-				outstationChallenge(outstationChallenge_),
-				keyChangeSeqNum(keyChangeSeqNum_),
-				user(user_)
+		    std::string username_,
+		    openpal::RSlice masterChallenge_,
+		    openpal::RSlice outstationChallenge_,
+		    uint32_t keyChangeSeqNum_,
+		    opendnp3::User user_
+		) :
+			username(username_),
+			masterChallenge(masterChallenge_),
+			outstationChallenge(outstationChallenge_),
+			keyChangeSeqNum(keyChangeSeqNum_),
+			user(user_)
 		{}
 
 		std::string username;
@@ -76,25 +76,25 @@ class UpdateKeyChangeState
 	void Reset();
 
 	bool WriteUpdateKeyChangeResposne(
-		opendnp3::HeaderWriter& writer,	
-		uint32_t ksq,
-		const std::string& username,
-		const openpal::RSlice& masterChallengeData,
-		const IFreeUser& freeUser);
+	    opendnp3::HeaderWriter& writer,
+	    uint32_t ksq,
+	    const std::string& username,
+	    const openpal::RSlice& masterChallengeData,
+	    const IFreeUser& freeUser);
 
 	bool VerifyUserAndKSQ(uint32_t ksq, opendnp3::User user, VerificationData& data);
 
-	private:
+private:
 
 	bool m_valid;
-	VerificationData m_data;	
+	VerificationData m_data;
 
 	const uint16_t M_CHALLENGE_SIZE;
 	openpal::Logger m_logger;
 	openpal::ICryptoProvider* m_crypto;
-		
+
 	// static buffers for both nonces
-	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_masterChallengeBuffer;				
+	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_masterChallengeBuffer;
 	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> m_outstationChallengeBuffer;
 };
 

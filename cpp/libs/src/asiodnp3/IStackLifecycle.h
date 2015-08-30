@@ -25,7 +25,10 @@
 
 #include <opendnp3/link/ILinkSession.h>
 
-namespace asiopal { class ASIOExecutor; }
+namespace asiopal
+{
+class ASIOExecutor;
+}
 
 namespace asiodnp3
 {
@@ -39,7 +42,7 @@ public:
 	* Get a reference to the underlying ASIOExecutor
 	*/
 	virtual asiopal::ASIOExecutor& GetExecutor() = 0;
-	
+
 	/**
 	*	Invoked from user code. Synchronously start the session
 	*/
@@ -56,7 +59,7 @@ public:
 	*/
 	virtual void Shutdown(opendnp3::ILinkSession* pContext, IStack* pStack) = 0;
 };
-	
+
 }
 
 #endif

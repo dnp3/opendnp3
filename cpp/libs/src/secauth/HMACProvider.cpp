@@ -22,44 +22,44 @@
 #include "HMACProvider.h"
 
 namespace secauth
-{	
-	openpal::IHMACAlgo& HMACProvider::GetHMAC(openpal::ICryptoProvider& crypto, HMACMode mode)
+{
+openpal::IHMACAlgo& HMACProvider::GetHMAC(openpal::ICryptoProvider& crypto, HMACMode mode)
+{
+	switch (mode)
 	{
-		switch (mode)
-		{
-		case(HMACMode::SHA1_TRUNC_8) :
-		case(HMACMode::SHA1_TRUNC_10) :
-			return crypto.GetSHA1HMAC();
-		default:
-			return crypto.GetSHA256HMAC();
-		}
+	case(HMACMode::SHA1_TRUNC_8) :
+	case(HMACMode::SHA1_TRUNC_10) :
+		return crypto.GetSHA1HMAC();
+	default:
+		return crypto.GetSHA256HMAC();
+	}
+}
+
+HMACProvider::HMACProvider(openpal::ICryptoProvider& crypto, HMACMode mode_) :
+	mode(mode_),
+	pHMAC(&GetHMAC(crypto, mode_)),
+	TRUNC_SIZE(GetTruncationSize(mode_))
+{
+
+}
+
+opendnp3::HMACType HMACProvider::GetType() const
+{
+	return ToHMACType(mode);
+}
+
+openpal::RSlice HMACProvider::Compute(const openpal::RSlice& key, std::initializer_list<openpal::RSlice> buffers, std::error_code& ec)
+{
+	auto dest = buffer.GetWSlice();
+	auto result = pHMAC->Calculate(key, buffers, dest, ec);
+
+	if (ec)
+	{
+		return openpal::RSlice();
 	}
 
-	HMACProvider::HMACProvider(openpal::ICryptoProvider& crypto, HMACMode mode_) :
-		mode(mode_),
-		pHMAC(&GetHMAC(crypto, mode_)),
-		TRUNC_SIZE(GetTruncationSize(mode_))
-	{
-		
-	}
-
-	opendnp3::HMACType HMACProvider::GetType() const
-	{
-		return ToHMACType(mode);
-	}	
-
-	openpal::RSlice HMACProvider::Compute(const openpal::RSlice& key, std::initializer_list<openpal::RSlice> buffers, std::error_code& ec)
-	{
-		auto dest = buffer.GetWSlice();		
-		auto result = pHMAC->Calculate(key, buffers, dest, ec);
-
-		if (ec)
-		{
-			return openpal::RSlice();
-		}
-
-		return result.Take(TRUNC_SIZE);
-	}
+	return result.Take(TRUNC_SIZE);
+}
 }
 
 

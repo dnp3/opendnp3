@@ -49,7 +49,7 @@ TEST_CASE(SUITE("ApplicationIINBits"))
 	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
-	
+
 	t.application.appIIN.deviceTrouble = true;
 	t.application.appIIN.localControl = true;
 	t.application.appIIN.configCorrupt = true;
@@ -127,7 +127,7 @@ TEST_CASE(SUITE("NoResponseToNoAckCodes"))
 
 	for (auto code : codes)
 	{
-		uint8_t bytes[2];		
+		uint8_t bytes[2];
 		AppControlField control(true, true, false, false, sequence);
 		bytes[0] = control.ToByte();
 		bytes[1] = static_cast<uint8_t>(code);
@@ -137,7 +137,7 @@ TEST_CASE(SUITE("NoResponseToNoAckCodes"))
 		REQUIRE(t.lower.PopWriteAsHex() == "");
 
 		++sequence;
-	}	
+	}
 }
 
 TEST_CASE(SUITE("WriteIIN"))
@@ -184,7 +184,7 @@ TEST_CASE(SUITE("DelayMeasure"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.LowerLayerUp();	
+	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 17"); //delay measure
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
@@ -202,8 +202,8 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 
 TEST_CASE(SUITE("WriteTimeDate"))
 {
-	OutstationConfig config;	
-	OutstationTestObject t(config);	
+	OutstationConfig config;
+	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
 
@@ -217,23 +217,23 @@ TEST_CASE(SUITE("WriteTimeDate"))
 TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);	
+	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
 	t.application.allowTimeWrite = false;
 	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error	
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error
 	REQUIRE(t.application.timestamps.size() == 0);
 }
 
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 {
-	OutstationConfig cfg;	
+	OutstationConfig cfg;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error +  need time still set	
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error +  need time still set
 	REQUIRE(t.application.timestamps.empty());
 }
 
@@ -252,7 +252,8 @@ TEST_CASE(SUITE("MixedVariationAssignments"))
 	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(2));
 
-	{	// configure two different default variations
+	{
+		// configure two different default variations
 		auto view = t.context.GetConfigView();
 		view.analogs[0].variation = StaticAnalogVariation::Group30Var1;
 		view.analogs[1].variation = StaticAnalogVariation::Group30Var2;
@@ -270,7 +271,7 @@ TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
 {
 	OutstationConfig config;
 	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes().Except(StaticTypeBitmask::DoubleBinaryInput);
-	OutstationTestObject t(config, DatabaseTemplate(1,1)); // 1 binary and 1 double binary
+	OutstationTestObject t(config, DatabaseTemplate(1, 1)); // 1 binary and 1 double binary
 
 	t.LowerLayerUp();
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
@@ -280,18 +281,19 @@ TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
 TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 {
 	OutstationConfig config;
-	config.params.maxTxFragSize = 20; // override to use a fragment length of 20	
+	config.params.maxTxFragSize = 20; // override to use a fragment length of 20
 	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(8));
 	t.LowerLayerUp();
 
-	
-	t.Transaction([](IDatabase& db) {
+
+	t.Transaction([](IDatabase & db)
+	{
 		for (uint16_t i = 0; i < 8; i++)
 		{
 			db.Update(Analog(0, 0x01), i);
 		}
 	});
-	
+
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 
@@ -306,7 +308,7 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 	REQUIRE(t.lower.PopWriteAsHex() == "22 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
 	t.OnSendResult(true);
 	t.SendToOutstation("C2 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "43 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");	
+	REQUIRE(t.lower.PopWriteAsHex() == "43 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");
 	t.OnSendResult(true);
 	t.SendToOutstation("C3 00");
 
@@ -325,9 +327,9 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 
 
 void NewTestStaticRead(const std::string& request, const std::string& response)
-{	
+{
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));	
+	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
 	t.LowerLayerUp();
 
 	t.SendToOutstation(request);
@@ -338,14 +340,15 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 
 void TestTimeAndIntervalRead(const std::string& request)
 {
-	OutstationConfig config;	
+	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
 	t.LowerLayerUp();
 
 	t.Transaction(
-		[](IDatabase& db){
+	    [](IDatabase & db)
+	{
 		db.Update(TimeAndInterval(DNPTime(9), 3, IntervalUnits::Days), 0);
-		}
+	}
 	);
 
 	t.SendToOutstation(request);
@@ -354,7 +357,7 @@ void TestTimeAndIntervalRead(const std::string& request)
 
 TEST_CASE(SUITE("TimeAndIntervalViaIntegrity"))
 {
-	TestTimeAndIntervalRead(hex::IntegrityPoll(0));	
+	TestTimeAndIntervalRead(hex::IntegrityPoll(0));
 }
 
 TEST_CASE(SUITE("TimeAndIntervalViaDirectRequest"))
@@ -369,11 +372,11 @@ TEST_CASE(SUITE("TimeAndIntervalViaDirectRangeRequest"))
 
 TEST_CASE(SUITE("TestTimeAndIntervalWrite"))
 {
-	OutstationConfig config;	
+	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
 	t.LowerLayerUp();
 
-	t.application.supportsWriteTimeAndInterval = true;	
+	t.application.supportsWriteTimeAndInterval = true;
 
 	// write g50v4 using 2-octet count & index prefix
 	t.SendToOutstation("C0 02 32 04 28 01 00 07 00 09 00 00 00 00 00 03 00 00 00 05");
@@ -438,14 +441,15 @@ TEST_CASE(SUITE("ReadGrp40Var0ViaIntegrity"))
 
 TEST_CASE(SUITE("ReadByRangeHeader"))
 {
-	OutstationConfig config;	
+	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(10));
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase& db){
+	t.Transaction([](IDatabase & db)
+	{
 		db.Update(Analog(42, 0x01), 5);
 		db.Update(Analog(41, 0x01), 6);
-	});	
+	});
 
 	t.SendToOutstation("C2 01 1E 02 00 05 06"); // read 30 var 2, [05 : 06]
 	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 1E 02 00 05 06 01 2A 00 01 29 00");
@@ -489,10 +493,11 @@ std::string QueryDiscontiguousBinary(const std::string& request)
 	view.binaries[0].vIndex = 2;
 	view.binaries[1].vIndex = 4;
 	view.binaries[2].vIndex = 5;
-	
+
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase& db){
+	t.Transaction([](IDatabase & db)
+	{
 		db.Update(Binary(true, 0x01), 2, EventMode::Suppress);
 		db.Update(Binary(false, 0x01), 4, EventMode::Suppress);
 	});
@@ -558,16 +563,16 @@ TEST_CASE(SUITE("ReadDiscontiguousAllDataWithRangeError"))
 template <class PointType>
 void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp, const std::function<void (DatabaseConfigView&)>& configure)
 {
-	OutstationTestObject t(config, tmp);	
+	OutstationTestObject t(config, tmp);
 
 	auto view = t.context.GetConfigView();
 	configure(view);
 
 	t.LowerLayerUp();
 
-	t.Transaction([value](IDatabase& db) 
-	{ 
-		db.Update(PointType(value), 0); 
+	t.Transaction([value](IDatabase & db)
+	{
+		db.Update(PointType(value), 0);
 	});
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
@@ -579,7 +584,10 @@ template <class T>
 void TestStaticCounter(StaticCounterVariation variation, T value, const std::string& response)
 {
 	OutstationConfig cfg;
-	auto configure = [variation](DatabaseConfigView& view) { view.counters[0].variation = variation; };
+	auto configure = [variation](DatabaseConfigView & view)
+	{
+		view.counters[0].variation = variation;
+	};
 	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), value, response, configure);
 }
 
@@ -590,9 +598,10 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 
 	{
 		auto view = t.context.GetConfigView();
-		view.binaries.foreach([](Cell<Binary>& cell){ 
+		view.binaries.foreach([](Cell<Binary>& cell)
+		{
 			cell.SetInitialValue(Binary(false));
-			cell.variation = StaticBinaryVariation::Group1Var1; 
+			cell.variation = StaticBinaryVariation::Group1Var1;
 		});
 	}
 
@@ -611,7 +620,7 @@ TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 	{
 		auto view = t.context.GetConfigView();
 		view.binaries.foreach([](Cell<Binary>& cell)
-		{			
+		{
 			cell.variation = StaticBinaryVariation::Group1Var1;
 		});
 	}
@@ -647,7 +656,10 @@ template <class T>
 void TestStaticAnalog(StaticAnalogVariation variation, T value, const std::string& response)
 {
 	OutstationConfig cfg;
-	auto configure = [variation](DatabaseConfigView& view) { view.analogs[0].variation = variation; };
+	auto configure = [variation](DatabaseConfigView & view)
+	{
+		view.analogs[0].variation = variation;
+	};
 	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), value, response, configure);
 }
 
@@ -683,7 +695,10 @@ void TestStaticBinaryOutputStatus(T value, const std::string& response)
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
 	t.LowerLayerUp();
 
-	t.Transaction([value](IDatabase& db) { db.Update(BinaryOutputStatus(value, 0x01), 0); });
+	t.Transaction([value](IDatabase & db)
+	{
+		db.Update(BinaryOutputStatus(value, 0x01), 0);
+	});
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 	REQUIRE(t.lower.PopWriteAsHex() == response);
@@ -698,7 +713,10 @@ template <class T>
 void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T value, const string& response)
 {
 	OutstationConfig cfg;
-	auto configure = [variation](DatabaseConfigView& view) { view.analogOutputStatii[0].variation = variation; };
+	auto configure = [variation](DatabaseConfigView & view)
+	{
+		view.analogOutputStatii[0].variation = variation;
+	};
 	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), value, response, configure);
 }
 

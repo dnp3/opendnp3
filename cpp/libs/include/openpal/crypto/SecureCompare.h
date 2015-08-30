@@ -25,8 +25,8 @@
 
 namespace openpal
 {
-	// A buffer comparison function that doesn't leak timing info
-	bool SecureEquals(const RSlice& lhs, const RSlice& rhs);	
+// A buffer comparison function that doesn't leak timing info
+bool SecureEquals(const RSlice& lhs, const RSlice& rhs);
 }
 
 #endif

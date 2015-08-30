@@ -37,7 +37,7 @@ LinkLayerParser::LinkLayerParser(const Logger& logger_, LinkChannelStatistics* p
 	logger(logger_),
 	pStatistics(pStatistics_),
 	state(State::FindSync),
-	frameSize(0),			
+	frameSize(0),
 	buffer(rxBuffer, LPDU_MAX_FRAME_SIZE)
 {
 
@@ -46,17 +46,17 @@ LinkLayerParser::LinkLayerParser(const Logger& logger_, LinkChannelStatistics* p
 void LinkLayerParser::Reset()
 {
 	state = State::FindSync;
-	frameSize = 0;	
+	frameSize = 0;
 	buffer.Reset();
 }
 
 WSlice LinkLayerParser::WriteBuff() const
 {
-	return WSlice(buffer.WriteBuff(), buffer.NumWriteBytes());	
+	return WSlice(buffer.WriteBuff(), buffer.NumWriteBytes());
 }
 
 void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink* pSink)
-{	
+{
 	buffer.AdvanceWrite(numBytes);
 
 	while (ParseUntilComplete() == State::Complete)
@@ -77,7 +77,7 @@ LinkLayerParser::State LinkLayerParser::ParseUntilComplete()
 	auto lastState = this->state;
 	// continue as long as we're making progress, i.e. a state change
 	while ((this->state = ParseOneStep()) != lastState)
-	{		
+	{
 		lastState = state;
 	}
 	return state;
@@ -87,14 +87,14 @@ LinkLayerParser::State LinkLayerParser::ParseOneStep()
 {
 	switch (state)
 	{
-		case(State::FindSync) :
-			return ParseSync();
-		case(State::ReadHeader) :
-			return ParseHeader();
-		case(State::ReadBody) :
-			return ParseBody();
-		default:
-			return state;
+	case(State::FindSync) :
+		return ParseSync();
+	case(State::ReadHeader) :
+		return ParseHeader();
+	case(State::ReadBody) :
+		return ParseBody();
+	default:
+		return state;
 	}
 }
 
@@ -147,7 +147,7 @@ LinkLayerParser::State LinkLayerParser::ParseBody()
 		{
 			this->FailFrame();
 			return State::FindSync;
-		}		
+		}
 	}
 }
 
@@ -156,12 +156,12 @@ LinkLayerParser::State LinkLayerParser::ParseBody()
 void LinkLayerParser::PushFrame(IFrameSink* pSink)
 {
 	LinkHeaderFields fields(
-		header.GetFuncEnum(),
-		header.IsFromMaster(),
-		header.IsFcbSet(),
-		header.IsFcvDfcSet(),
-		header.GetDest(),
-		header.GetSrc()
+	    header.GetFuncEnum(),
+	    header.IsFromMaster(),
+	    header.IsFcbSet(),
+	    header.IsFcvDfcSet(),
+	    header.GetDest(),
+	    header.GetSrc()
 	);
 
 	pSink->OnFrame(fields, userData);
@@ -182,7 +182,7 @@ bool LinkLayerParser::ReadHeader()
 	if (CRC::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
 	{
 		if (ValidateHeaderParameters())
-		{			
+		{
 			return true;
 		}
 		else
@@ -191,12 +191,12 @@ bool LinkLayerParser::ReadHeader()
 			return false;
 		}
 	}
-	else 
+	else
 	{
 		if (pStatistics) ++pStatistics->numCrcError;
 		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_CRC, "CRC failure in header");
 		return false;
-	}	
+	}
 }
 
 bool LinkLayerParser::ValidateBody()
@@ -205,12 +205,12 @@ bool LinkLayerParser::ValidateBody()
 	if (LinkFrame::ValidateBodyCRC(buffer.ReadBuffer() + LPDU_HEADER_SIZE, len))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::LINK_RX,
-			"Function: %s Dest: %u Source: %u Length: %u",
-			LinkFunctionToString(header.GetFuncEnum()),
-			header.GetDest(),
-			header.GetSrc(),
-			header.GetLength());
-		
+		                 "Function: %s Dest: %u Source: %u Length: %u",
+		                 LinkFunctionToString(header.GetFuncEnum()),
+		                 header.GetDest(),
+		                 header.GetSrc(),
+		                 header.GetLength());
+
 		FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer.ReadBuffer().Take(frameSize), 10, 18);
 
 		return true;
@@ -227,12 +227,12 @@ bool LinkLayerParser::ValidateBody()
 }
 
 bool LinkLayerParser::ValidateHeaderParameters()
-{	
+{
 	if(!header.ValidLength())
-	{		
+	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_INVALID_LENGTH, "LENGTH out of range [5,255]: %i", header.GetLength());
 		return false;
-	}	
+	}
 
 	// some combinations of these header parameters are invalid
 	// check for them here

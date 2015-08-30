@@ -28,10 +28,10 @@ namespace openpal
 
 class IMonotonicTimeSource
 {
-	public:
+public:
 
 	virtual ~IMonotonicTimeSource() {}
-	
+
 	/// @return a non-absolute timestamp for the monotonic time source
 	virtual MonotonicTimestamp GetTime() = 0;
 };

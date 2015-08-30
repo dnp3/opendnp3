@@ -31,13 +31,13 @@ namespace opendnp3
 
 /**
 	Some IIN bits are necessarily controlled by the outstation application,
-	not the underlying protocol stack. This structure describes the state of 
+	not the underlying protocol stack. This structure describes the state of
 	the bits controllable by the application.
 */
 class ApplicationIIN
 {
 
-	public:
+public:
 
 	ApplicationIIN();
 

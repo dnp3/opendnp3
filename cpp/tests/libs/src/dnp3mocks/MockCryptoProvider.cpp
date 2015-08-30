@@ -24,38 +24,38 @@
 #include <cstring>
 
 namespace opendnp3
-{	
-	MockCryptoProvider::MockCryptoProvider() :
-		secureFill(0xAA),
-		sha1(20),
-		sha256(32)
-	{}
-	
+{
+MockCryptoProvider::MockCryptoProvider() :
+	secureFill(0xAA),
+	sha1(20),
+	sha256(32)
+{}
 
-	openpal::RSlice MockCryptoProvider::GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec)
-	{
-		memset(buffer, secureFill, buffer.Size());
-		auto ret = buffer.ToRSlice();
-		buffer.Advance(buffer.Size());
-		return ret;		
-	}
 
-	openpal::IHMACAlgo& MockCryptoProvider::GetSHA1HMAC()
-	{
-		return sha1;
-	}
-	
-	openpal::IHMACAlgo& MockCryptoProvider::GetSHA256HMAC()
-	{
-		return sha256;
-	}
+openpal::RSlice MockCryptoProvider::GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec)
+{
+	memset(buffer, secureFill, buffer.Size());
+	auto ret = buffer.ToRSlice();
+	buffer.Advance(buffer.Size());
+	return ret;
+}
 
-	openpal::IKeyWrapAlgo& MockCryptoProvider::GetAESKeyWrap()
-	{
-		return keyWrap;
-	}
-	
-		
+openpal::IHMACAlgo& MockCryptoProvider::GetSHA1HMAC()
+{
+	return sha1;
+}
+
+openpal::IHMACAlgo& MockCryptoProvider::GetSHA256HMAC()
+{
+	return sha256;
+}
+
+openpal::IKeyWrapAlgo& MockCryptoProvider::GetAESKeyWrap()
+{
+	return keyWrap;
+}
+
+
 }
 
 

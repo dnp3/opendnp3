@@ -76,9 +76,9 @@ uint8_t AppControlField::ToByte() const
 	{
 		ret |= UNS_MASK;
 	}
-	
+
 	uint8_t seq = SEQ % 16;
-	
+
 	return ret | seq;
 }
 

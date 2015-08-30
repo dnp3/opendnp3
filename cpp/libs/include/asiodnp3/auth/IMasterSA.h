@@ -33,12 +33,12 @@
 namespace asiodnp3
 {
 
-/** 
+/**
 * Extends the vanilla DNP3 master interface with secure authentication features.
 */
 class IMasterSA : public IMaster
 {
-public:		
+public:
 
 	virtual ~IMasterSA() {}
 
@@ -56,16 +56,16 @@ public:
 	*  Begins the first step in changing a user's update key
 	*
 	*  At the moment this only support symmetric with KeyChangeMethod::AES_256_SHA256_HMAC
-	*/	
+	*/
 	virtual void BeginUpdateKeyChange(const std::string& userName, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& handler) = 0;
 
 	/**
 	*	Begin the 2nd and final step in change a user's update key
-	* 
+	*
 	*/
 	virtual void FinishUpdateKeyChange(const secauth::FinishUpdateKeyChangeArgs& args, const opendnp3::TaskConfig& config) = 0;
-	
-	
+
+
 };
 
 }

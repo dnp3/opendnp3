@@ -41,7 +41,7 @@ bool Logger::IsEnabled(const LogFilters& filters) const
 void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
 	if (pRoot->IsEnabled(filters))
-	{		
+	{
 		pRoot->Log(filters, location, message, errorCode);
 	}
 }

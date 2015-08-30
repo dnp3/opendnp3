@@ -46,7 +46,7 @@ public:
 
 	// transmission events to handle
 	virtual PriStateBase& TrySendConfirmed(LinkContext&, ITransportSegment& segments);
-	virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments);	
+	virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments);
 	virtual PriStateBase& TrySendRequestLinkStatus(LinkContext&);
 
 	//every concrete state implements this for logging purposes
@@ -59,7 +59,7 @@ class PLLS_Idle final : public PriStateBase
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_Idle);
 
 	virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments) override;
-	virtual PriStateBase& TrySendConfirmed(LinkContext&, ITransportSegment& segments) override;	
+	virtual PriStateBase& TrySendConfirmed(LinkContext&, ITransportSegment& segments) override;
 	virtual PriStateBase& TrySendRequestLinkStatus(LinkContext&) override;
 };
 
@@ -120,9 +120,18 @@ class PLLS_ResetLinkWait final : public PriStateBase
 
 	PriStateBase& OnAck(LinkContext&, bool aIsRcvBuffFull) override;
 
-	PriStateBase& OnNack(LinkContext&  link, bool)  override { return Failure(link); }
-	PriStateBase& OnLinkStatus(LinkContext& link, bool) override { return Failure(link); }
-	PriStateBase& OnNotSupported(LinkContext&  link, bool)  override { return Failure(link); }
+	PriStateBase& OnNack(LinkContext&  link, bool)  override
+	{
+		return Failure(link);
+	}
+	PriStateBase& OnLinkStatus(LinkContext& link, bool) override
+	{
+		return Failure(link);
+	}
+	PriStateBase& OnNotSupported(LinkContext&  link, bool)  override
+	{
+		return Failure(link);
+	}
 
 	PriStateBase& OnTimeout(LinkContext&) override;
 
@@ -141,9 +150,15 @@ class PLLS_ConfDataWait final : public PriStateBase
 
 	PriStateBase& OnAck(LinkContext&, bool aIsRcvBuffFull) override;
 	PriStateBase& OnNack(LinkContext& link, bool) override;
-	PriStateBase& OnLinkStatus(LinkContext& link, bool) override { return Failure(link); }
-	PriStateBase& OnNotSupported(LinkContext& link, bool)  override { return Failure(link); }
-	
+	PriStateBase& OnLinkStatus(LinkContext& link, bool) override
+	{
+		return Failure(link);
+	}
+	PriStateBase& OnNotSupported(LinkContext& link, bool)  override
+	{
+		return Failure(link);
+	}
+
 	PriStateBase& OnTimeout(LinkContext&) override;
 
 private:
@@ -158,7 +173,7 @@ private:
 class PLLS_RequestLinkStatusWait final : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusWait);
-	
+
 	PriStateBase& OnNack(LinkContext& link, bool) override;
 	PriStateBase& OnLinkStatus(LinkContext& link, bool) override;
 	PriStateBase& OnNotSupported(LinkContext& link, bool)  override;

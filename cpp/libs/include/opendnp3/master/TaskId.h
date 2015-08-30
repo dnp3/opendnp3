@@ -24,18 +24,30 @@
 namespace opendnp3
 {
 
-/** 
+/**
 * Interface that represents a running master.
 */
 class TaskId
 {
-public:		
+public:
 
-	static TaskId Defined(int id) { return TaskId(id, true); }
-	static TaskId Undefined() { return TaskId(-1, false); }
+	static TaskId Defined(int id)
+	{
+		return TaskId(id, true);
+	}
+	static TaskId Undefined()
+	{
+		return TaskId(-1, false);
+	}
 
-	int GetId() const { return id; }
-	bool IsDefined() const { return isDefined; }
+	int GetId() const
+	{
+		return id;
+	}
+	bool IsDefined() const
+	{
+		return isDefined;
+	}
 
 private:
 

@@ -39,13 +39,19 @@ public:
 	 */
 	ShiftableBuffer(uint8_t* pBuffer_, uint32_t size);
 
-	
-	// ------- Functions related to reading -----------	
 
-	uint32_t NumBytesRead() const { return writePos - readPos; }
+	// ------- Functions related to reading -----------
+
+	uint32_t NumBytesRead() const
+	{
+		return writePos - readPos;
+	}
 
 	/// @return Pointer to the next byte to be read in the buffer
-	openpal::RSlice ReadBuffer() const { return openpal::RSlice(pBuffer + readPos, NumBytesRead()); }
+	openpal::RSlice ReadBuffer() const
+	{
+		return openpal::RSlice(pBuffer + readPos, NumBytesRead());
+	}
 
 	/// Signal that some bytes don't have to be stored any longer. They'll be recovered during the next shift operation.
 	void AdvanceRead(uint32_t aNumBytes);
@@ -59,11 +65,17 @@ public:
 	/// Reset the buffer to its initial state, empty
 	void Reset();
 
-	/// @return Bytes of available for writing 
-	uint32_t NumWriteBytes() const { return M_SIZE - writePos; }
+	/// @return Bytes of available for writing
+	uint32_t NumWriteBytes() const
+	{
+		return M_SIZE - writePos;
+	}
 
 	/// @return Pointer to the position in the buffer available for writing
-	uint8_t* WriteBuff() const { return pBuffer + writePos; }
+	uint8_t* WriteBuff() const
+	{
+		return pBuffer + writePos;
+	}
 
 	/// Signal to the buffer bytes were written to the current write position
 	void AdvanceWrite(uint32_t numBytes);
@@ -74,12 +86,12 @@ public:
 
 
 	/// Searches the read subsequence for 0x0564 sync bytes
-	/// @return true if both sync bytes were found in the buffer.	
+	/// @return true if both sync bytes were found in the buffer.
 	bool Sync();
 
 private:
 
-	
+
 
 	uint8_t* pBuffer;
 	const uint32_t M_SIZE;

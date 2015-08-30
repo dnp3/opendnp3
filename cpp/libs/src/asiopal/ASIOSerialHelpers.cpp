@@ -63,17 +63,17 @@ serial_port_base::flow_control ConvertFlow(FlowType aFlowType)
 
 	switch(aFlowType)
 	{
-		case(FlowType::NONE):
-			t = serial_port_base::flow_control::none;
-			break;
-		case(FlowType::XONXOFF) :
-			t = serial_port_base::flow_control::software;
-			break;
-		case(FlowType::HARDWARE) :
-			t = serial_port_base::flow_control::hardware;
-			break;
-		default:
-			break;
+	case(FlowType::NONE):
+		t = serial_port_base::flow_control::none;
+		break;
+	case(FlowType::XONXOFF) :
+		t = serial_port_base::flow_control::software;
+		break;
+	case(FlowType::HARDWARE) :
+		t = serial_port_base::flow_control::hardware;
+		break;
+	default:
+		break;
 	}
 
 	return serial_port_base::flow_control(t);
@@ -109,7 +109,7 @@ serial_port_base::parity ConvertParity(ParityType aParity)
 }
 
 bool Configure(SerialSettings& settings, asio::serial_port& port, error_code& ec)
-{	
+{
 	//Set all the various options
 	port.set_option(ConvertBaud(settings.baud), ec);
 	if (ec) return false;

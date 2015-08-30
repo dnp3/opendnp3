@@ -38,30 +38,36 @@ namespace secauth
 
 class ChallengeState
 {
-	public:
+public:
 
 	ChallengeState(uint16_t challengeSize, uint32_t maxRxASDUSize);
 
 	bool WriteChallenge(
-		const openpal::RSlice& fragment,
-		const opendnp3::APDUHeader& header, 
-		opendnp3::APDUResponse& response, 
-		opendnp3::HMACType hmacType, 
-		openpal::ICryptoProvider& crypto,
-		openpal::Logger* pLogger
+	    const openpal::RSlice& fragment,
+	    const opendnp3::APDUHeader& header,
+	    opendnp3::APDUResponse& response,
+	    opendnp3::HMACType hmacType,
+	    openpal::ICryptoProvider& crypto,
+	    openpal::Logger* pLogger
 	);
 
 	bool VerifyAuthenticity(
-		const openpal::RSlice& key,
-		HMACProvider& provider, 
-		const openpal::RSlice& hmac, 
-		openpal::Logger logger
+	    const openpal::RSlice& key,
+	    HMACProvider& provider,
+	    const openpal::RSlice& hmac,
+	    openpal::Logger logger
 	);
 
-	openpal::RSlice GetCriticalASDU() const { return criticalASDU.GetFragment(); }
+	openpal::RSlice GetCriticalASDU() const
+	{
+		return criticalASDU.GetFragment();
+	}
 
-	opendnp3::APDUHeader GetCriticalHeader() const { return criticalASDU.GetHeader(); }
-	
+	opendnp3::APDUHeader GetCriticalHeader() const
+	{
+		return criticalASDU.GetHeader();
+	}
+
 private:
 
 	const uint16_t CHALLENGE_SIZE;
@@ -73,7 +79,7 @@ private:
 
 	openpal::RSlice challengeData;
 	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> challengeDataBuffer;
-	
+
 	uint32_t seqNumber;
 };
 

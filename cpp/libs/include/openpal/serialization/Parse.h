@@ -27,33 +27,36 @@
 
 namespace openpal
 {
-	class Parse : private StaticOnly
+class Parse : private StaticOnly
+{
+public:
+
+	static bool Read(RSlice& input, uint8_t& output);
+	static bool Read(RSlice& input, uint16_t& output);
+
+	static bool Read(RSlice& input, uint32_t& output);
+	static bool Read(RSlice& input, UInt48Type& output);
+
+	static bool Read(RSlice& input, int16_t& output);
+	static bool Read(RSlice& input, int32_t& output);
+
+
+	static bool Read(RSlice& input, double& output);
+	static bool Read(RSlice& input, float& output);
+
+	template <typename T, typename... Args>
+	static bool Many(RSlice& input, T& output, Args& ... args)
 	{
-		public:
+		return Read(input, output) && Many(input, args...);
+	}
 
-			static bool Read(RSlice& input, uint8_t& output);
-			static bool Read(RSlice& input, uint16_t& output);
-			
-			static bool Read(RSlice& input, uint32_t& output);
-			static bool Read(RSlice& input, UInt48Type& output);
+private:
 
-			static bool Read(RSlice& input, int16_t& output);
-			static bool Read(RSlice& input, int32_t& output);
-
-
-			static bool Read(RSlice& input, double& output);
-			static bool Read(RSlice& input, float& output);
-
-			template <typename T, typename... Args>
-			static bool Many(RSlice& input, T& output, Args&... args)
-			{
-				return Read(input, output) && Many(input, args...);
-			}
-
-		private:
-
-			static bool Many(RSlice& input) { return true; }
-	};
+	static bool Many(RSlice& input)
+	{
+		return true;
+	}
+};
 
 }
 

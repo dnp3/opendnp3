@@ -24,36 +24,36 @@
 namespace secauth
 {
 
-	AuthorityCredentials::AuthorityCredentials() : m_statusChangeSeqNum(0)
-	{}
+AuthorityCredentials::AuthorityCredentials() : m_statusChangeSeqNum(0)
+{}
 
-	void AuthorityCredentials::SetSCSN(uint32_t statusChangeSeqNumber)
+void AuthorityCredentials::SetSCSN(uint32_t statusChangeSeqNumber)
+{
+	this->m_statusChangeSeqNum = statusChangeSeqNumber;
+}
+
+void AuthorityCredentials::Configure(uint32_t statusChangeSeqNumber, const AuthorityKey& key)
+{
+	this->m_statusChangeSeqNum = statusChangeSeqNumber;
+	this->m_authorityKey = key;
+}
+
+openpal::RSlice AuthorityCredentials::GetSymmetricKey() const
+{
+	return m_authorityKey.IsValid() ? m_authorityKey.GetKeyView() : openpal::RSlice::Empty();
+}
+
+bool AuthorityCredentials::GetSymmetricKey(uint32_t& statusChangeSeqNumber, openpal::RSlice& keyView) const
+{
+	if (!m_authorityKey.IsValid())
 	{
-		this->m_statusChangeSeqNum = statusChangeSeqNumber;
+		return false;
 	}
 
-	void AuthorityCredentials::Configure(uint32_t statusChangeSeqNumber, const AuthorityKey& key)
-	{		
-		this->m_statusChangeSeqNum = statusChangeSeqNumber;
-		this->m_authorityKey = key;
-	}
-
-	openpal::RSlice AuthorityCredentials::GetSymmetricKey() const
-	{
-		return m_authorityKey.IsValid() ? m_authorityKey.GetKeyView() : openpal::RSlice::Empty();
-	}
-
-	bool AuthorityCredentials::GetSymmetricKey(uint32_t& statusChangeSeqNumber, openpal::RSlice& keyView) const
-	{
-		if (!m_authorityKey.IsValid())
-		{
-			return false;
-		}
-
-		statusChangeSeqNumber = m_statusChangeSeqNum;
-		keyView = m_authorityKey.GetKeyView();
-		return true;
-	}
+	statusChangeSeqNumber = m_statusChangeSeqNum;
+	keyView = m_authorityKey.GetKeyView();
+	return true;
+}
 
 }
 

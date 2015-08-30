@@ -30,37 +30,37 @@ namespace secauth
 
 class FinishUpdateKeyChangeHandler final : public opendnp3::IAPDUHandler, private openpal::Uncopyable
 {
-	public:
+public:
 
-		enum Result : uint8_t
-		{
-			NONE,					// if the required objects were not present
-			HMAC,					// if the 2nd object was a g120v15
-			DIGITAL_SIGNATURE		// if the 2nd object was a g120v14
-		};
+	enum Result : uint8_t
+	{
+	    NONE,					// if the required objects were not present
+	    HMAC,					// if the 2nd object was a g120v15
+	    DIGITAL_SIGNATURE		// if the 2nd object was a g120v14
+	};
 
-		FinishUpdateKeyChangeHandler() : m_result(Result::NONE)
-		{}
+	FinishUpdateKeyChangeHandler() : m_result(Result::NONE)
+	{}
 
-		Result GetResult() const
-		{
-			return m_result;
-		}
-		
-		virtual bool IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc) override;
+	Result GetResult() const
+	{
+		return m_result;
+	}
 
-		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var13& value, const openpal::RSlice& object) override;
-		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var14& value, const openpal::RSlice& object) override;
-		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var15& value, const openpal::RSlice& object) override;
+	virtual bool IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc) override;
 
-		// the actual data that will be set correct if the result != NONE
-		opendnp3::Group120Var13 keyChange;
-		openpal::RSlice authData;
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var13& value, const openpal::RSlice& object) override;
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var14& value, const openpal::RSlice& object) override;
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var15& value, const openpal::RSlice& object) override;
 
-	private:
-		
-		Result m_result;
-			
+	// the actual data that will be set correct if the result != NONE
+	opendnp3::Group120Var13 keyChange;
+	openpal::RSlice authData;
+
+private:
+
+	Result m_result;
+
 };
 
 

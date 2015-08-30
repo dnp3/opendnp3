@@ -38,7 +38,7 @@ public:
 	virtual ~Measurement() {}
 
 	uint8_t quality;	//	bitfield that stores type specific quality information
-	DNPTime time;		//	timestamp associated with the measurement			
+	DNPTime time;		//	timestamp associated with the measurement
 
 protected:
 
@@ -50,7 +50,7 @@ protected:
 
 	Measurement(uint8_t quality_, DNPTime time_) : quality(quality_), time(time_)
 	{}
-	
+
 };
 
 
@@ -58,7 +58,7 @@ protected:
 template <class T>
 class TypedMeasurement : public Measurement
 {
-public:	
+public:
 
 	T value;
 

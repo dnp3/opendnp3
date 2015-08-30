@@ -37,7 +37,7 @@ UpdateKey::View OutstationUserDatabase::GetUpdateKeyView(const opendnp3::User& u
 		return UpdateKey::View();
 	}
 	else
-	{		
+	{
 		return iter->second.updateKey.GetView();
 	}
 }
@@ -52,7 +52,7 @@ bool OutstationUserDatabase::IsAuthorized(const User& user, opendnp3::FunctionCo
 	else
 	{
 		return iter->second.permissions.IsAllowed(code);
-	}	
+	}
 }
 
 bool OutstationUserDatabase::UserExists(const User& user) const
@@ -94,7 +94,7 @@ bool OutstationUserDatabase::FindFreeUserId(opendnp3::User& user) const
 		}
 
 		if (iter->first > lowest)
-		{			
+		{
 			break; // found a gap
 		}
 		else
@@ -104,7 +104,7 @@ bool OutstationUserDatabase::FindFreeUserId(opendnp3::User& user) const
 			++lowest; // the values were equal
 		}
 	}
-	
+
 	if (userMap.find(lowest) == userMap.end())
 	{
 		user = User(lowest);
@@ -124,13 +124,19 @@ void OutstationUserDatabase::AddUser(const OutstationUserInfo& info)
 
 OutstationUserDatabase::UserMap::const_iterator OutstationUserDatabase::FindByName(const std::string& userName) const
 {
-	auto byName = [&](const UserMap::value_type& value) { return value.second.username == userName; };
+	auto byName = [&](const UserMap::value_type & value)
+	{
+		return value.second.username == userName;
+	};
 	return std::find_if(userMap.begin(), userMap.end(), byName);
 }
 
 OutstationUserDatabase::UserMap::iterator OutstationUserDatabase::FindByName(const std::string& userName)
 {
-	auto byName = [&](const UserMap::value_type& value) { return value.second.username == userName; };
+	auto byName = [&](const UserMap::value_type & value)
+	{
+		return value.second.username == userName;
+	};
 	return std::find_if(userMap.begin(), userMap.end(), byName);
 }
 

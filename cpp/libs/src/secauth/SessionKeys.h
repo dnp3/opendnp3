@@ -31,39 +31,42 @@
 
 namespace secauth
 {
-	class SessionKeySize
+class SessionKeySize
+{
+public:
+
+	SessionKeySize(uint32_t size_) :
+		size(AuthSizes::GetBoundedSessionKeySize(size_))
+	{}
+
+	operator uint32_t() const
 	{
-		public:
+		return size;
+	}
 
-		SessionKeySize(uint32_t size_) : 
-			size(AuthSizes::GetBoundedSessionKeySize(size_))
-		{}
+private:
+	uint32_t size;
+};
 
-		operator uint32_t() const { return size; }
+/// Stores bi-directional session key data in internal buffers
+class SessionKeys : private openpal::Uncopyable
+{
+public:
 
-		private:
-		uint32_t size;
-	};
+	void SetKeys(const SessionKeysView& view);
 
-	/// Stores bi-directional session key data in internal buffers
-	class SessionKeys : private openpal::Uncopyable
-	{
-		public:
+	SessionKeysView GetView() const;
 
-			void SetKeys(const SessionKeysView& view);
+	void DeriveFrom(openpal::ISecureRandom& rs, const SessionKeySize& size, std::error_code& ec);
 
-			SessionKeysView GetView() const;	
+private:
 
-			void DeriveFrom(openpal::ISecureRandom& rs, const SessionKeySize& size, std::error_code& ec);
+	openpal::RSlice controlKey;
+	openpal::RSlice monitorKey;
 
-		private:
-
-			openpal::RSlice controlKey;
-			openpal::RSlice monitorKey;
-
-			openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_SIZE_BYTES> controlBuffer;
-			openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_SIZE_BYTES> monitorBuffer;
-	};
+	openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_SIZE_BYTES> controlBuffer;
+	openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_SIZE_BYTES> monitorBuffer;
+};
 }
 
 #endif

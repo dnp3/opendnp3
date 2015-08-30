@@ -32,8 +32,8 @@ namespace opendnp3
 /// Sequence numbers for one channel (sol or unsol)
 ///
 class OutstationSeqNum
-{	
-	public:		
+{
+public:
 
 	OutstationSeqNum()
 	{}

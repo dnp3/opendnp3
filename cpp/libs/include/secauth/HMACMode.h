@@ -27,18 +27,18 @@
 
 namespace secauth
 {
-	// Specifies the configured HMAC mode
-	// This enum represents a subset of all HMAC types in the spec
-	enum class HMACMode : uint8_t
-	{
-		SHA1_TRUNC_10,
-		SHA1_TRUNC_8,
-		SHA256_TRUNC_8,
-		SHA256_TRUNC_16
-	};
+// Specifies the configured HMAC mode
+// This enum represents a subset of all HMAC types in the spec
+enum class HMACMode : uint8_t
+{
+    SHA1_TRUNC_10,
+    SHA1_TRUNC_8,
+    SHA256_TRUNC_8,
+    SHA256_TRUNC_16
+};
 
-	opendnp3::HMACType ToHMACType(HMACMode mode);
-	uint32_t GetTruncationSize(HMACMode mode);
+opendnp3::HMACType ToHMACType(HMACMode mode);
+uint32_t GetTruncationSize(HMACMode mode);
 }
 
 #endif

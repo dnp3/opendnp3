@@ -57,10 +57,10 @@ private:
 
 	openpal::Logger logger;
 	StackStatistics* pStatistics;
-	
+
 	openpal::Buffer rxBuffer;
 	uint32_t numBytesRead;
-	
+
 	TransportSeqNum sequence;
 };
 

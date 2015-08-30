@@ -27,14 +27,15 @@
 namespace opendnp3
 {
 
-template <class T>	
+template <class T>
 class CallbackQueue
 {
-public:	
+public:
 
 	std::function<void (const T&)> Callback()
 	{
-		return [this](const T& rsp) -> void {
+		return [this](const T & rsp) -> void
+		{
 			responses.push_back(rsp);
 		};
 	}

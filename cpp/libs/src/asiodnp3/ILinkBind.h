@@ -27,18 +27,18 @@
 namespace asiodnp3
 {
 
-	/** 
-	*  @section desc Interface used to bind a session at the link-layer	
-	*/
-	class ILinkBind
-	{
-	public:
+/**
+*  @section desc Interface used to bind a session at the link-layer
+*/
+class ILinkBind
+{
+public:
 
-		virtual void SetLinkRouter(opendnp3::ILinkRouter& router) = 0;
+	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) = 0;
 
-		virtual opendnp3::ILinkSession& GetLinkContext() = 0;
+	virtual opendnp3::ILinkSession& GetLinkContext() = 0;
 
-	};
+};
 
 }
 

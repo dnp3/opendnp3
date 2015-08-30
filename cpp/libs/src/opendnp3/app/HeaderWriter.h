@@ -65,7 +65,7 @@ public:
 
 	template <class CountType, class ValueType>
 	bool WriteSingleValue(QualifierCode qc, const DNP3Serializer<ValueType>& serializer, const ValueType&);
-	
+
 	bool WriteFreeFormat(const IVariableLength&);
 
 	template <class CountType, class WriteType>
@@ -120,7 +120,7 @@ bool HeaderWriter::WriteCountHeader(QualifierCode qc, GroupVariationID gvId, typ
 {
 	if (WriteHeaderWithReserve(gvId, qc, IndexType::SIZE))
 	{
-		IndexType::WriteBuffer(*position, count);		
+		IndexType::WriteBuffer(*position, count);
 		return true;
 	}
 	else

@@ -35,25 +35,25 @@ namespace opendnp3
 
 class EventWriter : openpal::StaticOnly
 {
-	public:	
+public:
 
 	static bool Write(HeaderWriter& writer, IEventRecorder& recorder, openpal::LinkedListIterator<SOERecord> iterator);
-	
-	private:
+
+private:
 
 	class Result
 	{
-		public:
+	public:
 
-			Result(bool isFragmentFull_, openpal::LinkedListIterator<SOERecord> location_) : isFragmentFull(isFragmentFull_), location(location_)
+		Result(bool isFragmentFull_, openpal::LinkedListIterator<SOERecord> location_) : isFragmentFull(isFragmentFull_), location(location_)
 		{}
 
 		bool isFragmentFull;
 		openpal::LinkedListIterator<SOERecord> location;
-		
 
-		private:
-		
+
+	private:
+
 		Result() = delete;
 	};
 
@@ -67,29 +67,32 @@ class EventWriter : openpal::StaticOnly
 	static Result LoadHeaderBinaryOutputStatus(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
 	static Result LoadHeaderAnalogOutputStatus(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
 	static Result LoadHeaderSecurityStat(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
-	
-	inline static bool IsWritable(const SOERecord& record) { return record.selected && !record.written; }
+
+	inline static bool IsWritable(const SOERecord& record)
+	{
+		return record.selected && !record.written;
+	}
 
 	template <class T>
 	static Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<T> serializer, typename T::EventVariation variation)
 	{
-		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);		
+		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
 
 		auto header = writer.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer);
 
 		openpal::ListNode<SOERecord>* pCurrent = nullptr;
-		
+
 		while (recorder.HasMoreUnwrittenEvents() && (pCurrent = iter.Next()))
 		{
 			auto& record = pCurrent->value;
 
 			if (IsWritable(record))
-			{				
+			{
 				if ((record.type == T::EventTypeEnum) && (record.GetValue<T>().selectedVariation == variation))
 				{
 					auto evt = record.ReadEvent<T>();
 					if (header.Write(evt.value, evt.index))
-					{						
+					{
 						record.written = true;
 						recorder.RecordWritten(record.clazz, record.type);
 					}
@@ -102,10 +105,10 @@ class EventWriter : openpal::StaticOnly
 				else
 				{
 
-					// drop out and return from current location					
+					// drop out and return from current location
 					break;
 				}
-			}			
+			}
 		}
 
 		auto location = openpal::LinkedListIterator<SOERecord>::From(pCurrent);
@@ -116,7 +119,7 @@ class EventWriter : openpal::StaticOnly
 	static Result WriteCTOTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<T> serializer, typename T::EventVariation variation)
 	{
 		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
-		
+
 		CTOType cto = { pLocation->value.GetTime() };
 
 		auto header = writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, T, CTOType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto);
@@ -159,11 +162,11 @@ class EventWriter : openpal::StaticOnly
 								return Result(true, location);
 							}
 						}
-					}					
+					}
 				}
 				else
 				{
-					// drop out and return from current location					
+					// drop out and return from current location
 					break;
 				}
 			}

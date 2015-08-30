@@ -28,11 +28,11 @@ namespace secauth
 {
 
 MasterSecurity::MasterSecurity(
-	openpal::IExecutor& executor,		
-	IMasterApplicationSA& application,
-	const MasterAuthSettings& authSettings,
-	openpal::ICryptoProvider& crypto
-	) :
+    openpal::IExecutor& executor,
+    IMasterApplicationSA& application,
+    const MasterAuthSettings& authSettings,
+    openpal::ICryptoProvider& crypto
+) :
 	settings(authSettings),
 	pApplicationSA(&application),
 	pCrypto(&crypto),

@@ -32,24 +32,24 @@ namespace asiodnp3
 
 class MultidropTaskLock: public opendnp3::ITaskLock
 {
-	public:
+public:
 
 	MultidropTaskLock();
 
-	
+
 	virtual bool Acquire(opendnp3::IScheduleCallback&) override final;
 
-	
+
 	virtual void Release(opendnp3::IScheduleCallback&) override final;
 
-	
+
 	virtual void OnLayerUp() override final;
 
-	
+
 	virtual void OnLayerDown() override final;
 
 
-	private:
+private:
 
 	bool AddIfNotContained(opendnp3::IScheduleCallback&);
 

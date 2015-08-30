@@ -76,13 +76,13 @@ public:
 		assert(index < this->size);
 		return buffer[index];
 	}
-    
-    void resize(IndexType aSize)
-    {
-        delete[] buffer;
-        buffer = new ValueType[aSize];
-        this->size = aSize;
-    }
+
+	void resize(IndexType aSize)
+	{
+		delete[] buffer;
+		buffer = new ValueType[aSize];
+		this->size = aSize;
+	}
 
 	template <class Action>
 	void foreach(const Action& action) const
@@ -119,7 +119,7 @@ protected:
 	ValueType* buffer;
 
 private:
-	
+
 	Array& operator=(const Array&);
 };
 

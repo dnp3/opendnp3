@@ -78,8 +78,8 @@ class ILowerLayer
 
 public:
 
-	virtual ~ILowerLayer() {}		
-	
+	virtual ~ILowerLayer() {}
+
 	virtual void BeginTransmit(const openpal::RSlice&) = 0;
 };
 
@@ -93,7 +93,7 @@ public:
 	// Called by the lower layer when data arrives
 
 	void SetLowerLayer(ILowerLayer& lowerLayer)
-	{		
+	{
 		assert(pLowerLayer == nullptr);
 		pLowerLayer = &lowerLayer;
 	}
@@ -113,7 +113,7 @@ public:
 	// Called by the lower layer when data arrives
 
 	void SetUpperLayer(IUpperLayer& upperLayer)
-	{		
+	{
 		assert(pUpperLayer == nullptr);
 		pUpperLayer = &upperLayer;
 	}

@@ -37,8 +37,8 @@ namespace opendnp3
 {
 
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
-	openpal::LogRoot& root,
-	openpal::IExecutor& executor,
+    openpal::LogRoot& root,
+    openpal::IExecutor& executor,
     IPhysicalLayer* apPhys,
     TimeDuration aMinOpenRetry,
     TimeDuration aMaxOpenRetry
@@ -87,7 +87,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 		oss << "Data corruption on receive, " << read << " != " << expecting;
 		throw std::invalid_argument(oss.str());
 	}
-	mBytesRead += static_cast<uint32_t>(aNumBytes);	
+	mBytesRead += static_cast<uint32_t>(aNumBytes);
 	WSlice buffer(mReadBuffer, mReadBuffer.Size());
 	pPhys->BeginRead(buffer);
 }
@@ -128,7 +128,7 @@ bool MockPhysicalLayerMonitor::NextStateIs(ChannelState aState)
 	if(mState.empty()) return false;
 	else
 	{
-		ChannelState state = mState.front();		
+		ChannelState state = mState.front();
 		mState.pop();
 		return (state == aState);
 	}

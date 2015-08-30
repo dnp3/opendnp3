@@ -28,7 +28,7 @@ namespace opendnp3
 
 class IChannelStateListener
 {
-	public:	
+public:
 
 	// called when the registered event fires
 	virtual void OnStateChange(ChannelState value) = 0;

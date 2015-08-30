@@ -25,9 +25,9 @@ using namespace opendnp3;
 
 namespace secauth
 {
-	
+
 KeyStatusHandler::KeyStatusHandler(openpal::Logger logger_) : logger(logger_), valid(false)
-{}	
+{}
 
 
 bool KeyStatusHandler::GetStatus(Group120Var5& status, openpal::RSlice& rawObject) const
@@ -42,12 +42,12 @@ bool KeyStatusHandler::GetStatus(Group120Var5& status, openpal::RSlice& rawObjec
 }
 
 IINField KeyStatusHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& status, const openpal::RSlice& rawObject)
-{							
+{
 	this->valid = true;
 	this->status = status;
 	this->rawObject = rawObject;
-	return IINField::Empty();		
-}	
+	return IINField::Empty();
+}
 
 
 }

@@ -31,7 +31,7 @@ RequestHistory::RequestHistory() :
 	lastDigest(0),
 	lastObjectsLength(0)
 {
-	
+
 }
 
 void RequestHistory::Reset()
@@ -59,10 +59,10 @@ APDUHeader RequestHistory::GetLastHeader() const
 
 bool RequestHistory::EqualsLastObjects(const openpal::RSlice& objects) const
 {
-	
-	return	hasLast && 
-			(lastObjectsLength == objects.Size()) && 
-			(lastDigest == CRC::CalcCrc(objects));	
+
+	return	hasLast &&
+	        (lastObjectsLength == objects.Size()) &&
+	        (lastDigest == CRC::CalcCrc(objects));
 }
 
 }

@@ -28,16 +28,16 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterParams::MasterParams() :	
+MasterParams::MasterParams() :
 	responseTimeout(TimeDuration::Seconds(5)),
 	timeSyncMode(TimeSyncMode::None),
-	disableUnsolOnStartup(true),	
+	disableUnsolOnStartup(true),
 	unsolClassMask(ClassField::AllEventClasses()),
 	startupIntegrityClassMask(ClassField::AllClasses()),
 	integrityOnEventOverflowIIN(true),
 	eventScanOnEventsAvailableClassMask(ClassField::None()),
 	taskRetryPeriod(TimeDuration::Seconds(5)),
-	taskStartTimeout(TimeDuration::Seconds(10)),	
+	taskStartTimeout(TimeDuration::Seconds(10)),
 	maxTxFragSize(DEFAULT_MAX_APDU_SIZE),
 	maxRxFragSize(DEFAULT_MAX_APDU_SIZE)
 {}

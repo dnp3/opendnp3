@@ -29,17 +29,17 @@ namespace opendnp3
 EventBuffer::EventBuffer(const EventBufferConfig& config_) :
 	overflow(false),
 	config(config_),
-	events(config_.TotalEvents())	
+	events(config_.TotalEvents())
 {
 
 }
 
 void EventBuffer::Unselect()
 {
-	auto unselect = [this](SOERecord& record) 
+	auto unselect = [this](SOERecord & record)
 	{
 		if (record.selected)
-		{			
+		{
 			selectedCounts.Decrement(record.clazz, record.type);
 			record.selected = false;
 		}
@@ -70,108 +70,108 @@ IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum)
 {
 	switch (gv)
 	{
-		case(GroupVariation::Group2Var0) :		
-			return this->SelectByType<Binary>(maximum);			
-		case(GroupVariation::Group2Var1) :
-			return this->SelectByType<Binary>(maximum, EventBinaryVariation::Group2Var1);			
-		case(GroupVariation::Group2Var2) :
-			return this->SelectByType<Binary>(maximum, EventBinaryVariation::Group2Var2);			
-		case(GroupVariation::Group2Var3) :
-			return this->SelectByType<Binary>(maximum, EventBinaryVariation::Group2Var3);
-			
-		case(GroupVariation::Group4Var0) :
-			return this->SelectByType<DoubleBitBinary>(maximum);			
-		case(GroupVariation::Group4Var1) :
-			return this->SelectByType<DoubleBitBinary>(maximum, EventDoubleBinaryVariation::Group4Var1);			
-		case(GroupVariation::Group4Var2) :
-			return this->SelectByType<DoubleBitBinary>(maximum, EventDoubleBinaryVariation::Group4Var2);			
-		case(GroupVariation::Group4Var3) :
-			return this->SelectByType<DoubleBitBinary>(maximum, EventDoubleBinaryVariation::Group4Var3);			
+	case(GroupVariation::Group2Var0) :
+		return this->SelectByType<Binary>(maximum);
+	case(GroupVariation::Group2Var1) :
+		return this->SelectByType<Binary>(maximum, EventBinaryVariation::Group2Var1);
+	case(GroupVariation::Group2Var2) :
+		return this->SelectByType<Binary>(maximum, EventBinaryVariation::Group2Var2);
+	case(GroupVariation::Group2Var3) :
+		return this->SelectByType<Binary>(maximum, EventBinaryVariation::Group2Var3);
 
-		case(GroupVariation::Group11Var0) :
-			return this->SelectByType<BinaryOutputStatus>(maximum);			
-		case(GroupVariation::Group11Var1) :
-			return this->SelectByType<BinaryOutputStatus>(maximum, EventBinaryOutputStatusVariation::Group11Var1);			
-		case(GroupVariation::Group11Var2) :
-			return this->SelectByType<BinaryOutputStatus>(maximum, EventBinaryOutputStatusVariation::Group11Var2);			
-		
-		case(GroupVariation::Group22Var0) :
-			return this->SelectByType<Counter>(maximum);			
-		case(GroupVariation::Group22Var1) :
-			return this->SelectByType<Counter>(maximum, EventCounterVariation::Group22Var1);			
-		case(GroupVariation::Group22Var2) :
-			return this->SelectByType<Counter>(maximum, EventCounterVariation::Group22Var2);			
-		case(GroupVariation::Group22Var5) :
-			return this->SelectByType<Counter>(maximum, EventCounterVariation::Group22Var5);			
-		case(GroupVariation::Group22Var6) :
-			return this->SelectByType<Counter>(maximum, EventCounterVariation::Group22Var6);			
+	case(GroupVariation::Group4Var0) :
+		return this->SelectByType<DoubleBitBinary>(maximum);
+	case(GroupVariation::Group4Var1) :
+		return this->SelectByType<DoubleBitBinary>(maximum, EventDoubleBinaryVariation::Group4Var1);
+	case(GroupVariation::Group4Var2) :
+		return this->SelectByType<DoubleBitBinary>(maximum, EventDoubleBinaryVariation::Group4Var2);
+	case(GroupVariation::Group4Var3) :
+		return this->SelectByType<DoubleBitBinary>(maximum, EventDoubleBinaryVariation::Group4Var3);
 
-		case(GroupVariation::Group23Var0) :
-			return this->SelectByType<FrozenCounter>(maximum);			
-		case(GroupVariation::Group23Var1) :
-			return this->SelectByType<FrozenCounter>(maximum, EventFrozenCounterVariation::Group23Var1);			
-		case(GroupVariation::Group23Var2) :
-			return this->SelectByType<FrozenCounter>(maximum, EventFrozenCounterVariation::Group23Var2);			
-		case(GroupVariation::Group23Var5) :
-			return this->SelectByType<FrozenCounter>(maximum, EventFrozenCounterVariation::Group23Var5);			
-		case(GroupVariation::Group23Var6) :
-			return this->SelectByType<FrozenCounter>(maximum, EventFrozenCounterVariation::Group23Var6);			
-			
-		case(GroupVariation::Group32Var0) :
-			return this->SelectByType<Analog>(maximum);			
-		case(GroupVariation::Group32Var1) :
-			return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var1);
-		case(GroupVariation::Group32Var2) :
-			return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var2);
-		case(GroupVariation::Group32Var3) :
-			return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var3);
-		case(GroupVariation::Group32Var4) :
-			return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var4);
-		case(GroupVariation::Group32Var5) :
-			return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var5);
-		case(GroupVariation::Group32Var6) :
-			return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var6);
-		case(GroupVariation::Group32Var7) :
-			return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var7);
-		case(GroupVariation::Group32Var8) :
-			return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var8);
+	case(GroupVariation::Group11Var0) :
+		return this->SelectByType<BinaryOutputStatus>(maximum);
+	case(GroupVariation::Group11Var1) :
+		return this->SelectByType<BinaryOutputStatus>(maximum, EventBinaryOutputStatusVariation::Group11Var1);
+	case(GroupVariation::Group11Var2) :
+		return this->SelectByType<BinaryOutputStatus>(maximum, EventBinaryOutputStatusVariation::Group11Var2);
 
-		case(GroupVariation::Group42Var0) :
-			return this->SelectByType<AnalogOutputStatus>(maximum);
-		case(GroupVariation::Group42Var1) :
-			return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var1);
-		case(GroupVariation::Group42Var2) :
-			return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var2);
-		case(GroupVariation::Group42Var3) :
-			return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var3);
-		case(GroupVariation::Group42Var4) :
-			return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var4);
-		case(GroupVariation::Group42Var5) :
-			return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var5);
-		case(GroupVariation::Group42Var6) :
-			return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var6);
-		case(GroupVariation::Group42Var7) :
-			return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var7);
-		case(GroupVariation::Group42Var8) :
-			return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var8);
+	case(GroupVariation::Group22Var0) :
+		return this->SelectByType<Counter>(maximum);
+	case(GroupVariation::Group22Var1) :
+		return this->SelectByType<Counter>(maximum, EventCounterVariation::Group22Var1);
+	case(GroupVariation::Group22Var2) :
+		return this->SelectByType<Counter>(maximum, EventCounterVariation::Group22Var2);
+	case(GroupVariation::Group22Var5) :
+		return this->SelectByType<Counter>(maximum, EventCounterVariation::Group22Var5);
+	case(GroupVariation::Group22Var6) :
+		return this->SelectByType<Counter>(maximum, EventCounterVariation::Group22Var6);
+
+	case(GroupVariation::Group23Var0) :
+		return this->SelectByType<FrozenCounter>(maximum);
+	case(GroupVariation::Group23Var1) :
+		return this->SelectByType<FrozenCounter>(maximum, EventFrozenCounterVariation::Group23Var1);
+	case(GroupVariation::Group23Var2) :
+		return this->SelectByType<FrozenCounter>(maximum, EventFrozenCounterVariation::Group23Var2);
+	case(GroupVariation::Group23Var5) :
+		return this->SelectByType<FrozenCounter>(maximum, EventFrozenCounterVariation::Group23Var5);
+	case(GroupVariation::Group23Var6) :
+		return this->SelectByType<FrozenCounter>(maximum, EventFrozenCounterVariation::Group23Var6);
+
+	case(GroupVariation::Group32Var0) :
+		return this->SelectByType<Analog>(maximum);
+	case(GroupVariation::Group32Var1) :
+		return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var1);
+	case(GroupVariation::Group32Var2) :
+		return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var2);
+	case(GroupVariation::Group32Var3) :
+		return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var3);
+	case(GroupVariation::Group32Var4) :
+		return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var4);
+	case(GroupVariation::Group32Var5) :
+		return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var5);
+	case(GroupVariation::Group32Var6) :
+		return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var6);
+	case(GroupVariation::Group32Var7) :
+		return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var7);
+	case(GroupVariation::Group32Var8) :
+		return this->SelectByType<Analog>(maximum, EventAnalogVariation::Group32Var8);
+
+	case(GroupVariation::Group42Var0) :
+		return this->SelectByType<AnalogOutputStatus>(maximum);
+	case(GroupVariation::Group42Var1) :
+		return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var1);
+	case(GroupVariation::Group42Var2) :
+		return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var2);
+	case(GroupVariation::Group42Var3) :
+		return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var3);
+	case(GroupVariation::Group42Var4) :
+		return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var4);
+	case(GroupVariation::Group42Var5) :
+		return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var5);
+	case(GroupVariation::Group42Var6) :
+		return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var6);
+	case(GroupVariation::Group42Var7) :
+		return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var7);
+	case(GroupVariation::Group42Var8) :
+		return this->SelectByType<AnalogOutputStatus>(maximum, EventAnalogOutputStatusVariation::Group42Var8);
 
 
-		case(GroupVariation::Group60Var2) :
-			return this->SelectByClass(ClassField(PointClass::Class1), maximum);			
-		case(GroupVariation::Group60Var3):
-			return this->SelectByClass(ClassField(PointClass::Class2), maximum);
-		case(GroupVariation::Group60Var4):
-			return this->SelectByClass(ClassField(PointClass::Class3), maximum);
+	case(GroupVariation::Group60Var2) :
+		return this->SelectByClass(ClassField(PointClass::Class1), maximum);
+	case(GroupVariation::Group60Var3):
+		return this->SelectByClass(ClassField(PointClass::Class2), maximum);
+	case(GroupVariation::Group60Var4):
+		return this->SelectByClass(ClassField(PointClass::Class3), maximum);
 
-		case(GroupVariation::Group122Var0) :
-			return this->SelectByType<SecurityStat>(maximum);
-		case(GroupVariation::Group122Var1) :
-			return this->SelectByType<SecurityStat>(maximum, EventSecurityStatVariation::Group122Var1);
-		case(GroupVariation::Group122Var2) :
-			return this->SelectByType<SecurityStat>(maximum, EventSecurityStatVariation::Group122Var2);
-		
-		default:
-			return IINBit::FUNC_NOT_SUPPORTED;
+	case(GroupVariation::Group122Var0) :
+		return this->SelectByType<SecurityStat>(maximum);
+	case(GroupVariation::Group122Var1) :
+		return this->SelectByType<SecurityStat>(maximum, EventSecurityStatVariation::Group122Var1);
+	case(GroupVariation::Group122Var2) :
+		return this->SelectByType<SecurityStat>(maximum, EventSecurityStatVariation::Group122Var2);
+
+	default:
+		return IINBit::FUNC_NOT_SUPPORTED;
 	}
 }
 
@@ -197,12 +197,12 @@ void EventBuffer::RecordWritten(EventClass ec, EventType et)
 }
 
 ClassField EventBuffer::UnwrittenClassField() const
-{	
+{
 	return ClassField(false,
-		HasUnwrittenEvents(EventClass::EC1),
-		HasUnwrittenEvents(EventClass::EC2),
-		HasUnwrittenEvents(EventClass::EC3)
-	);
+	                  HasUnwrittenEvents(EventClass::EC1),
+	                  HasUnwrittenEvents(EventClass::EC2),
+	                  HasUnwrittenEvents(EventClass::EC3)
+	                 );
 }
 
 bool EventBuffer::IsOverflown()
@@ -226,11 +226,11 @@ IINField EventBuffer::SelectByClass(const ClassField& field, uint32_t max)
 		auto pNode = iter.Next();
 		if (field.HasEventType(pNode->value.clazz))
 		{
-			pNode->value.SelectDefault();			
+			pNode->value.SelectDefault();
 			selectedCounts.Increment(pNode->value.clazz, pNode->value.type);
 			++num;
 		}
-	}	
+	}
 
 	return IINField();
 }
@@ -253,13 +253,16 @@ void EventBuffer::RemoveFromCounts(const SOERecord& record)
 bool EventBuffer::RemoveOldestEventOfType(EventType type)
 {
 	// find the first event of this type in the SOE, and discard it
-	auto isMatch = [type](const SOERecord& rec) { return rec.type == type; };
+	auto isMatch = [type](const SOERecord & rec)
+	{
+		return rec.type == type;
+	};
 	auto pNode = events.RemoveFirst(isMatch);
 
 	if (pNode)
-	{		
+	{
 		this->RemoveFromCounts(pNode->value);
-		pNode->value.Reset();	
+		pNode->value.Reset();
 		return true;
 	}
 	else
@@ -275,8 +278,8 @@ void EventBuffer::SelectAllByClass(const ClassField& field)
 
 void EventBuffer::ClearWritten()
 {
-	auto written = [this](const SOERecord& record) 
-	{ 
+	auto written = [this](const SOERecord & record)
+	{
 		if (record.written)
 		{
 			this->RemoveFromCounts(record);
@@ -285,32 +288,32 @@ void EventBuffer::ClearWritten()
 		else
 		{
 			return false;
-		}		
-	};	
+		}
+	};
 
 	events.RemoveAll(written);
 }
 
 bool EventBuffer::IsTypeOverflown(EventType type) const
-{	
-	auto max = config.GetMaxEventsForType(type);	
-	return  (max > 0) ? (totalCounts.NumOfType(type) >= max) : false;	
+{
+	auto max = config.GetMaxEventsForType(type);
+	return  (max > 0) ? (totalCounts.NumOfType(type) >= max) : false;
 }
 
 bool EventBuffer::IsAnyTypeOverflown() const
 {
 	return	IsTypeOverflown(EventType::Binary) ||
-			IsTypeOverflown(EventType::DoubleBitBinary) ||
-			IsTypeOverflown(EventType::BinaryOutputStatus) ||
-			IsTypeOverflown(EventType::Counter) ||
-			IsTypeOverflown(EventType::FrozenCounter) ||
-			IsTypeOverflown(EventType::Analog) ||
-			IsTypeOverflown(EventType::AnalogOutputStatus);
+	        IsTypeOverflown(EventType::DoubleBitBinary) ||
+	        IsTypeOverflown(EventType::BinaryOutputStatus) ||
+	        IsTypeOverflown(EventType::Counter) ||
+	        IsTypeOverflown(EventType::FrozenCounter) ||
+	        IsTypeOverflown(EventType::Analog) ||
+	        IsTypeOverflown(EventType::AnalogOutputStatus);
 }
 
 bool EventBuffer::HasEnoughSpaceToClearOverflow() const
-{	
-	return !(events.IsFull() || IsAnyTypeOverflown());	
+{
+	return !(events.IsFull() || IsAnyTypeOverflown());
 }
 
 }

@@ -28,20 +28,20 @@
 
 namespace openpal
 {
-	/**
-	* Provides an abstract interface for a key wrapping algorithm
-	*
-	*	Must work with any valid AES key size: 128, 192, or 256 bits
-	*   Input must be pre-padded into 8-byte blocks and larger than at least
-	*/
-	class IKeyWrapAlgo
-	{
-		public:	
+/**
+* Provides an abstract interface for a key wrapping algorithm
+*
+*	Must work with any valid AES key size: 128, 192, or 256 bits
+*   Input must be pre-padded into 8-byte blocks and larger than at least
+*/
+class IKeyWrapAlgo
+{
+public:
 
-		virtual openpal::RSlice WrapKey(const RSlice& kek, const RSlice& input, WSlice& dest, std::error_code& ec) const = 0;
+	virtual openpal::RSlice WrapKey(const RSlice& kek, const RSlice& input, WSlice& dest, std::error_code& ec) const = 0;
 
-		virtual openpal::RSlice UnwrapKey(const RSlice& kek, const RSlice& input, WSlice& dest, std::error_code& ec) const = 0;
-	};
+	virtual openpal::RSlice UnwrapKey(const RSlice& kek, const RSlice& input, WSlice& dest, std::error_code& ec) const = 0;
+};
 }
 
 #endif

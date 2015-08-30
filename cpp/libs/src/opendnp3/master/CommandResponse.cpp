@@ -23,7 +23,7 @@
 namespace opendnp3
 {
 
-	const CommandResponse CommandResponse::Success(TaskCompletion::SUCCESS, CommandStatus::SUCCESS);
+const CommandResponse CommandResponse::Success(TaskCompletion::SUCCESS, CommandStatus::SUCCESS);
 
 CommandResponse::CommandResponse(TaskCompletion result_, CommandStatus status_) :
 	result(result_),

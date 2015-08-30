@@ -49,10 +49,10 @@ TEST_CASE(SUITE("CatchesBadKeySize"))
 
 	StaticBuffer<128> buffer;
 	auto dest = buffer.GetWSlice();
-	
+
 
 	CryptoProvider crypto;
-	
+
 	std::error_code ec;
 	auto result = crypto.GetAESKeyWrap().WrapKey(kek.ToRSlice(), input.ToRSlice(), dest, ec);
 	REQUIRE(ec);
@@ -84,7 +84,7 @@ Input:				00112233445566778899AABBCCDDEEFF
 Ciphertext:			64E8C3F9CE0F5BA263E9777905818A2A 93C8191E7D6E8AE7
 */
 TEST_CASE(SUITE("TestKeyWrapUnWrap-256KEK-128Data"))
-{	
+{
 	auto kek = "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F";
 	auto input = "00112233445566778899AABBCCDDEEFF";
 	auto ciphertext = "64E8C3F9CE0F5BA263E9777905818A2A93C8191E7D6E8AE7";
@@ -110,11 +110,11 @@ TEST_CASE(SUITE("TestKeyUnWrap-VerifyCSharp"))
 }
 
 void TestKeyWrap(
-	const std::string& kek,
-	const std::string& input,
-	const std::string& ciphertext,
-	IKeyWrapAlgo& algo
-	)
+    const std::string& kek,
+    const std::string& input,
+    const std::string& ciphertext,
+    IKeyWrapAlgo& algo
+)
 {
 	HexSequence kekBuffer(kek);
 	HexSequence inputBuffer(input);
@@ -125,18 +125,18 @@ void TestKeyWrap(
 	auto outputBuffer = out.GetWSlice();
 	std::error_code ec;
 	auto result = algo.WrapKey(kekBuffer, inputBuffer, outputBuffer, ec);
-	REQUIRE_FALSE(ec);	
+	REQUIRE_FALSE(ec);
 	REQUIRE(outputBuffer.IsEmpty());
 	REQUIRE(ToHex(result, false) == ciphertext);
 }
 
 void TestKeyUnwrap(
-	const std::string& kek,
-	const std::string& input,
-	const std::string& ciphertext,
-	IKeyWrapAlgo& algo
-	)
-{	
+    const std::string& kek,
+    const std::string& input,
+    const std::string& ciphertext,
+    IKeyWrapAlgo& algo
+)
+{
 	HexSequence kekBuffer(kek);
 	HexSequence inputBuffer(ciphertext);
 
@@ -147,7 +147,7 @@ void TestKeyUnwrap(
 	std::error_code ec;
 	auto result = algo.UnwrapKey(kekBuffer, inputBuffer, outputBuffer, ec);
 	REQUIRE_FALSE(ec);
-	REQUIRE(result.IsNotEmpty());	
+	REQUIRE(result.IsNotEmpty());
 	REQUIRE(outputBuffer.IsEmpty());
 	REQUIRE(ToHex(result, false) == input);
 }

@@ -32,17 +32,17 @@ namespace opendnp3
 ParseResult MeasurementHandler::ProcessMeasurements(const openpal::RSlice& objects, openpal::Logger& logger, ISOEHandler* pHandler)
 {
 	MeasurementHandler handler(logger, pHandler);
-	return APDUParser::Parse(objects, handler, &logger);	
+	return APDUParser::Parse(objects, handler, &logger);
 }
 
-MeasurementHandler::MeasurementHandler(const openpal::Logger& logger_, ISOEHandler* pSOEHandler_) : 
+MeasurementHandler::MeasurementHandler(const openpal::Logger& logger_, ISOEHandler* pSOEHandler_) :
 	logger(logger_),
 	txInitiated(false),
 	pSOEHandler(pSOEHandler_),
-	ctoMode(TimestampMode::INVALID),	
+	ctoMode(TimestampMode::INVALID),
 	commonTimeOccurence(0)
 {
-	
+
 }
 
 MeasurementHandler::~MeasurementHandler()
@@ -69,23 +69,23 @@ void MeasurementHandler::CheckForTxStart()
 }
 
 IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values)
-{	
+{
 	Group51Var1 cto;
 	if (values.ReadOnlyValue(cto))
 	{
 		ctoMode = TimestampMode::SYNCHRONIZED;
-		commonTimeOccurence = cto.time;		
+		commonTimeOccurence = cto.time;
 	}
 	return IINField::Empty();
 }
 
 IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values)
-{	
+{
 	Group51Var2 cto;
 	if (values.ReadOnlyValue(cto))
 	{
 		ctoMode = TimestampMode::UNSYNCHRONIZED;
-		commonTimeOccurence = cto.time;		
+		commonTimeOccurence = cto.time;
 	}
 
 	return IINField::Empty();
@@ -206,7 +206,7 @@ IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICo
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
-{			
+{
 	return this->LoadValuesWithTransformTo<SecurityStat>(header, values);
 }
 

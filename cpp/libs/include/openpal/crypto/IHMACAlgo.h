@@ -29,27 +29,27 @@
 
 namespace openpal
 {
-	/**
-	* Provides an abstract interface to an HMAC algorithm
-	*/
-	class IHMACAlgo
-	{
-	public:
-		virtual ~IHMACAlgo() {}
+/**
+* Provides an abstract interface to an HMAC algorithm
+*/
+class IHMACAlgo
+{
+public:
+	virtual ~IHMACAlgo() {}
 
-		// Describes the required output size
-		virtual uint16_t OutputSize() const = 0;
+	// Describes the required output size
+	virtual uint16_t OutputSize() const = 0;
 
-		// Calculate the HMAC value, writing the result into 'output'		
-		virtual openpal::RSlice Calculate(
-			const RSlice& key,
-			std::initializer_list<RSlice> data,
-			WSlice& dest,
-			std::error_code& ec
-		) = 0;
+	// Calculate the HMAC value, writing the result into 'output'
+	virtual openpal::RSlice Calculate(
+	    const RSlice& key,
+	    std::initializer_list<RSlice> data,
+	    WSlice& dest,
+	    std::error_code& ec
+	) = 0;
 
 
-	};
+};
 }
 
 #endif

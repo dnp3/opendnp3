@@ -31,7 +31,7 @@ MasterScan::MasterScan() : pExecutor(nullptr), pTask(nullptr)
 {}
 
 MasterScan::MasterScan(openpal::IExecutor& executor, IMasterTask* pTask_, const std::function<void()>& demandCallback_) :
-	pExecutor(&executor),	
+	pExecutor(&executor),
 	pTask(pTask_),
 	demandCallback(demandCallback_)
 {
@@ -46,15 +46,15 @@ bool MasterScan::IsDefined() const
 bool MasterScan::Demand()
 {
 	if (IsDefined())
-	{		
+	{
 		auto action = [this]()
-		{ 			
+		{
 			pTask->Demand();
 		};
-		pExecutor->PostLambda(action);	
+		pExecutor->PostLambda(action);
 		demandCallback();
 		return true;
-	}	
+	}
 	else
 	{
 		return false;

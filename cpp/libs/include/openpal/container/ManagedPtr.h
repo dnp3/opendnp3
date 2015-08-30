@@ -61,7 +61,7 @@ public:
 		if (managed)
 		{
 			managed = false;
-			delete pValue;			
+			delete pValue;
 		}
 
 		pValue = nullptr;
@@ -97,7 +97,7 @@ public:
 	}
 
 	// move assign operator
-	ManagedPtr& operator=(ManagedPtr&& other) 
+	ManagedPtr& operator=(ManagedPtr && other)
 	{
 		if (this != &other)
 		{
@@ -112,13 +112,13 @@ public:
 			other.managed = false;
 			other.pValue = nullptr;
 		}
-		
+
 		return *this;
 	}
 
 private:
 
-	ManagedPtr & operator=(const ManagedPtr&) = delete;
+	ManagedPtr& operator=(const ManagedPtr&) = delete;
 
 	ManagedPtr(const ManagedPtr&) = delete;
 
@@ -127,7 +127,7 @@ private:
 
 	T* pValue;
 	bool managed;
-	
+
 };
 
 }

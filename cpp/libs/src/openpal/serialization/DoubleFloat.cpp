@@ -28,50 +28,50 @@
 
 namespace openpal
 {
-	const double DoubleFloat::Max(openpal::MaxValue<double>());
-	const double DoubleFloat::Min(openpal::MinValue<double>());
+const double DoubleFloat::Max(openpal::MaxValue<double>());
+const double DoubleFloat::Min(openpal::MinValue<double>());
 
-	double DoubleFloat::ReadBuffer(RSlice& buffer)
-	{
-		auto ret = Read(buffer);
-		buffer.Advance(SIZE);
-		return ret;
-	}
+double DoubleFloat::ReadBuffer(RSlice& buffer)
+{
+	auto ret = Read(buffer);
+	buffer.Advance(SIZE);
+	return ret;
+}
 
-	void DoubleFloat::WriteBuffer(WSlice& buffer, double value)
-	{
-		Write(buffer, value);
-		buffer.Advance(SIZE);
-	}
-	
-	double DoubleFloat::Read(const uint8_t* data)
-	{
-		if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
-		{
-			double d;
-			memcpy(&d, data, SIZE);
-			return d;
-		}
-		else
-		{
-			uint8_t bytes[8] = { data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] };
-			return *reinterpret_cast<double*>(bytes);
-		}
-	}
+void DoubleFloat::WriteBuffer(WSlice& buffer, double value)
+{
+	Write(buffer, value);
+	buffer.Advance(SIZE);
+}
 
-	void DoubleFloat::Write(uint8_t* dest, double value)
-	{		
-		if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
-		{
-			memcpy(dest, &value, SIZE);
-		}
-		else
-		{
-			auto data = reinterpret_cast<uint8_t*>(&value);
-			uint8_t bytes[8] = { data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] };
-			memcpy(dest, bytes, SIZE);
-		}
+double DoubleFloat::Read(const uint8_t* data)
+{
+	if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
+	{
+		double d;
+		memcpy(&d, data, SIZE);
+		return d;
 	}
+	else
+	{
+		uint8_t bytes[8] = { data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] };
+		return *reinterpret_cast<double*>(bytes);
+	}
+}
+
+void DoubleFloat::Write(uint8_t* dest, double value)
+{
+	if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
+	{
+		memcpy(dest, &value, SIZE);
+	}
+	else
+	{
+		auto data = reinterpret_cast<uint8_t*>(&value);
+		uint8_t bytes[8] = { data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] };
+		memcpy(dest, bytes, SIZE);
+	}
+}
 }
 
 

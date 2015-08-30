@@ -41,7 +41,7 @@ enum class EventType : uint16_t
     SecurityStat = 7
 };
 
-enum class EventClass: uint8_t
+enum class EventClass : uint8_t
 {
     EC1 = 0,
     EC2 = 1,

@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-/** 
+/**
 	A composite configuration struct that contains all the config
 	information for a dnp3 outstation stack
 */
@@ -37,21 +37,21 @@ struct OutstationStackConfig
 {
 
 	OutstationStackConfig(const DatabaseTemplate& dbTemplate_) :
-		dbTemplate(dbTemplate_),		
-		link(false, false)		
+		dbTemplate(dbTemplate_),
+		link(false, false)
 	{
 
 	}
 
-	OutstationStackConfig() : link(false, false)		
+	OutstationStackConfig() : link(false, false)
 	{}
 
 	// Configuration of the database
-	DatabaseTemplate dbTemplate;	
-	
+	DatabaseTemplate dbTemplate;
+
 	/// Outstation config
-	OutstationConfig outstation;	
-	
+	OutstationConfig outstation;
+
 	/// Link layer config
 	LinkConfig link;
 

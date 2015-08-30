@@ -50,7 +50,7 @@ void TestHMACSuccess(IHMACAlgo& algo, const openpal::RSlice& key, const openpal:
 }
 
 void TestInsufficientOutputSizeFails(IHMACAlgo& algo)
-{	
+{
 	Buffer buffer(algo.OutputSize() - 1);
 	auto dest = buffer.GetWSlice();
 	error_code ec;
@@ -60,7 +60,7 @@ void TestInsufficientOutputSizeFails(IHMACAlgo& algo)
 }
 
 TEST_CASE(SUITE("SHA1-SHA256-SHORTKEY"))
-{		
+{
 	/*
 		From:
 		http://www.freeformatter.com/hmac-generator.html
@@ -103,5 +103,5 @@ TEST_CASE(SUITE("InsufficientWriteBuffer"))
 {
 	CryptoProvider crypto;
 	TestInsufficientOutputSizeFails(crypto.GetSHA1HMAC());
-	TestInsufficientOutputSizeFails(crypto.GetSHA256HMAC());	
+	TestInsufficientOutputSizeFails(crypto.GetSHA256HMAC());
 }

@@ -33,70 +33,70 @@ using namespace opendnp3;
 
 namespace secauth
 {
-	KeyChangeHMACData::KeyChangeHMACData(
-		const std::string& name_,
-		const openpal::RSlice& senderNonce_,
-		const openpal::RSlice& receiverNonce_,
-		uint32_t keyChangeSeqNum_,
-		opendnp3::User user_
-		) :
-		name(name_),
-		senderNonce(senderNonce_),
-		receiverNonce(receiverNonce_),
-		keyChangeSeqNum(keyChangeSeqNum_),
-		user(user_)
-	{}
+KeyChangeHMACData::KeyChangeHMACData(
+    const std::string& name_,
+    const openpal::RSlice& senderNonce_,
+    const openpal::RSlice& receiverNonce_,
+    uint32_t keyChangeSeqNum_,
+    opendnp3::User user_
+) :
+	name(name_),
+	senderNonce(senderNonce_),
+	receiverNonce(receiverNonce_),
+	keyChangeSeqNum(keyChangeSeqNum_),
+	user(user_)
+{}
 
-	KeyChangeConfirmationHMAC::KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm) : m_algorithm(&algorithm)
-	{}
+KeyChangeConfirmationHMAC::KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm) : m_algorithm(&algorithm)
+{}
 
-	bool KeyChangeConfirmationHMAC::ComputeAndCompare(
-			const openpal::RSlice& key,
-			const KeyChangeHMACData& data,
-			openpal::IHMACAlgo& algorithm,
-			const openpal::RSlice& expectedHMAC,
-			std::error_code& ec
-		)
+bool KeyChangeConfirmationHMAC::ComputeAndCompare(
+    const openpal::RSlice& key,
+    const KeyChangeHMACData& data,
+    openpal::IHMACAlgo& algorithm,
+    const openpal::RSlice& expectedHMAC,
+    std::error_code& ec
+)
+{
+	// verify the HMAC value
+	KeyChangeConfirmationHMAC calc(algorithm);
+
+	auto hmac = calc.Compute(key, data, ec);
+
+	if (ec)
 	{
-		// verify the HMAC value
-		KeyChangeConfirmationHMAC calc(algorithm);
-		
-		auto hmac = calc.Compute(key, data, ec);
-
-		if (ec)
-		{			
-			return false;
-		}
-
-		if (!SecureEquals(hmac, expectedHMAC))
-		{
-			ec = make_error_code(OutstationError::KEY_CHANGE_CONFIRMATION_HMAC_MISMATCH);
-			return false;
-		}
-
-		return true;
+		return false;
 	}
 
-	openpal::RSlice KeyChangeConfirmationHMAC::Compute(
-		const openpal::RSlice& key,
-		const KeyChangeHMACData& data,
-		std::error_code& ec)
-	{		
-		openpal::StaticBuffer<6> ksqAndUser;
-
-		{
-			auto dest = ksqAndUser.GetWSlice();
-			Format::Many(dest, data.keyChangeSeqNum, data.user.GetId());
-		}
-
-		auto outputDest = m_buffer.GetWSlice();
-
-		return m_algorithm->Calculate(key, 
-		{	AsSlice(data.name), data.senderNonce, data.receiverNonce, ksqAndUser.ToRSlice() },
-			outputDest,
-			ec
-		);
+	if (!SecureEquals(hmac, expectedHMAC))
+	{
+		ec = make_error_code(OutstationError::KEY_CHANGE_CONFIRMATION_HMAC_MISMATCH);
+		return false;
 	}
+
+	return true;
+}
+
+openpal::RSlice KeyChangeConfirmationHMAC::Compute(
+    const openpal::RSlice& key,
+    const KeyChangeHMACData& data,
+    std::error_code& ec)
+{
+	openpal::StaticBuffer<6> ksqAndUser;
+
+	{
+		auto dest = ksqAndUser.GetWSlice();
+		Format::Many(dest, data.keyChangeSeqNum, data.user.GetId());
+	}
+
+	auto outputDest = m_buffer.GetWSlice();
+
+	return m_algorithm->Calculate(key,
+	{	AsSlice(data.name), data.senderNonce, data.receiverNonce, ksqAndUser.ToRSlice() },
+	outputDest,
+	ec
+	                             );
+}
 
 }
 

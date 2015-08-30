@@ -42,7 +42,7 @@ class IExecutor : public IMonotonicTimeSource
 public:
 
 	virtual ~IExecutor() {}
-		
+
 	/// @return a new timer based on a relative time duration
 	virtual ITimer* Start(const TimeDuration& duration, const Action0& action) = 0;
 

@@ -37,21 +37,21 @@ namespace secauth
 	Arguments required for completing an update key change on the master
 */
 class FinishUpdateKeyChangeArgs
-{	
+{
 
 public:
-	
+
 	FinishUpdateKeyChangeArgs(
-		const std::string& username,
-		const std::string& outstationName,
-		opendnp3::User user,
-		uint32_t keyChangeSequenceNumber,
-		const openpal::RSlice& masterChallengeData,
-		const openpal::RSlice& outstationChallengeData,		
-		const openpal::RSlice& encryptedKeyData,
-		const UpdateKey& key
+	    const std::string& username,
+	    const std::string& outstationName,
+	    opendnp3::User user,
+	    uint32_t keyChangeSequenceNumber,
+	    const openpal::RSlice& masterChallengeData,
+	    const openpal::RSlice& outstationChallengeData,
+	    const openpal::RSlice& encryptedKeyData,
+	    const UpdateKey& key
 	);
-				
+
 	/// The UTF-8 username shared by the authority and outstation
 	std::string username;
 
@@ -59,7 +59,7 @@ public:
 	std::string outstationName;
 
 	/// The user # assigned by the outstation associated w/ the UTF-8 encoded name
-	opendnp3::User user;	
+	opendnp3::User user;
 
 	/// The KSQ specified by the outstation
 	uint32_t keyChangeSequenceNum;
@@ -71,7 +71,7 @@ public:
 	openpal::Buffer outstationChallengeData;
 
 	/// The encrypted key data provided by the authority using the authority symmetric key
-	openpal::Buffer encryptedKeyData;	
+	openpal::Buffer encryptedKeyData;
 
 	/// the plaintext update key that was derived by the master and signed by the authority
 	UpdateKey updateKey;

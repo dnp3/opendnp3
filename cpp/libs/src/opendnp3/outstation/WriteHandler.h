@@ -37,8 +37,11 @@ public:
 
 	WriteHandler(openpal::Logger logger, IOutstationApplication& application, IINField* pWriteIIN_);
 
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
-	
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+	{
+		return true;
+	}
+
 private:
 
 	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override final;

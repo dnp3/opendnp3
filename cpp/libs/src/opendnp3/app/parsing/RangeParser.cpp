@@ -60,13 +60,13 @@ ParseResult RangeParser::ParseHeader(openpal::RSlice& buffer, const NumParser& n
 	if (res == ParseResult::OK)
 	{
 		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-			"%03u,%03u %s, %s [%u, %u]",
-			record.group,
-			record.variation,
-			GroupVariationToString(record.enumeration),
-			QualifierCodeToString(record.GetQualifierCode()),
-			range.start,
-			range.stop);
+		                    "%03u,%03u %s, %s [%u, %u]",
+		                    record.group,
+		                    record.variation,
+		                    GroupVariationToString(record.enumeration),
+		                    QualifierCodeToString(record.GetQualifierCode()),
+		                    range.start,
+		                    range.stop);
 
 		if (settings.ExpectsContents())
 		{
@@ -107,22 +107,22 @@ ParseResult RangeParser::Process(const HeaderRecord& record, openpal::RSlice& bu
 
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
 	case(GroupVariation::descriptor): \
-	return RangeParser::FromFixedSize<descriptor>(range).Process(record, buffer, pHandler, pLogger);	
+	return RangeParser::FromFixedSize<descriptor>(range).Process(record, buffer, pHandler, pLogger);
 
 ParseResult RangeParser::ParseRangeOfObjects(openpal::RSlice& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	switch (record.enumeration)
-	{		
-		case(GroupVariation::Group1Var1) :
-			return RangeParser::FromBitfieldType<Binary>(range).Process(record, buffer, pHandler, pLogger);	
-		
+	{
+	case(GroupVariation::Group1Var1) :
+		return RangeParser::FromBitfieldType<Binary>(range).Process(record, buffer, pHandler, pLogger);
+
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
-		
-		case(GroupVariation::Group3Var1) :
-			return RangeParser::FromDoubleBitfieldType<DoubleBitBinary>(range).Process(record, buffer, pHandler, pLogger);	
-		case(GroupVariation::Group10Var1):
-			return RangeParser::FromBitfieldType<BinaryOutputStatus>(range).Process(record, buffer, pHandler, pLogger);
-		
+
+	case(GroupVariation::Group3Var1) :
+		return RangeParser::FromDoubleBitfieldType<DoubleBitBinary>(range).Process(record, buffer, pHandler, pLogger);
+	case(GroupVariation::Group10Var1):
+		return RangeParser::FromBitfieldType<BinaryOutputStatus>(range).Process(record, buffer, pHandler, pLogger);
+
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group3Var2);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
 
@@ -151,10 +151,10 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::RSlice& buffer, const Head
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
 
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group50Var4);
-				
+
 	case(GroupVariation::Group80Var1) :
 		return RangeParser::FromBitfieldType<IINValue>(range).Process(record, buffer, pHandler, pLogger);
-		
+
 	case(GroupVariation::Group110Var0) :
 		return ParseRangeOfOctetData(buffer, record, range, pLogger, pHandler);
 
@@ -163,13 +163,13 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::RSlice& buffer, const Head
 
 	default:
 		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
-			"Unsupported qualifier/object - %s - %i / %i",
-			QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
+		                              "Unsupported qualifier/object - %s - %i / %i",
+		                              QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}
 }
-	
+
 ParseResult RangeParser::ParseRangeOfOctetData(openpal::RSlice& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	if (record.variation > 0)
@@ -184,8 +184,9 @@ ParseResult RangeParser::ParseRangeOfOctetData(openpal::RSlice& buffer, const He
 		else
 		{
 			if (pHandler)
-			{								
-				auto read = [range, record](openpal::RSlice& buffer, uint32_t pos) -> Indexed<OctetString> {
+			{
+				auto read = [range, record](openpal::RSlice & buffer, uint32_t pos) -> Indexed<OctetString>
+				{
 					OctetString octets(buffer.Take(record.variation));
 					buffer.Advance(record.variation);
 					return WithIndex(octets, range.start + pos);

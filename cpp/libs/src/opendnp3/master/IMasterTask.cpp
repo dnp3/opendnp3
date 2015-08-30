@@ -30,7 +30,7 @@ namespace opendnp3
 {
 
 IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger_, TaskConfig config_) :
-	pApplication(&app),		
+	pApplication(&app),
 	logger(logger_),
 	state(expiration),
 	config(config_),
@@ -61,25 +61,25 @@ openpal::MonotonicTimestamp IMasterTask::StartExpirationTime() const
 }
 
 IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& response, const openpal::RSlice& objects, openpal::MonotonicTimestamp now)
-{	
+{
 	auto result = ProcessResponse(response, objects);
-	
+
 	switch (result)
 	{
-		case(ResponseResult::ERROR_BAD_RESPONSE) :
-			this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_RESPONSE, now);		
-			this->NotifyResult(TaskCompletion::FAILURE_BAD_RESPONSE);
-			break;
-		case(ResponseResult::ERROR_INTERNAL_FAILURE) :
-			this->state = this->OnTaskComplete(TaskCompletion::FAILURE_INTERNAL_ERROR, now);
-			this->NotifyResult(TaskCompletion::FAILURE_INTERNAL_ERROR);
-			break;
-		case(ResponseResult::OK_FINAL) :
-			this->state = this->OnTaskComplete(TaskCompletion::SUCCESS, now);
-			this->NotifyResult(TaskCompletion::SUCCESS);
-			break;
-		default:
-			break;
+	case(ResponseResult::ERROR_BAD_RESPONSE) :
+		this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_RESPONSE, now);
+		this->NotifyResult(TaskCompletion::FAILURE_BAD_RESPONSE);
+		break;
+	case(ResponseResult::ERROR_INTERNAL_FAILURE) :
+		this->state = this->OnTaskComplete(TaskCompletion::FAILURE_INTERNAL_ERROR, now);
+		this->NotifyResult(TaskCompletion::FAILURE_INTERNAL_ERROR);
+		break;
+	case(ResponseResult::OK_FINAL) :
+		this->state = this->OnTaskComplete(TaskCompletion::SUCCESS, now);
+		this->NotifyResult(TaskCompletion::SUCCESS);
+		break;
+	default:
+		break;
 	}
 
 	return result;
@@ -92,7 +92,7 @@ void IMasterTask::OnResponseTimeout(openpal::MonotonicTimestamp now)
 }
 
 void IMasterTask::OnLowerLayerClose(openpal::MonotonicTimestamp now)
-{	
+{
 	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NO_COMMS, now);
 	this->NotifyResult(TaskCompletion::FAILURE_NO_COMMS);
 }
@@ -104,7 +104,7 @@ void IMasterTask::OnStartTimeout(openpal::MonotonicTimestamp now)
 }
 
 void IMasterTask::OnNoUser(openpal::MonotonicTimestamp now)
-{	
+{
 	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NO_USER, now);
 	this->NotifyResult(TaskCompletion::FAILURE_NO_USER);
 }
@@ -136,7 +136,7 @@ void IMasterTask::NotifyResult(TaskCompletion result)
 
 	pApplication->OnTaskComplete(TaskInfo(this->GetTaskType(), result, config.taskId, config.user));
 }
-	
+
 void IMasterTask::OnStart()
 {
 	if (config.pCallback)
@@ -163,7 +163,7 @@ bool IMasterTask::ValidateSingleResponse(const APDUResponseHeader& header)
 	else
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");
-		return false;		
+		return false;
 	}
 }
 
@@ -190,7 +190,7 @@ bool IMasterTask::ValidateNoObjects(const openpal::RSlice& objects)
 {
 	if (objects.IsEmpty())
 	{
-		return true;		
+		return true;
 	}
 	else
 	{

@@ -35,9 +35,9 @@ namespace opendnp3
 {
 
 TransportLoopbackTestObject::TransportLoopbackTestObject(
-	openpal::LogRoot& root,
-	asio::io_service& service,
-	openpal::IExecutor& executor,
+    openpal::LogRoot& root,
+    asio::io_service& service,
+    openpal::IExecutor& executor,
     IPhysicalLayer* apPhys,
     LinkConfig aCfgA,
     LinkConfig aCfgB,
@@ -60,7 +60,7 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mRouter.Enable(&mLinkA);
 	mRouter.AddContext(&mLinkB, routeB);
 	mRouter.Enable(&mLinkB);
-	
+
 	mTransA.SetLinkLayer(&mLinkA);
 	mTransB.SetLinkLayer(&mLinkB);
 

@@ -106,14 +106,14 @@ void HexSequence::RemoveSpacesInPlace(std::string& s)
 uint32_t HexSequence::Validate(const std::string& s)
 {
 	//annoying when you accidentally put an 'O' instead of zero '0'
-	if(s.find_first_of( "oO") != string::npos)	
+	if(s.find_first_of( "oO") != string::npos)
 	{
 		throw std::invalid_argument("Sequence contains 'o' or 'O'");
 	}
 
-	if(s.size() % 2 != 0) 
+	if(s.size() % 2 != 0)
 	{
-		throw std::invalid_argument(s);	
+		throw std::invalid_argument(s);
 	}
 
 	return static_cast<uint32_t>(s.size() / 2);

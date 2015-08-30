@@ -64,8 +64,8 @@ namespace asiodnp3
 */
 class IChannel : public DestructorHook
 {
-public:	
-	
+public:
+
 	virtual ~IChannel() {}
 
 	/*
@@ -73,21 +73,21 @@ public:
 	* You'll receive one callback immediately with the current state
 	*/
 	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) = 0;
-	
+
 	/**
 	* Synchronously read the channel statistics
 	*/
 	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() = 0;
-	
+
 	/**
 	* synchronously shutdown the channel
 	*/
-	virtual void Shutdown() = 0;	
+	virtual void Shutdown() = 0;
 
 	/**
 	*  @return The current logger settings for this channel
 	*/
-	virtual openpal::LogFilters GetLogFilters() const = 0;	
+	virtual openpal::LogFilters GetLogFilters() const = 0;
 
 	/**
 	*  @param filters Adjust the filters to this value
@@ -105,9 +105,9 @@ public:
 	* @return interface representing the running master
 	*/
 	virtual IMaster* AddMaster(		char const* id,
-									opendnp3::ISOEHandler& SOEHandler,							   
-									opendnp3::IMasterApplication& application,
-									const opendnp3::MasterStackConfig& config) = 0;	
+	                                opendnp3::ISOEHandler& SOEHandler,
+	                                opendnp3::IMasterApplication& application,
+	                                const opendnp3::MasterStackConfig& config) = 0;
 
 	/**
 	* Add an outstation to the channel
@@ -119,9 +119,9 @@ public:
 	* @return interface representing the running outstations
 	*/
 	virtual IOutstation* AddOutstation( char const* id,
-										opendnp3::ICommandHandler& commandHandler,
-										opendnp3::IOutstationApplication& application,
-										const opendnp3::OutstationStackConfig& config) = 0;
+	                                    opendnp3::ICommandHandler& commandHandler,
+	                                    opendnp3::IOutstationApplication& application,
+	                                    const opendnp3::OutstationStackConfig& config) = 0;
 
 #ifdef OPENDNP3_USE_SECAUTH
 
@@ -129,17 +129,17 @@ public:
 	* SA enabled version of the master
 	*/
 	virtual IMasterSA* AddMasterSA(	char const* id,
-									opendnp3::ISOEHandler& SOEHandler,
-									secauth::IMasterApplicationSA& application,
-									const secauth::MasterAuthStackConfig& config) = 0;
+	                                opendnp3::ISOEHandler& SOEHandler,
+	                                secauth::IMasterApplicationSA& application,
+	                                const secauth::MasterAuthStackConfig& config) = 0;
 
 	/**
 	* Add an SA-enabled outstation to the channel
 	*/
 	virtual IOutstationSA* AddOutstationSA(	char const* id,
-											opendnp3::ICommandHandler& commandHandler,
-											secauth::IOutstationApplicationSA& application,
-											const secauth::OutstationAuthStackConfig& config) = 0;
+	                                        opendnp3::ICommandHandler& commandHandler,
+	                                        secauth::IOutstationApplicationSA& application,
+	                                        const secauth::OutstationAuthStackConfig& config) = 0;
 
 #endif
 

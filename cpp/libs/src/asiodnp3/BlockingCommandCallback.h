@@ -34,13 +34,14 @@ namespace asiodnp3
 * Callback when a command finishes or fails
 */
 class BlockingCommandCallback : private openpal::Uncopyable
-{	
-	
-public:		
+{
+
+public:
 
 	opendnp3::CommandCallbackT Callback()
 	{
-		return [this](const opendnp3::CommandResponse& rsp) -> void {
+		return [this](const opendnp3::CommandResponse & rsp) -> void
+		{
 			this->response.SetValue(rsp);
 		};
 	}

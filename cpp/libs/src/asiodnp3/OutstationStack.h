@@ -37,19 +37,19 @@ public:
 
 	/// standard DNP3 constructor
 	OutstationStack(
-		const char* id,
+	    const char* id,
 	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,		
-		IStackLifecycle& lifecycle);
-		
+	    openpal::IExecutor& executor,
+	    opendnp3::ICommandHandler& commandHandler,
+	    opendnp3::IOutstationApplication& application,
+	    const opendnp3::OutstationStackConfig& config,
+	    IStackLifecycle& lifecycle);
+
 
 private:
-	
-	
-	opendnp3::OContext ocontext;	
+
+
+	opendnp3::OContext ocontext;
 };
 
 }

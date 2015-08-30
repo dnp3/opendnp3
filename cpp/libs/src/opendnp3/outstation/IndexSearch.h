@@ -43,7 +43,7 @@ public:
 
 	class Result
 	{
-		public:
+	public:
 
 		Result(bool match_, uint16_t index_) : match(match_), index(index_)
 		{}
@@ -51,7 +51,7 @@ public:
 		const bool match;
 		const uint16_t index;
 
-		private:
+	private:
 
 		Result() = delete;
 	};

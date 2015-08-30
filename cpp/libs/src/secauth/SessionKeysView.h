@@ -24,25 +24,25 @@
 #include <openpal/container/RSlice.h>
 
 namespace secauth
-{	
-	// A view of session keys stored elsewhere
-	class SessionKeysView
-	{
-	public:
-		SessionKeysView() {}
+{
+// A view of session keys stored elsewhere
+class SessionKeysView
+{
+public:
+	SessionKeysView() {}
 
-		SessionKeysView(
-			const openpal::RSlice& controlKey,
-			const openpal::RSlice& monitorKey
-		);
+	SessionKeysView(
+	    const openpal::RSlice& controlKey,
+	    const openpal::RSlice& monitorKey
+	);
 
-		uint32_t TotalSize() const;
+	uint32_t TotalSize() const;
 
-		bool IsValid() const;
+	bool IsValid() const;
 
-		openpal::RSlice controlKey;
-		openpal::RSlice monitorKey;		
-	};
+	openpal::RSlice controlKey;
+	openpal::RSlice monitorKey;
+};
 }
 
 #endif

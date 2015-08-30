@@ -37,20 +37,20 @@ void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu)
 #ifndef OPENPAL_STRIP_LOGGING
 
 	FORMAT_HEX_BLOCK(logger, flags::APP_HEX_TX, apdu, 18, 18);
-		
+
 	if (logger.IsEnabled(flags::APP_HEADER_TX))
 	{
-		APDUHeader header;		
+		APDUHeader header;
 		if (APDUHeaderParser::ParseRequest(apdu, header, &logger))
 		{
 			FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_TX,
-				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-				header.control.FIR,
-				header.control.FIN,
-				header.control.CON,
-				header.control.UNS,
-				header.control.SEQ,
-				FunctionCodeToString(header.function));
+			                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
+			                 header.control.FIR,
+			                 header.control.FIN,
+			                 header.control.CON,
+			                 header.control.UNS,
+			                 header.control.SEQ,
+			                 FunctionCodeToString(header.function));
 
 			if (logger.IsEnabled(flags::APP_OBJECT_TX))
 			{
@@ -58,7 +58,7 @@ void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu)
 				APDUParser::ParseAndLogAll(apdu.Skip(APDU_REQUEST_HEADER_SIZE), &logger, ParserSettings::Create(expectsContents, flags::APP_OBJECT_TX));
 			}
 		}
-	}	
+	}
 
 #endif
 
@@ -67,7 +67,7 @@ void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu)
 void ParseAndLogResponseTx(openpal::Logger logger, const openpal::RSlice& apdu)
 {
 
-#ifndef OPENPAL_STRIP_LOGGING	
+#ifndef OPENPAL_STRIP_LOGGING
 
 	FORMAT_HEX_BLOCK(logger, flags::APP_HEX_TX, apdu, 18, 18);
 
@@ -77,27 +77,27 @@ void ParseAndLogResponseTx(openpal::Logger logger, const openpal::RSlice& apdu)
 		if (APDUHeaderParser::ParseResponse(apdu, header, &logger))
 		{
 			FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_TX,
-				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-				header.control.FIR,
-				header.control.FIN,
-				header.control.CON,
-				header.control.UNS,
-				header.control.SEQ,
-				FunctionCodeToString(header.function),
-				header.IIN.LSB,
-				header.IIN.MSB);
+			                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+			                 header.control.FIR,
+			                 header.control.FIN,
+			                 header.control.CON,
+			                 header.control.UNS,
+			                 header.control.SEQ,
+			                 FunctionCodeToString(header.function),
+			                 header.IIN.LSB,
+			                 header.IIN.MSB);
 
 			if (logger.IsEnabled(flags::APP_OBJECT_TX))
-			{				
+			{
 				APDUParser::ParseAndLogAll(apdu.Skip(APDU_RESPONSE_HEADER_SIZE), &logger, ParserSettings::Create(true, flags::APP_OBJECT_TX));
 			}
 		}
-	}	
+	}
 
 #endif
 
 }
-	
+
 }
 }
 

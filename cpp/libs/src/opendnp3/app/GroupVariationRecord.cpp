@@ -39,10 +39,10 @@ bool TypeHasTimestamp(GroupVariation gv)
 
 	case(GroupVariation::Group13Var2) :
 
-	// group 21 (frozen counters) is the only static type with a timestamp
+		// group 21 (frozen counters) is the only static type with a timestamp
 	case(GroupVariation::Group21Var5) :
 	case(GroupVariation::Group21Var6) :
-	
+
 	case(GroupVariation::Group22Var5) :
 	case(GroupVariation::Group22Var6) :
 
@@ -82,7 +82,7 @@ GroupVariationRecord::GroupVariationRecord(uint8_t group_, uint8_t variation_, G
 }
 
 HeaderRecord::HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier_, uint32_t headerCount_) :
-	GroupVariationRecord(gv), 
+	GroupVariationRecord(gv),
 	qualifier(qualifier_),
 	headerCount(headerCount_)
 {
@@ -106,8 +106,8 @@ uint16_t GroupVariationRecord::GetGroupVar(uint8_t group, uint8_t variation)
 }
 
 EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variation)
-{	
-	auto type = GetType(group, variation);	
+{
+	auto type = GetType(group, variation);
 	auto enumeration = GroupVariationFromType(GetGroupVar(group, variation));
 
 	if (enumeration == GroupVariation::UNKNOWN)
@@ -130,7 +130,7 @@ EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variatio
 			break;
 		}
 	}
-	
+
 	return EnumAndType(enumeration, type);
 }
 
@@ -192,21 +192,21 @@ GroupVariationType GroupVariationRecord::GetType(uint8_t group, uint8_t variatio
 	case(50) :
 		switch (variation)
 		{
-			case(4) :
-				return GroupVariationType::STATIC;
-			default:
-				return GroupVariationType::OTHER;
+		case(4) :
+			return GroupVariationType::STATIC;
+		default:
+			return GroupVariationType::OTHER;
 		}
 
 	case(60):
 		switch (variation)
 		{
-			case(1) :
-				return GroupVariationType::STATIC;
-			default:
-				return GroupVariationType::EVENT;
+		case(1) :
+			return GroupVariationType::STATIC;
+		default:
+			return GroupVariationType::EVENT;
 		}
-				
+
 	case(110):
 		return GroupVariationType::STATIC;
 

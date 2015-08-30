@@ -46,13 +46,13 @@ class OutstationSecAuthFixture
 {
 
 public:
-	OutstationSecAuthFixture(		
-		const secauth::OutstationAuthSettings& authConfig = secauth::OutstationAuthSettings(),
-		const DatabaseTemplate& dbTemplate = DatabaseTemplate::BinaryOnly(1),
-		const OutstationConfig& config = OutstationConfig()		
-	);	
-														
-	uint32_t SendToOutstation(const std::string& hex);	
+	OutstationSecAuthFixture(
+	    const secauth::OutstationAuthSettings& authConfig = secauth::OutstationAuthSettings(),
+	    const DatabaseTemplate& dbTemplate = DatabaseTemplate::BinaryOnly(1),
+	    const OutstationConfig& config = OutstationConfig()
+	);
+
+	uint32_t SendToOutstation(const std::string& hex);
 
 	std::string SendAndReceive(const std::string& hex);
 
@@ -71,13 +71,13 @@ public:
 	void AddUser(User user, const std::string& userName, uint8_t keyRepeat, KeyWrapAlgorithm keyWrap, secauth::Permissions permissions = secauth::Permissions::AllowAll())
 	{
 		context.AddUser(
-			secauth::OutstationUserInfo(
-			user, userName, permissions, secauth::UpdateKey(keyRepeat, keyWrap)
-			)			
+		    secauth::OutstationUserInfo(
+		        user, userName, permissions, secauth::UpdateKey(keyRepeat, keyWrap)
+		    )
 		);
 	}
 
-	
+
 	void SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data);
 	void TestSessionKeyChange(AppSeqNum& seq, User user, opendnp3::KeyWrapAlgorithm keyWrap, secauth::HMACMode hmacMode);
 
@@ -87,9 +87,9 @@ public:
 	testlib::MockExecutor exe;
 	MockLowerLayer lower;
 	MockCommandHandler cmdHandler;
-	MockOutstationApplicationSA application;	
-	MockCryptoProvider crypto;	
-	secauth::OAuthContext context;	
+	MockOutstationApplicationSA application;
+	MockCryptoProvider crypto;
+	secauth::OAuthContext context;
 };
 
 

@@ -31,25 +31,25 @@
 namespace opendnp3
 {
 
-	class TaskComparison : private openpal::StaticOnly
+class TaskComparison : private openpal::StaticOnly
+{
+public:
+
+	enum class Result : uint8_t
 	{
-		public:
-
-		enum class Result : uint8_t
-		{
-			Left,
-			Right,
-			Same
-		};
-
-		static Result SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs, ITaskFilter& filter);
-
-		private:
-
-		static Result HigherPriority(const IMasterTask& lhs, const IMasterTask& rhs);
-
-		static bool Enabled(const IMasterTask& task, ITaskFilter& filter);
+	    Left,
+	    Right,
+	    Same
 	};
+
+	static Result SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs, ITaskFilter& filter);
+
+private:
+
+	static Result HigherPriority(const IMasterTask& lhs, const IMasterTask& rhs);
+
+	static bool Enabled(const IMasterTask& task, ITaskFilter& filter);
+};
 
 }
 

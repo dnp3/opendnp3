@@ -44,7 +44,7 @@
 	if(pLogger && pLogger->IsEnabled(filters)){ \
 		pLogger->Log(filters, LOCATION, message, code); \
 	}
-	
+
 #define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
 if(logger.IsEnabled(filters)){ \
 	char message[openpal::MAX_LOG_ENTRY_SIZE]; \

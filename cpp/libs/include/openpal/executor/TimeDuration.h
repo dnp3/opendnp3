@@ -43,9 +43,12 @@ public:
 	bool IsNegative() const
 	{
 		return milliseconds < 0;
-	}	
-	
-	operator T() const { return milliseconds; }
+	}
+
+	operator T() const
+	{
+		return milliseconds;
+	}
 
 protected:
 	TimeDurationBase(T aMilliseconds) : milliseconds(aMilliseconds)
@@ -69,7 +72,7 @@ public:
 
 	TimeDuration MultiplyBy(int factor) const
 	{
-		return TimeDuration(factor*milliseconds);
+		return TimeDuration(factor * milliseconds);
 	}
 
 	static TimeDuration Min();

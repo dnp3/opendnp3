@@ -42,7 +42,7 @@ public:
 	LogRoot(const LogRoot&, char const* alias_);
 
 	LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters);
-	
+
 	~LogRoot();
 
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode);
@@ -55,12 +55,12 @@ public:
 
 	const LogFilters& GetFilters() const;
 
-private:	
-	
-	ILogHandler*	pHandler;	
+private:
+
+	ILogHandler*	pHandler;
 	LogFilters		filters;   // bit field describing what is being logged
 	char*           alias;
-	
+
 };
 
 }

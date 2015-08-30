@@ -40,12 +40,12 @@
 namespace asiodnp3
 {
 
-/** 
+/**
 * Interface that represents a running master session.
 */
 class IMaster : public opendnp3::ICommandProcessor, public IStack
 {
-public:		
+public:
 
 	virtual ~IMaster() {}
 
@@ -91,7 +91,7 @@ public:
 	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
-	* Initiate a single class-based scan	
+	* Initiate a single class-based scan
 	*/
 	virtual void ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 	/**
@@ -108,7 +108,7 @@ public:
 	* Perform any operation that requires just a function code
 	*/
 	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
-	
+
 };
 
 }

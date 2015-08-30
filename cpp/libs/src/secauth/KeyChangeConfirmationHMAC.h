@@ -32,53 +32,53 @@
 
 namespace secauth
 {
-	class KeyChangeHMACData
-	{
-	public:
-		KeyChangeHMACData(
-			const std::string& name,
-			const openpal::RSlice& senderNonce,
-			const openpal::RSlice& receiverNonce,
-			uint32_t keyChangeSeqNum,
-			opendnp3::User user
-		);
-		
-		std::string name;
-		openpal::RSlice senderNonce;
-		openpal::RSlice receiverNonce;
-		uint32_t keyChangeSeqNum;
-		opendnp3::User user;
-	};
+class KeyChangeHMACData
+{
+public:
+	KeyChangeHMACData(
+	    const std::string& name,
+	    const openpal::RSlice& senderNonce,
+	    const openpal::RSlice& receiverNonce,
+	    uint32_t keyChangeSeqNum,
+	    opendnp3::User user
+	);
 
-	/**
-	*  Class for calculating an HMAC as defined in 1815 pg 757
-	*/
-	class KeyChangeConfirmationHMAC
-	{
-		public:
+	std::string name;
+	openpal::RSlice senderNonce;
+	openpal::RSlice receiverNonce;
+	uint32_t keyChangeSeqNum;
+	opendnp3::User user;
+};
 
-			KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm);						
-			
-			openpal::RSlice Compute(
-				const openpal::RSlice& key, 
-				const KeyChangeHMACData& data,
-				std::error_code& ec
-			);
+/**
+*  Class for calculating an HMAC as defined in 1815 pg 757
+*/
+class KeyChangeConfirmationHMAC
+{
+public:
 
-			static bool ComputeAndCompare(
-				const openpal::RSlice& key,														
-				const KeyChangeHMACData& data,
-				openpal::IHMACAlgo& algorithm,
-				const openpal::RSlice& expectedHMAC,
-				std::error_code& ec
-			);
-			
-		private:
-			
-			openpal::IHMACAlgo* m_algorithm;
-			
-			openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> m_buffer;
-	};
+	KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm);
+
+	openpal::RSlice Compute(
+	    const openpal::RSlice& key,
+	    const KeyChangeHMACData& data,
+	    std::error_code& ec
+	);
+
+	static bool ComputeAndCompare(
+	    const openpal::RSlice& key,
+	    const KeyChangeHMACData& data,
+	    openpal::IHMACAlgo& algorithm,
+	    const openpal::RSlice& expectedHMAC,
+	    std::error_code& ec
+	);
+
+private:
+
+	openpal::IHMACAlgo* m_algorithm;
+
+	openpal::StaticBuffer<AuthSizes::MAX_HMAC_OUTPUT_SIZE> m_buffer;
+};
 }
 
 #endif

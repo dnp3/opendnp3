@@ -76,7 +76,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 	{
 		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class2);
 	}
-		
+
 	REQUIRE(t.application.classAssignments.size() == 1);
 	auto assignment = t.application.classAssignments.front();
 	REQUIRE(assignment == std::make_tuple(AssignClassType::BinaryInput, PointClass::Class2, 0, 4));
@@ -102,7 +102,7 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class2);
 	}
 
-	REQUIRE(t.application.classAssignments.size() == 1);	
+	REQUIRE(t.application.classAssignments.size() == 1);
 }
 
 TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
@@ -140,11 +140,11 @@ TEST_CASE(SUITE("AcceptsMultipleAssignsmentPerMessage"))
 	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate(NUM_BINARY, 0, NUM_ANALOG));
 	t.application.supportsAssignClass = true;
-	t.LowerLayerUp();	
+	t.LowerLayerUp();
 
 	// assign binaries 2 - 3 to class 2 - assign all analogs to class 3
 	t.SendToOutstation("C0 16 3C 03 06 01 00 01 02 00 03 00 3C 04 06 1E 00 06");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");	
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
 
 	REQUIRE(t.application.classAssignments.size() == 2);
 	auto assignment = t.application.classAssignments.front();

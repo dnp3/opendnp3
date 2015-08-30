@@ -47,7 +47,7 @@ LinkContext::LinkContext(openpal::LogRoot& root, openpal::IExecutor& executor, I
 	nextWriteFCB(false),
 	isOnline(false),
 	isRemoteReset(false),
-	keepAliveTimeout(false),	
+	keepAliveTimeout(false),
 	lastMessageTimestamp(executor.GetTime()),
 	pRouter(nullptr),
 	pPriState(&PLLS_Idle::Instance()),
@@ -63,7 +63,7 @@ bool LinkContext::OnLowerLayerUp()
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
 		return false;
-	}	
+	}
 
 	this->isOnline = true;
 
@@ -77,7 +77,7 @@ bool LinkContext::OnLowerLayerUp()
 	{
 		this->pUpperLayer->OnLowerLayerUp();
 	}
-	
+
 	return true;
 }
 
@@ -155,7 +155,7 @@ bool LinkContext::OnTransmitResult(bool success)
 	{
 		this->pSecState = &this->pSecState->OnTransmitResult(*this, success);
 	}
-	
+
 	return true;
 }
 
@@ -300,7 +300,7 @@ void LinkContext::OnKeepAliveTimeout()
 	if (elapsed >= this->config.KeepAliveTimeout.GetMilliseconds())
 	{
 		this->lastMessageTimestamp = now;
-		this->keepAliveTimeout = true;		
+		this->keepAliveTimeout = true;
 	}
 
 	// No matter what, reschedule the timer based on last message timestamp
@@ -320,8 +320,8 @@ void LinkContext::OnResponseTimeout()
 void LinkContext::StartResponseTimer()
 {
 	rspTimeoutTimer.Start(
-		TimeDuration(config.Timeout),
-		[this]()
+	    TimeDuration(config.Timeout),
+	    [this]()
 	{
 		this->OnResponseTimeout();
 	}
@@ -330,7 +330,10 @@ void LinkContext::StartResponseTimer()
 
 void LinkContext::StartKeepAliveTimer()
 {
-	this->keepAliveTimer.Start(config.KeepAliveTimeout, [this]() { this->OnKeepAliveTimeout(); });
+	this->keepAliveTimer.Start(config.KeepAliveTimeout, [this]()
+	{
+		this->OnKeepAliveTimeout();
+	});
 }
 
 void LinkContext::CancelTimer()
@@ -339,7 +342,7 @@ void LinkContext::CancelTimer()
 }
 
 void LinkContext::FailKeepAlive(bool timeout)
-{	
+{
 	if (timeout)
 	{
 		this->pListener->OnKeepAliveFailure();
@@ -347,7 +350,7 @@ void LinkContext::FailKeepAlive(bool timeout)
 }
 
 void LinkContext::CompleteKeepAlive()
-{	
+{
 	this->pListener->OnKeepAliveSuccess();
 }
 
@@ -406,7 +409,7 @@ bool LinkContext::Validate(bool isMaster, uint16_t src, uint16_t dest)
 	if (isMaster == config.IsMaster)
 	{
 		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
-			(isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));
+		                           (isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));
 
 		return false;
 	}

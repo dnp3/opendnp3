@@ -51,7 +51,7 @@ public:
 
 	RSlice Take(uint32_t count) const;
 
-	RSlice Skip(uint32_t count) const;	
+	RSlice Skip(uint32_t count) const;
 
 	bool Equals(const RSlice& rhs) const;
 

@@ -41,8 +41,8 @@ class IPhysicalLayer;
 namespace opendnp3
 {
 
-	class ILinkSession;
-	class LinkFrame;
+class ILinkSession;
+class LinkFrame;
 
 }
 
@@ -57,13 +57,13 @@ class LinkLayerRouter : public asiodnp3::PhysicalLayerMonitor, public opendnp3::
 public:
 
 	LinkLayerRouter(openpal::LogRoot&,
-					openpal::IExecutor& executor,
+	                openpal::IExecutor& executor,
 	                openpal::IPhysicalLayer*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
-					opendnp3::IChannelStateListener* pStateHandler = nullptr,
-					opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance(),
-					opendnp3::LinkChannelStatistics* pStatistics = nullptr);
+	                opendnp3::IChannelStateListener* pStateHandler = nullptr,
+	                opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance(),
+	                opendnp3::LinkChannelStatistics* pStatistics = nullptr);
 
 	// called when the router shuts down
 	void SetShutdownHandler(const openpal::Action0& action);
@@ -132,14 +132,14 @@ private:
 	{
 		Transmission(const openpal::RSlice& buffer_, opendnp3::ILinkSession* pContext_) :
 			buffer(buffer_),
-			pContext(pContext_)			
+			pContext(pContext_)
 		{}
 
 		Transmission() : buffer(), pContext(nullptr)
 		{}
 
 		openpal::RSlice buffer;
-		opendnp3::ILinkSession* pContext;		
+		opendnp3::ILinkSession* pContext;
 	};
 
 	opendnp3::ILinkSession* GetDestination(uint16_t aDest, uint16_t aSrc);
@@ -149,12 +149,12 @@ private:
 
 	opendnp3::IChannelStateListener* pStateHandler;
 	openpal::Action0 shutdownHandler;
-	
+
 	std::vector<Record> records;
 	std::deque<Transmission>  transmitQueue;
-	
+
 	// Handles the parsing of incoming frames
-	
+
 	opendnp3::LinkChannelStatistics* pStatistics;
 	opendnp3::LinkLayerParser parser;
 	bool isTransmitting;

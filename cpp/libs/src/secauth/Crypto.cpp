@@ -25,7 +25,7 @@ using namespace opendnp3;
 
 namespace secauth
 {
-	
+
 bool Crypto::TryGetHMACMode(HMACType type, HMACMode& mode)
 {
 	switch (type)
@@ -47,7 +47,7 @@ bool Crypto::TryGetHMACMode(HMACType type, HMACMode& mode)
 	}
 }
 
-	
+
 }
 
 

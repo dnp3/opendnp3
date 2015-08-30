@@ -33,11 +33,11 @@ namespace opendnp3
 *	Evaluates a task to determine if it can run based on additional state information not available in the scheduler
 */
 class ITaskFilter
-{		
+{
 
-public:	
-	
-	virtual bool CanRun(const IMasterTask& task) = 0;	
+public:
+
+	virtual bool CanRun(const IMasterTask& task) = 0;
 
 	virtual void SetTaskStartTimeout(const openpal::MonotonicTimestamp& time) = 0;
 

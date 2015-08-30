@@ -39,13 +39,13 @@
 
 namespace openpal
 {
-	class IPhysicalLayer;
+class IPhysicalLayer;
 }
 
 namespace opendnp3
 {
-	class ICommandHandler;
-	class ITimeWriteHandler;
+class ICommandHandler;
+class ITimeWriteHandler;
 }
 
 
@@ -57,24 +57,24 @@ class IOutstation;
 
 class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
 {
-	
+
 public:
 
 	DNP3Channel(
-		openpal::LogRoot* pLogRoot_,
-		asiopal::ASIOExecutor& executor,		
+	    openpal::LogRoot* pLogRoot_,
+	    asiopal::ASIOExecutor& executor,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
-		opendnp3::IOpenDelayStrategy& strategy,
-		openpal::IPhysicalLayer* pPhys,
-		openpal::ICryptoProvider* pCrypto
+	    opendnp3::IOpenDelayStrategy& strategy,
+	    openpal::IPhysicalLayer* pPhys,
+	    openpal::ICryptoProvider* pCrypto
 	);
 
 	// ----------------------- Implement IChannel -----------------------
 
 	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override final;
-	
-	void Shutdown() override final;	
+
+	void Shutdown() override final;
 
 	virtual openpal::LogFilters GetLogFilters() const override final;
 
@@ -83,28 +83,28 @@ public:
 	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) override final;
 
 	virtual IMaster* AddMaster(	char const* id,
-								opendnp3::ISOEHandler& SOEHandler,								
-								opendnp3::IMasterApplication& application,
-								const opendnp3::MasterStackConfig& config) override final;
+	                            opendnp3::ISOEHandler& SOEHandler,
+	                            opendnp3::IMasterApplication& application,
+	                            const opendnp3::MasterStackConfig& config) override final;
 
-	
+
 
 	virtual IOutstation* AddOutstation(char const* id,
-								opendnp3::ICommandHandler& commandHandler,
-								opendnp3::IOutstationApplication& application,
-								const opendnp3::OutstationStackConfig& config) override final;
+	                                   opendnp3::ICommandHandler& commandHandler,
+	                                   opendnp3::IOutstationApplication& application,
+	                                   const opendnp3::OutstationStackConfig& config) override final;
 
 #ifdef OPENDNP3_USE_SECAUTH
 
 	virtual IMasterSA* AddMasterSA(	char const* id,
-									opendnp3::ISOEHandler& SOEHandler,
-									secauth::IMasterApplicationSA& application,
-									const secauth::MasterAuthStackConfig& config) override final;
+	                                opendnp3::ISOEHandler& SOEHandler,
+	                                secauth::IMasterApplicationSA& application,
+	                                const secauth::MasterAuthStackConfig& config) override final;
 
 	virtual IOutstationSA* AddOutstationSA(	char const* id,
-											opendnp3::ICommandHandler& commandHandler,
-											secauth::IOutstationApplicationSA& application,
-											const secauth::OutstationAuthStackConfig& config) override final;
+	                                        opendnp3::ICommandHandler& commandHandler,
+	                                        secauth::IOutstationApplicationSA& application,
+	                                        const secauth::OutstationAuthStackConfig& config) override final;
 #endif
 
 	// -----------------------------------------------------------------------
@@ -114,14 +114,14 @@ public:
 
 
 private:
-	
+
 	// ----- generic method for adding a stack ------
 	template <class T>
 	T* AddStack(const opendnp3::LinkConfig& link, const std::function<T* ()>& factory);
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);
 
-	virtual void OnStateChange(opendnp3::ChannelState state) override final;		
+	virtual void OnStateChange(opendnp3::ChannelState state) override final;
 
 	void CheckForFinalShutdown();
 
@@ -132,17 +132,17 @@ private:
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
 	openpal::ICryptoProvider* pCrypto;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
-	asiopal::ASIOExecutor* pExecutor;	
+	asiopal::ASIOExecutor* pExecutor;
 	openpal::Logger logger;
-	
-	asiopal::Synchronized<bool>* pShutdownHandler;		
+
+	asiopal::Synchronized<bool>* pShutdownHandler;
 
 	opendnp3::ChannelState channelState;
 	std::vector<std::function<void(opendnp3::ChannelState)>> callbacks;
-	
+
 	LinkLayerRouter router;
 	StackLifecycle stacks;
-	
+
 };
 
 }

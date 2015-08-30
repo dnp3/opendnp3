@@ -95,9 +95,9 @@ struct LinkHeader
 
 	/** Writes header to buffer including, 0x0564 and CRC
 	@param apBuff Buffer of at least 10 bytes */
-	void Write(uint8_t* dest) const;	
+	void Write(uint8_t* dest) const;
 
-	static uint8_t ControlByte(bool isMaster, bool fcb, bool fcvdfc, LinkFunction func);	
+	static uint8_t ControlByte(bool isMaster, bool fcb, bool fcvdfc, LinkFunction func);
 
 private:
 

@@ -32,7 +32,7 @@ using namespace opendnp3;
 
 template <class T>
 void TestBufferForEvent(bool aIsEvent, const T& arNewVal, DatabaseTestObject& test, std::deque< Event <T> >& arQueue)
-{	
+{
 	test.db.Update(arNewVal, 0);
 
 	if(aIsEvent)
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("AnalogNoEventNegative"))
 TEST_CASE(SUITE("BinaryNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
-	auto view = t.db.GetConfigView();	
+	auto view = t.db.GetConfigView();
 	view.binaries[0].metadata.clazz = PointClass::Class1;
 	TestBufferForEvent(false, Binary(false, ToUnderlying(BinaryQuality::RESTART)), t, t.buffer.binaryEvents);
 }

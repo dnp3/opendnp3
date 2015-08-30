@@ -43,7 +43,7 @@ public:
 	*/
 	TimeSyncHandler(openpal::Logger logger_) :
 		logger(logger_),
-		valid(false)		
+		valid(false)
 	{}
 
 	bool GetTimeDelay(uint16_t& time)
@@ -54,7 +54,7 @@ public:
 		}
 		else
 		{
-			if (valid) 
+			if (valid)
 			{
 				time = value.time;
 			}
@@ -72,14 +72,14 @@ private:
 	openpal::Logger logger;
 
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& times) override final
-	{				
+	{
 		if (times.ReadOnlyValue(value))
 		{
-			valid = true;			
+			valid = true;
 			return IINField::Empty();
 		}
 		else
-		{		
+		{
 			return IINBit::PARAM_ERROR;
 		}
 	}

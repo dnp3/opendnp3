@@ -53,17 +53,17 @@ IMasterTask::TaskState DisableUnsolicitedTask::OnTaskComplete(TaskCompletion res
 {
 	switch (result)
 	{
-		case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-			return TaskState::Disabled();
+	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
+		return TaskState::Disabled();
 
-		case(TaskCompletion::FAILURE_NO_COMMS) :
-			return TaskState::Immediately();
+	case(TaskCompletion::FAILURE_NO_COMMS) :
+		return TaskState::Immediately();
 
-		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-			return TaskState::Retry(now.Add(retryPeriod));
+	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+		return TaskState::Retry(now.Add(retryPeriod));
 
-		default:
-			return TaskState::Infinite();
+	default:
+		return TaskState::Infinite();
 	}
 }
 

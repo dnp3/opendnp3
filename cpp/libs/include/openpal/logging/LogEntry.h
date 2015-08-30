@@ -45,7 +45,7 @@ public:
 	{
 		return alias;
 	}
-	
+
 	/// @return The place in the source code where the message was recorded
 	char const*	GetLocation() const
 	{
@@ -63,7 +63,7 @@ public:
 	{
 		return filters;
 	}
-	
+
 	/// @return the error code associated with the message
 	int	GetErrorCode() const
 	{
@@ -73,7 +73,7 @@ public:
 private:
 
 	char const*		alias;
-	LogFilters		filters;		
+	LogFilters		filters;
 	char const*		location;
 	char const*		message;
 	int				errorCode;

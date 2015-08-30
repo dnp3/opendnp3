@@ -26,13 +26,13 @@
 
 namespace secauth
 {
-	// -- Routines for going from UTF-8 uint8_t* slices in memory to std::string and back again
+// -- Routines for going from UTF-8 uint8_t* slices in memory to std::string and back again
 
-	/// Makes a copy of the data and stores it in std::string
-	std::string ToString(const openpal::RSlice& rslice);
+/// Makes a copy of the data and stores it in std::string
+std::string ToString(const openpal::RSlice& rslice);
 
-	/// Produces an unsigned byte view of the string w/o copying the source data
-	openpal::RSlice AsSlice(const std::string& str);
+/// Produces an unsigned byte view of the string w/o copying the source data
+openpal::RSlice AsSlice(const std::string& str);
 }
 
 #endif

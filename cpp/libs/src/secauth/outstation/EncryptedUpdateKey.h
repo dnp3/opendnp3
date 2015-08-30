@@ -39,18 +39,18 @@ namespace secauth
 	SAv5 outstation authentication provider
 */
 class EncryptedUpdateKey : private openpal::Uncopyable
-{	
-	public:	
+{
+public:
 
 	static bool DecryptAndVerify(
-		openpal::IKeyWrapAlgo& algorithm,
-		const openpal::RSlice& key,
-		const openpal::RSlice& encryptedData,
-		const std::string& username, 
-		const openpal::RSlice& outstationChallengeData, 
-		UpdateKey& updateKey,
-		std::error_code& ec
-	);	
+	    openpal::IKeyWrapAlgo& algorithm,
+	    const openpal::RSlice& key,
+	    const openpal::RSlice& encryptedData,
+	    const std::string& username,
+	    const openpal::RSlice& outstationChallengeData,
+	    UpdateKey& updateKey,
+	    std::error_code& ec
+	);
 };
 
 }

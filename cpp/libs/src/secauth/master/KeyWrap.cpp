@@ -34,12 +34,12 @@ namespace secauth
 {
 
 bool KeyWrapBuffer::Wrap(
-	openpal::IKeyWrapAlgo& algo,
-	const openpal::RSlice& updateKey,
-	const SessionKeysView& sessionKeys,
-	const openpal::RSlice& keyStatus,
-	openpal::Logger logger
-	)
+    openpal::IKeyWrapAlgo& algo,
+    const openpal::RSlice& updateKey,
+    const SessionKeysView& sessionKeys,
+    const openpal::RSlice& keyStatus,
+    openpal::Logger logger
+)
 {
 	if (!sessionKeys.IsValid())
 	{
@@ -78,7 +78,7 @@ bool KeyWrapBuffer::Wrap(
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
 		return false;
 	}
-	
+
 	return data.IsNotEmpty();
 }
 

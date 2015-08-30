@@ -62,7 +62,7 @@ private:
 
 	uint32_t numTotalWrites;
 
-	std::deque<std::string> writeQueue;		
+	std::deque<std::string> writeQueue;
 };
 
 }

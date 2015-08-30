@@ -31,12 +31,15 @@
 
 #include <opendnp3/link/IOpenDelayStrategy.h>
 
-namespace openpal { class ICryptoProvider; }
+namespace openpal
+{
+class ICryptoProvider;
+}
 
 namespace asiopal
 {
-	class PhysicalLayerBase;
-	class ASIOExecutor;
+class PhysicalLayerBase;
+class ASIOExecutor;
 }
 
 namespace asiodnp3
@@ -49,22 +52,22 @@ class ChannelSet
 {
 
 public:
-	
+
 	~ChannelSet();
 
 	IChannel* CreateChannel(	openpal::LogRoot* pRoot,
-								asiopal::ASIOExecutor& executor,								
+	                            asiopal::ASIOExecutor& executor,
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
-								asiopal::PhysicalLayerBase* pPhys,	                            
-								openpal::ICryptoProvider* pCrypto,
-								opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
+	                            asiopal::PhysicalLayerBase* pPhys,
+	                            openpal::ICryptoProvider* pCrypto,
+	                            opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/// Synchronously shutdown all channels. Block until complete.
 	void Shutdown();
 
 private:
-	
+
 	std::set<DNP3Channel*> channels;
 
 	void OnShutdown(DNP3Channel* pChannel);

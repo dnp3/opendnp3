@@ -44,20 +44,20 @@ template <class Interface>
 class OutstationStackBase : public Interface, public ILinkBind
 {
 public:
-	
+
 	OutstationStackBase(
-		const char* id,
-		openpal::LogRoot& root_,
-		openpal::IExecutor& executor,
-		opendnp3::ILinkListener& listener,
-		const opendnp3::OutstationStackConfig& config,
-		IStackLifecycle& lifecycle
+	    const char* id,
+	    openpal::LogRoot& root_,
+	    openpal::IExecutor& executor,
+	    opendnp3::ILinkListener& listener,
+	    const opendnp3::OutstationStackConfig& config,
+	    IStackLifecycle& lifecycle
 	) :
 		root(root_, id),
 		pLifecycle(&lifecycle),
 		stack(root, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link)
 	{}
-	
+
 
 	// ------- implement IOutstation -------
 
@@ -69,15 +69,18 @@ public:
 	virtual void SetRestartIIN() override final
 	{
 		// this doesn't need to be synchronous, just post it
-		auto lambda = [this]() { this->pContext->SetRestartIIN(); };
+		auto lambda = [this]()
+		{
+			this->pContext->SetRestartIIN();
+		};
 		pLifecycle->GetExecutor().strand.post(lambda);
 	}
-	
+
 	virtual bool Enable() override final
 	{
 		return pLifecycle->EnableRoute(&stack.link);
 	}
-	
+
 	virtual bool Disable() override final
 	{
 		return pLifecycle->DisableRoute(&stack.link);
@@ -90,7 +93,10 @@ public:
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override final
 	{
-		auto get = [this]() { return statistics; };
+		auto get = [this]()
+		{
+			return statistics;
+		};
 		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::StackStatistics>(get);
 	}
 
@@ -106,7 +112,7 @@ public:
 		return stack.link;
 	}
 
-private:		
+private:
 
 	virtual opendnp3::IDatabase& GetDatabase() override final
 	{
@@ -117,7 +123,7 @@ private:
 	{
 		return pLifecycle->GetExecutor();
 	}
-	
+
 	virtual void CheckForUpdates() override final
 	{
 		this->pContext->CheckForTaskStart();
@@ -131,10 +137,10 @@ protected:
 		this->pContext = &context;
 	}
 
-	openpal::LogRoot root;	
-	opendnp3::StackStatistics statistics;	
+	openpal::LogRoot root;
+	opendnp3::StackStatistics statistics;
 	IStackLifecycle* pLifecycle;
-	opendnp3::TransportStack stack;	
+	opendnp3::TransportStack stack;
 
 private:
 

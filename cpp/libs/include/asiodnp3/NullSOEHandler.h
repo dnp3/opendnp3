@@ -48,14 +48,14 @@ public:
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override final  {}
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override final  {}
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override final  {}
-	
+
 
 protected:
 
 	void Start() override {}
 	void End() override {}
 
-private:	
+private:
 
 
 

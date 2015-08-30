@@ -40,14 +40,17 @@ class RAII
 public:
 	friend RAII Finally<Cleanup>(const Cleanup& fun);
 
-	~RAII() { fun(); }	
+	~RAII()
+	{
+		fun();
+	}
 
 private:
 
 	RAII() = delete;
 
 	RAII(const Cleanup& fun_) : fun(fun_) {}
-	
+
 	Cleanup fun;
 };
 

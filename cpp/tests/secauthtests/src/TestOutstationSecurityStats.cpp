@@ -35,7 +35,7 @@ using namespace testlib;
 #define SUITE(name) "OutstationSecurityStatsTestSuite - " name
 
 TEST_CASE(SUITE("ReadStaticSecurityStats"))
-{	
+{
 	OutstationAuthSettings settings;
 	settings.functions.authRead = false;
 
@@ -55,35 +55,35 @@ TEST_CASE(SUITE("ReadStaticSecurityStats"))
 		auto response = "C1 81 80 00 79 01 00 05 06 01 00 00 01 00 00 00 01 00 00 02 00 00 00"; // both counts are incremented by 1
 		REQUIRE(fixture.SendAndReceive(read) == response);
 	}
-	
+
 }
 
 TEST_CASE(SUITE("ReadSecurityStatEvents"))
-{	
-	OutstationAuthSettings settings;	
+{
+	OutstationAuthSettings settings;
 	settings.functions.authRead = false;
 	settings.functions.authConfirm = false;
-	
+
 	/// override the default thresholds to make testing easier
 	settings.statThresholds.Set(SecurityStatIndex::TOTAL_MESSAGES_TX, 2);
 	settings.statThresholds.Set(SecurityStatIndex::TOTAL_MESSAGES_RX, 2);
-	
+
 
 	OutstationConfig config;
 	config.eventBufferConfig.maxSecurityStatisticEvents = 100;
 
 	OutstationSecAuthFixture fixture(settings, DatabaseTemplate(), config);
 	fixture.LowerLayerUp();
-		
+
 	AppSeqNum seq;
 
-	// should get no statistics reports on the first poll		
+	// should get no statistics reports on the first poll
 	{
 		auto poll = hex::EventPoll(seq, ClassField::AllEventClasses());
 		auto response = hex::EmptyResponse(seq.Get(), IINBit::DEVICE_RESTART);
 		REQUIRE(fixture.SendAndReceive(poll) == response);
 	}
-	
+
 	seq.Increment();
 
 	{
@@ -91,15 +91,15 @@ TEST_CASE(SUITE("ReadSecurityStatEvents"))
 		auto response = "E1 81 80 00 7A 01 28 01 00 06 00 01 00 00 02 00 00 00"; // total rx == 2
 		REQUIRE(fixture.SendAndReceive(poll) == response);
 	}
-	
+
 	// confirm the event
 	fixture.SendToOutstation(hex::Confirm(seq, false));
 	REQUIRE(fixture.lower.HasNoData());
 
 	seq.Increment();
-	
+
 	auto poll = hex::EventPoll(seq, ClassField::AllEventClasses());
 	auto response = "E2 81 80 00 7A 01 28 02 00 05 00 01 00 00 02 00 00 00 06 00 01 00 00 04 00 00 00"; // total tx == 2, total rx == 4
-	REQUIRE(fixture.SendAndReceive(poll) == response);	
+	REQUIRE(fixture.SendAndReceive(poll) == response);
 	REQUIRE(fixture.lower.HasNoData());
 }

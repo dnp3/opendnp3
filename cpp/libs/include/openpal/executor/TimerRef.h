@@ -43,7 +43,7 @@ public:
 	~TimerRef();
 
 	// Called to see if the timer is currently active
-	bool IsActive() const;	
+	bool IsActive() const;
 
 	// return the expiration time, MonotonticTimestamp::Max() if not active
 	MonotonicTimestamp ExpiresAt() const;
@@ -65,10 +65,10 @@ public:
 
 	template <class Lambda>
 	void Restart(const MonotonicTimestamp& expiration, const Lambda& action);
-	
 
-private:	
-	
+
+private:
+
 	// restart the timer, return false if already active
 	bool Start(const TimeDuration& timeout, const openpal::Action0& action);
 	bool Start(const MonotonicTimestamp& expiration, const openpal::Action0& action);
@@ -86,7 +86,7 @@ private:
 template <class Lambda>
 bool TimerRef::Start(const TimeDuration& timeout, const Lambda& action)
 {
-	auto proxy = [this, action] 
+	auto proxy = [this, action]
 	{
 		pTimer = nullptr;
 		action();

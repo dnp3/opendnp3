@@ -27,63 +27,63 @@ using namespace openpal;
 using namespace opendnp3;
 
 namespace secauth
-{		
-	Session::Session(openpal::IMonotonicTimeSource& timeSource, const openpal::TimeDuration& duration, uint32_t maxAuthCount) :
-		pTimeSource(&timeSource),
-		DURATION(duration),
-		MAX_AUTH_COUNT(maxAuthCount),
-		status(KeyStatus::NOT_INIT),
-		authCount(0)
-	{
-	
-	}	
+{
+Session::Session(openpal::IMonotonicTimeSource& timeSource, const openpal::TimeDuration& duration, uint32_t maxAuthCount) :
+	pTimeSource(&timeSource),
+	DURATION(duration),
+	MAX_AUTH_COUNT(maxAuthCount),
+	status(KeyStatus::NOT_INIT),
+	authCount(0)
+{
 
-	opendnp3::KeyStatus Session::IncrementAuthCount()
+}
+
+opendnp3::KeyStatus Session::IncrementAuthCount()
+{
+	if (this->status == KeyStatus::OK)
 	{
-		if (this->status == KeyStatus::OK)
+		++this->authCount;
+		if (this->authCount >= MAX_AUTH_COUNT)
 		{
-			++this->authCount;
-			if (this->authCount >= MAX_AUTH_COUNT)
-			{
-				this->status = KeyStatus::COMM_FAIL;
-			}
+			this->status = KeyStatus::COMM_FAIL;
 		}
-
-		return this->status;
 	}
 
-	opendnp3::KeyStatus Session::CheckTimeValidity()
+	return this->status;
+}
+
+opendnp3::KeyStatus Session::CheckTimeValidity()
+{
+	if ((this->status == KeyStatus::OK) && (this->expirationTime < pTimeSource->GetTime()))
 	{
-		if ((this->status == KeyStatus::OK) && (this->expirationTime < pTimeSource->GetTime()))
-		{
-			this->status = KeyStatus::COMM_FAIL;			
-		}
-
-		return this->status;
+		this->status = KeyStatus::COMM_FAIL;
 	}
 
-	void Session::SetKeys(const SessionKeysView& view)
+	return this->status;
+}
+
+void Session::SetKeys(const SessionKeysView& view)
+{
+	this->authCount = 0;
+	this->expirationTime = pTimeSource->GetTime().Add(this->DURATION);
+	this->keys.SetKeys(view);
+	this->status = KeyStatus::OK;
+}
+
+opendnp3::KeyStatus Session::GetKeyStatus()
+{
+	return this->CheckTimeValidity();
+}
+
+opendnp3::KeyStatus Session::TryGetKeyView(SessionKeysView& view)
+{
+	auto result = this->CheckTimeValidity();
+	if (result == KeyStatus::OK)
 	{
-		this->authCount = 0;
-		this->expirationTime = pTimeSource->GetTime().Add(this->DURATION);
-		this->keys.SetKeys(view);		
-		this->status = KeyStatus::OK;
+		view = keys.GetView();
 	}
-
-	opendnp3::KeyStatus Session::GetKeyStatus()
-	{
-		return this->CheckTimeValidity();
-	}
-
-	opendnp3::KeyStatus Session::TryGetKeyView(SessionKeysView& view)
-	{
-		auto result = this->CheckTimeValidity();
-		if (result == KeyStatus::OK)
-		{
-			view = keys.GetView();
-		}
-		return result;
-	}
+	return result;
+}
 
 
 }

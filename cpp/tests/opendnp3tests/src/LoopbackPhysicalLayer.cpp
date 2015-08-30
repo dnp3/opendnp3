@@ -41,7 +41,8 @@ LoopbackPhysicalLayer::LoopbackPhysicalLayer(openpal::LogRoot& root, asio::io_se
 void LoopbackPhysicalLayer::DoOpen()
 {
 	//always open successfully
-	auto lambda = [this]() {
+	auto lambda = [this]()
+	{
 		this->OnOpenCallback(std::error_code(0, std::generic_category()));
 	};
 	executor.PostLambda(lambda);
@@ -49,7 +50,7 @@ void LoopbackPhysicalLayer::DoOpen()
 
 void LoopbackPhysicalLayer::DoOpenSuccess()
 {
-	
+
 }
 
 void LoopbackPhysicalLayer::DoClose()

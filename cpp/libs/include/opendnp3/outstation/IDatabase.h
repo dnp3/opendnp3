@@ -106,7 +106,7 @@ public:
 	/**
 	* Update a TimeAndInterval valueindex
 	* @param meas measurement to be processed
-	* @param index index of the measurement	
+	* @param index index of the measurement
 	* @return true if the value exists and it was updated
 	*/
 	virtual bool Update(const TimeAndInterval& meas, uint16_t index) = 0;
@@ -177,7 +177,7 @@ public:
 	/**
 	* Modify a value using the current valueindex
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
-	* @param index index of the measurement	
+	* @param index index of the measurement
 	* @return true if the value exists and it was updated
 	*/
 	virtual bool Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index) = 0;

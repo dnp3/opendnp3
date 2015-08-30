@@ -38,7 +38,7 @@ struct LinkConfig
 	    uint16_t localAddr,
 	    uint16_t remoteAddr,
 	    openpal::TimeDuration timeout,
-		openpal::TimeDuration keepAliveTimeout) :
+	    openpal::TimeDuration keepAliveTimeout) :
 
 		IsMaster(isMaster),
 		UseConfirms(useConfirms),

@@ -53,7 +53,7 @@ public:
 private:
 
 	std::map<uint16_t, std::unique_ptr<UpdateKey>> userMap;
-		
+
 };
 
 }

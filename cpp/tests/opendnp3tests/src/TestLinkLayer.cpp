@@ -126,7 +126,7 @@ TEST_CASE(SUITE("SecondaryResetLink"))
 	LinkLayerTest t(LinkLayerTest::DefaultConfig());
 	t.link.OnLowerLayerUp();
 	t.OnFrame(LinkFunction::PRI_RESET_LINK_STATES, false, false, false, 1, 1024);
-	
+
 	REQUIRE(t.NumTotalWrites() ==  1);
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::Ack(true, false, 1024, 1));
 }
@@ -146,7 +146,7 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 	ByteStr b(250, 0);
 	t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, false, false, 1, 1024, b.ToRSlice());
 	t.link.OnTransmitResult(true);
-	REQUIRE(t.NumTotalWrites() ==  2);	
+	REQUIRE(t.NumTotalWrites() ==  2);
 
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::Ack(true, false, 1024, 1));
 	REQUIRE(t.upper.receivedQueue.empty()); //data should not be passed up!
@@ -165,7 +165,7 @@ TEST_CASE(SUITE("SecondaryResetResetLinkStates"))
 
 	t.OnFrame(LinkFunction::PRI_RESET_LINK_STATES, false, false, false, 1, 1024);
 	REQUIRE(t.NumTotalWrites() == 2);
-	t.link.OnTransmitResult(true);	
+	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.NumTotalWrites() ==  2);
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::Ack(true, false, 1024, 1));
@@ -200,7 +200,7 @@ TEST_CASE(SUITE("RequestStatusOfLink"))
 	t.link.OnLowerLayerUp();
 	t.OnFrame(LinkFunction::PRI_REQUEST_LINK_STATUS, false, false, false, 1, 1024); //should be able to request this before the link is reset
 	REQUIRE(t.NumTotalWrites() ==  1);
-	t.link.OnTransmitResult(true);	
+	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::LinkStatus(true, false, 1024, 1));
 
@@ -226,7 +226,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 	t.link.OnTransmitResult(true);
 
 	t.OnFrame(LinkFunction::PRI_TEST_LINK_STATES, false, true, false, 1, 1024);
-	
+
 	REQUIRE(t.NumTotalWrites() ==  2);
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::Ack(true, false, 1024, 1));
 }
@@ -235,12 +235,12 @@ TEST_CASE(SUITE("SendUnconfirmed"))
 {
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segment(250, IncrementHex(0, 250));
 	t.link.Send(segment);
 	REQUIRE(t.NumTotalWrites() ==  1);
-	t.link.OnTransmitResult(true);	
-	
+	t.link.OnTransmitResult(true);
+
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.upper.GetState().successCnt ==  1);
@@ -252,7 +252,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 {
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segments(250, IncrementHex(0, 250));
 	t.link.Send(segments);
 	t.link.OnTransmitResult(true);
@@ -279,14 +279,14 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segments(250, IncrementHex(0, 250));
 	t.link.Send(segments);
 	REQUIRE(t.NumTotalWrites() ==  1);
 	t.link.OnTransmitResult(true); // reset link
 
 	REQUIRE(t.exe.RunMany() > 0);
-	
+
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ResetLinkStates(true, 1024, 1));
 	REQUIRE(t.upper.CountersEqual(0, 0));
 
@@ -305,28 +305,28 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segments(250, IncrementHex(0, 250));
 	t.link.Send(segments);
 	REQUIRE(t.NumTotalWrites() == 1);
 	t.link.OnTransmitResult(true);
 	t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunMany() > 0); // timeout the wait for Ack
-	
+
 	REQUIRE(t.upper.CountersEqual(0, 0)); //check that the send is still occuring
 	REQUIRE(t.NumTotalWrites() == 2);
-		
-	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ResetLinkStates(true, 1024, 1)); // check that reset links got sent again	
+
+	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ResetLinkStates(true, 1024, 1)); // check that reset links got sent again
 	t.link.OnTransmitResult(true);
-	
+
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024); // this time Ack it
-	REQUIRE(t.NumTotalWrites() == 3);					
+	REQUIRE(t.NumTotalWrites() == 3);
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, IncrementHex(0x00, 250))); // check that the data got sent
-	
+
 	t.link.OnTransmitResult(true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunMany() > 0); //timeout the ACK	
+	REQUIRE(t.exe.RunMany() > 0); //timeout the ACK
 	REQUIRE(t.upper.CountersEqual(0, 1));
 
 	// Test retry reset
@@ -349,7 +349,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segments(250, IncrementHex(0, 250));
 	t.link.Send(segments);
 	REQUIRE(t.NumTotalWrites() == 1);
@@ -386,7 +386,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne());	
+	REQUIRE(t.exe.RunOne());
 	REQUIRE(t.upper.CountersEqual(2, 0)); //check that the send is still occuring
 }
 
@@ -398,7 +398,7 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	cfg.UseConfirms = true;
 
 	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segments(250, IncrementHex(0, 250));
 	t.link.Send(segments);
 	t.link.OnTransmitResult(true);
@@ -409,9 +409,9 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	t.link.OnTransmitResult(true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunMany() > 0); //timeout the ConfData, check that it retransmits	
+	REQUIRE(t.exe.RunMany() > 0); //timeout the ConfData, check that it retransmits
 	REQUIRE(t.NumTotalWrites() ==  3);
-		
+
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, IncrementHex(0x00, 250)));
 	t.link.OnTransmitResult(true);
 
@@ -428,13 +428,13 @@ TEST_CASE(SUITE("ResetLinkRetries"))
 	cfg.UseConfirms = true;
 
 	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segments(250, IncrementHex(0, 250));
 	t.link.Send(segments);
 
 	for(int i = 1; i < 5; ++i)
 	{
-		REQUIRE(t.NumTotalWrites() ==  i); // sends link retry				
+		REQUIRE(t.NumTotalWrites() ==  i); // sends link retry
 		REQUIRE(t.PopLastWriteAsHex() == LinkHex::ResetLinkStates(true, 1024, 1));
 		t.link.OnTransmitResult(true);
 		t.exe.AdvanceTime(cfg.Timeout);
@@ -451,7 +451,7 @@ TEST_CASE(SUITE("ConfirmedDataNackDFCClear"))
 	cfg.UseConfirms = true;
 
 	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segments(250, IncrementHex(0, 250));
 	t.link.Send(segments);
 	t.link.OnTransmitResult(true);
@@ -476,7 +476,7 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segments(250, IncrementHex(0, 250));
 	t.link.Send(segments);
 	REQUIRE(t.NumTotalWrites() ==  1);
@@ -484,7 +484,7 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024); // ACK the reset links
 	REQUIRE(t.NumTotalWrites() ==  2);
-		
+
 	REQUIRE(t.NumTotalWrites() ==  2);
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, IncrementHex(0x00, 250))); // check that data was sent
 	t.link.OnTransmitResult(true);
@@ -502,7 +502,7 @@ TEST_CASE(SUITE("SendDataSuccess"))
 
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
-	
+
 	BufferSegment segments(250, IncrementHex(0, 250));
 	t.link.Send(segments);
 	t.link.OnTransmitResult(true);
@@ -514,7 +514,7 @@ TEST_CASE(SUITE("SendDataSuccess"))
 
 	segments.Reset();
 	t.link.Send(segments); // now we should be directly sending w/o having to reset, and the FCB should flip
-	
+
 	REQUIRE(t.NumTotalWrites() ==  3);
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, false, 1024, 1, IncrementHex(0x00, 250)));
 }

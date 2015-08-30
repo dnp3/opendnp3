@@ -37,7 +37,10 @@ class SelectedRanges : private openpal::Uncopyable
 public:
 
 	template <class T>
-	Range Get() { return GetRangeRef<T>(); }
+	Range Get()
+	{
+		return GetRangeRef<T>();
+	}
 
 	template <class T>
 	void Set(const Range& range)
@@ -46,22 +49,25 @@ public:
 	}
 
 	template <class T>
-	void Merge(const Range& range) 
-	{ 
+	void Merge(const Range& range)
+	{
 		auto& ref = GetRangeRef<T>();
 		ref = ref.Union(range);
 	}
 
 	template <class T>
-	void Clear() { Set<T>(Range::Invalid()); }
+	void Clear()
+	{
+		Set<T>(Range::Invalid());
+	}
 
 	bool HasAnySelection() const;
-	
+
 private:
 
 	// specializations in cpp file
 	template <class T>
-	Range& GetRangeRef();		
+	Range& GetRangeRef();
 
 	Range binaries;
 	Range doubleBinaries;

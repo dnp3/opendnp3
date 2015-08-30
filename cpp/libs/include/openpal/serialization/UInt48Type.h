@@ -37,15 +37,15 @@ public:
 	UInt48Type() : representation(0)
 	{}
 
-	inline operator uint64_t() const 
-	{ 
+	inline operator uint64_t() const
+	{
 		return representation;
-	}	
+	}
 
 private:
-	
+
 	uint64_t representation;
-	
+
 };
 
 }

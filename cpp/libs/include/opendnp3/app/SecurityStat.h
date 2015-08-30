@@ -44,7 +44,7 @@ public:
 
 	// this is the easiest way to make the SecurityStats look like other types
 	struct Value
-	{			
+	{
 		uint16_t assocId;
 		uint32_t count;
 	};
@@ -67,10 +67,10 @@ public:
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::SecurityStat;
 	const static EventSecurityStatVariation DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
 	const static StaticSecurityStatVariation DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
-		
+
 	typedef Value ValueType;
 	typedef EventSecurityStatVariation EventVariation;
-	typedef StaticSecurityStatVariation StaticVariation;	
+	typedef StaticSecurityStatVariation StaticVariation;
 	typedef DeadbandMetadata<SecurityStat, uint32_t> MetadataType;
 };
 

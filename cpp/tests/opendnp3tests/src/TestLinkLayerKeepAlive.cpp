@@ -55,7 +55,7 @@ TEST_CASE(SUITE("ForwardsKeepAliveTimeouts"))
 	LinkConfig config(true, false);
 	config.KeepAliveTimeout = TimeDuration::Seconds(5);
 	LinkLayerTest t(config);
-	
+
 	t.link.OnLowerLayerUp();
 
 	REQUIRE(t.exe.NumPendingTimers() == 1);
@@ -78,9 +78,9 @@ TEST_CASE(SUITE("KeepAliveFailureCallbackIsInvokedOnTimeout"))
 	REQUIRE(t.listener.numKeepAliveTransmissions == 0);
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
-	REQUIRE(t.exe.RunMany() > 0);	
+	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));	
+	REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
 	REQUIRE(t.exe.NumPendingTimers() == 1);
 	t.link.OnTransmitResult(true);
 	REQUIRE(t.exe.NumPendingTimers() == 2);
@@ -132,7 +132,7 @@ TEST_CASE(SUITE("KeepAliveIsPeriodicOnFailure"))
 		REQUIRE(t.exe.NumPendingTimers() == 1);
 		t.link.OnTransmitResult(true);
 		REQUIRE(t.exe.NumPendingTimers() == 2);
-		
+
 		t.exe.AdvanceTime(config.Timeout);
 		REQUIRE(t.exe.RunMany() > 0);
 		REQUIRE(t.listener.numKeepAliveFailure == (count + 1));

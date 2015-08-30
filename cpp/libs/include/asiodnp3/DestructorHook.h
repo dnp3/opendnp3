@@ -28,14 +28,14 @@ namespace asiodnp3
 {
 
 /**
-* Provides callback capabilities upon destruction. Useful for tying the 
+* Provides callback capabilities upon destruction. Useful for tying the
 * lifecycle of some resource to the lifecycle of the inherited object.
 */
 class DestructorHook
 {
 
-	public:	
-	
+public:
+
 	DestructorHook();
 
 	virtual ~DestructorHook();
@@ -43,19 +43,22 @@ class DestructorHook
 	/**
 	* Free a resource when this object destructs
 	* @param pointer Typed pointer to be deleted.
-	*/	
+	*/
 	template <class T>
 	void DeleteOnDestruct(T* pointer)
 	{
-		auto lambda = [pointer]() { delete pointer; };
+		auto lambda = [pointer]()
+		{
+			delete pointer;
+		};
 		this->AddDestructorHook(lambda);
 	}
 
-	protected:
+protected:
 
-	void AddDestructorHook(const std::function<void()>& action);	
+	void AddDestructorHook(const std::function<void()>& action);
 
-	private:
+private:
 	std::vector<std::function<void()>> actions;
 };
 

@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 SerialTimeSyncTask::SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
-	IMasterTask(app, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),	
+	IMasterTask(app, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
 	delay(-1)
 {}
 
@@ -68,20 +68,20 @@ IMasterTask::TaskState SerialTimeSyncTask::OnTaskComplete(TaskCompletion result,
 {
 	switch (result)
 	{
-		case(TaskCompletion::FAILURE_BAD_RESPONSE) :			
-			return TaskState::Disabled();
-		default:
-			return TaskState::Infinite();
+	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
+		return TaskState::Disabled();
+	default:
+		return TaskState::Infinite();
 	}
 }
 
 IMasterTask::ResponseResult SerialTimeSyncTask::ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects)
-{	
-	return (delay < 0) ? OnResponseDelayMeas(response, objects) : OnResponseWriteTime(response, objects);				
+{
+	return (delay < 0) ? OnResponseDelayMeas(response, objects) : OnResponseWriteTime(response, objects);
 }
 
 IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::RSlice& objects)
-{	
+{
 	if (ValidateSingleResponse(response))
 	{
 		TimeSyncHandler handler(logger);
@@ -94,7 +94,7 @@ IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDURe
 				auto now = pApplication->Now();
 				auto sendReceieveTime = now.msSinceEpoch - start.msSinceEpoch;
 
-				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
+				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting
 				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;
 
 				return ResponseResult::OK_REPEAT;
@@ -112,14 +112,14 @@ IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDURe
 	else
 	{
 		return ResponseResult::ERROR_BAD_RESPONSE;
-	}	
+	}
 }
 
 IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
-	
+
 } //ens ns
 
 

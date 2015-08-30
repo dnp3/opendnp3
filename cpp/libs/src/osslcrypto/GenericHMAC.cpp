@@ -29,48 +29,51 @@ using namespace openpal;
 
 namespace osslcrypto
 {
-	RSlice CalculateHMAC(
-		const EVP_MD* md,
-		uint32_t outputSize,
-		const openpal::RSlice& key,
-		std::initializer_list<openpal::RSlice> data,
-		openpal::WSlice& output,
-		std::error_code& ec
-		)
+RSlice CalculateHMAC(
+    const EVP_MD* md,
+    uint32_t outputSize,
+    const openpal::RSlice& key,
+    std::initializer_list<openpal::RSlice> data,
+    openpal::WSlice& output,
+    std::error_code& ec
+)
+{
+	if (output.Size() < outputSize)
 	{
-		if (output.Size() < outputSize)
-		{
-			ec = make_error_code(errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
-			return RSlice();
-		}
-
-		HMAC_CTX ctx;
-		HMAC_CTX_init(&ctx);
-		auto cleanup = Finally([&]() { HMAC_CTX_cleanup(&ctx); });
-
-		if (HMAC_Init_ex(&ctx, key, key.Size(), md, nullptr) == 0)
-		{
-			ec = make_error_code(errors::OPENSSL_HMAC_INIT_EX_ERROR);
-			return RSlice();
-		}
-					
-		for (auto& bytes : data)
-		{
-			if (HMAC_Update(&ctx, bytes, bytes.Size()) == 0)
-			{
-				ec = make_error_code(errors::OPENSSL_HMAC_UPDATE_ERROR);
-				return RSlice();
-			}
-		}
-
-		unsigned int length = 0;
-		if (HMAC_Final(&ctx, output, &length) == 0)
-		{
-			ec = make_error_code(errors::OPENSSL_HMAC_FINAL_ERROR);
-			return RSlice();
-		}
-
-		return output.ToRSlice().Take(outputSize);
+		ec = make_error_code(errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
+		return RSlice();
 	}
+
+	HMAC_CTX ctx;
+	HMAC_CTX_init(&ctx);
+	auto cleanup = Finally([&]()
+	{
+		HMAC_CTX_cleanup(&ctx);
+	});
+
+	if (HMAC_Init_ex(&ctx, key, key.Size(), md, nullptr) == 0)
+	{
+		ec = make_error_code(errors::OPENSSL_HMAC_INIT_EX_ERROR);
+		return RSlice();
+	}
+
+	for (auto & bytes : data)
+	{
+		if (HMAC_Update(&ctx, bytes, bytes.Size()) == 0)
+		{
+			ec = make_error_code(errors::OPENSSL_HMAC_UPDATE_ERROR);
+			return RSlice();
+		}
+	}
+
+	unsigned int length = 0;
+	if (HMAC_Final(&ctx, output, &length) == 0)
+	{
+		ec = make_error_code(errors::OPENSSL_HMAC_FINAL_ERROR);
+		return RSlice();
+	}
+
+	return output.ToRSlice().Take(outputSize);
+}
 }
 

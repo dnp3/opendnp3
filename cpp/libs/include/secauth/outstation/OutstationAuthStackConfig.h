@@ -28,12 +28,12 @@
 namespace secauth
 {
 
-/** 
+/**
 	A composite configuration struct that contains all the config
 	information for a dnp3 outstation stack
 */
 struct OutstationAuthStackConfig : public opendnp3::OutstationStackConfig
-{	
+{
 
 	OutstationAuthSettings auth;
 

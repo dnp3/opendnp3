@@ -40,25 +40,25 @@ public:
 
 	/// standard DNP3 constructor
 	OutstationStackSA(
-		const char* id,
+	    const char* id,
 	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		secauth::IOutstationApplicationSA& application,		
-		const secauth::OutstationAuthStackConfig& config,		
-		IStackLifecycle& lifecycle,		
-		openpal::ICryptoProvider& crypto);
-	
+	    openpal::IExecutor& executor,
+	    opendnp3::ICommandHandler& commandHandler,
+	    secauth::IOutstationApplicationSA& application,
+	    const secauth::OutstationAuthStackConfig& config,
+	    IStackLifecycle& lifecycle,
+	    openpal::ICryptoProvider& crypto);
+
 
 	// ------- implement IOutstationSA -------
 
 	virtual void ConfigureUser(const secauth::OutstationUserInfo& info) override final;
-	
+
 	virtual void ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key) override final;
 
 private:
-		
-	secauth::OAuthContext ocontext;	
+
+	secauth::OAuthContext ocontext;
 };
 
 }

@@ -38,7 +38,7 @@ using namespace testlib;
 
 void TestAggModeHMAC(const std::string& data, uint32_t hmacSize, function<void(AggModeHMACResult result)> validate)
 {
-	HexSequence objects(data);	
+	HexSequence objects(data);
 	auto result = AggressiveModeParser::ParseHMAC(objects.ToRSlice(), hmacSize, nullptr);
 	validate(result);
 }
@@ -52,20 +52,20 @@ TEST_CASE(SUITE("AcceptsValidInput"))
 	auto hmac = "AB BA AB BA";
 	auto input = AppendHex({ objects, trailer, hmac });
 
-	TestAggModeHMAC(input, 4, [=](AggModeHMACResult result)
-	{	
+	TestAggModeHMAC(input, 4, [ = ](AggModeHMACResult result)
+	{
 		REQUIRE(result.result == ParseResult::OK);
 		REQUIRE(ToHex(result.hmac.hmacValue) == hmac);
 		REQUIRE(ToHex(result.objects) == objects);
-	});	
+	});
 }
 
 TEST_CASE(SUITE("RejectsBadAlignment"))
 {
-	auto input = "DE AD BE EF 78 09 5B 01 04 00 AB BA AB BA";	
+	auto input = "DE AD BE EF 78 09 5B 01 04 00 AB BA AB BA";
 
 	// this causes an unknown object
-	TestAggModeHMAC(input, 3, [=](AggModeHMACResult result)
+	TestAggModeHMAC(input, 3, [ = ](AggModeHMACResult result)
 	{
 		REQUIRE(result.result == ParseResult::UNKNOWN_OBJECT);
 	});
@@ -76,7 +76,7 @@ TEST_CASE(SUITE("RejectsSizeMismatch"))
 	auto input = "DE AD BE EF 78 09 5B 01 03 00 AB BA AB BA";
 
 	// this causes an unknown object
-	TestAggModeHMAC(input, 4, [=](AggModeHMACResult result)
+	TestAggModeHMAC(input, 4, [ = ](AggModeHMACResult result)
 	{
 		REQUIRE(result.result == ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
 	});
@@ -87,7 +87,7 @@ TEST_CASE(SUITE("RejectsInsufficient"))
 	auto input = "DE AD BE EF 78 09 5B 01 03";
 
 	// this causes an unknown object
-	TestAggModeHMAC(input, 4, [=](AggModeHMACResult result)
+	TestAggModeHMAC(input, 4, [ = ](AggModeHMACResult result)
 	{
 		REQUIRE(result.result == ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
 	});

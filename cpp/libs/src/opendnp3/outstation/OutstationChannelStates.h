@@ -33,9 +33,9 @@ namespace opendnp3
 
 class OutstationSolState : private openpal::Uncopyable
 {
-	public:
+public:
 
-	OutstationSolState(uint32_t maxTxSize) : 
+	OutstationSolState(uint32_t maxTxSize) :
 		pState(&OutstationSolicitedStateIdle::Inst()),
 		tx(maxTxSize)
 	{}
@@ -45,8 +45,11 @@ class OutstationSolState : private openpal::Uncopyable
 		pState = &OutstationSolicitedStateIdle::Inst();
 	}
 
-	bool IsIdle() const { return pState == &OutstationSolicitedStateIdle::Inst(); };
-	
+	bool IsIdle() const
+	{
+		return pState == &OutstationSolicitedStateIdle::Inst();
+	};
+
 	OutstationSolicitedStateBase*	pState;
 	OutstationSeqNum seq;
 	TxBuffer tx;
@@ -57,17 +60,20 @@ class OutstationUnsolState : private openpal::Uncopyable
 public:
 
 	OutstationUnsolState(uint32_t maxTxSize) :
-		completedNull(false), 
+		completedNull(false),
 		pState(&OutstationUnsolicitedStateIdle::Inst()),
 		tx(maxTxSize)
 	{}
 
-	bool IsIdle() const { return pState == &OutstationUnsolicitedStateIdle::Inst(); };
+	bool IsIdle() const
+	{
+		return pState == &OutstationUnsolicitedStateIdle::Inst();
+	};
 
 	void Reset()
 	{
 		completedNull = false;
-		pState = &OutstationUnsolicitedStateIdle::Inst();		
+		pState = &OutstationUnsolicitedStateIdle::Inst();
 	}
 
 	bool completedNull;

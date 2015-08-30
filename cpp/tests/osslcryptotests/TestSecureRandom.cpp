@@ -54,7 +54,7 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 		{
 			++count;
 		}
-	}	
+	}
 
 	REQUIRE(count == NUM_RAND_FETCH);
 }
@@ -85,15 +85,15 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 	};
 
 	for (int i = 0; i < 100; ++i)
-	{		
+	{
 		threads.push_back(std::unique_ptr<std::thread>(new std::thread(runner)));
 	}
 
-	for (auto& t : threads)
+	for (auto & t : threads)
 	{
 		t->join();
 	}
 
-	REQUIRE(randCount == NUM_THREADS*NUM_RAND_FETCH);	
+	REQUIRE(randCount == NUM_THREADS * NUM_RAND_FETCH);
 }
 

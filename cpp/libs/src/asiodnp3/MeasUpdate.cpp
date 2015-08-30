@@ -28,115 +28,121 @@ using namespace opendnp3;
 
 namespace asiodnp3
 {
-	MeasUpdate::MeasUpdate(IOutstation* pOutstation_) :
-		pOutstation(pOutstation_),
-		pChanges(new ChangeSet())
-	{
-		
-	}
+MeasUpdate::MeasUpdate(IOutstation* pOutstation_) :
+	pOutstation(pOutstation_),
+	pChanges(new ChangeSet())
+{
 
-	MeasUpdate::~MeasUpdate()
+}
+
+MeasUpdate::~MeasUpdate()
+{
+	if (pChanges->IsEmpty())
 	{
-		if (pChanges->IsEmpty())
-		{		
-			// The user didn't add anything, just delete it here
-			delete pChanges;			
-		}
-		else
+		// The user didn't add anything, just delete it here
+		delete pChanges;
+	}
+	else
+	{
+		auto pChangeSet = pChanges;
+		auto pOut = pOutstation;
+
+		auto update = [pChangeSet, pOut]()
 		{
-			auto pChangeSet = pChanges;
-			auto pOut = pOutstation;
+			pChangeSet->ApplyAll(pOut->GetDatabase());
+			delete pChangeSet;
+			pOut->CheckForUpdates();
+		};
 
-			auto update = [pChangeSet, pOut]()
-			{
-				pChangeSet->ApplyAll(pOut->GetDatabase());
-				delete pChangeSet;
-				pOut->CheckForUpdates();
-			};
+		pOutstation->GetExecutor().PostLambda(update);
+	}
+}
 
-			pOutstation->GetExecutor().PostLambda(update);
-		}
-	}
+void MeasUpdate::Update(const Binary& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
 
-	void MeasUpdate::Update(const Binary& meas, uint16_t index, EventMode mode)
-	{
-		this->UpdateAny(meas, index, mode);
-	}
-	
-	void MeasUpdate::Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode)
-	{
-		this->UpdateAny(meas, index, mode);
-	}
-	
-	void MeasUpdate::Update(const Analog& meas, uint16_t index, EventMode mode)
-	{
-		this->UpdateAny(meas, index, mode);
-	}
-	
-	void MeasUpdate::Update(const Counter& meas, uint16_t index, EventMode mode)
-	{
-		this->UpdateAny(meas, index, mode);
-	}
-	
-	void MeasUpdate::Update(const FrozenCounter& meas, uint16_t index, EventMode mode)
-	{
-		this->UpdateAny(meas, index, mode);
-	}
-	
-	void MeasUpdate::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
-	{
-		this->UpdateAny(meas, index, mode);
-	}
-	
-	void MeasUpdate::Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode)
-	{
-		this->UpdateAny(meas, index, mode);
-	}
-	
-	void MeasUpdate::Update(const TimeAndInterval& meas, uint16_t index)
-	{
-		auto update = [=](IDatabase& db) { db.Update(meas, index); };
-		pChanges->Add(update);
-	}
+void MeasUpdate::Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
 
-	void MeasUpdate::Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode)
+void MeasUpdate::Update(const Analog& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasUpdate::Update(const Counter& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasUpdate::Update(const FrozenCounter& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasUpdate::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasUpdate::Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasUpdate::Update(const TimeAndInterval& meas, uint16_t index)
+{
+	auto update = [ = ](IDatabase & db)
 	{
-		this->ModifyAny(modify, index, mode);
-	}
-	
-	void MeasUpdate::Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, EventMode mode)
+		db.Update(meas, index);
+	};
+	pChanges->Add(update);
+}
+
+void MeasUpdate::Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode)
+{
+	this->ModifyAny(modify, index, mode);
+}
+
+void MeasUpdate::Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, EventMode mode)
+{
+	this->ModifyAny(modify, index, mode);
+}
+
+void MeasUpdate::Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, EventMode mode)
+{
+	this->ModifyAny(modify, index, mode);
+}
+
+void MeasUpdate::Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, EventMode mode)
+{
+	this->ModifyAny(modify, index, mode);
+}
+
+void MeasUpdate::Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, EventMode mode)
+{
+	this->ModifyAny(modify, index, mode);
+}
+
+void MeasUpdate::Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, EventMode mode)
+{
+	this->ModifyAny(modify, index, mode);
+}
+
+void MeasUpdate::Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, EventMode mode)
+{
+	this->ModifyAny(modify, index, mode);
+}
+
+void MeasUpdate::Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index)
+{
+	auto update = [ = ](IDatabase & db)
 	{
-		this->ModifyAny(modify, index, mode);
-	}
-	
-	void MeasUpdate::Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, EventMode mode)
-	{
-		this->ModifyAny(modify, index, mode);
-	}
-	
-	void MeasUpdate::Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, EventMode mode)
-	{
-		this->ModifyAny(modify, index, mode);
-	}
-	
-	void MeasUpdate::Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, EventMode mode)
-	{
-		this->ModifyAny(modify, index, mode);
-	}
-	
-	void MeasUpdate::Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, EventMode mode)
-	{
-		this->ModifyAny(modify, index, mode);
-	}
-	
-	void MeasUpdate::Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, EventMode mode)
-	{
-		this->ModifyAny(modify, index, mode);
-	}
-	
-	void MeasUpdate::Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index)
-	{
-		auto update = [=](IDatabase& db) { db.Modify(modify, index); };
-		pChanges->Add(update);
-	}
+		db.Modify(modify, index);
+	};
+	pChanges->Add(update);
+}
 }

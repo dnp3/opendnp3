@@ -29,18 +29,18 @@ namespace secauth
 {
 
 class StatThresholds
-{		
-	
+{
+
 public:
 
-	StatThresholds();	
+	StatThresholds();
 
 	// returns MAX_UINT32 if the index is undefined
 	uint32_t GetDeadband(uint16_t index) const;
 
 	void Set(opendnp3::SecurityStatIndex index, uint32_t threshold);
 
-private:	
+private:
 
 	uint32_t thresholds[AuthConstants::NUM_SECURITY_STATS];
 

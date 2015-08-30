@@ -34,7 +34,7 @@ LogEntry::LogEntry() :
 LogEntry::LogEntry(char const* alias_, const LogFilters& filters_, char const* location_, char const* message_, int errorCode_)
 	:
 	alias(alias_),
-	filters(filters_),	
+	filters(filters_),
 	location(location_),
 	message(message_),
 	errorCode(errorCode_)

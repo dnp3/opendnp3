@@ -269,7 +269,7 @@ struct ConvertGroup122Var1 : private openpal::StaticOnly
 		Group122Var1 ret;
 		ret.flags = value.quality;
 		ret.assocId = value.value.assocId;
-		ret.value = value.value.count;		
+		ret.value = value.value.count;
 		return ret;
 	}
 };

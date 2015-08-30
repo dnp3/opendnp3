@@ -25,45 +25,45 @@ using namespace opendnp3;
 
 namespace secauth
 {
-	void MasterUserDatabase::EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const
+void MasterUserDatabase::EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const
+{
+	for (auto & pair : userMap)
 	{
-		for (auto& pair : userMap)
-		{
-			fun(User(pair.first));
-		}
+		fun(User(pair.first));
 	}
+}
 
-	UpdateKey::View MasterUserDatabase::GetUpdateKeyView(const opendnp3::User& user) const
+UpdateKey::View MasterUserDatabase::GetUpdateKeyView(const opendnp3::User& user) const
+{
+	auto iter = this->userMap.find(user.GetId());
+	if (iter == userMap.end())
 	{
-		auto iter = this->userMap.find(user.GetId());
-		if (iter == userMap.end())
-		{
-			return UpdateKey::View();
-		}
-		else
-		{			
-			return iter->second->GetView();			
-		}
-	}	
-
-	bool MasterUserDatabase::UserExists(const User& user) const
-	{
-		auto iter = this->userMap.find(user.GetId());
-		return iter != userMap.end();
+		return UpdateKey::View();
 	}
-
-	bool MasterUserDatabase::AddUser(const User& user, const UpdateKey& key)
+	else
 	{
-		if (key.GetView().algorithm != KeyWrapAlgorithm::UNDEFINED)
-		{
-			userMap[user.GetId()] = std::unique_ptr<UpdateKey>(new UpdateKey(key));
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return iter->second->GetView();
 	}
+}
+
+bool MasterUserDatabase::UserExists(const User& user) const
+{
+	auto iter = this->userMap.find(user.GetId());
+	return iter != userMap.end();
+}
+
+bool MasterUserDatabase::AddUser(const User& user, const UpdateKey& key)
+{
+	if (key.GetView().algorithm != KeyWrapAlgorithm::UNDEFINED)
+	{
+		userMap[user.GetId()] = std::unique_ptr<UpdateKey>(new UpdateKey(key));
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 }
 
 

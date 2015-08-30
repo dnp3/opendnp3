@@ -28,7 +28,7 @@ namespace opendnp3
 {
 
 
-	ShiftableBuffer::ShiftableBuffer(uint8_t* pBuffer_, uint32_t size) :
+ShiftableBuffer::ShiftableBuffer(uint8_t* pBuffer_, uint32_t size) :
 	pBuffer(pBuffer_),
 	M_SIZE(size),
 	writePos(0),
@@ -38,14 +38,14 @@ namespace opendnp3
 }
 
 void ShiftableBuffer::Shift()
-{	
+{
 	auto numRead = this->NumBytesRead();
-	
+
 	//copy all unread data to the front of the buffer
 	memmove(pBuffer, pBuffer + readPos, numRead);
 
 	readPos = 0;
-	writePos = numRead;	
+	writePos = numRead;
 }
 
 void ShiftableBuffer::Reset()

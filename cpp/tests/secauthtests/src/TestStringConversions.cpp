@@ -28,12 +28,12 @@ using namespace secauth;
 #define SUITE(name) "StringConversionTestSuite - " name
 
 TEST_CASE(SUITE("Conversion from slice to string makes a copy of the data"))
-{		
-	auto getJim = []() -> std::string 
+{
+	auto getJim = []() -> std::string
 	{
 		uint8_t jim[3] = { 0x6A, 0x69, 0x6D };
 		RSlice slice(jim, 3);
-		return ToString(slice);		
+		return ToString(slice);
 	};
 
 	auto name = getJim();
@@ -43,7 +43,7 @@ TEST_CASE(SUITE("Conversion from slice to string makes a copy of the data"))
 TEST_CASE(SUITE("Conversion from string to slice provides a UTF-8 view of the underlying byte array"))
 {
 	std::string jim("jim");
-	
+
 	auto slice = AsSlice(jim);
 
 	REQUIRE(slice.Size() == 3);

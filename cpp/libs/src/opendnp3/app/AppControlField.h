@@ -30,7 +30,7 @@ namespace opendnp3
 */
 struct AppControlField
 {
-	const static AppControlField DEFAULT;	
+	const static AppControlField DEFAULT;
 
 	static AppControlField Request(uint8_t seq);
 
@@ -42,7 +42,10 @@ struct AppControlField
 
 	uint8_t ToByte() const;
 
-	bool IsFirAndFin() const { return FIR && FIN; }
+	bool IsFirAndFin() const
+	{
+		return FIR && FIN;
+	}
 
 	bool FIR;
 	bool FIN;

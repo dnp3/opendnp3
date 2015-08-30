@@ -36,37 +36,37 @@
 namespace secauth
 {
 
-/** 
+/**
 	A very simple update key store for the default user
 */
 class OutstationUserDatabase final : public IOutstationUserDatabase
 {
-	public:		
-		
-		virtual UpdateKey::View GetUpdateKeyView(const opendnp3::User& user) const override;		
+public:
 
-		virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const override;
+	virtual UpdateKey::View GetUpdateKeyView(const opendnp3::User& user) const override;
 
-		virtual bool UserExists(const opendnp3::User& user) const override;
+	virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const override;
 
-		virtual bool UserExists(const std::string& userName) const override;
+	virtual bool UserExists(const opendnp3::User& user) const override;
 
-		virtual bool Delete(const std::string& userName, opendnp3::User& userOut) override;
+	virtual bool UserExists(const std::string& userName) const override;
 
-		virtual bool FindFreeUserId(opendnp3::User& user) const override;
+	virtual bool Delete(const std::string& userName, opendnp3::User& userOut) override;
 
-		
-		void AddUser(const OutstationUserInfo& info);
+	virtual bool FindFreeUserId(opendnp3::User& user) const override;
 
-	private:	
 
-		typedef std::map<uint16_t, OutstationUserInfo> UserMap;
+	void AddUser(const OutstationUserInfo& info);
 
-		UserMap::const_iterator FindByName(const std::string& userName) const;
+private:
 
-		UserMap::iterator FindByName(const std::string& userName);
+	typedef std::map<uint16_t, OutstationUserInfo> UserMap;
 
-		UserMap userMap;
+	UserMap::const_iterator FindByName(const std::string& userName) const;
+
+	UserMap::iterator FindByName(const std::string& userName);
+
+	UserMap userMap;
 };
 
 }

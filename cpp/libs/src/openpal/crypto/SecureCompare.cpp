@@ -23,23 +23,23 @@
 
 namespace openpal
 {
-	bool SecureEquals(const RSlice& lhs, const RSlice& rhs)
+bool SecureEquals(const RSlice& lhs, const RSlice& rhs)
+{
+	if (lhs.Size() != rhs.Size())
 	{
-		if (lhs.Size() != rhs.Size())
-		{
-			return false;
-		}
-
-		uint8_t result = 0;
-
-		// accumulate all the different bit in each byte
-		for (uint32_t i = 0; i < lhs.Size(); ++i)
-		{
-			result |= lhs[i] ^ rhs[i];
-		}
-
-		return result == 0;
+		return false;
 	}
+
+	uint8_t result = 0;
+
+	// accumulate all the different bit in each byte
+	for (uint32_t i = 0; i < lhs.Size(); ++i)
+	{
+		result |= lhs[i] ^ rhs[i];
+	}
+
+	return result == 0;
+}
 }
 
 

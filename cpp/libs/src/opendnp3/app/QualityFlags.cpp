@@ -28,7 +28,7 @@
 namespace opendnp3
 {
 
-namespace flags 
+namespace flags
 {
 
 bool GetBinaryValue(uint8_t quality)

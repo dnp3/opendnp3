@@ -23,7 +23,7 @@
 
 namespace opendnp3
 {
-	const uint16_t User::UNKNOWN_ID = 0;
-	const uint16_t User::DEFAULT_ID = 1;	
+const uint16_t User::UNKNOWN_ID = 0;
+const uint16_t User::DEFAULT_ID = 1;
 }
 

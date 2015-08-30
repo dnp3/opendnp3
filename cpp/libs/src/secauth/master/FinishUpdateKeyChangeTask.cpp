@@ -40,37 +40,37 @@ namespace secauth
 
 
 FinishUpdateKeyChangeTask::FinishUpdateKeyChangeTask(
-	const FinishUpdateKeyChangeArgs& args,
-	IMasterApplication& application,
-	openpal::IHMACAlgo& algorithm,
-	openpal::Logger logger,
-	const opendnp3::TaskConfig& config,
-	const ChangeUpdateKeyCallbackT& callback
+    const FinishUpdateKeyChangeArgs& args,
+    IMasterApplication& application,
+    openpal::IHMACAlgo& algorithm,
+    openpal::Logger logger,
+    const opendnp3::TaskConfig& config,
+    const ChangeUpdateKeyCallbackT& callback
 ) :
 	IMasterTask(application, MonotonicTimestamp::Min(), logger, config),
 	m_args(args),
 	m_algorithm(&algorithm),
 	m_callback(callback)
 {}
-			
+
 
 bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
-	KeyChangeConfirmationHMAC calc(*m_algorithm);	
+	KeyChangeConfirmationHMAC calc(*m_algorithm);
 
 	std::error_code ec;
 
 	auto hmac = calc.Compute(
-		m_args.updateKey.GetView().data,
-		KeyChangeHMACData(
-			m_args.outstationName,
-			m_args.masterChallengeData.ToRSlice(),
-			m_args.outstationChallengeData.ToRSlice(),
-			m_args.keyChangeSequenceNum,
-			m_args.user
-		),
-		ec
-	);
+	                m_args.updateKey.GetView().data,
+	                KeyChangeHMACData(
+	                    m_args.outstationName,
+	                    m_args.masterChallengeData.ToRSlice(),
+	                    m_args.outstationChallengeData.ToRSlice(),
+	                    m_args.keyChangeSequenceNum,
+	                    m_args.user
+	                ),
+	                ec
+	            );
 
 	if (ec)
 	{
@@ -82,15 +82,15 @@ bool FinishUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uin
 	request.SetControl(AppControlField::Request(seq));
 
 	auto writer = request.GetWriter();
-	
+
 	Group120Var13 updateKeyChange(
-		m_args.keyChangeSequenceNum,
-		m_args.user.GetId(),
-		m_args.encryptedKeyData.ToRSlice()
-	);	
-	
+	    m_args.keyChangeSequenceNum,
+	    m_args.user.GetId(),
+	    m_args.encryptedKeyData.ToRSlice()
+	);
+
 	if (!(writer.WriteFreeFormat(updateKeyChange) && writer.WriteFreeFormat(Group120Var15(hmac))))
-	{		
+	{
 		return false;
 	}
 
@@ -114,13 +114,13 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessResponse(const ope
 
 	switch (gv)
 	{
-		case(GroupVariation::Group120Var7) :
-			return ProcessErrorResponse(objects);
-		case(GroupVariation::Group120Var15) :
-			return ProcessConfirmationResponse(objects);
-		default:
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported object header in response: %s", GroupVariationToString(gv));
-			return ResponseResult::ERROR_BAD_RESPONSE;
+	case(GroupVariation::Group120Var7) :
+		return ProcessErrorResponse(objects);
+	case(GroupVariation::Group120Var15) :
+		return ProcessConfirmationResponse(objects);
+	default:
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported object header in response: %s", GroupVariationToString(gv));
+		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 }
 
@@ -142,21 +142,21 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationRespon
 	{
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
-	
+
 	std::error_code ec;
 
 	KeyChangeConfirmationHMAC::ComputeAndCompare(
-		m_args.updateKey.GetView().data,
-		KeyChangeHMACData(
-			m_args.username,
-			m_args.outstationChallengeData.ToRSlice(),
-			m_args.masterChallengeData.ToRSlice(),
-			m_args.keyChangeSequenceNum,
-			m_args.user
-		),
-		*m_algorithm,
-		handler.value.hmacValue,
-		ec
+	    m_args.updateKey.GetView().data,
+	    KeyChangeHMACData(
+	        m_args.username,
+	        m_args.outstationChallengeData.ToRSlice(),
+	        m_args.masterChallengeData.ToRSlice(),
+	        m_args.keyChangeSequenceNum,
+	        m_args.user
+	    ),
+	    *m_algorithm,
+	    handler.value.hmacValue,
+	    ec
 	);
 
 	if (ec)
@@ -166,11 +166,11 @@ IMasterTask::ResponseResult FinishUpdateKeyChangeTask::ProcessConfirmationRespon
 	}
 
 	// make the specified callback
-	m_callback(m_args.username, m_args.user, m_args.updateKey);	
+	m_callback(m_args.username, m_args.user, m_args.updateKey);
 
 	return ResponseResult::OK_FINAL;
 }
-	
+
 
 } //end ns
 

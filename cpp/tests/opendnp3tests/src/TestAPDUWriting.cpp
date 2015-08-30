@@ -104,8 +104,8 @@ TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
 {
 	APDUResponse response(APDUHelpers::Response());
 	auto writer = response.GetWriter();
-	
-	writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1::Inst());	
+
+	writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1::Inst());
 
 	REQUIRE("C0 81 00 00 1E 01 08 00 00" ==  ToHex(response.ToRSlice()));
 
@@ -121,7 +121,7 @@ TEST_CASE(SUITE("CountWriteIteratorFillsUpCorrectly"))
 
 		REQUIRE(iter.Write(Analog(9, 0xFF)));
 		REQUIRE(iter.Write(Analog(7, 0xFF)));
-		REQUIRE(!iter.Write(Analog(7, 0xFF))); //we're full	
+		REQUIRE(!iter.Write(Analog(7, 0xFF))); //we're full
 	}
 
 	REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" ==  ToHex(response.ToRSlice()));
@@ -166,7 +166,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
 	APDUResponse response(APDUHelpers::Response(26));
 	auto writer = response.GetWriter();
 
-	Group51Var1 cto = { UInt48Type(0xAA) };	
+	Group51Var1 cto = { UInt48Type(0xAA) };
 
 	{
 		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3::Inst(), cto);
@@ -183,11 +183,11 @@ TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
 	APDUResponse response(APDUHelpers::Response(23));
 	auto writer = response.GetWriter();
 
-	Group51Var1 cto = { UInt48Type(0xAA) };	
+	Group51Var1 cto = { UInt48Type(0xAA) };
 
 	{
 		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3::Inst(), cto);
-		REQUIRE(!iter.IsValid());		
+		REQUIRE(!iter.IsValid());
 	}
 
 	REQUIRE("C0 81 00 00" == ToHex(response.ToRSlice()));

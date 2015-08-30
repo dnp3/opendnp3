@@ -36,35 +36,35 @@ namespace secauth
 	SAv5 outstation authentication provider
 */
 struct OutstationAuthSettings
-{	
-	OutstationAuthSettings();	
+{
+	OutstationAuthSettings();
 
 	/// TODO - this is an important organizationally unique security parameter
 	/// this shouldn't be default-constructable
 	std::string outstationName;
-	
+
 	/// response timeout period for challenges
-	openpal::TimeDuration challengeTimeout;	
+	openpal::TimeDuration challengeTimeout;
 	/// the number of bytes in a standard session challenge
-	uint16_t challengeSize;	
+	uint16_t challengeSize;
 	/// the number of bytes in a session key change challenge
 	uint16_t sessionKeyChangeChallengeSize;
 	/// the number of bytes in a update key change challenge
 	uint16_t updateKeyChangeChallengeSize;
 	/// the association Id reported in tranmissions
-	uint16_t assocId;					
+	uint16_t assocId;
 	/// The hmac mode to request when challenging
 	HMACMode hmacMode;
 	/// A datastructure that defines what function codes are deemed 'critical'
 	CriticalFunctions functions;
 	/// The maximum number of auth-ed messages before a session key change is required
 	uint32_t maxAuthMsgCount;
-	/// The maximum time allowed before a session key expires 
+	/// The maximum time allowed before a session key expires
 	openpal::TimeDuration sessionKeyTimeout;
 	/// Thresholds for various security statistics
 	StatThresholds statThresholds;
 
-	
+
 };
 
 }

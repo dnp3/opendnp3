@@ -35,17 +35,17 @@ namespace asiopal
 */
 class LogFanoutHandler : public openpal::ILogHandler, private openpal::Uncopyable
 {
-public:	
+public:
 
 	/**
 	* Binds a listener to ALL log messages
 	*/
-	void Subscribe(openpal::ILogHandler* pHandler);	
+	void Subscribe(openpal::ILogHandler* pHandler);
 
 	// implement the log function from ILogHandler
 	virtual void Log(const openpal::LogEntry& entry) override final;
 
-private:	
+private:
 
 	std::mutex callbackMutex;
 	std::vector<openpal::ILogHandler*> subscribers;

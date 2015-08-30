@@ -25,7 +25,10 @@
 
 #include <set>
 
-namespace asiopal { class ASIOExecutor; }
+namespace asiopal
+{
+class ASIOExecutor;
+}
 
 namespace asiodnp3
 {
@@ -36,7 +39,7 @@ class StackLifecycle final : public IStackLifecycle
 {
 public:
 
-	StackLifecycle(LinkLayerRouter& router, asiopal::ASIOExecutor& executor);	
+	StackLifecycle(LinkLayerRouter& router, asiopal::ASIOExecutor& executor);
 
 	/// --- helper methods uses within the channel ----
 
@@ -45,8 +48,11 @@ public:
 	void ShutdownAll();
 
 	/// --- implement IStackLifecycle ----
-	
-	virtual asiopal::ASIOExecutor& GetExecutor() override { return *pExecutor; }
+
+	virtual asiopal::ASIOExecutor& GetExecutor() override
+	{
+		return *pExecutor;
+	}
 
 	virtual bool EnableRoute(opendnp3::ILinkSession* pContext) override;
 

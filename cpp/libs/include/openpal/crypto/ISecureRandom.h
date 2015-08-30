@@ -27,21 +27,21 @@
 
 namespace openpal
 {
-	/**
-	* A provider of cryptographic services. All function are assumed to be thread-safe
-	* such that multiple threads can safely share a single instance of this class.
-	*/
-	class ISecureRandom
-	{
-	public:
-		
-		virtual ~ISecureRandom() {}
+/**
+* A provider of cryptographic services. All function are assumed to be thread-safe
+* such that multiple threads can safely share a single instance of this class.
+*/
+class ISecureRandom
+{
+public:
 
-		/** 
-		 * Fill the specified buffer with secure random bytes		 
-		*/
-		virtual openpal::RSlice GetSecureRandom(WSlice& dest, std::error_code& ec) = 0;		
-	};
+	virtual ~ISecureRandom() {}
+
+	/**
+	 * Fill the specified buffer with secure random bytes
+	*/
+	virtual openpal::RSlice GetSecureRandom(WSlice& dest, std::error_code& ec) = 0;
+};
 
 }
 

@@ -32,25 +32,28 @@
 
 namespace secauth
 {
-	class KeyWrapBuffer
+class KeyWrapBuffer
+{
+public:
+
+	bool Wrap(
+	    openpal::IKeyWrapAlgo& algo,
+	    const openpal::RSlice& updateKey,
+	    const SessionKeysView& sessionKeys,
+	    const openpal::RSlice& keyStatus,
+	    const openpal::Logger logger
+	);
+
+	openpal::RSlice GetWrappedData() const
 	{
-	public:
+		return data;
+	}
 
-		bool Wrap(
-							openpal::IKeyWrapAlgo& algo,
-							const openpal::RSlice& updateKey,
-							const SessionKeysView& sessionKeys,
-							const openpal::RSlice& keyStatus,									
-							const openpal::Logger logger
-				);
+private:
 
-		openpal::RSlice GetWrappedData() const { return data; }
-
-	private:
-		
-		openpal::RSlice data;
-		openpal::StaticBuffer<AuthSizes::MAX_SESSION_KEY_WRAP_BUFFER_SIZE> buffer;
-	};
+	openpal::RSlice data;
+	openpal::StaticBuffer<AuthSizes::MAX_SESSION_KEY_WRAP_BUFFER_SIZE> buffer;
+};
 
 }
 

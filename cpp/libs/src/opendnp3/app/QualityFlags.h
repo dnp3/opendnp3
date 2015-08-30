@@ -26,17 +26,17 @@
 namespace opendnp3
 {
 
-namespace flags 
+namespace flags
 {
 
 enum Quality : uint8_t
 {
-	ONLINE = 0x01,
-	RESTART = 0x02
+    ONLINE = 0x01,
+    RESTART = 0x02
 };
 
 bool GetBinaryValue(uint8_t quality);
-	
+
 uint8_t GetBinaryQuality(uint8_t q, bool value);
 
 }

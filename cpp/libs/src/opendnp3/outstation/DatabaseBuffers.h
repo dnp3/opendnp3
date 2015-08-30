@@ -50,14 +50,17 @@ public:
 	DatabaseBuffers(const DatabaseTemplate&, StaticTypeBitField allowedClass0Types, IndexMode indexMode);
 
 	// ------- IStaticSelector -------------
-	
+
 	virtual IINField SelectAll(GroupVariation gv) override final;
 	virtual IINField SelectRange(GroupVariation gv, const Range& range) override final;
 
 	// ------- IResponseLoader -------------
-	
+
 	virtual bool Load(HeaderWriter& writer) override final;
-	virtual bool HasAnySelection() const override final { return ranges.HasAnySelection(); }
+	virtual bool HasAnySelection() const override final
+	{
+		return ranges.HasAnySelection();
+	}
 
 	// ------- IClassAssigner -------------
 
@@ -66,16 +69,16 @@ public:
 
 	//used to unselect selected points
 	void Unselect();
-	
-	// stores the most revent values and event information	
-	StaticBuffers buffers;	
+
+	// stores the most revent values and event information
+	StaticBuffers buffers;
 
 private:
 
 	StaticTypeBitField class0;
 	IndexMode indexMode;
-	
-	SelectedRanges ranges;	
+
+	SelectedRanges ranges;
 
 	template <class T>
 	bool LoadType(HeaderWriter& writer);
@@ -92,7 +95,7 @@ private:
 				view[i].selection.selected = false;
 			}
 			ranges.Clear<T>();
-		}		
+		}
 	}
 
 	//specialization for binary in cpp file
@@ -100,16 +103,16 @@ private:
 	static typename T::StaticVariation  CheckForPromotion(const T& value, typename T::StaticVariation variation)
 	{
 		return variation;
-	}	
+	}
 
 	static Range RangeOf(uint16_t size);
 
 	template <class T>
 	IINField GenericSelect(
-		Range range,
-		openpal::ArrayView<Cell<T>, uint16_t> view,		
-		bool useDefault,
-		typename T::StaticVariation variation
+	    Range range,
+	    openpal::ArrayView<Cell<T>, uint16_t> view,
+	    bool useDefault,
+	    typename T::StaticVariation variation
 	);
 
 	template <class T>
@@ -120,14 +123,14 @@ private:
 	{
 		if (class0.IsSet(T::StaticTypeEnum))
 		{
-			this->SelectAll<T>();			
-		}		
+			this->SelectAll<T>();
+		}
 	}
 
 	template <class T>
 	IINField SelectAll()
-	{		
-		auto view = buffers.GetArrayView<T>();		
+	{
+		auto view = buffers.GetArrayView<T>();
 		return GenericSelect(RangeOf(view.Size()), view, true, typename T::StaticVariation());
 	}
 
@@ -135,7 +138,7 @@ private:
 	IINField SelectAllUsing(typename T::StaticVariation variation)
 	{
 		auto view = buffers.GetArrayView<T>();
-		return GenericSelect(RangeOf(view.Size()), view, false, variation);		
+		return GenericSelect(RangeOf(view.Size()), view, false, variation);
 	}
 
 	template <class T>
@@ -166,24 +169,24 @@ private:
 	IINField SelectRange(const Range& range)
 	{
 		return SelectVirtualRange<T>(range, true, typename T::StaticVariation());
-	}	
+	}
 
 	template <class T>
 	IINField SelectRangeUsing(const Range& range, typename T::StaticVariation variation)
-	{	
+	{
 		return SelectVirtualRange<T>(range, false, variation);
-	}		
+	}
 };
 
 template <class T>
 IINField DatabaseBuffers::GenericSelect(
-	Range range,
-	openpal::ArrayView<Cell<T>, uint16_t> view,	
-	bool useDefault,
-	typename T::StaticVariation variation)
+    Range range,
+    openpal::ArrayView<Cell<T>, uint16_t> view,
+    bool useDefault,
+    typename T::StaticVariation variation)
 {
 	if (range.IsValid())
-	{		
+	{
 		auto allowed = range.Intersection(RangeOf(view.Size()));
 
 		if (allowed.IsValid())
@@ -203,7 +206,7 @@ IINField DatabaseBuffers::GenericSelect(
 					view[i].selection.value = view[i].value;
 					auto var = useDefault ? view[i].variation : variation;
 					view[i].selection.variation = CheckForPromotion<T>(view[i].selection.value, var);
-				}				
+				}
 			}
 
 			ranges.Merge<T>(allowed);
@@ -239,15 +242,15 @@ bool DatabaseBuffers::LoadType(HeaderWriter& writer)
 				/// lookup the specific write function based on the reporting variation
 				auto writeFun = GetStaticWriter(view[range.start].selection.variation);
 
-				// start writing a header, the invoked function will advance the range appropriately				
+				// start writing a header, the invoked function will advance the range appropriately
 				spaceRemaining = writeFun(view, writer, range);
 			}
 			else
 			{
 				// just skip over values that are not selected
 				range.Advance();
-			}			
-		} 		
+			}
+		}
 
 		ranges.Set<T>(range);
 
@@ -257,13 +260,13 @@ bool DatabaseBuffers::LoadType(HeaderWriter& writer)
 	{
 		// no data to load
 		return true;
-	}	
+	}
 }
 
 template <class T>
 Range DatabaseBuffers::AssignClassTo(PointClass clazz, const Range& range)
 {
-	auto view = buffers.GetArrayView<T>();	
+	auto view = buffers.GetArrayView<T>();
 	auto clipped = range.Intersection(RangeOf(view.Size()));
 	for (auto i = clipped.start; i <= clipped.stop; ++i)
 	{

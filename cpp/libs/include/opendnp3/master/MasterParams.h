@@ -35,7 +35,7 @@ Configuration information for the dnp3 master
 struct MasterParams
 {
 	/// Default constructor
-	MasterParams();	
+	MasterParams();
 
 	/// Application layer response timeout
 	openpal::TimeDuration responseTimeout;
@@ -44,7 +44,7 @@ struct MasterParams
 	TimeSyncMode timeSyncMode;
 
 	/// If true, the master will disable unsol on startup for all 3 classes
-	bool disableUnsolOnStartup;	
+	bool disableUnsolOnStartup;
 
 	///	Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
 	ClassField unsolClassMask;
@@ -63,7 +63,7 @@ struct MasterParams
 	openpal::TimeDuration taskRetryPeriod;
 
 	/// Time delay before failing a non-recurring task (e.g. commands) that cannot start
-	openpal::TimeDuration taskStartTimeout;	
+	openpal::TimeDuration taskStartTimeout;
 
 	/// maximum APDU tx size in bytes
 	uint32_t maxTxFragSize;

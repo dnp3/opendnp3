@@ -62,7 +62,7 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm
 		ocontext.confirmTimer.Cancel();
 
 		if (ocontext.unsol.completedNull)
-		{			
+		{
 			ocontext.eventBuffer.ClearWritten();
 		}
 		else

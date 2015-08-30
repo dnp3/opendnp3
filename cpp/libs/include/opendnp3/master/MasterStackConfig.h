@@ -32,11 +32,11 @@ namespace opendnp3
 */
 struct MasterStackConfig
 {
-	MasterStackConfig() : link(true, false)		
+	MasterStackConfig() : link(true, false)
 	{}
 
 	/// Master config
-	MasterParams master;	
+	MasterParams master;
 
 	/// Link layer config
 	LinkConfig link;

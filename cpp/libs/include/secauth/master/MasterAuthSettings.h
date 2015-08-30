@@ -33,23 +33,23 @@ namespace secauth
 	SAv5 outstation authentication provider
 */
 struct MasterAuthSettings
-{	
+{
 	MasterAuthSettings();
-	
+
 	/// response timeout period for challenges
-	openpal::TimeDuration challengeTimeout;	
+	openpal::TimeDuration challengeTimeout;
 	/// the number of bytes in a challenge
-	uint16_t challengeSize;				
+	uint16_t challengeSize;
 	/// The hmac mode to request when challenging
-	HMACMode hmacMode;	
+	HMACMode hmacMode;
 	/// The maximum number of auth-ed messages before a session key change is required
 	uint32_t maxAuthMsgCount;
-	/// The maximum time allowed before a session key expires 
+	/// The maximum time allowed before a session key expires
 	openpal::TimeDuration sessionKeyTimeout;
 	/// The interval at which session keys are refreshed. You want this to be less than the key timeout by some margin.
 	openpal::TimeDuration sessionChangeInterval;
 
-	
+
 };
 
 }

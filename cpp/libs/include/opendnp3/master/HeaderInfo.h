@@ -32,19 +32,19 @@ class HeaderInfo
 {
 public:
 
-	HeaderInfo() : 
+	HeaderInfo() :
 		gv(GroupVariation::UNKNOWN),
 		qualifier(QualifierCode::UNDEFINED),
 		tsmode(TimestampMode::INVALID),
 		headerCount(0)
 	{}
-	
+
 	HeaderInfo(
-		GroupVariation gv_,
-		QualifierCode qualifier_,
-		TimestampMode tsmode_,
-		uint32_t headerCount_
-	) : 
+	    GroupVariation gv_,
+	    QualifierCode qualifier_,
+	    TimestampMode tsmode_,
+	    uint32_t headerCount_
+	) :
 		gv(gv_),
 		qualifier(qualifier_),
 		tsmode(tsmode_)

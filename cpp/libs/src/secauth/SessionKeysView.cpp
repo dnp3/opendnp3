@@ -24,28 +24,28 @@
 #include "secauth/AuthSizes.h"
 
 namespace secauth
-{	
-		SessionKeysView::SessionKeysView(
-			const openpal::RSlice& controlKey_,
-			const openpal::RSlice& monitorKey_
-			) : 
-			controlKey(controlKey_), 
-			monitorKey(monitorKey_)
-		{
-		
-		}
+{
+SessionKeysView::SessionKeysView(
+    const openpal::RSlice& controlKey_,
+    const openpal::RSlice& monitorKey_
+) :
+	controlKey(controlKey_),
+	monitorKey(monitorKey_)
+{
 
-		bool SessionKeysView::IsValid() const
-		{
-			return (controlKey.Size() == monitorKey.Size()) &&
-				   AuthSizes::SessionKeySizeWithinLimits(controlKey.Size()) &&
-				   AuthSizes::SessionKeySizeWithinLimits(monitorKey.Size());
-		}	
+}
 
-		uint32_t SessionKeysView::TotalSize() const
-		{
-			return controlKey.Size() + monitorKey.Size();
-		}
+bool SessionKeysView::IsValid() const
+{
+	return (controlKey.Size() == monitorKey.Size()) &&
+	       AuthSizes::SessionKeySizeWithinLimits(controlKey.Size()) &&
+	       AuthSizes::SessionKeySizeWithinLimits(monitorKey.Size());
+}
+
+uint32_t SessionKeysView::TotalSize() const
+{
+	return controlKey.Size() + monitorKey.Size();
+}
 
 
 }

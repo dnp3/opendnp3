@@ -36,7 +36,7 @@ class EventCount
 {
 	static const uint16_t NUM_CLASSES = 3;
 	static const uint16_t NUM_TYPES = 8;
-	
+
 public:
 
 	EventCount();
@@ -51,14 +51,17 @@ public:
 	uint32_t NumOfClass(ClassField field) const;
 	uint32_t NumOfType(EventType type) const;
 
-	uint32_t TotatCount() const { return total; }
+	uint32_t TotatCount() const
+	{
+		return total;
+	}
 
 	void Increment(EventClass clazz, EventType type);
 	void Decrement(EventClass clazz, EventType type);
-	
-	bool IsEmpty() const;	
 
-	void Clear();	
+	bool IsEmpty() const;
+
+	void Clear();
 
 private:
 
@@ -66,7 +69,7 @@ private:
 
 	uint32_t total;
 	uint32_t numOfType[NUM_TYPES];
-	uint32_t numOfClass[NUM_CLASSES];	
+	uint32_t numOfClass[NUM_CLASSES];
 };
 
 }

@@ -42,19 +42,22 @@ class MeasurementHandler : public IAPDUHandler
 public:
 
 	/**
-	* Static helper function for interpreting a response as a measurement response	
+	* Static helper function for interpreting a response as a measurement response
 	*/
 	static ParseResult ProcessMeasurements(const openpal::RSlice& objects, openpal::Logger& logger, ISOEHandler* pHandler);
 
 	// TODO
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; };
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+	{
+		return true;
+	};
 
 	/**
 	* Creates a new ResponseLoader instance.
 	*
 	* @param logger	the Logger that the loader should use for message reporting
 	*/
-	MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler);	
+	MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler);
 
 	~MeasurementHandler();
 
@@ -67,7 +70,7 @@ private:
 	// Handle the CTO objects
 	IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& cto) override final;
 	IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& cto) override final;
-	
+
 	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override final;
 	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
 	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
@@ -96,7 +99,8 @@ private:
 	template <class Target, class Source>
 	IINField LoadValuesWithTransformTo(const HeaderRecord& record, const ICollection<Indexed<Source>>& values)
 	{
-		auto transform = [](const Indexed<Source>& input) -> Indexed<Target> {
+		auto transform = [](const Indexed<Source>& input) -> Indexed<Target>
+		{
 			return Convert<Source, Target>(input);
 		};
 
@@ -109,7 +113,7 @@ private:
 	IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, const ICollection<Indexed<T>>& values)
 	{
 		this->CheckForTxStart();
-		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerCount);				
+		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerCount);
 		this->pSOEHandler->Process(info, values);
 		return IINField();
 	}
@@ -120,7 +124,7 @@ private:
 	bool txInitiated;
 	ISOEHandler* pSOEHandler;
 
-	TimestampMode ctoMode;	
+	TimestampMode ctoMode;
 	uint64_t commonTimeOccurence;
 
 	void CheckForTxStart();
@@ -131,7 +135,7 @@ private:
 
 	template <class T, class U>
 	static Indexed<U> Convert(const Indexed<T>& input)
-	{		
+	{
 		return WithIndex(Convert(input.value), input.index);
 	}
 
@@ -139,7 +143,7 @@ private:
 
 template <class T>
 IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const ICollection<Indexed<T>>& values)
-{	
+{
 	if (ctoMode == TimestampMode::INVALID)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior CTO objects for %s", GroupVariationToString(record.enumeration));
@@ -149,7 +153,8 @@ IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const IC
 	const auto MODE = this->ctoMode;
 	const auto cto = this->commonTimeOccurence;
 
-	auto transform = [cto](const Indexed<T>& input) -> Indexed<T> {
+	auto transform = [cto](const Indexed<T>& input) -> Indexed<T>
+	{
 		Indexed<T> copy(input);
 		copy.value.time = DNPTime(input.value.time + cto);
 		return copy;

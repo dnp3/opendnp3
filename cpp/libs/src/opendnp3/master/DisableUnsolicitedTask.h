@@ -28,30 +28,48 @@ namespace opendnp3
 {
 
 class DisableUnsolicitedTask : public IMasterTask
-{	
+{
 
-public:	
+public:
 
-	DisableUnsolicitedTask(IMasterApplication& application, bool enabled, openpal::TimeDuration retryPeriod, openpal::Logger logger);	
+	DisableUnsolicitedTask(IMasterApplication& application, bool enabled, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
-	virtual char const* Name() const override final { return "Disable Unsolicited"; }
+	virtual char const* Name() const override final
+	{
+		return "Disable Unsolicited";
+	}
 
-	virtual bool IsRecurring() const override final { return true; }
+	virtual bool IsRecurring() const override final
+	{
+		return true;
+	}
 
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual int Priority() const override final { return priority::DISABLE_UNSOLICITED; }	
+	virtual int Priority() const override final
+	{
+		return priority::DISABLE_UNSOLICITED;
+	}
 
-	virtual bool BlocksLowerPriority() const { return true; }	
+	virtual bool BlocksLowerPriority() const
+	{
+		return true;
+	}
 
 private:
 
 	bool enabled;
 	openpal::TimeDuration retryPeriod;
 
-	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::DISABLE_UNSOLICITED; }
+	virtual MasterTaskType GetTaskType() const override final
+	{
+		return MasterTaskType::DISABLE_UNSOLICITED;
+	}
 
-	virtual bool IsEnabled() const override final { return enabled; }
+	virtual bool IsEnabled() const override final
+	{
+		return enabled;
+	}
 
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 

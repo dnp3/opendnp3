@@ -52,24 +52,24 @@ CountIndexParser::CountIndexParser(uint16_t count_, uint32_t requiredSize_, cons
 {}
 
 ParseResult CountIndexParser::ParseHeader(
-	openpal::RSlice& buffer,
-	const NumParser& numparser,
-	const ParserSettings& settings,
-	const HeaderRecord& record,
-	openpal::Logger* pLogger,
-	IAPDUHandler* pHandler)
+    openpal::RSlice& buffer,
+    const NumParser& numparser,
+    const ParserSettings& settings,
+    const HeaderRecord& record,
+    openpal::Logger* pLogger,
+    IAPDUHandler* pHandler)
 {
 	uint16_t count;
 	auto res = numparser.ParseCount(buffer, count, pLogger);
 	if (res == ParseResult::OK)
 	{
 		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-			"%03u,%03u %s, %s [%u]",
-			record.group,
-			record.variation,
-			GroupVariationToString(record.enumeration),
-			QualifierCodeToString(record.GetQualifierCode()),
-			count);
+		                    "%03u,%03u %s, %s [%u]",
+		                    record.group,
+		                    record.variation,
+		                    GroupVariationToString(record.enumeration),
+		                    QualifierCodeToString(record.GetQualifierCode()),
+		                    count);
 
 		return ParseCountOfObjects(buffer, record, numparser, count, pLogger, pHandler);
 	}
@@ -103,12 +103,12 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 	switch (record.enumeration)
 	{
 	case(GroupVariation::Group2Var1) :
-		return CountIndexParser::From<Group2Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);				
+		return CountIndexParser::From<Group2Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group2Var2) :
 		return CountIndexParser::From<Group2Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group2Var3) :
 		return CountIndexParser::From<Group2Var3>(count, numparser).Process(record, buffer, pHandler, pLogger);
-		
+
 	case(GroupVariation::Group4Var1) :
 		return CountIndexParser::From<Group4Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group4Var2) :
@@ -116,7 +116,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 	case(GroupVariation::Group4Var3) :
 		return CountIndexParser::From<Group4Var3>(count, numparser).Process(record, buffer, pHandler, pLogger);
 
-		
+
 	case(GroupVariation::Group11Var1) :
 		return CountIndexParser::From<Group11Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group11Var2) :
@@ -129,7 +129,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 		return CountIndexParser::From<Group13Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group13Var2) :
 		return CountIndexParser::From<Group13Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
-		
+
 	case(GroupVariation::Group22Var1) :
 		return CountIndexParser::From<Group22Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group22Var2) :
@@ -147,7 +147,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 		return CountIndexParser::From<Group23Var5>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group23Var6) :
 		return CountIndexParser::From<Group23Var6>(count, numparser).Process(record, buffer, pHandler, pLogger);
-		
+
 	case(GroupVariation::Group32Var1) :
 		return CountIndexParser::From<Group32Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group32Var2) :
@@ -164,7 +164,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 		return CountIndexParser::From<Group32Var7>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group32Var8) :
 		return CountIndexParser::From<Group32Var8>(count, numparser).Process(record, buffer, pHandler, pLogger);
-		
+
 	case(GroupVariation::Group41Var1) :
 		return CountIndexParser::From<Group41Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group41Var2) :
@@ -190,7 +190,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 		return CountIndexParser::From<Group42Var7>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group42Var8) :
 		return CountIndexParser::From<Group42Var8>(count, numparser).Process(record, buffer, pHandler, pLogger);
-		
+
 	case(GroupVariation::Group43Var1) :
 		return CountIndexParser::From<Group43Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group43Var2) :
@@ -206,9 +206,9 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 	case(GroupVariation::Group43Var7) :
 		return CountIndexParser::From<Group43Var7>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group43Var8) :
-		return CountIndexParser::From<Group43Var8>(count, numparser).Process(record, buffer, pHandler, pLogger);		
+		return CountIndexParser::From<Group43Var8>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group50Var4) :
-		return CountIndexParser::From<Group50Var4>(count, numparser).Process(record, buffer, pHandler, pLogger);	
+		return CountIndexParser::From<Group50Var4>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group111Var0) :
 		return ParseIndexPrefixedOctetData(buffer, record, numparser, count, pLogger, pHandler);
 
@@ -216,12 +216,12 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 		return CountIndexParser::FromType<Group122Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group122Var2) :
 		return CountIndexParser::FromType<Group122Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
-	
+
 	default:
 
 		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
-			"Unsupported qualifier/object - %s - %i / %i",
-			QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
+		                              "Unsupported qualifier/object - %s - %i / %i",
+		                              QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}
@@ -242,10 +242,11 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::RSlice& buffe
 		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
 		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
-	
+
 	if (pHandler)
 	{
-		auto read = [&numparser, record](RSlice& buffer, uint32_t pos) -> Indexed<OctetString> {
+		auto read = [&numparser, record](RSlice & buffer, uint32_t pos) -> Indexed<OctetString>
+		{
 			auto index = numparser.ReadNum(buffer);
 			OctetString octets(buffer.Take(record.variation));
 			buffer.Advance(record.variation);
@@ -257,7 +258,7 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::RSlice& buffe
 	}
 
 	buffer.Advance(TOTAL_SIZE);
-	return ParseResult::OK;		
+	return ParseResult::OK;
 }
 
 }

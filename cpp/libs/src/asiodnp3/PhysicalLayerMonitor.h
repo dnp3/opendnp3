@@ -31,7 +31,7 @@
 
 namespace openpal
 {
-	class IPhysicalLayer;
+class IPhysicalLayer;
 }
 
 namespace asiodnp3
@@ -48,11 +48,11 @@ class PhysicalLayerMonitor : public openpal::IPhysicalLayerCallbacks
 public:
 
 	PhysicalLayerMonitor(	openpal::LogRoot& root,
-							openpal::IExecutor& executor,
+	                        openpal::IExecutor& executor,
 	                        openpal::IPhysicalLayer*,
 	                        openpal::TimeDuration minOpenRetry_,
 	                        openpal::TimeDuration maxOpenRetry_,
-							opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
+	                        opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/** Begin monitor execution, retry indefinitely on failure - Idempotent*/
 	void Start();
@@ -130,7 +130,7 @@ private:
 
 	const openpal::TimeDuration minOpenRetry;
 	const openpal::TimeDuration maxOpenRetry;
-	
+
 	openpal::TimeDuration currentRetry;
 
 	const opendnp3::IOpenDelayStrategy* pOpenStrategy;

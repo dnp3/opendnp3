@@ -38,13 +38,13 @@ public:
 	OctetData();
 	OctetData(const openpal::RSlice& input);
 
-	openpal::RSlice ToRSlice() const;	
+	openpal::RSlice ToRSlice() const;
 
 private:
 
 	void Initialize(const openpal::RSlice& buffer);
 
-	openpal::StaticBuffer<MAX_SIZE> buffer;	
+	openpal::StaticBuffer<MAX_SIZE> buffer;
 	uint8_t size;
 };
 

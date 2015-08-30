@@ -30,33 +30,33 @@ namespace secauth
 *	Describes what function codes a user is authorized to perform
 */
 class Permissions
-{	
+{
 	typedef uint64_t bitfield_t;
-	
+
 public:
 
 	Permissions() : permissions(0) {}
-	
+
 	template <typename... Args>
 	static Permissions Allowed(Args... args)
 	{
 		return Permissions(GetBitfield(args...));
 	}
-	
+
 	Permissions operator|(const Permissions& other) const
 	{
-	  return Permissions(this->permissions | other.permissions); 
+		return Permissions(this->permissions | other.permissions);
 	}
 
 	static Permissions AllowNothing();
 	static Permissions AllowAll();
-	
+
 	void Allow(opendnp3::FunctionCode code);
 
 	bool IsAllowed(opendnp3::FunctionCode) const;
-	
+
 private:
-  
+
 	template <typename... Args>
 	static bitfield_t GetBitfield(opendnp3::FunctionCode fc, Args... args)
 	{
@@ -64,17 +64,20 @@ private:
 	}
 
 	// base case for variadic method
-	static bitfield_t GetBitfield() { return 0; }
-	
-	inline static bitfield_t Bit(uint8_t bit) 
-	{ 
-	  return static_cast<bitfield_t>(1 << bit); 
+	static bitfield_t GetBitfield()
+	{
+		return 0;
 	}
-	
+
+	inline static bitfield_t Bit(uint8_t bit)
+	{
+		return static_cast<bitfield_t>(1 << bit);
+	}
+
 	static bitfield_t GetMask(opendnp3::FunctionCode code);
 
 	bitfield_t permissions;
-		
+
 	Permissions(bitfield_t mask);
 
 };

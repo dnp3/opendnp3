@@ -38,17 +38,17 @@ class Logger
 {
 	friend class LogRoot;
 
-public:	
+public:
 
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
-	
-	bool IsEnabled(const LogFilters& filters) const;	
+
+	bool IsEnabled(const LogFilters& filters) const;
 
 private:
 
 	Logger(LogRoot* pRoot);
 
-	LogRoot* pRoot;	
+	LogRoot* pRoot;
 };
 
 }

@@ -28,7 +28,7 @@ namespace secauth
 
 UpdateKey::UpdateKey() : m_algorithm (KeyWrapAlgorithm::UNDEFINED), m_buffer(0xFF)
 {
-	
+
 }
 
 UpdateKey::UpdateKey(uint8_t repeat, KeyWrapAlgorithm algorithm) : m_algorithm(algorithm), m_buffer(0xFF)
@@ -41,7 +41,7 @@ UpdateKey::UpdateKey(const openpal::RSlice& key) : UpdateKey()
 }
 
 UpdateKey::View UpdateKey::GetView() const
-{	
+{
 	return View(m_algorithm, m_buffer.ToRSlice(GetSize(m_algorithm)));
 }
 
@@ -49,12 +49,12 @@ uint32_t UpdateKey::GetSize(opendnp3::KeyWrapAlgorithm algorithm)
 {
 	switch (algorithm)
 	{
-		case(KeyWrapAlgorithm::AES_128) :
-			return UPDATE_KEY_SIZE_128;
-		case(KeyWrapAlgorithm::AES_256) :
-			return UPDATE_KEY_SIZE_256;
-		default:
-			return 0;
+	case(KeyWrapAlgorithm::AES_128) :
+		return UPDATE_KEY_SIZE_128;
+	case(KeyWrapAlgorithm::AES_256) :
+		return UPDATE_KEY_SIZE_256;
+	default:
+		return 0;
 	}
 }
 
@@ -62,12 +62,12 @@ opendnp3::KeyWrapAlgorithm UpdateKey::GetKeyWrapAlgorithm(uint32_t size)
 {
 	switch (size)
 	{
-		case(UPDATE_KEY_SIZE_128) :
-			return KeyWrapAlgorithm::AES_128;
-		case(UPDATE_KEY_SIZE_256) :
-			return KeyWrapAlgorithm::AES_256;
-		default:
-			return KeyWrapAlgorithm::UNDEFINED;
+	case(UPDATE_KEY_SIZE_128) :
+		return KeyWrapAlgorithm::AES_128;
+	case(UPDATE_KEY_SIZE_256) :
+		return KeyWrapAlgorithm::AES_256;
+	default:
+		return KeyWrapAlgorithm::UNDEFINED;
 	}
 }
 
@@ -76,19 +76,19 @@ bool UpdateKey::Initialize(const openpal::RSlice& key)
 {
 	switch (key.Size())
 	{
-		case(UPDATE_KEY_SIZE_128) :
-		case(UPDATE_KEY_SIZE_256) :
-			this->Copy(key);
-			return true;
-		default:		
-			return false;
+	case(UPDATE_KEY_SIZE_128) :
+	case(UPDATE_KEY_SIZE_256) :
+		this->Copy(key);
+		return true;
+	default:
+		return false;
 	}
 }
 
 void UpdateKey::Copy(const openpal::RSlice& key)
-{  
+{
 	auto dest = m_buffer.GetWSlice();
-	key.CopyTo(dest);  
+	key.CopyTo(dest);
 	this->m_algorithm = GetKeyWrapAlgorithm(key.Size());
 }
 

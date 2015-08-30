@@ -38,18 +38,18 @@ namespace asiodnp3
 class MasterStackSA : public MasterStackBase<IMasterSA>
 {
 public:
-		
+
 	MasterStackSA(
-		const char* id,
-		openpal::LogRoot& root,
-		asiopal::ASIOExecutor& executor,
-		opendnp3::ISOEHandler& SOEHandler,
-		secauth::IMasterApplicationSA& application,
-		const secauth::MasterAuthStackConfig& config,
-		IStackLifecycle& lifecycle,
-		opendnp3::ITaskLock& taskLock,		
-		openpal::ICryptoProvider& crypto
-	);	
+	    const char* id,
+	    openpal::LogRoot& root,
+	    asiopal::ASIOExecutor& executor,
+	    opendnp3::ISOEHandler& SOEHandler,
+	    secauth::IMasterApplicationSA& application,
+	    const secauth::MasterAuthStackConfig& config,
+	    IStackLifecycle& lifecycle,
+	    opendnp3::ITaskLock& taskLock,
+	    openpal::ICryptoProvider& crypto
+	);
 
 	virtual void AddUser(opendnp3::User user, const secauth::UpdateKey& key) override final;
 
@@ -58,10 +58,10 @@ public:
 	virtual void BeginUpdateKeyChange(const std::string& username, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& callback) override final;
 
 	virtual void FinishUpdateKeyChange(const secauth::FinishUpdateKeyChangeArgs& args, const opendnp3::TaskConfig& config) override final;
-	
-private:	
-	
-	secauth::MAuthContext mcontext;	
+
+private:
+
+	secauth::MAuthContext mcontext;
 };
 
 }

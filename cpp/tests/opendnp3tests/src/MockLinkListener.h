@@ -61,7 +61,7 @@ public:
 	uint32_t numKeepAliveReplys;
 
 	std::vector< LinkStatus > statusValues;
-	
+
 };
 
 }

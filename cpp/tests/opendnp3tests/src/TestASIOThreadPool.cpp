@@ -44,19 +44,19 @@ using namespace asiodnp3;
 #define SUITE(name) "ASIOThreadPoolTestSuite - " name
 
 TEST_CASE(SUITE("CleanConstructionDestruction"))
-{	
+{
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 4);
 }
 
 TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
-{	
+{
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 4);
 	for(size_t i = 0; i < 100000; ++i) pool.GetIOService().post([]() {});
 }
 
 
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
-{	
+{
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
 
 	size_t iterations = 100000;
@@ -75,7 +75,7 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 }
 
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
-{	
+{
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
 	size_t iterations = 100000;
 

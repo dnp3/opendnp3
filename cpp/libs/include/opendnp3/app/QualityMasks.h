@@ -27,13 +27,13 @@
 #include "opendnp3/gen/AnalogQuality.h"
 #include "opendnp3/gen/BinaryOutputStatusQuality.h"
 
-namespace opendnp3 
+namespace opendnp3
 {
-	template <class T>
-	inline uint8_t ToUnderlying(T flag)
-	{
-		return static_cast<uint8_t>(flag);
-	}
+template <class T>
+inline uint8_t ToUnderlying(T flag)
+{
+	return static_cast<uint8_t>(flag);
+}
 
 }
 

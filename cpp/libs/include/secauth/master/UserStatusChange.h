@@ -31,37 +31,37 @@
 
 namespace opendnp3
 {
-	struct Group120Var10;
+struct Group120Var10;
 }
 
 namespace secauth
 {
-	
+
 /**
-	The object is part of the external master API. It used to initiate the UserStatusChange 
+	The object is part of the external master API. It used to initiate the UserStatusChange
 	operation for both symmetric and assymetric keys.
 
 	It gets mapped to g120v10 when the master sends it over the wire.
 */
 class UserStatusChange
-{	
+{
 
 public:
-	
+
 	/**
 		constructor for symmetric key update
-		doesn't include the public key as there 
+		doesn't include the public key as there
 		is no public key in this mode
 	*/
 	UserStatusChange(
-		opendnp3::KeyChangeMethod keyChangeMethod,
-		opendnp3::UserOperation userOperation,
-		uint32_t statusChangeSeqNum,
-		uint16_t userRole,
-		uint16_t userRoleExpDays,
-		const std::string& userName,
-		openpal::RSlice userPublicKey,
-		openpal::RSlice certificationData
+	    opendnp3::KeyChangeMethod keyChangeMethod,
+	    opendnp3::UserOperation userOperation,
+	    uint32_t statusChangeSeqNum,
+	    uint16_t userRole,
+	    uint16_t userRoleExpDays,
+	    const std::string& userName,
+	    openpal::RSlice userPublicKey,
+	    openpal::RSlice certificationData
 	);
 
 	opendnp3::Group120Var10 Convert() const;
@@ -74,7 +74,7 @@ public:
 	std::string userName;
 	openpal::Buffer userPublicKey;
 	openpal::Buffer certificationData;
-	
+
 };
 
 }

@@ -36,19 +36,19 @@ using namespace testlib;
 #define SUITE(name) "MasterSessionKeySuite - " name
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
-{		
+{
 	MasterParams params;
 	User user = User::Default();
 	MasterSecAuthFixture fixture(params);
 	REQUIRE(fixture.ConfigureUser(User::Default()));
-		
+
 	fixture.context.OnLowerLayerUp();
 
 	AppSeqNum seq;
 
 	fixture.TestSessionKeyExchange(seq, user);
 
-	// next task should be diable unsol w/ this configuration	
+	// next task should be diable unsol w/ this configuration
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, seq, ClassField::AllEventClasses()));
 }
 
@@ -76,9 +76,9 @@ TEST_CASE(SUITE("Session keys are refreshed at the cofigured interval"))
 	REQUIRE(fixture.lower.HasNoData());
 
 	// check that advancing the timer starts up the next session key change
-	REQUIRE(fixture.exe.AdvanceToNextTimer());	
+	REQUIRE(fixture.exe.AdvanceToNextTimer());
 	REQUIRE(fixture.exe.GetTime().milliseconds == 5000);
-	
+
 	fixture.TestSessionKeyExchange(seq, user);
 }
 
@@ -116,13 +116,13 @@ TEST_CASE(SUITE("Master authenticates using default user"))
 	// next task should be diable unsol w/ this configuration
 	auto disableUnsol = hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 2, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(
-		IINField::Empty(),
-		2, // seq
-		0, // csq
-		0, // unknown user
-		HMACType::HMAC_SHA1_TRUNC_10,
-		ChallengeReason::CRITICAL,
-		hex::repeat(0xFF,4));
+	                     IINField::Empty(),
+	                     2, // seq
+	                     0, // csq
+	                     0, // unknown user
+	                     HMACType::HMAC_SHA1_TRUNC_10,
+	                     ChallengeReason::CRITICAL,
+	                     hex::repeat(0xFF, 4));
 
 	fixture.TestRequestAndReply(disableUnsol, challenge);
 
@@ -143,13 +143,13 @@ TEST_CASE(SUITE("Non-default user can initiate scan prior to the key change"))
 	params.disableUnsolOnStartup = false;
 	params.startupIntegrityClassMask = ClassField();
 	params.unsolClassMask = ClassField();
-	
+
 	User joe(42);
 
 	MasterSecAuthFixture fixture(params);
 
 	fixture.ConfigureUser(User::Default());
-	fixture.ConfigureUser(joe);	
+	fixture.ConfigureUser(joe);
 
 	fixture.context.OnLowerLayerUp();
 
@@ -157,7 +157,7 @@ TEST_CASE(SUITE("Non-default user can initiate scan prior to the key change"))
 
 	AppSeqNum seq;
 	fixture.TestSessionKeyExchange(seq, User::Default());
-	fixture.TestSessionKeyExchange(seq, joe);	
+	fixture.TestSessionKeyExchange(seq, joe);
 
 	fixture.application.completions.clear();
 
@@ -171,14 +171,14 @@ TEST_CASE(SUITE("Non-default user can initiate scan prior to the key change"))
 	REQUIRE(info.result == TaskCompletion::SUCCESS);
 	REQUIRE(info.type == MasterTaskType::USER_TASK);
 	REQUIRE(info.user.GetId() == joe.GetId());
-	
+
 }
 
 TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))
 {
 	MasterParams params;
-	User user = User::Default();	
-	MasterSecAuthFixture fixture(params);	
+	User user = User::Default();
+	MasterSecAuthFixture fixture(params);
 	fixture.ConfigureUser(user);
 	fixture.context.OnLowerLayerUp();
 
@@ -188,7 +188,7 @@ TEST_CASE(SUITE("Other tasks are blocked if user has no valid session keys"))
 	fixture.TestRequestAndReply(requestKeys, badResponse);
 
 	// check that no other tasks run
-	REQUIRE(fixture.lower.PopWriteAsHex() == "");	
+	REQUIRE(fixture.lower.PopWriteAsHex() == "");
 }
 
 TEST_CASE(SUITE("Tasks for non-existant users are immediately failed"))

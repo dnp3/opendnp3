@@ -32,7 +32,7 @@ namespace opendnp3
 {
 
 MockLowerLayer::MockLowerLayer(openpal::LogRoot& root) :
-	logger(root.GetLogger())	
+	logger(root.GetLogger())
 {
 
 }
@@ -70,7 +70,7 @@ std::string MockLowerLayer::PopWriteAsHex()
 
 void MockLowerLayer::BeginTransmit(const openpal::RSlice& output)
 {
-	this->sendQueue.push(output);	
+	this->sendQueue.push(output);
 }
 
 void MockLowerLayer::SendUp(const openpal::RSlice& arBuffer)

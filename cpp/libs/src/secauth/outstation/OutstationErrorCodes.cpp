@@ -23,29 +23,29 @@
 
 namespace secauth
 {
-	OutstationErrorCategory OutstationErrorCategory::instance;
+OutstationErrorCategory OutstationErrorCategory::instance;
 
-	std::string OutstationErrorCategory::message(int ev) const
+std::string OutstationErrorCategory::message(int ev) const
+{
+	switch (ev)
 	{
-		switch (ev)
-		{			
-		case(static_cast<int>(OutstationError::BAD_UNWRAPPPED_UPDATE_KEY_DATA_SIZE)) :
-			return "Unwrapped update key data doesn't meet size requirements";		
-		case(static_cast<int>(OutstationError::DECRYPTED_USERNAME_MISMATCH)) :
-			return "The decrypted username did not match the expected username";
-		case(static_cast<int>(OutstationError::CHALLENGE_DATA_MISMATCH)) :
-			return "Decrypted challenge data did not match what was sent";
-		case(static_cast<int>(OutstationError::KEY_CHANGE_CONFIRMATION_HMAC_MISMATCH)) :
-			return "The confirmation HMAC on a g120v15 did not match the expected value";
-		default:
-			return "unknown outstation error";
-		}
+	case(static_cast<int>(OutstationError::BAD_UNWRAPPPED_UPDATE_KEY_DATA_SIZE)) :
+		return "Unwrapped update key data doesn't meet size requirements";
+	case(static_cast<int>(OutstationError::DECRYPTED_USERNAME_MISMATCH)) :
+		return "The decrypted username did not match the expected username";
+	case(static_cast<int>(OutstationError::CHALLENGE_DATA_MISMATCH)) :
+		return "Decrypted challenge data did not match what was sent";
+	case(static_cast<int>(OutstationError::KEY_CHANGE_CONFIRMATION_HMAC_MISMATCH)) :
+		return "The confirmation HMAC on a g120v15 did not match the expected value";
+	default:
+		return "unknown outstation error";
 	}
+}
 
-	std::error_code make_error_code(OutstationError err)
-	{
-		return std::error_code(static_cast<int>(err), OutstationErrorCategory::Instance());
-	}
+std::error_code make_error_code(OutstationError err)
+{
+	return std::error_code(static_cast<int>(err), OutstationErrorCategory::Instance());
+}
 
 }
 

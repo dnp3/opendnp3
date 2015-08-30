@@ -22,12 +22,12 @@
 #include "opendnp3/master/TaskConfig.h"
 
 namespace opendnp3
-{	
-	TaskConfig::TaskConfig(TaskId taskId_, ITaskCallback* pCallback_, User user_) :
-		taskId(taskId_),		
-		pCallback(pCallback_),		
-		user(user_)
-	{}
+{
+TaskConfig::TaskConfig(TaskId taskId_, ITaskCallback* pCallback_, User user_) :
+	taskId(taskId_),
+	pCallback(pCallback_),
+	user(user_)
+{}
 
 }
 

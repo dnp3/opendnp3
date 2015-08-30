@@ -27,17 +27,17 @@ namespace opendnp3
 {
 
 struct LinkHeaderFields
-{	
+{
 	LinkHeaderFields();
 
 	LinkHeaderFields(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source);
-	
+
 	LinkFunction func;
 	bool isFromMaster;
 	bool fcb;
 	bool fcvdfc;
 	uint16_t dest;
-	uint16_t src;		
+	uint16_t src;
 };
 
 }

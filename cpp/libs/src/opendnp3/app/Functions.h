@@ -32,7 +32,7 @@ class Functions : private openpal::StaticOnly
 {
 public:
 
-	static bool IsNoAckFuncCode(FunctionCode code);	
+	static bool IsNoAckFuncCode(FunctionCode code);
 };
 
 }

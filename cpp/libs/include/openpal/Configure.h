@@ -24,18 +24,22 @@
 #include <cstdint>
 
 // Default configurations for the static erasure size.
-// They are liberally set by default for x64 
+// They are liberally set by default for x64
 // but can be reduced for embedded systems.
 
 #ifndef OPENPAL_ERASURE_MULTIPLE
 #define OPENPAL_ERASURE_MULTIPLE 12
 #endif
 
-namespace openpal { namespace sizes {
+namespace openpal
+{
+namespace sizes
+{
 
-	static const uint16_t MAX_ERASURE_SIZE = OPENPAL_ERASURE_MULTIPLE * sizeof(void*);
+static const uint16_t MAX_ERASURE_SIZE = OPENPAL_ERASURE_MULTIPLE* sizeof(void*);
 
-}}
+}
+}
 
 #ifdef AVR
 
@@ -43,26 +47,26 @@ namespace openpal { namespace sizes {
 #include <stdlib.h>
 
 inline void* operator new(size_t, void* p)
-{ 
+{
 	return p;
 }
 
-inline void * operator new(size_t size)
+inline void* operator new(size_t size)
 {
 	return malloc(size);
 }
 
-inline void operator delete(void * ptr)
+inline void operator delete(void* ptr)
 {
 	free(ptr);
 }
 
-inline void * operator new[](size_t size)
+inline void* operator new[](size_t size)
 {
 	return malloc(size);
 }
 
-inline void operator delete[](void * ptr)
+inline void operator delete[](void* ptr)
 {
 	free(ptr);
 }

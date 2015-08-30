@@ -50,11 +50,11 @@ void ClassRequest(APDURequest& request, FunctionCode fc, const ClassField& class
 	request.SetControl(AppControlField(true, true, false, false, seq));
 	request.SetFunction(fc);
 	auto writer = request.GetWriter();
-	WriteClassHeaders(writer, classes);	
+	WriteClassHeaders(writer, classes);
 }
 
 bool WriteClassHeaders(HeaderWriter& writer, const ClassField& classes)
-{	
+{
 	if (classes.HasClass1())
 	{
 		if (!writer.WriteHeader(Group60Var2::ID(), QualifierCode::ALL_OBJECTS))
@@ -89,7 +89,7 @@ bool WriteClassHeaders(HeaderWriter& writer, const ClassField& classes)
 
 void DisableUnsolicited(APDURequest& request, uint8_t seq)
 {
-	ClassRequest(request, FunctionCode::DISABLE_UNSOLICITED, ClassField::AllEventClasses(), seq);	
+	ClassRequest(request, FunctionCode::DISABLE_UNSOLICITED, ClassField::AllEventClasses(), seq);
 }
 
 void EnableUnsolicited(APDURequest& request, const ClassField& classes, uint8_t seq)
@@ -103,11 +103,11 @@ void ClearRestartIIN(APDURequest& request, uint8_t seq)
 	request.SetControl(AppControlField(true, true, false, false, seq));
 	auto writer = request.GetWriter();
 	auto iter = writer.IterateOverSingleBitfield<openpal::UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, static_cast<uint8_t>(IINBit::DEVICE_RESTART));
-	iter.Write(false);		
+	iter.Write(false);
 }
 
 void MeasureDelay(APDURequest& request, uint8_t seq)
-{	
+{
 	request.SetFunction(FunctionCode::DELAY_MEASURE);
 	request.SetControl(AppControlField::Request(seq));
 }

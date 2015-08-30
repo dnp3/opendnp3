@@ -31,7 +31,7 @@ namespace opendnp3
 
 class ClassField
 {
-	public:	
+public:
 
 	ClassField();
 
@@ -43,9 +43,12 @@ class ClassField
 
 	bool IsEmpty() const;
 
-	bool Intersects(const ClassField& other) const;	
+	bool Intersects(const ClassField& other) const;
 
-	uint8_t GetBitfield() const { return bitfield; };
+	uint8_t GetBitfield() const
+	{
+		return bitfield;
+	};
 
 	ClassField OnlyEventClasses() const;
 
@@ -74,9 +77,9 @@ class ClassField
 
 	static ClassField None();
 	static ClassField AllClasses();
-	static ClassField AllEventClasses();	
-	
-	private:
+	static ClassField AllEventClasses();
+
+private:
 	uint8_t bitfield;
 };
 

@@ -135,7 +135,7 @@ TEST_CASE(SUITE("SyncFullPattern"))
 
 	REQUIRE(b.Sync());
 	REQUIRE(b.NumBytesRead() == 50);
-	REQUIRE(b.NumWriteBytes() ==  0);	
+	REQUIRE(b.NumWriteBytes() ==  0);
 }
 
 TEST_CASE(SUITE("SyncPartialPattern"))
@@ -151,7 +151,7 @@ TEST_CASE(SUITE("SyncPartialPattern"))
 
 	REQUIRE_FALSE(b.Sync());
 	REQUIRE(b.NumBytesRead() == 1);
-	REQUIRE(b.NumWriteBytes() ==  2);	
+	REQUIRE(b.NumWriteBytes() ==  2);
 }
 
 

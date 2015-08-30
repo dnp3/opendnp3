@@ -36,7 +36,7 @@ public:
 
 	MasterScan();
 
-	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask, const std::function<void()>& demandCallback);	
+	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask, const std::function<void()>& demandCallback);
 
 	// Request that the scan be performed as soon as possible
 	bool Demand();
@@ -44,8 +44,8 @@ public:
 	bool IsDefined() const;
 
 private:
-	
-	openpal::IExecutor* pExecutor;			
+
+	openpal::IExecutor* pExecutor;
 	IMasterTask* pTask;
 	std::function<void()> demandCallback;
 };

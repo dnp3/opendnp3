@@ -112,7 +112,7 @@ class SLLS_NotReset final : public SecStateBase
 {
 public:
 
-	MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);	
+	MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);
 
 	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const openpal::RSlice&) override;
 	virtual SecStateBase& OnResetLinkStates(LinkContext&) override;

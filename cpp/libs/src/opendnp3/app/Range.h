@@ -37,7 +37,7 @@ public:
 	static Range From(uint16_t start, uint16_t stop)
 	{
 		return Range(start, stop);
-	}	
+	}
 
 	static Range Invalid()
 	{
@@ -49,7 +49,7 @@ public:
 
 	uint32_t Count() const
 	{
-		return IsValid() ? (static_cast<uint32_t>(stop)-static_cast<uint32_t>(start) + 1) : 0;
+		return IsValid() ? (static_cast<uint32_t>(stop) - static_cast<uint32_t>(start) + 1) : 0;
 	}
 
 	bool Advance()
@@ -58,7 +58,7 @@ public:
 		{
 			if (start < stop)
 			{
-				++start;				
+				++start;
 			}
 			else
 			{
@@ -77,26 +77,26 @@ public:
 
 	/// @return A new range with only values found in both ranges
 	Range Intersection(const Range& other) const
-	{				
+	{
 		return Range(
-			openpal::Max<uint16_t>(start, other.start), 
-			openpal::Min<uint16_t>(stop, other.stop)
-		);		
+		           openpal::Max<uint16_t>(start, other.start),
+		           openpal::Min<uint16_t>(stop, other.stop)
+		       );
 	}
 
 	/// @return A new range with min start and the max stop of both ranges
 	Range Union(const Range& other) const
-	{		
+	{
 		return Range(
-			openpal::Min<uint16_t>(start, other.start),
-			openpal::Max<uint16_t>(stop, other.stop)
-		);		
-	}	
+		           openpal::Min<uint16_t>(start, other.start),
+		           openpal::Max<uint16_t>(stop, other.stop)
+		       );
+	}
 
 	bool Equals(const Range& other) const
 	{
 		return (other.start == start) && (other.stop == stop);
-	}   	
+	}
 
 	bool IsValid() const
 	{
@@ -107,7 +107,7 @@ public:
 	{
 		return IsValid() && (start <= 255) && (stop <= 255);
 	}
-	
+
 	uint16_t start;
 	uint16_t stop;
 

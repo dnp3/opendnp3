@@ -33,7 +33,10 @@ class MockOutstationApplicationSA : public secauth::IOutstationApplicationSA
 
 public:
 
-	virtual openpal::UTCTimestamp Now() override { return utc.Now(); }
+	virtual openpal::UTCTimestamp Now() override
+	{
+		return utc.Now();
+	}
 
 	virtual void OnNewSCSN(uint32_t statusChangeSeqNum) override
 	{

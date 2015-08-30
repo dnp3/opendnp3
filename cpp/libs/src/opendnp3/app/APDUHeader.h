@@ -43,17 +43,17 @@ struct APDUHeader
 	APDUHeader(const AppControlField& control_) : function(FunctionCode::UNKNOWN), control(control_)
 	{}
 
-	bool Equals(const APDUHeader& header) const 
-	{ 
+	bool Equals(const APDUHeader& header) const
+	{
 		return (header.function == function) && (header.control.ToByte() == control.ToByte());
 	}
-	
+
 	FunctionCode function;
 	AppControlField control;
 };
 
 struct APDUResponseHeader : public APDUHeader
-{	
+{
 	APDUResponseHeader(const AppControlField control_, const IINField& iin) : APDUHeader(control_), IIN(iin)
 	{}
 
@@ -63,7 +63,7 @@ struct APDUResponseHeader : public APDUHeader
 	APDUResponseHeader()
 	{}
 
-	IINField IIN;	
+	IINField IIN;
 };
 
 }

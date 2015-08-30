@@ -37,19 +37,22 @@ std::ostringstream& operator<<(std::ostringstream& ss, const openpal::LogFilters
 class ConsoleLogger : public openpal::ILogHandler
 {
 
-public:	
+public:
 
 	virtual void Log(const openpal::LogEntry& entry) override final;
-	
+
 	void SetPrintLocation(bool printLocation);
 
-	static openpal::ILogHandler& Instance() { return instance; };
+	static openpal::ILogHandler& Instance()
+	{
+		return instance;
+	};
 
-private:	
+private:
 
-	ConsoleLogger();	
+	ConsoleLogger();
 
-	static ConsoleLogger instance;	
+	static ConsoleLogger instance;
 
 	bool printLocation;
 

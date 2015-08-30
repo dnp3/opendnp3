@@ -37,7 +37,7 @@ class MonotonicTimestamp
 public:
 
 	static MonotonicTimestamp Max();
-	static MonotonicTimestamp Min();	
+	static MonotonicTimestamp Min();
 
 	bool IsMax() const;
 	bool IsMin() const;

@@ -36,7 +36,7 @@ namespace opendnp3
 class DeferredRequest : private openpal::Uncopyable
 {
 
-	public:
+public:
 
 	//typedef bool (*Handler)(OContext& ocontext, APDUHeader header, openpal::RSlice objects);
 
@@ -49,19 +49,19 @@ class DeferredRequest : private openpal::Uncopyable
 	FunctionCode GetFunction() const;
 
 	void Set(APDUHeader header, openpal::RSlice objects);
-	
+
 	template <class Handler>
 	bool Process(const Handler& handler);
-	
-	private:
+
+private:
 
 	DeferredRequest() = delete;
 
-	bool isSet;	
+	bool isSet;
 	APDUHeader header;
 	openpal::RSlice objects;
 	openpal::Buffer buffer;
-	
+
 };
 
 template <class Handler>

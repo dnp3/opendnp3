@@ -37,14 +37,14 @@ class NumParser
 	typedef uint16_t(*ReadFun)(openpal::RSlice& buffer);
 
 public:
-	
+
 	uint8_t NumBytes() const;
 
 	ParseResult ParseCount(openpal::RSlice& buffer, uint16_t& count, openpal::Logger* pLogger) const;
 	ParseResult ParseRange(openpal::RSlice& buffer, Range& range, openpal::Logger* pLogger) const;
 
 	uint16_t ReadNum(openpal::RSlice& buffer) const;
-	
+
 	static NumParser OneByte();
 	static NumParser TwoByte();
 

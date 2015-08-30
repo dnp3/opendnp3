@@ -47,17 +47,17 @@ namespace secauth
 {
 
 MAuthContext::MAuthContext(
-		openpal::IExecutor& executor,
-		openpal::LogRoot& root,
-		opendnp3::ILowerLayer& lower,
-		opendnp3::ISOEHandler& SOEHandler,
-		secauth::IMasterApplicationSA& application,
-		const opendnp3::MasterParams& params,
-		opendnp3::ITaskLock& taskLock,
-		const secauth::MasterAuthSettings& authSettings,
-		openpal::ICryptoProvider& crypto		
-	) : 
-	MContext(executor, root, lower, SOEHandler, application, params, taskLock),	
+    openpal::IExecutor& executor,
+    openpal::LogRoot& root,
+    opendnp3::ILowerLayer& lower,
+    opendnp3::ISOEHandler& SOEHandler,
+    secauth::IMasterApplicationSA& application,
+    const opendnp3::MasterParams& params,
+    opendnp3::ITaskLock& taskLock,
+    const secauth::MasterAuthSettings& authSettings,
+    openpal::ICryptoProvider& crypto
+) :
+	MContext(executor, root, lower, SOEHandler, application, params, taskLock),
 	security(executor, application, authSettings, crypto)
 {
 
@@ -69,8 +69,8 @@ void MAuthContext::InitSessionKeyTaskForUser(const User& user)
 	if (iter == security.sessionKeyTaskMap.end())
 	{
 		auto task = std::unique_ptr<SessionKeyTask>(
-			new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, security.settings.sessionChangeInterval, this->logger, user, *security.pCrypto, security.userDB, security.sessions)
-		);
+		                new SessionKeyTask(*this->pApplication, this->params.taskRetryPeriod, security.settings.sessionChangeInterval, this->logger, user, *security.pCrypto, security.userDB, security.sessions)
+		            );
 
 		this->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(task.get()));
 
@@ -87,18 +87,18 @@ bool MAuthContext::OnLowerLayerUp()
 	bool ret = MContext::OnLowerLayerUp();
 
 	if (ret)
-	{		
-		security.userDB.EnumerateUsers([this](const User& user)
+	{
+		security.userDB.EnumerateUsers([this](const User & user)
 		{
 			this->InitSessionKeyTaskForUser(user);
 		});
 	}
-		
+
 	return ret;
 }
 
 bool MAuthContext::OnLowerLayerDown()
-{	
+{
 	auto ret = MContext::OnLowerLayerDown();
 
 	if (ret)
@@ -111,22 +111,22 @@ bool MAuthContext::OnLowerLayerDown()
 }
 
 void MAuthContext::OnParsedHeader(const openpal::RSlice& apdu, const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
-{	
+{
 	switch (header.function)
 	{
-		case(FunctionCode::AUTH_RESPONSE) :
-			this->OnReceiveAuthResponse(apdu, header, objects);
-			break;
-		case(FunctionCode::RESPONSE) :
-			this->ProcessResponse(header, objects);
-			break;
-		case(FunctionCode::UNSOLICITED_RESPONSE) :
-			this->ProcessUnsolicitedResponse(header, objects);
-			break;
-		default:
-			FORMAT_LOG_BLOCK(this->logger, opendnp3::flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
-			break;
-	}	
+	case(FunctionCode::AUTH_RESPONSE) :
+		this->OnReceiveAuthResponse(apdu, header, objects);
+		break;
+	case(FunctionCode::RESPONSE) :
+		this->ProcessResponse(header, objects);
+		break;
+	case(FunctionCode::UNSOLICITED_RESPONSE) :
+		this->ProcessUnsolicitedResponse(header, objects);
+		break;
+	default:
+		FORMAT_LOG_BLOCK(this->logger, opendnp3::flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
+		break;
+	}
 }
 
 bool MAuthContext::CanRun(const opendnp3::IMasterTask& task)
@@ -161,7 +161,7 @@ void MAuthContext::RecordLastRequest(const openpal::RSlice& apdu)
 bool MAuthContext::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
 {
 	auto ret = security.userDB.AddUser(user, key);
-	if (ret) 
+	if (ret)
 	{
 		// invalidate any active sessions for this user immediately to force usage of the new update key
 		security.sessions.Invalidate(user);
@@ -184,11 +184,11 @@ void MAuthContext::BeginUpdateKeyChange(const std::string& username, const opend
 void MAuthContext::FinishUpdateKeyChange(const FinishUpdateKeyChangeArgs& args, const opendnp3::TaskConfig& config)
 {
 	// the callback that is invoked if a this task succeeds and is fully authenticated
-	ChangeUpdateKeyCallbackT callback = [this](const std::string& username, opendnp3::User user, const UpdateKey& key) -> void
+	ChangeUpdateKeyCallbackT callback = [this](const std::string & username, opendnp3::User user, const UpdateKey & key) -> void
 	{
 		// record the new or updated key internally
 		this->AddUser(user, key);
-		
+
 		// create or demand session key task for this user
 		this->InitSessionKeyTaskForUser(user);
 
@@ -203,7 +203,7 @@ void MAuthContext::FinishUpdateKeyChange(const FinishUpdateKeyChangeArgs& args, 
 void MAuthContext::OnReceiveAuthResponse(const openpal::RSlice& apdu, const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	// need to determine the context of the auth response
-	
+
 	if (!(this->tstate == TaskState::WAIT_FOR_RESPONSE && this->pActiveTask.IsDefined()))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unexpected AuthResponse");
@@ -226,16 +226,16 @@ void MAuthContext::OnReceiveAuthResponse(const openpal::RSlice& apdu, const open
 
 	switch (gv)
 	{
-		case(GroupVariation::Group120Var1) : // a challenge
-			this->OnAuthChallenge(apdu, header, objects);
-			return;
-		case(GroupVariation::Group120Var7) : // an error
-			this->OnAuthError(apdu, header, objects); 
-			return;
-		default:
-			FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unknown AuthResponse type: %s", GroupVariationToString(gv));
-			return;
-	}	
+	case(GroupVariation::Group120Var1) : // a challenge
+		this->OnAuthChallenge(apdu, header, objects);
+		return;
+	case(GroupVariation::Group120Var7) : // an error
+		this->OnAuthError(apdu, header, objects);
+		return;
+	default:
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unknown AuthResponse type: %s", GroupVariationToString(gv));
+		return;
+	}
 }
 
 void MAuthContext::OnAuthChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects)
@@ -273,7 +273,7 @@ void MAuthContext::OnAuthChallenge(const openpal::RSlice& apdu, const opendnp3::
 	// lookup the session keys
 	SessionKeysView keys;
 	if (security.sessions.TryGetSessionKeys(user, keys) != KeyStatus::OK)
-	{		
+	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Session is not valid for user: %u", user.GetId());
 		return;
 	}
@@ -283,7 +283,7 @@ void MAuthContext::OnAuthChallenge(const openpal::RSlice& apdu, const opendnp3::
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Outstation requested unsupported HMAC type: %s", HMACTypeToString(handler.value.hmacAlgo));
 		return;
-	}	
+	}
 
 	HMACProvider hmacProvider(*security.pCrypto, hmacMode);
 
@@ -295,16 +295,16 @@ void MAuthContext::OnAuthChallenge(const openpal::RSlice& apdu, const opendnp3::
 		FORMAT_LOG_BLOCK(this->logger, flags::ERR, "Error calculating HMAC: %s", ec.message().c_str());
 		return;
 	}
-		
+
 	Group120Var2 challengeReply;
 	challengeReply.challengeSeqNum = handler.value.challengeSeqNum;
 	challengeReply.userNum = user.GetId();
 	challengeReply.hmacValue = hmacValue;
-	
+
 	APDURequest reply(security.challengeReplyBuffer.GetWSlice());
 	reply.SetFunction(FunctionCode::AUTH_REQUEST);
 	reply.SetControl(AppControlField::Request(header.control.SEQ));
-	
+
 	if (!reply.GetWriter().WriteFreeFormat(challengeReply))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Unable to write challenge reply");
@@ -327,9 +327,9 @@ void MAuthContext::OnAuthError(const openpal::RSlice& apdu, const opendnp3::APDU
 	auto errorCode = handler.value.errorCode;
 
 	FORMAT_LOG_BLOCK(this->logger, flags::WARN,
-		"Received auth error from outstation w/ code: %s",
-		AuthErrorCodeToString(errorCode)
-	);
+	                 "Received auth error from outstation w/ code: %s",
+	                 AuthErrorCodeToString(errorCode)
+	                );
 
 	if (this->tstate != TaskState::WAIT_FOR_RESPONSE || !this->pActiveTask.IsDefined())
 	{

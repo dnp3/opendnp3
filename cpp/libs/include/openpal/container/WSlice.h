@@ -42,7 +42,7 @@ public:
 
 	void SetAllTo(uint8_t value);
 
-	WSlice();	
+	WSlice();
 	WSlice(uint8_t* pBuffer, uint32_t size);
 
 	void Clear();

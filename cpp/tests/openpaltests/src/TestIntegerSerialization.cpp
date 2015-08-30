@@ -50,12 +50,12 @@ bool TestReadWrite(T value)
 			return false;
 		}
 
-		auto written = buffer.ToRSlice().Skip(i);		
+		auto written = buffer.ToRSlice().Skip(i);
 		T readValue;
 		if (!(Parse::Read(written, readValue) && value == readValue))
 		{
 			return false;
-		}		
+		}
 	}
 
 	return true;
@@ -75,7 +75,7 @@ TEST_CASE(SUITE("UInt16"))
 {
 	REQUIRE(TestReadWrite<uint16_t>(0));
 	REQUIRE(TestReadWrite<uint16_t>(123));
-	REQUIRE(TestReadWrite<uint16_t>(65535));	
+	REQUIRE(TestReadWrite<uint16_t>(65535));
 }
 
 TEST_CASE(SUITE("UInt16 read from little endian"))
@@ -125,13 +125,13 @@ TEST_CASE(SUITE("Int32"))
 
 TEST_CASE(SUITE("Int32 read from little endian"))
 {
-	uint8_t arr[4] = { 0x00, 0x00, 0x00, 0x80 };	
+	uint8_t arr[4] = { 0x00, 0x00, 0x00, 0x80 };
 
 	REQUIRE(Int32::Read(arr) == openpal::MinValue<int32_t>());
 }
 
 TEST_CASE(SUITE("UInt48"))
-{	
+{
 	REQUIRE(TestReadWrite<UInt48Type>(UInt48Type(0)));
 	REQUIRE(TestReadWrite<UInt48Type>(UInt48Type(123)));
 	REQUIRE(TestReadWrite<UInt48Type>(UInt48Type(281474976710655ULL)));
@@ -149,13 +149,13 @@ TEST_CASE(SUITE("UInt48  read from little endian"))
 TEST_CASE(SUITE("ParseMany"))
 {
 	HexSequence hex("FF AB BA 01 00 00 00 CC");
-		
-	uint8_t first = 0; 
+
+	uint8_t first = 0;
 	uint16_t second = 0;
-	uint32_t third = 0;	
+	uint32_t third = 0;
 
 	{
-		auto input = hex.ToRSlice();		
+		auto input = hex.ToRSlice();
 		REQUIRE(Parse::Many(input, first, second, third));
 		REQUIRE(first == 255);
 		REQUIRE(second == 0xBAAB);
@@ -164,7 +164,7 @@ TEST_CASE(SUITE("ParseMany"))
 	}
 
 	{
-		auto input = hex.ToRSlice().Skip(2);		
+		auto input = hex.ToRSlice().Skip(2);
 		REQUIRE_FALSE(Parse::Many(input, first, second, third));
 	}
 }

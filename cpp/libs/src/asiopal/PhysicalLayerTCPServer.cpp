@@ -37,8 +37,8 @@ namespace asiopal
 {
 
 PhysicalLayerTCPServer::PhysicalLayerTCPServer(
-	openpal::LogRoot& root,
-	asio::io_service& service,
+    openpal::LogRoot& root,
+    asio::io_service& service,
     const std::string& endpoint,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> configure_) :
@@ -61,7 +61,10 @@ void PhysicalLayerTCPServer::DoOpen()
 		auto address = asio::ip::address::from_string(localEndpointString, ec);
 		if (ec)
 		{
-			auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+			auto lambda = [this, ec]()
+			{
+				this->OnOpenCallback(ec);
+			};
 			pExecutor->PostLambda(lambda);
 		}
 		else
@@ -70,7 +73,10 @@ void PhysicalLayerTCPServer::DoOpen()
 			acceptor.open(localEndpoint.protocol(), ec);
 			if (ec)
 			{
-				auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+				auto lambda = [this, ec]()
+				{
+					this->OnOpenCallback(ec);
+				};
 				pExecutor->PostLambda(lambda);
 			}
 			else
@@ -79,7 +85,10 @@ void PhysicalLayerTCPServer::DoOpen()
 				acceptor.bind(localEndpoint, ec);
 				if (ec)
 				{
-					auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+					auto lambda = [this, ec]()
+					{
+						this->OnOpenCallback(ec);
+					};
 					pExecutor->PostLambda(lambda);
 				}
 				else
@@ -87,12 +96,18 @@ void PhysicalLayerTCPServer::DoOpen()
 					acceptor.listen(socket_base::max_connections, ec);
 					if (ec)
 					{
-						auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+						auto lambda = [this, ec]()
+						{
+							this->OnOpenCallback(ec);
+						};
 						pExecutor->PostLambda(lambda);
 					}
 					else
 					{
-						auto callback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
+						auto callback = [this](const std::error_code & code)
+						{
+							this->OnOpenCallback(code);
+						};
 						acceptor.async_accept(socket, remoteEndpoint, executor.strand.wrap(callback));
 					}
 				}
@@ -101,7 +116,10 @@ void PhysicalLayerTCPServer::DoOpen()
 	}
 	else
 	{
-		auto callback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
+		auto callback = [this](const std::error_code & code)
+		{
+			this->OnOpenCallback(code);
+		};
 		acceptor.async_accept(socket, remoteEndpoint, executor.strand.wrap(callback));
 	}
 }

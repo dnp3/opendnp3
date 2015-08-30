@@ -40,7 +40,7 @@ struct OutstationParams
 	IndexMode indexMode;
 
 	/// The maximum number of controls the outstation will attempt to process from a single APDU
-	uint8_t maxControlsPerRequest;			
+	uint8_t maxControlsPerRequest;
 
 	/// How long the outstation will allow an operate to proceed after a prior select
 	openpal::TimeDuration selectTimeout;
@@ -67,7 +67,7 @@ struct OutstationParams
 	StaticTypeBitField typesAllowedInClass0;
 
 	/// Class mask for unsolicted, default to 0 as unsolicited has to be enabled
-	ClassField unsolClassMask;	
+	ClassField unsolClassMask;
 };
 
 }

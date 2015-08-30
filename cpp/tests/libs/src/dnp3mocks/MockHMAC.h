@@ -25,46 +25,49 @@
 
 namespace opendnp3
 {
-	class MockHMAC : public openpal::IHMACAlgo
+class MockHMAC : public openpal::IHMACAlgo
+{
+public:
+
+	MockHMAC(uint16_t size) : fillByte(0xFF), SIZE(size) {}
+
+	virtual uint16_t OutputSize() const
 	{
-	public:
+		return SIZE;
+	}
 
-		MockHMAC(uint16_t size) : fillByte(0xFF), SIZE(size) {}
-
-		virtual uint16_t OutputSize() const { return SIZE; }
-
-		virtual openpal::RSlice Calculate(
-			const openpal::RSlice& key,
-			std::initializer_list<openpal::RSlice> data,
-			openpal::WSlice& output,
-			std::error_code& ec
-			)
+	virtual openpal::RSlice Calculate(
+	    const openpal::RSlice& key,
+	    std::initializer_list<openpal::RSlice> data,
+	    openpal::WSlice& output,
+	    std::error_code& ec
+	)
+	{
+		if (output.Size() < SIZE)
 		{
-			if (output.Size() < SIZE)
-			{
-				ec = std::error_code(1, std::generic_category());
-				return openpal::RSlice();
-			}
-			else
-			{
-				for (uint16_t i = 0; i < SIZE; ++i)
-				{
-					output[i] = fillByte;
-				}
-				auto ret = output.ToRSlice().Take(SIZE);
-				output.Advance(SIZE);
-				return ret;
-			}			
+			ec = std::error_code(1, std::generic_category());
+			return openpal::RSlice();
 		}
+		else
+		{
+			for (uint16_t i = 0; i < SIZE; ++i)
+			{
+				output[i] = fillByte;
+			}
+			auto ret = output.ToRSlice().Take(SIZE);
+			output.Advance(SIZE);
+			return ret;
+		}
+	}
 
-		uint8_t fillByte;
+	uint8_t fillByte;
 
-	private:
+private:
 
-		const uint16_t SIZE;
+	const uint16_t SIZE;
 
-		
-	};
+
+};
 }
 
 #endif

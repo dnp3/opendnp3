@@ -34,17 +34,17 @@
 namespace opendnp3
 {
 
-/** 
+/**
 	Implements the DNP3 transport layer
 */
 class TransportLayer : public IUpperLayer, public ILowerLayer
-{		
+{
 
 public:
 
 	TransportLayer(openpal::LogRoot& root, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics_ = nullptr);
 
-	/// ILowerLayer		
+	/// ILowerLayer
 
 	virtual void BeginTransmit(const openpal::RSlice&) override final;
 
@@ -59,17 +59,17 @@ public:
 	void SetLinkLayer(ILinkLayer* pLinkLayer_);
 
 private:
-	
+
 	openpal::Logger logger;
 	IUpperLayer* pUpperLayer;
-	ILinkLayer* pLinkLayer;	
+	ILinkLayer* pLinkLayer;
 
 	// ---- state ----
 	bool isOnline;
 	bool isSending;
 
 	openpal::IExecutor* pExecutor;
-	
+
 	// ----- Transmitter and Receiver Classes ------
 	TransportRx receiver;
 	TransportTx transmitter;

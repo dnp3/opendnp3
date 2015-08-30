@@ -41,199 +41,208 @@
 
 namespace opendnp3
 {
-	/*
-		All of the mutable state and configuration for a master
-	*/
-	class MContext : public IUpperLayer, private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
+/*
+	All of the mutable state and configuration for a master
+*/
+class MContext : public IUpperLayer, private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
+{
+
+protected:
+
+	enum class TaskState
 	{
-
-	protected:
-
-		enum class TaskState
-		{
-			IDLE,
-			TASK_READY,
-			WAIT_FOR_RESPONSE
-		};
-
-	public:
-
-		MContext(
-			openpal::IExecutor& executor,
-			openpal::LogRoot& root,
-			ILowerLayer& lower,
-			ISOEHandler& SOEHandler,
-			opendnp3::IMasterApplication& application,			
-			const MasterParams& params,
-			ITaskLock& taskLock
-		);
-
-		openpal::Logger logger;
-		openpal::IExecutor* pExecutor;
-		ILowerLayer* pLower;
-
-		// ------- configuration --------
-		MasterParams params;
-		ISOEHandler* pSOEHandler;
-		ITaskLock* pTaskLock;
-		IMasterApplication* pApplication;				
-
-
-		// ------- dynamic state ---------
-		bool isOnline;
-		bool isSending;
-		AppSeqNum solSeq;
-		AppSeqNum unsolSeq;
-		openpal::ManagedPtr<IMasterTask> pActiveTask;		
-		openpal::TimerRef responseTimer;
-		openpal::TimerRef scheduleTimer;
-		openpal::TimerRef taskStartTimeoutTimer;
-		MasterTasks tasks;
-		MasterScheduler scheduler;
-		std::deque<APDUHeader> confirmQueue;
-		openpal::Buffer txBuffer;
-		TaskState tstate;
-
-		/// --- implement  IUpperLayer ------
-		
-		virtual bool OnLowerLayerUp() override;
-
-		virtual bool OnLowerLayerDown() override;
-		
-		virtual bool OnReceive(const openpal::RSlice& apdu) override final;
-
-		virtual bool OnSendResult(bool isSucccess) override final;
-
-		/// additional virtual methods that can be overriden to implement secure authentication				
-		
-		virtual void OnParsedHeader(const openpal::RSlice& apdu, const APDUResponseHeader& header, const openpal::RSlice& objects);		
-
-		virtual void RecordLastRequest(const openpal::RSlice& apdu) {}
-
-		virtual bool MeetsUserRequirements(const IMasterTask& task) { return true; }
-
-		/// ITaskFilter
-
-		virtual bool CanRun(const IMasterTask& task) override { return true; }
-
-		virtual void SetTaskStartTimeout(const openpal::MonotonicTimestamp& time) override final;
-
-		/// methods for initiating command sequences
-
-		void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-
-		void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-
-		void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-
-		void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-
-		void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-		void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-
-		/// -----  public methods used to add tasks -----
-
-		MasterScan AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
-
-		MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
-
-		MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
-
-		MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
-
-		/// ---- Single shot immediate scans ----
-
-		void Scan(const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
-
-		void ScanAllObjects(GroupVariationID gvId, TaskConfig config = TaskConfig::Default());
-
-		void ScanClasses(const ClassField& field, TaskConfig config = TaskConfig::Default());
-
-		void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config = TaskConfig::Default());
-
-		/// ---- Write tasks -----
-
-		void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
-
-		void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
-	
-		/// public state manipulation actions
-
-		TaskState BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
-
-		TaskState ResumeActiveTask();
-
-		void CompleteActiveTask();
-
-		void QueueConfirm(const APDUHeader& header);
-
-		void StartResponseTimer();		
-
-		void ProcessAPDU(const APDUResponseHeader& header, const openpal::RSlice& objects);
-
-		void CheckForTask();
-
-		bool CheckConfirmTransmit();
-
-		void PostCheckForTask();
-
-		void ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
-
-		void ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
-
-		void Transmit(const openpal::RSlice& data);
-
-	private:	
-
-		void ScheduleRecurringPollTask(IMasterTask* pTask);
-		
-		virtual void OnPendingTask() override { this->PostCheckForTask(); }
-
-		void ProcessIIN(const IINField& iin);		
-							
-		void OnResponseTimeout();
-
-		// -------- helpers for command requests --------	
-
-		template <class T>
-		void SelectAndOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
-
-		template <class T>
-		void DirectOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
-
-	protected:
-
-		void ScheduleAdhocTask(IMasterTask* pTask);
-				
-		/// state switch lookups
-		TaskState OnStartEvent();
-		TaskState OnResponseEvent(const APDUResponseHeader& header, const openpal::RSlice& objects);
-		TaskState OnResponseTimeoutEvent();
-
-		/// --- state handling functions ----
-
-		TaskState StartTask_Idle();
-		TaskState StartTask_TaskReady();
-
-		TaskState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
-		TaskState OnResponseTimeout_WaitForResponse();
+	    IDLE,
+	    TASK_READY,
+	    WAIT_FOR_RESPONSE
 	};
 
-	template <class T>
-	void MContext::SelectAndOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
+public:
+
+	MContext(
+	    openpal::IExecutor& executor,
+	    openpal::LogRoot& root,
+	    ILowerLayer& lower,
+	    ISOEHandler& SOEHandler,
+	    opendnp3::IMasterApplication& application,
+	    const MasterParams& params,
+	    ITaskLock& taskLock
+	);
+
+	openpal::Logger logger;
+	openpal::IExecutor* pExecutor;
+	ILowerLayer* pLower;
+
+	// ------- configuration --------
+	MasterParams params;
+	ISOEHandler* pSOEHandler;
+	ITaskLock* pTaskLock;
+	IMasterApplication* pApplication;
+
+
+	// ------- dynamic state ---------
+	bool isOnline;
+	bool isSending;
+	AppSeqNum solSeq;
+	AppSeqNum unsolSeq;
+	openpal::ManagedPtr<IMasterTask> pActiveTask;
+	openpal::TimerRef responseTimer;
+	openpal::TimerRef scheduleTimer;
+	openpal::TimerRef taskStartTimeoutTimer;
+	MasterTasks tasks;
+	MasterScheduler scheduler;
+	std::deque<APDUHeader> confirmQueue;
+	openpal::Buffer txBuffer;
+	TaskState tstate;
+
+	/// --- implement  IUpperLayer ------
+
+	virtual bool OnLowerLayerUp() override;
+
+	virtual bool OnLowerLayerDown() override;
+
+	virtual bool OnReceive(const openpal::RSlice& apdu) override final;
+
+	virtual bool OnSendResult(bool isSucccess) override final;
+
+	/// additional virtual methods that can be overriden to implement secure authentication
+
+	virtual void OnParsedHeader(const openpal::RSlice& apdu, const APDUResponseHeader& header, const openpal::RSlice& objects);
+
+	virtual void RecordLastRequest(const openpal::RSlice& apdu) {}
+
+	virtual bool MeetsUserRequirements(const IMasterTask& task)
 	{
-		this->ScheduleAdhocTask(CommandTask::FSelectAndOperate(command, index, *pApplication, callback, config, serializer, logger));
+		return true;
 	}
 
-	template <class T>
-	void MContext::DirectOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
+	/// ITaskFilter
+
+	virtual bool CanRun(const IMasterTask& task) override
 	{
-		this->ScheduleAdhocTask(CommandTask::FDirectOperate(command, index, *pApplication, callback, config, serializer, logger));
+		return true;
 	}
+
+	virtual void SetTaskStartTimeout(const openpal::MonotonicTimestamp& time) override final;
+
+	/// methods for initiating command sequences
+
+	void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+	void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+
+	void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+	void DirectOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+
+	void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+	void DirectOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+
+	void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+	void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+
+	void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+	void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+
+	/// -----  public methods used to add tasks -----
+
+	MasterScan AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+
+	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+
+	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+
+	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+
+	/// ---- Single shot immediate scans ----
+
+	void Scan(const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+
+	void ScanAllObjects(GroupVariationID gvId, TaskConfig config = TaskConfig::Default());
+
+	void ScanClasses(const ClassField& field, TaskConfig config = TaskConfig::Default());
+
+	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config = TaskConfig::Default());
+
+	/// ---- Write tasks -----
+
+	void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
+
+	void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+
+	/// public state manipulation actions
+
+	TaskState BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
+
+	TaskState ResumeActiveTask();
+
+	void CompleteActiveTask();
+
+	void QueueConfirm(const APDUHeader& header);
+
+	void StartResponseTimer();
+
+	void ProcessAPDU(const APDUResponseHeader& header, const openpal::RSlice& objects);
+
+	void CheckForTask();
+
+	bool CheckConfirmTransmit();
+
+	void PostCheckForTask();
+
+	void ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
+
+	void ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
+
+	void Transmit(const openpal::RSlice& data);
+
+private:
+
+	void ScheduleRecurringPollTask(IMasterTask* pTask);
+
+	virtual void OnPendingTask() override
+	{
+		this->PostCheckForTask();
+	}
+
+	void ProcessIIN(const IINField& iin);
+
+	void OnResponseTimeout();
+
+	// -------- helpers for command requests --------
+
+	template <class T>
+	void SelectAndOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
+
+	template <class T>
+	void DirectOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
+
+protected:
+
+	void ScheduleAdhocTask(IMasterTask* pTask);
+
+	/// state switch lookups
+	TaskState OnStartEvent();
+	TaskState OnResponseEvent(const APDUResponseHeader& header, const openpal::RSlice& objects);
+	TaskState OnResponseTimeoutEvent();
+
+	/// --- state handling functions ----
+
+	TaskState StartTask_Idle();
+	TaskState StartTask_TaskReady();
+
+	TaskState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
+	TaskState OnResponseTimeout_WaitForResponse();
+};
+
+template <class T>
+void MContext::SelectAndOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
+{
+	this->ScheduleAdhocTask(CommandTask::FSelectAndOperate(command, index, *pApplication, callback, config, serializer, logger));
+}
+
+template <class T>
+void MContext::DirectOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
+{
+	this->ScheduleAdhocTask(CommandTask::FDirectOperate(command, index, *pApplication, callback, config, serializer, logger));
+}
 }
 
 #endif

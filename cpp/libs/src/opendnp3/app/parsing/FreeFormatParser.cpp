@@ -33,102 +33,102 @@ using namespace openpal;
 
 namespace opendnp3
 {
-	ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+{
+	if (buffer.Size() < 3)
 	{
-		if (buffer.Size() < 3)
-		{
-			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for free format data");
-			return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
-		}
-		
-		const uint8_t FREE_FORMAT_COUNT = UInt8::ReadBuffer(buffer);
-		const uint16_t FREE_FORMAT_SIZE = UInt16::ReadBuffer(buffer);
-
-		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-			"%03u, %03u %s, %s [%u]",
-			record.group,
-			record.variation,
-			GroupVariationToString(record.enumeration),
-			QualifierCodeToString(record.GetQualifierCode()),
-			FREE_FORMAT_COUNT
-			);
-
-		if (FREE_FORMAT_COUNT != 1)
-		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported free-format count of %u", FREE_FORMAT_COUNT);
-			return ParseResult::UNREASONABLE_OBJECT_COUNT;
-		}
-
-		if (buffer.Size() < FREE_FORMAT_SIZE)
-		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data (%u) for free format object of size (%u)", buffer.Size(), FREE_FORMAT_SIZE);
-			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-		}
-	
-		RSlice copy(buffer.Take(FREE_FORMAT_SIZE));
-		buffer.Advance(FREE_FORMAT_SIZE);
-
-		FreeFormatHeader header(record, FREE_FORMAT_COUNT);
-
-		switch (record.enumeration)
-		{
-		case(GroupVariation::Group120Var1) :
-			return ParseFreeFormat(ParseAny<Group120Var1>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var2) :
-			return ParseFreeFormat(ParseAny<Group120Var2>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var5) :
-			return ParseFreeFormat(ParseAny<Group120Var5>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var6) :
-			return ParseFreeFormat(ParseAny<Group120Var6>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var7) :
-			return ParseFreeFormat(ParseAny<Group120Var7>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var10) :
-			return ParseFreeFormat(ParseAny<Group120Var10>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var11) :
-			return ParseFreeFormat(ParseAny<Group120Var11>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var12) :
-			return ParseFreeFormat(ParseAny<Group120Var12>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var13) :
-			return ParseFreeFormat(ParseAny<Group120Var13>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var14) :
-			return ParseFreeFormat(ParseAny<Group120Var14>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		case(GroupVariation::Group120Var15) :
-			return ParseFreeFormat(ParseAny<Group120Var15>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
-
-		default:
-			FORMAT_LOGGER_BLOCK(
-				pLogger, flags::WARN,
-				"Unknown object (%i, %i) and qualifer (%i) in AuthRequest",
-				record.group,
-				record.variation,
-				record.qualifier
-				);
-			return ParseResult::INVALID_OBJECT_QUALIFIER;
-		}
-		
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for free format data");
+		return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
 	}
 
-	ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser, const FreeFormatHeader& header, uint16_t size, openpal::RSlice& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger)
-	{				
-		if (parser(header, objects, pHandler))
-		{
-			return ParseResult::OK;
-		}
-		else
-		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Error parsing free-format (%i, %i)", header.group, header.variation);
-			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-		}		
+	const uint8_t FREE_FORMAT_COUNT = UInt8::ReadBuffer(buffer);
+	const uint16_t FREE_FORMAT_SIZE = UInt16::ReadBuffer(buffer);
+
+	FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
+	                    "%03u, %03u %s, %s [%u]",
+	                    record.group,
+	                    record.variation,
+	                    GroupVariationToString(record.enumeration),
+	                    QualifierCodeToString(record.GetQualifierCode()),
+	                    FREE_FORMAT_COUNT
+	                   );
+
+	if (FREE_FORMAT_COUNT != 1)
+	{
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported free-format count of %u", FREE_FORMAT_COUNT);
+		return ParseResult::UNREASONABLE_OBJECT_COUNT;
 	}
+
+	if (buffer.Size() < FREE_FORMAT_SIZE)
+	{
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data (%u) for free format object of size (%u)", buffer.Size(), FREE_FORMAT_SIZE);
+		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
+	}
+
+	RSlice copy(buffer.Take(FREE_FORMAT_SIZE));
+	buffer.Advance(FREE_FORMAT_SIZE);
+
+	FreeFormatHeader header(record, FREE_FORMAT_COUNT);
+
+	switch (record.enumeration)
+	{
+	case(GroupVariation::Group120Var1) :
+		return ParseFreeFormat(ParseAny<Group120Var1>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var2) :
+		return ParseFreeFormat(ParseAny<Group120Var2>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var5) :
+		return ParseFreeFormat(ParseAny<Group120Var5>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var6) :
+		return ParseFreeFormat(ParseAny<Group120Var6>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var7) :
+		return ParseFreeFormat(ParseAny<Group120Var7>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var10) :
+		return ParseFreeFormat(ParseAny<Group120Var10>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var11) :
+		return ParseFreeFormat(ParseAny<Group120Var11>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var12) :
+		return ParseFreeFormat(ParseAny<Group120Var12>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var13) :
+		return ParseFreeFormat(ParseAny<Group120Var13>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var14) :
+		return ParseFreeFormat(ParseAny<Group120Var14>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var15) :
+		return ParseFreeFormat(ParseAny<Group120Var15>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	default:
+		FORMAT_LOGGER_BLOCK(
+		    pLogger, flags::WARN,
+		    "Unknown object (%i, %i) and qualifer (%i) in AuthRequest",
+		    record.group,
+		    record.variation,
+		    record.qualifier
+		);
+		return ParseResult::INVALID_OBJECT_QUALIFIER;
+	}
+
+}
+
+ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser, const FreeFormatHeader& header, uint16_t size, openpal::RSlice& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger)
+{
+	if (parser(header, objects, pHandler))
+	{
+		return ParseResult::OK;
+	}
+	else
+	{
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Error parsing free-format (%i, %i)", header.group, header.variation);
+		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
+	}
+}
 
 }

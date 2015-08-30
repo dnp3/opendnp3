@@ -42,7 +42,7 @@ PhysicalLayerBaseTCP::PhysicalLayerBaseTCP(openpal::LogRoot& root, asio::io_serv
 	PhysicalLayerASIO(root, service),
 	socket(service)
 {
-	
+
 }
 
 /* Implement the actions */
@@ -55,12 +55,12 @@ void PhysicalLayerBaseTCP::DoClose()
 
 void PhysicalLayerBaseTCP::DoRead(WSlice& buff)
 {
-	uint8_t* pBuff = buff;	
-	
-	auto callback = [this, pBuff](const std::error_code & code, size_t  numRead) 
+	uint8_t* pBuff = buff;
+
+	auto callback = [this, pBuff](const std::error_code & code, size_t  numRead)
 	{
 		this->OnReadCallback(code, pBuff, static_cast<uint32_t>(numRead));
-	};	
+	};
 
 	socket.async_read_some(buffer(pBuff, buff.Size()), executor.strand.wrap(callback));
 }

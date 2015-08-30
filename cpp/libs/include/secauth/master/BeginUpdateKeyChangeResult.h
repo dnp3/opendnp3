@@ -33,24 +33,24 @@ namespace secauth
 {
 
 /**
-	The result of the first step in an update key change sequence 
+	The result of the first step in an update key change sequence
 */
 class BeginUpdateKeyChangeResult
-{	
+{
 
 public:
 
 	// failure constructor
 	BeginUpdateKeyChangeResult(opendnp3::TaskCompletion result);
-		
+
 	// success constructor
 	BeginUpdateKeyChangeResult(
-		opendnp3::User user,
-		uint32_t keyChangeSequenceNum,
-		const openpal::RSlice& masterChallengeData,
-		const openpal::RSlice& outstationChallengeData		
+	    opendnp3::User user,
+	    uint32_t keyChangeSequenceNum,
+	    const openpal::RSlice& masterChallengeData,
+	    const openpal::RSlice& outstationChallengeData
 	);
-	
+
 	/// The success or failure type of the overall operation
 	/// the other fields are only valid if this value is 'SUCCESS'
 	opendnp3::TaskCompletion result;
@@ -63,7 +63,7 @@ public:
 	openpal::Buffer masterChallengeData;
 	/// The challenge data that the outstation provided in its response
 	openpal::Buffer outstationChallengeData;
-	
+
 };
 
 }

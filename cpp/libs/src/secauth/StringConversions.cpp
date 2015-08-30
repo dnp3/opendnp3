@@ -23,18 +23,18 @@
 
 namespace secauth
 {
-	std::string ToString(const openpal::RSlice& rslice)
-	{
-		std::string str;	
-		const uint8_t* buffer = rslice;
-		str.append(reinterpret_cast<const char*>(buffer), rslice.Size());
-		return str;
-	}
+std::string ToString(const openpal::RSlice& rslice)
+{
+	std::string str;
+	const uint8_t* buffer = rslice;
+	str.append(reinterpret_cast<const char*>(buffer), rslice.Size());
+	return str;
+}
 
-	openpal::RSlice AsSlice(const std::string& str)
-	{
-		return openpal::RSlice(reinterpret_cast<const uint8_t*>(str.c_str()), str.size());
-	}
+openpal::RSlice AsSlice(const std::string& str)
+{
+	return openpal::RSlice(reinterpret_cast<const uint8_t*>(str.c_str()), str.size());
+}
 
 }
 

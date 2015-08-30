@@ -31,13 +31,13 @@ namespace testlib
 
 class LogRecord
 {
-	public:
+public:
 
 	LogRecord();
 	LogRecord(const openpal::LogEntry& entry);
 
 	std::string		id;
-	openpal::LogFilters		filters;	
+	openpal::LogFilters		filters;
 	std::string		location;
 	std::string		message;
 	int				errorCode;
@@ -75,7 +75,7 @@ public:
 	openpal::LogRoot root;
 
 protected:
-	
+
 	bool outputToStdIO;
 	openpal::Logger logger;
 	std::deque<LogRecord> messages;

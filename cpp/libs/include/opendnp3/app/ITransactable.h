@@ -59,7 +59,7 @@ public:
 		if (pTransactable)
 		{
 			pTransactable->Start();
-		}				
+		}
 	}
 
 	~Transaction()
@@ -67,7 +67,7 @@ public:
 		if (pTransactable)
 		{
 			pTransactable->End();
-		}		
+		}
 	}
 
 	static void Start(ITransactable* t)

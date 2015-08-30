@@ -34,24 +34,24 @@ using namespace testlib;
 #define SUITE(name) "OutstationKeyUpdateTestSuite - " name
 
 TEST_CASE(SUITE("Rejects user status change when authority is not configured"))
-{		
-	OutstationSecAuthFixture fixture;	
+{
+	OutstationSecAuthFixture fixture;
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
 	uint16_t statusChangeSeq = 0;
 
 	auto userStatusChangeRequest = hex::UserStatusChangeRequest(
-		seq,
-		KeyChangeMethod::AES_256_SHA256_HMAC,
-		UserOperation::OP_ADD,
-		statusChangeSeq,
-		UserRoleToType(UserRole::OPERATOR),
-		365,
-		"Jim",
-		"",
-		"DEADBEEF"
-		);
+	                                   seq,
+	                                   KeyChangeMethod::AES_256_SHA256_HMAC,
+	                                   UserOperation::OP_ADD,
+	                                   statusChangeSeq,
+	                                   UserRoleToType(UserRole::OPERATOR),
+	                                   365,
+	                                   "Jim",
+	                                   "",
+	                                   "DEADBEEF"
+	                               );
 
 	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED, DNPTime(0), "");
 
@@ -60,7 +60,7 @@ TEST_CASE(SUITE("Rejects user status change when authority is not configured"))
 
 TEST_CASE(SUITE("Rejects user status change with incorrect HMAC"))
 {
-	OutstationSecAuthFixture fixture;	
+	OutstationSecAuthFixture fixture;
 	fixture.context.ConfigureAuthority(0, AuthorityKey(0xFF));
 	fixture.LowerLayerUp();
 
@@ -69,20 +69,20 @@ TEST_CASE(SUITE("Rejects user status change with incorrect HMAC"))
 	fixture.crypto.sha256.fillByte = 0xBB; // force the HMACS to be different
 
 	auto userStatusChangeRequest = hex::UserStatusChangeRequest(
-		seq,
-		KeyChangeMethod::AES_256_SHA256_HMAC,
-		UserOperation::OP_ADD,
-		statusChangeSeq,
-		UserRoleToType(UserRole::OPERATOR),
-		365,
-		"Jim",
-		"",
-		hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
-		);
+	                                   seq,
+	                                   KeyChangeMethod::AES_256_SHA256_HMAC,
+	                                   UserOperation::OP_ADD,
+	                                   statusChangeSeq,
+	                                   UserRoleToType(UserRole::OPERATOR),
+	                                   365,
+	                                   "Jim",
+	                                   "",
+	                                   hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
+	                               );
 
 	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::INVALID_CERTIFICATION_DATA, DNPTime(0), "");
-	
-	
+
+
 	REQUIRE(fixture.SendAndReceive(userStatusChangeRequest) == response);
 	REQUIRE(fixture.context.security.stats.GetValue(SecurityStatIndex::AUTHENTICATION_FAILURES) == 1);
 	REQUIRE(fixture.context.security.otherStats.badStatusChangeSeqNum == 0);
@@ -99,19 +99,19 @@ TEST_CASE(SUITE("Rejects authenticated message w/ bad SCSN"))
 	fixture.crypto.sha256.fillByte = 0xAA;
 
 	auto userStatusChangeRequest = hex::UserStatusChangeRequest(
-		seq,
-		KeyChangeMethod::AES_256_SHA256_HMAC,
-		UserOperation::OP_ADD,
-		statusChangeSeq,
-		UserRoleToType(UserRole::OPERATOR),
-		365,
-		"Jim",
-		"",
-		hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
-		);
+	                                   seq,
+	                                   KeyChangeMethod::AES_256_SHA256_HMAC,
+	                                   UserOperation::OP_ADD,
+	                                   statusChangeSeq,
+	                                   UserRoleToType(UserRole::OPERATOR),
+	                                   365,
+	                                   "Jim",
+	                                   "",
+	                                   hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
+	                               );
 
 	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, statusChangeSeq, User::UNKNOWN_ID, 0, AuthErrorCode::INVALID_CERTIFICATION_DATA, DNPTime(0), "");
-	
+
 	REQUIRE(fixture.SendAndReceive(userStatusChangeRequest) == response);
 	REQUIRE(fixture.context.security.stats.GetValue(SecurityStatIndex::AUTHENTICATION_FAILURES) == 0);
 	REQUIRE(fixture.context.security.otherStats.badStatusChangeSeqNum == 1);
@@ -122,7 +122,7 @@ TEST_CASE(SUITE("Accepts authenticated message w/ good SCSN"))
 	OutstationSecAuthFixture fixture;
 	fixture.context.ConfigureAuthority(2, AuthorityKey(0xFF)); // expecitng SCSN >= 2
 	fixture.LowerLayerUp();
-	
+
 	AppSeqNum seq;
 	fixture.TestAddUserStatusChange("Jim", seq, 3);
 }
@@ -136,7 +136,7 @@ TEST_CASE(SUITE("Replies with auth error if now prior status change before begin
 	AppSeqNum seq;
 	auto request = hex::BeginUpdateKeyChangeRequest(seq, KeyChangeMethod::AES_256_SHA256_HMAC, "Jim", hex::repeat(0xFF, 4));
 	auto response = hex::AuthErrorResponse(IINBit::DEVICE_RESTART, seq, 0, User::UNKNOWN_ID, 0, AuthErrorCode::UNKNOWN_USER, DNPTime(0), "");
-	
+
 	REQUIRE(fixture.SendAndReceive(request) == response);
 }
 
@@ -150,7 +150,7 @@ TEST_CASE(SUITE("Replies with g120v12 if the user exists and assigns a user #"))
 	auto BOB = "bob";
 	const uint16_t EXPECTED_USER_NUM = 2; // the first un-used Id > 1
 	const uint32_t SCSN = 4;
-	
+
 	fixture.TestAddUserStatusChange(BOB, seq, SCSN);
 
 	auto request = hex::BeginUpdateKeyChangeRequest(seq, KeyChangeMethod::AES_256_SHA256_HMAC, BOB, hex::repeat(0xFF, 4));
@@ -173,14 +173,14 @@ TEST_CASE(SUITE("Correctly adds a user if the update key change authenticates"))
 	fixture.TestAddUserStatusChange(BOB, seq, SCSN);
 
 	{
- 		auto request = hex::BeginUpdateKeyChangeRequest(seq, KeyChangeMethod::AES_256_SHA256_HMAC, BOB, hex::repeat(0xFF, 4));
+		auto request = hex::BeginUpdateKeyChangeRequest(seq, KeyChangeMethod::AES_256_SHA256_HMAC, BOB, hex::repeat(0xFF, 4));
 		auto response = hex::BeginUpdateKeyChangeResponse(seq, 0, EXPECTED_USER_NUM, hex::repeat(0xAA, 4));
 		REQUIRE(fixture.SendAndReceive(request) == response);
 	}
 
 	seq.Increment();
 	uint32_t KSQ = 0;
-	
+
 	// The mock data for the key unwrap - "bob" followed by the update key, followed by the outstation challenge data + padding
 	fixture.crypto.keyWrap.hexOutput = std::string("62 6F 62") + hex::repeat(0xBB, 32) + hex::repeat(0xAA, 4);
 
@@ -196,7 +196,7 @@ TEST_CASE(SUITE("Correctly adds a user if the update key change authenticates"))
 	REQUIRE(info.username == BOB);
 	REQUIRE(info.permissions.IsAllowed(FunctionCode::DIRECT_OPERATE));
 	REQUIRE(ToHex(info.updateKey.GetView().data) == hex::repeat(0xBB, 32));
-	
+
 }
 
 

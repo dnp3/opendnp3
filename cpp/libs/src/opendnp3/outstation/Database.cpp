@@ -75,12 +75,12 @@ bool Database::Update(const AnalogOutputStatus& value, uint16_t index, EventMode
 }
 
 bool Database::Update(const TimeAndInterval& value, uint16_t index)
-{		
+{
 	auto rawIndex = GetRawIndex<TimeAndInterval>(index);
-	auto view = buffers.buffers.GetArrayView<TimeAndInterval>();	
+	auto view = buffers.buffers.GetArrayView<TimeAndInterval>();
 
 	if (view.Contains(rawIndex))
-	{		
+	{
 		view[rawIndex].value = value;
 		return true;
 	}
@@ -133,7 +133,7 @@ bool Database::Modify(const openpal::Function1<const AnalogOutputStatus&, Analog
 bool Database::Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index)
 {
 	auto rawIndex = GetRawIndex<TimeAndInterval>(index);
-	
+
 	auto view = buffers.buffers.GetArrayView<TimeAndInterval>();
 
 	if (view.Contains(rawIndex))

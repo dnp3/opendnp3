@@ -43,7 +43,7 @@ public:
 	// initialize with the exact size and contents of the view
 	Buffer(const RSlice& input);
 
-	virtual ~Buffer(){}	
+	virtual ~Buffer() {}
 
 	RSlice ToRSlice() const;
 
@@ -51,9 +51,15 @@ public:
 
 	WSlice GetWSlice(uint32_t maxSize);
 
-	const uint8_t* operator()() const { return buffer; }
+	const uint8_t* operator()() const
+	{
+		return buffer;
+	}
 
-	uint8_t* operator()() { return buffer; }
+	uint8_t* operator()()
+	{
+		return buffer;
+	}
 };
 
 }

@@ -59,7 +59,7 @@ public:
 		testlib::HexSequence hs(hex);
 		if (pUpperLayer)
 		{
-			auto buffer = hs.ToRSlice();			
+			auto buffer = hs.ToRSlice();
 			pUpperLayer->OnReceive(buffer);
 		}
 	}

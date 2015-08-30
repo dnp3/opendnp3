@@ -31,7 +31,8 @@
 #include <string>
 #include <map>
 
-namespace secauth {
+namespace secauth
+{
 
 
 class ChangeData
@@ -46,9 +47,9 @@ public:
 	{}
 
 	ChangeData(
-		opendnp3::KeyChangeMethod keyChangeMethod,
-		opendnp3::UserRole userRole,
-		openpal::MonotonicTimestamp expiration
+	    opendnp3::KeyChangeMethod keyChangeMethod,
+	    opendnp3::UserRole userRole,
+	    openpal::MonotonicTimestamp expiration
 	);
 
 	opendnp3::KeyChangeMethod keyChangeMethod;
@@ -59,20 +60,20 @@ public:
 class PendingUserStatusChanges : private openpal::Uncopyable
 {
 
-public:	
+public:
 
 	bool IsPending(const std::string& userName) const;
 
 	void QueueChange(const std::string& userName, const ChangeData& data);
 
-	bool PopChange(const std::string& userName, ChangeData& data);	
+	bool PopChange(const std::string& userName, ChangeData& data);
 
 private:
 
 	typedef std::map<std::string, ChangeData> ChangeMap;
 
 	ChangeMap changeMap;
-	  
+
 };
 
 

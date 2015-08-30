@@ -41,9 +41,9 @@
 
 namespace asiopal
 {
-	class EventLog;
-	class LogFanoutHandler;
-	class IOServiceThreadPool;
+class EventLog;
+class LogFanoutHandler;
+class IOServiceThreadPool;
 }
 
 namespace asiodnp3
@@ -60,10 +60,10 @@ class DNP3Manager
 {
 
 public:
-	
+
 	/**
 	*	Construct a manger
-	* 
+	*
 	*	@param concurrencyHint How many threads to allocate in the thread pool
 	*	@param crypto Optional cryptography interface for secure authentication
 	*	@param onThreadStart Action to run when a thread pool thread starts
@@ -71,18 +71,18 @@ public:
 	*/
 	DNP3Manager(
 	    uint32_t concurrencyHint,
-		openpal::ICryptoProvider* crypto = nullptr,
-		std::function<void()> onThreadStart = []() {},
-		std::function<void()> onThreadExit = []() {}
+	    openpal::ICryptoProvider* crypto = nullptr,
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
 	);
-	
+
 	~DNP3Manager();
 
 	/**
 	* Add a callback to receive log messages
 	* @param handler pointer to a log handling interface
 	*/
-	void AddLogSubscriber(openpal::ILogHandler* handler);	
+	void AddLogSubscriber(openpal::ILogHandler* handler);
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop
@@ -104,13 +104,13 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTCPClient(
-		char const* id,
+	    char const* id,
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& host,
-		const std::string& local,
-	    uint16_t port,	    
+	    const std::string& local,
+	    uint16_t port,
 	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/**
@@ -126,12 +126,12 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTCPServer(
-		char const* id,
+	    char const* id,
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& endpoint,
-	    uint16_t port,		
+	    uint16_t port,
 	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/**
@@ -146,20 +146,20 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddSerial(
-		char const* id,
+	    char const* id,
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
-	    asiopal::SerialSettings settings,		
+	    asiopal::SerialSettings settings,
 	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 private:
-	
+
 	openpal::ICryptoProvider* pCrypto;
 	std::unique_ptr<asiopal::LogFanoutHandler> pFanoutHandler;
 	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
 	std::unique_ptr<ChannelSet> pChannelSet;
-	
+
 };
 
 }

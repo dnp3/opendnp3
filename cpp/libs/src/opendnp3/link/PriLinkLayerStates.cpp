@@ -62,7 +62,7 @@ PriStateBase& PriStateBase::OnNotSupported(LinkContext& ctx, bool rxBuffFull)
 
 PriStateBase& PriStateBase::OnTransmitResult(LinkContext& ctx, bool success)
 {
-	FORMAT_LOG_BLOCK(ctx.logger, flags::ERR, "Invalid action for state: %s", this->Name());	
+	FORMAT_LOG_BLOCK(ctx.logger, flags::ERR, "Invalid action for state: %s", this->Name());
 	return *this;
 }
 
@@ -73,12 +73,12 @@ PriStateBase& PriStateBase::OnTimeout(LinkContext& ctx)
 }
 
 PriStateBase& PriStateBase::TrySendConfirmed(LinkContext& ctx, ITransportSegment&)
-{	
+{
 	return *this;
 }
 
 PriStateBase& PriStateBase::TrySendUnconfirmed(LinkContext& ctx, ITransportSegment&)
-{	
+{
 	return *this;
 }
 
@@ -94,11 +94,11 @@ PriStateBase& PriStateBase::TrySendRequestLinkStatus(LinkContext&)
 PLLS_Idle PLLS_Idle::instance;
 
 PriStateBase& PLLS_Idle::TrySendUnconfirmed(LinkContext& ctx, ITransportSegment& segments)
-{	
+{
 	auto first = segments.GetSegment();
-	auto output = ctx.FormatPrimaryBufferWithUnconfirmed(first);	
+	auto output = ctx.FormatPrimaryBufferWithUnconfirmed(first);
 	ctx.QueueTransmit(output, true);
-	return PLLS_SendUnconfirmedTransmitWait::Instance();	
+	return PLLS_SendUnconfirmedTransmitWait::Instance();
 }
 
 PriStateBase& PLLS_Idle::TrySendConfirmed(LinkContext& ctx, ITransportSegment& segments)
@@ -115,11 +115,11 @@ PriStateBase& PLLS_Idle::TrySendConfirmed(LinkContext& ctx, ITransportSegment& s
 		ctx.ResetRetry();
 		ctx.QueueResetLinks();
 		return PLLS_LinkResetTransmitWait::Instance();
-	}	
+	}
 }
 
 PriStateBase& PLLS_Idle::TrySendRequestLinkStatus(LinkContext& ctx)
-{	
+{
 	ctx.keepAliveTimeout = false;
 	ctx.QueueRequestLinkStatus();
 	ctx.pListener->OnKeepAliveInitiated();
@@ -163,7 +163,7 @@ PriStateBase& PLLS_LinkResetTransmitWait::OnTransmitResult(LinkContext& ctx, boo
 		return PLLS_ResetLinkWait::Instance();
 	}
 	else
-	{		
+	{
 		ctx.CompleteSendOperation(success);
 		return PLLS_Idle::Instance();
 	}
@@ -184,7 +184,7 @@ PriStateBase& PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkContext& ctx, 
 		return PLLS_ConfDataWait::Instance();
 	}
 	else
-	{		
+	{
 		ctx.CompleteSendOperation(false);
 		return PLLS_Idle::Instance();
 	}
@@ -224,7 +224,7 @@ PriStateBase& PLLS_ResetLinkWait::OnAck(LinkContext& ctx, bool rxBuffFull)
 	ctx.ResetWriteFCB();
 	ctx.CancelTimer();
 	auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetSegment(), ctx.nextWriteFCB);
-	ctx.QueueTransmit(buffer, true);	
+	ctx.QueueTransmit(buffer, true);
 	ctx.PostStatusCallback(opendnp3::LinkStatus::RESET);
 	return PLLS_ConfUserDataTransmitWait::Instance();
 }
@@ -239,7 +239,7 @@ PriStateBase& PLLS_ResetLinkWait::OnTimeout(LinkContext& ctx)
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Link reset final timeout, no retries remain");		
+		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Link reset final timeout, no retries remain");
 		ctx.CompleteSendOperation(false);
 		return PLLS_Idle::Instance();
 	}
@@ -270,7 +270,7 @@ PriStateBase& PLLS_ConfDataWait::OnAck(LinkContext& ctx, bool rxBuffFull)
 		return PLLS_ConfUserDataTransmitWait::Instance();
 	}
 	else //we're done!
-	{		
+	{
 		ctx.CompleteSendOperation(true);
 		return PLLS_Idle::Instance();
 	}
@@ -291,7 +291,7 @@ PriStateBase& PLLS_ConfDataWait::OnNack(LinkContext& ctx, bool rxBuffFull)
 		ctx.QueueResetLinks();
 		return PLLS_LinkResetTransmitWait::Instance();
 	}
-	
+
 }
 
 PriStateBase& PLLS_ConfDataWait::Failure(LinkContext& ctx)
@@ -308,7 +308,7 @@ PriStateBase& PLLS_ConfDataWait::OnTimeout(LinkContext& ctx)
 		FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "confirmed data timeout, retrying %u remaining", ctx.numRetryRemaining);
 		auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetSegment(), ctx.nextWriteFCB);
 		ctx.QueueTransmit(buffer, true);
-		return PLLS_ConfUserDataTransmitWait::Instance();		
+		return PLLS_ConfUserDataTransmitWait::Instance();
 	}
 	else
 	{

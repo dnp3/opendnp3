@@ -30,7 +30,7 @@
 
 namespace openpal
 {
-	class Logger;
+class Logger;
 }
 
 namespace opendnp3

@@ -40,15 +40,15 @@ class CountParser
 	typedef void (*HandleFun)(const HeaderRecord& record, uint16_t count, const openpal::RSlice& buffer, IAPDUHandler& handler);
 
 public:
-	
+
 	static ParseResult ParseHeader(
-		openpal::RSlice& buffer,
-		const NumParser& numparser,
-		const ParserSettings& settings, 
-		const HeaderRecord& record, 
-		openpal::Logger* pLogger, 
-		IAPDUHandler* pHandler
-		);
+	    openpal::RSlice& buffer,
+	    const NumParser& numparser,
+	    const ParserSettings& settings,
+	    const HeaderRecord& record,
+	    openpal::Logger* pLogger,
+	    IAPDUHandler* pHandler
+	);
 
 private:
 
@@ -59,31 +59,32 @@ private:
 	template <class Descriptor>
 	static CountParser From(uint16_t count);
 
-	static ParseResult ParseCountOfObjects(openpal::RSlice& buffer, const HeaderRecord& record, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler);		
-	
+	static ParseResult ParseCountOfObjects(openpal::RSlice& buffer, const HeaderRecord& record, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler);
+
 	template <class Descriptor>
 	static void InvokeCountOf(const HeaderRecord& record, uint16_t count, const openpal::RSlice& buffer, IAPDUHandler& handler);
 
 	CountParser(uint16_t count, uint32_t requiredSize, HandleFun handler);
-		
+
 	uint16_t count;
 	uint32_t requiredSize;
 	HandleFun handler;
-	
+
 	CountParser() = delete;
 };
 
 template <class Descriptor>
 CountParser CountParser::From(uint16_t count)
 {
-	uint32_t size = static_cast<uint32_t>(count)* Descriptor::Size();
+	uint32_t size = static_cast<uint32_t>(count) * Descriptor::Size();
 	return CountParser(count, size, &InvokeCountOf<Descriptor>);
 }
 
 template <class T>
 void CountParser::InvokeCountOf(const HeaderRecord& record, uint16_t count, const openpal::RSlice& buffer, IAPDUHandler& handler)
-{	
-	auto read = [](openpal::RSlice& buffer, uint32_t) -> T {
+{
+	auto read = [](openpal::RSlice & buffer, uint32_t) -> T
+	{
 		T value;
 		T::Read(buffer, value);
 		return value;

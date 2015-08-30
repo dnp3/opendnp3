@@ -31,7 +31,7 @@ namespace opendnp3
 {
 
 AssignClassTask::AssignClassTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
-	IMasterTask(application, 0, logger, TaskConfig::Default()),	
+	IMasterTask(application, 0, logger, TaskConfig::Default()),
 	retryPeriod(retryPeriod_)
 {}
 
@@ -42,7 +42,7 @@ bool AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 	auto writer = request.GetWriter();
 
 	bool success = true;
-	auto writeFun = [&](const Header& header)
+	auto writeFun = [&](const Header & header)
 	{
 		success &= header.WriteTo(writer);
 	};
@@ -57,7 +57,7 @@ bool AssignClassTask::IsEnabled() const
 }
 
 IMasterTask::ResponseResult AssignClassTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
-{	
+{
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
@@ -65,14 +65,14 @@ IMasterTask::TaskState AssignClassTask::OnTaskComplete(TaskCompletion result, op
 {
 	switch (result)
 	{
-		case(TaskCompletion::FAILURE_NO_COMMS) :
-			return TaskState::Immediately();
+	case(TaskCompletion::FAILURE_NO_COMMS) :
+		return TaskState::Immediately();
 
-		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-			return TaskState::Retry(now.Add(retryPeriod));
-		
-		default:
-			return TaskState::Infinite();
+	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+		return TaskState::Retry(now.Add(retryPeriod));
+
+	default:
+		return TaskState::Infinite();
 	}
 }
 

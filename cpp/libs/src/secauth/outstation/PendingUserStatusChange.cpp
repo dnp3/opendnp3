@@ -21,23 +21,24 @@
 
 #include "PendingUserStatusChange.h"
 
-namespace secauth {
+namespace secauth
+{
 
 ChangeData::ChangeData(
-	opendnp3::KeyChangeMethod keyChangeMethod_,
-	opendnp3::UserRole userRole_,
-	openpal::MonotonicTimestamp expiration_
-	) :
-		keyChangeMethod(keyChangeMethod_),
-		userRole(userRole_),
-		expiration(expiration_)
+    opendnp3::KeyChangeMethod keyChangeMethod_,
+    opendnp3::UserRole userRole_,
+    openpal::MonotonicTimestamp expiration_
+) :
+	keyChangeMethod(keyChangeMethod_),
+	userRole(userRole_),
+	expiration(expiration_)
 {}
 
 bool PendingUserStatusChanges::IsPending(const std::string& userName) const
 {
 	return changeMap.find(userName) != changeMap.end();
 }
-	
+
 void PendingUserStatusChanges::QueueChange(const std::string& username, const ChangeData& data)
 {
 	changeMap[username] = data;

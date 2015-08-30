@@ -36,7 +36,7 @@ class IFrameSink
 public:
 
 	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) = 0;
-	
+
 };
 
 }

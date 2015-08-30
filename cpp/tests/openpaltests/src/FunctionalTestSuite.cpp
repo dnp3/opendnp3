@@ -27,14 +27,17 @@ using namespace openpal;
 #define SUITE(name) "FunctionalTestSuite - " name
 
 TEST_CASE(SUITE("Action0BindWorksAsExpected"))
-{	
+{
 	int a = 1;
 	int b = 2;
 
 	auto pA = &a;
 	auto pB = &b;
 
-	auto add = [=]() { *pA += *pB;  };
+	auto add = [ = ]()
+	{
+		*pA += *pB;
+	};
 
 	auto bound = Action0::Bind(add);
 

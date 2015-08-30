@@ -33,9 +33,9 @@ namespace secauth
 * Class for tracking security statistics as defined in 1815-2012
 */
 struct Statistics : openpal::Uncopyable
-{	
+{
 
-public:	
+public:
 
 	Statistics();
 

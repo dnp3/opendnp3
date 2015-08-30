@@ -38,10 +38,10 @@ class TaskInfo
 public:
 
 	TaskInfo(
-		MasterTaskType type_,
-		TaskCompletion result_,
-		TaskId id_,
-		User user_
+	    MasterTaskType type_,
+	    TaskCompletion result_,
+	    TaskId id_,
+	    User user_
 	) :
 		type(type_),
 		result(result_),
@@ -50,8 +50,8 @@ public:
 	{}
 
 	MasterTaskType type;
-	TaskCompletion result; 
-	TaskId id; 
+	TaskCompletion result;
+	TaskId id;
 	User user;
 };
 

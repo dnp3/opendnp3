@@ -35,7 +35,7 @@ namespace opendnp3
 class LinkHex : private openpal::StaticOnly
 {
 
-public:	  
+public:
 
 	////////////////////////////////////////////////
 	//	Functions for formatting outgoing Sec to Pri frames

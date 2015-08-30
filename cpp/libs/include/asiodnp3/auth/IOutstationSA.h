@@ -35,8 +35,8 @@ Extend the normal IOutstation interface w/ SA features
 */
 class IOutstationSA : public IOutstation
 {
-	public:	
-	
+public:
+
 	/**
 	* Add a user to the outstation. This is normally only done during initialization.
 	*/

@@ -34,10 +34,10 @@ template <uint32_t SIZE>
 class StaticBuffer
 {
 
-public:	
+public:
 
 	StaticBuffer()
-	{}	
+	{}
 
 	virtual ~StaticBuffer() {}
 
@@ -61,11 +61,20 @@ public:
 		return WSlice(buffer, openpal::Min(SIZE, maxSize));
 	}
 
-	const uint8_t* operator()() const { return buffer; }
+	const uint8_t* operator()() const
+	{
+		return buffer;
+	}
 
-	uint8_t* operator()() { return buffer; }
+	uint8_t* operator()()
+	{
+		return buffer;
+	}
 
-	uint32_t Size() const { return SIZE; }
+	uint32_t Size() const
+	{
+		return SIZE;
+	}
 
 private:
 	uint8_t buffer[SIZE];

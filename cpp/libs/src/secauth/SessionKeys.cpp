@@ -25,32 +25,32 @@ using namespace openpal;
 
 namespace secauth
 {
-	void SessionKeys::SetKeys(const SessionKeysView& view)
-	{
-		auto controlDest = controlBuffer.GetWSlice();
-		controlKey = view.controlKey.CopyTo(controlDest);
+void SessionKeys::SetKeys(const SessionKeysView& view)
+{
+	auto controlDest = controlBuffer.GetWSlice();
+	controlKey = view.controlKey.CopyTo(controlDest);
 
-		auto monitorDest = monitorBuffer.GetWSlice();
-		monitorKey = view.monitorKey.CopyTo(monitorDest);
-	}
+	auto monitorDest = monitorBuffer.GetWSlice();
+	monitorKey = view.monitorKey.CopyTo(monitorDest);
+}
 
-	SessionKeysView SessionKeys::GetView() const
-	{
-		return SessionKeysView(controlKey, monitorKey);
-	}
+SessionKeysView SessionKeys::GetView() const
+{
+	return SessionKeysView(controlKey, monitorKey);
+}
 
-	void SessionKeys::DeriveFrom(ISecureRandom& rs, const SessionKeySize& size, std::error_code& ec)
-	{
-		auto dest1 = controlBuffer.GetWSlice(size);
-		auto dest2 = monitorBuffer.GetWSlice(size);
+void SessionKeys::DeriveFrom(ISecureRandom& rs, const SessionKeySize& size, std::error_code& ec)
+{
+	auto dest1 = controlBuffer.GetWSlice(size);
+	auto dest2 = monitorBuffer.GetWSlice(size);
 
-		this->controlKey = controlBuffer.ToRSlice(size);
-		this->monitorKey = monitorBuffer.ToRSlice(size);
+	this->controlKey = controlBuffer.ToRSlice(size);
+	this->monitorKey = monitorBuffer.ToRSlice(size);
 
-		rs.GetSecureRandom(dest1, ec);
-		rs.GetSecureRandom(dest2, ec);				
-	}
-	
+	rs.GetSecureRandom(dest1, ec);
+	rs.GetSecureRandom(dest2, ec);
+}
+
 }
 
 

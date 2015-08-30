@@ -34,12 +34,12 @@ TimerRef::~TimerRef()
 
 
 bool TimerRef::IsActive() const
-{ 
-	return (pTimer != nullptr); 
+{
+	return (pTimer != nullptr);
 }
 
 MonotonicTimestamp TimerRef::ExpiresAt() const
-{	
+{
 	return pTimer ? pTimer->ExpiresAt() : MonotonicTimestamp::Max();
 }
 

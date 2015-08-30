@@ -35,8 +35,8 @@ class MockMasterApplicationSA : public secauth::IMasterApplicationSA
 
 public:
 
-	virtual openpal::UTCTimestamp Now() override 
-	{ 
+	virtual openpal::UTCTimestamp Now() override
+	{
 		return utc.Now();
 	}
 

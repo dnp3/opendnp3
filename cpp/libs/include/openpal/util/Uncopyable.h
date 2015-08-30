@@ -40,7 +40,7 @@ private:
 
 class StaticOnly
 {
-	
+
 private:
 	// prevent these functions
 	StaticOnly() = delete;

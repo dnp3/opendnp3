@@ -32,22 +32,22 @@
 #include <functional>
 
 namespace secauth
-{	
+{
 
-/** 
-	An interface for retrieving info about configured users on the master	
+/**
+	An interface for retrieving info about configured users on the master
 */
 class IMasterUserDatabase
 {
-	public:		
+public:
 
-		virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const = 0;
+	virtual void EnumerateUsers(const std::function<void(const opendnp3::User)>& fun) const = 0;
 
-		virtual UpdateKey::View GetUpdateKeyView(const opendnp3::User& user) const = 0;
+	virtual UpdateKey::View GetUpdateKeyView(const opendnp3::User& user) const = 0;
 
-		virtual bool UserExists(const opendnp3::User& user) const = 0;
+	virtual bool UserExists(const opendnp3::User& user) const = 0;
 
-		virtual bool AddUser(const opendnp3::User& user, const secauth::UpdateKey& key) = 0;
+	virtual bool AddUser(const opendnp3::User& user, const secauth::UpdateKey& key) = 0;
 };
 
 }

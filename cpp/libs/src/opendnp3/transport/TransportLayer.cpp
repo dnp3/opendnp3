@@ -40,7 +40,7 @@ TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor& execu
 	pLinkLayer(nullptr),
 	isOnline(false),
 	isSending(false),
-	pExecutor(&executor),	
+	pExecutor(&executor),
 	receiver(logger, maxRxFragSize, pStatistics),
 	transmitter(logger, pStatistics)
 {
@@ -58,28 +58,34 @@ void TransportLayer::BeginTransmit(const RSlice& apdu)
 		if (apdu.IsEmpty())
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
-			auto lambda = [this]() { this->OnSendResult(false); };
+			auto lambda = [this]()
+			{
+				this->OnSendResult(false);
+			};
 			pExecutor->PostLambda(lambda);
 		}
 		else
-		{			
+		{
 			if (isSending)
 			{
 				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
 			}
 			else
-			{	
+			{
 				isSending = true;
 
 				if (pLinkLayer)
-				{					
+				{
 					transmitter.Configure(apdu);
 					pLinkLayer->Send(transmitter);
 				}
 				else
-				{	
+				{
 					SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
-					auto lambda = [this]() { this->OnSendResult(false); };
+					auto lambda = [this]()
+					{
+						this->OnSendResult(false);
+					};
 					pExecutor->PostLambda(lambda);
 				}
 			}
@@ -134,14 +140,14 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 		pUpperLayer->OnSendResult(isSuccess);
 	}
 
-	return true;	
+	return true;
 }
 
 void TransportLayer::SetAppLayer(IUpperLayer* pUpperLayer_)
 {
 	assert(pUpperLayer_ != nullptr);
 	assert(pUpperLayer == nullptr);
-	pUpperLayer = pUpperLayer_;	
+	pUpperLayer = pUpperLayer_;
 }
 
 void TransportLayer::SetLinkLayer(ILinkLayer* pLinkLayer_)
@@ -158,7 +164,7 @@ bool TransportLayer::OnLowerLayerUp()
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
 		return false;
 	}
-	
+
 	isOnline = true;
 	if (pUpperLayer)
 	{
@@ -178,12 +184,12 @@ bool TransportLayer::OnLowerLayerDown()
 	isOnline = false;
 	isSending = false;
 	receiver.Reset();
-		
+
 	if (pUpperLayer)
 	{
 		pUpperLayer->OnLowerLayerDown();
 	}
-	
+
 	return true;
 }
 

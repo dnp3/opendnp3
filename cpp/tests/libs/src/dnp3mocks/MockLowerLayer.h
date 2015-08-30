@@ -56,7 +56,7 @@ public:
 
 private:
 
-	openpal::Logger logger;	
+	openpal::Logger logger;
 
 	std::queue<openpal::RSlice> sendQueue;
 };

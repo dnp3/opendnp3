@@ -35,37 +35,40 @@
 
 
 namespace secauth
-{	
-	class SessionKeyUnwrapBuffer
+{
+class SessionKeyUnwrapBuffer
+{
+public:
+
+	class Result
 	{
 	public:
 
-		class Result
+		static Result Failure()
 		{
-		public:
+			return Result();
+		}
 
-			static Result Failure() { return Result(); }
-			
-			Result(const SessionKeysView& keys, const openpal::RSlice& keyStatusObject);
+		Result(const SessionKeysView& keys, const openpal::RSlice& keyStatusObject);
 
-			bool success;
-			SessionKeysView keys;
-			openpal::RSlice keyStatusObject;
-
-		private:
-			Result();
-		};
-
-		Result Unwrap(
-			openpal::IKeyWrapAlgo& algo,
-			openpal::RSlice updateKey,
-			openpal::RSlice inputData,			
-			openpal::Logger* pLogger);
+		bool success;
+		SessionKeysView keys;
+		openpal::RSlice keyStatusObject;
 
 	private:
-		
-		openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_WRAP_BUFFER_SIZE> buffer;
+		Result();
 	};
+
+	Result Unwrap(
+	    openpal::IKeyWrapAlgo& algo,
+	    openpal::RSlice updateKey,
+	    openpal::RSlice inputData,
+	    openpal::Logger* pLogger);
+
+private:
+
+	openpal::SecureStaticBuffer<AuthSizes::MAX_SESSION_KEY_WRAP_BUFFER_SIZE> buffer;
+};
 
 }
 

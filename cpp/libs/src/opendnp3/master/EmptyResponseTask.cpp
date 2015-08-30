@@ -26,27 +26,27 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	EmptyResponseTask::EmptyResponseTask(IMasterApplication& app, const std::string& name_, FunctionCode func_, const std::function<bool(HeaderWriter&)>& format_, openpal::Logger logger, const TaskConfig& config) :
-		IMasterTask(app, 0, logger, config),
-		name(name_),
-		func(func_),
-		format(format_)
-	{
+EmptyResponseTask::EmptyResponseTask(IMasterApplication& app, const std::string& name_, FunctionCode func_, const std::function<bool(HeaderWriter&)>& format_, openpal::Logger logger, const TaskConfig& config) :
+	IMasterTask(app, 0, logger, config),
+	name(name_),
+	func(func_),
+	format(format_)
+{
 
-	}
+}
 
-	bool EmptyResponseTask::BuildRequest(APDURequest& request, uint8_t seq)
-	{
-		request.SetFunction(func);
-		request.SetControl(AppControlField::Request(seq));
-		auto writer = request.GetWriter();
-		return format(writer);
-	}
+bool EmptyResponseTask::BuildRequest(APDURequest& request, uint8_t seq)
+{
+	request.SetFunction(func);
+	request.SetControl(AppControlField::Request(seq));
+	auto writer = request.GetWriter();
+	return format(writer);
+}
 
-	IMasterTask::ResponseResult EmptyResponseTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
-	{
-		return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
-	}
+IMasterTask::ResponseResult EmptyResponseTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
+{
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+}
 
 
 } //end ns

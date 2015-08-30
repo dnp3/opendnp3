@@ -23,45 +23,46 @@
 
 namespace secauth
 {
-	const uint32_t StatThresholds::DEFAULTS[AuthConstants::NUM_SECURITY_STATS] = {
-		3,
-		5,
-		5,
-		3,
-		3,
-		100,
-		100,
-		100,
-		100,
-		10,
-		2,
-		10,
-		100,
-		10,
-		5,
-		1,
-		1,
-		3		
-	};
-	
-	StatThresholds::StatThresholds()
-	{
-		for (auto i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
-		{
-			thresholds[i] = DEFAULTS[i];
-		}
-	}
+const uint32_t StatThresholds::DEFAULTS[AuthConstants::NUM_SECURITY_STATS] =
+{
+	3,
+	5,
+	5,
+	3,
+	3,
+	100,
+	100,
+	100,
+	100,
+	10,
+	2,
+	10,
+	100,
+	10,
+	5,
+	1,
+	1,
+	3
+};
 
-	void StatThresholds::Set(opendnp3::SecurityStatIndex index, uint32_t threshold)
+StatThresholds::StatThresholds()
+{
+	for (auto i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
 	{
-		thresholds[static_cast<int>(index)] = threshold;
+		thresholds[i] = DEFAULTS[i];
 	}
-	
-	uint32_t StatThresholds::GetDeadband(uint16_t index) const
-	{
-		// deadband is always 1 less than the threshold	
-		return (index < AuthConstants::NUM_SECURITY_STATS && thresholds[index] > 0) ? (thresholds[index] - 1) : 0;
-	}
+}
+
+void StatThresholds::Set(opendnp3::SecurityStatIndex index, uint32_t threshold)
+{
+	thresholds[static_cast<int>(index)] = threshold;
+}
+
+uint32_t StatThresholds::GetDeadband(uint16_t index) const
+{
+	// deadband is always 1 less than the threshold
+	return (index < AuthConstants::NUM_SECURITY_STATS && thresholds[index] > 0) ? (thresholds[index] - 1) : 0;
+}
 
 
 }

@@ -49,32 +49,32 @@ namespace opendnp3
 {
 
 OContext::OContext(
-	const OutstationConfig& config,
-	const DatabaseTemplate& dbTemplate,
-	openpal::Logger logger_,				
-	openpal::IExecutor& executor,		
-	ILowerLayer& lower,
-	ICommandHandler& commandHandler,
-	IOutstationApplication& application) :
-	
-		logger(logger_),
-		pExecutor(&executor),
-		pLower(&lower),	
-		pCommandHandler(&commandHandler),
-		pApplication(&application),
-		eventBuffer(config.eventBufferConfig),
-		database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
-		rspContext(database.buffers, eventBuffer),
-		params(config.params),	
-		isOnline(false),
-		isTransmitting(false),	
-		staticIIN(IINBit::DEVICE_RESTART),	
-		confirmTimer(executor),
-		deferred(config.params.maxRxFragSize),
-		sol(config.params.maxTxFragSize),
-		unsol(config.params.maxTxFragSize)
-{	
-	
+    const OutstationConfig& config,
+    const DatabaseTemplate& dbTemplate,
+    openpal::Logger logger_,
+    openpal::IExecutor& executor,
+    ILowerLayer& lower,
+    ICommandHandler& commandHandler,
+    IOutstationApplication& application) :
+
+	logger(logger_),
+	pExecutor(&executor),
+	pLower(&lower),
+	pCommandHandler(&commandHandler),
+	pApplication(&application),
+	eventBuffer(config.eventBufferConfig),
+	database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
+	rspContext(database.buffers, eventBuffer),
+	params(config.params),
+	isOnline(false),
+	isTransmitting(false),
+	staticIIN(IINBit::DEVICE_RESTART),
+	confirmTimer(executor),
+	deferred(config.params.maxRxFragSize),
+	sol(config.params.maxTxFragSize),
+	unsol(config.params.maxTxFragSize)
+{
+
 }
 
 bool OContext::OnLowerLayerUp()
@@ -243,7 +243,7 @@ void OContext::ProcessConfirm(const APDUHeader& header)
 	}
 	else
 	{
-		this->sol.pState = this->sol.pState->OnConfirm(*this, header);		
+		this->sol.pState = this->sol.pState->OnConfirm(*this, header);
 	}
 }
 
@@ -263,7 +263,7 @@ void OContext::BeginUnsolTx(const RSlice& response)
 
 void OContext::BeginTx(const openpal::RSlice& response)
 {
-	logging::ParseAndLogResponseTx(this->logger, response);	
+	logging::ParseAndLogResponseTx(this->logger, response);
 	this->isTransmitting = true;
 	this->pLower->BeginTransmit(response);
 	this->Increment(SecurityStatIndex::TOTAL_MESSAGES_TX);
@@ -273,7 +273,7 @@ void OContext::CheckForDeferredRequest()
 {
 	if (this->CanTransmit() && this->deferred.IsSet())
 	{
-		auto handler = [this](const APDUHeader& header, const RSlice& objects)
+		auto handler = [this](const APDUHeader & header, const RSlice & objects)
 		{
 			return this->ProcessDeferredRequest(header, objects);
 		};
@@ -335,7 +335,7 @@ void OContext::CheckForUnsolicited()
 		}
 		else
 		{
-			// send a NULL unsolcited message									
+			// send a NULL unsolcited message
 			auto response = this->unsol.tx.Start();
 			build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
 			this->StartUnsolicitedConfirmTimer();
@@ -451,40 +451,40 @@ IINField OContext::GetDynamicIIN()
 }
 
 void OContext::ParseHeader(const openpal::RSlice& apdu)
-{	
+{
 	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, apdu, 18, 18);
 
 	APDUHeader header;
 	if (!APDUHeaderParser::ParseRequest(apdu, header, &this->logger))
-	{		
+	{
 		return;
 	}
 
 	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-		"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-		header.control.FIR,
-		header.control.FIN,
-		header.control.CON,
-		header.control.UNS,
-		header.control.SEQ,
-		FunctionCodeToString(header.function));
+	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
+	                 header.control.FIR,
+	                 header.control.FIN,
+	                 header.control.CON,
+	                 header.control.UNS,
+	                 header.control.SEQ,
+	                 FunctionCodeToString(header.function));
 
 	// outstations should only process single fragment messages that don't request confirmation
 	if (!header.control.IsFirAndFin() || header.control.CON)
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Request must be FIR/FIN/!CON");
 		return;
-	}	
+	}
 
 	auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
 
 	// this method is virtual, and the implementation may vary for SA
-	this->ReceiveParsedHeader(apdu, header, objects);	
+	this->ReceiveParsedHeader(apdu, header, objects);
 }
 
 void OContext::CheckForTaskStart()
 {
-	// do these checks in order of priority	
+	// do these checks in order of priority
 	this->CheckForDeferredRequest();
 	this->CheckForUnsolicited();
 }
@@ -674,25 +674,25 @@ IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRest
 		case(RestartMode::UNSUPPORTED) :
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 		case(RestartMode::SUPPORTED_DELAY_COARSE) :
-		{
-			auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
-			if (pWriter)
 			{
-				Group52Var1 coarse = { delay };
-				pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
+				auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
+				if (pWriter)
+				{
+					Group52Var1 coarse = { delay };
+					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
+				}
+				return IINField::Empty();
 			}
-			return IINField::Empty();
-		}
 		default:
-		{
-			auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
-			if (pWriter)
 			{
-				Group52Var2 fine = { delay };
-				pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
+				auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
+				if (pWriter)
+				{
+					Group52Var2 fine = { delay };
+					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
+				}
+				return IINField::Empty();
 			}
-			return IINField::Empty();
-		}
 		}
 	}
 	else

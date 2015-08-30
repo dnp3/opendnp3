@@ -32,11 +32,14 @@ TEST_CASE(SUITE("Map integers to booleans"))
 {
 	int values[4] = { 1, 2, 3, 4 };
 	ArrayCollection<int> collectionInt(values, 4);
-	auto greaterThanTwo = [](const int& x) -> bool { return x > 2; };
+	auto greaterThanTwo = [](const int & x) -> bool { return x > 2; };
 	auto collectionBool = Map<int, bool>(collectionInt, greaterThanTwo);
 
 	std::vector<bool> items;
-	auto fillVector = [&items](const bool& item) { items.push_back(item); };
+	auto fillVector = [&items](const bool & item)
+	{
+		items.push_back(item);
+	};
 	collectionBool.ForeachItem(fillVector);
 
 	REQUIRE(items.size() == 4);

@@ -49,38 +49,38 @@ namespace secauth
 
 enum class SecurityState
 {
-	IDLE,
-	WAIT_FOR_REPLY
+    IDLE,
+    WAIT_FOR_REPLY
 };
 
 class OutstationSecurity
 {
-	public:
+public:
 
 	OutstationSecurity(
-		const opendnp3::OutstationParams& params,
-		const OutstationAuthSettings& settings, 
-		openpal::Logger logger, 
-		openpal::IExecutor& executor,		
-		IOutstationApplicationSA& application,
-		openpal::ICryptoProvider& crypto
-	);	
-	
+	    const opendnp3::OutstationParams& params,
+	    const OutstationAuthSettings& settings,
+	    openpal::Logger logger,
+	    openpal::IExecutor& executor,
+	    IOutstationApplicationSA& application,
+	    openpal::ICryptoProvider& crypto
+	);
+
 	SecurityState state;
 	OutstationAuthSettings settings;
 	ChallengeState challenge;
 	openpal::TimerRef challengeTimer;
 	HMACProvider hmac;
-	DeferredASDU deferred;		
+	DeferredASDU deferred;
 	IOutstationApplicationSA* pApplication;
 	OutstationUserDatabase userDB;
-	openpal::ICryptoProvider* pCrypto;		
+	openpal::ICryptoProvider* pCrypto;
 	SessionKeyChangeState sessionKeyChangeState;
 	UpdateKeyChangeState updateKeyChangeState;
 	SessionStore sessions;
 	opendnp3::TxBuffer txBuffer;
 	Statistics stats;
-	UnofficialStatistics otherStats;	
+	UnofficialStatistics otherStats;
 	AuthorityCredentials credentials;
 	PendingUserStatusChanges statusChanges;
 };

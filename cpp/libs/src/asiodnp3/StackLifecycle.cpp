@@ -36,7 +36,7 @@ namespace asiodnp3
 
 StackLifecycle::StackLifecycle(LinkLayerRouter& router, asiopal::ASIOExecutor& executor) :
 	pRouter(&router),
-	pExecutor(&executor)	
+	pExecutor(&executor)
 {
 
 }
@@ -62,26 +62,38 @@ void StackLifecycle::ShutdownAll()
 
 bool StackLifecycle::EnableRoute(ILinkSession* pContext)
 {
-	auto enable = [this, pContext]() { return pRouter->Enable(pContext); };
-	return pExecutor->ReturnBlockFor<bool>(enable);	
+	auto enable = [this, pContext]()
+	{
+		return pRouter->Enable(pContext);
+	};
+	return pExecutor->ReturnBlockFor<bool>(enable);
 }
 
 bool StackLifecycle::DisableRoute(ILinkSession* pContext)
 {
-	auto disable = [this, pContext]() { return pRouter->Disable(pContext); };
-	return pExecutor->ReturnBlockFor<bool>(disable);	
+	auto disable = [this, pContext]()
+	{
+		return pRouter->Disable(pContext);
+	};
+	return pExecutor->ReturnBlockFor<bool>(disable);
 }
 
 void StackLifecycle::Shutdown(ILinkSession* pContext, IStack* pStack)
 {
 	// synchronously remove the stack from the running strand
-	auto action = [this, pContext](){ pRouter->Remove(pContext); };
-	pExecutor->BlockFor(action);	
-	
+	auto action = [this, pContext]()
+	{
+		pRouter->Remove(pContext);
+	};
+	pExecutor->BlockFor(action);
+
 	stacks.erase(pStack);
 
 	// post the deletion of the stack to the strand
-	auto deleteStack = [pStack]() { delete pStack; };
+	auto deleteStack = [pStack]()
+	{
+		delete pStack;
+	};
 	pExecutor->strand.post(deleteStack);
 }
 

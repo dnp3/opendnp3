@@ -39,7 +39,7 @@ struct StaticTypeBitField
 	static StaticTypeBitField AllTypes()
 	{
 		return StaticTypeBitField(~0);
-	}	
+	}
 
 	bool IsSet(StaticTypeBitmask type) const
 	{
@@ -49,7 +49,7 @@ struct StaticTypeBitField
 	StaticTypeBitField Except(StaticTypeBitmask type) const
 	{
 		return StaticTypeBitField(mask & ~static_cast<uint16_t>(type));
-	}	
+	}
 
 private:
 

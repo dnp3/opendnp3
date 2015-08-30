@@ -61,7 +61,7 @@ std::string ByteToHex(uint8_t b)
 std::string AppendHex(std::initializer_list<std::string> segments)
 {
 	ostringstream oss;
-	for (auto& str : segments)
+	for (auto & str : segments)
 	{
 		oss << str;
 	}
@@ -84,7 +84,7 @@ std::string RepeatHex(uint8_t byte, uint16_t count, bool spaced)
 
 std::string IncrementHex(uint8_t start, uint16_t count, bool spaced)
 {
-	Buffer buffer(count);	
+	Buffer buffer(count);
 
 	for (uint16_t i = 0; i < count; ++i)
 	{

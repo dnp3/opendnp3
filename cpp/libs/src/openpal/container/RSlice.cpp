@@ -51,14 +51,14 @@ RSlice RSlice::CopyTo(WSlice& dest) const
 	else
 	{
 		WSlice copy(dest);
-		memcpy(dest, pBuffer, size);		
+		memcpy(dest, pBuffer, size);
 		dest.Advance(size);
 		return copy.ToRSlice().Take(size);
 	}
 }
 
 RSlice RSlice::Take(uint32_t count) const
-{	
+{
 	return RSlice(pBuffer, openpal::Min(size, count));
 }
 

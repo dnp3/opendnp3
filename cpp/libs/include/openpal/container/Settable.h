@@ -31,7 +31,7 @@ class Settable
 public:
 
 	Settable() : valueIsSet(false)
-	{}	
+	{}
 
 	bool IsSet() const
 	{
@@ -68,9 +68,9 @@ public:
 	}
 
 	void Set(const T& value_)
-	{		
+	{
 		value = value_;
-		valueIsSet = true;		
+		valueIsSet = true;
 	}
 
 	template <class Action>
@@ -92,7 +92,7 @@ bool Settable<T>::IsSetAnd(Action action)
 {
 	if (valueIsSet)
 	{
-		return action(value);		
+		return action(value);
 	}
 	else
 	{
@@ -107,7 +107,7 @@ void Settable<T>::Foreach(Action action)
 	if (valueIsSet)
 	{
 		action(value);
-	}	
+	}
 }
 
 }

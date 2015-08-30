@@ -31,7 +31,7 @@ class MockCommandHandler : public SimpleCommandHandler
 public:
 
 	MockCommandHandler(CommandStatus status = CommandStatus::SUCCESS) : SimpleCommandHandler(status)
-	{}	
+	{}
 
 	void SetResponse(CommandStatus status_)
 	{

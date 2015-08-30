@@ -38,10 +38,10 @@ namespace asiodnp3
 
 
 DNP3Manager::DNP3Manager(
-		uint32_t concurrencyHint, 		
-		openpal::ICryptoProvider* crypto,
-		std::function<void()> onThreadStart,
-		std::function<void()> onThreadExit) :	
+    uint32_t concurrencyHint,
+    openpal::ICryptoProvider* crypto,
+    std::function<void()> onThreadStart,
+    std::function<void()> onThreadExit) :
 	pCrypto(crypto),
 	pFanoutHandler(new asiopal::LogFanoutHandler()),
 	pThreadPool(new asiopal::IOServiceThreadPool(pFanoutHandler.get(), opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit)),
@@ -52,7 +52,7 @@ DNP3Manager::DNP3Manager(
 
 DNP3Manager::~DNP3Manager()
 {
-	
+
 }
 
 void DNP3Manager::AddLogSubscriber(openpal::ILogHandler* handler)
@@ -66,13 +66,13 @@ void DNP3Manager::Shutdown()
 }
 
 IChannel* DNP3Manager::AddTCPClient(
-	char const* id,
+    char const* id,
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     const std::string& host,
-	const std::string& local,
-    uint16_t port,    
+    const std::string& local,
+    uint16_t port,
     opendnp3::IOpenDelayStrategy& strategy)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
@@ -81,12 +81,12 @@ IChannel* DNP3Manager::AddTCPClient(
 }
 
 IChannel* DNP3Manager::AddTCPServer(
-	char const* id,
+    char const* id,
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     const std::string& endpoint,
-    uint16_t port,    
+    uint16_t port,
     opendnp3::IOpenDelayStrategy& strategy)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
@@ -95,11 +95,11 @@ IChannel* DNP3Manager::AddTCPServer(
 }
 
 IChannel* DNP3Manager::AddSerial(
-	char const* id,
+    char const* id,
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
-    asiopal::SerialSettings aSettings,    
+    asiopal::SerialSettings aSettings,
     opendnp3::IOpenDelayStrategy& strategy)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);

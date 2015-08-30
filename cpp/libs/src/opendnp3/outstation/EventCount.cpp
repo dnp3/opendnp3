@@ -42,7 +42,7 @@ EventCount::EventCount(const EventCount& ec) : total(ec.total)
 	for (uint16_t type = 0; type < NUM_TYPES; ++type)
 	{
 		numOfType[type] = ec.numOfType[type];
-	}	
+	}
 }
 
 EventCount& EventCount::operator=(const EventCount& ec)
@@ -114,7 +114,7 @@ uint32_t EventCount::NumOfType(EventType type) const
 
 bool EventCount::IsEmpty() const
 {
-	return ToClassField().IsEmpty();	
+	return ToClassField().IsEmpty();
 }
 
 void EventCount::Increment(EventClass clazz, EventType type)

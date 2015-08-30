@@ -26,71 +26,71 @@
 
 namespace opendnp3
 {
-	Header Header::AllObjects(uint8_t group, uint8_t variation)
-	{
-		return Header(group, variation);		
-	}	
+Header Header::AllObjects(uint8_t group, uint8_t variation)
+{
+	return Header(group, variation);
+}
 
-	Header Header::Range8(uint8_t group, uint8_t variation, uint8_t start, uint8_t stop)
+Header Header::Range8(uint8_t group, uint8_t variation, uint8_t start, uint8_t stop)
+{
+	return Header(group, variation, start, stop);
+}
+
+Header Header::Range16(uint8_t group, uint8_t variation, uint16_t start, uint16_t stop)
+{
+	return Header(group, variation, start, stop);
+}
+
+Header Header::Count8(uint8_t group, uint8_t variation, uint8_t count)
+{
+	return Header(group, variation, count);
+}
+
+Header Header::Count16(uint8_t group, uint8_t variation, uint16_t count)
+{
+	return Header(group, variation, count);
+}
+
+Header::Header(uint8_t group, uint8_t var) : id(group, var), type(HeaderType::AllObjects) {}
+
+Header::Header(uint8_t group, uint8_t var, uint8_t start, uint8_t stop) : id(group, var), type(HeaderType::Ranged8)
+{
+	value.range8 = { start, stop };
+}
+
+Header::Header(uint8_t group, uint8_t var, uint16_t start, uint16_t stop) : id(group, var), type(HeaderType::Ranged16)
+{
+	value.range16 = { start, stop };
+}
+
+Header::Header(uint8_t group, uint8_t var, uint8_t count) : id(group, var), type(HeaderType::LimitedCount8)
+{
+	value.count8.value = count;
+}
+
+Header::Header(uint8_t group, uint8_t var, uint16_t count) : id(group, var), type(HeaderType::LimitedCount16)
+{
+	value.count16.value = count;
+}
+
+bool Header::WriteTo(opendnp3::HeaderWriter& writer) const
+{
+	switch (type)
 	{
-		return Header(group, variation, start, stop);
+	case(HeaderType::AllObjects) :
+		return writer.WriteHeader(id, QualifierCode::ALL_OBJECTS);
+	case(HeaderType::Ranged8) :
+		return writer.WriteRangeHeader<openpal::UInt8>(QualifierCode::UINT8_START_STOP, id, value.range8.start, value.range8.stop);
+	case(HeaderType::Ranged16) :
+		return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, id, value.range16.start, value.range16.stop);
+	case(HeaderType::LimitedCount8) :
+		return writer.WriteCountHeader<openpal::UInt8>(QualifierCode::UINT8_CNT, id, value.count8.value);
+	case(HeaderType::LimitedCount16) :
+		return writer.WriteCountHeader<openpal::UInt16>(QualifierCode::UINT16_CNT, id, value.count16.value);
+	default:
+		return false;
 	}
-
-	Header Header::Range16(uint8_t group, uint8_t variation, uint16_t start, uint16_t stop)
-	{
-		return Header(group, variation, start, stop);
-	}
-
-	Header Header::Count8(uint8_t group, uint8_t variation, uint8_t count)
-	{
-		return Header(group, variation, count);
-	}
-
-	Header Header::Count16(uint8_t group, uint8_t variation, uint16_t count)
-	{
-		return Header(group, variation, count);
-	}
-
-	Header::Header(uint8_t group, uint8_t var) : id(group, var), type(HeaderType::AllObjects) {}
-
-	Header::Header(uint8_t group, uint8_t var, uint8_t start, uint8_t stop) : id(group, var), type(HeaderType::Ranged8)
-	{
-		value.range8 = { start, stop };
-	}
-
-	Header::Header(uint8_t group, uint8_t var, uint16_t start, uint16_t stop) : id(group, var), type(HeaderType::Ranged16)
-	{
-		value.range16 = { start, stop };
-	}
-
-	Header::Header(uint8_t group, uint8_t var, uint8_t count) : id(group, var), type(HeaderType::LimitedCount8)
-	{
-		value.count8.value = count;
-	}
-
-	Header::Header(uint8_t group, uint8_t var, uint16_t count) : id(group, var), type(HeaderType::LimitedCount16)
-	{
-		value.count16.value = count;
-	}
-
-	bool Header::WriteTo(opendnp3::HeaderWriter& writer) const
-	{
-		switch (type)
-		{
-			case(HeaderType::AllObjects) :
-				return writer.WriteHeader(id, QualifierCode::ALL_OBJECTS);
-			case(HeaderType::Ranged8) :
-				return writer.WriteRangeHeader<openpal::UInt8>(QualifierCode::UINT8_START_STOP, id, value.range8.start, value.range8.stop);				
-			case(HeaderType::Ranged16) :
-				return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, id, value.range16.start, value.range16.stop);
-			case(HeaderType::LimitedCount8) :
-				return writer.WriteCountHeader<openpal::UInt8>(QualifierCode::UINT8_CNT, id, value.count8.value);
-			case(HeaderType::LimitedCount16) :
-				return writer.WriteCountHeader<openpal::UInt16>(QualifierCode::UINT16_CNT, id, value.count16.value);
-			default:
-				return false;
-		}
-	}
+}
 }
 
 

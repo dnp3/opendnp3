@@ -37,8 +37,8 @@ public:
 	virtual openpal::UTCTimestamp Now() override final
 	{
 		return openpal::UTCTimestamp(time);
-	}	
-	
+	}
+
 	uint64_t time;
 };
 

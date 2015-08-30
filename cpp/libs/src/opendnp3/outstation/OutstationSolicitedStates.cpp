@@ -51,7 +51,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(OCo
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {
-	ocontext.deferred.Set(header, objects);	
+	ocontext.deferred.Set(header, objects);
 	return this;
 }
 
@@ -96,9 +96,9 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
-{					
+{
 	ocontext.BeginResponseTx(ocontext.sol.tx.GetLastResponse());
-	return this;			
+	return this;
 }
 
 // --------------------- OutstationStateSolConfirmWait ----------------------
@@ -111,11 +111,11 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 }
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
-{	
+{
 	ocontext.deferred.Set(header, objects);
 	ocontext.confirmTimer.Cancel();
 	return &OutstationSolicitedStateIdle::Inst();
-			
+
 }
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
@@ -126,17 +126,17 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadR
 }
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OContext& ocontext, const APDUHeader& header)
-{	
+{
 	if (ocontext.sol.seq.confirmNum.Equals(header.control.SEQ))
 	{
-		ocontext.confirmTimer.Cancel();					
+		ocontext.confirmTimer.Cancel();
 		ocontext.eventBuffer.ClearWritten();
 
 		if (ocontext.rspContext.HasSelection())
-		{						
+		{
 			return ocontext.ContinueMultiFragResponse(AppSeqNum(header.control.SEQ).Next());
 		}
-		else 
+		else
 		{
 			return &OutstationSolicitedStateIdle::Inst();
 		}
@@ -145,13 +145,13 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OCo
 	{
 		FORMAT_LOG_BLOCK(ocontext.logger, flags::WARN, "Confirm with wrong seq: %u", header.control.SEQ);
 		return this;
-	}			
+	}
 }
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirmTimeout(OContext& ocontext)
-{	
-	SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Solicited confirm timeout");	
-	return &OutstationSolicitedStateIdle::Inst();	
+{
+	SIMPLE_LOG_BLOCK(ocontext.logger, flags::WARN, "Solicited confirm timeout");
+	return &OutstationSolicitedStateIdle::Inst();
 }
 
 }

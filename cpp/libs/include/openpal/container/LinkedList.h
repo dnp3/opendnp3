@@ -63,7 +63,7 @@ public:
 		return LinkedListIterator(pStart);
 	}
 
-	
+
 
 	bool HasNext() const
 	{
@@ -74,19 +74,19 @@ public:
 	{
 		if (pCurrent == nullptr)
 		{
-			return nullptr;			
+			return nullptr;
 		}
 		else
 		{
 			auto pRet = pCurrent;
 			pCurrent = pCurrent->next;
 			return pRet;
-		}				
+		}
 	}
 
 	ListNode< ValueType>* Current()
 	{
-		return pCurrent;		
+		return pCurrent;
 	}
 
 	ValueType* CurrentValue()
@@ -197,15 +197,15 @@ public:
 	IndexType RemoveAll(Selector match)
 	{
 		IndexType count = 0;
-				
+
 		auto iter = this->Iterate();
 		auto pCurrent = iter.Next();
 		while (pCurrent)
 		{
 			if (match(pCurrent->value))
-			{				
+			{
 				auto pRemoved = pCurrent;
-				pCurrent = iter.Next();								
+				pCurrent = iter.Next();
 				this->Remove(pRemoved);
 				++count;
 			}
@@ -214,7 +214,7 @@ public:
 				pCurrent = iter.Next();
 			}
 		}
-		
+
 		return count;
 	}
 
@@ -258,7 +258,7 @@ private:
 template <class ValueType, class IndexType>
 ListNode<ValueType>* LinkedList<ValueType, IndexType>::Add(const ValueType& value)
 {
-	return this->Insert(value, pTail, nullptr);	
+	return this->Insert(value, pTail, nullptr);
 }
 
 
@@ -271,8 +271,11 @@ ListNode<ValueType>* LinkedList<ValueType, IndexType>::Insert(const ValueType& v
 		return nullptr;
 	}
 	else
-	{		
-		auto query = [lt, value](const ValueType& v){ return lt(value, v); };
+	{
+		auto query = [lt, value](const ValueType & v)
+		{
+			return lt(value, v);
+		};
 		auto pResult = this->FindFirst(query);
 		if (pResult)
 		{
@@ -382,7 +385,7 @@ void LinkedList<ValueType, IndexType>::Link(ListNode<ValueType>* first, ListNode
 
 template <class ValueType, class IndexType>
 void LinkedList<ValueType, IndexType>::Initialize()
-{	
+{
 	if(underlying.IsNotEmpty())
 	{
 		pFree = &underlying[0];

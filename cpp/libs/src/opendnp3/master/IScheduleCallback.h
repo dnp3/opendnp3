@@ -27,7 +27,7 @@ namespace opendnp3
 
 class IScheduleCallback
 {
-	public:
+public:
 
 	virtual void OnPendingTask() = 0;
 };

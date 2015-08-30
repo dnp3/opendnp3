@@ -35,23 +35,23 @@
 namespace opendnp3
 {
 
-	MasterParams NoStartupTasks();
+MasterParams NoStartupTasks();
 
-	class MasterTestObject
-	{
-	public:
+class MasterTestObject
+{
+public:
 
-		MasterTestObject(const MasterParams& params, ITaskLock& lock = NullTaskLock::Instance());
+	MasterTestObject(const MasterParams& params, ITaskLock& lock = NullTaskLock::Instance());
 
-		void SendToMaster(const std::string& hex);		
+	void SendToMaster(const std::string& hex);
 
-		testlib::MockLogHandler log;
-		testlib::MockExecutor exe;
-		MockSOEHandler meas;
-		MockLowerLayer lower;
-		MockMasterApplication application;
-		MContext context;		
-	};
+	testlib::MockLogHandler log;
+	testlib::MockExecutor exe;
+	MockSOEHandler meas;
+	MockLowerLayer lower;
+	MockMasterApplication application;
+	MContext context;
+};
 
 }
 

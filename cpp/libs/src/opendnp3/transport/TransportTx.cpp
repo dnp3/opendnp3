@@ -35,7 +35,7 @@ namespace opendnp3
 
 TransportTx::TransportTx(const openpal::Logger& logger_, StackStatistics* pStatistics_) :
 	logger(logger_),
-	pStatistics(pStatistics_),	
+	pStatistics(pStatistics_),
 	tpduCount(0)
 {}
 
@@ -53,7 +53,7 @@ bool TransportTx::HasValue() const
 }
 
 openpal::RSlice TransportTx::GetSegment()
-{	
+{
 	if (txSegment.IsSet())
 	{
 		return txSegment.Get();
@@ -61,16 +61,16 @@ openpal::RSlice TransportTx::GetSegment()
 	else
 	{
 		uint32_t numToSend = (apdu.Size() < MAX_TPDU_PAYLOAD) ? apdu.Size() : MAX_TPDU_PAYLOAD;
-		
+
 		auto dest = tpduBuffer.GetWSlice().Skip(1);
-		apdu.Take(numToSend).CopyTo(dest);		
+		apdu.Take(numToSend).CopyTo(dest);
 
 		bool fir = (tpduCount == 0);
 		bool fin = (numToSend == apdu.Size());
 		tpduBuffer()[0] = GetHeader(fir, fin, sequence);
 
 		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence.Get(), numToSend);
-		
+
 		if (pStatistics)
 		{
 			++pStatistics->numTransportTx;
@@ -80,7 +80,7 @@ openpal::RSlice TransportTx::GetSegment()
 		txSegment.Set(segment);
 		return segment;
 	}
-	
+
 }
 
 bool TransportTx::Advance()

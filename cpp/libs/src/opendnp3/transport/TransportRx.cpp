@@ -34,18 +34,18 @@ namespace opendnp3
 {
 
 TransportRx::TransportRx(const Logger& logger_, uint32_t maxRxFragSize, StackStatistics* pStatistics_) :
-	logger(logger_),	
+	logger(logger_),
 	pStatistics(pStatistics_),
-	rxBuffer(maxRxFragSize),	
-	numBytesRead(0)	
+	rxBuffer(maxRxFragSize),
+	numBytesRead(0)
 {
-	
+
 }
 
 void TransportRx::Reset()
 {
 	sequence.Reset();
-	this->ClearRxBuffer();	
+	this->ClearRxBuffer();
 }
 
 void TransportRx::ClearRxBuffer()
@@ -65,7 +65,7 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_HEADER, "Received tpdu with no header");
 		if (pStatistics) ++pStatistics->numTransportErrorRx;
 		return RSlice::Empty();
-	}	
+	}
 	else
 	{
 		uint8_t hdr = input[0];
@@ -73,7 +73,7 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 		bool last = (hdr & TL_HDR_FIN) != 0;
 		int seq = hdr & TL_HDR_SEQ;
 
-		auto payload = input.Skip(1);		
+		auto payload = input.Skip(1);
 
 		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", first, last, seq, payload.Size());
 
@@ -97,15 +97,15 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 			if (pStatistics) ++pStatistics->numTransportRx;
 
 			auto payload = input.Skip(1);
-				
+
 			payload.CopyTo(available);
 
 			this->numBytesRead += payload.Size();
 			this->sequence.Increment();
 
 			if(last)
-			{			
-				RSlice ret = rxBuffer.ToRSlice().Take(numBytesRead);					
+			{
+				RSlice ret = rxBuffer.ToRSlice().Take(numBytesRead);
 				this->ClearRxBuffer();
 				return ret;
 			}
@@ -113,14 +113,14 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 			{
 				return RSlice::Empty();
 			}
-		}		
+		}
 	}
 
 
 }
 
 bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_)
-{	
+{
 	if(fir)
 	{
 		sequence = sequence_; //always accept the sequence on FIR
@@ -132,7 +132,7 @@ bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_)
 		}
 		return true;
 	}
-	
+
 	if(numBytesRead == 0)   //non-first packet with 0 prior bytes
 	{
 		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_MESSAGE_WITHOUT_FIR, "non-FIR packet with 0 prior bytes");

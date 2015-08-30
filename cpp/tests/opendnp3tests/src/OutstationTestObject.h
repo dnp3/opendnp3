@@ -45,27 +45,27 @@ class OutstationTestObject
 
 public:
 	OutstationTestObject(const OutstationConfig& config,
-						 const DatabaseTemplate& dbTemplate = DatabaseTemplate());	
+	                     const DatabaseTemplate& dbTemplate = DatabaseTemplate());
 
-	
+
 	uint32_t SendToOutstation(const std::string& hex);
 
 	uint32_t LowerLayerUp();
 
-	uint32_t LowerLayerDown();	
+	uint32_t LowerLayerDown();
 
 	uint32_t OnSendResult(bool isSuccess);
 
-	size_t NumPendingTimers() const;	
+	size_t NumPendingTimers() const;
 
 	bool AdvanceToNextTimer();
 
-	uint32_t AdvanceTime(const openpal::TimeDuration& td);	
+	uint32_t AdvanceTime(const openpal::TimeDuration& td);
 
 	testlib::MockLogHandler log;
-	
+
 	void Transaction(const std::function<void (IDatabase&)>& apply)
-	{		
+	{
 		auto& db = context.GetDatabase();
 		apply(db);
 		context.CheckForTaskStart();
@@ -77,10 +77,10 @@ private:
 
 public:
 
-	MockLowerLayer lower;	
+	MockLowerLayer lower;
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
-	OContext context;	
+	OContext context;
 };
 
 

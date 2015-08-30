@@ -39,7 +39,7 @@ namespace asiopal
 {
 
 PhysicalLayerSerial::PhysicalLayerSerial(
-	openpal::LogRoot& root,
+    openpal::LogRoot& root,
     asio::io_service& service,
     const SerialSettings& settings) :
 
@@ -67,16 +67,19 @@ void PhysicalLayerSerial::DoOpen()
 		}
 	}
 
-	auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+	auto lambda = [this, ec]()
+	{
+		this->OnOpenCallback(ec);
+	};
 
 	if (settings.asyncOpenDelay.GetMilliseconds() > 0)
 	{
 		executor.Start(settings.asyncOpenDelay, Action0::Bind(lambda));
 	}
 	else
-	{				
+	{
 		executor.PostLambda(lambda);
-	}	
+	}
 }
 
 void PhysicalLayerSerial::DoClose()
@@ -91,24 +94,27 @@ void PhysicalLayerSerial::DoClose()
 
 void PhysicalLayerSerial::DoOpenSuccess()
 {
-	
+
 }
 
 void PhysicalLayerSerial::DoRead(openpal::WSlice& buff)
 {
 	uint8_t* pBuffer = buff;
-	
-	auto callback = [this, pBuffer](const std::error_code & error, size_t numRead)	
+
+	auto callback = [this, pBuffer](const std::error_code & error, size_t numRead)
 	{
 		this->OnReadCallback(error, pBuffer, static_cast<uint32_t>(numRead));
-	};	
-	
+	};
+
 	port.async_read_some(buffer(pBuffer, buff.Size()), executor.strand.wrap(callback));
 }
 
 void PhysicalLayerSerial::DoWrite(const RSlice& buff)
-{	
-	auto callback = [this](const std::error_code& error, size_t size) { this->OnWriteCallback(error, static_cast<uint32_t>(size));  };
+{
+	auto callback = [this](const std::error_code & error, size_t size)
+	{
+		this->OnWriteCallback(error, static_cast<uint32_t>(size));
+	};
 
 	async_write(port, buffer(buff, buff.Size()), executor.strand.wrap(callback));
 }

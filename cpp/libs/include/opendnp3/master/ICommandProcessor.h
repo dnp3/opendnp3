@@ -40,6 +40,7 @@ public:
 
 	/**
 	* Select and operate a ControlRelayOutputBlock
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure
@@ -49,6 +50,7 @@ public:
 
 	/**
 	* Direct operate a ControlRelayOutputBlock
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure
@@ -58,6 +60,7 @@ public:
 
 	/**
 	* Select and operate a 16 bit analog output
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure
@@ -67,6 +70,7 @@ public:
 
 	/**
 	* Direct operate a 16 bit analog output
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure
@@ -76,6 +80,7 @@ public:
 
 	/**
 	* Select and operate a 32 bit analog output
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure
@@ -85,6 +90,7 @@ public:
 
 	/**
 	* Direct operate a 32 bit analog output
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure
@@ -94,6 +100,7 @@ public:
 
 	/**
 	* Select and operate a single precision analog output
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure
@@ -103,6 +110,7 @@ public:
 
 	/**
 	* Direct operate a single precision analog output
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure
@@ -112,6 +120,7 @@ public:
 
 	/**
 	* Select and operate a double precision analog output
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure
@@ -121,6 +130,7 @@ public:
 
 	/**
 	* Direct operate a double precision analog output
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @param callback callback that will be invoked upon completion or failure

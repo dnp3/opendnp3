@@ -73,9 +73,9 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 	int last = 0;
 
 	for(int i = 1; i <= NUM; ++i)
-	{		
-		auto lambda = [i, &count, &last, &monotonic]() 
-		{ 
+	{
+		auto lambda = [i, &count, &last, &monotonic]()
+		{
 			++count;
 			if (i != (last + 1))
 			{
@@ -100,10 +100,13 @@ TEST_CASE(SUITE("ExpirationAndReuse"))
 {
 	MockTimerHandler mth;
 	auto pTimerHandler = &mth;
-	asio::io_service service;	
+	asio::io_service service;
 	ASIOExecutor exe(service);
 
-	auto lambda = [pTimerHandler]() { pTimerHandler->OnExpiration(); };
+	auto lambda = [pTimerHandler]()
+	{
+		pTimerHandler->OnExpiration();
+	};
 	auto runnable = Action0::Bind(lambda);
 	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), runnable);
 	REQUIRE(1 ==  service.run_one());
@@ -118,9 +121,12 @@ TEST_CASE(SUITE("Cancelation"))
 {
 	MockTimerHandler mth;
 	auto pTimerHandler = &mth;
-	asio::io_service service;	
+	asio::io_service service;
 	ASIOExecutor exe(service);
-	auto lambda = [pTimerHandler](){ pTimerHandler->OnExpiration(); };
+	auto lambda = [pTimerHandler]()
+	{
+		pTimerHandler->OnExpiration();
+	};
 	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), Action0::Bind(lambda));
 	pT1->Cancel();
 	REQUIRE(1 ==  service.run_one());
@@ -138,13 +144,19 @@ TEST_CASE(SUITE("MultipleOutstanding"))
 	MockTimerHandler mth2;
 	auto pTimerHandler1 = &mth1;
 	auto pTimerHandler2 = &mth2;
-	
-	asio::io_service service;	
+
+	asio::io_service service;
 	ASIOExecutor ts(service);
 
 
-	auto lambda1 = [pTimerHandler1](){ pTimerHandler1->OnExpiration(); };
-	auto lambda2 = [pTimerHandler2](){ pTimerHandler2->OnExpiration(); };
+	auto lambda1 = [pTimerHandler1]()
+	{
+		pTimerHandler1->OnExpiration();
+	};
+	auto lambda2 = [pTimerHandler2]()
+	{
+		pTimerHandler2->OnExpiration();
+	};
 
 
 	ITimer* pT1 = ts.Start(TimeDuration::Milliseconds(0), Action0::Bind(lambda1));

@@ -40,7 +40,10 @@ public:
 
 	AssignClassHandler(openpal::Logger logger, openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
 
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+	{
+		return true;
+	}
 
 private:
 
@@ -48,7 +51,7 @@ private:
 
 	virtual IINField ProcessHeader(const RangeHeader& header) override final;
 
-	IINField RecordClass(GroupVariation gv);	
+	IINField RecordClass(GroupVariation gv);
 
 	bool IsExpectingAssignment();
 
@@ -56,8 +59,8 @@ private:
 
 	IINField ProcessAssignRange(AssignClassType type, PointClass clazz, const Range& range);
 
-	void NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range);	
-	
+	void NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range);
+
 	openpal::Logger logger;
 	int32_t classHeader;
 	PointClass clazz;

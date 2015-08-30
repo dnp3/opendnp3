@@ -25,30 +25,30 @@ using namespace opendnp3;
 
 namespace secauth
 {
-	OutstationSecurity::OutstationSecurity(
-			const OutstationParams& params,
-			const OutstationAuthSettings& settings_, 
-			openpal::Logger logger, 
-			openpal::IExecutor& executor, 			
-			IOutstationApplicationSA& application,
-			openpal::ICryptoProvider& crypto) :
+OutstationSecurity::OutstationSecurity(
+    const OutstationParams& params,
+    const OutstationAuthSettings& settings_,
+    openpal::Logger logger,
+    openpal::IExecutor& executor,
+    IOutstationApplicationSA& application,
+    openpal::ICryptoProvider& crypto) :
 
-		state(SecurityState::IDLE),
-		settings(settings_),
-		challenge(settings.challengeSize, params.maxRxFragSize),
-		challengeTimer(executor),
-		hmac(crypto, settings.hmacMode),
-		deferred(params.maxRxFragSize),				
-		pApplication(&application),
-		pCrypto(&crypto),				
-		sessionKeyChangeState(settings.sessionKeyChangeChallengeSize, logger, crypto),
-		updateKeyChangeState(settings.updateKeyChangeChallengeSize, logger, crypto),
-		sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount),
-		txBuffer(params.maxTxFragSize)
-	{
-				
-	}
-	
+	state(SecurityState::IDLE),
+	settings(settings_),
+	challenge(settings.challengeSize, params.maxRxFragSize),
+	challengeTimer(executor),
+	hmac(crypto, settings.hmacMode),
+	deferred(params.maxRxFragSize),
+	pApplication(&application),
+	pCrypto(&crypto),
+	sessionKeyChangeState(settings.sessionKeyChangeChallengeSize, logger, crypto),
+	updateKeyChangeState(settings.updateKeyChangeChallengeSize, logger, crypto),
+	sessions(executor, settings.sessionKeyTimeout, settings.maxAuthMsgCount),
+	txBuffer(params.maxTxFragSize)
+{
+
+}
+
 }
 
 

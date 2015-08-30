@@ -28,20 +28,20 @@ namespace secauth
 
 class AuthorityCredentials
 {
-	public:
+public:
 
 	AuthorityCredentials();
 
-	void SetSCSN(uint32_t statusChangeSeqNumber);	
+	void SetSCSN(uint32_t statusChangeSeqNumber);
 
 	void Configure(uint32_t statusChangeSeqNumber, const AuthorityKey& key);
 
 	bool GetSymmetricKey(uint32_t& statusChangeSeqNumber, openpal::RSlice& keyView) const;
 
 	openpal::RSlice GetSymmetricKey() const;
-	
-	private:
-	
+
+private:
+
 	uint32_t m_statusChangeSeqNum;
 	AuthorityKey m_authorityKey;
 

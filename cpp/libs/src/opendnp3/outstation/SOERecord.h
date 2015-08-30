@@ -34,8 +34,8 @@ namespace opendnp3
 
 template <class T>
 struct ValueAndVariation
-{	
-	typename T::ValueType value;	
+{
+	typename T::ValueType value;
 	typename T::EventVariation defaultVariation;
 	typename T::EventVariation selectedVariation;
 
@@ -81,7 +81,7 @@ public:
 
 	template <class T>
 	EventInstance<T> ReadEvent()
-	{		
+	{
 		return EventInstance < T > { T(GetValue<T>().value, flags, time), index };
 	}
 
@@ -98,14 +98,17 @@ public:
 	void Select(EventAnalogVariation var);
 	void Select(EventAnalogOutputStatusVariation var);
 	void Select(EventSecurityStatVariation var);
-	
-	EventType type;	
+
+	EventType type;
 	EventClass clazz;
 	bool selected;
 	bool written;
 	void Reset();
 
-	DNPTime GetTime() const { return time; }
+	DNPTime GetTime() const
+	{
+		return time;
+	}
 
 private:
 
@@ -114,7 +117,8 @@ private:
 	template <class T>
 	EventInstance<T> Convert(const ValueAndVariation<T>& value)
 	{
-		return EventInstance < T > {
+		return EventInstance < T >
+		{
 			T(value.value, flags, time),
 			index,
 			value.selectedVariation
@@ -122,7 +126,7 @@ private:
 	}
 
 
-	// the actual value;	
+	// the actual value;
 	EventValue value;
 	uint16_t index;
 	DNPTime time;

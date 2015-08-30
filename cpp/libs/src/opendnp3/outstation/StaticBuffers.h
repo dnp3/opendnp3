@@ -61,7 +61,7 @@ private:
 			view[i].vIndex = i;
 		}
 	}
-		
+
 	openpal::Array<Cell<Binary>, uint16_t> binaries;
 	openpal::Array<Cell<DoubleBitBinary>, uint16_t> doubleBinaries;
 	openpal::Array<Cell<Analog>, uint16_t> analogs;

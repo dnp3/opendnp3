@@ -48,8 +48,8 @@ public:
 
 	MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
 
-	void Initialize(MasterScheduler& scheduler);	
-	
+	void Initialize(MasterScheduler& scheduler);
+
 	// master tasks that can be "failed" (startup and in response to IIN bits)
 	EnableUnsolicitedTask enableUnsol;
 	ClearRestartTask clearRestart;
@@ -62,7 +62,7 @@ public:
 	void BindTask(IMasterTask* pTask);
 
 private:
-	
+
 	std::vector<std::unique_ptr<IMasterTask>> boundTasks;
 
 };

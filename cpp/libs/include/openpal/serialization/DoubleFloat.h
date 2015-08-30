@@ -40,10 +40,10 @@ public:
 
 	static double ReadBuffer(RSlice& buffer);
 	static void WriteBuffer(WSlice& buffer, double value);
-		
+
 	static double Read(const uint8_t* data);
 	static void Write(uint8_t* data, double value);
-	
+
 	const static std::size_t SIZE = sizeof(double);
 	const static double Max;
 	const static double Min;

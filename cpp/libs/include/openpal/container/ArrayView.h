@@ -40,7 +40,7 @@ public:
 	static ArrayView<ValueType, IndexType> Empty()
 	{
 		return ArrayView(nullptr, 0);
-	}	
+	}
 
 	ArrayView(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
 	{}
@@ -53,7 +53,7 @@ public:
 	inline bool Contains(IndexType start, IndexType stop) const
 	{
 		return (start < stop) && Contains(stop);
-	}	
+	}
 
 	inline ValueType& operator[](IndexType index)
 	{

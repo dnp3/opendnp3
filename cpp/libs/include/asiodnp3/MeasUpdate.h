@@ -30,14 +30,14 @@
 
 namespace asiodnp3
 {
-	
+
 class MeasUpdate : private openpal::Uncopyable
 {
 public:
 	MeasUpdate(IOutstation* pOutstation);
 
 	~MeasUpdate();
-	
+
 	void Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
@@ -55,7 +55,7 @@ public:
 	void Modify(const openpal::Function1<const opendnp3::BinaryOutputStatus&, opendnp3::BinaryOutputStatus>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Modify(const openpal::Function1<const opendnp3::AnalogOutputStatus&, opendnp3::AnalogOutputStatus>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Modify(const openpal::Function1<const opendnp3::TimeAndInterval&, opendnp3::TimeAndInterval>& modify, uint16_t index);
-	
+
 private:
 
 	template <class T>
@@ -70,15 +70,21 @@ private:
 
 template <class T>
 void MeasUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode)
-{	
-	auto update = [=](opendnp3::IDatabase& db) { db.Update(meas, index, mode); };
+{
+	auto update = [ = ](opendnp3::IDatabase & db)
+	{
+		db.Update(meas, index, mode);
+	};
 	pChanges->Add(update);
 }
 
 template <class T>
 void MeasUpdate::ModifyAny(const openpal::Function1<const T&, T>& modify, uint16_t index, opendnp3::EventMode mode)
 {
-	auto update = [=](opendnp3::IDatabase& db){ db.Modify(modify, index, mode); };
+	auto update = [ = ](opendnp3::IDatabase & db)
+	{
+		db.Modify(modify, index, mode);
+	};
 	pChanges->Add(update);
 }
 

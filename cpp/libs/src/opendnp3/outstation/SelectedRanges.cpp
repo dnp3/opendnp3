@@ -26,48 +26,75 @@
 #include "opendnp3/app/SecurityStat.h"
 
 namespace opendnp3
-{	
+{
 
 bool SelectedRanges::HasAnySelection() const
 {
 	return
-		binaries.IsValid() ||
-		doubleBinaries.IsValid() ||
-		analogs.IsValid() ||
-		counters.IsValid() ||
-		frozenCounters.IsValid() ||
-		binaryOutputStatii.IsValid() ||
-		analogOutputStatii.IsValid() ||
-		timeAndIntervals.IsValid() ||
-		securityStats.IsValid();
+	    binaries.IsValid() ||
+	    doubleBinaries.IsValid() ||
+	    analogs.IsValid() ||
+	    counters.IsValid() ||
+	    frozenCounters.IsValid() ||
+	    binaryOutputStatii.IsValid() ||
+	    analogOutputStatii.IsValid() ||
+	    timeAndIntervals.IsValid() ||
+	    securityStats.IsValid();
 }
-	
-template <>
-Range& SelectedRanges::GetRangeRef<Binary>() { return binaries; }
 
 template <>
-Range& SelectedRanges::GetRangeRef<DoubleBitBinary>() { return doubleBinaries; }
+Range& SelectedRanges::GetRangeRef<Binary>()
+{
+	return binaries;
+}
 
 template <>
-Range& SelectedRanges::GetRangeRef<Analog>() { return analogs; }
+Range& SelectedRanges::GetRangeRef<DoubleBitBinary>()
+{
+	return doubleBinaries;
+}
 
 template <>
-Range& SelectedRanges::GetRangeRef<Counter>() { return counters; }
+Range& SelectedRanges::GetRangeRef<Analog>()
+{
+	return analogs;
+}
 
 template <>
-Range& SelectedRanges::GetRangeRef<FrozenCounter>() { return frozenCounters; }
+Range& SelectedRanges::GetRangeRef<Counter>()
+{
+	return counters;
+}
 
 template <>
-Range& SelectedRanges::GetRangeRef<BinaryOutputStatus>() { return binaryOutputStatii; }
+Range& SelectedRanges::GetRangeRef<FrozenCounter>()
+{
+	return frozenCounters;
+}
 
 template <>
-Range& SelectedRanges::GetRangeRef<AnalogOutputStatus>() { return analogOutputStatii; }
+Range& SelectedRanges::GetRangeRef<BinaryOutputStatus>()
+{
+	return binaryOutputStatii;
+}
 
 template <>
-Range& SelectedRanges::GetRangeRef<TimeAndInterval>() { return timeAndIntervals; }
+Range& SelectedRanges::GetRangeRef<AnalogOutputStatus>()
+{
+	return analogOutputStatii;
+}
 
 template <>
-Range& SelectedRanges::GetRangeRef<SecurityStat>() { return securityStats; }
+Range& SelectedRanges::GetRangeRef<TimeAndInterval>()
+{
+	return timeAndIntervals;
+}
+
+template <>
+Range& SelectedRanges::GetRangeRef<SecurityStat>()
+{
+	return securityStats;
+}
 
 }
 

@@ -37,59 +37,59 @@ PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& soeHand
 	rxCount(0),
 	pSOEHandler(&soeHandler)
 {
-	
+
 }
 
 void PollTaskBase::Initialize()
 {
 	rxCount = 0;
 }
-	
+
 IMasterTask::ResponseResult PollTaskBase::ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	if (header.control.FIR)
 	{
 		if (rxCount > 0)
 		{
-			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");			
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");
 			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 		else
-		{			
+		{
 			return ProcessMeasurements(header, objects);
 		}
 	}
 	else
 	{
 		if (rxCount > 0)
-		{			
+		{
 			return ProcessMeasurements(header, objects);
 		}
 		else
-		{	
-			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected non-FIR frame");			
+		{
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected non-FIR frame");
 			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 	}
 }
 
 IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::RSlice& objects)
-{	
+{
 	++rxCount;
 
 	if (MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler) == ParseResult::OK)
-	{	
+	{
 		if (header.control.FIN)
-		{											
+		{
 			return ResponseResult::OK_FINAL;
 		}
 		else
 		{
 			return ResponseResult::OK_CONTINUE;
-		}		
+		}
 	}
 	else
-	{						
+	{
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 }

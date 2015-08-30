@@ -33,77 +33,77 @@
 namespace asiopal
 {
 
-	class TimerASIO;
+class TimerASIO;
 
-	class ASIOExecutor : public openpal::IExecutor
-	{
+class ASIOExecutor : public openpal::IExecutor
+{
 
-	public:
+public:
 
-		ASIOExecutor(asio::io_service& service);
+	ASIOExecutor(asio::io_service& service);
 
-		~ASIOExecutor();
+	~ASIOExecutor();
 
-		virtual openpal::MonotonicTimestamp GetTime() override final;
-		virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Action0& runnable)  override final;
-		virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Action0& runnable)  override final;
-		virtual void Post(const openpal::Action0& runnable) override final;
+	virtual openpal::MonotonicTimestamp GetTime() override final;
+	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Action0& runnable)  override final;
+	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Action0& runnable)  override final;
+	virtual void Post(const openpal::Action0& runnable) override final;
 
-		// Gracefully wait for all timers to finish
-		void WaitForShutdown();
-
-		template <class T>
-		T ReturnBlockFor(const std::function<T()>& action);
-
-		void BlockFor(const std::function<void()>& action);
-
-		// access to the underlying strand is provided for wrapping callbacks
-		asio::strand strand;
-
-	private:
-
-		void InitiateShutdown(Synchronized<bool>& handler);
-
-		void CheckForShutdown();
-
-		Synchronized<bool>* pShutdownSignal;
-
-		TimerASIO* GetTimer();
-
-		openpal::ITimer* Start(const asiopal_steady_clock::time_point& tp, const openpal::Action0& runnable);
-
-		void StartTimer(TimerASIO*, const openpal::Action0& runnable);
-
-		typedef std::deque<TimerASIO*> TimerQueue;
-		typedef std::set<TimerASIO*> TimerMap;
-
-		TimerQueue allTimers;
-		TimerQueue idleTimers;
-		TimerMap activeTimers;
-
-		void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Action0& runnable);
-	};
+	// Gracefully wait for all timers to finish
+	void WaitForShutdown();
 
 	template <class T>
-	T ASIOExecutor::ReturnBlockFor(const std::function<T()>& action)
+	T ReturnBlockFor(const std::function<T()>& action);
+
+	void BlockFor(const std::function<void()>& action);
+
+	// access to the underlying strand is provided for wrapping callbacks
+	asio::strand strand;
+
+private:
+
+	void InitiateShutdown(Synchronized<bool>& handler);
+
+	void CheckForShutdown();
+
+	Synchronized<bool>* pShutdownSignal;
+
+	TimerASIO* GetTimer();
+
+	openpal::ITimer* Start(const asiopal_steady_clock::time_point& tp, const openpal::Action0& runnable);
+
+	void StartTimer(TimerASIO*, const openpal::Action0& runnable);
+
+	typedef std::deque<TimerASIO*> TimerQueue;
+	typedef std::set<TimerASIO*> TimerMap;
+
+	TimerQueue allTimers;
+	TimerQueue idleTimers;
+	TimerMap activeTimers;
+
+	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Action0& runnable);
+};
+
+template <class T>
+T ASIOExecutor::ReturnBlockFor(const std::function<T()>& action)
+{
+	if (strand.running_in_this_thread())
 	{
-		if (strand.running_in_this_thread())
-		{
-			return action();
-		}
-		else
-		{
-			Synchronized<T> sync;
-			auto pointer = &sync;
-			auto lambda = [action, pointer]()
-			{
-				T tmp = action();
-				pointer->SetValue(tmp);
-			};
-			strand.post(lambda);
-			return sync.WaitForValue();
-		}
+		return action();
 	}
+	else
+	{
+		Synchronized<T> sync;
+		auto pointer = &sync;
+		auto lambda = [action, pointer]()
+		{
+			T tmp = action();
+			pointer->SetValue(tmp);
+		};
+		strand.post(lambda);
+		return sync.WaitForValue();
+	}
+}
 
 }
 

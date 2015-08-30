@@ -34,23 +34,41 @@ class SerialTimeSyncTask : public IMasterTask
 {
 
 public:
-	SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger);	
-	
-	virtual char const* Name() const override final { return "serial time sync"; }
+	SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger);
 
-	virtual int Priority() const override final { return priority::TIME_SYNC; }
-	
-	virtual bool BlocksLowerPriority() const override final { return true; }
-	
-	virtual bool IsRecurring() const override final { return true; }	
+	virtual char const* Name() const override final
+	{
+		return "serial time sync";
+	}
+
+	virtual int Priority() const override final
+	{
+		return priority::TIME_SYNC;
+	}
+
+	virtual bool BlocksLowerPriority() const override final
+	{
+		return true;
+	}
+
+	virtual bool IsRecurring() const override final
+	{
+		return true;
+	}
 
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 private:
 
-	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::SERIAL_TIME_SYNC; }
+	virtual MasterTaskType GetTaskType() const override final
+	{
+		return MasterTaskType::SERIAL_TIME_SYNC;
+	}
 
-	virtual bool IsEnabled() const override final { return true; }	
+	virtual bool IsEnabled() const override final
+	{
+		return true;
+	}
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 

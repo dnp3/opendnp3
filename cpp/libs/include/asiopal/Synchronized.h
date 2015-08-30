@@ -32,7 +32,7 @@ namespace asiopal
 template <class T>
 class Synchronized
 {
-	public:
+public:
 
 	Synchronized() : value(), isSet(false)
 	{}
@@ -42,21 +42,24 @@ class Synchronized
 		std::unique_lock<std::mutex> lock(mutex);
 		while (!isSet)
 		{
-			auto complete = [this]() { return isSet; };
+			auto complete = [this]()
+			{
+				return isSet;
+			};
 			condition.wait(lock, complete);
 		}
 		return value;
 	}
-	
+
 	void SetValue(T value_)
 	{
-        std::unique_lock<std::mutex> lock(mutex);
-        this->value = value_;
-        isSet = true;
+		std::unique_lock<std::mutex> lock(mutex);
+		this->value = value_;
+		isSet = true;
 		condition.notify_all();
 	}
 
-	private:
+private:
 
 	T value;
 	bool isSet;
@@ -64,7 +67,7 @@ class Synchronized
 	std::mutex mutex;
 	std::condition_variable condition;
 };
-	
+
 }
 
 #endif

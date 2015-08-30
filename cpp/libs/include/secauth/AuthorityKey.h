@@ -31,47 +31,47 @@ namespace secauth
 */
 class AuthorityKey
 {
-	public:
-		
-		static const uint8_t KEY_SIZE_256 = 32;		
-		
-		/**
-		* Construct an invalid default key
-		*/
-		AuthorityKey();
+public:
 
-		/**
-		* Test constructor that initializes a key with the same value for every byte
-		*/
-		AuthorityKey(uint8_t repeat);
+	static const uint8_t KEY_SIZE_256 = 32;
 
-		/**
-		* Initialize the key base on a view
-		*/
-		AuthorityKey(const openpal::RSlice& key);
+	/**
+	* Construct an invalid default key
+	*/
+	AuthorityKey();
 
-		/**
-		* Retrieve update key view
-		*/
-		openpal::RSlice GetKeyView() const;					
+	/**
+	* Test constructor that initializes a key with the same value for every byte
+	*/
+	AuthorityKey(uint8_t repeat);
 
-		/**
-		* returns true if the key is valid, false otherwise
-		*/
-		bool IsValid() const;
+	/**
+	* Initialize the key base on a view
+	*/
+	AuthorityKey(const openpal::RSlice& key);
 
-		/**
-		* Only accepts 128 or 256 bit update keys
-		*
-		* returns true if the key was of valid size, false otherwise
-		*/
-		bool Initialize(const openpal::RSlice& key);
+	/**
+	* Retrieve update key view
+	*/
+	openpal::RSlice GetKeyView() const;
 
-	private:	
+	/**
+	* returns true if the key is valid, false otherwise
+	*/
+	bool IsValid() const;
 
-		bool m_valid;
-	 				
-		openpal::SecureStaticBuffer<KEY_SIZE_256> m_buffer;
+	/**
+	* Only accepts 128 or 256 bit update keys
+	*
+	* returns true if the key was of valid size, false otherwise
+	*/
+	bool Initialize(const openpal::RSlice& key);
+
+private:
+
+	bool m_valid;
+
+	openpal::SecureStaticBuffer<KEY_SIZE_256> m_buffer;
 };
 
 }

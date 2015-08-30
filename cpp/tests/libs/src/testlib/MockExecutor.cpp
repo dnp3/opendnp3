@@ -37,12 +37,15 @@ MockExecutor::MockExecutor() :
 
 MockExecutor::~MockExecutor()
 {
-	for(auto pTimer : timers) delete pTimer;	
+	for(auto pTimer : timers) delete pTimer;
 }
 
 openpal::MonotonicTimestamp MockExecutor::NextTimerExpiration()
-{	
-	auto lt = [](MockTimer* pLHS, MockTimer* pRHS) { return pLHS->ExpiresAt() < pRHS->ExpiresAt(); };
+{
+	auto lt = [](MockTimer * pLHS, MockTimer * pRHS)
+	{
+		return pLHS->ExpiresAt() < pRHS->ExpiresAt();
+	};
 	auto min = std::min_element(timers.begin(), timers.end(), lt);
 	if (min == timers.end())
 	{
@@ -51,12 +54,12 @@ openpal::MonotonicTimestamp MockExecutor::NextTimerExpiration()
 	else
 	{
 		return (*min)->ExpiresAt();
-	}	
+	}
 }
 
 size_t MockExecutor::CheckForExpiredTimers()
 {
-	size_t count = 0;	
+	size_t count = 0;
 	while (FindExpiredTimer())
 	{
 		++count;
@@ -66,7 +69,10 @@ size_t MockExecutor::CheckForExpiredTimers()
 
 bool MockExecutor::FindExpiredTimer()
 {
-	auto expired = [this](MockTimer* pTimer) { return pTimer->ExpiresAt().milliseconds <= this->mCurrentTime.milliseconds; };
+	auto expired = [this](MockTimer * pTimer)
+	{
+		return pTimer->ExpiresAt().milliseconds <= this->mCurrentTime.milliseconds;
+	};
 	auto iter = std::find_if(timers.begin(), timers.end(), expired);
 	if (iter == timers.end())
 	{
@@ -74,7 +80,7 @@ bool MockExecutor::FindExpiredTimer()
 	}
 	else
 	{
-		this->postQueue.push_back((*iter)->runnable);		
+		this->postQueue.push_back((*iter)->runnable);
 		delete (*iter);
 		timers.erase(iter);
 		return true;
@@ -128,7 +134,7 @@ bool MockExecutor::RunOne()
 	else
 	{
 		return false;
-	}	
+	}
 }
 
 size_t MockExecutor::RunMany(size_t aMaximum)
@@ -157,7 +163,7 @@ openpal::MonotonicTimestamp MockExecutor::GetTime()
 
 ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const openpal::Action0& runnable)
 {
-	auto expiration = mCurrentTime.Add(aDelay);	
+	auto expiration = mCurrentTime.Add(aDelay);
 	return Start(expiration, runnable);
 }
 
@@ -175,7 +181,7 @@ void MockExecutor::Cancel(ITimer* pTimer)
 		if(*i == pTimer)
 		{
 			delete pTimer;
-			timers.erase(i);			
+			timers.erase(i);
 			return;
 		}
 	}

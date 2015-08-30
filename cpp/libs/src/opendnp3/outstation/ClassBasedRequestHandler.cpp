@@ -33,18 +33,18 @@ IINField ClassBasedRequestHandler::ProcessHeader(const AllObjectsHeader& header)
 {
 	switch (header.enumeration)
 	{
-		case(GroupVariation::Group60Var2) :
-			classField.Set(PointClass::Class1);
-			return IINField::Empty();
-		case(GroupVariation::Group60Var3) :
-			classField.Set(PointClass::Class2);
-			return IINField::Empty();
-		case(GroupVariation::Group60Var4) :
-			classField.Set(PointClass::Class3);
-			return IINField::Empty();
-		default:
-			return IINField(IINBit::FUNC_NOT_SUPPORTED);			
-	}	
+	case(GroupVariation::Group60Var2) :
+		classField.Set(PointClass::Class1);
+		return IINField::Empty();
+	case(GroupVariation::Group60Var3) :
+		classField.Set(PointClass::Class2);
+		return IINField::Empty();
+	case(GroupVariation::Group60Var4) :
+		classField.Set(PointClass::Class3);
+		return IINField::Empty();
+	default:
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
 }
 
 }

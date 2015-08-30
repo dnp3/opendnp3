@@ -33,7 +33,7 @@ WSlice WSlice::Empty()
 	return WSlice();
 }
 
-WSlice::WSlice(): 
+WSlice::WSlice():
 	HasSize(0),
 	pBuffer(nullptr)
 {}

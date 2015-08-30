@@ -33,10 +33,10 @@ class PhysicalLayerTCPClient : public PhysicalLayerBaseTCP
 {
 public:
 	PhysicalLayerTCPClient(
-		openpal::LogRoot& root,
-		asio::io_service& service,
+	    openpal::LogRoot& root,
+	    asio::io_service& service,
 	    const std::string& host,
-		const std::string& localAddress,
+	    const std::string& localAddress,
 	    uint16_t port,
 	std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});
 
@@ -60,7 +60,7 @@ private:
 			if (ec)
 			{
 				FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
-			}			
+			}
 			return next;
 		}
 

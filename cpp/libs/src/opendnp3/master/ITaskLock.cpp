@@ -40,10 +40,10 @@ bool NullTaskLock::Acquire(IScheduleCallback&)
 {
 	return true;
 }
-	
+
 void NullTaskLock::Release(IScheduleCallback&)
-{ 
-	
+{
+
 }
 
 void NullTaskLock::OnLayerUp()

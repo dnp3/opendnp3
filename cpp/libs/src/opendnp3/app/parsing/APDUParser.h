@@ -34,17 +34,20 @@ namespace opendnp3
 
 class APDUParser : private openpal::StaticOnly
 {
-public:	
+public:
 
 	static ParseResult Parse(const openpal::RSlice& buffer, IAPDUHandler& handler, openpal::Logger& logger, ParserSettings settings = ParserSettings::Default());
 
 	static ParseResult Parse(const openpal::RSlice& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
 
-	static ParseResult ParseAndLogAll(const openpal::RSlice& buffer, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());	
+	static ParseResult ParseAndLogAll(const openpal::RSlice& buffer, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
 
 private:
 
-	static bool AllowAll(uint32_t headerCount, GroupVariation gv, QualifierCode qc) { return true; }
+	static bool AllowAll(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
+	{
+		return true;
+	}
 
 	static ParseResult ParseSinglePass(const openpal::RSlice& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, IWhiteList* pWhiteList, const ParserSettings& settings);
 

@@ -33,16 +33,16 @@ class HeaderWriter;
 
 enum class HeaderType : uint8_t
 {
-	AllObjects,
-	Ranged8,
-	Ranged16,
-	LimitedCount8,
-	LimitedCount16
+    AllObjects,
+    Ranged8,
+    Ranged16,
+    LimitedCount8,
+    LimitedCount16
 };
 
 template <class T>
 struct StartStopRange
-{	
+{
 	T start;
 	T stop;
 };
@@ -54,7 +54,7 @@ struct Count
 };
 
 union HeaderUnion
-{	
+{
 	StartStopRange<uint8_t> range8;
 	StartStopRange<uint16_t> range16;
 	Count<uint8_t> count8;
@@ -62,8 +62,8 @@ union HeaderUnion
 };
 
 class Header
-{		
-	public:
+{
+public:
 
 	bool WriteTo(opendnp3::HeaderWriter& writer) const;
 
@@ -76,16 +76,16 @@ class Header
 	static Header Count8(uint8_t group, uint8_t variation, uint8_t count);
 
 	static Header Count16(uint8_t group, uint8_t variation, uint16_t count);
-	
+
 	Header() : id(0, 0), type(HeaderType::AllObjects)
 	{}
 
-	private:
+private:
 
 	opendnp3::GroupVariationID id;
 	HeaderType type;
 	HeaderUnion value;
-	
+
 	Header(uint8_t group, uint8_t var);
 
 	Header(uint8_t group, uint8_t var, uint8_t start, uint8_t stop);

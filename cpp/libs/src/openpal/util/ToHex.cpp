@@ -25,7 +25,7 @@ namespace openpal
 
 char ToHexChar(char c)
 {
-	return (c > 9) ? ('A' + (c - 10)) : ('0' + c);	
+	return (c > 9) ? ('A' + (c - 10)) : ('0' + c);
 }
 
 }

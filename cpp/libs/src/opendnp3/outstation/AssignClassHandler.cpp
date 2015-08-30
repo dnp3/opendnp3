@@ -41,45 +41,45 @@ AssignClassHandler::AssignClassHandler(openpal::Logger logger_, openpal::IExecut
 }
 
 IINField AssignClassHandler::ProcessHeader(const AllObjectsHeader& header)
-{		
+{
 	if (IsExpectingAssignment())
-	{		
+	{
 		switch (header.enumeration)
 		{
-			case(GroupVariation::Group1Var0) :
-				return this->ProcessAssignAll(AssignClassType::BinaryInput, clazz);
-			case(GroupVariation::Group3Var0) :
-				return this->ProcessAssignAll(AssignClassType::DoubleBinaryInput, clazz);
-			case(GroupVariation::Group10Var0) :
-				return this->ProcessAssignAll(AssignClassType::BinaryOutputStatus, clazz);
-			case(GroupVariation::Group20Var0) :
-				return this->ProcessAssignAll(AssignClassType::Counter, clazz);
-			case(GroupVariation::Group21Var0) :
-				return this->ProcessAssignAll(AssignClassType::FrozenCounter, clazz);
-			case(GroupVariation::Group30Var0) :
-				return this->ProcessAssignAll(AssignClassType::AnalogInput, clazz);
-			case(GroupVariation::Group40Var0) :
-				return this->ProcessAssignAll(AssignClassType::AnalogOutputStatus, clazz);
-			default:	
-				return IINBit::FUNC_NOT_SUPPORTED;				
-		}		
+		case(GroupVariation::Group1Var0) :
+			return this->ProcessAssignAll(AssignClassType::BinaryInput, clazz);
+		case(GroupVariation::Group3Var0) :
+			return this->ProcessAssignAll(AssignClassType::DoubleBinaryInput, clazz);
+		case(GroupVariation::Group10Var0) :
+			return this->ProcessAssignAll(AssignClassType::BinaryOutputStatus, clazz);
+		case(GroupVariation::Group20Var0) :
+			return this->ProcessAssignAll(AssignClassType::Counter, clazz);
+		case(GroupVariation::Group21Var0) :
+			return this->ProcessAssignAll(AssignClassType::FrozenCounter, clazz);
+		case(GroupVariation::Group30Var0) :
+			return this->ProcessAssignAll(AssignClassType::AnalogInput, clazz);
+		case(GroupVariation::Group40Var0) :
+			return this->ProcessAssignAll(AssignClassType::AnalogOutputStatus, clazz);
+		default:
+			return IINBit::FUNC_NOT_SUPPORTED;
+		}
 	}
 	else
-	{	
+	{
 		return this->RecordClass(header.enumeration);
-	}	
+	}
 }
 
 
 
 IINField AssignClassHandler::ProcessHeader(const RangeHeader& header)
-{	
+{
 	if (IsExpectingAssignment())
 	{
 		switch (header.enumeration)
 		{
-			
-		case(GroupVariation::Group1Var0) :			
+
+		case(GroupVariation::Group1Var0) :
 			return ProcessAssignRange(AssignClassType::BinaryInput, clazz, header.range);
 		case(GroupVariation::Group3Var0) :
 			return ProcessAssignRange(AssignClassType::DoubleBinaryInput, clazz, header.range);
@@ -96,11 +96,11 @@ IINField AssignClassHandler::ProcessHeader(const RangeHeader& header)
 		default:
 			return IINBit::FUNC_NOT_SUPPORTED;
 		}
-	}	
+	}
 	else
 	{
 		return IINBit::PARAM_ERROR;
-	}	
+	}
 }
 
 bool AssignClassHandler::IsExpectingAssignment()
@@ -122,10 +122,10 @@ IINField AssignClassHandler::ProcessAssignRange(AssignClassType type, PointClass
 {
 	auto actual  = pAssigner->AssignClassToRange(type, clazz, range);
 
-	this->NotifyApplicationOfAssignment(type, clazz, actual);	
+	this->NotifyApplicationOfAssignment(type, clazz, actual);
 
 	// if the range was clipped or invalid return parameter error
-	return actual.Equals(range) ? IINField() : IINBit::PARAM_ERROR;	
+	return actual.Equals(range) ? IINField() : IINBit::PARAM_ERROR;
 }
 
 IINField AssignClassHandler::ProcessAssignAll(AssignClassType type, PointClass clazz)
@@ -140,7 +140,7 @@ IINField AssignClassHandler::ProcessAssignAll(AssignClassType type, PointClass c
 void AssignClassHandler::NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range)
 {
 	if (range.IsValid() && pApplication)
-	{		
+	{
 		auto pApplication = this->pApplication;
 		auto callback = [pApplication, range, clazz, type]()
 		{
@@ -157,21 +157,21 @@ IINField AssignClassHandler::RecordClass(GroupVariation gv)
 
 	switch (gv)
 	{
-		case(GroupVariation::Group60Var1) :
-			clazz = PointClass::Class0;				
-			return IINField();
-		case(GroupVariation::Group60Var2) :
-			clazz = PointClass::Class1;		
-			return IINField();
-		case(GroupVariation::Group60Var3) :
-			clazz = PointClass::Class2;		
-			return IINField();
-		case(GroupVariation::Group60Var4) :
-			clazz = PointClass::Class3;		
-			return IINField();
-		default:		
-			classHeader = -1;
-			return IINBit::PARAM_ERROR;
+	case(GroupVariation::Group60Var1) :
+		clazz = PointClass::Class0;
+		return IINField();
+	case(GroupVariation::Group60Var2) :
+		clazz = PointClass::Class1;
+		return IINField();
+	case(GroupVariation::Group60Var3) :
+		clazz = PointClass::Class2;
+		return IINField();
+	case(GroupVariation::Group60Var4) :
+		clazz = PointClass::Class3;
+		return IINField();
+	default:
+		classHeader = -1;
+		return IINBit::PARAM_ERROR;
 	}
 }
 

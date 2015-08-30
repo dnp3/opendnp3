@@ -44,7 +44,7 @@ struct OutstationConfig
 	OutstationParams params;
 
 	/// Describes the sizes in the event buffer
-	EventBufferConfig eventBufferConfig;	
+	EventBufferConfig eventBufferConfig;
 };
 
 }

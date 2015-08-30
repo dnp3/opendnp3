@@ -32,24 +32,24 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::MasterScheduler(ITaskFilter& filter) :		
+MasterScheduler::MasterScheduler(ITaskFilter& filter) :
 	m_filter(&filter)
 {
-	
+
 }
 
 void MasterScheduler::Schedule(openpal::ManagedPtr<IMasterTask> pTask)
 {
-	m_tasks.push_back(std::move(pTask));	
+	m_tasks.push_back(std::move(pTask));
 	this->RecalculateTaskStartTimeout();
 }
 
 std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
 {
 	auto runningBest = m_tasks.begin();
-	
+
 	if (!m_tasks.empty())
-	{		
+	{
 		auto current = m_tasks.begin();
 		++current;
 
@@ -60,15 +60,15 @@ std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNext
 			{
 				runningBest = current;
 			}
-		}		
-	}	
-	
-	return runningBest;	
-} 
+		}
+	}
+
+	return runningBest;
+}
 
 openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimestamp& now, MonotonicTimestamp& next)
-{		
-	auto elem = GetNextTask(now);	
+{
+	auto elem = GetNextTask(now);
 
 	if (elem == m_tasks.end())
 	{
@@ -80,22 +80,22 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimesta
 		const bool EXPIRED = (*elem)->ExpirationTime().milliseconds <= now.milliseconds;
 		const bool CAN_RUN = this->m_filter->CanRun(**elem);
 
-		if (EXPIRED && CAN_RUN) 
+		if (EXPIRED && CAN_RUN)
 		{
 			ManagedPtr<IMasterTask> ret(std::move(*elem));
 			m_tasks.erase(elem);
 			return ret;
 		}
 		else
-		{			
+		{
 			next = CAN_RUN ? (*elem)->ExpirationTime() : MonotonicTimestamp::Max();
 			return ManagedPtr<IMasterTask>();
-		}		
-	}	
+		}
+	}
 }
 
 void MasterScheduler::Shutdown(const MonotonicTimestamp& now)
-{			
+{
 	m_tasks.clear();
 }
 
@@ -112,21 +112,21 @@ bool MasterScheduler::IsTimedOut(const MonotonicTimestamp& now, openpal::Managed
 }
 
 void MasterScheduler::CheckTaskStartTimeout(const openpal::MonotonicTimestamp& now)
-{	
-	auto timedOut = [this, now](openpal::ManagedPtr<IMasterTask>& task) 
-	{		
-		return this->IsTimedOut(now, task);	
+{
+	auto timedOut = [this, now](openpal::ManagedPtr<IMasterTask>& task)
+	{
+		return this->IsTimedOut(now, task);
 	};
-	
+
 	// erase-remove idion (https://en.wikipedia.org/wiki/Erase-remove_idiom)
-	m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), timedOut), m_tasks.end());	
+	m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), timedOut), m_tasks.end());
 }
 
 void MasterScheduler::RecalculateTaskStartTimeout()
 {
 	auto min = MonotonicTimestamp::Max();
 
-	for(auto& task : m_tasks)
+	for(auto & task : m_tasks)
 	{
 		if (!task->IsRecurring() && (task->StartExpirationTime() < min))
 		{

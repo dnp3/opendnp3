@@ -39,19 +39,19 @@ namespace secauth
 	SAv5 outstation authentication provider
 */
 class OAuthContext final : public opendnp3::OContext
-{	
-	public:
+{
+public:
 
 	OAuthContext(
-		const opendnp3::OutstationConfig& config,
-		const opendnp3::DatabaseTemplate& dbTemplate,
-		openpal::Logger logger,
-		openpal::IExecutor& executor,
-		opendnp3::ILowerLayer& lower,
-		opendnp3::ICommandHandler& commandHandler,
-		IOutstationApplicationSA& application,
-		const OutstationAuthSettings& settings,			
-		openpal::ICryptoProvider& crypto
+	    const opendnp3::OutstationConfig& config,
+	    const opendnp3::DatabaseTemplate& dbTemplate,
+	    openpal::Logger logger,
+	    openpal::IExecutor& executor,
+	    opendnp3::ILowerLayer& lower,
+	    opendnp3::ICommandHandler& commandHandler,
+	    IOutstationApplicationSA& application,
+	    const OutstationAuthSettings& settings,
+	    openpal::ICryptoProvider& crypto
 	);
 
 	//// --- external methods ----
@@ -65,7 +65,7 @@ class OAuthContext final : public opendnp3::OContext
 	virtual bool OnLowerLayerDown() override final;
 
 	virtual void CheckForTaskStart() override final;
-		
+
 	virtual void ReceiveParsedHeader(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header, const openpal::RSlice& objects) override final;
 
 	virtual void Increment(opendnp3::SecurityStatIndex index) override final;
@@ -74,12 +74,12 @@ class OAuthContext final : public opendnp3::OContext
 
 	OutstationSecurity security;
 
-	private:		
+private:
 
 	enum APDUResult
 	{
-		PROCESSED,
-		DISCARDED
+	    PROCESSED,
+	    DISCARDED
 	};
 
 
@@ -110,20 +110,20 @@ class OAuthContext final : public opendnp3::OContext
 	APDUResult QueueUserStatusChange(const opendnp3::APDUHeader& header, const std::string& username, const opendnp3::Group120Var10& change);
 
 	APDUResult TryRespondWithAuthError(opendnp3::AppSeqNum seq, uint32_t authSeqNum, const opendnp3::User& user, opendnp3::AuthErrorCode code);
-	
-	void OnChallengeTimeout();	
+
+	void OnChallengeTimeout();
 
 	/// --- Helper methods ----
-			
+
 	void IncrementSessionAuthCount(const opendnp3::User& user);
 
 	void ConfigureSecStats(const StatThresholds& thresholds);
 
-	opendnp3::APDUResponse StartAuthResponse(uint8_t seq);		
+	opendnp3::APDUResponse StartAuthResponse(uint8_t seq);
 
-	bool AuthenticateUserStatusChange(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);	
+	bool AuthenticateUserStatusChange(const opendnp3::APDUHeader& header, const opendnp3::Group120Var10& change);
 
-	bool TransmitChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header);	
+	bool TransmitChallenge(const openpal::RSlice& apdu, const opendnp3::APDUHeader& header);
 
 	static opendnp3::DatabaseTemplate EnableSecStats(const opendnp3::DatabaseTemplate& dbTemplate);
 

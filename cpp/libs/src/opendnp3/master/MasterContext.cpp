@@ -38,612 +38,624 @@ using namespace openpal;
 
 namespace opendnp3
 {
-	MContext::MContext(
-		IExecutor& executor,
-		LogRoot& root,
-		ILowerLayer& lower,
-		ISOEHandler& SOEHandler,
-		opendnp3::IMasterApplication& application,		
-		const MasterParams& params_,
-		ITaskLock& taskLock
-		) :
+MContext::MContext(
+    IExecutor& executor,
+    LogRoot& root,
+    ILowerLayer& lower,
+    ISOEHandler& SOEHandler,
+    opendnp3::IMasterApplication& application,
+    const MasterParams& params_,
+    ITaskLock& taskLock
+) :
 
-		logger(root.GetLogger()),
-		pExecutor(&executor),
-		pLower(&lower),
-		params(params_),
-		pSOEHandler(&SOEHandler),
-		pTaskLock(&taskLock),
-		pApplication(&application),		
-		isOnline(false),
-		isSending(false),		
-		responseTimer(executor),
-		scheduleTimer(executor),
-		taskStartTimeoutTimer(executor),
-		tasks(params, logger, application, SOEHandler, application),	
-		scheduler(*this),
-		txBuffer(params.maxTxFragSize),
-		tstate(TaskState::IDLE)
-	{}
+	logger(root.GetLogger()),
+	pExecutor(&executor),
+	pLower(&lower),
+	params(params_),
+	pSOEHandler(&SOEHandler),
+	pTaskLock(&taskLock),
+	pApplication(&application),
+	isOnline(false),
+	isSending(false),
+	responseTimer(executor),
+	scheduleTimer(executor),
+	taskStartTimeoutTimer(executor),
+	tasks(params, logger, application, SOEHandler, application),
+	scheduler(*this),
+	txBuffer(params.maxTxFragSize),
+	tstate(TaskState::IDLE)
+{}
 
-	bool MContext::OnLowerLayerUp()
+bool MContext::OnLowerLayerUp()
+{
+	if (isOnline)
 	{
-		if (isOnline)
-		{
-			return false;
-		}
-		
-		isOnline = true;
-		pTaskLock->OnLayerUp();
-		tasks.Initialize(scheduler);
-		this->PostCheckForTask();		
-		return true;		
+		return false;
 	}
 
-	bool MContext::OnLowerLayerDown()
+	isOnline = true;
+	pTaskLock->OnLayerUp();
+	tasks.Initialize(scheduler);
+	this->PostCheckForTask();
+	return true;
+}
+
+bool MContext::OnLowerLayerDown()
+{
+	if (!isOnline)
 	{
-		if (!isOnline)
-		{
-			return false;
-		}
+		return false;
+	}
 
-		auto now = pExecutor->GetTime();
-		scheduler.Shutdown(now);
+	auto now = pExecutor->GetTime();
+	scheduler.Shutdown(now);
 
-		if (pActiveTask.IsDefined())
-		{
-			pActiveTask->OnLowerLayerClose(now);
-			pActiveTask.Release();
-		}
+	if (pActiveTask.IsDefined())
+	{
+		pActiveTask->OnLowerLayerClose(now);
+		pActiveTask.Release();
+	}
 
-		tstate = TaskState::IDLE;
+	tstate = TaskState::IDLE;
 
-		pTaskLock->OnLayerDown();
+	pTaskLock->OnLayerDown();
 
-		responseTimer.Cancel();
-		taskStartTimeoutTimer.Cancel();
-		scheduleTimer.Cancel();
+	responseTimer.Cancel();
+	taskStartTimeoutTimer.Cancel();
+	scheduleTimer.Cancel();
 
-		solSeq = unsolSeq = 0;
-		isOnline = isSending = false;
+	solSeq = unsolSeq = 0;
+	isOnline = isSending = false;
 
+	return true;
+}
+
+bool MContext::OnReceive(const openpal::RSlice& apdu)
+{
+	if (!this->isOnline)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Ignorning rx data while offline");
+		return false;
+	}
+
+	APDUResponseHeader header;
+	if (!APDUHeaderParser::ParseResponse(apdu, header, &this->logger))
+	{
 		return true;
 	}
 
-	bool MContext::OnReceive(const openpal::RSlice& apdu)
+
+	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
+	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+	                 header.control.FIR,
+	                 header.control.FIN,
+	                 header.control.CON,
+	                 header.control.UNS,
+	                 header.control.SEQ,
+	                 FunctionCodeToString(header.function),
+	                 header.IIN.LSB,
+	                 header.IIN.MSB);
+
+	this->OnParsedHeader(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+	return true;
+}
+
+bool MContext::OnSendResult(bool isSucccess)
+{
+	if (!this->isOnline || !this->isSending)
 	{
-		if (!this->isOnline)
-		{
-			SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Ignorning rx data while offline");
-			return false;
-		}
-
-		APDUResponseHeader header;
-		if (!APDUHeaderParser::ParseResponse(apdu, header, &this->logger))
-		{
-			return true;
-		}
-
-
-		FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-			"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-			header.control.FIR,
-			header.control.FIN,
-			header.control.CON,
-			header.control.UNS,
-			header.control.SEQ,
-			FunctionCodeToString(header.function),
-			header.IIN.LSB,
-			header.IIN.MSB);
-
-		this->OnParsedHeader(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
-		return true;
+		return false;
 	}
 
-	bool MContext::OnSendResult(bool isSucccess)
+	this->isSending = false;
+	this->CheckConfirmTransmit();
+	this->CheckForTask();
+	return true;
+}
+
+void MContext::CheckForTask()
+{
+	if (isOnline)
 	{
-		if (!this->isOnline || !this->isSending)
+		this->tstate = this->OnStartEvent();
+	}
+}
+
+void MContext::OnResponseTimeout()
+{
+	if (isOnline)
+	{
+		this->tstate = this->OnResponseTimeoutEvent();
+	}
+}
+
+void MContext::CompleteActiveTask()
+{
+	if (this->pActiveTask.IsDefined())
+	{
+		if (this->pActiveTask->IsRecurring())
 		{
-			return false;
+			this->scheduler.Schedule(std::move(this->pActiveTask));
+		}
+		else
+		{
+			this->pActiveTask.Release();
 		}
 
-		this->isSending = false;
-		this->CheckConfirmTransmit();
+		pTaskLock->Release(*this);
+		this->PostCheckForTask();
+	}
+}
+
+void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& header, const RSlice& objects)
+{
+	// Note: this looks silly, but OnParsedHeader() is virtual and can be overriden to do SA
+	this->ProcessAPDU(header, objects);
+}
+
+/// --- command handlers ----
+
+void MContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->SelectAndOperateT(command, index, callback, config, Group12Var1::Inst());
+}
+
+void MContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->DirectOperateT(command, index, callback, config, Group12Var1::Inst());
+}
+
+void MContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->SelectAndOperateT(command, index, callback, config, Group41Var2::Inst());
+}
+
+void MContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->DirectOperateT(command, index, callback, config, Group41Var2::Inst());
+}
+
+void MContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->SelectAndOperateT(command, index, callback, config, Group41Var1::Inst());
+}
+
+void MContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->DirectOperateT(command, index, callback, config, Group41Var1::Inst());
+}
+
+void MContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->SelectAndOperateT(command, index, callback, config, Group41Var3::Inst());
+}
+
+void MContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->DirectOperateT(command, index, callback, config, Group41Var3::Inst());
+}
+
+void MContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->SelectAndOperateT(command, index, callback, config, Group41Var4::Inst());
+}
+
+void MContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	this->DirectOperateT(command, index, callback, config, Group41Var4::Inst());
+}
+
+void MContext::ProcessAPDU(const APDUResponseHeader& header, const RSlice& objects)
+{
+	switch (header.function)
+	{
+	case(FunctionCode::UNSOLICITED_RESPONSE) :
+		this->ProcessUnsolicitedResponse(header, objects);
+		break;
+	case(FunctionCode::RESPONSE) :
+		this->ProcessResponse(header, objects);
+		break;
+	default:
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
+		break;
+	}
+}
+
+void MContext::ProcessIIN(const IINField& iin)
+{
+	if (iin.IsSet(IINBit::DEVICE_RESTART))
+	{
+		this->tasks.clearRestart.Demand();
+		this->tasks.assignClass.Demand();
+		this->tasks.startupIntegrity.Demand();
+		this->tasks.enableUnsol.Demand();
+	}
+
+	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && this->params.integrityOnEventOverflowIIN)
+	{
+		this->tasks.startupIntegrity.Demand();
+	}
+
+	if (iin.IsSet(IINBit::NEED_TIME))
+	{
+		this->tasks.timeSync.Demand();
+	}
+
+	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
+	        (iin.IsSet(IINBit::CLASS2_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
+	        (iin.IsSet(IINBit::CLASS3_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass3()))
+	{
+		this->tasks.eventScan.Demand();
+	}
+
+	this->pApplication->OnReceiveIIN(iin);
+}
+
+void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const RSlice& objects)
+{
+	if (!header.control.UNS)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unsolicited response without UNS bit set");
+		return;
+	}
+
+	auto result = MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler);
+
+	if ((result == ParseResult::OK) && header.control.CON)
+	{
+		this->QueueConfirm(APDUHeader::UnsolicitedConfirm(header.control.SEQ));
+	}
+
+	this->ProcessIIN(header.IIN);
+}
+
+void MContext::ProcessResponse(const APDUResponseHeader& header, const RSlice& objects)
+{
+	this->tstate = this->OnResponseEvent(header, objects);
+	this->ProcessIIN(header.IIN); // TODO - should we process IIN bits for unexpected responses?
+}
+
+void MContext::QueueConfirm(const APDUHeader& header)
+{
+	this->confirmQueue.push_back(header);
+	this->CheckConfirmTransmit();
+}
+
+bool MContext::CheckConfirmTransmit()
+{
+	if (this->isSending || this->confirmQueue.empty())
+	{
+		return false;
+	}
+
+	auto confirm = this->confirmQueue.front();
+	APDUWrapper wrapper(this->txBuffer.GetWSlice());
+	wrapper.SetFunction(confirm.function);
+	wrapper.SetControl(confirm.control);
+	this->Transmit(wrapper.ToRSlice());
+	this->confirmQueue.pop_front();
+	return true;
+}
+
+void MContext::Transmit(const RSlice& data)
+{
+	logging::ParseAndLogRequestTx(this->logger, data);
+	assert(!this->isSending);
+	this->isSending = true;
+	this->pLower->BeginTransmit(data);
+}
+
+void MContext::StartResponseTimer()
+{
+	auto timeout = [this]()
+	{
+		this->OnResponseTimeout();
+	};
+	this->responseTimer.Start(this->params.responseTimeout, timeout);
+}
+
+void MContext::PostCheckForTask()
+{
+	auto callback = [this]()
+	{
 		this->CheckForTask();
-		return true;
-	}
+	};
+	this->pExecutor->PostLambda(callback);
+}
 
-	void MContext::CheckForTask()
+MasterScan MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
+{
+	auto pTask = new UserPollTask(builder, true, period, params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
+	this->ScheduleRecurringPollTask(pTask);
+	auto callback = [this]()
 	{
-		if (isOnline)
+		this->PostCheckForTask();
+	};
+	return MasterScan(*pExecutor, pTask, callback);
+}
+
+MasterScan MContext::AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config)
+{
+	auto build = [field](HeaderWriter & writer) -> bool
+	{
+		return build::WriteClassHeaders(writer, field);
+	};
+	return this->AddScan(period, build, config);
+}
+
+MasterScan MContext::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config)
+{
+	auto build = [gvId](HeaderWriter & writer) -> bool
+	{
+		return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
+	};
+	return this->AddScan(period, build, config);
+}
+
+MasterScan MContext::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config)
+{
+	auto build = [gvId, start, stop](HeaderWriter & writer) -> bool
+	{
+		return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
+	};
+	return this->AddScan(period, build, config);
+}
+
+void MContext::Scan(const HeaderBuilderT& builder, TaskConfig config)
+{
+	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
+	this->ScheduleAdhocTask(pTask);
+}
+
+void MContext::ScanClasses(const ClassField& field, TaskConfig config)
+{
+	auto configure = [field](HeaderWriter & writer) -> bool
+	{
+		return build::WriteClassHeaders(writer, field);
+	};
+	this->Scan(configure, config);
+}
+
+void MContext::ScanAllObjects(GroupVariationID gvId, TaskConfig config)
+{
+	auto configure = [gvId](HeaderWriter & writer) -> bool
+	{
+		return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
+	};
+	this->Scan(configure, config);
+}
+
+void MContext::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config)
+{
+	auto configure = [gvId, start, stop](HeaderWriter & writer) -> bool
+	{
+		return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
+	};
+	this->Scan(configure, config);
+}
+
+void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig config)
+{
+	auto builder = [value, index](HeaderWriter & writer) -> bool
+	{
+		return writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
+	};
+
+	auto pTask = new EmptyResponseTask(*this->pApplication, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, this->logger, config);
+	this->ScheduleAdhocTask(pTask);
+}
+
+void MContext::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config)
+{
+	auto pTask = new EmptyResponseTask(*this->pApplication, name, func, builder, this->logger, config);
+	this->ScheduleAdhocTask(pTask);
+}
+
+void MContext::SetTaskStartTimeout(const openpal::MonotonicTimestamp& time)
+{
+	auto action = [this]()
+	{
+		this->scheduler.CheckTaskStartTimeout(pExecutor->GetTime());
+	};
+
+	this->taskStartTimeoutTimer.Restart(time, action);
+}
+
+/// ------ private helpers ----------
+
+void MContext::ScheduleRecurringPollTask(IMasterTask* pTask)
+{
+	this->tasks.BindTask(pTask);
+
+	if (this->isOnline)
+	{
+		this->scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
+		this->PostCheckForTask();
+	}
+}
+
+void MContext::ScheduleAdhocTask(IMasterTask* pTask)
+{
+	const auto NOW = this->pExecutor->GetTime();
+
+	pTask->ConfigureStartExpiration(NOW.milliseconds + params.taskStartTimeout.GetMilliseconds());
+
+	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
+	if (this->isOnline)
+	{
+		if (this->MeetsUserRequirements(*pTask))
 		{
-			this->tstate = this->OnStartEvent();
-		}
-	}
-
-	void MContext::OnResponseTimeout()
-	{
-		if (isOnline)
-		{
-			this->tstate = this->OnResponseTimeoutEvent();
-		}
-	}
-
-	void MContext::CompleteActiveTask()
-	{
-		if (this->pActiveTask.IsDefined())
-		{
-			if (this->pActiveTask->IsRecurring())
-			{
-				this->scheduler.Schedule(std::move(this->pActiveTask));
-			}
-			else
-			{
-				this->pActiveTask.Release();
-			}
-
-			pTaskLock->Release(*this);
-			this->PostCheckForTask();
-		}		
-	}	
-
-	void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& header, const RSlice& objects)
-	{
-		// Note: this looks silly, but OnParsedHeader() is virtual and can be overriden to do SA
-		this->ProcessAPDU(header, objects);
-	}
-
-	/// --- command handlers ----
-
-	void MContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->SelectAndOperateT(command, index, callback, config, Group12Var1::Inst());
-	}
-
-	void MContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->DirectOperateT(command, index, callback, config, Group12Var1::Inst());
-	}
-
-	void MContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->SelectAndOperateT(command, index, callback, config, Group41Var2::Inst());
-	}
-
-	void MContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->DirectOperateT(command, index, callback, config, Group41Var2::Inst());
-	}
-
-	void MContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->SelectAndOperateT(command, index, callback, config, Group41Var1::Inst());
-	}
-
-	void MContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->DirectOperateT(command, index, callback, config, Group41Var1::Inst());
-	}
-
-	void MContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->SelectAndOperateT(command, index, callback, config, Group41Var3::Inst());
-	}
-
-	void MContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->DirectOperateT(command, index, callback, config, Group41Var3::Inst());
-	}
-
-	void MContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->SelectAndOperateT(command, index, callback, config, Group41Var4::Inst());
-	}
-
-	void MContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
-	{
-		this->DirectOperateT(command, index, callback, config, Group41Var4::Inst());
-	}
-
-	void MContext::ProcessAPDU(const APDUResponseHeader& header, const RSlice& objects)
-	{
-		switch (header.function)
-		{
-		case(FunctionCode::UNSOLICITED_RESPONSE) :
-			this->ProcessUnsolicitedResponse(header, objects);
-			break;
-		case(FunctionCode::RESPONSE) :
-			this->ProcessResponse(header, objects);
-			break;
-		default:
-			FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
-			break;
-		}
-	}
-
-	void MContext::ProcessIIN(const IINField& iin)
-	{
-		if (iin.IsSet(IINBit::DEVICE_RESTART))
-		{
-			this->tasks.clearRestart.Demand();
-			this->tasks.assignClass.Demand();
-			this->tasks.startupIntegrity.Demand();
-			this->tasks.enableUnsol.Demand();
-		}
-
-		if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && this->params.integrityOnEventOverflowIIN)
-		{
-			this->tasks.startupIntegrity.Demand();
-		}
-
-		if (iin.IsSet(IINBit::NEED_TIME))
-		{
-			this->tasks.timeSync.Demand();
-		}
-
-		if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
-			(iin.IsSet(IINBit::CLASS2_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
-			(iin.IsSet(IINBit::CLASS3_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass3()))
-		{
-			this->tasks.eventScan.Demand();
-		}
-
-		this->pApplication->OnReceiveIIN(iin);
-	}
-
-	void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const RSlice& objects)
-	{
-		if (!header.control.UNS)
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unsolicited response without UNS bit set");
-			return;
-		}
-
-		auto result = MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler);
-
-		if ((result == ParseResult::OK) && header.control.CON)
-		{
-			this->QueueConfirm(APDUHeader::UnsolicitedConfirm(header.control.SEQ));
-		}
-
-		this->ProcessIIN(header.IIN);
-	}
-
-	void MContext::ProcessResponse(const APDUResponseHeader& header, const RSlice& objects)
-	{				
-		this->tstate = this->OnResponseEvent(header, objects);		
-		this->ProcessIIN(header.IIN); // TODO - should we process IIN bits for unexpected responses?
-	}
-
-	void MContext::QueueConfirm(const APDUHeader& header)
-	{
-		this->confirmQueue.push_back(header);
-		this->CheckConfirmTransmit();
-	}
-
-	bool MContext::CheckConfirmTransmit()
-	{
-		if (this->isSending || this->confirmQueue.empty())
-		{
-			return false;
-		}
-
-		auto confirm = this->confirmQueue.front();
-		APDUWrapper wrapper(this->txBuffer.GetWSlice());
-		wrapper.SetFunction(confirm.function);
-		wrapper.SetControl(confirm.control);
-		this->Transmit(wrapper.ToRSlice());	
-		this->confirmQueue.pop_front();
-		return true;
-	}
-
-	void MContext::Transmit(const RSlice& data)
-	{
-		logging::ParseAndLogRequestTx(this->logger, data);
-		assert(!this->isSending);
-		this->isSending = true;
-		this->pLower->BeginTransmit(data);
-	}
-
-	void MContext::StartResponseTimer()
-	{
-		auto timeout = [this](){ this->OnResponseTimeout(); };
-		this->responseTimer.Start(this->params.responseTimeout, timeout);
-	}
-
-	void MContext::PostCheckForTask()
-	{
-		auto callback = [this]() { this->CheckForTask(); };
-		this->pExecutor->PostLambda(callback);
-	}	
-
-	MasterScan MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
-	{
-		auto pTask = new UserPollTask(builder, true, period, params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
-		this->ScheduleRecurringPollTask(pTask);
-		auto callback = [this]() { this->PostCheckForTask(); };
-		return MasterScan(*pExecutor, pTask, callback);
-	}
-
-	MasterScan MContext::AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config)
-	{
-		auto build = [field](HeaderWriter& writer) -> bool
-		{
-			return build::WriteClassHeaders(writer, field);
-		};
-		return this->AddScan(period, build, config);
-	}
-
-	MasterScan MContext::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config)
-	{
-		auto build = [gvId](HeaderWriter& writer) -> bool
-		{
-			return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
-		};
-		return this->AddScan(period, build, config);
-	}
-
-	MasterScan MContext::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config)
-	{
-		auto build = [gvId, start, stop](HeaderWriter& writer) -> bool
-		{
-			return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
-		};
-		return this->AddScan(period, build, config);
-	}
-
-	void MContext::Scan(const HeaderBuilderT& builder, TaskConfig config)
-	{
-		auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
-		this->ScheduleAdhocTask(pTask);
-	}
-
-	void MContext::ScanClasses(const ClassField& field, TaskConfig config)
-	{
-		auto configure = [field](HeaderWriter& writer) -> bool
-		{
-			return build::WriteClassHeaders(writer, field);
-		};
-		this->Scan(configure, config);
-	}
-
-	void MContext::ScanAllObjects(GroupVariationID gvId, TaskConfig config)
-	{
-		auto configure = [gvId](HeaderWriter& writer) -> bool
-		{
-			return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
-		};
-		this->Scan(configure, config);
-	}
-
-	void MContext::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config)
-	{
-		auto configure = [gvId, start, stop](HeaderWriter& writer) -> bool
-		{
-			return writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
-		};
-		this->Scan(configure, config);
-	}
-
-	void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig config)
-	{
-		auto builder = [value, index](HeaderWriter& writer) -> bool
-		{
-			return writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
-		};
-		
-		auto pTask = new EmptyResponseTask(*this->pApplication, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, this->logger, config);
-		this->ScheduleAdhocTask(pTask);
-	}
-
-	void MContext::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config)
-	{
-		auto pTask = new EmptyResponseTask(*this->pApplication, name, func, builder, this->logger, config);
-		this->ScheduleAdhocTask(pTask);
-	}
-
-	void MContext::SetTaskStartTimeout(const openpal::MonotonicTimestamp& time)
-	{
-		auto action = [this]()
-		{
-			this->scheduler.CheckTaskStartTimeout(pExecutor->GetTime());			
-		};
-
-		this->taskStartTimeoutTimer.Restart(time, action);
-	}
-
-	/// ------ private helpers ----------	
-
-	void MContext::ScheduleRecurringPollTask(IMasterTask* pTask)
-	{
-		this->tasks.BindTask(pTask);
-
-		if (this->isOnline)
-		{
-			this->scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
-			this->PostCheckForTask();
-		}
-	}
-
-	void MContext::ScheduleAdhocTask(IMasterTask* pTask)
-	{
-		const auto NOW = this->pExecutor->GetTime();
-		
-		pTask->ConfigureStartExpiration(NOW.milliseconds + params.taskStartTimeout.GetMilliseconds());
-
-		auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
-		if (this->isOnline)
-		{
-			if (this->MeetsUserRequirements(*pTask))
-			{
-				this->scheduler.Schedule(std::move(task));
-				this->CheckForTask();
-			}
-			else
-			{
-				// task is failed because an SA user doesn't exist
-				pTask->OnNoUser(NOW);
-			}			
+			this->scheduler.Schedule(std::move(task));
+			this->CheckForTask();
 		}
 		else
 		{
-			// can't run this task since we're offline so fail it immediately
-			pTask->OnLowerLayerClose(NOW);
+			// task is failed because an SA user doesn't exist
+			pTask->OnNoUser(NOW);
 		}
 	}
-
-	MContext::TaskState MContext::BeginNewTask(ManagedPtr<IMasterTask>& task)
+	else
 	{
-		this->pActiveTask = std::move(task);				
-		this->pActiveTask->OnStart();
-		FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->pActiveTask->Name());
-		return this->ResumeActiveTask();
+		// can't run this task since we're offline so fail it immediately
+		pTask->OnLowerLayerClose(NOW);
 	}
+}
 
-	MContext::TaskState MContext::ResumeActiveTask()
-	{		
-		if (!this->pTaskLock->Acquire(*this))
-		{
-			return TaskState::TASK_READY;
-		}
+MContext::TaskState MContext::BeginNewTask(ManagedPtr<IMasterTask>& task)
+{
+	this->pActiveTask = std::move(task);
+	this->pActiveTask->OnStart();
+	FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->pActiveTask->Name());
+	return this->ResumeActiveTask();
+}
 
-		APDURequest request(this->txBuffer.GetWSlice());
-
-		/// try to build a requst for the task
-		if (!this->pActiveTask->BuildRequest(request, this->solSeq))
-		{
-			pActiveTask->OnInternalError(pExecutor->GetTime());
-			this->CompleteActiveTask();
-			return TaskState::IDLE;
-		}
-		
-		this->StartResponseTimer();
-		auto apdu = request.ToRSlice();
-		this->RecordLastRequest(apdu);
-		this->Transmit(apdu);
-
-		return TaskState::WAIT_FOR_RESPONSE;
-	}
-
-	//// --- State tables ---
-
-	MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, const RSlice& objects)
+MContext::TaskState MContext::ResumeActiveTask()
+{
+	if (!this->pTaskLock->Acquire(*this))
 	{
-		switch (tstate)
-		{			
-			case(TaskState::WAIT_FOR_RESPONSE) :
-				return OnResponse_WaitForResponse(header, objects);
-			default:
-				FORMAT_LOG_BLOCK(logger, flags::WARN, "Not expecting a response, sequence: %u", header.control.SEQ);
-				return tstate;
-		}
-	}
-	
-	MContext::TaskState MContext::OnStartEvent()
-	{
-		switch (tstate)
-		{
-			case(TaskState::IDLE) :
-				return StartTask_Idle();
-			case(TaskState::TASK_READY) :
-				return StartTask_TaskReady();
-			default:
-				return tstate;
-		}
-	}
-	
-	MContext::TaskState MContext::OnResponseTimeoutEvent()
-	{
-		switch (tstate)
-		{
-			case(TaskState::WAIT_FOR_RESPONSE) :
-				return OnResponseTimeout_WaitForResponse();
-			default:
-				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unexpected response timeout");
-				return tstate;
-		}
+		return TaskState::TASK_READY;
 	}
 
-	//// --- State actions ----
+	APDURequest request(this->txBuffer.GetWSlice());
 
-	MContext::TaskState MContext::StartTask_Idle()
+	/// try to build a requst for the task
+	if (!this->pActiveTask->BuildRequest(request, this->solSeq))
 	{
-		if (this->isSending)
-		{
-			return TaskState::IDLE;
-		}
-
-		MonotonicTimestamp next;
-		auto task = this->scheduler.GetNext(pExecutor->GetTime(), next);
-
-		if (task.IsDefined())
-		{
-			return this->BeginNewTask(task);
-		}
-		else
-		{
-			// restart the task timer			
-			if (!next.IsMax())
-			{
-				scheduleTimer.Restart(next, [this](){this->CheckForTask(); });
-			}
-			return TaskState::IDLE;
-		}		
-	}
-
-	MContext::TaskState MContext::StartTask_TaskReady()
-	{
-		if (this->isSending)
-		{
-			return TaskState::TASK_READY;
-		}
-
-		return this->ResumeActiveTask();
-	}
-
-	MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const RSlice& objects)
-	{
-		if (header.control.SEQ != this->solSeq)
-		{
-			FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Response with bad sequence: %u", header.control.SEQ);
-			return TaskState::WAIT_FOR_RESPONSE;
-		}
-		
-		this->responseTimer.Cancel();
-
-		this->solSeq.Increment();
-
-		auto now = this->pExecutor->GetTime();
-
-		auto result = this->pActiveTask->OnResponse(header, objects, now);
-
-		if (header.control.CON)
-		{
-			this->QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
-		}
-
-		switch (result)
-		{
-			case(IMasterTask::ResponseResult::OK_CONTINUE) :
-				this->StartResponseTimer();
-				return TaskState::WAIT_FOR_RESPONSE;
-			case(IMasterTask::ResponseResult::OK_REPEAT) :
-				return StartTask_TaskReady();
-			default:
-				// task completed or failed, either way go back to idle			
-				this->CompleteActiveTask();
-				return TaskState::IDLE;
-		}
-	}
-
-	MContext::TaskState MContext::OnResponseTimeout_WaitForResponse()
-	{
-		auto now = this->pExecutor->GetTime();
-		this->pActiveTask->OnResponseTimeout(now);
-		this->solSeq.Increment();
+		pActiveTask->OnInternalError(pExecutor->GetTime());
 		this->CompleteActiveTask();
 		return TaskState::IDLE;
 	}
+
+	this->StartResponseTimer();
+	auto apdu = request.ToRSlice();
+	this->RecordLastRequest(apdu);
+	this->Transmit(apdu);
+
+	return TaskState::WAIT_FOR_RESPONSE;
+}
+
+//// --- State tables ---
+
+MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, const RSlice& objects)
+{
+	switch (tstate)
+	{
+	case(TaskState::WAIT_FOR_RESPONSE) :
+		return OnResponse_WaitForResponse(header, objects);
+	default:
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Not expecting a response, sequence: %u", header.control.SEQ);
+		return tstate;
+	}
+}
+
+MContext::TaskState MContext::OnStartEvent()
+{
+	switch (tstate)
+	{
+	case(TaskState::IDLE) :
+		return StartTask_Idle();
+	case(TaskState::TASK_READY) :
+		return StartTask_TaskReady();
+	default:
+		return tstate;
+	}
+}
+
+MContext::TaskState MContext::OnResponseTimeoutEvent()
+{
+	switch (tstate)
+	{
+	case(TaskState::WAIT_FOR_RESPONSE) :
+		return OnResponseTimeout_WaitForResponse();
+	default:
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unexpected response timeout");
+		return tstate;
+	}
+}
+
+//// --- State actions ----
+
+MContext::TaskState MContext::StartTask_Idle()
+{
+	if (this->isSending)
+	{
+		return TaskState::IDLE;
+	}
+
+	MonotonicTimestamp next;
+	auto task = this->scheduler.GetNext(pExecutor->GetTime(), next);
+
+	if (task.IsDefined())
+	{
+		return this->BeginNewTask(task);
+	}
+	else
+	{
+		// restart the task timer
+		if (!next.IsMax())
+		{
+			scheduleTimer.Restart(next, [this]()
+			{
+				this->CheckForTask();
+			});
+		}
+		return TaskState::IDLE;
+	}
+}
+
+MContext::TaskState MContext::StartTask_TaskReady()
+{
+	if (this->isSending)
+	{
+		return TaskState::TASK_READY;
+	}
+
+	return this->ResumeActiveTask();
+}
+
+MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const RSlice& objects)
+{
+	if (header.control.SEQ != this->solSeq)
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Response with bad sequence: %u", header.control.SEQ);
+		return TaskState::WAIT_FOR_RESPONSE;
+	}
+
+	this->responseTimer.Cancel();
+
+	this->solSeq.Increment();
+
+	auto now = this->pExecutor->GetTime();
+
+	auto result = this->pActiveTask->OnResponse(header, objects, now);
+
+	if (header.control.CON)
+	{
+		this->QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
+	}
+
+	switch (result)
+	{
+	case(IMasterTask::ResponseResult::OK_CONTINUE) :
+		this->StartResponseTimer();
+		return TaskState::WAIT_FOR_RESPONSE;
+	case(IMasterTask::ResponseResult::OK_REPEAT) :
+		return StartTask_TaskReady();
+	default:
+		// task completed or failed, either way go back to idle
+		this->CompleteActiveTask();
+		return TaskState::IDLE;
+	}
+}
+
+MContext::TaskState MContext::OnResponseTimeout_WaitForResponse()
+{
+	auto now = this->pExecutor->GetTime();
+	this->pActiveTask->OnResponseTimeout(now);
+	this->solSeq.Increment();
+	this->CompleteActiveTask();
+	return TaskState::IDLE;
+}
 }
 
 

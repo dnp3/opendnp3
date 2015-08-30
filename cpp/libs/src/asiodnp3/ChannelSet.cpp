@@ -37,35 +37,38 @@ ChannelSet::~ChannelSet()
 }
 
 void ChannelSet::Shutdown()
-{	
+{
 	std::vector<DNP3Channel*> channelscopy;
 
 	for (auto pChannel : channels) channelscopy.push_back(pChannel);
-	
+
 	for (auto pChannel : channelscopy) pChannel->Shutdown();
 
 	assert(channels.empty());
 }
 
 IChannel* ChannelSet::CreateChannel(
-	openpal::LogRoot* pLogRoot,
-	asiopal::ASIOExecutor& executor,	
+    openpal::LogRoot* pLogRoot,
+    asiopal::ASIOExecutor& executor,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
-	PhysicalLayerBase* apPhys,    
-	openpal::ICryptoProvider* pCrypto,
+    PhysicalLayerBase* apPhys,
+    openpal::ICryptoProvider* pCrypto,
     IOpenDelayStrategy& strategy)
-{	
+{
 	auto pChannel = new DNP3Channel(pLogRoot, executor, minOpenRetry, maxOpenRetry, strategy, apPhys, pCrypto);
-	auto onShutdown = [this, pChannel]() { this->OnShutdown(pChannel); };
+	auto onShutdown = [this, pChannel]()
+	{
+		this->OnShutdown(pChannel);
+	};
 	pChannel->SetShutdownHandler(Action0::Bind(onShutdown));
 	channels.insert(pChannel);
 	return pChannel;
 }
 
 void ChannelSet::OnShutdown(DNP3Channel* pChannel)
-{		
-	channels.erase(pChannel);	
+{
+	channels.erase(pChannel);
 	delete pChannel;
 }
 

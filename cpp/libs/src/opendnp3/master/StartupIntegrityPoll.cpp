@@ -42,11 +42,11 @@ StartupIntegrityPoll::StartupIntegrityPoll(IMasterApplication& app, ISOEHandler&
 	classes(classes_),
 	retryPeriod(retryPeriod_)
 {
-	
+
 }
 
 bool StartupIntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
-{	
+{
 	build::ReadIntegrity(request, classes, seq);
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
@@ -61,15 +61,15 @@ bool StartupIntegrityPoll::IsEnabled() const
 IMasterTask::TaskState StartupIntegrityPoll::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
-	{		
-		case(TaskCompletion::FAILURE_NO_COMMS) :
-			return TaskState::Immediately();
-		
-		case(TaskCompletion::SUCCESS) :
-			return TaskState::Infinite();
+	{
+	case(TaskCompletion::FAILURE_NO_COMMS) :
+		return TaskState::Immediately();
 
-		default:
-			return TaskState::Infinite();
+	case(TaskCompletion::SUCCESS) :
+		return TaskState::Infinite();
+
+	default:
+		return TaskState::Infinite();
 	}
 }
 

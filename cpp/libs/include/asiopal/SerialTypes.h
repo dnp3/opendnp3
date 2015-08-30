@@ -47,10 +47,10 @@ enum class FlowType
 /// Enumeration for stop bits
 enum class StopBits
 {
-	NONE,
-	ONE,
-	ONE_POINT_FIVE,
-	TWO
+    NONE,
+    ONE,
+    ONE_POINT_FIVE,
+    TWO
 };
 
 ParityType GetParityFromInt(int parity);
@@ -72,16 +72,16 @@ struct SerialSettings
 
 	/// name of the port, i.e. "COM1" or "/dev/tty0"
 	std::string deviceName;
-	
+
 	/// Baud rate of the port, i.e. 9600 or 57600
 	int baud;
-	
+
 	/// Data bits, usually 8
 	int dataBits;
-	
+
 	/// Stop bits, usually set to 1
 	StopBits stopBits;
-	
+
 	/// Parity setting for the port, usually PAR_NONE
 	ParityType parity;
 

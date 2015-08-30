@@ -4,7 +4,8 @@
 
 #include <chrono>
 
-namespace asiopal {
+namespace asiopal
+{
 
 #if (defined WIN32 && (_MSC_VER < 1900)) // Windows with VS eariler than 2015, e.g. 2013
 
@@ -23,16 +24,19 @@ struct SteadyClockWindows
 	typedef std::chrono::time_point<SteadyClockWindows, duration> time_point;
 
 
-	static time_point now() {
+	static time_point now()
+	{
 		// Special case for WIN32 because std::chrono::steady_clock is broken
 		LARGE_INTEGER freq;
 		LONGLONG nanoSecondsPerTick = 0;
-		if (QueryPerformanceFrequency(&freq)) {
+		if (QueryPerformanceFrequency(&freq))
+		{
 			nanoSecondsPerTick = LONGLONG(1000000000.0L / freq.QuadPart);
 		}
 
 		LARGE_INTEGER performanceCount;
-		if (nanoSecondsPerTick <= 0 || !QueryPerformanceCounter(&performanceCount)) {
+		if (nanoSecondsPerTick <= 0 || !QueryPerformanceCounter(&performanceCount))
+		{
 			// Error condition, return 0 time
 			return time_point();
 		}
@@ -50,7 +54,7 @@ typedef SteadyClockWindows asiopal_steady_clock;
 
 // In all other situations use the normal steady clock
 typedef std::chrono::steady_clock asiopal_steady_clock;
-	
+
 #endif
 
 }

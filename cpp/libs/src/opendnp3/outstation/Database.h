@@ -50,7 +50,7 @@ public:
 	virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
-	
+
 	// only callable from within the slave itself ATM
 	bool Update(const SecurityStat&, uint16_t);
 
@@ -62,30 +62,36 @@ public:
 	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index) override final;
-	
+
 	// ------- Misc ---------------
-	
+
 	/**
 	* @return A view of all the static data for configuration purposes
 	*/
-	DatabaseConfigView GetConfigView() { return buffers.buffers.GetView(); }
+	DatabaseConfigView GetConfigView()
+	{
+		return buffers.buffers.GetView();
+	}
 
 	// used to clear the static selection for a new read
-	void Unselect() { buffers.Unselect(); }
+	void Unselect()
+	{
+		buffers.Unselect();
+	}
 
 	// stores the most recent values, selected values, and metadata
 	DatabaseBuffers buffers;
 
-private:	
+private:
 
 	template <class T>
 	uint16_t GetRawIndex(uint16_t index);
-		
-	IEventReceiver* pEventReceiver;	
-	IndexMode indexMode;
-			
 
-	static bool ConvertToEventClass(PointClass pc, EventClass& ec);	
+	IEventReceiver* pEventReceiver;
+	IndexMode indexMode;
+
+
+	static bool ConvertToEventClass(PointClass pc, EventClass& ec);
 
 	template <class T>
 	bool UpdateEvent(const T& value, uint16_t index, EventMode mode);
@@ -108,13 +114,13 @@ uint16_t Database::GetRawIndex(uint16_t index)
 	{
 		auto view = buffers.buffers.GetArrayView<T>();
 		auto result = IndexSearch::FindClosestRawIndex(view, index);
-		return result.match ? result.index : openpal::MaxValue<uint16_t>();				
+		return result.match ? result.index : openpal::MaxValue<uint16_t>();
 	}
 }
 
 template <class T>
 bool Database::UpdateEvent(const T& value, uint16_t index, EventMode mode)
-{	
+{
 	auto rawIndex = GetRawIndex<T>(index);
 	auto view = buffers.buffers.GetArrayView<T>();
 
@@ -156,14 +162,14 @@ bool Database::UpdateAny(Cell<T>& cell, const T& value, EventMode mode)
 
 		switch (mode)
 		{
-			case(EventMode::Force) :
-				createEvent = true;
-				break;
-			case(EventMode::Detect):
-				createEvent = cell.metadata.IsEvent(value);
-				break;
-			default:
-				break;
+		case(EventMode::Force) :
+			createEvent = true;
+			break;
+		case(EventMode::Detect):
+			createEvent = cell.metadata.IsEvent(value);
+			break;
+		default:
+			break;
 		}
 
 		if (createEvent)
@@ -172,9 +178,9 @@ bool Database::UpdateAny(Cell<T>& cell, const T& value, EventMode mode)
 
 			if (pEventReceiver)
 			{
-				pEventReceiver->Update(Event<T>(value, cell.vIndex, ec, cell.metadata.variation));				
+				pEventReceiver->Update(Event<T>(value, cell.vIndex, ec, cell.metadata.variation));
 			}
-		}		
+		}
 	}
 
 	cell.value = value;

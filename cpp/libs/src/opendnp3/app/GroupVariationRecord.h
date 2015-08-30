@@ -88,7 +88,7 @@ public:
 
 	HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier, uint32_t headerCount);
 
-	QualifierCode GetQualifierCode() const;	
+	QualifierCode GetQualifierCode() const;
 
 	uint8_t qualifier;
 	uint32_t headerCount;
@@ -102,7 +102,7 @@ public:
 
 	AllObjectsHeader(const HeaderRecord& record) : HeaderRecord(record)
 	{}
-	
+
 };
 
 class CountHeader : public HeaderRecord

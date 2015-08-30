@@ -47,15 +47,15 @@ public:
 
 	bool HasSelection() const;
 
-	void Reset();	
+	void Reset();
 
 	AppControlField LoadResponse(HeaderWriter& writer);
 
-private:	
+private:
 
 	static AppControlField GetControl(bool fir, bool fin, bool hasEvents);
 
-	uint16_t fragmentCount;	
+	uint16_t fragmentCount;
 	IResponseLoader* pStaticLoader;
 	IResponseLoader* pEventLoader;
 };

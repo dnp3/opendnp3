@@ -33,7 +33,7 @@ namespace opendnp3
 
 /**
 * DatabaseConfigView provides abstracted access to the raw buffers in outstation database.
-* 
+*
 * Use this object to congfigure:
 *
 *  1) Inital values if you want something besides false/zero with 0x02 restart quality
@@ -45,19 +45,19 @@ namespace opendnp3
 class DatabaseConfigView
 {
 
-public:	
+public:
 
 	DatabaseConfigView(
-		openpal::ArrayView<Cell<Binary>, uint16_t> binaries_,
-		openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> doubleBinaries_,
-		openpal::ArrayView<Cell<Analog>, uint16_t> analogs_,
-		openpal::ArrayView<Cell<Counter>, uint16_t> counters_,
-		openpal::ArrayView<Cell<FrozenCounter>, uint16_t> frozenCounters_,
-		openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii_,
-		openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii_,
-		openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> timeAndIntervals_
-		);
-	
+	    openpal::ArrayView<Cell<Binary>, uint16_t> binaries_,
+	    openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> doubleBinaries_,
+	    openpal::ArrayView<Cell<Analog>, uint16_t> analogs_,
+	    openpal::ArrayView<Cell<Counter>, uint16_t> counters_,
+	    openpal::ArrayView<Cell<FrozenCounter>, uint16_t> frozenCounters_,
+	    openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii_,
+	    openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii_,
+	    openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> timeAndIntervals_
+	);
+
 	// ------------ Helper functions for setting initial value ------
 
 	void SetInitialValue(const Binary& meas, uint16_t index);
@@ -78,7 +78,7 @@ public:
 	openpal::ArrayView<Cell<FrozenCounter>, uint16_t> frozenCounters;
 	openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
 	openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
-	openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;	
+	openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;
 };
 
 }

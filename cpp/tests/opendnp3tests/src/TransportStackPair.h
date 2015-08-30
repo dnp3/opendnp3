@@ -43,7 +43,7 @@ public:
 	    LinkConfig aClientCfg,
 	    LinkConfig aServerCfg,
 	    openpal::LogRoot& root,
-		asio::io_service& service,
+	    asio::io_service& service,
 	    uint16_t aPort);
 
 	void Start();

@@ -29,9 +29,9 @@
 #include <string>
 
 namespace secauth
-{	
+{
 
-/** 
+/**
 	Extends the master application interface for vanilla DNP3 with additional methods required for secure authentication
 */
 class IMasterApplicationSA : public opendnp3::IMasterApplication
@@ -40,11 +40,11 @@ class IMasterApplicationSA : public opendnp3::IMasterApplication
 public:
 
 	/**
-	* Called when the update key sequence completes. Update keys are automatically updated in memory, but 
-	* user code needs to persist these values to non-volatile memory.	
+	* Called when the update key sequence completes. Update keys are automatically updated in memory, but
+	* user code needs to persist these values to non-volatile memory.
 	*/
 	virtual void PersistNewUpdateKey(const std::string& username, opendnp3::User user, const UpdateKey& key) = 0;
-	
+
 };
 
 }

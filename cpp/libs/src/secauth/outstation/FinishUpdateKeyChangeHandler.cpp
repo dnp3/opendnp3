@@ -33,15 +33,15 @@ bool FinishUpdateKeyChangeHandler::IsAllowed(uint32_t headerCount, GroupVariatio
 
 	switch (gv)
 	{
-		case(GroupVariation::Group120Var13) : // this must be the first object header
-			return headerCount == 0;
-		case(GroupVariation::Group120Var14) : // either of these is allowed in position 1
-		case(GroupVariation::Group120Var15) :
-			return headerCount == 1;			
-		default:
-			return false;
+	case(GroupVariation::Group120Var13) : // this must be the first object header
+		return headerCount == 0;
+	case(GroupVariation::Group120Var14) : // either of these is allowed in position 1
+	case(GroupVariation::Group120Var15) :
+		return headerCount == 1;
+	default:
+		return false;
 	}
-}	
+}
 
 IINField FinishUpdateKeyChangeHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var13& value, const openpal::RSlice& object)
 {

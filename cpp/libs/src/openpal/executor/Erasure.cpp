@@ -29,7 +29,7 @@ namespace openpal
 Erasure::Erasure() : size(0)
 {
 
-}	
+}
 
 Erasure::Erasure(uint32_t size_) : size(size_)
 {
@@ -40,8 +40,8 @@ void Erasure::CopyErasure(const Erasure& erasure)
 {
 	this->size = erasure.size;
 	memcpy(bytes, erasure.bytes, size);
-}	
-	
+}
+
 }
 
 

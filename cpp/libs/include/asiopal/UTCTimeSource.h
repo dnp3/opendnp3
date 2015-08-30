@@ -34,7 +34,7 @@ class UTCTimeSource : public openpal::IUTCTimeSource
 
 public:
 	static openpal::IUTCTimeSource& Instance();
-	openpal::UTCTimestamp Now();	
+	openpal::UTCTimestamp Now();
 
 private:
 	UTCTimeSource() {}

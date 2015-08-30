@@ -23,19 +23,19 @@
 
 namespace opendnp3
 {
-	// a simple wrapper type to differentiate an IIN from a bool
-	class IINValue
-	{
-		public:
+// a simple wrapper type to differentiate an IIN from a bool
+class IINValue
+{
+public:
 
-		IINValue() : value(false)
-		{}
+	IINValue() : value(false)
+	{}
 
-		IINValue(bool value_) : value(value_)
-		{}
+	IINValue(bool value_) : value(value_)
+	{}
 
-		bool value;
-	};
+	bool value;
+};
 }
 
 #endif

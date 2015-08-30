@@ -33,18 +33,18 @@ namespace secauth
 {
 
 bool EncryptedUpdateKey::DecryptAndVerify(
-	IKeyWrapAlgo& algorithm, 
-	const RSlice& kek,
-	const RSlice& encryptedData,
-	const std::string& username, 
-	const RSlice& outstationChallengeData, 
-	UpdateKey& updateKey,
-	std::error_code& ec)
+    IKeyWrapAlgo& algorithm,
+    const RSlice& kek,
+    const RSlice& encryptedData,
+    const std::string& username,
+    const RSlice& outstationChallengeData,
+    UpdateKey& updateKey,
+    std::error_code& ec)
 {
 	// buffer where the decrypted data is written
 	openpal::StaticBuffer<AuthSizes::MAX_UPDATE_KEY_UNWRAP_BUFFER_SIZE> buffer;
 
-	auto dest = buffer.GetWSlice();	
+	auto dest = buffer.GetWSlice();
 	auto unwrapped = algorithm.UnwrapKey(kek, encryptedData, dest, ec);
 
 	if (ec)
@@ -80,8 +80,8 @@ bool EncryptedUpdateKey::DecryptAndVerify(
 	{
 		ec = make_error_code(OutstationError::CHALLENGE_DATA_MISMATCH);
 		return false;
-	}	
-	
+	}
+
 	// we're fully authenticated so this data is the key
 	updateKey = UpdateKey(unwrapped.Take(AuthSizes::MAX_UPDATE_KEY_SIZE_BYTES));
 

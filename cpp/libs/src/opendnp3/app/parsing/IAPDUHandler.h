@@ -56,8 +56,8 @@ namespace opendnp3
 class IAPDUHandler : public IWhiteList
 {
 public:
-	
-	IAPDUHandler();	
+
+	IAPDUHandler();
 
 	// read any accumulated errors
 	IINField Errors() const;
@@ -84,7 +84,7 @@ public:
 	void OnHeader(const CountHeader& header, const ICollection<Group52Var2>& values);
 	void OnHeader(const CountHeader& header, const ICollection<Group120Var4>& values);
 
-	void OnHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>> &values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values);
 	void OnHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values);
 	void OnHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values);
 	void OnHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values);
@@ -156,13 +156,13 @@ protected:
 	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var14& value, const openpal::RSlice& object);
 	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object);
 
-	
+
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values);
-	
+
 	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values);
 	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values);
 	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values);
@@ -190,16 +190,16 @@ protected:
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values);
 
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values);
-	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>> &values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values);
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values);
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values);
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values);
 
-protected:	
+protected:
 
 	// overridable to receive events for every header
 	virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) {}
-	
+
 private:
 
 	inline void Record(const HeaderRecord& record, const IINField& result)
@@ -217,7 +217,7 @@ private:
 
 	IINField errors;
 	uint32_t numTotalHeaders;
-	uint32_t numIgnoredHeaders;		
+	uint32_t numIgnoredHeaders;
 };
 
 }

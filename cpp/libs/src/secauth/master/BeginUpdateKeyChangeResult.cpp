@@ -24,26 +24,26 @@
 namespace secauth
 {
 
-	// failure constructor
-	BeginUpdateKeyChangeResult::BeginUpdateKeyChangeResult(opendnp3::TaskCompletion result_) :
-			result(result_),
-			keyChangeSequenceNum(0)
-	{}
-		
-	// success constructor
-	BeginUpdateKeyChangeResult::BeginUpdateKeyChangeResult(
-		opendnp3::User user_,
-		uint32_t keyChangeSequenceNum_,
-		const openpal::RSlice& masterChallengeData_,
-		const openpal::RSlice& outstationChallengeData_		
-	) :
-		result(opendnp3::TaskCompletion::SUCCESS),
-		user(user_),
-		keyChangeSequenceNum(keyChangeSequenceNum_),
-		masterChallengeData(masterChallengeData_),
-		outstationChallengeData(outstationChallengeData_)		
-	{}
-	
+// failure constructor
+BeginUpdateKeyChangeResult::BeginUpdateKeyChangeResult(opendnp3::TaskCompletion result_) :
+	result(result_),
+	keyChangeSequenceNum(0)
+{}
+
+// success constructor
+BeginUpdateKeyChangeResult::BeginUpdateKeyChangeResult(
+    opendnp3::User user_,
+    uint32_t keyChangeSequenceNum_,
+    const openpal::RSlice& masterChallengeData_,
+    const openpal::RSlice& outstationChallengeData_
+) :
+	result(opendnp3::TaskCompletion::SUCCESS),
+	user(user_),
+	keyChangeSequenceNum(keyChangeSequenceNum_),
+	masterChallengeData(masterChallengeData_),
+	outstationChallengeData(outstationChallengeData_)
+{}
+
 }
 
 

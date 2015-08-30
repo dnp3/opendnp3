@@ -35,7 +35,7 @@ LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	upper(),
 	link(log.root, exe, upper, listener, config),
 	numTotalWrites(0)
-{	
+{
 	upper.SetLinkLayer(link);
 	link.SetRouter(*this);
 }

@@ -35,7 +35,7 @@ using namespace testlib;
 
 void TestAggMode(const std::string& data, function<void(AggModeResult result)> validate)
 {
-	HexSequence objects(data);	
+	HexSequence objects(data);
 	auto result = AggressiveModeParser::IsAggressiveMode(objects.ToRSlice(), nullptr);
 	validate(result);
 }
@@ -45,13 +45,13 @@ void TestAggMode(const std::string& data, function<void(AggModeResult result)> v
 TEST_CASE(SUITE("AcceptsValidInput"))
 {
 	TestAggMode("78 03 07 01 04 00 00 00 09 00 DE AD BE EF", [](AggModeResult result)
-	{	
+	{
 		REQUIRE(result.result == ParseResult::OK);
-		REQUIRE(result.isAggMode);		
+		REQUIRE(result.isAggMode);
 		REQUIRE(result.request.challengeSeqNum == 4);
 		REQUIRE(result.request.userNum == 9);
 		REQUIRE(ToHex(result.remainder) == "DE AD BE EF");
-	});	
+	});
 }
 
 TEST_CASE(SUITE("RejectsBadHeader"))
@@ -59,7 +59,7 @@ TEST_CASE(SUITE("RejectsBadHeader"))
 	TestAggMode("78 03", [](AggModeResult result)
 	{
 		REQUIRE(result.result == ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
-		REQUIRE(!result.isAggMode);		
+		REQUIRE(!result.isAggMode);
 	});
 }
 
@@ -68,7 +68,7 @@ TEST_CASE(SUITE("RejectsNormalObject"))
 	TestAggMode("02 01 01", [](AggModeResult result)
 	{
 		REQUIRE(result.result == ParseResult::OK);
-		REQUIRE(!result.isAggMode);		
+		REQUIRE(!result.isAggMode);
 	});
 }
 
@@ -77,7 +77,7 @@ TEST_CASE(SUITE("RejectsInsufficientData"))
 	TestAggMode("78 03 07 01 FF FF FF FF FF", [](AggModeResult result)
 	{
 		REQUIRE(result.result == ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
-		REQUIRE(!result.isAggMode);		
+		REQUIRE(!result.isAggMode);
 	});
 }
 

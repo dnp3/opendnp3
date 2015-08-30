@@ -43,7 +43,7 @@ ParseResult TestObjectHeaders(const std::string& objects, ParseResult expectedRe
 
 TEST_CASE(SUITE("accepts empty response"))
 {
-	auto verify = [](MockSOEHandler& soe) 
+	auto verify = [](MockSOEHandler & soe)
 	{
 		REQUIRE(soe.TotalReceived() == 0);
 	};
@@ -53,7 +53,7 @@ TEST_CASE(SUITE("accepts empty response"))
 
 TEST_CASE(SUITE("parses g121v1 correctly"))
 {
-	auto verify = [](MockSOEHandler& soe) 
+	auto verify = [](MockSOEHandler & soe)
 	{
 		REQUIRE(soe.TotalReceived() == 1);
 
@@ -73,7 +73,7 @@ TEST_CASE(SUITE("parses g121v1 correctly"))
 
 TEST_CASE(SUITE("parses g122v1 correctly"))
 {
-	auto verify = [](MockSOEHandler& soe)
+	auto verify = [](MockSOEHandler & soe)
 	{
 		REQUIRE(soe.TotalReceived() == 1);
 
@@ -93,7 +93,7 @@ TEST_CASE(SUITE("parses g122v1 correctly"))
 
 TEST_CASE(SUITE("parses g122v2 correctly"))
 {
-	auto verify = [](MockSOEHandler& soe)
+	auto verify = [](MockSOEHandler & soe)
 	{
 		REQUIRE(soe.TotalReceived() == 1);
 

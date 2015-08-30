@@ -34,13 +34,13 @@ namespace secauth
 {
 
 struct AuthSizes : openpal::StaticOnly
-{	
+{
 
 public:
 
 	// Although the specification does name one we define one and enforce it to allow static buffer allocation
 	const static uint32_t MAX_USER_NAME_SIZE = 32;
-	
+
 	const static uint32_t MIN_CHALLENGE_DATA_SIZE = 4;
 	const static uint32_t MAX_CHALLENGE_DATA_SIZE = 16;
 
@@ -54,7 +54,7 @@ public:
 	MACRO_WITHIN_CHALLENGE_LIMITS(DEFAULT_CHALLENGE_SIZE);
 	MACRO_WITHIN_CHALLENGE_LIMITS(DEFAULT_SESSION_KEY_CHALLENGE_SIZE);
 	MACRO_WITHIN_CHALLENGE_LIMITS(DEFAULT_UPDATE_KEY_CHALLENGE_SIZE);
-	
+
 	const static uint32_t MIN_SESSION_KEY_SIZE_BYTES = 16;
 	const static uint32_t MAX_SESSION_KEY_SIZE_BYTES = 32;
 
@@ -65,25 +65,25 @@ public:
 	const static uint16_t MAX_HMAC_OUTPUT_SIZE = 32; // SHA256 output is 32 bytes
 
 	// the maximum size of an outstation challenge response
-	// 4 bytes header + 6 bytes obj header  = 10	
+	// 4 bytes header + 6 bytes obj header  = 10
 	const static uint32_t MAX_OUTSTATION_CHALLENGE_RESPONSE_FRAGMENT_SIZE = 10 + opendnp3::Group120Var1::MIN_SIZE + MAX_CHALLENGE_DATA_SIZE;
 
 	// 2 bytes header + 6 bytes obj header = 8
 	const static uint8_t FREE_FORMAT_HEADER_SIZE = 8;
 
-	// the maximum size of a master challenge reply	
+	// the maximum size of a master challenge reply
 	const static uint32_t MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE = FREE_FORMAT_HEADER_SIZE + opendnp3::Group120Var2::MIN_SIZE + MAX_HMAC_TRUNC_SIZE;
 
 	const static uint32_t MAX_SESSION_KEY_WRAP_BUFFER_SIZE = MACRO_PADDED_MODULO(
-		8, // AES key wrap requires data to be padded modulo 8
-		(2 + 2 * MAX_SESSION_KEY_SIZE_BYTES + opendnp3::Group120Var5::MIN_SIZE + MAX_CHALLENGE_DATA_SIZE) // the maximum unpadded space required to unwrap the session key
-	);
+	            8, // AES key wrap requires data to be padded modulo 8
+	            (2 + 2 * MAX_SESSION_KEY_SIZE_BYTES + opendnp3::Group120Var5::MIN_SIZE + MAX_CHALLENGE_DATA_SIZE) // the maximum unpadded space required to unwrap the session key
+	        );
 
 	const static uint32_t MAX_UPDATE_KEY_UNWRAP_BUFFER_SIZE = MACRO_PADDED_MODULO(
-		8, // AES key wrap requires data to be padded modulo 8
-		(8 + MAX_USER_NAME_SIZE + MAX_UPDATE_KEY_SIZE_BYTES + MAX_CHALLENGE_DATA_SIZE)	 // the maximum unpadded space required to unwrap the update key
-	);
-		
+	            8, // AES key wrap requires data to be padded modulo 8
+	            (8 + MAX_USER_NAME_SIZE + MAX_UPDATE_KEY_SIZE_BYTES + MAX_CHALLENGE_DATA_SIZE)	 // the maximum unpadded space required to unwrap the update key
+	        );
+
 	static uint32_t GetBoundedSessionKeySize(uint32_t size)
 	{
 		return openpal::Bounded(size, MIN_SESSION_KEY_SIZE_BYTES, MAX_SESSION_KEY_SIZE_BYTES);

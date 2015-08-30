@@ -86,7 +86,7 @@ uint32_t APDUWrapper::Size() const
 }
 
 openpal::RSlice APDUWrapper::ToRSlice() const
-{	
+{
 	return buffer.ToRSlice().Take(this->Size());
 }
 

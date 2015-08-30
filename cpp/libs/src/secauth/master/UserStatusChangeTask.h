@@ -30,52 +30,73 @@
 namespace secauth
 {
 
-	/**
-	* First step in updating user info from the DNP3 authority
-	*/
-	class UserStatusChangeTask : public opendnp3::IMasterTask
-	{	
+/**
+* First step in updating user info from the DNP3 authority
+*/
+class UserStatusChangeTask : public opendnp3::IMasterTask
+{
 
-	public:
+public:
 
-		UserStatusChangeTask(
-			const UserStatusChange& userStatusChange,
-			IMasterApplicationSA& application,
-			openpal::Logger logger,
-			const opendnp3::TaskConfig& config);
-			
+	UserStatusChangeTask(
+	    const UserStatusChange& userStatusChange,
+	    IMasterApplicationSA& application,
+	    openpal::Logger logger,
+	    const opendnp3::TaskConfig& config);
 
-		virtual bool IsAuthTask() const override final { return true; }
 
-		virtual char const* Name() const override final { return "User Status Change"; }
-		
-		virtual bool IsRecurring() const override final { return false; }
+	virtual bool IsAuthTask() const override final
+	{
+		return true;
+	}
 
-		virtual bool BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
+	virtual char const* Name() const override final
+	{
+		return "User Status Change";
+	}
 
-		virtual int Priority() const override final { return opendnp3::priority::USER_STATUS_CHANGE; }		
+	virtual bool IsRecurring() const override final
+	{
+		return false;
+	}
 
-		virtual bool BlocksLowerPriority() const override final { return false; }
+	virtual bool BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
 
-	private:	
-		
-		opendnp3::User user;
-		UserStatusChange statusChange;
+	virtual int Priority() const override final
+	{
+		return opendnp3::priority::USER_STATUS_CHANGE;
+	}
 
-		virtual void Initialize() override final {}
+	virtual bool BlocksLowerPriority() const override final
+	{
+		return false;
+	}
 
-		virtual opendnp3::MasterTaskType GetTaskType() const override final { return opendnp3::MasterTaskType::USER_TASK; }
+private:
 
-		virtual bool IsEnabled() const override final { return true; }
+	opendnp3::User user;
+	UserStatusChange statusChange;
 
-		virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::RSlice& objects) override final;
+	virtual void Initialize() override final {}
 
-		virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final
-		{
-			return TaskState::Infinite();
-		}
-		
-	};
+	virtual opendnp3::MasterTaskType GetTaskType() const override final
+	{
+		return opendnp3::MasterTaskType::USER_TASK;
+	}
+
+	virtual bool IsEnabled() const override final
+	{
+		return true;
+	}
+
+	virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::RSlice& objects) override final;
+
+	virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final
+	{
+		return TaskState::Infinite();
+	}
+
+};
 
 
 } //end ns

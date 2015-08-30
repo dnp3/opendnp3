@@ -30,63 +30,63 @@ using namespace openpal;
 
 namespace secauth
 {
-	SessionKeyUnwrapBuffer::Result::Result() : success(false)
-	{}
+SessionKeyUnwrapBuffer::Result::Result() : success(false)
+{}
 
-	SessionKeyUnwrapBuffer::Result::Result(const SessionKeysView& keys_, const openpal::RSlice& keyStatusObject_) :
-		success(true),
-		keys(keys_),
-		keyStatusObject(keyStatusObject_)
-	{}
+SessionKeyUnwrapBuffer::Result::Result(const SessionKeysView& keys_, const openpal::RSlice& keyStatusObject_) :
+	success(true),
+	keys(keys_),
+	keyStatusObject(keyStatusObject_)
+{}
 
-	SessionKeyUnwrapBuffer::Result SessionKeyUnwrapBuffer::Unwrap(
-		openpal::IKeyWrapAlgo& algo,
-		openpal::RSlice updateKey,
-		openpal::RSlice inputData,		
-		openpal::Logger* pLogger)
-	{		
-		auto dest = buffer.GetWSlice();
+SessionKeyUnwrapBuffer::Result SessionKeyUnwrapBuffer::Unwrap(
+    openpal::IKeyWrapAlgo& algo,
+    openpal::RSlice updateKey,
+    openpal::RSlice inputData,
+    openpal::Logger* pLogger)
+{
+	auto dest = buffer.GetWSlice();
 
-		std::error_code ec;
-		auto unwrapped = algo.UnwrapKey(updateKey, inputData, dest, ec);
+	std::error_code ec;
+	auto unwrapped = algo.UnwrapKey(updateKey, inputData, dest, ec);
 
-		if (ec)
-		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, ec.message().c_str());
-			return Result::Failure();
-		}
-
-		if (unwrapped.Size() < UInt16::SIZE)
-		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough data for key length");
-			return Result::Failure();
-		}
-
-		uint16_t keyLength = UInt16::ReadBuffer(unwrapped);
-		
-		if (!AuthSizes::SessionKeySizeWithinLimits(keyLength))
-		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Session key size of %u not within limits");
-			return Result::Failure();
-		}
-
-		const uint32_t REQUIRED_KEY_SIZE = 2 * keyLength;
-
-		if (unwrapped.Size() < REQUIRED_KEY_SIZE)
-		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough data for session keys");
-			return Result::Failure();
-		}
-
-		auto controlKey = unwrapped.Take(keyLength);
-		unwrapped.Advance(keyLength);
-
-		auto monitorKey = unwrapped.Take(keyLength);
-		unwrapped.Advance(keyLength);
-
-		// anything left over is the key status message
-		return Result(SessionKeysView(controlKey, monitorKey), unwrapped);		
+	if (ec)
+	{
+		SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, ec.message().c_str());
+		return Result::Failure();
 	}
+
+	if (unwrapped.Size() < UInt16::SIZE)
+	{
+		SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough data for key length");
+		return Result::Failure();
+	}
+
+	uint16_t keyLength = UInt16::ReadBuffer(unwrapped);
+
+	if (!AuthSizes::SessionKeySizeWithinLimits(keyLength))
+	{
+		SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Session key size of %u not within limits");
+		return Result::Failure();
+	}
+
+	const uint32_t REQUIRED_KEY_SIZE = 2 * keyLength;
+
+	if (unwrapped.Size() < REQUIRED_KEY_SIZE)
+	{
+		SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough data for session keys");
+		return Result::Failure();
+	}
+
+	auto controlKey = unwrapped.Take(keyLength);
+	unwrapped.Advance(keyLength);
+
+	auto monitorKey = unwrapped.Take(keyLength);
+	unwrapped.Advance(keyLength);
+
+	// anything left over is the key status message
+	return Result(SessionKeysView(controlKey, monitorKey), unwrapped);
+}
 }
 
 

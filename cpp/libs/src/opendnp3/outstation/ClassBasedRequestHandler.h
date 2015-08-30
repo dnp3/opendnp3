@@ -37,16 +37,22 @@ public:
 
 	ClassBasedRequestHandler(openpal::Logger logger);
 
-	ClassField GetClassField() const { return classField; }
+	ClassField GetClassField() const
+	{
+		return classField;
+	}
 
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+	{
+		return true;
+	}
 
 private:
 
 	openpal::Logger logger;
 
 	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
-	
+
 	ClassField classField;
 };
 

@@ -31,30 +31,36 @@ namespace asiodnp3
 {
 
 OutstationStackSA::OutstationStackSA(
-	const char* id,
-	openpal::LogRoot& root_,
-	openpal::IExecutor& executor,
-	opendnp3::ICommandHandler& commandHandler,
-	secauth::IOutstationApplicationSA& application,
-	const secauth::OutstationAuthStackConfig& config,
-	IStackLifecycle& lifecycle,	
-	openpal::ICryptoProvider& crypto) :
-	
+    const char* id,
+    openpal::LogRoot& root_,
+    openpal::IExecutor& executor,
+    opendnp3::ICommandHandler& commandHandler,
+    secauth::IOutstationApplicationSA& application,
+    const secauth::OutstationAuthStackConfig& config,
+    IStackLifecycle& lifecycle,
+    openpal::ICryptoProvider& crypto) :
+
 	OutstationStackBase<IOutstationSA>(id, root_, executor, application, config, lifecycle),
-	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, crypto)	
-{	
+	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, crypto)
+{
 	this->SetContext(ocontext);
 }
 
 void OutstationStackSA::ConfigureUser(const OutstationUserInfo& info)
 {
-	auto add = [this, info]() { this->ocontext.AddUser(info); };
+	auto add = [this, info]()
+	{
+		this->ocontext.AddUser(info);
+	};
 	pLifecycle->GetExecutor().BlockFor(add);
 }
 
 void OutstationStackSA::ConfigureAuthority(uint32_t statusChangeSeqNumber, const secauth::AuthorityKey& key)
 {
-	auto add = [=]() { this->ocontext.ConfigureAuthority(statusChangeSeqNumber, key); };
+	auto add = [ = ]()
+	{
+		this->ocontext.ConfigureAuthority(statusChangeSeqNumber, key);
+	};
 	pLifecycle->GetExecutor().BlockFor(add);
 }
 

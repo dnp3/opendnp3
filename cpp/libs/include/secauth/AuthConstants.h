@@ -31,14 +31,14 @@ namespace secauth
 
 
 struct AuthConstants : openpal::StaticOnly
-{	
+{
 
 public:
 
 	static const uint8_t NUM_SECURITY_STATS = 18;
 
 	static const uint16_t DEFAULT_SESSION_KEY_MAX_AUTH_COUNT = 1000;	// 1815 - pg 243
-	static const uint8_t DEFAULT_SESSION_KEY_CHANGE_MINUTES = 15;		
+	static const uint8_t DEFAULT_SESSION_KEY_CHANGE_MINUTES = 15;
 };
 
 }

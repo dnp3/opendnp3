@@ -74,13 +74,13 @@ struct DatabaseTemplate
 	}
 
 	DatabaseTemplate(uint16_t numBinary_ = 0,
-		uint16_t numDoubleBinary_ = 0,
-		uint16_t numAnalog_ = 0,
-		uint16_t numCounter_ = 0,
-		uint16_t numFrozenCounter_ = 0,
-		uint16_t numBinaryOutputStatus_ = 0,
-		uint16_t numAnalogOutputStatus_ = 0,
-		uint16_t numTimeAndInterval_ = 0) :
+	                 uint16_t numDoubleBinary_ = 0,
+	                 uint16_t numAnalog_ = 0,
+	                 uint16_t numCounter_ = 0,
+	                 uint16_t numFrozenCounter_ = 0,
+	                 uint16_t numBinaryOutputStatus_ = 0,
+	                 uint16_t numAnalogOutputStatus_ = 0,
+	                 uint16_t numTimeAndInterval_ = 0) :
 
 		numBinary(numBinary_),
 		numDoubleBinary(numDoubleBinary_),
@@ -100,7 +100,7 @@ struct DatabaseTemplate
 	uint16_t numFrozenCounter;
 	uint16_t numBinaryOutputStatus;
 	uint16_t numAnalogOutputStatus;
-	uint16_t numTimeAndInterval;	
+	uint16_t numTimeAndInterval;
 	uint16_t numSecurityStats;
 
 };

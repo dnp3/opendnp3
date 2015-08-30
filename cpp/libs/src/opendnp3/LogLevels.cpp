@@ -24,42 +24,42 @@
 namespace opendnp3
 {
 
-	const char* LogFlagToString(int32_t flag)
+const char* LogFlagToString(int32_t flag)
+{
+	switch (flag)
 	{
-		switch (flag)
-		{
 
-		case(flags::EVENT) :
-			return "EVENT  ";
-		case(flags::ERR) :
-			return "ERROR  ";
-		case(flags::WARN) :
-			return "WARN   ";
-		case(flags::INFO) :
-			return "INFO   ";
-		case(flags::DBG) :
-			return "DEBUG  ";
-		case(flags::LINK_RX) :
-		case(flags::LINK_RX_HEX) :
-			return "<-LL-- ";
-		case(flags::LINK_TX) :
-		case(flags::LINK_TX_HEX) :
-			return "--LL-> ";
-		case(flags::TRANSPORT_RX) :
-			return "<-TL-- ";
-		case(flags::TRANSPORT_TX) :
-			return "--TL-> ";
-		case(flags::APP_HEADER_RX) :
-		case(flags::APP_OBJECT_RX) :
-		case(flags::APP_HEX_RX) :
-			return "<-AL-- ";
-		case(flags::APP_HEADER_TX) :
-		case(flags::APP_OBJECT_TX) :
-		case(flags::APP_HEX_TX) :
-			return "--AL-> ";
-		default:
-			return "UNKNOWN";
-		}
+	case(flags::EVENT) :
+		return "EVENT  ";
+	case(flags::ERR) :
+		return "ERROR  ";
+	case(flags::WARN) :
+		return "WARN   ";
+	case(flags::INFO) :
+		return "INFO   ";
+	case(flags::DBG) :
+		return "DEBUG  ";
+	case(flags::LINK_RX) :
+	case(flags::LINK_RX_HEX) :
+		return "<-LL-- ";
+	case(flags::LINK_TX) :
+	case(flags::LINK_TX_HEX) :
+		return "--LL-> ";
+	case(flags::TRANSPORT_RX) :
+		return "<-TL-- ";
+	case(flags::TRANSPORT_TX) :
+		return "--TL-> ";
+	case(flags::APP_HEADER_RX) :
+	case(flags::APP_OBJECT_RX) :
+	case(flags::APP_HEX_RX) :
+		return "<-AL-- ";
+	case(flags::APP_HEADER_TX) :
+	case(flags::APP_OBJECT_TX) :
+	case(flags::APP_HEX_TX) :
+		return "--AL-> ";
+	default:
+		return "UNKNOWN";
 	}
+}
 
 }

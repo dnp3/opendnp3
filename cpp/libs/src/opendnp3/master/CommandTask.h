@@ -46,30 +46,48 @@ namespace opendnp3
 // Base class with machinery for performing command operations
 class CommandTask : public IMasterTask
 {
-	
-public:	
-	
+
+public:
+
 	template <class T>
 	static IMasterTask* FDirectOperate(const T& command, uint16_t index, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger);
 
 	template <class T>
 	static IMasterTask* FSelectAndOperate(const T& command, uint16_t index, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger);
 
-	virtual char const* Name() const override final { return "Command Task"; }	
+	virtual char const* Name() const override final
+	{
+		return "Command Task";
+	}
 
-	virtual int Priority() const override final { return priority::COMMAND; }
-	
-	virtual bool BlocksLowerPriority() const override final { return false; }	
-	
-	virtual bool IsRecurring() const override final { return false; }
-	
+	virtual int Priority() const override final
+	{
+		return priority::COMMAND;
+	}
+
+	virtual bool BlocksLowerPriority() const override final
+	{
+		return false;
+	}
+
+	virtual bool IsRecurring() const override final
+	{
+		return false;
+	}
+
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 private:
 
-	virtual bool IsEnabled() const override final { return true; }
+	virtual bool IsEnabled() const override final
+	{
+		return true;
+	}
 
-	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK; }
+	virtual MasterTaskType GetTaskType() const override final
+	{
+		return MasterTaskType::USER_TASK;
+	}
 
 	virtual void Initialize() override final;
 
@@ -83,14 +101,14 @@ private:
 
 	void LoadSelectAndOperate();
 	void LoadDirectOperate();
-	
+
 	void Callback(const CommandResponse& cr);
 
 	std::deque<FunctionCode> functionCodes;
-	
+
 	CommandStatus statusResult;
-	CommandCallbackT commandCallback;	
-	std::unique_ptr<ICommandSequence> pSequence;	
+	CommandCallbackT commandCallback;
+	std::unique_ptr<ICommandSequence> pSequence;
 };
 
 template <class T>

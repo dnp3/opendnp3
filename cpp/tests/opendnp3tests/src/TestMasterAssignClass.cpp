@@ -36,8 +36,8 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 
 	// configure the mock application to do assign class on startup
 	t.application.assignClassHeaders.push_back(Header::AllObjects(60, 2));
-	t.application.assignClassHeaders.push_back(Header::AllObjects(3, 0));	
-		
+	t.application.assignClassHeaders.push_back(Header::AllObjects(3, 0));
+
 	t.context.OnLowerLayerUp();
 
 	REQUIRE(t.exe.RunMany() > 0);
@@ -45,15 +45,15 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 16 3C 02 06 03 00 06");
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00");
-	
+
 	t.exe.RunMany();
 	REQUIRE(t.exe.NumPendingTimers() == 1);
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
 	REQUIRE(t.application.taskStartEvents.size() == 1);
-	REQUIRE(t.application.taskStartEvents[0] == MasterTaskType::ASSIGN_CLASS);	
+	REQUIRE(t.application.taskStartEvents[0] == MasterTaskType::ASSIGN_CLASS);
 
-	REQUIRE(t.application.taskCompletionEvents.size() == 1);	
+	REQUIRE(t.application.taskCompletionEvents.size() == 1);
 	REQUIRE(t.application.taskCompletionEvents[0].result == TaskCompletion::SUCCESS);
 }
 

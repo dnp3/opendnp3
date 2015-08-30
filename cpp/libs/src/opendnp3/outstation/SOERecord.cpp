@@ -24,14 +24,14 @@
 namespace opendnp3
 {
 
-SOERecord::SOERecord() : SOERecord(EventType::Analog, EventClass::EC1, 0, 0 ,0)
+SOERecord::SOERecord() : SOERecord(EventType::Analog, EventClass::EC1, 0, 0 , 0)
 {}
 
 SOERecord::SOERecord(EventType type_, EventClass clazz_, uint16_t index_, uint64_t time_, uint8_t flags_) :
 	type(type_),
 	clazz(clazz_),
 	selected(false),
-	written(false), 
+	written(false),
 	index(index_),
 	time(time_),
 	flags(flags_)
@@ -47,36 +47,36 @@ void SOERecord::SelectDefault()
 	selected = true;
 	switch (type)
 	{
-		case(EventType::Binary) :
-			value.binary.SelectDefaultVariation();
-			break;
-		case(EventType::DoubleBitBinary) :
-			value.doubleBinary.SelectDefaultVariation();
-			break;
-		case(EventType::Counter) :
-			value.counter.SelectDefaultVariation();
-			break;
-		case(EventType::FrozenCounter) :
-			value.frozenCounter.SelectDefaultVariation();
-			break;
-		case(EventType::Analog) :
-			value.analog.SelectDefaultVariation();
-			break;
-		case(EventType::BinaryOutputStatus) :
-			value.binaryOutputStatus.SelectDefaultVariation();
-			break;
-		case(EventType::AnalogOutputStatus) :
-			value.analogOutputStatus.SelectDefaultVariation();
-			break;		
-		case(EventType::SecurityStat) :
-			value.securityStat.SelectDefaultVariation();
-			break;
+	case(EventType::Binary) :
+		value.binary.SelectDefaultVariation();
+		break;
+	case(EventType::DoubleBitBinary) :
+		value.doubleBinary.SelectDefaultVariation();
+		break;
+	case(EventType::Counter) :
+		value.counter.SelectDefaultVariation();
+		break;
+	case(EventType::FrozenCounter) :
+		value.frozenCounter.SelectDefaultVariation();
+		break;
+	case(EventType::Analog) :
+		value.analog.SelectDefaultVariation();
+		break;
+	case(EventType::BinaryOutputStatus) :
+		value.binaryOutputStatus.SelectDefaultVariation();
+		break;
+	case(EventType::AnalogOutputStatus) :
+		value.analogOutputStatus.SelectDefaultVariation();
+		break;
+	case(EventType::SecurityStat) :
+		value.securityStat.SelectDefaultVariation();
+		break;
 	}
 }
 
 SOERecord::SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_, EventBinaryVariation var) :
 	SOERecord(EventType::Binary, clazz_, index_, meas.time, meas.quality)
-{		
+{
 	this->value.binary = ValueAndVariation <Binary> { meas.value, var, var };
 }
 
@@ -94,7 +94,7 @@ SOERecord::SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass
 
 SOERecord::SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_, EventCounterVariation var) :
 	SOERecord(EventType::Counter, clazz_, index_, meas.time, meas.quality)
-{	
+{
 	this->value.counter = ValueAndVariation < Counter > { meas.value, var, var };
 }
 
@@ -171,27 +171,51 @@ void SOERecord::Select(EventSecurityStatVariation var)
 }
 
 template <>
-const ValueAndVariation<Binary>& SOERecord::GetValue() { return value.binary; }
+const ValueAndVariation<Binary>& SOERecord::GetValue()
+{
+	return value.binary;
+}
 
 template <>
-const ValueAndVariation<DoubleBitBinary>& SOERecord::GetValue() { return value.doubleBinary; }
+const ValueAndVariation<DoubleBitBinary>& SOERecord::GetValue()
+{
+	return value.doubleBinary;
+}
 
 template <>
-const ValueAndVariation<Counter>& SOERecord::GetValue() { return value.counter; }
+const ValueAndVariation<Counter>& SOERecord::GetValue()
+{
+	return value.counter;
+}
 
 template <>
-const ValueAndVariation<FrozenCounter>& SOERecord::GetValue() { return value.frozenCounter; }
+const ValueAndVariation<FrozenCounter>& SOERecord::GetValue()
+{
+	return value.frozenCounter;
+}
 
 template <>
-const ValueAndVariation<Analog>& SOERecord::GetValue() { return value.analog; }
+const ValueAndVariation<Analog>& SOERecord::GetValue()
+{
+	return value.analog;
+}
 
 template <>
-const ValueAndVariation<BinaryOutputStatus>& SOERecord::GetValue() { return value.binaryOutputStatus; }
+const ValueAndVariation<BinaryOutputStatus>& SOERecord::GetValue()
+{
+	return value.binaryOutputStatus;
+}
 
 template <>
-const ValueAndVariation<AnalogOutputStatus>& SOERecord::GetValue() { return value.analogOutputStatus; }
+const ValueAndVariation<AnalogOutputStatus>& SOERecord::GetValue()
+{
+	return value.analogOutputStatus;
+}
 
 template <>
-const ValueAndVariation<SecurityStat>& SOERecord::GetValue() { return value.securityStat; }
+const ValueAndVariation<SecurityStat>& SOERecord::GetValue()
+{
+	return value.securityStat;
+}
 
 }

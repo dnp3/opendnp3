@@ -31,9 +31,9 @@ namespace opendnp3
 
 OctetData::OctetData() :  size(0) {}
 
-OctetData::OctetData(const RSlice& input) : 
+OctetData::OctetData(const RSlice& input) :
 	size(openpal::Min<uint32_t>(MAX_SIZE, input.Size()))
-{	
+{
 	auto dest = buffer.GetWSlice();
 	input.Take(size).CopyTo(dest);
 }

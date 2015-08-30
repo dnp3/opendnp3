@@ -28,7 +28,7 @@ namespace opendnp3
 template <class ValueType>
 struct SelectedValue
 {
-	SelectedValue() : selected(false), value(), variation(ValueType::DefaultStaticVariation) 
+	SelectedValue() : selected(false), value(), variation(ValueType::DefaultStaticVariation)
 	{}
 
 	bool selected;
@@ -38,7 +38,7 @@ struct SelectedValue
 
 template <class ValueType>
 struct Cell
-{			
+{
 	Cell() : value(), vIndex(0), variation(ValueType::DefaultStaticVariation)
 	{}
 

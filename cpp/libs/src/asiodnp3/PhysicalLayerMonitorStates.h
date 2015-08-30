@@ -58,7 +58,7 @@ public:
 
 	virtual char const* Name() const = 0;
 
-	virtual bool IsShuttingDown() const = 0;	
+	virtual bool IsShuttingDown() const = 0;
 };
 
 class MonitorStateActions

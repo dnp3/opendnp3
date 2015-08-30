@@ -31,33 +31,51 @@ namespace opendnp3
 * Clear the IIN restart bit
 */
 class ClearRestartTask : public IMasterTask
-{	
+{
 
-public:	
+public:
 
 	ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
-	virtual char const* Name() const override final { return "Clear Restart IIN"; }
+	virtual char const* Name() const override final
+	{
+		return "Clear Restart IIN";
+	}
 
-	virtual bool IsRecurring() const override final { return true; }
+	virtual bool IsRecurring() const override final
+	{
+		return true;
+	}
 
-	virtual int Priority() const override final { return priority::CLEAR_RESTART; }
+	virtual int Priority() const override final
+	{
+		return priority::CLEAR_RESTART;
+	}
 
-	virtual bool BlocksLowerPriority() const override final { return true; }	
+	virtual bool BlocksLowerPriority() const override final
+	{
+		return true;
+	}
 
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 private:
 
-	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK; }
+	virtual MasterTaskType GetTaskType() const override final
+	{
+		return MasterTaskType::USER_TASK;
+	}
 
-	virtual bool IsEnabled() const override final { return true; }
+	virtual bool IsEnabled() const override final
+	{
+		return true;
+	}
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
-	
+
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 
-	openpal::TimeDuration retryPeriod;	
+	openpal::TimeDuration retryPeriod;
 };
 
 } //end ns

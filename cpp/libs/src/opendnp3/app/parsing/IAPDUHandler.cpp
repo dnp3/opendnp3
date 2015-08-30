@@ -25,9 +25,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IAPDUHandler::IAPDUHandler() :	
+IAPDUHandler::IAPDUHandler() :
 	numTotalHeaders(0),
-	numIgnoredHeaders(0)	
+	numIgnoredHeaders(0)
 {
 
 }
@@ -35,8 +35,8 @@ IAPDUHandler::IAPDUHandler() :
 void IAPDUHandler::Reset()
 {
 	numTotalHeaders = 0;
-	numIgnoredHeaders = 0;	
-	errors.Clear();	
+	numIgnoredHeaders = 0;
+	errors.Clear();
 }
 
 IINField IAPDUHandler::Errors() const
@@ -46,7 +46,7 @@ IINField IAPDUHandler::Errors() const
 
 void IAPDUHandler::OnHeader(const AllObjectsHeader& header)
 {
-	Record(header, this->ProcessHeader(header));	
+	Record(header, this->ProcessHeader(header));
 }
 
 void IAPDUHandler::OnHeader(const RangeHeader& header)
@@ -264,7 +264,7 @@ void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<Indexe
 // --- controls ----
 
 void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
-{		
+{
 	Record(header, this->ProcessHeader(header, values));
 }
 

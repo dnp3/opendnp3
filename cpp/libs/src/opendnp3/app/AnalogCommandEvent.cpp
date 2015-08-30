@@ -26,12 +26,12 @@ namespace opendnp3
 
 AnalogCommandEvent::AnalogCommandEvent() :
 	value(0),
-	status(CommandStatus::SUCCESS)	
+	status(CommandStatus::SUCCESS)
 {}
 
 AnalogCommandEvent::AnalogCommandEvent(double value_, CommandStatus status_) :
 	value(value_),
-	status(status_)	
+	status(status_)
 {}
 
 AnalogCommandEvent::AnalogCommandEvent(double value_, CommandStatus status_, DNPTime time_) :

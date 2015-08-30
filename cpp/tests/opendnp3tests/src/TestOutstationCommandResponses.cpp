@@ -40,8 +40,8 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 	t.cmdHandler.SetResponse(CommandStatus::NOT_SUPPORTED);
 
 	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");	
-	
+	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+
 	// conformance requires IIN 2.2 to be set whenever the command status is not supported
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CommandStatus::NOT_SUPPORTED
 
@@ -79,7 +79,7 @@ TEST_CASE(SUITE("SelectCROBTooMany"))
 
 TEST_CASE(SUITE("SelectOperateCROB"))
 {
-	OutstationConfig config;	
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
@@ -138,13 +138,13 @@ TEST_CASE(SUITE("SelectOperateTimeout"))
 
 TEST_CASE(SUITE("SelectOperateGapInSequenceNumber"))
 {
-	OutstationConfig config;	
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS	
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 	t.OnSendResult(true);
 
 	// operate
@@ -161,7 +161,7 @@ TEST_CASE(SUITE("SelectOperateSameSequenceNumber"))
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS	
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 	t.OnSendResult(true);
 
 	// operate
@@ -178,7 +178,7 @@ TEST_CASE(SUITE("SelectOperateNonMatchingRequests"))
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS	
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 	t.OnSendResult(true);
 
 	// operate
@@ -206,7 +206,7 @@ TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(2 == t.cmdHandler.NumInvocations());
 	t.OnSendResult(true);
-	
+
 	// operate again with same sequence number, should respond success but not really do an operation
 	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");

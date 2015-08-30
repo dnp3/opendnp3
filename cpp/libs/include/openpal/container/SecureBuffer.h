@@ -42,7 +42,7 @@ public:
 	{
 		this->GetWSlice().SetAllTo(0x00);
 	}
-	
+
 };
 
 }

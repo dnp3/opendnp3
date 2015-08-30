@@ -343,7 +343,7 @@ void PhysicalLayerBase::OnWriteCallback(const std::error_code& err, uint32_t num
 			}
 
 			if (!state.isClosing)
-			{			
+			{
 				this->DoWriteSuccess();
 			}
 		}

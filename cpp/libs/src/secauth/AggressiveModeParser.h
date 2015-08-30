@@ -40,7 +40,7 @@ struct AggModeResult
 
 	// success constructor
 	AggModeResult(const opendnp3::Group120Var3& request, const openpal::RSlice& remainder);
-	
+
 
 	opendnp3::ParseResult result;
 	bool isAggMode;
@@ -59,7 +59,7 @@ struct AggModeHMACResult
 	AggModeHMACResult(const opendnp3::Group120Var9& hmac, const openpal::RSlice& objects);
 
 
-	opendnp3::ParseResult result;	
+	opendnp3::ParseResult result;
 	opendnp3::Group120Var9 hmac;
 	openpal::RSlice objects;
 
@@ -68,9 +68,9 @@ struct AggModeHMACResult
 
 
 struct AggressiveModeParser : openpal::StaticOnly
-{	
+{
 	static AggModeResult IsAggressiveMode(openpal::RSlice objects, openpal::Logger* pLogger);
-		
+
 	static AggModeHMACResult ParseHMAC(openpal::RSlice remainder, uint32_t HMACSize, openpal::Logger* pLogger);
 };
 

@@ -44,10 +44,10 @@ public:
 		maxCount(0),
 		isValid(position_.Size() >= (2 * IndexType::SIZE)),
 		range(position_),
-		pPosition(&position_)				
+		pPosition(&position_)
 	{
 		if(isValid)
-		{			
+		{
 			openpal::Format::Write(range, start_);
 			pPosition->Advance(2 * IndexType::SIZE);
 			maxCount = pPosition->Size() * 8;
@@ -68,13 +68,13 @@ public:
 				++num;
 			}
 
-			pPosition->Advance(num);			
+			pPosition->Advance(num);
 		}
-	}	
+	}
 
 	bool Write(bool value)
 	{
-		if (isValid && count < maxCount)		
+		if (isValid && count < maxCount)
 		{
 			auto byte = count / 8;
 			auto bit = count % 8;

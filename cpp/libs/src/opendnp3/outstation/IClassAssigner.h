@@ -35,7 +35,7 @@ namespace opendnp3
 */
 class IClassAssigner
 {
-public:	
+public:
 
 	/**
 	*	@return the full range for the actual type, an invalid range if the type doesn't exist

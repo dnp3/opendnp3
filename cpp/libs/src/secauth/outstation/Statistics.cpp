@@ -23,26 +23,26 @@
 
 namespace secauth
 {
-	
-	Statistics::Statistics()
-	{				
-		for (int i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
-		{
-			statistics[i] = 0;
-		}		
-	}
-	
 
-	uint32_t Statistics::Increment(opendnp3::SecurityStatIndex index)
+Statistics::Statistics()
+{
+	for (int i = 0; i < AuthConstants::NUM_SECURITY_STATS; ++i)
 	{
-		return ++statistics[static_cast<uint8_t>(index)];
+		statistics[i] = 0;
 	}
+}
 
-	
-	uint32_t Statistics::GetValue(opendnp3::SecurityStatIndex index) const
-	{
-		return statistics[static_cast<uint8_t>(index)];
-	}
+
+uint32_t Statistics::Increment(opendnp3::SecurityStatIndex index)
+{
+	return ++statistics[static_cast<uint8_t>(index)];
+}
+
+
+uint32_t Statistics::GetValue(opendnp3::SecurityStatIndex index) const
+{
+	return statistics[static_cast<uint8_t>(index)];
+}
 
 }
 

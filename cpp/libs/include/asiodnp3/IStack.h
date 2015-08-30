@@ -34,15 +34,15 @@
 
 namespace asiodnp3
 {
-	
+
 /**
 * Base class for masters or outstations
 */
 class IStack : public DestructorHook
 {
-public:	
+public:
 
-	virtual ~IStack() {}	
+	virtual ~IStack() {}
 
 	/**
 	* Synchronously enable communications
@@ -57,7 +57,7 @@ public:
 	/**
 	* Synchronously shutdown the endpoint. No more calls are allowed after this call.
 	*/
-	virtual void Shutdown() = 0;	
+	virtual void Shutdown() = 0;
 
 };
 

@@ -37,33 +37,33 @@
 namespace opendnp3
 {
 
-	MasterParams NoStartupTasks();
+MasterParams NoStartupTasks();
 
-	class MasterSecAuthFixture
-	{
-		const static std::string MOCK_KEY_WRAP_DATA; // "DEADBEEF"		
+class MasterSecAuthFixture
+{
+	const static std::string MOCK_KEY_WRAP_DATA; // "DEADBEEF"
 
-	public:
+public:
 
-		MasterSecAuthFixture(const MasterParams& params, const secauth::MasterAuthSettings& authSettings = secauth::MasterAuthSettings(), ITaskLock& lock = NullTaskLock::Instance());
+	MasterSecAuthFixture(const MasterParams& params, const secauth::MasterAuthSettings& authSettings = secauth::MasterAuthSettings(), ITaskLock& lock = NullTaskLock::Instance());
 
-		void SendToMaster(const std::string& hex);		
+	void SendToMaster(const std::string& hex);
 
-		bool ConfigureUser(opendnp3::User user, opendnp3::KeyWrapAlgorithm mode = opendnp3::KeyWrapAlgorithm::AES_128, uint8_t keyRepeat = 0xFF);
+	bool ConfigureUser(opendnp3::User user, opendnp3::KeyWrapAlgorithm mode = opendnp3::KeyWrapAlgorithm::AES_128, uint8_t keyRepeat = 0xFF);
 
-		void TestRequestAndReply(const std::string& request, const std::string& response);
+	void TestRequestAndReply(const std::string& request, const std::string& response);
 
-		void TestSessionKeyExchange(AppSeqNum& seq, User user);				
+	void TestSessionKeyExchange(AppSeqNum& seq, User user);
 
-		testlib::MockLogHandler log;
-		testlib::MockExecutor exe;
-		MockSOEHandler meas;
-		MockLowerLayer lower;
-		MockMasterApplicationSA application;
-		MockCryptoProvider crypto;		
-		secauth::MAuthContext context;
-		
-	};
+	testlib::MockLogHandler log;
+	testlib::MockExecutor exe;
+	MockSOEHandler meas;
+	MockLowerLayer lower;
+	MockMasterApplicationSA application;
+	MockCryptoProvider crypto;
+	secauth::MAuthContext context;
+
+};
 
 }
 

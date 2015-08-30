@@ -26,42 +26,42 @@ using namespace openpal;
 namespace opendnp3
 {
 
-UserPollTask::UserPollTask(	
-	const HeaderBuilderT& builder_,
-	bool recurring_,
-	openpal::TimeDuration period_,
-	openpal::TimeDuration retryDelay_,
-	IMasterApplication& app,
-	ISOEHandler& soeHandler,	
-	openpal::Logger logger,
-	TaskConfig config
+UserPollTask::UserPollTask(
+    const HeaderBuilderT& builder_,
+    bool recurring_,
+    openpal::TimeDuration period_,
+    openpal::TimeDuration retryDelay_,
+    IMasterApplication& app,
+    ISOEHandler& soeHandler,
+    openpal::Logger logger,
+    TaskConfig config
 ) :
-	PollTaskBase(app, soeHandler, 0, logger, config),	
+	PollTaskBase(app, soeHandler, 0, logger, config),
 	builder(builder_),
 	recurring(recurring_),
 	period(period_),
-	retryDelay(retryDelay_)	
+	retryDelay(retryDelay_)
 {}
 
 bool UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	rxCount = 0;	
+	rxCount = 0;
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
 	auto writer = request.GetWriter();
-	return builder(writer);	
+	return builder(writer);
 }
 
 IMasterTask::TaskState UserPollTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	switch (result)
-	{		
-		case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-			return TaskState::Disabled();
-		case(TaskCompletion::FAILURE_NO_COMMS) :
-			return TaskState::Immediately();
-		default:
-			return period.IsNegative() ? TaskState::Infinite() : TaskState::Retry(now.Add(period));
+	{
+	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
+		return TaskState::Disabled();
+	case(TaskCompletion::FAILURE_NO_COMMS) :
+		return TaskState::Immediately();
+	default:
+		return period.IsNegative() ? TaskState::Infinite() : TaskState::Retry(now.Add(period));
 	}
 }
 

@@ -56,7 +56,7 @@ bool CryptoProvider::ConfigureMultithreading()
 	}
 
 	// specific the function that will lock and unlock the various mutexes
-	
+
 	CRYPTO_set_locking_callback(LockingFunction);
 
 	return true;
@@ -67,24 +67,24 @@ const char* CryptoProvider::Version() const
 	return SSLeay_version(SSLEAY_VERSION);
 }
 
-void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line)
+void CryptoProvider::LockingFunction(int mode, int n, const char* file, int line)
 {
 	assert(n > 0);
 	assert(static_cast<size_t>(n) < mutexes.size());
 
-	if (mode & CRYPTO_LOCK) 
+	if (mode & CRYPTO_LOCK)
 	{
-		mutexes[n]->lock();		
+		mutexes[n]->lock();
 	}
-	else 
+	else
 	{
-		mutexes[n]->unlock();		
+		mutexes[n]->unlock();
 	}
 }
 
 openpal::RSlice CryptoProvider::GetSecureRandom(WSlice& buffer, std::error_code& ec)
-{	
-	int result  = RAND_bytes(buffer, buffer.Size()) > 0;	
+{
+	int result  = RAND_bytes(buffer, buffer.Size()) > 0;
 
 	if (!result)
 	{
@@ -95,7 +95,7 @@ openpal::RSlice CryptoProvider::GetSecureRandom(WSlice& buffer, std::error_code&
 
 	auto ret = buffer.ToRSlice();
 	buffer.Advance(buffer.Size());
-	return ret;	
+	return ret;
 }
 
 }

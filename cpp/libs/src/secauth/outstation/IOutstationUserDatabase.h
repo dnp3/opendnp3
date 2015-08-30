@@ -36,32 +36,32 @@ namespace secauth
 
 // used to find an unassigned user id
 class IFreeUser
-{	
+{
 public:
 	virtual bool FindFreeUserId(opendnp3::User& id) const = 0;
 };
 
 
-/** 
+/**
 	An interface for retrieving info about users
 
-	This interface may be given out to multiple outstation instances on multiple threads, 
+	This interface may be given out to multiple outstation instances on multiple threads,
 	and therefore should be thread-safe.
 */
 class IOutstationUserDatabase : public IFreeUser
 {
-	public:		
-		
-		virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const = 0;
-		
-		virtual UpdateKey::View GetUpdateKeyView(const opendnp3::User& user) const = 0;
+public:
 
-		virtual bool UserExists(const opendnp3::User& user) const = 0;
+	virtual bool IsAuthorized(const opendnp3::User& user, opendnp3::FunctionCode code) const = 0;
 
-		virtual bool UserExists(const std::string& userName) const = 0;
+	virtual UpdateKey::View GetUpdateKeyView(const opendnp3::User& user) const = 0;
 
-		virtual bool Delete(const std::string& userName, opendnp3::User& userOut) = 0;
-		
+	virtual bool UserExists(const opendnp3::User& user) const = 0;
+
+	virtual bool UserExists(const std::string& userName) const = 0;
+
+	virtual bool Delete(const std::string& userName, opendnp3::User& userOut) = 0;
+
 };
 
 }

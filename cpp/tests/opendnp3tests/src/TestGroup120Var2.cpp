@@ -39,7 +39,7 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
 	HexSequence buffer("");
 
 	Group120Var2 output;
-	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));	
+	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Parser identifies data field"))

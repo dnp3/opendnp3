@@ -29,39 +29,42 @@ namespace asiodnp3
 {
 
 MasterStackSA::MasterStackSA(
-	const char* id,
-	openpal::LogRoot& root,
-	asiopal::ASIOExecutor& executor,
-	opendnp3::ISOEHandler& SOEHandler,
-	secauth::IMasterApplicationSA& application,
-	const secauth::MasterAuthStackConfig& config,
-	IStackLifecycle& lifecycle,
-	opendnp3::ITaskLock& taskLock,	
-	openpal::ICryptoProvider& crypto
+    const char* id,
+    openpal::LogRoot& root,
+    asiopal::ASIOExecutor& executor,
+    opendnp3::ISOEHandler& SOEHandler,
+    secauth::IMasterApplicationSA& application,
+    const secauth::MasterAuthStackConfig& config,
+    IStackLifecycle& lifecycle,
+    opendnp3::ITaskLock& taskLock,
+    openpal::ICryptoProvider& crypto
 ) :
 	MasterStackBase<IMasterSA>(id, root, executor, application, config, lifecycle),
-	mcontext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto)	
+	mcontext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto)
 {
 	this->SetContext(mcontext);
 }
 
 void MasterStackSA::AddUser(opendnp3::User user, const secauth::UpdateKey& key)
 {
-	auto action = [this, user, key]() { mcontext.AddUser(user, key); };
+	auto action = [this, user, key]()
+	{
+		mcontext.AddUser(user, key);
+	};
 	mcontext.pExecutor->PostLambda(action);
 }
 
 void MasterStackSA::ChangeUserStatus(const secauth::UserStatusChange& userStatusChange, const opendnp3::TaskConfig& config)
 {
-	auto action = [this, userStatusChange, config] 
+	auto action = [this, userStatusChange, config]
 	{
 		this->mcontext.ChangeUserStatus(userStatusChange, config);
 	};
-	this->pASIOExecutor->strand.post(action);	
+	this->pASIOExecutor->strand.post(action);
 }
 
 void MasterStackSA::BeginUpdateKeyChange(const std::string& username, const opendnp3::TaskConfig& config, const secauth::BeginUpdateKeyChangeCallbackT& callback)
-{	
+{
 	auto action = [this, username, config, callback]
 	{
 		this->mcontext.BeginUpdateKeyChange(username, config, callback);

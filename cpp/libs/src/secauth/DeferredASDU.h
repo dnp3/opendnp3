@@ -33,32 +33,38 @@ namespace secauth
 class DeferredASDU : private openpal::Uncopyable
 {
 
-	public:	
+public:
 
 	DeferredASDU(uint32_t maxAPDUSize);
 
 	void Reset();
 
-	bool IsSet() const;	
+	bool IsSet() const;
 
 	void SetASDU(opendnp3::APDUHeader header, openpal::RSlice asdu);
 
-	openpal::RSlice GetFragment() const { return asdu; }
+	openpal::RSlice GetFragment() const
+	{
+		return asdu;
+	}
 
-	opendnp3::APDUHeader GetHeader() const { return header; }
-	
+	opendnp3::APDUHeader GetHeader() const
+	{
+		return header;
+	}
+
 	template <class Handler>
 	bool Process(const Handler& handler);
-	
-	private:
+
+private:
 
 	DeferredASDU() = delete;
 
-	bool isSet;	
+	bool isSet;
 	opendnp3::APDUHeader header;
 	openpal::RSlice asdu;
 	openpal::Buffer buffer;
-	
+
 };
 
 template <class Handler>

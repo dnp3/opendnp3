@@ -28,7 +28,7 @@ using namespace secauth;
 #define SUITE(name) "PermissionsSuite - " name
 
 TEST_CASE(SUITE("Variadic initialization works as expected"))
-{	
+{
 	auto permissions = Permissions::Allowed(FunctionCode::READ, FunctionCode::COLD_RESTART);
 
 	REQUIRE(permissions.IsAllowed(FunctionCode::READ));

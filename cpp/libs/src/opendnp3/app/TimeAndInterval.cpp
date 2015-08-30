@@ -38,10 +38,10 @@ TimeAndInterval::TimeAndInterval(DNPTime time_, uint32_t interval_, IntervalUnit
 	interval(interval_),
 	units(static_cast<uint8_t>(units_))
 {}
-	
+
 IntervalUnits TimeAndInterval::GetUnitsEnum() const
-{ 
+{
 	return IntervalUnitsFromType(units);
-}	
+}
 
 }

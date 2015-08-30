@@ -73,7 +73,7 @@ public:
 	/**
 	* Visit all the elements of a collection
 	*/
-	virtual void Foreach(IVisitor<T>& visitor) const = 0;	
+	virtual void Foreach(IVisitor<T>& visitor) const = 0;
 
 	/**
 		visit all of the elements of a collection
@@ -84,7 +84,7 @@ public:
 		FunctorVisitor<T, Fun> visitor(fun);
 		this->Foreach(visitor);
 	}
-	
+
 	/**
 		Retrieve the only value from the collection.
 	*/
@@ -92,7 +92,10 @@ public:
 	{
 		if (this->Count() == 1)
 		{
-			auto assignValue = [&value](const T& item) { value = item; };
+			auto assignValue = [&value](const T & item)
+			{
+				value = item;
+			};
 			this->ForeachItem(assignValue);
 			return true;
 		}
@@ -109,8 +112,8 @@ public:
 template <class T>
 class ArrayCollection : public opendnp3::ICollection<T>
 {
-	public:
-	
+public:
+
 	ArrayCollection(const T* pArray_, uint32_t count) : pArray(pArray_), COUNT(count)
 	{}
 
@@ -128,8 +131,8 @@ class ArrayCollection : public opendnp3::ICollection<T>
 		}
 	}
 
-	private:
-	
+private:
+
 	const T* pArray;
 	const uint32_t COUNT;
 };
@@ -137,8 +140,8 @@ class ArrayCollection : public opendnp3::ICollection<T>
 template <class T, class U, class Transform>
 class TransformedCollection : public ICollection < U >
 {
-public:	
-	
+public:
+
 	TransformedCollection(const ICollection<T>& input_, Transform transform_) :
 		input(&input_),
 		transform(transform_)
@@ -151,7 +154,8 @@ public:
 
 	virtual void Foreach(IVisitor<U>& visitor) const override final
 	{
-		auto process = [this, &visitor](const T& elem) {
+		auto process = [this, &visitor](const T & elem)
+		{
 			visitor.OnValue(transform(elem));
 		};
 		input->ForeachItem(process);

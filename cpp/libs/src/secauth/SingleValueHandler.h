@@ -29,26 +29,26 @@ namespace secauth
 template <class ValueType, opendnp3::GroupVariation GV, opendnp3::QualifierCode QC>
 class SingleValueHandler: public opendnp3::IAPDUHandler, private openpal::Uncopyable
 {
-	public:
+public:
 
-		SingleValueHandler() : m_valid(false)
-		{}	
+	SingleValueHandler() : m_valid(false)
+	{}
 
-		ValueType value;
+	ValueType value;
 
-		bool IsValid() const
-		{			
-			return m_valid;
-		}
-		
-		virtual bool IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc) override final
-		{
-			return (headerCount == 0) && (gv == GV) && (qc == QC);
-		}		
+	bool IsValid() const
+	{
+		return m_valid;
+	}
 
-	protected:
-		bool m_valid;
-			
+	virtual bool IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc) override final
+	{
+		return (headerCount == 0) && (gv == GV) && (qc == QC);
+	}
+
+protected:
+	bool m_valid;
+
 };
 
 

@@ -39,16 +39,16 @@ namespace asiodnp3
 {
 
 LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
-									openpal::IExecutor& executor,
+                                    openpal::IExecutor& executor,
                                     IPhysicalLayer* pPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
-									IChannelStateListener* pStateHandler_,                                    
-									IOpenDelayStrategy& strategy,
-									LinkChannelStatistics* pStatistics_) :
+                                    IChannelStateListener* pStateHandler_,
+                                    IOpenDelayStrategy& strategy,
+                                    LinkChannelStatistics* pStatistics_) :
 
 	PhysicalLayerMonitor(root, executor, pPhys, minOpenRetry, maxOpenRetry, strategy),
-	pStateHandler(pStateHandler_),	
+	pStateHandler(pStateHandler_),
 	pStatistics(pStatistics_),
 	parser(logger, pStatistics_),
 	isTransmitting(false)
@@ -83,7 +83,7 @@ bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
 		auto matches = [pContext](const Record & record)
 		{
 			return record.pContext == pContext;
-		};		
+		};
 
 		auto iter = std::find_if(records.begin(), records.end(), matches);
 
@@ -91,7 +91,7 @@ bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
 		{
 			// record is always disabled by default
 			Record(pContext, route);
-			records.push_back(Record(pContext, route));	
+			records.push_back(Record(pContext, route));
 			return true;
 		}
 		else
@@ -104,7 +104,10 @@ bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
 
 bool LinkLayerRouter::Enable(ILinkSession* pContext)
 {
-	auto matches = [pContext](const Record & rec) { return rec.pContext == pContext; };
+	auto matches = [pContext](const Record & rec)
+	{
+		return rec.pContext == pContext;
+	};
 	auto iter = std::find_if(records.begin(), records.end(), matches);
 
 	if(iter != records.end())
@@ -112,7 +115,7 @@ bool LinkLayerRouter::Enable(ILinkSession* pContext)
 		if(iter->enabled)
 		{
 			// already enabled
-			return true;			
+			return true;
 		}
 		else
 		{
@@ -127,7 +130,7 @@ bool LinkLayerRouter::Enable(ILinkSession* pContext)
 
 			return true;
 		}
-		
+
 	}
 	else
 	{
@@ -137,7 +140,10 @@ bool LinkLayerRouter::Enable(ILinkSession* pContext)
 
 bool LinkLayerRouter::Disable(ILinkSession* pContext)
 {
-	auto matches = [pContext](const Record & rec) { return rec.pContext == pContext; };
+	auto matches = [pContext](const Record & rec)
+	{
+		return rec.pContext == pContext;
+	};
 
 	auto iter = std::find_if(records.begin(), records.end(), matches);
 
@@ -167,7 +173,10 @@ bool LinkLayerRouter::Disable(ILinkSession* pContext)
 
 bool LinkLayerRouter::Remove(ILinkSession* pContext)
 {
-	auto matches = [pContext](const Record & rec) { return rec.pContext == pContext; };
+	auto matches = [pContext](const Record & rec)
+	{
+		return rec.pContext == pContext;
+	};
 	auto iter = std::find_if(records.begin(), records.end(), matches);
 
 	if(iter != records.end())
@@ -184,7 +193,7 @@ bool LinkLayerRouter::Remove(ILinkSession* pContext)
 		{
 			this->Suspend();
 		}
-		
+
 		return true;
 	}
 	else
@@ -195,7 +204,10 @@ bool LinkLayerRouter::Remove(ILinkSession* pContext)
 
 ILinkSession* LinkLayerRouter::GetEnabledContext(const Route& route)
 {
-	auto matches = [route](const Record & rec) { return rec.enabled && rec.route.Equals(route); };	
+	auto matches = [route](const Record & rec)
+	{
+		return rec.enabled && rec.route.Equals(route);
+	};
 	auto iter = std::find_if(records.begin(), records.end(), matches);
 	if (iter == records.end())
 	{
@@ -204,7 +216,7 @@ ILinkSession* LinkLayerRouter::GetEnabledContext(const Route& route)
 	else
 	{
 		return iter->pContext;
-	}	
+	}
 }
 
 
@@ -242,13 +254,13 @@ bool LinkLayerRouter::OnFrame(const LinkHeaderFields& header, const openpal::RSl
 void LinkLayerRouter::OnReceive(const openpal::RSlice& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
-	// over the buffer before it is processed	
+	// over the buffer before it is processed
 	parser.OnRead(input.Size(), this); //this may trigger callbacks to the local ILinkSession interface
 	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
 		auto buff = parser.WriteBuff();
 		pPhys->BeginRead(buff); //start another read
-	}	
+	}
 }
 
 void LinkLayerRouter::BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext)
@@ -258,7 +270,7 @@ void LinkLayerRouter::BeginTransmit(const openpal::RSlice& buffer, ILinkSession*
 		Transmission tx(buffer, pContext);
 
 		transmitQueue.push_back(tx);
-		this->CheckForSend();		
+		this->CheckForSend();
 	}
 	else
 	{
@@ -276,12 +288,15 @@ void LinkLayerRouter::OnStateChange(ChannelState state)
 
 void LinkLayerRouter::OnShutdown()
 {
-	shutdownHandler.Apply();	
+	shutdownHandler.Apply();
 }
 
 bool LinkLayerRouter::HasEnabledContext()
 {
-	auto matches = [](const Record & rec) { return rec.enabled; };
+	auto matches = [](const Record & rec)
+	{
+		return rec.enabled;
+	};
 	auto iter = std::find_if(records.begin(), records.end(), matches);
 	return iter != records.end();
 }
@@ -312,12 +327,12 @@ void LinkLayerRouter::CheckForSend()
 void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 {
 	if(pPhys->CanRead())
-	{		
+	{
 		auto buff = parser.WriteBuff();
 		pPhys->BeginRead(buff);
 	}
 
-	for (auto& rec : records)
+	for (auto & rec : records)
 	{
 		if (rec.enabled)
 		{
@@ -327,7 +342,7 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 }
 
 void LinkLayerRouter::OnPhysicalLayerCloseCallback()
-{	
+{
 	// reset the state of receiver
 	parser.Reset();
 
@@ -335,13 +350,13 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 	isTransmitting = false;
 	transmitQueue.clear();
 
-	for (auto& rec : records)
+	for (auto & rec : records)
 	{
 		if (rec.enabled)
 		{
 			rec.pContext->OnLowerLayerDown();
 		}
-	}	
+	}
 }
 
 }

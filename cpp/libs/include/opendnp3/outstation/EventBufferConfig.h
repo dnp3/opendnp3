@@ -36,15 +36,15 @@ struct EventBufferConfig
 	uint16_t GetMaxEventsForType(EventType type) const;
 
 	EventBufferConfig(
-		uint16_t maxBinaryEvents_ = 0,
-		uint16_t maxDoubleBinaryEvents_ = 0,
-		uint16_t maxAnalogEvents_ = 0,
-		uint16_t maxCounterEvents_ = 0,
-		uint16_t maxFrozenCounterEvents_ = 0,
-		uint16_t maxBinaryOutputStatusEvents_ = 0,
-		uint16_t maxAnalogOutputStatusEvents_ = 0,
-		uint16_t maxSecurityStatisticEvents_ = 0
-		);
+	    uint16_t maxBinaryEvents_ = 0,
+	    uint16_t maxDoubleBinaryEvents_ = 0,
+	    uint16_t maxAnalogEvents_ = 0,
+	    uint16_t maxCounterEvents_ = 0,
+	    uint16_t maxFrozenCounterEvents_ = 0,
+	    uint16_t maxBinaryOutputStatusEvents_ = 0,
+	    uint16_t maxAnalogOutputStatusEvents_ = 0,
+	    uint16_t maxSecurityStatisticEvents_ = 0
+	);
 
 	uint32_t TotalEvents() const;
 

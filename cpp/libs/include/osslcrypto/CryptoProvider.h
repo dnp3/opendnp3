@@ -34,7 +34,7 @@
 
 namespace std
 {
-	class mutex;
+class mutex;
 }
 
 namespace osslcrypto
@@ -44,29 +44,38 @@ namespace osslcrypto
 * An ICryptoProvider based on openssl
 */
 class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopyable
-{		
-	public:	
+{
+public:
 
 	virtual openpal::RSlice GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec) override final;
-	
-	virtual openpal::IKeyWrapAlgo& GetAESKeyWrap() override final { return keywrap; }	
 
-	virtual openpal::IHMACAlgo& GetSHA1HMAC() override final { return hmacSHA1;  }
-	virtual openpal::IHMACAlgo& GetSHA256HMAC() override final { return hmacSHA256; }
+	virtual openpal::IKeyWrapAlgo& GetAESKeyWrap() override final
+	{
+		return keywrap;
+	}
+
+	virtual openpal::IHMACAlgo& GetSHA1HMAC() override final
+	{
+		return hmacSHA1;
+	}
+	virtual openpal::IHMACAlgo& GetSHA256HMAC() override final
+	{
+		return hmacSHA256;
+	}
 
 	const char* Version() const;
-	
-	private:
+
+private:
 
 	// state-less hmac algorithms
 	SHA1HMAC hmacSHA1;
-	SHA256HMAC hmacSHA256;	
+	SHA256HMAC hmacSHA256;
 
 	// state-less key-wrap algorithm
-	AESKeyWrap keywrap;	
+	AESKeyWrap keywrap;
 
-	static void LockingFunction(int mode, int n, const char *file, int line);
-			
+	static void LockingFunction(int mode, int n, const char* file, int line);
+
 	static bool Initialize();
 	static bool ConfigureMultithreading();
 

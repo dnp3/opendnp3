@@ -32,11 +32,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-NumParser::NumParser(ReadFun pReadFun_, uint8_t size_) : 
-	pReadFun(pReadFun_), 
+NumParser::NumParser(ReadFun pReadFun_, uint8_t size_) :
+	pReadFun(pReadFun_),
 	size(size_)
 {
-	
+
 }
 
 uint8_t NumParser::NumBytes() const
@@ -73,18 +73,18 @@ ParseResult NumParser::ParseRange(openpal::RSlice& buffer, Range& range, openpal
 		return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
 	}
 	else
-	{		
+	{
 		range.start = this->ReadNum(buffer);
 		range.stop = this->ReadNum(buffer);
-		
+
 		if (range.IsValid())
 		{
-			return ParseResult::OK;			
+			return ParseResult::OK;
 		}
 		else
 		{
 			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_START_STOP_MISMATCH, "start > stop");
-			return ParseResult::BAD_START_STOP;			
+			return ParseResult::BAD_START_STOP;
 		}
 	}
 }

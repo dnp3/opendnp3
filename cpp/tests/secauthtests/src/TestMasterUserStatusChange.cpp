@@ -37,29 +37,29 @@ using namespace testlib;
 #define SUITE(name) "MasterUserStatusChangeSuite - " name
 
 TEST_CASE(SUITE("initiates a user status change when invoked"))
-{		
+{
 	MasterParams params;
 	MasterSecAuthFixture fixture(params);
 
-	fixture.context.OnLowerLayerUp();	
+	fixture.context.OnLowerLayerUp();
 
 	auto certData = "DE AD BE EF";
 	HexSequence certDataBuffer(certData);
 
 	UserStatusChange statusChange(
-		KeyChangeMethod::AES_256_SHA256_HMAC,
-		UserOperation::OP_ADD,
-		0,
-		UserRoleToType(UserRole::OPERATOR),
-		10,
-		"BOB",
-		RSlice(),
-		certDataBuffer.ToRSlice()
+	    KeyChangeMethod::AES_256_SHA256_HMAC,
+	    UserOperation::OP_ADD,
+	    0,
+	    UserRoleToType(UserRole::OPERATOR),
+	    10,
+	    "BOB",
+	    RSlice(),
+	    certDataBuffer.ToRSlice()
 	);
 
 	MockTaskCallback callback;
 
-	fixture.context.ChangeUserStatus(statusChange, TaskConfig::With(callback));	
+	fixture.context.ChangeUserStatus(statusChange, TaskConfig::With(callback));
 
 	auto request = hex::UserStatusChangeRequest(0, KeyChangeMethod::AES_256_SHA256_HMAC, UserOperation::OP_ADD, 0, UserRoleToType(UserRole::OPERATOR), 10, "BOB", "", certData);
 	fixture.TestRequestAndReply(request, hex::EmptyResponse(0));

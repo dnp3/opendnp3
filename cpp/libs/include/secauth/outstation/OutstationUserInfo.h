@@ -31,33 +31,33 @@
 namespace secauth
 {
 
-	class OutstationUserInfo
+class OutstationUserInfo
+{
+
+public:
+
+	OutstationUserInfo() {}
+
+	OutstationUserInfo(
+	    opendnp3::User user_,
+	    const std::string& username_,
+	    const secauth::Permissions& permissions_,
+	    const secauth::UpdateKey& updateKey_
+	) :
+		user(user_),
+		username(username_),
+		permissions(permissions_),
+		updateKey(updateKey_)
 	{
 
-	public:
+	}
 
-		OutstationUserInfo() {}
-			
-		OutstationUserInfo(
-			opendnp3::User user_,
-			const std::string& username_,
-			const secauth::Permissions& permissions_,
-			const secauth::UpdateKey& updateKey_
-		) :
-			user(user_),
-			username(username_),
-			permissions(permissions_),
-			updateKey(updateKey_)
-		{
-			
-		}
+	opendnp3::User user;
+	std::string username;
+	secauth::Permissions permissions;
+	secauth::UpdateKey updateKey;
+};
 
-		opendnp3::User user;
-		std::string username;
-		secauth::Permissions permissions;
-		secauth::UpdateKey updateKey;
-	};
-	
 }
 
 #endif

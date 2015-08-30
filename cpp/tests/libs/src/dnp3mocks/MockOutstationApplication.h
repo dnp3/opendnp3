@@ -31,8 +31,8 @@ namespace opendnp3
 class MockOutstationApplication : public IOutstationApplication
 {
 public:
-	
-	MockOutstationApplication() :		
+
+	MockOutstationApplication() :
 		supportsTimeWrite(true),
 		supportsAssignClass(false),
 		supportsWriteTimeAndInterval(false),
@@ -61,7 +61,7 @@ public:
 		else
 		{
 			return false;
-		}		
+		}
 	}
 
 	virtual bool SupportsWriteTimeAndInterval() override final
@@ -70,12 +70,13 @@ public:
 	}
 
 	virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& meas) override final
-	{		
-		auto push = [this](const Indexed<TimeAndInterval>& value) {
+	{
+		auto push = [this](const Indexed<TimeAndInterval>& value)
+		{
 			this->timeAndIntervals.push_back(value);
 		};
 
-		meas.ForeachItem(push);		
+		meas.ForeachItem(push);
 		return true;
 	}
 
@@ -83,7 +84,7 @@ public:
 	{
 		return supportsAssignClass;
 	}
-	
+
 	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final
 	{
 		this->classAssignments.push_back(std::make_tuple(type, clazz, start, stop));
@@ -93,27 +94,27 @@ public:
 	{
 		return appIIN;
 	}
-	
+
 	virtual RestartMode ColdRestartSupport() const override final
 	{
 		return coldRestartSupport;
 	}
-	
+
 	virtual RestartMode WarmRestartSupport() const override final
 	{
 		return warmRestartSupport;
 	}
-	
+
 	virtual uint16_t ColdRestart() override final
 	{
 		return coldRestartTimeDelay;
 	}
-	
+
 	virtual uint16_t WarmRestart() override final
 	{
 		return warmRestartTimeDelay;
 	}
-	
+
 	bool supportsTimeWrite;
 	bool supportsAssignClass;
 	bool supportsWriteTimeAndInterval;

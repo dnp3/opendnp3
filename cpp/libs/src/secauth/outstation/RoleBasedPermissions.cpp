@@ -27,25 +27,25 @@ namespace secauth
 {
 
 const Permissions RoleBasedPermissions::OPERATE_CONTROLS(
-	Permissions::Allowed(FunctionCode::SELECT, FunctionCode::OPERATE, FunctionCode::DIRECT_OPERATE)
+    Permissions::Allowed(FunctionCode::SELECT, FunctionCode::OPERATE, FunctionCode::DIRECT_OPERATE)
 );
 
 const Permissions RoleBasedPermissions::MONITOR_DATA(
-	Permissions::Allowed(FunctionCode::READ)
+    Permissions::Allowed(FunctionCode::READ)
 );
 
 Permissions RoleBasedPermissions::From(opendnp3::UserRole role)
 {
 	switch (role)
 	{
-		case(UserRole::VIEWER) :
-			return MONITOR_DATA;
-		case(UserRole::OPERATOR) :
-			return MONITOR_DATA | OPERATE_CONTROLS;
-		case(UserRole::SINGLE_USER) :
-			return Permissions::AllowAll();
-		default:
-			return Permissions::AllowNothing();
+	case(UserRole::VIEWER) :
+		return MONITOR_DATA;
+	case(UserRole::OPERATOR) :
+		return MONITOR_DATA | OPERATE_CONTROLS;
+	case(UserRole::SINGLE_USER) :
+		return Permissions::AllowAll();
+	default:
+		return Permissions::AllowNothing();
 	}
 }
 

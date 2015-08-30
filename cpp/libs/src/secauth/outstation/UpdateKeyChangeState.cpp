@@ -33,7 +33,7 @@ namespace secauth
 {
 
 UpdateKeyChangeState::UpdateKeyChangeState(uint16_t challengeSize, Logger logger, ICryptoProvider& provider) :
-	m_valid(false),	
+	m_valid(false),
 	M_CHALLENGE_SIZE(AuthSizes::GetBoundedChallengeSize(challengeSize)),
 	m_logger(logger),
 	m_crypto(&provider)
@@ -45,23 +45,23 @@ void UpdateKeyChangeState::Reset()
 }
 
 bool UpdateKeyChangeState::WriteUpdateKeyChangeResposne(
-	HeaderWriter& writer,	
-	uint32_t ksq,
-	const std::string& username,
-	const RSlice& masterChallengeData,
-	const IFreeUser& freeUser
-	)
+    HeaderWriter& writer,
+    uint32_t ksq,
+    const std::string& username,
+    const RSlice& masterChallengeData,
+    const IFreeUser& freeUser
+)
 {
 	m_valid = false;
 
 	this->m_data.username = username;
 	this->m_data.keyChangeSeqNum = ksq;
 
-	// first thing to do is see if we can establish a user id assignment	
+	// first thing to do is see if we can establish a user id assignment
 	if (!freeUser.FindFreeUserId(m_data.user))
 	{
 		return false;
-	}	
+	}
 
 	// validate and set the master challenge data
 
@@ -82,15 +82,15 @@ bool UpdateKeyChangeState::WriteUpdateKeyChangeResposne(
 		auto dest = m_outstationChallengeBuffer.GetWSlice(this->M_CHALLENGE_SIZE);
 		this->m_data.outstationChallenge = m_crypto->GetSecureRandom(dest, ec);
 	}
-	
+
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(m_logger, flags::WARN, "Error producing update key change challenge data: %s", ec.message().c_str());
 		return false;
-	}	
+	}
 
 	// TODO investigate when the KSQ increments for these. Same KSQ as session keys? WTF?
-	
+
 	auto success = writer.WriteFreeFormat(Group120Var12(m_data.keyChangeSeqNum, m_data.user.GetId(), m_data.outstationChallenge));
 	this->m_valid = success;
 	return success;
@@ -102,7 +102,7 @@ bool UpdateKeyChangeState::VerifyUserAndKSQ(uint32_t ksq, User user, Verificatio
 	{
 		SIMPLE_LOG_BLOCK(m_logger, flags::WARN, "No prior begin update key change request");
 		return false;
-	}	
+	}
 
 	m_valid = false; // regardless of whether this succeeds or fails we invalidate the state
 
@@ -116,10 +116,10 @@ bool UpdateKeyChangeState::VerifyUserAndKSQ(uint32_t ksq, User user, Verificatio
 	{
 		FORMAT_LOG_BLOCK(m_logger, flags::WARN, "User %u does not match expected user %u", user.GetId(), m_data.user.GetId());
 		return false;
-	}	
+	}
 
 	data = this->m_data;
-	
+
 	return true;
 }
 

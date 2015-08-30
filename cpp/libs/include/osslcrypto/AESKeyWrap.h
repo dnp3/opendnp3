@@ -27,16 +27,16 @@
 #include <openpal/crypto/IKeyWrapAlgo.h>
 
 namespace osslcrypto
-{		
-	class AESKeyWrap final : public openpal::IKeyWrapAlgo
-	{
+{
+class AESKeyWrap final : public openpal::IKeyWrapAlgo
+{
 
-	public:
+public:
 
-		virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override;
-		virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override;
+	virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override;
+	virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const override;
 
-	};	
+};
 }
 
 #endif

@@ -31,13 +31,16 @@ class BufferedCollection : public ICollection<T>
 {
 public:
 
-	BufferedCollection(const openpal::RSlice& buffer_, uint32_t count, const ReadFunc& readFunc_) :	
+	BufferedCollection(const openpal::RSlice& buffer_, uint32_t count, const ReadFunc& readFunc_) :
 		buffer(buffer_),
 		COUNT(count),
 		readFunc(readFunc_)
 	{}
 
-	virtual uint32_t Count() const override final { return COUNT; }
+	virtual uint32_t Count() const override final
+	{
+		return COUNT;
+	}
 
 
 	virtual void Foreach(IVisitor<T>& visitor) const final
@@ -47,7 +50,7 @@ public:
 		for (uint32_t pos = 0; pos < COUNT; ++pos)
 		{
 			visitor.OnValue(readFunc(copy, pos));
-		}		
+		}
 	}
 
 private:

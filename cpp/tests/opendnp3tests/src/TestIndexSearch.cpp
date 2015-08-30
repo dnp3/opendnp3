@@ -42,7 +42,7 @@ IndexSearch::Result TestResultLengthFour(uint16_t index)
 }
 
 TEST_CASE(SUITE("FindsExactMatchForLastValue"))
-{	
+{
 	auto result = TestResultLengthFour(9);
 	REQUIRE(result.match);
 	REQUIRE(result.index == 3);
@@ -104,7 +104,7 @@ TEST_CASE(SUITE("FindsFullRangeIfInputBracketsEntireRange"))
 TEST_CASE(SUITE("FindsInvalidRangeIfBeneathRange"))
 {
 	auto range = TestRangeSearch(Range::From(0, 0));
-	REQUIRE(!range.IsValid());	
+	REQUIRE(!range.IsValid());
 }
 
 TEST_CASE(SUITE("FindsInvalidRangeIfAboveRange"))

@@ -32,22 +32,22 @@ namespace asiodnp3
 class MasterStack : public MasterStackBase<IMaster>
 {
 public:
-	
-	MasterStack(
-		const char* id,
-		openpal::LogRoot& root,
-	    asiopal::ASIOExecutor& executor,
-		opendnp3::ISOEHandler& SOEHandler,	    
-		opendnp3::IMasterApplication& application,
-		const opendnp3::MasterStackConfig& config,		
-		IStackLifecycle& lifecycle,
-		opendnp3::ITaskLock& taskLock
-	);	
-	
-protected:	
-	
 
-	opendnp3::MContext mcontext;	
+	MasterStack(
+	    const char* id,
+	    openpal::LogRoot& root,
+	    asiopal::ASIOExecutor& executor,
+	    opendnp3::ISOEHandler& SOEHandler,
+	    opendnp3::IMasterApplication& application,
+	    const opendnp3::MasterStackConfig& config,
+	    IStackLifecycle& lifecycle,
+	    opendnp3::ITaskLock& taskLock
+	);
+
+protected:
+
+
+	opendnp3::MContext mcontext;
 };
 
 }

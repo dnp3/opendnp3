@@ -39,13 +39,13 @@ namespace secauth
 {
 
 BeginUpdateKeyChangeTask::BeginUpdateKeyChangeTask(
-		const std::string& username,
-		IMasterApplicationSA& application,
-		openpal::Logger logger,		
-		const opendnp3::TaskConfig& config,
-		openpal::ICryptoProvider& crypto,
-		const BeginUpdateKeyChangeCallbackT& callback
-	) : 
+    const std::string& username,
+    IMasterApplicationSA& application,
+    openpal::Logger logger,
+    const opendnp3::TaskConfig& config,
+    openpal::ICryptoProvider& crypto,
+    const BeginUpdateKeyChangeCallbackT& callback
+) :
 	IMasterTask(application, MonotonicTimestamp::Min(), logger, config),
 	m_username(username),
 	m_crypto(&crypto),
@@ -53,32 +53,32 @@ BeginUpdateKeyChangeTask::BeginUpdateKeyChangeTask(
 {
 
 }
-				
+
 bool BeginUpdateKeyChangeTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
 	request.SetControl(AppControlField::Request(seq));
 	request.SetFunction(FunctionCode::AUTH_REQUEST);
-	
+
 	std::error_code ec;
 	auto dest = m_challengeBuffer.GetWSlice(4); // TODO - make this challenge size configurable
-	this->m_challengeDataView = m_crypto->GetSecureRandom(dest, ec); 
+	this->m_challengeDataView = m_crypto->GetSecureRandom(dest, ec);
 	if (ec)
-	{ 
+	{
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "Error creating master challenge data: %s", ec.message().c_str());
 		return false;
 	}
 
 	Group120Var11 updateKeyChangeRequest(
-		KeyChangeMethod::AES_256_SHA256_HMAC,
-		AsSlice(m_username),		
-		m_challengeDataView
+	    KeyChangeMethod::AES_256_SHA256_HMAC,
+	    AsSlice(m_username),
+	    m_challengeDataView
 	);
 
 	return request.GetWriter().WriteFreeFormat(updateKeyChangeRequest);
 }
 
 IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
-{	
+{
 	if (!(header.function == FunctionCode::AUTH_RESPONSE && ValidateSingleResponse(header) && ValidateInternalIndications(header)))
 	{
 		return ResponseResult::ERROR_BAD_RESPONSE;
@@ -91,19 +91,19 @@ IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessResponse(const open
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Response contains empty or malformed object data");
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
-		
+
 
 	switch (gv)
 	{
-		case(GroupVariation::Group120Var7) :
-			return ProcessErrorResponse(objects);
-		case(GroupVariation::Group120Var12) :
-			return ProcessDataResponse(objects);
-		default:
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported object header in response: %s", GroupVariationToString(gv));
-			return ResponseResult::ERROR_BAD_RESPONSE;
+	case(GroupVariation::Group120Var7) :
+		return ProcessErrorResponse(objects);
+	case(GroupVariation::Group120Var12) :
+		return ProcessDataResponse(objects);
+	default:
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unsupported object header in response: %s", GroupVariationToString(gv));
+		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
-	
+
 }
 
 IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessErrorResponse(const openpal::RSlice& objects)
@@ -129,15 +129,15 @@ IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessDataResponse(const 
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Outstation challenge data size not within limts: %u", handler.value.challengeData.Size());
 		return ResponseResult::ERROR_BAD_RESPONSE;
-	}	
+	}
 
 	m_callback(
-		BeginUpdateKeyChangeResult(
-			User(handler.value.userNum),
-			handler.value.keyChangeSeqNum,
-			m_challengeDataView,
-			handler.value.challengeData			
-		)
+	    BeginUpdateKeyChangeResult(
+	        User(handler.value.userNum),
+	        handler.value.keyChangeSeqNum,
+	        m_challengeDataView,
+	        handler.value.challengeData
+	    )
 	);
 
 	return ResponseResult::OK_FINAL;
@@ -146,7 +146,7 @@ IMasterTask::ResponseResult BeginUpdateKeyChangeTask::ProcessDataResponse(const 
 IMasterTask::TaskState BeginUpdateKeyChangeTask::OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	if (result != TaskCompletion::SUCCESS) // the success callback happens in the response routine if a valid response is received
-	{		
+	{
 		m_callback(BeginUpdateKeyChangeResult(result));
 	}
 

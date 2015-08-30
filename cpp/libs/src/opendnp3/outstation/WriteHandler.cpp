@@ -39,19 +39,19 @@ WriteHandler::WriteHandler(openpal::Logger logger_, IOutstationApplication& appl
 {}
 
 IINField WriteHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
-{	
+{
 	Indexed<IINValue> pair;
 
 	if (!values.ReadOnlyValue(pair))
 	{
 		return IINBit::PARAM_ERROR;
-	}	
+	}
 
 	if (wroteIIN)
 	{
 		return IINBit::PARAM_ERROR;
 	}
-	
+
 	if (pair.index != static_cast<uint16_t>(IINBit::DEVICE_RESTART))
 	{
 		return IINBit::PARAM_ERROR;
@@ -61,10 +61,10 @@ IINField WriteHandler::ProcessHeader(const RangeHeader& header, const ICollectio
 	{
 		return IINBit::PARAM_ERROR;
 	}
-			
+
 	wroteIIN = true;
 	pWriteIIN->ClearBit(IINBit::DEVICE_RESTART);
-	return IINField();		
+	return IINField();
 }
 
 IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
@@ -74,13 +74,13 @@ IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollectio
 		return IINBit::PARAM_ERROR;
 	}
 	else
-	{		
+	{
 		Group50Var1 value;
 		if (values.ReadOnlyValue(value))
 		{
 			if (pApplication->SupportsWriteAbsoluteTime())
 			{
-				wroteTime = true;												
+				wroteTime = true;
 				return pApplication->WriteAbsoluteTime(UTCTimestamp(value.time)) ? IINField::Empty() : IINBit::PARAM_ERROR;
 			}
 			else
@@ -91,7 +91,7 @@ IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollectio
 		else
 		{
 			return IINBit::PARAM_ERROR;
-		}		
+		}
 	}
 }
 
@@ -102,7 +102,7 @@ IINField  WriteHandler::ProcessHeader(const PrefixHeader& header, const ICollect
 		return IINBit::FUNC_NOT_SUPPORTED;
 	}
 
-	return pApplication->WriteTimeAndInterval(values) ? IINField::Empty() : IINBit::PARAM_ERROR;	
+	return pApplication->WriteTimeAndInterval(values) ? IINField::Empty() : IINBit::PARAM_ERROR;
 }
 
 }

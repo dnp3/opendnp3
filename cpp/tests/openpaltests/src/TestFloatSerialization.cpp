@@ -53,7 +53,7 @@ bool TestReadWriteFloat(T value)
 
 		auto written = buffer.ToRSlice().Skip(i);
 		T readValue;
-		if (!(Parse::Read(written, readValue) && FloatEqual(value,readValue)))
+		if (!(Parse::Read(written, readValue) && FloatEqual(value, readValue)))
 		{
 			return false;
 		}
@@ -85,7 +85,7 @@ bool TestFloatParsing(std::string hex, typename T::Type value)
 		if (!(Parse::Read(written, val) && openpal::FloatEqual(val, value)))
 		{
 			return false;
-		}		
+		}
 	}
 
 	return true;

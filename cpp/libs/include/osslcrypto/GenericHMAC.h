@@ -33,14 +33,14 @@
 
 namespace osslcrypto
 {
-	openpal::RSlice CalculateHMAC(
-		const EVP_MD* md,
-		uint32_t outputSize,
-		const openpal::RSlice& key,
-		std::initializer_list<openpal::RSlice> data, 
-		openpal::WSlice& output,
-		std::error_code& ec
-	);
+openpal::RSlice CalculateHMAC(
+    const EVP_MD* md,
+    uint32_t outputSize,
+    const openpal::RSlice& key,
+    std::initializer_list<openpal::RSlice> data,
+    openpal::WSlice& output,
+    std::error_code& ec
+);
 }
 
 #endif

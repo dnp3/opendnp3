@@ -53,7 +53,7 @@ bool Binary::IsQualityOnlineOnly() const
 	uint8_t allowedBits = static_cast<uint8_t>(BinaryQuality::ONLINE) | static_cast<uint8_t>(BinaryQuality::STATE);
 	bool otherBitsClear = (quality & ~allowedBits) == 0;
 
-	return isOnline && otherBitsClear;	
+	return isOnline && otherBitsClear;
 }
 
 bool Binary::IsEvent(const Binary& newValue) const

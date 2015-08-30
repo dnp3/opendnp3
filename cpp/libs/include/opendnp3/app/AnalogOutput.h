@@ -56,11 +56,11 @@ public:
 	}
 
 	T value;
-	
+
 	/**
 	* The status value defaults to CS_SUCCESS for requests
 	*/
-	CommandStatus status;	
+	CommandStatus status;
 };
 
 /**

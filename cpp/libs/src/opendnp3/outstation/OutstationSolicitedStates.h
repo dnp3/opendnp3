@@ -36,7 +36,7 @@ class OContext;
  */
 class OutstationSolicitedStateBase
 {
-public:	
+public:
 
 	virtual OutstationSolicitedStateBase* OnConfirm(OContext&, const APDUHeader& frag);
 
@@ -88,13 +88,13 @@ public:
 
 	virtual OutstationSolicitedStateBase* OnNewReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects) override final;
 
-	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects)  override final;	
+	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OContext&, const APDUHeader& header, const openpal::RSlice& objects)  override final;
 
 	virtual OutstationSolicitedStateBase* OnConfirm(OContext&, const APDUHeader& frag) override final;
 
 	virtual OutstationSolicitedStateBase* OnConfirmTimeout(OContext&) override final;
 
-private:	
+private:
 
 	static OutstationStateSolicitedConfirmWait instance;
 

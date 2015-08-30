@@ -27,30 +27,30 @@
 #include "MockKeyWrap.h"
 
 namespace opendnp3
-{	
+{
 
-	class MockCryptoProvider : public openpal::ICryptoProvider
-	{
-		public:
+class MockCryptoProvider : public openpal::ICryptoProvider
+{
+public:
 
-			MockCryptoProvider();
+	MockCryptoProvider();
 
-			virtual openpal::RSlice GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec) override final;			
+	virtual openpal::RSlice GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec) override final;
 
-			virtual openpal::IHMACAlgo& GetSHA1HMAC() override final;
-			virtual openpal::IHMACAlgo& GetSHA256HMAC() override final;
+	virtual openpal::IHMACAlgo& GetSHA1HMAC() override final;
+	virtual openpal::IHMACAlgo& GetSHA256HMAC() override final;
 
-			virtual openpal::IKeyWrapAlgo& GetAESKeyWrap() override final;		
+	virtual openpal::IKeyWrapAlgo& GetAESKeyWrap() override final;
 
-			/// -- fixed fill data, defaults to 0xAA --
-			uint8_t secureFill;
-		
-			/// --- algo mocks ----
+	/// -- fixed fill data, defaults to 0xAA --
+	uint8_t secureFill;
 
-			MockHMAC sha1;
-			MockHMAC sha256;
-			MockKeyWrap keyWrap;						
-	};
+	/// --- algo mocks ----
+
+	MockHMAC sha1;
+	MockHMAC sha256;
+	MockKeyWrap keyWrap;
+};
 }
 
 #endif

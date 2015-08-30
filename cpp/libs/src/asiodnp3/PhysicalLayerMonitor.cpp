@@ -36,12 +36,12 @@ namespace asiodnp3
 {
 
 PhysicalLayerMonitor::PhysicalLayerMonitor(
-	openpal::LogRoot& root,
-	openpal::IExecutor& executor,
+    openpal::LogRoot& root,
+    openpal::IExecutor& executor,
     IPhysicalLayer* pPhys_,
     TimeDuration minOpenRetry_,
     TimeDuration maxOpenRetry_,
-	IOpenDelayStrategy& strategy) :
+    IOpenDelayStrategy& strategy) :
 	logger(root.GetLogger()),
 	pPhys(pPhys_),
 	pExecutor(&executor),
@@ -114,7 +114,7 @@ void PhysicalLayerMonitor::OnLowerLayerDown()
 /* ------- User facing events that occurs ------- */
 
 void PhysicalLayerMonitor::Start()
-{	
+{
 	mpState->OnStartRequest(*this);
 }
 
@@ -129,7 +129,7 @@ void PhysicalLayerMonitor::Close()
 }
 
 void PhysicalLayerMonitor::Suspend()
-{	
+{
 	mpState->OnSuspendRequest(*this);
 }
 
@@ -154,7 +154,10 @@ void PhysicalLayerMonitor::OnOpenTimerExpiration()
 void PhysicalLayerMonitor::StartOpenTimer()
 {
 	assert(mpOpenTimer == nullptr);
-	auto lambda = [this]() { this->OnOpenTimerExpiration(); };
+	auto lambda = [this]()
+	{
+		this->OnOpenTimerExpiration();
+	};
 	mpOpenTimer = pExecutor->Start(currentRetry, Action0::Bind(lambda));
 }
 

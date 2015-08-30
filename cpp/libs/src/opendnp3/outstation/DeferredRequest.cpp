@@ -47,7 +47,7 @@ void DeferredRequest::Set(APDUHeader header_, openpal::RSlice objects_)
 	this->isSet = true;
 	this->header = header_;
 	auto dest = buffer.GetWSlice();
-	this->objects = objects_.CopyTo(dest);	
+	this->objects = objects_.CopyTo(dest);
 }
 
 }

@@ -43,15 +43,15 @@ class SecStateBase;
 
 enum class LinkTransmitMode : uint8_t
 {
-	Idle,
-	Primary,
-	Secondary
+    Idle,
+    Primary,
+    Secondary
 };
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
 class LinkContext
 {
-		
+
 
 public:
 
@@ -60,10 +60,22 @@ public:
 
 	/// ---- helpers for dealing with the FCB bits ----
 
-	void ResetReadFCB() { nextReadFCB = true; }
-	void ResetWriteFCB() { nextWriteFCB = true; }
-	void ToggleReadFCB() { nextReadFCB = !nextReadFCB; }
-	void ToggleWriteFCB() { nextWriteFCB = !nextWriteFCB; }	
+	void ResetReadFCB()
+	{
+		nextReadFCB = true;
+	}
+	void ResetWriteFCB()
+	{
+		nextWriteFCB = true;
+	}
+	void ToggleReadFCB()
+	{
+		nextReadFCB = !nextReadFCB;
+	}
+	void ToggleWriteFCB()
+	{
+		nextWriteFCB = !nextWriteFCB;
+	}
 
 	/// --- helpers for dealing with layer state transitations ---
 	bool OnLowerLayerUp();
@@ -75,7 +87,7 @@ public:
 	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu);
 	openpal::RSlice FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB);
 
-	/// --- Helpers for queueing frames ---	
+	/// --- Helpers for queueing frames ---
 	void QueueAck();
 	void QueueLinkStatus();
 	void QueueResetLinks();
@@ -94,14 +106,14 @@ public:
 	void OnResponseTimeout();
 	void StartResponseTimer();
 	void StartKeepAliveTimer();
-	void CancelTimer();	
+	void CancelTimer();
 	void FailKeepAlive(bool timeout);
 	void CompleteKeepAlive();
 	bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata);
 	bool Validate(bool isMaster, uint16_t src, uint16_t dest);
 	bool TryPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
 
-	// buffers used for primary and secondary requests	
+	// buffers used for primary and secondary requests
 	openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> priTxBuffer;
 	openpal::StaticBuffer<LPDU_HEADER_SIZE> secTxBuffer;
 
@@ -110,8 +122,8 @@ public:
 
 	openpal::Logger logger;
 	const LinkConfig config;
-	ITransportSegment* pSegments;	
-	LinkTransmitMode txMode;	
+	ITransportSegment* pSegments;
+	LinkTransmitMode txMode;
 	uint32_t numRetryRemaining;
 	openpal::IExecutor* pExecutor;
 	openpal::TimerRef rspTimeoutTimer;
@@ -120,11 +132,11 @@ public:
 	bool nextWriteFCB;
 	bool isOnline;
 	bool isRemoteReset;
-	bool keepAliveTimeout;	
-	openpal::MonotonicTimestamp lastMessageTimestamp;		
+	bool keepAliveTimeout;
+	openpal::MonotonicTimestamp lastMessageTimestamp;
 	ILinkRouter* pRouter;
 	PriStateBase* pPriState;
-	SecStateBase* pSecState;	
+	SecStateBase* pSecState;
 	ILinkListener* pListener;
 	ILinkSession* pSession;
 	IUpperLayer* pUpperLayer;

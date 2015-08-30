@@ -40,7 +40,7 @@ bool Action0::IsSet() const
 Action0& Action0::operator=(const Action0& other)
 {
 	if (this != &other)
-	{		
+	{
 		this->pInvoke = other.pInvoke;
 		this->CopyErasure(other);
 	}

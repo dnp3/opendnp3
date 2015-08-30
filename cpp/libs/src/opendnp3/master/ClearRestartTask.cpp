@@ -34,10 +34,10 @@ namespace opendnp3
 
 ClearRestartTask::ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
 	IMasterTask(application, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
-	retryPeriod(retryPeriod_)	
+	retryPeriod(retryPeriod_)
 {
 
-}	
+}
 
 bool ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
@@ -53,11 +53,11 @@ IMasterTask::ResponseResult ClearRestartTask::ProcessResponse(const APDUResponse
 		if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 		{
 			// we tried to clear the restart, but the device responded with the restart still set
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Clear restart task failed to clear restart bit, permanently disabling task");			
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Clear restart task failed to clear restart bit, permanently disabling task");
 			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 		else
-		{			
+		{
 			return  ResponseResult::OK_FINAL;
 		}
 	}
@@ -72,14 +72,14 @@ IMasterTask::TaskState ClearRestartTask::OnTaskComplete(TaskCompletion result, o
 	switch (result)
 	{
 		// if the outstation ever rejects the task outright, disable this task so that it doesn't rapid-retry
-		case(TaskCompletion::FAILURE_NOT_AUTHORIZED) :
-		case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-			return TaskState::Disabled();		
-		
-		case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-			return TaskState::Retry(now.Add(retryPeriod));
-		default:
-			return TaskState::Infinite();
+	case(TaskCompletion::FAILURE_NOT_AUTHORIZED) :
+	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
+		return TaskState::Disabled();
+
+	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
+		return TaskState::Retry(now.Add(retryPeriod));
+	default:
+		return TaskState::Infinite();
 	}
 }
 

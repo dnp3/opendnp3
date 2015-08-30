@@ -28,7 +28,7 @@ using namespace openpal;
 #define SUITE(name) "LinkedListAdapter - " name
 
 TEST_CASE(SUITE("CorrectInitialState"))
-{	
+{
 	LinkedList<int, uint16_t> list(3);
 
 	REQUIRE(list.IsEmpty());
@@ -37,7 +37,7 @@ TEST_CASE(SUITE("CorrectInitialState"))
 }
 
 TEST_CASE(SUITE("AddsUntilFull"))
-{	
+{
 	LinkedList<int, uint16_t> list(3);
 
 	REQUIRE(list.Add(1));
@@ -51,7 +51,7 @@ TEST_CASE(SUITE("AddsUntilFull"))
 }
 
 TEST_CASE(SUITE("CanRemoveHead"))
-{	
+{
 	LinkedList<int, uint16_t> list(3);
 
 	auto one = list.Add(1);
@@ -68,7 +68,7 @@ TEST_CASE(SUITE("CanRemoveHead"))
 }
 
 TEST_CASE(SUITE("CanRemoveTail"))
-{	
+{
 	LinkedList<int, uint16_t> list(3);
 
 	list.Add(1);
@@ -85,7 +85,7 @@ TEST_CASE(SUITE("CanRemoveTail"))
 }
 
 TEST_CASE(SUITE("CanRemoveMiddle"))
-{	
+{
 	LinkedList<int, uint16_t> list(3);
 
 	list.Add(1);
@@ -112,14 +112,20 @@ TEST_CASE(SUITE("RemoveAllComplexQuery"))
 	list.Add(20);
 	list.Add(8);
 
-	auto isEven = [](int num) { return (num % 2) == 0; };
+	auto isEven = [](int num)
+	{
+		return (num % 2) == 0;
+	};
 	auto count = list.RemoveAll(isEven);
 
 	REQUIRE(count == 4);
 	REQUIRE(list.Size() == 2);
 
 	std::vector<int> remaining;
-	auto pushToVector = [&](int num) { remaining.push_back(num);  };
+	auto pushToVector = [&](int num)
+	{
+		remaining.push_back(num);
+	};
 	list.Foreach(pushToVector);
 
 	REQUIRE(remaining.size() == 2);
@@ -128,7 +134,7 @@ TEST_CASE(SUITE("RemoveAllComplexQuery"))
 }
 
 TEST_CASE(SUITE("CanIterateOverValues"))
-{	
+{
 	LinkedList<int, uint16_t> list(3);
 
 	list.Add(1);
@@ -147,7 +153,7 @@ TEST_CASE(SUITE("CanIterateOverValues"))
 }
 
 TEST_CASE(SUITE("StaticLinkedList"))
-{	
+{
 	LinkedList<int, uint16_t> list(3);
 
 	REQUIRE(list.Add(1));
@@ -159,35 +165,47 @@ TEST_CASE(SUITE("StaticLinkedList"))
 }
 
 TEST_CASE(SUITE("Insert at front of list"))
-{	
+{
 	LinkedList<int, uint16_t> list(3);
 
 	REQUIRE(list.Add(7));
-	
-	auto lessThan = [](int lhs, int rhs) { return lhs < rhs; };
+
+	auto lessThan = [](int lhs, int rhs)
+	{
+		return lhs < rhs;
+	};
 	REQUIRE(list.Insert(4, lessThan));
 
 	std::vector<int> items;
 
-	list.Foreach([&](int x) { items.push_back(x); });
+	list.Foreach([&](int x)
+	{
+		items.push_back(x);
+	});
 	REQUIRE(items.size() == 2);
 	REQUIRE(items[0] == 4);
 	REQUIRE(items[1] == 7);
 }
 
 TEST_CASE(SUITE("Insert in center of list"))
-{	
+{
 	LinkedList<int, uint16_t> list(10);
 
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(7));
 
-	auto lessThan = [](int lhs, int rhs) { return lhs < rhs; };
+	auto lessThan = [](int lhs, int rhs)
+	{
+		return lhs < rhs;
+	};
 	REQUIRE(list.Insert(4, lessThan));
 
 	std::vector<int> items;
 
-	list.Foreach([&](int x) { items.push_back(x); });
+	list.Foreach([&](int x)
+	{
+		items.push_back(x);
+	});
 	REQUIRE(items.size() == 3);
 
 	REQUIRE(items[0] == 2);
@@ -196,18 +214,24 @@ TEST_CASE(SUITE("Insert in center of list"))
 }
 
 TEST_CASE(SUITE("Insert at end of list"))
-{	
+{
 	LinkedList<int, uint16_t> list(10);
 
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(4));
 
-	auto lessThan = [](int lhs, int rhs) { return lhs < rhs; };
+	auto lessThan = [](int lhs, int rhs)
+	{
+		return lhs < rhs;
+	};
 	REQUIRE(list.Insert(7, lessThan));
 
 	std::vector<int> items;
 
-	list.Foreach([&](int x) { items.push_back(x); });
+	list.Foreach([&](int x)
+	{
+		items.push_back(x);
+	});
 	REQUIRE(items.size() == 3);
 
 	REQUIRE(items[0] == 2);

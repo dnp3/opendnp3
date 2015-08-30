@@ -60,11 +60,11 @@ void CommandTask::LoadDirectOperate()
 bool CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (!functionCodes.empty())
-	{		
+	{
 		request.SetFunction(functionCodes.front());
 		functionCodes.pop_front();
 		request.SetControl(AppControlField::Request(seq));
-		pSequence->FormatRequestHeader(request);		
+		pSequence->FormatRequestHeader(request);
 	}
 
 	return true;
@@ -79,14 +79,14 @@ IMasterTask::TaskState CommandTask::OnTaskComplete(TaskCompletion result, openpa
 {
 	switch (result)
 	{
-		case(TaskCompletion::SUCCESS):
-			this->Callback(CommandResponse::OK(this->statusResult));
-			return TaskState::Infinite();
-		default:
-			this->Callback(CommandResponse(result));
-			return TaskState::Infinite();
+	case(TaskCompletion::SUCCESS):
+		this->Callback(CommandResponse::OK(this->statusResult));
+		return TaskState::Infinite();
+	default:
+		this->Callback(CommandResponse(result));
+		return TaskState::Infinite();
 	}
-	
+
 }
 
 void CommandTask::Initialize()
@@ -104,16 +104,16 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::RSlice& 
 		this->statusResult = response.GetStatus();
 
 		if(functionCodes.empty())
-		{						
+		{
 			return ResponseResult::OK_FINAL;
 		}
 		else // we may have more depending on response
-		{			
-			return (response == CommandResponse::Success) ? ResponseResult::OK_REPEAT : ResponseResult::OK_FINAL;			
+		{
+			return (response == CommandResponse::Success) ? ResponseResult::OK_REPEAT : ResponseResult::OK_FINAL;
 		}
 	}
 	else
-	{				
+	{
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 }

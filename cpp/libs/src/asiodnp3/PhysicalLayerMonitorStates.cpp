@@ -94,14 +94,14 @@ bool NotWaitingForTimer::OnOpenTimeout(PhysicalLayerMonitor& context)
 
 void IgnoresClose::OnCloseRequest(PhysicalLayerMonitor& context)
 {
-	
+
 }
 
 /* --- IgnoresSuspend --- */
 
 void IgnoresSuspend::OnSuspendRequest(PhysicalLayerMonitor& context)
 {
-	
+
 }
 
 /* --- StartsOnClose --- */
@@ -117,21 +117,21 @@ bool StartsOnClose::OnLayerClose(PhysicalLayerMonitor& context)
 
 void IgnoresShutdown::OnShutdownRequest(PhysicalLayerMonitor& context)
 {
-	
+
 }
 
 /* --- IgnoresStart --- */
 
 void IgnoresStart::OnStartRequest(PhysicalLayerMonitor& context)
 {
-	
+
 }
 
 /* --- IgnoresStartOne --- */
 
 void IgnoresStartOne::OnStartOneRequest(PhysicalLayerMonitor& context)
 {
-	
+
 }
 
 /* --- OpenFailureCausesWait --- */

@@ -84,7 +84,7 @@ bool HeaderWriter::WriteFreeFormat(const IVariableLength& value)
 	{
 		openpal::UInt8::WriteBuffer(*position, 1);
 		openpal::UInt16::WriteBuffer(*position, value.Size());
-		return value.Write(*position);		
+		return value.Write(*position);
 	}
 	else
 	{

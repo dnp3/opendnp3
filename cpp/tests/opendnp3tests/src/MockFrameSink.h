@@ -49,7 +49,7 @@ public:
 	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
 	void Reset();
-	
+
 
 	bool CheckLast(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
 	bool CheckLastWithFCB(LinkFunction aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
@@ -58,7 +58,7 @@ public:
 	// Last frame information
 	size_t m_num_frames;
 	LinkHeaderFields m_last_header;
-	
+
 	bool mLowerOnline;
 
 	// Add a function to execute the next time a frame is received

@@ -32,11 +32,11 @@ namespace secauth
 * Class for tracking security statistics NOT defined in 1815-2012
 */
 struct UnofficialStatistics : openpal::Uncopyable
-{	
+{
 
-public:	
+public:
 
-	UnofficialStatistics() : 
+	UnofficialStatistics() :
 		authFailuresDueToExpiredKeys(0),
 		badStatusChangeSeqNum(0)
 	{}

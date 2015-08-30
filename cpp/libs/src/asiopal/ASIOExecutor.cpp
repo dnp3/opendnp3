@@ -31,7 +31,7 @@ using namespace std;
 namespace asiopal
 {
 
-ASIOExecutor::ASIOExecutor(asio::io_service& service) : 
+ASIOExecutor::ASIOExecutor(asio::io_service& service) :
 	strand(service),
 	pShutdownSignal(nullptr)
 {
@@ -49,7 +49,10 @@ ASIOExecutor::~ASIOExecutor()
 void ASIOExecutor::WaitForShutdown()
 {
 	Synchronized<bool> sync;
-	auto initiate = [this, &sync]() { this->InitiateShutdown(sync); };
+	auto initiate = [this, &sync]()
+	{
+		this->InitiateShutdown(sync);
+	};
 	strand.post(initiate);
 	sync.WaitForValue();
 }
@@ -75,7 +78,7 @@ void ASIOExecutor::BlockFor(const std::function<void()>& action)
 }
 
 void ASIOExecutor::InitiateShutdown(Synchronized<bool>& handler)
-{		
+{
 	pShutdownSignal = &handler;
 	this->CheckForShutdown();
 }
@@ -87,9 +90,9 @@ void ASIOExecutor::CheckForShutdown()
 		if (activeTimers.empty())
 		{
 			// send the final shutdown signal via the strand to ensure all post events are flushed
-			auto finalpost = [this]() 
-			{ 
-				this->pShutdownSignal->SetValue(true); 
+			auto finalpost = [this]()
+			{
+				this->pShutdownSignal->SetValue(true);
 			};
 
 			strand.post(finalpost);
@@ -103,20 +106,20 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& delay, const openpal::Action0& runnable)
-{	
+{
 	auto expiration = asiopal_steady_clock::now() + std::chrono::milliseconds(delay.GetMilliseconds());
 	return Start(expiration, runnable);
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& time, const openpal::Action0& runnable)
-{	
+{
 	asiopal_steady_clock::time_point expiration(std::chrono::milliseconds(time.milliseconds));
 	return Start(expiration, runnable);
 }
 
 openpal::ITimer* ASIOExecutor::Start(const asiopal_steady_clock::time_point& tp, const openpal::Action0& runnable)
 {
-	TimerASIO* pTimer = GetTimer();	
+	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_at(tp);
 	this->StartTimer(pTimer, runnable);
 	return pTimer;
@@ -124,7 +127,10 @@ openpal::ITimer* ASIOExecutor::Start(const asiopal_steady_clock::time_point& tp,
 
 void ASIOExecutor::Post(const openpal::Action0& runnable)
 {
-	auto captured = [runnable]() { runnable.Apply(); };
+	auto captured = [runnable]()
+	{
+		runnable.Apply();
+	};
 	strand.post(captured);
 }
 
@@ -141,20 +147,23 @@ TimerASIO* ASIOExecutor::GetTimer()
 		pTimer = idleTimers.front();
 		idleTimers.pop_front();
 	}
-	
+
 	activeTimers.insert(pTimer);
 	pTimer->canceled = false;
 	return pTimer;
 }
 
 void ASIOExecutor::StartTimer(TimerASIO* pTimer, const openpal::Action0& runnable)
-{	
-	auto callback = [runnable, this, pTimer](const std::error_code& ec){ this->OnTimerCallback(ec, pTimer, runnable); };
+{
+	auto callback = [runnable, this, pTimer](const std::error_code & ec)
+	{
+		this->OnTimerCallback(ec, pTimer, runnable);
+	};
 	pTimer->timer.async_wait(strand.wrap(callback));
 }
 
 void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* pTimer, const openpal::Action0& runnable)
-{	
+{
 	activeTimers.erase(pTimer);
 	idleTimers.push_back(pTimer);
 	if (!(ec || pTimer->canceled))

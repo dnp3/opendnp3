@@ -28,18 +28,18 @@
 
 namespace secauth
 {
-	OutstationAuthSettings::OutstationAuthSettings() :		
-		outstationName("outstation"),
-		challengeTimeout(opendnp3::DEFAULT_APP_TIMEOUT),
-		challengeSize(AuthSizes::DEFAULT_CHALLENGE_SIZE),
-		sessionKeyChangeChallengeSize(AuthSizes::DEFAULT_SESSION_KEY_CHALLENGE_SIZE),
-		updateKeyChangeChallengeSize(AuthSizes::DEFAULT_UPDATE_KEY_CHALLENGE_SIZE),
-		assocId(0),
-		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
-		functions(CriticalFunctions::AuthEverything()),
-		maxAuthMsgCount(AuthConstants::DEFAULT_SESSION_KEY_MAX_AUTH_COUNT),
-		sessionKeyTimeout(openpal::TimeDuration::Minutes(AuthConstants::DEFAULT_SESSION_KEY_CHANGE_MINUTES))
-	{}
+OutstationAuthSettings::OutstationAuthSettings() :
+	outstationName("outstation"),
+	challengeTimeout(opendnp3::DEFAULT_APP_TIMEOUT),
+	challengeSize(AuthSizes::DEFAULT_CHALLENGE_SIZE),
+	sessionKeyChangeChallengeSize(AuthSizes::DEFAULT_SESSION_KEY_CHALLENGE_SIZE),
+	updateKeyChangeChallengeSize(AuthSizes::DEFAULT_UPDATE_KEY_CHALLENGE_SIZE),
+	assocId(0),
+	hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
+	functions(CriticalFunctions::AuthEverything()),
+	maxAuthMsgCount(AuthConstants::DEFAULT_SESSION_KEY_MAX_AUTH_COUNT),
+	sessionKeyTimeout(openpal::TimeDuration::Minutes(AuthConstants::DEFAULT_SESSION_KEY_CHANGE_MINUTES))
+{}
 
 }
 

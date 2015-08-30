@@ -25,7 +25,7 @@
 
 namespace opendnp3
 {
-	typedef openpal::UInt48Type DNPTime;
+typedef openpal::UInt48Type DNPTime;
 }
 
 

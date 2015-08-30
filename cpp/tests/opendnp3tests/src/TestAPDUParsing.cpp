@@ -48,7 +48,7 @@ using namespace testlib;
 void TestComplex(const std::string& hex, ParseResult expected, size_t numCalls, std::function<void (MockApduHeaderHandler&)> validate)
 {
 	HexSequence buffer(hex);
-	MockApduHeaderHandler mock;	
+	MockApduHeaderHandler mock;
 	testlib::MockLogHandler log;
 	auto logger = log.GetLogger();
 	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, &logger);
@@ -182,7 +182,7 @@ TEST_CASE(SUITE("Group1Var2CountOfZero"))
 }
 
 TEST_CASE(SUITE("Group1Var2With2Headers"))
-{		
+{
 	// 1 -> 1 & 2 -> 3
 	TestComplex("01 02 00 01 01 81 01 02 00 02 03 81 81", ParseResult::OK, 2, [](MockApduHeaderHandler & mock)
 	{
@@ -352,7 +352,7 @@ TEST_CASE(SUITE("TestIINValue"))
 {
 	TestComplex("50 01 00 07 07 00", ParseResult::OK, 1, [&](MockApduHeaderHandler & mock)
 	{
-		REQUIRE(1 ==  mock.iinBits.size());		
+		REQUIRE(1 ==  mock.iinBits.size());
 		REQUIRE_FALSE(mock.iinBits[0].value.value);
 	});
 }

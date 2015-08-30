@@ -49,7 +49,7 @@ public:
 
 	virtual void OnTaskStart(MasterTaskType type, TaskId id) override final
 	{
-		taskStartEvents.push_back(type);		
+		taskStartEvents.push_back(type);
 	}
 
 	virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override final
@@ -61,15 +61,15 @@ public:
 	{
 		return !assignClassHeaders.empty();
 	}
-	
+
 	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override final
 	{
-		for (auto& header : assignClassHeaders)
+		for (auto & header : assignClassHeaders)
 		{
 			fun(header);
 		}
 	}
-	
+
 
 	std::vector<opendnp3::Header> assignClassHeaders;
 
@@ -77,7 +77,7 @@ public:
 
 	std::vector<MasterTaskType> taskStartEvents;
 	std::vector<TaskInfo> taskCompletionEvents;
-	
+
 	uint64_t time;
 };
 

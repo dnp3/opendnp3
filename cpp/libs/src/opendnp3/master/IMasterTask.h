@@ -45,18 +45,30 @@ protected:
 
 	class TaskState
 	{
-		public:
+	public:
 
 		TaskState(openpal::MonotonicTimestamp expiration_, bool disabled_ = false) : disabled(disabled_), expiration(expiration_)
 		{}
 
-		static TaskState Immediately() { return TaskState(0, false); }
+		static TaskState Immediately()
+		{
+			return TaskState(0, false);
+		}
 
-		static TaskState Infinite() { return TaskState(openpal::MonotonicTimestamp::Max(), false); }
+		static TaskState Infinite()
+		{
+			return TaskState(openpal::MonotonicTimestamp::Max(), false);
+		}
 
-		static TaskState Retry(openpal::MonotonicTimestamp exp) { return TaskState(exp, false); }
+		static TaskState Retry(openpal::MonotonicTimestamp exp)
+		{
+			return TaskState(exp, false);
+		}
 
-		static TaskState Disabled() { return TaskState(openpal::MonotonicTimestamp::Max(), true); }
+		static TaskState Disabled()
+		{
+			return TaskState(openpal::MonotonicTimestamp::Max(), true);
+		}
 
 		bool disabled;
 		openpal::MonotonicTimestamp expiration;
@@ -66,47 +78,53 @@ protected:
 	};
 
 
-public:	
+public:
 
 	enum class ResponseResult : uint8_t
 	{
-		/// The response was bad, the task has failed
-		ERROR_BAD_RESPONSE,
+	    /// The response was bad, the task has failed
+	    ERROR_BAD_RESPONSE,
 
-		/// An internal error occured like a failure calculating an HMAC
-		ERROR_INTERNAL_FAILURE,
+	    /// An internal error occured like a failure calculating an HMAC
+	    ERROR_INTERNAL_FAILURE,
 
-		/// The response was good and the task is complete
-		OK_FINAL,		
+	    /// The response was good and the task is complete
+	    OK_FINAL,
 
-		/// The response was good and the task should repeat the format, transmit, and await response sequence
-		OK_REPEAT,
+	    /// The response was good and the task should repeat the format, transmit, and await response sequence
+	    OK_REPEAT,
 
-		/// The response was good and the task should continue executing. Restart the response timer, and increment expected SEQ#.
-		OK_CONTINUE
-	};	
-	
+	    /// The response was good and the task should continue executing. Restart the response timer, and increment expected SEQ#.
+	    OK_CONTINUE
+	};
+
 
 	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config);
 
 
 	virtual ~IMasterTask();
 
-	/**	
+	/**
 	*	Overridable for auth tasks
 	*/
-	virtual bool IsAuthTask() const { return false; }
+	virtual bool IsAuthTask() const
+	{
+		return false;
+	}
 
 	/**
 	*	The SA user requesting the task. always the default user unless overridden.
 	*/
-	User GetUser() const { return config.user; }
-	
-	/**	
+	User GetUser() const
+	{
+		return config.user;
+	}
+
+	/**
 	*
 	* @return	the name of the task
 	*/
-	virtual char const* Name() const = 0;		
+	virtual char const* Name() const = 0;
 
 	/**
 	* The task's priority. Lower numbers are higher priority.
@@ -123,12 +141,12 @@ public:
 	* Indicates if the task should be rescheduled (true) or discarded
 	* after a single execution (false)
 	*/
-	virtual bool IsRecurring() const = 0;	
+	virtual bool IsRecurring() const = 0;
 
 	/**
 	* The time when this task can run again.
 	*/
-	openpal::MonotonicTimestamp ExpirationTime() const;		
+	openpal::MonotonicTimestamp ExpirationTime() const;
 
 	/**
 	* Configure the start expiration time
@@ -141,24 +159,24 @@ public:
 	openpal::MonotonicTimestamp StartExpirationTime() const;
 
 	/**
-	 * Build a request APDU.	 
+	 * Build a request APDU.
 	 *
 	 * Return false if some kind of internal error prevents the task for formatting the request.
 	 */
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) = 0;
 
 	/**
-	 * Handler for responses	 
-	 */	
+	 * Handler for responses
+	 */
 	ResponseResult OnResponse(const APDUResponseHeader& response, const openpal::RSlice& objects, openpal::MonotonicTimestamp now);
-	
+
 	/**
-	 * Called when a response times out	 
+	 * Called when a response times out
 	 */
 	void OnResponseTimeout(openpal::MonotonicTimestamp now);
 
 	/**
-	* Called when the layer closes while the task is executing.	
+	* Called when the layer closes while the task is executing.
 	*/
 	void OnLowerLayerClose(openpal::MonotonicTimestamp now);
 
@@ -190,17 +208,17 @@ public:
 	/**
 	* Called when the task first starts, before the first request is formatted
 	*/
-	void OnStart();			
+	void OnStart();
 
 	/**
 	* Demand that the task run immediately by setting the expiration to 0
 	*/
 	void Demand();
-	
-	protected:
+
+protected:
 
 	// called during OnStart() to initialize any state for a new run
-	virtual void Initialize() {}		
+	virtual void Initialize() {}
 
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) = 0;
 
@@ -210,18 +228,18 @@ public:
 
 	virtual MasterTaskType GetTaskType() const = 0;
 
-	IMasterApplication* pApplication;	
+	IMasterApplication* pApplication;
 	openpal::Logger logger;
 
 	// Validation helpers for various behaviors to avoid deep inheritance
 	bool ValidateSingleResponse(const APDUResponseHeader& header);
-	bool ValidateNullResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);	
+	bool ValidateNullResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
 	bool ValidateNoObjects(const openpal::RSlice& objects);
 	bool ValidateInternalIndications(const APDUResponseHeader& header);
 
 	void NotifyResult(TaskCompletion result);
 
-	private:
+private:
 
 	IMasterTask();
 

@@ -27,28 +27,28 @@
 
 namespace openpal
 {
-	/**
-	* An abstract provider of cryptographic services. All function are assumed 
-	* to  be thread-safe such that multiple threads can safely share a single 
-	* instance of this class.
-	*
-	* The default implementation of this class is based on libcrypto (openssl).			
-	*/
-	class ICryptoProvider : public ISecureRandom
-	{
-	public:
-		
-		virtual ~ICryptoProvider() {}		
-		
-		/// --- Getters for HMAC algorithms ----
+/**
+* An abstract provider of cryptographic services. All function are assumed
+* to  be thread-safe such that multiple threads can safely share a single
+* instance of this class.
+*
+* The default implementation of this class is based on libcrypto (openssl).
+*/
+class ICryptoProvider : public ISecureRandom
+{
+public:
 
-		virtual IHMACAlgo& GetSHA1HMAC() = 0;
-		virtual IHMACAlgo& GetSHA256HMAC() = 0;
-		
-		/// --- Getters for key wrap algorithms ----
+	virtual ~ICryptoProvider() {}
 
-		virtual IKeyWrapAlgo& GetAESKeyWrap() = 0;		
-	};
+	/// --- Getters for HMAC algorithms ----
+
+	virtual IHMACAlgo& GetSHA1HMAC() = 0;
+	virtual IHMACAlgo& GetSHA256HMAC() = 0;
+
+	/// --- Getters for key wrap algorithms ----
+
+	virtual IKeyWrapAlgo& GetAESKeyWrap() = 0;
+};
 
 }
 

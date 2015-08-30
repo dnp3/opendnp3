@@ -29,18 +29,18 @@
 
 namespace secauth
 {
-	// set of helpers on top of ICryptoProvider
-	class Crypto : private openpal::StaticOnly
-	{
-		public:
-											
-			
+// set of helpers on top of ICryptoProvider
+class Crypto : private openpal::StaticOnly
+{
+public:
 
-			static bool TryGetHMACMode(opendnp3::HMACType type, HMACMode& mode);
 
-	};
 
-	
+	static bool TryGetHMACMode(opendnp3::HMACType type, HMACMode& mode);
+
+};
+
+
 }
 
 #endif

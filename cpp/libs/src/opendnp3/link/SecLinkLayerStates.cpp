@@ -39,7 +39,7 @@ namespace opendnp3
 
 SecStateBase& SecStateBase::OnTransmitResult(LinkContext& ctx, bool success)
 {
-	FORMAT_LOG_BLOCK(ctx.logger, flags::ERR, "Invalid event for state: %s", this->Name());	
+	FORMAT_LOG_BLOCK(ctx.logger, flags::ERR, "Invalid event for state: %s", this->Name());
 	return *this;
 }
 

@@ -29,9 +29,9 @@
 #include <string>
 
 namespace secauth
-{	
+{
 
-/** 
+/**
 	Extends the outstation application interface for vanilla DNP3 with additional methods required for secure authentication.
 
 	A UTC time source is required so that the outstation can timestamp authentication error objects internally, whereas in vanilla DNP3
@@ -39,8 +39,8 @@ namespace secauth
 */
 class IOutstationApplicationSA : public opendnp3::IOutstationApplication, public openpal::IUTCTimeSource
 {
-	public:	
-		
+public:
+
 	/**
 	*	Called when a fully authenticated user status change message is received w/ a new SCSN
 	*
@@ -48,10 +48,10 @@ class IOutstationApplicationSA : public opendnp3::IOutstationApplication, public
 	*/
 	virtual void OnNewSCSN(uint32_t userStatusSeqNum) {}
 
-	/**	
+	/**
 	*	Callback received when an authenticated user status change is received with a DELETE for an existing user
 	*
-	*	The user's update keys are automatically deleted and existing sessions are invalidated.	
+	*	The user's update keys are automatically deleted and existing sessions are invalidated.
 	*/
 	virtual void OnDeleteUser(const std::string& userName, const opendnp3::User& user) {}
 
@@ -61,7 +61,7 @@ class IOutstationApplicationSA : public opendnp3::IOutstationApplication, public
 	*	Application code is expected to persist this data to secure non-volatile memory so that it can be loaded on the next reboot.
 	*/
 	virtual void AddOrUpdateUser(const OutstationUserInfo& info) {}
-				
+
 };
 
 }

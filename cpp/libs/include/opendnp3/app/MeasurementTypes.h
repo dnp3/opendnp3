@@ -80,7 +80,7 @@ public:
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
 	const static EventBinaryVariation DefaultEventVariation = EventBinaryVariation::Group2Var1;
 	const static StaticBinaryVariation DefaultStaticVariation = StaticBinaryVariation::Group1Var2;
-		
+
 	typedef bool ValueType;
 	typedef EventBinaryVariation EventVariation;
 	typedef StaticBinaryVariation StaticVariation;
@@ -192,7 +192,7 @@ public:
 	typedef double ValueType;
 	typedef EventAnalogVariation EventVariation;
 	typedef StaticAnalogVariation StaticVariation;
-	typedef DeadbandMetadata<Analog, double> MetadataType;	
+	typedef DeadbandMetadata<Analog, double> MetadataType;
 };
 
 /**
@@ -233,7 +233,7 @@ public:
 
 	FrozenCounter();
 
-	FrozenCounter(uint32_t value);	
+	FrozenCounter(uint32_t value);
 
 	FrozenCounter(uint32_t value, uint8_t quality);
 
@@ -262,7 +262,7 @@ public:
 
 	AnalogOutputStatus();
 
-	AnalogOutputStatus(double value);	
+	AnalogOutputStatus(double value);
 
 	AnalogOutputStatus(double value, uint8_t quality);
 

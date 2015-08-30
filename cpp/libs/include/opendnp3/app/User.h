@@ -26,43 +26,49 @@
 
 namespace opendnp3
 {
-	/// A user in SA is just a uint16. This is just a type-safe wrapper with helpers
-	class User
+/// A user in SA is just a uint16. This is just a type-safe wrapper with helpers
+class User
+{
+public:
+
+	User() : id(UNKNOWN_ID)
+	{}
+
+	explicit User(uint16_t id_) : id(id_)
+	{}
+
+	uint16_t GetId() const
 	{
-		public:
-		
-			User() : id(UNKNOWN_ID)
-			{}
+		return id;
+	}
 
-			explicit User(uint16_t id_) : id(id_)
-			{}
+	bool IsDefault() const
+	{
+		return id == DEFAULT_ID;
+	}
 
-			uint16_t GetId() const
-			{
-				return id;
-			}
+	bool IsUnknown() const
+	{
+		return id == UNKNOWN_ID;
+	}
 
-			bool IsDefault() const
-			{
-				return id == DEFAULT_ID;
-			}
+	static User Default()
+	{
+		return User(DEFAULT_ID);
+	}
 
-			bool IsUnknown() const
-			{
-				return id == UNKNOWN_ID;
-			}
+	static User Unknown()
+	{
+		return User(UNKNOWN_ID);
+	}
 
-			static User Default() { return User(DEFAULT_ID); }
+	static const uint16_t UNKNOWN_ID;
+	static const uint16_t DEFAULT_ID;
 
-			static User Unknown() { return User(UNKNOWN_ID); }
+private:
 
-			static const uint16_t UNKNOWN_ID;
-			static const uint16_t DEFAULT_ID;
-
-		private:			
-
-			uint16_t id;
-	};
+	uint16_t id;
+};
 
 }
 

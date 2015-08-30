@@ -33,7 +33,7 @@ class LinkLayer final : public ILinkLayer, public ILinkSession
 public:
 
 	LinkLayer(openpal::LogRoot&, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, const LinkConfig&);
-	
+
 	void SetRouter(ILinkRouter&);
 
 	// ---- Events from below: ILinkSession / IFrameSink  ----
@@ -42,16 +42,16 @@ public:
 	virtual bool OnLowerLayerDown() override;
 	virtual bool OnTransmitResult(bool success) override;
 	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
-	
+
 	// ---- Events from above: ILinkLayer ----
 
-	virtual void Send(ITransportSegment& segments) override;	
+	virtual void Send(ITransportSegment& segments) override;
 
 private:
 
 	// The full state
-	LinkContext ctx;		
-	
+	LinkContext ctx;
+
 };
 
 }

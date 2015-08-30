@@ -51,30 +51,33 @@ public:
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override final;
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override final;
-	
+
 
 protected:
 
 	void Start() final {}
 	void End() final {}
 
-private:	
+private:
 
 	template <class T>
 	static void PrintAll(const HeaderInfo& info, const ICollection<Indexed<T>>& values)
 	{
-		auto print = [&](const Indexed<T>& pair) { Print<T>(info, pair.value, pair.index); };
+		auto print = [&](const Indexed<T>& pair)
+		{
+			Print<T>(info, pair.value, pair.index);
+		};
 		values.ForeachItem(print);
 	}
 
 	template <class T>
 	static void Print(const HeaderInfo& info, const T& value, uint16_t index)
-	{				
+	{
 		std::cout << "[" << index << "] : " <<
-			ValueToString(value) << " : " <<
-			static_cast<int>(value.quality) << " : " <<
-			value.time << std::endl;		
-	}	
+		          ValueToString(value) << " : " <<
+		          static_cast<int>(value.quality) << " : " <<
+		          value.time << std::endl;
+	}
 
 	template <class T>
 	static std::string ValueToString(const T& meas)
@@ -86,20 +89,20 @@ private:
 
 	static std::string GetTimeString(TimestampMode tsmode)
 	{
-		std::ostringstream oss;	
+		std::ostringstream oss;
 		switch (tsmode)
 		{
-			case(TimestampMode::SYNCHRONIZED) :
-				return "synchronized";
-				break;
-			case(TimestampMode::UNSYNCHRONIZED):
-				oss << "unsynchronized";
-				break;
-			default:
-				oss << "no timestamp";
-				break;
+		case(TimestampMode::SYNCHRONIZED) :
+			return "synchronized";
+			break;
+		case(TimestampMode::UNSYNCHRONIZED):
+			oss << "unsynchronized";
+			break;
+		default:
+			oss << "no timestamp";
+			break;
 		}
-		
+
 		return oss.str();
 	}
 

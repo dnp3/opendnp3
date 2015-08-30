@@ -49,18 +49,18 @@ namespace opendnp3
 ///
 class OContext : public IUpperLayer
 {
-	
-public:		
 
-	OContext(	const OutstationConfig& config,	
-				const DatabaseTemplate& dbTemplate,
-				openpal::Logger logger,						
-				openpal::IExecutor& executor,			
-				ILowerLayer& lower,
-				ICommandHandler& commandHandler,
-				IOutstationApplication& application);		
+public:
 
-public:	
+	OContext(	const OutstationConfig& config,
+	            const DatabaseTemplate& dbTemplate,
+	            openpal::Logger logger,
+	            openpal::IExecutor& executor,
+	            ILowerLayer& lower,
+	            ICommandHandler& commandHandler,
+	            IOutstationApplication& application);
+
+public:
 
 	/// ----- Implement IUpperLayer ------
 
@@ -94,7 +94,7 @@ public:
 
 	/// ---- External helpers ----
 
-	void SetRestartIIN();	
+	void SetRestartIIN();
 
 	IDatabase& GetDatabase();
 
@@ -102,7 +102,7 @@ public:
 
 	/// ---- Processing functions --------
 
-	
+
 
 	void ProcessAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects);
 
@@ -114,7 +114,7 @@ public:
 
 	void ParseHeader(const openpal::RSlice& apdu);
 
-	void BeginResponseTx(const openpal::RSlice& response);		
+	void BeginResponseTx(const openpal::RSlice& response);
 
 	void BeginUnsolTx(const openpal::RSlice& response);
 
@@ -128,11 +128,11 @@ public:
 
 	bool StartUnsolicitedConfirmTimer();
 
-	void CheckForUnsolicited();	
-	
+	void CheckForUnsolicited();
+
 	bool CanTransmit() const;
 
-	IINField GetResponseIIN();		
+	IINField GetResponseIIN();
 
 	IINField GetDynamicIIN();
 
@@ -142,7 +142,7 @@ public:
 	/// @return An IIN field indicating the validity of the request, and to be returned in the response.
 	IINField HandleNonReadResponse(const APDUHeader& header, const openpal::RSlice& objects, HeaderWriter& writer);
 
-	/// Handles read function codes. May trigger an unsolicited response	
+	/// Handles read function codes. May trigger an unsolicited response
 	/// @return an IIN field and a partial AppControlField (missing sequence info)
 	openpal::Pair<IINField, AppControlField> HandleRead(const openpal::RSlice& objects, HeaderWriter& writer);
 
@@ -161,13 +161,13 @@ public:
 	IINField HandleDisableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer);
 	IINField HandleEnableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer);
 	IINField HandleCommandWithConstant(const openpal::RSlice& objects, HeaderWriter& writer, CommandStatus status);
-	
+
 	// ------ resources --------
 	openpal::Logger logger;
 	openpal::IExecutor* const pExecutor;
-	ILowerLayer* const pLower;	
+	ILowerLayer* const pLower;
 	ICommandHandler* const pCommandHandler;
-	IOutstationApplication* const pApplication;	
+	IOutstationApplication* const pApplication;
 
 	// ------ Database, event buffer, and response tracking
 	EventBuffer eventBuffer;
@@ -175,11 +175,11 @@ public:
 	ResponseContext rspContext;
 
 	// ------ Static configuration -------
-	OutstationParams params;	
-		
+	OutstationParams params;
+
 	// ------ Shared dynamic state --------
 	bool isOnline;
-	bool isTransmitting;	
+	bool isTransmitting;
 	IINField staticIIN;
 	openpal::TimerRef confirmTimer;
 	RequestHistory history;
@@ -188,7 +188,7 @@ public:
 	// ------ Dynamic state related to controls ------
 	ControlState control;
 
-	// ------ Dynamic state related to solicited and unsolicited modes ------			
+	// ------ Dynamic state related to solicited and unsolicited modes ------
 	OutstationSolState  sol;
 	OutstationUnsolState unsol;
 };

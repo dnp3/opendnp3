@@ -46,12 +46,12 @@ public:
 	TimeAndInterval(DNPTime time, uint32_t interval, uint8_t units);
 
 	TimeAndInterval(DNPTime time, uint32_t interval, IntervalUnits units);
-	
+
 	IntervalUnits GetUnitsEnum() const;
-	
+
 	DNPTime time;
-	uint32_t interval;	
-	uint8_t units;	
+	uint32_t interval;
+	uint8_t units;
 
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
 	const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;

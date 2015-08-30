@@ -59,7 +59,7 @@ public:
 
 
 protected:
-	
+
 	virtual void Start() override final;
 	virtual void End() override final;
 
@@ -71,7 +71,7 @@ public:
 	uint32_t numSelect;
 	uint32_t numStart;
 	uint32_t numEnd;
-	
+
 };
 
 class SuccessCommandHandler : public SimpleCommandHandler

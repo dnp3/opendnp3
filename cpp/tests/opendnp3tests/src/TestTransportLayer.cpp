@@ -44,14 +44,14 @@ TEST_CASE(SUITE("RepeatSendsDoNotLogOrChangeStatistics"))
 	TransportTx transmitter(log.GetLogger(), &stats);
 	HexSequence hs("12 34 56");
 	transmitter.Configure(hs.ToRSlice());
-	
+
 	auto segment1 = transmitter.GetSegment();
 	REQUIRE("C0 12 34 56" == ToHex(segment1));
 	REQUIRE(1 == stats.numTransportTx);
 
 	auto segment2 = transmitter.GetSegment();
 	REQUIRE("C0 12 34 56" == ToHex(segment2));
-	REQUIRE(1 == stats.numTransportTx);	
+	REQUIRE(1 == stats.numTransportTx);
 }
 
 // make sure an invalid state exception gets thrown
@@ -96,7 +96,7 @@ TEST_CASE(SUITE("ReceiveBadArguments"))
 	//check that the wrong aruments throw argument exceptions, and it's doesn't go to the sending state
 	test.link.SendUp("");
 	REQUIRE(TLERR_NO_HEADER ==  test.log.NextErrorCode());
-	
+
 	test.link.SendUp("FF");
 	REQUIRE(-1 ==  test.log.NextErrorCode());
 
@@ -108,7 +108,7 @@ TEST_CASE(SUITE("ReceiveBadArguments"))
 TEST_CASE(SUITE("AllowsHeaderOnlyFinalFrame"))
 {
 	TransportTestObject test(true);
-	
+
 	test.link.SendUp("41 DE AD BE EF");
 	test.link.SendUp("82");
 

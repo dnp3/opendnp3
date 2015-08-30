@@ -33,159 +33,159 @@ using namespace testlib;
 
 namespace opendnp3
 {
-	OutstationSecAuthFixture::OutstationSecAuthFixture(		
-		const secauth::OutstationAuthSettings& authConfig,
-		const DatabaseTemplate& dbTemplate,
-		const OutstationConfig& config
-	) : 
-		log(),
-		exe(),
-		lower(log.root),
-		cmdHandler(),
-		application(),		
-		crypto(),		
-		context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, crypto)		
+OutstationSecAuthFixture::OutstationSecAuthFixture(
+    const secauth::OutstationAuthSettings& authConfig,
+    const DatabaseTemplate& dbTemplate,
+    const OutstationConfig& config
+) :
+	log(),
+	exe(),
+	lower(log.root),
+	cmdHandler(),
+	application(),
+	crypto(),
+	context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, crypto)
+{
+	lower.SetUpperLayer(context);
+}
+
+uint32_t OutstationSecAuthFixture::LowerLayerUp()
+{
+	context.OnLowerLayerUp();
+	return exe.RunMany();
+}
+
+uint32_t OutstationSecAuthFixture::LowerLayerDown()
+{
+	context.OnLowerLayerDown();
+	return exe.RunMany();
+}
+
+uint32_t OutstationSecAuthFixture::OnSendResult(bool isSuccess)
+{
+	context.OnSendResult(isSuccess);
+	return exe.RunMany();
+}
+
+uint32_t OutstationSecAuthFixture::SendToOutstation(const std::string& hex)
+{
+	testlib::HexSequence hs(hex);
+	context.OnReceive(hs.ToRSlice());
+	return exe.RunMany();
+}
+
+std::string OutstationSecAuthFixture::SendAndReceive(const std::string& hex)
+{
+	this->SendToOutstation(hex);
+	auto ret = this->lower.PopWriteAsHex();
+	if (!ret.empty())
 	{
-		lower.SetUpperLayer(context);
+		this->OnSendResult(true);
 	}
+	return ret;
+}
 
-	uint32_t OutstationSecAuthFixture::LowerLayerUp()
+size_t OutstationSecAuthFixture::NumPendingTimers() const
+{
+	return exe.NumPendingTimers();
+}
+
+bool OutstationSecAuthFixture::AdvanceToNextTimer()
+{
+	if (exe.AdvanceToNextTimer())
 	{
-		context.OnLowerLayerUp();
-		return exe.RunMany();
+		return exe.RunMany() > 0;
 	}
-
-	uint32_t OutstationSecAuthFixture::LowerLayerDown()
+	else
 	{
-		context.OnLowerLayerDown();
-		return exe.RunMany();
+		return false;
 	}
+}
 
-	uint32_t OutstationSecAuthFixture::OnSendResult(bool isSuccess)
+uint32_t OutstationSecAuthFixture::AdvanceTime(const openpal::TimeDuration& td)
+{
+	exe.AdvanceTime(td);
+	return exe.RunMany();
+}
+
+void OutstationSecAuthFixture::SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data)
+{
+	switch (keyWrap)
 	{
-		context.OnSendResult(isSuccess);
-		return exe.RunMany();
+	case(KeyWrapAlgorithm::AES_128) :
+		crypto.keyWrap.hexOutput = hex::KeyWrapData(16, 0xBB, data);
+		break;
+	case(KeyWrapAlgorithm::AES_256) :
+		crypto.keyWrap.hexOutput = hex::KeyWrapData(32, 0xBB, data);
+		break;
+	default:
+		throw std::logic_error("bad param");
 	}
+}
 
-	uint32_t OutstationSecAuthFixture::SendToOutstation(const std::string& hex)
-	{
-		testlib::HexSequence hs(hex);
-		context.OnReceive(hs.ToRSlice());
-		return exe.RunMany();
-	}
+void OutstationSecAuthFixture::TestSessionKeyChange(AppSeqNum& seq, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
+{
+	REQUIRE(this->lower.HasNoData());
 
-	std::string OutstationSecAuthFixture::SendAndReceive(const std::string& hex)
-	{
-		this->SendToOutstation(hex);		
-		auto ret = this->lower.PopWriteAsHex();
-		if (!ret.empty())
-		{
-			this->OnSendResult(true);
-		}
-		return ret;
-	}
+	auto keyStatusRequest = hex::RequestKeyStatus(seq, user.GetId());
+	auto keyStatusRsp = hex::KeyStatusResponse(
+	                        IINBit::DEVICE_RESTART,
+	                        seq,
+	                        1, // ksq
+	                        user.GetId(),
+	                        keyWrap,
+	                        KeyStatus::NOT_INIT,
+	                        HMACType::NO_MAC_VALUE,
+	                        hex::repeat(0xAA, 4), // challenge
+	                        "");  // no hmac
 
-	size_t OutstationSecAuthFixture::NumPendingTimers() const
-	{
-		return exe.NumPendingTimers();
-	}
+	REQUIRE(this->SendAndReceive(keyStatusRequest) == keyStatusRsp);
+	REQUIRE(this->lower.HasNoData());
 
-	bool OutstationSecAuthFixture::AdvanceToNextTimer()
-	{
-		if (exe.AdvanceToNextTimer())
-		{
-			return exe.RunMany() > 0;
-		}
-		else
-		{
-			return false;
-		}
-	}
+	this->SetMockKeyWrapData(keyWrap, SkipBytesHex(keyStatusRsp, 10));
 
-	uint32_t OutstationSecAuthFixture::AdvanceTime(const openpal::TimeDuration& td)
-	{
-		exe.AdvanceTime(td);
-		return exe.RunMany();
-	}
+	auto keyChangeRequest = hex::KeyChangeRequest(seq, 1, 1, "DE AD BE EF");
+	auto keyStatusRspFinal = hex::KeyStatusResponse(
+	                             IINBit::DEVICE_RESTART,
+	                             seq, // seq
+	                             2, // ksq
+	                             user.GetId(), // user
+	                             keyWrap,
+	                             KeyStatus::OK,
+	                             ToHMACType(hmacMode),
+	                             hex::repeat(0xAA, 4), // challenge
+	                             RepeatHex(0xFF, GetTruncationSize(hmacMode)));  // fixed value from hmac mock
 
-	void OutstationSecAuthFixture::SetMockKeyWrapData(KeyWrapAlgorithm keyWrap, const std::string& data)
-	{
-		switch (keyWrap)
-		{
-		case(KeyWrapAlgorithm::AES_128) :
-			crypto.keyWrap.hexOutput = hex::KeyWrapData(16, 0xBB, data);
-			break;
-		case(KeyWrapAlgorithm::AES_256) :
-			crypto.keyWrap.hexOutput = hex::KeyWrapData(32, 0xBB, data);
-			break;
-		default:
-			throw std::logic_error("bad param");
-		}
-	}
+	// --- session key change request ---
+	// the key wrap data doesn't matter b/c we've mocked the unwrap call above
+	REQUIRE(this->SendAndReceive(keyChangeRequest) == keyStatusRspFinal);
+	REQUIRE(this->lower.HasNoData());
+}
 
-	void OutstationSecAuthFixture::TestSessionKeyChange(AppSeqNum& seq, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
-	{
-		REQUIRE(this->lower.HasNoData());		
+void OutstationSecAuthFixture::TestAddUserStatusChange(const std::string& username, AppSeqNum& seq, uint32_t scsn)
+{
+	this->crypto.sha256.fillByte = 0xAA;
 
-		auto keyStatusRequest = hex::RequestKeyStatus(seq, user.GetId());
-		auto keyStatusRsp = hex::KeyStatusResponse(
-			IINBit::DEVICE_RESTART,
-			seq,
-			1, // ksq
-			user.GetId(),
-			keyWrap,
-			KeyStatus::NOT_INIT,
-			HMACType::NO_MAC_VALUE,
-			hex::repeat(0xAA, 4), // challenge
-			"");  // no hmac
+	auto userStatusChangeRequest = hex::UserStatusChangeRequest(
+	                                   seq,
+	                                   KeyChangeMethod::AES_256_SHA256_HMAC,
+	                                   UserOperation::OP_ADD,
+	                                   scsn,
+	                                   UserRoleToType(UserRole::OPERATOR),
+	                                   365,
+	                                   username,
+	                                   "",
+	                                   hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
+	                               );
 
-		REQUIRE(this->SendAndReceive(keyStatusRequest) == keyStatusRsp);	
-		REQUIRE(this->lower.HasNoData());
+	auto response = this->SendAndReceive(userStatusChangeRequest);
 
-		this->SetMockKeyWrapData(keyWrap, SkipBytesHex(keyStatusRsp, 10));
+	// verify that the application was asked to persist the new SCSN value
+	REQUIRE(this->application.userStatusSeqNums.size() == 1);
+	REQUIRE(this->application.userStatusSeqNums.front() == (scsn + 1));
 
-		auto keyChangeRequest = hex::KeyChangeRequest(seq, 1, 1, "DE AD BE EF");
-		auto keyStatusRspFinal = hex::KeyStatusResponse(
-			IINBit::DEVICE_RESTART,
-			seq, // seq
-			2, // ksq
-			user.GetId(), // user
-			keyWrap,
-			KeyStatus::OK,
-			ToHMACType(hmacMode),
-			hex::repeat(0xAA, 4), // challenge
-			RepeatHex(0xFF, GetTruncationSize(hmacMode)));  // fixed value from hmac mock
-
-		// --- session key change request ---	
-		// the key wrap data doesn't matter b/c we've mocked the unwrap call above
-		REQUIRE(this->SendAndReceive(keyChangeRequest) == keyStatusRspFinal);				
-		REQUIRE(this->lower.HasNoData());
-	}
-
-	void OutstationSecAuthFixture::TestAddUserStatusChange(const std::string& username, AppSeqNum& seq, uint32_t scsn)
-	{		
-		this->crypto.sha256.fillByte = 0xAA;
-
-		auto userStatusChangeRequest = hex::UserStatusChangeRequest(
-			seq,
-			KeyChangeMethod::AES_256_SHA256_HMAC,
-			UserOperation::OP_ADD,
-			scsn,
-			UserRoleToType(UserRole::OPERATOR),
-			365,
-			username,
-			"",
-			hex::repeat(0xAA, AuthSizes::MAX_HMAC_OUTPUT_SIZE)
-		);
-
-		auto response = this->SendAndReceive(userStatusChangeRequest);
-
-		// verify that the application was asked to persist the new SCSN value 
-		REQUIRE(this->application.userStatusSeqNums.size() == 1);
-		REQUIRE(this->application.userStatusSeqNums.front() == (scsn + 1));
-
-		REQUIRE(response == hex::EmptyAuthResponse(0, IINBit::DEVICE_RESTART));
-	}
+	REQUIRE(response == hex::EmptyAuthResponse(0, IINBit::DEVICE_RESTART));
+}
 }
 
 

@@ -42,14 +42,14 @@ public:
 
 class ChallengeReplyHandler : public SingleValueHandler<opendnp3::Group120Var2, opendnp3::GroupVariation::Group120Var2, opendnp3::QualifierCode::UINT16_FREE_FORMAT>
 {
-	public:		
+public:
 
-		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var2& data, const openpal::RSlice&) override final
-		{
-			this->value = data;
-			this->m_valid = true;
-			return opendnp3::IINField();
-		}				
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var2& data, const openpal::RSlice&) override final
+	{
+		this->value = data;
+		this->m_valid = true;
+		return opendnp3::IINField();
+	}
 };
 
 class RequestKeyStatusHandler : public SingleValueHandler<opendnp3::Group120Var4, opendnp3::GroupVariation::Group120Var4, opendnp3::QualifierCode::UINT8_CNT>

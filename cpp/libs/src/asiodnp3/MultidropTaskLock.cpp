@@ -45,7 +45,7 @@ bool MultidropTaskLock::Acquire(IScheduleCallback& callback)
 			{
 				this->AddIfNotContained(callback);
 				return false;
-			}			
+			}
 		}
 		else
 		{
@@ -58,23 +58,23 @@ bool MultidropTaskLock::Acquire(IScheduleCallback& callback)
 		return false;
 	}
 }
-	
+
 void MultidropTaskLock::Release(IScheduleCallback& callback)
 {
 	if (isOnline && pActive == &callback)
 	{
 		pActive = nullptr;
-		
+
 		if (!callbackQueue.empty())
 		{
 			pActive = callbackQueue.front();
 			callbackQueue.pop_front();
-			callbackSet.erase(pActive);			
+			callbackSet.erase(pActive);
 			pActive->OnPendingTask();
 		}
 	}
 }
-	
+
 void MultidropTaskLock::OnLayerUp()
 {
 	if (!isOnline)
@@ -82,7 +82,7 @@ void MultidropTaskLock::OnLayerUp()
 		isOnline = true;
 	}
 }
-	
+
 void MultidropTaskLock::OnLayerDown()
 {
 	if (isOnline)

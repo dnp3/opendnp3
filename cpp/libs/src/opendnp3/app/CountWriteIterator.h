@@ -33,7 +33,7 @@ class CountWriteIterator
 public:
 
 	static CountWriteIterator Null()
-	{		
+	{
 		return CountWriteIterator();
 	}
 
@@ -42,7 +42,7 @@ public:
 
 	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position) :
 		count(0),
-		serializer(serializer_),		
+		serializer(serializer_),
 		isValid(position.Size() >= CountType::SIZE),
 		countPosition(position),
 		pPosition(&position)
@@ -57,14 +57,14 @@ public:
 	{
 		if (isValid)
 		{
-			openpal::Format::Write(countPosition, count);				
-		}		
-	}	
+			openpal::Format::Write(countPosition, count);
+		}
+	}
 
 	bool Write(const WriteType& value)
-	{		
+	{
 		if (isValid && (serializer.Size() <= pPosition->Size()))
-		{			
+		{
 			serializer.Write(value, *this->pPosition);
 			++count;
 			return true;
@@ -72,7 +72,7 @@ public:
 		else
 		{
 			return false;
-		}		
+		}
 	}
 
 	bool IsValid() const

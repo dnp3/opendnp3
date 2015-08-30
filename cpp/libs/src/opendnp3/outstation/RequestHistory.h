@@ -33,26 +33,29 @@ namespace opendnp3
 
 /// Tracks the state of the last request ASDU
 class RequestHistory
-{	
-	public:
-	
+{
+public:
+
 	RequestHistory();
 
-	bool HasLastRequest() const { return hasLast; }
+	bool HasLastRequest() const
+	{
+		return hasLast;
+	}
 
-	void Reset();	
-	void RecordLastProcessedRequest(const APDUHeader& header, const openpal::RSlice& objects);	
-	
+	void Reset();
+	void RecordLastProcessedRequest(const APDUHeader& header, const openpal::RSlice& objects);
+
 	APDUHeader GetLastHeader() const;
 	bool EqualsLastObjects(const openpal::RSlice& objects) const;
 	bool FullyEqualsLastRequest(const APDUHeader& header, const openpal::RSlice& objects) const;
 
-	private:
+private:
 
 	bool hasLast;
 	APDUHeader lastHeader;
 	uint16_t lastDigest;
-	uint32_t lastObjectsLength;	
+	uint32_t lastObjectsLength;
 };
 
 

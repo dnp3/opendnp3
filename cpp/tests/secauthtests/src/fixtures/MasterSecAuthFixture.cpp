@@ -30,81 +30,81 @@ using namespace testlib;
 using namespace secauth;
 
 namespace opendnp3
-{	
-	const std::string MasterSecAuthFixture::MOCK_KEY_WRAP_DATA("DEADBEEF");
+{
+const std::string MasterSecAuthFixture::MOCK_KEY_WRAP_DATA("DEADBEEF");
 
-	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, const MasterAuthSettings& authSettings, ITaskLock& lock) :
-		log(),
-		exe(),
-		meas(),
-		lower(log.root),
-		application(),
-		crypto(),		
-		context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto)					
-	{
-		
-	}
+MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, const MasterAuthSettings& authSettings, ITaskLock& lock) :
+	log(),
+	exe(),
+	meas(),
+	lower(log.root),
+	application(),
+	crypto(),
+	context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto)
+{
 
-	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
-	{
-		HexSequence hs(hex);
-		context.OnReceive(hs.ToRSlice());
-	}
+}
 
-	bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, KeyWrapAlgorithm mode, uint8_t keyRepeat)
-	{		
-		return context.AddUser(user, secauth::UpdateKey(keyRepeat, mode));
-	}
+void MasterSecAuthFixture::SendToMaster(const std::string& hex)
+{
+	HexSequence hs(hex);
+	context.OnReceive(hs.ToRSlice());
+}
 
-	void MasterSecAuthFixture::TestRequestAndReply(const std::string& request, const std::string& response)
-	{
-		this->exe.RunMany();
-		auto asdu = this->lower.PopWriteAsHex();
-		REQUIRE(asdu == request);
-		this->context.OnSendResult(true);
-		this->SendToMaster(response);
-		this->exe.RunMany();
-	}
+bool MasterSecAuthFixture::ConfigureUser(opendnp3::User user, KeyWrapAlgorithm mode, uint8_t keyRepeat)
+{
+	return context.AddUser(user, secauth::UpdateKey(keyRepeat, mode));
+}
 
-	void MasterSecAuthFixture::TestSessionKeyExchange(AppSeqNum& seq, User user)
-	{
-		this->crypto.keyWrap.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
+void MasterSecAuthFixture::TestRequestAndReply(const std::string& request, const std::string& response)
+{
+	this->exe.RunMany();
+	auto asdu = this->lower.PopWriteAsHex();
+	REQUIRE(asdu == request);
+	this->context.OnSendResult(true);
+	this->SendToMaster(response);
+	this->exe.RunMany();
+}
 
-		
-		auto requestKeyStatus = hex::RequestKeyStatus(seq, user.GetId());
-		auto keyStatusResponse = hex::KeyStatusResponse(
-			IINField::Empty(),
-			seq,
-			0, // ksq
-			user.GetId(),
-			KeyWrapAlgorithm::AES_128,
-			KeyStatus::NOT_INIT,
-			HMACType::HMAC_SHA1_TRUNC_10,
-			hex::repeat(0xFF, 4), // challenge
-			"" // no hmac
-			);
+void MasterSecAuthFixture::TestSessionKeyExchange(AppSeqNum& seq, User user)
+{
+	this->crypto.keyWrap.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
 
-		this->TestRequestAndReply(requestKeyStatus, keyStatusResponse);
 
-		seq.Increment();
+	auto requestKeyStatus = hex::RequestKeyStatus(seq, user.GetId());
+	auto keyStatusResponse = hex::KeyStatusResponse(
+	                             IINField::Empty(),
+	                             seq,
+	                             0, // ksq
+	                             user.GetId(),
+	                             KeyWrapAlgorithm::AES_128,
+	                             KeyStatus::NOT_INIT,
+	                             HMACType::HMAC_SHA1_TRUNC_10,
+	                             hex::repeat(0xFF, 4), // challenge
+	                             "" // no hmac
+	                         );
 
-		auto keyChangeRequest = hex::KeyChangeRequest(seq, 0, user.GetId(), MOCK_KEY_WRAP_DATA);
-		auto finalKeyStatusResponse = hex::KeyStatusResponse(
-			IINField::Empty(),
-			seq,
-			0, // ksq
-			user.GetId(),
-			KeyWrapAlgorithm::AES_128,
-			KeyStatus::OK,
-			HMACType::HMAC_SHA1_TRUNC_10,
-			hex::repeat(0xFF, 4),	// challenge
-			hex::repeat(0xFF, 10) // hmac
-		);		
+	this->TestRequestAndReply(requestKeyStatus, keyStatusResponse);
 
-		this->TestRequestAndReply(keyChangeRequest, finalKeyStatusResponse);
+	seq.Increment();
 
-		seq.Increment();
-	}
+	auto keyChangeRequest = hex::KeyChangeRequest(seq, 0, user.GetId(), MOCK_KEY_WRAP_DATA);
+	auto finalKeyStatusResponse = hex::KeyStatusResponse(
+	                                  IINField::Empty(),
+	                                  seq,
+	                                  0, // ksq
+	                                  user.GetId(),
+	                                  KeyWrapAlgorithm::AES_128,
+	                                  KeyStatus::OK,
+	                                  HMACType::HMAC_SHA1_TRUNC_10,
+	                                  hex::repeat(0xFF, 4),	// challenge
+	                                  hex::repeat(0xFF, 10) // hmac
+	                              );
+
+	this->TestRequestAndReply(keyChangeRequest, finalKeyStatusResponse);
+
+	seq.Increment();
+}
 
 }
 

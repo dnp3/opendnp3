@@ -39,7 +39,7 @@ struct Flags
 
 TEST_CASE(SUITE("ManagedPointersCanCreatedViaPoinerToStack"))
 {
-	Flags stack = { 4, 3 };	
+	Flags stack = { 4, 3 };
 	auto pFlags = ManagedPtr<Flags>::WrapperOnly(&stack);
 
 	REQUIRE(pFlags->x == 4);
@@ -53,21 +53,21 @@ TEST_CASE(SUITE("ManagedPointersCanCreatedViaPoinerToStack"))
 }
 
 TEST_CASE(SUITE("ContainerTypesLikeVectorCanHoldAMixtureOfManagedAndUnmanaged"))
-{	
+{
 	std::vector<ManagedPtr<Flags>> container;
 
 	Flags stack = { 4, 3 };
 	container.push_back(ManagedPtr<Flags>::WrapperOnly(&stack));
 	container.push_back(ManagedPtr<Flags>::WrapperOnly(&stack));
-	container.push_back(ManagedPtr<Flags>::Deleted(new Flags{ 10, 20 }));
-	container.push_back(ManagedPtr<Flags>::Deleted(new Flags{ 30, 40 }));	
+	container.push_back(ManagedPtr<Flags>::Deleted(new Flags { 10, 20 }));
+	container.push_back(ManagedPtr<Flags>::Deleted(new Flags { 30, 40 }));
 }
 
 
 TEST_CASE(SUITE("ManagedPointersCanBeDereferenced"))
 {
-	auto pFlags = ManagedPtr<Flags>::Deleted(new Flags{ 4, 3 });
-	
+	auto pFlags = ManagedPtr<Flags>::Deleted(new Flags { 4, 3 });
+
 	REQUIRE(pFlags->x == 4);
 	REQUIRE(pFlags->y == 3);
 
@@ -75,7 +75,7 @@ TEST_CASE(SUITE("ManagedPointersCanBeDereferenced"))
 	pFlags->y = 20;
 
 	REQUIRE(pFlags->x == 10);
-	REQUIRE(pFlags->y == 20);		
+	REQUIRE(pFlags->y == 20);
 }
 
 TEST_CASE(SUITE("ManagedPointersCanBeMovementConstructed"))
@@ -88,7 +88,7 @@ TEST_CASE(SUITE("ManagedPointersCanBeMovementConstructed"))
 }
 
 TEST_CASE(SUITE("ManagedPointersCanBeMovementAssigned"))
-{	
+{
 	auto pInt = ManagedPtr<int>::Deleted(new int);
 	auto pInt2 = std::move(pInt);
 

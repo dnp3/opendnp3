@@ -115,7 +115,7 @@ public:
 	bool CanWrite() const
 	{
 		return state.CanWrite();
-	}	
+	}
 
 	/* Implement IPhysicalLayer - Events from the outside */
 	virtual void BeginOpen() override final;
@@ -158,7 +158,7 @@ protected:
 	void OnOpenCallback(const std::error_code& err);
 	void OnReadCallback(const std::error_code& err, uint8_t* pBuffer, uint32_t numRead);
 	void OnWriteCallback(const std::error_code& errr, uint32_t  numWritten);
-	
+
 	openpal::Logger logger;
 	openpal::IExecutor* pExecutor;
 

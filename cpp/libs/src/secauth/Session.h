@@ -30,37 +30,37 @@
 
 namespace secauth
 {
-	// All the info for a session
-	class Session : private openpal::Uncopyable
-	{
-		public:
+// All the info for a session
+class Session : private openpal::Uncopyable
+{
+public:
 
-		// construct an uninitialized session
-		Session(openpal::IMonotonicTimeSource& timeSource, const openpal::TimeDuration& duration, uint32_t maxAuthCount);
+	// construct an uninitialized session
+	Session(openpal::IMonotonicTimeSource& timeSource, const openpal::TimeDuration& duration, uint32_t maxAuthCount);
 
-		void SetKeys(const SessionKeysView& view);
+	void SetKeys(const SessionKeysView& view);
 
-		opendnp3::KeyStatus GetKeyStatus();
+	opendnp3::KeyStatus GetKeyStatus();
 
-		opendnp3::KeyStatus TryGetKeyView(SessionKeysView& view);
+	opendnp3::KeyStatus TryGetKeyView(SessionKeysView& view);
 
-		opendnp3::KeyStatus IncrementAuthCount();		
+	opendnp3::KeyStatus IncrementAuthCount();
 
-		private:
+private:
 
-		opendnp3::KeyStatus CheckTimeValidity();
+	opendnp3::KeyStatus CheckTimeValidity();
 
-		
-		openpal::IMonotonicTimeSource* pTimeSource;
 
-		const openpal::TimeDuration DURATION;
-		const uint32_t MAX_AUTH_COUNT;
+	openpal::IMonotonicTimeSource* pTimeSource;
 
-		opendnp3::KeyStatus status;
-		SessionKeys keys;
-		openpal::MonotonicTimestamp expirationTime;		
-		uint32_t authCount;
-	};
+	const openpal::TimeDuration DURATION;
+	const uint32_t MAX_AUTH_COUNT;
+
+	opendnp3::KeyStatus status;
+	SessionKeys keys;
+	openpal::MonotonicTimestamp expirationTime;
+	uint32_t authCount;
+};
 
 }
 

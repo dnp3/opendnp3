@@ -71,9 +71,9 @@ bool MockFrameSink::OnFrame(const LinkHeaderFields& header, const openpal::RSlic
 	++m_num_frames;
 
 	this->m_last_header = header;
-	
+
 	if (userdata.IsNotEmpty())
-	{		
+	{
 		this->WriteToBuffer(userdata);
 	}
 

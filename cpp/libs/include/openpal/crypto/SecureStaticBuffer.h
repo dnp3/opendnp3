@@ -39,13 +39,13 @@ public:
 
 	SecureStaticBuffer()
 	{}
-	
+
 	SecureStaticBuffer(uint8_t initialValue)
 	{
 		this->GetWSlice().SetAllTo(initialValue);
 	}
 
-	~SecureStaticBuffer() 
+	~SecureStaticBuffer()
 	{
 		this->GetWSlice().SetAllTo(0x00);
 	}

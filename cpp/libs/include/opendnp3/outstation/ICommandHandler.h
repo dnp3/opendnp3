@@ -40,6 +40,7 @@ public:
 
 	/**
 	* Ask if the application supports a ControlRelayOutputBlock - group 12 variation 1
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request
@@ -48,6 +49,7 @@ public:
 
 	/**
 	* Operate a ControlRelayOutputBlock - group 12 variation 1
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request
@@ -57,6 +59,7 @@ public:
 
 	/**
 	* Ask if the application supports a 16 bit analog output - group 41 variation 2
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request
@@ -65,6 +68,7 @@ public:
 
 	/**
 	* Ask if the application supports a 16 bit analog output - group 41 variation 2
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request
@@ -74,6 +78,7 @@ public:
 
 	/**
 	* Ask if the application supports a 32 bit analog output - group 41 variation 1
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request
@@ -82,6 +87,7 @@ public:
 
 	/**
 	* Operate a 32 bit analog output - group 41 variation 1
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request
@@ -90,6 +96,7 @@ public:
 
 	/**
 	* Ask if the application supports a single precision, floating point analog output - group 41 variation 3
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request
@@ -98,6 +105,7 @@ public:
 
 	/**
 	* Operate a single precision, floating point analog output - group 41 variation 3
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request
@@ -106,6 +114,7 @@ public:
 
 	/**
 	* Ask if the application supports a double precision, floating point analog output - group 41 variation 4
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request
@@ -114,6 +123,7 @@ public:
 
 	/**
 	* Operate a double precision, floating point analog output - group 41 variation 4
+	*
 	* @param command command to operate
 	* @param index index of the command
 	* @return result of request

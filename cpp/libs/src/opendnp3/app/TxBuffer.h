@@ -28,18 +28,18 @@ namespace opendnp3
 {
 
 class TxBuffer
-{	
-	public:	
+{
+public:
 
-	TxBuffer(uint32_t maxTxSize) : buffer(maxTxSize)		
-	{}		
-	
+	TxBuffer(uint32_t maxTxSize) : buffer(maxTxSize)
+	{}
+
 	APDUResponse Start()
 	{
 		APDUResponse response(buffer.GetWSlice());
 		return response;
 	}
-	
+
 	void Record(const openpal::RSlice& view)
 	{
 		lastResponse = view;
@@ -49,11 +49,11 @@ class TxBuffer
 	{
 		return lastResponse;
 	}
-	
-	private:
-			
-	openpal::RSlice lastResponse;	
-	openpal::Buffer buffer;	
+
+private:
+
+	openpal::RSlice lastResponse;
+	openpal::Buffer buffer;
 };
 
 }

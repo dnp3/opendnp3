@@ -33,7 +33,7 @@ ClassField ClassField::AllClasses()
 {
 	return ClassField(ALL_CLASSES);
 }
-	
+
 ClassField ClassField::AllEventClasses()
 {
 	return ClassField(EVENT_CLASSES);

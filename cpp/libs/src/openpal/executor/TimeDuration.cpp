@@ -52,17 +52,17 @@ TimeDuration TimeDuration::Seconds(int64_t seconds)
 
 TimeDuration TimeDuration::Minutes(int64_t minutes)
 {
-	return TimeDuration(static_cast<int64_t>(1000*60) * minutes);
+	return TimeDuration(static_cast<int64_t>(1000 * 60) * minutes);
 }
 
 TimeDuration TimeDuration::Hours(int64_t hours)
 {
-	return TimeDuration(static_cast<int64_t>(1000*60*60) * hours);
+	return TimeDuration(static_cast<int64_t>(1000 * 60 * 60) * hours);
 }
 
 TimeDuration TimeDuration::Days(int64_t days)
 {
-	return TimeDuration(static_cast<int64_t>(1000*60*60*24) * days);
+	return TimeDuration(static_cast<int64_t>(1000 * 60 * 60 * 24) * days);
 }
 
 TimeDuration::TimeDuration() : TimeDurationBase(0) {}

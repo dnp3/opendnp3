@@ -31,39 +31,45 @@
 #endif
 
 namespace secauth
-{	  	
-	enum class OutstationError : int
+{
+enum class OutstationError : int
+{
+    BAD_UNWRAPPPED_UPDATE_KEY_DATA_SIZE,
+    DECRYPTED_USERNAME_MISMATCH,
+    CHALLENGE_DATA_MISMATCH,
+    KEY_CHANGE_CONFIRMATION_HMAC_MISMATCH
+};
+
+class OutstationErrorCategory final : public std::error_category
+{
+public:
+
+	static const std::error_category& Instance()
 	{
-		BAD_UNWRAPPPED_UPDATE_KEY_DATA_SIZE,
-		DECRYPTED_USERNAME_MISMATCH,
-		CHALLENGE_DATA_MISMATCH,
-		KEY_CHANGE_CONFIRMATION_HMAC_MISMATCH
-	};
+		return instance;
+	}
 
-	class OutstationErrorCategory final : public std::error_category
+	virtual const char* name() const NOEXCEPT
 	{
-	public:
+		return "Outstation Errors";
+	}
+	virtual std::string message(int ev) const;
 
-		static const std::error_category& Instance() { return instance; }
+private:
 
-		virtual const char* name() const NOEXCEPT { return "Outstation Errors"; }
-		virtual std::string message(int ev) const;
+	OutstationErrorCategory() {}
+	OutstationErrorCategory(const OutstationErrorCategory&) = delete;
 
-	private:
+	static OutstationErrorCategory instance;
+};
 
-		OutstationErrorCategory() {}
-		OutstationErrorCategory(const OutstationErrorCategory&) = delete;
-
-		static OutstationErrorCategory instance;
-	};
-	
-	std::error_code make_error_code(secauth::OutstationError err);
+std::error_code make_error_code(secauth::OutstationError err);
 }
 
 namespace std
-{	          
-    template <>
-	struct is_error_code_enum<secauth::OutstationError> : public true_type{};
+{
+template <>
+struct is_error_code_enum<secauth::OutstationError> : public true_type {};
 }
 
 

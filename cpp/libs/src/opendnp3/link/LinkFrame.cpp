@@ -166,15 +166,15 @@ RSlice LinkFrame::FormatUnconfirmedUserData(WSlice& buffer, bool aIsMaster, uint
 
 RSlice LinkFrame::FormatHeader(WSlice& buffer, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFuncCode, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	assert(buffer.Size() >= LPDU_HEADER_SIZE);	
+	assert(buffer.Size() >= LPDU_HEADER_SIZE);
 	LinkHeader header(aDataLength + LPDU_MIN_LENGTH, aSrc, aDest, aIsMaster, aFcvDfc, aFcb, aFuncCode);
-		
+
 	FORMAT_LOGGER_BLOCK(pLogger, flags::LINK_TX,
-		"Function: %s Dest: %u Source: %u Length: %u",
-		LinkFunctionToString(aFuncCode),
-		aDest,
-		aSrc,
-		aDataLength);
+	                    "Function: %s Dest: %u Source: %u Length: %u",
+	                    LinkFunctionToString(aFuncCode),
+	                    aDest,
+	                    aSrc,
+	                    aDataLength);
 
 	header.Write(buffer);
 	auto ret = buffer.ToRSlice().Take(10);

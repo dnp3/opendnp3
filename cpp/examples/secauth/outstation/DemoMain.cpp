@@ -49,7 +49,10 @@ using namespace secauth;
 // don't modify the defaults
 class OutstationApplication final : public IOutstationApplicationSA
 {
-	virtual UTCTimestamp Now() override { return UTCTimeSource::Instance().Now(); }
+	virtual UTCTimestamp Now() override
+	{
+		return UTCTimeSource::Instance().Now();
+	}
 
 	// normally this needs to persist to disk
 	virtual void OnNewSCSN(uint32_t userStatusSeqNum) {}
@@ -61,7 +64,7 @@ int main(int argc, char* argv[])
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the communication logging by uncommenting below.
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
-		
+
 	// application instance the outstation session runs against
 	OutstationApplication application;
 
@@ -78,9 +81,9 @@ int main(int argc, char* argv[])
 	// send log messages to the console
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());
 
-	// Create a TCP server (listener)	
-	auto pChannel= manager.AddTCPServer("server", FILTERS, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);	
-	
+	// Create a TCP server (listener)
+	auto pChannel = manager.AddTCPServer("server", FILTERS, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
+
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console
 	pChannel->AddStateListener([](ChannelState state)
@@ -88,14 +91,14 @@ int main(int argc, char* argv[])
 		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
 	});
 
-	// The main object for a outstation. The defaults are use-able, 
+	// The main object for a outstation. The defaults are use-able,
 	// but understanding the options are important.
-	OutstationAuthStackConfig config;	
-	
+	OutstationAuthStackConfig config;
+
 	// You must specify the shape of your database and the size of the event buffers
 	config.dbTemplate = DatabaseTemplate::AllTypes(10);
-	config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);	
-	
+	config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
+
 	// you can override an default outstation parameters here
 	// in this example, we've enabled the outstation to use unsolicited reporting
 	// if the master enables it
@@ -104,34 +107,34 @@ int main(int argc, char* argv[])
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
 	config.link.LocalAddr = 10;
-	config.link.RemoteAddr = 1;	
+	config.link.RemoteAddr = 1;
 
 	// only challenge function codes defined to be critical by 1815
 	config.auth.functions = CriticalFunctions::AuthOptional();
-	
+
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
-	// updating the outstation's database.	
+	// updating the outstation's database.
 	auto pOutstation = pChannel->AddOutstationSA(
-		"outstation",
-		SuccessCommandHandler::Instance(),
-		application,
-		config
-	);	
+	                       "outstation",
+	                       SuccessCommandHandler::Instance(),
+	                       application,
+	                       config
+	                   );
 
 	// add a user to the outstation w/ a key of all 0xFF
 	pOutstation->ConfigureUser(
-		OutstationUserInfo(
-			opendnp3::User::Default(),
-			"bob",			
-			// so that the default user can do the initial startup handshaking
-			Permissions::Allowed(FunctionCode::WRITE, FunctionCode::DISABLE_UNSOLICITED, FunctionCode::ENABLE_UNSOLICITED),
-			UpdateKey(0xFF, KeyWrapAlgorithm::AES_128)
-		)
+	    OutstationUserInfo(
+	        opendnp3::User::Default(),
+	        "bob",
+	        // so that the default user can do the initial startup handshaking
+	        Permissions::Allowed(FunctionCode::WRITE, FunctionCode::DISABLE_UNSOLICITED, FunctionCode::ENABLE_UNSOLICITED),
+	        UpdateKey(0xFF, KeyWrapAlgorithm::AES_128)
+	    )
 	);
 
 	// Enable the outstation and start communications
-	pOutstation->Enable();	
+	pOutstation->Enable();
 
 	// variables used in example loop
 	string input;
@@ -139,53 +142,53 @@ int main(int argc, char* argv[])
 	double value = 0;
 	bool binary = false;
 	DoubleBit dbit = DoubleBit::DETERMINED_OFF;
-	
+
 	while (true)
 	{
 		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
-		
+
 		MeasUpdate tx(pOutstation);
-		for (char& c : input)
+		for (char & c : input)
 		{
 			switch (c)
 			{
-				case('c') :
-				{				
+			case('c') :
+				{
 					tx.Update(Counter(count), 0);
 					++count;
 					break;
 				}
-				case('a') :
-				{				
+			case('a') :
+				{
 					tx.Update(Analog(value), 0);
 					value += 1;
 					break;
 				}
-				case('b') :
-				{				
+			case('b') :
+				{
 					tx.Update(Binary(binary), 0);
 					binary = !binary;
 					break;
 				}
-				case('d') :
-				{				
+			case('d') :
+				{
 					tx.Update(DoubleBitBinary(dbit), 0);
 					dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
 					break;
 				}
-				case('x') :
+			case('x') :
 
-					// DNP3Manager destructor cleanups up everything automagically
-					return 0;
+				// DNP3Manager destructor cleanups up everything automagically
+				return 0;
 
-				default:
-					std::cout << "No action registered for: " << c << std::endl;
-					break;
+			default:
+				std::cout << "No action registered for: " << c << std::endl;
+				break;
 			}
 		}
-		
+
 	}
 
 	return 0;

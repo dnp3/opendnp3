@@ -50,7 +50,7 @@ public:
 	/// The command status enumeration received from the outstation, if applicable
 	CommandStatus GetStatus() const;
 
-	bool operator==(const CommandResponse& rhs) const;	
+	bool operator==(const CommandResponse& rhs) const;
 
 private:
 

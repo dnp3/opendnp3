@@ -29,41 +29,41 @@
 
 namespace opendnp3
 {
-	class MockKeyWrap : public openpal::IKeyWrapAlgo
+class MockKeyWrap : public openpal::IKeyWrapAlgo
+{
+public:
+
+	virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const
 	{
-	public:				
+		return WrapOrUnwrap(kek, input, output, ec);
+	}
 
-		virtual openpal::RSlice WrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const
+	virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const
+	{
+		return WrapOrUnwrap(kek, input, output, ec);
+	}
+
+	std::string hexOutput;
+
+private:
+
+	openpal::RSlice WrapOrUnwrap(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const
+	{
+		if (!(kek.Size() == 16 || kek.Size() == 32))
 		{
-			return WrapOrUnwrap(kek, input, output, ec);
+			throw std::logic_error("MockKeyWrap: bad key size");
 		}
-		
-		virtual openpal::RSlice UnwrapKey(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const
+
+		testlib::HexSequence hex(hexOutput);
+		auto data = hex.ToRSlice();
+		if (output.Size() < data.Size())
 		{
-			return WrapOrUnwrap(kek, input, output, ec);
+			throw std::logic_error("MockKeyWrap: Output buffer too small");
 		}
-			
-		std::string hexOutput;		
 
-	private:
-
-		openpal::RSlice WrapOrUnwrap(const openpal::RSlice& kek, const openpal::RSlice& input, openpal::WSlice& output, std::error_code& ec) const
-		{
-			if (!(kek.Size() == 16 || kek.Size() == 32))
-			{
-				throw std::logic_error("MockKeyWrap: bad key size");
-			}
-
-			testlib::HexSequence hex(hexOutput);
-			auto data = hex.ToRSlice();
-			if (output.Size() < data.Size())
-			{
-				throw std::logic_error("MockKeyWrap: Output buffer too small");
-			}
-
-			return data.CopyTo(output);
-		}
-	};
+		return data.CopyTo(output);
+	}
+};
 }
 
 #endif

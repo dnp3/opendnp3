@@ -24,60 +24,60 @@
 #include "openpal/serialization/Serialization.h"
 
 namespace openpal
-{	
-	template <class Serializer>
-	bool WriteType(WSlice& dest, const typename Serializer::Type& value)
+{
+template <class Serializer>
+bool WriteType(WSlice& dest, const typename Serializer::Type& value)
+{
+	if (dest.Size() < Serializer::SIZE)
 	{
-		if (dest.Size() < Serializer::SIZE)
-		{
-			return false;
-		}
-		else
-		{
-			Serializer::WriteBuffer(dest, value);
-			return true;
-		}
+		return false;
 	}
+	else
+	{
+		Serializer::WriteBuffer(dest, value);
+		return true;
+	}
+}
 
-	bool Format::Write(WSlice& dest, const uint8_t& value)
-	{
-		return WriteType<UInt8>(dest, value);
-	}
-	
-	bool Format::Write(WSlice& dest, const uint16_t& value)
-	{
-		return WriteType<UInt16>(dest, value);
-	}
+bool Format::Write(WSlice& dest, const uint8_t& value)
+{
+	return WriteType<UInt8>(dest, value);
+}
 
-	bool Format::Write(WSlice& dest, const uint32_t& value)
-	{
-		return WriteType<UInt32>(dest, value);
-	}
+bool Format::Write(WSlice& dest, const uint16_t& value)
+{
+	return WriteType<UInt16>(dest, value);
+}
 
-	bool Format::Write(WSlice& dest, const UInt48Type& value)
-	{
-		return WriteType<UInt48>(dest, value);
-	}
+bool Format::Write(WSlice& dest, const uint32_t& value)
+{
+	return WriteType<UInt32>(dest, value);
+}
 
-	bool Format::Write(WSlice& dest, const int16_t& value)
-	{
-		return WriteType<Int16>(dest, value);
-	}
+bool Format::Write(WSlice& dest, const UInt48Type& value)
+{
+	return WriteType<UInt48>(dest, value);
+}
 
-	bool Format::Write(WSlice& dest, const int32_t& value)
-	{
-		return WriteType<Int32>(dest, value);
-	}
+bool Format::Write(WSlice& dest, const int16_t& value)
+{
+	return WriteType<Int16>(dest, value);
+}
 
-	bool Format::Write(WSlice& dest, const double& value)
-	{
-		return WriteType<DoubleFloat>(dest, value);
-	}
+bool Format::Write(WSlice& dest, const int32_t& value)
+{
+	return WriteType<Int32>(dest, value);
+}
 
-	bool Format::Write(WSlice& dest, const float& value)
-	{
-		return WriteType<SingleFloat>(dest, value);
-	}
+bool Format::Write(WSlice& dest, const double& value)
+{
+	return WriteType<DoubleFloat>(dest, value);
+}
+
+bool Format::Write(WSlice& dest, const float& value)
+{
+	return WriteType<SingleFloat>(dest, value);
+}
 }
 
 

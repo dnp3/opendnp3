@@ -118,7 +118,7 @@ struct FrozenCounterFactory: private openpal::StaticOnly
 };
 
 struct TimeAndIntervalFactory : private openpal::StaticOnly
-{	
+{
 	inline static TimeAndInterval From(DNPTime time, uint32_t interval, uint8_t units)
 	{
 		return TimeAndInterval(time, interval, units);
@@ -132,8 +132,8 @@ struct ControlRelayOutputBlockFactory: private openpal::StaticOnly
 	    uint8_t count,
 	    uint32_t onTime,
 	    uint32_t offTime,
-		uint8_t status)
-	{		
+	    uint8_t status)
+	{
 		return ControlRelayOutputBlock(code, count, onTime, offTime, CommandStatusFromType(status));
 	}
 };
@@ -195,7 +195,7 @@ struct SecurityStatFactory : private openpal::StaticOnly
 	inline static SecurityStat From(uint8_t flags, uint16_t assocId, uint32_t value)
 	{
 		return SecurityStat(flags, assocId, value);
-	}	
+	}
 
 	inline static SecurityStat From(uint8_t flags, uint16_t assocId, uint32_t value, DNPTime time)
 	{

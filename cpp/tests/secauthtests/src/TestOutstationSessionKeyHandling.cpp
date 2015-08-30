@@ -35,7 +35,7 @@ using namespace testlib;
 #define SUITE(name) "OutstationSessionKeyTestSuite - " name
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
-{		
+{
 	OutstationSecAuthFixture fixture;
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_128);
 	fixture.LowerLayerUp();
@@ -45,21 +45,21 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
-{	
+{
 	OutstationSecAuthFixture fixture;
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_256);
 	fixture.LowerLayerUp();
-	
+
 	AppSeqNum seq;
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
-{	
+{
 	OutstationAuthSettings settings;
 	settings.hmacMode = HMACMode::SHA1_TRUNC_8; // use a non-default HMAC mode
 
-	OutstationSecAuthFixture fixture(settings);	
+	OutstationSecAuthFixture fixture(settings);
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_256);
 	fixture.LowerLayerUp();
 
@@ -68,7 +68,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 }
 
 TEST_CASE(SUITE("Critical requests are challenged when session keys are not initialized"))
-{	
+{
 	OutstationAuthSettings settings;
 	settings.challengeSize = 5; // try a non-default challenge size
 
@@ -79,14 +79,14 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 	auto request = hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses());
 
 	auto challenge = hex::ChallengeResponse(
-		IINBit::DEVICE_RESTART,
-		0, // app-seq
-		1, // csq
-		User::UNKNOWN_ID,
-		HMACType::HMAC_SHA256_TRUNC_16,
-		ChallengeReason::CRITICAL,
-		"AA AA AA AA AA"
-	);
+	                     IINBit::DEVICE_RESTART,
+	                     0, // app-seq
+	                     1, // csq
+	                     User::UNKNOWN_ID,
+	                     HMACType::HMAC_SHA256_TRUNC_16,
+	                     ChallengeReason::CRITICAL,
+	                     "AA AA AA AA AA"
+	                 );
 
 	REQUIRE(fixture.SendAndReceive(request) == challenge);
 
@@ -94,20 +94,20 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 }
 
 TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
-{	
+{
 	OutstationAuthSettings settings;
-	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value	
-	OutstationSecAuthFixture fixture(settings);	
+	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value
+	OutstationSecAuthFixture fixture(settings);
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_128);
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
-	
+
 	auto readRequest = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, 1, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
 	REQUIRE(fixture.SendAndReceive(readRequest) == challenge);
-		
+
 	// Advance the time source past the key timeout period
 	fixture.exe.AddTime(openpal::TimeDuration::Minutes(6));
 
@@ -119,16 +119,16 @@ TEST_CASE(SUITE("Sessions keys ared invalidated after configured period"))
 }
 
 TEST_CASE(SUITE("Sessions keys are invalidated after configured period"))
-{	
+{
 	OutstationAuthSettings settings;
-	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value	
-	OutstationSecAuthFixture fixture(settings);	
+	settings.sessionKeyTimeout = TimeDuration::Minutes(5); // set to some known value
+	OutstationSecAuthFixture fixture(settings);
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_128);
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_128, HMACMode::SHA256_TRUNC_16);
-	
+
 	auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, 1, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, "AA AA AA AA");
 	REQUIRE(fixture.SendAndReceive(poll) == challenge);
@@ -145,10 +145,10 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured period"))
 }
 
 TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authenticated messages for a user"))
-{	
+{
 	OutstationAuthSettings settings;
 	settings.maxAuthMsgCount = 1; // only allow a single authenticated message before invalidating keys
-	OutstationSecAuthFixture fixture(settings);	
+	OutstationSecAuthFixture fixture(settings);
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_128);
 	fixture.LowerLayerUp();
 
@@ -180,11 +180,11 @@ TEST_CASE(SUITE("Sessions keys are invalidated after configured number of authen
 	}
 
 	REQUIRE(fixture.lower.HasNoData());
-	REQUIRE(fixture.context.security.otherStats.authFailuresDueToExpiredKeys == 1);		
+	REQUIRE(fixture.context.security.otherStats.authFailuresDueToExpiredKeys == 1);
 }
 
 TEST_CASE(SUITE("Non-critical requests are not challenged"))
-{	
+{
 	OutstationAuthSettings settings;
 	settings.functions.authRead = false;
 
@@ -196,9 +196,9 @@ TEST_CASE(SUITE("Non-critical requests are not challenged"))
 }
 
 TEST_CASE(SUITE("Critical requests can be challenged and processed"))
-{		
-	OutstationAuthSettings settings;	
-	OutstationSecAuthFixture fixture(settings);	
+{
+	OutstationAuthSettings settings;
+	OutstationSecAuthFixture fixture(settings);
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_256);
 	fixture.LowerLayerUp();
 
@@ -208,58 +208,58 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 
 	auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(
-		IINBit::DEVICE_RESTART,
-		seq,
-		1, // csq
-		User::UNKNOWN_ID,
-		HMACType::HMAC_SHA256_TRUNC_16,
-		ChallengeReason::CRITICAL,
-		hex::repeat(0xAA, 4));
+	                     IINBit::DEVICE_RESTART,
+	                     seq,
+	                     1, // csq
+	                     User::UNKNOWN_ID,
+	                     HMACType::HMAC_SHA256_TRUNC_16,
+	                     ChallengeReason::CRITICAL,
+	                     hex::repeat(0xAA, 4));
 
 	REQUIRE(fixture.SendAndReceive(poll) == challenge);
-	
+
 
 	auto challengeReply = hex::ChallengeReply(seq, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
 	auto response = hex::EmptyResponse(seq, IINBit::DEVICE_RESTART);
-	REQUIRE(fixture.SendAndReceive(challengeReply) == response);	
+	REQUIRE(fixture.SendAndReceive(challengeReply) == response);
 
 
 	REQUIRE(fixture.lower.HasNoData());
 }
 
 TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
-{			
+{
 	OutstationSecAuthFixture fixture;
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_256, Permissions::AllowNothing());
 	fixture.LowerLayerUp();
 
 	AppSeqNum seq;
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
-		
+
 	auto poll = hex::ClassTask(FunctionCode::READ, seq, ClassField::AllEventClasses());
 	auto challenge = hex::ChallengeResponse(
-		IINBit::DEVICE_RESTART,
-		seq,
-		1, // csq
-		User::UNKNOWN_ID,
-		HMACType::HMAC_SHA256_TRUNC_16,
-		ChallengeReason::CRITICAL,
-		hex::repeat(0xAA, 4)
-		);
+	                     IINBit::DEVICE_RESTART,
+	                     seq,
+	                     1, // csq
+	                     User::UNKNOWN_ID,
+	                     HMACType::HMAC_SHA256_TRUNC_16,
+	                     ChallengeReason::CRITICAL,
+	                     hex::repeat(0xAA, 4)
+	                 );
 
 	REQUIRE(fixture.SendAndReceive(poll) == challenge);
 
 	auto challengeReply = hex::ChallengeReply(seq, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16));
 	auto error = hex::AuthErrorResponse(
-		IINBit::DEVICE_RESTART,
-		seq,
-		1,
-		User::DEFAULT_ID,
-		0,
-		AuthErrorCode::AUTHORIZATION_FAILED,
-		DNPTime(0),
-		""
-	);
+	                 IINBit::DEVICE_RESTART,
+	                 seq,
+	                 1,
+	                 User::DEFAULT_ID,
+	                 0,
+	                 AuthErrorCode::AUTHORIZATION_FAILED,
+	                 DNPTime(0),
+	                 ""
+	             );
 
 	REQUIRE(fixture.SendAndReceive(challengeReply) == error);
 	REQUIRE(fixture.lower.HasNoData());
@@ -267,7 +267,7 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 
 TEST_CASE(SUITE("Chain of unauthorized requests is handled"))
 {
-	OutstationSecAuthFixture fixture;	
+	OutstationSecAuthFixture fixture;
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_256, Permissions::AllowNothing());
 	fixture.LowerLayerUp();
 
@@ -278,9 +278,9 @@ TEST_CASE(SUITE("Chain of unauthorized requests is handled"))
 	const int ITERATIONS = 10;
 
 	for (int i = 0; i < ITERATIONS; ++i)
-	{		
-		auto crob = hex::Control(FunctionCode::DIRECT_OPERATE, seq, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);		
-		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, hex::repeat(0xAA, 4));		
+	{
+		auto crob = hex::Control(FunctionCode::DIRECT_OPERATE, seq, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);
+		auto challenge = hex::ChallengeResponse(IINBit::DEVICE_RESTART, seq, csq, User::UNKNOWN_ID, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, hex::repeat(0xAA, 4));
 		REQUIRE(fixture.SendAndReceive(crob) == challenge);
 
 		auto challengeReply = hex::ChallengeReply(seq, csq, User::DEFAULT_ID, hex::repeat(0xFF, 16));
@@ -290,12 +290,12 @@ TEST_CASE(SUITE("Chain of unauthorized requests is handled"))
 		REQUIRE(fixture.lower.HasNoData());
 
 		++csq;
-	}		
+	}
 }
 
 void TestUnauthorizedControl(OutstationSecAuthFixture& fixture, AppSeqNum& seq, uint32_t csq)
 {
-	
+
 }
 
 TEST_CASE(SUITE("Mixture of authenticated requests and unsolicited behaves as expected"))
@@ -304,27 +304,27 @@ TEST_CASE(SUITE("Mixture of authenticated requests and unsolicited behaves as ex
 	authConfig.functions.authConfirm = false;
 	auto db = DatabaseTemplate::BinaryOnly(1);
 	OutstationConfig config;
-	config.params.allowUnsolicited = true;	
-	
-		
+	config.params.allowUnsolicited = true;
+
+
 	OutstationSecAuthFixture fixture(authConfig, db, config);
 	//fixture.log.WriteToStdIo();
 	fixture.AddUser(User::Default(), "bob", 0xFF, KeyWrapAlgorithm::AES_256, Permissions::AllowNothing());
-	fixture.LowerLayerUp();	
+	fixture.LowerLayerUp();
 
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINBit::DEVICE_RESTART));
 	fixture.OnSendResult(true);
-	
+
 	AppSeqNum seq;
 	fixture.TestSessionKeyChange(seq, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 
 	// confirm the null unsolicited
 	fixture.SendToOutstation(hex::UnsolConfirm(0));
 
-	uint32_t csq = 1;	
-	
+	uint32_t csq = 1;
+
 	for (int i = 0; i < 10; ++i)
-	{		
+	{
 		//std::cout << i << std::endl;
 
 		auto crob = hex::Control(FunctionCode::DIRECT_OPERATE, seq, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);

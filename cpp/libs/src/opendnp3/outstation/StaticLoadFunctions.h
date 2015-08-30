@@ -60,17 +60,17 @@ StaticWriter<SecurityStat>::Function GetStaticWriter(StaticSecurityStatVariation
 
 template <class Target, class IndexType>
 bool LoadWithRangeIterator(openpal::ArrayView<Cell<Target>, uint16_t>& view, RangeWriteIterator<IndexType, Target>& iterator, Range& range)
-{			
+{
 	const Cell<Target>& start = view[range.start];
 	uint16_t nextIndex = start.vIndex;
 
 	while (
-			range.IsValid() &&
-			view[range.start].selection.selected &&
-			(view[range.start].selection.variation == start.selection.variation) &&
-			(view[range.start].vIndex == nextIndex)
-		)
-	{			
+	    range.IsValid() &&
+	    view[range.start].selection.selected &&
+	    (view[range.start].selection.variation == start.selection.variation) &&
+	    (view[range.start].vIndex == nextIndex)
+	)
+	{
 		if (iterator.Write(view[range.start].selection.value))
 		{
 			// deselect the value and advance the range
@@ -81,25 +81,25 @@ bool LoadWithRangeIterator(openpal::ArrayView<Cell<Target>, uint16_t>& view, Ran
 		else
 		{
 			return false;
-		}		
+		}
 	}
 
-	return true;	
+	return true;
 }
 
 template <class Target, class IndexType>
 bool LoadWithBitfieldIterator(openpal::ArrayView<Cell<Target>, uint16_t>& view, BitfieldRangeWriteIterator<IndexType>& iterator, Range& range)
-{	
+{
 	const Cell<Target>& start = view[range.start];
 
 	uint16_t nextIndex = start.vIndex;
-	
+
 	while (
-			range.IsValid() && 
-			view[range.start].selection.selected && 
-			(view[range.start].selection.variation == start.selection.variation) &&
-			(view[range.start].vIndex == nextIndex)
-		)
+	    range.IsValid() &&
+	    view[range.start].selection.selected &&
+	    (view[range.start].selection.variation == start.selection.variation) &&
+	    (view[range.start].vIndex == nextIndex)
+	)
 	{
 		if (iterator.Write(view[range.start].selection.value.value))
 		{
@@ -138,13 +138,13 @@ bool WriteSingleBitfield(openpal::ArrayView<Cell<T>, uint16_t>& view, HeaderWrit
 
 template <class Serializer>
 bool WriteWithSerializer(openpal::ArrayView<Cell<typename Serializer::Target>, uint16_t>& view, HeaderWriter& writer, Range& range)
-{	
+{
 	auto start = view[range.start].vIndex;
 	auto stop = view[range.stop].vIndex;
 	auto mapped = Range::From(start, stop);
 
 	if (mapped.IsOneByte())
-	{		
+	{
 		auto iter = writer.IterateOverRange<openpal::UInt8, typename Serializer::Target>(QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(mapped.start));
 		return LoadWithRangeIterator<typename Serializer::Target, openpal::UInt8>(view, iter, range);
 	}

@@ -37,7 +37,7 @@ struct MasterAuthStackConfig : public opendnp3::MasterStackConfig
 	{}
 
 	/// authentication configuration
-	MasterAuthSettings auth;	
+	MasterAuthSettings auth;
 };
 
 }

@@ -27,10 +27,10 @@ using namespace openpal;
 
 namespace osslcrypto
 {
-	openpal::RSlice SHA1HMAC::Calculate(const RSlice& key, std::initializer_list<RSlice> data, WSlice& output, std::error_code& ec)
-	{
-		return CalculateHMAC(EVP_sha1(), OUTPUT_SIZE, key, data, output, ec);
-	}
+openpal::RSlice SHA1HMAC::Calculate(const RSlice& key, std::initializer_list<RSlice> data, WSlice& output, std::error_code& ec)
+{
+	return CalculateHMAC(EVP_sha1(), OUTPUT_SIZE, key, data, output, ec);
+}
 
 }
 

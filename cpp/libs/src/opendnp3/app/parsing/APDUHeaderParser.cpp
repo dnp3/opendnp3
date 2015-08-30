@@ -41,7 +41,7 @@ bool APDUHeaderParser::ParseRequest(const openpal::RSlice& apdu, APDUHeader& hea
 	else
 	{
 		header.control = AppControlField(apdu[0]);
-		header.function = FunctionCodeFromType(apdu[1]);		
+		header.function = FunctionCodeFromType(apdu[1]);
 		return true;
 	}
 }
@@ -49,7 +49,7 @@ bool APDUHeaderParser::ParseRequest(const openpal::RSlice& apdu, APDUHeader& hea
 bool APDUHeaderParser::ParseResponse(const openpal::RSlice& apdu, APDUResponseHeader& header, openpal::Logger* pLogger)
 {
 	if (apdu.Size() < APDU_RESPONSE_HEADER_SIZE)
-	{		
+	{
 		return false;
 	}
 	else

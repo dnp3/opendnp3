@@ -54,7 +54,7 @@ TEST_CASE(SUITE("UnknownDestination"))
 	t.phys.SignalOpenSuccess();
 
 
-	t.phys.TriggerRead("05 64 05 C0 01 00 00 04 E9 21");	
+	t.phys.TriggerRead("05 64 05 C0 01 00 00 04 E9 21");
 	REQUIRE(t.log.NextErrorCode() == DLERR_UNKNOWN_ROUTE);
 }
 

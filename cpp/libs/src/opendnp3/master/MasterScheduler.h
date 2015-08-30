@@ -39,7 +39,7 @@ namespace opendnp3
 {
 
 class MasterScheduler
-{		
+{
 
 public:
 
@@ -68,13 +68,13 @@ public:
 
 private:
 
-	bool IsTimedOut(const openpal::MonotonicTimestamp& now, openpal::ManagedPtr<IMasterTask>& task);	
+	bool IsTimedOut(const openpal::MonotonicTimestamp& now, openpal::ManagedPtr<IMasterTask>& task);
 
 	void RecalculateTaskStartTimeout();
-	
 
-	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);		
-		
+
+	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);
+
 	ITaskFilter* m_filter;
 	std::vector<openpal::ManagedPtr<IMasterTask>> m_tasks;
 };

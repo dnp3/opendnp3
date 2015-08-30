@@ -36,7 +36,7 @@ public:
 
 	/**
 	* Callback method for log messages
-	* 
+	*
 	* @param entry the log message to handle
 	*/
 	virtual void Log( const LogEntry& entry ) = 0;

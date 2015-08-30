@@ -34,23 +34,26 @@ class ISOEHandler;
  * Base class for measurement polls
  */
 class PollTaskBase : public IMasterTask, openpal::Uncopyable
-{	
+{
 
-public:		
+public:
 
 	PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config);
 
-	virtual const char* Name() const override final { return "Application Poll"; };
-	
-protected:	
+	virtual const char* Name() const override final
+	{
+		return "Application Poll";
+	};
+
+protected:
 
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 
 	ResponseResult ProcessMeasurements(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	virtual void Initialize() override final;		
+	virtual void Initialize() override final;
 
-	uint16_t rxCount;		
+	uint16_t rxCount;
 	ISOEHandler* pSOEHandler;
 };
 

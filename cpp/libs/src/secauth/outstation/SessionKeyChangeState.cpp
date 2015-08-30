@@ -33,91 +33,91 @@ using namespace opendnp3;
 namespace secauth
 {
 
-	SessionKeyChangeState::SessionKeyChangeState(uint16_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :
-		challengeSize(AuthSizes::GetBoundedChallengeSize(challengeSize_)),
-		logger(logger_),
-		pProvider(&provider),
-		keyChangeSeqNum(0)
-	{}
+SessionKeyChangeState::SessionKeyChangeState(uint16_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :
+	challengeSize(AuthSizes::GetBoundedChallengeSize(challengeSize_)),
+	logger(logger_),
+	pProvider(&provider),
+	keyChangeSeqNum(0)
+{}
 
-	bool SessionKeyChangeState::FormatKeyStatusResponse(
-			opendnp3::HeaderWriter& writer,
-			const User& user,
-			opendnp3::HMACType hmacType,
-			opendnp3::KeyWrapAlgorithm keyWrapAlgo,
-			opendnp3::KeyStatus status, 
-			const openpal::RSlice& hmac
-		)
-	{				
-		auto dest = challengeData.GetWSlice(challengeSize);
+bool SessionKeyChangeState::FormatKeyStatusResponse(
+    opendnp3::HeaderWriter& writer,
+    const User& user,
+    opendnp3::HMACType hmacType,
+    opendnp3::KeyWrapAlgorithm keyWrapAlgo,
+    opendnp3::KeyStatus status,
+    const openpal::RSlice& hmac
+)
+{
+	auto dest = challengeData.GetWSlice(challengeSize);
 
-		std::error_code ec;
-		auto challenge = pProvider->GetSecureRandom(dest, ec);
-		if (ec)
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
-			return false;
-		}
-
-		++keyChangeSeqNum;			
-
-		this->lastUser = user;
-
-		statusRsp.keyChangeSeqNum = keyChangeSeqNum;
-		statusRsp.userNum = user.GetId();
-		statusRsp.keyWrapAlgo = keyWrapAlgo;
-		statusRsp.keyStatus = status;
-		statusRsp.hmacAlgo = hmacType;
-		statusRsp.challengeData = challenge;
-		statusRsp.hmacValue = hmac;
-
-		return writer.WriteFreeFormat(statusRsp);		
-	}
-
-	bool SessionKeyChangeState::EqualsLastStatusResponse(const openpal::RSlice& unwrappedKeyStatus)
+	std::error_code ec;
+	auto challenge = pProvider->GetSecureRandom(dest, ec);
+	if (ec)
 	{
-		Group120Var5 copy(statusRsp);
-		copy.hmacValue = RSlice::Empty(); // exclude the HMAC from the comparison
-
-		const uint32_t MAX_SIZE = Group120Var5::MIN_SIZE + AuthSizes::MAX_CHALLENGE_DATA_SIZE;
-		openpal::StaticBuffer<MAX_SIZE> buffer;
-		
-		auto dest = buffer.GetWSlice();
-		if (!copy.Write(dest))
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to write last response to buffer");
-			return false;
-		}
-		
-		// this is what we sent
-		auto sent = buffer.ToRSlice(copy.Size());
-		// the unwrapped data may be larger due to padding so truncate it to the length of what we're expecting before comparing
-		auto unwrappedTrunc = unwrappedKeyStatus.Take(sent.Size());
-					
-		if (!SecureEquals(sent, unwrappedTrunc))
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unwrapped key data did not equal last response");
-			return false;
-		}
-
-		return true;
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
+		return false;
 	}
 
-	bool SessionKeyChangeState::CheckUserAndKSQMatches(const User& user, uint32_t keyChangeSeq)
+	++keyChangeSeqNum;
+
+	this->lastUser = user;
+
+	statusRsp.keyChangeSeqNum = keyChangeSeqNum;
+	statusRsp.userNum = user.GetId();
+	statusRsp.keyWrapAlgo = keyWrapAlgo;
+	statusRsp.keyStatus = status;
+	statusRsp.hmacAlgo = hmacType;
+	statusRsp.challengeData = challenge;
+	statusRsp.hmacValue = hmac;
+
+	return writer.WriteFreeFormat(statusRsp);
+}
+
+bool SessionKeyChangeState::EqualsLastStatusResponse(const openpal::RSlice& unwrappedKeyStatus)
+{
+	Group120Var5 copy(statusRsp);
+	copy.hmacValue = RSlice::Empty(); // exclude the HMAC from the comparison
+
+	const uint32_t MAX_SIZE = Group120Var5::MIN_SIZE + AuthSizes::MAX_CHALLENGE_DATA_SIZE;
+	openpal::StaticBuffer<MAX_SIZE> buffer;
+
+	auto dest = buffer.GetWSlice();
+	if (!copy.Write(dest))
 	{
-		if (lastUser.GetId() != user.GetId())
-		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior key change status for user %u", user.GetId());
-			return false;
-		}
-
-		if (keyChangeSeqNum != keyChangeSeq)
-		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "KSQ of %u doesn't match expected KSQ of %u", keyChangeSeq, keyChangeSeqNum);
-			return false;
-		}
-			
-		return true;
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to write last response to buffer");
+		return false;
 	}
+
+	// this is what we sent
+	auto sent = buffer.ToRSlice(copy.Size());
+	// the unwrapped data may be larger due to padding so truncate it to the length of what we're expecting before comparing
+	auto unwrappedTrunc = unwrappedKeyStatus.Take(sent.Size());
+
+	if (!SecureEquals(sent, unwrappedTrunc))
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unwrapped key data did not equal last response");
+		return false;
+	}
+
+	return true;
+}
+
+bool SessionKeyChangeState::CheckUserAndKSQMatches(const User& user, uint32_t keyChangeSeq)
+{
+	if (lastUser.GetId() != user.GetId())
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior key change status for user %u", user.GetId());
+		return false;
+	}
+
+	if (keyChangeSeqNum != keyChangeSeq)
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "KSQ of %u doesn't match expected KSQ of %u", keyChangeSeq, keyChangeSeqNum);
+		return false;
+	}
+
+	return true;
+}
 
 }

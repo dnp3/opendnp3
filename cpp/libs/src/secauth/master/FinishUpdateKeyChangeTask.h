@@ -33,62 +33,86 @@
 
 namespace secauth
 {
-	typedef std::function<void (const std::string& username, opendnp3::User user, const UpdateKey& key)> ChangeUpdateKeyCallbackT;
+typedef std::function<void (const std::string& username, opendnp3::User user, const UpdateKey& key)> ChangeUpdateKeyCallbackT;
 
 
-	/**
-	* 2nd and final step in change a user's update key
-	*/
-	class FinishUpdateKeyChangeTask : public opendnp3::IMasterTask
-	{	
+/**
+* 2nd and final step in change a user's update key
+*/
+class FinishUpdateKeyChangeTask : public opendnp3::IMasterTask
+{
 
-	public:
+public:
 
-		FinishUpdateKeyChangeTask(
-			const FinishUpdateKeyChangeArgs& args,
-			opendnp3::IMasterApplication& application,
-			openpal::IHMACAlgo& algorithm,
-			openpal::Logger logger,			
-			const opendnp3::TaskConfig& config,
-			const ChangeUpdateKeyCallbackT& callback
-		);
-			
-
-		virtual bool IsAuthTask() const override final { return true; }
-
-		virtual char const* Name() const override final { return "Finish Update Key Change"; }
-		
-		virtual bool IsRecurring() const override final { return false; }
-
-		virtual bool BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
-
-		virtual int Priority() const override final { return opendnp3::priority::UPDATE_KEY_CHANGE; }		
-
-		virtual bool BlocksLowerPriority() const override final { return false; }
-
-	private:	
-
-		FinishUpdateKeyChangeArgs m_args;
-		openpal::IHMACAlgo* m_algorithm;
-		ChangeUpdateKeyCallbackT m_callback;
-		
-		virtual void Initialize() override final {}
-
-		virtual opendnp3::MasterTaskType GetTaskType() const override final { return opendnp3::MasterTaskType::USER_TASK; }
-
-		virtual bool IsEnabled() const override final { return true; }
-
-		virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::RSlice& objects) override final;
-
-		virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final { return TaskState::Infinite(); }
+	FinishUpdateKeyChangeTask(
+	    const FinishUpdateKeyChangeArgs& args,
+	    opendnp3::IMasterApplication& application,
+	    openpal::IHMACAlgo& algorithm,
+	    openpal::Logger logger,
+	    const opendnp3::TaskConfig& config,
+	    const ChangeUpdateKeyCallbackT& callback
+	);
 
 
-		/// --- helpers -----
+	virtual bool IsAuthTask() const override final
+	{
+		return true;
+	}
 
-		opendnp3::IMasterTask::ResponseResult ProcessErrorResponse(const openpal::RSlice& objects);
+	virtual char const* Name() const override final
+	{
+		return "Finish Update Key Change";
+	}
 
-		opendnp3::IMasterTask::ResponseResult ProcessConfirmationResponse(const openpal::RSlice& objects);
-	};
+	virtual bool IsRecurring() const override final
+	{
+		return false;
+	}
+
+	virtual bool BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
+
+	virtual int Priority() const override final
+	{
+		return opendnp3::priority::UPDATE_KEY_CHANGE;
+	}
+
+	virtual bool BlocksLowerPriority() const override final
+	{
+		return false;
+	}
+
+private:
+
+	FinishUpdateKeyChangeArgs m_args;
+	openpal::IHMACAlgo* m_algorithm;
+	ChangeUpdateKeyCallbackT m_callback;
+
+	virtual void Initialize() override final {}
+
+	virtual opendnp3::MasterTaskType GetTaskType() const override final
+	{
+		return opendnp3::MasterTaskType::USER_TASK;
+	}
+
+	virtual bool IsEnabled() const override final
+	{
+		return true;
+	}
+
+	virtual opendnp3::IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& response, const openpal::RSlice& objects) override final;
+
+	virtual IMasterTask::TaskState OnTaskComplete(opendnp3::TaskCompletion result, openpal::MonotonicTimestamp now) override final
+	{
+		return TaskState::Infinite();
+	}
+
+
+	/// --- helpers -----
+
+	opendnp3::IMasterTask::ResponseResult ProcessErrorResponse(const openpal::RSlice& objects);
+
+	opendnp3::IMasterTask::ResponseResult ProcessConfirmationResponse(const openpal::RSlice& objects);
+};
 
 
 } //end ns

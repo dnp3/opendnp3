@@ -24,27 +24,27 @@
 namespace secauth
 {
 
-	FinishUpdateKeyChangeArgs::FinishUpdateKeyChangeArgs(
-			const std::string& username_,
-			const std::string& outstationName_,
-			opendnp3::User user_,
-			uint32_t keyChangeSequenceNumber_,
-			const openpal::RSlice& masterChallengeData_,
-			const openpal::RSlice& outstationChallengeData_,
-			const openpal::RSlice& encryptedKeyData_,
-			const UpdateKey& updateKey_
-		) :
-		username(username_),
-		outstationName(outstationName_),
-		user(user_),
-		keyChangeSequenceNum(keyChangeSequenceNumber_),
-		masterChallengeData(masterChallengeData_),
-		outstationChallengeData(outstationChallengeData_),
-		encryptedKeyData(encryptedKeyData_),
-		updateKey(updateKey_)
-	{
-	
-	}
+FinishUpdateKeyChangeArgs::FinishUpdateKeyChangeArgs(
+    const std::string& username_,
+    const std::string& outstationName_,
+    opendnp3::User user_,
+    uint32_t keyChangeSequenceNumber_,
+    const openpal::RSlice& masterChallengeData_,
+    const openpal::RSlice& outstationChallengeData_,
+    const openpal::RSlice& encryptedKeyData_,
+    const UpdateKey& updateKey_
+) :
+	username(username_),
+	outstationName(outstationName_),
+	user(user_),
+	keyChangeSequenceNum(keyChangeSequenceNumber_),
+	masterChallengeData(masterChallengeData_),
+	outstationChallengeData(outstationChallengeData_),
+	encryptedKeyData(encryptedKeyData_),
+	updateKey(updateKey_)
+{
+
+}
 
 
 }

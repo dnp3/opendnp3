@@ -40,8 +40,8 @@ class IOutstation : public IStack
 {
 	friend class MeasUpdate;
 
-	public:	
-		
+public:
+
 	virtual ~IOutstation() {}
 
 	/**
@@ -69,17 +69,17 @@ protected:
 	* return the non-thread safe database the outstation uses
 	*/
 	virtual opendnp3::IDatabase& GetDatabase() = 0;
-	
+
 	/*
 	* return the executor used by the outstation
 	*/
 	virtual openpal::IExecutor& GetExecutor() = 0;
-	
+
 	/*
 	* force the outstation to check for updates
 	*/
 	virtual void CheckForUpdates() = 0;
-	
+
 };
 
 }

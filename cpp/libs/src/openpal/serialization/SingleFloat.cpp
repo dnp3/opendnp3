@@ -28,51 +28,51 @@
 
 namespace openpal
 {
-	const float SingleFloat::Max(openpal::MaxValue<float>());
-	const float SingleFloat::Min(openpal::MinValue<float>());
+const float SingleFloat::Max(openpal::MaxValue<float>());
+const float SingleFloat::Min(openpal::MinValue<float>());
 
 
-	float SingleFloat::ReadBuffer(RSlice& buffer)
+float SingleFloat::ReadBuffer(RSlice& buffer)
+{
+	auto ret = Read(buffer);
+	buffer.Advance(SIZE);
+	return ret;
+}
+
+void SingleFloat::WriteBuffer(WSlice& buffer, float value)
+{
+	Write(buffer, value);
+	buffer.Advance(SIZE);
+}
+
+float SingleFloat::Read(const uint8_t* data)
+{
+	if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
 	{
-		auto ret = Read(buffer);
-		buffer.Advance(SIZE);
-		return ret;
+		float d;
+		memcpy(&d, data, SIZE);
+		return d;
 	}
-
-	void SingleFloat::WriteBuffer(WSlice& buffer, float value)
+	else
 	{
-		Write(buffer, value);
-		buffer.Advance(SIZE);
+		uint8_t bytes[4] = { data[3], data[2], data[1], data[0] };
+		return *reinterpret_cast<float*>(bytes);
 	}
-	
-	float SingleFloat::Read(const uint8_t* data)
-	{
-		if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
-		{
-			float d;
-			memcpy(&d, data, SIZE);
-			return d;
-		}
-		else
-		{
-			uint8_t bytes[4] = { data[3], data[2], data[1], data[0] };
-			return *reinterpret_cast<float*>(bytes);
-		}
-	}
+}
 
-	void SingleFloat::Write(uint8_t* dest, float value)
-	{		
-		if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
-		{
-			memcpy(dest, &value, SIZE);
-		}
-		else
-		{
-			auto data = reinterpret_cast<uint8_t*>(&value);
-			uint8_t bytes[4] = { data[3], data[2], data[1], data[0] };
-			memcpy(dest, bytes, SIZE);
-		}
+void SingleFloat::Write(uint8_t* dest, float value)
+{
+	if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
+	{
+		memcpy(dest, &value, SIZE);
 	}
+	else
+	{
+		auto data = reinterpret_cast<uint8_t*>(&value);
+		uint8_t bytes[4] = { data[3], data[2], data[1], data[0] };
+		memcpy(dest, bytes, SIZE);
+	}
+}
 }
 
 

@@ -86,12 +86,12 @@ public:
 class DatabaseTestObject
 {
 public:
-	
-	DatabaseTestObject(const DatabaseTemplate& dbTemplate, IndexMode mode = IndexMode::Contiguous, StaticTypeBitField allowedClass0 = StaticTypeBitField::AllTypes()) : 
+
+	DatabaseTestObject(const DatabaseTemplate& dbTemplate, IndexMode mode = IndexMode::Contiguous, StaticTypeBitField allowedClass0 = StaticTypeBitField::AllTypes()) :
 		buffer(),
 		db(dbTemplate, buffer, mode, allowedClass0)
 	{
-		
+
 	}
 
 

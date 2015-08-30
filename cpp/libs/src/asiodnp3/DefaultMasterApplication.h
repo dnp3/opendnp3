@@ -39,8 +39,11 @@ public:
 
 	virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override final {}
 
-	virtual bool AssignClassDuringStartup() override final { return false; }
-	
+	virtual bool AssignClassDuringStartup() override final
+	{
+		return false;
+	}
+
 	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override final {}
 
 	virtual openpal::UTCTimestamp Now() override final;

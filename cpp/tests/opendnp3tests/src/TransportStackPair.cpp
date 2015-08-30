@@ -30,8 +30,8 @@ namespace opendnp3
 TransportStackPair::TransportStackPair(
     LinkConfig aClientCfg,
     LinkConfig aServerCfg,
-	openpal::LogRoot& root,
-	asio::io_service& service,
+    openpal::LogRoot& root,
+    asio::io_service& service,
     uint16_t aPort) :
 
 	mClient(root, service, "127.0.0.1", "127.0.0.1", aPort),

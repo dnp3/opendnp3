@@ -36,7 +36,7 @@ public:
 	virtual bool HasAnySelection() const = 0;
 
 	/**
-	* Loads static data into a response APDU 
+	* Loads static data into a response APDU
 	*
 	* @param writer The HeaderWriter instance used to place data in the APDU
 	* @return True if all data was loaded, false if there is no more space

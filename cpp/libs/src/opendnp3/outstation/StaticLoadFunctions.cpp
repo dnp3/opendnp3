@@ -40,21 +40,21 @@ StaticWriter<Binary>::Function GetStaticWriter(StaticBinaryVariation variation)
 {
 	switch (variation)
 	{
-		case(StaticBinaryVariation::Group1Var1) :
-			return &WriteSingleBitfield<Binary, Group1Var1>;
-		default:
-			return &WriteWithSerializer<Group1Var2>;
-	}	
+	case(StaticBinaryVariation::Group1Var1) :
+		return &WriteSingleBitfield<Binary, Group1Var1>;
+	default:
+		return &WriteWithSerializer<Group1Var2>;
+	}
 }
 
 StaticWriter<DoubleBitBinary>::Function GetStaticWriter(StaticDoubleBinaryVariation variation)
 {
 	switch (variation)
 	{
-		case(StaticDoubleBinaryVariation::Group3Var2) :
-			return &WriteWithSerializer<Group3Var2>;
-		default:
-			return &WriteWithSerializer<Group3Var2>;
+	case(StaticDoubleBinaryVariation::Group3Var2) :
+		return &WriteWithSerializer<Group3Var2>;
+	default:
+		return &WriteWithSerializer<Group3Var2>;
 	}
 }
 
@@ -110,18 +110,18 @@ StaticWriter<AnalogOutputStatus>::Function GetStaticWriter(StaticAnalogOutputSta
 {
 	switch (variation)
 	{
-		case(StaticAnalogOutputStatusVariation::Group40Var1): return &WriteWithSerializer<Group40Var1>;
-		case(StaticAnalogOutputStatusVariation::Group40Var2): return &WriteWithSerializer<Group40Var2>;
-		case(StaticAnalogOutputStatusVariation::Group40Var3): return &WriteWithSerializer<Group40Var3>;
-		case(StaticAnalogOutputStatusVariation::Group40Var4): return &WriteWithSerializer<Group40Var4>;
-		default:
-			return &WriteWithSerializer<Group40Var1>;
+	case(StaticAnalogOutputStatusVariation::Group40Var1): return &WriteWithSerializer<Group40Var1>;
+	case(StaticAnalogOutputStatusVariation::Group40Var2): return &WriteWithSerializer<Group40Var2>;
+	case(StaticAnalogOutputStatusVariation::Group40Var3): return &WriteWithSerializer<Group40Var3>;
+	case(StaticAnalogOutputStatusVariation::Group40Var4): return &WriteWithSerializer<Group40Var4>;
+	default:
+		return &WriteWithSerializer<Group40Var1>;
 	}
 }
 
 StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalVariation variation)
 {
-	return &WriteWithSerializer<Group50Var4>;	
+	return &WriteWithSerializer<Group50Var4>;
 }
 
 StaticWriter<SecurityStat>::Function GetStaticWriter(StaticSecurityStatVariation variation)

@@ -30,43 +30,61 @@
 namespace opendnp3
 {
 
-	class IMasterApplication;
+class IMasterApplication;
 
-	class EmptyResponseTask : public IMasterTask
+class EmptyResponseTask : public IMasterTask
+{
+
+public:
+
+	EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func_, const HeaderBuilderT& format_, openpal::Logger logger, const TaskConfig& config);
+
+	virtual char const* Name() const override final
 	{
+		return name.c_str();
+	}
 
-	public:
+	virtual bool IsRecurring() const override final
+	{
+		return false;
+	}
 
-		EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func_, const HeaderBuilderT& format_, openpal::Logger logger, const TaskConfig& config);
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-		virtual char const* Name() const override final { return name.c_str(); }
+	virtual int Priority(void) const override final
+	{
+		return priority::USER_WRITE;
+	}
 
-		virtual bool IsRecurring() const override final { return false; }
+	virtual bool BlocksLowerPriority() const override final
+	{
+		return false;
+	}
 
-		virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;		
+private:
 
-		virtual int Priority(void) const override final { return priority::USER_WRITE; }
+	std::string name;
+	FunctionCode func;
+	std::function<bool(HeaderWriter&)> format;
 
-		virtual bool BlocksLowerPriority() const override final { return false; }
+	IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
 
-	private:
+	virtual  bool IsEnabled() const override final
+	{
+		return true;
+	}
 
-		std::string name;
-		FunctionCode func;
-		std::function<bool(HeaderWriter&)> format;
+	virtual MasterTaskType GetTaskType() const override final
+	{
+		return MasterTaskType::USER_TASK;
+	}
 
-		IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final
+	{
+		return TaskState::Infinite();
+	}
 
-		virtual  bool IsEnabled() const override final { return true; }
-
-		virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK; }
-		
-		virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final
-		{
-			return TaskState::Infinite();
-		}		
-
-	};
+};
 
 } //end ns
 

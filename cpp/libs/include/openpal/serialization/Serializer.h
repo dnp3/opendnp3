@@ -50,7 +50,7 @@ public:
 	uint32_t Size() const
 	{
 		return size;
-	}	
+	}
 
 	/**
 	* reads the value and advances the read buffer

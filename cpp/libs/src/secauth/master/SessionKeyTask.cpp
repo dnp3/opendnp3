@@ -41,23 +41,23 @@ namespace secauth
 {
 
 SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
-								openpal::TimeDuration retryPeriod_,
-								openpal::TimeDuration changeInterval_,
-								openpal::Logger logger,
-								const User& user_,
-								ICryptoProvider& crypto,
-								IMasterUserDatabase& userDB,
-								SessionStore& sessionStore) :
+                                openpal::TimeDuration retryPeriod_,
+                                openpal::TimeDuration changeInterval_,
+                                openpal::Logger logger,
+                                const User& user_,
+                                ICryptoProvider& crypto,
+                                IMasterUserDatabase& userDB,
+                                SessionStore& sessionStore) :
 
-							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, TaskConfig::With(user_)),
-							retryPeriod(retryPeriod_),
-							changeInterval(changeInterval_),
-							user(user_),
-							pCrypto(&crypto),
-							pUserDB(&userDB),
-							pSessionStore(&sessionStore),
-							state(ChangeState::GetStatus),
-							keyChangeSeqNum(0)
+	opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, TaskConfig::With(user_)),
+	retryPeriod(retryPeriod_),
+	changeInterval(changeInterval_),
+	user(user_),
+	pCrypto(&crypto),
+	pUserDB(&userDB),
+	pSessionStore(&sessionStore),
+	state(ChangeState::GetStatus),
+	keyChangeSeqNum(0)
 {
 
 }
@@ -88,12 +88,12 @@ IMasterTask::TaskState SessionKeyTask::OnTaskComplete(TaskCompletion result, ope
 {
 	switch (result)
 	{
-		case(TaskCompletion::SUCCESS) :
-			return TaskState::Retry(now.Add(this->changeInterval));		
-		case(TaskCompletion::FAILURE_NO_COMMS) :
-			return TaskState::Immediately();
-		default:
-			return TaskState::Retry(now.Add(this->retryPeriod));
+	case(TaskCompletion::SUCCESS) :
+		return TaskState::Retry(now.Add(this->changeInterval));
+	case(TaskCompletion::FAILURE_NO_COMMS) :
+		return TaskState::Immediately();
+	default:
+		return TaskState::Retry(now.Add(this->retryPeriod));
 	}
 }
 
@@ -150,7 +150,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
-	// before we derive keys, make sure we support the specified key wrap algorithm	
+	// before we derive keys, make sure we support the specified key wrap algorithm
 	if (status.keyWrapAlgo == KeyWrapAlgorithm::UNDEFINED)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unsupported key wrap algorithm: %s", KeyWrapAlgorithmToString(status.keyWrapAlgo));
@@ -158,8 +158,8 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 	}
 
 	std::error_code ec;
-	
-	keys.DeriveFrom(*pCrypto, AuthSizes::MIN_SESSION_KEY_SIZE_BYTES, ec); // TODO - make the session key size configurable	
+
+	keys.DeriveFrom(*pCrypto, AuthSizes::MIN_SESSION_KEY_SIZE_BYTES, ec); // TODO - make the session key size configurable
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unable to derive session keys: %s", ec.message().c_str());
@@ -174,7 +174,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unable to get update key for user: %u", user.GetId());
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
-	
+
 	if (status.keyWrapAlgo != key.algorithm)
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Update key length does not match outstation KeyWrapAlgorithm");
@@ -192,7 +192,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 	this->state = ChangeState::ChangeKey; // we're now ready to try changing the key itself
 
 	return ResponseResult::OK_REPEAT;
- }
+}
 
 IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseHeader& response, const RSlice& objects)
 {
@@ -210,7 +210,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseH
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Response did not contain a key status object");
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
-	
+
 	HMACMode hmacMode;
 	if (!Crypto::TryGetHMACMode(status.hmacAlgo, hmacMode))
 	{
@@ -225,7 +225,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseH
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());
 		return ResponseResult::ERROR_BAD_RESPONSE;
-	}	
+	}
 
 	if (!SecureEquals(hmacValue, status.hmacValue))
 	{

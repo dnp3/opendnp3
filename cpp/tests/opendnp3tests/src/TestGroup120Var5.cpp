@@ -89,7 +89,7 @@ TEST_CASE(SUITE("Parser rejects if specified challenge data is missing"))
 
 TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 {
-	HexSequence challenge("DE AD"); 
+	HexSequence challenge("DE AD");
 	HexSequence hmac("BE EF");
 
 	Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
@@ -103,8 +103,8 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 	REQUIRE(status.Write(dest));
 	uint32_t numWritten = output.Size() - dest.Size();
 
-	REQUIRE(numWritten == SIZE);	
-	REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");	
+	REQUIRE(numWritten == SIZE);
+	REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");
 }
 
 TEST_CASE(SUITE("Formatter rejects when one less than required space"))

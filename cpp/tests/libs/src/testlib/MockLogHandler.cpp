@@ -31,15 +31,15 @@ namespace testlib
 
 LogRecord::LogRecord() :
 	id(),
-	filters(0),	
+	filters(0),
 	location(),
 	message(),
 	errorCode(-1)
 {}
 
-LogRecord::LogRecord(const LogEntry& entry) : 
-	id(entry.GetAlias()), 
-	filters(entry.GetFilters()), 
+LogRecord::LogRecord(const LogEntry& entry) :
+	id(entry.GetAlias()),
+	filters(entry.GetFilters()),
 	location(entry.GetLocation()),
 	message(entry.GetMessage()),
 	errorCode(entry.GetErrorCode())
@@ -48,7 +48,7 @@ LogRecord::LogRecord(const LogEntry& entry) :
 }
 
 MockLogHandler::MockLogHandler(uint32_t filters) :
-	root(this, "test", filters), 
+	root(this, "test", filters),
 	outputToStdIO(false),
 	logger(root.GetLogger())
 {
@@ -72,7 +72,7 @@ int32_t MockLogHandler::PopFilter()
 	{
 		auto flags = messages.front().filters.GetBitfield();
 		messages.pop_front();
-		return flags;	
+		return flags;
 	}
 	else
 	{

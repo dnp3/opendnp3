@@ -49,7 +49,7 @@ namespace opendnp3
 class ISOEHandler : public ITransactable
 {
 public:
-	
+
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) = 0;
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) = 0;

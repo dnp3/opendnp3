@@ -30,47 +30,47 @@ using namespace opendnp3;
 namespace secauth
 {
 
-	IOAuthState* IOAuthState::IgnoreRegularRequest(openpal::Logger& logger)
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring regular request", this->GetName());
-		return this;
-	}
+IOAuthState* IOAuthState::IgnoreRegularRequest(openpal::Logger& logger)
+{
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring regular request", this->GetName());
+	return this;
+}
 
-	IOAuthState* IOAuthState::IgnoreAggModeRequest(openpal::Logger& logger)
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring Aggressive mode request", this->GetName());
-		return this;
-	}
+IOAuthState* IOAuthState::IgnoreAggModeRequest(openpal::Logger& logger)
+{
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring Aggressive mode request", this->GetName());
+	return this;
+}
 
-	IOAuthState* IOAuthState::IgnoreAuthChallenge(openpal::Logger& logger)
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring Auth challenge", this->GetName());
-		return this;
-	}
+IOAuthState* IOAuthState::IgnoreAuthChallenge(openpal::Logger& logger)
+{
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring Auth challenge", this->GetName());
+	return this;
+}
 
-	IOAuthState* IOAuthState::IgnoreAuthReply(openpal::Logger& logger)
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring Auth reply", this->GetName());
-		return this;
-	}
+IOAuthState* IOAuthState::IgnoreAuthReply(openpal::Logger& logger)
+{
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring Auth reply", this->GetName());
+	return this;
+}
 
-	IOAuthState* IOAuthState::IgnoreRequestKeyStatus(openpal::Logger& logger, uint16_t user)
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring key status request for user %u", this->GetName(), user);
-		return this;
-	}
+IOAuthState* IOAuthState::IgnoreRequestKeyStatus(openpal::Logger& logger, uint16_t user)
+{
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring key status request for user %u", this->GetName(), user);
+	return this;
+}
 
-	IOAuthState* IOAuthState::IgnoreChangeSessionKeys(openpal::Logger& logger, uint16_t user)
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring change session keys for user %u", this->GetName(), user);
-		return this;
-	}
+IOAuthState* IOAuthState::IgnoreChangeSessionKeys(openpal::Logger& logger, uint16_t user)
+{
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring change session keys for user %u", this->GetName(), user);
+	return this;
+}
 
-	IOAuthState* IOAuthState::IgnoreChallengeTimeout(openpal::Logger& logger)
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring challenge timeout", this->GetName());
-		return this;
-	}
+IOAuthState* IOAuthState::IgnoreChallengeTimeout(openpal::Logger& logger)
+{
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "AuthState: %s - Ignoring challenge timeout", this->GetName());
+	return this;
+}
 
 }
 

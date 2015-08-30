@@ -27,15 +27,15 @@ namespace opendnp3
 {
 
 MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& app, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
-enableUnsol(app, params.unsolClassMask, params.taskRetryPeriod, logger),
-clearRestart(app, params.taskRetryPeriod, logger),
-assignClass(app, params.taskRetryPeriod, logger),
-startupIntegrity(app, SOEHandler, params.startupIntegrityClassMask, params.taskRetryPeriod, logger),
-disableUnsol(app, params.disableUnsolOnStartup, params.taskRetryPeriod, logger),
-timeSync(app, logger),
-eventScan(app, SOEHandler, params.eventScanOnEventsAvailableClassMask, params.taskRetryPeriod, logger)
+	enableUnsol(app, params.unsolClassMask, params.taskRetryPeriod, logger),
+	clearRestart(app, params.taskRetryPeriod, logger),
+	assignClass(app, params.taskRetryPeriod, logger),
+	startupIntegrity(app, SOEHandler, params.startupIntegrityClassMask, params.taskRetryPeriod, logger),
+	disableUnsol(app, params.disableUnsolOnStartup, params.taskRetryPeriod, logger),
+	timeSync(app, logger),
+	eventScan(app, SOEHandler, params.eventScanOnEventsAvailableClassMask, params.taskRetryPeriod, logger)
 {
-	
+
 }
 
 void MasterTasks::Initialize(MasterScheduler& scheduler)
@@ -48,7 +48,7 @@ void MasterTasks::Initialize(MasterScheduler& scheduler)
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&timeSync));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&eventScan));
 
-	for (auto& pTask : boundTasks)
+	for (auto & pTask : boundTasks)
 	{
 		scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask.get()));
 	}

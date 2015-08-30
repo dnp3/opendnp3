@@ -39,7 +39,7 @@ public:
 
 	IOServiceThreadPool(
 	    openpal::ILogHandler* pHandler,
-	    uint32_t levels,		
+	    uint32_t levels,
 	    uint32_t aConcurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}
@@ -59,7 +59,7 @@ private:
 	std::function<void ()> onThreadStart;
 	std::function<void ()> onThreadExit;
 
-	bool isShutdown;	
+	bool isShutdown;
 
 	void Run();
 

@@ -35,7 +35,7 @@
 namespace opendnp3
 {
 
-/*	
+/*
 	The sequence of events list is a doubly linked-list implemented
 	in a finite array.  The list is desired for O(1) remove operations from
 	arbitrary parts of the list depending on what the user asks for in terms
@@ -48,23 +48,47 @@ namespace opendnp3
 
 class EventBuffer : public IEventReceiver, public IEventSelector, public IResponseLoader, private IEventRecorder
 {
-	
+
 public:
 
 	EventBuffer(const EventBufferConfig& config);
-	
-	// ------- IEventReceiver ------ 
 
-	virtual void Update(const Event<Binary>& evt) override final { this->UpdateAny(evt); }	
-	virtual void Update(const Event<DoubleBitBinary>& evt) override final { this->UpdateAny(evt); }		
-	virtual void Update(const Event<Analog>& evt) override final { this->UpdateAny(evt); }	
-	virtual void Update(const Event<Counter>& evt) override final { this->UpdateAny(evt); }	
-	virtual void Update(const Event<FrozenCounter>&  evt) override final { this->UpdateAny(evt); }	
-	virtual void Update(const Event<BinaryOutputStatus>& evt) override final { this->UpdateAny(evt); }	
-	virtual void Update(const Event<AnalogOutputStatus>& evt) override final { this->UpdateAny(evt); }
-	virtual void Update(const Event<SecurityStat>& evt) override final { this->UpdateAny(evt); }
+	// ------- IEventReceiver ------
 
-	// ------- IEventSelector ------ 
+	virtual void Update(const Event<Binary>& evt) override final
+	{
+		this->UpdateAny(evt);
+	}
+	virtual void Update(const Event<DoubleBitBinary>& evt) override final
+	{
+		this->UpdateAny(evt);
+	}
+	virtual void Update(const Event<Analog>& evt) override final
+	{
+		this->UpdateAny(evt);
+	}
+	virtual void Update(const Event<Counter>& evt) override final
+	{
+		this->UpdateAny(evt);
+	}
+	virtual void Update(const Event<FrozenCounter>&  evt) override final
+	{
+		this->UpdateAny(evt);
+	}
+	virtual void Update(const Event<BinaryOutputStatus>& evt) override final
+	{
+		this->UpdateAny(evt);
+	}
+	virtual void Update(const Event<AnalogOutputStatus>& evt) override final
+	{
+		this->UpdateAny(evt);
+	}
+	virtual void Update(const Event<SecurityStat>& evt) override final
+	{
+		this->UpdateAny(evt);
+	}
+
+	// ------- IEventSelector ------
 
 	virtual void Unselect();
 
@@ -75,7 +99,7 @@ public:
 	// ------- IResponseLoader -------
 
 	virtual bool HasAnySelection() const override final;
-	
+
 	virtual bool Load(HeaderWriter& writer) override final;
 
 	// ------- IEventRecorder-------
@@ -84,14 +108,14 @@ public:
 
 	virtual void RecordWritten(EventClass ec, EventType et) override final;
 
-	// ------- Misc -------	
+	// ------- Misc -------
 
 	void SelectAllByClass(const ClassField& field);
 
 	void ClearWritten(); // called when a transmission succeeds
 
 	ClassField UnwrittenClassField() const;
-	
+
 	bool IsOverflown();
 
 private:
@@ -109,15 +133,15 @@ private:
 	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename T::EventVariation var);
 
 	template <class T>
-	IINField SelectByType(int32_t max) 
-	{ 
+	IINField SelectByType(int32_t max)
+	{
 		GenericSelectByType<T>(max, true, typename T::EventVariation());
 		return IINField();
 	}
 
 	template <class T>
-	IINField SelectByType(int32_t max, typename T::EventVariation var) 
-	{ 
+	IINField SelectByType(int32_t max, typename T::EventVariation var)
+	{
 		GenericSelectByType<T>(max, false, var);
 		return IINField();
 	}
@@ -130,12 +154,12 @@ private:
 	void UpdateAny(const Event<T>& evt);
 
 	bool IsAnyTypeOverflown() const;
-	bool IsTypeOverflown(EventType type) const;	
+	bool IsTypeOverflown(EventType type) const;
 
 	bool overflow;
 
 	EventBufferConfig config;
-			
+
 	openpal::LinkedList<SOERecord, uint32_t> events;
 
 	// ---- trakcers
@@ -144,28 +168,28 @@ private:
 	EventCount selectedCounts;
 	EventCount writtenCounts;
 
-	bool HasEnoughSpaceToClearOverflow() const;	
+	bool HasEnoughSpaceToClearOverflow() const;
 };
 
 template <class T>
 void EventBuffer::UpdateAny(const Event<T>& evt)
-{		
+{
 	auto maxForType = config.GetMaxEventsForType(T::EventTypeEnum);
-	
+
 	if (maxForType > 0)
 	{
 		auto currentCount = totalCounts.NumOfType(T::EventTypeEnum);
-		
+
 		if (currentCount >= maxForType || events.IsFull())
 		{
 			this->overflow = true;
-			RemoveOldestEventOfType(T::EventTypeEnum);			
+			RemoveOldestEventOfType(T::EventTypeEnum);
 		}
 
 		// Add the event, the Reset() ensures that selected/written == false
-		events.Add(SOERecord(evt.value, evt.index, evt.clazz, evt.variation))->value.Reset();		
+		events.Add(SOERecord(evt.value, evt.index, evt.clazz, evt.variation))->value.Reset();
 		totalCounts.Increment(evt.clazz, T::EventTypeEnum);
-	}	
+	}
 }
 
 template <class T>
@@ -174,7 +198,7 @@ uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typenam
 	uint32_t num = 0;
 	auto iter = events.Iterate();
 	const uint32_t remaining = totalCounts.NumOfType(T::EventTypeEnum) - selectedCounts.NumOfType(T::EventTypeEnum);
-	
+
 	while (iter.HasNext() && (num < remaining) && (num < max))
 	{
 		auto pNode = iter.Next();
@@ -189,7 +213,7 @@ uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typenam
 			{
 				pNode->value.Select(var);
 			}
-			
+
 			selectedCounts.Increment(pNode->value.clazz, pNode->value.type);
 			++num;
 		}

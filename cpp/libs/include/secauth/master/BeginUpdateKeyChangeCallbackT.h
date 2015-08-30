@@ -29,7 +29,7 @@ namespace secauth
 {
 
 typedef std::function<void (const BeginUpdateKeyChangeResult&)> BeginUpdateKeyChangeCallbackT;
-	
+
 }
 
 #endif

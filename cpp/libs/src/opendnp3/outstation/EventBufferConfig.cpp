@@ -33,24 +33,24 @@ uint16_t EventBufferConfig::GetMaxEventsForType(EventType type) const
 {
 	switch (type)
 	{
-		case(EventType::Binary) :
-			return maxBinaryEvents;
-		case(EventType::DoubleBitBinary) :
-			return maxDoubleBinaryEvents;
-		case(EventType::BinaryOutputStatus) :
-			return maxBinaryOutputStatusEvents;
-		case(EventType::Counter) :
-			return maxCounterEvents;
-		case(EventType::FrozenCounter) :
-			return maxFrozenCounterEvents;		
-		case(EventType::Analog) :
-			return maxAnalogEvents;
-		case(EventType::AnalogOutputStatus) :
-			return maxAnalogOutputStatusEvents;
-		case(EventType::SecurityStat) :
-			return maxSecurityStatisticEvents;
-		default:
-			return 0;
+	case(EventType::Binary) :
+		return maxBinaryEvents;
+	case(EventType::DoubleBitBinary) :
+		return maxDoubleBinaryEvents;
+	case(EventType::BinaryOutputStatus) :
+		return maxBinaryOutputStatusEvents;
+	case(EventType::Counter) :
+		return maxCounterEvents;
+	case(EventType::FrozenCounter) :
+		return maxFrozenCounterEvents;
+	case(EventType::Analog) :
+		return maxAnalogEvents;
+	case(EventType::AnalogOutputStatus) :
+		return maxAnalogOutputStatusEvents;
+	case(EventType::SecurityStat) :
+		return maxSecurityStatisticEvents;
+	default:
+		return 0;
 	}
 }
 
@@ -62,7 +62,7 @@ EventBufferConfig::EventBufferConfig(
     uint16_t maxFrozenCounterEvents_,
     uint16_t maxBinaryOutputStatusEvents_,
     uint16_t maxAnalogOutputStatusEvents_,
-	uint16_t maxSecurityStatisticEvents_) :
+    uint16_t maxSecurityStatisticEvents_) :
 
 	maxBinaryEvents(maxBinaryEvents_),
 	maxDoubleBinaryEvents(maxDoubleBinaryEvents_),
@@ -79,13 +79,13 @@ EventBufferConfig::EventBufferConfig(
 uint32_t EventBufferConfig::TotalEvents() const
 {
 	return	maxBinaryEvents +
-			maxDoubleBinaryEvents +
-			maxAnalogEvents +
-			maxCounterEvents +
-			maxFrozenCounterEvents +
-			maxBinaryOutputStatusEvents +
-			maxAnalogOutputStatusEvents +
-			maxSecurityStatisticEvents;
+	        maxDoubleBinaryEvents +
+	        maxAnalogEvents +
+	        maxCounterEvents +
+	        maxFrozenCounterEvents +
+	        maxBinaryOutputStatusEvents +
+	        maxAnalogOutputStatusEvents +
+	        maxSecurityStatisticEvents;
 }
 
 

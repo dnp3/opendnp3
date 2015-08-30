@@ -45,8 +45,8 @@ typedef std::function<void(const Header&)> WriteHeaderFunT;
 */
 class IMasterApplication : public ILinkListener, public openpal::IUTCTimeSource
 {
-	public:
-	
+public:
+
 	virtual ~IMasterApplication() {}
 
 	/// Called when a response or unsolicited response is receive from the outstation
@@ -59,13 +59,16 @@ class IMasterApplication : public ILinkListener, public openpal::IUTCTimeSource
 	virtual void OnTaskComplete(const TaskInfo& info) {}
 
 	/// @return true if the master should do an assign class task during startup handshaking
-	virtual bool AssignClassDuringStartup() { return false; }
+	virtual bool AssignClassDuringStartup()
+	{
+		return false;
+	}
 
 	/// Configure the request headers for assign class. Only called if
 	/// "AssignClassDuringStartup" returns true
 	/// The user only needs to call the function for each header type to be written
 	virtual void ConfigureAssignClassRequest(const WriteHeaderFunT& fun) {}
-	
+
 };
 
 }

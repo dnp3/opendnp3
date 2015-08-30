@@ -22,41 +22,41 @@
 #include "secauth/AuthorityKey.h"
 
 namespace secauth
-{			
-	AuthorityKey::AuthorityKey() : m_valid(false)
-	{}
-	
-	AuthorityKey::AuthorityKey(uint8_t repeat) : m_valid(true)
+{
+AuthorityKey::AuthorityKey() : m_valid(false)
+{}
+
+AuthorityKey::AuthorityKey(uint8_t repeat) : m_valid(true)
+{
+	this->m_buffer.GetWSlice().SetAllTo(repeat);
+}
+
+AuthorityKey::AuthorityKey(const openpal::RSlice& key) : m_valid(false)
+{
+	this->Initialize(key);
+}
+
+openpal::RSlice AuthorityKey::GetKeyView() const
+{
+	return m_buffer.ToRSlice();
+}
+
+bool AuthorityKey::IsValid() const
+{
+	return m_valid;
+}
+
+bool AuthorityKey::Initialize(const openpal::RSlice& key)
+{
+	if (!(key.Size() == KEY_SIZE_256))
 	{
-		this->m_buffer.GetWSlice().SetAllTo(repeat);
-	}
-	
-	AuthorityKey::AuthorityKey(const openpal::RSlice& key) : m_valid(false)
-	{
-		this->Initialize(key);
+		return false;
 	}
 
-	openpal::RSlice AuthorityKey::GetKeyView() const
-	{
-		return m_buffer.ToRSlice();
-	}
-
-	bool AuthorityKey::IsValid() const
-	{		
-		return m_valid;
-	}
-
-	bool AuthorityKey::Initialize(const openpal::RSlice& key)
-	{		
-		if (!(key.Size() == KEY_SIZE_256))
-		{
-			return false;
-		}
-		
-		auto dest = this->m_buffer.GetWSlice();
-		key.CopyTo(dest);
-		return true;
-	}
+	auto dest = this->m_buffer.GetWSlice();
+	key.CopyTo(dest);
+	return true;
+}
 
 
 

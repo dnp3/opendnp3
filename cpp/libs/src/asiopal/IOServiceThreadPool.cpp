@@ -40,8 +40,8 @@ namespace asiopal
 {
 
 IOServiceThreadPool::IOServiceThreadPool(
-	openpal::ILogHandler* pHandler,
-    uint32_t levels,	
+    openpal::ILogHandler* pHandler,
+    uint32_t levels,
     uint32_t aConcurrency,
     std::function<void()> onThreadStart_,
     std::function<void()> onThreadExit_) :
@@ -59,7 +59,7 @@ IOServiceThreadPool::IOServiceThreadPool(
 		SIMPLE_LOG_BLOCK(logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
 	infiniteTimer.expires_at(asiopal::asiopal_steady_clock::time_point::max());
-	infiniteTimer.async_wait([](const std::error_code&){});
+	infiniteTimer.async_wait([](const std::error_code&) {});
 	for(uint32_t i = 0; i < aConcurrency; ++i)
 	{
 		threads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
@@ -94,9 +94,9 @@ asio::io_service& IOServiceThreadPool::GetIOService()
 }
 
 void IOServiceThreadPool::Run()
-{	
-	onThreadStart();	
-	ioservice.run();	
+{
+	onThreadStart();
+	ioservice.run();
 	onThreadExit();
 }
 
