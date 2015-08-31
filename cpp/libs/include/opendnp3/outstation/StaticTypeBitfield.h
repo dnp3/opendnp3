@@ -28,6 +28,9 @@
 namespace opendnp3
 {
 
+/**
+* A bitfield that describes a subset of all static types, e.g. { Binary, Analog } or {Analog, Counter, FrozenCounter }
+*/
 struct StaticTypeBitField
 {
 	StaticTypeBitField() : mask(0)

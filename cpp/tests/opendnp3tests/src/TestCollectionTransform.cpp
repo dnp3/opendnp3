@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/app/parsing/ICollection.h>
+#include <opendnp3/app/parsing/Collections.h>
 
 #include <vector>
 

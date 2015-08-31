@@ -31,6 +31,9 @@
 namespace opendnp3
 {
 
+/**
+* Struct that provides information about a completed or failed task.
+*/
 class TaskInfo
 {
 

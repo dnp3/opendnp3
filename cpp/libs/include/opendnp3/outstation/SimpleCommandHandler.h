@@ -74,6 +74,9 @@ public:
 
 };
 
+/**
+* A singleton command handler that always returns success
+*/
 class SuccessCommandHandler : public SimpleCommandHandler
 {
 public:

@@ -28,6 +28,7 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "opendnp3/app/parsing/Collections.h"
 #include "opendnp3/LogLevels.h"
 
 namespace opendnp3
