@@ -135,6 +135,9 @@ public:
 	virtual ~IOutstationApplication() {}
 };
 
+/**
+* A singleton with default setting useful for examples
+*/
 class DefaultOutstationApplication : public IOutstationApplication
 {
 public:

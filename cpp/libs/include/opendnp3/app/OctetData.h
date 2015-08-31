@@ -29,6 +29,9 @@
 namespace opendnp3
 {
 
+/**
+* A base-class for bitstrings containing up to 255 bytes
+*/
 class OctetData
 {
 public:

@@ -21,8 +21,9 @@
 #include "asiodnp3/PrintingSOEHandler.h"
 
 using namespace std;
+using namespace opendnp3;
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 PrintingSOEHandler PrintingSOEHandler::instance;

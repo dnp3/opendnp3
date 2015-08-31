@@ -26,6 +26,9 @@
 namespace opendnp3
 {
 
+/**
+* Respresents group 110/111 objects
+*/
 class OctetString : public OctetData
 {
 public:
@@ -33,7 +36,7 @@ public:
 	OctetString() : OctetData()
 	{}
 
-	OctetString(const OctetString& arData) : OctetData(arData)
+	OctetString(const OctetString& data) : OctetData(data)
 	{}
 
 	OctetString(const openpal::RSlice& buffer) : OctetData(buffer)

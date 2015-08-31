@@ -26,10 +26,13 @@
 #include <iostream>
 #include <sstream>
 
-namespace opendnp3
+namespace asiodnp3
 {
 
-class PrintingSOEHandler : public ISOEHandler
+/**
+*	ISOEHandler singleton that prints to the console.
+*/
+class PrintingSOEHandler : public opendnp3::ISOEHandler
 {
 
 public:
@@ -39,18 +42,18 @@ public:
 		return instance;
 	}
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override final;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override final;
 
 
 protected:
@@ -61,7 +64,7 @@ protected:
 private:
 
 	template <class T>
-	static void PrintAll(const HeaderInfo& info, const ICollection<Indexed<T>>& values)
+	static void PrintAll(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<T>>& values)
 	{
 		auto print = [&](const Indexed<T>& pair)
 		{
@@ -71,7 +74,7 @@ private:
 	}
 
 	template <class T>
-	static void Print(const HeaderInfo& info, const T& value, uint16_t index)
+	static void Print(const opendnp3::HeaderInfo& info, const T& value, uint16_t index)
 	{
 		std::cout << "[" << index << "] : " <<
 		          ValueToString(value) << " : " <<
@@ -87,15 +90,15 @@ private:
 		return oss.str();
 	}
 
-	static std::string GetTimeString(TimestampMode tsmode)
+	static std::string GetTimeString(opendnp3::TimestampMode tsmode)
 	{
 		std::ostringstream oss;
 		switch (tsmode)
 		{
-		case(TimestampMode::SYNCHRONIZED) :
+		case(opendnp3::TimestampMode::SYNCHRONIZED) :
 			return "synchronized";
 			break;
-		case(TimestampMode::UNSYNCHRONIZED):
+		case(opendnp3::TimestampMode::UNSYNCHRONIZED) :
 			oss << "unsynchronized";
 			break;
 		default:
@@ -106,9 +109,9 @@ private:
 		return oss.str();
 	}
 
-	static std::string ValueToString(const DoubleBitBinary& meas)
+	static std::string ValueToString(const opendnp3::DoubleBitBinary& meas)
 	{
-		return DoubleBitToString(meas.value);
+		return opendnp3::DoubleBitToString(meas.value);
 	}
 
 	PrintingSOEHandler()
