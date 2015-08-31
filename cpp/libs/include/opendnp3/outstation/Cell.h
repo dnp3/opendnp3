@@ -25,6 +25,9 @@
 namespace opendnp3
 {
 
+/**
+* Type used to record whether a value is requested in a response
+*/
 template <class ValueType>
 struct SelectedValue
 {
@@ -36,6 +39,9 @@ struct SelectedValue
 	typename ValueType::StaticVariation variation;
 };
 
+/**
+* Holds particular measurement type in the database.
+*/
 template <class ValueType>
 struct Cell
 {

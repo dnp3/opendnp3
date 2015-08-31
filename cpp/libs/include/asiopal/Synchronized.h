@@ -28,6 +28,9 @@
 namespace asiopal
 {
 
+/**
+* Provides thread-safe access to a value that can be set once.
+*/
 template <class T>
 class Synchronized
 {

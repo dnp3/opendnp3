@@ -30,6 +30,9 @@ namespace opendnp3
 
 class IMasterTask;
 
+/**
+* Provides access to a permanently bound scan
+*/
 class MasterScan
 {
 public:
@@ -38,7 +41,7 @@ public:
 
 	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask, const std::function<void()>& demandCallback);
 
-	// Request that the scan be performed as soon as possible
+	/// Request that the scan be performed as soon as possible
 	bool Demand();
 
 	bool IsDefined() const;

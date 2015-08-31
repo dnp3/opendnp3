@@ -27,14 +27,14 @@
 namespace opendnp3
 {
 
-// A null object for types that have no metadata
+/// A null object for types that have no metadata
 template <class Target>
 struct EmptyMetadata
 {
 	void SetEventValue(const Target& value) {}
 };
 
-// Base class for different types of event metadata
+/// Base class for different types of event metadata
 template <class Target>
 struct EventMetadata
 {
@@ -53,6 +53,7 @@ protected:
 	{}
 };
 
+/// Metatype w/o a deadband
 template <class Target>
 struct SimpleEventMetadata : EventMetadata<Target>
 {
@@ -65,7 +66,7 @@ struct SimpleEventMetadata : EventMetadata<Target>
 	}
 };
 
-//Structure for holding metadata information on points that have support deadbanding
+/// Structure for holding metadata information on points that have support deadbanding
 template <class Target, class DeadbandType>
 struct DeadbandMetadata : EventMetadata<Target>
 {

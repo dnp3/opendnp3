@@ -33,6 +33,9 @@
 namespace asiopal
 {
 
+/**
+*	A thread pool that calls asio::io_service::run
+*/
 class IOServiceThreadPool
 {
 public:

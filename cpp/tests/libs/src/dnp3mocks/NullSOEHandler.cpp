@@ -18,9 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "opendnp3/master/ISOEHandler.h"
 
-using namespace std;
+#include "NullSOEHandler.h"
 
 namespace opendnp3
 {

@@ -30,6 +30,8 @@
 
 #include <asiopal/UTCTimeSource.h>
 
+#include <dnp3mocks/NullSOEHandler.h>
+
 #include <thread>
 
 using namespace opendnp3;

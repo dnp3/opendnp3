@@ -33,9 +33,9 @@ class io_service;
 namespace asiopal
 {
 
-// This is the base class for the new async physical layers. It assumes that all of the functions
-// are called from a single thread.
-
+/**
+*	Base class for all ASIO based physical layers
+*/
 class PhysicalLayerASIO : public PhysicalLayerBase
 {
 

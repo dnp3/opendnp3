@@ -25,7 +25,8 @@ namespace opendnp3
 {
 
 /**
-	Abstract way of visiting elements of a collection
+* Abstract way of visiting elements of a collection
+*
 */
 template <class T>
 class IVisitor
@@ -36,7 +37,8 @@ public:
 };
 
 /**
-	A visitor implemented as an abstract functor
+* A visitor implemented as an abstract functor
+*
 */
 template <class T, class Fun>
 class FunctorVisitor : public IVisitor<T>
@@ -55,10 +57,10 @@ private:
 	Fun fun;
 };
 
-/*
-	An interface representing an abstract immutable collection of things of type T.
-
-	The user can only read these values via callback to receive each element.
+/**
+* An interface representing an abstract immutable collection of things of type T.
+*
+* The user can only read these values via callback to receive each element.
 */
 template <class T>
 class ICollection
@@ -107,7 +109,7 @@ public:
 };
 
 /**
-	A simple collection derived from an underlying array
+* A simple collection derived from an underlying array
 */
 template <class T>
 class ArrayCollection : public opendnp3::ICollection<T>

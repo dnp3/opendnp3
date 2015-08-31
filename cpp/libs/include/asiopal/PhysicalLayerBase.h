@@ -33,8 +33,9 @@ namespace asiopal
 
 class PLAS_Base;
 
-// This is the base class for the new async physical layers. It assumes that all of the functions
-// are called from a single thread.
+/**
+* Base class for all physical layers
+*/
 class PhysicalLayerBase : public openpal::IPhysicalLayer
 {
 	class State : public  openpal::IChannelState

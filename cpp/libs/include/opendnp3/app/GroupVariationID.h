@@ -26,6 +26,7 @@
 namespace opendnp3
 {
 
+/// Simple uint8_t/uint8_t tuple for group and variation
 struct GroupVariationID
 {
 	GroupVariationID() : group(0xFF), variation(0xFF)

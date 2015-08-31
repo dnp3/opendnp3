@@ -28,6 +28,10 @@
 namespace opendnp3
 {
 
+/**
+* Simple structure used in the ISOEHandler callbacks to return information
+* about the associated header.
+*/
 class HeaderInfo
 {
 public:
@@ -36,24 +40,29 @@ public:
 		gv(GroupVariation::UNKNOWN),
 		qualifier(QualifierCode::UNDEFINED),
 		tsmode(TimestampMode::INVALID),
-		headerCount(0)
+		headerIndex(0)
 	{}
 
 	HeaderInfo(
 	    GroupVariation gv_,
 	    QualifierCode qualifier_,
 	    TimestampMode tsmode_,
-	    uint32_t headerCount_
+		uint32_t headerIndex_
 	) :
 		gv(gv_),
 		qualifier(qualifier_),
-		tsmode(tsmode_)
+		tsmode(tsmode_),
+		headerIndex(headerIndex_)
 	{}
 
+	/// The group/variation enumeration for the header
 	GroupVariation gv;
+	/// The qualifier code enumeration for the header
 	QualifierCode qualifier;
+	/// Enumeration that provides information about the validity of timestamps on the associated objects
 	TimestampMode tsmode;
-	uint32_t headerCount;
+	/// The 0-based index of the header within the ASDU
+	uint32_t headerIndex;
 };
 
 }

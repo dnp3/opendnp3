@@ -30,12 +30,16 @@ namespace asiodnp3
   
 class ChangeSet;  
 
-/*
- *
+/**
+ *	A helper class that allows user code to update the measurement values in an outstation
  */  
 class MeasUpdate : private openpal::Uncopyable
 {
 public:
+
+	/**
+	*	Construct a MeasUpdate with a pointer to an outstation session
+	*/
 	MeasUpdate(IOutstation* outstation);
 
 	~MeasUpdate();

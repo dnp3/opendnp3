@@ -26,6 +26,9 @@
 namespace opendnp3
 {
 
+/**
+* Specifies the number and type of measurements in an outstation database.
+*/
 struct DatabaseTemplate
 {
 	static DatabaseTemplate BinaryOnly(uint16_t count)

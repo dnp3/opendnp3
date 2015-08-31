@@ -28,6 +28,9 @@
 namespace opendnp3
 {
 
+/**
+* A strategy interface for controlling how connection are retried
+*/
 class IOpenDelayStrategy
 {
 
@@ -35,9 +38,15 @@ public:
 
 	virtual ~IOpenDelayStrategy() {}
 
+	/**
+	* The the next delay based on the current and the maximum.
+	*/
 	virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const = 0;
 };
 
+/**
+* Implements IOpenDelayStrategy using exponential-backoff.
+*/
 class ExponentialBackoffStrategy : public IOpenDelayStrategy, private openpal::Uncopyable
 {
 	static ExponentialBackoffStrategy instance;

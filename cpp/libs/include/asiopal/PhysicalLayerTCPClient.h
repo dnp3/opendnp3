@@ -29,6 +29,9 @@
 namespace asiopal
 {
 
+/**
+* Implementation of a TCP client
+*/
 class PhysicalLayerTCPClient : public PhysicalLayerBaseTCP
 {
 public:

@@ -29,6 +29,9 @@
 namespace opendnp3
 {
 
+/**
+* Specifies a set of event classes e.g. some subset of {0, 1, 2, 3}
+*/
 class ClassField
 {
 public:

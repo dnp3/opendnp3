@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
 	// returns a thread-safe interface used for sending commands.
 	auto pMaster = pChannel->AddMasterSA(
 	                   "master",										// id for logging
-	                   NullSOEHandler::Instance(),						// callback for data processing
+	                   PrintingSOEHandler::Instance(),						// callback for data processing
 	                   application,										// master application instance for SA
 	                   stackConfig										// stack configuration
 	               );

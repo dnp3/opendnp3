@@ -35,6 +35,9 @@ namespace asiopal
 
 class TimerASIO;
 
+/**
+* An ASIO-based implementation of openpal::IExecutor
+*/
 class ASIOExecutor : public openpal::IExecutor
 {
 

@@ -31,6 +31,9 @@ namespace opendnp3
 
 class HeaderWriter;
 
+/**
+* An enumeration that defines the type of object header
+*/
 enum class HeaderType : uint8_t
 {
     AllObjects,
@@ -40,6 +43,9 @@ enum class HeaderType : uint8_t
     LimitedCount16
 };
 
+/**
+* A template for a integer range
+*/
 template <class T>
 struct StartStopRange
 {
@@ -47,12 +53,18 @@ struct StartStopRange
 	T stop;
 };
 
+/**
+* A template for an integer count
+*/
 template <class T>
 struct Count
 {
 	T value;
 };
 
+/**
+* Union type that holds information for a single header type
+*/
 union HeaderUnion
 {
 	StartStopRange<uint8_t> range8;
@@ -61,20 +73,38 @@ union HeaderUnion
 	Count<uint16_t> count16;
 };
 
+/**
+* Class used to specify a header type
+*/
 class Header
 {
 public:
 
 	bool WriteTo(opendnp3::HeaderWriter& writer) const;
 
+	/**
+	* Create an all objects (0x06) header
+	*/
 	static Header AllObjects(uint8_t group, uint8_t variation);
 
+	/**
+	* Create a 8-bit start stop header (0x00)
+	*/
 	static Header Range8(uint8_t group, uint8_t variation, uint8_t start, uint8_t stop);
 
+	/**
+	* Create a 16-bit start stop header (0x01)
+	*/
 	static Header Range16(uint8_t group, uint8_t variation, uint16_t start, uint16_t stop);
 
+	/**
+	* Create a 8-bit count header (0x07)
+	*/
 	static Header Count8(uint8_t group, uint8_t variation, uint8_t count);
 
+	/**
+	* Create a 16-bit count header (0x08)
+	*/
 	static Header Count16(uint8_t group, uint8_t variation, uint16_t count);
 
 	Header() : id(0, 0), type(HeaderType::AllObjects)
