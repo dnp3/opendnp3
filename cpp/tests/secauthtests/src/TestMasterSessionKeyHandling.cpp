@@ -245,7 +245,7 @@ void TestTaskCompletionDueToAuthError(AuthErrorCode error, TaskCompletion comple
 	REQUIRE(info.user.GetId() == User::DEFAULT_ID);
 	REQUIRE(info.type == MasterTaskType::USER_TASK);
 
-	REQUIRE(fixture.exe.NumPendingTimers() == 1); // just the timer for the next task should be active, not the wait timer
+	REQUIRE(fixture.exe.NumPendingTimers() == 2); // next task timer + start timer
 
 	fixture.SendToMaster("C1 83 00 00");
 }
