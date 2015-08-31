@@ -32,6 +32,9 @@
 namespace openpal
 {
 
+/**
+* Template type for a dynamically allocated array
+*/
 template <class ValueType, class IndexType>
 class Array : public HasSize<IndexType>, private openpal::Uncopyable
 {

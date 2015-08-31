@@ -27,6 +27,9 @@
 namespace openpal
 {
 
+/**
+* Statically allocated function object of type void ()
+*/
 class Action0 : public Erasure
 {
 
