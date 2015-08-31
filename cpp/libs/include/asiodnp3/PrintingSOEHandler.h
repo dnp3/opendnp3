@@ -66,7 +66,7 @@ private:
 	template <class T>
 	static void PrintAll(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<T>>& values)
 	{
-		auto print = [&](const Indexed<T>& pair)
+		auto print = [&](const opendnp3::Indexed<T>& pair)
 		{
 			Print<T>(info, pair.value, pair.index);
 		};

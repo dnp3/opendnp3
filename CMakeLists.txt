@@ -25,6 +25,7 @@ endif()
 option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
+option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
 
 if(SECAUTH)
    find_package(OpenSSL REQUIRED)
@@ -62,6 +63,11 @@ else()
   # different release and debug flags
   set(CMAKE_CXX_FLAGS_RELEASE "-O3")
   set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+  
+  if(COVERAGE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -g -O0")
+    #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage -g -O0")
+  endif()
 
   if (WERROR)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
@@ -124,10 +130,11 @@ else()
 endif()
 
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
-target_link_libraries(asiodnp3 opendnp3)
-target_link_libraries(asiodnp3 asiopal)
+
 if(SECAUTH)
-  target_link_libraries(asiodnp3 secauth)
+  target_link_libraries(asiodnp3 secauth opendnp3 asiopal)
+else()
+  target_link_libraries(asiodnp3 opendnp3 asiopal)  
 endif()
 
 install(TARGETS asiodnp3 DESTINATION lib)
