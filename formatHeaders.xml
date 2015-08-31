@@ -28,6 +28,8 @@
                         <include>cpp/**/*.cpp</include>
                     </includes>
                     <excludes>
+                        <exclude>cpp/include/opendnp3/gen/*</exclude>
+                        <exclude>cpp/include/opendnp3/objects/*</exclude>
                         <exclude>cpp/src/opendnp3/gen/*</exclude>
                         <exclude>cpp/src/opendnp3/objects/*</exclude>
                     </excludes>
