@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
  * more contributor license agreements. See the NOTICE file distributed
  * with this work for additional information regarding copyright ownership.
@@ -18,7 +18,6 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-
 #include "APDUParser.h"
 
 
