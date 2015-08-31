@@ -63,18 +63,18 @@ namespace Automatak.DNP3.Interface
 
     public class HeaderInfo
     {
-        public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampMode tsmode, UInt32 headerCount)
+        public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampMode tsmode, UInt32 headerIndex)
         {
             this.variation = variation;
             this.qualifier = qualifier;
             this.tsmode = tsmode;
-            this.headerCount = headerCount;
+            this.headerIndex = headerIndex;
         }
         
         public readonly GroupVariation variation;
         public readonly QualifierCode qualifier;
         public readonly TimestampMode tsmode;
-        public readonly UInt32 headerCount;
+        public readonly UInt32 headerIndex;
     }
 
     /// <summary>
