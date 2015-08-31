@@ -1,4 +1,7 @@
 ### 2.1.0-RC1 (pending) ###
+* Migrated fully to CMake, including generated SLN
+* Separated include vs private headers
+* New guide + doxygen docs
 * Add an ILinkListener interface inherited by IMasterApplication/IOutstationApplication that allows you to monitor link-layer activity.
 * Implemented the RequestLinkStates/LinkStatus heartbeat functionality in 1815.
 * :beetle: Fixed a bug in the way CTO objects were handled w/ Group2Var3 and Group4Var3
@@ -7,7 +10,6 @@
 * Introduced an experimental version of SAv5 (not intended for production use)
  * Significantly refactored the master/outstation internals to accommodate adding SA via inheritance.
  * Added parser/formatter generators for variable-length objects in Group120
-
 
 
 ### 2.0.1 ###
