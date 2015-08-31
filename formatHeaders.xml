@@ -19,13 +19,17 @@
                 <version>2.5</version>
                 <configuration>
                     <header>APACHE_LICENSE_HEADER</header>
+                    <mapping>
+                      <h>SLASHSTAR_STYLE</h>
+                      <cpp>SLASHSTAR_STYLE</cpp>
+                    </mapping>
                     <includes>
                         <include>cpp/**/*.h</include>
                         <include>cpp/**/*.cpp</include>
                     </includes>
                     <excludes>
-                        <exclude>cpp/opendnp3/src/opendnp3/gen/*</exclude>
-                        <exclude>cpp/opendnp3/src/opendnp3/objects/*</exclude>
+                        <exclude>cpp/src/opendnp3/gen/*</exclude>
+                        <exclude>cpp/src/opendnp3/objects/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
