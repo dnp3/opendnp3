@@ -42,6 +42,31 @@ CommandSet::~CommandSet()
 	}
 }
 
+CommandSet::CommandSet(std::initializer_list<Indexed<ControlRelayOutputBlock>> items)
+{
+	this->Add(items);
+}
+
+CommandSet::CommandSet(std::initializer_list<Indexed<AnalogOutputInt16>> items)
+{
+	this->Add(items);
+}
+
+CommandSet::CommandSet(std::initializer_list<Indexed<AnalogOutputInt32>> items)
+{
+	this->Add(items);
+}
+
+CommandSet::CommandSet(std::initializer_list<Indexed<AnalogOutputFloat32>> items)
+{
+	this->Add(items);
+}
+
+CommandSet::CommandSet(std::initializer_list<Indexed<AnalogOutputDouble64>> items)
+{
+	this->Add(items);
+}
+
 ICommandCollection<ControlRelayOutputBlock>& CommandSet::StartHeaderCROB()
 {
 	TypedCommandHeader<ControlRelayOutputBlock>* header = new TypedCommandHeader<ControlRelayOutputBlock>(Group12Var1::Inst());
@@ -76,8 +101,6 @@ ICommandCollection<AnalogOutputDouble64>& CommandSet::StartHeaderAODouble64()
 	this->m_headers.push_back(header);
 	return *header;
 }
-
-
 
 }
 

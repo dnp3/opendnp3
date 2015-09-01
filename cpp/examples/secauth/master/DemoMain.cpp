@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
 		case('c'):
 			{
 				CommandSet commands;
-				commands.StartHeaderCROB().Add(ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);
+				commands.StartHeader<ControlRelayOutputBlock>().Add(ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);
 				pMaster->SelectAndOperate(std::move(commands), PrintingCommandCallback::Get());
 				break;
 			}

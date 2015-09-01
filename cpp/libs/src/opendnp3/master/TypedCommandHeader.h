@@ -66,7 +66,7 @@ public:
 
 	// --- Implement ICommandCollection ---
 
-	virtual void Add(const T& command, uint16_t index) override;
+	virtual ICommandCollection<T>& Add(const T& command, uint16_t index) override;
 	
 	// --- Implement ICommandHeader ----
 
@@ -92,9 +92,10 @@ private:
 
 
 template <class T>
-void TypedCommandHeader<T>::Add(const T& command, uint16_t index)
+ICommandCollection<T>& TypedCommandHeader<T>::Add(const T& command, uint16_t index)
 {
 	m_records.push_back(WithIndex(command, index));
+	return *this;
 }
 
 template <class T>

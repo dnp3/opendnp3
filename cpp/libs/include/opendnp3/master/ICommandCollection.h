@@ -30,7 +30,8 @@ template <class T>
 class ICommandCollection
 {
 public:
-	virtual void Add(const T& command, uint16_t index) = 0;
+	
+	virtual ICommandCollection& Add(const T& command, uint16_t index) = 0;
 };
 
 }

@@ -43,14 +43,13 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 	MasterParams params;
 	MasterTestObject t(params);
 
-	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
+	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
 	CommandCallbackQueue queue;
 
 
 	for (int i = 0; i < 10; ++i)
 	{
-		CommandSet commands;
-		commands.StartHeaderCROB().Add(bo, 7);
+		CommandSet commands({ WithIndex(crob, 7) });
 
 		t.context.SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 		REQUIRE(1 == queue.values.size());

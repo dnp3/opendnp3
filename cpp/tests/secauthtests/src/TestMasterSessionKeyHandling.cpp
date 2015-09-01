@@ -202,7 +202,7 @@ TEST_CASE(SUITE("Tasks for non-existant users are immediately failed"))
 
 	CommandCallbackQueue queue;
 	CommandSet commands;
-	commands.StartHeaderCROB().Add(ControlRelayOutputBlock(ControlCode::LATCH_ON), 1);
+	commands.StartHeader<ControlRelayOutputBlock>().Add(ControlRelayOutputBlock(ControlCode::LATCH_ON), 1);
 
 	/// start a command request on some user that doesn't exist
 	fixture.context.SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::With(User(42)));

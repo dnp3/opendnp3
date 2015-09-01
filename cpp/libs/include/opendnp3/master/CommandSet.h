@@ -25,15 +25,17 @@
 
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
+#include "opendnp3/app/Indexed.h"
 
 #include <vector>
+#include <initializer_list>
 
 namespace opendnp3
 {
 
 class ICommandHeader;
 
-class CommandSet
+class CommandSet final
 {	
 	// friend class used to hide some implementation details while keeping the headers private
 	friend class CommandSetOps;
@@ -45,14 +47,77 @@ public:
 	CommandSet() {}	
 	CommandSet(CommandSet&& other);
 	~CommandSet();
-		
-	ICommandCollection<ControlRelayOutputBlock>& StartHeaderCROB();	
-	ICommandCollection<AnalogOutputInt32>& StartHeaderAOInt32();	
-	ICommandCollection<AnalogOutputInt16>& StartHeaderAOInt16();	
-	ICommandCollection<AnalogOutputFloat32>& StartHeaderAOFloat32();	
-	ICommandCollection<AnalogOutputDouble64>& StartHeaderAODouble64();	
+	
+	CommandSet(std::initializer_list<Indexed<ControlRelayOutputBlock>> items);
+	CommandSet(std::initializer_list<Indexed<AnalogOutputInt16>> items);
+	CommandSet(std::initializer_list<Indexed<AnalogOutputInt32>> items);
+	CommandSet(std::initializer_list<Indexed<AnalogOutputFloat32>> items);
+	CommandSet(std::initializer_list<Indexed<AnalogOutputDouble64>> items);
+	
+	template <class T>
+	ICommandCollection<T>& StartHeader()
+	{
+		static_assert(false, "StartHeader() can only be templated with command types");
+	}
+
+
+	/// Convenience functions that can build an entire header in one call
+	template <class T>
+	void Add(std::initializer_list<Indexed<T>> items)
+	{
+		auto& header = this->StartHeader<T>();
+		for (auto& command : items)
+		{
+			header.Add(command.value, command.index);
+		}
+	}
+
+	template <class T>
+	ICommandCollection<T>& CommandSet::StartHeader()
+	{
+		static_assert(false, "StartHeader() can only be templated with command types");
+	}
+
+	template <>
+	ICommandCollection<ControlRelayOutputBlock>& CommandSet::StartHeader()
+	{
+		return this->StartHeaderCROB();
+	}
+
+	template <>
+	ICommandCollection<AnalogOutputInt16>& CommandSet::StartHeader()
+	{
+		return this->StartHeaderAOInt16();
+	}
+
+	template <>
+	ICommandCollection<AnalogOutputInt32>& CommandSet::StartHeader()
+	{
+		return this->StartHeaderAOInt32();
+	}
+
+	template <>
+	ICommandCollection<AnalogOutputFloat32>& CommandSet::StartHeader()
+	{
+		return this->StartHeaderAOFloat32();
+	}
+
+	template <>
+	ICommandCollection<AnalogOutputDouble64>& CommandSet::StartHeader()
+	{
+		return this->StartHeaderAODouble64();
+	}
 	
 private:
+
+	template <class T>
+	void AddAny(std::initializer_list<Indexed<T>> items);
+
+	ICommandCollection<ControlRelayOutputBlock>& StartHeaderCROB();
+	ICommandCollection<AnalogOutputInt32>& StartHeaderAOInt32();
+	ICommandCollection<AnalogOutputInt16>& StartHeaderAOInt16();
+	ICommandCollection<AnalogOutputFloat32>& StartHeaderAOFloat32();
+	ICommandCollection<AnalogOutputDouble64>& StartHeaderAODouble64();
 	
 	CommandSet(const CommandSet&) = delete;
 	CommandSet& operator= (const CommandSet& other) = delete;

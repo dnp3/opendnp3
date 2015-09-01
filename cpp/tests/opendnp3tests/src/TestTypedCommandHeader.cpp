@@ -80,15 +80,8 @@ TEST_CASE(SUITE("Command set can be moved and written"))
 {
 	CommandSet commands;
 
-	{
-		auto& header = commands.StartHeaderAOInt16();
-		header.Add(AnalogOutputInt16(7), 10);
-	}
-
-	{
-		auto& header = commands.StartHeaderAOInt32();
-		header.Add(AnalogOutputInt32(8), 11);
-	}
+	commands.Add<AnalogOutputInt16>({ WithIndex(AnalogOutputInt16(7), 10) });
+	commands.Add<AnalogOutputInt32>({ WithIndex(AnalogOutputInt32(8), 11) });
 
 	CommandSet commands2(std::move(commands));
 
