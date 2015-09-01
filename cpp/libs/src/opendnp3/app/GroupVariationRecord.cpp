@@ -80,10 +80,10 @@ GroupVariationRecord::GroupVariationRecord(uint8_t group_, uint8_t variation_, G
 
 }
 
-HeaderRecord::HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier_, uint32_t headerCount_) :
+HeaderRecord::HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier_, uint32_t headerIndex_) :
 	GroupVariationRecord(gv),
 	qualifier(qualifier_),
-	headerCount(headerCount_)
+	headerIndex(headerIndex_)
 {
 
 }

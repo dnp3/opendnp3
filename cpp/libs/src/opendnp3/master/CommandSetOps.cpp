@@ -23,10 +23,42 @@
 
 #include "opendnp3/master/ICommandHeader.h"
 
+#include "opendnp3/app/parsing/APDUParser.h"
+
+#include <algorithm>
+
 namespace opendnp3
 {
+
+template <class T>
+IINField CommandSetOps::ProcessAny(const PrefixHeader& header, const ICollection<Indexed<T>>& values)
+{
+	if (header.GetQualifierCode() != QualifierCode::UINT16_CNT_UINT16_INDEX)
+	{
+		return IINBit::PARAM_ERROR;
+	}
+
+	if (header.headerIndex >= commands->m_headers.size()) // more response headers than request headers
+	{
+		return IINBit::PARAM_ERROR;
+	}	
+
+	if (mode == Mode::Select)
+	{
+		commands->m_headers[header.headerIndex]->ApplySelectResponse(values);
+	}
+	else
+	{
+		commands->m_headers[header.headerIndex]->ApplyOperateResponse(values);
+	}
 	
-bool CommandSetOps::Write(HeaderWriter& writer, const CommandSet& set)
+	return IINField::Empty();
+}
+
+CommandSetOps::CommandSetOps(Mode mode, CommandSet& commands_) : commands(&commands_)
+{}
+	
+bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer)
 {
 	for(auto& header: set.m_headers)
 	{
@@ -37,6 +69,69 @@ bool CommandSetOps::Write(HeaderWriter& writer, const CommandSet& set)
 	}
 
 	return true;
+}
+
+bool CommandSetOps::ProcessSelectResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)
+{
+	CommandSetOps handler(Mode::Select, set);
+	if (APDUParser::Parse(headers, handler, logger) != ParseResult::OK)
+	{
+		return false;
+	}
+
+	auto selected = [](const std::unique_ptr<ICommandHeader>& header) -> bool { return header->AreAllSelected(); };
+	return std::all_of(set.m_headers.begin(), set.m_headers.end(), selected);
+}
+
+bool CommandSetOps::ProcessOperateResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)
+{
+	CommandSetOps handler(Mode::Operate, set);
+	return APDUParser::Parse(headers, handler, logger) == ParseResult::OK;
+}
+
+bool CommandSetOps::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
+{
+	if (qc != QualifierCode::UINT16_CNT_UINT16_INDEX)
+	{
+		return false;
+	}
+
+	switch (gv)
+	{
+	case(GroupVariation::Group12Var1) : //	CROB
+	case(GroupVariation::Group41Var1) : //	4 kinds of AO
+	case(GroupVariation::Group41Var2) :
+	case(GroupVariation::Group41Var3) :
+	case(GroupVariation::Group41Var4) :
+		return true;
+	default:
+		return false;
+	}
+}
+
+IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
+{
+	return this->ProcessAny(header, values);
+}
+
+IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values)
+{
+	return this->ProcessAny(header, values);
+}
+
+IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values)
+{
+	return this->ProcessAny(header, values);
+}
+
+IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values)
+{
+	return this->ProcessAny(header, values);
+}
+
+IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values)
+{
+	return this->ProcessAny(header, values);
 }
 	
 

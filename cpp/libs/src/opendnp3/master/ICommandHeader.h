@@ -23,6 +23,7 @@
 
 #include "opendnp3/master/HeaderInfo.h"
 #include "opendnp3/app/parsing/ICollection.h"
+#include "opendnp3/master/CommandResponse.h"
 
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
@@ -36,30 +37,33 @@ class HeaderWriter;
 /**
 * Represents an object header of command objects (CROB or AO)
 */
-class ICommandHeader
+class ICommandHeader : public ICollection<Indexed<CommandResponse>>
 {
 public:
 
 	virtual ~ICommandHeader() {}
 	
-	/// Write all of the headers to an ASDU 	
-	virtual bool Write(HeaderWriter&) = 0;
+	// --- Write all of the headers to an ASDU 	---
+	virtual bool Write(HeaderWriter&) const = 0;
+
+	// Ask if all of the individual commands have been selected
+	virtual bool AreAllSelected() const = 0;
 
 	// --- each overriden classs will only override one of these ---
 
-	virtual bool VerifySelect(const HeaderInfo& info, const ICollection<Indexed<ControlRelayOutputBlock>>& commands) { return false; }
-	virtual bool VerifySelect(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputInt16>>& commands) { return false; }
-	virtual bool VerifySelect(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputInt32>>& commands)  { return false; }
-	virtual bool VerifySelect(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputFloat32>>& commands)  { return false; }
-	virtual bool VerifySelect(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputDouble64>>& commands)  { return false; }
+	virtual void ApplySelectResponse(const ICollection<Indexed<ControlRelayOutputBlock>>& commands) {}
+	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputInt16>>& commands) {}
+	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputInt32>>& commands)  {}
+	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputFloat32>>& commands)  {}
+	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputDouble64>>& commands)  {}
 
 	// --- each overriden classs will only override one of these ---
 
-	virtual bool VerifyOperate(const HeaderInfo& info, const ICollection<Indexed<ControlRelayOutputBlock>>& commands) { return false; }
-	virtual bool VerifyOperate(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputInt16>>& commands) { return false; }
-	virtual bool VerifyOperate(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputInt32>>& commands)  { return false; }
-	virtual bool VerifyOperate(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputFloat32>>& commands)  { return false; }
-	virtual bool VerifyOperate(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputDouble64>>& commands)  { return false; }
+	virtual void ApplyOperateResponse(const ICollection<Indexed<ControlRelayOutputBlock>>& commands) {}
+	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputInt16>>& commands) {}
+	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputInt32>>& commands)  {}
+	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputFloat32>>& commands)  {}
+	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputDouble64>>& commands)  {}
 };
 
 }

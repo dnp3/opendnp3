@@ -83,15 +83,15 @@ class HeaderRecord : public GroupVariationRecord
 {
 public:
 
-	HeaderRecord() : qualifier(0), headerCount(0)
+	HeaderRecord() : qualifier(0), headerIndex(0)
 	{}
 
-	HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier, uint32_t headerCount);
+	HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier, uint32_t headerIndex);
 
 	QualifierCode GetQualifierCode() const;
 
 	uint8_t qualifier;
-	uint32_t headerCount;
+	uint32_t headerIndex;
 };
 
 // ---- Specific header types  ---

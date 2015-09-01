@@ -44,7 +44,7 @@ enum class SelectState : uint8_t
 };
 
 template <class T>
-class TypedCommandHeader final : public ICommandHeader, public ICollection<Indexed<CommandResponse>>, public ICommandCollection<T>
+class TypedCommandHeader final : public ICommandHeader, public ICommandCollection<T>
 {	
 	struct Record
 	{
@@ -69,12 +69,14 @@ public:
 	virtual void Add(const T& command, uint16_t index) override;
 	
 	// --- Implement ICommandHeader ----
+
+	virtual bool AreAllSelected() const override;
 	
-	virtual bool Write(HeaderWriter&) override;
+	virtual bool Write(HeaderWriter&) const override;
 
-	virtual bool VerifySelect(const HeaderInfo& info, const ICollection<Indexed<T>>& commands) override;	
+	virtual void ApplySelectResponse(const ICollection<Indexed<T>>& commands) override;	
 
-	virtual bool VerifyOperate(const HeaderInfo& info, const ICollection<Indexed<T>>& commands) override;
+	virtual void ApplyOperateResponse(const ICollection<Indexed<T>>& commands) override;
 
 	// --- Implement ICollection<Indexed<CommandResponse>> ----
 
@@ -96,7 +98,14 @@ void TypedCommandHeader<T>::Add(const T& command, uint16_t index)
 }
 
 template <class T>
-bool TypedCommandHeader<T>::Write(HeaderWriter& writer)
+bool TypedCommandHeader<T>::AreAllSelected() const
+{	
+	auto isSuccess = [](const Record& rec) -> bool { return rec.state == SelectState::SUCCESS; };
+	return std::all_of(m_records.begin(), m_records.end(), isSuccess);
+}
+
+template <class T>
+bool TypedCommandHeader<T>::Write(HeaderWriter& writer) const
 {	
 	if (m_records.empty())
 	{
@@ -117,11 +126,11 @@ bool TypedCommandHeader<T>::Write(HeaderWriter& writer)
 }
 
 template <class T>
-bool TypedCommandHeader<T>::VerifySelect(const HeaderInfo& info, const ICollection<Indexed<T>>& commands)
+void TypedCommandHeader<T>::ApplySelectResponse(const ICollection<Indexed<T>>& commands)
 {
 	if (commands.Count() > m_records.size())
 	{
-		return false;
+		return;
 	}
 	
 	uint32_t index = 0;
@@ -153,18 +162,14 @@ bool TypedCommandHeader<T>::VerifySelect(const HeaderInfo& info, const ICollecti
 	}; 
 
 	commands.ForeachItem(visit);
-
-	auto isSuccess = [](const Record& rec) -> bool { return rec.state == SelectState::SUCCESS; };
-
-	return std::all_of(m_records.begin(), m_records.end(), isSuccess);
 }
 
 template <class T>
-bool TypedCommandHeader<T>::VerifyOperate(const HeaderInfo& info, const ICollection<Indexed<T>>& commands)
+void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& commands)
 {	
 	if (commands.Count() > m_records.size())
 	{
-		return false;
+		return;
 	}
 
 	uint32_t index = 0;
@@ -188,11 +193,7 @@ bool TypedCommandHeader<T>::VerifyOperate(const HeaderInfo& info, const ICollect
 		rec.response = CommandResponse::OK(item.value.status);		
 	};
 
-	commands.ForeachItem(visit);
-
-	auto isSuccess = [](const Record& rec) -> bool { return rec.response.GetResult() == TaskCompletion::SUCCESS; };
-
-	return std::all_of(m_records.begin(), m_records.end(), isSuccess);
+	commands.ForeachItem(visit);	
 }
 
 template <class T>

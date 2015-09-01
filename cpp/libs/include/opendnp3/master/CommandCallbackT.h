@@ -22,13 +22,17 @@
 #define OPENDNP3_COMMAND_CALLBACK_T_H
 
 #include "opendnp3/master/CommandResponse.h"
+#include "opendnp3/app/parsing/ICollection.h"
 
 #include <functional>
 
 namespace opendnp3
 {
 
-typedef std::function<void (const CommandResponse&)> CommandCallbackT;
+//typedef ICollection<ICollection<Indexed<CommandResponse>>> CommandCallbackValueT;
+typedef CommandResponse CommandCallbackValueT;
+
+typedef std::function<void(const CommandCallbackValueT&)> CommandCallbackT;
 
 }
 

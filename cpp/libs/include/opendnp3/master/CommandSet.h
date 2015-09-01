@@ -41,6 +41,8 @@ class CommandSet
 
 public:	
 
+	typedef std::vector<std::unique_ptr<ICommandHeader>> HeaderVector;
+
 	CommandSet() {}	
 	CommandSet(CommandSet&& other);
 		
@@ -55,7 +57,7 @@ private:
 	CommandSet(const CommandSet&) = delete;
 	CommandSet& operator= (const CommandSet& other) = delete;
 	
-	std::vector<std::unique_ptr<ICommandHeader>> m_headers;	
+	HeaderVector m_headers;
 };
 
 }

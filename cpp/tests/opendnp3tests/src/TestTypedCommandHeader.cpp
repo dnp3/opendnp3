@@ -103,6 +103,6 @@ std::string WriteToHex(const CommandSet& commands)
 	APDURequest request(dest);
 	auto writer = request.GetWriter();
 
-	REQUIRE(CommandSetOps::Write(writer, commands));
+	REQUIRE(CommandSetOps::Write(commands, writer));
 	return ToHex(request.ToRSlice().Skip(2));
 }

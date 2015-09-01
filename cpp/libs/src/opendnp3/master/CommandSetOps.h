@@ -24,6 +24,9 @@
 #include "opendnp3/master/CommandSet.h"
 
 #include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
+
+#include <openpal/logging/Logger.h>
 
 namespace opendnp3
 {
@@ -33,11 +36,51 @@ namespace opendnp3
 	* 
 	* Used to reduce the public API surface exposed in includes to users	
 	*/
-	class CommandSetOps
+	class CommandSetOps final : public IAPDUHandler, private openpal::Uncopyable
 	{
+		enum class Mode : uint8_t
+		{
+			Select,
+			Operate
+		};
+
+		CommandSetOps(Mode mode, CommandSet& commands_);
+
+		Mode mode;
+
 	public:
 		
-		static bool Write(HeaderWriter& writer, const CommandSet& set);
+		/// Write the headers to an ASDU
+		static bool Write(const CommandSet& set, HeaderWriter& writer);
+
+		/**
+		* parses a response to a select, applying each received header to the command set
+		*
+		* @return true if every object in every header was correctly selected, false otherwise
+		*/
+		static bool ProcessSelectResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger);
+
+		/**
+		* parses a response to an operate (or DO), applying each received header to the command set
+		*
+		* @return true if parsing was successful, the results are left in the set
+		*/
+		static bool ProcessOperateResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger);
+		
+	private:
+
+		virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override;
+
+		virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values) override;
+		virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values) override;
+		virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values) override;
+		virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values) override;
+		virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values) override;
+
+		template <class T>
+		IINField ProcessAny(const PrefixHeader& header, const ICollection<Indexed<T>>& values);
+
+		CommandSet* commands;
 	};
 
 }
