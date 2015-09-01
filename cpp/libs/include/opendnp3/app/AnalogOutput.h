@@ -40,19 +40,19 @@ public:
 		status(CommandStatus::SUCCESS)
 	{}
 
-	AnalogOutput(T aValue) :
-		value(aValue),
+	AnalogOutput(T value_) :
+		value(value_),
 		status(CommandStatus::SUCCESS)
 	{}
 
-	AnalogOutput(T aValue, CommandStatus aStatus) :
-		value(aValue),
-		status(aStatus)
+	AnalogOutput(T value_, CommandStatus status_) :
+		value(value_),
+		status(status_)
 	{}
 
-	bool ValuesEqual(const AnalogOutput<T>& aLHS) const
+	bool ValuesEqual(const AnalogOutput<T>& lhs) const
 	{
-		return value == aLHS.value;
+		return value == lhs.value;
 	}
 
 	T value;

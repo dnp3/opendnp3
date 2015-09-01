@@ -67,17 +67,17 @@ public:
 	/// status of the resulting operation
 	CommandStatus status;
 
-	bool ValuesEqual(const ControlRelayOutputBlock& aLHS) const
+	bool ValuesEqual(const ControlRelayOutputBlock& lhs) const
 	{
-		return (functionCode == aLHS.functionCode) &&
-		       (count == aLHS.count) &&
-		       (onTimeMS == aLHS.onTimeMS) &&
-		       (offTimeMS == aLHS.offTimeMS);
+		return (functionCode == lhs.functionCode) &&
+			   (count == lhs.count) &&
+			   (onTimeMS == lhs.onTimeMS) &&
+			   (offTimeMS == lhs.offTimeMS);
 	}
 
-	bool operator==(const ControlRelayOutputBlock& aLHS) const
+	bool operator==(const ControlRelayOutputBlock& lhs) const
 	{
-		return this->ValuesEqual(aLHS) && (this->status == aLHS.status);
+		return this->ValuesEqual(lhs) && (this->status == lhs.status);
 	}
 };
 
