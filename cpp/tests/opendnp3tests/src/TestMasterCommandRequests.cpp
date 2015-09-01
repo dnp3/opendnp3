@@ -67,7 +67,6 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 	}
 }
 
-/*
 TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 {
 	MasterParams params;
@@ -79,23 +78,22 @@ TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 
-	// while we're waiting for a reponse, submit a control
-	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
-	CallbackQueue<CommandResponse> queue;
+	// while we're waiting for a reponse, submit a control	
+	CommandCallbackQueue queue;
 
 	for(int i = 0; i < 5; ++i)
 	{
-		t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
+		CommandSet commands({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) });
+		t.context.SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 		t.exe.AdvanceTime(params.taskStartTimeout);
 		REQUIRE(t.exe.RunMany() > 0);
-		REQUIRE(1 == queue.responses.size());
-		REQUIRE((CommandResponse(TaskCompletion::FAILURE_START_TIMEOUT) == queue.responses.front()));
-		queue.responses.pop_front();
+		REQUIRE(1 == queue.values.size());
+		REQUIRE(TaskCompletion::FAILURE_START_TIMEOUT == queue.values.front().summary);
+		queue.values.pop_front();
 	}
-
-
 }
 
+/*
 TEST_CASE(SUITE("SelectAndOperate"))
 {
 	MasterTestObject t(NoStartupTasks());
