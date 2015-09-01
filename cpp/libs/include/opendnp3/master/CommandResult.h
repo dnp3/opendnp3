@@ -18,20 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_COMMAND_CALLBACK_T_H
-#define OPENDNP3_COMMAND_CALLBACK_T_H
 
-#include "CommandResult.h"
+#ifndef OPENDNP3_COMMAND_RESULT_H
+#define OPENDNP3_COMMAND_RESULT_H
 
-#include <functional>
+#include "opendnp3/master/CommandResponse.h"
+#include "opendnp3/app/parsing/ICollection.h"
 
 namespace opendnp3
 {
 
-//typedef ICommandResults CommandCallbackValueT;
-typedef CommandResponse CommandCallbackValueT;
+class CommandResult
+{
+	CommandResult(uint32_t headerIndex_, uint16_t index_, CommandResponse response_) :
+		headerIndex(headerIndex_),
+		index(index_),
+		response(response_)
+	{}
 
-typedef std::function<void(const CommandCallbackValueT&)> CommandCallbackT;
+	/// The index of the header when request was made (0-based)
+	uint32_t headerIndex;
+		
+	/// The index of the command that was requested
+	uint16_t index;
+		
+	/// The response value
+	CommandResponse response;
+};
+
+class ICommandResults : public ICollection<CommandResult>
+{
+public:
+
+	ICommandResults(TaskCompletion result_) : result(result)
+	{}
+
+	/// A summary result for the entire task
+	TaskCompletion result;
+};
 
 }
 
