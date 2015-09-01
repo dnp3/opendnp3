@@ -18,43 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_BLOCKINGCOMMANDCALLBACK_H
-#define ASIODNP3_BLOCKINGCOMMANDCALLBACK_H
+#ifndef ASIODNP3_PRINTINGCOMMANDCALLBACK_H
+#define ASIODNP3_PRINTINGCOMMANDCALLBACK_H
+
+#include <opendnp3/master/CommandCallbackT.h>
 
 #include <openpal/util/Uncopyable.h>
-
-#include <opendnp3/master/CommandResponse.h>
-
-#include <asiopal/Synchronized.h>
 
 namespace asiodnp3
 {
 
-/**
-* Callback when a command finishes or fails
-*/
-class BlockingCommandCallback : private openpal::Uncopyable
-{
-
-public:
-
-	opendnp3::CommandCallbackT Callback()
+	class PrintingCommandCallback : public openpal::StaticOnly
 	{
-		return [this](const opendnp3::CommandResponse & rsp) -> void
-		{
-			this->response.SetValue(rsp);
-		};
-	}
 
-	opendnp3::CommandResponse WaitForResult()
-	{
-		return response.WaitForValue();
-	}
+	public:
+		static opendnp3::CommandCallbackT Get();
 
-private:
-
-	asiopal::Synchronized<opendnp3::CommandResponse> response;
-};
+	};
 
 }
 

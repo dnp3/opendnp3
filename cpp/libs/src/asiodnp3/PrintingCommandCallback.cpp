@@ -18,20 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_COMMAND_CALLBACK_T_H
-#define OPENDNP3_COMMAND_CALLBACK_T_H
 
-#include "CommandResult.h"
+#include "asiodnp3/PrintingCommandCallback.h"
 
-#include <functional>
+#include <iostream>
 
-namespace opendnp3
+using namespace opendnp3;
+
+namespace asiodnp3
 {
-
-typedef ICommandResults CommandCallbackValueT;
-
-typedef std::function<void(const CommandCallbackValueT&)> CommandCallbackT;
-
+	opendnp3::CommandCallbackT PrintingCommandCallback::Get()
+	{
+		return [](const ICommandResults& results) -> void
+		{			
+			std::cout << "Received command result w/ summary: " << TaskCompletionToString(results.summary) << std::endl;
+			auto print = [](const CommandResult& result)
+			{
+				std::cout << "Header: " << result.headerIndex << " Index: " << result.index << std::endl;
+				std::cout << "Result: " << TaskCompletionToString(result.response.GetResult()) << std::endl;
+				std::cout << "Status: " << CommandStatusToString(result.response.GetStatus()) << std::endl;
+			};
+			results.ForeachItem(print);
+		};
+	}
 }
 
-#endif
+

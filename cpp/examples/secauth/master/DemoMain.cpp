@@ -22,7 +22,7 @@
 #include <asiodnp3/PrintingSOEHandler.h>
 #include <asiodnp3/ConsoleLogger.h>
 #include <asiodnp3/DefaultMasterApplication.h>
-#include <asiodnp3/BlockingCommandCallback.h>
+#include <asiodnp3/PrintingCommandCallback.h>
 
 #include <asiopal/UTCTimeSource.h>
 
@@ -55,8 +55,6 @@ class MasterApplication final : public IMasterApplicationSA
 
 	virtual void PersistNewUpdateKey(const std::string& username, opendnp3::User user, const UpdateKey& key) override {}
 };
-
-void DoCommandSequence(IMaster* master);
 
 int main(int argc, char* argv[])
 {
@@ -145,7 +143,9 @@ int main(int argc, char* argv[])
 			return 0;
 		case('c'):
 			{
-				DoCommandSequence(pMaster);
+				CommandSet commands;
+				commands.StartHeaderCROB().Add(ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);
+				pMaster->SelectAndOperate(std::move(commands), PrintingCommandCallback::Get());
 				break;
 			}
 		default:
@@ -158,16 +158,5 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void DoCommandSequence(IMaster* master)
-{
-	ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
-	// This is an example of synchronously doing a control operation
 
-	BlockingCommandCallback handler;
-	master->SelectAndOperate(crob, 0, handler.Callback());
-	auto response = handler.WaitForResult();
-	std::cout << "Result: " << TaskCompletionToString(response.GetResult()) <<
-	          " Status: " << CommandStatusToString(response.GetStatus()) << std::endl;
-
-}
 

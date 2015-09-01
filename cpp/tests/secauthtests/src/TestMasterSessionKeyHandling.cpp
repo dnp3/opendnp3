@@ -23,7 +23,7 @@
 #include "fixtures/MasterSecAuthFixture.h"
 
 #include <dnp3mocks/APDUHexBuilders.h>
-#include <dnp3mocks/CallbackQueue.h>
+#include <dnp3mocks/CommandCallbackQueue.h>
 
 #include <testlib/HexConversions.h>
 
@@ -200,13 +200,16 @@ TEST_CASE(SUITE("Tasks for non-existant users are immediately failed"))
 
 	fixture.context.OnLowerLayerUp();
 
-	CallbackQueue<CommandResponse> queue;
-	/// start a command request on some user that doesn't exist
-	fixture.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::LATCH_ON), 1, queue.Callback(), TaskConfig::With(User(42)));
+	CommandCallbackQueue queue;
+	CommandSet commands;
+	commands.StartHeaderCROB().Add(ControlRelayOutputBlock(ControlCode::LATCH_ON), 1);
 
-	REQUIRE(queue.responses.size() == 1);
-	auto result = queue.responses.front();
-	REQUIRE(result.GetResult() == TaskCompletion::FAILURE_NO_USER);
+	/// start a command request on some user that doesn't exist
+	fixture.context.SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::With(User(42)));
+
+	REQUIRE(queue.values.size() == 1);
+	auto result = queue.values.front();
+	REQUIRE(result.summary == TaskCompletion::FAILURE_NO_USER);
 }
 
 void TestTaskCompletionDueToAuthError(AuthErrorCode error, TaskCompletion completion)
