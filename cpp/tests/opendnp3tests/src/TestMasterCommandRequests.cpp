@@ -24,7 +24,7 @@
 #include "MeasurementComparisons.h"
 #include <testlib/HexConversions.h>
 
-#include <dnp3mocks/CallbackQueue.h>
+#include <dnp3mocks/CommandCallbackQueue.h>
 #include <dnp3mocks/APDUHexBuilders.h>
 
 #include <opendnp3/app/APDUResponse.h>
@@ -44,18 +44,31 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 	MasterTestObject t(params);
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 
 
 	for (int i = 0; i < 10; ++i)
 	{
-		t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
-		REQUIRE(1 == queue.responses.size());
-		REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == queue.responses.front()));
-		queue.responses.pop_front();
+		CommandSet commands;
+		commands.StartHeaderCROB().Add(bo, 7);
+
+		t.context.SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+		REQUIRE(1 == queue.values.size());
+
+		auto& rsp = queue.values.front();
+		REQUIRE(rsp.summary == TaskCompletion::FAILURE_NO_COMMS);
+
+		// even though it has failed, there should be an entry for the command
+		REQUIRE(rsp.responses.size() == 1);
+		REQUIRE(rsp.responses[0].headerIndex == 0);
+		REQUIRE(rsp.responses[0].index == 7);
+		REQUIRE(rsp.responses[0].response == CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE));
+
+		queue.values.pop_front();
 	}
 }
 
+/*
 TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 {
 	MasterParams params;
@@ -377,6 +390,6 @@ TEST_CASE(SUITE("Int16SetpointExecution"))
 	TestAnalogOutputExecution("29 02 28 01 00 01 00 64 00 00", AnalogOutputInt16(100));
 }
 
-
+*/
 
 

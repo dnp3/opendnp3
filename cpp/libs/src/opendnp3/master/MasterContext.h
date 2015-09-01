@@ -29,6 +29,8 @@
 #include "opendnp3/LayerInterfaces.h"
 
 #include "opendnp3/app/AppSeqNum.h"
+#include "opendnp3/app/TimeAndInterval.h"
+
 #include "opendnp3/master/MasterScheduler.h"
 #include "opendnp3/master/ITaskFilter.h"
 #include "opendnp3/master/MasterTasks.h"
@@ -36,6 +38,7 @@
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/MasterScan.h"
 #include "opendnp3/master/HeaderBuilder.h"
+
 
 #include <deque>
 
@@ -126,20 +129,9 @@ public:
 
 	/// methods for initiating command sequences
 
-	void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-	void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-
-	void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-	void DirectOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-
-	void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-	void DirectOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-
-	void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-	void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-
-	void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
-	void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config);
+	void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
+	void SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
+	
 
 	/// -----  public methods used to add tasks -----
 
@@ -204,15 +196,7 @@ private:
 
 	void ProcessIIN(const IINField& iin);
 
-	void OnResponseTimeout();
-
-	// -------- helpers for command requests --------
-
-	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
-
-	template <class T>
-	void DirectOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer);
+	void OnResponseTimeout();	
 
 protected:
 
@@ -232,17 +216,6 @@ protected:
 	TaskState OnResponseTimeout_WaitForResponse();
 };
 
-template <class T>
-void MContext::SelectAndOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
-{
-	this->ScheduleAdhocTask(CommandTask::FSelectAndOperate(command, index, *pApplication, callback, config, serializer, logger));
-}
-
-template <class T>
-void MContext::DirectOperateT(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer)
-{
-	this->ScheduleAdhocTask(CommandTask::FDirectOperate(command, index, *pApplication, callback, config, serializer, logger));
-}
 }
 
 #endif

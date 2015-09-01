@@ -35,7 +35,7 @@ class CommandResultsImpl final : public ICommandResults, private openpal::Uncopy
 {
 	public:
 
-	CommandResultsImpl(const CommandSet::HeaderVector& vector);
+	CommandResultsImpl(TaskCompletion result, const CommandSet::HeaderVector& vector);
 	
 	/// --- Implement ICollection<CommandResult> ----
 

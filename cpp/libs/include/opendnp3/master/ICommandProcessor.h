@@ -21,10 +21,7 @@
 #ifndef OPENDNP3_ICOMMANDPROCESSOR_H
 #define OPENDNP3_ICOMMANDPROCESSOR_H
 
-#include "opendnp3/app/AnalogOutput.h"
-#include "opendnp3/app/ControlRelayOutputBlock.h"
-#include "opendnp3/master/ITaskCallback.h"
-#include "opendnp3/master/CommandResponse.h"
+#include "opendnp3/master/CommandSet.h"
 #include "opendnp3/master/CommandCallbackT.h"
 #include "opendnp3/master/TaskConfig.h"
 
@@ -39,104 +36,22 @@ class ICommandProcessor
 public:
 
 	/**
-	* Select and operate a ControlRelayOutputBlock
+	* Select and operate a set of commands
 	*
-	* @param command command to operate
-	* @param index index of the command
+	* @param commands Set of command headers	
 	* @param callback callback that will be invoked upon completion or failure
 	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
 	*/
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
+	virtual void SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
 
 	/**
-	* Direct operate a ControlRelayOutputBlock
+	* Direct operate a set of commands
 	*
-	* @param command command to operate
-	* @param index index of the command
+	* @param commands Set of command headers
 	* @param callback callback that will be invoked upon completion or failure
 	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
 	*/
-	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
-
-	/**
-	* Select and operate a 16 bit analog output
-	*
-	* @param command command to operate
-	* @param index index of the command
-	* @param callback callback that will be invoked upon completion or failure
-	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
-	*/
-	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
-
-	/**
-	* Direct operate a 16 bit analog output
-	*
-	* @param command command to operate
-	* @param index index of the command
-	* @param callback callback that will be invoked upon completion or failure
-	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
-	*/
-	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
-
-	/**
-	* Select and operate a 32 bit analog output
-	*
-	* @param command command to operate
-	* @param index index of the command
-	* @param callback callback that will be invoked upon completion or failure
-	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
-	*/
-	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
-
-	/**
-	* Direct operate a 32 bit analog output
-	*
-	* @param command command to operate
-	* @param index index of the command
-	* @param callback callback that will be invoked upon completion or failure
-	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
-	*/
-	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
-
-	/**
-	* Select and operate a single precision analog output
-	*
-	* @param command command to operate
-	* @param index index of the command
-	* @param callback callback that will be invoked upon completion or failure
-	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
-	*/
-	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
-
-	/**
-	* Direct operate a single precision analog output
-	*
-	* @param command command to operate
-	* @param index index of the command
-	* @param callback callback that will be invoked upon completion or failure
-	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
-	*/
-	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
-
-	/**
-	* Select and operate a double precision analog output
-	*
-	* @param command command to operate
-	* @param index index of the command
-	* @param callback callback that will be invoked upon completion or failure
-	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
-	*/
-	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
-
-	/**
-	* Direct operate a double precision analog output
-	*
-	* @param command command to operate
-	* @param index index of the command
-	* @param callback callback that will be invoked upon completion or failure
-	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
-	*/
-	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
+	virtual void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;	
 };
 
 }

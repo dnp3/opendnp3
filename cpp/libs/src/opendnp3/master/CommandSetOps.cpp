@@ -72,9 +72,9 @@ bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer)
 	return true;
 }
 
-void CommandSetOps::InvokeCallback(const CommandSet& set, CommandCallbackT& callback)
+void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result, CommandCallbackT& callback)
 {
-	CommandResultsImpl facade(set.m_headers);
+	CommandResultsImpl facade(result, set.m_headers);
 	callback(facade);
 }
 
@@ -86,7 +86,7 @@ bool CommandSetOps::ProcessSelectResponse(CommandSet& set, const openpal::RSlice
 		return false;
 	}
 
-	auto selected = [](const std::unique_ptr<ICommandHeader>& header) -> bool { return header->AreAllSelected(); };
+	auto selected = [](const ICommandHeader* header) -> bool { return header->AreAllSelected(); };
 	return std::all_of(set.m_headers.begin(), set.m_headers.end(), selected);
 }
 

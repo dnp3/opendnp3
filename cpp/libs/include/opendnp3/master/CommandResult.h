@@ -53,11 +53,11 @@ class ICommandResults : public ICollection<CommandResult>
 {
 public:
 
-	ICommandResults(TaskCompletion result_) : result(result)
+	ICommandResults(TaskCompletion result_) : summary(result_)
 	{}
 
 	/// A summary result for the entire task
-	TaskCompletion result;
+	TaskCompletion summary;
 };
 
 }

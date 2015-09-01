@@ -26,8 +26,8 @@
 namespace opendnp3
 {
 
-CommandResultsImpl::CommandResultsImpl(const CommandSet::HeaderVector& vector) :
-	ICommandResults(TaskCompletion::SUCCESS),
+CommandResultsImpl::CommandResultsImpl(TaskCompletion result, const CommandSet::HeaderVector& vector) :
+	ICommandResults(result),
 	m_vector(&vector)
 {
 	

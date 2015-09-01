@@ -28,8 +28,8 @@
 #include "opendnp3/master/CommandResponse.h"
 #include "opendnp3/master/ITaskCallback.h"
 #include "opendnp3/master/ICommandProcessor.h"
-#include "opendnp3/master/CommandSequence.h"
 #include "opendnp3/master/TaskPriority.h"
+#include "opendnp3/master/CommandSet.h"
 
 
 #include <openpal/logging/Logger.h>
@@ -39,7 +39,6 @@
 #include <deque>
 #include <memory>
 
-
 namespace opendnp3
 {
 
@@ -48,12 +47,9 @@ class CommandTask : public IMasterTask
 {
 
 public:
-
-	template <class T>
-	static IMasterTask* FDirectOperate(const T& command, uint16_t index, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger);
-
-	template <class T>
-	static IMasterTask* FSelectAndOperate(const T& command, uint16_t index, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger);
+	
+	static IMasterTask* FDirectOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
+	static IMasterTask* FSelectAndOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
 
 	virtual char const* Name() const override final
 	{
@@ -95,39 +91,21 @@ private:
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
-	CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
+	CommandTask(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
 
 	ResponseResult ProcessResponse(const openpal::RSlice& objects);
 
 	void LoadSelectAndOperate();
-	void LoadDirectOperate();
-
-	void Callback(const CommandResponse& cr);
+	void LoadDirectOperate();	
 
 	std::deque<FunctionCode> functionCodes;
 
 	CommandStatus statusResult;
 	CommandCallbackT commandCallback;
-	std::unique_ptr<ICommandSequence> pSequence;
+	CommandSet commands;	
+	
 };
 
-template <class T>
-IMasterTask* CommandTask::FDirectOperate(const T& command, uint16_t index, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger)
-{
-	auto pSequence = new CommandSequence<T>(serializer, command, index);
-	auto pCommand = new CommandTask(app, pSequence, callback, config, logger);
-	pCommand->LoadDirectOperate();
-	return pCommand;
-}
-
-template <class T>
-IMasterTask* CommandTask::FSelectAndOperate(const T& command, uint16_t index, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, const DNP3Serializer<T>& serializer, openpal::Logger logger)
-{
-	auto pSequence = new CommandSequence<T>(serializer, command, index);
-	auto pCommand = new CommandTask(app, pSequence, callback, config, logger);
-	pCommand->LoadSelectAndOperate();
-	return pCommand;
-}
 
 } //ens ns
 

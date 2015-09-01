@@ -20,6 +20,9 @@
  */
 #include "CommandTask.h"
 
+#include "opendnp3/master/CommandSetOps.h"
+#include "opendnp3/master/ICommandHeader.h"
+
 #include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/app/parsing/APDUParser.h"
@@ -30,18 +33,28 @@ using namespace openpal;
 namespace opendnp3
 {
 
-CommandTask::CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger) :
+IMasterTask* CommandTask::FDirectOperate(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger)
+{
+	auto task = new CommandTask(std::move(set), app, callback, config, logger);
+	task->LoadDirectOperate();
+	return task;
+}
+
+
+IMasterTask* CommandTask::FSelectAndOperate(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger)
+{
+	auto task = new CommandTask(std::move(set), app, callback, config, logger);
+	task->LoadSelectAndOperate();
+	return task;
+}
+
+CommandTask::CommandTask(CommandSet&& commands_, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger) :
 	IMasterTask(app, MonotonicTimestamp::Min(), logger, config),
 	statusResult(CommandStatus::UNDEFINED),
 	commandCallback(callback),
-	pSequence(pSequence_)
+	commands(std::move(commands_))	
 {
 
-}
-
-void CommandTask::Callback(const CommandResponse& cr)
-{
-	commandCallback(cr);
 }
 
 void CommandTask::LoadSelectAndOperate()
@@ -60,14 +73,15 @@ void CommandTask::LoadDirectOperate()
 bool CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (!functionCodes.empty())
-	{
+	{		
 		request.SetFunction(functionCodes.front());
 		functionCodes.pop_front();
 		request.SetControl(AppControlField::Request(seq));
-		pSequence->FormatRequestHeader(request);
+		auto writer = request.GetWriter();
+		return CommandSetOps::Write(commands, writer);
 	}
 
-	return true;
+	return false;
 }
 
 IMasterTask::ResponseResult CommandTask::ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects)
@@ -77,16 +91,8 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const APDUResponseHeade
 
 IMasterTask::TaskState CommandTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	switch (result)
-	{
-	case(TaskCompletion::SUCCESS):
-		this->Callback(CommandResponse::OK(this->statusResult));
-		return TaskState::Infinite();
-	default:
-		this->Callback(CommandResponse(result));
-		return TaskState::Infinite();
-	}
-
+	CommandSetOps::InvokeCallback(commands, result, this->commandCallback);
+	return TaskState::Infinite();
 }
 
 void CommandTask::Initialize()
@@ -96,25 +102,14 @@ void CommandTask::Initialize()
 
 IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::RSlice& objects)
 {
-	auto result = APDUParser::Parse(objects, *pSequence.get(), &logger);
-	if(result == ParseResult::OK)
+	if (functionCodes.empty())
 	{
-		auto response = pSequence->Validate();
-
-		this->statusResult = response.GetStatus();
-
-		if(functionCodes.empty())
-		{
-			return ResponseResult::OK_FINAL;
-		}
-		else // we may have more depending on response
-		{
-			return (response == CommandResponse::Success) ? ResponseResult::OK_REPEAT : ResponseResult::OK_FINAL;
-		}
+		CommandSetOps::ProcessOperateResponse(commands, objects, &logger);
+		return ResponseResult::OK_FINAL;
 	}
 	else
 	{
-		return ResponseResult::ERROR_BAD_RESPONSE;
+		return CommandSetOps::ProcessSelectResponse(commands, objects, &logger) ? ResponseResult::OK_REPEAT : ResponseResult::ERROR_BAD_RESPONSE;
 	}
 }
 

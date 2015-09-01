@@ -27,7 +27,6 @@
 #include "opendnp3/app/AnalogOutput.h"
 
 #include <vector>
-#include <memory>
 
 namespace opendnp3
 {
@@ -41,10 +40,11 @@ class CommandSet
 
 public:	
 
-	typedef std::vector<std::unique_ptr<ICommandHeader>> HeaderVector;
+	typedef std::vector<ICommandHeader*> HeaderVector;
 
 	CommandSet() {}	
 	CommandSet(CommandSet&& other);
+	~CommandSet();
 		
 	ICommandCollection<ControlRelayOutputBlock>& StartHeaderCROB();	
 	ICommandCollection<AnalogOutputInt32>& StartHeaderAOInt32();	

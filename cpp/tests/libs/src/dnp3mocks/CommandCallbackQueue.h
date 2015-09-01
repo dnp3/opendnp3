@@ -18,21 +18,52 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_COMMAND_CALLBACK_T_H
-#define OPENDNP3_COMMAND_CALLBACK_T_H
+#ifndef DNP3MOCKS_COMMAND_CALLBACK_QUEUE_H
+#define DNP3MOCKS_COMMAND_CALLBACK_QUEUE_H
 
-#include "CommandResult.h"
-
+#include <queue>
 #include <functional>
+
+#include <opendnp3/master/CommandResult.h>
 
 namespace opendnp3
 {
 
-typedef ICommandResults CommandCallbackValueT;
-//typedef CommandResponse CommandCallbackValueT;
+class MockCommandResultType final : public IVisitor<CommandResult>
+{
+public:
 
-typedef std::function<void(const CommandCallbackValueT&)> CommandCallbackT;
+	MockCommandResultType(TaskCompletion result_) : summary(result_)
+	{}
+
+	virtual void OnValue(const CommandResult& value) override
+	{
+		responses.push_back(value);
+	}
+
+	TaskCompletion summary;
+	std::vector<opendnp3::CommandResult> responses;
+};
+
+class CommandCallbackQueue
+{
+public:
+
+	std::function<void(const ICommandResults&)> Callback()
+	{
+		return [this](const ICommandResults& rsp) -> void
+		{
+			MockCommandResultType result(rsp.summary);
+			rsp.Foreach(result);
+			values.push_back(result);
+		};
+	}
+
+	std::deque<MockCommandResultType> values;
+
+};
 
 }
 
 #endif
+
