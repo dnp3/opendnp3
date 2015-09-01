@@ -43,10 +43,10 @@ public:
 
 	virtual ~ICommandHeader() {}
 	
-	// --- Write all of the headers to an ASDU 	---
+	/// Write all of the headers to an ASDU
 	virtual bool Write(HeaderWriter&) const = 0;
 
-	// Ask if all of the individual commands have been selected
+	/// Ask if all of the individual commands have been selected
 	virtual bool AreAllSelected() const = 0;
 
 	// --- each overriden classs will only override one of these ---
@@ -54,16 +54,16 @@ public:
 	virtual void ApplySelectResponse(const ICollection<Indexed<ControlRelayOutputBlock>>& commands) {}
 	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputInt16>>& commands) {}
 	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputInt32>>& commands)  {}
-	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputFloat32>>& commands)  {}
-	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputDouble64>>& commands)  {}
+	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputFloat32>>& commands) {}
+	virtual void ApplySelectResponse(const ICollection<Indexed<AnalogOutputDouble64>>& commands) {}
 
 	// --- each overriden classs will only override one of these ---
 
 	virtual void ApplyOperateResponse(const ICollection<Indexed<ControlRelayOutputBlock>>& commands) {}
 	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputInt16>>& commands) {}
 	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputInt32>>& commands)  {}
-	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputFloat32>>& commands)  {}
-	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputDouble64>>& commands)  {}
+	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputFloat32>>& commands) {}
+	virtual void ApplyOperateResponse(const ICollection<Indexed<AnalogOutputDouble64>>& commands) {}
 };
 
 }

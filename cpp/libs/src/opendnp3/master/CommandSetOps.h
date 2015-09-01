@@ -22,6 +22,7 @@
 #define OPENDNP3_COMMAND_SET_OPS_H
 
 #include "opendnp3/master/CommandSet.h"
+#include "opendnp3/master/CommandCallbackT.h"
 
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/parsing/IAPDUHandler.h"
@@ -53,6 +54,9 @@ namespace opendnp3
 		/// Write the headers to an ASDU
 		static bool Write(const CommandSet& set, HeaderWriter& writer);
 
+		/// Invoke the callback for a response
+		static void InvokeCallback(const CommandSet& set, CommandCallbackT& callback);
+
 		/**
 		* parses a response to a select, applying each received header to the command set
 		*
@@ -65,7 +69,7 @@ namespace opendnp3
 		*
 		* @return true if parsing was successful, the results are left in the set
 		*/
-		static bool ProcessOperateResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger);
+		static bool ProcessOperateResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger);		
 		
 	private:
 

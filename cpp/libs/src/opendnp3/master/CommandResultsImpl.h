@@ -19,46 +19,37 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_COMMAND_RESULT_H
-#define OPENDNP3_COMMAND_RESULT_H
+#ifndef OPENDNP3_COMMAND_RESULTS_IMPL_H
+#define OPENDNP3_COMMAND_RESULTS_IMPL_H
 
-#include "opendnp3/master/CommandResponse.h"
-#include "opendnp3/app/parsing/ICollection.h"
+#include "opendnp3/master/CommandResult.h"
+
+#include "opendnp3/master/CommandSet.h"
+
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {
 
-class CommandResult
+class CommandResultsImpl final : public ICommandResults, private openpal::Uncopyable
 {
+	public:
 
-public:
+	CommandResultsImpl(const CommandSet::HeaderVector& vector);
+	
+	/// --- Implement ICollection<CommandResult> ----
 
-	CommandResult(uint32_t headerIndex_, uint16_t index_, CommandResponse response_) :
-		headerIndex(headerIndex_),
-		index(index_),
-		response(response_)
-	{}
+	virtual uint32_t Count() const override;	
+	virtual void Foreach(IVisitor<CommandResult>& visitor) const override;
 
-	/// The index of the header when request was made (0-based)
-	uint32_t headerIndex;
-		
-	/// The index of the command that was requested
-	uint16_t index;
-		
-	/// The response value
-	CommandResponse response;
+	private:
+
+	CommandResultsImpl() = delete;
+
+	const CommandSet::HeaderVector* m_vector;
 };
 
-class ICommandResults : public ICollection<CommandResult>
-{
-public:
 
-	ICommandResults(TaskCompletion result_) : result(result)
-	{}
-
-	/// A summary result for the entire task
-	TaskCompletion result;
-};
 
 }
 

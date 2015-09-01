@@ -19,47 +19,48 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_COMMAND_RESULT_H
-#define OPENDNP3_COMMAND_RESULT_H
+#include "CommandResultsImpl.h"
 
-#include "opendnp3/master/CommandResponse.h"
-#include "opendnp3/app/parsing/ICollection.h"
+#include "opendnp3/master/ICommandHeader.h"
 
 namespace opendnp3
 {
 
-class CommandResult
+CommandResultsImpl::CommandResultsImpl(const CommandSet::HeaderVector& vector) :
+	ICommandResults(TaskCompletion::SUCCESS),
+	m_vector(&vector)
 {
+	
+}
+	
+/// --- Implement ICollection<CommandResult> ----
 
-public:
-
-	CommandResult(uint32_t headerIndex_, uint16_t index_, CommandResponse response_) :
-		headerIndex(headerIndex_),
-		index(index_),
-		response(response_)
-	{}
-
-	/// The index of the header when request was made (0-based)
-	uint32_t headerIndex;
-		
-	/// The index of the command that was requested
-	uint16_t index;
-		
-	/// The response value
-	CommandResponse response;
-};
-
-class ICommandResults : public ICollection<CommandResult>
+uint32_t CommandResultsImpl::Count() const
 {
-public:
+	uint32_t count = 0;
+	for (auto& header : *m_vector)
+	{
+		count += header->Count();
+	}
+	return count;
+}
 
-	ICommandResults(TaskCompletion result_) : result(result)
-	{}
+void CommandResultsImpl::Foreach(IVisitor<CommandResult>& visitor) const
+{
+	uint32_t headerIndex = 0;
 
-	/// A summary result for the entire task
-	TaskCompletion result;
-};
+	for (auto& header : *m_vector)
+	{
+		auto visit = [&](const Indexed<CommandResponse>& rsp) 
+		{
+			visitor.OnValue(CommandResult(headerIndex, rsp.index, rsp.value));
+		};
+
+		header->ForeachItem(visit);
+		++headerIndex;
+	}
+}
 
 }
 
-#endif
+
