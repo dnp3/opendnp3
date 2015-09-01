@@ -35,6 +35,8 @@ using namespace opendnp3;
 using namespace openpal;
 using namespace testlib;
 
+std::string WriteToHex(const CommandSet& set);
+
 #define SUITE(name) "TypedCommandHeaderTestSuite - " name
 
 TEST_CASE(SUITE("Can instantiate a CROB header"))
@@ -90,15 +92,17 @@ TEST_CASE(SUITE("Command set can be moved and written"))
 
 	CommandSet commands2(std::move(commands));
 
+	REQUIRE(WriteToHex(commands) == "");
+	REQUIRE(WriteToHex(commands2) == "29 02 28 01 00 0A 00 07 00 00 29 01 28 01 00 0B 00 08 00 00 00 00");	
+}
 
+std::string WriteToHex(const CommandSet& commands)
+{
 	StaticBuffer<100> buffer;
 	auto dest = buffer.GetWSlice();
 	APDURequest request(dest);
 	auto writer = request.GetWriter();
 
-	REQUIRE(CommandSetOps::Write(writer, commands2));
-
-	auto hex = ToHex(request.ToRSlice().Skip(2));
-	REQUIRE(hex == "29 02 28 01 00 0A 00 07 00 00 29 01 28 01 00 0B 00 08 00 00 00 00");
+	REQUIRE(CommandSetOps::Write(writer, commands));
+	return ToHex(request.ToRSlice().Skip(2));
 }
-

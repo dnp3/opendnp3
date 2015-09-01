@@ -36,7 +36,7 @@ class ICommandHeader;
 
 class CommandSet
 {	
-
+	// friend class used to hide some implementation details while keeping the headers private
 	friend class CommandSetOps;
 
 public:	
