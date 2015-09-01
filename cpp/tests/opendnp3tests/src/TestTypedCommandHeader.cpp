@@ -21,6 +21,7 @@
 #include <catch.hpp>
 
 #include <opendnp3/master/TypedCommandHeader.h>
+#include <opendnp3/master/CommandSetOps.h>
 #include <opendnp3/objects/Group12.h>
 #include <opendnp3/objects/Group41.h>
 
@@ -73,5 +74,31 @@ TEST_CASE(SUITE("Does not format if insufficient space"))
 	REQUIRE_FALSE(header.Write(writer));	
 }
 
+TEST_CASE(SUITE("Command set can be moved and written"))
+{
+	CommandSet commands;
 
+	{
+		auto& header = commands.StartHeaderAOInt16();
+		header.Add(AnalogOutputInt16(7), 10);
+	}
+
+	{
+		auto& header = commands.StartHeaderAOInt32();
+		header.Add(AnalogOutputInt32(8), 11);
+	}
+
+	CommandSet commands2(std::move(commands));
+
+
+	StaticBuffer<100> buffer;
+	auto dest = buffer.GetWSlice();
+	APDURequest request(dest);
+	auto writer = request.GetWriter();
+
+	REQUIRE(CommandSetOps::Write(writer, commands2));
+
+	auto hex = ToHex(request.ToRSlice().Skip(2));
+	REQUIRE(hex == "29 02 28 01 00 0A 00 07 00 00 29 01 28 01 00 0B 00 08 00 00 00 00");
+}
 

@@ -23,10 +23,12 @@
 
 #include "opendnp3/master/ICommandHeader.h"
 #include "opendnp3/master/CommandResponse.h"
+#include "opendnp3/master/ICommandCollection.h"
 
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/parsing/ICollection.h"
 #include "opendnp3/app/Indexed.h"
+
 
 #include <vector>
 #include <algorithm>
@@ -42,7 +44,7 @@ enum class SelectState : uint8_t
 };
 
 template <class T>
-class TypedCommandHeader final : public ICommandHeader, public ICollection<Indexed<CommandResponse>>
+class TypedCommandHeader final : public ICommandHeader, public ICollection<Indexed<CommandResponse>>, public ICommandCollection<T>
 {	
 	struct Record
 	{
@@ -62,7 +64,9 @@ public:
 	TypedCommandHeader(const DNP3Serializer<T>& serializer) : m_serializer(serializer)
 	{}
 
-	void Add(const T& command, uint16_t index);
+	// --- Implement ICommandCollection ---
+
+	virtual void Add(const T& command, uint16_t index) override;
 	
 	// --- Implement ICommandHeader ----
 	
