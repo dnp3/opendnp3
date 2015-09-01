@@ -36,12 +36,12 @@ using namespace testlib;
 
 #define SUITE(name) "TypedCommandHeaderTestSuite - " name
 
-TEST_CASE(SUITE("CanInstantiate"))
+TEST_CASE(SUITE("Can instantiate a CROB header"))
 {
 	TypedCommandHeader<ControlRelayOutputBlock> header(Group12Var1::Inst());
 }
 
-TEST_CASE(SUITE("FormatsProperly"))
+TEST_CASE(SUITE("Formats properly if enough space is available"))
 {	
 	TypedCommandHeader<AnalogOutputInt16> header(Group41Var2::Inst());
 	header.Add(AnalogOutputInt16(7), 10);
@@ -57,6 +57,20 @@ TEST_CASE(SUITE("FormatsProperly"))
 	auto hex = ToHex(request.ToRSlice().Skip(2));
 
 	REQUIRE(hex == "29 02 28 02 00 0A 00 07 00 00 0B 00 08 00 00");
+}
+
+TEST_CASE(SUITE("Does not format if insufficient space"))
+{
+	TypedCommandHeader<AnalogOutputInt16> header(Group41Var2::Inst());
+	header.Add(AnalogOutputInt16(7), 10);
+	header.Add(AnalogOutputInt16(8), 11);
+
+	StaticBuffer<14> buffer;
+	auto dest = buffer.GetWSlice();
+	APDURequest request(dest);
+	auto writer = request.GetWriter();
+
+	REQUIRE_FALSE(header.Write(writer));	
 }
 
 
