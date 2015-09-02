@@ -312,7 +312,6 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	));
 }
 
-/*
 TEST_CASE(SUITE("ResponseTimeout"))
 {
 	MasterTestObject t(NoStartupTasks());
@@ -321,19 +320,24 @@ TEST_CASE(SUITE("ResponseTimeout"))
 	AnalogOutputInt16 ao(100);
 	CommandCallbackQueue queue;
 
-	t.context.DirectOperate(ao, 1, queue.Callback(), TaskConfig::Default());
+	t.context.DirectOperate(
+		CommandSet({ WithIndex(ao, 1) }),
+		queue.Callback(), TaskConfig::Default()
+	);
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
-	REQUIRE(queue.responses.empty());
+	REQUIRE(queue.values.empty());
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 
 	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(1 == queue.responses.size());
-	REQUIRE(queue.responses[0].GetResult() == TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
+	REQUIRE(queue.OnlyValueValueEquals(
+		TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
+		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
+	));
 }
 
 TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
@@ -352,21 +356,28 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 
 	// while we're waiting for a response to the disable unsol, initiate a command seqeunce
 	CommandCallbackQueue queue;
-	t.context.DirectOperate(AnalogOutputInt16(100), 1, queue.Callback(), TaskConfig::Default());
+	AnalogOutputInt16 ao(100);
+	t.context.DirectOperate(
+		CommandSet({ WithIndex(ao, 1) }),
+		queue.Callback(), TaskConfig::Default()
+	);
 
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
-	REQUIRE(queue.responses.empty());
+	REQUIRE(queue.values.empty());
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 
 	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(1 == queue.responses.size());
-	REQUIRE(queue.responses[0].GetResult() == TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
+	REQUIRE(queue.OnlyValueValueEquals(
+		TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
+		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
+	));
 }
 
+/*
 template <class T>
 void TestAnalogOutputExecution(const std::string& hex, const T& command)
 {
