@@ -256,7 +256,6 @@ TEST_CASE(SUITE("ControlExecutionSelectBadFIRFIN"))
 	));
 }
 
-/*
 TEST_CASE(SUITE("DeferredControlExecution"))
 {
 	MasterParams params;
@@ -272,9 +271,12 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	t.context.OnSendResult(true);
 
 	//issue a command while the master is waiting for a response from the outstation
-	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
+	
 	CommandCallbackQueue queue;
-	t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
+	t.context.SelectAndOperate(
+		CommandSet({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) }),
+		queue.Callback(), TaskConfig::Default()
+	);
 
 	t.SendToMaster("C0 81 00 00"); //now master gets response to integrity
 
@@ -282,7 +284,6 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 03 " + crob); //select
 }
-
 
 TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 {
@@ -293,16 +294,25 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	AnalogOutputInt16 ao(100);
 	CommandCallbackQueue queue;
 
-	t.context.DirectOperate(ao, 1, queue.Callback(), TaskConfig::Default());
+	t.context.DirectOperate(
+		CommandSet({ WithIndex(ao, 1) }),
+		queue.Callback(), TaskConfig::Default()
+	);
+	
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
-	REQUIRE(queue.responses.empty());
+	REQUIRE(queue.values.empty());
 	t.context.OnLowerLayerDown();
-	REQUIRE(1 == queue.responses.size());
+
+	REQUIRE(queue.OnlyValueValueEquals(
+		TaskCompletion::FAILURE_NO_COMMS,
+		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
+	));
 }
 
+/*
 TEST_CASE(SUITE("ResponseTimeout"))
 {
 	MasterTestObject t(NoStartupTasks());
