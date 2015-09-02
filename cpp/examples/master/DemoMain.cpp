@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
-	const uint32_t FILTERS = levels::NORMAL; // | levels::ALL_COMMS;
+	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
 
 	// This is the main point of interaction with the stack
 	DNP3Manager manager(1);
@@ -128,8 +128,8 @@ int main(int argc, char* argv[])
 			break;
 		case('c'):
 			{
-				CommandSet commands;
-				commands.StartHeader<ControlRelayOutputBlock>().Add(ControlRelayOutputBlock(ControlCode::LATCH_ON), 0);				
+				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
+				CommandSet commands({ WithIndex(crob, 0), WithIndex(crob, 1) }); 								
 				pMaster->SelectAndOperate(std::move(commands), PrintingCommandCallback::Get());				
 				break;
 			}
