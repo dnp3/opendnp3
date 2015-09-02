@@ -64,6 +64,13 @@ public:
 		};
 	}	
 
+	bool OnlyValueValueEquals(TaskCompletion summary, CommandPointResult cpr)
+	{
+		if (values.size() != 1) return false;
+
+		return values[0].Equals(summary, cpr);
+	}
+
 	std::deque<MockCommandResultType> values;
 
 };

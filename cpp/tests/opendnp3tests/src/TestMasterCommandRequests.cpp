@@ -151,12 +151,13 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	t.SendToMaster("C1 81 00 00 " + crob);
 	t.exe.RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
-	REQUIRE(1 == queue.values.size());
-	REQUIRE(queue.values.front().Equals(
-		TaskCompletion::SUCCESS, 
-		CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
-	));
+	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets	
+	REQUIRE(
+		queue.OnlyValueValueEquals(
+			TaskCompletion::SUCCESS, 
+			CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
+		)
+	);
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
@@ -177,14 +178,14 @@ TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 	t.exe.AdvanceTime(config.responseTimeout);
 	t.exe.RunMany();
 
-	REQUIRE(1 == queue.values.size());
-	REQUIRE(queue.values.front().Equals(
-		TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
-		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
-	));
+	REQUIRE(
+		queue.OnlyValueValueEquals(
+			TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
+			CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
+		)
+	);
 }
 
-/*
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 {
 	auto config = NoStartupTasks();
@@ -192,17 +193,23 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	t.context.OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
-	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
+	t.context.SelectAndOperate(
+		CommandSet({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) }),
+		queue.Callback(), TaskConfig::Default()
+	);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
 
 	t.context.OnLowerLayerDown();
 
-	REQUIRE(1 == queue.responses.size());
-	REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == queue.responses.front()));
+	REQUIRE(queue.OnlyValueValueEquals(
+		TaskCompletion::FAILURE_NO_COMMS,
+		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
+	));
 }
 
+/*
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 {
 	auto config = NoStartupTasks();
