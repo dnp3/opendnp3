@@ -130,7 +130,6 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	REQUIRE(result.response.GetStatus() == CommandStatus::SUCCESS);
 }
 
-/*
 TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 {
 	MasterTestObject t(NoStartupTasks());
@@ -138,8 +137,8 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 
-	CallbackQueue<CommandResponse> queue;
-	t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
+	CommandCallbackQueue queue;
+	t.context.SelectAndOperate(CommandSet({ WithIndex(bo, 1) }), queue.Callback(), TaskConfig::Default());
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
@@ -159,17 +158,21 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
-	REQUIRE(1 == queue.responses.size());
-	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == queue.responses.front()));
+	REQUIRE(1 == queue.values.size());
+	REQUIRE(queue.values.front().Equals(
+		TaskCompletion::SUCCESS, 
+		CommandResult(0, 1, CommandResponse::OK(CommandStatus::SUCCESS))
+	));
 }
 
+/*
 TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 {
 	auto config = NoStartupTasks();
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
@@ -188,7 +191,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
@@ -206,7 +209,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
 
 	t.context.OnSendResult(true);
@@ -224,7 +227,7 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 
 	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
 	t.context.OnSendResult(true);
@@ -253,7 +256,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 
 	//issue a command while the master is waiting for a response from the outstation
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 	t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
 
 	t.SendToMaster("C0 81 00 00"); //now master gets response to integrity
@@ -271,7 +274,7 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	t.context.OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 
 	t.context.DirectOperate(ao, 1, queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe.RunMany() > 0);
@@ -289,7 +292,7 @@ TEST_CASE(SUITE("ResponseTimeout"))
 	t.context.OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 
 	t.context.DirectOperate(ao, 1, queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe.RunMany() > 0);
@@ -321,7 +324,7 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 	REQUIRE(t.exe.RunMany() > 0);
 
 	// while we're waiting for a response to the disable unsol, initiate a command seqeunce
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 	t.context.DirectOperate(AnalogOutputInt16(100), 1, queue.Callback(), TaskConfig::Default());
 
 
@@ -344,7 +347,7 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
-	CallbackQueue<CommandResponse> queue;
+	CommandCallbackQueue queue;
 
 	t.context.SelectAndOperate(command, 1, queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe.RunMany() > 0);

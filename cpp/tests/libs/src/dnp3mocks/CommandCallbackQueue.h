@@ -41,6 +41,11 @@ public:
 		responses.push_back(value);
 	}
 
+	bool Equals(TaskCompletion summary_, CommandResult result) const
+	{		
+		return (responses.size() == 1) && (summary_ == summary) && result.Equals(responses.front());
+	}
+
 	TaskCompletion summary;
 	std::vector<opendnp3::CommandResult> responses;
 };
@@ -57,7 +62,7 @@ public:
 			rsp.Foreach(result);
 			values.push_back(result);
 		};
-	}
+	}	
 
 	std::deque<MockCommandResultType> values;
 

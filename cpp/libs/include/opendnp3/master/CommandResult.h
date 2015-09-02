@@ -39,6 +39,14 @@ public:
 		response(response_)
 	{}
 
+	bool Equals(const CommandResult& other) const
+	{
+		return	(headerIndex == other.headerIndex) &&
+			(index == other.index) &&
+			(response.GetResult() == other.response.GetResult()) &&
+			(response.GetStatus() == other.response.GetStatus());
+	}
+
 	/// The index of the header when request was made (0-based)
 	uint32_t headerIndex;
 		
@@ -47,6 +55,8 @@ public:
 		
 	/// The response value
 	CommandResponse response;
+
+	
 };
 
 class ICommandResults : public ICollection<CommandResult>
