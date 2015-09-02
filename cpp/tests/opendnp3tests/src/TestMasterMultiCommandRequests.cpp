@@ -69,3 +69,49 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 	));
 }
 
+TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
+{
+	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
+	// Group 41 Var2 - index 8, value 0x1234
+	std::string crobstr = "0C 01 28 02 00 01 00 01 01 64 00 00 00 64 00 00 00 00 07 00 01 01 64 00 00 00 64 00 00 00 00";
+	std::string aostr = "29 02 28 01 00 08 00 34 12 00";
+	std::string headers = crobstr + " " + aostr;
+
+
+	MasterTestObject t(NoStartupTasks());
+	t.context.OnLowerLayerUp();
+
+	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+	AnalogOutputInt16 ao(0x1234);
+
+	CommandSet commands;
+	commands.Add<ControlRelayOutputBlock>({ WithIndex(crob, 1), WithIndex(crob, 7) });
+	commands.Add<AnalogOutputInt16>({ WithIndex(ao, 8) });
+
+	CommandCallbackQueue queue;
+	t.context.SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + headers); // select
+	t.context.OnSendResult(true);
+	t.SendToMaster("C0 81 00 00 " + headers);
+
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + headers); // operate
+	t.context.OnSendResult(true);
+	t.SendToMaster("C1 81 00 00 " + headers);
+
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
+
+	REQUIRE(queue.PopOnlyEqualValue(
+		TaskCompletion::SUCCESS,
+		{
+			CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
+			CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
+			CommandPointResult(1, 8, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
+		}
+	));
+}
+
