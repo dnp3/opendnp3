@@ -117,11 +117,11 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
-	REQUIRE(1 == queue.values.size());
-	auto& rsp = queue.values.front();
-	REQUIRE(TaskCompletion::SUCCESS == rsp.summary);
-		
-	REQUIRE(rsp.results[0].Equals(CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)));
+	
+	REQUIRE(queue.PopOnlyEqualValue(
+		TaskCompletion::SUCCESS,
+		CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
+	));
 }
 
 TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
@@ -153,7 +153,7 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets	
 	REQUIRE(
-		queue.OnlyValueValueEquals(
+		queue.PopOnlyEqualValue(
 			TaskCompletion::SUCCESS, 
 			CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
 		)
@@ -179,7 +179,7 @@ TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 	t.exe.RunMany();
 
 	REQUIRE(
-		queue.OnlyValueValueEquals(
+		queue.PopOnlyEqualValue(
 			TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
 			CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
 		)
@@ -203,7 +203,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 
 	t.context.OnLowerLayerDown();
 
-	REQUIRE(queue.OnlyValueValueEquals(
+	REQUIRE(queue.PopOnlyEqualValue(
 		TaskCompletion::FAILURE_NO_COMMS,
 		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
 	));
@@ -226,7 +226,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 
 	t.exe.RunMany();
 
-	REQUIRE(queue.OnlyValueValueEquals(
+	REQUIRE(queue.PopOnlyEqualValue(
 		TaskCompletion::SUCCESS,
 		CommandPointResult(0, 1, CommandPointState::SELECT_FAIL, CommandStatus::NOT_SUPPORTED)
 	));
@@ -250,7 +250,7 @@ TEST_CASE(SUITE("ControlExecutionSelectBadFIRFIN"))
 
 	t.exe.RunMany();
 
-	REQUIRE(queue.OnlyValueValueEquals(
+	REQUIRE(queue.PopOnlyEqualValue(
 		TaskCompletion::FAILURE_BAD_RESPONSE,
 		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
 	));
@@ -306,7 +306,7 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	REQUIRE(queue.values.empty());
 	t.context.OnLowerLayerDown();
 
-	REQUIRE(queue.OnlyValueValueEquals(
+	REQUIRE(queue.PopOnlyEqualValue(
 		TaskCompletion::FAILURE_NO_COMMS,
 		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
 	));
@@ -334,7 +334,7 @@ TEST_CASE(SUITE("ResponseTimeout"))
 
 	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(queue.OnlyValueValueEquals(
+	REQUIRE(queue.PopOnlyEqualValue(
 		TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
 		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
 	));
@@ -371,7 +371,7 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 
 	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(queue.OnlyValueValueEquals(
+	REQUIRE(queue.PopOnlyEqualValue(
 		TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
 		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
 	));
@@ -403,7 +403,7 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 
 	t.exe.RunMany();
 
-	REQUIRE(queue.OnlyValueValueEquals(
+	REQUIRE(queue.PopOnlyEqualValue(
 		TaskCompletion::SUCCESS,
 		CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
 	));

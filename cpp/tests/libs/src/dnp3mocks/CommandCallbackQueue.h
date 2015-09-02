@@ -64,11 +64,41 @@ public:
 		};
 	}	
 
-	bool OnlyValueValueEquals(TaskCompletion summary, CommandPointResult cpr)
+	bool PopOnlyEqualValue(TaskCompletion summary, CommandPointResult item)
+	{
+		return PopOnlyEqualValue(summary, { item });
+	}
+
+	bool PopOnlyEqualValue(TaskCompletion summary, std::initializer_list<CommandPointResult> list)
 	{
 		if (values.size() != 1) return false;
 
-		return values[0].Equals(summary, cpr);
+		auto value = values.front();
+		values.pop_front();
+
+		if (value.summary != summary)
+		{
+			return false;
+		}
+
+		if (list.size() != value.results.size())
+		{
+			return false;
+		}
+
+		uint32_t i = 0;
+
+		for (auto& item: list)
+		{
+			if (!value.results[i].Equals(item))
+			{
+				return false;
+			}
+
+			++i;
+		}
+
+		return true;
 	}
 
 	std::deque<MockCommandResultType> values;
