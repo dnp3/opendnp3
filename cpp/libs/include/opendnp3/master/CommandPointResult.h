@@ -24,8 +24,6 @@
 
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/gen/CommandPointState.h"
-#include "opendnp3/gen/TaskCompletion.h"
-#include "opendnp3/app/parsing/ICollection.h"
 
 namespace opendnp3
 {
@@ -61,17 +59,6 @@ public:
 		
 	/// The response value. This is only valid if state == SUCCESS or state == SELECT_FAIL
 	CommandStatus status;	
-};
-
-class ICommandResults : public ICollection<CommandPointResult>
-{
-public:
-
-	ICommandResults(TaskCompletion result_) : summary(result_)
-	{}
-
-	/// A summary result for the entire task
-	TaskCompletion summary;
 };
 
 }

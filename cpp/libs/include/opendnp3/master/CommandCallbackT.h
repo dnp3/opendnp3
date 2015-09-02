@@ -21,16 +21,14 @@
 #ifndef OPENDNP3_COMMAND_CALLBACK_T_H
 #define OPENDNP3_COMMAND_CALLBACK_T_H
 
-#include "CommandPointResult.h"
+#include "ICommandTaskResult.h"
 
 #include <functional>
 
 namespace opendnp3
 {
 
-typedef ICommandResults CommandCallbackValueT;
-
-typedef std::function<void(const CommandCallbackValueT&)> CommandCallbackT;
+typedef std::function<void(const ICommandTaskResult&)> CommandCallbackT;
 
 }
 

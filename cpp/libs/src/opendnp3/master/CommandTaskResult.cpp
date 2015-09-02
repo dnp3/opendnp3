@@ -19,38 +19,55 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_COMMAND_RESULTS_IMPL_H
-#define OPENDNP3_COMMAND_RESULTS_IMPL_H
+#include "CommandTaskResult.h"
 
-#include "opendnp3/master/CommandPointResult.h"
-
-#include "opendnp3/master/CommandSet.h"
-
-#include <openpal/util/Uncopyable.h>
+#include "opendnp3/master/ICommandHeader.h"
 
 namespace opendnp3
 {
 
-class CommandResultsImpl final : public ICommandResults, private openpal::Uncopyable
+CommandTaskResult::CommandTaskResult(TaskCompletion result, const CommandSet::HeaderVector& vector) :
+	ICommandTaskResult(result),
+	m_vector(&vector)
 {
-	public:
-
-	CommandResultsImpl(TaskCompletion result, const CommandSet::HeaderVector& vector);
 	
-	/// --- Implement ICollection<CommandResult> ----
+}
+	
+/// --- Implement ICollection<CommandResult> ----
 
-	virtual uint32_t Count() const override;	
-	virtual void Foreach(IVisitor<CommandPointResult>& visitor) const override;
+uint32_t CommandTaskResult::Count() const
+{
+	uint32_t count = 0;
+	for (auto& header : *m_vector)
+	{
+		count += header->Count();
+	}
+	return count;
+}
 
-	private:
+void CommandTaskResult::Foreach(IVisitor<CommandPointResult>& visitor) const
+{
+	uint32_t headerIndex = 0;
 
-	CommandResultsImpl() = delete;
+	for (auto& header : *m_vector)
+	{
+		auto visit = [&](const CommandState& state) 
+		{
+				visitor.OnValue(
+					CommandPointResult(
+						headerIndex,
+						state.index,
+						state.state,
+						state.status
+					)
+				);
+		};
 
-	const CommandSet::HeaderVector* m_vector;
-};
-
-
+		header->ForeachItem(visit);
+		++headerIndex;
+	}
+}
 
 }
 
-#endif
+

@@ -22,7 +22,7 @@
 #include "CommandSetOps.h"
 
 #include "opendnp3/master/ICommandHeader.h"
-#include "opendnp3/master/CommandResultsImpl.h"
+#include "opendnp3/master/CommandTaskResult.h"
 
 #include "opendnp3/app/parsing/APDUParser.h"
 
@@ -76,8 +76,8 @@ bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer)
 
 void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result, CommandCallbackT& callback)
 {
-	CommandResultsImpl facade(result, set.m_headers);
-	callback(facade);
+	CommandTaskResult impl(result, set.m_headers);
+	callback(impl);
 }
 
 bool CommandSetOps::ProcessSelectResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)

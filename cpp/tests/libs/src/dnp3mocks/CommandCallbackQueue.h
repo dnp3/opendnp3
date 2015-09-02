@@ -54,9 +54,9 @@ class CommandCallbackQueue
 {
 public:
 
-	std::function<void(const ICommandResults&)> Callback()
+	std::function<void(const ICommandTaskResult&)> Callback()
 	{
-		return [this](const ICommandResults& rsp) -> void
+		return [this](const ICommandTaskResult& rsp) -> void
 		{
 			MockCommandResultType result(rsp.summary);
 			rsp.Foreach(result);

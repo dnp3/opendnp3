@@ -19,55 +19,27 @@
  * to you under the terms of the License.
  */
 
-#include "CommandResultsImpl.h"
+#ifndef OPENDNP3_ICOMMAND_TASK_RESULT_H
+#define OPENDNP3_ICOMMAND_TASK_RESULT_H
 
-#include "opendnp3/master/ICommandHeader.h"
+#include "opendnp3/master/CommandPointResult.h"
+#include "opendnp3/gen/TaskCompletion.h"
+#include "opendnp3/app/parsing/ICollection.h"
 
 namespace opendnp3
 {
 
-CommandResultsImpl::CommandResultsImpl(TaskCompletion result, const CommandSet::HeaderVector& vector) :
-	ICommandResults(result),
-	m_vector(&vector)
+class ICommandTaskResult : public ICollection<CommandPointResult>
 {
-	
-}
-	
-/// --- Implement ICollection<CommandResult> ----
+public:
 
-uint32_t CommandResultsImpl::Count() const
-{
-	uint32_t count = 0;
-	for (auto& header : *m_vector)
-	{
-		count += header->Count();
-	}
-	return count;
-}
+	ICommandTaskResult(TaskCompletion result_) : summary(result_)
+	{}
 
-void CommandResultsImpl::Foreach(IVisitor<CommandPointResult>& visitor) const
-{
-	uint32_t headerIndex = 0;
-
-	for (auto& header : *m_vector)
-	{
-		auto visit = [&](const CommandState& state) 
-		{
-				visitor.OnValue(
-					CommandPointResult(
-						headerIndex,
-						state.index,
-						state.state,
-						state.status
-					)
-				);
-		};
-
-		header->ForeachItem(visit);
-		++headerIndex;
-	}
-}
+	/// A summary result for the entire task
+	TaskCompletion summary;
+};
 
 }
 
-
+#endif

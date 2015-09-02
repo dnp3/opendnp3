@@ -19,30 +19,38 @@
  * to you under the terms of the License.
  */
 
-#include "asiodnp3/PrintingCommandCallback.h"
+#ifndef OPENDNP3_COMMAND_TASK_RESULT_H
+#define OPENDNP3_COMMAND_TASK_RESULT_H
 
-#include <iostream>
+#include "opendnp3/master/ICommandTaskResult.h"
 
-using namespace opendnp3;
+#include "opendnp3/master/CommandSet.h"
 
-namespace asiodnp3
+#include <openpal/util/Uncopyable.h>
+
+namespace opendnp3
 {
-	opendnp3::CommandCallbackT PrintingCommandCallback::Get()
-	{
-		return [](const ICommandTaskResult& result) -> void
-		{			
-			std::cout << "Received command result w/ summary: " << TaskCompletionToString(result.summary) << std::endl;
-			auto print = [](const CommandPointResult& res)
-			{
-				std::cout 
-					<< "Header: " << res.headerIndex
-					<< " Index: " << res.index
-					<< " State: " << CommandPointStateToString(res.state)
-					<< " Status: " << CommandStatusToString(res.status);
-			};
-			result.ForeachItem(print);
-		};
-	}
+
+class CommandTaskResult final : public ICommandTaskResult, private openpal::Uncopyable
+{
+	public:
+
+		CommandTaskResult(TaskCompletion result, const CommandSet::HeaderVector& vector);
+	
+	/// --- Implement ICollection<CommandResult> ----
+
+	virtual uint32_t Count() const override;	
+	virtual void Foreach(IVisitor<CommandPointResult>& visitor) const override;
+
+	private:
+
+	CommandTaskResult() = delete;
+
+	const CommandSet::HeaderVector* m_vector;
+};
+
+
+
 }
 
-
+#endif
