@@ -26,6 +26,7 @@
 namespace opendnp3
 {
 
+/// A collection type for command to which the user can add by type and index
 template <class T>
 class ICommandCollection
 {

@@ -35,6 +35,9 @@ namespace opendnp3
 
 class ICommandHeader;
 
+/**
+* Provides a mechanism for building a set of one or more command headers
+*/
 class CommandSet final
 {	
 	// friend class used to hide some implementation details while keeping the headers private
@@ -44,14 +47,28 @@ public:
 
 	typedef std::vector<ICommandHeader*> HeaderVector;
 
-	CommandSet() {}	
+	/// Contrsuct an empty command set
+	CommandSet(){}	
+
+	/// Construct a new command set and take ownership of the headers in argument
 	CommandSet(CommandSet&& other);
+
+	/// Destruct the command set and free any referenced headers
 	~CommandSet();
 	
+	/// Construct a command set from a list of CROB
 	CommandSet(std::initializer_list<Indexed<ControlRelayOutputBlock>> items);
+	
+	/// Construct a command set from a list of AOInt16
 	CommandSet(std::initializer_list<Indexed<AnalogOutputInt16>> items);
+	
+	/// Construct a command set from a list of AOInt32
 	CommandSet(std::initializer_list<Indexed<AnalogOutputInt32>> items);
+	
+	/// Construct a command set from a list of AOFloat32
 	CommandSet(std::initializer_list<Indexed<AnalogOutputFloat32>> items);
+	
+	/// Construct a command set from a list of AODouble64
 	CommandSet(std::initializer_list<Indexed<AnalogOutputDouble64>> items);
 
 	/// Convenience functions that can build an entire header in one call
@@ -64,8 +81,8 @@ public:
 			header.Add(command.value, command.index);
 		}
 	}
-
-
+	
+	/// Begin a header of the parameterized type
 	template <class T>
 	ICommandCollection<T>& StartHeader();
 	

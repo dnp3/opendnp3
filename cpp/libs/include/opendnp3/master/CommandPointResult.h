@@ -28,11 +28,13 @@
 namespace opendnp3
 {
 
+/// Represents the result of a command operation on a particular point
 class CommandPointResult
 {
 
 public:
 
+	/// Fully construct based on all members
 	CommandPointResult(uint32_t headerIndex_, uint16_t index_, CommandPointState state_, CommandStatus status_) :
 		headerIndex(headerIndex_),
 		index(index_),
@@ -40,6 +42,7 @@ public:
 		status(status_)
 	{}
 
+	/// Check the result for equality against another value
 	bool Equals(const CommandPointResult& other) const
 	{
 		return	(headerIndex == other.headerIndex) &&

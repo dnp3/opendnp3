@@ -29,6 +29,16 @@
 namespace opendnp3
 {
 
+/**
+* Abstract result type returned via callback to a command operation.
+*
+* Provides the TaskCompleton summary value and access to a collection
+* of flatten results.
+*
+* A result value is provided for every object in every header specified
+* in the CommandSet used to start the operation.
+*
+*/
 class ICommandTaskResult : public ICollection<CommandPointResult>
 {
 public:
