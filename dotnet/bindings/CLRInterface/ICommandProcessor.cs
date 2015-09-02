@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 
 namespace Automatak.DNP3.Interface
-{
+{    
     /// <summary>
     /// Interface for dispatching command requests from a master to an outstation
     /// </summary>

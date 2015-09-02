@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="ClassAssignment.cs" />
     <Compile Include="ClassField.cs" />
+    <Compile Include="CommandSet.cs" />
     <Compile Include="CommandTypes.cs" />
     <Compile Include="config\DatabaseTemplate.cs" />
     <Compile Include="config\OutstationConfig.cs">
@@ -72,6 +73,7 @@
     <Compile Include="gen\BinaryOutputStatusQuality.cs" />
     <Compile Include="gen\BinaryQuality.cs" />
     <Compile Include="gen\ChannelState.cs" />
+    <Compile Include="gen\CommandPointState.cs" />
     <Compile Include="gen\CommandStatus.cs" />
     <Compile Include="gen\ControlCode.cs" />
     <Compile Include="gen\CounterQuality.cs" />
@@ -116,12 +118,14 @@
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ICommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IDatabase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IDNP3Manager.cs" />
     <Compile Include="IChannel.cs" />
-    <Compile Include="ICommandProcessor.cs" />
     <Compile Include="ILinkListener.cs" />
     <Compile Include="ILogHandler.cs" />
     <Compile Include="IMaster.cs">
