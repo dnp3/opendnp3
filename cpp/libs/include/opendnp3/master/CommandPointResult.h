@@ -19,32 +19,35 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_COMMAND_RESULT_H
-#define OPENDNP3_COMMAND_RESULT_H
+#ifndef OPENDNP3_COMMAND_POINT_RESULT_H
+#define OPENDNP3_COMMAND_POINT_RESULT_H
 
-#include "opendnp3/master/CommandResponse.h"
+#include "opendnp3/gen/CommandStatus.h"
+#include "opendnp3/gen/CommandPointState.h"
+#include "opendnp3/gen/TaskCompletion.h"
 #include "opendnp3/app/parsing/ICollection.h"
 
 namespace opendnp3
 {
 
-class CommandResult
+class CommandPointResult
 {
 
 public:
 
-	CommandResult(uint32_t headerIndex_, uint16_t index_, CommandResponse response_) :
+	CommandPointResult(uint32_t headerIndex_, uint16_t index_, CommandPointState state_, CommandStatus status_) :
 		headerIndex(headerIndex_),
 		index(index_),
-		response(response_)
+		state(state_),
+		status(status_)
 	{}
 
-	bool Equals(const CommandResult& other) const
+	bool Equals(const CommandPointResult& other) const
 	{
 		return	(headerIndex == other.headerIndex) &&
-			(index == other.index) &&
-			(response.GetResult() == other.response.GetResult()) &&
-			(response.GetStatus() == other.response.GetStatus());
+				(index == other.index) &&
+				(state == other.state) &&
+				(status == other.status);
 	}
 
 	/// The index of the header when request was made (0-based)
@@ -52,14 +55,15 @@ public:
 		
 	/// The index of the command that was requested
 	uint16_t index;
-		
-	/// The response value
-	CommandResponse response;
 
-	
+	/// The final state of the command operation on this point
+	CommandPointState state;
+		
+	/// The response value. This is only valid if state == SUCCESS
+	CommandStatus status;	
 };
 
-class ICommandResults : public ICollection<CommandResult>
+class ICommandResults : public ICollection<CommandPointResult>
 {
 public:
 

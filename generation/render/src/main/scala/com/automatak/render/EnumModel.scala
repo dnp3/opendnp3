@@ -23,6 +23,10 @@ object EnumValues {
   def bitmask(list: List[String]): List[EnumValue] = from(list, Iterator.iterate(1)(i => i << 1))
   def from(list: List[String], i: Int = 0) : List[EnumValue] = from(list, Iterator.from(i,1))
   def from(list: List[String], iterator: Iterator[Int]) : List[EnumValue] = list.map(s => EnumValue(s, iterator.next(), None))
+
+
+  def fromPairs(list: List[Tuple2[String,String]], iterator: Iterator[Int]): List[EnumValue] = list.map(x => EnumValue(x._1, iterator.next(), Some(x._2)))
+  def fromPairs(list: List[Tuple2[String,String]], i: Int = 0): List[EnumValue] = fromPairs(list, Iterator.from(i,1))
 }
 
 object EnumValue {

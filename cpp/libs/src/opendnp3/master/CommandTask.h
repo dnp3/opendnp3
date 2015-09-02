@@ -25,7 +25,6 @@
 #include "opendnp3/gen/FunctionCode.h"
 
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/CommandResponse.h"
 #include "opendnp3/master/ITaskCallback.h"
 #include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/TaskPriority.h"

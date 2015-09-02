@@ -22,8 +22,9 @@
 #define OPENDNP3_ICOMMAND_HEADER_H
 
 #include "opendnp3/master/HeaderInfo.h"
+#include "opendnp3/master/CommandPointResult.h"
+
 #include "opendnp3/app/parsing/ICollection.h"
-#include "opendnp3/master/CommandResponse.h"
 
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
@@ -34,10 +35,23 @@ namespace opendnp3
 
 class HeaderWriter;
 
+struct CommandState
+{
+	CommandState(uint16_t index_) :
+		state(CommandPointState::INIT),
+		status(CommandStatus::UNDEFINED),
+		index(index_)
+	{}
+	
+	CommandPointState state;
+	CommandStatus status;
+	uint16_t index;
+};
+
 /**
 * Represents an object header of command objects (CROB or AO)
 */
-class ICommandHeader : public ICollection<Indexed<CommandResponse>>
+class ICommandHeader : public ICollection<CommandState>
 {
 public:
 

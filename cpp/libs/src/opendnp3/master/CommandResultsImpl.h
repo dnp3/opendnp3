@@ -22,7 +22,7 @@
 #ifndef OPENDNP3_COMMAND_RESULTS_IMPL_H
 #define OPENDNP3_COMMAND_RESULTS_IMPL_H
 
-#include "opendnp3/master/CommandResult.h"
+#include "opendnp3/master/CommandPointResult.h"
 
 #include "opendnp3/master/CommandSet.h"
 
@@ -40,7 +40,7 @@ class CommandResultsImpl final : public ICommandResults, private openpal::Uncopy
 	/// --- Implement ICollection<CommandResult> ----
 
 	virtual uint32_t Count() const override;	
-	virtual void Foreach(IVisitor<CommandResult>& visitor) const override;
+	virtual void Foreach(IVisitor<CommandPointResult>& visitor) const override;
 
 	private:
 

@@ -32,11 +32,13 @@ namespace asiodnp3
 		return [](const ICommandResults& results) -> void
 		{			
 			std::cout << "Received command result w/ summary: " << TaskCompletionToString(results.summary) << std::endl;
-			auto print = [](const CommandResult& result)
+			auto print = [](const CommandPointResult& res)
 			{
-				std::cout << "Header: " << result.headerIndex << " Index: " << result.index << std::endl;
-				std::cout << "Result: " << TaskCompletionToString(result.response.GetResult()) << std::endl;
-				std::cout << "Status: " << CommandStatusToString(result.response.GetStatus()) << std::endl;
+				std::cout 
+					<< "Header: " << res.headerIndex
+					<< " Index: " << res.index
+					<< " State: " << CommandPointStateToString(res.state)
+					<< " Status: " << CommandStatusToString(res.status);
 			};
 			results.ForeachItem(print);
 		};

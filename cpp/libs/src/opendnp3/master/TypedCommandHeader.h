@@ -22,8 +22,10 @@
 #define OPENDNP3_TYPED_COMMAND_HEADER_H
 
 #include "opendnp3/master/ICommandHeader.h"
-#include "opendnp3/master/CommandResponse.h"
 #include "opendnp3/master/ICommandCollection.h"
+
+#include "opendnp3/gen/CommandStatus.h"
+#include "opendnp3/gen/CommandPointState.h"
 
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/parsing/ICollection.h"
@@ -36,27 +38,15 @@
 namespace opendnp3
 {
 
-enum class SelectState : uint8_t
-{
-	INIT,
-	FAIL,
-	SUCCESS
-};
-
 template <class T>
 class TypedCommandHeader final : public ICommandHeader, public ICommandCollection<T>
 {	
-	struct Record
+	struct Record : public CommandState
 	{
-		Record(const Indexed<T>& command_) : 
-			command(command_),
-			response(TaskCompletion::FAILURE_BAD_RESPONSE),
-			state(SelectState::INIT)
+		Record(const Indexed<T>& pair) : CommandState(pair.index), command(pair.value)						
 		{}
 
-		Indexed<T> command;
-		CommandResponse response;	
-		SelectState state;
+		T command;
 	};
 
 public:
@@ -82,7 +72,7 @@ public:
 
 	virtual uint32_t Count() const override;
 
-	virtual void Foreach(IVisitor<Indexed<CommandResponse>>& visitor) const override;
+	virtual void Foreach(IVisitor<CommandState>& visitor) const override;
 
 private:
 
@@ -101,7 +91,7 @@ ICommandCollection<T>& TypedCommandHeader<T>::Add(const T& command, uint16_t ind
 template <class T>
 bool TypedCommandHeader<T>::AreAllSelected() const
 {	
-	auto isSuccess = [](const Record& rec) -> bool { return rec.state == SelectState::SUCCESS; };
+	auto isSuccess = [](const Record& rec) -> bool { return rec.state == CommandPointState::SELECT_SUCCESS; };
 	return std::all_of(m_records.begin(), m_records.end(), isSuccess);
 }
 
@@ -117,7 +107,7 @@ bool TypedCommandHeader<T>::Write(HeaderWriter& writer) const
 
 	for(auto& rec: m_records)
 	{
-		if (!iter.Write(rec.command.value, rec.command.index))
+		if (!iter.Write(rec.command, rec.index))
 		{
 			return false;
 		}
@@ -141,24 +131,24 @@ void TypedCommandHeader<T>::ApplySelectResponse(const ICollection<Indexed<T>>& c
 		auto& rec = m_records[index];
 		++index;
 
-		if (item.index != rec.command.index)
+		if (item.index != rec.index)
 		{
 			return;
 		}
 
-		if (!item.value.ValuesEqual(rec.command.value))
+		if (!item.value.ValuesEqual(rec.command))
 		{
-			rec.state = SelectState::FAIL;
+			rec.state = CommandPointState::SELECT_FAIL;
 		}
 
 		if (item.value.status != CommandStatus::SUCCESS)
 		{
-			rec.state = SelectState::FAIL;
+			rec.state = CommandPointState::SELECT_FAIL;
 		}
 
-		if (rec.state == SelectState::INIT)
+		if (rec.state == CommandPointState::INIT)
 		{
-			rec.state = SelectState::SUCCESS;
+			rec.state = CommandPointState::SELECT_SUCCESS;
 		}		
 	}; 
 
@@ -180,18 +170,19 @@ void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& 
 		auto& rec = m_records[index];
 		++index; 
 
-		if (item.index != rec.command.index)
+		if (item.index != rec.index)
 		{
 			return;
 		}
 
-		if (!item.value.ValuesEqual(rec.command.value))
+		if (!item.value.ValuesEqual(rec.command))
 		{
-			rec.response = CommandResponse::CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE);
+			rec.state = CommandPointState::OPERATE_FAIL;
 			return;
 		}
 
-		rec.response = CommandResponse::OK(item.value.status);		
+		rec.state = CommandPointState::SUCCESS;
+		rec.status = item.value.status;
 	};
 
 	commands.ForeachItem(visit);	
@@ -204,11 +195,11 @@ uint32_t TypedCommandHeader<T>::Count() const
 }
 
 template <class T>
-void TypedCommandHeader<T>::Foreach(IVisitor<Indexed<CommandResponse>>& visitor) const
+void TypedCommandHeader<T>::Foreach(IVisitor<CommandState>& visitor) const
 {
 	for(auto& rec : m_records)
 	{		
-		visitor.OnValue(WithIndex(rec.response, rec.command.index));
+		visitor.OnValue(rec);
 	}
 }
 

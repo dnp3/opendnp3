@@ -58,10 +58,8 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 		REQUIRE(rsp.summary == TaskCompletion::FAILURE_NO_COMMS);
 
 		// even though it has failed, there should be an entry for the command
-		REQUIRE(rsp.responses.size() == 1);
-		REQUIRE(rsp.responses[0].headerIndex == 0);
-		REQUIRE(rsp.responses[0].index == 7);
-		REQUIRE(rsp.responses[0].response == CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE));
+		REQUIRE(rsp.results.size() == 1);
+		REQUIRE(rsp.results[0].Equals(CommandPointResult(0, 7, CommandPointState::INIT, CommandStatus::UNDEFINED)));
 
 		queue.values.pop_front();
 	}
@@ -122,14 +120,11 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	REQUIRE(1 == queue.values.size());
 	auto& rsp = queue.values.front();
 	REQUIRE(TaskCompletion::SUCCESS == rsp.summary);
-	REQUIRE(rsp.responses.size() == 1);
-	auto result = rsp.responses[0];
-	REQUIRE(result.headerIndex == 0);
-	REQUIRE(result.index == 1);
-	REQUIRE(result.response.GetResult() == TaskCompletion::SUCCESS);
-	REQUIRE(result.response.GetStatus() == CommandStatus::SUCCESS);
+		
+	REQUIRE(rsp.results[0].Equals(CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)));
 }
 
+/*
 TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 {
 	MasterTestObject t(NoStartupTasks());
@@ -165,7 +160,6 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	));
 }
 
-/*
 TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 {
 	auto config = NoStartupTasks();

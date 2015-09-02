@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_COMMAND_CALLBACK_T_H
 #define OPENDNP3_COMMAND_CALLBACK_T_H
 
-#include "CommandResult.h"
+#include "CommandPointResult.h"
 
 #include <functional>
 

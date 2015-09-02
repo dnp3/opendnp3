@@ -24,30 +24,30 @@
 #include <queue>
 #include <functional>
 
-#include <opendnp3/master/CommandResult.h>
+#include <opendnp3/master/CommandPointResult.h>
 
 namespace opendnp3
 {
 
-class MockCommandResultType final : public IVisitor<CommandResult>
+class MockCommandResultType final : public IVisitor<CommandPointResult>
 {
 public:
 
 	MockCommandResultType(TaskCompletion result_) : summary(result_)
 	{}
 
-	virtual void OnValue(const CommandResult& value) override
+	virtual void OnValue(const CommandPointResult& value) override
 	{
-		responses.push_back(value);
+		results.push_back(value);
 	}
 
-	bool Equals(TaskCompletion summary_, CommandResult result) const
+	bool Equals(TaskCompletion summary_, CommandPointResult result) const
 	{		
-		return (responses.size() == 1) && (summary_ == summary) && result.Equals(responses.front());
+		return (results.size() == 1) && (summary_ == summary) && result.Equals(results.front());
 	}
 
 	TaskCompletion summary;
-	std::vector<opendnp3::CommandResult> responses;
+	std::vector<opendnp3::CommandPointResult> results;
 };
 
 class CommandCallbackQueue

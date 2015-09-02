@@ -45,15 +45,22 @@ uint32_t CommandResultsImpl::Count() const
 	return count;
 }
 
-void CommandResultsImpl::Foreach(IVisitor<CommandResult>& visitor) const
+void CommandResultsImpl::Foreach(IVisitor<CommandPointResult>& visitor) const
 {
 	uint32_t headerIndex = 0;
 
 	for (auto& header : *m_vector)
 	{
-		auto visit = [&](const Indexed<CommandResponse>& rsp) 
+		auto visit = [&](const CommandState& state) 
 		{
-			visitor.OnValue(CommandResult(headerIndex, rsp.index, rsp.value));
+				visitor.OnValue(
+					CommandPointResult(
+						headerIndex,
+						state.index,
+						state.state,
+						state.status
+					)
+				);
 		};
 
 		header->ForeachItem(visit);
