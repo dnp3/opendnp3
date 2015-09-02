@@ -6,10 +6,23 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// Interface for retrieving descriptions about a specific quality bit
+    /// </summary>
     public interface IQualityBitInfo
     {
+        /// <summary>
+        /// returns a long label
+        /// </summary>
+        /// <param name="bit">the specific bit [0-7]</param>
+        /// <returns>long label representation</returns>
         string GetLongLabel(int bit);
 
+        /// <summary>
+        /// returns a short label
+        /// </summary>
+        /// <param name="bit">the specific bit [0-7]</param>
+        /// <returns>short label representation</returns>
         string GetShortLabel(int bit);
     }
 

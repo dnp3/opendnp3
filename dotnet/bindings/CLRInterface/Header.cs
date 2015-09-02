@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// Represents a header that can be used to specifiy various types of master tasks
+    /// </summary>
     public class Header
     {
         public readonly Byte group;

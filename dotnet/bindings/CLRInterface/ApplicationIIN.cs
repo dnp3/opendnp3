@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// Represents the set of IIN bits that can be controlled by the application
+    /// </summary>
     public struct ApplicationIIN
     {        
         public bool needTime;

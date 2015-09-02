@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// Transform
+    /// </summary>
     public class TaskCompletionProxy : ITaskCallback
     {
         readonly TaskCompletionSource<TaskCompletion> completionSource = new TaskCompletionSource<TaskCompletion>();

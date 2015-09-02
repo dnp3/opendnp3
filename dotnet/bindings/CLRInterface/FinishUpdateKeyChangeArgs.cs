@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// Represents the arguments for completing an update key change
+    /// </summary>
     public class FinishUpdateKeyChangeArgs
     {
         public FinishUpdateKeyChangeArgs(

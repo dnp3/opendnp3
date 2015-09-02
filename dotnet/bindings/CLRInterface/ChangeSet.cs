@@ -6,11 +6,21 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// A set of measurement changes that can be applied to a database
+    /// </summary>
     public interface IChangeSet
     {
+        /// <summary>
+        /// Apply the change set
+        /// </summary>
+        /// <param name="database">The database to which to apply the changes</param>
         void Apply(IDatabase database);        
     }
 
+    /// <summary>
+    /// Concrete implementation of IChangeSet
+    /// </summary>
     public class ChangeSet : IDatabase, IChangeSet
     {
         private IList<Action<IDatabase>> updates = new List<Action<IDatabase>>();

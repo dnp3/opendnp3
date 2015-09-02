@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// Represent a start-stop range
+    /// </summary>
     public struct Range
     {        
         public static Range From(UInt16 start, UInt16 stop)

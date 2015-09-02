@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// Set of useful extension methods
+    /// </summary>
     public static class Extensions
     {
         public static void Each<T>(this IEnumerable<T> ie, Action<T> action)

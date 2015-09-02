@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
+    /// <summary>
+    /// A bitfield representing a subset of all static types
+    /// </summary>
     public struct StaticTypeBitField
     {	    
 	    public StaticTypeBitField(UInt16 mask)

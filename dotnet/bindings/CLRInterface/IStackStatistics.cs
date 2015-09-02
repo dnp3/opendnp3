@@ -5,21 +5,24 @@ using System.Text;
 
 namespace Automatak.DNP3.Interface
 {
-   public interface IStackStatistics
-   {    
-       /// <summary>
-       /// Number of valid TPDUs received
-       /// </summary>
-       System.UInt32 NumTransportRx { get; }
+    /// <summary>
+    /// Provides various counters for common transport events
+    /// </summary>
+    public interface IStackStatistics
+    {
+        /// <summary>
+        /// The number of transport frames received
+        /// </summary>
+        System.UInt32 NumTransportRx { get; }
 
-       /// <summary>
-       /// Number of TPDUs transmitted
-       /// </summary>
-       System.UInt32 NumTransportTx { get; }
+        /// <summary>
+        /// The number of transport frames transmitted
+        /// </summary>
+        System.UInt32 NumTransportTx { get; }
 
-       /// <summary>
-       /// Number of TPDUs dropped due to error
-       /// </summary>
-       System.UInt32 NumTransportErrorRx { get; }       
-   }
+        /// <summary>
+        /// The number of transport frames that caused an error
+        /// </summary>
+        System.UInt32 NumTransportErrorRx { get; }
+    }
 }
