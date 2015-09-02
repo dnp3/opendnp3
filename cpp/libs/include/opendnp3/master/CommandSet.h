@@ -53,13 +53,6 @@ public:
 	CommandSet(std::initializer_list<Indexed<AnalogOutputInt32>> items);
 	CommandSet(std::initializer_list<Indexed<AnalogOutputFloat32>> items);
 	CommandSet(std::initializer_list<Indexed<AnalogOutputDouble64>> items);
-	
-	template <class T>
-	ICommandCollection<T>& StartHeader()
-	{
-		static_assert(false, "StartHeader() can only be templated with command types");
-	}
-
 
 	/// Convenience functions that can build an entire header in one call
 	template <class T>
@@ -72,41 +65,10 @@ public:
 		}
 	}
 
+
 	template <class T>
-	ICommandCollection<T>& CommandSet::StartHeader()
-	{
-		static_assert(false, "StartHeader() can only be templated with command types");
-	}
-
-	template <>
-	ICommandCollection<ControlRelayOutputBlock>& CommandSet::StartHeader()
-	{
-		return this->StartHeaderCROB();
-	}
-
-	template <>
-	ICommandCollection<AnalogOutputInt16>& CommandSet::StartHeader()
-	{
-		return this->StartHeaderAOInt16();
-	}
-
-	template <>
-	ICommandCollection<AnalogOutputInt32>& CommandSet::StartHeader()
-	{
-		return this->StartHeaderAOInt32();
-	}
-
-	template <>
-	ICommandCollection<AnalogOutputFloat32>& CommandSet::StartHeader()
-	{
-		return this->StartHeaderAOFloat32();
-	}
-
-	template <>
-	ICommandCollection<AnalogOutputDouble64>& CommandSet::StartHeader()
-	{
-		return this->StartHeaderAODouble64();
-	}
+	ICommandCollection<T>& StartHeader();
+	
 	
 private:
 
@@ -124,6 +86,36 @@ private:
 	
 	HeaderVector m_headers;
 };
+
+template <>
+inline ICommandCollection<ControlRelayOutputBlock>& CommandSet::StartHeader()
+{
+	return this->StartHeaderCROB();
+}
+
+template <>
+inline ICommandCollection<AnalogOutputInt16>& CommandSet::StartHeader()
+{
+	return this->StartHeaderAOInt16();
+}
+
+template <>
+inline ICommandCollection<AnalogOutputInt32>& CommandSet::StartHeader()
+{
+	return this->StartHeaderAOInt32();
+}
+
+template <>
+inline ICommandCollection<AnalogOutputFloat32>& CommandSet::StartHeader()
+{
+	return this->StartHeaderAOFloat32();
+}
+
+template <>
+inline ICommandCollection<AnalogOutputDouble64>& CommandSet::StartHeader()
+{
+	return this->StartHeaderAODouble64();
+}
 
 }
 
