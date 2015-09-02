@@ -56,7 +56,9 @@ IINField CommandSetOps::ProcessAny(const PrefixHeader& header, const ICollection
 	return IINField::Empty();
 }
 
-CommandSetOps::CommandSetOps(Mode mode, CommandSet& commands_) : commands(&commands_)
+CommandSetOps::CommandSetOps(Mode mode_, CommandSet& commands_) :
+	mode(mode_),
+	commands(&commands_)
 {}
 	
 bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer)
@@ -86,7 +88,10 @@ bool CommandSetOps::ProcessSelectResponse(CommandSet& set, const openpal::RSlice
 		return false;
 	}
 
-	auto selected = [](const ICommandHeader* header) -> bool { return header->AreAllSelected(); };
+	auto selected = [](const ICommandHeader* header) -> bool 
+	{ 
+		return header->AreAllSelected(); 
+	};
 	return std::all_of(set.m_headers.begin(), set.m_headers.end(), selected);
 }
 

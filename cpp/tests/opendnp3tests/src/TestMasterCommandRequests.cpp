@@ -93,16 +93,15 @@ TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 	}
 }
 
-/*
 TEST_CASE(SUITE("SelectAndOperate"))
 {
 	MasterTestObject t(NoStartupTasks());
 	t.context.OnLowerLayerUp();
 
-	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
+	ControlRelayOutputBlock command(ControlCode::PULSE_ON);
 
-	CallbackQueue<CommandResponse> queue;
-	t.context.SelectAndOperate(bo, 1, queue.Callback(), TaskConfig::Default());
+	CommandCallbackQueue queue;
+	t.context.SelectAndOperate(CommandSet({ WithIndex(command, 1) }), queue.Callback(), TaskConfig::Default());
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
@@ -120,10 +119,12 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
-	REQUIRE(1 == queue.responses.size());
-	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == queue.responses.front()));
+	REQUIRE(1 == queue.values.size());
+	auto& rsp = queue.values.front();
+	REQUIRE(TaskCompletion::SUCCESS == rsp.summary);
 }
 
+/*
 TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 {
 	MasterTestObject t(NoStartupTasks());
