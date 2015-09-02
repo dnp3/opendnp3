@@ -122,6 +122,12 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	REQUIRE(1 == queue.values.size());
 	auto& rsp = queue.values.front();
 	REQUIRE(TaskCompletion::SUCCESS == rsp.summary);
+	REQUIRE(rsp.responses.size() == 1);
+	auto result = rsp.responses[0];
+	REQUIRE(result.headerIndex == 0);
+	REQUIRE(result.index == 1);
+	REQUIRE(result.response.GetResult() == TaskCompletion::SUCCESS);
+	REQUIRE(result.response.GetStatus() == CommandStatus::SUCCESS);
 }
 
 /*

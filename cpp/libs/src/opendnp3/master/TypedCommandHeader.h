@@ -185,7 +185,7 @@ void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& 
 			return;
 		}
 
-		if (item.value.ValuesEqual(rec.command.value))
+		if (!item.value.ValuesEqual(rec.command.value))
 		{
 			rec.response = CommandResponse::CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE);
 			return;
