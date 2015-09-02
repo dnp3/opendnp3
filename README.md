@@ -8,8 +8,9 @@ Documentation
 =============
 
 The documentation can be found [here](http://www.automatak.com/opendnp3)
-  
-  
+
+If you want to help contribute to the official guide its in [this repo](https://github.com/automatak/dnp3-guide).
+    
 Overview
 ========
 
