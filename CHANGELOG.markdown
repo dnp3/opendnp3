@@ -4,11 +4,11 @@
 * New guide + doxygen docs
 * Add an ILinkListener interface inherited by IMasterApplication/IOutstationApplication that allows you to monitor link-layer activity.
 * Master can now send any combination and # of commands in a single request
+* Modified the IMaster interface to inherit from ICommandProcessor which now contains only two methods.
 * Master now uses Task[T] everywhere instead of custom Future[T]. Eases uses with TPL and async/await.
 * Master now has a parameter to timeout tasks that fail to start within a certain TimeDuration.  
 * Implemented the RequestLinkStates/LinkStatus heartbeat functionality in 1815.
 * :beetle: Fixed a bug in the way CTO objects were handled w/ Group2Var3 and Group4Var3
-* Modified the IMaster interface to inherit from ICommandProcessor.
 * C# bindings now use .NET Task[T] instead of custom Future[T]
 * Introduced an experimental version of SAv5 (not intended for production use)
  * Significantly refactored the master/outstation internals to accommodate adding SA via inheritance.
