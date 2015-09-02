@@ -124,7 +124,6 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	REQUIRE(rsp.results[0].Equals(CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)));
 }
 
-/*
 TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 {
 	MasterTestObject t(NoStartupTasks());
@@ -156,18 +155,21 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	REQUIRE(1 == queue.values.size());
 	REQUIRE(queue.values.front().Equals(
 		TaskCompletion::SUCCESS, 
-		CommandResult(0, 1, CommandResponse::OK(CommandStatus::SUCCESS))
+		CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
 	));
 }
 
-TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
+TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 {
 	auto config = NoStartupTasks();
 	MasterTestObject t(config);
 	t.context.OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
-	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
+	t.context.SelectAndOperate(
+		CommandSet({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) }),
+		queue.Callback(), TaskConfig::Default()
+	);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
@@ -175,10 +177,14 @@ TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 	t.exe.AdvanceTime(config.responseTimeout);
 	t.exe.RunMany();
 
-	REQUIRE(1 == queue.responses.size());
-	REQUIRE((CommandResponse(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) == queue.responses.front()));
+	REQUIRE(1 == queue.values.size());
+	REQUIRE(queue.values.front().Equals(
+		TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
+		CommandPointResult(0, 1, CommandPointState::INIT, CommandStatus::UNDEFINED)
+	));
 }
 
+/*
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 {
 	auto config = NoStartupTasks();
