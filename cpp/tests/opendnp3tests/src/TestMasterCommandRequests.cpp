@@ -377,7 +377,6 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 	));
 }
 
-/*
 template <class T>
 void TestAnalogOutputExecution(const std::string& hex, const T& command)
 {
@@ -387,27 +386,28 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 
 	CommandCallbackQueue queue;
 
-	t.context.SelectAndOperate(command, 1, queue.Callback(), TaskConfig::Default());
+	t.context.SelectAndOperate(CommandSet({WithIndex(command,1)}), queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + hex);
 	t.context.OnSendResult(true);
-	REQUIRE(queue.responses.empty());
+	REQUIRE(queue.values.empty());
 	t.SendToMaster("C0 81 00 00 " + hex);
 
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + hex);
 	t.context.OnSendResult(true);
-	REQUIRE(queue.responses.empty());
+	REQUIRE(queue.values.empty());
 	t.SendToMaster("C1 81 00 00 " + hex);
 
 	t.exe.RunMany();
 
-	REQUIRE(queue.responses.size() == 1);
-	REQUIRE(queue.responses.front() == CommandResponse::OK(CommandStatus::SUCCESS));
+	REQUIRE(queue.OnlyValueValueEquals(
+		TaskCompletion::SUCCESS,
+		CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
+	));
 }
-
 
 TEST_CASE(SUITE("SingleSetpointExecution"))// Group 41 Var4
 {
@@ -435,6 +435,5 @@ TEST_CASE(SUITE("Int16SetpointExecution"))
 	TestAnalogOutputExecution("29 02 28 01 00 01 00 64 00 00", AnalogOutputInt16(100));
 }
 
-*/
 
 
