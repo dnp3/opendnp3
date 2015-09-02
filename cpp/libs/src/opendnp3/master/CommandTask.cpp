@@ -109,7 +109,7 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::RSlice& 
 	}
 	else
 	{
-		return CommandSetOps::ProcessSelectResponse(commands, objects, &logger) ? ResponseResult::OK_REPEAT : ResponseResult::ERROR_BAD_RESPONSE;
+		return CommandSetOps::ProcessSelectResponse(commands, objects, &logger) ? ResponseResult::OK_REPEAT : ResponseResult::OK_FINAL;
 	}
 }
 

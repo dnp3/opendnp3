@@ -30,6 +30,8 @@ char const* CommandPointStateToString(CommandPointState arg)
       return "INIT";
     case(CommandPointState::SELECT_SUCCESS):
       return "SELECT_SUCCESS";
+    case(CommandPointState::SELECT_MISMATCH):
+      return "SELECT_MISMATCH";
     case(CommandPointState::SELECT_FAIL):
       return "SELECT_FAIL";
     case(CommandPointState::OPERATE_FAIL):

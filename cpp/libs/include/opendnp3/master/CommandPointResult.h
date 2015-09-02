@@ -59,7 +59,7 @@ public:
 	/// The final state of the command operation on this point
 	CommandPointState state;
 		
-	/// The response value. This is only valid if state == SUCCESS
+	/// The response value. This is only valid if state == SUCCESS or state == SELECT_FAIL
 	CommandStatus status;	
 };
 

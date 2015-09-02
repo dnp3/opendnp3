@@ -13,8 +13,9 @@ object CommandPointState {
 
   private val codes = List(
     "INIT" -> "No corresponding response was ever received for this command point",
-    "SELECT_SUCCESS" -> "A response to a select request was received, but the operate did not complete",
-    "SELECT_FAIL" -> "A response to a select operation did not match the request",
+    "SELECT_SUCCESS" -> "A response to a select request was received and matched, but the operate did not complete",
+    "SELECT_MISMATCH" -> "A response to a select operation did not contain the same value that was sent",
+    "SELECT_FAIL" -> "A response to a select operation contained a command status other than success",
     "OPERATE_FAIL" -> "A response to an operate or direct operate did not match the request",
     "SUCCESS" -> "A matching response was received to the operate"
   )

@@ -30,20 +30,24 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     INIT = 0,
     /// <summary>
-    /// A response to a select request was received, but the operate did not complete
+    /// A response to a select request was received and matched, but the operate did not complete
     /// </summary>
     SELECT_SUCCESS = 1,
     /// <summary>
-    /// A response to a select operation did not match the request
+    /// A response to a select operation did not contain the same value that was sent
     /// </summary>
-    SELECT_FAIL = 2,
+    SELECT_MISMATCH = 2,
+    /// <summary>
+    /// A response to a select operation contained a command status other than success
+    /// </summary>
+    SELECT_FAIL = 3,
     /// <summary>
     /// A response to an operate or direct operate did not match the request
     /// </summary>
-    OPERATE_FAIL = 3,
+    OPERATE_FAIL = 4,
     /// <summary>
     /// A matching response was received to the operate
     /// </summary>
-    SUCCESS = 4
+    SUCCESS = 5
   }
 }

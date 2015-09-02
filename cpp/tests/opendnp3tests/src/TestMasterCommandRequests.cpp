@@ -209,7 +209,6 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	));
 }
 
-/*
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 {
 	auto config = NoStartupTasks();
@@ -217,17 +216,23 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	t.context.OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
-	t.context.SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, queue.Callback(), TaskConfig::Default());
+	t.context.SelectAndOperate(
+		CommandSet({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) }),
+		queue.Callback(), TaskConfig::Default()
+	);
 
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
 	t.exe.RunMany();
 
-	REQUIRE(1 ==  queue.responses.size());
-	REQUIRE((CommandResponse::OK(CommandStatus::NOT_SUPPORTED) == queue.responses.front()));
+	REQUIRE(queue.OnlyValueValueEquals(
+		TaskCompletion::SUCCESS,
+		CommandPointResult(0, 1, CommandPointState::SELECT_FAIL, CommandStatus::NOT_SUPPORTED)
+	));
 }
 
+/*
 TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 {
 	auto config = NoStartupTasks();

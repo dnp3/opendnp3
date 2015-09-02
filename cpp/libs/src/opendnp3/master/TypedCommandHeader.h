@@ -126,7 +126,7 @@ void TypedCommandHeader<T>::ApplySelectResponse(const ICollection<Indexed<T>>& c
 	
 	uint32_t index = 0;
 
-	auto visit = [&](const Indexed<T> item) 
+	auto visit = [&](const Indexed<T> item) -> void
 	{
 		auto& rec = m_records[index];
 		++index;
@@ -138,12 +138,15 @@ void TypedCommandHeader<T>::ApplySelectResponse(const ICollection<Indexed<T>>& c
 
 		if (!item.value.ValuesEqual(rec.command))
 		{
-			rec.state = CommandPointState::SELECT_FAIL;
+			rec.state = CommandPointState::SELECT_MISMATCH;
+			return;
 		}
 
 		if (item.value.status != CommandStatus::SUCCESS)
 		{
 			rec.state = CommandPointState::SELECT_FAIL;
+			rec.status = item.value.status;
+			return;
 		}
 
 		if (rec.state == CommandPointState::INIT)
