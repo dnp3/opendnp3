@@ -96,7 +96,8 @@ namespace DotNetMasterDemo
                         break;
                     case "c":
                         var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
-                        var task = master.SelectAndOperate(crob, 0, TaskConfig.With(User.Default));
+                        var commands = CommandHeader.From(IndexedValue.From(crob, 0));
+                        var task = master.SelectAndOperate(commands, TaskConfig.With(User.Default));
                         task.ContinueWith((result) => Console.WriteLine("Result: " + result.Result));
                         break;
                     case "l":

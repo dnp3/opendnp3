@@ -34,83 +34,19 @@ namespace Automatak.DNP3.Interface
     public interface ICommandProcessor
     {
         /// <summary>
-        /// Select and operate a ControlRelayOutputBlock
+        /// Select and operate a set of headers
         /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
+        /// <param name="headers">A collection of command headers</param>
+        /// <param name="config">Configuration for the task</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(ControlRelayOutputBlock command, System.UInt32 index, TaskConfig config);
-
-        /// <summary>
-        /// Select and operate a 32-bit AnalogOutput (Group 41 Var1)
-        /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
-        /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(AnalogOutputInt32 command, System.UInt32 index, TaskConfig config);
-
-        /// <summary>
-        /// Select and operate a 16-bit AnalogOutput (Group 41 Var2)
-        /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
-        /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(AnalogOutputInt16 command, System.UInt32 index, TaskConfig config);
-
-        /// <summary>
-        /// Select and operate a single precision AnalogOutput (Group 41 Var3)
-        /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
-        /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(AnalogOutputFloat32 command, System.UInt32 index, TaskConfig config);
-
-        /// <summary>
-        /// Select and operate a double precision AnalogOutput (Group 41 Var4)
-        /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
-        /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> SelectAndOperate(AnalogOutputDouble64 command, System.UInt32 index, TaskConfig config);
-
+        Task<CommandTaskResult> SelectAndOperate(ICommandHeaders headers, TaskConfig config);
+      
         /// <summary>
         /// Direct operate a ControlRelayOutputBlock
         /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
+        /// <param name="headers">A collection of command headers</param>
+        /// <param name="config">Configuration for the task</param>
         /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(ControlRelayOutputBlock command, System.UInt32 index, TaskConfig config);
-
-        /// <summary>
-        /// Direct operate a 32-bit AnalogOutput (Group 41 Var1)
-        /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
-        /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(AnalogOutputInt32 command, System.UInt32 index, TaskConfig config);
-
-        /// <summary>
-        /// Direct operate a 16-bit AnalogOutput (Group 41 Var2)
-        /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
-        /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(AnalogOutputInt16 command, System.UInt32 index, TaskConfig config);
-
-        /// <summary>
-        /// Direct operate a single precision AnalogOutput (Group 41 Var3)
-        /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
-        /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(AnalogOutputFloat32 command, System.UInt32 index, TaskConfig config);
-
-        /// <summary>
-        /// Direct operate a double precision AnalogOutput (Group 41 Var4)
-        /// </summary>
-        /// <param name="command">command to operate</param>
-        /// <param name="index">index of command</param>
-        /// <returns>A reference to future value of the result</returns>
-        Task<CommandResponse> DirectOperate(AnalogOutputDouble64 command, System.UInt32 index, TaskConfig config);
+        Task<CommandTaskResult> DirectOperate(ICommandHeaders headers, TaskConfig config);      
     }
 }

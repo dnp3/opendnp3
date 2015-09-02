@@ -60,27 +60,27 @@ namespace Automatak.DNP3.Interface
             this.action = action;
         }
 
-        public static ICommandHeaders From(IEnumerable<IndexedValue<ControlRelayOutputBlock>> commands)
+        public static ICommandHeaders From(params IndexedValue<ControlRelayOutputBlock>[] commands)
         {
             return new CommandHeader((ICommandBuilder builder) => builder.Add(commands));
         }
 
-        public static ICommandHeaders From(IEnumerable<IndexedValue<AnalogOutputInt16>> commands)
+        public static ICommandHeaders From(params IndexedValue<AnalogOutputInt16>[] commands)
         {
             return new CommandHeader((ICommandBuilder builder) => builder.Add(commands));
         }
 
-        public static ICommandHeaders From(IEnumerable<IndexedValue<AnalogOutputInt32>> commands)
+        public static ICommandHeaders From(params IndexedValue<AnalogOutputInt32>[] commands)
         {
             return new CommandHeader((ICommandBuilder builder) => builder.Add(commands));
         }
 
-        public static ICommandHeaders From(IEnumerable<IndexedValue<AnalogOutputFloat32>> commands)
+        public static ICommandHeaders From(params IndexedValue<AnalogOutputFloat32>[] commands)
         {
             return new CommandHeader((ICommandBuilder builder) => builder.Add(commands));
         }
 
-        public static ICommandHeaders From(IEnumerable<IndexedValue<AnalogOutputDouble64>> commands)
+        public static ICommandHeaders From(params IndexedValue<AnalogOutputDouble64>[] commands)
         {
             return new CommandHeader((ICommandBuilder builder) => builder.Add(commands));
         }

@@ -155,6 +155,7 @@
     <ClInclude Include="src\ChannelAdapter.h" />
     <ClInclude Include="src\CollectionAdapter.h" />
     <ClInclude Include="src\CallbackAdapters.h" />
+    <ClInclude Include="src\CommandSetBuilder.h" />
     <ClInclude Include="src\Conversions.h" />
     <ClInclude Include="src\DNP3ManagerAdapter.h" />
     <ClInclude Include="src\EventConverter.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="src\CallbackAdapters.cpp" />
     <ClCompile Include="src\ChangeSetAdapter.cpp" />
     <ClCompile Include="src\ChannelAdapter.cpp" />
+    <ClCompile Include="src\CommandSetBuilder.cpp" />
     <ClCompile Include="src\Conversions.cpp" />
     <ClCompile Include="src\DNP3ManagerAdapter.cpp" />
     <ClCompile Include="src\LogAdapter.cpp" />

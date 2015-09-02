@@ -30,12 +30,24 @@ using Automatak.DNP3.Interface;
 namespace DotNetMasterDemo
 {
     class Program
-    {        
+    {
+        // demonstrates how to build a set of command headers for a complex command request
+        static ICommandHeaders GetCommandHeaders()
+        {
+            var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
+            var ao = new AnalogOutputDouble64(1.37);
+            
+            return CommandSet.From(
+                CommandHeader.From(IndexedValue.From(crob, 0)),
+                CommandHeader.From(IndexedValue.From(ao, 1))
+            );
+        }
+
         static int Main(string[] args)
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1);
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
-            var channel = mgr.AddTCPClient("client", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
+            var channel = mgr.AddTCPClient("client", LogLevels.ALL, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
             
             //optionally, add a listener for the channel state
             channel.AddStateListener(state => Console.WriteLine("channel state: " + state));            
@@ -76,9 +88,8 @@ namespace DotNetMasterDemo
                         // perform an ad-hoc scan of all analogs
                         master.ScanAllObjects(30, 0, TaskConfig.Default);
                         break;
-                    case "c":
-                        var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
-                        var task = master.SelectAndOperate(crob, 0, TaskConfig.Default);
+                    case "c":                        
+                        var task = master.SelectAndOperate(GetCommandHeaders(), TaskConfig.Default);
                         task.ContinueWith((result) => Console.WriteLine("Result: " + result.Result));
                         break;
                     case "l":

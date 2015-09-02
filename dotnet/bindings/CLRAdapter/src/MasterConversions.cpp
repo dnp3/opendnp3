@@ -3,6 +3,8 @@
 
 #include "TaskCallbackAdapter.h"
 
+#include "CommandSetBuilder.h"
+
 #include <openpal/container/SecureBuffer.h>
 
 namespace Automatak
@@ -163,6 +165,17 @@ namespace Automatak
 					encryptedKeyData.ToRSlice(),
 					Convert(args->updateKey)
 				);
+			}
+
+			opendnp3::CommandSet MasterConversions::Convert(ICommandHeaders^ headers)
+			{
+				opendnp3::CommandSet commands;
+
+				auto builder = gcnew CommandSetBuilder(commands);
+
+				headers->Build(builder);
+
+				return commands;
 			}
 
 			opendnp3::TaskId MasterConversions::Convert(TaskId^ id)

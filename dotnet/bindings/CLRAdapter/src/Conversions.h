@@ -25,8 +25,8 @@
 #include <opendnp3/app/GroupVariationID.h>
 #include <opendnp3/app/User.h>
 
-#include <opendnp3/master/CommandResponse.h>
 #include <opendnp3/master/MasterStackConfig.h>
+#include <opendnp3/master/ICommandTaskResult.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
@@ -72,7 +72,7 @@ namespace Automatak
 				static CommandStatus ConvertCommandStatus(opendnp3::CommandStatus status);
 				static opendnp3::CommandStatus ConvertCommandStatus(CommandStatus status);				
 
-				static CommandResponse ConvertCommandResponse(opendnp3::CommandResponse response);
+				static CommandTaskResult^ ConvertCommandTaskResult(const opendnp3::ICommandTaskResult& result);
 
 				//functions for Converting binary outputs
 

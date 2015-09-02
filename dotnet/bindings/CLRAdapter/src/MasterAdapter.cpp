@@ -108,55 +108,19 @@ namespace Automatak
 					return gcnew MasterScanAdapter(scan);
 				}
 												
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config)
 				{
-					return this->SelectAndOperateT(command, index, config);
+					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();							
+					pMaster->SelectAndOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
+					return tcs->Task;
 				}
 
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::DirectOperate(ICommandHeaders^ headers, TaskConfig^ config)
 				{
-					return this->SelectAndOperateT(command, index, config);
-				}
-				
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					return this->SelectAndOperateT(command, index, config);
-				}
-
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					return this->SelectAndOperateT(command, index, config);
-				}
-
-				Task<CommandResponse>^ MasterAdapter::SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					return this->SelectAndOperateT(command, index, config);
-				}
-
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					return this->DirectOperateT(command, index, config);
-				}
-
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputInt32^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					return this->DirectOperateT(command, index, config);
-				}
-
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputInt16^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					return this->DirectOperateT(command, index, config);
-				}
-
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					return this->DirectOperateT(command, index, config);
-				}
-
-				Task<CommandResponse>^ MasterAdapter::DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index, TaskConfig^ config)
-				{
-					return this->DirectOperateT(command, index, config);
-				}			
+					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();					
+					pMaster->DirectOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
+					return tcs->Task;
+				}								
 		}
 	}
 }

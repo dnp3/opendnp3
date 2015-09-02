@@ -60,11 +60,18 @@ namespace Automatak
 				return ret;
 			}
 
-			CommandResponse Conversions::ConvertCommandResponse(opendnp3::CommandResponse response)
+			CommandTaskResult^ Conversions::ConvertCommandTaskResult(const opendnp3::ICommandTaskResult& response)
 			{
-				auto result = (TaskCompletion) response.GetResult();
-				auto status = ConvertCommandStatus(response.GetStatus());
-				return CommandResponse(result, status);
+				auto convert = [](const opendnp3::CommandPointResult& value) -> CommandPointResult^ 
+				{
+					return gcnew CommandPointResult(value.headerIndex, value.index, (CommandPointState)value.state, (CommandStatus) value.status);
+				};
+
+				auto adapter = CreateAdapter<opendnp3::CommandPointResult, CommandPointResult^>(convert);
+
+				response.Foreach(adapter);
+
+				return gcnew CommandTaskResult((TaskCompletion)response.summary, adapter.GetValues());
 			}			
 
 			CommandStatus Conversions::ConvertCommandStatus(opendnp3::CommandStatus status)

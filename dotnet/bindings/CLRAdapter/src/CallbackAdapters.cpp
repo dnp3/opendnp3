@@ -13,13 +13,13 @@ namespace Automatak
 		namespace Adapter
 		{						
 																
-			opendnp3::CommandCallbackT CallbackAdapters::Get(TaskCompletionSource<CommandResponse>^ tcs)
+			opendnp3::CommandCallbackT CallbackAdapters::Get(TaskCompletionSource<CommandTaskResult^>^ tcs)
 			{
-				gcroot<TaskCompletionSource<CommandResponse>^> handle(tcs);
+				gcroot<TaskCompletionSource<CommandTaskResult^>^> handle(tcs);
 
-				return [handle](const opendnp3::CommandResponse& rsp) -> void
+				return [handle](const opendnp3::ICommandTaskResult& res) -> void
 				{
-					auto result = Conversions::ConvertCommandResponse(rsp);
+					auto result = Conversions::ConvertCommandTaskResult(res);
 					handle->SetResult(result);
 				};
 			}

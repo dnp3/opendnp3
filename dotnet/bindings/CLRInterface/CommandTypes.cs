@@ -32,23 +32,29 @@ namespace Automatak.DNP3.Interface
     /// Aggregate result of command operation.  Check the Result before checking the status.
     /// Status is only valid when Result == RESPONSE_OK
     /// </summary>
-    public struct CommandResponse
+    public class CommandPointResult
     {
-        public CommandResponse(TaskCompletion result, CommandStatus status)
+        public CommandPointResult(UInt16 headerIndex, UInt16 requestIndex, CommandPointState state, CommandStatus status)
         {
-            this.result = result;
+            this.headerIndex = headerIndex;
+            this.requestIndex = requestIndex;
+            this.state = state;
             this.status = status;
         }
 
-        public override string ToString() 
+        public UInt16 HeaderIndex
         {
-            if (result == TaskCompletion.SUCCESS) return "Response(" + status + ")";
-            else return "Failure(" + result + ")";
+            get { return headerIndex; }
         }
 
-        public TaskCompletion Result
+        public UInt16 RequestIndex
         {
-            get { return result; }
+            get { return RequestIndex; }
+        }
+
+        public CommandPointState PointState
+        {
+            get { return state; }
         }
 
         public CommandStatus Status
@@ -56,9 +62,43 @@ namespace Automatak.DNP3.Interface
             get { return status; }
         }
 
-        private readonly TaskCompletion result;
-        private readonly CommandStatus status;
-    }   
+        public override string ToString() 
+        {
+            return String.Format("Header: {0} Index: {1} State: {2} Status: {3}", headerIndex, requestIndex, state, status);
+        }
+
+        readonly UInt16 headerIndex;
+        readonly UInt16 requestIndex;
+        readonly CommandPointState state;
+        readonly CommandStatus status;
+    }
+
+    public class CommandTaskResult
+    {
+        public CommandTaskResult(TaskCompletion summary, IEnumerable<CommandPointResult> results)
+        {
+            this.summary = summary;
+            this.results = results;
+        }
+
+        public TaskCompletion TaskSummary
+        {
+            get { return summary; }
+        }
+
+        public IEnumerable<CommandPointResult> Results
+        {
+            get { return results; }
+        }
+
+        public override string ToString()
+        {
+            return String.Format("Summary: {0} Results: [{1}]", summary, String.Join("; ", results));
+        }
+
+        readonly TaskCompletion summary;
+        readonly IEnumerable<CommandPointResult> results;
+    }
 
     /// <summary>
     /// Command request to control a relay output.
