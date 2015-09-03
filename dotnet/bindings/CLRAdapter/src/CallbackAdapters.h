@@ -23,7 +23,7 @@ namespace Automatak
 
 				public:
 													
-				static opendnp3::CommandCallbackT Get(TaskCompletionSource<CommandTaskResult^>^ tcs);
+				static opendnp3::CommandCallbackT Get(TaskCompletionSource<MultiCommandTaskResult^>^ tcs);
 
 				static secauth::BeginUpdateKeyChangeCallbackT Get(TaskCompletionSource<BeginUpdateKeyChangeResult^>^ tcs);
 

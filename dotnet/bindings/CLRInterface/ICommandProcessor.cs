@@ -39,15 +39,15 @@ namespace Automatak.DNP3.Interface
         /// <param name="headers">A collection of command headers</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the commands</returns>
-        Task<CommandTaskResult> SelectAndOperate(ICommandHeaders headers, TaskConfig config);
+        Task<MultiCommandTaskResult> SelectAndOperate(ICommandHeaders headers, TaskConfig config);
       
         /// <summary>
-        /// Direct operate a ControlRelayOutputBlock
+        /// Direct operate a set of headers
         /// </summary>
         /// <param name="headers">A collection of command headers</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the commands</returns>
-        Task<CommandTaskResult> DirectOperate(ICommandHeaders headers, TaskConfig config);
+        Task<MultiCommandTaskResult> DirectOperate(ICommandHeaders headers, TaskConfig config);
 
         /// <summary>
         /// Select and operate a command

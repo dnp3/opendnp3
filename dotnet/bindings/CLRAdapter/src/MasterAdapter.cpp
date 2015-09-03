@@ -108,16 +108,16 @@ namespace Automatak
 					return gcnew MasterScanAdapter(scan);
 				}
 												
-				Task<CommandTaskResult^>^ MasterAdapter::SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config)
+				Task<MultiCommandTaskResult^>^ MasterAdapter::SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config)
 				{
-					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();							
+					auto tcs = gcnew TaskCompletionSource<MultiCommandTaskResult^>();
 					pMaster->SelectAndOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
 					return tcs->Task;
 				}
 
-				Task<CommandTaskResult^>^ MasterAdapter::DirectOperate(ICommandHeaders^ headers, TaskConfig^ config)
+				Task<MultiCommandTaskResult^>^ MasterAdapter::DirectOperate(ICommandHeaders^ headers, TaskConfig^ config)
 				{
-					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();					
+					auto tcs = gcnew TaskCompletionSource<MultiCommandTaskResult^>();
 					pMaster->DirectOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
 					return tcs->Task;
 				}

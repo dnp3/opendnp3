@@ -72,7 +72,7 @@ namespace Automatak
 				static CommandStatus ConvertCommandStatus(opendnp3::CommandStatus status);
 				static opendnp3::CommandStatus ConvertCommandStatus(CommandStatus status);				
 
-				static CommandTaskResult^ ConvertCommandTaskResult(const opendnp3::ICommandTaskResult& result);
+				static MultiCommandTaskResult^ ConvertCommandTaskResult(const opendnp3::ICommandTaskResult& result);
 
 				//functions for Converting binary outputs
 

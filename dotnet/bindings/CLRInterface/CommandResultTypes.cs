@@ -78,9 +78,9 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// Result type returned for CommandSet based command requests
     /// </summary>
-    public class CommandTaskResult
+    public class MultiCommandTaskResult
     {
-        public CommandTaskResult(TaskCompletion summary, IEnumerable<CommandPointResult> results)
+        public MultiCommandTaskResult(TaskCompletion summary, IEnumerable<CommandPointResult> results)
         {
             this.summary = summary;
             this.results = results;
@@ -110,12 +110,12 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public class SingleCommandTaskResult
     {
-       public static Task<SingleCommandTaskResult> From(Task<CommandTaskResult> task)
+       public static Task<SingleCommandTaskResult> From(Task<MultiCommandTaskResult> task)
        {
            return task.ContinueWith(x => Convert(x.Result));
        }
 
-       static SingleCommandTaskResult Convert(CommandTaskResult result)
+       static SingleCommandTaskResult Convert(MultiCommandTaskResult result)
        {
            if (result.Results.Count() == 1)
            {

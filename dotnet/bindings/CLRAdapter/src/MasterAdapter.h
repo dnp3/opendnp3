@@ -54,9 +54,8 @@ namespace Automatak
 
 				/// --- implement ICommandProcessor ----
 
-				virtual Task<CommandTaskResult^>^ SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config);
-				
-				virtual Task<CommandTaskResult^>^ DirectOperate(ICommandHeaders^ headers, TaskConfig^ config);
+				virtual Task<MultiCommandTaskResult^>^ SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config);				
+				virtual Task<MultiCommandTaskResult^>^ DirectOperate(ICommandHeaders^ headers, TaskConfig^ config);
 
 				virtual Task<SingleCommandTaskResult^>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt16 index, TaskConfig^ config);			
 				virtual Task<SingleCommandTaskResult^>^ SelectAndOperate(AnalogOutputInt16^ command, System::UInt16 index, TaskConfig^ config);				
