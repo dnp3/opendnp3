@@ -26,7 +26,8 @@
 
 #include <testlib/MockLogHandler.h>
 #include <testlib/BufferHelpers.h>
-#include "MockFrameSink.h"
+
+#include <dnp3mocks/MockFrameSink.h>
 
 #include <cstring>
 #include <assert.h>

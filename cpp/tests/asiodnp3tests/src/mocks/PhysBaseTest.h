@@ -18,50 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RANDOM_H_
-#define __RANDOM_H_
+#ifndef __PHYS_BASE_TEST_H_
+#define __PHYS_BASE_TEST_H_
 
-#include <random>
+#include <dnp3mocks/LowerLayerToPhysAdapter.h>
+
+#include <dnp3mocks/MockUpperLayer.h>
+#include "MockPhysicalLayer.h"
+
+#include <testlib/MockExecutor.h>
+#include <testlib/MockLogHandler.h>
+#include <opendnp3/LogLevels.h>
 
 namespace opendnp3
 {
 
-template<class T>
-class Random
-{
-
-public:
-	Random(T min = std::numeric_limits<T>::min(), T max = std::numeric_limits<T>::max()) :
-		rng(),
-		dist(min, max)
-	{
-
-	}
-
-	T Next()
-	{
-		return dist(rng);
-	}
-
-private:
-	std::mt19937 rng;
-	std::uniform_int_distribution<T> dist;
-};
-
-class RandomBool : private Random<uint32_t>
+class PhysBaseTest
 {
 public:
-	RandomBool() : Random<uint32_t>(0, 1)
-	{}
+	PhysBaseTest(uint32_t filter = levels::NORMAL, bool aImmediate = false);
 
-	bool NextBool()
-	{
-		return Next() ? true : false;
-	}
+	testlib::MockLogHandler log;
+	testlib::MockExecutor exe;
+	MockPhysicalLayer phys;
+	LowerLayerToPhysAdapter adapter;
+	MockUpperLayer upper;
 };
-
 
 }
 
 #endif
-

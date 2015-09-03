@@ -20,9 +20,10 @@
  */
 #include <catch.hpp>
 
-#include "ProtocolUtil.h"
 #include "TransportTestObject.h"
+
 #include <testlib/MockLogHandler.h>
+#include <dnp3mocks/ProtocolUtil.h>
 
 #include <asiodnp3/ConsoleLogger.h>
 

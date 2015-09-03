@@ -28,7 +28,7 @@
 #include <string>
 
 #include "MockLinkLayer.h"
-#include "MockUpperLayer.h"
+#include <dnp3mocks/MockUpperLayer.h>
 
 #include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>

@@ -28,12 +28,12 @@
 
 #include <openpal/logging/LogRoot.h>
 
-#include "RandomizedBuffer.h"
-#include "PhysLoopback.h"
+#include "mocks/PhysLoopback.h"
+#include "mocks/TestObjectASIO.h"
+#include "mocks/PhysTestObject.h"
 
 #include <testlib/BufferHelpers.h>
-#include "TestObjectASIO.h"
-#include "PhysTestObject.h"
+#include <testlib/RandomizedBuffer.h>
 
 #include <iostream>
 

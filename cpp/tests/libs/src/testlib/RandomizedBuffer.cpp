@@ -20,7 +20,7 @@
  */
 #include "RandomizedBuffer.h"
 
-namespace opendnp3
+namespace testlib
 {
 
 RandomizedBuffer::RandomizedBuffer(uint32_t aSize) :

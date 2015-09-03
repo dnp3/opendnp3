@@ -18,33 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SERIAL_TEST_OBJECT_H_
-#define __SERIAL_TEST_OBJECT_H_
+#ifndef __TRANSPORT_INTEGRATION_STACK_H_
+#define __TRANSPORT_INTEGRATION_STACK_H_
 
-#include <asiopal/PhysicalLayerSerial.h>
+#include <opendnp3/link/LinkLayer.h>
+#include <opendnp3/transport/TransportLayer.h>
 
-#include "LowerLayerToPhysAdapter.h"
-#include "TestObjectASIO.h"
-#include <testlib/MockLogHandler.h>
-#include "MockUpperLayer.h"
+#include <asiodnp3/LinkLayerRouter.h>
 
-#include <opendnp3/LogLevels.h>
+#include <dnp3mocks/MockUpperLayer.h>
+#include <dnp3mocks/MockLinkListener.h>
+
+namespace openpal
+{
+class IPhysicalLayer;
+}
 
 namespace opendnp3
 {
 
-class SerialTestObject : public TestObjectASIO
+class TransportIntegrationStack
 {
 public:
-	SerialTestObject(asiopal::SerialSettings cfg, uint32_t filters = levels::NORMAL, bool aImmediate = false);
-	virtual ~SerialTestObject() {}
+	TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer*, LinkConfig);
 
-	testlib::MockLogHandler log;
-	asiopal::PhysicalLayerSerial mPort;
-	LowerLayerToPhysAdapter mAdapter;
-	MockUpperLayer mUpper;
+	MockLinkListener listener;
+	asiodnp3::LinkLayerRouter router;
+	TransportLayer transport;
+	LinkLayer link;
+	MockUpperLayer upper;
 };
 
 }
 
 #endif
+

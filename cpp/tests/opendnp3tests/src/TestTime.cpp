@@ -20,10 +20,7 @@
  */
 #include <catch.hpp>
 
-
-
-
-#include "Timeout.h"
+#include <testlib/Timeout.h>
 #include "StopWatch.h"
 
 #include <iostream>
@@ -32,6 +29,7 @@
 
 using namespace std;
 using namespace std::chrono;
+using namespace testlib;
 using namespace opendnp3;
 
 #define SUITE(name) "TimeoutStopWatchTests - " name

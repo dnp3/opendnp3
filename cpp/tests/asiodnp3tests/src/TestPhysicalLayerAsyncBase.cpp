@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "PhysBaseTest.h"
+#include "mocks/PhysBaseTest.h"
 
 using namespace opendnp3;
 using namespace openpal;

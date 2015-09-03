@@ -18,27 +18,64 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "Timeout.h"
+#ifndef __TRANSPORT_LOOPBACK_TEST_OBJECT_H_
+#define __TRANSPORT_LOOPBACK_TEST_OBJECT_H_
 
-using namespace std::chrono;
+#include "TestObjectASIO.h"
+
+#include <testlib/MockLogHandler.h>
+
+#include <dnp3mocks/MockUpperLayer.h>
+#include <dnp3mocks/MockLinkListener.h>
+
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/link/LinkLayer.h>
+#include <opendnp3/transport/TransportLayer.h>
+
+#include <asiodnp3/LinkLayerRouter.h>
 
 namespace opendnp3
 {
 
-Timeout::Timeout(std::chrono::steady_clock::duration aTimeout)
-	: mExpireTime(std::chrono::steady_clock::now() + aTimeout)
+class TransportLoopbackTestObject :  public TestObjectASIO
 {
+public:
+	TransportLoopbackTestObject(
+	    openpal::LogRoot& root,
+	    asio::io_service& service,
+	    openpal::IExecutor& executor,
+	    openpal::IPhysicalLayer*,
+	    LinkConfig,
+	    LinkConfig,
+	    uint32_t filters = flags::INFO);
+
+	~TransportLoopbackTestObject();
+
+	bool LayersUp();
+
+	void Start();
+
+private:
+
+	MockLinkListener listener;
+
+	LinkConfig mCfgA;
+	LinkConfig mCfgB;
+
+	TransportLayer mTransA;
+	TransportLayer mTransB;
+
+	LinkLayer mLinkA;
+	LinkLayer mLinkB;
+
+	asiodnp3::LinkLayerRouter mRouter;
+
+public:
+	MockUpperLayer mUpperA;
+	MockUpperLayer mUpperB;
+
+};
 
 }
 
-bool Timeout :: IsExpired()
-{
-	return std::chrono::steady_clock::now() >= mExpireTime;
-}
-
-std::chrono::steady_clock::duration Timeout::Remaining()
-{
-	return mExpireTime - std::chrono::steady_clock::now();
-}
-
-}
+#endif

@@ -27,8 +27,10 @@
 
 #include <opendnp3/Route.h>
 
-#include "LinkLayerRouterTest.h"
-#include "MockFrameSink.h"
+#include <dnp3mocks/MockFrameSink.h>
+
+#include "mocks/LinkLayerRouterTest.h"
+
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 

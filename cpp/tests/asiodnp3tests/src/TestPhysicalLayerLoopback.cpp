@@ -24,8 +24,8 @@
 
 #include <openpal/logging/LogRoot.h>
 
-#include "PhysLoopback.h"
-#include "MockPhysicalLayer.h"
+#include "mocks/PhysLoopback.h"
+#include "mocks/MockPhysicalLayer.h"
 
 #include <testlib/MockExecutor.h>
 

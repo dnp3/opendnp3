@@ -24,7 +24,7 @@
 #include <opendnp3/link/ILinkSession.h>
 #include <opendnp3/link/LinkLayerConstants.h>
 
-#include "BufferTestObject.h"
+#include <testlib/BufferTestObject.h>
 
 #include <opendnp3/gen/LinkFunction.h>
 
@@ -35,7 +35,7 @@ namespace opendnp3
 {
 
 
-class MockFrameSink : public ILinkSession, public BufferTestObject
+class MockFrameSink : public ILinkSession, public testlib::BufferTestObject
 {
 public:
 

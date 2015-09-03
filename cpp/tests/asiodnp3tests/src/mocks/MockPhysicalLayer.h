@@ -25,7 +25,7 @@
 
 #include <openpal/channel/IPhysicalLayerCallbacks.h>
 
-#include "BufferTestObject.h"
+#include <testlib/BufferTestObject.h>
 
 namespace openpal
 {
@@ -37,7 +37,7 @@ namespace opendnp3
 
 
 // Provides a backend for testing physical layers
-class MockPhysicalLayer : public asiopal::PhysicalLayerBase, public BufferTestObject
+class MockPhysicalLayer : public asiopal::PhysicalLayerBase, public testlib::BufferTestObject
 {
 public:
 	MockPhysicalLayer(openpal::LogRoot& root, openpal::IExecutor& executor);

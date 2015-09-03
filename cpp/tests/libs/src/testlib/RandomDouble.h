@@ -18,43 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "SerialTestObject.h"
+#ifndef TESTLIB_RANDOM_DOUBLE_H_
+#define TESTLIB_RANDOM_DOUBLE_H_
 
-#include <testlib/BufferHelpers.h>
+#include <random>
 
-#include <asio.hpp>
-#include <catch.hpp>
-
-using namespace opendnp3;
-using namespace openpal;
-
-
-//run the tests on arm to give us some protection
-#define SUITE(name) "PhysicalLayerSerialSuite - " name
-#ifdef SERIAL_PORT
-
-TEST_CASE(SUITE("TestSendReceiveLoopback"))
+namespace testlib
 {
-	SerialSettings s;
-	s.mDevice = TOSTRING(SERIAL_PORT);
-	s.mBaud = 9600;
-	s.mDataBits = 8;
-	s.mStopBits = 1;
-	s.mParity = PAR_NONE;
-	s.mFlowType = FLOW_NONE;
 
-	SerialTestObject t(s);
+class RandomDouble
+{
 
-	t.mPort.Open();
-	REQUIRE(t.ProceedUntil(bind(&MockUpperLayer::IsLowerLayerUp, &t.mUpper)));
+public:
+	RandomDouble() :
+		rng(),
+		dist(0.0, 1.0)
+	{}
 
-	ByteStr b(4096, 0);
-	t.mUpper.SendDown(b, b.Size());
+	double Next()
+	{
+		return dist(rng);
+	}
 
-	REQUIRE(t.ProceedUntil(bind(&MockUpperLayer::SizeEquals, &t.mUpper, b.Size())));
+private:
+	std::mt19937 rng;
+	std::uniform_real_distribution<double> dist;
+};
+
 }
 
 #endif
-
-
 

@@ -18,61 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BUFFER_TEST_OBJECT_H_
-#define __BUFFER_TEST_OBJECT_H_
+#ifndef __SERIAL_TEST_OBJECT_H_
+#define __SERIAL_TEST_OBJECT_H_
 
-#include <string>
-#include <vector>
-#include <cstdint>
+#include <asiopal/PhysicalLayerSerial.h>
 
-#include <openpal/container/RSlice.h>
+#include "TestObjectASIO.h"
+
+#include <testlib/MockLogHandler.h>
+#include <dnp3mocks/MockUpperLayer.h>
+#include <dnp3mocks/LowerLayerToPhysAdapter.h>
+
+#include <opendnp3/LogLevels.h>
 
 namespace opendnp3
 {
 
-class BufferTestObject
+class SerialTestObject : public TestObjectASIO
 {
-	static const size_t MAX_SIZE = 1024 * 1024;
-
 public:
-	BufferTestObject();
-	~BufferTestObject();
+	SerialTestObject(asiopal::SerialSettings cfg, uint32_t filters = levels::NORMAL, bool aImmediate = false);
+	virtual ~SerialTestObject() {}
 
-	bool BufferEquals(const openpal::RSlice& arBuffer) const;
-	bool BufferEquals(const uint8_t*, size_t) const;
-	bool BufferEqualsHex(const std::string& arData) const;
-	bool BufferEqualsString(const std::string& arData) const;
-	bool BufferContains(const std::string& arData) const;
-
-	std::string GetBufferAsHexString(bool spaced = true) const;
-
-	bool IsBufferEmpty()
-	{
-		return mBuffer.size() == 0;
-	}
-	void ClearBuffer();
-	size_t Size()
-	{
-		return mBuffer.size();
-	}
-	bool SizeEquals(size_t aNum)
-	{
-		return aNum == Size();
-	}
-	size_t NumWrites()
-	{
-		return mNumWrites;
-	}
-
-protected:
-	void WriteToBuffer(const openpal::RSlice& arBuffer);
-
-private:
-	size_t mNumWrites;
-	std::vector<uint8_t> mBuffer;
+	testlib::MockLogHandler log;
+	asiopal::PhysicalLayerSerial mPort;
+	LowerLayerToPhysAdapter mAdapter;
+	MockUpperLayer mUpper;
 };
 
 }
 
 #endif
-

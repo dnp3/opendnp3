@@ -18,41 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "TestObject.h"
+#include "mocks/SerialTestObject.h"
 
-#include "Timeout.h"
+#include <testlib/BufferHelpers.h>
 
-#include <functional>
-#include <chrono>
+#include <asio.hpp>
+#include <catch.hpp>
 
+using namespace opendnp3;
 using namespace openpal;
-using namespace std;
 
-namespace opendnp3
+
+//run the tests on arm to give us some protection
+#define SUITE(name) "PhysicalLayerSerialSuite - " name
+#ifdef SERIAL_PORT
+
+TEST_CASE(SUITE("TestSendReceiveLoopback"))
 {
+	SerialSettings s;
+	s.mDevice = TOSTRING(SERIAL_PORT);
+	s.mBaud = 9600;
+	s.mDataBits = 8;
+	s.mStopBits = 1;
+	s.mParity = PAR_NONE;
+	s.mFlowType = FLOW_NONE;
 
-bool TestObject::ProceedUntil(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
-{
-	Timeout to(std::chrono::milliseconds(aTimeout.GetMilliseconds()));
+	SerialTestObject t(s);
 
-	do
-	{
-		if(arFunc()) return true;
-		else this->Next();
-	}
-	while(!to.IsExpired());
+	t.mPort.Open();
+	REQUIRE(t.ProceedUntil(bind(&MockUpperLayer::IsLowerLayerUp, &t.mUpper)));
 
-	return false;
+	ByteStr b(4096, 0);
+	t.mUpper.SendDown(b, b.Size());
+
+	REQUIRE(t.ProceedUntil(bind(&MockUpperLayer::SizeEquals, &t.mUpper, b.Size())));
 }
 
-void TestObject::ProceedForTime(openpal::TimeDuration aTimeout)
-{
-	ProceedUntil(std::bind(&TestObject::AlwaysBoolean, false), aTimeout);
-}
+#endif
 
-bool TestObject::ProceedUntilFalse(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
-{
-	return ProceedUntil(std::bind(&TestObject::Negate, std::cref(arFunc)), aTimeout);
-}
 
-}
+

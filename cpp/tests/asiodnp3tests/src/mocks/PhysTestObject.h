@@ -18,30 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYS_BASE_TEST_H_
-#define __PHYS_BASE_TEST_H_
+#ifndef __PHYS_TEST_OBJECT_H_
+#define __PHYS_TEST_OBJECT_H_
 
-#include "LowerLayerToPhysAdapter.h"
-#include "MockUpperLayer.h"
-#include "MockPhysicalLayer.h"
+#include "TestObjectASIO.h"
 
-#include <testlib/MockExecutor.h>
+#include <dnp3mocks/MockUpperLayer.h>
+#include <dnp3mocks/LowerLayerToPhysAdapter.h>
+
 #include <testlib/MockLogHandler.h>
+
+#include <asiopal/PhysicalLayerTCPClient.h>
+#include <asiopal/PhysicalLayerTCPServer.h>
+
 #include <opendnp3/LogLevels.h>
 
 namespace opendnp3
 {
 
-class PhysBaseTest
+class PhysTestObject : public TestObjectASIO
 {
 public:
-	PhysBaseTest(uint32_t filter = levels::NORMAL, bool aImmediate = false);
+	PhysTestObject(uint32_t levels = levels::NORMAL, bool aAutoRead = true);
 
 	testlib::MockLogHandler log;
-	testlib::MockExecutor exe;
-	MockPhysicalLayer phys;
-	LowerLayerToPhysAdapter adapter;
-	MockUpperLayer upper;
+
+	asiopal::PhysicalLayerTCPClient mTCPClient;
+	asiopal::PhysicalLayerTCPServer mTCPServer;
+
+	LowerLayerToPhysAdapter mClientAdapter;
+	LowerLayerToPhysAdapter mServerAdapter;
+
+	MockUpperLayer mClientUpper;
+	MockUpperLayer mServerUpper;
 };
 
 }

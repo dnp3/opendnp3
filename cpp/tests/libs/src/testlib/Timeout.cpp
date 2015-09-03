@@ -18,52 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef _TIMEOUT_H__
-#define _TIMEOUT_H__
+#include "Timeout.h"
 
-#include <chrono>
+using namespace std::chrono;
 
-namespace opendnp3
+namespace testlib
 {
 
-// Use this class to simplify writing do loops with a timeout
-// it minimizes the number of calls to get datetime and allows
-// us to easily replace the implementation later if we find an
-// even more effecient way to implement the timeout checking.
-//
-// Intended Usage:
-//
-// Timeout to(5000);
-// do{
-//	  //call some subordinate slow function
-//	  bool success = WaitForInput(to.Remaining());
-//
-//		//do something on success
-//		if(success) return or break;
-//
-//		//or go back around the loop, the next call to
-//		//remaining will be guarnteed to be > 0
-// }while(!to.IsExpired());
-class Timeout
+Timeout::Timeout(std::chrono::steady_clock::duration aTimeout)
+	: mExpireTime(std::chrono::steady_clock::now() + aTimeout)
 {
-public:
-	// constuctor, timeout will expire this many mills in the future
-	Timeout(std::chrono::steady_clock::duration aTimeout);
-
-	// returns whether its expired
-	bool IsExpired();
-
-	// returns how much time is left
-	std::chrono::steady_clock::duration Remaining();
-
-
-private:
-
-	std::chrono::steady_clock::time_point mExpireTime;
-
-};
-
 
 }
 
-#endif
+bool Timeout :: IsExpired()
+{
+	return std::chrono::steady_clock::now() >= mExpireTime;
+}
+
+std::chrono::steady_clock::duration Timeout::Remaining()
+{
+	return mExpireTime - std::chrono::steady_clock::now();
+}
+
+}

@@ -18,34 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RANDOM_DOUBLE_H_
-#define __RANDOM_DOUBLE_H_
+#include "TestObject.h"
 
-#include <random>
+#include <testlib/Timeout.h>
+
+#include <functional>
+#include <chrono>
+
+using namespace openpal;
+using namespace testlib;
+using namespace std;
 
 namespace opendnp3
 {
 
-class RandomDouble
+bool TestObject::ProceedUntil(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
 {
+	Timeout to(std::chrono::milliseconds(aTimeout.GetMilliseconds()));
 
-public:
-	RandomDouble() :
-		rng(),
-		dist(0.0, 1.0)
-	{}
-
-	double Next()
+	do
 	{
-		return dist(rng);
+		if(arFunc()) return true;
+		else this->Next();
 	}
+	while(!to.IsExpired());
 
-private:
-	std::mt19937 rng;
-	std::uniform_real_distribution<double> dist;
-};
-
+	return false;
 }
 
-#endif
+void TestObject::ProceedForTime(openpal::TimeDuration aTimeout)
+{
+	ProceedUntil(std::bind(&TestObject::AlwaysBoolean, false), aTimeout);
+}
 
+bool TestObject::ProceedUntilFalse(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
+{
+	return ProceedUntil(std::bind(&TestObject::Negate, std::cref(arFunc)), aTimeout);
+}
+
+}

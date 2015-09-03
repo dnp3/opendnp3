@@ -18,7 +18,6 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "TransportLoopbackTestObject.h"
 
 #include <asio.hpp>
 #include <catch.hpp>
@@ -28,10 +27,13 @@
 #include <asiopal/PhysicalLayerSerial.h>
 
 #include <opendnp3/app/AppConstants.h>
+#include <dnp3mocks/ProtocolUtil.h>
 
-#include "ProtocolUtil.h"
+#include "mocks/TransportLoopbackTestObject.h"
+#include "mocks/LoopbackPhysicalLayer.h"
+
 #include <testlib/BufferHelpers.h>
-#include "LoopbackPhysicalLayer.h"
+
 
 using namespace std;
 using namespace opendnp3;

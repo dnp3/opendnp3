@@ -18,40 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYS_TEST_OBJECT_H_
-#define __PHYS_TEST_OBJECT_H_
+#ifndef TESTLIB_RANDOMIZED_BUFFER_H_
+#define TESTLIB_RANDOMIZED_BUFFER_H_
 
-#include "TestObjectASIO.h"
-#include "MockUpperLayer.h"
-#include <testlib/MockLogHandler.h>
+#include "CopyableBuffer.h"
+#include "Random.h"
 
-#include <asiopal/PhysicalLayerTCPClient.h>
-#include <asiopal/PhysicalLayerTCPServer.h>
-
-#include <opendnp3/LogLevels.h>
-
-#include "LowerLayerToPhysAdapter.h"
-
-namespace opendnp3
+namespace  testlib
 {
 
-class PhysTestObject : public TestObjectASIO
+class RandomizedBuffer : public testlib::CopyableBuffer
 {
+
 public:
-	PhysTestObject(uint32_t levels = levels::NORMAL, bool aAutoRead = true);
 
-	testlib::MockLogHandler log;
+	RandomizedBuffer(uint32_t aSize);
 
-	asiopal::PhysicalLayerTCPClient mTCPClient;
-	asiopal::PhysicalLayerTCPServer mTCPServer;
+	void Randomize();
 
-	LowerLayerToPhysAdapter mClientAdapter;
-	LowerLayerToPhysAdapter mServerAdapter;
-
-	MockUpperLayer mClientUpper;
-	MockUpperLayer mServerUpper;
+private:
+	Random<uint32_t> rand;
 };
 
 }
 
 #endif
+
+

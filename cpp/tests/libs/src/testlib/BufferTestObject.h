@@ -18,35 +18,58 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_INTEGRATION_STACK_H_
-#define __TRANSPORT_INTEGRATION_STACK_H_
+#ifndef __BUFFER_TEST_OBJECT_H_
+#define __BUFFER_TEST_OBJECT_H_
 
-#include <opendnp3/link/LinkLayer.h>
-#include <opendnp3/transport/TransportLayer.h>
+#include <string>
+#include <vector>
+#include <cstdint>
 
-#include <asiodnp3/LinkLayerRouter.h>
+#include <openpal/container/RSlice.h>
 
-#include "MockUpperLayer.h"
-#include "MockLinkListener.h"
-
-namespace openpal
-{
-class IPhysicalLayer;
-}
-
-namespace opendnp3
+namespace testlib
 {
 
-class TransportIntegrationStack
+class BufferTestObject
 {
+	static const size_t MAX_SIZE = 1024 * 1024;
+
 public:
-	TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer*, LinkConfig);
+	BufferTestObject();
+	~BufferTestObject();
 
-	MockLinkListener listener;
-	asiodnp3::LinkLayerRouter router;
-	TransportLayer transport;
-	LinkLayer link;
-	MockUpperLayer upper;
+	bool BufferEquals(const openpal::RSlice& arBuffer) const;
+	bool BufferEquals(const uint8_t*, size_t) const;
+	bool BufferEqualsHex(const std::string& arData) const;
+	bool BufferEqualsString(const std::string& arData) const;
+	bool BufferContains(const std::string& arData) const;
+
+	std::string GetBufferAsHexString(bool spaced = true) const;
+
+	bool IsBufferEmpty()
+	{
+		return mBuffer.size() == 0;
+	}
+	void ClearBuffer();
+	size_t Size()
+	{
+		return mBuffer.size();
+	}
+	bool SizeEquals(size_t aNum)
+	{
+		return aNum == Size();
+	}
+	size_t NumWrites()
+	{
+		return mNumWrites;
+	}
+
+protected:
+	void WriteToBuffer(const openpal::RSlice& arBuffer);
+
+private:
+	size_t mNumWrites;
+	std::vector<uint8_t> mBuffer;
 };
 
 }

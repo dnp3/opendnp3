@@ -22,7 +22,8 @@
 #define __LINK_LAYER_TEST_H_
 
 #include "MockTransportLayer.h"
-#include "MockLinkListener.h"
+
+#include <dnp3mocks/MockLinkListener.h>
 
 #include "testlib/MockExecutor.h"
 #include "testlib/MockLogHandler.h"

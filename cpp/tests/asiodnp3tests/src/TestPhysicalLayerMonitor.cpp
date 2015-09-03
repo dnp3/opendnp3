@@ -25,7 +25,7 @@
 
 #include <asiodnp3/PhysicalLayerMonitor.h>
 
-#include "MockPhysicalLayer.h"
+#include "mocks/MockPhysicalLayer.h"
 
 #include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>

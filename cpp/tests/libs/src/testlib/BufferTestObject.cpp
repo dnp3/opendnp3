@@ -30,9 +30,8 @@
 #include <openpal/util/ToHex.h>
 
 using namespace openpal;
-using namespace testlib;
 
-namespace opendnp3
+namespace testlib
 {
 
 BufferTestObject::BufferTestObject() :

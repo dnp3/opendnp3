@@ -26,12 +26,12 @@
 
 #include <functional>
 
-#include "BufferTestObject.h"
+#include <testlib/BufferTestObject.h>
 
 namespace opendnp3
 {
 
-class MockUpperLayer : public IUpperLayer, public HasLowerLayer, public BufferTestObject
+class MockUpperLayer : public IUpperLayer, public HasLowerLayer, public testlib::BufferTestObject
 {
 public:
 

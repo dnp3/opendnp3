@@ -18,62 +18,50 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_LOOPBACK_TEST_OBJECT_H_
-#define __TRANSPORT_LOOPBACK_TEST_OBJECT_H_
+#ifndef TESTLIB_RANDOM_H_
+#define TESTLIB_RANDOM_H_
 
-#include "TestObjectASIO.h"
-#include <testlib/MockLogHandler.h>
-#include "MockUpperLayer.h"
-#include "MockLinkListener.h"
+#include <random>
 
-#include <opendnp3/LogLevels.h>
-#include <opendnp3/link/LinkLayer.h>
-#include <opendnp3/transport/TransportLayer.h>
-
-#include <asiodnp3/LinkLayerRouter.h>
-
-namespace opendnp3
+namespace testlib
 {
 
-class TransportLoopbackTestObject :  public TestObjectASIO
+template<class T>
+class Random
 {
+
 public:
-	TransportLoopbackTestObject(
-	    openpal::LogRoot& root,
-	    asio::io_service& service,
-	    openpal::IExecutor& executor,
-	    openpal::IPhysicalLayer*,
-	    LinkConfig,
-	    LinkConfig,
-	    uint32_t filters = flags::INFO);
+	Random(T min = std::numeric_limits<T>::min(), T max = std::numeric_limits<T>::max()) :
+		rng(),
+		dist(min, max)
+	{
 
-	~TransportLoopbackTestObject();
+	}
 
-	bool LayersUp();
-
-	void Start();
+	T Next()
+	{
+		return dist(rng);
+	}
 
 private:
-
-	MockLinkListener listener;
-
-	LinkConfig mCfgA;
-	LinkConfig mCfgB;
-
-	TransportLayer mTransA;
-	TransportLayer mTransB;
-
-	LinkLayer mLinkA;
-	LinkLayer mLinkB;
-
-	asiodnp3::LinkLayerRouter mRouter;
-
-public:
-	MockUpperLayer mUpperA;
-	MockUpperLayer mUpperB;
-
+	std::mt19937 rng;
+	std::uniform_int_distribution<T> dist;
 };
+
+class RandomBool : private Random<uint32_t>
+{
+public:
+	RandomBool() : Random<uint32_t>(0, 1)
+	{}
+
+	bool NextBool()
+	{
+		return Next() ? true : false;
+	}
+};
+
 
 }
 
 #endif
+
