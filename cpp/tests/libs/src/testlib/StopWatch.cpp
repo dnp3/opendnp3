@@ -18,38 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
-#include <testlib/Timeout.h>
 #include "StopWatch.h"
 
-#include <iostream>
-#include <chrono>
-#include <thread>
-
-using namespace std;
 using namespace std::chrono;
-using namespace testlib;
-using namespace opendnp3;
 
-#define SUITE(name) "TimeoutStopWatchTests - " name
-
-TEST_CASE(SUITE("TimeoutCorrectlyNotExpired"))
+namespace testlib
 {
-	//create a timeout of 1 millisecond
-	Timeout to(milliseconds(1000));
 
-	//check that the timeout starts out unexpired
-	REQUIRE(to.IsExpired() ==  false);
-	REQUIRE(to.Remaining() > milliseconds(1));
+StopWatch::StopWatch() : mStartTime(std::chrono::steady_clock::now())
+{
+
 }
 
-TEST_CASE(SUITE("StopWatchBasicTest"))
+std::chrono::steady_clock::duration StopWatch::Elapsed(bool aReset)
 {
-	StopWatch sw;
-
-	REQUIRE(sw.Elapsed(false) <= milliseconds(100));
+	return std::chrono::steady_clock::now() - mStartTime;
 }
 
+void StopWatch :: Restart()
+{
+	mStartTime = std::chrono::steady_clock::now();
+}
 
-
+}

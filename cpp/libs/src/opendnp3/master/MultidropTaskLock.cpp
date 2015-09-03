@@ -20,9 +20,7 @@
  */
 #include "MultidropTaskLock.h"
 
-using namespace opendnp3;
-
-namespace asiodnp3
+namespace opendnp3
 {
 
 MultidropTaskLock::MultidropTaskLock() : isOnline(false), pActive(nullptr)

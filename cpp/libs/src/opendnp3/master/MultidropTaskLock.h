@@ -18,34 +18,47 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef _STOP_WATCH_H__
-#define _STOP_WATCH_H__
+#ifndef OPENDNP3_MULTIDROPTASKLOCK_H
+#define OPENDNP3_MULTIDROPTASKLOCK_H
 
-#include <chrono>
+#include "opendnp3/master/ITaskLock.h"
+
+#include <set>
+#include <deque>
 
 namespace opendnp3
 {
 
-/**
-	This class is designed to make it easier to do simple timing tests
-*/
-class StopWatch
+class MultidropTaskLock: public opendnp3::ITaskLock
 {
 public:
 
-	StopWatch();
+	MultidropTaskLock();
 
-	//get the elapsed time since creation or the last restart
-	//by default each call to Elapsed restarts the timer.
-	std::chrono::steady_clock::duration Elapsed(bool aReset = true);
 
-	//restart or re-zero the StopWatch.
-	void Restart();
+	virtual bool Acquire(IScheduleCallback&) override final;
+
+
+	virtual void Release(IScheduleCallback&) override final;
+
+
+	virtual void OnLayerUp() override final;
+
+
+	virtual void OnLayerDown() override final;
+
 
 private:
-	std::chrono::steady_clock::time_point mStartTime;
-};
 
+	bool AddIfNotContained(IScheduleCallback&);
+
+	std::set<IScheduleCallback*> callbackSet;
+	std::deque<IScheduleCallback*> callbackQueue;
+
+	bool isOnline;
+
+	IScheduleCallback* pActive;
+};
 
 }
 

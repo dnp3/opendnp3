@@ -24,11 +24,10 @@
 #include <testlib/HexConversions.h>
 #include <dnp3mocks/APDUHexBuilders.h>
 
-#include <asiodnp3/MultidropTaskLock.h>
+#include <opendnp3/master/MultidropTaskLock.h>
 
 using namespace openpal;
 using namespace opendnp3;
-using namespace asiodnp3;
 
 #define SUITE(name) "MasterMultidropTestSuite - " name
 

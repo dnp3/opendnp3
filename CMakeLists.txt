@@ -218,12 +218,8 @@ if(TEST)
 
   # ----- opendnp3 tests -----
   file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp ./cpp/tests/opendnp3tests/src/*.h)
-  add_executable (testopendnp3 ${opendnp3_TESTSRC})  
-  if(SECAUTH)
-   target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks ${PTHREAD})
-  else()
-   target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
-  endif()
+  add_executable (testopendnp3 ${opendnp3_TESTSRC})    
+  target_link_libraries (testopendnp3 LINK_PUBLIC dnp3mocks ${PTHREAD})  
   set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
 
   # ----- asiodnp3 tests -----

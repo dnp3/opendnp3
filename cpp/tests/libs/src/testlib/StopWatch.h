@@ -18,31 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef _PHYSICAL_LAYER_FACTORY_H_
-#define _PHYSICAL_LAYER_FACTORY_H_
+#ifndef TESTLIB_STOP_WATCH_H
+#define TESTLIB_STOP_WATCH_H
 
+#include <chrono>
 
-#include "SerialTypes.h"
-#include "Exception.h"
-#include "PhysicalLayerFunctors.h"
-#include <map>
-
-namespace opendnp3
+namespace testlib
 {
 
-class PhysicalLayerWrapperFactory
+/**
+	This class is designed to make it easier to do simple timing tests
+*/
+class StopWatch
 {
 public:
 
-	static IPhysicalLayerFactory GetSerial(SerialSettings s);
-	static IPhysicalLayerFactory GetTCPClient(std::string aAddress, uint16_t aPort);
-	static IPhysicalLayerFactory GetTCPServer(std::string aEndpoint, uint16_t aPort);
+	StopWatch();
 
-	//normal factory functions
-	static IPhysicalLayerWrapper* FGetSerial(SerialSettings s, asio::io_service* apSrv, openpal::Logger& arLogger);
-	static IPhysicalLayer* FGetTCPClient(std::string aAddress, uint16_t aPort, asio::io_service* apSrv, openpal::Logger& arLogger);
-	static IPhysicalLayer* FGetTCPServer(std::string aEndpoint, uint16_t aPort, asio::io_service* apSrv, openpal::Logger& arLogger);
+	//get the elapsed time since creation or the last restart
+	//by default each call to Elapsed restarts the timer.
+	std::chrono::steady_clock::duration Elapsed(bool aReset = true);
+
+	//restart or re-zero the StopWatch.
+	void Restart();
+
+private:
+	std::chrono::steady_clock::time_point mStartTime;
 };
+
+
 }
 
 #endif

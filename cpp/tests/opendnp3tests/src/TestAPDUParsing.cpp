@@ -35,13 +35,10 @@
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/Indexed.h>
 
-#include <asiodnp3/ConsoleLogger.h>
-
 #include <functional>
 
 using namespace std;
 using namespace openpal;
-using namespace asiodnp3;
 using namespace opendnp3;
 using namespace testlib;
 
@@ -54,8 +51,9 @@ void TestComplex(const std::string& hex, ParseResult expected, size_t numCalls, 
 	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, &logger);
 
 	if (result != expected)
-	{
-		log.Pop(ConsoleLogger::Instance());
+	{	
+		// TODO
+		// log.Pop(ConsoleLogger::Instance());
 	}
 
 	REQUIRE((result == expected));

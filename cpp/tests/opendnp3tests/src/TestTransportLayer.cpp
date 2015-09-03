@@ -25,15 +25,12 @@
 #include <testlib/MockLogHandler.h>
 #include <dnp3mocks/ProtocolUtil.h>
 
-#include <asiodnp3/ConsoleLogger.h>
-
 #include <opendnp3/app/AppConstants.h>
 #include <opendnp3/transport/TransportConstants.h>
 
 using namespace std;
 using namespace openpal;
 using namespace opendnp3;
-using namespace asiodnp3;
 using namespace testlib;
 
 #define SUITE(name) "TransportLayerTestSuite - " name

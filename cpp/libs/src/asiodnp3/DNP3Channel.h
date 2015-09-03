@@ -26,12 +26,12 @@
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
+#include <opendnp3/master/MultidropTaskLock.h>
 
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/Synchronized.h>
 
 #include "asiodnp3/IChannel.h"
-#include "asiodnp3/MultidropTaskLock.h"
 #include "asiodnp3/StackLifecycle.h"
 #include "asiodnp3/LinkLayerRouter.h"
 
@@ -125,7 +125,7 @@ private:
 
 	void CheckForFinalShutdown();
 
-	MultidropTaskLock taskLock;
+	opendnp3::MultidropTaskLock taskLock;
 
 	openpal::Action0 shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;
