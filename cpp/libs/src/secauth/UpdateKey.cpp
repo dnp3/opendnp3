@@ -30,7 +30,7 @@ UpdateKey::UpdateKey() : m_algorithm (KeyWrapAlgorithm::UNDEFINED), m_buffer(0xF
 
 }
 
-UpdateKey::UpdateKey(uint8_t repeat, KeyWrapAlgorithm algorithm) : m_algorithm(algorithm), m_buffer(0xFF)
+UpdateKey::UpdateKey(uint8_t repeat, KeyWrapAlgorithm algorithm) : m_algorithm(algorithm), m_buffer(repeat)
 {
 }
 
