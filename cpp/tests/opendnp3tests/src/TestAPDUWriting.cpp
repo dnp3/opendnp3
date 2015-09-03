@@ -36,7 +36,8 @@
 
 #include <assert.h>
 
-#include "APDUHelpers.h"
+#include "mocks/APDUHelpers.h"
+
 #include <testlib/HexConversions.h>
 
 using namespace openpal;

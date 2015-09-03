@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "OutstationTestObject.h"
+#include "mocks/OutstationTestObject.h"
 
 #include <opendnp3/ErrorCodes.h>
 

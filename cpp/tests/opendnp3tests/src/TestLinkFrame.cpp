@@ -28,8 +28,9 @@
 #include <openpal/container/Buffer.h>
 
 #include <testlib/BufferHelpers.h>
-#include "DNPHelpers.h"
 #include <testlib/HexConversions.h>
+
+#include "mocks/DNPHelpers.h"
 
 using namespace testlib;
 using namespace opendnp3;

@@ -20,9 +20,8 @@
  */
 #include <catch.hpp>
 
-
-#include "MeasurementComparisons.h"
-#include "DatabaseTestObject.h"
+#include "mocks/MeasurementComparisons.h"
+#include "mocks/DatabaseTestObject.h"
 
 #include <limits>
 

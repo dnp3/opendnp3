@@ -20,7 +20,8 @@
  */
 #include <catch.hpp>
 
-#include "MasterTestObject.h"
+#include "mocks/MasterTestObject.h"
+
 #include <testlib/HexConversions.h>
 #include <dnp3mocks/APDUHexBuilders.h>
 

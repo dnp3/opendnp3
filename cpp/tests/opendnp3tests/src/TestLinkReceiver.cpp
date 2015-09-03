@@ -20,8 +20,8 @@
  */
 #include <catch.hpp>
 
-#include "LinkReceiverTest.h"
-#include "DNPHelpers.h"
+#include "mocks/LinkReceiverTest.h"
+#include "mocks/DNPHelpers.h"
 
 #include <testlib/BufferHelpers.h>
 

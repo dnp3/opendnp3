@@ -20,8 +20,9 @@
  */
 #include <catch.hpp>
 
-#include "MasterTestObject.h"
-#include "MeasurementComparisons.h"
+#include "mocks/MasterTestObject.h"
+#include "mocks/MeasurementComparisons.h"
+
 #include <testlib/HexConversions.h>
 #include <dnp3mocks/MockTaskCallback.h>
 #include <dnp3mocks/APDUHexBuilders.h>

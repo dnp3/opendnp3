@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "TransportTestObject.h"
+#include "mocks/TransportTestObject.h"
 
 #include <testlib/MockLogHandler.h>
 #include <dnp3mocks/ProtocolUtil.h>

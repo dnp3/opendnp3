@@ -24,9 +24,9 @@
 
 #include <openpal/util/ToHex.h>
 
-#include "BufferSegment.h"
-#include "LinkLayerTest.h"
-#include "LinkHex.h"
+#include "mocks/BufferSegment.h"
+#include "mocks/LinkLayerTest.h"
+#include "mocks/LinkHex.h"
 
 #include <testlib/HexConversions.h>
 

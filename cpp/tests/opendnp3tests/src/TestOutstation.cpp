@@ -20,8 +20,8 @@
  */
 #include <catch.hpp>
 
+#include "mocks/OutstationTestObject.h"
 
-#include "OutstationTestObject.h"
 #include <dnp3mocks/APDUHexBuilders.h>
 #include <testlib/HexConversions.h>
 

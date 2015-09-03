@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "OutstationTestObject.h"
+#include "mocks/OutstationTestObject.h"
 
 #include <dnp3mocks/APDUHexBuilders.h>
 

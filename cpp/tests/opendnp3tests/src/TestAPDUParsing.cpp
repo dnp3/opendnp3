@@ -20,8 +20,8 @@
  */
 #include <catch.hpp>
 
-#include "MockAPDUHeaderHandler.h"
-#include "MeasurementComparisons.h"
+#include "mocks/MockAPDUHeaderHandler.h"
+#include "mocks/MeasurementComparisons.h"
 
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
