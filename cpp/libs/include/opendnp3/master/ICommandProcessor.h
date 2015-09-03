@@ -51,8 +51,45 @@ public:
 	* @param callback callback that will be invoked upon completion or failure
 	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
 	*/
-	virtual void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;	
+	virtual void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
+
+
+	/**
+	* Select/operate a single command
+	*
+	* @param command Command to operate
+	* @param index of the command
+	* @param callback callback that will be invoked upon completion or failure
+	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
+	*/
+	template <class T>
+	void SelectAndOperate(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default());
+
+	/**
+	* Direct operate a single command
+	*
+	* @param command Command to operate
+	* @param index of the command
+	* @param callback callback that will be invoked upon completion or failure
+	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
+	*/
+	template <class T>
+	void DirectOperate(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default());
 };
+
+template <class T>
+void ICommandProcessor::SelectAndOperate(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	CommandSet commands({ WithIndex(command, index) });
+	this->SelectAndOperate(std::move(commands), callback, config);
+}
+
+template <class T>
+void ICommandProcessor::DirectOperate(const T& command, uint16_t index, const CommandCallbackT& callback, const TaskConfig& config)
+{
+	CommandSet commands({ WithIndex(command, index) });
+	this->DirectOperate(std::move(commands), callback, config);
+}
 
 }
 

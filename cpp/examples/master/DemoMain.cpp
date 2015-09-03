@@ -128,9 +128,8 @@ int main(int argc, char* argv[])
 			break;
 		case('c'):
 			{
-				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
-				CommandSet commands({ WithIndex(crob, 0), WithIndex(crob, 1) }); 								
-				pMaster->SelectAndOperate(std::move(commands), PrintingCommandCallback::Get());				
+				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);											
+				pMaster->SelectAndOperate(crob, 0, PrintingCommandCallback::Get());				
 				break;
 			}
 		default:
