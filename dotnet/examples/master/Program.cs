@@ -91,6 +91,11 @@ namespace DotNetMasterDemo
                     case "c":                        
                         var task = master.SelectAndOperate(GetCommandHeaders(), TaskConfig.Default);
                         task.ContinueWith((result) => Console.WriteLine("Result: " + result.Result));
+                        break;                        
+                    case "o":
+                        var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
+                        var single = master.SelectAndOperate(crob, 1, TaskConfig.Default);
+                        single.ContinueWith((result) => Console.WriteLine("Result: " + result.Result));
                         break;
                     case "l":
                         // add interpretation to the current logging level

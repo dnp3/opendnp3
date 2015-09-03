@@ -38,7 +38,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="headers">A collection of command headers</param>
         /// <param name="config">Configuration for the task</param>
-        /// <returns>A reference to future value of the result</returns>
+        /// <returns>A Task representing the future completion of the commands</returns>
         Task<CommandTaskResult> SelectAndOperate(ICommandHeaders headers, TaskConfig config);
       
         /// <summary>
@@ -46,7 +46,97 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="headers">A collection of command headers</param>
         /// <param name="config">Configuration for the task</param>
-        /// <returns>A reference to future value of the result</returns>
-        Task<CommandTaskResult> DirectOperate(ICommandHeaders headers, TaskConfig config);      
+        /// <returns>A Task representing the future completion of the commands</returns>
+        Task<CommandTaskResult> DirectOperate(ICommandHeaders headers, TaskConfig config);
+
+        /// <summary>
+        /// Select and operate a command
+        /// </summary>
+        /// <param name="command">command to SBO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> SelectAndOperate(ControlRelayOutputBlock command, System.UInt16 index, TaskConfig config);
+
+        /// <summary>
+        /// Direct operate a command
+        /// </summary>
+        /// <param name="command">command to DO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> DirectOperate(ControlRelayOutputBlock command, System.UInt16 index, TaskConfig config);
+
+        /// <summary>
+        /// Select and operate a command
+        /// </summary>
+        /// <param name="command">command to SBO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> SelectAndOperate(AnalogOutputInt16 command, System.UInt16 index, TaskConfig config);
+
+        /// <summary>
+        /// Direct operate a command
+        /// </summary>
+        /// <param name="command">command to DO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> DirectOperate(AnalogOutputInt16 command, System.UInt16 index, TaskConfig config);
+
+        /// <summary>
+        /// Select and operate a command
+        /// </summary>
+        /// <param name="command">command to SBO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> SelectAndOperate(AnalogOutputInt32 command, System.UInt16 index, TaskConfig config);
+
+        /// <summary>
+        /// Direct operate a command
+        /// </summary>
+        /// <param name="command">command to DO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> DirectOperate(AnalogOutputInt32 command, System.UInt16 index, TaskConfig config);
+
+        /// <summary>
+        /// Select and operate a command
+        /// </summary>
+        /// <param name="command">command to SBO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> SelectAndOperate(AnalogOutputFloat32 command, System.UInt16 index, TaskConfig config);
+
+        /// <summary>
+        /// Direct operate a command
+        /// </summary>
+        /// <param name="command">command to DO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> DirectOperate(AnalogOutputFloat32 command, System.UInt16 index, TaskConfig config);
+
+        /// <summary>
+        /// Select and operate a command
+        /// </summary>
+        /// <param name="command">command to SBO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> SelectAndOperate(AnalogOutputDouble64 command, System.UInt16 index, TaskConfig config);
+
+        /// <summary>
+        /// Direct operate a command
+        /// </summary>
+        /// <param name="command">command to DO</param>
+        /// <param name="index">index of the command</param>
+        /// <param name="config">Configuration for the task</param>
+        /// <returns>A Task representing the future completion of the command</returns>
+        Task<SingleCommandTaskResult> DirectOperate(AnalogOutputDouble64 command, System.UInt16 index, TaskConfig config);
     }
 }

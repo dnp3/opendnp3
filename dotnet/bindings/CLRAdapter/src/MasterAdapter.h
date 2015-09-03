@@ -52,9 +52,23 @@ namespace Automatak
 
 				virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, TaskConfig^ config);												
 
+				/// --- implement ICommandProcessor ----
+
 				virtual Task<CommandTaskResult^>^ SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config);
 				
 				virtual Task<CommandTaskResult^>^ DirectOperate(ICommandHeaders^ headers, TaskConfig^ config);
+
+				virtual Task<SingleCommandTaskResult^>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt16 index, TaskConfig^ config);			
+				virtual Task<SingleCommandTaskResult^>^ SelectAndOperate(AnalogOutputInt16^ command, System::UInt16 index, TaskConfig^ config);				
+				virtual Task<SingleCommandTaskResult^>^ SelectAndOperate(AnalogOutputInt32^ command, System::UInt16 index, TaskConfig^ config);				
+				virtual Task<SingleCommandTaskResult^>^ SelectAndOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config);				
+				virtual Task<SingleCommandTaskResult^>^ SelectAndOperate(AnalogOutputDouble64^ command, System::UInt16 index, TaskConfig^ config);
+				
+				virtual Task<SingleCommandTaskResult^>^ DirectOperate(ControlRelayOutputBlock^ command, System::UInt16 index, TaskConfig^ config);
+				virtual Task<SingleCommandTaskResult^>^ DirectOperate(AnalogOutputDouble64^ command, System::UInt16 index, TaskConfig^ config);				
+				virtual Task<SingleCommandTaskResult^>^ DirectOperate(AnalogOutputInt16^ command, System::UInt16 index, TaskConfig^ config);
+				virtual Task<SingleCommandTaskResult^>^ DirectOperate(AnalogOutputInt32^ command, System::UInt16 index, TaskConfig^ config);
+				virtual Task<SingleCommandTaskResult^>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config);
 				
 
 			private:				
