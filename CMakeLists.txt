@@ -226,6 +226,16 @@ if(TEST)
   endif()
   set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
 
+  # ----- asiodnp3 tests -----
+  file(GLOB_RECURSE asiodnp3_TESTSRC ./cpp/tests/asiodnp3tests/src/*.cpp ./cpp/tests/asiodnp3tests/src/*.h)
+  add_executable (testasiodnp3 ${asiodnp3_TESTSRC})
+  if(SECAUTH)
+   target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks ${PTHREAD})
+  else()
+   target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
+  endif()
+  set_target_properties(testasiodnp3 PROPERTIES FOLDER tests)
+
   if(SECAUTH)
   
     # ----- sa tests -----
