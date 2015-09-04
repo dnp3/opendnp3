@@ -111,7 +111,7 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::RSlice& 
 	{
 		auto result = CommandSetOps::ProcessSelectResponse(commands, objects, &logger);
 		
-		switch (CommandSetOps::ProcessSelectResponse(commands, objects, &logger))
+		switch (result)
 		{
 			case(CommandSetOps::SelectResult::OK) :
 				return ResponseResult::OK_REPEAT; // proceed to OPERATE
