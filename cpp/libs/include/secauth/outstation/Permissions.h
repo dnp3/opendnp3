@@ -71,7 +71,7 @@ private:
 
 	inline static bitfield_t Bit(uint8_t bit)
 	{
-		return static_cast<bitfield_t>(1 << bit);
+		return static_cast<bitfield_t>(static_cast<uint64_t>(1) << bit);
 	}
 
 	static bitfield_t GetMask(opendnp3::FunctionCode code);

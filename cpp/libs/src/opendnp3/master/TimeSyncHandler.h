@@ -26,6 +26,7 @@
 #include "opendnp3/LogLevels.h"
 
 #include <openpal/logging/LogMacros.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {
@@ -33,7 +34,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class TimeSyncHandler : public IAPDUHandler
+class TimeSyncHandler : public IAPDUHandler, private openpal::Uncopyable
 {
 
 public:
@@ -43,7 +44,8 @@ public:
 	*/
 	TimeSyncHandler(openpal::Logger logger_) :
 		logger(logger_),
-		valid(false)
+		m_valid(false),
+		m_time(0)
 	{}
 
 	bool GetTimeDelay(uint16_t& time)
@@ -54,11 +56,11 @@ public:
 		}
 		else
 		{
-			if (valid)
+			if (m_valid)
 			{
-				time = value.time;
+				time = m_time;
 			}
-			return valid;
+			return m_valid;
 		}
 	}
 
@@ -68,14 +70,18 @@ public:
 	}
 
 private:
+    
+	TimeSyncHandler() = delete;
 
 	openpal::Logger logger;
 
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& times) override final
 	{
+		Group52Var2 value;
 		if (times.ReadOnlyValue(value))
 		{
-			valid = true;
+			m_valid = true;
+			m_time = value.time;
 			return IINField::Empty();
 		}
 		else
@@ -84,8 +90,8 @@ private:
 		}
 	}
 
-	bool valid;
-	Group52Var2 value;
+	bool m_valid;
+	uint16_t m_time;
 
 };
 

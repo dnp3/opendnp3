@@ -48,7 +48,8 @@ public:
 	{
 	public:
 
-		VerificationData() {}
+		VerificationData() : keyChangeSeqNum(0)
+		{}
 
 		VerificationData(
 		    std::string username_,
