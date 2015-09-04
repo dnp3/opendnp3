@@ -60,7 +60,7 @@ namespace Automatak
 				return ret;
 			}
 
-			MultiCommandTaskResult^ Conversions::ConvertCommandTaskResult(const opendnp3::ICommandTaskResult& response)
+			CommandTaskResult^ Conversions::ConvertCommandTaskResult(const opendnp3::ICommandTaskResult& response)
 			{
 				auto convert = [](const opendnp3::CommandPointResult& value) -> CommandPointResult^ 
 				{
@@ -71,7 +71,7 @@ namespace Automatak
 
 				response.Foreach(adapter);
 
-				return gcnew MultiCommandTaskResult((TaskCompletion)response.summary, adapter.GetValues());
+				return gcnew CommandTaskResult((TaskCompletion)response.summary, adapter.GetValues());
 			}			
 
 			CommandStatus Conversions::ConvertCommandStatus(opendnp3::CommandStatus status)

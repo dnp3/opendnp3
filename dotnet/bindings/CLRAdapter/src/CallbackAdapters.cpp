@@ -13,9 +13,9 @@ namespace Automatak
 		namespace Adapter
 		{						
 																
-			opendnp3::CommandCallbackT CallbackAdapters::Get(TaskCompletionSource<MultiCommandTaskResult^>^ tcs)
+			opendnp3::CommandCallbackT CallbackAdapters::Get(TaskCompletionSource<CommandTaskResult^>^ tcs)
 			{
-				gcroot<TaskCompletionSource<MultiCommandTaskResult^>^> handle(tcs);
+				gcroot<TaskCompletionSource<CommandTaskResult^>^> handle(tcs);
 
 				return [handle](const opendnp3::ICommandTaskResult& res) -> void
 				{

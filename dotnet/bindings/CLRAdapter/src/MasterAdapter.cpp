@@ -108,89 +108,79 @@ namespace Automatak
 					return gcnew MasterScanAdapter(scan);
 				}
 												
-				Task<MultiCommandTaskResult^>^ MasterAdapter::SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config)
 				{
-					auto tcs = gcnew TaskCompletionSource<MultiCommandTaskResult^>();
+					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();
 					pMaster->SelectAndOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
 					return tcs->Task;
 				}
 
-				Task<MultiCommandTaskResult^>^ MasterAdapter::DirectOperate(ICommandHeaders^ headers, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::DirectOperate(ICommandHeaders^ headers, TaskConfig^ config)
 				{
-					auto tcs = gcnew TaskCompletionSource<MultiCommandTaskResult^>();
+					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();
 					pMaster->DirectOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
 					return tcs->Task;
 				}
 
-				Task<SingleCommandTaskResult^>^ MasterAdapter::SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->SelectAndOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->SelectAndOperate(headers, config);					
 				}
 
-				Task<SingleCommandTaskResult^>^ MasterAdapter::SelectAndOperate(AnalogOutputInt16^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::SelectAndOperate(AnalogOutputInt16^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->SelectAndOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->SelectAndOperate(headers, config);					
 				}
 
-				Task<SingleCommandTaskResult^>^ MasterAdapter::SelectAndOperate(AnalogOutputInt32^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::SelectAndOperate(AnalogOutputInt32^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->SelectAndOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->SelectAndOperate(headers, config);					
 				}
 
-				Task<SingleCommandTaskResult^>^ MasterAdapter::SelectAndOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::SelectAndOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->SelectAndOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->SelectAndOperate(headers, config);					
 				}
 
-				Task<SingleCommandTaskResult^>^ MasterAdapter::SelectAndOperate(AnalogOutputDouble64^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::SelectAndOperate(AnalogOutputDouble64^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->SelectAndOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->SelectAndOperate(headers, config);					
 				}
 				
 
-				Task<SingleCommandTaskResult^>^ MasterAdapter::DirectOperate(ControlRelayOutputBlock^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::DirectOperate(ControlRelayOutputBlock^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->DirectOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->DirectOperate(headers, config);					
 				}
 
-				Task<SingleCommandTaskResult^>^ MasterAdapter::DirectOperate(AnalogOutputDouble64^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::DirectOperate(AnalogOutputDouble64^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->DirectOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->DirectOperate(headers, config);					
 				}
 				
-				Task<SingleCommandTaskResult^>^ MasterAdapter::DirectOperate(AnalogOutputInt16^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::DirectOperate(AnalogOutputInt16^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->DirectOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->DirectOperate(headers, config);
 				}
 
-				Task<SingleCommandTaskResult^>^ MasterAdapter::DirectOperate(AnalogOutputInt32^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::DirectOperate(AnalogOutputInt32^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->DirectOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->DirectOperate(headers, config);					
 				}
 
-				Task<SingleCommandTaskResult^>^ MasterAdapter::DirectOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config)
+				Task<CommandTaskResult^>^ MasterAdapter::DirectOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config)
 				{
 					ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-					auto task = this->DirectOperate(headers, config);
-					return SingleCommandTaskResult::From(task);
+					return this->DirectOperate(headers, config);					
 				}
 		}
 	}

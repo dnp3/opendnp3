@@ -56,7 +56,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> SelectAndOperate(ControlRelayOutputBlock command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> SelectAndOperate(ControlRelayOutputBlock command, System.UInt16 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a command
@@ -65,7 +65,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> DirectOperate(ControlRelayOutputBlock command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> DirectOperate(ControlRelayOutputBlock command, System.UInt16 index, TaskConfig config);
 
         /// <summary>
         /// Select and operate a command
@@ -74,7 +74,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> SelectAndOperate(AnalogOutputInt16 command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> SelectAndOperate(AnalogOutputInt16 command, System.UInt16 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a command
@@ -83,7 +83,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> DirectOperate(AnalogOutputInt16 command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> DirectOperate(AnalogOutputInt16 command, System.UInt16 index, TaskConfig config);
 
         /// <summary>
         /// Select and operate a command
@@ -92,7 +92,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> SelectAndOperate(AnalogOutputInt32 command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> SelectAndOperate(AnalogOutputInt32 command, System.UInt16 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a command
@@ -101,7 +101,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> DirectOperate(AnalogOutputInt32 command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> DirectOperate(AnalogOutputInt32 command, System.UInt16 index, TaskConfig config);
 
         /// <summary>
         /// Select and operate a command
@@ -110,7 +110,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> SelectAndOperate(AnalogOutputFloat32 command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> SelectAndOperate(AnalogOutputFloat32 command, System.UInt16 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a command
@@ -119,7 +119,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> DirectOperate(AnalogOutputFloat32 command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> DirectOperate(AnalogOutputFloat32 command, System.UInt16 index, TaskConfig config);
 
         /// <summary>
         /// Select and operate a command
@@ -128,7 +128,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> SelectAndOperate(AnalogOutputDouble64 command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> SelectAndOperate(AnalogOutputDouble64 command, System.UInt16 index, TaskConfig config);
 
         /// <summary>
         /// Direct operate a command
@@ -137,6 +137,6 @@ namespace Automatak.DNP3.Interface
         /// <param name="index">index of the command</param>
         /// <param name="config">Configuration for the task</param>
         /// <returns>A Task representing the future completion of the command</returns>
-        Task<SingleCommandTaskResult> DirectOperate(AnalogOutputDouble64 command, System.UInt16 index, TaskConfig config);
+        Task<CommandTaskResult> DirectOperate(AnalogOutputDouble64 command, System.UInt16 index, TaskConfig config);
     }
 }
