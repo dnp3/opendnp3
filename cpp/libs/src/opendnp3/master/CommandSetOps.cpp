@@ -80,25 +80,25 @@ void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result,
 	callback(impl);
 }
 
-bool CommandSetOps::ProcessSelectResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)
+CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)
 {
 	CommandSetOps handler(Mode::Select, set);
 	if (APDUParser::Parse(headers, handler, logger) != ParseResult::OK)
 	{
-		return false;
+		return SelectResult::FAIL_PARSE;
 	}
 
 	auto selected = [](const ICommandHeader* header) -> bool 
 	{ 
 		return header->AreAllSelected(); 
 	};
-	return std::all_of(set.m_headers.begin(), set.m_headers.end(), selected);
+	return std::all_of(set.m_headers.begin(), set.m_headers.end(), selected) ? SelectResult::OK : SelectResult::FAIL_SELECT;
 }
 
-bool CommandSetOps::ProcessOperateResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)
+CommandSetOps::OperateResult CommandSetOps::ProcessOperateResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)
 {
 	CommandSetOps handler(Mode::Operate, set);
-	return APDUParser::Parse(headers, handler, logger) == ParseResult::OK;
+	return (APDUParser::Parse(headers, handler, logger) == ParseResult::OK) ? OperateResult::OK : OperateResult::FAIL_PARSE;
 }
 
 bool CommandSetOps::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)

@@ -78,14 +78,17 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// Result type returned for CommandSet based command requests
     /// </summary>
-    public class MultiCommandTaskResult
+    public class CommandTaskResult
     {
-        public MultiCommandTaskResult(TaskCompletion summary, IEnumerable<CommandPointResult> results)
+        public CommandTaskResult(TaskCompletion summary, IEnumerable<CommandPointResult> results)
         {
             this.summary = summary;
             this.results = results;
         }
 
+        /// <summary>
+        /// Describes the result of the task as a whole
+        /// </summary>
         public TaskCompletion TaskSummary
         {
             get { return summary; }
@@ -103,52 +106,5 @@ namespace Automatak.DNP3.Interface
 
         readonly TaskCompletion summary;
         readonly IEnumerable<CommandPointResult> results;
-    }
-
-    /// <summary>
-    /// Result type for single command based requests
-    /// </summary>
-    public class SingleCommandTaskResult
-    {
-       public static Task<SingleCommandTaskResult> From(Task<MultiCommandTaskResult> task)
-       {
-           return task.ContinueWith(x => Convert(x.Result));
-       }
-
-       static SingleCommandTaskResult Convert(MultiCommandTaskResult result)
-       {
-           if (result.Results.Count() == 1)
-           {
-               return new SingleCommandTaskResult(result.TaskSummary, result.Results.First());
-           }
-           else
-           {
-               return new SingleCommandTaskResult(TaskCompletion.FAILURE_BAD_RESPONSE, new CommandPointResult(0, 0, CommandPointState.INIT, CommandStatus.UNDEFINED));
-           }
-       }
-
-       public SingleCommandTaskResult(TaskCompletion summary, CommandPointResult result)
-       {
-            this.summary = summary;
-            this.result = result;
-       }       
-
-       public TaskCompletion TaskSummary
-       {
-           get { return summary; }
-       }
-
-       public CommandPointResult Result
-       {
-           get { return result; }
-       }
-
-       public override string ToString()
-       {
-           return String.Format("Summary: {0} Results: {1}", summary, result);
-       }
-
-       readonly TaskCompletion summary;
-       readonly CommandPointResult result;
-    }
+    }   
 }

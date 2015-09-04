@@ -104,12 +104,22 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::RSlice& 
 {
 	if (functionCodes.empty())
 	{
-		CommandSetOps::ProcessOperateResponse(commands, objects, &logger);
-		return ResponseResult::OK_FINAL;
+		auto result = CommandSetOps::ProcessOperateResponse(commands, objects, &logger);
+		return (result == CommandSetOps::OperateResult::FAIL_PARSE) ? ResponseResult::ERROR_BAD_RESPONSE : ResponseResult::OK_FINAL;
 	}
 	else
 	{
-		return CommandSetOps::ProcessSelectResponse(commands, objects, &logger) ? ResponseResult::OK_REPEAT : ResponseResult::OK_FINAL;
+		auto result = CommandSetOps::ProcessSelectResponse(commands, objects, &logger);
+		
+		switch (CommandSetOps::ProcessSelectResponse(commands, objects, &logger))
+		{
+			case(CommandSetOps::SelectResult::OK) :
+				return ResponseResult::OK_REPEAT; // proceed to OPERATE
+			case(CommandSetOps::SelectResult::FAIL_SELECT) :
+				return ResponseResult::OK_FINAL; // end the task, let the user examine each command point
+			default:
+				return ResponseResult::ERROR_BAD_RESPONSE;
+		}
 	}
 }
 

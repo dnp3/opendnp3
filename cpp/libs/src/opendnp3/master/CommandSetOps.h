@@ -50,6 +50,19 @@ namespace opendnp3
 		Mode mode;
 
 	public:
+
+		enum class OperateResult : uint8_t
+		{
+			OK,
+			FAIL_PARSE
+		};
+
+		enum class SelectResult : uint8_t
+		{
+			OK,
+			FAIL_PARSE,
+			FAIL_SELECT
+		};
 		
 		/// Write the headers to an ASDU
 		static bool Write(const CommandSet& set, HeaderWriter& writer);
@@ -62,14 +75,14 @@ namespace opendnp3
 		*
 		* @return true if every object in every header was correctly selected, false otherwise
 		*/
-		static bool ProcessSelectResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger);
+		static SelectResult ProcessSelectResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger);
 
 		/**
 		* parses a response to an operate (or DO), applying each received header to the command set
 		*
 		* @return true if parsing was successful, the results are left in the set
 		*/
-		static bool ProcessOperateResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger);		
+		static OperateResult ProcessOperateResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger);
 		
 	private:
 
