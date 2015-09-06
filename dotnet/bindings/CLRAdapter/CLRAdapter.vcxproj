@@ -159,6 +159,7 @@
     <ClInclude Include="src\Conversions.h" />
     <ClInclude Include="src\DNP3ManagerAdapter.h" />
     <ClInclude Include="src\EventConverter.h" />
+    <ClInclude Include="src\ICommandHeaderWorkAround.h" />
     <ClInclude Include="src\Lock.h" />
     <ClInclude Include="src\LogAdapter.h" />
     <ClInclude Include="src\MasterAdapter.h" />

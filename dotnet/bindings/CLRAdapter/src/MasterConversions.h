@@ -5,6 +5,7 @@ using namespace System::Collections::ObjectModel;
 using namespace System::Collections::Generic;
 
 #include "TaskCallbackAdapter.h"
+#include "ICommandHeaderWorkAround.h"
 
 #include <vector>
 
