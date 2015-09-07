@@ -36,10 +36,8 @@ class DeferredRequest : private openpal::Uncopyable
 {
 
 public:
-
-	//typedef bool (*Handler)(OContext& ocontext, APDUHeader header, openpal::RSlice objects);
-
-	DeferredRequest(uint32_t maxAPDUSize);
+	
+	explicit DeferredRequest(uint32_t maxAPDUSize);
 
 	void Reset();
 

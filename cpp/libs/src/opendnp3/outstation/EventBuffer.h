@@ -50,7 +50,7 @@ class EventBuffer : public IEventReceiver, public IEventSelector, public IRespon
 
 public:
 
-	EventBuffer(const EventBufferConfig& config);
+	explicit EventBuffer(const EventBufferConfig& config);
 
 	// ------- IEventReceiver ------
 

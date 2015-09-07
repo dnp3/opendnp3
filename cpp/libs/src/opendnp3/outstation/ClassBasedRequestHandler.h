@@ -35,7 +35,7 @@ class ClassBasedRequestHandler : public IAPDUHandler
 {
 public:
 
-	ClassBasedRequestHandler(openpal::Logger logger);
+	explicit ClassBasedRequestHandler(openpal::Logger logger);
 
 	ClassField GetClassField() const
 	{

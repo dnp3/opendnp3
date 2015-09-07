@@ -113,18 +113,7 @@ private:
 
 	SOERecord(EventType type, EventClass clazz, uint16_t index, uint64_t time, uint8_t flags);
 
-	template <class T>
-	EventInstance<T> Convert(const ValueAndVariation<T>& value)
-	{
-		return EventInstance < T >
-		{
-			T(value.value, flags, time),
-			index,
-			value.selectedVariation
-		};
-	}
-
-
+	
 	// the actual value;
 	EventValue value;
 	uint16_t index;
