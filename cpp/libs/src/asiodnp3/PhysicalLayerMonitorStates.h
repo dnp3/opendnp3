@@ -29,8 +29,8 @@
 
 #define MACRO_MONITOR_SINGLETON(type, state, shuttingDown) \
 	MACRO_NAME_SINGLETON_INSTANCE(type) \
-	opendnp3::ChannelState GetState() const { return state; } \
-	bool IsShuttingDown() const { return shuttingDown; }
+	virtual opendnp3::ChannelState GetState() const override { return state; } \
+	virtual bool IsShuttingDown() const override { return shuttingDown; }
 
 namespace asiodnp3
 {
