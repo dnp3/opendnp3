@@ -77,9 +77,8 @@ bool SessionKeyChangeState::EqualsLastStatusResponse(const openpal::RSlice& unwr
 {
 	Group120Var5 copy(statusRsp);
 	copy.hmacValue = RSlice::Empty(); // exclude the HMAC from the comparison
-
-	const uint32_t MAX_SIZE = Group120Var5::MIN_SIZE + AuthSizes::MAX_CHALLENGE_DATA_SIZE;
-	openpal::StaticBuffer<MAX_SIZE> buffer;
+	
+	openpal::StaticBuffer<MAX_KEY_STATUS_BUFFER_SIZE> buffer;
 
 	auto dest = buffer.GetWSlice();
 	if (!copy.Write(dest))

@@ -38,7 +38,7 @@ class KeyStatusHandler : public opendnp3::IAPDUHandler
 
 public:
 
-	KeyStatusHandler(openpal::Logger logger);
+	explicit KeyStatusHandler(openpal::Logger logger);
 
 	virtual bool IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode) override final
 	{

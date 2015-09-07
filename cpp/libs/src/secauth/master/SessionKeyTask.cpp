@@ -179,7 +179,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 	std::error_code ec;
 
-	keys.DeriveFrom(*pCrypto, AuthSizes::MIN_SESSION_KEY_SIZE_BYTES, ec); // TODO - make the session key size configurable
+	keys.DeriveFrom(*pCrypto, SessionKeySize(AuthSizes::MIN_SESSION_KEY_SIZE_BYTES), ec); // TODO - make the session key size configurable
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unable to derive session keys: %s", ec.message().c_str());

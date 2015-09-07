@@ -57,7 +57,7 @@ class KeyChangeConfirmationHMAC
 {
 public:
 
-	KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm);
+	explicit KeyChangeConfirmationHMAC(openpal::IHMACAlgo& algorithm);
 
 	openpal::RSlice Compute(
 	    const openpal::RSlice& key,

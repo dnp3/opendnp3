@@ -35,7 +35,7 @@ class SessionKeySize
 {
 public:
 
-	SessionKeySize(uint32_t size_) :
+	explicit SessionKeySize(uint32_t size_) :
 		size(AuthSizes::GetBoundedSessionKeySize(size_))
 	{}
 

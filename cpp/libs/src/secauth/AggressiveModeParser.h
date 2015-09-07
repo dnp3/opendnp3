@@ -36,7 +36,7 @@ namespace secauth
 struct AggModeResult
 {
 	// failure constructor
-	AggModeResult(opendnp3::ParseResult result_);
+	explicit AggModeResult(opendnp3::ParseResult result_);
 
 	// success constructor
 	AggModeResult(const opendnp3::Group120Var3& request, const openpal::RSlice& remainder);
@@ -53,7 +53,7 @@ struct AggModeResult
 struct AggModeHMACResult
 {
 	// failure constructor
-	AggModeHMACResult(opendnp3::ParseResult result_);
+	explicit AggModeHMACResult(opendnp3::ParseResult result_);
 
 	// success constructor
 	AggModeHMACResult(const opendnp3::Group120Var9& hmac, const openpal::RSlice& objects);

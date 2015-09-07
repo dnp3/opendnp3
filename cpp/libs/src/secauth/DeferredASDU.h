@@ -34,7 +34,7 @@ class DeferredASDU : private openpal::Uncopyable
 
 public:
 
-	DeferredASDU(uint32_t maxAPDUSize);
+	explicit DeferredASDU(uint32_t maxAPDUSize);
 
 	void Reset();
 

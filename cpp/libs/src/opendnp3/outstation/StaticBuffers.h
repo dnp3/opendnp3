@@ -42,7 +42,7 @@ class StaticBuffers : private openpal::Uncopyable
 
 public:
 
-	StaticBuffers(const DatabaseTemplate& dbTemplate);
+	explicit StaticBuffers(const DatabaseTemplate& dbTemplate);
 
 	DatabaseConfigView GetView() const;
 

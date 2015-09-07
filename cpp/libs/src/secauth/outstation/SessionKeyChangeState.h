@@ -66,7 +66,7 @@ private:
 	openpal::StaticBuffer<AuthSizes::MAX_CHALLENGE_DATA_SIZE> challengeData;
 	opendnp3::Group120Var5 statusRsp;
 
-
+	static const uint32_t MAX_KEY_STATUS_BUFFER_SIZE = opendnp3::Group120Var5::MIN_SIZE + AuthSizes::MAX_CHALLENGE_DATA_SIZE;
 };
 
 }
