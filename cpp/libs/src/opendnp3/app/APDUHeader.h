@@ -57,7 +57,7 @@ struct APDUResponseHeader : public APDUHeader
 	APDUResponseHeader(const AppControlField control_, const IINField& iin) : APDUHeader(control_), IIN(iin)
 	{}
 
-	APDUResponseHeader(const IINField& iin) : IIN(iin)
+	explicit APDUResponseHeader(const IINField& iin) : IIN(iin)
 	{}
 
 	APDUResponseHeader()

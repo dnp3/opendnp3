@@ -32,10 +32,6 @@ using namespace std;
 using namespace std::chrono;
 using namespace openpal;
 
-#ifdef ERROR
-#undef ERROR
-#endif
-
 namespace asiopal
 {
 

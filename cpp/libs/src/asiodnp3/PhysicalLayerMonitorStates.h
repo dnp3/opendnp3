@@ -357,10 +357,6 @@ bool OpenFailureGoesToState<T>::OnOpenFailure(PhysicalLayerMonitor& context)
 	return true;
 }
 
-#ifdef WIN32
-#pragma warning(pop)
-#endif
-
 }
 
 #endif
