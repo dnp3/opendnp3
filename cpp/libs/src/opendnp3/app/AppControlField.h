@@ -36,9 +36,9 @@ struct AppControlField
 
 	AppControlField();
 
-	AppControlField(uint8_t byte);
+	explicit AppControlField(uint8_t byte);
 
-	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0);
+	AppControlField(bool fir, bool fin, bool con, bool uns, uint8_t seq = 0);
 
 	uint8_t ToByte() const;
 

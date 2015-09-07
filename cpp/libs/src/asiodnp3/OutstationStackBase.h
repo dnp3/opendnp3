@@ -55,7 +55,8 @@ public:
 	) :
 		root(root_, id),
 		pLifecycle(&lifecycle),
-		stack(root, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link)
+		stack(root, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
+		pContext(nullptr)
 	{}
 
 

@@ -203,13 +203,13 @@ public:
 	virtual void SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		/// this is to work around the fact that c++11 doesn't have generic move capture
-		opendnp3::CommandSet* pointer = new opendnp3::CommandSet(std::move(commands));
+		auto set = new opendnp3::CommandSet(std::move(commands));
 
-		auto action = [this, pointer, config, callback]()
+		auto action = [this, set, config, callback]()
 		{
 			// delete pointer at the end of the lambda
-			std::unique_ptr<opendnp3::CommandSet> deleted(pointer);				
-			this->pContext->SelectAndOperate(std::move(*pointer), callback, config);
+			std::unique_ptr<opendnp3::CommandSet> deleted(set);
+			this->pContext->SelectAndOperate(std::move(*set), callback, config);
 		};
 			
 		this->pASIOExecutor->strand.post(action);		
@@ -217,12 +217,12 @@ public:
 
 	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
-		opendnp3::CommandSet* pointer = new opendnp3::CommandSet(std::move(commands));
+		auto set = new opendnp3::CommandSet(std::move(commands));
 
-		auto action = [this, pointer, config, callback]()
+		auto action = [this, set, config, callback]()
 		{
-			std::unique_ptr<opendnp3::CommandSet> deleted(pointer);
-			this->pContext->DirectOperate(std::move(*pointer), callback, config);
+			std::unique_ptr<opendnp3::CommandSet> deleted(set);
+			this->pContext->DirectOperate(std::move(*set), callback, config);
 		};
 
 		this->pASIOExecutor->strand.post(action);

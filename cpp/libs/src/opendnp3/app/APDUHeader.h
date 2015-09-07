@@ -40,7 +40,7 @@ struct APDUHeader
 	APDUHeader() : function(FunctionCode::UNKNOWN), control(true, true, false, false)
 	{}
 
-	APDUHeader(const AppControlField& control_) : function(FunctionCode::UNKNOWN), control(control_)
+	explicit APDUHeader(const AppControlField& control_) : function(FunctionCode::UNKNOWN), control(control_)
 	{}
 
 	bool Equals(const APDUHeader& header) const

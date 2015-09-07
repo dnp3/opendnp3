@@ -100,7 +100,7 @@ class AllObjectsHeader : public HeaderRecord
 {
 public:
 
-	AllObjectsHeader(const HeaderRecord& record) : HeaderRecord(record)
+	explicit AllObjectsHeader(const HeaderRecord& record) : HeaderRecord(record)
 	{}
 
 };

@@ -47,12 +47,12 @@ AppControlField::AppControlField() :
 	SEQ(0)
 {}
 
-AppControlField::AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ) :
-	FIR(aFIR),
-	FIN(aFIN),
-	CON(aCON),
-	UNS(aUNS),
-	SEQ(aSEQ)
+AppControlField::AppControlField(bool fir, bool fin, bool con, bool uns, uint8_t seq) :
+	FIR(fir),
+	FIN(fin),
+	CON(con),
+	UNS(uns),
+	SEQ(seq)
 {}
 
 uint8_t AppControlField::ToByte() const

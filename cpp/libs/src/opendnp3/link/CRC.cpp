@@ -62,14 +62,12 @@ uint16_t CRC::crcTable[256] =
 };
 
 uint16_t CRC::CalcCrc(const uint8_t* input, uint32_t length)
-{
-	uint8_t index;
-
+{	
 	uint16_t CRC = 0;
 
 	for (uint32_t i = 0; i < length; ++i)
 	{
-		index = (CRC ^ input[i]) & 0xFF;
+		uint8_t index = (CRC ^ input[i]) & 0xFF;
 		CRC = crcTable[index] ^ (CRC >> 8);
 	}
 

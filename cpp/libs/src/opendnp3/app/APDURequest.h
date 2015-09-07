@@ -31,12 +31,13 @@ namespace opendnp3
 class APDURequest : public APDUWrapper
 {
 public:
-
-	static APDUEquality Compare(const openpal::RSlice& lhs, const openpal::RSlice& rhs);
-
-	APDURequest(const openpal::WSlice& aBuffer);
+	
+	explicit APDURequest(const openpal::WSlice& buffer);
 
 	void ConfigureHeader(FunctionCode code, uint8_t seq);
+
+
+	static APDUEquality Compare(const openpal::RSlice& lhs, const openpal::RSlice& rhs);
 
 private:
 

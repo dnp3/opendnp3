@@ -42,7 +42,7 @@ class MasterScheduler
 
 public:
 
-	MasterScheduler(ITaskFilter& filter);
+	explicit MasterScheduler(ITaskFilter& filter);
 
 	/*
 	* Add a task to the scheduler

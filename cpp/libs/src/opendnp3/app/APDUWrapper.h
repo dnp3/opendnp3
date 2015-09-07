@@ -45,7 +45,7 @@ public:
 
 	APDUWrapper();
 
-	APDUWrapper(const openpal::WSlice& aBuffer);
+	explicit APDUWrapper(const openpal::WSlice& aBuffer);
 
 	bool IsValid() const;
 

@@ -91,7 +91,7 @@ public:
 
 private:
 
-	HeaderWriter(openpal::WSlice* position_);
+	explicit HeaderWriter(openpal::WSlice* position_);
 
 	bool WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve);
 
