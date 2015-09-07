@@ -100,6 +100,19 @@ sealed case class FixedSizeField(name: String, typ: FixedSizeFieldType) extends 
     case _ => throw new Exception("Unknown field type")
   }
 
+  def defaultValue: String = typ match {
+    case UInt8Field => "0"
+    case UInt16Field => "0"
+    case UInt32Field => "0"
+    case UInt48Field => "0"
+    case SInt16Field => "0"
+    case SInt32Field => "0"
+    case Float32Field => "0.0"
+    case Float64Field => "0.0"
+    case EnumFieldType(model: EnumModel) => model.defaultValue.get.toString
+    case _ => throw new Exception("Unknown field type")
+  }
+
 }
 sealed case class VariableField(name: String) extends Field {
   def cppType: String = "openpal::RSlice"

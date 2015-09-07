@@ -46,6 +46,9 @@ struct Group10Var1
 struct Group10Var2
 {
   static GroupVariationID ID() { return GroupVariationID(10,2); }
+
+  Group10Var2();
+
   static uint32_t Size() { return 1; }
   static bool Read(openpal::RSlice&, Group10Var2&);
   static bool Write(const Group10Var2&, openpal::WSlice&);

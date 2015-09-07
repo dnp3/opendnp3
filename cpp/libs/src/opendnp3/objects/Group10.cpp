@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group10Var2 -------
 
+Group10Var2::Group10Var2() : flags(0)
+{}
+
 bool Group10Var2::Read(RSlice& buffer, Group10Var2& output)
 {
   return Parse::Many(buffer, output.flags);

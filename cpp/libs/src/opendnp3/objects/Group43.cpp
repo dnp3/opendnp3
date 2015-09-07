@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group43Var1 -------
 
+Group43Var1::Group43Var1() : status(0), value(0)
+{}
+
 bool Group43Var1::Read(RSlice& buffer, Group43Var1& output)
 {
   return Parse::Many(buffer, output.status, output.value);
@@ -61,6 +64,9 @@ bool Group43Var1::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& 
 }
 
 // ------- Group43Var2 -------
+
+Group43Var2::Group43Var2() : status(0), value(0)
+{}
 
 bool Group43Var2::Read(RSlice& buffer, Group43Var2& output)
 {
@@ -93,6 +99,9 @@ bool Group43Var2::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& 
 
 // ------- Group43Var3 -------
 
+Group43Var3::Group43Var3() : status(0), value(0), time(0)
+{}
+
 bool Group43Var3::Read(RSlice& buffer, Group43Var3& output)
 {
   return Parse::Many(buffer, output.status, output.value, output.time);
@@ -123,6 +132,9 @@ bool Group43Var3::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& 
 }
 
 // ------- Group43Var4 -------
+
+Group43Var4::Group43Var4() : status(0), value(0), time(0)
+{}
 
 bool Group43Var4::Read(RSlice& buffer, Group43Var4& output)
 {
@@ -155,6 +167,9 @@ bool Group43Var4::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& 
 
 // ------- Group43Var5 -------
 
+Group43Var5::Group43Var5() : status(0), value(0.0)
+{}
+
 bool Group43Var5::Read(RSlice& buffer, Group43Var5& output)
 {
   return Parse::Many(buffer, output.status, output.value);
@@ -185,6 +200,9 @@ bool Group43Var5::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& 
 }
 
 // ------- Group43Var6 -------
+
+Group43Var6::Group43Var6() : status(0), value(0.0)
+{}
 
 bool Group43Var6::Read(RSlice& buffer, Group43Var6& output)
 {
@@ -217,6 +235,9 @@ bool Group43Var6::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& 
 
 // ------- Group43Var7 -------
 
+Group43Var7::Group43Var7() : status(0), value(0.0), time(0)
+{}
+
 bool Group43Var7::Read(RSlice& buffer, Group43Var7& output)
 {
   return Parse::Many(buffer, output.status, output.value, output.time);
@@ -247,6 +268,9 @@ bool Group43Var7::WriteTarget(const AnalogCommandEvent& value, openpal::WSlice& 
 }
 
 // ------- Group43Var8 -------
+
+Group43Var8::Group43Var8() : status(0), value(0.0), time(0)
+{}
 
 bool Group43Var8::Read(RSlice& buffer, Group43Var8& output)
 {

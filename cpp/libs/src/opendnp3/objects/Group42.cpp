@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group42Var1 -------
 
+Group42Var1::Group42Var1() : flags(0), value(0)
+{}
+
 bool Group42Var1::Read(RSlice& buffer, Group42Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -61,6 +64,9 @@ bool Group42Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 }
 
 // ------- Group42Var2 -------
+
+Group42Var2::Group42Var2() : flags(0), value(0)
+{}
 
 bool Group42Var2::Read(RSlice& buffer, Group42Var2& output)
 {
@@ -93,6 +99,9 @@ bool Group42Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 
 // ------- Group42Var3 -------
 
+Group42Var3::Group42Var3() : flags(0), value(0), time(0)
+{}
+
 bool Group42Var3::Read(RSlice& buffer, Group42Var3& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -123,6 +132,9 @@ bool Group42Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 }
 
 // ------- Group42Var4 -------
+
+Group42Var4::Group42Var4() : flags(0), value(0), time(0)
+{}
 
 bool Group42Var4::Read(RSlice& buffer, Group42Var4& output)
 {
@@ -155,6 +167,9 @@ bool Group42Var4::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 
 // ------- Group42Var5 -------
 
+Group42Var5::Group42Var5() : flags(0), value(0.0)
+{}
+
 bool Group42Var5::Read(RSlice& buffer, Group42Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -185,6 +200,9 @@ bool Group42Var5::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 }
 
 // ------- Group42Var6 -------
+
+Group42Var6::Group42Var6() : flags(0), value(0.0)
+{}
 
 bool Group42Var6::Read(RSlice& buffer, Group42Var6& output)
 {
@@ -217,6 +235,9 @@ bool Group42Var6::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 
 // ------- Group42Var7 -------
 
+Group42Var7::Group42Var7() : flags(0), value(0.0), time(0)
+{}
+
 bool Group42Var7::Read(RSlice& buffer, Group42Var7& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -247,6 +268,9 @@ bool Group42Var7::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 }
 
 // ------- Group42Var8 -------
+
+Group42Var8::Group42Var8() : flags(0), value(0.0), time(0)
+{}
 
 bool Group42Var8::Read(RSlice& buffer, Group42Var8& output)
 {

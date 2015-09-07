@@ -32,6 +32,9 @@ namespace opendnp3 {
 struct Group51Var1
 {
   static GroupVariationID ID() { return GroupVariationID(51,1); }
+
+  Group51Var1();
+
   static uint32_t Size() { return 6; }
   static bool Read(openpal::RSlice&, Group51Var1&);
   static bool Write(const Group51Var1&, openpal::WSlice&);
@@ -43,6 +46,9 @@ struct Group51Var1
 struct Group51Var2
 {
   static GroupVariationID ID() { return GroupVariationID(51,2); }
+
+  Group51Var2();
+
   static uint32_t Size() { return 6; }
   static bool Read(openpal::RSlice&, Group51Var2&);
   static bool Write(const Group51Var2&, openpal::WSlice&);

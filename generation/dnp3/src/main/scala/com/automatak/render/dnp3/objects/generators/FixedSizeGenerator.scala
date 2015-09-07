@@ -14,6 +14,8 @@ object FixedSizeGenerator {
       else Iterator.empty
     }
 
+    def defaultConstructor: Iterator[String] = Iterator("%s();".format(x.name))
+
     def members: Iterator[String] =  x.fields.map(f => typedefs(f)).iterator.flatten ++ x.fields.map(f => getFieldString(f)).iterator
 
     def sizeSignature: Iterator[String] = Iterator("static uint32_t Size() { return %d; }".format(x.size))
@@ -22,6 +24,9 @@ object FixedSizeGenerator {
 
     def writeSignature: Iterator[String] = Iterator("static bool Write(const %s&, openpal::WSlice&);".format(x.name))
 
+    space ++
+    defaultConstructor ++
+    space ++
     sizeSignature ++
     readSignature ++
     writeSignature ++
@@ -36,6 +41,12 @@ object FixedSizeGenerator {
 
     def writeSignature: Iterator[String] = Iterator("bool %s::Write(const %s& arg, openpal::WSlice& buffer)".format(x.name, x.name))
 
+    def defaultConstructorSignature: Iterator[String] = Iterator("%s::%s() : %s".format(x.name, x.name, defaultParams), "{}")
+
+    def defaultParams: String = {
+      x.fields.map(f => "%s(%s)".format(f.name, f.defaultValue)).mkString(", ")
+    }
+
     def fieldParams(name: String) : String = {
       x.fields.map(f => f.name).map(s => "%s.%s".format(name,s)).mkString(", ")
     }
@@ -48,6 +59,10 @@ object FixedSizeGenerator {
       Iterator("return Format::Many(buffer, %s);".format(fieldParams("arg")))
     }
 
-    readFunction ++ space ++ writeFunction
+    def defaultConstructor: Iterator[String] = defaultConstructorSignature
+
+    defaultConstructor ++ space ++
+    readFunction ++ space ++
+    writeFunction
   }
 }

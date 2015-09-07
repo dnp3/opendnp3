@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group30Var1 -------
 
+Group30Var1::Group30Var1() : flags(0), value(0)
+{}
+
 bool Group30Var1::Read(RSlice& buffer, Group30Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -61,6 +64,9 @@ bool Group30Var1::WriteTarget(const Analog& value, openpal::WSlice& buff)
 }
 
 // ------- Group30Var2 -------
+
+Group30Var2::Group30Var2() : flags(0), value(0)
+{}
 
 bool Group30Var2::Read(RSlice& buffer, Group30Var2& output)
 {
@@ -93,6 +99,9 @@ bool Group30Var2::WriteTarget(const Analog& value, openpal::WSlice& buff)
 
 // ------- Group30Var3 -------
 
+Group30Var3::Group30Var3() : value(0)
+{}
+
 bool Group30Var3::Read(RSlice& buffer, Group30Var3& output)
 {
   return Parse::Many(buffer, output.value);
@@ -123,6 +132,9 @@ bool Group30Var3::WriteTarget(const Analog& value, openpal::WSlice& buff)
 }
 
 // ------- Group30Var4 -------
+
+Group30Var4::Group30Var4() : value(0)
+{}
 
 bool Group30Var4::Read(RSlice& buffer, Group30Var4& output)
 {
@@ -155,6 +167,9 @@ bool Group30Var4::WriteTarget(const Analog& value, openpal::WSlice& buff)
 
 // ------- Group30Var5 -------
 
+Group30Var5::Group30Var5() : flags(0), value(0.0)
+{}
+
 bool Group30Var5::Read(RSlice& buffer, Group30Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -185,6 +200,9 @@ bool Group30Var5::WriteTarget(const Analog& value, openpal::WSlice& buff)
 }
 
 // ------- Group30Var6 -------
+
+Group30Var6::Group30Var6() : flags(0), value(0.0)
+{}
 
 bool Group30Var6::Read(RSlice& buffer, Group30Var6& output)
 {

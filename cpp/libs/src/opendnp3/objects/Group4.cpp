@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group4Var1 -------
 
+Group4Var1::Group4Var1() : flags(0)
+{}
+
 bool Group4Var1::Read(RSlice& buffer, Group4Var1& output)
 {
   return Parse::Many(buffer, output.flags);
@@ -62,6 +65,9 @@ bool Group4Var1::WriteTarget(const DoubleBitBinary& value, openpal::WSlice& buff
 
 // ------- Group4Var2 -------
 
+Group4Var2::Group4Var2() : flags(0), time(0)
+{}
+
 bool Group4Var2::Read(RSlice& buffer, Group4Var2& output)
 {
   return Parse::Many(buffer, output.flags, output.time);
@@ -92,6 +98,9 @@ bool Group4Var2::WriteTarget(const DoubleBitBinary& value, openpal::WSlice& buff
 }
 
 // ------- Group4Var3 -------
+
+Group4Var3::Group4Var3() : flags(0), time(0)
+{}
 
 bool Group4Var3::Read(RSlice& buffer, Group4Var3& output)
 {

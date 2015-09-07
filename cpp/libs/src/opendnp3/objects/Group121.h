@@ -40,6 +40,9 @@ struct Group121Var0
 struct Group121Var1
 {
   static GroupVariationID ID() { return GroupVariationID(121,1); }
+
+  Group121Var1();
+
   static uint32_t Size() { return 7; }
   static bool Read(openpal::RSlice&, Group121Var1&);
   static bool Write(const Group121Var1&, openpal::WSlice&);

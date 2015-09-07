@@ -651,7 +651,8 @@ IINField OContext::HandleDelayMeasure(const openpal::RSlice& objects, HeaderWrit
 {
 	if (objects.IsEmpty())
 	{
-		Group52Var2 value = { 0 }; 	// respond with 0 time delay
+		Group52Var2 value;
+		value.time = 0; 	// respond with 0 time delay
 		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
 		return IINField::Empty();
 	}
@@ -677,7 +678,8 @@ IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRest
 				auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
 				if (pWriter)
 				{
-					Group52Var1 coarse = { delay };
+					Group52Var1 coarse;
+					coarse.time = delay;
 					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
 				}
 				return IINField::Empty();
@@ -687,7 +689,8 @@ IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRest
 				auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
 				if (pWriter)
 				{
-					Group52Var2 fine = { delay };
+					Group52Var2 fine;
+					fine.time = delay;
 					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
 				}
 				return IINField::Empty();

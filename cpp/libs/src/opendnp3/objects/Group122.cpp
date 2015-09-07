@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group122Var1 -------
 
+Group122Var1::Group122Var1() : flags(0), assocId(0), value(0)
+{}
+
 bool Group122Var1::Read(RSlice& buffer, Group122Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.assocId, output.value);
@@ -61,6 +64,9 @@ bool Group122Var1::WriteTarget(const SecurityStat& value, openpal::WSlice& buff)
 }
 
 // ------- Group122Var2 -------
+
+Group122Var2::Group122Var2() : flags(0), assocId(0), value(0), time(0)
+{}
 
 bool Group122Var2::Read(RSlice& buffer, Group122Var2& output)
 {

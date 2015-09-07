@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group22Var1 -------
 
+Group22Var1::Group22Var1() : flags(0), value(0)
+{}
+
 bool Group22Var1::Read(RSlice& buffer, Group22Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -61,6 +64,9 @@ bool Group22Var1::WriteTarget(const Counter& value, openpal::WSlice& buff)
 }
 
 // ------- Group22Var2 -------
+
+Group22Var2::Group22Var2() : flags(0), value(0)
+{}
 
 bool Group22Var2::Read(RSlice& buffer, Group22Var2& output)
 {
@@ -93,6 +99,9 @@ bool Group22Var2::WriteTarget(const Counter& value, openpal::WSlice& buff)
 
 // ------- Group22Var5 -------
 
+Group22Var5::Group22Var5() : flags(0), value(0), time(0)
+{}
+
 bool Group22Var5::Read(RSlice& buffer, Group22Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -123,6 +132,9 @@ bool Group22Var5::WriteTarget(const Counter& value, openpal::WSlice& buff)
 }
 
 // ------- Group22Var6 -------
+
+Group22Var6::Group22Var6() : flags(0), value(0), time(0)
+{}
 
 bool Group22Var6::Read(RSlice& buffer, Group22Var6& output)
 {

@@ -99,6 +99,9 @@ struct Group120Var2 : public IVariableLength
 struct Group120Var3
 {
   static GroupVariationID ID() { return GroupVariationID(120,3); }
+
+  Group120Var3();
+
   static uint32_t Size() { return 6; }
   static bool Read(openpal::RSlice&, Group120Var3&);
   static bool Write(const Group120Var3&, openpal::WSlice&);
@@ -111,6 +114,9 @@ struct Group120Var3
 struct Group120Var4
 {
   static GroupVariationID ID() { return GroupVariationID(120,4); }
+
+  Group120Var4();
+
   static uint32_t Size() { return 2; }
   static bool Read(openpal::RSlice&, Group120Var4&);
   static bool Write(const Group120Var4&, openpal::WSlice&);

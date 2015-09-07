@@ -29,6 +29,9 @@ namespace opendnp3 {
 
 // ------- Group52Var1 -------
 
+Group52Var1::Group52Var1() : time(0)
+{}
+
 bool Group52Var1::Read(RSlice& buffer, Group52Var1& output)
 {
   return Parse::Many(buffer, output.time);
@@ -40,6 +43,9 @@ bool Group52Var1::Write(const Group52Var1& arg, openpal::WSlice& buffer)
 }
 
 // ------- Group52Var2 -------
+
+Group52Var2::Group52Var2() : time(0)
+{}
 
 bool Group52Var2::Read(RSlice& buffer, Group52Var2& output)
 {

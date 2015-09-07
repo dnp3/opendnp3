@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group11Var1 -------
 
+Group11Var1::Group11Var1() : flags(0)
+{}
+
 bool Group11Var1::Read(RSlice& buffer, Group11Var1& output)
 {
   return Parse::Many(buffer, output.flags);
@@ -61,6 +64,9 @@ bool Group11Var1::WriteTarget(const BinaryOutputStatus& value, openpal::WSlice& 
 }
 
 // ------- Group11Var2 -------
+
+Group11Var2::Group11Var2() : flags(0), time(0)
+{}
 
 bool Group11Var2::Read(RSlice& buffer, Group11Var2& output)
 {

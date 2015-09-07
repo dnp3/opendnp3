@@ -40,6 +40,9 @@ struct Group30Var0
 struct Group30Var1
 {
   static GroupVariationID ID() { return GroupVariationID(30,1); }
+
+  Group30Var1();
+
   static uint32_t Size() { return 5; }
   static bool Read(openpal::RSlice&, Group30Var1&);
   static bool Write(const Group30Var1&, openpal::WSlice&);
@@ -58,6 +61,9 @@ struct Group30Var1
 struct Group30Var2
 {
   static GroupVariationID ID() { return GroupVariationID(30,2); }
+
+  Group30Var2();
+
   static uint32_t Size() { return 3; }
   static bool Read(openpal::RSlice&, Group30Var2&);
   static bool Write(const Group30Var2&, openpal::WSlice&);
@@ -76,6 +82,9 @@ struct Group30Var2
 struct Group30Var3
 {
   static GroupVariationID ID() { return GroupVariationID(30,3); }
+
+  Group30Var3();
+
   static uint32_t Size() { return 4; }
   static bool Read(openpal::RSlice&, Group30Var3&);
   static bool Write(const Group30Var3&, openpal::WSlice&);
@@ -93,6 +102,9 @@ struct Group30Var3
 struct Group30Var4
 {
   static GroupVariationID ID() { return GroupVariationID(30,4); }
+
+  Group30Var4();
+
   static uint32_t Size() { return 2; }
   static bool Read(openpal::RSlice&, Group30Var4&);
   static bool Write(const Group30Var4&, openpal::WSlice&);
@@ -110,6 +122,9 @@ struct Group30Var4
 struct Group30Var5
 {
   static GroupVariationID ID() { return GroupVariationID(30,5); }
+
+  Group30Var5();
+
   static uint32_t Size() { return 5; }
   static bool Read(openpal::RSlice&, Group30Var5&);
   static bool Write(const Group30Var5&, openpal::WSlice&);
@@ -128,6 +143,9 @@ struct Group30Var5
 struct Group30Var6
 {
   static GroupVariationID ID() { return GroupVariationID(30,6); }
+
+  Group30Var6();
+
   static uint32_t Size() { return 9; }
   static bool Read(openpal::RSlice&, Group30Var6&);
   static bool Write(const Group30Var6&, openpal::WSlice&);

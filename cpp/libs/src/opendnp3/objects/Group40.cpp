@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group40Var1 -------
 
+Group40Var1::Group40Var1() : flags(0), value(0)
+{}
+
 bool Group40Var1::Read(RSlice& buffer, Group40Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -61,6 +64,9 @@ bool Group40Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 }
 
 // ------- Group40Var2 -------
+
+Group40Var2::Group40Var2() : flags(0), value(0)
+{}
 
 bool Group40Var2::Read(RSlice& buffer, Group40Var2& output)
 {
@@ -93,6 +99,9 @@ bool Group40Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 
 // ------- Group40Var3 -------
 
+Group40Var3::Group40Var3() : flags(0), value(0.0)
+{}
+
 bool Group40Var3::Read(RSlice& buffer, Group40Var3& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -123,6 +132,9 @@ bool Group40Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WSlice& 
 }
 
 // ------- Group40Var4 -------
+
+Group40Var4::Group40Var4() : flags(0), value(0.0)
+{}
 
 bool Group40Var4::Read(RSlice& buffer, Group40Var4& output)
 {

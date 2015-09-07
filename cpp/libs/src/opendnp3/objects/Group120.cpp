@@ -141,6 +141,9 @@ bool Group120Var2::Write(openpal::WSlice& buffer) const
 
 // ------- Group120Var3 -------
 
+Group120Var3::Group120Var3() : challengeSeqNum(0), userNum(0)
+{}
+
 bool Group120Var3::Read(RSlice& buffer, Group120Var3& output)
 {
   return Parse::Many(buffer, output.challengeSeqNum, output.userNum);
@@ -152,6 +155,9 @@ bool Group120Var3::Write(const Group120Var3& arg, openpal::WSlice& buffer)
 }
 
 // ------- Group120Var4 -------
+
+Group120Var4::Group120Var4() : userNum(0)
+{}
 
 bool Group120Var4::Read(RSlice& buffer, Group120Var4& output)
 {

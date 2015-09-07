@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group21Var1 -------
 
+Group21Var1::Group21Var1() : flags(0), value(0)
+{}
+
 bool Group21Var1::Read(RSlice& buffer, Group21Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -61,6 +64,9 @@ bool Group21Var1::WriteTarget(const FrozenCounter& value, openpal::WSlice& buff)
 }
 
 // ------- Group21Var2 -------
+
+Group21Var2::Group21Var2() : flags(0), value(0)
+{}
 
 bool Group21Var2::Read(RSlice& buffer, Group21Var2& output)
 {
@@ -93,6 +99,9 @@ bool Group21Var2::WriteTarget(const FrozenCounter& value, openpal::WSlice& buff)
 
 // ------- Group21Var5 -------
 
+Group21Var5::Group21Var5() : flags(0), value(0), time(0)
+{}
+
 bool Group21Var5::Read(RSlice& buffer, Group21Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -123,6 +132,9 @@ bool Group21Var5::WriteTarget(const FrozenCounter& value, openpal::WSlice& buff)
 }
 
 // ------- Group21Var6 -------
+
+Group21Var6::Group21Var6() : flags(0), value(0), time(0)
+{}
 
 bool Group21Var6::Read(RSlice& buffer, Group21Var6& output)
 {
@@ -155,6 +167,9 @@ bool Group21Var6::WriteTarget(const FrozenCounter& value, openpal::WSlice& buff)
 
 // ------- Group21Var9 -------
 
+Group21Var9::Group21Var9() : value(0)
+{}
+
 bool Group21Var9::Read(RSlice& buffer, Group21Var9& output)
 {
   return Parse::Many(buffer, output.value);
@@ -185,6 +200,9 @@ bool Group21Var9::WriteTarget(const FrozenCounter& value, openpal::WSlice& buff)
 }
 
 // ------- Group21Var10 -------
+
+Group21Var10::Group21Var10() : value(0)
+{}
 
 bool Group21Var10::Read(RSlice& buffer, Group21Var10& output)
 {

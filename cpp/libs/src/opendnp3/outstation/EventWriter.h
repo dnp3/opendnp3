@@ -119,7 +119,8 @@ private:
 	{
 		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
 
-		CTOType cto = { pLocation->value.GetTime() };
+		CTOType cto;
+		cto.time = pLocation->value.GetTime();
 
 		auto header = writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, T, CTOType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto);
 

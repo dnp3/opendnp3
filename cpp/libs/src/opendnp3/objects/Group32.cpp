@@ -31,6 +31,9 @@ namespace opendnp3 {
 
 // ------- Group32Var1 -------
 
+Group32Var1::Group32Var1() : flags(0), value(0)
+{}
+
 bool Group32Var1::Read(RSlice& buffer, Group32Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -61,6 +64,9 @@ bool Group32Var1::WriteTarget(const Analog& value, openpal::WSlice& buff)
 }
 
 // ------- Group32Var2 -------
+
+Group32Var2::Group32Var2() : flags(0), value(0)
+{}
 
 bool Group32Var2::Read(RSlice& buffer, Group32Var2& output)
 {
@@ -93,6 +99,9 @@ bool Group32Var2::WriteTarget(const Analog& value, openpal::WSlice& buff)
 
 // ------- Group32Var3 -------
 
+Group32Var3::Group32Var3() : flags(0), value(0), time(0)
+{}
+
 bool Group32Var3::Read(RSlice& buffer, Group32Var3& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -123,6 +132,9 @@ bool Group32Var3::WriteTarget(const Analog& value, openpal::WSlice& buff)
 }
 
 // ------- Group32Var4 -------
+
+Group32Var4::Group32Var4() : flags(0), value(0), time(0)
+{}
 
 bool Group32Var4::Read(RSlice& buffer, Group32Var4& output)
 {
@@ -155,6 +167,9 @@ bool Group32Var4::WriteTarget(const Analog& value, openpal::WSlice& buff)
 
 // ------- Group32Var5 -------
 
+Group32Var5::Group32Var5() : flags(0), value(0.0)
+{}
+
 bool Group32Var5::Read(RSlice& buffer, Group32Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -185,6 +200,9 @@ bool Group32Var5::WriteTarget(const Analog& value, openpal::WSlice& buff)
 }
 
 // ------- Group32Var6 -------
+
+Group32Var6::Group32Var6() : flags(0), value(0.0)
+{}
 
 bool Group32Var6::Read(RSlice& buffer, Group32Var6& output)
 {
@@ -217,6 +235,9 @@ bool Group32Var6::WriteTarget(const Analog& value, openpal::WSlice& buff)
 
 // ------- Group32Var7 -------
 
+Group32Var7::Group32Var7() : flags(0), value(0.0), time(0)
+{}
+
 bool Group32Var7::Read(RSlice& buffer, Group32Var7& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -247,6 +268,9 @@ bool Group32Var7::WriteTarget(const Analog& value, openpal::WSlice& buff)
 }
 
 // ------- Group32Var8 -------
+
+Group32Var8::Group32Var8() : flags(0), value(0.0), time(0)
+{}
 
 bool Group32Var8::Read(RSlice& buffer, Group32Var8& output)
 {
