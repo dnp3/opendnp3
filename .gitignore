@@ -47,6 +47,7 @@ libclangfuzzer.*
 libdnp3mocks.*
 testopenpal
 testopendnp3
+testasiodnp3
 testosslcrypto
 testsecauth
 dnp3fuzzer
