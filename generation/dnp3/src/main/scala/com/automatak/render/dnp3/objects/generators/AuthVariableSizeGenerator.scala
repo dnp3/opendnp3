@@ -24,7 +24,7 @@ object AuthVariableSizeGenerator {
 
     def defaultConstructor = Iterator("%s();".format(x.name))
 
-    def Id = Iterator("virtual GroupVariationID InstanceID() const override final { return %s::ID(); }".format(x.name))
+    def Id = Iterator("virtual GroupVariationID InstanceID() const override final { return ID(); }".format(x.name))
 
     def primaryConstructor(implicit indent: Indentation) : Iterator[String] = {
 
@@ -36,7 +36,9 @@ object AuthVariableSizeGenerator {
       def firstArgs : Iterator[String] = front.map(f => "%s %s,".format(f.cppArgument, f.name)).toIterator
       def lastArg : Iterator[String] = Iterator("%s %s".format(last.cppArgument, last.name))
 
-      Iterator("%s(".format(x.name)) ++ indent {
+      def constructor = if (count == 1) "explicit %s".format(x.name) else x.name
+
+      Iterator("%s(".format(constructor)) ++ indent {
         firstArgs ++ lastArg
       } ++ Iterator(");")
     }

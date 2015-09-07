@@ -42,7 +42,7 @@ struct Group120Var1 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,1); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var1::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var1();
 
@@ -73,7 +73,7 @@ struct Group120Var2 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,2); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var2::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var2();
 
@@ -123,7 +123,7 @@ struct Group120Var5 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,5); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var5::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var5();
 
@@ -158,7 +158,7 @@ struct Group120Var6 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,6); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var6::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var6();
 
@@ -185,7 +185,7 @@ struct Group120Var7 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,7); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var7::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var7();
 
@@ -218,7 +218,7 @@ struct Group120Var8 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,8); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var8::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var8();
 
@@ -245,11 +245,11 @@ struct Group120Var9 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,9); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var9::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var9();
 
-  Group120Var9(
+  explicit Group120Var9(
     const openpal::RSlice& hmacValue
   );
 
@@ -268,7 +268,7 @@ struct Group120Var10 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,10); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var10::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var10();
 
@@ -305,7 +305,7 @@ struct Group120Var11 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,11); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var11::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var11();
 
@@ -332,7 +332,7 @@ struct Group120Var12 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,12); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var12::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var12();
 
@@ -359,7 +359,7 @@ struct Group120Var13 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,13); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var13::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var13();
 
@@ -386,11 +386,11 @@ struct Group120Var14 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,14); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var14::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var14();
 
-  Group120Var14(
+  explicit Group120Var14(
     const openpal::RSlice& digitalSignature
   );
 
@@ -409,11 +409,11 @@ struct Group120Var15 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,15); }
 
-  virtual GroupVariationID InstanceID() const override final { return Group120Var15::ID(); }
+  virtual GroupVariationID InstanceID() const override final { return ID(); }
 
   Group120Var15();
 
-  Group120Var15(
+  explicit Group120Var15(
     const openpal::RSlice& hmacValue
   );
 
