@@ -30,8 +30,10 @@
 #include <opendnp3/master/TaskConfig.h>
 #include <opendnp3/master/MasterScan.h>
 #include <opendnp3/master/ICommandProcessor.h>
+#include <opendnp3/master/RestartOperationResult.h>
 
 #include <opendnp3/gen/FunctionCode.h>
+#include <opendnp3/gen/RestartType.h>
 
 #include <openpal/executor/TimeDuration.h>
 
@@ -103,6 +105,11 @@ public:
 	* Write a time and interval object to a specific index
 	*/
 	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+
+	/**
+	* Perform a cold or warm restart and get back the time-to-complete value
+	*/
+	virtual void Restart(opendnp3::RestartType op, const opendnp3::RestartOperationCallbackT& callback, opendnp3::TaskConfig config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
 	* Perform any operation that requires just a function code

@@ -45,13 +45,13 @@ class MasterStackBase : public Interface, public ILinkBind
 public:
 
 	MasterStackBase(
-	    const char* id,
-	    openpal::LogRoot& root_,
-	    asiopal::ASIOExecutor& executor,
-	    opendnp3::ILinkListener& listener,
-	    const opendnp3::MasterStackConfig& config,
-	    IStackLifecycle& lifecycle
-	) :
+		const char* id,
+		openpal::LogRoot& root_,
+		asiopal::ASIOExecutor& executor,
+		opendnp3::ILinkListener& listener,
+		const opendnp3::MasterStackConfig& config,
+		IStackLifecycle& lifecycle
+		) :
 		root(root_, id),
 		pLifecycle(&lifecycle),
 		stack(root, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
@@ -172,6 +172,15 @@ public:
 		auto add = [this, value, index, config]()
 		{
 			this->pContext->Write(value, index, config);
+		};
+		return pLifecycle->GetExecutor().BlockFor(add);
+	}
+
+	virtual void Restart(opendnp3::RestartType op, const opendnp3::RestartOperationCallbackT& callback, opendnp3::TaskConfig config) override final
+	{
+		auto add = [this, op, callback, config]()
+		{
+			this->pContext->Restart(op, callback, config);
 		};
 		return pLifecycle->GetExecutor().BlockFor(add);
 	}
