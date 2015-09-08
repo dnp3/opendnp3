@@ -803,7 +803,7 @@ bool OAuthContext::AuthenticateUserStatusChange(const opendnp3::APDUHeader& head
 
 	if (change.statusChangeSeqNum < statusChangeSeq)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Invalid certification data in user status change request");
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Invalid SCSN in user status change. Received %u, expecting >= %u", change.statusChangeSeqNum, statusChangeSeq);
 		this->TryRespondWithAuthError(header.control.SEQ, change.statusChangeSeqNum, User::Unknown(), AuthErrorCode::INVALID_CERTIFICATION_DATA); // TODO - Is this the right error code?
 		// TODO update an official stats?
 		this->security.otherStats.badStatusChangeSeqNum++;
