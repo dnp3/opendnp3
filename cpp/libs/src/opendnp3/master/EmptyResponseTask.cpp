@@ -20,26 +20,18 @@
  */
 #include "EmptyResponseTask.h"
 
+#include "opendnp3/master/TaskPriority.h"
+
 using namespace openpal;
 
 namespace opendnp3
 {
 
-EmptyResponseTask::EmptyResponseTask(IMasterApplication& app, const std::string& name_, FunctionCode func_, const std::function<bool(HeaderWriter&)>& format_, openpal::Logger logger, const TaskConfig& config) :
-	IMasterTask(app, 0, logger, config),
-	name(name_),
-	func(func_),
-	format(format_)
+EmptyResponseTask::EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func, const std::function<bool(HeaderWriter&)>& format, openpal::Logger logger, const TaskConfig& config) :
+	SimpleRequestTaskBase(app, func, priority::USER_REQUEST, format, logger, config),
+	m_name(name)
 {
 
-}
-
-bool EmptyResponseTask::BuildRequest(APDURequest& request, uint8_t seq)
-{
-	request.SetFunction(func);
-	request.SetControl(AppControlField::Request(seq));
-	auto writer = request.GetWriter();
-	return format(writer);
 }
 
 IMasterTask::ResponseResult EmptyResponseTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
