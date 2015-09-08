@@ -89,8 +89,7 @@ bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
 
 		if (iter == records.end())
 		{
-			// record is always disabled by default
-			Record(pContext, route);
+			// record is always disabled by default			
 			records.push_back(Record(pContext, route));
 			return true;
 		}
