@@ -18,11 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_EMPTY_RESPONSE_TASK_H
-#define OPENDNP3_EMPTY_RESPONSE_TASK_H
+#ifndef OPENDNP3_SIMPLE_REQUEST_TASK_BASE_H
+#define OPENDNP3_SIMPLE_REQUEST_TASK_BASE_H
 
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/TaskPriority.h"
 #include "opendnp3/master/HeaderBuilder.h"
 
 #include <string>
@@ -32,17 +31,12 @@ namespace opendnp3
 
 class IMasterApplication;
 
-class EmptyResponseTask : public IMasterTask
+class SimpleRequestTaskBase : public IMasterTask
 {
 
 public:
 
-	EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func_, const HeaderBuilderT& format_, openpal::Logger logger, const TaskConfig& config);
-
-	virtual char const* Name() const override final
-	{
-		return name.c_str();
-	}
+	SimpleRequestTaskBase(IMasterApplication& app, FunctionCode func, int taskPriority, const HeaderBuilderT& format, openpal::Logger logger, const TaskConfig& config);
 
 	virtual bool IsRecurring() const override final
 	{
@@ -53,7 +47,7 @@ public:
 
 	virtual int Priority(void) const override final
 	{
-		return priority::USER_REQUEST;
+		return m_priority;
 	}
 
 	virtual bool BlocksLowerPriority() const override final
@@ -63,13 +57,11 @@ public:
 
 private:
 
-	std::string name;
-	FunctionCode func;
-	std::function<bool(HeaderWriter&)> format;
+	int m_priority;
+	FunctionCode m_func;
+	HeaderBuilderT m_format;		
 
-	IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
-
-	virtual  bool IsEnabled() const override final
+	virtual bool IsEnabled() const override final
 	{
 		return true;
 	}

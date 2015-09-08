@@ -51,7 +51,8 @@ object CppEnumGenerator {
       EventMode(),
       IndexMode(),
       ConfigAuthMode(),
-      SecurityStatIndex()
+      SecurityStatIndex(),
+      RestartOperation()
     ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, false, false))
 
     def stringOnlyEnums = List(MasterTaskType(), TaskCompletion(), ChannelState(), LinkStatus(), CommandPointState()).map(x => EnumConfig(x, false, true))

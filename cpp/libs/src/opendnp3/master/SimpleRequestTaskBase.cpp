@@ -18,40 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKPRIORITY_H
-#define OPENDNP3_TASKPRIORITY_H
+
+#include "opendnp3/master/SimpleRequestTaskBase.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {
-namespace priority
+
+SimpleRequestTaskBase::SimpleRequestTaskBase(IMasterApplication& app, FunctionCode func, int taskPriority, const HeaderBuilderT& format, openpal::Logger logger, const TaskConfig& config) :
+	IMasterTask(app, MonotonicTimestamp::Min(), logger, config),
+	m_priority(taskPriority),
+	m_func(func),
+	m_format(format)
 {
-const int USER_STATUS_CHANGE = 20;
-
-const int UPDATE_KEY_CHANGE = 40;
-
-const int SESSION_KEY = 50;
-
-const int COMMAND = 100;
-
-const int USER_REQUEST = 110;
-
-const int CLEAR_RESTART = 120;
-
-const int DISABLE_UNSOLICITED = 130;
-
-const int ASSIGN_CLASS = 140;
-
-const int INTEGRITY_POLL = 150;
-
-const int TIME_SYNC = 160;
-
-const int ENABLE_UNSOLICITED = 170;
-
-const int EVENT_SCAN = 180;
-
-const int USER_POLL = 190;
-}
 
 }
 
-#endif
+
+bool SimpleRequestTaskBase::BuildRequest(APDURequest& request, uint8_t seq)
+{
+	request.SetFunction(m_func);
+	request.SetControl(AppControlField::Request(seq));
+	auto writer = request.GetWriter();
+	return m_format(writer);
+}
+
+} //end ns
+
+
+
