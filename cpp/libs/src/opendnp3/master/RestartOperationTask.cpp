@@ -66,8 +66,8 @@ IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const opendnp3
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
-	if (objects.Empty())
-	{
+	if (objects.IsEmpty())
+	{		
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 

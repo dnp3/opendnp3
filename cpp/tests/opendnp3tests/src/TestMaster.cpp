@@ -26,7 +26,7 @@
 #include <testlib/HexConversions.h>
 #include <dnp3mocks/MockTaskCallback.h>
 #include <dnp3mocks/APDUHexBuilders.h>
-
+#include <dnp3mocks/CallbackQueue.h>
 
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
@@ -544,4 +544,43 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
 	REQUIRE(callback.numStart == 1);
 	REQUIRE(callback.results.size() == 1);
 	REQUIRE(callback.results[0] == TaskCompletion::SUCCESS);
+}
+
+TEST_CASE(SUITE("Cold restart fails with empty response"))
+{
+	MasterParams params = NoStartupTasks();
+	MasterTestObject t(params);
+	t.context.OnLowerLayerUp();
+
+	CallbackQueue<RestartOperationResult> queue;
+
+	t.context.Restart(RestartOperation::COLD_RESTART, queue.Callback());
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 0D"); // cold restart
+	t.context.OnSendResult(true);
+	t.SendToMaster("C0 81 00 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "");
+
+	REQUIRE(queue.responses.size() == 1);
+	REQUIRE(queue.responses[0].summary == TaskCompletion::FAILURE_BAD_RESPONSE);
+}
+
+TEST_CASE(SUITE("Warm restart fails with empty response"))
+{
+	MasterParams params = NoStartupTasks();
+	MasterTestObject t(params);
+	t.context.OnLowerLayerUp();
+
+	CallbackQueue<RestartOperationResult> queue;
+
+	t.context.Restart(RestartOperation::WARM_RESTART, queue.Callback());
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 0E"); // warm restart
+	t.context.OnSendResult(true);
+	t.SendToMaster("C0 81 00 00 34 01 07 01 BB BB");
+	REQUIRE(t.lower.PopWriteAsHex() == "");
+
+	REQUIRE(queue.responses.size() == 1);
+	REQUIRE(queue.responses[0].summary == TaskCompletion::SUCCESS);
+	REQUIRE(queue.responses[0].restartTime.GetMilliseconds() == (0xBBBB * 1000));
 }

@@ -38,7 +38,8 @@ public:
 	RestartOperationResult() : summary(TaskCompletion::FAILURE_NO_COMMS)
 	{}
 
-	RestartOperationResult(TaskCompletion summary, openpal::TimeDuration restartTime)
+	RestartOperationResult(TaskCompletion summary_, openpal::TimeDuration restartTime_) : 
+		summary(summary_), restartTime(restartTime_)
 	{}
 
 	/// The result of the task as a whole.
