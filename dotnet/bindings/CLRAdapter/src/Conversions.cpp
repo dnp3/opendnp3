@@ -276,6 +276,11 @@ namespace Automatak
 				return ConvertMilliseconds(ts.Ticks / System::TimeSpan::TicksPerMillisecond);
 			}
 
+			System::TimeSpan ConvertTimeDuration(const openpal::TimeDuration& duration)
+			{
+				return System::TimeSpan::FromMilliseconds((double) duration.GetMilliseconds());
+			}
+
 			opendnp3::ClassField Conversions::ConvertClassField(ClassField classField)
 			{
 				return opendnp3::ClassField(classField.ClassMask);

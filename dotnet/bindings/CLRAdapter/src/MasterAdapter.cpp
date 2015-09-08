@@ -72,6 +72,15 @@ namespace Automatak
 					return proxy->CompletionTask;
 				}
 
+				Task<RestartResultType^>^ MasterAdapter::Restart(RestartType restartType, TaskConfig^ config)
+				{
+					auto tcs = gcnew TaskCompletionSource<RestartResultType^>();
+
+					pMaster->Restart((opendnp3::RestartType) restartType,  CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
+
+					return tcs->Task;
+				}
+
 				Task<TaskCompletion>^ MasterAdapter::PerformFunction(System::String^ name, FunctionCode func, IEnumerable<Header^>^ headers, TaskConfig^ config)
 				{
 					auto proxy = gcnew TaskCompletionProxy(config->callback);

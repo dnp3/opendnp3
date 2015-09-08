@@ -94,6 +94,11 @@ namespace Automatak.DNP3.Interface
         Task<TaskCompletion> Write(TimeAndInterval value, System.UInt16 index, TaskConfig config);
 
         /// <summary>
+        /// Write a time and value object
+        /// </summary>
+        Task<RestartResultType> Restart(RestartType restartType, TaskConfig config);
+
+        /// <summary>
         /// Perform an arbitrary function that doesn't expect a response
         /// </summary>        
         Task<TaskCompletion> PerformFunction(string name, FunctionCode func, IEnumerable<Header> headers, TaskConfig config);

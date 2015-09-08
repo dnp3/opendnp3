@@ -53,6 +53,8 @@ namespace Automatak
 
 				static openpal::TimeDuration ConvertTimespan(System::TimeSpan ts);
 
+				static System::TimeSpan ConvertTimeDuration(const openpal::TimeDuration& duration);
+
 				static opendnp3::ClassField ConvertClassField(ClassField classField);
 
 				// Convert a .NET string to a C++ string
@@ -171,3 +173,4 @@ namespace Automatak
 }
 
 #endif
+
