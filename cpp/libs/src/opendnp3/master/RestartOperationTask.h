@@ -25,7 +25,7 @@
 #include "opendnp3/master/RestartOperationResult.h"
 #include "opendnp3/app/parsing/IAPDUHandler.h"
 
-#include "opendnp3/gen/RestartOperation.h"
+#include "opendnp3/gen/RestartType.h"
 
 namespace opendnp3
 {
@@ -35,7 +35,7 @@ class RestartOperationTask final : public SimpleRequestTaskBase, private IAPDUHa
 
 public:
 
-	RestartOperationTask(IMasterApplication& app, RestartOperation operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config);
+	RestartOperationTask(IMasterApplication& app, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config);
 
 	virtual char const* Name() const override;
 
@@ -46,7 +46,7 @@ private:
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;
 
-	static FunctionCode ToFunctionCode(RestartOperation op);
+	static FunctionCode ToFunctionCode(RestartType op);
 
 	RestartOperationCallbackT m_callback;	
 	openpal::TimeDuration m_duration;

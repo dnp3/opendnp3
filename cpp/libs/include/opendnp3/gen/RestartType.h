@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_RESTARTOPERATION_H
-#define OPENDNP3_RESTARTOPERATION_H
+#ifndef OPENDNP3_RESTARTTYPE_H
+#define OPENDNP3_RESTARTTYPE_H
 
 #include <cstdint>
 
@@ -28,12 +28,12 @@ namespace opendnp3 {
 /**
   Enumeration describing restart operation to perform on an outstation
 */
-enum class RestartOperation : uint8_t
+enum class RestartType : uint8_t
 {
   /// Full reboot
-  COLD_RESTART = 0,
+  COLD = 0,
   /// Warm reboot of process only
-  WARM_RESTART = 1
+  WARM = 1
 };
 
 

@@ -31,7 +31,7 @@
 #include "opendnp3/app/AppSeqNum.h"
 #include "opendnp3/app/TimeAndInterval.h"
 
-#include "opendnp3/gen/RestartOperation.h"
+#include "opendnp3/gen/RestartType.h"
 
 #include "opendnp3/master/MasterScheduler.h"
 #include "opendnp3/master/ITaskFilter.h"
@@ -160,7 +160,7 @@ public:
 
 	void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
 
-	void Restart(RestartOperation op, const RestartOperationCallbackT& callback, TaskConfig config = TaskConfig::Default());
+	void Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config = TaskConfig::Default());
 
 	void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 

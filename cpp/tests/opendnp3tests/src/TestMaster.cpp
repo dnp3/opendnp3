@@ -554,7 +554,7 @@ TEST_CASE(SUITE("Cold restart fails with empty response"))
 
 	CallbackQueue<RestartOperationResult> queue;
 
-	t.context.Restart(RestartOperation::COLD_RESTART, queue.Callback());
+	t.context.Restart(RestartType::COLD, queue.Callback());
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 0D"); // cold restart
 	t.context.OnSendResult(true);
@@ -573,7 +573,7 @@ TEST_CASE(SUITE("Warm restart fails with empty response"))
 
 	CallbackQueue<RestartOperationResult> queue;
 
-	t.context.Restart(RestartOperation::WARM_RESTART, queue.Callback());
+	t.context.Restart(RestartType::WARM, queue.Callback());
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 0E"); // warm restart
 	t.context.OnSendResult(true);

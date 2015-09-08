@@ -405,7 +405,7 @@ void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig co
 	this->ScheduleAdhocTask(pTask);
 }
 
-void MContext::Restart(RestartOperation op, const RestartOperationCallbackT& callback, TaskConfig config)
+void MContext::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 {	
 	auto pTask = new RestartOperationTask(*this->pApplication, op, callback, this->logger, config);
 	this->ScheduleAdhocTask(pTask);

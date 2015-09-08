@@ -23,15 +23,15 @@ namespace Automatak.DNP3.Interface
   /// <summary>
   /// Enumeration describing restart operation to perform on an outstation
   /// </summary>
-  public enum RestartOperation : byte
+  public enum RestartType : byte
   {
     /// <summary>
     /// Full reboot
     /// </summary>
-    COLD_RESTART = 0,
+    COLD = 0,
     /// <summary>
     /// Warm reboot of process only
     /// </summary>
-    WARM_RESTART = 1
+    WARM = 1
   }
 }

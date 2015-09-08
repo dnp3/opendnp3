@@ -29,7 +29,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-RestartOperationTask::RestartOperationTask(IMasterApplication& app, RestartOperation operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config) :
+RestartOperationTask::RestartOperationTask(IMasterApplication& app, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config) :
 	SimpleRequestTaskBase(app, ToFunctionCode(operationType), priority::USER_REQUEST, [](HeaderWriter&){ return true; }, logger, config),
 	m_callback(callback),
 	m_duration(TimeDuration::Min())
@@ -104,9 +104,9 @@ IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const IC
 	}
 }
 
-FunctionCode RestartOperationTask::ToFunctionCode(RestartOperation op)
+FunctionCode RestartOperationTask::ToFunctionCode(RestartType op)
 {
-	return (op == RestartOperation::COLD_RESTART) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART;
+	return (op == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART;
 }
 
 IMasterTask::TaskState RestartOperationTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
