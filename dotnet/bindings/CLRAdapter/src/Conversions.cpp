@@ -276,7 +276,7 @@ namespace Automatak
 				return ConvertMilliseconds(ts.Ticks / System::TimeSpan::TicksPerMillisecond);
 			}
 
-			System::TimeSpan ConvertTimeDuration(const openpal::TimeDuration& duration)
+			System::TimeSpan Conversions::ConvertTimeDuration(const openpal::TimeDuration& duration)
 			{
 				return System::TimeSpan::FromMilliseconds((double) duration.GetMilliseconds());
 			}
