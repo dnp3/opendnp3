@@ -81,6 +81,7 @@ public:
 	void OnHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
 	void OnHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
 	void OnHeader(const CountHeader& header, const ICollection<Group51Var2>& values);
+	void OnHeader(const CountHeader& header, const ICollection<Group52Var1>& values);
 	void OnHeader(const CountHeader& header, const ICollection<Group52Var2>& values);
 	void OnHeader(const CountHeader& header, const ICollection<Group120Var4>& values);
 
@@ -160,6 +161,7 @@ protected:
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values);
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values);
 

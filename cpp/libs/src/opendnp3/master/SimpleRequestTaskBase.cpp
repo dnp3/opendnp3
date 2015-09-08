@@ -28,8 +28,8 @@ namespace opendnp3
 
 SimpleRequestTaskBase::SimpleRequestTaskBase(IMasterApplication& app, FunctionCode func, int taskPriority, const HeaderBuilderT& format, openpal::Logger logger, const TaskConfig& config) :
 	IMasterTask(app, MonotonicTimestamp::Min(), logger, config),
-	m_priority(taskPriority),
 	m_func(func),
+	m_priority(taskPriority),	
 	m_format(format)
 {
 

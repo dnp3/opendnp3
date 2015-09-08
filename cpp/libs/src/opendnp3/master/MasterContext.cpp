@@ -27,6 +27,7 @@
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/master/MeasurementHandler.h"
 #include "opendnp3/master/EmptyResponseTask.h"
+#include "opendnp3/master/RestartOperationTask.h"
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"
 
@@ -401,6 +402,12 @@ void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig co
 	};
 
 	auto pTask = new EmptyResponseTask(*this->pApplication, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, this->logger, config);
+	this->ScheduleAdhocTask(pTask);
+}
+
+void MContext::Restart(RestartOperation op, const RestartOperationCallbackT& callback, TaskConfig config)
+{	
+	auto pTask = new RestartOperationTask(*this->pApplication, op, callback, this->logger, config);
 	this->ScheduleAdhocTask(pTask);
 }
 

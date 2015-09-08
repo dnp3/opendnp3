@@ -18,39 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_EMPTY_RESPONSE_TASK_H
-#define OPENDNP3_EMPTY_RESPONSE_TASK_H
+#ifndef OPENDNP3_RESTART_OPERATION_RESULT_H
+#define OPENDNP3_RESTART_OPERATION_RESULT_H
 
-#include "opendnp3/master/SimpleRequestTaskBase.h"
+#include "opendnp3/gen/TaskCompletion.h"
 
-#include <string>
+#include <openpal/executor/TimeDuration.h>
+
+#include <cstdint>
+#include <functional>
 
 namespace opendnp3
 {
 
-class EmptyResponseTask : public SimpleRequestTaskBase
+class RestartOperationResult
 {
+public:	
 
-public:
+	RestartOperationResult() : summary(TaskCompletion::FAILURE_NO_COMMS)
+	{}
 
-	EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func, const HeaderBuilderT& format, openpal::Logger logger, const TaskConfig& config);
+	RestartOperationResult(TaskCompletion summary, openpal::TimeDuration restartTime)
+	{}
 
-	virtual char const* Name() const override final
-	{
-		return m_name.c_str();
-	}	
+	/// The result of the task as a whole.
+	TaskCompletion summary;
 
-private:
-
-	std::string m_name;
-	
-	IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;	
-
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final
-	{
-		return TaskState::Infinite();
-	}
+	/// Time delay until restart
+	openpal::TimeDuration restartTime;
 };
+
+typedef std::function<void(const RestartOperationResult&)> RestartOperationCallbackT;
 
 } //end ns
 

@@ -55,11 +55,15 @@ public:
 		return false;
 	}
 
+protected:
+
+	const FunctionCode m_func;
+
 private:
 
-	int m_priority;
-	FunctionCode m_func;
-	HeaderBuilderT m_format;		
+	const int m_priority;	
+	const HeaderBuilderT m_format;
+
 
 	virtual bool IsEnabled() const override final
 	{
@@ -69,12 +73,7 @@ private:
 	virtual MasterTaskType GetTaskType() const override final
 	{
 		return MasterTaskType::USER_TASK;
-	}
-
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final
-	{
-		return TaskState::Infinite();
-	}
+	}	
 
 };
 
