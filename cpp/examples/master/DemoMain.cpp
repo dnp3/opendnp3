@@ -115,8 +115,15 @@ int main(int argc, char* argv[])
 			                        );
 			break;
 		case('r') :
-			pMaster->PerformFunction("cold restart", FunctionCode::COLD_RESTART, {});
+		{
+			auto print = [](const RestartOperationResult& result)
+			{
+			  std::cout << "Result: " << TaskCompletionToString(result.summary) 
+				    << " Time: " << result.restartTime.GetMilliseconds() << std::endl;
+			};
+			pMaster->Restart(RestartType::COLD, print);
 			break;
+		}
 		case('x'):
 			// C++ destructor on DNP3Manager cleans everything up for you
 			return 0;
