@@ -118,8 +118,14 @@ int main(int argc, char* argv[])
 		{
 			auto print = [](const RestartOperationResult& result)
 			{
-			  std::cout << "Result: " << TaskCompletionToString(result.summary) 
-				    << " Time: " << result.restartTime.GetMilliseconds() << std::endl;
+			  if(result.summary == TaskCompletion::SUCCESS)
+			  {
+			    std::cout << "Success, Time: " << result.restartTime.GetMilliseconds() << std::endl;
+			  }
+			  else
+			  {
+			    std::cout << "Failure: " << TaskCompletionToString(result.summary) << std::endl;
+			  }    
 			};
 			pMaster->Restart(RestartType::COLD, print);
 			break;
