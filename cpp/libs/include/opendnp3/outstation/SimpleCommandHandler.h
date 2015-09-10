@@ -60,8 +60,23 @@ public:
 
 protected:
 
-	virtual void Start() override final;
-	virtual void End() override final;
+	virtual void DoSelect(const ControlRelayOutputBlock& command, uint16_t index) {}
+	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index) {}
+
+	virtual void DoSelect(const AnalogOutputInt16& command, uint16_t index) {}
+	virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index) {}
+
+	virtual void DoSelect(const AnalogOutputInt32& command, uint16_t index) {}
+	virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index) {}
+
+	virtual void DoSelect(const AnalogOutputFloat32& command, uint16_t index) {}
+	virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index) {}
+
+	virtual void DoSelect(const AnalogOutputDouble64& command, uint16_t index) {}
+	virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index) {}
+
+	virtual void Start() override;
+	virtual void End() override;
 
 	CommandStatus status;
 

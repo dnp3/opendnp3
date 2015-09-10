@@ -381,6 +381,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 	t.SendToOutstation("C1 05 29 03 17 01 01 00 00 C8 42 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
+	
 }
 
 TEST_CASE(SUITE("DirectOperateGroup41Var4"))
