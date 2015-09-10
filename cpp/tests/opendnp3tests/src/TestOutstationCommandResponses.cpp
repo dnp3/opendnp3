@@ -378,9 +378,12 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 	t.LowerLayerUp();
 
 	// Direct operate group 41 Var 3, count = 1, index = 1
-	t.SendToOutstation("C1 05 29 03 17 01 01 00 00 C8 42 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
+	t.SendToOutstation("C1 05 29 03 17 01 01 00 00 C7 42 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 03 17 01 01 00 00 C7 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
+	REQUIRE(t.cmdHandler.aoFloat32.size() == 1);
+	REQUIRE(t.cmdHandler.aoFloat32[0].value.value == Approx(99.5).epsilon(1e-6));
+	REQUIRE(t.cmdHandler.aoFloat32[0].index == 1);
 	
 }
 
@@ -391,7 +394,11 @@ TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 	t.LowerLayerUp();
 
 	// Direct operate group 41 Var 4, count = 1, index = 1
-	t.SendToOutstation("C1 05 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
+	t.SendToOutstation("C1 05 29 04 17 01 01 00 00 00 00 00 00 58 40 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 04 17 01 01 00 00 00 00 00 00 58 40 00"); // 0x00 status == CommandStatus::SUCCESS	
+
+	REQUIRE(t.cmdHandler.aoDouble64.size() == 1);
+	REQUIRE(t.cmdHandler.aoDouble64[0].value.value == Approx(96.0).epsilon(1e-6));
+	REQUIRE(t.cmdHandler.aoDouble64[0].index == 1);
 }
 

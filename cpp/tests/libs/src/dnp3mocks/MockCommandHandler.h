@@ -18,15 +18,17 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_COMMAND_HANDLER_H_
-#define __MOCK_COMMAND_HANDLER_H_
+#ifndef OPENDNP3_MOCK_COMMAND_HANDLER_H
+#define OPENDNP3_MOCK_COMMAND_HANDLER_H
 
 #include <opendnp3/outstation/SimpleCommandHandler.h>
+
+#include <vector>
 
 namespace opendnp3
 {
 
-class MockCommandHandler : public SimpleCommandHandler
+class MockCommandHandler final : public SimpleCommandHandler
 {
 public:
 
@@ -52,6 +54,41 @@ public:
 	{
 		return numOperate;
 	}
+
+protected:	
+
+	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index) override 
+	{ 
+		this->crob.push_back(WithIndex(command, index));
+	}
+
+	virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index) override
+	{
+		this->aoInt16.push_back(WithIndex(command, index));
+	}
+
+	virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index) override
+	{
+		this->aoInt32.push_back(WithIndex(command, index));
+	}
+
+	virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index) override
+	{
+		this->aoFloat32.push_back(WithIndex(command, index));
+	}
+
+	virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index) override
+	{
+		this->aoDouble64.push_back(WithIndex(command, index));
+	}
+
+public:
+
+	std::vector<Indexed<ControlRelayOutputBlock>> crob;
+	std::vector<Indexed<AnalogOutputInt16>> aoInt16;
+	std::vector<Indexed<AnalogOutputInt32>> aoInt32;
+	std::vector<Indexed<AnalogOutputFloat32>> aoFloat32;
+	std::vector<Indexed<AnalogOutputDouble64>> aoDouble64;
 
 };
 
