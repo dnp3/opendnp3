@@ -88,11 +88,13 @@ set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
 if (DEFINED ENV{ASIO_HOME})
   message("ASIO_HOME defined: $ENV{ASIO_HOME}")
-  include_directories($ENV{ASIO_HOME})
-  set (CMAKE_REQUIRED_INCLUDES $ENV{ASIO_HOME})
+  message("Adding ASIO_HOME To your include path")
+  include_directories($ENV{ASIO_HOME})  
 else()
-  message(FATAL_ERROR "You must define ASIO_HOME to point to your ASIO include subdirectory")
-endif()
+  message("ASIO_HOME was not defined. ASIO will be expected to be on your include path.")
+end
+
+
 
 # include paths for all the local libraries
 include_directories(./cpp/libs/src)
