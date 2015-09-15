@@ -87,12 +87,17 @@ endif()
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
 if (DEFINED ENV{ASIO_HOME})
-  message("ASIO_HOME defined: $ENV{ASIO_HOME}")
+  message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")
   message("Adding ASIO_HOME To your include path")
   include_directories($ENV{ASIO_HOME})  
 else()
-  message("ASIO_HOME was not defined. ASIO will be expected to be on your include path.")
-end
+  if(ASIO_HOME)
+    message("ASIO_HOME defined in cache: ${ASIO_HOME}")
+    include_directories(${ASIO_HOME})    
+  else()
+    message("ASIO_HOME not found. ASIO expected to be on include path")  
+  endif()
+endif()
 
 
 
