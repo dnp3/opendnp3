@@ -18,13 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_PHYSICAL_LAYER_BASE_TCP_H
-#define ASIOPAL_PHYSICAL_LAYER_BASE_TCP_H
+
+#ifndef ASIOPAL_PHYSICAL_LAYER_BASE_TLS_H
+#define ASIOPAL_PHYSICAL_LAYER_BASE_TLS_H
 
 #include "PhysicalLayerASIO.h"
 
 #include <asio.hpp>
 #include <asio/ip/tcp.hpp>
+#include <asio/ssl.hpp>
 
 #include <memory>
 
@@ -32,28 +34,29 @@ namespace asiopal
 {
 
 /**
-Common socket object and some shared implementations for server/client.
+Common TLS stream object and some shared implementations for server/client
 */
-class PhysicalLayerBaseTCP : public PhysicalLayerASIO
+class PhysicalLayerBaseTLS : public PhysicalLayerASIO
 {
 public:
-	PhysicalLayerBaseTCP(openpal::LogRoot& root, asio::io_service& service);
+	PhysicalLayerBaseTLS(openpal::LogRoot& root, asio::io_service& service);
 
-	virtual ~PhysicalLayerBaseTCP() {}
+	virtual ~PhysicalLayerBaseTLS() {}
 
-	/* Implement the shared client/server actions */
+	// ---- Implement the shared client/server actions ----
+
 	void DoClose();
 	void DoRead(openpal::WSlice&);
 	void DoWrite(const openpal::RSlice&);
 	void DoOpenFailure();
 
 protected:
-
-	asio::ip::tcp::socket socket;
-	void CloseSocket();
+	
+	asio::ssl::context ctx;
+	asio::ssl::stream<asio::ip::tcp::socket> socket;	
 
 private:
-	void ShutdownSocket();
+	void Shutdown();
 
 };
 }
