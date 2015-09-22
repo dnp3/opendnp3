@@ -1,7 +1,7 @@
 package com.automatak.render.dnp3.enums.groups
 
+import com.automatak.render.cpp.EnumConfig
 import com.automatak.render.dnp3.enums._
-import com.automatak.render.dnp3.EnumConfig
 
 
 object DNPCppEnumGroup {

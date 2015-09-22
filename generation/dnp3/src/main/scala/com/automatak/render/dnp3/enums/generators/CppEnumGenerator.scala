@@ -3,8 +3,6 @@ package com.automatak.render.dnp3.enums.generators
 import _root_.java.nio.file.Path
 
 import com.automatak.render._
-import com.automatak.render.cpp.EnumModelRenderer
-import com.automatak.render.dnp3.EnumConfig
 import com.automatak.render.cpp._
 
 object CppEnumGenerator {
@@ -12,6 +10,12 @@ object CppEnumGenerator {
   def apply(enums: List[EnumConfig], cppNamespace : String, incDirectory: Path, implDirectory: Path): Unit = {
 
     implicit val indent = CppIndentation()
+
+    def headerPath(model: EnumModel) = incDirectory.resolve(headerName(model))
+    def implPath(model: EnumModel) = implDirectory.resolve(implName(model))
+
+    def headerName(model: EnumModel) = model.name + ".h"
+    def implName(model: EnumModel) = model.name + ".cpp"
 
     def writeEnumToFiles(cfg: EnumConfig): Unit = {
 
@@ -25,20 +29,20 @@ object CppEnumGenerator {
         def enum = EnumModelRenderer.render(cfg.model)
         def signatures = renders.map(c => c.header.render(cfg.model)).flatten.toIterator
         def lines = license ++ space ++ includeGuards(cfg.model.name)(cstdint ++ space ++ namespace(cppNamespace)(enum ++ space ++ signatures))
-        writeTo(cfg.headerPath(incDirectory))(lines)
-        println("Wrote: " + cfg.headerPath(incDirectory))
+        writeTo(headerPath(cfg.model))(lines)
+        println("Wrote: " + headerPath(cfg.model))
       }
 
       def writeImpl() {
         def license = commented(LicenseHeader())
         def funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
-        def inc = quoted(String.format("opendnp3/gen/%s", cfg.headerName))
+        def inc = quoted(String.format("opendnp3/gen/%s", headerName(cfg.model)))
         def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cppNamespace)(funcs)
 
         if(cfg.conversions || cfg.stringConv)
         {
-          writeTo(cfg.implPath(implDirectory))(lines)
-          println("Wrote: " + cfg.implPath(implDirectory))
+          writeTo(implPath(cfg.model))(lines)
+          println("Wrote: " + implPath(cfg.model))
         }
       }
 
