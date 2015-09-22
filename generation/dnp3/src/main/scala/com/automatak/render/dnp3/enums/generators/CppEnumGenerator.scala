@@ -7,7 +7,7 @@ import com.automatak.render.cpp._
 
 object CppEnumGenerator {
 
-  def apply(enums: List[EnumConfig], cppNamespace : String, incDirectory: Path, implDirectory: Path): Unit = {
+  def apply(enums: List[EnumConfig], cppNamespace : String, incFormatString: String, incDirectory: Path, implDirectory: Path): Unit = {
 
     implicit val indent = CppIndentation()
 
@@ -36,7 +36,7 @@ object CppEnumGenerator {
       def writeImpl() {
         def license = commented(LicenseHeader())
         def funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
-        def inc = quoted(String.format("opendnp3/gen/%s", headerName(cfg.model)))
+        def inc = quoted(String.format(incFormatString, headerName(cfg.model)))
         def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cppNamespace)(funcs)
 
         if(cfg.conversions || cfg.stringConv)
