@@ -2,6 +2,7 @@ package com.automatak.render.dnp3
 
 import java.nio.file.FileSystems
 import com.automatak.render.dnp3.enums.generators.{CSharpEnumGenerator, CppEnumGenerator}
+import com.automatak.render.dnp3.enums.groups.{CSharpEnumGroup, DNPCppEnumGroup}
 import com.automatak.render.dnp3.objects.generators.GroupVariationFileGenerator
 
 object Generate {
@@ -16,8 +17,9 @@ object Generate {
   def main(args: Array[String]): Unit = {
 
     // generate all the required filter items
-    CppEnumGenerator(DNPEnumGroup, dnp3GenHeaderPath, dnp3GenImplPath)
-    CSharpEnumGenerator("Automatak.DNP3.Interface", csharpGenPath)
+    CppEnumGenerator(DNPCppEnumGroup.enums, "opendnp3", dnp3GenHeaderPath, dnp3GenImplPath)
+
+    CSharpEnumGenerator(CSharpEnumGroup.enums, "Automatak.DNP3.Interface", csharpGenPath)
 
 
     GroupVariationFileGenerator(dnp3ObjectPath)

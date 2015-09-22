@@ -14,9 +14,3 @@ case class EnumConfig(model: EnumModel, conversions: Boolean, stringConv: Boolea
 
 }
 
-trait EnumGroup {
-
-  def namespace: String
-
-  def enums : List[EnumConfig]
-}

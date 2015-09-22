@@ -1,10 +1,10 @@
-package com.automatak.render.dnp3
+package com.automatak.render.dnp3.enums.groups
 
 import com.automatak.render.dnp3.enums._
+import com.automatak.render.dnp3.EnumConfig
 
-object DNPEnumGroup extends EnumGroup {
 
-  def namespace: String = "opendnp3"
+object DNPCppEnumGroup {
 
   def enums : List[EnumConfig] = List(fullEnums, simpleEnums, stringOnlyEnums).flatten
 
@@ -42,6 +42,11 @@ object DNPEnumGroup extends EnumGroup {
     RestartType()
   ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, false, false))
 
-  private def stringOnlyEnums = List(MasterTaskType(), TaskCompletion(), ChannelState(), LinkStatus(), CommandPointState()).map(x => EnumConfig(x, false, true))
+  private def stringOnlyEnums = List(
+    MasterTaskType(),
+    TaskCompletion(),
+    ChannelState(),
+    LinkStatus(),
+    CommandPointState()).map(x => EnumConfig(x, false, true))
 
 }

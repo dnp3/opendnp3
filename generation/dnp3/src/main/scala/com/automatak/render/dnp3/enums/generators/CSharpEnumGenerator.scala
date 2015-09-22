@@ -9,51 +9,20 @@ import com.automatak.render.csharp._
 
 object CSharpEnumGenerator {
 
-  def apply(ns: String, dir: Path): Unit = {
+  def apply(enums: List[EnumModel], ns: String, dir: Path): Unit = {
 
-    case class EnumConfig(model: EnumModel, dest: Path) {
-      def fileName = model.name + ".cs"
-      def filePath = dest.resolve(fileName)
-    }
+    def fileName(model: EnumModel) = model.name + ".cs"
 
-    def events = DefaultVariations.enums.map(m => EnumConfig(m, dir))
-
-    def qualityMasks = QualityMasks.enums.map(m => EnumConfig(m, dir))
-
-    def enums : List[EnumConfig] = List(
-      AssignClassType(),
-      MasterTaskType(),
-      StaticTypeBitmask(),
-      IntervalUnit(),
-      DoubleBit(),
-      PointClass(),
-      CommandStatus(),
-      TaskCompletion(),
-      ControlCode(),
-      ChannelState(),
-      TimeSyncMode(),
-      RestartMode(),
-      TimestampMode(),
-      QualifierCode(),
-      GroupVariationEnum(),
-      EventMode(),
-      IndexMode(),
-      UserOperation(),
-      UserRole(),
-      KeyWrapAlgorithm(),
-      KeyChangeMethod(),
-      CommandPointState(),
-      RestartType()
-    ).map(e => EnumConfig.apply(e, dir)) ::: events ::: qualityMasks
+    def filePath(model: EnumModel) = dir.resolve(fileName(model))
 
     implicit val indent = CppIndentation()
 
-    def writeEnumToFile(cfg: EnumConfig): Unit = {
+    def writeEnumToFile(model: EnumModel): Unit = {
         def license = commented(LicenseHeader())
-        def enum = EnumModelRenderer.render(cfg.model)
+        def enum = EnumModelRenderer.render(model)
         def lines = license ++ space ++ namespace(ns)(enum)
-        writeTo(cfg.filePath)(lines)
-        println("Wrote: " + cfg.filePath)
+        writeTo(filePath(model))(lines)
+        println("Wrote: " + filePath(model))
     }
 
     enums.foreach(writeEnumToFile)
