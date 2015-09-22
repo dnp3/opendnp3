@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef ASIOPAL_PHYSICAL_LAYER_BASE_TLS_H
-#define ASIOPAL_PHYSICAL_LAYER_BASE_TLS_H
+#ifndef ASIOPAL_PHYSICAL_LAYER_TLS_BASE_H
+#define ASIOPAL_PHYSICAL_LAYER_TLS_BASE_H
 
 #include <asiopal/PhysicalLayerASIO.h>
 
@@ -28,20 +28,19 @@
 #include <asio/ip/tcp.hpp>
 #include <asio/ssl.hpp>
 
-#include <memory>
-
 namespace asiotls
 {
 
 /**
 Common TLS stream object and some shared implementations for server/client
 */
-class PhysicalLayerBaseTLS : public asiopal::PhysicalLayerASIO
+
+	class PhysicalLayerTLSBase : public asiopal::PhysicalLayerASIO
 {
 public:
-	PhysicalLayerBaseTLS(openpal::LogRoot& root, asio::io_service& service);
+	PhysicalLayerTLSBase(openpal::LogRoot& root, asio::io_service& service, std::error_code& ec);
 
-	virtual ~PhysicalLayerBaseTLS() {}
+	virtual ~PhysicalLayerTLSBase() {}
 
 	// ---- Implement the shared client/server actions ----
 
@@ -53,7 +52,7 @@ public:
 protected:
 	
 	asio::ssl::context ctx;
-	asio::ssl::stream<asio::ip::tcp::socket> socket;	
+	asio::ssl::stream<asio::ip::tcp::socket> stream;	
 
 private:
 	void Shutdown();

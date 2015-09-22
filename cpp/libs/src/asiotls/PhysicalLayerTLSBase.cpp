@@ -19,31 +19,36 @@
  * to you under the terms of the License.
  */
 
-#include "asiotls/PhysicalLayerBaseTLS.h"
+#include "asiotls/PhysicalLayerTLSBase.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
 using namespace asio;
 using namespace openpal;
+using namespace asio::ssl;
 
 namespace asiotls
 {
 
-	PhysicalLayerBaseTLS::PhysicalLayerBaseTLS(openpal::LogRoot& root, asio::io_service& service) : 
+	PhysicalLayerTLSBase::PhysicalLayerTLSBase(openpal::LogRoot& root, asio::io_service& service, std::error_code& ec) :
 		PhysicalLayerASIO(root, service),
-		ctx(asio::ssl::context::tlsv12),
-		socket(service, ctx)
-	{}
+		ctx(asio::ssl::context::sslv23), // we'll disable ssl v2/v3 later
+		stream(service, ctx)
+	{
+		const auto OPTIONS = context::default_workarounds | context::no_sslv2 | context::no_sslv3;
+
+		ctx.set_options(OPTIONS, ec);
+	}
 
 	// ---- Implement the shared client/server actions ----
 
-	void PhysicalLayerBaseTLS::DoClose()
+	void PhysicalLayerTLSBase::DoClose()
 	{
 		this->Shutdown();		
 	}
 	
-	void PhysicalLayerBaseTLS::DoRead(openpal::WSlice& dest)
+	void PhysicalLayerTLSBase::DoRead(openpal::WSlice& dest)
 	{
 		uint8_t* pBuff = dest;
 
@@ -52,34 +57,35 @@ namespace asiotls
 			this->OnReadCallback(ec, pBuff, static_cast<uint32_t>(numRead));
 		};
 
-		socket.async_read_some(buffer(pBuff, dest.Size()), executor.strand.wrap(callback));
+		stream.async_read_some(buffer(pBuff, dest.Size()), executor.strand.wrap(callback));
 	}
 	
-	void PhysicalLayerBaseTLS::DoWrite(const openpal::RSlice& data)
+	void PhysicalLayerTLSBase::DoWrite(const openpal::RSlice& data)
 	{
 		auto callback = [this](const std::error_code & code, size_t  numWritten)
 		{
 			this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));
 		};
 
-		async_write(socket, buffer(data, data.Size()), executor.strand.wrap(callback));
+		async_write(stream, buffer(data, data.Size()), executor.strand.wrap(callback));
 	}
 	
-	void PhysicalLayerBaseTLS::DoOpenFailure()
+	void PhysicalLayerTLSBase::DoOpenFailure()
 	{
 		SIMPLE_LOG_BLOCK(logger, logflags::DBG, "Failed socket open, closing socket");
 		this->Shutdown();
 	}	
 
-	void PhysicalLayerBaseTLS::Shutdown()
+	void PhysicalLayerTLSBase::Shutdown()
 	{
 		std::error_code ec;
 
-		socket.shutdown(ec);
+		// TODO - async vs blocking?!
+		stream.shutdown(ec);
 		if (ec)
 		{
 			FORMAT_LOG_BLOCK(logger, logflags::WARN, "Error while shutting down TLS stream: %s", ec.message().c_str());
-		}
+		}		
 	}
 
 }
