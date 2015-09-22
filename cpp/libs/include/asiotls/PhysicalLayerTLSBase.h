@@ -54,7 +54,6 @@ protected:
 	asio::ssl::context ctx;
 	asio::ssl::stream<asio::ip::tcp::socket> stream;	
 
-private:
 	void Shutdown();
 
 };

@@ -21,7 +21,7 @@
 #ifndef ASIOPAL_PHYSICAL_LAYER_TLS_CLIENT_H
 #define ASIOPAL_PHYSICAL_LAYER_TLS_CLIENT_H
 
-#include "PhysicalLayerBaseTLS.h"
+#include "PhysicalLayerTLSBase.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
@@ -32,7 +32,7 @@ namespace asiotls
 /**
 * Implementation of a TCP client
 */
-class PhysicalLayerTLSClient : public PhysicalLayerBaseTLS
+class PhysicalLayerTLSClient : public PhysicalLayerTLSBase
 {
 public:
 	PhysicalLayerTLSClient(
@@ -41,7 +41,8 @@ public:
 	    const std::string& host,
 	    const std::string& localAddress,
 	    uint16_t port,
-		std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {}
+		const std::string& verifyFilePath,
+		std::error_code& ec
 	);
 
 	// ---- Implement the remaining actions ----
@@ -51,6 +52,8 @@ public:
 	void DoOpenSuccess();
 
 private:
+
+	bool VerifyCertificate(bool preverified, asio::ssl::verify_context& ctx);
 
 	void BindToLocalAddress(std::error_code& code);
 
@@ -72,7 +75,8 @@ private:
 		openpal::Logger logger;
 	};
 
-	void HandleResolve(const std::error_code& code, asio::ip::tcp::resolver::iterator endpoint_iterator);
+	void HandleResolveResult(const std::error_code& ec, asio::ip::tcp::resolver::iterator endpoint_iterator);
+	void HandleConnectResult(const std::error_code& ec);	
 
 	ConnectionCondition condition;
 	const std::string host;
