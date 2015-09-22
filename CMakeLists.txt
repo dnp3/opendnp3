@@ -146,9 +146,9 @@ endif()
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 
 if(SECAUTH)
-  target_link_libraries(asiodnp3 secauth opendnp3 asiopal)
+  target_link_libraries(asiodnp3 secauth opendnp3 asiotls ${OPENSSL_LIBRARIES})
 else()
-  target_link_libraries(asiodnp3 opendnp3 asiopal)  
+  target_link_libraries(asiodnp3 opendnp3 asiotls ${OPENSSL_LIBRARIES})  
 endif()
 
 install(TARGETS asiodnp3 DESTINATION lib)

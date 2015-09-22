@@ -131,8 +131,35 @@ public:
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& endpoint,
-	    uint16_t port,
+	    uint16_t port,		
 	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
+
+
+	/**
+	* Add a TLS client channel
+	*
+	* @param id Alias that will be used for logging purposes with this channel
+	* @param levels Bitfield that describes the logging level for this channel and associated sessions
+	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
+	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
+	* @param port Port of remote outstation is listening on
+	* @param verifyFilePath Certificate file path used to verify the client
+	* @param strategy Reconnection delay strategy, default to exponential backoff
+	* @return A channel interface
+	*/
+	IChannel* AddTLSClient(
+		char const* id,
+		uint32_t levels,
+		openpal::TimeDuration minOpenRetry,
+		openpal::TimeDuration maxOpenRetry,
+		const std::string& host,
+		const std::string& local,
+		uint16_t port,
+		const std::string& verifyFilePath,
+		std::error_code& ec,
+		opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/**
 	* Add a serial channel

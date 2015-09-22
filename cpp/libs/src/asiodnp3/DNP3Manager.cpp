@@ -30,6 +30,8 @@
 #include <asiopal/PhysicalLayerTCPClient.h>
 #include <asiopal/PhysicalLayerTCPServer.h>
 
+#include <asiotls/PhysicalLayerTLSClient.h>
+
 using namespace openpal;
 
 namespace asiodnp3
@@ -90,6 +92,23 @@ IChannel* DNP3Manager::AddTCPServer(
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPServer(*pRoot, pThreadPool->GetIOService(), endpoint, port);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pCrypto, strategy);
+}
+
+IChannel* DNP3Manager::AddTLSClient(
+	char const* id,
+	uint32_t levels,
+	openpal::TimeDuration minOpenRetry,
+	openpal::TimeDuration maxOpenRetry,
+	const std::string& host,
+	const std::string& local,
+	uint16_t port,
+	const std::string& verifyFilePath,
+	std::error_code& ec,
+	opendnp3::IOpenDelayStrategy& strategy)
+{
+	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
+	auto pPhys = new asiotls::PhysicalLayerTLSClient(*pRoot, pThreadPool->GetIOService(), host, local, port, verifyFilePath, ec);
 	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pCrypto, strategy);
 }
 
