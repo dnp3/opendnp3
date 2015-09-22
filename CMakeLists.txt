@@ -194,6 +194,11 @@ if(DEMO)
   target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(outstationdemo PROPERTIES FOLDER demos)
 
+  # ----- master tls executable -----  
+  add_executable (master-tls-demo ./cpp/examples/tls/master/main.cpp)
+  target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  set_target_properties(master-tls-demo PROPERTIES FOLDER demos/tls)
+
   if(SECAUTH)
 
   # ----- outstation SAv5 demo executable -----
