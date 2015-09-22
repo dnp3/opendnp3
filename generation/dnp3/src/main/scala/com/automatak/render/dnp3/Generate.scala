@@ -16,8 +16,10 @@ object Generate {
   def main(args: Array[String]): Unit = {
 
     // generate all the required filter items
-    CppEnumGenerator(dnp3GenHeaderPath, dnp3GenImplPath)
+    CppEnumGenerator(DNPEnumGroup, dnp3GenHeaderPath, dnp3GenImplPath)
     CSharpEnumGenerator("Automatak.DNP3.Interface", csharpGenPath)
+
+
     GroupVariationFileGenerator(dnp3ObjectPath)
   }
 
