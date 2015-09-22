@@ -26,7 +26,7 @@
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
-namespace asiopal
+namespace asiotls
 {
 
 /**

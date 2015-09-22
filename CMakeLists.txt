@@ -129,6 +129,13 @@ target_link_libraries(asiopal openpal)
 install(TARGETS asiopal DESTINATION lib)
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
+# ---- asiotls library ----
+file(GLOB_RECURSE asiotls_SRC ./cpp/libs/src/asiotls/*.cpp ./cpp/libs/src/asiotls/*.h ./cpp/libs/include/asiotls/*.h)
+add_library(asiotls ${LIB_TYPE} ${asiotls_SRC})
+target_link_libraries(asiotls asiopal)
+install(TARGETS asiotls DESTINATION lib)
+set_target_properties(asiotls PROPERTIES FOLDER libs)
+
 # ---- asiodnp3 library ----
 if(SECAUTH)
 	file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiodnp3/*.h)

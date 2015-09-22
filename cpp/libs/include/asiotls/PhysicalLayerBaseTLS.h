@@ -22,7 +22,7 @@
 #ifndef ASIOPAL_PHYSICAL_LAYER_BASE_TLS_H
 #define ASIOPAL_PHYSICAL_LAYER_BASE_TLS_H
 
-#include "PhysicalLayerASIO.h"
+#include <asiopal/PhysicalLayerASIO.h>
 
 #include <asio.hpp>
 #include <asio/ip/tcp.hpp>
@@ -30,13 +30,13 @@
 
 #include <memory>
 
-namespace asiopal
+namespace asiotls
 {
 
 /**
 Common TLS stream object and some shared implementations for server/client
 */
-class PhysicalLayerBaseTLS : public PhysicalLayerASIO
+class PhysicalLayerBaseTLS : public asiopal::PhysicalLayerASIO
 {
 public:
 	PhysicalLayerBaseTLS(openpal::LogRoot& root, asio::io_service& service);
