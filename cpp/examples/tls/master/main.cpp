@@ -36,6 +36,18 @@ using namespace opendnp3;
 
 int main(int argc, char* argv[])
 {
+	if (argc != 2)
+	{
+		std::cout << "usage: master-tls-demo <peer certificate> <private key/certificate>" << std::endl;
+		return -1;
+	}
+
+	std::string peerCertificate(argv[0]);
+	std::string privateKey(argv[1]);
+
+	std::cout << "Using peer cert: " << peerCertificate << std::endl;
+	std::cout << "Using private key file: " << privateKey << std::endl;
+
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
@@ -45,18 +57,10 @@ int main(int argc, char* argv[])
 	DNP3Manager manager(1);
 
 	// send log messages to the console
-	manager.AddLogSubscriber(&ConsoleLogger::Instance());
-
-	std::error_code ec;
+	manager.AddLogSubscriber(&ConsoleLogger::Instance());	
 
 	// Connect via a TCPClient socket to a outstation
-	auto pChannel = manager.AddTLSClient("tls-client", FILTERS, TimeDuration::Seconds(2), TimeDuration::Seconds(5), "127.0.0.1", "0.0.0.0", 20000, "client.pem", ec);
-
-	if (ec)
-	{
-		std::cout << "Error creating TLS client: " << ec.message() << std::endl;
-		return -1;
-	}
+	auto pChannel = manager.AddTLSClient("tls-client", FILTERS, TimeDuration::Seconds(2), TimeDuration::Seconds(5), "127.0.0.1", "0.0.0.0", 20000, peerCertificate, privateKey);
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console

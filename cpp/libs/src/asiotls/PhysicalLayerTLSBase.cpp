@@ -31,14 +31,16 @@ using namespace asio::ssl;
 namespace asiotls
 {
 
-	PhysicalLayerTLSBase::PhysicalLayerTLSBase(openpal::LogRoot& root, asio::io_service& service, std::error_code& ec) :
+	PhysicalLayerTLSBase::PhysicalLayerTLSBase(
+			openpal::LogRoot& root, 
+			asio::io_service& service,			
+			asio::ssl::context_base::method method) :
+
 		PhysicalLayerASIO(root, service),
-		ctx(asio::ssl::context::sslv23), // we'll disable ssl v2/v3 later
+		ctx(method),
 		stream(service, ctx)
 	{
-		const auto OPTIONS = context::default_workarounds | context::no_sslv2 | context::no_sslv3;
-
-		ctx.set_options(OPTIONS, ec);
+		
 	}
 
 	// ---- Implement the shared client/server actions ----

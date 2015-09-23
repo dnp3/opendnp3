@@ -41,8 +41,8 @@ public:
 	    const std::string& host,
 	    const std::string& localAddress,
 	    uint16_t port,
-		const std::string& verifyFilePath,
-		std::error_code& ec
+		const std::string& peerCertFilePath,
+		const std::string& privateKeyFilePath
 	);
 
 	// ---- Implement the remaining actions ----
@@ -53,7 +53,7 @@ public:
 
 private:
 
-	bool VerifyCertificate(bool preverified, asio::ssl::verify_context& ctx);
+	bool VerifyServerCertificate(bool preverified, asio::ssl::verify_context& ctx);
 
 	void BindToLocalAddress(std::error_code& code);
 

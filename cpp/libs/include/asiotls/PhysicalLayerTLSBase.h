@@ -38,7 +38,11 @@ Common TLS stream object and some shared implementations for server/client
 	class PhysicalLayerTLSBase : public asiopal::PhysicalLayerASIO
 {
 public:
-	PhysicalLayerTLSBase(openpal::LogRoot& root, asio::io_service& service, std::error_code& ec);
+	PhysicalLayerTLSBase(
+		openpal::LogRoot& root,
+		asio::io_service& service,
+		asio::ssl::context_base::method method		
+	);
 
 	virtual ~PhysicalLayerTLSBase() {}
 

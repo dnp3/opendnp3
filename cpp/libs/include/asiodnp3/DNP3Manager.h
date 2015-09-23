@@ -157,8 +157,8 @@ public:
 		const std::string& host,
 		const std::string& local,
 		uint16_t port,
-		const std::string& verifyFilePath,
-		std::error_code& ec,
+		const std::string& peerCertFilePath,
+		const std::string& privateKeyFilePath,		
 		opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/**

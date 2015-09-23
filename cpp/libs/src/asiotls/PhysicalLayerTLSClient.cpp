@@ -33,28 +33,41 @@ namespace asiotls
 		const std::string& host_,
 		const std::string& localAddress_,
 		uint16_t port,
-		const std::string& verifyFilePath,
-		std::error_code& ec) :
-			PhysicalLayerTLSBase(root, service, ec),
+		const std::string& peerCertFilePath,		
+		const std::string& privateKeyFilePath
+	) :
+			PhysicalLayerTLSBase(root, service, ssl::context_base::sslv23_client),
 			condition(logger),
 			host(host_),
 			localAddress(localAddress_),
 			remoteEndpoint(ip::tcp::v4(), port),
 			localEndpoint(),
 			resolver(service)			
-	{
-		if (!ec)
-		{
-			ctx.load_verify_file(verifyFilePath, ec);
-		}
+	{		
 
-		if (!ec)
-		{
-			stream.set_verify_mode(asio::ssl::verify_peer, ec);
-		}
+		const auto OPTIONS = ssl::context::default_workarounds | ssl::context::no_sslv2 | ssl::context::no_sslv3;
+
+		ctx.set_options(OPTIONS);
+
+		// configure us to verify the peer certificate
+		stream.set_verify_mode(ssl::verify_peer);
+
+		// The public certificate file used to verify the peer
+		ctx.load_verify_file(peerCertFilePath);
+
+		// additionally, call this callback for the purposes of logging only
+		ctx.set_verify_callback(
+			[this](bool preverified, asio::ssl::verify_context& ctx) 
+			{ 
+					return this->VerifyServerCertificate(preverified, ctx); 
+			}
+		);
+		
+		// the certificate we present to the server + the private key we use
+		ctx.use_certificate_file(privateKeyFilePath, asio::ssl::context_base::file_format::pem);
 	}
 
-	bool PhysicalLayerTLSClient::VerifyCertificate(bool preverified, asio::ssl::verify_context& ctx)
+	bool PhysicalLayerTLSClient::VerifyServerCertificate(bool preverified, asio::ssl::verify_context& ctx)
 	{
 		// The verify callback can be used to check whether the certificate that is
 		// being presented is valid for the peer. For example, RFC 2818 describes
@@ -64,8 +77,10 @@ namespace asiotls
 		// certificate authority.
 
 		// In this example we will simply print the certificate's subject name.
-		char subjectName[256];
+		
 		X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
+
+		char subjectName[256];
 		X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
 						
 		FORMAT_LOG_BLOCK(logger, openpal::logflags::EVENT, "Verifying %s", subjectName);

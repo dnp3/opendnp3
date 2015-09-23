@@ -103,12 +103,12 @@ IChannel* DNP3Manager::AddTLSClient(
 	const std::string& host,
 	const std::string& local,
 	uint16_t port,
-	const std::string& verifyFilePath,
-	std::error_code& ec,
+	const std::string& peerCertFilePath,
+	const std::string& privateKeyFilePath,
 	opendnp3::IOpenDelayStrategy& strategy)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
-	auto pPhys = new asiotls::PhysicalLayerTLSClient(*pRoot, pThreadPool->GetIOService(), host, local, port, verifyFilePath, ec);
+	auto pPhys = new asiotls::PhysicalLayerTLSClient(*pRoot, pThreadPool->GetIOService(), host, local, port, peerCertFilePath, privateKeyFilePath);
 	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pCrypto, strategy);
 }
 
