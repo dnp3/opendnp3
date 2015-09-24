@@ -134,6 +134,7 @@ public:
 	    uint16_t port,		
 	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
+#ifdef OPENDNP3_USE_TLS
 
 	/**
 	* Add a TLS client channel
@@ -145,7 +146,8 @@ public:
 	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
-	* @param verifyFilePath Certificate file path used to verify the client
+	* @param peerCertFilePath Certificate file used to verify the server. Can be CA file for self-signed cert.
+	* @param privateKeyFilePath File that contains the public certitficate to present to the server plus the private key.
 	* @param strategy Reconnection delay strategy, default to exponential backoff
 	* @return A channel interface
 	*/
@@ -160,6 +162,8 @@ public:
 		const std::string& peerCertFilePath,
 		const std::string& privateKeyFilePath,		
 		opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
+
+#endif
 
 	/**
 	* Add a serial channel

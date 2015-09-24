@@ -9,16 +9,22 @@ set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPEND
 option(DEMO "Build demo applications" OFF)
 option(TEST "Build tests" OFF)
 option(FULL "Build all optional projects (secauth, demos, tests)" OFF)
-option(SECAUTH "build the secure authentication module and openssl crypto wrapper" OFF)
+option(SECAUTH "Build the secure authentication module and openssl crypto wrapper" OFF)
+option(DNP3_TLS "Build TLS client/server support")
 
 if(FULL)
-	set(SECAUTH ON)
 	set(DEMO ON)
 	set(TEST ON)
+	set(SECAUTH ON)
+	set(DNP3_TLS ON)	
 endif()
 
 if(SECAUTH)
 	 add_definitions(-DOPENDNP3_USE_SECAUTH)
+endif()
+
+if(DNP3_TLS)
+    add_definitions(-DOPENDNP3_USE_TLS)
 endif()
  
 # other options off-by-default that you can enable
@@ -129,12 +135,16 @@ target_link_libraries(asiopal openpal)
 install(TARGETS asiopal DESTINATION lib)
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
-# ---- asiotls library ----
-file(GLOB_RECURSE asiotls_SRC ./cpp/libs/src/asiotls/*.cpp ./cpp/libs/src/asiotls/*.h ./cpp/libs/include/asiotls/*.h)
-add_library(asiotls ${LIB_TYPE} ${asiotls_SRC})
-target_link_libraries(asiotls asiopal)
-install(TARGETS asiotls DESTINATION lib)
-set_target_properties(asiotls PROPERTIES FOLDER libs)
+if(DNP3_TLS)
+
+  # ---- asiotls library ----
+  file(GLOB_RECURSE asiotls_SRC ./cpp/libs/src/asiotls/*.cpp ./cpp/libs/src/asiotls/*.h ./cpp/libs/include/asiotls/*.h)
+  add_library(asiotls ${LIB_TYPE} ${asiotls_SRC})
+  target_link_libraries(asiotls asiopal)
+  install(TARGETS asiotls DESTINATION lib)
+  set_target_properties(asiotls PROPERTIES FOLDER libs)
+
+endif()
 
 # ---- asiodnp3 library ----
 if(SECAUTH)
@@ -146,9 +156,15 @@ endif()
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 
 if(SECAUTH)
-  target_link_libraries(asiodnp3 secauth opendnp3 asiotls ${OPENSSL_LIBRARIES})
+  target_link_libraries(asiodnp3 secauth opendnp3)
 else()
   target_link_libraries(asiodnp3 opendnp3 asiotls ${OPENSSL_LIBRARIES})  
+endif()
+
+if(DNP3_TLS)
+   target_link_libraries(asiodnp3 asiotls ${OPENSSL_LIBRARIES})
+else()
+   target_link_libraries(asiodnp3 asiopal)
 endif()
 
 install(TARGETS asiodnp3 DESTINATION lib)
@@ -194,10 +210,14 @@ if(DEMO)
   target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(outstationdemo PROPERTIES FOLDER demos)
 
-  # ----- master tls executable -----  
-  add_executable (master-tls-demo ./cpp/examples/tls/master/main.cpp)
-  target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-  set_target_properties(master-tls-demo PROPERTIES FOLDER demos/tls)
+  if(DNP3_TLS)
+
+    # ----- master tls executable -----  
+    add_executable (master-tls-demo ./cpp/examples/tls/master/main.cpp)
+    target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+    set_target_properties(master-tls-demo PROPERTIES FOLDER demos/tls)
+
+  endif()
 
   if(SECAUTH)
 
