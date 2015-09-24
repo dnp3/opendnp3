@@ -33,7 +33,7 @@ namespace asiotls
 		const std::string& host_,
 		const std::string& localAddress_,
 		uint16_t port,
-		const std::string& peerCertFilePath,		
+		const std::string& peerCertFilePath,
 		const std::string& privateKeyFilePath
 	) :
 			PhysicalLayerTLSBase(root, service, ssl::context_base::sslv23_client),
@@ -42,8 +42,8 @@ namespace asiotls
 			localAddress(localAddress_),
 			remoteEndpoint(ip::tcp::v4(), port),
 			localEndpoint(),
-			resolver(service)			
-	{		
+			resolver(service)
+	{
 
 		const auto OPTIONS = ssl::context::default_workarounds | ssl::context::no_sslv2 | ssl::context::no_sslv3;
 
@@ -58,13 +58,15 @@ namespace asiotls
 		// additionally, call this callback for the purposes of logging only
 		ctx.set_verify_callback(
 			[this](bool preverified, asio::ssl::verify_context& ctx) 
-			{ 
+			{
 					return this->VerifyServerCertificate(preverified, ctx); 
 			}
 		);
-		
+
 		// the certificate we present to the server + the private key we use
 		ctx.use_certificate_file(privateKeyFilePath, asio::ssl::context_base::file_format::pem);
+
+		FORMAT_LOG_BLOCK(logger, openpal::logflags::EVENT, "Version %s", SSLeay_version(SSLEAY_VERSION));
 	}
 
 	bool PhysicalLayerTLSClient::VerifyServerCertificate(bool preverified, asio::ssl::verify_context& ctx)

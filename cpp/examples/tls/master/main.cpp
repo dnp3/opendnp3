@@ -36,14 +36,14 @@ using namespace opendnp3;
 
 int main(int argc, char* argv[])
 {
-	if (argc != 2)
+	if (argc != 3)
 	{
 		std::cout << "usage: master-tls-demo <peer certificate> <private key/certificate>" << std::endl;
 		return -1;
 	}
 
-	std::string peerCertificate(argv[0]);
-	std::string privateKey(argv[1]);
+	std::string peerCertificate(argv[1]);
+	std::string privateKey(argv[2]);
 
 	std::cout << "Using peer cert: " << peerCertificate << std::endl;
 	std::cout << "Using private key file: " << privateKey << std::endl;

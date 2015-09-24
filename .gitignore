@@ -38,6 +38,7 @@ cmake_install.cmake
 install_manifest.txt
 libopenpal.*
 libasiopal.*
+libasiotls.*
 libopendnp3.*
 libasiodnp3.*
 libsecauth.*
@@ -56,6 +57,7 @@ masterdemo
 outstationdemoSA
 masterdemoSA
 aflfuzzer
+master-tls-demo
 
 openpaltest.log
 openpaltest.trs
