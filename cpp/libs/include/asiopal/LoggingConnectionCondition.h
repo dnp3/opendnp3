@@ -18,50 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef ASIOPAL_LOGGING_CONNECTION_CONDITION_H
+#define ASIOPAL_LOGGING_CONNECTION_CONDITION_H
 
-#ifndef ASIOPAL_PHYSICAL_LAYER_TLS_BASE_H
-#define ASIOPAL_PHYSICAL_LAYER_TLS_BASE_H
+#include <openpal/logging/LogMacros.h>
+#include <openpal/logging/LogLevels.h>
 
-#include <asiopal/PhysicalLayerASIO.h>
-
-#include <asio.hpp>
-#include <asio/ip/tcp.hpp>
-#include <asio/ssl.hpp>
-
-namespace asiotls
+namespace asiopal
 {
 
-/**
-Common TLS stream object and some shared implementations for server/client
-*/
 
-	class PhysicalLayerTLSBase : public asiopal::PhysicalLayerASIO
-{
-public:
-	PhysicalLayerTLSBase(
-		openpal::LogRoot& root,
-		asio::io_service& service,
-		asio::ssl::context_base::method method		
-	);
+	class LoggingConnectionCondition
+	{
 
-	virtual ~PhysicalLayerTLSBase() {}
+	public:
 
-	// ---- Implement the shared client/server actions ----
+		LoggingConnectionCondition(openpal::Logger logger_) : logger(logger_)
+		{}
 
-	void DoClose();
-	void DoRead(openpal::WSlice&);
-	void DoWrite(const openpal::RSlice&);
-	void DoOpenFailure();
+		template <typename Iterator>
+		Iterator operator()(const std::error_code& ec, Iterator next)
+		{
+			if (ec)
+			{
+				FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
+			}
 
-protected:
-	
-	asio::ssl::context ctx;
-	
-	std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;	
+			return next;
+		}
 
-	void Shutdown();
+	private:
 
-};
+		openpal::Logger logger;
+	};
 }
 
 #endif

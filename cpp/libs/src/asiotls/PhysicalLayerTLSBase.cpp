@@ -37,8 +37,7 @@ namespace asiotls
 			asio::ssl::context_base::method method) :
 
 		PhysicalLayerASIO(root, service),
-		ctx(method),
-		stream(service, ctx)
+		ctx(method)		
 	{
 		
 	}
@@ -59,7 +58,7 @@ namespace asiotls
 			this->OnReadCallback(ec, pBuff, static_cast<uint32_t>(numRead));
 		};
 
-		stream.async_read_some(buffer(pBuff, dest.Size()), executor.strand.wrap(callback));
+		stream->async_read_some(buffer(pBuff, dest.Size()), executor.strand.wrap(callback));
 	}
 	
 	void PhysicalLayerTLSBase::DoWrite(const openpal::RSlice& data)
@@ -68,8 +67,8 @@ namespace asiotls
 		{
 			this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));
 		};
-
-		async_write(stream, buffer(data, data.Size()), executor.strand.wrap(callback));
+		
+		async_write(*stream, buffer(data, data.Size()), executor.strand.wrap(callback));
 	}
 	
 	void PhysicalLayerTLSBase::DoOpenFailure()
@@ -80,14 +79,18 @@ namespace asiotls
 
 	void PhysicalLayerTLSBase::Shutdown()
 	{
-		std::error_code ec;
-
-		// TODO - async vs blocking?!
-		stream.shutdown(ec);
+		
+		std::error_code ec;		
+		stream->shutdown(ec);
 		if (ec)
 		{
 			FORMAT_LOG_BLOCK(logger, logflags::WARN, "Error while shutting down TLS stream: %s", ec.message().c_str());
 		}		
+
+		stream->lowest_layer().shutdown(ip::tcp::socket::shutdown_both, ec);
+		stream->lowest_layer().close(ec);
+
+
 	}
 
 }

@@ -23,6 +23,8 @@
 
 #include "PhysicalLayerTLSBase.h"
 
+#include <asiopal/LoggingConnectionCondition.h>
+
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
@@ -53,32 +55,12 @@ public:
 
 private:
 
-	bool VerifyServerCertificate(bool preverified, asio::ssl::verify_context& ctx);
-
-	void BindToLocalAddress(std::error_code& code);
-
-	struct ConnectionCondition
-	{
-		ConnectionCondition(openpal::Logger logger_) : logger(logger_)
-		{}
-
-		template <typename Iterator>
-		Iterator operator()(const std::error_code& ec, Iterator next)
-		{
-			if (ec)
-			{
-				FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
-			}
-			return next;
-		}
-
-		openpal::Logger logger;
-	};
+	bool VerifyServerCertificate(bool preverified, asio::ssl::verify_context& ctx);		
 
 	void HandleResolveResult(const std::error_code& ec, asio::ip::tcp::resolver::iterator endpoint_iterator);
 	void HandleConnectResult(const std::error_code& ec);	
 
-	ConnectionCondition condition;
+	asiopal::LoggingConnectionCondition condition;
 	const std::string host;
 	const std::string localAddress;
 	asio::ip::tcp::endpoint remoteEndpoint;

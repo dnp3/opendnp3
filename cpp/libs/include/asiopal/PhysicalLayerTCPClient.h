@@ -23,6 +23,8 @@
 
 #include "PhysicalLayerBaseTCP.h"
 
+#include "asiopal/LoggingConnectionCondition.h"
+
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
@@ -48,31 +50,11 @@ public:
 	void DoOpeningClose(); //override this to just close the socket insead of shutting is down too
 	void DoOpenSuccess();
 
-private:
-
-	void BindToLocalAddress(std::error_code& code);
-
-	struct ConnectionCondition
-	{
-		ConnectionCondition(openpal::Logger logger_) : logger(logger_)
-		{}
-
-		template <typename Iterator>
-		Iterator operator()(const std::error_code& ec, Iterator next)
-		{
-			if (ec)
-			{
-				FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
-			}
-			return next;
-		}
-
-		openpal::Logger logger;
-	};
+private:		
 
 	void HandleResolve(const std::error_code& code, asio::ip::tcp::resolver::iterator endpoint_iterator);
 
-	ConnectionCondition condition;
+	LoggingConnectionCondition condition;
 	const std::string host;
 	const std::string localAddress;
 	asio::ip::tcp::endpoint remoteEndpoint;

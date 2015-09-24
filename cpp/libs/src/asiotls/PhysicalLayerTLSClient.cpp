@@ -19,10 +19,12 @@
  * to you under the terms of the License.
  */
 
-
 #include "asiotls/PhysicalLayerTLSClient.h"
 
+#include "asiopal/SocketHelpers.h"
+
 using namespace asio;
+using namespace asiopal;
 
 namespace asiotls
 {
@@ -43,57 +45,53 @@ namespace asiotls
 			remoteEndpoint(ip::tcp::v4(), port),
 			localEndpoint(),
 			resolver(service)
-	{
+	{	
 
-		const auto OPTIONS = ssl::context::default_workarounds | ssl::context::no_sslv2 | ssl::context::no_sslv3;
+		const auto OPTIONS = ssl::context::default_workarounds | ssl::context::no_sslv2 | ssl::context::no_sslv3;		
 
 		ctx.set_options(OPTIONS);
 
 		// configure us to verify the peer certificate
-		stream.set_verify_mode(ssl::verify_peer);
+		ctx.set_verify_mode(ssl::verify_peer);		
 
 		// The public certificate file used to verify the peer
 		ctx.load_verify_file(peerCertFilePath);
 
-		// additionally, call this callback for the purposes of logging only
+		// additionally, call this callback for the purposes of logging only		
 		ctx.set_verify_callback(
 			[this](bool preverified, asio::ssl::verify_context& ctx) 
 			{
 					return this->VerifyServerCertificate(preverified, ctx); 
 			}
-		);
+		);		
 
-		// the certificate we present to the server + the private key we use
+		// the certificate we present to the server + the private key we use are placed into the same file
 		ctx.use_certificate_file(privateKeyFilePath, asio::ssl::context_base::file_format::pem);
-
-		FORMAT_LOG_BLOCK(logger, openpal::logflags::EVENT, "Version %s", SSLeay_version(SSLEAY_VERSION));
+		ctx.use_private_key_file(privateKeyFilePath, asio::ssl::context_base::file_format::pem);
+		
+		/// Now with all of this configured, we can create the stream class
+		/// The order is important since the socket object inerhits all the settings from the context
+		this->stream = std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>(new asio::ssl::stream<asio::ip::tcp::socket>(service, ctx));		
 	}
 
 	bool PhysicalLayerTLSClient::VerifyServerCertificate(bool preverified, asio::ssl::verify_context& ctx)
 	{
-		// The verify callback can be used to check whether the certificate that is
-		// being presented is valid for the peer. For example, RFC 2818 describes
-		// the steps involved in doing this for HTTPS. Consult the OpenSSL
-		// documentation for more details. Note that the callback is called once
-		// for each certificate in the certificate chain, starting from the root
-		// certificate authority.
+		// This is just for logging purposes to log the subject name of the certificate if verifies or not
 
-		// In this example we will simply print the certificate's subject name.
-		
 		X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
 
 		char subjectName[256];
 		X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
-						
-		FORMAT_LOG_BLOCK(logger, openpal::logflags::EVENT, "Verifying %s", subjectName);
 
+		FORMAT_LOG_BLOCK(logger, openpal::logflags::INFO, preverified ? "Verified subject_name: %s" : "Did not verify subject_name: %s", subjectName);
+		
 		return preverified;
 	}
 	
 	void PhysicalLayerTLSClient::DoOpen()
 	{
 		std::error_code ec;
-		this->BindToLocalAddress(ec);
+		SocketHelpers::BindToLocalAddress(localAddress, localEndpoint, this->stream->lowest_layer(), ec);
 		if (ec)
 		{
 			auto callback = [this, ec]()
@@ -122,7 +120,7 @@ namespace asiotls
 				this->HandleConnectResult(ec);
 			};
 
-			stream.lowest_layer().async_connect(remoteEndpoint, executor.strand.wrap(callback));			
+			stream->lowest_layer().async_connect(remoteEndpoint, executor.strand.wrap(callback));			
 		}
 
 	}
@@ -135,23 +133,8 @@ namespace asiotls
 	void PhysicalLayerTLSClient::DoOpenSuccess()
 	{
 		SIMPLE_LOG_BLOCK(logger, openpal::logflags::INFO, "Connected to host");		
-	}
+	}	
 
-	void PhysicalLayerTLSClient::BindToLocalAddress(std::error_code& ec)
-	{
-		auto string = localAddress.empty() ? "0.0.0.0" : localAddress;
-		auto addr = asio::ip::address::from_string(string, ec);
-		if (!ec)
-		{
-			localEndpoint.address(addr);
-			stream.lowest_layer().open(ip::tcp::v4(), ec);
-			if (!ec)
-			{
-				stream.lowest_layer().bind(localEndpoint, ec);
-			}
-		}
-	}
-	
 	void PhysicalLayerTLSClient::HandleResolveResult(const std::error_code& ec, asio::ip::tcp::resolver::iterator endpoints)
 	{
 		if (ec)
@@ -166,7 +149,7 @@ namespace asiotls
 				this->HandleConnectResult(code);
 			};
 
-			asio::async_connect(stream.lowest_layer(), endpoints, condition, executor.strand.wrap(callback));
+			asio::async_connect(stream->lowest_layer(), endpoints, condition, executor.strand.wrap(callback));
 		}
 	}
 
@@ -183,7 +166,7 @@ namespace asiotls
 				this->OnOpenCallback(code);
 			};
 
-			this->stream.async_handshake(asio::ssl::stream_base::client, executor.strand.wrap(callback));
+			this->stream->async_handshake(asio::ssl::stream_base::client, executor.strand.wrap(callback));
 		}
 	}
 	

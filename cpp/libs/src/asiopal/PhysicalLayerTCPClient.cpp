@@ -20,6 +20,8 @@
  */
 #include "asiopal/PhysicalLayerTCPClient.h"
 
+#include "asiopal/SocketHelpers.h"
+
 #include <asio.hpp>
 
 #include <functional>
@@ -59,7 +61,8 @@ PhysicalLayerTCPClient::PhysicalLayerTCPClient(
 void PhysicalLayerTCPClient::DoOpen()
 {
 	std::error_code ec;
-	this->BindToLocalAddress(ec);
+	SocketHelpers::BindToLocalAddress(localAddress, localEndpoint, socket, ec);
+	
 	if (ec)
 	{
 		auto callback = [this, ec]()
@@ -88,21 +91,6 @@ void PhysicalLayerTCPClient::DoOpen()
 				this->OnOpenCallback(code);
 			};
 			socket.async_connect(remoteEndpoint, executor.strand.wrap(callback));
-		}
-	}
-}
-
-void PhysicalLayerTCPClient::BindToLocalAddress(std::error_code& ec)
-{
-	auto string = localAddress.empty() ? "0.0.0.0" : localAddress;
-	auto addr = asio::ip::address::from_string(string, ec);
-	if (!ec)
-	{
-		localEndpoint.address(addr);
-		socket.open(ip::tcp::v4(), ec);
-		if (!ec)
-		{
-			socket.bind(localEndpoint, ec);
 		}
 	}
 }
