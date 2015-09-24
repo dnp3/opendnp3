@@ -23,6 +23,8 @@
 
 #include "PhysicalLayerTLSBase.h"
 
+#include "asiotls/TLSConfig.h"
+
 #include <asiopal/LoggingConnectionCondition.h>
 
 #include <openpal/logging/LogMacros.h>
@@ -37,14 +39,14 @@ namespace asiotls
 class PhysicalLayerTLSClient : public PhysicalLayerTLSBase
 {
 public:
+
 	PhysicalLayerTLSClient(
 	    openpal::LogRoot& root,
 	    asio::io_service& service,
 	    const std::string& host,
 	    const std::string& localAddress,
 	    uint16_t port,
-		const std::string& peerCertFilePath,
-		const std::string& privateKeyFilePath
+		const TLSConfig& config
 	);
 
 	// ---- Implement the remaining actions ----

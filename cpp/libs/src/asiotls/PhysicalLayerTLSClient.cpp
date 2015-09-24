@@ -35,8 +35,7 @@ namespace asiotls
 		const std::string& host_,
 		const std::string& localAddress_,
 		uint16_t port,
-		const std::string& peerCertFilePath,
-		const std::string& privateKeyFilePath
+		const TLSConfig& config
 	) :
 			PhysicalLayerTLSBase(root, service, ssl::context_base::sslv23_client),
 			condition(logger),
@@ -47,7 +46,22 @@ namespace asiotls
 			resolver(service)
 	{	
 
-		const auto OPTIONS = ssl::context::default_workarounds | ssl::context::no_sslv2 | ssl::context::no_sslv3;		
+		auto OPTIONS = ssl::context::default_workarounds | ssl::context::no_sslv2 | ssl::context::no_sslv3;
+
+		if (!config.allowTLSv10)
+		{
+			OPTIONS |= ssl::context::no_tlsv1;
+		}
+
+		if (!config.allowTLSv11)
+		{
+			OPTIONS |= ssl::context::no_tlsv1_1;
+		}
+
+		if (!config.allowTLSv12)
+		{
+			OPTIONS |= ssl::context::no_tlsv1_2;
+		}
 
 		ctx.set_options(OPTIONS);
 
@@ -55,7 +69,7 @@ namespace asiotls
 		ctx.set_verify_mode(ssl::verify_peer);		
 
 		// The public certificate file used to verify the peer
-		ctx.load_verify_file(peerCertFilePath);
+		ctx.load_verify_file(config.peerCertFilePath);
 
 		// additionally, call this callback for the purposes of logging only		
 		ctx.set_verify_callback(
@@ -66,8 +80,8 @@ namespace asiotls
 		);		
 
 		// the certificate we present to the server + the private key we use are placed into the same file
-		ctx.use_certificate_file(privateKeyFilePath, asio::ssl::context_base::file_format::pem);
-		ctx.use_private_key_file(privateKeyFilePath, asio::ssl::context_base::file_format::pem);
+		ctx.use_certificate_file(config.localCertFilePath, asio::ssl::context_base::file_format::pem);
+		ctx.use_private_key_file(config.privateKeyFilePath, asio::ssl::context_base::file_format::pem);
 		
 		/// Now with all of this configured, we can create the stream class
 		/// The order is important since the socket object inerhits all the settings from the context

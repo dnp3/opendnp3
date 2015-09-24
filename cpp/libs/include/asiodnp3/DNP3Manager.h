@@ -31,6 +31,7 @@
 #include <openpal/executor/TimeDuration.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
+
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/link/IOpenDelayStrategy.h>
 
@@ -38,6 +39,10 @@
 #include <asiodnp3/IChannel.h>
 #include <asiodnp3/IMaster.h>
 #include <asiodnp3/IOutstation.h>
+
+#ifdef OPENDNP3_USE_TLS
+#include <asiotls/TLSConfig.h>
+#endif
 
 namespace asiopal
 {
@@ -62,7 +67,7 @@ class DNP3Manager
 public:
 
 	/**
-	*	Construct a manger
+	*	Construct a manager
 	*
 	*	@param concurrencyHint How many threads to allocate in the thread pool
 	*	@param crypto Optional cryptography interface for secure authentication
@@ -146,8 +151,7 @@ public:
 	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
-	* @param peerCertFilePath Certificate file used to verify the server. Can be CA file for self-signed cert.
-	* @param privateKeyFilePath File that contains the public certitficate to present to the server plus the private key.
+	* @param config TLS configuration information	
 	* @param strategy Reconnection delay strategy, default to exponential backoff
 	* @return A channel interface
 	*/
@@ -159,8 +163,7 @@ public:
 		const std::string& host,
 		const std::string& local,
 		uint16_t port,
-		const std::string& peerCertFilePath,
-		const std::string& privateKeyFilePath,		
+		const asiotls::TLSConfig& config,
 		opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 #endif

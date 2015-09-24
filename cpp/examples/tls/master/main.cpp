@@ -30,6 +30,7 @@
 
 using namespace std;
 using namespace openpal;
+using namespace asiotls;
 using namespace asiopal;
 using namespace asiodnp3;
 using namespace opendnp3;
@@ -60,7 +61,16 @@ int main(int argc, char* argv[])
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());	
 
 	// Connect via a TCPClient socket to a outstation
-	auto pChannel = manager.AddTLSClient("tls-client", FILTERS, TimeDuration::Seconds(2), TimeDuration::Seconds(5), "127.0.0.1", "0.0.0.0", 20001, peerCertificate, privateKey);
+	auto pChannel = manager.AddTLSClient(
+		"tls-client", 
+		FILTERS, 
+		TimeDuration::Seconds(2),
+		TimeDuration::Seconds(5), 
+		"127.0.0.1", 
+		"0.0.0.0", 
+		20001, 
+		TLSConfig(peerCertificate, privateKey, privateKey)
+	);
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console
