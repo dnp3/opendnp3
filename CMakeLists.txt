@@ -12,6 +12,11 @@ option(FULL "Build all optional projects (secauth, demos, tests)" OFF)
 option(SECAUTH "Build the secure authentication module and openssl crypto wrapper" OFF)
 option(DNP3_TLS "Build TLS client/server support")
 
+# other options off-by-default that you can enable
+option(WERROR "Set all warnings to errors" OFF)
+option(STATICLIBS "Builds static versions of all installed libraries" OFF)
+option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
+
 if(FULL)
 	set(DEMO ON)
 	set(TEST ON)
@@ -32,15 +37,17 @@ else()
     set(ASIOPAL_OR_ASIOTLS_LIB asiopal)
 endif()
  
-# other options off-by-default that you can enable
-option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
-option(WERROR "Set all warnings to errors" OFF)
-option(STATICLIBS "Builds static versions of all installed libraries" OFF)
-option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
+
 
 if(SECAUTH OR DNP3_TLS)
+
    find_package(OpenSSL REQUIRED)
    message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+
+   if(WIN32)
+     include_directories(${OPENSSL_INCLUDE_DIR})
+   endif()
+
 endif()
 
 if(WIN32)
@@ -54,11 +61,7 @@ if(WIN32)
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP")
 
   set(LIB_TYPE STATIC) #default to static on MSVC
-
-  if(SECAUTH)
-    include_directories(${OPENSSL_INCLUDE_DIR})
-  endif() 
-
+  
 else()
 
   set(PTHREAD pthread)   
@@ -98,19 +101,16 @@ endif()
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
 if (DEFINED ENV{ASIO_HOME})
-  message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")
-  message("Adding ASIO_HOME To your include path")
+  message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")  
   include_directories($ENV{ASIO_HOME})  
 else()
   if(ASIO_HOME)
     message("ASIO_HOME defined in cache: ${ASIO_HOME}")
     include_directories(${ASIO_HOME})    
   else()
-    message("ASIO_HOME not found. ASIO expected to be on include path")  
+    message("ASIO_HOME was not defined. ASIO expected to be on include path")  
   endif()
 endif()
-
-
 
 # include paths for all the local libraries
 include_directories(./cpp/libs/src)
