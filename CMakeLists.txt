@@ -25,6 +25,11 @@ endif()
 
 if(DNP3_TLS)
     add_definitions(-DOPENDNP3_USE_TLS)
+	# asiotls depends on both asiopal and openssl
+	# this alias allows to link to the right thing depending on whether TLS support is built or not
+	set(ASIOPAL_OR_ASIOTLS_LIB asiotls)
+else()
+    set(ASIOPAL_OR_ASIOTLS_LIB asiopal)
 endif()
  
 # other options off-by-default that you can enable
@@ -33,7 +38,7 @@ option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
 option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
 
-if(SECAUTH)
+if(SECAUTH OR DNP3_TLS)
    find_package(OpenSSL REQUIRED)
    message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 endif()
@@ -141,6 +146,7 @@ if(DNP3_TLS)
   file(GLOB_RECURSE asiotls_SRC ./cpp/libs/src/asiotls/*.cpp ./cpp/libs/src/asiotls/*.h ./cpp/libs/include/asiotls/*.h)
   add_library(asiotls ${LIB_TYPE} ${asiotls_SRC})
   target_link_libraries(asiotls asiopal)
+  target_link_libraries(asiotls ${OPENSSL_LIBRARIES})
   install(TARGETS asiotls DESTINATION lib)
   set_target_properties(asiotls PROPERTIES FOLDER libs)
 
@@ -156,15 +162,9 @@ endif()
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 
 if(SECAUTH)
-  target_link_libraries(asiodnp3 secauth opendnp3)
+  target_link_libraries(asiodnp3 secauth opendnp3 ${ASIOPAL_OR_ASIOTLS_LIB})
 else()
-  target_link_libraries(asiodnp3 opendnp3 asiotls ${OPENSSL_LIBRARIES})  
-endif()
-
-if(DNP3_TLS)
-   target_link_libraries(asiodnp3 asiotls ${OPENSSL_LIBRARIES})
-else()
-   target_link_libraries(asiodnp3 asiopal)
+  target_link_libraries(asiodnp3 opendnp3 ${ASIOPAL_OR_ASIOTLS_LIB})  
 endif()
 
 install(TARGETS asiodnp3 DESTINATION lib)
@@ -196,8 +196,6 @@ endif()
 set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
 install(DIRECTORY ./cpp/libs/include/ DESTINATION include ${INSTALL_ARGS})
 
-
-
 if(DEMO)
 
   # ----- master demo executable -----
@@ -208,6 +206,8 @@ if(DEMO)
   # ----- outstation demo executable -----
   add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
   target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 ${PTHREAD})
+    
   set_target_properties(outstationdemo PROPERTIES FOLDER demos)
 
   if(DNP3_TLS)
