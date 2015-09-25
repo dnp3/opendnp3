@@ -187,37 +187,42 @@ install(DIRECTORY ./cpp/libs/include/ DESTINATION include ${INSTALL_ARGS})
 if(DEMO)
 
   # ----- master demo executable -----
-  add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
-  target_link_libraries (masterdemo LINK_PUBLIC asiodnp3 ${PTHREAD})
-  set_target_properties(masterdemo PROPERTIES FOLDER demos)
+  add_executable(master-demo ./cpp/examples/master/main.cpp)
+  target_link_libraries (master-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  set_target_properties(master-demo PROPERTIES FOLDER demos)
 
   # ----- outstation demo executable -----
-  add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
-  target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 ${PTHREAD})
-  target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  add_executable(outstation-demo ./cpp/examples/outstation/main.cpp)
+  target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
     
-  set_target_properties(outstationdemo PROPERTIES FOLDER demos)
+  set_target_properties(outstation-demo PROPERTIES FOLDER demos)
 
   if(DNP3_TLS)
 
-    # ----- master tls executable -----  
-    add_executable (master-tls-demo ./cpp/examples/tls/master/main.cpp)
-    target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-    set_target_properties(master-tls-demo PROPERTIES FOLDER demos/tls)
+	# ----- master tls executable -----  
+	add_executable(master-tls-demo ./cpp/examples/tls/master/main.cpp)
+	target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+	set_target_properties(master-tls-demo PROPERTIES FOLDER demos/tls)
+
+	# ----- outstation tls executable -----  
+	add_executable(outstation-tls-demo ./cpp/examples/tls/outstation/main.cpp)
+	target_link_libraries (outstation-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+	set_target_properties(outstation-tls-demo PROPERTIES FOLDER demos/tls)
 
   endif()
 
   if(SECAUTH)
 
-  # ----- outstation SAv5 demo executable -----
-  add_executable (outstationdemoSA ./cpp/examples/secauth/outstation/DemoMain.cpp)
-  target_link_libraries (outstationdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
-  set_target_properties(outstationdemoSA PROPERTIES FOLDER demos/secauth)
+	# ----- outstation SAv5 demo executable -----
+	add_executable (outstation-sa-demo ./cpp/examples/secauth/outstation/main.cpp)
+	target_link_libraries (outstation-sa-demo LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
+	set_target_properties(outstation-sa-demo PROPERTIES FOLDER demos/secauth)
 
-  # ----- master SAv5 demo executable -----
-  add_executable (masterdemoSA ./cpp/examples/secauth/master/DemoMain.cpp)
-  target_link_libraries (masterdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
-  set_target_properties(masterdemoSA PROPERTIES FOLDER demos/secauth)
+	# ----- master SAv5 demo executable -----
+	add_executable (master-sa-demo ./cpp/examples/secauth/master/main.cpp)
+	target_link_libraries (master-sa-demo LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
+	set_target_properties(master-sa-demo PROPERTIES FOLDER demos/secauth)
 
   endif()
 
