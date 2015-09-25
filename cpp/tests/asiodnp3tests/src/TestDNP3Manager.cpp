@@ -49,8 +49,8 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
 
-		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", "", 20000);
-		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
+		auto pClient = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "", 20000);
+		auto pServer = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), asiodnp3::DefaultMasterApplication::Instance(), MasterStackConfig());
@@ -66,8 +66,8 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
 
-		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", "", 20000);
-		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
+		auto pClient = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "", 20000);
+		auto pServer = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), asiodnp3::DefaultMasterApplication::Instance(), MasterStackConfig());
@@ -87,8 +87,8 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
 
-		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", "127.0.0.1", 20000);
-		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
+		auto pClient = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "127.0.0.1", 20000);
+		auto pServer = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), asiodnp3::DefaultMasterApplication::Instance(), MasterStackConfig());
@@ -107,8 +107,8 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
 
-		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", "127.0.0.1", 20000);
-		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
+		auto pClient = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "127.0.0.1", 20000);
+		auto pServer = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000);
 
 		pClient->Shutdown();
 		pServer->Shutdown();

@@ -26,6 +26,7 @@
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
+#include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/master/MultidropTaskLock.h>
 
 #include <asiopal/ASIOExecutor.h>
@@ -63,9 +64,7 @@ public:
 	DNP3Channel(
 	    openpal::LogRoot* pLogRoot_,
 	    asiopal::ASIOExecutor& executor,
-	    openpal::TimeDuration minOpenRetry,
-	    openpal::TimeDuration maxOpenRetry,
-	    opendnp3::IOpenDelayStrategy& strategy,
+		const opendnp3::ChannelRetry& retry,
 	    openpal::IPhysicalLayer* pPhys,
 	    openpal::ICryptoProvider* pCrypto
 	);

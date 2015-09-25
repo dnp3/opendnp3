@@ -27,7 +27,7 @@
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/link/IFrameSink.h>
 #include <opendnp3/link/ILinkRouter.h>
-#include <opendnp3/link/IOpenDelayStrategy.h>
+#include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/link/IChannelStateListener.h>
 
 #include <vector>
@@ -59,10 +59,8 @@ public:
 	LinkLayerRouter(openpal::LogRoot&,
 	                openpal::IExecutor& executor,
 	                openpal::IPhysicalLayer*,
-	                openpal::TimeDuration minOpenRetry,
-	                openpal::TimeDuration maxOpenRetry,
-	                opendnp3::IChannelStateListener* pStateHandler = nullptr,
-	                opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance(),
+					const opendnp3::ChannelRetry& retry,
+	                opendnp3::IChannelStateListener* pStateHandler = nullptr,	                
 	                opendnp3::LinkChannelStatistics* pStatistics = nullptr);
 
 	// called when the router shuts down

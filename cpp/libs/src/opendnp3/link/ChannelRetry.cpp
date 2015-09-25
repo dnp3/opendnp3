@@ -18,34 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "TransportIntegrationStack.h"
 
-#include <opendnp3/Route.h>
-#include <opendnp3/app/AppConstants.h>
-
-#include <openpal/channel/IPhysicalLayer.h>
+#include "opendnp3/link/ChannelRetry.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys, LinkConfig aCfg) :
-	listener(),
-	router(root, executor, apPhys, ChannelRetry::Default()),
-	transport(root, executor, DEFAULT_MAX_APDU_SIZE),
-	link(root, executor, transport, listener, aCfg)
-{
-	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
-	router.AddContext(&link, route);
-	router.Enable(&link);
-	link.SetRouter(router);
+	ChannelRetry::ChannelRetry(
+		openpal::TimeDuration minOpenRetry_,
+		openpal::TimeDuration maxOpenRetry_,
+		IOpenDelayStrategy& strategy_
+	) :
+		minOpenRetry(minOpenRetry_),
+		maxOpenRetry(maxOpenRetry_),
+		strategy(strategy_)
+	{}	
 
-	transport.SetLinkLayer(&link);
-
-	transport.SetAppLayer(&upper);
-	upper.SetLowerLayer(transport);
-}
-
+	ChannelRetry ChannelRetry::Default()
+	{
+		return ChannelRetry(TimeDuration::Seconds(1), TimeDuration::Minutes(1));
+	}
 
 }
+

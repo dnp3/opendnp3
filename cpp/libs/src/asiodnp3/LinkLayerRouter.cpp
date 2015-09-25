@@ -41,13 +41,11 @@ namespace asiodnp3
 LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     openpal::IExecutor& executor,
                                     IPhysicalLayer* pPhys,
-                                    openpal::TimeDuration minOpenRetry,
-                                    openpal::TimeDuration maxOpenRetry,
-                                    IChannelStateListener* pStateHandler_,
-                                    IOpenDelayStrategy& strategy,
+									const ChannelRetry& retry,
+                                    IChannelStateListener* pStateHandler_,                                   
                                     LinkChannelStatistics* pStatistics_) :
 
-	PhysicalLayerMonitor(root, executor, pPhys, minOpenRetry, maxOpenRetry, strategy),
+	PhysicalLayerMonitor(root, executor, pPhys, retry),
 	pStateHandler(pStateHandler_),
 	pStatistics(pStatistics_),
 	parser(logger, pStatistics_),

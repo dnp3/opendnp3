@@ -63,8 +63,7 @@ int main(int argc, char* argv[])
 	auto pChannel = manager.AddTLSClient(
 		"tls-client", 
 		FILTERS, 
-		TimeDuration::Seconds(2),
-		TimeDuration::Seconds(5), 
+		ChannelRetry::Default(),				
 		"127.0.0.1", 
 		"0.0.0.0", 
 		20001, 

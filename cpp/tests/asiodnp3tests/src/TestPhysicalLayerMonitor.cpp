@@ -38,7 +38,7 @@ class ConcretePhysicalLayerMonitor : public asiodnp3::PhysicalLayerMonitor
 public:
 
 	ConcretePhysicalLayerMonitor(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys) :
-		PhysicalLayerMonitor(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(10)),
+		PhysicalLayerMonitor(root, executor, apPhys, ChannelRetry::Default()),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0),
 		mShutdownCallbackCount(0)

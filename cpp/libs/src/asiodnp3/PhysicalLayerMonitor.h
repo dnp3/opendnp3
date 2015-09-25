@@ -27,7 +27,7 @@
 #include <openpal/logging/LogRoot.h>
 
 #include <opendnp3/gen/ChannelState.h>
-#include <opendnp3/link/IOpenDelayStrategy.h>
+#include <opendnp3/link/ChannelRetry.h>
 
 namespace openpal
 {
@@ -50,9 +50,7 @@ public:
 	PhysicalLayerMonitor(	openpal::LogRoot& root,
 	                        openpal::IExecutor& executor,
 	                        openpal::IPhysicalLayer*,
-	                        openpal::TimeDuration minOpenRetry_,
-	                        openpal::TimeDuration maxOpenRetry_,
-	                        opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
+							const opendnp3::ChannelRetry& retry);
 
 	/** Begin monitor execution, retry indefinitely on failure - Idempotent*/
 	void Start();
@@ -128,12 +126,9 @@ private:
 
 	void DoFinalShutdown();
 
-	const openpal::TimeDuration minOpenRetry;
-	const openpal::TimeDuration maxOpenRetry;
+	opendnp3::ChannelRetry retry;
 
-	openpal::TimeDuration currentRetry;
-
-	const opendnp3::IOpenDelayStrategy* pOpenStrategy;
+	openpal::TimeDuration currentRetry;	
 };
 
 }

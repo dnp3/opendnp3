@@ -29,7 +29,7 @@
 #include <openpal/logging/Logger.h>
 #include <openpal/executor/TimeDuration.h>
 
-#include <opendnp3/link/IOpenDelayStrategy.h>
+#include <opendnp3/link/ChannelRetry.h>
 
 namespace openpal
 {
@@ -57,11 +57,9 @@ public:
 
 	IChannel* CreateChannel(	openpal::LogRoot* pRoot,
 	                            asiopal::ASIOExecutor& executor,
-	                            openpal::TimeDuration minOpenRetry,
-	                            openpal::TimeDuration maxOpenRetry,
+	                            const opendnp3::ChannelRetry& retry,
 	                            asiopal::PhysicalLayerBase* pPhys,
-	                            openpal::ICryptoProvider* pCrypto,
-	                            opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
+	                            openpal::ICryptoProvider* pCrypto);
 
 	/// Synchronously shutdown all channels. Block until complete.
 	void Shutdown();

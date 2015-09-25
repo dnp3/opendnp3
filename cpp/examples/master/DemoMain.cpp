@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());
 
 	// Connect via a TCPClient socket to a outstation
-	auto pChannel = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Seconds(5), "127.0.0.1", "0.0.0.0", 20000);
+	auto pChannel = manager.AddTCPClient("tcpclient", FILTERS, ChannelRetry::Default(), "127.0.0.1", "0.0.0.0", 20000);
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console

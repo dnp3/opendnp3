@@ -72,30 +72,37 @@ void DNP3Manager::Shutdown()
 IChannel* DNP3Manager::AddTCPClient(
     char const* id,
     uint32_t levels,
-    openpal::TimeDuration minOpenRetry,
-    openpal::TimeDuration maxOpenRetry,
+	const opendnp3::ChannelRetry& retry,
     const std::string& host,
     const std::string& local,
-    uint16_t port,
-    opendnp3::IOpenDelayStrategy& strategy)
+    uint16_t port)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPClient(*pRoot, pThreadPool->GetIOService(), host, local, port);
-	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pCrypto, strategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, retry, pPhys, pCrypto);
 }
 
 IChannel* DNP3Manager::AddTCPServer(
     char const* id,
     uint32_t levels,
-    openpal::TimeDuration minOpenRetry,
-    openpal::TimeDuration maxOpenRetry,
+	const opendnp3::ChannelRetry& retry,
     const std::string& endpoint,
-    uint16_t port,
-    opendnp3::IOpenDelayStrategy& strategy)
+    uint16_t port)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPServer(*pRoot, pThreadPool->GetIOService(), endpoint, port);
-	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pCrypto, strategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, retry, pPhys, pCrypto);
+}
+
+IChannel* DNP3Manager::AddSerial(
+	char const* id,
+	uint32_t levels,
+	const opendnp3::ChannelRetry& retry,
+	asiopal::SerialSettings settings)
+{
+	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
+	auto pPhys = new asiopal::PhysicalLayerSerial(*pRoot, pThreadPool->GetIOService(), settings);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, retry, pPhys, pCrypto);
 }
 
 #ifdef OPENDNP3_USE_TLS
@@ -103,48 +110,33 @@ IChannel* DNP3Manager::AddTCPServer(
 IChannel* DNP3Manager::AddTLSClient(
 	char const* id,
 	uint32_t levels,
-	openpal::TimeDuration minOpenRetry,
-	openpal::TimeDuration maxOpenRetry,
+	const opendnp3::ChannelRetry& retry,
 	const std::string& host,
 	const std::string& local,
 	uint16_t port,
-	const asiopal::TLSConfig& config,
-	opendnp3::IOpenDelayStrategy& strategy)
+	const asiopal::TLSConfig& config)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTLSClient(*pRoot, pThreadPool->GetIOService(), host, local, port, config);
-	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pCrypto, strategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, retry, pPhys, pCrypto);
 }
 
 IChannel* DNP3Manager::AddTLSServer(
 	char const* id,
 	uint32_t levels,
-	openpal::TimeDuration minOpenRetry,
-	openpal::TimeDuration maxOpenRetry,
+	const opendnp3::ChannelRetry& retry,
 	const std::string& endpoint,
 	uint16_t port,
-	const asiopal::TLSConfig& config,
-	opendnp3::IOpenDelayStrategy& strategy)
+	const asiopal::TLSConfig& config)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTLSServer(*pRoot, pThreadPool->GetIOService(), endpoint, port, config);
-	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pCrypto, strategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, retry, pPhys, pCrypto);
 }
 
 #endif
 
-IChannel* DNP3Manager::AddSerial(
-    char const* id,
-    uint32_t levels,
-    openpal::TimeDuration minOpenRetry,
-    openpal::TimeDuration maxOpenRetry,
-    asiopal::SerialSettings aSettings,
-    opendnp3::IOpenDelayStrategy& strategy)
-{
-	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
-	auto pPhys = new asiopal::PhysicalLayerSerial(*pRoot, pThreadPool->GetIOService(), aSettings);
-	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pCrypto, strategy);
-}
+
 
 }
 

@@ -44,9 +44,7 @@ namespace asiodnp3
 DNP3Channel::DNP3Channel(
     LogRoot* pLogRoot_,
     asiopal::ASIOExecutor& executor,
-    openpal::TimeDuration minOpenRetry,
-    openpal::TimeDuration maxOpenRetry,
-    IOpenDelayStrategy& strategy,
+    const ChannelRetry& retry,
     openpal::IPhysicalLayer* pPhys_,
     openpal::ICryptoProvider* pCrypto_) :
 
@@ -57,7 +55,7 @@ DNP3Channel::DNP3Channel(
 	logger(pLogRoot->GetLogger()),
 	pShutdownHandler(nullptr),
 	channelState(ChannelState::CLOSED),
-	router(*pLogRoot, executor, pPhys.get(), minOpenRetry, maxOpenRetry, this, strategy, &statistics),
+	router(*pLogRoot, executor, pPhys.get(), retry, this, &statistics),
 	stacks(router, executor)
 {
 	pPhys->SetChannelStatistics(&statistics);

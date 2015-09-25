@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());
 
 	// Create a TCP server (listener)
-	auto pChannel = manager.AddTCPServer("server", FILTERS, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
+	auto pChannel = manager.AddTCPServer("server", FILTERS, ChannelRetry::Default(), "0.0.0.0", 20000);
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console

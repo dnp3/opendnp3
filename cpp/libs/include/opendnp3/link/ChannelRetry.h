@@ -18,34 +18,47 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "TransportIntegrationStack.h"
+#ifndef OPENDNP3_CHANNEL_RETRY_H
+#define OPENDNP3_CHANNEL_RETRY_H
 
-#include <opendnp3/Route.h>
-#include <opendnp3/app/AppConstants.h>
+#include <openpal/executor/TimeDuration.h>
 
-#include <openpal/channel/IPhysicalLayer.h>
+#include <opendnp3/link/IOpenDelayStrategy.h>
 
-using namespace openpal;
 
 namespace opendnp3
 {
 
-TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys, LinkConfig aCfg) :
-	listener(),
-	router(root, executor, apPhys, ChannelRetry::Default()),
-	transport(root, executor, DEFAULT_MAX_APDU_SIZE),
-	link(root, executor, transport, listener, aCfg)
+/// Class used to configure how channel failures are retried
+class ChannelRetry
 {
-	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
-	router.AddContext(&link, route);
-	router.Enable(&link);
-	link.SetRouter(router);
 
-	transport.SetLinkLayer(&link);
+public:
+	
+	/*
+	* Construct a channel retry config class
+	*
+	* @param minOpenRetry minimum connection retry interval on failure
+	* @param maxOpenRetry maximum connection retry interval on failure
+	*/
+	ChannelRetry(
+		openpal::TimeDuration minOpenRetry,
+		openpal::TimeDuration maxOpenRetry,
+		IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance()
+	);
 
-	transport.SetAppLayer(&upper);
-	upper.SetLowerLayer(transport);
+	/// Return the default configuration of exponential backoff from 1 sec to 1 minute
+	static ChannelRetry Default();
+
+	/// minimum connection retry interval on failure
+	openpal::TimeDuration minOpenRetry;
+	/// maximum connection retry interval on failure
+	openpal::TimeDuration maxOpenRetry;
+	//// Strategy to use (default to exponential backoff)
+	IOpenDelayStrategy& strategy;
+	
+};
+
 }
 
-
-}
+#endif

@@ -39,9 +39,8 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(
     openpal::LogRoot& root,
     openpal::IExecutor& executor,
     IPhysicalLayer* pPhys_,
-    TimeDuration minOpenRetry_,
-    TimeDuration maxOpenRetry_,
-    IOpenDelayStrategy& strategy) :
+	const opendnp3::ChannelRetry& retry_
+) :
 	logger(root.GetLogger()),
 	pPhys(pPhys_),
 	pExecutor(&executor),
@@ -49,10 +48,8 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(
 	mpOpenTimer(nullptr),
 	mpState(&MonitorStateInit::Instance()),
 	mFinalShutdown(false),
-	minOpenRetry(minOpenRetry_),
-	maxOpenRetry(maxOpenRetry_),
-	currentRetry(minOpenRetry_),
-	pOpenStrategy(&strategy)
+	retry(retry_),
+	currentRetry(retry_.minOpenRetry)
 {
 	assert(pPhys != nullptr);
 	pPhys->SetHandler(this);
@@ -88,7 +85,7 @@ void PhysicalLayerMonitor::OnOpenFailure()
 	if (mpState->OnOpenFailure(*this))
 	{
 		this->OnPhysicalLayerOpenFailureCallback();
-		this->currentRetry = pOpenStrategy->GetNextDelay(currentRetry, maxOpenRetry);
+		this->currentRetry = retry.strategy.GetNextDelay(currentRetry, retry.maxOpenRetry);
 	}
 }
 
@@ -97,7 +94,7 @@ void PhysicalLayerMonitor::OnLowerLayerUp()
 	if (mpState->OnLayerOpen(*this))
 	{
 		isOnline = true;
-		this->currentRetry = minOpenRetry;
+		this->currentRetry = retry.minOpenRetry;
 		this->OnPhysicalLayerOpenSuccessCallback();
 	}
 }
