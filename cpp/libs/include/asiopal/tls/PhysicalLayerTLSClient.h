@@ -21,16 +21,16 @@
 #ifndef ASIOPAL_PHYSICAL_LAYER_TLS_CLIENT_H
 #define ASIOPAL_PHYSICAL_LAYER_TLS_CLIENT_H
 
-#include "PhysicalLayerTLSBase.h"
+#include "asiopal/tls/PhysicalLayerTLSBase.h"
 
-#include "asiotls/TLSConfig.h"
+#include "asiopal/tls/TLSConfig.h"
 
-#include <asiopal/LoggingConnectionCondition.h>
+#include "asiopal/LoggingConnectionCondition.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
-namespace asiotls
+namespace asiopal
 {
 
 /**

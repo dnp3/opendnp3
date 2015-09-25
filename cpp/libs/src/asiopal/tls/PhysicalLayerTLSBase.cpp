@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "asiotls/PhysicalLayerTLSBase.h"
+#include "asiopal/tls/PhysicalLayerTLSBase.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
@@ -28,7 +28,7 @@ using namespace asio;
 using namespace openpal;
 using namespace asio::ssl;
 
-namespace asiotls
+namespace asiopal
 {
 
 	PhysicalLayerTLSBase::PhysicalLayerTLSBase(

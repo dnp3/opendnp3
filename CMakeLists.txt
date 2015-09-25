@@ -29,16 +29,9 @@ if(SECAUTH)
 endif()
 
 if(DNP3_TLS)
-    add_definitions(-DOPENDNP3_USE_TLS)
-	# asiotls depends on both asiopal and openssl
-	# this alias allows to link to the right thing depending on whether TLS support is built or not
-	set(ASIOPAL_OR_ASIOTLS_LIB asiotls)
-else()
-    set(ASIOPAL_OR_ASIOTLS_LIB asiopal)
+    add_definitions(-DOPENDNP3_USE_TLS)	
 endif()
  
-
-
 if(SECAUTH OR DNP3_TLS)
 
    find_package(OpenSSL REQUIRED)
@@ -134,23 +127,18 @@ install(TARGETS opendnp3 DESTINATION lib)
 set_target_properties(opendnp3 PROPERTIES FOLDER libs)
 
 # ---- asiopal library ----
-file(GLOB_RECURSE asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)
+if(DNP3_TLS)
+  file(GLOB_RECURSE asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)  
+else()
+  file(GLOB asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)
+endif()
 add_library(asiopal ${LIB_TYPE} ${asiopal_SRC})
 target_link_libraries(asiopal openpal)
+if(DNP3_TLS)
+  target_link_libraries(asiopal ${OPENSSL_LIBRARIES}) 
+endif()
 install(TARGETS asiopal DESTINATION lib)
 set_target_properties(asiopal PROPERTIES FOLDER libs)
-
-if(DNP3_TLS)
-
-  # ---- asiotls library ----
-  file(GLOB_RECURSE asiotls_SRC ./cpp/libs/src/asiotls/*.cpp ./cpp/libs/src/asiotls/*.h ./cpp/libs/include/asiotls/*.h)
-  add_library(asiotls ${LIB_TYPE} ${asiotls_SRC})
-  target_link_libraries(asiotls asiopal)
-  target_link_libraries(asiotls ${OPENSSL_LIBRARIES})
-  install(TARGETS asiotls DESTINATION lib)
-  set_target_properties(asiotls PROPERTIES FOLDER libs)
-
-endif()
 
 # ---- asiodnp3 library ----
 if(SECAUTH)
@@ -162,9 +150,9 @@ endif()
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 
 if(SECAUTH)
-  target_link_libraries(asiodnp3 secauth opendnp3 ${ASIOPAL_OR_ASIOTLS_LIB})
+  target_link_libraries(asiodnp3 secauth opendnp3 asiopal)
 else()
-  target_link_libraries(asiodnp3 opendnp3 ${ASIOPAL_OR_ASIOTLS_LIB})  
+  target_link_libraries(asiodnp3 opendnp3 asiopal)  
 endif()
 
 install(TARGETS asiodnp3 DESTINATION lib)

@@ -19,14 +19,14 @@
  * to you under the terms of the License.
  */
 
-#include "asiotls/PhysicalLayerTLSClient.h"
+#include "asiopal/tls/PhysicalLayerTLSClient.h"
 
 #include "asiopal/SocketHelpers.h"
 
 using namespace asio;
 using namespace asiopal;
 
-namespace asiotls
+namespace asiopal
 {
 
 	PhysicalLayerTLSClient::PhysicalLayerTLSClient(

@@ -19,9 +19,9 @@
  * to you under the terms of the License.
  */
 
-#include "asiotls/TLSConfig.h"
+#include "asiopal/tls/TLSConfig.h"
 
-namespace asiotls
+namespace asiopal
 {
 	
 	TLSConfig::TLSConfig(

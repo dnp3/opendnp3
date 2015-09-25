@@ -32,7 +32,7 @@
 
 #ifdef OPENDNP3_USE_TLS
 
-#include <asiotls/PhysicalLayerTLSClient.h>
+#include <asiopal/tls/PhysicalLayerTLSClient.h>
 
 #endif
 
@@ -109,11 +109,11 @@ IChannel* DNP3Manager::AddTLSClient(
 	const std::string& host,
 	const std::string& local,
 	uint16_t port,
-	const asiotls::TLSConfig& config,
+	const asiopal::TLSConfig& config,
 	opendnp3::IOpenDelayStrategy& strategy)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
-	auto pPhys = new asiotls::PhysicalLayerTLSClient(*pRoot, pThreadPool->GetIOService(), host, local, port, config);
+	auto pPhys = new asiopal::PhysicalLayerTLSClient(*pRoot, pThreadPool->GetIOService(), host, local, port, config);
 	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pCrypto, strategy);
 }
 

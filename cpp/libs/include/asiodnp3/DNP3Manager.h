@@ -41,7 +41,7 @@
 #include <asiodnp3/IOutstation.h>
 
 #ifdef OPENDNP3_USE_TLS
-#include <asiotls/TLSConfig.h>
+#include <asiopal/tls/TLSConfig.h>
 #endif
 
 namespace asiopal
@@ -163,7 +163,7 @@ public:
 		const std::string& host,
 		const std::string& local,
 		uint16_t port,
-		const asiotls::TLSConfig& config,
+		const asiopal::TLSConfig& config,
 		opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 #endif

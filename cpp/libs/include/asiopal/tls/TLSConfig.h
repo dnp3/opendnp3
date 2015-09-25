@@ -19,12 +19,12 @@
  * to you under the terms of the License.
  */
 
-#ifndef ASIOTLS_TLS_CONFIG_H
-#define ASIOTLS_TLS_CONFIG_H
+#ifndef ASIOPAL_TLS_CONFIG_H
+#define ASIOPAL_TLS_CONFIG_H
 
 #include <string>
 
-namespace asiotls
+namespace asiopal
 {
 
 /**

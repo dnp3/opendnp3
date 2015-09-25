@@ -28,13 +28,13 @@
 #include <asio/ip/tcp.hpp>
 #include <asio/ssl.hpp>
 
-namespace asiotls
+namespace asiopal
 {
 
 /**
 Common TLS stream object and some shared implementations for server/client
 */
-class PhysicalLayerTLSBase : public asiopal::PhysicalLayerASIO
+class PhysicalLayerTLSBase : public PhysicalLayerASIO
 {
 public:
 	PhysicalLayerTLSBase(

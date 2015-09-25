@@ -30,7 +30,6 @@
 
 using namespace std;
 using namespace openpal;
-using namespace asiotls;
 using namespace asiopal;
 using namespace asiodnp3;
 using namespace opendnp3;
