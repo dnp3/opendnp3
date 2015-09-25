@@ -37,13 +37,39 @@ using namespace openpal;
 namespace osslcrypto
 {
 
-std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes;
-bool CryptoProvider::initialized = Initialize();
-
-bool CryptoProvider::Initialize()
+CryptoProvider::CryptoProvider(bool configMultiThreading)
 {
-	return ConfigureMultithreading();
+	if (!multiThreadInitialized && configMultiThreading)
+	{
+		multiThreadInitialized = ConfigureMultithreading();
+	}
 }
+
+const char* CryptoProvider::Version() const
+{
+	return SSLeay_version(SSLEAY_VERSION);
+}
+
+openpal::RSlice CryptoProvider::GetSecureRandom(WSlice& buffer, std::error_code& ec)
+{
+	int result  = RAND_bytes(buffer, buffer.Size()) > 0;
+
+	if (!result)
+	{
+		ec = make_error_code(errors::OPENSSL_RAND_BYTES_ERROR);
+		return RSlice();
+	}
+
+
+	auto ret = buffer.ToRSlice();
+	buffer.Advance(buffer.Size());
+	return ret;
+}
+
+// ------- mutlithreading stuff ---------
+
+std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes;
+bool CryptoProvider::multiThreadInitialized = false;
 
 bool CryptoProvider::ConfigureMultithreading()
 {
@@ -63,10 +89,6 @@ bool CryptoProvider::ConfigureMultithreading()
 	return true;
 }
 
-const char* CryptoProvider::Version() const
-{
-	return SSLeay_version(SSLEAY_VERSION);
-}
 
 void CryptoProvider::LockingFunction(int mode, int n, const char* file, int line)
 {
@@ -83,20 +105,6 @@ void CryptoProvider::LockingFunction(int mode, int n, const char* file, int line
 	}
 }
 
-openpal::RSlice CryptoProvider::GetSecureRandom(WSlice& buffer, std::error_code& ec)
-{
-	int result  = RAND_bytes(buffer, buffer.Size()) > 0;
 
-	if (!result)
-	{
-		ec = make_error_code(errors::OPENSSL_RAND_BYTES_ERROR);
-		return RSlice();
-	}
-
-
-	auto ret = buffer.ToRSlice();
-	buffer.Advance(buffer.Size());
-	return ret;
-}
 
 }

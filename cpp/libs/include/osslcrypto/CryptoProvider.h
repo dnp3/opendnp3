@@ -47,6 +47,16 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 {
 public:
 
+	/**
+	*
+	* Construct the cryptography provider
+	* 
+	* optionally turn of multi-threading configuration b/c other components like ASIO do the same
+	* thing and we can't control.
+	*
+	*/
+	CryptoProvider(bool configMultiThreading = true);
+
 	virtual openpal::RSlice GetSecureRandom(openpal::WSlice& buffer, std::error_code& ec) override final;
 
 	virtual openpal::IKeyWrapAlgo& GetAESKeyWrap() override final
@@ -73,14 +83,12 @@ private:
 
 	// state-less key-wrap algorithm
 	AESKeyWrap keywrap;
-
-	static void LockingFunction(int mode, int n, const char* file, int line);
-
-	static bool Initialize();
+	
+	// may not get used depending on constructor
+	static bool multiThreadInitialized;
 	static bool ConfigureMultithreading();
-
+	static void LockingFunction(int mode, int n, const char* file, int line);	
 	static std::vector < std::unique_ptr<std::mutex> > mutexes;
-	static bool initialized;
 };
 
 }

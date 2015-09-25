@@ -77,8 +77,8 @@ public:
 	DNP3Manager(
 	    uint32_t concurrencyHint,
 	    openpal::ICryptoProvider* crypto = nullptr,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
 	);
 
 	~DNP3Manager();
