@@ -21,6 +21,8 @@
 
 #include "asiopal/tls/PhysicalLayerTLSBase.h"
 
+#include "asiopal/tls/TLSHelpers.h"
+
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
@@ -34,12 +36,39 @@ namespace asiopal
 	PhysicalLayerTLSBase::PhysicalLayerTLSBase(
 			openpal::LogRoot& root, 
 			asio::io_service& service,			
+			const TLSConfig& config,
 			asio::ssl::context_base::method method) :
 
 		PhysicalLayerASIO(root, service),
-		ctx(method)		
+		ctx(method)
 	{
-		
+
+		TLSHelpers::ApplyConfig(config, ctx);
+
+		ctx.set_verify_callback(
+			[this](bool preverified, asio::ssl::verify_context& ctx)
+			{
+				return this->LogPeerCertificateInfo(preverified, ctx);
+			}
+		);
+
+		/// Now with all of this configured, we can create the stream class
+		/// The order is important since the socket object inerhits all the settings from the context
+		this->stream = std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>(new asio::ssl::stream<asio::ip::tcp::socket>(service, ctx));
+	}
+
+	bool PhysicalLayerTLSBase::LogPeerCertificateInfo(bool preverified, asio::ssl::verify_context& ctx)
+	{
+		// This is just for logging purposes to log the subject name of the certificate if verifies or not
+
+		X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
+
+		char subjectName[256];
+		X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
+
+		FORMAT_LOG_BLOCK(logger, openpal::logflags::INFO, preverified ? "Verified subject_name: %s" : "Did not verify subject_name: %s", subjectName);
+
+		return preverified;
 	}
 
 	// ---- Implement the shared client/server actions ----

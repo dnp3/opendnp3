@@ -166,6 +166,29 @@ public:
 		const asiopal::TLSConfig& config,
 		opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
+	/**
+	* Add a TLS server channel
+	*
+	* @param id Alias that will be used for logging purposes with this channel
+	* @param levels Bitfield that describes the logging level for this channel and associated sessions
+	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
+	* @param port Port to listen on
+	* @param config TLS configuration information
+	* @param strategy Reconnection delay strategy, default to exponential
+	* @return A channel interface
+	*/
+	IChannel* AddTLSServer(
+		char const* id,
+		uint32_t levels,
+		openpal::TimeDuration minOpenRetry,
+		openpal::TimeDuration maxOpenRetry,
+		const std::string& endpoint,
+		uint16_t port,
+		const asiopal::TLSConfig& config,
+		opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
+
 #endif
 
 	/**

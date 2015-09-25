@@ -18,57 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_PHYSICAL_LAYER_TLS_CLIENT_H
-#define ASIOPAL_PHYSICAL_LAYER_TLS_CLIENT_H
+#ifndef ASIOPAL_PHYSICAL_LAYER_TLS_SERVER_H
+#define ASIOPAL_PHYSICAL_LAYER_TLS_SERVER_H
 
 #include "asiopal/tls/PhysicalLayerTLSBase.h"
 
 #include "asiopal/tls/TLSConfig.h"
 
-#include "asiopal/LoggingConnectionCondition.h"
-
-#include <openpal/logging/LogMacros.h>
-#include <openpal/logging/LogLevels.h>
-
 namespace asiopal
 {
 
 /**
-* Implementation of a TCP client
+* Implementation of a TLS server
 */
-class PhysicalLayerTLSClient final : public PhysicalLayerTLSBase
+class PhysicalLayerTLSServer final : public PhysicalLayerTLSBase
 {
 public:
-
-	PhysicalLayerTLSClient(
+	PhysicalLayerTLSServer(
 	    openpal::LogRoot& root,
 	    asio::io_service& service,
-	    const std::string& host,
-	    const std::string& localAddress,
+	    const std::string& endpoint,
 	    uint16_t port,
 		const TLSConfig& config
 	);
 
-	// ---- Implement the remaining actions ----
-
+	// --- Implement the remainging actions ---
 	void DoOpen() override;
-	void DoOpeningClose() override; //override this to just close the socket insead of shutting it down too
+	void DoOpeningClose() override; //override this to cancel the acceptor instead of the socket
 	void DoOpenSuccess() override;
+	void DoOpenCallback() override;
 
-private:			
+private:	
 
-	void HandleResolveResult(const std::error_code& ec, asio::ip::tcp::resolver::iterator endpoint_iterator);
-	void HandleConnectResult(const std::error_code& ec);	
+	void HandleAcceptResult(const std::error_code& ec);
 
-	asiopal::LoggingConnectionCondition condition;
-	const std::string host;
-	const std::string localAddress;
-	asio::ip::tcp::endpoint remoteEndpoint;
+	void OpenAcceptorAndListen(std::error_code& ec);
+
+	void CloseAcceptor();
+
+	std::string localEndpointString;
 	asio::ip::tcp::endpoint localEndpoint;
-	asio::ip::tcp::resolver resolver;
-	std::function<void (asio::ip::tcp::socket&)> configure;
+	asio::ip::tcp::endpoint remoteEndpoint;
+	asio::ip::tcp::acceptor acceptor;	
 };
-
 }
 
 #endif

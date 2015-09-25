@@ -22,6 +22,7 @@
 #include "asiopal/tls/PhysicalLayerTLSClient.h"
 
 #include "asiopal/SocketHelpers.h"
+#include "asiopal/tls/TLSHelpers.h"
 
 using namespace asio;
 using namespace asiopal;
@@ -37,7 +38,7 @@ namespace asiopal
 		uint16_t port,
 		const TLSConfig& config
 	) :
-			PhysicalLayerTLSBase(root, service, ssl::context_base::sslv23_client),
+			PhysicalLayerTLSBase(root, service, config, ssl::context_base::sslv23_client),
 			condition(logger),
 			host(host_),
 			localAddress(localAddress_),
@@ -46,61 +47,8 @@ namespace asiopal
 			resolver(service)
 	{	
 
-		auto OPTIONS = ssl::context::default_workarounds | ssl::context::no_sslv2 | ssl::context::no_sslv3;
-
-		if (!config.allowTLSv10)
-		{
-			OPTIONS |= ssl::context::no_tlsv1;
-		}
-
-		if (!config.allowTLSv11)
-		{
-			OPTIONS |= ssl::context::no_tlsv1_1;
-		}
-
-		if (!config.allowTLSv12)
-		{
-			OPTIONS |= ssl::context::no_tlsv1_2;
-		}
-
-		ctx.set_options(OPTIONS);
-
-		// configure us to verify the peer certificate
-		ctx.set_verify_mode(ssl::verify_peer);		
-
-		// The public certificate file used to verify the peer
-		ctx.load_verify_file(config.peerCertFilePath);
-
-		// additionally, call this callback for the purposes of logging only		
-		ctx.set_verify_callback(
-			[this](bool preverified, asio::ssl::verify_context& ctx) 
-			{
-					return this->VerifyServerCertificate(preverified, ctx); 
-			}
-		);		
-
-		// the certificate we present to the server + the private key we use are placed into the same file
-		ctx.use_certificate_file(config.localCertFilePath, asio::ssl::context_base::file_format::pem);
-		ctx.use_private_key_file(config.privateKeyFilePath, asio::ssl::context_base::file_format::pem);
 		
-		/// Now with all of this configured, we can create the stream class
-		/// The order is important since the socket object inerhits all the settings from the context
-		this->stream = std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>(new asio::ssl::stream<asio::ip::tcp::socket>(service, ctx));		
-	}
-
-	bool PhysicalLayerTLSClient::VerifyServerCertificate(bool preverified, asio::ssl::verify_context& ctx)
-	{
-		// This is just for logging purposes to log the subject name of the certificate if verifies or not
-
-		X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
-
-		char subjectName[256];
-		X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
-
-		FORMAT_LOG_BLOCK(logger, openpal::logflags::INFO, preverified ? "Verified subject_name: %s" : "Did not verify subject_name: %s", subjectName);
-		
-		return preverified;
-	}
+	}	
 	
 	void PhysicalLayerTLSClient::DoOpen()
 	{

@@ -19,56 +19,29 @@
  * to you under the terms of the License.
  */
 
-#ifndef ASIOPAL_PHYSICAL_LAYER_TLS_BASE_H
-#define ASIOPAL_PHYSICAL_LAYER_TLS_BASE_H
-
-#include <asiopal/PhysicalLayerASIO.h>
+#ifndef ASIOPAL_TLS_HELPERS_H
+#define ASIOPAL_TLS_HELPERS_H
 
 #include "asiopal/tls/TLSConfig.h"
 
-#include <asio.hpp>
-#include <asio/ip/tcp.hpp>
+#include <openpal/util/Uncopyable.h>
+
 #include <asio/ssl.hpp>
 
 namespace asiopal
 {
 
 /**
-Common TLS stream object and some shared implementations for server/client
+* Implementation of a TCP client
 */
-class PhysicalLayerTLSBase : public PhysicalLayerASIO
+class TLSHelpers : openpal::StaticOnly
 {
-public:
+public:	
 
-	PhysicalLayerTLSBase(
-		openpal::LogRoot& root,
-		asio::io_service& service,
-		const TLSConfig& config,
-		asio::ssl::context_base::method method		
-	);
-
-	virtual ~PhysicalLayerTLSBase() {}
-
-	// ---- Implement the shared client/server actions ----
-
-	void DoClose() override final;
-	void DoRead(openpal::WSlice&) override final;
-	void DoWrite(const openpal::RSlice&) override final;
-	void DoOpenFailure() override final;
-
-protected:
-
-	bool LogPeerCertificateInfo(bool preverified, asio::ssl::verify_context& ctx);
-	
-	asio::ssl::context ctx;
-	
-	std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;	
-
-	void ShutdownTLSStream();
-	void ShutdownSocket();
-	void CloseSocket();
-
+	/// Configure an ssl context using the settings in a TLSConfig struct
+	static void ApplyConfig(const TLSConfig&, asio::ssl::context& context);
 };
+
 }
 
 #endif
