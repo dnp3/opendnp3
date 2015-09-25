@@ -36,6 +36,8 @@ CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
 install_manifest.txt
+
+# libraries
 libopenpal.*
 libasiopal.*
 libasiotls.*
@@ -46,18 +48,22 @@ libosslcrypto.*
 libtestlib.*
 libclangfuzzer.*
 libdnp3mocks.*
+
+#test suites
 testopenpal
 testopendnp3
 testasiodnp3
 testosslcrypto
 testsecauth
-dnp3fuzzer
-outstationdemo
-masterdemo
-outstationdemoSA
-masterdemoSA
-aflfuzzer
+
+#demos
+master-demo
+master-sa-demo
 master-tls-demo
+outstation-demo
+outstation-sa-demo
+outstation-tls-demo
+
 
 openpaltest.log
 openpaltest.trs
