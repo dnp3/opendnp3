@@ -36,7 +36,7 @@ namespace asiotls
 /**
 * Implementation of a TCP client
 */
-class PhysicalLayerTLSClient : public PhysicalLayerTLSBase
+class PhysicalLayerTLSClient final : public PhysicalLayerTLSBase
 {
 public:
 
@@ -51,9 +51,9 @@ public:
 
 	// ---- Implement the remaining actions ----
 
-	void DoOpen();
-	void DoOpeningClose(); //override this to just close the socket insead of shutting it down too
-	void DoOpenSuccess();
+	void DoOpen() override;
+	void DoOpeningClose() override; //override this to just close the socket insead of shutting it down too
+	void DoOpenSuccess() override;
 
 private:
 

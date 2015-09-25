@@ -141,7 +141,8 @@ namespace asiotls
 
 	void PhysicalLayerTLSClient::DoOpeningClose()
 	{
-		this->Shutdown();
+		this->ShutdownSocket();
+		this->CloseSocket();
 	}
 	
 	void PhysicalLayerTLSClient::DoOpenSuccess()

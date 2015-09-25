@@ -46,7 +46,9 @@ namespace asiotls
 
 	void PhysicalLayerTLSBase::DoClose()
 	{
-		this->Shutdown();		
+		this->ShutdownTLSStream();
+		this->ShutdownSocket();
+		this->CloseSocket();
 	}
 	
 	void PhysicalLayerTLSBase::DoRead(openpal::WSlice& dest)
@@ -74,23 +76,39 @@ namespace asiotls
 	void PhysicalLayerTLSBase::DoOpenFailure()
 	{
 		SIMPLE_LOG_BLOCK(logger, logflags::DBG, "Failed socket open, closing socket");
-		this->Shutdown();
-	}	
+		this->ShutdownSocket();
+		this->CloseSocket();
+	}
 
-	void PhysicalLayerTLSBase::Shutdown()
-	{
-		
-		std::error_code ec;		
+	void PhysicalLayerTLSBase::ShutdownTLSStream()
+	{		
+		std::error_code ec;
 		stream->shutdown(ec);
 		if (ec)
 		{
-			FORMAT_LOG_BLOCK(logger, logflags::WARN, "Error while shutting down TLS stream: %s", ec.message().c_str());
-		}		
+			FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error while shutting down TLS stream: %s", ec.message().c_str());
+		}	
+	}
 
+	void PhysicalLayerTLSBase::ShutdownSocket()
+	{
+
+		std::error_code ec;
 		stream->lowest_layer().shutdown(ip::tcp::socket::shutdown_both, ec);
-		stream->lowest_layer().close(ec);
+		if (ec)
+		{
+			FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error shutting down socket: %s", ec.message().c_str());
+		}
+	}
 
-
+	void PhysicalLayerTLSBase::CloseSocket()
+	{
+		std::error_code ec;
+		stream->lowest_layer().close(ec);			
+		if (ec)
+		{
+			FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error closing socket: %s", ec.message().c_str());
+		}		
 	}
 
 }

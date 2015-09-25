@@ -34,8 +34,7 @@ namespace asiotls
 /**
 Common TLS stream object and some shared implementations for server/client
 */
-
-	class PhysicalLayerTLSBase : public asiopal::PhysicalLayerASIO
+class PhysicalLayerTLSBase : public asiopal::PhysicalLayerASIO
 {
 public:
 	PhysicalLayerTLSBase(
@@ -48,10 +47,10 @@ public:
 
 	// ---- Implement the shared client/server actions ----
 
-	void DoClose();
-	void DoRead(openpal::WSlice&);
-	void DoWrite(const openpal::RSlice&);
-	void DoOpenFailure();
+	void DoClose() override final;
+	void DoRead(openpal::WSlice&) override final;
+	void DoWrite(const openpal::RSlice&) override final;
+	void DoOpenFailure() override final;
 
 protected:
 	
@@ -59,7 +58,9 @@ protected:
 	
 	std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;	
 
-	void Shutdown();
+	void ShutdownTLSStream();
+	void ShutdownSocket();
+	void CloseSocket();
 
 };
 }
