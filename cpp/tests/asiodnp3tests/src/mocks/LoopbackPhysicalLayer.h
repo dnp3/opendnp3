@@ -36,7 +36,7 @@ namespace opendnp3
 {
 
 // Provides a backend for testing physical layers
-class LoopbackPhysicalLayer : public asiopal::PhysicalLayerASIO
+class LoopbackPhysicalLayer final : public asiopal::PhysicalLayerASIO
 {
 public:
 	LoopbackPhysicalLayer(openpal::LogRoot& root, asio::io_service& service);
@@ -44,11 +44,12 @@ public:
 
 private:
 
-	void DoOpen();
-	void DoClose();
-	void DoOpenSuccess();
-	void DoRead(openpal::WSlice&);
-	void DoWrite(const openpal::RSlice&);
+	void DoOpen() override;
+	void DoClose() override;
+	void DoOpeningClose() override { this->DoClose(); }
+	void DoOpenSuccess() override;
+	void DoRead(openpal::WSlice&) override;
+	void DoWrite(const openpal::RSlice&) override;
 
 
 	void CheckForReadDispatch();

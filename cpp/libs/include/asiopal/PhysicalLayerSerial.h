@@ -33,18 +33,17 @@ namespace asiopal
 
 /** Serial implementation of PhysicalLayerASIO
 */
-class PhysicalLayerSerial : public PhysicalLayerASIO
+class PhysicalLayerSerial final : public PhysicalLayerASIO
 {
 public:
 	PhysicalLayerSerial(openpal::LogRoot& root, asio::io_service& service, const SerialSettings& settings);
-
-	/* Implement the shared client/server actions */
-	void DoClose();
-	void DoOpenSuccess();
-	void DoRead(openpal::WSlice&);
-	void DoWrite(const openpal::RSlice&);
-
-	void DoOpen();
+	
+	void DoClose() override;
+	void DoOpeningClose() override { this->DoClose(); }
+	void DoOpenSuccess() override;
+	void DoRead(openpal::WSlice&) override;
+	void DoWrite(const openpal::RSlice&) override;
+	void DoOpen() override;
 
 protected:
 

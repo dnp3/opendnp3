@@ -34,9 +34,10 @@ namespace asiopal
 /**
 * Implementation of a TCP client
 */
-class PhysicalLayerTCPClient : public PhysicalLayerBaseTCP
+class PhysicalLayerTCPClient final : public PhysicalLayerBaseTCP
 {
 public:
+
 	PhysicalLayerTCPClient(
 	    openpal::LogRoot& root,
 	    asio::io_service& service,
@@ -45,10 +46,10 @@ public:
 	    uint16_t port,
 	std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});
 
-	/* Implement the remaining actions */
-	void DoOpen();
-	void DoOpeningClose(); //override this to just close the socket insead of shutting is down too
-	void DoOpenSuccess();
+	/// Implement the remaining actions
+	void DoOpen() override;
+	void DoOpeningClose() override;  //override this to just close the socket insead of shutting is down too
+	void DoOpenSuccess() override;
 
 private:		
 

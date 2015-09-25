@@ -131,10 +131,13 @@ public:
 	classes inherited from this class */
 	virtual void DoOpen() = 0;
 	virtual void DoClose() = 0;
-	virtual void DoOpeningClose()
+	
+	virtual void DoOpeningClose() = 0;
+	/*
 	{
 		DoClose();    //optionally override this action
 	}
+	*/
 	virtual void DoRead(openpal::WSlice&) = 0;
 	virtual void DoWrite(const  openpal::RSlice&) = 0;
 

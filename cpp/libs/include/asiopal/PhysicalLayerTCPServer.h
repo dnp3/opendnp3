@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_PHYSICALLAYERTCPSERVER_H
-#define ASIOPAL_PHYSICALLAYERTCPSERVER_H
+#ifndef ASIOPAL_PHYSICAL_LAYER_TCP_SERVER_H
+#define ASIOPAL_PHYSICAL_LAYER_TCP_SERVER_H
 
 #include "PhysicalLayerBaseTCP.h"
 
@@ -32,7 +32,7 @@ namespace asiopal
 /**
 * Implementation of a TCP server
 */
-class PhysicalLayerTCPServer : public PhysicalLayerBaseTCP
+class PhysicalLayerTCPServer final : public PhysicalLayerBaseTCP
 {
 public:
 	PhysicalLayerTCPServer(
@@ -40,13 +40,14 @@ public:
 	    asio::io_service& service,
 	    const std::string& endpoint,
 	    uint16_t port,
-	std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});
+		std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {}
+	);
 
-	/* Implement the remainging actions */
-	void DoOpen();
-	void DoOpeningClose(); //override this to cancel the acceptor instead of the socket
-	void DoOpenSuccess();
-	void DoOpenCallback();
+	// --- Implement the remainging actions ---
+	void DoOpen() override;
+	void DoOpeningClose() override; //override this to cancel the acceptor instead of the socket
+	void DoOpenSuccess() override;
+	void DoOpenCallback() override;
 
 private:
 
