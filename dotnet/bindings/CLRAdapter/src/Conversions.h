@@ -35,6 +35,7 @@
 #include "CollectionAdapter.h"
 
 #include <asiopal/SerialTypes.h>
+#include <asiopal/tls/TLSConfig.h>
 
 using namespace System::Collections::Generic;
 using namespace Automatak::DNP3::Interface;
@@ -60,7 +61,7 @@ namespace Automatak
 
 				static opendnp3::ClassField ConvertClassField(ClassField classField);
 
-			
+				static asiopal::TLSConfig Convert(TLSConfig^ config);
 
 				// Convert a .NET string to a C++ string
 				static std::string ConvertString(System::String^ s);

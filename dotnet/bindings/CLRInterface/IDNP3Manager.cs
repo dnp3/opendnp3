@@ -66,6 +66,30 @@ namespace Automatak.DNP3.Interface
         IChannel AddTCPServer(String id, UInt32 filters, ChannelRetry retry, String endpoint, UInt16 port);
 
         /// <summary>
+        /// Add a TLS client channel. The channel does not try to connect until you add a stack.
+        /// </summary>
+        /// <param name="id">An id used for logging purposes</param>
+        /// <param name="filters">The starting level for logging output</param>
+        /// <param name="retry">Retry configuration for the channel</param>
+        /// <param name="address">The address of remote host as a INET address i.e. "127.0.0.1" or name "www.google.com"</param>
+        /// <param name="port">The port to make the connection on</param>
+        /// <param name="config">TLS configuration information</param>
+        /// <returns>A channel interface</returns>
+        IChannel AddTLSClient(String id, UInt32 filters, ChannelRetry retry, String address, UInt16 port, TLSConfig config);
+
+        /// <summary>
+        /// Add a TLS server channel. The channel does not try to listen until you add a stack.
+        /// </summary>
+        /// <param name="id">An id used for logging purposes</param>
+        /// <param name="filters">The starting level for logging output</param>
+        /// <param name="retry">Retry configuration for the channel</param>
+        /// <param name="endpoint">The address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"</param>
+        /// <param name="port">The port to listen on</param>
+        /// <param name="config">TLS configuration information</param>
+        /// <returns>A channel interface</returns>
+        IChannel AddTLSServer(String id, UInt32 filters, ChannelRetry retry, String endpoint, UInt16 port, TLSConfig config);
+
+        /// <summary>
         /// Add a serial channel. The port does not try to open until you add a stack.
         /// </summary>
         /// <param name="id">An id used for logging purposes</param>

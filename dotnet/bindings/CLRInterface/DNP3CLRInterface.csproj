@@ -176,6 +176,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TaskInfo.cs" />
+    <Compile Include="TLSConfig.cs" />
     <Compile Include="UpdateKey.cs" />
     <Compile Include="User.cs">
       <SubType>Code</SubType>

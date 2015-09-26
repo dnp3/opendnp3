@@ -91,6 +91,44 @@ namespace Automatak
 				}
 			}
 
+			IChannel^ DNP3ManagerAdapter::AddTLSClient(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ address, System::UInt16 port, Automatak::DNP3::Interface::TLSConfig^ config)
+			{
+				std::string stdName = Conversions::ConvertString(id);
+				std::string stdAddress = Conversions::ConvertString(address);
+				uint16_t stdPort = port;
+
+				auto pChannel = pManager->AddTLSClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, Conversions::Convert(config));
+				if (pChannel)
+				{
+					auto adapter = gcnew ChannelAdapter(pChannel, pCrypto);
+					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
+					return adapter;
+				}
+				else
+				{
+					return nullptr;
+				}
+			}
+			
+			IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::TLSConfig^ config)
+			{
+				std::string stdName = Conversions::ConvertString(id);
+				std::string stdEndpoint = Conversions::ConvertString(endpoint);
+				uint16_t stdPort = port;
+
+				auto pChannel = pManager->AddTLSServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, Conversions::Convert(config));
+				if (pChannel)
+				{
+					auto adapter = gcnew ChannelAdapter(pChannel, pCrypto);
+					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
+					return adapter;
+				}
+				else
+				{
+					return nullptr;
+				}
+			}
+
 			IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, Automatak::DNP3::Interface::SerialSettings^ settings)
 			{
 				std::string stdName = Conversions::ConvertString(id);

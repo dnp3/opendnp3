@@ -40,6 +40,8 @@ public:
 	* @param peerCertFilePath Certificate file used to verify the server. Can be CA file or a self - signed cert provided by other party
 	* @param localCertFilePath File that contains the certificate that will be presented to the remote side of the connection
 	* @param privateKeyFilePath File that contains the private key corresponding to the local certificate
+	*
+	* localCertFilePath and privateKeyFilePath can optionally be the same file, i.e. a PEM that contains both pieces of data.
 	* 	 	
 	*/
 	TLSConfig(

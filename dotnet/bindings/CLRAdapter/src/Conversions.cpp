@@ -290,6 +290,26 @@ namespace Automatak
 			{
 				return opendnp3::ClassField(classField.ClassMask);
 			}
+			
+			asiopal::TLSConfig Conversions::Convert(TLSConfig^ config)
+			{
+				auto peerCert = Conversions::ConvertString(config->peerCertFilePath);
+				auto localCert = Conversions::ConvertString(config->localCertFilePath);
+				auto privateKey = Conversions::ConvertString(config->privateKeyFilePath);
+
+				asiopal::TLSConfig ret(
+					peerCert,
+					localCert,
+					privateKey
+				);
+
+				ret.allowTLSv10 = config->allowTLSv10;
+				ret.allowTLSv11 = config->allowTLSv11;
+				ret.allowTLSv12 = config->allowTLSv12;
+
+				return ret;
+			}
+
 
 			opendnp3::LinkConfig Conversions::ConvertConfig(LinkConfig^ config)
 			{
