@@ -93,11 +93,11 @@ endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
-if (DEFINED ENV{ASIO_HOME})
+if (ASIO_HOME)
   message("ASIO_HOME defined in cache: ${ASIO_HOME}")
   include_directories(${ASIO_HOME})  
 else()
-  if(ASIO_HOME)
+  if(DEFINED ENV{ASIO_HOME})
     message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")  
     include_directories($ENV{ASIO_HOME})    
   else()
