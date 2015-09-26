@@ -56,7 +56,7 @@ namespace DotNetMasterDemo
 
 
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
-            var channel = mgr.AddTCPClient("client", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
+            var channel = mgr.AddTCPClient("client", LogLevels.NORMAL, ChannelRetry.Default, "127.0.0.1", 20000);
 
             //optionally, add a listener for the channel state
             channel.AddStateListener(state => Console.WriteLine("channel state: " + state));

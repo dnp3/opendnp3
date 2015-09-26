@@ -50,6 +50,7 @@
     <Compile Include="BaseMeasurementTypes.cs" />
     <Compile Include="BeginUpdateKeyChangeResult.cs" />
     <Compile Include="ChangeSet.cs" />
+    <Compile Include="ChannelRetry.cs" />
     <Compile Include="ChannelStatistics.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -118,6 +119,7 @@
     <Compile Include="gen\UserOperation.cs" />
     <Compile Include="gen\UserRole.cs" />
     <Compile Include="Header.cs" />
+    <Compile Include="IChannel.cs" />
     <Compile Include="IChannelStatistics.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
@@ -129,7 +131,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IDNP3Manager.cs" />
-    <Compile Include="IChannel.cs" />
     <Compile Include="ILinkListener.cs" />
     <Compile Include="ILogHandler.cs" />
     <Compile Include="IMaster.cs">

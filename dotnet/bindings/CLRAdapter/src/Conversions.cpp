@@ -276,6 +276,11 @@ namespace Automatak
 				return ConvertMilliseconds(ts.Ticks / System::TimeSpan::TicksPerMillisecond);
 			}
 
+			opendnp3::ChannelRetry Conversions::Convert(ChannelRetry^ retry)
+			{
+				return opendnp3::ChannelRetry(ConvertTimespan(retry->minRetryDelay), ConvertTimespan(retry->maxRetryDelay));
+			}
+
 			System::TimeSpan Conversions::ConvertTimeDuration(const openpal::TimeDuration& duration)
 			{
 				return System::TimeSpan::FromMilliseconds((double) duration.GetMilliseconds());

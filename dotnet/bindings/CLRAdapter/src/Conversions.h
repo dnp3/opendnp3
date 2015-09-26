@@ -30,6 +30,7 @@
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
+#include <opendnp3/link/ChannelRetry.h>
 
 #include "CollectionAdapter.h"
 
@@ -55,7 +56,11 @@ namespace Automatak
 
 				static System::TimeSpan ConvertTimeDuration(const openpal::TimeDuration& duration);
 
+				static opendnp3::ChannelRetry Convert(ChannelRetry^ retry);
+
 				static opendnp3::ClassField ConvertClassField(ClassField classField);
+
+			
 
 				// Convert a .NET string to a C++ string
 				static std::string ConvertString(System::String^ s);

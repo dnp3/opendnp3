@@ -35,7 +35,7 @@ namespace DotNetOutstationDemo
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1);
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
-            var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), "0.0.0.0", 20000);
+            var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, ChannelRetry.Default, "0.0.0.0", 20000);
 
             // Optional: add a listener for the channel state
             channel.AddStateListener(state => Console.WriteLine("channel state: " + state));     
