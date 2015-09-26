@@ -21,41 +21,29 @@
 #ifndef ASIODNP3_DNP3MANAGER_H
 #define ASIODNP3_DNP3MANAGER_H
 
-#include <cstdint>
-#include <functional>
-#include <memory>
-
-#include <asiopal/SerialTypes.h>
-
 #include <openpal/logging/ILogHandler.h>
 #include <openpal/executor/TimeDuration.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
-
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/link/ChannelRetry.h>
-
 
 #include <asiodnp3/IChannel.h>
 #include <asiodnp3/IMaster.h>
 #include <asiodnp3/IOutstation.h>
 
+#include <asiopal/SerialTypes.h>
+
 #ifdef OPENDNP3_USE_TLS
 #include <asiopal/tls/TLSConfig.h>
 #endif
 
-namespace asiopal
-{
-class EventLog;
-class LogFanoutHandler;
-class IOServiceThreadPool;
-}
+#include <memory>
 
 namespace asiodnp3
 {
 
-class DNP3Channel;
-class ChannelSet;
+class ManagerImpl;
 
 
 /**
@@ -193,11 +181,8 @@ public:
 #endif
 
 private:
-
-	openpal::ICryptoProvider* pCrypto;
-	std::unique_ptr<asiopal::LogFanoutHandler> pFanoutHandler;
-	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
-	std::unique_ptr<ChannelSet> pChannelSet;
+	
+	std::unique_ptr<ManagerImpl> impl;
 
 };
 
