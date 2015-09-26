@@ -29,8 +29,6 @@
 #include <opendnp3/link/ChannelRetry.h>
 
 #include <asiodnp3/IChannel.h>
-#include <asiodnp3/IMaster.h>
-#include <asiodnp3/IOutstation.h>
 
 #include <asiopal/SerialTypes.h>
 
