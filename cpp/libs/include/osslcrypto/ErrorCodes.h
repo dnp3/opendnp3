@@ -24,10 +24,10 @@
 
 #include <system_error>
 
-#ifndef _MSC_VER
-#define NOEXCEPT noexcept
-#else
+#if (defined WIN32 && (_MSC_VER < 1900))
 #define NOEXCEPT
+#else
+#define NOEXCEPT noexcept
 #endif
 
 namespace osslcrypto
