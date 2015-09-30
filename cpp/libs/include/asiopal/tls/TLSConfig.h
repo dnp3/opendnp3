@@ -40,6 +40,7 @@ public:
 	* @param peerCertFilePath Certificate file used to verify the server. Can be CA file or a self - signed cert provided by other party
 	* @param localCertFilePath File that contains the certificate that will be presented to the remote side of the connection
 	* @param privateKeyFilePath File that contains the private key corresponding to the local certificate
+	* @param cipherList The openssl cipher-list, defaults to "" which does not modify the default cipher list
 	*
 	* localCertFilePath and privateKeyFilePath can optionally be the same file, i.e. a PEM that contains both pieces of data.
 	* 	 	
@@ -47,13 +48,15 @@ public:
 	TLSConfig(
 		const std::string& peerCertFilePath,
 		const std::string& localCertFilePath,
-		const std::string& privateKeyFilePath	
+		const std::string& privateKeyFilePath,
+		const std::string& cipherList = ""
 	);
 		
 
 	std::string peerCertFilePath;
 	std::string localCertFilePath;
 	std::string privateKeyFilePath;
+	std::string cipherList;
 
 	/// Allow TLS version 1.0 (default true)
 	bool allowTLSv10;

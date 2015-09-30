@@ -54,7 +54,7 @@ namespace asiopal
 
 		/// Now with all of this configured, we can create the stream class
 		/// The order is important since the socket object inerhits all the settings from the context
-		this->stream = std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>(new asio::ssl::stream<asio::ip::tcp::socket>(service, ctx));
+		this->stream = std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>(new asio::ssl::stream<asio::ip::tcp::socket>(service, ctx));		
 	}
 
 	bool PhysicalLayerTLSBase::LogPeerCertificateInfo(bool preverified, asio::ssl::verify_context& ctx)

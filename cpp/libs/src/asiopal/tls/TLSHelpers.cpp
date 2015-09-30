@@ -47,6 +47,12 @@ void TLSHelpers::ApplyConfig(const TLSConfig& config, asio::ssl::context& contex
 
 	context.set_options(OPTIONS);
 
+	// optionally, configure the cipher-list
+	if (!config.cipherList.empty())
+	{
+		SSL_CTX_set_cipher_list(context.native_handle(), config.cipherList.c_str());
+	}
+
 	// verify the peer certificate
 	context.set_verify_mode(ssl::verify_peer);
 

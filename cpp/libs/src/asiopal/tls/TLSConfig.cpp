@@ -27,14 +27,16 @@ namespace asiopal
 	TLSConfig::TLSConfig(
 		const std::string& peerCertFilePath_,
 		const std::string& localCertFilePath_,
-		const std::string& privateKeyFilePath_
+		const std::string& privateKeyFilePath_,
+		const std::string& cipherList_
 		) :
-		peerCertFilePath(peerCertFilePath_),
-		localCertFilePath(localCertFilePath_),
-		privateKeyFilePath(privateKeyFilePath_),
-		allowTLSv10(true),
-		allowTLSv11(true),
-		allowTLSv12(true)
+			peerCertFilePath(peerCertFilePath_),
+			localCertFilePath(localCertFilePath_),
+			privateKeyFilePath(privateKeyFilePath_),
+			cipherList(cipherList_),
+			allowTLSv10(true),
+			allowTLSv11(true),
+			allowTLSv12(true)
 	{}
 
 }
