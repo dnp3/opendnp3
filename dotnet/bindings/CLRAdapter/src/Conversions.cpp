@@ -296,11 +296,13 @@ namespace Automatak
 				auto peerCert = Conversions::ConvertString(config->peerCertFilePath);
 				auto localCert = Conversions::ConvertString(config->localCertFilePath);
 				auto privateKey = Conversions::ConvertString(config->privateKeyFilePath);
+				auto cipherList = Conversions::ConvertString(config->cipherList);
 
 				asiopal::TLSConfig ret(
 					peerCert,
 					localCert,
-					privateKey
+					privateKey,
+					cipherList
 				);
 
 				ret.allowTLSv10 = config->allowTLSv10;
