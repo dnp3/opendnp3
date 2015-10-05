@@ -28,7 +28,7 @@ namespace asiopal
 {
 
 /**
-* Implementation of a TCP client
+* TLS configuration information
 */
 class TLSConfig
 {
