@@ -4,6 +4,7 @@
 * New guide + doxygen docs
 * Add an ILinkListener interface inherited by IMasterApplication/IOutstationApplication that allows you to monitor link-layer activity.
 * Master can now send any combination and # of commands in a single request
+* Support for TLS client/server (optional in build)
 * Modified the IMaster interface to inherit from ICommandProcessor which now contains only two methods.
 * Master now uses Task[T] everywhere instead of custom Future[T]. Eases uses with TPL and async/await.
 * Master now has a parameter to timeout tasks that fail to start within a certain TimeDuration.  
