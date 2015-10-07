@@ -1,4 +1,4 @@
-### 2.1.0-RC1 (pending) ###
+### 2.1.0-RC1 ###
 * Migrated fully to CMake, including generated SLN
 * Separated include vs private headers
 * New guide + doxygen docs
