@@ -28,17 +28,17 @@ using namespace std;
 #undef min
 
 template<class T>
-void TestType(T min, T max, size_t aBytes)
+void TestType(T min, T max, size_t numBytes)
 {
-	REQUIRE(sizeof(T) == aBytes);
+	REQUIRE((sizeof(T) == numBytes));
 
 	T val = min;
 	T limit = numeric_limits<T>::min();
-	REQUIRE(val == limit);
+	REQUIRE((val == limit));
 
 	val = max;
 	limit = numeric_limits<T>::max();
-	REQUIRE(val == limit);
+	REQUIRE((val == limit));
 }
 
 #define SUITE(name) "TestTypes - " name

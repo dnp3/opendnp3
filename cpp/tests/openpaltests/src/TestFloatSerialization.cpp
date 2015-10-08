@@ -67,7 +67,7 @@ bool TestFloatParsing(std::string hex, typename T::Type value)
 {
 	HexSequence hs(hex);
 	const uint32_t TYPE_SIZE = static_cast<uint32_t>(sizeof(typename T::Type));
-	REQUIRE(hs.Size() == TYPE_SIZE);
+	REQUIRE((hs.Size() == TYPE_SIZE));
 
 	Buffer buffer(2 * TYPE_SIZE);
 

@@ -30,20 +30,20 @@ using namespace openpal;
 using namespace opendnp3;
 
 template <class T>
-void TestBufferForEvent(bool aIsEvent, const T& arNewVal, DatabaseTestObject& test, std::deque< Event <T> >& arQueue)
+void TestBufferForEvent(bool isEvent, const T& newVal, DatabaseTestObject& test, std::deque< Event <T> >& queue)
 {
-	test.db.Update(arNewVal, 0);
+	test.db.Update(newVal, 0);
 
-	if(aIsEvent)
+	if(isEvent)
 	{
-		REQUIRE(arQueue.size() ==  1);
-		REQUIRE((arNewVal == arQueue.front().value));
-		REQUIRE(0 ==  arQueue.front().index);
-		arQueue.pop_front();
+		REQUIRE((queue.size() ==  1));
+		REQUIRE((newVal == queue.front().value));
+		REQUIRE((0 ==  queue.front().index));
+		queue.pop_front();
 	}
 	else
 	{
-		REQUIRE(arQueue.size() ==  0);
+		REQUIRE((queue.size() ==  0));
 	}
 }
 

@@ -577,7 +577,7 @@ void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp,
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 
-	REQUIRE(t.lower.PopWriteAsHex() == rsp);
+	REQUIRE((t.lower.PopWriteAsHex() == rsp));
 }
 
 template <class T>
@@ -701,7 +701,7 @@ void TestStaticBinaryOutputStatus(T value, const std::string& response)
 	});
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
-	REQUIRE(t.lower.PopWriteAsHex() == response);
+	REQUIRE((t.lower.PopWriteAsHex() == response));
 }
 
 TEST_CASE(SUITE("ReadGrp10Var2"))

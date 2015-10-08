@@ -28,15 +28,17 @@ using namespace testlib;
 
 #define SUITE(name) "UtilSuite - " name
 template <int N>
-void TestHex(const std::string& aHex, uint8_t* aCompareBytes, size_t aCount)
+void TestHex(const std::string& hex, uint8_t* compareBytes, size_t count)
 {
-	HexSequence hs(aHex);
+	HexSequence hs(hex);
 
 	REQUIRE(hs.Size() <= N);
 
-	REQUIRE(hs.Size() ==  aCount );
-	for ( size_t i = 0; i < aCount; i++ )
-		REQUIRE(hs[i] ==  aCompareBytes[i]);
+	REQUIRE((hs.Size() ==  count));
+	for ( size_t i = 0; i < count; i++ )
+	{
+	  REQUIRE((hs[i] ==  compareBytes[i]));
+	}
 }
 
 TEST_CASE(SUITE("HexToBytes2TestSmall"))

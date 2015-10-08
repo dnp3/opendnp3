@@ -390,14 +390,14 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 	t.context.SelectAndOperate(CommandSet({WithIndex(command,1)}), queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + hex);
+	REQUIRE((t.lower.PopWriteAsHex() == ("C0 03 " + hex)));
 	t.context.OnSendResult(true);
 	REQUIRE(queue.values.empty());
 	t.SendToMaster("C0 81 00 00 " + hex);
 
 	t.exe.RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + hex);
+	REQUIRE((t.lower.PopWriteAsHex() == ("C1 04 " + hex)));
 	t.context.OnSendResult(true);
 	REQUIRE(queue.values.empty());
 	t.SendToMaster("C1 81 00 00 " + hex);
