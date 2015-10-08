@@ -37,7 +37,7 @@ namespace opendnp3
 {
 
 StartupIntegrityPoll::StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes_, TimeDuration retryPeriod_, openpal::Logger logger) :
-	PollTaskBase(app, soeHandler, 0, logger, TaskConfig::Default()),
+	PollTaskBase(app, soeHandler, openpal::MonotonicTimestamp(0), logger, TaskConfig::Default()),
 	classes(classes_),
 	retryPeriod(retryPeriod_)
 {

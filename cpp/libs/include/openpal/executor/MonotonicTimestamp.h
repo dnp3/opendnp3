@@ -43,8 +43,8 @@ public:
 	bool IsMin() const;
 
 	MonotonicTimestamp();
-	MonotonicTimestamp(int64_t aMilliseconds);
-	MonotonicTimestamp Add(const TimeDuration& arDuration) const;
+	explicit MonotonicTimestamp(int64_t milliseconds);
+	MonotonicTimestamp Add(const TimeDuration& duration) const;
 
 	int64_t milliseconds;
 };

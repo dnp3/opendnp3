@@ -65,10 +65,11 @@ bool LinkContext::OnLowerLayerUp()
 	}
 
 	this->isOnline = true;
-
-	// no reason to trigger a keep-alive until we've actually expired
-	this->lastMessageTimestamp = this->pExecutor->GetTime();
-	this->StartKeepAliveTimer();
+	
+	auto now = this->pExecutor->GetTime();
+	this->lastMessageTimestamp = now; // no reason to trigger a keep-alive until we've actually expired
+	MonotonicTimestamp expiration(now.milliseconds + config.KeepAliveTimeout.GetMilliseconds());
+	this->StartKeepAliveTimer(MonotonicTimestamp(now.milliseconds + config.KeepAliveTimeout.GetMilliseconds()));
 
 	this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
 
@@ -294,7 +295,7 @@ void LinkContext::OnKeepAliveTimeout()
 {
 	auto now = this->pExecutor->GetTime();
 
-	auto elapsed = this->pExecutor->GetTime().milliseconds - this->lastMessageTimestamp.milliseconds;
+	auto elapsed = now.milliseconds - this->lastMessageTimestamp.milliseconds;
 
 	if (elapsed >= this->config.KeepAliveTimeout.GetMilliseconds())
 	{
@@ -304,7 +305,7 @@ void LinkContext::OnKeepAliveTimeout()
 
 	// No matter what, reschedule the timer based on last message timestamp
 	MonotonicTimestamp expiration(this->lastMessageTimestamp.milliseconds + config.KeepAliveTimeout);
-	this->StartKeepAliveTimer();
+	this->StartKeepAliveTimer(expiration);
 
 	this->TryStartTransmission();
 }
@@ -327,9 +328,9 @@ void LinkContext::StartResponseTimer()
 	);
 }
 
-void LinkContext::StartKeepAliveTimer()
+void LinkContext::StartKeepAliveTimer(const MonotonicTimestamp& expiration)
 {
-	this->keepAliveTimer.Start(config.KeepAliveTimeout, [this]()
+	this->keepAliveTimer.Start(expiration, [this]()
 	{
 		this->OnKeepAliveTimeout();
 	});

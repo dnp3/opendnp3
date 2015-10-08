@@ -107,9 +107,9 @@ bool MockExecutor::AdvanceToNextTimer()
 	else
 	{
 		auto timestamp = NextTimerExpiration();
-		if (timestamp.milliseconds > mCurrentTime)
+		if (timestamp > mCurrentTime)
 		{
-			mCurrentTime = timestamp.milliseconds;
+			mCurrentTime = timestamp;
 			return true;
 		}
 		else

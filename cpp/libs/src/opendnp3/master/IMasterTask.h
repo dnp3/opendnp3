@@ -52,7 +52,7 @@ protected:
 
 		static TaskState Immediately()
 		{
-			return TaskState(0, false);
+			return TaskState(openpal::MonotonicTimestamp(0), false);
 		}
 
 		static TaskState Infinite()

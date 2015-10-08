@@ -444,7 +444,7 @@ void MContext::ScheduleAdhocTask(IMasterTask* pTask)
 {
 	const auto NOW = this->pExecutor->GetTime();
 
-	pTask->ConfigureStartExpiration(NOW.milliseconds + params.taskStartTimeout.GetMilliseconds());
+	pTask->ConfigureStartExpiration(NOW.Add(params.taskStartTimeout));
 
 	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
 	if (this->isOnline)

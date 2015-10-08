@@ -102,7 +102,8 @@ void ASIOExecutor::CheckForShutdown()
 
 openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 {
-	return std::chrono::duration_cast<std::chrono::milliseconds>(asiopal_steady_clock::now().time_since_epoch()).count();
+	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(asiopal_steady_clock::now().time_since_epoch()).count();
+	return openpal::MonotonicTimestamp(millisec);
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& delay, const openpal::Action0& runnable)

@@ -39,7 +39,8 @@ TimerASIO::TimerASIO(asio::strand& strand) :
  */
 openpal::MonotonicTimestamp TimerASIO::ExpiresAt()
 {
-	return std::chrono::duration_cast<std::chrono::milliseconds>(timer.expires_at().time_since_epoch()).count();
+	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(timer.expires_at().time_since_epoch()).count();
+	return MonotonicTimestamp(millisec);
 }
 
 void TimerASIO::Cancel()

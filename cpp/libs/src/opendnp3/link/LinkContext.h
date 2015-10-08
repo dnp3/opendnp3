@@ -105,7 +105,7 @@ public:
 	void OnKeepAliveTimeout();
 	void OnResponseTimeout();
 	void StartResponseTimer();
-	void StartKeepAliveTimer();
+	void StartKeepAliveTimer(const openpal::MonotonicTimestamp& expiration);
 	void CancelTimer();
 	void FailKeepAlive(bool timeout);
 	void CompleteKeepAlive();

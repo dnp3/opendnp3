@@ -31,7 +31,7 @@ namespace opendnp3
 {
 
 EnableUnsolicitedTask::EnableUnsolicitedTask(IMasterApplication& app, ClassField enabledClasses_, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
-	IMasterTask(app, 0, logger, TaskConfig::Default()),
+	IMasterTask(app, openpal::MonotonicTimestamp(0), logger, TaskConfig::Default()),
 	enabledClasses(enabledClasses_),
 	retryPeriod(retryPeriod_)
 {
