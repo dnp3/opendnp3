@@ -229,7 +229,7 @@ if(DEMO)
 endif()
 
 if(TEST)
-
+  enable_testing()
   # ----- testlib library ------
   file(GLOB_RECURSE testlib_SRC ./cpp/tests/libs/src/testlib/*.cpp ./cpp/tests/libs/src/testlib/*.h)
   add_library(testlib ${testlib_SRC})
@@ -247,12 +247,14 @@ if(TEST)
   add_executable (testopenpal ${openpal_TESTSRC})
   target_link_libraries (testopenpal LINK_PUBLIC testlib ${PTHREAD})
   set_target_properties(testopenpal PROPERTIES FOLDER tests)
+  add_test(testopenpal testopenpal)
 
   # ----- opendnp3 tests -----
   file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp ./cpp/tests/opendnp3tests/src/*.h)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})    
   target_link_libraries (testopendnp3 LINK_PUBLIC dnp3mocks ${PTHREAD})  
   set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
+  add_test(testopendnp3 testopendnp3)
 
   # ----- asiodnp3 tests -----
   file(GLOB_RECURSE asiodnp3_TESTSRC ./cpp/tests/asiodnp3tests/src/*.cpp ./cpp/tests/asiodnp3tests/src/*.h)
@@ -263,6 +265,7 @@ if(TEST)
    target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
   endif()
   set_target_properties(testasiodnp3 PROPERTIES FOLDER tests)
+  add_test(testasiodnp3 testasiodnp3)
 
   if(SECAUTH)
   
@@ -271,12 +274,14 @@ if(TEST)
     add_executable (testsecauth ${secauth_TESTSRC})
     target_link_libraries (testsecauth LINK_PUBLIC secauth dnp3mocks)
     set_target_properties(testsecauth PROPERTIES FOLDER tests)   
+	add_test(testsecauth testsecauth)
 
     # ----- opensslcrypto tests -----
     file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp ./cpp/tests/osslcryptotests/*.h)
     add_executable (testosslcrypto ${osslcrypto_TESTSRC})
     target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto ${PTHREAD})
     set_target_properties(testosslcrypto PROPERTIES FOLDER tests)          
+	add_test(testosslcrypto testosslcrypto)
   
   endif()
 
