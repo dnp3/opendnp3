@@ -89,8 +89,7 @@ public:
 	* @param retry Retry parameters for failed channels
 	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
-	* @param port Port of remote outstation is listening on
-	* @param strategy Reconnection delay strategy, default to exponential backoff
+	* @param port Port of remote outstation is listening on	
 	* @return A channel interface
 	*/
 	IChannel* AddTCPClient(
@@ -108,8 +107,7 @@ public:
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
 	* @param retry Retry parameters for failed channels
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
-	* @param port Port to listen on
-	* @param strategy Reconnection delay strategy, default to exponential
+	* @param port Port to listen on	
 	* @return A channel interface
 	*/
 	IChannel* AddTCPServer(
