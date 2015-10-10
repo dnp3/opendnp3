@@ -1,3 +1,6 @@
+### 2.1.0-RC2 ###
+* :beetle: Fixed a bug that was causing the keep-alive to not retry at the configured rate
+
 ### 2.1.0-RC1 ###
 * Migrated fully to CMake, including generated SLN
 * Separated include vs private headers
