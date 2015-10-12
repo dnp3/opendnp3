@@ -31,21 +31,21 @@ namespace Automatak
 			private ref class LogAdapterWrapper
 			{
 			public:
-				LogAdapterWrapper(ILogHandler^ proxy) : mpAdapter(new LogAdapter(proxy))
+				LogAdapterWrapper(ILogHandler^ proxy) : adapter(new LogAdapter(proxy))
 				{}
 
-				openpal::ILogHandler* GetLogAdapter()
+				openpal::ILogHandler& GetLogAdapter()
 				{
-					return mpAdapter;
+					return *adapter;
 				}
 
 				~LogAdapterWrapper()
 				{
-					delete mpAdapter;
+					delete adapter;
 				}
 
 			private:
-				LogAdapter* mpAdapter;
+				LogAdapter* adapter;
 			};
 		}
 	}

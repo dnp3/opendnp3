@@ -96,18 +96,26 @@ namespace Automatak
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdAddress = Conversions::ConvertString(address);
 				uint16_t stdPort = port;
-
-				auto pChannel = pManager->AddTLSClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, Conversions::Convert(config));
-				if (pChannel)
+				
+				try 
 				{
-					auto adapter = gcnew ChannelAdapter(pChannel, pCrypto);
-					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-					return adapter;
+					auto pChannel = pManager->AddTLSClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, Conversions::Convert(config));
+					if (pChannel)
+					{
+						auto adapter = gcnew ChannelAdapter(pChannel, pCrypto);
+						pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
+						return adapter;
+					}
+					else
+					{
+						return nullptr;
+					}
 				}
-				else
+				catch (const std::runtime_error& ex)
 				{
-					return nullptr;
-				}
+					std::string msg(ex.what());
+					throw gcnew System::ArgumentException(Conversions::ConvertString(msg));
+				}												
 			}
 			
 			IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::TLSConfig^ config)
@@ -116,16 +124,24 @@ namespace Automatak
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
 				uint16_t stdPort = port;
 
-				auto pChannel = pManager->AddTLSServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, Conversions::Convert(config));
-				if (pChannel)
+				try
 				{
-					auto adapter = gcnew ChannelAdapter(pChannel, pCrypto);
-					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-					return adapter;
+					auto pChannel = pManager->AddTLSServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, Conversions::Convert(config));
+					if (pChannel)
+					{
+						auto adapter = gcnew ChannelAdapter(pChannel, pCrypto);
+						pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
+						return adapter;
+					}
+					else
+					{
+						return nullptr;
+					}
 				}
-				else
+				catch (const std::runtime_error& ex)
 				{
-					return nullptr;
+					std::string msg(ex.what());
+					throw gcnew System::ArgumentException(Conversions::ConvertString(msg));
 				}
 			}
 

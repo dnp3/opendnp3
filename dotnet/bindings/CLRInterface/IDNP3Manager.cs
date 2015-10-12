@@ -68,6 +68,9 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Add a TLS client channel. The channel does not try to connect until you add a stack.
         /// </summary>
+        /// 
+        /// <exception cref="System.ArgumentException">If the TLS certificate/key information is invalid</exception>
+        /// 
         /// <param name="id">An id used for logging purposes</param>
         /// <param name="filters">The starting level for logging output</param>
         /// <param name="retry">Retry configuration for the channel</param>
@@ -80,6 +83,9 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Add a TLS server channel. The channel does not try to listen until you add a stack.
         /// </summary>
+        /// 
+        /// <exception cref="System.ArgumentException">If the TLS certificate/key information is invalid</exception>
+        /// 
         /// <param name="id">An id used for logging purposes</param>
         /// <param name="filters">The starting level for logging output</param>
         /// <param name="retry">Retry configuration for the channel</param>
