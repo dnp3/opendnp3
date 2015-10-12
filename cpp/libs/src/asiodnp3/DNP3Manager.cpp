@@ -56,7 +56,7 @@ DNP3Manager::~DNP3Manager()
 
 }
 
-void DNP3Manager::AddLogSubscriber(openpal::ILogHandler* handler)
+void DNP3Manager::AddLogSubscriber(openpal::ILogHandler& handler)
 {
 	impl->fanout.Subscribe(handler);
 }

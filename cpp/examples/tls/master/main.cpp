@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 	DNP3Manager manager(1);
 
 	// send log messages to the console
-	manager.AddLogSubscriber(&ConsoleLogger::Instance());	
+	manager.AddLogSubscriber(ConsoleLogger::Instance());	
 
 	// Connect via a TCPClient socket to a outstation
 	auto pChannel = manager.AddTLSClient(

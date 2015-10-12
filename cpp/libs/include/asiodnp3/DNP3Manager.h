@@ -71,9 +71,9 @@ public:
 
 	/**
 	* Add a callback to receive log messages
-	* @param handler pointer to a log handling interface
+	* @param handler reference to a log handling interface
 	*/
-	void AddLogSubscriber(openpal::ILogHandler* handler);
+	void AddLogSubscriber(openpal::ILogHandler& handler);
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop
@@ -137,6 +137,8 @@ public:
 	/**
 	* Add a TLS client channel
 	*
+	* @throw std::system_error Throws underlying ASIO exception of TLS configuration is invalid
+	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
 	* @param retry Retry parameters for failed channels
@@ -157,6 +159,8 @@ public:
 
 	/**
 	* Add a TLS server channel
+	*
+	* @throw std::system_error Throws underlying ASIO exception of TLS configuration is invalid
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions

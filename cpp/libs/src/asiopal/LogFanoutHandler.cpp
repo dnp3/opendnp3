@@ -35,10 +35,10 @@ void LogFanoutHandler::Log(const LogEntry& entry)
 	}
 }
 
-void LogFanoutHandler::Subscribe(ILogHandler* pHandler)
+void LogFanoutHandler::Subscribe(ILogHandler& handler)
 {
 	unique_lock<mutex> lock(callbackMutex);
-	this->subscribers.push_back(pHandler);
+	this->subscribers.push_back(&handler);
 }
 
 }

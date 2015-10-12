@@ -40,7 +40,7 @@ public:
 	/**
 	* Binds a listener to ALL log messages
 	*/
-	void Subscribe(openpal::ILogHandler* pHandler);
+	void Subscribe(openpal::ILogHandler& handler);
 
 	// implement the log function from ILogHandler
 	virtual void Log(const openpal::LogEntry& entry) override final;
