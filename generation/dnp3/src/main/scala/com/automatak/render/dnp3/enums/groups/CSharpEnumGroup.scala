@@ -30,7 +30,8 @@ object CSharpEnumGroup {
     KeyWrapAlgorithm(),
     KeyChangeMethod(),
     CommandPointState(),
-    RestartType()
+    RestartType(),
+    OperateType()
   ) ::: DefaultVariations.enums ::: QualityMasks.enums
 
 
