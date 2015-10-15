@@ -36,7 +36,7 @@ class CommandActionAdapter : public ICommandAction
 
 public:
 
-	CommandActionAdapter(ICommandHandler* handler, bool isSelect);
+	CommandActionAdapter(ICommandHandler* handler, bool isSelect, OperateType opType);
 
 	~CommandActionAdapter();
 
@@ -56,13 +56,14 @@ private:
 	CommandStatus ActionT(const T& command, uint16_t index)
 	{
 		this->CheckStart();
-		return m_isSelect ? m_handler->Select(command, index) : m_handler->Operate(command, index);
+		return m_isSelect ? m_handler->Select(command, index) : m_handler->Operate(command, index, m_opType);
 	}
 
 	void CheckStart();
 
 	ICommandHandler* m_handler;
 	bool m_isSelect;
+	OperateType m_opType;
 	bool m_isStarted;
 
 };

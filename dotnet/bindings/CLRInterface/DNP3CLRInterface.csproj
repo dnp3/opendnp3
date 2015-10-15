@@ -100,6 +100,7 @@
     <Compile Include="gen\KeyWrapAlgorithm.cs" />
     <Compile Include="gen\LinkStatus.cs" />
     <Compile Include="gen\MasterTaskType.cs" />
+    <Compile Include="gen\OperateType.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\QualifierCode.cs" />
     <Compile Include="gen\RestartMode.cs" />

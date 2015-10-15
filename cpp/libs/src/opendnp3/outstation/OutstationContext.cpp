@@ -510,7 +510,7 @@ void OContext::ProcessRequestNoAck(const APDUHeader& header, const openpal::RSli
 	switch (header.function)
 	{
 	case(FunctionCode::DIRECT_OPERATE_NR) :
-		this->HandleDirectOperate(objects, nullptr); // no object writer, this is a no ack code
+		this->HandleDirectOperate(objects, OperateType::DirectOperateNoAck, nullptr); // no object writer, this is a no ack code
 		break;
 	default:
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
@@ -529,7 +529,7 @@ IINField OContext::HandleNonReadResponse(const APDUHeader& header, const openpal
 	case(FunctionCode::OPERATE) :
 		return this->HandleOperate(objects, writer);
 	case(FunctionCode::DIRECT_OPERATE) :
-		return this->HandleDirectOperate(objects, &writer);
+		return this->HandleDirectOperate(objects, OperateType::DirectOperate, &writer);
 	case(FunctionCode::COLD_RESTART) :
 		return this->HandleRestart(objects, false, &writer);
 	case(FunctionCode::WARM_RESTART) :
@@ -574,7 +574,7 @@ IINField OContext::HandleWrite(const openpal::RSlice& objects)
 	return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
 
-IINField OContext::HandleDirectOperate(const openpal::RSlice& objects, HeaderWriter* pWriter)
+IINField OContext::HandleDirectOperate(const openpal::RSlice& objects, OperateType opType, HeaderWriter* pWriter)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (pWriter && (objects.Size() > pWriter->Remaining()))
@@ -584,7 +584,7 @@ IINField OContext::HandleDirectOperate(const openpal::RSlice& objects, HeaderWri
 	}
 	else
 	{
-		CommandActionAdapter adapter(this->pCommandHandler, false);
+		CommandActionAdapter adapter(this->pCommandHandler, false, opType);
 		CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, pWriter);
 		auto result = APDUParser::Parse(objects, handler, &this->logger);
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
@@ -601,7 +601,8 @@ IINField OContext::HandleSelect(const openpal::RSlice& objects, HeaderWriter& wr
 	}
 	else
 	{
-		CommandActionAdapter adapter(this->pCommandHandler, true);
+		// the 'OperateType' is just ignored  since it's a select
+		CommandActionAdapter adapter(this->pCommandHandler, true, OperateType::DirectOperate); 
 		CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, &writer);
 		auto result = APDUParser::Parse(objects, handler, &this->logger);
 		if (result == ParseResult::OK)
@@ -635,7 +636,7 @@ IINField OContext::HandleOperate(const openpal::RSlice& objects, HeaderWriter& w
 
 		if (result == CommandStatus::SUCCESS)
 		{
-			CommandActionAdapter adapter(this->pCommandHandler, false);
+			CommandActionAdapter adapter(this->pCommandHandler, false, OperateType::SelectBeforeOperate);
 			CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, &writer);
 			auto result = APDUParser::Parse(objects, handler, &this->logger);
 			return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);

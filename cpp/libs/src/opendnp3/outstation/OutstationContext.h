@@ -154,7 +154,7 @@ public:
 	IINField HandleWrite(const openpal::RSlice& objects);
 	IINField HandleSelect(const openpal::RSlice& objects, HeaderWriter& writer);
 	IINField HandleOperate(const openpal::RSlice& objects, HeaderWriter& writer);
-	IINField HandleDirectOperate(const openpal::RSlice& objects, HeaderWriter* pWriter);
+	IINField HandleDirectOperate(const openpal::RSlice& objects, OperateType opType, HeaderWriter* pWriter);
 	IINField HandleDelayMeasure(const openpal::RSlice& objects, HeaderWriter& writer);
 	IINField HandleRestart(const openpal::RSlice& objects, bool isWarmRestart, HeaderWriter* pWriter);
 	IINField HandleAssignClass(const openpal::RSlice& objects);

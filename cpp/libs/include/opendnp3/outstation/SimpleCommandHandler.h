@@ -39,41 +39,41 @@ public:
 	SimpleCommandHandler(CommandStatus status);
 
 	CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) override final;
-	CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index) override final;
+	CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) override final;
 
 
 	CommandStatus Select(const AnalogOutputInt16& command, uint16_t index) override final;
-	CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index) override final;
+	CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) override final;
 
 
 	CommandStatus Select(const AnalogOutputInt32& command, uint16_t index) override final;
-	CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index) override final;
+	CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) override final;
 
 
 	CommandStatus Select(const AnalogOutputFloat32& command, uint16_t index) override final;
-	CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index) override final;
+	CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) override final;
 
 
 	CommandStatus Select(const AnalogOutputDouble64& command, uint16_t index) override final;
-	CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index) override final;
+	CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) override final;
 
 
 protected:
 
 	virtual void DoSelect(const ControlRelayOutputBlock& command, uint16_t index) {}
-	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index) {}
+	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) {}
 
 	virtual void DoSelect(const AnalogOutputInt16& command, uint16_t index) {}
-	virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index) {}
+	virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) {}
 
 	virtual void DoSelect(const AnalogOutputInt32& command, uint16_t index) {}
-	virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index) {}
+	virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) {}
 
 	virtual void DoSelect(const AnalogOutputFloat32& command, uint16_t index) {}
-	virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index) {}
+	virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) {}
 
 	virtual void DoSelect(const AnalogOutputDouble64& command, uint16_t index) {}
-	virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index) {}
+	virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) {}
 
 	virtual void Start() override;
 	virtual void End() override;

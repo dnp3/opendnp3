@@ -24,6 +24,7 @@
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/ITransactable.h"
+#include "opendnp3/gen/OperateType.h"
 
 namespace opendnp3
 {
@@ -52,9 +53,10 @@ public:
 	*
 	* @param command command to operate
 	* @param index index of the command
+	* @param opType the operation type the outstation received.
 	* @return result of request
 	*/
-	virtual CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index) = 0;
+	virtual CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) = 0;
 
 
 	/**
@@ -71,9 +73,10 @@ public:
 	*
 	* @param command command to operate
 	* @param index index of the command
+	* @param opType the operation type the outstation received.
 	* @return result of request
 	*/
-	virtual CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index) = 0;
+	virtual CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) = 0;
 
 
 	/**
@@ -90,9 +93,10 @@ public:
 	*
 	* @param command command to operate
 	* @param index index of the command
+	* @param opType the operation type the outstation received.
 	* @return result of request
 	*/
-	virtual CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index) = 0;
+	virtual CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) = 0;
 
 	/**
 	* Ask if the application supports a single precision, floating point analog output - group 41 variation 3
@@ -108,9 +112,10 @@ public:
 	*
 	* @param command command to operate
 	* @param index index of the command
+	* @param opType the operation type the outstation received.
 	* @return result of request
 	*/
-	virtual CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index) = 0;
+	virtual CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) = 0;
 
 	/**
 	* Ask if the application supports a double precision, floating point analog output - group 41 variation 4
@@ -126,9 +131,10 @@ public:
 	*
 	* @param command command to operate
 	* @param index index of the command
+	* @param opType the operation type the outstation received.
 	* @return result of request
 	*/
-	virtual CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index) = 0;
+	virtual CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) = 0;
 
 };
 

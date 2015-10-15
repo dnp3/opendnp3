@@ -28,6 +28,22 @@
 namespace opendnp3
 {
 
+template <class T>
+class Operation : public Indexed<T>
+{
+public:
+
+	Operation(T value, uint16_t index, OperateType opType_) :
+		Indexed<T>(value, index),
+		opType(opType_)
+	{
+	
+	}
+
+	OperateType opType;
+};
+
+
 class MockCommandHandler final : public SimpleCommandHandler
 {
 public:
@@ -57,38 +73,38 @@ public:
 
 protected:	
 
-	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index) override 
+	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) override 
 	{ 
-		this->crob.push_back(WithIndex(command, index));
+		this->crobOps.push_back(Operation<ControlRelayOutputBlock>(command, index, opType));
 	}
 
-	virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index) override
+	virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) override
 	{
-		this->aoInt16.push_back(WithIndex(command, index));
+		this->aoInt16Ops.push_back(Operation<AnalogOutputInt16>(command, index, opType));
 	}
 
-	virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index) override
+	virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) override
 	{
-		this->aoInt32.push_back(WithIndex(command, index));
+		this->aoInt32Ops.push_back(Operation<AnalogOutputInt32>(command, index, opType));
 	}
 
-	virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index) override
+	virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) override
 	{
-		this->aoFloat32.push_back(WithIndex(command, index));
+		this->aoFloat32Ops.push_back(Operation<AnalogOutputFloat32>(command, index, opType));
 	}
 
-	virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index) override
+	virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) override
 	{
-		this->aoDouble64.push_back(WithIndex(command, index));
+		this->aoDouble64Ops.push_back(Operation<AnalogOutputDouble64>(command, index, opType));
 	}
 
 public:
 
-	std::vector<Indexed<ControlRelayOutputBlock>> crob;
-	std::vector<Indexed<AnalogOutputInt16>> aoInt16;
-	std::vector<Indexed<AnalogOutputInt32>> aoInt32;
-	std::vector<Indexed<AnalogOutputFloat32>> aoFloat32;
-	std::vector<Indexed<AnalogOutputDouble64>> aoDouble64;
+	std::vector<Operation<ControlRelayOutputBlock>> crobOps;
+	std::vector<Operation<AnalogOutputInt16>> aoInt16Ops;
+	std::vector<Operation<AnalogOutputInt32>> aoInt32Ops;
+	std::vector<Operation<AnalogOutputFloat32>> aoFloat32Ops;
+	std::vector<Operation<AnalogOutputDouble64>> aoDouble64Ops;
 
 };
 

@@ -34,9 +34,9 @@ CommandStatus SimpleCommandHandler::Select(const ControlRelayOutputBlock& comman
 	++numSelect;
 	return status;
 }
-CommandStatus SimpleCommandHandler::Operate(const ControlRelayOutputBlock& command, uint16_t index)
+CommandStatus SimpleCommandHandler::Operate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index);
+	this->DoOperate(command, index, opType);
 	++numOperate;
 	return status;
 }
@@ -47,9 +47,9 @@ CommandStatus SimpleCommandHandler::Select(const AnalogOutputInt16& command, uin
 	++numSelect;
 	return status;
 }
-CommandStatus SimpleCommandHandler::Operate(const AnalogOutputInt16& command, uint16_t index)
+CommandStatus SimpleCommandHandler::Operate(const AnalogOutputInt16& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index);
+	this->DoOperate(command, index, opType);
 	++numOperate;
 	return status;
 }
@@ -60,9 +60,9 @@ CommandStatus SimpleCommandHandler::Select(const AnalogOutputInt32& command, uin
 	++numSelect;
 	return status;
 }
-CommandStatus SimpleCommandHandler::Operate(const AnalogOutputInt32& command, uint16_t index)
+CommandStatus SimpleCommandHandler::Operate(const AnalogOutputInt32& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index);
+	this->DoOperate(command, index, opType);
 	++numOperate;
 	return status;
 }
@@ -73,9 +73,9 @@ CommandStatus SimpleCommandHandler::Select(const AnalogOutputFloat32& command, u
 	++numSelect;
 	return status;
 }
-CommandStatus SimpleCommandHandler::Operate(const AnalogOutputFloat32& command, uint16_t index)
+CommandStatus SimpleCommandHandler::Operate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index);
+	this->DoOperate(command, index, opType);
 	++numOperate;
 	return status;
 }
@@ -86,9 +86,9 @@ CommandStatus SimpleCommandHandler::Select(const AnalogOutputDouble64& command, 
 	++numSelect;
 	return status;
 }
-CommandStatus SimpleCommandHandler::Operate(const AnalogOutputDouble64& command, uint16_t index)
+CommandStatus SimpleCommandHandler::Operate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index);
+	this->DoOperate(command, index, opType);
 	++numOperate;
 	return status;
 }

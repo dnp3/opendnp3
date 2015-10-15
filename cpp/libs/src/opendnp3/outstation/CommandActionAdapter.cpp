@@ -25,9 +25,10 @@
 namespace opendnp3
 {
 
-CommandActionAdapter::CommandActionAdapter(ICommandHandler* handler, bool isSelect) :
+CommandActionAdapter::CommandActionAdapter(ICommandHandler* handler, bool isSelect, OperateType opType) :
 	m_handler(handler),
 	m_isSelect(isSelect),
+	m_opType(opType),
 	m_isStarted(false)
 {}
 

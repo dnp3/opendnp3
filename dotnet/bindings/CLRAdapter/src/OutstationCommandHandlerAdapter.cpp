@@ -50,29 +50,29 @@ namespace Automatak
 				return Conversions::ConvertCommandStatus(proxy->Select(Conversions::ConvertCommand(command), index));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index, opendnp3::OperateType opType)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index, (OperateType) opType));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt32& command, uint16_t index)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt32& command, uint16_t index, opendnp3::OperateType opType)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index, (OperateType)opType));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt16& command, uint16_t index)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt16& command, uint16_t index, opendnp3::OperateType opType)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index, (OperateType)opType));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputFloat32& command, uint16_t index)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, opendnp3::OperateType opType)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index, (OperateType)opType));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, opendnp3::OperateType opType)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(command), index, (OperateType)opType));
 			}
 
 		}

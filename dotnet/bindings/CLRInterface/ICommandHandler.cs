@@ -86,41 +86,46 @@ namespace Automatak.DNP3.Interface
         /// Operate a ControlRelayOutputBlock (Group12Var1)
         /// </summary>
         /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>        
+        /// <param name="index">index of the command</param>
+        /// <param name="opType">The type of the operation (SBO, DO, DONoAck) </param>
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(ControlRelayOutputBlock command, System.UInt16 index);
+        CommandStatus Operate(ControlRelayOutputBlock command, System.UInt16 index, OperateType opType);
         
         /// <summary>
         /// Operate a 32-bit analog output (Group 41 Var1)
         /// </summary>
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
+        /// <param name="opType">The type of the operation (SBO, DO, DONoAck) </param>
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(AnalogOutputInt32 command, System.UInt16 index);
+        CommandStatus Operate(AnalogOutputInt32 command, System.UInt16 index, OperateType opType);
         
         /// <summary>
         /// Operate a 16-bit analog output (Group 41 Var2)
         /// </summary>
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
+        /// <param name="opType">The type of the operation (SBO, DO, DONoAck) </param>
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(AnalogOutputInt16 command, System.UInt16 index);
+        CommandStatus Operate(AnalogOutputInt16 command, System.UInt16 index, OperateType opType);
 
         /// <summary>
         /// Operate a single precision analog output (Group 41 Var3)
         /// </summary>
         /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>        
+        /// <param name="index">index of the command</param>
+        /// <param name="opType">The type of the operation (SBO, DO, DONoAck) </param>
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(AnalogOutputFloat32 command, System.UInt16 index);
+        CommandStatus Operate(AnalogOutputFloat32 command, System.UInt16 index, OperateType opType);
 
         /// <summary>
         /// Operate a double precision analog output (Group 41 Var4)
         /// </summary>
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
+        /// <param name="opType">The type of the operation (SBO, DO, DONoAck) </param>
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(AnalogOutputDouble64 command, System.UInt16 index);
+        CommandStatus Operate(AnalogOutputDouble64 command, System.UInt16 index, OperateType opType);
      
     }
 }
