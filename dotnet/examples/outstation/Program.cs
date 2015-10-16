@@ -46,7 +46,7 @@ namespace DotNetOutstationDemo
             config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1, 0);
             config.databaseTemplate.binaries[0].clazz = PointClass.Class2;               
             // ....           
-            config.outstation.config.allowUnsolicited = true;
+            config.outstation.config.allowUnsolicited = true;            
 
             // Optional: setup your stack configuration here
             config.link.localAddr = 10;

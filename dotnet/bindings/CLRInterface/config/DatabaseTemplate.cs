@@ -138,24 +138,26 @@ namespace Automatak.DNP3.Interface
         }
 
         private static bool IsContiguous(IReadOnlyList<PointRecord> records, string name)
-        {
-            int lastIndex = records.Any() ? (records[0].index - 1) : -1;
+        {                       
+            int lastIndex = -1;             // will always detect non-zero based indices (even if contiguous)
+            bool contiguous = true;         // empty collections will always be contiguous
             System.UInt16 rawIndex = 0;
-            bool contiguous = true;
+            
             foreach (var rec in records)
             {
+                // this condition must not be violated for either mode
                 if (rec.index <= lastIndex)
                 {
-                    throw new ArgumentException(String.Format("Bad discontiguous index {0} found at raw index {1} for type {2}", rec.index, rawIndex, name));
+                    throw new ArgumentException(String.Format("Non-increasing index {0} found at raw index {1} for type {2}", rec.index, rawIndex, name));
                 }
-                else
-                { 
-                    if(rec.index != (lastIndex + 1))
-                    {
-                        contiguous = false;
-                    }                        
-                    lastIndex = rec.index;                    
-                }
+                                
+                if(rec.index != (lastIndex + 1))
+                {
+                    contiguous = false;
+                }                        
+
+                lastIndex = rec.index;
+                ++rawIndex;
             }
 
             return contiguous;
