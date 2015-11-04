@@ -1,3 +1,6 @@
+### 2.1.0-RC3 ###
+* :beetle: Fixed a bug in the C# bindings where non-zero based indices were not being detected properly.
+
 ### 2.1.0-RC2 ###
 * :beetle: Fixed a bug that was causing the keep-alive to not retry at the configured rate
 
