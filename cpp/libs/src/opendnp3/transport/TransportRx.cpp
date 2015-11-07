@@ -60,63 +60,62 @@ openpal::WSlice TransportRx::GetAvailable()
 
 RSlice TransportRx::ProcessReceive(const RSlice& input)
 {
-	if (input.Size() == 0)
+	if (input.IsEmpty())
 	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_HEADER, "Received tpdu with no header");
 		if (pStatistics) ++pStatistics->numTransportErrorRx;
 		return RSlice::Empty();
 	}
-	else
+	
+
+	const uint8_t HDR = input[0];
+	const bool FIR = (HDR & TL_HDR_FIR) != 0;
+	const bool FIN = (HDR & TL_HDR_FIN) != 0;
+	const int SEQ = HDR & TL_HDR_SEQ;
+
+	auto payload = input.Skip(1);
+
+	FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", FIR, FIR, SEQ, payload.Size());
+
+	if (!this->ValidateHeader(FIR, FIR, SEQ))
 	{
-		uint8_t hdr = input[0];
-		bool first = (hdr & TL_HDR_FIR) != 0;
-		bool last = (hdr & TL_HDR_FIN) != 0;
-		int seq = hdr & TL_HDR_SEQ;
-
-		auto payload = input.Skip(1);
-
-		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", first, last, seq, payload.Size());
-
-		if (!this->ValidateHeader(first, last, seq))
+		if (pStatistics) 	
 		{
-			if (pStatistics) ++pStatistics->numTransportErrorRx;
-			return RSlice::Empty();
+			++pStatistics->numTransportErrorRx;
 		}
-
-		auto available = this->GetAvailable();
-
-		if (payload.Size() > available.Size())
-		{
-			if (pStatistics) ++pStatistics->numTransportErrorRx;
-			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
-			this->ClearRxBuffer();
-			return RSlice::Empty();
-		}
-		else   //passed all validation
-		{
-			if (pStatistics) ++pStatistics->numTransportRx;
-
-			auto payload = input.Skip(1);
-
-			payload.CopyTo(available);
-
-			this->numBytesRead += payload.Size();
-			this->sequence.Increment();
-
-			if(last)
-			{
-				RSlice ret = rxBuffer.ToRSlice().Take(numBytesRead);
-				this->ClearRxBuffer();
-				return ret;
-			}
-			else
-			{
-				return RSlice::Empty();
-			}
-		}
+		return RSlice::Empty();
 	}
 
+	auto available = this->GetAvailable();
 
+	if (payload.Size() > available.Size())
+	{
+		if (pStatistics) ++pStatistics->numTransportErrorRx;
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
+		this->ClearRxBuffer();
+		return RSlice::Empty();
+	}
+	
+	if (pStatistics) 
+	{
+		++pStatistics->numTransportRx;
+	}
+
+	payload.CopyTo(available);
+
+	this->numBytesRead += payload.Size();
+	this->sequence.Increment();
+
+	if(FIN)
+	{
+		RSlice ret = rxBuffer.ToRSlice().Take(numBytesRead);
+		this->ClearRxBuffer();
+		return ret;
+	}
+	else
+	{
+		return RSlice::Empty();
+	}
 }
 
 bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_)
