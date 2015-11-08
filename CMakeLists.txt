@@ -188,7 +188,7 @@ if(DEMO)
   
   # ----- decoder executable -----
   add_executable(decoder ./cpp/examples/decoder/main.cpp)
-  target_link_libraries (decoder asiodnp3)
+  target_link_libraries (decoder asiodnp3 ${PTHREAD})
   set_target_properties(decoder PROPERTIES FOLDER demos)
 
   # ----- master demo executable -----
@@ -198,9 +198,7 @@ if(DEMO)
 
   # ----- outstation demo executable -----
   add_executable(outstation-demo ./cpp/examples/outstation/main.cpp)
-  target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-  target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-    
+  target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})   
   set_target_properties(outstation-demo PROPERTIES FOLDER demos)
 
   if(DNP3_TLS)
