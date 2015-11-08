@@ -18,37 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_IDECODERCALLBACKS_H
+#define OPENDNP3_IDECODERCALLBACKS_H
 
-#include <opendnp3/Decoder.h>
-
-#include "DecoderImpl.h"
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {
-	Decoder::Decoder(openpal::Logger logger) :
-		impl(new DecoderImpl(logger))		
-	{}
+	class IDecoderCallbacks : openpal::Uncopyable
+	{
+		friend class Indent;
 
-	void Decoder::DecodeLPDU(const openpal::RSlice& data)
-	{
-		impl->DecodeLPDU(data);
-	}
-	
-	void Decoder::DecodeTPDU(const openpal::RSlice& data)
-	{
-		impl->DecodeTPDU(data);
-	}
+	protected:
 
-	void Decoder::DecodeAPDU(const openpal::RSlice& data)
+		virtual void PushIndent() = 0;
+		virtual void PopIndent() = 0;
+	};
+
+	class Indent : openpal::Uncopyable
 	{
-		impl->DecodeAPDU(data);
-	}
-	
-	Decoder::~Decoder()
-	{
-		delete impl;
-	}
-	
+		
+	};
 }
 
-
+#endif

@@ -19,37 +19,36 @@
  * to you under the terms of the License.
  */
 
-#include <openpal/logging/LogRoot.h>
-#include <openpal/container/Buffer.h>
-
 #include <opendnp3/decoder/Decoder.h>
-#include <opendnp3/LogLevels.h>
-#include <asiodnp3/ConsoleLogger.h>
 
-using namespace std;
-using namespace openpal;
-using namespace opendnp3;
-using namespace asiodnp3;
+#include "DecoderImpl.h"
 
-int main(int argc, char* argv[])
-{		
-	openpal::LogRoot log(&ConsoleLogger::Instance(), "decoder", LogFilters(~0));
-	Decoder decoder(log.GetLogger());
-	
-	Buffer buffer(4096);
+namespace opendnp3
+{
+	Decoder::Decoder(openpal::Logger logger) :
+		impl(new DecoderImpl(logger))		
+	{}
 
-	while (true)
+	void Decoder::DecodeLPDU(const openpal::RSlice& data)
 	{
-		const size_t NUM_READ = fread(buffer(), 1, buffer.Size(), stdin);
-		
-		if (NUM_READ == 0)
-		{
-			return 0;
-		}
-		
-		decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
+		impl->DecodeLPDU(data);
+	}
+	
+	void Decoder::DecodeTPDU(const openpal::RSlice& data)
+	{
+		impl->DecodeTPDU(data);
 	}
 
-	return 0;
+	void Decoder::DecodeAPDU(const openpal::RSlice& data)
+	{
+		impl->DecodeAPDU(data);
+	}
+	
+	Decoder::~Decoder()
+	{
+		delete impl;
+	}
+	
 }
+
 
