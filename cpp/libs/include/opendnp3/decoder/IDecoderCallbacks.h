@@ -31,14 +31,11 @@ namespace opendnp3
 
 	protected:
 
-		virtual void PushIndent() = 0;
-		virtual void PopIndent() = 0;
-	};
-
-	class Indent : openpal::Uncopyable
-	{
-		
+		virtual void PushIndent() {};
+		virtual void PopIndent() {};
 	};
 }
 
 #endif
+
+

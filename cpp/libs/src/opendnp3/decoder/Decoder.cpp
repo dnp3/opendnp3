@@ -25,8 +25,8 @@
 
 namespace opendnp3
 {
-	Decoder::Decoder(openpal::Logger logger) :
-		impl(new DecoderImpl(logger))		
+	Decoder::Decoder(IDecoderCallbacks& callbacks, openpal::Logger logger) :
+		impl(new DecoderImpl(callbacks, logger))		
 	{}
 
 	void Decoder::DecodeLPDU(const openpal::RSlice& data)

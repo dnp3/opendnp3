@@ -24,6 +24,8 @@
 #include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
 
+#include <opendnp3/decoder/IDecoderCallbacks.h>
+
 #include "opendnp3/link/LinkLayerParser.h"
 #include "opendnp3/link/IFrameSink.h"
 #include "opendnp3/transport/TransportRx.h"
@@ -38,7 +40,7 @@ namespace opendnp3
 	{
 	public:
 
-		DecoderImpl(openpal::Logger logger);		
+		DecoderImpl(IDecoderCallbacks& callbacks, openpal::Logger logger);		
 
 		void DecodeLPDU(const openpal::RSlice& data);
 		void DecodeTPDU(const openpal::RSlice& data);
@@ -108,6 +110,7 @@ namespace opendnp3
 		virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values) override;
 
 
+		IDecoderCallbacks* callbacks;
 		openpal::Logger logger;		
 		LinkLayerParser link;
 		TransportRx transportRx;

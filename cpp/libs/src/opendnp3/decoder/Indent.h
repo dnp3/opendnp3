@@ -18,39 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_IDECODERCALLBACKS_H
+#define OPENDNP3_IDECODERCALLBACKS_H
 
-#include <openpal/logging/LogRoot.h>
-#include <openpal/container/Buffer.h>
+#include <opendnp3/IDecoderCallbacks.h>
 
-#include <opendnp3/decoder/Decoder.h>
-#include <opendnp3/LogLevels.h>
-#include <asiodnp3/ConsoleLogger.h>
-
-using namespace std;
-using namespace openpal;
-using namespace opendnp3;
-using namespace asiodnp3;
-
-int main(int argc, char* argv[])
-{		
-	openpal::LogRoot log(&ConsoleLogger::Instance(), "decoder", LogFilters(~0));
-	IDecoderCallbacks callback;
-	Decoder decoder(callback, log.GetLogger());
-	
-	Buffer buffer(4096);
-
-	while (true)
+namespace opendnp3
+{
+	class Indent : openpal::Uncopyable
 	{
-		const size_t NUM_READ = fread(buffer(), 1, buffer.Size(), stdin);
+		public:
 		
-		if (NUM_READ == 0)
+		Indent(IDecoderCallbacks& callbacks) : m_callbacks(&callbacks)
 		{
-			return 0;
+			m_callbacks->PushIndent();
 		}
-		
-		decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
-	}
 
-	return 0;
+		~Indent()
+		{
+			m_callbacks->PopIndent();
+		}	
+			
+
+		private:
+
+		Indent() = 0;
+		
+		IDecoderCallbacks* m_callbacks;
+					
+	};
 }
+
+#endif
+
 
