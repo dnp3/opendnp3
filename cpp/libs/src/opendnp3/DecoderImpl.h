@@ -27,6 +27,8 @@
 #include "opendnp3/link/LinkLayerParser.h"
 #include "opendnp3/link/IFrameSink.h"
 
+#include "opendnp3/transport/TransportRx.h"
+
 namespace opendnp3
 {
 	class DecoderImpl;
@@ -40,13 +42,19 @@ namespace opendnp3
 
 		void DecodeLPDU(const openpal::RSlice& data);
 		void DecodeTPDU(const openpal::RSlice& data);
-		void DecodeAPDU(const openpal::RSlice& data);
-
-		virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
+		void DecodeAPDU(const openpal::RSlice& data);		
 
 	private:
+		
+		static bool IsResponse(const openpal::RSlice& data);
+
+		/// --- Implement IFrameSink ---
+		virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
+
+
 		openpal::Logger logger;		
 		LinkLayerParser link;
+		TransportRx transportRx;
 	};
 
 
