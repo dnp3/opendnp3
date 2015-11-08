@@ -24,6 +24,8 @@
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/parsing/APDUParser.h"
 
+#include <openpal/logging/LogMacros.h>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -58,17 +60,31 @@ void DecoderImpl::DecodeTPDU(const openpal::RSlice& data)
 	auto asdu = transportRx.ProcessReceive(data);
 	if (asdu.IsNotEmpty())
 	{
-		this->DecodeAPDU(data);
+		this->DecodeAPDU(asdu);
 	}
 }
 
 void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 {
+	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, data, 18, 18);
+
 	if (IsResponse(data))
 	{
 		APDUResponseHeader header;
 		if (APDUHeaderParser::ParseResponse(data, header, &logger))
 		{
+			FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
+	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+	                 header.control.FIR,
+	                 header.control.FIN,
+	                 header.control.CON,
+	                 header.control.UNS,
+	                 header.control.SEQ,
+	                 FunctionCodeToString(header.function),
+	                 header.IIN.LSB,
+	                 header.IIN.MSB);
+
+
 			// proceed
 		}
 	}
@@ -77,6 +93,16 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 		APDUHeader header;
 		if (APDUHeaderParser::ParseRequest(data, header, &logger))
 		{
+			
+			FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
+	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
+	                 header.control.FIR,
+	                 header.control.FIN,
+	                 header.control.CON,
+	                 header.control.UNS,
+	                 header.control.SEQ,
+	                 FunctionCodeToString(header.function));
+
 			// proceed
 		}
 	}
