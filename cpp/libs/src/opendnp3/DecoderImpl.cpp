@@ -84,8 +84,6 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 	                 header.IIN.LSB,
 	                 header.IIN.MSB);
 
-
-			// proceed
 		}
 	}
 	else

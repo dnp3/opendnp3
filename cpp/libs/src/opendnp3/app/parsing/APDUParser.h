@@ -42,14 +42,14 @@ public:
 
 	static ParseResult ParseAndLogAll(const openpal::RSlice& buffer, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
 
+	static ParseResult ParseSinglePass(const openpal::RSlice& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, IWhiteList* pWhiteList, const ParserSettings& settings);
+
 private:
 
 	static bool AllowAll(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
 	{
 		return true;
 	}
-
-	static ParseResult ParseSinglePass(const openpal::RSlice& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, IWhiteList* pWhiteList, const ParserSettings& settings);
 
 	static ParseResult ParseHeaders(const openpal::RSlice& buffer, openpal::Logger* pLogger, const ParserSettings& settings, IAPDUHandler* pHandler);
 
