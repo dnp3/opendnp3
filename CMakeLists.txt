@@ -185,6 +185,11 @@ set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".
 install(DIRECTORY ./cpp/libs/include/ DESTINATION include ${INSTALL_ARGS})
 
 if(DEMO)
+  
+  # ----- decoder executable -----
+  add_executable(decoder ./cpp/examples/decoder/main.cpp)
+  target_link_libraries (decoder asiodnp3)
+  set_target_properties(decoder PROPERTIES FOLDER demos)
 
   # ----- master demo executable -----
   add_executable(master-demo ./cpp/examples/master/main.cpp)

@@ -24,21 +24,29 @@
 #include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
 
+#include "opendnp3/link/LinkLayerParser.h"
+#include "opendnp3/link/IFrameSink.h"
+
 namespace opendnp3
 {
 	class DecoderImpl;
 
 	// stand-alone DNP3 decoder
-	class DecoderImpl
+	class DecoderImpl final : private IFrameSink
 	{
 	public:
 
 		DecoderImpl(openpal::Logger logger);		
 
-		void Decode(const openpal::RSlice& data);
+		void DecodeLPDU(const openpal::RSlice& data);
+		void DecodeTPDU(const openpal::RSlice& data);
+		void DecodeAPDU(const openpal::RSlice& data);
+
+		virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
 
 	private:
 		openpal::Logger logger;		
+		LinkLayerParser link;
 	};
 
 

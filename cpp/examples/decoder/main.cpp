@@ -18,36 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_DECODER_H
-#define OPENDNP3_DECODER_H
 
-#include <openpal/container/RSlice.h>
-#include <openpal/logging/Logger.h>
+#include <openpal/logging/LogRoot.h>
+#include <openpal/container/Buffer.h>
 
-namespace opendnp3
-{
-	class DecoderImpl;
+#include <opendnp3/Decoder.h>
+#include <opendnp3/LogLevels.h>
+#include <asiodnp3/ConsoleLogger.h>
 
-	// stand-alone DNP3 decoder
-	class Decoder
+using namespace std;
+using namespace openpal;
+using namespace opendnp3;
+using namespace asiodnp3;
+
+int main(int argc, char* argv[])
+{		
+	openpal::LogRoot log(&ConsoleLogger::Instance(), "decoder", LogFilters(~0));
+	Decoder decoder(log.GetLogger());
+	
+	Buffer buffer(4096);
+
+	while (true)
 	{
-	public:
+		const size_t NUM_READ = fread(buffer(), 1, buffer.Size(), stdin);
+		
+		if (NUM_READ == 0)
+		{
+			return 0;
+		}
+		
+		decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
+	}
 
-		Decoder(openpal::Logger logger);
-		~Decoder();
-
-		void DecodeLPDU(const openpal::RSlice& data);
-		void DecodeTPDU(const openpal::RSlice& data);
-		void DecodeAPDU(const openpal::RSlice& data);
-
-
-
-	private:
-
-		DecoderImpl* impl;
-	};
-
-
+	return 0;
 }
 
-#endif

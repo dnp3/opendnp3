@@ -21,15 +21,47 @@
 
 #include "DecoderImpl.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 	
-DecoderImpl::DecoderImpl(openpal::Logger logger_) : logger(logger_)
+DecoderImpl::DecoderImpl(openpal::Logger logger_) : 
+	logger(logger_),
+	link(logger_, nullptr)
 {}
 
-void DecoderImpl::Decode(const openpal::RSlice& data)
+void DecoderImpl::DecodeLPDU(const openpal::RSlice& data)
+{
+	RSlice remaining(data);
+
+	while (remaining.IsNotEmpty())
+	{
+		auto dest = this->link.WriteBuff();
+
+		const auto NUM = (remaining.Size() > dest.Size()) ? dest.Size() : remaining.Size();
+		
+		remaining.Take(NUM).CopyTo(dest);
+		link.OnRead(NUM, this);
+		
+		remaining.Advance(NUM);
+	}
+	
+}
+
+void DecoderImpl::DecodeTPDU(const openpal::RSlice& data)
 {
 
+}
+
+void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
+{
+
+}
+
+bool DecoderImpl::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
+{
+	return true;
 }
 
 }
