@@ -21,8 +21,11 @@
 
 #include "DecoderImpl.h"
 
+#include "opendnp3/decoder/Indent.h"
+
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/parsing/APDUParser.h"
+
 
 #include <openpal/logging/LogMacros.h>
 
@@ -40,6 +43,8 @@ DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks_, openpal::Logger logger_)
 
 void DecoderImpl::DecodeLPDU(const openpal::RSlice& data)
 {
+	Indent i(*callbacks);
+	
 	RSlice remaining(data);
 
 	while (remaining.IsNotEmpty())
@@ -58,6 +63,8 @@ void DecoderImpl::DecodeLPDU(const openpal::RSlice& data)
 
 void DecoderImpl::DecodeTPDU(const openpal::RSlice& data)
 {
+	Indent i(*callbacks);
+
 	auto asdu = transportRx.ProcessReceive(data);
 	if (asdu.IsNotEmpty())
 	{
@@ -67,6 +74,8 @@ void DecoderImpl::DecodeTPDU(const openpal::RSlice& data)
 
 void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 {
+	Indent i(*callbacks);
+
 	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, data, 18, 18);
 
 	if (IsResponse(data))

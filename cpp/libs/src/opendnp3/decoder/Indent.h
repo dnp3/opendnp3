@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IDECODERCALLBACKS_H
-#define OPENDNP3_IDECODERCALLBACKS_H
+#ifndef OPENDNP3_INDENT_H
+#define OPENDNP3_INDENT_H
 
-#include <opendnp3/IDecoderCallbacks.h>
+#include <opendnp3/decoder/IDecoderCallbacks.h>
 
 namespace opendnp3
 {
@@ -42,7 +42,7 @@ namespace opendnp3
 
 		private:
 
-		Indent() = 0;
+		Indent() = delete;
 		
 		IDecoderCallbacks* m_callbacks;
 					
