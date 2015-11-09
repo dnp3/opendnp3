@@ -25,7 +25,7 @@
 
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/parsing/APDUParser.h"
-
+#include "opendnp3/decoder/LoggingHandler.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -96,7 +96,8 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 	                 header.IIN.MSB);
 
 			Indent i(*callbacks);
-			APDUParser::ParseSinglePass(data.Skip(4), &logger, this, this, ParserSettings::Default());
+			LoggingHandler handler(logger, *callbacks);
+			APDUParser::ParseSinglePass(data.Skip(4), &logger, &handler, nullptr, ParserSettings::Default());
 		}
 	}
 	else
@@ -116,8 +117,9 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 
 
 			Indent i(*callbacks);
+			LoggingHandler handler(logger, *callbacks);
 			auto settings = (header.function == FunctionCode::READ) ? ParserSettings::NoContents() : ParserSettings::Default();			
-			APDUParser::ParseSinglePass(data.Skip(2), &logger, this, this, settings);
+			APDUParser::ParseSinglePass(data.Skip(2), &logger, &handler, nullptr, settings);
 		}
 	}
 }
@@ -148,236 +150,6 @@ bool DecoderImpl::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 	}
 
 	return true;
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object) 
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var2& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var6& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var7& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var13& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var14& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values)
-{
-	return IINField::Empty();
-}
-
-IINField DecoderImpl::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values)
-{
-	return IINField::Empty();
 }
 
 }
