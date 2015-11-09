@@ -51,7 +51,10 @@ namespace opendnp3
 		/// --- templated helpers ---
 
 		template <class T>
-		IINField PrintValues(const ICollection<Indexed<T>>& items);
+		IINField PrintBV(const ICollection<Indexed<T>>& items);
+
+		template <class T>
+		IINField PrintBVQT(const ICollection<Indexed<T>>& items);
 
 		/// --- Implement IAPDUHandler ---
 
@@ -110,16 +113,35 @@ namespace opendnp3
 		virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values) override;
 		virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values) override;				
 	};
-
 	
-
 	template <class T>
-	IINField LoggingHandler::PrintValues(const ICollection<Indexed<T>>& items)
+	IINField LoggingHandler::PrintBV(const ICollection<Indexed<T>>& items)
 	{
 		Indent i(*callbacks);
 		auto logItem = [this](const Indexed<T>& item) 
 		{
-			FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] - value: %s", item.index, Bool(item.value.value));
+			FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] - %s", item.index, Bool(item.value.value));
+		};
+
+		items.ForeachItem(logItem);
+
+		return IINField::Empty();
+	}
+
+	template <class T>
+	IINField LoggingHandler::PrintBVQT(const ICollection<Indexed<T>>& items)
+	{
+		Indent i(*callbacks);
+		auto logItem = [this](const Indexed<T>& item)
+		{
+			FORMAT_LOG_BLOCK(logger, 
+							flags::APP_OBJECT_RX, 
+							"[%u] - %s flags: %u time: %u",
+							item.index, 
+							Bool(item.value.value), 
+							static_cast<uint32_t>(item.value.quality),
+							item.value.time
+			);
 		};
 
 		items.ForeachItem(logItem);

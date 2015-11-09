@@ -129,12 +129,12 @@ IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
 {
-	return this->PrintValues(values);
+	return this->PrintBV(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
 {
-	return IINField::Empty();
+	return this->PrintBVQT(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
@@ -184,7 +184,7 @@ IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
 {
-	return IINField::Empty();
+	return this->PrintBVQT(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
