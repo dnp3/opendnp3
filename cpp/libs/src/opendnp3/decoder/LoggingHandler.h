@@ -49,7 +49,7 @@ namespace opendnp3
 
 		static const char* Bool(bool value)
 		{
-			return value ? "true" : "false";
+			return value ? "1" : "0";
 		}
 
 		static std::string ToHex(uint8_t b)
@@ -131,7 +131,7 @@ namespace opendnp3
 		Indent i(*callbacks);
 		auto logItem = [this](const Indexed<T>& item) 
 		{
-			FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] - %s", item.index, Bool(item.value.value));
+			FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] - value: %s", item.index, Bool(item.value.value));
 		};
 
 		items.ForeachItem(logItem);
@@ -146,7 +146,7 @@ namespace opendnp3
 		auto logItem = [this](const Indexed<T>& item)
 		{
 			std::ostringstream oss;
-			oss << "[" << item.index << "] - " << Bool(item.value.value); 
+			oss << "[" << item.index << "] - value: " << Bool(item.value.value); 
 			oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
 			oss << " time: " << item.value.time.Get();
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
