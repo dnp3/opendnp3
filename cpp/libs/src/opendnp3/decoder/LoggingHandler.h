@@ -136,7 +136,7 @@ namespace opendnp3
 		{
 			FORMAT_LOG_BLOCK(logger, 
 							flags::APP_OBJECT_RX, 
-							"[%u] - %s flags: %u time: %u",
+							"[%u] - %s flags: %u time: %llu",
 							item.index, 
 							Bool(item.value.value), 
 							static_cast<uint32_t>(item.value.quality),
