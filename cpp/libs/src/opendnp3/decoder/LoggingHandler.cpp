@@ -37,10 +37,10 @@ IINField LoggingHandler::PrintCrob(const ICollection<Indexed<ControlRelayOutputB
 	auto logItem = [this](const Indexed<ControlRelayOutputBlock>& item)
 	{
 		std::ostringstream oss;
-		oss << "[" << item.index << "] - code: " << ControlCodeToString(item.value.functionCode) << "(" << ToHex(item.value.rawCode) << ")";
+		oss << "[" << item.index << "] - code: 0x" << ToHex(item.value.rawCode) << " (" << ControlCodeToString(item.value.functionCode) << ")";
 		oss << " count: " << static_cast<uint32_t>(item.value.count);
-		oss << " onTime: " << static_cast<uint32_t>(item.value.onTimeMS);
-		oss << " offTime: " << static_cast<uint32_t>(item.value.offTimeMS);
+		oss << " on-time: " << static_cast<uint32_t>(item.value.onTimeMS);
+		oss << " off-time: " << static_cast<uint32_t>(item.value.offTimeMS);
 		oss << " status: " << CommandStatusToString(item.value.status);
 		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 	};
