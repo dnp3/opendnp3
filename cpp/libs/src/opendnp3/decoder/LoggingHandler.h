@@ -22,9 +22,12 @@
 #define OPENDNP3_LOGGINGHANDLER_H
 
 #include <openpal/logging/Logger.h>
+#include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/app/parsing/IAPDUHandler.h"
 #include "opendnp3/decoder/IDecoderCallbacks.h"
+#include "opendnp3/decoder/Indent.h"
+#include "opendnp3/LogLevels.h"
 
 namespace opendnp3
 {	
@@ -39,6 +42,16 @@ namespace opendnp3
 
 		openpal::Logger logger;
 		IDecoderCallbacks* callbacks;
+
+		static const char* Bool(bool value)
+		{
+			return value ? "true" : "false";
+		}
+
+		/// --- templated helpers ---
+
+		template <class T>
+		IINField PrintValues(const ICollection<Indexed<T>>& items);
 
 		/// --- Implement IAPDUHandler ---
 
@@ -98,7 +111,21 @@ namespace opendnp3
 		virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values) override;				
 	};
 
+	
 
+	template <class T>
+	IINField LoggingHandler::PrintValues(const ICollection<Indexed<T>>& items)
+	{
+		Indent i(*callbacks);
+		auto logItem = [this](const Indexed<T>& item) 
+		{
+			FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] - value: %s", item.index, Bool(item.value.value));
+		};
+
+		items.ForeachItem(logItem);
+
+		return IINField::Empty();
+	}
 }
 
 #endif

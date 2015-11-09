@@ -129,7 +129,7 @@ IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
 {
-	return IINField::Empty();
+	return this->PrintValues(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
