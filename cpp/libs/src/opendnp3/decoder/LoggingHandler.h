@@ -23,6 +23,7 @@
 
 #include <openpal/logging/Logger.h>
 #include <openpal/logging/LogMacros.h>
+#include <openpal/util/ToHex.h>
 
 #include "opendnp3/app/parsing/IAPDUHandler.h"
 #include "opendnp3/decoder/IDecoderCallbacks.h"
@@ -49,6 +50,13 @@ namespace opendnp3
 		static const char* Bool(bool value)
 		{
 			return value ? "true" : "false";
+		}
+
+		static std::string ToHex(uint8_t b)
+		{
+			std::ostringstream oss;
+			oss << openpal::ToHexChar((b & 0xf0) >> 4) << openpal::ToHexChar(b & 0xf);
+			return oss.str();
 		}
 
 		/// --- templated helpers ---
@@ -139,7 +147,7 @@ namespace opendnp3
 		{
 			std::ostringstream oss;
 			oss << "[" << item.index << "] - " << Bool(item.value.value); 
-			oss << " flags: 0x" << std::hex << item.value.quality << std::dec;
+			oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
 			oss << " time: " << item.value.time.Get();
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 		};
