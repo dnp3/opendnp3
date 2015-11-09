@@ -29,6 +29,9 @@
 #include "opendnp3/decoder/Indent.h"
 #include "opendnp3/LogLevels.h"
 
+#include <cstdint>
+#include <sstream>
+
 namespace opendnp3
 {	
 	// stand-alone DNP3 decoder
@@ -134,14 +137,11 @@ namespace opendnp3
 		Indent i(*callbacks);
 		auto logItem = [this](const Indexed<T>& item)
 		{
-			FORMAT_LOG_BLOCK(logger, 
-							flags::APP_OBJECT_RX, 
-							"[%u] - %s flags: %u time: %llu",
-							item.index, 
-							Bool(item.value.value), 
-							static_cast<uint32_t>(item.value.quality),
-							item.value.time.Get()
-			);
+			std::ostringstream oss;
+			oss << "[" << item.index << "] - " << Bool(item.value.value); 
+			oss << " flags: " << static_cast<int>(item.value.quality);
+			oss << " time: " << item.value.time.Get();
+			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 		};
 
 		items.ForeachItem(logItem);
