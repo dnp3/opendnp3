@@ -94,6 +94,7 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 	                 header.IIN.LSB,
 	                 header.IIN.MSB);
 
+			Indent i(*callbacks);
 			APDUParser::ParseSinglePass(data.Skip(4), &logger, this, this, ParserSettings::Default());
 		}
 	}
@@ -112,8 +113,9 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 	                 header.control.SEQ,
 	                 FunctionCodeToString(header.function));
 
-			auto settings = (header.function == FunctionCode::READ) ? ParserSettings::NoContents() : ParserSettings::Default();
-			
+
+			Indent i(*callbacks);
+			auto settings = (header.function == FunctionCode::READ) ? ParserSettings::NoContents() : ParserSettings::Default();			
 			APDUParser::ParseSinglePass(data.Skip(2), &logger, this, this, settings);
 		}
 	}
