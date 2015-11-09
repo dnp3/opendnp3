@@ -49,6 +49,7 @@ bool APDUHeaderParser::ParseResponse(const openpal::RSlice& apdu, APDUResponseHe
 {
 	if (apdu.Size() < APDU_RESPONSE_HEADER_SIZE)
 	{
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Response fragment  with insufficient size of %u bytes", apdu.Size());
 		return false;
 	}
 	else

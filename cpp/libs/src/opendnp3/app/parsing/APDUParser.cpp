@@ -80,41 +80,37 @@ ParseResult APDUParser::ParseHeader(RSlice& buffer, openpal::Logger* pLogger, ui
 {
 	ObjectHeader header;
 	auto result = ObjectHeaderParser::ParseObjectHeader(header, buffer, pLogger);
-	if (result == ParseResult::OK)
-	{
-		auto gv = GroupVariationRecord::GetRecord(header.group, header.variation);
-
-		if (gv.enumeration == GroupVariation::UNKNOWN)
-		{
-			FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object %i / %i", gv.group, gv.variation);
-			return ParseResult::UNKNOWN_OBJECT;
-		}
-		else
-		{
-			// if a white-list is defined and it doesn't validate, exit early
-			if (pWhiteList && !pWhiteList->IsAllowed(count, gv.enumeration, QualifierCodeFromType(header.qualifier)))
-			{
-				FORMAT_LOGGER_BLOCK(
-				    pLogger,
-				    flags::WARN,
-				    "Header (%i) w/ Object (%i,%i) and qualifier (%i) failed whitelist",
-				    count,
-				    header.group,
-				    header.variation,
-				    header.qualifier);
-
-				return ParseResult::NOT_ON_WHITELIST;
-			}
-			else
-			{
-				return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier, count), settings, pHandler);
-			}
-		}
-	}
-	else
+	if (result != ParseResult::OK)
 	{
 		return result;
 	}
+
+	const auto GV = GroupVariationRecord::GetRecord(header.group, header.variation);
+
+	if (GV.enumeration == GroupVariation::UNKNOWN)
+	{
+		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object %i / %i", GV.group, GV.variation);
+		return ParseResult::UNKNOWN_OBJECT;
+	}
+	
+	// if a white-list is defined and it doesn't validate, exit early
+	if (pWhiteList && !pWhiteList->IsAllowed(count, GV.enumeration, QualifierCodeFromType(header.qualifier)))
+	{
+		FORMAT_LOGGER_BLOCK(
+		    pLogger,
+		    flags::WARN,
+		    "Header (%i) w/ Object (%i,%i) and qualifier (%i) failed whitelist",
+		    count,
+		    header.group,
+		    header.variation,
+		    header.qualifier
+		);
+
+		return ParseResult::NOT_ON_WHITELIST;
+	}
+		
+	
+	return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(GV, header.qualifier, count), settings, pHandler);
 }
 
 ParseResult APDUParser::ParseQualifier(RSlice& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler)

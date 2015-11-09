@@ -49,7 +49,7 @@ Mode GetMode(const std::string& mode)
 	}
 	else
 	{
-		return Mode::Link;
+		return Mode::App;
 	}
 }
 
