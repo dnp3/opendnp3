@@ -139,7 +139,7 @@ namespace opendnp3
 		{
 			std::ostringstream oss;
 			oss << "[" << item.index << "] - " << Bool(item.value.value); 
-			oss << " flags: " << static_cast<int>(item.value.quality);
+			oss << " flags: 0x" << std::hex << item.value.quality << std::dec;
 			oss << " time: " << item.value.time.Get();
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 		};
