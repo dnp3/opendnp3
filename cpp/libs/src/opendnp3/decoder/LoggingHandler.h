@@ -47,10 +47,10 @@ namespace opendnp3
 		openpal::Logger logger;
 		IDecoderCallbacks* callbacks;
 
-		static const char* Bool(bool value)
+		static const char* GetStringValue(bool value)
 		{
 			return value ? "1" : "0";
-		}
+		}	
 
 		static std::string ToHex(uint8_t b)
 		{
@@ -62,10 +62,13 @@ namespace opendnp3
 		/// --- templated helpers ---
 
 		template <class T>
-		IINField PrintBV(const ICollection<Indexed<T>>& items);
+		IINField PrintV(const ICollection<Indexed<T>>& items);
 
 		template <class T>
-		IINField PrintBVQT(const ICollection<Indexed<T>>& items);
+		IINField PrintVQT(const ICollection<Indexed<T>>& items);
+
+		template <class T, class Stringify>
+		IINField PrintVQTStringify(const ICollection<Indexed<T>>& items, const Stringify& stringify);
 
 		/// --- Implement IAPDUHandler ---
 
@@ -126,12 +129,12 @@ namespace opendnp3
 	};
 	
 	template <class T>
-	IINField LoggingHandler::PrintBV(const ICollection<Indexed<T>>& items)
+	IINField LoggingHandler::PrintV(const ICollection<Indexed<T>>& items)
 	{
 		Indent i(*callbacks);
 		auto logItem = [this](const Indexed<T>& item) 
 		{
-			FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] - value: %s", item.index, Bool(item.value.value));
+			FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] - value: %s", item.index, GetStringValue(item.value.value));
 		};
 
 		items.ForeachItem(logItem);
@@ -140,13 +143,32 @@ namespace opendnp3
 	}
 
 	template <class T>
-	IINField LoggingHandler::PrintBVQT(const ICollection<Indexed<T>>& items)
+	IINField LoggingHandler::PrintVQT(const ICollection<Indexed<T>>& items)
 	{
 		Indent i(*callbacks);
 		auto logItem = [this](const Indexed<T>& item)
 		{
 			std::ostringstream oss;
-			oss << "[" << item.index << "] - value: " << Bool(item.value.value); 
+			oss << "[" << item.index << "] - value: " << item.value.value;
+			oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
+			oss << " time: " << item.value.time.Get();
+			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+		};
+
+		items.ForeachItem(logItem);
+
+		return IINField::Empty();
+	}
+
+
+	template <class T, class Stringify>
+	IINField LoggingHandler::PrintVQTStringify(const ICollection<Indexed<T>>& items, const Stringify& stringify)
+	{
+		Indent i(*callbacks);
+		auto logItem = [&](const Indexed<T>& item)
+		{
+			std::ostringstream oss;
+			oss << "[" << item.index << "] - value: " << stringify(item.value.value);
 			oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
 			oss << " time: " << item.value.time.Get();
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
