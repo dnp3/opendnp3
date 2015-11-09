@@ -42,6 +42,11 @@ public:
 		return representation;
 	}
 
+	uint64_t Get() const
+	{
+		return representation;
+	}
+
 private:
 
 	uint64_t representation;

@@ -140,7 +140,7 @@ namespace opendnp3
 							item.index, 
 							Bool(item.value.value), 
 							static_cast<uint32_t>(item.value.quality),
-							item.value.time
+							item.value.time.Get()
 			);
 		};
 
