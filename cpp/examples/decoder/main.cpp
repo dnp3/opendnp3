@@ -31,6 +31,28 @@ using namespace openpal;
 using namespace opendnp3;
 using namespace asiodnp3;
 
+enum class Mode {
+	Link,
+	Transport,
+	App
+};
+
+Mode GetMode(const std::string& mode)
+{
+	if (mode == "link")
+	{
+		return Mode::Link;
+	}
+	else if (mode == "transport")
+	{
+		return Mode::Transport;
+	}
+	else
+	{
+		return Mode::Link;
+	}
+}
+
 int main(int argc, char* argv[])
 {		
 	openpal::LogRoot log(&ConsoleLogger::Instance(), "decoder", LogFilters(~0));
@@ -39,6 +61,8 @@ int main(int argc, char* argv[])
 	
 	Buffer buffer(4096);
 
+	const Mode MODE = (argc > 1) ? GetMode(argv[1]) : Mode::Link;
+
 	while (true)
 	{
 		const size_t NUM_READ = fread(buffer(), 1, buffer.Size(), stdin);
@@ -46,9 +70,20 @@ int main(int argc, char* argv[])
 		if (NUM_READ == 0)
 		{
 			return 0;
-		}
+		}		
 		
-		decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
+		switch (MODE)
+		{
+			case(Mode::Link):
+				decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
+				break;
+			case(Mode::Transport) :
+				decoder.DecodeTPDU(buffer.ToRSlice().Take(NUM_READ));
+				break;
+			default:
+				decoder.DecodeAPDU(buffer.ToRSlice().Take(NUM_READ));
+				break;
+		}
 	}
 
 	return 0;
