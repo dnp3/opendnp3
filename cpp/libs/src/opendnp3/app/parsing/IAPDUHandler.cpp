@@ -139,6 +139,11 @@ void IAPDUHandler::OnHeader(const CountHeader& header, const ICollection<Group52
 	Record(header, this->ProcessHeader(header, values));
 }
 
+void IAPDUHandler::OnHeader(const CountHeader& header, const ICollection<Group120Var3>& values)
+{
+	Record(header, this->ProcessHeader(header, values));
+}
+
 void IAPDUHandler::OnHeader(const CountHeader& header, const ICollection<Group120Var4>& values)
 {
 	Record(header, this->ProcessHeader(header, values));
@@ -386,6 +391,11 @@ IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollectio
 }
 
 IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>&)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>&)
 {
 	return ProcessUnsupportedHeader();
 }
