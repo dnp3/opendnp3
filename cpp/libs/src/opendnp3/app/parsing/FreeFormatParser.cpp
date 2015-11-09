@@ -57,7 +57,7 @@ ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserS
 {
 	if (buffer.Size() < 3)
 	{
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for free format data");
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for free format count and size");
 		return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
 	}
 
@@ -106,6 +106,9 @@ ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserS
 
 	case(GroupVariation::Group120Var7) :
 		return ParseFreeFormat(ParseAny<Group120Var7>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
+	case(GroupVariation::Group120Var9) :
+		return ParseFreeFormat(ParseAny<Group120Var9>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 	case(GroupVariation::Group120Var10) :
 		return ParseFreeFormat(ParseAny<Group120Var10>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
