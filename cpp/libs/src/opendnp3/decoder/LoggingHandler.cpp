@@ -31,6 +31,25 @@ LoggingHandler::LoggingHandler(openpal::Logger logger_, IDecoderCallbacks& callb
 	callbacks(&callbacks_)
 {}
 
+IINField LoggingHandler::PrintCrob(const ICollection<Indexed<ControlRelayOutputBlock>>& items)
+{
+	Indent i(*callbacks);
+	auto logItem = [this](const Indexed<ControlRelayOutputBlock>& item)
+	{
+		std::ostringstream oss;
+		oss << "[" << item.index << "] - code: " << ControlCodeToString(item.value.functionCode) << "(" << ToHex(item.value.rawCode) << ")";
+		oss << " count: " << static_cast<uint32_t>(item.value.count);
+		oss << " onTime: " << static_cast<uint32_t>(item.value.onTimeMS);
+		oss << " offTime: " << static_cast<uint32_t>(item.value.offTimeMS);
+		oss << " status: " << CommandStatusToString(item.value.status);
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	};
+
+	items.ForeachItem(logItem);
+
+	return IINField::Empty();
+}
+
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object) 
 {
@@ -252,7 +271,7 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollec
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
 {
-	return IINField::Empty();
+	return PrintCrob(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values)

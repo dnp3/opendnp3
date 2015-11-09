@@ -66,6 +66,8 @@ namespace opendnp3
 
 		template <class T>
 		IINField PrintAO(const ICollection<Indexed<T>>& items);
+		
+		IINField PrintCrob(const ICollection<Indexed<ControlRelayOutputBlock>>& items);
 
 		template <class T>
 		IINField PrintVQT(const ICollection<Indexed<T>>& items);
