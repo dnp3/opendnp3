@@ -65,6 +65,9 @@ namespace opendnp3
 		IINField PrintV(const ICollection<Indexed<T>>& items);
 
 		template <class T>
+		IINField PrintAO(const ICollection<Indexed<T>>& items);
+
+		template <class T>
 		IINField PrintVQT(const ICollection<Indexed<T>>& items);
 
 		template <class T, class Stringify>
@@ -152,6 +155,23 @@ namespace opendnp3
 			oss << "[" << item.index << "] - value: " << item.value.value;
 			oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
 			oss << " time: " << item.value.time.Get();
+			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+		};
+
+		items.ForeachItem(logItem);
+
+		return IINField::Empty();
+	}
+
+	template <class T>
+	IINField LoggingHandler::PrintAO(const ICollection<Indexed<T>>& items)
+	{
+		Indent i(*callbacks);
+		auto logItem = [this](const Indexed<T>& item)
+		{
+			std::ostringstream oss;
+			oss << "[" << item.index << "] - value: " << item.value.value;			
+			oss << " status: " << CommandStatusToString(item.value.status);
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 		};
 

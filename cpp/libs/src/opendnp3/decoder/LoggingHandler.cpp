@@ -257,22 +257,22 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollec
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values)
 {
-	return IINField::Empty();
+	return PrintAO(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values)
 {
-	return IINField::Empty();
+	return PrintAO(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values)
 {
-	return IINField::Empty();
+	return PrintAO(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values)
 {
-	return IINField::Empty();
+	return PrintAO(values);
 }
 
 }
