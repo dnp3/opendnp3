@@ -57,6 +57,11 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 	return IINField::Empty();
 }
 
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var9& value, const openpal::RSlice& object)
+{
+	return IINField::Empty();
+}
+
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::RSlice& object)
 {
 	return IINField::Empty();
@@ -108,6 +113,11 @@ IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollect
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values)
+{
+	return IINField::Empty();
+}
+
+IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>& values)
 {
 	return IINField::Empty();
 }

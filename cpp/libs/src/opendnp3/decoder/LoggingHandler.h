@@ -49,6 +49,7 @@ namespace opendnp3
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::RSlice& object) override;
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var6& value, const openpal::RSlice& object) override;
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var7& value, const openpal::RSlice& object) override;
+		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var9& value, const openpal::RSlice& object) override;
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::RSlice& object) override;
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::RSlice& object) override;
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::RSlice& object) override;
@@ -56,12 +57,12 @@ namespace opendnp3
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var14& value, const openpal::RSlice& object) override;
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object) override;
 
-
 		virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values) override;
 		virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values) override;
 		virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values) override;
 		virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
 		virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;
+		virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>& values) override;
 		virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values) override;
 
 		virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override;
