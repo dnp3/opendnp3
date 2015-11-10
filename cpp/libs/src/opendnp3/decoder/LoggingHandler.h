@@ -67,10 +67,13 @@ namespace opendnp3
 		template <class T>
 		IINField PrintV(const ICollection<Indexed<T>>& items);
 
+		
+
 		template <class T>
 		IINField PrintAO(const ICollection<Indexed<T>>& items);
 		
 		IINField PrintCrob(const ICollection<Indexed<ControlRelayOutputBlock>>& items);
+		IINField PrintOctets(const ICollection<Indexed<OctetString>>& values);
 
 		template <class T>
 		IINField PrintVQT(GroupVariation gv, const ICollection<Indexed<T>>& items);

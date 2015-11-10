@@ -57,6 +57,20 @@ IINField LoggingHandler::PrintCrob(const ICollection<Indexed<ControlRelayOutputB
 	return IINField::Empty();
 }
 
+IINField LoggingHandler::PrintOctets(const ICollection<Indexed<OctetString>>& items)
+{
+	Indent i(*callbacks);
+	auto logItem = [this](const Indexed<OctetString>& item)
+	{		
+		auto slice = item.value.ToRSlice();
+		FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[u] length: %u", item.index, slice.Size());
+		FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, slice, 18, 18);
+	};
+
+	items.ForeachItem(logItem);
+
+	return IINField::Empty();
+}
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object) 
 {
@@ -202,7 +216,7 @@ IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintOctets(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
@@ -253,7 +267,7 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollec
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintOctets(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
