@@ -63,7 +63,7 @@ IINField LoggingHandler::PrintOctets(const ICollection<Indexed<OctetString>>& it
 	auto logItem = [this](const Indexed<OctetString>& item)
 	{		
 		auto slice = item.value.ToRSlice();
-		FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] length: %u", item.index, slice.Size());
+		FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] value: (length = %u)", item.index, slice.Size());
 		FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, slice, 18, 18);
 	};
 
