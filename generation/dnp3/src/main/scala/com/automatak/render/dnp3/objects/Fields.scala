@@ -24,7 +24,7 @@ sealed case class EnumFieldType(model: EnumModel) extends FixedSizeFieldType(1) 
 
 object FieldAttribute extends Enumeration {
   type WeekDay = Value
-  val IsTimeUTC, IsFlags = Value
+  val IsTimeUTC, IsTimeRel, IsFlags = Value
 }
 
 object FixedSizeField {
@@ -51,7 +51,7 @@ object FixedSizeField {
 
 
   // timestamps
-  val time16 = FixedSizeField("time", UInt16Field)
+  val time16 = FixedSizeField("time", UInt16Field, Set(FieldAttribute.IsTimeRel))
   val time48 = FixedSizeField("time", UInt48Field, Set(FieldAttribute.IsTimeUTC))
 
   // counter values

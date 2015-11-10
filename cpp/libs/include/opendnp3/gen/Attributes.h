@@ -21,14 +21,13 @@
 #ifndef OPENDNP3_ATTRIBUTES_H
 #define OPENDNP3_ATTRIBUTES_H
 
-#include "opendnp3/app/MeasAttr.h"
 #include "opendnp3/gen/GroupVariation.h"
-
-#include <cstdint>
 
 namespace opendnp3 {
 
-MeasAttr GetMeasAttr(GroupVariation gv);
+bool HasAbsoluteTime(GroupVariation gv);
+bool HasRelativeTime(GroupVariation gv);
+bool HasFlags(GroupVariation gv);
 
 }
 

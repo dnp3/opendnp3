@@ -19,17 +19,23 @@ object AttributeGenerator {
     val headerPath = inc.resolve(String.format("%s.h", name))
     val implPath = impl.resolve(String.format("%s.cpp", name))
 
-    val measSignature = "MeasAttr GetMeasAttr(GroupVariation gv)"
+    case class AttrConfig(signature: String, attr: FieldAttribute.Value)
+
+    val hasAbsTime = AttrConfig("bool HasAbsoluteTime(GroupVariation gv)", FieldAttribute.IsTimeUTC)
+    val hasRelTime = AttrConfig("bool HasRelativeTime(GroupVariation gv)", FieldAttribute.IsTimeRel)
+    val hasFlags = AttrConfig("bool HasFlags(GroupVariation gv)", FieldAttribute.IsFlags)
+
+    val attributes : List[AttrConfig] = List(hasAbsTime, hasRelTime, hasFlags)
 
     def license = commented(LicenseHeader())
 
     def writeHeader() {
 
-      def includes : Iterator[String] = Iterator(include(""""opendnp3/app/MeasAttr.h""""), include(""""opendnp3/gen/GroupVariation.h""""))
+      def includes : Iterator[String] = Iterator(include(""""opendnp3/gen/GroupVariation.h""""))
 
-      def signatures : Iterator[String] = Iterator(measSignature+";")
+      def signatures : Iterator[String] = attributes.map(a => a.signature + ";").iterator
 
-      def lines = license ++ space ++ includeGuards(name)(includes ++ space ++ cstdint ++ space ++ namespace(cppNamespace)(signatures))
+      def lines = license ++ space ++ includeGuards(name)(includes ++ space ++ namespace(cppNamespace)(signatures))
 
       writeTo(headerPath)(lines)
     }
@@ -37,35 +43,33 @@ object AttributeGenerator {
     def writeImpl() {
       def license = commented(LicenseHeader())
 
-      def cases : Iterator[String] = ObjectGroup.all.map(og => getCases(og)).flatten.iterator
+      def cases(attr: FieldAttribute.Value) : Iterator[String] = ObjectGroup.all.map(og => getCases(og, attr)).flatten.iterator
 
-      def getCases(og: ObjectGroup) : List[String] = og.objects.flatMap(gv => getCase(gv)).flatten
+      def getCases(og: ObjectGroup, attr: FieldAttribute.Value) : List[String] = og.objects.flatMap(gv => getCase(gv, attr)).flatten
 
-      def getCase(gv: GroupVariation) : Option[Iterator[String]] = {
-        val attr : Set[FieldAttribute.Value] = gv.attributes
-        val isTime = attr.contains(FieldAttribute.IsTimeUTC)
-        val isFlag = attr.contains(FieldAttribute.IsFlags)
-
-        if(isTime || isFlag)
+      def getCase(gv: GroupVariation, attr: FieldAttribute.Value) : Option[Iterator[String]] = {
+        if(gv.attributes.contains(attr))
         {
             Some(Iterator("case(GroupVariation::%s):".format(gv.name)) ++ indent {
-              Iterator("return MeasAttr(%b, %b);".format(isTime, isFlag))
+              Iterator("return true;")
             })
         }
         else None
       }
 
-      def measImpl : Iterator[String] = Iterator(measSignature) ++ bracket {
+      def measImpl(attr: AttrConfig) : Iterator[String] = Iterator(attr.signature) ++ bracket {
         Iterator(String.format("switch(gv)")) ++ bracket {
-          cases ++
+          cases(attr.attr) ++
           Iterator("default:") ++ indent {
-            Iterator("return MeasAttr(false, false);")
+            Iterator("return false;")
           }
         }
       }
 
+      def impls : Iterator[String] = attributes.flatMap(x => measImpl(x)).iterator
+
       def lines = license ++ space ++ Iterator(include(quoted("opendnp3/gen/Attributes.h"))) ++ space ++ namespace(cppNamespace) {
-        measImpl
+        impls
       }
 
       writeTo(implPath)(lines)
