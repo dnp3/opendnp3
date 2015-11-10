@@ -4,6 +4,7 @@ import com.automatak.render.EnumModel
 import com.automatak.render.dnp3.enums._
 import com.automatak.render.dnp3.objects.generators.FixedSizeHelpers
 
+
 sealed trait FieldType
 sealed class FixedSizeFieldType(val numBytes: Int) extends FieldType {
   def defaultValue: String = "0"
@@ -21,11 +22,15 @@ sealed case class EnumFieldType(model: EnumModel) extends FixedSizeFieldType(1) 
   override def defaultValue: String = "%s::%s".format(model.name, model.default.displayName)
 }
 
+object FieldAttribute extends Enumeration {
+  type WeekDay = Value
+  val IsTimeUTC, IsFlags = Value
+}
+
 object FixedSizeField {
 
   //common flags field
-  val flags = FixedSizeField("flags", UInt8Field)
-
+  val flags = FixedSizeField("flags", UInt8Field, Set(FieldAttribute.IsFlags))
 
   // SA stuff
   val csq = FixedSizeField("challengeSeqNum", UInt32Field)
@@ -45,10 +50,9 @@ object FixedSizeField {
   val userRoleExpDays = FixedSizeField("userRoleExpDays", UInt16Field)
 
 
-
   // timestamps
   val time16 = FixedSizeField("time", UInt16Field)
-  val time48 = FixedSizeField("time", UInt48Field)
+  val time48 = FixedSizeField("time", UInt48Field, Set(FieldAttribute.IsTimeUTC))
 
   // counter values
   val count16 = FixedSizeField("value", UInt16Field)
@@ -85,7 +89,10 @@ sealed trait Field {
   def cppArgument: String = cppType
 }
 
-sealed case class FixedSizeField(name: String, typ: FixedSizeFieldType) extends Field {
+sealed case class FixedSizeField(name: String, typ: FixedSizeFieldType, attributes: Set[FieldAttribute.Value] = Set.empty) extends Field {
+
+  def isTimeUTC : Boolean = attributes.contains(FieldAttribute.IsTimeUTC)
+  def isFlags : Boolean = attributes.contains(FieldAttribute.IsFlags)
 
   def cppType: String = typ match {
     case UInt8Field => "uint8_t"

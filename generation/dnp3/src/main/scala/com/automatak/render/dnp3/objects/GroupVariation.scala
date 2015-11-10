@@ -8,6 +8,7 @@ object GroupVariation {
   case class Id(group: Byte, variation: Byte)
 }
 
+
 /**
  * Base trait for DNP3 objects
  */
@@ -26,7 +27,7 @@ trait GroupVariation {
   def desc: String
   def declaration(implicit i : Indentation): Iterator[String] = struct(name) { headerLines }
 
-  //def isFixedSize: Boolean = false
+  def attributes : Set[FieldAttribute.Value]
 
   /// --- Includes for h/cpp files ----
 
@@ -50,6 +51,8 @@ sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte, description: 
   def variation: Byte = v
   def parent: ObjectGroup = g
   def desc: String = description
+
+  def attributes : Set[FieldAttribute.Value] = Set.empty
 }
 
 class AuthVariableSize( g: ObjectGroup,
@@ -92,5 +95,7 @@ class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField
 
   def fields : List[FixedSizeField] = fs.toList
   def size: Int = fs.map(x => x.typ.numBytes).sum
+
+  override def attributes : Set[FieldAttribute.Value] = fs.map(_.attributes).flatten.toSet
 
 }
