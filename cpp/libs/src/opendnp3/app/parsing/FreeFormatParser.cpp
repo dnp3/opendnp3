@@ -150,7 +150,7 @@ ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser, const Fr
 	}
 	else
 	{
-		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Error parsing free-format (%i, %i)", header.group, header.variation);
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data for free-format object: (%i, %i)", header.group, header.variation);
 		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 }
