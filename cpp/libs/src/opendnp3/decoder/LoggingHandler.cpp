@@ -166,38 +166,38 @@ IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollect
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
 {
 	auto stringify = [](bool value) -> const char* { return GetStringValue(value); };
-	return this->PrintVQTStringify(values, stringify);
+	return this->PrintVQTStringify(header.enumeration, values, stringify);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {	
 	auto stringify = [](DoubleBit db) -> const char* { return DoubleBitToString(db); };
-	return this->PrintVQTStringify(values, stringify);
+	return this->PrintVQTStringify(header.enumeration, values, stringify);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
@@ -217,38 +217,38 @@ IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
 	auto stringify = [](DoubleBit db) -> const char* { return DoubleBitToString(db); };
-	return this->PrintVQTStringify(values, stringify);
+	return this->PrintVQTStringify(header.enumeration, values, stringify);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	return this->PrintVQT(values);
+	return this->PrintVQT(header.enumeration, values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)

@@ -26,6 +26,7 @@
 #include <openpal/util/ToHex.h>
 
 #include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "opendnp3/gen/Attributes.h"
 #include "opendnp3/decoder/IDecoderCallbacks.h"
 #include "opendnp3/decoder/Indent.h"
 #include "opendnp3/LogLevels.h"
@@ -72,10 +73,10 @@ namespace opendnp3
 		IINField PrintCrob(const ICollection<Indexed<ControlRelayOutputBlock>>& items);
 
 		template <class T>
-		IINField PrintVQT(const ICollection<Indexed<T>>& items);
+		IINField PrintVQT(GroupVariation gv, const ICollection<Indexed<T>>& items);
 
 		template <class T, class Stringify>
-		IINField PrintVQTStringify(const ICollection<Indexed<T>>& items, const Stringify& stringify);
+		IINField PrintVQTStringify(GroupVariation gv, const ICollection<Indexed<T>>& items, const Stringify& stringify);
 
 		/// --- Implement IAPDUHandler ---
 
@@ -151,15 +152,21 @@ namespace opendnp3
 	}
 
 	template <class T>
-	IINField LoggingHandler::PrintVQT(const ICollection<Indexed<T>>& items)
+	IINField LoggingHandler::PrintVQT(GroupVariation gv, const ICollection<Indexed<T>>& items)
 	{
 		Indent i(*callbacks);
-		auto logItem = [this](const Indexed<T>& item)
+		auto logItem = [this, gv](const Indexed<T>& item)
 		{
 			std::ostringstream oss;
 			oss << "[" << item.index << "] - value: " << item.value.value;
-			oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
-			oss << " time: " << item.value.time.Get();
+			if (HasFlags(gv))
+			{
+				oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
+			}
+			if (HasAbsoluteTime(gv) || HasRelativeTime(gv))
+			{
+				oss << " time: " << item.value.time.Get();
+			}
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 		};
 
@@ -187,15 +194,21 @@ namespace opendnp3
 
 
 	template <class T, class Stringify>
-	IINField LoggingHandler::PrintVQTStringify(const ICollection<Indexed<T>>& items, const Stringify& stringify)
+	IINField LoggingHandler::PrintVQTStringify(GroupVariation gv, const ICollection<Indexed<T>>& items, const Stringify& stringify)
 	{
 		Indent i(*callbacks);
-		auto logItem = [&](const Indexed<T>& item)
+		auto logItem = [this, gv, stringify](const Indexed<T>& item)
 		{
 			std::ostringstream oss;
 			oss << "[" << item.index << "] - value: " << stringify(item.value.value);
-			oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
-			oss << " time: " << item.value.time.Get();
+			if (HasFlags(gv))
+			{
+				oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
+			}
+			if (HasAbsoluteTime(gv) || HasRelativeTime(gv))
+			{
+				oss << " time: " << item.value.time.Get();
+			}
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 		};
 
