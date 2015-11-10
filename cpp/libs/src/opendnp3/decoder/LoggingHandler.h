@@ -67,7 +67,11 @@ namespace opendnp3
 		template <class T>
 		IINField PrintV(const ICollection<Indexed<T>>& items);
 
-		
+		template <class T>
+		IINField PrintTime(const ICollection<T>& items);
+
+		template <class T>
+		IINField PrintTime16(const ICollection<T>& items);
 
 		template <class T>
 		IINField PrintAO(const ICollection<Indexed<T>>& items);
@@ -147,6 +151,38 @@ namespace opendnp3
 		auto logItem = [this](const Indexed<T>& item) 
 		{
 			FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] - value: %s", item.index, GetStringValue(item.value.value));
+		};
+
+		items.ForeachItem(logItem);
+
+		return IINField::Empty();
+	}
+
+	template <class T>
+	IINField LoggingHandler::PrintTime(const ICollection<T>& items)
+	{
+		Indent i(*callbacks);
+		auto logItem = [this](const T& item)
+		{
+			std::ostringstream oss;
+			oss << "time: " << item.time.Get();			
+			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+		};
+
+		items.ForeachItem(logItem);
+
+		return IINField::Empty();
+	}
+
+	template <class T>
+	IINField LoggingHandler::PrintTime16(const ICollection<T>& items)
+	{
+		Indent i(*callbacks);
+		auto logItem = [this](const T& item)
+		{
+			std::ostringstream oss;
+			oss << "time: " << item.time;
+			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 		};
 
 		items.ForeachItem(logItem);

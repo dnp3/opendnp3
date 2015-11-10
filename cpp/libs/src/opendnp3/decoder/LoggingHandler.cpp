@@ -139,27 +139,27 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintTime(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintTime(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintTime(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintTime16(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintTime16(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>& values)
@@ -174,7 +174,7 @@ IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintV(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
