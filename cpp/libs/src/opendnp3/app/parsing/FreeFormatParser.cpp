@@ -129,13 +129,11 @@ ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserS
 		return ParseFreeFormat(ParseAny<Group120Var15>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 	default:
-		FORMAT_LOGGER_BLOCK(
-		    pLogger, flags::WARN,
-		    "Unknown object (%i, %i) and qualifer (%i) in AuthRequest",
-		    record.group,
-		    record.variation,
-		    record.qualifier
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN,
+			"Unsupported qualifier/object - %s - %i / %i",
+			QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation
 		);
+
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}
 
