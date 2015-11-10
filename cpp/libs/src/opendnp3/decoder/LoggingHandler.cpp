@@ -34,7 +34,7 @@ LoggingHandler::LoggingHandler(openpal::Logger logger_, IDecoderCallbacks& callb
 IINField LoggingHandler::PrintUnsupported()
 {
 	Indent i(*callbacks);
-	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "Pretty printing of this type not yet supported");
+	SIMPLE_LOG_BLOCK(logger, flags::EVENT, "Pretty printing of this type not yet supported");
 	return IINField::Empty();
 }
 
