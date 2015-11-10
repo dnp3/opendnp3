@@ -83,6 +83,11 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 	return this->PrintUnsupported();
 }
 
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var8& value, const openpal::RSlice& object)
+{
+	return this->PrintUnsupported();
+}
+
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var9& value, const openpal::RSlice& object)
 {
 	return this->PrintUnsupported();

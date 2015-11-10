@@ -110,6 +110,9 @@ ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserS
 	case(GroupVariation::Group120Var9) :
 		return ParseFreeFormat(ParseAny<Group120Var9>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
+	case(GroupVariation::Group120Var8) :
+		return ParseFreeFormat(ParseAny<Group120Var8>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
 	case(GroupVariation::Group120Var10) :
 		return ParseFreeFormat(ParseAny<Group120Var10>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
