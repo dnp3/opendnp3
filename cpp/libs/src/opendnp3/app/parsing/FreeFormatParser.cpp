@@ -65,12 +65,13 @@ ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserS
 	const uint16_t FREE_FORMAT_SIZE = UInt16::ReadBuffer(buffer);
 
 	FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-	                    "%03u, %03u %s, %s [%u]",
+	                    "%03u, %03u %s, %s [%u] size: %u",
 	                    record.group,
 	                    record.variation,
 	                    GroupVariationToString(record.enumeration),
 	                    QualifierCodeToString(record.GetQualifierCode()),
-	                    FREE_FORMAT_COUNT
+	                    FREE_FORMAT_COUNT,
+						FREE_FORMAT_SIZE
 	                   );
 
 	if (FREE_FORMAT_COUNT != 1)
