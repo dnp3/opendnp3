@@ -162,11 +162,13 @@ namespace opendnp3
 	IINField LoggingHandler::PrintTime(const ICollection<T>& items)
 	{
 		Indent i(*callbacks);
-		auto logItem = [this](const T& item)
+		uint32_t count = 0;
+		auto logItem = [this, &count](const T& item)
 		{
 			std::ostringstream oss;
-			oss << "time: " << item.time.Get();			
+			oss << "[" << count << "] - time: " << item.time.Get();			
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+			++count;
 		};
 
 		items.ForeachItem(logItem);
@@ -178,11 +180,13 @@ namespace opendnp3
 	IINField LoggingHandler::PrintTime16(const ICollection<T>& items)
 	{
 		Indent i(*callbacks);
-		auto logItem = [this](const T& item)
+		uint32_t count = 0;
+		auto logItem = [this, &count](const T& item)
 		{
 			std::ostringstream oss;
-			oss << "time: " << item.time;
+			oss << "[" << count << "] - time: " << item.time;
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+			++count;
 		};
 
 		items.ForeachItem(logItem);
