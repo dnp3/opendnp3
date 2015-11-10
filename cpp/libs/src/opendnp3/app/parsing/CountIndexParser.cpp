@@ -82,7 +82,7 @@ ParseResult CountIndexParser::Process(const HeaderRecord& record, openpal::RSlic
 {
 	if (buffer.Size() < requiredSize)
 	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified objects");
 		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else
@@ -218,7 +218,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 
 	default:
 
-		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN,
 		                              "Unsupported qualifier/object - %s - %i / %i",
 		                              QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
 
@@ -238,7 +238,7 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::RSlice& buffe
 
 	if (buffer.Size() < TOTAL_SIZE)
 	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified bitfield objects");
 		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 

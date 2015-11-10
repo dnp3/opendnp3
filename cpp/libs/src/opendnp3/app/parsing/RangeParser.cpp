@@ -88,7 +88,7 @@ ParseResult RangeParser::Process(const HeaderRecord& record, openpal::RSlice& bu
 {
 	if (buffer.Size() < requiredSize)
 	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified objects");
 		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else
@@ -159,9 +159,10 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::RSlice& buffer, const Head
 		return RangeParser::FromFixedSizeType<Group121Var1>(range).Process(record, buffer, pHandler, pLogger);
 
 	default:
-		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
-		                              "Unsupported qualifier/object - %s - %i / %i",
-		                              QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
+		                              QualifierCodeToString(record.GetQualifierCode()), 
+									  record.group, 
+									  record.variation);
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}
@@ -175,7 +176,7 @@ ParseResult RangeParser::ParseRangeOfOctetData(openpal::RSlice& buffer, const He
 		uint32_t size = record.variation * COUNT;
 		if (buffer.Size() < size)
 		{
-			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified octet objects");
 			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}
 		else

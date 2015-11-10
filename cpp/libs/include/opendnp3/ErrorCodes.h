@@ -26,16 +26,7 @@ namespace opendnp3
 
 /// Error codes returned in log messages
 enum ErrorCodes
-{
-
-    // Application Layer Parsing
-    ALERR_INSUFFICIENT_DATA_FOR_HEADER,			// not enough to read object header
-    ALERR_INSUFFICIENT_DATA_FOR_OBJECTS,		// not enough to read the indicated objects
-    ALERR_UNKNOWN_GROUP_VAR,					// encounter an unknown group var while parsing
-    ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,			// The qualifier/object combination is invalid
-    ALERR_COUNT_OF_ZERO,						// count header with ZERO    
-    ALERR_UNKNOWN_QUALIFIER,					// An unknown qualifer was received
-
+{    
     // Transport Layer
     TLERR_NO_HEADER,							// TPDU with no header (empty)
     TLERR_BUFFER_FULL,							// Transport reassembly buffer full before complete fragment received

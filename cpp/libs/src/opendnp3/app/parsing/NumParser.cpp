@@ -49,7 +49,7 @@ ParseResult NumParser::ParseCount(openpal::RSlice& buffer, uint16_t& count, open
 	{
 		if (count == 0)
 		{
-			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_COUNT_OF_ZERO, "count of 0");
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "count of 0");
 			return ParseResult::COUNT_OF_ZERO;
 		}
 		else
@@ -59,7 +59,7 @@ ParseResult NumParser::ParseCount(openpal::RSlice& buffer, uint16_t& count, open
 	}
 	else
 	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for count");
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for count");
 		return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
 	}
 }
@@ -68,7 +68,7 @@ ParseResult NumParser::ParseRange(openpal::RSlice& buffer, Range& range, openpal
 {
 	if (buffer.Size() < (2 * static_cast<uint32_t>(size)))
 	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for start / stop");
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for start / stop");
 		return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
 	}
 	else

@@ -39,7 +39,7 @@ ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header, RSlice& 
 {
 	if (buffer.Size() < 3)
 	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for header");
 		return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
 	}
 	else

@@ -89,7 +89,7 @@ ParseResult APDUParser::ParseHeader(RSlice& buffer, openpal::Logger* pLogger, ui
 
 	if (GV.enumeration == GroupVariation::UNKNOWN)
 	{
-		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object %i / %i", GV.group, GV.variation);
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unknown object %i / %i", GV.group, GV.variation);
 		return ParseResult::UNKNOWN_OBJECT;
 	}
 	
@@ -142,7 +142,7 @@ ParseResult APDUParser::ParseQualifier(RSlice& buffer, openpal::Logger* pLogger,
 		return FreeFormatParser::ParseHeader(buffer, settings, record, pLogger, pHandler);
 
 	default:
-		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", record.qualifier);
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unknown qualifier %x", record.qualifier);
 		return ParseResult::UNKNOWN_QUALIFIER;
 	}
 }
