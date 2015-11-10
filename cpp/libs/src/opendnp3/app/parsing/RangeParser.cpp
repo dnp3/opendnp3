@@ -56,34 +56,32 @@ ParseResult RangeParser::ParseHeader(openpal::RSlice& buffer, const NumParser& n
 {
 	Range range;
 	auto res = numparser.ParseRange(buffer, range, pLogger);
-	if (res == ParseResult::OK)
-	{
-		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-		                    "%03u,%03u %s, %s [%u, %u]",
-		                    record.group,
-		                    record.variation,
-		                    GroupVariationToString(record.enumeration),
-		                    QualifierCodeToString(record.GetQualifierCode()),
-		                    range.start,
-		                    range.stop);
-
-		if (settings.ExpectsContents())
-		{
-			return ParseRangeOfObjects(buffer, record, range, pLogger, pHandler);
-		}
-		else
-		{
-			if (pHandler)
-			{
-				pHandler->OnHeader(RangeHeader(record, range));
-			}
-			return ParseResult::OK;
-		}
-	}
-	else
+	if (res != ParseResult::OK)
 	{
 		return res;
 	}
+	
+	FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
+		                "%03u,%03u %s, %s [%u, %u]",
+		                record.group,
+		                record.variation,
+		                GroupVariationToString(record.enumeration),
+		                QualifierCodeToString(record.GetQualifierCode()),
+		                range.start,
+		                range.stop);
+
+	if (settings.ExpectsContents())
+	{
+		return ParseRangeOfObjects(buffer, record, range, pLogger, pHandler);
+	}
+	else
+	{
+		if (pHandler)
+		{
+			pHandler->OnHeader(RangeHeader(record, range));
+		}
+		return ParseResult::OK;
+	}	
 }
 
 ParseResult RangeParser::Process(const HeaderRecord& record, openpal::RSlice& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const

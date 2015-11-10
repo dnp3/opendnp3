@@ -82,7 +82,7 @@ ParseResult NumParser::ParseRange(openpal::RSlice& buffer, Range& range, openpal
 		}
 		else
 		{
-			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_START_STOP_MISMATCH, "start > stop");
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "start (%u) > stop (%u)", range.start, range.stop);
 			return ParseResult::BAD_START_STOP;
 		}
 	}

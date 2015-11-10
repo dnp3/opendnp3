@@ -33,8 +33,7 @@ enum ErrorCodes
     ALERR_INSUFFICIENT_DATA_FOR_OBJECTS,		// not enough to read the indicated objects
     ALERR_UNKNOWN_GROUP_VAR,					// encounter an unknown group var while parsing
     ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,			// The qualifier/object combination is invalid
-    ALERR_COUNT_OF_ZERO,						// count header with ZERO
-    ALERR_START_STOP_MISMATCH,					// start > stop in a ranged header
+    ALERR_COUNT_OF_ZERO,						// count header with ZERO    
     ALERR_UNKNOWN_QUALIFIER,					// An unknown qualifer was received
 
     // Transport Layer
