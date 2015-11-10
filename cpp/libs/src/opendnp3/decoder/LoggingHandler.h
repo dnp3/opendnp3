@@ -61,6 +61,8 @@ namespace opendnp3
 
 		/// --- templated helpers ---
 
+		IINField PrintUnsupported();
+
 		template <class T>
 		IINField PrintV(const ICollection<Indexed<T>>& items);
 

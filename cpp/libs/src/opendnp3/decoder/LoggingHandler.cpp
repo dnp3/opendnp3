@@ -31,6 +31,13 @@ LoggingHandler::LoggingHandler(openpal::Logger logger_, IDecoderCallbacks& callb
 	callbacks(&callbacks_)
 {}
 
+IINField LoggingHandler::PrintUnsupported()
+{
+	Indent i(*callbacks);
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "Pretty printing of this type not yet supported");
+	return IINField::Empty();
+}
+
 IINField LoggingHandler::PrintCrob(const ICollection<Indexed<ControlRelayOutputBlock>>& items)
 {
 	Indent i(*callbacks);
@@ -53,102 +60,102 @@ IINField LoggingHandler::PrintCrob(const ICollection<Indexed<ControlRelayOutputB
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object) 
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var2& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var6& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var7& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var9& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var13& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var14& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
 {
-	return this->PrintV(values);
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
@@ -190,17 +197,17 @@ IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
@@ -241,32 +248,32 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollec
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
 {
-	return IINField::Empty();
+	return this->PrintUnsupported();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
