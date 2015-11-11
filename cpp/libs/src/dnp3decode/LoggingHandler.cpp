@@ -305,7 +305,19 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollec
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+	auto logItem = [this](const Indexed<TimeAndInterval>& item)
+	{
+		std::ostringstream oss;		
+		oss << "[" << item.index << "] - startTime: " << ToUTCString(item.value.time);
+		oss << " count: " << item.value.interval;
+		oss << " units: " << IntervalUnitsToString(item.value.GetUnitsEnum()) << " (" << static_cast<int>(item.value.units) << ")";		
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	};
+
+	values.ForeachItem(logItem);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
