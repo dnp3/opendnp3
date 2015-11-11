@@ -96,6 +96,10 @@ namespace opendnp3
 
 		virtual bool IsAllowed(uint32_t, GroupVariation, QualifierCode) override { return true; }
 
+		virtual IINField ProcessHeader(const AllObjectsHeader& record) override { return IINField::Empty(); }
+		virtual IINField ProcessHeader(const RangeHeader& header) override { return IINField::Empty(); }
+		virtual IINField ProcessHeader(const CountHeader& header) override { return IINField::Empty(); }
+
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object) override;
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var2& value, const openpal::RSlice& object) override;
 		virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::RSlice& object) override;
