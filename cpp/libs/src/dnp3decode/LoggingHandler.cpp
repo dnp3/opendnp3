@@ -320,12 +320,37 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollec
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+	auto logItem = [this](const Indexed<Group122Var1>& item)
+	{
+		std::ostringstream oss;
+		oss << "[" << item.index << "] - flags: 0x" << ToHex(item.value.flags);
+		oss << " assoc: " << item.value.assocId;
+		oss << " value: " << item.value.value;		
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	};
+
+	values.ForeachItem(logItem);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+	auto logItem = [this](const Indexed<Group122Var2>& item)
+	{
+		std::ostringstream oss;
+		oss << "[" << item.index << "] - flags: 0x" << ToHex(item.value.flags);
+		oss << " assoc: " << item.value.assocId;
+		oss << " value: " << item.value.value;
+		oss << " time: " << ToUTCString(item.value.time);
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	};
+
+	values.ForeachItem(logItem);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)

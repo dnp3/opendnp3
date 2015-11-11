@@ -203,9 +203,9 @@ protected:
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values);
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values);
 
-protected:
+protected:	
 
-	// overridable to receive events for every header
+	// overridable to receive post processing events for every header
 	virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) {}
 
 private:
