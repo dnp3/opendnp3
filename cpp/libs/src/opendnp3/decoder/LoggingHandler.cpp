@@ -21,6 +21,9 @@
 
 #include "LoggingHandler.h"
 
+#include <ctime>
+#include <iomanip>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -30,6 +33,32 @@ LoggingHandler::LoggingHandler(openpal::Logger logger_, IDecoderCallbacks& callb
 	logger(logger_),
 	callbacks(&callbacks_)
 {}
+
+std::string LoggingHandler::ToUTCString(const DNPTime& dnptime)
+{
+	time_t seconds = static_cast<time_t>(dnptime / 1000);
+	uint16_t milliseconds = static_cast<uint16_t>(dnptime % 1000);
+
+#ifdef WIN32
+	tm t;
+	if (gmtime_s(&t, &seconds))
+	{
+		return "BAD TIME";
+	}
+#else
+
+#endif
+
+	std::ostringstream oss;
+	oss << (1900 + t.tm_year);
+	oss << "-" << std::setfill('0') << std::setw(2) << (1 + t.tm_mon);
+	oss << "-" << std::setfill('0') << std::setw(2) << t.tm_mday;
+	oss << " " << std::setfill('0') << std::setw(2) << t.tm_hour;
+	oss << ":" << std::setfill('0') << std::setw(2) << t.tm_min;
+	oss << ":" << std::setfill('0') << std::setw(2) << t.tm_sec;
+	oss << "." << std::setfill('0') << std::setw(3) << milliseconds;
+	return oss.str();
+}
 
 IINField LoggingHandler::PrintUnsupported()
 {

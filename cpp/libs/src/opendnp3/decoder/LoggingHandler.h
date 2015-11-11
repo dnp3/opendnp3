@@ -43,7 +43,9 @@ namespace opendnp3
 
 		LoggingHandler(openpal::Logger logger, IDecoderCallbacks& callbacks);
 
-	private:	
+	private:
+
+		static std::string ToUTCString(const DNPTime& time);
 
 		openpal::Logger logger;
 		IDecoderCallbacks* callbacks;
@@ -165,9 +167,8 @@ namespace opendnp3
 		uint32_t count = 0;
 		auto logItem = [this, &count](const T& item)
 		{
-			std::ostringstream oss;
-			oss << "[" << count << "] - time: " << item.time.Get();			
-			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+			auto time = ToUTCString(item.time);
+			FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] - time: %s", count, time.c_str());
 			++count;
 		};
 
@@ -208,7 +209,7 @@ namespace opendnp3
 			}
 			if (HasAbsoluteTime(gv) || HasRelativeTime(gv))
 			{
-				oss << " time: " << item.value.time.Get();
+				oss << " time: " << ToUTCString(item.value.time);
 			}
 			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 		};
