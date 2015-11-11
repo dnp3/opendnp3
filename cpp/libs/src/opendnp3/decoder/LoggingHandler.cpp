@@ -46,7 +46,11 @@ std::string LoggingHandler::ToUTCString(const DNPTime& dnptime)
 		return "BAD TIME";
 	}
 #else
-
+	tm t;
+	if (!gmtime_r(&seconds, &t))
+	{
+		return "BAD TIME";
+	}
 #endif
 
 	std::ostringstream oss;
