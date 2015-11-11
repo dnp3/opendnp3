@@ -105,6 +105,23 @@ IINField LoggingHandler::PrintOctets(const ICollection<Indexed<OctetString>>& it
 	return IINField::Empty();
 }
 
+IINField LoggingHandler::PrintTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values)
+{
+	Indent i(*callbacks);
+	auto logItem = [this](const Indexed<TimeAndInterval>& item)
+	{
+		std::ostringstream oss;
+		oss << "[" << item.index << "] - startTime: " << ToUTCString(item.value.time);
+		oss << " count: " << item.value.interval;
+		oss << " units: " << IntervalUnitsToString(item.value.GetUnitsEnum()) << " (" << static_cast<int>(item.value.units) << ")";
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	};
+
+	values.ForeachItem(logItem);
+
+	return IINField::Empty();
+}
+
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object) 
 {
 	return this->PrintUnsupported();
@@ -254,12 +271,12 @@ IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintTimeAndInterval(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
 {
-	return this->PrintUnsupported();
+	return this->PrintSecStat(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
@@ -305,46 +322,52 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollec
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	Indent i(*callbacks);
-	auto logItem = [this](const Indexed<TimeAndInterval>& item)
-	{
-		std::ostringstream oss;		
-		oss << "[" << item.index << "] - startTime: " << ToUTCString(item.value.time);
-		oss << " count: " << item.value.interval;
-		oss << " units: " << IntervalUnitsToString(item.value.GetUnitsEnum()) << " (" << static_cast<int>(item.value.units) << ")";		
-		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
-	};
-
-	values.ForeachItem(logItem);
-
-	return IINField::Empty();
+	return this->PrintTimeAndInterval(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
 {
-	return this->PrintUnsupported();
-}
-
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
-{
-	return this->PrintUnsupported();
-}
-
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
-{
 	Indent i(*callbacks);
-	auto logItem = [this](const Indexed<Group122Var1>& item)
+	const bool HAS_TIME = HasAbsoluteTime(header.enumeration);
+	auto logItem = [this, HAS_TIME](const Indexed<BinaryCommandEvent>& item)
 	{
 		std::ostringstream oss;
-		oss << "[" << item.index << "] - flags: 0x" << ToHex(item.value.flags);
-		oss << " assoc: " << item.value.assocId;
-		oss << " value: " << item.value.value;		
+		oss << "[" << item.index << "] - value: " << GetStringValue(item.value.value) << "  status: " << CommandStatusToString(item.value.status);
+		if (HAS_TIME)
+		{
+			oss << " time: " << ToUTCString(item.value.time);
+		}
 		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 	};
 
 	values.ForeachItem(logItem);
 
 	return IINField::Empty();
+}
+
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
+{
+	Indent i(*callbacks);
+	const bool HAS_TIME = HasAbsoluteTime(header.enumeration);
+	auto logItem = [this, HAS_TIME](const Indexed<AnalogCommandEvent>& item)
+	{
+		std::ostringstream oss;
+		oss << "[" << item.index << "] - value: " << item.value.value << "  status: " << CommandStatusToString(item.value.status);
+		if (HAS_TIME)
+		{
+			oss << " time: " << ToUTCString(item.value.time);
+		}
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	};
+
+	values.ForeachItem(logItem);
+
+	return IINField::Empty();
+}
+
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
+{
+	return this->PrintSecStat(values);
 }
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)

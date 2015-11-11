@@ -81,9 +81,13 @@ namespace opendnp3
 		
 		IINField PrintCrob(const ICollection<Indexed<ControlRelayOutputBlock>>& items);
 		IINField PrintOctets(const ICollection<Indexed<OctetString>>& values);
+		IINField PrintTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values);
 
 		template <class T>
 		IINField PrintVQT(GroupVariation gv, const ICollection<Indexed<T>>& items);
+
+		template <class T>
+		IINField PrintSecStat(const ICollection<Indexed<T>>& values);
 
 		template <class T, class Stringify>
 		IINField PrintVQTStringify(GroupVariation gv, const ICollection<Indexed<T>>& items, const Stringify& stringify);
@@ -216,6 +220,24 @@ namespace opendnp3
 		};
 
 		items.ForeachItem(logItem);
+
+		return IINField::Empty();
+	}
+
+	template <class T>
+	IINField LoggingHandler::PrintSecStat(const ICollection<Indexed<T>>& values)
+	{
+		Indent i(*callbacks);
+		auto logItem = [this](const Indexed<T>& item)
+		{
+			std::ostringstream oss;
+			oss << "[" << item.index << "] - flags: 0x" << ToHex(item.value.flags);
+			oss << " assoc: " << item.value.assocId;
+			oss << " value: " << item.value.value;
+			SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+		};
+
+		values.ForeachItem(logItem);
 
 		return IINField::Empty();
 	}
