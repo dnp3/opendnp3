@@ -21,11 +21,11 @@
 
 #include "DecoderImpl.h"
 
-#include "opendnp3/decoder/Indent.h"
+#include "dnp3decode/Indent.h"
 
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/parsing/APDUParser.h"
-#include "opendnp3/decoder/LoggingHandler.h"
+#include "dnp3decode/LoggingHandler.h"
 
 #include <openpal/logging/LogMacros.h>
 

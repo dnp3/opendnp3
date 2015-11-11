@@ -27,9 +27,10 @@
 
 #include "opendnp3/app/parsing/IAPDUHandler.h"
 #include "opendnp3/gen/Attributes.h"
-#include "opendnp3/decoder/IDecoderCallbacks.h"
-#include "opendnp3/decoder/Indent.h"
 #include "opendnp3/LogLevels.h"
+
+#include "dnp3decode/IDecoderCallbacks.h"
+#include "dnp3decode/Indent.h"
 
 #include <cstdint>
 #include <sstream>

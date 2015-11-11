@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include <opendnp3/decoder/Decoder.h>
+#include <dnp3decode/Decoder.h>
 
 #include "DecoderImpl.h"
 

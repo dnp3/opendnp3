@@ -9,8 +9,9 @@ set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPEND
 option(DEMO "Build demo applications" OFF)
 option(TEST "Build tests" OFF)
 option(FULL "Build all optional projects (secauth, demos, tests)" OFF)
-option(SECAUTH "Build the secure authentication module and openssl crypto wrapper" OFF)
+option(DNP3_DECODER "Build the decoder library" OFF)
 option(DNP3_TLS "Build TLS client/server support")
+option(SECAUTH "Build the secure authentication module and openssl crypto wrapper" OFF)
 
 # other options off-by-default that you can enable
 option(WERROR "Set all warnings to errors" OFF)
@@ -126,6 +127,14 @@ target_link_libraries(openpal)
 install(TARGETS opendnp3 DESTINATION lib)
 set_target_properties(opendnp3 PROPERTIES FOLDER libs)
 
+if(DNP3_DECODER)
+  file(GLOB_RECURSE dnp3decode_SRC ./cpp/libs/src/dnp3decode/*.cpp ./cpp/libs/src/dnp3decode/*.h ./cpp/libs/include/dnp3decode/*.h)
+  add_library(dnp3decode ${LIB_TYPE} ${dnp3decode_SRC})
+  target_link_libraries(opendnp3)
+  install(TARGETS dnp3decode DESTINATION lib)
+  set_target_properties(dnp3decode PROPERTIES FOLDER libs)
+endif()
+
 # ---- asiopal library ----
 if(DNP3_TLS)
   file(GLOB_RECURSE asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)  
@@ -185,12 +194,7 @@ set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".
 install(DIRECTORY ./cpp/libs/include/ DESTINATION include ${INSTALL_ARGS})
 
 if(DEMO)
-  
-  # ----- decoder executable -----
-  add_executable(decoder ./cpp/examples/decoder/main.cpp)
-  target_link_libraries (decoder asiodnp3 ${PTHREAD})
-  set_target_properties(decoder PROPERTIES FOLDER demos)
-
+    
   # ----- master demo executable -----
   add_executable(master-demo ./cpp/examples/master/main.cpp)
   target_link_libraries (master-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
@@ -200,6 +204,15 @@ if(DEMO)
   add_executable(outstation-demo ./cpp/examples/outstation/main.cpp)
   target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})   
   set_target_properties(outstation-demo PROPERTIES FOLDER demos)
+
+  if(DNP3_DECODE)
+    
+    # ----- decoder executable -----
+    add_executable(decoder ./cpp/examples/decoder/main.cpp)
+    target_link_libraries (decoder asiodnp3 dnp3decode ${PTHREAD})
+    set_target_properties(decoder PROPERTIES FOLDER demos)
+  
+  endif()
 
   if(DNP3_TLS)
 
