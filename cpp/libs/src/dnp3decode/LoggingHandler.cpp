@@ -34,6 +34,15 @@ LoggingHandler::LoggingHandler(openpal::Logger logger_, IDecoderCallbacks& callb
 	callbacks(&callbacks_)
 {}
 
+void LoggingHandler::OnHeaderResult(const HeaderRecord& record, const IINField& result)
+{
+	if (result.Any())
+	{
+		Indent i(*callbacks);
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "Pretty printing not supported for this type");
+	}
+}
+
 std::string LoggingHandler::ToUTCString(const DNPTime& dnptime)
 {
 	time_t seconds = static_cast<time_t>(dnptime / 1000);
@@ -62,13 +71,6 @@ std::string LoggingHandler::ToUTCString(const DNPTime& dnptime)
 	oss << ":" << std::setfill('0') << std::setw(2) << t.tm_sec;
 	oss << "." << std::setfill('0') << std::setw(3) << milliseconds;
 	return oss.str();
-}
-
-IINField LoggingHandler::PrintUnsupported()
-{
-	Indent i(*callbacks);
-	SIMPLE_LOG_BLOCK(logger, flags::EVENT, "Pretty printing of this type not yet supported");
-	return IINField::Empty();
 }
 
 IINField LoggingHandler::PrintCrob(const ICollection<Indexed<ControlRelayOutputBlock>>& items)
@@ -141,62 +143,202 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var2& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	std::ostringstream oss;
+	oss << "csq: " << value.challengeSeqNum;
+	oss << " user: " << value.userNum;
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "MAC value: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.hmacValue, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	std::ostringstream oss;
+	oss << "ksq: " << value.keyChangeSeqNum;
+	oss << " user: " << value.userNum;
+	oss << " KW: " << KeyWrapAlgorithmToString(value.keyWrapAlgo);
+	oss << " KS: " << KeyStatusToString(value.keyStatus);
+	oss << " MAC: " << HMACTypeToString(value.hmacAlgo);
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "challenge data: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.challengeData, 18, 18);
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "MAC value: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.hmacValue, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var6& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	std::ostringstream oss;
+	oss << "ksq: " << value.keyChangeSeqNum;
+	oss << " user: " << value.userNum;
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "key data: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.keyWrapData, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var7& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	{
+		std::ostringstream oss;
+		oss << "seq: " << value.challengeSeqNum;
+		oss << " user: " << value.userNum;
+		oss << " assoc: " << value.assocId;
+		oss << " error: " << AuthErrorCodeToString(value.errorCode);
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	}
+
+	{
+		std::ostringstream oss;
+		oss << "time of error: " << ToUTCString(value.time);
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	}	
+	
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "error text: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.errorText, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var8& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	std::ostringstream oss;
+	oss << "kcm: " << KeyChangeMethodToString(value.keyChangeMethod);
+	oss << " type: " << CertificateTypeToString(value.certificateType);
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "certificate: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.certificate, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var9& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "MAC: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.hmacValue, 18, 18);
+	
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var10& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	{
+		std::ostringstream oss;
+		oss << "kcm: " << KeyChangeMethodToString(value.keyChangeMethod);
+		oss << " op: " << UserOperationToString(value.userOperation);
+		oss << " scsn: " << value.statusChangeSeqNum;
+		oss << " role: " << value.userRole;
+		oss << "exp: " << value.userRoleExpDays;
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	}
+	
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "user name: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.userName, 18, 18);
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "pub key: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.userPublicKey, 18, 18);
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "cert data: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.certificationData, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var11& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	{
+		std::ostringstream oss;
+		oss << "kcm: " << KeyChangeMethodToString(value.keyChangeMethod);		
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	}
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "user name: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.userName, 18, 18);	
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "master challenge data: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.challengeData, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var12& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	{
+		std::ostringstream oss;
+		oss << "ksq: " << value.keyChangeSeqNum;
+		oss << " user: " << value.userNum;
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	}	
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "outstation challenge data: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.challengeData, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var13& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	{
+		std::ostringstream oss;
+		oss << "ksq: " << value.keyChangeSeqNum;
+		oss << " user: " << value.userNum;
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	}
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "encrypted update key: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.encryptedUpdateKey, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var14& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "Digital Signature: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.digitalSignature, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "MAC value: ");
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.hmacValue, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
@@ -226,12 +368,33 @@ IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>& values)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	auto print = [this](const Group120Var3& value) {
+		std::ostringstream oss;		
+		oss << "csq: " << value.challengeSeqNum;
+		oss << " user: " << value.userNum;
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	};
+
+	values.ForeachItem(print);
+	
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values)
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+
+	auto print = [this](const Group120Var4& value) {
+		std::ostringstream oss;		
+		oss << "user: " << value.userNum;
+		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	};
+
+	values.ForeachItem(print);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)

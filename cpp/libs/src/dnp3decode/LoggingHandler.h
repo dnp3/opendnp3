@@ -46,6 +46,8 @@ namespace opendnp3
 
 	private:
 
+		virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) override;
+
 		static std::string ToUTCString(const DNPTime& time);
 
 		openpal::Logger logger;
@@ -63,9 +65,7 @@ namespace opendnp3
 			return oss.str();
 		}
 
-		/// --- templated helpers ---
-
-		IINField PrintUnsupported();
+		/// --- templated helpers ---		
 
 		template <class T>
 		IINField PrintV(const ICollection<Indexed<T>>& items);
