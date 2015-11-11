@@ -124,7 +124,18 @@ IINField LoggingHandler::PrintTimeAndInterval(const ICollection<Indexed<TimeAndI
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object) 
 {
-	return this->PrintUnsupported();
+	Indent i(*callbacks);
+	
+	std::ostringstream oss;
+	oss << "csq: " << value.challengeSeqNum;
+	oss << " user: " << value.userNum;
+	oss << " MAC: " << HMACTypeToString(value.hmacAlgo);
+	oss << " reason: " << ChallengeReasonToString(value.challengeReason);
+	oss << " challenge data: ";
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.challengeData, 18, 18);
+
+	return IINField::Empty();
 }
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var2& value, const openpal::RSlice& object)
