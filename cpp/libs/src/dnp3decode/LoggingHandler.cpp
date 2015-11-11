@@ -130,9 +130,10 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 	oss << "csq: " << value.challengeSeqNum;
 	oss << " user: " << value.userNum;
 	oss << " MAC: " << HMACTypeToString(value.hmacAlgo);
-	oss << " reason: " << ChallengeReasonToString(value.challengeReason);
-	oss << " challenge data: ";
+	oss << " reason: " << ChallengeReasonToString(value.challengeReason);	
 	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
+
+	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "challenge data: ");
 	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.challengeData, 18, 18);
 
 	return IINField::Empty();
