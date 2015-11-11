@@ -26,18 +26,24 @@ namespace openpal
 
 const FloatByteOrder::Value FloatByteOrder::ORDER(GetByteOrder());
 
+union FloatUnion
+{
+	uint8_t bytes[4];
+	float f;
+};
+
+static_assert(sizeof(FloatUnion) == 4, "Bad float union size");
+
 bool FloatByteOrder::IsNormalByteOrder()
 {
-	uint8_t bytes[4] = { 0x00, 0x00, 0xA0, 0xC1 };
-	float f = *reinterpret_cast<float*>(bytes);
-	return (f == -20.0f);
+	FloatUnion value = { 0x00, 0x00, 0xA0, 0xC1 };		
+	return (value.f == -20.0f);
 }
 
 bool FloatByteOrder::IsReverseByteOrder()
 {
-	uint8_t bytes[4] = { 0xC1, 0xA0, 0x00, 0x00 };
-	float f = *reinterpret_cast<float*>(bytes);
-	return (f == -20.0f);
+	FloatUnion value = { 0xC1, 0xA0, 0x00, 0x00 };	
+	return (value.f == -20.0f);
 }
 
 FloatByteOrder::Value FloatByteOrder::GetByteOrder()
