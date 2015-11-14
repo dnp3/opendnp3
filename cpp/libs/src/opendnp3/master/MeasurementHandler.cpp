@@ -21,6 +21,7 @@
 #include "MeasurementHandler.h"
 
 #include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/gen/Attributes.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -55,7 +56,7 @@ MeasurementHandler::~MeasurementHandler()
 
 TimestampMode MeasurementHandler::ModeFromType(GroupVariation gv)
 {
-	return TypeHasTimestamp(gv) ? TimestampMode::SYNCHRONIZED : TimestampMode::INVALID;
+	return HasAbsoluteTime(gv) ? TimestampMode::SYNCHRONIZED : TimestampMode::INVALID;
 }
 
 
@@ -93,47 +94,47 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICol
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
@@ -149,13 +150,13 @@ IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICo
 	}
 	else
 	{
-		return this->LoadValues(header, ModeFromType(header.enumeration), values);
+		return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 	}
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
@@ -166,43 +167,43 @@ IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICo
 	}
 	else
 	{
-		return this->LoadValues(header, ModeFromType(header.enumeration), values);
+		return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 	}
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
 {
-	return this->LoadValues(header, ModeFromType(header.enumeration), values);
+	return this->LoadValues(header, ModeFromType(header.enumeration), HasFlags(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)

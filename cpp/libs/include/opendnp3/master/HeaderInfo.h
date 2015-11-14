@@ -40,6 +40,7 @@ public:
 		gv(GroupVariation::UNKNOWN),
 		qualifier(QualifierCode::UNDEFINED),
 		tsmode(TimestampMode::INVALID),
+		flagsValid(false),
 		headerIndex(0)
 	{}
 
@@ -47,11 +48,13 @@ public:
 	    GroupVariation gv_,
 	    QualifierCode qualifier_,
 	    TimestampMode tsmode_,
+		bool flagsValid_,
 		uint32_t headerIndex_
 	) :
 		gv(gv_),
 		qualifier(qualifier_),
 		tsmode(tsmode_),
+		flagsValid(flagsValid_),
 		headerIndex(headerIndex_)
 	{}
 
@@ -61,6 +64,8 @@ public:
 	QualifierCode qualifier;
 	/// Enumeration that provides information about the validity of timestamps on the associated objects
 	TimestampMode tsmode;
+	/// True if the flags on the value were present on underlying type, false if online is just assumed 
+	bool flagsValid;
 	/// The 0-based index of the header within the ASDU
 	uint32_t headerIndex;
 };

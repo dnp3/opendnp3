@@ -35,9 +35,6 @@
 namespace opendnp3
 {
 
-// tells if type carries a timestamp
-bool TypeHasTimestamp(GroupVariation gv);
-
 enum class GroupVariationType : int
 {
     STATIC,

@@ -37,7 +37,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class MeasurementHandler : public IAPDUHandler
+class MeasurementHandler final : public IAPDUHandler
 {
 
 public:
@@ -48,7 +48,7 @@ public:
 	static ParseResult ProcessMeasurements(const openpal::RSlice& objects, openpal::Logger& logger, ISOEHandler* pHandler);
 
 	// TODO
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override
 	{
 		return true;
 	};
@@ -107,14 +107,14 @@ private:
 
 		auto collection = Map<Indexed<Source>, Indexed<Target>>(values, transform);
 
-		return this->LoadValues(record, ModeFromType(record.enumeration), collection);
+		return this->LoadValues(record, ModeFromType(record.enumeration), HasFlags(record.enumeration), collection);
 	}
 
 	template <class T>
-	IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, const ICollection<Indexed<T>>& values)
+	IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, bool flagsValid, const ICollection<Indexed<T>>& values)
 	{
 		this->CheckForTxStart();
-		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerIndex);
+		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, flagsValid, record.headerIndex);
 		this->pSOEHandler->Process(info, values);
 		return IINField();
 	}
@@ -163,7 +163,7 @@ IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const IC
 
 	auto adjusted = Map<Indexed<T>, Indexed<T>>(values, transform);
 
-	return this->LoadValues(record, MODE, adjusted);
+	return this->LoadValues(record, MODE, HasFlags(record.enumeration), adjusted);
 }
 
 }
