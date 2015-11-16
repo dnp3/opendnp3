@@ -72,7 +72,7 @@ class PLLS_SendUnconfirmedTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success);
+	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success) override;
 };
 
 
@@ -84,7 +84,7 @@ class PLLS_LinkResetTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkResetTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success);
+	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ class PLLS_ConfUserDataTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfUserDataTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success);
+	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success);
+	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////

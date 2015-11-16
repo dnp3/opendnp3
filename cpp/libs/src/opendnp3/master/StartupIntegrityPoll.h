@@ -34,26 +34,26 @@ class ISOEHandler;
 /**
  * A generic interface for defining master request/response style tasks
  */
-class StartupIntegrityPoll : public PollTaskBase
+class StartupIntegrityPoll final : public PollTaskBase
 {
 
 public:
 
 	StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
-	virtual bool IsRecurring() const override final
+	virtual bool IsRecurring() const override
 	{
 		return true;
 	}
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual int Priority() const override final
+	virtual int Priority() const override
 	{
 		return priority::INTEGRITY_POLL;
 	}
 
-	virtual bool BlocksLowerPriority() const
+	virtual bool BlocksLowerPriority() const override
 	{
 		return true;
 	}
@@ -64,14 +64,14 @@ private:
 
 	openpal::TimeDuration retryPeriod;
 
-	virtual bool IsEnabled() const override final;
+	virtual bool IsEnabled() const override;
 
-	virtual MasterTaskType GetTaskType() const override final
+	virtual MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::STARTUP_INTEGRITY_POLL;
 	}
 
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 
 };
 

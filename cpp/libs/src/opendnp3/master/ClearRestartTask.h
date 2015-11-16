@@ -30,50 +30,50 @@ namespace opendnp3
 /**
 * Clear the IIN restart bit
 */
-class ClearRestartTask : public IMasterTask
+class ClearRestartTask final : public IMasterTask
 {
 
 public:
 
 	ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
-	virtual char const* Name() const override final
+	virtual char const* Name() const override
 	{
 		return "Clear Restart IIN";
 	}
 
-	virtual bool IsRecurring() const override final
+	virtual bool IsRecurring() const override
 	{
 		return true;
 	}
 
-	virtual int Priority() const override final
+	virtual int Priority() const override
 	{
 		return priority::CLEAR_RESTART;
 	}
 
-	virtual bool BlocksLowerPriority() const override final
+	virtual bool BlocksLowerPriority() const override
 	{
 		return true;
 	}
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
 private:
 
-	virtual MasterTaskType GetTaskType() const override final
+	virtual MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::USER_TASK;
 	}
 
-	virtual bool IsEnabled() const override final
+	virtual bool IsEnabled() const override
 	{
 		return true;
 	}
 
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
+	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override;
 
 	openpal::TimeDuration retryPeriod;
 };

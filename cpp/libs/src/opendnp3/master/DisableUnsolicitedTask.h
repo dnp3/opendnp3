@@ -27,31 +27,31 @@
 namespace opendnp3
 {
 
-class DisableUnsolicitedTask : public IMasterTask
+class DisableUnsolicitedTask final : public IMasterTask
 {
 
 public:
 
 	DisableUnsolicitedTask(IMasterApplication& application, bool enabled, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
-	virtual char const* Name() const override final
+	virtual char const* Name() const override
 	{
 		return "Disable Unsolicited";
 	}
 
-	virtual bool IsRecurring() const override final
+	virtual bool IsRecurring() const override
 	{
 		return true;
 	}
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual int Priority() const override final
+	virtual int Priority() const override
 	{
 		return priority::DISABLE_UNSOLICITED;
 	}
 
-	virtual bool BlocksLowerPriority() const
+	virtual bool BlocksLowerPriority() const override
 	{
 		return true;
 	}
@@ -61,19 +61,19 @@ private:
 	bool enabled;
 	openpal::TimeDuration retryPeriod;
 
-	virtual MasterTaskType GetTaskType() const override final
+	virtual MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::DISABLE_UNSOLICITED;
 	}
 
-	virtual bool IsEnabled() const override final
+	virtual bool IsEnabled() const override
 	{
 		return enabled;
 	}
 
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
+	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override;
 
-	virtual TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 };
 
 

@@ -29,31 +29,31 @@ namespace opendnp3
 
 class IMasterApplication;
 
-class AssignClassTask : public IMasterTask
+class AssignClassTask final : public IMasterTask
 {
 
 public:
 
 	AssignClassTask(IMasterApplication& application, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
-	virtual char const* Name() const override final
+	virtual char const* Name() const override
 	{
 		return "Assign Class";
 	}
 
-	virtual bool IsRecurring() const override final
+	virtual bool IsRecurring() const override
 	{
 		return true;
 	}
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual int Priority(void) const override final
+	virtual int Priority(void) const override
 	{
 		return priority::ASSIGN_CLASS;
 	}
 
-	virtual bool BlocksLowerPriority() const
+	virtual bool BlocksLowerPriority() const override
 	{
 		return true;
 	}
@@ -62,16 +62,16 @@ private:
 
 	openpal::TimeDuration retryPeriod;
 
-	virtual MasterTaskType GetTaskType() const override final
+	virtual MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::ASSIGN_CLASS;
 	}
 
-	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
+	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
 
-	virtual TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 
-	virtual bool IsEnabled() const override final;
+	virtual bool IsEnabled() const override;
 
 };
 

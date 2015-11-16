@@ -31,7 +31,7 @@
 
 #define MACRO_NAME_SINGLETON_INSTANCE(type) \
 	MACRO_SINGLETON_INSTANCE(type) \
-	char const* Name() const { return #type; }
+	char const* Name() const override { return #type; }
 
 #define MACRO_STATE_SINGLETON_INSTANCE(type) MACRO_NAME_SINGLETON_INSTANCE(type)
 

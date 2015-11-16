@@ -37,7 +37,7 @@ class ISOEHandler;
  * A generic interface for defining master request/response style tasks
  */
 
-class UserPollTask : public PollTaskBase
+class UserPollTask final : public PollTaskBase
 {
 
 public:
@@ -53,33 +53,33 @@ public:
 	    TaskConfig config
 	);
 
-	virtual int Priority() const override final
+	virtual int Priority() const override
 	{
 		return priority::USER_POLL;
 	}
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual bool BlocksLowerPriority() const override final
+	virtual bool BlocksLowerPriority() const override
 	{
 		return false;
 	}
 
-	virtual bool IsRecurring() const override final
+	virtual bool IsRecurring() const override
 	{
 		return recurring;
 	}
 
-	virtual bool IsEnabled() const
+	virtual bool IsEnabled() const override
 	{
 		return true;
 	}
 
 private:
 
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 
-	virtual MasterTaskType GetTaskType() const override final
+	virtual MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::USER_TASK;
 	}
