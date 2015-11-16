@@ -21,7 +21,6 @@
 #include "MeasurementHandler.h"
 
 #include "opendnp3/app/parsing/APDUParser.h"
-#include "opendnp3/gen/Attributes.h"
 
 #include <openpal/logging/LogMacros.h>
 
