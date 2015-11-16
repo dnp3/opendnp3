@@ -33,7 +33,7 @@
 using namespace opendnp3;
 using namespace openpal;
 
-class ConcretePhysicalLayerMonitor : public asiodnp3::PhysicalLayerMonitor
+class ConcretePhysicalLayerMonitor final : public asiodnp3::PhysicalLayerMonitor
 {
 public:
 
@@ -46,8 +46,8 @@ public:
 
 	}
 
-	virtual void OnReceive(const openpal::RSlice&) override final {}
-	virtual void OnSendResult(bool isSuccess) override final {}
+	virtual void OnReceive(const openpal::RSlice&) override {}
+	virtual void OnSendResult(bool isSuccess) override {}
 
 	void ReachInAndStartOpenTimer()
 	{
@@ -60,20 +60,20 @@ public:
 
 protected:
 
-	void OnShutdown() override final
+	void OnShutdown() override
 	{
 		++mShutdownCallbackCount;
 	}
 
-	void OnPhysicalLayerOpenSuccessCallback()
+	void OnPhysicalLayerOpenSuccessCallback() override
 	{
 		++mOpenCallbackCount;
 	}
-	void OnPhysicalLayerOpenFailureCallback()
+	void OnPhysicalLayerOpenFailureCallback() override
 	{
 		++mOpenCallbackCount;
 	}
-	void OnPhysicalLayerCloseCallback()
+	void OnPhysicalLayerCloseCallback() override
 	{
 		++mCloseCallbackCount;
 	}

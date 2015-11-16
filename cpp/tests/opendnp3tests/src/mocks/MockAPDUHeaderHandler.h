@@ -32,7 +32,7 @@ class MockApduHeaderHandler : public IAPDUHandler
 {
 public:
 
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
 	{
 		return true;
 	}

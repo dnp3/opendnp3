@@ -106,7 +106,7 @@ protected:
 
 private:
 
-	void OnStateChange(opendnp3::ChannelState aState);
+	void OnStateChange(opendnp3::ChannelState aState) override final;
 
 	bool HasEnabledContext();
 
@@ -158,9 +158,9 @@ private:
 	bool isTransmitting;
 
 	// Implement virtual PhysLayerMonitor
-	void OnPhysicalLayerOpenSuccessCallback();
-	void OnPhysicalLayerOpenFailureCallback() {}
-	void OnPhysicalLayerCloseCallback();
+	void OnPhysicalLayerOpenSuccessCallback() override;
+	void OnPhysicalLayerOpenFailureCallback() override {}
+	void OnPhysicalLayerCloseCallback() override;
 
 };
 

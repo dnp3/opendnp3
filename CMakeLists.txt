@@ -67,7 +67,7 @@ else()
 	set(LIB_TYPE SHARED)
   endif()
 
-  set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+  set(CMAKE_CXX_FLAGS "-Wall -Wno-error=unused-local-typedef -std=c++11")
 
   # different release and debug flags
   set(CMAKE_CXX_FLAGS_RELEASE "-O3")

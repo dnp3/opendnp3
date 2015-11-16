@@ -76,44 +76,44 @@ public:
 	virtual ~PhysicalLayerBase() {}
 
 	// Implement IChannelState
-	bool IsOpen() const
+	bool IsOpen() const override
 	{
 		return state.IsOpen();
 	}
-	bool IsOpening() const
+	bool IsOpening() const override
 	{
 		return state.IsOpening();
 	}
-	bool IsReading() const
+	bool IsReading() const override
 	{
 		return state.IsReading();
 	}
-	bool IsWriting() const
+	bool IsWriting() const override
 	{
 		return state.IsWriting();
 	}
-	bool IsClosing() const
+	bool IsClosing() const override
 	{
 		return state.IsClosing();
 	}
-	bool IsClosed() const
+	bool IsClosed() const override
 	{
 		return state.IsClosed();
 	}
 
-	bool CanOpen() const
+	bool CanOpen() const override
 	{
 		return state.CanOpen();
 	}
-	bool CanClose() const
+	bool CanClose() const override
 	{
 		return state.CanClose();
 	}
-	bool CanRead() const
+	bool CanRead() const override
 	{
 		return state.CanRead();
 	}
-	bool CanWrite() const
+	bool CanWrite() const override
 	{
 		return state.CanWrite();
 	}
@@ -125,7 +125,7 @@ public:
 	virtual void BeginRead(openpal::WSlice&) override final;
 
 	// Not an event delegated to the states
-	void SetHandler(openpal::IPhysicalLayerCallbacks* apHandler);
+	void SetHandler(openpal::IPhysicalLayerCallbacks* apHandler) override;
 
 	/* Actions taken by the states - These must be implemented by the concrete
 	classes inherited from this class */

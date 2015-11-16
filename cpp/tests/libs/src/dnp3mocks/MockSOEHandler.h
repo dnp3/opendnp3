@@ -155,8 +155,8 @@ public:
 
 protected:
 
-	void Start() {}
-	void End() {}
+	void Start() override {}
+	void End() override {}
 
 private:
 

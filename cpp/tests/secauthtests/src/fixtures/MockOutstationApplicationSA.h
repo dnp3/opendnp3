@@ -43,7 +43,7 @@ public:
 		this->userStatusSeqNums.push_back(statusChangeSeqNum);
 	}
 
-	virtual void AddOrUpdateUser(const secauth::OutstationUserInfo& info)
+	virtual void AddOrUpdateUser(const secauth::OutstationUserInfo& info) override
 	{
 		this->modifiedUsers.push_back(info);
 	}

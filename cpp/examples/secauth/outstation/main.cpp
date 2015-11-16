@@ -54,7 +54,7 @@ class OutstationApplication final : public IOutstationApplicationSA
 	}
 
 	// normally this needs to persist to disk
-	virtual void OnNewSCSN(uint32_t userStatusSeqNum) {}
+	virtual void OnNewSCSN(uint32_t userStatusSeqNum) override {}
 };
 
 
