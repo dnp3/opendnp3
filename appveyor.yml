@@ -1,0 +1,69 @@
+version: 2.1.0.{build}
+branches:
+  only:
+  - 2.0.x
+skip_non_tags: true
+os: Visual Studio 2013
+configuration: Release
+platform: x86
+clone_folder: C:\projects\dnp3
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+environment:
+  ASIO_HOME: C:\asio\asio-1.10.6\include
+  OSSL_LIB32_DIR: C:\OpenSSL-Win32\lib\VC
+  OPENDNP3_DIR: C:\projects\dnp3\build\lib
+  OPENSSL_CONF: C:\OpenSSL-Win32\bin\openssl.cfg
+install:
+- ps: >-
+    if (-not (Test-Path C:\asio)){
+    	Start-FileDownload "https://github.com/chriskohlhoff/asio/archive/asio-1-10-6.zip" -FileName asio-1-10-6.zip
+    	7z x -y asio-1-10-6.zip
+    	New-Item C:\asio -ItemType Directory
+    	Move-Item .\asio-asio-1-10-6\asio C:\asio\asio-1.10.6
+    }
+
+    if (-not (Test-Path C:\OpenSSL-Win32)){
+    	Start-FileDownload "https://slproweb.com/download/Win32OpenSSL-1_0_2e.exe" -FileName "Win32OpenSSL-1_0_2e.exe"
+    	Start-Process "Win32OpenSSL-1_0_2e.exe" -ArgumentList "/silent /verysilent /sp- /suppressmsgboxes" -Wait
+    }
+cache:
+- C:\asio
+- C:\OpenSSL-Win32
+nuget:
+  project_feed: true
+build_script:
+- cmd: >-
+    MKDIR build
+
+    CD build
+
+    MKDIR lib
+
+    cmake .. -DCMAKE_INSTALL_PREFIX=lib -DFULL=ON -DCMAKE_BUILD_TYPE=Release
+
+    msbuild opendnp3.sln /p:Configuration=Release /p:Platform=Win32
+
+    msbuild INSTALL.vcxproj /p:Configuration=Release /p:Platform=Win32
+
+    cd ..
+
+    msbuild dotnet\bindings.sln /p:Configuration=Release /p:Platform=Win32
+
+    7z a opendnp3-dotnet.zip %APPVEYOR_BUILD_FOLDER%\dotnet\bindings\CLRAdapter\Release\Win32\*.dll
+
+    nuget pack dotnet\nuget\opendnp3.nuspec -Version %APPVEYOR_BUILD_VERSION%
+test_script:
+- cmd: >-
+    c:\projects\dnp3\build\Release\testopendnp3.exe
+
+    c:\projects\dnp3\build\Release\testopenpal.exe
+artifacts:
+- path: opendnp3-dotnet.zip
+  name: dotnet-zip
+- path: opendnp3*.nupkg
+  name: nuget
