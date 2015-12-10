@@ -50,3 +50,5 @@ test_script:
 #   provider: NuGet
 #   api_key:
 #     secure: encrypted key https://ci.appveyor.com/tools/encrypt
+#   on:
+#     appveyor_repo_tag: true
