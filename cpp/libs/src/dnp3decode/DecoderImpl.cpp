@@ -94,6 +94,22 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 	                 FunctionCodeToString(header.function),
 	                 header.IIN.LSB,
 	                 header.IIN.MSB);
+			if (header.IIN.LSB & 0x01) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.0 - All stations");
+			if (header.IIN.LSB & 0x02) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.1 - Class 1 events");
+			if (header.IIN.LSB & 0x04) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.2 - Class 2 events");
+			if (header.IIN.LSB & 0x08) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.3 - Class 3 events");
+			if (header.IIN.LSB & 0x10) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.4 - Need time");
+			if (header.IIN.LSB & 0x20) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.5 - Local control");
+			if (header.IIN.LSB & 0x40) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.6 - Device trouble");
+			if (header.IIN.LSB & 0x80) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.7 - Device restart");
+			if (header.IIN.MSB & 0x01) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.0 - Function code not supported");
+			if (header.IIN.MSB & 0x02) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.1 - Object unknown");
+			if (header.IIN.MSB & 0x04) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.2 - Parameter error");
+			if (header.IIN.MSB & 0x08) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.3 - Event buffer overflow");
+			if (header.IIN.MSB & 0x10) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.4 - Already executing");
+			if (header.IIN.MSB & 0x20) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.5 - Configuration corrupt");
+			if (header.IIN.MSB & 0x40) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.6 - Reserved 1");
+			if (header.IIN.MSB & 0x80) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.7 - Reserved 2");
 
 			Indent i(*callbacks);
 			LoggingHandler handler(logger, *callbacks);
