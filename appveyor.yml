@@ -26,8 +26,6 @@ install:
 cache:
 - C:\asio
 - C:\OpenSSL-Win32
-nuget:
-  project_feed: true
 build_script:
 - cmd: MKDIR build
 - cmd: CD build
