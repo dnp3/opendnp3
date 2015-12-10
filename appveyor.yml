@@ -37,12 +37,15 @@ build_script:
 - cmd: msbuild dotnet\bindings.sln /p:Configuration=Release /p:Platform=Win32
 after_build:
 - ps: >-
-    if ($env:APPVEYOR_REPO_TAG){
+    if ($env:APPVEYOR_REPO_TAG -eq "true"){
       nuget pack dotnet\nuget\opendnp3.nuspec -Version "$env:APPVEYOR_REPO_TAG_NAME"
     }
 test_script:
 - cmd: c:\projects\dnp3\build\Release\testopendnp3.exe
 - cmd: c:\projects\dnp3\build\Release\testopenpal.exe
+artifacts:
+- path: '*.nupkg'
+  name: nuget
 # deploy:
 #   provider: NuGet
 #   api_key:
