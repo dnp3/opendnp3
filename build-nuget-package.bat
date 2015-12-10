@@ -1,14 +1,13 @@
+setx OPENDNP3_DIR %~dp0\build\lib
 
-setx OPENDNP3_DIR build\lib
-setx OSSL_LIB32_DIR %~1
-
-RMDIR build /s /q
+IF EXIST build RMDIR build /s /q
 MKDIR build
 CD build
 MKDIR lib
-cmake ../ -DCMAKE_INSTALL_PREFIX=lib -DDNP3_TLS=ON -DSECAUTH=ON -DCMAKE_BUILD_TYPE=Release
-msbuild opendnp3.sln
-msbuild INSTALL.vcxproj
+cmake .. -DCMAKE_INSTALL_PREFIX=lib -DDNP3_TLS=ON -DSECAUTH=ON -DCMAKE_BUILD_TYPE=Release -G"Visual Studio 12 2013"
+msbuild opendnp3.sln /p:Configuration=Release /p:Platform=Win32
+msbuild INSTALL.vcxproj /p:Configuration=Release /p:Platform=Win32
 cd ..
-msbuild dotnet\bindings.sln /p:Configuration=Release
+msbuild dotnet\bindings.sln /p:Configuration=Release /p:Platform=Win32
+nuget pack dotnet\nuget\opendnp3.nuspec -Version %1
 
