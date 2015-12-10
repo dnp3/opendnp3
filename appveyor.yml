@@ -29,15 +29,14 @@ cache:
 nuget:
   project_feed: true
 build_script:
-- cmd: >-
-    MKDIR build
-    CD build
-    MKDIR lib
-    cmake .. -DCMAKE_INSTALL_PREFIX=lib -DFULL=ON -DCMAKE_BUILD_TYPE=Release
-    msbuild opendnp3.sln /p:Configuration=Release /p:Platform=Win32
-    msbuild INSTALL.vcxproj /p:Configuration=Release /p:Platform=Win32
-    cd ..
-    msbuild dotnet\bindings.sln /p:Configuration=Release /p:Platform=Win32
+- cmd: MKDIR build
+- cmd: CD build
+- cmd: MKDIR lib
+- cmd: cmake .. -DCMAKE_INSTALL_PREFIX=lib -DFULL=ON -DCMAKE_BUILD_TYPE=Release
+- cmd: msbuild opendnp3.sln /p:Configuration=Release /p:Platform=Win32
+- cmd: msbuild INSTALL.vcxproj /p:Configuration=Release /p:Platform=Win32
+- cmd: cd ..
+- cmd: msbuild dotnet\bindings.sln /p:Configuration=Release /p:Platform=Win32
 after_build:
 - ps: >-
     if ($env:APPVEYOR_REPO_TAG){
