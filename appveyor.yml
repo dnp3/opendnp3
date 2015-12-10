@@ -38,7 +38,7 @@ build_script:
 after_build:
 - ps: >-
     if ($env:APPVEYOR_REPO_TAG){
-      nuget pack dotnet\nuget\opendnp3.nuspec -Version $env:APPVEYOR_REPO_TAG_NAME
+      nuget pack dotnet\nuget\opendnp3.nuspec -Version "$env:APPVEYOR_REPO_TAG_NAME"
     }
 test_script:
 - cmd: c:\projects\dnp3\build\Release\testopendnp3.exe
