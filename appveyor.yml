@@ -52,3 +52,4 @@ deploy:
     secure: H7w8XBF6q0Gxyo1xKhywjZ4qrjfy3W87oGAAu30BIas1paWIE1UMvk6QM/3xzVE9
   on:
     appveyor_repo_tag: true
+  artifact: '*.nupkg'
