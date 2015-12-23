@@ -37,32 +37,7 @@
 
 #ifdef OPENPAL_CUSTOMIZE_LOGGING
 
-	#include "openpal/logging/LogFilters.h"
-
-	namespace openpal {
-		// this will be defined and linked by the user application
-		void CustomLogMethod(const LogFilters& filters, const char* format, ...);
-	}
-
-	#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
-		if(logger.HasAny(filters)){ \
-			openpal::CustomLogMethod(filters, message); \
-		}
-
-	#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message) \
-		if(pLogger && pLogger->HasAny(filters)){ \
-			openpal::CustomLogMethod(filters, message); \
-		}
-
-	#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
-	if(logger.HasAny(filters)){ \
-		openpal::CustomLogMethod(filters, format, ##__VA_ARGS__); \
-	}
-
-	#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
-	if(pLogger && pLogger->HasAny(filters)){ \
-		openpal::CustomLogMethod(filters, format, ##__VA_ARGS__); \
-	}
+	#include "CustomLogMacros.h"
 
 #else
 
@@ -90,12 +65,12 @@
 		pLogger->Log(filters, LOCATION, message, code); \
 	}
 
-#endif
+	#define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize) \
+	if(logger.HasAny(filters)){ \
+		LogHex(logger, filters, buffer, firstSize, otherSize); \
+	}
 
-#define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize) \
-if(logger.HasAny(filters)){ \
-	LogHex(logger, filters, buffer, firstSize, otherSize); \
-}
+#endif
 
 #else
 
