@@ -77,11 +77,8 @@ void LogHex(Logger& logger, const openpal::LogFilters& filters, const openpal::R
 		buffer[3 * rowSize] = '\0';
 		copy.Advance(rowSize);
 
-#ifdef OPENPAL_CUSTOMIZE_LOGGING
-		CustomLogMethod(filters, buffer);
-#else
 		logger.Log(filters, "", buffer, -1);
-#endif
+
 		++rowCount;
 	}
 }
