@@ -35,29 +35,62 @@
 #define SAFE_STRING_FORMAT(dest, size, format, ...) snprintf(dest, size, format, ##__VA_ARGS__)
 #endif
 
-#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
+#ifdef OPENPAL_CUSTOMIZE_LOGGING
+
+	#include "openpal/logging/LogFilters.h"
+
+	namespace openpal {
+		// this will be defined and linked by the user application
+		void CustomLogMethod(const LogFilters& filters, const char* format, ...);
+	}
+
+	#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
+		if(logger.IsEnabled(filters)){ \
+			openpal::CustomLogMethod(filters, message); \
+		}
+
+	#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message) \
+		if(pLogger && pLogger->IsEnabled(filters)){ \
+			openpal::CustomLogMethod(filters, message); \
+		}
+
+	#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
 	if(logger.IsEnabled(filters)){ \
+		openpal::CustomLogMethod(filters, format, ##__VA_ARGS__); \
+	}
+
+	#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
+	if(pLogger && pLogger->IsEnabled(filters)){ \
+		openpal::CustomLogMethod(filters, format, ##__VA_ARGS__); \
+	}
+
+#else
+
+	#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
+		if(logger.IsEnabled(filters)){ \
+			logger.Log(filters, LOCATION, message, code); \
+		}
+
+	#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message) \
+		if(pLogger && pLogger->IsEnabled(filters)){ \
+			pLogger->Log(filters, LOCATION, message, code); \
+		}
+
+	#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
+	if(logger.IsEnabled(filters)){ \
+		char message[openpal::MAX_LOG_ENTRY_SIZE]; \
+		SAFE_STRING_FORMAT(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
 		logger.Log(filters, LOCATION, message, code); \
 	}
 
-#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message) \
+	#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
 	if(pLogger && pLogger->IsEnabled(filters)){ \
+		char message[openpal::MAX_LOG_ENTRY_SIZE]; \
+		SAFE_STRING_FORMAT(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
 		pLogger->Log(filters, LOCATION, message, code); \
 	}
 
-#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
-if(logger.IsEnabled(filters)){ \
-	char message[openpal::MAX_LOG_ENTRY_SIZE]; \
-	SAFE_STRING_FORMAT(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
-	logger.Log(filters, LOCATION, message, code); \
-}
-
-#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
-if(pLogger && pLogger->IsEnabled(filters)){ \
-	char message[openpal::MAX_LOG_ENTRY_SIZE]; \
-	SAFE_STRING_FORMAT(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
-	pLogger->Log(filters, LOCATION, message, code); \
-}
+#endif
 
 #define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize) \
 if(logger.IsEnabled(filters)){ \

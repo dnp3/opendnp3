@@ -20,6 +20,7 @@
  */
 #include "openpal/logging/StringFormatting.h"
 
+#include "openpal/logging/LogMacros.h"
 #include "openpal/util/ToHex.h"
 #include "openpal/container/RSlice.h"
 #include "openpal/Configure.h"
@@ -75,7 +76,12 @@ void LogHex(Logger& logger, const openpal::LogFilters& filters, const openpal::R
 		}
 		buffer[3 * rowSize] = '\0';
 		copy.Advance(rowSize);
+
+#ifdef OPENPAL_CUSTOMIZE_LOGGING
+		CustomLogMethod(filters, buffer);
+#else
 		logger.Log(filters, "", buffer, -1);
+#endif
 		++rowCount;
 	}
 }
