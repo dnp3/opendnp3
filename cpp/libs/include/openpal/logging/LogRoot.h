@@ -51,6 +51,8 @@ public:
 
 	bool IsEnabled(const LogFilters& rhs) const;
 
+	bool HasAny(const LogFilters& filters) const;
+
 	void SetFilters(const LogFilters& filters_);
 
 	const LogFilters& GetFilters() const;

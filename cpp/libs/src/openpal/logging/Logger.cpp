@@ -38,6 +38,11 @@ bool Logger::IsEnabled(const LogFilters& filters) const
 	return pRoot->IsEnabled(filters);
 }
 
+bool Logger::HasAny(const LogFilters& filters) const
+{
+	return pRoot->HasAny(filters);
+}
+
 void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
 	if (pRoot->IsEnabled(filters))

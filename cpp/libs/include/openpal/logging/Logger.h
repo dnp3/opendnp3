@@ -44,6 +44,8 @@ public:
 
 	bool IsEnabled(const LogFilters& filters) const;
 
+	bool HasAny(const LogFilters& filters) const;
+
 private:
 
 	Logger(LogRoot* pRoot);

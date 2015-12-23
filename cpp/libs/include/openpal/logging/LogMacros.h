@@ -45,22 +45,22 @@
 	}
 
 	#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
-		if(logger.IsEnabled(filters)){ \
+		if(logger.HasAny(filters)){ \
 			openpal::CustomLogMethod(filters, message); \
 		}
 
 	#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message) \
-		if(pLogger && pLogger->IsEnabled(filters)){ \
+		if(pLogger && pLogger->HasAny(filters)){ \
 			openpal::CustomLogMethod(filters, message); \
 		}
 
 	#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
-	if(logger.IsEnabled(filters)){ \
+	if(logger.HasAny(filters)){ \
 		openpal::CustomLogMethod(filters, format, ##__VA_ARGS__); \
 	}
 
 	#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
-	if(pLogger && pLogger->IsEnabled(filters)){ \
+	if(pLogger && pLogger->HasAny(filters)){ \
 		openpal::CustomLogMethod(filters, format, ##__VA_ARGS__); \
 	}
 
@@ -93,7 +93,7 @@
 #endif
 
 #define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize) \
-if(logger.IsEnabled(filters)){ \
+if(logger.HasAny(filters)){ \
 	LogHex(logger, filters, buffer, firstSize, otherSize); \
 }
 

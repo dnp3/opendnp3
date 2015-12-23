@@ -70,6 +70,11 @@ bool LogRoot::IsEnabled(const LogFilters& rhs) const
 	return pHandler && (this->filters & rhs);
 }
 
+bool LogRoot::HasAny(const LogFilters& rhs) const
+{
+	return this->filters & rhs;
+}
+
 void LogRoot::SetFilters(const LogFilters& filters_)
 {
 	filters = filters_;
