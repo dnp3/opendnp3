@@ -23,7 +23,7 @@
 
 #include <assert.h>
 
-#include "openpal/container/DynamicArray.h"
+#include "openpal/container/Array.h"
 
 namespace openpal
 {
@@ -115,7 +115,7 @@ private:
 	IndexType first;
 	IndexType nextInsert;
 
-	openpal::DynamicArray<ValueType, IndexType> buffer;
+	openpal::Array<ValueType, IndexType> buffer;
 };
 
 }
