@@ -13,7 +13,7 @@ object QualityMasks {
     EnumModel("CounterQuality", comments("counter"), EnumModel.UInt8, counterValues, None, Hex),
     EnumModel("FrozenCounterQuality", comments("frozen counter"), EnumModel.UInt8, frozenCounterValues, None, Hex),
     EnumModel("AnalogQuality", comments("analog"), EnumModel.UInt8, analogValues, None, Hex),
-    EnumModel("BinaryOutputStatusQuality", comments("binary output status"), EnumModel.UInt8, binaryOutputValues, None, Hex)
+    EnumModel("BinaryOutputStatusQuality", comments("binary output status"), EnumModel.UInt8, binaryOutputValues, None, Hex),
     EnumModel("AnalogOutputStatusQuality", comments("analog output status"), EnumModel.UInt8, analogOutputValues, None, Hex)
   )
 
