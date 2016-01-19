@@ -96,7 +96,7 @@ IListener* DNP3Manager::AddTCPListener(
 	uint32_t levels,
 	const std::string& endpoint,
 	uint16_t port,
-	IListenerCallback& callback)
+	IListenCallback& callback)
 {
 	// TODO
 	throw std::exception("not implemented");

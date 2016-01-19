@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_ILISTENERCALLBACK_H
-#define ASIODNP3_ILISTENERCALLBACK_H
+#ifndef ASIODNP3_ILISTENCALLBACK_H
+#define ASIODNP3_ILISTENCALLBACK_H
 
 #include <opendnp3/link/LinkHeaderFields.h>
 #include <opendnp3/master/MasterStackConfig.h>
@@ -48,11 +48,11 @@ class MasterListenConfig
 /**
 * Callback interface invoked when a new connection is accepted
 */
-class IListenerCallback
+class IListenCallback
 {
 public:
 
-	virtual ~IListenerCallback() {}
+	virtual ~IListenCallback() {}
 
 	/**
 	* Ask user code if the following connection should be accepted
