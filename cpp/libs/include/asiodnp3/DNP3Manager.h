@@ -29,6 +29,8 @@
 #include <opendnp3/link/ChannelRetry.h>
 
 #include <asiodnp3/IChannel.h>
+#include <asiodnp3/IListener.h>
+#include <asiodnp3/IListenerCallback.h>
 
 #include <asiopal/SerialTypes.h>
 
@@ -82,7 +84,7 @@ public:
 	void Shutdown();
 
 	/**
-	* Add a tcp client channel
+	* Add a persistent TCP client channel. Automatically attempts to reconnect.
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
@@ -101,7 +103,7 @@ public:
 	    uint16_t port);
 
 	/**
-	* Add a tcp server channel
+	* Add a persistent TCP server channel. Only accepts a single connection at a time.
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
@@ -118,7 +120,17 @@ public:
 		uint16_t port);
 
 	/**
-	* Add a serial channel
+	* Add a TCP listener that will callback when new a connection is accepted
+	*/
+	IListener* AddTCPListener(
+		char const* id,
+		uint32_t levels,
+		const std::string& endpoint,
+		uint16_t port,
+		IListenerCallback& callback);
+
+	/**
+	* Add a persistent TCP serial channel
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
@@ -131,6 +143,7 @@ public:
 	    uint32_t levels,
 		const opendnp3::ChannelRetry& retry,
 	    asiopal::SerialSettings settings);
+
 
 #ifdef OPENDNP3_USE_TLS
 
