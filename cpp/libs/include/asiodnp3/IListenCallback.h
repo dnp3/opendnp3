@@ -72,20 +72,20 @@ public:
 	* @param header the header from the first received link-layer frame
 	* @param config Configuration information expected to be populated by the application code
 	*/
-	virtual bool BeginMasterSession(
+	virtual bool CreateMasterSession(
 		const opendnp3::LinkHeaderFields& header,
 		MasterListenConfig& config
 	) = 0;
 
 	/**
-	* Called when a new master is created after a successul call to OnCreateMaster()
+	* Called when a new master is created after a successul call to CreateMasterSession()
 	*/
-	virtual void OnMasterCreated(IMaster& master) = 0;
+	virtual void OnSessionCreated(IMaster& master) = 0;
 
 	/**
 	* Called when a new master is created after a successul call to OnCreateMaster()
 	*/
-	virtual bool OnMasterTerminated(IMaster& master) = 0; // TODO - provide statistics
+	virtual bool OnSessionTerminated(IMaster& master) = 0; // TODO - provide statistics
 
 };
 
