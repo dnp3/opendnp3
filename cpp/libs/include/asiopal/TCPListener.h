@@ -34,7 +34,7 @@ namespace asiopal
 	/**	
 	* Binds and listens on an IPv4 TCP port
 	*
-	* Meant to be used exclusively as a shared_ptr<TCPListener>
+	* Meant to be used exclusively as a shared_ptr
 	*/
 	class TCPListener : public std::enable_shared_from_this<TCPListener>, private openpal::Uncopyable
 	{		
@@ -43,6 +43,7 @@ namespace asiopal
 
 		/// Callback invoked when a new connection is received
 		/// The accepting process is blocked by this callback
+		/// Client code is respon
 		typedef std::function<void (asio::ip::tcp::socket)> AcceptCallback;
 
 		/// Factory function ensures that only managed instances are created
