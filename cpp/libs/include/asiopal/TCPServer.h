@@ -18,8 +18,8 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_TCPLISTENER_H
-#define ASIOPAL_TCPLISTENER_H
+#ifndef ASIOPAL_TCPSERVER_H
+#define ASIOPAL_TCPSERVER_H
 
 #include <asio.hpp>
 #include <utility>
@@ -36,7 +36,7 @@ namespace asiopal
 	*
 	* Meant to be used exclusively as a shared_ptr
 	*/
-	class TCPListener : public std::enable_shared_from_this<TCPListener>, private openpal::Uncopyable
+	class TCPServer : public std::enable_shared_from_this<TCPServer>, private openpal::Uncopyable
 	{		
 
 	public:
@@ -47,18 +47,18 @@ namespace asiopal
 		typedef std::function<void (asio::ip::tcp::socket)> AcceptCallback;
 
 		/// Factory function ensures that only managed instances are created
-		static std::shared_ptr<TCPListener> Start(asio::io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec);
+		static std::shared_ptr<TCPServer> Create(asio::io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec);
 
 		// Stop listening for connections, permanently shutting down the listener
 		void Shutdown();
 		
 	private:		
 
-		TCPListener(asio::io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec);
+		TCPServer(asio::io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec);
 
 		void Configure(const std::string& adapter, std::error_code& ec);
 
-		void DoAccept();
+		void StartAccept();
 
 		asio::ip::tcp::endpoint m_endpoint;
 		AcceptCallback m_callback;

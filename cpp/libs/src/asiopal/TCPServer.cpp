@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "asiopal/TCPListener.h"
+#include "asiopal/TCPServer.h"
 
 using namespace asio;
 using namespace asio::ip;
@@ -27,7 +27,7 @@ using namespace asio::ip;
 namespace asiopal
 {
 
-	TCPListener::TCPListener(io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec) :
+	TCPServer::TCPServer(io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec) :
 		m_endpoint(ip::tcp::v4(), endpoint.port),
 		m_callback(callback),
 		m_acceptor(ioservice),
@@ -37,21 +37,21 @@ namespace asiopal
 
 		if (!ec)
 		{
-			this->DoAccept();
+			this->StartAccept();
 		}
 	}
 
-	std::shared_ptr<TCPListener> TCPListener::Start(asio::io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec)
+	std::shared_ptr<TCPServer> TCPServer::Create(asio::io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec)
 	{
-		return std::shared_ptr<TCPListener>(new TCPListener(ioservice, endpoint, callback, ec));
+		return std::shared_ptr<TCPServer>(new TCPServer(ioservice, endpoint, callback, ec));
 	}
 
-	void TCPListener::Shutdown()
+	void TCPServer::Shutdown()
 	{
 		m_acceptor.close();
 	}
 
-	void TCPListener::Configure(const std::string& adapter, std::error_code& ec)
+	void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
 	{
 		auto address = asio::ip::address::from_string(adapter, ec);
 
@@ -73,7 +73,7 @@ namespace asiopal
 		m_acceptor.listen(socket_base::max_connections, ec);		
 	}
 		
-	void TCPListener::DoAccept()
+	void TCPServer::StartAccept()
 	{
 		// this ensures that the TCPListener is never deleted during an active callback
 		auto self(shared_from_this());
@@ -87,7 +87,7 @@ namespace asiopal
 
 			if (self->m_acceptor.is_open())
 			{
-				self->DoAccept();
+				self->StartAccept();
 			}
 		};
 
