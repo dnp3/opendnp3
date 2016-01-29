@@ -36,6 +36,32 @@ using namespace openpal;
 
 #define SUITE(name) "MasterMultiCommandRequestsTestSuite - " name
 
+TEST_CASE(SUITE("AnEmptyHeaderFailsTheTaskWithInternalError"))
+{
+	MasterTestObject t(NoStartupTasks());
+	t.context.OnLowerLayerUp();
+
+	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+
+	CommandSet commands;
+	commands.Add<ControlRelayOutputBlock>({});
+	commands.Add<ControlRelayOutputBlock>({ WithIndex(crob, 1), WithIndex(crob, 7) });
+
+	CommandCallbackQueue queue;
+	t.context.DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+
+	// nothing should have been written because the request formatting fails
+	REQUIRE(t.lower.PopWriteAsHex() == "");
+
+	REQUIRE(queue.PopOnlyEqualValue(
+		TaskCompletion::FAILURE_INTERNAL_ERROR,
+		{
+			CommandPointResult(1, 1, CommandPointState::INIT, CommandStatus::UNDEFINED),
+			CommandPointResult(1, 7, CommandPointState::INIT, CommandStatus::UNDEFINED)
+		}
+	));
+}
+
 TEST_CASE(SUITE("DirectOperateTwoCROB"))
 {
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
