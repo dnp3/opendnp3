@@ -43,7 +43,7 @@ namespace asiopal
 
 		/// Callback invoked when a new connection is received
 		/// The accepting process is blocked by this callback
-		/// Client code is respon
+		/// Client code is responsible for closing the socket
 		typedef std::function<void (asio::ip::tcp::socket)> AcceptCallback;
 
 		/// Factory function ensures that only managed instances are created

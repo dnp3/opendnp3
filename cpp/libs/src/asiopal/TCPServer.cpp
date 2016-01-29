@@ -85,6 +85,7 @@ namespace asiopal
 				self->m_callback(std::move(self->m_socket));
 			}
 
+			// the acceptor may have been closed
 			if (self->m_acceptor.is_open())
 			{
 				self->StartAccept();
