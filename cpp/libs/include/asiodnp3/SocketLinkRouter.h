@@ -30,23 +30,27 @@
 
 #include <asio.hpp>
 
+
 namespace asiodnp3
 {	
-	class SocketLinkRouter final : public opendnp3::ILinkRouter
+	class SocketLinkRouter final : public opendnp3::ILinkRouter, public std::enable_shared_from_this<SocketLinkRouter>
 	{
-	public:
+	public:		
 
-		SocketLinkRouter(openpal::Logger logger, asio::ip::tcp::socket socket);
+		static std::shared_ptr<SocketLinkRouter> Create(openpal::Logger logger, asio::ip::tcp::socket socket);
 
-		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;
+		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;		
 
 	private:
 
-		openpal::Logger m_logger;
-		asio::ip::tcp::socket m_socket;
+		SocketLinkRouter(openpal::Logger logger, asio::ip::tcp::socket socket);
+
+		openpal::Logger m_logger;		
 		opendnp3::LinkChannelStatistics m_stats;
 		opendnp3::LinkLayerParser m_parser;
 
+		asio::ip::tcp::socket m_socket;
+		asio::strand m_strand;
 	};
 }
 

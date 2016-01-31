@@ -21,18 +21,55 @@
 
 #include "asiodnp3/SocketLinkRouter.h"
 
+#include <openpal/logging/LogMacros.h>
+
+#include <opendnp3/LogLevels.h>
+
+using namespace openpal;
+using namespace opendnp3;
+
 namespace asiodnp3
 {
 
 	SocketLinkRouter::SocketLinkRouter(openpal::Logger logger, asio::ip::tcp::socket socket) :
-		m_logger(logger),
-		m_socket(std::move(socket)),		
-		m_parser(logger, &m_stats)
+		m_logger(logger),			
+		m_parser(logger, &m_stats),
+		m_socket(std::move(socket)),
+		m_strand(m_socket.get_io_service())
 	{
 		
 	}
 
+	std::shared_ptr<SocketLinkRouter> SocketLinkRouter::Create(openpal::Logger logger, asio::ip::tcp::socket socket)
+	{
+		return std::shared_ptr<SocketLinkRouter>(new SocketLinkRouter(logger, std::move(socket)));
+	}
+
 	void SocketLinkRouter::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
-	{}
+	{
+		auto pSession = &session;
+		auto self(shared_from_this());
+		auto callback = [self, buffer, pSession](const std::error_code& err, std::size_t num) {
+			if (err) {
+				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, err.message().c_str());
+				pSession->OnTransmitResult(false);
+			}
+			else {
+				assert(num <= buffer.Size());
+				auto remainder = buffer.Skip(num);
+
+				if (remainder.IsEmpty())
+				{
+					pSession->OnTransmitResult(true);
+				}
+				else
+				{
+					self->BeginTransmit(remainder, *pSession);
+				}
+			}
+		};
+
+		m_socket.async_write_some(asio::buffer(buffer, buffer.Size()), m_strand.wrap(callback));
+	}
 
 }
