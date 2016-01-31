@@ -54,7 +54,7 @@ void DecoderImpl::DecodeLPDU(const openpal::RSlice& data)
 		const auto NUM = (remaining.Size() > dest.Size()) ? dest.Size() : remaining.Size();
 		
 		remaining.Take(NUM).CopyTo(dest);
-		link.OnRead(NUM, this);
+		link.OnRead(NUM, *this);
 		
 		remaining.Advance(NUM);
 	}

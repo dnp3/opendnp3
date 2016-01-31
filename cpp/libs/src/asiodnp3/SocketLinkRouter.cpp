@@ -51,6 +51,7 @@ namespace asiodnp3
 		auto self(shared_from_this());
 		auto callback = [self, buffer, pSession](const std::error_code& err, std::size_t num) {
 			if (err) {
+				// we'll let the failed read close the session
 				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, err.message().c_str());
 				pSession->OnTransmitResult(false);
 			}

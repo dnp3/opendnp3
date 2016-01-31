@@ -54,7 +54,7 @@ WSlice LinkLayerParser::WriteBuff() const
 	return WSlice(buffer.WriteBuff(), buffer.NumWriteBytes());
 }
 
-void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink* pSink)
+void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink& sink)
 {
 	buffer.AdvanceWrite(numBytes);
 
@@ -64,7 +64,7 @@ void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink* pSink)
 		{
 			++pStatistics->numLinkFrameRx;
 		}
-		this->PushFrame(pSink);
+		this->PushFrame(sink);
 		state = State::FindSync;
 	}
 
@@ -152,7 +152,7 @@ LinkLayerParser::State LinkLayerParser::ParseBody()
 
 
 
-void LinkLayerParser::PushFrame(IFrameSink* pSink)
+void LinkLayerParser::PushFrame(IFrameSink& sink)
 {
 	LinkHeaderFields fields(
 	    header.GetFuncEnum(),
@@ -163,7 +163,7 @@ void LinkLayerParser::PushFrame(IFrameSink* pSink)
 	    header.GetSrc()
 	);
 
-	pSink->OnFrame(fields, userData);
+	sink.OnFrame(fields, userData);
 
 	buffer.AdvanceRead(frameSize);
 }

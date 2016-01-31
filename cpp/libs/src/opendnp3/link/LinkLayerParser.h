@@ -57,7 +57,7 @@ public:
 	/// Called when valid data has been written to the current buffer write position
 	/// Parses the new data and calls the specified frame sink
 	/// @param numBytes Number of bytes written
-	void OnRead(uint32_t numBytes, IFrameSink* pSink);
+	void OnRead(uint32_t numBytes, IFrameSink& sink);
 
 	/// @return Buffer that can currently be used for writing
 	openpal::WSlice WriteBuff() const;
@@ -73,7 +73,7 @@ private:
 	State ParseHeader();
 	State ParseBody();
 
-	void PushFrame(IFrameSink* pSink);
+	void PushFrame(IFrameSink& sink);
 
 	bool ReadHeader();
 	bool ValidateBody();

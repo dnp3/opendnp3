@@ -250,7 +250,7 @@ void LinkLayerRouter::OnReceive(const openpal::RSlice& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed
-	parser.OnRead(input.Size(), this); //this may trigger callbacks to the local ILinkSession interface
+	parser.OnRead(input.Size(), *this); //this may trigger callbacks to the local ILinkSession interface
 	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
 		auto buff = parser.WriteBuff();
