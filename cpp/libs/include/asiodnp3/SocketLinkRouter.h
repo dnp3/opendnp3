@@ -26,6 +26,7 @@
 
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/LinkChannelStatistics.h>
 
 #include <asio.hpp>
 
@@ -37,12 +38,13 @@ namespace asiodnp3
 
 		SocketLinkRouter(openpal::Logger logger, asio::ip::tcp::socket socket);
 
-		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession* session) override;
+		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;
 
 	private:
 
 		openpal::Logger m_logger;
 		asio::ip::tcp::socket m_socket;
+		opendnp3::LinkChannelStatistics m_stats;
 		opendnp3::LinkLayerParser m_parser;
 
 	};

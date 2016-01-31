@@ -68,19 +68,17 @@ bool LinkLayerRouter::IsRouteInUse(const Route& route)
 	return iter != records.end();
 }
 
-bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
-{
-	assert(pContext != nullptr);
-
+bool LinkLayerRouter::AddContext(ILinkSession& context, const Route& route)
+{	
 	if (IsRouteInUse(route))
 	{
 		return false;
 	}
 	else
 	{
-		auto matches = [pContext](const Record & record)
+		auto matches = [&](const Record & record)
 		{
-			return record.pContext == pContext;
+			return record.pContext == &context;
 		};
 
 		auto iter = std::find_if(records.begin(), records.end(), matches);
@@ -88,7 +86,7 @@ bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
 		if (iter == records.end())
 		{
 			// record is always disabled by default			
-			records.push_back(Record(pContext, route));
+			records.push_back(Record(&context, route));
 			return true;
 		}
 		else
@@ -260,11 +258,11 @@ void LinkLayerRouter::OnReceive(const openpal::RSlice& input)
 	}
 }
 
-void LinkLayerRouter::BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext)
+void LinkLayerRouter::BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context)
 {
 	if (this->IsOnline())
 	{
-		Transmission tx(buffer, pContext);
+		Transmission tx(buffer, &context);
 
 		transmitQueue.push_back(tx);
 		this->CheckForSend();

@@ -68,7 +68,7 @@ uint32_t LinkLayerTest::NumTotalWrites()
 	return numTotalWrites;
 }
 
-void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext)
+void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession&)
 {
 	++numTotalWrites;
 	this->writeQueue.push_back(ToHex(buffer));

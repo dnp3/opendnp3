@@ -39,7 +39,7 @@ public:
 	/**
 	* Begin transmission of a frame. Callback happens OFF the call stack (via executor)
 	*/
-	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext) = 0;
+	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context) = 0;
 
 };
 

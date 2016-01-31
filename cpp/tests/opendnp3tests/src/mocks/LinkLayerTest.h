@@ -46,7 +46,7 @@ public:
 	bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata = openpal::RSlice::Empty());
 
 	//ILinkRouter interface
-	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext) override final;
+	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context) override final;
 
 	static LinkConfig DefaultConfig();
 

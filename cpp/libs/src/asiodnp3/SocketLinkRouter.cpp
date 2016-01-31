@@ -26,13 +26,13 @@ namespace asiodnp3
 
 	SocketLinkRouter::SocketLinkRouter(openpal::Logger logger, asio::ip::tcp::socket socket) :
 		m_logger(logger),
-		m_socket(std::move(socket)),
-		m_parser(logger, nullptr) // TODO
+		m_socket(std::move(socket)),		
+		m_parser(logger, &m_stats)
 	{
 		
 	}
 
-	void SocketLinkRouter::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession* session)
+	void SocketLinkRouter::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
 	{}
 
 }

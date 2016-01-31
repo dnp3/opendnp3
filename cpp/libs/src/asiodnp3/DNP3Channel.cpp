@@ -198,7 +198,7 @@ T* DNP3Channel::AddStack(const opendnp3::LinkConfig& link, const std::function<T
 		auto pStack = factory();
 		stacks.Add(pStack);
 		pStack->SetLinkRouter(router);
-		router.AddContext(&pStack->GetLinkContext(), route);
+		router.AddContext(pStack->GetLinkContext(), route);
 		return pStack;
 	}
 }

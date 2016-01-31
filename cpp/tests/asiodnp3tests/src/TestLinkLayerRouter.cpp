@@ -49,7 +49,7 @@ TEST_CASE(SUITE("UnknownDestination"))
 
 	Route route(1, 1024);
 
-	REQUIRE(t.router.AddContext(&mfs, route));
+	REQUIRE(t.router.AddContext(mfs, route));
 	REQUIRE(!t.phys.IsOpening());
 	REQUIRE(t.router.Enable(&mfs));
 	REQUIRE(t.phys.IsOpening());
@@ -66,10 +66,10 @@ TEST_CASE(SUITE("LayerNotOnline"))
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
 	Route route(1, 1024);
-	REQUIRE(t.router.AddContext(&mfs, route));
+	REQUIRE(t.router.AddContext(mfs, route));
 	REQUIRE(t.router.Enable(&mfs));
 	RSlice buffer;
-	t.router.BeginTransmit(buffer, &mfs);
+	t.router.BeginTransmit(buffer, mfs);
 	REQUIRE(t.log.PopUntil(flags::ERR));
 }
 
@@ -79,7 +79,7 @@ TEST_CASE(SUITE("AutomaticallyClosesWhenAllContextsAreRemoved"))
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
 	Route route(1, 1024);
-	t.router.AddContext(&mfs, route);
+	t.router.AddContext(mfs, route);
 	REQUIRE(t.router.Enable(&mfs));
 	REQUIRE((ChannelState::OPENING == t.router.GetState()));
 	REQUIRE(t.router.Remove(&mfs));
@@ -94,12 +94,12 @@ TEST_CASE(SUITE("CloseBehavior"))
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
 	Route route(1, 1024);
-	t.router.AddContext(&mfs, route);
+	t.router.AddContext(mfs, route);
 	REQUIRE(t.router.Enable(&mfs));
 	t.phys.SignalOpenSuccess();
 
 	ByteStr buffer(292);
-	t.router.BeginTransmit(buffer.ToRSlice(), &mfs); // puts the router in the send state
+	t.router.BeginTransmit(buffer.ToRSlice(), mfs); // puts the router in the send state
 
 	REQUIRE(t.phys.NumWrites() ==  1);
 	t.phys.BeginClose(); //we're both reading and writing so this doesn't trigger a callback yet
@@ -120,7 +120,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
 
-	t.router.BeginTransmit(buffer.ToRSlice(), &mfs);
+	t.router.BeginTransmit(buffer.ToRSlice(), mfs);
 	REQUIRE(t.phys.NumWrites() ==  2);
 	REQUIRE(t.phys.GetBufferAsHexString() == ToHex(buffer.ToRSlice()));
 	t.phys.SignalSendSuccess();
@@ -132,7 +132,7 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
 	Route route(1, 1024);
-	t.router.AddContext(&mfs, route);
+	t.router.AddContext(mfs, route);
 	t.router.Enable(&mfs);
 	t.phys.SignalOpenSuccess();
 	REQUIRE(mfs.mLowerOnline);
@@ -152,8 +152,8 @@ TEST_CASE(SUITE("MultiAddressBindError"))
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
 	Route route(1, 1024);
-	REQUIRE(t.router.AddContext(&mfs, route));
-	REQUIRE_FALSE(t.router.AddContext(&mfs, route));
+	REQUIRE(t.router.AddContext(mfs, route));
+	REQUIRE_FALSE(t.router.AddContext(mfs, route));
 }
 
 /// Test that the second bind fails when a non-unique context is added
@@ -161,8 +161,8 @@ TEST_CASE(SUITE("MultiContextBindError"))
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	REQUIRE(t.router.AddContext(&mfs, Route(1, 1024)));
-	REQUIRE_FALSE(t.router.AddContext(&mfs, Route(1, 2048)));
+	REQUIRE(t.router.AddContext(mfs, Route(1, 1024)));
+	REQUIRE_FALSE(t.router.AddContext(mfs, Route(1, 2048)));
 }
 
 /// Test that router correctly buffers and sends frames from multiple contexts
@@ -175,16 +175,16 @@ TEST_CASE(SUITE("MultiContextSend"))
 	Route route1(1, 1024);
 	Route route2(1, 2048);
 
-	t.router.AddContext(&mfs1, route1);
+	t.router.AddContext(mfs1, route1);
 	t.router.Enable(&mfs1);
-	t.router.AddContext(&mfs2, route2);
+	t.router.AddContext(mfs2, route2);
 	t.router.Enable(&mfs2);
 
 	Buffer buffer(292);
 
 	t.phys.SignalOpenSuccess();
-	t.router.BeginTransmit(buffer.ToRSlice(), &mfs1);
-	t.router.BeginTransmit(buffer.ToRSlice(), &mfs2);
+	t.router.BeginTransmit(buffer.ToRSlice(), mfs1);
+	t.router.BeginTransmit(buffer.ToRSlice(), mfs2);
 	REQUIRE(t.phys.NumWrites() ==  1);
 	t.phys.SignalSendSuccess();
 	REQUIRE(t.phys.NumWrites() ==  2);
@@ -198,7 +198,7 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
 	Route route(1, 1024);
-	t.router.AddContext(&mfs, route);
+	t.router.AddContext(mfs, route);
 	REQUIRE(t.router.Enable(&mfs));
 	t.phys.SignalOpenSuccess();
 	t.phys.TriggerRead("05 64 D5 C4 00 04 01 00 F0 BC C0 C0 01 3C 01 06 FF 50");
