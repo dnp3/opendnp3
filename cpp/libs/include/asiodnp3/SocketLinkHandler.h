@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef ASIODNP3_SOCKETLINKROUTER_H
-#define ASIODNP3_SOCKETLINKROUTER_H
+#ifndef ASIODNP3_SOCKETLINKHANDLER_H
+#define ASIODNP3_SOCKETLINKHANDLER_H
 
 #include <openpal/logging/LogRoot.h>
 
@@ -33,14 +33,14 @@
 
 namespace asiodnp3
 {	
-	class SocketLinkRouter final : 
+	class SocketLinkHandler final : 
 		public opendnp3::ILinkTx,
 		private opendnp3::IFrameSink,
-		public std::enable_shared_from_this<SocketLinkRouter>
+		public std::enable_shared_from_this<SocketLinkHandler>
 	{
 	public:		
 
-		static std::shared_ptr<SocketLinkRouter> Create(openpal::Logger logger, asio::ip::tcp::socket socket);
+		static std::shared_ptr<SocketLinkHandler> Create(openpal::Logger logger, asio::ip::tcp::socket socket);
 
 		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;		
 
@@ -50,7 +50,7 @@ namespace asiodnp3
 
 		void BeginReceive();
 
-		SocketLinkRouter(openpal::Logger logger, asio::ip::tcp::socket socket);
+		SocketLinkHandler(openpal::Logger logger, asio::ip::tcp::socket socket);
 
 		openpal::Logger m_logger;		
 		opendnp3::LinkChannelStatistics m_stats;

@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "asiodnp3/SocketLinkRouter.h"
+#include "asiodnp3/SocketLinkHandler.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -31,7 +31,7 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	SocketLinkRouter::SocketLinkRouter(openpal::Logger logger, asio::ip::tcp::socket socket) :
+	SocketLinkHandler::SocketLinkHandler(openpal::Logger logger, asio::ip::tcp::socket socket) :
 		m_logger(logger),			
 		m_parser(logger, &m_stats),
 		m_socket(std::move(socket)),
@@ -40,12 +40,12 @@ namespace asiodnp3
 		
 	}
 
-	std::shared_ptr<SocketLinkRouter> SocketLinkRouter::Create(openpal::Logger logger, asio::ip::tcp::socket socket)
+	std::shared_ptr<SocketLinkHandler> SocketLinkHandler::Create(openpal::Logger logger, asio::ip::tcp::socket socket)
 	{
-		return std::shared_ptr<SocketLinkRouter>(new SocketLinkRouter(logger, std::move(socket)));
+		return std::shared_ptr<SocketLinkHandler>(new SocketLinkHandler(logger, std::move(socket)));
 	}
 
-	void SocketLinkRouter::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
+	void SocketLinkHandler::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
 	{		
 		auto self(shared_from_this());
 		auto callback = [self, buffer, &session](const std::error_code& ec, std::size_t num) {
@@ -69,17 +69,18 @@ namespace asiodnp3
 			}
 		};
 
+		// TODO - change this async_write_all
 		m_socket.async_write_some(asio::buffer(buffer, buffer.Size()), m_strand.wrap(callback));
 	}
 
 
-	bool SocketLinkRouter::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
+	bool SocketLinkHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
 		// TODO
 		return true;
 	}
 
-	void SocketLinkRouter::BeginReceive()
+	void SocketLinkHandler::BeginReceive()
 	{
 		auto self(shared_from_this());
 		auto callback = [self](const std::error_code& ec, std::size_t num) {
