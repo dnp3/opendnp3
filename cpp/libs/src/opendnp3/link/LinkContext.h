@@ -37,7 +37,7 @@
 namespace opendnp3
 {
 
-class ILinkRouter;
+class ILinkTx;
 class PriStateBase;
 class SecStateBase;
 
@@ -134,7 +134,7 @@ public:
 	bool isRemoteReset;
 	bool keepAliveTimeout;
 	openpal::MonotonicTimestamp lastMessageTimestamp;
-	ILinkRouter* pRouter;
+	ILinkTx* pRouter;
 	PriStateBase* pPriState;
 	SecStateBase* pSecState;
 	ILinkListener* pListener;

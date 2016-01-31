@@ -26,7 +26,7 @@
 #include <opendnp3/Route.h>
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/link/IFrameSink.h>
-#include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/link/IChannelStateListener.h>
 
@@ -52,7 +52,7 @@ namespace asiodnp3
 // Implements the parsing and de-multiplexing portion of
 // of DNP 3 Data Link Layer. PhysicalLayerMonitor inherits
 // from IHandler, which inherits from IUpperLayer
-class LinkLayerRouter : public asiodnp3::PhysicalLayerMonitor, public opendnp3::ILinkRouter, private opendnp3::IFrameSink
+class LinkLayerRouter : public asiodnp3::PhysicalLayerMonitor, public opendnp3::ILinkTx, private opendnp3::IFrameSink
 {
 public:
 
@@ -91,7 +91,7 @@ public:
 	// ------------ IFrameSink -----------------
 	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
-	// ------------ ILinkRouter -----------------
+	// ------------ ILinkTx -----------------
 
 	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& context) override final;
 

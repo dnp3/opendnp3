@@ -25,7 +25,7 @@
 #include <openpal/logging/LogRoot.h>
 
 #include <opendnp3/link/LinkLayerParser.h>
-#include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 
 #include <asio.hpp>
@@ -33,7 +33,10 @@
 
 namespace asiodnp3
 {	
-	class SocketLinkRouter final : public opendnp3::ILinkRouter, public std::enable_shared_from_this<SocketLinkRouter>
+	class SocketLinkRouter final : 
+		public opendnp3::ILinkTx,
+		private opendnp3::IFrameSink,
+		public std::enable_shared_from_this<SocketLinkRouter>
 	{
 	public:		
 
@@ -42,6 +45,10 @@ namespace asiodnp3
 		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;		
 
 	private:
+
+		virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override;
+
+		void BeginReceive();
 
 		SocketLinkRouter(openpal::Logger logger, asio::ip::tcp::socket socket);
 

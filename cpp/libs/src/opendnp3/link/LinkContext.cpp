@@ -23,7 +23,7 @@
 #include "opendnp3/link/PriLinkLayerStates.h"
 #include "opendnp3/link/SecLinkLayerStates.h"
 #include "opendnp3/link/LinkFrame.h"
-#include "opendnp3/link/ILinkRouter.h"
+#include "opendnp3/link/ILinkTx.h"
 
 #include "opendnp3/ErrorCodes.h"
 

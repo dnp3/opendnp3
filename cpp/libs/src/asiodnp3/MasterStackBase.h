@@ -197,7 +197,7 @@ public:
 
 	// ------- implement ILinkBind ---------
 
-	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final
+	virtual void SetLinkRouter(opendnp3::ILinkTx& router) override final
 	{
 		stack.link.SetRouter(router);
 	}

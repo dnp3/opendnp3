@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ILINKROUTER_H
-#define OPENDNP3_ILINKROUTER_H
+#ifndef OPENDNP3_ILINKTX_H
+#define OPENDNP3_ILINKTX_H
 
 #include <openpal/container/RSlice.h>
 
@@ -28,13 +28,14 @@
 namespace opendnp3
 {
 
-// @section DESCRIPTION Interface the link layer uses to transmit data
-
-class ILinkRouter
+/**
+* Interface the link layer uses to transmit data
+*/
+class ILinkTx
 {
 public:
 
-	virtual ~ILinkRouter() {}
+	virtual ~ILinkTx() {}
 
 	/**
 	* Begin transmission of a frame. Callback happens OFF the call stack (via executor)

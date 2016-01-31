@@ -26,7 +26,7 @@
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/outstation/OutstationContext.h>
 
-#include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/link/ILinkListener.h>
 #include <opendnp3/transport/TransportStack.h>
 
@@ -103,7 +103,7 @@ public:
 
 	// ------- implement ILinkBind ---------
 
-	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final
+	virtual void SetLinkRouter(opendnp3::ILinkTx& router) override final
 	{
 		stack.link.SetRouter(router);
 	}

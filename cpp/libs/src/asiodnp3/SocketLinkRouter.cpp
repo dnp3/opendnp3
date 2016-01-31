@@ -46,14 +46,13 @@ namespace asiodnp3
 	}
 
 	void SocketLinkRouter::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
-	{
-		auto pSession = &session;
+	{		
 		auto self(shared_from_this());
-		auto callback = [self, buffer, pSession](const std::error_code& err, std::size_t num) {
-			if (err) {
+		auto callback = [self, buffer, &session](const std::error_code& ec, std::size_t num) {
+			if (ec) {
 				// we'll let the failed read close the session
-				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, err.message().c_str());
-				pSession->OnTransmitResult(false);
+				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, ec.message().c_str());
+				session.OnTransmitResult(false);
 			}
 			else {
 				assert(num <= buffer.Size());
@@ -61,11 +60,11 @@ namespace asiodnp3
 
 				if (remainder.IsEmpty())
 				{
-					pSession->OnTransmitResult(true);
+					session.OnTransmitResult(true);
 				}
 				else
 				{
-					self->BeginTransmit(remainder, *pSession);
+					self->BeginTransmit(remainder, session);
 				}
 			}
 		};
@@ -73,4 +72,28 @@ namespace asiodnp3
 		m_socket.async_write_some(asio::buffer(buffer, buffer.Size()), m_strand.wrap(callback));
 	}
 
+
+	bool SocketLinkRouter::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
+	{
+		// TODO
+		return true;
+	}
+
+	void SocketLinkRouter::BeginReceive()
+	{
+		auto self(shared_from_this());
+		auto callback = [self](const std::error_code& ec, std::size_t num) {
+			if (ec) {
+				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, ec.message().c_str());
+				// TODO - how do we signal the close of the session?
+			}
+			else {
+				self->m_parser.OnRead(num, *self);
+				self->BeginReceive();
+			}
+		};
+
+		auto dest = m_parser.WriteBuff();
+		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_strand.wrap(callback));
+	}
 }
