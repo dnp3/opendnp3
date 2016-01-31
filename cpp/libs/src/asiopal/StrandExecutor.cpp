@@ -21,6 +21,10 @@
 
 #include "asiopal/StrandExecutor.h"
 
+#include "asiopal/SteadyClock.h"
+
+#include <chrono>
+
 using namespace openpal;
 
 namespace asiopal
@@ -31,9 +35,15 @@ StrandExecutor::StrandExecutor(asio::io_service& service) : strand(service)
 
 }
 
+std::shared_ptr<StrandExecutor> StrandExecutor::Create(asio::io_service& service)
+{
+	return std::shared_ptr<StrandExecutor>(new StrandExecutor(service));
+}
+
 MonotonicTimestamp GetTime()
 {
-	return MonotonicTimestamp::Min();
+	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(asiopal_steady_clock::now().time_since_epoch()).count();
+	return openpal::MonotonicTimestamp(millisec);
 }
 
 ITimer* StrandExecutor::Start(const TimeDuration&, const Action0& runnable)
@@ -46,9 +56,14 @@ ITimer* StrandExecutor::Start(const MonotonicTimestamp&, const Action0& runnable
 	return nullptr;
 }
 
-void Post(const Action0& runnable)
+void StrandExecutor::Post(const Action0& runnable)
 {
-
+	auto self(shared_from_this());
+	auto callback = [self, runnable]() 
+	{
+		runnable.Apply();
+	};
+	strand.post(callback);
 }
 
 }

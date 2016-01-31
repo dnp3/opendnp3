@@ -30,6 +30,7 @@ namespace asiopal
 {
 
 /**
+*
 * Implementation of openpal::IExecutor backed by asio::strand
 *
 * Shutdown life-cycle guarantees are provided by using std::shared_ptr
@@ -42,6 +43,10 @@ class StrandExecutor final :
 {
 
 public:	
+
+	static std::shared_ptr<StrandExecutor> Create(asio::io_service& service);
+
+	/// ---- Implement IExecutor -----
 
 	virtual openpal::MonotonicTimestamp GetTime() override;
 	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Action0& runnable)  override;
