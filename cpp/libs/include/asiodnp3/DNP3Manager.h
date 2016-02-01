@@ -117,24 +117,7 @@ public:
 		uint32_t levels,
 		const opendnp3::ChannelRetry& retry,
 		const std::string& endpoint,
-		uint16_t port);
-
-	/**
-	* Add a TCP listener that will callback when new a connection is accepted
-	*
-	* @param id Alias that will be used for logging purposes for the listener
-	* @param levels Bitfield that describes the logging level for this channel and associated sessions	
-	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
-	* @param port Port to listen on
-	* @param callback Callback interface that will be used to get configuration data for dynamic master sessions
-	* @return A listener interface
-	*/
-	IListener* AddTCPListener(
-		char const* id,
-		uint32_t levels,
-		const std::string& endpoint,
-		uint16_t port,
-		IListenCallback& callback);
+		uint16_t port);	
 
 	/**
 	* Add a persistent TCP serial channel

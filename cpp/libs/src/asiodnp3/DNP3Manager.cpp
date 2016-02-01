@@ -91,17 +91,6 @@ IChannel* DNP3Manager::AddTCPServer(
 	return impl->channels.CreateChannel(pRoot, pPhys->executor, retry, pPhys, impl->crypto);
 }
 
-IListener* DNP3Manager::AddTCPListener(
-	char const* id,
-	uint32_t levels,
-	const std::string& endpoint,
-	uint16_t port,
-	IListenCallback& callback)
-{
-	// TODO
-	throw std::exception("not implemented");
-}
-
 IChannel* DNP3Manager::AddSerial(
 	char const* id,
 	uint32_t levels,
