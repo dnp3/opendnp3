@@ -39,7 +39,7 @@ std::shared_ptr<StrandExecutor> StrandExecutor::Create(asio::io_service& service
 	return std::shared_ptr<StrandExecutor>(new StrandExecutor(service));
 }
 
-MonotonicTimestamp GetTime()
+MonotonicTimestamp StrandExecutor::GetTime()
 {
 	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(asiopal_steady_clock::now().time_since_epoch()).count();
 	return openpal::MonotonicTimestamp(millisec);
@@ -59,10 +59,10 @@ ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const Action0& run
 
 openpal::ITimer* StrandExecutor::Start(const asiopal_steady_clock::time_point& expiration, const openpal::Action0& runnable)
 {
+	auto self(shared_from_this());
 	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->strand.get_io_service()));
 	StrandTimer* ret = timer.get();
-	auto self(shared_from_this());
-	
+		
 	// neither the executor nor the timer can be deleted while the timer is still active
 	auto callback = [timer, self, runnable](const std::error_code& ec) {
 		if (!ec) { // an error indicate timer was canceled
