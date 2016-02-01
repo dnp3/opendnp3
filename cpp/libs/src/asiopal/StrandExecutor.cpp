@@ -20,8 +20,7 @@
  */
 
 #include "asiopal/StrandExecutor.h"
-
-#include "asiopal/SteadyClock.h"
+#include "asiopal/StrandTimer.h"
 
 #include <chrono>
 
@@ -46,14 +45,34 @@ MonotonicTimestamp GetTime()
 	return openpal::MonotonicTimestamp(millisec);
 }
 
-ITimer* StrandExecutor::Start(const TimeDuration&, const Action0& runnable)
+ITimer* StrandExecutor::Start(const TimeDuration& delay, const Action0& runnable)
 {
-	return nullptr;
+	auto expiration = asiopal_steady_clock::now() + std::chrono::milliseconds(delay.GetMilliseconds());
+	return Start(expiration, runnable);
 }
 
-ITimer* StrandExecutor::Start(const MonotonicTimestamp&, const Action0& runnable)
+ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const Action0& runnable)
 {
-	return nullptr;
+	asiopal_steady_clock::time_point expiration(std::chrono::milliseconds(time.milliseconds));
+	return Start(expiration, runnable);
+}
+
+openpal::ITimer* StrandExecutor::Start(const asiopal_steady_clock::time_point& expiration, const openpal::Action0& runnable)
+{
+	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->strand.get_io_service()));
+	StrandTimer* ret = timer.get();
+	auto self(shared_from_this());
+	
+	// neither the executor nor the timer can be deleted while the timer is still active
+	auto callback = [timer, self, runnable](const std::error_code& ec) {
+		if (!ec) { // an error indicate timer was canceled
+			runnable.Apply();
+		}
+	};
+
+	ret->m_timer.async_wait(strand.wrap(callback));
+
+	return ret;
 }
 
 void StrandExecutor::Post(const Action0& runnable)

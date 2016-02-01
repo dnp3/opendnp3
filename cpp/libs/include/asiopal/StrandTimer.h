@@ -18,53 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_STRANDEXECUTOR_H
-#define ASIOPAL_STRANDEXECUTOR_H
-
-#include <openpal/executor/IExecutor.h>
-#include <openpal/util/Uncopyable.h>
+#ifndef ASIOPAL_STRANDTIMER_H
+#define ASIOPAL_STRANDTIMER_H
 
 #include <asio.hpp>
+
+#include <openpal/executor/ITimer.h>
+#include <openpal/util/Uncopyable.h>
+
 #include "asiopal/SteadyClock.h"
+
 
 namespace asiopal
 {
 
 /**
 *
-* Implementation of openpal::IExecutor backed by asio::strand
-*
-* Shutdown life-cycle guarantees are provided by using std::shared_ptr
+* Implementation of openpal::ITimer backed by asio::basic_waitable_timer<steady_clock>
 *
 */
-class StrandExecutor final : 
-		public openpal::IExecutor, 
-		public std::enable_shared_from_this<StrandExecutor>,
-		private openpal::Uncopyable
+class StrandTimer final : public openpal::ITimer, private openpal::Uncopyable
 {
+	friend class StrandExecutor;
 
-public:	
+public:
+	
+	virtual void Cancel() override;
+	virtual openpal::MonotonicTimestamp ExpiresAt() override;
 
-	static std::shared_ptr<StrandExecutor> Create(asio::io_service& service);
+private:	
 
-	/// ---- Implement IExecutor -----
-
-	virtual openpal::MonotonicTimestamp GetTime() override;
-	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Action0& runnable)  override;
-	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Action0& runnable)  override;
-	virtual void Post(const openpal::Action0& runnable) override;
-
-	// access to the underlying strand is provided for wrapping callbacks
-	asio::strand strand;
-
-private:
-
-	openpal::ITimer* Start(const asiopal_steady_clock::time_point& expiration, const openpal::Action0& runnable);
-
-	StrandExecutor(asio::io_service& service);
+	StrandTimer(asio::io_service& service);
+	
+	asio::basic_waitable_timer< asiopal::asiopal_steady_clock > m_timer;
 };
 
 }
 
 #endif
-
