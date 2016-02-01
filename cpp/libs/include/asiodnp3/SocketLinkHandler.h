@@ -27,9 +27,7 @@
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
-
-#include <asio.hpp>
-
+#include <asiopal/StrandExecutor.h>
 
 namespace asiodnp3
 {	
@@ -57,7 +55,7 @@ namespace asiodnp3
 		opendnp3::LinkLayerParser m_parser;
 
 		asio::ip::tcp::socket m_socket;
-		asio::strand m_strand;
+		std::shared_ptr<asiopal::StrandExecutor> m_executor;
 	};
 }
 

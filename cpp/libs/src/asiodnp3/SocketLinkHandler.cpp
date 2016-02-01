@@ -26,6 +26,7 @@
 #include <opendnp3/LogLevels.h>
 
 using namespace openpal;
+using namespace asiopal;
 using namespace opendnp3;
 
 namespace asiodnp3
@@ -35,7 +36,7 @@ namespace asiodnp3
 		m_logger(logger),			
 		m_parser(logger, &m_stats),
 		m_socket(std::move(socket)),
-		m_strand(m_socket.get_io_service())
+		m_executor(StrandExecutor::Create(m_socket.get_io_service()))
 	{
 		
 	}
@@ -70,7 +71,7 @@ namespace asiodnp3
 		};
 
 		// TODO - change this async_write_all
-		m_socket.async_write_some(asio::buffer(buffer, buffer.Size()), m_strand.wrap(callback));
+		m_socket.async_write_some(asio::buffer(buffer, buffer.Size()), m_executor->strand.wrap(callback));
 	}
 
 
@@ -95,6 +96,6 @@ namespace asiodnp3
 		};
 
 		auto dest = m_parser.WriteBuff();
-		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_strand.wrap(callback));
+		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_executor->strand.wrap(callback));
 	}
 }
