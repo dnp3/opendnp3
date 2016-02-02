@@ -50,7 +50,8 @@ namespace asiodnp3
 	void SocketLinkHandler::Shutdown()
 	{
 		auto self(shared_from_this());
-		m_executor->PostLambda([self](){ self->m_socket.close(); });
+		auto action = [self](){ self->m_socket.close(); };
+		m_executor->PostLambda(action);
 	}
 
 	void SocketLinkHandler::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
