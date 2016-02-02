@@ -44,9 +44,14 @@ void GPRSManager::BeginShutdown()
 	m_impl->BeginShutdown();
 }
 
-std::shared_ptr<IListener> GPRSManager::CreateListener(std::error_code& ec)
+std::shared_ptr<asiopal::IListener> GPRSManager::CreateListener(
+		std::string loggerid,
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		std::error_code& ec
+	)
 {
-	return m_impl->CreateListener(ec);
+	return m_impl->CreateListener(loggerid, loglevel, endpoint, ec);
 }
 	
 }

@@ -21,24 +21,34 @@
 
 #include "asiodnp3/MasterTCPServer.h"
 
+#include <openpal/logging/LogMacros.h>
+#include <opendnp3/LogLevels.h>
+
+using namespace opendnp3;
 using namespace asiopal;
 
 namespace asiodnp3
 {			
 
-std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(asio::io_service& ioservice, asiopal::IPEndpoint endpoint, std::error_code& ec)
+std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(asio::io_service& ioservice, openpal::Logger logger, asiopal::IPEndpoint endpoint, std::error_code& ec)
 {
-	return std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, endpoint, ec));
+	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, logger, endpoint, ec));
+	ret->StartAccept();
+	return ret;
 }
 
-MasterTCPServer::MasterTCPServer(asio::io_service& ioservice, asiopal::IPEndpoint endpoint, std::error_code& ec) : 
-	TCPServer(ioservice, endpoint, ec)
+MasterTCPServer::MasterTCPServer(asio::io_service& ioservice, openpal::Logger logger, asiopal::IPEndpoint endpoint, std::error_code& ec) :
+	TCPServer(ioservice, logger, endpoint, ec)
 {
 
 }
 				
 void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 {
+	std::ostringstream oss;
+	oss << socket.remote_endpoint();
+	FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
+
 	// TODO - create a parser/handler
 	socket.close();
 }

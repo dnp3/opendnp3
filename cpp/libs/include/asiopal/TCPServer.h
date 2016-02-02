@@ -23,7 +23,10 @@
 
 #include "asiopal/IPEndpoint.h"
 
+#include "asiopal/IListener.h"
+
 #include <openpal/util/Uncopyable.h>
+#include <openpal/logging/Logger.h>
 
 #include <asio.hpp>
 #include <memory>
@@ -35,30 +38,33 @@ namespace asiopal
 	*
 	* Meant to be used exclusively as a shared_ptr
 	*/
-	class TCPServer : public std::enable_shared_from_this<TCPServer>, private openpal::Uncopyable
+	class TCPServer : public std::enable_shared_from_this<TCPServer>, public IListener, private openpal::Uncopyable
 	{		
 
 	public:				
 
 		/// Stop listening for connections, permanently shutting down the listener
-		void BeginShutdown();
+		void BeginShutdown() override final;
 
 	protected:	
 
 		TCPServer(
-			asio::io_service& ioservice, 
+			asio::io_service& ioservice,			
+			openpal::Logger logger,
 			IPEndpoint endpoint,			
 			std::error_code& ec
 		);
+
+		void StartAccept();
 		
 		/// inherited flass defines what to do with
 		virtual void AcceptConnection(asio::ip::tcp::socket) = 0;
+
+		openpal::Logger m_logger;
 			
 	private:				
 
-		void Configure(const std::string& adapter, std::error_code& ec);
-
-		void StartAccept();
+		void Configure(const std::string& adapter, std::error_code& ec);		
 
 		asio::ip::tcp::endpoint m_endpoint;		
 		asio::ip::tcp::acceptor m_acceptor;

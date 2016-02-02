@@ -21,6 +21,7 @@
 #ifndef ASIOPAL_MASTERTCPSERVER_H
 #define ASIOPAL_MASTERTCPSERVER_H
 
+#include <openpal/logging/Logger.h>
 #include <asiopal/TCPServer.h>
 
 namespace asiodnp3
@@ -35,11 +36,11 @@ namespace asiodnp3
 
 	public:
 
-		std::shared_ptr<MasterTCPServer> Create(asio::io_service& ioservice, asiopal::IPEndpoint endpoint, std::error_code& ec);
+		static std::shared_ptr<MasterTCPServer> Create(asio::io_service& ioservice, openpal::Logger logger, asiopal::IPEndpoint endpoint, std::error_code& ec);
 
 	private:
 
-		MasterTCPServer(asio::io_service& ioservice, asiopal::IPEndpoint endpoint, std::error_code& ec);
+		MasterTCPServer(asio::io_service& ioservice, openpal::Logger logger, asiopal::IPEndpoint endpoint, std::error_code& ec);
 				
 		virtual void AcceptConnection(asio::ip::tcp::socket) override;				
 	};

@@ -21,7 +21,8 @@
 #ifndef ASIODNP3_GPRSMANAGER_H
 #define ASIODNP3_GPRSMANAGER_H
 
-#include <asiodnp3/IListener.h>
+#include <asiopal/IListener.h>
+#include <asiopal/IPEndpoint.h>
 #include <openpal/logging/ILogHandler.h>
 
 #include <memory>
@@ -57,7 +58,12 @@ public:
 	/**
 	* Create a TCP listener that will be used to accept incoming connections
 	*/
-	std::shared_ptr<IListener> CreateListener(std::error_code& ec);	
+	std::shared_ptr<asiopal::IListener> CreateListener(
+		std::string loggerid, 
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		std::error_code& ec
+	);	
 
 private:
 		

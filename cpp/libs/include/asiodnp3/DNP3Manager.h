@@ -29,9 +29,6 @@
 #include <opendnp3/link/ChannelRetry.h>
 
 #include <asiodnp3/IChannel.h>
-#include <asiodnp3/IListener.h>
-#include <asiodnp3/IListenCallback.h>
-
 #include <asiopal/SerialTypes.h>
 
 #ifdef OPENDNP3_USE_TLS

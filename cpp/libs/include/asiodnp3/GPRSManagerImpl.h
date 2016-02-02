@@ -23,10 +23,11 @@
 
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/LogFanoutHandler.h>
+#include <asiopal/IListener.h>
 
 #include <openpal/util/Uncopyable.h>
+#include <openpal/logging/LogRoot.h>
 
-#include <asiodnp3/IListener.h>
 #include <asiodnp3/MasterTCPServer.h>
 
 #include <cstdint>
@@ -46,7 +47,12 @@ public:
 
 	void BeginShutdown();
 
-	std::shared_ptr<IListener> CreateListener(std::error_code& ec);
+	std::shared_ptr<asiopal::IListener> CreateListener(
+		std::string loggerid,
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		std::error_code& ec
+	);
 
 private:
 
@@ -57,6 +63,7 @@ private:
 	std::mutex m_mutex;
 
 	openpal::ILogHandler* m_log_handler;
+	openpal::LogRoot m_log_root;
 	bool m_is_shutting_down;
 	openpal::ILogHandler* m_log;
 	asiopal::IOServiceThreadPool m_pool;

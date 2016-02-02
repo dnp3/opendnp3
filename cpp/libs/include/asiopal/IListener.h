@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_ILISTENER_H
-#define ASIODNP3_ILISTENER_H
+#ifndef ASIOPAL_ILISTENER_H
+#define ASIOPAL_ILISTENER_H
 
-namespace asiodnp3
+namespace asiopal
 {
 
 /**
@@ -34,7 +34,7 @@ public:
 
 	virtual ~IListener() {}
 
-	virtual void Shutdown() = 0;
+	virtual void BeginShutdown() = 0;
 
 };
 

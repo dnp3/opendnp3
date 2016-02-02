@@ -23,9 +23,11 @@
 
 #include <opendnp3/LogLevels.h>
 #include <iostream>
+#include <thread>
 
 using namespace std;
 using namespace openpal;
+using namespace asiopal;
 using namespace asiodnp3;
 using namespace opendnp3;
 
@@ -35,8 +37,19 @@ int main(int argc, char* argv[])
 	// You can add all the comms logging by uncommenting below
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
 
+	const auto NUM_THREAD = std::thread::hardware_concurrency();
+
 	// This is the main point of interaction with the stack
-	GPRSManager manager(1, ConsoleLogger::Instance());	
+	GPRSManager manager(std::thread::hardware_concurrency(), ConsoleLogger::Instance());
+
+	std::error_code ec;
+	auto server1 = manager.CreateListener("server-20000", levels::NORMAL, IPEndpoint::AllAdapters(20000), ec);
+
+	if (ec)
+	{
+		std::cout << ec.message() << std::endl;
+		return ec.value();
+	}	
 
 	do
 	{
@@ -48,7 +61,7 @@ int main(int argc, char* argv[])
 		switch(cmd)
 		{		
 		case('x'):			
-			return 0;		
+			return 0;					
 		default:
 			std::cout << "Unknown action: " << cmd << std::endl;
 			break;

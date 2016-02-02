@@ -21,6 +21,8 @@
 
 #include "asiodnp3/GPRSManagerImpl.h"
 
+#include "asiodnp3/MasterTCPServer.h"
+
 #include <opendnp3/LogLevels.h>
 
 namespace asiodnp3
@@ -31,13 +33,25 @@ GPRSManagerImpl::~GPRSManagerImpl()
 	this->BeginShutdown();
 }
 
-std::shared_ptr<IListener> GPRSManagerImpl::CreateListener(std::error_code& ec)
+std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
+	std::string loggerid,
+	openpal::LogFilters loglevel,
+	asiopal::IPEndpoint endpoint,
+	std::error_code& ec)
 {
 	std::lock_guard <std::mutex> lock(m_mutex);
 
-	
+	auto server = asiodnp3::MasterTCPServer::Create(m_pool.GetIOService(), m_log_root.GetLogger(), endpoint, ec);
 
-	return nullptr; // TODO
+	if (ec)
+	{
+		return nullptr;
+	}
+	else
+	{
+		this->m_servers.push_back(server);
+		return server;
+	}	
 }
 
 void GPRSManagerImpl::BeginShutdown()
@@ -57,6 +71,7 @@ void GPRSManagerImpl::BeginShutdown()
 GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler& handler) :
 	m_mutex(),
 	m_log_handler(&handler),
+	m_log_root(&handler, "manager", opendnp3::levels::NORMAL),
 	m_is_shutting_down(false),
 	m_log(&handler),
 	m_pool(&handler, concurrencyHint, opendnp3::flags::INFO, [](){}, [](){})

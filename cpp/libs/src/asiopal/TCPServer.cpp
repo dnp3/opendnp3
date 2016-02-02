@@ -21,23 +21,25 @@
 
 #include "asiopal/TCPServer.h"
 
+#include <openpal/logging/LogMacros.h>
+#include <opendnp3/LogLevels.h>
+
+#include <sstream>
+
 using namespace asio;
 using namespace asio::ip;
+using namespace opendnp3;
 
 namespace asiopal
 {
 
-	TCPServer::TCPServer(io_service& ioservice, IPEndpoint endpoint, std::error_code& ec) :
+	TCPServer::TCPServer(io_service& ioservice, openpal::Logger logger, IPEndpoint endpoint, std::error_code& ec) :
+		m_logger(logger),
 		m_endpoint(ip::tcp::v4(), endpoint.port),		
 		m_acceptor(ioservice),
 		m_socket(ioservice)
 	{
-		this->Configure(endpoint.address, ec);
-
-		if (!ec)
-		{
-			this->StartAccept();
-		}
+		this->Configure(endpoint.address, ec);		
 	}	
 
 	void TCPServer::BeginShutdown()
@@ -55,8 +57,20 @@ namespace asiopal
 		}
 
 		m_endpoint.address(address);
+		m_acceptor.open(m_endpoint.protocol(), ec);
 
-		m_acceptor.set_option(ip::tcp::acceptor::reuse_address(true));
+		if (ec)
+		{
+			return;
+		}
+
+		m_acceptor.set_option(ip::tcp::acceptor::reuse_address(true), ec);
+
+		if (ec)
+		{
+			return;
+		}
+
 		m_acceptor.bind(m_endpoint, ec);
 
 		if (ec)
@@ -64,25 +78,39 @@ namespace asiopal
 			return;
 		}
 
-		m_acceptor.listen(socket_base::max_connections, ec);		
+		m_acceptor.listen(socket_base::max_connections, ec);
+
+		if (!ec)
+		{
+			std::ostringstream oss;
+			oss << m_endpoint;
+			FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+		}
 	}
 		
 	void TCPServer::StartAccept()
 	{
 		// this ensures that the TCPListener is never deleted during an active callback
 		auto self(shared_from_this());
-		auto callback = [self](std::error_code ec) 
+		auto callback = [self](std::error_code ec)
 		{
-			if (!ec)
+			if (ec)
+			{
+				SIMPLE_LOG_BLOCK(self->m_logger, flags::INFO, ec.message().c_str());
+			}
+			else
 			{
 				// method responsible for closing
 				self->AcceptConnection(std::move(self->m_socket));
-			}
 
-			// the acceptor may have been closed
-			if (self->m_acceptor.is_open())
-			{
-				self->StartAccept();
+				if (self->m_acceptor.is_open())
+				{
+					self->StartAccept();
+				}
+				else
+				{
+					// TODO unregister the server
+				}
 			}
 		};
 
