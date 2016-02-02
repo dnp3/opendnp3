@@ -44,12 +44,14 @@ public:
 	*	Construct a manager
 	*
 	*	@param concurrencyHint How many threads to allocate in the thread pool
-	*
 	*/
 	GPRSManager(uint32_t concurrencyHint, openpal::ILogHandler& handler);
 
 	~GPRSManager();
 
+	/**
+	* Begin the shutdown process. Also called by the destructor automatically
+	*/
 	void BeginShutdown();
 
 	/**
