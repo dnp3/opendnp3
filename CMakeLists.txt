@@ -201,6 +201,11 @@ if(DEMO)
   target_link_libraries (master-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(master-demo PROPERTIES FOLDER demos)
 
+  # ----- master demo executable -----
+  add_executable(master-gprs-demo ./cpp/examples/master-gprs/main.cpp)
+  target_link_libraries (master-gprs-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  set_target_properties(master-gprs-demo PROPERTIES FOLDER demos)
+
   # ----- outstation demo executable -----
   add_executable(outstation-demo ./cpp/examples/outstation/main.cpp)
   target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})   

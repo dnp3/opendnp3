@@ -34,14 +34,19 @@ GPRSManager::GPRSManager(uint32_t concurrencyHint, openpal::ILogHandler& handler
 {}
 
 
+GPRSManager::~GPRSManager()
+{
+	this->BeginShutdown();
+}
+
 void GPRSManager::BeginShutdown()
 {
 	m_impl->BeginShutdown();
 }
 
-std::shared_ptr<IListener> GPRSManager::CreateListener()
+std::shared_ptr<IListener> GPRSManager::CreateListener(std::error_code& ec)
 {
-	return m_impl->CreateListener();
+	return m_impl->CreateListener(ec);
 }
 	
 }

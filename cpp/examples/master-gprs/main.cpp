@@ -18,53 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_GPRSMANAGERIMPL_H
-#define ASIODNP3_GPRSMANAGERIMPL_H
+#include <asiodnp3/GPRSManager.h>
+#include <asiodnp3/ConsoleLogger.h>
 
-#include <asiopal/IOServiceThreadPool.h>
-#include <asiopal/LogFanoutHandler.h>
+#include <opendnp3/LogLevels.h>
+#include <iostream>
 
-#include <openpal/util/Uncopyable.h>
+using namespace std;
+using namespace openpal;
+using namespace asiodnp3;
+using namespace opendnp3;
 
-#include <asiodnp3/IListener.h>
-#include <asiodnp3/MasterTCPServer.h>
-
-#include <cstdint>
-#include <memory>
-#include <mutex>
-#include <vector>
-
-namespace asiodnp3
+int main(int argc, char* argv[])
 {
+	// Specify what log levels to use. NORMAL is warning and above
+	// You can add all the comms logging by uncommenting below
+	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
 
-class GPRSManagerImpl : private openpal::Uncopyable
-{
-	
-public:	
-					
-	~GPRSManagerImpl();
+	// This is the main point of interaction with the stack
+	GPRSManager manager(1, ConsoleLogger::Instance());	
 
-	void BeginShutdown();
+	do
+	{
+		std::cout << "Enter a command" << std::endl;
+		std::cout << "x - exits program" << std::endl;		
 
-	std::shared_ptr<IListener> CreateListener(std::error_code& ec);
+		char cmd;
+		std::cin >> cmd;
+		switch(cmd)
+		{		
+		case('x'):			
+			return 0;		
+		default:
+			std::cout << "Unknown action: " << cmd << std::endl;
+			break;
+		}
+	}
+	while(true);
 
-private:
-
-	friend class GPRSManager;
-
-	GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler& handler);	
-
-	std::mutex m_mutex;
-
-	openpal::ILogHandler* m_log_handler;
-	bool m_is_shutting_down;
-	openpal::ILogHandler* m_log;
-	asiopal::IOServiceThreadPool m_pool;
-
-	std::vector<std::shared_ptr<MasterTCPServer>> m_servers;
-	
-};
-
+	return 0;
 }
 
-#endif

@@ -25,6 +25,7 @@
 #include <openpal/logging/ILogHandler.h>
 
 #include <memory>
+#include <system_error>
 
 namespace asiodnp3
 {
@@ -45,14 +46,16 @@ public:
 	*	@param concurrencyHint How many threads to allocate in the thread pool
 	*
 	*/
-	GPRSManager(uint32_t concurrencyHint, openpal::ILogHandler& handler);	
+	GPRSManager(uint32_t concurrencyHint, openpal::ILogHandler& handler);
+
+	~GPRSManager();
 
 	void BeginShutdown();
 
 	/**
 	* Create a TCP listener that will be used to accept incoming connections
 	*/
-	std::shared_ptr<IListener> CreateListener();	
+	std::shared_ptr<IListener> CreateListener(std::error_code& ec);	
 
 private:
 		

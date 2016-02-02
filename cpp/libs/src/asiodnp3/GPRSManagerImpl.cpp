@@ -31,9 +31,11 @@ GPRSManagerImpl::~GPRSManagerImpl()
 	this->BeginShutdown();
 }
 
-std::shared_ptr<IListener> GPRSManagerImpl::CreateListener()
+std::shared_ptr<IListener> GPRSManagerImpl::CreateListener(std::error_code& ec)
 {
 	std::lock_guard <std::mutex> lock(m_mutex);
+
+	
 
 	return nullptr; // TODO
 }
