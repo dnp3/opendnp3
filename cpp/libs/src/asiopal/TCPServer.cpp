@@ -27,9 +27,8 @@ using namespace asio::ip;
 namespace asiopal
 {
 
-	TCPServer::TCPServer(io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec) :
-		m_endpoint(ip::tcp::v4(), endpoint.port),
-		m_callback(callback),
+	TCPServer::TCPServer(io_service& ioservice, IPEndpoint endpoint, std::error_code& ec) :
+		m_endpoint(ip::tcp::v4(), endpoint.port),		
 		m_acceptor(ioservice),
 		m_socket(ioservice)
 	{
@@ -39,14 +38,9 @@ namespace asiopal
 		{
 			this->StartAccept();
 		}
-	}
+	}	
 
-	std::shared_ptr<TCPServer> TCPServer::Create(asio::io_service& ioservice, IPEndpoint endpoint, AcceptCallback callback, std::error_code& ec)
-	{
-		return std::shared_ptr<TCPServer>(new TCPServer(ioservice, endpoint, callback, ec));
-	}
-
-	void TCPServer::Shutdown()
+	void TCPServer::BeginShutdown()
 	{
 		m_acceptor.close();
 	}
@@ -81,8 +75,8 @@ namespace asiopal
 		{
 			if (!ec)
 			{
-				// client code responsible for closing
-				self->m_callback(std::move(self->m_socket));
+				// method responsible for closing
+				self->AcceptConnection(std::move(self->m_socket));
 			}
 
 			// the acceptor may have been closed

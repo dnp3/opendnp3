@@ -27,6 +27,8 @@
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
+#include <opendnp3/Route.h>
+
 #include <asiopal/StrandExecutor.h>
 
 namespace asiodnp3
@@ -34,11 +36,19 @@ namespace asiodnp3
 	class SocketLinkHandler final : 
 		public opendnp3::ILinkTx,
 		private opendnp3::IFrameSink,
-		public std::enable_shared_from_this<SocketLinkHandler>
+		public std::enable_shared_from_this<SocketLinkHandler>,
+		private openpal::Uncopyable
 	{
 	public:		
 
+		enum class State {
+			UNINIT,		// has not received a link-layer frame. Timer is active
+			INIT		// 
+		};
+
 		static std::shared_ptr<SocketLinkHandler> Create(openpal::Logger logger, asio::ip::tcp::socket socket);
+
+		void Shutdown();
 
 		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;		
 
@@ -52,10 +62,14 @@ namespace asiodnp3
 
 		openpal::Logger m_logger;		
 		opendnp3::LinkChannelStatistics m_stats;
-		opendnp3::LinkLayerParser m_parser;
-
-		asio::ip::tcp::socket m_socket;
+		opendnp3::LinkLayerParser m_parser;		
 		std::shared_ptr<asiopal::StrandExecutor> m_executor;
+		State m_state;
+		opendnp3::Route m_route;
+
+		// this will become some kind of shared ptr to an interface
+		// so that the same class can handle TCP or TLS
+		asio::ip::tcp::socket m_socket;
 	};
 }
 

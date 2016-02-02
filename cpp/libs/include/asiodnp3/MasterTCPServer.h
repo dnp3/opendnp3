@@ -18,51 +18,30 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_TCPSERVER_H
-#define ASIOPAL_TCPSERVER_H
+#ifndef ASIOPAL_MASTERTCPSERVER_H
+#define ASIOPAL_MASTERTCPSERVER_H
 
-#include "asiopal/IPEndpoint.h"
+#include <asiopal/TCPServer.h>
 
-#include <openpal/util/Uncopyable.h>
-
-#include <asio.hpp>
-#include <memory>
-
-namespace asiopal
+namespace asiodnp3
 {			
 	/**	
 	* Binds and listens on an IPv4 TCP port
 	*
 	* Meant to be used exclusively as a shared_ptr
 	*/
-	class TCPServer : public std::enable_shared_from_this<TCPServer>, private openpal::Uncopyable
-	{		
+	class MasterTCPServer final : public asiopal::TCPServer
+	{			
 
-	public:				
+	public:
 
-		/// Stop listening for connections, permanently shutting down the listener
-		void BeginShutdown();
+		std::shared_ptr<MasterTCPServer> Create(asio::io_service& ioservice, asiopal::IPEndpoint endpoint, std::error_code& ec);
 
-	protected:	
+	private:
 
-		TCPServer(
-			asio::io_service& ioservice, 
-			IPEndpoint endpoint,			
-			std::error_code& ec
-		);
-		
-		/// inherited flass defines what to do with
-		virtual void AcceptConnection(asio::ip::tcp::socket) = 0;
-			
-	private:				
-
-		void Configure(const std::string& adapter, std::error_code& ec);
-
-		void StartAccept();
-
-		asio::ip::tcp::endpoint m_endpoint;		
-		asio::ip::tcp::acceptor m_acceptor;
-		asio::ip::tcp::socket m_socket;		
+		MasterTCPServer(asio::io_service& ioservice, asiopal::IPEndpoint endpoint, std::error_code& ec);
+				
+		virtual void AcceptConnection(asio::ip::tcp::socket) override;				
 	};
 
 }

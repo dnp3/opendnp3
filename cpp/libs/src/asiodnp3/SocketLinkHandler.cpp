@@ -34,9 +34,10 @@ namespace asiodnp3
 
 	SocketLinkHandler::SocketLinkHandler(openpal::Logger logger, asio::ip::tcp::socket socket) :
 		m_logger(logger),			
-		m_parser(logger, &m_stats),
-		m_socket(std::move(socket)),
-		m_executor(StrandExecutor::Create(m_socket.get_io_service()))
+		m_parser(logger, &m_stats),		
+		m_executor(StrandExecutor::Create(m_socket.get_io_service())),
+		m_state(State::UNINIT),
+		m_socket(std::move(socket))
 	{
 		
 	}
@@ -44,6 +45,12 @@ namespace asiodnp3
 	std::shared_ptr<SocketLinkHandler> SocketLinkHandler::Create(openpal::Logger logger, asio::ip::tcp::socket socket)
 	{
 		return std::shared_ptr<SocketLinkHandler>(new SocketLinkHandler(logger, std::move(socket)));
+	}
+
+	void SocketLinkHandler::Shutdown()
+	{
+		auto self(shared_from_this());
+		m_executor->PostLambda([self](){ self->m_socket.close(); });
 	}
 
 	void SocketLinkHandler::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
@@ -55,29 +62,26 @@ namespace asiodnp3
 				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, ec.message().c_str());
 				session.OnTransmitResult(false);
 			}
-			else {
-				assert(num <= buffer.Size());
-				auto remainder = buffer.Skip(num);
-
-				if (remainder.IsEmpty())
-				{
-					session.OnTransmitResult(true);
-				}
-				else
-				{
-					self->BeginTransmit(remainder, session);
-				}
+			else {				
+				session.OnTransmitResult(true);				
 			}
 		};
 
-		// TODO - change this async_write_all
-		m_socket.async_write_some(asio::buffer(buffer, buffer.Size()), m_executor->strand.wrap(callback));
+		// this writes all the data	
+		asio::async_write(m_socket, asio::buffer(buffer, buffer.Size()), m_executor->strand.wrap(callback));
 	}
-
 
 	bool SocketLinkHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
-		// TODO
+		if (m_state == State::UNINIT)
+		{
+			// TODO - ask application if we should create a master
+		}
+		else
+		{
+			// TODO - push the frame into the application
+		}
+
 		return true;
 	}
 
