@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef ASIODNP3_SOCKETLINKHANDLER_H
-#define ASIODNP3_SOCKETLINKHANDLER_H
+#ifndef ASIODNP3_SOCKETSESSION_H
+#define ASIODNP3_SOCKETSESSION_H
 
 #include <openpal/logging/LogRoot.h>
 
@@ -34,10 +34,10 @@
 
 namespace asiodnp3
 {	
-	class SocketLinkHandler final : 
+	class SocketSession final : 
 		public opendnp3::ILinkTx,
 		private opendnp3::IFrameSink,
-		public std::enable_shared_from_this<SocketLinkHandler>,
+		public std::enable_shared_from_this<SocketSession>,
 		public asiopal::IResource,
 		private openpal::Uncopyable
 	{
@@ -48,7 +48,7 @@ namespace asiodnp3
 			INIT		// 
 		};
 
-		static std::shared_ptr<SocketLinkHandler> Create(
+		static std::shared_ptr<SocketSession> Create(
 			openpal::Logger logger,
 			asiopal::IResourceManager& manager, 
 			asio::ip::tcp::socket socket
@@ -60,13 +60,15 @@ namespace asiodnp3
 		// override IResource
 		void BeginShutdown() override;
 
+		// ILinkTx
 		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;
 
+		// IFrameSink
 		virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override;
 
 		void BeginReceive();
 
-		SocketLinkHandler(
+		SocketSession(
 			openpal::Logger logger,
 			asiopal::IResourceManager& manager,
 			asio::ip::tcp::socket socket

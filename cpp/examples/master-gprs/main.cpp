@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 	const auto NUM_THREAD = std::thread::hardware_concurrency();
 
 	// This is the main point of interaction with the stack
-	GPRSManager manager(std::thread::hardware_concurrency(), ConsoleLogger::Instance());
+	GPRSManager manager(NUM_THREAD, ConsoleLogger::Instance());
 
 	std::error_code ec;
 	auto server1 = manager.CreateListener("server-20000", FILTERS, IPEndpoint::AllAdapters(20000), ec);

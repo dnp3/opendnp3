@@ -21,7 +21,7 @@
 
 #include "asiodnp3/MasterTCPServer.h"
 
-#include "asiodnp3/SocketLinkHandler.h"
+#include "asiodnp3/SocketSession.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <opendnp3/LogLevels.h>
@@ -66,7 +66,7 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 
 	// TODO - create a new logger? 
 
-	SocketLinkHandler::Create(m_logger, *m_manager, std::move(socket));
+	SocketSession::Create(m_logger, *m_manager, std::move(socket));
 }
 
 void MasterTCPServer::OnShutdown()

@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "asiodnp3/SocketLinkHandler.h"
+#include "asiodnp3/SocketSession.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -32,7 +32,7 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	SocketLinkHandler::SocketLinkHandler(openpal::Logger logger, asiopal::IResourceManager& manager, asio::ip::tcp::socket socket) :
+	SocketSession::SocketSession(openpal::Logger logger, asiopal::IResourceManager& manager, asio::ip::tcp::socket socket) :
 		m_logger(logger),			
 		m_manager(&manager),
 		m_parser(logger, &m_stats),		
@@ -43,31 +43,30 @@ namespace asiodnp3
 		
 	}
 
-	std::shared_ptr<SocketLinkHandler> SocketLinkHandler::Create(openpal::Logger logger, asiopal::IResourceManager& manager, asio::ip::tcp::socket socket)
+	std::shared_ptr<SocketSession> SocketSession::Create(openpal::Logger logger, asiopal::IResourceManager& manager, asio::ip::tcp::socket socket)
 	{
-		auto ret = std::shared_ptr<SocketLinkHandler>(new SocketLinkHandler(logger, manager, std::move(socket)));
+		auto ret = std::shared_ptr<SocketSession>(new SocketSession(logger, manager, std::move(socket)));
 		
 		if (manager.Register(ret))
 		{
 			ret->BeginReceive();
 		}
 		else
-		{
-			// if the handler can't be registered, it will automatically get destroyed
+		{			
 			ret->BeginShutdown();
 		}		
 
 		return ret;
 	}
 
-	void SocketLinkHandler::BeginShutdown()
+	void SocketSession::BeginShutdown()
 	{
 		auto self(shared_from_this());
 		auto action = [self](){ self->m_socket.close(); };
 		m_executor->PostLambda(action);
 	}
 
-	void SocketLinkHandler::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
+	void SocketSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
 	{		
 		auto self(shared_from_this());
 		auto callback = [self, buffer, &session](const std::error_code& ec, std::size_t num) {
@@ -85,7 +84,7 @@ namespace asiodnp3
 		asio::async_write(m_socket, asio::buffer(buffer, buffer.Size()), m_executor->strand.wrap(callback));
 	}
 
-	bool SocketLinkHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
+	bool SocketSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
 		if (m_state == State::UNINIT)
 		{
@@ -99,7 +98,7 @@ namespace asiodnp3
 		return true;
 	}
 
-	void SocketLinkHandler::BeginReceive()
+	void SocketSession::BeginReceive()
 	{
 		auto self(shared_from_this());
 		auto callback = [self](const std::error_code& ec, std::size_t num) {
