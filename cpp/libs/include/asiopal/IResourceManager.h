@@ -21,6 +21,8 @@
 #ifndef ASIOPAL_IRESOURCEMANAGER_H
 #define ASIOPAL_IRESOURCEMANAGER_H
 
+#include <memory>
+
 namespace asiopal
 {
 
@@ -38,8 +40,11 @@ class IResourceManager
 
 public:
 	
-	virtual void Register(IResource& resource) = 0;
-	virtual void Unregister(const IResource& resource) = 0;
+	/// Returns false if the manager is shutting down - calling code 
+	/// should dispose of the resource if it can't be registered
+	virtual bool Register(std::shared_ptr<IResource> resource) = 0;
+
+	virtual void Unregister(std::shared_ptr<IResource> resource) = 0;
 
 };
 

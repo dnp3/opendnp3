@@ -63,8 +63,8 @@ private:
 
 	GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler& handler);	
 
-	virtual void Register(asiopal::IResource& resource) override;
-	virtual void Unregister(const asiopal::IResource& resource) override;
+	virtual bool Register(std::shared_ptr<asiopal::IResource> resource) override;
+	virtual void Unregister(std::shared_ptr<asiopal::IResource> resource) override;
 
 	std::mutex m_mutex;
 
@@ -72,7 +72,7 @@ private:
 	openpal::LogRoot m_log_root;
 	bool m_is_shutting_down;
 	openpal::ILogHandler* m_log;
-	std::vector<asiopal::IResource*> m_resources;
+	std::vector<std::shared_ptr<asiopal::IResource>> m_resources;
 
 	/// this will be the first thing to be destroyed forcing all handlers to be run
 	asiopal::IOServiceThreadPool m_pool;	

@@ -40,13 +40,23 @@ namespace asiodnp3
 		m_state(State::UNINIT),
 		m_socket(std::move(socket))
 	{
-		m_manager->Register(*this);
+		
 	}
 
 	std::shared_ptr<SocketLinkHandler> SocketLinkHandler::Create(openpal::Logger logger, asiopal::IResourceManager& manager, asio::ip::tcp::socket socket)
 	{
 		auto ret = std::shared_ptr<SocketLinkHandler>(new SocketLinkHandler(logger, manager, std::move(socket)));
-		ret->BeginReceive();
+		
+		if (manager.Register(ret))
+		{
+			ret->BeginReceive();
+		}
+		else
+		{
+			// if the handler can't be registered, it will automatically get destroyed
+			ret->BeginShutdown();
+		}		
+
 		return ret;
 	}
 
@@ -96,7 +106,7 @@ namespace asiodnp3
 			if (ec) {
 				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, ec.message().c_str());
 				// TODO - how do we signal the close of the session?
-				self->m_manager->Unregister(*self);
+				self->m_manager->Unregister(self);
 			}
 			else {
 				self->m_parser.OnRead(num, *self);

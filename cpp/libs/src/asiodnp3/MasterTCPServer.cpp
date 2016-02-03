@@ -70,8 +70,8 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 }
 
 void MasterTCPServer::OnShutdown()
-{
-	m_manager->Unregister(*this);
+{	
+	m_manager->Unregister(shared_from_this());
 }
 	
 }
