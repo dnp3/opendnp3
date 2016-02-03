@@ -63,7 +63,7 @@ namespace asiodnp3
 	{
 		auto self(shared_from_this());
 		auto action = [self](){ self->m_socket.close(); };
-		m_executor->PostLambda(action);
+		m_executor->strand.post(action);
 	}
 
 	void SocketSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
