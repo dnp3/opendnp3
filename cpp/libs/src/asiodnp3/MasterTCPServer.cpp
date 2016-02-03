@@ -21,6 +21,8 @@
 
 #include "asiodnp3/MasterTCPServer.h"
 
+#include "asiodnp3/SocketLinkHandler.h"
+
 #include <openpal/logging/LogMacros.h>
 #include <opendnp3/LogLevels.h>
 
@@ -62,8 +64,9 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 	oss << socket.remote_endpoint();
 	FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 
-	// TODO - create a parser/handler and begin reading
-	socket.close();
+	// TODO - create a new logger? 
+
+	SocketLinkHandler::Create(m_logger, *m_manager, std::move(socket));
 }
 
 void MasterTCPServer::OnShutdown()

@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 {
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
-	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
+	const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
 
 	const auto NUM_THREAD = std::thread::hardware_concurrency();
 
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 	GPRSManager manager(std::thread::hardware_concurrency(), ConsoleLogger::Instance());
 
 	std::error_code ec;
-	auto server1 = manager.CreateListener("server-20000", levels::NORMAL, IPEndpoint::AllAdapters(20000), ec);
+	auto server1 = manager.CreateListener("server-20000", FILTERS, IPEndpoint::AllAdapters(20000), ec);
 
 	if (ec)
 	{

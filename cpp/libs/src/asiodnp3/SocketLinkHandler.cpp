@@ -32,22 +32,25 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	SocketLinkHandler::SocketLinkHandler(openpal::Logger logger, asio::ip::tcp::socket socket) :
+	SocketLinkHandler::SocketLinkHandler(openpal::Logger logger, asiopal::IResourceManager& manager, asio::ip::tcp::socket socket) :
 		m_logger(logger),			
+		m_manager(&manager),
 		m_parser(logger, &m_stats),		
-		m_executor(StrandExecutor::Create(m_socket.get_io_service())),
+		m_executor(StrandExecutor::Create(socket.get_io_service())),
 		m_state(State::UNINIT),
 		m_socket(std::move(socket))
 	{
-		
+		m_manager->Register(*this);
 	}
 
-	std::shared_ptr<SocketLinkHandler> SocketLinkHandler::Create(openpal::Logger logger, asio::ip::tcp::socket socket)
+	std::shared_ptr<SocketLinkHandler> SocketLinkHandler::Create(openpal::Logger logger, asiopal::IResourceManager& manager, asio::ip::tcp::socket socket)
 	{
-		return std::shared_ptr<SocketLinkHandler>(new SocketLinkHandler(logger, std::move(socket)));
+		auto ret = std::shared_ptr<SocketLinkHandler>(new SocketLinkHandler(logger, manager, std::move(socket)));
+		ret->BeginReceive();
+		return ret;
 	}
 
-	void SocketLinkHandler::Shutdown()
+	void SocketLinkHandler::BeginShutdown()
 	{
 		auto self(shared_from_this());
 		auto action = [self](){ self->m_socket.close(); };
@@ -93,6 +96,7 @@ namespace asiodnp3
 			if (ec) {
 				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, ec.message().c_str());
 				// TODO - how do we signal the close of the session?
+				self->m_manager->Unregister(*self);
 			}
 			else {
 				self->m_parser.OnRead(num, *self);

@@ -30,6 +30,7 @@
 #include <opendnp3/Route.h>
 
 #include <asiopal/StrandExecutor.h>
+#include <asiopal/IResourceManager.h>
 
 namespace asiodnp3
 {	
@@ -37,6 +38,7 @@ namespace asiodnp3
 		public opendnp3::ILinkTx,
 		private opendnp3::IFrameSink,
 		public std::enable_shared_from_this<SocketLinkHandler>,
+		public asiopal::IResource,
 		private openpal::Uncopyable
 	{
 	public:		
@@ -46,11 +48,16 @@ namespace asiodnp3
 			INIT		// 
 		};
 
-		static std::shared_ptr<SocketLinkHandler> Create(openpal::Logger logger, asio::ip::tcp::socket socket);
+		static std::shared_ptr<SocketLinkHandler> Create(
+			openpal::Logger logger,
+			asiopal::IResourceManager& manager, 
+			asio::ip::tcp::socket socket
+		);
 
-		void Shutdown();
+		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;
 
-		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;		
+		// override IResource
+		void BeginShutdown() override;
 
 	private:
 
@@ -58,9 +65,14 @@ namespace asiodnp3
 
 		void BeginReceive();
 
-		SocketLinkHandler(openpal::Logger logger, asio::ip::tcp::socket socket);
+		SocketLinkHandler(
+			openpal::Logger logger,
+			asiopal::IResourceManager& manager,
+			asio::ip::tcp::socket socket
+		);
 
-		openpal::Logger m_logger;		
+		openpal::Logger m_logger;
+		asiopal::IResourceManager* m_manager;
 		opendnp3::LinkChannelStatistics m_stats;
 		opendnp3::LinkLayerParser m_parser;		
 		std::shared_ptr<asiopal::StrandExecutor> m_executor;
