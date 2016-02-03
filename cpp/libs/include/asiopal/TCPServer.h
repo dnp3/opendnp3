@@ -38,7 +38,10 @@ namespace asiopal
 	*
 	* Meant to be used exclusively as a shared_ptr
 	*/
-	class TCPServer : public std::enable_shared_from_this<TCPServer>, public IListener, private openpal::Uncopyable
+	class TCPServer : 
+		public std::enable_shared_from_this<TCPServer>,
+		public IListener,		
+		private openpal::Uncopyable
 	{		
 
 	public:				

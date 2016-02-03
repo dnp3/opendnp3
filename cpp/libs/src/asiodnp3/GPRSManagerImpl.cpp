@@ -56,7 +56,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	}
 	else
 	{		
-		this->m_servers.push_back(server);
+		this->m_resources.push_back(server.get());
 		return server;
 	}	
 }
@@ -67,9 +67,9 @@ void GPRSManagerImpl::BeginShutdown()
 
 	this->m_is_shutting_down = true;
 
-	for (auto& server : m_servers)
+	for (auto& resource : m_resources)
 	{
-		server->BeginShutdown();
+		resource->BeginShutdown();
 	}	
 }
 
@@ -82,16 +82,22 @@ GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler&
 	m_pool(&handler, concurrencyHint, opendnp3::flags::INFO, [](){}, [](){})
 {}
 
-void GPRSManagerImpl::OnShutdown(const MasterTCPServer& server)
+void GPRSManagerImpl::Register(asiopal::IResource& resource)
 {
-	std::lock_guard <std::mutex> lock(m_mutex);	
+	std::lock_guard <std::mutex> lock(m_mutex);
+	m_resources.push_back(&resource);
+}
 
-	auto is_match = [&server](const std::shared_ptr<MasterTCPServer>& ptr) -> bool {
-		bool ret =  &server == ptr.get();
-		return ret;
+void GPRSManagerImpl::Unregister(const asiopal::IResource& resource)
+{
+	std::lock_guard <std::mutex> lock(m_mutex);
+
+	auto is_match = [&resource](asiopal::IResource* other) -> bool {
+		return &resource == other;
 	};
 
-	m_servers.erase(std::remove_if(m_servers.begin(), m_servers.end(), is_match), m_servers.end());
+	m_resources.erase(std::remove_if(m_resources.begin(), m_resources.end(), is_match), m_resources.end());
+
 }
 
 }

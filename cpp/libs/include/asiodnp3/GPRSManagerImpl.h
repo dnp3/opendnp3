@@ -23,12 +23,13 @@
 
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/LogFanoutHandler.h>
-#include <asiopal/IListener.h>
+#include <asiopal/IResourceManager.h>
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/LogRoot.h>
 
 #include <asiodnp3/MasterTCPServer.h>
+
 
 #include <cstdint>
 #include <memory>
@@ -40,7 +41,7 @@ namespace asiodnp3
 
 class GPRSManagerImpl final : 
 	private openpal::Uncopyable,
-	private IShutdownHandler<MasterTCPServer>
+	private asiopal::IResourceManager
 {
 	
 public:	
@@ -62,7 +63,8 @@ private:
 
 	GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler& handler);	
 
-	virtual void OnShutdown(const MasterTCPServer& server) override;
+	virtual void Register(asiopal::IResource& resource) override;
+	virtual void Unregister(const asiopal::IResource& resource) override;
 
 	std::mutex m_mutex;
 
@@ -70,7 +72,7 @@ private:
 	openpal::LogRoot m_log_root;
 	bool m_is_shutting_down;
 	openpal::ILogHandler* m_log;
-	std::vector<std::shared_ptr<MasterTCPServer>> m_servers;
+	std::vector<asiopal::IResource*> m_resources;
 
 	/// this will be the first thing to be destroyed forcing all handlers to be run
 	asiopal::IOServiceThreadPool m_pool;	

@@ -22,9 +22,9 @@
 #define ASIOPAL_MASTERTCPSERVER_H
 
 #include <openpal/logging/Logger.h>
-#include <asiopal/TCPServer.h>
 
-#include "asiodnp3/IShutdownHandler.h"
+#include <asiopal/TCPServer.h>
+#include <asiopal/IResourceManager.h>
 
 namespace asiodnp3
 {			
@@ -34,15 +34,13 @@ namespace asiodnp3
 	* Meant to be used exclusively as a shared_ptr
 	*/
 	class MasterTCPServer final : public asiopal::TCPServer
-	{			
-
-		typedef IShutdownHandler<MasterTCPServer> ServerShutdownHandler;
+	{					
 
 	public:
 
 		static std::shared_ptr<MasterTCPServer> Create(
 			asio::io_service& ioservice, 
-			IShutdownHandler<MasterTCPServer>& shutdown,
+			asiopal::IResourceManager& shutdown,
 			openpal::Logger logger, 
 			asiopal::IPEndpoint endpoint, 
 			std::error_code& ec
@@ -50,11 +48,11 @@ namespace asiodnp3
 
 	private:
 
-		IShutdownHandler<MasterTCPServer>* m_shutdown;
+		asiopal::IResourceManager* m_manager;
 
 		MasterTCPServer(
 			asio::io_service& ioservice,
-			IShutdownHandler<MasterTCPServer>& shutdown,
+			asiopal::IResourceManager& shutdown,
 			openpal::Logger logger,
 			asiopal::IPEndpoint endpoint,
 			std::error_code& ec

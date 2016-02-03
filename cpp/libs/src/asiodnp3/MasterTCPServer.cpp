@@ -32,7 +32,7 @@ namespace asiodnp3
 
 std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 	asio::io_service& ioservice, 
-	IShutdownHandler<MasterTCPServer>& shutdown,
+	IResourceManager& shutdown,
 	openpal::Logger logger,
 	asiopal::IPEndpoint endpoint,
 	std::error_code& ec
@@ -45,13 +45,13 @@ std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 
 MasterTCPServer::MasterTCPServer(
 		asio::io_service& ioservice,
-		IShutdownHandler<MasterTCPServer>& shutdown, 
+		IResourceManager& shutdown,
 		openpal::Logger logger,
 		asiopal::IPEndpoint endpoint, 
 		std::error_code& ec
 ) :
 	TCPServer(ioservice, logger, endpoint, ec),
-	m_shutdown(&shutdown)
+	m_manager(&shutdown)
 {
 
 }
@@ -68,7 +68,7 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 
 void MasterTCPServer::OnShutdown()
 {
-	m_shutdown->OnShutdown(*this);
+	m_manager->Unregister(*this);
 }
 	
 }

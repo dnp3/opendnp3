@@ -18,18 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_ISHUTDOWNHANDLER_H
-#define ASIODNP3_ISHUTDOWNHANDLER_H
+#ifndef ASIOPAL_IRESOURCEMANAGER_H
+#define ASIOPAL_IRESOURCEMANAGER_H
 
-namespace asiodnp3
+namespace asiopal
 {
 
-template <class T>
-class IShutdownHandler
+class IResource
 {
+	public:
+
+		virtual ~IResource() {}
+
+		virtual void BeginShutdown() = 0;
+};
+
+class IResourceManager
+{
+
 public:
 	
-	virtual void OnShutdown(const T& item) = 0;
+	virtual void Register(IResource& resource) = 0;
+	virtual void Unregister(const IResource& resource) = 0;
+
 };
 
 }

@@ -21,6 +21,8 @@
 #ifndef ASIOPAL_ILISTENER_H
 #define ASIOPAL_ILISTENER_H
 
+#include "asiopal/IResourceManager.h"
+
 namespace asiopal
 {
 
@@ -28,13 +30,11 @@ namespace asiopal
 * Represents a running TCP or TLS listener that can be shutdown 
 * so that no new connections are accepted.
 */
-class IListener
+class IListener : public IResource
 {
 public:
 
-	virtual ~IListener() {}
-
-	virtual void BeginShutdown() = 0;
+	virtual ~IListener() {}	
 
 };
 
