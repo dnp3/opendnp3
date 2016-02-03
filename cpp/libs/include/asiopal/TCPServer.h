@@ -60,6 +60,9 @@ namespace asiopal
 		/// inherited flass defines what to do with
 		virtual void AcceptConnection(asio::ip::tcp::socket) = 0;
 
+		/// Inherited class defines what happens when the server shuts down
+		virtual void OnShutdown() = 0;
+
 		openpal::Logger m_logger;
 			
 	private:				

@@ -97,20 +97,13 @@ namespace asiopal
 			if (ec)
 			{
 				SIMPLE_LOG_BLOCK(self->m_logger, flags::INFO, ec.message().c_str());
+				self->OnShutdown();
 			}
 			else
 			{
 				// method responsible for closing
 				self->AcceptConnection(std::move(self->m_socket));
-
-				if (self->m_acceptor.is_open())
-				{
-					self->StartAccept();
-				}
-				else
-				{
-					// TODO unregister the server
-				}
+				self->StartAccept();
 			}
 		};
 

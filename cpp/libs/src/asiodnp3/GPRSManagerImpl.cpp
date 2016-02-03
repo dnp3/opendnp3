@@ -48,14 +48,14 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		return nullptr;
 	}
 
-	auto server = asiodnp3::MasterTCPServer::Create(m_pool.GetIOService(), m_log_root.GetLogger(), endpoint, ec);
+	auto server = asiodnp3::MasterTCPServer::Create(m_pool.GetIOService(), *this, m_log_root.GetLogger(), endpoint, ec);
 
 	if (ec)
 	{
 		return nullptr;
 	}
 	else
-	{
+	{		
 		this->m_servers.push_back(server);
 		return server;
 	}	
@@ -70,9 +70,7 @@ void GPRSManagerImpl::BeginShutdown()
 	for (auto& server : m_servers)
 	{
 		server->BeginShutdown();
-	}
-
-	m_servers.clear();
+	}	
 }
 
 GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler& handler) :
@@ -83,6 +81,18 @@ GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler&
 	m_log(&handler),
 	m_pool(&handler, concurrencyHint, opendnp3::flags::INFO, [](){}, [](){})
 {}
+
+void GPRSManagerImpl::OnShutdown(const MasterTCPServer& server)
+{
+	std::lock_guard <std::mutex> lock(m_mutex);	
+
+	auto is_match = [&server](const std::shared_ptr<MasterTCPServer>& ptr) -> bool {
+		bool ret =  &server == ptr.get();
+		return ret;
+	};
+
+	m_servers.erase(std::remove_if(m_servers.begin(), m_servers.end(), is_match), m_servers.end());
+}
 
 }
 

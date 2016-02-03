@@ -24,6 +24,8 @@
 #include <openpal/logging/Logger.h>
 #include <asiopal/TCPServer.h>
 
+#include "asiodnp3/IShutdownHandler.h"
+
 namespace asiodnp3
 {			
 	/**	
@@ -34,15 +36,32 @@ namespace asiodnp3
 	class MasterTCPServer final : public asiopal::TCPServer
 	{			
 
+		typedef IShutdownHandler<MasterTCPServer> ServerShutdownHandler;
+
 	public:
 
-		static std::shared_ptr<MasterTCPServer> Create(asio::io_service& ioservice, openpal::Logger logger, asiopal::IPEndpoint endpoint, std::error_code& ec);
+		static std::shared_ptr<MasterTCPServer> Create(
+			asio::io_service& ioservice, 
+			IShutdownHandler<MasterTCPServer>& shutdown,
+			openpal::Logger logger, 
+			asiopal::IPEndpoint endpoint, 
+			std::error_code& ec
+		);
 
 	private:
 
-		MasterTCPServer(asio::io_service& ioservice, openpal::Logger logger, asiopal::IPEndpoint endpoint, std::error_code& ec);
+		IShutdownHandler<MasterTCPServer>* m_shutdown;
+
+		MasterTCPServer(
+			asio::io_service& ioservice,
+			IShutdownHandler<MasterTCPServer>& shutdown,
+			openpal::Logger logger,
+			asiopal::IPEndpoint endpoint,
+			std::error_code& ec
+		);
 				
-		virtual void AcceptConnection(asio::ip::tcp::socket) override;				
+		virtual void AcceptConnection(asio::ip::tcp::socket) override;
+		virtual void OnShutdown() override;
 	};
 
 }

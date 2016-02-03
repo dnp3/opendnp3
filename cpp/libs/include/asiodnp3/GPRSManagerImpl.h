@@ -38,7 +38,9 @@
 namespace asiodnp3
 {
 
-class GPRSManagerImpl : private openpal::Uncopyable
+class GPRSManagerImpl final : 
+	private openpal::Uncopyable,
+	private IShutdownHandler<MasterTCPServer>
 {
 	
 public:	
@@ -60,15 +62,18 @@ private:
 
 	GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler& handler);	
 
+	virtual void OnShutdown(const MasterTCPServer& server) override;
+
 	std::mutex m_mutex;
 
 	openpal::ILogHandler* m_log_handler;
 	openpal::LogRoot m_log_root;
 	bool m_is_shutting_down;
 	openpal::ILogHandler* m_log;
-	asiopal::IOServiceThreadPool m_pool;
-
 	std::vector<std::shared_ptr<MasterTCPServer>> m_servers;
+
+	/// this will be the first thing to be destroyed forcing all handlers to be run
+	asiopal::IOServiceThreadPool m_pool;	
 	
 };
 

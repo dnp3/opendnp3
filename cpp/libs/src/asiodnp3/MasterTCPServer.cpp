@@ -30,15 +30,28 @@ using namespace asiopal;
 namespace asiodnp3
 {			
 
-std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(asio::io_service& ioservice, openpal::Logger logger, asiopal::IPEndpoint endpoint, std::error_code& ec)
+std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
+	asio::io_service& ioservice, 
+	IShutdownHandler<MasterTCPServer>& shutdown,
+	openpal::Logger logger,
+	asiopal::IPEndpoint endpoint,
+	std::error_code& ec
+)
 {
-	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, logger, endpoint, ec));
+	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, shutdown, logger, endpoint, ec));
 	ret->StartAccept();
 	return ret;
 }
 
-MasterTCPServer::MasterTCPServer(asio::io_service& ioservice, openpal::Logger logger, asiopal::IPEndpoint endpoint, std::error_code& ec) :
-	TCPServer(ioservice, logger, endpoint, ec)
+MasterTCPServer::MasterTCPServer(
+		asio::io_service& ioservice,
+		IShutdownHandler<MasterTCPServer>& shutdown, 
+		openpal::Logger logger,
+		asiopal::IPEndpoint endpoint, 
+		std::error_code& ec
+) :
+	TCPServer(ioservice, logger, endpoint, ec),
+	m_shutdown(&shutdown)
 {
 
 }
@@ -49,8 +62,13 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 	oss << socket.remote_endpoint();
 	FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 
-	// TODO - create a parser/handler
+	// TODO - create a parser/handler and begin reading
 	socket.close();
+}
+
+void MasterTCPServer::OnShutdown()
+{
+	m_shutdown->OnShutdown(*this);
 }
 	
 }
