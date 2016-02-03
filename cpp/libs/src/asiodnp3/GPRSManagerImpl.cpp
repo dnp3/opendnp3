@@ -22,6 +22,7 @@
 #include "asiodnp3/GPRSManagerImpl.h"
 
 #include "asiodnp3/MasterTCPServer.h"
+#include "asiodnp3/ErrorCodes.h"
 
 #include <opendnp3/LogLevels.h>
 
@@ -40,6 +41,12 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	std::error_code& ec)
 {
 	std::lock_guard <std::mutex> lock(m_mutex);
+
+	if (m_is_shutting_down) 
+	{
+		ec = make_error_code(errors::Error::SHUTTING_DOWN);		
+		return nullptr;
+	}
 
 	auto server = asiodnp3::MasterTCPServer::Create(m_pool.GetIOService(), m_log_root.GetLogger(), endpoint, ec);
 
