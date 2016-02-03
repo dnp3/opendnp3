@@ -53,13 +53,14 @@ namespace asiodnp3
 			asiopal::IResourceManager& manager, 
 			asio::ip::tcp::socket socket
 		);
+				
 
-		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;
+	private:
 
 		// override IResource
 		void BeginShutdown() override;
 
-	private:
+		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;
 
 		virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override;
 
