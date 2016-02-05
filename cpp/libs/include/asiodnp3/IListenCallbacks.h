@@ -18,59 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_GPRSMANAGER_H
-#define ASIODNP3_GPRSMANAGER_H
+#ifndef ASIODNP3_ILISTENCALLBACKS_H
+#define ASIODNP3_ILISTENCALLBACKS_H
 
-#include <asiopal/IListener.h>
-#include <asiopal/IPEndpoint.h>
-#include <openpal/logging/ILogHandler.h>
-#include <asiodnp3/IListenCallbacks.h>
+#include <openpal/executor/TimeDuration.h>
 
-#include <memory>
-#include <system_error>
+#include <string>
 
 namespace asiodnp3
 {
 
-class GPRSManagerImpl;
-
 /**
-*	Root DNP3 object used to create listeners
+* Callback interface invoked when a new connection is accepted
 */
-class GPRSManager
+class IListenCallbacks
 {
-
 public:
 
+	virtual ~IListenCallbacks() {}
+
 	/**
-	*	Construct a manager
+	* Ask user code if the following connection should be accepted
 	*
-	*	@param concurrencyHint How many threads to allocate in the thread pool
+	* @ipaddress The IP address of the connecting host. Can optionally be used for connection filtering.	
+	*
+	* @return If true, the connection is accepted and a link frame parser is created to handle incoming frame data.
 	*/
-	GPRSManager(uint32_t concurrencyHint, openpal::ILogHandler& handler);
+	virtual bool AcceptConnection(const std::string& ipaddress) = 0;
 
-	~GPRSManager();
-
-	/**
-	* Begin the shutdown process. Also called by the destructor automatically
-	*/
-	void BeginShutdown();
-
-	/**
-	* Create a TCP listener that will be used to accept incoming connections
-	*/
-	std::shared_ptr<asiopal::IListener> CreateListener(
-		std::string loggerid,
-		openpal::LogFilters loglevel,
-		asiopal::IPEndpoint endpoint,
-		IListenCallbacks& callbacks,
-		std::error_code& ec
-	);	
-
-private:
-		
-	std::unique_ptr<GPRSManagerImpl> m_impl;
-
+	/// return the amount of time the session should wait for the first frame
+	virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;
 };
 
 }

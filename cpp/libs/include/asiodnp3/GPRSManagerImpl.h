@@ -29,6 +29,7 @@
 #include <openpal/logging/LogRoot.h>
 
 #include <asiodnp3/MasterTCPServer.h>
+#include <asiodnp3/IListenCallbacks.h>
 
 
 #include <cstdint>
@@ -54,6 +55,7 @@ public:
 		std::string loggerid,
 		openpal::LogFilters loglevel,
 		asiopal::IPEndpoint endpoint,
+		IListenCallbacks& callbacks,
 		std::error_code& ec
 	);
 

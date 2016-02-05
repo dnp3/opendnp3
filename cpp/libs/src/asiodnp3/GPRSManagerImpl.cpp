@@ -38,6 +38,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	std::string loggerid,
 	openpal::LogFilters loglevel,
 	asiopal::IPEndpoint endpoint,
+	IListenCallbacks& callbacks,
 	std::error_code& ec)
 {
 	std::lock_guard <std::mutex> lock(m_mutex);
@@ -48,7 +49,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		return nullptr;
 	}
 
-	auto server = asiodnp3::MasterTCPServer::Create(m_pool.GetIOService(), *this, m_log_root.GetLogger(), endpoint, ec);
+	auto server = asiodnp3::MasterTCPServer::Create(m_pool.GetIOService(), *this, callbacks, m_log_root.GetLogger(), endpoint, ec);
 
 	if (ec)
 	{

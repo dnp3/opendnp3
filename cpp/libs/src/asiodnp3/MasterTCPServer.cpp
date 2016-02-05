@@ -27,6 +27,7 @@
 #include <opendnp3/LogLevels.h>
 
 using namespace opendnp3;
+using namespace openpal;
 using namespace asiopal;
 
 namespace asiodnp3
@@ -35,12 +36,13 @@ namespace asiodnp3
 std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 	asio::io_service& ioservice, 
 	IResourceManager& shutdown,
+	IListenCallbacks& callbacks,
 	openpal::Logger logger,
 	asiopal::IPEndpoint endpoint,
 	std::error_code& ec
 )
 {
-	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, shutdown, logger, endpoint, ec));
+	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, shutdown, callbacks, logger, endpoint, ec));
 	ret->StartAccept();
 	return ret;
 }
@@ -48,12 +50,14 @@ std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 MasterTCPServer::MasterTCPServer(
 		asio::io_service& ioservice,
 		IResourceManager& shutdown,
+		IListenCallbacks& callbacks,
 		openpal::Logger logger,
 		asiopal::IPEndpoint endpoint, 
 		std::error_code& ec
 ) :
 	TCPServer(ioservice, logger, endpoint, ec),
-	m_manager(&shutdown)
+	m_manager(&shutdown),
+	m_callbacks(&callbacks)
 {
 
 }
@@ -62,11 +66,20 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 {
 	std::ostringstream oss;
 	oss << socket.remote_endpoint();
-	FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
+	
+	if (m_callbacks->AcceptConnection(socket.remote_endpoint().address().to_string()))
+	{
+		FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());		
 
-	// TODO - create a new logger? 
+		// TODO - create a new logger? 
 
-	SocketSession::Create(m_logger, *m_manager, std::move(socket));
+		SocketSession::Create(m_logger, *m_manager, *m_callbacks, std::move(socket));
+	}
+	else
+	{		
+		socket.close();
+		FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
+	}
 }
 
 void MasterTCPServer::OnShutdown()

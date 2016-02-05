@@ -26,6 +26,8 @@
 #include <asiopal/TCPServer.h>
 #include <asiopal/IResourceManager.h>
 
+#include "asiodnp3/IListenCallbacks.h"
+
 namespace asiodnp3
 {			
 	/**	
@@ -41,18 +43,21 @@ namespace asiodnp3
 		static std::shared_ptr<MasterTCPServer> Create(
 			asio::io_service& ioservice, 
 			asiopal::IResourceManager& shutdown,
-			openpal::Logger logger, 
-			asiopal::IPEndpoint endpoint, 
+			IListenCallbacks& callbacks,
+			openpal::Logger logger,			
+			asiopal::IPEndpoint endpoint,
 			std::error_code& ec
 		);
 
 	private:
 
 		asiopal::IResourceManager* m_manager;
+		IListenCallbacks* m_callbacks;
 
 		MasterTCPServer(
 			asio::io_service& ioservice,
 			asiopal::IResourceManager& shutdown,
+			IListenCallbacks& callbacks,
 			openpal::Logger logger,
 			asiopal::IPEndpoint endpoint,
 			std::error_code& ec

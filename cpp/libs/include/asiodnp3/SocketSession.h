@@ -23,6 +23,7 @@
 #define ASIODNP3_SOCKETSESSION_H
 
 #include <openpal/logging/LogRoot.h>
+#include <openpal/executor/TimerRef.h>
 
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/link/ILinkTx.h>
@@ -31,6 +32,9 @@
 
 #include <asiopal/StrandExecutor.h>
 #include <asiopal/IResourceManager.h>
+
+#include "asiodnp3/GPRSMasterStack.h"
+#include "asiodnp3/IListenCallbacks.h"
 
 namespace asiodnp3
 {	
@@ -43,14 +47,10 @@ namespace asiodnp3
 	{
 	public:		
 
-		enum class State {
-			UNINIT,		// has not received a link-layer frame. Timer is active
-			INIT		// 
-		};
-
 		static std::shared_ptr<SocketSession> Create(
 			openpal::Logger logger,
-			asiopal::IResourceManager& manager, 
+			asiopal::IResourceManager& manager,
+			IListenCallbacks& callbacks,
 			asio::ip::tcp::socket socket
 		);
 				
@@ -66,25 +66,33 @@ namespace asiodnp3
 		// IFrameSink
 		virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override;
 
+		void Start();
+
 		void BeginReceive();
+
+		void OnFirstFrameTimeout();
 
 		SocketSession(
 			openpal::Logger logger,
 			asiopal::IResourceManager& manager,
+			IListenCallbacks& callbacks,
 			asio::ip::tcp::socket socket
 		);
 
 		openpal::Logger m_logger;
 		asiopal::IResourceManager* m_manager;
+		IListenCallbacks* m_callbacks;
 		opendnp3::LinkChannelStatistics m_stats;
 		opendnp3::LinkLayerParser m_parser;		
 		std::shared_ptr<asiopal::StrandExecutor> m_executor;
-		State m_state;
+		openpal::TimerRef m_first_frame_timer;
 		opendnp3::Route m_route;
+		
 
 		// this will become some kind of shared ptr to an interface
 		// so that the same class can handle TCP or TLS
 		asio::ip::tcp::socket m_socket;
+		std::shared_ptr<GPRSMasterStack> m_stack;	// initialized to null
 	};
 }
 

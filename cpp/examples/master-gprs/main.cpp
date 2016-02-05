@@ -20,6 +20,7 @@
  */
 #include <asiodnp3/GPRSManager.h>
 #include <asiodnp3/ConsoleLogger.h>
+#include <asiodnp3/DefaultListenCallbacks.h>
 
 #include <opendnp3/LogLevels.h>
 #include <iostream>
@@ -39,11 +40,13 @@ int main(int argc, char* argv[])
 
 	const auto NUM_THREAD = std::thread::hardware_concurrency();
 
+	DefaultListenCallbacks callbacks;
+
 	// This is the main point of interaction with the stack
 	GPRSManager manager(NUM_THREAD, ConsoleLogger::Instance());
 
 	std::error_code ec;
-	auto server1 = manager.CreateListener("server-20000", FILTERS, IPEndpoint::AllAdapters(20000), ec);
+	auto server1 = manager.CreateListener("server-20000", FILTERS, IPEndpoint::AllAdapters(20000), callbacks, ec);
 
 	if (ec)
 	{

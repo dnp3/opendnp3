@@ -32,24 +32,25 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	SocketSession::SocketSession(openpal::Logger logger, asiopal::IResourceManager& manager, asio::ip::tcp::socket socket) :
+	SocketSession::SocketSession(openpal::Logger logger, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket) :
 		m_logger(logger),			
 		m_manager(&manager),
+		m_callbacks(&callbacks),
 		m_parser(logger, &m_stats),		
-		m_executor(StrandExecutor::Create(socket.get_io_service())),
-		m_state(State::UNINIT),
-		m_socket(std::move(socket))
+		m_executor(StrandExecutor::Create(socket.get_io_service())),		
+		m_first_frame_timer(*m_executor),
+		m_socket(std::move(socket))		
 	{
 		
 	}
 
-	std::shared_ptr<SocketSession> SocketSession::Create(openpal::Logger logger, asiopal::IResourceManager& manager, asio::ip::tcp::socket socket)
+	std::shared_ptr<SocketSession> SocketSession::Create(openpal::Logger logger, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket)
 	{
-		auto ret = std::shared_ptr<SocketSession>(new SocketSession(logger, manager, std::move(socket)));
+		auto ret = std::shared_ptr<SocketSession>(new SocketSession(logger, manager, callbacks, std::move(socket)));
 		
 		if (manager.Register(ret))
-		{
-			ret->BeginReceive();
+		{			
+			ret->Start();
 		}
 		else
 		{			
@@ -57,13 +58,17 @@ namespace asiodnp3
 		}		
 
 		return ret;
-	}
+	}	
 
 	void SocketSession::BeginShutdown()
 	{
 		auto self(shared_from_this());
-		auto action = [self](){ self->m_socket.close(); };
-		m_executor->strand.post(action);
+		auto shutdown = [self]()
+		{ 
+			self->m_socket.close();
+			self->m_first_frame_timer.Cancel();
+		};
+		m_executor->strand.post(shutdown);
 	}
 
 	void SocketSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
@@ -86,16 +91,29 @@ namespace asiodnp3
 
 	bool SocketSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
-		if (m_state == State::UNINIT)
+		if (m_stack)
 		{
-			// TODO - ask application if we should create a master
+			m_stack->OnFrame(header, userdata);
 		}
 		else
-		{
-			// TODO - push the frame into the application
+		{			
+			// TODO - ask application if we should create a master		
+			// Cancel the first frame timer
 		}
 
 		return true;
+	}
+
+	void SocketSession::Start()
+	{
+		auto timeout = [this]()
+		{
+			this->OnFirstFrameTimeout();
+		};
+
+		m_first_frame_timer.Start(m_callbacks->GetFirstFrameTimeout(), timeout);
+
+		this->BeginReceive();
 	}
 
 	void SocketSession::BeginReceive()
@@ -115,5 +133,11 @@ namespace asiodnp3
 
 		auto dest = m_parser.WriteBuff();
 		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_executor->strand.wrap(callback));
+	}
+
+	void SocketSession::OnFirstFrameTimeout()
+	{
+		SIMPLE_LOG_BLOCK(m_logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
+		this->m_socket.close();
 	}
 }
