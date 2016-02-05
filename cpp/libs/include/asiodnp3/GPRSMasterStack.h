@@ -37,23 +37,54 @@ namespace asiodnp3
 /**
 * Interface that represents an ephemeral master session
 */
-class GPRSMasterStack : public IGPRSMaster
+class GPRSMasterStack final : public IGPRSMaster
 {
 public:
 
 	GPRSMasterStack(		
 		openpal::LogRoot& root,
 		asiopal::StrandExecutor& executor,
+		opendnp3::ILinkTx& linktx,
 		opendnp3::ISOEHandler& SOEHandler,
 		opendnp3::IMasterApplication& application,
-		const opendnp3::MasterStackConfig& config		
-	);
+		const opendnp3::MasterStackConfig& config	
+	);	
+
+	void OnLowerLayerUp();
+
+	void OnLowerLayerDown();
+
+	bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata);
+
+	/// --- IGPRSMaster ---
+
+	virtual void BeginShutdown() override;
+
+	/// --- ICommandOperations ---
+
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;	
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;	
+	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
+	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
+	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
+	virtual void Scan(const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
+	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config) override;
+	virtual void ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config) override;
+	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const opendnp3::TaskConfig& config) override;
+	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config) override;
+	virtual void Restart(opendnp3::RestartType op, const opendnp3::RestartOperationCallbackT& callback, opendnp3::TaskConfig config) override;
+	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
+
+	/// --- ICommandProcessor ---
+
+	virtual void SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;	
+	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;	
 
 private:
 
 	asiopal::StrandExecutor* m_executor;
 	opendnp3::StackStatistics m_statistics;
-	opendnp3::TransportStack m_transport;
+	opendnp3::TransportStack m_stack;
 	opendnp3::MContext m_context;
 };
 

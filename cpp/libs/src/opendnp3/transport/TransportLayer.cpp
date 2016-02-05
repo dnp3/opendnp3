@@ -143,18 +143,16 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 	return true;
 }
 
-void TransportLayer::SetAppLayer(IUpperLayer* pUpperLayer_)
-{
-	assert(pUpperLayer_ != nullptr);
+void TransportLayer::SetAppLayer(IUpperLayer& upperLayer)
+{	
 	assert(pUpperLayer == nullptr);
-	pUpperLayer = pUpperLayer_;
+	pUpperLayer = &upperLayer;
 }
 
-void TransportLayer::SetLinkLayer(ILinkLayer* pLinkLayer_)
-{
-	assert(pLinkLayer_ != nullptr);
+void TransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
+{	
 	assert(pLinkLayer == nullptr);
-	pLinkLayer = pLinkLayer_;
+	pLinkLayer = &linkLayer;
 }
 
 bool TransportLayer::OnLowerLayerUp()

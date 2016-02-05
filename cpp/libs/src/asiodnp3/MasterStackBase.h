@@ -243,7 +243,7 @@ protected:
 	{
 		assert(pContext == nullptr);
 		this->pContext = &context;
-		this->stack.transport.SetAppLayer(&context);
+		this->stack.transport.SetAppLayer(context);
 	}
 
 	openpal::LogRoot root;

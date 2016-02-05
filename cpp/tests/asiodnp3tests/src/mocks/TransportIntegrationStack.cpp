@@ -41,9 +41,9 @@ TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, ope
 	router.Enable(&link);
 	link.SetRouter(router);
 
-	transport.SetLinkLayer(&link);
+	transport.SetLinkLayer(link);
 
-	transport.SetAppLayer(&upper);
+	transport.SetAppLayer(upper);
 	upper.SetLowerLayer(transport);
 }
 

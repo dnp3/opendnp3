@@ -29,7 +29,7 @@ TransportStack::TransportStack(openpal::LogRoot& root, openpal::IExecutor& execu
 	transport(root, executor, maxRxFragSize, pStatistics),
 	link(root, executor, transport, listener, config)
 {
-	transport.SetLinkLayer(&link);
+	transport.SetLinkLayer(link);
 }
 
 }

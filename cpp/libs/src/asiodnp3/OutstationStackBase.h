@@ -134,7 +134,7 @@ protected:
 
 	void SetContext(opendnp3::OContext& context)
 	{
-		this->stack.transport.SetAppLayer(&context);
+		this->stack.transport.SetAppLayer(context);
 		this->pContext = &context;
 	}
 

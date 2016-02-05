@@ -61,14 +61,14 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mRouter.AddContext(mLinkB, routeB);
 	mRouter.Enable(&mLinkB);
 
-	mTransA.SetLinkLayer(&mLinkA);
-	mTransB.SetLinkLayer(&mLinkB);
+	mTransA.SetLinkLayer(mLinkA);
+	mTransB.SetLinkLayer(mLinkB);
 
 	mLinkA.SetRouter(mRouter);
 	mLinkB.SetRouter(mRouter);
 
-	mTransA.SetAppLayer(&mUpperA);
-	mTransB.SetAppLayer(&mUpperB);
+	mTransA.SetAppLayer(mUpperA);
+	mTransB.SetAppLayer(mUpperB);
 
 	mUpperA.SetLowerLayer(mTransA);
 	mUpperB.SetLowerLayer(mTransB);

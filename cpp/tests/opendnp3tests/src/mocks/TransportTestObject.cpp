@@ -41,10 +41,10 @@ TransportTestObject::TransportTestObject(bool aOpenOnStart, uint32_t filters, bo
 	transport(log.root, exe, DEFAULT_MAX_APDU_SIZE)
 {
 	link.SetUpperLayer(transport);
-	transport.SetLinkLayer(&link);
+	transport.SetLinkLayer(link);
 
 	upper.SetLowerLayer(transport);
-	transport.SetAppLayer(&upper);
+	transport.SetAppLayer(upper);
 
 	if (aOpenOnStart)
 	{
