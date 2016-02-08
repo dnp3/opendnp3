@@ -154,8 +154,8 @@ namespace asiodnp3
 		auto callback = [self](const std::error_code& ec, std::size_t num) {
 			if (ec) {
 				SIMPLE_LOG_BLOCK(self->m_log_root.logger, flags::WARN, ec.message().c_str());
-				// TODO - how do we signal the close of the session?
-				self->m_manager->Unregister(self);
+
+				self->Shutdown();
 			}
 			else {
 				self->m_parser.OnRead(num, *self);
@@ -166,4 +166,14 @@ namespace asiodnp3
 		auto dest = m_parser.WriteBuff();
 		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_executor->strand.wrap(callback));
 	}	
+
+	void SocketSession::Shutdown()
+	{
+		if (m_stack)
+		{
+			m_stack->OnLowerLayerDown();
+		}
+
+		m_manager->Unregister(shared_from_this());
+	}
 }

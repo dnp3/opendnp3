@@ -76,6 +76,8 @@ namespace asiodnp3
 
 		void Start();
 
+		void Shutdown();
+
 		void BeginReceive();		
 
 		SocketSession(
