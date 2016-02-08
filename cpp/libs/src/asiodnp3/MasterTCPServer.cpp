@@ -37,12 +37,14 @@ std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 	asio::io_service& ioservice, 
 	IResourceManager& shutdown,
 	IListenCallbacks& callbacks,
-	openpal::Logger logger,
+	openpal::LogRoot& root,
+	const std::string& loggerid,
+	openpal::LogFilters loglevel,
 	asiopal::IPEndpoint endpoint,
 	std::error_code& ec
 )
 {
-	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, shutdown, callbacks, logger, endpoint, ec));
+	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, shutdown, callbacks, root,  loggerid, loglevel, endpoint, ec));
 	ret->StartAccept();
 	return ret;
 }
@@ -51,11 +53,13 @@ MasterTCPServer::MasterTCPServer(
 		asio::io_service& ioservice,
 		IResourceManager& shutdown,
 		IListenCallbacks& callbacks,
-		openpal::Logger logger,
+		openpal::LogRoot& root,
+		const std::string& loggerid,
+		openpal::LogFilters loglevel,
 		asiopal::IPEndpoint endpoint, 
 		std::error_code& ec
 ) :
-	TCPServer(ioservice, logger, endpoint, ec),
+	TCPServer(ioservice, root, loggerid, loglevel, endpoint, ec),
 	m_manager(&shutdown),
 	m_callbacks(&callbacks)
 {

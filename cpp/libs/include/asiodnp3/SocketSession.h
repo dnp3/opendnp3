@@ -43,6 +43,7 @@ namespace asiodnp3
 		private opendnp3::IFrameSink,
 		public std::enable_shared_from_this<SocketSession>,
 		public asiopal::IResource,
+		private ISessionAcceptor,
 		private openpal::Uncopyable
 	{
 	public:		
@@ -66,11 +67,16 @@ namespace asiodnp3
 		// IFrameSink
 		virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override;
 
+		// ISessionAcceptor
+		virtual std::shared_ptr<IGPRSMaster> AcceptSession(
+			const std::string& loggerid,
+			opendnp3::ISOEHandler& SOEHandler,
+			opendnp3::IMasterApplication& application,
+			const opendnp3::MasterStackConfig& config) override;
+
 		void Start();
 
-		void BeginReceive();
-
-		void OnFirstFrameTimeout();
+		void BeginReceive();		
 
 		SocketSession(
 			openpal::Logger logger,

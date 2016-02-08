@@ -33,8 +33,9 @@ using namespace opendnp3;
 namespace asiopal
 {
 
-	TCPServer::TCPServer(io_service& ioservice, openpal::Logger logger, IPEndpoint endpoint, std::error_code& ec) :
-		m_logger(logger),
+	TCPServer::TCPServer(io_service& ioservice, openpal::LogRoot& root, const std::string& loggerid, openpal::LogFilters loglevel, IPEndpoint endpoint, std::error_code& ec) :
+		m_root(root, loggerid.c_str(), loglevel),
+		m_logger(m_root.GetLogger()),
 		m_endpoint(ip::tcp::v4(), endpoint.port),		
 		m_acceptor(ioservice),
 		m_socket(ioservice)

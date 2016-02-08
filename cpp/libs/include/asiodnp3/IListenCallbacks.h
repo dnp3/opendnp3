@@ -22,8 +22,9 @@
 #define ASIODNP3_ILISTENCALLBACKS_H
 
 #include <openpal/executor/TimeDuration.h>
+#include <opendnp3/link/LinkHeaderFields.h>
 
-#include <string>
+#include "asiodnp3/ISessionAcceptor.h"
 
 namespace asiodnp3
 {
@@ -48,6 +49,12 @@ public:
 
 	/// return the amount of time the session should wait for the first frame
 	virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;
+
+	/// called when the first frame is received
+	virtual void OnFirstFrame(
+		const opendnp3::LinkHeaderFields& header,
+		ISessionAcceptor& acceptor
+	) = 0;
 };
 
 }

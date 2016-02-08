@@ -30,33 +30,41 @@
 namespace openpal
 {
 
-LogRoot::LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters_) :
-	pHandler(pHandler_),
-	filters(filters_),
-	alias(AllocateCopy(alias_))
+LogRoot::LogRoot(ILogHandler* gandler, char const* alias, LogFilters filters) :
+	m_handler(gandler),
+	m_filters(filters),
+	m_alias(AllocateCopy(alias))
 {
 
 }
 
-LogRoot::LogRoot(const LogRoot& copy, char const* alias_) :
-	pHandler(copy.pHandler),
-	filters(copy.filters),
-	alias(AllocateCopy(alias_))
+LogRoot::LogRoot(const LogRoot& copy, char const* alias) :
+	m_handler(copy.m_handler),
+	m_filters(copy.m_filters),
+	m_alias(AllocateCopy(alias))
+{
+
+}
+
+LogRoot::LogRoot(const LogRoot& copy, char const* alias, LogFilters filters) :
+	m_handler(copy.m_handler),
+	m_filters(filters),
+	m_alias(AllocateCopy(alias))
 {
 
 }
 
 LogRoot::~LogRoot()
 {
-	delete[] alias;
+	delete[] m_alias;
 }
 
 void LogRoot::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
-	if (pHandler)
+	if (m_handler)
 	{
-		LogEntry le(alias, filters, location, message, errorCode);
-		pHandler->Log(le);
+		LogEntry le(m_alias, filters, location, message, errorCode);
+		m_handler->Log(le);
 	}
 }
 
@@ -67,22 +75,22 @@ Logger LogRoot::GetLogger()
 
 bool LogRoot::IsEnabled(const LogFilters& rhs) const
 {
-	return pHandler && (this->filters & rhs);
+	return m_handler && (this->m_filters & rhs);
 }
 
 bool LogRoot::HasAny(const LogFilters& rhs) const
 {
-	return this->filters & rhs;
+	return this->m_filters & rhs;
 }
 
-void LogRoot::SetFilters(const LogFilters& filters_)
+void LogRoot::SetFilters(const LogFilters& filters)
 {
-	filters = filters_;
+	m_filters = filters;
 }
 
 const LogFilters& LogRoot::GetFilters() const
 {
-	return filters;
+	return m_filters;
 }
 
 }

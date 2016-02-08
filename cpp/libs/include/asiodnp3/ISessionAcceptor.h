@@ -18,12 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_DEFAULTLISTENCALLBACKS_H
-#define ASIODNP3_DEFAULTLISTENCALLBACKS_H
+#ifndef ASIODNP3_ISESSION_ACCEPTOR_H
+#define ASIODNP3_ISESSION_ACCEPTOR_H
 
-#include "asiodnp3/IListenCallbacks.h"
-#include "asiodnp3/PrintingSOEHandler.h"
-#include "asiodnp3/DefaultMasterApplication.h"
+#include <opendnp3/master/ISOEHandler.h>
+#include <opendnp3/master/IMasterApplication.h>
+#include <opendnp3/master/MasterStackConfig.h>
+
+#include "asiodnp3/IGPRSMaster.h"
+
+#include <memory>
 
 namespace asiodnp3
 {
@@ -31,38 +35,20 @@ namespace asiodnp3
 /**
 * Callback interface invoked when a new connection is accepted
 */
-class DefaultListenCallbacks final : public IListenCallbacks
+class ISessionAcceptor
 {
 public:
 
-	virtual ~DefaultListenCallbacks() {}
+	virtual ~ISessionAcceptor() {}
 	
-	virtual bool AcceptConnection(const std::string& ipaddress) override
-	{		
-		return true;
-	}
-
-	virtual openpal::TimeDuration GetFirstFrameTimeout() override
-	{
-		return openpal::TimeDuration::Seconds(5);
-	}
-
-	virtual void OnFirstFrame(const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override
-	{		
-		opendnp3::MasterStackConfig config;
-		
-		// full implementations will look up config information for the SRC address
-
-		config.link.LocalAddr = header.dest;
-		config.link.RemoteAddr = header.src;
-
-		// full implementations will keep a shared_ptr<IGPRSMaster> somewhere			
-		auto master = acceptor.AcceptSession("session", PrintingSOEHandler::Instance(), DefaultMasterApplication::Instance(), config);
-	}
-	
+	virtual std::shared_ptr<IGPRSMaster> AcceptSession(
+		const std::string& loggerid,
+		opendnp3::ISOEHandler& SOEHandler,
+		opendnp3::IMasterApplication& application,
+		const opendnp3::MasterStackConfig& config
+	) = 0;
 };
 
 }
 
 #endif
-

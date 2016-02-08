@@ -26,7 +26,7 @@
 #include "asiopal/IListener.h"
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/logging/Logger.h>
+#include <openpal/logging/LogRoot.h>
 
 #include <asio.hpp>
 #include <memory>
@@ -53,7 +53,9 @@ namespace asiopal
 
 		TCPServer(
 			asio::io_service& ioservice,			
-			openpal::Logger logger,
+			openpal::LogRoot& root,
+			const std::string& loggerid,
+			openpal::LogFilters loglevel,
 			IPEndpoint endpoint,			
 			std::error_code& ec
 		);
@@ -66,6 +68,7 @@ namespace asiopal
 		/// Inherited class defines what happens when the server shuts down
 		virtual void OnShutdown() = 0;
 
+		openpal::LogRoot m_root;
 		openpal::Logger m_logger;
 			
 	private:				

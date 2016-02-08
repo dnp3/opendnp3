@@ -62,7 +62,7 @@ public:
 
 	/// --- ICommandOperations ---
 
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;	
+	virtual opendnp3::StackStatistics GetStackStatistics() override;
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;	
 	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
 	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;

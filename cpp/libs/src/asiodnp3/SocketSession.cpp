@@ -104,11 +104,30 @@ namespace asiodnp3
 		return true;
 	}
 
+	std::shared_ptr<IGPRSMaster> SocketSession::AcceptSession(
+		const std::string& loggerid,
+		opendnp3::ISOEHandler& SOEHandler,
+		opendnp3::IMasterApplication& application,
+		const opendnp3::MasterStackConfig& config
+		)
+	{
+		if (m_stack)
+		{
+			SIMPLE_LOG_BLOCK(m_logger, flags::ERR, "SocketSession already has a master bound");
+			return nullptr;
+		}
+
+		//this->m_stack = std::shared_ptr<GPRSMasterStack>(new GPRSMasterStack(,))
+
+		return m_stack;
+	}
+
 	void SocketSession::Start()
 	{
 		auto timeout = [this]()
 		{
-			this->OnFirstFrameTimeout();
+			SIMPLE_LOG_BLOCK(m_logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
+			this->m_socket.close();
 		};
 
 		m_first_frame_timer.Start(m_callbacks->GetFirstFrameTimeout(), timeout);
@@ -133,11 +152,5 @@ namespace asiodnp3
 
 		auto dest = m_parser.WriteBuff();
 		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_executor->strand.wrap(callback));
-	}
-
-	void SocketSession::OnFirstFrameTimeout()
-	{
-		SIMPLE_LOG_BLOCK(m_logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
-		this->m_socket.close();
-	}
+	}	
 }
