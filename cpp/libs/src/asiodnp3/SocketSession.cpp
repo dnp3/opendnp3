@@ -129,7 +129,7 @@ namespace asiodnp3
 		}
 
 		this->m_stack = std::shared_ptr<GPRSMasterStack>(
-			new GPRSMasterStack(m_log_root.logger, *m_executor, *this, SOEHandler, application, config)
+			new GPRSMasterStack(m_log_root.logger, *m_executor, *this, *this, SOEHandler, application, config)
 		);		
 
 		return m_stack;
@@ -154,7 +154,17 @@ namespace asiodnp3
 		auto callback = [self](const std::error_code& ec, std::size_t num) {
 			if (ec) {
 				SIMPLE_LOG_BLOCK(self->m_log_root.logger, flags::WARN, ec.message().c_str());
-				self->Shutdown();
+				
+				if (self->m_stack)
+				{
+					self->m_stack->OnLowerLayerDown();
+					self->m_callbacks->OnSessionClose(self->m_stack);
+				}
+
+				// release our reference to the stack
+				self->m_stack.reset();
+
+				self->m_manager->Unregister(self);
 			}
 			else {
 				self->m_parser.OnRead(num, *self);
@@ -165,15 +175,5 @@ namespace asiodnp3
 		auto dest = m_parser.WriteBuff();
 		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_executor->strand.wrap(callback));
 	}	
-
-	void SocketSession::Shutdown()
-	{
-		if (m_stack)
-		{
-			m_stack->OnLowerLayerDown();
-			m_callbacks->OnSessionClose(m_stack);
-		}
-
-		m_manager->Unregister(shared_from_this());
-	}
+	
 }

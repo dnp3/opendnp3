@@ -27,6 +27,8 @@
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/transport/TransportStack.h>
 
+#include <asiopal/IResourceManager.h>
+
 namespace asiopal {
 	class StrandExecutor;
 }
@@ -44,6 +46,7 @@ public:
 	GPRSMasterStack(		
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
+		asiopal::IResource& shutdown,
 		opendnp3::ILinkTx& linktx,
 		opendnp3::ISOEHandler& SOEHandler,
 		opendnp3::IMasterApplication& application,
@@ -80,9 +83,10 @@ public:
 	virtual void SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;	
 	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;	
 
-private:
+private:	
 
 	asiopal::StrandExecutor* m_executor;
+	asiopal::IResource* m_shutdown_resource;
 	opendnp3::StackStatistics m_statistics;
 	opendnp3::TransportStack m_stack;
 	opendnp3::MContext m_context;

@@ -74,9 +74,7 @@ namespace asiodnp3
 			opendnp3::IMasterApplication& application,
 			const opendnp3::MasterStackConfig& config) override;
 
-		void Start();
-
-		void Shutdown();
+		void Start();		
 
 		void BeginReceive();		
 

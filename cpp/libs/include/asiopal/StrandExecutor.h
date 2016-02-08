@@ -24,6 +24,7 @@
 #include <openpal/executor/IExecutor.h>
 #include <openpal/util/Uncopyable.h>
 
+#include <future>
 #include <asio.hpp>
 #include "asiopal/SteadyClock.h"
 
@@ -57,12 +58,66 @@ public:
 	// access to the underlying strand is provided for wrapping callbacks
 	asio::strand strand;
 
+	template <class Lambda>
+	void BlockFor(const Lambda& action);
+
+	template <class T>
+	T ReturnFrom(const std::function<T()>& action);
+
 private:
 
 	openpal::ITimer* Start(const asiopal_steady_clock::time_point& expiration, const openpal::Action0& runnable);
 
 	StrandExecutor(asio::io_service& service);
 };
+
+template <class Lambda>
+void StrandExecutor::BlockFor(const Lambda& action)
+{
+	if (strand.running_in_this_thread())
+	{
+		action();
+	}
+	else
+	{
+		std::promise<void> ready;
+
+		auto future = ready.get_future();
+
+		auto run = [&] {
+			action();
+			ready.set_value();
+		};
+
+		strand.post(run);
+
+		future.wait();
+	}	
+}
+
+template <class T>
+T StrandExecutor::ReturnFrom(const std::function<T()>& action)
+{
+	if (strand.running_in_this_thread())
+	{
+		return action();
+	}
+	else
+	{
+		std::promise<T> ready;
+
+		auto future = ready.get_future();
+
+		auto run = [&] {			
+			ready.set_value(action());
+		};
+
+		strand.post(run);
+
+		future.wait();
+		return future.get();
+	}
+}
 
 }
 
