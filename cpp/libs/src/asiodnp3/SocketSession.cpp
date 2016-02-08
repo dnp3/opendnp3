@@ -154,7 +154,6 @@ namespace asiodnp3
 		auto callback = [self](const std::error_code& ec, std::size_t num) {
 			if (ec) {
 				SIMPLE_LOG_BLOCK(self->m_log_root.logger, flags::WARN, ec.message().c_str());
-
 				self->Shutdown();
 			}
 			else {
@@ -172,6 +171,7 @@ namespace asiodnp3
 		if (m_stack)
 		{
 			m_stack->OnLowerLayerDown();
+			m_callbacks->OnSessionClose(m_stack);
 		}
 
 		m_manager->Unregister(shared_from_this());

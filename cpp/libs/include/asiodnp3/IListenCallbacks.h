@@ -50,11 +50,14 @@ public:
 	/// return the amount of time the session should wait for the first frame
 	virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;
 
-	/// called when the first frame is received
+	/// called when the first link-layer frame is received
 	virtual void OnFirstFrame(
 		const opendnp3::LinkHeaderFields& header,
 		ISessionAcceptor& acceptor
 	) = 0;
+
+	/// Called when an active master session closes
+	virtual void OnSessionClose(std::shared_ptr<IGPRSMaster> session) = 0;
 };
 
 }

@@ -59,6 +59,11 @@ public:
 		// full implementations will keep a std::shared_ptr<IGPRSMaster> somewhere			
 		auto master = acceptor.AcceptSession("session", PrintingSOEHandler::Instance(), DefaultMasterApplication::Instance(), config);
 	}
+
+	virtual void OnSessionClose(std::shared_ptr<IGPRSMaster> session) override
+	{
+		// full implementations would drop any references they're holding to this session
+	}
 	
 };
 
