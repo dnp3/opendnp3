@@ -38,7 +38,7 @@ public:
 
 	MAuthContext(
 	    openpal::IExecutor& executor,
-	    openpal::LogRoot& root,
+		openpal::Logger logger,
 	    opendnp3::ILowerLayer& lower,
 	    opendnp3::ISOEHandler& SOEHandler,
 	    IMasterApplicationSA& application,

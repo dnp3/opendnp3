@@ -49,7 +49,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		return nullptr;
 	}
 
-	auto server = asiodnp3::MasterTCPServer::Create(m_pool.GetIOService(), *this, callbacks, m_log_root, loggerid, loglevel, endpoint, ec);
+	auto server = asiodnp3::MasterTCPServer::Create(m_pool.GetIOService(), *this, callbacks, m_log_root.Clone(loggerid.c_str(), loglevel), endpoint, ec);
 
 	if (ec)
 	{

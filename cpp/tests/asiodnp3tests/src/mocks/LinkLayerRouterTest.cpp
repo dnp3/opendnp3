@@ -28,8 +28,8 @@ namespace opendnp3
 LinkLayerRouterTest::LinkLayerRouterTest(uint32_t filters) :
 	log(),
 	exe(),
-	phys(log.root, exe),
-	router(log.root, exe, &phys, 
+	phys(log.root.logger, exe),
+	router(log.root.logger, exe, &phys, 
 		ChannelRetry(TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100))
 	)
 {

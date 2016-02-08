@@ -68,16 +68,13 @@ public:
 	bool GetNextEntry(LogRecord& record);
 	bool IsLogErrorFree();
 
-	void Pop(openpal::ILogHandler& log);
-
-	openpal::Logger GetLogger();
+	void Pop(openpal::ILogHandler& log);	
 
 	openpal::LogRoot root;
 
 protected:
 
-	bool outputToStdIO;
-	openpal::Logger logger;
+	bool outputToStdIO;	
 	std::deque<LogRecord> messages;
 
 };

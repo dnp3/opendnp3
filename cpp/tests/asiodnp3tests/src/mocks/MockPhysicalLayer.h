@@ -40,7 +40,7 @@ namespace opendnp3
 class MockPhysicalLayer : public asiopal::PhysicalLayerBase, public testlib::BufferTestObject
 {
 public:
-	MockPhysicalLayer(openpal::LogRoot& root, openpal::IExecutor& executor);
+	MockPhysicalLayer(openpal::Logger logger, openpal::IExecutor& executor);
 
 	openpal::IExecutor* GetExecutor()
 	{

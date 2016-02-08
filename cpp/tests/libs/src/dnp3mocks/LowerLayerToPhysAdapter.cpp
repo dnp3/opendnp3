@@ -27,11 +27,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(const openpal::Logger& logger_, IPhysicalLayer* apPhys, bool aAutoRead) :
+LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(openpal::Logger logger_, IPhysicalLayer& phys, bool aAutoRead) :
 	logger(logger_),
 	mAutoRead(aAutoRead),
 	mNumOpenFailure(0),
-	mpPhys(apPhys)
+	mpPhys(&phys)
 {
 	mpPhys->SetHandler(this);
 }

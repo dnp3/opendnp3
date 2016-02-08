@@ -33,16 +33,16 @@ namespace asiodnp3
 {
 
 MasterStack::MasterStack(
-    const char* id,
-    LogRoot& root,
+	openpal::LogRoot root_,
     asiopal::ASIOExecutor& executor,
     opendnp3::ISOEHandler& SOEHandler,
     opendnp3::IMasterApplication& application,
     const MasterStackConfig& config,
     IStackLifecycle& lifecycle,
     opendnp3::ITaskLock& taskLock) :
-	MasterStackBase<IMaster>(id, root, executor, application, config, lifecycle),
-	mcontext(executor, root, stack.transport, SOEHandler, application,  config.master, taskLock)
+
+	MasterStackBase<IMaster>(std::move(root_), executor, application, config, lifecycle),
+	mcontext(executor, root.logger, stack.transport, SOEHandler, application,  config.master, taskLock)
 {
 	this->SetContext(mcontext);
 }

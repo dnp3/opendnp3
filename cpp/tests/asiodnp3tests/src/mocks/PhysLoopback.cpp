@@ -27,8 +27,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysLoopback::PhysLoopback(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer* apPhys) :
-	PhysicalLayerMonitor(root, executor, apPhys, ChannelRetry::Default()),
+PhysLoopback::PhysLoopback(openpal::Logger logger, openpal::IExecutor& executor, openpal::IPhysicalLayer* apPhys) :
+	PhysicalLayerMonitor(logger, executor, apPhys, ChannelRetry::Default()),
 	mBytesReadWritten(0),
 	mBuffer(1024)
 {

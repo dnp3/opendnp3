@@ -46,15 +46,8 @@ void TestComplex(const std::string& hex, ParseResult expected, size_t numCalls, 
 {
 	HexSequence buffer(hex);
 	MockApduHeaderHandler mock;
-	testlib::MockLogHandler log;
-	auto logger = log.GetLogger();
-	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, &logger);
-
-	if (result != expected)
-	{	
-		// TODO
-		// log.Pop(ConsoleLogger::Instance());
-	}
+	testlib::MockLogHandler log;	
+	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, &log.root.logger);	
 
 	REQUIRE((result == expected));
 	REQUIRE(numCalls ==  mock.records.size());

@@ -30,9 +30,8 @@ using namespace secauth;
 namespace asiodnp3
 {
 
-OutstationStackSA::OutstationStackSA(
-    const char* id,
-    openpal::LogRoot& root_,
+OutstationStackSA::OutstationStackSA(    
+    openpal::LogRoot root_,
     openpal::IExecutor& executor,
     opendnp3::ICommandHandler& commandHandler,
     secauth::IOutstationApplicationSA& application,
@@ -40,8 +39,8 @@ OutstationStackSA::OutstationStackSA(
     IStackLifecycle& lifecycle,
     openpal::ICryptoProvider& crypto) :
 
-	OutstationStackBase<IOutstationSA>(id, root_, executor, application, config, lifecycle),
-	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, config.auth, crypto)
+	OutstationStackBase<IOutstationSA>(std::move(root_), executor, application, config, lifecycle),
+	ocontext(config.outstation, config.dbTemplate, root.logger, executor, stack.transport, commandHandler, application, config.auth, crypto)
 {
 	this->SetContext(ocontext);
 }

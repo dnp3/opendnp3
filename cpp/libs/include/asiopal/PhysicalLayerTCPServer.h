@@ -36,7 +36,7 @@ class PhysicalLayerTCPServer final : public PhysicalLayerBaseTCP
 {
 public:
 	PhysicalLayerTCPServer(
-	    openpal::LogRoot& root,
+		openpal::Logger logger,
 	    asio::io_service& service,
 	    const std::string& endpoint,
 	    uint16_t port,

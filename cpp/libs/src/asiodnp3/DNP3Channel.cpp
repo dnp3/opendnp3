@@ -52,10 +52,10 @@ DNP3Channel::DNP3Channel(
 	pCrypto(pCrypto_),
 	pLogRoot(pLogRoot_),
 	pExecutor(&executor),
-	logger(pLogRoot->GetLogger()),
+	logger(pLogRoot->logger),
 	pShutdownHandler(nullptr),
 	channelState(ChannelState::CLOSED),
-	router(*pLogRoot, executor, pPhys.get(), retry, this, &statistics),
+	router(pLogRoot->logger, executor, pPhys.get(), retry, this, &statistics),
 	stacks(router, executor)
 {
 	pPhys->SetChannelStatistics(&statistics);
@@ -155,7 +155,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	{
 		auto factory = [&]()
 		{
-			return new MasterStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock);
+			return new MasterStack(pLogRoot->Clone(id), *pExecutor, SOEHandler, application, config, stacks, taskLock);
 		};
 
 		return this->AddStack<MasterStack>(config.link, factory);
@@ -170,7 +170,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 	{
 		auto factory = [&]()
 		{
-			return new OutstationStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks);
+			return new OutstationStack(pLogRoot->Clone(id), *pExecutor, commandHandler, application, config, stacks);
 		};
 
 		return this->AddStack<OutstationStack>(config.link, factory);
@@ -221,7 +221,7 @@ IMasterSA* DNP3Channel::AddMasterSA(char const* id,
 	{
 		auto factory = [&]()
 		{
-			return new MasterStackSA(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, *pCrypto);
+			return new MasterStackSA(pLogRoot->Clone(id), *pExecutor, SOEHandler, application, config, stacks, taskLock, *pCrypto);
 		};
 
 		return this->AddStack<MasterStackSA>(config.link, factory);
@@ -245,7 +245,7 @@ IOutstationSA* DNP3Channel::AddOutstationSA(char const* id,
 	{
 		auto factory = [&]()
 		{
-			return new OutstationStackSA(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, *pCrypto);
+			return new OutstationStackSA(pLogRoot->Clone(id), *pExecutor, commandHandler, application, config, stacks, *pCrypto);
 		};
 
 		return this->AddStack<OutstationStackSA>(config.link, factory);

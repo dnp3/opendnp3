@@ -32,7 +32,7 @@ class LinkLayer final : public ILinkLayer, public ILinkSession
 
 public:
 
-	LinkLayer(openpal::LogRoot&, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, const LinkConfig&);
+	LinkLayer(openpal::Logger logger, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, const LinkConfig&);
 
 	void SetRouter(ILinkTx&);
 

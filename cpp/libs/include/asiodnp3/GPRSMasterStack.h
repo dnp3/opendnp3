@@ -42,7 +42,7 @@ class GPRSMasterStack final : public IGPRSMaster
 public:
 
 	GPRSMasterStack(		
-		openpal::LogRoot& root,
+		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
 		opendnp3::ILinkTx& linktx,
 		opendnp3::ISOEHandler& SOEHandler,

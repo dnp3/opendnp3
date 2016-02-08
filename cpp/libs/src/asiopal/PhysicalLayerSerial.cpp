@@ -39,11 +39,11 @@ namespace asiopal
 {
 
 PhysicalLayerSerial::PhysicalLayerSerial(
-    openpal::LogRoot& root,
+	openpal::Logger logger,
     asio::io_service& service,
     const SerialSettings& settings) :
 
-	PhysicalLayerASIO(root, service),
+	PhysicalLayerASIO(logger, service),
 	settings(settings),
 	port(service)
 {

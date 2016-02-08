@@ -44,9 +44,7 @@ namespace asiodnp3
 			asio::io_service& ioservice, 
 			asiopal::IResourceManager& shutdown,
 			IListenCallbacks& callbacks,
-			openpal::LogRoot& root,
-			const std::string& loggerid,
-			openpal::LogFilters loglevel,
+			openpal::LogRoot root,
 			asiopal::IPEndpoint endpoint,
 			std::error_code& ec
 		);
@@ -60,9 +58,7 @@ namespace asiodnp3
 			asio::io_service& ioservice,
 			asiopal::IResourceManager& shutdown,
 			IListenCallbacks& callbacks,
-			openpal::LogRoot& root,
-			const std::string& loggerid,
-			openpal::LogFilters loglevel,
+			openpal::LogRoot root,
 			asiopal::IPEndpoint endpoint,
 			std::error_code& ec
 		);

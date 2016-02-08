@@ -38,14 +38,14 @@ namespace asiopal
 {
 
 PhysicalLayerTCPClient::PhysicalLayerTCPClient(
-    openpal::LogRoot& root,
+	openpal::Logger logger,
     asio::io_service& service,
     const std::string& host_,
     const std::string& localAddress_,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
-	PhysicalLayerBaseTCP(root, service),
+	PhysicalLayerBaseTCP(logger, service),
 	condition(logger),
 	host(host_),
 	localAddress(localAddress_),

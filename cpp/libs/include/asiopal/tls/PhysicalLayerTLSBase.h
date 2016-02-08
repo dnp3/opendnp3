@@ -41,7 +41,7 @@ class PhysicalLayerTLSBase : public PhysicalLayerASIO
 public:
 
 	PhysicalLayerTLSBase(
-		openpal::LogRoot& root,
+		openpal::Logger logger,
 		asio::io_service& service,
 		const TLSConfig& config,
 		asio::ssl::context_base::method method		

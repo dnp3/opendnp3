@@ -115,12 +115,11 @@ TEST_CASE(SUITE("parses g122v2 correctly"))
 ParseResult TestObjectHeaders(const std::string& objects, ParseResult expectedResult, const std::function<void(MockSOEHandler&)>& verify)
 {
 	MockSOEHandler soe;
-	testlib::MockLogHandler log;
-	auto logger = log.GetLogger();
+	testlib::MockLogHandler log;	
 
 	HexSequence hex(objects);
 
-	auto result = MeasurementHandler::ProcessMeasurements(hex.ToRSlice(), logger, &soe);
+	auto result = MeasurementHandler::ProcessMeasurements(hex.ToRSlice(), log.root.logger, &soe);
 	REQUIRE(result == expectedResult);
 	verify(soe);
 	return result;

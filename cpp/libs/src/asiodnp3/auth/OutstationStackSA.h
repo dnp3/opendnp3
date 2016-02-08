@@ -39,9 +39,8 @@ class OutstationStackSA : public OutstationStackBase<IOutstationSA>
 public:
 
 	/// standard DNP3 constructor
-	OutstationStackSA(
-	    const char* id,
-	    openpal::LogRoot&,
+	OutstationStackSA(	    
+	    openpal::LogRoot root,
 	    openpal::IExecutor& executor,
 	    opendnp3::ICommandHandler& commandHandler,
 	    secauth::IOutstationApplicationSA& application,

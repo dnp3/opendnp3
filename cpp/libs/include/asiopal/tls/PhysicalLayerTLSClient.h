@@ -41,7 +41,7 @@ class PhysicalLayerTLSClient final : public PhysicalLayerTLSBase
 public:
 
 	PhysicalLayerTLSClient(
-	    openpal::LogRoot& root,
+		openpal::Logger logger,
 	    asio::io_service& service,
 	    const std::string& host,
 	    const std::string& localAddress,

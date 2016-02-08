@@ -41,7 +41,7 @@ class TransportLoopbackTestObject :  public TestObjectASIO
 {
 public:
 	TransportLoopbackTestObject(
-	    openpal::LogRoot& root,
+	    openpal::Logger logger,
 	    asio::io_service& service,
 	    openpal::IExecutor& executor,
 	    openpal::IPhysicalLayer*,

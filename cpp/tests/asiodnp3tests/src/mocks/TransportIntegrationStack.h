@@ -40,7 +40,7 @@ namespace opendnp3
 class TransportIntegrationStack
 {
 public:
-	TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer*, LinkConfig);
+	TransportIntegrationStack(openpal::Logger logger, openpal::IExecutor& executor, openpal::IPhysicalLayer&, LinkConfig);
 
 	MockLinkListener listener;
 	asiodnp3::LinkLayerRouter router;

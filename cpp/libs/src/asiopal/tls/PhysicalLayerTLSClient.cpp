@@ -31,14 +31,14 @@ namespace asiopal
 {
 
 	PhysicalLayerTLSClient::PhysicalLayerTLSClient(
-		openpal::LogRoot& root,
+		openpal::Logger logger,
 		asio::io_service& service,
 		const std::string& host_,
 		const std::string& localAddress_,
 		uint16_t port,
 		const TLSConfig& config
 	) :
-			PhysicalLayerTLSBase(root, service, config, ssl::context_base::sslv23_client),
+			PhysicalLayerTLSBase(logger, service, config, ssl::context_base::sslv23_client),
 			condition(logger),
 			host(host_),
 			localAddress(localAddress_),

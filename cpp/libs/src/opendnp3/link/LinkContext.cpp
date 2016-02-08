@@ -33,8 +33,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkContext::LinkContext(openpal::LogRoot& root, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config_) :
-	logger(root.GetLogger()),
+LinkContext::LinkContext(openpal::Logger logger_, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config_) :
+	logger(logger_),
 	config(config_),
 	pSegments(nullptr),
 	txMode(LinkTransmitMode::Idle),

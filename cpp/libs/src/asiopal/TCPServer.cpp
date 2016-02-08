@@ -33,9 +33,8 @@ using namespace opendnp3;
 namespace asiopal
 {
 
-	TCPServer::TCPServer(io_service& ioservice, openpal::LogRoot& root, const std::string& loggerid, openpal::LogFilters loglevel, IPEndpoint endpoint, std::error_code& ec) :
-		m_root(root, loggerid.c_str(), loglevel),
-		m_logger(m_root.GetLogger()),
+	TCPServer::TCPServer(io_service& ioservice, openpal::LogRoot root, IPEndpoint endpoint, std::error_code& ec) :
+		m_root(std::move(root)),		
 		m_endpoint(ip::tcp::v4(), endpoint.port),		
 		m_acceptor(ioservice),
 		m_socket(ioservice)
@@ -85,7 +84,7 @@ namespace asiopal
 		{
 			std::ostringstream oss;
 			oss << m_endpoint;
-			FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+			FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
 		}
 	}
 		
@@ -97,7 +96,7 @@ namespace asiopal
 		{
 			if (ec)
 			{
-				SIMPLE_LOG_BLOCK(self->m_logger, flags::INFO, ec.message().c_str());
+				SIMPLE_LOG_BLOCK(self->m_root.logger, flags::INFO, ec.message().c_str());
 				self->OnShutdown();
 			}
 			else

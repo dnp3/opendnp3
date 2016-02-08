@@ -39,9 +39,8 @@ class MasterStackSA : public MasterStackBase<IMasterSA>
 {
 public:
 
-	MasterStackSA(
-	    const char* id,
-	    openpal::LogRoot& root,
+	MasterStackSA(	    
+	    openpal::LogRoot root,
 	    asiopal::ASIOExecutor& executor,
 	    opendnp3::ISOEHandler& SOEHandler,
 	    secauth::IMasterApplicationSA& application,

@@ -25,8 +25,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& listener, const LinkConfig& config) :
-	ctx(root, executor, upper, listener, *this, config)
+LinkLayer::LinkLayer(openpal::Logger logger, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& listener, const LinkConfig& config) :
+	ctx(logger, executor, upper, listener, *this, config)
 {}
 
 void LinkLayer::SetRouter(ILinkTx& router)

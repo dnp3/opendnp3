@@ -37,14 +37,12 @@ std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 	asio::io_service& ioservice, 
 	IResourceManager& shutdown,
 	IListenCallbacks& callbacks,
-	openpal::LogRoot& root,
-	const std::string& loggerid,
-	openpal::LogFilters loglevel,
+	openpal::LogRoot root,
 	asiopal::IPEndpoint endpoint,
 	std::error_code& ec
 )
 {
-	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, shutdown, callbacks, root,  loggerid, loglevel, endpoint, ec));
+	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(ioservice, shutdown, callbacks, std::move(root), endpoint, ec));
 	ret->StartAccept();
 	return ret;
 }
@@ -53,13 +51,11 @@ MasterTCPServer::MasterTCPServer(
 		asio::io_service& ioservice,
 		IResourceManager& shutdown,
 		IListenCallbacks& callbacks,
-		openpal::LogRoot& root,
-		const std::string& loggerid,
-		openpal::LogFilters loglevel,
+		openpal::LogRoot root,		
 		asiopal::IPEndpoint endpoint, 
 		std::error_code& ec
 ) :
-	TCPServer(ioservice, root, loggerid, loglevel, endpoint, ec),
+	TCPServer(ioservice, std::move(root), endpoint, ec),
 	m_manager(&shutdown),
 	m_callbacks(&callbacks)
 {
@@ -73,16 +69,16 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 	
 	if (m_callbacks->AcceptConnection(socket.remote_endpoint().address().to_string()))
 	{
-		FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());		
+		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());		
 
-		// TODO - create a new logger? 
+		// TODO - where to get the settings for the new log root?
 
-		SocketSession::Create(m_logger, *m_manager, *m_callbacks, std::move(socket));
+		SocketSession::Create(m_root.Clone("session"), *m_manager, *m_callbacks, std::move(socket));
 	}
 	else
 	{		
 		socket.close();
-		FORMAT_LOG_BLOCK(m_logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
 	}
 }
 

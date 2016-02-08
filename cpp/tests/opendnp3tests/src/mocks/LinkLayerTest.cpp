@@ -33,7 +33,7 @@ LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	exe(),
 	listener(),
 	upper(),
-	link(log.root, exe, upper, listener, config),
+	link(log.root.logger, exe, upper, listener, config),
 	numTotalWrites(0)
 {
 	upper.SetLinkLayer(link);

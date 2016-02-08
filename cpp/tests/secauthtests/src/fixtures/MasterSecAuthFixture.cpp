@@ -36,10 +36,10 @@ MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, const Mas
 	log(),
 	exe(),
 	meas(),
-	lower(log.root),
+	lower(),
 	application(),
 	crypto(),
-	context(exe, log.root, lower, meas, application, params, lock, authSettings, crypto)
+	context(exe, log.root.logger, lower, meas, application, params, lock, authSettings, crypto)
 {
 
 }

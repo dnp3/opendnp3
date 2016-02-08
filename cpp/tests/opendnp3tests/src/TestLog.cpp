@@ -36,9 +36,8 @@ using namespace openpal;
 
 TEST_CASE(SUITE("LogErrorCounting"))
 {
-	testlib::MockLogHandler log;
-	auto logger = log.GetLogger();
-	logger.Log( flags::EVENT, "location", "MessageMessage", 5 );
+	testlib::MockLogHandler log;	
+	log.root.logger.Log(flags::EVENT, "location", "MessageMessage", 5);
 
 	REQUIRE(log.NextErrorCode() ==  5);
 	REQUIRE(log.NextErrorCode() ==  -1);

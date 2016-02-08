@@ -28,9 +28,8 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-MasterStackSA::MasterStackSA(
-    const char* id,
-    openpal::LogRoot& root,
+MasterStackSA::MasterStackSA(    
+    openpal::LogRoot root_,
     asiopal::ASIOExecutor& executor,
     opendnp3::ISOEHandler& SOEHandler,
     secauth::IMasterApplicationSA& application,
@@ -39,8 +38,8 @@ MasterStackSA::MasterStackSA(
     opendnp3::ITaskLock& taskLock,
     openpal::ICryptoProvider& crypto
 ) :
-	MasterStackBase<IMasterSA>(id, root, executor, application, config, lifecycle),
-	mcontext(executor, root, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto)
+	MasterStackBase<IMasterSA>(std::move(root_), executor, application, config, lifecycle),
+	mcontext(executor, root.logger, stack.transport, SOEHandler, application, config.master, taskLock, config.auth, crypto)
 {
 	this->SetContext(mcontext);
 }

@@ -75,7 +75,7 @@ IChannel* DNP3Manager::AddTCPClient(
     uint16_t port)
 {
 	auto pRoot = new LogRoot(&impl->fanout, id, levels);
-	auto pPhys = new asiopal::PhysicalLayerTCPClient(*pRoot, impl->threadpool.GetIOService(), host, local, port);
+	auto pPhys = new asiopal::PhysicalLayerTCPClient(pRoot->logger, impl->threadpool.GetIOService(), host, local, port);
 	return impl->channels.CreateChannel(pRoot, pPhys->executor, retry, pPhys, impl->crypto);
 }
 
@@ -87,7 +87,7 @@ IChannel* DNP3Manager::AddTCPServer(
     uint16_t port)
 {
 	auto pRoot = new LogRoot(&impl->fanout, id, levels);
-	auto pPhys = new asiopal::PhysicalLayerTCPServer(*pRoot, impl->threadpool.GetIOService(), endpoint, port);
+	auto pPhys = new asiopal::PhysicalLayerTCPServer(pRoot->logger, impl->threadpool.GetIOService(), endpoint, port);
 	return impl->channels.CreateChannel(pRoot, pPhys->executor, retry, pPhys, impl->crypto);
 }
 
@@ -98,7 +98,7 @@ IChannel* DNP3Manager::AddSerial(
 	asiopal::SerialSettings settings)
 {
 	auto pRoot = new LogRoot(&impl->fanout, id, levels);
-	auto pPhys = new asiopal::PhysicalLayerSerial(*pRoot, impl->threadpool.GetIOService(), settings);
+	auto pPhys = new asiopal::PhysicalLayerSerial(pRoot->logger, impl->threadpool.GetIOService(), settings);
 	return impl->channels.CreateChannel(pRoot, pPhys->executor, retry, pPhys, impl->crypto);
 }
 
@@ -114,7 +114,7 @@ IChannel* DNP3Manager::AddTLSClient(
 	const asiopal::TLSConfig& config)
 {
 	auto pRoot = new LogRoot(&impl->fanout, id, levels);
-	auto pPhys = new asiopal::PhysicalLayerTLSClient(*pRoot, impl->threadpool.GetIOService(), host, local, port, config);
+	auto pPhys = new asiopal::PhysicalLayerTLSClient(pRoot->logger, impl->threadpool.GetIOService(), host, local, port, config);
 	return impl->channels.CreateChannel(pRoot, pPhys->executor, retry, pPhys, impl->crypto);
 }
 
@@ -127,7 +127,7 @@ IChannel* DNP3Manager::AddTLSServer(
 	const asiopal::TLSConfig& config)
 {
 	auto pRoot = new LogRoot(&impl->fanout, id, levels);
-	auto pPhys = new asiopal::PhysicalLayerTLSServer(*pRoot, impl->threadpool.GetIOService(), endpoint, port, config);
+	auto pPhys = new asiopal::PhysicalLayerTLSServer(pRoot->logger, impl->threadpool.GetIOService(), endpoint, port, config);
 	return impl->channels.CreateChannel(pRoot, pPhys->executor, retry, pPhys, impl->crypto);
 }
 

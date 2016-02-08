@@ -39,7 +39,7 @@ namespace opendnp3
 class LoopbackPhysicalLayer final : public asiopal::PhysicalLayerASIO
 {
 public:
-	LoopbackPhysicalLayer(openpal::LogRoot& root, asio::io_service& service);
+	LoopbackPhysicalLayer(openpal::Logger logger, asio::io_service& service);
 
 
 private:

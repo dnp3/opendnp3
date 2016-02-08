@@ -34,10 +34,10 @@ TransportStackPair::TransportStackPair(
     asio::io_service& service,
     uint16_t aPort) :
 
-	mClient(root, service, "127.0.0.1", "127.0.0.1", aPort),
-	mServer(root, service, "127.0.0.1", aPort),
-	mClientStack(root, mClient.executor, &mClient, aClientCfg),
-	mServerStack(root, mServer.executor, &mServer, aServerCfg)
+	mClient(root.logger, service, "127.0.0.1", "127.0.0.1", aPort),
+	mServer(root.logger, service, "127.0.0.1", aPort),
+	mClientStack(root.logger, mClient.executor, mClient, aClientCfg),
+	mServerStack(root.logger, mServer.executor, mServer, aServerCfg)
 {
 
 }

@@ -40,7 +40,7 @@ namespace opendnp3
 {
 MContext::MContext(
     IExecutor& executor,
-    LogRoot& root,
+	openpal::Logger logger_,
     ILowerLayer& lower,
     ISOEHandler& SOEHandler,
     opendnp3::IMasterApplication& application,
@@ -48,7 +48,7 @@ MContext::MContext(
     ITaskLock& taskLock
 ) :
 
-	logger(root.GetLogger()),
+	logger(logger_),
 	pExecutor(&executor),
 	pLower(&lower),
 	params(params_),

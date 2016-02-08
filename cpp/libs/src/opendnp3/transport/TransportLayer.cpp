@@ -34,8 +34,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
-	logger(root.GetLogger()),
+TransportLayer::TransportLayer(openpal::Logger logger_, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
+	logger(logger_),
 	pUpperLayer(nullptr),
 	pLinkLayer(nullptr),
 	isOnline(false),
@@ -53,48 +53,45 @@ TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor& execu
 
 void TransportLayer::BeginTransmit(const RSlice& apdu)
 {
-	if (isOnline)
-	{
-		if (apdu.IsEmpty())
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
-			auto lambda = [this]()
-			{
-				this->OnSendResult(false);
-			};
-			pExecutor->PostLambda(lambda);
-		}
-		else
-		{
-			if (isSending)
-			{
-				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
-			}
-			else
-			{
-				isSending = true;
-
-				if (pLinkLayer)
-				{
-					transmitter.Configure(apdu);
-					pLinkLayer->Send(transmitter);
-				}
-				else
-				{
-					SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
-					auto lambda = [this]()
-					{
-						this->OnSendResult(false);
-					};
-					pExecutor->PostLambda(lambda);
-				}
-			}
-		}
-	}
-	else
+	if (!isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
+		return;
 	}
+
+
+	if (apdu.IsEmpty())
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
+		auto lambda = [this]()
+		{
+			this->OnSendResult(false);
+		};
+		pExecutor->PostLambda(lambda);
+		return;
+	}
+
+
+	if (isSending)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
+		return;
+	}
+
+	if (!pLinkLayer)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
+		auto lambda = [this]()
+		{
+			this->OnSendResult(false);
+		};
+		pExecutor->PostLambda(lambda);
+		return;
+	}
+
+	isSending = true;
+	transmitter.Configure(apdu);
+	pLinkLayer->Send(transmitter);
 }
 
 ///////////////////////////////////////

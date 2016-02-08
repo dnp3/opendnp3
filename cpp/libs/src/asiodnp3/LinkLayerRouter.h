@@ -56,7 +56,7 @@ class LinkLayerRouter : public asiodnp3::PhysicalLayerMonitor, public opendnp3::
 {
 public:
 
-	LinkLayerRouter(openpal::LogRoot&,
+	LinkLayerRouter(openpal::Logger logger,
 	                openpal::IExecutor& executor,
 	                openpal::IPhysicalLayer*,
 					const opendnp3::ChannelRetry& retry,

@@ -29,7 +29,7 @@ namespace asiodnp3
 {
 
 	GPRSMasterStack::GPRSMasterStack(
-		openpal::LogRoot& root,		
+		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
 		opendnp3::ILinkTx& linktx,
 		opendnp3::ISOEHandler& SOEHandler,
@@ -38,8 +38,8 @@ namespace asiodnp3
 		) :
 		m_executor(&executor),
 		m_statistics(),
-		m_stack(root, executor, application, config.master.maxRxFragSize, &m_statistics, config.link),
-		m_context(executor, root, m_stack.transport, SOEHandler, application, config.master, opendnp3::NullTaskLock::Instance())
+		m_stack(logger, executor, application, config.master.maxRxFragSize, &m_statistics, config.link),
+		m_context(executor, logger, m_stack.transport, SOEHandler, application, config.master, opendnp3::NullTaskLock::Instance())
 	{
 		m_stack.link.SetRouter(linktx);	
 		m_stack.transport.SetAppLayer(m_context);

@@ -34,7 +34,7 @@ class MockPhysicalLayerMonitor : public asiodnp3::PhysicalLayerMonitor
 {
 public:
 	MockPhysicalLayerMonitor(
-	    openpal::LogRoot& root,
+		openpal::Logger logger,
 	    openpal::IExecutor& executor,
 	    openpal::IPhysicalLayer* apPhys,
 	    openpal::TimeDuration aMinOpenRetry,

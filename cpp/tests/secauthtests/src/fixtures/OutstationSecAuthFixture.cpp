@@ -39,11 +39,11 @@ OutstationSecAuthFixture::OutstationSecAuthFixture(
 ) :
 	log(),
 	exe(),
-	lower(log.root),
+	lower(),
 	cmdHandler(),
 	application(),
 	crypto(),
-	context(config, dbTemplate, log.GetLogger(), exe, lower, cmdHandler, application, authConfig, crypto)
+	context(config, dbTemplate, log.root.logger, exe, lower, cmdHandler, application, authConfig, crypto)
 {
 	lower.SetUpperLayer(context);
 }

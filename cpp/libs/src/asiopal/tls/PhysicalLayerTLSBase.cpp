@@ -34,12 +34,12 @@ namespace asiopal
 {
 
 	PhysicalLayerTLSBase::PhysicalLayerTLSBase(
-			openpal::LogRoot& root, 
+			openpal::Logger logger,
 			asio::io_service& service,			
 			const TLSConfig& config,
 			asio::ssl::context_base::method method) :
 
-		PhysicalLayerASIO(root, service),
+		PhysicalLayerASIO(logger, service),
 		ctx(method)
 	{
 

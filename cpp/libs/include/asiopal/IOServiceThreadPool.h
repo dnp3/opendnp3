@@ -56,8 +56,7 @@ public:
 
 private:
 
-	openpal::LogRoot root;
-	openpal::Logger logger;
+	openpal::LogRoot root;	
 
 	std::function<void ()> onThreadStart;
 	std::function<void ()> onThreadExit;

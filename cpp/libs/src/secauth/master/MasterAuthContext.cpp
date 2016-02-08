@@ -47,7 +47,7 @@ namespace secauth
 
 MAuthContext::MAuthContext(
     openpal::IExecutor& executor,
-    openpal::LogRoot& root,
+	openpal::Logger logger,
     opendnp3::ILowerLayer& lower,
     opendnp3::ISOEHandler& SOEHandler,
     secauth::IMasterApplicationSA& application,
@@ -56,7 +56,7 @@ MAuthContext::MAuthContext(
     const secauth::MasterAuthSettings& authSettings,
     openpal::ICryptoProvider& crypto
 ) :
-	MContext(executor, root, lower, SOEHandler, application, params, taskLock),
+	MContext(executor, logger, lower, SOEHandler, application, params, taskLock),
 	security(executor, application, authSettings, crypto)
 {
 

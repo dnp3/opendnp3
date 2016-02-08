@@ -44,17 +44,16 @@ class MasterStackBase : public Interface, public ILinkBind
 {
 public:
 
-	MasterStackBase(
-		const char* id,
-		openpal::LogRoot& root_,
+	MasterStackBase(		
+		openpal::LogRoot root_,
 		asiopal::ASIOExecutor& executor,
 		opendnp3::ILinkListener& listener,
 		const opendnp3::MasterStackConfig& config,
 		IStackLifecycle& lifecycle
 		) :
-		root(root_, id),
+		root(std::move(root_)),
 		pLifecycle(&lifecycle),
-		stack(root, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
+		stack(root.logger, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
 		pASIOExecutor(&executor),
 		pContext(nullptr)
 	{

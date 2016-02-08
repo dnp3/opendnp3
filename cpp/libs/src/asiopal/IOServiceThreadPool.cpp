@@ -41,8 +41,7 @@ IOServiceThreadPool::IOServiceThreadPool(
     uint32_t aConcurrency,
     std::function<void()> onThreadStart_,
     std::function<void()> onThreadExit_) :
-	root(pHandler, "pool", levels),
-	logger(root.GetLogger()),
+	root(pHandler, "pool", levels),	
 	onThreadStart(onThreadStart_),
 	onThreadExit(onThreadExit_),
 	isShutdown(false),
@@ -52,7 +51,7 @@ IOServiceThreadPool::IOServiceThreadPool(
 	if(aConcurrency == 0)
 	{
 		aConcurrency = 1;
-		SIMPLE_LOG_BLOCK(logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
+		SIMPLE_LOG_BLOCK(root.logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
 	infiniteTimer.expires_at(asiopal::asiopal_steady_clock::time_point::max());
 	infiniteTimer.async_wait([](const std::error_code&) {});

@@ -55,7 +55,7 @@ class LinkContext
 
 public:
 
-	LinkContext(openpal::LogRoot&, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, ILinkSession& session, const LinkConfig&);
+	LinkContext(openpal::Logger logger, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, ILinkSession& session, const LinkConfig&);
 
 
 	/// ---- helpers for dealing with the FCB bits ----

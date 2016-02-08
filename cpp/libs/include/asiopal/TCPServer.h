@@ -53,9 +53,7 @@ namespace asiopal
 
 		TCPServer(
 			asio::io_service& ioservice,			
-			openpal::LogRoot& root,
-			const std::string& loggerid,
-			openpal::LogFilters loglevel,
+			openpal::LogRoot root,			
 			IPEndpoint endpoint,			
 			std::error_code& ec
 		);
@@ -68,8 +66,7 @@ namespace asiopal
 		/// Inherited class defines what happens when the server shuts down
 		virtual void OnShutdown() = 0;
 
-		openpal::LogRoot m_root;
-		openpal::Logger m_logger;
+		openpal::LogRoot m_root;		
 			
 	private:				
 

@@ -38,14 +38,14 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
+LinkLayerRouter::LinkLayerRouter(	openpal::Logger logger,
                                     openpal::IExecutor& executor,
                                     IPhysicalLayer* pPhys,
 									const ChannelRetry& retry,
                                     IChannelStateListener* pStateHandler_,                                   
                                     LinkChannelStatistics* pStatistics_) :
 
-	PhysicalLayerMonitor(root, executor, pPhys, retry),
+	PhysicalLayerMonitor(logger, executor, pPhys, retry),
 	pStateHandler(pStateHandler_),
 	pStatistics(pStatistics_),
 	parser(logger, pStatistics_),

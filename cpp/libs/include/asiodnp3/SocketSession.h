@@ -49,7 +49,7 @@ namespace asiodnp3
 	public:		
 
 		static std::shared_ptr<SocketSession> Create(
-			openpal::Logger logger,
+			openpal::LogRoot logroot,
 			asiopal::IResourceManager& manager,
 			IListenCallbacks& callbacks,
 			asio::ip::tcp::socket socket
@@ -79,13 +79,14 @@ namespace asiodnp3
 		void BeginReceive();		
 
 		SocketSession(
-			openpal::Logger logger,
+			openpal::LogRoot logroot,
 			asiopal::IResourceManager& manager,
 			IListenCallbacks& callbacks,
 			asio::ip::tcp::socket socket
 		);
 
-		openpal::Logger m_logger;
+		openpal::LogRoot m_log_root;
+
 		asiopal::IResourceManager* m_manager;
 		IListenCallbacks* m_callbacks;
 		opendnp3::LinkChannelStatistics m_stats;

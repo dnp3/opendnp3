@@ -67,7 +67,7 @@ class PhysicalLayerBase : public openpal::IPhysicalLayer
 	};
 
 public:
-	PhysicalLayerBase(openpal::LogRoot& root);
+	PhysicalLayerBase(openpal::Logger logger);
 
 	void SetExecutor(openpal::IExecutor& executor);
 

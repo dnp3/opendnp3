@@ -35,13 +35,13 @@ namespace asiopal
 {
 
 PhysicalLayerTLSServer::PhysicalLayerTLSServer(
-    openpal::LogRoot& root,
+	openpal::Logger logger,
     asio::io_service& service,
     const std::string& endpoint,
     uint16_t port,
     const TLSConfig& config) :
 
-	PhysicalLayerTLSBase(root, service, config, asio::ssl::context_base::sslv23_server),
+	PhysicalLayerTLSBase(logger, service, config, asio::ssl::context_base::sslv23_server),
 	localEndpointString(endpoint),
 	localEndpoint(ip::tcp::v4(), port),
 	acceptor(service)	

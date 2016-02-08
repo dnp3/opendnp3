@@ -45,17 +45,16 @@ class OutstationStackBase : public Interface, public ILinkBind
 {
 public:
 
-	OutstationStackBase(
-	    const char* id,
-	    openpal::LogRoot& root_,
+	OutstationStackBase(	    
+	    openpal::LogRoot root_,
 	    openpal::IExecutor& executor,
 	    opendnp3::ILinkListener& listener,
 	    const opendnp3::OutstationStackConfig& config,
 	    IStackLifecycle& lifecycle
 	) :
-		root(root_, id),
+		root(std::move(root_)),
 		pLifecycle(&lifecycle),
-		stack(root, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
+		stack(root.logger, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
 		pContext(nullptr)
 	{}
 

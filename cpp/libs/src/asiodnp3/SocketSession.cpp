@@ -32,11 +32,11 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	SocketSession::SocketSession(openpal::Logger logger, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket) :
-		m_logger(logger),			
+	SocketSession::SocketSession(openpal::LogRoot logroot, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket) :
+		m_log_root(std::move(logroot)),			
 		m_manager(&manager),
 		m_callbacks(&callbacks),
-		m_parser(logger, &m_stats),		
+		m_parser(m_log_root.logger, &m_stats),		
 		m_executor(StrandExecutor::Create(socket.get_io_service())),		
 		m_first_frame_timer(*m_executor),
 		m_socket(std::move(socket))		
@@ -44,9 +44,9 @@ namespace asiodnp3
 		
 	}
 
-	std::shared_ptr<SocketSession> SocketSession::Create(openpal::Logger logger, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket)
+	std::shared_ptr<SocketSession> SocketSession::Create(openpal::LogRoot logroot, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket)
 	{
-		auto ret = std::shared_ptr<SocketSession>(new SocketSession(logger, manager, callbacks, std::move(socket)));
+		auto ret = std::shared_ptr<SocketSession>(new SocketSession(std::move(logroot), manager, callbacks, std::move(socket)));
 		
 		if (manager.Register(ret))
 		{			
@@ -77,7 +77,7 @@ namespace asiodnp3
 		auto callback = [self, buffer, &session](const std::error_code& ec, std::size_t num) {
 			if (ec) {
 				// we'll let the failed read close the session
-				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, ec.message().c_str());
+				SIMPLE_LOG_BLOCK(self->m_log_root.logger, flags::WARN, ec.message().c_str());
 				session.OnTransmitResult(false);
 			}
 			else {				
@@ -113,7 +113,7 @@ namespace asiodnp3
 	{
 		if (m_stack)
 		{
-			SIMPLE_LOG_BLOCK(m_logger, flags::ERR, "SocketSession already has a master bound");
+			SIMPLE_LOG_BLOCK(m_log_root.logger, flags::ERR, "SocketSession already has a master bound");
 			return nullptr;
 		}
 
@@ -126,7 +126,7 @@ namespace asiodnp3
 	{
 		auto timeout = [this]()
 		{
-			SIMPLE_LOG_BLOCK(m_logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
+			SIMPLE_LOG_BLOCK(m_log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
 			this->m_socket.close();
 		};
 
@@ -140,7 +140,7 @@ namespace asiodnp3
 		auto self(shared_from_this());
 		auto callback = [self](const std::error_code& ec, std::size_t num) {
 			if (ec) {
-				SIMPLE_LOG_BLOCK(self->m_logger, flags::WARN, ec.message().c_str());
+				SIMPLE_LOG_BLOCK(self->m_log_root.logger, flags::WARN, ec.message().c_str());
 				// TODO - how do we signal the close of the session?
 				self->m_manager->Unregister(self);
 			}
