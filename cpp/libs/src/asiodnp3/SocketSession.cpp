@@ -101,7 +101,11 @@ namespace asiodnp3
 
 			this->m_callbacks->OnFirstFrame(header, *this);
 
-			if (!m_stack)
+			if (m_stack)
+			{
+				this->m_stack->OnLowerLayerUp();
+			}
+			else
 			{
 				SIMPLE_LOG_BLOCK(m_log_root.logger, flags::WARN, "No master created. Closing socket.");
 				this->m_socket.close();
@@ -124,7 +128,9 @@ namespace asiodnp3
 			return nullptr;
 		}
 
-		//this->m_stack = std::shared_ptr<GPRSMasterStack>(new GPRSMasterStack(,))
+		this->m_stack = std::shared_ptr<GPRSMasterStack>(
+			new GPRSMasterStack(m_log_root.logger, *m_executor, *this, SOEHandler, application, config)
+		);		
 
 		return m_stack;
 	}

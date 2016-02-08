@@ -44,7 +44,7 @@ public:
 
 	virtual openpal::TimeDuration GetFirstFrameTimeout() override
 	{
-		return openpal::TimeDuration::Seconds(5);
+		return openpal::TimeDuration::Seconds(30);
 	}
 
 	virtual void OnFirstFrame(const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override
@@ -56,7 +56,7 @@ public:
 		config.link.LocalAddr = header.dest;
 		config.link.RemoteAddr = header.src;
 
-		// full implementations will keep a shared_ptr<IGPRSMaster> somewhere			
+		// full implementations will keep a std::shared_ptr<IGPRSMaster> somewhere			
 		auto master = acceptor.AcceptSession("session", PrintingSOEHandler::Instance(), DefaultMasterApplication::Instance(), config);
 	}
 	
