@@ -61,7 +61,8 @@ openpal::ITimer* StrandExecutor::Start(const asiopal_steady_clock::time_point& e
 {
 	auto self(shared_from_this());
 	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->strand.get_io_service()));
-	StrandTimer* ret = timer.get();
+
+	timer->m_timer.expires_at(expiration);
 		
 	// neither the executor nor the timer can be deleted while the timer is still active
 	auto callback = [timer, self, runnable](const std::error_code& ec) {
@@ -70,9 +71,9 @@ openpal::ITimer* StrandExecutor::Start(const asiopal_steady_clock::time_point& e
 		}
 	};
 
-	ret->m_timer.async_wait(strand.wrap(callback));
+	timer->m_timer.async_wait(strand.wrap(callback));
 
-	return ret;
+	return timer.get();
 }
 
 void StrandExecutor::Post(const Action0& runnable)
