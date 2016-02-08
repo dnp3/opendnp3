@@ -97,8 +97,15 @@ namespace asiodnp3
 		}
 		else
 		{			
-			// TODO - ask application if we should create a master		
-			// Cancel the first frame timer
+			this->m_first_frame_timer.Cancel();
+
+			this->m_callbacks->OnFirstFrame(header, *this);
+
+			if (!m_stack)
+			{
+				SIMPLE_LOG_BLOCK(m_log_root.logger, flags::WARN, "No master created. Closing socket.");
+				this->m_socket.close();
+			}			
 		}
 
 		return true;
