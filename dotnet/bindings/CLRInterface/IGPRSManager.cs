@@ -24,28 +24,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Automatak.DNP3.Interface
 {
     /// <summary>
-    /// Base interface for masters and outstations
+    /// Root interface used for master-server style applications
     /// </summary>
-    public interface IStack
-    {       
+    public interface IGPRSManager
+    {
         /// <summary>
-        /// Permanently shutdown the stack and any child objects
+        /// Begin shutting down all open listeners and sessions
         /// </summary>
-        void Shutdown();
+        void BeginShutdown();
 
         /// <summary>
-        /// Enable communications
+        /// 
         /// </summary>
-        void Enable();
-
-        /// <summary>
-        /// Disable communications
-        /// </summary>
-        void Disable();
-
+        /// <param name="loggerid"></param>
+        /// <param name="filters"></param>
+        /// <param name="endpoint"></param>        
+        /// <returns>A listener which can be canceled</returns>        
+        IListener CreateListener(string loggerid, LogFilter filters, IPEndpoint endpoint);
     }
 }

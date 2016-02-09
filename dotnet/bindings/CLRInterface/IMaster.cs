@@ -31,7 +31,13 @@ namespace Automatak.DNP3.Interface
     /// Interface representing a master station
     /// </summary>
     public interface IMaster : IStack, ICommandProcessor
-    {               
+    {
+        /// <summary>
+        /// Retrieves stack statistic information
+        /// </summary>
+        /// <returns></returns>
+        IStackStatistics GetStackStatistics();
+
         /// <summary>
         /// Adds a periodic all objects scan that uses the 0x06 qualifier
         /// </summary>

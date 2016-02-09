@@ -40,7 +40,13 @@ namespace Automatak.DNP3.Interface
     /// Interface representing an outstation
     /// </summary>
     public interface IOutstation: IStack, IMeasurementLoader
-    {                
+    {
+        /// <summary>
+        /// Retrieves stack statistic information
+        /// </summary>
+        /// <returns></returns>
+        IStackStatistics GetStackStatistics();
+
         /// <summary>
         /// Sets the restart IIN bit. Normally applications should not
 	    /// touch this bit, but it is provided for simulating restarts.

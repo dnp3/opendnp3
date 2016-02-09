@@ -63,6 +63,7 @@ public:
 	virtual void OnSessionClose(std::shared_ptr<IGPRSMaster> session) override
 	{
 		// full implementations would drop any references they're holding to this session
+		// shared_ptr can be used with == operator
 	}
 	
 };

@@ -1,5 +1,4 @@
-﻿
-//
+﻿//
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
 // with this work for additional information regarding copyright ownership.
@@ -19,6 +18,7 @@
 // have been made to this file. Automatak, LLC licenses these modifications to
 // you under the terms of the License.
 //
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,25 +27,11 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
-    /// <summary>
-    /// Base interface for masters and outstations
-    /// </summary>
-    public interface IStack
-    {       
+    public interface IListener
+    {
         /// <summary>
-        /// Permanently shutdown the stack and any child objects
+        /// Begin shutting down the listener
         /// </summary>
-        void Shutdown();
-
-        /// <summary>
-        /// Enable communications
-        /// </summary>
-        void Enable();
-
-        /// <summary>
-        /// Disable communications
-        /// </summary>
-        void Disable();
-
+        void BeginShutdown();
     }
 }

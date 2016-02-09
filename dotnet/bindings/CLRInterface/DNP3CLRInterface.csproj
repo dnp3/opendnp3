@@ -132,7 +132,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IDNP3Manager.cs" />
+    <Compile Include="IGPRSManager.cs" />
     <Compile Include="ILinkListener.cs" />
+    <Compile Include="IListener.cs" />
     <Compile Include="ILogHandler.cs" />
     <Compile Include="IMaster.cs">
       <SubType>Code</SubType>
@@ -145,6 +147,7 @@
     <Compile Include="IOutstationApplication.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IPEndpoint.cs" />
     <Compile Include="IQualityBitInfo.cs" />
     <Compile Include="ISOEHandler.cs" />
     <Compile Include="IOutstation.cs" />
