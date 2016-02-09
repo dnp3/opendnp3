@@ -28,10 +28,10 @@ using System.Threading.Tasks;
 namespace Automatak.DNP3.Interface
 {
     /// <summary>
-    /// Interface representing a master station
+    /// Interface representing an ephemeral master session
     /// </summary>
-    public interface IMaster : IStack, IMasterOperations
+    public interface IMasterSession : IMasterOperations
     {
-       
+        void BeginShutdown();
     }
 }

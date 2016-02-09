@@ -134,6 +134,7 @@
     <Compile Include="IDNP3Manager.cs" />
     <Compile Include="IGPRSManager.cs" />
     <Compile Include="ILinkListener.cs" />
+    <Compile Include="IListenCallbacks.cs" />
     <Compile Include="IListener.cs" />
     <Compile Include="ILogHandler.cs" />
     <Compile Include="IMaster.cs">
@@ -143,12 +144,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IMasterApplicationSA.cs" />
+    <Compile Include="IMasterOperations.cs" />
     <Compile Include="IMasterSA.cs" />
+    <Compile Include="IMasterSession.cs" />
     <Compile Include="IOutstationApplication.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IPEndpoint.cs" />
     <Compile Include="IQualityBitInfo.cs" />
+    <Compile Include="ISessionAcceptor.cs" />
     <Compile Include="ISOEHandler.cs" />
     <Compile Include="IOutstation.cs" />
     <Compile Include="IStack.cs">
@@ -158,6 +162,7 @@
     <Compile Include="IMasterScan.cs" />
     <Compile Include="config\LinkConfig.cs" />
     <Compile Include="ITaskCallback.cs" />
+    <Compile Include="LinkHeader.cs" />
     <Compile Include="LogLevels.cs" />
     <Compile Include="config\MasterConfig.cs" />
     <Compile Include="config\MasterStackConfig.cs" />
