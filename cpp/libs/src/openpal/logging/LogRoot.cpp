@@ -30,16 +30,19 @@
 namespace openpal
 {
 
-LogRoot::LogRoot(ILogHandler* handler, char const* alias, LogFilters filters) :
-	logger(this),
-	m_handler(handler),
-	m_filters(filters),
-	m_alias(AllocateCopy(alias))
+LogRoot::LogRoot(ILogHandler* handler, char const* alias, LogFilters filters) : LogRoot(handler, alias, filters, false)
 {
 
 }
 
-LogRoot::LogRoot(LogRoot&& other) : LogRoot(other.m_handler, other.m_alias, other.m_filters)	
+LogRoot::LogRoot(ILogHandler* handler, char const* alias, LogFilters filters, bool reuseAlias) : 
+	logger(this),
+	m_handler(handler),
+	m_filters(filters),
+	m_alias((reuseAlias ? alias : AllocateCopy(alias)))
+{}
+
+LogRoot::LogRoot(LogRoot&& other) : LogRoot(other.m_handler, other.m_alias, other.m_filters, true)	
 {
 	other.m_alias = nullptr;
 	other.m_handler = nullptr;

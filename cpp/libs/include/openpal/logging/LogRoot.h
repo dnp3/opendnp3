@@ -65,9 +65,11 @@ public:
 
 private:	
 
+	LogRoot(ILogHandler* pHandler, char const* alias, LogFilters filters, bool reuseAlias);
+
 	ILogHandler*	m_handler;
 	LogFilters		m_filters;   // bit field describing what is being logged
-	char*           m_alias;
+	const char*     m_alias;
 
 };
 
