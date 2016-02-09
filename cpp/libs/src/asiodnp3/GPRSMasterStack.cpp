@@ -22,6 +22,7 @@
 #include "asiodnp3/GPRSMasterStack.h"
 
 #include "asiopal/StrandExecutor.h"
+#include "asiodnp3/Conversions.h"
 
 using namespace opendnp3;
 
@@ -73,12 +74,15 @@ namespace asiodnp3
 
 	opendnp3::StackStatistics GPRSMasterStack::GetStackStatistics()
 	{
-		throw std::exception();
+		auto get = [this](){ return this->m_statistics; };
+		return m_executor->ReturnFrom<StackStatistics>(get);
 	}
 
 	opendnp3::MasterScan GPRSMasterStack::AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
 	{
-		throw std::exception();
+		auto builder = ConvertToLambda(headers);
+		auto get = [this, period, builder, config]() -> opendnp3::MasterScan { return this->m_context.AddScan(period, builder, config); };
+		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
 	opendnp3::MasterScan GPRSMasterStack::AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
