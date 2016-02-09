@@ -31,7 +31,7 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// Root interface used for master-server style applications
     /// </summary>
-    public interface IGPRSManager
+    public interface IDNP3SessionManager
     {
         /// <summary>
         /// Begin shutting down all open listeners and sessions

@@ -133,7 +133,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IDNP3Manager.cs" />
-    <Compile Include="IGPRSManager.cs" />
+    <Compile Include="IDNP3SessionManager.cs" />
     <Compile Include="ILinkListener.cs" />
     <Compile Include="IListenCallbacks.cs" />
     <Compile Include="IListener.cs" />
