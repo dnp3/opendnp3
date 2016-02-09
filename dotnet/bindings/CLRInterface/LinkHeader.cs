@@ -27,8 +27,31 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
-    class LinkHeader
+    public class LinkHeader
     {
-        
+        public LinkHeader(
+            LinkFunction function,
+            bool isFromMaster,
+            bool FCB,
+            bool FCV,
+            UInt16 destination,
+            UInt16 source
+        )
+        {
+
+            this.Function = function;
+            this.IsFromMaster = isFromMaster;
+            this.FCB = FCB;
+            this.FCV = FCV;
+            this.Destination = destination;
+            this.Source = source;
+        }
+
+        public readonly LinkFunction Function;
+        public readonly bool IsFromMaster;
+        public readonly bool FCB;
+        public readonly bool FCV;
+        public readonly UInt16 Destination;
+        public readonly UInt16 Source;        
     }
 }

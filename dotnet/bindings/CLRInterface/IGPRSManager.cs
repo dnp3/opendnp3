@@ -39,12 +39,13 @@ namespace Automatak.DNP3.Interface
         void BeginShutdown();
 
         /// <summary>
-        /// 
+        /// Create a new TCP listener an bind it to the specified callback interface
         /// </summary>
         /// <param name="loggerid"></param>
         /// <param name="filters"></param>
-        /// <param name="endpoint"></param>        
+        /// <param name="endpoint"></param>
+        /// <param name="callbacks"></param>
         /// <returns>A listener which can be canceled</returns>        
-        IListener CreateListener(string loggerid, LogFilter filters, IPEndpoint endpoint);
+        IListener CreateListener(string loggerid, LogFilter filters, IPEndpoint endpoint, IListenCallbacks callbacks);
     }
 }

@@ -98,6 +98,7 @@
     <Compile Include="gen\IntervalUnits.cs" />
     <Compile Include="gen\KeyChangeMethod.cs" />
     <Compile Include="gen\KeyWrapAlgorithm.cs" />
+    <Compile Include="gen\LinkFunction.cs" />
     <Compile Include="gen\LinkStatus.cs" />
     <Compile Include="gen\MasterTaskType.cs" />
     <Compile Include="gen\OperateType.cs" />

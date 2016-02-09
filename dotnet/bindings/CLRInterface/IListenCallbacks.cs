@@ -27,12 +27,14 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
-    interface IListenCallbacks
+    public interface IListenCallbacks
     {        
         bool AcceptConnection(string ipaddress);
 
         TimeSpan GetFirstFrameTimeout();
 
-        //void OnFirstFrame(Link)
+        void OnFirstFrame(LinkHeader header, ISessionAcceptor acceptor);
+
+        void OnSessionClose(IMasterSession session);
     }
 }
