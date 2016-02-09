@@ -21,6 +21,11 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 	
 	DNP3SessionManagerAdapter::~DNP3SessionManagerAdapter()
 	{
+		this->!DNP3SessionManagerAdapter();
+	}
+
+	DNP3SessionManagerAdapter::!DNP3SessionManagerAdapter()
+	{
 		delete manager;
 	}
 
@@ -30,7 +35,7 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 	}
 
 
-	IListener^ DNP3SessionManagerAdapter::CreateListener(System::String^ loggerid, LogFilter filters, IPEndpoint^ endpoint, IListenCallbacks^ callbacks)
+	IListener^ DNP3SessionManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, IPEndpoint^ endpoint, IListenCallbacks^ callbacks)
 	{
 		return nullptr;
 	}

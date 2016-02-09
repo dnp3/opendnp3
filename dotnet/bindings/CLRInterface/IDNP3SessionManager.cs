@@ -46,6 +46,6 @@ namespace Automatak.DNP3.Interface
         /// <param name="endpoint"></param>
         /// <param name="callbacks"></param>
         /// <returns>A listener which can be canceled</returns>        
-        IListener CreateListener(string loggerid, LogFilter filters, IPEndpoint endpoint, IListenCallbacks callbacks);
+        IListener CreateListener(string loggerid, UInt32 filters, IPEndpoint endpoint, IListenCallbacks callbacks);
     }
 }

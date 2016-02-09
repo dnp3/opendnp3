@@ -15,6 +15,8 @@ namespace DotNetMasterGPRSDemo
         {
             var manager = DNP3SessionManagerFactory.CreateManager(4, PrintingLogAdapter.Instance);
 
+            var listener = manager.CreateListener("listener", LogLevels.ALL, IPEndpoint.Localhost(20000), null);
+
             Console.WriteLine("Enter a command");
 
             while (true)
