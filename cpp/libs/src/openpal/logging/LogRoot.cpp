@@ -49,12 +49,12 @@ LogRoot::LogRoot(LogRoot&& other) : LogRoot(other.m_handler, other.m_alias, othe
 	other.m_filters = 0;
 }
 
-LogRoot LogRoot::Clone(char const* alias)
+LogRoot LogRoot::Clone(char const* alias) const
 {
 	return LogRoot(this->m_handler, alias, this->m_filters);
 }
 
-LogRoot LogRoot::Clone(char const* alias, LogFilters filters)
+LogRoot LogRoot::Clone(char const* alias, LogFilters filters) const
 {
 	return LogRoot(this->m_handler, alias, filters);
 }
@@ -62,6 +62,12 @@ LogRoot LogRoot::Clone(char const* alias, LogFilters filters)
 LogRoot::~LogRoot()
 {	
 	delete[] m_alias;
+}
+
+void LogRoot::Rename(char const* alias)
+{
+	delete[] m_alias;
+	m_alias = AllocateCopy(alias);
 }
 
 void LogRoot::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)

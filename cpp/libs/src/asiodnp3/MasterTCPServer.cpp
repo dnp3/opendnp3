@@ -73,7 +73,7 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 
 		// TODO - where to get the settings for the new log root?
 
-		SocketSession::Create(m_root.Clone("session"), *m_manager, *m_callbacks, std::move(socket));
+		SocketSession::Create(m_root.Clone("unknown-session"), *m_manager, *m_callbacks, std::move(socket));
 	}
 	else
 	{		
