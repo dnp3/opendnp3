@@ -132,7 +132,7 @@ namespace asiodnp3
 		this->m_log_root.Rename(loggerid.c_str());
 
 		this->m_stack = std::shared_ptr<GPRSMasterStack>(
-			new GPRSMasterStack(m_log_root.logger, *m_executor, *this, *this, SOEHandler, application, config)
+			new GPRSMasterStack(m_log_root.logger, *m_executor, shared_from_this(), *this, SOEHandler, application, config)
 		);		
 
 		return m_stack;

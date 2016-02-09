@@ -27,7 +27,7 @@
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <asiopal/IResourceManager.h>
+
 
 namespace asiopal {
 	class StrandExecutor;
@@ -35,6 +35,8 @@ namespace asiopal {
 
 namespace asiodnp3
 {
+
+class SocketSession;
 
 /**
 * Interface that represents an ephemeral master session
@@ -46,7 +48,7 @@ public:
 	GPRSMasterStack(		
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
-		asiopal::IResource& shutdown,
+		std::shared_ptr<SocketSession> session,
 		opendnp3::ILinkTx& linktx,
 		opendnp3::ISOEHandler& SOEHandler,
 		opendnp3::IMasterApplication& application,
@@ -86,7 +88,7 @@ public:
 private:	
 
 	asiopal::StrandExecutor* m_executor;
-	asiopal::IResource* m_shutdown_resource;
+	std::shared_ptr<SocketSession> m_session;
 	opendnp3::StackStatistics m_statistics;
 	opendnp3::TransportStack m_stack;
 	opendnp3::MContext m_context;

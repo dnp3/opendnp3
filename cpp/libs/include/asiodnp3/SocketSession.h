@@ -37,7 +37,7 @@
 #include "asiodnp3/IListenCallbacks.h"
 
 namespace asiodnp3
-{	
+{		
 	class SocketSession final : 
 		public opendnp3::ILinkTx,
 		private opendnp3::IFrameSink,
@@ -54,12 +54,11 @@ namespace asiodnp3
 			IListenCallbacks& callbacks,
 			asio::ip::tcp::socket socket
 		);
-				
-
-	private:
-
+		
 		// override IResource
 		void BeginShutdown() override;
+
+	private:		
 
 		// ILinkTx
 		virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;

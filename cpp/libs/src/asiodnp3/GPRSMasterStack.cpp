@@ -23,6 +23,7 @@
 
 #include "asiopal/StrandExecutor.h"
 #include "asiodnp3/Conversions.h"
+#include "asiodnp3/SocketSession.h"
 
 using namespace opendnp3;
 
@@ -32,14 +33,14 @@ namespace asiodnp3
 	GPRSMasterStack::GPRSMasterStack(
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
-		asiopal::IResource& shutdown,
+		std::shared_ptr<SocketSession> session,
 		opendnp3::ILinkTx& linktx,
 		opendnp3::ISOEHandler& SOEHandler,
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config
 		) :
 		m_executor(&executor),
-		m_shutdown_resource(&shutdown),
+		m_session(session),
 		m_statistics(),
 		m_stack(logger, executor, application, config.master.maxRxFragSize, &m_statistics, config.link),
 		m_context(executor, logger, m_stack.transport, SOEHandler, application, config.master, opendnp3::NullTaskLock::Instance())
@@ -65,8 +66,9 @@ namespace asiodnp3
 
 	void GPRSMasterStack::BeginShutdown()
 	{
-		auto shutdown = [this](){
-			this->m_shutdown_resource->BeginShutdown();
+		auto session = m_session;
+		auto shutdown = [session](){
+			session->BeginShutdown();
 		};
 
 		m_executor->strand.post(shutdown);
