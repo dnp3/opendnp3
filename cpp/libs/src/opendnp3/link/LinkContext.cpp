@@ -254,10 +254,11 @@ void LinkContext::PushDataUp(const openpal::RSlice& data)
 }
 
 void LinkContext::PostStatusCallback(opendnp3::LinkStatus status)
-{
-	auto callback = [this, status]()
+{	
+	auto listener = pListener;
+	auto callback = [listener, status]()
 	{
-		this->pListener->OnStateChange(status);
+		listener->OnStateChange(status);
 	};
 
 	pExecutor->PostLambda(callback);
