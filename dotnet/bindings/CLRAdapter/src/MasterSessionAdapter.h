@@ -27,7 +27,20 @@ namespace Automatak
 				~MasterSessionAdapter();
 				!MasterSessionAdapter();
 
-				virtual void BeginShutdown();				
+				virtual bool IsSameSession(IMasterSession^ other)
+				{
+					if (other->GetType() != MasterSessionAdapter::typeid)
+					{
+						return false;
+					}
+
+					auto ref = (MasterSessionAdapter^)(other);
+
+					// perform shared_ptr equality
+					return ref->m_master == m_master;					
+				}
+
+				virtual void BeginShutdown();
 
 			private:
 				

@@ -33,5 +33,8 @@ namespace Automatak.DNP3.Interface
     public interface IMasterSession : IMasterOperations
     {
         void BeginShutdown();
+
+        // determines if the other reference is to the same underlying session        
+        bool IsSameSession(IMasterSession other);
     }
 }
