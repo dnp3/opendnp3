@@ -28,7 +28,7 @@ namespace Automatak
 
 			private:
 				
-				gcroot < Interface::IListenCallbacks^ > proxy;
+				gcroot < Interface::IListenCallbacks^ > m_proxy;
 			};
 
 		}

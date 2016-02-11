@@ -1,7 +1,10 @@
 
 #include "DNP3SessionManagerAdapter.h"
 
+#include "ListenCallbacksAdapter.h"
 #include "LogAdapter.h"
+#include "Conversions.h"
+#include "ListenerAdapter.h"
 
 namespace Automatak { namespace DNP3 { namespace Adapter {
 			
@@ -34,10 +37,22 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 		manager->BeginShutdown();
 	}
 
-
 	IListener^ DNP3SessionManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, IPEndpoint^ endpoint, IListenCallbacks^ callbacks)
 	{
-		return nullptr;
+		auto id = Conversions::ConvertString(loggerid);
+		auto levels = openpal::LogFilters(filters);
+		auto ep = Conversions::Convert(endpoint);
+		auto cb = std::shared_ptr<asiodnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));		
+
+		std::error_code ec;
+		auto listener = manager->CreateListener(id, levels, ep, cb, ec);
+
+		if (ec)
+		{
+			throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
+		}
+
+		return gcnew ListenerAdapter(listener);
 	}
 
 }}}

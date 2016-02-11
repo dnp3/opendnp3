@@ -36,6 +36,7 @@
 #include "CollectionAdapter.h"
 
 #include <asiopal/SerialTypes.h>
+#include <asiopal/IPEndpoint.h>
 #include <asiopal/tls/TLSConfig.h>
 
 using namespace System::Collections::Generic;
@@ -133,10 +134,11 @@ namespace Automatak
 				static opendnp3::AnalogCommandEvent ConvertMeas(AnalogCommandEvent^ meas);
 
 				static LinkHeader^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields);
+				static asiopal::IPEndpoint Convert(IPEndpoint^ endpoint);
 
 				//Convert the configuration types
 				static asiopal::SerialSettings ConvertSerialSettings(SerialSettings^ settings);
-				static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);
+				static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);				
 
 				static opendnp3::LinkConfig ConvertConfig(LinkConfig^ config);
 				static opendnp3::MasterParams ConvertConfig(MasterConfig^ config);
