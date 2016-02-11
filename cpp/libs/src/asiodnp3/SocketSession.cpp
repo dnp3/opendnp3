@@ -117,8 +117,8 @@ namespace asiodnp3
 
 	std::shared_ptr<IGPRSMaster> SocketSession::AcceptSession(
 		const std::string& loggerid,
-		opendnp3::ISOEHandler& SOEHandler,
-		opendnp3::IMasterApplication& application,
+		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+		std::shared_ptr<opendnp3::IMasterApplication> application,
 		const opendnp3::MasterStackConfig& config
 		)
 	{
@@ -132,7 +132,7 @@ namespace asiodnp3
 		this->m_log_root.Rename(loggerid.c_str());
 
 		this->m_stack = std::shared_ptr<GPRSMasterStack>(
-			new GPRSMasterStack(m_log_root.logger, *m_executor, shared_from_this(), *this, SOEHandler, application, config)
+			new GPRSMasterStack(m_log_root.logger, *m_executor, SOEHandler, application, shared_from_this(), *this, config)
 		);		
 
 		return m_stack;

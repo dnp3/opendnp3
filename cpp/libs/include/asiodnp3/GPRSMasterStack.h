@@ -48,10 +48,10 @@ public:
 	GPRSMasterStack(		
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
+		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+		std::shared_ptr<opendnp3::IMasterApplication> application,
 		std::shared_ptr<SocketSession> session,
-		opendnp3::ILinkTx& linktx,
-		opendnp3::ISOEHandler& SOEHandler,
-		opendnp3::IMasterApplication& application,
+		opendnp3::ILinkTx& linktx,		
 		const opendnp3::MasterStackConfig& config	
 	);	
 
@@ -88,6 +88,8 @@ public:
 private:	
 
 	asiopal::StrandExecutor* m_executor;
+	std::shared_ptr<opendnp3::ISOEHandler> m_handler;
+	std::shared_ptr<opendnp3::IMasterApplication> m_application;
 	std::shared_ptr<SocketSession> m_session;
 	opendnp3::StackStatistics m_statistics;
 	opendnp3::TransportStack m_stack;

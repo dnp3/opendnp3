@@ -30,6 +30,8 @@ class DefaultMasterApplication : public opendnp3::IMasterApplication
 {
 public:
 
+	DefaultMasterApplication() {}
+
 	static IMasterApplication& Instance();
 
 	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final {}
@@ -50,8 +52,7 @@ public:
 	virtual void OnStateChange(opendnp3::LinkStatus value) override final {}
 
 private:
-	DefaultMasterApplication() {}
-
+	
 	static DefaultMasterApplication instance;
 };
 

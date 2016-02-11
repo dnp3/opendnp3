@@ -175,6 +175,7 @@
     <ClInclude Include="src\OutstationApplicationAdapter.h" />
     <ClInclude Include="src\OutstationCommandHandlerAdapter.h" />
     <ClInclude Include="src\SAConversions.h" />
+    <ClInclude Include="src\SessionAcceptorAdapter.h" />
     <ClInclude Include="src\SOEHandlerAdapter.h" />
     <ClInclude Include="src\TaskCallbackAdapter.h" />
   </ItemGroup>
@@ -199,6 +200,7 @@
     <ClCompile Include="src\OutstationApplicationAdapter.cpp" />
     <ClCompile Include="src\OutstationCommandHandlerAdapter.cpp" />
     <ClCompile Include="src\SAConversions.cpp" />
+    <ClCompile Include="src\SessionAcceptorAdapter.cpp" />
     <ClCompile Include="src\SOEHandlerAdapter.cpp" />
   </ItemGroup>
   <ItemGroup>

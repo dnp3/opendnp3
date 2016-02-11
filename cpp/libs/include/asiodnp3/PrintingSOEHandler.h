@@ -37,6 +37,9 @@ class PrintingSOEHandler : public opendnp3::ISOEHandler
 
 public:
 
+	PrintingSOEHandler()
+	{}
+
 	static ISOEHandler& Instance()
 	{
 		return instance;
@@ -114,8 +117,7 @@ private:
 		return opendnp3::DoubleBitToString(meas.value);
 	}
 
-	PrintingSOEHandler()
-	{}
+	
 
 	static PrintingSOEHandler instance;
 };

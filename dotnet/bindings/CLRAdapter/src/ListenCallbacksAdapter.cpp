@@ -18,11 +18,13 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 	void ListenCallbacksAdapter::OnFirstFrame(const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor)
 	{
 		auto linkheader = Conversions::Convert(header);
+
+		proxy->OnFirstFrame(linkheader, nullptr);
 	}
 
 	void ListenCallbacksAdapter::OnSessionClose(std::shared_ptr<asiodnp3::IGPRSMaster> session)
 	{
-	
+		
 	}
 
 }}}

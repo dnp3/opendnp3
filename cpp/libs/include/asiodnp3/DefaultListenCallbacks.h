@@ -56,8 +56,11 @@ public:
 		config.link.LocalAddr = header.dest;
 		config.link.RemoteAddr = header.src;
 
+		auto soe = std::make_shared<PrintingSOEHandler>();
+		auto app = std::make_shared<DefaultMasterApplication>();
+
 		// full implementations will keep a std::shared_ptr<IGPRSMaster> somewhere			
-		auto master = acceptor.AcceptSession("session", PrintingSOEHandler::Instance(), DefaultMasterApplication::Instance(), config);
+		auto master = acceptor.AcceptSession("session", soe, app, config);
 	}
 
 	virtual void OnSessionClose(std::shared_ptr<IGPRSMaster> session) override

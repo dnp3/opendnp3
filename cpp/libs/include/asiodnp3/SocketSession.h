@@ -69,8 +69,8 @@ namespace asiodnp3
 		// ISessionAcceptor
 		virtual std::shared_ptr<IGPRSMaster> AcceptSession(
 			const std::string& loggerid,
-			opendnp3::ISOEHandler& SOEHandler,
-			opendnp3::IMasterApplication& application,
+			std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+			std::shared_ptr<opendnp3::IMasterApplication> application,
 			const opendnp3::MasterStackConfig& config) override;
 
 		void Start();		

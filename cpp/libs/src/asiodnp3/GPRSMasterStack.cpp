@@ -33,17 +33,19 @@ namespace asiodnp3
 	GPRSMasterStack::GPRSMasterStack(
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
+		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+		std::shared_ptr<opendnp3::IMasterApplication> application,
 		std::shared_ptr<SocketSession> session,
-		opendnp3::ILinkTx& linktx,
-		opendnp3::ISOEHandler& SOEHandler,
-		opendnp3::IMasterApplication& application,
+		opendnp3::ILinkTx& linktx,		
 		const opendnp3::MasterStackConfig& config
 		) :
 		m_executor(&executor),
+		m_handler(SOEHandler),
+		m_application(application),
 		m_session(session),
 		m_statistics(),
-		m_stack(logger, executor, application, config.master.maxRxFragSize, &m_statistics, config.link),
-		m_context(executor, logger, m_stack.transport, SOEHandler, application, config.master, opendnp3::NullTaskLock::Instance())
+		m_stack(logger, executor, *application, config.master.maxRxFragSize, &m_statistics, config.link),
+		m_context(executor, logger, m_stack.transport, *SOEHandler, *application, config.master, opendnp3::NullTaskLock::Instance())
 	{
 		m_stack.link.SetRouter(linktx);	
 		m_stack.transport.SetAppLayer(m_context);
