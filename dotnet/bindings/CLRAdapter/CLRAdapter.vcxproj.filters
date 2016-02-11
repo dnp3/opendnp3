@@ -90,6 +90,12 @@
     <ClInclude Include="src\ICommandHeaderWorkAround.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MasterSessionAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MasterOperationsAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -147,6 +153,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ListenCallbacksAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MasterOperationsAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

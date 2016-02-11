@@ -254,6 +254,11 @@ namespace Automatak
 				return opendnp3::BinaryOutputStatus(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
+			LinkHeader^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields)
+			{
+				return gcnew LinkHeader((LinkFunction)fields.func, fields.isFromMaster, fields.fcb, fields.fcvdfc, fields.dest, fields.src);
+			}
+
 			asiopal::SerialSettings Conversions::ConvertSerialSettings(SerialSettings^ settings)
 			{
 				asiopal::SerialSettings s;

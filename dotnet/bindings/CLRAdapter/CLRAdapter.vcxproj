@@ -168,7 +168,9 @@
     <ClInclude Include="src\MasterApplicationAdapter.h" />
     <ClInclude Include="src\MasterApplicationAdapterSA.h" />
     <ClInclude Include="src\MasterConversions.h" />
+    <ClInclude Include="src\MasterOperationsAdapter.h" />
     <ClInclude Include="src\MasterScanAdapter.h" />
+    <ClInclude Include="src\MasterSessionAdapter.h" />
     <ClInclude Include="src\OutstationAdapter.h" />
     <ClInclude Include="src\OutstationApplicationAdapter.h" />
     <ClInclude Include="src\OutstationCommandHandlerAdapter.h" />
@@ -190,6 +192,7 @@
     <ClCompile Include="src\MasterAdapter.cpp" />
     <ClCompile Include="src\MasterApplicationAdapterSA.cpp" />
     <ClCompile Include="src\MasterConversions.cpp" />
+    <ClCompile Include="src\MasterOperationsAdapter.cpp" />
     <ClCompile Include="src\MasterScanAdapter.cpp" />
     <ClCompile Include="src\OutstationAdapter.cpp" />
     <ClCompile Include="src\OutstationApplicationAdapter.cpp" />

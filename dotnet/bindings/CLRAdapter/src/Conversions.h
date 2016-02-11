@@ -31,6 +31,7 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 #include <opendnp3/link/ChannelRetry.h>
+#include <opendnp3/link/LinkHeaderFields.h>
 
 #include "CollectionAdapter.h"
 
@@ -130,6 +131,8 @@ namespace Automatak
 				static opendnp3::TimeAndInterval ConvertMeas(TimeAndInterval^ meas);
 				static opendnp3::BinaryCommandEvent ConvertMeas(BinaryCommandEvent^ meas);
 				static opendnp3::AnalogCommandEvent ConvertMeas(AnalogCommandEvent^ meas);
+
+				static LinkHeader^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields);
 
 				//Convert the configuration types
 				static asiopal::SerialSettings ConvertSerialSettings(SerialSettings^ settings);

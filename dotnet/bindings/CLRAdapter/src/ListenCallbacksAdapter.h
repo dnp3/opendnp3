@@ -13,16 +13,16 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
-			private class ListenCallbacksAdapter : public asiodnp3::IListenCallbacks
+			private class ListenCallbacksAdapter final : public asiodnp3::IListenCallbacks
 			{
 			public:
 
 				ListenCallbacksAdapter(Interface::IListenCallbacks^ proxy);
 
-				virtual bool AcceptConnection(const std::string& ipaddress) = 0;				
-				virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;				
-				virtual void OnFirstFrame(const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor) = 0;				
-				virtual void OnSessionClose(std::shared_ptr<asiodnp3::IGPRSMaster> session) = 0;
+				virtual bool AcceptConnection(const std::string& ipaddress) override;
+				virtual openpal::TimeDuration GetFirstFrameTimeout() override;
+				virtual void OnFirstFrame(const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor) override;
+				virtual void OnSessionClose(std::shared_ptr<asiodnp3::IGPRSMaster> session) override;
 				
 
 			private:
