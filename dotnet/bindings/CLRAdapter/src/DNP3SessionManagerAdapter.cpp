@@ -30,7 +30,7 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 	}
 
 	void DNP3SessionManagerAdapter::BeginShutdown()
-	{
+	{		
 		manager->BeginShutdown();
 	}
 

@@ -5,7 +5,6 @@ using namespace System;
 using namespace Automatak::DNP3::Interface;
 
 #include <asiodnp3/GPRSManager.h>
-#include <memory>
 
 namespace Automatak
 {
@@ -41,7 +40,7 @@ namespace Automatak
 			{
 			public:
 				
-				DNP3SessionManagerAdapter(System::Int32 aConcurrency, ILogHandler^ handler);
+				DNP3SessionManagerAdapter(System::Int32 concurrency, ILogHandler^ handler);
 				
 				~DNP3SessionManagerAdapter();
 				!DNP3SessionManagerAdapter();
