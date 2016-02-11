@@ -23,12 +23,12 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 	{}
 	
 	DNP3SessionManagerAdapter::~DNP3SessionManagerAdapter()
-	{
+	{		
 		this->!DNP3SessionManagerAdapter();
 	}
 
 	DNP3SessionManagerAdapter::!DNP3SessionManagerAdapter()
-	{
+	{		
 		delete manager;
 	}
 

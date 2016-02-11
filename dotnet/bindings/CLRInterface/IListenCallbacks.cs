@@ -37,4 +37,32 @@ namespace Automatak.DNP3.Interface
 
         void OnSessionClose(IMasterSession session);
     }
+
+    public class DefaultListenCallbacks : IListenCallbacks
+    {
+        public bool AcceptConnection(string ipaddress)
+        {
+            return true;
+        }
+
+        public TimeSpan GetFirstFrameTimeout()
+        {
+            return TimeSpan.FromSeconds(30);
+        }
+
+        public void OnFirstFrame(LinkHeader header, ISessionAcceptor acceptor)
+        {
+            var config = new MasterStackConfig();
+
+            config.link.remoteAddr = header.Source;
+            config.link.localAddr = header.Destination;
+
+            acceptor.AcceptSession("session", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);
+        }
+
+        public void OnSessionClose(IMasterSession session)
+        {
+            // 
+        }
+    }
 }
