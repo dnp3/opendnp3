@@ -55,7 +55,7 @@ public:
 		std::string loggerid,
 		openpal::LogFilters loglevel,
 		asiopal::IPEndpoint endpoint,
-		IListenCallbacks& callbacks,
+		std::shared_ptr<IListenCallbacks> callbacks,
 		std::error_code& ec
 	);
 

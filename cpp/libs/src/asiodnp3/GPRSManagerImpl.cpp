@@ -38,7 +38,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	std::string loggerid,
 	openpal::LogFilters loglevel,
 	asiopal::IPEndpoint endpoint,
-	IListenCallbacks& callbacks,
+	std::shared_ptr<IListenCallbacks> callbacks,
 	std::error_code& ec)
 {
 	std::lock_guard <std::mutex> lock(m_mutex);
