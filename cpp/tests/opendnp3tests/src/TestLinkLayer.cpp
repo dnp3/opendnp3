@@ -285,8 +285,6 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 	REQUIRE(t.NumTotalWrites() ==  1);
 	t.link.OnTransmitResult(true); // reset link
 
-	REQUIRE(t.exe.RunMany() > 0);
-
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ResetLinkStates(true, 1024, 1));
 	REQUIRE(t.upper.CountersEqual(0, 0));
 

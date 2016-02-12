@@ -99,7 +99,6 @@ public:
 	void ResetRetry();
 	bool Retry();
 	void PushDataUp(const openpal::RSlice& data);
-	void PostStatusCallback(opendnp3::LinkStatus status);
 	void CompleteSendOperation(bool success);
 	void TryStartTransmission();
 	void OnKeepAliveTimeout();

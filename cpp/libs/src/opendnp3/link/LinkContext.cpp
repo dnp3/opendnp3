@@ -71,7 +71,7 @@ bool LinkContext::OnLowerLayerUp()
 	MonotonicTimestamp expiration(now.milliseconds + config.KeepAliveTimeout.GetMilliseconds());
 	this->StartKeepAliveTimer(MonotonicTimestamp(now.milliseconds + config.KeepAliveTimeout.GetMilliseconds()));
 
-	this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
+	pListener->OnStateChange(opendnp3::LinkStatus::UNRESET);
 
 	if (pUpperLayer)
 	{
@@ -103,7 +103,7 @@ bool LinkContext::OnLowerLayerDown()
 	pPriState = &PLLS_Idle::Instance();
 	pSecState = &SLLS_NotReset::Instance();
 
-	this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
+	pListener->OnStateChange(opendnp3::LinkStatus::UNRESET);
 
 	if (pUpperLayer)
 	{
@@ -251,17 +251,6 @@ void LinkContext::PushDataUp(const openpal::RSlice& data)
 	{
 		pUpperLayer->OnReceive(data);
 	}
-}
-
-void LinkContext::PostStatusCallback(opendnp3::LinkStatus status)
-{	
-	auto listener = pListener;
-	auto callback = [listener, status]()
-	{
-		listener->OnStateChange(status);
-	};
-
-	pExecutor->PostLambda(callback);
 }
 
 void LinkContext::CompleteSendOperation(bool success)
