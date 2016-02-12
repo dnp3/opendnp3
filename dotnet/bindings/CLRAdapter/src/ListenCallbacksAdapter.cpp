@@ -27,7 +27,7 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 		m_proxy->OnFirstFrame(linkheader, adapter);
 	}
 
-	void ListenCallbacksAdapter::OnSessionClose(std::shared_ptr<asiodnp3::IGPRSMaster> session)
+	void ListenCallbacksAdapter::OnSessionClose(std::shared_ptr<asiodnp3::IMasterSession> session)
 	{
 		m_proxy->OnSessionClose(gcnew MasterSessionAdapter(session));
 	}

@@ -105,7 +105,7 @@ namespace Automatak
 												
 				Task<CommandTaskResult^>^ MasterOperationsAdapter::SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config)
 				{
-					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();
+					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();					
 					m_operations->SelectAndOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
 					return tcs->Task;
 				}

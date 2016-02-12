@@ -7,7 +7,7 @@ using namespace System::Threading::Tasks;
 
 using namespace Automatak::DNP3::Interface;
 
-#include <asiodnp3/IGPRSMaster.h>
+#include <asiodnp3/IMasterSession.h>
 #include <memory>
 
 #include "MasterOperationsAdapter.h"
@@ -22,29 +22,19 @@ namespace Automatak
 			{
 			public:
 
-				MasterSessionAdapter(std::shared_ptr<asiodnp3::IGPRSMaster> proxy);		
+				MasterSessionAdapter(std::shared_ptr<asiodnp3::IMasterSession> proxy);		
 
 				~MasterSessionAdapter();
 				!MasterSessionAdapter();
 
-				virtual bool IsSameSession(IMasterSession^ other)
-				{
-					if (other->GetType() != MasterSessionAdapter::typeid)
-					{
-						return false;
-					}
+				/// --- implement IMasterSession ----
 
-					auto ref = (MasterSessionAdapter^)(other);
-
-					// perform shared_ptr equality
-					return ref->m_master == m_master;					
-				}
-
+				virtual bool IsSameSession(IMasterSession^ other);
 				virtual void BeginShutdown();
 
 			private:
 				
-				std::shared_ptr<asiodnp3::IGPRSMaster>* m_master;
+				std::shared_ptr<asiodnp3::IMasterSession>* m_master;
 			};
 
 		}

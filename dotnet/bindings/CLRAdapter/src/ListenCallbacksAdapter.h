@@ -23,7 +23,7 @@ namespace Automatak
 				virtual bool AcceptConnection(const std::string& ipaddress) override;
 				virtual openpal::TimeDuration GetFirstFrameTimeout() override;
 				virtual void OnFirstFrame(const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor) override;
-				virtual void OnSessionClose(std::shared_ptr<asiodnp3::IGPRSMaster> session) override;
+				virtual void OnSessionClose(std::shared_ptr<asiodnp3::IMasterSession> session) override;
 				
 
 			private:

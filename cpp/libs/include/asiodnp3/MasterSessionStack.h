@@ -82,8 +82,8 @@ public:
 
 	/// --- ICommandProcessor ---
 
-	virtual void SelectAndOperate(opendnp3::CommandSet commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;	
-	virtual void DirectOperate(opendnp3::CommandSet commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;	
+	virtual void SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
+	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
 
 private:	
 
