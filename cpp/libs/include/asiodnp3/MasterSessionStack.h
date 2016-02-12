@@ -41,20 +41,20 @@ class SocketSession;
 /**
 * Interface that represents an ephemeral master session
 */
-class MasterSessionStack final : public IMasterSession
+class MasterSessionStack final : public IMasterSession, public std::enable_shared_from_this<MasterSessionStack>
 {
 public:
 
-	MasterSessionStack(		
+	static std::shared_ptr<MasterSessionStack> Create(
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 		std::shared_ptr<opendnp3::IMasterApplication> application,
 		std::shared_ptr<SocketSession> session,
-		opendnp3::ILinkTx& linktx,		
-		const opendnp3::MasterStackConfig& config	
-	);	
-
+		opendnp3::ILinkTx& linktx,
+		const opendnp3::MasterStackConfig& config
+	);
+		
 	void OnLowerLayerUp();
 
 	void OnLowerLayerDown();
@@ -86,6 +86,16 @@ public:
 	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;	
 
 private:	
+
+	MasterSessionStack(
+		openpal::Logger logger,
+		asiopal::StrandExecutor& executor,
+		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+		std::shared_ptr<opendnp3::IMasterApplication> application,
+		std::shared_ptr<SocketSession> session,
+		opendnp3::ILinkTx& linktx,
+		const opendnp3::MasterStackConfig& config
+	);
 
 	asiopal::StrandExecutor* m_executor;
 	std::shared_ptr<opendnp3::ISOEHandler> m_handler;

@@ -29,6 +29,18 @@ using namespace opendnp3;
 
 namespace asiodnp3
 {
+	std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
+		openpal::Logger logger,
+		asiopal::StrandExecutor& executor,
+		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+		std::shared_ptr<opendnp3::IMasterApplication> application,
+		std::shared_ptr<SocketSession> session,
+		opendnp3::ILinkTx& linktx,
+		const opendnp3::MasterStackConfig& config
+		)
+	{
+		return std::shared_ptr<MasterSessionStack>(new MasterSessionStack(logger, executor, SOEHandler, application, session, linktx, config));
+	}
 
 	MasterSessionStack::MasterSessionStack(
 		openpal::Logger logger,
@@ -78,14 +90,16 @@ namespace asiodnp3
 
 	opendnp3::StackStatistics MasterSessionStack::GetStackStatistics()
 	{
-		auto get = [this](){ return this->m_statistics; };
+		auto self(shared_from_this());
+		auto get = [self ](){ return self->m_statistics; };
 		return m_executor->ReturnFrom<StackStatistics>(get);
 	}
 
 	opendnp3::MasterScan MasterSessionStack::AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
 	{
+		auto self(shared_from_this());
 		auto builder = ConvertToLambda(headers);
-		auto get = [this, period, builder, config]() -> opendnp3::MasterScan { return this->m_context.AddScan(period, builder, config); };
+		auto get = [self, period, builder, config]() -> opendnp3::MasterScan { return self->m_context.AddScan(period, builder, config); };
 		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
