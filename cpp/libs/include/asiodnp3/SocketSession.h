@@ -33,7 +33,7 @@
 #include <asiopal/StrandExecutor.h>
 #include <asiopal/IResourceManager.h>
 
-#include "asiodnp3/GPRSMasterStack.h"
+#include "asiodnp3/MasterSessionStack.h"
 #include "asiodnp3/IListenCallbacks.h"
 
 namespace asiodnp3
@@ -98,7 +98,7 @@ namespace asiodnp3
 		// this will become some kind of shared ptr to an interface
 		// so that the same class can handle TCP or TLS
 		asio::ip::tcp::socket m_socket;
-		std::shared_ptr<GPRSMasterStack> m_stack;	// initialized to null
+		std::shared_ptr<MasterSessionStack> m_stack;	// initialized to null
 	};
 }
 

@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "asiodnp3/GPRSMasterStack.h"
+#include "asiodnp3/MasterSessionStack.h"
 
 #include "asiopal/StrandExecutor.h"
 #include "asiodnp3/Conversions.h"
@@ -30,7 +30,7 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	GPRSMasterStack::GPRSMasterStack(
+	MasterSessionStack::MasterSessionStack(
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
@@ -51,22 +51,22 @@ namespace asiodnp3
 		m_stack.transport.SetAppLayer(m_context);
 	}
 
-	void GPRSMasterStack::OnLowerLayerUp()
+	void MasterSessionStack::OnLowerLayerUp()
 	{
 		m_stack.link.OnLowerLayerUp();
 	}
 
-	void GPRSMasterStack::OnLowerLayerDown()
+	void MasterSessionStack::OnLowerLayerDown()
 	{
 		m_stack.link.OnLowerLayerDown();
 	}
 
-	bool GPRSMasterStack::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
+	bool MasterSessionStack::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
 		return m_stack.link.OnFrame(header, userdata);
 	}
 
-	void GPRSMasterStack::BeginShutdown()
+	void MasterSessionStack::BeginShutdown()
 	{
 		auto session = m_session;
 		auto shutdown = [session](){
@@ -76,77 +76,77 @@ namespace asiodnp3
 		m_executor->strand.post(shutdown);
 	}
 
-	opendnp3::StackStatistics GPRSMasterStack::GetStackStatistics()
+	opendnp3::StackStatistics MasterSessionStack::GetStackStatistics()
 	{
 		auto get = [this](){ return this->m_statistics; };
 		return m_executor->ReturnFrom<StackStatistics>(get);
 	}
 
-	opendnp3::MasterScan GPRSMasterStack::AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
+	opendnp3::MasterScan MasterSessionStack::AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
 	{
 		auto builder = ConvertToLambda(headers);
 		auto get = [this, period, builder, config]() -> opendnp3::MasterScan { return this->m_context.AddScan(period, builder, config); };
 		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
-	opendnp3::MasterScan GPRSMasterStack::AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
+	opendnp3::MasterScan MasterSessionStack::AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
-	opendnp3::MasterScan GPRSMasterStack::AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
+	opendnp3::MasterScan MasterSessionStack::AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
-	opendnp3::MasterScan GPRSMasterStack::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
+	opendnp3::MasterScan MasterSessionStack::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
-	void GPRSMasterStack::Scan(const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::Scan(const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
-	void GPRSMasterStack::ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
-	void GPRSMasterStack::ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
-	void GPRSMasterStack::ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
-	void GPRSMasterStack::Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
-	void GPRSMasterStack::Restart(opendnp3::RestartType op, const opendnp3::RestartOperationCallbackT& callback, opendnp3::TaskConfig config)
+	void MasterSessionStack::Restart(opendnp3::RestartType op, const opendnp3::RestartOperationCallbackT& callback, opendnp3::TaskConfig config)
 	{
 		throw std::exception();
 	}
 
-	void GPRSMasterStack::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
 	/// --- ICommandProcessor ---
 
-	void GPRSMasterStack::SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}
 
-	void GPRSMasterStack::DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
 	{
 		throw std::exception();
 	}

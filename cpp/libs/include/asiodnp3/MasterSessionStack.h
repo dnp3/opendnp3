@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_GPRSMASTERSTACK_H
-#define ASIODNP3_GPRSMASTERSTACK_H
+#ifndef ASIODNP3_MASTERSESSIONSTACK_H
+#define ASIODNP3_MASTERSESSIONSTACK_H
 
 #include "asiodnp3/IMasterSession.h"
 
@@ -41,11 +41,11 @@ class SocketSession;
 /**
 * Interface that represents an ephemeral master session
 */
-class GPRSMasterStack final : public IMasterSession
+class MasterSessionStack final : public IMasterSession
 {
 public:
 
-	GPRSMasterStack(		
+	MasterSessionStack(		
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
