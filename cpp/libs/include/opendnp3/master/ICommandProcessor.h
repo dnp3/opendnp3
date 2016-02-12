@@ -42,7 +42,7 @@ public:
 	* @param callback callback that will be invoked upon completion or failure
 	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
 	*/
-	virtual void SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
+	virtual void SelectAndOperate(CommandSet commands, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
 
 	/**
 	* Direct operate a set of commands
@@ -51,7 +51,7 @@ public:
 	* @param callback callback that will be invoked upon completion or failure
 	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
 	*/
-	virtual void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
+	virtual void DirectOperate(CommandSet commands, const CommandCallbackT& callback, const TaskConfig& config = TaskConfig::Default()) = 0;
 
 
 	/**

@@ -208,7 +208,7 @@ public:
 
 	// ------- implement ICommandProcessor ---------
 
-	virtual void SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void SelectAndOperate(opendnp3::CommandSet commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		/// this is to work around the fact that c++11 doesn't have generic move capture
 		auto set = new opendnp3::CommandSet(std::move(commands));
@@ -223,7 +223,7 @@ public:
 		this->pASIOExecutor->strand.post(action);		
 	}
 
-	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
+	virtual void DirectOperate(opendnp3::CommandSet commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
 	{
 		auto set = new opendnp3::CommandSet(std::move(commands));
 

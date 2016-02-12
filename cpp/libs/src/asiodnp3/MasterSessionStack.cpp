@@ -177,7 +177,7 @@ namespace asiodnp3
 
 	/// --- ICommandProcessor ---
 
-	void MasterSessionStack::SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
+	void MasterSessionStack::SelectAndOperate(CommandSet commands, const CommandCallbackT& callback, const TaskConfig& config)
 	{
 		auto self(shared_from_this());
 
@@ -191,7 +191,7 @@ namespace asiodnp3
 		m_executor->strand.post(action);
 	}
 
-	void MasterSessionStack::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
+	void MasterSessionStack::DirectOperate(CommandSet commands, const CommandCallbackT& callback, const TaskConfig& config)
 	{
 		auto self(shared_from_this());
 
