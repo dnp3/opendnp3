@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_GPRSMASTERSTACK_H
 #define ASIODNP3_GPRSMASTERSTACK_H
 
-#include "asiodnp3/IGPRSMaster.h"
+#include "asiodnp3/IMasterSession.h"
 
 #include <opendnp3/master/MasterContext.h>
 #include <opendnp3/master/MasterStackConfig.h>
@@ -41,7 +41,7 @@ class SocketSession;
 /**
 * Interface that represents an ephemeral master session
 */
-class GPRSMasterStack final : public IGPRSMaster
+class GPRSMasterStack final : public IMasterSession
 {
 public:
 

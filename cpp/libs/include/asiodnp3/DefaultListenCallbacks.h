@@ -63,7 +63,7 @@ public:
 		auto master = acceptor.AcceptSession("session", soe, app, config);
 	}
 
-	virtual void OnSessionClose(std::shared_ptr<IGPRSMaster> session) override
+	virtual void OnSessionClose(std::shared_ptr<IMasterSession> session) override
 	{
 		// full implementations would drop any references they're holding to this session
 		// shared_ptr can be used with == operator

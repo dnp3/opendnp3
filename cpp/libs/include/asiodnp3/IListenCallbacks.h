@@ -57,7 +57,7 @@ public:
 	) = 0;
 
 	/// Called when an active master session closes
-	virtual void OnSessionClose(std::shared_ptr<IGPRSMaster> session) = 0;
+	virtual void OnSessionClose(std::shared_ptr<IMasterSession> session) = 0;
 };
 
 }

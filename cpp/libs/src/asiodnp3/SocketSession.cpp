@@ -115,7 +115,7 @@ namespace asiodnp3
 		return true;
 	}
 
-	std::shared_ptr<IGPRSMaster> SocketSession::AcceptSession(
+	std::shared_ptr<IMasterSession> SocketSession::AcceptSession(
 		const std::string& loggerid,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 		std::shared_ptr<opendnp3::IMasterApplication> application,

@@ -67,7 +67,7 @@ namespace asiodnp3
 		virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override;
 
 		// ISessionAcceptor
-		virtual std::shared_ptr<IGPRSMaster> AcceptSession(
+		virtual std::shared_ptr<IMasterSession> AcceptSession(
 			const std::string& loggerid,
 			std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 			std::shared_ptr<opendnp3::IMasterApplication> application,

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_IGPRSMASTER_H
-#define ASIODNP3_IGPRSMASTER_H
+#ifndef ASIODNP3_IMASTERSESSION_H
+#define ASIODNP3_IMASTERSESSION_H
 
 #include "asiodnp3/IMasterOperations.h"
 
@@ -29,13 +29,14 @@ namespace asiodnp3
 /**
 * Interface that represents an emphemeral master session
 */
-class IGPRSMaster : public IMasterOperations
+class IMasterSession : public IMasterOperations
 {
 public:
 
-	virtual void BeginShutdown() = 0;
+	virtual ~IMasterSession() {}
 
-	virtual ~IGPRSMaster() {}
+	virtual void BeginShutdown() = 0;
+	
 };
 
 }

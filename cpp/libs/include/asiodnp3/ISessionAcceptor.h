@@ -25,7 +25,7 @@
 #include <opendnp3/master/IMasterApplication.h>
 #include <opendnp3/master/MasterStackConfig.h>
 
-#include "asiodnp3/IGPRSMaster.h"
+#include "asiodnp3/IMasterSession.h"
 
 #include <memory>
 
@@ -41,7 +41,7 @@ public:
 
 	virtual ~ISessionAcceptor() {}
 	
-	virtual std::shared_ptr<IGPRSMaster> AcceptSession(
+	virtual std::shared_ptr<IMasterSession> AcceptSession(
 		const std::string& loggerid,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 		std::shared_ptr<opendnp3::IMasterApplication> application,
