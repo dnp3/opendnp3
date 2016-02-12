@@ -90,7 +90,7 @@ CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set
 
 	auto selected = [](const ICommandHeader* header) -> bool 
 	{ 
-		return header->AreAllSelected(); 
+		return header->AreAllSelected();
 	};
 	return std::all_of(set.m_headers.begin(), set.m_headers.end(), selected) ? SelectResult::OK : SelectResult::FAIL_SELECT;
 }

@@ -32,11 +32,11 @@ namespace asiodnp3
 	std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
-		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-		std::shared_ptr<opendnp3::IMasterApplication> application,
+		std::shared_ptr<ISOEHandler> SOEHandler,
+		std::shared_ptr<IMasterApplication> application,
 		std::shared_ptr<SocketSession> session,
-		opendnp3::ILinkTx& linktx,
-		const opendnp3::MasterStackConfig& config
+		ILinkTx& linktx,
+		const MasterStackConfig& config
 		)
 	{
 		return std::shared_ptr<MasterSessionStack>(new MasterSessionStack(logger, executor, SOEHandler, application, session, linktx, config));
@@ -45,11 +45,11 @@ namespace asiodnp3
 	MasterSessionStack::MasterSessionStack(
 		openpal::Logger logger,
 		asiopal::StrandExecutor& executor,
-		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-		std::shared_ptr<opendnp3::IMasterApplication> application,
+		std::shared_ptr<ISOEHandler> SOEHandler,
+		std::shared_ptr<IMasterApplication> application,
 		std::shared_ptr<SocketSession> session,
-		opendnp3::ILinkTx& linktx,		
-		const opendnp3::MasterStackConfig& config
+		ILinkTx& linktx,		
+		const MasterStackConfig& config
 		) :
 		m_executor(&executor),
 		m_handler(SOEHandler),
@@ -57,7 +57,7 @@ namespace asiodnp3
 		m_session(session),
 		m_statistics(),
 		m_stack(logger, executor, *application, config.master.maxRxFragSize, &m_statistics, config.link),
-		m_context(executor, logger, m_stack.transport, *SOEHandler, *application, config.master, opendnp3::NullTaskLock::Instance())
+		m_context(executor, logger, m_stack.transport, *SOEHandler, *application, config.master, NullTaskLock::Instance())
 	{
 		m_stack.link.SetRouter(linktx);	
 		m_stack.transport.SetAppLayer(m_context);
@@ -88,81 +88,121 @@ namespace asiodnp3
 		m_executor->strand.post(shutdown);
 	}
 
-	opendnp3::StackStatistics MasterSessionStack::GetStackStatistics()
+	StackStatistics MasterSessionStack::GetStackStatistics()
 	{
 		auto self(shared_from_this());
 		auto get = [self ](){ return self->m_statistics; };
 		return m_executor->ReturnFrom<StackStatistics>(get);
 	}
 
-	opendnp3::MasterScan MasterSessionStack::AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
+	MasterScan MasterSessionStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
 	{
 		auto self(shared_from_this());
 		auto builder = ConvertToLambda(headers);
-		auto get = [self, period, builder, config]() -> opendnp3::MasterScan { return self->m_context.AddScan(period, builder, config); };
+		auto get = [self, period, builder, config]() -> MasterScan { return self->m_context.AddScan(period, builder, config); };
 		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
-	opendnp3::MasterScan MasterSessionStack::AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
+	MasterScan MasterSessionStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());
+		auto get = [self, gvId, period, config] { return self->AddAllObjectsScan(gvId, period, config); };
+		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
-	opendnp3::MasterScan MasterSessionStack::AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
+	MasterScan MasterSessionStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());
+		auto get = [self, field, period, config] { return self->AddClassScan(field, period, config); };
+		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
-	opendnp3::MasterScan MasterSessionStack::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config)
+	MasterScan MasterSessionStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());
+		auto get = [self, gvId, start, stop, period, config] { return self->AddRangeScan(gvId, start, stop, period, config); };
+		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
-	void MasterSessionStack::Scan(const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());
+		auto builder = ConvertToLambda(headers);
+		auto action = [self, builder, config]() -> void { self->m_context.Scan(builder, config); };
+		return m_executor->strand.post(action);
 	}
 
-	void MasterSessionStack::ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());		
+		auto action = [self, gvId, config]() -> void { self->m_context.ScanAllObjects(gvId, config); };
+		return m_executor->strand.post(action);
 	}
 
-	void MasterSessionStack::ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::ScanClasses(const ClassField& field, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());		
+		auto action = [self, field, config]() -> void { self->m_context.ScanClasses(field, config); };
+		return m_executor->strand.post(action);
 	}
 
-	void MasterSessionStack::ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());		
+		auto action = [self, gvId, start, stop, config]() -> void { self->m_context.ScanRange(gvId, start, stop, config); };
+		return m_executor->strand.post(action);
 	}
 
-	void MasterSessionStack::Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());		
+		auto action = [self, value, index, config]() -> void { self->m_context.Write(value, index, config); };
+		return m_executor->strand.post(action);
 	}
 
-	void MasterSessionStack::Restart(opendnp3::RestartType op, const opendnp3::RestartOperationCallbackT& callback, opendnp3::TaskConfig config)
+	void MasterSessionStack::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());
+		auto action = [self, op, callback, config]() -> void { self->m_context.Restart(op, callback, config); };
+		return m_executor->strand.post(action);
 	}
 
-	void MasterSessionStack::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::PerformFunction(const std::string& name, FunctionCode func, const std::vector<Header>& headers, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());
+		auto builder = ConvertToLambda(headers);
+		auto action = [self, name, func, builder, config]() -> void { self->m_context.PerformFunction(name, func, builder, config); };
+		return m_executor->strand.post(action);
 	}
 
 	/// --- ICommandProcessor ---
 
-	void MasterSessionStack::SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());
+
+		// this is required b/c move capture not supported in C++11
+		auto set = std::make_shared<CommandSet>(std::move(commands));
+
+		auto action = [self, set, config, callback]() -> void
+		{			
+			self->SelectAndOperate(std::move(*set), callback, config);
+		};
+		m_executor->strand.post(action);
 	}
 
-	void MasterSessionStack::DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
+	void MasterSessionStack::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 	{
-		throw std::exception();
+		auto self(shared_from_this());
+
+		// this is required b/c move capture not supported in C++11
+		auto set = std::make_shared<CommandSet>(std::move(commands));
+
+		auto action = [self, set, config, callback]() -> void
+		{
+			self->DirectOperate(std::move(*set), callback, config);
+		};
+		m_executor->strand.post(action);
 	}
 }
 
