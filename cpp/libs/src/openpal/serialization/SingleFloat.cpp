@@ -32,8 +32,8 @@ const float SingleFloat::Min(openpal::MinValue<float>());
 
 union SingleFloatUnion
 {
-	float value;
 	uint8_t bytes[4];
+	float value;	
 };
 
 
@@ -54,12 +54,12 @@ float SingleFloat::Read(const uint8_t* data)
 {
 	if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
 	{
-		SingleFloatUnion x = { .bytes = { data[0], data[1], data[2], data[3] } };
+		SingleFloatUnion x = { data[0], data[1], data[2], data[3] };
 		return x.value;
 	}
 	else
 	{
-		SingleFloatUnion x = { .bytes = { data[3], data[2], data[1], data[0] } };
+		SingleFloatUnion x = { data[3], data[2], data[1], data[0] };
 		return x.value;
 	}
 }
