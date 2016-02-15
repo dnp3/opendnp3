@@ -13,7 +13,7 @@ namespace DotNetMasterGPRSDemo
     {
         static int Main(string[] args)
         {
-            var manager = DNP3SessionManagerFactory.CreateManager(4, PrintingLogAdapter.Instance);
+            var manager = DNP3SessionManagerFactory.CreateManager(4, new PrintingLogAdapter());
 
             var listener = manager.CreateListener("listener", LogLevels.ALL, IPEndpoint.Localhost(20000), new DefaultListenCallbacks());
 

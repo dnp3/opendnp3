@@ -108,7 +108,7 @@ namespace Automatak.DNP3.Interface
             Console.WriteLine(DateTime.Now + " - " + LogFilters.GetFilterString(entry.filter.Flags) + " - " + entry.message);
         }
 
-        private PrintingLogAdapter()
-        { }
+        public PrintingLogAdapter()
+        {}
     }
 }

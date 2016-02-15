@@ -43,7 +43,7 @@ namespace Automatak.DNP3.Interface
             }
         }
 
-        private PrintingSOEHandler()
+        public PrintingSOEHandler()
         {}
 
         void ISOEHandler.Start()

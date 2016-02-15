@@ -49,7 +49,7 @@ namespace Automatak.DNP3.Interface
             config.link.remoteAddr = header.Source;
             config.link.localAddr = header.Destination;
                         
-            var master = acceptor.AcceptSession(GetNextSessionId(), PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);            
+            var master = acceptor.AcceptSession(GetNextSessionId(), new PrintingSOEHandler(), new DefaultMasterApplication(), config);            
         }
 
         public void OnSessionClose(IMasterSession session, string sessionid)
