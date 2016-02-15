@@ -26,15 +26,43 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
-{
-    public interface IListenCallbacks
-    {        
-        bool AcceptConnection(string ipaddress);
+{   
+    public class DefaultListenCallbacks : IListenCallbacks
+    {
+        readonly Object mutex = new Object();
+        readonly List<IMasterSession> masters = new List<IMasterSession>();
 
-        TimeSpan GetFirstFrameTimeout();
+        public bool AcceptConnection(string ipaddress)
+        {
+            return true;
+        }
 
-        void OnFirstFrame(LinkHeader header, ISessionAcceptor acceptor);
+        public TimeSpan GetFirstFrameTimeout()
+        {
+            return TimeSpan.FromSeconds(30);
+        }
 
-        void OnSessionClose(IMasterSession session);
-    }   
+        public void OnFirstFrame(LinkHeader header, ISessionAcceptor acceptor)
+        {
+            var config = new MasterStackConfig();
+
+            config.link.remoteAddr = header.Source;
+            config.link.localAddr = header.Destination;
+            
+            lock (mutex)
+            {
+                var master = acceptor.AcceptSession("session", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);
+
+
+            }
+        }
+
+        public void OnSessionClose(IMasterSession session)
+        {
+            lock (mutex)
+            {
+
+            }
+        }
+    }
 }

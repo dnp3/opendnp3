@@ -70,6 +70,7 @@
     <Compile Include="config\StaticTypeBitfield.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="config\EventBufferConfig.cs" />
+    <Compile Include="DefaultListenCallbacks.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FinishUpdateKeyChangeArgs.cs" />
     <Compile Include="gen\AnalogQuality.cs" />
