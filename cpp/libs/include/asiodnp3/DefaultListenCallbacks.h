@@ -42,20 +42,17 @@ public:
 
 	virtual ~DefaultListenCallbacks() {}
 	
-	virtual bool AcceptConnection(const std::string& ipaddress) override;
+	virtual bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) override;
 
 	virtual openpal::TimeDuration GetFirstFrameTimeout() override;
 
-	virtual void OnFirstFrame(const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override;
+	virtual void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override;
 
-	virtual void OnSessionClose(std::shared_ptr<IMasterSession> session, const std::string& sessionid) override;
+	virtual void OnSessionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) override;
 
 private:	
 
-	std::string GetNextSessionId();
-
-	std::mutex m_mutex;
-	std::uint64_t m_session_count;
+	std::string SessionIdToString(uint64_t id);
 };
 
 }

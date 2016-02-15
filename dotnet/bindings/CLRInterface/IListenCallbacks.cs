@@ -29,12 +29,13 @@ namespace Automatak.DNP3.Interface
 {
     public interface IListenCallbacks
     {        
-        bool AcceptConnection(string ipaddress);
+        bool AcceptConnection(UInt64 sessionid, string ipaddress);
 
         TimeSpan GetFirstFrameTimeout();
 
-        void OnFirstFrame(LinkHeader header, ISessionAcceptor acceptor);
+        void OnFirstFrame(UInt64 sessionid, LinkHeader header, ISessionAcceptor acceptor);
 
-        void OnSessionClose(IMasterSession session, string sessionid);
+        // session could be null if a frame was never received
+        void OnSessionClose(UInt64 sessionid, IMasterSession session);
     }   
 }

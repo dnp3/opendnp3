@@ -24,11 +24,11 @@
 namespace asiodnp3
 {
 
-DefaultListenCallbacks::DefaultListenCallbacks() : m_session_count(0)
+DefaultListenCallbacks::DefaultListenCallbacks()
 {}
 
 	
-bool DefaultListenCallbacks::AcceptConnection(const std::string& ipaddress)
+bool DefaultListenCallbacks::AcceptConnection(uint64_t sessionid, const std::string& ipaddress)
 {		
 	return true;
 }
@@ -38,7 +38,7 @@ openpal::TimeDuration DefaultListenCallbacks::GetFirstFrameTimeout()
 	return openpal::TimeDuration::Seconds(30);
 }
 
-void DefaultListenCallbacks::OnFirstFrame(const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor)
+void DefaultListenCallbacks::OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor)
 {			
 	opendnp3::MasterStackConfig config;
 		
@@ -51,22 +51,20 @@ void DefaultListenCallbacks::OnFirstFrame(const opendnp3::LinkHeaderFields& head
 	auto app = std::make_shared<DefaultMasterApplication>();
 
 	// full implementations will keep a std::shared_ptr<IGPRSMaster> somewhere			
-	auto master = acceptor.AcceptSession(GetNextSessionId(), soe, app, config);
+	auto master = acceptor.AcceptSession(SessionIdToString(sessionid), soe, app, config);
 }
 
-void DefaultListenCallbacks::OnSessionClose(std::shared_ptr<IMasterSession> session, const std::string& sessionid)
+void DefaultListenCallbacks::OnSessionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session)
 {
 	std::cout << "Session close: " << sessionid << std::endl;
 	// full implementations would drop any references they're holding to this session
 	// shared_ptr can be used with == operator also
 }
 
-std::string DefaultListenCallbacks::GetNextSessionId()
-{
-	std::lock_guard<std::mutex> locK(m_mutex);
+std::string DefaultListenCallbacks::SessionIdToString(uint64_t id)
+{	
 	std::ostringstream oss;
-	oss << "session" << m_session_count;
-	++m_session_count;
+	oss << "session-" << id;	
 	return oss.str();
 }
 

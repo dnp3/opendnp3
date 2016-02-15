@@ -25,7 +25,6 @@
 
 #include <chrono>
 #include <sstream>
-#include <iostream>
 
 #include <asiopal/SteadyClock.h>
 
@@ -63,14 +62,12 @@ IOServiceThreadPool::IOServiceThreadPool(
 }
 
 IOServiceThreadPool::~IOServiceThreadPool()
-{
-	std::cout << "Begin threadpool shutdown" << std::endl;
+{	
 	this->Shutdown();
 	for(auto pThread : threads)
 	{
 		delete pThread;
 	}
-	std::cout << "threadpool shutdown complete" << std::endl;
 }
 
 void IOServiceThreadPool::Shutdown()

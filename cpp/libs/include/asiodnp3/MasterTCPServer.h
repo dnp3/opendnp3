@@ -53,6 +53,9 @@ namespace asiodnp3
 
 		asiopal::IResourceManager* m_manager;
 		std::shared_ptr<IListenCallbacks> m_callbacks;
+		uint64_t m_accept_count;
+
+		static std::string SessionIdToString(uint64_t sessionid);
 
 		MasterTCPServer(
 			asio::io_service& ioservice,

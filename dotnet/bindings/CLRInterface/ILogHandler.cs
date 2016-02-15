@@ -105,7 +105,14 @@ namespace Automatak.DNP3.Interface
 
         public void Log(LogEntry entry)
         {
-            Console.WriteLine(DateTime.Now + " - " + LogFilters.GetFilterString(entry.filter.Flags) + " - " + entry.message);
+            var msg = String.Format("{0} - {1} - {2} - {3}",
+                DateTime.Now,
+                entry.alias,
+                LogFilters.GetFilterString(entry.filter.Flags),
+                entry.message
+            );
+
+            Console.WriteLine(msg);
         }
 
         public PrintingLogAdapter()

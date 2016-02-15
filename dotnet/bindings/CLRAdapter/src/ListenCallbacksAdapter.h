@@ -20,10 +20,10 @@ namespace Automatak
 
 				ListenCallbacksAdapter(Interface::IListenCallbacks^ proxy);
 
-				virtual bool AcceptConnection(const std::string& ipaddress) override;
+				virtual bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) override;
 				virtual openpal::TimeDuration GetFirstFrameTimeout() override;
-				virtual void OnFirstFrame(const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor) override;
-				virtual void OnSessionClose(std::shared_ptr<asiodnp3::IMasterSession> session, const std::string& sessionid) override;
+				virtual void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor) override;
+				virtual void OnSessionClose(uint64_t sessionid, std::shared_ptr<asiodnp3::IMasterSession> session) override;
 				
 
 			private:

@@ -10,9 +10,9 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 	ListenCallbacksAdapter::ListenCallbacksAdapter(Interface::IListenCallbacks^ proxy) : m_proxy(proxy)
 	{}
 
-	bool ListenCallbacksAdapter::AcceptConnection(const std::string& ipaddress)
+	bool ListenCallbacksAdapter::AcceptConnection(uint64_t sessionid, const std::string& ipaddress)
 	{		
-		return m_proxy->AcceptConnection(Conversions::ConvertString(ipaddress));
+		return m_proxy->AcceptConnection(sessionid, Conversions::ConvertString(ipaddress));
 	}
 
 	openpal::TimeDuration ListenCallbacksAdapter::GetFirstFrameTimeout()
@@ -20,16 +20,17 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 		return Conversions::ConvertTimespan(m_proxy->GetFirstFrameTimeout());
 	}
 
-	void ListenCallbacksAdapter::OnFirstFrame(const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor)
+	void ListenCallbacksAdapter::OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor)
 	{
 		auto linkheader = Conversions::Convert(header);
 		auto adapter = gcnew SessionAcceptorAdapter(acceptor);
-		m_proxy->OnFirstFrame(linkheader, adapter);
+		m_proxy->OnFirstFrame(sessionid, linkheader, adapter);
 	}
 
-	void ListenCallbacksAdapter::OnSessionClose(std::shared_ptr<asiodnp3::IMasterSession> session, const std::string& sessionid)
+	void ListenCallbacksAdapter::OnSessionClose(uint64_t sessionid, std::shared_ptr<asiodnp3::IMasterSession> session)
 	{
-		m_proxy->OnSessionClose(gcnew MasterSessionAdapter(session.get()), Conversions::ConvertString(sessionid));
+		IMasterSession^ ms = session ? gcnew MasterSessionAdapter(session.get()) : nullptr;
+		m_proxy->OnSessionClose(sessionid, ms);
 	}
 
 }}}

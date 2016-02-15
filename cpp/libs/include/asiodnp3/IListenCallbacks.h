@@ -41,23 +41,33 @@ public:
 	/**
 	* Ask user code if the following connection should be accepted
 	*
-	* @ipaddress The IP address of the connecting host. Can optionally be used for connection filtering.	
+	* @sessionid Incrementing id used to uniquely identify the session
+	* @ipaddress The IP address of the connecting host. Can optionally be used for connection filtering
 	*
-	* @return If true, the connection is accepted and a link frame parser is created to handle incoming frame data.
+	* @return If true, the connection is accepted and a link frame parser is created to handle incoming frame data
 	*/
-	virtual bool AcceptConnection(const std::string& ipaddress) = 0;
+	virtual bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) = 0;
 
 	/// return the amount of time the session should wait for the first frame
 	virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;
 
-	/// called when the first link-layer frame is received
+	/**
+	* Called when the first link-layer frame is received for a session
+	*
+	*/
 	virtual void OnFirstFrame(
+		uint64_t sessionid,
 		const opendnp3::LinkHeaderFields& header,		
 		ISessionAcceptor& acceptor
 	) = 0;
 
-	/// Called when an active master session closes
-	virtual void OnSessionClose(std::shared_ptr<IMasterSession> session, const std::string& sessionid) = 0;
+	/** 
+	* Called when a session closes
+	*
+	* @sessionid Incrementing id used to uniquely identify the session
+	* @session Possibly NULL shared_ptr to the master session
+	*/	
+	virtual void OnSessionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) = 0;
 };
 
 }

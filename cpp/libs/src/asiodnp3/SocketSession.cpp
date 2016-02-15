@@ -32,8 +32,9 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	SocketSession::SocketSession(openpal::LogRoot logroot, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket) :
-		m_log_root(std::move(logroot)),			
+	SocketSession::SocketSession(openpal::LogRoot logroot, uint64_t sessionid, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket) :
+		m_log_root(std::move(logroot)),		
+		m_session_id(sessionid),
 		m_manager(&manager),
 		m_callbacks(&callbacks),
 		m_parser(m_log_root.logger, &m_stats),		
@@ -44,9 +45,9 @@ namespace asiodnp3
 		
 	}
 
-	std::shared_ptr<SocketSession> SocketSession::Create(openpal::LogRoot logroot, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket)
+	std::shared_ptr<SocketSession> SocketSession::Create(openpal::LogRoot logroot, uint64_t sessionid, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket)
 	{
-		auto ret = std::shared_ptr<SocketSession>(new SocketSession(std::move(logroot), manager, callbacks, std::move(socket)));
+		auto ret = std::shared_ptr<SocketSession>(new SocketSession(std::move(logroot), sessionid, manager, callbacks, std::move(socket)));
 		
 		if (manager.Register(ret))
 		{			
@@ -99,7 +100,7 @@ namespace asiodnp3
 		{			
 			this->m_first_frame_timer.Cancel();
 
-			this->m_callbacks->OnFirstFrame(header, *this);
+			this->m_callbacks->OnFirstFrame(m_session_id, header, *this);
 
 			if (m_stack)
 			{
@@ -167,7 +168,7 @@ namespace asiodnp3
 				if (self->m_stack)
 				{
 					self->m_stack->OnLowerLayerDown();
-					self->m_callbacks->OnSessionClose(self->m_stack, self->m_log_root.GetId());
+					self->m_callbacks->OnSessionClose(self->m_session_id, self->m_stack);
 				}
 
 				// release our reference to the stack

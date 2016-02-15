@@ -28,11 +28,8 @@ using System.Threading.Tasks;
 namespace Automatak.DNP3.Interface
 {   
     public class DefaultListenCallbacks : IListenCallbacks
-    {
-        readonly Object mutex = new Object();
-        UInt64 sessionCount = 0;
-
-        public bool AcceptConnection(string ipaddress)
+    {                
+        public bool AcceptConnection(UInt64 sessionid, string ipaddress)
         {
             return true;
         }
@@ -42,29 +39,25 @@ namespace Automatak.DNP3.Interface
             return TimeSpan.FromSeconds(30);
         }
 
-        public void OnFirstFrame(LinkHeader header, ISessionAcceptor acceptor)
+        public void OnFirstFrame(UInt64 sessionid, LinkHeader header, ISessionAcceptor acceptor)
         {
             var config = new MasterStackConfig();
 
             config.link.remoteAddr = header.Source;
             config.link.localAddr = header.Destination;
                         
-            var master = acceptor.AcceptSession(GetNextSessionId(), new PrintingSOEHandler(), new DefaultMasterApplication(), config);            
+            var master = acceptor.AcceptSession(SessionIdToString(sessionid), new PrintingSOEHandler(), new DefaultMasterApplication(), config);            
         }
 
-        public void OnSessionClose(IMasterSession session, string sessionid)
+        public void OnSessionClose(UInt64 sessionid, IMasterSession session)
         {
             Console.WriteLine(String.Format("Session closed: %s", sessionid));
         }
 
-        private string GetNextSessionId()
+        private string SessionIdToString(UInt64 sessionid)
         { 
-            lock (mutex)
-            {
-                var ret = String.Format("Session{0}", sessionCount);
-                ++sessionCount;
-                return ret;
-            }   
+            return String.Format("session-{0}", sessionid);
+
         }
     }
 }

@@ -23,9 +23,7 @@ namespace Automatak
 
 				MasterSessionAdapter(asiodnp3::IMasterSession* proxy);						
 
-				/// --- implement IMasterSession ----
-
-				virtual bool IsSameSession(IMasterSession^ other);
+				/// --- implement IMasterSession ----				
 				virtual void BeginShutdown();
 
 			private:

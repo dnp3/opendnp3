@@ -50,6 +50,7 @@ namespace asiodnp3
 
 		static std::shared_ptr<SocketSession> Create(
 			openpal::LogRoot logroot,
+			uint64_t sessionid,
 			asiopal::IResourceManager& manager,
 			IListenCallbacks& callbacks,
 			asio::ip::tcp::socket socket
@@ -79,12 +80,14 @@ namespace asiodnp3
 
 		SocketSession(
 			openpal::LogRoot logroot,
+			uint64_t sessionid,
 			asiopal::IResourceManager& manager,
 			IListenCallbacks& callbacks,
 			asio::ip::tcp::socket socket
 		);
 
 		openpal::LogRoot m_log_root;
+		const uint64_t m_session_id;
 
 		asiopal::IResourceManager* m_manager;
 		IListenCallbacks* m_callbacks;

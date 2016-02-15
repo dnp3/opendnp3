@@ -26,6 +26,8 @@
 #include <openpal/logging/LogMacros.h>
 #include <opendnp3/LogLevels.h>
 
+#include <sstream>
+
 using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
@@ -57,7 +59,8 @@ MasterTCPServer::MasterTCPServer(
 ) :
 	TCPServer(ioservice, std::move(root), endpoint, ec),
 	m_manager(&shutdown),
-	m_callbacks(callbacks)
+	m_callbacks(callbacks),
+	m_accept_count(0)
 {
 
 }
@@ -66,20 +69,28 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 {
 	std::ostringstream oss;
 	oss << socket.remote_endpoint();
+
+	const auto SESSION_ID = m_accept_count;
+	++m_accept_count;
 	
-	if (m_callbacks->AcceptConnection(socket.remote_endpoint().address().to_string()))
+	if (m_callbacks->AcceptConnection(SESSION_ID, socket.remote_endpoint().address().to_string()))
 	{
-		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());		
+		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());				
 
-		// TODO - where to get the settings for the new log root?
-
-		SocketSession::Create(m_root.Clone("unknown-session"), *m_manager, *m_callbacks, std::move(socket));
+		SocketSession::Create(m_root.Clone(SessionIdToString(SESSION_ID).c_str()), SESSION_ID, *m_manager, *m_callbacks, std::move(socket));
 	}
 	else
 	{		
 		socket.close();
 		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
 	}
+}
+
+std::string MasterTCPServer::SessionIdToString(uint64_t sessionid)
+{
+	std::ostringstream oss;
+	oss << "session-" << sessionid;
+	return oss.str();
 }
 
 void MasterTCPServer::OnShutdown()
