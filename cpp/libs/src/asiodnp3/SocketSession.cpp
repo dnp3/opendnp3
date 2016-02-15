@@ -107,6 +107,9 @@ namespace asiodnp3
 			if (m_stack)
 			{
 				this->m_stack->OnLowerLayerUp();
+
+				// push the frame into the newly created stack
+				this->m_stack->OnFrame(header, userdata);
 			}
 			else
 			{
