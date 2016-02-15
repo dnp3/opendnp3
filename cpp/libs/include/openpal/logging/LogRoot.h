@@ -47,6 +47,8 @@ public:
 
 	void Rename(char const* alias);
 
+	const char* GetId() const;
+
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode);	
 
 	// create another log root, but change the alias

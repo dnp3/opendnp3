@@ -63,14 +63,14 @@ private:
 
 	friend class GPRSManager;
 
-	GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler& handler);	
+	GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler);
 
 	virtual bool Register(std::shared_ptr<asiopal::IResource> resource) override;
 	virtual void Unregister(std::shared_ptr<asiopal::IResource> resource) override;
 
 	std::mutex m_mutex;
 
-	openpal::ILogHandler* m_log_handler;
+	std::shared_ptr<openpal::ILogHandler> m_log_handler;
 	openpal::LogRoot m_log_root;
 	bool m_is_shutting_down;
 	openpal::ILogHandler* m_log;

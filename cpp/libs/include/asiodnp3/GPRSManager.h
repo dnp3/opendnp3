@@ -47,7 +47,7 @@ public:
 	*
 	*	@param concurrencyHint How many threads to allocate in the thread pool
 	*/
-	GPRSManager(uint32_t concurrencyHint, openpal::ILogHandler& handler);
+	GPRSManager(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler);
 
 	~GPRSManager();
 

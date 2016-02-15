@@ -29,7 +29,7 @@ using namespace openpal;
 namespace asiodnp3
 {
 
-GPRSManager::GPRSManager(uint32_t concurrencyHint, openpal::ILogHandler& handler) :
+GPRSManager::GPRSManager(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler) :
 	m_impl(new GPRSManagerImpl(concurrencyHint, handler))	
 {}
 

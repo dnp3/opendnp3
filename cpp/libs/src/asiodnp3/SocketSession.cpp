@@ -167,7 +167,7 @@ namespace asiodnp3
 				if (self->m_stack)
 				{
 					self->m_stack->OnLowerLayerDown();
-					self->m_callbacks->OnSessionClose(self->m_stack);
+					self->m_callbacks->OnSessionClose(self->m_stack, self->m_log_root.GetId());
 				}
 
 				// release our reference to the stack

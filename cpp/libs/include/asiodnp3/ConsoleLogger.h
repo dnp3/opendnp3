@@ -39,6 +39,8 @@ class ConsoleLogger : public openpal::ILogHandler
 
 public:
 
+	ConsoleLogger();
+
 	virtual void Log(const openpal::LogEntry& entry) override final;
 
 	void SetPrintLocation(bool printLocation);
@@ -48,9 +50,7 @@ public:
 		return instance;
 	};
 
-private:
-
-	ConsoleLogger();
+private:	
 
 	static ConsoleLogger instance;
 

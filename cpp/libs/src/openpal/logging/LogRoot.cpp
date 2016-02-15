@@ -70,6 +70,11 @@ void LogRoot::Rename(char const* alias)
 	m_alias = AllocateCopy(alias);
 }
 
+const char* LogRoot::GetId() const
+{
+	return m_alias;
+}
+
 void LogRoot::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
 	if (m_handler)

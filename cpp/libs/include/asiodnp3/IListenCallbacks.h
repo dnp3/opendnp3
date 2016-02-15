@@ -52,12 +52,12 @@ public:
 
 	/// called when the first link-layer frame is received
 	virtual void OnFirstFrame(
-		const opendnp3::LinkHeaderFields& header,
+		const opendnp3::LinkHeaderFields& header,		
 		ISessionAcceptor& acceptor
 	) = 0;
 
 	/// Called when an active master session closes
-	virtual void OnSessionClose(std::shared_ptr<IMasterSession> session) = 0;
+	virtual void OnSessionClose(std::shared_ptr<IMasterSession> session, const std::string& sessionid) = 0;
 };
 
 }

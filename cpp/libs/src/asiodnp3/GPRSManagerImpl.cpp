@@ -72,13 +72,13 @@ void GPRSManagerImpl::BeginShutdown()
 	}	
 }
 
-GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, openpal::ILogHandler& handler) :
+GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler) :
 	m_mutex(),
-	m_log_handler(&handler),
-	m_log_root(&handler, "gprs-manager", opendnp3::levels::NORMAL),
+	m_log_handler(handler),
+	m_log_root(handler.get(), "gprs-manager", opendnp3::levels::NORMAL),
 	m_is_shutting_down(false),
-	m_log(&handler),
-	m_pool(&handler, concurrencyHint, opendnp3::flags::INFO, [](){}, [](){})
+	m_log(handler.get()),
+	m_pool(handler.get(), concurrencyHint, opendnp3::flags::INFO, [](){}, [](){})
 {}
 
 bool GPRSManagerImpl::Register(std::shared_ptr<asiopal::IResource> resource)

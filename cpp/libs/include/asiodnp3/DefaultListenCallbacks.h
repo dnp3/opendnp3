@@ -25,6 +25,9 @@
 #include "asiodnp3/PrintingSOEHandler.h"
 #include "asiodnp3/DefaultMasterApplication.h"
 
+#include <iostream>
+#include <mutex>
+
 namespace asiodnp3
 {
 
@@ -35,40 +38,24 @@ class DefaultListenCallbacks final : public IListenCallbacks
 {
 public:
 
+	DefaultListenCallbacks();
+
 	virtual ~DefaultListenCallbacks() {}
 	
-	virtual bool AcceptConnection(const std::string& ipaddress) override
-	{		
-		return true;
-	}
+	virtual bool AcceptConnection(const std::string& ipaddress) override;
 
-	virtual openpal::TimeDuration GetFirstFrameTimeout() override
-	{
-		return openpal::TimeDuration::Seconds(30);
-	}
+	virtual openpal::TimeDuration GetFirstFrameTimeout() override;
 
-	virtual void OnFirstFrame(const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override
-	{		
-		opendnp3::MasterStackConfig config;
-		
-		// full implementations will look up config information for the SRC address
+	virtual void OnFirstFrame(const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override;
 
-		config.link.LocalAddr = header.dest;
-		config.link.RemoteAddr = header.src;
+	virtual void OnSessionClose(std::shared_ptr<IMasterSession> session, const std::string& sessionid) override;
 
-		auto soe = std::make_shared<PrintingSOEHandler>();
-		auto app = std::make_shared<DefaultMasterApplication>();
+private:	
 
-		// full implementations will keep a std::shared_ptr<IGPRSMaster> somewhere			
-		auto master = acceptor.AcceptSession("session", soe, app, config);
-	}
+	std::string GetNextSessionId();
 
-	virtual void OnSessionClose(std::shared_ptr<IMasterSession> session) override
-	{
-		// full implementations would drop any references they're holding to this session
-		// shared_ptr can be used with == operator
-	}
-	
+	std::mutex m_mutex;
+	std::uint64_t m_session_count;
 };
 
 }
