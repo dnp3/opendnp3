@@ -52,7 +52,7 @@ namespace asiodnp3
 			openpal::LogRoot logroot,
 			uint64_t sessionid,
 			asiopal::IResourceManager& manager,
-			IListenCallbacks& callbacks,
+			std::shared_ptr<IListenCallbacks> callbacks,
 			asio::ip::tcp::socket socket
 		);
 		
@@ -82,7 +82,7 @@ namespace asiodnp3
 			openpal::LogRoot logroot,
 			uint64_t sessionid,
 			asiopal::IResourceManager& manager,
-			IListenCallbacks& callbacks,
+			std::shared_ptr<IListenCallbacks> callbacks,
 			asio::ip::tcp::socket socket
 		);
 
@@ -90,7 +90,7 @@ namespace asiodnp3
 		const uint64_t m_session_id;
 
 		asiopal::IResourceManager* m_manager;
-		IListenCallbacks* m_callbacks;
+		std::shared_ptr<IListenCallbacks> m_callbacks;
 		opendnp3::LinkChannelStatistics m_stats;
 		opendnp3::LinkLayerParser m_parser;		
 		std::shared_ptr<asiopal::StrandExecutor> m_executor;

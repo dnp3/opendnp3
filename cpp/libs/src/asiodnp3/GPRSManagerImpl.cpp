@@ -26,12 +26,14 @@
 
 #include <opendnp3/LogLevels.h>
 
+#include <iostream>
+
 namespace asiodnp3
 {
 
 GPRSManagerImpl::~GPRSManagerImpl()
-{
-	this->BeginShutdown();
+{	
+	this->BeginShutdown();		
 }
 
 std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(

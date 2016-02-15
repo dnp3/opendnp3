@@ -77,7 +77,7 @@ void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
 	{
 		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());				
 
-		SocketSession::Create(m_root.Clone(SessionIdToString(SESSION_ID).c_str()), SESSION_ID, *m_manager, *m_callbacks, std::move(socket));
+		SocketSession::Create(m_root.Clone(SessionIdToString(SESSION_ID).c_str()), SESSION_ID, *m_manager, m_callbacks, std::move(socket));
 	}
 	else
 	{		

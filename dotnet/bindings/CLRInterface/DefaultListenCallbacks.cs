@@ -51,7 +51,7 @@ namespace Automatak.DNP3.Interface
 
         public void OnSessionClose(UInt64 sessionid, IMasterSession session)
         {
-            Console.WriteLine(String.Format("Session closed: %s", sessionid));
+            Console.WriteLine(String.Format("Session closed: {0}", sessionid));
         }
 
         private string SessionIdToString(UInt64 sessionid)

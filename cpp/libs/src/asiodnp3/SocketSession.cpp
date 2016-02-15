@@ -25,6 +25,8 @@
 
 #include <opendnp3/LogLevels.h>
 
+#include <iostream>
+
 using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
@@ -32,11 +34,11 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	SocketSession::SocketSession(openpal::LogRoot logroot, uint64_t sessionid, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket) :
+	SocketSession::SocketSession(openpal::LogRoot logroot, uint64_t sessionid, asiopal::IResourceManager& manager, std::shared_ptr<IListenCallbacks> callbacks, asio::ip::tcp::socket socket) :
 		m_log_root(std::move(logroot)),		
 		m_session_id(sessionid),
 		m_manager(&manager),
-		m_callbacks(&callbacks),
+		m_callbacks(callbacks),
 		m_parser(m_log_root.logger, &m_stats),		
 		m_executor(StrandExecutor::Create(socket.get_io_service())),		
 		m_first_frame_timer(*m_executor),
@@ -45,7 +47,7 @@ namespace asiodnp3
 		
 	}
 
-	std::shared_ptr<SocketSession> SocketSession::Create(openpal::LogRoot logroot, uint64_t sessionid, asiopal::IResourceManager& manager, IListenCallbacks& callbacks, asio::ip::tcp::socket socket)
+	std::shared_ptr<SocketSession> SocketSession::Create(openpal::LogRoot logroot, uint64_t sessionid, asiopal::IResourceManager& manager, std::shared_ptr<IListenCallbacks> callbacks, asio::ip::tcp::socket socket)
 	{
 		auto ret = std::shared_ptr<SocketSession>(new SocketSession(std::move(logroot), sessionid, manager, callbacks, std::move(socket)));
 		
@@ -166,15 +168,15 @@ namespace asiodnp3
 				SIMPLE_LOG_BLOCK(self->m_log_root.logger, flags::WARN, ec.message().c_str());
 				
 				if (self->m_stack)
-				{
-					self->m_stack->OnLowerLayerDown();
-					self->m_callbacks->OnSessionClose(self->m_session_id, self->m_stack);
-				}
-
-				// release our reference to the stack
-				self->m_stack.reset();
-
+				{					
+					self->m_stack->OnLowerLayerDown();				
+					self->m_callbacks->OnSessionClose(self->m_session_id, self->m_stack);					
+				}				
+								
 				self->m_manager->Unregister(self);
+
+				// release our reference to the stack				
+				self->m_stack.reset();				
 			}
 			else {
 				self->m_parser.OnRead(num, *self);
