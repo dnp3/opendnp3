@@ -1,10 +1,11 @@
-#ifndef __LOG_ADAPTER_H_
-#define __LOG_ADAPTER_H_
+#ifndef DNP3CLR_LOG_ADAPTER_H
+#define DNP3CLR_LOG_ADAPTER_H
 
 using namespace System::Collections::ObjectModel;
 
 #include <vcclr.h>
 #include <openpal/logging/ILogHandler.h>
+#include <memory>
 
 using namespace Automatak::DNP3::Interface;
 
@@ -24,6 +25,8 @@ namespace Automatak
 				// logging error messages, etc
 				virtual void Log(const openpal::LogEntry& Entry) override final;
 
+				static std::shared_ptr<openpal::ILogHandler> Create(Automatak::DNP3::Interface::ILogHandler^ proxy);
+
 			private:
 				gcroot < Automatak::DNP3::Interface::ILogHandler^ > proxy;
 			};
@@ -40,6 +43,11 @@ namespace Automatak
 				}
 
 				~LogAdapterWrapper()
+				{
+					this->!LogAdapterWrapper();
+				}
+
+				!LogAdapterWrapper()
 				{
 					delete adapter;
 				}

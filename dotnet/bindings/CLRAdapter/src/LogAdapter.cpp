@@ -26,6 +26,11 @@ namespace Automatak
 				proxy->Log(le);
 			}
 
+			std::shared_ptr<openpal::ILogHandler> LogAdapter::Create(Automatak::DNP3::Interface::ILogHandler^ proxy)
+			{
+				return std::shared_ptr<openpal::ILogHandler>(new LogAdapter(proxy));
+			}
+
 		}
 	}
 }

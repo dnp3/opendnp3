@@ -35,6 +35,6 @@ namespace Automatak.DNP3.Interface
 
         void OnFirstFrame(LinkHeader header, ISessionAcceptor acceptor);
 
-        void OnSessionClose(IMasterSession session);
+        void OnSessionClose(IMasterSession session, string sessionid);
     }   
 }

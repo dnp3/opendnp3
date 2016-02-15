@@ -30,7 +30,7 @@ namespace Automatak.DNP3.Interface
     public class DefaultListenCallbacks : IListenCallbacks
     {
         readonly Object mutex = new Object();
-        readonly List<IMasterSession> masters = new List<IMasterSession>();
+        UInt64 sessionCount = 0;
 
         public bool AcceptConnection(string ipaddress)
         {
@@ -48,21 +48,23 @@ namespace Automatak.DNP3.Interface
 
             config.link.remoteAddr = header.Source;
             config.link.localAddr = header.Destination;
-            
-            lock (mutex)
-            {
-                var master = acceptor.AcceptSession("session", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);
-
-
-            }
+                        
+            var master = acceptor.AcceptSession(GetNextSessionId(), PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);            
         }
 
-        public void OnSessionClose(IMasterSession session)
+        public void OnSessionClose(IMasterSession session, string sessionid)
         {
+            Console.WriteLine(String.Format("Session closed: %s", sessionid));
+        }
+
+        private string GetNextSessionId()
+        { 
             lock (mutex)
             {
-
-            }
+                var ret = String.Format("Session{0}", sessionCount);
+                ++sessionCount;
+                return ret;
+            }   
         }
     }
 }

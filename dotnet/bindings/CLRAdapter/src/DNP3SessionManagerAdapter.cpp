@@ -19,8 +19,10 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 	}
 					
 	DNP3SessionManagerAdapter::DNP3SessionManagerAdapter(System::Int32 concurrency, ILogHandler^ handler) :
-		manager(new asiodnp3::GPRSManager(concurrency, (gcnew LogAdapterWrapper(handler))->GetLogAdapter()))
-	{}
+		manager(new asiodnp3::GPRSManager(concurrency, LogAdapter::Create(handler)))
+	{
+	
+	}
 	
 	DNP3SessionManagerAdapter::~DNP3SessionManagerAdapter()
 	{		
