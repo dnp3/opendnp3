@@ -27,7 +27,7 @@ IMasterSession^ SessionAcceptorAdapter::AcceptSession(
 	);
 	
 	auto session = m_proxy->AcceptSession(id, handler, app, mconfig);
-	return gcnew MasterSessionAdapter(session);
+	return gcnew MasterSessionAdapter(session.get());
 }
 
 }}} 

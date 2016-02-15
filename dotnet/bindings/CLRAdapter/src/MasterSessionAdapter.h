@@ -8,7 +8,6 @@ using namespace System::Threading::Tasks;
 using namespace Automatak::DNP3::Interface;
 
 #include <asiodnp3/IMasterSession.h>
-#include <memory>
 
 #include "MasterOperationsAdapter.h"
 
@@ -22,10 +21,7 @@ namespace Automatak
 			{
 			public:
 
-				MasterSessionAdapter(std::shared_ptr<asiodnp3::IMasterSession> proxy);		
-
-				~MasterSessionAdapter();
-				!MasterSessionAdapter();
+				MasterSessionAdapter(asiodnp3::IMasterSession* proxy);						
 
 				/// --- implement IMasterSession ----
 
@@ -34,7 +30,7 @@ namespace Automatak
 
 			private:
 				
-				std::shared_ptr<asiodnp3::IMasterSession>* m_master;
+				asiodnp3::IMasterSession* m_master;
 			};
 
 		}

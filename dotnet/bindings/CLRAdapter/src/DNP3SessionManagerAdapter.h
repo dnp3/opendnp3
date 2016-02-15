@@ -40,12 +40,9 @@ namespace Automatak
 			{
 			public:
 				
-				DNP3SessionManagerAdapter(System::Int32 concurrency, ILogHandler^ handler);
-				
-				~DNP3SessionManagerAdapter();
-				!DNP3SessionManagerAdapter();
+				DNP3SessionManagerAdapter(System::Int32 concurrency, ILogHandler^ handler);							
 
-				virtual void BeginShutdown() sealed;
+				virtual void Shutdown() sealed;
 
 				virtual IListener^ CreateListener(System::String^ loggerid, System::UInt32 filters, IPEndpoint^ endpoint, IListenCallbacks^ callbacks) sealed;				
 

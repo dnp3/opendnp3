@@ -29,7 +29,7 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 
 	void ListenCallbacksAdapter::OnSessionClose(std::shared_ptr<asiodnp3::IMasterSession> session, const std::string& sessionid)
 	{
-		m_proxy->OnSessionClose(gcnew MasterSessionAdapter(session), Conversions::ConvertString(sessionid));
+		m_proxy->OnSessionClose(gcnew MasterSessionAdapter(session.get()), Conversions::ConvertString(sessionid));
 	}
 
 }}}

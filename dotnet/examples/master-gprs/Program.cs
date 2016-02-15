@@ -23,8 +23,10 @@ namespace DotNetMasterGPRSDemo
             {
                 switch (Console.ReadLine())
                 {                    
-                    case "x":
-                        manager.BeginShutdown();
+                    case "x":                        
+                        // The manager does not automatically reclaim resources for stop executing threads in a finalizer
+                        // Be sure to call this before exiting to cleanup all resources.
+                        manager.Shutdown();
                         return 0;
                     default:
                         break;

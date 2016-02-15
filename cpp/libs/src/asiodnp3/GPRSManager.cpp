@@ -23,8 +23,9 @@
 
 #include "asiodnp3/GPRSManagerImpl.h"
 
-using namespace openpal;
+#include <iostream>
 
+using namespace openpal;
 
 namespace asiodnp3
 {
@@ -36,7 +37,9 @@ GPRSManager::GPRSManager(uint32_t concurrencyHint, std::shared_ptr<openpal::ILog
 
 GPRSManager::~GPRSManager()
 {
-	this->BeginShutdown();
+	std::cout << "deleting impl" << std::endl;
+	delete m_impl;
+	std::cout << "delete complete" << std::endl;
 }
 
 void GPRSManager::BeginShutdown()

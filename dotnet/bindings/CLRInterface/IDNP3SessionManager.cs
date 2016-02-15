@@ -34,9 +34,9 @@ namespace Automatak.DNP3.Interface
     public interface IDNP3SessionManager
     {
         /// <summary>
-        /// Begin shutting down all open listeners and sessions
+        /// Blocking shutdown. Call this before exiting.
         /// </summary>
-        void BeginShutdown();
+        void Shutdown();
 
         /// <summary>
         /// Create a new TCP listener an bind it to the specified callback interface

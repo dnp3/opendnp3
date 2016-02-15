@@ -22,21 +22,12 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 		manager(new asiodnp3::GPRSManager(concurrency, LogAdapter::Create(handler)))
 	{
 	
-	}
-	
-	DNP3SessionManagerAdapter::~DNP3SessionManagerAdapter()
-	{		
-		this->!DNP3SessionManagerAdapter();
-	}
+	}	
 
-	DNP3SessionManagerAdapter::!DNP3SessionManagerAdapter()
-	{		
+	void DNP3SessionManagerAdapter::Shutdown()
+	{				
 		delete manager;
-	}
-
-	void DNP3SessionManagerAdapter::BeginShutdown()
-	{		
-		manager->BeginShutdown();
+		manager = nullptr;
 	}
 
 	IListener^ DNP3SessionManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, IPEndpoint^ endpoint, IListenCallbacks^ callbacks)
@@ -54,7 +45,7 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 			throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
 		}
 
-		return gcnew ListenerAdapter(listener);
+		return gcnew ListenerAdapter(listener.get());
 	}
 
 }}}

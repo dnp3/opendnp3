@@ -8,9 +8,6 @@ using namespace System::Threading::Tasks;
 using namespace Automatak::DNP3::Interface;
 
 #include <asiopal/IListener.h>
-#include <memory>
-
-#include "MasterOperationsAdapter.h"
 
 namespace Automatak
 {
@@ -22,16 +19,13 @@ namespace Automatak
 			{
 			public:
 
-				ListenerAdapter(std::shared_ptr<asiopal::IListener> proxy);
-
-				~ListenerAdapter();
-				!ListenerAdapter();				
+				ListenerAdapter(asiopal::IListener* proxy);				
 
 				virtual void BeginShutdown();
 
 			private:
 				
-				std::shared_ptr<asiopal::IListener>* m_proxy;
+				asiopal::IListener* m_proxy;
 			};
 
 		}

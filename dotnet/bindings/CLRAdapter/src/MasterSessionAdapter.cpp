@@ -3,21 +3,11 @@
 namespace Automatak { namespace DNP3 { namespace Adapter {
 
 
-MasterSessionAdapter::MasterSessionAdapter(std::shared_ptr<asiodnp3::IMasterSession> proxy) :
-	MasterOperationsAdapter(proxy.get()),
-	m_master(new std::shared_ptr<asiodnp3::IMasterSession>(proxy))
+MasterSessionAdapter::MasterSessionAdapter(asiodnp3::IMasterSession* proxy) :
+	MasterOperationsAdapter(proxy),
+	m_master(proxy)
 {
 
-}
-
-MasterSessionAdapter::~MasterSessionAdapter()
-{
-	this->!MasterSessionAdapter();
-}
-
-MasterSessionAdapter::!MasterSessionAdapter()
-{
-	delete m_master;
 }
 
 bool MasterSessionAdapter::IsSameSession(IMasterSession^ other)
@@ -35,7 +25,7 @@ bool MasterSessionAdapter::IsSameSession(IMasterSession^ other)
 
 void MasterSessionAdapter::BeginShutdown()
 {
-	(*m_master)->BeginShutdown();
+	m_master->BeginShutdown();
 }
 
 }}}

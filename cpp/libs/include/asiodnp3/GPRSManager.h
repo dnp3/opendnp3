@@ -26,7 +26,6 @@
 #include <openpal/logging/ILogHandler.h>
 #include <asiodnp3/IListenCallbacks.h>
 
-#include <memory>
 #include <system_error>
 
 namespace asiodnp3
@@ -69,7 +68,7 @@ public:
 
 private:
 		
-	std::unique_ptr<GPRSManagerImpl> m_impl;
+	GPRSManagerImpl* m_impl;
 
 };
 
