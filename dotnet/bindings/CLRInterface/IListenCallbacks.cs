@@ -36,6 +36,6 @@ namespace Automatak.DNP3.Interface
         void OnFirstFrame(UInt64 sessionid, LinkHeader header, ISessionAcceptor acceptor);
 
         // session could be null if a frame was never received
-        void OnSessionClose(UInt64 sessionid, IMasterSession session);
+        void OnSessionClose(UInt64 sessionid, IStackStatistics statistics);
     }   
 }

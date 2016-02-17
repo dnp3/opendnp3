@@ -18,7 +18,7 @@ namespace Automatak
 			{
 			public:
 
-				SessionAcceptorAdapter(asiodnp3::ISessionAcceptor& proxy);
+				SessionAcceptorAdapter(UInt64 sessionid, MasterSessionCache^ cache, asiodnp3::ISessionAcceptor& proxy);
 				
 				virtual IMasterSession^ AcceptSession(
 					System::String^ loggerid,
@@ -29,7 +29,9 @@ namespace Automatak
 				
 
 			private:
-				
+
+				UInt64 m_sessionid;
+				MasterSessionCache^ m_cache;
 				asiodnp3::ISessionAcceptor* m_proxy;
 			};
 

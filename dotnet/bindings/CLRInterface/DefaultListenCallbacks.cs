@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 namespace Automatak.DNP3.Interface
 {   
     public class DefaultListenCallbacks : IListenCallbacks
-    {                
+    {      
         public bool AcceptConnection(UInt64 sessionid, string ipaddress)
         {
             return true;
@@ -46,12 +46,17 @@ namespace Automatak.DNP3.Interface
             config.link.remoteAddr = header.Source;
             config.link.localAddr = header.Destination;
                         
-            var master = acceptor.AcceptSession(SessionIdToString(sessionid), new PrintingSOEHandler(), new DefaultMasterApplication(), config);            
+            var master = acceptor.AcceptSession(SessionIdToString(sessionid), new PrintingSOEHandler(), new DefaultMasterApplication(), config);
         }
 
-        public void OnSessionClose(UInt64 sessionid, IMasterSession session)
+        public void OnSessionClose(UInt64 sessionid, IStackStatistics statistics)
         {
-            Console.WriteLine(String.Format("Session closed: {0}", sessionid));
+            Console.WriteLine(String.Format("Session closed: {0}", sessionid));            
+        }
+
+        private void OnScanComplete(Task<TaskCompletion> result)
+        {
+            Console.WriteLine("Scan Result: " + result.Result);
         }
 
         private string SessionIdToString(UInt64 sessionid)

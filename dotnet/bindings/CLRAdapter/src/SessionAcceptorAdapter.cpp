@@ -7,7 +7,10 @@
 
 namespace Automatak { namespace DNP3 { namespace Adapter {
 
-SessionAcceptorAdapter::SessionAcceptorAdapter(asiodnp3::ISessionAcceptor& proxy) : m_proxy(&proxy)
+SessionAcceptorAdapter::SessionAcceptorAdapter(UInt64 sessionid, MasterSessionCache^ cache, asiodnp3::ISessionAcceptor& proxy) : 
+	m_sessionid(sessionid),
+	m_cache(cache),
+	m_proxy(&proxy)
 {}
 
 IMasterSession^ SessionAcceptorAdapter::AcceptSession(
@@ -27,7 +30,14 @@ IMasterSession^ SessionAcceptorAdapter::AcceptSession(
 	);
 	
 	auto session = m_proxy->AcceptSession(id, handler, app, mconfig);
-	return gcnew MasterSessionAdapter(session.get());
+
+	if (!session)
+	{
+		return nullptr;
+	}	
+
+	// return a safe proxy that looks things up in the cache by id
+	return m_cache->Add(m_sessionid, gcnew MasterSessionAdapter(session.get()));
 }
 
 }}} 

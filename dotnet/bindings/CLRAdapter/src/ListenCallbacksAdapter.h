@@ -29,6 +29,7 @@ namespace Automatak
 			private:
 				
 				gcroot < Interface::IListenCallbacks^ > m_proxy;
+				gcroot < MasterSessionCache^ > m_cache;
 			};
 
 		}
