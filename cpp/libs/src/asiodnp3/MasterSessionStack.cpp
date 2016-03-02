@@ -31,7 +31,7 @@ namespace asiodnp3
 {
 	std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
 		openpal::Logger logger,
-		asiopal::StrandExecutor& executor,
+		std::shared_ptr<asiopal::StrandExecutor> executor,
 		std::shared_ptr<ISOEHandler> SOEHandler,
 		std::shared_ptr<IMasterApplication> application,
 		std::shared_ptr<SocketSession> session,
@@ -44,20 +44,20 @@ namespace asiodnp3
 
 	MasterSessionStack::MasterSessionStack(
 		openpal::Logger logger,
-		asiopal::StrandExecutor& executor,
+		std::shared_ptr<asiopal::StrandExecutor> executor,
 		std::shared_ptr<ISOEHandler> SOEHandler,
 		std::shared_ptr<IMasterApplication> application,
 		std::shared_ptr<SocketSession> session,
 		ILinkTx& linktx,		
 		const MasterStackConfig& config
 		) :
-		m_executor(&executor),
+		m_executor(executor),
 		m_handler(SOEHandler),
 		m_application(application),
 		m_session(session),
 		m_statistics(),
-		m_stack(logger, executor, *application, config.master.maxRxFragSize, &m_statistics, config.link),
-		m_context(executor, logger, m_stack.transport, *SOEHandler, *application, config.master, NullTaskLock::Instance())
+		m_stack(logger, *m_executor, *application, config.master.maxRxFragSize, &m_statistics, config.link),
+		m_context(*m_executor, logger, m_stack.transport, *SOEHandler, *application, config.master, NullTaskLock::Instance())
 	{
 		m_stack.link.SetRouter(linktx);	
 		m_stack.transport.SetAppLayer(m_context);
@@ -71,6 +71,9 @@ namespace asiodnp3
 	void MasterSessionStack::OnLowerLayerDown()
 	{
 		m_stack.link.OnLowerLayerDown();
+
+		// now we can release the socket session
+		m_session.reset();
 	}
 
 	bool MasterSessionStack::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)

@@ -151,7 +151,7 @@ namespace asiodnp3
 
 		this->m_stack = MasterSessionStack::Create(
 			m_log_root.logger, 
-			*m_executor,
+			m_executor,
 			SOEHandler,
 			application,
 			shared_from_this(),

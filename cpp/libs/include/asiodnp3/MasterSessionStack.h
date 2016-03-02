@@ -47,7 +47,7 @@ public:
 
 	static std::shared_ptr<MasterSessionStack> Create(
 		openpal::Logger logger,
-		asiopal::StrandExecutor& executor,
+		std::shared_ptr<asiopal::StrandExecutor> executor,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 		std::shared_ptr<opendnp3::IMasterApplication> application,
 		std::shared_ptr<SocketSession> session,
@@ -89,7 +89,7 @@ private:
 
 	MasterSessionStack(
 		openpal::Logger logger,
-		asiopal::StrandExecutor& executor,
+		std::shared_ptr<asiopal::StrandExecutor> executor,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 		std::shared_ptr<opendnp3::IMasterApplication> application,
 		std::shared_ptr<SocketSession> session,
@@ -97,7 +97,7 @@ private:
 		const opendnp3::MasterStackConfig& config
 	);
 
-	asiopal::StrandExecutor* m_executor;
+	std::shared_ptr<asiopal::StrandExecutor> m_executor;
 	std::shared_ptr<opendnp3::ISOEHandler> m_handler;
 	std::shared_ptr<opendnp3::IMasterApplication> m_application;
 	std::shared_ptr<SocketSession> m_session;

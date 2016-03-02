@@ -33,7 +33,9 @@ namespace asiodnp3
 
 GPRSManagerImpl::~GPRSManagerImpl()
 {	
-	this->BeginShutdown();		
+	this->BeginShutdown();
+	// block on the pool until it is gone
+	this->m_pool->Shutdown();
 }
 
 std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
