@@ -8,8 +8,7 @@
 namespace Automatak { namespace DNP3 { namespace Adapter {
 
 	ListenCallbacksAdapter::ListenCallbacksAdapter(Interface::IListenCallbacks^ proxy) : 
-		m_proxy(proxy), 
-		m_cache(gcnew MasterSessionCache())
+		m_proxy(proxy)		
 	{}
 
 	bool ListenCallbacksAdapter::AcceptConnection(uint64_t sessionid, const std::string& ipaddress)
@@ -25,16 +24,14 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 	void ListenCallbacksAdapter::OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor)
 	{
 		auto linkheader = Conversions::Convert(header);
-		auto adapter = gcnew SessionAcceptorAdapter(sessionid, m_cache, acceptor);
+		auto adapter = gcnew SessionAcceptorAdapter(acceptor);
 		m_proxy->OnFirstFrame(sessionid, linkheader, adapter);
 	}
 
 	void ListenCallbacksAdapter::OnSessionClose(uint64_t sessionid, std::shared_ptr<asiodnp3::IMasterSession> session)
-	{
-		m_cache->Remove(sessionid);		
+	{		
 		auto stats = Conversions::ConvertStackStats(session->GetStackStatistics());
-		m_proxy->OnSessionClose(sessionid, stats);
-		m_cache->Remove(sessionid);
+		m_proxy->OnSessionClose(sessionid, stats);	
 	}
 
 }}}

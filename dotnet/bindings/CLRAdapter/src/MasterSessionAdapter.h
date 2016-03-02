@@ -11,6 +11,8 @@ using namespace Automatak::DNP3::Interface;
 
 #include "MasterOperationsAdapter.h"
 
+#include <memory>
+
 namespace Automatak
 {
 	namespace DNP3
@@ -21,14 +23,17 @@ namespace Automatak
 			{
 			public:
 
-				MasterSessionAdapter(asiodnp3::IMasterSession* proxy);						
+				MasterSessionAdapter(std::shared_ptr<asiodnp3::IMasterSession> proxy);					
+
+				~MasterSessionAdapter();
+				!MasterSessionAdapter();
 
 				/// --- implement IMasterSession ----				
 				virtual void BeginShutdown();
 
 			private:
 				
-				asiodnp3::IMasterSession* m_master;
+				std::shared_ptr<asiodnp3::IMasterSession>* m_proxy;
 			};
 
 		}

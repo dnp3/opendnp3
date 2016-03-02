@@ -168,8 +168,6 @@
     <Compile Include="LogLevels.cs" />
     <Compile Include="config\MasterConfig.cs" />
     <Compile Include="config\MasterStackConfig.cs" />
-    <Compile Include="MasterSessionCache.cs" />
-    <Compile Include="MasterSessionProxy.cs" />
     <Compile Include="MeasurementTypes.cs">
       <SubType>Code</SubType>
     </Compile>
