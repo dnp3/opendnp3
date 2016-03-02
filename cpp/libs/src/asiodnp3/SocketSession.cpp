@@ -34,22 +34,34 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	SocketSession::SocketSession(openpal::LogRoot logroot, uint64_t sessionid, asiopal::IResourceManager& manager, std::shared_ptr<IListenCallbacks> callbacks, asio::ip::tcp::socket socket) :
-		m_log_root(std::move(logroot)),		
-		m_session_id(sessionid),
-		m_manager(&manager),
-		m_callbacks(callbacks),
-		m_parser(m_log_root.logger, &m_stats),		
-		m_executor(StrandExecutor::Create(socket.get_io_service())),		
-		m_first_frame_timer(*m_executor),
-		m_socket(std::move(socket))		
+	SocketSession::SocketSession(
+		openpal::LogRoot logroot,
+		uint64_t sessionid,
+		asiopal::IResourceManager& manager,
+		std::shared_ptr<IListenCallbacks> callbacks,
+		std::shared_ptr<StrandExecutor> executor, 
+		asio::ip::tcp::socket socket) :
+			m_log_root(std::move(logroot)),		
+			m_session_id(sessionid),
+			m_manager(&manager),
+			m_callbacks(callbacks),
+			m_parser(m_log_root.logger, &m_stats),		
+			m_executor(executor),		
+			m_first_frame_timer(*m_executor),
+			m_socket(std::move(socket))		
 	{
 		
 	}
 
-	std::shared_ptr<SocketSession> SocketSession::Create(openpal::LogRoot logroot, uint64_t sessionid, asiopal::IResourceManager& manager, std::shared_ptr<IListenCallbacks> callbacks, asio::ip::tcp::socket socket)
+	std::shared_ptr<SocketSession> SocketSession::Create(
+		openpal::LogRoot logroot,
+		uint64_t sessionid,
+		asiopal::IResourceManager& manager,
+		std::shared_ptr<IListenCallbacks> callbacks,
+		std::shared_ptr<StrandExecutor> executor,
+		asio::ip::tcp::socket socket)
 	{
-		auto ret = std::shared_ptr<SocketSession>(new SocketSession(std::move(logroot), sessionid, manager, callbacks, std::move(socket)));
+		auto ret = std::shared_ptr<SocketSession>(new SocketSession(std::move(logroot), sessionid, manager, callbacks, executor, std::move(socket)));
 		
 		if (manager.Register(ret))
 		{			
@@ -71,7 +83,7 @@ namespace asiodnp3
 			self->m_socket.close();
 			self->m_first_frame_timer.Cancel();
 		};
-		m_executor->strand.post(shutdown);
+		m_executor->PostToStrand(shutdown);
 	}
 
 	void SocketSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
@@ -89,7 +101,7 @@ namespace asiodnp3
 		};
 
 		// this writes all the data	
-		asio::async_write(m_socket, asio::buffer(buffer, buffer.Size()), m_executor->strand.wrap(callback));
+		asio::async_write(m_socket, asio::buffer(buffer, buffer.Size()), m_executor->m_strand.wrap(callback));
 	}
 
 	bool SocketSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
@@ -188,7 +200,7 @@ namespace asiodnp3
 		};
 
 		auto dest = m_parser.WriteBuff();
-		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_executor->strand.wrap(callback));
+		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_executor->m_strand.wrap(callback));
 	}	
 	
 }

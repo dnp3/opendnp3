@@ -40,10 +40,10 @@ namespace asiodnp3
 
 	public:
 
-		static std::shared_ptr<MasterTCPServer> Create(
-			asio::io_service& ioservice, 
+		static std::shared_ptr<MasterTCPServer> Create(			
 			asiopal::IResourceManager& shutdown,
 			std::shared_ptr<IListenCallbacks> callbacks,
+			std::shared_ptr<asiopal::ThreadPool> pool,
 			openpal::LogRoot root,
 			asiopal::IPEndpoint endpoint,
 			std::error_code& ec
@@ -52,15 +52,15 @@ namespace asiodnp3
 	private:
 
 		asiopal::IResourceManager* m_manager;
-		std::shared_ptr<IListenCallbacks> m_callbacks;
+		std::shared_ptr<IListenCallbacks> m_callbacks;		
 		uint64_t m_accept_count;
 
 		static std::string SessionIdToString(uint64_t sessionid);
 
-		MasterTCPServer(
-			asio::io_service& ioservice,
+		MasterTCPServer(			
 			asiopal::IResourceManager& shutdown,
 			std::shared_ptr<IListenCallbacks> callbacks,
+			std::shared_ptr<asiopal::ThreadPool> pool,
 			openpal::LogRoot root,
 			asiopal::IPEndpoint endpoint,
 			std::error_code& ec

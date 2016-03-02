@@ -42,13 +42,13 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 	const int NUM_OPS = 1000;
 	
 	uint32_t counter[NUM_STRAND] = { 0 };
+	LogFanoutHandler log;
 
-	{
-		LogFanoutHandler log;
-		ThreadPool pool(&log, levels::NORMAL, NUM_THREAD);
+	{		
+		auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);		
 
 		auto setup = [&](uint32_t& counter) {
-			auto exe = StrandExecutor::Create(pool.GetIOService());
+			auto exe = StrandExecutor::Create(pool);
 			auto increment = [&]() { ++counter; };			
 			for (int i = 0; i < NUM_OPS; ++i) {
 				exe->PostLambda(increment);
@@ -68,35 +68,22 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 	}			
 }
 
-TEST_CASE(SUITE("Test BlockFor()"))
-{
-	const int NUM_THREAD = 10;
-	LogFanoutHandler log;
-	ThreadPool pool(&log, levels::NORMAL, NUM_THREAD);
-	auto exe = StrandExecutor::Create(pool.GetIOService());
-
-	int counter = 0;
-	for (int i = 0; i < 100; ++i)
-	{
-		auto increment = [&] { ++counter; };		
-		exe->BlockFor(increment);
-	}
-
-	REQUIRE(counter == 100);
-}
-
 TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 {
 	const int NUM_THREAD = 10;
 	LogFanoutHandler log;
-	ThreadPool pool(&log, levels::NORMAL, NUM_THREAD);
-	auto exe = StrandExecutor::Create(pool.GetIOService());
-
 	int counter = 0;
-	for (int i = 0; i < 100; ++i)
+
 	{
-		auto getvalue = []() -> int { return 1; };
-		counter += exe->ReturnFrom<int>(getvalue);
+		auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);
+		auto exe = StrandExecutor::Create(pool);
+
+		
+		for (int i = 0; i < 100; ++i)
+		{
+			auto getvalue = []() -> int { return 1; };
+			counter += exe->ReturnFrom<int>(getvalue);
+		}
 	}
 
 	REQUIRE(counter == 100);

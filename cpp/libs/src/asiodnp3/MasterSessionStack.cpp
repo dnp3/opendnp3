@@ -85,7 +85,7 @@ namespace asiodnp3
 			session->BeginShutdown();
 		};
 
-		m_executor->strand.post(shutdown);
+		m_executor->m_strand.post(shutdown);
 	}
 
 	StackStatistics MasterSessionStack::GetStackStatistics()
@@ -129,42 +129,42 @@ namespace asiodnp3
 		auto self(shared_from_this());
 		auto builder = ConvertToLambda(headers);
 		auto action = [self, builder, config]() -> void { self->m_context.Scan(builder, config); };
-		return m_executor->strand.post(action);
+		return m_executor->m_strand.post(action);
 	}
 
 	void MasterSessionStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config)
 	{
 		auto self(shared_from_this());		
 		auto action = [self, gvId, config]() -> void { self->m_context.ScanAllObjects(gvId, config); };
-		return m_executor->strand.post(action);
+		return m_executor->m_strand.post(action);
 	}
 
 	void MasterSessionStack::ScanClasses(const ClassField& field, const TaskConfig& config)
 	{
 		auto self(shared_from_this());		
 		auto action = [self, field, config]() -> void { self->m_context.ScanClasses(field, config); };
-		return m_executor->strand.post(action);
+		return m_executor->m_strand.post(action);
 	}
 
 	void MasterSessionStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config)
 	{
 		auto self(shared_from_this());		
 		auto action = [self, gvId, start, stop, config]() -> void { self->m_context.ScanRange(gvId, start, stop, config); };
-		return m_executor->strand.post(action);
+		return m_executor->m_strand.post(action);
 	}
 
 	void MasterSessionStack::Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config)
 	{
 		auto self(shared_from_this());		
 		auto action = [self, value, index, config]() -> void { self->m_context.Write(value, index, config); };
-		return m_executor->strand.post(action);
+		return m_executor->m_strand.post(action);
 	}
 
 	void MasterSessionStack::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 	{
 		auto self(shared_from_this());
 		auto action = [self, op, callback, config]() -> void { self->m_context.Restart(op, callback, config); };
-		return m_executor->strand.post(action);
+		return m_executor->m_strand.post(action);
 	}
 
 	void MasterSessionStack::PerformFunction(const std::string& name, FunctionCode func, const std::vector<Header>& headers, const TaskConfig& config)
@@ -172,7 +172,7 @@ namespace asiodnp3
 		auto self(shared_from_this());
 		auto builder = ConvertToLambda(headers);
 		auto action = [self, name, func, builder, config]() -> void { self->m_context.PerformFunction(name, func, builder, config); };
-		return m_executor->strand.post(action);
+		return m_executor->m_strand.post(action);
 	}
 
 	/// --- ICommandProcessor ---
@@ -188,7 +188,7 @@ namespace asiodnp3
 		{			
 			self->SelectAndOperate(std::move(*set), callback, config);
 		};
-		m_executor->strand.post(action);
+		m_executor->m_strand.post(action);
 	}
 
 	void MasterSessionStack::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
@@ -202,7 +202,7 @@ namespace asiodnp3
 		{
 			self->DirectOperate(std::move(*set), callback, config);
 		};
-		m_executor->strand.post(action);
+		m_executor->m_strand.post(action);
 	}
 }
 

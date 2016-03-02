@@ -29,14 +29,16 @@ using namespace openpal;
 namespace asiopal
 {
 	
-StrandExecutor::StrandExecutor(asio::io_service& service) : strand(service)
+StrandExecutor::StrandExecutor(std::shared_ptr<ThreadPool> pool) : 
+	m_pool(pool),
+	m_strand(pool->GetIOService())
 {
 
 }
 
-std::shared_ptr<StrandExecutor> StrandExecutor::Create(asio::io_service& service)
+std::shared_ptr<StrandExecutor> StrandExecutor::Create(std::shared_ptr<ThreadPool> pool)
 {
-	return std::shared_ptr<StrandExecutor>(new StrandExecutor(service));
+	return std::shared_ptr<StrandExecutor>(new StrandExecutor(pool));
 }
 
 MonotonicTimestamp StrandExecutor::GetTime()
@@ -60,7 +62,7 @@ ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const Action0& run
 openpal::ITimer* StrandExecutor::Start(const asiopal_steady_clock::time_point& expiration, const openpal::Action0& runnable)
 {
 	auto self(shared_from_this());
-	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->strand.get_io_service()));
+	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->m_strand.get_io_service()));
 
 	timer->m_timer.expires_at(expiration);
 		
@@ -71,7 +73,7 @@ openpal::ITimer* StrandExecutor::Start(const asiopal_steady_clock::time_point& e
 		}
 	};
 
-	timer->m_timer.async_wait(strand.wrap(callback));
+	timer->m_timer.async_wait(m_strand.wrap(callback));
 
 	return timer.get();
 }
@@ -83,7 +85,7 @@ void StrandExecutor::Post(const Action0& runnable)
 	{
 		runnable.Apply();
 	};
-	strand.post(callback);
+	m_strand.post(callback);
 }
 
 }

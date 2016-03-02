@@ -24,9 +24,10 @@
 #include <openpal/executor/IExecutor.h>
 #include <openpal/util/Uncopyable.h>
 
-#include <future>
-#include <asio.hpp>
+#include "asiopal/ThreadPool.h"
 #include "asiopal/SteadyClock.h"
+
+#include <future>
 
 namespace asiopal
 {
@@ -46,7 +47,7 @@ class StrandExecutor final :
 
 public:	
 
-	static std::shared_ptr<StrandExecutor> Create(asio::io_service& service);
+	static std::shared_ptr<StrandExecutor> Create(std::shared_ptr<ThreadPool> pool);
 
 	/// ---- Implement IExecutor -----
 
@@ -55,50 +56,36 @@ public:
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Action0& runnable)  override;
 	virtual void Post(const openpal::Action0& runnable) override;
 
-	// access to the underlying strand is provided for wrapping callbacks
-	asio::strand strand;
-
-	template <class Lambda>
-	void BlockFor(const Lambda& action);
+	template <class T>
+	void PostToStrand(const T& action);
 
 	template <class T>
-	T ReturnFrom(const std::function<T()>& action);
+	T ReturnFrom(const std::function<T()>& action);	
 
 private:
 
+	// we hold a shared_ptr to the pool so that it cannot dissapear while the strand is still executing
+	std::shared_ptr<ThreadPool> m_pool;
+
+public:
+	asio::strand m_strand;
+
+private:
 	openpal::ITimer* Start(const asiopal_steady_clock::time_point& expiration, const openpal::Action0& runnable);
 
-	StrandExecutor(asio::io_service& service);
+	StrandExecutor(std::shared_ptr<ThreadPool> pool);
 };
 
-template <class Lambda>
-void StrandExecutor::BlockFor(const Lambda& action)
+template <class T>
+void StrandExecutor::PostToStrand(const T& action)
 {
-	if (strand.running_in_this_thread())
-	{
-		action();
-	}
-	else
-	{
-		std::promise<void> ready;
-
-		auto future = ready.get_future();
-
-		auto run = [&] {
-			action();
-			ready.set_value();
-		};
-
-		strand.post(run);
-
-		future.wait();
-	}	
+	m_strand.post(action);
 }
 
 template <class T>
 T StrandExecutor::ReturnFrom(const std::function<T()>& action)
 {
-	if (strand.running_in_this_thread())
+	if (m_strand.running_in_this_thread())
 	{
 		return action();
 	}
@@ -112,7 +99,7 @@ T StrandExecutor::ReturnFrom(const std::function<T()>& action)
 			ready.set_value(action());
 		};
 
-		strand.post(run);
+		m_strand.post(run);
 
 		future.wait();
 		return future.get();

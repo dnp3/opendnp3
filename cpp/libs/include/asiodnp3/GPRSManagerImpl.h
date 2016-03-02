@@ -77,7 +77,7 @@ private:
 	std::vector<std::shared_ptr<asiopal::IResource>> m_resources;
 
 	/// this will be the first thing to be destroyed forcing all handlers to be run
-	asiopal::ThreadPool m_pool;	
+	std::shared_ptr<asiopal::ThreadPool> m_pool;	
 	
 };
 

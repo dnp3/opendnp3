@@ -53,6 +53,7 @@ namespace asiodnp3
 			uint64_t sessionid,
 			asiopal::IResourceManager& manager,
 			std::shared_ptr<IListenCallbacks> callbacks,
+			std::shared_ptr<asiopal::StrandExecutor> executor,
 			asio::ip::tcp::socket socket
 		);
 		
@@ -83,6 +84,7 @@ namespace asiodnp3
 			uint64_t sessionid,
 			asiopal::IResourceManager& manager,
 			std::shared_ptr<IListenCallbacks> callbacks,
+			std::shared_ptr<asiopal::StrandExecutor> executor,
 			asio::ip::tcp::socket socket
 		);
 

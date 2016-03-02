@@ -21,14 +21,13 @@
 #ifndef ASIOPAL_TCPSERVER_H
 #define ASIOPAL_TCPSERVER_H
 
+#include "asiopal/ThreadPool.h"
 #include "asiopal/IPEndpoint.h"
-
 #include "asiopal/IListener.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/LogRoot.h>
 
-#include <asio.hpp>
 #include <memory>
 
 namespace asiopal
@@ -52,7 +51,7 @@ namespace asiopal
 	protected:	
 
 		TCPServer(
-			asio::io_service& ioservice,			
+			std::shared_ptr<ThreadPool> pool,
 			openpal::LogRoot root,			
 			IPEndpoint endpoint,			
 			std::error_code& ec
@@ -66,12 +65,16 @@ namespace asiopal
 		/// Inherited class defines what happens when the server shuts down
 		virtual void OnShutdown() = 0;
 
+	private:
+		void Configure(const std::string& adapter, std::error_code& ec);
+		
+	protected:
+
+		std::shared_ptr<ThreadPool> m_pool;
 		openpal::LogRoot m_root;		
 			
 	private:				
-
-		void Configure(const std::string& adapter, std::error_code& ec);		
-
+		
 		asio::ip::tcp::endpoint m_endpoint;		
 		asio::ip::tcp::acceptor m_acceptor;
 		asio::ip::tcp::socket m_socket;		
