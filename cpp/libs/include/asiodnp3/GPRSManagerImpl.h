@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_GPRSMANAGERIMPL_H
 #define ASIODNP3_GPRSMANAGERIMPL_H
 
-#include <asiopal/IOServiceThreadPool.h>
+#include <asiopal/ThreadPool.h>
 #include <asiopal/LogFanoutHandler.h>
 #include <asiopal/IResourceManager.h>
 
@@ -77,7 +77,7 @@ private:
 	std::vector<std::shared_ptr<asiopal::IResource>> m_resources;
 
 	/// this will be the first thing to be destroyed forcing all handlers to be run
-	asiopal::IOServiceThreadPool m_pool;	
+	asiopal::ThreadPool m_pool;	
 	
 };
 

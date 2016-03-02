@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <asiopal/IOServiceThreadPool.h>
+#include <asiopal/ThreadPool.h>
 #include <asiopal/StrandExecutor.h>
 #include <asiopal/LogFanoutHandler.h>
 
@@ -45,7 +45,7 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 
 	{
 		LogFanoutHandler log;
-		IOServiceThreadPool pool(&log, levels::NORMAL, NUM_THREAD);
+		ThreadPool pool(&log, levels::NORMAL, NUM_THREAD);
 
 		auto setup = [&](uint32_t& counter) {
 			auto exe = StrandExecutor::Create(pool.GetIOService());
@@ -72,7 +72,7 @@ TEST_CASE(SUITE("Test BlockFor()"))
 {
 	const int NUM_THREAD = 10;
 	LogFanoutHandler log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, NUM_THREAD);
+	ThreadPool pool(&log, levels::NORMAL, NUM_THREAD);
 	auto exe = StrandExecutor::Create(pool.GetIOService());
 
 	int counter = 0;
@@ -89,7 +89,7 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 {
 	const int NUM_THREAD = 10;
 	LogFanoutHandler log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, NUM_THREAD);
+	ThreadPool pool(&log, levels::NORMAL, NUM_THREAD);
 	auto exe = StrandExecutor::Create(pool.GetIOService());
 
 	int counter = 0;

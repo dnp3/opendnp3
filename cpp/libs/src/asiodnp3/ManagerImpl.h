@@ -28,7 +28,7 @@
 #include <openpal/util/Uncopyable.h>
 
 #include <asiopal/LogFanoutHandler.h>
-#include <asiopal/IOServiceThreadPool.h>
+#include <asiopal/ThreadPool.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -56,7 +56,7 @@ public:
 
 	openpal::ICryptoProvider* crypto;
 	asiopal::LogFanoutHandler fanout;
-	asiopal::IOServiceThreadPool threadpool;
+	asiopal::ThreadPool threadpool;
 	ChannelSet channels;
 };
 
