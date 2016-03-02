@@ -41,6 +41,8 @@ class ThreadPool
 {
 public:
 
+	friend class ThreadPoolTest;
+
 	ThreadPool(
 	    openpal::ILogHandler* pHandler,
 	    uint32_t levels,
@@ -59,13 +61,11 @@ public:
 
 	~ThreadPool();
 
-
-
 	asio::io_service& GetIOService();
-	
-private:
 
 	void Shutdown();
+	
+private:	
 
 	openpal::LogRoot root;	
 

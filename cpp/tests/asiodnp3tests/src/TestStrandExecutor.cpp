@@ -32,7 +32,6 @@ using namespace openpal;
 using namespace opendnp3;
 using namespace asiopal;
 
-
 #define SUITE(name) "StrandExecutorTestSuite - " name
 
 TEST_CASE(SUITE("Test automatic resource reclaimation"))
@@ -44,24 +43,25 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 	uint32_t counter[NUM_STRAND] = { 0 };
 	LogFanoutHandler log;
 
-	{		
-		auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);		
+	
+	auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);		
 
-		auto setup = [&](uint32_t& counter) {
-			auto exe = StrandExecutor::Create(pool);
-			auto increment = [&]() { ++counter; };			
-			for (int i = 0; i < NUM_OPS; ++i) {
-				exe->PostLambda(increment);
-				exe->StartLambda(TimeDuration::Milliseconds(0), increment);
-			}
-		};
+	auto setup = [&](uint32_t& counter) {
+		auto exe = StrandExecutor::Create(pool);
+		auto increment = [&]() { ++counter; };			
+		for (int i = 0; i < NUM_OPS; ++i) {
+			exe->PostLambda(increment);
+			exe->StartLambda(TimeDuration::Milliseconds(0), increment);
+		}
+	};
 
-		for (int i = 0; i < NUM_STRAND; ++i)
-		{
-			setup(counter[i]);
-		}				
-	}
+	for (int i = 0; i < NUM_STRAND; ++i)
+	{
+		setup(counter[i]);
+	}	
 
+	pool->Shutdown();
+	
 	for (int i = 0; i < NUM_STRAND; ++i)
 	{
 		REQUIRE(counter[i] == 2 * NUM_OPS);
@@ -73,18 +73,19 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 	const int NUM_THREAD = 10;
 	LogFanoutHandler log;
 	int counter = 0;
-
-	{
-		auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);
-		auto exe = StrandExecutor::Create(pool);
+	
+	auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);
+	auto exe = StrandExecutor::Create(pool);
 
 		
-		for (int i = 0; i < 100; ++i)
-		{
-			auto getvalue = []() -> int { return 1; };
-			counter += exe->ReturnFrom<int>(getvalue);
-		}
+	for (int i = 0; i < 100; ++i)
+	{
+		auto getvalue = []() -> int { return 1; };
+		counter += exe->ReturnFrom<int>(getvalue);
 	}
+
+	pool->Shutdown();
+	
 
 	REQUIRE(counter == 100);
 
