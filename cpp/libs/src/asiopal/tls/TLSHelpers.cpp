@@ -26,7 +26,7 @@ using namespace asio;
 namespace asiopal
 {
 
-void TLSHelpers::ApplyConfig(const TLSConfig& config, asio::ssl::context& context)
+std::error_code TLSHelpers::ApplyConfig(const TLSConfig& config, asio::ssl::context& context, std::error_code& ec)
 {
 	auto OPTIONS = ssl::context::default_workarounds | ssl::context::no_sslv2 | ssl::context::no_sslv3;
 
@@ -45,23 +45,30 @@ void TLSHelpers::ApplyConfig(const TLSConfig& config, asio::ssl::context& contex
 		OPTIONS |= ssl::context::no_tlsv1_2;
 	}
 
-	context.set_options(OPTIONS);
+	if(context.set_options(OPTIONS, ec)) return ec;
 
 	// optionally, configure the cipher-list
 	if (!config.cipherList.empty())
 	{
-		SSL_CTX_set_cipher_list(context.native_handle(), config.cipherList.c_str());
+		if (SSL_CTX_set_cipher_list(context.native_handle(), config.cipherList.c_str()) == 0)
+		{
+			ec = asio::error_code();
+			return ec;
+		}
 	}
 
 	// verify the peer certificate
-	context.set_verify_mode(ssl::verify_peer);
+	if (context.set_verify_mode(ssl::verify_peer, ec)) return ec;
 
 	// The public certificate file used to verify the peer
-	context.load_verify_file(config.peerCertFilePath);
+	if (context.load_verify_file(config.peerCertFilePath, ec)) return ec;
 
 	// the certificate we present to the server + the private key we use are placed into the same file
-	context.use_certificate_file(config.localCertFilePath, asio::ssl::context_base::file_format::pem);
-	context.use_private_key_file(config.privateKeyFilePath, asio::ssl::context_base::file_format::pem);
+	if (context.use_certificate_chain_file(config.localCertFilePath, ec)) return ec;
+
+	context.use_private_key_file(config.privateKeyFilePath, asio::ssl::context_base::file_format::pem, ec);
+
+	return ec;
 }
 
 }

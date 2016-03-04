@@ -33,6 +33,11 @@ bool DefaultListenCallbacks::AcceptConnection(uint64_t sessionid, const std::str
 	return true;
 }
 
+bool DefaultListenCallbacks::AcceptCertificate(uint64_t sessionid, const X509Info& info)
+{
+	return true;
+}
+
 openpal::TimeDuration DefaultListenCallbacks::GetFirstFrameTimeout()
 {
 	return openpal::TimeDuration::Seconds(30);

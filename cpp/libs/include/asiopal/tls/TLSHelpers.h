@@ -39,7 +39,7 @@ class TLSHelpers : openpal::StaticOnly
 public:	
 
 	/// Configure an ssl context using the settings in a TLSConfig struct
-	static void ApplyConfig(const TLSConfig&, asio::ssl::context& context);
+	static std::error_code ApplyConfig(const TLSConfig& config, asio::ssl::context& context, std::error_code& ec);
 };
 
 }

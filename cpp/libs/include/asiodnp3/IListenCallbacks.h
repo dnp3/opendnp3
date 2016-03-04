@@ -25,6 +25,7 @@
 #include <opendnp3/link/LinkHeaderFields.h>
 
 #include "asiodnp3/ISessionAcceptor.h"
+#include "asiodnp3/X509Info.h"
 
 namespace asiodnp3
 {
@@ -47,6 +48,16 @@ public:
 	* @return If true, the connection is accepted and a link frame parser is created to handle incoming frame data
 	*/
 	virtual bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) = 0;
+
+	/**
+	* Ask user code if the following preverified certificate should be accepted
+	*
+	* @sessionid Incrementing id used to uniquely identify the session
+	* @info Information from the x509 certificate
+	*
+	* @return If true, if the certificate should be accepted, false otherwise.
+	*/
+	virtual bool AcceptCertificate(uint64_t sessionid, const X509Info& info) = 0;
 
 	/// return the amount of time the session should wait for the first frame
 	virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;

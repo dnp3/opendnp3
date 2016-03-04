@@ -42,8 +42,9 @@ namespace asiopal
 		PhysicalLayerASIO(logger, service),
 		ctx(method)
 	{
-
-		TLSHelpers::ApplyConfig(config, ctx);
+		std::error_code ec;
+		TLSHelpers::ApplyConfig(config, ctx, ec);
+		asio::detail::throw_error(ec, "apply_config");	// TODO rework this so that constuctor returns ec
 
 		ctx.set_verify_callback(
 			[this](bool preverified, asio::ssl::verify_context& ctx)

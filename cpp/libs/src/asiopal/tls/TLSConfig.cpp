@@ -34,6 +34,7 @@ namespace asiopal
 			localCertFilePath(localCertFilePath_),
 			privateKeyFilePath(privateKeyFilePath_),
 			cipherList(cipherList_),
+			maxVerifyDepth(0),
 			allowTLSv10(true),
 			allowTLSv11(true),
 			allowTLSv12(true)

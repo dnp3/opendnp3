@@ -18,46 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_DEFAULTLISTENCALLBACKS_H
-#define ASIODNP3_DEFAULTLISTENCALLBACKS_H
+#ifndef ASIODNP3_X509_INFO_H
+#define ASIODNP3_X509_INFO_H
 
-#include "asiodnp3/IListenCallbacks.h"
-#include "asiodnp3/PrintingSOEHandler.h"
-#include "asiodnp3/DefaultMasterApplication.h"
+#include <openpal/container/RSlice.h>
+#include <openpal/util/Uncopyable.h>
+#include <string>
 
-#include <iostream>
-#include <mutex>
 
 namespace asiodnp3
 {
 
 /**
-* Callback interface invoked when a new connection is accepted
+* Select information from a preverified x509 certificate
+* that user can can inspect an optionally reject
 */
-class DefaultListenCallbacks final : public IListenCallbacks
+class X509Info : private openpal::Uncopyable
 {
-public:
+	public:
 
-	DefaultListenCallbacks();
+	X509Info(const openpal::RSlice fingerprint_, std::string subjectName_) :
+		fingerprint(fingerprint_),
+		subjectName(subjectName_)
+	{}
 
-	virtual ~DefaultListenCallbacks() {}
-	
-	virtual bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) override;
+	openpal::RSlice fingerprint;
+	std::string subjectName;
 
-	virtual bool AcceptCertificate(uint64_t sessionid, const X509Info& info) override;
+	private:
 
-	virtual openpal::TimeDuration GetFirstFrameTimeout() override;
-
-	virtual void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override;
-
-	virtual void OnSessionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) override;
-
-private:	
-
-	std::string SessionIdToString(uint64_t id);
+	X509Info();
 };
 
 }
 
 #endif
-
