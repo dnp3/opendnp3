@@ -72,10 +72,8 @@ bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::
 
 	if (m_callbacks->AcceptConnection(sessionid, remote.address().to_string()))
 	{
-		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
-
-		//SocketSession::Create(m_root.Clone(SessionIdToString(SESSION_ID).c_str()), SESSION_ID, *m_manager, m_callbacks, StrandExecutor::Create(m_pool), std::move(socket));
-		return false; // TODO
+		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());		
+		return true;
 	}
 	else
 	{		
@@ -84,14 +82,43 @@ bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::
 	}
 }
 
-void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>)
+bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx)
+{
+	if (!preverified) return preverified;
+
+	// lookup the subject name and the fingerprint
+
+	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
+	char subjectName[256];
+	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
+
+	const EVP_MD* digest_func = EVP_get_digestbyname("sha1");
+	if (!digest_func) {
+		return false;
+	}
+
+	uint8_t digest[EVP_MAX_MD_SIZE];
+	unsigned int length = 0;
+
+	if (X509_digest(cert, digest_func, digest, &length) != 1) {
+		return false;
+	}
+
+	X509Info info(RSlice(digest, length), std::string(subjectName));
+
+	return this->m_callbacks->AcceptCertificate(sessionid, info);
+}
+
+void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
 	
 }
 
 std::string MasterTLSServer::SessionIdToString(uint64_t sessionid)
 {
-	return "";
+	std::ostringstream oss;
+	oss << "session-" << sessionid;
+	return oss.str();
 }
 
 }

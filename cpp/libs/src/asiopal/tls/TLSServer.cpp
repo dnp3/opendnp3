@@ -47,8 +47,8 @@ namespace asiopal
 		m_endpoint(ip::tcp::v4(), endpoint.port),
 		m_acceptor(pool->GetIOService()),
 		m_session_id(0)		
-	{						
-		
+	{	
+				
 	}	
 
 	void TLSServer::BeginShutdown()
@@ -82,21 +82,30 @@ namespace asiopal
 		
 	void TLSServer::StartAccept()
 	{
+		const auto ID = this->m_session_id;
+		++this->m_session_id;
+
 		// this ensures that the TCPListener is never deleted during an active callback
 		auto self(shared_from_this());
+
 		// this could be a unique_ptr once move semantics are supported in lambdas
 		auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(m_pool->GetIOService(), self->m_ctx.value);
-		auto accept_cb = [self, stream](std::error_code ec) -> void
+
+		auto verify = [this, ID](bool preverified, asio::ssl::verify_context& ctx)
+		{
+			return this->VerifyCallback(ID, preverified, ctx);
+		};
+
+		stream->set_verify_callback(verify);
+
+		auto accept_cb = [self, stream, ID](std::error_code ec) -> void
 		{
 			if (ec)
 			{
 				SIMPLE_LOG_BLOCK(self->m_root.logger, flags::INFO, ec.message().c_str());
 				self->OnShutdown();
 				return;
-			}
-				
-			const auto ID = self->m_session_id;
-			++self->m_session_id;
+			}			
 
 			// begin accepting another session
 			self->StartAccept();
