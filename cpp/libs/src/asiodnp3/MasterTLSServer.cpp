@@ -86,15 +86,18 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 {
 	if (!preverified) return preverified;
 
-	// lookup the subject name and the fingerprint
-
+	// lookup the subject name
 	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
 	char subjectName[256];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
-	
-	X509Info info(RSlice(cert->sha1_hash, SHA_DIGEST_LENGTH), std::string(subjectName));
-
-	return this->m_callbacks->AcceptCertificate(sessionid, info);
+		
+	return this->m_callbacks->AcceptCertificate(
+		sessionid, 
+		X509Info(
+			RSlice(cert->sha1_hash, SHA_DIGEST_LENGTH), // the thumbprint
+			std::string(subjectName)
+		)
+	);
 }
 
 void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
