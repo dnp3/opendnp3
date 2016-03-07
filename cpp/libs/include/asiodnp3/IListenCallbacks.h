@@ -63,8 +63,7 @@ public:
 	virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;
 
 	/**
-	* Called when the first link-layer frame is received for a session
-	*
+	* Called when the first link-layer frame is received for a session	
 	*/
 	virtual void OnFirstFrame(
 		uint64_t sessionid,
