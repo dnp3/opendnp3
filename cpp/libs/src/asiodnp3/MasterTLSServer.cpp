@@ -91,20 +91,8 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
 	char subjectName[256];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
-
-	const EVP_MD* digest_func = EVP_get_digestbyname("sha1");
-	if (!digest_func) {
-		return false;
-	}
-
-	uint8_t digest[EVP_MAX_MD_SIZE];
-	unsigned int length = 0;
-
-	if (X509_digest(cert, digest_func, digest, &length) != 1) {
-		return false;
-	}
-
-	X509Info info(RSlice(digest, length), std::string(subjectName));
+	
+	X509Info info(RSlice(cert->sha1_hash, SHA_DIGEST_LENGTH), std::string(subjectName));
 
 	return this->m_callbacks->AcceptCertificate(sessionid, info);
 }
