@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "asiodnp3/SocketSession.h"
+#include "asiodnp3/LinkSession.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -34,13 +34,13 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-	SocketSession::SocketSession(
+	LinkSession::LinkSession(
 		openpal::LogRoot logroot,
 		uint64_t sessionid,
 		asiopal::IResourceManager& manager,
 		std::shared_ptr<IListenCallbacks> callbacks,
 		std::shared_ptr<StrandExecutor> executor, 
-		asio::ip::tcp::socket socket) :
+		std::unique_ptr<asiopal::IAsyncChannel> channel) :
 			m_log_root(std::move(logroot)),		
 			m_session_id(sessionid),
 			m_manager(&manager),
@@ -48,20 +48,20 @@ namespace asiodnp3
 			m_parser(m_log_root.logger, &m_stats),		
 			m_executor(executor),		
 			m_first_frame_timer(*m_executor),
-			m_socket(std::move(socket))		
+			m_channel(std::move(channel))
 	{
 		
 	}
 
-	std::shared_ptr<SocketSession> SocketSession::Create(
+	std::shared_ptr<LinkSession> LinkSession::Create(
 		openpal::LogRoot logroot,
 		uint64_t sessionid,
 		asiopal::IResourceManager& manager,
 		std::shared_ptr<IListenCallbacks> callbacks,
 		std::shared_ptr<StrandExecutor> executor,
-		asio::ip::tcp::socket socket)
+		std::unique_ptr<asiopal::IAsyncChannel> channel)
 	{
-		auto ret = std::shared_ptr<SocketSession>(new SocketSession(std::move(logroot), sessionid, manager, callbacks, executor, std::move(socket)));
+		auto ret = std::shared_ptr<LinkSession>(new LinkSession(std::move(logroot), sessionid, manager, callbacks, executor, std::move(channel)));
 		
 		if (manager.Register(ret))
 		{			
@@ -75,18 +75,18 @@ namespace asiodnp3
 		return ret;
 	}	
 
-	void SocketSession::BeginShutdown()
+	void LinkSession::BeginShutdown()
 	{
 		auto self(shared_from_this());
 		auto shutdown = [self]()
 		{ 
-			self->m_socket.close();
 			self->m_first_frame_timer.Cancel();
+			self->m_channel->BeginShutdown([self](){});			
 		};
 		m_executor->PostToStrand(shutdown);
 	}
 
-	void SocketSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
+	void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
 	{		
 		auto self(shared_from_this());
 		auto callback = [self, buffer, &session](const std::error_code& ec, std::size_t num) {
@@ -100,12 +100,12 @@ namespace asiodnp3
 			}
 		};
 
-		// this writes all the data	
-		asio::async_write(m_socket, asio::buffer(buffer, buffer.Size()), m_executor->m_strand.wrap(callback));
+		this->m_channel->BeginWrite(buffer, m_executor->m_strand.wrap(callback));		
 	}
 
-	bool SocketSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
+	bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
+		auto self(shared_from_this());
 		if (m_stack)
 		{
 			m_stack->OnFrame(header, userdata);
@@ -126,14 +126,14 @@ namespace asiodnp3
 			else
 			{
 				SIMPLE_LOG_BLOCK(m_log_root.logger, flags::WARN, "No master created. Closing socket.");
-				this->m_socket.close();
+				this->m_channel->BeginShutdown([self](){});
 			}			
 		}
 
 		return true;
 	}
 
-	std::shared_ptr<IMasterSession> SocketSession::AcceptSession(
+	std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 		const std::string& loggerid,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 		std::shared_ptr<opendnp3::IMasterApplication> application,
@@ -162,12 +162,13 @@ namespace asiodnp3
 		return m_stack;
 	}
 
-	void SocketSession::Start()
+	void LinkSession::Start()
 	{
-		auto timeout = [this]()
+		auto self(shared_from_this());
+		auto timeout = [self]()
 		{
-			SIMPLE_LOG_BLOCK(m_log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
-			this->m_socket.close();
+			SIMPLE_LOG_BLOCK(self->m_log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
+			self->m_channel->BeginShutdown([self](){});
 		};
 
 		m_first_frame_timer.Start(m_callbacks->GetFirstFrameTimeout(), timeout);
@@ -175,7 +176,7 @@ namespace asiodnp3
 		this->BeginReceive();
 	}
 
-	void SocketSession::BeginReceive()
+	void LinkSession::BeginReceive()
 	{
 		auto self(shared_from_this());
 		auto callback = [self](const std::error_code& ec, std::size_t num) {
@@ -200,7 +201,7 @@ namespace asiodnp3
 		};
 
 		auto dest = m_parser.WriteBuff();
-		m_socket.async_read_some(asio::buffer(dest, dest.Size()), m_executor->m_strand.wrap(callback));
+		m_channel->BeginRead(dest, m_executor->m_strand.wrap(callback));
 	}	
 	
 }

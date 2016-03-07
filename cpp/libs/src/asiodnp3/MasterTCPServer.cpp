@@ -21,10 +21,12 @@
 
 #include "asiodnp3/MasterTCPServer.h"
 
-#include "asiodnp3/SocketSession.h"
+#include "asiodnp3/LinkSession.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <opendnp3/LogLevels.h>
+
+#include "asiopal/SocketChannel.h"
 
 #include <sstream>
 
@@ -72,8 +74,8 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket
 	if (m_callbacks->AcceptConnection(sessionid, socket.remote_endpoint().address().to_string()))
 	{
 		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());				
-
-		SocketSession::Create(m_root.Clone(SessionIdToString(sessionid).c_str()), sessionid, *m_manager, m_callbacks, StrandExecutor::Create(m_pool), std::move(socket));
+		std::unique_ptr<IAsyncChannel> channel = std::make_unique<SocketChannel>(std::move(socket));
+		LinkSession::Create(m_root.Clone(SessionIdToString(sessionid).c_str()), sessionid, *m_manager, m_callbacks, StrandExecutor::Create(m_pool), std::move(channel));
 	}
 	else
 	{		

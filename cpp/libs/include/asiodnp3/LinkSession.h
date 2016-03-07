@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef ASIODNP3_SOCKETSESSION_H
-#define ASIODNP3_SOCKETSESSION_H
+#ifndef ASIODNP3_LINKSESSION_H
+#define ASIODNP3_LINKSESSION_H
 
 #include <openpal/logging/LogRoot.h>
 #include <openpal/executor/TimerRef.h>
@@ -32,29 +32,30 @@
 
 #include <asiopal/StrandExecutor.h>
 #include <asiopal/IResourceManager.h>
+#include <asiopal/IAsyncChannel.h>
 
 #include "asiodnp3/MasterSessionStack.h"
 #include "asiodnp3/IListenCallbacks.h"
 
 namespace asiodnp3
 {		
-	class SocketSession final : 
+	class LinkSession final : 
 		public opendnp3::ILinkTx,
 		private opendnp3::IFrameSink,
-		public std::enable_shared_from_this<SocketSession>,
+		public std::enable_shared_from_this<LinkSession>,
 		public asiopal::IResource,
 		private ISessionAcceptor,
 		private openpal::Uncopyable
 	{
 	public:		
 
-		static std::shared_ptr<SocketSession> Create(
+		static std::shared_ptr<LinkSession> Create(
 			openpal::LogRoot logroot,
 			uint64_t sessionid,
 			asiopal::IResourceManager& manager,
 			std::shared_ptr<IListenCallbacks> callbacks,
 			std::shared_ptr<asiopal::StrandExecutor> executor,
-			asio::ip::tcp::socket socket
+			std::unique_ptr<asiopal::IAsyncChannel> channel
 		);
 		
 		// override IResource
@@ -79,13 +80,13 @@ namespace asiodnp3
 
 		void BeginReceive();		
 
-		SocketSession(
+		LinkSession(
 			openpal::LogRoot logroot,
 			uint64_t sessionid,
 			asiopal::IResourceManager& manager,
 			std::shared_ptr<IListenCallbacks> callbacks,
 			std::shared_ptr<asiopal::StrandExecutor> executor,
-			asio::ip::tcp::socket socket
+			std::unique_ptr<asiopal::IAsyncChannel> channel
 		);
 
 		openpal::LogRoot m_log_root;
@@ -99,10 +100,8 @@ namespace asiodnp3
 		openpal::TimerRef m_first_frame_timer;
 		opendnp3::Route m_route;
 		
-
-		// this will become some kind of shared ptr to an interface
-		// so that the same class can handle TCP or TLS
-		asio::ip::tcp::socket m_socket;
+		
+		std::unique_ptr<asiopal::IAsyncChannel> m_channel;
 		std::shared_ptr<MasterSessionStack> m_stack;	// initialized to null
 	};
 }

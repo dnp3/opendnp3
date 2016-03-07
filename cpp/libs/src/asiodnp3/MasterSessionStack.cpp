@@ -23,7 +23,7 @@
 
 #include "asiopal/StrandExecutor.h"
 #include "asiodnp3/Conversions.h"
-#include "asiodnp3/SocketSession.h"
+#include "asiodnp3/LinkSession.h"
 
 using namespace opendnp3;
 
@@ -34,7 +34,7 @@ namespace asiodnp3
 		std::shared_ptr<asiopal::StrandExecutor> executor,
 		std::shared_ptr<ISOEHandler> SOEHandler,
 		std::shared_ptr<IMasterApplication> application,
-		std::shared_ptr<SocketSession> session,
+		std::shared_ptr<LinkSession> session,
 		ILinkTx& linktx,
 		const MasterStackConfig& config
 		)
@@ -47,7 +47,7 @@ namespace asiodnp3
 		std::shared_ptr<asiopal::StrandExecutor> executor,
 		std::shared_ptr<ISOEHandler> SOEHandler,
 		std::shared_ptr<IMasterApplication> application,
-		std::shared_ptr<SocketSession> session,
+		std::shared_ptr<LinkSession> session,
 		ILinkTx& linktx,		
 		const MasterStackConfig& config
 		) :

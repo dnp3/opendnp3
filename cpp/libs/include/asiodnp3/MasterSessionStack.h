@@ -36,7 +36,7 @@ namespace asiopal {
 namespace asiodnp3
 {
 
-class SocketSession;
+class LinkSession;
 
 /**
 * Interface that represents an ephemeral master session
@@ -50,7 +50,7 @@ public:
 		std::shared_ptr<asiopal::StrandExecutor> executor,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 		std::shared_ptr<opendnp3::IMasterApplication> application,
-		std::shared_ptr<SocketSession> session,
+		std::shared_ptr<LinkSession> session,
 		opendnp3::ILinkTx& linktx,
 		const opendnp3::MasterStackConfig& config
 	);
@@ -92,7 +92,7 @@ private:
 		std::shared_ptr<asiopal::StrandExecutor> executor,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 		std::shared_ptr<opendnp3::IMasterApplication> application,
-		std::shared_ptr<SocketSession> session,
+		std::shared_ptr<LinkSession> session,
 		opendnp3::ILinkTx& linktx,
 		const opendnp3::MasterStackConfig& config
 	);
@@ -100,7 +100,7 @@ private:
 	std::shared_ptr<asiopal::StrandExecutor> m_executor;
 	std::shared_ptr<opendnp3::ISOEHandler> m_handler;
 	std::shared_ptr<opendnp3::IMasterApplication> m_application;
-	std::shared_ptr<SocketSession> m_session;
+	std::shared_ptr<LinkSession> m_session;
 	opendnp3::StackStatistics m_statistics;
 	opendnp3::TransportStack m_stack;
 	opendnp3::MContext m_context;
