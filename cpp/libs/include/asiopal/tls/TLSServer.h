@@ -61,7 +61,7 @@ namespace asiopal
 
 		void StartAccept();
 		
-		/// inherited flass defines what to do with
+		/// inherited flass defines what to do with these callbacks
 		virtual bool AcceptConnection(const asio::ip::tcp::endpoint& remote) = 0;
 		virtual bool AcceptStream(std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>) = 0;
 
@@ -71,9 +71,7 @@ namespace asiopal
 	private:
 
 		std::error_code ConfigureContext(const TLSConfig& config, std::error_code& ec);
-		std::error_code ConfigureListener(const std::string& adapter, std::error_code& ec);
-
-		void OnHandShakeResult(std::shared_ptr<TLSServer> self, const std::error_code& code);
+		std::error_code ConfigureListener(const std::string& adapter, std::error_code& ec);		
 		
 	protected:
 

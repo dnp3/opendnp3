@@ -85,7 +85,7 @@ namespace asiopal
 	{
 		// this ensures that the TCPListener is never deleted during an active callback
 		auto self(shared_from_this());
-		auto accept_cb = [self](std::error_code ec)
+		auto accept_cb = [self](std::error_code ec) -> void
 		{
 			if (ec)
 			{
@@ -104,10 +104,16 @@ namespace asiopal
 
 				self->m_stream->lowest_layer().close();
 				self->StartAccept();
+				return;
 			}
 			
 			auto handshake_cb = [self](const std::error_code& ec) {
-				self->OnHandShakeResult(self, ec);
+				if (ec) {
+					FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
+					return;
+				}
+
+				self->AcceptStream(std::move(self->m_stream));
 			};
 			
 			// Begin the TLS handshake
@@ -116,18 +122,7 @@ namespace asiopal
 
 
 		m_acceptor.async_accept(m_stream->lowest_layer(), accept_cb);
-	}
-
-	void TLSServer::OnHandShakeResult(std::shared_ptr<TLSServer> self, const std::error_code& ec)
-	{
-		if (ec) {
-			FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
-			return;
-		}
-
-		this->AcceptStream(std::move(m_stream));
-	}
-
+	}	
 }
 
 
