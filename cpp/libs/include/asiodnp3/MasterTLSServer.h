@@ -49,8 +49,7 @@ namespace asiodnp3
 	private:
 
 		asiopal::IResourceManager* m_manager;
-		std::shared_ptr<IListenCallbacks> m_callbacks;		
-		uint64_t m_accept_count;		
+		std::shared_ptr<IListenCallbacks> m_callbacks;				
 
 		MasterTLSServer(			
 			asiopal::IResourceManager& shutdown,
@@ -63,9 +62,8 @@ namespace asiodnp3
 		);
 				
 		virtual void OnShutdown() override;
-		virtual bool AcceptConnection(const asio::ip::tcp::endpoint& remote) override;
-		virtual bool AcceptStream(std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>) override;
-
+		virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
+		virtual void AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;
 
 		static std::string SessionIdToString(uint64_t sessionid);
 	};

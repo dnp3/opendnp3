@@ -54,8 +54,7 @@ MasterTLSServer::MasterTLSServer(
 	std::error_code& ec) :
 		TLSServer(pool, std::move(root), endpoint, config, ec),
 		m_manager(&shutdown),
-		m_callbacks(callbacks),
-		m_accept_count(0)
+		m_callbacks(callbacks)		
 {
 
 }
@@ -66,15 +65,12 @@ void MasterTLSServer::OnShutdown()
 }
 
 				
-bool MasterTLSServer::AcceptConnection(const asio::ip::tcp::endpoint& remote)
+bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote)
 {
 	std::ostringstream oss;
-	oss << remote;
+	oss << remote;	
 
-	const auto SESSION_ID = m_accept_count;
-	++m_accept_count;
-
-	if (m_callbacks->AcceptConnection(SESSION_ID, remote.address().to_string()))
+	if (m_callbacks->AcceptConnection(sessionid, remote.address().to_string()))
 	{
 		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 
@@ -88,9 +84,9 @@ bool MasterTLSServer::AcceptConnection(const asio::ip::tcp::endpoint& remote)
 	}
 }
 
-bool MasterTLSServer::AcceptStream(std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>)
+void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>)
 {
-	return false;
+	
 }
 
 std::string MasterTLSServer::SessionIdToString(uint64_t sessionid)

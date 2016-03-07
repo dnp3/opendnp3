@@ -38,7 +38,8 @@ namespace asiopal
 		m_root(std::move(root)),		
 		m_endpoint(ip::tcp::v4(), endpoint.port),		
 		m_acceptor(pool->GetIOService()),
-		m_socket(pool->GetIOService())
+		m_socket(pool->GetIOService()),
+		m_session_id(0)
 	{
 		this->Configure(endpoint.address, ec);		
 	}	
@@ -102,8 +103,11 @@ namespace asiopal
 			}
 			else
 			{
+				const auto ID = self->m_session_id;
+				++self->m_session_id;
+
 				// method responsible for closing
-				self->AcceptConnection(std::move(self->m_socket));
+				self->AcceptConnection(ID, std::move(self->m_socket));
 				self->StartAccept();
 			}
 		};

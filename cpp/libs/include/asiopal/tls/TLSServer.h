@@ -29,7 +29,7 @@
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/LogRoot.h>
 
-#include <asio/ssl.hpp>
+#include "asiopal/tls/SSLContext.h"
 
 namespace asiopal
 {			
@@ -62,8 +62,8 @@ namespace asiopal
 		void StartAccept();
 		
 		/// inherited flass defines what to do with these callbacks
-		virtual bool AcceptConnection(const asio::ip::tcp::endpoint& remote) = 0;
-		virtual bool AcceptStream(std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>) = 0;
+		virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) = 0;
+		virtual void AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
 
 		/// Inherited class defines what happens when the server shuts down
 		virtual void OnShutdown() = 0;
@@ -80,11 +80,11 @@ namespace asiopal
 			
 	private:				
 		
-		asio::ssl::context m_ctx;
+		SSLContext m_ctx;
 		asio::ip::tcp::endpoint m_endpoint;		
 		asio::ip::tcp::acceptor m_acceptor;
-		
-		std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>> m_stream;
+				
+		uint64_t m_session_id;
 	};
 
 }

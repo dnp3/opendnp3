@@ -60,7 +60,7 @@ namespace asiopal
 		void StartAccept();
 		
 		/// inherited flass defines what to do with
-		virtual void AcceptConnection(asio::ip::tcp::socket) = 0;
+		virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) = 0;
 
 		/// Inherited class defines what happens when the server shuts down
 		virtual void OnShutdown() = 0;
@@ -78,6 +78,7 @@ namespace asiopal
 		asio::ip::tcp::endpoint m_endpoint;		
 		asio::ip::tcp::acceptor m_acceptor;
 		asio::ip::tcp::socket m_socket;		
+		uint64_t m_session_id;
 	};
 
 }

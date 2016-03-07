@@ -59,25 +59,21 @@ MasterTCPServer::MasterTCPServer(
 ) :
 	TCPServer(pool, std::move(root), endpoint, ec),
 	m_manager(&shutdown),
-	m_callbacks(callbacks),
-	m_accept_count(0)
+	m_callbacks(callbacks)	
 {
 
 }
 				
-void MasterTCPServer::AcceptConnection(asio::ip::tcp::socket socket)
+void MasterTCPServer::AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket socket)
 {
 	std::ostringstream oss;
-	oss << socket.remote_endpoint();
-
-	const auto SESSION_ID = m_accept_count;
-	++m_accept_count;
+	oss << socket.remote_endpoint();	
 	
-	if (m_callbacks->AcceptConnection(SESSION_ID, socket.remote_endpoint().address().to_string()))
+	if (m_callbacks->AcceptConnection(sessionid, socket.remote_endpoint().address().to_string()))
 	{
 		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());				
 
-		SocketSession::Create(m_root.Clone(SessionIdToString(SESSION_ID).c_str()), SESSION_ID, *m_manager, m_callbacks, StrandExecutor::Create(m_pool), std::move(socket));
+		SocketSession::Create(m_root.Clone(SessionIdToString(sessionid).c_str()), sessionid, *m_manager, m_callbacks, StrandExecutor::Create(m_pool), std::move(socket));
 	}
 	else
 	{		

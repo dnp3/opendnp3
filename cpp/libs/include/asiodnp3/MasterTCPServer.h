@@ -53,7 +53,6 @@ namespace asiodnp3
 
 		asiopal::IResourceManager* m_manager;
 		std::shared_ptr<IListenCallbacks> m_callbacks;		
-		uint64_t m_accept_count;
 
 		static std::string SessionIdToString(uint64_t sessionid);
 
@@ -66,7 +65,7 @@ namespace asiodnp3
 			std::error_code& ec
 		);
 				
-		virtual void AcceptConnection(asio::ip::tcp::socket) override;
+		virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) override;
 		virtual void OnShutdown() override;
 	};
 

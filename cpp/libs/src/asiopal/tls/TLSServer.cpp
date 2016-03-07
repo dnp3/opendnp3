@@ -35,21 +35,20 @@ namespace asiopal
 {
 
 	TLSServer::TLSServer(
-			std::shared_ptr<ThreadPool> pool,
-			openpal::LogRoot root,
-			IPEndpoint endpoint,
-			const TLSConfig& config, 
-			std::error_code& ec
+		std::shared_ptr<ThreadPool> pool,
+		openpal::LogRoot root,
+		IPEndpoint endpoint,
+		const TLSConfig& config,
+		std::error_code& ec
 		) :
 		m_pool(pool),
-		m_root(std::move(root)),		
-		m_ctx(asio::ssl::context_base::sslv23_server),
-		m_endpoint(ip::tcp::v4(), endpoint.port),		
-		m_acceptor(pool->GetIOService())
-	{
-		if (TLSHelpers::ApplyConfig(config, m_ctx, ec)) return;
-				
-		this->ConfigureListener(endpoint.address, ec);
+		m_root(std::move(root)),
+		m_ctx(asio::ssl::context_base::sslv23_server, config, ec),
+		m_endpoint(ip::tcp::v4(), endpoint.port),
+		m_acceptor(pool->GetIOService()),
+		m_session_id(0)		
+	{						
+		
 	}	
 
 	void TLSServer::BeginShutdown()
@@ -85,7 +84,9 @@ namespace asiopal
 	{
 		// this ensures that the TCPListener is never deleted during an active callback
 		auto self(shared_from_this());
-		auto accept_cb = [self](std::error_code ec) -> void
+		// this could be a unique_ptr once move semantics are supported in lambdas
+		auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(m_pool->GetIOService(), self->m_ctx.value);
+		auto accept_cb = [self, stream](std::error_code ec) -> void
 		{
 			if (ec)
 			{
@@ -93,35 +94,41 @@ namespace asiopal
 				self->OnShutdown();
 				return;
 			}
+				
+			const auto ID = self->m_session_id;
+			++self->m_session_id;
+
+			// begin accepting another session
+			self->StartAccept();
 						
-			
-			if (!self->AcceptConnection(self->m_stream->lowest_layer().remote_endpoint()))
+			if (!self->AcceptConnection(ID, stream->lowest_layer().remote_endpoint()))
 			{				
 				std::ostringstream oss;
-				oss << self->m_stream->lowest_layer().remote_endpoint();
+				oss << stream->lowest_layer().remote_endpoint();
 
 				FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "Remote endpoint rejected: %s", oss.str().c_str());
 
-				self->m_stream->lowest_layer().close();
-				self->StartAccept();
+				stream->lowest_layer().close();				
 				return;
 			}
-			
-			auto handshake_cb = [self](const std::error_code& ec) {
+
+			// at this point			
+						
+			auto handshake_cb = [stream, ID, self](const std::error_code& ec) {
 				if (ec) {
 					FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
 					return;
 				}
 
-				self->AcceptStream(std::move(self->m_stream));
+				self->AcceptStream(ID, stream);
 			};
 			
 			// Begin the TLS handshake
-			self->m_stream->async_handshake(asio::ssl::stream_base::server, handshake_cb);
+			stream->async_handshake(asio::ssl::stream_base::server, handshake_cb);
 		};
 
 
-		m_acceptor.async_accept(m_stream->lowest_layer(), accept_cb);
+		m_acceptor.async_accept(stream->lowest_layer(), accept_cb);
 	}	
 }
 
