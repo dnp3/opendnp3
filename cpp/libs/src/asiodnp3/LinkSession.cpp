@@ -53,6 +53,11 @@ namespace asiodnp3
 		
 	}
 
+	LinkSession::~LinkSession()
+	{
+		std::cout << "destroying link session" << std::endl;
+	}
+
 	std::shared_ptr<LinkSession> LinkSession::Create(
 		openpal::LogRoot logroot,
 		uint64_t sessionid,
@@ -164,11 +169,10 @@ namespace asiodnp3
 
 	void LinkSession::Start()
 	{
-		auto self(shared_from_this());
-		auto timeout = [self]()
+		auto timeout = [this]()
 		{
-			SIMPLE_LOG_BLOCK(self->m_log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
-			self->m_channel->BeginShutdown([self](){});
+			SIMPLE_LOG_BLOCK(this->m_log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
+			this->m_channel->BeginShutdown([](){});
 		};
 
 		m_first_frame_timer.Start(m_callbacks->GetFirstFrameTimeout(), timeout);
@@ -191,8 +195,12 @@ namespace asiodnp3
 								
 				self->m_manager->Unregister(self);
 
+				std::cout << "stack count: " << self->m_stack.use_count() << std::endl;
+
 				// release our reference to the stack				
-				self->m_stack.reset();				
+				self->m_stack.reset();	
+
+				std::cout << "session count: " << self.use_count() << std::endl;
 			}
 			else {
 				self->m_parser.OnRead(num, *self);
