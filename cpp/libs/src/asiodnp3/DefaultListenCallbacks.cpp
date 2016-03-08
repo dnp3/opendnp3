@@ -34,7 +34,7 @@ bool DefaultListenCallbacks::AcceptConnection(uint64_t sessionid, const std::str
 }
 
 bool DefaultListenCallbacks::AcceptCertificate(uint64_t sessionid, const X509Info& info)
-{
+{	
 	return true;
 }
 

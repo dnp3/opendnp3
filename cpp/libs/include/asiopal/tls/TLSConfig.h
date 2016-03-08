@@ -48,15 +48,18 @@ public:
 	TLSConfig(
 		const std::string& peerCertFilePath,
 		const std::string& localCertFilePath,
-		const std::string& privateKeyFilePath,		
+		const std::string& privateKeyFilePath,
+		int maxVerifyDepth = 0,
+		bool allowTLSv10 = true,
+		bool allowTLSv11 = true,
+		bool allowTLSv12 = true,
 		const std::string& cipherList = ""
 	);
 		
 
 	std::string peerCertFilePath;
 	std::string localCertFilePath;
-	std::string privateKeyFilePath;
-	std::string cipherList;
+	std::string privateKeyFilePath;	
 
 	/// max verification depth (defaults to 0 - peer certificate only)
 	int maxVerifyDepth;
@@ -69,6 +72,9 @@ public:
 
 	/// Allow TLS version 1.2 (default true)
 	bool allowTLSv12;
+
+	/// openssl format cipher list
+	std::string cipherList;
 
 };
 

@@ -28,16 +28,20 @@ namespace asiopal
 		const std::string& peerCertFilePath_,
 		const std::string& localCertFilePath_,
 		const std::string& privateKeyFilePath_,
+		int maxVerifyDepth_,
+		bool allowTLSv10_,
+		bool allowTLSv11_,
+		bool allowTLSv12_,
 		const std::string& cipherList_
 		) :
 			peerCertFilePath(peerCertFilePath_),
 			localCertFilePath(localCertFilePath_),
-			privateKeyFilePath(privateKeyFilePath_),
-			cipherList(cipherList_),
+			privateKeyFilePath(privateKeyFilePath_),			
 			maxVerifyDepth(0),
-			allowTLSv10(true),
-			allowTLSv11(true),
-			allowTLSv12(true)
+			allowTLSv10(allowTLSv10_),
+			allowTLSv11(allowTLSv11_),
+			allowTLSv12(allowTLSv12_),
+			cipherList(cipherList_)
 	{}
 
 }

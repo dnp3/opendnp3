@@ -37,13 +37,13 @@ class X509Info : private openpal::Uncopyable
 {
 	public:
 
-	X509Info(const openpal::RSlice thumbprint_, std::string subjectName_) :
-		thumbprint(thumbprint_),
+		X509Info(const openpal::RSlice sha1thumbprint_, std::string subjectName_) :
+		sha1thumbprint(sha1thumbprint_),
 		subjectName(subjectName_)
 	{}
 
 	// the sha1 thumbprint
-	openpal::RSlice thumbprint;
+	openpal::RSlice sha1thumbprint;
 
 	// the extracted subject name
 	std::string subjectName;
