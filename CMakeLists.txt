@@ -236,6 +236,11 @@ if(DEMO)
 	target_link_libraries (outstation-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
 	set_target_properties(outstation-tls-demo PROPERTIES FOLDER demos/tls)
 
+	# ----- master-gprs tls executable -----  
+	add_executable(master-gprs-tls-demo ./cpp/examples/tls/master-gprs/main.cpp)
+	target_link_libraries (master-gprs-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+	set_target_properties(master-gprs-tls-demo PROPERTIES FOLDER demos/tls)
+
   endif()
 
   if(SECAUTH)
