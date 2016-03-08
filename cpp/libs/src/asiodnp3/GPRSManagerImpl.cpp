@@ -24,7 +24,9 @@
 #include "asiodnp3/MasterTCPServer.h"
 #include "asiodnp3/ErrorCodes.h"
 
+#ifdef OPENDNP3_USE_TLS
 #include "asiodnp3/tls/MasterTLSServer.h"
+#endif
 
 #include "opendnp3/LogLevels.h"
 
@@ -73,6 +75,8 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	return server;	
 }
 
+#ifdef OPENDNP3_USE_TLS
+
 std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	std::string loggerid,
 	openpal::LogFilters loglevel,
@@ -107,6 +111,8 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	this->m_resources.push_back(server);
 	return server;
 }
+
+#endif
 
 void GPRSManagerImpl::BeginShutdown()
 {

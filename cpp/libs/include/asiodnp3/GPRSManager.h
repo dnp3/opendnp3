@@ -26,7 +26,9 @@
 #include <openpal/logging/ILogHandler.h>
 #include <asiodnp3/IListenCallbacks.h>
 
+#ifdef OPENDNP3_USE_TLS
 #include <asiopal/tls/TLSConfig.h>
+#endif
 
 #include <system_error>
 
@@ -68,6 +70,8 @@ public:
 		std::error_code& ec
 	);
 
+#ifdef OPENDNP3_USE_TLS
+
 	/**
 	* Create a TLS listener that will be used to accept incoming connections
 	*/
@@ -79,6 +83,7 @@ public:
 		std::shared_ptr<IListenCallbacks> callbacks,
 		std::error_code& ec
 	);
+#endif
 
 private:
 		

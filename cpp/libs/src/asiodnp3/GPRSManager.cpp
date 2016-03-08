@@ -54,6 +54,8 @@ std::shared_ptr<asiopal::IListener> GPRSManager::CreateListener(
 	return m_impl->CreateListener(loggerid, loglevel, endpoint, callbacks, ec);
 }
 
+#ifdef OPENDNP3_USE_TLS
+
 std::shared_ptr<asiopal::IListener> GPRSManager::CreateListener(
 		std::string loggerid,
 		openpal::LogFilters loglevel,
@@ -65,6 +67,8 @@ std::shared_ptr<asiopal::IListener> GPRSManager::CreateListener(
 {
 	return m_impl->CreateListener(loggerid, loglevel, endpoint, config, callbacks, ec);
 }
+
+#endif
 	
 }
 
