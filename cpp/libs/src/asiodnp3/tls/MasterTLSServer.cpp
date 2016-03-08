@@ -19,10 +19,13 @@
 * to you under the terms of the License.
 */
 
-#include "asiodnp3/MasterTLSServer.h"
+#include "asiodnp3/tls/MasterTLSServer.h"
+
+#include "asiodnp3/LinkSession.h"
+
+#include "asiopal/tls/TLSStreamChannel.h"
 
 #include <openpal/logging/LogMacros.h>
-
 #include <opendnp3/LogLevels.h>
 
 using namespace openpal;
@@ -102,7 +105,14 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 
 void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
-	
+	LinkSession::Create(
+		m_root.Clone(SessionIdToString(sessionid).c_str()),
+		sessionid,
+		*m_manager,
+		m_callbacks,
+		StrandExecutor::Create(m_pool),
+		TLSStreamChannel::Create(stream)
+	);
 }
 
 std::string MasterTLSServer::SessionIdToString(uint64_t sessionid)

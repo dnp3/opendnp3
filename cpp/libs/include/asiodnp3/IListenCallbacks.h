@@ -25,7 +25,7 @@
 #include <opendnp3/link/LinkHeaderFields.h>
 
 #include "asiodnp3/ISessionAcceptor.h"
-#include "asiodnp3/X509Info.h"
+#include "asiodnp3/tls/X509Info.h"
 
 namespace asiodnp3
 {
