@@ -44,7 +44,9 @@ std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
 	const TLSConfig& config,
 	std::error_code& ec)
 {
-	return std::shared_ptr<MasterTLSServer>(new MasterTLSServer(shutdown, callbacks, pool, std::move(root), endpoint, config, ec));
+	auto ret = std::shared_ptr<MasterTLSServer>(new MasterTLSServer(shutdown, callbacks, pool, std::move(root), endpoint, config, ec));
+	ret->StartAccept();
+	return ret;
 }
 
 MasterTLSServer::MasterTLSServer(
@@ -91,6 +93,7 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 
 	// lookup the subject name
 	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
+	// TODO - is this a reasonable limit?
 	char subjectName[256];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
 		

@@ -26,6 +26,8 @@
 #include <openpal/logging/ILogHandler.h>
 #include <asiodnp3/IListenCallbacks.h>
 
+#include <asiopal/tls/TLSConfig.h>
+
 #include <system_error>
 
 namespace asiodnp3
@@ -62,9 +64,21 @@ public:
 		std::string loggerid,
 		openpal::LogFilters loglevel,
 		asiopal::IPEndpoint endpoint,
+		std::shared_ptr<IListenCallbacks> callbacks,		
+		std::error_code& ec
+	);
+
+	/**
+	* Create a TLS listener that will be used to accept incoming connections
+	*/
+	std::shared_ptr<asiopal::IListener> CreateListener(
+		std::string loggerid,
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		const asiopal::TLSConfig& config,
 		std::shared_ptr<IListenCallbacks> callbacks,
 		std::error_code& ec
-	);	
+	);
 
 private:
 		

@@ -32,6 +32,8 @@
 #include <asiodnp3/IListenCallbacks.h>
 
 
+#include <asiopal/tls/TLSConfig.h>
+
 #include <cstdint>
 #include <memory>
 #include <mutex>
@@ -55,6 +57,15 @@ public:
 		std::string loggerid,
 		openpal::LogFilters loglevel,
 		asiopal::IPEndpoint endpoint,
+		std::shared_ptr<IListenCallbacks> callbacks,
+		std::error_code& ec
+	);
+
+	std::shared_ptr<asiopal::IListener> CreateListener(
+		std::string loggerid,
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		const asiopal::TLSConfig& config,
 		std::shared_ptr<IListenCallbacks> callbacks,
 		std::error_code& ec
 	);

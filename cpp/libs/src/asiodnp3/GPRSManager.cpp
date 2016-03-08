@@ -53,6 +53,18 @@ std::shared_ptr<asiopal::IListener> GPRSManager::CreateListener(
 {
 	return m_impl->CreateListener(loggerid, loglevel, endpoint, callbacks, ec);
 }
+
+std::shared_ptr<asiopal::IListener> GPRSManager::CreateListener(
+		std::string loggerid,
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		const asiopal::TLSConfig& config,
+		std::shared_ptr<IListenCallbacks> callbacks,
+		std::error_code& ec
+	)
+{
+	return m_impl->CreateListener(loggerid, loglevel, endpoint, config, callbacks, ec);
+}
 	
 }
 
