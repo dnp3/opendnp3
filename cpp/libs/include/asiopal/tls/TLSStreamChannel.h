@@ -18,20 +18,21 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_SOCKETCHANNEL_H
-#define ASIOPAL_SOCKETCHANNEL_H
+#ifndef ASIOPAL_TLSSTREAMCHANNEL_H
+#define ASIOPAL_TLSSTREAMCHANNEL_H
 
-#include "IAsyncChannel.h"
+#include "asiopal/IAsyncChannel.h"
 
 #include <asio.hpp>
+#include <asio/ssl.hpp>
 
 namespace asiopal
 {				
-	class SocketChannel final : public IAsyncChannel
+	class TLSStreamChannel final : public IAsyncChannel
 	{
 	public:
 
-		static std::unique_ptr<IAsyncChannel> Create(asio::ip::tcp::socket socket);
+		static std::unique_ptr<IAsyncChannel> Create(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
 		
 		virtual void BeginRead(openpal::WSlice& buffer, const ReadCallbackT& callback) override;
 		virtual void BeginWrite(const openpal::RSlice& buffer, const WriteCallbackT& callback)  override;
@@ -39,9 +40,9 @@ namespace asiopal
 
 	private:
 
-		SocketChannel(asio::ip::tcp::socket socket);
+		TLSStreamChannel(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
 
-		asio::ip::tcp::socket m_socket;
+		std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> m_stream;
 	
 	};
 }

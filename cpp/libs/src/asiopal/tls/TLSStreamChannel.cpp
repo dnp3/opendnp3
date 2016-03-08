@@ -18,32 +18,39 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_SOCKETCHANNEL_H
-#define ASIOPAL_SOCKETCHANNEL_H
 
-#include "IAsyncChannel.h"
-
-#include <asio.hpp>
+#include "asiopal/tls/TLSStreamChannel.h"
 
 namespace asiopal
-{				
-	class SocketChannel final : public IAsyncChannel
-	{
-	public:
+{
 
-		static std::unique_ptr<IAsyncChannel> Create(asio::ip::tcp::socket socket);
+TLSStreamChannel::TLSStreamChannel(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) : m_stream(stream)
+{}
+
+std::unique_ptr<IAsyncChannel> TLSStreamChannel::Create(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
+{
+	return std::unique_ptr<IAsyncChannel>(new TLSStreamChannel(stream));
+}
 		
-		virtual void BeginRead(openpal::WSlice& buffer, const ReadCallbackT& callback) override;
-		virtual void BeginWrite(const openpal::RSlice& buffer, const WriteCallbackT& callback)  override;
-		virtual void BeginShutdown(const ShutdownCallbackT& callback)  override;
-
-	private:
-
-		SocketChannel(asio::ip::tcp::socket socket);
-
-		asio::ip::tcp::socket m_socket;
-	
-	};
+void TLSStreamChannel::BeginRead(openpal::WSlice& dest, const ReadCallbackT& callback)
+{
+	m_stream->async_read_some(asio::buffer(dest, dest.Size()), callback);
 }
 
-#endif
+void TLSStreamChannel::BeginWrite(const openpal::RSlice& data, const WriteCallbackT& callback)
+{
+	asio::async_write(*m_stream, asio::buffer(data, data.Size()), callback);
+}
+
+void TLSStreamChannel::BeginShutdown(const ShutdownCallbackT& callback)
+{
+	// TODO - should we perform an async shutdown on the TLS stream?	
+	std::error_code ec;
+	m_stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec);
+	m_stream->lowest_layer().close(ec);
+	callback();
+}
+
+}
+
+

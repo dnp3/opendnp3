@@ -23,7 +23,10 @@
 
 #include <functional>
 #include <system_error>
+
 #include <openpal/container/WSlice.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace asiopal
 {			
@@ -31,7 +34,7 @@ namespace asiopal
 	typedef std::function<void (const std::error_code& ec, std::size_t num)> WriteCallbackT;
 	typedef std::function<void ()> ShutdownCallbackT;
 
-	class IAsyncChannel
+	class IAsyncChannel : private openpal::Uncopyable
 	{
 	public:
 		virtual ~IAsyncChannel() {}
