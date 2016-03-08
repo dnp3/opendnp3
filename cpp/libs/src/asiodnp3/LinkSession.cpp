@@ -104,8 +104,7 @@ namespace asiodnp3
 	}
 
 	bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
-	{
-		auto self(shared_from_this());
+	{		
 		if (m_stack)
 		{
 			m_stack->OnFrame(header, userdata);
@@ -126,6 +125,7 @@ namespace asiodnp3
 			else
 			{
 				SIMPLE_LOG_BLOCK(m_log_root.logger, flags::WARN, "No master created. Closing socket.");
+				auto self(shared_from_this());
 				this->m_channel->BeginShutdown([self](){});
 			}			
 		}

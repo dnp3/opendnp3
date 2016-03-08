@@ -23,9 +23,15 @@
 
 namespace asiopal
 {
+	std::unique_ptr<IAsyncChannel> SocketChannel::Create(asio::ip::tcp::socket socket)
+	{
+		return std::unique_ptr<IAsyncChannel>(new SocketChannel(std::move(socket)));
+	}
 
 	SocketChannel::SocketChannel(asio::ip::tcp::socket socket) : m_socket(std::move(socket))
-	{}
+	{
+	
+	}
 
 	void SocketChannel::BeginRead(openpal::WSlice& dest, const ReadCallbackT& callback)
 	{

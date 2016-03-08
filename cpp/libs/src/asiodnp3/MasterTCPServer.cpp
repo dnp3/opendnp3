@@ -74,8 +74,15 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket
 	if (m_callbacks->AcceptConnection(sessionid, socket.remote_endpoint().address().to_string()))
 	{
 		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());				
-		std::unique_ptr<IAsyncChannel> channel = std::make_unique<SocketChannel>(std::move(socket));
-		LinkSession::Create(m_root.Clone(SessionIdToString(sessionid).c_str()), sessionid, *m_manager, m_callbacks, StrandExecutor::Create(m_pool), std::move(channel));
+		
+		LinkSession::Create(
+			m_root.Clone(SessionIdToString(sessionid).c_str()), 
+			sessionid, 
+			*m_manager,
+			m_callbacks, 
+			StrandExecutor::Create(m_pool), 
+			SocketChannel::Create(std::move(socket))
+		);
 	}
 	else
 	{		
