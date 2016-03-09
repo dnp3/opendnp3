@@ -74,8 +74,8 @@ IChannel* DNP3Manager::AddTCPClient(
     const std::string& local,
     uint16_t port)
 {
-	auto root = std::make_unique<LogRoot>(&impl->fanout, id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerTCPClient>(root->logger, impl->threadpool.GetIOService(), host, local, port);	
+	auto root = std::unique_ptr<LogRoot>(new LogRoot(&impl->fanout, id, levels));
+	auto phys = std::unique_ptr<asiopal::PhysicalLayerTCPClient>(new asiopal::PhysicalLayerTCPClient(root->logger, impl->threadpool.GetIOService(), host, local, port));
 	return impl->channels.CreateChannel(std::move(root), retry, std::move(phys), impl->crypto);
 }
 
@@ -86,8 +86,10 @@ IChannel* DNP3Manager::AddTCPServer(
     const std::string& endpoint,
     uint16_t port)
 {
-	auto root = std::make_unique<LogRoot>(&impl->fanout, id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerTCPServer>(root->logger, impl->threadpool.GetIOService(), endpoint, port);
+	auto root = std::unique_ptr<LogRoot>(new LogRoot(&impl->fanout, id, levels));
+	auto phys = std::unique_ptr<asiopal::PhysicalLayerTCPServer>(
+		new asiopal::PhysicalLayerTCPServer(root->logger, impl->threadpool.GetIOService(), endpoint, port)
+	);
 	return impl->channels.CreateChannel(std::move(root), retry, std::move(phys), impl->crypto);
 }
 
@@ -97,8 +99,10 @@ IChannel* DNP3Manager::AddSerial(
 	const opendnp3::ChannelRetry& retry,
 	asiopal::SerialSettings settings)
 {
-	auto root = std::make_unique<LogRoot>(&impl->fanout, id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerSerial>(root->logger, impl->threadpool.GetIOService(), settings);
+	auto root = std::unique_ptr<LogRoot>(new LogRoot(&impl->fanout, id, levels));
+	auto phys = std::unique_ptr<asiopal::PhysicalLayerSerial>(
+		new asiopal::PhysicalLayerSerial(root->logger, impl->threadpool.GetIOService(), settings)
+	);
 	return impl->channels.CreateChannel(std::move(root), retry, std::move(phys), impl->crypto);
 }
 
@@ -114,9 +118,10 @@ IChannel* DNP3Manager::AddTLSClient(
 	const asiopal::TLSConfig& config,
 	std::error_code& ec)
 {
-	auto root = std::make_unique<LogRoot>(&impl->fanout, id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerTLSClient>(root->logger, impl->threadpool.GetIOService(), host, local, port, config, ec);
-	auto& executor = phys->executor;
+	auto root = std::unique_ptr<LogRoot>(new LogRoot(&impl->fanout, id, levels));
+	auto phys = std::unique_ptr<asiopal::PhysicalLayerTLSClient>(
+		new asiopal::PhysicalLayerTLSClient(root->logger, impl->threadpool.GetIOService(), host, local, port, config, ec)
+	);	
 	return ec ? nullptr : impl->channels.CreateChannel(std::move(root), retry, std::move(phys), impl->crypto);
 }
 
@@ -129,8 +134,10 @@ IChannel* DNP3Manager::AddTLSServer(
 	const asiopal::TLSConfig& config,
 	std::error_code& ec)
 {
-	auto root = std::make_unique<LogRoot>(&impl->fanout, id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerTLSServer>(root->logger, impl->threadpool.GetIOService(), endpoint, port, config, ec);
+	auto root = std::unique_ptr<LogRoot>(new LogRoot(&impl->fanout, id, levels));
+	auto phys = std::unique_ptr<asiopal::PhysicalLayerTLSServer>(
+		new asiopal::PhysicalLayerTLSServer(root->logger, impl->threadpool.GetIOService(), endpoint, port, config, ec)
+	);
 	return ec ? nullptr : impl->channels.CreateChannel(std::move(root), retry, std::move(phys), impl->crypto);
 }
 
