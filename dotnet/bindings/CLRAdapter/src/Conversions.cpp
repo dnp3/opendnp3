@@ -264,6 +264,14 @@ namespace Automatak
 				return asiopal::IPEndpoint(ConvertString(endpoint->address), endpoint->port);
 			}
 
+			X509Info^ Conversions::Convert(const asiodnp3::X509Info& info)
+			{				
+				return gcnew X509Info(
+					Conversions::Convert(info.sha1thumbprint),
+					Conversions::ConvertString(info.subjectName)
+				);
+			}
+
 			asiopal::SerialSettings Conversions::ConvertSerialSettings(SerialSettings^ settings)
 			{
 				asiopal::SerialSettings s;
@@ -302,24 +310,17 @@ namespace Automatak
 			}
 			
 			asiopal::TLSConfig Conversions::Convert(TLSConfig^ config)
-			{
-				auto peerCert = Conversions::ConvertString(config->peerCertFilePath);
-				auto localCert = Conversions::ConvertString(config->localCertFilePath);
-				auto privateKey = Conversions::ConvertString(config->privateKeyFilePath);
-				auto cipherList = Conversions::ConvertString(config->cipherList);
-
-				asiopal::TLSConfig ret(
-					peerCert,
-					localCert,
-					privateKey,
-					cipherList
+			{				
+				return asiopal::TLSConfig(
+					Conversions::ConvertString(config->peerCertFilePath),
+					Conversions::ConvertString(config->localCertFilePath),
+					Conversions::ConvertString(config->privateKeyFilePath),
+					config->maxVerifyDepth,
+					config->allowTLSv10,
+					config->allowTLSv11,
+					config->allowTLSv12,
+					Conversions::ConvertString(config->cipherList)
 				);
-
-				ret.allowTLSv10 = config->allowTLSv10;
-				ret.allowTLSv11 = config->allowTLSv11;
-				ret.allowTLSv12 = config->allowTLSv12;
-
-				return ret;
 			}
 
 

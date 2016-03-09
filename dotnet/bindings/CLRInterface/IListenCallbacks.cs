@@ -31,6 +31,8 @@ namespace Automatak.DNP3.Interface
     {        
         bool AcceptConnection(UInt64 sessionid, string ipaddress);
 
+        bool AcceptCertificate(UInt64 sessionid, X509Info info);
+
         TimeSpan GetFirstFrameTimeout();
 
         void OnFirstFrame(UInt64 sessionid, LinkHeader header, ISessionAcceptor acceptor);

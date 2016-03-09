@@ -16,6 +16,11 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 		return m_proxy->AcceptConnection(sessionid, Conversions::ConvertString(ipaddress));
 	}
 
+	bool ListenCallbacksAdapter::AcceptCertificate(uint64_t sessionid, const asiodnp3::X509Info& info)
+	{
+		return m_proxy->AcceptCertificate(sessionid, Conversions::Convert(info));
+	}
+
 	openpal::TimeDuration ListenCallbacksAdapter::GetFirstFrameTimeout()
 	{
 		return Conversions::ConvertTimespan(m_proxy->GetFirstFrameTimeout());

@@ -28,8 +28,13 @@ using System.Threading.Tasks;
 namespace Automatak.DNP3.Interface
 {   
     public class DefaultListenCallbacks : IListenCallbacks
-    {      
+    {
         public bool AcceptConnection(UInt64 sessionid, string ipaddress)
+        {
+            return true;
+        }
+
+        public bool AcceptCertificate(UInt64 sessionid, X509Info info)
         {
             return true;
         }

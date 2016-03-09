@@ -38,6 +38,7 @@
 #include <asiopal/SerialTypes.h>
 #include <asiopal/IPEndpoint.h>
 #include <asiopal/tls/TLSConfig.h>
+#include <asiodnp3/tls/X509Info.h>
 
 using namespace System::Collections::Generic;
 using namespace Automatak::DNP3::Interface;
@@ -134,7 +135,9 @@ namespace Automatak
 				static opendnp3::AnalogCommandEvent ConvertMeas(AnalogCommandEvent^ meas);
 
 				static LinkHeader^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields);
-				static asiopal::IPEndpoint Convert(IPEndpoint^ endpoint);
+				static asiopal::IPEndpoint Convert(IPEndpoint^ endpoint);				
+
+				static X509Info^ Convert(const asiodnp3::X509Info& info);
 
 				//Convert the configuration types
 				static asiopal::SerialSettings ConvertSerialSettings(SerialSettings^ settings);
