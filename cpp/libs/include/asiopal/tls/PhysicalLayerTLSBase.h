@@ -22,9 +22,8 @@
 #ifndef ASIOPAL_PHYSICAL_LAYER_TLS_BASE_H
 #define ASIOPAL_PHYSICAL_LAYER_TLS_BASE_H
 
-#include <asiopal/PhysicalLayerASIO.h>
-
-#include "asiopal/tls/TLSConfig.h"
+#include "asiopal/PhysicalLayerASIO.h"
+#include "asiopal/tls/SSLContext.h"
 
 #include <asio.hpp>
 #include <asio/ip/tcp.hpp>
@@ -44,7 +43,8 @@ public:
 		openpal::Logger logger,
 		asio::io_service& service,
 		const TLSConfig& config,
-		asio::ssl::context_base::method method		
+		asio::ssl::context_base::method method,
+		std::error_code& ec
 	);
 
 	virtual ~PhysicalLayerTLSBase() {}
@@ -60,9 +60,8 @@ protected:
 
 	bool LogPeerCertificateInfo(bool preverified, asio::ssl::verify_context& ctx);
 	
-	asio::ssl::context ctx;
-	
-	std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;	
+	SSLContext ctx;	
+	asio::ssl::stream<asio::ip::tcp::socket> stream;	
 
 	void ShutdownTLSStream();
 	void ShutdownSocket();

@@ -21,8 +21,6 @@
 
 #include "asiopal/tls/PhysicalLayerTLSBase.h"
 
-#include "asiopal/tls/TLSHelpers.h"
-
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
@@ -37,25 +35,19 @@ namespace asiopal
 			openpal::Logger logger,
 			asio::io_service& service,			
 			const TLSConfig& config,
-			asio::ssl::context_base::method method) :
+			asio::ssl::context_base::method method,
+			std::error_code& ec) :
 
 		PhysicalLayerASIO(logger, service),
-		ctx(method)
-	{
-		std::error_code ec;
-		TLSHelpers::ApplyConfig(config, ctx, ec);
-		asio::detail::throw_error(ec, "apply_config");	// TODO rework this so that constuctor returns ec
-
-		ctx.set_verify_callback(
+		ctx(method, config, ec),
+		stream(service, ctx.value)
+	{		
+		stream.set_verify_callback(
 			[this](bool preverified, asio::ssl::verify_context& ctx)
 			{
 				return this->LogPeerCertificateInfo(preverified, ctx);
 			}
 		);
-
-		/// Now with all of this configured, we can create the stream class
-		/// The order is important since the socket object inerhits all the settings from the context
-		this->stream = std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>(new asio::ssl::stream<asio::ip::tcp::socket>(service, ctx));		
 	}
 
 	bool PhysicalLayerTLSBase::LogPeerCertificateInfo(bool preverified, asio::ssl::verify_context& ctx)
@@ -90,7 +82,7 @@ namespace asiopal
 			this->OnReadCallback(ec, pBuff, static_cast<uint32_t>(numRead));
 		};
 
-		stream->async_read_some(buffer(pBuff, dest.Size()), executor.strand.wrap(callback));
+		stream.async_read_some(buffer(pBuff, dest.Size()), executor.strand.wrap(callback));
 	}
 	
 	void PhysicalLayerTLSBase::DoWrite(const openpal::RSlice& data)
@@ -100,7 +92,7 @@ namespace asiopal
 			this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));
 		};
 		
-		async_write(*stream, buffer(data, data.Size()), executor.strand.wrap(callback));
+		async_write(stream, buffer(data, data.Size()), executor.strand.wrap(callback));
 	}
 	
 	void PhysicalLayerTLSBase::DoOpenFailure()
@@ -113,7 +105,7 @@ namespace asiopal
 	void PhysicalLayerTLSBase::ShutdownTLSStream()
 	{		
 		std::error_code ec;
-		stream->shutdown(ec);
+		stream.shutdown(ec);
 		if (ec)
 		{
 			FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error while shutting down TLS stream: %s", ec.message().c_str());
@@ -124,7 +116,7 @@ namespace asiopal
 	{
 
 		std::error_code ec;
-		stream->lowest_layer().shutdown(ip::tcp::socket::shutdown_both, ec);
+		stream.lowest_layer().shutdown(ip::tcp::socket::shutdown_both, ec);
 		if (ec)
 		{
 			FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error shutting down socket: %s", ec.message().c_str());
@@ -134,7 +126,7 @@ namespace asiopal
 	void PhysicalLayerTLSBase::CloseSocket()
 	{
 		std::error_code ec;
-		stream->lowest_layer().close(ec);			
+		stream.lowest_layer().close(ec);			
 		if (ec)
 		{
 			FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error closing socket: %s", ec.message().c_str());

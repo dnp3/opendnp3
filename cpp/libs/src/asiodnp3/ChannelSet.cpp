@@ -48,13 +48,12 @@ void ChannelSet::Shutdown()
 }
 
 IChannel* ChannelSet::CreateChannel(
-    openpal::LogRoot* pLogRoot,
-    asiopal::ASIOExecutor& executor,
+	std::unique_ptr<LogRoot> root,    
 	const ChannelRetry& retry,
-    PhysicalLayerBase* apPhys,
+	std::unique_ptr<asiopal::PhysicalLayerASIO> phys,
     openpal::ICryptoProvider* pCrypto)
 {
-	auto pChannel = new DNP3Channel(pLogRoot, executor, retry, apPhys, pCrypto);
+	auto pChannel = new DNP3Channel(std::move(root), retry, std::move(phys), pCrypto);
 	auto onShutdown = [this, pChannel]()
 	{
 		this->OnShutdown(pChannel);

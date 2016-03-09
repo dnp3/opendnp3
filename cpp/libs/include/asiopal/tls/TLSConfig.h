@@ -37,7 +37,7 @@ public:
 	/**
 	* Construct a TLS configuration
 	*
-	* @param peerCertFilePath Certificate file used to verify the server. Can be CA file or a self - signed cert provided by other party
+	* @param peerCertFilePath Certificate file used to verify the peer or server. Can be CA file or a self-signed cert provided by other party.
 	* @param localCertFilePath File that contains the certificate (or certificate chain) that will be presented to the remote side of the connection
 	* @param privateKeyFilePath File that contains the private key corresponding to the local certificate
 	* @param cipherList The openssl cipher-list, defaults to "" which does not modify the default cipher list

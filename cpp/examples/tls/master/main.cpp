@@ -59,6 +59,8 @@ int main(int argc, char* argv[])
 	// send log messages to the console
 	manager.AddLogSubscriber(ConsoleLogger::Instance());	
 
+	std::error_code ec;
+
 	// Connect via a TCPClient socket to a outstation
 	auto pChannel = manager.AddTLSClient(
 		"tls-client", 
@@ -67,8 +69,14 @@ int main(int argc, char* argv[])
 		"127.0.0.1", 
 		"0.0.0.0", 
 		20001, 
-		TLSConfig(peerCertificate, privateKey, privateKey)
+		TLSConfig(peerCertificate, privateKey, privateKey),
+		ec
 	);
+
+	if (ec) {
+		std::cout << "Unable to create tls client: " << ec.message() << std::endl;
+		return ec.value();
+	}
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console

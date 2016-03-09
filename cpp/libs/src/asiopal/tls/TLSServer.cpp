@@ -20,7 +20,6 @@
 */
 
 #include "asiopal/tls/TLSServer.h"
-#include "asiopal/tls/TLSHelpers.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <opendnp3/LogLevels.h>

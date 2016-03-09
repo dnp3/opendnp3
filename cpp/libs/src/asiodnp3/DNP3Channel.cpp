@@ -42,23 +42,20 @@ namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
-    LogRoot* pLogRoot_,
-    asiopal::ASIOExecutor& executor,
+	std::unique_ptr<LogRoot> root_,    
     const ChannelRetry& retry,
-    openpal::IPhysicalLayer* pPhys_,
+	std::unique_ptr<asiopal::PhysicalLayerASIO> phys_,
     openpal::ICryptoProvider* pCrypto_) :
 
-	pPhys(pPhys_),
+	phys(std::move(phys_)),
 	pCrypto(pCrypto_),
-	pLogRoot(pLogRoot_),
-	pExecutor(&executor),
-	logger(pLogRoot->logger),
+	root(std::move(root_)),	
 	pShutdownHandler(nullptr),
 	channelState(ChannelState::CLOSED),
-	router(pLogRoot->logger, executor, pPhys.get(), retry, this, &statistics),
-	stacks(router, executor)
+	router(root->logger, phys->executor, phys.get(), retry, this, &statistics),
+	stacks(router, phys->executor)
 {
-	pPhys->SetChannelStatistics(&statistics);
+	phys->SetChannelStatistics(&statistics);
 
 	auto onShutdown = [this]()
 	{
@@ -84,7 +81,7 @@ void DNP3Channel::AddStateListener(const std::function<void(opendnp3::ChannelSta
 		this->callbacks.push_back(listener);
 		listener(channelState);
 	};
-	pExecutor->strand.post(lambda);
+	phys->executor.strand.post(lambda);
 }
 
 // comes from the outside, so we need to synchronize
@@ -98,11 +95,11 @@ void DNP3Channel::Shutdown()
 	{
 		this->InitiateShutdown(blocking);
 	};
-	pExecutor->strand.post(initiate);
+	phys->executor.strand.post(initiate);
 	blocking.WaitForValue();
 
 	// With the router shutdown, wait for any remaining timers
-	pExecutor->WaitForShutdown();
+	phys->executor.WaitForShutdown();
 
 	shutdownHandler.Apply();
 }
@@ -113,7 +110,7 @@ LinkChannelStatistics DNP3Channel::GetChannelStatistics()
 	{
 		return statistics;
 	};
-	return pExecutor->ReturnBlockFor<LinkChannelStatistics>(get);
+	return phys->executor.ReturnBlockFor<LinkChannelStatistics>(get);
 }
 
 void DNP3Channel::InitiateShutdown(asiopal::Synchronized<bool>& handler)
@@ -135,18 +132,18 @@ openpal::LogFilters DNP3Channel::GetLogFilters() const
 {
 	auto get = [this]()
 	{
-		return pLogRoot->GetFilters();
+		return root->GetFilters();
 	};
-	return pExecutor->ReturnBlockFor<LogFilters>(get);
+	return phys->executor.ReturnBlockFor<LogFilters>(get);
 }
 
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 {
 	auto set = [this, filters]()
 	{
-		this->pLogRoot->SetFilters(filters);
+		root->SetFilters(filters);
 	};
-	pExecutor->BlockFor(set);
+	phys->executor.BlockFor(set);
 }
 
 IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMasterApplication& application, const MasterStackConfig& config)
@@ -155,13 +152,13 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	{
 		auto factory = [&]()
 		{
-			return new MasterStack(pLogRoot->Clone(id), *pExecutor, SOEHandler, application, config, stacks, taskLock);
+			return new MasterStack(root->Clone(id), phys->executor, SOEHandler, application, config, stacks, taskLock);
 		};
 
 		return this->AddStack<MasterStack>(config.link, factory);
 	};
 
-	return pExecutor->ReturnBlockFor<IMaster*>(add);
+	return phys->executor.ReturnBlockFor<IMaster*>(add);
 }
 
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
@@ -170,13 +167,13 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 	{
 		auto factory = [&]()
 		{
-			return new OutstationStack(pLogRoot->Clone(id), *pExecutor, commandHandler, application, config, stacks);
+			return new OutstationStack(root->Clone(id), phys->executor, commandHandler, application, config, stacks);
 		};
 
 		return this->AddStack<OutstationStack>(config.link, factory);
 	};
 
-	return pExecutor->ReturnBlockFor<IOutstation*>(add);
+	return phys->executor.ReturnBlockFor<IOutstation*>(add);
 }
 
 void DNP3Channel::SetShutdownHandler(const openpal::Action0& action)
@@ -190,7 +187,7 @@ T* DNP3Channel::AddStack(const opendnp3::LinkConfig& link, const std::function<T
 	Route route(link.RemoteAddr, link.LocalAddr);
 	if (router.IsRouteInUse(route))
 	{
-		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
+		FORMAT_LOG_BLOCK(root->logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
 		return nullptr;
 	}
 	else
@@ -212,7 +209,7 @@ IMasterSA* DNP3Channel::AddMasterSA(char const* id,
 {
 	if (!pCrypto)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Manager was not initialized with a crypto provider");
+		SIMPLE_LOG_BLOCK(root->logger, flags::ERR, "Manager was not initialized with a crypto provider");
 		return nullptr;
 	}
 
@@ -221,13 +218,13 @@ IMasterSA* DNP3Channel::AddMasterSA(char const* id,
 	{
 		auto factory = [&]()
 		{
-			return new MasterStackSA(pLogRoot->Clone(id), *pExecutor, SOEHandler, application, config, stacks, taskLock, *pCrypto);
+			return new MasterStackSA(root->Clone(id), phys->executor, SOEHandler, application, config, stacks, taskLock, *pCrypto);
 		};
 
 		return this->AddStack<MasterStackSA>(config.link, factory);
 	};
 
-	return pExecutor->ReturnBlockFor<IMasterSA*>(add);
+	return phys->executor.ReturnBlockFor<IMasterSA*>(add);
 }
 
 IOutstationSA* DNP3Channel::AddOutstationSA(char const* id,
@@ -237,7 +234,7 @@ IOutstationSA* DNP3Channel::AddOutstationSA(char const* id,
 {
 	if (!pCrypto)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Manager was not initialized with a crypto provider");
+		SIMPLE_LOG_BLOCK(root->logger, flags::ERR, "Manager was not initialized with a crypto provider");
 		return nullptr;
 	}
 
@@ -245,13 +242,13 @@ IOutstationSA* DNP3Channel::AddOutstationSA(char const* id,
 	{
 		auto factory = [&]()
 		{
-			return new OutstationStackSA(pLogRoot->Clone(id), *pExecutor, commandHandler, application, config, stacks, *pCrypto);
+			return new OutstationStackSA(root->Clone(id), phys->executor, commandHandler, application, config, stacks, *pCrypto);
 		};
 
 		return this->AddStack<OutstationStackSA>(config.link, factory);
 	};
 
-	return pExecutor->ReturnBlockFor<IOutstationSA*>(add);
+	return phys->executor.ReturnBlockFor<IOutstationSA*>(add);
 }
 
 #endif

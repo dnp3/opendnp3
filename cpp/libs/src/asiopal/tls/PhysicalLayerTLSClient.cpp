@@ -22,7 +22,6 @@
 #include "asiopal/tls/PhysicalLayerTLSClient.h"
 
 #include "asiopal/SocketHelpers.h"
-#include "asiopal/tls/TLSHelpers.h"
 
 using namespace asio;
 using namespace asiopal;
@@ -36,9 +35,10 @@ namespace asiopal
 		const std::string& host_,
 		const std::string& localAddress_,
 		uint16_t port,
-		const TLSConfig& config
+		const TLSConfig& config,
+		std::error_code& ec
 	) :
-			PhysicalLayerTLSBase(logger, service, config, ssl::context_base::sslv23_client),
+			PhysicalLayerTLSBase(logger, service, config, ssl::context_base::sslv23_client, ec),
 			condition(logger),
 			host(host_),
 			localAddress(localAddress_),
@@ -53,7 +53,7 @@ namespace asiopal
 	void PhysicalLayerTLSClient::DoOpen()
 	{
 		std::error_code ec;
-		SocketHelpers::BindToLocalAddress(localAddress, localEndpoint, this->stream->lowest_layer(), ec);
+		SocketHelpers::BindToLocalAddress(localAddress, localEndpoint, this->stream.lowest_layer(), ec);
 		if (ec)
 		{
 			auto callback = [this, ec]()
@@ -82,7 +82,7 @@ namespace asiopal
 				this->HandleConnectResult(ec);
 			};
 
-			stream->lowest_layer().async_connect(remoteEndpoint, executor.strand.wrap(callback));			
+			stream.lowest_layer().async_connect(remoteEndpoint, executor.strand.wrap(callback));			
 		}
 
 	}
@@ -112,7 +112,7 @@ namespace asiopal
 				this->HandleConnectResult(code);
 			};
 
-			asio::async_connect(stream->lowest_layer(), endpoints, condition, executor.strand.wrap(callback));
+			asio::async_connect(stream.lowest_layer(), endpoints, condition, executor.strand.wrap(callback));
 		}
 	}
 
@@ -129,7 +129,7 @@ namespace asiopal
 				this->OnOpenCallback(code);
 			};
 
-			this->stream->async_handshake(asio::ssl::stream_base::client, executor.strand.wrap(callback));
+			this->stream.async_handshake(asio::ssl::stream_base::client, executor.strand.wrap(callback));
 		}
 	}
 	

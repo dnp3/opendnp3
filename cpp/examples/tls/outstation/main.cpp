@@ -73,6 +73,8 @@ int main(int argc, char* argv[])
 	// send log messages to the console
 	manager.AddLogSubscriber(ConsoleLogger::Instance());
 
+	std::error_code ec;
+
 	// Create a TCP server (listener)
 	auto pChannel = manager.AddTLSServer(
 		"server",
@@ -80,8 +82,14 @@ int main(int argc, char* argv[])
 		ChannelRetry::Default(),
 		"0.0.0.0",
 		20001, 
-		TLSConfig(peerCertificate, privateKey, privateKey)
+		TLSConfig(peerCertificate, privateKey, privateKey),
+		ec
 	);
+
+	if (ec) {
+		std::cout << "Unable to create tls server: " << ec.message() << std::endl;
+		return ec.value();
+	}
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console

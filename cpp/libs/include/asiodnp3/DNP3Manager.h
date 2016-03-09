@@ -146,6 +146,7 @@ public:
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
 	* @param config TLS configuration information	
+	* @param An error code. If set, a nullptr will be returned
 	* @return A channel interface
 	*/
 	IChannel* AddTLSClient(
@@ -155,7 +156,8 @@ public:
 		const std::string& host,
 		const std::string& local,
 		uint16_t port,
-		const asiopal::TLSConfig& config);
+		const asiopal::TLSConfig& config,
+		std::error_code& ec);
 
 	/**
 	* Add a TLS server channel
@@ -168,6 +170,7 @@ public:
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param config TLS configuration information	
+	* @param An error code. If set, a nullptr will be returned
 	* @return A channel interface
 	*/
 	IChannel* AddTLSServer(
@@ -176,7 +179,8 @@ public:
 		const opendnp3::ChannelRetry& retry,
 		const std::string& endpoint,
 		uint16_t port,
-		const asiopal::TLSConfig& config);
+		const asiopal::TLSConfig& config,
+		std::error_code& ec);
 
 #endif
 
