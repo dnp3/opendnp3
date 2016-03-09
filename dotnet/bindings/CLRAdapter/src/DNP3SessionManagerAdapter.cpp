@@ -48,6 +48,26 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 		return gcnew ListenerAdapter(listener.get());
 	}
 
+	IListener^ DNP3SessionManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, IPEndpoint^ endpoint, TLSConfig^ config, IListenCallbacks^ callbacks)
+	{
+		auto id = Conversions::ConvertString(loggerid);
+		auto levels = openpal::LogFilters(filters);
+		auto ep = Conversions::Convert(endpoint);
+		auto tlsConfig = Conversions::Convert(config);
+		auto cb = std::shared_ptr<asiodnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
+
+		std::error_code ec;
+		auto listener = manager->CreateListener(id, levels, ep, tlsConfig, cb, ec);
+
+		if (ec)
+		{
+			throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
+		}
+
+		return gcnew ListenerAdapter(listener.get());
+	}
+
+
 }}}
 
 

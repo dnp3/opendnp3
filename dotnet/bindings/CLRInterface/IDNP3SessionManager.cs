@@ -47,5 +47,16 @@ namespace Automatak.DNP3.Interface
         /// <param name="callbacks"></param>
         /// <returns>A listener which can be canceled</returns>        
         IListener CreateListener(string loggerid, UInt32 filters, IPEndpoint endpoint, IListenCallbacks callbacks);
+
+        /// <summary>
+        /// Create a new TLS listener an bind it to the specified callback interface
+        /// </summary>
+        /// <param name="loggerid"></param>
+        /// <param name="filters"></param>
+        /// <param name="endpoint"></param>
+        /// <param name="config"></param>
+        /// <param name="callbacks"></param>
+        /// <returns>A listener which can be canceled</returns>        
+        IListener CreateListener(string loggerid, UInt32 filters, IPEndpoint endpoint, TLSConfig config, IListenCallbacks callbacks);
     }
 }
