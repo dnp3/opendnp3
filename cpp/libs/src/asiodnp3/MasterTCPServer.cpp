@@ -47,7 +47,9 @@ std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 )
 {
 	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(shutdown, callbacks, pool, std::move(root), endpoint, ec));
-	ret->StartAccept();
+	if (!ec) {
+		ret->StartAccept();
+	}
 	return ret;
 }
 

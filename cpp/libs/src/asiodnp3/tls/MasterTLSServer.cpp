@@ -45,7 +45,9 @@ std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
 	std::error_code& ec)
 {
 	auto ret = std::shared_ptr<MasterTLSServer>(new MasterTLSServer(shutdown, callbacks, pool, std::move(root), endpoint, config, ec));
-	ret->StartAccept();
+	if (!ec) {
+		ret->StartAccept();
+	}
 	return ret;
 }
 

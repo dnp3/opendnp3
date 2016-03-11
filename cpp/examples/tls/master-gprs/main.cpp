@@ -34,16 +34,19 @@ using namespace opendnp3;
 
 int main(int argc, char* argv[])
 {
-	if (argc != 3)
+	if (argc != 4)
 	{
-		std::cout << "usage: master-gprs-tls-demo <peer certificate> <private key/certificate>" << std::endl;
+		std::cout << "usage: master-gprs-tls-demo <ca certificate> <certificate chain> <private key>" << std::endl;
 		return -1;
 	}
 
-	std::string peerCertificate(argv[1]);
-	std::string privateKey(argv[2]);
+	std::string caCertificate(argv[1]);
+	std::string certificateChain(argv[2]);
+	std::string privateKey(argv[3]);
+	
 
-	std::cout << "Using peer cert: " << peerCertificate << std::endl;
+	std::cout << "Using CA certificate: " << caCertificate << std::endl;
+	std::cout << "Using certificate chain: " << certificateChain << std::endl;
 	std::cout << "Using private key file: " << privateKey << std::endl;	
 
 	// Specify what log levels to use. NORMAL is warning and above
@@ -64,8 +67,8 @@ int main(int argc, char* argv[])
 		FILTERS,
 		IPEndpoint::AllAdapters(20001), 
 		TLSConfig(
-			peerCertificate, 
-			privateKey,
+			caCertificate, 
+			certificateChain,
 			privateKey,
 			2,
 			true, true, true

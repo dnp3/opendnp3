@@ -60,7 +60,7 @@ namespace asiopal
 		}
 
 		// verify the peer certificate
-		if (value.set_verify_mode(asio::ssl::verify_peer, ec)) return ec;
+		if (value.set_verify_mode(asio::ssl::verify_fail_if_no_peer_cert, ec)) return ec;		
 
 		// The public certificate file used to verify the peer
 		if (value.load_verify_file(config.peerCertFilePath, ec)) return ec;

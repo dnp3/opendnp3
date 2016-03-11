@@ -47,7 +47,9 @@ namespace asiopal
 		m_acceptor(pool->GetIOService()),
 		m_session_id(0)		
 	{	
-				
+		if (!ec) {
+			this->ConfigureListener(endpoint.address, ec);
+		}
 	}	
 
 	void TLSServer::BeginShutdown()
