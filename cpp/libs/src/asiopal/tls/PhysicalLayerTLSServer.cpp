@@ -40,7 +40,7 @@ PhysicalLayerTLSServer::PhysicalLayerTLSServer(
     const TLSConfig& config,
 	std::error_code& ec) :
 
-	PhysicalLayerTLSBase(logger, service, config, asio::ssl::context_base::sslv23_server, ec),
+	PhysicalLayerTLSBase(logger, service, config, true, ec),
 	localEndpointString(endpoint),
 	localEndpoint(ip::tcp::v4(), port),
 	acceptor(service)	

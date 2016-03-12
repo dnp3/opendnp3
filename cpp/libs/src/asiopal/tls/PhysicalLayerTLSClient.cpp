@@ -38,7 +38,7 @@ namespace asiopal
 		const TLSConfig& config,
 		std::error_code& ec
 	) :
-			PhysicalLayerTLSBase(logger, service, config, ssl::context_base::sslv23_client, ec),
+			PhysicalLayerTLSBase(logger, service, config, false, ec),
 			condition(logger),
 			host(host_),
 			localAddress(localAddress_),

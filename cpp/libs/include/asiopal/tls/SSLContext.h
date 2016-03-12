@@ -37,13 +37,13 @@ namespace asiopal
 
 	public:	
 
-		SSLContext(asio::ssl::context_base::method method, const TLSConfig& cfg, std::error_code&);		
+		SSLContext(bool server, const TLSConfig& cfg, std::error_code&);		
 
 		asio::ssl::context value;
 
 	private:
 
-		std::error_code ApplyConfig(const TLSConfig& config, std::error_code& ec);
+		std::error_code ApplyConfig(const TLSConfig& config, bool server, std::error_code& ec);
 	};
 
 }

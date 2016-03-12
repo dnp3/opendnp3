@@ -42,14 +42,14 @@ namespace asiopal
 		) :
 		m_pool(pool),
 		m_root(std::move(root)),
-		m_ctx(asio::ssl::context_base::sslv23_server, config, ec),
+		m_ctx(true, config, ec),
 		m_endpoint(ip::tcp::v4(), endpoint.port),
 		m_acceptor(pool->GetIOService()),
 		m_session_id(0)		
-	{	
+	{			
 		if (!ec) {
 			this->ConfigureListener(endpoint.address, ec);
-		}
+		}		
 	}	
 
 	void TLSServer::BeginShutdown()
@@ -81,7 +81,7 @@ namespace asiopal
 		return ec;
 	}		
 		
-	void TLSServer::StartAccept()
+	void TLSServer::StartAccept(std::error_code& ec)
 	{
 		const auto ID = this->m_session_id;
 		++this->m_session_id;
@@ -90,15 +90,17 @@ namespace asiopal
 		auto self(shared_from_this());
 
 		// this could be a unique_ptr once move semantics are supported in lambdas
-		auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(m_pool->GetIOService(), self->m_ctx.value);
+		auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(m_pool->GetIOService(), self->m_ctx.value);	
 
 		auto verify = [this, ID](bool preverified, asio::ssl::verify_context& ctx)
 		{
 			return this->VerifyCallback(ID, preverified, ctx);
 		};
 
-		stream->set_verify_callback(verify);
-
+		if (!ec) {
+			stream->set_verify_callback(verify, ec);
+		}
+		
 		auto accept_cb = [self, stream, ID](std::error_code ec) -> void
 		{
 			if (ec)
@@ -109,7 +111,7 @@ namespace asiopal
 			}			
 
 			// begin accepting another session
-			self->StartAccept();
+			self->StartAccept(ec);
 						
 			if (!self->AcceptConnection(ID, stream->lowest_layer().remote_endpoint()))
 			{				
@@ -137,8 +139,9 @@ namespace asiopal
 			stream->async_handshake(asio::ssl::stream_base::server, handshake_cb);
 		};
 
-
-		m_acceptor.async_accept(stream->lowest_layer(), accept_cb);
+		if (!ec) {
+			m_acceptor.async_accept(stream->lowest_layer(), accept_cb);
+		}
 	}	
 }
 

@@ -59,7 +59,7 @@ namespace asiopal
 			std::error_code& ec
 		);
 
-		void StartAccept();
+		void StartAccept(std::error_code& ec);
 		
 		/// inherited flass defines what to do with these callbacks
 		virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) = 0;

@@ -70,8 +70,7 @@ int main(int argc, char* argv[])
 			caCertificate, 
 			certificateChain,
 			privateKey,
-			2,
-			true, true, true
+			2			
 		),
 		callbacks, 
 		ec

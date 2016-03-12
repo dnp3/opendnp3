@@ -35,11 +35,11 @@ namespace asiopal
 			openpal::Logger logger,
 			asio::io_service& service,			
 			const TLSConfig& config,
-			asio::ssl::context_base::method method,
+			bool server,
 			std::error_code& ec) :
 
 		PhysicalLayerASIO(logger, service),
-		ctx(method, config, ec),
+		ctx(server, config, ec),
 		stream(service, ctx.value)
 	{		
 		stream.set_verify_callback(

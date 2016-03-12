@@ -23,12 +23,13 @@
 
 namespace asiopal
 {			
-	SSLContext::SSLContext(asio::ssl::context_base::method method, const TLSConfig& config, std::error_code& ec) : value(method)
+	SSLContext::SSLContext(bool server, const TLSConfig& config, std::error_code& ec) : 
+		value(server ? asio::ssl::context_base::sslv23_server : asio::ssl::context_base::sslv23_client)
 	{
-		this->ApplyConfig(config, ec);
+		this->ApplyConfig(config, server, ec);
 	}
 
-	std::error_code SSLContext::ApplyConfig(const TLSConfig& config, std::error_code& ec)
+	std::error_code SSLContext::ApplyConfig(const TLSConfig& config, bool server, std::error_code& ec)
 	{
 		auto OPTIONS = asio::ssl::context::default_workarounds | asio::ssl::context::no_sslv2 | asio::ssl::context::no_sslv3;
 
@@ -59,8 +60,11 @@ namespace asiopal
 			}
 		}
 
+		//auto mode = server ? asio::ssl::verify_fail_if_no_peer_cert : asio::ssl::verify_peer;
+		auto mode = asio::ssl::verify_peer;
+
 		// verify the peer certificate
-		if (value.set_verify_mode(asio::ssl::verify_fail_if_no_peer_cert, ec)) return ec;		
+		if (value.set_verify_mode(mode, ec)) return ec;
 
 		// The public certificate file used to verify the peer
 		if (value.load_verify_file(config.peerCertFilePath, ec)) return ec;

@@ -21,6 +21,8 @@
 
 #include "asiodnp3/DefaultListenCallbacks.h"
 
+#include <sstream>
+
 namespace asiodnp3
 {
 
@@ -35,6 +37,11 @@ bool DefaultListenCallbacks::AcceptConnection(uint64_t sessionid, const std::str
 
 bool DefaultListenCallbacks::AcceptCertificate(uint64_t sessionid, const X509Info& info)
 {	
+	std::cout << "session: " << sessionid << " fingerprint size : " << info.sha1thumbprint.Size() << std::endl;
+	for (uint32_t i = 0; i < info.sha1thumbprint.Size(); ++i) {
+		std::cout << std::hex << static_cast<int>(info.sha1thumbprint[i]) << ":";
+	}
+	std::cout << std::dec << std::endl;
 	return true;
 }
 

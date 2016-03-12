@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 	auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
 
 	// do a Class 1 exception poll every 5 seconds
-	auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(2));
+	auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(2));	
 
 	// Enable the master. This will start communications.
 	pMaster->Enable();

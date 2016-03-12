@@ -46,7 +46,7 @@ std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
 {
 	auto ret = std::shared_ptr<MasterTLSServer>(new MasterTLSServer(shutdown, callbacks, pool, std::move(root), endpoint, config, ec));
 	if (!ec) {
-		ret->StartAccept();
+		ret->StartAccept(ec);
 	}
 	return ret;
 }
@@ -98,6 +98,8 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	// TODO - is this a reasonable limit?
 	char subjectName[256];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
+
+	FORMAT_LOG_BLOCK(this->m_root.logger, flags::INFO, "Verified certificate: %s", subjectName);
 		
 	return this->m_callbacks->AcceptCertificate(
 		sessionid, 

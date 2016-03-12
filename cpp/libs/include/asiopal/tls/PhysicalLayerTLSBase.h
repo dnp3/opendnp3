@@ -43,7 +43,7 @@ public:
 		openpal::Logger logger,
 		asio::io_service& service,
 		const TLSConfig& config,
-		asio::ssl::context_base::method method,
+		bool server,		
 		std::error_code& ec
 	);
 
