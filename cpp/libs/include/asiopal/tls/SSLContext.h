@@ -43,6 +43,8 @@ namespace asiopal
 
 	private:
 
+		static int GetVerifyMode(bool server);
+
 		std::error_code ApplyConfig(const TLSConfig& config, bool server, std::error_code& ec);
 	};
 

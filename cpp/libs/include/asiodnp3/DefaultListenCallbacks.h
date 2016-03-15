@@ -25,9 +25,6 @@
 #include "asiodnp3/PrintingSOEHandler.h"
 #include "asiodnp3/DefaultMasterApplication.h"
 
-#include <iostream>
-#include <mutex>
-
 namespace asiodnp3
 {
 

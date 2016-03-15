@@ -21,8 +21,6 @@
 
 #include "asiodnp3/DefaultListenCallbacks.h"
 
-#include <sstream>
-
 namespace asiodnp3
 {
 
@@ -36,12 +34,7 @@ bool DefaultListenCallbacks::AcceptConnection(uint64_t sessionid, const std::str
 }
 
 bool DefaultListenCallbacks::AcceptCertificate(uint64_t sessionid, const X509Info& info)
-{	
-	std::cout << "session: " << sessionid << " fingerprint size : " << info.sha1thumbprint.Size() << std::endl;
-	for (uint32_t i = 0; i < info.sha1thumbprint.Size(); ++i) {
-		std::cout << std::hex << static_cast<int>(info.sha1thumbprint[i]) << ":";
-	}
-	std::cout << std::dec << std::endl;
+{			
 	return true;
 }
 
@@ -67,8 +60,7 @@ void DefaultListenCallbacks::OnFirstFrame(uint64_t sessionid, const opendnp3::Li
 }
 
 void DefaultListenCallbacks::OnSessionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session)
-{
-	std::cout << "Session close: " << sessionid << std::endl;
+{	
 	// full implementations would drop any references they're holding to this session
 	// shared_ptr can be used with == operator also
 }

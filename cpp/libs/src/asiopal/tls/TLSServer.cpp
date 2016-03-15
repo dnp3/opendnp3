@@ -49,7 +49,7 @@ namespace asiopal
 	{			
 		if (!ec) {
 			this->ConfigureListener(endpoint.address, ec);
-		}		
+		}				
 	}	
 
 	void TLSServer::BeginShutdown()
@@ -90,14 +90,15 @@ namespace asiopal
 		auto self(shared_from_this());
 
 		// this could be a unique_ptr once move semantics are supported in lambdas
-		auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(m_pool->GetIOService(), self->m_ctx.value);	
-
-		auto verify = [this, ID](bool preverified, asio::ssl::verify_context& ctx)
-		{
-			return this->VerifyCallback(ID, preverified, ctx);
-		};
-
+		auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(m_pool->GetIOService(), self->m_ctx.value);			
+		
 		if (!ec) {
+
+			auto verify = [this, ID](bool preverified, asio::ssl::verify_context& ctx)
+			{
+				return this->VerifyCallback(ID, preverified, ctx);
+			};
+
 			stream->set_verify_callback(verify, ec);
 		}
 		

@@ -59,9 +59,7 @@ namespace asiodnp3
 		);
 		
 		// override IResource
-		void BeginShutdown() override;
-
-		~LinkSession();
+		void BeginShutdown() override;		
 
 	private:		
 

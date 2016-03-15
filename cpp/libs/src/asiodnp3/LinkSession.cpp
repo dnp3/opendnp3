@@ -25,8 +25,6 @@
 
 #include <opendnp3/LogLevels.h>
 
-#include <iostream>
-
 using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
@@ -51,12 +49,7 @@ namespace asiodnp3
 			m_channel(std::move(channel))
 	{
 		
-	}
-
-	LinkSession::~LinkSession()
-	{
-		std::cout << "destroying link session" << std::endl;
-	}
+	}	
 
 	std::shared_ptr<LinkSession> LinkSession::Create(
 		openpal::LogRoot logroot,
@@ -194,13 +187,9 @@ namespace asiodnp3
 				}				
 								
 				self->m_manager->Unregister(self);
-
-				std::cout << "stack count: " << self->m_stack.use_count() << std::endl;
-
+				
 				// release our reference to the stack				
-				self->m_stack.reset();	
-
-				std::cout << "session count: " << self.use_count() << std::endl;
+				self->m_stack.reset();					
 			}
 			else {
 				self->m_parser.OnRead(num, *self);

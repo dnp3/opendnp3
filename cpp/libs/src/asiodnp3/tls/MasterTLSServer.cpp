@@ -94,10 +94,9 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	if (!preverified) return preverified;
 
 	// lookup the subject name
-	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
-	// TODO - is this a reasonable limit?
-	char subjectName[256];
-	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
+	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());	
+	char subjectName[512];
+	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 512);	
 
 	FORMAT_LOG_BLOCK(this->m_root.logger, flags::INFO, "Verified certificate: %s", subjectName);
 		
