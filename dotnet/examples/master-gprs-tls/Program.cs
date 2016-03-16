@@ -28,7 +28,7 @@ namespace DotNetMasterGPRSDemo
             var listener = manager.CreateListener(
                 "listener", 
                 LogLevels.ALL,
-                IPEndpoint.Localhost(20000),
+                IPEndpoint.Localhost(20001),
                 new TLSConfig(caCertificate, certificateChain, privateKey),
                 new DefaultListenCallbacks()
             );

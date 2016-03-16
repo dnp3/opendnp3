@@ -39,10 +39,10 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 
 		std::error_code ec;
 		auto listener = manager->CreateListener(id, levels, ep, cb, ec);
-
+		
 		if (ec)
 		{
-			throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
+			throw gcnew System::Exception("An error occured configuring your TCP listener. Check you log.");
 		}
 
 		return gcnew ListenerAdapter(listener.get());
@@ -61,7 +61,7 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 
 		if (ec)
 		{
-			throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
+			throw gcnew System::Exception("An error occured configuring your TLS listener. Check you log.");
 		}
 
 		return gcnew ListenerAdapter(listener.get());
