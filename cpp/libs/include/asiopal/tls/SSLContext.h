@@ -24,6 +24,7 @@
 #include "asiopal/tls/TLSConfig.h"
 
 #include <openpal/util/Uncopyable.h>
+#include <openpal/logging/Logger.h>
 
 #include <asio/ssl.hpp>
 
@@ -37,11 +38,14 @@ namespace asiopal
 
 	public:	
 
-		SSLContext(bool server, const TLSConfig& cfg, std::error_code&);		
+		SSLContext(openpal::Logger logger, bool server, const TLSConfig& cfg, std::error_code&);		
 
+		
 		asio::ssl::context value;
 
 	private:
+
+		openpal::Logger m_logger;
 
 		static int GetVerifyMode(bool server);
 

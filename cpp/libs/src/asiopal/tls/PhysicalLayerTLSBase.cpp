@@ -39,7 +39,7 @@ namespace asiopal
 			std::error_code& ec) :
 
 		PhysicalLayerASIO(logger, service),
-		ctx(server, config, ec),
+		ctx(logger, server, config, ec),
 		stream(service, ctx.value)
 	{		
 		stream.set_verify_callback(

@@ -42,7 +42,7 @@ namespace asiopal
 		) :
 		m_pool(pool),
 		m_root(std::move(root)),
-		m_ctx(true, config, ec),
+		m_ctx(m_root.logger, true, config, ec),
 		m_endpoint(ip::tcp::v4(), endpoint.port),
 		m_acceptor(pool->GetIOService()),
 		m_session_id(0)		
