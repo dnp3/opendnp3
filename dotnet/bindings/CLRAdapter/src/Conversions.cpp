@@ -267,6 +267,7 @@ namespace Automatak
 			X509Info^ Conversions::Convert(const asiodnp3::X509Info& info)
 			{				
 				return gcnew X509Info(
+					info.depth,
 					Conversions::Convert(info.sha1thumbprint),
 					Conversions::ConvertString(info.subjectName)
 				);
