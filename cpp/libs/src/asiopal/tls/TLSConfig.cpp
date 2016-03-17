@@ -37,7 +37,7 @@ namespace asiopal
 			peerCertFilePath(peerCertFilePath_),
 			localCertFilePath(localCertFilePath_),
 			privateKeyFilePath(privateKeyFilePath_),			
-			maxVerifyDepth(0),
+			maxVerifyDepth(maxVerifyDepth_),
 			allowTLSv10(allowTLSv10_),
 			allowTLSv11(allowTLSv11_),
 			allowTLSv12(allowTLSv12_),

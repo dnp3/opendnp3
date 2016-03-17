@@ -67,6 +67,11 @@ namespace asiopal
 			return ec;
 		}
 
+		if (value.set_verify_depth(config.maxVerifyDepth, ec)) {
+			FORMAT_LOG_BLOCK(m_logger, flags::ERR, "Error calling ssl::context::set_verify_depth(..): %s", ec.message().c_str());
+			return ec;
+		}
+
 		// optionally, configure the cipher-list
 		if (!config.cipherList.empty())
 		{
