@@ -40,6 +40,10 @@ public:
 	* @param peerCertFilePath Certificate file used to verify the peer or server. Can be CA file or a self-signed cert provided by other party.
 	* @param localCertFilePath File that contains the certificate (or certificate chain) that will be presented to the remote side of the connection
 	* @param privateKeyFilePath File that contains the private key corresponding to the local certificate
+	* @param maxVerifyDepth The maximum certificate chain verification depth (0 == self-signed only)
+	* @param allowTLSv10 Allow TLS version 1.0 (default false)
+	* @param allowTLSv11 Allow TLS version 1.1 (default false)
+	* @param allowTLSv12 Allow TLS version 1.2 (default true)
 	* @param cipherList The openssl cipher-list, defaults to "" which does not modify the default cipher list
 	*
 	* localCertFilePath and privateKeyFilePath can optionally be the same file, i.e. a PEM that contains both pieces of data.
@@ -50,24 +54,28 @@ public:
 		const std::string& localCertFilePath,
 		const std::string& privateKeyFilePath,
 		int maxVerifyDepth = 0,
-		bool allowTLSv10 = true,
-		bool allowTLSv11 = true,
+		bool allowTLSv10 = false,
+		bool allowTLSv11 = false,
 		bool allowTLSv12 = true,
 		const std::string& cipherList = ""
 	);
 		
-
+	/// Certificate file used to verify the peer or server. Can be CA file or a self-signed cert provided by other party.
 	std::string peerCertFilePath;
+
+	/// File that contains the certificate (or certificate chain) that will be presented to the remote side of the connection
 	std::string localCertFilePath;
+	
+	/// File that contains the private key corresponding to the local certificate
 	std::string privateKeyFilePath;	
 
 	/// max verification depth (defaults to 0 - peer certificate only)
 	int maxVerifyDepth;
 
-	/// Allow TLS version 1.0 (default true)
+	/// Allow TLS version 1.0 (default false)
 	bool allowTLSv10;
 
-	/// Allow TLS version 1.1 (default true)
+	/// Allow TLS version 1.1 (default false)
 	bool allowTLSv11;
 
 	/// Allow TLS version 1.2 (default true)

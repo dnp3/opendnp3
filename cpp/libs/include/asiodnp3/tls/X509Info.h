@@ -37,10 +37,14 @@ class X509Info : private openpal::Uncopyable
 {
 	public:
 
-		X509Info(const openpal::RSlice sha1thumbprint_, std::string subjectName_) :
+		X509Info(int depth_, const openpal::RSlice sha1thumbprint_, std::string subjectName_) :
+		depth(depth_),
 		sha1thumbprint(sha1thumbprint_),
 		subjectName(subjectName_)
 	{}
+
+	// the depth of the certificate in the chain
+	int depth;
 
 	// the sha1 thumbprint
 	openpal::RSlice sha1thumbprint;
