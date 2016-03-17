@@ -42,6 +42,9 @@ namespace asiopal
 
 	std::error_code SSLContext::ApplyConfig(const TLSConfig& config, bool server, std::error_code& ec)
 	{		
+		// turn off session caching completely
+		SSL_CTX_set_session_cache_mode(value.native_handle(), SSL_SESS_CACHE_OFF);
+
 		auto OPTIONS = asio::ssl::context::default_workarounds | asio::ssl::context::no_sslv2 | asio::ssl::context::no_sslv3 | SSL_OP_NO_TICKET;		
 
 		if (!config.allowTLSv10)
