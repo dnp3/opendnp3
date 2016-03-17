@@ -63,7 +63,7 @@ private:
 
 	virtual MasterTaskType GetTaskType() const override
 	{
-		return MasterTaskType::USER_TASK;
+		return MasterTaskType::CLEAR_RESTART;
 	}
 
 	virtual bool IsEnabled() const override
