@@ -25,8 +25,8 @@ namespace Automatak.DNP3.Interface
             string localCertFilePath,
             string privateKeyFilePath,
             int maxVerifyDepth = 0,
-            bool allowTLSv10 = true,
-            bool allowTLSv11 = true,
+            bool allowTLSv10 = false,
+            bool allowTLSv11 = false,
             bool allowTLSv12 = true,
             string cipherList = ""
         )
@@ -47,10 +47,10 @@ namespace Automatak.DNP3.Interface
         
         public readonly int maxVerifyDepth;
 
-        /// 
+        /// Allow TLS version 1.0 (default false)
         public readonly bool allowTLSv10;
 
-        /// Allow TLS version 1.1 (default true)
+        /// Allow TLS version 1.1 (default false)
         public readonly bool allowTLSv11;
 
         /// Allow TLS version 1.2 (default true)

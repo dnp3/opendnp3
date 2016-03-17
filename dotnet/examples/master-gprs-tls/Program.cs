@@ -29,7 +29,7 @@ namespace DotNetMasterGPRSDemo
                 "listener", 
                 LogLevels.ALL,
                 IPEndpoint.Localhost(20001),
-                new TLSConfig(caCertificate, certificateChain, privateKey),
+                new TLSConfig(caCertificate, certificateChain, privateKey, 2),
                 new DefaultListenCallbacks()
             );
 
