@@ -42,7 +42,6 @@ public:
 private:
 
 	bool AddIfNotContained(IScheduleCallback&);
-
 	
 	std::set<IScheduleCallback*> m_callback_set;
 	std::deque<IScheduleCallback*> m_callback_queue;
