@@ -108,14 +108,14 @@ private:
 
 		auto collection = Map<Indexed<Source>, Indexed<Target>>(values, transform);
 
-		return this->LoadValues(record, ModeFromType(record.enumeration), HasFlags(record.enumeration), collection);
+		return this->LoadValues(record, ModeFromType(record.enumeration), collection);
 	}
 
 	template <class T>
-	IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, bool flagsValid, const ICollection<Indexed<T>>& values)
+	IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, const ICollection<Indexed<T>>& values)
 	{
 		this->CheckForTxStart();
-		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, flagsValid, record.headerIndex);
+		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerIndex);
 		this->pSOEHandler->Process(info, values);
 		return IINField();
 	}
@@ -164,7 +164,7 @@ IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const IC
 
 	auto adjusted = Map<Indexed<T>, Indexed<T>>(values, transform);
 
-	return this->LoadValues(record, MODE, HasFlags(record.enumeration), adjusted);
+	return this->LoadValues(record, MODE, adjusted);
 }
 
 }
