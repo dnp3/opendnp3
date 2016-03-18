@@ -10,6 +10,7 @@ object Group11 extends ObjectGroup {
   def objects = List(Group11Var0, Group11Var1, Group11Var2)
   def group: Byte = 11
   def desc: String = "Binary Output Event"
+  def isEventGroup: Boolean = true
 }
 
 object Group11Var0 extends AnyVariation(Group11, 0)

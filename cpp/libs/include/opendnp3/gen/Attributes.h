@@ -28,6 +28,7 @@ namespace opendnp3 {
 bool HasAbsoluteTime(GroupVariation gv);
 bool HasRelativeTime(GroupVariation gv);
 bool HasFlags(GroupVariation gv);
+bool IsEvent(GroupVariation gv);
 
 }
 

@@ -10,6 +10,7 @@ object Group50 extends ObjectGroup {
   def objects = List(Group50Var1, Group50Var4)
   def group: Byte = 50
   def desc: String = "Time and Date"
+  def isEventGroup: Boolean = false
 }
 
 object Group50Var1 extends FixedSize(Group50, 1, "Absolute Time")(time48)

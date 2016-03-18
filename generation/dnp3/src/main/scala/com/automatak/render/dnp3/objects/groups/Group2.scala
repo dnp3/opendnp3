@@ -10,6 +10,7 @@ object Group2 extends ObjectGroup {
   val objects = List(Group2Var0, Group2Var1, Group2Var2, Group2Var3)
   def group: Byte = 2
   def desc: String = "Binary Input Event"
+  def isEventGroup: Boolean = true
 }
 
 object Group2Var0 extends AnyVariation(Group2, 0)

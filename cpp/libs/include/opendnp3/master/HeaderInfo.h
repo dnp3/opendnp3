@@ -64,6 +64,7 @@ public:
 	QualifierCode qualifier;
 	/// Enumeration that provides information about the validity of timestamps on the associated objects
 	TimestampMode tsmode;
+
 	/// True if the flags on the value were present on underlying type, false if online is just assumed 
 	bool flagsValid;
 	/// The 0-based index of the header within the ASDU

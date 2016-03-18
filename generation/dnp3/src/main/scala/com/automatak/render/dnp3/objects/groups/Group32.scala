@@ -11,6 +11,7 @@ object Group32 extends ObjectGroup {
   def objects = List(Group32Var0, Group32Var1, Group32Var2, Group32Var3, Group32Var4, Group32Var5, Group32Var6, Group32Var7, Group32Var8)
   def group: Byte = 32
   def desc: String = "Analog Input Event"
+  def isEventGroup: Boolean = true
 }
 
 object Group32Var0 extends AnyVariation(Group32, 0)
