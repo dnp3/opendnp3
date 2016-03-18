@@ -63,17 +63,44 @@ namespace Automatak.DNP3.Interface
 
     public class HeaderInfo
     {
-        public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampMode tsmode, UInt32 headerIndex)
+        public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampMode tsmode, bool isEvent, bool flagsValid, UInt32 headerIndex)
         {
             this.variation = variation;
             this.qualifier = qualifier;
             this.tsmode = tsmode;
+            this.isEvent = isEvent;
+            this.flagsValid = flagsValid;
             this.headerIndex = headerIndex;
         }
         
+        /// <summary>
+        /// An enum representing the group and variation for this header
+        /// </summary>
         public readonly GroupVariation variation;
+
+        /// <summary>
+        /// The qualifier code used for this header
+        /// </summary>
         public readonly QualifierCode qualifier;
+
+        /// <summary>
+        /// An enumeration describing the validity of the timestamp on the measurements
+        /// </summary>
         public readonly TimestampMode tsmode;
+
+        /// <summary>
+        /// True if this qualifier is an event type
+        /// </summary>
+        public readonly bool isEvent;
+        
+        /// <summary>
+        /// True if the flags/quality on the measurements are valid
+        /// </summary>
+        public readonly bool flagsValid;
+
+        /// <summary>
+        /// The index of the header (0-based) within the ASDU
+        /// </summary>
         public readonly UInt32 headerIndex;
     }
 
