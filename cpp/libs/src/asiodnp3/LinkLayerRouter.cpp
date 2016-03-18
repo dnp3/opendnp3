@@ -329,6 +329,8 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 		pPhys->BeginRead(buff);
 	}
 
+	taskLock.SetOnline();
+
 	for (auto & rec : records)
 	{
 		if (rec.enabled)
@@ -346,6 +348,8 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 	// Drop frames queued for transmit and tell the contexts that the router has closed
 	isTransmitting = false;
 	transmitQueue.clear();
+
+	taskLock.SetOffline();
 
 	for (auto & rec : records)
 	{

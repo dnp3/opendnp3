@@ -155,7 +155,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	{
 		auto factory = [&]()
 		{
-			return new MasterStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock);
+			return new MasterStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, router.GetTaskLock());
 		};
 
 		return this->AddStack<MasterStack>(config.link, factory);
@@ -221,7 +221,7 @@ IMasterSA* DNP3Channel::AddMasterSA(char const* id,
 	{
 		auto factory = [&]()
 		{
-			return new MasterStackSA(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, *pCrypto);
+			return new MasterStackSA(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, router.GetTaskLock(), *pCrypto);
 		};
 
 		return this->AddStack<MasterStackSA>(config.link, factory);

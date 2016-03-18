@@ -23,13 +23,17 @@
 namespace opendnp3
 {
 
-MultidropTaskLock::MultidropTaskLock() : m_active(nullptr)
+MultidropTaskLock::MultidropTaskLock() : m_is_online(false), m_active(nullptr)
 {
 
 }
 
 bool MultidropTaskLock::Acquire(IScheduleCallback& callback)
 {	
+	if (!m_is_online) {
+		return false;
+	}
+
 	if (m_active)
 	{
 		if (&callback == m_active)
@@ -41,9 +45,11 @@ bool MultidropTaskLock::Acquire(IScheduleCallback& callback)
 		this->AddIfNotContained(callback);
 		return false;		
 	}
-
-	m_active = &callback;
-	return true;	
+	else 
+	{
+		m_active = &callback;
+		return true;
+	}	
 }
 
 bool MultidropTaskLock::Release(IScheduleCallback& callback)
@@ -55,11 +61,15 @@ bool MultidropTaskLock::Release(IScheduleCallback& callback)
 
 	m_active = nullptr;
 
-	if (m_callback_queue.empty())
+	if (!m_is_online) 
 	{
 		return true;
 	}
 
+	if (m_callback_queue.empty())
+	{
+		return true;
+	}
 
 	m_active = m_callback_queue.front();
 	m_callback_queue.pop_front();

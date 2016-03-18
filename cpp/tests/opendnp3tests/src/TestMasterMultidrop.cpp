@@ -35,6 +35,7 @@ using namespace opendnp3;
 TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 {
 	MultidropTaskLock taskLock;
+	taskLock.SetOnline();
 
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
@@ -73,6 +74,7 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock"))
 {
 	MultidropTaskLock taskLock;
+	taskLock.SetOnline();
 
 	MasterParams params;
 	params.disableUnsolOnStartup = false;

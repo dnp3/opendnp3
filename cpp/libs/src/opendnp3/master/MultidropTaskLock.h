@@ -29,20 +29,24 @@
 namespace opendnp3
 {
 
-class MultidropTaskLock: public opendnp3::ITaskLock
+class MultidropTaskLock final : public opendnp3::ITaskLock
 {
 public:
 
 	MultidropTaskLock();
+	
+	/// these are controlled by the link layer router
+	void SetOnline() { m_is_online = true; }
+	void SetOffline() { m_is_online = false; }
 
-	virtual bool Acquire(IScheduleCallback&) override final;
-
-	virtual bool Release(IScheduleCallback&) override final;
+	virtual bool Acquire(IScheduleCallback&) override;
+	virtual bool Release(IScheduleCallback&) override;
 
 private:
 
 	bool AddIfNotContained(IScheduleCallback&);
-	
+
+	bool m_is_online;
 	std::set<IScheduleCallback*> m_callback_set;
 	std::deque<IScheduleCallback*> m_callback_queue;
 

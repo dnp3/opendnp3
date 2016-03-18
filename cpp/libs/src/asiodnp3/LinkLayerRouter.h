@@ -29,6 +29,7 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/link/IChannelStateListener.h>
+#include <opendnp3/master/MultidropTaskLock.h>
 
 #include <vector>
 #include <deque>
@@ -62,6 +63,8 @@ public:
 					const opendnp3::ChannelRetry& retry,
 	                opendnp3::IChannelStateListener* pStateHandler = nullptr,	                
 	                opendnp3::LinkChannelStatistics* pStatistics = nullptr);
+
+	opendnp3::ITaskLock& GetTaskLock() { return taskLock; }
 
 	// called when the router shuts down
 	void SetShutdownHandler(const openpal::Action0& action);
@@ -145,6 +148,7 @@ private:
 
 	void CheckForSend();
 
+	opendnp3::MultidropTaskLock taskLock;
 	opendnp3::IChannelStateListener* pStateHandler;
 	openpal::Action0 shutdownHandler;
 
