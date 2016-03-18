@@ -35,29 +35,19 @@ public:
 
 	MultidropTaskLock();
 
-
 	virtual bool Acquire(IScheduleCallback&) override final;
 
-
-	virtual void Release(IScheduleCallback&) override final;
-
-
-	virtual void OnLayerUp() override final;
-
-
-	virtual void OnLayerDown() override final;
-
+	virtual bool Release(IScheduleCallback&) override final;
 
 private:
 
 	bool AddIfNotContained(IScheduleCallback&);
 
-	std::set<IScheduleCallback*> callbackSet;
-	std::deque<IScheduleCallback*> callbackQueue;
+	
+	std::set<IScheduleCallback*> m_callback_set;
+	std::deque<IScheduleCallback*> m_callback_queue;
 
-	bool isOnline;
-
-	IScheduleCallback* pActive;
+	IScheduleCallback* m_active;
 };
 
 }

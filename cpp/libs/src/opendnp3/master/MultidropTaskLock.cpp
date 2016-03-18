@@ -23,87 +23,62 @@
 namespace opendnp3
 {
 
-MultidropTaskLock::MultidropTaskLock() : isOnline(false), pActive(nullptr)
+MultidropTaskLock::MultidropTaskLock() : m_active(nullptr)
 {
 
 }
 
 bool MultidropTaskLock::Acquire(IScheduleCallback& callback)
-{
-	if (isOnline)
+{	
+	if (m_active)
 	{
-		if (pActive)
+		if (&callback == m_active)
 		{
-			if (&callback == pActive)
-			{
-				return true;
-			}
-			else
-			{
-				this->AddIfNotContained(callback);
-				return false;
-			}
-		}
-		else
-		{
-			pActive = &callback;
 			return true;
 		}
+		
+
+		this->AddIfNotContained(callback);
+		return false;		
 	}
-	else
+
+	m_active = &callback;
+	return true;	
+}
+
+bool MultidropTaskLock::Release(IScheduleCallback& callback)
+{
+	if (m_active != &callback)
 	{
 		return false;
 	}
-}
 
-void MultidropTaskLock::Release(IScheduleCallback& callback)
-{
-	if (isOnline && pActive == &callback)
+	m_active = nullptr;
+
+	if (m_callback_queue.empty())
 	{
-		pActive = nullptr;
-
-		if (!callbackQueue.empty())
-		{
-			pActive = callbackQueue.front();
-			callbackQueue.pop_front();
-			callbackSet.erase(pActive);
-			pActive->OnPendingTask();
-		}
+		return true;
 	}
-}
 
-void MultidropTaskLock::OnLayerUp()
-{
-	if (!isOnline)
-	{
-		isOnline = true;
-	}
-}
 
-void MultidropTaskLock::OnLayerDown()
-{
-	if (isOnline)
-	{
-		isOnline = false;
-		pActive = nullptr;
-		callbackSet.clear();
-		callbackQueue.clear();
-	}
+	m_active = m_callback_queue.front();
+	m_callback_queue.pop_front();
+	m_callback_set.erase(m_active);
+	m_active->OnPendingTask();	
+	return true;
 }
 
 bool MultidropTaskLock::AddIfNotContained(IScheduleCallback& callback)
 {
-	auto result = callbackSet.find(&callback);
-	if (result == callbackSet.end())
-	{
-		callbackSet.insert(&callback);
-		callbackQueue.push_back(&callback);
-		return true;
-	}
-	else
+	auto result = m_callback_set.find(&callback);
+	if (result != m_callback_set.end())
 	{
 		return false;
 	}
+
+	m_callback_set.insert(&callback);
+	m_callback_queue.push_back(&callback);
+	return true;	
 }
 
 }
