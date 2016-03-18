@@ -27,7 +27,6 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 #include <opendnp3/link/ChannelRetry.h>
-#include <opendnp3/master/MultidropTaskLock.h>
 
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/Synchronized.h>
@@ -117,9 +116,7 @@ private:
 
 	virtual void OnStateChange(opendnp3::ChannelState state) override final;
 
-	void CheckForFinalShutdown();
-
-	opendnp3::MultidropTaskLock taskLock;
+	void CheckForFinalShutdown();	
 
 	openpal::Action0 shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;

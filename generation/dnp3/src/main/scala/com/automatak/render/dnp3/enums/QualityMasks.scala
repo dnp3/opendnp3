@@ -11,8 +11,10 @@ object QualityMasks {
     EnumModel("BinaryQuality", comments("binary"), EnumModel.UInt8, binaryValues, None, Hex),
     EnumModel("DoubleBitBinaryQuality", comments("double bit binary"), EnumModel.UInt8, doubleBinaryValues, None, Hex),
     EnumModel("CounterQuality", comments("counter"), EnumModel.UInt8, counterValues, None, Hex),
+    EnumModel("FrozenCounterQuality", comments("frozen counter"), EnumModel.UInt8, frozenCounterValues, None, Hex),
     EnumModel("AnalogQuality", comments("analog"), EnumModel.UInt8, analogValues, None, Hex),
-    EnumModel("BinaryOutputStatusQuality", comments("binary output status"), EnumModel.UInt8, binaryOutputValues, None, Hex)
+    EnumModel("BinaryOutputStatusQuality", comments("binary output status"), EnumModel.UInt8, binaryOutputValues, None, Hex),
+    EnumModel("AnalogOutputStatusQuality", comments("analog output status"), EnumModel.UInt8, analogOutputValues, None, Hex)
   )
 
   private def bits() : Iterator[Int] = Iterator.iterate(1)(x => x << 1)
@@ -80,6 +82,19 @@ object QualityMasks {
     )
   )
 
+  private val frozenCounterValues = toValues(
+    List(
+      online,
+      restart,
+      commsLost,
+      remoteForedData,
+      localForcedData,
+      rollover,
+      discontinuity,
+      reserved
+    )
+  )
+  
   private val analogValues = toValues(
     List(
       online,
@@ -103,6 +118,19 @@ object QualityMasks {
       reserved1,
       reserved2,
       state
+    )
+  )
+
+  private val analogOutputValues = toValues(
+    List(
+      online,
+      restart,
+      commsLost,
+      remoteForedData,
+      localForcedData,
+      overrange,
+      referenceErr,
+      reserved
     )
   )
 

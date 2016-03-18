@@ -40,32 +40,23 @@ public:
 	virtual bool Acquire(IScheduleCallback&) = 0;
 
 	/// Release a lock
-	virtual void Release(IScheduleCallback&) = 0;
-
-	/// channel online
-	virtual void OnLayerUp() = 0;
-
-	/// channel offline
-	virtual void OnLayerDown() = 0;
+	virtual bool Release(IScheduleCallback&) = 0;
+	
 };
 
-class NullTaskLock : public ITaskLock, private openpal::Uncopyable
+class NullTaskLock final : public ITaskLock, private openpal::Uncopyable
 {
 public:
 
-	virtual bool Acquire(IScheduleCallback&) override final;
+	virtual bool Acquire(IScheduleCallback&) override { return true; }
 
-	virtual void Release(IScheduleCallback&) override final;
-
-	virtual void OnLayerUp() override final;
-
-	virtual void OnLayerDown() override final;
+	virtual bool Release(IScheduleCallback&) override { return true; }
 
 	static ITaskLock& Instance();
 
 private:
 
-	NullTaskLock();
+	NullTaskLock() {}
 
 	static NullTaskLock instance;
 };

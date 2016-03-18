@@ -35,6 +35,7 @@ using namespace opendnp3;
 TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 {
 	MultidropTaskLock taskLock;
+	taskLock.SetOnline();
 
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
@@ -68,6 +69,36 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 
 	REQUIRE(t1.lower.PopWriteAsHex() == hex::ClearRestartIIN(1));
 	REQUIRE(t2.lower.PopWriteAsHex() == "");
+}
 
+TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock"))
+{
+	MultidropTaskLock taskLock;
+	taskLock.SetOnline();
+
+	MasterParams params;
+	params.disableUnsolOnStartup = false;
+
+	MasterTestObject t1(params, taskLock);
+	MasterTestObject t2(params, taskLock);
+
+	t1.context.OnLowerLayerUp();
+	t2.context.OnLowerLayerUp();
+
+	t1.exe.RunMany();
+	t2.exe.RunMany();
+
+	REQUIRE(t1.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t2.lower.PopWriteAsHex() == "");
+	
+	t1.context.OnSendResult(true);
+	// instead of sending a reply, shutdown the first master
+	t1.context.OnLowerLayerDown();	
+
+	t1.exe.RunMany();
+	t2.exe.RunMany();
+
+	REQUIRE(t1.lower.PopWriteAsHex() == "");
+	REQUIRE(t2.lower.PopWriteAsHex() == hex::IntegrityPoll(0));	
 }
 

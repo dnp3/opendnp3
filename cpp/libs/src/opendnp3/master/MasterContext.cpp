@@ -73,8 +73,7 @@ bool MContext::OnLowerLayerUp()
 		return false;
 	}
 
-	isOnline = true;
-	pTaskLock->OnLayerUp();
+	isOnline = true;	
 	tasks.Initialize(scheduler);
 	this->PostCheckForTask();
 	return true;
@@ -98,7 +97,7 @@ bool MContext::OnLowerLayerDown()
 
 	tstate = TaskState::IDLE;
 
-	pTaskLock->OnLayerDown();
+	pTaskLock->Release(*this);
 
 	responseTimer.Cancel();
 	taskStartTimeoutTimer.Cancel();

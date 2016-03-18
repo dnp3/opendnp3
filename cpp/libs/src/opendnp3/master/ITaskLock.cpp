@@ -30,30 +30,5 @@ ITaskLock& NullTaskLock::Instance()
 	return instance;
 }
 
-NullTaskLock::NullTaskLock()
-{
-
-}
-
-bool NullTaskLock::Acquire(IScheduleCallback&)
-{
-	return true;
-}
-
-void NullTaskLock::Release(IScheduleCallback&)
-{
-
-}
-
-void NullTaskLock::OnLayerUp()
-{
-
-}
-
-void NullTaskLock::OnLayerDown()
-{
-
-}
-
 }
 
