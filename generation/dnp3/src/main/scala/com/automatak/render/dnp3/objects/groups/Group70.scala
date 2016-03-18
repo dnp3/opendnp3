@@ -17,6 +17,7 @@ object Group70 extends ObjectGroup {
 
   def group: Byte = 70
   def desc: String = "File-control"
+  def isEventGroup: Boolean = false
 
 }
 

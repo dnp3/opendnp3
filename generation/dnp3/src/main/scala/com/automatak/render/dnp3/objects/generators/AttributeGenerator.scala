@@ -19,13 +19,28 @@ object AttributeGenerator {
     val headerPath = inc.resolve(String.format("%s.h", name))
     val implPath = impl.resolve(String.format("%s.cpp", name))
 
-    case class AttrConfig(signature: String, attr: FieldAttribute.Value)
+    trait HasAttribute {
+      def signature : String
+      def matches(gv: GroupVariation) : Boolean
+    }
 
-    val hasAbsTime = AttrConfig("bool HasAbsoluteTime(GroupVariation gv)", FieldAttribute.IsTimeUTC)
-    val hasRelTime = AttrConfig("bool HasRelativeTime(GroupVariation gv)", FieldAttribute.IsTimeRel)
-    val hasFlags = AttrConfig("bool HasFlags(GroupVariation gv)", FieldAttribute.IsFlags)
+    case class HasFieldAttrib(signature: String, attr: FieldAttribute.Value) extends HasAttribute {
+      def matches(gv: GroupVariation) : Boolean = gv.attributes.contains(attr)
+    }
 
-    val attributes : List[AttrConfig] = List(hasAbsTime, hasRelTime, hasFlags)
+    object EventAttribute extends HasAttribute {
+      def signature = "bool IsEvent(GroupVariation gv)";
+      def matches(gv: GroupVariation) : Boolean = {
+         gv.parent.isEventGroup && gv.variation != 0
+      }
+    }
+
+    val attributes : List[HasAttribute] = List(
+      HasFieldAttrib("bool HasAbsoluteTime(GroupVariation gv)", FieldAttribute.IsTimeUTC),
+      HasFieldAttrib("bool HasRelativeTime(GroupVariation gv)", FieldAttribute.IsTimeRel),
+      HasFieldAttrib("bool HasFlags(GroupVariation gv)", FieldAttribute.IsFlags),
+      EventAttribute
+    )
 
     def license = commented(LicenseHeader())
 
@@ -43,12 +58,12 @@ object AttributeGenerator {
     def writeImpl() {
       def license = commented(LicenseHeader())
 
-      def cases(attr: FieldAttribute.Value) : Iterator[String] = ObjectGroup.all.map(og => getCases(og, attr)).flatten.iterator
+      def cases(attr: HasAttribute) : Iterator[String] = ObjectGroup.all.map(og => getCases(og, attr)).flatten.iterator
 
-      def getCases(og: ObjectGroup, attr: FieldAttribute.Value) : List[String] = og.objects.flatMap(gv => getCase(gv, attr)).flatten
+      def getCases(og: ObjectGroup, attr: HasAttribute) : List[String] = og.objects.flatMap(gv => getCase(gv, attr)).flatten
 
-      def getCase(gv: GroupVariation, attr: FieldAttribute.Value) : Option[Iterator[String]] = {
-        if(gv.attributes.contains(attr))
+      def getCase(gv: GroupVariation, attr: HasAttribute) : Option[Iterator[String]] = {
+        if(attr.matches(gv))
         {
             Some(Iterator("case(GroupVariation::%s):".format(gv.name)) ++ indent {
               Iterator("return true;")
@@ -57,9 +72,9 @@ object AttributeGenerator {
         else None
       }
 
-      def measImpl(attr: AttrConfig) : Iterator[String] = Iterator(attr.signature) ++ bracket {
+      def measImpl(attr: HasAttribute) : Iterator[String] = Iterator(attr.signature) ++ bracket {
         Iterator(String.format("switch(gv)")) ++ bracket {
-          cases(attr.attr) ++
+          cases(attr) ++
           Iterator("default:") ++ indent {
             Iterator("return false;")
           }

@@ -10,6 +10,7 @@ object Group20 extends ObjectGroup {
   def objects = List(Group20Var0, Group20Var1, Group20Var2, Group20Var5, Group20Var6)
   def group: Byte = 20
   def desc: String = "Counter"
+  def isEventGroup: Boolean = false
 }
 
 object Group20Var0 extends AnyVariation(Group20, 0)

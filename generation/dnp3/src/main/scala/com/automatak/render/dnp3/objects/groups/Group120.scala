@@ -27,6 +27,7 @@ object Group120 extends ObjectGroup {
 
   def group: Byte = 120
   def desc: String = "Authentication"
+  def isEventGroup: Boolean = false
 }
 
 object Group120Var1 extends AuthVariableSize(Group120, 1, "Challenge",

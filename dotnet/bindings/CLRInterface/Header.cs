@@ -34,7 +34,7 @@ namespace Automatak.DNP3.Interface
     {
         public readonly Byte group;
         public readonly Byte variation;
-        public readonly QualifierCode qualifier;
+        public readonly QualifierCode qualifier;        
 
         protected Header(Byte group, Byte variation, QualifierCode qualifier)
         {

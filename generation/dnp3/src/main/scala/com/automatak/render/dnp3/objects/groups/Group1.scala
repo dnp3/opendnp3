@@ -8,6 +8,7 @@ object Group1 extends ObjectGroup {
   def objects = List(Group1Var0, Group1Var1, Group1Var2)
   def desc: String = "Binary Input"
   def group: Byte = 1
+  def isEventGroup: Boolean = false
 }
 
 object Group1Var0 extends AnyVariation(Group1, 0)

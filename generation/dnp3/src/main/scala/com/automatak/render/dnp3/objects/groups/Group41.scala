@@ -11,6 +11,7 @@ object Group41 extends ObjectGroup {
   def objects = List(Group41Var0, Group41Var1, Group41Var2, Group41Var3, Group41Var4)
   def group: Byte = 41
   def desc: String = "Analog Output"
+  def isEventGroup: Boolean = false
 }
 
 object Group41Var0 extends AnyVariation(Group41, 0)

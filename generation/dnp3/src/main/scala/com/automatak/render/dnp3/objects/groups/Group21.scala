@@ -21,6 +21,7 @@ object Group21 extends ObjectGroup {
 
   def group: Byte = 21
   def desc: String = "Frozen Counter"
+  def isEventGroup: Boolean = false
 
 }
 

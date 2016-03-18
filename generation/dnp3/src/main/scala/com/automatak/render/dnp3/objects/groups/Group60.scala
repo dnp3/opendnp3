@@ -6,6 +6,7 @@ object Group60 extends ObjectGroup {
   def objects = List(Group60Var1, Group60Var2, Group60Var3, Group60Var4)
   def group: Byte = 60
   def desc: String = "Class Data"
+  def isEventGroup: Boolean = false
 }
 
 object Group60Var1 extends ClassData(Group60, 1, "Class 0")
