@@ -34,12 +34,27 @@ namespace asiodnp3
   
 template <class T>
 void MeasUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode)
-{
-	auto update = [ = ](opendnp3::IDatabase & db)
+{	
+	if (this->m_use_timestamp) 
 	{
-		db.Update(meas, index, mode);
-	};
-	pChanges->Add(update);
+		T copy(meas);
+		copy.time = DNPTime(this->m_timestamp.msSinceEpoch);
+
+		auto update = [=](opendnp3::IDatabase & db)
+		{
+			db.Update(copy, index, mode);
+		};
+		m_changes->Add(update);
+
+	}
+	else
+	{
+		auto update = [=](opendnp3::IDatabase & db)
+		{
+			db.Update(meas, index, mode);
+		};
+		m_changes->Add(update);
+	}	
 }
 
 template <class T>
@@ -49,27 +64,37 @@ void MeasUpdate::ModifyAny(const openpal::Function1<const T&, T>& modify, uint16
 	{
 		db.Modify(modify, index, mode);
 	};
-	pChanges->Add(update);
+	m_changes->Add(update);
 }  
   
-MeasUpdate::MeasUpdate(IOutstation* pOutstation_) :
-	pOutstation(pOutstation_),
-	pChanges(new ChangeSet())
+MeasUpdate::MeasUpdate(IOutstation* outstation, openpal::UTCTimestamp timestamp) :
+	m_outstation(outstation),
+	m_timestamp(timestamp),
+	m_use_timestamp(true),
+	m_changes(new ChangeSet())
+{
+
+}
+
+MeasUpdate::MeasUpdate(IOutstation* outstation) :
+m_outstation(outstation),
+m_use_timestamp(false),
+m_changes(new ChangeSet())
 {
 
 }
 
 MeasUpdate::~MeasUpdate()
 {
-	if (pChanges->IsEmpty())
+	if (m_changes->IsEmpty())
 	{
 		// The user didn't add anything, just delete it here
-		delete pChanges;
+		delete m_changes;
 	}
 	else
 	{
-		auto pChangeSet = pChanges;
-		auto pOut = pOutstation;
+		auto pChangeSet = m_changes;
+		auto pOut = m_outstation;
 
 		auto update = [pChangeSet, pOut]()
 		{
@@ -78,7 +103,7 @@ MeasUpdate::~MeasUpdate()
 			pOut->CheckForUpdates();
 		};
 
-		pOutstation->GetExecutor().PostLambda(update);
+		m_outstation->GetExecutor().PostLambda(update);
 	}
 }
 
@@ -123,7 +148,7 @@ void MeasUpdate::Update(const TimeAndInterval& meas, uint16_t index)
 	{
 		db.Update(meas, index);
 	};
-	pChanges->Add(update);
+	m_changes->Add(update);
 }
 
 void MeasUpdate::Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode)
@@ -167,6 +192,6 @@ void MeasUpdate::Modify(const openpal::Function1<const TimeAndInterval&, TimeAnd
 	{
 		db.Modify(modify, index);
 	};
-	pChanges->Add(update);
+	m_changes->Add(update);
 }
 }
