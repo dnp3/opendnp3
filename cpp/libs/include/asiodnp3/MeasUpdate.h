@@ -24,6 +24,7 @@
 #include "IOutstation.h"
 
 #include <openpal/util/Uncopyable.h>
+#include <asiopal/UTCTimeSource.h>
 
 namespace asiodnp3
 {
@@ -38,7 +39,12 @@ class MeasUpdate : private openpal::Uncopyable
 public:
 
 	/**
-	*	Construct a MeasUpdate with a pointer to an outstation session
+	*	Construct a MeasUpdate with a pointer to an outstation session. Apply the timestamp to all values used in Update(..) methods.
+	*/
+	MeasUpdate(IOutstation* outstation, openpal::UTCTimestamp timestamp);
+
+	/**
+	*	Construct a MeasUpdate with a pointer to an outstation session.
 	*/
 	MeasUpdate(IOutstation* outstation);
 
@@ -62,16 +68,18 @@ public:
 	void Modify(const openpal::Function1<const opendnp3::AnalogOutputStatus&, opendnp3::AnalogOutputStatus>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Modify(const openpal::Function1<const opendnp3::TimeAndInterval&, opendnp3::TimeAndInterval>& modify, uint16_t index);
 
-private:
+private:	
 
 	template <class T>
 	void UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode);
 
 	template <class T>
 	void ModifyAny(const openpal::Function1<const T&, T>& modify, uint16_t index, opendnp3::EventMode mode);
-
-	IOutstation* pOutstation;
-	ChangeSet* pChanges;
+	
+	IOutstation* m_outstation;
+	openpal::UTCTimestamp m_timestamp;
+	bool m_use_timestamp;
+	ChangeSet* m_changes;
 };
 
 
