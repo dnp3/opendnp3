@@ -2,6 +2,7 @@
 * :beetle: Fixed a bug in the master multi-drop functionality where removing an active master, caused remaining session to freeze.
 * :beetle: Fixed a bug in ClearRestartTask where the completion callback was invoked with the wrong task type.
 * :star: HeaderInfo class in ISOEHandler now exposes isEvent member which tells user if header is for an event type. Added this to C# as well.
+* :star: C++ outstation demos now load the current timestamp using overloaded MeasUpdate constructor
 
 ### 2.1.0-RC4 ###
 * :star: Tagged released now automatically deployed to Nuget via AppVeyor build
