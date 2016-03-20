@@ -1,7 +1,12 @@
-### 2.1.0-RC4 ###
+### 2.1.0-RC5 ###
 * :beetle: Fixed a bug in the master multi-drop functionality where removing an active master, caused remaining session to freeze.
 * :beetle: Fixed a bug in ClearRestartTask where the completion callback was invoked with the wrong task type.
 * :star: HeaderInfo class in ISOEHandler now exposes isEvent member which tells user if header is for an event type. Added this to C# as well.
+
+### 2.1.0-RC4 ###
+* :star: Tagged released now automatically deployed to Nuget via AppVeyor build
+* :star: Code generator now produces lookup functions for group variation time/tag information.
+* :star: Added a decoder feature used to power the website decoder.
 
 ### 2.1.0-RC3 ###
 * :beetle: Fixed a bug in the C# bindings where non-zero based indices were not being detected properly.
