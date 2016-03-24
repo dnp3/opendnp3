@@ -51,7 +51,7 @@ namespace Automatak
 			{
 			public:
 
-				static openpal::TimeDuration ConvertMilliseconds(System::UInt64 ms);
+				static openpal::TimeDuration ConvertMilliseconds(System::Int64 ms);
 
 				static openpal::TimeDuration ConvertTimespan(System::TimeSpan ts);
 
