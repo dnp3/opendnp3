@@ -5,6 +5,9 @@ set(OPENDNP3_MINOR_VERSION 1)
 set(OPENDNP3_MICRO_VERSION 0)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
 
+set(USING_ASIO ON)
+include(${CMAKE_SOURCE_DIR}/cmake/settings.cmake)
+
 # various optional libraries and projects
 option(DEMO "Build demo applications" OFF)
 option(TEST "Build tests" OFF)
@@ -50,10 +53,6 @@ if(WIN32)
   set_property(GLOBAL PROPERTY USE_FOLDERS ON) #allows the creation of solution folders
 
    # for ASIO
-  add_definitions(-D_WIN32_WINNT=0x0501)
-  add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)  
-
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP")
 
   set(LIB_TYPE STATIC) #default to static on MSVC
   
