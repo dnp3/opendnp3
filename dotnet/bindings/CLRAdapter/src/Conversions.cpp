@@ -266,7 +266,7 @@ namespace Automatak
 				return s;
 			}
 
-			openpal::TimeDuration Conversions::ConvertMilliseconds(System::UInt64 ms)
+			openpal::TimeDuration Conversions::ConvertMilliseconds(System::Int64 ms)
 			{
 				return openpal::TimeDuration::Milliseconds(ms);
 			}
@@ -321,8 +321,8 @@ namespace Automatak
 					config->numRetry,
 					config->localAddr,
 					config->remoteAddr,
-					ConvertMilliseconds(config->timeoutMs),
-					ConvertMilliseconds(config->keepAliveTimeoutMs)
+					ConvertTimespan(config->responseTimeout),
+					ConvertTimespan(config->keepAliveTimeout)
 				);
 			}
 
