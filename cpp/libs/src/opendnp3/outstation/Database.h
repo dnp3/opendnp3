@@ -66,6 +66,7 @@ public:
 	// ------- Misc ---------------
 
 	IResponseLoader& GetResponseLoader() noexcept override final { return buffers; }
+	IStaticSelector& GetStaticSelector() noexcept override final { return buffers; }
 
 	/**
 	* @return A view of all the static data for configuration purposes
@@ -73,12 +74,6 @@ public:
 	DatabaseConfigView GetConfigView()
 	{
 		return buffers.buffers.GetView();
-	}
-
-	// used to clear the static selection for a new read
-	void Unselect()
-	{
-		buffers.Unselect();
 	}
 
 	// stores the most recent values, selected values, and metadata

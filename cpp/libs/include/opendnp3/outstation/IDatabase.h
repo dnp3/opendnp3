@@ -31,6 +31,7 @@
 namespace opendnp3
 {
 class IResponseLoader;
+class IStaticSelector;
 /**
 * An interface used to update measurement values.
 */
@@ -184,6 +185,7 @@ public:
 
 
 	virtual IResponseLoader& GetResponseLoader() noexcept = 0;
+	virtual IStaticSelector& GetStaticSelector() noexcept = 0;
 };
 
 }
