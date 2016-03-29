@@ -37,7 +37,8 @@ using namespace testlib;
 TEST_CASE(SUITE("UnsupportedFunction"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 10"); // func = initialize application (16)
@@ -47,7 +48,8 @@ TEST_CASE(SUITE("UnsupportedFunction"))
 TEST_CASE(SUITE("ApplicationIINBits"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.application.appIIN.deviceTrouble = true;
@@ -63,7 +65,8 @@ TEST_CASE(SUITE("ApplicationIINBits"))
 TEST_CASE(SUITE("ReadUnknownObject"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// from the conformance tests, respond with IIN 2-1
@@ -74,7 +77,8 @@ TEST_CASE(SUITE("ReadUnknownObject"))
 TEST_CASE(SUITE("ColdRestart"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// try first with support turned off
@@ -93,7 +97,8 @@ TEST_CASE(SUITE("ColdRestart"))
 TEST_CASE(SUITE("WarmRestart"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// try first with support turned off
@@ -113,7 +118,8 @@ TEST_CASE(SUITE("WarmRestart"))
 TEST_CASE(SUITE("NoResponseToNoAckCodes"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// outstation shouldn't respond to any of these
@@ -143,7 +149,8 @@ TEST_CASE(SUITE("NoResponseToNoAckCodes"))
 TEST_CASE(SUITE("WriteIIN"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation(hex::ClearRestartIIN(0));
@@ -153,7 +160,8 @@ TEST_CASE(SUITE("WriteIIN"))
 TEST_CASE(SUITE("WriteIINEnabled"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 50 01 00 07 07 01");
@@ -163,7 +171,8 @@ TEST_CASE(SUITE("WriteIINEnabled"))
 TEST_CASE(SUITE("WriteIINWrongBit"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 50 01 00 04 04 01");
@@ -173,7 +182,8 @@ TEST_CASE(SUITE("WriteIINWrongBit"))
 TEST_CASE(SUITE("WriteNonWriteObject"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 01 02 00 07 07 00");
@@ -183,7 +193,8 @@ TEST_CASE(SUITE("WriteNonWriteObject"))
 TEST_CASE(SUITE("DelayMeasure"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 17"); //delay measure
@@ -193,7 +204,8 @@ TEST_CASE(SUITE("DelayMeasure"))
 TEST_CASE(SUITE("DelayMeasureExtraData"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 17 DE AD BE EF"); //delay measure
@@ -203,7 +215,8 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 TEST_CASE(SUITE("WriteTimeDate"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 
@@ -217,7 +230,8 @@ TEST_CASE(SUITE("WriteTimeDate"))
 TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.application.allowTimeWrite = false;
@@ -229,7 +243,8 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 {
 	OutstationConfig cfg;
-	OutstationTestObject t(cfg, DatabaseTemplate());
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
@@ -240,7 +255,8 @@ TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 TEST_CASE(SUITE("BlankIntegrityPoll"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
@@ -250,11 +266,12 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 TEST_CASE(SUITE("MixedVariationAssignments"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(2));
+	Database db(DatabaseTemplate::AnalogOnly(2), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 
 	{
 		// configure two different default variations
-		auto view = t.context.GetConfigView();
+		auto view = db.GetConfigView();
 		view.analogs[0].variation = StaticAnalogVariation::Group30Var1;
 		view.analogs[1].variation = StaticAnalogVariation::Group30Var2;
 	}
@@ -270,8 +287,8 @@ TEST_CASE(SUITE("MixedVariationAssignments"))
 TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
 {
 	OutstationConfig config;
-	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes().Except(StaticTypeBitmask::DoubleBinaryInput);
-	OutstationTestObject t(config, DatabaseTemplate(1, 1)); // 1 binary and 1 double binary
+	Database db(DatabaseTemplate(1, 1), IndexMode::Contiguous, StaticTypeBitField::AllTypes().Except(StaticTypeBitmask::DoubleBinaryInput));
+	OutstationTestObject t(config, &db); // 1 binary and 1 double binary
 
 	t.LowerLayerUp();
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
@@ -282,7 +299,8 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 {
 	OutstationConfig config;
 	config.params.maxTxFragSize = 20; // override to use a fragment length of 20
-	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(8));
+	Database db(DatabaseTemplate::AnalogOnly(8), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 
@@ -318,7 +336,8 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 TEST_CASE(SUITE("ReadFuncNotSupported"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 0C 01 06"); //try to read 12/1 (control block)
@@ -329,7 +348,8 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 void NewTestStaticRead(const std::string& request, const std::string& response)
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
+	Database db(DatabaseTemplate::AllTypes(1), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation(request);
@@ -341,7 +361,8 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 void TestTimeAndIntervalRead(const std::string& request)
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
+	Database db(DatabaseTemplate::TimeAndIntervalOnly(1), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.Transaction(
@@ -373,7 +394,8 @@ TEST_CASE(SUITE("TimeAndIntervalViaDirectRangeRequest"))
 TEST_CASE(SUITE("TestTimeAndIntervalWrite"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
+	Database db(DatabaseTemplate::TimeAndIntervalOnly(1), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.application.supportsWriteTimeAndInterval = true;
@@ -442,7 +464,8 @@ TEST_CASE(SUITE("ReadGrp40Var0ViaIntegrity"))
 TEST_CASE(SUITE("ReadByRangeHeader"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(10));
+	Database db(DatabaseTemplate::AnalogOnly(10), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.Transaction([](IDatabase & db)
@@ -459,8 +482,8 @@ TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeIntegrityScan"))
 {
 	// this will tell the outstation to use discontiguous index mode, but we won't change the address assignments
 	OutstationConfig config;
-	config.params.indexMode = IndexMode::Discontiguous;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(2));
+	Database db(DatabaseTemplate::BinaryOnly(2), IndexMode::Discontiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation(hex::IntegrityPoll(0));
@@ -472,8 +495,8 @@ TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeRangeScan"))
 {
 	// this will tell the outstation to use discontiguous index mode, but we won't change the address assignments
 	OutstationConfig config;
-	config.params.indexMode = IndexMode::Discontiguous;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(2));
+	Database db(DatabaseTemplate::BinaryOnly(2), IndexMode::Discontiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 01 02 00 00 01");
@@ -484,12 +507,11 @@ TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeRangeScan"))
 std::string QueryDiscontiguousBinary(const std::string& request)
 {
 	OutstationConfig config;
-	config.params.indexMode = IndexMode::Discontiguous;
-
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(3));
+	Database db(DatabaseTemplate::BinaryOnly(3), IndexMode::Discontiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 
 	// assign virtual indices to the database specified above
-	auto view = t.context.GetConfigView();
+	auto view = db.GetConfigView();
 	view.binaries[0].vIndex = 2;
 	view.binaries[1].vIndex = 4;
 	view.binaries[2].vIndex = 5;
@@ -563,9 +585,10 @@ TEST_CASE(SUITE("ReadDiscontiguousAllDataWithRangeError"))
 template <class PointType>
 void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp, const std::function<void (DatabaseConfigView&)>& configure)
 {
-	OutstationTestObject t(config, tmp);
+	Database db(tmp, IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 
-	auto view = t.context.GetConfigView();
+	auto view = db.GetConfigView();
 	configure(view);
 
 	t.LowerLayerUp();
@@ -594,10 +617,11 @@ void TestStaticCounter(StaticCounterVariation variation, T value, const std::str
 TEST_CASE(SUITE("ReadGrp1Var1"))
 {
 	OutstationConfig cfg;
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(10));
+	Database db(DatabaseTemplate::BinaryOnly(10), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	{
-		auto view = t.context.GetConfigView();
+		auto view = db.GetConfigView();
 		view.binaries.foreach([](Cell<Binary>& cell)
 		{
 			cell.SetInitialValue(Binary(false));
@@ -615,10 +639,11 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 {
 	OutstationConfig cfg;
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(2));
+	Database db(DatabaseTemplate::BinaryOnly(2), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	{
-		auto view = t.context.GetConfigView();
+		auto view = db.GetConfigView();
 		view.binaries.foreach([](Cell<Binary>& cell)
 		{
 			cell.variation = StaticBinaryVariation::Group1Var1;
@@ -692,7 +717,8 @@ template <class T>
 void TestStaticBinaryOutputStatus(T value, const std::string& response)
 {
 	OutstationConfig cfg;
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
+	Database db(DatabaseTemplate::BinaryOutputStatusOnly(1), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 	t.LowerLayerUp();
 
 	t.Transaction([value](IDatabase & db)

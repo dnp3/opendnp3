@@ -155,13 +155,13 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	return pExecutor->ReturnBlockFor<IMaster*>(add);
 }
 
-IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
+IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config, IDatabase *database)
 {
-	auto add = [this, id, &commandHandler, &application, config]() -> IOutstation*
+	auto add = [this, id, &commandHandler, &application, database, config]() -> IOutstation*
 	{
 		auto factory = [&]()
 		{
-			return new OutstationStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks);
+			return new OutstationStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, database, stacks);
 		};
 
 		return this->AddStack<OutstationStack>(config.link, factory);

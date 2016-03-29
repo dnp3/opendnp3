@@ -62,11 +62,6 @@ public:
 
 	// ------- implement IOutstation -------
 
-	virtual opendnp3::DatabaseConfigView GetConfigView() override final
-	{
-		return this->pContext->GetConfigView();
-	}
-
 	virtual void SetRestartIIN() override final
 	{
 		// this doesn't need to be synchronous, just post it

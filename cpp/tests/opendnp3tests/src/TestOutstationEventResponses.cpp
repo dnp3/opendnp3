@@ -38,7 +38,8 @@ using namespace openpal;
 TEST_CASE(SUITE("BlankExceptionScan"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 3C 02 06"); // Read class 1
@@ -49,8 +50,8 @@ TEST_CASE(SUITE("ReadDiscontiguousEvent"))
 {
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig(5);
-	config.params.indexMode = IndexMode::Discontiguous;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1));
+	Database db(DatabaseTemplate::BinaryOnly(1), IndexMode::Discontiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.Transaction([](IDatabase & db)
@@ -66,7 +67,8 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 {
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1));
+	Database db(DatabaseTemplate::BinaryOnly(1), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.Transaction([](IDatabase & db)
@@ -86,7 +88,8 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(100));
+	Database db(DatabaseTemplate::AllTypes(100), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 
 	t.LowerLayerUp();
 
@@ -110,7 +113,8 @@ TEST_CASE(SUITE("EventBufferOverflowAndClear"))
 {
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(2);
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(100));
+	Database db(DatabaseTemplate::AllTypes(100), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 
 	t.LowerLayerUp();
 
@@ -138,10 +142,11 @@ TEST_CASE(SUITE("MultipleClasses"))
 {
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
+	Database db(DatabaseTemplate::AllTypes(1), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
-	auto view = t.context.GetConfigView();
+	auto view = db.GetConfigView();
 
 	view.binaries[0].metadata.clazz = PointClass::Class1;
 	view.analogs[0].metadata.clazz = PointClass::Class2;
@@ -188,9 +193,10 @@ const std::function<void(DatabaseConfigView& db)>& configure = [](DatabaseConfig
 
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(5));
+	Database db(DatabaseTemplate::AllTypes(5), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 
-	auto view = t.context.GetConfigView();
+	auto view = db.GetConfigView();
 	configure(view);
 
 	t.LowerLayerUp();

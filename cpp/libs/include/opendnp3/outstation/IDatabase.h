@@ -33,6 +33,7 @@ namespace opendnp3
 class IResponseLoader;
 class IStaticSelector;
 class IClassAssigner;
+class IEventReceiver;
 /**
 * An interface used to update measurement values.
 */
@@ -114,6 +115,7 @@ public:
 	virtual bool Update(const TimeAndInterval& meas, uint16_t index) = 0;
 
 
+	virtual void SetEventReceiver(IEventReceiver *eventReceiver) = 0;
 
 	virtual IResponseLoader& GetResponseLoader() = 0;
 	virtual IStaticSelector& GetStaticSelector() = 0;

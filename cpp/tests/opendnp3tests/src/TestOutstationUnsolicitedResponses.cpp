@@ -36,7 +36,8 @@ using namespace openpal;
 TEST_CASE(SUITE("NullUnsolOnStartup"))
 {
 	OutstationConfig cfg;  cfg.params.allowUnsolicited = true;
-	OutstationTestObject t(cfg);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 	t.LowerLayerUp();
 
 	// Null UNSOL, FIR, FIN, CON, UNS, w/ restart and need-time IIN
@@ -46,7 +47,8 @@ TEST_CASE(SUITE("NullUnsolOnStartup"))
 TEST_CASE(SUITE("UnsolRetryDelay"))
 {
 	OutstationConfig cfg; cfg.params.allowUnsolicited = true;
-	OutstationTestObject t(cfg);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	t.LowerLayerUp();
 
@@ -67,9 +69,10 @@ TEST_CASE(SUITE("UnsolData"))
 	OutstationConfig cfg; cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = ClassField::AllEventClasses(); // allows us to skip the "enable unsol" step
 	cfg.eventBufferConfig = EventBufferConfig::AllTypes(5);
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(3));
+	Database db(DatabaseTemplate::BinaryOnly(3), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
-	auto view = t.context.GetConfigView();
+	auto view = db.GetConfigView();
 	view.binaries[0].metadata.clazz = PointClass::Class1;
 	view.binaries[1].metadata.clazz = PointClass::Class2;
 	view.binaries[2].metadata.clazz = PointClass::Class3;
@@ -102,7 +105,8 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 	cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = ClassField(PointClass::Class1);
 	cfg.eventBufferConfig = EventBufferConfig(2);
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
+	Database db(DatabaseTemplate::BinaryOnly(1), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	t.LowerLayerUp();
 	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
@@ -134,7 +138,8 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
 	cfg.params.maxTxFragSize = 20; //this will cause the unsol response to get fragmented
 	cfg.params.unsolClassMask = ClassField::AllEventClasses(); // this allows the EnableUnsol sequence to be skipped
 	cfg.eventBufferConfig = EventBufferConfig(0, 0, 5);
-	OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(5));
+	Database db(DatabaseTemplate::AnalogOnly(5), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	t.LowerLayerUp();
 
@@ -169,7 +174,8 @@ void WriteDuringUnsol(bool beforeTx)
 	cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = ClassField::AllEventClasses();
 	cfg.eventBufferConfig = EventBufferConfig(5);
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5));
+	Database db(DatabaseTemplate::BinaryOnly(5), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	t.LowerLayerUp();
 
@@ -222,7 +228,8 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 	cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = ClassField::AllEventClasses();
 	cfg.eventBufferConfig = EventBufferConfig(5);
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5));
+	Database db(DatabaseTemplate::BinaryOnly(5), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	t.LowerLayerUp();
 
@@ -262,7 +269,8 @@ TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 	cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = ClassField::AllEventClasses();
 	cfg.eventBufferConfig = EventBufferConfig(5);
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5));
+	Database db(DatabaseTemplate::BinaryOnly(5), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	t.LowerLayerUp();
 
@@ -293,7 +301,8 @@ TEST_CASE(SUITE("RepeatRequestDuringUnsol"))
 	cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = ClassField::AllEventClasses();
 	cfg.eventBufferConfig = EventBufferConfig(5);
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5));
+	Database db(DatabaseTemplate::BinaryOnly(5), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	t.LowerLayerUp();
 
@@ -325,7 +334,8 @@ TEST_CASE(SUITE("UnsolEnable"))
 	OutstationConfig cfg;
 	cfg.params.allowUnsolicited = true;
 	cfg.eventBufferConfig = EventBufferConfig(5);
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5));
+	Database db(DatabaseTemplate::BinaryOnly(5), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	t.LowerLayerUp();
 
@@ -355,7 +365,8 @@ TEST_CASE(SUITE("UnsolEnableDisableFailure"))
 {
 	OutstationConfig cfg;
 	cfg.eventBufferConfig = EventBufferConfig(5);
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5));
+	Database db(DatabaseTemplate::BinaryOnly(5), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(cfg, &db);
 
 	t.LowerLayerUp();
 	t.SendToOutstation("C0 14 3C 02 06");

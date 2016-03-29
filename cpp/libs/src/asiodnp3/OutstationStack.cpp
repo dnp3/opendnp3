@@ -34,10 +34,11 @@ OutstationStack::OutstationStack(
     opendnp3::ICommandHandler& commandHandler,
     IOutstationApplication& application,
     const OutstationStackConfig& config,
+	IDatabase* database,
     IStackLifecycle& lifecycle) :
 
 	OutstationStackBase(id, root_, executor, application, config, lifecycle),
-	ocontext(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application)
+	ocontext(config.outstation, database, root.GetLogger(), executor, stack.transport, commandHandler, application)
 {
 	this->SetContext(ocontext);
 }

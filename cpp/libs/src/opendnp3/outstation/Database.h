@@ -37,8 +37,7 @@ The database coordinates all updates of measurement data
 class Database : public IDatabase, private openpal::Uncopyable
 {
 public:
-
-	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, IndexMode indexMode, StaticTypeBitField allowedClass0Types);
+	Database(const DatabaseTemplate&, IndexMode indexMode_, StaticTypeBitField allowedClass0Types);
 
 	// ------- IDatabase --------------
 
@@ -56,6 +55,8 @@ public:
 	IResponseLoader& GetResponseLoader() override final { return buffers; }
 	IStaticSelector& GetStaticSelector() override final { return buffers; }
 	IClassAssigner& GetClassAssigner() override final { return buffers; }
+
+	void SetEventReceiver(IEventReceiver *eventReceiver) override final;
 
 	/**
 	* @return A view of all the static data for configuration purposes

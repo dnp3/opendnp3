@@ -76,8 +76,8 @@ int main(int argc, char* argv[])
 	// but understanding the options are important.
 	OutstationStackConfig stackConfig;
 
-	// You must specify the shape of your database and the size of the event buffers
-	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
+	// You must specify your database and the size of the event buffers
+	Database db(DatabaseTemplate::AllTypes(10), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
 	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
 
 	// you can override an default outstation parameters here
@@ -93,10 +93,10 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto pOutstation = pChannel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
+	auto pOutstation = pChannel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig, &db);
 
 	// You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-	ConfigureDatabase(pOutstation->GetConfigView());
+	ConfigureDatabase(db.GetConfigView());
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();

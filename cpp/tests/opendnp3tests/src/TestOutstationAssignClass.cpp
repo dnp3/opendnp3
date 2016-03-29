@@ -36,7 +36,8 @@ using namespace openpal;
 TEST_CASE(SUITE("RejectsWithFuncNotSupportedIfAppDoesNotSupport"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// assign binaries to class 2
@@ -49,7 +50,8 @@ TEST_CASE(SUITE("RejectsWithFuncNotSupportedIfAppDoesNotSupport"))
 TEST_CASE(SUITE("RejectsWithParamErrorIfNoType"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 
@@ -64,7 +66,8 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 	const uint16_t NUM_BINARY = 5;
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(NUM_BINARY));
+	Database db(DatabaseTemplate::BinaryOnly(NUM_BINARY), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 
@@ -72,7 +75,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
 
-	auto view = t.context.GetConfigView();
+	auto view = db.GetConfigView();
 	for (uint16_t i = 0; i < NUM_BINARY; ++i)
 	{
 		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class2);
@@ -88,7 +91,8 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 	const uint16_t NUM_BINARY = 5;
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(NUM_BINARY));
+	Database db(DatabaseTemplate::BinaryOnly(NUM_BINARY), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 
@@ -97,7 +101,7 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
 
 	//despite the invalid range, the outstation should assign the values that it does have
-	auto view = t.context.GetConfigView();
+	auto view = db.GetConfigView();
 	for (uint16_t i = 0; i < NUM_BINARY; ++i)
 	{
 		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class2);
@@ -111,7 +115,8 @@ TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
 	const uint16_t NUM_BINARY = 5;
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(NUM_BINARY));
+	Database db(DatabaseTemplate::BinaryOnly(NUM_BINARY), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 
@@ -119,7 +124,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
 	t.SendToOutstation("C0 16 3C 03 06 01 00 01 02 00 03 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
 
-	auto view = t.context.GetConfigView();
+	auto view = db.GetConfigView();
 
 	REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class1);
 	for (uint16_t i = 2; i < 3; ++i)
@@ -139,7 +144,8 @@ TEST_CASE(SUITE("AcceptsMultipleAssignsmentPerMessage"))
 	const uint16_t NUM_ANALOG = 10;
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate(NUM_BINARY, 0, NUM_ANALOG));
+	Database db(DatabaseTemplate(NUM_BINARY, 0, NUM_ANALOG), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 

@@ -49,8 +49,8 @@ namespace opendnp3
 
 OContext::OContext(
     const OutstationConfig& config,
-    const DatabaseTemplate& dbTemplate,
-    openpal::Logger logger_,
+	IDatabase *database,
+	openpal::Logger logger_,
     openpal::IExecutor& executor,
     ILowerLayer& lower,
     ICommandHandler& commandHandler,
@@ -62,8 +62,8 @@ OContext::OContext(
 	pCommandHandler(&commandHandler),
 	pApplication(&application),
 	eventBuffer(config.eventBufferConfig),
-	database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
-	rspContext(database.GetResponseLoader(), eventBuffer),
+	database(database),
+	rspContext(database->GetResponseLoader(), eventBuffer),
 	params(config.params),
 	isOnline(false),
 	isTransmitting(false),
@@ -73,7 +73,7 @@ OContext::OContext(
 	sol(config.params.maxTxFragSize),
 	unsol(config.params.maxTxFragSize)
 {
-
+	database->SetEventReceiver(&eventBuffer);
 }
 
 bool OContext::OnLowerLayerUp()
@@ -495,12 +495,7 @@ void OContext::SetRestartIIN()
 
 IDatabase& OContext::GetDatabase()
 {
-	return this->database;
-}
-
-DatabaseConfigView OContext::GetConfigView()
-{
-	return this->database.GetConfigView();
+	return *(this->database);
 }
 
 //// ----------------------------- function handlers -----------------------------
@@ -551,9 +546,9 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
 {
 	this->rspContext.Reset();
 	this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
-	this->database.GetStaticSelector().Unselect();
+	this->database->GetStaticSelector().Unselect();
 
-	ReadHandler handler(this->logger, this->database.GetStaticSelector(), this->eventBuffer);
+	ReadHandler handler(this->logger, this->database->GetStaticSelector(), this->eventBuffer);
 	auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 	if (result == ParseResult::OK)
 	{
@@ -709,7 +704,7 @@ IINField OContext::HandleAssignClass(const openpal::RSlice& objects)
 {
 	if (this->pApplication->SupportsAssignClass())
 	{
-		AssignClassHandler handler(this->logger, *this->pExecutor, *this->pApplication, this->database.GetClassAssigner());
+		AssignClassHandler handler(this->logger, *this->pExecutor, *this->pApplication, this->database->GetClassAssigner());
 		auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}

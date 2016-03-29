@@ -26,6 +26,7 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/OutstationContext.h>
 
+#include <memory>
 #include <functional>
 
 #include <testlib/MockExecutor.h>
@@ -45,8 +46,7 @@ class OutstationTestObject
 
 public:
 	OutstationTestObject(const OutstationConfig& config,
-	                     const DatabaseTemplate& dbTemplate = DatabaseTemplate());
-
+	                     Database *database);
 
 	uint32_t SendToOutstation(const std::string& hex);
 

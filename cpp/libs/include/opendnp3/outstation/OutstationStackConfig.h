@@ -36,18 +36,11 @@ namespace opendnp3
 struct OutstationStackConfig
 {
 
-	OutstationStackConfig(const DatabaseTemplate& dbTemplate_) :
-		dbTemplate(dbTemplate_),
+	OutstationStackConfig() :
 		link(false, false)
 	{
 
 	}
-
-	OutstationStackConfig() : link(false, false)
-	{}
-
-	// Configuration of the database
-	DatabaseTemplate dbTemplate;
 
 	/// Outstation config
 	OutstationConfig outstation;

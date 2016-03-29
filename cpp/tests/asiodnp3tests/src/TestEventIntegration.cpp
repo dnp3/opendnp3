@@ -23,6 +23,7 @@
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
+#include <opendnp3/outstation/Database.h>
 
 #include <asiodnp3/DefaultMasterApplication.h>
 #include <asiodnp3/DNP3Manager.h>
@@ -198,16 +199,15 @@ private:
 	std::mt19937 m_gen;	
 };
 
-IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numValues, uint16_t eventBufferSize)
+IOutstation* ConfigureOutstation(DNP3Manager& manager, IDatabase *database, int levels, uint16_t numValues, uint16_t eventBufferSize)
 {
 	auto server = manager.AddTCPServer("server", levels, ChannelRetry::Default(), "127.0.0.1", 20000);
 
 	OutstationStackConfig stackConfig;
-	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(numValues);
 	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(eventBufferSize);
 	stackConfig.outstation.params.allowUnsolicited = true;
 
-	auto outstation = server->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
+	auto outstation = server->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig, database);
 	outstation->Enable();
 	return outstation;
 }
@@ -240,7 +240,8 @@ TEST_CASE(SUITE("TestEventIntegration"))
 	DNP3Manager manager(2);
 	//manager.AddLogSubscriber(ConsoleLogger::Instance());
 
-	auto outstation = ConfigureOutstation(manager, LEVELS, NUM_VALUES, EVENT_BUFFER_SIZE);
+	Database database(DatabaseTemplate::AllTypes(NUM_VALUES), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	auto outstation = ConfigureOutstation(manager, &database, LEVELS, NUM_VALUES, EVENT_BUFFER_SIZE);
 	auto master = ConfigureMaster(manager, eventrx, LEVELS);
 
 	while (!eventrx.LoadAndWait(outstation, std::chrono::seconds(3)));

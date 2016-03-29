@@ -31,9 +31,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, IndexMode indexMode_, StaticTypeBitField allowedClass0Types) :
+Database::Database(const DatabaseTemplate& dbTemplate, IndexMode indexMode_, StaticTypeBitField allowedClass0Types) :
 	buffers(dbTemplate, allowedClass0Types, indexMode_),
-	pEventReceiver(&eventReceiver),
+	pEventReceiver(nullptr),
 	indexMode(indexMode_)
 {
 
@@ -106,6 +106,11 @@ bool Database::ConvertToEventClass(PointClass pc, EventClass& ec)
 	default:
 		return false;
 	}
+}
+
+void Database::SetEventReceiver(IEventReceiver *eventReceiver)
+{
+	pEventReceiver = eventReceiver;
 }
 
 }

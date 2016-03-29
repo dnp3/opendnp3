@@ -56,12 +56,6 @@ public:
 	*/
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
-	/**
-	* Get a view of the raw buffers in the database. This can be used to configure each point before execution.
-	* @return View of static values and metadata.
-	*/
-	virtual opendnp3::DatabaseConfigView GetConfigView() = 0;
-
 protected:
 
 	//// --- These methods are protected and are only intened to be used by the MeasUpdate friend class ----
