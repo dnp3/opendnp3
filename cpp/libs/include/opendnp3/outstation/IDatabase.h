@@ -30,7 +30,7 @@
 
 namespace opendnp3
 {
-
+class IResponseLoader;
 /**
 * An interface used to update measurement values.
 */
@@ -182,6 +182,8 @@ public:
 	*/
 	virtual bool Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index) = 0;
 
+
+	virtual IResponseLoader& GetResponseLoader() noexcept = 0;
 };
 
 }
