@@ -63,7 +63,7 @@ OContext::OContext(
 	pApplication(&application),
 	eventBuffer(config.eventBufferConfig),
 	database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
-	rspContext(database.buffers, eventBuffer),
+	rspContext(database.GetResponseLoader(), eventBuffer),
 	params(config.params),
 	isOnline(false),
 	isTransmitting(false),

@@ -62,6 +62,8 @@ public:
 
 	// ------- Misc ---------------
 
+	IResponseLoader& GetResponseLoader() noexcept override final { return buffers; }
+
 	/**
 	* @return A view of all the static data for configuration purposes
 	*/
