@@ -709,7 +709,7 @@ IINField OContext::HandleAssignClass(const openpal::RSlice& objects)
 {
 	if (this->pApplication->SupportsAssignClass())
 	{
-		AssignClassHandler handler(this->logger, *this->pExecutor, *this->pApplication, this->database.buffers);
+		AssignClassHandler handler(this->logger, *this->pExecutor, *this->pApplication, this->database.GetClassAssigner());
 		auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
