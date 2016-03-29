@@ -35,6 +35,8 @@ public:
 	virtual IINField SelectAll(GroupVariation gv) = 0;
 
 	virtual IINField SelectRange(GroupVariation gv, const Range& range) = 0;
+
+	virtual void Unselect() = 0;
 };
 
 }
