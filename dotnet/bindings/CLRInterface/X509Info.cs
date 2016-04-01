@@ -18,5 +18,9 @@ namespace Automatak.DNP3.Interface
         readonly int depth;
         readonly byte[] sha1fingerprint;
         readonly string subjectName;
+
+        public int Depth { get { return this.depth; } }
+        public IEnumerable<byte> SHA1Fingerprint { get { return this.sha1fingerprint; } }
+        public string SubjectName { get { return this.subjectName; } }
     }
 }

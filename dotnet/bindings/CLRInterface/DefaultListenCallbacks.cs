@@ -59,15 +59,9 @@ namespace Automatak.DNP3.Interface
             Console.WriteLine(String.Format("Session closed: {0}", sessionid));            
         }
 
-        private void OnScanComplete(Task<TaskCompletion> result)
-        {
-            Console.WriteLine("Scan Result: " + result.Result);
-        }
-
         private string SessionIdToString(UInt64 sessionid)
         { 
             return String.Format("session-{0}", sessionid);
-
         }
     }
 }
