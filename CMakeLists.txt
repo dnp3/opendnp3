@@ -19,26 +19,22 @@ option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
 
 if(FULL)
 	set(DEMO ON)
-	set(TEST ON)
-	set(DNP3_DECODER ON)	
+	set(TEST ON)	
 	set(DNP3_TLS ON)	
+	set(DNP3_DECODER ON)	
 endif()
 
 if(DNP3_TLS)
-    add_definitions(-DOPENDNP3_USE_TLS)	
+	add_definitions(-DOPENDNP3_USE_TLS)
+	
+	find_package(OpenSSL REQUIRED)
+	message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+
+	if(WIN32)
+		include_directories(${OPENSSL_INCLUDE_DIR})
+	endif()   	
 endif()
  
-if(DNP3_TLS)
-
-   find_package(OpenSSL REQUIRED)
-   message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
-
-   if(WIN32)
-     include_directories(${OPENSSL_INCLUDE_DIR})
-   endif()
-
-endif()
-
 if(WIN32)
 
   set_property(GLOBAL PROPERTY USE_FOLDERS ON) #allows the creation of solution folders
