@@ -92,19 +92,6 @@ public:
 	                                   opendnp3::IOutstationApplication& application,
 	                                   const opendnp3::OutstationStackConfig& config) override final;
 
-#ifdef OPENDNP3_USE_SECAUTH
-
-	virtual IMasterSA* AddMasterSA(	char const* id,
-	                                opendnp3::ISOEHandler& SOEHandler,
-	                                secauth::IMasterApplicationSA& application,
-	                                const secauth::MasterAuthStackConfig& config) override final;
-
-	virtual IOutstationSA* AddOutstationSA(	char const* id,
-	                                        opendnp3::ICommandHandler& commandHandler,
-	                                        secauth::IOutstationApplicationSA& application,
-	                                        const secauth::OutstationAuthStackConfig& config) override final;
-#endif
-
 	// -----------------------------------------------------------------------
 
 	// Helper functions only available inside DNP3Manager

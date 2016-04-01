@@ -145,7 +145,7 @@ install(TARGETS asiopal DESTINATION lib)
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
-file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiopal/*.h)
+file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiodnp3/*.h)
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 asiopal opendnp3)
 install(TARGETS asiodnp3 DESTINATION lib)
