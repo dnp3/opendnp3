@@ -34,7 +34,6 @@
 
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
-#include <openpal/crypto/ICryptoProvider.h>
 
 #include "IMaster.h"
 #include "IOutstation.h"
