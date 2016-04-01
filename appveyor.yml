@@ -27,6 +27,8 @@ cache:
 - C:\asio
 - C:\OpenSSL-Win32
 build_script:
+- cmd: git submodule init
+- cmd: git submodule update
 - cmd: MKDIR build
 - cmd: CD build
 - cmd: MKDIR lib
