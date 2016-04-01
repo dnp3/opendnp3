@@ -61,7 +61,7 @@ protected:
 
 private:
 
-	const int m_priority;	
+	const int m_priority;
 	const HeaderBuilderT m_format;
 
 
@@ -73,7 +73,7 @@ private:
 	virtual MasterTaskType GetTaskType() const override final
 	{
 		return MasterTaskType::USER_TASK;
-	}	
+	}
 
 };
 

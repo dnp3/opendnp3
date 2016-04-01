@@ -41,10 +41,10 @@ class PhysicalLayerTLSBase : public PhysicalLayerASIO
 public:
 
 	PhysicalLayerTLSBase(
-		openpal::LogRoot& root,
-		asio::io_service& service,
-		const TLSConfig& config,
-		asio::ssl::context_base::method method		
+	    openpal::LogRoot& root,
+	    asio::io_service& service,
+	    const TLSConfig& config,
+	    asio::ssl::context_base::method method
 	);
 
 	virtual ~PhysicalLayerTLSBase() {}
@@ -59,10 +59,10 @@ public:
 protected:
 
 	bool LogPeerCertificateInfo(bool preverified, asio::ssl::verify_context& ctx);
-	
+
 	asio::ssl::context ctx;
-	
-	std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;	
+
+	std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;
 
 	void ShutdownTLSStream();
 	void ShutdownSocket();

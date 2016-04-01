@@ -31,10 +31,11 @@ using namespace openpal;
 using namespace opendnp3;
 using namespace asiodnp3;
 
-enum class Mode {
-	Link,
-	Transport,
-	App
+enum class Mode
+{
+    Link,
+    Transport,
+    App
 };
 
 Mode GetMode(const std::string& mode)
@@ -54,11 +55,11 @@ Mode GetMode(const std::string& mode)
 }
 
 int main(int argc, char* argv[])
-{		
+{
 	openpal::LogRoot log(&ConsoleLogger::Instance(), "decoder", LogFilters(~0));
 	IDecoderCallbacks callback;
 	Decoder decoder(callback, log.GetLogger());
-	
+
 	Buffer buffer(4096);
 
 	const Mode MODE = (argc > 1) ? GetMode(argv[1]) : Mode::Link;
@@ -66,23 +67,23 @@ int main(int argc, char* argv[])
 	while (true)
 	{
 		const size_t NUM_READ = fread(buffer(), 1, buffer.Size(), stdin);
-		
+
 		if (NUM_READ == 0)
 		{
 			return 0;
-		}		
-		
+		}
+
 		switch (MODE)
 		{
-			case(Mode::Link):
-				decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
-				break;
-			case(Mode::Transport) :
-				decoder.DecodeTPDU(buffer.ToRSlice().Take(NUM_READ));
-				break;
-			default:
-				decoder.DecodeAPDU(buffer.ToRSlice().Take(NUM_READ));
-				break;
+		case(Mode::Link):
+			decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
+			break;
+		case(Mode::Transport) :
+			decoder.DecodeTPDU(buffer.ToRSlice().Take(NUM_READ));
+			break;
+		default:
+			decoder.DecodeAPDU(buffer.ToRSlice().Take(NUM_READ));
+			break;
 		}
 	}
 

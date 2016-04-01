@@ -37,7 +37,7 @@ public:
 		Indexed<T>(value, index),
 		opType(opType_)
 	{
-	
+
 	}
 
 	OperateType opType;
@@ -71,10 +71,10 @@ public:
 		return numOperate;
 	}
 
-protected:	
+protected:
 
-	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) override 
-	{ 
+	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) override
+	{
 		this->crobOps.push_back(Operation<ControlRelayOutputBlock>(command, index, opType));
 	}
 

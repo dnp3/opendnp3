@@ -92,7 +92,7 @@ ParseResult APDUParser::ParseHeader(RSlice& buffer, openpal::Logger* pLogger, ui
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unknown object %i / %i", GV.group, GV.variation);
 		return ParseResult::UNKNOWN_OBJECT;
 	}
-	
+
 	// if a white-list is defined and it doesn't validate, exit early
 	if (pWhiteList && !pWhiteList->IsAllowed(count, GV.enumeration, QualifierCodeFromType(header.qualifier)))
 	{
@@ -108,8 +108,8 @@ ParseResult APDUParser::ParseHeader(RSlice& buffer, openpal::Logger* pLogger, ui
 
 		return ParseResult::NOT_ON_WHITELIST;
 	}
-		
-	
+
+
 	return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(GV, header.qualifier, count), settings, pHandler);
 }
 

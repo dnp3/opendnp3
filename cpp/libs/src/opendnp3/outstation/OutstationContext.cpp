@@ -602,7 +602,7 @@ IINField OContext::HandleSelect(const openpal::RSlice& objects, HeaderWriter& wr
 	else
 	{
 		// the 'OperateType' is just ignored  since it's a select
-		CommandActionAdapter adapter(this->pCommandHandler, true, OperateType::DirectOperate); 
+		CommandActionAdapter adapter(this->pCommandHandler, true, OperateType::DirectOperate);
 		CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, &writer);
 		auto result = APDUParser::Parse(objects, handler, &this->logger);
 		if (result == ParseResult::OK)

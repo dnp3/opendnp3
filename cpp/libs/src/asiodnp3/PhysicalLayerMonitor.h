@@ -50,7 +50,7 @@ public:
 	PhysicalLayerMonitor(	openpal::LogRoot& root,
 	                        openpal::IExecutor& executor,
 	                        openpal::IPhysicalLayer*,
-							const opendnp3::ChannelRetry& retry);
+	                        const opendnp3::ChannelRetry& retry);
 
 	/** Begin monitor execution, retry indefinitely on failure - Idempotent*/
 	void Start();
@@ -128,7 +128,7 @@ private:
 
 	opendnp3::ChannelRetry retry;
 
-	openpal::TimeDuration currentRetry;	
+	openpal::TimeDuration currentRetry;
 };
 
 }

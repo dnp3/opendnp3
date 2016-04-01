@@ -31,16 +31,16 @@ using namespace opendnp3;
 
 namespace asiodnp3
 {
-  
+
 template <class T>
 void MeasUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode)
-{	
-	if (this->m_use_timestamp) 
+{
+	if (this->m_use_timestamp)
 	{
 		T copy(meas);
 		copy.time = DNPTime(this->m_timestamp.msSinceEpoch);
 
-		auto update = [=](opendnp3::IDatabase & db)
+		auto update = [ = ](opendnp3::IDatabase & db)
 		{
 			db.Update(copy, index, mode);
 		};
@@ -49,12 +49,12 @@ void MeasUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mo
 	}
 	else
 	{
-		auto update = [=](opendnp3::IDatabase & db)
+		auto update = [ = ](opendnp3::IDatabase & db)
 		{
 			db.Update(meas, index, mode);
 		};
 		m_changes->Add(update);
-	}	
+	}
 }
 
 template <class T>
@@ -65,8 +65,8 @@ void MeasUpdate::ModifyAny(const openpal::Function1<const T&, T>& modify, uint16
 		db.Modify(modify, index, mode);
 	};
 	m_changes->Add(update);
-}  
-  
+}
+
 MeasUpdate::MeasUpdate(IOutstation* outstation, openpal::UTCTimestamp timestamp) :
 	m_outstation(outstation),
 	m_timestamp(timestamp),
@@ -77,9 +77,9 @@ MeasUpdate::MeasUpdate(IOutstation* outstation, openpal::UTCTimestamp timestamp)
 }
 
 MeasUpdate::MeasUpdate(IOutstation* outstation) :
-m_outstation(outstation),
-m_use_timestamp(false),
-m_changes(new ChangeSet())
+	m_outstation(outstation),
+	m_use_timestamp(false),
+	m_changes(new ChangeSet())
 {
 
 }

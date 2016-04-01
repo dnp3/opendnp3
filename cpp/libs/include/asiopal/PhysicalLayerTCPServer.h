@@ -40,7 +40,7 @@ public:
 	    asio::io_service& service,
 	    const std::string& endpoint,
 	    uint16_t port,
-		std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {}
+	std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {}
 	);
 
 	// --- Implement the remainging actions ---

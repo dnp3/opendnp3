@@ -41,8 +41,8 @@ namespace asiodnp3
 LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     openpal::IExecutor& executor,
                                     IPhysicalLayer* pPhys,
-									const ChannelRetry& retry,
-                                    IChannelStateListener* pStateHandler_,                                   
+                                    const ChannelRetry& retry,
+                                    IChannelStateListener* pStateHandler_,
                                     LinkChannelStatistics* pStatistics_) :
 
 	PhysicalLayerMonitor(root, executor, pPhys, retry),
@@ -87,7 +87,7 @@ bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
 
 		if (iter == records.end())
 		{
-			// record is always disabled by default			
+			// record is always disabled by default
 			records.push_back(Record(pContext, route));
 			return true;
 		}

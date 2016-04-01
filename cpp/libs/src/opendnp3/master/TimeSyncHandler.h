@@ -70,7 +70,7 @@ public:
 	}
 
 private:
-    
+
 	TimeSyncHandler() = delete;
 
 	openpal::Logger logger;

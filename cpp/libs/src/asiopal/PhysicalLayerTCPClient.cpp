@@ -62,7 +62,7 @@ void PhysicalLayerTCPClient::DoOpen()
 {
 	std::error_code ec;
 	SocketHelpers::BindToLocalAddress(localAddress, localEndpoint, socket, ec);
-	
+
 	if (ec)
 	{
 		auto callback = [this, ec]()

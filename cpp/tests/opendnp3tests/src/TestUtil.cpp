@@ -37,7 +37,7 @@ void TestHex(const std::string& hex, uint8_t* compareBytes, size_t count)
 	REQUIRE((hs.Size() ==  count));
 	for ( size_t i = 0; i < count; i++ )
 	{
-	  REQUIRE((hs[i] ==  compareBytes[i]));
+		REQUIRE((hs[i] ==  compareBytes[i]));
 	}
 }
 

@@ -60,15 +60,15 @@ ParseResult RangeParser::ParseHeader(openpal::RSlice& buffer, const NumParser& n
 	{
 		return res;
 	}
-	
+
 	FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-		                "%03u,%03u %s, %s [%u, %u]",
-		                record.group,
-		                record.variation,
-		                GroupVariationToString(record.enumeration),
-		                QualifierCodeToString(record.GetQualifierCode()),
-		                range.start,
-		                range.stop);
+	                    "%03u,%03u %s, %s [%u, %u]",
+	                    record.group,
+	                    record.variation,
+	                    GroupVariationToString(record.enumeration),
+	                    QualifierCodeToString(record.GetQualifierCode()),
+	                    range.start,
+	                    range.stop);
 
 	if (settings.ExpectsContents())
 	{
@@ -81,7 +81,7 @@ ParseResult RangeParser::ParseHeader(openpal::RSlice& buffer, const NumParser& n
 			pHandler->OnHeader(RangeHeader(record, range));
 		}
 		return ParseResult::OK;
-	}	
+	}
 }
 
 ParseResult RangeParser::Process(const HeaderRecord& record, openpal::RSlice& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const
@@ -160,9 +160,9 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::RSlice& buffer, const Head
 
 	default:
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
-		                              QualifierCodeToString(record.GetQualifierCode()), 
-									  record.group, 
-									  record.variation);
+		                    QualifierCodeToString(record.GetQualifierCode()),
+		                    record.group,
+		                    record.variation);
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}

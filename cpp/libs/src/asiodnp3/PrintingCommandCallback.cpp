@@ -27,22 +27,22 @@ using namespace opendnp3;
 
 namespace asiodnp3
 {
-	opendnp3::CommandCallbackT PrintingCommandCallback::Get()
+opendnp3::CommandCallbackT PrintingCommandCallback::Get()
+{
+	return [](const ICommandTaskResult & result) -> void
 	{
-		return [](const ICommandTaskResult& result) -> void
-		{			
-			std::cout << "Received command result w/ summary: " << TaskCompletionToString(result.summary) << std::endl;
-			auto print = [](const CommandPointResult& res)
-			{
-				std::cout 
-					<< "Header: " << res.headerIndex
-					<< " Index: " << res.index
-					<< " State: " << CommandPointStateToString(res.state)
-					<< " Status: " << CommandStatusToString(res.status);
-			};
-			result.ForeachItem(print);
+		std::cout << "Received command result w/ summary: " << TaskCompletionToString(result.summary) << std::endl;
+		auto print = [](const CommandPointResult & res)
+		{
+			std::cout
+			        << "Header: " << res.headerIndex
+			<< " Index: " << res.index
+			<< " State: " << CommandPointStateToString(res.state)
+			<< " Status: " << CommandStatusToString(res.status);
 		};
-	}
+		result.ForeachItem(print);
+	};
+}
 }
 
 

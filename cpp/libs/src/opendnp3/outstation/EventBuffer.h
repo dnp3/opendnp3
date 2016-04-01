@@ -81,7 +81,7 @@ public:
 	virtual void Update(const Event<AnalogOutputStatus>& evt) override final
 	{
 		this->UpdateAny(evt);
-	}	
+	}
 
 	// ------- IEventSelector ------
 

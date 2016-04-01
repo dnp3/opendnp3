@@ -41,16 +41,22 @@ public:
 
 	/// Release a lock
 	virtual bool Release(IScheduleCallback&) = 0;
-	
+
 };
 
 class NullTaskLock final : public ITaskLock, private openpal::Uncopyable
 {
 public:
 
-	virtual bool Acquire(IScheduleCallback&) override { return true; }
+	virtual bool Acquire(IScheduleCallback&) override
+	{
+		return true;
+	}
 
-	virtual bool Release(IScheduleCallback&) override { return true; }
+	virtual bool Release(IScheduleCallback&) override
+	{
+		return true;
+	}
 
 	static ITaskLock& Instance();
 

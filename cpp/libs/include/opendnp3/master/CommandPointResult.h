@@ -46,22 +46,22 @@ public:
 	bool Equals(const CommandPointResult& other) const
 	{
 		return	(headerIndex == other.headerIndex) &&
-				(index == other.index) &&
-				(state == other.state) &&
-				(status == other.status);
+		        (index == other.index) &&
+		        (state == other.state) &&
+		        (status == other.status);
 	}
 
 	/// The index of the header when request was made (0-based)
 	uint32_t headerIndex;
-		
+
 	/// The index of the command that was requested
 	uint16_t index;
 
 	/// The final state of the command operation on this point
 	CommandPointState state;
-		
+
 	/// The response value. This is only valid if state == SUCCESS or state == SELECT_FAIL
-	CommandStatus status;	
+	CommandStatus status;
 };
 
 }

@@ -59,9 +59,9 @@ public:
 	*	@param onThreadExit Action to run just before a thread pool thread exits
 	*/
 	DNP3Manager(
-		uint32_t concurrencyHint,
-		std::function<void()> onThreadStart = []() {},
-		std::function<void()> onThreadExit = []() {}
+	    uint32_t concurrencyHint,
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
 	);
 
 	~DNP3Manager();
@@ -86,13 +86,13 @@ public:
 	* @param retry Retry parameters for failed channels
 	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
-	* @param port Port of remote outstation is listening on	
+	* @param port Port of remote outstation is listening on
 	* @return A channel interface
 	*/
 	IChannel* AddTCPClient(
 	    char const* id,
 	    uint32_t levels,
-		const opendnp3::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    const std::string& host,
 	    const std::string& local,
 	    uint16_t port);
@@ -104,15 +104,15 @@ public:
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
 	* @param retry Retry parameters for failed channels
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
-	* @param port Port to listen on	
+	* @param port Port to listen on
 	* @return A channel interface
 	*/
 	IChannel* AddTCPServer(
-		char const* id,
-		uint32_t levels,
-		const opendnp3::ChannelRetry& retry,
-		const std::string& endpoint,
-		uint16_t port);
+	    char const* id,
+	    uint32_t levels,
+	    const opendnp3::ChannelRetry& retry,
+	    const std::string& endpoint,
+	    uint16_t port);
 
 	/**
 	* Add a serial channel
@@ -120,13 +120,13 @@ public:
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
 	* @param retry Retry parameters for failed channels
-	* @param settings settings object that fully parameterizes the serial port	
+	* @param settings settings object that fully parameterizes the serial port
 	* @return A channel interface
 	*/
 	IChannel* AddSerial(
 	    char const* id,
 	    uint32_t levels,
-		const opendnp3::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    asiopal::SerialSettings settings);
 
 #ifdef OPENDNP3_USE_TLS
@@ -142,17 +142,17 @@ public:
 	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
-	* @param config TLS configuration information	
+	* @param config TLS configuration information
 	* @return A channel interface
 	*/
 	IChannel* AddTLSClient(
-		char const* id,
-		uint32_t levels,
-		const opendnp3::ChannelRetry& retry,
-		const std::string& host,
-		const std::string& local,
-		uint16_t port,
-		const asiopal::TLSConfig& config);
+	    char const* id,
+	    uint32_t levels,
+	    const opendnp3::ChannelRetry& retry,
+	    const std::string& host,
+	    const std::string& local,
+	    uint16_t port,
+	    const asiopal::TLSConfig& config);
 
 	/**
 	* Add a TLS server channel
@@ -164,21 +164,21 @@ public:
 	* @param retry Retry parameters for failed channels
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
-	* @param config TLS configuration information	
+	* @param config TLS configuration information
 	* @return A channel interface
 	*/
 	IChannel* AddTLSServer(
-		char const* id,
-		uint32_t levels,
-		const opendnp3::ChannelRetry& retry,
-		const std::string& endpoint,
-		uint16_t port,
-		const asiopal::TLSConfig& config);
+	    char const* id,
+	    uint32_t levels,
+	    const opendnp3::ChannelRetry& retry,
+	    const std::string& endpoint,
+	    uint16_t port,
+	    const asiopal::TLSConfig& config);
 
 #endif
 
 private:
-	
+
 	std::unique_ptr<ManagerImpl> impl;
 
 };

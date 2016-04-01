@@ -51,14 +51,14 @@ public:
 	static TaskConfig With(ITaskCallback& callback)
 	{
 		return TaskConfig(TaskId::Undefined(), &callback);
-	}	
+	}
 
 	TaskConfig() = delete;
 
 public:
 
 	TaskId taskId;
-	ITaskCallback* pCallback;	
+	ITaskCallback* pCallback;
 };
 
 }

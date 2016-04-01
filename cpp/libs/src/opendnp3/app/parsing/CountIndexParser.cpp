@@ -219,8 +219,8 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer, const
 	default:
 
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN,
-		                              "Unsupported qualifier/object - %s - %i / %i",
-		                              QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
+		                    "Unsupported qualifier/object - %s - %i / %i",
+		                    QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}

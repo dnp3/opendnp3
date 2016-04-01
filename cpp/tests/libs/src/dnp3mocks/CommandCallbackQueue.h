@@ -42,7 +42,7 @@ public:
 	}
 
 	bool Equals(TaskCompletion summary_, CommandPointResult result) const
-	{		
+	{
 		return (results.size() == 1) && (summary_ == summary) && result.Equals(results.front());
 	}
 
@@ -56,13 +56,13 @@ public:
 
 	std::function<void(const ICommandTaskResult&)> Callback()
 	{
-		return [this](const ICommandTaskResult& rsp) -> void
+		return [this](const ICommandTaskResult & rsp) -> void
 		{
 			MockCommandResultType result(rsp.summary);
 			rsp.Foreach(result);
 			values.push_back(result);
 		};
-	}	
+	}
 
 	bool PopOnlyEqualValue(TaskCompletion summary, CommandPointResult item)
 	{
@@ -88,7 +88,7 @@ public:
 
 		uint32_t i = 0;
 
-		for (auto& item: list)
+		for (auto & item : list)
 		{
 			if (!value.results[i].Equals(item))
 			{

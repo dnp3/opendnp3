@@ -66,7 +66,7 @@ public:
 	void Update(const Event<AnalogOutputStatus>& evt) override
 	{
 		analogOutputStatusEvents.push_back(evt);
-	}	
+	}
 
 	std::deque<Event<Binary>> binaryEvents;
 	std::deque<Event<DoubleBitBinary>> doubleBinaryEvents;

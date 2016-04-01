@@ -39,35 +39,35 @@ class ICommandHeader;
 * Provides a mechanism for building a set of one or more command headers
 */
 class CommandSet final
-{	
+{
 	// friend class used to hide some implementation details while keeping the headers private
 	friend class CommandSetOps;
 
-public:	
+public:
 
 	typedef std::vector<ICommandHeader*> HeaderVector;
 
 	/// Contrsuct an empty command set
-	CommandSet(){}	
+	CommandSet() {}
 
 	/// Construct a new command set and take ownership of the headers in argument
 	CommandSet(CommandSet&& other);
 
 	/// Destruct the command set and free any referenced headers
 	~CommandSet();
-	
+
 	/// Construct a command set from a list of CROB
 	CommandSet(std::initializer_list<Indexed<ControlRelayOutputBlock>> items);
-	
+
 	/// Construct a command set from a list of AOInt16
 	CommandSet(std::initializer_list<Indexed<AnalogOutputInt16>> items);
-	
+
 	/// Construct a command set from a list of AOInt32
 	CommandSet(std::initializer_list<Indexed<AnalogOutputInt32>> items);
-	
+
 	/// Construct a command set from a list of AOFloat32
 	CommandSet(std::initializer_list<Indexed<AnalogOutputFloat32>> items);
-	
+
 	/// Construct a command set from a list of AODouble64
 	CommandSet(std::initializer_list<Indexed<AnalogOutputDouble64>> items);
 
@@ -76,17 +76,17 @@ public:
 	void Add(std::initializer_list<Indexed<T>> items)
 	{
 		auto& header = this->StartHeader<T>();
-		for (auto& command : items)
+		for (auto & command : items)
 		{
 			header.Add(command.value, command.index);
 		}
 	}
-	
+
 	/// Begin a header of the parameterized type
 	template <class T>
 	ICommandCollection<T>& StartHeader();
-	
-	
+
+
 private:
 
 	template <class T>
@@ -97,10 +97,10 @@ private:
 	ICommandCollection<AnalogOutputInt16>& StartHeaderAOInt16();
 	ICommandCollection<AnalogOutputFloat32>& StartHeaderAOFloat32();
 	ICommandCollection<AnalogOutputDouble64>& StartHeaderAODouble64();
-	
+
 	CommandSet(const CommandSet&) = delete;
 	CommandSet& operator= (const CommandSet& other) = delete;
-	
+
 	HeaderVector m_headers;
 };
 

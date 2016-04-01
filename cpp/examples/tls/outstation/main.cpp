@@ -75,13 +75,13 @@ int main(int argc, char* argv[])
 
 	// Create a TCP server (listener)
 	auto pChannel = manager.AddTLSServer(
-		"server",
-		FILTERS,
-		ChannelRetry::Default(),
-		"0.0.0.0",
-		20001, 
-		TLSConfig(peerCertificate, privateKey, privateKey)
-	);
+	                    "server",
+	                    FILTERS,
+	                    ChannelRetry::Default(),
+	                    "0.0.0.0",
+	                    20001,
+	                    TLSConfig(peerCertificate, privateKey, privateKey)
+	                );
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console

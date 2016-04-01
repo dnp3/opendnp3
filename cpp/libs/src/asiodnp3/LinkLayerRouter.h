@@ -60,11 +60,14 @@ public:
 	LinkLayerRouter(openpal::LogRoot&,
 	                openpal::IExecutor& executor,
 	                openpal::IPhysicalLayer*,
-					const opendnp3::ChannelRetry& retry,
-	                opendnp3::IChannelStateListener* pStateHandler = nullptr,	                
+	                const opendnp3::ChannelRetry& retry,
+	                opendnp3::IChannelStateListener* pStateHandler = nullptr,
 	                opendnp3::LinkChannelStatistics* pStatistics = nullptr);
 
-	opendnp3::ITaskLock& GetTaskLock() { return taskLock; }
+	opendnp3::ITaskLock& GetTaskLock()
+	{
+		return taskLock;
+	}
 
 	// called when the router shuts down
 	void SetShutdownHandler(const openpal::Action0& action);

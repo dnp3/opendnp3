@@ -109,7 +109,7 @@ public:
 	virtual bool IsAuthTask() const
 	{
 		return false;
-	}	
+	}
 
 	/**
 	*

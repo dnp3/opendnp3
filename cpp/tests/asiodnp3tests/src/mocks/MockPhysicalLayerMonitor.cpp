@@ -43,7 +43,7 @@ MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
     TimeDuration aMinOpenRetry,
     TimeDuration aMaxOpenRetry
 ) :
-PhysicalLayerMonitor(root, executor, apPhys, ChannelRetry(aMinOpenRetry, aMaxOpenRetry)),
+	PhysicalLayerMonitor(root, executor, apPhys, ChannelRetry(aMinOpenRetry, aMaxOpenRetry)),
 	mOpens(0),
 	mCloses(0),
 	mNumReads(0),

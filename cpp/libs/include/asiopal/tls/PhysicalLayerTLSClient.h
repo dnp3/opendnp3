@@ -46,7 +46,7 @@ public:
 	    const std::string& host,
 	    const std::string& localAddress,
 	    uint16_t port,
-		const TLSConfig& config
+	    const TLSConfig& config
 	);
 
 	// ---- Implement the remaining actions ----
@@ -55,10 +55,10 @@ public:
 	void DoOpeningClose() override; //override this to just close the socket insead of shutting it down too
 	void DoOpenSuccess() override;
 
-private:			
+private:
 
 	void HandleResolveResult(const std::error_code& ec, asio::ip::tcp::resolver::iterator endpoint_iterator);
-	void HandleConnectResult(const std::error_code& ec);	
+	void HandleConnectResult(const std::error_code& ec);
 
 	asiopal::LoggingConnectionCondition condition;
 	const std::string host;

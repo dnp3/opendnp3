@@ -51,7 +51,7 @@ void TestComplex(const std::string& hex, ParseResult expected, size_t numCalls, 
 	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, &logger);
 
 	if (result != expected)
-	{	
+	{
 		// TODO
 		// log.Pop(ConsoleLogger::Instance());
 	}

@@ -51,7 +51,7 @@ public:
 	void DoOpeningClose() override;  //override this to just close the socket insead of shutting is down too
 	void DoOpenSuccess() override;
 
-private:		
+private:
 
 	void HandleResolve(const std::error_code& code, asio::ip::tcp::resolver::iterator endpoint_iterator);
 

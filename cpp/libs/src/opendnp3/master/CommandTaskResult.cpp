@@ -30,15 +30,15 @@ CommandTaskResult::CommandTaskResult(TaskCompletion result, const CommandSet::He
 	ICommandTaskResult(result),
 	m_vector(&vector)
 {
-	
+
 }
-	
+
 /// --- Implement ICollection<CommandResult> ----
 
 uint32_t CommandTaskResult::Count() const
 {
 	uint32_t count = 0;
-	for (auto& header : *m_vector)
+	for (auto & header : *m_vector)
 	{
 		count += header->Count();
 	}
@@ -49,18 +49,18 @@ void CommandTaskResult::Foreach(IVisitor<CommandPointResult>& visitor) const
 {
 	uint32_t headerIndex = 0;
 
-	for (auto& header : *m_vector)
+	for (auto & header : *m_vector)
 	{
-		auto visit = [&](const CommandState& state) 
+		auto visit = [&](const CommandState & state)
 		{
-				visitor.OnValue(
-					CommandPointResult(
-						headerIndex,
-						state.index,
-						state.state,
-						state.status
-					)
-				);
+			visitor.OnValue(
+			    CommandPointResult(
+			        headerIndex,
+			        state.index,
+			        state.state,
+			        state.status
+			    )
+			);
 		};
 
 		header->ForeachItem(visit);

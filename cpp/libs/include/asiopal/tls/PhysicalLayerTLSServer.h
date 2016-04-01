@@ -39,7 +39,7 @@ public:
 	    asio::io_service& service,
 	    const std::string& endpoint,
 	    uint16_t port,
-		const TLSConfig& config
+	    const TLSConfig& config
 	);
 
 	// --- Implement the remainging actions ---
@@ -48,7 +48,7 @@ public:
 	void DoOpenSuccess() override;
 	void DoOpenCallback() override;
 
-private:	
+private:
 
 	void HandleAcceptResult(const std::error_code& ec);
 
@@ -59,7 +59,7 @@ private:
 	std::string localEndpointString;
 	asio::ip::tcp::endpoint localEndpoint;
 	asio::ip::tcp::endpoint remoteEndpoint;
-	asio::ip::tcp::acceptor acceptor;	
+	asio::ip::tcp::acceptor acceptor;
 };
 }
 

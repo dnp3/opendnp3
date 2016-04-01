@@ -68,7 +68,7 @@ private:
 	openpal::Array<Cell<FrozenCounter>, uint16_t> frozenCounters;
 	openpal::Array<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
 	openpal::Array<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
-	openpal::Array<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;	
+	openpal::Array<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;
 };
 
 }

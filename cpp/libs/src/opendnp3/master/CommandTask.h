@@ -46,7 +46,7 @@ class CommandTask : public IMasterTask
 {
 
 public:
-	
+
 	static IMasterTask* FDirectOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
 	static IMasterTask* FSelectAndOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
 
@@ -95,14 +95,14 @@ private:
 	ResponseResult ProcessResponse(const openpal::RSlice& objects);
 
 	void LoadSelectAndOperate();
-	void LoadDirectOperate();	
+	void LoadDirectOperate();
 
 	std::deque<FunctionCode> functionCodes;
 
 	CommandStatus statusResult;
 	CommandCallbackT commandCallback;
-	CommandSet commands;	
-	
+	CommandSet commands;
+
 };
 
 

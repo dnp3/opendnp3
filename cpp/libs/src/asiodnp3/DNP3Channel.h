@@ -60,10 +60,10 @@ class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
 public:
 
 	DNP3Channel(
-		openpal::LogRoot* pLogRoot_,
-		asiopal::ASIOExecutor& executor,
-		const opendnp3::ChannelRetry& retry,
-	    	openpal::IPhysicalLayer* pPhys
+	    openpal::LogRoot* pLogRoot_,
+	    asiopal::ASIOExecutor& executor,
+	    const opendnp3::ChannelRetry& retry,
+	    openpal::IPhysicalLayer* pPhys
 	);
 
 	// ----------------------- Implement IChannel -----------------------
@@ -79,9 +79,9 @@ public:
 	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) override final;
 
 	virtual IMaster* AddMaster(char const* id,
-	                            opendnp3::ISOEHandler& SOEHandler,
-	                            opendnp3::IMasterApplication& application,
-	                            const opendnp3::MasterStackConfig& config) override final;
+	                           opendnp3::ISOEHandler& SOEHandler,
+	                           opendnp3::IMasterApplication& application,
+	                           const opendnp3::MasterStackConfig& config) override final;
 
 
 
@@ -106,7 +106,7 @@ private:
 
 	virtual void OnStateChange(opendnp3::ChannelState state) override final;
 
-	void CheckForFinalShutdown();	
+	void CheckForFinalShutdown();
 
 	openpal::Action0 shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;

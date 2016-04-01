@@ -31,7 +31,7 @@ namespace opendnp3
 class APDURequest : public APDUWrapper
 {
 public:
-	
+
 	explicit APDURequest(const openpal::WSlice& buffer);
 
 	void ConfigureHeader(FunctionCode code, uint8_t seq);

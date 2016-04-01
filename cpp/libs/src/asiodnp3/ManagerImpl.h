@@ -40,12 +40,12 @@ class ManagerImpl : private openpal::Uncopyable
 {
 
 public:
-	
+
 	ManagerImpl(
-			uint32_t concurrencyHint,			
-			std::function<void()> onThreadStart,
-			std::function<void()> onThreadExit
-		) :
+	    uint32_t concurrencyHint,
+	    std::function<void()> onThreadStart,
+	    std::function<void()> onThreadExit
+	) :
 		fanout(),
 		threadpool(&fanout, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
 		channels()

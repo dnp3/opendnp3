@@ -115,21 +115,21 @@ int main(int argc, char* argv[])
 			                        );
 			break;
 		case('r') :
-		{
-			auto print = [](const RestartOperationResult& result)
 			{
-			  if(result.summary == TaskCompletion::SUCCESS)
-			  {
-			    std::cout << "Success, Time: " << result.restartTime.GetMilliseconds() << std::endl;
-			  }
-			  else
-			  {
-			    std::cout << "Failure: " << TaskCompletionToString(result.summary) << std::endl;
-			  }    
-			};
-			pMaster->Restart(RestartType::COLD, print);
-			break;
-		}
+				auto print = [](const RestartOperationResult & result)
+				{
+					if(result.summary == TaskCompletion::SUCCESS)
+					{
+						std::cout << "Success, Time: " << result.restartTime.GetMilliseconds() << std::endl;
+					}
+					else
+					{
+						std::cout << "Failure: " << TaskCompletionToString(result.summary) << std::endl;
+					}
+				};
+				pMaster->Restart(RestartType::COLD, print);
+				break;
+			}
 		case('x'):
 			// C++ destructor on DNP3Manager cleans everything up for you
 			return 0;
@@ -141,8 +141,8 @@ int main(int argc, char* argv[])
 			break;
 		case('c'):
 			{
-				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);											
-				pMaster->SelectAndOperate(crob, 0, PrintingCommandCallback::Get());				
+				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
+				pMaster->SelectAndOperate(crob, 0, PrintingCommandCallback::Get());
 				break;
 			}
 		default:

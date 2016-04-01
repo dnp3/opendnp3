@@ -28,12 +28,12 @@
 
 namespace asiodnp3
 {
-  
-class ChangeSet;  
+
+class ChangeSet;
 
 /**
  *	A helper class that allows user code to update the measurement values in an outstation
- */  
+ */
 class MeasUpdate : private openpal::Uncopyable
 {
 public:
@@ -68,14 +68,14 @@ public:
 	void Modify(const openpal::Function1<const opendnp3::AnalogOutputStatus&, opendnp3::AnalogOutputStatus>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Modify(const openpal::Function1<const opendnp3::TimeAndInterval&, opendnp3::TimeAndInterval>& modify, uint16_t index);
 
-private:	
+private:
 
 	template <class T>
 	void UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode);
 
 	template <class T>
 	void ModifyAny(const openpal::Function1<const T&, T>& modify, uint16_t index, opendnp3::EventMode mode);
-	
+
 	IOutstation* m_outstation;
 	openpal::UTCTimestamp m_timestamp;
 	bool m_use_timestamp;

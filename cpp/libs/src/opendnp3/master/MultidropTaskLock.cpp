@@ -29,8 +29,9 @@ MultidropTaskLock::MultidropTaskLock() : m_is_online(false), m_active(nullptr)
 }
 
 bool MultidropTaskLock::Acquire(IScheduleCallback& callback)
-{	
-	if (!m_is_online) {
+{
+	if (!m_is_online)
+	{
 		return false;
 	}
 
@@ -40,16 +41,16 @@ bool MultidropTaskLock::Acquire(IScheduleCallback& callback)
 		{
 			return true;
 		}
-		
+
 
 		this->AddIfNotContained(callback);
-		return false;		
+		return false;
 	}
-	else 
+	else
 	{
 		m_active = &callback;
 		return true;
-	}	
+	}
 }
 
 bool MultidropTaskLock::Release(IScheduleCallback& callback)
@@ -61,7 +62,7 @@ bool MultidropTaskLock::Release(IScheduleCallback& callback)
 
 	m_active = nullptr;
 
-	if (!m_is_online) 
+	if (!m_is_online)
 	{
 		return true;
 	}
@@ -74,7 +75,7 @@ bool MultidropTaskLock::Release(IScheduleCallback& callback)
 	m_active = m_callback_queue.front();
 	m_callback_queue.pop_front();
 	m_callback_set.erase(m_active);
-	m_active->OnPendingTask();	
+	m_active->OnPendingTask();
 	return true;
 }
 
@@ -88,7 +89,7 @@ bool MultidropTaskLock::AddIfNotContained(IScheduleCallback& callback)
 
 	m_callback_set.insert(&callback);
 	m_callback_queue.push_back(&callback);
-	return true;	
+	return true;
 }
 
 }

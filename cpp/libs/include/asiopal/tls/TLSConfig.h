@@ -32,7 +32,7 @@ namespace asiopal
 */
 class TLSConfig
 {
-public:	
+public:
 
 	/**
 	* Construct a TLS configuration
@@ -43,15 +43,15 @@ public:
 	* @param cipherList The openssl cipher-list, defaults to "" which does not modify the default cipher list
 	*
 	* localCertFilePath and privateKeyFilePath can optionally be the same file, i.e. a PEM that contains both pieces of data.
-	* 	 	
+	*
 	*/
 	TLSConfig(
-		const std::string& peerCertFilePath,
-		const std::string& localCertFilePath,
-		const std::string& privateKeyFilePath,
-		const std::string& cipherList = ""
+	    const std::string& peerCertFilePath,
+	    const std::string& localCertFilePath,
+	    const std::string& privateKeyFilePath,
+	    const std::string& cipherList = ""
 	);
-		
+
 
 	std::string peerCertFilePath;
 	std::string localCertFilePath;

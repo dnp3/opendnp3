@@ -50,7 +50,7 @@ void ChannelSet::Shutdown()
 IChannel* ChannelSet::CreateChannel(
     openpal::LogRoot* pLogRoot,
     asiopal::ASIOExecutor& executor,
-	const ChannelRetry& retry,
+    const ChannelRetry& retry,
     PhysicalLayerBase* apPhys)
 {
 	auto pChannel = new DNP3Channel(pLogRoot, executor, retry, apPhys);

@@ -33,112 +33,112 @@ using namespace asio::ssl;
 namespace asiopal
 {
 
-	PhysicalLayerTLSBase::PhysicalLayerTLSBase(
-			openpal::LogRoot& root, 
-			asio::io_service& service,			
-			const TLSConfig& config,
-			asio::ssl::context_base::method method) :
+PhysicalLayerTLSBase::PhysicalLayerTLSBase(
+    openpal::LogRoot& root,
+    asio::io_service& service,
+    const TLSConfig& config,
+    asio::ssl::context_base::method method) :
 
-		PhysicalLayerASIO(root, service),
-		ctx(method)
+	PhysicalLayerASIO(root, service),
+	ctx(method)
+{
+
+	TLSHelpers::ApplyConfig(config, ctx);
+
+	ctx.set_verify_callback(
+	    [this](bool preverified, asio::ssl::verify_context & ctx)
 	{
-
-		TLSHelpers::ApplyConfig(config, ctx);
-
-		ctx.set_verify_callback(
-			[this](bool preverified, asio::ssl::verify_context& ctx)
-			{
-				return this->LogPeerCertificateInfo(preverified, ctx);
-			}
-		);
-
-		/// Now with all of this configured, we can create the stream class
-		/// The order is important since the socket object inerhits all the settings from the context
-		this->stream = std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>(new asio::ssl::stream<asio::ip::tcp::socket>(service, ctx));		
+		return this->LogPeerCertificateInfo(preverified, ctx);
 	}
+	);
 
-	bool PhysicalLayerTLSBase::LogPeerCertificateInfo(bool preverified, asio::ssl::verify_context& ctx)
+	/// Now with all of this configured, we can create the stream class
+	/// The order is important since the socket object inerhits all the settings from the context
+	this->stream = std::unique_ptr<asio::ssl::stream<asio::ip::tcp::socket>>(new asio::ssl::stream<asio::ip::tcp::socket>(service, ctx));
+}
+
+bool PhysicalLayerTLSBase::LogPeerCertificateInfo(bool preverified, asio::ssl::verify_context& ctx)
+{
+	// This is just for logging purposes to log the subject name of the certificate if verifies or not
+
+	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
+
+	char subjectName[256];
+	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
+
+	FORMAT_LOG_BLOCK(logger, openpal::logflags::INFO, preverified ? "Verified subject_name: %s" : "Did not verify subject_name: %s", subjectName);
+
+	return preverified;
+}
+
+// ---- Implement the shared client/server actions ----
+
+void PhysicalLayerTLSBase::DoClose()
+{
+	this->ShutdownTLSStream();
+	this->ShutdownSocket();
+	this->CloseSocket();
+}
+
+void PhysicalLayerTLSBase::DoRead(openpal::WSlice& dest)
+{
+	uint8_t* pBuff = dest;
+
+	auto callback = [this, pBuff](const std::error_code & ec, size_t  numRead)
 	{
-		// This is just for logging purposes to log the subject name of the certificate if verifies or not
+		this->OnReadCallback(ec, pBuff, static_cast<uint32_t>(numRead));
+	};
 
-		X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
+	stream->async_read_some(buffer(pBuff, dest.Size()), executor.strand.wrap(callback));
+}
 
-		char subjectName[256];
-		X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 256);
-
-		FORMAT_LOG_BLOCK(logger, openpal::logflags::INFO, preverified ? "Verified subject_name: %s" : "Did not verify subject_name: %s", subjectName);
-
-		return preverified;
-	}
-
-	// ---- Implement the shared client/server actions ----
-
-	void PhysicalLayerTLSBase::DoClose()
+void PhysicalLayerTLSBase::DoWrite(const openpal::RSlice& data)
+{
+	auto callback = [this](const std::error_code & code, size_t  numWritten)
 	{
-		this->ShutdownTLSStream();
-		this->ShutdownSocket();
-		this->CloseSocket();
-	}
-	
-	void PhysicalLayerTLSBase::DoRead(openpal::WSlice& dest)
+		this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));
+	};
+
+	async_write(*stream, buffer(data, data.Size()), executor.strand.wrap(callback));
+}
+
+void PhysicalLayerTLSBase::DoOpenFailure()
+{
+	SIMPLE_LOG_BLOCK(logger, logflags::DBG, "Failed socket open, closing socket");
+	this->ShutdownSocket();
+	this->CloseSocket();
+}
+
+void PhysicalLayerTLSBase::ShutdownTLSStream()
+{
+	std::error_code ec;
+	stream->shutdown(ec);
+	if (ec)
 	{
-		uint8_t* pBuff = dest;
-
-		auto callback = [this, pBuff](const std::error_code & ec, size_t  numRead)
-		{
-			this->OnReadCallback(ec, pBuff, static_cast<uint32_t>(numRead));
-		};
-
-		stream->async_read_some(buffer(pBuff, dest.Size()), executor.strand.wrap(callback));
+		FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error while shutting down TLS stream: %s", ec.message().c_str());
 	}
-	
-	void PhysicalLayerTLSBase::DoWrite(const openpal::RSlice& data)
+}
+
+void PhysicalLayerTLSBase::ShutdownSocket()
+{
+
+	std::error_code ec;
+	stream->lowest_layer().shutdown(ip::tcp::socket::shutdown_both, ec);
+	if (ec)
 	{
-		auto callback = [this](const std::error_code & code, size_t  numWritten)
-		{
-			this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));
-		};
-		
-		async_write(*stream, buffer(data, data.Size()), executor.strand.wrap(callback));
+		FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error shutting down socket: %s", ec.message().c_str());
 	}
-	
-	void PhysicalLayerTLSBase::DoOpenFailure()
+}
+
+void PhysicalLayerTLSBase::CloseSocket()
+{
+	std::error_code ec;
+	stream->lowest_layer().close(ec);
+	if (ec)
 	{
-		SIMPLE_LOG_BLOCK(logger, logflags::DBG, "Failed socket open, closing socket");
-		this->ShutdownSocket();
-		this->CloseSocket();
+		FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error closing socket: %s", ec.message().c_str());
 	}
-
-	void PhysicalLayerTLSBase::ShutdownTLSStream()
-	{		
-		std::error_code ec;
-		stream->shutdown(ec);
-		if (ec)
-		{
-			FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error while shutting down TLS stream: %s", ec.message().c_str());
-		}	
-	}
-
-	void PhysicalLayerTLSBase::ShutdownSocket()
-	{
-
-		std::error_code ec;
-		stream->lowest_layer().shutdown(ip::tcp::socket::shutdown_both, ec);
-		if (ec)
-		{
-			FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error shutting down socket: %s", ec.message().c_str());
-		}
-	}
-
-	void PhysicalLayerTLSBase::CloseSocket()
-	{
-		std::error_code ec;
-		stream->lowest_layer().close(ec);			
-		if (ec)
-		{
-			FORMAT_LOG_BLOCK(logger, logflags::DBG, "Error closing socket: %s", ec.message().c_str());
-		}		
-	}
+}
 
 }
 

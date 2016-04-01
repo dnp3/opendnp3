@@ -45,12 +45,12 @@ public:
 	) :
 		type(type_),
 		result(result_),
-		id(id_)		
+		id(id_)
 	{}
 
 	MasterTaskType type;
 	TaskCompletion result;
-	TaskId id;	
+	TaskId id;
 };
 
 }

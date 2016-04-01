@@ -40,10 +40,10 @@ namespace opendnp3
 
 template <class T>
 class TypedCommandHeader final : public ICommandHeader, public ICommandCollection<T>
-{	
+{
 	struct Record : public CommandState
 	{
-		Record(const Indexed<T>& pair) : CommandState(pair.index), command(pair.value)						
+		Record(const Indexed<T>& pair) : CommandState(pair.index), command(pair.value)
 		{}
 
 		T command;
@@ -57,14 +57,14 @@ public:
 	// --- Implement ICommandCollection ---
 
 	virtual ICommandCollection<T>& Add(const T& command, uint16_t index) override;
-	
+
 	// --- Implement ICommandHeader ----
 
 	virtual bool AreAllSelected() const override;
-	
+
 	virtual bool Write(HeaderWriter&) const override;
 
-	virtual void ApplySelectResponse(const ICollection<Indexed<T>>& commands) override;	
+	virtual void ApplySelectResponse(const ICollection<Indexed<T>>& commands) override;
 
 	virtual void ApplyOperateResponse(const ICollection<Indexed<T>>& commands) override;
 
@@ -90,14 +90,14 @@ ICommandCollection<T>& TypedCommandHeader<T>::Add(const T& command, uint16_t ind
 
 template <class T>
 bool TypedCommandHeader<T>::AreAllSelected() const
-{	
-	auto isSuccess = [](const Record& rec) -> bool { return rec.state == CommandPointState::SELECT_SUCCESS; };
+{
+	auto isSuccess = [](const Record & rec) -> bool { return rec.state == CommandPointState::SELECT_SUCCESS; };
 	return std::all_of(m_records.begin(), m_records.end(), isSuccess);
 }
 
 template <class T>
 bool TypedCommandHeader<T>::Write(HeaderWriter& writer) const
-{	
+{
 	if (m_records.empty())
 	{
 		return false;
@@ -105,14 +105,14 @@ bool TypedCommandHeader<T>::Write(HeaderWriter& writer) const
 
 	auto iter = writer.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, m_serializer);
 
-	for(auto& rec: m_records)
+	for(auto & rec : m_records)
 	{
 		if (!iter.Write(rec.command, rec.index))
 		{
 			return false;
 		}
 	}
-	
+
 	return iter.IsValid();
 }
 
@@ -123,7 +123,7 @@ void TypedCommandHeader<T>::ApplySelectResponse(const ICollection<Indexed<T>>& c
 	{
 		return;
 	}
-	
+
 	uint32_t index = 0;
 
 	auto visit = [&](const Indexed<T> item) -> void
@@ -152,15 +152,15 @@ void TypedCommandHeader<T>::ApplySelectResponse(const ICollection<Indexed<T>>& c
 		if (rec.state == CommandPointState::INIT)
 		{
 			rec.state = CommandPointState::SELECT_SUCCESS;
-		}		
-	}; 
+		}
+	};
 
 	commands.ForeachItem(visit);
 }
 
 template <class T>
 void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& commands)
-{	
+{
 	if (commands.Count() > m_records.size())
 	{
 		return;
@@ -169,9 +169,9 @@ void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& 
 	uint32_t index = 0;
 
 	auto visit = [&](const Indexed<T> item)
-	{		
+	{
 		auto& rec = m_records[index];
-		++index; 
+		++index;
 
 		if (item.index != rec.index)
 		{
@@ -188,7 +188,7 @@ void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& 
 		rec.status = item.value.status;
 	};
 
-	commands.ForeachItem(visit);	
+	commands.ForeachItem(visit);
 }
 
 template <class T>
@@ -200,8 +200,8 @@ uint32_t TypedCommandHeader<T>::Count() const
 template <class T>
 void TypedCommandHeader<T>::Foreach(IVisitor<CommandState>& visitor) const
 {
-	for(auto& rec : m_records)
-	{		
+	for(auto & rec : m_records)
+	{
 		visitor.OnValue(rec);
 	}
 }

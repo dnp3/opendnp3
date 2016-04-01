@@ -134,7 +134,7 @@ public:
 
 	void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
 	void SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
-	
+
 
 	/// -----  public methods used to add tasks -----
 
@@ -201,7 +201,7 @@ private:
 
 	void ProcessIIN(const IINField& iin);
 
-	void OnResponseTimeout();	
+	void OnResponseTimeout();
 
 protected:
 

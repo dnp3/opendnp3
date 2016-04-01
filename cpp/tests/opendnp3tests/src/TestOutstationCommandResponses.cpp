@@ -387,7 +387,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 	REQUIRE(op.value.value == Approx(99.5).epsilon(1e-6));
 	REQUIRE(op.index == 1);
 	REQUIRE(op.opType == OperateType::DirectOperate);
-	
+
 }
 
 TEST_CASE(SUITE("DirectOperateGroup41Var4"))
@@ -398,8 +398,8 @@ TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 
 	// Direct operate group 41 Var 4, count = 1, index = 1
 	t.SendToOutstation("C1 05 29 04 17 01 01 00 00 00 00 00 00 58 40 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 04 17 01 01 00 00 00 00 00 00 58 40 00"); // 0x00 status == CommandStatus::SUCCESS	
-	
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 04 17 01 01 00 00 00 00 00 00 58 40 00"); // 0x00 status == CommandStatus::SUCCESS
+
 
 	REQUIRE(t.cmdHandler.aoDouble64Ops.size() == 1);
 	auto op = t.cmdHandler.aoDouble64Ops[0];

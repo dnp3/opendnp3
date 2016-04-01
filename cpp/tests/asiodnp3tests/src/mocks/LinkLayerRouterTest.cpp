@@ -29,9 +29,9 @@ LinkLayerRouterTest::LinkLayerRouterTest(uint32_t filters) :
 	log(),
 	exe(),
 	phys(log.root, exe),
-	router(log.root, exe, &phys, 
-		ChannelRetry(TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100))
-	)
+	router(log.root, exe, &phys,
+	       ChannelRetry(TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100))
+	      )
 {
 
 }

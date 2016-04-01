@@ -70,9 +70,9 @@ public:
 	bool ValuesEqual(const ControlRelayOutputBlock& lhs) const
 	{
 		return (functionCode == lhs.functionCode) &&
-			   (count == lhs.count) &&
-			   (onTimeMS == lhs.onTimeMS) &&
-			   (offTimeMS == lhs.offTimeMS);
+		       (count == lhs.count) &&
+		       (onTimeMS == lhs.onTimeMS) &&
+		       (offTimeMS == lhs.offTimeMS);
 	}
 
 	bool operator==(const ControlRelayOutputBlock& lhs) const

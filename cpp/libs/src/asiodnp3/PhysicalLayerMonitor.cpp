@@ -39,7 +39,7 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(
     openpal::LogRoot& root,
     openpal::IExecutor& executor,
     IPhysicalLayer* pPhys_,
-	const opendnp3::ChannelRetry& retry_
+    const opendnp3::ChannelRetry& retry_
 ) :
 	logger(root.GetLogger()),
 	pPhys(pPhys_),

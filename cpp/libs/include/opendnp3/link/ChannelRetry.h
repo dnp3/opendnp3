@@ -34,7 +34,7 @@ class ChannelRetry
 {
 
 public:
-	
+
 	/*
 	* Construct a channel retry config class
 	*
@@ -42,9 +42,9 @@ public:
 	* @param maxOpenRetry maximum connection retry interval on failure
 	*/
 	ChannelRetry(
-		openpal::TimeDuration minOpenRetry,
-		openpal::TimeDuration maxOpenRetry,
-		IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance()
+	    openpal::TimeDuration minOpenRetry,
+	    openpal::TimeDuration maxOpenRetry,
+	    IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance()
 	);
 
 	/// Return the default configuration of exponential backoff from 1 sec to 1 minute
@@ -56,7 +56,7 @@ public:
 	openpal::TimeDuration maxOpenRetry;
 	//// Strategy to use (default to exponential backoff)
 	IOpenDelayStrategy& strategy;
-	
+
 };
 
 }

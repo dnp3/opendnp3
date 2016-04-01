@@ -49,7 +49,7 @@ public:
 
 	virtual void Update(const Event<BinaryOutputStatus>& evt) = 0;
 
-	virtual void Update(const Event<AnalogOutputStatus>& evt) = 0;	
+	virtual void Update(const Event<AnalogOutputStatus>& evt) = 0;
 
 };
 

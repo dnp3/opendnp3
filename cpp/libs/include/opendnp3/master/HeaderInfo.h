@@ -50,8 +50,8 @@ public:
 	HeaderInfo(
 	    GroupVariation gv_,
 	    QualifierCode qualifier_,
-	    TimestampMode tsmode_,		
-		uint32_t headerIndex_
+	    TimestampMode tsmode_,
+	    uint32_t headerIndex_
 	) :
 		gv(gv_),
 		qualifier(qualifier_),
@@ -69,7 +69,7 @@ public:
 	TimestampMode tsmode;
 	/// True if the specfied variation is an event variation
 	bool isEventVariation;
-	/// True if the flags on the value were present on underlying type, false if online is just assumed 
+	/// True if the flags on the value were present on underlying type, false if online is just assumed
 	bool flagsValid;
 	/// The 0-based index of the header within the ASDU
 	uint32_t headerIndex;

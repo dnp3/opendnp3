@@ -48,7 +48,7 @@ void DatabaseBuffers::Unselect()
 	this->Deselect<Analog>();
 	this->Deselect<BinaryOutputStatus>();
 	this->Deselect<AnalogOutputStatus>();
-	this->Deselect<TimeAndInterval>();	
+	this->Deselect<TimeAndInterval>();
 }
 
 IINField DatabaseBuffers::SelectAll(GroupVariation gv)
@@ -62,7 +62,7 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 		this->SelectAllClass0<Analog>();
 		this->SelectAllClass0<BinaryOutputStatus>();
 		this->SelectAllClass0<AnalogOutputStatus>();
-		this->SelectAllClass0<TimeAndInterval>();		
+		this->SelectAllClass0<TimeAndInterval>();
 
 		return IINField::Empty();
 	}
@@ -140,7 +140,7 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 			return this->SelectAllUsing<AnalogOutputStatus>(StaticAnalogOutputStatusVariation::Group40Var4);
 
 		case(GroupVariation::Group50Var4) :
-			return this->SelectAllUsing<TimeAndInterval>(StaticTimeAndIntervalVariation::Group50Var4);		
+			return this->SelectAllUsing<TimeAndInterval>(StaticTimeAndIntervalVariation::Group50Var4);
 
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -222,7 +222,7 @@ IINField DatabaseBuffers::SelectRange(GroupVariation gv, const Range& range)
 		return this->SelectRangeUsing<AnalogOutputStatus>(range, StaticAnalogOutputStatusVariation::Group40Var4);
 
 	case(GroupVariation::Group50Var4) :
-		return this->SelectRangeUsing<TimeAndInterval>(range, StaticTimeAndIntervalVariation::Group50Var4);	
+		return this->SelectRangeUsing<TimeAndInterval>(range, StaticTimeAndIntervalVariation::Group50Var4);
 
 	default:
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -244,7 +244,7 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
 		&DatabaseBuffers::LoadType<Analog>,
 		&DatabaseBuffers::LoadType<BinaryOutputStatus>,
 		&DatabaseBuffers::LoadType<AnalogOutputStatus>,
-		&DatabaseBuffers::LoadType<TimeAndInterval>		
+		&DatabaseBuffers::LoadType<TimeAndInterval>
 	};
 
 	for (int i = 0; i < NUM_TYPE; ++i)
@@ -276,7 +276,7 @@ Range DatabaseBuffers::AssignClassToAll(AssignClassType type, PointClass clazz)
 	case(AssignClassType::BinaryOutputStatus) :
 		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinaryOutputStatus>().Size()));
 	case(AssignClassType::AnalogOutputStatus) :
-		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogOutputStatus>().Size()));	
+		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogOutputStatus>().Size()));
 	default:
 		return Range::Invalid();
 	}

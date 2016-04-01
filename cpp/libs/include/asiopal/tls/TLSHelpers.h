@@ -36,7 +36,7 @@ namespace asiopal
 */
 class TLSHelpers : openpal::StaticOnly
 {
-public:	
+public:
 
 	/// Configure an ssl context using the settings in a TLSConfig struct
 	static void ApplyConfig(const TLSConfig&, asio::ssl::context& context);

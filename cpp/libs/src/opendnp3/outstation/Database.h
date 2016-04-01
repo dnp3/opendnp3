@@ -49,7 +49,7 @@ public:
 	virtual bool Update(const FrozenCounter&, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Update(const TimeAndInterval&, uint16_t) override final;	
+	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
 
 	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t, EventMode = EventMode::Detect) override final;

@@ -36,13 +36,13 @@ static_assert(sizeof(FloatUnion) == 4, "Bad float union size");
 
 bool FloatByteOrder::IsNormalByteOrder()
 {
-	FloatUnion value = {{ 0x00, 0x00, 0xA0, 0xC1 }};		
+	FloatUnion value = {{ 0x00, 0x00, 0xA0, 0xC1 }};
 	return (value.f == -20.0f);
 }
 
 bool FloatByteOrder::IsReverseByteOrder()
 {
-	FloatUnion value = {{ 0xC1, 0xA0, 0x00, 0x00 }};	
+	FloatUnion value = {{ 0xC1, 0xA0, 0x00, 0x00 }};
 	return (value.f == -20.0f);
 }
 

@@ -73,7 +73,7 @@ bool MContext::OnLowerLayerUp()
 		return false;
 	}
 
-	isOnline = true;	
+	isOnline = true;
 	tasks.Initialize(scheduler);
 	this->PostCheckForTask();
 	return true;
@@ -405,7 +405,7 @@ void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig co
 }
 
 void MContext::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
-{	
+{
 	auto pTask = new RestartOperationTask(*this->pApplication, op, callback, this->logger, config);
 	this->ScheduleAdhocTask(pTask);
 }

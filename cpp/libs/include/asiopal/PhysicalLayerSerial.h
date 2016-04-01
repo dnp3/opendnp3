@@ -37,9 +37,12 @@ class PhysicalLayerSerial final : public PhysicalLayerASIO
 {
 public:
 	PhysicalLayerSerial(openpal::LogRoot& root, asio::io_service& service, const SerialSettings& settings);
-	
+
 	void DoClose() override;
-	void DoOpeningClose() override { this->DoClose(); }
+	void DoOpeningClose() override
+	{
+		this->DoClose();
+	}
 	void DoOpenSuccess() override;
 	void DoRead(openpal::WSlice&) override;
 	void DoWrite(const openpal::RSlice&) override;

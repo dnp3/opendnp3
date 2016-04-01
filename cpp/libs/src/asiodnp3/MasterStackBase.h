@@ -45,13 +45,13 @@ class MasterStackBase : public Interface, public ILinkBind
 public:
 
 	MasterStackBase(
-		const char* id,
-		openpal::LogRoot& root_,
-		asiopal::ASIOExecutor& executor,
-		opendnp3::ILinkListener& listener,
-		const opendnp3::MasterStackConfig& config,
-		IStackLifecycle& lifecycle
-		) :
+	    const char* id,
+	    openpal::LogRoot& root_,
+	    asiopal::ASIOExecutor& executor,
+	    opendnp3::ILinkListener& listener,
+	    const opendnp3::MasterStackConfig& config,
+	    IStackLifecycle& lifecycle
+	) :
 		root(root_, id),
 		pLifecycle(&lifecycle),
 		stack(root, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
@@ -220,8 +220,8 @@ public:
 			std::unique_ptr<opendnp3::CommandSet> deleted(set);
 			this->pContext->SelectAndOperate(std::move(*set), callback, config);
 		};
-			
-		this->pASIOExecutor->strand.post(action);		
+
+		this->pASIOExecutor->strand.post(action);
 	}
 
 	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override final
@@ -236,8 +236,8 @@ public:
 
 		this->pASIOExecutor->strand.post(action);
 	}
-	
-protected:	
+
+protected:
 
 	void SetContext(opendnp3::MContext& context)
 	{

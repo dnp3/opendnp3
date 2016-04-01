@@ -113,7 +113,7 @@ private:
 
 	SOERecord(EventType type, EventClass clazz, uint16_t index, uint64_t time, uint8_t flags);
 
-	
+
 	// the actual value;
 	EventValue value;
 	uint16_t index;
