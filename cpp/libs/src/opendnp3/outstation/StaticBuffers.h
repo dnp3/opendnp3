@@ -25,7 +25,6 @@
 
 #include "opendnp3/outstation/Cell.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
-#include "opendnp3/app/SecurityStat.h"
 
 #include <openpal/container/Array.h>
 #include <openpal/util/Uncopyable.h>
@@ -69,8 +68,7 @@ private:
 	openpal::Array<Cell<FrozenCounter>, uint16_t> frozenCounters;
 	openpal::Array<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
 	openpal::Array<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
-	openpal::Array<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;
-	openpal::Array<Cell<SecurityStat>, uint16_t> securityStats;
+	openpal::Array<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;	
 };
 
 }

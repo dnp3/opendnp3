@@ -19,8 +19,7 @@ object StaticTypeBitmask {
     "AnalogInput",
     "BinaryOutputStatus",
     "AnalogOutputStatus",
-    "TimeAndInterval",
-    "SecurityStat"
+    "TimeAndInterval"
   )
 
 }
