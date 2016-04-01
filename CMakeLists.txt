@@ -11,7 +11,6 @@ option(TEST "Build tests" OFF)
 option(FULL "Build all optional projects (secauth, demos, tests)" OFF)
 option(DNP3_DECODER "Build the decoder library" OFF)
 option(DNP3_TLS "Build TLS client/server support")
-option(SECAUTH "Build the secure authentication module and openssl crypto wrapper" OFF)
 
 # other options off-by-default that you can enable
 option(WERROR "Set all warnings to errors" OFF)
@@ -21,20 +20,15 @@ option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
 if(FULL)
 	set(DEMO ON)
 	set(TEST ON)
-        set(DNP3_DECODER ON)
-	set(SECAUTH ON)
+	set(DNP3_DECODER ON)	
 	set(DNP3_TLS ON)	
-endif()
-
-if(SECAUTH)
-	 add_definitions(-DOPENDNP3_USE_SECAUTH)
 endif()
 
 if(DNP3_TLS)
     add_definitions(-DOPENDNP3_USE_TLS)	
 endif()
  
-if(SECAUTH OR DNP3_TLS)
+if(DNP3_TLS)
 
    find_package(OpenSSL REQUIRED)
    message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
@@ -151,42 +145,11 @@ install(TARGETS asiopal DESTINATION lib)
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
-if(SECAUTH)
-	file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiodnp3/*.h)
-else()
-	file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiopal/*.h)
-endif()
-
+file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiopal/*.h)
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
-
-if(SECAUTH)
-  target_link_libraries(asiodnp3 secauth opendnp3 asiopal)
-else()
-  target_link_libraries(asiodnp3 opendnp3 asiopal)  
-endif()
-
+target_link_libraries(asiodnp3 asiopal opendnp3)
 install(TARGETS asiodnp3 DESTINATION lib)
 set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
-
-if(SECAUTH)
-  
-  # ---- secauth library ----
-  file(GLOB_RECURSE secauth_SRC ./cpp/libs/src/secauth/*.cpp ./cpp/libs/src/secauth/*.h ./cpp/libs/include/secauth/*.h)
-  add_library(secauth ${LIB_TYPE} ${secauth_SRC})
-  target_link_libraries(secauth opendnp3)
-  install(TARGETS secauth DESTINATION lib)  
-  set_target_properties(secauth PROPERTIES FOLDER libs)
-
-  # ---- osslcrypto library ----
-  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/src/osslcrypto/*.cpp ./cpp/libs/src/osslcrypto/*.h ./cpp/libs/include/osslcrypto/*.h)
-  add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
-  target_link_libraries(osslcrypto openpal)
-  target_link_libraries(osslcrypto ${OPENSSL_LIBRARIES})  
-  install(TARGETS osslcrypto DESTINATION lib)  
-  set_target_properties(osslcrypto PROPERTIES FOLDER libs)  
-
-endif()
-
 
 # ----- install -----
 
@@ -227,26 +190,14 @@ if(DEMO)
 	target_link_libraries (outstation-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
 	set_target_properties(outstation-tls-demo PROPERTIES FOLDER demos/tls)
 
-  endif()
-
-  if(SECAUTH)
-
-	# ----- outstation SAv5 demo executable -----
-	add_executable (outstation-sa-demo ./cpp/examples/secauth/outstation/main.cpp)
-	target_link_libraries (outstation-sa-demo LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
-	set_target_properties(outstation-sa-demo PROPERTIES FOLDER demos/secauth)
-
-	# ----- master SAv5 demo executable -----
-	add_executable (master-sa-demo ./cpp/examples/secauth/master/main.cpp)
-	target_link_libraries (master-sa-demo LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
-	set_target_properties(master-sa-demo PROPERTIES FOLDER demos/secauth)
-
-  endif()
+  endif() 
 
 endif()
 
 if(TEST)
+
   enable_testing()
+
   # ----- testlib library ------
   file(GLOB_RECURSE testlib_SRC ./cpp/tests/libs/src/testlib/*.cpp ./cpp/tests/libs/src/testlib/*.h)
   add_library(testlib ${testlib_SRC})
@@ -275,32 +226,10 @@ if(TEST)
 
   # ----- asiodnp3 tests -----
   file(GLOB_RECURSE asiodnp3_TESTSRC ./cpp/tests/asiodnp3tests/src/*.cpp ./cpp/tests/asiodnp3tests/src/*.h)
-  add_executable (testasiodnp3 ${asiodnp3_TESTSRC})
-  if(SECAUTH)
-   target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks ${PTHREAD})
-  else()
-   target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
-  endif()
+  add_executable (testasiodnp3 ${asiodnp3_TESTSRC}) 
+  target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})  
   set_target_properties(testasiodnp3 PROPERTIES FOLDER tests)
-  add_test(testasiodnp3 testasiodnp3)
-
-  if(SECAUTH)
-  
-    # ----- sa tests -----
-    file(GLOB_RECURSE secauth_TESTSRC ./cpp/tests/secauthtests/src/*.cpp ./cpp/tests/secauthtests/src/*.h)
-    add_executable (testsecauth ${secauth_TESTSRC})
-    target_link_libraries (testsecauth LINK_PUBLIC secauth dnp3mocks)
-    set_target_properties(testsecauth PROPERTIES FOLDER tests)   
-	add_test(testsecauth testsecauth)
-
-    # ----- opensslcrypto tests -----
-    file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp ./cpp/tests/osslcryptotests/*.h)
-    add_executable (testosslcrypto ${osslcrypto_TESTSRC})
-    target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto ${PTHREAD})
-    set_target_properties(testosslcrypto PROPERTIES FOLDER tests)          
-	add_test(testosslcrypto testosslcrypto)
-  
-  endif()
+  add_test(testasiodnp3 testasiodnp3)  
 
 endif()
 
