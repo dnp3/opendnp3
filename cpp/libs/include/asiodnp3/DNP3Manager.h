@@ -35,6 +35,7 @@
 #endif
 
 #include <memory>
+#include <system_error>
 
 namespace asiodnp3
 {
