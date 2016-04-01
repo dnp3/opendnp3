@@ -31,11 +31,6 @@
 
 #include <opendnp3/link/ChannelRetry.h>
 
-namespace openpal
-{
-class ICryptoProvider;
-}
-
 namespace asiopal
 {
 class PhysicalLayerBase;
@@ -55,11 +50,10 @@ public:
 
 	~ChannelSet();
 
-	IChannel* CreateChannel(	openpal::LogRoot* pRoot,
+	IChannel* CreateChannel(    openpal::LogRoot* pRoot,
 	                            asiopal::ASIOExecutor& executor,
 	                            const opendnp3::ChannelRetry& retry,
-	                            asiopal::PhysicalLayerBase* pPhys,
-	                            openpal::ICryptoProvider* pCrypto);
+	                            asiopal::PhysicalLayerBase* pPhys);
 
 	/// Synchronously shutdown all channels. Block until complete.
 	void Shutdown();

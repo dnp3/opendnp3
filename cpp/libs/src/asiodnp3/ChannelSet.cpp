@@ -51,10 +51,9 @@ IChannel* ChannelSet::CreateChannel(
     openpal::LogRoot* pLogRoot,
     asiopal::ASIOExecutor& executor,
 	const ChannelRetry& retry,
-    PhysicalLayerBase* apPhys,
-    openpal::ICryptoProvider* pCrypto)
+    PhysicalLayerBase* apPhys)
 {
-	auto pChannel = new DNP3Channel(pLogRoot, executor, retry, apPhys, pCrypto);
+	auto pChannel = new DNP3Channel(pLogRoot, executor, retry, apPhys);
 	auto onShutdown = [this, pChannel]()
 	{
 		this->OnShutdown(pChannel);

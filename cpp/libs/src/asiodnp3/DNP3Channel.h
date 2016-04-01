@@ -22,7 +22,6 @@
 #define ASIODNP3_DNP3CHANNEL_H
 
 #include <openpal/logging/LogRoot.h>
-#include <openpal/crypto/ICryptoProvider.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
@@ -61,11 +60,10 @@ class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
 public:
 
 	DNP3Channel(
-	    openpal::LogRoot* pLogRoot_,
-	    asiopal::ASIOExecutor& executor,
+		openpal::LogRoot* pLogRoot_,
+		asiopal::ASIOExecutor& executor,
 		const opendnp3::ChannelRetry& retry,
-	    openpal::IPhysicalLayer* pPhys,
-	    openpal::ICryptoProvider* pCrypto
+	    	openpal::IPhysicalLayer* pPhys
 	);
 
 	// ----------------------- Implement IChannel -----------------------
@@ -80,7 +78,7 @@ public:
 
 	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) override final;
 
-	virtual IMaster* AddMaster(	char const* id,
+	virtual IMaster* AddMaster(char const* id,
 	                            opendnp3::ISOEHandler& SOEHandler,
 	                            opendnp3::IMasterApplication& application,
 	                            const opendnp3::MasterStackConfig& config) override final;
@@ -113,7 +111,6 @@ private:
 	openpal::Action0 shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
-	openpal::ICryptoProvider* pCrypto;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
 	asiopal::ASIOExecutor* pExecutor;
 	openpal::Logger logger;

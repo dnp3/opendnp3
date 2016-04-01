@@ -23,7 +23,6 @@
 
 #include <openpal/logging/ILogHandler.h>
 #include <openpal/executor/TimeDuration.h>
-#include <openpal/crypto/ICryptoProvider.h>
 
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/link/ChannelRetry.h>
@@ -56,13 +55,11 @@ public:
 	*	Construct a manager
 	*
 	*	@param concurrencyHint How many threads to allocate in the thread pool
-	*	@param crypto Optional cryptography interface for secure authentication
 	*	@param onThreadStart Action to run when a thread pool thread starts
 	*	@param onThreadExit Action to run just before a thread pool thread exits
 	*/
 	DNP3Manager(
-	    uint32_t concurrencyHint,
-	    openpal::ICryptoProvider* crypto = nullptr,
+		uint32_t concurrencyHint,
 		std::function<void()> onThreadStart = []() {},
 		std::function<void()> onThreadExit = []() {}
 	);

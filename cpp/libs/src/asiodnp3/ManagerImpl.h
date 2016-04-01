@@ -24,7 +24,6 @@
 
 #include <openpal/logging/ILogHandler.h>
 
-#include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/util/Uncopyable.h>
 
 #include <asiopal/LogFanoutHandler.h>
@@ -43,18 +42,15 @@ class ManagerImpl : private openpal::Uncopyable
 public:
 	
 	ManagerImpl(
-			openpal::ICryptoProvider* crypto_,
 			uint32_t concurrencyHint,			
 			std::function<void()> onThreadStart,
 			std::function<void()> onThreadExit
 		) :
-		crypto(crypto_),
 		fanout(),
 		threadpool(&fanout, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
 		channels()
 	{}
 
-	openpal::ICryptoProvider* crypto;
 	asiopal::LogFanoutHandler fanout;
 	asiopal::IOServiceThreadPool threadpool;
 	ChannelSet channels;

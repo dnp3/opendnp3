@@ -38,11 +38,9 @@ DNP3Channel::DNP3Channel(
     LogRoot* pLogRoot_,
     asiopal::ASIOExecutor& executor,
     const ChannelRetry& retry,
-    openpal::IPhysicalLayer* pPhys_,
-    openpal::ICryptoProvider* pCrypto_) :
+    openpal::IPhysicalLayer* pPhys_) :
 
 	pPhys(pPhys_),
-	pCrypto(pCrypto_),
 	pLogRoot(pLogRoot_),
 	pExecutor(&executor),
 	logger(pLogRoot->GetLogger()),
