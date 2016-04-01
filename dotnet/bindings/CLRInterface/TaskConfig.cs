@@ -29,28 +29,21 @@ namespace Automatak.DNP3.Interface
 {
    public class TaskConfig
    {
-       public TaskConfig(TaskId taskId, ITaskCallback callback, User user)
+       public TaskConfig(TaskId taskId, ITaskCallback callback)
        {
            this.taskId = taskId;
-           this.callback = callback;
-           this.user = user;
-       }
-
-       public static TaskConfig With(User user)
-       {
-           return new TaskConfig(TaskId.Undefined, null, user);
-       }
+           this.callback = callback;           
+       }       
 
        public static TaskConfig Default
        {
            get
            {
-               return new TaskConfig(TaskId.Undefined, null, User.Default);
+               return new TaskConfig(TaskId.Undefined, null);
            }
        }
 
        public readonly TaskId taskId;
-       public readonly ITaskCallback callback;     // may be null
-       public readonly User user;
+       public readonly ITaskCallback callback;     // may be null       
    }
 }

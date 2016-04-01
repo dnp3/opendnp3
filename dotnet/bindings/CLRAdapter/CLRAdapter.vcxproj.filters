@@ -42,9 +42,6 @@
     <ClInclude Include="src\LogAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MasterAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MasterApplicationAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,16 +63,7 @@
     <ClInclude Include="src\TaskCallbackAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MasterApplicationAdapterSA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MasterConversions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MasterAdapterSA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SAConversions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CallbackAdapters.h">
@@ -85,6 +73,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ICommandHeaderWorkAround.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MasterAdapterBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MasterAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -122,22 +116,16 @@
     <ClCompile Include="src\SOEHandlerAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MasterApplicationAdapterSA.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\MasterConversions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MasterAdapter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SAConversions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CallbackAdapters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CommandSetBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MasterAdapterBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,15 +5,12 @@
 #include "SOEHandlerAdapter.h"
 #include "OutstationCommandHandlerAdapter.h"
 #include "OutstationApplicationAdapter.h"
+#include "MasterApplicationAdapter.h"
 
-#include "MasterApplicationAdapterSA.h"
-
-#include "MasterAdapterSA.h"
 #include "OutstationAdapter.h"
+#include "MasterAdapter.h"
 
 #include "EventConverter.h"
-
-#include <secauth/master/MasterAuthStackConfig.h>
 
 #include <asiopal/UTCTimeSource.h>
 #include <functional>
@@ -79,39 +76,9 @@ namespace Automatak
 				{
 					pMaster->DeleteOnDestruct(pSOEHandler);
 					pMaster->DeleteOnDestruct(pApplication);
-					return gcnew MasterAdapterStandard(pMaster);
+					return gcnew MasterAdapter(pMaster);
 				}
-			}
-
-			IMasterSA^ ChannelAdapter::AddMasterSA(System::String^ loggerId, ISOEHandler^ handler, IMasterApplicationSA^ application, MasterStackConfig^ config)
-			{
-				std::string stdLoggerId = Conversions::ConvertString(loggerId);
-
-				auto baseCfg = Conversions::ConvertConfig(config);
-
-				// TODO - define master auth stuff in C#
-				secauth::MasterAuthStackConfig cfg;
-				cfg.link = baseCfg.link;
-				cfg.master = baseCfg.master;
-
-				auto pSOEHandler = new SOEHandlerAdapter(handler);
-				auto pApplication = new MasterApplicationAdapterSA(application);
-				
-				auto pMaster = pChannel->AddMasterSA(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg);
-				if (pMaster == nullptr)
-				{
-					delete pSOEHandler;
-					delete pApplication;					
-					return nullptr;
-				}
-				else
-				{
-					pMaster->DeleteOnDestruct(pSOEHandler);
-					pMaster->DeleteOnDestruct(pApplication);					
-					return gcnew MasterAdapterSA(pMaster);
-				}
-			}
-
+			}	
 
 			IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config)
 			{

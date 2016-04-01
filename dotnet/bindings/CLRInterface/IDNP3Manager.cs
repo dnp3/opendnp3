@@ -36,12 +36,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Force a blocking shutdown. All channels and stacks are invalidated.
         /// </summary>
-        void Shutdown();
-
-        /// <summary>
-        /// Retrieve the version of openssl being used for secure authentication
-        /// </summary>
-        String SSLVersion();
+        void Shutdown();        
 
 		/// <summary>
         /// Add a TCP client channel. The channel does not try to connect until you add a stack.

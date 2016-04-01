@@ -29,17 +29,15 @@ namespace Automatak.DNP3.Interface
 {
     public class TaskInfo
     {
-        public TaskInfo( MasterTaskType type, TaskCompletion result, TaskId taskid, User user)
+        public TaskInfo( MasterTaskType type, TaskCompletion result, TaskId taskid)
         {
             this.type = type;
             this.result = result;
-            this.taskid = taskid;
-            this.user = user;
+            this.taskid = taskid;            
         }
           
         public readonly MasterTaskType type; 
         public readonly TaskCompletion result;
-        public readonly TaskId taskid;
-        public readonly User user;
+        public readonly TaskId taskid;        
     }
 }

@@ -107,7 +107,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;shell32.lib;advapi32.lib;gdi32.lib;User32.lib;$(OPENDNP3_DIR)\lib\asiodnp3.lib;$(OPENDNP3_DIR)\lib\asiopal.lib;$(OPENDNP3_DIR)\lib\opendnp3.lib;$(OPENDNP3_DIR)\lib\openpal.lib;$(OPENDNP3_DIR)\lib\osslcrypto.lib;$(OPENDNP3_DIR)\lib\secauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;shell32.lib;advapi32.lib;gdi32.lib;User32.lib;$(OPENDNP3_DIR)\lib\asiodnp3.lib;$(OPENDNP3_DIR)\lib\asiopal.lib;$(OPENDNP3_DIR)\lib\opendnp3.lib;$(OPENDNP3_DIR)\lib\openpal.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,7 +130,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;shell32.lib;advapi32.lib;gdi32.lib;User32.lib;$(OPENDNP3_DIR)\lib\asiodnp3.lib;$(OPENDNP3_DIR)\lib\asiopal.lib;$(OPENDNP3_DIR)\lib\opendnp3.lib;$(OPENDNP3_DIR)\lib\openpal.lib;$(OPENDNP3_DIR)\lib\osslcrypto.lib;$(OPENDNP3_DIR)\lib\secauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;shell32.lib;advapi32.lib;gdi32.lib;User32.lib;$(OPENDNP3_DIR)\lib\asiodnp3.lib;$(OPENDNP3_DIR)\lib\asiopal.lib;$(OPENDNP3_DIR)\lib\opendnp3.lib;$(OPENDNP3_DIR)\lib\openpal.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -162,16 +162,14 @@
     <ClInclude Include="src\ICommandHeaderWorkAround.h" />
     <ClInclude Include="src\Lock.h" />
     <ClInclude Include="src\LogAdapter.h" />
+    <ClInclude Include="src\MasterAdapterBase.h" />
     <ClInclude Include="src\MasterAdapter.h" />
-    <ClInclude Include="src\MasterAdapterSA.h" />
     <ClInclude Include="src\MasterApplicationAdapter.h" />
-    <ClInclude Include="src\MasterApplicationAdapterSA.h" />
     <ClInclude Include="src\MasterConversions.h" />
     <ClInclude Include="src\MasterScanAdapter.h" />
     <ClInclude Include="src\OutstationAdapter.h" />
     <ClInclude Include="src\OutstationApplicationAdapter.h" />
     <ClInclude Include="src\OutstationCommandHandlerAdapter.h" />
-    <ClInclude Include="src\SAConversions.h" />
     <ClInclude Include="src\SOEHandlerAdapter.h" />
     <ClInclude Include="src\TaskCallbackAdapter.h" />
   </ItemGroup>
@@ -184,14 +182,12 @@
     <ClCompile Include="src\Conversions.cpp" />
     <ClCompile Include="src\DNP3ManagerAdapter.cpp" />
     <ClCompile Include="src\LogAdapter.cpp" />
-    <ClCompile Include="src\MasterAdapter.cpp" />
-    <ClCompile Include="src\MasterApplicationAdapterSA.cpp" />
+    <ClCompile Include="src\MasterAdapterBase.cpp" />
     <ClCompile Include="src\MasterConversions.cpp" />
     <ClCompile Include="src\MasterScanAdapter.cpp" />
     <ClCompile Include="src\OutstationAdapter.cpp" />
     <ClCompile Include="src\OutstationApplicationAdapter.cpp" />
     <ClCompile Include="src\OutstationCommandHandlerAdapter.cpp" />
-    <ClCompile Include="src\SAConversions.cpp" />
     <ClCompile Include="src\SOEHandlerAdapter.cpp" />
   </ItemGroup>
   <ItemGroup>

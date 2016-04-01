@@ -10,8 +10,6 @@ using namespace System::Threading::Tasks;
 #include <opendnp3/master/CommandCallbackT.h>
 #include <opendnp3/master/RestartOperationResult.h>
 
-#include <secauth/master/BeginUpdateKeyChangeCallbackT.h>
-
 using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
@@ -28,9 +26,7 @@ namespace Automatak
 				static opendnp3::CommandCallbackT Get(TaskCompletionSource<CommandTaskResult^>^ tcs);
 
 				static opendnp3::RestartOperationCallbackT Get(TaskCompletionSource<RestartResultType^>^ tcs);
-
-				static secauth::BeginUpdateKeyChangeCallbackT Get(TaskCompletionSource<BeginUpdateKeyChangeResult^>^ tcs);
-
+				
 			};			
 
 		}

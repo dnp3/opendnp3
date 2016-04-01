@@ -22,7 +22,6 @@
 #define OPENDNP3_TASK_INFO_H
 
 #include "opendnp3/master/TaskId.h"
-#include "opendnp3/app/User.h"
 
 #include "opendnp3/gen/MasterTaskType.h"
 #include "opendnp3/gen/TaskCompletion.h"
@@ -42,19 +41,16 @@ public:
 	TaskInfo(
 	    MasterTaskType type_,
 	    TaskCompletion result_,
-	    TaskId id_,
-	    User user_
+	    TaskId id_
 	) :
 		type(type_),
 		result(result_),
-		id(id_),
-		user(user_)
+		id(id_)		
 	{}
 
 	MasterTaskType type;
 	TaskCompletion result;
-	TaskId id;
-	User user;
+	TaskId id;	
 };
 
 }

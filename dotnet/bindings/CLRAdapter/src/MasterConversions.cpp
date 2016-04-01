@@ -120,53 +120,14 @@ namespace Automatak
 
 			opendnp3::TaskConfig MasterConversions::Convert(TaskConfig^ config, ITaskCallback^ wrapper)
 			{			
-				return opendnp3::TaskConfig(Convert(config->taskId), CreateTaskCallback(wrapper), opendnp3::User(config->user->Number));
+				return opendnp3::TaskConfig(Convert(config->taskId), CreateTaskCallback(wrapper));
 			}
 
 			opendnp3::TaskConfig MasterConversions::Convert(TaskConfig^ config)
 			{
-				return opendnp3::TaskConfig(Convert(config->taskId), CreateTaskCallback(config->callback), opendnp3::User(config->user->Number));
+				return opendnp3::TaskConfig(Convert(config->taskId), CreateTaskCallback(config->callback));
 			}
-
-			secauth::UpdateKey MasterConversions::Convert(UpdateKey^ key)
-			{
-				openpal::SecureBuffer buffer(key->key->Length);
-
-				for (int i = 0; i < key->key->Length; ++i)
-				{
-					buffer[i] = key->key[i];
-				}
-
-				return secauth::UpdateKey(buffer.ToRSlice());
-			}
-
-			UpdateKey^ MasterConversions::Convert(const secauth::UpdateKey& key)
-			{
-				auto bytes = Conversions::Convert(key.GetView().data);
-				return gcnew UpdateKey(bytes);
-			}
-
-			secauth::FinishUpdateKeyChangeArgs MasterConversions::Convert(FinishUpdateKeyChangeArgs^ args)
-			{
-				auto nativeUserName = Conversions::ConvertString(args->username);
-				auto nativeOutstationName = Conversions::ConvertString(args->outstationName);
-
-				auto masterChallenge = Conversions::Convert(args->masterChallengeData);
-				auto outstationChallenge = Conversions::Convert(args->outstationChallengeData);
-				auto encryptedKeyData = Conversions::Convert(args->encryptedKeyData);				
 			
-				return secauth::FinishUpdateKeyChangeArgs(
-					Conversions::ConvertString(args->username),
-					Conversions::ConvertString(args->outstationName),
-					opendnp3::User(args->user->Number),
-					args->keyChangeSequenceNum,
-					masterChallenge.ToRSlice(),
-					outstationChallenge.ToRSlice(),
-					encryptedKeyData.ToRSlice(),
-					Convert(args->updateKey)
-				);
-			}
-
 			opendnp3::CommandSet MasterConversions::Convert(ICommandHeaders^ headers)
 			{
 				opendnp3::CommandSet commands;
@@ -190,7 +151,7 @@ namespace Automatak
 
 			TaskInfo^ MasterConversions::Convert(const opendnp3::TaskInfo& info)
 			{
-				return gcnew TaskInfo((MasterTaskType)info.type, (TaskCompletion)info.result, MasterConversions::Convert(info.id), Conversions::Convert(info.user));
+				return gcnew TaskInfo((MasterTaskType)info.type, (TaskCompletion)info.result, MasterConversions::Convert(info.id));
 			}
 
 			opendnp3::ITaskCallback* MasterConversions::CreateTaskCallback(ITaskCallback^ callback)

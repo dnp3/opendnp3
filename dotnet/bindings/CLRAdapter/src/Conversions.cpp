@@ -458,12 +458,7 @@ namespace Automatak
 				}
 
 				return ret;
-			}
-
-			User^ Conversions::Convert(const opendnp3::User& user)
-			{
-				return User::FromNumber(user.GetId());
-			}
+			}			
 
 		}
 	}
