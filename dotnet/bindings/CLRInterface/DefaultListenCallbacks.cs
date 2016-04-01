@@ -54,7 +54,7 @@ namespace Automatak.DNP3.Interface
             var master = acceptor.AcceptSession(SessionIdToString(sessionid), new PrintingSOEHandler(), new DefaultMasterApplication(), config);
         }
 
-        public void OnSessionClose(UInt64 sessionid, IStackStatistics statistics)
+        public void OnConnectionClose(UInt64 sessionid, IMasterSession session)
         {
             Console.WriteLine(String.Format("Session closed: {0}", sessionid));            
         }

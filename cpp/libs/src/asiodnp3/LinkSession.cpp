@@ -180,11 +180,13 @@ namespace asiodnp3
 			if (ec) {
 				SIMPLE_LOG_BLOCK(self->m_log_root.logger, flags::WARN, ec.message().c_str());
 				
+				// if we created a master stack, tell it to shutdown
 				if (self->m_stack)
 				{					
-					self->m_stack->OnLowerLayerDown();				
-					self->m_callbacks->OnSessionClose(self->m_session_id, self->m_stack);					
-				}				
+					self->m_stack->OnLowerLayerDown();								
+				}
+
+				self->m_callbacks->OnConnectionClose(self->m_session_id, self->m_stack);
 								
 				self->m_manager->Unregister(self);
 				

@@ -29,15 +29,41 @@ namespace Automatak.DNP3.Interface
 {
     public interface IListenCallbacks
     {        
+        /// <summary>
+        /// Ask user code if the following connection should be accepted
+        /// </summary>
+        /// <param name="sessionid">Incrementing id used to uniquely identify the session</param>
+        /// <param name="ipaddress">The IP address of the connecting host. Can optionally be used for connection filtering</param>
+        /// <returns>If true, the connection is accepted and a link frame parser is created to handle incoming frame data</returns>
         bool AcceptConnection(UInt64 sessionid, string ipaddress);
 
+        /// <summary>
+        /// Ask user code if the following preverified certificate should be accepted
+        /// </summary>
+        /// <param name="sessionid">Incrementing id used to uniquely identify the session</param>
+        /// <param name="info">Information from the x509 certificate</param>
+        /// <returns>If true, the certificate is accepted and a link frame parser is created to handle incoming frame data</returns>
         bool AcceptCertificate(UInt64 sessionid, X509Info info);
 
+        /// <summary>
+        /// Retrieve the first frame timeout
+        /// </summary>
+        /// <returns>The amount of time the session should wait for the first frame</returns>
         TimeSpan GetFirstFrameTimeout();
 
+        /// <summary>
+        /// Called when the first link-layer frame is received for a session
+        /// </summary>
+        /// <param name="sessionid">Incrementing id used to uniquely identify the session</param>
+        /// <param name="header">The link-layer header including source and destination addresses</param>
+        /// <param name="acceptor">Interface used to create a master on the session</param>
         void OnFirstFrame(UInt64 sessionid, LinkHeader header, ISessionAcceptor acceptor);
 
-        // session could be null if a frame was never received
-        void OnSessionClose(UInt64 sessionid, IStackStatistics statistics);
+        /// <summary>
+        /// Called when a socket/session closes.
+        /// </summary>
+        /// <param name="sessionid">Incrementing id used to uniquely identify the session</param>
+        /// <param name="session">Possibly null reference to the master session</param>
+        void OnConnectionClose(UInt64 sessionid, IMasterSession session);
     }   
 }

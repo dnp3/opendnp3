@@ -59,7 +59,7 @@ void DefaultListenCallbacks::OnFirstFrame(uint64_t sessionid, const opendnp3::Li
 	auto master = acceptor.AcceptSession(SessionIdToString(sessionid), soe, app, config);
 }
 
-void DefaultListenCallbacks::OnSessionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session)
+void DefaultListenCallbacks::OnConnectionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session)
 {	
 	// full implementations would drop any references they're holding to this session
 	// shared_ptr can be used with == operator also

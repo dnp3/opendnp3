@@ -33,8 +33,7 @@ IMasterSession^ SessionAcceptorAdapter::AcceptSession(
 	{
 		return nullptr;
 	}	
-
-	// return a safe proxy that looks things up in the cache by id
+	
 	return gcnew MasterSessionAdapter(session);
 }
 

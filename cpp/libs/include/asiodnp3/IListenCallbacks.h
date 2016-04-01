@@ -72,12 +72,12 @@ public:
 	) = 0;
 
 	/** 
-	* Called when a session closes
+	* Called when a socket closes
 	*
 	* @sessionid Incrementing id used to uniquely identify the session
-	* @session Possibly NULL shared_ptr to the master session
+	* @session Possibly NULL shared_ptr to the master session if it was created
 	*/	
-	virtual void OnSessionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) = 0;
+	virtual void OnConnectionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) = 0;
 };
 
 }
