@@ -4,9 +4,7 @@ import com.automatak.render.EnumModel
 import com.automatak.render.dnp3.enums._
 import com.automatak.render.dnp3.objects.generators.FixedSizeHelpers
 
-
-sealed trait FieldType
-sealed class FixedSizeFieldType(val numBytes: Int) extends FieldType {
+sealed abstract class FixedSizeFieldType(val numBytes: Int) {
   def defaultValue: String = "0"
 }
 
@@ -18,7 +16,7 @@ case object SInt16Field extends FixedSizeFieldType(2)
 case object SInt32Field extends FixedSizeFieldType(4)
 case object Float32Field extends FixedSizeFieldType(4)
 case object Float64Field extends FixedSizeFieldType(8)
-sealed case class EnumFieldType(model: EnumModel) extends FixedSizeFieldType(1) {
+case class EnumFieldType(model: EnumModel) extends FixedSizeFieldType(1) {
   override def defaultValue: String = "%s::%s".format(model.name, model.default.displayName)
 }
 
