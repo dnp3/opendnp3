@@ -42,7 +42,7 @@ struct CommandState
 		status(CommandStatus::UNDEFINED),
 		index(index_)
 	{}
-	
+
 	CommandPointState state;
 	CommandStatus status;
 	uint16_t index;
@@ -56,7 +56,7 @@ class ICommandHeader : public ICollection<CommandState>
 public:
 
 	virtual ~ICommandHeader() {}
-	
+
 	/// Write all of the headers to an ASDU
 	virtual bool Write(HeaderWriter&) const = 0;
 

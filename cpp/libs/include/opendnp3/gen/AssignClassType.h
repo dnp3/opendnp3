@@ -36,8 +36,7 @@ enum class AssignClassType : uint8_t
   FrozenCounter = 0x3,
   AnalogInput = 0x4,
   BinaryOutputStatus = 0x5,
-  AnalogOutputStatus = 0x6,
-  SecurityStat = 0x7
+  AnalogOutputStatus = 0x6
 };
 
 

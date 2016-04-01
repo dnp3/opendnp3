@@ -66,7 +66,7 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 		if (pStatistics) ++pStatistics->numTransportErrorRx;
 		return RSlice::Empty();
 	}
-	
+
 
 	const uint8_t HDR = input[0];
 	const bool FIR = (HDR & TL_HDR_FIR) != 0;
@@ -79,7 +79,7 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 
 	if (!this->ValidateHeader(FIR, FIR, SEQ))
 	{
-		if (pStatistics) 	
+		if (pStatistics)
 		{
 			++pStatistics->numTransportErrorRx;
 		}
@@ -95,8 +95,8 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 		this->ClearRxBuffer();
 		return RSlice::Empty();
 	}
-	
-	if (pStatistics) 
+
+	if (pStatistics)
 	{
 		++pStatistics->numTransportRx;
 	}

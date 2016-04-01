@@ -36,7 +36,7 @@ namespace asiopal
 */
 class TLSContext : private openpal::Uncopyable
 {
-public:	
+public:
 
 	TLSContext(asio::ssl::context_base::method method, const TLSConfig& config, std::error_code& ec);
 

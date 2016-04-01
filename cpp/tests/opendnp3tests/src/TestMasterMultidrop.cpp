@@ -90,15 +90,15 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock")
 
 	REQUIRE(t1.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	REQUIRE(t2.lower.PopWriteAsHex() == "");
-	
+
 	t1.context.OnSendResult(true);
 	// instead of sending a reply, shutdown the first master
-	t1.context.OnLowerLayerDown();	
+	t1.context.OnLowerLayerDown();
 
 	t1.exe.RunMany();
 	t2.exe.RunMany();
 
 	REQUIRE(t1.lower.PopWriteAsHex() == "");
-	REQUIRE(t2.lower.PopWriteAsHex() == hex::IntegrityPoll(0));	
+	REQUIRE(t2.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 

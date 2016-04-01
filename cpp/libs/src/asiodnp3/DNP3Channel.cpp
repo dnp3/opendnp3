@@ -28,13 +28,6 @@
 #include "MasterStack.h"
 #include "OutstationStack.h"
 
-#ifdef OPENDNP3_USE_SECAUTH
-
-#include "asiodnp3/auth/MasterStackSA.h"
-#include "asiodnp3/auth/OutstationStackSA.h"
-
-#endif
-
 using namespace openpal;
 using namespace opendnp3;
 
@@ -42,14 +35,12 @@ namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
-	std::unique_ptr<LogRoot> root_,    
-    const ChannelRetry& retry,
-	std::unique_ptr<asiopal::PhysicalLayerASIO> phys_,
-    openpal::ICryptoProvider* pCrypto_) :
+	std::unique_ptr<LogRoot> root_,
+  const ChannelRetry& retry,
+	std::unique_ptr<asiopal::PhysicalLayerASIO> phys_) :
 
 	phys(std::move(phys_)),
-	pCrypto(pCrypto_),
-	root(std::move(root_)),	
+	root(std::move(root_)),
 	pShutdownHandler(nullptr),
 	channelState(ChannelState::CLOSED),
 	router(root->logger, phys->executor, phys.get(), retry, this, &statistics),
@@ -199,58 +190,5 @@ T* DNP3Channel::AddStack(const opendnp3::LinkConfig& link, const std::function<T
 		return pStack;
 	}
 }
-
-#ifdef OPENDNP3_USE_SECAUTH
-
-IMasterSA* DNP3Channel::AddMasterSA(char const* id,
-                                    opendnp3::ISOEHandler& SOEHandler,
-                                    secauth::IMasterApplicationSA& application,
-                                    const secauth::MasterAuthStackConfig& config)
-{
-	if (!pCrypto)
-	{
-		SIMPLE_LOG_BLOCK(root->logger, flags::ERR, "Manager was not initialized with a crypto provider");
-		return nullptr;
-	}
-
-
-	auto add = [&]() -> IMasterSA*
-	{
-		auto factory = [&]()
-		{
-			return new MasterStackSA(root->Clone(id), phys->executor, SOEHandler, application, config, stacks, router.GetTaskLock(), *pCrypto);
-		};
-
-		return this->AddStack<MasterStackSA>(config.link, factory);
-	};
-
-	return phys->executor.ReturnBlockFor<IMasterSA*>(add);
-}
-
-IOutstationSA* DNP3Channel::AddOutstationSA(char const* id,
-        opendnp3::ICommandHandler& commandHandler,
-        secauth::IOutstationApplicationSA& application,
-        const secauth::OutstationAuthStackConfig& config)
-{
-	if (!pCrypto)
-	{
-		SIMPLE_LOG_BLOCK(root->logger, flags::ERR, "Manager was not initialized with a crypto provider");
-		return nullptr;
-	}
-
-	auto add = [&]() -> IOutstationSA*
-	{
-		auto factory = [&]()
-		{
-			return new OutstationStackSA(root->Clone(id), phys->executor, commandHandler, application, config, stacks, *pCrypto);
-		};
-
-		return this->AddStack<OutstationStackSA>(config.link, factory);
-	};
-
-	return phys->executor.ReturnBlockFor<IOutstationSA*>(add);
-}
-
-#endif
 
 }

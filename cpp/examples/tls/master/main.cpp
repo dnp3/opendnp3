@@ -57,18 +57,18 @@ int main(int argc, char* argv[])
 	DNP3Manager manager(1);
 
 	// send log messages to the console
-	manager.AddLogSubscriber(ConsoleLogger::Instance());	
+	manager.AddLogSubscriber(ConsoleLogger::Instance());
 
 	std::error_code ec;
 
 	// Connect via a TCPClient socket to a outstation
 	auto pChannel = manager.AddTLSClient(
-		"tls-client", 
-		FILTERS, 
-		ChannelRetry::Default(),				
-		"127.0.0.1", 
-		"0.0.0.0", 
-		20001, 
+		"tls-client",
+		FILTERS,
+		ChannelRetry::Default(),
+		"127.0.0.1",
+		"0.0.0.0",
+		20001,
 		TLSConfig(peerCertificate, privateKey, privateKey),
 		ec
 	);
@@ -143,21 +143,21 @@ int main(int argc, char* argv[])
 			                        );
 			break;
 		case('r') :
-		{
-			auto print = [](const RestartOperationResult& result)
 			{
-			  if(result.summary == TaskCompletion::SUCCESS)
-			  {
-			    std::cout << "Success, Time: " << result.restartTime.GetMilliseconds() << std::endl;
-			  }
-			  else
-			  {
-			    std::cout << "Failure: " << TaskCompletionToString(result.summary) << std::endl;
-			  }    
-			};
-			pMaster->Restart(RestartType::COLD, print);
-			break;
-		}
+				auto print = [](const RestartOperationResult & result)
+				{
+					if(result.summary == TaskCompletion::SUCCESS)
+					{
+						std::cout << "Success, Time: " << result.restartTime.GetMilliseconds() << std::endl;
+					}
+					else
+					{
+						std::cout << "Failure: " << TaskCompletionToString(result.summary) << std::endl;
+					}
+				};
+				pMaster->Restart(RestartType::COLD, print);
+				break;
+			}
 		case('x'):
 			// C++ destructor on DNP3Manager cleans everything up for you
 			return 0;
@@ -169,8 +169,8 @@ int main(int argc, char* argv[])
 			break;
 		case('c'):
 			{
-				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);											
-				pMaster->SelectAndOperate(crob, 0, PrintingCommandCallback::Get());				
+				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
+				pMaster->SelectAndOperate(crob, 0, PrintingCommandCallback::Get());
 				break;
 			}
 		default:
@@ -182,4 +182,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-

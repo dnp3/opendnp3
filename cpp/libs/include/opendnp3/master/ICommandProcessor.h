@@ -38,7 +38,7 @@ public:
 	/**
 	* Select and operate a set of commands
 	*
-	* @param commands Set of command headers	
+	* @param commands Set of command headers
 	* @param callback callback that will be invoked upon completion or failure
 	* @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
 	*/

@@ -65,7 +65,7 @@ bool LinkContext::OnLowerLayerUp()
 	}
 
 	this->isOnline = true;
-	
+
 	auto now = this->pExecutor->GetTime();
 	this->lastMessageTimestamp = now; // no reason to trigger a keep-alive until we've actually expired
 	MonotonicTimestamp expiration(now.milliseconds + config.KeepAliveTimeout.GetMilliseconds());

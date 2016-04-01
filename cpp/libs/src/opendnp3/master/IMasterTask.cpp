@@ -133,7 +133,7 @@ void IMasterTask::NotifyResult(TaskCompletion result)
 		config.pCallback->OnComplete(result);
 	}
 
-	pApplication->OnTaskComplete(TaskInfo(this->GetTaskType(), result, config.taskId, config.user));
+	pApplication->OnTaskComplete(TaskInfo(this->GetTaskType(), result, config.taskId));
 }
 
 void IMasterTask::OnStart()

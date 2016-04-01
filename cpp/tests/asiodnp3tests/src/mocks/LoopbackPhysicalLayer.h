@@ -46,7 +46,10 @@ private:
 
 	void DoOpen() override;
 	void DoClose() override;
-	void DoOpeningClose() override { this->DoClose(); }
+	void DoOpeningClose() override
+	{
+		this->DoClose();
+	}
 	void DoOpenSuccess() override;
 	void DoRead(openpal::WSlice&) override;
 	void DoWrite(const openpal::RSlice&) override;

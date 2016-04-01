@@ -37,8 +37,7 @@ enum class StaticTypeBitmask : uint16_t
   AnalogInput = 0x10,
   BinaryOutputStatus = 0x20,
   AnalogOutputStatus = 0x40,
-  TimeAndInterval = 0x80,
-  SecurityStat = 0x100
+  TimeAndInterval = 0x80
 };
 
 

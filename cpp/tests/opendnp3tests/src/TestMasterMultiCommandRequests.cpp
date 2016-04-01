@@ -54,19 +54,19 @@ TEST_CASE(SUITE("AnEmptyHeaderFailsTheTaskWithInternalError"))
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
 	REQUIRE(queue.PopOnlyEqualValue(
-		TaskCompletion::FAILURE_INTERNAL_ERROR,
-		{
-			CommandPointResult(1, 1, CommandPointState::INIT, CommandStatus::UNDEFINED),
-			CommandPointResult(1, 7, CommandPointState::INIT, CommandStatus::UNDEFINED)
-		}
-	));
+	            TaskCompletion::FAILURE_INTERNAL_ERROR,
+	{
+		CommandPointResult(1, 1, CommandPointState::INIT, CommandStatus::UNDEFINED),
+		CommandPointResult(1, 7, CommandPointState::INIT, CommandStatus::UNDEFINED)
+	}
+	        ));
 }
 
 TEST_CASE(SUITE("DirectOperateTwoCROB"))
 {
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crobstr = "0C 01 28 02 00 01 00 01 01 64 00 00 00 64 00 00 00 00 07 00 01 01 64 00 00 00 64 00 00 00 00";
-	
+
 
 	MasterTestObject t(NoStartupTasks());
 	t.context.OnLowerLayerUp();
@@ -83,17 +83,17 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + crobstr);
 
-	t.exe.RunMany();	
+	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
-	
+
 	REQUIRE(queue.PopOnlyEqualValue(
-		TaskCompletion::SUCCESS,
-		{
-			CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
-			CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
-		}
-	));
+	            TaskCompletion::SUCCESS,
+	{
+		CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
+		CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
+	}
+	        ));
 }
 
 TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
@@ -133,12 +133,12 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
 
 	REQUIRE(queue.PopOnlyEqualValue(
-		TaskCompletion::SUCCESS,
-		{
-			CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
-			CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
-			CommandPointResult(1, 8, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
-		}
-	));
+	            TaskCompletion::SUCCESS,
+	{
+		CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
+		CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
+		CommandPointResult(1, 8, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
+	}
+	        ));
 }
 

@@ -106,7 +106,7 @@ ParseResult CountParser::ParseCountOfObjects(openpal::RSlice& buffer, const Head
 
 	case(GroupVariation::Group52Var2) :
 		return CountParser::From<Group52Var2>(count).Process(record, buffer, pHandler, pLogger);
-	
+
 	case(GroupVariation::Group120Var3) :
 		return CountParser::From<Group120Var3>(count).Process(record, buffer, pHandler, pLogger);
 
@@ -115,9 +115,9 @@ ParseResult CountParser::ParseCountOfObjects(openpal::RSlice& buffer, const Head
 
 	default:
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
-								QualifierCodeToString(record.GetQualifierCode()), 
-								record.group, 
-								record.variation);
+		                    QualifierCodeToString(record.GetQualifierCode()),
+		                    record.group,
+		                    record.variation);
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}

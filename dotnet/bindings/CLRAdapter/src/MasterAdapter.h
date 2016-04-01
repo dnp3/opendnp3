@@ -12,7 +12,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{			
-			private ref class MasterAdapter abstract : MasterOperationsAdapter
+			private ref class MasterAdapter : MasterOperationsAdapter, IMaster
 			{
 			public:
 

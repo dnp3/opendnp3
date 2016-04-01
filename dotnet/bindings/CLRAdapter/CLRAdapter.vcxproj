@@ -107,7 +107,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;shell32.lib;advapi32.lib;gdi32.lib;User32.lib;$(OPENDNP3_DIR)\lib\asiodnp3.lib;$(OPENDNP3_DIR)\lib\asiopal.lib;$(OPENDNP3_DIR)\lib\opendnp3.lib;$(OPENDNP3_DIR)\lib\openpal.lib;$(OPENDNP3_DIR)\lib\osslcrypto.lib;$(OPENDNP3_DIR)\lib\secauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;shell32.lib;advapi32.lib;gdi32.lib;User32.lib;$(OPENDNP3_DIR)\lib\asiodnp3.lib;$(OPENDNP3_DIR)\lib\asiopal.lib;$(OPENDNP3_DIR)\lib\opendnp3.lib;$(OPENDNP3_DIR)\lib\openpal.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,7 +130,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;shell32.lib;advapi32.lib;gdi32.lib;User32.lib;$(OPENDNP3_DIR)\lib\asiodnp3.lib;$(OPENDNP3_DIR)\lib\asiopal.lib;$(OPENDNP3_DIR)\lib\opendnp3.lib;$(OPENDNP3_DIR)\lib\openpal.lib;$(OPENDNP3_DIR)\lib\osslcrypto.lib;$(OPENDNP3_DIR)\lib\secauth.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;shell32.lib;advapi32.lib;gdi32.lib;User32.lib;$(OPENDNP3_DIR)\lib\asiodnp3.lib;$(OPENDNP3_DIR)\lib\asiopal.lib;$(OPENDNP3_DIR)\lib\opendnp3.lib;$(OPENDNP3_DIR)\lib\openpal.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -194,7 +194,6 @@
     <ClCompile Include="src\ListenerAdapter.cpp" />
     <ClCompile Include="src\LogAdapter.cpp" />
     <ClCompile Include="src\MasterAdapter.cpp" />
-    <ClCompile Include="src\MasterApplicationAdapterSA.cpp" />
     <ClCompile Include="src\MasterConversions.cpp" />
     <ClCompile Include="src\MasterOperationsAdapter.cpp" />
     <ClCompile Include="src\MasterScanAdapter.cpp" />
@@ -202,7 +201,6 @@
     <ClCompile Include="src\OutstationAdapter.cpp" />
     <ClCompile Include="src\OutstationApplicationAdapter.cpp" />
     <ClCompile Include="src\OutstationCommandHandlerAdapter.cpp" />
-    <ClCompile Include="src\SAConversions.cpp" />
     <ClCompile Include="src\SessionAcceptorAdapter.cpp" />
     <ClCompile Include="src\SOEHandlerAdapter.cpp" />
   </ItemGroup>

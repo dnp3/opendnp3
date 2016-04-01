@@ -33,16 +33,16 @@ namespace opendnp3
 
 class CommandTaskResult final : public ICommandTaskResult, private openpal::Uncopyable
 {
-	public:
+public:
 
-		CommandTaskResult(TaskCompletion result, const CommandSet::HeaderVector& vector);
-	
+	CommandTaskResult(TaskCompletion result, const CommandSet::HeaderVector& vector);
+
 	/// --- Implement ICollection<CommandResult> ----
 
-	virtual uint32_t Count() const override;	
+	virtual uint32_t Count() const override;
 	virtual void Foreach(IVisitor<CommandPointResult>& visitor) const override;
 
-	private:
+private:
 
 	CommandTaskResult() = delete;
 

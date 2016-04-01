@@ -27,7 +27,6 @@
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
-#include "opendnp3/app/User.h"
 
 #include "opendnp3/master/TaskConfig.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -110,14 +109,6 @@ public:
 	virtual bool IsAuthTask() const
 	{
 		return false;
-	}
-
-	/**
-	*	The SA user requesting the task. always the default user unless overridden.
-	*/
-	User GetUser() const
-	{
-		return config.user;
 	}
 
 	/**

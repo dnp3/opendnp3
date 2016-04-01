@@ -31,12 +31,12 @@ namespace opendnp3
 
 CommandSet::CommandSet(CommandSet&& other) : m_headers(std::move(other.m_headers))
 {
-	
+
 }
 
 CommandSet::~CommandSet()
 {
-	for(auto header: m_headers)
+	for(auto header : m_headers)
 	{
 		delete header;
 	}

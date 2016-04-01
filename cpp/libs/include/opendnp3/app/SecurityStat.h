@@ -64,7 +64,7 @@ public:
 	DNPTime time;		//	timestamp associated with the measurement (may not be set)
 
 	const static EventType EventTypeEnum = EventType::SecurityStat;
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::SecurityStat;
+	//const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::SecurityStat;
 	const static EventSecurityStatVariation DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
 	const static StaticSecurityStatVariation DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
 

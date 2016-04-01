@@ -14,8 +14,6 @@ using namespace System::Collections::Generic;
 #include <opendnp3/master/TaskInfo.h>
 #include <opendnp3/master/CommandSet.h>
 
-#include <secauth/master/FinishUpdateKeyChangeArgs.h>
-
 using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
@@ -40,12 +38,7 @@ namespace Automatak
 				static opendnp3::Header ConvertRange16(RangeHeader^ header);
 
 				static opendnp3::TaskConfig Convert(TaskConfig^ config, ITaskCallback^ wrapper);
-				static opendnp3::TaskConfig Convert(TaskConfig^ config);
-
-				static secauth::UpdateKey Convert(UpdateKey^ key);
-				static UpdateKey^ Convert(const secauth::UpdateKey&);
-
-				static secauth::FinishUpdateKeyChangeArgs Convert(FinishUpdateKeyChangeArgs^ args);
+				static opendnp3::TaskConfig Convert(TaskConfig^ config);				
 
 				static opendnp3::CommandSet Convert(ICommandHeaders^ headers);
 								

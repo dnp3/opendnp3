@@ -26,20 +26,20 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	ChannelRetry::ChannelRetry(
-		openpal::TimeDuration minOpenRetry_,
-		openpal::TimeDuration maxOpenRetry_,
-		IOpenDelayStrategy& strategy_
-	) :
-		minOpenRetry(minOpenRetry_),
-		maxOpenRetry(maxOpenRetry_),
-		strategy(strategy_)
-	{}	
+ChannelRetry::ChannelRetry(
+    openpal::TimeDuration minOpenRetry_,
+    openpal::TimeDuration maxOpenRetry_,
+    IOpenDelayStrategy& strategy_
+) :
+	minOpenRetry(minOpenRetry_),
+	maxOpenRetry(maxOpenRetry_),
+	strategy(strategy_)
+{}
 
-	ChannelRetry ChannelRetry::Default()
-	{
-		return ChannelRetry(TimeDuration::Seconds(1), TimeDuration::Minutes(1));
-	}
+ChannelRetry ChannelRetry::Default()
+{
+	return ChannelRetry(TimeDuration::Seconds(1), TimeDuration::Minutes(1));
+}
 
 }
 

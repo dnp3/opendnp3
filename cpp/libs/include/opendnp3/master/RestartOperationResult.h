@@ -33,12 +33,12 @@ namespace opendnp3
 
 class RestartOperationResult
 {
-public:	
+public:
 
 	RestartOperationResult() : summary(TaskCompletion::FAILURE_NO_COMMS)
 	{}
 
-	RestartOperationResult(TaskCompletion summary_, openpal::TimeDuration restartTime_) : 
+	RestartOperationResult(TaskCompletion summary_, openpal::TimeDuration restartTime_) :
 		summary(summary_), restartTime(restartTime_)
 	{}
 

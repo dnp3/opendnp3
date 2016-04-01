@@ -131,7 +131,7 @@ public:
 	classes inherited from this class */
 	virtual void DoOpen() = 0;
 	virtual void DoClose() = 0;
-	
+
 	virtual void DoOpeningClose() = 0;
 	/*
 	{

@@ -28,26 +28,26 @@
 
 namespace opendnp3
 {
-	class DecoderImpl;
+class DecoderImpl;
 
-	// stand-alone DNP3 decoder
-	class Decoder
-	{
-	public:
+// stand-alone DNP3 decoder
+class Decoder
+{
+public:
 
-		Decoder(IDecoderCallbacks& callbacks, openpal::Logger logger);
-		~Decoder();
+	Decoder(IDecoderCallbacks& callbacks, openpal::Logger logger);
+	~Decoder();
 
-		void DecodeLPDU(const openpal::RSlice& data);
-		void DecodeTPDU(const openpal::RSlice& data);
-		void DecodeAPDU(const openpal::RSlice& data);
+	void DecodeLPDU(const openpal::RSlice& data);
+	void DecodeTPDU(const openpal::RSlice& data);
+	void DecodeAPDU(const openpal::RSlice& data);
 
 
 
-	private:
+private:
 
-		DecoderImpl* impl;
-	};
+	DecoderImpl* impl;
+};
 
 
 }

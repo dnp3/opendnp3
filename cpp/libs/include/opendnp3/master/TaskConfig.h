@@ -23,7 +23,6 @@
 
 #include "TaskId.h"
 #include "ITaskCallback.h"
-#include "opendnp3/app/User.h"
 
 #include <openpal/executor/TimeDuration.h>
 
@@ -37,23 +36,21 @@ class TaskConfig
 {
 public:
 
-	TaskConfig(TaskId taskId, ITaskCallback* pCallback, User user);
+	TaskConfig(TaskId taskId, ITaskCallback* pCallback) :
+		taskId(taskId),
+		pCallback(pCallback)
+	{}
 
 	static TaskConfig Default()
 	{
-		return TaskConfig(TaskId::Undefined(), nullptr, User::Default());
+		return TaskConfig(TaskId::Undefined(), nullptr);
 	}
 
 	///  --- syntax sugar for building configs -----
 
 	static TaskConfig With(ITaskCallback& callback)
 	{
-		return TaskConfig(TaskId::Undefined(), &callback, User::Default());
-	}
-
-	static TaskConfig With(User user)
-	{
-		return TaskConfig(TaskId::Undefined(), nullptr, user);
+		return TaskConfig(TaskId::Undefined(), &callback);
 	}
 
 	TaskConfig() = delete;
@@ -62,7 +59,6 @@ public:
 
 	TaskId taskId;
 	ITaskCallback* pCallback;
-	User user;
 };
 
 }

@@ -31,11 +31,6 @@
 
 #include <opendnp3/link/ChannelRetry.h>
 
-namespace openpal
-{
-class ICryptoProvider;
-}
-
 namespace asiopal
 {
 class ASIOExecutor;
@@ -57,8 +52,8 @@ public:
 
 	IChannel* CreateChannel(	std::unique_ptr<openpal::LogRoot> root,	                            
 	                            const opendnp3::ChannelRetry& retry,
-								std::unique_ptr<asiopal::PhysicalLayerASIO> phys,
-	                            openpal::ICryptoProvider* pCrypto);
+								std::unique_ptr<asiopal::PhysicalLayerASIO> phys);
+
 
 	/// Synchronously shutdown all channels. Block until complete.
 	void Shutdown();

@@ -28,29 +28,29 @@ namespace asiopal
 {
 
 
-	class LoggingConnectionCondition
+class LoggingConnectionCondition
+{
+
+public:
+
+	LoggingConnectionCondition(openpal::Logger logger_) : logger(logger_)
+	{}
+
+	template <typename Iterator>
+	Iterator operator()(const std::error_code& ec, Iterator next)
 	{
-
-	public:
-
-		LoggingConnectionCondition(openpal::Logger logger_) : logger(logger_)
-		{}
-
-		template <typename Iterator>
-		Iterator operator()(const std::error_code& ec, Iterator next)
+		if (ec)
 		{
-			if (ec)
-			{
-				FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
-			}
-
-			return next;
+			FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
 		}
 
-	private:
+		return next;
+	}
 
-		openpal::Logger logger;
-	};
+private:
+
+	openpal::Logger logger;
+};
 }
 
 #endif

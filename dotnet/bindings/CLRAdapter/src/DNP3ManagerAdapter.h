@@ -4,11 +4,6 @@
 using namespace System;
 using namespace Automatak::DNP3::Interface;
 
-namespace osslcrypto
-{
-	class CryptoProvider;
-}
-
 namespace asiodnp3
 {
 	class DNP3Manager;
@@ -50,9 +45,7 @@ namespace Automatak
 				DNP3ManagerAdapter(System::Int32 aConcurrency);
 				~DNP3ManagerAdapter();
 
-				virtual void Shutdown() sealed;
-
-				virtual String^ SSLVersion() sealed;
+				virtual void Shutdown() sealed;				
 
 				virtual IChannel^ AddTCPClient(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ address, System::UInt16 port)  sealed;
 				virtual IChannel^ AddTCPServer(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port) sealed;
@@ -64,8 +57,7 @@ namespace Automatak
 
 				virtual void AddLogHandler(ILogHandler^ logHandler);
 
-			private:
-				osslcrypto::CryptoProvider* pCrypto;
+			private:				
 				asiodnp3::DNP3Manager* pManager;								
 			};
 

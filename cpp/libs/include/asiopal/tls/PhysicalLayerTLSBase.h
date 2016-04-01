@@ -43,7 +43,7 @@ public:
 		openpal::Logger logger,
 		asio::io_service& service,
 		const TLSConfig& config,
-		bool server,		
+		bool server,
 		std::error_code& ec
 	);
 
@@ -59,9 +59,9 @@ public:
 protected:
 
 	bool LogPeerCertificateInfo(bool preverified, asio::ssl::verify_context& ctx);
-	
-	SSLContext ctx;	
-	asio::ssl::stream<asio::ip::tcp::socket> stream;	
+
+	SSLContext ctx;
+	asio::ssl::stream<asio::ip::tcp::socket> stream;
 
 	void ShutdownTLSStream();
 	void ShutdownSocket();

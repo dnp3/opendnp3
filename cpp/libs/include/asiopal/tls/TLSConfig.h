@@ -32,7 +32,7 @@ namespace asiopal
 */
 class TLSConfig
 {
-public:	
+public:
 
 	/**
 	* Construct a TLS configuration
@@ -47,7 +47,7 @@ public:
 	* @param cipherList The openssl cipher-list, defaults to "" which does not modify the default cipher list
 	*
 	* localCertFilePath and privateKeyFilePath can optionally be the same file, i.e. a PEM that contains both pieces of data.
-	* 	 	
+	*
 	*/
 	TLSConfig(
 		const std::string& peerCertFilePath,
@@ -65,9 +65,9 @@ public:
 
 	/// File that contains the certificate (or certificate chain) that will be presented to the remote side of the connection
 	std::string localCertFilePath;
-	
+
 	/// File that contains the private key corresponding to the local certificate
-	std::string privateKeyFilePath;	
+	std::string privateKeyFilePath;
 
 	/// max verification depth (defaults to 0 - peer certificate only)
 	int maxVerifyDepth;

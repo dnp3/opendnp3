@@ -28,13 +28,13 @@
 namespace asiodnp3
 {
 
-	class PrintingCommandCallback : public openpal::StaticOnly
-	{
+class PrintingCommandCallback : public openpal::StaticOnly
+{
 
-	public:
-		static opendnp3::CommandCallbackT Get();
+public:
+	static opendnp3::CommandCallbackT Get();
 
-	};
+};
 
 }
 

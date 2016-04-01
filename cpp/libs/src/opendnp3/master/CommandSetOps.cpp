@@ -42,7 +42,7 @@ IINField CommandSetOps::ProcessAny(const PrefixHeader& header, const ICollection
 	if (header.headerIndex >= commands->m_headers.size()) // more response headers than request headers
 	{
 		return IINBit::PARAM_ERROR;
-	}	
+	}
 
 	if (mode == Mode::Select)
 	{
@@ -52,7 +52,7 @@ IINField CommandSetOps::ProcessAny(const PrefixHeader& header, const ICollection
 	{
 		commands->m_headers[header.headerIndex]->ApplyOperateResponse(values);
 	}
-	
+
 	return IINField::Empty();
 }
 
@@ -60,10 +60,10 @@ CommandSetOps::CommandSetOps(Mode mode_, CommandSet& commands_) :
 	mode(mode_),
 	commands(&commands_)
 {}
-	
+
 bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer)
 {
-	for(auto& header: set.m_headers)
+	for(auto & header : set.m_headers)
 	{
 		if (!header->Write(writer))
 		{
@@ -88,8 +88,8 @@ CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set
 		return SelectResult::FAIL_PARSE;
 	}
 
-	auto selected = [](const ICommandHeader* header) -> bool 
-	{ 
+	auto selected = [](const ICommandHeader* header) -> bool
+	{
 		return header->AreAllSelected();
 	};
 	return std::all_of(set.m_headers.begin(), set.m_headers.end(), selected) ? SelectResult::OK : SelectResult::FAIL_SELECT;
@@ -145,8 +145,6 @@ IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollect
 {
 	return this->ProcessAny(header, values);
 }
-	
+
 
 }
-
-

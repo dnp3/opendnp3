@@ -31,7 +31,7 @@ template <class T>
 class ICommandCollection
 {
 public:
-	
+
 	virtual ICommandCollection& Add(const T& command, uint16_t index) = 0;
 };
 

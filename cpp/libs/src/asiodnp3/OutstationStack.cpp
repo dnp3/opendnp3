@@ -22,10 +22,7 @@
 
 #include <asiopal/ASIOExecutor.h>
 
-#include <secauth/outstation/OutstationAuthContext.h>
-
 using namespace opendnp3;
-using namespace secauth;
 
 namespace asiodnp3
 {

@@ -52,7 +52,7 @@ CommandTask::CommandTask(CommandSet&& commands_, IMasterApplication& app, const 
 	IMasterTask(app, MonotonicTimestamp::Min(), logger, config),
 	statusResult(CommandStatus::UNDEFINED),
 	commandCallback(callback),
-	commands(std::move(commands_))	
+	commands(std::move(commands_))
 {
 
 }
@@ -73,7 +73,7 @@ void CommandTask::LoadDirectOperate()
 bool CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (!functionCodes.empty())
-	{		
+	{
 		request.SetFunction(functionCodes.front());
 		functionCodes.pop_front();
 		request.SetControl(AppControlField::Request(seq));
@@ -110,15 +110,15 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::RSlice& 
 	else
 	{
 		auto result = CommandSetOps::ProcessSelectResponse(commands, objects, &logger);
-		
+
 		switch (result)
 		{
-			case(CommandSetOps::SelectResult::OK) :
-				return ResponseResult::OK_REPEAT; // proceed to OPERATE
-			case(CommandSetOps::SelectResult::FAIL_SELECT) :
-				return ResponseResult::OK_FINAL; // end the task, let the user examine each command point
-			default:
-				return ResponseResult::ERROR_BAD_RESPONSE;
+		case(CommandSetOps::SelectResult::OK) :
+			return ResponseResult::OK_REPEAT; // proceed to OPERATE
+		case(CommandSetOps::SelectResult::FAIL_SELECT) :
+			return ResponseResult::OK_FINAL; // end the task, let the user examine each command point
+		default:
+			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 	}
 }

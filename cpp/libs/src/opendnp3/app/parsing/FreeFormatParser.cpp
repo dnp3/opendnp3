@@ -71,7 +71,7 @@ ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserS
 	                    GroupVariationToString(record.enumeration),
 	                    QualifierCodeToString(record.GetQualifierCode()),
 	                    FREE_FORMAT_COUNT,
-						FREE_FORMAT_SIZE
+	                    FREE_FORMAT_SIZE
 	                   );
 
 	if (FREE_FORMAT_COUNT != 1)
@@ -134,9 +134,9 @@ ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer, const ParserS
 
 	default:
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN,
-			"Unsupported qualifier/object - %s - %i / %i",
-			QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation
-		);
+		                    "Unsupported qualifier/object - %s - %i / %i",
+		                    QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation
+		                   );
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}

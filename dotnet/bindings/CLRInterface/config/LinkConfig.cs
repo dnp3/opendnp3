@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Automatak.DNP3.Interface
 {
@@ -19,23 +20,23 @@ namespace Automatak.DNP3.Interface
         /// <param name="numRetry">The number of retry attempts the link will attempt after the initial try</param>
         /// <param name="localAddr">dnp3 address of the local device</param>
         /// <param name="remoteAddr">dnp3 address of the remote device</param>
-        /// <param name="timeout">the response timeout in milliseconds for confirmed requests</param>
-        /// <param name="keepAliveTimeoutMs">the keep-alive timeout interval</param>
+        /// <param name="responseTimeout">the response timeout for confirmed requests</param>
+        /// <param name="keepAliveTimeout">the keep-alive timeout interval</param>
         public LinkConfig(  bool isMaster,
                             bool useConfirms,
                             System.UInt32 numRetry,
                             System.UInt16 localAddr,
                             System.UInt16 remoteAddr,
-                            System.UInt32 timeoutMs,
-                            System.UInt32 keepAliveTimeoutMs)
+                            TimeSpan responseTimeout,
+                            TimeSpan keepAliveTimeout)
         {
             this.isMaster = isMaster;
             this.useConfirms = useConfirms;
             this.numRetry = numRetry;
             this.localAddr = localAddr;
             this.remoteAddr = remoteAddr;
-            this.timeoutMs = timeoutMs;
-            this.keepAliveTimeoutMs = keepAliveTimeoutMs;
+            this.responseTimeout = responseTimeout;
+            this.keepAliveTimeout = keepAliveTimeout;
         }
 
         /// <summary>
@@ -50,8 +51,8 @@ namespace Automatak.DNP3.Interface
                 DefaultNumRetries,
                 GetDefaultSourceAddress(isMaster),
                 GetDefaultDestinationAddress(isMaster),
-                DefaultTimeoutMillisconds,
-                DefaultKeepAliveTimeoutMillisconds
+                DefaultResponseTimeout,
+                DefaultKeepAliveTimeout
             )
         {
 
@@ -105,19 +106,19 @@ namespace Automatak.DNP3.Interface
             return isMaster ? DefaultMasterAddress : DefaultOutstationAddress;
         }
 
-        public static System.UInt32 DefaultTimeoutMillisconds
+        public static TimeSpan DefaultResponseTimeout
         {
             get
             {
-                return 1000;
+                return TimeSpan.FromSeconds(1);
             }
         }
 
-        public static System.UInt32 DefaultKeepAliveTimeoutMillisconds
+        public static TimeSpan DefaultKeepAliveTimeout
         {
             get
             {
-                return 1000*60;
+                return TimeSpan.FromSeconds(60);
             }
         }
 
@@ -149,11 +150,40 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// the response timeout for confirmed requests
         /// </summary>
-        public System.UInt32 timeoutMs;
+        [XmlIgnore]
+        public TimeSpan responseTimeout;       
 
         /// <summary>
         /// the keep-alive timer timeout interval
         /// </summary>
-        public System.UInt32 keepAliveTimeoutMs;
+        [XmlIgnore]
+        public TimeSpan keepAliveTimeout;
+
+        [XmlElement]
+        public System.Int64 ResponeTimeoutMilliseconds
+        {
+            get
+            {
+                return (responseTimeout.Ticks / TimeSpan.TicksPerMillisecond);
+            }
+            set
+            {
+                responseTimeout = TimeSpan.FromMilliseconds(value);
+            }
+        }
+
+       
+        [XmlElement]
+        public System.Int64 KeepAliveTimeoutMilliseconds
+        {
+            get
+            {
+                return (keepAliveTimeout.Ticks / TimeSpan.TicksPerMillisecond);
+            }
+            set
+            {
+                keepAliveTimeout = TimeSpan.FromMilliseconds(value);
+            }
+        }
     }
 }

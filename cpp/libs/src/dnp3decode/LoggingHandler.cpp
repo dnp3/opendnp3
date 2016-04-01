@@ -28,8 +28,8 @@ using namespace openpal;
 
 namespace opendnp3
 {
-	
-LoggingHandler::LoggingHandler(openpal::Logger logger_, IDecoderCallbacks& callbacks_) :	
+
+LoggingHandler::LoggingHandler(openpal::Logger logger_, IDecoderCallbacks& callbacks_) :
 	logger(logger_),
 	callbacks(&callbacks_)
 {}
@@ -96,7 +96,7 @@ IINField LoggingHandler::PrintOctets(const ICollection<Indexed<OctetString>>& it
 {
 	Indent i(*callbacks);
 	auto logItem = [this](const Indexed<OctetString>& item)
-	{		
+	{
 		auto slice = item.value.ToRSlice();
 		FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] value: (length = %u)", item.index, slice.Size());
 		FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, slice, 18, 18);
@@ -124,15 +124,15 @@ IINField LoggingHandler::PrintTimeAndInterval(const ICollection<Indexed<TimeAndI
 	return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object) 
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value, const openpal::RSlice& object)
 {
 	Indent i(*callbacks);
-	
+
 	std::ostringstream oss;
 	oss << "csq: " << value.challengeSeqNum;
 	oss << " user: " << value.userNum;
 	oss << " MAC: " << HMACTypeToString(value.hmacAlgo);
-	oss << " reason: " << ChallengeReasonToString(value.challengeReason);	
+	oss << " reason: " << ChallengeReasonToString(value.challengeReason);
 	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 
 	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "challenge data: ");
@@ -209,8 +209,8 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 		std::ostringstream oss;
 		oss << "time of error: " << ToUTCString(value.time);
 		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
-	}	
-	
+	}
+
 	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "error text: ");
 	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.errorText, 18, 18);
 
@@ -238,7 +238,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 
 	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "MAC: ");
 	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.hmacValue, 18, 18);
-	
+
 	return IINField::Empty();
 }
 
@@ -255,7 +255,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 		oss << "exp: " << value.userRoleExpDays;
 		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 	}
-	
+
 	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "user name: ");
 	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.userName, 18, 18);
 
@@ -274,12 +274,12 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 
 	{
 		std::ostringstream oss;
-		oss << "kcm: " << KeyChangeMethodToString(value.keyChangeMethod);		
+		oss << "kcm: " << KeyChangeMethodToString(value.keyChangeMethod);
 		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 	}
 
 	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "user name: ");
-	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.userName, 18, 18);	
+	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.userName, 18, 18);
 
 	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "master challenge data: ");
 	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.challengeData, 18, 18);
@@ -296,7 +296,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header, const Gro
 		oss << "ksq: " << value.keyChangeSeqNum;
 		oss << " user: " << value.userNum;
 		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
-	}	
+	}
 
 	SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "outstation challenge data: ");
 	FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, value.challengeData, 18, 18);
@@ -370,15 +370,16 @@ IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollect
 {
 	Indent i(*callbacks);
 
-	auto print = [this](const Group120Var3& value) {
-		std::ostringstream oss;		
+	auto print = [this](const Group120Var3 & value)
+	{
+		std::ostringstream oss;
 		oss << "csq: " << value.challengeSeqNum;
 		oss << " user: " << value.userNum;
 		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 	};
 
 	values.ForeachItem(print);
-	
+
 	return IINField::Empty();
 }
 
@@ -386,8 +387,9 @@ IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollect
 {
 	Indent i(*callbacks);
 
-	auto print = [this](const Group120Var4& value) {
-		std::ostringstream oss;		
+	auto print = [this](const Group120Var4 & value)
+	{
+		std::ostringstream oss;
 		oss << "user: " << value.userNum;
 		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 	};
@@ -404,13 +406,19 @@ IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
 {
-	auto stringify = [](bool value) -> const char* { return GetStringValue(value); };
+	auto stringify = [](bool value) -> const char*
+	{
+		return GetStringValue(value);
+	};
 	return this->PrintVQTStringify(header.enumeration, values, stringify);
 }
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
-{	
-	auto stringify = [](DoubleBit db) -> const char* { return DoubleBitToString(db); };
+{
+	auto stringify = [](DoubleBit db) -> const char*
+	{
+		return DoubleBitToString(db);
+	};
 	return this->PrintVQTStringify(header.enumeration, values, stringify);
 }
 
@@ -466,7 +474,10 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollec
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-	auto stringify = [](DoubleBit db) -> const char* { return DoubleBitToString(db); };
+	auto stringify = [](DoubleBit db) -> const char*
+	{
+		return DoubleBitToString(db);
+	};
 	return this->PrintVQTStringify(header.enumeration, values, stringify);
 }
 

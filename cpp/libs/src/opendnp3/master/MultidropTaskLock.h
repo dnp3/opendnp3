@@ -34,10 +34,16 @@ class MultidropTaskLock final : public opendnp3::ITaskLock
 public:
 
 	MultidropTaskLock();
-	
+
 	/// these are controlled by the link layer router
-	void SetOnline() { m_is_online = true; }
-	void SetOffline() { m_is_online = false; }
+	void SetOnline()
+	{
+		m_is_online = true;
+	}
+	void SetOffline()
+	{
+		m_is_online = false;
+	}
 
 	virtual bool Acquire(IScheduleCallback&) override;
 	virtual bool Release(IScheduleCallback&) override;

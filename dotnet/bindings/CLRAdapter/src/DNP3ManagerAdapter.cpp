@@ -6,7 +6,6 @@
 #include "ChannelAdapter.h"
 
 #include <asiodnp3/DNP3Manager.h>
-#include <osslcrypto/CryptoProvider.h>
 
 using namespace asiopal;
 
@@ -28,29 +27,21 @@ namespace Automatak
 			}
 
 
-			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 concurrency) : 
-				pCrypto(new osslcrypto::CryptoProvider()),
-				pManager(new asiodnp3::DNP3Manager(concurrency, pCrypto))				
+			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 concurrency) : 				
+				pManager(new asiodnp3::DNP3Manager(concurrency))				
 			{
 
 			}
 
 			DNP3ManagerAdapter::~DNP3ManagerAdapter()
 			{
-				delete pManager;
-				delete pCrypto;
+				delete pManager;				
 			}
 
 			void DNP3ManagerAdapter::Shutdown()
 			{
 				pManager->Shutdown();
-			}
-
-			String^ DNP3ManagerAdapter::SSLVersion()
-			{
-				std::string version(pCrypto->Version());
-				return Conversions::ConvertString(version);
-			}
+			}			
 
 			IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ address, System::UInt16 port)
 			{
@@ -62,7 +53,7 @@ namespace Automatak
 				auto channel = pManager->AddTCPClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort);
 				if (channel)
 				{
-					auto adapter = gcnew ChannelAdapter(channel, pCrypto);
+					auto adapter = gcnew ChannelAdapter(channel);
 					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}
@@ -81,7 +72,7 @@ namespace Automatak
 				auto channel = pManager->AddTCPServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort);
 				if (channel)
 				{
-					auto adapter = gcnew ChannelAdapter(channel, pCrypto);
+					auto adapter = gcnew ChannelAdapter(channel);
 					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}
@@ -105,7 +96,7 @@ namespace Automatak
 				}
 				else
 				{
-					auto adapter = gcnew ChannelAdapter(channel, pCrypto);
+					auto adapter = gcnew ChannelAdapter(channel);
 					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;						
 				}								
@@ -126,7 +117,7 @@ namespace Automatak
 				}
 				else
 				{
-					auto adapter = gcnew ChannelAdapter(channel, pCrypto);
+					auto adapter = gcnew ChannelAdapter(channel);
 					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}				
@@ -140,7 +131,7 @@ namespace Automatak
 				auto channel = pManager->AddSerial(stdName.c_str(), filters, Conversions::Convert(retry), s);
 				if (channel)
 				{
-					auto adapter = gcnew ChannelAdapter(channel, pCrypto);
+					auto adapter = gcnew ChannelAdapter(channel);
 					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}

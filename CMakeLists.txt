@@ -11,7 +11,6 @@ option(TEST "Build tests" OFF)
 option(FULL "Build all optional projects (secauth, demos, tests)" OFF)
 option(DNP3_DECODER "Build the decoder library" OFF)
 option(DNP3_TLS "Build TLS client/server support")
-option(SECAUTH "Build the secure authentication module and openssl crypto wrapper" OFF)
 
 # other options off-by-default that you can enable
 option(WERROR "Set all warnings to errors" OFF)
@@ -21,28 +20,19 @@ option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
 if(FULL)
 	set(DEMO ON)
 	set(TEST ON)
-        set(DNP3_DECODER ON)
-	set(SECAUTH ON)
-	set(DNP3_TLS ON)	
-endif()
-
-if(SECAUTH)
-	 add_definitions(-DOPENDNP3_USE_SECAUTH)
+	set(DNP3_TLS ON)
+	set(DNP3_DECODER ON)
 endif()
 
 if(DNP3_TLS)
-    add_definitions(-DOPENDNP3_USE_TLS)	
-endif()
- 
-if(SECAUTH OR DNP3_TLS)
+	add_definitions(-DOPENDNP3_USE_TLS)
 
-   find_package(OpenSSL REQUIRED)
-   message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+	find_package(OpenSSL REQUIRED)
+	message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 
-   if(WIN32)
-     include_directories(${OPENSSL_INCLUDE_DIR})
-   endif()
-
+	if(WIN32)
+		include_directories(${OPENSSL_INCLUDE_DIR})
+	endif()
 endif()
 
 if(WIN32)
@@ -51,15 +41,15 @@ if(WIN32)
 
    # for ASIO
   add_definitions(-D_WIN32_WINNT=0x0501)
-  add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)  
+  add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)
 
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP")
 
   set(LIB_TYPE STATIC) #default to static on MSVC
-  
+
 else()
 
-  set(PTHREAD pthread)   
+  set(PTHREAD pthread)
 
   if(STATICLIBS)
 	set(LIB_TYPE STATIC)
@@ -72,7 +62,7 @@ else()
   # different release and debug flags
   set(CMAKE_CXX_FLAGS_RELEASE "-O3")
   set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
-  
+
   if(COVERAGE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -g -O0")
     #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage -g -O0")
@@ -86,10 +76,10 @@ endif()
 
 # There's problem with detecting usage of pthread with gcc 4.8.x
 # http://ubuntuforums.org/showthread.php?t=2183408
-if(CMAKE_COMPILER_IS_GNUCXX)      
+if(CMAKE_COMPILER_IS_GNUCXX)
   if(CMAKE_CXX_COMPILER_VERSION MATCHES 4.8.*)
     message("Adding pthread workaround for GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
-    SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-as-needed" )            
+    SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-as-needed" )
   endif()
 endif()
 
@@ -97,13 +87,13 @@ set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
 if (ASIO_HOME)
   message("ASIO_HOME defined in cache: ${ASIO_HOME}")
-  include_directories(${ASIO_HOME})  
+  include_directories(${ASIO_HOME})
 else()
   if(DEFINED ENV{ASIO_HOME})
-    message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")  
-    include_directories($ENV{ASIO_HOME})    
+    message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")
+    include_directories($ENV{ASIO_HOME})
   else()
-    message("ASIO_HOME was not defined. ASIO expected to be on include path")  
+    message("ASIO_HOME was not defined. ASIO expected to be on include path")
   endif()
 endif()
 
@@ -138,59 +128,28 @@ endif()
 
 # ---- asiopal library ----
 if(DNP3_TLS)
-  file(GLOB_RECURSE asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)  
+  file(GLOB_RECURSE asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)
 else()
   file(GLOB asiopal_SRC ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)
 endif()
 add_library(asiopal ${LIB_TYPE} ${asiopal_SRC})
 target_link_libraries(asiopal openpal)
 if(DNP3_TLS)
-  target_link_libraries(asiopal ${OPENSSL_LIBRARIES}) 
+  target_link_libraries(asiopal ${OPENSSL_LIBRARIES})
 endif()
 install(TARGETS asiopal DESTINATION lib)
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
 # ---- asiodnp3 library ----
-file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiodnp3/*.h)
-if(SECAUTH)
-	file(GLOB_RECURSE tmp_SRC ./cpp/libs/src/asiodnp3/auth/*.cpp ./cpp/libs/src/asiodnp3/auth/*.h ./cpp/libs/include/asiodnp3/auth/*.h)
-	set(asiodnp3_SRC ${asiodnp3_SRC} ${tmp_SRC})
-endif()
 if(DNP3_TLS)
-	file(GLOB_RECURSE tmp_SRC ./cpp/libs/src/asiodnp3/tls/*.cpp ./cpp/libs/src/asiodnp3/tls/*.h ./cpp/libs/include/asiodnp3/tls/*.h)
-	set(asiodnp3_SRC ${asiodnp3_SRC} ${tmp_SRC})
-endif()
-
-add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
-
-if(SECAUTH)
-  target_link_libraries(asiodnp3 secauth opendnp3 asiopal)
+  file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiodnp3/*.h)
 else()
-  target_link_libraries(asiodnp3 opendnp3 asiopal)  
+  file(GLOB asiodnp3_SRC ./cpp/libs/src/asiodnp3/*.cpp ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiodnp3/*.h)
 endif()
-
+add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
+target_link_libraries(asiodnp3 asiopal opendnp3)
 install(TARGETS asiodnp3 DESTINATION lib)
 set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
-
-if(SECAUTH)
-  
-  # ---- secauth library ----
-  file(GLOB_RECURSE secauth_SRC ./cpp/libs/src/secauth/*.cpp ./cpp/libs/src/secauth/*.h ./cpp/libs/include/secauth/*.h)
-  add_library(secauth ${LIB_TYPE} ${secauth_SRC})
-  target_link_libraries(secauth opendnp3)
-  install(TARGETS secauth DESTINATION lib)  
-  set_target_properties(secauth PROPERTIES FOLDER libs)
-
-  # ---- osslcrypto library ----
-  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/src/osslcrypto/*.cpp ./cpp/libs/src/osslcrypto/*.h ./cpp/libs/include/osslcrypto/*.h)
-  add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
-  target_link_libraries(osslcrypto openpal)
-  target_link_libraries(osslcrypto ${OPENSSL_LIBRARIES})  
-  install(TARGETS osslcrypto DESTINATION lib)  
-  set_target_properties(osslcrypto PROPERTIES FOLDER libs)  
-
-endif()
-
 
 # ----- install -----
 
@@ -199,7 +158,7 @@ set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".
 install(DIRECTORY ./cpp/libs/include/ DESTINATION include ${INSTALL_ARGS})
 
 if(DEMO)
-    
+
   # ----- master demo executable -----
   add_executable(master-demo ./cpp/examples/master/main.cpp)
   target_link_libraries (master-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
@@ -212,55 +171,43 @@ if(DEMO)
 
   # ----- outstation demo executable -----
   add_executable(outstation-demo ./cpp/examples/outstation/main.cpp)
-  target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})   
+  target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(outstation-demo PROPERTIES FOLDER demos)
 
   if(DNP3_DECODE)
-    
+
     # ----- decoder executable -----
     add_executable(decoder ./cpp/examples/decoder/main.cpp)
     target_link_libraries (decoder asiodnp3 dnp3decode ${PTHREAD})
     set_target_properties(decoder PROPERTIES FOLDER demos)
-  
+
   endif()
 
   if(DNP3_TLS)
 
-	# ----- master tls executable -----  
+	# ----- master tls executable -----
 	add_executable(master-tls-demo ./cpp/examples/tls/master/main.cpp)
 	target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
 	set_target_properties(master-tls-demo PROPERTIES FOLDER demos/tls)
 
-	# ----- outstation tls executable -----  
+	# ----- outstation tls executable -----
 	add_executable(outstation-tls-demo ./cpp/examples/tls/outstation/main.cpp)
 	target_link_libraries (outstation-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
 	set_target_properties(outstation-tls-demo PROPERTIES FOLDER demos/tls)
 
-	# ----- master-gprs tls executable -----  
+	# ----- master-gprs tls executable -----
 	add_executable(master-gprs-tls-demo ./cpp/examples/tls/master-gprs/main.cpp)
 	target_link_libraries (master-gprs-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
 	set_target_properties(master-gprs-tls-demo PROPERTIES FOLDER demos/tls)
 
-  endif()
-
-  if(SECAUTH)
-
-	# ----- outstation SAv5 demo executable -----
-	add_executable (outstation-sa-demo ./cpp/examples/secauth/outstation/main.cpp)
-	target_link_libraries (outstation-sa-demo LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
-	set_target_properties(outstation-sa-demo PROPERTIES FOLDER demos/secauth)
-
-	# ----- master SAv5 demo executable -----
-	add_executable (master-sa-demo ./cpp/examples/secauth/master/main.cpp)
-	target_link_libraries (master-sa-demo LINK_PUBLIC asiodnp3 secauth osslcrypto ${PTHREAD})
-	set_target_properties(master-sa-demo PROPERTIES FOLDER demos/secauth)
-
-  endif()
+	endif()
 
 endif()
 
 if(TEST)
+
   enable_testing()
+
   # ----- testlib library ------
   file(GLOB_RECURSE testlib_SRC ./cpp/tests/libs/src/testlib/*.cpp ./cpp/tests/libs/src/testlib/*.h)
   add_library(testlib ${testlib_SRC})
@@ -282,39 +229,16 @@ if(TEST)
 
   # ----- opendnp3 tests -----
   file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp ./cpp/tests/opendnp3tests/src/*.h)
-  add_executable (testopendnp3 ${opendnp3_TESTSRC})    
-  target_link_libraries (testopendnp3 LINK_PUBLIC dnp3mocks ${PTHREAD})  
+  add_executable (testopendnp3 ${opendnp3_TESTSRC})
+  target_link_libraries (testopendnp3 LINK_PUBLIC dnp3mocks ${PTHREAD})
   set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
   add_test(testopendnp3 testopendnp3)
 
   # ----- asiodnp3 tests -----
   file(GLOB_RECURSE asiodnp3_TESTSRC ./cpp/tests/asiodnp3tests/src/*.cpp ./cpp/tests/asiodnp3tests/src/*.h)
   add_executable (testasiodnp3 ${asiodnp3_TESTSRC})
-  if(SECAUTH)
-   target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks ${PTHREAD})
-  else()
-   target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
-  endif()
+  target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
   set_target_properties(testasiodnp3 PROPERTIES FOLDER tests)
   add_test(testasiodnp3 testasiodnp3)
 
-  if(SECAUTH)
-  
-    # ----- sa tests -----
-    file(GLOB_RECURSE secauth_TESTSRC ./cpp/tests/secauthtests/src/*.cpp ./cpp/tests/secauthtests/src/*.h)
-    add_executable (testsecauth ${secauth_TESTSRC})
-    target_link_libraries (testsecauth LINK_PUBLIC secauth dnp3mocks)
-    set_target_properties(testsecauth PROPERTIES FOLDER tests)   
-	add_test(testsecauth testsecauth)
-
-    # ----- opensslcrypto tests -----
-    file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp ./cpp/tests/osslcryptotests/*.h)
-    add_executable (testosslcrypto ${osslcrypto_TESTSRC})
-    target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto ${PTHREAD})
-    set_target_properties(testosslcrypto PROPERTIES FOLDER tests)          
-	add_test(testosslcrypto testosslcrypto)
-  
-  endif()
-
 endif()
-

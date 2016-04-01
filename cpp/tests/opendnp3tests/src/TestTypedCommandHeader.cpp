@@ -45,7 +45,7 @@ TEST_CASE(SUITE("Can instantiate a CROB header"))
 }
 
 TEST_CASE(SUITE("Formats properly if enough space is available"))
-{	
+{
 	TypedCommandHeader<AnalogOutputInt16> header(Group41Var2::Inst());
 	header.Add(AnalogOutputInt16(7), 10);
 	header.Add(AnalogOutputInt16(8), 11);
@@ -73,7 +73,7 @@ TEST_CASE(SUITE("Does not format if insufficient space"))
 	APDURequest request(dest);
 	auto writer = request.GetWriter();
 
-	REQUIRE_FALSE(header.Write(writer));	
+	REQUIRE_FALSE(header.Write(writer));
 }
 
 TEST_CASE(SUITE("Command set can be moved and written"))
@@ -86,7 +86,7 @@ TEST_CASE(SUITE("Command set can be moved and written"))
 	CommandSet commands2(std::move(commands));
 
 	REQUIRE(WriteToHex(commands) == "");
-	REQUIRE(WriteToHex(commands2) == "29 02 28 01 00 0A 00 07 00 00 29 01 28 01 00 0B 00 08 00 00 00 00");	
+	REQUIRE(WriteToHex(commands2) == "29 02 28 01 00 0A 00 07 00 00 29 01 28 01 00 0B 00 08 00 00 00 00");
 }
 
 std::string WriteToHex(const CommandSet& commands)

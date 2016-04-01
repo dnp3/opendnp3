@@ -51,9 +51,6 @@ public:
 	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
 
-	// only callable from within the slave itself ATM
-	bool Update(const SecurityStat&, uint16_t);
-
 	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t, EventMode = EventMode::Detect) override final;

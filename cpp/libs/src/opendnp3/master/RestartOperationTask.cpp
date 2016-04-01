@@ -30,9 +30,12 @@ namespace opendnp3
 {
 
 RestartOperationTask::RestartOperationTask(IMasterApplication& app, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config) :
-	SimpleRequestTaskBase(app, ToFunctionCode(operationType), priority::USER_REQUEST, [](HeaderWriter&){ return true; }, logger, config),
-	m_callback(callback),
-	m_duration(TimeDuration::Min())
+	SimpleRequestTaskBase(app, ToFunctionCode(operationType), priority::USER_REQUEST, [](HeaderWriter&)
+{
+	return true;
+}, logger, config),
+m_callback(callback),
+m_duration(TimeDuration::Min())
 {
 
 }
@@ -58,7 +61,7 @@ char const* RestartOperationTask::Name() const
 {
 	return FunctionCodeToString(m_func);
 }
-	
+
 IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	if (!(ValidateSingleResponse(header) && ValidateInternalIndications(header)))
@@ -67,7 +70,7 @@ IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const opendnp3
 	}
 
 	if (objects.IsEmpty())
-	{		
+	{
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
@@ -87,7 +90,7 @@ IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const IC
 	else
 	{
 		return IINBit::PARAM_ERROR;
-	}	
+	}
 }
 
 IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values)
@@ -119,7 +122,7 @@ IMasterTask::TaskState RestartOperationTask::OnTaskComplete(TaskCompletion resul
 	{
 		this->m_callback(RestartOperationResult(result, m_duration));
 	}
-	
+
 	return TaskState::Infinite();
 }
 

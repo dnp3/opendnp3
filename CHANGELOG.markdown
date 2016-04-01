@@ -1,3 +1,8 @@
+### 2.1.0-RC6 (pending) ###
+* :wrench: The C# LinkConfig class now uses Timespan for timeouts for consistency with other API elements. This also solved
+an issue where the LinkTimeout could not be effectively disabled since MaxInt wasn't big enough to ensure it never ran.
+* :wrench: Moved experimental SA components to the "secauth" branch.
+
 ### 2.1.0-RC5 ###
 * :beetle: Fixed a bug in the master multi-drop functionality where removing an active master, caused remaining session to freeze.
 * :beetle: Fixed a bug in ClearRestartTask where the completion callback was invoked with the wrong task type.

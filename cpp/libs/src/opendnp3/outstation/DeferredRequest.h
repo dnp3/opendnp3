@@ -36,7 +36,7 @@ class DeferredRequest : private openpal::Uncopyable
 {
 
 public:
-	
+
 	explicit DeferredRequest(uint32_t maxAPDUSize);
 
 	void Reset();

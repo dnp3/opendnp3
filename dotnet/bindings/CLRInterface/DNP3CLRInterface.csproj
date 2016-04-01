@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="ApplicationIIN.cs" />
     <Compile Include="BaseMeasurementTypes.cs" />
-    <Compile Include="BeginUpdateKeyChangeResult.cs" />
     <Compile Include="ChangeSet.cs" />
     <Compile Include="ChannelRetry.cs" />
     <Compile Include="ChannelStatistics.cs">
@@ -72,7 +71,6 @@
     <Compile Include="config\EventBufferConfig.cs" />
     <Compile Include="DefaultListenCallbacks.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FinishUpdateKeyChangeArgs.cs" />
     <Compile Include="gen\AnalogQuality.cs" />
     <Compile Include="gen\AssignClassType.cs" />
     <Compile Include="gen\BinaryOutputStatusQuality.cs" />
@@ -145,9 +143,7 @@
     <Compile Include="IMasterApplication.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IMasterApplicationSA.cs" />
     <Compile Include="IMasterOperations.cs" />
-    <Compile Include="IMasterSA.cs" />
     <Compile Include="IMasterSession.cs" />
     <Compile Include="IOutstationApplication.cs">
       <SubType>Code</SubType>
@@ -188,11 +184,6 @@
     </Compile>
     <Compile Include="TaskInfo.cs" />
     <Compile Include="TLSConfig.cs" />
-    <Compile Include="UpdateKey.cs" />
-    <Compile Include="User.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UserStatusChange.cs" />
     <Compile Include="X509Info.cs" />
   </ItemGroup>
   <ItemGroup />

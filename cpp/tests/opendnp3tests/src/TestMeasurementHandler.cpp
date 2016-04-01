@@ -60,7 +60,7 @@ TEST_CASE(SUITE("parses g121v1 correctly"))
 		auto& stat = soe.securityStatSOE[2];
 
 		REQUIRE(stat.info.tsmode == TimestampMode::INVALID);
-		REQUIRE(stat.info.gv == GroupVariation::Group121Var1);		
+		REQUIRE(stat.info.gv == GroupVariation::Group121Var1);
 		REQUIRE_FALSE(stat.info.isEventVariation);
 		REQUIRE(stat.meas.value.count == 8);
 		REQUIRE(stat.meas.value.assocId == 7);

@@ -29,29 +29,29 @@
 
 namespace asiopal
 {
-	class SocketHelpers : private openpal::StaticOnly
-	{
+class SocketHelpers : private openpal::StaticOnly
+{
 
-	public:
-		/**
-		* Bind a socket object to a local endpoint given an address. If the address is empty, 0.0.0.0 is used
-		*/
-		template <class SocketType>
-		static void BindToLocalAddress(const std::string& address, asio::ip::tcp::endpoint& endpoint, SocketType& socket, std::error_code& ec)
+public:
+	/**
+	* Bind a socket object to a local endpoint given an address. If the address is empty, 0.0.0.0 is used
+	*/
+	template <class SocketType>
+	static void BindToLocalAddress(const std::string& address, asio::ip::tcp::endpoint& endpoint, SocketType& socket, std::error_code& ec)
+	{
+		auto string = address.empty() ? "0.0.0.0" : address;
+		auto addr = asio::ip::address::from_string(string, ec);
+		if (!ec)
 		{
-			auto string = address.empty() ? "0.0.0.0" : address;
-			auto addr = asio::ip::address::from_string(string, ec);
+			endpoint.address(addr);
+			socket.open(asio::ip::tcp::v4(), ec);
 			if (!ec)
 			{
-				endpoint.address(addr);
-				socket.open(asio::ip::tcp::v4(), ec);
-				if (!ec)
-				{
-					socket.bind(endpoint, ec);
-				}
+				socket.bind(endpoint, ec);
 			}
 		}
-	};
+	}
+};
 
 }
 

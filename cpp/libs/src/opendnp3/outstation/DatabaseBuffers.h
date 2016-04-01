@@ -25,7 +25,6 @@
 
 #include "opendnp3/gen/IndexMode.h"
 
-
 #include "opendnp3/outstation/IndexSearch.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/outstation/StaticBuffers.h"

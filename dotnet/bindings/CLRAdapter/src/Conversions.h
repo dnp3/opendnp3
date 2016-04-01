@@ -23,7 +23,6 @@
 #include <opendnp3/app/SecurityStat.h>
 #include <opendnp3/app/parsing/ICollection.h>
 #include <opendnp3/app/GroupVariationID.h>
-#include <opendnp3/app/User.h>
 
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/ICommandTaskResult.h>
@@ -54,7 +53,7 @@ namespace Automatak
 			{
 			public:
 
-				static openpal::TimeDuration ConvertMilliseconds(System::UInt64 ms);
+				static openpal::TimeDuration ConvertMilliseconds(System::Int64 ms);
 
 				static openpal::TimeDuration ConvertTimespan(System::TimeSpan ts);
 
@@ -64,7 +63,7 @@ namespace Automatak
 
 				static opendnp3::ClassField ConvertClassField(ClassField classField);
 
-				static asiopal::TLSConfig Convert(TLSConfig^ config);
+				static asiopal::TLSConfig Convert(Automatak::DNP3::Interface::TLSConfig^ config);
 
 				// Convert a .NET string to a C++ string
 				static std::string ConvertString(System::String^ s);
@@ -156,9 +155,6 @@ namespace Automatak
 
 				static openpal::Buffer Convert(array<System::Byte>^ bytes);
 				static array<System::Byte>^ Convert(const openpal::RSlice& bytes);				
-
-
-				static User^ Convert(const opendnp3::User& user);
 
 
 				template <class Target, class Source>

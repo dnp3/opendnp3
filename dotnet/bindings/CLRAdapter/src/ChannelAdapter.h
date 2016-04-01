@@ -20,7 +20,7 @@ namespace Automatak
 			{
 			public:
 
-				ChannelAdapter(asiodnp3::IChannel* pChannel_, openpal::ICryptoProvider* pCrypto_) : pChannel(pChannel_), pCrypto(pCrypto_)
+				ChannelAdapter(asiodnp3::IChannel* pChannel_) : pChannel(pChannel_)
 				{}
 
 				virtual LogFilter GetLogFilters() sealed;
@@ -33,16 +33,13 @@ namespace Automatak
 
 				virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplication^ application, MasterStackConfig^ config) sealed;
 
-				virtual IMasterSA^ AddMasterSA(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplicationSA^ application, MasterStackConfig^ config) sealed;
-
 				virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config) sealed;
 
 				virtual void Shutdown() sealed;
 
 			private:
 
-				asiodnp3::IChannel* pChannel;
-				openpal::ICryptoProvider* pCrypto;
+				asiodnp3::IChannel* pChannel;				
 
 				static void ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate);
 

@@ -82,10 +82,6 @@ public:
 	{
 		this->UpdateAny(evt);
 	}
-	virtual void Update(const Event<SecurityStat>& evt) override final
-	{
-		this->UpdateAny(evt);
-	}
 
 	// ------- IEventSelector ------
 

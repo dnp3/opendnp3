@@ -38,13 +38,13 @@ public:
 	virtual char const* Name() const override final
 	{
 		return m_name.c_str();
-	}	
+	}
 
 private:
 
 	std::string m_name;
-	
-	IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;	
+
+	IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final
 	{

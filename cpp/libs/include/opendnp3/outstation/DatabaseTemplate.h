@@ -92,8 +92,7 @@ struct DatabaseTemplate
 		numFrozenCounter(numFrozenCounter_),
 		numBinaryOutputStatus(numBinaryOutputStatus_),
 		numAnalogOutputStatus(numAnalogOutputStatus_),
-		numTimeAndInterval(numTimeAndInterval_),
-		numSecurityStats(0)
+		numTimeAndInterval(numTimeAndInterval_)
 	{}
 
 	uint16_t numBinary;
@@ -104,7 +103,6 @@ struct DatabaseTemplate
 	uint16_t numBinaryOutputStatus;
 	uint16_t numAnalogOutputStatus;
 	uint16_t numTimeAndInterval;
-	uint16_t numSecurityStats;
 
 };
 

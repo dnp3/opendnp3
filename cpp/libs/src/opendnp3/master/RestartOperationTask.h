@@ -40,7 +40,7 @@ public:
 	virtual char const* Name() const override;
 
 	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override;
-		
+
 private:
 
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
@@ -48,11 +48,11 @@ private:
 
 	static FunctionCode ToFunctionCode(RestartType op);
 
-	RestartOperationCallbackT m_callback;	
+	RestartOperationCallbackT m_callback;
 	openpal::TimeDuration m_duration;
-	
-		
-	virtual IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;	
+
+
+	virtual IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 };

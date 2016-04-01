@@ -32,31 +32,31 @@
 
 namespace opendnp3
 {
-	class DecoderImpl;
+class DecoderImpl;
 
-	// stand-alone DNP3 decoder
-	class DecoderImpl final : private IFrameSink
-	{
-	public:
+// stand-alone DNP3 decoder
+class DecoderImpl final : private IFrameSink
+{
+public:
 
-		DecoderImpl(IDecoderCallbacks& callbacks, openpal::Logger logger);		
+	DecoderImpl(IDecoderCallbacks& callbacks, openpal::Logger logger);
 
-		void DecodeLPDU(const openpal::RSlice& data);
-		void DecodeTPDU(const openpal::RSlice& data);
-		void DecodeAPDU(const openpal::RSlice& data);
+	void DecodeLPDU(const openpal::RSlice& data);
+	void DecodeTPDU(const openpal::RSlice& data);
+	void DecodeAPDU(const openpal::RSlice& data);
 
-	private:
-				
-		static bool IsResponse(const openpal::RSlice& data);
+private:
 
-		/// --- Implement IFrameSink ---
-		virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
-		
-		IDecoderCallbacks* callbacks;
-		openpal::Logger logger;	
-		LinkLayerParser link;
-		TransportRx transportRx;
-	};
+	static bool IsResponse(const openpal::RSlice& data);
+
+	/// --- Implement IFrameSink ---
+	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
+
+	IDecoderCallbacks* callbacks;
+	openpal::Logger logger;
+	LinkLayerParser link;
+	TransportRx transportRx;
+};
 
 
 }

@@ -84,11 +84,11 @@ int main(int argc, char* argv[])
 		ChannelRetry::Default(),
 		"127.0.0.1",
 		"0.0.0.0",
-		20001, 
+		20001,
 		TLSConfig(
 			caCertificate,
 			certificateChain,
-			privateKey, 
+			privateKey,
 			2
 		),
 		ec

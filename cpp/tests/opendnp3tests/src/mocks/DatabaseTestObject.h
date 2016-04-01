@@ -29,48 +29,43 @@
 namespace opendnp3
 {
 
-class MockEventBuffer : public IEventReceiver
+class MockEventBuffer final : public IEventReceiver
 {
 public:
 
-	void Update(const Event<Binary>& evt) override final
+	void Update(const Event<Binary>& evt) override
 	{
 		binaryEvents.push_back(evt);
 	}
 
-	void Update(const Event<DoubleBitBinary>& evt) override final
+	void Update(const Event<DoubleBitBinary>& evt) override
 	{
 		doubleBinaryEvents.push_back(evt);
 	}
 
-	void Update(const Event<Analog>& evt) override final
+	void Update(const Event<Analog>& evt) override
 	{
 		analogEvents.push_back(evt);
 	}
 
-	void Update(const Event<Counter>& evt) override final
+	void Update(const Event<Counter>& evt) override
 	{
 		counterEvents.push_back(evt);
 	}
 
-	void Update(const Event<FrozenCounter>& evt) override final
+	void Update(const Event<FrozenCounter>& evt) override
 	{
 		frozenCounterEvents.push_back(evt);
 	}
 
-	void Update(const Event<BinaryOutputStatus>& evt) override final
+	void Update(const Event<BinaryOutputStatus>& evt) override
 	{
 		binaryOutputStatusEvents.push_back(evt);
 	}
 
-	void Update(const Event<AnalogOutputStatus>& evt) override final
+	void Update(const Event<AnalogOutputStatus>& evt) override
 	{
 		analogOutputStatusEvents.push_back(evt);
-	}
-
-	void Update(const Event<SecurityStat>& evt) override final
-	{
-		securityStatEvents.push_back(evt);
 	}
 
 	std::deque<Event<Binary>> binaryEvents;

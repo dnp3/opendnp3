@@ -22,7 +22,6 @@
 #define ASIODNP3_DNP3CHANNEL_H
 
 #include <openpal/logging/LogRoot.h>
-#include <openpal/crypto/ICryptoProvider.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
@@ -57,10 +56,9 @@ class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
 public:
 
 	DNP3Channel(
-		std::unique_ptr<openpal::LogRoot> root,	    
+		std::unique_ptr<openpal::LogRoot> root,
 		const opendnp3::ChannelRetry& retry,
-		std::unique_ptr<asiopal::PhysicalLayerASIO> phys,
-	    openpal::ICryptoProvider* pCrypto
+		std::unique_ptr<asiopal::PhysicalLayerASIO> phys
 	);
 
 	// ----------------------- Implement IChannel -----------------------
@@ -75,10 +73,10 @@ public:
 
 	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) override final;
 
-	virtual IMaster* AddMaster(	char const* id,
-	                            opendnp3::ISOEHandler& SOEHandler,
-	                            opendnp3::IMasterApplication& application,
-	                            const opendnp3::MasterStackConfig& config) override final;
+	virtual IMaster* AddMaster(char const* id,
+	                           opendnp3::ISOEHandler& SOEHandler,
+	                           opendnp3::IMasterApplication& application,
+	                           const opendnp3::MasterStackConfig& config) override final;
 
 
 
@@ -86,19 +84,6 @@ public:
 	                                   opendnp3::ICommandHandler& commandHandler,
 	                                   opendnp3::IOutstationApplication& application,
 	                                   const opendnp3::OutstationStackConfig& config) override final;
-
-#ifdef OPENDNP3_USE_SECAUTH
-
-	virtual IMasterSA* AddMasterSA(	char const* id,
-	                                opendnp3::ISOEHandler& SOEHandler,
-	                                secauth::IMasterApplicationSA& application,
-	                                const secauth::MasterAuthStackConfig& config) override final;
-
-	virtual IOutstationSA* AddOutstationSA(	char const* id,
-	                                        opendnp3::ICommandHandler& commandHandler,
-	                                        secauth::IOutstationApplicationSA& application,
-	                                        const secauth::OutstationAuthStackConfig& config) override final;
-#endif
 
 	// -----------------------------------------------------------------------
 
@@ -116,13 +101,13 @@ private:
 
 	virtual void OnStateChange(opendnp3::ChannelState state) override final;
 
-	void CheckForFinalShutdown();	
+	void CheckForFinalShutdown();
 
 	openpal::Action0 shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;
+
 	std::unique_ptr<asiopal::PhysicalLayerASIO> phys;
-	openpal::ICryptoProvider* pCrypto;
-	std::unique_ptr<openpal::LogRoot> root;	
+	std::unique_ptr<openpal::LogRoot> root;
 
 	asiopal::Synchronized<bool>* pShutdownHandler;
 
@@ -137,4 +122,3 @@ private:
 }
 
 #endif
-

@@ -26,7 +26,7 @@ namespace opendnp3
 
 /// Error codes returned in log messages
 enum ErrorCodes
-{    
+{
     // Transport Layer
     TLERR_NO_HEADER,							// TPDU with no header (empty)
     TLERR_BUFFER_FULL,							// Transport reassembly buffer full before complete fragment received
