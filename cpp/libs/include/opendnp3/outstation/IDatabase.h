@@ -185,9 +185,9 @@ public:
 	virtual bool Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index) = 0;
 
 
-	virtual IResponseLoader& GetResponseLoader() noexcept = 0;
-	virtual IStaticSelector& GetStaticSelector() noexcept = 0;
-	virtual IClassAssigner& GetClassAssigner() noexcept = 0;
+	virtual IResponseLoader& GetResponseLoader() = 0;
+	virtual IStaticSelector& GetStaticSelector() = 0;
+	virtual IClassAssigner& GetClassAssigner() = 0;
 };
 
 }
