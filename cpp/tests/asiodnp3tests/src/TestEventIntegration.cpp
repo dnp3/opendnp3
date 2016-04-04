@@ -34,6 +34,7 @@
 #include <condition_variable>
 #include <stdexcept>
 #include <iostream>
+#include <random>
 
 using namespace std;
 using namespace opendnp3;
@@ -94,17 +95,20 @@ public:
 
 		const auto RX_NUM = this->ProcessRxValues();
 		//std::cout << "rx: " << RX_NUM << std::endl;
+		
+		if (m_num_remaining == 0) {
+			return true;
+		}
 
-		const auto TX_NUM = MAX_OUTSTANDING - m_num_outstanding;
-		this->LoadNewValues(outstation, TX_NUM);
-		//std::cout << "tx: " << TX_NUM << std::endl;
+		const auto TX_NUM = this->LoadNewValues(outstation);
+		//std::cout << "tx: " << TX_NUM << std::endl;		
 
 		if (m_condition.wait_for(lock, timeout) == cv_status::timeout)
 		{
 			throw std::logic_error("timed out waiting for update");
 		}
 
-		return m_num_remaining == 0;
+		return false;
 	}
 
 private:
@@ -125,27 +129,51 @@ private:
 			}
 
 			++m_rx_sequence;
-		}
+		}		
 
 		const auto NUM = m_rx_values.size();
+
+		//std::cout << "rx: " << m_rx_values.size() << " out: " << m_num_outstanding << " remain: " << m_num_remaining << std::endl;
+
+		if (NUM > m_num_outstanding) {
+			throw std::logic_error("rx NUM > m_num_outstanding");
+		}
+
+		if (NUM > m_num_remaining) {
+			throw std::logic_error("rx NUM > m_num_remaining");
+		}		
+
 		m_num_remaining -= NUM;
 		m_num_outstanding -= NUM;
 		m_rx_values.clear();
 		return NUM;
 	}
 
-	void LoadNewValues(IOutstation* outstation, uint32_t num)
+	uint32_t LoadNewValues(IOutstation* outstation)
 	{
+		const auto TX_SAFELY = MAX_OUTSTANDING - m_num_outstanding;
+		const auto TX_MAX = TX_SAFELY > m_num_remaining ? m_num_remaining : TX_SAFELY;
+
+		if (TX_MAX == 0) { 
+			return 0;
+		}
+
+		// send some random fraction of what's allowed to be sent
+		// this makes the test less deterministic and more realistic
+		std::uniform_int_distribution<uint32_t> dis(1, TX_MAX);
+		const auto TX_NUM = dis(m_gen);
+
 		MeasUpdate tx(outstation);
 
-		for (uint32_t i = 0; i < num; ++i)
+		for (uint32_t i = 0; i < TX_NUM; ++i)
 		{
 			Analog a(m_tx_sequence);
 			tx.Update(a, m_tx_sequence % NUM_VALUES);
 			++m_tx_sequence;
 		}
 
-		m_num_outstanding += num;
+		m_num_outstanding += TX_NUM;
+		return TX_NUM;
 	}
 
 	std::vector<Indexed<Analog>> m_rx_values;
@@ -162,6 +190,10 @@ private:
 
 	std::mutex m_mutex;
 	std::condition_variable m_condition;
+
+
+	std::random_device m_random;
+	std::mt19937 m_gen;	
 };
 
 IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numValues, uint16_t eventBufferSize)
@@ -195,10 +227,11 @@ TEST_CASE(SUITE("TestEventIntegration"))
 {
 	const auto LEVELS = levels::NORMAL | flags::APP_HEADER_RX | flags::APP_HEADER_TX | flags::APP_OBJECT_RX | flags::APP_OBJECT_TX;
 
-	const uint32_t NUM_TO_SEND = 100000;		// send 100,000 values
-	const uint32_t MAX_OUTSTANDING = 25;		// important to keep this below the event buffer size, otherwise we can overflow it and lose events
-	const uint16_t NUM_VALUES = 100;			// size of the static database. we'll rotate through indices
-	const uint16_t EVENT_BUFFER_SIZE = 100;		// size of the events buffers for all types
+	const uint32_t NUM_TO_SEND = 100000;						// send 100,000 values
+	const uint16_t EVENT_BUFFER_SIZE = 100;						// size of the events buffers for all types
+	const uint32_t MAX_OUTSTANDING = EVENT_BUFFER_SIZE/4;		// important to keep this below the event buffer size, otherwise we can overflow it and lose events
+	const uint16_t NUM_VALUES = 100;							// size of the static database. we'll rotate through indices
+	
 
 	EventReceiver eventrx(NUM_TO_SEND, MAX_OUTSTANDING, NUM_VALUES);
 
