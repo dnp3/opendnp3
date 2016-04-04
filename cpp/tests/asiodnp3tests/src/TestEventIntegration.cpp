@@ -192,6 +192,6 @@ TEST_CASE(SUITE("TestEventIntegration"))
 	auto outstation = ConfigureOutstation(manager, LEVELS, NUM_VALUES, EVENT_BUFFER_SIZE);
 	auto master = ConfigureMaster(manager, eventrx, LEVELS);
 
-	while (!eventrx.LoadAndWait(outstation, std::chrono::seconds(60)));
+	while (!eventrx.LoadAndWait(outstation, std::chrono::seconds(3)));
 }
 
