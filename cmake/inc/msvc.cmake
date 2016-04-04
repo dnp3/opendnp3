@@ -1,6 +1,5 @@
 if (WIN32)
-
-	set(VLINDER_TARGET_PLATFORM_NAME win32)
+	
 	if (USING_ASIO)
 		add_definitions(-D_WIN32_WINNT=0x0501)
 		add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)  

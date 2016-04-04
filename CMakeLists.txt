@@ -5,7 +5,6 @@ set(OPENDNP3_MINOR_VERSION 1)
 set(OPENDNP3_MICRO_VERSION 0)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
 
-set(USING_ASIO ON)
 include(${CMAKE_SOURCE_DIR}/cmake/settings.cmake)
 
 # various optional libraries and projects
