@@ -144,3 +144,6 @@ coverage.info
 cpp/demos/cover.info
 cpp/demos/cover_html/
 
+# out-of-directory builds
+_build/
+.build/
