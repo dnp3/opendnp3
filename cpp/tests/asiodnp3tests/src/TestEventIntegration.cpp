@@ -32,6 +32,8 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
+#include <stdexcept>
+#include <iostream>
 
 using namespace std;
 using namespace opendnp3;
@@ -44,8 +46,8 @@ class EventReceiver final : public ISOEHandler {
 public:
 
 	EventReceiver(uint32_t numToSend, uint32_t maxOutstanding, std::uint16_t numValues) :
-		m_rx_sequence(0),
 		m_tx_sequence(0),
+		m_rx_sequence(0),
 		m_num_remaining(numToSend),
 		m_num_outstanding(0),
 		MAX_OUTSTANDING(maxOutstanding),
@@ -79,17 +81,19 @@ public:
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override  {}
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override {}
 
-	bool LoadAndWait(IOutstation* outstation, std::chrono::monotonic_clock::duration timeout) {
+	bool LoadAndWait(IOutstation* outstation, std::chrono::steady_clock::duration timeout) {
 		
 		std::unique_lock<std::mutex> lock(m_mutex);		
 		
 		const auto RX_NUM = this->ProcessRxValues();
+		std::cout << "rx: " << RX_NUM << std::endl;
 		
 		const auto TX_NUM = MAX_OUTSTANDING - m_num_outstanding;
-		this->LoadNewValues(outstation, TX_NUM);		
+		this->LoadNewValues(outstation, TX_NUM);
+		std::cout << "tx: " << TX_NUM << std::endl;		
 			
 		if (m_condition.wait_for(lock, timeout) == cv_status::timeout) {
-			throw std::exception("timed out waiting for update");
+			throw std::logic_error("timed out waiting for update");
 		}
 
 		return m_num_remaining == 0;
@@ -102,11 +106,11 @@ private:
 		for (auto& value : m_rx_values) {
 			
 			if (value.value.value != m_rx_sequence) {
-				throw std::exception("Unexpected rx value");
+				throw std::logic_error("Unexpected rx value");
 			}
 
-			if (value.index != (m_rx_sequence%100)) {
-				throw std::exception("Unexpected rx value");
+			if (value.index != (m_rx_sequence % NUM_VALUES)) {
+				throw std::logic_error("Unexpected rx value");
 			}
 
 			++m_rx_sequence;
@@ -125,7 +129,7 @@ private:
 
 		for (uint32_t i = 0; i < num; ++i) {
 			Analog a(m_tx_sequence);
-			tx.Update(a, m_tx_sequence % 100);
+			tx.Update(a, m_tx_sequence % NUM_VALUES);
 			++m_tx_sequence;			
 		}		
 
@@ -180,7 +184,7 @@ TEST_CASE(SUITE("TestEventIntegration"))
 	const auto LEVELS = levels::NORMAL | flags::APP_HEADER_RX | flags::APP_HEADER_TX | flags::APP_OBJECT_RX | flags::APP_OBJECT_TX;
 
 	const uint32_t NUM_TO_SEND = 100000;		// send 100,000 values
-	const uint32_t MAX_OUTSTANDING = 40;		// important to keep this below the event buffer size, otherwise we can overflow it and lose events
+	const uint32_t MAX_OUTSTANDING = 25;		// important to keep this below the event buffer size, otherwise we can overflow it and lose events
 	const uint16_t NUM_VALUES = 100;			// size of the static database. we'll rotate through indices
 	const uint16_t EVENT_BUFFER_SIZE = 100;		// size of the events buffers for all types
 
