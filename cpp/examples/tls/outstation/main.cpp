@@ -21,7 +21,7 @@
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/PrintingSOEHandler.h>
 #include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/MeasUpdate.h>
+#include <asiodnp3/MeasurementUpdate.h>
 
 #include <asiopal/UTCTimeSource.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
 
-		MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
+		MeasurementUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
 
 		for (char & c : input)
 		{
@@ -172,6 +172,8 @@ int main(int argc, char* argv[])
 				break;
 			}
 		}
+
+		tx.commit();
 
 	}
 

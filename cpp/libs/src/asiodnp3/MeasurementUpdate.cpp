@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "asiodnp3/MeasUpdate.h"
+#include "asiodnp3/MeasurementUpdate.h"
 
 #include "asiodnp3/ChangeSet.h"
 
@@ -33,8 +33,12 @@ namespace asiodnp3
 {
 
 template <class T>
-void MeasUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode)
+void MeasurementUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode)
 {
+	if (!m_changes)
+	{
+		m_changes = new ChangeSet;
+	}
 	if (this->m_use_timestamp)
 	{
 		T copy(meas);
@@ -57,24 +61,73 @@ void MeasUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mo
 	}
 }
 
-MeasUpdate::MeasUpdate(IOutstation* outstation, openpal::UTCTimestamp timestamp) :
+MeasurementUpdate::MeasurementUpdate(IOutstation* outstation, openpal::UTCTimestamp timestamp) :
 	m_outstation(outstation),
 	m_timestamp(timestamp),
 	m_use_timestamp(true),
-	m_changes(new ChangeSet())
+	m_changes(new ChangeSet)
 {
 
 }
 
-MeasUpdate::MeasUpdate(IOutstation* outstation) :
+MeasurementUpdate::MeasurementUpdate(IOutstation* outstation) :
 	m_outstation(outstation),
 	m_use_timestamp(false),
-	m_changes(new ChangeSet())
+	m_changes(new ChangeSet)
 {
 
 }
 
-MeasUpdate::~MeasUpdate()
+MeasurementUpdate::~MeasurementUpdate()
+{
+	delete m_changes;
+}
+
+void MeasurementUpdate::Update(const Binary& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasurementUpdate::Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasurementUpdate::Update(const Analog& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasurementUpdate::Update(const Counter& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasurementUpdate::Update(const FrozenCounter& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasurementUpdate::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasurementUpdate::Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode)
+{
+	this->UpdateAny(meas, index, mode);
+}
+
+void MeasurementUpdate::Update(const TimeAndInterval& meas, uint16_t index)
+{
+	auto update = [ = ](IDatabase & db)
+	{
+		db.Update(meas, index);
+	};
+	m_changes->Add(update);
+}
+
+void MeasurementUpdate::commit()
 {
 	if (m_changes->IsEmpty())
 	{
@@ -95,49 +148,6 @@ MeasUpdate::~MeasUpdate()
 
 		m_outstation->GetExecutor().PostLambda(update);
 	}
-}
-
-void MeasUpdate::Update(const Binary& meas, uint16_t index, EventMode mode)
-{
-	this->UpdateAny(meas, index, mode);
-}
-
-void MeasUpdate::Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode)
-{
-	this->UpdateAny(meas, index, mode);
-}
-
-void MeasUpdate::Update(const Analog& meas, uint16_t index, EventMode mode)
-{
-	this->UpdateAny(meas, index, mode);
-}
-
-void MeasUpdate::Update(const Counter& meas, uint16_t index, EventMode mode)
-{
-	this->UpdateAny(meas, index, mode);
-}
-
-void MeasUpdate::Update(const FrozenCounter& meas, uint16_t index, EventMode mode)
-{
-	this->UpdateAny(meas, index, mode);
-}
-
-void MeasUpdate::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
-{
-	this->UpdateAny(meas, index, mode);
-}
-
-void MeasUpdate::Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode)
-{
-	this->UpdateAny(meas, index, mode);
-}
-
-void MeasUpdate::Update(const TimeAndInterval& meas, uint16_t index)
-{
-	auto update = [ = ](IDatabase & db)
-	{
-		db.Update(meas, index);
-	};
-	m_changes->Add(update);
+	m_changes = nullptr;
 }
 }

@@ -27,7 +27,7 @@
 #include <asiodnp3/DefaultMasterApplication.h>
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/MeasUpdate.h>
+#include <asiodnp3/MeasurementUpdate.h>
 
 #include <thread>
 #include <mutex>
@@ -163,7 +163,7 @@ private:
 		std::uniform_int_distribution<uint32_t> dis(1, TX_MAX);
 		const auto TX_NUM = dis(m_gen);
 
-		MeasUpdate tx(outstation);
+		MeasurementUpdate tx(outstation);
 
 		for (uint32_t i = 0; i < TX_NUM; ++i)
 		{
@@ -171,6 +171,8 @@ private:
 			tx.Update(a, m_tx_sequence % NUM_VALUES);
 			++m_tx_sequence;
 		}
+
+		tx.commit();
 
 		m_num_outstanding += TX_NUM;
 		return TX_NUM;

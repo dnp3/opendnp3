@@ -38,7 +38,8 @@ namespace asiodnp3
 */
 class IOutstation : public IStack
 {
-	friend class MeasUpdate;
+	//TODO rlc- I really want to get rid of this :)
+	friend class MeasurementUpdate;
 
 public:
 

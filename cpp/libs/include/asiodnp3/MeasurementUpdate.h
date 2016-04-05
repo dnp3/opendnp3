@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_MEASUPDATE_H
-#define ASIODNP3_MEASUPDATE_H
+#ifndef ASIODNP3_MEASUREMENTUPDATE_H
+#define ASIODNP3_MEASUREMENTUPDATE_H
 
 #include "IOutstation.h"
 
@@ -34,21 +34,21 @@ class ChangeSet;
 /**
  *	A helper class that allows user code to update the measurement values in an outstation
  */
-class MeasUpdate : private openpal::Uncopyable
+class MeasurementUpdate : private openpal::Uncopyable
 {
 public:
 
 	/**
 	*	Construct a MeasUpdate with a pointer to an outstation session. Apply the timestamp to all values used in Update(..) methods.
 	*/
-	MeasUpdate(IOutstation* outstation, openpal::UTCTimestamp timestamp);
+	MeasurementUpdate(IOutstation* outstation, openpal::UTCTimestamp timestamp);
 
 	/**
 	*	Construct a MeasUpdate with a pointer to an outstation session.
 	*/
-	MeasUpdate(IOutstation* outstation);
+	MeasurementUpdate(IOutstation* outstation);
 
-	~MeasUpdate();
+	~MeasurementUpdate();
 
 	void Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
@@ -58,6 +58,8 @@ public:
 	void Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
+
+	void commit();
 
 private:
 
