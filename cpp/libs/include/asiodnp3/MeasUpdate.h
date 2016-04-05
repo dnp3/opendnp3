@@ -59,22 +59,10 @@ public:
 	void Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
 
-	void Modify(const openpal::Function1<const opendnp3::Binary&, opendnp3::Binary>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Modify(const openpal::Function1<const opendnp3::DoubleBitBinary&, opendnp3::DoubleBitBinary>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Modify(const openpal::Function1<const opendnp3::Analog&, opendnp3::Analog>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Modify(const openpal::Function1<const opendnp3::Counter&, opendnp3::Counter>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Modify(const openpal::Function1<const opendnp3::FrozenCounter&, opendnp3::FrozenCounter>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Modify(const openpal::Function1<const opendnp3::BinaryOutputStatus&, opendnp3::BinaryOutputStatus>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Modify(const openpal::Function1<const opendnp3::AnalogOutputStatus&, opendnp3::AnalogOutputStatus>& modify, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Modify(const openpal::Function1<const opendnp3::TimeAndInterval&, opendnp3::TimeAndInterval>& modify, uint16_t index);
-
 private:
 
 	template <class T>
 	void UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode);
-
-	template <class T>
-	void ModifyAny(const openpal::Function1<const T&, T>& modify, uint16_t index, opendnp3::EventMode mode);
 
 	IOutstation* m_outstation;
 	openpal::UTCTimestamp m_timestamp;

@@ -51,15 +51,6 @@ public:
 	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
 
-	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index) override final;
-
 	// ------- Misc ---------------
 
 	IResponseLoader& GetResponseLoader() override final { return buffers; }
@@ -87,9 +78,6 @@ private:
 
 	template <class T>
 	bool UpdateEvent(const T& value, uint16_t index, EventMode mode);
-
-	template <class T>
-	bool ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, EventMode mode);
 
 	template <class T>
 	bool UpdateAny(Cell<T>& cell, const T& value, EventMode mode);
@@ -122,23 +110,6 @@ bool Database::UpdateEvent(const T& value, uint16_t index, EventMode mode)
 	if (view.Contains(rawIndex))
 	{
 		this->UpdateAny(view[rawIndex], value, mode);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-template <class T>
-bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, EventMode mode)
-{
-	auto rawIndex = GetRawIndex<T>(index);
-	auto view = buffers.buffers.GetArrayView<T>();
-
-	if (view.Contains(rawIndex))
-	{
-		this->UpdateAny(view[rawIndex], modify.Apply(view[rawIndex].value), mode);
 		return true;
 	}
 	else

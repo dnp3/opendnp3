@@ -90,58 +90,6 @@ bool Database::Update(const TimeAndInterval& value, uint16_t index)
 	}
 }
 
-bool Database::Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode)
-{
-	return this->ModifyEvent(modify, index, mode);
-}
-
-bool Database::Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, EventMode mode)
-{
-	return this->ModifyEvent(modify, index, mode);
-}
-
-bool Database::Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, EventMode mode)
-{
-	return this->ModifyEvent(modify, index, mode);
-}
-
-bool Database::Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, EventMode mode)
-{
-	return this->ModifyEvent(modify, index, mode);
-}
-
-bool Database::Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, EventMode mode)
-{
-	return this->ModifyEvent(modify, index, mode);
-}
-
-bool Database::Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, EventMode mode)
-{
-	return this->ModifyEvent(modify, index, mode);
-}
-
-bool Database::Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, EventMode mode)
-{
-	return this->ModifyEvent(modify, index, mode);
-}
-
-bool Database::Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index)
-{
-	auto rawIndex = GetRawIndex<TimeAndInterval>(index);
-
-	auto view = buffers.buffers.GetArrayView<TimeAndInterval>();
-
-	if (view.Contains(rawIndex))
-	{
-		view[rawIndex].value = modify.Apply(view[rawIndex].value);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
 bool Database::ConvertToEventClass(PointClass pc, EventClass& ec)
 {
 	switch (pc)

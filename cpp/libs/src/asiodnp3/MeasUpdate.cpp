@@ -57,16 +57,6 @@ void MeasUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mo
 	}
 }
 
-template <class T>
-void MeasUpdate::ModifyAny(const openpal::Function1<const T&, T>& modify, uint16_t index, opendnp3::EventMode mode)
-{
-	auto update = [ = ](opendnp3::IDatabase & db)
-	{
-		db.Modify(modify, index, mode);
-	};
-	m_changes->Add(update);
-}
-
 MeasUpdate::MeasUpdate(IOutstation* outstation, openpal::UTCTimestamp timestamp) :
 	m_outstation(outstation),
 	m_timestamp(timestamp),
@@ -147,50 +137,6 @@ void MeasUpdate::Update(const TimeAndInterval& meas, uint16_t index)
 	auto update = [ = ](IDatabase & db)
 	{
 		db.Update(meas, index);
-	};
-	m_changes->Add(update);
-}
-
-void MeasUpdate::Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode)
-{
-	this->ModifyAny(modify, index, mode);
-}
-
-void MeasUpdate::Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, EventMode mode)
-{
-	this->ModifyAny(modify, index, mode);
-}
-
-void MeasUpdate::Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, EventMode mode)
-{
-	this->ModifyAny(modify, index, mode);
-}
-
-void MeasUpdate::Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, EventMode mode)
-{
-	this->ModifyAny(modify, index, mode);
-}
-
-void MeasUpdate::Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, EventMode mode)
-{
-	this->ModifyAny(modify, index, mode);
-}
-
-void MeasUpdate::Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, EventMode mode)
-{
-	this->ModifyAny(modify, index, mode);
-}
-
-void MeasUpdate::Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, EventMode mode)
-{
-	this->ModifyAny(modify, index, mode);
-}
-
-void MeasUpdate::Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index)
-{
-	auto update = [ = ](IDatabase & db)
-	{
-		db.Modify(modify, index);
 	};
 	m_changes->Add(update);
 }
