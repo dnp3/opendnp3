@@ -51,6 +51,9 @@
 namespace opendnp3
 {
 
+struct no_value_change_tag {};
+extern no_value_change_tag no_value_change;
+
 /**
 	The Binary data type is for describing on-off (boolean) type values. Good examples of
 	binaries are alarms, mode settings, enabled/disabled flags etc. Think of it as a status
@@ -67,6 +70,10 @@ public:
 	Binary(uint8_t quality);
 
 	Binary(uint8_t quality, DNPTime time);
+
+	Binary(no_value_change_tag const &, uint8_t quality);
+
+	Binary(no_value_change_tag const &, uint8_t quality, DNPTime time);
 
 	Binary(bool value, uint8_t quality);
 
@@ -103,6 +110,10 @@ public:
 	DoubleBitBinary(uint8_t quality);
 
 	DoubleBitBinary(uint8_t quality, DNPTime time);
+
+	DoubleBitBinary(no_value_change_tag const &, uint8_t quality);
+
+	DoubleBitBinary(no_value_change_tag const &, uint8_t quality, DNPTime time);
 
 	DoubleBitBinary(DoubleBit value, uint8_t quality);
 
@@ -148,6 +159,10 @@ public:
 
 	BinaryOutputStatus(uint8_t quality, DNPTime time);
 
+	BinaryOutputStatus(no_value_change_tag const &, uint8_t quality);
+
+	BinaryOutputStatus(no_value_change_tag const &, uint8_t quality, DNPTime time);
+
 	BinaryOutputStatus(bool value, uint8_t quality);
 
 	BinaryOutputStatus(bool value, uint8_t quality, DNPTime time);
@@ -177,10 +192,14 @@ public:
 	Analog();
 
 	Analog(double value);
-
+	
 	Analog(double value, uint8_t quality);
 
 	Analog(double value, uint8_t quality, DNPTime time);
+
+	Analog(no_value_change_tag const &, uint8_t quality);
+
+	Analog(no_value_change_tag const &, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const Analog& newValue, double deadband) const;
 
@@ -206,10 +225,14 @@ public:
 	Counter();
 
 	Counter(uint32_t value);
-
+	
 	Counter(uint32_t value, uint8_t quality);
 
 	Counter(uint32_t value, uint8_t quality, DNPTime time);
+
+	Counter(no_value_change_tag const &, uint8_t quality);
+
+	Counter(no_value_change_tag const &, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const;
 
@@ -234,10 +257,14 @@ public:
 	FrozenCounter();
 
 	FrozenCounter(uint32_t value);
-
+	
 	FrozenCounter(uint32_t value, uint8_t quality);
 
 	FrozenCounter(uint32_t value, uint8_t quality, DNPTime time);
+
+	FrozenCounter(no_value_change_tag const &, uint8_t quality);
+
+	FrozenCounter(no_value_change_tag const &, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const;
 
@@ -263,10 +290,14 @@ public:
 	AnalogOutputStatus();
 
 	AnalogOutputStatus(double value);
-
+	
 	AnalogOutputStatus(double value, uint8_t quality);
 
 	AnalogOutputStatus(double value, uint8_t quality, DNPTime time);
+
+	AnalogOutputStatus(no_value_change_tag const &, uint8_t quality);
+
+	AnalogOutputStatus(no_value_change_tag const &, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const;
 

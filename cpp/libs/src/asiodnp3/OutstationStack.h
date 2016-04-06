@@ -43,7 +43,8 @@ public:
 	    opendnp3::ICommandHandler& commandHandler,
 	    opendnp3::IOutstationApplication& application,
 	    const opendnp3::OutstationStackConfig& config,
-	    IStackLifecycle& lifecycle);
+		opendnp3::IDatabase* database,
+		IStackLifecycle& lifecycle);
 
 
 private:

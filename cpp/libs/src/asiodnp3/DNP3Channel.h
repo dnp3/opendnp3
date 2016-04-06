@@ -88,7 +88,8 @@ public:
 	virtual IOutstation* AddOutstation(char const* id,
 	                                   opendnp3::ICommandHandler& commandHandler,
 	                                   opendnp3::IOutstationApplication& application,
-	                                   const opendnp3::OutstationStackConfig& config) override final;
+	                                   const opendnp3::OutstationStackConfig& config,
+									   opendnp3::IDatabase *database) override final;
 
 	// -----------------------------------------------------------------------
 

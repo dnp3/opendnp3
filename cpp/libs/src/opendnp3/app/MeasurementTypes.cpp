@@ -40,6 +40,12 @@ Binary::Binary(uint8_t quality) : TypedMeasurement(flags::GetBinaryValue(quality
 Binary::Binary(uint8_t quality, DNPTime time) : TypedMeasurement(flags::GetBinaryValue(quality), quality, time)
 {}
 
+Binary::Binary(no_value_change_tag const &, uint8_t quality) : TypedMeasurement(quality, time)
+{}
+
+Binary::Binary(no_value_change_tag const &, uint8_t quality, DNPTime time) : TypedMeasurement(quality, time)
+{}
+
 Binary::Binary(bool value, uint8_t quality) : TypedMeasurement(value, flags::GetBinaryQuality(quality, value))
 {}
 
@@ -73,6 +79,12 @@ DoubleBitBinary::DoubleBitBinary(uint8_t quality) : TypedMeasurement(GetValue(qu
 {}
 
 DoubleBitBinary::DoubleBitBinary(uint8_t quality, DNPTime time) : TypedMeasurement(GetValue(quality), quality, time)
+{}
+
+DoubleBitBinary::DoubleBitBinary(no_value_change_tag const &, uint8_t quality) : TypedMeasurement(quality)
+{}
+
+DoubleBitBinary::DoubleBitBinary(no_value_change_tag const &, uint8_t quality, DNPTime time) : TypedMeasurement(quality, time)
 {}
 
 DoubleBitBinary::DoubleBitBinary(DoubleBit value, uint8_t quality) : TypedMeasurement(value, GetQual(quality, value))
@@ -114,6 +126,12 @@ BinaryOutputStatus::BinaryOutputStatus(uint8_t quality) : TypedMeasurement(flags
 BinaryOutputStatus::BinaryOutputStatus(uint8_t quality, DNPTime time) : TypedMeasurement(flags::GetBinaryValue(quality), quality, time)
 {}
 
+BinaryOutputStatus::BinaryOutputStatus(no_value_change_tag const &, uint8_t quality) : TypedMeasurement(quality)
+{}
+
+BinaryOutputStatus::BinaryOutputStatus(no_value_change_tag const &, uint8_t quality, DNPTime time) : TypedMeasurement(quality, time)
+{}
+
 BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality) : TypedMeasurement(value, flags::GetBinaryQuality(quality, value))
 {}
 
@@ -139,6 +157,12 @@ Analog::Analog(double value, uint8_t quality) : TypedMeasurement(value, quality)
 Analog::Analog(double value, uint8_t quality, DNPTime time) : TypedMeasurement<double>(value, quality, time)
 {}
 
+Analog::Analog(no_value_change_tag const &, uint8_t quality) : TypedMeasurement(quality)
+{}
+
+Analog::Analog(no_value_change_tag const &, uint8_t quality, DNPTime time) : TypedMeasurement<double>(quality, time)
+{}
+
 bool Analog::IsEvent(const Analog& newValue, double deadband) const
 {
 	return measurements::IsEvent(newValue, *this, deadband);
@@ -157,6 +181,12 @@ Counter::Counter(uint32_t value, uint8_t quality) : TypedMeasurement<uint32_t>(v
 {}
 
 Counter::Counter(uint32_t value, uint8_t quality, DNPTime time) : TypedMeasurement<uint32_t>(value, quality, time)
+{}
+
+Counter::Counter(no_value_change_tag const &, uint8_t quality) : TypedMeasurement<uint32_t>(quality)
+{}
+
+Counter::Counter(no_value_change_tag const &, uint8_t quality, DNPTime time) : TypedMeasurement<uint32_t>(quality, time)
 {}
 
 bool Counter::IsEvent(const Counter& newValue, uint32_t aDeadband) const
@@ -182,6 +212,12 @@ FrozenCounter::FrozenCounter(uint32_t value, uint8_t quality) : TypedMeasurement
 FrozenCounter::FrozenCounter(uint32_t value, uint8_t quality, DNPTime time) : TypedMeasurement<uint32_t>(value, quality, time)
 {}
 
+FrozenCounter::FrozenCounter(no_value_change_tag const &, uint8_t quality) : TypedMeasurement<uint32_t>(quality)
+{}
+
+FrozenCounter::FrozenCounter(no_value_change_tag const &, uint8_t quality, DNPTime time) : TypedMeasurement<uint32_t>(quality, time)
+{}
+
 bool FrozenCounter::IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const
 {
 	if(quality != newValue.quality) return true;
@@ -205,6 +241,12 @@ AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality) : TypedMea
 {}
 
 AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality, DNPTime time) : TypedMeasurement<double>(value, quality, time)
+{}
+
+AnalogOutputStatus::AnalogOutputStatus(no_value_change_tag const &, uint8_t quality) : TypedMeasurement<double>(quality)
+{}
+
+AnalogOutputStatus::AnalogOutputStatus(no_value_change_tag const &, uint8_t quality, DNPTime time) : TypedMeasurement<double>(quality, time)
 {}
 
 bool AnalogOutputStatus::IsEvent(const AnalogOutputStatus& newValue, double deadband) const

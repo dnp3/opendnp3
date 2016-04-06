@@ -34,7 +34,8 @@ using namespace openpal;
 TEST_CASE(SUITE("SelectCROBNotSupported"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.cmdHandler.SetResponse(CommandStatus::NOT_SUPPORTED);
@@ -52,7 +53,8 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 TEST_CASE(SUITE("UnknownCodeIsEchoed"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	t.cmdHandler.SetResponse(CommandStatus::NOT_SUPPORTED);
@@ -68,7 +70,8 @@ TEST_CASE(SUITE("SelectCROBTooMany"))
 {
 	OutstationConfig config;
 	config.params.maxControlsPerRequest = 1;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 2, index = 3 & 4
@@ -80,7 +83,8 @@ TEST_CASE(SUITE("SelectCROBTooMany"))
 TEST_CASE(SUITE("SelectOperateCROB"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -97,7 +101,8 @@ TEST_CASE(SUITE("SelectOperateCROB"))
 TEST_CASE(SUITE("SelectRetryAndOperateCROB"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -120,7 +125,8 @@ TEST_CASE(SUITE("SelectOperateTimeout"))
 {
 	OutstationConfig config;
 	config.params.selectTimeout = TimeDuration::Seconds(5);
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -139,7 +145,8 @@ TEST_CASE(SUITE("SelectOperateTimeout"))
 TEST_CASE(SUITE("SelectOperateGapInSequenceNumber"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -156,7 +163,8 @@ TEST_CASE(SUITE("SelectOperateGapInSequenceNumber"))
 TEST_CASE(SUITE("SelectOperateSameSequenceNumber"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -173,7 +181,8 @@ TEST_CASE(SUITE("SelectOperateSameSequenceNumber"))
 TEST_CASE(SUITE("SelectOperateNonMatchingRequests"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -190,7 +199,8 @@ TEST_CASE(SUITE("SelectOperateNonMatchingRequests"))
 TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	REQUIRE(0 ==  t.cmdHandler.NumInvocations());
@@ -217,7 +227,8 @@ TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 TEST_CASE(SUITE("SelectGroup41Var1"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
@@ -228,7 +239,8 @@ TEST_CASE(SUITE("SelectGroup41Var1"))
 TEST_CASE(SUITE("SelectGroup41Var2"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 41 Var 2, count = 1, index = 3
@@ -239,7 +251,8 @@ TEST_CASE(SUITE("SelectGroup41Var2"))
 TEST_CASE(SUITE("SelectGroup41Var3"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 41 Var 3, count = 1, index = 1, value = 100.0
@@ -250,7 +263,8 @@ TEST_CASE(SUITE("SelectGroup41Var3"))
 TEST_CASE(SUITE("SelectGroup41Var4"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 41 Var 4, count = 1, index = 1, value = 100.0
@@ -261,7 +275,8 @@ TEST_CASE(SUITE("SelectGroup41Var4"))
 TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
@@ -279,7 +294,8 @@ TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 41 Var 2, count = 1, index = 3
@@ -298,7 +314,8 @@ TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 41 Var 3, count = 1, index = 1
@@ -315,7 +332,8 @@ TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Select group 41 Var 4, count = 1, index = 1
@@ -333,7 +351,8 @@ TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 TEST_CASE(SUITE("DirectOperateNoResponseGroup12Var1"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Direct operate (no response) group 12 Var 1, count = 1, index = 3
@@ -351,7 +370,8 @@ TEST_CASE(SUITE("DirectOperateNoResponseGroup12Var1"))
 TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Direct operate group 41 Var 1, count = 1, index = 3
@@ -362,7 +382,8 @@ TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Direct operate group 41 Var 1, count = 1, index = 3
@@ -374,7 +395,8 @@ TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Direct operate group 41 Var 3, count = 1, index = 1
@@ -393,7 +415,8 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config);
+	Database db(DatabaseTemplate(), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	OutstationTestObject t(config, &db);
 	t.LowerLayerUp();
 
 	// Direct operate group 41 Var 4, count = 1, index = 1

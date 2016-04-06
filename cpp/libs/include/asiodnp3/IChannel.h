@@ -104,7 +104,8 @@ public:
 	virtual IOutstation* AddOutstation( char const* id,
 	                                    opendnp3::ICommandHandler& commandHandler,
 	                                    opendnp3::IOutstationApplication& application,
-	                                    const opendnp3::OutstationStackConfig& config) = 0;
+	                                    const opendnp3::OutstationStackConfig& config,
+										opendnp3::IDatabase *database) = 0;
 
 };
 

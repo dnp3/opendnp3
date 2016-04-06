@@ -38,7 +38,8 @@ namespace asiodnp3
 */
 class IOutstation : public IStack
 {
-	friend class MeasUpdate;
+	//TODO rlc- I really want to get rid of this :)
+	friend class MeasurementUpdate;
 
 public:
 
@@ -54,12 +55,6 @@ public:
 	* @return stack statistics counters
 	*/
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
-
-	/**
-	* Get a view of the raw buffers in the database. This can be used to configure each point before execution.
-	* @return View of static values and metadata.
-	*/
-	virtual opendnp3::DatabaseConfigView GetConfigView() = 0;
 
 protected:
 

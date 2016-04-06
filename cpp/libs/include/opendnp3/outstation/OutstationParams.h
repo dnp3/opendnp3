@@ -39,9 +39,6 @@ struct OutstationParams
 {
 	OutstationParams();
 
-	/// Controls the index mode (defaults to contiguous)
-	IndexMode indexMode;
-
 	/// The maximum number of controls the outstation will attempt to process from a single APDU
 	uint8_t maxControlsPerRequest;
 
@@ -65,9 +62,6 @@ struct OutstationParams
 
 	/// Global enabled / disable for unsolicted messages. If false, the NULL unsolicited message is not even sent
 	bool allowUnsolicited;
-
-	/// A bitmask type that specifies the types allowed in a class 0 reponse
-	StaticTypeBitField typesAllowedInClass0;
 
 	/// Class mask for unsolicted, default to 0 as unsolicited has to be enabled
 	ClassField unsolClassMask;

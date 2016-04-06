@@ -53,7 +53,7 @@ class OContext : public IUpperLayer
 public:
 
 	OContext(	const OutstationConfig& config,
-	            const DatabaseTemplate& dbTemplate,
+				IDatabase *database,
 	            openpal::Logger logger,
 	            openpal::IExecutor& executor,
 	            ILowerLayer& lower,
@@ -97,8 +97,6 @@ public:
 	void SetRestartIIN();
 
 	IDatabase& GetDatabase();
-
-	DatabaseConfigView GetConfigView();
 
 	/// ---- Processing functions --------
 
@@ -171,7 +169,7 @@ public:
 
 	// ------ Database, event buffer, and response tracking
 	EventBuffer eventBuffer;
-	Database database;
+	IDatabase *database;
 	ResponseContext rspContext;
 
 	// ------ Static configuration -------

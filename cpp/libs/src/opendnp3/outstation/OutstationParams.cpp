@@ -28,7 +28,6 @@ namespace opendnp3
 {
 
 OutstationParams::OutstationParams() :
-	indexMode(IndexMode::Contiguous),
 	maxControlsPerRequest(16),
 	selectTimeout(TimeDuration::Seconds(10)),
 	solConfirmTimeout(DEFAULT_APP_TIMEOUT),
@@ -36,8 +35,7 @@ OutstationParams::OutstationParams() :
 	unsolRetryTimeout(DEFAULT_APP_TIMEOUT),
 	maxTxFragSize(DEFAULT_MAX_APDU_SIZE),
 	maxRxFragSize(DEFAULT_MAX_APDU_SIZE),
-	allowUnsolicited(false),
-	typesAllowedInClass0(StaticTypeBitField::AllTypes())
+	allowUnsolicited(false)
 {
 
 }

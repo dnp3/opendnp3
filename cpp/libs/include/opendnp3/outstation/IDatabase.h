@@ -33,6 +33,7 @@ namespace opendnp3
 class IResponseLoader;
 class IStaticSelector;
 class IClassAssigner;
+class IEventReceiver;
 /**
 * An interface used to update measurement values.
 */
@@ -113,77 +114,8 @@ public:
 	*/
 	virtual bool Update(const TimeAndInterval& meas, uint16_t index) = 0;
 
-	/**
-	* Modify a value using the current valueindex
-	* @param modify Functor that takes a measurement and returns a new one based on the old value
-	* @param index index of the measurement
-	* @param mode Describes how event generation is handled for this method
-	* @return true if the value exists and it was updated
-	*/
-	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
-	/**
-	* Modify a value using the current valueindex
-	* @param modify Functor that takes a measurement and returns a new one based on the old value
-	* @param index index of the measurement
-	* @param mode Describes how event generation is handled for this method
-	* @return true if the value exists and it was updated
-	*/
-	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
-
-	/**
-	* Modify a value using the current valueindex
-	* @param modify Functor that takes a measurement and returns a new one based on the old value
-	* @param index index of the measurement
-	* @param mode Describes how event generation is handled for this method
-	* @return true if the value exists and it was updated
-	*/
-	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
-
-	/**
-	* Modify a value using the current valueindex
-	* @param modify Functor that takes a measurement and returns a new one based on the old value
-	* @param index index of the measurement
-	* @param mode Describes how event generation is handled for this method
-	* @return true if the value exists and it was updated
-	*/
-	virtual bool Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
-
-	/**
-	* Modify a value using the current valueindex
-	* @param modify Functor that takes a measurement and returns a new one based on the old value
-	* @param index index of the measurement
-	* @param mode Describes how event generation is handled for this method
-	* @return true if the value exists and it was updated
-	*/
-	virtual bool Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
-
-	/**
-	* Modify a value using the current valueindex
-	* @param modify Functor that takes a measurement and returns a new one based on the old value
-	* @param index index of the measurement
-	* @param mode Describes how event generation is handled for this method
-	* @return true if the value exists and it was updated
-	*/
-	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
-
-	/**
-	* Modify a value using the current valueindex
-	* @param modify Functor that takes a measurement and returns a new one based on the old value
-	* @param index index of the measurement
-	* @param mode Describes how event generation is handled for this method
-	* @return true if the value exists and it was updated
-	*/
-	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
-
-	/**
-	* Modify a value using the current valueindex
-	* @param modify Functor that takes a measurement and returns a new one based on the old value
-	* @param index index of the measurement
-	* @return true if the value exists and it was updated
-	*/
-	virtual bool Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index) = 0;
-
+	virtual void SetEventReceiver(IEventReceiver *eventReceiver) = 0;
 
 	virtual IResponseLoader& GetResponseLoader() = 0;
 	virtual IStaticSelector& GetStaticSelector() = 0;

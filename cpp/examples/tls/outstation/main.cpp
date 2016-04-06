@@ -21,7 +21,7 @@
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/PrintingSOEHandler.h>
 #include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/MeasUpdate.h>
+#include <asiodnp3/MeasurementUpdate.h>
 
 #include <asiopal/UTCTimeSource.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -95,7 +95,6 @@ int main(int argc, char* argv[])
 	OutstationStackConfig stackConfig;
 
 	// You must specify the shape of your database and the size of the event buffers
-	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
 	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
 
 	// you can override an default outstation parameters here
@@ -111,10 +110,11 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto pOutstation = pChannel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
+	Database db(DatabaseTemplate::AllTypes(10), IndexMode::Contiguous, StaticTypeBitField::AllTypes());
+	auto pOutstation = pChannel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig, &db);
 
 	// You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-	ConfigureDatabase(pOutstation->GetConfigView());
+	ConfigureDatabase(db.GetConfigView());
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();
@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
 
-		MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
+		MeasurementUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
 
 		for (char & c : input)
 		{
@@ -172,6 +172,8 @@ int main(int argc, char* argv[])
 				break;
 			}
 		}
+
+		tx.commit();
 
 	}
 
