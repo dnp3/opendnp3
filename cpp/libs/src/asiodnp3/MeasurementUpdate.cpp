@@ -31,6 +31,8 @@ using namespace opendnp3;
 
 namespace asiodnp3
 {
+no_value_change_tag no_value_change;
+
 
 template <class T>
 void MeasurementUpdate::UpdateAny(const T& meas, uint16_t index, opendnp3::EventMode mode)

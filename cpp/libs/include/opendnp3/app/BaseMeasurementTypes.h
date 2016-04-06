@@ -64,12 +64,15 @@ public:
 
 	typedef T Type;
 
+	bool no_value_change;
+
 protected:
 
-	TypedMeasurement(): Measurement(), value(0) {}
-	TypedMeasurement(uint8_t quality) : Measurement(quality), value(0) {}
-	TypedMeasurement(T value, uint8_t quality) : Measurement(quality), value(value) {}
-	TypedMeasurement(T value, uint8_t quality, DNPTime time) : Measurement(quality, time), value(value) {}
+	TypedMeasurement(): Measurement(), value(), no_value_change(true) {}
+	TypedMeasurement(uint8_t quality) : Measurement(quality), value(), no_value_change(true) {}
+	TypedMeasurement(T value, uint8_t quality) : Measurement(quality), value(value), no_value_change(false) {}
+	TypedMeasurement(T value, uint8_t quality, DNPTime time) : Measurement(quality, time), value(value), no_value_change(false) {}
+	TypedMeasurement(uint8_t quality, DNPTime time) : Measurement(quality, time), no_value_change(true) {}
 };
 
 }

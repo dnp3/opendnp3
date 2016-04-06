@@ -149,7 +149,17 @@ bool Database::UpdateAny(Cell<T>& cell, const T& value, EventMode mode)
 		}
 	}
 
-	cell.value = value;
+	if (value.no_value_change)
+	{
+		// this is a lot quicker to code and a lot less error-prone that copying the members one by one :)
+		typename T::Type temp(cell.value.value);
+		cell.value = value;
+		cell.value.value = temp;
+	}
+	else
+	{
+		cell.value = value;
+	}
 	return true;
 }
 
