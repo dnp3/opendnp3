@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below.
-	const uint32_t FILTERS = levels::NORMAL; // | levels::ALL_COMMS;
+	const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
 
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation
@@ -104,15 +104,14 @@ int main(int argc, char* argv[])
 	uint32_t count = 0;
 	double value = 0;
 	bool binary = false;
+	bool commsLoggingEnabled = true;
 	DoubleBit dbit = DoubleBit::DETERMINED_OFF;
 
 	while (true)
 	{
 		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
-		std::cin >> input;
-
-		MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
+		std::cin >> input;		
 
 		for (char & c : input)
 		{
@@ -120,26 +119,38 @@ int main(int argc, char* argv[])
 			{
 			case('c') :
 				{
+					MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
 					tx.Update(Counter(count), 0);
 					++count;
 					break;
 				}
 			case('a') :
 				{
+					MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
 					tx.Update(Analog(value), 0);
 					value += 1;
 					break;
 				}
 			case('b') :
 				{
+					MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
 					tx.Update(Binary(binary), 0);
 					binary = !binary;
 					break;
 				}
 			case('d') :
 				{
+					MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
 					tx.Update(DoubleBitBinary(dbit), 0);
 					dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
+					break;
+				}
+			case('t') :
+				{
+					commsLoggingEnabled = !commsLoggingEnabled;
+					auto levels = commsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
+					pChannel->SetLogFilters(levels);
+					std::cout << "Logging set to: " << levels << std::endl;
 					break;
 				}
 			case('x') :

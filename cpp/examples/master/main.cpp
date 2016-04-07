@@ -88,7 +88,9 @@ int main(int argc, char* argv[])
 	// Enable the master. This will start communications.
 	pMaster->Enable();
 
-	do
+	bool commsLoggingEnabled = true;
+
+	while (true)
 	{
 		std::cout << "Enter a command" << std::endl;
 		std::cout << "x - exits program" << std::endl;
@@ -108,8 +110,8 @@ int main(int argc, char* argv[])
 			break;
 		case('d') :
 			pMaster->PerformFunction("disable unsol", FunctionCode::DISABLE_UNSOLICITED,
-			{ Header::AllObjects(60, 2), Header::AllObjects(60, 3), Header::AllObjects(60, 4) }
-			                        );
+				{ Header::AllObjects(60, 2), Header::AllObjects(60, 3), Header::AllObjects(60, 4) }
+			);
 			break;
 		case('r') :
 			{
@@ -142,12 +144,19 @@ int main(int argc, char* argv[])
 				pMaster->SelectAndOperate(crob, 0, PrintingCommandCallback::Get());
 				break;
 			}
+		case('t') :
+		{
+			commsLoggingEnabled = !commsLoggingEnabled;
+			auto levels = commsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
+			pChannel->SetLogFilters(levels);
+			std::cout << "Logging set to: " << levels << std::endl;
+			break;
+		}
 		default:
 			std::cout << "Unknown action: " << cmd << std::endl;
 			break;
 		}
-	}
-	while(true);
+	}	
 
 	return 0;
 }
