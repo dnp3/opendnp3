@@ -16,19 +16,19 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			IDNP3Manager^ DNP3ManagerFactory::CreateManager(System::Int32 concurrency)
+			IDNP3Manager^ DNP3ManagerFactory::CreateManager(System::Int32 concurrency, ILogHandler^ logHandler)
 			{
-				return gcnew DNP3ManagerAdapter(concurrency);
+				return gcnew DNP3ManagerAdapter(concurrency, logHandler);
 			}
 
-			IDNP3Manager^ DNP3ManagerFactory::CreateManager()
+			IDNP3Manager^ DNP3ManagerFactory::CreateManager(ILogHandler^ logHandler)
 			{
-				return gcnew DNP3ManagerAdapter(Environment::ProcessorCount);
+				return gcnew DNP3ManagerAdapter(Environment::ProcessorCount, logHandler);
 			}
 
 
-			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 concurrency) : 				
-				pManager(new asiodnp3::DNP3Manager(concurrency))				
+			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 concurrency, ILogHandler^ logHandler) :
+				pManager(new asiodnp3::DNP3Manager(concurrency, LogAdapter::Create(logHandler)))				
 			{
 
 			}
@@ -139,13 +139,7 @@ namespace Automatak
 				{
 					return nullptr;
 				}
-			}
-
-			void DNP3ManagerAdapter::AddLogHandler(ILogHandler^ logHandler)
-			{
-				LogAdapterWrapper^ wrapper = gcnew LogAdapterWrapper(logHandler);
-				pManager->AddLogSubscriber(wrapper->GetLogAdapter());
-			}
+			}		
 
 		}
 	}

@@ -43,15 +43,16 @@ public:
 
 	ManagerImpl(
 	    uint32_t concurrencyHint,
+		std::shared_ptr<openpal::ILogHandler> handler,
 	    std::function<void()> onThreadStart,
 	    std::function<void()> onThreadExit
 	) :
-		fanout(),
-		threadpool(&fanout, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
+		handler(handler),
+		threadpool(handler.get(), opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
 		channels()
 	{}
 
-	asiopal::LogFanoutHandler fanout;
+	std::shared_ptr<openpal::ILogHandler> handler;
 	asiopal::ThreadPool threadpool;
 	ChannelSet channels;
 };

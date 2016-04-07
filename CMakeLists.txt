@@ -5,6 +5,8 @@ set(OPENDNP3_MINOR_VERSION 1)
 set(OPENDNP3_MICRO_VERSION 0)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
 
+include(${CMAKE_SOURCE_DIR}/cmake/settings.cmake)
+
 # various optional libraries and projects
 option(DEMO "Build demo applications" OFF)
 option(TEST "Build tests" OFF)
@@ -35,75 +37,12 @@ if(DNP3_TLS)
 	endif()
 endif()
 
-if(WIN32)
-
-  set_property(GLOBAL PROPERTY USE_FOLDERS ON) #allows the creation of solution folders
-
-   # for ASIO
-  add_definitions(-D_WIN32_WINNT=0x0501)
-  add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)
-
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP")
-
-  set(LIB_TYPE STATIC) #default to static on MSVC
-
-else()
-
-  set(PTHREAD pthread)
-
-  if(STATICLIBS)
-	set(LIB_TYPE STATIC)
-  else()
-	set(LIB_TYPE SHARED)
-  endif()
-
-  set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
-
-  # different release and debug flags
-  set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-  set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
-
-  if(COVERAGE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -g -O0")
-    #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage -g -O0")
-  endif()
-
-  if (WERROR)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
-  endif()
-
-endif()
-
-# There's problem with detecting usage of pthread with gcc 4.8.x
-# http://ubuntuforums.org/showthread.php?t=2183408
-if(CMAKE_COMPILER_IS_GNUCXX)
-  if(CMAKE_CXX_COMPILER_VERSION MATCHES 4.8.*)
-    message("Adding pthread workaround for GCC version: ${CMAKE_CXX_COMPILER_VERSION}")
-    SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-as-needed" )
-  endif()
-endif()
-
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
-
-if (ASIO_HOME)
-  message("ASIO_HOME defined in cache: ${ASIO_HOME}")
-  include_directories(${ASIO_HOME})
-else()
-  if(DEFINED ENV{ASIO_HOME})
-    message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")
-    include_directories($ENV{ASIO_HOME})
-  else()
-    message("ASIO_HOME was not defined. ASIO expected to be on include path")
-  endif()
-endif()
 
 # include paths for all the local libraries
 include_directories(./cpp/libs/src)
 include_directories(./cpp/libs/include)
 include_directories(./cpp/tests/libs/src)
-
-# required for ASIO in C++11 only mode
-add_definitions(-DASIO_STANDALONE)
 
 # ---- openpal library ----
 file(GLOB_RECURSE openpal_SRC ./cpp/libs/src/openpal/*.cpp ./cpp/libs/src/openpal/*.h ./cpp/libs/include/openpal/*.h)

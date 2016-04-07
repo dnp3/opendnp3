@@ -98,12 +98,6 @@ namespace Automatak.DNP3.Interface
         /// <param name="retry">Retry configuration for the channel</param>
         /// <param name="settings">Configuration struct for the serial port</param>        
         /// <returns>A channel interface</returns>
-        IChannel AddSerial(String id, UInt32 filters, ChannelRetry retry, SerialSettings settings);
-
-        /// <summary>
-        /// Subscribe to all log messages
-        /// </summary>
-        /// <param name="logHandler">Callback interface</param>
-		void AddLogHandler(ILogHandler logHandler);		
+        IChannel AddSerial(String id, UInt32 filters, ChannelRetry retry, SerialSettings settings);      
     }
 }

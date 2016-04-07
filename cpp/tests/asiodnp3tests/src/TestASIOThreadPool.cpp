@@ -45,25 +45,24 @@ using namespace asiodnp3;
 
 TEST_CASE(SUITE("CleanConstructionDestruction"))
 {
-	ThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 4);
+	ThreadPool pool(nullptr, levels::NORMAL, 4);
 }
 
 TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 {
-	ThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 4);
+	ThreadPool pool(nullptr, levels::NORMAL, 4);
 	for(size_t i = 0; i < 100000; ++i) pool.GetIOService().post([]() {});
 }
 
 
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 {
-	const size_t ITERATIONS = 100000;
 
+	const size_t ITERATIONS = 100000;	
 	int count1 = 0;
 
 	{
-		ThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
-
+		ThreadPool pool(nullptr, levels::NORMAL, 8);
 		strand s1(pool.GetIOService());
 
 		auto increment = [&count1]()
@@ -79,11 +78,13 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 {
+
 	const size_t ITERATIONS = 100000;
+
 	int count1 = 0;
 
 	{
-		ThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
+		ThreadPool pool(nullptr, levels::NORMAL, 8);
 
 		strand s1(pool.GetIOService());
 

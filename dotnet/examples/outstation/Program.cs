@@ -31,10 +31,10 @@ namespace DotNetOutstationDemo
 {   
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1);
-            mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
+            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, PrintingLogAdapter.Instance);
+            
             var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, ChannelRetry.Default, "0.0.0.0", 20000);
 
             // Optional: add a listener for the channel state
@@ -61,17 +61,25 @@ namespace DotNetOutstationDemo
             double analogValue = 0;
             while (true)
             {
-                Console.ReadLine();
-                binaryValue = !binaryValue;
-                ++analogValue;
-                System.Console.WriteLine("Change Binary 0 to: " + binaryValue);
-                System.Console.WriteLine("Change Analog 9 to: " + analogValue);
+                switch (Console.ReadLine())
+                {
+                    case("x"):
+                        return 0;
+                    default:
+                        {
+                            binaryValue = !binaryValue;
+                            ++analogValue;
+                            System.Console.WriteLine("Change Binary 0 to: " + binaryValue);
+                            System.Console.WriteLine("Change Analog 9 to: " + analogValue);
 
-                // create a changeset and load it 
-                var changeset = new ChangeSet();
-                changeset.Update(new Binary(binaryValue, 1, DateTime.Now), 0);
-                changeset.Update(new Analog(analogValue, 1, DateTime.Now), 0);
-                outstation.Load(changeset);
+                            // create a changeset and load it 
+                            var changeset = new ChangeSet();
+                            changeset.Update(new Binary(binaryValue, 1, DateTime.Now), 0);
+                            changeset.Update(new Analog(analogValue, 1, DateTime.Now), 0);
+                            outstation.Load(changeset);
+                        }
+                        break;
+                }                              
             }
         }
     }

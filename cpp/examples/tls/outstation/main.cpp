@@ -70,10 +70,7 @@ int main(int argc, char* argv[])
 
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation
-	DNP3Manager manager(1);
-
-	// send log messages to the console
-	manager.AddLogSubscriber(ConsoleLogger::Instance());
+	DNP3Manager manager(1, ConsoleLogger::Create());	
 
 	std::error_code ec;
 
