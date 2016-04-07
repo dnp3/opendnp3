@@ -31,7 +31,13 @@ namespace Automatak.DNP3.Interface
     /// Interface representing a master station
     /// </summary>
     public interface IMaster : IStack, ICommandProcessor
-    {               
+    {
+        /// <summary>
+        /// Set the log filters to a new value
+        /// </summary>
+        /// <param name="filters">A structure representing the new set of enabled filters</param>
+        void SetLogFilters(LogFilter filters);
+ 
         /// <summary>
         /// Adds a periodic all objects scan that uses the 0x06 qualifier
         /// </summary>

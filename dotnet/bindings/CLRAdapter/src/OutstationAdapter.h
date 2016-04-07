@@ -19,6 +19,8 @@ namespace Automatak
 
 				OutstationAdapter(asiodnp3::IOutstation* pOutstation);
 
+				virtual void SetLogFilters(LogFilter filters);
+
 				virtual void Load(IChangeSet^ changes);
 
 				virtual void SetRestartIIN();

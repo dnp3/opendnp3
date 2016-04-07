@@ -26,7 +26,7 @@ namespace Automatak
 
 				MasterAdapter(asiodnp3::IMaster* apMaster) : MasterAdapterBase(apMaster)
 				{}
-		
+			
 			};			
 
 		}

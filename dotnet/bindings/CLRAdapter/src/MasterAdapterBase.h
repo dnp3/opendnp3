@@ -24,6 +24,8 @@ namespace Automatak
 
 				MasterAdapterBase(asiodnp3::IMaster* apMaster);
 
+				virtual void SetLogFilters(LogFilter flags);
+
 				virtual IStackStatistics^ GetStackStatistics();
 
 				virtual void Enable();

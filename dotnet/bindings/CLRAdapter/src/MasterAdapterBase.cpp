@@ -14,6 +14,11 @@ namespace Automatak
 				MasterAdapterBase::MasterAdapterBase(asiodnp3::IMaster* apMaster) : pMaster(apMaster)
 				{}				
 
+				void MasterAdapterBase::SetLogFilters(LogFilter filters)
+				{
+					pMaster->SetLogFilters(filters.Flags);
+				}
+
 				IStackStatistics^ MasterAdapterBase::GetStackStatistics()
 				{
 					auto stats = pMaster->GetStackStatistics();
