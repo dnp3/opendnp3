@@ -3,6 +3,7 @@
 an issue where the LinkTimeout could not be effectively disabled since MaxInt wasn't big enough to ensure it never ran.
 * :wrench: Moved experimental SA components to the "secauth" branch.
 * :wrench: ILogHandler is now injected as an argument to the DNP3Manager constructor as a shared_ptr.
+* :star: Master and outstation interfaces can now control their log level independently of the channel they're created on.
 * :beetle: Fixed a bug in the C# bindings where the ILogHandler was prematurely freed by the GC.
 * Refactored cmake build files into several sub-files for better modularity.
 
