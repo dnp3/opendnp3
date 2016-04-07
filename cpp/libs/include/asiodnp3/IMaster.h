@@ -52,6 +52,11 @@ public:
 	virtual ~IMaster() {}
 
 	/**
+	*  @param filters Adjust the filters to this value
+	*/
+	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
+
+	/**
 	* @return stack statistics counters
 	*/
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;

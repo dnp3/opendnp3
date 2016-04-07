@@ -61,11 +61,11 @@ int main(int argc, char* argv[])
 	DNP3Manager manager(1, ConsoleLogger::Create());	
 
 	// Create a TCP server (listener)
-	auto pChannel = manager.AddTCPServer("server", FILTERS, ChannelRetry::Default(), "0.0.0.0", 20000);
+	auto channel = manager.AddTCPServer("server", FILTERS, ChannelRetry::Default(), "0.0.0.0", 20000);
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console
-	pChannel->AddStateListener([](ChannelState state)
+	channel->AddStateListener([](ChannelState state)
 	{
 		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
 	});
@@ -91,21 +91,22 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto pOutstation = pChannel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
+	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
 
 	// You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-	ConfigureDatabase(pOutstation->GetConfigView());
+	ConfigureDatabase(outstation->GetConfigView());
 
 	// Enable the outstation and start communications
-	pOutstation->Enable();
+	outstation->Enable();
 
 	// variables used in example loop
 	string input;
 	uint32_t count = 0;
 	double value = 0;
-	bool binary = false;
-	bool commsLoggingEnabled = true;
+	bool binary = false;	
 	DoubleBit dbit = DoubleBit::DETERMINED_OFF;
+	bool channelCommsLoggingEnabled = true;
+	bool outstationCommsLoggingEnabled = true;
 
 	while (true)
 	{
@@ -119,38 +120,46 @@ int main(int argc, char* argv[])
 			{
 			case('c') :
 				{
-					MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
+					MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
 					tx.Update(Counter(count), 0);
 					++count;
 					break;
 				}
 			case('a') :
 				{
-					MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
+					MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
 					tx.Update(Analog(value), 0);
 					value += 1;
 					break;
 				}
 			case('b') :
 				{
-					MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
+					MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
 					tx.Update(Binary(binary), 0);
 					binary = !binary;
 					break;
 				}
 			case('d') :
 				{
-					MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
+					MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
 					tx.Update(DoubleBitBinary(dbit), 0);
 					dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
 					break;
 				}
 			case('t') :
 				{
-					commsLoggingEnabled = !commsLoggingEnabled;
-					auto levels = commsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
-					pChannel->SetLogFilters(levels);
-					std::cout << "Logging set to: " << levels << std::endl;
+					channelCommsLoggingEnabled = !channelCommsLoggingEnabled;
+					auto levels = channelCommsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
+					channel->SetLogFilters(levels);
+					std::cout << "Channel logging set to: " << levels << std::endl;
+					break;
+				}
+			case('u') :
+				{
+					outstationCommsLoggingEnabled = !outstationCommsLoggingEnabled;
+					auto levels = outstationCommsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
+					outstation->SetLogFilters(levels);
+					std::cout << "Outstation logging set to: " << levels << std::endl;
 					break;
 				}
 			case('x') :

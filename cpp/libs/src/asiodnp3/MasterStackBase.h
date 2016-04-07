@@ -76,6 +76,16 @@ public:
 	{
 		return pLifecycle->Shutdown(&stack.link, this);
 	}
+	
+	virtual void SetLogFilters(const openpal::LogFilters& filters) override final
+	{
+		auto set = [this, filters]() 
+		{
+			this->root->SetFilters(filters);
+		};
+
+		pLifecycle->GetExecutor().BlockFor(set);
+	}
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override final
 	{
