@@ -3,8 +3,10 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <vcclr.h>
 #include <openpal/logging/ILogHandler.h>
+
+#include <vcclr.h>
+#include <memory>
 
 using namespace Automatak::DNP3::Interface;
 
@@ -15,38 +17,21 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			private class LogAdapter : public openpal::ILogHandler
+			private class LogAdapter final : public openpal::ILogHandler
 			{
 			public:
 
 				LogAdapter(Automatak::DNP3::Interface::ILogHandler^ proxy);
 
+				static std::shared_ptr<openpal::ILogHandler> Create(Automatak::DNP3::Interface::ILogHandler^ proxy);
+
 				// logging error messages, etc
-				virtual void Log(const openpal::LogEntry& Entry) override final;
+				virtual void Log(const openpal::LogEntry& Entry) override;
 
 			private:
 				gcroot < Automatak::DNP3::Interface::ILogHandler^ > proxy;
 			};
-
-			private ref class LogAdapterWrapper
-			{
-			public:
-				LogAdapterWrapper(ILogHandler^ proxy) : adapter(new LogAdapter(proxy))
-				{}
-
-				openpal::ILogHandler& GetLogAdapter()
-				{
-					return *adapter;
-				}
-
-				~LogAdapterWrapper()
-				{
-					delete adapter;
-				}
-
-			private:
-				LogAdapter* adapter;
-			};
+			
 		}
 	}
 }
