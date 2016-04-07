@@ -34,8 +34,6 @@ using namespace std::chrono;
 namespace asiodnp3
 {
 
-ConsoleLogger ConsoleLogger::instance;
-
 ConsoleLogger::ConsoleLogger() : printLocation(false)
 {
 

@@ -44,8 +44,8 @@ public:
 	    openpal::ILogHandler* pHandler,
 	    uint32_t levels,
 	    uint32_t aConcurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
 	);
 
 	~IOServiceThreadPool();

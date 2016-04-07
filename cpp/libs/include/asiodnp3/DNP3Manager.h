@@ -60,17 +60,12 @@ public:
 	*/
 	DNP3Manager(
 	    uint32_t concurrencyHint,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+		std::shared_ptr<openpal::ILogHandler> handler = std::shared_ptr<openpal::ILogHandler>(),
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
 	);
 
-	~DNP3Manager();
-
-	/**
-	* Add a callback to receive log messages
-	* @param handler reference to a log handling interface
-	*/
-	void AddLogSubscriber(openpal::ILogHandler& handler);
+	~DNP3Manager();	
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop

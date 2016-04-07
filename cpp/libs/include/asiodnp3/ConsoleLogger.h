@@ -22,7 +22,10 @@
 #define ASIODNP3_CONSOLELOGGER_H
 
 #include <mutex>
+#include <memory>
+
 #include <openpal/logging/ILogHandler.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace asiodnp3
 {
@@ -34,25 +37,23 @@ std::ostringstream& operator<<(std::ostringstream& ss, const openpal::LogFilters
 *
 *
 */
-class ConsoleLogger : public openpal::ILogHandler
+class ConsoleLogger final : public openpal::ILogHandler, private openpal::Uncopyable
 {
 
 public:
 
-	virtual void Log(const openpal::LogEntry& entry) override final;
-
-	void SetPrintLocation(bool printLocation);
-
-	static openpal::ILogHandler& Instance()
-	{
-		return instance;
-	};
-
-private:
-
 	ConsoleLogger();
 
-	static ConsoleLogger instance;
+	virtual void Log(const openpal::LogEntry& entry) override;
+
+	void SetPrintLocation(bool printLocation);
+	
+	static std::shared_ptr<openpal::ILogHandler>Create()
+	{
+		return std::make_shared<ConsoleLogger>();
+	};
+
+private:	
 
 	bool printLocation;
 
