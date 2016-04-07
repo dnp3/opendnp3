@@ -47,10 +47,10 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	listener(),
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
-	mTransA(root, executor, DEFAULT_MAX_APDU_SIZE),
-	mTransB(root, executor, DEFAULT_MAX_APDU_SIZE),
-	mLinkA(root, executor, mTransA, listener, aCfgA),
-	mLinkB(root, executor, mTransB, listener, aCfgB),
+	mTransA(root.GetLogger(), executor, DEFAULT_MAX_APDU_SIZE),
+	mTransB(root.GetLogger(), executor, DEFAULT_MAX_APDU_SIZE),
+	mLinkA(root.GetLogger(), executor, mTransA, listener, aCfgA),
+	mLinkB(root.GetLogger(), executor, mTransB, listener, aCfgB),
 	mRouter(root, executor, apPhys, ChannelRetry::Default())
 {
 	Route routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);

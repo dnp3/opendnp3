@@ -33,8 +33,8 @@ namespace opendnp3
 TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys, LinkConfig aCfg) :
 	listener(),
 	router(root, executor, apPhys, ChannelRetry::Default()),
-	transport(root, executor, DEFAULT_MAX_APDU_SIZE),
-	link(root, executor, transport, listener, aCfg)
+	transport(root.GetLogger(), executor, DEFAULT_MAX_APDU_SIZE),
+	link(root.GetLogger(), executor, transport, listener, aCfg)
 {
 	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
 	router.AddContext(&link, route);

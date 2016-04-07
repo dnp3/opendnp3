@@ -66,7 +66,7 @@ public:
 
 	MContext(
 	    openpal::IExecutor& executor,
-	    openpal::LogRoot& root,
+	    openpal::Logger logger,
 	    ILowerLayer& lower,
 	    ISOEHandler& SOEHandler,
 	    opendnp3::IMasterApplication& application,

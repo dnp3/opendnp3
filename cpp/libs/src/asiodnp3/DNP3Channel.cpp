@@ -144,9 +144,10 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 {
 	auto add = [&]() -> IMaster*
 	{
-		auto factory = [&]()
+		auto factory = [&]() -> MasterStack*
 		{
-			return new MasterStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, router.GetTaskLock());
+			auto root = std::make_unique<openpal::LogRoot>(*pLogRoot, id);
+			return new MasterStack(std::move(root), *pExecutor, SOEHandler, application, config, stacks, router.GetTaskLock());
 		};
 
 		return this->AddStack<MasterStack>(config.link, factory);
@@ -161,7 +162,8 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 	{
 		auto factory = [&]()
 		{
-			return new OutstationStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks);
+			auto root = std::make_unique<openpal::LogRoot>(*pLogRoot, id);
+			return new OutstationStack(std::move(root), *pExecutor, commandHandler, application, config, stacks);
 		};
 
 		return this->AddStack<OutstationStack>(config.link, factory);

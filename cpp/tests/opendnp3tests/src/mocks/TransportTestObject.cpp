@@ -38,7 +38,7 @@ namespace opendnp3
 TransportTestObject::TransportTestObject(bool aOpenOnStart, uint32_t filters, bool aImmediate) :
 	log(),
 	exe(),
-	transport(log.root, exe, DEFAULT_MAX_APDU_SIZE)
+	transport(log.root.GetLogger(), exe, DEFAULT_MAX_APDU_SIZE)
 {
 	link.SetUpperLayer(transport);
 	transport.SetLinkLayer(&link);
