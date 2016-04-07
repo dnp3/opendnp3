@@ -29,12 +29,7 @@ namespace Automatak
 				Automatak::DNP3::Interface::LogEntry^ le = gcnew Automatak::DNP3::Interface::LogEntry(entry.GetFilters().GetBitfield(), alias, location, message, entry.GetErrorCode());
 
 				proxy->Log(le);
-			}
-
-			std::shared_ptr<openpal::ILogHandler> LogAdapter::Create(Automatak::DNP3::Interface::ILogHandler^ proxy)
-			{
-				return std::shared_ptr<openpal::ILogHandler>(new LogAdapter(proxy));
-			}
+			}			
 
 		}
 	}

@@ -93,15 +93,8 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public class PrintingLogAdapter : ILogHandler
     {
-        private static readonly PrintingLogAdapter instance = new PrintingLogAdapter();
-
-        public static ILogHandler Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public PrintingLogAdapter()
+        {}
 
         public void Log(LogEntry entry)
         {
@@ -113,9 +106,6 @@ namespace Automatak.DNP3.Interface
             );
 
             Console.WriteLine(msg);
-        }
-
-        public PrintingLogAdapter()
-        {}
+        }        
     }
 }

@@ -29,40 +29,10 @@ namespace Automatak
 				// logging error messages, etc
 				virtual void Log(const openpal::LogEntry& Entry) override;
 
-				static std::shared_ptr<openpal::ILogHandler> Create(Automatak::DNP3::Interface::ILogHandler^ proxy);
-
 			private:
 				gcroot < Automatak::DNP3::Interface::ILogHandler^ > proxy;
 			};
-<<<<<<< HEAD
 
-			private ref class LogAdapterWrapper
-			{
-			public:
-				LogAdapterWrapper(ILogHandler^ proxy) : adapter(new LogAdapter(proxy))
-				{}
-
-				openpal::ILogHandler& GetLogAdapter()
-				{
-					return *adapter;
-				}
-
-				~LogAdapterWrapper()
-				{
-					this->!LogAdapterWrapper();
-				}
-
-				!LogAdapterWrapper()
-				{
-					delete adapter;
-				}
-
-			private:
-				LogAdapter* adapter;
-			};
-=======
-			
->>>>>>> 2.0.x
 		}
 	}
 }
