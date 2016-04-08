@@ -36,6 +36,7 @@
 #include <opendnp3/gen/RestartType.h>
 
 #include <openpal/executor/TimeDuration.h>
+#include <openpal/logging/LogFilters.h>
 
 #include <vector>
 
