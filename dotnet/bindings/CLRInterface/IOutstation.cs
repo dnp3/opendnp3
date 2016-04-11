@@ -47,6 +47,11 @@ namespace Automatak.DNP3.Interface
         /// <returns></returns>
         IStackStatistics GetStackStatistics();
 
+        /// Set the log filters to a new value
+        /// </summary>
+        /// <param name="filters">A structure representing the new set of enabled filters</param>
+        void SetLogFilters(LogFilter filters);
+
         /// <summary>
         /// Sets the restart IIN bit. Normally applications should not
 	    /// touch this bit, but it is provided for simulating restarts.

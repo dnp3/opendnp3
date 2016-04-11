@@ -35,6 +35,7 @@
 #include <opendnp3/gen/RestartType.h>
 
 #include <openpal/executor/TimeDuration.h>
+#include <openpal/logging/LogFilters.h>
 
 #include <vector>
 
@@ -49,6 +50,11 @@ class IMasterOperations : public opendnp3::ICommandProcessor
 public:
 
 	virtual ~IMasterOperations() {}
+
+	/**
+	*  @param filters Adjust the filters to this value
+	*/
+	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
 
 	/**
 	* @return stack statistics counters

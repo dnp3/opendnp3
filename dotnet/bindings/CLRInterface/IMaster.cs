@@ -30,8 +30,9 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// Interface representing a master station
     /// </summary>
+
     public interface IMaster : IStack, IMasterOperations
-    {
-       
+    {       
+        
     }
 }

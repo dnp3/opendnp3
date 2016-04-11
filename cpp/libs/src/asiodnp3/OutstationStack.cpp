@@ -27,16 +27,16 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-OutstationStack::OutstationStack(    
-    openpal::LogRoot root_,
+OutstationStack::OutstationStack(
+    std::unique_ptr<openpal::LogRoot> root,
     openpal::IExecutor& executor,
     opendnp3::ICommandHandler& commandHandler,
     IOutstationApplication& application,
     const OutstationStackConfig& config,
     IStackLifecycle& lifecycle) :
 
-	OutstationStackBase(std::move(root_), executor, application, config, lifecycle),
-	ocontext(config.outstation, config.dbTemplate, this->root.logger, executor, stack.transport, commandHandler, application)
+	OutstationStackBase(std::move(root), executor, application, config, lifecycle),
+	ocontext(config.outstation, config.dbTemplate, this->root->logger, executor, stack.transport, commandHandler, application)
 {
 	this->SetContext(ocontext);
 }

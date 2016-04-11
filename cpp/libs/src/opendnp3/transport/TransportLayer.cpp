@@ -34,8 +34,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
+
 TransportLayer::TransportLayer(openpal::Logger logger_, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
-	logger(logger_),
+	logger(logger),
 	pUpperLayer(nullptr),
 	pLinkLayer(nullptr),
 	isOnline(false),

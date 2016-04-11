@@ -19,7 +19,12 @@ namespace Automatak
 				{
 					auto stats = m_operations->GetStackStatistics();
 					return Conversions::ConvertStackStats(stats);
-				}				
+				}	
+
+				void MasterOperationsAdapter::SetLogFilters(LogFilter flags)
+				{
+					m_operations->SetLogFilters(flags.Flags);
+				}
 			
 				Task<TaskCompletion>^ MasterOperationsAdapter::Scan(IEnumerable<Header^>^ headers, TaskConfig^ config)
 				{

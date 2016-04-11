@@ -42,6 +42,15 @@ LogRoot::LogRoot(ILogHandler* handler, char const* alias, LogFilters filters, bo
 	m_alias((reuseAlias ? alias : AllocateCopy(alias)))
 {}
 
+LogRoot::LogRoot(const LogRoot& copy, char const* alias) :
+	logger(this),
+	m_handler(copy.m_handler),
+	m_filters(copy.m_filters),
+	m_alias(AllocateCopy(alias))
+{
+
+}
+
 LogRoot::LogRoot(LogRoot&& other) : LogRoot(other.m_handler, other.m_alias, other.m_filters, true)	
 {
 	other.m_alias = nullptr;

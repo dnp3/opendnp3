@@ -46,20 +46,29 @@ class OutstationStackBase : public Interface, public ILinkBind
 public:
 
 	OutstationStackBase(	    
-	    openpal::LogRoot root_,
+	    std::unique_ptr<openpal::LogRoot> root,
 	    openpal::IExecutor& executor,
 	    opendnp3::ILinkListener& listener,
 	    const opendnp3::OutstationStackConfig& config,
 	    IStackLifecycle& lifecycle
 	) :
-		root(std::move(root_)),
+		root(std::move(root)),
 		pLifecycle(&lifecycle),
-		stack(root.logger, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
+		stack(this->root->logger, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
 		pContext(nullptr)
 	{}
 
-
 	// ------- implement IOutstation -------
+	
+	virtual void SetLogFilters(const openpal::LogFilters& filters) override final
+	{
+		auto set = [this, filters]()
+		{
+			this->root->SetFilters(filters);
+		};
+
+		pLifecycle->GetExecutor().BlockFor(set);
+	}
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final
 	{
@@ -137,7 +146,7 @@ protected:
 		this->pContext = &context;
 	}
 
-	openpal::LogRoot root;
+	std::unique_ptr<openpal::LogRoot> root;
 	opendnp3::StackStatistics statistics;
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;

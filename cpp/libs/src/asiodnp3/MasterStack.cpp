@@ -32,17 +32,16 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-MasterStack::MasterStack(
-	openpal::LogRoot root_,
+MasterStack::MasterStack(    
+    std::unique_ptr<LogRoot> root,
     asiopal::ASIOExecutor& executor,
     opendnp3::ISOEHandler& SOEHandler,
     opendnp3::IMasterApplication& application,
     const MasterStackConfig& config,
     IStackLifecycle& lifecycle,
-    opendnp3::ITaskLock& taskLock) :
-
-	MasterStackBase<IMaster>(std::move(root_), executor, application, config, lifecycle),
-	mcontext(executor, root.logger, stack.transport, SOEHandler, application,  config.master, taskLock)
+	opendnp3::ITaskLock& taskLock) :		
+		MasterStackBase<IMaster>(std::move(root), executor, application, config, lifecycle),
+		mcontext(executor, this->root->logger, stack.transport, SOEHandler, application,  config.master, taskLock)
 {
 	this->SetContext(mcontext);
 }

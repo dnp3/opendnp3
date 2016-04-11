@@ -50,7 +50,7 @@ namespace asiodnp3
 		std::shared_ptr<LinkSession> session,
 		ILinkTx& linktx,		
 		const MasterStackConfig& config
-		) :
+		) :		
 		m_executor(executor),
 		m_handler(SOEHandler),
 		m_application(application),
@@ -81,6 +81,16 @@ namespace asiodnp3
 		return m_stack.link.OnFrame(header, userdata);
 	}
 
+	void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)
+	{
+		auto set = [this, filters]()
+		{
+			this->m_session->SetLogFilters(filters);
+		};
+
+		this->m_executor->m_strand.post(set);		
+	}
+
 	void MasterSessionStack::BeginShutdown()
 	{
 		auto session = m_session;
@@ -89,7 +99,7 @@ namespace asiodnp3
 		};
 
 		m_executor->m_strand.post(shutdown);
-	}
+	}	
 
 	StackStatistics MasterSessionStack::GetStackStatistics()
 	{

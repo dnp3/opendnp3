@@ -15,6 +15,11 @@ namespace Automatak
 			OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* pOutstation_) : pOutstation(pOutstation_)				
 			{}
 
+			void OutstationAdapter::SetLogFilters(LogFilter filters)
+			{
+				pOutstation->SetLogFilters(filters.Flags);
+			}
+
 			void OutstationAdapter::Load(IChangeSet^ changes)
 			{
 				auto adapter = gcnew ChangeSetAdapter(*pOutstation);

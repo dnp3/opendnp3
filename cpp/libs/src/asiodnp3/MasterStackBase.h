@@ -44,16 +44,16 @@ class MasterStackBase : public Interface, public ILinkBind
 {
 public:
 
-	MasterStackBase(
-		openpal::LogRoot root_,
-		asiopal::ASIOExecutor& executor,
-		opendnp3::ILinkListener& listener,
-		const opendnp3::MasterStackConfig& config,
-		IStackLifecycle& lifecycle
-		) :
-		root(std::move(root_)),
+	MasterStackBase(	    
+		std::unique_ptr<openpal::LogRoot> root,
+	    asiopal::ASIOExecutor& executor,
+	    opendnp3::ILinkListener& listener,
+	    const opendnp3::MasterStackConfig& config,
+	    IStackLifecycle& lifecycle
+	) :		
+		root(std::move(root)),
 		pLifecycle(&lifecycle),
-		stack(root.logger, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
+		stack(this->root->logger, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
 		pASIOExecutor(&executor),
 		pContext(nullptr)
 	{
@@ -75,6 +75,16 @@ public:
 	virtual void Shutdown() override final
 	{
 		return pLifecycle->Shutdown(&stack.link, this);
+	}
+	
+	virtual void SetLogFilters(const openpal::LogFilters& filters) override final
+	{
+		auto set = [this, filters]() 
+		{
+			this->root->SetFilters(filters);
+		};
+
+		pLifecycle->GetExecutor().BlockFor(set);
 	}
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override final
@@ -244,8 +254,8 @@ protected:
 		this->pContext = &context;
 		this->stack.transport.SetAppLayer(context);
 	}
-
-	openpal::LogRoot root;
+	
+	std::unique_ptr<openpal::LogRoot> root;
 	opendnp3::StackStatistics statistics;
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;

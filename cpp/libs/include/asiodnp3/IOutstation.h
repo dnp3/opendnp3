@@ -26,6 +26,8 @@
 #include <opendnp3/outstation/IDatabase.h>
 #include <opendnp3/outstation/DatabaseConfigView.h>
 
+#include <openpal/logging/LogFilters.h>
+
 namespace asiodnp3
 {
 
@@ -43,6 +45,11 @@ class IOutstation : public IStack
 public:
 
 	virtual ~IOutstation() {}
+
+	/**
+	*  @param filters Adjust the filters to this value
+	*/
+	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
 
 	/**
 	* Sets the restart IIN bit. Normally applications should not

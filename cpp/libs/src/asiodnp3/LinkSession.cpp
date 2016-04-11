@@ -84,6 +84,11 @@ namespace asiodnp3
 		m_executor->PostToStrand(shutdown);
 	}
 
+	void LinkSession::SetLogFilters(openpal::LogFilters filters)
+	{
+		this->m_log_root.SetFilters(filters);
+	}
+
 	void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
 	{		
 		auto self(shared_from_this());
@@ -148,7 +153,7 @@ namespace asiodnp3
 		this->m_log_root.Rename(loggerid.c_str());
 
 		this->m_stack = MasterSessionStack::Create(
-			m_log_root.logger, 
+			this->m_log_root.logger,
 			m_executor,
 			SOEHandler,
 			application,

@@ -43,7 +43,9 @@ public:
 
 	LogRoot(LogRoot&& other);
 
-	~LogRoot();	
+	LogRoot(const LogRoot&, char const* alias);
+
+	~LogRoot();
 
 	void Rename(char const* alias);
 
@@ -55,7 +57,7 @@ public:
 	LogRoot Clone(char const* alias) const;
 
 	// create another log root, but change the alias and the filters
-	LogRoot Clone(char const* alias, LogFilters filters) const;
+	LogRoot Clone(char const* alias, LogFilters filters) const;	
 
 	bool IsEnabled(const LogFilters& rhs) const;
 

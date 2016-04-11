@@ -36,7 +36,7 @@ namespace asiodnp3
 
 DNP3Channel::DNP3Channel(
 	std::unique_ptr<LogRoot> root_,
-  const ChannelRetry& retry,
+	const ChannelRetry& retry,
 	std::unique_ptr<asiopal::PhysicalLayerASIO> phys_) :
 
 	phys(std::move(phys_)),
@@ -141,9 +141,10 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 {
 	auto add = [&]() -> IMaster*
 	{
-		auto factory = [&]()
+		auto factory = [&]() -> MasterStack*
 		{
-			return new MasterStack(root->Clone(id), phys->executor, SOEHandler, application, config, stacks, router.GetTaskLock());
+			auto root = std::unique_ptr<openpal::LogRoot>(new openpal::LogRoot(*this->root.get(), id));
+			return new MasterStack(std::move(root), this->phys->executor, SOEHandler, application, config, stacks, router.GetTaskLock());
 		};
 
 		return this->AddStack<MasterStack>(config.link, factory);
@@ -158,7 +159,8 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 	{
 		auto factory = [&]()
 		{
-			return new OutstationStack(root->Clone(id), phys->executor, commandHandler, application, config, stacks);
+			auto root = std::unique_ptr<openpal::LogRoot>(new openpal::LogRoot(*this->root.get(), id));
+			return new OutstationStack(std::move(root), this->phys->executor, commandHandler, application, config, stacks);
 		};
 
 		return this->AddStack<OutstationStack>(config.link, factory);

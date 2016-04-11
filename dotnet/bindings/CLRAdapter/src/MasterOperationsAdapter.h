@@ -25,6 +25,8 @@ namespace Automatak
 				MasterOperationsAdapter(asiodnp3::IMasterOperations* operations);
 
 				virtual IStackStatistics^ GetStackStatistics();			
+
+				virtual void SetLogFilters(LogFilter flags);				
 			
 				virtual Task<TaskCompletion>^ Scan(IEnumerable<Header^>^ headers, TaskConfig^ config);
 

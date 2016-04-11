@@ -61,6 +61,8 @@ public:
 
 	bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata);
 
+	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
+
 	/// --- IGPRSMaster ---
 
 	virtual void BeginShutdown() override;
@@ -96,7 +98,7 @@ private:
 		opendnp3::ILinkTx& linktx,
 		const opendnp3::MasterStackConfig& config
 	);
-
+	
 	std::shared_ptr<asiopal::StrandExecutor> m_executor;
 	std::shared_ptr<opendnp3::ISOEHandler> m_handler;
 	std::shared_ptr<opendnp3::IMasterApplication> m_application;

@@ -35,6 +35,7 @@ class IMaster : public IMasterOperations, public IStack
 public:
 
 	virtual ~IMaster() {}	
+
 };
 
 }

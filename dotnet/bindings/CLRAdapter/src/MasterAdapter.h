@@ -16,7 +16,7 @@ namespace Automatak
 			{
 			public:
 
-				MasterAdapter(asiodnp3::IMaster* master);				
+				MasterAdapter(asiodnp3::IMaster* apMaster);
 
 				virtual void Enable();
 

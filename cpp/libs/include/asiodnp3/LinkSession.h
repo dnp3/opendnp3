@@ -59,7 +59,9 @@ namespace asiodnp3
 		);
 		
 		// override IResource
-		void BeginShutdown() override;		
+		void BeginShutdown() override;	
+
+		void SetLogFilters(openpal::LogFilters filters);
 
 	private:		
 

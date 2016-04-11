@@ -33,9 +33,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkContext::LinkContext(openpal::Logger logger_, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config_) :
-	logger(logger_),
-	config(config_),
+LinkContext::LinkContext(openpal::Logger logger, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config) :
+	logger(logger),
+	config(config),
 	pSegments(nullptr),
 	txMode(LinkTransmitMode::Idle),
 	numRetryRemaining(0),
