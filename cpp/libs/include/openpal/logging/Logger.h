@@ -48,6 +48,8 @@ public:
 
 private:
 
+	Logger() = delete;
+
 	Logger(LogRoot* pRoot);
 
 	LogRoot* pRoot;
