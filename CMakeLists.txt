@@ -104,6 +104,9 @@ if(DEMO)
   target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})   
   set_target_properties(outstation-demo PROPERTIES FOLDER demos)
 
+  # When linking the demos, asiopal requires network libraries
+  target_link_libraries (asiopal LINK_PUBLIC ${NET_LIBS})
+
   if(DNP3_DECODE)
     
     # ----- decoder executable -----
@@ -167,4 +170,3 @@ if(TEST)
   add_test(testasiodnp3 testasiodnp3)  
 
 endif()
-
