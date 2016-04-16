@@ -35,10 +35,10 @@ class Function1 : private Erasure
 
 public:
 
-	Function1() : pInvoke(nullptr)
+	Function1() : Erasure(), pInvoke(nullptr)
 	{}
 
-	Function1(const Function1& other) : pInvoke(other.pInvoke)
+	Function1(const Function1& other) : Erasure(), pInvoke(other.pInvoke)
 	{
 		this->CopyErasure(other);
 	}

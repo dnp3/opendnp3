@@ -30,6 +30,12 @@ namespace openpal
 const double DoubleFloat::Max(openpal::MaxValue<double>());
 const double DoubleFloat::Min(openpal::MinValue<double>());
 
+union DoubleFloatUnion
+{
+	uint8_t bytes[8];
+	double value;	
+};
+
 double DoubleFloat::ReadBuffer(RSlice& buffer)
 {
 	auto ret = Read(buffer);
@@ -47,14 +53,13 @@ double DoubleFloat::Read(const uint8_t* data)
 {
 	if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
 	{
-		double d;
-		memcpy(&d, data, SIZE);
-		return d;
+		DoubleFloatUnion x = {{ data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7] }};
+		return x.value;
 	}
 	else
 	{
-		uint8_t bytes[8] = { data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] };
-		return *reinterpret_cast<double*>(bytes);
+		DoubleFloatUnion x = {{ data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] }};
+		return x.value;
 	}
 }
 
@@ -72,5 +77,4 @@ void DoubleFloat::Write(uint8_t* dest, double value)
 	}
 }
 }
-
 

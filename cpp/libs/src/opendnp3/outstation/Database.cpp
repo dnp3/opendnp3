@@ -32,9 +32,9 @@ namespace opendnp3
 {
 
 Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, IndexMode indexMode_, StaticTypeBitField allowedClass0Types) :
-	buffers(dbTemplate, allowedClass0Types, indexMode_),
 	pEventReceiver(&eventReceiver),
-	indexMode(indexMode_)
+	indexMode(indexMode_),
+	buffers(dbTemplate, allowedClass0Types, indexMode_)
 {
 
 }
