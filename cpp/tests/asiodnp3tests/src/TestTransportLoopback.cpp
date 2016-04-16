@@ -23,7 +23,6 @@
 #include <catch.hpp>
 #include <functional>
 
-#include <asiopal/LogFanoutHandler.h>
 #include <asiopal/PhysicalLayerSerial.h>
 
 #include <opendnp3/app/AppConstants.h>
@@ -71,8 +70,8 @@ TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 
 	LinkConfig cfgA(true, true);
 	LinkConfig cfgB(false, true);
-
-	LogFanoutHandler log;
+	
+	testlib::MockLogHandler log;
 	LogRoot root(&log, "test", level);
 	asio::io_service service;
 	LoopbackPhysicalLayer phys(root, service);

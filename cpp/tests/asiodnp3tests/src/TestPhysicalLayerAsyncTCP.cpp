@@ -24,7 +24,6 @@
 #include <functional>
 
 #include <asiopal/ASIOExecutor.h>
-#include <asiopal/LogFanoutHandler.h>
 
 #include <openpal/logging/LogRoot.h>
 
@@ -229,7 +228,7 @@ TEST_CASE(SUITE("Loopback"))
 	const size_t SIZE = MACRO_LOOPBACK_SIZE;
 	const size_t ITERATIONS = MACRO_LOOPBACK_ITERATIONS;
 
-	LogFanoutHandler log;
+	testlib::MockLogHandler log;
 	LogRoot root(&log, "test", levels::NORMAL);
 	TestObjectASIO test;
 	PhysicalLayerTCPServer server(root, test.GetService(), "127.0.0.1", 30000);

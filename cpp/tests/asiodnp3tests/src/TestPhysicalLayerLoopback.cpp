@@ -20,14 +20,13 @@
  */
 #include <catch.hpp>
 
-#include <asiopal/LogFanoutHandler.h>
-
 #include <openpal/logging/LogRoot.h>
 
 #include "mocks/PhysLoopback.h"
 #include "mocks/MockPhysicalLayer.h"
 
 #include <testlib/MockExecutor.h>
+#include <testlib/MockLogHandler.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -50,7 +49,7 @@ public:
 		loopback.Start();
 	}
 
-	asiopal::LogFanoutHandler log;
+	testlib::MockLogHandler log;
 	openpal::LogRoot root;
 	testlib::MockExecutor exe;
 	MockPhysicalLayer phys;

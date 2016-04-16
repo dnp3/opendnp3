@@ -26,7 +26,6 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include <asiopal/LogFanoutHandler.h>
 #include <asiopal/IOServiceThreadPool.h>
 
 #include <opendnp3/LogLevels.h>

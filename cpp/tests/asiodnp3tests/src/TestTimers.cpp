@@ -22,11 +22,12 @@
 
 #include <openpal/logging/LogRoot.h>
 
-#include <asiopal/LogFanoutHandler.h>
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/IOServiceThreadPool.h>
 
 #include <opendnp3/LogLevels.h>
+
+#include <testlib/MockLogHandler.h>
 
 #include <map>
 #include <functional>
@@ -64,7 +65,7 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 {
 	const int NUM = 10000;
 
-	asiopal::LogFanoutHandler log;
+	testlib::MockLogHandler log;
 	asiopal::IOServiceThreadPool pool(&log, levels::NORMAL, 4);
 	asiopal::ASIOExecutor executor(pool.GetIOService());
 

@@ -20,7 +20,6 @@
  */
 #include <catch.hpp>
 
-#include <asiopal/LogFanoutHandler.h>
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/ASIOExecutor.h>
 #include <asiodnp3/ConsoleLogger.h>
