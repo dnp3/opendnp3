@@ -55,6 +55,7 @@ public:
 	*	Construct a manager
 	*
 	*	@param concurrencyHint How many threads to allocate in the thread pool
+	*	@param handler Callback interface for log messages
 	*	@param onThreadStart Action to run when a thread pool thread starts
 	*	@param onThreadExit Action to run just before a thread pool thread exits
 	*/
