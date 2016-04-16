@@ -45,7 +45,7 @@ class OutstationStackBase : public Interface, public ILinkBind
 {
 public:
 
-	OutstationStackBase(	    
+	OutstationStackBase(
 	    std::unique_ptr<openpal::LogRoot> root,
 	    openpal::IExecutor& executor,
 	    opendnp3::ILinkListener& listener,
@@ -59,7 +59,7 @@ public:
 	{}
 
 	// ------- implement IOutstation -------
-	
+
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final
 	{
 		auto set = [this, filters]()

@@ -42,7 +42,7 @@ public:
 
 	ManagerImpl(
 	    uint32_t concurrencyHint,
-		std::shared_ptr<openpal::ILogHandler> handler,
+	    std::shared_ptr<openpal::ILogHandler> handler,
 	    std::function<void()> onThreadStart,
 	    std::function<void()> onThreadExit
 	) :

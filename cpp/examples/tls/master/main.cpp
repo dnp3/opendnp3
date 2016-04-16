@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 
 	// This is the main point of interaction with the stack
 	// send log messages to the console
-	DNP3Manager manager(1, ConsoleLogger::Create());	
+	DNP3Manager manager(1, ConsoleLogger::Create());
 
 	// Connect via a TCPClient socket to a outstation
 	auto pChannel = manager.AddTLSClient(

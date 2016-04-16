@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
 
 	// This is the main point of interaction with the stack
-	DNP3Manager manager(1, ConsoleLogger::Create());	
+	DNP3Manager manager(1, ConsoleLogger::Create());
 
 	// Connect via a TCPClient socket to a outstation
 	auto pChannel = manager.AddTCPClient("tcpclient", FILTERS, ChannelRetry::Default(), "127.0.0.1", "0.0.0.0", 20000);
@@ -72,11 +72,11 @@ int main(int argc, char* argv[])
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
 	auto master = pChannel->AddMaster(
-	                   "master",										// id for logging
-	                   PrintingSOEHandler::Instance(),					// callback for data processing
-	                   asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
-	                   stackConfig										// stack configuration
-	               );
+	                  "master",										// id for logging
+	                  PrintingSOEHandler::Instance(),					// callback for data processing
+	                  asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
+	                  stackConfig										// stack configuration
+	              );
 
 
 	// do an integrity poll (Class 3/2/1/0) once per minute
@@ -111,8 +111,8 @@ int main(int argc, char* argv[])
 			break;
 		case('d') :
 			master->PerformFunction("disable unsol", FunctionCode::DISABLE_UNSOLICITED,
-				{ Header::AllObjects(60, 2), Header::AllObjects(60, 3), Header::AllObjects(60, 4) }
-			);
+			{ Header::AllObjects(60, 2), Header::AllObjects(60, 3), Header::AllObjects(60, 4) }
+			                       );
 			break;
 		case('r') :
 			{
@@ -146,26 +146,26 @@ int main(int argc, char* argv[])
 				break;
 			}
 		case('t') :
-		{
-			channelCommsLoggingEnabled = !channelCommsLoggingEnabled;
-			auto levels = channelCommsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
-			pChannel->SetLogFilters(levels);
-			std::cout << "Channel logging set to: " << levels << std::endl;
-			break;
-		}
+			{
+				channelCommsLoggingEnabled = !channelCommsLoggingEnabled;
+				auto levels = channelCommsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
+				pChannel->SetLogFilters(levels);
+				std::cout << "Channel logging set to: " << levels << std::endl;
+				break;
+			}
 		case('u') :
-		{
-			masterCommsLoggingEnabled = !masterCommsLoggingEnabled;
-			auto levels = masterCommsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
-			master->SetLogFilters(levels);
-			std::cout << "Master logging set to: " << levels << std::endl;
-			break;
-		}
+			{
+				masterCommsLoggingEnabled = !masterCommsLoggingEnabled;
+				auto levels = masterCommsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
+				master->SetLogFilters(levels);
+				std::cout << "Master logging set to: " << levels << std::endl;
+				break;
+			}
 		default:
 			std::cout << "Unknown action: " << cmd << std::endl;
 			break;
 		}
-	}	
+	}
 
 	return 0;
 }

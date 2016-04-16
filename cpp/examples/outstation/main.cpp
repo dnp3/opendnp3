@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation
 	// Log messages to the console
-	DNP3Manager manager(1, ConsoleLogger::Create());	
+	DNP3Manager manager(1, ConsoleLogger::Create());
 
 	// Create a TCP server (listener)
 	auto channel = manager.AddTCPServer("server", FILTERS, ChannelRetry::Default(), "0.0.0.0", 20000);
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
 	string input;
 	uint32_t count = 0;
 	double value = 0;
-	bool binary = false;	
+	bool binary = false;
 	DoubleBit dbit = DoubleBit::DETERMINED_OFF;
 	bool channelCommsLoggingEnabled = true;
 	bool outstationCommsLoggingEnabled = true;
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
-		std::cin >> input;		
+		std::cin >> input;
 
 		for (char & c : input)
 		{

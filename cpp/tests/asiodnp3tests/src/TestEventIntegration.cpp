@@ -95,13 +95,14 @@ public:
 
 		const auto RX_NUM = this->ProcessRxValues();
 		//std::cout << "rx: " << RX_NUM << std::endl;
-		
-		if (m_num_remaining == 0) {
+
+		if (m_num_remaining == 0)
+		{
 			return true;
 		}
 
 		const auto TX_NUM = this->LoadNewValues(outstation);
-		//std::cout << "tx: " << TX_NUM << std::endl;		
+		//std::cout << "tx: " << TX_NUM << std::endl;
 
 		if (m_condition.wait_for(lock, timeout) == cv_status::timeout)
 		{
@@ -129,19 +130,21 @@ private:
 			}
 
 			++m_rx_sequence;
-		}		
+		}
 
 		const auto NUM = m_rx_values.size();
 
 		//std::cout << "rx: " << m_rx_values.size() << " out: " << m_num_outstanding << " remain: " << m_num_remaining << std::endl;
 
-		if (NUM > m_num_outstanding) {
+		if (NUM > m_num_outstanding)
+		{
 			throw std::logic_error("rx NUM > m_num_outstanding");
 		}
 
-		if (NUM > m_num_remaining) {
+		if (NUM > m_num_remaining)
+		{
 			throw std::logic_error("rx NUM > m_num_remaining");
-		}		
+		}
 
 		m_num_remaining -= NUM;
 		m_num_outstanding -= NUM;
@@ -154,7 +157,8 @@ private:
 		const auto TX_SAFELY = MAX_OUTSTANDING - m_num_outstanding;
 		const auto TX_MAX = TX_SAFELY > m_num_remaining ? m_num_remaining : TX_SAFELY;
 
-		if (TX_MAX == 0) { 
+		if (TX_MAX == 0)
+		{
 			return 0;
 		}
 
@@ -193,7 +197,7 @@ private:
 
 
 	std::random_device m_random;
-	std::mt19937 m_gen;	
+	std::mt19937 m_gen;
 };
 
 IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numValues, uint16_t eventBufferSize)
@@ -229,9 +233,9 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
 	const uint32_t NUM_TO_SEND = 100000;						// send 100,000 values
 	const uint16_t EVENT_BUFFER_SIZE = 100;						// size of the events buffers for all types
-	const uint32_t MAX_OUTSTANDING = EVENT_BUFFER_SIZE/4;		// important to keep this below the event buffer size, otherwise we can overflow it and lose events
+	const uint32_t MAX_OUTSTANDING = EVENT_BUFFER_SIZE / 4;		// important to keep this below the event buffer size, otherwise we can overflow it and lose events
 	const uint16_t NUM_VALUES = 100;							// size of the static database. we'll rotate through indices
-	
+
 
 	EventReceiver eventrx(NUM_TO_SEND, MAX_OUTSTANDING, NUM_VALUES);
 

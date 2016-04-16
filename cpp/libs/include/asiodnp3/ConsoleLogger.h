@@ -47,13 +47,13 @@ public:
 	virtual void Log(const openpal::LogEntry& entry) override;
 
 	void SetPrintLocation(bool printLocation);
-	
+
 	static std::shared_ptr<openpal::ILogHandler>Create()
 	{
 		return std::make_shared<ConsoleLogger>();
 	};
 
-private:	
+private:
 
 	bool printLocation;
 

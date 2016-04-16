@@ -62,9 +62,18 @@ public:
 
 	// ------- Misc ---------------
 
-	IResponseLoader& GetResponseLoader() override final { return buffers; }
-	IStaticSelector& GetStaticSelector() override final { return buffers; }
-	IClassAssigner& GetClassAssigner() override final { return buffers; }
+	IResponseLoader& GetResponseLoader() override final
+	{
+		return buffers;
+	}
+	IStaticSelector& GetStaticSelector() override final
+	{
+		return buffers;
+	}
+	IClassAssigner& GetClassAssigner() override final
+	{
+		return buffers;
+	}
 
 	/**
 	* @return A view of all the static data for configuration purposes

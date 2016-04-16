@@ -33,7 +33,7 @@ const float SingleFloat::Min(openpal::MinValue<float>());
 union SingleFloatUnion
 {
 	uint8_t bytes[4];
-	float value;	
+	float value;
 };
 
 

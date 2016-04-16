@@ -40,7 +40,7 @@ namespace opendnp3
 {
 MContext::MContext(
     IExecutor& executor,
-	openpal::Logger logger,
+    openpal::Logger logger,
     ILowerLayer& lower,
     ISOEHandler& SOEHandler,
     opendnp3::IMasterApplication& application,

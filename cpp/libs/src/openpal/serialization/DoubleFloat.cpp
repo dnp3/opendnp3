@@ -33,7 +33,7 @@ const double DoubleFloat::Min(openpal::MinValue<double>());
 union DoubleFloatUnion
 {
 	uint8_t bytes[8];
-	double value;	
+	double value;
 };
 
 double DoubleFloat::ReadBuffer(RSlice& buffer)

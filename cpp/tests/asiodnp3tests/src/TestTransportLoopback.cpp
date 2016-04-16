@@ -70,7 +70,7 @@ TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 
 	LinkConfig cfgA(true, true);
 	LinkConfig cfgB(false, true);
-	
+
 	testlib::MockLogHandler log;
 	LogRoot root(&log, "test", level);
 	asio::io_service service;
