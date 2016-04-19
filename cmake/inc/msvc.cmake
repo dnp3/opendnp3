@@ -1,5 +1,5 @@
 if (WIN32)
-    if(MSVS)
+    if(MSVC)
 	add_definitions(-D_WIN32_WINNT=0x0501)
 	add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)  
 	
