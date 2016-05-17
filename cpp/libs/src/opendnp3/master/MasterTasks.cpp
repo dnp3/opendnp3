@@ -31,7 +31,7 @@ MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logg
 	assignClass(app, params.taskRetryPeriod, logger),
 	startupIntegrity(app, SOEHandler, params.startupIntegrityClassMask, params.taskRetryPeriod, logger),
 	disableUnsol(app, params.disableUnsolOnStartup, params.taskRetryPeriod, logger),
-	timeSync(app, logger),
+	timeSync(app, params.timeSyncMode, logger),
 	eventScan(app, SOEHandler, params.eventScanOnEventsAvailableClassMask, params.taskRetryPeriod, logger)
 {
 

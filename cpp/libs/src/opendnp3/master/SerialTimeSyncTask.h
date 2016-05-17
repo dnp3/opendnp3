@@ -26,6 +26,8 @@
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
 
+#include "opendnp3/gen/TimeSyncMode.h"
+
 namespace opendnp3
 {
 
@@ -34,7 +36,7 @@ class SerialTimeSyncTask : public IMasterTask
 {
 
 public:
-	SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger);
+	SerialTimeSyncTask(IMasterApplication& app, TimeSyncMode mode, openpal::Logger logger);
 
 	virtual char const* Name() const override final
 	{
@@ -60,14 +62,16 @@ public:
 
 private:
 
+    bool enabled;
+
 	virtual MasterTaskType GetTaskType() const override final
 	{
 		return MasterTaskType::SERIAL_TIME_SYNC;
 	}
 
-	virtual bool IsEnabled() const override final
+	virtual bool IsEnabled() const override
 	{
-		return true;
+        return enabled;
 	}
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;

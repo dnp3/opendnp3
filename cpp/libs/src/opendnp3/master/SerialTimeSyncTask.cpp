@@ -27,15 +27,19 @@
 
 #include <openpal/serialization/Serialization.h>
 
+#include "opendnp3/gen/TimeSyncMode.h"
+
 using namespace openpal;
 
 namespace opendnp3
 {
 
-SerialTimeSyncTask::SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
+SerialTimeSyncTask::SerialTimeSyncTask(IMasterApplication& app, TimeSyncMode mode, openpal::Logger logger) :
 	IMasterTask(app, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
 	delay(-1)
-{}
+{
+    enabled = (mode == TimeSyncMode::SerialTimeSync);
+}
 
 void SerialTimeSyncTask::Initialize()
 {
