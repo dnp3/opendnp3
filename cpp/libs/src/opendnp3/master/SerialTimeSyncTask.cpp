@@ -38,7 +38,7 @@ SerialTimeSyncTask::SerialTimeSyncTask(IMasterApplication& app, TimeSyncMode mod
 	IMasterTask(app, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
 	delay(-1)
 {
-    enabled = (mode == TimeSyncMode::SerialTimeSync);
+	enabled = (mode == TimeSyncMode::SerialTimeSync);
 }
 
 void SerialTimeSyncTask::Initialize()

@@ -62,7 +62,7 @@ public:
 
 private:
 
-    bool enabled;
+	bool enabled;
 
 	virtual MasterTaskType GetTaskType() const override final
 	{
@@ -71,7 +71,7 @@ private:
 
 	virtual bool IsEnabled() const override
 	{
-        return enabled;
+		return enabled;
 	}
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
