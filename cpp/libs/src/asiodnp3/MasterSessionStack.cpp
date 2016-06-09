@@ -119,21 +119,21 @@ namespace asiodnp3
 	MasterScan MasterSessionStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
 	{
 		auto self(shared_from_this());
-		auto get = [self, gvId, period, config] { return self->AddAllObjectsScan(gvId, period, config); };
+		auto get = [self, gvId, period, config] { return self->m_context.AddAllObjectsScan(gvId, period, config); };
 		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
 	MasterScan MasterSessionStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
 	{
 		auto self(shared_from_this());
-		auto get = [self, field, period, config] { return self->AddClassScan(field, period, config); };
+		auto get = [self, field, period, config] { return self->m_context.AddClassScan(field, period, config); };
 		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
 	MasterScan MasterSessionStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
 	{
 		auto self(shared_from_this());
-		auto get = [self, gvId, start, stop, period, config] { return self->AddRangeScan(gvId, start, stop, period, config); };
+		auto get = [self, gvId, start, stop, period, config] { return self->m_context.AddRangeScan(gvId, start, stop, period, config); };
 		return m_executor->ReturnFrom<MasterScan>(get);
 	}
 
@@ -199,7 +199,7 @@ namespace asiodnp3
 
 		auto action = [self, set, config, callback]() -> void
 		{			
-			self->SelectAndOperate(std::move(*set), callback, config);
+			self->m_context.SelectAndOperate(std::move(*set), callback, config);
 		};
 		m_executor->m_strand.post(action);
 	}
@@ -213,7 +213,7 @@ namespace asiodnp3
 
 		auto action = [self, set, config, callback]() -> void
 		{
-			self->DirectOperate(std::move(*set), callback, config);
+			self->m_context.DirectOperate(std::move(*set), callback, config);
 		};
 		m_executor->m_strand.post(action);
 	}
