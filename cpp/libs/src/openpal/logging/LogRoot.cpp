@@ -35,7 +35,7 @@ LogRoot::LogRoot(ILogHandler* handler, char const* alias, LogFilters filters) : 
 
 }
 
-LogRoot::LogRoot(ILogHandler* handler, char const* alias, LogFilters filters, bool reuseAlias) : 
+LogRoot::LogRoot(ILogHandler* handler, char const* alias, LogFilters filters, bool reuseAlias) :
 	logger(this),
 	m_handler(handler),
 	m_filters(filters),
@@ -51,7 +51,7 @@ LogRoot::LogRoot(const LogRoot& copy, char const* alias) :
 
 }
 
-LogRoot::LogRoot(LogRoot&& other) : LogRoot(other.m_handler, other.m_alias, other.m_filters, true)	
+LogRoot::LogRoot(LogRoot&& other) : LogRoot(other.m_handler, other.m_alias, other.m_filters, true)
 {
 	other.m_alias = nullptr;
 	other.m_handler = nullptr;
@@ -69,7 +69,7 @@ LogRoot LogRoot::Clone(char const* alias, LogFilters filters) const
 }
 
 LogRoot::~LogRoot()
-{	
+{
 	delete[] m_alias;
 }
 

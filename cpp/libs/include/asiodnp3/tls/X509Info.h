@@ -35,9 +35,9 @@ namespace asiodnp3
 */
 class X509Info : private openpal::Uncopyable
 {
-	public:
+public:
 
-		X509Info(int depth_, const openpal::RSlice sha1thumbprint_, std::string subjectName_) :
+	X509Info(int depth_, const openpal::RSlice sha1thumbprint_, std::string subjectName_) :
 		depth(depth_),
 		sha1thumbprint(sha1thumbprint_),
 		subjectName(subjectName_)
@@ -52,7 +52,7 @@ class X509Info : private openpal::Uncopyable
 	// the extracted subject name
 	std::string subjectName;
 
-	private:
+private:
 
 	X509Info();
 };

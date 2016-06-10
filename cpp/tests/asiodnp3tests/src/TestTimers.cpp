@@ -66,7 +66,7 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 	const int NUM = 10000;
 
 
-	testlib::MockLogHandler log;	
+	testlib::MockLogHandler log;
 	asiopal::ThreadPool pool(&log, levels::NORMAL, 4);
 	asiopal::ASIOExecutor executor(pool.GetIOService());
 

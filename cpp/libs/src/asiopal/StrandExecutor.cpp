@@ -28,8 +28,8 @@ using namespace openpal;
 
 namespace asiopal
 {
-	
-StrandExecutor::StrandExecutor(std::shared_ptr<ThreadPool> pool) : 
+
+StrandExecutor::StrandExecutor(std::shared_ptr<ThreadPool> pool) :
 	m_pool(pool),
 	m_strand(pool->GetIOService())
 {
@@ -65,10 +65,12 @@ openpal::ITimer* StrandExecutor::Start(const asiopal_steady_clock::time_point& e
 	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->m_strand.get_io_service()));
 
 	timer->m_timer.expires_at(expiration);
-		
+
 	// neither the executor nor the timer can be deleted while the timer is still active
-	auto callback = [timer, self, runnable](const std::error_code& ec) {
-		if (!ec) { // an error indicate timer was canceled
+	auto callback = [timer, self, runnable](const std::error_code & ec)
+	{
+		if (!ec)   // an error indicate timer was canceled
+		{
 			runnable.Apply();
 		}
 	};
@@ -81,7 +83,7 @@ openpal::ITimer* StrandExecutor::Start(const asiopal_steady_clock::time_point& e
 void StrandExecutor::Post(const Action0& runnable)
 {
 	auto self(shared_from_this());
-	auto callback = [self, runnable]() 
+	auto callback = [self, runnable]()
 	{
 		runnable.Apply();
 	};

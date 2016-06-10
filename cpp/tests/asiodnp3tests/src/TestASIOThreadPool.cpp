@@ -58,7 +58,7 @@ TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 {
 
-	const size_t ITERATIONS = 100000;	
+	const size_t ITERATIONS = 100000;
 	int count1 = 0;
 
 	{
@@ -69,10 +69,10 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 		{
 			++count1;
 		};
-		
+
 		for (size_t i = 0; i < ITERATIONS; ++i) s1.post(increment);
 	}
-	
+
 	REQUIRE(count1 == ITERATIONS);
 }
 
@@ -88,11 +88,14 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 
 		strand s1(pool.GetIOService());
 
-		auto increment = [&count1]() { ++count1; };
+		auto increment = [&count1]()
+		{
+			++count1;
+		};
 
 		for (size_t i = 0; i < ITERATIONS; ++i) pool.GetIOService().post(s1.wrap(increment));
 	}
-	
+
 	REQUIRE(count1 == ITERATIONS);
 }
 

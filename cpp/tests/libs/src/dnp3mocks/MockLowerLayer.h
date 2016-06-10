@@ -32,7 +32,7 @@ namespace opendnp3
 class MockLowerLayer : public ILowerLayer, public HasUpperLayer
 {
 public:
-	
+
 	void SendUp(const openpal::RSlice& arBuffer);
 	void SendUp(const std::string&);
 	void SendSuccess();
@@ -51,7 +51,7 @@ public:
 
 	virtual void BeginTransmit(const openpal::RSlice& arBuffer) override final;
 
-private:	
+private:
 
 	std::queue<openpal::RSlice> sendQueue;
 };

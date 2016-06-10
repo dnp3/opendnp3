@@ -41,7 +41,7 @@ ThreadPool::ThreadPool(
     uint32_t concurrency,
     std::function<void()> onThreadStart_,
     std::function<void()> onThreadExit_) :
-	root(handler, "pool", levels),	
+	root(handler, "pool", levels),
 	onThreadStart(onThreadStart_),
 	onThreadExit(onThreadExit_),
 	isShutdown(false),
@@ -62,17 +62,17 @@ ThreadPool::ThreadPool(
 }
 
 std::shared_ptr<ThreadPool> ThreadPool::Create(
-	openpal::ILogHandler* handler,
-	uint32_t levels,
-	uint32_t concurrency,
-	std::function<void()> onThreadStart,
-	std::function<void()> onThreadExit)
+    openpal::ILogHandler* handler,
+    uint32_t levels,
+    uint32_t concurrency,
+    std::function<void()> onThreadStart,
+    std::function<void()> onThreadExit)
 {
 	return std::make_shared<ThreadPool>(handler, levels, concurrency, onThreadStart, onThreadExit);
 }
 
 ThreadPool::~ThreadPool()
-{	
+{
 	this->Shutdown();
 	for(auto pThread : threads)
 	{

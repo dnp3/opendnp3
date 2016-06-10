@@ -29,8 +29,9 @@
 
 
 
-namespace asiopal {
-	class StrandExecutor;
+namespace asiopal
+{
+class StrandExecutor;
 }
 
 namespace asiodnp3
@@ -46,15 +47,15 @@ class MasterSessionStack final : public IMasterSession, public std::enable_share
 public:
 
 	static std::shared_ptr<MasterSessionStack> Create(
-		openpal::Logger logger,
-		std::shared_ptr<asiopal::StrandExecutor> executor,
-		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-		std::shared_ptr<opendnp3::IMasterApplication> application,
-		std::shared_ptr<LinkSession> session,
-		opendnp3::ILinkTx& linktx,
-		const opendnp3::MasterStackConfig& config
+	    openpal::Logger logger,
+	    std::shared_ptr<asiopal::StrandExecutor> executor,
+	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+	    std::shared_ptr<opendnp3::IMasterApplication> application,
+	    std::shared_ptr<LinkSession> session,
+	    opendnp3::ILinkTx& linktx,
+	    const opendnp3::MasterStackConfig& config
 	);
-		
+
 	void OnLowerLayerUp();
 
 	void OnLowerLayerDown();
@@ -70,7 +71,7 @@ public:
 	/// --- ICommandOperations ---
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override;
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;	
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
 	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
 	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
 	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
@@ -87,18 +88,18 @@ public:
 	virtual void SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
 	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
 
-private:	
+private:
 
 	MasterSessionStack(
-		openpal::Logger logger,
-		std::shared_ptr<asiopal::StrandExecutor> executor,
-		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-		std::shared_ptr<opendnp3::IMasterApplication> application,
-		std::shared_ptr<LinkSession> session,
-		opendnp3::ILinkTx& linktx,
-		const opendnp3::MasterStackConfig& config
+	    openpal::Logger logger,
+	    std::shared_ptr<asiopal::StrandExecutor> executor,
+	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+	    std::shared_ptr<opendnp3::IMasterApplication> application,
+	    std::shared_ptr<LinkSession> session,
+	    opendnp3::ILinkTx& linktx,
+	    const opendnp3::MasterStackConfig& config
 	);
-	
+
 	std::shared_ptr<asiopal::StrandExecutor> m_executor;
 	std::shared_ptr<opendnp3::ISOEHandler> m_handler;
 	std::shared_ptr<opendnp3::IMasterApplication> m_application;

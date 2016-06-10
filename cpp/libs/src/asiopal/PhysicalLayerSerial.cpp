@@ -39,7 +39,7 @@ namespace asiopal
 {
 
 PhysicalLayerSerial::PhysicalLayerSerial(
-	openpal::Logger logger,
+    openpal::Logger logger,
     asio::io_service& service,
     const SerialSettings& settings) :
 

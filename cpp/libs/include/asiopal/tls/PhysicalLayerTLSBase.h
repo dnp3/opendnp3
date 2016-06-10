@@ -40,11 +40,11 @@ class PhysicalLayerTLSBase : public PhysicalLayerASIO
 public:
 
 	PhysicalLayerTLSBase(
-		openpal::Logger logger,
-		asio::io_service& service,
-		const TLSConfig& config,
-		bool server,
-		std::error_code& ec
+	    openpal::Logger logger,
+	    asio::io_service& service,
+	    const TLSConfig& config,
+	    bool server,
+	    std::error_code& ec
 	);
 
 	virtual ~PhysicalLayerTLSBase() {}

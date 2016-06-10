@@ -104,11 +104,11 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTCPServer(
-		char const* id,
-		uint32_t levels,
-		const opendnp3::ChannelRetry& retry,
-		const std::string& endpoint,
-		uint16_t port);
+	    char const* id,
+	    uint32_t levels,
+	    const opendnp3::ChannelRetry& retry,
+	    const std::string& endpoint,
+	    uint16_t port);
 
 	/**
 	* Add a persistent TCP serial channel
@@ -144,14 +144,14 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTLSClient(
-		char const* id,
-		uint32_t levels,
-		const opendnp3::ChannelRetry& retry,
-		const std::string& host,
-		const std::string& local,
-		uint16_t port,
-		const asiopal::TLSConfig& config,
-		std::error_code& ec);
+	    char const* id,
+	    uint32_t levels,
+	    const opendnp3::ChannelRetry& retry,
+	    const std::string& host,
+	    const std::string& local,
+	    uint16_t port,
+	    const asiopal::TLSConfig& config,
+	    std::error_code& ec);
 
 
 	/**
@@ -169,13 +169,13 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTLSServer(
-		char const* id,
-		uint32_t levels,
-		const opendnp3::ChannelRetry& retry,
-		const std::string& endpoint,
-		uint16_t port,
-		const asiopal::TLSConfig& config,
-		std::error_code& ec);
+	    char const* id,
+	    uint32_t levels,
+	    const opendnp3::ChannelRetry& retry,
+	    const std::string& endpoint,
+	    uint16_t port,
+	    const asiopal::TLSConfig& config,
+	    std::error_code& ec);
 
 #endif
 

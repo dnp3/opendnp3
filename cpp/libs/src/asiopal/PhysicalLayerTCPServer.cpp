@@ -37,7 +37,7 @@ namespace asiopal
 {
 
 PhysicalLayerTCPServer::PhysicalLayerTCPServer(
-	openpal::Logger logger,
+    openpal::Logger logger,
     asio::io_service& service,
     const std::string& endpoint,
     uint16_t port,

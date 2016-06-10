@@ -53,19 +53,19 @@ int main(int argc, char* argv[])
 	{
 		std::cout << ec.message() << std::endl;
 		return ec.value();
-	}	
+	}
 
 	do
 	{
 		std::cout << "Enter a command" << std::endl;
-		std::cout << "x - exits program" << std::endl;		
+		std::cout << "x - exits program" << std::endl;
 
 		char cmd;
 		std::cin >> cmd;
 		switch(cmd)
-		{		
-		case('x'):			
-			return 0;					
+		{
+		case('x'):
+			return 0;
 		default:
 			std::cout << "Unknown action: " << cmd << std::endl;
 			break;

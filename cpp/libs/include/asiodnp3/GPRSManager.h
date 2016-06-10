@@ -63,11 +63,11 @@ public:
 	* Create a TCP listener that will be used to accept incoming connections
 	*/
 	std::shared_ptr<asiopal::IListener> CreateListener(
-		std::string loggerid,
-		openpal::LogFilters loglevel,
-		asiopal::IPEndpoint endpoint,
-		std::shared_ptr<IListenCallbacks> callbacks,		
-		std::error_code& ec
+	    std::string loggerid,
+	    openpal::LogFilters loglevel,
+	    asiopal::IPEndpoint endpoint,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::error_code& ec
 	);
 
 #ifdef OPENDNP3_USE_TLS
@@ -76,17 +76,17 @@ public:
 	* Create a TLS listener that will be used to accept incoming connections
 	*/
 	std::shared_ptr<asiopal::IListener> CreateListener(
-		std::string loggerid,
-		openpal::LogFilters loglevel,
-		asiopal::IPEndpoint endpoint,
-		const asiopal::TLSConfig& config,
-		std::shared_ptr<IListenCallbacks> callbacks,
-		std::error_code& ec
+	    std::string loggerid,
+	    openpal::LogFilters loglevel,
+	    asiopal::IPEndpoint endpoint,
+	    const asiopal::TLSConfig& config,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::error_code& ec
 	);
 #endif
 
 private:
-		
+
 	GPRSManagerImpl* m_impl;
 
 };

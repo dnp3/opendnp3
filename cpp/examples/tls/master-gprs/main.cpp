@@ -43,11 +43,11 @@ int main(int argc, char* argv[])
 	std::string caCertificate(argv[1]);
 	std::string certificateChain(argv[2]);
 	std::string privateKey(argv[3]);
-	
+
 
 	std::cout << "Using CA certificate: " << caCertificate << std::endl;
 	std::cout << "Using certificate chain: " << certificateChain << std::endl;
-	std::cout << "Using private key file: " << privateKey << std::endl;	
+	std::cout << "Using private key file: " << privateKey << std::endl;
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
@@ -60,39 +60,39 @@ int main(int argc, char* argv[])
 
 	// This is the main point of interaction with the stack
 	GPRSManager manager(NUM_THREAD, log_handler);
-	
+
 	std::error_code ec;
 	auto server1 = manager.CreateListener(
-		"server-20001",
-		FILTERS,
-		IPEndpoint::AllAdapters(20001), 
-		TLSConfig(
-			caCertificate, 
-			certificateChain,
-			privateKey,
-			2		
-		),
-		callbacks, 
-		ec
-	);
+	                   "server-20001",
+	                   FILTERS,
+	                   IPEndpoint::AllAdapters(20001),
+	                   TLSConfig(
+	                       caCertificate,
+	                       certificateChain,
+	                       privateKey,
+	                       2
+	                   ),
+	                   callbacks,
+	                   ec
+	               );
 
 	if (ec)
 	{
 		std::cout << ec.message() << std::endl;
 		return ec.value();
-	}	
+	}
 
 	do
 	{
 		std::cout << "Enter a command" << std::endl;
-		std::cout << "x - exits program" << std::endl;		
+		std::cout << "x - exits program" << std::endl;
 
 		char cmd;
 		std::cin >> cmd;
 		switch(cmd)
-		{		
-		case('x'):			
-			return 0;					
+		{
+		case('x'):
+			return 0;
 		default:
 			std::cout << "Unknown action: " << cmd << std::endl;
 			break;

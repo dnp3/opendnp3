@@ -37,7 +37,7 @@ namespace opendnp3
 {
 
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
-	openpal::Logger logger,
+    openpal::Logger logger,
     openpal::IExecutor& executor,
     IPhysicalLayer* apPhys,
     TimeDuration aMinOpenRetry,

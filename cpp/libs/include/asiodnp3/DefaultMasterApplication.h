@@ -52,7 +52,7 @@ public:
 	virtual void OnStateChange(opendnp3::LinkStatus value) override final {}
 
 private:
-	
+
 	static DefaultMasterApplication instance;
 };
 

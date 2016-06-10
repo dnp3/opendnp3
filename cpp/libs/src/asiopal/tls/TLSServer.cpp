@@ -33,117 +33,122 @@ using namespace opendnp3;
 namespace asiopal
 {
 
-	TLSServer::TLSServer(
-		std::shared_ptr<ThreadPool> pool,
-		openpal::LogRoot root,
-		IPEndpoint endpoint,
-		const TLSConfig& config,
-		std::error_code& ec
-		) :
-		m_pool(pool),
-		m_root(std::move(root)),
-		m_ctx(m_root.logger, true, config, ec),
-		m_endpoint(ip::tcp::v4(), endpoint.port),
-		m_acceptor(pool->GetIOService()),
-		m_session_id(0)		
-	{			
-		if (!ec) {
-			this->ConfigureListener(endpoint.address, ec);
-		}				
-	}	
-
-	void TLSServer::BeginShutdown()
+TLSServer::TLSServer(
+    std::shared_ptr<ThreadPool> pool,
+    openpal::LogRoot root,
+    IPEndpoint endpoint,
+    const TLSConfig& config,
+    std::error_code& ec
+) :
+	m_pool(pool),
+	m_root(std::move(root)),
+	m_ctx(m_root.logger, true, config, ec),
+	m_endpoint(ip::tcp::v4(), endpoint.port),
+	m_acceptor(pool->GetIOService()),
+	m_session_id(0)
+{
+	if (!ec)
 	{
-		m_acceptor.close();
-	}	
+		this->ConfigureListener(endpoint.address, ec);
+	}
+}
 
-	std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::error_code& ec)
+void TLSServer::BeginShutdown()
+{
+	m_acceptor.close();
+}
+
+std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::error_code& ec)
+{
+	auto address = asio::ip::address::from_string(adapter, ec);
+
+	if (ec)
 	{
-		auto address = asio::ip::address::from_string(adapter, ec);
+		return ec;
+	}
 
+	m_endpoint.address(address);
+
+	if (m_acceptor.open(m_endpoint.protocol(), ec)) return ec;
+	if (m_acceptor.set_option(ip::tcp::acceptor::reuse_address(true), ec)) return ec;
+	if (m_acceptor.bind(m_endpoint, ec)) return ec;
+
+	if (m_acceptor.listen(socket_base::max_connections, ec)) return ec;
+
+
+	std::ostringstream oss;
+	oss << m_endpoint;
+	FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+	return ec;
+}
+
+void TLSServer::StartAccept(std::error_code& ec)
+{
+	const auto ID = this->m_session_id;
+	++this->m_session_id;
+
+	// this ensures that the TCPListener is never deleted during an active callback
+	auto self(shared_from_this());
+
+	// this could be a unique_ptr once move semantics are supported in lambdas
+	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(m_pool->GetIOService(), self->m_ctx.value);
+
+	if (!ec)
+	{
+
+		auto verify = [this, ID](bool preverified, asio::ssl::verify_context & ctx)
+		{
+			return this->VerifyCallback(ID, preverified, ctx);
+		};
+
+		stream->set_verify_callback(verify, ec);
+	}
+
+	auto accept_cb = [self, stream, ID](std::error_code ec) -> void
+	{
 		if (ec)
 		{
-			return ec;
+			SIMPLE_LOG_BLOCK(self->m_root.logger, flags::INFO, ec.message().c_str());
+			self->OnShutdown();
+			return;
 		}
 
-		m_endpoint.address(address);
+		// begin accepting another session
+		self->StartAccept(ec);
 
-		if (m_acceptor.open(m_endpoint.protocol(), ec)) return ec;		
-		if (m_acceptor.set_option(ip::tcp::acceptor::reuse_address(true), ec)) return ec;
-		if (m_acceptor.bind(m_endpoint, ec)) return ec;
-	
-		if (m_acceptor.listen(socket_base::max_connections, ec)) return ec;
+		if (!self->AcceptConnection(ID, stream->lowest_layer().remote_endpoint()))
+		{
+			std::ostringstream oss;
+			oss << stream->lowest_layer().remote_endpoint();
 
-		
-		std::ostringstream oss;
-		oss << m_endpoint;
-		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
-		return ec;
-	}		
-		
-	void TLSServer::StartAccept(std::error_code& ec)
-	{
-		const auto ID = this->m_session_id;
-		++this->m_session_id;
+			FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "Remote endpoint rejected: %s", oss.str().c_str());
 
-		// this ensures that the TCPListener is never deleted during an active callback
-		auto self(shared_from_this());
-
-		// this could be a unique_ptr once move semantics are supported in lambdas
-		auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(m_pool->GetIOService(), self->m_ctx.value);			
-		
-		if (!ec) {
-
-			auto verify = [this, ID](bool preverified, asio::ssl::verify_context& ctx)
-			{
-				return this->VerifyCallback(ID, preverified, ctx);
-			};
-
-			stream->set_verify_callback(verify, ec);
+			stream->lowest_layer().close();
+			return;
 		}
-		
-		auto accept_cb = [self, stream, ID](std::error_code ec) -> void
+
+		// at this point
+
+		auto handshake_cb = [stream, ID, self](const std::error_code & ec)
 		{
 			if (ec)
 			{
-				SIMPLE_LOG_BLOCK(self->m_root.logger, flags::INFO, ec.message().c_str());
-				self->OnShutdown();
-				return;
-			}			
-
-			// begin accepting another session
-			self->StartAccept(ec);
-						
-			if (!self->AcceptConnection(ID, stream->lowest_layer().remote_endpoint()))
-			{				
-				std::ostringstream oss;
-				oss << stream->lowest_layer().remote_endpoint();
-
-				FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "Remote endpoint rejected: %s", oss.str().c_str());
-
-				stream->lowest_layer().close();				
+				FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
 				return;
 			}
 
-			// at this point			
-						
-			auto handshake_cb = [stream, ID, self](const std::error_code& ec) {
-				if (ec) {
-					FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
-					return;
-				}
-
-				self->AcceptStream(ID, stream);
-			};
-			
-			// Begin the TLS handshake
-			stream->async_handshake(asio::ssl::stream_base::server, handshake_cb);
+			self->AcceptStream(ID, stream);
 		};
 
-		if (!ec) {
-			m_acceptor.async_accept(stream->lowest_layer(), accept_cb);
-		}
-	}	
+		// Begin the TLS handshake
+		stream->async_handshake(asio::ssl::stream_base::server, handshake_cb);
+	};
+
+	if (!ec)
+	{
+		m_acceptor.async_accept(stream->lowest_layer(), accept_cb);
+	}
+}
 }
 
 

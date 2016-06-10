@@ -33,8 +33,8 @@ using namespace openpal;
 
 namespace opendnp3
 {
-	
-DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks_, openpal::Logger logger_) : 
+
+DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks_, openpal::Logger logger_) :
 	callbacks(&callbacks_),
 	logger(logger_),
 	link(logger_, nullptr),
@@ -44,7 +44,7 @@ DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks_, openpal::Logger logger_)
 void DecoderImpl::DecodeLPDU(const openpal::RSlice& data)
 {
 	Indent i(*callbacks);
-	
+
 	RSlice remaining(data);
 
 	while (remaining.IsNotEmpty())
@@ -52,13 +52,13 @@ void DecoderImpl::DecodeLPDU(const openpal::RSlice& data)
 		auto dest = this->link.WriteBuff();
 
 		const auto NUM = (remaining.Size() > dest.Size()) ? dest.Size() : remaining.Size();
-		
+
 		remaining.Take(NUM).CopyTo(dest);
 		link.OnRead(NUM, *this);
-		
+
 		remaining.Advance(NUM);
 	}
-	
+
 }
 
 void DecoderImpl::DecodeTPDU(const openpal::RSlice& data)
@@ -85,15 +85,15 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 		if (APDUHeaderParser::ParseResponse(data, header, &logger))
 		{
 			FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-	                 header.control.FIR,
-	                 header.control.FIN,
-	                 header.control.CON,
-	                 header.control.UNS,
-	                 header.control.SEQ,
-	                 FunctionCodeToString(header.function),
-	                 header.IIN.LSB,
-	                 header.IIN.MSB);
+			                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+			                 header.control.FIR,
+			                 header.control.FIN,
+			                 header.control.CON,
+			                 header.control.UNS,
+			                 header.control.SEQ,
+			                 FunctionCodeToString(header.function),
+			                 header.IIN.LSB,
+			                 header.IIN.MSB);
 			if (header.IIN.LSB & 0x01) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.0 - All stations");
 			if (header.IIN.LSB & 0x02) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.1 - Class 1 events");
 			if (header.IIN.LSB & 0x04) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.2 - Class 2 events");
@@ -121,20 +121,20 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 		APDUHeader header;
 		if (APDUHeaderParser::ParseRequest(data, header, &logger))
 		{
-			
+
 			FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-	                 header.control.FIR,
-	                 header.control.FIN,
-	                 header.control.CON,
-	                 header.control.UNS,
-	                 header.control.SEQ,
-	                 FunctionCodeToString(header.function));
+			                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
+			                 header.control.FIR,
+			                 header.control.FIN,
+			                 header.control.CON,
+			                 header.control.UNS,
+			                 header.control.SEQ,
+			                 FunctionCodeToString(header.function));
 
 
 			Indent i(*callbacks);
 			LoggingHandler handler(logger, *callbacks);
-			auto settings = (header.function == FunctionCode::READ) ? ParserSettings::NoContents() : ParserSettings::Default();			
+			auto settings = (header.function == FunctionCode::READ) ? ParserSettings::NoContents() : ParserSettings::Default();
 			APDUParser::ParseSinglePass(data.Skip(2), &logger, &handler, nullptr, settings);
 		}
 	}
@@ -149,12 +149,12 @@ bool DecoderImpl::IsResponse(const openpal::RSlice& data)
 
 	switch (FunctionCodeFromType(data[1]))
 	{
-		case(FunctionCode::RESPONSE) :
-		case(FunctionCode::UNSOLICITED_RESPONSE) :
-		case(FunctionCode::AUTH_RESPONSE) :
-			return true;
-		default:
-			return false;
+	case(FunctionCode::RESPONSE) :
+	case(FunctionCode::UNSOLICITED_RESPONSE) :
+	case(FunctionCode::AUTH_RESPONSE) :
+		return true;
+	default:
+		return false;
 	}
 }
 
@@ -162,7 +162,7 @@ bool DecoderImpl::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 {
 	if (header.func == LinkFunction::PRI_CONFIRMED_USER_DATA || header.func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
 	{
-		this->DecodeTPDU(userdata);		
+		this->DecodeTPDU(userdata);
 	}
 
 	return true;

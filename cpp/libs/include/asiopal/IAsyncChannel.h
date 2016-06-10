@@ -29,20 +29,20 @@
 #include <openpal/util/Uncopyable.h>
 
 namespace asiopal
-{			
-	typedef std::function<void (const std::error_code& ec, std::size_t num)> ReadCallbackT;
-	typedef std::function<void (const std::error_code& ec, std::size_t num)> WriteCallbackT;
-	typedef std::function<void ()> ShutdownCallbackT;
+{
+typedef std::function<void (const std::error_code& ec, std::size_t num)> ReadCallbackT;
+typedef std::function<void (const std::error_code& ec, std::size_t num)> WriteCallbackT;
+typedef std::function<void ()> ShutdownCallbackT;
 
-	class IAsyncChannel : private openpal::Uncopyable
-	{
-	public:
-		virtual ~IAsyncChannel() {}
+class IAsyncChannel : private openpal::Uncopyable
+{
+public:
+	virtual ~IAsyncChannel() {}
 
-		virtual void BeginRead(openpal::WSlice& buffer, const ReadCallbackT& callback) = 0;
-		virtual void BeginWrite(const openpal::RSlice& buffer, const WriteCallbackT& callback) = 0;
-		virtual void BeginShutdown(const ShutdownCallbackT& callback) = 0;
-	};
+	virtual void BeginRead(openpal::WSlice& buffer, const ReadCallbackT& callback) = 0;
+	virtual void BeginWrite(const openpal::RSlice& buffer, const WriteCallbackT& callback) = 0;
+	virtual void BeginShutdown(const ShutdownCallbackT& callback) = 0;
+};
 }
 
 #endif

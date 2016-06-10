@@ -31,55 +31,55 @@
 #include <memory>
 
 namespace asiopal
-{			
-	/**	
-	* Binds and listens on an IPv4 TCP port
-	*
-	* Meant to be used exclusively as a shared_ptr
-	*/
-	class TCPServer : 
-		public std::enable_shared_from_this<TCPServer>,
-		public IListener,		
-		private openpal::Uncopyable
-	{		
+{
+/**
+* Binds and listens on an IPv4 TCP port
+*
+* Meant to be used exclusively as a shared_ptr
+*/
+class TCPServer :
+	public std::enable_shared_from_this<TCPServer>,
+	public IListener,
+	private openpal::Uncopyable
+{
 
-	public:				
+public:
 
-		/// Stop listening for connections, permanently shutting down the listener
-		void BeginShutdown() override final;
+	/// Stop listening for connections, permanently shutting down the listener
+	void BeginShutdown() override final;
 
-	protected:	
+protected:
 
-		TCPServer(
-			std::shared_ptr<ThreadPool> pool,
-			openpal::LogRoot root,			
-			IPEndpoint endpoint,			
-			std::error_code& ec
-		);
+	TCPServer(
+	    std::shared_ptr<ThreadPool> pool,
+	    openpal::LogRoot root,
+	    IPEndpoint endpoint,
+	    std::error_code& ec
+	);
 
-		void StartAccept();
-		
-		/// inherited flass defines what to do with
-		virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) = 0;
+	void StartAccept();
 
-		/// Inherited class defines what happens when the server shuts down
-		virtual void OnShutdown() = 0;
+	/// inherited flass defines what to do with
+	virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) = 0;
 
-	private:
-		void Configure(const std::string& adapter, std::error_code& ec);
-		
-	protected:
+	/// Inherited class defines what happens when the server shuts down
+	virtual void OnShutdown() = 0;
 
-		std::shared_ptr<ThreadPool> m_pool;
-		openpal::LogRoot m_root;		
-			
-	private:				
-		
-		asio::ip::tcp::endpoint m_endpoint;		
-		asio::ip::tcp::acceptor m_acceptor;
-		asio::ip::tcp::socket m_socket;		
-		uint64_t m_session_id;
-	};
+private:
+	void Configure(const std::string& adapter, std::error_code& ec);
+
+protected:
+
+	std::shared_ptr<ThreadPool> m_pool;
+	openpal::LogRoot m_root;
+
+private:
+
+	asio::ip::tcp::endpoint m_endpoint;
+	asio::ip::tcp::acceptor m_acceptor;
+	asio::ip::tcp::socket m_socket;
+	uint64_t m_session_id;
+};
 
 }
 

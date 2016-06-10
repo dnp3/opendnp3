@@ -43,33 +43,33 @@
 namespace asiodnp3
 {
 
-class GPRSManagerImpl final : 
+class GPRSManagerImpl final :
 	private openpal::Uncopyable,
 	private asiopal::IResourceManager
 {
-	
-public:	
-					
+
+public:
+
 	~GPRSManagerImpl();
 
 	void BeginShutdown();
 
 	std::shared_ptr<asiopal::IListener> CreateListener(
-		std::string loggerid,
-		openpal::LogFilters loglevel,
-		asiopal::IPEndpoint endpoint,
-		std::shared_ptr<IListenCallbacks> callbacks,
-		std::error_code& ec
+	    std::string loggerid,
+	    openpal::LogFilters loglevel,
+	    asiopal::IPEndpoint endpoint,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::error_code& ec
 	);
 
 #ifdef OPENDNP3_USE_TLS
 	std::shared_ptr<asiopal::IListener> CreateListener(
-		std::string loggerid,
-		openpal::LogFilters loglevel,
-		asiopal::IPEndpoint endpoint,
-		const asiopal::TLSConfig& config,
-		std::shared_ptr<IListenCallbacks> callbacks,
-		std::error_code& ec
+	    std::string loggerid,
+	    openpal::LogFilters loglevel,
+	    asiopal::IPEndpoint endpoint,
+	    const asiopal::TLSConfig& config,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::error_code& ec
 	);
 #endif
 
@@ -91,8 +91,8 @@ private:
 	std::vector<std::shared_ptr<asiopal::IResource>> m_resources;
 
 	/// this will be the first thing to be destroyed forcing all handlers to be run
-	std::shared_ptr<asiopal::ThreadPool> m_pool;	
-	
+	std::shared_ptr<asiopal::ThreadPool> m_pool;
+
 };
 
 }

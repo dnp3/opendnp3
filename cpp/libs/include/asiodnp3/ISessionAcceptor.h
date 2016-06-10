@@ -40,12 +40,12 @@ class ISessionAcceptor
 public:
 
 	virtual ~ISessionAcceptor() {}
-	
+
 	virtual std::shared_ptr<IMasterSession> AcceptSession(
-		const std::string& sessionid,
-		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-		std::shared_ptr<opendnp3::IMasterApplication> application,
-		const opendnp3::MasterStackConfig& config
+	    const std::string& sessionid,
+	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+	    std::shared_ptr<opendnp3::IMasterApplication> application,
+	    const opendnp3::MasterStackConfig& config
 	) = 0;
 };
 

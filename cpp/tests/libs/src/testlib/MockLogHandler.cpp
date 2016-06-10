@@ -49,7 +49,7 @@ LogRecord::LogRecord(const LogEntry& entry) :
 
 MockLogHandler::MockLogHandler(uint32_t filters) :
 	root(this, "test", filters),
-	outputToStdIO(false)	
+	outputToStdIO(false)
 {
 
 }
@@ -137,7 +137,7 @@ int MockLogHandler::ClearLog()
 }
 
 void MockLogHandler::Log(const std::string& location, const std::string& message)
-{	
+{
 	root.logger.Log(openpal::logflags::EVENT, location.c_str(), message.c_str());
 }
 

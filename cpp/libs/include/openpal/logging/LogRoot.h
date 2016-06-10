@@ -37,7 +37,7 @@ namespace openpal
 class LogRoot : private Uncopyable
 {
 
-public:	
+public:
 
 	LogRoot(ILogHandler* pHandler, char const* alias, LogFilters filters);
 
@@ -51,13 +51,13 @@ public:
 
 	const char* GetId() const;
 
-	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode);	
+	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode);
 
 	// create another log root, but change the alias
 	LogRoot Clone(char const* alias) const;
 
 	// create another log root, but change the alias and the filters
-	LogRoot Clone(char const* alias, LogFilters filters) const;	
+	LogRoot Clone(char const* alias, LogFilters filters) const;
 
 	bool IsEnabled(const LogFilters& rhs) const;
 
@@ -69,7 +69,7 @@ public:
 
 	Logger  logger;
 
-private:	
+private:
 
 	LogRoot(ILogHandler* pHandler, char const* alias, LogFilters filters, bool reuseAlias);
 

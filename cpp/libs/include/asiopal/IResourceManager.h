@@ -28,19 +28,19 @@ namespace asiopal
 
 class IResource
 {
-	public:
+public:
 
-		virtual ~IResource() {}
+	virtual ~IResource() {}
 
-		virtual void BeginShutdown() = 0;
+	virtual void BeginShutdown() = 0;
 };
 
 class IResourceManager
 {
 
 public:
-	
-	/// Returns false if the manager is shutting down - calling code 
+
+	/// Returns false if the manager is shutting down - calling code
 	/// should dispose of the resource if it can't be registered
 	virtual bool Register(std::shared_ptr<IResource> resource) = 0;
 

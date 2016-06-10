@@ -36,21 +36,26 @@ using namespace asiopal;
 #define SUITE(name) "StrandExecutorTestSuite - " name
 
 TEST_CASE(SUITE("Test automatic resource reclaimation"))
-{	
+{
 	const int NUM_THREAD = 10;
 	const int NUM_STRAND = 100;
 	const int NUM_OPS = 1000;
-	
+
 	uint32_t counter[NUM_STRAND] = { 0 };
 	testlib::MockLogHandler log;
 
-	
-	auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);		
 
-	auto setup = [&](uint32_t& counter) {
+	auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);
+
+	auto setup = [&](uint32_t & counter)
+	{
 		auto exe = StrandExecutor::Create(pool);
-		auto increment = [&]() { ++counter; };			
-		for (int i = 0; i < NUM_OPS; ++i) {
+		auto increment = [&]()
+		{
+			++counter;
+		};
+		for (int i = 0; i < NUM_OPS; ++i)
+		{
 			exe->PostLambda(increment);
 			exe->StartLambda(TimeDuration::Milliseconds(0), increment);
 		}
@@ -59,14 +64,14 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 	for (int i = 0; i < NUM_STRAND; ++i)
 	{
 		setup(counter[i]);
-	}	
+	}
 
 	pool->Shutdown();
-	
+
 	for (int i = 0; i < NUM_STRAND; ++i)
 	{
 		REQUIRE(counter[i] == 2 * NUM_OPS);
-	}			
+	}
 }
 
 TEST_CASE(SUITE("Test ReturnFrom<T>()"))
@@ -74,11 +79,11 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 	const int NUM_THREAD = 10;
 	testlib::MockLogHandler log;
 	int counter = 0;
-	
+
 	auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);
 	auto exe = StrandExecutor::Create(pool);
 
-		
+
 	for (int i = 0; i < 100; ++i)
 	{
 		auto getvalue = []() -> int { return 1; };
@@ -86,7 +91,7 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 	}
 
 	pool->Shutdown();
-	
+
 
 	REQUIRE(counter == 100);
 

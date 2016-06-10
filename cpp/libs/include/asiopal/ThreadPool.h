@@ -47,16 +47,16 @@ public:
 	    openpal::ILogHandler* pHandler,
 	    uint32_t levels,
 	    uint32_t aConcurrency,
-		std::function<void()> onThreadStart = []() {},
-		std::function<void()> onThreadExit = []() {}
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
 	);
 
 	static std::shared_ptr<ThreadPool> Create(
-		openpal::ILogHandler* pHandler,
-		uint32_t levels,
-		uint32_t concurrency,
-		std::function<void()> onThreadStart = []() {},
-		std::function<void()> onThreadExit = []() {}
+	    openpal::ILogHandler* pHandler,
+	    uint32_t levels,
+	    uint32_t concurrency,
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
 	);
 
 	~ThreadPool();
@@ -64,10 +64,10 @@ public:
 	asio::io_service& GetIOService();
 
 	void Shutdown();
-	
-private:	
 
-	openpal::LogRoot root;	
+private:
+
+	openpal::LogRoot root;
 
 	std::function<void ()> onThreadStart;
 	std::function<void ()> onThreadExit;

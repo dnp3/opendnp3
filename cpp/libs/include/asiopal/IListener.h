@@ -27,14 +27,14 @@ namespace asiopal
 {
 
 /**
-* Represents a running TCP or TLS listener that can be shutdown 
+* Represents a running TCP or TLS listener that can be shutdown
 * so that no new connections are accepted.
 */
 class IListener : public IResource
 {
 public:
 
-	virtual ~IListener() {}	
+	virtual ~IListener() {}
 
 };
 

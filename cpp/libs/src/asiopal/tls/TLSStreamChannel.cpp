@@ -31,7 +31,7 @@ std::unique_ptr<IAsyncChannel> TLSStreamChannel::Create(std::shared_ptr<asio::ss
 {
 	return std::unique_ptr<IAsyncChannel>(new TLSStreamChannel(stream));
 }
-		
+
 void TLSStreamChannel::BeginRead(openpal::WSlice& dest, const ReadCallbackT& callback)
 {
 	m_stream->async_read_some(asio::buffer(dest, dest.Size()), callback);
@@ -44,7 +44,7 @@ void TLSStreamChannel::BeginWrite(const openpal::RSlice& data, const WriteCallba
 
 void TLSStreamChannel::BeginShutdown(const ShutdownCallbackT& callback)
 {
-	// TODO - should we perform an async shutdown on the TLS stream?	
+	// TODO - should we perform an async shutdown on the TLS stream?
 	std::error_code ec;
 	m_stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec);
 	m_stream->lowest_layer().close(ec);

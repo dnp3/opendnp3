@@ -117,7 +117,7 @@ TEST_CASE(SUITE("parses g122v2 correctly"))
 ParseResult TestObjectHeaders(const std::string& objects, ParseResult expectedResult, const std::function<void(MockSOEHandler&)>& verify)
 {
 	MockSOEHandler soe;
-	testlib::MockLogHandler log;	
+	testlib::MockLogHandler log;
 
 	HexSequence hex(objects);
 

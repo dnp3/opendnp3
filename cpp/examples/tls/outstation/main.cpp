@@ -76,22 +76,23 @@ int main(int argc, char* argv[])
 
 	// Create a TCP server (listener)
 	auto pChannel = manager.AddTLSClient(
-		"server",
-		FILTERS,
-		ChannelRetry::Default(),
-		"127.0.0.1",
-		"0.0.0.0",
-		20001,
-		TLSConfig(
-			caCertificate,
-			certificateChain,
-			privateKey,
-			2
-		),
-		ec
-	);
+	                    "server",
+	                    FILTERS,
+	                    ChannelRetry::Default(),
+	                    "127.0.0.1",
+	                    "0.0.0.0",
+	                    20001,
+	                    TLSConfig(
+	                        caCertificate,
+	                        certificateChain,
+	                        privateKey,
+	                        2
+	                    ),
+	                    ec
+	                );
 
-	if (ec) {
+	if (ec)
+	{
 		std::cout << "Unable to create tls server: " << ec.message() << std::endl;
 		return ec.value();
 	}

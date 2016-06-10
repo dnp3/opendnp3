@@ -50,9 +50,9 @@ public:
 
 	~ChannelSet();
 
-	IChannel* CreateChannel(	std::unique_ptr<openpal::LogRoot> root,	                            
+	IChannel* CreateChannel(	std::unique_ptr<openpal::LogRoot> root,
 	                            const opendnp3::ChannelRetry& retry,
-								std::unique_ptr<asiopal::PhysicalLayerASIO> phys);
+	                            std::unique_ptr<asiopal::PhysicalLayerASIO> phys);
 
 
 	/// Synchronously shutdown all channels. Block until complete.

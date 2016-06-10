@@ -35,12 +35,12 @@ class PhysicalLayerTLSServer final : public PhysicalLayerTLSBase
 {
 public:
 	PhysicalLayerTLSServer(
-		openpal::Logger logger,
+	    openpal::Logger logger,
 	    asio::io_service& service,
 	    const std::string& endpoint,
 	    uint16_t port,
-			const TLSConfig& config,
-			std::error_code& ec
+	    const TLSConfig& config,
+	    std::error_code& ec
 	);
 
 	// --- Implement the remainging actions ---

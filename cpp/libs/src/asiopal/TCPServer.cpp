@@ -33,88 +33,88 @@ using namespace opendnp3;
 namespace asiopal
 {
 
-	TCPServer::TCPServer(std::shared_ptr<ThreadPool> pool, openpal::LogRoot root, IPEndpoint endpoint, std::error_code& ec) :
-		m_pool(pool),
-		m_root(std::move(root)),		
-		m_endpoint(ip::tcp::v4(), endpoint.port),		
-		m_acceptor(pool->GetIOService()),
-		m_socket(pool->GetIOService()),
-		m_session_id(0)
-	{
-		this->Configure(endpoint.address, ec);		
-	}	
+TCPServer::TCPServer(std::shared_ptr<ThreadPool> pool, openpal::LogRoot root, IPEndpoint endpoint, std::error_code& ec) :
+	m_pool(pool),
+	m_root(std::move(root)),
+	m_endpoint(ip::tcp::v4(), endpoint.port),
+	m_acceptor(pool->GetIOService()),
+	m_socket(pool->GetIOService()),
+	m_session_id(0)
+{
+	this->Configure(endpoint.address, ec);
+}
 
-	void TCPServer::BeginShutdown()
+void TCPServer::BeginShutdown()
+{
+	m_acceptor.close();
+}
+
+void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
+{
+	auto address = asio::ip::address::from_string(adapter, ec);
+
+	if (ec)
 	{
-		m_acceptor.close();
+		return;
 	}
 
-	void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
+	m_endpoint.address(address);
+	m_acceptor.open(m_endpoint.protocol(), ec);
+
+	if (ec)
 	{
-		auto address = asio::ip::address::from_string(adapter, ec);
-
-		if (ec)
-		{
-			return;
-		}
-
-		m_endpoint.address(address);
-		m_acceptor.open(m_endpoint.protocol(), ec);
-
-		if (ec)
-		{
-			return;
-		}
-
-		m_acceptor.set_option(ip::tcp::acceptor::reuse_address(true), ec);
-
-		if (ec)
-		{
-			return;
-		}
-
-		m_acceptor.bind(m_endpoint, ec);
-
-		if (ec)
-		{
-			return;
-		}
-
-		m_acceptor.listen(socket_base::max_connections, ec);
-
-		if (!ec)
-		{
-			std::ostringstream oss;
-			oss << m_endpoint;
-			FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
-		}
+		return;
 	}
-		
-	void TCPServer::StartAccept()
+
+	m_acceptor.set_option(ip::tcp::acceptor::reuse_address(true), ec);
+
+	if (ec)
 	{
-		// this ensures that the TCPListener is never deleted during an active callback
-		auto self(shared_from_this());
-		auto callback = [self](std::error_code ec)
-		{
-			if (ec)
-			{
-				SIMPLE_LOG_BLOCK(self->m_root.logger, flags::INFO, ec.message().c_str());
-				self->OnShutdown();
-			}
-			else
-			{
-				const auto ID = self->m_session_id;
-				++self->m_session_id;
-
-				// method responsible for closing
-				self->AcceptConnection(ID, std::move(self->m_socket));
-				self->StartAccept();
-			}
-		};
-
-
-		m_acceptor.async_accept(m_socket, callback);
+		return;
 	}
+
+	m_acceptor.bind(m_endpoint, ec);
+
+	if (ec)
+	{
+		return;
+	}
+
+	m_acceptor.listen(socket_base::max_connections, ec);
+
+	if (!ec)
+	{
+		std::ostringstream oss;
+		oss << m_endpoint;
+		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+	}
+}
+
+void TCPServer::StartAccept()
+{
+	// this ensures that the TCPListener is never deleted during an active callback
+	auto self(shared_from_this());
+	auto callback = [self](std::error_code ec)
+	{
+		if (ec)
+		{
+			SIMPLE_LOG_BLOCK(self->m_root.logger, flags::INFO, ec.message().c_str());
+			self->OnShutdown();
+		}
+		else
+		{
+			const auto ID = self->m_session_id;
+			++self->m_session_id;
+
+			// method responsible for closing
+			self->AcceptConnection(ID, std::move(self->m_socket));
+			self->StartAccept();
+		}
+	};
+
+
+	m_acceptor.async_accept(m_socket, callback);
+}
 
 }
 

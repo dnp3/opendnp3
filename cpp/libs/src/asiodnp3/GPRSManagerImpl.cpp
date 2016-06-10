@@ -36,54 +36,54 @@ namespace asiodnp3
 {
 
 GPRSManagerImpl::~GPRSManagerImpl()
-{	
+{
 	this->BeginShutdown();
 	// block on the pool until it is gone
 	this->m_pool->Shutdown();
 }
 
 std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
-	std::string loggerid,
-	openpal::LogFilters loglevel,
-	asiopal::IPEndpoint endpoint,
-	std::shared_ptr<IListenCallbacks> callbacks,
-	std::error_code& ec)
+    std::string loggerid,
+    openpal::LogFilters loglevel,
+    asiopal::IPEndpoint endpoint,
+    std::shared_ptr<IListenCallbacks> callbacks,
+    std::error_code& ec)
 {
 	std::lock_guard <std::mutex> lock(m_mutex);
 
-	if (m_is_shutting_down) 
+	if (m_is_shutting_down)
 	{
-		ec = make_error_code(errors::Error::SHUTTING_DOWN);		
+		ec = make_error_code(errors::Error::SHUTTING_DOWN);
 		return nullptr;
 	}
 
-	auto server = asiodnp3::MasterTCPServer::Create(		
-		*this, 
-		callbacks,
-		m_pool,
-		m_log_root.Clone(loggerid.c_str(), loglevel), 
-		endpoint, 
-		ec
-	);
+	auto server = asiodnp3::MasterTCPServer::Create(
+	                  *this,
+	                  callbacks,
+	                  m_pool,
+	                  m_log_root.Clone(loggerid.c_str(), loglevel),
+	                  endpoint,
+	                  ec
+	              );
 
 	if (ec)
 	{
 		return nullptr;
 	}
-	
+
 	this->m_resources.push_back(server);
-	return server;	
+	return server;
 }
 
 #ifdef OPENDNP3_USE_TLS
 
 std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
-	std::string loggerid,
-	openpal::LogFilters loglevel,
-	asiopal::IPEndpoint endpoint,
-	const asiopal::TLSConfig& config,
-	std::shared_ptr<IListenCallbacks> callbacks,
-	std::error_code& ec)
+    std::string loggerid,
+    openpal::LogFilters loglevel,
+    asiopal::IPEndpoint endpoint,
+    const asiopal::TLSConfig& config,
+    std::shared_ptr<IListenCallbacks> callbacks,
+    std::error_code& ec)
 {
 	std::lock_guard <std::mutex> lock(m_mutex);
 
@@ -94,14 +94,14 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	}
 
 	auto server = asiodnp3::MasterTLSServer::Create(
-		*this,
-		callbacks,
-		m_pool,
-		m_log_root.Clone(loggerid.c_str(), loglevel),
-		endpoint,
-		config,
-		ec
-	);
+	                  *this,
+	                  callbacks,
+	                  m_pool,
+	                  m_log_root.Clone(loggerid.c_str(), loglevel),
+	                  endpoint,
+	                  config,
+	                  ec
+	              );
 
 	if (ec)
 	{
@@ -120,10 +120,10 @@ void GPRSManagerImpl::BeginShutdown()
 
 	this->m_is_shutting_down = true;
 
-	for (auto& resource : m_resources)
+	for (auto & resource : m_resources)
 	{
 		resource->BeginShutdown();
-	}	
+	}
 }
 
 GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler) :
@@ -150,7 +150,8 @@ void GPRSManagerImpl::Unregister(std::shared_ptr<asiopal::IResource> resource)
 {
 	std::lock_guard <std::mutex> lock(m_mutex);
 
-	auto is_match = [resource](const std::shared_ptr<asiopal::IResource>& other) -> bool {
+	auto is_match = [resource](const std::shared_ptr<asiopal::IResource>& other) -> bool
+	{
 		return resource == other;
 	};
 

@@ -39,13 +39,13 @@ namespace asiopal
 * Shutdown life-cycle guarantees are provided by using std::shared_ptr
 *
 */
-class StrandExecutor final : 
-		public openpal::IExecutor, 
-		public std::enable_shared_from_this<StrandExecutor>,
-		private openpal::Uncopyable
+class StrandExecutor final :
+	public openpal::IExecutor,
+	public std::enable_shared_from_this<StrandExecutor>,
+	private openpal::Uncopyable
 {
 
-public:	
+public:
 
 	static std::shared_ptr<StrandExecutor> Create(std::shared_ptr<ThreadPool> pool);
 
@@ -60,7 +60,7 @@ public:
 	void PostToStrand(const T& action);
 
 	template <class T>
-	T ReturnFrom(const std::function<T()>& action);	
+	T ReturnFrom(const std::function<T()>& action);
 
 private:
 
@@ -95,7 +95,8 @@ T StrandExecutor::ReturnFrom(const std::function<T()>& action)
 
 		auto future = ready.get_future();
 
-		auto run = [&] {			
+		auto run = [&]
+		{
 			ready.set_value(action());
 		};
 

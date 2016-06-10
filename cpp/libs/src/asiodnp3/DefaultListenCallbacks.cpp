@@ -27,14 +27,14 @@ namespace asiodnp3
 DefaultListenCallbacks::DefaultListenCallbacks()
 {}
 
-	
+
 bool DefaultListenCallbacks::AcceptConnection(uint64_t sessionid, const std::string& ipaddress)
-{		
+{
 	return true;
 }
 
 bool DefaultListenCallbacks::AcceptCertificate(uint64_t sessionid, const X509Info& info)
-{			
+{
 	return true;
 }
 
@@ -44,9 +44,9 @@ openpal::TimeDuration DefaultListenCallbacks::GetFirstFrameTimeout()
 }
 
 void DefaultListenCallbacks::OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor)
-{			
+{
 	opendnp3::MasterStackConfig config;
-		
+
 	// full implementations will look up config information for the SRC address
 
 	config.link.LocalAddr = header.dest;
@@ -55,20 +55,20 @@ void DefaultListenCallbacks::OnFirstFrame(uint64_t sessionid, const opendnp3::Li
 	auto soe = std::make_shared<PrintingSOEHandler>();
 	auto app = std::make_shared<DefaultMasterApplication>();
 
-	// full implementations will keep a std::shared_ptr<IGPRSMaster> somewhere			
+	// full implementations will keep a std::shared_ptr<IGPRSMaster> somewhere
 	auto master = acceptor.AcceptSession(SessionIdToString(sessionid), soe, app, config);
 }
 
 void DefaultListenCallbacks::OnConnectionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session)
-{	
+{
 	// full implementations would drop any references they're holding to this session
 	// shared_ptr can be used with == operator also
 }
 
 std::string DefaultListenCallbacks::SessionIdToString(uint64_t id)
-{	
+{
 	std::ostringstream oss;
-	oss << "session-" << id;	
+	oss << "session-" << id;
 	return oss.str();
 }
 

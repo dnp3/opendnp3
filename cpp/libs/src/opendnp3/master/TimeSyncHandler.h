@@ -38,7 +38,7 @@ class TimeSyncHandler : public IAPDUHandler, private openpal::Uncopyable
 {
 
 public:
-	
+
 	TimeSyncHandler() :
 		m_valid(false),
 		m_time(0)

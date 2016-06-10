@@ -30,44 +30,44 @@
 #include "asiodnp3/IListenCallbacks.h"
 
 namespace asiodnp3
-{				
-	class MasterTLSServer final : public asiopal::TLSServer
-	{					
+{
+class MasterTLSServer final : public asiopal::TLSServer
+{
 
-	public:
+public:
 
-		static std::shared_ptr<MasterTLSServer> Create(			
-			asiopal::IResourceManager& shutdown,
-			std::shared_ptr<IListenCallbacks> callbacks,
-			std::shared_ptr<asiopal::ThreadPool> pool,
-			openpal::LogRoot root,
-			asiopal::IPEndpoint endpoint,
-			const asiopal::TLSConfig& config,
-			std::error_code& ec
-		);
+	static std::shared_ptr<MasterTLSServer> Create(
+	    asiopal::IResourceManager& shutdown,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::shared_ptr<asiopal::ThreadPool> pool,
+	    openpal::LogRoot root,
+	    asiopal::IPEndpoint endpoint,
+	    const asiopal::TLSConfig& config,
+	    std::error_code& ec
+	);
 
-	private:
+private:
 
-		asiopal::IResourceManager* m_manager;
-		std::shared_ptr<IListenCallbacks> m_callbacks;				
+	asiopal::IResourceManager* m_manager;
+	std::shared_ptr<IListenCallbacks> m_callbacks;
 
-		MasterTLSServer(			
-			asiopal::IResourceManager& shutdown,
-			std::shared_ptr<IListenCallbacks> callbacks,
-			std::shared_ptr<asiopal::ThreadPool> pool,
-			openpal::LogRoot root,
-			asiopal::IPEndpoint endpoint,
-			const asiopal::TLSConfig& config,
-			std::error_code& ec
-		);
-				
-		virtual void OnShutdown() override;
-		virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
-		virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override;
-		virtual void AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;
+	MasterTLSServer(
+	    asiopal::IResourceManager& shutdown,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::shared_ptr<asiopal::ThreadPool> pool,
+	    openpal::LogRoot root,
+	    asiopal::IPEndpoint endpoint,
+	    const asiopal::TLSConfig& config,
+	    std::error_code& ec
+	);
 
-		static std::string SessionIdToString(uint64_t sessionid);
-	};
+	virtual void OnShutdown() override;
+	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
+	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override;
+	virtual void AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;
+
+	static std::string SessionIdToString(uint64_t sessionid);
+};
 
 }
 

@@ -36,7 +36,7 @@ public:
 	virtual ~IMasterSession() {}
 
 	virtual void BeginShutdown() = 0;
-	
+
 };
 
 }

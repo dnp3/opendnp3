@@ -36,7 +36,7 @@ namespace asiodnp3
 {
 
 PhysicalLayerMonitor::PhysicalLayerMonitor(
-	openpal::Logger logger_,
+    openpal::Logger logger_,
     openpal::IExecutor& executor,
     IPhysicalLayer* pPhys_,
     const opendnp3::ChannelRetry& retry_

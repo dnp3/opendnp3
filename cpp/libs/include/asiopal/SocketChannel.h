@@ -26,24 +26,24 @@
 #include <asio.hpp>
 
 namespace asiopal
-{				
-	class SocketChannel final : public IAsyncChannel
-	{
-	public:
+{
+class SocketChannel final : public IAsyncChannel
+{
+public:
 
-		static std::unique_ptr<IAsyncChannel> Create(asio::ip::tcp::socket socket);
-		
-		virtual void BeginRead(openpal::WSlice& buffer, const ReadCallbackT& callback) override;
-		virtual void BeginWrite(const openpal::RSlice& buffer, const WriteCallbackT& callback)  override;
-		virtual void BeginShutdown(const ShutdownCallbackT& callback)  override;
+	static std::unique_ptr<IAsyncChannel> Create(asio::ip::tcp::socket socket);
 
-	private:
+	virtual void BeginRead(openpal::WSlice& buffer, const ReadCallbackT& callback) override;
+	virtual void BeginWrite(const openpal::RSlice& buffer, const WriteCallbackT& callback)  override;
+	virtual void BeginShutdown(const ShutdownCallbackT& callback)  override;
 
-		SocketChannel(asio::ip::tcp::socket socket);
+private:
 
-		asio::ip::tcp::socket m_socket;
-	
-	};
+	SocketChannel(asio::ip::tcp::socket socket);
+
+	asio::ip::tcp::socket m_socket;
+
+};
 }
 
 #endif

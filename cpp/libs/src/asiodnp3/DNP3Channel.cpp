@@ -35,9 +35,9 @@ namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
-	std::unique_ptr<LogRoot> root_,
-	const ChannelRetry& retry,
-	std::unique_ptr<asiopal::PhysicalLayerASIO> phys_) :
+    std::unique_ptr<LogRoot> root_,
+    const ChannelRetry& retry,
+    std::unique_ptr<asiopal::PhysicalLayerASIO> phys_) :
 
 	phys(std::move(phys_)),
 	root(std::move(root_)),

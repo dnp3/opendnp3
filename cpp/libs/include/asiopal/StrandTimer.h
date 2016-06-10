@@ -42,14 +42,14 @@ class StrandTimer final : public openpal::ITimer, private openpal::Uncopyable
 	friend class StrandExecutor;
 
 public:
-	
+
 	virtual void Cancel() override;
 	virtual openpal::MonotonicTimestamp ExpiresAt() override;
 
-private:	
+private:
 
 	StrandTimer(asio::io_service& service);
-	
+
 	asio::basic_waitable_timer< asiopal::asiopal_steady_clock > m_timer;
 };
 

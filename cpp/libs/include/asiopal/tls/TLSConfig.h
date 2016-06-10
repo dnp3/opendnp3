@@ -50,16 +50,16 @@ public:
 	*
 	*/
 	TLSConfig(
-		const std::string& peerCertFilePath,
-		const std::string& localCertFilePath,
-		const std::string& privateKeyFilePath,
-		int maxVerifyDepth = 0,
-		bool allowTLSv10 = false,
-		bool allowTLSv11 = false,
-		bool allowTLSv12 = true,
-		const std::string& cipherList = ""
+	    const std::string& peerCertFilePath,
+	    const std::string& localCertFilePath,
+	    const std::string& privateKeyFilePath,
+	    int maxVerifyDepth = 0,
+	    bool allowTLSv10 = false,
+	    bool allowTLSv11 = false,
+	    bool allowTLSv12 = true,
+	    const std::string& cipherList = ""
 	);
-		
+
 	/// Certificate file used to verify the peer or server. Can be CA file or a self-signed cert provided by other party.
 	std::string peerCertFilePath;
 

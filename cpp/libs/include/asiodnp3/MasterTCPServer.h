@@ -29,45 +29,45 @@
 #include "asiodnp3/IListenCallbacks.h"
 
 namespace asiodnp3
-{			
-	/**	
-	* Binds and listens on an IPv4 TCP port
-	*
-	* Meant to be used exclusively as a shared_ptr
-	*/
-	class MasterTCPServer final : public asiopal::TCPServer
-	{					
+{
+/**
+* Binds and listens on an IPv4 TCP port
+*
+* Meant to be used exclusively as a shared_ptr
+*/
+class MasterTCPServer final : public asiopal::TCPServer
+{
 
-	public:
+public:
 
-		static std::shared_ptr<MasterTCPServer> Create(			
-			asiopal::IResourceManager& shutdown,
-			std::shared_ptr<IListenCallbacks> callbacks,
-			std::shared_ptr<asiopal::ThreadPool> pool,
-			openpal::LogRoot root,
-			asiopal::IPEndpoint endpoint,
-			std::error_code& ec
-		);
+	static std::shared_ptr<MasterTCPServer> Create(
+	    asiopal::IResourceManager& shutdown,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::shared_ptr<asiopal::ThreadPool> pool,
+	    openpal::LogRoot root,
+	    asiopal::IPEndpoint endpoint,
+	    std::error_code& ec
+	);
 
-	private:
+private:
 
-		asiopal::IResourceManager* m_manager;
-		std::shared_ptr<IListenCallbacks> m_callbacks;		
+	asiopal::IResourceManager* m_manager;
+	std::shared_ptr<IListenCallbacks> m_callbacks;
 
-		static std::string SessionIdToString(uint64_t sessionid);
+	static std::string SessionIdToString(uint64_t sessionid);
 
-		MasterTCPServer(			
-			asiopal::IResourceManager& shutdown,
-			std::shared_ptr<IListenCallbacks> callbacks,
-			std::shared_ptr<asiopal::ThreadPool> pool,
-			openpal::LogRoot root,
-			asiopal::IPEndpoint endpoint,
-			std::error_code& ec
-		);
-				
-		virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) override;
-		virtual void OnShutdown() override;
-	};
+	MasterTCPServer(
+	    asiopal::IResourceManager& shutdown,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::shared_ptr<asiopal::ThreadPool> pool,
+	    openpal::LogRoot root,
+	    asiopal::IPEndpoint endpoint,
+	    std::error_code& ec
+	);
+
+	virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) override;
+	virtual void OnShutdown() override;
+};
 
 }
 

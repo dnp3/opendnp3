@@ -38,7 +38,7 @@ public:
 	DefaultListenCallbacks();
 
 	virtual ~DefaultListenCallbacks() {}
-	
+
 	virtual bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) override;
 
 	virtual bool AcceptCertificate(uint64_t sessionid, const X509Info& info) override;
@@ -49,7 +49,7 @@ public:
 
 	virtual void OnConnectionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) override;
 
-private:	
+private:
 
 	std::string SessionIdToString(uint64_t id);
 };

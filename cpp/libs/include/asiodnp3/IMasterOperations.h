@@ -91,7 +91,7 @@ public:
 	*/
 	virtual void Scan(const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
-	/**	
+	/**
 	* Initiate a single scan that requests all objects (0x06 qualifier code) for a certain group and variation
 	*/
 	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;

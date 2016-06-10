@@ -25,30 +25,30 @@
 #include <cstdint>
 
 namespace asiopal
-{	
-	class IPEndpoint
+{
+class IPEndpoint
+{
+
+public:
+
+	IPEndpoint(const std::string& address_, uint16_t port_) :
+		address(address_),
+		port(port_)
+	{}
+
+	IPEndpoint(uint16_t port_) :
+		address("127.0.0.1"),
+		port(port_)
+	{}
+
+	static IPEndpoint AllAdapters(uint16_t port)
 	{
+		return IPEndpoint("0.0.0.0", port);
+	}
 
-	public:
-
-		IPEndpoint(const std::string& address_, uint16_t port_) :
-			address(address_),
-			port(port_)
-		{}
-
-		IPEndpoint(uint16_t port_) :
-			address("127.0.0.1"),
-			port(port_)
-		{}
-
-		static IPEndpoint AllAdapters(uint16_t port)
-		{
-			return IPEndpoint("0.0.0.0", port);
-		}
-
-		std::string address;
-		uint16_t port;
-	};
+	std::string address;
+	uint16_t port;
+};
 
 }
 

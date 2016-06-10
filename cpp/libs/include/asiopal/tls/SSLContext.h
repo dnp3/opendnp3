@@ -29,28 +29,28 @@
 #include <asio/ssl.hpp>
 
 namespace asiopal
-{			
-	/**
-	* Create and fully configure an asio::ssl::context
-	*/
-	class SSLContext : private openpal::Uncopyable
-	{		
+{
+/**
+* Create and fully configure an asio::ssl::context
+*/
+class SSLContext : private openpal::Uncopyable
+{
 
-	public:	
+public:
 
-		SSLContext(openpal::Logger logger, bool server, const TLSConfig& cfg, std::error_code&);		
+	SSLContext(openpal::Logger logger, bool server, const TLSConfig& cfg, std::error_code&);
 
-		
-		asio::ssl::context value;
 
-	private:
+	asio::ssl::context value;
 
-		openpal::Logger m_logger;
+private:
 
-		static int GetVerifyMode(bool server);
+	openpal::Logger m_logger;
 
-		std::error_code ApplyConfig(const TLSConfig& config, bool server, std::error_code& ec);
-	};
+	static int GetVerifyMode(bool server);
+
+	std::error_code ApplyConfig(const TLSConfig& config, bool server, std::error_code& ec);
+};
 
 }
 

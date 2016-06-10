@@ -63,20 +63,20 @@ public:
 	virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;
 
 	/**
-	* Called when the first link-layer frame is received for a session	
+	* Called when the first link-layer frame is received for a session
 	*/
 	virtual void OnFirstFrame(
-		uint64_t sessionid,
-		const opendnp3::LinkHeaderFields& header,		
-		ISessionAcceptor& acceptor
+	    uint64_t sessionid,
+	    const opendnp3::LinkHeaderFields& header,
+	    ISessionAcceptor& acceptor
 	) = 0;
 
-	/** 
+	/**
 	* Called when a socket closes
 	*
 	* @sessionid Incrementing id used to uniquely identify the session
 	* @session Possibly NULL shared_ptr to the master session if it was created
-	*/	
+	*/
 	virtual void OnConnectionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) = 0;
 };
 

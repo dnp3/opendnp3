@@ -56,9 +56,9 @@ class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
 public:
 
 	DNP3Channel(
-		std::unique_ptr<openpal::LogRoot> root,
-		const opendnp3::ChannelRetry& retry,
-		std::unique_ptr<asiopal::PhysicalLayerASIO> phys
+	    std::unique_ptr<openpal::LogRoot> root,
+	    const opendnp3::ChannelRetry& retry,
+	    std::unique_ptr<asiopal::PhysicalLayerASIO> phys
 	);
 
 	// ----------------------- Implement IChannel -----------------------

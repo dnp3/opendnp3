@@ -142,13 +142,13 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 }
 
 void TransportLayer::SetAppLayer(IUpperLayer& upperLayer)
-{	
+{
 	assert(pUpperLayer == nullptr);
 	pUpperLayer = &upperLayer;
 }
 
 void TransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
-{	
+{
 	assert(pLinkLayer == nullptr);
 	pLinkLayer = &linkLayer;
 }
