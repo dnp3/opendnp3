@@ -23,6 +23,7 @@
 #define ASIODNP3_ERRORCODES_H
 
 #include <system_error>
+#include <string>
 
 #if (defined WIN32 && (_MSC_VER < 1900))
 #define NOEXCEPT

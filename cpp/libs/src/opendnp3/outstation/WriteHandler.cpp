@@ -29,8 +29,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WriteHandler::WriteHandler(openpal::Logger logger_, IOutstationApplication& application, IINField* pWriteIIN_) :
-	logger(logger_),
+WriteHandler::WriteHandler(IOutstationApplication& application, IINField* pWriteIIN_) :
 	pApplication(&application),
 	pWriteIIN(pWriteIIN_),
 	wroteTime(false),

@@ -38,7 +38,7 @@ class AssignClassHandler : public IAPDUHandler
 {
 public:
 
-	AssignClassHandler(openpal::Logger logger, openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
+	AssignClassHandler(openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
 
 	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
 	{
@@ -61,7 +61,6 @@ private:
 
 	void NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range);
 
-	openpal::Logger logger;
 	int32_t classHeader;
 	PointClass clazz;
 

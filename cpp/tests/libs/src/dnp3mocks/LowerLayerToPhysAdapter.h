@@ -40,7 +40,7 @@ class LowerLayerToPhysAdapter : public openpal::IPhysicalLayerCallbacks, public 
 {
 
 public:
-	LowerLayerToPhysAdapter(openpal::Logger logger, openpal::IPhysicalLayer&, bool aAutoRead = true);
+	LowerLayerToPhysAdapter(openpal::IPhysicalLayer&, bool aAutoRead = true);
 
 	uint32_t GetNumOpenFailure()
 	{
@@ -70,7 +70,6 @@ public:
 
 private:
 
-	openpal::Logger logger;
 	bool mAutoRead;
 	uint32_t mNumOpenFailure;
 

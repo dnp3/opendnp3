@@ -35,7 +35,7 @@ class ClassBasedRequestHandler : public IAPDUHandler
 {
 public:
 
-	explicit ClassBasedRequestHandler(openpal::Logger logger);
+	ClassBasedRequestHandler() {}
 
 	ClassField GetClassField() const
 	{
@@ -48,8 +48,6 @@ public:
 	}
 
 private:
-
-	openpal::Logger logger;
 
 	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
 

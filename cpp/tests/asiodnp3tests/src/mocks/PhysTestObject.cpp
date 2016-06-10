@@ -30,8 +30,8 @@ PhysTestObject::PhysTestObject(uint32_t filters, bool aAutoRead) :
 	log(),
 	mTCPClient(log.root.logger, this->GetService(), "127.0.0.1", "127.0.0.1", 50000),
 	mTCPServer(log.root.logger, this->GetService(), "127.0.0.1", 50000),
-	mClientAdapter(log.root.logger, mTCPClient, aAutoRead),
-	mServerAdapter(log.root.logger, mTCPServer, aAutoRead)
+	mClientAdapter(mTCPClient, aAutoRead),
+	mServerAdapter(mTCPServer, aAutoRead)
 {
 	mClientAdapter.SetUpperLayer(mClientUpper);
 	mServerAdapter.SetUpperLayer(mServerUpper);

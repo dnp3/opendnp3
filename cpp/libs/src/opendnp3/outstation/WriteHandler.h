@@ -35,7 +35,7 @@ class WriteHandler : public IAPDUHandler
 {
 public:
 
-	WriteHandler(openpal::Logger logger, IOutstationApplication& application, IINField* pWriteIIN_);
+	WriteHandler(IOutstationApplication& application, IINField* pWriteIIN_);
 
 	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
 	{
@@ -50,7 +50,6 @@ private:
 
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
 
-	openpal::Logger logger;
 	IOutstationApplication* pApplication;
 	IINField* pWriteIIN;
 

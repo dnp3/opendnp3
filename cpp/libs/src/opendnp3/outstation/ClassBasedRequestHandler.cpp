@@ -23,11 +23,6 @@
 namespace opendnp3
 {
 
-ClassBasedRequestHandler::ClassBasedRequestHandler(openpal::Logger logger_) : logger(logger_)
-{
-
-}
-
 IINField ClassBasedRequestHandler::ProcessHeader(const AllObjectsHeader& header)
 {
 	switch (header.enumeration)

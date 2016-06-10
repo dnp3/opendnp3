@@ -41,9 +41,9 @@ public:
 	virtual ~SerialTestObject() {}
 
 	testlib::MockLogHandler log;
-	asiopal::PhysicalLayerSerial mPort;
-	LowerLayerToPhysAdapter mAdapter;
-	MockUpperLayer mUpper;
+	asiopal::PhysicalLayerSerial port;
+	LowerLayerToPhysAdapter adapter;
+	MockUpperLayer upper;
 };
 
 }

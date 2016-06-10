@@ -29,7 +29,7 @@ PhysBaseTest::PhysBaseTest(uint32_t filters, bool aImmediate) :
 	log(),
 	exe(),
 	phys(log.root.logger, exe),
-	adapter(log.root.logger, phys, false)
+	adapter(phys, false)
 {
 	adapter.SetUpperLayer(upper);
 	upper.SetLowerLayer(adapter);

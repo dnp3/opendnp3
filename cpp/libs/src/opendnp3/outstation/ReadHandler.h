@@ -37,7 +37,7 @@ class ReadHandler : public IAPDUHandler
 {
 public:
 
-	ReadHandler(openpal::Logger logger, IStaticSelector& staticSelector, IEventSelector& eventSelector);
+	ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector);
 
 	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
 	{
@@ -52,7 +52,6 @@ private:
 
 	virtual IINField ProcessHeader(const CountHeader& header) override final;
 
-	openpal::Logger logger;
 	IStaticSelector* pStaticSelector;
 	IEventSelector* pEventSelector;
 

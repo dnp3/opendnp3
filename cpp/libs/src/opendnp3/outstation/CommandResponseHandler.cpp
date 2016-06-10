@@ -28,8 +28,7 @@
 namespace opendnp3
 {
 
-CommandResponseHandler::CommandResponseHandler(openpal::Logger logger_, uint8_t maxCommands_, ICommandAction* pCommandAction_, HeaderWriter* pWriter_) :
-	logger(logger_),
+CommandResponseHandler::CommandResponseHandler(uint8_t maxCommands_, ICommandAction* pCommandAction_, HeaderWriter* pWriter_) :
 	pCommandAction(pCommandAction_),
 	numRequests(0),
 	numSuccess(0),

@@ -38,12 +38,8 @@ class TimeSyncHandler : public IAPDUHandler, private openpal::Uncopyable
 {
 
 public:
-
-	/**
-	* @param arLogger the Logger that the loader should use for message reporting
-	*/
-	TimeSyncHandler(openpal::Logger logger_) :
-		logger(logger_),
+	
+	TimeSyncHandler() :
 		m_valid(false),
 		m_time(0)
 	{}
@@ -70,10 +66,6 @@ public:
 	}
 
 private:
-
-	TimeSyncHandler() = delete;
-
-	openpal::Logger logger;
 
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& times) override final
 	{

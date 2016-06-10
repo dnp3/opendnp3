@@ -83,7 +83,7 @@ IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDURe
 {
 	if (ValidateSingleResponse(response))
 	{
-		TimeSyncHandler handler(logger);
+		TimeSyncHandler handler;
 		auto result = APDUParser::Parse(objects, handler, &logger);
 		if (result == ParseResult::OK)
 		{

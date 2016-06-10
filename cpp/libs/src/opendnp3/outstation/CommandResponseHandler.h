@@ -34,7 +34,7 @@ class CommandResponseHandler : public IAPDUHandler
 {
 public:
 
-	CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, HeaderWriter* pWriter_);
+	CommandResponseHandler(uint8_t maxCommands_, ICommandAction* pCommandAction_, HeaderWriter* pWriter_);
 
 	bool AllCommandsSuccessful() const
 	{
@@ -63,7 +63,6 @@ private:
 	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas);
 	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas);
 
-	openpal::Logger logger;
 	ICommandAction* pCommandAction;
 	uint32_t numRequests;
 	uint32_t numSuccess;

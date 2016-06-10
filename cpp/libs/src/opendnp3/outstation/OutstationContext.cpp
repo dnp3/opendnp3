@@ -553,7 +553,7 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
 	this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
 	this->database.GetStaticSelector().Unselect();
 
-	ReadHandler handler(this->logger, this->database.GetStaticSelector(), this->eventBuffer);
+	ReadHandler handler(this->database.GetStaticSelector(), this->eventBuffer);
 	auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 	if (result == ParseResult::OK)
 	{
@@ -569,7 +569,7 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
 
 IINField OContext::HandleWrite(const openpal::RSlice& objects)
 {
-	WriteHandler handler(this->logger, *this->pApplication, &this->staticIIN);
+	WriteHandler handler(*this->pApplication, &this->staticIIN);
 	auto result = APDUParser::Parse(objects, handler, &this->logger);
 	return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
@@ -585,7 +585,7 @@ IINField OContext::HandleDirectOperate(const openpal::RSlice& objects, OperateTy
 	else
 	{
 		CommandActionAdapter adapter(this->pCommandHandler, false, opType);
-		CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, pWriter);
+		CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, pWriter);
 		auto result = APDUParser::Parse(objects, handler, &this->logger);
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
@@ -603,7 +603,7 @@ IINField OContext::HandleSelect(const openpal::RSlice& objects, HeaderWriter& wr
 	{
 		// the 'OperateType' is just ignored  since it's a select
 		CommandActionAdapter adapter(this->pCommandHandler, true, OperateType::DirectOperate);
-		CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, &writer);
+		CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
 		auto result = APDUParser::Parse(objects, handler, &this->logger);
 		if (result == ParseResult::OK)
 		{
@@ -637,7 +637,7 @@ IINField OContext::HandleOperate(const openpal::RSlice& objects, HeaderWriter& w
 		if (result == CommandStatus::SUCCESS)
 		{
 			CommandActionAdapter adapter(this->pCommandHandler, false, OperateType::SelectBeforeOperate);
-			CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &adapter, &writer);
+			CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
 			auto result = APDUParser::Parse(objects, handler, &this->logger);
 			return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 		}
@@ -709,7 +709,7 @@ IINField OContext::HandleAssignClass(const openpal::RSlice& objects)
 {
 	if (this->pApplication->SupportsAssignClass())
 	{
-		AssignClassHandler handler(this->logger, *this->pExecutor, *this->pApplication, this->database.GetClassAssigner());
+		AssignClassHandler handler(*this->pExecutor, *this->pApplication, this->database.GetClassAssigner());
 		auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
@@ -721,7 +721,7 @@ IINField OContext::HandleAssignClass(const openpal::RSlice& objects)
 
 IINField OContext::HandleDisableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer)
 {
-	ClassBasedRequestHandler handler(this->logger);
+	ClassBasedRequestHandler handler;
 	auto result = APDUParser::Parse(objects, handler, &this->logger);
 	if (result == ParseResult::OK)
 	{
@@ -736,7 +736,7 @@ IINField OContext::HandleDisableUnsolicited(const openpal::RSlice& objects, Head
 
 IINField OContext::HandleEnableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer)
 {
-	ClassBasedRequestHandler handler(this->logger);
+	ClassBasedRequestHandler handler;
 	auto result = APDUParser::Parse(objects, handler, &this->logger);
 	if (result == ParseResult::OK)
 	{
@@ -752,7 +752,7 @@ IINField OContext::HandleEnableUnsolicited(const openpal::RSlice& objects, Heade
 IINField OContext::HandleCommandWithConstant(const openpal::RSlice& objects, HeaderWriter& writer, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
-	CommandResponseHandler handler(this->logger, this->params.maxControlsPerRequest, &constant, &writer);
+	CommandResponseHandler handler(this->params.maxControlsPerRequest, &constant, &writer);
 	auto result = APDUParser::Parse(objects, handler, &this->logger);
 	return IINFromParseResult(result);
 }
