@@ -41,7 +41,7 @@ public:
 	LinkParserTest(bool aImmediate = false) :
 		log(),
 		sink(),
-		parser(log.GetLogger())
+		parser(log.root.logger)
 	{}
 
 	void WriteData(const openpal::RSlice& input)
@@ -49,7 +49,7 @@ public:
 		auto buff = parser.WriteBuff();
 		assert(input.Size() <= buff.Size());
 		input.CopyTo(buff);
-		parser.OnRead(input.Size(), &sink);
+		parser.OnRead(input.Size(), sink);
 	}
 
 	void WriteData(const std::string& hex)
@@ -58,7 +58,7 @@ public:
 		auto buff = parser.WriteBuff();
 		assert(hs.Size() <= buff.Size());
 		memcpy(buff, hs, hs.Size());
-		parser.OnRead(hs.Size(), &sink);
+		parser.OnRead(hs.Size(), sink);
 	}
 
 	testlib::MockLogHandler log;

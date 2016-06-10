@@ -32,8 +32,8 @@ using namespace testlib;
 namespace opendnp3
 {
 
-MockPhysicalLayer::MockPhysicalLayer(openpal::LogRoot& root, openpal::IExecutor& executor) :
-	PhysicalLayerBase(root),
+MockPhysicalLayer::MockPhysicalLayer(openpal::Logger logger, openpal::IExecutor& executor) :
+	PhysicalLayerBase(logger),
 	mpWriteBuff(nullptr),
 	mNumToRead(0),
 	mNumToWrite(0),

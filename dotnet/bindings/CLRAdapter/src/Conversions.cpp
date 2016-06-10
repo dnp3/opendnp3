@@ -62,9 +62,9 @@ namespace Automatak
 
 			CommandTaskResult^ Conversions::ConvertCommandTaskResult(const opendnp3::ICommandTaskResult& response)
 			{
-				auto convert = [](const opendnp3::CommandPointResult& value) -> CommandPointResult^ 
+				auto convert = [](const opendnp3::CommandPointResult& value) -> CommandPointResult^
 				{
-					return gcnew CommandPointResult(value.headerIndex, value.index, (CommandPointState)value.state, (CommandStatus) value.status);
+					return gcnew CommandPointResult(value.headerIndex, value.index, (CommandPointState)value.state, (CommandStatus)value.status);
 				};
 
 				auto adapter = CreateAdapter<opendnp3::CommandPointResult, CommandPointResult^>(convert);
@@ -72,7 +72,7 @@ namespace Automatak
 				response.Foreach(adapter);
 
 				return gcnew CommandTaskResult((TaskCompletion)response.summary, adapter.GetValues());
-			}			
+			}
 
 			CommandStatus Conversions::ConvertCommandStatus(opendnp3::CommandStatus status)
 			{
@@ -145,42 +145,42 @@ namespace Automatak
 			}
 
 			Binary^ Conversions::ConvertMeas(opendnp3::Binary meas)
-			{				
-				return gcnew Binary(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
+			{
+				return gcnew Binary(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 			}
 
 			DoubleBitBinary^ Conversions::ConvertMeas(opendnp3::DoubleBitBinary meas)
 			{
-				return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.quality, TimeStamp::Convert(meas.time));				
+				return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.quality, TimeStamp::Convert(meas.time));
 			}
 
 			Analog^ Conversions::ConvertMeas(opendnp3::Analog meas)
-			{				
-				return gcnew Analog(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
+			{
+				return gcnew Analog(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 			}
 
 			Counter^ Conversions::ConvertMeas(opendnp3::Counter meas)
 			{
-				return gcnew Counter(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
+				return gcnew Counter(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 			}
 
 			FrozenCounter^ Conversions::ConvertMeas(opendnp3::FrozenCounter meas)
 			{
-				return gcnew FrozenCounter(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
+				return gcnew FrozenCounter(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 			}
 
 			AnalogOutputStatus^ Conversions::ConvertMeas(opendnp3::AnalogOutputStatus meas)
 			{
-				return gcnew AnalogOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
+				return gcnew AnalogOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 			}
 
 			BinaryOutputStatus^ Conversions::ConvertMeas(opendnp3::BinaryOutputStatus meas)
-			{				
-				return gcnew BinaryOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
+			{
+				return gcnew BinaryOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 			}
 
 			OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& meas)
-			{				
+			{
 				return gcnew OctetString(Conversions::Convert(meas.ToRSlice()));
 			}
 
@@ -254,6 +254,25 @@ namespace Automatak
 				return opendnp3::BinaryOutputStatus(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
+			LinkHeader^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields)
+			{
+				return gcnew LinkHeader((LinkFunction)fields.func, fields.isFromMaster, fields.fcb, fields.fcvdfc, fields.dest, fields.src);
+			}
+
+			asiopal::IPEndpoint Conversions::Convert(IPEndpoint^ endpoint)
+			{
+				return asiopal::IPEndpoint(ConvertString(endpoint->address), endpoint->port);
+			}
+
+			X509Info^ Conversions::Convert(const asiodnp3::X509Info& info)
+			{				
+				return gcnew X509Info(
+					info.depth,
+					Conversions::Convert(info.sha1thumbprint),
+					Conversions::ConvertString(info.subjectName)
+				);
+			}
+
 			asiopal::SerialSettings Conversions::ConvertSerialSettings(SerialSettings^ settings)
 			{
 				asiopal::SerialSettings s;
@@ -292,24 +311,17 @@ namespace Automatak
 			}
 			
 			asiopal::TLSConfig Conversions::Convert(TLSConfig^ config)
-			{
-				auto peerCert = Conversions::ConvertString(config->peerCertFilePath);
-				auto localCert = Conversions::ConvertString(config->localCertFilePath);
-				auto privateKey = Conversions::ConvertString(config->privateKeyFilePath);
-				auto cipherList = Conversions::ConvertString(config->cipherList);
-
-				asiopal::TLSConfig ret(
-					peerCert,
-					localCert,
-					privateKey,
-					cipherList
+			{				
+				return asiopal::TLSConfig(
+					Conversions::ConvertString(config->peerCertFilePath),
+					Conversions::ConvertString(config->localCertFilePath),
+					Conversions::ConvertString(config->privateKeyFilePath),
+					config->maxVerifyDepth,
+					config->allowTLSv10,
+					config->allowTLSv11,
+					config->allowTLSv12,
+					Conversions::ConvertString(config->cipherList)
 				);
-
-				ret.allowTLSv10 = config->allowTLSv10;
-				ret.allowTLSv11 = config->allowTLSv11;
-				ret.allowTLSv12 = config->allowTLSv12;
-
-				return ret;
 			}
 
 

@@ -29,17 +29,13 @@
 
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/Synchronized.h>
+#include <asiopal/PhysicalLayerASIO.h>
 
 #include "asiodnp3/IChannel.h"
 #include "asiodnp3/StackLifecycle.h"
 #include "asiodnp3/LinkLayerRouter.h"
 
 #include <memory>
-
-namespace openpal
-{
-class IPhysicalLayer;
-}
 
 namespace opendnp3
 {
@@ -60,10 +56,9 @@ class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
 public:
 
 	DNP3Channel(
-	    openpal::LogRoot* pLogRoot_,
-	    asiopal::ASIOExecutor& executor,
-	    const opendnp3::ChannelRetry& retry,
-	    openpal::IPhysicalLayer* pPhys
+		std::unique_ptr<openpal::LogRoot> root,
+		const opendnp3::ChannelRetry& retry,
+		std::unique_ptr<asiopal::PhysicalLayerASIO> phys
 	);
 
 	// ----------------------- Implement IChannel -----------------------
@@ -110,10 +105,9 @@ private:
 
 	openpal::Action0 shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;
-	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
-	std::unique_ptr<openpal::LogRoot> pLogRoot;
-	asiopal::ASIOExecutor* pExecutor;
-	openpal::Logger logger;
+
+	std::unique_ptr<asiopal::PhysicalLayerASIO> phys;
+	std::unique_ptr<openpal::LogRoot> root;
 
 	asiopal::Synchronized<bool>* pShutdownHandler;
 
@@ -128,4 +122,3 @@ private:
 }
 
 #endif
-

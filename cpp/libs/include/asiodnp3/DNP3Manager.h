@@ -28,7 +28,6 @@
 #include <opendnp3/link/ChannelRetry.h>
 
 #include <asiodnp3/IChannel.h>
-
 #include <asiopal/SerialTypes.h>
 
 #ifdef OPENDNP3_USE_TLS
@@ -36,6 +35,7 @@
 #endif
 
 #include <memory>
+#include <system_error>
 
 namespace asiodnp3
 {
@@ -75,7 +75,7 @@ public:
 	void Shutdown();
 
 	/**
-	* Add a tcp client channel
+	* Add a persistent TCP client channel. Automatically attempts to reconnect.
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
@@ -94,7 +94,7 @@ public:
 	    uint16_t port);
 
 	/**
-	* Add a tcp server channel
+	* Add a persistent TCP server channel. Only accepts a single connection at a time.
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
@@ -104,14 +104,14 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTCPServer(
-	    char const* id,
-	    uint32_t levels,
-	    const opendnp3::ChannelRetry& retry,
-	    const std::string& endpoint,
-	    uint16_t port);
+		char const* id,
+		uint32_t levels,
+		const opendnp3::ChannelRetry& retry,
+		const std::string& endpoint,
+		uint16_t port);
 
 	/**
-	* Add a serial channel
+	* Add a persistent TCP serial channel
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
@@ -124,6 +124,7 @@ public:
 	    uint32_t levels,
 	    const opendnp3::ChannelRetry& retry,
 	    asiopal::SerialSettings settings);
+
 
 #ifdef OPENDNP3_USE_TLS
 
@@ -139,16 +140,19 @@ public:
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
 	* @param config TLS configuration information
+	* @param An error code. If set, a nullptr will be returned
 	* @return A channel interface
 	*/
 	IChannel* AddTLSClient(
-	    char const* id,
-	    uint32_t levels,
-	    const opendnp3::ChannelRetry& retry,
-	    const std::string& host,
-	    const std::string& local,
-	    uint16_t port,
-	    const asiopal::TLSConfig& config);
+		char const* id,
+		uint32_t levels,
+		const opendnp3::ChannelRetry& retry,
+		const std::string& host,
+		const std::string& local,
+		uint16_t port,
+		const asiopal::TLSConfig& config,
+		std::error_code& ec);
+
 
 	/**
 	* Add a TLS server channel
@@ -161,15 +165,17 @@ public:
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param config TLS configuration information
+	* @param An error code. If set, a nullptr will be returned
 	* @return A channel interface
 	*/
 	IChannel* AddTLSServer(
-	    char const* id,
-	    uint32_t levels,
-	    const opendnp3::ChannelRetry& retry,
-	    const std::string& endpoint,
-	    uint16_t port,
-	    const asiopal::TLSConfig& config);
+		char const* id,
+		uint32_t levels,
+		const opendnp3::ChannelRetry& retry,
+		const std::string& endpoint,
+		uint16_t port,
+		const asiopal::TLSConfig& config,
+		std::error_code& ec);
 
 #endif
 

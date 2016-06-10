@@ -26,7 +26,7 @@
 #include <opendnp3/Route.h>
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/link/IFrameSink.h>
-#include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/link/IChannelStateListener.h>
 #include <opendnp3/master/MultidropTaskLock.h>
@@ -53,11 +53,11 @@ namespace asiodnp3
 // Implements the parsing and de-multiplexing portion of
 // of DNP 3 Data Link Layer. PhysicalLayerMonitor inherits
 // from IHandler, which inherits from IUpperLayer
-class LinkLayerRouter : public asiodnp3::PhysicalLayerMonitor, public opendnp3::ILinkRouter, private opendnp3::IFrameSink
+class LinkLayerRouter : public asiodnp3::PhysicalLayerMonitor, public opendnp3::ILinkTx, private opendnp3::IFrameSink
 {
 public:
 
-	LinkLayerRouter(openpal::LogRoot&,
+	LinkLayerRouter(openpal::Logger logger,
 	                openpal::IExecutor& executor,
 	                openpal::IPhysicalLayer*,
 	                const opendnp3::ChannelRetry& retry,
@@ -76,7 +76,7 @@ public:
 	bool IsRouteInUse(const opendnp3::Route& route);
 
 	// Ties the lower part of the link layer to the upper part
-	bool AddContext(opendnp3::ILinkSession* pContext, const opendnp3::Route& route);
+	bool AddContext(opendnp3::ILinkSession& context, const opendnp3::Route& route);
 
 	/**
 	*  Tells the router to begin sending messages to the context
@@ -97,9 +97,9 @@ public:
 	// ------------ IFrameSink -----------------
 	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
-	// ------------ ILinkRouter -----------------
+	// ------------ ILinkTx -----------------
 
-	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession* pContext) override final;
+	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& context) override final;
 
 	// ------------ IUpperLayer -----------------
 

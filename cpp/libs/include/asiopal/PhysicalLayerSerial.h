@@ -36,8 +36,9 @@ namespace asiopal
 class PhysicalLayerSerial final : public PhysicalLayerASIO
 {
 public:
-	PhysicalLayerSerial(openpal::LogRoot& root, asio::io_service& service, const SerialSettings& settings);
 
+	PhysicalLayerSerial(openpal::Logger logger, asio::io_service& service, const SerialSettings& settings);
+	
 	void DoClose() override;
 	void DoOpeningClose() override
 	{

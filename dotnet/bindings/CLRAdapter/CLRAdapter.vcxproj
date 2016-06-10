@@ -158,18 +158,26 @@
     <ClInclude Include="src\CommandSetBuilder.h" />
     <ClInclude Include="src\Conversions.h" />
     <ClInclude Include="src\DNP3ManagerAdapter.h" />
+    <ClInclude Include="src\DNP3SessionManagerAdapter.h" />
     <ClInclude Include="src\EventConverter.h" />
     <ClInclude Include="src\ICommandHeaderWorkAround.h" />
+    <ClInclude Include="src\ListenCallbacksAdapter.h" />
+    <ClInclude Include="src\ListenerAdapter.h" />
     <ClInclude Include="src\Lock.h" />
     <ClInclude Include="src\LogAdapter.h" />
-    <ClInclude Include="src\MasterAdapterBase.h" />
     <ClInclude Include="src\MasterAdapter.h" />
+    <ClInclude Include="src\MasterAdapterSA.h" />
     <ClInclude Include="src\MasterApplicationAdapter.h" />
+    <ClInclude Include="src\MasterApplicationAdapterSA.h" />
     <ClInclude Include="src\MasterConversions.h" />
+    <ClInclude Include="src\MasterOperationsAdapter.h" />
     <ClInclude Include="src\MasterScanAdapter.h" />
+    <ClInclude Include="src\MasterSessionAdapter.h" />
     <ClInclude Include="src\OutstationAdapter.h" />
     <ClInclude Include="src\OutstationApplicationAdapter.h" />
     <ClInclude Include="src\OutstationCommandHandlerAdapter.h" />
+    <ClInclude Include="src\SAConversions.h" />
+    <ClInclude Include="src\SessionAcceptorAdapter.h" />
     <ClInclude Include="src\SOEHandlerAdapter.h" />
     <ClInclude Include="src\TaskCallbackAdapter.h" />
   </ItemGroup>
@@ -181,13 +189,19 @@
     <ClCompile Include="src\CommandSetBuilder.cpp" />
     <ClCompile Include="src\Conversions.cpp" />
     <ClCompile Include="src\DNP3ManagerAdapter.cpp" />
+    <ClCompile Include="src\DNP3SessionManagerAdapter.cpp" />
+    <ClCompile Include="src\ListenCallbacksAdapter.cpp" />
+    <ClCompile Include="src\ListenerAdapter.cpp" />
     <ClCompile Include="src\LogAdapter.cpp" />
-    <ClCompile Include="src\MasterAdapterBase.cpp" />
+    <ClCompile Include="src\MasterAdapter.cpp" />
     <ClCompile Include="src\MasterConversions.cpp" />
+    <ClCompile Include="src\MasterOperationsAdapter.cpp" />
     <ClCompile Include="src\MasterScanAdapter.cpp" />
+    <ClCompile Include="src\MasterSessionAdapter.cpp" />
     <ClCompile Include="src\OutstationAdapter.cpp" />
     <ClCompile Include="src\OutstationApplicationAdapter.cpp" />
     <ClCompile Include="src\OutstationCommandHandlerAdapter.cpp" />
+    <ClCompile Include="src\SessionAcceptorAdapter.cpp" />
     <ClCompile Include="src\SOEHandlerAdapter.cpp" />
   </ItemGroup>
   <ItemGroup>

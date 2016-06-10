@@ -43,8 +43,8 @@ public:
 		log(),
 		root(&log, "test", filters),
 		exe(),
-		phys(root, exe),
-		loopback(root, exe, &phys)
+		phys(root.logger, exe),
+		loopback(root.logger, exe, &phys)
 	{
 		loopback.Start();
 	}

@@ -46,15 +46,9 @@ void TestComplex(const std::string& hex, ParseResult expected, size_t numCalls, 
 {
 	HexSequence buffer(hex);
 	MockApduHeaderHandler mock;
-	testlib::MockLogHandler log;
-	auto logger = log.GetLogger();
-	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, &logger);
 
-	if (result != expected)
-	{
-		// TODO
-		// log.Pop(ConsoleLogger::Instance());
-	}
+	testlib::MockLogHandler log;
+	auto result = APDUParser::Parse(buffer.ToRSlice(), mock, &log.root.logger);
 
 	REQUIRE((result == expected));
 	REQUIRE(numCalls ==  mock.records.size());
@@ -466,5 +460,3 @@ TEST_CASE(SUITE("Group43Var3CountWithAllIndexSizes"))
 	TestComplex("2B 03 17 01 09 01 32 00 00 00 88 6E D0 92 4A 01", ParseResult::OK, 1, validator);
 	TestComplex("2B 03 28 01 00 09 00 01 32 00 00 00 88 6E D0 92 4A 01", ParseResult::OK, 1, validator);
 }
-
-

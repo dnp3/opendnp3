@@ -47,7 +47,7 @@ class PhysicalLayerMonitor : public openpal::IPhysicalLayerCallbacks
 
 public:
 
-	PhysicalLayerMonitor(	openpal::LogRoot& root,
+	PhysicalLayerMonitor(	openpal::Logger logger,
 	                        openpal::IExecutor& executor,
 	                        openpal::IPhysicalLayer*,
 	                        const opendnp3::ChannelRetry& retry);

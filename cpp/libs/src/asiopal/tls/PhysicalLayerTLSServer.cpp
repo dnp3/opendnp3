@@ -21,8 +21,6 @@
 
 #include "asiopal/tls/PhysicalLayerTLSServer.h"
 
-#include "asiopal/tls/TLSHelpers.h"
-
 #include <openpal/logging/LogMacros.h>
 #include <openpal/channel/IPhysicalLayerCallbacks.h>
 #include <openpal/logging/LogLevels.h>
@@ -35,18 +33,19 @@ namespace asiopal
 {
 
 PhysicalLayerTLSServer::PhysicalLayerTLSServer(
-    openpal::LogRoot& root,
+	openpal::Logger logger,
     asio::io_service& service,
     const std::string& endpoint,
     uint16_t port,
-    const TLSConfig& config) :
+    const TLSConfig& config,
+	std::error_code& ec) :
 
-	PhysicalLayerTLSBase(root, service, config, asio::ssl::context_base::sslv23_server),
+	PhysicalLayerTLSBase(logger, service, config, true, ec),
 	localEndpointString(endpoint),
 	localEndpoint(ip::tcp::v4(), port),
-	acceptor(service)
+	acceptor(service)	
 {
-
+	
 }
 
 void PhysicalLayerTLSServer::DoOpen()
@@ -54,10 +53,10 @@ void PhysicalLayerTLSServer::DoOpen()
 	std::error_code ec;
 
 	if (!acceptor.is_open())
-	{
+	{		
 		this->OpenAcceptorAndListen(ec);
 	}
-
+		
 	if (ec)
 	{
 		auto callback = [this, ec]()
@@ -67,13 +66,13 @@ void PhysicalLayerTLSServer::DoOpen()
 		pExecutor->PostLambda(callback);
 	}
 	else
-	{
-		auto callback = [this](const std::error_code & code)
+	{			
+		auto callback = [this](const std::error_code &code)
 		{
 			this->HandleAcceptResult(code);
 		};
-		acceptor.async_accept(stream->lowest_layer(), remoteEndpoint, executor.strand.wrap(callback));
-	}
+		acceptor.async_accept(stream.lowest_layer(), remoteEndpoint, executor.strand.wrap(callback));								
+	}	
 }
 
 void PhysicalLayerTLSServer::HandleAcceptResult(const std::error_code& ec)
@@ -83,13 +82,13 @@ void PhysicalLayerTLSServer::HandleAcceptResult(const std::error_code& ec)
 		this->OnOpenCallback(ec);
 	}
 	else
-	{
-		auto callback = [this](const std::error_code & code)
+	{		
+		auto callback = [this](const std::error_code& code)
 		{
 			this->OnOpenCallback(code);
 		};
 
-		this->stream->async_handshake(asio::ssl::stream_base::server, executor.strand.wrap(callback));
+		this->stream.async_handshake(asio::ssl::stream_base::server, executor.strand.wrap(callback));
 	}
 }
 
@@ -100,26 +99,26 @@ void PhysicalLayerTLSServer::OpenAcceptorAndListen(std::error_code& ec)
 	{
 		return;
 	}
-
+	
 	localEndpoint.address(address);
 	acceptor.open(localEndpoint.protocol(), ec);
 	if (ec)
 	{
 		return;
 	}
-
+		
 	acceptor.set_option(ip::tcp::acceptor::reuse_address(true));
 	acceptor.bind(localEndpoint, ec);
 	if (ec)
 	{
 		return;
 	}
-
+			
 	acceptor.listen(socket_base::max_connections, ec);
 	if (ec)
 	{
 		return;
-	}
+	}									
 }
 
 void PhysicalLayerTLSServer::CloseAcceptor()
@@ -145,7 +144,7 @@ void PhysicalLayerTLSServer::DoOpeningClose()
 
 void PhysicalLayerTLSServer::DoOpenSuccess()
 {
-	FORMAT_LOG_BLOCK(logger, logflags::INFO, "Accepted connection from: %s", remoteEndpoint.address().to_string().c_str());
+	FORMAT_LOG_BLOCK(logger, logflags::INFO, "Accepted connection from: %s", remoteEndpoint.address().to_string().c_str());	
 }
 
 }

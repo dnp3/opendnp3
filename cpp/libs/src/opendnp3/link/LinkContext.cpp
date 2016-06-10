@@ -23,7 +23,7 @@
 #include "opendnp3/link/PriLinkLayerStates.h"
 #include "opendnp3/link/SecLinkLayerStates.h"
 #include "opendnp3/link/LinkFrame.h"
-#include "opendnp3/link/ILinkRouter.h"
+#include "opendnp3/link/ILinkTx.h"
 
 #include "opendnp3/ErrorCodes.h"
 
@@ -33,9 +33,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkContext::LinkContext(openpal::Logger logger, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config_) :
+LinkContext::LinkContext(openpal::Logger logger, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config) :
 	logger(logger),
-	config(config_),
+	config(config),
 	pSegments(nullptr),
 	txMode(LinkTransmitMode::Idle),
 	numRetryRemaining(0),
@@ -71,7 +71,7 @@ bool LinkContext::OnLowerLayerUp()
 	MonotonicTimestamp expiration(now.milliseconds + config.KeepAliveTimeout.GetMilliseconds());
 	this->StartKeepAliveTimer(MonotonicTimestamp(now.milliseconds + config.KeepAliveTimeout.GetMilliseconds()));
 
-	this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
+	pListener->OnStateChange(opendnp3::LinkStatus::UNRESET);
 
 	if (pUpperLayer)
 	{
@@ -103,7 +103,7 @@ bool LinkContext::OnLowerLayerDown()
 	pPriState = &PLLS_Idle::Instance();
 	pSecState = &SLLS_NotReset::Instance();
 
-	this->PostStatusCallback(opendnp3::LinkStatus::UNRESET);
+	pListener->OnStateChange(opendnp3::LinkStatus::UNRESET);
 
 	if (pUpperLayer)
 	{
@@ -180,7 +180,7 @@ void LinkContext::QueueTransmit(const RSlice& buffer, bool primary)
 	if (txMode == LinkTransmitMode::Idle)
 	{
 		txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
-		pRouter->BeginTransmit(buffer, pSession);
+		pRouter->BeginTransmit(buffer, *pSession);
 	}
 	else
 	{
@@ -251,16 +251,6 @@ void LinkContext::PushDataUp(const openpal::RSlice& data)
 	{
 		pUpperLayer->OnReceive(data);
 	}
-}
-
-void LinkContext::PostStatusCallback(opendnp3::LinkStatus status)
-{
-	auto callback = [this, status]()
-	{
-		this->pListener->OnStateChange(status);
-	};
-
-	pExecutor->PostLambda(callback);
 }
 
 void LinkContext::CompleteSendOperation(bool success)
@@ -434,7 +424,7 @@ bool LinkContext::TryPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 {
 	if (this->txMode == LinkTransmitMode::Idle && pending.IsSet())
 	{
-		this->pRouter->BeginTransmit(pending.Get(), pSession);
+		this->pRouter->BeginTransmit(pending.Get(), *pSession);
 		pending.Clear();
 		this->txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
 		return true;

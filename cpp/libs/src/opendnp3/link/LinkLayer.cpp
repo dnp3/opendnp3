@@ -29,7 +29,7 @@ LinkLayer::LinkLayer(openpal::Logger logger, openpal::IExecutor& executor, IUppe
 	ctx(logger, executor, upper, listener, *this, config)
 {}
 
-void LinkLayer::SetRouter(ILinkRouter& router)
+void LinkLayer::SetRouter(ILinkTx& router)
 {
 	assert(ctx.pRouter == nullptr);
 	ctx.pRouter = &router;

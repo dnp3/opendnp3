@@ -18,30 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef ASIODNP3_DEFAULTLISTENCALLBACKS_H
+#define ASIODNP3_DEFAULTLISTENCALLBACKS_H
 
-#ifndef ASIOPAL_TLS_HELPERS_H
-#define ASIOPAL_TLS_HELPERS_H
+#include "asiodnp3/IListenCallbacks.h"
+#include "asiodnp3/PrintingSOEHandler.h"
+#include "asiodnp3/DefaultMasterApplication.h"
 
-#include "asiopal/tls/TLSConfig.h"
-
-#include <openpal/util/Uncopyable.h>
-
-#include <asio/ssl.hpp>
-
-namespace asiopal
+namespace asiodnp3
 {
 
 /**
-* Implementation of a TCP client
+* Callback interface invoked when a new connection is accepted
 */
-class TLSHelpers : openpal::StaticOnly
+class DefaultListenCallbacks final : public IListenCallbacks
 {
 public:
 
-	/// Configure an ssl context using the settings in a TLSConfig struct
-	static void ApplyConfig(const TLSConfig&, asio::ssl::context& context);
+	DefaultListenCallbacks();
+
+	virtual ~DefaultListenCallbacks() {}
+	
+	virtual bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) override;
+
+	virtual bool AcceptCertificate(uint64_t sessionid, const X509Info& info) override;
+
+	virtual openpal::TimeDuration GetFirstFrameTimeout() override;
+
+	virtual void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override;
+
+	virtual void OnConnectionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) override;
+
+private:	
+
+	std::string SessionIdToString(uint64_t id);
 };
 
 }
 
 #endif
+

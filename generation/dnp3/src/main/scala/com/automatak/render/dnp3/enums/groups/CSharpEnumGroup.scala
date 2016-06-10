@@ -31,7 +31,8 @@ object CSharpEnumGroup {
     KeyChangeMethod(),
     CommandPointState(),
     RestartType(),
-    OperateType()
+    OperateType(),
+    LinkFunction()
   ) ::: DefaultVariations.enums ::: QualityMasks.enums
 
 

@@ -31,7 +31,8 @@ namespace Automatak.DNP3.Interface
     {
         public static readonly System.UInt32 NONE = 0;
         public static readonly System.UInt32 ALL = ~NONE;
-        public static readonly System.UInt32 NORMAL = LogFilters.EVENT | LogFilters.ERROR | LogFilters.WARNING | LogFilters.INFO;        
+        public static readonly System.UInt32 NORMAL = LogFilters.EVENT | LogFilters.ERROR | LogFilters.WARNING | LogFilters.INFO;
+        public static readonly System.UInt32 APP_COMMS = LogFilters.APP_HEADER_RX | LogFilters.APP_HEADER_TX | LogFilters.APP_OBJECT_RX | LogFilters.APP_OBJECT_TX;
     }
 
     /// <summary>
@@ -81,19 +82,22 @@ namespace Automatak.DNP3.Interface
         public const System.UInt32 DEBUG = 1 << 4;
 
         public const System.UInt32 LINK_RX = DEBUG << 1;
-        public const System.UInt32 LINK_RX_HEX = LINK_RX << 1;
+        public const System.UInt32 LINK_RX_HEX = DEBUG << 2;
 
-        public const System.UInt32 LINK_TX = LINK_RX_HEX << 1;
-        public const System.UInt32 LINK_TX_HEX = LINK_TX << 1;
+        public const System.UInt32 LINK_TX = DEBUG << 3;
+        public const System.UInt32 LINK_TX_HEX = DEBUG << 4;
 
-        public const System.UInt32 TRANSPORT_RX = LINK_TX_HEX << 1;
-        public const System.UInt32 TRANSPORT_TX = TRANSPORT_RX << 1;
+        public const System.UInt32 TRANSPORT_RX = DEBUG << 5;
+        public const System.UInt32 TRANSPORT_TX = DEBUG << 6;
 
-        public const System.UInt32 APP_HEADER_RX = TRANSPORT_TX << 1;
-        public const System.UInt32 APP_HEADER_TX = APP_HEADER_RX << 1;
+        public const System.UInt32 APP_HEADER_RX = DEBUG << 7;
+        public const System.UInt32 APP_HEADER_TX = DEBUG << 8;
 
-        public const System.UInt32 APP_OBJECT_RX = APP_HEADER_TX << 1;
-        public const System.UInt32 APP_OBJECT_TX = APP_OBJECT_RX << 1;
+        public const System.UInt32 APP_OBJECT_RX = DEBUG << 9;
+        public const System.UInt32 APP_OBJECT_TX = DEBUG << 10;
+
+        public const System.UInt32 APP_HEX_RX = DEBUG << 11;
+        public const System.UInt32 APP_HEX_TX = DEBUG << 12;
      
         public static string GetFilterString(System.UInt32 filters)
         {
@@ -108,27 +112,27 @@ namespace Automatak.DNP3.Interface
                 case(INFO):
                     return "INFO";
                 case(DEBUG):
-                    return "DEBUG";
-                case(LINK_RX):
-                    return "<-LL-";
+                    return "DEBUG";                
+                case(LINK_RX):                    
                 case (LINK_RX_HEX):
                     return "<-LL-";
-                case (LINK_TX):
-                    return "-LL->";
+                case (LINK_TX):                    
                 case (LINK_TX_HEX):
                     return "-LL->";
                 case (TRANSPORT_RX):
                     return "<-TL-";
                 case (TRANSPORT_TX):
                     return "-TL->";
+
+                case(APP_HEX_RX):
                 case(APP_HEADER_RX):
+                case(APP_OBJECT_RX):
                     return "<-AL-";
+
+                case (APP_HEX_TX):
                 case (APP_HEADER_TX):
-                    return "-AL->";
-                case (APP_OBJECT_RX):
-                    return "<-AL-";
                 case (APP_OBJECT_TX):
-                    return "-AL->";
+                    return "-AL->";                
                 default:
                     return "?";
             }           

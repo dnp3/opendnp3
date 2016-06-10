@@ -30,59 +30,87 @@
 namespace openpal
 {
 
-LogRoot::LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters_) :
-	pHandler(pHandler_),
-	filters(filters_),
-	alias(AllocateCopy(alias_))
+LogRoot::LogRoot(ILogHandler* handler, char const* alias, LogFilters filters) : LogRoot(handler, alias, filters, false)
 {
 
 }
 
-LogRoot::LogRoot(const LogRoot& copy, char const* alias_) :
-	pHandler(copy.pHandler),
-	filters(copy.filters),
-	alias(AllocateCopy(alias_))
+LogRoot::LogRoot(ILogHandler* handler, char const* alias, LogFilters filters, bool reuseAlias) : 
+	logger(this),
+	m_handler(handler),
+	m_filters(filters),
+	m_alias((reuseAlias ? alias : AllocateCopy(alias)))
+{}
+
+LogRoot::LogRoot(const LogRoot& copy, char const* alias) :
+	logger(this),
+	m_handler(copy.m_handler),
+	m_filters(copy.m_filters),
+	m_alias(AllocateCopy(alias))
 {
 
+}
+
+LogRoot::LogRoot(LogRoot&& other) : LogRoot(other.m_handler, other.m_alias, other.m_filters, true)	
+{
+	other.m_alias = nullptr;
+	other.m_handler = nullptr;
+	other.m_filters = 0;
+}
+
+LogRoot LogRoot::Clone(char const* alias) const
+{
+	return LogRoot(this->m_handler, alias, this->m_filters);
+}
+
+LogRoot LogRoot::Clone(char const* alias, LogFilters filters) const
+{
+	return LogRoot(this->m_handler, alias, filters);
 }
 
 LogRoot::~LogRoot()
+{	
+	delete[] m_alias;
+}
+
+void LogRoot::Rename(char const* alias)
 {
-	delete[] alias;
+	delete[] m_alias;
+	m_alias = AllocateCopy(alias);
+}
+
+const char* LogRoot::GetId() const
+{
+	return m_alias;
 }
 
 void LogRoot::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
-	if (pHandler)
+	if (m_handler)
 	{
-		LogEntry le(alias, filters, location, message, errorCode);
-		pHandler->Log(le);
+		LogEntry le(m_alias, filters, location, message, errorCode);
+		m_handler->Log(le);
 	}
-}
-
-Logger LogRoot::GetLogger()
-{
-	return Logger(this);
 }
 
 bool LogRoot::IsEnabled(const LogFilters& rhs) const
 {
-	return pHandler && (this->filters & rhs);
+	return m_handler && (this->m_filters & rhs);
 }
 
 bool LogRoot::HasAny(const LogFilters& rhs) const
 {
-	return this->filters & rhs;
+	return this->m_filters & rhs;
 }
 
-void LogRoot::SetFilters(const LogFilters& filters_)
+void LogRoot::SetFilters(const LogFilters& filters)
 {
-	filters = filters_;
+	m_filters = filters;
 }
 
 const LogFilters& LogRoot::GetFilters() const
 {
-	return filters;
+	return m_filters;
 }
 
 }

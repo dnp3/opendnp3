@@ -26,7 +26,7 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include <asiopal/IOServiceThreadPool.h>
+#include <asiopal/ThreadPool.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -52,7 +52,7 @@ public:
 	{}
 
 	std::shared_ptr<openpal::ILogHandler> handler;
-	asiopal::IOServiceThreadPool threadpool;
+	asiopal::ThreadPool threadpool;
 	ChannelSet channels;
 };
 

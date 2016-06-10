@@ -36,12 +36,12 @@ namespace asiodnp3
 {
 
 PhysicalLayerMonitor::PhysicalLayerMonitor(
-    openpal::LogRoot& root,
+	openpal::Logger logger_,
     openpal::IExecutor& executor,
     IPhysicalLayer* pPhys_,
     const opendnp3::ChannelRetry& retry_
 ) :
-	logger(root.GetLogger()),
+	logger(logger_),
 	pPhys(pPhys_),
 	pExecutor(&executor),
 	isOnline(false),

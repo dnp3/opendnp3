@@ -31,12 +31,6 @@ using namespace testlib;
 namespace opendnp3
 {
 
-MockLowerLayer::MockLowerLayer(openpal::LogRoot& root) :
-	logger(root.GetLogger())
-{
-
-}
-
 bool MockLowerLayer::HasNoData() const
 {
 	return sendQueue.empty();

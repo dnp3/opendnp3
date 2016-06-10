@@ -34,7 +34,7 @@ public:
 
 	LinkLayer(openpal::Logger logger, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, const LinkConfig&);
 
-	void SetRouter(ILinkRouter&);
+	void SetRouter(ILinkTx&);
 
 	// ---- Events from below: ILinkSession / IFrameSink  ----
 

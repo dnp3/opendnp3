@@ -50,11 +50,11 @@ namespace Automatak
 				std::string stdAddress = Conversions::ConvertString(address);
 				uint16_t stdPort = port;
 
-				auto pChannel = pManager->AddTCPClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort);
-				if (pChannel)
+				auto channel = pManager->AddTCPClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort);
+				if (channel)
 				{
-					auto adapter = gcnew ChannelAdapter(pChannel);
-					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
+					auto adapter = gcnew ChannelAdapter(channel);
+					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}
 				else
@@ -69,11 +69,11 @@ namespace Automatak
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
 				uint16_t stdPort = port;
 
-				auto pChannel = pManager->AddTCPServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort);
-				if (pChannel)
+				auto channel = pManager->AddTCPServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort);
+				if (channel)
 				{
-					auto adapter = gcnew ChannelAdapter(pChannel);
-					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
+					auto adapter = gcnew ChannelAdapter(channel);
+					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}
 				else
@@ -87,26 +87,19 @@ namespace Automatak
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdAddress = Conversions::ConvertString(address);
 				uint16_t stdPort = port;
-				
-				try 
+								
+				std::error_code ec;
+				auto channel = pManager->AddTLSClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, Conversions::Convert(config), ec);
+				if (ec)
 				{
-					auto pChannel = pManager->AddTLSClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, Conversions::Convert(config));
-					if (pChannel)
-					{
-						auto adapter = gcnew ChannelAdapter(pChannel);
-						pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-						return adapter;
-					}
-					else
-					{
-						return nullptr;
-					}
+					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
 				}
-				catch (const std::runtime_error& ex)
+				else
 				{
-					std::string msg(ex.what());
-					throw gcnew System::ArgumentException(Conversions::ConvertString(msg));
-				}												
+					auto adapter = gcnew ChannelAdapter(channel);
+					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
+					return adapter;						
+				}								
 			}
 			
 			IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::TLSConfig^ config)
@@ -115,25 +108,19 @@ namespace Automatak
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
 				uint16_t stdPort = port;
 
-				try
+				
+				std::error_code ec;
+				auto channel = pManager->AddTLSServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, Conversions::Convert(config), ec);
+				if (ec)
 				{
-					auto pChannel = pManager->AddTLSServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, Conversions::Convert(config));
-					if (pChannel)
-					{
-						auto adapter = gcnew ChannelAdapter(pChannel);
-						pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-						return adapter;
-					}
-					else
-					{
-						return nullptr;
-					}
+					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
 				}
-				catch (const std::runtime_error& ex)
+				else
 				{
-					std::string msg(ex.what());
-					throw gcnew System::ArgumentException(Conversions::ConvertString(msg));
-				}
+					auto adapter = gcnew ChannelAdapter(channel);
+					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
+					return adapter;
+				}				
 			}
 
 			IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, Automatak::DNP3::Interface::SerialSettings^ settings)
@@ -141,11 +128,11 @@ namespace Automatak
 				std::string stdName = Conversions::ConvertString(id);
 				auto s = Conversions::ConvertSerialSettings(settings);
 
-				auto pChannel = pManager->AddSerial(stdName.c_str(), filters, Conversions::Convert(retry), s);
-				if (pChannel)
+				auto channel = pManager->AddSerial(stdName.c_str(), filters, Conversions::Convert(retry), s);
+				if (channel)
 				{
-					auto adapter = gcnew ChannelAdapter(pChannel);
-					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
+					auto adapter = gcnew ChannelAdapter(channel);
+					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}
 				else

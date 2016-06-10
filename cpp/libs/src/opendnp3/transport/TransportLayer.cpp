@@ -34,6 +34,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
+
 TransportLayer::TransportLayer(openpal::Logger logger, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
 	logger(logger),
 	pUpperLayer(nullptr),
@@ -53,48 +54,45 @@ TransportLayer::TransportLayer(openpal::Logger logger, openpal::IExecutor& execu
 
 void TransportLayer::BeginTransmit(const RSlice& apdu)
 {
-	if (isOnline)
-	{
-		if (apdu.IsEmpty())
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
-			auto lambda = [this]()
-			{
-				this->OnSendResult(false);
-			};
-			pExecutor->PostLambda(lambda);
-		}
-		else
-		{
-			if (isSending)
-			{
-				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
-			}
-			else
-			{
-				isSending = true;
-
-				if (pLinkLayer)
-				{
-					transmitter.Configure(apdu);
-					pLinkLayer->Send(transmitter);
-				}
-				else
-				{
-					SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
-					auto lambda = [this]()
-					{
-						this->OnSendResult(false);
-					};
-					pExecutor->PostLambda(lambda);
-				}
-			}
-		}
-	}
-	else
+	if (!isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
+		return;
 	}
+
+
+	if (apdu.IsEmpty())
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
+		auto lambda = [this]()
+		{
+			this->OnSendResult(false);
+		};
+		pExecutor->PostLambda(lambda);
+		return;
+	}
+
+
+	if (isSending)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
+		return;
+	}
+
+	if (!pLinkLayer)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
+		auto lambda = [this]()
+		{
+			this->OnSendResult(false);
+		};
+		pExecutor->PostLambda(lambda);
+		return;
+	}
+
+	isSending = true;
+	transmitter.Configure(apdu);
+	pLinkLayer->Send(transmitter);
 }
 
 ///////////////////////////////////////
@@ -143,18 +141,16 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 	return true;
 }
 
-void TransportLayer::SetAppLayer(IUpperLayer* pUpperLayer_)
-{
-	assert(pUpperLayer_ != nullptr);
+void TransportLayer::SetAppLayer(IUpperLayer& upperLayer)
+{	
 	assert(pUpperLayer == nullptr);
-	pUpperLayer = pUpperLayer_;
+	pUpperLayer = &upperLayer;
 }
 
-void TransportLayer::SetLinkLayer(ILinkLayer* pLinkLayer_)
-{
-	assert(pLinkLayer_ != nullptr);
+void TransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
+{	
 	assert(pLinkLayer == nullptr);
-	pLinkLayer = pLinkLayer_;
+	pLinkLayer = &linkLayer;
 }
 
 bool TransportLayer::OnLowerLayerUp()

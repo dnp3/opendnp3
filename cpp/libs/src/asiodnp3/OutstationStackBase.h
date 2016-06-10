@@ -26,7 +26,7 @@
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/outstation/OutstationContext.h>
 
-#include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/link/ILinkListener.h>
 #include <opendnp3/transport/TransportStack.h>
 
@@ -54,7 +54,7 @@ public:
 	) :
 		root(std::move(root)),
 		pLifecycle(&lifecycle),
-		stack(this->root->GetLogger(), executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
+		stack(this->root->logger, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
 		pContext(nullptr)
 	{}
 
@@ -111,7 +111,7 @@ public:
 
 	// ------- implement ILinkBind ---------
 
-	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final
+	virtual void SetLinkRouter(opendnp3::ILinkTx& router) override final
 	{
 		stack.link.SetRouter(router);
 	}
@@ -142,7 +142,7 @@ protected:
 
 	void SetContext(opendnp3::OContext& context)
 	{
-		this->stack.transport.SetAppLayer(&context);
+		this->stack.transport.SetAppLayer(context);
 		this->pContext = &context;
 	}
 

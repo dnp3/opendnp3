@@ -42,6 +42,9 @@
     <ClInclude Include="src\LogAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MasterAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\MasterApplicationAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,7 +66,16 @@
     <ClInclude Include="src\TaskCallbackAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MasterApplicationAdapterSA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\MasterConversions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MasterAdapterSA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAConversions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CallbackAdapters.h">
@@ -72,13 +84,25 @@
     <ClInclude Include="src\CommandSetBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ListenCallbacksAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\ICommandHeaderWorkAround.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MasterAdapterBase.h">
+    <ClInclude Include="src\MasterSessionAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MasterAdapter.h">
+    <ClInclude Include="src\MasterOperationsAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SessionAcceptorAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DNP3SessionManagerAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ListenerAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -125,7 +149,25 @@
     <ClCompile Include="src\CommandSetBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MasterAdapterBase.cpp">
+    <ClCompile Include="src\DNP3SessionManagerAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ListenCallbacksAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MasterOperationsAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MasterSessionAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SessionAcceptorAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ListenerAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MasterAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

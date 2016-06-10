@@ -50,16 +50,18 @@ void ConfigureDatabase(DatabaseConfigView view)
 
 int main(int argc, char* argv[])
 {
-	if (argc != 3)
+	if (argc != 4)
 	{
-		std::cout << "usage: outstation-tls-demo <peer certificate> <private key/certificate>" << std::endl;
+		std::cout << "usage: master-gprs-tls-demo <ca certificate> <certificate chain> <private key>" << std::endl;
 		return -1;
 	}
 
-	std::string peerCertificate(argv[1]);
-	std::string privateKey(argv[2]);
+	std::string caCertificate(argv[1]);
+	std::string certificateChain(argv[2]);
+	std::string privateKey(argv[3]);
 
-	std::cout << "Using peer cert: " << peerCertificate << std::endl;
+	std::cout << "Using CA certificate: " << caCertificate << std::endl;
+	std::cout << "Using certificate chain: " << certificateChain << std::endl;
 	std::cout << "Using private key file: " << privateKey << std::endl;
 
 	// Specify what log levels to use. NORMAL is warning and above
@@ -70,15 +72,29 @@ int main(int argc, char* argv[])
 	// Allocate a single thread to the pool since this is a single outstation
 	DNP3Manager manager(1, ConsoleLogger::Create());
 
+	std::error_code ec;
+
 	// Create a TCP server (listener)
-	auto pChannel = manager.AddTLSServer(
-	                    "server",
-	                    FILTERS,
-	                    ChannelRetry::Default(),
-	                    "0.0.0.0",
-	                    20001,
-	                    TLSConfig(peerCertificate, privateKey, privateKey)
-	                );
+	auto pChannel = manager.AddTLSClient(
+		"server",
+		FILTERS,
+		ChannelRetry::Default(),
+		"127.0.0.1",
+		"0.0.0.0",
+		20001,
+		TLSConfig(
+			caCertificate,
+			certificateChain,
+			privateKey,
+			2
+		),
+		ec
+	);
+
+	if (ec) {
+		std::cout << "Unable to create tls server: " << ec.message() << std::endl;
+		return ec.value();
+	}
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console

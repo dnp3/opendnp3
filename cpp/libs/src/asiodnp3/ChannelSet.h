@@ -33,8 +33,8 @@
 
 namespace asiopal
 {
-class PhysicalLayerBase;
 class ASIOExecutor;
+class PhysicalLayerASIO;
 }
 
 namespace asiodnp3
@@ -50,10 +50,10 @@ public:
 
 	~ChannelSet();
 
-	IChannel* CreateChannel(    openpal::LogRoot* pRoot,
-	                            asiopal::ASIOExecutor& executor,
+	IChannel* CreateChannel(	std::unique_ptr<openpal::LogRoot> root,	                            
 	                            const opendnp3::ChannelRetry& retry,
-	                            asiopal::PhysicalLayerBase* pPhys);
+								std::unique_ptr<asiopal::PhysicalLayerASIO> phys);
+
 
 	/// Synchronously shutdown all channels. Block until complete.
 	void Shutdown();

@@ -87,7 +87,7 @@ namespace Automatak.DNP3.Interface
             }
         }
 
-        protected DefaultMasterApplication() { }
+        public DefaultMasterApplication() { }
         
         void ILinkStatusListener.OnStateChange(LinkStatus value) { }
 

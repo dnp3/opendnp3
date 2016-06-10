@@ -88,7 +88,7 @@ CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set
 		return SelectResult::FAIL_PARSE;
 	}
 
-	auto selected = [](const ICommandHeader * header) -> bool
+	auto selected = [](const ICommandHeader* header) -> bool
 	{
 		return header->AreAllSelected();
 	};
@@ -148,5 +148,3 @@ IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollect
 
 
 }
-
-

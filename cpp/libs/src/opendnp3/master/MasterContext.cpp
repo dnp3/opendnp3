@@ -47,7 +47,6 @@ MContext::MContext(
     const MasterParams& params_,
     ITaskLock& taskLock
 ) :
-
 	logger(logger),
 	pExecutor(&executor),
 	pLower(&lower),

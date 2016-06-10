@@ -18,32 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ILINKROUTER_H
-#define OPENDNP3_ILINKROUTER_H
+#ifndef ASIODNP3_ISESSION_ACCEPTOR_H
+#define ASIODNP3_ISESSION_ACCEPTOR_H
 
-#include <openpal/container/RSlice.h>
+#include <opendnp3/master/ISOEHandler.h>
+#include <opendnp3/master/IMasterApplication.h>
+#include <opendnp3/master/MasterStackConfig.h>
 
-#include "opendnp3/link/ILinkSession.h"
+#include "asiodnp3/IMasterSession.h"
 
-namespace opendnp3
+#include <memory>
+
+namespace asiodnp3
 {
 
-// @section DESCRIPTION Interface the link layer uses to transmit data
-
-class ILinkRouter
+/**
+* Callback interface invoked when a new connection is accepted
+*/
+class ISessionAcceptor
 {
 public:
 
-	virtual ~ILinkRouter() {}
-
-	/**
-	* Begin transmission of a frame. Callback happens OFF the call stack (via executor)
-	*/
-	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext) = 0;
-
+	virtual ~ISessionAcceptor() {}
+	
+	virtual std::shared_ptr<IMasterSession> AcceptSession(
+		const std::string& sessionid,
+		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+		std::shared_ptr<opendnp3::IMasterApplication> application,
+		const opendnp3::MasterStackConfig& config
+	) = 0;
 };
 
 }
 
 #endif
-

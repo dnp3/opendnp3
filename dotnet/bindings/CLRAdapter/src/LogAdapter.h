@@ -1,9 +1,10 @@
-#ifndef __LOG_ADAPTER_H_
-#define __LOG_ADAPTER_H_
+#ifndef DNP3CLR_LOG_ADAPTER_H
+#define DNP3CLR_LOG_ADAPTER_H
 
 using namespace System::Collections::ObjectModel;
 
 #include <openpal/logging/ILogHandler.h>
+#include <memory>
 
 #include <vcclr.h>
 #include <memory>
@@ -31,7 +32,7 @@ namespace Automatak
 			private:
 				gcroot < Automatak::DNP3::Interface::ILogHandler^ > proxy;
 			};
-			
+
 		}
 	}
 }

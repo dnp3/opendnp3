@@ -55,8 +55,8 @@ public:
 	virtual bool OnLowerLayerDown() override final;
 	virtual bool OnSendResult(bool isSuccess) override final;
 
-	void SetAppLayer(IUpperLayer* pUpperLayer_);
-	void SetLinkLayer(ILinkLayer* pLinkLayer_);
+	void SetAppLayer(IUpperLayer& upperLayer);
+	void SetLinkLayer(ILinkLayer& linkLayer);
 
 private:
 

@@ -35,7 +35,7 @@ namespace opendnp3
 {
 
 TransportLoopbackTestObject::TransportLoopbackTestObject(
-    openpal::LogRoot& root,
+    openpal::Logger logger,
     asio::io_service& service,
     openpal::IExecutor& executor,
     IPhysicalLayer* apPhys,
@@ -47,28 +47,28 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	listener(),
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
-	mTransA(root.GetLogger(), executor, DEFAULT_MAX_APDU_SIZE),
-	mTransB(root.GetLogger(), executor, DEFAULT_MAX_APDU_SIZE),
-	mLinkA(root.GetLogger(), executor, mTransA, listener, aCfgA),
-	mLinkB(root.GetLogger(), executor, mTransB, listener, aCfgB),
-	mRouter(root, executor, apPhys, ChannelRetry::Default())
+	mTransA(logger, executor, DEFAULT_MAX_APDU_SIZE),
+	mTransB(logger, executor, DEFAULT_MAX_APDU_SIZE),
+	mLinkA(logger, executor, mTransA, listener, aCfgA),
+	mLinkB(logger, executor, mTransB, listener, aCfgB),
+	mRouter(logger, executor, apPhys, ChannelRetry::Default())
 {
 	Route routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);
 	Route routeB(mCfgB.RemoteAddr, mCfgB.LocalAddr);
 
-	mRouter.AddContext(&mLinkA, routeA);
+	mRouter.AddContext(mLinkA, routeA);
 	mRouter.Enable(&mLinkA);
-	mRouter.AddContext(&mLinkB, routeB);
+	mRouter.AddContext(mLinkB, routeB);
 	mRouter.Enable(&mLinkB);
 
-	mTransA.SetLinkLayer(&mLinkA);
-	mTransB.SetLinkLayer(&mLinkB);
+	mTransA.SetLinkLayer(mLinkA);
+	mTransB.SetLinkLayer(mLinkB);
 
 	mLinkA.SetRouter(mRouter);
 	mLinkB.SetRouter(mRouter);
 
-	mTransA.SetAppLayer(&mUpperA);
-	mTransB.SetAppLayer(&mUpperB);
+	mTransA.SetAppLayer(mUpperA);
+	mTransB.SetAppLayer(mUpperB);
 
 	mUpperA.SetLowerLayer(mTransA);
 	mUpperB.SetLowerLayer(mTransB);

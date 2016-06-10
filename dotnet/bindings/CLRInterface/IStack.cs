@@ -31,13 +31,7 @@ namespace Automatak.DNP3.Interface
     /// Base interface for masters and outstations
     /// </summary>
     public interface IStack
-    {
-        /// <summary>
-        /// Retrieves stack statistic information
-        /// </summary>
-        /// <returns></returns>
-        IStackStatistics GetStackStatistics();
-
+    {       
         /// <summary>
         /// Permanently shutdown the stack and any child objects
         /// </summary>

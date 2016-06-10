@@ -57,6 +57,12 @@ public:
 	{
 		this->Post(Action0::Bind<Lambda>(lambda));
 	}
+
+	template <class Lambda>
+	ITimer* StartLambda(const TimeDuration& duration, Lambda& lambda)
+	{
+		return this->Start(duration, Action0::Bind<Lambda>(lambda));
+	}
 };
 
 }

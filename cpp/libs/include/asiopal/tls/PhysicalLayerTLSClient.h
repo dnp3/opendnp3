@@ -41,12 +41,13 @@ class PhysicalLayerTLSClient final : public PhysicalLayerTLSBase
 public:
 
 	PhysicalLayerTLSClient(
-	    openpal::LogRoot& root,
+		openpal::Logger logger,
 	    asio::io_service& service,
 	    const std::string& host,
 	    const std::string& localAddress,
 	    uint16_t port,
-	    const TLSConfig& config
+			const TLSConfig& config,
+			std::error_code& ec
 	);
 
 	// ---- Implement the remaining actions ----

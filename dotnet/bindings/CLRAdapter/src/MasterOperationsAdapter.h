@@ -1,10 +1,10 @@
-#ifndef OPENDNP3CLR_MASTER_ADAPTER_H
-#define OPENDNP3CLR_MASTER_ADAPTER_H
+#ifndef OPENDNP3CLR_MASTER_OPERATIONS_ADAPTER_H
+#define OPENDNP3CLR_MASTER_OPERATIONS_ADAPTER_H
 
 using namespace System::Collections::ObjectModel;
 using namespace System::Collections::Generic;
 
-#include <asiodnp3/IMaster.h>
+#include <asiodnp3/IMasterOperations.h>
 
 #include "CallbackAdapters.h"
 #include "MasterConversions.h"
@@ -18,21 +18,15 @@ namespace Automatak
 	{
 		namespace Adapter
 		{			
-			private ref class MasterAdapterBase abstract
+			private ref class MasterOperationsAdapter abstract
 			{
 			public:
 
-				MasterAdapterBase(asiodnp3::IMaster* apMaster);
+				MasterOperationsAdapter(asiodnp3::IMasterOperations* operations);
 
-				virtual void SetLogFilters(LogFilter flags);
+				virtual IStackStatistics^ GetStackStatistics();			
 
-				virtual IStackStatistics^ GetStackStatistics();
-
-				virtual void Enable();
-
-				virtual void Disable();
-
-				virtual void Shutdown();
+				virtual void SetLogFilters(LogFilter flags);				
 			
 				virtual Task<TaskCompletion>^ Scan(IEnumerable<Header^>^ headers, TaskConfig^ config);
 
@@ -76,7 +70,7 @@ namespace Automatak
 
 			private:				
 				
-				asiodnp3::IMaster* pMaster;				
+				asiodnp3::IMasterOperations* m_operations;
 			};
 
 		}

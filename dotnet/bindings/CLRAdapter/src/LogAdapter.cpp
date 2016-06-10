@@ -29,7 +29,7 @@ namespace Automatak
 				Automatak::DNP3::Interface::LogEntry^ le = gcnew Automatak::DNP3::Interface::LogEntry(entry.GetFilters().GetBitfield(), alias, location, message, entry.GetErrorCode());
 
 				proxy->Log(le);
-			}
+			}			
 
 		}
 	}

@@ -69,6 +69,7 @@
     <Compile Include="config\StaticTypeBitfield.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="config\EventBufferConfig.cs" />
+    <Compile Include="DefaultListenCallbacks.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="gen\AnalogQuality.cs" />
     <Compile Include="gen\AssignClassType.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="gen\IntervalUnits.cs" />
     <Compile Include="gen\KeyChangeMethod.cs" />
     <Compile Include="gen\KeyWrapAlgorithm.cs" />
+    <Compile Include="gen\LinkFunction.cs" />
     <Compile Include="gen\LinkStatus.cs" />
     <Compile Include="gen\MasterTaskType.cs" />
     <Compile Include="gen\OperateType.cs" />
@@ -130,7 +132,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IDNP3Manager.cs" />
+    <Compile Include="IDNP3SessionManager.cs" />
     <Compile Include="ILinkListener.cs" />
+    <Compile Include="IListenCallbacks.cs" />
+    <Compile Include="IListener.cs" />
     <Compile Include="ILogHandler.cs" />
     <Compile Include="IMaster.cs">
       <SubType>Code</SubType>
@@ -138,10 +143,14 @@
     <Compile Include="IMasterApplication.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IMasterOperations.cs" />
+    <Compile Include="IMasterSession.cs" />
     <Compile Include="IOutstationApplication.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IPEndpoint.cs" />
     <Compile Include="IQualityBitInfo.cs" />
+    <Compile Include="ISessionAcceptor.cs" />
     <Compile Include="ISOEHandler.cs" />
     <Compile Include="IOutstation.cs" />
     <Compile Include="IStack.cs">
@@ -151,6 +160,7 @@
     <Compile Include="IMasterScan.cs" />
     <Compile Include="config\LinkConfig.cs" />
     <Compile Include="ITaskCallback.cs" />
+    <Compile Include="LinkHeader.cs" />
     <Compile Include="LogLevels.cs" />
     <Compile Include="config\MasterConfig.cs" />
     <Compile Include="config\MasterStackConfig.cs" />
@@ -174,6 +184,7 @@
     </Compile>
     <Compile Include="TaskInfo.cs" />
     <Compile Include="TLSConfig.cs" />
+    <Compile Include="X509Info.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -30,20 +30,20 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys, LinkConfig aCfg) :
+TransportIntegrationStack::TransportIntegrationStack(openpal::Logger logger, openpal::IExecutor& executor, IPhysicalLayer& phys, LinkConfig aCfg) :
 	listener(),
-	router(root, executor, apPhys, ChannelRetry::Default()),
-	transport(root.GetLogger(), executor, DEFAULT_MAX_APDU_SIZE),
-	link(root.GetLogger(), executor, transport, listener, aCfg)
+	router(logger, executor, &phys, ChannelRetry::Default()),
+	transport(logger, executor, DEFAULT_MAX_APDU_SIZE),
+	link(logger, executor, transport, listener, aCfg)
 {
 	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
-	router.AddContext(&link, route);
+	router.AddContext(link, route);
 	router.Enable(&link);
 	link.SetRouter(router);
 
-	transport.SetLinkLayer(&link);
+	transport.SetLinkLayer(link);
 
-	transport.SetAppLayer(&upper);
+	transport.SetAppLayer(upper);
 	upper.SetLowerLayer(transport);
 }
 

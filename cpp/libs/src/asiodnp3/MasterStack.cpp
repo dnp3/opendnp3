@@ -41,7 +41,7 @@ MasterStack::MasterStack(
     IStackLifecycle& lifecycle,
     opendnp3::ITaskLock& taskLock) :
 	MasterStackBase<IMaster>(std::move(root), executor, application, config, lifecycle),
-	mcontext(executor, this->root->GetLogger(), stack.transport, SOEHandler, application,  config.master, taskLock)
+	mcontext(executor, this->root->logger, stack.transport, SOEHandler, application,  config.master, taskLock)
 {
 	this->SetContext(mcontext);
 }

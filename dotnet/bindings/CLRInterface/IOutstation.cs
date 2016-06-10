@@ -42,6 +42,11 @@ namespace Automatak.DNP3.Interface
     public interface IOutstation: IStack, IMeasurementLoader
     {
         /// <summary>
+        /// Retrieves stack statistic information
+        /// </summary>
+        /// <returns></returns>
+        IStackStatistics GetStackStatistics();
+
         /// Set the log filters to a new value
         /// </summary>
         /// <param name="filters">A structure representing the new set of enabled filters</param>

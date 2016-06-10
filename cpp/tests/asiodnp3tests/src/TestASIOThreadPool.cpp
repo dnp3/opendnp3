@@ -20,7 +20,8 @@
  */
 #include <catch.hpp>
 
-#include <asiopal/IOServiceThreadPool.h>
+
+#include <asiopal/ThreadPool.h>
 #include <asiopal/ASIOExecutor.h>
 #include <asiodnp3/ConsoleLogger.h>
 
@@ -44,51 +45,55 @@ using namespace asiodnp3;
 
 TEST_CASE(SUITE("CleanConstructionDestruction"))
 {
-	IOServiceThreadPool pool(nullptr, levels::NORMAL, 4);
+	ThreadPool pool(nullptr, levels::NORMAL, 4);
 }
 
 TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 {
-	IOServiceThreadPool pool(nullptr, levels::NORMAL, 4);
+	ThreadPool pool(nullptr, levels::NORMAL, 4);
 	for(size_t i = 0; i < 100000; ++i) pool.GetIOService().post([]() {});
 }
 
 
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 {
-	IOServiceThreadPool pool(nullptr, levels::NORMAL, 8);
 
-	size_t iterations = 100000;
-
-	strand s1(pool.GetIOService());
-
+	const size_t ITERATIONS = 100000;	
 	int count1 = 0;
 
-	for(size_t i = 0; i < iterations; ++i) s1.post([&count1]()
 	{
-		++count1;
-	});
+		ThreadPool pool(nullptr, levels::NORMAL, 8);
+		strand s1(pool.GetIOService());
 
-	pool.Shutdown();
-	REQUIRE(iterations ==  count1);
+		auto increment = [&count1]()
+		{
+			++count1;
+		};
+		
+		for (size_t i = 0; i < ITERATIONS; ++i) s1.post(increment);
+	}
+	
+	REQUIRE(count1 == ITERATIONS);
 }
 
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 {
-	IOServiceThreadPool pool(nullptr, levels::NORMAL, 8);
-	size_t iterations = 100000;
 
-	strand s1(pool.GetIOService());
+	const size_t ITERATIONS = 100000;
 
 	int count1 = 0;
 
-	for (size_t i = 0; i < iterations; ++i) pool.GetIOService().post(s1.wrap([&count1]()
 	{
-		++count1;
-	}));
+		ThreadPool pool(nullptr, levels::NORMAL, 8);
 
-	pool.Shutdown();
-	REQUIRE(iterations ==  count1);
+		strand s1(pool.GetIOService());
+
+		auto increment = [&count1]() { ++count1; };
+
+		for (size_t i = 0; i < ITERATIONS; ++i) pool.GetIOService().post(s1.wrap(increment));
+	}
+	
+	REQUIRE(count1 == ITERATIONS);
 }
 
 

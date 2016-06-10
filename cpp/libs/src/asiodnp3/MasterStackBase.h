@@ -53,7 +53,7 @@ public:
 	) :
 		root(std::move(root)),
 		pLifecycle(&lifecycle),
-		stack(this->root->GetLogger(), executor, listener, config.master.maxRxFragSize, &statistics, config.link),
+		stack(this->root->logger, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
 		pASIOExecutor(&executor),
 		pContext(nullptr)
 	{
@@ -206,7 +206,7 @@ public:
 
 	// ------- implement ILinkBind ---------
 
-	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final
+	virtual void SetLinkRouter(opendnp3::ILinkTx& router) override final
 	{
 		stack.link.SetRouter(router);
 	}
@@ -252,7 +252,7 @@ protected:
 	{
 		assert(pContext == nullptr);
 		this->pContext = &context;
-		this->stack.transport.SetAppLayer(&context);
+		this->stack.transport.SetAppLayer(context);
 	}
 
 	std::unique_ptr<openpal::LogRoot> root;
@@ -269,4 +269,3 @@ private:
 }
 
 #endif
-

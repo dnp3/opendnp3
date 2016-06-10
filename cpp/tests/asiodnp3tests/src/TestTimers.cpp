@@ -23,7 +23,7 @@
 #include <openpal/logging/LogRoot.h>
 
 #include <asiopal/ASIOExecutor.h>
-#include <asiopal/IOServiceThreadPool.h>
+#include <asiopal/ThreadPool.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -65,8 +65,9 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 {
 	const int NUM = 10000;
 
-	testlib::MockLogHandler log;
-	asiopal::IOServiceThreadPool pool(&log, levels::NORMAL, 4);
+
+	testlib::MockLogHandler log;	
+	asiopal::ThreadPool pool(&log, levels::NORMAL, 4);
 	asiopal::ASIOExecutor executor(pool.GetIOService());
 
 	bool monotonic = true;

@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_ILINKBIND_H
 #define ASIODNP3_ILINKBIND_H
 
-#include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/link/ILinkSession.h>
 
 namespace asiodnp3
@@ -34,7 +34,7 @@ class ILinkBind
 {
 public:
 
-	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) = 0;
+	virtual void SetLinkRouter(opendnp3::ILinkTx& router) = 0;
 
 	virtual opendnp3::ILinkSession& GetLinkContext() = 0;
 

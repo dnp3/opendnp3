@@ -18,60 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_IOSERVICETHREADPOOL_H
-#define ASIOPAL_IOSERVICETHREADPOOL_H
 
-#include <openpal/logging/LogRoot.h>
+#include "asiopal/StrandTimer.h"
 
-#include <asio.hpp>
+#include <chrono>
 
-#include <functional>
-#include <thread>
-
-#include <asiopal/SteadyClock.h>
+using namespace openpal;
 
 namespace asiopal
 {
 
-/**
-*	A thread pool that calls asio::io_service::run
-*/
-class IOServiceThreadPool
+void StrandTimer::Cancel()
 {
-public:
+	m_timer.cancel();
+}
 
-	IOServiceThreadPool(
-	    openpal::ILogHandler* pHandler,
-	    uint32_t levels,
-	    uint32_t aConcurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
-	);
+MonotonicTimestamp StrandTimer::ExpiresAt()
+{
+	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(m_timer.expires_at().time_since_epoch()).count();
+	return MonotonicTimestamp(millisec);
+}
 
-	~IOServiceThreadPool();
-
-	asio::io_service& GetIOService();
-
-	void Shutdown();
-
-private:
-
-	openpal::LogRoot root;
-	openpal::Logger logger;
-
-	std::function<void ()> onThreadStart;
-	std::function<void ()> onThreadExit;
-
-	bool isShutdown;
-
-	void Run();
-
-	asio::io_service ioservice;
-	asio::basic_waitable_timer< asiopal::asiopal_steady_clock > infiniteTimer;
-	std::vector<std::thread*> threads;
-};
+StrandTimer::StrandTimer(asio::io_service& service) : m_timer(service)
+{}
 
 }
 
 
-#endif

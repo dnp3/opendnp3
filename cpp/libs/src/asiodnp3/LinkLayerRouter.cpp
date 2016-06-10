@@ -38,14 +38,14 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
+LinkLayerRouter::LinkLayerRouter(	openpal::Logger logger,
                                     openpal::IExecutor& executor,
                                     IPhysicalLayer* pPhys,
                                     const ChannelRetry& retry,
                                     IChannelStateListener* pStateHandler_,
                                     LinkChannelStatistics* pStatistics_) :
 
-	PhysicalLayerMonitor(root, executor, pPhys, retry),
+	PhysicalLayerMonitor(logger, executor, pPhys, retry),
 	pStateHandler(pStateHandler_),
 	pStatistics(pStatistics_),
 	parser(logger, pStatistics_),
@@ -68,19 +68,17 @@ bool LinkLayerRouter::IsRouteInUse(const Route& route)
 	return iter != records.end();
 }
 
-bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
+bool LinkLayerRouter::AddContext(ILinkSession& context, const Route& route)
 {
-	assert(pContext != nullptr);
-
 	if (IsRouteInUse(route))
 	{
 		return false;
 	}
 	else
 	{
-		auto matches = [pContext](const Record & record)
+		auto matches = [&](const Record & record)
 		{
-			return record.pContext == pContext;
+			return record.pContext == &context;
 		};
 
 		auto iter = std::find_if(records.begin(), records.end(), matches);
@@ -88,7 +86,7 @@ bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
 		if (iter == records.end())
 		{
 			// record is always disabled by default
-			records.push_back(Record(pContext, route));
+			records.push_back(Record(&context, route));
 			return true;
 		}
 		else
@@ -252,7 +250,7 @@ void LinkLayerRouter::OnReceive(const openpal::RSlice& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed
-	parser.OnRead(input.Size(), this); //this may trigger callbacks to the local ILinkSession interface
+	parser.OnRead(input.Size(), *this); //this may trigger callbacks to the local ILinkSession interface
 	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
 		auto buff = parser.WriteBuff();
@@ -260,11 +258,11 @@ void LinkLayerRouter::OnReceive(const openpal::RSlice& input)
 	}
 }
 
-void LinkLayerRouter::BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext)
+void LinkLayerRouter::BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context)
 {
 	if (this->IsOnline())
 	{
-		Transmission tx(buffer, pContext);
+		Transmission tx(buffer, &context);
 
 		transmitQueue.push_back(tx);
 		this->CheckForSend();
@@ -361,5 +359,3 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 }
 
 }
-
-

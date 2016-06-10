@@ -33,7 +33,7 @@ LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	exe(),
 	listener(),
 	upper(),
-	link(log.root.GetLogger(), exe, upper, listener, config),
+	link(log.root.logger, exe, upper, listener, config),
 	numTotalWrites(0)
 {
 	upper.SetLinkLayer(link);
@@ -68,7 +68,7 @@ uint32_t LinkLayerTest::NumTotalWrites()
 	return numTotalWrites;
 }
 
-void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext)
+void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession&)
 {
 	++numTotalWrites;
 	this->writeQueue.push_back(ToHex(buffer));

@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "asiopal/IOServiceThreadPool.h"
+#include "asiopal/ThreadPool.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
@@ -35,35 +35,44 @@ using namespace openpal;
 namespace asiopal
 {
 
-IOServiceThreadPool::IOServiceThreadPool(
-    openpal::ILogHandler* pHandler,
+ThreadPool::ThreadPool(
+    openpal::ILogHandler* handler,
     uint32_t levels,
-    uint32_t aConcurrency,
+    uint32_t concurrency,
     std::function<void()> onThreadStart_,
     std::function<void()> onThreadExit_) :
-	root(pHandler, "pool", levels),
-	logger(root.GetLogger()),
+	root(handler, "pool", levels),	
 	onThreadStart(onThreadStart_),
 	onThreadExit(onThreadExit_),
 	isShutdown(false),
-	ioservice(),
-	infiniteTimer(ioservice)
+	ioservice(std::make_shared<asio::io_service>()),
+	infiniteTimer(*ioservice)
 {
-	if(aConcurrency == 0)
+	if(concurrency == 0)
 	{
-		aConcurrency = 1;
-		SIMPLE_LOG_BLOCK(logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
+		concurrency = 1;
+		SIMPLE_LOG_BLOCK(root.logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
 	infiniteTimer.expires_at(asiopal::asiopal_steady_clock::time_point::max());
 	infiniteTimer.async_wait([](const std::error_code&) {});
-	for(uint32_t i = 0; i < aConcurrency; ++i)
+	for(uint32_t i = 0; i < concurrency; ++i)
 	{
-		threads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
+		threads.push_back(new thread(bind(&ThreadPool::Run, this)));
 	}
 }
 
-IOServiceThreadPool::~IOServiceThreadPool()
+std::shared_ptr<ThreadPool> ThreadPool::Create(
+	openpal::ILogHandler* handler,
+	uint32_t levels,
+	uint32_t concurrency,
+	std::function<void()> onThreadStart,
+	std::function<void()> onThreadExit)
 {
+	return std::make_shared<ThreadPool>(handler, levels, concurrency, onThreadStart, onThreadExit);
+}
+
+ThreadPool::~ThreadPool()
+{	
 	this->Shutdown();
 	for(auto pThread : threads)
 	{
@@ -71,7 +80,7 @@ IOServiceThreadPool::~IOServiceThreadPool()
 	}
 }
 
-void IOServiceThreadPool::Shutdown()
+void ThreadPool::Shutdown()
 {
 	if(!isShutdown)
 	{
@@ -84,15 +93,15 @@ void IOServiceThreadPool::Shutdown()
 	}
 }
 
-asio::io_service& IOServiceThreadPool::GetIOService()
+asio::io_service& ThreadPool::GetIOService()
 {
-	return ioservice;
+	return *ioservice;
 }
 
-void IOServiceThreadPool::Run()
+void ThreadPool::Run()
 {
 	onThreadStart();
-	ioservice.run();
+	ioservice->run();
 	onThreadExit();
 }
 

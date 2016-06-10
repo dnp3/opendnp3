@@ -231,12 +231,12 @@ TEST_CASE(SUITE("Loopback"))
 	testlib::MockLogHandler log;
 	LogRoot root(&log, "test", levels::NORMAL);
 	TestObjectASIO test;
-	PhysicalLayerTCPServer server(root, test.GetService(), "127.0.0.1", 30000);
-	PhysLoopback loopback(root, server.executor, &server);
+	PhysicalLayerTCPServer server(root.logger, test.GetService(), "127.0.0.1", 30000);
+	PhysLoopback loopback(root.logger, server.executor, &server);
 	loopback.Start();
 
-	PhysicalLayerTCPClient client(root, test.GetService(), "127.0.0.1", "127.0.0.1", 30000);
-	LowerLayerToPhysAdapter adapter(root.GetLogger(), &client);
+	PhysicalLayerTCPClient client(root.logger, test.GetService(), "127.0.0.1", "127.0.0.1", 30000);
+	LowerLayerToPhysAdapter adapter(root.logger, client);
 	MockUpperLayer upper;
 	adapter.SetUpperLayer(upper);
 	upper.SetLowerLayer(adapter);

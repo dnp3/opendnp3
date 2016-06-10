@@ -37,8 +37,8 @@ class ConcretePhysicalLayerMonitor final : public asiodnp3::PhysicalLayerMonitor
 {
 public:
 
-	ConcretePhysicalLayerMonitor(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys) :
-		PhysicalLayerMonitor(root, executor, apPhys, ChannelRetry::Default()),
+	ConcretePhysicalLayerMonitor(openpal::Logger logger, openpal::IExecutor& executor, IPhysicalLayer& phys) :
+		PhysicalLayerMonitor(logger, executor, &phys, ChannelRetry::Default()),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0),
 		mShutdownCallbackCount(0)
@@ -87,8 +87,8 @@ public:
 	TestObject(uint32_t filters = levels::NORMAL) :
 		log(),
 		exe(),
-		phys(log.root, exe),
-		monitor(log.root, exe, &phys)
+		phys(log.root.logger, exe),
+		monitor(log.root.logger, exe, phys)
 	{}
 
 	testlib::MockLogHandler log;

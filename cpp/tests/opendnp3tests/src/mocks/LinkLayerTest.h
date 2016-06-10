@@ -29,7 +29,7 @@
 #include "testlib/MockLogHandler.h"
 
 #include <opendnp3/link/LinkLayer.h>
-#include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/LogLevels.h>
 
 #include <queue>
@@ -37,7 +37,7 @@
 namespace opendnp3
 {
 
-class LinkLayerTest : public ILinkRouter
+class LinkLayerTest : public ILinkTx
 {
 public:
 
@@ -45,8 +45,8 @@ public:
 
 	bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata = openpal::RSlice::Empty());
 
-	//ILinkRouter interface
-	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession* pContext) override final;
+	//ILinkTx interface
+	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context) override final;
 
 	static LinkConfig DefaultConfig();
 
