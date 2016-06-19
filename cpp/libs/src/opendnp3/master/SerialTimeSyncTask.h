@@ -36,7 +36,7 @@ class SerialTimeSyncTask : public IMasterTask
 {
 
 public:
-	SerialTimeSyncTask(IMasterApplication& app, TimeSyncMode mode, openpal::Logger logger);
+	SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger);
 
 	virtual char const* Name() const override final
 	{
@@ -62,7 +62,6 @@ public:
 
 private:
 
-	bool enabled;
 
 	virtual MasterTaskType GetTaskType() const override final
 	{
@@ -71,7 +70,7 @@ private:
 
 	virtual bool IsEnabled() const override
 	{
-		return enabled;
+		return true;
 	}
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;

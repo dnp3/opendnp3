@@ -237,7 +237,13 @@ void MContext::ProcessIIN(const IINField& iin)
 
 	if (iin.IsSet(IINBit::NEED_TIME))
 	{
-		this->tasks.timeSync.Demand();
+        switch(this->params.timeSyncMode) {
+            case(TimeSyncMode::SerialTimeSync):
+		        this->tasks.timeSync.Demand();
+                break;
+            default:
+                break;
+        }
 	}
 
 	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
