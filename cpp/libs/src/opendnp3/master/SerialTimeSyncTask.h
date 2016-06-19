@@ -26,6 +26,8 @@
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
 
+#include "opendnp3/gen/TimeSyncMode.h"
+
 namespace opendnp3
 {
 
@@ -60,12 +62,13 @@ public:
 
 private:
 
+
 	virtual MasterTaskType GetTaskType() const override final
 	{
 		return MasterTaskType::SERIAL_TIME_SYNC;
 	}
 
-	virtual bool IsEnabled() const override final
+	virtual bool IsEnabled() const override
 	{
 		return true;
 	}
