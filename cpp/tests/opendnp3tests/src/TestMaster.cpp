@@ -337,6 +337,49 @@ TEST_CASE(SUITE("ParsesGroup50Var4"))
 	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.GetUnitsEnum() == IntervalUnits::Days);
 }
 
+TEST_CASE(SUITE("RestartViaNullUnsol"))
+{
+	MasterParams params;
+
+	// disable all the automated behaviors except for restart IIN
+	params.disableUnsolOnStartup = false;
+	params.startupIntegrityClassMask = ClassField::None();
+	params.unsolClassMask = ClassField::None();
+	params.startupIntegrityClassMask = ClassField::None(); //disable integrity poll
+
+	MasterTestObject t(params);	
+	t.context.OnLowerLayerUp();
+
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.NumWrites() == 0);
+	t.SendToMaster("F0 82 80 00");
+	REQUIRE(t.lower.PopWriteAsHex() == hex::Confirm(0, true));
+	t.context.OnSendResult(true);
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 02 50 01 00 07 07 00");
+}
+
+TEST_CASE(SUITE("DisableAutomatedRestartClear"))
+{
+	MasterParams params;
+
+	// disable all the automated behaviors
+	params.ignoreRestartIIN = true;
+	params.disableUnsolOnStartup = false;
+	params.startupIntegrityClassMask = ClassField::None();
+	params.unsolClassMask = ClassField::None();
+	params.startupIntegrityClassMask = ClassField::None(); //disable integrity poll
+
+	MasterTestObject t(params);	
+	t.context.OnLowerLayerUp();
+
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.NumWrites() == 0);
+	t.SendToMaster("F0 82 80 00");
+	REQUIRE(t.lower.PopWriteAsHex() == hex::Confirm(0, true));
+	t.context.OnSendResult(true);
+	REQUIRE(t.lower.NumWrites() == 0);
+}
+
 TEST_CASE(SUITE("RestartDuringStartup"))
 {
 
