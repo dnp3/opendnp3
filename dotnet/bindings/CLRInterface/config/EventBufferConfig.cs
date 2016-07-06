@@ -14,7 +14,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// All events set to same count
         /// </summary>
-        public EventBufferConfig(uint count)
+        public EventBufferConfig(UInt16 count)
         {
             this.maxBinaryEvents = count;
             this.maxDoubleBinaryEvents = count;
@@ -37,37 +37,37 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// The number of binary events the outstation will buffer before overflowing
         /// </summary>
-        public System.UInt32 maxBinaryEvents;
+        public System.UInt16 maxBinaryEvents;
 
         /// <summary>
         /// The number of double-bit binary events the outstation will buffer before overflowing
         /// </summary>
-        public System.UInt32 maxDoubleBinaryEvents;
+        public System.UInt16 maxDoubleBinaryEvents;
 
         /// <summary>
         /// The number of analog events the outstation will buffer before overflowing
         /// </summary>
-        public System.UInt32 maxAnalogEvents;
+        public System.UInt16 maxAnalogEvents;
 
         /// <summary>
         /// The number of counter events the outstation will buffer before overflowing
         /// </summary>
-        public System.UInt32 maxCounterEvents;
+        public System.UInt16 maxCounterEvents;
 
         /// <summary>
         /// The number of frozen counter events the outstation will buffer before overflowing
         /// </summary>
-        public System.UInt32 maxFrozenCounterEvents;
+        public System.UInt16 maxFrozenCounterEvents;
 
         /// <summary>
         /// The number of binary output status events the outstation will buffer before overflowing
         /// </summary>
-        public System.UInt32 maxBinaryOutputStatusEvents;
+        public System.UInt16 maxBinaryOutputStatusEvents;
 
         /// <summary>
         /// The number of analog output status events the outstation will buffer before overflowing
         /// </summary>
-        public System.UInt32 maxAnalogOutputStatusEvents;
+        public System.UInt16 maxAnalogOutputStatusEvents;
     }
 
 }
