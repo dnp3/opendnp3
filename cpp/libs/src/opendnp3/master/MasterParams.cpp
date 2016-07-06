@@ -31,6 +31,7 @@ MasterParams::MasterParams() :
 	responseTimeout(TimeDuration::Seconds(5)),
 	timeSyncMode(TimeSyncMode::None),
 	disableUnsolOnStartup(true),
+	ignoreRestartIIN(false),
 	unsolClassMask(ClassField::AllEventClasses()),
 	startupIntegrityClassMask(ClassField::AllClasses()),
 	integrityOnEventOverflowIIN(true),

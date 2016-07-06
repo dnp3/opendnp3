@@ -221,7 +221,7 @@ void MContext::ProcessAPDU(const APDUResponseHeader& header, const RSlice& objec
 
 void MContext::ProcessIIN(const IINField& iin)
 {
-	if (iin.IsSet(IINBit::DEVICE_RESTART))
+	if (iin.IsSet(IINBit::DEVICE_RESTART) && !this->params.ignoreRestartIIN)
 	{
 		this->tasks.clearRestart.Demand();
 		this->tasks.assignClass.Demand();

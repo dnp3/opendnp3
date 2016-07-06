@@ -46,7 +46,10 @@ struct MasterParams
 	/// If true, the master will disable unsol on startup for all 3 classes
 	bool disableUnsolOnStartup;
 
-	///	Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
+	/// If true, the master will not clear the restart IIN bit in response to detecting it set
+	bool ignoreRestartIIN;
+
+	/// Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
 	ClassField unsolClassMask;
 
 	/// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
