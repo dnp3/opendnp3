@@ -77,7 +77,7 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 
 	FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", FIR, FIN, SEQ, payload.Size());
 
-	if (!this->ValidateHeader(FIR, FIR, SEQ))
+	if (!this->ValidateHeader(FIR, SEQ))
 	{
 		if (pStatistics)
 		{
@@ -118,7 +118,7 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 	}
 }
 
-bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_)
+bool TransportRx::ValidateHeader(bool fir, uint8_t sequence_)
 {
 	if(fir)
 	{

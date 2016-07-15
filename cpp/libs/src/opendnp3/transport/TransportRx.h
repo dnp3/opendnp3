@@ -53,7 +53,7 @@ private:
 
 	void ClearRxBuffer();
 
-	bool ValidateHeader(bool fir, bool fin, uint8_t sequence);
+	bool ValidateHeader(bool fir, uint8_t sequence);
 
 	openpal::Logger logger;
 	StackStatistics* pStatistics;
