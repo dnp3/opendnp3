@@ -75,7 +75,7 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 
 	auto payload = input.Skip(1);
 
-	FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", FIR, FIR, SEQ, payload.Size());
+	FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", FIR, FIN, SEQ, payload.Size());
 
 	if (!this->ValidateHeader(FIR, FIR, SEQ))
 	{
