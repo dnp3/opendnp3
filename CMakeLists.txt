@@ -26,6 +26,30 @@ if(FULL)
 	set(DNP3_DECODER ON)
 endif()
 
+SET(ASIO_SUBMODULE_DIR "${PROJECT_SOURCE_DIR}/deps/asio/asio/include")
+
+# detection stuff for ASIO
+if (EXISTS "${ASIO_SUBMODULE_DIR}/asio.hpp")
+    message("ASIO has been checked out as a git submodule: ${ASIO_SUBMODULE_DIR}")
+	set(ASIO_HOME ${ASIO_SUBMODULE_DIR})
+else()
+	message("ASIO has NOT been checked out as a git submodule...")
+	if (ASIO_HOME)
+		message("ASIO_HOME defined in cache: ${ASIO_HOME}")
+		include_directories(${ASIO_HOME})  
+	else()
+		if(DEFINED ENV{ASIO_HOME})
+			message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")  
+			include_directories($ENV{ASIO_HOME})    
+		else()
+			message("ASIO_HOME was not defined. ASIO expected to be on include path")  
+		endif()
+	endif()
+endif()
+
+# required for ASIO in C++11 only mode
+add_definitions(-DASIO_STANDALONE)
+
 if(DNP3_TLS)
 	add_definitions(-DOPENDNP3_USE_TLS)
 
