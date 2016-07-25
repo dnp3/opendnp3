@@ -147,3 +147,6 @@ cpp/demos/cover_html/
 # out-of-directory builds
 _build/
 .build/
+
+# git submodules
+/deps
