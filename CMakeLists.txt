@@ -31,7 +31,7 @@ SET(ASIO_SUBMODULE_DIR "${PROJECT_SOURCE_DIR}/deps/asio/asio/include")
 # detection stuff for ASIO
 if (EXISTS "${ASIO_SUBMODULE_DIR}/asio.hpp")
     message("ASIO has been checked out as a git submodule: ${ASIO_SUBMODULE_DIR}")
-	set(ASIO_HOME ${ASIO_SUBMODULE_DIR})
+	include_directories(${ASIO_SUBMODULE_DIR})
 else()
 	message("ASIO has NOT been checked out as a git submodule...")
 	if (ASIO_HOME)
