@@ -1,5 +1,5 @@
 if (WIN32)
-		
+    if(MSVC)
 	add_definitions(-D_WIN32_WINNT=0x0501)
 	add_definitions(-DASIO_HAS_STD_SYSTEM_ERROR)  
 	
@@ -8,5 +8,17 @@ if (WIN32)
 
 	set_property(GLOBAL PROPERTY USE_FOLDERS ON) #allows the creation of solution folders
 	set(LIB_TYPE STATIC) #default to static on MSVC
+    else()
+      if (MINGW)
+        # MINGW is a hybred between the Windows system and GCC compiler
+        add_definitions(-D_WIN32_WINNT=0x0501)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+        set(LIB_TYPE STATIC) #default to static on MinGW
+
+        # We need to link the demos with these
+        set(NET_LIBS "ws2_32" "wsock32") 
+      endif()
+    endif()
 endif()
 
