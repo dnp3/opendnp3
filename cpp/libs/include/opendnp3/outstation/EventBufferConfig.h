@@ -28,7 +28,18 @@
 namespace opendnp3
 {
 
-/// Configuration of max event counts
+/**
+  
+  Configuration of maximum event counts per event type.
+
+  The underlying implementation uses a *preallocated* heap buffer to store events
+  until they are transmitted to the master. The size of this buffer is proportional
+  to the TotalEvents() method, i.e. the sum of the maximum events for each type.
+
+  Implementations should configure the buffers to store a reasonable number events
+  given the polling frequency and memory restrictions of the target platform.
+
+*/
 struct EventBufferConfig
 {
 	static EventBufferConfig AllTypes(uint16_t sizes);
