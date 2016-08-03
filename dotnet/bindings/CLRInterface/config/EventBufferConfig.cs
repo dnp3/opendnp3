@@ -7,7 +7,14 @@ using System.Threading.Tasks;
 namespace Automatak.DNP3.Interface
 {
     /// <summary>
-    /// Class that defines how many events an outstation will before losing events
+    /// Configuration of maximum event counts per event type.
+    /// 
+    /// The underlying implementation uses a *preallocated* heap buffer to store events
+    /// until they are transmitted to the master. The size of this buffer is proportional
+    /// to the TotalEvents() method, i.e. the sum of the maximum events for each type.
+    /// Implementations should configure the buffers to store a reasonable number events
+    /// given the polling frequency and memory restrictions of the target platform.
+    /// 
     /// </summary>
     public class EventBufferConfig
     {
