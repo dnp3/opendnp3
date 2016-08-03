@@ -42,21 +42,30 @@ namespace opendnp3
 */
 struct EventBufferConfig
 {
+	/**
+		Construct the class using the same maximum for all types. This is mainly used for demo purposes.
+		You probably don't want to use this method unless your implementation actually reports every type. 
+	*/	
 	static EventBufferConfig AllTypes(uint16_t sizes);
 
+	/// Retrieve the number of events using a type enumeration
 	uint16_t GetMaxEventsForType(EventType type) const;
 
+	/**
+		Construct the class specifying the maximum number of events for each type individually.
+	*/
 	EventBufferConfig(
-	    uint16_t maxBinaryEvents_ = 0,
-	    uint16_t maxDoubleBinaryEvents_ = 0,
-	    uint16_t maxAnalogEvents_ = 0,
-	    uint16_t maxCounterEvents_ = 0,
-	    uint16_t maxFrozenCounterEvents_ = 0,
-	    uint16_t maxBinaryOutputStatusEvents_ = 0,
-	    uint16_t maxAnalogOutputStatusEvents_ = 0,
-	    uint16_t maxSecurityStatisticEvents_ = 0
+	    uint16_t maxBinaryEvents = 0,
+	    uint16_t maxDoubleBinaryEvents = 0,
+	    uint16_t maxAnalogEvents = 0,
+	    uint16_t maxCounterEvents = 0,
+	    uint16_t maxFrozenCounterEvents = 0,
+	    uint16_t maxBinaryOutputStatusEvents = 0,
+	    uint16_t maxAnalogOutputStatusEvents = 0,
+	    uint16_t maxSecurityStatisticEvents = 0
 	);
 
+	/// Returns the sum of all event count maximums (number of elements in preallocated buffer)
 	uint32_t TotalEvents() const;
 
 	/// The number of binary events the outstation will buffer before overflowing
