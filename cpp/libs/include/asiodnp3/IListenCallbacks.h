@@ -42,8 +42,8 @@ public:
 	/**
 	* Ask user code if the following connection should be accepted
 	*
-	* @sessionid Incrementing id used to uniquely identify the session
-	* @ipaddress The IP address of the connecting host. Can optionally be used for connection filtering
+	* @param sessionid Incrementing id used to uniquely identify the session
+	* @param ipaddress The IP address of the connecting host. Can optionally be used for connection filtering
 	*
 	* @return If true, the connection is accepted and a link frame parser is created to handle incoming frame data
 	*/
@@ -52,8 +52,8 @@ public:
 	/**
 	* Ask user code if the following preverified certificate should be accepted
 	*
-	* @sessionid Incrementing id used to uniquely identify the session
-	* @info Information from the x509 certificate
+	* @param sessionid Incrementing id used to uniquely identify the session
+	* @param info Information from the x509 certificate
 	*
 	* @return If true, if the certificate should be accepted, false otherwise.
 	*/
@@ -74,8 +74,8 @@ public:
 	/**
 	* Called when a socket closes
 	*
-	* @sessionid Incrementing id used to uniquely identify the session
-	* @session Possibly NULL shared_ptr to the master session if it was created
+	* @param sessionid Incrementing id used to uniquely identify the session
+	* @param session Possibly NULL shared_ptr to the master session if it was created
 	*/
 	virtual void OnConnectionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) = 0;
 };

@@ -140,7 +140,7 @@ public:
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
 	* @param config TLS configuration information
-	* @param An error code. If set, a nullptr will be returned
+	* @param ec An error code. If set, a nullptr will be returned
 	* @return A channel interface
 	*/
 	IChannel* AddTLSClient(
@@ -165,7 +165,7 @@ public:
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param config TLS configuration information
-	* @param An error code. If set, a nullptr will be returned
+	* @param ec An error code. If set, a nullptr will be returned
 	* @return A channel interface
 	*/
 	IChannel* AddTLSServer(
