@@ -19,6 +19,8 @@ ltmain.sh
 *.o
 *.lo
 *.la
+*.s
+*.ii
 Makefile
 config.status
 libtool
