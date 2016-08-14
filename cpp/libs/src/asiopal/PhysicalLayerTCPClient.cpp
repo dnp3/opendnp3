@@ -80,7 +80,9 @@ void PhysicalLayerTCPClient::DoOpen()
 			{
 				this->HandleResolve(code, endpoints);
 			};
-			ip::tcp::resolver::query query(host, "20000");
+			stringstream portstr;
+			portstr << remoteEndpoint.port();
+			ip::tcp::resolver::query query(host, portstr);
 			resolver.async_resolve(query, executor.strand.wrap(callback));
 		}
 		else
