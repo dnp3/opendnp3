@@ -82,7 +82,7 @@ void PhysicalLayerTCPClient::DoOpen()
 			};
 			stringstream portstr;
 			portstr << remoteEndpoint.port();
-			ip::tcp::resolver::query query(host, portstr);
+			ip::tcp::resolver::query query(host, portstr.str());
 			resolver.async_resolve(query, executor.strand.wrap(callback));
 		}
 		else
