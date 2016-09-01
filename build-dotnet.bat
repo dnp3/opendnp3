@@ -12,10 +12,6 @@ IF ERRORLEVEL 1 (
 	ECHO cmake could not be found
 	GOTO :QUIT
 )
-IF ["%ASIO_HOME%"]==[] (
-	ECHO ASIO could not be found
-	GOTO :QUIT
-)
 IF ["%OSSL_LIB32_DIR%"]==[] (
 	ECHO OpenSSL could not be found
 	GOTO :QUIT
