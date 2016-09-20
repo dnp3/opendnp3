@@ -127,7 +127,7 @@ private:
 	ISOEHandler* pSOEHandler;
 
 	TimestampMode ctoMode;
-	uint64_t commonTimeOccurence;
+	DNPTime commonTimeOccurence;
 
 	void CheckForTxStart();
 

@@ -23,17 +23,17 @@
 namespace opendnp3
 {
 
-SOERecord::SOERecord() : SOERecord(EventType::Analog, EventClass::EC1, 0, 0 , 0)
+SOERecord::SOERecord() : SOERecord(EventType::Analog, EventClass::EC1, 0, DNPTime(0), 0)
 {}
 
-SOERecord::SOERecord(EventType type_, EventClass clazz_, uint16_t index_, uint64_t time_, uint8_t flags_) :
-	type(type_),
-	clazz(clazz_),
+SOERecord::SOERecord(EventType type, EventClass clazz, uint16_t index, DNPTime time, uint8_t flags) :
+	type(type),
+	clazz(clazz),
 	selected(false),
 	written(false),
-	index(index_),
-	time(time_),
-	flags(flags_)
+	index(index),
+	time(time),
+	flags(flags)
 {}
 
 void SOERecord::Reset()

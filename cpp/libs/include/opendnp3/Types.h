@@ -31,7 +31,7 @@ class DNPTime : public openpal::UInt48Type
 
 public:
 
-	explicit DNPTime(uint64_t value) : openpal::UInt48Type(value)
+	explicit DNPTime(int64_t value) : openpal::UInt48Type(value)
 	{}
 
 	explicit DNPTime(openpal::UInt48Type value) : openpal::UInt48Type(value)

@@ -290,7 +290,7 @@ IINField LoggingHandler::PrintVQTStringify(GroupVariation gv, const ICollection<
 		}
 		if (HasAbsoluteTime(gv) || HasRelativeTime(gv))
 		{
-			oss << " time: " << item.value.time.Get();
+			oss << " time: " << item.value.time;
 		}
 		SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 	};

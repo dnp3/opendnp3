@@ -26,12 +26,12 @@ namespace openpal
 UInt48Type UInt48LE::Read(const uint8_t* data)
 {
 	return UInt48Type(
-	           (static_cast<uint64_t>(data[0]) << 0) |
-	           (static_cast<uint64_t>(data[1]) << 8) |
-	           (static_cast<uint64_t>(data[2]) << 16) |
-	           (static_cast<uint64_t>(data[3]) << 24) |
-	           (static_cast<uint64_t>(data[4]) << 32) |
-	           (static_cast<uint64_t>(data[5]) << 40));
+	           (static_cast<int64_t>(data[0]) << 0) |
+	           (static_cast<int64_t>(data[1]) << 8) |
+	           (static_cast<int64_t>(data[2]) << 16) |
+	           (static_cast<int64_t>(data[3]) << 24) |
+	           (static_cast<int64_t>(data[4]) << 32) |
+	           (static_cast<int64_t>(data[5]) << 40));
 }
 
 void UInt48LE::Write(uint8_t* data, UInt48Type value)

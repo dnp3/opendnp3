@@ -114,7 +114,7 @@ public:
 
 private:
 
-	SOERecord(EventType type, EventClass clazz, uint16_t index, uint64_t time, uint8_t flags);
+	SOERecord(EventType type, EventClass clazz, uint16_t index, DNPTime time, uint8_t flags);
 
 
 	// the actual value;

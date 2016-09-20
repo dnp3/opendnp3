@@ -341,7 +341,7 @@ bool Group120Var7::Read(const RSlice& buffer)
   this->userNum = UInt16::ReadBuffer(copy);
   this->assocId = UInt16::ReadBuffer(copy);
   this->errorCode = AuthErrorCodeFromType(UInt8::ReadBuffer(copy));
-  this->time = DNPTime(UInt48::ReadBuffer(copy).Get());
+  this->time = DNPTime(UInt48::ReadBuffer(copy));
 
   this->errorText = copy; // whatever is left over
   return true;
