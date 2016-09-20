@@ -621,10 +621,12 @@ TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 
 	{
 		auto view = t.context.GetConfigView();
-		view.binaries.foreach([](Cell<Binary>& cell)
+		auto setVariation = [](Cell<BinarySpec>& cell) -> void
 		{
 			cell.variation = StaticBinaryVariation::Group1Var1;
-		});
+		};
+
+		view.binaries.foreach(setVariation);
 	}
 
 	t.LowerLayerUp();
