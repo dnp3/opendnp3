@@ -76,10 +76,10 @@ public:
 
 	bool IsEvent(const Binary& newValue) const;
 
-	const static EventType EventTypeEnum = EventType::Binary;
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
-	const static EventBinaryVariation DefaultEventVariation = EventBinaryVariation::Group2Var1;
-	const static StaticBinaryVariation DefaultStaticVariation = StaticBinaryVariation::Group1Var2;
+	static const EventType EventTypeEnum = EventType::Binary;
+	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
+	static const EventBinaryVariation DefaultEventVariation = EventBinaryVariation::Group2Var1;
+	static const StaticBinaryVariation DefaultStaticVariation = StaticBinaryVariation::Group1Var2;
 
 	typedef bool ValueType;
 	typedef EventBinaryVariation EventVariation;
@@ -110,10 +110,10 @@ public:
 
 	bool IsEvent(const DoubleBitBinary& newValue) const;
 
-	const static EventType EventTypeEnum = EventType::DoubleBitBinary;
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
-	const static EventDoubleBinaryVariation DefaultEventVariation = EventDoubleBinaryVariation::Group4Var1;
-	const static StaticDoubleBinaryVariation DefaultStaticVariation = StaticDoubleBinaryVariation::Group3Var2;
+	static const EventType EventTypeEnum = EventType::DoubleBitBinary;
+	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
+	static const EventDoubleBinaryVariation DefaultEventVariation = EventDoubleBinaryVariation::Group4Var1;
+	static const StaticDoubleBinaryVariation DefaultStaticVariation = StaticDoubleBinaryVariation::Group3Var2;
 
 	typedef DoubleBit ValueType;
 	typedef EventDoubleBinaryVariation EventVariation;
@@ -154,10 +154,10 @@ public:
 
 	bool IsEvent(const BinaryOutputStatus& newValue) const;
 
-	const static EventType EventTypeEnum = EventType::BinaryOutputStatus;
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
-	const static EventBinaryOutputStatusVariation DefaultEventVariation = EventBinaryOutputStatusVariation::Group11Var1;
-	const static StaticBinaryOutputStatusVariation DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
+	static const EventType EventTypeEnum = EventType::BinaryOutputStatus;
+	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
+	static const EventBinaryOutputStatusVariation DefaultEventVariation = EventBinaryOutputStatusVariation::Group11Var1;
+	static const StaticBinaryOutputStatusVariation DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
 
 	typedef bool ValueType;
 	typedef EventBinaryOutputStatusVariation EventVariation;
@@ -184,10 +184,10 @@ public:
 
 	bool IsEvent(const Analog& newValue, double deadband) const;
 
-	const static EventType EventTypeEnum = EventType::Analog;
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogInput;
-	const static EventAnalogVariation DefaultEventVariation = EventAnalogVariation::Group32Var1;
-	const static StaticAnalogVariation DefaultStaticVariation = StaticAnalogVariation::Group30Var1;
+	static const EventType EventTypeEnum = EventType::Analog;
+	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogInput;
+	static const EventAnalogVariation DefaultEventVariation = EventAnalogVariation::Group32Var1;
+	static const StaticAnalogVariation DefaultStaticVariation = StaticAnalogVariation::Group30Var1;
 
 	typedef double ValueType;
 	typedef EventAnalogVariation EventVariation;
@@ -213,10 +213,10 @@ public:
 
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const;
 
-	const static EventType EventTypeEnum = EventType::Counter;
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::Counter;
-	const static EventCounterVariation DefaultEventVariation = EventCounterVariation::Group22Var1;
-	const static StaticCounterVariation DefaultStaticVariation = StaticCounterVariation::Group20Var1;
+	static const EventType EventTypeEnum = EventType::Counter;
+	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::Counter;
+	static const EventCounterVariation DefaultEventVariation = EventCounterVariation::Group22Var1;
+	static const StaticCounterVariation DefaultStaticVariation = StaticCounterVariation::Group20Var1;
 
 	typedef uint32_t ValueType;
 	typedef EventCounterVariation EventVariation;
@@ -241,10 +241,10 @@ public:
 
 	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const;
 
-	const static EventType EventTypeEnum = EventType::FrozenCounter;
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
-	const static EventFrozenCounterVariation DefaultEventVariation = EventFrozenCounterVariation::Group23Var1;
-	const static StaticFrozenCounterVariation DefaultStaticVariation = StaticFrozenCounterVariation::Group21Var1;
+	static const EventType EventTypeEnum = EventType::FrozenCounter;
+	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
+	static const EventFrozenCounterVariation DefaultEventVariation = EventFrozenCounterVariation::Group23Var1;
+	static const StaticFrozenCounterVariation DefaultStaticVariation = StaticFrozenCounterVariation::Group21Var1;
 
 	typedef uint32_t ValueType;
 	typedef EventFrozenCounterVariation EventVariation;
@@ -270,10 +270,10 @@ public:
 
 	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const;
 
-	const static EventType EventTypeEnum = EventType::AnalogOutputStatus;
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
-	const static EventAnalogOutputStatusVariation DefaultEventVariation = EventAnalogOutputStatusVariation::Group42Var1;
-	const static StaticAnalogOutputStatusVariation DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
+	static const EventType EventTypeEnum = EventType::AnalogOutputStatus;
+	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
+	static const EventAnalogOutputStatusVariation DefaultEventVariation = EventAnalogOutputStatusVariation::Group42Var1;
+	static const StaticAnalogOutputStatusVariation DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
 
 	typedef double ValueType;
 	typedef EventAnalogOutputStatusVariation EventVariation;
