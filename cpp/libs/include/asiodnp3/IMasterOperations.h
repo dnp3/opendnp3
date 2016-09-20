@@ -22,7 +22,7 @@
 #define ASIODNP3_IMASTEROPERATIONS_H
 
 #include <opendnp3/app/ClassField.h>
-#include <opendnp3/app/TimeAndInterval.h>
+#include <opendnp3/app/MeasurementTypes.h>
 #include <opendnp3/StackStatistics.h>
 
 #include <opendnp3/master/HeaderTypes.h>

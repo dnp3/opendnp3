@@ -22,7 +22,6 @@
 #define OPENDNP3_MEASUREMENTTYPESPECS_H
 
 #include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/SecurityStat.h"
 
 #include "opendnp3/app/EventType.h"

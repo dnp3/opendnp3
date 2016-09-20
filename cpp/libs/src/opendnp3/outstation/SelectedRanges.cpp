@@ -20,7 +20,6 @@
  */
 #include "SelectedRanges.h"
 
-#include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/app/SecurityStat.h"
 

@@ -23,7 +23,6 @@
 
 #include <openpal/util/Uncopyable.h>
 #include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/BinaryCommandEvent.h"
 #include "opendnp3/app/AnalogCommandEvent.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"

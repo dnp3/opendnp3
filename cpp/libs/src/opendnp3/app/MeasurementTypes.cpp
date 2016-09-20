@@ -146,10 +146,7 @@ FrozenCounter::FrozenCounter(uint32_t value, uint8_t quality, DNPTime time) : Ty
 
 // ------------ Analog Output Status ---------------
 
-
-
 AnalogOutputStatus::AnalogOutputStatus() : TypedMeasurement<double>(flags::RESTART) {}
-
 
 AnalogOutputStatus::AnalogOutputStatus(double value) : TypedMeasurement<double>(value, flags::ONLINE)
 {}
@@ -159,6 +156,28 @@ AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality) : TypedMea
 
 AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality, DNPTime time) : TypedMeasurement<double>(value, quality, time)
 {}
+
+// ------------ TimeAndInterval ---------------
+
+TimeAndInterval::TimeAndInterval() : time(0), interval(0), units(0)
+{}
+
+TimeAndInterval::TimeAndInterval(DNPTime time_, uint32_t interval_, uint8_t units_) :
+	time(time_),
+	interval(interval_),
+	units(units_)
+{}
+
+TimeAndInterval::TimeAndInterval(DNPTime time_, uint32_t interval_, IntervalUnits units_) :
+	time(time_),
+	interval(interval_),
+	units(static_cast<uint8_t>(units_))
+{}
+
+IntervalUnits TimeAndInterval::GetUnitsEnum() const
+{
+	return IntervalUnitsFromType(units);
+}
 
 } // end ns
 

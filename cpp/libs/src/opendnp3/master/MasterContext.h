@@ -29,7 +29,7 @@
 #include "opendnp3/LayerInterfaces.h"
 
 #include "opendnp3/app/AppSeqNum.h"
-#include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/MeasurementTypes.h"
 
 #include "opendnp3/gen/RestartType.h"
 

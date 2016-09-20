@@ -22,7 +22,6 @@
 #define OPENDNP3_IDATABASE_H
 
 #include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/TimeAndInterval.h"
 
 #include "opendnp3/gen/EventMode.h"
 

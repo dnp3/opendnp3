@@ -24,7 +24,6 @@
 #include "opendnp3/app/ITransactable.h"
 
 #include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/BinaryCommandEvent.h"
 #include "opendnp3/app/AnalogCommandEvent.h"
 #include "opendnp3/app/OctetString.h"

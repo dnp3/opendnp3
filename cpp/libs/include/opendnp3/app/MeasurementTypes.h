@@ -22,7 +22,9 @@
 #define OPENDNP3_MEASUREMENTTYPES_H
 
 #include "opendnp3/app/BaseMeasurementTypes.h"
+
 #include "opendnp3/gen/DoubleBit.h"
+#include "opendnp3/gen/IntervalUnits.h"
 
 namespace opendnp3
 {
@@ -170,6 +172,27 @@ public:
 	AnalogOutputStatus(double value, uint8_t quality);
 
 	AnalogOutputStatus(double value, uint8_t quality, DNPTime time);
+};
+
+/**
+	Maps to Group50Var4
+	This class is a bit of an outlier as an indexed type and is really only used in the DNP3 PV profile
+*/
+class TimeAndInterval
+{
+public:
+
+	TimeAndInterval();
+
+	TimeAndInterval(DNPTime time, uint32_t interval, uint8_t units);
+
+	TimeAndInterval(DNPTime time, uint32_t interval, IntervalUnits units);
+
+	IntervalUnits GetUnitsEnum() const;
+
+	DNPTime time;
+	uint32_t interval;
+	uint8_t units;
 };
 
 }

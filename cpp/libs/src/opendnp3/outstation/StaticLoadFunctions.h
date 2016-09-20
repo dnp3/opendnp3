@@ -23,7 +23,6 @@
 
 #include "opendnp3/app/Range.h"
 #include "opendnp3/app/HeaderWriter.h"
-#include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/app/SecurityStat.h"
 #include "opendnp3/outstation/Cell.h"

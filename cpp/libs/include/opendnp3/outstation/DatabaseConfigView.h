@@ -21,7 +21,6 @@
 #ifndef OPENDNP3_DATABASECONFIGVIEW_H
 #define OPENDNP3_DATABASECONFIGVIEW_H
 
-#include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 
 #include "opendnp3/outstation/Cell.h"

@@ -30,7 +30,7 @@
 #include "opendnp3/link/ILinkListener.h"
 
 #include "opendnp3/app/Indexed.h"
-#include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/parsing/ICollection.h"
 
 #include "opendnp3/outstation/ApplicationIIN.h"
