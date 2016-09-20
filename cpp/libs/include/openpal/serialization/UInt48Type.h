@@ -47,7 +47,7 @@ public:
 		return representation;
 	}
 
-private:
+protected:
 
 	uint64_t representation;
 

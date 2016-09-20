@@ -28,7 +28,7 @@ namespace measurements
 {
 bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<double>& oldMeas, double deadband)
 {
-	if (newMeas.quality != oldMeas.quality)
+	if (newMeas.flags.value != oldMeas.flags.value)
 	{
 		return true;
 	}

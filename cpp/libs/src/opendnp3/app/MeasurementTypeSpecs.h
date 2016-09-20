@@ -73,12 +73,12 @@ struct BinarySpec : private openpal::StaticOnly
 
 	inline static bool IsQualityOnlineOnly(const Binary& binary)
 	{
-		return (binary.quality & 0b01111111) == static_cast<uint8_t>(BinaryQuality::ONLINE);
+		return (binary.flags.value & 0b01111111) == static_cast<uint8_t>(BinaryQuality::ONLINE);
 	}
 
 	inline static bool IsEvent(const Binary& oldValue, const Binary& newValue)
 	{
-		return oldValue.quality != newValue.quality;
+		return oldValue.flags.value != newValue.flags.value;
 	}
 };
 
@@ -98,7 +98,7 @@ struct DoubleBitBinarySpec : private openpal::StaticOnly
 
 	inline static bool IsEvent(const DoubleBitBinary& oldValue, const DoubleBitBinary& newValue)
 	{
-		return oldValue.quality != newValue.quality;
+		return oldValue.flags.value != newValue.flags.value;
 	}
 };
 
@@ -120,7 +120,7 @@ public:
 
 	inline static bool IsEvent(const BinaryOutputStatus& oldValue, const BinaryOutputStatus& newValue)
 	{
-		return oldValue.quality != newValue.quality;
+		return oldValue.flags.value != newValue.flags.value;
 	}
 };
 
@@ -161,7 +161,7 @@ struct CounterSpec : private openpal::StaticOnly
 
 	inline static bool IsEvent(const Counter& oldValue, const Counter& newValue, uint32_t deadband)
 	{
-		if (oldValue.quality != newValue.quality)
+		if (oldValue.flags.value != newValue.flags.value)
 		{
 			return true;
 		}
@@ -188,7 +188,7 @@ struct FrozenCounterSpec : private openpal::StaticOnly
 
 	inline static bool IsEvent(const FrozenCounter& oldValue, const FrozenCounter& newValue, uint32_t deadband)
 	{
-		if (oldValue.quality != newValue.quality)
+		if (oldValue.flags.value != newValue.flags.value)
 		{
 			return true;
 		}

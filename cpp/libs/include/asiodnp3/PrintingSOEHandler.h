@@ -81,7 +81,7 @@ private:
 	{
 		std::cout << "[" << index << "] : " <<
 		          ValueToString(value) << " : " <<
-		          static_cast<int>(value.quality) << " : " <<
+		          static_cast<int>(value.flags.value) << " : " <<
 		          value.time << std::endl;
 	}
 

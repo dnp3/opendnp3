@@ -226,7 +226,7 @@ IINField LoggingHandler::PrintVQT(GroupVariation gv, const ICollection<Indexed<T
 		oss << "[" << item.index << "] - value: " << item.value.value;
 		if (HasFlags(gv))
 		{
-			oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
+			oss << " flags: 0x" << std::hex << ToHex(item.value.flags.value) << std::dec;
 		}
 		if (HasAbsoluteTime(gv) || HasRelativeTime(gv))
 		{
@@ -286,7 +286,7 @@ IINField LoggingHandler::PrintVQTStringify(GroupVariation gv, const ICollection<
 		oss << "[" << item.index << "] - value: " << stringify(item.value.value);
 		if (HasFlags(gv))
 		{
-			oss << " flags: 0x" << std::hex << ToHex(item.value.quality) << std::dec;
+			oss << " flags: 0x" << std::hex << ToHex(item.value.flags.value) << std::dec;
 		}
 		if (HasAbsoluteTime(gv) || HasRelativeTime(gv))
 		{

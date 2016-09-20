@@ -35,7 +35,7 @@ struct ConvertQ : private openpal::StaticOnly
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.quality;
+		t.flags = src.flags.value;
 		return t;
 	}
 };
@@ -47,7 +47,7 @@ struct ConvertQV : private openpal::StaticOnly
 	{
 		Target t;
 		t.value = src.value;
-		t.flags = src.quality;
+		t.flags = src.flags.value;
 		return t;
 	}
 };
@@ -93,7 +93,7 @@ struct ConvertQVRangeCheck : private openpal::StaticOnly
 		Target t;
 		auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
 		t.flags = overrange ? Overrange : 0;
-		t.flags |= src.quality;
+		t.flags |= src.flags.value;
 		return t;
 	}
 };
@@ -104,7 +104,7 @@ struct ConvertQVandTruncate : private openpal::StaticOnly
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.quality;
+		t.flags = src.flags.value;
 		t.value = static_cast<typename Target::ValueType>(src.value);
 		return t;
 	}
@@ -116,7 +116,7 @@ struct ConvertQVT : private openpal::StaticOnly
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.quality;
+		t.flags = src.flags.value;
 		t.value = src.value;
 		t.time = src.time;
 		return t;
@@ -129,7 +129,7 @@ struct ConvertQVTandTruncate : private openpal::StaticOnly
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.quality;
+		t.flags = src.flags.value;
 		t.value = static_cast<typename Target::ValueType>(src.value);
 		t.time = src.time;
 		return t;
@@ -144,7 +144,7 @@ struct ConvertQVTRangeCheck : private openpal::StaticOnly
 		Target t;
 		auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
 		t.flags = overrange ? Overrange : 0;
-		t.flags |= src.quality;
+		t.flags |= src.flags.value;
 		t.time = src.time;
 		return t;
 	}
@@ -156,7 +156,7 @@ struct ConvertQT : private openpal::StaticOnly
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.quality;
+		t.flags = src.flags.value;
 		t.time = src.time;
 		return t;
 	}
@@ -168,7 +168,7 @@ struct ConvertQTDowncast : private openpal::StaticOnly
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.quality;
+		t.flags = src.flags.value;
 		t.time = static_cast<Downcast>(src.time);
 		return t;
 	}

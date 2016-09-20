@@ -41,8 +41,6 @@
 
 #include "opendnp3/app/BinaryCommandEvent.h"
 
-using namespace openpal;
-
 namespace opendnp3
 {
 
@@ -52,46 +50,46 @@ BinaryCommandEvent::BinaryCommandEvent() :
 	time(0)
 {}
 
-BinaryCommandEvent::BinaryCommandEvent(uint8_t value_) :
-	value(GetValueFromFlags(value_)),
-	status(GetStatusFromFlags(value_))
+BinaryCommandEvent::BinaryCommandEvent(Flags flags) :
+	value(GetValueFromFlags(flags)),
+	status(GetStatusFromFlags(flags))
 {}
 
-BinaryCommandEvent::BinaryCommandEvent(uint8_t value_, UInt48Type time_) :
-	value(GetValueFromFlags(value_)),
-	status(GetStatusFromFlags(value_)),
-	time(time_)
+BinaryCommandEvent::BinaryCommandEvent(Flags flags, DNPTime time) :
+	value(GetValueFromFlags(flags)),
+	status(GetStatusFromFlags(flags)),
+	time(time)
 {}
 
-BinaryCommandEvent::BinaryCommandEvent(bool value_, CommandStatus status_) :
-	value(value_),
-	status(status_)
+BinaryCommandEvent::BinaryCommandEvent(bool value, CommandStatus status) :
+	value(value),
+	status(status)
 {}
 
-BinaryCommandEvent::BinaryCommandEvent(bool value_, CommandStatus status_, DNPTime time_) :
-	value(value_),
-	status(status_),
-	time(time_)
+BinaryCommandEvent::BinaryCommandEvent(bool value, CommandStatus status, DNPTime time) :
+	value(value),
+	status(status),
+	time(time)
 {}
 
-uint8_t BinaryCommandEvent::GetFlags() const
+Flags BinaryCommandEvent::GetFlags() const
 {
 	return (static_cast<uint8_t>(value) << 7) | (CommandStatusToType(status));
 }
 
-bool BinaryCommandEvent::operator==(const BinaryCommandEvent& arRHS) const
+bool BinaryCommandEvent::operator==(const BinaryCommandEvent& rhs) const
 {
-	return value == arRHS.value && status == arRHS.status && time == arRHS.time;
+	return value == rhs.value && status == rhs.status && time == rhs.time;
 }
 
-bool BinaryCommandEvent::GetValueFromFlags(uint8_t flags)
+bool BinaryCommandEvent::GetValueFromFlags(Flags flags)
 {
-	return (flags & ValueMask) == ValueMask;
+	return (flags.value & ValueMask) == ValueMask;
 }
 
-CommandStatus BinaryCommandEvent::GetStatusFromFlags(uint8_t flags)
+CommandStatus BinaryCommandEvent::GetStatusFromFlags(Flags flags)
 {
-	return CommandStatusFromType(flags & StatusMask);
+	return CommandStatusFromType(flags.value & StatusMask);
 }
 
 }

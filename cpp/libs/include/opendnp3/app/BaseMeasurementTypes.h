@@ -24,6 +24,7 @@
 #include <cstdint>
 
 #include "opendnp3/Types.h"
+#include "opendnp3/app/Flags.h"
 
 namespace opendnp3
 {
@@ -37,18 +38,18 @@ public:
 
 	virtual ~Measurement() {}
 
-	uint8_t quality;	//	bitfield that stores type specific quality information
+	Flags flags;		//	bitfield that stores type specific quality information
 	DNPTime time;		//	timestamp associated with the measurement
 
 protected:
 
-	Measurement() : quality(0)
+	Measurement()
 	{}
 
-	Measurement(uint8_t quality_) : quality(quality_)
+	Measurement(Flags flags) : flags(flags)
 	{}
 
-	Measurement(uint8_t quality_, DNPTime time_) : quality(quality_), time(time_)
+	Measurement(Flags flags, DNPTime time) : flags(flags), time(time)
 	{}
 
 };
@@ -67,9 +68,9 @@ public:
 protected:
 
 	TypedMeasurement(): Measurement(), value(0) {}
-	TypedMeasurement(uint8_t quality) : Measurement(quality), value(0) {}
-	TypedMeasurement(T value, uint8_t quality) : Measurement(quality), value(value) {}
-	TypedMeasurement(T value, uint8_t quality, DNPTime time) : Measurement(quality, time), value(value) {}
+	TypedMeasurement(Flags flags) : Measurement(flags), value(0) {}
+	TypedMeasurement(T value, Flags flags) : Measurement(flags), value(value) {}
+	TypedMeasurement(T value, Flags flags, DNPTime time) : Measurement(flags, time), value(value) {}
 };
 
 }

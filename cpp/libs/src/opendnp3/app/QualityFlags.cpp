@@ -18,12 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_QUALITYFLAGS_H
-#define OPENDNP3_QUALITYFLAGS_H
 
-#include <cstdint>
-
-#include "opendnp3/gen/BinaryQuality.h"
+#include "QualityFlags.h"
 
 namespace opendnp3
 {
@@ -31,14 +27,14 @@ namespace opendnp3
 namespace flags
 {
 
-bool GetBinaryValue(uint8_t quality)
+bool GetBinaryValue(Flags flags)
 {
-	return (quality & static_cast<uint8_t>(BinaryQuality::STATE)) != 0;
+	return (flags.value & static_cast<uint8_t>(BinaryQuality::STATE)) != 0;
 }
 
-uint8_t GetBinaryQuality(uint8_t q, bool value)
+Flags GetBinaryFlags(Flags flags, bool value)
 {
-	return (value) ? (q | static_cast<uint8_t>(BinaryQuality::STATE)) : (q & (~static_cast<uint8_t>(BinaryQuality::STATE)));
+	return (value) ? (flags.value | static_cast<uint8_t>(BinaryQuality::STATE)) : (flags.value & (~static_cast<uint8_t>(BinaryQuality::STATE)));
 }
 
 
@@ -46,4 +42,4 @@ uint8_t GetBinaryQuality(uint8_t q, bool value)
 
 }
 
-#endif
+

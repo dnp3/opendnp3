@@ -42,13 +42,13 @@ public:
 
 	Binary(bool value);
 
-	Binary(uint8_t quality);
+	Binary(Flags flags);
 
-	Binary(uint8_t quality, DNPTime time);
+	Binary(Flags flags, DNPTime time);
 
-	Binary(bool value, uint8_t quality);
+	Binary(bool value, Flags flags);
 
-	Binary(bool value, uint8_t quality, DNPTime time);
+	Binary(bool value, Flags flags, DNPTime time);
 };
 
 /**
@@ -64,22 +64,22 @@ public:
 
 	DoubleBitBinary(DoubleBit value);
 
-	DoubleBitBinary(uint8_t quality);
+	DoubleBitBinary(Flags flags);
 
-	DoubleBitBinary(uint8_t quality, DNPTime time);
+	DoubleBitBinary(Flags flags, DNPTime time);
 
-	DoubleBitBinary(DoubleBit value, uint8_t quality);
+	DoubleBitBinary(DoubleBit value, Flags flags);
 
-	DoubleBitBinary(DoubleBit value, uint8_t quality, DNPTime time);
+	DoubleBitBinary(DoubleBit value, Flags flags, DNPTime time);
 
 private:
 
 	static const uint8_t ValueMask = 0xC0;
 	static const uint8_t QualityMask = 0x3F;
 
-	static DoubleBit GetValue(uint8_t quality);
+	static DoubleBit GetValue(Flags flags);
 
-	static uint8_t GetQual(uint8_t quality, DoubleBit state);
+	static Flags GetFlags(Flags flags, DoubleBit state);
 };
 
 
@@ -96,13 +96,13 @@ public:
 
 	BinaryOutputStatus(bool value);
 
-	BinaryOutputStatus(uint8_t quality);
+	BinaryOutputStatus(Flags flags);
 
-	BinaryOutputStatus(uint8_t quality, DNPTime time);
+	BinaryOutputStatus(Flags flags, DNPTime time);
 
-	BinaryOutputStatus(bool value, uint8_t quality);
+	BinaryOutputStatus(bool value, Flags flags);
 
-	BinaryOutputStatus(bool value, uint8_t quality, DNPTime time);
+	BinaryOutputStatus(bool value, Flags flags, DNPTime time);
 
 };
 
@@ -119,9 +119,9 @@ public:
 
 	Analog(double value);
 
-	Analog(double value, uint8_t quality);
+	Analog(double value, Flags flags);
 
-	Analog(double value, uint8_t quality, DNPTime time);
+	Analog(double value, Flags flags, DNPTime time);
 };
 
 /**
@@ -136,9 +136,9 @@ public:
 
 	Counter(uint32_t value);
 
-	Counter(uint32_t value, uint8_t quality);
+	Counter(uint32_t value, Flags flags);
 
-	Counter(uint32_t value, uint8_t quality, DNPTime time);
+	Counter(uint32_t value, Flags flags, DNPTime time);
 };
 
 /**
@@ -152,9 +152,9 @@ public:
 
 	FrozenCounter(uint32_t value);
 
-	FrozenCounter(uint32_t value, uint8_t quality);
+	FrozenCounter(uint32_t value, Flags flags);
 
-	FrozenCounter(uint32_t value, uint8_t quality, DNPTime time);
+	FrozenCounter(uint32_t value, Flags flags, DNPTime time);
 };
 
 /**
@@ -169,9 +169,9 @@ public:
 
 	AnalogOutputStatus(double value);
 
-	AnalogOutputStatus(double value, uint8_t quality);
+	AnalogOutputStatus(double value, Flags flags);
 
-	AnalogOutputStatus(double value, uint8_t quality, DNPTime time);
+	AnalogOutputStatus(double value, Flags flags, DNPTime time);
 };
 
 /**

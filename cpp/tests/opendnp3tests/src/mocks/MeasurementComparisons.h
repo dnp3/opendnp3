@@ -30,7 +30,7 @@ template<class T>
 bool Equals(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
 {
 	return
-	    (lhs.quality == rhs.quality) &&
+	    (lhs.flags.value == rhs.flags.value) &&
 	    (lhs.value == rhs.value) &&
 	    (lhs.time == rhs.time);
 }

@@ -424,7 +424,8 @@ TEST_CASE(SUITE("Group13Var2CountWithAllIndexSizes"))
 	auto validator = [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 == mock.binaryCommandEvents.size());
-		Indexed<BinaryCommandEvent> value(BinaryCommandEvent(true, CommandStatus::TIMEOUT, DNPTime(1419802341000)), 9);
+		DNPTime time(1419802341000);
+		Indexed<BinaryCommandEvent> value(BinaryCommandEvent(true, CommandStatus::TIMEOUT, time), 9);
 		REQUIRE((value == mock.binaryCommandEvents[0]));
 	};
 

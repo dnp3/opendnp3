@@ -22,6 +22,7 @@
 #define OPENDNP3_QUALITYFLAGS_H
 
 #include <cstdint>
+#include "opendnp3/app/Flags.h"
 
 namespace opendnp3
 {
@@ -35,9 +36,9 @@ enum Quality : uint8_t
 	RESTART = 0x02
 };
 
-bool GetBinaryValue(uint8_t quality);
+bool GetBinaryValue(Flags flags);
 
-uint8_t GetBinaryQuality(uint8_t q, bool value);
+Flags GetBinaryFlags(Flags flags, bool value);
 
 }
 
