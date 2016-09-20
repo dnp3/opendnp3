@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_SECURITYSTATISTIC_H
 #define OPENDNP3_SECURITYSTATISTIC_H
 
-#include "opendnp3/Types.h"
+#include "opendnp3/DNPTime.h"
 
 namespace opendnp3
 {

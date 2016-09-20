@@ -25,7 +25,7 @@
 // include classes
 %include "opendnp3/app/Flags.h"
 %include "openpal/serialization/UInt48Type.h"
-%include "opendnp3/Types.h"
+%include "opendnp3/DNPTime.h"
 %include "opendnp3/app/BaseMeasurementTypes.h"
 
 %template(BoolTypedMeasurement) opendnp3::TypedMeasurement<bool>;

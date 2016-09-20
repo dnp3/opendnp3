@@ -24,7 +24,7 @@
 #include "opendnp3/app/GroupVariationID.h"
 #include <openpal/container/RSlice.h>
 #include <openpal/container/WSlice.h>
-#include "opendnp3/Types.h"
+#include "opendnp3/DNPTime.h"
 
 namespace opendnp3 {
 

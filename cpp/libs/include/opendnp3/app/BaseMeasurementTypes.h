@@ -23,7 +23,7 @@
 
 #include <cstdint>
 
-#include "opendnp3/Types.h"
+#include "opendnp3/DNPTime.h"
 #include "opendnp3/app/Flags.h"
 
 namespace opendnp3
