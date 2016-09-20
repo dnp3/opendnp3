@@ -66,7 +66,7 @@ struct SimpleEventMetadata : EventMetadata<ValueSpec>
 
 	bool IsEvent(const meas_type_t& newValue) const
 	{
-		return this->lastEvent.IsEvent(newValue);
+		return ValueSpec::IsEvent(this->lastEvent, newValue);
 	}
 };
 
@@ -79,7 +79,7 @@ struct DeadbandMetadata : EventMetadata<ValueSpec>
 
 	bool IsEvent(const typename ValueSpec::type_t& newValue) const
 	{
-		return this->lastEvent.IsEvent(newValue, deadband);
+		return ValueSpec::IsEvent(this->lastEvent, newValue, deadband);
 	}
 
 	DeadbandType deadband;

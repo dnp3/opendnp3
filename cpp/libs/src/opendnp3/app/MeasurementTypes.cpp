@@ -21,7 +21,6 @@
 #include "opendnp3/app/MeasurementTypes.h"
 
 #include "opendnp3/app/QualityFlags.h"
-#include "opendnp3/app/EventTriggers.h"
 #include "opendnp3/gen/BinaryQuality.h"
 
 namespace opendnp3
@@ -47,12 +46,6 @@ Binary::Binary(bool value, uint8_t quality) : TypedMeasurement(value, flags::Get
 Binary::Binary(bool value, uint8_t quality, DNPTime time) : TypedMeasurement(value, flags::GetBinaryQuality(quality, value), time)
 {}
 
-bool Binary::IsEvent(const Binary& newValue) const
-{
-	return quality != newValue.quality;
-}
-
-
 // ------------ Double Bit Binary ---------------
 
 DoubleBitBinary::DoubleBitBinary() : TypedMeasurement(DoubleBit::INDETERMINATE, flags::RESTART)
@@ -72,11 +65,6 @@ DoubleBitBinary::DoubleBitBinary(DoubleBit value, uint8_t quality) : TypedMeasur
 
 DoubleBitBinary::DoubleBitBinary(DoubleBit value, uint8_t quality, DNPTime time) : TypedMeasurement(value, GetQual(quality, value), time)
 {}
-
-bool DoubleBitBinary::IsEvent(const DoubleBitBinary& newValue) const
-{
-	return quality != newValue.quality;
-}
 
 DoubleBit DoubleBitBinary::GetValue(uint8_t quality)
 {
@@ -112,11 +100,6 @@ BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality) : TypedMeasu
 BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality, DNPTime time) : TypedMeasurement(value, flags::GetBinaryQuality(quality, value), time)
 {}
 
-bool BinaryOutputStatus::IsEvent(const BinaryOutputStatus& newValue) const
-{
-	return quality != newValue.quality;
-}
-
 // ------------ Analog ---------------
 
 Analog::Analog() : TypedMeasurement(flags::RESTART)
@@ -131,10 +114,6 @@ Analog::Analog(double value, uint8_t quality) : TypedMeasurement(value, quality)
 Analog::Analog(double value, uint8_t quality, DNPTime time) : TypedMeasurement<double>(value, quality, time)
 {}
 
-bool Analog::IsEvent(const Analog& newValue, double deadband) const
-{
-	return measurements::IsEvent(newValue, *this, deadband);
-}
 
 // ------------ Counter ---------------
 
@@ -151,15 +130,6 @@ Counter::Counter(uint32_t value, uint8_t quality) : TypedMeasurement<uint32_t>(v
 Counter::Counter(uint32_t value, uint8_t quality, DNPTime time) : TypedMeasurement<uint32_t>(value, quality, time)
 {}
 
-bool Counter::IsEvent(const Counter& newValue, uint32_t aDeadband) const
-{
-	if(quality != newValue.quality) return true;
-	else
-	{
-		return measurements::IsEvent<uint32_t, uint64_t>(this->value, newValue.value, aDeadband);
-	}
-}
-
 // ------------ Frozen Counter ---------------
 
 
@@ -173,15 +143,6 @@ FrozenCounter::FrozenCounter(uint32_t value, uint8_t quality) : TypedMeasurement
 
 FrozenCounter::FrozenCounter(uint32_t value, uint8_t quality, DNPTime time) : TypedMeasurement<uint32_t>(value, quality, time)
 {}
-
-bool FrozenCounter::IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const
-{
-	if(quality != newValue.quality) return true;
-	else
-	{
-		return measurements::IsEvent<uint32_t, uint64_t>(this->value, newValue.value, aDeadband);
-	}
-}
 
 // ------------ Analog Output Status ---------------
 
@@ -198,12 +159,6 @@ AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality) : TypedMea
 
 AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality, DNPTime time) : TypedMeasurement<double>(value, quality, time)
 {}
-
-bool AnalogOutputStatus::IsEvent(const AnalogOutputStatus& newValue, double deadband) const
-{
-	return measurements::IsEvent(newValue, *this, deadband);
-}
-
 
 } // end ns
 

@@ -27,6 +27,7 @@
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/EventMetadata.h"
+#include "opendnp3/app/EventTriggers.h"
 
 #include "opendnp3/gen/StaticBinaryVariation.h"
 #include "opendnp3/gen/StaticDoubleBinaryVariation.h"
@@ -71,9 +72,14 @@ struct BinarySpec : private openpal::StaticOnly
 	typedef StaticBinaryVariation StaticVariation;
 	typedef SimpleEventMetadata<BinarySpec> MetadataType;
 
-	static bool IsQualityOnlineOnly(const Binary& binary) 
+	inline static bool IsQualityOnlineOnly(const Binary& binary)
 	{ 
 		return (binary.quality & 0b01111111) == static_cast<uint8_t>(BinaryQuality::ONLINE);
+	}
+
+	inline static bool IsEvent(const Binary& oldValue, const Binary& newValue)
+	{
+		return oldValue.quality != newValue.quality;
 	}
 };
 
@@ -90,6 +96,11 @@ struct DoubleBitBinarySpec : private openpal::StaticOnly
 	typedef EventDoubleBinaryVariation EventVariation;
 	typedef StaticDoubleBinaryVariation StaticVariation;
 	typedef SimpleEventMetadata<DoubleBitBinarySpec> MetadataType;
+
+	inline static bool IsEvent(const DoubleBitBinary& oldValue, const DoubleBitBinary& newValue)
+	{
+		return oldValue.quality != newValue.quality;
+	}
 };
 
 class BinaryOutputStatusSpec : private openpal::StaticOnly
@@ -107,6 +118,11 @@ public:
 	typedef EventBinaryOutputStatusVariation EventVariation;
 	typedef StaticBinaryOutputStatusVariation StaticVariation;
 	typedef SimpleEventMetadata<BinaryOutputStatusSpec> MetadataType;
+
+	inline static bool IsEvent(const BinaryOutputStatus& oldValue, const BinaryOutputStatus& newValue)
+	{
+		return oldValue.quality != newValue.quality;
+	}
 };
 
 
@@ -123,6 +139,11 @@ struct AnalogSpec : private openpal::StaticOnly
 	typedef EventAnalogVariation EventVariation;
 	typedef StaticAnalogVariation StaticVariation;
 	typedef DeadbandMetadata<AnalogSpec, double> MetadataType;
+
+	inline static bool IsEvent(const Analog& oldValue, const Analog& newValue, double deadband)
+	{
+		return measurements::IsEvent(newValue, oldValue, deadband);
+	}
 };
 
 struct CounterSpec : private openpal::StaticOnly
@@ -138,6 +159,18 @@ struct CounterSpec : private openpal::StaticOnly
 	typedef EventCounterVariation EventVariation;
 	typedef StaticCounterVariation StaticVariation;
 	typedef DeadbandMetadata<CounterSpec, uint32_t> MetadataType;
+
+	inline static bool IsEvent(const Counter& oldValue, const Counter& newValue, uint32_t deadband)
+	{
+		if (oldValue.quality != newValue.quality)
+		{
+			return true;
+		}
+		else
+		{
+			return measurements::IsEvent<uint32_t, uint64_t>(oldValue.value, newValue.value, deadband);
+		}
+	}
 };
 
 struct FrozenCounterSpec : private openpal::StaticOnly
@@ -153,6 +186,18 @@ struct FrozenCounterSpec : private openpal::StaticOnly
 	typedef EventFrozenCounterVariation EventVariation;
 	typedef StaticFrozenCounterVariation StaticVariation;
 	typedef DeadbandMetadata<FrozenCounterSpec, uint32_t> MetadataType;
+
+	inline static bool IsEvent(const FrozenCounter& oldValue, const FrozenCounter& newValue, uint32_t deadband)
+	{
+		if (oldValue.quality != newValue.quality)
+		{
+			return true;
+		}
+		else
+		{
+			return measurements::IsEvent<uint32_t, uint64_t>(oldValue.value, newValue.value, deadband);
+		}
+	}
 };
 
 struct AnalogOutputStatusSpec : private openpal::StaticOnly
@@ -168,6 +213,11 @@ struct AnalogOutputStatusSpec : private openpal::StaticOnly
 	typedef EventAnalogOutputStatusVariation EventVariation;
 	typedef StaticAnalogOutputStatusVariation StaticVariation;
 	typedef DeadbandMetadata<AnalogOutputStatusSpec, double> MetadataType;
+
+	inline static bool IsEvent(const AnalogOutputStatus& oldValue, const AnalogOutputStatus& newValue, double deadband)
+	{
+		return measurements::IsEvent(newValue, oldValue, deadband);
+	}
 };
 
 struct TimeAndIntervalSpec : private openpal::StaticOnly
@@ -193,6 +243,18 @@ struct SecurityStatSpec : private openpal::StaticOnly
 	typedef EventSecurityStatVariation EventVariation;
 	typedef StaticSecurityStatVariation StaticVariation;
 	typedef DeadbandMetadata<SecurityStatSpec, uint32_t> MetadataType;
+
+	inline static bool IsEvent(const SecurityStat& oldValue, const SecurityStat& newValue, uint32_t deadband)
+	{
+		if (oldValue.quality != newValue.quality)
+		{
+			return true;
+		}
+		else
+		{
+			return measurements::IsEvent<uint32_t, uint64_t>(oldValue.value.count, newValue.value.count, deadband);
+		}
+	}
 };
 
 }

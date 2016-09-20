@@ -53,14 +53,14 @@ bool IsAnalogEvent(double val1, double val2, double deadband)
 {
 	Analog a1(val1);
 	Analog a2(val2);
-	return a1.IsEvent(a2, deadband);
+	return AnalogSpec::IsEvent(a1, a2, deadband);
 }
 
 bool IsCounterEvent(uint32_t val1, uint32_t val2, uint32_t deadband)
 {
 	Counter c1(val1);
 	Counter c2(val2);
-	return c1.IsEvent(c2, deadband);
+	return CounterSpec::IsEvent(c1, c2, deadband);
 }
 
 #define SUITE(name) "DatabaseTestSuite - " name

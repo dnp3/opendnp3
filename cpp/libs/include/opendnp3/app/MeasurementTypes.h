@@ -47,8 +47,6 @@ public:
 	Binary(bool value, uint8_t quality);
 
 	Binary(bool value, uint8_t quality, DNPTime time);	
-
-	bool IsEvent(const Binary& newValue) const;
 };
 
 /**
@@ -70,9 +68,7 @@ public:
 
 	DoubleBitBinary(DoubleBit value, uint8_t quality);
 
-	DoubleBitBinary(DoubleBit value, uint8_t quality, DNPTime time);
-
-	bool IsEvent(const DoubleBitBinary& newValue) const;
+	DoubleBitBinary(DoubleBit value, uint8_t quality, DNPTime time);	
 
 private:
 
@@ -105,8 +101,7 @@ public:
 	BinaryOutputStatus(bool value, uint8_t quality);
 
 	BinaryOutputStatus(bool value, uint8_t quality, DNPTime time);
-
-	bool IsEvent(const BinaryOutputStatus& newValue) const;
+	
 };
 
 /**
@@ -124,9 +119,7 @@ public:
 
 	Analog(double value, uint8_t quality);
 
-	Analog(double value, uint8_t quality, DNPTime time);
-
-	bool IsEvent(const Analog& newValue, double deadband) const;
+	Analog(double value, uint8_t quality, DNPTime time);	
 };
 
 /**
@@ -143,9 +136,7 @@ public:
 
 	Counter(uint32_t value, uint8_t quality);
 
-	Counter(uint32_t value, uint8_t quality, DNPTime time);
-
-	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const;
+	Counter(uint32_t value, uint8_t quality, DNPTime time);	
 };
 
 /**
@@ -161,9 +152,7 @@ public:
 
 	FrozenCounter(uint32_t value, uint8_t quality);
 
-	FrozenCounter(uint32_t value, uint8_t quality, DNPTime time);
-
-	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const;
+	FrozenCounter(uint32_t value, uint8_t quality, DNPTime time);	
 };
 
 /**
@@ -180,9 +169,7 @@ public:
 
 	AnalogOutputStatus(double value, uint8_t quality);
 
-	AnalogOutputStatus(double value, uint8_t quality, DNPTime time);
-
-	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const;
+	AnalogOutputStatus(double value, uint8_t quality, DNPTime time);	
 };
 
 }
