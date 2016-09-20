@@ -49,6 +49,8 @@
 
 #include "opendnp3/gen/StaticTypeBitmask.h"
 
+#include "opendnp3/gen/BinaryQuality.h"
+
 #include "openpal/util/Uncopyable.h"
 
 namespace opendnp3
@@ -68,6 +70,11 @@ struct BinarySpec : private openpal::StaticOnly
 	typedef EventBinaryVariation EventVariation;
 	typedef StaticBinaryVariation StaticVariation;
 	typedef SimpleEventMetadata<BinarySpec> MetadataType;
+
+	static bool IsQualityOnlineOnly(const Binary& binary) 
+	{ 
+		return (binary.quality & 0b01111111) == static_cast<uint8_t>(BinaryQuality::ONLINE);
+	}
 };
 
 struct DoubleBitBinarySpec : private openpal::StaticOnly
@@ -178,8 +185,7 @@ struct SecurityStatSpec : private openpal::StaticOnly
 {
 	typedef SecurityStat type_t;
 
-	const static EventType EventTypeEnum = EventType::SecurityStat;
-	//const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::SecurityStat;
+	const static EventType EventTypeEnum = EventType::SecurityStat;	
 	const static EventSecurityStatVariation DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
 	const static StaticSecurityStatVariation DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
 

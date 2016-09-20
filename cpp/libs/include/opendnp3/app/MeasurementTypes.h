@@ -46,9 +46,7 @@ public:
 
 	Binary(bool value, uint8_t quality);
 
-	Binary(bool value, uint8_t quality, DNPTime time);
-
-	bool IsQualityOnlineOnly() const;
+	Binary(bool value, uint8_t quality, DNPTime time);	
 
 	bool IsEvent(const Binary& newValue) const;
 };

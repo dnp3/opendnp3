@@ -310,7 +310,7 @@ StaticBinaryVariation DatabaseBuffers::CheckForPromotion<BinarySpec>(const Binar
 {
 	if (variation == StaticBinaryVariation::Group1Var1)
 	{
-		return value.IsQualityOnlineOnly() ? variation : StaticBinaryVariation::Group1Var2;
+		return BinarySpec::IsQualityOnlineOnly(value) ? variation : StaticBinaryVariation::Group1Var2;
 	}
 	else
 	{
