@@ -22,7 +22,7 @@
 #define OPENDNP3_IEVENTRECEIVER_H
 
 #include "opendnp3/outstation/Event.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/app/SecurityStat.h"
 
 namespace opendnp3
@@ -37,19 +37,19 @@ public:
 
 	virtual ~IEventReceiver() {}
 
-	virtual void Update(const Event<Binary>& evt) = 0;
+	virtual void Update(const Event<BinarySpec>& evt) = 0;
 
-	virtual void Update(const Event<DoubleBitBinary>& evt) = 0;
+	virtual void Update(const Event<DoubleBitBinarySpec>& evt) = 0;
 
-	virtual void Update(const Event<Analog>& evt) = 0;
+	virtual void Update(const Event<AnalogSpec>& evt) = 0;
 
-	virtual void Update(const Event<Counter>& evt) = 0;
+	virtual void Update(const Event<CounterSpec>& evt) = 0;
 
-	virtual void Update(const Event<FrozenCounter>&  evt) = 0;
+	virtual void Update(const Event<FrozenCounterSpec>&  evt) = 0;
 
-	virtual void Update(const Event<BinaryOutputStatus>& evt) = 0;
+	virtual void Update(const Event<BinaryOutputStatusSpec>& evt) = 0;
 
-	virtual void Update(const Event<AnalogOutputStatus>& evt) = 0;
+	virtual void Update(const Event<AnalogOutputStatusSpec>& evt) = 0;
 
 };
 

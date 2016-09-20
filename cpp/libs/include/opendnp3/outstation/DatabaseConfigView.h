@@ -22,7 +22,7 @@
 #define OPENDNP3_DATABASECONFIGVIEW_H
 
 #include "opendnp3/app/TimeAndInterval.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 #include "opendnp3/outstation/Cell.h"
 
@@ -48,14 +48,14 @@ class DatabaseConfigView
 public:
 
 	DatabaseConfigView(
-	    openpal::ArrayView<Cell<Binary>, uint16_t> binaries_,
-	    openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> doubleBinaries_,
-	    openpal::ArrayView<Cell<Analog>, uint16_t> analogs_,
-	    openpal::ArrayView<Cell<Counter>, uint16_t> counters_,
-	    openpal::ArrayView<Cell<FrozenCounter>, uint16_t> frozenCounters_,
-	    openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii_,
-	    openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii_,
-	    openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> timeAndIntervals_
+	    openpal::ArrayView<Cell<BinarySpec>, uint16_t> binaries_,
+	    openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> doubleBinaries_,
+	    openpal::ArrayView<Cell<AnalogSpec>, uint16_t> analogs_,
+	    openpal::ArrayView<Cell<CounterSpec>, uint16_t> counters_,
+	    openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> frozenCounters_,
+	    openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii_,
+	    openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii_,
+	    openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals_
 	);
 
 	// ------------ Helper functions for setting initial value ------
@@ -71,14 +71,14 @@ public:
 
 	//  ----------- Views of the underlying storage ---------
 
-	openpal::ArrayView<Cell<Binary>, uint16_t> binaries;
-	openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> doubleBinaries;
-	openpal::ArrayView<Cell<Analog>, uint16_t> analogs;
-	openpal::ArrayView<Cell<Counter>, uint16_t> counters;
-	openpal::ArrayView<Cell<FrozenCounter>, uint16_t> frozenCounters;
-	openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
-	openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
-	openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;
+	openpal::ArrayView<Cell<BinarySpec>, uint16_t> binaries;
+	openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> doubleBinaries;
+	openpal::ArrayView<Cell<AnalogSpec>, uint16_t> analogs;
+	openpal::ArrayView<Cell<CounterSpec>, uint16_t> counters;
+	openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> frozenCounters;
+	openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii;
+	openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii;
+	openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals;
 };
 
 }

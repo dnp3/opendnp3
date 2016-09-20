@@ -23,14 +23,16 @@
 #include "mocks/MeasurementComparisons.h"
 #include "mocks/DatabaseTestObject.h"
 
+#include <opendnp3/app/QualityMasks.h>
+
 #include <limits>
 
 using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 
-template <class T>
-void TestBufferForEvent(bool isEvent, const T& newVal, DatabaseTestObject& test, std::deque< Event <T> >& queue)
+template <class ValueSpec>
+void TestBufferForEvent(bool isEvent, const typename ValueSpec::type_t& newVal, DatabaseTestObject& test, std::deque< Event <ValueSpec> >& queue)
 {
 	test.db.Update(newVal, 0);
 
@@ -104,7 +106,7 @@ TEST_CASE(SUITE("BinaryNoChange"))
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
 	auto view = t.db.GetConfigView();
 	view.binaries[0].metadata.clazz = PointClass::Class1;
-	TestBufferForEvent(false, Binary(false, ToUnderlying(BinaryQuality::RESTART)), t, t.buffer.binaryEvents);
+	TestBufferForEvent<BinarySpec>(false, Binary(false, ToUnderlying(BinaryQuality::RESTART)), t, t.buffer.binaryEvents);
 }
 
 TEST_CASE(SUITE("AnalogNoChange"))

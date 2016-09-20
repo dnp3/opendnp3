@@ -21,32 +21,8 @@
 #ifndef OPENDNP3_MEASUREMENTTYPES_H
 #define OPENDNP3_MEASUREMENTTYPES_H
 
-#include "opendnp3/app/QualityMasks.h"
 #include "opendnp3/app/BaseMeasurementTypes.h"
-#include "opendnp3/app/EventType.h"
-#include "opendnp3/app/EventMetadata.h"
-
 #include "opendnp3/gen/DoubleBit.h"
-
-#include "opendnp3/gen/StaticBinaryVariation.h"
-#include "opendnp3/gen/StaticDoubleBinaryVariation.h"
-#include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
-#include "opendnp3/gen/StaticCounterVariation.h"
-#include "opendnp3/gen/StaticFrozenCounterVariation.h"
-#include "opendnp3/gen/StaticAnalogVariation.h"
-#include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
-
-#include "opendnp3/gen/StaticTypeBitmask.h"
-
-#include "opendnp3/gen/EventBinaryVariation.h"
-#include "opendnp3/gen/EventDoubleBinaryVariation.h"
-#include "opendnp3/gen/EventBinaryOutputStatusVariation.h"
-#include "opendnp3/gen/EventCounterVariation.h"
-#include "opendnp3/gen/EventFrozenCounterVariation.h"
-#include "opendnp3/gen/EventAnalogVariation.h"
-#include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
-
-
 
 namespace opendnp3
 {
@@ -75,16 +51,6 @@ public:
 	bool IsQualityOnlineOnly() const;
 
 	bool IsEvent(const Binary& newValue) const;
-
-	static const EventType EventTypeEnum = EventType::Binary;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
-	static const EventBinaryVariation DefaultEventVariation = EventBinaryVariation::Group2Var1;
-	static const StaticBinaryVariation DefaultStaticVariation = StaticBinaryVariation::Group1Var2;
-
-	typedef bool ValueType;
-	typedef EventBinaryVariation EventVariation;
-	typedef StaticBinaryVariation StaticVariation;
-	typedef SimpleEventMetadata<Binary> MetadataType;
 };
 
 /**
@@ -109,16 +75,6 @@ public:
 	DoubleBitBinary(DoubleBit value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const DoubleBitBinary& newValue) const;
-
-	static const EventType EventTypeEnum = EventType::DoubleBitBinary;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
-	static const EventDoubleBinaryVariation DefaultEventVariation = EventDoubleBinaryVariation::Group4Var1;
-	static const StaticDoubleBinaryVariation DefaultStaticVariation = StaticDoubleBinaryVariation::Group3Var2;
-
-	typedef DoubleBit ValueType;
-	typedef EventDoubleBinaryVariation EventVariation;
-	typedef StaticDoubleBinaryVariation StaticVariation;
-	typedef SimpleEventMetadata<DoubleBitBinary> MetadataType;
 
 private:
 
@@ -153,16 +109,6 @@ public:
 	BinaryOutputStatus(bool value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const BinaryOutputStatus& newValue) const;
-
-	static const EventType EventTypeEnum = EventType::BinaryOutputStatus;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
-	static const EventBinaryOutputStatusVariation DefaultEventVariation = EventBinaryOutputStatusVariation::Group11Var1;
-	static const StaticBinaryOutputStatusVariation DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
-
-	typedef bool ValueType;
-	typedef EventBinaryOutputStatusVariation EventVariation;
-	typedef StaticBinaryOutputStatusVariation StaticVariation;
-	typedef SimpleEventMetadata<BinaryOutputStatus> MetadataType;
 };
 
 /**
@@ -183,16 +129,6 @@ public:
 	Analog(double value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const Analog& newValue, double deadband) const;
-
-	static const EventType EventTypeEnum = EventType::Analog;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogInput;
-	static const EventAnalogVariation DefaultEventVariation = EventAnalogVariation::Group32Var1;
-	static const StaticAnalogVariation DefaultStaticVariation = StaticAnalogVariation::Group30Var1;
-
-	typedef double ValueType;
-	typedef EventAnalogVariation EventVariation;
-	typedef StaticAnalogVariation StaticVariation;
-	typedef DeadbandMetadata<Analog, double> MetadataType;
 };
 
 /**
@@ -212,16 +148,6 @@ public:
 	Counter(uint32_t value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const;
-
-	static const EventType EventTypeEnum = EventType::Counter;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::Counter;
-	static const EventCounterVariation DefaultEventVariation = EventCounterVariation::Group22Var1;
-	static const StaticCounterVariation DefaultStaticVariation = StaticCounterVariation::Group20Var1;
-
-	typedef uint32_t ValueType;
-	typedef EventCounterVariation EventVariation;
-	typedef StaticCounterVariation StaticVariation;
-	typedef DeadbandMetadata<Counter, uint32_t> MetadataType;
 };
 
 /**
@@ -240,16 +166,6 @@ public:
 	FrozenCounter(uint32_t value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const;
-
-	static const EventType EventTypeEnum = EventType::FrozenCounter;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
-	static const EventFrozenCounterVariation DefaultEventVariation = EventFrozenCounterVariation::Group23Var1;
-	static const StaticFrozenCounterVariation DefaultStaticVariation = StaticFrozenCounterVariation::Group21Var1;
-
-	typedef uint32_t ValueType;
-	typedef EventFrozenCounterVariation EventVariation;
-	typedef StaticFrozenCounterVariation StaticVariation;
-	typedef DeadbandMetadata<FrozenCounter, uint32_t> MetadataType;
 };
 
 /**
@@ -269,16 +185,6 @@ public:
 	AnalogOutputStatus(double value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const;
-
-	static const EventType EventTypeEnum = EventType::AnalogOutputStatus;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
-	static const EventAnalogOutputStatusVariation DefaultEventVariation = EventAnalogOutputStatusVariation::Group42Var1;
-	static const StaticAnalogOutputStatusVariation DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
-
-	typedef double ValueType;
-	typedef EventAnalogOutputStatusVariation EventVariation;
-	typedef StaticAnalogOutputStatusVariation StaticVariation;
-	typedef DeadbandMetadata<AnalogOutputStatus, double> MetadataType;
 };
 
 }

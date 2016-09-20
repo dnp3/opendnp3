@@ -22,11 +22,6 @@
 #define OPENDNP3_TIMEANDINTERVAL_H
 
 #include "opendnp3/gen/IntervalUnits.h"
-#include "opendnp3/gen/StaticTimeAndIntervalVariation.h"
-#include "opendnp3/gen/StaticTypeBitmask.h"
-
-#include "opendnp3/app/EventMetadata.h"
-
 #include "opendnp3/Types.h"
 
 namespace opendnp3
@@ -52,12 +47,6 @@ public:
 	DNPTime time;
 	uint32_t interval;
 	uint8_t units;
-
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
-	const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;
-
-	typedef StaticTimeAndIntervalVariation StaticVariation;
-	typedef EmptyMetadata<TimeAndInterval> MetadataType;
 };
 
 }

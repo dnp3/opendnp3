@@ -26,7 +26,7 @@
 #include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -60,6 +60,7 @@ struct Group50Var4
   uint8_t units;
 
   typedef TimeAndInterval Target;
+  typedef TimeAndIntervalSpec Spec;
   static bool ReadTarget(openpal::RSlice&, TimeAndInterval&);
   static bool WriteTarget(const TimeAndInterval&, openpal::WSlice&);
   static DNP3Serializer<TimeAndInterval> Inst() { return DNP3Serializer<TimeAndInterval>(ID(), Size(), &ReadTarget, &WriteTarget); }

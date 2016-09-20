@@ -26,7 +26,7 @@
 #include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -50,6 +50,7 @@ struct Group4Var1
   uint8_t flags;
 
   typedef DoubleBitBinary Target;
+  typedef DoubleBitBinarySpec Spec;
   static bool ReadTarget(openpal::RSlice&, DoubleBitBinary&);
   static bool WriteTarget(const DoubleBitBinary&, openpal::WSlice&);
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -70,6 +71,7 @@ struct Group4Var2
   DNPTime time;
 
   typedef DoubleBitBinary Target;
+  typedef DoubleBitBinarySpec Spec;
   static bool ReadTarget(openpal::RSlice&, DoubleBitBinary&);
   static bool WriteTarget(const DoubleBitBinary&, openpal::WSlice&);
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -90,6 +92,7 @@ struct Group4Var3
   uint16_t time;
 
   typedef DoubleBitBinary Target;
+  typedef DoubleBitBinarySpec Spec;
   static bool ReadTarget(openpal::RSlice&, DoubleBitBinary&);
   static bool WriteTarget(const DoubleBitBinary&, openpal::WSlice&);
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }

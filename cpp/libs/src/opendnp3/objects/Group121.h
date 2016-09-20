@@ -26,7 +26,7 @@
 #include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/SecurityStat.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -53,6 +53,7 @@ struct Group121Var1
   uint32_t value;
 
   typedef SecurityStat Target;
+  typedef SecurityStatSpec Spec;
   static bool ReadTarget(openpal::RSlice&, SecurityStat&);
   static bool WriteTarget(const SecurityStat&, openpal::WSlice&);
   static DNP3Serializer<SecurityStat> Inst() { return DNP3Serializer<SecurityStat>(ID(), Size(), &ReadTarget, &WriteTarget); }

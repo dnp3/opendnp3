@@ -26,7 +26,7 @@
 #include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -52,6 +52,7 @@ struct Group20Var1
   uint32_t value;
 
   typedef Counter Target;
+  typedef CounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Counter&);
   static bool WriteTarget(const Counter&, openpal::WSlice&);
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -73,6 +74,7 @@ struct Group20Var2
   uint16_t value;
 
   typedef Counter Target;
+  typedef CounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Counter&);
   static bool WriteTarget(const Counter&, openpal::WSlice&);
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -93,6 +95,7 @@ struct Group20Var5
   uint32_t value;
 
   typedef Counter Target;
+  typedef CounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Counter&);
   static bool WriteTarget(const Counter&, openpal::WSlice&);
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -113,6 +116,7 @@ struct Group20Var6
   uint16_t value;
 
   typedef Counter Target;
+  typedef CounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Counter&);
   static bool WriteTarget(const Counter&, openpal::WSlice&);
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }

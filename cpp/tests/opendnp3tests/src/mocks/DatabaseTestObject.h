@@ -33,49 +33,49 @@ class MockEventBuffer final : public IEventReceiver
 {
 public:
 
-	void Update(const Event<Binary>& evt) override
+	void Update(const Event<BinarySpec>& evt) override
 	{
 		binaryEvents.push_back(evt);
 	}
 
-	void Update(const Event<DoubleBitBinary>& evt) override
+	void Update(const Event<DoubleBitBinarySpec>& evt) override
 	{
 		doubleBinaryEvents.push_back(evt);
 	}
 
-	void Update(const Event<Analog>& evt) override
+	void Update(const Event<AnalogSpec>& evt) override
 	{
 		analogEvents.push_back(evt);
 	}
 
-	void Update(const Event<Counter>& evt) override
+	void Update(const Event<CounterSpec>& evt) override
 	{
 		counterEvents.push_back(evt);
 	}
 
-	void Update(const Event<FrozenCounter>& evt) override
+	void Update(const Event<FrozenCounterSpec>& evt) override
 	{
 		frozenCounterEvents.push_back(evt);
 	}
 
-	void Update(const Event<BinaryOutputStatus>& evt) override
+	void Update(const Event<BinaryOutputStatusSpec>& evt) override
 	{
 		binaryOutputStatusEvents.push_back(evt);
 	}
 
-	void Update(const Event<AnalogOutputStatus>& evt) override
+	void Update(const Event<AnalogOutputStatusSpec>& evt) override
 	{
 		analogOutputStatusEvents.push_back(evt);
 	}
 
-	std::deque<Event<Binary>> binaryEvents;
-	std::deque<Event<DoubleBitBinary>> doubleBinaryEvents;
-	std::deque<Event<Analog>> analogEvents;
-	std::deque<Event<Counter>> counterEvents;
-	std::deque<Event<FrozenCounter>> frozenCounterEvents;
-	std::deque<Event<BinaryOutputStatus>> binaryOutputStatusEvents;
-	std::deque<Event<AnalogOutputStatus>> analogOutputStatusEvents;
-	std::deque<Event<SecurityStat>> securityStatEvents;
+	std::deque<Event<BinarySpec>> binaryEvents;
+	std::deque<Event<DoubleBitBinarySpec>> doubleBinaryEvents;
+	std::deque<Event<AnalogSpec>> analogEvents;
+	std::deque<Event<CounterSpec>> counterEvents;
+	std::deque<Event<FrozenCounterSpec>> frozenCounterEvents;
+	std::deque<Event<BinaryOutputStatusSpec>> binaryOutputStatusEvents;
+	std::deque<Event<AnalogOutputStatusSpec>> analogOutputStatusEvents;
+	std::deque<Event<SecurityStatSpec>> securityStatEvents;
 };
 
 class DatabaseTestObject

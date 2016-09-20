@@ -21,7 +21,7 @@
 #include "SelectedRanges.h"
 
 #include "opendnp3/app/TimeAndInterval.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/app/SecurityStat.h"
 
 namespace opendnp3
@@ -42,55 +42,55 @@ bool SelectedRanges::HasAnySelection() const
 }
 
 template <>
-Range& SelectedRanges::GetRangeRef<Binary>()
+Range& SelectedRanges::GetRangeRef<BinarySpec>()
 {
 	return binaries;
 }
 
 template <>
-Range& SelectedRanges::GetRangeRef<DoubleBitBinary>()
+Range& SelectedRanges::GetRangeRef<DoubleBitBinarySpec>()
 {
 	return doubleBinaries;
 }
 
 template <>
-Range& SelectedRanges::GetRangeRef<Analog>()
+Range& SelectedRanges::GetRangeRef<AnalogSpec>()
 {
 	return analogs;
 }
 
 template <>
-Range& SelectedRanges::GetRangeRef<Counter>()
+Range& SelectedRanges::GetRangeRef<CounterSpec>()
 {
 	return counters;
 }
 
 template <>
-Range& SelectedRanges::GetRangeRef<FrozenCounter>()
+Range& SelectedRanges::GetRangeRef<FrozenCounterSpec>()
 {
 	return frozenCounters;
 }
 
 template <>
-Range& SelectedRanges::GetRangeRef<BinaryOutputStatus>()
+Range& SelectedRanges::GetRangeRef<BinaryOutputStatusSpec>()
 {
 	return binaryOutputStatii;
 }
 
 template <>
-Range& SelectedRanges::GetRangeRef<AnalogOutputStatus>()
+Range& SelectedRanges::GetRangeRef<AnalogOutputStatusSpec>()
 {
 	return analogOutputStatii;
 }
 
 template <>
-Range& SelectedRanges::GetRangeRef<TimeAndInterval>()
+Range& SelectedRanges::GetRangeRef<TimeAndIntervalSpec>()
 {
 	return timeAndIntervals;
 }
 
 template <>
-Range& SelectedRanges::GetRangeRef<SecurityStat>()
+Range& SelectedRanges::GetRangeRef<SecurityStatSpec>()
 {
 	return securityStats;
 }

@@ -22,7 +22,7 @@
 
 #include <openpal/container/Array.h>
 
-#include <opendnp3/app/MeasurementTypes.h>
+#include <opendnp3/app/MeasurementTypeSpecs.h>
 #include <opendnp3/outstation/IndexSearch.h>
 
 using namespace openpal;
@@ -32,7 +32,7 @@ using namespace opendnp3;
 
 IndexSearch::Result TestResultLengthFour(uint16_t index)
 {
-	Array<Cell<Binary>, uint16_t> values(4);
+	Array<Cell<BinarySpec>, uint16_t> values(4);
 	values[0].vIndex = 1;
 	values[1].vIndex = 3;
 	values[2].vIndex = 7;
@@ -85,7 +85,7 @@ TEST_CASE(SUITE("FindsNextBiggestIndex"))
 
 Range TestRangeSearch(const Range& range)
 {
-	Array<Cell<Binary>, uint16_t> values(4);
+	Array<Cell<BinarySpec>, uint16_t> values(4);
 	values[0].vIndex = 1;
 	values[1].vIndex = 3;
 	values[2].vIndex = 7;

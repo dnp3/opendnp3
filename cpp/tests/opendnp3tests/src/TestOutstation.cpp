@@ -598,11 +598,13 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 
 	{
 		auto view = t.context.GetConfigView();
-		view.binaries.foreach([](Cell<Binary>& cell)
+		auto setValue = [](Cell<BinarySpec>& cell) -> void
 		{
 			cell.SetInitialValue(Binary(false));
 			cell.variation = StaticBinaryVariation::Group1Var1;
-		});
+		};
+
+		view.binaries.foreach(setValue);
 	}
 
 	t.LowerLayerUp();

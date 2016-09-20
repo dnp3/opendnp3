@@ -54,31 +54,31 @@ public:
 
 	// ------- IEventReceiver ------
 
-	virtual void Update(const Event<Binary>& evt) override final
+	virtual void Update(const Event<BinarySpec>& evt) override final
 	{
 		this->UpdateAny(evt);
 	}
-	virtual void Update(const Event<DoubleBitBinary>& evt) override final
+	virtual void Update(const Event<DoubleBitBinarySpec>& evt) override final
 	{
 		this->UpdateAny(evt);
 	}
-	virtual void Update(const Event<Analog>& evt) override final
+	virtual void Update(const Event<AnalogSpec>& evt) override final
 	{
 		this->UpdateAny(evt);
 	}
-	virtual void Update(const Event<Counter>& evt) override final
+	virtual void Update(const Event<CounterSpec>& evt) override final
 	{
 		this->UpdateAny(evt);
 	}
-	virtual void Update(const Event<FrozenCounter>&  evt) override final
+	virtual void Update(const Event<FrozenCounterSpec>&  evt) override final
 	{
 		this->UpdateAny(evt);
 	}
-	virtual void Update(const Event<BinaryOutputStatus>& evt) override final
+	virtual void Update(const Event<BinaryOutputStatusSpec>& evt) override final
 	{
 		this->UpdateAny(evt);
 	}
-	virtual void Update(const Event<AnalogOutputStatus>& evt) override final
+	virtual void Update(const Event<AnalogOutputStatusSpec>& evt) override final
 	{
 		this->UpdateAny(evt);
 	}
@@ -124,20 +124,20 @@ private:
 
 	IINField SelectByClass(const ClassField& field, uint32_t max);
 
-	template <class T>
-	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename T::EventVariation var);
+	template <class ValueSpec>
+	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename ValueSpec::EventVariation var);
 
-	template <class T>
+	template <class ValueSpec>
 	IINField SelectByType(int32_t max)
 	{
-		GenericSelectByType<T>(max, true, typename T::EventVariation());
+		GenericSelectByType<ValueSpec>(max, true, typename ValueSpec::EventVariation());
 		return IINField();
 	}
 
-	template <class T>
-	IINField SelectByType(int32_t max, typename T::EventVariation var)
+	template <class ValueSpec>
+	IINField SelectByType(int32_t max, typename ValueSpec::EventVariation var)
 	{
-		GenericSelectByType<T>(max, false, var);
+		GenericSelectByType<ValueSpec>(max, false, var);
 		return IINField();
 	}
 
@@ -145,8 +145,8 @@ private:
 
 	bool RemoveOldestEventOfType(EventType type);
 
-	template <class T>
-	void UpdateAny(const Event<T>& evt);
+	template <class ValueSpec>
+	void UpdateAny(const Event<ValueSpec>& evt);
 
 	bool IsAnyTypeOverflown() const;
 	bool IsTypeOverflown(EventType type) const;
@@ -166,39 +166,39 @@ private:
 	bool HasEnoughSpaceToClearOverflow() const;
 };
 
-template <class T>
-void EventBuffer::UpdateAny(const Event<T>& evt)
+template <class ValueSpec>
+void EventBuffer::UpdateAny(const Event<ValueSpec>& evt)
 {
-	auto maxForType = config.GetMaxEventsForType(T::EventTypeEnum);
+	auto maxForType = config.GetMaxEventsForType(ValueSpec::EventTypeEnum);
 
 	if (maxForType > 0)
 	{
-		auto currentCount = totalCounts.NumOfType(T::EventTypeEnum);
+		auto currentCount = totalCounts.NumOfType(ValueSpec::EventTypeEnum);
 
 		if (currentCount >= maxForType || events.IsFull())
 		{
 			this->overflow = true;
-			RemoveOldestEventOfType(T::EventTypeEnum);
+			RemoveOldestEventOfType(ValueSpec::EventTypeEnum);
 		}
 
 		// Add the event, the Reset() ensures that selected/written == false
 		events.Add(SOERecord(evt.value, evt.index, evt.clazz, evt.variation))->value.Reset();
-		totalCounts.Increment(evt.clazz, T::EventTypeEnum);
+		totalCounts.Increment(evt.clazz, ValueSpec::EventTypeEnum);
 	}
 }
 
-template <class T>
-uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typename T::EventVariation var)
+template <class ValueSpec>
+uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typename ValueSpec::EventVariation var)
 {
 	uint32_t num = 0;
 	auto iter = events.Iterate();
-	const uint32_t remaining = totalCounts.NumOfType(T::EventTypeEnum) - selectedCounts.NumOfType(T::EventTypeEnum);
+	const uint32_t remaining = totalCounts.NumOfType(ValueSpec::EventTypeEnum) - selectedCounts.NumOfType(ValueSpec::EventTypeEnum);
 
 	while (iter.HasNext() && (num < remaining) && (num < max))
 	{
 		auto pNode = iter.Next();
 
-		if (pNode->value.type == T::EventTypeEnum)
+		if (pNode->value.type == ValueSpec::EventTypeEnum)
 		{
 			if (useDefault)
 			{

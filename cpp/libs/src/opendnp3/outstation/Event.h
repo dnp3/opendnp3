@@ -41,10 +41,12 @@ struct Evented
 /**
  * Record of an event that includes value, index, and class
  */
-template <typename ValueType>
+template <typename ValueSpec>
 struct Event : public Evented
 {
-	Event(const ValueType& value_, uint16_t index_, EventClass clazz_, typename ValueType::EventVariation variation_) :
+	typedef typename ValueSpec::type_t meas_type_t;
+
+	Event(const meas_type_t& value_, uint16_t index_, EventClass clazz_, typename ValueSpec::EventVariation variation_) :
 		Evented(index_, clazz_),
 		value(value_),
 		variation(variation_)
@@ -53,8 +55,8 @@ struct Event : public Evented
 	Event() : Evented(), value(), variation()
 	{}
 
-	ValueType value;
-	typename ValueType::EventVariation variation;
+	meas_type_t value;
+	typename ValueSpec::EventVariation variation;
 };
 
 } //end namespace

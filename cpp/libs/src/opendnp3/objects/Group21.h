@@ -26,7 +26,7 @@
 #include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -52,6 +52,7 @@ struct Group21Var1
   uint32_t value;
 
   typedef FrozenCounter Target;
+  typedef FrozenCounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, openpal::WSlice&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -73,6 +74,7 @@ struct Group21Var2
   uint16_t value;
 
   typedef FrozenCounter Target;
+  typedef FrozenCounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, openpal::WSlice&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -95,6 +97,7 @@ struct Group21Var5
   DNPTime time;
 
   typedef FrozenCounter Target;
+  typedef FrozenCounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, openpal::WSlice&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -117,6 +120,7 @@ struct Group21Var6
   DNPTime time;
 
   typedef FrozenCounter Target;
+  typedef FrozenCounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, openpal::WSlice&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -137,6 +141,7 @@ struct Group21Var9
   uint32_t value;
 
   typedef FrozenCounter Target;
+  typedef FrozenCounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, openpal::WSlice&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -157,6 +162,7 @@ struct Group21Var10
   uint16_t value;
 
   typedef FrozenCounter Target;
+  typedef FrozenCounterSpec Spec;
   static bool ReadTarget(openpal::RSlice&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, openpal::WSlice&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }

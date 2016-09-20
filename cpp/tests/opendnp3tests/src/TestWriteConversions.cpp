@@ -21,6 +21,7 @@
 #include <catch.hpp>
 
 #include <opendnp3/app/WriteConversions.h>
+#include <opendnp3/app/QualityMasks.h>
 
 using namespace opendnp3;
 

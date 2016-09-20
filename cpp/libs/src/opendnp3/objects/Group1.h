@@ -26,7 +26,7 @@
 #include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -56,6 +56,7 @@ struct Group1Var2
   uint8_t flags;
 
   typedef Binary Target;
+  typedef BinarySpec Spec;
   static bool ReadTarget(openpal::RSlice&, Binary&);
   static bool WriteTarget(const Binary&, openpal::WSlice&);
   static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }

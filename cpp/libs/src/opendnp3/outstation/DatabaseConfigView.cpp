@@ -24,14 +24,14 @@ namespace opendnp3
 {
 
 DatabaseConfigView::DatabaseConfigView(
-    openpal::ArrayView<Cell<Binary>, uint16_t> binaries_,
-    openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> doubleBinaries_,
-    openpal::ArrayView<Cell<Analog>, uint16_t> analogs_,
-    openpal::ArrayView<Cell<Counter>, uint16_t> counters_,
-    openpal::ArrayView<Cell<FrozenCounter>, uint16_t> frozenCounters_,
-    openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii_,
-    openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii_,
-    openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> timeAndIntervals_
+    openpal::ArrayView<Cell<BinarySpec>, uint16_t> binaries_,
+    openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> doubleBinaries_,
+    openpal::ArrayView<Cell<AnalogSpec>, uint16_t> analogs_,
+    openpal::ArrayView<Cell<CounterSpec>, uint16_t> counters_,
+    openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> frozenCounters_,
+    openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii_,
+    openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii_,
+    openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals_
 ) :
 	binaries(binaries_),
 	doubleBinaries(doubleBinaries_),

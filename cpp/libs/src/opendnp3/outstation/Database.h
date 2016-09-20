@@ -85,7 +85,7 @@ public:
 
 private:
 
-	template <class T>
+	template <class ValueSpec>
 	uint16_t GetRawIndex(uint16_t index);
 
 	IEventReceiver* pEventReceiver;
@@ -94,20 +94,17 @@ private:
 
 	static bool ConvertToEventClass(PointClass pc, EventClass& ec);
 
-	template <class T>
-	bool UpdateEvent(const T& value, uint16_t index, EventMode mode);
+	template <class ValueSpec>
+	bool UpdateEvent(const typename ValueSpec::type_t& value, uint16_t index, EventMode mode);
 
-	template <class T>
-	bool ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, EventMode mode);
-
-	template <class T>
-	bool UpdateAny(Cell<T>& cell, const T& value, EventMode mode);
+	template <class ValueSpec>
+	bool UpdateAny(Cell<ValueSpec>& cell, const typename ValueSpec::type_t& value, EventMode mode);
 
 	// stores the most recent values, selected values, and metadata
 	DatabaseBuffers buffers;
 };
 
-template <class T>
+template <class ValueSpec>
 uint16_t Database::GetRawIndex(uint16_t index)
 {
 	if (indexMode == IndexMode::Contiguous)
@@ -116,17 +113,17 @@ uint16_t Database::GetRawIndex(uint16_t index)
 	}
 	else
 	{
-		auto view = buffers.buffers.GetArrayView<T>();
+		auto view = buffers.buffers.GetArrayView<ValueSpec>();
 		auto result = IndexSearch::FindClosestRawIndex(view, index);
 		return result.match ? result.index : openpal::MaxValue<uint16_t>();
 	}
 }
 
-template <class T>
-bool Database::UpdateEvent(const T& value, uint16_t index, EventMode mode)
+template <class ValueSpec>
+bool Database::UpdateEvent(const typename ValueSpec::type_t& value, uint16_t index, EventMode mode)
 {
-	auto rawIndex = GetRawIndex<T>(index);
-	auto view = buffers.buffers.GetArrayView<T>();
+	auto rawIndex = GetRawIndex<ValueSpec>(index);
+	auto view = buffers.buffers.GetArrayView<ValueSpec>();
 
 	if (view.Contains(rawIndex))
 	{
@@ -139,6 +136,7 @@ bool Database::UpdateEvent(const T& value, uint16_t index, EventMode mode)
 	}
 }
 
+/*
 template <class T>
 bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, EventMode mode)
 {
@@ -155,9 +153,10 @@ bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16
 		return false;
 	}
 }
+*/
 
-template <class T>
-bool Database::UpdateAny(Cell<T>& cell, const T& value, EventMode mode)
+template <class ValueSpec>
+bool Database::UpdateAny(Cell<ValueSpec>& cell, const typename ValueSpec::type_t& value, EventMode mode)
 {
 	EventClass ec;
 	if (ConvertToEventClass(cell.metadata.clazz, ec))
@@ -182,7 +181,7 @@ bool Database::UpdateAny(Cell<T>& cell, const T& value, EventMode mode)
 
 			if (pEventReceiver)
 			{
-				pEventReceiver->Update(Event<T>(value, cell.vIndex, ec, cell.metadata.variation));
+				pEventReceiver->Update(Event<ValueSpec>(value, cell.vIndex, ec, cell.metadata.variation));
 			}
 		}
 	}

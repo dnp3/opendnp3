@@ -22,7 +22,7 @@
 #define OPENDNP3_SOERECORD_H
 
 #include "opendnp3/app/EventType.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/app/SecurityStat.h"
 
 #include <openpal/serialization/UInt48Type.h>
@@ -31,12 +31,12 @@
 namespace opendnp3
 {
 
-template <class T>
+template <class ValueSpec>
 struct ValueAndVariation
 {
-	typename T::ValueType value;
-	typename T::EventVariation defaultVariation;
-	typename T::EventVariation selectedVariation;
+	typename ValueSpec::ValueType value;
+	typename ValueSpec::EventVariation defaultVariation;
+	typename ValueSpec::EventVariation selectedVariation;
 
 	void SelectDefaultVariation()
 	{
@@ -53,14 +53,14 @@ struct EventInstance
 
 union EventValue
 {
-	ValueAndVariation<Binary> binary;
-	ValueAndVariation<DoubleBitBinary> doubleBinary;
-	ValueAndVariation<BinaryOutputStatus> binaryOutputStatus;
-	ValueAndVariation<Counter> counter;
-	ValueAndVariation<FrozenCounter> frozenCounter;
-	ValueAndVariation<Analog> analog;
-	ValueAndVariation<AnalogOutputStatus> analogOutputStatus;
-	ValueAndVariation<SecurityStat> securityStat;
+	ValueAndVariation<BinarySpec> binary;
+	ValueAndVariation<DoubleBitBinarySpec> doubleBinary;
+	ValueAndVariation<BinaryOutputStatusSpec> binaryOutputStatus;
+	ValueAndVariation<CounterSpec> counter;
+	ValueAndVariation<FrozenCounterSpec> frozenCounter;
+	ValueAndVariation<AnalogSpec> analog;
+	ValueAndVariation<AnalogOutputStatusSpec> analogOutputStatus;
+	ValueAndVariation<SecurityStatSpec> securityStat;
 };
 
 class SOERecord
@@ -78,14 +78,17 @@ public:
 	SOERecord(const AnalogOutputStatus& meas, uint16_t index, EventClass clazz, EventAnalogOutputStatusVariation var);
 	SOERecord(const SecurityStat& meas, uint16_t index, EventClass clazz, EventSecurityStatVariation var);
 
-	template <class T>
-	EventInstance<T> ReadEvent()
+	template <class ValueSpec>
+	EventInstance<typename ValueSpec::type_t> ReadEvent()
 	{
-		return EventInstance < T > { T(GetValue<T>().value, flags, time), index };
+		return EventInstance <typename ValueSpec::type_t>
+		{
+			typename ValueSpec::type_t(GetValue<ValueSpec>().value, flags, time), index
+		};
 	}
 
-	template <class T>
-	const ValueAndVariation<T>& GetValue();
+	template <class ValueSpec>
+	const ValueAndVariation<ValueSpec>& GetValue();
 
 	void SelectDefault();
 

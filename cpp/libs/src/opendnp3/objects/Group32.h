@@ -26,7 +26,7 @@
 #include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -52,6 +52,7 @@ struct Group32Var1
   int32_t value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -73,6 +74,7 @@ struct Group32Var2
   int16_t value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -95,6 +97,7 @@ struct Group32Var3
   DNPTime time;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -117,6 +120,7 @@ struct Group32Var4
   DNPTime time;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -138,6 +142,7 @@ struct Group32Var5
   float value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -159,6 +164,7 @@ struct Group32Var6
   double value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -181,6 +187,7 @@ struct Group32Var7
   DNPTime time;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -203,6 +210,7 @@ struct Group32Var8
   DNPTime time;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }

@@ -28,52 +28,56 @@ namespace opendnp3
 {
 
 /// A null object for types that have no metadata
-template <class Target>
+template <class ValueSpec>
 struct EmptyMetadata
 {
-	void SetEventValue(const Target& value) {}
+	void SetEventValue(const typename ValueSpec::type_t& value) {}
 };
 
 /// Base class for different types of event metadata
-template <class Target>
+template <class ValueSpec>
 struct EventMetadata
 {
-	PointClass clazz;
-	Target lastEvent;
-	typename Target::EventVariation variation;
+	typedef typename ValueSpec::type_t meas_type_t;
 
-	void SetEventValue(const Target& value)
+	PointClass clazz;
+	meas_type_t lastEvent;
+	typename ValueSpec::EventVariation variation;
+
+	void SetEventValue(const meas_type_t& value)
 	{
 		lastEvent = value;
 	}
 
 protected:
 
-	EventMetadata() : clazz(PointClass::Class1), lastEvent(), variation(Target::DefaultEventVariation)
+	EventMetadata() : clazz(PointClass::Class1), lastEvent(), variation(ValueSpec::DefaultEventVariation)
 	{}
 };
 
 /// Metatype w/o a deadband
-template <class Target>
-struct SimpleEventMetadata : EventMetadata<Target>
+template <class ValueSpec>
+struct SimpleEventMetadata : EventMetadata<ValueSpec>
 {
-	SimpleEventMetadata() : EventMetadata<Target>()
+	typedef typename ValueSpec::type_t meas_type_t;
+
+	SimpleEventMetadata() : EventMetadata<ValueSpec>()
 	{}
 
-	bool IsEvent(const Target& newValue) const
+	bool IsEvent(const meas_type_t& newValue) const
 	{
 		return this->lastEvent.IsEvent(newValue);
 	}
 };
 
 /// Structure for holding metadata information on points that have support deadbanding
-template <class Target, class DeadbandType>
-struct DeadbandMetadata : EventMetadata<Target>
+template <class ValueSpec, class DeadbandType>
+struct DeadbandMetadata : EventMetadata<ValueSpec>
 {
-	DeadbandMetadata() : EventMetadata<Target>(), deadband(0)
+	DeadbandMetadata() : EventMetadata<ValueSpec>(), deadband(0)
 	{}
 
-	bool IsEvent(const Target& newValue) const
+	bool IsEvent(const typename ValueSpec::type_t& newValue) const
 	{
 		return this->lastEvent.IsEvent(newValue, deadband);
 	}

@@ -26,7 +26,7 @@
 #include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -52,6 +52,7 @@ struct Group30Var1
   int32_t value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -73,6 +74,7 @@ struct Group30Var2
   int16_t value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -93,6 +95,7 @@ struct Group30Var3
   int32_t value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -113,6 +116,7 @@ struct Group30Var4
   int16_t value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -134,6 +138,7 @@ struct Group30Var5
   float value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -155,6 +160,7 @@ struct Group30Var6
   double value;
 
   typedef Analog Target;
+  typedef AnalogSpec Spec;
   static bool ReadTarget(openpal::RSlice&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WSlice&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }

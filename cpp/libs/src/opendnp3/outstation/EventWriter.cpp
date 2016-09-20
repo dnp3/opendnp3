@@ -82,157 +82,157 @@ EventWriter::Result EventWriter::LoadHeader(HeaderWriter& writer, IEventRecorder
 
 EventWriter::Result EventWriter::LoadHeaderBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
 {
-	auto variation = pLocation->value.GetValue<Binary>().selectedVariation;
+	auto variation = pLocation->value.GetValue<BinarySpec>().selectedVariation;
 
 	switch (variation)
 	{
 	case(EventBinaryVariation::Group2Var1):
-		return WriteTypeWithSerializer<Binary>(writer, recorder, pLocation, Group2Var1::Inst(), variation);
+		return WriteTypeWithSerializer<BinarySpec>(writer, recorder, pLocation, Group2Var1::Inst(), variation);
 	case(EventBinaryVariation::Group2Var2):
-		return WriteTypeWithSerializer<Binary>(writer, recorder, pLocation, Group2Var2::Inst(), variation);
+		return WriteTypeWithSerializer<BinarySpec>(writer, recorder, pLocation, Group2Var2::Inst(), variation);
 	case(EventBinaryVariation::Group2Var3) :
-		return WriteCTOTypeWithSerializer<Binary, Group51Var1>(writer, recorder, pLocation, Group2Var3::Inst(), variation);
+		return WriteCTOTypeWithSerializer<BinarySpec, Group51Var1>(writer, recorder, pLocation, Group2Var3::Inst(), variation);
 	default:
-		return WriteTypeWithSerializer<Binary>(writer, recorder, pLocation, Group2Var1::Inst(), variation);
+		return WriteTypeWithSerializer<BinarySpec>(writer, recorder, pLocation, Group2Var1::Inst(), variation);
 	}
 }
 
 EventWriter::Result EventWriter::LoadHeaderDoubleBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
 {
-	auto variation = pLocation->value.GetValue<DoubleBitBinary>().selectedVariation;
+	auto variation = pLocation->value.GetValue<DoubleBitBinarySpec>().selectedVariation;
 
 	switch (variation)
 	{
 	case(EventDoubleBinaryVariation::Group4Var1) :
-		return WriteTypeWithSerializer<DoubleBitBinary>(writer, recorder, pLocation, Group4Var1::Inst(), variation);
+		return WriteTypeWithSerializer<DoubleBitBinarySpec>(writer, recorder, pLocation, Group4Var1::Inst(), variation);
 	case(EventDoubleBinaryVariation::Group4Var2) :
-		return WriteTypeWithSerializer<DoubleBitBinary>(writer, recorder, pLocation, Group4Var2::Inst(), variation);
+		return WriteTypeWithSerializer<DoubleBitBinarySpec>(writer, recorder, pLocation, Group4Var2::Inst(), variation);
 	case(EventDoubleBinaryVariation::Group4Var3) :
-		return WriteCTOTypeWithSerializer<DoubleBitBinary, Group51Var1>(writer, recorder, pLocation, Group4Var3::Inst(), variation);
+		return WriteCTOTypeWithSerializer<DoubleBitBinarySpec, Group51Var1>(writer, recorder, pLocation, Group4Var3::Inst(), variation);
 	default:
-		return WriteTypeWithSerializer<DoubleBitBinary>(writer, recorder, pLocation, Group4Var1::Inst(), variation);
+		return WriteTypeWithSerializer<DoubleBitBinarySpec>(writer, recorder, pLocation, Group4Var1::Inst(), variation);
 	}
 }
 
 EventWriter::Result EventWriter::LoadHeaderCounter(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
 {
-	auto variation = pLocation->value.GetValue<Counter>().selectedVariation;
+	auto variation = pLocation->value.GetValue<CounterSpec>().selectedVariation;
 
 	switch (variation)
 	{
 	case(EventCounterVariation::Group22Var1) :
-		return WriteTypeWithSerializer<Counter>(writer, recorder, pLocation, Group22Var1::Inst(), variation);
+		return WriteTypeWithSerializer<CounterSpec>(writer, recorder, pLocation, Group22Var1::Inst(), variation);
 	case(EventCounterVariation::Group22Var2) :
-		return WriteTypeWithSerializer<Counter>(writer, recorder, pLocation, Group22Var2::Inst(), variation);
+		return WriteTypeWithSerializer<CounterSpec>(writer, recorder, pLocation, Group22Var2::Inst(), variation);
 	case(EventCounterVariation::Group22Var5) :
-		return WriteTypeWithSerializer<Counter>(writer, recorder, pLocation, Group22Var5::Inst(), variation);
+		return WriteTypeWithSerializer<CounterSpec>(writer, recorder, pLocation, Group22Var5::Inst(), variation);
 	case(EventCounterVariation::Group22Var6) :
-		return WriteTypeWithSerializer<Counter>(writer, recorder, pLocation, Group22Var6::Inst(), variation);
+		return WriteTypeWithSerializer<CounterSpec>(writer, recorder, pLocation, Group22Var6::Inst(), variation);
 	default:
-		return WriteTypeWithSerializer<Counter>(writer, recorder, pLocation, Group22Var1::Inst(), variation);
+		return WriteTypeWithSerializer<CounterSpec>(writer, recorder, pLocation, Group22Var1::Inst(), variation);
 	}
 }
 
 EventWriter::Result EventWriter::LoadHeaderFrozenCounter(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
 {
-	auto variation = pLocation->value.GetValue<FrozenCounter>().selectedVariation;
+	auto variation = pLocation->value.GetValue<FrozenCounterSpec>().selectedVariation;
 
 	switch (variation)
 	{
 	case(EventFrozenCounterVariation::Group23Var1) :
-		return WriteTypeWithSerializer<FrozenCounter>(writer, recorder, pLocation, Group23Var1::Inst(), variation);
+		return WriteTypeWithSerializer<FrozenCounterSpec>(writer, recorder, pLocation, Group23Var1::Inst(), variation);
 	case(EventFrozenCounterVariation::Group23Var2) :
-		return WriteTypeWithSerializer<FrozenCounter>(writer, recorder, pLocation, Group23Var2::Inst(), variation);
+		return WriteTypeWithSerializer<FrozenCounterSpec>(writer, recorder, pLocation, Group23Var2::Inst(), variation);
 	case(EventFrozenCounterVariation::Group23Var5) :
-		return WriteTypeWithSerializer<FrozenCounter>(writer, recorder, pLocation, Group23Var5::Inst(), variation);
+		return WriteTypeWithSerializer<FrozenCounterSpec>(writer, recorder, pLocation, Group23Var5::Inst(), variation);
 	case(EventFrozenCounterVariation::Group23Var6) :
-		return WriteTypeWithSerializer<FrozenCounter>(writer, recorder, pLocation, Group23Var6::Inst(), variation);
+		return WriteTypeWithSerializer<FrozenCounterSpec>(writer, recorder, pLocation, Group23Var6::Inst(), variation);
 	default:
-		return WriteTypeWithSerializer<FrozenCounter>(writer, recorder, pLocation, Group23Var1::Inst(), variation);
+		return WriteTypeWithSerializer<FrozenCounterSpec>(writer, recorder, pLocation, Group23Var1::Inst(), variation);
 	}
 }
 
 EventWriter::Result EventWriter::LoadHeaderAnalog(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
 {
-	auto variation = pLocation->value.GetValue<Analog>().selectedVariation;
+	auto variation = pLocation->value.GetValue<AnalogSpec>().selectedVariation;
 
 	switch (variation)
 	{
 	case(EventAnalogVariation::Group32Var1) :
-		return WriteTypeWithSerializer<Analog >(writer, recorder, pLocation, Group32Var1::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogSpec>(writer, recorder, pLocation, Group32Var1::Inst(), variation);
 	case(EventAnalogVariation::Group32Var2) :
-		return WriteTypeWithSerializer<Analog >(writer, recorder, pLocation, Group32Var2::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogSpec>(writer, recorder, pLocation, Group32Var2::Inst(), variation);
 	case(EventAnalogVariation::Group32Var3) :
-		return WriteTypeWithSerializer<Analog >(writer, recorder, pLocation, Group32Var3::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogSpec>(writer, recorder, pLocation, Group32Var3::Inst(), variation);
 	case(EventAnalogVariation::Group32Var4) :
-		return WriteTypeWithSerializer<Analog >(writer, recorder, pLocation, Group32Var4::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogSpec>(writer, recorder, pLocation, Group32Var4::Inst(), variation);
 	case(EventAnalogVariation::Group32Var5) :
-		return WriteTypeWithSerializer<Analog >(writer, recorder, pLocation, Group32Var5::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogSpec>(writer, recorder, pLocation, Group32Var5::Inst(), variation);
 	case(EventAnalogVariation::Group32Var6) :
-		return WriteTypeWithSerializer<Analog >(writer, recorder, pLocation, Group32Var6::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogSpec>(writer, recorder, pLocation, Group32Var6::Inst(), variation);
 	case(EventAnalogVariation::Group32Var7) :
-		return WriteTypeWithSerializer<Analog >(writer, recorder, pLocation, Group32Var7::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogSpec>(writer, recorder, pLocation, Group32Var7::Inst(), variation);
 	case(EventAnalogVariation::Group32Var8) :
-		return WriteTypeWithSerializer<Analog >(writer, recorder, pLocation, Group32Var8::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogSpec>(writer, recorder, pLocation, Group32Var8::Inst(), variation);
 	default:
-		return WriteTypeWithSerializer<Analog >(writer, recorder, pLocation, Group32Var1::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogSpec>(writer, recorder, pLocation, Group32Var1::Inst(), variation);
 	}
 }
 
 EventWriter::Result EventWriter::LoadHeaderBinaryOutputStatus(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
 {
-	auto variation = pLocation->value.GetValue<BinaryOutputStatus>().selectedVariation;
+	auto variation = pLocation->value.GetValue<BinaryOutputStatusSpec>().selectedVariation;
 
 	switch (variation)
 	{
 	case(EventBinaryOutputStatusVariation::Group11Var1) :
-		return WriteTypeWithSerializer<BinaryOutputStatus>(writer, recorder, pLocation, Group11Var1::Inst(), variation);
+		return WriteTypeWithSerializer<BinaryOutputStatusSpec>(writer, recorder, pLocation, Group11Var1::Inst(), variation);
 	case(EventBinaryOutputStatusVariation::Group11Var2) :
-		return WriteTypeWithSerializer<BinaryOutputStatus>(writer, recorder, pLocation, Group11Var2::Inst(), variation);
+		return WriteTypeWithSerializer<BinaryOutputStatusSpec>(writer, recorder, pLocation, Group11Var2::Inst(), variation);
 	default:
-		return WriteTypeWithSerializer<BinaryOutputStatus>(writer, recorder, pLocation, Group11Var1::Inst(), variation);
+		return WriteTypeWithSerializer<BinaryOutputStatusSpec>(writer, recorder, pLocation, Group11Var1::Inst(), variation);
 	}
 }
 
 EventWriter::Result EventWriter::LoadHeaderAnalogOutputStatus(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
 {
-	auto variation = pLocation->value.GetValue<AnalogOutputStatus>().selectedVariation;
+	auto variation = pLocation->value.GetValue<AnalogOutputStatusSpec>().selectedVariation;
 
 	switch (variation)
 	{
 	case(EventAnalogOutputStatusVariation::Group42Var1) :
-		return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var1::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var1::Inst(), variation);
 	case(EventAnalogOutputStatusVariation::Group42Var2) :
-		return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var2::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var2::Inst(), variation);
 	case(EventAnalogOutputStatusVariation::Group42Var3) :
-		return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var3::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var3::Inst(), variation);
 	case(EventAnalogOutputStatusVariation::Group42Var4) :
-		return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var4::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var4::Inst(), variation);
 	case(EventAnalogOutputStatusVariation::Group42Var5) :
-		return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var5::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var5::Inst(), variation);
 	case(EventAnalogOutputStatusVariation::Group42Var6) :
-		return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var6::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var6::Inst(), variation);
 	case(EventAnalogOutputStatusVariation::Group42Var7) :
-		return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var7::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var7::Inst(), variation);
 	case(EventAnalogOutputStatusVariation::Group42Var8) :
-		return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var8::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var8::Inst(), variation);
 	default:
-		return WriteTypeWithSerializer<AnalogOutputStatus>(writer, recorder, pLocation, Group42Var1::Inst(), variation);
+		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var1::Inst(), variation);
 	}
 }
 
 EventWriter::Result EventWriter::LoadHeaderSecurityStat(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
 {
-	auto variation = pLocation->value.GetValue<SecurityStat>().selectedVariation;
+	auto variation = pLocation->value.GetValue<SecurityStatSpec>().selectedVariation;
 
 	switch (variation)
 	{
 	case(EventSecurityStatVariation::Group122Var1) :
-		return WriteTypeWithSerializer<SecurityStat>(writer, recorder, pLocation, Group122Var1::Inst(), variation);
+		return WriteTypeWithSerializer<SecurityStatSpec>(writer, recorder, pLocation, Group122Var1::Inst(), variation);
 	case(EventSecurityStatVariation::Group122Var2) :
-		return WriteTypeWithSerializer<SecurityStat>(writer, recorder, pLocation, Group122Var2::Inst(), variation);
+		return WriteTypeWithSerializer<SecurityStatSpec>(writer, recorder, pLocation, Group122Var2::Inst(), variation);
 	default:
-		return WriteTypeWithSerializer<SecurityStat>(writer, recorder, pLocation, Group122Var1::Inst(), variation);
+		return WriteTypeWithSerializer<SecurityStatSpec>(writer, recorder, pLocation, Group122Var1::Inst(), variation);
 	}
 }
 

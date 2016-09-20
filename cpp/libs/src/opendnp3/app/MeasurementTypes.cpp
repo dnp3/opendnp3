@@ -22,6 +22,7 @@
 
 #include "opendnp3/app/QualityFlags.h"
 #include "opendnp3/app/EventTriggers.h"
+#include "opendnp3/gen/BinaryQuality.h"
 
 namespace opendnp3
 {

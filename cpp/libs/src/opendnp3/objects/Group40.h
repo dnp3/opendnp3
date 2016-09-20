@@ -26,7 +26,7 @@
 #include <openpal/container/WSlice.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -52,6 +52,7 @@ struct Group40Var1
   int32_t value;
 
   typedef AnalogOutputStatus Target;
+  typedef AnalogOutputStatusSpec Spec;
   static bool ReadTarget(openpal::RSlice&, AnalogOutputStatus&);
   static bool WriteTarget(const AnalogOutputStatus&, openpal::WSlice&);
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -73,6 +74,7 @@ struct Group40Var2
   int16_t value;
 
   typedef AnalogOutputStatus Target;
+  typedef AnalogOutputStatusSpec Spec;
   static bool ReadTarget(openpal::RSlice&, AnalogOutputStatus&);
   static bool WriteTarget(const AnalogOutputStatus&, openpal::WSlice&);
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -94,6 +96,7 @@ struct Group40Var3
   float value;
 
   typedef AnalogOutputStatus Target;
+  typedef AnalogOutputStatusSpec Spec;
   static bool ReadTarget(openpal::RSlice&, AnalogOutputStatus&);
   static bool WriteTarget(const AnalogOutputStatus&, openpal::WSlice&);
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
@@ -115,6 +118,7 @@ struct Group40Var4
   double value;
 
   typedef AnalogOutputStatus Target;
+  typedef AnalogOutputStatusSpec Spec;
   static bool ReadTarget(openpal::RSlice&, AnalogOutputStatus&);
   static bool WriteTarget(const AnalogOutputStatus&, openpal::WSlice&);
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }

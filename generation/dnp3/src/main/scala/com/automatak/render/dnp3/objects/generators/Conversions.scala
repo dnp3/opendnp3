@@ -6,7 +6,7 @@ import com.automatak.render.dnp3.objects.FixedSize
 
 object ConversionHeaders {
 
-  val dataTypes = quoted("opendnp3/app/MeasurementTypes.h")
+  val measurementTypeSpecs = quoted("opendnp3/app/MeasurementTypeSpecs.h")
   val timeAndInterval = quoted("opendnp3/app/TimeAndInterval.h")
   val securityStat = quoted("opendnp3/app/SecurityStat.h")
   val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
@@ -25,6 +25,9 @@ import com.automatak.render.dnp3.objects.generators.ConversionHeaders._
 trait Conversion extends FixedSize {
 
   def target : String
+  def includeSpecTypedef = false
+  def spec : String = target + "Spec"
+
   def convHeaderIncludes : List[String]
   def convImplIncludes : List[String] = cppIncludes
 
@@ -35,10 +38,12 @@ trait Conversion extends FixedSize {
   override def headerIncludes : List[String] = super.headerIncludes ++ (serializer :: convHeaderIncludes)
   override def implIncludes : List[String] = super.implIncludes ++ convImplIncludes
 
+  def specTypedef : Iterator[String] = if(includeSpecTypedef) Iterator("typedef %s Spec;".format(spec)) else Iterator.empty
+
 
   private def convHeaderLines : Iterator[String] = {
+    Iterator("typedef %s Target;".format(target)) ++ specTypedef ++
     Iterator(
-      "typedef %s Target;".format(target),
       "static bool ReadTarget(openpal::RSlice&, %s&);".format(target),
       "static bool WriteTarget(const %s&, openpal::WSlice&);".format(target),
       serializerInstance
@@ -84,38 +89,45 @@ trait Conversion extends FixedSize {
 
 trait ConversionToBinary extends Conversion {
   def target = "Binary"
-  def convHeaderIncludes = List(dataTypes)
+  override def includeSpecTypedef = true
+  def convHeaderIncludes = List(measurementTypeSpecs)
 }
 
 trait ConversionToDoubleBitBinary extends Conversion {
   def target = "DoubleBitBinary"
-  def convHeaderIncludes = List(dataTypes)
+  override def includeSpecTypedef = true
+  def convHeaderIncludes = List(measurementTypeSpecs)
 }
 
 trait ConversionToAnalog extends Conversion {
   def target = "Analog"
-  def convHeaderIncludes = List(dataTypes)
+  override def includeSpecTypedef = true
+  def convHeaderIncludes = List(measurementTypeSpecs)
 }
 
 trait ConversionToCounter extends Conversion {
   def target = "Counter"
-  def convHeaderIncludes = List(dataTypes)
+  override def includeSpecTypedef = true
+  def convHeaderIncludes = List(measurementTypeSpecs)
 }
 
 trait ConversionToFrozenCounter extends Conversion {
   def target = "FrozenCounter"
-  def convHeaderIncludes = List(dataTypes)
+  override def includeSpecTypedef = true
+  def convHeaderIncludes = List(measurementTypeSpecs)
 }
 
 
 trait ConversionToBinaryOutputStatus extends Conversion {
   def target = "BinaryOutputStatus"
-  def convHeaderIncludes = List(dataTypes)
+  override def includeSpecTypedef = true
+  def convHeaderIncludes = List(measurementTypeSpecs)
 }
 
 trait ConversionToAnalogOutputStatus extends Conversion {
   def target = "AnalogOutputStatus"
-  def convHeaderIncludes = List(dataTypes)
+  override def includeSpecTypedef = true
+  def convHeaderIncludes = List(measurementTypeSpecs)
 }
 
 trait ConversionToCROB extends Conversion {
@@ -145,7 +157,8 @@ trait ConversionToAnalogOutputDouble64 extends Conversion {
 
 trait ConversionToTimeAndInterval extends Conversion {
   def target = "TimeAndInterval"
-  def convHeaderIncludes = List(timeAndInterval)
+  override def includeSpecTypedef = true
+  def convHeaderIncludes = List(measurementTypeSpecs)
 }
 
 trait ConversionToBinaryCommandEvent extends Conversion {
@@ -160,5 +173,6 @@ trait ConversionToAnalogCommandEvent extends Conversion {
 
 trait ConversionToSecurityStat extends Conversion {
   def target = "SecurityStat"
-  def convHeaderIncludes = List(securityStat)
+  override def includeSpecTypedef = true
+  def convHeaderIncludes = List(measurementTypeSpecs)
 }

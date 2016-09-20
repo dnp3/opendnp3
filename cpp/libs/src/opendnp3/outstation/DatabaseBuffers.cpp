@@ -41,28 +41,28 @@ DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate, StaticTypeB
 
 void DatabaseBuffers::Unselect()
 {
-	this->Deselect<Binary>();
-	this->Deselect<DoubleBitBinary>();
-	this->Deselect<Counter>();
-	this->Deselect<FrozenCounter>();
-	this->Deselect<Analog>();
-	this->Deselect<BinaryOutputStatus>();
-	this->Deselect<AnalogOutputStatus>();
-	this->Deselect<TimeAndInterval>();
+	this->Deselect<BinarySpec>();
+	this->Deselect<DoubleBitBinarySpec>();
+	this->Deselect<CounterSpec>();
+	this->Deselect<FrozenCounterSpec>();
+	this->Deselect<AnalogSpec>();
+	this->Deselect<BinaryOutputStatusSpec>();
+	this->Deselect<AnalogOutputStatusSpec>();
+	this->Deselect<TimeAndIntervalSpec>();
 }
 
 IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 {
 	if (gv == GroupVariation::Group60Var1)
 	{
-		this->SelectAllClass0<Binary>();
-		this->SelectAllClass0<DoubleBitBinary>();
-		this->SelectAllClass0<Counter>();
-		this->SelectAllClass0<FrozenCounter>();
-		this->SelectAllClass0<Analog>();
-		this->SelectAllClass0<BinaryOutputStatus>();
-		this->SelectAllClass0<AnalogOutputStatus>();
-		this->SelectAllClass0<TimeAndInterval>();
+		this->SelectAllClass0<BinarySpec>();
+		this->SelectAllClass0<DoubleBitBinarySpec>();
+		this->SelectAllClass0<CounterSpec>();
+		this->SelectAllClass0<FrozenCounterSpec>();
+		this->SelectAllClass0<AnalogSpec>();
+		this->SelectAllClass0<BinaryOutputStatusSpec>();
+		this->SelectAllClass0<AnalogOutputStatusSpec>();
+		this->SelectAllClass0<TimeAndIntervalSpec>();
 
 		return IINField::Empty();
 	}
@@ -71,76 +71,76 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 		switch (gv)
 		{
 		case(GroupVariation::Group1Var0):
-			return this->SelectAll<Binary>();
+			return this->SelectAll<BinarySpec>();
 		case(GroupVariation::Group1Var1) :
-			return this->SelectAllUsing<Binary>(StaticBinaryVariation::Group1Var1);
+			return this->SelectAllUsing<BinarySpec>(StaticBinaryVariation::Group1Var1);
 		case(GroupVariation::Group1Var2) :
-			return this->SelectAllUsing<Binary>(StaticBinaryVariation::Group1Var2);
+			return this->SelectAllUsing<BinarySpec>(StaticBinaryVariation::Group1Var2);
 
 		case(GroupVariation::Group3Var0) :
-			return this->SelectAll<DoubleBitBinary>();
+			return this->SelectAll<DoubleBitBinarySpec>();
 		case(GroupVariation::Group3Var2) :
-			return this->SelectAllUsing<DoubleBitBinary>(StaticDoubleBinaryVariation::Group3Var2);
+			return this->SelectAllUsing<DoubleBitBinarySpec>(StaticDoubleBinaryVariation::Group3Var2);
 
 		case(GroupVariation::Group10Var0) :
-			return this->SelectAll<BinaryOutputStatus>();
+			return this->SelectAll<BinaryOutputStatusSpec>();
 		case(GroupVariation::Group10Var2) :
-			return this->SelectAllUsing<BinaryOutputStatus>(StaticBinaryOutputStatusVariation::Group10Var2);
+			return this->SelectAllUsing<BinaryOutputStatusSpec>(StaticBinaryOutputStatusVariation::Group10Var2);
 
 		case(GroupVariation::Group20Var0):
-			return this->SelectAll<Counter>();
+			return this->SelectAll<CounterSpec>();
 		case(GroupVariation::Group20Var1):
-			return this->SelectAllUsing<Counter>(StaticCounterVariation::Group20Var1);
+			return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var1);
 		case(GroupVariation::Group20Var2) :
-			return this->SelectAllUsing<Counter>(StaticCounterVariation::Group20Var2);
+			return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var2);
 		case(GroupVariation::Group20Var5) :
-			return this->SelectAllUsing<Counter>(StaticCounterVariation::Group20Var5);
+			return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var5);
 		case(GroupVariation::Group20Var6) :
-			return this->SelectAllUsing<Counter>(StaticCounterVariation::Group20Var6);
+			return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var6);
 
 		case(GroupVariation::Group21Var0) :
-			return this->SelectAll<FrozenCounter>();
+			return this->SelectAll<FrozenCounterSpec>();
 		case(GroupVariation::Group21Var1) :
-			return this->SelectAllUsing<FrozenCounter>(StaticFrozenCounterVariation::Group21Var1);
+			return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var1);
 		case(GroupVariation::Group21Var2) :
-			return this->SelectAllUsing<FrozenCounter>(StaticFrozenCounterVariation::Group21Var2);
+			return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var2);
 		case(GroupVariation::Group21Var5) :
-			return this->SelectAllUsing<FrozenCounter>(StaticFrozenCounterVariation::Group21Var5);
+			return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var5);
 		case(GroupVariation::Group21Var6) :
-			return this->SelectAllUsing<FrozenCounter>(StaticFrozenCounterVariation::Group21Var6);
+			return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var6);
 		case(GroupVariation::Group21Var9) :
-			return this->SelectAllUsing<FrozenCounter>(StaticFrozenCounterVariation::Group21Var9);
+			return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var9);
 		case(GroupVariation::Group21Var10) :
-			return this->SelectAllUsing<FrozenCounter>(StaticFrozenCounterVariation::Group21Var10);
+			return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var10);
 
 		case(GroupVariation::Group30Var0) :
-			return this->SelectAll<Analog>();
+			return this->SelectAll<AnalogSpec>();
 		case(GroupVariation::Group30Var1) :
-			return this->SelectAllUsing<Analog>(StaticAnalogVariation::Group30Var1);
+			return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var1);
 		case(GroupVariation::Group30Var2) :
-			return this->SelectAllUsing<Analog>(StaticAnalogVariation::Group30Var2);
+			return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var2);
 		case(GroupVariation::Group30Var3) :
-			return this->SelectAllUsing<Analog>(StaticAnalogVariation::Group30Var3);
+			return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var3);
 		case(GroupVariation::Group30Var4) :
-			return this->SelectAllUsing<Analog>(StaticAnalogVariation::Group30Var4);
+			return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var4);
 		case(GroupVariation::Group30Var5) :
-			return this->SelectAllUsing<Analog>(StaticAnalogVariation::Group30Var5);
+			return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var5);
 		case(GroupVariation::Group30Var6) :
-			return this->SelectAllUsing<Analog>(StaticAnalogVariation::Group30Var6);
+			return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var6);
 
 		case(GroupVariation::Group40Var0) :
-			return this->SelectAll<AnalogOutputStatus>();
+			return this->SelectAll<AnalogOutputStatusSpec>();
 		case(GroupVariation::Group40Var1) :
-			return this->SelectAllUsing<AnalogOutputStatus>(StaticAnalogOutputStatusVariation::Group40Var1);
+			return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var1);
 		case(GroupVariation::Group40Var2) :
-			return this->SelectAllUsing<AnalogOutputStatus>(StaticAnalogOutputStatusVariation::Group40Var2);
+			return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var2);
 		case(GroupVariation::Group40Var3) :
-			return this->SelectAllUsing<AnalogOutputStatus>(StaticAnalogOutputStatusVariation::Group40Var3);
+			return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var3);
 		case(GroupVariation::Group40Var4) :
-			return this->SelectAllUsing<AnalogOutputStatus>(StaticAnalogOutputStatusVariation::Group40Var4);
+			return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var4);
 
 		case(GroupVariation::Group50Var4) :
-			return this->SelectAllUsing<TimeAndInterval>(StaticTimeAndIntervalVariation::Group50Var4);
+			return this->SelectAllUsing<TimeAndIntervalSpec>(StaticTimeAndIntervalVariation::Group50Var4);
 
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -153,76 +153,76 @@ IINField DatabaseBuffers::SelectRange(GroupVariation gv, const Range& range)
 	switch (gv)
 	{
 	case(GroupVariation::Group1Var0) :
-		return this->SelectRange<Binary>(range);
+		return this->SelectRange<BinarySpec>(range);
 	case(GroupVariation::Group1Var1) :
-		return this->SelectRangeUsing<Binary>(range, StaticBinaryVariation::Group1Var1);
+		return this->SelectRangeUsing<BinarySpec>(range, StaticBinaryVariation::Group1Var1);
 	case(GroupVariation::Group1Var2) :
-		return this->SelectRangeUsing<Binary>(range, StaticBinaryVariation::Group1Var2);
+		return this->SelectRangeUsing<BinarySpec>(range, StaticBinaryVariation::Group1Var2);
 
 	case(GroupVariation::Group3Var0) :
-		return this->SelectRange<DoubleBitBinary>(range);
+		return this->SelectRange<DoubleBitBinarySpec>(range);
 	case(GroupVariation::Group3Var2) :
-		return this->SelectRangeUsing<DoubleBitBinary>(range, StaticDoubleBinaryVariation::Group3Var2);
+		return this->SelectRangeUsing<DoubleBitBinarySpec>(range, StaticDoubleBinaryVariation::Group3Var2);
 
 	case(GroupVariation::Group10Var0) :
-		return this->SelectRange<BinaryOutputStatus>(range);
+		return this->SelectRange<BinaryOutputStatusSpec>(range);
 	case(GroupVariation::Group10Var2) :
-		return this->SelectRangeUsing<BinaryOutputStatus>(range, StaticBinaryOutputStatusVariation::Group10Var2);
+		return this->SelectRangeUsing<BinaryOutputStatusSpec>(range, StaticBinaryOutputStatusVariation::Group10Var2);
 
 	case(GroupVariation::Group20Var0) :
-		return this->SelectRange<Counter>(range);
+		return this->SelectRange<CounterSpec>(range);
 	case(GroupVariation::Group20Var1) :
-		return this->SelectRangeUsing<Counter>(range, StaticCounterVariation::Group20Var1);
+		return this->SelectRangeUsing<CounterSpec>(range, StaticCounterVariation::Group20Var1);
 	case(GroupVariation::Group20Var2) :
-		return this->SelectRangeUsing<Counter>(range, StaticCounterVariation::Group20Var2);
+		return this->SelectRangeUsing<CounterSpec>(range, StaticCounterVariation::Group20Var2);
 	case(GroupVariation::Group20Var5) :
-		return this->SelectRangeUsing<Counter>(range, StaticCounterVariation::Group20Var5);
+		return this->SelectRangeUsing<CounterSpec>(range, StaticCounterVariation::Group20Var5);
 	case(GroupVariation::Group20Var6) :
-		return this->SelectRangeUsing<Counter>(range, StaticCounterVariation::Group20Var6);
+		return this->SelectRangeUsing<CounterSpec>(range, StaticCounterVariation::Group20Var6);
 
 	case(GroupVariation::Group21Var0) :
-		return this->SelectRange<FrozenCounter>(range);
+		return this->SelectRange<FrozenCounterSpec>(range);
 	case(GroupVariation::Group21Var1) :
-		return this->SelectRangeUsing<FrozenCounter>(range, StaticFrozenCounterVariation::Group21Var1);
+		return this->SelectRangeUsing<FrozenCounterSpec>(range, StaticFrozenCounterVariation::Group21Var1);
 	case(GroupVariation::Group21Var2) :
-		return this->SelectRangeUsing<FrozenCounter>(range, StaticFrozenCounterVariation::Group21Var2);
+		return this->SelectRangeUsing<FrozenCounterSpec>(range, StaticFrozenCounterVariation::Group21Var2);
 	case(GroupVariation::Group21Var5) :
-		return this->SelectRangeUsing<FrozenCounter>(range, StaticFrozenCounterVariation::Group21Var5);
+		return this->SelectRangeUsing<FrozenCounterSpec>(range, StaticFrozenCounterVariation::Group21Var5);
 	case(GroupVariation::Group21Var6) :
-		return this->SelectRangeUsing<FrozenCounter>(range, StaticFrozenCounterVariation::Group21Var6);
+		return this->SelectRangeUsing<FrozenCounterSpec>(range, StaticFrozenCounterVariation::Group21Var6);
 	case(GroupVariation::Group21Var9) :
-		return this->SelectRangeUsing<FrozenCounter>(range, StaticFrozenCounterVariation::Group21Var9);
+		return this->SelectRangeUsing<FrozenCounterSpec>(range, StaticFrozenCounterVariation::Group21Var9);
 	case(GroupVariation::Group21Var10) :
-		return this->SelectRangeUsing<FrozenCounter>(range, StaticFrozenCounterVariation::Group21Var10);
+		return this->SelectRangeUsing<FrozenCounterSpec>(range, StaticFrozenCounterVariation::Group21Var10);
 
 	case(GroupVariation::Group30Var0) :
-		return this->SelectRange<Analog>(range);
+		return this->SelectRange<AnalogSpec>(range);
 	case(GroupVariation::Group30Var1) :
-		return this->SelectRangeUsing<Analog>(range, StaticAnalogVariation::Group30Var1);
+		return this->SelectRangeUsing<AnalogSpec>(range, StaticAnalogVariation::Group30Var1);
 	case(GroupVariation::Group30Var2) :
-		return this->SelectRangeUsing<Analog>(range, StaticAnalogVariation::Group30Var2);
+		return this->SelectRangeUsing<AnalogSpec>(range, StaticAnalogVariation::Group30Var2);
 	case(GroupVariation::Group30Var3) :
-		return this->SelectRangeUsing<Analog>(range, StaticAnalogVariation::Group30Var3);
+		return this->SelectRangeUsing<AnalogSpec>(range, StaticAnalogVariation::Group30Var3);
 	case(GroupVariation::Group30Var4) :
-		return this->SelectRangeUsing<Analog>(range, StaticAnalogVariation::Group30Var4);
+		return this->SelectRangeUsing<AnalogSpec>(range, StaticAnalogVariation::Group30Var4);
 	case(GroupVariation::Group30Var5) :
-		return this->SelectRangeUsing<Analog>(range, StaticAnalogVariation::Group30Var5);
+		return this->SelectRangeUsing<AnalogSpec>(range, StaticAnalogVariation::Group30Var5);
 	case(GroupVariation::Group30Var6) :
-		return this->SelectRangeUsing<Analog>(range, StaticAnalogVariation::Group30Var6);
+		return this->SelectRangeUsing<AnalogSpec>(range, StaticAnalogVariation::Group30Var6);
 
 	case(GroupVariation::Group40Var0) :
-		return this->SelectRange<AnalogOutputStatus>(range);
+		return this->SelectRange<AnalogOutputStatusSpec>(range);
 	case(GroupVariation::Group40Var1) :
-		return this->SelectRangeUsing<AnalogOutputStatus>(range, StaticAnalogOutputStatusVariation::Group40Var1);
+		return this->SelectRangeUsing<AnalogOutputStatusSpec>(range, StaticAnalogOutputStatusVariation::Group40Var1);
 	case(GroupVariation::Group40Var2) :
-		return this->SelectRangeUsing<AnalogOutputStatus>(range, StaticAnalogOutputStatusVariation::Group40Var2);
+		return this->SelectRangeUsing<AnalogOutputStatusSpec>(range, StaticAnalogOutputStatusVariation::Group40Var2);
 	case(GroupVariation::Group40Var3) :
-		return this->SelectRangeUsing<AnalogOutputStatus>(range, StaticAnalogOutputStatusVariation::Group40Var3);
+		return this->SelectRangeUsing<AnalogOutputStatusSpec>(range, StaticAnalogOutputStatusVariation::Group40Var3);
 	case(GroupVariation::Group40Var4) :
-		return this->SelectRangeUsing<AnalogOutputStatus>(range, StaticAnalogOutputStatusVariation::Group40Var4);
+		return this->SelectRangeUsing<AnalogOutputStatusSpec>(range, StaticAnalogOutputStatusVariation::Group40Var4);
 
 	case(GroupVariation::Group50Var4) :
-		return this->SelectRangeUsing<TimeAndInterval>(range, StaticTimeAndIntervalVariation::Group50Var4);
+		return this->SelectRangeUsing<TimeAndIntervalSpec>(range, StaticTimeAndIntervalVariation::Group50Var4);
 
 	default:
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -237,14 +237,14 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
 
 	LoadFun functions[NUM_TYPE] =
 	{
-		&DatabaseBuffers::LoadType<Binary>,
-		&DatabaseBuffers::LoadType<DoubleBitBinary>,
-		&DatabaseBuffers::LoadType<Counter>,
-		&DatabaseBuffers::LoadType<FrozenCounter>,
-		&DatabaseBuffers::LoadType<Analog>,
-		&DatabaseBuffers::LoadType<BinaryOutputStatus>,
-		&DatabaseBuffers::LoadType<AnalogOutputStatus>,
-		&DatabaseBuffers::LoadType<TimeAndInterval>
+		&DatabaseBuffers::LoadType<BinarySpec>,
+		&DatabaseBuffers::LoadType<DoubleBitBinarySpec>,
+		&DatabaseBuffers::LoadType<CounterSpec>,
+		&DatabaseBuffers::LoadType<FrozenCounterSpec>,
+		&DatabaseBuffers::LoadType<AnalogSpec>,
+		&DatabaseBuffers::LoadType<BinaryOutputStatusSpec>,
+		&DatabaseBuffers::LoadType<AnalogOutputStatusSpec>,
+		&DatabaseBuffers::LoadType<TimeAndIntervalSpec>
 	};
 
 	for (int i = 0; i < NUM_TYPE; ++i)
@@ -264,19 +264,19 @@ Range DatabaseBuffers::AssignClassToAll(AssignClassType type, PointClass clazz)
 	switch (type)
 	{
 	case(AssignClassType::BinaryInput) :
-		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<Binary>().Size()));
+		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinarySpec>().Size()));
 	case(AssignClassType::DoubleBinaryInput) :
-		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<DoubleBitBinary>().Size()));
+		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<DoubleBitBinarySpec>().Size()));
 	case(AssignClassType::Counter) :
-		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<Counter>().Size()));
+		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<CounterSpec>().Size()));
 	case(AssignClassType::FrozenCounter) :
-		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<FrozenCounter>().Size()));
+		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<FrozenCounterSpec>().Size()));
 	case(AssignClassType::AnalogInput) :
-		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<Analog>().Size()));
+		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogSpec>().Size()));
 	case(AssignClassType::BinaryOutputStatus) :
-		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinaryOutputStatus>().Size()));
+		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinaryOutputStatusSpec>().Size()));
 	case(AssignClassType::AnalogOutputStatus) :
-		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogOutputStatus>().Size()));
+		return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogOutputStatusSpec>().Size()));
 	default:
 		return Range::Invalid();
 	}
@@ -287,26 +287,26 @@ Range DatabaseBuffers::AssignClassToRange(AssignClassType type, PointClass clazz
 	switch (type)
 	{
 	case(AssignClassType::BinaryInput) :
-		return AssignClassTo<Binary>(clazz, range);
+		return AssignClassTo<BinarySpec>(clazz, range);
 	case(AssignClassType::DoubleBinaryInput) :
-		return AssignClassTo<DoubleBitBinary>(clazz, range);
+		return AssignClassTo<DoubleBitBinarySpec>(clazz, range);
 	case(AssignClassType::Counter) :
-		return AssignClassTo<Counter>(clazz, range);
+		return AssignClassTo<CounterSpec>(clazz, range);
 	case(AssignClassType::FrozenCounter) :
-		return AssignClassTo<FrozenCounter>(clazz, range);
+		return AssignClassTo<FrozenCounterSpec>(clazz, range);
 	case(AssignClassType::AnalogInput) :
-		return AssignClassTo<Analog>(clazz, range);
+		return AssignClassTo<AnalogSpec>(clazz, range);
 	case(AssignClassType::BinaryOutputStatus) :
-		return AssignClassTo<BinaryOutputStatus>(clazz, range);
+		return AssignClassTo<BinaryOutputStatusSpec>(clazz, range);
 	case(AssignClassType::AnalogOutputStatus) :
-		return AssignClassTo<AnalogOutputStatus>(clazz, range);
+		return AssignClassTo<AnalogOutputStatusSpec>(clazz, range);
 	default:
 		return Range::Invalid();
 	}
 }
 
 template <>
-StaticBinaryVariation DatabaseBuffers::CheckForPromotion<Binary>(const Binary& value, StaticBinaryVariation variation)
+StaticBinaryVariation DatabaseBuffers::CheckForPromotion<BinarySpec>(const Binary& value, StaticBinaryVariation variation)
 {
 	if (variation == StaticBinaryVariation::Group1Var1)
 	{
