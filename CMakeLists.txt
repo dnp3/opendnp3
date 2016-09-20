@@ -218,5 +218,5 @@ add_custom_target(
 add_custom_target(
 	generate_java_sources
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	COMMAND swig -I./cpp/libs/include -I./cpp/libs/src -c++ -java -outdir ./java/bindings -package com.automatak.dnp3 ./java/java.i
+	COMMAND swig -I./cpp/libs/include -c++ -java -outdir ./java/bindings -package com.automatak.dnp3 ./java/java.i
 )
