@@ -37,8 +37,8 @@ namespace errors
 {
 enum Error : int
 {
-    // --- shutdown errors ---
-    SHUTTING_DOWN
+	// --- shutdown errors ---
+	SHUTTING_DOWN
 };
 
 }

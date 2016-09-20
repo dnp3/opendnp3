@@ -58,7 +58,7 @@ DNP3Channel::DNP3Channel(
 void DNP3Channel::OnStateChange(ChannelState state)
 {
 	channelState = state;
-	for (auto & cb : callbacks)
+	for (auto& cb : callbacks)
 	{
 		cb(state);
 	}

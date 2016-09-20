@@ -36,7 +36,7 @@ namespace openpal
 namespace sizes
 {
 
-static const uint16_t MAX_ERASURE_SIZE = OPENPAL_ERASURE_MULTIPLE* sizeof(void*);
+static const uint16_t MAX_ERASURE_SIZE = OPENPAL_ERASURE_MULTIPLE * sizeof(void*);
 
 }
 }

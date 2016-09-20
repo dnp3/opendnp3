@@ -37,9 +37,9 @@ public:
 
 	enum class Result : uint8_t
 	{
-	    Left,
-	    Right,
-	    Same
+		Left,
+		Right,
+		Same
 	};
 
 	static Result SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs, ITaskFilter& filter);

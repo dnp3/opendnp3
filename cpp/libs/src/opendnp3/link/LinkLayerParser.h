@@ -42,10 +42,10 @@ class LinkLayerParser
 {
 	enum class State
 	{
-	    FindSync,
-	    ReadHeader,
-	    ReadBody,
-	    Complete
+		FindSync,
+		ReadHeader,
+		ReadBody,
+		Complete
 	};
 
 public:

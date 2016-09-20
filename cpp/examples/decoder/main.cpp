@@ -33,9 +33,9 @@ using namespace asiodnp3;
 
 enum class Mode
 {
-    Link,
-    Transport,
-    App
+	Link,
+	Transport,
+	App
 };
 
 Mode GetMode(const std::string& mode)

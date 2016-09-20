@@ -329,7 +329,7 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 
 	taskLock.SetOnline();
 
-	for (auto & rec : records)
+	for (auto& rec : records)
 	{
 		if (rec.enabled)
 		{
@@ -349,7 +349,7 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 
 	taskLock.SetOffline();
 
-	for (auto & rec : records)
+	for (auto& rec : records)
 	{
 		if (rec.enabled)
 		{

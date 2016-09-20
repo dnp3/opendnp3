@@ -125,7 +125,7 @@ void MasterScheduler::RecalculateTaskStartTimeout()
 {
 	auto min = MonotonicTimestamp::Max();
 
-	for(auto & task : m_tasks)
+	for(auto& task : m_tasks)
 	{
 		if (!task->IsRecurring() && (task->StartExpirationTime() < min))
 		{

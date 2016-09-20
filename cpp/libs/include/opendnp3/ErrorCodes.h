@@ -27,30 +27,30 @@ namespace opendnp3
 /// Error codes returned in log messages
 enum ErrorCodes
 {
-    // Transport Layer
-    TLERR_NO_HEADER,							// TPDU with no header (empty)
-    TLERR_BUFFER_FULL,							// Transport reassembly buffer full before complete fragment received
-    TLERR_NEW_FIR_MID_SEQUENCE,					// Received a new FIR in the middle of previous fragment
-    TLERR_MESSAGE_WITHOUT_FIR,					// Received a NON-FIR TPDU without a previous FIR
-    TLERR_BAD_SEQUENCE,							// Received a bad transport sequence number
+	// Transport Layer
+	TLERR_NO_HEADER,							// TPDU with no header (empty)
+	TLERR_BUFFER_FULL,							// Transport reassembly buffer full before complete fragment received
+	TLERR_NEW_FIR_MID_SEQUENCE,					// Received a new FIR in the middle of previous fragment
+	TLERR_MESSAGE_WITHOUT_FIR,					// Received a NON-FIR TPDU without a previous FIR
+	TLERR_BAD_SEQUENCE,							// Received a bad transport sequence number
 
-    // Link Layer state machine
+	// Link Layer state machine
 
-    DLERR_WRONG_MASTER_BIT,
-    DLERR_UNKNOWN_ROUTE,
-    DLERR_UNKNOWN_DESTINATION,
-    DLERR_UNKNOWN_SOURCE,
-    DLERR_UNEXPECTED_LPDU,
+	DLERR_WRONG_MASTER_BIT,
+	DLERR_UNKNOWN_ROUTE,
+	DLERR_UNKNOWN_DESTINATION,
+	DLERR_UNKNOWN_SOURCE,
+	DLERR_UNEXPECTED_LPDU,
 
-    // Link Layer parsing / validation
+	// Link Layer parsing / validation
 
-    DLERR_CRC,				//	CRC failure in header or data payload
-    DLERR_INVALID_LENGTH,	//	length parameter outside range [0,255]
-    DLERR_UNEXPECTED_DATA,	//  length > 5 for non-user data func code
-    DLERR_NO_DATA,			//  length == 5 but func code indicates data
-    DLERR_UNKNOWN_FUNC,		//  unknown function code
-    DLERR_UNEXPECTED_FCV,	//	FCV bit set unexpectedly, ie set on wrong func code
-    DLERR_UNEXPECTED_FCB,	//  FCB set unexpectedly
+	DLERR_CRC,				//	CRC failure in header or data payload
+	DLERR_INVALID_LENGTH,	//	length parameter outside range [0,255]
+	DLERR_UNEXPECTED_DATA,	//  length > 5 for non-user data func code
+	DLERR_NO_DATA,			//  length == 5 but func code indicates data
+	DLERR_UNKNOWN_FUNC,		//  unknown function code
+	DLERR_UNEXPECTED_FCV,	//	FCV bit set unexpectedly, ie set on wrong func code
+	DLERR_UNEXPECTED_FCB,	//  FCB set unexpectedly
 
 };
 

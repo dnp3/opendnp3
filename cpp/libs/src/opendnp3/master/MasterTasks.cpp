@@ -47,7 +47,7 @@ void MasterTasks::Initialize(MasterScheduler& scheduler)
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&timeSync));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&eventScan));
 
-	for (auto & pTask : boundTasks)
+	for (auto& pTask : boundTasks)
 	{
 		scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask.get()));
 	}

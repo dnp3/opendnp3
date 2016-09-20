@@ -29,7 +29,7 @@ namespace opendnp3
 {
 
 /**
-  
+
   Configuration of maximum event counts per event type.
 
   The underlying implementation uses a *preallocated* heap buffer to store events
@@ -44,8 +44,8 @@ struct EventBufferConfig
 {
 	/**
 		Construct the class using the same maximum for all types. This is mainly used for demo purposes.
-		You probably don't want to use this method unless your implementation actually reports every type. 
-	*/	
+		You probably don't want to use this method unless your implementation actually reports every type.
+	*/
 	static EventBufferConfig AllTypes(uint16_t sizes);
 
 	/// Retrieve the number of events using a type enumeration

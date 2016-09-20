@@ -43,9 +43,9 @@ class SecStateBase;
 
 enum class LinkTransmitMode : uint8_t
 {
-    Idle,
-    Primary,
-    Secondary
+	Idle,
+	Primary,
+	Secondary
 };
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer

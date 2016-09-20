@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
 
 		MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
 
-		for (char & c : input)
+		for (char& c : input)
 		{
 			switch (c)
 			{

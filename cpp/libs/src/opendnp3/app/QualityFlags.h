@@ -31,8 +31,8 @@ namespace flags
 
 enum Quality : uint8_t
 {
-    ONLINE = 0x01,
-    RESTART = 0x02
+	ONLINE = 0x01,
+	RESTART = 0x02
 };
 
 bool GetBinaryValue(uint8_t quality);

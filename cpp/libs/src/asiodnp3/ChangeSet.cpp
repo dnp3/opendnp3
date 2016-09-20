@@ -29,7 +29,7 @@ void ChangeSet::Add(const UpdateFun& fun)
 
 void ChangeSet::ApplyAll(opendnp3::IDatabase& db)
 {
-	for (auto & update : updates)
+	for (auto& update : updates)
 	{
 		update(db);
 	}

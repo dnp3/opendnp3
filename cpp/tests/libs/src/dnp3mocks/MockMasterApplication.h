@@ -64,7 +64,7 @@ public:
 
 	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override final
 	{
-		for (auto & header : assignClassHeaders)
+		for (auto& header : assignClassHeaders)
 		{
 			fun(header);
 		}

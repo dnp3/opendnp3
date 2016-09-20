@@ -120,7 +120,7 @@ void GPRSManagerImpl::BeginShutdown()
 
 	this->m_is_shutting_down = true;
 
-	for (auto & resource : m_resources)
+	for (auto& resource : m_resources)
 	{
 		resource->BeginShutdown();
 	}

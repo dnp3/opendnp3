@@ -61,7 +61,7 @@ std::string ByteToHex(uint8_t b)
 std::string AppendHex(std::initializer_list<std::string> segments)
 {
 	ostringstream oss;
-	for (auto & str : segments)
+	for (auto& str : segments)
 	{
 		oss << str;
 	}

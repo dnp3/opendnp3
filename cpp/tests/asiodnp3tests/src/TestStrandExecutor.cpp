@@ -47,7 +47,7 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 
 	auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);
 
-	auto setup = [&](uint32_t & counter)
+	auto setup = [&](uint32_t& counter)
 	{
 		auto exe = StrandExecutor::Create(pool);
 		auto increment = [&]()

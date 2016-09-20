@@ -28,7 +28,7 @@ opendnp3::HeaderBuilderT ConvertToLambda(const std::vector<opendnp3::Header>& he
 	return[headers](opendnp3::HeaderWriter & writer) -> bool
 	{
 
-		for (auto & header : headers)
+		for (auto& header : headers)
 		{
 			if (!header.WriteTo(writer))
 			{

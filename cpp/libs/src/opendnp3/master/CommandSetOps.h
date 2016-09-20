@@ -41,8 +41,8 @@ class CommandSetOps final : public IAPDUHandler, private openpal::Uncopyable
 {
 	enum class Mode : uint8_t
 	{
-	    Select,
-	    Operate
+		Select,
+		Operate
 	};
 
 	CommandSetOps(Mode mode, CommandSet& commands_);
@@ -53,15 +53,15 @@ public:
 
 	enum class OperateResult : uint8_t
 	{
-	    OK,
-	    FAIL_PARSE
+		OK,
+		FAIL_PARSE
 	};
 
 	enum class SelectResult : uint8_t
 	{
-	    OK,
-	    FAIL_PARSE,
-	    FAIL_SELECT
+		OK,
+		FAIL_PARSE,
+		FAIL_SELECT
 	};
 
 	/// Write the headers to an ASDU

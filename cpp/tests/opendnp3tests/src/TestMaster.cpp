@@ -347,7 +347,7 @@ TEST_CASE(SUITE("RestartViaNullUnsol"))
 	params.unsolClassMask = ClassField::None();
 	params.startupIntegrityClassMask = ClassField::None(); //disable integrity poll
 
-	MasterTestObject t(params);	
+	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
 
 	REQUIRE(t.exe.RunMany() > 0);
@@ -369,7 +369,7 @@ TEST_CASE(SUITE("DisableAutomatedRestartClear"))
 	params.unsolClassMask = ClassField::None();
 	params.startupIntegrityClassMask = ClassField::None(); //disable integrity poll
 
-	MasterTestObject t(params);	
+	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
 
 	REQUIRE(t.exe.RunMany() > 0);

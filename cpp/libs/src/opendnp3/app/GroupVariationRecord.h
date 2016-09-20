@@ -37,9 +37,9 @@ namespace opendnp3
 
 enum class GroupVariationType : int
 {
-    STATIC,
-    EVENT,
-    OTHER
+	STATIC,
+	EVENT,
+	OTHER
 };
 
 struct EnumAndType

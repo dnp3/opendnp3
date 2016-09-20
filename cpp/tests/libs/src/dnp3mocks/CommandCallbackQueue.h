@@ -88,7 +88,7 @@ public:
 
 		uint32_t i = 0;
 
-		for (auto & item : list)
+		for (auto& item : list)
 		{
 			if (!value.results[i].Equals(item))
 			{

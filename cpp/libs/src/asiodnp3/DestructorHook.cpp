@@ -30,7 +30,7 @@ DestructorHook::DestructorHook()
 
 DestructorHook::~DestructorHook()
 {
-	for (auto & action : actions)
+	for (auto& action : actions)
 	{
 		action();
 	}

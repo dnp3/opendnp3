@@ -36,11 +36,11 @@ class HeaderWriter;
 */
 enum class HeaderType : uint8_t
 {
-    AllObjects,
-    Ranged8,
-    Ranged16,
-    LimitedCount8,
-    LimitedCount16
+	AllObjects,
+	Ranged8,
+	Ranged16,
+	LimitedCount8,
+	LimitedCount16
 };
 
 /**

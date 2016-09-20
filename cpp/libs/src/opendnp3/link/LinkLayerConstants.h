@@ -39,24 +39,24 @@ const uint16_t LPDU_MAX_FRAME_SIZE = 292;	//10(header) + 250 (user data) + 32 (b
 /// Indices for use with buffers containing link headers
 enum LinkHeaderIndex : uint8_t
 {
-    LI_START_05 = 0,
-    LI_START_64 = 1,
-    LI_LENGTH = 2,
-    LI_CONTROL = 3,
-    LI_DESTINATION = 4,
-    LI_SOURCE = 6,
-    LI_CRC = 8
+	LI_START_05 = 0,
+	LI_START_64 = 1,
+	LI_LENGTH = 2,
+	LI_CONTROL = 3,
+	LI_DESTINATION = 4,
+	LI_SOURCE = 6,
+	LI_CRC = 8
 };
 
 /// Masks for use with the CONTROL byte
 enum ControlMask : uint8_t
 {
-    MASK_DIR = 0x80,
-    MASK_PRM = 0x40,
-    MASK_FCB = 0x20,
-    MASK_FCV = 0x10,
-    MASK_FUNC = 0x0F,
-    MASK_FUNC_OR_PRM = MASK_PRM | MASK_FUNC
+	MASK_DIR = 0x80,
+	MASK_PRM = 0x40,
+	MASK_FCB = 0x20,
+	MASK_FCV = 0x10,
+	MASK_FUNC = 0x0F,
+	MASK_FUNC_OR_PRM = MASK_PRM | MASK_FUNC
 };
 
 }

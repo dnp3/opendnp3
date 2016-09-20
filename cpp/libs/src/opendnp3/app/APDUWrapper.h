@@ -33,9 +33,9 @@ namespace opendnp3
 
 enum class APDUEquality
 {
-    FULL_EQUALITY,
-    OBJECT_HEADERS_EQUAL,
-    NONE
+	FULL_EQUALITY,
+	OBJECT_HEADERS_EQUAL,
+	NONE
 };
 
 // This class is used to write to an underlying buffer

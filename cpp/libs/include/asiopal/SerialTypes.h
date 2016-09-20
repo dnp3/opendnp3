@@ -31,26 +31,26 @@ namespace asiopal
 /// Enumeration for setting serial port parity
 enum class ParityType
 {
-    NONE,
-    EVEN,
-    ODD
+	NONE,
+	EVEN,
+	ODD
 };
 
 /// Enumeration for setting serial port flow control
 enum class FlowType
 {
-    NONE,
-    HARDWARE,
-    XONXOFF
+	NONE,
+	HARDWARE,
+	XONXOFF
 };
 
 /// Enumeration for stop bits
 enum class StopBits
 {
-    NONE,
-    ONE,
-    ONE_POINT_FIVE,
-    TWO
+	NONE,
+	ONE,
+	ONE_POINT_FIVE,
+	TWO
 };
 
 ParityType GetParityFromInt(int parity);

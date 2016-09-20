@@ -238,11 +238,11 @@ void MContext::ProcessIIN(const IINField& iin)
 	{
 		switch (this->params.timeSyncMode)
 		{
-			case(TimeSyncMode::SerialTimeSync):
-				this->tasks.timeSync.Demand();
-				break;
-			default:
-				break;
+		case(TimeSyncMode::SerialTimeSync):
+			this->tasks.timeSync.Demand();
+			break;
+		default:
+			break;
 		}
 	}
 

@@ -116,7 +116,7 @@ private:
 
 	uint32_t ProcessRxValues()
 	{
-		for (auto & value : m_rx_values)
+		for (auto& value : m_rx_values)
 		{
 
 			if (value.value.value != m_rx_sequence)

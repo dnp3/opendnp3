@@ -29,7 +29,10 @@ namespace opendnp3
 
 SecurityStat::SecurityStat() :
 	quality(flags::RESTART),
-	value({0, 0})
+	value(
+{
+	0, 0
+})
 {}
 
 SecurityStat::SecurityStat(Value value_, uint8_t quality_, DNPTime time_) :
@@ -43,14 +46,20 @@ SecurityStat::SecurityStat(Value value_, uint8_t quality_, DNPTime time_) :
 
 SecurityStat::SecurityStat(uint8_t quality_, uint16_t assocId, uint32_t count) :
 	quality(quality_),
-	value({ assocId, count }),
-      time(0)
+	value(
+{
+	assocId, count
+}),
+time(0)
 {}
 
 SecurityStat::SecurityStat(uint8_t quality_, uint16_t assocId, uint32_t count, DNPTime time_) :
 	quality(quality_),
-	value({ assocId, count }),
-      time(time_)
+	value(
+{
+	assocId, count
+}),
+time(time_)
 {}
 
 

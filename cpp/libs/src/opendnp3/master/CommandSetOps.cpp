@@ -63,7 +63,7 @@ CommandSetOps::CommandSetOps(Mode mode_, CommandSet& commands_) :
 
 bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer)
 {
-	for(auto & header : set.m_headers)
+	for(auto& header : set.m_headers)
 	{
 		if (!header->Write(writer))
 		{

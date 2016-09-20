@@ -26,11 +26,11 @@ namespace opendnp3
 const AppControlField AppControlField::DEFAULT(true, true, false, false, 0);
 
 AppControlField::AppControlField(uint8_t byte) :
-	FIR((byte& FIR_MASK) != 0),
-	FIN((byte& FIN_MASK) != 0),
-	CON((byte& CON_MASK) != 0),
-	UNS((byte& UNS_MASK) != 0),
-	SEQ(byte& SEQ_MASK)
+	FIR((byte & FIR_MASK) != 0),
+	FIN((byte & FIN_MASK) != 0),
+	CON((byte & CON_MASK) != 0),
+	UNS((byte & UNS_MASK) != 0),
+	SEQ(byte & SEQ_MASK)
 {
 }
 

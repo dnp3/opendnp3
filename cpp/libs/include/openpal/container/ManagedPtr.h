@@ -97,7 +97,7 @@ public:
 	}
 
 	// move assign operator
-	ManagedPtr& operator=(ManagedPtr && other)
+	ManagedPtr& operator=(ManagedPtr&& other)
 	{
 		if (this != &other)
 		{

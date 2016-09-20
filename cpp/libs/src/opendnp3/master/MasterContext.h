@@ -57,9 +57,9 @@ protected:
 
 	enum class TaskState
 	{
-	    IDLE,
-	    TASK_READY,
-	    WAIT_FOR_RESPONSE
+		IDLE,
+		TASK_READY,
+		WAIT_FOR_RESPONSE
 	};
 
 public:

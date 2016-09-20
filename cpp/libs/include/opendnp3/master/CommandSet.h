@@ -76,7 +76,7 @@ public:
 	void Add(std::initializer_list<Indexed<T>> items)
 	{
 		auto& header = this->StartHeader<T>();
-		for (auto & command : items)
+		for (auto& command : items)
 		{
 			header.Add(command.value, command.index);
 		}

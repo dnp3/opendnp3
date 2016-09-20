@@ -81,20 +81,20 @@ public:
 
 	enum class ResponseResult : uint8_t
 	{
-	    /// The response was bad, the task has failed
-	    ERROR_BAD_RESPONSE,
+		/// The response was bad, the task has failed
+		ERROR_BAD_RESPONSE,
 
-	    /// An internal error occured like a failure calculating an HMAC
-	    ERROR_INTERNAL_FAILURE,
+		/// An internal error occured like a failure calculating an HMAC
+		ERROR_INTERNAL_FAILURE,
 
-	    /// The response was good and the task is complete
-	    OK_FINAL,
+		/// The response was good and the task is complete
+		OK_FINAL,
 
-	    /// The response was good and the task should repeat the format, transmit, and await response sequence
-	    OK_REPEAT,
+		/// The response was good and the task should repeat the format, transmit, and await response sequence
+		OK_REPEAT,
 
-	    /// The response was good and the task should continue executing. Restart the response timer, and increment expected SEQ#.
-	    OK_CONTINUE
+		/// The response was good and the task should continue executing. Restart the response timer, and increment expected SEQ#.
+		OK_CONTINUE
 	};
 
 
