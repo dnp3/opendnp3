@@ -31,12 +31,12 @@
 namespace opendnp3
 {
 
-template <class ValueSpec>
+template <class Spec>
 struct ValueAndVariation
 {
-	typename ValueSpec::ValueType value;
-	typename ValueSpec::EventVariation defaultVariation;
-	typename ValueSpec::EventVariation selectedVariation;
+	typename Spec::ValueType value;
+	typename Spec::EventVariation defaultVariation;
+	typename Spec::EventVariation selectedVariation;
 
 	void SelectDefaultVariation()
 	{
@@ -78,17 +78,17 @@ public:
 	SOERecord(const AnalogOutputStatus& meas, uint16_t index, EventClass clazz, EventAnalogOutputStatusVariation var);
 	SOERecord(const SecurityStat& meas, uint16_t index, EventClass clazz, EventSecurityStatVariation var);
 
-	template <class ValueSpec>
-	EventInstance<typename ValueSpec::type_t> ReadEvent()
+	template <class Spec>
+	EventInstance<typename Spec::type_t> ReadEvent()
 	{
-		return EventInstance <typename ValueSpec::type_t>
+		return EventInstance <typename Spec::type_t>
 		{
-			typename ValueSpec::type_t(GetValue<ValueSpec>().value, flags, time), index
+			typename Spec::type_t(GetValue<Spec>().value, flags, time), index
 		};
 	}
 
-	template <class ValueSpec>
-	const ValueAndVariation<ValueSpec>& GetValue();
+	template <class Spec>
+	const ValueAndVariation<Spec>& GetValue();
 
 	void SelectDefault();
 

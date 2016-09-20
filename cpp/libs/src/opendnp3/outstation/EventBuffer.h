@@ -124,20 +124,20 @@ private:
 
 	IINField SelectByClass(const ClassField& field, uint32_t max);
 
-	template <class ValueSpec>
-	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename ValueSpec::EventVariation var);
+	template <class Spec>
+	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename Spec::EventVariation var);
 
-	template <class ValueSpec>
+	template <class Spec>
 	IINField SelectByType(int32_t max)
 	{
-		GenericSelectByType<ValueSpec>(max, true, typename ValueSpec::EventVariation());
+		GenericSelectByType<Spec>(max, true, typename Spec::EventVariation());
 		return IINField();
 	}
 
-	template <class ValueSpec>
-	IINField SelectByType(int32_t max, typename ValueSpec::EventVariation var)
+	template <class Spec>
+	IINField SelectByType(int32_t max, typename Spec::EventVariation var)
 	{
-		GenericSelectByType<ValueSpec>(max, false, var);
+		GenericSelectByType<Spec>(max, false, var);
 		return IINField();
 	}
 
@@ -145,8 +145,8 @@ private:
 
 	bool RemoveOldestEventOfType(EventType type);
 
-	template <class ValueSpec>
-	void UpdateAny(const Event<ValueSpec>& evt);
+	template <class Spec>
+	void UpdateAny(const Event<Spec>& evt);
 
 	bool IsAnyTypeOverflown() const;
 	bool IsTypeOverflown(EventType type) const;
@@ -166,39 +166,39 @@ private:
 	bool HasEnoughSpaceToClearOverflow() const;
 };
 
-template <class ValueSpec>
-void EventBuffer::UpdateAny(const Event<ValueSpec>& evt)
+template <class Spec>
+void EventBuffer::UpdateAny(const Event<Spec>& evt)
 {
-	auto maxForType = config.GetMaxEventsForType(ValueSpec::EventTypeEnum);
+	auto maxForType = config.GetMaxEventsForType(Spec::EventTypeEnum);
 
 	if (maxForType > 0)
 	{
-		auto currentCount = totalCounts.NumOfType(ValueSpec::EventTypeEnum);
+		auto currentCount = totalCounts.NumOfType(Spec::EventTypeEnum);
 
 		if (currentCount >= maxForType || events.IsFull())
 		{
 			this->overflow = true;
-			RemoveOldestEventOfType(ValueSpec::EventTypeEnum);
+			RemoveOldestEventOfType(Spec::EventTypeEnum);
 		}
 
 		// Add the event, the Reset() ensures that selected/written == false
 		events.Add(SOERecord(evt.value, evt.index, evt.clazz, evt.variation))->value.Reset();
-		totalCounts.Increment(evt.clazz, ValueSpec::EventTypeEnum);
+		totalCounts.Increment(evt.clazz, Spec::EventTypeEnum);
 	}
 }
 
-template <class ValueSpec>
-uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typename ValueSpec::EventVariation var)
+template <class Spec>
+uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typename Spec::EventVariation var)
 {
 	uint32_t num = 0;
 	auto iter = events.Iterate();
-	const uint32_t remaining = totalCounts.NumOfType(ValueSpec::EventTypeEnum) - selectedCounts.NumOfType(ValueSpec::EventTypeEnum);
+	const uint32_t remaining = totalCounts.NumOfType(Spec::EventTypeEnum) - selectedCounts.NumOfType(Spec::EventTypeEnum);
 
 	while (iter.HasNext() && (num < remaining) && (num < max))
 	{
 		auto pNode = iter.Next();
 
-		if (pNode->value.type == ValueSpec::EventTypeEnum)
+		if (pNode->value.type == Spec::EventTypeEnum)
 		{
 			if (useDefault)
 			{

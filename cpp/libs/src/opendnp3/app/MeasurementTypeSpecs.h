@@ -73,7 +73,7 @@ struct BinarySpec : private openpal::StaticOnly
 	typedef SimpleEventMetadata<BinarySpec> MetadataType;
 
 	inline static bool IsQualityOnlineOnly(const Binary& binary)
-	{ 
+	{
 		return (binary.quality & 0b01111111) == static_cast<uint8_t>(BinaryQuality::ONLINE);
 	}
 
@@ -235,7 +235,7 @@ struct SecurityStatSpec : private openpal::StaticOnly
 {
 	typedef SecurityStat type_t;
 
-	const static EventType EventTypeEnum = EventType::SecurityStat;	
+	const static EventType EventTypeEnum = EventType::SecurityStat;
 	const static EventSecurityStatVariation DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
 	const static StaticSecurityStatVariation DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
 

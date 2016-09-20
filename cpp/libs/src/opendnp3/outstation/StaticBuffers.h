@@ -46,15 +46,15 @@ public:
 	DatabaseConfigView GetView() const;
 
 	// specializations in cpp file
-	template <class ValueSpec>
-	openpal::ArrayView<Cell<ValueSpec>, uint16_t> GetArrayView();
+	template <class Spec>
+	openpal::ArrayView<Cell<Spec>, uint16_t> GetArrayView();
 
 private:
 
-	template <class ValueSpec>
+	template <class Spec>
 	void SetDefaultIndices()
 	{
-		auto view = GetArrayView<ValueSpec>();
+		auto view = GetArrayView<Spec>();
 		for (uint16_t i = 0; i < view.Size(); ++i)
 		{
 			view[i].vIndex = i;

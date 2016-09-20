@@ -28,26 +28,26 @@ namespace opendnp3
 /**
 * Type used to record whether a value is requested in a response
 */
-template <class ValueSpec>
+template <class Spec>
 struct SelectedValue
 {
-	SelectedValue() : selected(false), value(), variation(ValueSpec::DefaultStaticVariation)
+	SelectedValue() : selected(false), value(), variation(Spec::DefaultStaticVariation)
 	{}
 
 	bool selected;
-	typename ValueSpec::type_t value;
-	typename ValueSpec::StaticVariation variation;
+	typename Spec::type_t value;
+	typename Spec::StaticVariation variation;
 };
 
 /**
 * Holds particular measurement type in the database.
 */
-template <class ValueSpec>
+template <class Spec>
 struct Cell
 {
-	typedef typename ValueSpec::type_t meas_type_t;
+	typedef typename Spec::type_t meas_type_t;
 
-	Cell() : value(), vIndex(0), variation(ValueSpec::DefaultStaticVariation)
+	Cell() : value(), vIndex(0), variation(Spec::DefaultStaticVariation)
 	{}
 
 	void SetInitialValue(const meas_type_t& value_)
@@ -58,10 +58,10 @@ struct Cell
 
 	meas_type_t value;
 	uint16_t vIndex; // virtual index for discontiguous data, as opposed to the raw array index
-	typename ValueSpec::StaticVariation variation;
-	typename ValueSpec::MetadataType metadata;
+	typename Spec::StaticVariation variation;
+	typename Spec::MetadataType metadata;
 
-	SelectedValue<ValueSpec> selection;
+	SelectedValue<Spec> selection;
 };
 
 

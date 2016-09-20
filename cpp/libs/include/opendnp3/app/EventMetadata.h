@@ -28,21 +28,21 @@ namespace opendnp3
 {
 
 /// A null object for types that have no metadata
-template <class ValueSpec>
+template <class Spec>
 struct EmptyMetadata
 {
-	void SetEventValue(const typename ValueSpec::type_t& value) {}
+	void SetEventValue(const typename Spec::type_t& value) {}
 };
 
 /// Base class for different types of event metadata
-template <class ValueSpec>
+template <class Spec>
 struct EventMetadata
 {
-	typedef typename ValueSpec::type_t meas_type_t;
+	typedef typename Spec::type_t meas_type_t;
 
 	PointClass clazz;
 	meas_type_t lastEvent;
-	typename ValueSpec::EventVariation variation;
+	typename Spec::EventVariation variation;
 
 	void SetEventValue(const meas_type_t& value)
 	{
@@ -51,35 +51,35 @@ struct EventMetadata
 
 protected:
 
-	EventMetadata() : clazz(PointClass::Class1), lastEvent(), variation(ValueSpec::DefaultEventVariation)
+	EventMetadata() : clazz(PointClass::Class1), lastEvent(), variation(Spec::DefaultEventVariation)
 	{}
 };
 
 /// Metatype w/o a deadband
-template <class ValueSpec>
-struct SimpleEventMetadata : EventMetadata<ValueSpec>
+template <class Spec>
+struct SimpleEventMetadata : EventMetadata<Spec>
 {
-	typedef typename ValueSpec::type_t meas_type_t;
+	typedef typename Spec::type_t meas_type_t;
 
-	SimpleEventMetadata() : EventMetadata<ValueSpec>()
+	SimpleEventMetadata() : EventMetadata<Spec>()
 	{}
 
 	bool IsEvent(const meas_type_t& newValue) const
 	{
-		return ValueSpec::IsEvent(this->lastEvent, newValue);
+		return Spec::IsEvent(this->lastEvent, newValue);
 	}
 };
 
 /// Structure for holding metadata information on points that have support deadbanding
-template <class ValueSpec, class DeadbandType>
-struct DeadbandMetadata : EventMetadata<ValueSpec>
+template <class Spec, class DeadbandType>
+struct DeadbandMetadata : EventMetadata<Spec>
 {
-	DeadbandMetadata() : EventMetadata<ValueSpec>(), deadband(0)
+	DeadbandMetadata() : EventMetadata<Spec>(), deadband(0)
 	{}
 
-	bool IsEvent(const typename ValueSpec::type_t& newValue) const
+	bool IsEvent(const typename Spec::type_t& newValue) const
 	{
-		return ValueSpec::IsEvent(this->lastEvent, newValue, deadband);
+		return Spec::IsEvent(this->lastEvent, newValue, deadband);
 	}
 
 	DeadbandType deadband;

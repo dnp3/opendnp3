@@ -31,8 +31,8 @@ using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 
-template <class ValueSpec>
-void TestBufferForEvent(bool isEvent, const typename ValueSpec::type_t& newVal, DatabaseTestObject& test, std::deque< Event <ValueSpec> >& queue)
+template <class Spec>
+void TestBufferForEvent(bool isEvent, const typename Spec::type_t& newVal, DatabaseTestObject& test, std::deque< Event <Spec> >& queue)
 {
 	test.db.Update(newVal, 0);
 

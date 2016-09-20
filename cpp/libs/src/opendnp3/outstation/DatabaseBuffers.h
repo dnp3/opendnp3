@@ -79,27 +79,27 @@ private:
 
 	SelectedRanges ranges;
 
-	template <class ValueSpec>
+	template <class Spec>
 	bool LoadType(HeaderWriter& writer);
 
-	template <class ValueSpec>
+	template <class Spec>
 	void Deselect()
 	{
-		auto range = ranges.Get<ValueSpec>();
+		auto range = ranges.Get<Spec>();
 		if (range.IsValid())
 		{
-			auto view = buffers.GetArrayView<ValueSpec>();
+			auto view = buffers.GetArrayView<Spec>();
 			for (uint16_t i = range.start; i <= range.stop; ++i)
 			{
 				view[i].selection.selected = false;
 			}
-			ranges.Clear<ValueSpec>();
+			ranges.Clear<Spec>();
 		}
 	}
 
 	//specialization for binary in cpp file
-	template <class ValueSpec>
-	static typename ValueSpec::StaticVariation  CheckForPromotion(const typename ValueSpec::type_t& value, typename ValueSpec::StaticVariation variation)
+	template <class Spec>
+	static typename Spec::StaticVariation  CheckForPromotion(const typename Spec::type_t& value, typename Spec::StaticVariation variation)
 	{
 		return variation;
 	}
@@ -114,7 +114,7 @@ private:
 	    typename T::StaticVariation variation
 	);
 
-	template <class ValueSpec>
+	template <class Spec>
 	Range AssignClassTo(PointClass clazz, const Range& range);
 
 	template <class T>
@@ -262,10 +262,10 @@ bool DatabaseBuffers::LoadType(HeaderWriter& writer)
 	}
 }
 
-template <class ValueSpec>
+template <class Spec>
 Range DatabaseBuffers::AssignClassTo(PointClass clazz, const Range& range)
 {
-	auto view = buffers.GetArrayView<ValueSpec>();
+	auto view = buffers.GetArrayView<Spec>();
 	auto clipped = range.Intersection(RangeOf(view.Size()));
 	for (auto i = clipped.start; i <= clipped.stop; ++i)
 	{
