@@ -208,3 +208,9 @@ if(TEST)
   add_test(testasiodnp3 testasiodnp3)
 
 endif()
+
+add_custom_target(
+	format
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	COMMAND astyle -R ./cpp/*.h ./cpp/*.cpp --options=./config/astyle.cfg --exclude=./cpp/libs/include/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/objects
+)
