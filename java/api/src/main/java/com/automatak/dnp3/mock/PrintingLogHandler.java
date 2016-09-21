@@ -20,6 +20,7 @@ package com.automatak.dnp3.mock;
 
 import com.automatak.dnp3.LogEntry;
 import com.automatak.dnp3.LogHandler;
+import com.automatak.dnp3.LogLevels;
 
 /**
  * Singleton that prints log information as it is received
@@ -46,11 +47,39 @@ public class PrintingLogHandler implements LogHandler {
     {
         switch(level)
         {
-            // TODO - convert levels to a human readable name
+            case(LogLevels.EVENT):
+                return "EVENT";
+            case(LogLevels.ERROR):
+                return "ERROR";
+            case(LogLevels.WARNING):
+                return "WARN";
+            case(LogLevels.INFO):
+                return "INFO";
+            case(LogLevels.DEBUG):
+                return "DEBUG";
+            case(LogLevels.LINK_RX):
+            case(LogLevels.LINK_RX_HEX):
+                return "<-LL-";
+            case(LogLevels.LINK_TX):
+            case(LogLevels.LINK_TX_HEX):
+                return "-LL->";
+            case(LogLevels.TRANSPORT_RX):
+                return "<-TL-";
+            case(LogLevels.TRANSPORT_TX):
+                return "-TL->";
 
+            case(LogLevels.APP_HEX_RX):
+            case(LogLevels.APP_HEADER_RX):
+            case(LogLevels.APP_OBJECT_RX):
+                return "<-AL-";
 
+            case (LogLevels.APP_HEX_TX):
+            case (LogLevels.APP_HEADER_TX):
+            case (LogLevels.APP_OBJECT_TX):
+                return "-AL->";
+            
             default:
-                return "UNKNOWN_LEVEL";
+                return "?";
         }
     }
 }

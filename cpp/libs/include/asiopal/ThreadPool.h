@@ -47,8 +47,8 @@ public:
 	    openpal::ILogHandler* pHandler,
 	    uint32_t levels,
 	    uint32_t aConcurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
 	);
 
 	static std::shared_ptr<ThreadPool> Create(
@@ -78,7 +78,7 @@ private:
 
 	std::shared_ptr<asio::io_service> ioservice;
 	asio::basic_waitable_timer< asiopal::asiopal_steady_clock > infiniteTimer;
-	std::vector<std::thread*> threads;
+	std::vector<std::unique_ptr<std::thread>> threads;
 };
 
 }

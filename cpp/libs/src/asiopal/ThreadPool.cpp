@@ -57,7 +57,8 @@ ThreadPool::ThreadPool(
 	infiniteTimer.async_wait([](const std::error_code&) {});
 	for(uint32_t i = 0; i < concurrency; ++i)
 	{
-		threads.push_back(new thread(bind(&ThreadPool::Run, this)));
+		auto run = [this]() { this->Run(); };
+		threads.push_back(std::make_unique<thread>(run));
 	}
 }
 
@@ -74,10 +75,7 @@ std::shared_ptr<ThreadPool> ThreadPool::Create(
 ThreadPool::~ThreadPool()
 {
 	this->Shutdown();
-	for(auto pThread : threads)
-	{
-		delete pThread;
-	}
+	threads.clear();
 }
 
 void ThreadPool::Shutdown()
@@ -86,9 +84,9 @@ void ThreadPool::Shutdown()
 	{
 		isShutdown = true;
 		infiniteTimer.cancel();
-		for (auto pThread : threads)
+		for (auto& thread : threads)
 		{
-			pThread->join();
+			thread->join();
 		}
 	}
 }
@@ -101,8 +99,14 @@ asio::io_service& ThreadPool::GetIOService()
 void ThreadPool::Run()
 {
 	onThreadStart();
+	
+	SIMPLE_LOG_BLOCK(root.logger, logflags::INFO, "Starting threadpool thread...");
+	
 	ioservice->run();
-	onThreadExit();
+	
+	SIMPLE_LOG_BLOCK(root.logger, logflags::INFO, "Exiting threadpool thread...");
+
+	onThreadExit();	
 }
 
 }
