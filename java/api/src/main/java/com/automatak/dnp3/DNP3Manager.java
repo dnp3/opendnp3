@@ -31,12 +31,34 @@ public interface DNP3Manager {
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
      * @param id An id used for logging purposes
      * @param levels The starting level for logging output
-     * @param retry >Retry configuration for the channel
+     * @param retry Retry configuration for the channel
      * @param address The address of remote host as a INET address i.e. "127.0.0.1" or name "www.google.com"
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @return A channel interface
      */
     Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, int port);
+
+    /**
+     * Add a TCP client channel. The channel does not try to connect until you add a stack.
+     * @param id An id used for logging purposes
+     * @param levels The starting level for logging output
+     * @param retry Retry configuration for the channel
+     * @param endpoint TThe address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
+     * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
+     * @return A channel interface
+     */
+    Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port);
+
+    /**
+     * Add a serial channel. The port does not try to open until you add a stack.
+     *
+     * @param id An id used for logging purposes
+     * @param levels The starting level for logging output
+     * @param retry Retry configuration for the channel
+     * @param settings Configuration for the serial port
+     * @return
+     */
+    Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings);
 
 
     /**

@@ -28,7 +28,6 @@ import com.automatak.dnp3.LogHandler;
  * variable "com.automatak.dnp3.nostaticload". Static loading works well most of the time, but OSGi environments must
  * be able to control which class loader does the loading.
  *
- *
  * OSGi bundles that use the shared library should insert the following code into the bundle constructor:
  *
  * <pre>
@@ -37,7 +36,6 @@ import com.automatak.dnp3.LogHandler;
  * System.loadLibrary("dnp3java")
  * }
  * </pre>
- *
  */
 public class DNP3ManagerFactory {
 

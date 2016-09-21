@@ -23,39 +23,83 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 class ManagerImpl implements DNP3Manager {
 
-    private long nativePointer;
+    private long pointer;
 
     public ManagerImpl(int concurrency, LogHandler handler)
     {
-        throw new NotImplementedException();
-        //this.nativePointer = create_native_manager(concurrency);
+        this.pointer = create_native_manager(concurrency, handler);
+    }
+
+    @Override
+    public void finalize()
+    {
+        this.shutdown();
     }
 
     @Override
     public Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, int port)
     {
-        throw new NotImplementedException();
+        long ptr = get_native_channel_tcp_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), address, port);
 
-        /*
-        long ptr = get_native_channel_tcp_client(nativePointer, name, level.toInt(), retryMs, address, port);
-        return new ChannelImpl(ptr);
-        */
+        if(ptr == 0) {
+            return null;
+        }
+
+        throw new NotImplementedException();
     }
 
     @Override
-    public void shutdown()
+    public Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port)
     {
+        long ptr = get_native_channel_tcp_server(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), endpoint, port);
+
+        if(ptr == 0) {
+            return null;
+        }
+
         throw new NotImplementedException();
     }
 
-    /*
-    private native long create_native_manager(int concurrency);
-    private native void destroy_native_manager(long ptr);
+    @Override
+    public Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings)
+    {
+        long ptr = get_native_channel_serial(
+                this.pointer,
+                id,
+                levels,
+                retry.minRetryDelay.toMillis(),
+                retry.maxRetryDelay.toMillis(),
+                settings.port,
+                settings.baudRate,
+                settings.dataBits,
+                settings.parity.toInt(),
+                settings.stopBits,
+                settings.flowControl.toInt()
+        );
 
-    private native long get_native_channel_tcp_client(long ptrManager, String name, int level, long retryMs, String address, int port);
-    private native long get_native_channel_tcp_server(long ptrManager, String name, int level, long retryMs, String endpoint, int port);
-    private native long get_native_channel_serial(long ptrManager, String name, int level, long retryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl);
+        if(ptr == 0) {
+            return null;
+        }
 
-    private native void native_add_log_subscriber(long ptrManager, LogSubscriber sub);
-    */
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public synchronized void shutdown()
+    {
+        if(this.pointer != 0)
+        {
+            shutdown_native_manager(this.pointer);
+            this.pointer = 0;
+        }
+    }
+
+    private native long create_native_manager(int concurrency, LogHandler handler);
+    private native void shutdown_native_manager(long nativePointer);
+
+    private native long get_native_channel_tcp_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String address, int port);
+    private native long get_native_channel_tcp_server(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String endpoint, int port);
+    private native long get_native_channel_serial(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl);
+
+
 }
