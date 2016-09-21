@@ -20,6 +20,7 @@ package com.automatak.dnp3.mock;
 
 
 import com.automatak.dnp3.*;
+import com.automatak.dnp3.enums.CommandStatus;
 
 public class ConstantCommandHandler implements CommandHandler {
 

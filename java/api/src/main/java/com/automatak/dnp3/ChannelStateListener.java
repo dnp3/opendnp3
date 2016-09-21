@@ -18,6 +18,8 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.ChannelState;
+
 /**
  * Callback interface invoked when the state of a communication channel changes
  */

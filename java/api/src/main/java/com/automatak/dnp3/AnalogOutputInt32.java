@@ -18,6 +18,8 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.CommandStatus;
+
 /**
  *  A set-point command request with short integer representation.
  *  The underlying DNP3 serialization is Group41, Variation 1

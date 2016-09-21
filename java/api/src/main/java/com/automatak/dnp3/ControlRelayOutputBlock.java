@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.CommandStatus;
+import com.automatak.dnp3.enums.ControlCode;
+
 /**
  * Command request for control a relay output
  */

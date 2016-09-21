@@ -18,7 +18,7 @@
  */
 package com.automatak.dnp3.mock;
 
-import com.automatak.dnp3.CommandStatus;
+import com.automatak.dnp3.enums.CommandStatus;
 
 /**
  * Singleton that return SUCCESS for all command requests it receives

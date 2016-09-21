@@ -18,6 +18,8 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.CommandStatus;
+
 /**
  * Interface for dispatching command requests from a master to an outstation
  */

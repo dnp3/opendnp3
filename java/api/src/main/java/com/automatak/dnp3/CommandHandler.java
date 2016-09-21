@@ -18,6 +18,8 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.CommandStatus;
+
 /**
  * Outstation application code implements this interface to handle command requests from a master
  */
