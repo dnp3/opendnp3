@@ -25,10 +25,6 @@ public class OutstationStackConfig {
      */
     public final LinkLayerConfig linkConfig = new LinkLayerConfig(false);
 
-    /**
-     * Application layer configuration
-     */
-    public final AppLayerConfig appConfig = new AppLayerConfig();
 
     /**
      * Configuration for the outstation (everything but the database layout)

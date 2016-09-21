@@ -18,8 +18,9 @@
  */
 package com.automatak.dnp3;
 
-import java.util.LinkedList;
-import java.util.List;
+import com.automatak.dnp3.enums.TimeSyncMode;
+
+import java.time.Duration;
 
 /**
  * Configuration class for a master station
@@ -36,55 +37,49 @@ public class MasterConfig {
     }
 
     /**
-     * Maximum fragment size to use for requests
+     * Enumeration that specifies how/if the master does performs time synchronization
      */
-    int maxRequestFragmentSize = 2048;
+    public TimeSyncMode timeSyncMode = TimeSyncMode.None;
 
     /**
-     * The number of objects to store in the VtoWriter queue.
+     * If true, the master will disable unsol on startup for all 3 event classes
      */
-    public int vtoWriterQueueSize = 1024;
-
-    /**
-     * Using FC_WRITE is a problem with vto because the spec won't allow it to retry
-     */
-    public boolean useNonStandardVtoFunction = false;
-
-    /**
-     * If true, the master will do time syncs when it sees the time IIN bit from the slave
-     */
-    public boolean allowTimeSync = true;
+    public boolean disableUnsolOnStartup = true;
 
     /**
      * If true, the master will enable/disable unsol on startup
      */
-    public boolean doUnsolOnStartup = true;
+    public ClassField unsolClassMask = ClassField.allEventClasses();
 
     /**
-     * If DoUnsolOnStartup == true, the master will use this bit to decide wether to enable (true) or disable (false)
+     * Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
+     * A mask equal to 0 means no startup integrity scan will be performed
      */
-    public boolean enableUnsol = false;
+    public ClassField startupIntegrityClassMask = ClassField.allClasses();
+
 
     /**
-     * Bitwise mask used determine which classes are enabled/disabled for unsol
+     * Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
      */
-    public int unsolClassMask = PointClassMasks.ALL_EVENTS;
+    public boolean integrityOnEventOverflowIIN = true;
 
     /**
-     * Period for integrity scans (class 0), -1 for non periodic
+     * Which classes should be requested in an event scan when detecting corresponding events available IIN
      */
-    public long integrityRateMs = 5000;
+    public ClassField eventScanOnEventsAvailableClassMask = ClassField.none();
 
     /**
-     * Time delay between task retries
+     * Application layer response timeout
      */
-    public long taskRetryRateMs = 5000;
+    public Duration responseTimeout = Duration.ofSeconds(5);
 
     /**
-     * vector that holds exception scans, defaults to empty list
+     * Time delay beforce retrying a failed task
      */
-    public final List<ExceptionScan> scans = new LinkedList<ExceptionScan>();
+    public Duration taskRetryPeriod = Duration.ofSeconds(5);
 
-
-
+    /**
+     * Period after which tasks that haven't started are failed
+     */
+    public Duration taskStartTimeout = Duration.ofSeconds(10);
 }

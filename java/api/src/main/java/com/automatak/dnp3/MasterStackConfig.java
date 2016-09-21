@@ -28,10 +28,6 @@ public class MasterStackConfig {
      */
     public final MasterConfig masterConfig;
 
-    /**
-     * Settings for the application layer
-     */
-    public final AppLayerConfig appConfig;
 
     /**
      * Settings for the link layer
@@ -44,7 +40,6 @@ public class MasterStackConfig {
     public MasterStackConfig()
     {
         this.masterConfig = new MasterConfig();
-        this.appConfig = new AppLayerConfig();
         this.linkConfig = new LinkLayerConfig(true);
     }
 }
