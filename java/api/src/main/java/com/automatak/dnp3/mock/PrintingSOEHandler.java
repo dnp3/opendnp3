@@ -22,17 +22,18 @@ import com.automatak.dnp3.*;
 
 public class PrintingSOEHandler implements SOEHandler {
 
-    private final OutputHandler handler;
+    private static PrintingSOEHandler instance = new PrintingSOEHandler();
 
-    public PrintingSOEHandler(OutputHandler handler)
-    {
-        this.handler = handler;
+    public static SOEHandler getInstance() {
+        return instance;
     }
+
+    private PrintingSOEHandler(){}
 
     @Override
     public void start()
     {
-        handler.handleOutput("start asdu");
+        System.out.println("start asdu");
     }
 
     @Override
@@ -53,6 +54,6 @@ public class PrintingSOEHandler implements SOEHandler {
     @Override
     public void end()
     {
-        handler.handleOutput("end asdu");
+        System.out.println("end asdu");
     }
 }
