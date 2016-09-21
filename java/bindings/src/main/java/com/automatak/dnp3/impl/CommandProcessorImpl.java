@@ -20,7 +20,7 @@ package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.*;
 
-
+/*
 class CommandProcessorImpl implements CommandProcessor {
 
     private final long nativeptr;
@@ -114,8 +114,5 @@ class CommandProcessorImpl implements CommandProcessor {
 
     private native void selectAndOperateAnalogDouble64(long nativeptr, double value, int status, long index, StatusCallback callback);
     private native void directOperateAnalogDouble64(long nativeptr, double value, int status, long index, StatusCallback callback);
-
-
-
-
 }
+*/

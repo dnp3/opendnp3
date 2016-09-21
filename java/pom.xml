@@ -13,7 +13,7 @@
 
     <modules>
         <module>api</module>
-        <!--<module>bindings</module>-->
+        <module>bindings</module>
         <!--<module>example</module>-->
     </modules>
 

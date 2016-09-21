@@ -20,6 +20,7 @@ package com.automatak.dnp3.impl;
 
 
 import com.automatak.dnp3.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 class ChannelImpl implements Channel {
 
@@ -31,38 +32,18 @@ class ChannelImpl implements Channel {
     }
 
     @Override
-    public void addStateListener(ChannelStateListener listener)
+    public Master addMaster(String loggerId, SOEHandler handler, MasterApplication application, MasterStackConfig config)
     {
-       ChannelStateProxy proxy = new ChannelStateProxy(listener);
-       add_native_state_change_listener(nativeChannel, proxy);
-    }
-
-    @Override
-    public Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config)
-    {
-        DataObserverAdapter adapter = new DataObserverAdapter(publisher);
-        long ptr = get_native_master(nativeChannel, loggerId, level.toInt(), adapter, config);
-        return new MasterImpl(ptr);
-    }
-
-    @Override
-    public Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler, OutstationStackConfig config)
-    {
-        CommandHandlerAdapter adapter = new CommandHandlerAdapter(cmdHandler);
-        long ptr = get_native_slave(nativeChannel, loggerId, level.toInt(), adapter, config);
-        return new OutstationImpl(ptr);
+        throw new NotImplementedException();
     }
 
     @Override
     public void shutdown()
     {
-        shutdown_native(nativeChannel);
+        throw new NotImplementedException();
     }
 
-    private native void shutdown_native(long ptrChannel);
-    private native void add_native_state_change_listener(long ptrChannel, ChannelStateProxy proxy);
-    private native long get_native_master(long ptrChannel, String loggerId, int level, DataObserverAdapter publisher, MasterStackConfig config);
-    private native long get_native_slave(long ptrChannel, String loggerId, int level, CommandHandlerAdapter handler, OutstationStackConfig config);
-
+    //private native void shutdown_native(long ptrChannel);
+    //private native long get_native_master(long ptrChannel, String loggerId, int level, DataObserverAdapter publisher, MasterStackConfig config);
 
 }

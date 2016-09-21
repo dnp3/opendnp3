@@ -21,6 +21,7 @@ package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.*;
 
+/*
 abstract class StackBase implements Stack {
 
     private final long nativeStackPtr;
@@ -55,3 +56,4 @@ abstract class StackBase implements Stack {
     private native long get_tcpclient_vto_endpoint(long nativePtr, String loggerId, int level, String host, int port, byte channelId, long minOpenRetryMs, long maxOpenRetryMs, boolean startLocal, boolean disableExtenstion);
     private native long get_tcpserver_vto_endpoint(long nativePtr, String loggerId, int level, String adapter, int port, byte channelId, long minOpenRetryMs, long maxOpenRetryMs, boolean startLocal, boolean disableExtenstion);
 }
+*/

@@ -20,6 +20,7 @@ package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.*;
 
+/*
 class DataObserverImpl implements DataObserver {
 
     private final long nativeptr;
@@ -72,3 +73,4 @@ class DataObserverImpl implements DataObserver {
     private native void native_update_aos(long nativeptr, double value, byte quality, long time, long index);
     private native void native_end(long nativeptr);
 }
+*/

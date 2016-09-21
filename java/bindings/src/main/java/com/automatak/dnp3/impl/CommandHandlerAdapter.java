@@ -21,6 +21,7 @@ package com.automatak.dnp3.impl;
 import com.automatak.dnp3.*;
 
 // Makes the JNI callbacks easier by breaking down the objects and passing enums as ints
+/*
 class CommandHandlerAdapter {
 
     private final CommandHandler proxy;
@@ -131,3 +132,4 @@ class CommandHandlerAdapter {
     }
 
 }
+*/

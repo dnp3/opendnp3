@@ -18,8 +18,8 @@
  */
 package com.automatak.dnp3.impl;
 
-import com.automatak.dnp3.ChannelState;
 import com.automatak.dnp3.ChannelStateListener;
+import com.automatak.dnp3.enums.ChannelState;
 
 /**
  * Proxy class that makes marshalling the channel state enumeration easier
@@ -35,7 +35,7 @@ class ChannelStateProxy {
 
     public void onStateChange(int state)
     {
-        listener.onStateChange(ChannelState.fromInt(state));
+        listener.onStateChange(ChannelState.fromType(state));
     }
 
 
