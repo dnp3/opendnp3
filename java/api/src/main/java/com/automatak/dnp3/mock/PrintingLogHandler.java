@@ -77,7 +77,7 @@ public class PrintingLogHandler implements LogHandler {
             case (LogLevels.APP_HEADER_TX):
             case (LogLevels.APP_OBJECT_TX):
                 return "-AL->";
-            
+
             default:
                 return "?";
         }

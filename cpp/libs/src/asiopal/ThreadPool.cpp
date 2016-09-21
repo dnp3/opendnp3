@@ -41,7 +41,7 @@ ThreadPool::ThreadPool(
     uint32_t concurrency,
     std::function<void()> onThreadStart_,
     std::function<void()> onThreadExit_) :
-	root(handler, "pool", levels),
+	root(handler, "threadpool", levels),
 	onThreadStart(onThreadStart_),
 	onThreadExit(onThreadExit_),
 	isShutdown(false),
@@ -57,7 +57,10 @@ ThreadPool::ThreadPool(
 	infiniteTimer.async_wait([](const std::error_code&) {});
 	for(uint32_t i = 0; i < concurrency; ++i)
 	{
-		auto run = [this]() { this->Run(); };
+		auto run = [this, i]()
+		{
+			this->Run(i);
+		};
 		threads.push_back(std::make_unique<thread>(run));
 	}
 }
@@ -96,17 +99,17 @@ asio::io_service& ThreadPool::GetIOService()
 	return *ioservice;
 }
 
-void ThreadPool::Run()
+void ThreadPool::Run(int threadnum)
 {
 	onThreadStart();
-	
-	SIMPLE_LOG_BLOCK(root.logger, logflags::INFO, "Starting threadpool thread...");
-	
-	ioservice->run();
-	
-	SIMPLE_LOG_BLOCK(root.logger, logflags::INFO, "Exiting threadpool thread...");
 
-	onThreadExit();	
+	FORMAT_LOG_BLOCK(root.logger, logflags::INFO, "Starting thread (%d)", threadnum);
+
+	ioservice->run();
+
+	FORMAT_LOG_BLOCK(root.logger, logflags::INFO, "Exiting thread (%d)", threadnum);
+
+	onThreadExit();
 }
 
 }
