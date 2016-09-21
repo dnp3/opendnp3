@@ -41,7 +41,7 @@ public class MasterDemo {
 
         // create the root class with a thread pool size of 1
         DNP3Manager manager = DNP3ManagerFactory.createManager(1, PrintingLogHandler.getInstance());
-
+/*
         // Create a tcp channel class that will connect to the loopback
         Channel channel = manager.addTCPClient("client", LogMasks.NORMAL, ChannelRetry.getDefault(), "127.0.0.1", 20000);
 
@@ -68,7 +68,9 @@ public class MasterDemo {
                 System.out.println("Command result: " + future.get().toString());
             }
         }
+    */
 
         manager.shutdown();
     }
+
 }

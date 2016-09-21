@@ -1,17 +1,32 @@
 
 #include "com_automatak_dnp3_impl_ManagerImpl.h"
 
+#include <asiodnp3/DNP3Manager.h>
+
+#include "JNIHelpers.h"
+#include "LogHandlerAdapter.h"
+
+using namespace asiodnp3;
+
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager
-(JNIEnv *, jobject, jint, jobject)
+(JNIEnv* env, jobject, jint concurreny, jobject loghandler)
 {
-	return 0;
+	JavaVM* jvm;
+	env->GetJavaVM(&jvm);
+	
+	auto attachThread = [jvm]() { JNI::AttachThread(jvm); };
+	auto detachThread = [jvm]() { JNI::DetachThread(jvm); };
+
+	auto adapter = std::make_shared<LogHandlerAdapter>(jvm, loghandler);
+
+	return (jlong) new DNP3Manager(concurreny, adapter, attachThread, detachThread);	
 }
 
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_shutdown_1native_1manager
-(JNIEnv *, jobject, jlong)
+(JNIEnv*, jobject, jlong pointer)
 {
-
+	delete (DNP3Manager*) pointer;
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
