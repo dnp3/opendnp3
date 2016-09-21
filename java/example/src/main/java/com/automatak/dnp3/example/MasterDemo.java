@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 /**
  * Example master than can be run against the example outstation
  */
+/*
 public class MasterDemo {
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -37,20 +38,9 @@ public class MasterDemo {
         // create the root class with a thread pool size of 1
         DNP3Manager manager = DNP3ManagerFactory.createManager(1);
 
-        // You can send the log messages anywhere you want
-        // but PrintingLogSubscriber just prints them to the console
-        manager.addLogSubscriber(PrintingLogSubscriber.getInstance());
-
         // Create a tcp channel class that will connect to the loopback
-        Channel channel = manager.addTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
+        Channel channel = manager.addTCPClient("client", LogLevel.INFO, ChannelRetry.getDefault(), "127.0.0.1", 20000);
 
-        // You can optionally add a listener to receive state changes on the channel
-        channel.addStateListener(new ChannelStateListener() {
-            @Override
-            public void onStateChange(ChannelState state) {
-                System.out.println("Client state: " + state);
-            }
-        });
 
         // You can modify the defaults to change the way the master behaves
         MasterStackConfig config = new MasterStackConfig();
@@ -88,3 +78,4 @@ public class MasterDemo {
         manager.shutdown();
     }
 }
+*/

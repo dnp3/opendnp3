@@ -30,6 +30,8 @@ import java.io.InputStreamReader;
 /**
  * Example master than can be run against the example outstation
  */
+
+/*
 public class OutstationDemo {
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -95,3 +97,4 @@ public class OutstationDemo {
         manager.shutdown();
     }
 }
+*/
