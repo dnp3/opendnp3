@@ -18,20 +18,30 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-namespace Automatak.DNP3.Interface
+package com.automatak.dnp3.enums;
+/**
+* Enumeration for reset/unreset states of a link layer
+*/
+public enum LinkStatus
 {
-  /// <summary>
-  /// Enumeration for reset/unreset states of a link layer
-  /// </summary>
-  public enum LinkStatus : byte
+  /**
+  * DOWN
+  */
+  UNRESET(0),
+  /**
+  * UP
+  */
+  RESET(1);
+
+  private final int id;
+
+  public int toType()
   {
-    /// <summary>
-    /// DOWN
-    /// </summary>
-    UNRESET = 0,
-    /// <summary>
-    /// UP
-    /// </summary>
-    RESET = 1
+    return id;
+  }
+
+  LinkStatus(int id)
+  {
+    this.id = id;
   }
 }

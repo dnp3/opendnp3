@@ -32,7 +32,8 @@ object CSharpEnumGroup {
     CommandPointState(),
     RestartType(),
     OperateType(),
-    LinkFunction()
+    LinkFunction(),
+    LinkStatus()
   ) ::: DefaultVariations.enums ::: QualityMasks.enums
 
 

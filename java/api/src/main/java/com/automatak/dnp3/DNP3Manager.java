@@ -30,44 +30,17 @@ public interface DNP3Manager {
     /**
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
      * @param id An id used for logging purposes
-     * @param level The starting level for logging output
-     * @param retryMs The number of milliseconds in between connection attempts
+     * @param levels The starting level for logging output
+     * @param retry >Retry configuration for the channel
      * @param address The address of remote host as a INET address i.e. "127.0.0.1" or name "www.google.com"
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @return A channel interface
      */
-    Channel addTCPClient(String id, LogLevel level, long retryMs, String address, int port);
-
-    /**
-     * Add a TCP server channel. The channel does not try to listen for a connection until you add a stack.
-     * @param id An id used for logging purposes
-     * @param level The starting level for logging output
-     * @param retryMs The number of milliseconds in between connection attempts (in the case of a bind failure)
-     * @param endpoint The address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
-     * @param port The port to listen on. Note that only the range 0 to 65535 is valid
-     * @return A channel interface
-     */
-    Channel addTCPServer(String id, LogLevel level, long retryMs, String endpoint, int port);
-
-    /**
-     * Add a serial communication channel. The channel does not try to open the port until a add a stack
-     * @param id An id used for logging purposes
-     * @param level The starting level for logging output
-     * @param retryMs  The number of milliseconds in between open attempts (in the case of an open failure)
-     * @param settings Settings class that specifies and configures the port
-     * @return A channel interface
-     */
-    Channel addSerial(String id, LogLevel level, long retryMs, SerialSettings settings);
+    Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, int port);
 
 
     /**
-     * Subscribe to all log messages
-     * @param sub An interface with which to listen
-     */
-    void addLogSubscriber(LogSubscriber sub);
-
-    /**
-     * Permanently shutdown all channels and any sub-objects (stacks, etc)
+     * Permanently shutdown all channels and any associated stacks
      */
     void shutdown();
 }

@@ -30,31 +30,14 @@ public interface Channel {
     void shutdown();
 
     /**
-     * Add a listener to receive state change messages. All callbacks come from the underlying thread pool.
-     * Listeners can be bound at any time and you will always receive an immediate callback with the current
-     * state.
-     *
-     * @param listener Callback interface to receive the messages
-     */
-    void addStateListener(ChannelStateListener listener);
-
-    /**
      * Adds a master to the channel
      * @param loggerId name of the logger that will be assigned to this stack
-     * @param level LogLevel assigned to the logger
-     * @param publisher Where measurements will be sent as they are received from the outstation
+     * @param handler where measurements will be sent as they are received from the outstation
+     * @param application  master application instance
      * @param config configuration information for the master stack
      * @return reference to the created master
      */
-    Master addMaster(String loggerId, LogLevel level, SOEHandler publisher, MasterStackConfig config);
+    Master addMaster(String loggerId, SOEHandler handler, MasterApplication application, MasterStackConfig config);
 
-    /**
-     * Adds an outstation to the channel
-     * @param loggerId name of the logger that will be assigned to this stack
-     * @param level LogLevel assigned to the logger
-     * @param cmdHandler where command requests are sent to be handled in application code
-     * @param config configuration information for the outstation stack
-     * @return reference to the created master
-     */
-    Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler, OutstationStackConfig config);
+
 }
