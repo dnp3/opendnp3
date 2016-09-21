@@ -5,7 +5,7 @@ object GroupVariationIncludes {
    def headerReadWrite : Iterator[String] = Iterator(
      "<openpal/container/RSlice.h>",
      "<openpal/container/WSlice.h>",
-     """"opendnp3/Types.h""""
+     """"opendnp3/app/DNPTime.h""""
    )
 
   def implReadWrite : Iterator[String] = Iterator(

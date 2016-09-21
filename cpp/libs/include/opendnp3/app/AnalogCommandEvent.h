@@ -23,7 +23,7 @@
 
 #include "opendnp3/gen/CommandStatus.h"
 
-#include "opendnp3/DNPTime.h"
+#include "opendnp3/app/DNPTime.h"
 
 namespace opendnp3
 {

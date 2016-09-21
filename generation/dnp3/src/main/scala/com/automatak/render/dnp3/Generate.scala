@@ -16,7 +16,6 @@ object Generate {
 
   def main(args: Array[String]): Unit = {
 
-    /*
     // generate the C++ dnp3 enums
     CppEnumGenerator(DNPCppEnumGroup.enums, "opendnp3", "opendnp3/gen/%s", dnp3GenHeaderPath, dnp3GenImplPath)
 
@@ -25,13 +24,13 @@ object Generate {
 
     // generate the C# enums
     CSharpEnumGenerator(CSharpEnumGroup.enums, "Automatak.DNP3.Interface", csharpGenPath)
-    */
+
 
     // generate the Java enums
     JavaEnumGenerator(CSharpEnumGroup.enums, "package com.automatak.dnp3.enums;", javaGenPath)
 
     // generate all the group/variation parsers
-    //GroupVariationFileGenerator(dnp3ObjectPath)
+    GroupVariationFileGenerator(dnp3ObjectPath)
   }
 
 }

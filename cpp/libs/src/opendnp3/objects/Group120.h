@@ -24,7 +24,7 @@
 #include "opendnp3/app/GroupVariationID.h"
 #include <openpal/container/RSlice.h>
 #include <openpal/container/WSlice.h>
-#include "opendnp3/DNPTime.h"
+#include "opendnp3/app/DNPTime.h"
 #include "opendnp3/app/IVariableLength.h"
 #include "opendnp3/gen/HMACType.h"
 #include "opendnp3/gen/ChallengeReason.h"

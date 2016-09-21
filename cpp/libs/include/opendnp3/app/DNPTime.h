@@ -26,19 +26,7 @@
 namespace opendnp3
 {
 
-class DNPTime : public openpal::UInt48Type
-{
-
-public:
-
-	explicit DNPTime(int64_t value) : openpal::UInt48Type(value)
-	{}
-
-	explicit DNPTime(openpal::UInt48Type value) : openpal::UInt48Type(value)
-	{}
-
-	DNPTime() {}
-};
+typedef openpal::UInt48Type DNPTime;
 
 }
 

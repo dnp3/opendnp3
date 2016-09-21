@@ -24,7 +24,7 @@
 #include <string>
 #include <cstdint>
 
-#include <opendnp3/DNPTime.h>
+#include <opendnp3/app/DNPTime.h>
 
 #include <opendnp3/app/ClassField.h>
 #include <opendnp3/app/IINField.h>
