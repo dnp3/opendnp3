@@ -37,7 +37,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class MasterDemo {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, DNP3Exception {
 
         // create the root class with a thread pool size of 1
         DNP3Manager manager = DNP3ManagerFactory.createManager(1, PrintingLogHandler.getInstance());
@@ -54,14 +54,13 @@ public class MasterDemo {
         // This sub-interface can issue command requests
         CommandProcessor processor = master.getCommandProcessor();
 
-        // all this stuff just to read a line of text in Java. Oh the humanity.
-        String line = "";
+        // all this cruft just to read a line of text in Java. Oh the humanity.
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
 
         while (true) {
             System.out.println("Enter something to issue a command or type <quit> to exit");
-            line = in.readLine();
+            String line = in.readLine();
             if(line.equals("quit")) break;
             else {
                 ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);

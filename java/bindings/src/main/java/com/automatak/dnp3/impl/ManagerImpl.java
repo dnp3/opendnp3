@@ -37,31 +37,31 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
-    public Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, int port)
+    public Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, int port) throws DNP3Exception
     {
         long ptr = get_native_channel_tcp_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), address, port);
 
         if(ptr == 0) {
-            return null;
+           throw new DNP3Exception("Unable to create channel");
         }
 
         throw new NotImplementedException();
     }
 
     @Override
-    public Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port)
+    public Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port) throws DNP3Exception
     {
         long ptr = get_native_channel_tcp_server(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), endpoint, port);
 
         if(ptr == 0) {
-            return null;
+            throw new DNP3Exception("Unable to create channel");
         }
 
         throw new NotImplementedException();
     }
 
     @Override
-    public Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings)
+    public Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings) throws DNP3Exception
     {
         long ptr = get_native_channel_serial(
                 this.pointer,
@@ -78,7 +78,7 @@ class ManagerImpl implements DNP3Manager {
         );
 
         if(ptr == 0) {
-            return null;
+            throw new DNP3Exception("Unable to create channel");
         }
 
         throw new NotImplementedException();

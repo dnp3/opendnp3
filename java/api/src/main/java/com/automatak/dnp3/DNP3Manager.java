@@ -36,7 +36,7 @@ public interface DNP3Manager {
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @return A channel interface
      */
-    Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, int port);
+    Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, int port) throws DNP3Exception;
 
     /**
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
@@ -47,7 +47,7 @@ public interface DNP3Manager {
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @return A channel interface
      */
-    Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port);
+    Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port) throws DNP3Exception;
 
     /**
      * Add a serial channel. The port does not try to open until you add a stack.
@@ -58,7 +58,7 @@ public interface DNP3Manager {
      * @param settings Configuration for the serial port
      * @return
      */
-    Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings);
+    Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings) throws DNP3Exception;
 
 
     /**

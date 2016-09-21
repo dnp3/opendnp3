@@ -124,7 +124,7 @@ set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
 
 if(DNP3_JAVA)
   file(GLOB_RECURSE opendnp3java_SRC ./java/cpp/*.h ./java/cpp/*.cpp)
-  add_library(opendnp3java ${LIB_TYPE} ${opendnp3java_SRC})
+  add_library(opendnp3java SHARED ${opendnp3java_SRC})
   target_link_libraries(asiodnp3 asiopal opendnp3)
   install(TARGETS opendnp3java DESTINATION lib)
   set_target_properties(opendnp3java PROPERTIES FOLDER libs)
