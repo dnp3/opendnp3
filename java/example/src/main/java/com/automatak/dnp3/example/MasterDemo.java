@@ -37,7 +37,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class MasterDemo {
 
-    public static void main(String[] args) throws IOException, InterruptedException, DNP3Exception {
+    public static void main(String[] args) throws Exception {
 
         // create the root class with a thread pool size of 1
         DNP3Manager manager = DNP3ManagerFactory.createManager(1, PrintingLogHandler.getInstance());
@@ -65,13 +65,7 @@ public class MasterDemo {
             else {
                 ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);
                 CompletableFuture<CommandTaskResult> future = processor.selectAndOperate(crob, 0, TaskConfig.getDefault());
-                try {
-                    System.out.println("Command result: " + future.get().toString());
-                }
-                catch(ExecutionException ex){
-                    System.out.println("Command error: " + ex.toString());
-                }
-
+                System.out.println("Command result: " + future.get().toString());
             }
         }
 
