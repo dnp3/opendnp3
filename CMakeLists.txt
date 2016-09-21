@@ -13,6 +13,7 @@ option(TEST "Build tests" OFF)
 option(FULL "Build all optional projects (secauth, demos, tests)" OFF)
 option(DNP3_DECODER "Build the decoder library" OFF)
 option(DNP3_TLS "Build TLS client/server support")
+option(DNP3_JAVA "Build the Java bindings")
 
 # other options off-by-default that you can enable
 option(WERROR "Set all warnings to errors" OFF)
@@ -24,6 +25,13 @@ if(FULL)
 	set(TEST ON)
 	set(DNP3_TLS ON)
 	set(DNP3_DECODER ON)
+	set(DNP3_JAVA ON)
+endif()
+
+if(DNP3_JAVA)
+	find_package(Java COMPONENTS Development)
+	find_package(JNI REQUIRED)
+	include_directories(${JNI_INCLUDE_DIRS})
 endif()
 
 SET(ASIO_SUBMODULE_DIR "${PROJECT_SOURCE_DIR}/deps/asio/asio/include")
@@ -113,6 +121,14 @@ add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 asiopal opendnp3)
 install(TARGETS asiodnp3 DESTINATION lib)
 set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
+
+if(DNP3_JAVA)
+  file(GLOB_RECURSE opendnp3java_SRC ./java/cpp/*.h ./java/cpp/*.cpp)
+  add_library(opendnp3java ${LIB_TYPE} ${opendnp3java_SRC})
+  target_link_libraries(asiodnp3 asiopal opendnp3)
+  install(TARGETS opendnp3java DESTINATION lib)
+  set_target_properties(opendnp3java PROPERTIES FOLDER libs)
+endif()
 
 # ----- install -----
 
