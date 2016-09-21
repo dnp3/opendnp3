@@ -18,6 +18,8 @@
  */
 package com.automatak.dnp3;
 
+import java.time.Duration;
+
 /**
  * Configuration class for the link layer
  */
@@ -54,9 +56,14 @@ public class LinkLayerConfig {
     public int remoteAddr;
 
     /**
-     * the response timeout in milliseconds for confirmed requests
+     * the response timeout for confirmed requests and link status requests
      */
-    public long timeoutMs = 1000;
+    public Duration responseTimeout = Duration.ofSeconds(1);
+
+    /**
+     * the keep-alive timer timeout interval
+     */
+    public Duration keepAliveTimeout = Duration.ofSeconds(60);
 
     private LinkLayerConfig()
     {
