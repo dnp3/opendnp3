@@ -46,7 +46,7 @@ public interface Channel {
      * @param config configuration information for the master stack
      * @return reference to the created master
      */
-    Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config);
+    Master addMaster(String loggerId, LogLevel level, SOEHandler publisher, MasterStackConfig config);
 
     /**
      * Adds an outstation to the channel

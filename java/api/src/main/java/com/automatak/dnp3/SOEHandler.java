@@ -19,15 +19,37 @@
 package com.automatak.dnp3;
 
 /**
- * Interface representing an outstation
+ * Interface called to process measurement data received from an outstation
+ *
+ * start() / end() will be called before / after any calls to update.
  */
-public interface Outstation extends Stack {
+public interface SOEHandler {
 
-    /**
-     *
-     * @return Interface used to load data into the outstation
+    /*
+     * Start a processing an ASDU
      */
-    SOEHandler getDataObserver();
+    void start();
+
+    /*
+    * End a processing an ASDU
+    */
+    void end();
+
+
+    void processBinaryInput(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values);
+
+
+    void processAnalogInput(HeaderInfo info, Iterable<IndexedValue<AnalogInput>> values);
+
+
+    void processCounter(HeaderInfo info, Iterable<IndexedValue<Counter>> values);
+
+
+    void processBinaryOutputStatus(HeaderInfo info, Iterable<IndexedValue<BinaryOutputStatus>> values);
+
+
+    void processAnalogOutputStatus(HeaderInfo info, Iterable<IndexedValue<AnalogOutputStatus>> values);
+
 
 
 }

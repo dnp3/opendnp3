@@ -21,7 +21,7 @@ package com.automatak.dnp3.mock;
 /**
  * Simple singleton that prints measurements to the console as they are received
  */
-public class PrintingDataObserver extends FormattingDataObserver {
+public class PrintingDataObserver extends PrintingSOEHandler {
     private static PrintingDataObserver ourInstance = new PrintingDataObserver();
 
     public static PrintingDataObserver getInstance() {
