@@ -19,7 +19,7 @@
 package com.automatak.dnp3;
 
 /**
- * Represents a Outstation or Master. Can be shutdown and can have Virtual Terminal Object (VTO) endpoints bound to it.
+ * Represents a Outstation or Master.
  */
 public interface Stack {
 

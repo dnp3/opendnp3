@@ -49,7 +49,7 @@ namespace Automatak.DNP3.Interface
     };
 
     /// <summary>
-    /// Concreate implementation of ICommandHeader
+    /// Concrete implementation of ICommandHeader
     /// </summary>
     public class CommandHeader : ICommandHeaders
     {
