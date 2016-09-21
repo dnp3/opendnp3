@@ -19,34 +19,16 @@
 package com.automatak.dnp3;
 
 
-import java.util.Set;
-
 /**
  * Represents the state of a digital output
  */
 public class BinaryOutputStatus extends Measurement
 {
-    private final boolean value;
+    public final boolean value;
 
     public BinaryOutputStatus(boolean value, byte quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;
-    }
-
-    /**
-     * @return value of measurement
-     */
-    public boolean getValue()
-    {
-        return value;
-    }
-
-    /**
-     * @return Quality flags as a set of enumerations
-     */
-    public Set<BinaryOutputStatusQuality> getQualitySet()
-    {
-        return BinaryOutputStatusQuality.getValuesInBitField(this.getQuality());
     }
 }

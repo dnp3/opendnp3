@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public class Counter extends Measurement
 {
-    private final long value;
+    public final long value;
 
     public Counter(long value, byte quality, long timestamp)
     {
@@ -34,19 +34,4 @@ public class Counter extends Measurement
         this.value = value;
     }
 
-    /**
-     * @return Value type of the measurement
-     */
-    public long getValue()
-    {
-        return value;
-    }
-
-    /**
-     * @return Quality flags as a set of enumerations
-     */
-    public Set<CounterInputQuality> getQualitySet()
-    {
-        return CounterInputQuality.getValuesInBitField(this.getQuality());
-    }
 }

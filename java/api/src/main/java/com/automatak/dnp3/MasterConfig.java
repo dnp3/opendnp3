@@ -68,7 +68,7 @@ public class MasterConfig {
     /**
      * Bitwise mask used determine which classes are enabled/disabled for unsol
      */
-    public int unsolClassMask = PointClass.ALL_EVENTS.toInt();
+    public int unsolClassMask = PointClassMasks.ALL_EVENTS;
 
     /**
      * Period for integrity scans (class 0), -1 for non periodic

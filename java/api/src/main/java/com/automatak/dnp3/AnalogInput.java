@@ -18,14 +18,12 @@
  */
 package com.automatak.dnp3;
 
-import java.util.Set;
-
 /**
  * A discrete or continuous analog value
  */
 public class AnalogInput extends Measurement
 {
-    private final double value;
+    public final double value;
 
     /**
      * Primary constructor
@@ -37,22 +35,6 @@ public class AnalogInput extends Measurement
     {
         super(quality, timestamp);
         this.value = value;
-    }
-
-    /**
-     * @return Quality flags as a set of enumerations
-     */
-    public Set<AnalogInputQuality> getQualitySet()
-    {
-        return AnalogInputQuality.getValuesInBitField(this.getQuality());
-    }
-
-    /**
-     * @return value type of measurement
-     */
-    public double getValue()
-    {
-        return value;
     }
 
 }

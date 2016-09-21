@@ -23,29 +23,13 @@ package com.automatak.dnp3;
  */
 public abstract class Measurement {
 
-    private final byte quality;
-    private final long timestamp;
+    public final byte quality;
+    public final long timestamp;
 
     public Measurement(byte quality, long timestamp)
     {
         this.quality = quality;
         this.timestamp = timestamp;
-    }
-
-    /**
-     * @return milliseconds since Unix epoch UTC
-     */
-    public long getDNPTime()
-    {
-        return timestamp;
-    }
-
-    /**
-     * @return bit-field representing measurement quality
-     */
-    public byte getQuality()
-    {
-        return quality;
     }
 
 }

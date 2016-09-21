@@ -19,35 +19,17 @@
 package com.automatak.dnp3;
 
 
-import java.util.Set;
-
 /**
  * A boolean measurement type (i.e. whether a switch is open/closed)
  */
 public class BinaryInput extends Measurement
 {
-    private final boolean value;
+    public final boolean value;
 
     public BinaryInput(boolean value, byte quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;
-    }
-
-    /**
-     * @return value of the measurement
-     */
-    public boolean getValue()
-    {
-        return value;
-    }
-
-    /**
-     * @return Quality flags as a set of enumerations
-     */
-    public Set<BinaryInputQuality> getQualitySet()
-    {
-        return BinaryInputQuality.getValuesInBitField(this.getQuality());
     }
 
 }

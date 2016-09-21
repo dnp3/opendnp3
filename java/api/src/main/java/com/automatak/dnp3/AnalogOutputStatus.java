@@ -19,34 +19,16 @@
 package com.automatak.dnp3;
 
 
-import java.util.Set;
-
 /**
  * Represents the status of analog output on an outstation.
  */
 public class AnalogOutputStatus extends Measurement
 {
-    private final double value;
+    public final double value;
 
     public AnalogOutputStatus(double value, byte quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;
-    }
-
-    /**
-     * @return Value of measurement
-     */
-    public double getValue()
-    {
-        return value;
-    }
-
-    /**
-     * @return Quality flags as a set of enumerations
-     */
-    public Set<AnalogOutputStatusQuality> getQualitySet()
-    {
-        return AnalogOutputStatusQuality.getValuesInBitField(this.getQuality());
     }
 }

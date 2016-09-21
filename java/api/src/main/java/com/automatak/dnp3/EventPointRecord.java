@@ -18,6 +18,8 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.PointClass;
+
 /**
  * Database point record for an type that can have an event class assigned
  */
@@ -33,7 +35,7 @@ public class EventPointRecord extends PointRecord {
      */
     public EventPointRecord()
     {
-        pointClass = PointClass.CLASS_1.toInt();
+        pointClass = PointClass.Class1.toType();
     }
 
 }

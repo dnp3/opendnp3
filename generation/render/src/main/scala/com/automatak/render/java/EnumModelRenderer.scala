@@ -45,7 +45,7 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
     def id = Iterator(List("private final", getEnumType(enum.enumType),"id;").spaced)
 
-    def constructor = Iterator(List("private ", enum.name, "(", getEnumType(enum.enumType), " id)").mkString) ++ bracket {
+    def constructor = Iterator(List(enum.name, "(", getEnumType(enum.enumType), " id)").mkString) ++ bracket {
         Iterator("this.id = id;")
     }
 
@@ -59,16 +59,20 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
     def switch = new SwitchModelRenderer[EnumValue](v => enum.render(v.value))(v => v.name).render(enum.nonDefaultValues, enum.default)
 
+    def fromTypeLines : Iterator[String] = enum.defaultValue match {
+      case None => Iterator.empty
+      case Some(x) =>  space ++
+        fromType {
+          switch
+        }
+    }
 
     summary(enum.comments.toIterator) ++
     header ++ bracket {
       merge(comments, definitions) ++ space ++
-      id ++ space ++
-      constructor ++ space ++
-      toType ++ space ++
-      fromType {
-        switch
-      }
+      id ++ space ++  toType ++
+        space ++ constructor ++
+        fromTypeLines
     }
 
   }

@@ -18,6 +18,8 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.*;
+
 /**
  * Configuration class that controls how an outstation behaves
  */
@@ -46,7 +48,7 @@ public class OutstationConfig {
      *
      * Use PointClass.getMask to set this value
      */
-    public int unsolMask = PointClass.ALL_EVENTS.toInt();
+    public int unsolMask = PointClassMasks.ALL_EVENTS;
 
     /**
      * if true, the outstation will request time synchronization on an interval. Defaults to false.
@@ -107,36 +109,36 @@ public class OutstationConfig {
     /**
      * The default group/variation to use for static binary responses (default 1:2)
      */
-    public StaticBinaryResponse staticBinaryInput  = StaticBinaryResponse.GROUP1_VAR2;
+    public StaticBinaryVariation staticBinaryInput  = StaticBinaryVariation.Group1Var2;
 
     /**
      * The default group/variation to use for static analog responses (default 30:1)
      */
-    public StaticAnalogResponse staticAnalogInput = StaticAnalogResponse.GROUP30_VAR1;
+    public StaticAnalogVariation staticAnalogInput = StaticAnalogVariation.Group30Var1;
 
     /**
      * The default group/variation to use for static counter responses (default 20:1)
      */
-    public StaticCounterResponse staticCounter = StaticCounterResponse.GROUP20_VAR1;
+    public StaticCounterVariation staticCounter = StaticCounterVariation.Group20Var1;
 
     /**
      * The default group/variation to use for static AnalogOutput status responses (default 40:1)
      */
-    public StaticAnalogOutputStatusResponse staticAnalogOutputStatus =  StaticAnalogOutputStatusResponse.GROUP40_VAR1;
+    public StaticAnalogOutputStatusVariation staticAnalogOutputStatus =  StaticAnalogOutputStatusVariation.Group40Var1;
 
     /**
      * The default group/variation to use for binary event responses (default 2:1)
      */
-    public EventBinaryResponse eventBinaryInput = EventBinaryResponse.GROUP2_VAR1;
+    public EventBinaryVariation eventBinaryInput = EventBinaryVariation.Group2Var1;
 
     /**
      * The default group/variation to use for analog event responses (default 32:1)
      */
-    public EventAnalogResponse eventAnalogInput = EventAnalogResponse.GROUP32_VAR1;
+    public EventAnalogVariation eventAnalogInput = EventAnalogVariation.Group32Var1;
 
     /**
      * The default group/variation to use for counter event responses (default 22:1)
      */
-    public EventCounterResponse eventCounter = EventCounterResponse.GROUP22_VAR1;
+    public EventCounterVariation eventCounter = EventCounterVariation.Group22Var1;
 
 }

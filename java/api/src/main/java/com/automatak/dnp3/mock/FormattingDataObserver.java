@@ -36,27 +36,27 @@ public class FormattingDataObserver implements DataObserver {
 
     public void update(BinaryInput meas, long index)
     {
-        handler.handleOutput("Binary: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getDNPTime());
+        handler.handleOutput("Binary: " + meas.value + " Index: " + index + " Timestamp: " + meas.timestamp);
     }
 
     public void update(AnalogInput meas, long index)
     {
-        handler.handleOutput("Analog: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getDNPTime());
+        handler.handleOutput("Analog: " + meas.value + " Index: " + index + " Timestamp: " + meas.timestamp);
     }
 
     public void update(Counter meas, long index)
     {
-        handler.handleOutput("Counter: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getDNPTime());
+        handler.handleOutput("Counter: " + meas.value + " Index: " + index + " Timestamp: " + meas.timestamp);
     }
 
     public void update(BinaryOutputStatus meas, long index)
     {
-        handler.handleOutput("BinaryOutputStatus: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getDNPTime());
+        handler.handleOutput("BinaryOutputStatus: " + meas.value + " Index: " + index + " Timestamp: " + meas.timestamp);
     }
 
     public void update(AnalogOutputStatus meas, long index)
     {
-        handler.handleOutput("AnalogOutputStatus: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getDNPTime());
+        handler.handleOutput("AnalogOutputStatus: " + meas.value + " Index: " + index + " Timestamp: " + meas.timestamp);
     }
 
     public void end()

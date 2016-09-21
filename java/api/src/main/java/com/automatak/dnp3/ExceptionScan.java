@@ -31,7 +31,7 @@ public class ExceptionScan
      */
     public ExceptionScan()
     {
-        this.classMask = PointClass.ALL_EVENTS.toInt();
+        this.classMask = PointClassMasks.ALL_EVENTS;
         this.scanRateMs = 5000;
     }
 
