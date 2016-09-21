@@ -53,7 +53,7 @@ public:
 		buffer.Advance(SIZE);
 	}
 
-	const static uint64_t MAX = 281474976710655ULL; // 2^48 -1
+	const static int64_t MAX = 281474976710655ULL; // 2^48 -1
 	const static size_t SIZE = 6;
 	typedef UInt48Type Type;
 };

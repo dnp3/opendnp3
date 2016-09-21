@@ -61,7 +61,7 @@ ThreadPool::ThreadPool(
 		{
 			this->Run(i);
 		};
-		threads.push_back(std::make_unique<thread>(run));
+		threads.push_back(std::unique_ptr<thread>(new thread(run)));
 	}
 }
 
