@@ -16,29 +16,41 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3;
+package com.automatak.dnp3.mock;
+
+import com.automatak.dnp3.LogEntry;
+import com.automatak.dnp3.LogHandler;
 
 /**
- * Enumeration for log severity
+ * Singleton that prints log information as it is received
  */
-public enum LogLevel {
-    DEBUG(0x40),
-    COMM(0x20),
-    INTERPRET(0x10),
-    INFO(0x08),
-    WARNING(0x04),
-    ERROR(0x02),
-    EVENT(0x01);
+public class PrintingLogHandler implements LogHandler {
 
-    private final int id;
+    private static PrintingLogHandler instance = new PrintingLogHandler();
 
-    LogLevel(int id)
+    @Override
+    public void log(LogEntry entry)
     {
-        this.id =  id;
+         System.out.println(System.currentTimeMillis() + " - " + getLevelString(entry.level) + " - " + entry.id + " - " + entry.message);
+
     }
 
-    public int toInt()
+    public static PrintingLogHandler getInstance() {
+        return instance;
+    }
+
+    private PrintingLogHandler() {
+    }
+
+    public String getLevelString(int level)
     {
-        return id;
+        switch(level)
+        {
+            // TODO - convert levels to a human readable name
+
+
+            default:
+                return "UNKNOWN_LEVEL";
+        }
     }
 }

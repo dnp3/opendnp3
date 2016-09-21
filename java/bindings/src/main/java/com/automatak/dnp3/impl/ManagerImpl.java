@@ -25,7 +25,7 @@ class ManagerImpl implements DNP3Manager {
 
     private long nativePointer;
 
-    public ManagerImpl(int concurrency)
+    public ManagerImpl(int concurrency, LogHandler handler)
     {
         throw new NotImplementedException();
         //this.nativePointer = create_native_manager(concurrency);

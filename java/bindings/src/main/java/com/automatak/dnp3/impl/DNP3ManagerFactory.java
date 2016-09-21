@@ -19,6 +19,7 @@
 package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.DNP3Manager;
+import com.automatak.dnp3.LogHandler;
 
 /**
  * Factory class used to retrieve the root DNP3 object. This is the only public class available in the impl package.
@@ -52,18 +53,18 @@ public class DNP3ManagerFactory {
      * @param concurrency The number of threads that will be allocated to the underlying thread pool.
      * @return Root management interface from which the entire class hierarchy is retrieved
      */
-    public static DNP3Manager createManager(int concurrency)
+    public static DNP3Manager createManager(int concurrency, LogHandler handler)
     {
-        return new ManagerImpl(concurrency);
+        return new ManagerImpl(concurrency, handler);
     }
 
     /**
      * Returns a DNP3Manager with the thread pool automatically allocated to the number of processors/cores
      * @return Root management interface from which the entire class hierarchy is retrieved
      */
-    public static DNP3Manager createDNP3ManagerWithDefaultConcurrency()
+    public static DNP3Manager createManager(LogHandler handler)
     {
-        return createManager(Runtime.getRuntime().availableProcessors());
+        return createManager(Runtime.getRuntime().availableProcessors(), handler);
     }
 
     private DNP3ManagerFactory()

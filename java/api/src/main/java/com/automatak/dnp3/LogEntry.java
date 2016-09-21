@@ -18,41 +18,38 @@
  */
 package com.automatak.dnp3;
 
-import java.util.Date;
-
 /**
  * A logged event
  */
-public interface LogEntry {
+public class LogEntry {
+
+    public LogEntry(int level, String id, String location, String message)
+    {
+        this.level = level;
+        this.id = id;
+        this.location = location;
+        this.message = message;
+    }
+
+    /**
+     * Log level of the entry
+     */
+    public final int level;
 
     /**
      *
-     * @return Enumeration defining the severity of the message
+     * @return Name of the logger by which the event was recorded
      */
-    LogLevel getLogLevel();
+    public final String id;
 
     /**
-     *
-     * @return Name of the logger by which the event was recored
+     * Event location in the underlying C++
      */
-    String getLoggerName();
+    public final String location;
 
     /**
-     *
-     * @return Event message
+     * Event message
      */
-    String getMessage();
-
-    /**
-     *
-     * @return Timestamp of the event
-     */
-    Date getTimestamp();
-
-    /**
-     *
-     * @return Error code associated with the event
-     */
-    int getErrorCode();
+    public final String message;
 
 }
