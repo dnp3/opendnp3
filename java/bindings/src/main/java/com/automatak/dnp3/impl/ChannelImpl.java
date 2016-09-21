@@ -20,30 +20,31 @@ package com.automatak.dnp3.impl;
 
 
 import com.automatak.dnp3.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 class ChannelImpl implements Channel {
 
-    private long nativeChannel;
+    private long nativePointer;
 
-    public ChannelImpl(long nativeChannel)
+    public ChannelImpl(long nativePointer)
     {
-        this.nativeChannel = nativeChannel;
+        this.nativePointer = nativePointer;
     }
 
     @Override
-    public Master addMaster(String loggerId, SOEHandler handler, MasterApplication application, MasterStackConfig config)
+    public Master addMaster(String id, SOEHandler handler, MasterApplication application, MasterStackConfig config)
     {
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     @Override
     public void shutdown()
     {
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
-    //private native void shutdown_native(long ptrChannel);
-    //private native long get_native_master(long ptrChannel, String loggerId, int level, DataObserverAdapter publisher, MasterStackConfig config);
-
+    /*
+    private native void shutdown_native(long nativePointer);
+    private native long get_native_master(long nativePointer, String id, SOEHandler handler, MasterApplication application, MasterStackConfig config);
+    */
 }

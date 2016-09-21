@@ -45,7 +45,7 @@ class ManagerImpl implements DNP3Manager {
            throw new DNP3Exception("Unable to create channel");
         }
 
-        throw new NotImplementedException();
+       return new ChannelImpl(ptr);
     }
 
     @Override
@@ -57,7 +57,7 @@ class ManagerImpl implements DNP3Manager {
             throw new DNP3Exception("Unable to create channel");
         }
 
-        throw new NotImplementedException();
+        return new ChannelImpl(ptr);
     }
 
     @Override
@@ -81,7 +81,7 @@ class ManagerImpl implements DNP3Manager {
             throw new DNP3Exception("Unable to create channel");
         }
 
-        throw new NotImplementedException();
+        return new ChannelImpl(ptr);
     }
 
     @Override

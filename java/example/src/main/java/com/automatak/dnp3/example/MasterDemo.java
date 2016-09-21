@@ -41,13 +41,15 @@ public class MasterDemo {
 
         // create the root class with a thread pool size of 1
         DNP3Manager manager = DNP3ManagerFactory.createManager(1, PrintingLogHandler.getInstance());
-/*
+
         // Create a tcp channel class that will connect to the loopback
         Channel channel = manager.addTCPClient("client", LogMasks.NORMAL, ChannelRetry.getDefault(), "127.0.0.1", 20000);
+
 
         // You can modify the defaults to change the way the master behaves
         MasterStackConfig config = new MasterStackConfig();
 
+/*
         // Create a master instance, pass in a simple singleton to print received values to the console
         Master master = channel.addMaster("master", PrintingSOEHandler.getInstance(), DefaultMasterApplication.getInstance(), config);
 
