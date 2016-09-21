@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * A boolean measurement type (i.e. whether a switch is open/closed)
  */
-public class BinaryInput extends BaseMeasurement
+public class BinaryInput extends Measurement
 {
     private final boolean value;
 

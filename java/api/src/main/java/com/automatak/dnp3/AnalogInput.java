@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * A discrete or continuous analog value
  */
-public class AnalogInput extends BaseMeasurement
+public class AnalogInput extends Measurement
 {
     private final double value;
 

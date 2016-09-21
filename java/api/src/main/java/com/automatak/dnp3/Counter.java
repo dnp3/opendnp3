@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * An increasing count of some event
  */
-public class Counter extends BaseMeasurement
+public class Counter extends Measurement
 {
     private final long value;
 

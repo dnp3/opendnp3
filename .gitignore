@@ -120,6 +120,8 @@ cpp/demos/outstation/Debug
 cpp/demos/outstation/Release
 *vcxproj.user
 cpp/unittest.log
+dotnet/bindings.VC.VC.opendb
+dotnet/bindings.VC.db
 
 #installer
 dotnet/simulator/setup*

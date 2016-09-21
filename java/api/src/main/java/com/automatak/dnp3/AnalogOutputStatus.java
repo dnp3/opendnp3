@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * Represents the status of analog output on an outstation.
  */
-public class AnalogOutputStatus extends BaseMeasurement
+public class AnalogOutputStatus extends Measurement
 {
     private final double value;
 

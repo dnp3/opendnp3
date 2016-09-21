@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * Represents the state of a digital output
  */
-public class BinaryOutputStatus extends BaseMeasurement
+public class BinaryOutputStatus extends Measurement
 {
     private final boolean value;
 
