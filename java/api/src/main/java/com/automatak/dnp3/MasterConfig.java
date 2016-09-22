@@ -37,6 +37,11 @@ public class MasterConfig {
     }
 
     /**
+     * Application layer response timeout
+     */
+    public Duration responseTimeout = Duration.ofSeconds(5);
+
+    /**
      * Enumeration that specifies how/if the master does performs time synchronization
      */
     public TimeSyncMode timeSyncMode = TimeSyncMode.None;
@@ -47,6 +52,11 @@ public class MasterConfig {
     public boolean disableUnsolOnStartup = true;
 
     /**
+     * If true, the master will not clear the restart IIN bit in response to detecting it set
+     */
+    public boolean ignoreRestartIIN = false;
+
+    /**
      * If true, the master will enable/disable unsol on startup
      */
     public ClassField unsolClassMask = ClassField.allEventClasses();
@@ -55,9 +65,8 @@ public class MasterConfig {
      * Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
      * A mask equal to 0 means no startup integrity scan will be performed
      */
-    public ClassField startupIntegrityClassMask = ClassField.allClasses();
-
-
+    public ClassField startupIntegrityClassMask = ClassField.none();
+    
     /**
      * Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
      */
@@ -69,11 +78,6 @@ public class MasterConfig {
     public ClassField eventScanOnEventsAvailableClassMask = ClassField.none();
 
     /**
-     * Application layer response timeout
-     */
-    public Duration responseTimeout = Duration.ofSeconds(5);
-
-    /**
      * Time delay beforce retrying a failed task
      */
     public Duration taskRetryPeriod = Duration.ofSeconds(5);
@@ -82,4 +86,14 @@ public class MasterConfig {
      * Period after which tasks that haven't started are failed
      */
     public Duration taskStartTimeout = Duration.ofSeconds(10);
+
+    /**
+     * maximum APDU tx size in bytes
+     */
+    public int maxTxFragSize = 2048;
+
+    /**
+     * maximum APDU rx size in bytes
+     */
+    public int maxRxFragSize = 2048;
 }

@@ -28,6 +28,7 @@ import com.automatak.dnp3.mock.PrintingSOEHandler;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -40,6 +41,18 @@ public class MasterDemo {
         // create the root class with a thread pool size of 1
         DNP3Manager manager = DNP3ManagerFactory.createManager(1, PrintingLogHandler.getInstance());
 
+        try {
+            run(manager);
+        }
+        finally {
+            // This call is needed b/c the thread-pool will stop the application from exiting
+            // and the finalizer isn't guaranteed to run b/c the GC might not be collected during main() exit
+            manager.shutdown();
+        }
+    }
+
+    static void run(DNP3Manager manager) throws Exception
+    {
         // Create a tcp channel class that will connect to the loopback
         Channel channel = manager.addTCPClient("client", LogMasks.NORMAL, ChannelRetry.getDefault(), "127.0.0.1", "0.0.0.0", 20000);
 
@@ -66,11 +79,6 @@ public class MasterDemo {
                 System.out.println("Command result: " + future.get().toString());
             }
         }
-
-        // This call is needed b/c the thread-pool will stop the application from exiting
-        // Also, the finalizer isn't guaranteed to run.
-        manager.shutdown();
-
     }
 
 }

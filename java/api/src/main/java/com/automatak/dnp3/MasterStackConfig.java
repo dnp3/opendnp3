@@ -26,20 +26,20 @@ public class MasterStackConfig {
     /**
      * Controls how the master behaves
      */
-    public final MasterConfig masterConfig;
+    public final MasterConfig master;
 
 
     /**
      * Settings for the link layer
      */
-    public final LinkLayerConfig linkConfig;
+    public final LinkLayerConfig link;
 
     /**
      * Constructs all sub-config objects with reasonable defaults
      */
     public MasterStackConfig()
     {
-        this.masterConfig = new MasterConfig();
-        this.linkConfig = new LinkLayerConfig(true);
+        this.master = new MasterConfig();
+        this.link = new LinkLayerConfig(true);
     }
 }

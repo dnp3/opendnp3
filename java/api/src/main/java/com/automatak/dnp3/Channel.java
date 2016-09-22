@@ -37,7 +37,7 @@ public interface Channel {
      * @param config configuration information for the master stack
      * @return reference to the created master
      */
-    Master addMaster(String loggerId, SOEHandler handler, MasterApplication application, MasterStackConfig config);
+    Master addMaster(String loggerId, SOEHandler handler, MasterApplication application, MasterStackConfig config) throws DNP3Exception;
 
 
 }

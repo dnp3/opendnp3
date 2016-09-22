@@ -32,19 +32,29 @@ class ChannelImpl implements Channel {
     }
 
     @Override
-    public Master addMaster(String id, SOEHandler handler, MasterApplication application, MasterStackConfig config)
+    public Master addMaster(String id, SOEHandler handler, MasterApplication application, MasterStackConfig config) throws DNP3Exception
     {
-        throw new RuntimeException("unable to add master!");
+        long ret = get_native_master(nativePointer, id, handler, application, config);
+
+        if(ret == 0) {
+            throw new DNP3Exception("Unable to create channel");
+        }
+
+        shutdown_native(ret);
+
+        throw new DNP3Exception("Unable to create channel");
     }
 
     @Override
-    public void shutdown()
+    public synchronized void shutdown()
     {
-        throw new RuntimeException();
+        if(nativePointer != 0)
+        {
+            this.shutdown_native(nativePointer);
+            nativePointer = 0;
+        }
     }
 
-    /*
     private native void shutdown_native(long nativePointer);
     private native long get_native_master(long nativePointer, String id, SOEHandler handler, MasterApplication application, MasterStackConfig config);
-    */
 }

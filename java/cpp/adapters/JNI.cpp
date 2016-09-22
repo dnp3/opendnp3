@@ -87,13 +87,51 @@ jmethodID JNI::GetMethodIDFromClass(JNIEnv* env, jclass clazz, const char* name,
 jmethodID JNI::GetMethodIDFromObject(JNIEnv* env, jobject obj, const char* name, const char* sig)
 {
 	auto method = GetMethodIDFromClass(env, GetClassForObject(env, obj), name, sig);
-	assert(method != nullptr);
+	assert(method);
 	return method;
 }
 
 jclass JNI::GetClassForObject(JNIEnv* env, jobject obj)
 {
 	jclass clazz = env->GetObjectClass(obj);
-	assert(clazz != nullptr);
+	assert(clazz);
 	return clazz;
+}
+
+jint JNI::GetIntField(JNIEnv* env, jobject obj, const char* fieldId)
+{
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "I");
+	assert(field);
+	return env->GetIntField(obj, field);
+}
+
+jlong JNI::GetLongField(JNIEnv* env, jobject obj, const char* fieldId)
+{
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "J");
+	assert(field);
+	return env->GetLongField(obj, field);
+}
+
+bool JNI::GetBoolField(JNIEnv* env, jobject obj, const char* fieldId)
+{
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "Z");
+	assert(field);
+	return env->GetBooleanField(obj, field) != 0;
+}
+
+jdouble JNI::GetDoubleField(JNIEnv* env, jobject obj, const char* fieldId)
+{
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "D");
+	assert(field);
+	return env->GetDoubleField(obj, field);
+}
+
+jobject JNI::GetObjectField(JNIEnv* env, jobject obj, const char* fieldId, const char* fqcn)
+{
+
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, fqcn);
+	assert(field);
+	jobject ret = env->GetObjectField(obj, field);
+	assert(ret);
+	return ret;
 }

@@ -51,7 +51,15 @@ public:
 	static jclass FindClass(JNIEnv* env, const char* name);
 	static jmethodID GetMethodIDFromClass(JNIEnv* env, jclass clazz, const char* name, const char* sig);
 	static jmethodID GetMethodIDFromObject(JNIEnv* env, jobject obj, const char* name, const char* sig);
-	static jclass GetClassForObject(JNIEnv* env, jobject obj);	
+	static jclass GetClassForObject(JNIEnv* env, jobject obj);
+
+	// --- field accessors ---
+
+	static jint GetIntField(JNIEnv* env, jobject obj, const char* fieldId);
+	static jlong GetLongField(JNIEnv* env, jobject obj, const char* fieldId);
+	static bool GetBoolField(JNIEnv* env, jobject obj, const char* fieldId);
+	static jdouble GetDoubleField(JNIEnv* env, jobject obj, const char* fieldId);
+	static jobject GetObjectField(JNIEnv* env, jobject obj, const char* fieldId, const char* fqcn);
 	
 
 private:
