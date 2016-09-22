@@ -22,8 +22,8 @@
 #include <iostream>
 #include <assert.h>
 
-#include "JNIHelpers.h"
-#include "ClassNames.h"
+#include "../cache/JNIHelpers.h"
+#include "../cache/ClassNames.h"
 
 LogHandlerAdapter::LogHandlerAdapter(JavaVM* jvm, jobject proxy) : 
 	jvm(jvm), 

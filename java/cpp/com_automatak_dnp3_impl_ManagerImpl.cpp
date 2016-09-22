@@ -11,9 +11,8 @@ using namespace openpal;
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager
 (JNIEnv* env, jobject, jint concurreny, jobject loghandler)
-{
-	JavaVM* jvm;
-	env->GetJavaVM(&jvm);
+{	
+	auto jvm = JNI::GetJVMFromEnv(env);
 	
 	auto attachThread = [jvm]() { JNI::AttachThread(jvm); };
 	auto detachThread = [jvm]() { JNI::DetachThread(jvm); };

@@ -19,7 +19,6 @@
 package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 class ManagerImpl implements DNP3Manager {
 

@@ -27,10 +27,8 @@ import com.automatak.dnp3.mock.PrintingLogHandler;
 import com.automatak.dnp3.mock.PrintingSOEHandler;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Example master than can be run against the example outstation
@@ -45,11 +43,9 @@ public class MasterDemo {
         // Create a tcp channel class that will connect to the loopback
         Channel channel = manager.addTCPClient("client", LogMasks.NORMAL, ChannelRetry.getDefault(), "127.0.0.1", 20000);
 
-
         // You can modify the defaults to change the way the master behaves
         MasterStackConfig config = new MasterStackConfig();
 
-/*
         // Create a master instance, pass in a simple singleton to print received values to the console
         Master master = channel.addMaster("master", PrintingSOEHandler.getInstance(), DefaultMasterApplication.getInstance(), config);
 
@@ -70,9 +66,11 @@ public class MasterDemo {
                 System.out.println("Command result: " + future.get().toString());
             }
         }
-    */
 
+        // This call is needed b/c the thread-pool will stop the application from exiting
+        // Also, the finalizer isn't guaranteed to run.
         manager.shutdown();
+
     }
 
 }

@@ -205,7 +205,7 @@ void LinkSession::BeginReceive()
 		}
 		else
 		{
-			self->m_parser.OnRead(num, *self);
+			self->m_parser.OnRead(static_cast<uint32_t>(num), *self);
 			self->BeginReceive();
 		}
 	};
