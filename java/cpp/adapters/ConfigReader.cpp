@@ -29,12 +29,9 @@ MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* env, jobject jC
 {
 	MasterStackConfig cfg;
 	
-
 	cfg.link = ConvertLinkConfig(env, JNI::GetObjectField(env, jCfg, "link", "Lcom/automatak/dnp3/LinkLayerConfig;"));
-
-	//cfg.app = ConvertAppConfig(env, JNIHelpers::GetObjectField(env, jCfg, "app", "Lcom/automatak/dnp3/AppLayerConfig;"));
-	//cfg.master = ConvertMasterConfig(env, JNIHelpers::GetObjectField(env, jCfg, "master", "Lcom/automatak/dnp3/MasterConfig;"));
-
+	cfg.master = ConvertMasterConfig(env, JNI::GetObjectField(env, jCfg, "master", "Lcom/automatak/dnp3/MasterConfig;"));
+		
 	return cfg;
 }
 
@@ -116,7 +113,7 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* env, jobject jCfg)
 
 jint ConfigReader::GetEnumId(JNIEnv* env, jobject jenum)
 {
-	jmethodID mid = JNI::GetMethodIDFromObject(env, jenum, "getId", "()I");
+	jmethodID mid = JNI::GetMethodIDFromObject(env, jenum, "toType", "()I");
 	return env->CallIntMethod(jenum, mid);
 }
 
@@ -162,11 +159,16 @@ DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* env, jobject jCfg)
 
 	return cfg;
 }
+*/
 
-MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jCfg)
+MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 {
-	MasterConfig cfg;
+	MasterParams cfg;
 
+	cfg.responseTimeout = ConvertDuration(env, JNI::GetObjectField(env, jcfg, "responseTimeout", classes::duration));
+	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, "timeSyncMode", classes::timeSyncMode));
+
+	/*
 	cfg.FragSize = JNIHelpers::GetIntField(env, jCfg, "maxRequestFragmentSize");
 	cfg.VtoWriterQueueSize = JNIHelpers::GetIntField(env, jCfg, "vtoWriterQueueSize");
 	cfg.UseNonStandardVtoFunction = JNIHelpers::GetBoolField(env, jCfg, "useNonStandardVtoFunction");
@@ -184,10 +186,12 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jCfg)
 		long rate = JNIHelpers::GetLongField(env, scan, "scanRateMs");
 		cfg.AddExceptionScan(mask, rate);
 	});
+	*/
 
 	return cfg;
 }
 
+/*
 AppConfig ConfigReader::ConvertAppConfig(JNIEnv* env, jobject jCfg)
 {
 	AppConfig cfg;

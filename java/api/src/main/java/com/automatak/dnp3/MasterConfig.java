@@ -66,7 +66,7 @@ public class MasterConfig {
      * A mask equal to 0 means no startup integrity scan will be performed
      */
     public ClassField startupIntegrityClassMask = ClassField.none();
-    
+
     /**
      * Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
      */

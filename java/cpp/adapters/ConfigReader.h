@@ -27,6 +27,7 @@
 namespace classes
 {
 	static const char* duration = "Ljava/time/Duration;";
+	static const char* timeSyncMode = "Lcom/automatak/dnp3/enums/TimeSyncMode;";
 }
 
 class ConfigReader
@@ -43,11 +44,13 @@ private:
 
 	static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* env, jobject jconfig);
 
-	static openpal::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
+	
+
+	static opendnp3::MasterParams ConvertMasterConfig(JNIEnv* apEnv, jobject jcfg);
 
 	/*
-	static opendnp3::AppConfig ConvertAppConfig(JNIEnv* apEnv, jobject jcfg);
-	static opendnp3::MasterConfig ConvertMasterConfig(JNIEnv* apEnv, jobject jcfg);
+	
+	
 	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* apEnv, jobject jcfg);
 	static opendnp3::DeviceTemplate ConvertDatabaseConfig(JNIEnv* apEnv, jobject jcfg);
 
@@ -60,6 +63,8 @@ private:
 	static opendnp3::EventAnalogResponse ConvertEventAnalog(jint value);
 	static opendnp3::EventCounterResponse ConvertEventCounter(jint value);
 	*/
+
+	static openpal::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
 
 	static jint GetEnumId(JNIEnv* apEnv, jobject jenum);
 
