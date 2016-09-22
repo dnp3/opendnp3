@@ -28,7 +28,7 @@ using namespace std;
 jint JNI_OnLoad(JavaVM *vm, void *reserved)
 {			
 	JNI::Initialize(vm);
-	return JNI_VERSION_1_8;
+	return OPENDNP3_JNI_VERSION;
 }
 
 // initialize static objects
@@ -59,7 +59,7 @@ bool JNI::DetachCurrentThread()
 JNIEnv* JNI::GetEnv()
 {
 	JNIEnv* env = nullptr;
-	jint ret = vm->GetEnv((void**)&env, JNI_VERSION_1_8);
+	jint ret = vm->GetEnv((void**)&env, OPENDNP3_JNI_VERSION);
 	assert(ret == 0);
 	assert(env != nullptr);
 	return env;
