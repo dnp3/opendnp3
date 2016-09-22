@@ -35,6 +35,12 @@ public:
 private:
 	
 	jobject proxy;
+
+	// cached ids
+	bool initialized = false;
+	jclass logEntryClass = nullptr;
+	jmethodID logEntryConstructor = nullptr;
+	jmethodID logMethod = nullptr;
 };
 
 #endif

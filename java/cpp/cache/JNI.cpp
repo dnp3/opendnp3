@@ -19,8 +19,6 @@
 
 #include "jni.h"
 
-#include "JNIHelpers.h"
-
 #include <assert.h>
 
 using namespace std;
@@ -33,7 +31,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
 
 // initialize static objects
 JavaVM * JNI::vm(nullptr);
-LogHandlerCache JNI::logging;
+
 
 jobject JNI::CreateGlobalRef(jobject ref)
 {
@@ -69,4 +67,33 @@ void JNI::Initialize(JavaVM *vmin)
 {
 	assert(vmin);
 	JNI::vm = vmin;		
+}
+
+
+jclass JNI::FindClass(JNIEnv* env, const char* name)
+{
+	auto ret = env->FindClass(name);
+	assert(ret != nullptr);
+	return ret;
+}
+
+jmethodID JNI::GetMethodIDFromClass(JNIEnv* env, jclass clazz, const char* name, const char* sig)
+{
+	jmethodID ret = env->GetMethodID(clazz, name, sig);
+	assert(ret != nullptr);
+	return ret;
+}
+
+jmethodID JNI::GetMethodIDFromObject(JNIEnv* env, jobject obj, const char* name, const char* sig)
+{
+	auto method = GetMethodIDFromClass(env, GetClassForObject(env, obj), name, sig);
+	assert(method != nullptr);
+	return method;
+}
+
+jclass JNI::GetClassForObject(JNIEnv* env, jobject obj)
+{
+	jclass clazz = env->GetObjectClass(obj);
+	assert(clazz != nullptr);
+	return clazz;
 }

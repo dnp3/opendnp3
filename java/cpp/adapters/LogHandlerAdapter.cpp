@@ -36,5 +36,25 @@ LogHandlerAdapter::~LogHandlerAdapter()
 
 void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
 {		
-	JNI::logging.LogToHandler(proxy, entry);
+	const auto env = JNI::GetEnv();
+
+	// cache these items
+	if (!initialized)
+	{
+		this->logEntryClass = JNI::FindClass(env, "com/automatak/dnp3/LogEntry");
+		this->logEntryConstructor = JNI::GetMethodIDFromClass(env, this->logEntryClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
+		this->logMethod = JNI::GetMethodIDFromObject(env, proxy, "log", "(Lcom/automatak/dnp3/LogEntry;)V");
+		this->initialized = true;
+	}
+
+	const jint level = entry.GetFilters().GetBitfield();
+	const jstring id = env->NewStringUTF(entry.GetAlias());
+	const jstring location = env->NewStringUTF(entry.GetLocation());
+	const jstring msg = env->NewStringUTF(entry.GetMessage());
+
+	auto jentry = env->NewObject(this->logEntryClass, this->logEntryConstructor, level, id, location, msg);
+
+	assert(jentry != nullptr);
+
+	env->CallVoidMethod(proxy, logMethod, jentry);
 }

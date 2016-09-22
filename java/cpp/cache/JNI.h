@@ -23,8 +23,6 @@
 #include <jni.h>
 #include <openpal/util/Uncopyable.h>
 
-#include "ClassCaches.h"
-
 extern "C" {
 	jint JNI_OnLoad(JavaVM *vm, void *reserved);
 }
@@ -36,23 +34,28 @@ class JNI : private openpal::StaticOnly
 
 public:
 
+	// called once during JNI_OnLoad
+	static void Initialize(JavaVM *vm);
+
+	static JNIEnv* GetEnv();
+
 	static jobject CreateGlobalRef(jobject ref);
 	static void DeleteGlobalRef(jobject ref);
 	
 	static bool AttachCurrentThread();
-	static bool DetachCurrentThread();
+	static bool DetachCurrentThread();	
 
-	// called once during JNI_OnLoad
-	static void Initialize(JavaVM *vm);	
-	static JNIEnv* GetEnv();
+	// --- methods requiring an ENV ---
+
+	static jclass FindClass(JNIEnv* env, const char* name);
+	static jmethodID GetMethodIDFromClass(JNIEnv* env, jclass clazz, const char* name, const char* sig);
+	static jmethodID GetMethodIDFromObject(JNIEnv* env, jobject obj, const char* name, const char* sig);
+	static jclass GetClassForObject(JNIEnv* env, jobject obj);
 
 private:
 	
 	static JavaVM *vm;
 
-public:
-
-	static LogHandlerCache logging;	
 
 };
 
