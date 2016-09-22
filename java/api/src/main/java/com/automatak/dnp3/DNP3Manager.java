@@ -33,10 +33,11 @@ public interface DNP3Manager {
      * @param levels The starting level for logging output
      * @param retry Retry configuration for the channel
      * @param address The address of remote host as a INET address i.e. "127.0.0.1" or name "www.google.com"
+     * @param adapter The local adapter to use. "0.0.0.0* means "any adapter'.
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @return A channel interface
      */
-    Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, int port) throws DNP3Exception;
+    Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port) throws DNP3Exception;
 
     /**
      * Add a TCP client channel. The channel does not try to connect until you add a stack.

@@ -26,10 +26,10 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_shutdown_1native
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    get_native_channel_tcp_client
- * Signature: (JLjava/lang/String;IJJLjava/lang/String;I)J
+ * Signature: (JLjava/lang/String;IJJLjava/lang/String;Ljava/lang/String;I)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
-  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jint);
+  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jstring, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl

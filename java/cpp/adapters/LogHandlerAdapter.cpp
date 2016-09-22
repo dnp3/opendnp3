@@ -22,7 +22,7 @@
 #include <iostream>
 #include <assert.h>
 
-#include "../cache/JNI.h"
+#include "JNI.h"
 
 LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(JNI::CreateGlobalRef(proxy))
 {

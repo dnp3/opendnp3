@@ -36,7 +36,7 @@ private:
 	
 	jobject proxy;
 
-	// cached ids
+	// cached JNI initialized on first usage ids
 	bool initialized = false;
 	jclass logEntryClass = nullptr;
 	jmethodID logEntryConstructor = nullptr;

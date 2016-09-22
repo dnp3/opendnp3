@@ -34,7 +34,7 @@ class ChannelImpl implements Channel {
     @Override
     public Master addMaster(String id, SOEHandler handler, MasterApplication application, MasterStackConfig config)
     {
-        throw new RuntimeException();
+        throw new RuntimeException("unable to add master!");
     }
 
     @Override

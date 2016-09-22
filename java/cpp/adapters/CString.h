@@ -17,46 +17,42 @@
  * the License.
  */
 
-#ifndef OPENDNP3_JNI_H
-#define OPENDNP3_JNI_H
+#ifndef OPENDNP3_CSTRING_H
+#define OPENDNP3_CSTRING_H
 
 #include <jni.h>
 #include <openpal/util/Uncopyable.h>
 
-extern "C" {
-	jint JNI_OnLoad(JavaVM *vm, void *reserved);
-}
-
-#define OPENDNP3_JNI_VERSION JNI_VERSION_1_8  
-
-class JNI : private openpal::StaticOnly
+// RAII class for java <=> cstring
+class CString : private openpal::Uncopyable
 {
+	JNIEnv* env;
+	jstring jstr;
+	const char* cstr;
 
 public:
 
-	// called once during JNI_OnLoad
-	static void Initialize(JavaVM *vm);
+	CString(JNIEnv* env, jstring jstr) : 
+		env(env),
+		jstr(jstr),
+		cstr(env->GetStringUTFChars(jstr, nullptr))
+	{}
 
-	static JNIEnv* GetEnv();
+	~CString()
+	{
+		env->ReleaseStringUTFChars(jstr, cstr);
+	}
 
-	static jobject CreateGlobalRef(jobject ref);
-	static void DeleteGlobalRef(jobject ref);
+	std::string str() const
+	{
+		return std::string(cstr);
+	}
+
+	operator const char*() const
+	{
+		return cstr;
+	}
 	
-	static bool AttachCurrentThread();
-	static bool DetachCurrentThread();	
-
-	// --- methods requiring an ENV ---
-
-	static jclass FindClass(JNIEnv* env, const char* name);
-	static jmethodID GetMethodIDFromClass(JNIEnv* env, jclass clazz, const char* name, const char* sig);
-	static jmethodID GetMethodIDFromObject(JNIEnv* env, jobject obj, const char* name, const char* sig);
-	static jclass GetClassForObject(JNIEnv* env, jobject obj);
-
-private:
-	
-	static JavaVM *vm;
-
-
 };
 
 #endif
