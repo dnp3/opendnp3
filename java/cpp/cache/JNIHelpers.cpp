@@ -19,30 +19,46 @@
 #include "JNIHelpers.h"
 
 #include <assert.h>
-#include <sstream>
-#include <iostream>
 
 using namespace std;
 
+jclass JNIHelpers::FindClass(JNIEnv* env, const char* name)
+{
+	auto ret = env->FindClass(name);
+	assert(ret != nullptr);
+	return ret;
+}
+
+jmethodID JNIHelpers::GetMethodIDFromClass(JNIEnv* env, jclass clazz, const char* name, const char* sig)
+{
+	jmethodID ret = env->GetMethodID(clazz, name, sig);
+	assert(ret != nullptr);
+	return ret;
+}
+
+jmethodID JNIHelpers::GetMethodIDFromObject(JNIEnv* env, jobject obj, const char* name, const char* sig)
+{
+	auto method = GetMethodIDFromClass(env, GetClassForObject(env, obj), name, sig);
+	assert(method != nullptr);
+	return method;
+}
+
+jclass JNIHelpers::GetClassForObject(JNIEnv* env, jobject obj)
+{
+	jclass clazz = env->GetObjectClass(obj);
+	assert(clazz != nullptr);
+	return clazz;
+}
+
+
+
+/*
 std::string JNIHelpers::GetString(jstring s, JNIEnv* env)
 {
 	auto cstr = env->GetStringUTFChars(s, NULL);
 	std::string copy(cstr);
 	env->ReleaseStringUTFChars(s, cstr);
 	return copy;
-}
-
-void JNIHelpers::AttachThread(JavaVM* jvm)
-{
-	JNIEnv* env;
-	jint res = jvm->AttachCurrentThread((void**)&env, nullptr);
-	assert(res == 0);
-}
-
-void JNIHelpers::DetachThread(JavaVM* jvm)
-{
-	jint res = jvm->DetachCurrentThread();
-	assert(res == 0);
 }
 
 void JNIHelpers::DeleteGlobalReference(JavaVM* jvm, jobject ref)
@@ -60,33 +76,8 @@ JavaVM* JNIHelpers::GetJVMFromEnv(JNIEnv* env)
 	return pJVM;
 }
 
-JNIEnv* JNIHelpers::GetEnvFromJVM(JavaVM* jvm)
-{
-	JNIEnv* env = nullptr;
-	jint ret = jvm->GetEnv((void**) &env, JNI_VERSION_1_8);	
-	assert(ret == 0);
-	assert(env != nullptr);
-	return env;
-}
 
-jmethodID JNIHelpers::GetMethodID(JNIEnv* env, jclass clazz, const char* name, const char* sig)
-{
-	jmethodID mid = env->GetMethodID(clazz, name, sig);
-	assert(mid != nullptr);
-	return mid;
-}
 
-jclass JNIHelpers::GetClassForObject(JNIEnv* env, jobject obj)
-{
-	jclass clazz = env->GetObjectClass(obj);
-	assert(clazz != nullptr);
-	return clazz;
-}
-
-jmethodID JNIHelpers::GetMethodID(JNIEnv* env, jobject obj, const char* name, const char* sig)
-{
-	return GetMethodID(env, GetClassForObject(env, obj), name, sig);
-}
 
 jint JNIHelpers::GetIntField(JNIEnv* env, jobject obj, const char* fieldId)
 {
@@ -139,6 +130,7 @@ void JNIHelpers::IterateOverListOfObjects(JNIEnv* env, jobject list, std::functi
 		fun(obj);
 	}
 }
+*/
 
 
 

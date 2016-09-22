@@ -16,11 +16,30 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-#ifndef OPENDNP3_JAVACLASSES_H
-#define OPENDNP3_JAVACLASSES_H
 
-namespace names {
-	const auto log_entry = "com/automatak/dnp3/LogEntry";
-}
+#ifndef OPENDNP3_CLASSCACHES_H
+#define OPENDNP3_CLASSCACHES_H
+
+#include <jni.h>
+
+#include <openpal/logging/LogEntry.h>
+
+// cache for log handler adapter
+class LogHandlerCache {
+
+public:
+
+	LogHandlerCache() {}	
+
+	void LogToHandler(jobject handler, const openpal::LogEntry& entry);
+
+private:
+
+	bool initialized = false;
+	jclass logEntryClass = nullptr;
+	jmethodID logEntryConstructor = nullptr;
+	jmethodID logMethod = nullptr;
+};
 
 #endif
+

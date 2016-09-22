@@ -22,43 +22,19 @@
 #include <iostream>
 #include <assert.h>
 
-#include "../cache/JNIHelpers.h"
-#include "../cache/ClassNames.h"
+#include "../cache/JNI.h"
 
-LogHandlerAdapter::LogHandlerAdapter(JavaVM* jvm, jobject proxy) : 
-	jvm(jvm), 
-	proxy(JNIHelpers::GetEnvFromJVM(jvm)->NewGlobalRef(proxy))
+LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(JNI::CreateGlobalRef(proxy))
 {
 	
 }
 
 LogHandlerAdapter::~LogHandlerAdapter()
 {
-	JNIHelpers::GetEnvFromJVM(jvm)->DeleteGlobalRef(proxy);
+	JNI::DeleteGlobalRef(proxy);	
 }
 
 void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
 {		
-	const auto env = JNIHelpers::GetEnvFromJVM(this->jvm);
-
-	const jclass logEntryClass = env->FindClass(names::log_entry);
-	assert(logEntryClass != nullptr);																					
-	const jmethodID logEntryConstructor = env->GetMethodID(logEntryClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
-	assert(logEntryConstructor != nullptr);
-	
-	const jint level = entry.GetFilters().GetBitfield();
-	const jstring id = env->NewStringUTF(entry.GetAlias());
-	const jstring location = env->NewStringUTF(entry.GetLocation());
-	const jstring msg = env->NewStringUTF(entry.GetMessage());
-				
-	const jobject jLogEntry = env->NewObject(logEntryClass, logEntryConstructor, level, id, location, msg);
-	assert(jLogEntry != nullptr);
-
-	const jclass logHandlerClass = env->GetObjectClass(proxy);
-	assert(logHandlerClass != nullptr);
-
-	const jmethodID onLogEntryId = env->GetMethodID(logHandlerClass, "log", "(Lcom/automatak/dnp3/LogEntry;)V");
-	assert(onLogEntryId != nullptr);
-	
-	env->CallVoidMethod(proxy, onLogEntryId, jLogEntry);
+	JNI::logging.LogToHandler(proxy, entry);
 }

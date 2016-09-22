@@ -16,25 +16,43 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-#ifndef OPENDNP3_LOG_HANDLER_ADAPTER_H
-#define OPENDNP3_LOG_HANDLER_ADAPTER_H
+
+#ifndef OPENDNP3_JNI_H
+#define OPENDNP3_JNI_H
 
 #include <jni.h>
-#include <openpal/logging/ILogHandler.h>
+#include <openpal/util/Uncopyable.h>
 
-class LogHandlerAdapter : public openpal::ILogHandler
+#include "ClassCaches.h"
+
+extern "C" {
+	jint JNI_OnLoad(JavaVM *vm, void *reserved);
+}
+
+class JNI : private openpal::StaticOnly
 {
+
 public:
 
-	LogHandlerAdapter(jobject proxy);
+	static jobject CreateGlobalRef(jobject ref);
+	static void DeleteGlobalRef(jobject ref);
+	
+	static bool AttachCurrentThread();
+	static bool DetachCurrentThread();
 
-	~LogHandlerAdapter();
-
-	virtual void Log(const openpal::LogEntry& entry);
+	// called once during JNI_OnLoad
+	static void Initialize(JavaVM *vm);	
+	static JNIEnv* GetEnv();
 
 private:
 	
-	jobject proxy;
+	static JavaVM *vm;
+
+public:
+
+	static LogHandlerCache logging;	
+
 };
 
 #endif
+
