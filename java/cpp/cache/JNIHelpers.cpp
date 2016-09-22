@@ -24,7 +24,7 @@
 
 using namespace std;
 
-std::string JNI::GetString(jstring s, JNIEnv* env)
+std::string JNIHelpers::GetString(jstring s, JNIEnv* env)
 {
 	auto cstr = env->GetStringUTFChars(s, NULL);
 	std::string copy(cstr);
@@ -32,27 +32,27 @@ std::string JNI::GetString(jstring s, JNIEnv* env)
 	return copy;
 }
 
-void JNI::AttachThread(JavaVM* jvm)
+void JNIHelpers::AttachThread(JavaVM* jvm)
 {
 	JNIEnv* env;
 	jint res = jvm->AttachCurrentThread((void**)&env, nullptr);
 	assert(res == 0);
 }
 
-void JNI::DetachThread(JavaVM* jvm)
+void JNIHelpers::DetachThread(JavaVM* jvm)
 {
 	jint res = jvm->DetachCurrentThread();
 	assert(res == 0);
 }
 
-void JNI::DeleteGlobalReference(JavaVM* jvm, jobject ref)
+void JNIHelpers::DeleteGlobalReference(JavaVM* jvm, jobject ref)
 {
 	JNIEnv* env = GetEnvFromJVM(jvm);			
 	env->DeleteGlobalRef(ref);
 }
 
 
-JavaVM* JNI::GetJVMFromEnv(JNIEnv* env)
+JavaVM* JNIHelpers::GetJVMFromEnv(JNIEnv* env)
 {
 	JavaVM* pJVM = nullptr;
 	env->GetJavaVM(&pJVM);
@@ -60,7 +60,7 @@ JavaVM* JNI::GetJVMFromEnv(JNIEnv* env)
 	return pJVM;
 }
 
-JNIEnv* JNI::GetEnvFromJVM(JavaVM* jvm)
+JNIEnv* JNIHelpers::GetEnvFromJVM(JavaVM* jvm)
 {
 	JNIEnv* env = nullptr;
 	jint ret = jvm->GetEnv((void**) &env, JNI_VERSION_1_8);	
@@ -69,54 +69,54 @@ JNIEnv* JNI::GetEnvFromJVM(JavaVM* jvm)
 	return env;
 }
 
-jmethodID JNI::GetMethodID(JNIEnv* env, jclass clazz, const char* name, const char* sig)
+jmethodID JNIHelpers::GetMethodID(JNIEnv* env, jclass clazz, const char* name, const char* sig)
 {
 	jmethodID mid = env->GetMethodID(clazz, name, sig);
 	assert(mid != nullptr);
 	return mid;
 }
 
-jclass JNI::GetClassForObject(JNIEnv* env, jobject obj)
+jclass JNIHelpers::GetClassForObject(JNIEnv* env, jobject obj)
 {
 	jclass clazz = env->GetObjectClass(obj);
 	assert(clazz != nullptr);
 	return clazz;
 }
 
-jmethodID JNI::GetMethodID(JNIEnv* env, jobject obj, const char* name, const char* sig)
+jmethodID JNIHelpers::GetMethodID(JNIEnv* env, jobject obj, const char* name, const char* sig)
 {
 	return GetMethodID(env, GetClassForObject(env, obj), name, sig);
 }
 
-jint JNI::GetIntField(JNIEnv* env, jobject obj, const char* fieldId)
+jint JNIHelpers::GetIntField(JNIEnv* env, jobject obj, const char* fieldId)
 {
 	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "I");
 	assert(field != nullptr);
 	return env->GetIntField(obj, field);
 }
 
-jlong JNI::GetLongField(JNIEnv* env, jobject obj, const char* fieldId)
+jlong JNIHelpers::GetLongField(JNIEnv* env, jobject obj, const char* fieldId)
 {
 	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "J");
 	assert(field != nullptr);
 	return env->GetLongField(obj, field);
 }
 
-bool JNI::GetBoolField(JNIEnv* env, jobject obj, const char* fieldId)
+bool JNIHelpers::GetBoolField(JNIEnv* env, jobject obj, const char* fieldId)
 {
 	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "Z");
 	assert(field != nullptr);
 	return env->GetBooleanField(obj, field) != 0;
 }
 
-jdouble JNI::GetDoubleField(JNIEnv* env, jobject obj, const char* fieldId)
+jdouble JNIHelpers::GetDoubleField(JNIEnv* env, jobject obj, const char* fieldId)
 {
 	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "D");
 	assert(field != nullptr);
 	return env->GetDoubleField(obj, field);
 }
 
-jobject JNI::GetObjectField(JNIEnv* env, jobject obj, const char* fieldId, const char* fqcn)
+jobject JNIHelpers::GetObjectField(JNIEnv* env, jobject obj, const char* fieldId, const char* fqcn)
 {
 
 	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, fqcn);
@@ -126,12 +126,12 @@ jobject JNI::GetObjectField(JNIEnv* env, jobject obj, const char* fieldId, const
 	return ret;
 }
 
-void JNI::IterateOverListOfObjects(JNIEnv* env, jobject list, std::function<void (jobject)> fun)
+void JNIHelpers::IterateOverListOfObjects(JNIEnv* env, jobject list, std::function<void (jobject)> fun)
 {
-	jmethodID sizeMID = JNI::GetMethodID(env, list, "size", "()I");
+	jmethodID sizeMID = JNIHelpers::GetMethodID(env, list, "size", "()I");
 	jint size = env->CallIntMethod(list, sizeMID);
 
-	jmethodID getMID = JNI::GetMethodID(env, list, "get", "(I)Ljava/lang/Object;");
+	jmethodID getMID = JNIHelpers::GetMethodID(env, list, "get", "(I)Ljava/lang/Object;");
 
 	for(jint i = 0; i < size; ++i) {
 		jobject obj = env->CallObjectMethod(list, getMID, i);

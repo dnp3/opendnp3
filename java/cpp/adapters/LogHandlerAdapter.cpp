@@ -27,19 +27,19 @@
 
 LogHandlerAdapter::LogHandlerAdapter(JavaVM* jvm, jobject proxy) : 
 	jvm(jvm), 
-	proxy(JNI::GetEnvFromJVM(jvm)->NewGlobalRef(proxy))
+	proxy(JNIHelpers::GetEnvFromJVM(jvm)->NewGlobalRef(proxy))
 {
 	
 }
 
 LogHandlerAdapter::~LogHandlerAdapter()
 {
-	JNI::GetEnvFromJVM(jvm)->DeleteGlobalRef(proxy);
+	JNIHelpers::GetEnvFromJVM(jvm)->DeleteGlobalRef(proxy);
 }
 
 void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
 {		
-	const auto env = JNI::GetEnvFromJVM(this->jvm);
+	const auto env = JNIHelpers::GetEnvFromJVM(this->jvm);
 
 	const jclass logEntryClass = env->FindClass(names::log_entry);
 	assert(logEntryClass != nullptr);																					

@@ -3,8 +3,8 @@
 
 #include <asiodnp3/DNP3Manager.h>
 
-#include "JNIHelpers.h"
-#include "LogHandlerAdapter.h"
+#include "cache/JNIHelpers.h"
+#include "adapters/LogHandlerAdapter.h"
 
 using namespace asiodnp3;
 using namespace openpal;
@@ -12,10 +12,10 @@ using namespace openpal;
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager
 (JNIEnv* env, jobject, jint concurreny, jobject loghandler)
 {	
-	auto jvm = JNI::GetJVMFromEnv(env);
+	auto jvm = JNIHelpers::GetJVMFromEnv(env);
 	
-	auto attachThread = [jvm]() { JNI::AttachThread(jvm); };
-	auto detachThread = [jvm]() { JNI::DetachThread(jvm); };
+	auto attachThread = [jvm]() { JNIHelpers::AttachThread(jvm); };
+	auto detachThread = [jvm]() { JNIHelpers::DetachThread(jvm); };
 
 	auto adapter = std::make_shared<LogHandlerAdapter>(jvm, loghandler);	
 

@@ -25,7 +25,7 @@
 
 #include <openpal/util/Uncopyable.h>
 
-struct JNI : private openpal::StaticOnly
+struct JNIHelpers : private openpal::StaticOnly
 {
 
 	static std::string GetString(jstring, JNIEnv*);
