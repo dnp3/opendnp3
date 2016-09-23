@@ -37,23 +37,30 @@ public class PrintingSOEHandler implements SOEHandler {
     }
 
     @Override
-    public void processBinaryInput(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values) {}
-
-    @Override
-    public void processAnalogInput(HeaderInfo info, Iterable<IndexedValue<AnalogInput>> values){}
-
-    @Override
-    public void processCounter(HeaderInfo info, Iterable<IndexedValue<Counter>> values){}
-
-    @Override
-    public void processBinaryOutputStatus(HeaderInfo info, Iterable<IndexedValue<BinaryOutputStatus>> values){}
-
-    @Override
-    public void processAnalogOutputStatus(HeaderInfo info, Iterable<IndexedValue<AnalogOutputStatus>> values){}
-
-    @Override
     public void end()
     {
         System.out.println("end asdu");
     }
+
+    @Override
+    public void processBI(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values) {}
+
+    @Override
+    public void processDBI(HeaderInfo info, Iterable<IndexedValue<DoubleBitBinaryInput>> values) {}
+
+    @Override
+    public void processAI(HeaderInfo info, Iterable<IndexedValue<AnalogInput>> values) {}
+
+    @Override
+    public void processC(HeaderInfo info, Iterable<IndexedValue<Counter>> values) {}
+
+    @Override
+    public void processFC(HeaderInfo info, Iterable<IndexedValue<FrozenCounter>> values) {}
+
+    @Override
+    public void processBOS(HeaderInfo info, Iterable<IndexedValue<BinaryOutputStatus>> values) {}
+
+    @Override
+    public void processAOS(HeaderInfo info, Iterable<IndexedValue<AnalogOutputStatus>> values) {}
+
 }

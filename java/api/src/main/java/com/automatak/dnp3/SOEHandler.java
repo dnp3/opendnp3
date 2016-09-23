@@ -25,31 +25,63 @@ package com.automatak.dnp3;
  */
 public interface SOEHandler {
 
-    /*
+    /**
      * Start a processing an ASDU
      */
     void start();
 
-    /*
-    * End a processing an ASDU
-    */
+    /**
+     * End a processing an ASDU
+     */
     void end();
 
+    /**
+     * Process a single value
+     * @param info information about the header from which the value came
+     * @param values the measurement values
+     */
+    void processBI(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values);
 
-    void processBinaryInput(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values);
+    /**
+     * Process a single value
+     * @param info information about the header from which the value came
+     * @param values the measurement values
+     */
+    void processDBI(HeaderInfo info, Iterable<IndexedValue<DoubleBitBinaryInput>> values);
 
+    /**
+     * Process a single value
+     * @param info information about the header from which the value came
+     * @param values the measurement values
+     */
+    void processAI(HeaderInfo info, Iterable<IndexedValue<AnalogInput>> values);
 
-    void processAnalogInput(HeaderInfo info, Iterable<IndexedValue<AnalogInput>> values);
+    /**
+     * Process a single value
+     * @param info information about the header from which the value came
+     * @param values the measurement value
+     */
+    void processC(HeaderInfo info, Iterable<IndexedValue<Counter>> values);
 
+    /**
+     * Process a single value
+     * @param info information about the header from which the value came
+     * @param values the measurement values
+     */
+    void processFC(HeaderInfo info, Iterable<IndexedValue<FrozenCounter>> values);
 
-    void processCounter(HeaderInfo info, Iterable<IndexedValue<Counter>> values);
+    /**
+     * Process a single value
+     * @param info information about the header from which the value came
+     * @param values the measurement values
+     */
+    void processBOS(HeaderInfo info, Iterable<IndexedValue<BinaryOutputStatus>> values);
 
-
-    void processBinaryOutputStatus(HeaderInfo info, Iterable<IndexedValue<BinaryOutputStatus>> values);
-
-
-    void processAnalogOutputStatus(HeaderInfo info, Iterable<IndexedValue<AnalogOutputStatus>> values);
-
-
+    /**
+     * Process a single value
+     * @param info information about the header from which the value came
+     * @param values the measurement values
+     */
+    void processAOS(HeaderInfo info, Iterable<IndexedValue<AnalogOutputStatus>> values);
 
 }

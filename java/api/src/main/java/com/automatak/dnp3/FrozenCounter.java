@@ -22,11 +22,11 @@ package com.automatak.dnp3;
 /**
  * An increasing count of some event
  */
-public class Counter extends Measurement
+public class FrozenCounter extends Measurement
 {
     public final long value;
 
-    public Counter(long value, byte quality, long timestamp)
+    public FrozenCounter(long value, byte quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;

@@ -24,6 +24,8 @@
 #include <string>
 #include <openpal/util/Uncopyable.h>
 
+#include "MethodInfo.h"
+
 extern "C" {
 	jint JNI_OnLoad(JavaVM *vm, void *reserved);
 }
@@ -49,8 +51,9 @@ public:
 	// --- methods requiring an ENV ---
 
 	static jclass FindClass(JNIEnv* env, const char* name);
-	static jmethodID GetMethodIDFromClass(JNIEnv* env, jclass clazz, const char* name, const char* sig);
-	static jmethodID GetMethodIDFromObject(JNIEnv* env, jobject obj, const char* name, const char* sig);
+	static jmethodID GetStaticMethodID(JNIEnv* env, const char* fqcn, const MethodInfo& minfo);
+	static jmethodID GetMethodIDFromClass(JNIEnv* env, jclass clazz, const MethodInfo& minfo);
+	static jmethodID GetMethodIDFromObject(JNIEnv* env, jobject obj, const MethodInfo& minfo);
 	static jclass GetClassForObject(JNIEnv* env, jobject obj);
 
 	// --- field accessors ---

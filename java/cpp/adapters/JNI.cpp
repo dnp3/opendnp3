@@ -59,7 +59,7 @@ JNIEnv* JNI::GetEnv()
 	JNIEnv* env = nullptr;
 	jint ret = vm->GetEnv((void**)&env, OPENDNP3_JNI_VERSION);
 	assert(ret == 0);
-	assert(env != nullptr);
+	assert(env);
 	return env;
 }
 
@@ -73,20 +73,28 @@ void JNI::Initialize(JavaVM *vmin)
 jclass JNI::FindClass(JNIEnv* env, const char* name)
 {
 	auto ret = env->FindClass(name);
-	assert(ret != nullptr);
+	assert(ret);
 	return ret;
 }
 
-jmethodID JNI::GetMethodIDFromClass(JNIEnv* env, jclass clazz, const char* name, const char* sig)
+jmethodID JNI::GetStaticMethodID(JNIEnv* env, const char* fqcn, const MethodInfo& minfo)
 {
-	jmethodID ret = env->GetMethodID(clazz, name, sig);
-	assert(ret != nullptr);
+	auto clazz = FindClass(env, fqcn);
+	auto mid = env->GetStaticMethodID(clazz, minfo.name, minfo.sig);
+	assert(mid);
+	return mid;
+}
+
+jmethodID JNI::GetMethodIDFromClass(JNIEnv* env, jclass clazz, const MethodInfo& minfo)
+{
+	jmethodID ret = env->GetMethodID(clazz, minfo.name, minfo.sig);
+	assert(ret);
 	return ret;
 }
 
-jmethodID JNI::GetMethodIDFromObject(JNIEnv* env, jobject obj, const char* name, const char* sig)
+jmethodID JNI::GetMethodIDFromObject(JNIEnv* env, jobject obj, const MethodInfo& minfo)
 {
-	auto method = GetMethodIDFromClass(env, GetClassForObject(env, obj), name, sig);
+	auto method = GetMethodIDFromClass(env, GetClassForObject(env, obj), minfo);
 	assert(method);
 	return method;
 }

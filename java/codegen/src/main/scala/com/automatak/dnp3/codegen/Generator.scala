@@ -3,7 +3,7 @@ package com.automatak.dnp3.codegen
 import java.nio.file.FileSystems
 
 import com.automatak.dnp3._
-import com.automatak.dnp3.enums.TimeSyncMode
+import com.automatak.dnp3.enums.{GroupVariation, QualifierCode, TimeSyncMode, TimestampMode}
 
 object Generator {
 
@@ -22,7 +22,11 @@ object Generator {
     ClassConfig(classOf[TimeSyncMode], Features.FQCN),
     ClassConfig(classOf[java.time.Duration], Features.FQCN),
     ClassConfig(classOf[ClassField], Features.FQCN, Features.Fields),
-    ClassConfig(classOf[SOEHandler], Features.Methods)
+    ClassConfig(classOf[SOEHandler], Features.Methods),
+    ClassConfig(classOf[HeaderInfo], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[GroupVariation], Features.FQCN, Features.Methods),
+    ClassConfig(classOf[QualifierCode], Features.FQCN, Features.Methods),
+    ClassConfig(classOf[TimestampMode], Features.FQCN, Features.Methods)
 
   )
 

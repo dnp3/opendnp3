@@ -28,14 +28,28 @@ void SOEHandlerAdapter::Start()
 {
 	const auto env = JNI::GetEnv();
 
+	// cache all the method ids
 	if (!this->initialized)
 	{
 		using namespace classes::SOEHandler;
 
-		this->startMethod = JNI::GetMethodIDFromObject(env, proxy, methods::start.name, methods::start.sig);
-		this->endMethod = JNI::GetMethodIDFromObject(env, proxy, methods::end.name, methods::end.sig);
+		this->startMethod = JNI::GetMethodIDFromObject(env, proxy, methods::start);
+		this->endMethod = JNI::GetMethodIDFromObject(env, proxy, methods::end);
 
-		// remaining mids
+		
+
+		this->gvfromTypeMethod = JNI::GetStaticMethodID(env, classes::GroupVariation::fqcn, classes::GroupVariation::methods::fromType);
+		this->qualiferCodefromTypeMethod = JNI::GetStaticMethodID(env, classes::QualifierCode::fqcn, classes::GroupVariation::methods::fromType);
+
+
+		this->processBIMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processBI);
+		this->processDBIMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processDBI);
+		this->processAIMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processAI);
+		this->processCMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processC);
+		this->processFCMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processFC);
+		this->processBOSMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processBOS);
+		this->processAOSMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processAOS);
+	
 
 		this->initialized = true;
 	}
@@ -51,61 +65,41 @@ void SOEHandlerAdapter::End()
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
-
+	const auto env = JNI::GetEnv();
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-
+	const auto env = JNI::GetEnv();
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values)
 {
-
+	const auto env = JNI::GetEnv();
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values)
 {
-
+	const auto env = JNI::GetEnv();
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values)
 {
-
+	const auto env = JNI::GetEnv();
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-
+	const auto env = JNI::GetEnv();
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-
+	const auto env = JNI::GetEnv();
 }
 
-void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values)
+jobject SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::HeaderInfo& info)
 {
-
-}
-
-void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values)
-{
-
-}
-
-void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values)
-{
-
-}
-
-void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values)
-{
-
-}
-
-void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values)
-{
-
+	return nullptr;
 }
 

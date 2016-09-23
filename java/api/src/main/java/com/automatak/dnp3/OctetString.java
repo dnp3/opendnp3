@@ -20,16 +20,14 @@ package com.automatak.dnp3;
 
 
 /**
- * An increasing count of some event
+ * A byte[] measurement type
  */
-public class Counter extends Measurement
+public class OctetString
 {
-    public final long value;
+    public final byte[] value;
 
-    public Counter(long value, byte quality, long timestamp)
+    public OctetString(byte[] value)
     {
-        super(quality, timestamp);
         this.value = value;
     }
-
 }

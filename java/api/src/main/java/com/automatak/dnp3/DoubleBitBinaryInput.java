@@ -19,14 +19,16 @@
 package com.automatak.dnp3;
 
 
-/**
- * An increasing count of some event
- */
-public class Counter extends Measurement
-{
-    public final long value;
+import com.automatak.dnp3.enums.DoubleBit;
 
-    public Counter(long value, byte quality, long timestamp)
+/**
+ * A boolean measurement type (i.e. whether a switch is open/closed)
+ */
+public class DoubleBitBinaryInput extends Measurement
+{
+    public final DoubleBit value;
+
+    public DoubleBitBinaryInput(DoubleBit value, byte quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;

@@ -36,8 +36,8 @@ void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
 	if (!initialized)
 	{
 		this->logEntryClass = JNI::FindClass(env, classes::LogEntry::fqcn);
-		this->logEntryConstructor = JNI::GetMethodIDFromClass(env, this->logEntryClass, "<init>", constructors::sig0);
-		this->logMethod = JNI::GetMethodIDFromObject(env, proxy, methods::log.name, methods::log.sig);
+		this->logEntryConstructor = JNI::GetMethodIDFromClass(env, this->logEntryClass, constructors::init0);
+		this->logMethod = JNI::GetMethodIDFromObject(env, proxy, methods::log);
 		this->initialized = true;
 	}
 

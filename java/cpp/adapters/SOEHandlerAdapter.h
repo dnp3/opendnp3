@@ -41,14 +41,16 @@ public:
 	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) override;
 	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) override;
 	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override;
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override {}
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override {}
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) override {}
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override {}
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override {}
 	
 
 private:	
+
+	static jobject Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
 
 	GlobalRef proxy;
 		
@@ -58,9 +60,20 @@ private:
 	jmethodID startMethod = nullptr;
 	jmethodID endMethod = nullptr;
 
-	//jclass logEntryClass = nullptr;
-	//jmethodID logEntryConstructor = nullptr;
-	//jmethodID logMethod = nullptr;
+	jmethodID processBIMethod = nullptr;
+	jmethodID processDBIMethod = nullptr;
+	jmethodID processAIMethod = nullptr;
+	jmethodID processCMethod = nullptr;
+	jmethodID processFCMethod = nullptr;
+	jmethodID processBOSMethod = nullptr;
+	jmethodID processAOSMethod = nullptr;
+	jmethodID processOSMethod = nullptr;
+
+	jmethodID gvfromTypeMethod = nullptr;
+	jmethodID qualiferCodefromTypeMethod = nullptr;
+	jmethodID timestampModefromTypeMethod = nullptr;
+
+	
 };
 
 #endif

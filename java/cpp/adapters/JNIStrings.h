@@ -21,7 +21,8 @@
 #ifndef OPENDNP3JAVA_JNISTRINGS_H
 #define OPENDNP3JAVA_JNISTRINGS_H
 
-struct Method { const char* name; const char* sig; };
+#include "MethodInfo.h"
+#include "AdditionalJNIStrings.h"
 
 namespace classes
 {
@@ -84,7 +85,7 @@ namespace classes
 
         namespace constructors
         {
-            static const char* sig0 = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V";
+            static const MethodInfo init0 = { "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V" };
         }
     }
 }
@@ -95,7 +96,7 @@ namespace classes
 
         namespace methods
         {
-            static const Method log = { "log", "(Lcom/automatak/dnp3/LogEntry;)V" };
+            static const MethodInfo log = { "log", "(Lcom/automatak/dnp3/LogEntry;)V" };
         }
     }
 }
@@ -132,13 +133,71 @@ namespace classes
 
         namespace methods
         {
-            static const Method start = { "start", "()V" };
-            static const Method end = { "end", "()V" };
-            static const Method processCounter = { "processCounter", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const Method processBinaryInput = { "processBinaryInput", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const Method processBinaryOutputStatus = { "processBinaryOutputStatus", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const Method processAnalogInput = { "processAnalogInput", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const Method processAnalogOutputStatus = { "processAnalogOutputStatus", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo end = { "end", "()V" };
+            static const MethodInfo start = { "start", "()V" };
+            static const MethodInfo processBI = { "processBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processDBI = { "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processAI = { "processAI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processFC = { "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processBOS = { "processBOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processC = { "processC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processAOS = { "processAOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace HeaderInfo
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/HeaderInfo;";
+
+        namespace constructors
+        {
+            static const MethodInfo init0 = { "<init>", "(Lcom/automatak/dnp3/enums/GroupVariation;Lcom/automatak/dnp3/enums/QualifierCode;Lcom/automatak/dnp3/enums/TimestampMode;ZZI)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace GroupVariation
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/enums/GroupVariation;";
+
+        namespace methods
+        {
+            static const MethodInfo values = { "values", "()[Lcom/automatak/dnp3/enums/GroupVariation;" };
+            static const MethodInfo valueOf = { "valueOf", "(Ljava/lang/String;)Lcom/automatak/dnp3/enums/GroupVariation;" };
+            static const MethodInfo toType = { "toType", "()I" };
+            static const MethodInfo fromType = { "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;" };
+        }
+    }
+}
+namespace classes
+{
+    namespace QualifierCode
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/enums/QualifierCode;";
+
+        namespace methods
+        {
+            static const MethodInfo values = { "values", "()[Lcom/automatak/dnp3/enums/QualifierCode;" };
+            static const MethodInfo valueOf = { "valueOf", "(Ljava/lang/String;)Lcom/automatak/dnp3/enums/QualifierCode;" };
+            static const MethodInfo toType = { "toType", "()I" };
+            static const MethodInfo fromType = { "fromType", "(I)Lcom/automatak/dnp3/enums/QualifierCode;" };
+        }
+    }
+}
+namespace classes
+{
+    namespace TimestampMode
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/enums/TimestampMode;";
+
+        namespace methods
+        {
+            static const MethodInfo values = { "values", "()[Lcom/automatak/dnp3/enums/TimestampMode;" };
+            static const MethodInfo valueOf = { "valueOf", "(Ljava/lang/String;)Lcom/automatak/dnp3/enums/TimestampMode;" };
+            static const MethodInfo toType = { "toType", "()I" };
         }
     }
 }

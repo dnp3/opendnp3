@@ -20,7 +20,7 @@ object ClassInfoGenerator {
 
     commented(LicenseHeader()) ++ space ++
     includeGuards("JNIStrings") {
-      "struct Method { const char* name; const char* sig; };".iter ++
+      List("#include \"MethodInfo.h\"", "#include \"AdditionalJNIStrings.h\"").toIterator ++
        space ++ classes.map(lines).flatten
     }
 
@@ -30,9 +30,9 @@ object ClassInfoGenerator {
 
     def fieldLine(f: Field) : String = "static const char* %s = \"%s\";".format(f.getName, f.getName)
 
-    def methodLine(m: Method) : String = "static const Method %s = { \"%s\", \"%s\" };".format(m.getName, m.getName, m.jniSignature)
+    def methodLine(m: Method) : String = "static const MethodInfo %s = { \"%s\", \"%s\" };".format(m.getName, m.getName, m.jniSignature)
 
-    def constructorLine(c: Constructor[_]) : String = "static const char* %s = \"%s\";".format("sig%s".format(0), c.jniSignature)
+    def constructorLine(c: Constructor[_]) : String = "static const MethodInfo %s = { \"%s\", \"%s\" };".format("init%s".format(0), "<init>", c.jniSignature)
 
     def fqcn : Iterator[String] = {
       if(cfg.isEnabled(Features.FQCN)) {
