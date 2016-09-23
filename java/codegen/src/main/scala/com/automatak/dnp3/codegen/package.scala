@@ -1,6 +1,7 @@
 package com.automatak.dnp3
 
 import java.nio.charset.Charset
+import java.lang.reflect.{Constructor, Method}
 import java.nio.file.{Files, Path, StandardOpenOption}
 
 package object codegen {
@@ -9,8 +10,26 @@ package object codegen {
     def fqcn : String = "L%s;".format(c.getCanonicalName.replace('.','/'))
   }
 
+  implicit class RichMethod(m: Method) {
+
+    def jniSignature : String = org.objectweb.asm.Type.getMethodDescriptor(m)
+
+  }
+
+  implicit class RichConstructor(c: Constructor[_]) {
+
+    def jniSignature : String = org.objectweb.asm.Type.getConstructorDescriptor(c)
+
+  }
+
   implicit class RichString(s: String) {
     def iter : Iterator[String] = Iterator(s)
+  }
+
+  //"(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
+
+  def getJNISignature(param: Array[Class[_]]) : String = {
+    param.map(p => p.getCanonicalName).mkString(";")
   }
 
   def space : Iterator[String] = "".iter
@@ -60,11 +79,13 @@ package object codegen {
         writer.write(System.lineSeparator)
       }
 
-      try { lines.foreach(writeLine) }
+      try {
+        lines.foreach(writeLine) }
       finally {
         writer.close()
-        println("Wrote: " + path.toString)
       }
+
+      println("Wrote: " + path.toString)
     }
 
 

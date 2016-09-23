@@ -23,6 +23,7 @@
 #include <assert.h>
 
 #include "JNI.h"
+#include "JNIStrings.h"
 
 LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(JNI::CreateGlobalRef(proxy))
 {
@@ -36,14 +37,17 @@ LogHandlerAdapter::~LogHandlerAdapter()
 
 void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
 {		
+	using namespace classes::LogEntry;
+	using namespace classes::LogHandler;
+
 	const auto env = JNI::GetEnv();
 
 	// cache these items
 	if (!initialized)
 	{
-		this->logEntryClass = JNI::FindClass(env, "com/automatak/dnp3/LogEntry");
-		this->logEntryConstructor = JNI::GetMethodIDFromClass(env, this->logEntryClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
-		this->logMethod = JNI::GetMethodIDFromObject(env, proxy, "log", "(Lcom/automatak/dnp3/LogEntry;)V");
+		this->logEntryClass = JNI::FindClass(env, classes::LogEntry::fqcn);
+		this->logEntryConstructor = JNI::GetMethodIDFromClass(env, this->logEntryClass, "<init>", constructors::sig0);
+		this->logMethod = JNI::GetMethodIDFromObject(env, proxy, methods::log.name, methods::log.sig);
 		this->initialized = true;
 	}
 

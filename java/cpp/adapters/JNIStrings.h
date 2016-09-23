@@ -21,6 +21,7 @@
 #ifndef OPENDNP3JAVA_JNISTRINGS_H
 #define OPENDNP3JAVA_JNISTRINGS_H
 
+struct Method { const char* name; const char* sig; };
 
 namespace classes
 {
@@ -73,6 +74,30 @@ namespace classes
             static const char* remoteAddr = "remoteAddr";
             static const char* responseTimeout = "responseTimeout";
             static const char* keepAliveTimeout = "keepAliveTimeout";
+        }
+    }
+}
+namespace classes
+{
+    namespace LogEntry
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/LogEntry;";
+
+        namespace constructors
+        {
+            static const char* sig0 = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V";
+        }
+    }
+}
+namespace classes
+{
+    namespace LogHandler
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/LogHandler;";
+
+        namespace methods
+        {
+            static const Method log = { "log", "(Lcom/automatak/dnp3/LogEntry;)V" };
         }
     }
 }

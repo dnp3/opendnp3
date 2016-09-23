@@ -18,6 +18,12 @@
             <version>${opendnp3.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.orbit</groupId>
+            <artifactId>org.objectweb.asm</artifactId>
+            <version>3.3.1.v201105211655</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
