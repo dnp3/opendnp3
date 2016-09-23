@@ -35,7 +35,7 @@ object Generator {
     ClassConfig(classOf[FrozenCounter], Features.FQCN, Features.Constructors),
     ClassConfig(classOf[BinaryOutputStatus], Features.FQCN, Features.Constructors),
     ClassConfig(classOf[AnalogOutputStatus], Features.FQCN, Features.Constructors),
-    ClassConfig(classOf[DoubleBit], Features.FQCN, Features.Constructors)
+    ClassConfig(classOf[DoubleBit], Features.FQCN)
 
   )
 
