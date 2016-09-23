@@ -101,5 +101,19 @@ namespace classes
         }
     }
 }
+namespace classes
+{
+    namespace TimeSyncMode
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/enums/TimeSyncMode;";
+    }
+}
+namespace classes
+{
+    namespace Duration
+    {
+        static const char* fqcn = "Ljava/time/Duration;";
+    }
+}
 
 #endif

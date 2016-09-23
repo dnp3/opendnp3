@@ -24,12 +24,6 @@
 
 #include <opendnp3/master/MasterStackConfig.h>
 
-namespace classes
-{
-	static const char* duration = "Ljava/time/Duration;";
-	static const char* timeSyncMode = "Lcom/automatak/dnp3/enums/TimeSyncMode;";
-}
-
 class ConfigReader
 {
 public:

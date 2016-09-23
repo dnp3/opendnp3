@@ -170,8 +170,10 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 
 	MasterParams cfg;	
 
-	cfg.responseTimeout = ConvertDuration(env, JNI::GetObjectField(env, jcfg, fields::responseTimeout, classes::duration));
-	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, fields::timeSyncMode, classes::timeSyncMode));
+	cfg.responseTimeout = ConvertDuration(env, JNI::GetObjectField(env, jcfg, fields::responseTimeout, classes::Duration::fqcn));
+	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, fields::timeSyncMode, classes::TimeSyncMode::fqcn));
+	cfg.disableUnsolOnStartup = JNI::GetBoolField(env, jcfg, fields::disableUnsolOnStartup);
+	cfg.ignoreRestartIIN = JNI::GetBoolField(env, jcfg, fields::ignoreRestartIIN);
 
 	/*
 	cfg.FragSize = JNIHelpers::GetIntField(env, jCfg, "maxRequestFragmentSize");
@@ -221,8 +223,8 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 	cfg.NumRetry = JNI::GetIntField(env, jlinkcfg, fields::numRetry);
 	cfg.LocalAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, fields::localAddr));
 	cfg.RemoteAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, fields::remoteAddr));
-	cfg.Timeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::responseTimeout, classes::duration));
-	cfg.KeepAliveTimeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::keepAliveTimeout, classes::duration));
+	cfg.Timeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::responseTimeout, classes::Duration::fqcn));
+	cfg.KeepAliveTimeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::keepAliveTimeout, classes::Duration::fqcn));
 	
 	return cfg;
 }
