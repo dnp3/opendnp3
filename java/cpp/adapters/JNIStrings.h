@@ -125,5 +125,22 @@ namespace classes
         }
     }
 }
+namespace classes
+{
+    namespace SOEHandler
+    {
+
+        namespace methods
+        {
+            static const Method start = { "start", "()V" };
+            static const Method end = { "end", "()V" };
+            static const Method processCounter = { "processCounter", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const Method processBinaryInput = { "processBinaryInput", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const Method processBinaryOutputStatus = { "processBinaryOutputStatus", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const Method processAnalogInput = { "processAnalogInput", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const Method processAnalogOutputStatus = { "processAnalogOutputStatus", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+        }
+    }
+}
 
 #endif

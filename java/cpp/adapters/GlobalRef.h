@@ -16,31 +16,43 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-#ifndef OPENDNP3_LOG_HANDLER_ADAPTER_H
-#define OPENDNP3_LOG_HANDLER_ADAPTER_H
+
+#ifndef OPENDNP3_GLOBALREF_H
+#define OPENDNP3_GLOBALREF_H
 
 #include <jni.h>
-#include <openpal/logging/ILogHandler.h>
 
-#include "GlobalRef.h"
+#include <openpal/util/Uncopyable.h>
 
-class LogHandlerAdapter : public openpal::ILogHandler
+#include "JNI.h"
+
+// RAII class for JNI global refs
+class GlobalRef : private openpal::Uncopyable
 {
+	jobject reference;
+	
 public:
 
-	LogHandlerAdapter(jobject proxy) : proxy(proxy) {}	
+	GlobalRef(jobject reference) : reference(JNI::CreateGlobalRef(reference))
+	{}
 
-	virtual void Log(const openpal::LogEntry& entry);
+	~GlobalRef()
+	{
+		JNI::DeleteGlobalRef(reference);
+	}
 
-private:
+	operator const jobject& () const
+	{
+		return reference;
+	}
+/*
+	operator jobject& ()
+	{
+		return reference;
+	}
+*/
 	
-	GlobalRef proxy;
-
-	// cached JNI initialized on first usage ids
-	bool initialized = false;
-	jclass logEntryClass = nullptr;
-	jmethodID logEntryConstructor = nullptr;
-	jmethodID logMethod = nullptr;
 };
 
 #endif
+

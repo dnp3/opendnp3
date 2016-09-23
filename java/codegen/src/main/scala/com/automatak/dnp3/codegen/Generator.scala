@@ -21,7 +21,8 @@ object Generator {
     ClassConfig(classOf[LogHandler], Features.Methods),
     ClassConfig(classOf[TimeSyncMode], Features.FQCN),
     ClassConfig(classOf[java.time.Duration], Features.FQCN),
-    ClassConfig(classOf[ClassField], Features.FQCN, Features.Fields)
+    ClassConfig(classOf[ClassField], Features.FQCN, Features.Fields),
+    ClassConfig(classOf[SOEHandler], Features.Methods)
 
   )
 

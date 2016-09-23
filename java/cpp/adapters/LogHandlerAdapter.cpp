@@ -25,16 +25,6 @@
 #include "JNI.h"
 #include "JNIStrings.h"
 
-LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(JNI::CreateGlobalRef(proxy))
-{
-	
-}
-
-LogHandlerAdapter::~LogHandlerAdapter()
-{
-	JNI::DeleteGlobalRef(proxy);	
-}
-
 void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
 {		
 	using namespace classes::LogEntry;

@@ -16,8 +16,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-#ifndef __CONFIG_READER_H_
-#define __CONFIG_READER_H_
+#ifndef OPENDNP3_CONFIG_READER_H
+#define OPENDNP3_CONFIG_READER_H
 
 #include <jni.h>
 #include <string>
@@ -34,28 +34,12 @@ public:
 
 private:
 
-	
-
 	static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* env, jobject jconfig);
-
-	
-
 	static opendnp3::MasterParams ConvertMasterConfig(JNIEnv* apEnv, jobject jcfg);
 
-	/*
-	
-	
+	/*	
 	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* apEnv, jobject jcfg);
 	static opendnp3::DeviceTemplate ConvertDatabaseConfig(JNIEnv* apEnv, jobject jcfg);
-
-	static opendnp3::StaticBinaryResponse ConvertStaticBinary(jint value);
-	static opendnp3::StaticAnalogResponse ConvertStaticAnalog(jint value);
-	static opendnp3::StaticCounterResponse ConvertStaticCounter(jint value);
-	static opendnp3::StaticSetpointStatusResponse ConvertStaticAnalogOutputStatus(jint value);
-
-	static opendnp3::EventBinaryResponse ConvertEventBinary(jint value);
-	static opendnp3::EventAnalogResponse ConvertEventAnalog(jint value);
-	static opendnp3::EventCounterResponse ConvertEventCounter(jint value);
 	*/
 
 	static openpal::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
