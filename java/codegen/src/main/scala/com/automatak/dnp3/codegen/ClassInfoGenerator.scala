@@ -17,7 +17,7 @@ object ClassInfoGenerator {
   private def lines(clazz: Class[_])(implicit indent: Indentation) : Iterator[String] = {
 
     def fieldLine(f: Field) : String = "static const char* %s = \"%s\";".format(f.getName, f.getName)
-    def fqcn : String = "static const char* fqcn = \"%s\";".format(clazz.getName)
+    def fqcn : String = "static const char* fqcn = \"%s\";".format(clazz.fqcn)
 
     def fields = clazz.getFields.map(fieldLine).toIterator
 

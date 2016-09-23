@@ -28,10 +28,12 @@ using namespace opendnp3;
 
 MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* env, jobject jCfg)
 {
+	using namespace classes::MasterStackConfig;
+
 	MasterStackConfig cfg;
-	
-	cfg.link = ConvertLinkConfig(env, JNI::GetObjectField(env, jCfg, "link", "Lcom/automatak/dnp3/LinkLayerConfig;"));
-	cfg.master = ConvertMasterConfig(env, JNI::GetObjectField(env, jCfg, "master", "Lcom/automatak/dnp3/MasterConfig;"));
+		
+	cfg.link = ConvertLinkConfig(env, JNI::GetObjectField(env, jCfg, fields::link, classes::LinkLayerConfig::fqcn));
+	cfg.master = ConvertMasterConfig(env, JNI::GetObjectField(env, jCfg, fields::master, classes::MasterConfig::fqcn));
 		
 	return cfg;
 }
@@ -164,9 +166,9 @@ DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* env, jobject jCfg)
 
 MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 {
-	MasterParams cfg;
-
 	using namespace classes::MasterConfig;
+
+	MasterParams cfg;	
 
 	cfg.responseTimeout = ConvertDuration(env, JNI::GetObjectField(env, jcfg, fields::responseTimeout, classes::duration));
 	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, fields::timeSyncMode, classes::timeSyncMode));
@@ -210,15 +212,17 @@ AppConfig ConfigReader::ConvertAppConfig(JNIEnv* env, jobject jCfg)
 
 LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 {
-	LinkConfig cfg(true, false);	
+	using namespace classes::LinkLayerConfig;
+
+	LinkConfig cfg(true, false);
 	
-	cfg.IsMaster = JNI::GetBoolField(env, jlinkcfg, "isMaster");
-	cfg.UseConfirms = JNI::GetBoolField(env, jlinkcfg, "useConfirms");
-	cfg.NumRetry = JNI::GetIntField(env, jlinkcfg, "numRetry");
-	cfg.LocalAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, "localAddr"));
-	cfg.RemoteAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, "remoteAddr"));
-	cfg.Timeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, "responseTimeout", classes::duration));
-	cfg.KeepAliveTimeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, "keepAliveTimeout", classes::duration));
+	cfg.IsMaster = JNI::GetBoolField(env, jlinkcfg, fields::isMaster);
+	cfg.UseConfirms = JNI::GetBoolField(env, jlinkcfg, fields::useConfirms);
+	cfg.NumRetry = JNI::GetIntField(env, jlinkcfg, fields::numRetry);
+	cfg.LocalAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, fields::localAddr));
+	cfg.RemoteAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, fields::remoteAddr));
+	cfg.Timeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::responseTimeout, classes::duration));
+	cfg.KeepAliveTimeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::keepAliveTimeout, classes::duration));
 	
 	return cfg;
 }

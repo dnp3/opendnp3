@@ -12,13 +12,14 @@ object Main {
 
   // all the classes to generate C++ info on
   def classes : List[Class[_]] = List(
-    classOf[MasterConfig]
+    classOf[MasterStackConfig],
+    classOf[MasterConfig],
+    classOf[LinkLayerConfig]
   )
 
   def main(args: Array[String]): Unit = {
 
     writeTo(javaGenPath)(ClassInfoGenerator.lines(classes))
-
   }
 
 

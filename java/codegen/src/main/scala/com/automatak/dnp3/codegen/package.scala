@@ -6,7 +6,7 @@ import java.nio.file.{Files, Path, StandardOpenOption}
 package object codegen {
 
   implicit class RichClass(c: Class[_]) {
-    def fqcn : String = c.getCanonicalName
+    def fqcn : String = "L%s;".format(c.getCanonicalName.replace('.','/'))
   }
 
   implicit class RichString(s: String) {
@@ -61,7 +61,10 @@ package object codegen {
       }
 
       try { lines.foreach(writeLine) }
-      finally { writer.close() }
+      finally {
+        writer.close()
+        println("Wrote: " + path.toString)
+      }
     }
 
 

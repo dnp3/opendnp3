@@ -24,9 +24,22 @@
 
 namespace classes
 {
+    namespace MasterStackConfig
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/MasterStackConfig;";
+
+        namespace fields
+        {
+            static const char* master = "master";
+            static const char* link = "link";
+        }
+    }
+}
+namespace classes
+{
     namespace MasterConfig
     {
-        static const char* fqcn = "com.automatak.dnp3.MasterConfig";
+        static const char* fqcn = "Lcom/automatak/dnp3/MasterConfig;";
 
         namespace fields
         {
@@ -42,6 +55,24 @@ namespace classes
             static const char* taskStartTimeout = "taskStartTimeout";
             static const char* maxTxFragSize = "maxTxFragSize";
             static const char* maxRxFragSize = "maxRxFragSize";
+        }
+    }
+}
+namespace classes
+{
+    namespace LinkLayerConfig
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/LinkLayerConfig;";
+
+        namespace fields
+        {
+            static const char* isMaster = "isMaster";
+            static const char* useConfirms = "useConfirms";
+            static const char* numRetry = "numRetry";
+            static const char* localAddr = "localAddr";
+            static const char* remoteAddr = "remoteAddr";
+            static const char* responseTimeout = "responseTimeout";
+            static const char* keepAliveTimeout = "keepAliveTimeout";
         }
     }
 }
