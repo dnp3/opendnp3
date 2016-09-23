@@ -1,5 +1,6 @@
 package com.automatak.dnp3.impl
 
+/*
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
@@ -133,6 +134,5 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
       serverEndpoint.shutdown()
     }
   }
-
-
 }
+*/

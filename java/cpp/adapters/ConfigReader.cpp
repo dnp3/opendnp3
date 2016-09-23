@@ -19,6 +19,7 @@
 #include "ConfigReader.h"
 
 #include "JNI.h"
+#include "JNIStrings.h"
 
 #include <iostream>
 
@@ -165,8 +166,10 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 {
 	MasterParams cfg;
 
-	cfg.responseTimeout = ConvertDuration(env, JNI::GetObjectField(env, jcfg, "responseTimeout", classes::duration));
-	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, "timeSyncMode", classes::timeSyncMode));
+	using namespace classes::MasterConfig;
+
+	cfg.responseTimeout = ConvertDuration(env, JNI::GetObjectField(env, jcfg, fields::responseTimeout, classes::duration));
+	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, fields::timeSyncMode, classes::timeSyncMode));
 
 	/*
 	cfg.FragSize = JNIHelpers::GetIntField(env, jCfg, "maxRequestFragmentSize");
