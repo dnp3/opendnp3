@@ -30,12 +30,12 @@ namespace opendnp3 {
 */
 enum class TimestampMode : uint8_t
 {
-  /// Timestamp is not valid, ignore the value and use a local timestamp
-  INVALID = 0,
   /// The timestamp is UTC synchronized at the remote device
   SYNCHRONIZED = 1,
   /// The device indicate the timestamp may be unsynchronized
-  UNSYNCHRONIZED = 2
+  UNSYNCHRONIZED = 2,
+  /// Timestamp is not valid, ignore the value and use a local timestamp
+  INVALID = 0
 };
 
 

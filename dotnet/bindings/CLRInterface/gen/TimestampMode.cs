@@ -26,16 +26,16 @@ namespace Automatak.DNP3.Interface
   public enum TimestampMode : byte
   {
     /// <summary>
-    /// Timestamp is not valid, ignore the value and use a local timestamp
-    /// </summary>
-    INVALID = 0,
-    /// <summary>
     /// The timestamp is UTC synchronized at the remote device
     /// </summary>
     SYNCHRONIZED = 1,
     /// <summary>
     /// The device indicate the timestamp may be unsynchronized
     /// </summary>
-    UNSYNCHRONIZED = 2
+    UNSYNCHRONIZED = 2,
+    /// <summary>
+    /// Timestamp is not valid, ignore the value and use a local timestamp
+    /// </summary>
+    INVALID = 0
   }
 }

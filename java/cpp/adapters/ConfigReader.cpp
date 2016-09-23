@@ -154,7 +154,7 @@ return cfg;
 
 jint ConfigReader::GetEnumId(JNIEnv* env, jobject jenum)
 {
-	jmethodID mid = JNI::GetMethodIDFromObject(env, jenum, classes::AnyEnum::methods::toType);
+	jmethodID mid = JNI::GetMethod(env, jenum, classes::AnyEnum::methods::toType);
 	return env->CallIntMethod(jenum, mid);
 }
 
@@ -205,7 +205,7 @@ return cfg;
 openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
 {
 	const auto clazz = JNI::GetClassForObject(env, jduration);
-	const auto method = JNI::GetMethodIDFromObject(env, jduration, classes::Duration::methods::toMillis);	
+	const auto method = JNI::GetMethod(env, jduration, classes::Duration::methods::toMillis);	
 	const jlong value = env->CallLongMethod(jduration, method);	
 
 	return TimeDuration::Milliseconds(value);

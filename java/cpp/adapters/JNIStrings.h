@@ -135,13 +135,13 @@ namespace classes
         {
             static const MethodInfo start = { "start", "()V" };
             static const MethodInfo end = { "end", "()V" };
-            static const MethodInfo processFC = { "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processBOS = { "processBOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processBI = { "processBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processDBI = { "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processAI = { "processAI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processC = { "processC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processAOS = { "processAOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processBOS = { "processBOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processDBI = { "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processC = { "processC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processFC = { "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processAI = { "processAI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
         }
     }
 }
@@ -198,6 +198,7 @@ namespace classes
             static const MethodInfo values = { "values", "()[Lcom/automatak/dnp3/enums/TimestampMode;" };
             static const MethodInfo valueOf = { "valueOf", "(Ljava/lang/String;)Lcom/automatak/dnp3/enums/TimestampMode;" };
             static const MethodInfo toType = { "toType", "()I" };
+            static const MethodInfo fromType = { "fromType", "(I)Lcom/automatak/dnp3/enums/TimestampMode;" };
         }
     }
 }

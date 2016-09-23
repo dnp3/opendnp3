@@ -50,7 +50,7 @@ public:
 
 private:	
 
-	static jobject Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
+	jobject Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
 
 	GlobalRef proxy;
 		
@@ -69,11 +69,12 @@ private:
 	jmethodID processAOSMethod = nullptr;
 	jmethodID processOSMethod = nullptr;
 
-	jmethodID gvfromTypeMethod = nullptr;
-	jmethodID qualiferCodefromTypeMethod = nullptr;
-	jmethodID timestampModefromTypeMethod = nullptr;
-
 	
+	ClassMethodPair headerInfoConstructor;
+
+	ClassMethodPair gvFromType;	
+	ClassMethodPair qualiferCodefromType;
+	ClassMethodPair timestampModefromType;	
 };
 
 #endif

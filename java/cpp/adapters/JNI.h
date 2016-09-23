@@ -50,10 +50,14 @@ public:
 
 	// --- methods requiring an ENV ---
 
-	static jclass FindClass(JNIEnv* env, const FQCN& fqcn);
-	static jmethodID GetStaticMethodID(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo);
-	static jmethodID GetMethodIDFromClass(JNIEnv* env, jclass clazz, const MethodInfo& minfo);
-	static jmethodID GetMethodIDFromObject(JNIEnv* env, jobject obj, const MethodInfo& minfo);
+	static jclass FindClass(JNIEnv* env, const FQCN& fqcn);	
+	
+	static ClassMethodPair GetStaticMethod(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo);
+	
+	static jmethodID GetMethod(JNIEnv* env, jclass clazz, const MethodInfo& minfo);
+	static jmethodID GetMethod(JNIEnv* env, jobject obj, const MethodInfo& minfo);
+	static ClassMethodPair GetMethod(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo);
+
 	static jclass GetClassForObject(JNIEnv* env, jobject obj);
 
 	// --- field accessors ---

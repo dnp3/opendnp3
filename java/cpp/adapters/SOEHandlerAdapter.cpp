@@ -33,24 +33,25 @@ void SOEHandlerAdapter::Start()
 	{
 		using namespace classes::SOEHandler;
 
-		this->startMethod = JNI::GetMethodIDFromObject(env, proxy, methods::start);
-		this->endMethod = JNI::GetMethodIDFromObject(env, proxy, methods::end);
-
+		this->startMethod = JNI::GetMethod(env, proxy, methods::start);
+		this->endMethod = JNI::GetMethod(env, proxy, methods::end);
 		
+		// header info stuff		
+		this->headerInfoConstructor = JNI::GetMethod(env, classes::HeaderInfo::fqcn, classes::HeaderInfo::constructors::init0);
+		
+		this->gvFromType = JNI::GetStaticMethod(env, classes::GroupVariation::fqcn, classes::GroupVariation::methods::fromType);
+		this->qualiferCodefromType = JNI::GetStaticMethod(env, classes::QualifierCode::fqcn, classes::GroupVariation::methods::fromType);
+		this->timestampModefromType = JNI::GetStaticMethod(env, classes::TimestampMode::fqcn, classes::TimestampMode::methods::fromType);
 
-		this->gvfromTypeMethod = JNI::GetStaticMethodID(env, classes::GroupVariation::fqcn, classes::GroupVariation::methods::fromType);
-		this->qualiferCodefromTypeMethod = JNI::GetStaticMethodID(env, classes::QualifierCode::fqcn, classes::GroupVariation::methods::fromType);
-
-
-		this->processBIMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processBI);
-		this->processDBIMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processDBI);
-		this->processAIMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processAI);
-		this->processCMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processC);
-		this->processFCMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processFC);
-		this->processBOSMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processBOS);
-		this->processAOSMethod = JNI::GetMethodIDFromObject(env, proxy, methods::processAOS);
+		// measurement process methods
+		this->processBIMethod = JNI::GetMethod(env, proxy, methods::processBI);
+		this->processDBIMethod = JNI::GetMethod(env, proxy, methods::processDBI);
+		this->processAIMethod = JNI::GetMethod(env, proxy, methods::processAI);
+		this->processCMethod = JNI::GetMethod(env, proxy, methods::processC);
+		this->processFCMethod = JNI::GetMethod(env, proxy, methods::processFC);
+		this->processBOSMethod = JNI::GetMethod(env, proxy, methods::processBOS);
+		this->processAOSMethod = JNI::GetMethod(env, proxy, methods::processAOS);
 	
-
 		this->initialized = true;
 	}
 
@@ -99,7 +100,18 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 }
 
 jobject SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::HeaderInfo& info)
-{
-	return nullptr;
+{	
+	jint gvRaw = GroupVariationToType(info.gv);
+	jint qcRaw = QualifierCodeToType(info.qualifier);
+	jint tsModeRaw = static_cast<int>(info.tsmode);
+
+	auto gv = env->CallStaticObjectMethod(this->gvFromType.clazz, this->gvFromType.method, gvRaw);
+	auto qc = env->CallStaticObjectMethod(this->qualiferCodefromType.clazz, this->qualiferCodefromType.method, qcRaw);
+	auto tsmode = env->CallStaticObjectMethod(this->timestampModefromType.clazz, this->timestampModefromType.method, tsModeRaw);
+	jboolean isEvent = info.isEventVariation;
+	jboolean flagsValid = info.flagsValid;
+	jint headerIndex = info.headerIndex;
+
+	return env->NewObject(this->headerInfoConstructor.clazz, this->headerInfoConstructor.method, gv, qc, tsmode, isEvent, flagsValid, headerIndex);
 }
 

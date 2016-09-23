@@ -77,26 +77,32 @@ jclass JNI::FindClass(JNIEnv* env, const FQCN& fqcn)
 	return ret;
 }
 
-jmethodID JNI::GetStaticMethodID(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo)
-{
-	auto clazz = FindClass(env, fqcn);
-	auto mid = env->GetStaticMethodID(clazz, minfo.name, minfo.sig);
-	assert(mid);
-	return mid;
+ClassMethodPair JNI::GetStaticMethod(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo)
+{	
+	auto clazz = JNI::FindClass(env, fqcn);
+	auto mid = env->GetStaticMethodID(clazz, minfo.name, minfo.sig);	
+	return ClassMethodPair(clazz, mid);
 }
 
-jmethodID JNI::GetMethodIDFromClass(JNIEnv* env, jclass clazz, const MethodInfo& minfo)
+jmethodID JNI::GetMethod(JNIEnv* env, jclass clazz, const MethodInfo& minfo)
 {
 	jmethodID ret = env->GetMethodID(clazz, minfo.name, minfo.sig);
 	assert(ret);
 	return ret;
 }
 
-jmethodID JNI::GetMethodIDFromObject(JNIEnv* env, jobject obj, const MethodInfo& minfo)
+jmethodID JNI::GetMethod(JNIEnv* env, jobject obj, const MethodInfo& minfo)
 {
-	auto method = GetMethodIDFromClass(env, GetClassForObject(env, obj), minfo);
+	auto method = GetMethod(env, GetClassForObject(env, obj), minfo);
 	assert(method);
 	return method;
+}
+
+ClassMethodPair JNI::GetMethod(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo)
+{
+	auto clazz = FindClass(env, fqcn);
+	auto mid = GetMethod(env, clazz, minfo);
+	return ClassMethodPair(clazz, mid);
 }
 
 jclass JNI::GetClassForObject(JNIEnv* env, jobject obj)

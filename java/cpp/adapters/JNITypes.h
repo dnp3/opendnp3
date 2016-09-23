@@ -21,6 +21,8 @@
 #ifndef OPENDNP3JAVA_JNITYPES_H
 #define OPENDNP3JAVA_JNITYPES_H
 
+#include <jni.h>
+
 struct MethodInfo
 { 
 	const char* name; const char* sig;
@@ -35,6 +37,15 @@ struct FQCN
 struct FieldId
 {
 	const char* value;
+};
+
+struct ClassMethodPair
+{	
+	ClassMethodPair(jclass clazz, jmethodID method) : clazz(clazz), method(method) {}
+	ClassMethodPair() {}
+
+	jclass clazz = nullptr;
+	jmethodID method = nullptr;
 };
 
 #endif

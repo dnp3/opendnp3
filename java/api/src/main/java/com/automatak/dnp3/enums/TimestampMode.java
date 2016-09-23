@@ -25,17 +25,17 @@ package com.automatak.dnp3.enums;
 public enum TimestampMode
 {
   /**
-  * Timestamp is not valid, ignore the value and use a local timestamp
-  */
-  INVALID(0),
-  /**
   * The timestamp is UTC synchronized at the remote device
   */
   SYNCHRONIZED(1),
   /**
   * The device indicate the timestamp may be unsynchronized
   */
-  UNSYNCHRONIZED(2);
+  UNSYNCHRONIZED(2),
+  /**
+  * Timestamp is not valid, ignore the value and use a local timestamp
+  */
+  INVALID(0);
 
   private final int id;
 
@@ -47,5 +47,18 @@ public enum TimestampMode
   TimestampMode(int id)
   {
     this.id = id;
+  }
+
+  public static TimestampMode fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(1):
+        return SYNCHRONIZED;
+      case(2):
+        return UNSYNCHRONIZED;
+      default:
+        return INVALID;
+    }
   }
 }
