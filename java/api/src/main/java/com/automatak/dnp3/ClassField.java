@@ -8,7 +8,7 @@ import com.automatak.dnp3.enums.PointClass;
  */
 public class ClassField {
 
-    private int bitfield;
+    public int bitfield;
 
     private ClassField(int mask) {
         this.bitfield = mask;
@@ -26,7 +26,6 @@ public class ClassField {
     {
         return (pc.toType() & bitfield) != 0;
     }
-
 
     public static ClassField none() {
         return new ClassField(0);

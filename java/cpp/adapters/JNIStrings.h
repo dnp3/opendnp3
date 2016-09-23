@@ -113,5 +113,17 @@ namespace classes
         static const char* fqcn = "Ljava/time/Duration;";
     }
 }
+namespace classes
+{
+    namespace ClassField
+    {
+        static const char* fqcn = "Lcom/automatak/dnp3/ClassField;";
+
+        namespace fields
+        {
+            static const char* bitfield = "bitfield";
+        }
+    }
+}
 
 #endif

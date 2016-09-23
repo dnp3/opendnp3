@@ -60,6 +60,8 @@ private:
 
 	static openpal::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
 
+	static opendnp3::ClassField ConvertClassField(JNIEnv* env, jobject jclassmask);
+
 	static jint GetEnumId(JNIEnv* apEnv, jobject jenum);
 
 

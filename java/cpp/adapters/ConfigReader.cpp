@@ -174,6 +174,7 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, fields::timeSyncMode, classes::TimeSyncMode::fqcn));
 	cfg.disableUnsolOnStartup = JNI::GetBoolField(env, jcfg, fields::disableUnsolOnStartup);
 	cfg.ignoreRestartIIN = JNI::GetBoolField(env, jcfg, fields::ignoreRestartIIN);
+	cfg.unsolClassMask = ConvertClassField(env, JNI::GetObjectField(env, jcfg, fields::unsolClassMask, classes::ClassField::fqcn));
 
 	/*
 	cfg.FragSize = JNIHelpers::GetIntField(env, jCfg, "maxRequestFragmentSize");
@@ -224,7 +225,7 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 	cfg.LocalAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, fields::localAddr));
 	cfg.RemoteAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, fields::remoteAddr));
 	cfg.Timeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::responseTimeout, classes::Duration::fqcn));
-	cfg.KeepAliveTimeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::keepAliveTimeout, classes::Duration::fqcn));
+	cfg.KeepAliveTimeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::keepAliveTimeout, classes::Duration::fqcn));	
 	
 	return cfg;
 }
@@ -236,6 +237,12 @@ openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jdurati
 	const jlong value = env->CallLongMethod(jduration, method);	
 
 	return TimeDuration::Milliseconds(value);
+}
+
+opendnp3::ClassField ConfigReader::ConvertClassField(JNIEnv* env, jobject jclassmask)
+{
+	const jint value = JNI::GetIntField(env, jclassmask, classes::ClassField::fields::bitfield);
+	return ClassField(static_cast<uint8_t>(value));
 }
 
 

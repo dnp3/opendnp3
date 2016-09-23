@@ -20,7 +20,8 @@ object Generator {
     ClassConfig(classOf[LogEntry], Features.FQCN, Features.Constructors),
     ClassConfig(classOf[LogHandler], Features.Methods),
     ClassConfig(classOf[TimeSyncMode], Features.FQCN),
-    ClassConfig(classOf[java.time.Duration], Features.FQCN)
+    ClassConfig(classOf[java.time.Duration], Features.FQCN),
+    ClassConfig(classOf[ClassField], Features.FQCN, Features.Fields)
 
   )
 
