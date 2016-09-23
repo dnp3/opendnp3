@@ -77,6 +77,14 @@ private:
 
 	// cached measurement type stuff
 	ClassMethodPair binaryConstructor;
+	ClassMethodPair doubleBinaryConstructor;
+	ClassMethodPair analogConstructor;
+	ClassMethodPair counterConstructor;
+	ClassMethodPair frozenCounterConstructor;
+	ClassMethodPair boStatusConstructor;
+	ClassMethodPair aoStatusConstructor;
+
+	ClassMethodPair indexedValueConstructor;
 };
 
 #endif

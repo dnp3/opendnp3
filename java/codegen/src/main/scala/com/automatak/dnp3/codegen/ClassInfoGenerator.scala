@@ -32,7 +32,9 @@ object ClassInfoGenerator {
 
     def methodLine(m: Method) : String = "static const MethodInfo %s = { \"%s\", \"%s\" };".format(m.getName, m.getName, m.jniSignature)
 
-    def constructorLine(c: Constructor[_]) : String = "static const MethodInfo %s = { \"%s\", \"%s\" };".format("init%s".format(0), "<init>", c.jniSignature)
+    def constructorLine(c: Constructor[_]) : String = {
+      "static const MethodInfo %s = { \"%s\", \"%s\" };".format("init%s".format(c.getParameterCount), "<init>", c.jniSignature)
+    }
 
     def fqcn : Iterator[String] = {
       if(cfg.isEnabled(Features.FQCN)) {

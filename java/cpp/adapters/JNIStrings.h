@@ -85,7 +85,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V" };
+            static const MethodInfo init4 = { "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V" };
         }
     }
 }
@@ -136,12 +136,12 @@ namespace classes
             static const MethodInfo start = { "start", "()V" };
             static const MethodInfo end = { "end", "()V" };
             static const MethodInfo processBOS = { "processBOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processBI = { "processBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processC = { "processC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processFC = { "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processAOS = { "processAOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processDBI = { "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processAI = { "processAI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processC = { "processC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processAOS = { "processAOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processBI = { "processBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processDBI = { "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processFC = { "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
         }
     }
 }
@@ -153,7 +153,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(Lcom/automatak/dnp3/enums/GroupVariation;Lcom/automatak/dnp3/enums/QualifierCode;Lcom/automatak/dnp3/enums/TimestampMode;ZZI)V" };
+            static const MethodInfo init6 = { "<init>", "(Lcom/automatak/dnp3/enums/GroupVariation;Lcom/automatak/dnp3/enums/QualifierCode;Lcom/automatak/dnp3/enums/TimestampMode;ZZI)V" };
         }
     }
 }
@@ -210,7 +210,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(Ljava/lang/Object;I)V" };
+            static const MethodInfo init2 = { "<init>", "(Ljava/lang/Object;I)V" };
         }
     }
 }
@@ -222,7 +222,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(ZBJ)V" };
+            static const MethodInfo init3 = { "<init>", "(ZBJ)V" };
         }
     }
 }
@@ -234,7 +234,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(Lcom/automatak/dnp3/enums/DoubleBit;BJ)V" };
+            static const MethodInfo init3 = { "<init>", "(Lcom/automatak/dnp3/enums/DoubleBit;BJ)V" };
         }
     }
 }
@@ -246,7 +246,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(DBJ)V" };
+            static const MethodInfo init3 = { "<init>", "(DBJ)V" };
         }
     }
 }
@@ -258,7 +258,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(JBJ)V" };
+            static const MethodInfo init3 = { "<init>", "(JBJ)V" };
         }
     }
 }
@@ -270,7 +270,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(JBJ)V" };
+            static const MethodInfo init3 = { "<init>", "(JBJ)V" };
         }
     }
 }
@@ -282,7 +282,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(ZBJ)V" };
+            static const MethodInfo init3 = { "<init>", "(ZBJ)V" };
         }
     }
 }
@@ -294,7 +294,7 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init0 = { "<init>", "(DBJ)V" };
+            static const MethodInfo init3 = { "<init>", "(DBJ)V" };
         }
     }
 }

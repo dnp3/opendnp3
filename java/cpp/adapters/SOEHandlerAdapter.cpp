@@ -37,7 +37,7 @@ void SOEHandlerAdapter::Start()
 		this->endMethod = JNI::GetMethod(env, proxy, methods::end);
 		
 		// header info stuff		
-		this->headerInfoConstructor = JNI::GetMethod(env, classes::HeaderInfo::fqcn, classes::HeaderInfo::constructors::init0);		
+		this->headerInfoConstructor = JNI::GetMethod(env, classes::HeaderInfo::fqcn, classes::HeaderInfo::constructors::init6);		
 		this->gvFromType = JNI::GetStaticMethod(env, classes::GroupVariation::fqcn, classes::GroupVariation::methods::fromType);
 		this->qualiferCodefromType = JNI::GetStaticMethod(env, classes::QualifierCode::fqcn, classes::GroupVariation::methods::fromType);
 		this->timestampModefromType = JNI::GetStaticMethod(env, classes::TimestampMode::fqcn, classes::TimestampMode::methods::fromType);
@@ -52,8 +52,16 @@ void SOEHandlerAdapter::Start()
 		this->processAOSMethod = JNI::GetMethod(env, proxy, methods::processAOS);
 
 		// measurement stuff
-		this->binaryConstructor = JNI::GetMethod(env, classes::BinaryInput::fqcn, classes::BinaryInput::constructors::init0);
-	
+		this->binaryConstructor = JNI::GetMethod(env, classes::BinaryInput::fqcn, classes::BinaryInput::constructors::init3);
+		this->doubleBinaryConstructor = JNI::GetMethod(env, classes::DoubleBitBinaryInput::fqcn, classes::DoubleBitBinaryInput::constructors::init3);
+		this->analogConstructor = JNI::GetMethod(env, classes::AnalogInput::fqcn, classes::AnalogInput::constructors::init3);
+		this->counterConstructor = JNI::GetMethod(env, classes::Counter::fqcn, classes::Counter::constructors::init3);
+		this->frozenCounterConstructor = JNI::GetMethod(env, classes::FrozenCounter::fqcn, classes::FrozenCounter::constructors::init3);
+		this->boStatusConstructor = JNI::GetMethod(env, classes::BinaryOutputStatus::fqcn, classes::BinaryOutputStatus::constructors::init3);
+		this->aoStatusConstructor = JNI::GetMethod(env, classes::AnalogOutputStatus::fqcn, classes::AnalogOutputStatus::constructors::init3);
+		this->indexedValueConstructor = JNI::GetMethod(env, classes::IndexedValue::fqcn, classes::IndexedValue::constructors::init2);
+
+
 		this->initialized = true;
 	}
 
