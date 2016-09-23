@@ -24,7 +24,7 @@
 #include <string>
 #include <openpal/util/Uncopyable.h>
 
-#include "MethodInfo.h"
+#include "JNITypes.h"
 
 extern "C" {
 	jint JNI_OnLoad(JavaVM *vm, void *reserved);
@@ -50,19 +50,19 @@ public:
 
 	// --- methods requiring an ENV ---
 
-	static jclass FindClass(JNIEnv* env, const char* name);
-	static jmethodID GetStaticMethodID(JNIEnv* env, const char* fqcn, const MethodInfo& minfo);
+	static jclass FindClass(JNIEnv* env, const FQCN& fqcn);
+	static jmethodID GetStaticMethodID(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo);
 	static jmethodID GetMethodIDFromClass(JNIEnv* env, jclass clazz, const MethodInfo& minfo);
 	static jmethodID GetMethodIDFromObject(JNIEnv* env, jobject obj, const MethodInfo& minfo);
 	static jclass GetClassForObject(JNIEnv* env, jobject obj);
 
 	// --- field accessors ---
 
-	static jint GetIntField(JNIEnv* env, jobject obj, const char* fieldId);
-	static jlong GetLongField(JNIEnv* env, jobject obj, const char* fieldId);
-	static bool GetBoolField(JNIEnv* env, jobject obj, const char* fieldId);
-	static jdouble GetDoubleField(JNIEnv* env, jobject obj, const char* fieldId);
-	static jobject GetObjectField(JNIEnv* env, jobject obj, const char* fieldId, const char* fqcn);
+	static jint GetIntField(JNIEnv* env, jobject obj, const FieldId& id);
+	static jlong GetLongField(JNIEnv* env, jobject obj, const FieldId& id);
+	static bool GetBoolField(JNIEnv* env, jobject obj, const FieldId& id);
+	static jdouble GetDoubleField(JNIEnv* env, jobject obj, const FieldId& id);
+	static jobject GetObjectField(JNIEnv* env, jobject obj, const FieldId& id, const FQCN& fqcn);
 	
 
 private:

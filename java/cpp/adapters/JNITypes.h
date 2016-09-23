@@ -18,12 +18,23 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_METHODINFO_H
-#define OPENDNP3JAVA_METHODINFO_H
+#ifndef OPENDNP3JAVA_JNITYPES_H
+#define OPENDNP3JAVA_JNITYPES_H
 
 struct MethodInfo
 { 
 	const char* name; const char* sig;
+};
+
+// fully qualified class name
+struct FQCN
+{
+	const char* value;
+};
+
+struct FieldId
+{
+	const char* value;
 };
 
 #endif

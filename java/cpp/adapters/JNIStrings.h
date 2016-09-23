@@ -21,7 +21,7 @@
 #ifndef OPENDNP3JAVA_JNISTRINGS_H
 #define OPENDNP3JAVA_JNISTRINGS_H
 
-#include "MethodInfo.h"
+#include "JNITypes.h"
 #include "AdditionalJNIStrings.h"
 
 namespace classes
@@ -31,8 +31,8 @@ namespace classes
 
         namespace fields
         {
-            static const char* master = "master";
-            static const char* link = "link";
+            static const FieldId master = { "master" };
+            static const FieldId link = { "link" };
         }
     }
 }
@@ -40,22 +40,22 @@ namespace classes
 {
     namespace MasterConfig
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/MasterConfig;";
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/MasterConfig;" };
 
         namespace fields
         {
-            static const char* responseTimeout = "responseTimeout";
-            static const char* timeSyncMode = "timeSyncMode";
-            static const char* disableUnsolOnStartup = "disableUnsolOnStartup";
-            static const char* ignoreRestartIIN = "ignoreRestartIIN";
-            static const char* unsolClassMask = "unsolClassMask";
-            static const char* startupIntegrityClassMask = "startupIntegrityClassMask";
-            static const char* integrityOnEventOverflowIIN = "integrityOnEventOverflowIIN";
-            static const char* eventScanOnEventsAvailableClassMask = "eventScanOnEventsAvailableClassMask";
-            static const char* taskRetryPeriod = "taskRetryPeriod";
-            static const char* taskStartTimeout = "taskStartTimeout";
-            static const char* maxTxFragSize = "maxTxFragSize";
-            static const char* maxRxFragSize = "maxRxFragSize";
+            static const FieldId responseTimeout = { "responseTimeout" };
+            static const FieldId timeSyncMode = { "timeSyncMode" };
+            static const FieldId disableUnsolOnStartup = { "disableUnsolOnStartup" };
+            static const FieldId ignoreRestartIIN = { "ignoreRestartIIN" };
+            static const FieldId unsolClassMask = { "unsolClassMask" };
+            static const FieldId startupIntegrityClassMask = { "startupIntegrityClassMask" };
+            static const FieldId integrityOnEventOverflowIIN = { "integrityOnEventOverflowIIN" };
+            static const FieldId eventScanOnEventsAvailableClassMask = { "eventScanOnEventsAvailableClassMask" };
+            static const FieldId taskRetryPeriod = { "taskRetryPeriod" };
+            static const FieldId taskStartTimeout = { "taskStartTimeout" };
+            static const FieldId maxTxFragSize = { "maxTxFragSize" };
+            static const FieldId maxRxFragSize = { "maxRxFragSize" };
         }
     }
 }
@@ -63,17 +63,17 @@ namespace classes
 {
     namespace LinkLayerConfig
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/LinkLayerConfig;";
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/LinkLayerConfig;" };
 
         namespace fields
         {
-            static const char* isMaster = "isMaster";
-            static const char* useConfirms = "useConfirms";
-            static const char* numRetry = "numRetry";
-            static const char* localAddr = "localAddr";
-            static const char* remoteAddr = "remoteAddr";
-            static const char* responseTimeout = "responseTimeout";
-            static const char* keepAliveTimeout = "keepAliveTimeout";
+            static const FieldId isMaster = { "isMaster" };
+            static const FieldId useConfirms = { "useConfirms" };
+            static const FieldId numRetry = { "numRetry" };
+            static const FieldId localAddr = { "localAddr" };
+            static const FieldId remoteAddr = { "remoteAddr" };
+            static const FieldId responseTimeout = { "responseTimeout" };
+            static const FieldId keepAliveTimeout = { "keepAliveTimeout" };
         }
     }
 }
@@ -81,7 +81,7 @@ namespace classes
 {
     namespace LogEntry
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/LogEntry;";
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/LogEntry;" };
 
         namespace constructors
         {
@@ -104,25 +104,25 @@ namespace classes
 {
     namespace TimeSyncMode
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/enums/TimeSyncMode;";
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/enums/TimeSyncMode;" };
     }
 }
 namespace classes
 {
     namespace Duration
     {
-        static const char* fqcn = "Ljava/time/Duration;";
+        static const FQCN fqcn = { "Ljava/time/Duration;" };
     }
 }
 namespace classes
 {
     namespace ClassField
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/ClassField;";
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/ClassField;" };
 
         namespace fields
         {
-            static const char* bitfield = "bitfield";
+            static const FieldId bitfield = { "bitfield" };
         }
     }
 }
@@ -133,13 +133,13 @@ namespace classes
 
         namespace methods
         {
-            static const MethodInfo end = { "end", "()V" };
             static const MethodInfo start = { "start", "()V" };
+            static const MethodInfo end = { "end", "()V" };
+            static const MethodInfo processFC = { "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processBOS = { "processBOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processBI = { "processBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processDBI = { "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processAI = { "processAI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processFC = { "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processBOS = { "processBOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processC = { "processC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processAOS = { "processAOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
         }
@@ -149,7 +149,7 @@ namespace classes
 {
     namespace HeaderInfo
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/HeaderInfo;";
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/HeaderInfo;" };
 
         namespace constructors
         {
@@ -161,7 +161,7 @@ namespace classes
 {
     namespace GroupVariation
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/enums/GroupVariation;";
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/enums/GroupVariation;" };
 
         namespace methods
         {
@@ -176,7 +176,7 @@ namespace classes
 {
     namespace QualifierCode
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/enums/QualifierCode;";
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/enums/QualifierCode;" };
 
         namespace methods
         {
@@ -191,7 +191,7 @@ namespace classes
 {
     namespace TimestampMode
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/enums/TimestampMode;";
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/enums/TimestampMode;" };
 
         namespace methods
         {

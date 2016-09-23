@@ -20,7 +20,9 @@
 #ifndef OPENDNP3JAVA_ADDITIONALJNISTRINGS_H
 #define OPENDNP3JAVA_ADDITIONALJNISTRINGS_H
 
-#include "MethodInfo.h"
+#include "JNITypes.h"
+
+// Things that are hard to define with the code generator are put in this file manually
 
 namespace classes
 {

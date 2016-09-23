@@ -70,14 +70,14 @@ void JNI::Initialize(JavaVM *vmin)
 }
 
 
-jclass JNI::FindClass(JNIEnv* env, const char* name)
+jclass JNI::FindClass(JNIEnv* env, const FQCN& fqcn)
 {
-	auto ret = env->FindClass(name);
+	auto ret = env->FindClass(fqcn.value);
 	assert(ret);
 	return ret;
 }
 
-jmethodID JNI::GetStaticMethodID(JNIEnv* env, const char* fqcn, const MethodInfo& minfo)
+jmethodID JNI::GetStaticMethodID(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo)
 {
 	auto clazz = FindClass(env, fqcn);
 	auto mid = env->GetStaticMethodID(clazz, minfo.name, minfo.sig);
@@ -106,38 +106,38 @@ jclass JNI::GetClassForObject(JNIEnv* env, jobject obj)
 	return clazz;
 }
 
-jint JNI::GetIntField(JNIEnv* env, jobject obj, const char* fieldId)
+jint JNI::GetIntField(JNIEnv* env, jobject obj, const FieldId& id)
 {
-	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "I");
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), id.value, "I");
 	assert(field);
 	return env->GetIntField(obj, field);
 }
 
-jlong JNI::GetLongField(JNIEnv* env, jobject obj, const char* fieldId)
+jlong JNI::GetLongField(JNIEnv* env, jobject obj, const FieldId& id)
 {
-	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "J");
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), id.value, "J");
 	assert(field);
 	return env->GetLongField(obj, field);
 }
 
-bool JNI::GetBoolField(JNIEnv* env, jobject obj, const char* fieldId)
+bool JNI::GetBoolField(JNIEnv* env, jobject obj, const FieldId& id)
 {
-	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "Z");
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), id.value, "Z");
 	assert(field);
 	return env->GetBooleanField(obj, field) != 0;
 }
 
-jdouble JNI::GetDoubleField(JNIEnv* env, jobject obj, const char* fieldId)
+jdouble JNI::GetDoubleField(JNIEnv* env, jobject obj, const FieldId& id)
 {
-	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, "D");
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), id.value, "D");
 	assert(field);
 	return env->GetDoubleField(obj, field);
 }
 
-jobject JNI::GetObjectField(JNIEnv* env, jobject obj, const char* fieldId, const char* fqcn)
+jobject JNI::GetObjectField(JNIEnv* env, jobject obj, const FieldId& id, const FQCN& fqcn)
 {
 
-	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), fieldId, fqcn);
+	jfieldID field = env->GetFieldID(GetClassForObject(env, obj), id.value, fqcn.value);
 	assert(field);
 	jobject ret = env->GetObjectField(obj, field);
 	assert(ret);
