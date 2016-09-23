@@ -11,7 +11,14 @@ object ClassConfig {
 }
 
 case class ClassConfig(clazz: Class[_], features : Set[Features.Value]) {
+
   def isEnabled(f : Features.Value) : Boolean  = features.contains(f)
+
+  def ifEnabled(f : Features.Value)(inner: => Iterator[String]) : Iterator[String] = {
+    if(!isEnabled(f)) Iterator.empty else {
+      inner
+    }
+  }
 }
 
 object ClassInfoGenerator {
@@ -25,6 +32,16 @@ object ClassInfoGenerator {
     }
 
   }
+
+  /*
+  namespace constructors {
+    namespace init3 {
+        static const MethodInfo sig = { "<init>", "(DBJ)V" };
+        jmethodID getId(JNIEnv* env);
+        jobject call(JNIEnv* env, jmethodID id, jdouble value, jbyte quality, jlong timestamp);
+    }
+  }
+  */
 
   private def lines(cfg: ClassConfig)(implicit indent: Indentation) : Iterator[String] = {
 

@@ -294,7 +294,12 @@ namespace classes
 
         namespace constructors
         {
-            static const MethodInfo init3 = { "<init>", "(DBJ)V" };
+			/*
+            static const MethodInfo init3sig = { "<init>", "(DBJ)V" };
+
+			jmethodID init3Id(JNIEnv* env);
+			jobject init3(JNIEnv* env, jmethodID id, jdouble value, jbyte quality, jlong timestamp);
+			*/
         }
     }
 }

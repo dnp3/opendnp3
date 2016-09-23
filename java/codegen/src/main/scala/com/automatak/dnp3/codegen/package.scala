@@ -34,6 +34,14 @@ package object codegen {
 
   def space : Iterator[String] = "".iter
 
+  def classDef(name: String)(inner: => Iterator[String])(implicit indent: Indentation): Iterator[String] = {
+
+    "class %s".format(name).iter ++ bracketWithCap(";") {
+      inner
+    }
+
+  }
+
   def bracketWithCap(cap: String)(inner: => Iterator[String])(implicit indent: Indentation): Iterator[String] = {
     "{".iter ++
      indent(inner) ++

@@ -41,7 +41,18 @@ object Generator {
 
   def main(args: Array[String]): Unit = {
 
-    writeTo(javaGenPath)(ClassInfoGenerator.lines(classes))
+    val clazz1 = ClassConfig(classOf[MasterStackConfig], Features.Fields)
+    val clazz2 = ClassConfig(classOf[LogHandler], Features.Methods)
+    val clazz3 = ClassConfig(classOf[BinaryInput], Features.FQCN, Features.Constructors)
+    //writeTo(javaGenPath)(ClassInfoGenerator.lines(classes))
+
+    //JNIClassGenerator(clazz1).header.foreach(println)
+    //JNIClassGenerator(clazz2).header.foreach(println)
+    //JNIClassGenerator(clazz3).header.foreach(println)
+
+    JNIClassGenerator(clazz1).impl.foreach(println)
+    JNIClassGenerator(clazz2).impl.foreach(println)
+    JNIClassGenerator(clazz3).impl.foreach(println)
   }
 
 
