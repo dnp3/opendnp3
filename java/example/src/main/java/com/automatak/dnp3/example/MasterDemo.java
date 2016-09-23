@@ -39,7 +39,7 @@ public class MasterDemo {
     public static void main(String[] args) throws Exception {
 
         // create the root class with a thread pool size of 1
-        DNP3Manager manager = DNP3ManagerFactory.createManager(1, PrintingLogHandler.getInstance());
+        DNP3Manager manager = DNP3ManagerFactory.createManager(PrintingLogHandler.getInstance());
 
         try {
             run(manager);
@@ -53,6 +53,8 @@ public class MasterDemo {
             // and the finalizer isn't guaranteed to run b/c the GC might not be collected during main() exit
             manager.shutdown();
         }
+
+        //System.exit(0);
     }
 
     static void run(DNP3Manager manager) throws Exception

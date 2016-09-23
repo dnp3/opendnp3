@@ -37,8 +37,7 @@ void SOEHandlerAdapter::Start()
 		this->endMethod = JNI::GetMethod(env, proxy, methods::end);
 		
 		// header info stuff		
-		this->headerInfoConstructor = JNI::GetMethod(env, classes::HeaderInfo::fqcn, classes::HeaderInfo::constructors::init0);
-		
+		this->headerInfoConstructor = JNI::GetMethod(env, classes::HeaderInfo::fqcn, classes::HeaderInfo::constructors::init0);		
 		this->gvFromType = JNI::GetStaticMethod(env, classes::GroupVariation::fqcn, classes::GroupVariation::methods::fromType);
 		this->qualiferCodefromType = JNI::GetStaticMethod(env, classes::QualifierCode::fqcn, classes::GroupVariation::methods::fromType);
 		this->timestampModefromType = JNI::GetStaticMethod(env, classes::TimestampMode::fqcn, classes::TimestampMode::methods::fromType);
@@ -51,6 +50,9 @@ void SOEHandlerAdapter::Start()
 		this->processFCMethod = JNI::GetMethod(env, proxy, methods::processFC);
 		this->processBOSMethod = JNI::GetMethod(env, proxy, methods::processBOS);
 		this->processAOSMethod = JNI::GetMethod(env, proxy, methods::processAOS);
+
+		// measurement stuff
+		this->binaryConstructor = JNI::GetMethod(env, classes::BinaryInput::fqcn, classes::BinaryInput::constructors::init0);
 	
 		this->initialized = true;
 	}
@@ -67,6 +69,8 @@ void SOEHandlerAdapter::End()
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
 	const auto env = JNI::GetEnv();
+
+	
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values)

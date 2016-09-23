@@ -18,35 +18,31 @@
  */
 
 #include "LogHandlerAdapter.h"
-
-#include <iostream>
 #include <assert.h>
 
 #include "JNI.h"
 #include "JNIStrings.h"
 
+LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(proxy)
+{}
+
 void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
-{		
-	using namespace classes::LogEntry;
-	using namespace classes::LogHandler;
+{				
+	const auto env = JNI::GetEnv();	
 
-	const auto env = JNI::GetEnv();
-
-	// cache these items
 	if (!initialized)
 	{
-		this->logEntryClass = JNI::FindClass(env, classes::LogEntry::fqcn);
-		this->logEntryConstructor = JNI::GetMethod(env, this->logEntryClass, constructors::init0);
-		this->logMethod = JNI::GetMethod(env, proxy, methods::log);
+		this->logEntryConstructor = JNI::GetMethod(env, classes::LogEntry::fqcn, classes::LogEntry::constructors::init0);
+		this->logMethod = JNI::GetMethod(env, proxy, classes::LogHandler::methods::log);
 		this->initialized = true;
 	}
-
+	
 	const jint level = entry.GetFilters().GetBitfield();
 	const jstring id = env->NewStringUTF(entry.GetAlias());
 	const jstring location = env->NewStringUTF(entry.GetLocation());
 	const jstring msg = env->NewStringUTF(entry.GetMessage());
 
-	auto jentry = env->NewObject(this->logEntryClass, this->logEntryConstructor, level, id, location, msg);
+	auto jentry = env->NewObject(this->logEntryConstructor.clazz, this->logEntryConstructor.method, level, id, location, msg);
 
 	assert(jentry != nullptr);
 

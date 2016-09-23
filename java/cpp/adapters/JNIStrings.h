@@ -135,12 +135,12 @@ namespace classes
         {
             static const MethodInfo start = { "start", "()V" };
             static const MethodInfo end = { "end", "()V" };
-            static const MethodInfo processBI = { "processBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processAOS = { "processAOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processBOS = { "processBOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
-            static const MethodInfo processDBI = { "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processBI = { "processBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processC = { "processC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processFC = { "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processAOS = { "processAOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
+            static const MethodInfo processDBI = { "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
             static const MethodInfo processAI = { "processAI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V" };
         }
     }
@@ -167,8 +167,8 @@ namespace classes
         {
             static const MethodInfo values = { "values", "()[Lcom/automatak/dnp3/enums/GroupVariation;" };
             static const MethodInfo valueOf = { "valueOf", "(Ljava/lang/String;)Lcom/automatak/dnp3/enums/GroupVariation;" };
-            static const MethodInfo toType = { "toType", "()I" };
             static const MethodInfo fromType = { "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;" };
+            static const MethodInfo toType = { "toType", "()I" };
         }
     }
 }
@@ -182,8 +182,8 @@ namespace classes
         {
             static const MethodInfo values = { "values", "()[Lcom/automatak/dnp3/enums/QualifierCode;" };
             static const MethodInfo valueOf = { "valueOf", "(Ljava/lang/String;)Lcom/automatak/dnp3/enums/QualifierCode;" };
-            static const MethodInfo toType = { "toType", "()I" };
             static const MethodInfo fromType = { "fromType", "(I)Lcom/automatak/dnp3/enums/QualifierCode;" };
+            static const MethodInfo toType = { "toType", "()I" };
         }
     }
 }
@@ -197,8 +197,115 @@ namespace classes
         {
             static const MethodInfo values = { "values", "()[Lcom/automatak/dnp3/enums/TimestampMode;" };
             static const MethodInfo valueOf = { "valueOf", "(Ljava/lang/String;)Lcom/automatak/dnp3/enums/TimestampMode;" };
-            static const MethodInfo toType = { "toType", "()I" };
             static const MethodInfo fromType = { "fromType", "(I)Lcom/automatak/dnp3/enums/TimestampMode;" };
+            static const MethodInfo toType = { "toType", "()I" };
+        }
+    }
+}
+namespace classes
+{
+    namespace IndexedValue
+    {
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/IndexedValue;" };
+
+        namespace constructors
+        {
+            static const MethodInfo init0 = { "<init>", "(Ljava/lang/Object;I)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace BinaryInput
+    {
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/BinaryInput;" };
+
+        namespace constructors
+        {
+            static const MethodInfo init0 = { "<init>", "(ZBJ)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace DoubleBitBinaryInput
+    {
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/DoubleBitBinaryInput;" };
+
+        namespace constructors
+        {
+            static const MethodInfo init0 = { "<init>", "(Lcom/automatak/dnp3/enums/DoubleBit;BJ)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace AnalogInput
+    {
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/AnalogInput;" };
+
+        namespace constructors
+        {
+            static const MethodInfo init0 = { "<init>", "(DBJ)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace Counter
+    {
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/Counter;" };
+
+        namespace constructors
+        {
+            static const MethodInfo init0 = { "<init>", "(JBJ)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace FrozenCounter
+    {
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/FrozenCounter;" };
+
+        namespace constructors
+        {
+            static const MethodInfo init0 = { "<init>", "(JBJ)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace BinaryOutputStatus
+    {
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/BinaryOutputStatus;" };
+
+        namespace constructors
+        {
+            static const MethodInfo init0 = { "<init>", "(ZBJ)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace AnalogOutputStatus
+    {
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/AnalogOutputStatus;" };
+
+        namespace constructors
+        {
+            static const MethodInfo init0 = { "<init>", "(DBJ)V" };
+        }
+    }
+}
+namespace classes
+{
+    namespace DoubleBit
+    {
+        static const FQCN fqcn = { "Lcom/automatak/dnp3/enums/DoubleBit;" };
+
+        namespace constructors
+        {
         }
     }
 }

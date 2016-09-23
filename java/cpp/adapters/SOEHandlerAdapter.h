@@ -69,12 +69,14 @@ private:
 	jmethodID processAOSMethod = nullptr;
 	jmethodID processOSMethod = nullptr;
 
-	
+	// cached header info stuff
 	ClassMethodPair headerInfoConstructor;
-
 	ClassMethodPair gvFromType;	
 	ClassMethodPair qualiferCodefromType;
-	ClassMethodPair timestampModefromType;	
+	ClassMethodPair timestampModefromType;
+
+	// cached measurement type stuff
+	ClassMethodPair binaryConstructor;
 };
 
 #endif

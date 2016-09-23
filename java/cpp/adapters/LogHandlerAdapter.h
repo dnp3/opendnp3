@@ -28,7 +28,7 @@ class LogHandlerAdapter : public openpal::ILogHandler
 {
 public:
 
-	LogHandlerAdapter(jobject proxy) : proxy(proxy) {}	
+	LogHandlerAdapter(jobject proxy);
 
 	virtual void Log(const openpal::LogEntry& entry);
 
@@ -36,10 +36,8 @@ private:
 	
 	GlobalRef proxy;
 
-	// cached JNI initialized on first usage ids
 	bool initialized = false;
-	jclass logEntryClass = nullptr;
-	jmethodID logEntryConstructor = nullptr;
+	ClassMethodPair logEntryConstructor;	
 	jmethodID logMethod = nullptr;
 };
 

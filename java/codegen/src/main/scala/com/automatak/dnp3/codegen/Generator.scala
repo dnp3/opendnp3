@@ -3,7 +3,7 @@ package com.automatak.dnp3.codegen
 import java.nio.file.FileSystems
 
 import com.automatak.dnp3._
-import com.automatak.dnp3.enums.{GroupVariation, QualifierCode, TimeSyncMode, TimestampMode}
+import com.automatak.dnp3.enums._
 
 object Generator {
 
@@ -26,7 +26,16 @@ object Generator {
     ClassConfig(classOf[HeaderInfo], Features.FQCN, Features.Constructors),
     ClassConfig(classOf[GroupVariation], Features.FQCN, Features.Methods),
     ClassConfig(classOf[QualifierCode], Features.FQCN, Features.Methods),
-    ClassConfig(classOf[TimestampMode], Features.FQCN, Features.Methods)
+    ClassConfig(classOf[TimestampMode], Features.FQCN, Features.Methods),
+    ClassConfig(classOf[IndexedValue[_]], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[BinaryInput], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[DoubleBitBinaryInput], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[AnalogInput], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[Counter], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[FrozenCounter], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[BinaryOutputStatus], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[AnalogOutputStatus], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[DoubleBit], Features.FQCN, Features.Constructors)
 
   )
 
