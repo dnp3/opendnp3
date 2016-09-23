@@ -13,14 +13,15 @@ object Generator {
 
   // all the classes to generate C++ info on
   def classes : List[ClassConfig] = List(
-    ClassConfig(classOf[MasterStackConfig], true, false, false),
-    ClassConfig(classOf[MasterConfig], true, false, false),
-    ClassConfig(classOf[LinkLayerConfig], true, false, false),
-    ClassConfig(classOf[LogEntry], false, false, true),
-    ClassConfig(classOf[LogHandler], false, true, false),
 
-    ClassConfig(classOf[TimeSyncMode], false, false, false),
-    ClassConfig(classOf[java.time.Duration], false, false, false)
+    ClassConfig(classOf[MasterStackConfig], Features.Fields),
+    ClassConfig(classOf[MasterConfig], Features.FQCN, Features.Fields),
+    ClassConfig(classOf[LinkLayerConfig], Features.FQCN, Features.Fields),
+    ClassConfig(classOf[LogEntry], Features.FQCN, Features.Constructors),
+    ClassConfig(classOf[LogHandler], Features.Methods),
+    ClassConfig(classOf[TimeSyncMode], Features.FQCN),
+    ClassConfig(classOf[java.time.Duration], Features.FQCN)
+
   )
 
   def main(args: Array[String]): Unit = {

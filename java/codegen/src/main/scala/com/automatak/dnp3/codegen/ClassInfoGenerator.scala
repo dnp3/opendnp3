@@ -2,7 +2,17 @@ package com.automatak.dnp3.codegen
 
 import java.lang.reflect.{Constructor, Field, Method}
 
-case class ClassConfig(clazz: Class[_], fields: Boolean, methods: Boolean, constructors: Boolean)
+object Features extends Enumeration {
+  val FQCN, Fields, Methods, Constructors = Value
+}
+
+object ClassConfig {
+  def apply(clazz: Class[_], features: Features.Value*) : ClassConfig = ClassConfig(clazz, features.toSet)
+}
+
+case class ClassConfig(clazz: Class[_], features : Set[Features.Value]) {
+  def isEnabled(f : Features.Value) : Boolean  = features.contains(f)
+}
 
 object ClassInfoGenerator {
 
@@ -24,10 +34,15 @@ object ClassInfoGenerator {
 
     def constructorLine(c: Constructor[_]) : String = "static const char* %s = \"%s\";".format("sig%s".format(0), c.jniSignature)
 
-    def fqcn : String = "static const char* fqcn = \"%s\";".format(cfg.clazz.fqcn)
+    def fqcn : Iterator[String] = {
+      if(cfg.isEnabled(Features.FQCN)) {
+        "static const char* fqcn = \"%s\";".format(cfg.clazz.fqcn).iter
+      }
+      else Iterator.empty
+    }
 
     def fields : Iterator[String] = {
-      if(cfg.fields) {
+      if(cfg.isEnabled(Features.Fields)) {
         space ++ namespace("fields") {
           cfg.clazz.getFields.map(fieldLine).toIterator
         }
@@ -36,7 +51,7 @@ object ClassInfoGenerator {
     }
 
     def methods : Iterator[String] = {
-      if(cfg.methods) {
+      if(cfg.isEnabled(Features.Methods)) {
         space ++ namespace("methods") {
           cfg.clazz.getDeclaredMethods.map(methodLine).toIterator
         }
@@ -45,7 +60,7 @@ object ClassInfoGenerator {
     }
 
     def constructors : Iterator[String] = {
-      if(cfg.constructors) {
+      if(cfg.isEnabled(Features.Constructors)) {
         space ++ namespace("constructors") {
           cfg.clazz.getConstructors.map(constructorLine).toIterator
         }
@@ -55,7 +70,7 @@ object ClassInfoGenerator {
 
     namespace("classes") {
       namespace(cfg.clazz.getSimpleName) {
-        fqcn.iter ++
+        fqcn ++
         fields ++
         methods ++
         constructors

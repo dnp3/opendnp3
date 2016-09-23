@@ -27,7 +27,6 @@ namespace classes
 {
     namespace MasterStackConfig
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/MasterStackConfig;";
 
         namespace fields
         {
@@ -93,7 +92,6 @@ namespace classes
 {
     namespace LogHandler
     {
-        static const char* fqcn = "Lcom/automatak/dnp3/LogHandler;";
 
         namespace methods
         {
