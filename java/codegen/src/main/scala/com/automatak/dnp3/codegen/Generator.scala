@@ -41,6 +41,7 @@ object Generator {
 
   def main(args: Array[String]): Unit = {
 
+
     classes.foreach { c =>
 
       val gen = JNIClassGenerator(c)
@@ -48,6 +49,11 @@ object Generator {
       writeTo(javaJNIPath.resolve(gen.headerFileName))(gen.header)
       writeTo(javaJNIPath.resolve(gen.implFileName))(gen.impl)
     }
+
+    val staticClass = StaticClassGenerator(classes)
+
+    writeTo(javaJNIPath.resolve(staticClass.headerFileName))(staticClass.header)
+    writeTo(javaJNIPath.resolve(staticClass.implFileName))(staticClass.impl)
 
   }
 
