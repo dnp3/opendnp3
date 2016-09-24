@@ -18,7 +18,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNITypes.h"
+#include "JCache.h"
 
 namespace jcache
 {

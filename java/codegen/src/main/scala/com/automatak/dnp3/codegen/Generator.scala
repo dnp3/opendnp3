@@ -50,7 +50,7 @@ object Generator {
       writeTo(javaJNIPath.resolve(gen.implFileName))(gen.impl)
     }
 
-    val staticClass = StaticClassGenerator(classes)
+    val staticClass = JCacheGenerator(classes)
 
     writeTo(javaJNIPath.resolve(staticClass.headerFileName))(staticClass.header)
     writeTo(javaJNIPath.resolve(staticClass.implFileName))(staticClass.impl)

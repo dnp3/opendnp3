@@ -1,13 +1,10 @@
 package com.automatak.dnp3.codegen
 
-import java.lang.reflect.{Constructor, Field, Method}
+case class JCacheGenerator(classes: List[ClassConfig]) {
 
+  def headerFileName : String = "JCache.h"
 
-case class StaticClassGenerator(classes: List[ClassConfig]) {
-
-  def headerFileName : String = "JNITypes.h"
-
-  def implFileName : String = "JNITypes.cpp"
+  def implFileName : String = "JCache.cpp"
 
   def header(implicit indent: Indentation): Iterator[String] = {
 
@@ -38,7 +35,7 @@ case class StaticClassGenerator(classes: List[ClassConfig]) {
     }
 
     commented(LicenseHeader()) ++ space ++
-    "#include \"JNITypes.h\"".iter ++ space ++
+    "#include \"JCache.h\"".iter ++ space ++
     namespace("jcache") {
       "bool init(JNIEnv* env)".iter ++ bracket {
         "auto success = true;".iter ++ space ++
