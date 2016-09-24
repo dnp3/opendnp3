@@ -14,11 +14,11 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     def classMember: Iterator[String] = "jclass clazz = nullptr;".iter
 
     def methodSignatures: Iterator[String] = cfg.ifEnabled(Features.Methods) {
-      space ++ "// methods".iter ++ cfg.clazz.getDeclaredMethods.map(m => "%s;".format(JNIMethod.getSignature(m))).toIterator
+      space ++ "// methods".iter ++ cfg.methods.map(m => "%s;".format(JNIMethod.getSignature(m))).toIterator
     }
 
     def methodsMembers: Iterator[String] = cfg.ifEnabled(Features.Methods) {
-      space ++ "// method ids".iter ++ cfg.clazz.getDeclaredMethods.map(m => "jmethodID %sMethod = nullptr;".format(m.getName)).toIterator
+      space ++ "// method ids".iter ++ cfg.methods.map(m => "jmethodID %sMethod = nullptr;".format(m.getName)).toIterator
     }
 
     def constructorSignatures: Iterator[String] = cfg.ifEnabled(Features.Constructors) {
@@ -37,7 +37,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
       space ++ "// field getter methods".iter ++ cfg.clazz.getDeclaredFields.map(f => "%s get%s(JNIEnv* env);".format(JNIMethod.getType(f.getType), f.getName)).toIterator
     }
 
-    def initSignature: Iterator[String] = "void init(JNIEnv* env);".iter
+    def initSignature: Iterator[String] = "bool init(JNIEnv* env);".iter
 
     commented(LicenseHeader()) ++ space ++
       includeGuards("JNI%s".format(cfg.clazz.getSimpleName)) {
@@ -58,47 +58,55 @@ case class JNIClassGenerator(cfg: ClassConfig) {
 
     def initImpl: Iterator[String] = {
 
-      def setAndAssert(name: String)(value: String) : Iterator[String] = {
+      def setAndCheckReturn(name: String)(value: String) : Iterator[String] = {
+        space ++
         "%s = %s;".format(name, value).iter ++
-        "assert(%s);".format(name).iter
+        "if(!%s) return false;".format(name).iter
       }
 
       def constructorInit : Iterator[String] = cfg.ifEnabled(Features.Constructors) {
 
         def lines(c : Constructor[_]) : Iterator[String] = {
-          setAndAssert("this->init%dConstructor".format(c.getParameterCount)) {
-            "env->GetMethodID(env, \"<init>\", \"%s\")".format(c.jniSignature)
+          setAndCheckReturn("this->init%dConstructor".format(c.getParameterCount)) {
+            "env->GetMethodID(this->clazz, \"<init>\", \"%s\")".format(c.jniSignature)
           }
         }
 
-        space ++ cfg.clazz.getConstructors.toIterator.map(lines).flatten
+        cfg.clazz.getConstructors.toIterator.map(lines).flatten
       }
 
       def methodInit : Iterator[String] = cfg.ifEnabled(Features.Methods) {
 
         def lines(m : Method) : Iterator[String] = {
-          setAndAssert("this->%sMethod".format(m.getName)) {
-            "env->GetMethodID(\"%s\", \"%s\")".format(m.getName, m.jniSignature)
+          setAndCheckReturn("this->%sMethod".format(m.getName)) {
+            "env->GetMethodID(this->clazz, \"%s\", \"%s\")".format(m.getName, m.jniSignature)
           }
         }
 
-        space ++ cfg.clazz.getMethods.toIterator.map(lines).flatten
+        cfg.methods.toIterator.map(lines).flatten
       }
 
       def fieldInit : Iterator[String] = cfg.ifEnabled(Features.Fields) {
 
         def lines(f : Field) : Iterator[String] = {
-          "this->%sField = env->GetFieldID(\"%s\", \"%s\");".format(f.getName, f.getName, JNIMethod.getFieldType(f.getType)).iter ++
-            "assert(this->%sField);".format(f.getName).iter
+          setAndCheckReturn("this->%sField".format(f.getName)) {
+            "env->GetFieldID(this->clazz, \"%s\", \"%s\")".format(f.getName, JNIMethod.getFieldType(f.getType))
+          }
         }
 
-        space ++ cfg.clazz.getFields.toIterator.map(lines).flatten
+        cfg.clazz.getFields.toIterator.map(lines).flatten
       }
 
-      "void %s::init(JNIEnv* env)".format(cfg.clazz.getSimpleName).iter ++ bracket {
-        "this->clazz = env->FindClass(env, \"%s\");".format(cfg.clazz.fqcn).iter ++
-          "assert(this->clazz);".iter ++ constructorInit ++ methodInit ++ fieldInit
+      "bool %s::init(JNIEnv* env)".format(cfg.clazz.getSimpleName).iter ++ bracket {
+
+        setAndCheckReturn("this->clazz") {
+          "env->FindClass(\"%s\")".format(cfg.clazz.fqcn)
+        } ++
+        constructorInit ++ methodInit ++ fieldInit ++
+        space ++ "return true;".iter
       }
+
+
     }
 
     commented(LicenseHeader()) ++ space ++

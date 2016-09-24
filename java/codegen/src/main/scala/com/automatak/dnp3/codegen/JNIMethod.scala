@@ -13,7 +13,7 @@ object JNIMethod {
   val classOfString = classOf[java.lang.String]
 
   def getType(clazz: Class[_]): String = clazz match {
-    //case `classOfVoid` => "void"
+    case `classOfBool` => "jboolean"
     case `classOfShort` => "jshort"
     case `classOfInt` => "jint"
     case `classOfLong` => "jlong"
@@ -24,10 +24,14 @@ object JNIMethod {
       if(clazz.isPrimitive) {
         clazz.getTypeName match {
           case "void" => "void"
+          case "boolean" => "jboolean"
+          case "int" => "jint"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
+      } else {
+        "jobject"
       }
-      "jobject"
+
     }
   }
 
@@ -39,7 +43,11 @@ object JNIMethod {
     case `classOfDouble` => "D"
     case _ => {
       if(clazz.isPrimitive) {
-        throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
+        clazz.getTypeName match {
+          case "boolean" => "Z"
+          case "int" => "I"
+          case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
+        }
       }
       clazz.fqcn
     }
@@ -49,17 +57,25 @@ object JNIMethod {
 
     def returnType = getType(method.getReturnType)
 
-    def arguments = method.getParameters.map(p => "%s %s".format(p.getName, getType(p.getType.getClass))).mkString(", ")
+    def arguments = method.getParameters.map(p => "%s %s".format(getType(p.getType.getClass), p.getName)).mkString(", ")
 
-    "%s %s%s(JNIEnv* env, %s)".format(returnType, className.map(n => "%s::".format(n)).getOrElse(""), method.getName, arguments)
+    if(arguments.isEmpty)
+      "%s %s%s(JNIEnv* env)".format(returnType, className.map(n => "%s::".format(n)).getOrElse(""), method.getName)
+    else
+      "%s %s%s(JNIEnv* env, %s)".format(returnType, className.map(n => "%s::".format(n)).getOrElse(""), method.getName, arguments)
   }
 
   def getConstructorSignature(method: Constructor[_], className: Option[String] = None) : String = {
 
 
-    def arguments = method.getParameters.map(p => "%s %s".format(p.getName, getType(p.getType.getClass))).mkString(", ")
+    def arguments = method.getParameters.map(p => "%s %s".format(getType(p.getType.getClass), p.getName)).mkString(", ")
 
-    "jobject %sinit%d(JNIEnv* env, %s)".format(className.map(n => "%s::".format(n)).getOrElse(""), method.getParameterCount, arguments)
+    if(arguments.isEmpty) {
+      "jobject %sinit%d(JNIEnv* env)".format(className.map(n => "%s::".format(n)).getOrElse(""), method.getParameterCount)
+    }
+    else {
+      "jobject %sinit%d(JNIEnv* env, %s)".format(className.map(n => "%s::".format(n)).getOrElse(""), method.getParameterCount, arguments)
+    }
 
   }
 }

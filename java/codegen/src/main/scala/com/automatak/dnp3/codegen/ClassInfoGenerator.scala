@@ -3,14 +3,24 @@ package com.automatak.dnp3.codegen
 import java.lang.reflect.{Constructor, Field, Method}
 
 object Features extends Enumeration {
-  val FQCN, Fields, Methods, Constructors = Value
+  val Fields, Methods, Constructors = Value
 }
 
-object ClassConfig {
-  def apply(clazz: Class[_], features: Features.Value*) : ClassConfig = ClassConfig(clazz, features.toSet)
+trait MethodFilter {
+  def matches(method: Method) : Boolean
 }
 
-case class ClassConfig(clazz: Class[_], features : Set[Features.Value]) {
+object AcceptsAnyFilter extends MethodFilter {
+  override def matches(method: Method) : Boolean = true
+}
+
+case class MethodEquals(string: String) extends MethodFilter {
+  override def matches(method: Method) : Boolean = {
+    method.getName == string
+  }
+}
+
+case class ClassConfig(clazz: Class[_], features : Set[Features.Value], mfilter: MethodFilter = AcceptsAnyFilter) {
 
   def isEnabled(f : Features.Value) : Boolean  = features.contains(f)
 
@@ -19,6 +29,8 @@ case class ClassConfig(clazz: Class[_], features : Set[Features.Value]) {
       inner
     }
   }
+
+  def methods : Array[Method] = clazz.getDeclaredMethods.filter(mfilter.matches)
 }
 
 object ClassInfoGenerator {
@@ -54,10 +66,7 @@ object ClassInfoGenerator {
     }
 
     def fqcn : Iterator[String] = {
-      if(cfg.isEnabled(Features.FQCN)) {
         "static const FQCN fqcn = { \"%s\" };".format(cfg.clazz.fqcn).iter
-      }
-      else Iterator.empty
     }
 
     def fields : Iterator[String] = {

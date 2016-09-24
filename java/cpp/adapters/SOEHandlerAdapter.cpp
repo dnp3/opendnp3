@@ -51,6 +51,7 @@ void SOEHandlerAdapter::Start()
 		this->processBOSMethod = JNI::GetMethod(env, proxy, methods::processBOS);
 		this->processAOSMethod = JNI::GetMethod(env, proxy, methods::processAOS);
 
+		/*
 		// measurement stuff
 		this->binaryConstructor = JNI::GetMethod(env, classes::BinaryInput::fqcn, classes::BinaryInput::constructors::init3);
 		this->doubleBinaryConstructor = JNI::GetMethod(env, classes::DoubleBitBinaryInput::fqcn, classes::DoubleBitBinaryInput::constructors::init3);
@@ -60,7 +61,7 @@ void SOEHandlerAdapter::Start()
 		this->boStatusConstructor = JNI::GetMethod(env, classes::BinaryOutputStatus::fqcn, classes::BinaryOutputStatus::constructors::init3);
 		this->aoStatusConstructor = JNI::GetMethod(env, classes::AnalogOutputStatus::fqcn, classes::AnalogOutputStatus::constructors::init3);
 		this->indexedValueConstructor = JNI::GetMethod(env, classes::IndexedValue::fqcn, classes::IndexedValue::constructors::init2);
-
+		*/
 
 		this->initialized = true;
 	}
