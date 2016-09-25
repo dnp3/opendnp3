@@ -29,6 +29,7 @@ package object codegen {
   implicit class RichString(s: String) {
     def iter: Iterator[String] = Iterator(s)
 
+    /*
     def decapitalize : String = {
       if (s == null || s.isEmpty) {
         s
@@ -39,6 +40,7 @@ package object codegen {
         new String(chars)
       }
     }
+    */
   }
 
   //"(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"

@@ -35,7 +35,7 @@ void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
 	const jstring location = env->NewStringUTF(entry.GetLocation());
 	const jstring msg = env->NewStringUTF(entry.GetMessage());
 	
-	auto jentry = JCache::logEntry.init4(env, level, id, location, msg);
+	auto jentry = JCache::LogEntry.init4(env, level, id, location, msg);
 
-	JCache::logHandler.log(env, proxy, jentry);
+	JCache::LogHandler.log(env, proxy, jentry);
 }

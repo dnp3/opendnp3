@@ -36,13 +36,13 @@ namespace jni
         // methods
         void end(JNIEnv* env, jobject instance);
         void start(JNIEnv* env, jobject instance);
-        void processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processBOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
         void processBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+        void processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+        void processC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
         void processFC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+        void processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+        void processBOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+        void processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
 
         private:
 
@@ -51,13 +51,13 @@ namespace jni
         // method ids
         jmethodID endMethod = nullptr;
         jmethodID startMethod = nullptr;
-        jmethodID processDBIMethod = nullptr;
-        jmethodID processBOSMethod = nullptr;
-        jmethodID processAIMethod = nullptr;
-        jmethodID processCMethod = nullptr;
-        jmethodID processAOSMethod = nullptr;
         jmethodID processBIMethod = nullptr;
+        jmethodID processDBIMethod = nullptr;
+        jmethodID processCMethod = nullptr;
         jmethodID processFCMethod = nullptr;
+        jmethodID processAIMethod = nullptr;
+        jmethodID processBOSMethod = nullptr;
+        jmethodID processAOSMethod = nullptr;
     };
 }
 

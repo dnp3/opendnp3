@@ -10,7 +10,7 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
 
     def classIncludes : Iterator[String] = classes.map(c => "#include \"JNI%s.h\"".format(c.clazz.getSimpleName)).toIterator
 
-    def instances : Iterator[String] = classes.map(c => "static jni::%s %s;".format(c.clazz.getSimpleName, c.clazz.getSimpleName.decapitalize)).toIterator
+    def instances : Iterator[String] = classes.map(c => "static jni::%s %s;".format(c.clazz.getSimpleName, c.clazz.getSimpleName)).toIterator
 
     commented(LicenseHeader()) ++ space ++
       includeGuards("OPENDNP3_JNITYPES") {
@@ -30,7 +30,7 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
     def instances : Iterator[String] = {
       classes.iterator.flatMap {
         c => {
-          "success = %s.init(env);".format(c.clazz.getSimpleName.decapitalize).iter ++
+          "success = %s.init(env);".format(c.clazz.getSimpleName).iter ++
           "if(!success) return false;".iter
         }
       }
@@ -46,7 +46,7 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
 
     def staticInitializers : Iterator[String] = {
       classes.iterator.flatMap { c =>
-        "jni::%s JCache::%s;".format(c.clazz.getSimpleName, c.clazz.getSimpleName.decapitalize).iter
+        "jni::%s JCache::%s;".format(c.clazz.getSimpleName, c.clazz.getSimpleName).iter
       }
     }
 

@@ -27,8 +27,8 @@ MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* env, jobject jc
 {	
 	MasterStackConfig cfg;
 		
-	cfg.link = ConvertLinkConfig(env, jni::JCache::masterStackConfig.getlink(env, jcfg));
-	cfg.master = ConvertMasterConfig(env, jni::JCache::masterStackConfig.getmaster(env, jcfg));
+	cfg.link = ConvertLinkConfig(env, jni::JCache::MasterStackConfig.getlink(env, jcfg));
+	cfg.master = ConvertMasterConfig(env, jni::JCache::MasterStackConfig.getmaster(env, jcfg));
 		
 	return cfg;
 }
@@ -37,7 +37,7 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 {	
 	MasterParams cfg;	
 
-	cfg.responseTimeout = ConvertDuration(env, jni::JCache::masterConfig.getresponseTimeout(env, jcfg));
+	cfg.responseTimeout = ConvertDuration(env, jni::JCache::MasterConfig.getresponseTimeout(env, jcfg));
 
 /*
 	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, fields::timeSyncMode, classes::TimeSyncMode::fqcn));
@@ -196,12 +196,12 @@ return cfg;
 
 openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
 {		
-	return TimeDuration::Milliseconds(jni::JCache::duration.toMillis(env, jduration));
+	return TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
 }
 
 opendnp3::ClassField ConfigReader::ConvertClassField(JNIEnv* env, jobject jclassmask)
 {	
-	jint value = jni::JCache::classField.getbitfield(env, jclassmask);
+	jint value = jni::JCache::ClassField.getbitfield(env, jclassmask);
 	return ClassField(static_cast<uint8_t>(value));
 }
 

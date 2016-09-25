@@ -50,26 +50,26 @@ namespace jni
     {
         static bool init(JNIEnv* env);
 
-        static jni::MasterStackConfig masterStackConfig;
-        static jni::MasterConfig masterConfig;
-        static jni::LinkLayerConfig linkLayerConfig;
-        static jni::LogEntry logEntry;
-        static jni::LogHandler logHandler;
-        static jni::ClassField classField;
-        static jni::SOEHandler sOEHandler;
-        static jni::HeaderInfo headerInfo;
-        static jni::GroupVariation groupVariation;
-        static jni::QualifierCode qualifierCode;
-        static jni::TimestampMode timestampMode;
-        static jni::IndexedValue indexedValue;
-        static jni::BinaryInput binaryInput;
-        static jni::DoubleBitBinaryInput doubleBitBinaryInput;
-        static jni::AnalogInput analogInput;
-        static jni::Counter counter;
-        static jni::FrozenCounter frozenCounter;
-        static jni::BinaryOutputStatus binaryOutputStatus;
-        static jni::AnalogOutputStatus analogOutputStatus;
-        static jni::Duration duration;
+        static jni::MasterStackConfig MasterStackConfig;
+        static jni::MasterConfig MasterConfig;
+        static jni::LinkLayerConfig LinkLayerConfig;
+        static jni::LogEntry LogEntry;
+        static jni::LogHandler LogHandler;
+        static jni::ClassField ClassField;
+        static jni::SOEHandler SOEHandler;
+        static jni::HeaderInfo HeaderInfo;
+        static jni::GroupVariation GroupVariation;
+        static jni::QualifierCode QualifierCode;
+        static jni::TimestampMode TimestampMode;
+        static jni::IndexedValue IndexedValue;
+        static jni::BinaryInput BinaryInput;
+        static jni::DoubleBitBinaryInput DoubleBitBinaryInput;
+        static jni::AnalogInput AnalogInput;
+        static jni::Counter Counter;
+        static jni::FrozenCounter FrozenCounter;
+        static jni::BinaryOutputStatus BinaryOutputStatus;
+        static jni::AnalogOutputStatus AnalogOutputStatus;
+        static jni::Duration Duration;
     };
 }
 

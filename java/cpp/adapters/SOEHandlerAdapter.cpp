@@ -26,12 +26,12 @@ using namespace opendnp3;
 void SOEHandlerAdapter::Start()
 {
 		
-	jni::JCache::sOEHandler.start(JNI::GetEnv(), proxy);	
+	jni::JCache::SOEHandler.start(JNI::GetEnv(), proxy);	
 }
 
 void SOEHandlerAdapter::End()
 {
-	jni::JCache::sOEHandler.end(JNI::GetEnv(), proxy);
+	jni::JCache::SOEHandler.end(JNI::GetEnv(), proxy);
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
@@ -75,13 +75,13 @@ jobject SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::HeaderInfo& info
 	jint qcRaw = QualifierCodeToType(info.qualifier);
 	jint tsModeRaw = static_cast<int>(info.tsmode);
 
-	auto gv = jni::JCache::groupVariation.fromType(env, GroupVariationToType(info.gv));
-	auto qc = jni::JCache::qualifierCode.fromType(env, QualifierCodeToType(info.qualifier));
-	auto tsmode = jni::JCache::timestampMode.fromType(env, static_cast<jint>(info.tsmode));	
+	auto gv = jni::JCache::GroupVariation.fromType(env, GroupVariationToType(info.gv));
+	auto qc = jni::JCache::QualifierCode.fromType(env, QualifierCodeToType(info.qualifier));
+	auto tsmode = jni::JCache::TimestampMode.fromType(env, static_cast<jint>(info.tsmode));	
 	jboolean isEvent = info.isEventVariation;
 	jboolean flagsValid = info.flagsValid;
 	jint headerIndex = info.headerIndex;
 
-	return jni::JCache::headerInfo.init6(env, gv, qc, tsmode, isEvent, flagsValid, headerIndex);
+	return jni::JCache::HeaderInfo.init6(env, gv, qc, tsmode, isEvent, flagsValid, headerIndex);
 }
 
