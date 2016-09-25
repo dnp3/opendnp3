@@ -24,8 +24,6 @@
 #include <string>
 #include <openpal/util/Uncopyable.h>
 
-#include "JNITypes.h"
-
 extern "C" {
 	jint JNI_OnLoad(JavaVM *vm, void *reserved);
 }
@@ -48,37 +46,9 @@ public:
 	static jobject CreateGlobalRef(jobject ref);
 	static void DeleteGlobalRef(jobject ref);
 
-/*
-
-	
-	
-
-	// --- methods requiring an ENV ---
-
-	static jclass FindClass(JNIEnv* env, const FQCN& fqcn);	
-	
-	static ClassMethodPair GetStaticMethod(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo);
-	
-	static jmethodID GetMethod(JNIEnv* env, jclass clazz, const MethodInfo& minfo);
-	static jmethodID GetMethod(JNIEnv* env, jobject obj, const MethodInfo& minfo);
-	static ClassMethodPair GetMethod(JNIEnv* env, const FQCN& fqcn, const MethodInfo& minfo);
-
-	static jclass GetClassForObject(JNIEnv* env, jobject obj);
-
-	// --- field accessors ---
-
-	static jint GetIntField(JNIEnv* env, jobject obj, const FieldId& id);
-	static jlong GetLongField(JNIEnv* env, jobject obj, const FieldId& id);
-	static bool GetBoolField(JNIEnv* env, jobject obj, const FieldId& id);
-	static jdouble GetDoubleField(JNIEnv* env, jobject obj, const FieldId& id);
-	static jobject GetObjectField(JNIEnv* env, jobject obj, const FieldId& id, const FQCN& fqcn);
-*/	
-
 private:
 	
 	static JavaVM *vm;
-
-
 };
 
 #endif
