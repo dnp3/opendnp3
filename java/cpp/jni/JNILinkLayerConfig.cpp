@@ -20,6 +20,8 @@
 
 #include "JNILinkLayerConfig.h"
 
+#include <iostream>
+
 namespace jni
 {
     bool LinkLayerConfig::init(JNIEnv* env)
@@ -78,12 +80,16 @@ namespace jni
     }
 
     jobject LinkLayerConfig::getresponseTimeout(JNIEnv* env, jobject instance)
-    {
+    {		
+		std::cout << "getresponseTimeout, class: " << this->clazz << " method: " << this->remoteAddrField << std::endl;
+
         return env->GetObjectField(instance, this->responseTimeoutField);
     }
 
     jobject LinkLayerConfig::getkeepAliveTimeout(JNIEnv* env, jobject instance)
     {
+		std::cout << "getkeepAliveTimeout, class: " << this->clazz << " method: " << this->keepAliveTimeoutField << std::endl;
+
         return env->GetObjectField(instance, this->keepAliveTimeoutField);
     }
 }

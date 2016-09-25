@@ -53,8 +53,6 @@ public class MasterDemo {
             // and the finalizer isn't guaranteed to run b/c the GC might not be collected during main() exit
             manager.shutdown();
         }
-
-        //System.exit(0);
     }
 
     static void run(DNP3Manager manager) throws Exception

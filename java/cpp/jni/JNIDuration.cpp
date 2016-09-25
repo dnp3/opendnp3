@@ -20,6 +20,8 @@
 
 #include "JNIDuration.h"
 
+#include <iostream>
+
 namespace jni
 {
     bool Duration::init(JNIEnv* env)
@@ -29,13 +31,13 @@ namespace jni
         if(!this->clazz) return false;
 
         this->toMillisMethod = env->GetMethodID(this->clazz, "toMillis", "()J");
-        if(!this->toMillisMethod) return false;
+        if(!this->toMillisMethod) return false;		
 
         return true;
     }
 
     jlong Duration::toMillis(JNIEnv* env, jobject instance)
-    {
+    {		
         return env->CallLongMethod(instance, this->toMillisMethod);
     }
 }

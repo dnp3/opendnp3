@@ -20,6 +20,8 @@
 
 #include "../jni/JCache.h"
 
+#include <iostream>
+
 using namespace openpal;
 using namespace opendnp3;
 
@@ -37,7 +39,7 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 {	
 	MasterParams cfg;	
 
-	cfg.responseTimeout = ConvertDuration(env, jni::JCache::MasterConfig.getresponseTimeout(env, jcfg));
+	//cfg.responseTimeout = ConvertDuration(env, jni::JCache::MasterConfig.getresponseTimeout(env, jcfg));
 
 /*
 	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, fields::timeSyncMode, classes::TimeSyncMode::fqcn));
@@ -56,20 +58,30 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 }
 
 LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
-{
+{	
+	LinkConfig cfg(true, false);
+
+	
+	auto& ref = jni::JCache::LinkLayerConfig;
+		
+	cfg.IsMaster = !!ref.getisMaster(env, jlinkcfg);	
+	cfg.UseConfirms = !!ref.getuseConfirms(env, jlinkcfg);	
+	cfg.NumRetry = ref.getnumRetry(env, jlinkcfg);
+	cfg.LocalAddr = static_cast<uint16_t>(ref.getlocalAddr(env, jlinkcfg));
+	cfg.RemoteAddr = static_cast<uint16_t>(ref.getremoteAddr(env, jlinkcfg));
+
+	
+	cfg.Timeout = TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, ref.getresponseTimeout(env, jlinkcfg)));
+
+	// error here
+	// auto duration = ref.getkeepAliveTimeout(env, jlinkcfg);
+
+	//auto keepAliveMS = jni::JCache::Duration.toMillis(env, ref.getkeepAliveTimeout(env, jlinkcfg));
+
+
 	
 
-	LinkConfig cfg(true, false);
-	
-	/*
-	cfg.IsMaster = JNI::GetBoolField(env, jlinkcfg, fields::isMaster);
-	cfg.UseConfirms = JNI::GetBoolField(env, jlinkcfg, fields::useConfirms);
-	cfg.NumRetry = JNI::GetIntField(env, jlinkcfg, fields::numRetry);
-	cfg.LocalAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, fields::localAddr));
-	cfg.RemoteAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, fields::remoteAddr));
-	cfg.Timeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::responseTimeout, classes::Duration::fqcn));
-	cfg.KeepAliveTimeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::keepAliveTimeout, classes::Duration::fqcn));	
-	*/
+	std::cout << "returning config!!" << std::endl;
 
 	return cfg;
 }
@@ -196,6 +208,8 @@ return cfg;
 
 openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
 {		
+	std::cout << "convert duration!" << std::endl;
+
 	return TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
 }
 
