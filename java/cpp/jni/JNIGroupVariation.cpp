@@ -31,7 +31,7 @@ namespace jni
         this->clazz = env->FindClass("Lcom/automatak/dnp3/enums/GroupVariation;");
         if(!this->clazz) return false;
 
-        this->fromTypeMethod = env->GetMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
+        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
         if(!this->fromTypeMethod) return false;
 
         return true;

@@ -18,6 +18,7 @@
  */
 package com.automatak.dnp3.impl;
 
+import com.automatak.dnp3.DNP3Exception;
 import com.automatak.dnp3.DNP3Manager;
 import com.automatak.dnp3.LogHandler;
 
@@ -46,13 +47,25 @@ public class DNP3ManagerFactory {
         }
     }
 
+
     /**
      *
      * @param concurrency The number of threads that will be allocated to the underlying thread pool.
      * @return Root management interface from which the entire class hierarchy is retrieved
      */
-    public static DNP3Manager createManager(int concurrency, LogHandler handler)
+    public static DNP3Manager createManager(int concurrency, LogHandler handler) throws DNP3Exception
     {
+        if(!initialized) {
+
+            if(init_jni_cache()) {
+                initialized = true;
+            } else {
+                throw new DNP3Exception("Unable to initialize JNI cache");
+            }
+
+
+        }
+
         return new ManagerImpl(concurrency, handler);
     }
 
@@ -60,7 +73,7 @@ public class DNP3ManagerFactory {
      * Returns a DNP3Manager with the thread pool automatically allocated to the number of processors/cores
      * @return Root management interface from which the entire class hierarchy is retrieved
      */
-    public static DNP3Manager createManager(LogHandler handler)
+    public static DNP3Manager createManager(LogHandler handler) throws DNP3Exception
     {
         return createManager(Runtime.getRuntime().availableProcessors(), handler);
     }
@@ -68,4 +81,6 @@ public class DNP3ManagerFactory {
     private DNP3ManagerFactory()
     {}
 
+    private static boolean initialized = false;
+    private native static boolean init_jni_cache();
 }

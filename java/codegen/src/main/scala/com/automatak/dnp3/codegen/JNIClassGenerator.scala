@@ -78,8 +78,11 @@ case class JNIClassGenerator(cfg: ClassConfig) {
       def methodInit : Iterator[String] = cfg.ifEnabled(Features.Methods) {
 
         def lines(m : Method) : Iterator[String] = {
+
+          def typ = if(m.isStatic) "Static" else ""
+
           setAndCheckReturn("this->%sMethod".format(m.getName)) {
-            "env->GetMethodID(this->clazz, \"%s\", \"%s\")".format(m.getName, m.jniSignature)
+              "env->Get%sMethodID(this->clazz, \"%s\", \"%s\")".format(typ, m.getName, m.jniSignature)
           }
         }
 

@@ -31,7 +31,7 @@ namespace jni
         this->clazz = env->FindClass("Lcom/automatak/dnp3/enums/TimestampMode;");
         if(!this->clazz) return false;
 
-        this->fromTypeMethod = env->GetMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/TimestampMode;");
+        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/TimestampMode;");
         if(!this->fromTypeMethod) return false;
 
         return true;
