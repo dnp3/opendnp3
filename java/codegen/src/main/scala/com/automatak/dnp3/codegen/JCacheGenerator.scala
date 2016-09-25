@@ -10,15 +10,15 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
 
     def classIncludes : Iterator[String] = classes.map(c => "#include \"JNI%s.h\"".format(c.clazz.getSimpleName)).toIterator
 
-    def instances : Iterator[String] = classes.map(c => "static jni::%s j%s;".format(c.clazz.getSimpleName, c.clazz.getSimpleName)).toIterator
+    def instances : Iterator[String] = classes.map(c => "static jni::%s %s;".format(c.clazz.getSimpleName, c.clazz.getSimpleName.decapitalize)).toIterator
 
     commented(LicenseHeader()) ++ space ++
       includeGuards("OPENDNP3_JNITYPES") {
-        "#include \"openpal/util/Uncopyable.h\"".iter ++ space
+        "#include \"openpal/util/Uncopyable.h\"".iter ++ space ++
         classIncludes ++ space ++
-        namespace("jcache") {
-          "bool init(JNIEnv* env);".iter ++ space ++
-          instances
+        structDef("JCache: private openpal::StaticOnly") {
+          "static bool init(JNIEnv* env);".iter ++ space ++
+            instances
         }
       }
   }
@@ -26,23 +26,33 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
   def impl(implicit indent: Indentation): Iterator[String] = {
 
     def instances : Iterator[String] = {
-      classes.flatMap {
+      classes.iterator.flatMap {
         c => {
-          "success = j%s.init(env);".format(c.clazz.getSimpleName).iter ++
+          "success = %s.init(env);".format(c.clazz.getSimpleName.decapitalize).iter ++
           "if(!success) return false;".iter
         }
-      }.toIterator
+      }
+    }
+
+    def jcacheInit = {
+      "bool JCache::init(JNIEnv* env)".iter ++ bracket {
+        "auto success = true;".iter ++ space ++
+          instances ++
+          "return true;".iter
+      }
+    }
+
+    def staticInitializers : Iterator[String] = {
+      classes.iterator.flatMap { c =>
+        "jni::%s JCache::%s;".format(c.clazz.getSimpleName, c.clazz.getSimpleName.decapitalize).iter
+      }
     }
 
     commented(LicenseHeader()) ++ space ++
-    "#include \"JCache.h\"".iter ++ space ++
-    namespace("jcache") {
-      "bool init(JNIEnv* env)".iter ++ bracket {
-        "auto success = true;".iter ++ space ++
-        instances ++
-        "return true;".iter
-      }
-    }
+      "#include \"JCache.h\"".iter ++ space ++
+      staticInitializers ++ space ++ jcacheInit
+
+
 
 
   }

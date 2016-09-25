@@ -21,6 +21,8 @@
 #ifndef OPENDNP3JAVA_OPENDNP3_JNITYPES_H
 #define OPENDNP3JAVA_OPENDNP3_JNITYPES_H
 
+#include "openpal/util/Uncopyable.h"
+
 #include "JNIMasterStackConfig.h"
 #include "JNIMasterConfig.h"
 #include "JNILinkLayerConfig.h"
@@ -41,29 +43,29 @@
 #include "JNIBinaryOutputStatus.h"
 #include "JNIAnalogOutputStatus.h"
 
-namespace jcache
+struct JCache: private openpal::StaticOnly
 {
-    bool init(JNIEnv* env);
+    static bool init(JNIEnv* env);
 
-    static jni::MasterStackConfig jMasterStackConfig;
-    static jni::MasterConfig jMasterConfig;
-    static jni::LinkLayerConfig jLinkLayerConfig;
-    static jni::LogEntry jLogEntry;
-    static jni::LogHandler jLogHandler;
-    static jni::ClassField jClassField;
-    static jni::SOEHandler jSOEHandler;
-    static jni::HeaderInfo jHeaderInfo;
-    static jni::GroupVariation jGroupVariation;
-    static jni::QualifierCode jQualifierCode;
-    static jni::TimestampMode jTimestampMode;
-    static jni::IndexedValue jIndexedValue;
-    static jni::BinaryInput jBinaryInput;
-    static jni::DoubleBitBinaryInput jDoubleBitBinaryInput;
-    static jni::AnalogInput jAnalogInput;
-    static jni::Counter jCounter;
-    static jni::FrozenCounter jFrozenCounter;
-    static jni::BinaryOutputStatus jBinaryOutputStatus;
-    static jni::AnalogOutputStatus jAnalogOutputStatus;
-}
+    static jni::MasterStackConfig masterStackConfig;
+    static jni::MasterConfig masterConfig;
+    static jni::LinkLayerConfig linkLayerConfig;
+    static jni::LogEntry logEntry;
+    static jni::LogHandler logHandler;
+    static jni::ClassField classField;
+    static jni::SOEHandler sOEHandler;
+    static jni::HeaderInfo headerInfo;
+    static jni::GroupVariation groupVariation;
+    static jni::QualifierCode qualifierCode;
+    static jni::TimestampMode timestampMode;
+    static jni::IndexedValue indexedValue;
+    static jni::BinaryInput binaryInput;
+    static jni::DoubleBitBinaryInput doubleBitBinaryInput;
+    static jni::AnalogInput analogInput;
+    static jni::Counter counter;
+    static jni::FrozenCounter frozenCounter;
+    static jni::BinaryOutputStatus binaryOutputStatus;
+    static jni::AnalogOutputStatus analogOutputStatus;
+};
 
 #endif

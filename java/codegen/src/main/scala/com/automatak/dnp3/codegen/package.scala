@@ -1,7 +1,7 @@
 package com.automatak.dnp3
 
-import java.nio.charset.Charset
 import java.lang.reflect.{Constructor, Method, Modifier}
+import java.nio.charset.Charset
 import java.nio.file.{Files, Path, StandardOpenOption}
 
 package object codegen {
@@ -27,7 +27,18 @@ package object codegen {
   }
 
   implicit class RichString(s: String) {
-    def iter : Iterator[String] = Iterator(s)
+    def iter: Iterator[String] = Iterator(s)
+
+    def decapitalize : String = {
+      if (s == null || s.isEmpty) {
+        s
+      }
+      else {
+        val chars = s.toCharArray()
+        chars(0) = java.lang.Character.toLowerCase(chars(0));
+        new String(chars)
+      }
+    }
   }
 
   //"(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
@@ -41,6 +52,14 @@ package object codegen {
   def classDef(name: String)(inner: => Iterator[String])(implicit indent: Indentation): Iterator[String] = {
 
     "class %s".format(name).iter ++ bracketWithCap(";") {
+      inner
+    }
+
+  }
+
+  def structDef(name: String)(inner: => Iterator[String])(implicit indent: Indentation): Iterator[String] = {
+
+    "struct %s".format(name).iter ++ bracketWithCap(";") {
       inner
     }
 

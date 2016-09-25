@@ -39,7 +39,7 @@ public class MasterDemo {
     public static void main(String[] args) throws Exception {
 
         // create the root class with a thread pool size of 1
-        DNP3Manager manager = DNP3ManagerFactory.createManager(PrintingLogHandler.getInstance());
+        DNP3Manager manager = DNP3ManagerFactory.createManager(1, PrintingLogHandler.getInstance());
 
         try {
             run(manager);

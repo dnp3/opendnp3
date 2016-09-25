@@ -37,7 +37,7 @@ namespace jni
         return true;
     }
 
-    jobject AnalogOutputStatus::init3(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2)
+    jobject AnalogOutputStatus::init3(JNIEnv* env, jdouble arg0, jbyte arg1, jlong arg2)
     {
         return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
     }

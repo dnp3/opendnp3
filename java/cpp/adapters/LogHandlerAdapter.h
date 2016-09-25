@@ -19,7 +19,6 @@
 #ifndef OPENDNP3_LOG_HANDLER_ADAPTER_H
 #define OPENDNP3_LOG_HANDLER_ADAPTER_H
 
-#include <jni.h>
 #include <openpal/logging/ILogHandler.h>
 
 #include "GlobalRef.h"
@@ -34,11 +33,7 @@ public:
 
 private:
 	
-	GlobalRef proxy;
-
-	bool initialized = false;
-	ClassMethodPair logEntryConstructor;	
-	jmethodID logMethod = nullptr;
+	GlobalRef proxy;	
 };
 
 #endif

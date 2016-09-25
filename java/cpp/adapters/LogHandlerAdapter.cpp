@@ -20,31 +20,21 @@
 #include "LogHandlerAdapter.h"
 #include <assert.h>
 
-#include "JNI.h"
-#include "JNIStrings.h"
+#include "../jni/JCache.h"
 
 LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(proxy)
 {}
 
 void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
-{				
+{					
 	const auto env = JNI::GetEnv();	
-
-	if (!initialized)
-	{
-		this->logEntryConstructor = JNI::GetMethod(env, classes::LogEntry::fqcn, classes::LogEntry::constructors::init4);
-		this->logMethod = JNI::GetMethod(env, proxy, classes::LogHandler::methods::log);
-		this->initialized = true;
-	}
 	
 	const jint level = entry.GetFilters().GetBitfield();
 	const jstring id = env->NewStringUTF(entry.GetAlias());
 	const jstring location = env->NewStringUTF(entry.GetLocation());
 	const jstring msg = env->NewStringUTF(entry.GetMessage());
+	
+	auto jentry = JCache::logEntry.init4(env, level, id, location, msg);
 
-	auto jentry = env->NewObject(this->logEntryConstructor.clazz, this->logEntryConstructor.method, level, id, location, msg);
-
-	assert(jentry != nullptr);
-
-	env->CallVoidMethod(proxy, logMethod, jentry);
+	JCache::logHandler.log(env, proxy, jentry);
 }

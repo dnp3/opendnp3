@@ -37,7 +37,7 @@ namespace jni
         return true;
     }
 
-    jobject Counter::init3(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2)
+    jobject Counter::init3(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2)
     {
         return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
     }

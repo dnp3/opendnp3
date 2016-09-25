@@ -37,7 +37,7 @@ namespace jni
         return true;
     }
 
-    jobject LogEntry::init4(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2, jobject arg3)
+    jobject LogEntry::init4(JNIEnv* env, jint arg0, jstring arg1, jstring arg2, jstring arg3)
     {
         return env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3);
     }

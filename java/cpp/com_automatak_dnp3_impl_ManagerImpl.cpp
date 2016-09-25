@@ -3,7 +3,6 @@
 
 #include <asiodnp3/DNP3Manager.h>
 
-#include "adapters/JNI.h"
 #include "adapters/CString.h"
 #include "adapters/LogHandlerAdapter.h"
 

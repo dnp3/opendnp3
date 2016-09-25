@@ -26,6 +26,9 @@ object JNIMethod {
           case "void" => "void"
           case "boolean" => "jboolean"
           case "int" => "jint"
+          case "byte" => "jbyte"
+          case "long" => "jlong"
+          case "double" => "jdouble"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
       } else {
@@ -129,7 +132,7 @@ object JNIMethod {
   def getConstructorSignature(constructor: Constructor[_], className: Option[String] = None) : String = {
 
 
-    def arguments = constructor.getParameters.map(p => "%s %s".format(getType(p.getType.getClass), p.getName)).mkString(", ")
+    def arguments = constructor.getParameters.map(p => "%s %s".format(getType(p.getType), p.getName)).mkString(", ")
 
     if(arguments.isEmpty) {
       "jobject %sinit%d(JNIEnv* env)".format(className.map(n => "%s::".format(n)).getOrElse(""), constructor.getParameterCount)

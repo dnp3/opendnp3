@@ -20,50 +20,67 @@
 
 #include "JCache.h"
 
-namespace jcache
-{
-    bool init(JNIEnv* env)
-    {
-        auto success = true;
+jni::MasterStackConfig JCache::masterStackConfig;
+jni::MasterConfig JCache::masterConfig;
+jni::LinkLayerConfig JCache::linkLayerConfig;
+jni::LogEntry JCache::logEntry;
+jni::LogHandler JCache::logHandler;
+jni::ClassField JCache::classField;
+jni::SOEHandler JCache::sOEHandler;
+jni::HeaderInfo JCache::headerInfo;
+jni::GroupVariation JCache::groupVariation;
+jni::QualifierCode JCache::qualifierCode;
+jni::TimestampMode JCache::timestampMode;
+jni::IndexedValue JCache::indexedValue;
+jni::BinaryInput JCache::binaryInput;
+jni::DoubleBitBinaryInput JCache::doubleBitBinaryInput;
+jni::AnalogInput JCache::analogInput;
+jni::Counter JCache::counter;
+jni::FrozenCounter JCache::frozenCounter;
+jni::BinaryOutputStatus JCache::binaryOutputStatus;
+jni::AnalogOutputStatus JCache::analogOutputStatus;
 
-        success = jMasterStackConfig.init(env);
-        if(!success) return false;
-        success = jMasterConfig.init(env);
-        if(!success) return false;
-        success = jLinkLayerConfig.init(env);
-        if(!success) return false;
-        success = jLogEntry.init(env);
-        if(!success) return false;
-        success = jLogHandler.init(env);
-        if(!success) return false;
-        success = jClassField.init(env);
-        if(!success) return false;
-        success = jSOEHandler.init(env);
-        if(!success) return false;
-        success = jHeaderInfo.init(env);
-        if(!success) return false;
-        success = jGroupVariation.init(env);
-        if(!success) return false;
-        success = jQualifierCode.init(env);
-        if(!success) return false;
-        success = jTimestampMode.init(env);
-        if(!success) return false;
-        success = jIndexedValue.init(env);
-        if(!success) return false;
-        success = jBinaryInput.init(env);
-        if(!success) return false;
-        success = jDoubleBitBinaryInput.init(env);
-        if(!success) return false;
-        success = jAnalogInput.init(env);
-        if(!success) return false;
-        success = jCounter.init(env);
-        if(!success) return false;
-        success = jFrozenCounter.init(env);
-        if(!success) return false;
-        success = jBinaryOutputStatus.init(env);
-        if(!success) return false;
-        success = jAnalogOutputStatus.init(env);
-        if(!success) return false;
-        return true;
-    }
+bool JCache::init(JNIEnv* env)
+{
+    auto success = true;
+
+    success = masterStackConfig.init(env);
+    if(!success) return false;
+    success = masterConfig.init(env);
+    if(!success) return false;
+    success = linkLayerConfig.init(env);
+    if(!success) return false;
+    success = logEntry.init(env);
+    if(!success) return false;
+    success = logHandler.init(env);
+    if(!success) return false;
+    success = classField.init(env);
+    if(!success) return false;
+    success = sOEHandler.init(env);
+    if(!success) return false;
+    success = headerInfo.init(env);
+    if(!success) return false;
+    success = groupVariation.init(env);
+    if(!success) return false;
+    success = qualifierCode.init(env);
+    if(!success) return false;
+    success = timestampMode.init(env);
+    if(!success) return false;
+    success = indexedValue.init(env);
+    if(!success) return false;
+    success = binaryInput.init(env);
+    if(!success) return false;
+    success = doubleBitBinaryInput.init(env);
+    if(!success) return false;
+    success = analogInput.init(env);
+    if(!success) return false;
+    success = counter.init(env);
+    if(!success) return false;
+    success = frozenCounter.init(env);
+    if(!success) return false;
+    success = binaryOutputStatus.init(env);
+    if(!success) return false;
+    success = analogOutputStatus.init(env);
+    if(!success) return false;
+    return true;
 }
