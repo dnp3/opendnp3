@@ -43,6 +43,7 @@
 #include "JNIBinaryOutputStatus.h"
 #include "JNIAnalogOutputStatus.h"
 #include "JNIDuration.h"
+#include "JNIArrayList.h"
 
 namespace jni
 {
@@ -71,6 +72,7 @@ namespace jni
         static jni::BinaryOutputStatus BinaryOutputStatus;
         static jni::AnalogOutputStatus AnalogOutputStatus;
         static jni::Duration Duration;
+        static jni::ArrayList ArrayList;
     };
 }
 

@@ -22,11 +22,11 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     }
 
     def constructorSignatures: Iterator[String] = cfg.ifEnabled(Features.Constructors) {
-      space ++ "// constructor methods".iter ++ cfg.clazz.getConstructors.map(c => JNIMethod.getConstructorSignature(c)+";").toIterator
+      space ++ "// constructor methods".iter ++ cfg.constructors.map(c => JNIMethod.getConstructorSignature(c)+";").toIterator
     }
 
     def constructorMembers: Iterator[String] = cfg.ifEnabled(Features.Constructors) {
-      space ++ "// constructor method ids".iter ++ cfg.clazz.getConstructors.map(c => "jmethodID init%dConstructor = nullptr;".format(c.getParameterCount)).toIterator
+      space ++ "// constructor method ids".iter ++ cfg.constructors.map(c => "jmethodID init%dConstructor = nullptr;".format(c.getParameterCount)).toIterator
     }
 
     def fieldMembers: Iterator[String] = cfg.ifEnabled(Features.Fields) {
@@ -75,7 +75,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
           }
         }
 
-        cfg.clazz.getConstructors.toIterator.map(lines).flatten
+        cfg.constructors.toIterator.map(lines).flatten
       }
 
       def methodInit : Iterator[String] = cfg.ifEnabled(Features.Methods) {
@@ -126,7 +126,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     }
 
     def constructorImpls : Iterator[String] = cfg.ifEnabled(Features.Constructors) {
-      cfg.clazz.getConstructors.toIterator.flatMap { c =>
+      cfg.constructors.toIterator.flatMap { c =>
         space ++ JNIMethod.getConstructorImpl(c)
       }
     }

@@ -8,7 +8,7 @@ import com.automatak.dnp3.enums._
 object Generator {
 
 
-  def enumeration(clazz: Class[_]) = ClassConfig(clazz, Set(Features.Methods), MethodEquals("fromType"))
+  def enumeration(clazz: Class[_]) = ClassConfig(clazz, Set(Features.Methods), MethodFilter.strictlyEqual("fromType"))
 
   implicit val indent = CppIndentation
 
@@ -37,7 +37,8 @@ object Generator {
     ClassConfig(classOf[FrozenCounter], Set(Features.Constructors)),
     ClassConfig(classOf[BinaryOutputStatus], Set(Features.Constructors)),
     ClassConfig(classOf[AnalogOutputStatus], Set(Features.Constructors)),
-    ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodEquals("toMillis"))
+    ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodFilter.strictlyEqual("toMillis")),
+    ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), MethodFilter.strictlyEqual("add", Some(1)), ConstructorFilter.withParamTypes(List("int")))
   )
 
   def main(args: Array[String]): Unit = {

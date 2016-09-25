@@ -42,6 +42,7 @@ namespace jni
     jni::BinaryOutputStatus JCache::BinaryOutputStatus;
     jni::AnalogOutputStatus JCache::AnalogOutputStatus;
     jni::Duration JCache::Duration;
+    jni::ArrayList JCache::ArrayList;
 
     bool JCache::init(JNIEnv* env)
     {
@@ -87,6 +88,8 @@ namespace jni
         if(!success) return false;
         success = Duration.init(env);
         if(!success) return false;
+        success = ArrayList.init(env);
+        if(!success) return false;
         return true;
     }
 
@@ -112,5 +115,6 @@ namespace jni
         BinaryOutputStatus.cleanup(env);
         AnalogOutputStatus.cleanup(env);
         Duration.cleanup(env);
+        ArrayList.cleanup(env);
     }
 }

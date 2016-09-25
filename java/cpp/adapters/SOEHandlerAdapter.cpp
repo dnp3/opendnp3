@@ -36,7 +36,21 @@ void SOEHandlerAdapter::End()
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
-	const auto env = JNI::GetEnv();	
+	const auto env = JNI::GetEnv();
+
+	auto jinfo = Convert(env, info);
+
+	auto list = jni::JCache::ArrayList.init1(env, values.Count());
+
+	auto add = [&](const Indexed<Binary>& meas) {
+		auto jvalue = jni::JCache::BinaryInput.init3(env, meas.value.value, meas.value.flags.value, meas.value.time);
+		auto jindexed = jni::JCache::IndexedValue.init2(env, jvalue, meas.index);
+		jni::JCache::ArrayList.add(env, list, jindexed);
+	};
+
+	values.ForeachItem(add);
+	
+	jni::JCache::SOEHandler.processBI(env, proxy, jinfo, list);
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values)
@@ -45,7 +59,7 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 }
 
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values)
-{
+{	
 	const auto env = JNI::GetEnv();
 }
 

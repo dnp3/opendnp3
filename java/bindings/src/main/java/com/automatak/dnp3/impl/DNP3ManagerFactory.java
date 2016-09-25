@@ -34,7 +34,7 @@ import com.automatak.dnp3.LogHandler;
  * <pre>
  * {@code
  * System.setProperty("com.automatak.dnp3.nostaticload", "")
- * System.loadLibrary("dnp3java")
+ * System.loadLibrary("opendnp3java")
  * }
  * </pre>
  */
