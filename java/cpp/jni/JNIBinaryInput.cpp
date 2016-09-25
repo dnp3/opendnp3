@@ -24,9 +24,9 @@ namespace jni
 {
     bool BinaryInput::init(JNIEnv* env)
     {
-
-        this->clazz = env->FindClass("Lcom/automatak/dnp3/BinaryInput;");
-        if(!this->clazz) return false;
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/BinaryInput;");
+        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+        env->DeleteLocalRef(clazzTemp);
 
         this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(ZBJ)V");
         if(!this->init3Constructor) return false;

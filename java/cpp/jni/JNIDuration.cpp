@@ -20,24 +20,22 @@
 
 #include "JNIDuration.h"
 
-#include <iostream>
-
 namespace jni
 {
     bool Duration::init(JNIEnv* env)
     {
-
-        this->clazz = env->FindClass("Ljava/time/Duration;");
-        if(!this->clazz) return false;
+        auto clazzTemp = env->FindClass("Ljava/time/Duration;");
+        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+        env->DeleteLocalRef(clazzTemp);
 
         this->toMillisMethod = env->GetMethodID(this->clazz, "toMillis", "()J");
-        if(!this->toMillisMethod) return false;		
+        if(!this->toMillisMethod) return false;
 
         return true;
     }
 
     jlong Duration::toMillis(JNIEnv* env, jobject instance)
-    {		
+    {
         return env->CallLongMethod(instance, this->toMillisMethod);
     }
 }

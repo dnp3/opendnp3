@@ -20,15 +20,13 @@
 
 #include "JNILinkLayerConfig.h"
 
-#include <iostream>
-
 namespace jni
 {
     bool LinkLayerConfig::init(JNIEnv* env)
     {
-
-        this->clazz = env->FindClass("Lcom/automatak/dnp3/LinkLayerConfig;");
-        if(!this->clazz) return false;
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/LinkLayerConfig;");
+        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+        env->DeleteLocalRef(clazzTemp);
 
         this->isMasterField = env->GetFieldID(this->clazz, "isMaster", "Z");
         if(!this->isMasterField) return false;
@@ -80,16 +78,12 @@ namespace jni
     }
 
     jobject LinkLayerConfig::getresponseTimeout(JNIEnv* env, jobject instance)
-    {		
-		std::cout << "getresponseTimeout, class: " << this->clazz << " method: " << this->remoteAddrField << std::endl;
-
+    {
         return env->GetObjectField(instance, this->responseTimeoutField);
     }
 
     jobject LinkLayerConfig::getkeepAliveTimeout(JNIEnv* env, jobject instance)
     {
-		std::cout << "getkeepAliveTimeout, class: " << this->clazz << " method: " << this->keepAliveTimeoutField << std::endl;
-
         return env->GetObjectField(instance, this->keepAliveTimeoutField);
     }
 }

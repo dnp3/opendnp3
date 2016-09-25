@@ -60,7 +60,6 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 {	
 	LinkConfig cfg(true, false);
-
 	
 	auto& ref = jni::JCache::LinkLayerConfig;
 		
@@ -68,20 +67,9 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 	cfg.UseConfirms = !!ref.getuseConfirms(env, jlinkcfg);	
 	cfg.NumRetry = ref.getnumRetry(env, jlinkcfg);
 	cfg.LocalAddr = static_cast<uint16_t>(ref.getlocalAddr(env, jlinkcfg));
-	cfg.RemoteAddr = static_cast<uint16_t>(ref.getremoteAddr(env, jlinkcfg));
-
-	
-	cfg.Timeout = TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, ref.getresponseTimeout(env, jlinkcfg)));
-
-	// error here
-	// auto duration = ref.getkeepAliveTimeout(env, jlinkcfg);
-
-	//auto keepAliveMS = jni::JCache::Duration.toMillis(env, ref.getkeepAliveTimeout(env, jlinkcfg));
-
-
-	
-
-	std::cout << "returning config!!" << std::endl;
+	cfg.RemoteAddr = static_cast<uint16_t>(ref.getremoteAddr(env, jlinkcfg));	
+	cfg.Timeout = TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, ref.getresponseTimeout(env, jlinkcfg)));	
+	cfg.KeepAliveTimeout = TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, ref.getkeepAliveTimeout(env, jlinkcfg)));
 
 	return cfg;
 }
@@ -205,13 +193,6 @@ cfg.mSetpointStatus.push_back(PointRecord());
 return cfg;
 }
 */
-
-openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
-{		
-	std::cout << "convert duration!" << std::endl;
-
-	return TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
-}
 
 opendnp3::ClassField ConfigReader::ConvertClassField(JNIEnv* env, jobject jclassmask)
 {	

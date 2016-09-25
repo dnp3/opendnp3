@@ -24,9 +24,9 @@ namespace jni
 {
     bool MasterStackConfig::init(JNIEnv* env)
     {
-
-        this->clazz = env->FindClass("Lcom/automatak/dnp3/MasterStackConfig;");
-        if(!this->clazz) return false;
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/MasterStackConfig;");
+        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+        env->DeleteLocalRef(clazzTemp);
 
         this->masterField = env->GetFieldID(this->clazz, "master", "Lcom/automatak/dnp3/MasterConfig;");
         if(!this->masterField) return false;

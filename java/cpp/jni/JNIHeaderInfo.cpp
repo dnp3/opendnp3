@@ -24,9 +24,9 @@ namespace jni
 {
     bool HeaderInfo::init(JNIEnv* env)
     {
-
-        this->clazz = env->FindClass("Lcom/automatak/dnp3/HeaderInfo;");
-        if(!this->clazz) return false;
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/HeaderInfo;");
+        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+        env->DeleteLocalRef(clazzTemp);
 
         this->init6Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/GroupVariation;Lcom/automatak/dnp3/enums/QualifierCode;Lcom/automatak/dnp3/enums/TimestampMode;ZZI)V");
         if(!this->init6Constructor) return false;

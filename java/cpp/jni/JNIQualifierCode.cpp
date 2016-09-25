@@ -24,9 +24,9 @@ namespace jni
 {
     bool QualifierCode::init(JNIEnv* env)
     {
-
-        this->clazz = env->FindClass("Lcom/automatak/dnp3/enums/QualifierCode;");
-        if(!this->clazz) return false;
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/QualifierCode;");
+        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+        env->DeleteLocalRef(clazzTemp);
 
         this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/QualifierCode;");
         if(!this->fromTypeMethod) return false;

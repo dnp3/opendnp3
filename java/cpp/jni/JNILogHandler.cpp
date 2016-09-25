@@ -24,9 +24,9 @@ namespace jni
 {
     bool LogHandler::init(JNIEnv* env)
     {
-
-        this->clazz = env->FindClass("Lcom/automatak/dnp3/LogHandler;");
-        if(!this->clazz) return false;
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/LogHandler;");
+        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+        env->DeleteLocalRef(clazzTemp);
 
         this->logMethod = env->GetMethodID(this->clazz, "log", "(Lcom/automatak/dnp3/LogEntry;)V");
         if(!this->logMethod) return false;

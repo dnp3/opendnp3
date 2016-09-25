@@ -40,9 +40,7 @@ private:
 	/*	
 	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* apEnv, jobject jcfg);
 	static opendnp3::DeviceTemplate ConvertDatabaseConfig(JNIEnv* apEnv, jobject jcfg);
-	*/
-
-	static openpal::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
+	*/	
 
 	static opendnp3::ClassField ConvertClassField(JNIEnv* env, jobject jclassmask);
 

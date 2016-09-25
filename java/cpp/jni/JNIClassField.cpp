@@ -24,9 +24,9 @@ namespace jni
 {
     bool ClassField::init(JNIEnv* env)
     {
-
-        this->clazz = env->FindClass("Lcom/automatak/dnp3/ClassField;");
-        if(!this->clazz) return false;
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/ClassField;");
+        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+        env->DeleteLocalRef(clazzTemp);
 
         this->bitfieldField = env->GetFieldID(this->clazz, "bitfield", "I");
         if(!this->bitfieldField) return false;
