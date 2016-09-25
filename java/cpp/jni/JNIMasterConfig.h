@@ -32,18 +32,18 @@ namespace jni
         bool init(JNIEnv* env);
 
         // field getter methods
-        jobject getresponseTimeout(JNIEnv* env);
-        jobject gettimeSyncMode(JNIEnv* env);
-        jboolean getdisableUnsolOnStartup(JNIEnv* env);
-        jboolean getignoreRestartIIN(JNIEnv* env);
-        jobject getunsolClassMask(JNIEnv* env);
-        jobject getstartupIntegrityClassMask(JNIEnv* env);
-        jboolean getintegrityOnEventOverflowIIN(JNIEnv* env);
-        jobject geteventScanOnEventsAvailableClassMask(JNIEnv* env);
-        jobject gettaskRetryPeriod(JNIEnv* env);
-        jobject gettaskStartTimeout(JNIEnv* env);
-        jint getmaxTxFragSize(JNIEnv* env);
-        jint getmaxRxFragSize(JNIEnv* env);
+        jobject getresponseTimeout(JNIEnv* env, jobject instance);
+        jobject gettimeSyncMode(JNIEnv* env, jobject instance);
+        jboolean getdisableUnsolOnStartup(JNIEnv* env, jobject instance);
+        jboolean getignoreRestartIIN(JNIEnv* env, jobject instance);
+        jobject getunsolClassMask(JNIEnv* env, jobject instance);
+        jobject getstartupIntegrityClassMask(JNIEnv* env, jobject instance);
+        jboolean getintegrityOnEventOverflowIIN(JNIEnv* env, jobject instance);
+        jobject geteventScanOnEventsAvailableClassMask(JNIEnv* env, jobject instance);
+        jobject gettaskRetryPeriod(JNIEnv* env, jobject instance);
+        jobject gettaskStartTimeout(JNIEnv* env, jobject instance);
+        jint getmaxTxFragSize(JNIEnv* env, jobject instance);
+        jint getmaxRxFragSize(JNIEnv* env, jobject instance);
 
         private:
 

@@ -32,7 +32,7 @@ namespace jni
         bool init(JNIEnv* env);
 
         // field getter methods
-        jint getbitfield(JNIEnv* env);
+        jint getbitfield(JNIEnv* env, jobject instance);
 
         private:
 

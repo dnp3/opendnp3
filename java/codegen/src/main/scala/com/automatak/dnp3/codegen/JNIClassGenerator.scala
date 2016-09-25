@@ -34,7 +34,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     }
 
     def fieldGetters: Iterator[String] = cfg.ifEnabled(Features.Fields) {
-      space ++ "// field getter methods".iter ++ cfg.clazz.getDeclaredFields.map(f => "%s get%s(JNIEnv* env);".format(JNIMethod.getType(f.getType), f.getName)).toIterator
+      space ++ "// field getter methods".iter ++ cfg.clazz.getDeclaredFields.map(f => "%s get%s(JNIEnv* env, jobject instance);".format(JNIMethod.getType(f.getType), f.getName)).toIterator
     }
 
     def initSignature: Iterator[String] = "bool init(JNIEnv* env);".iter
@@ -113,12 +113,24 @@ case class JNIClassGenerator(cfg: ClassConfig) {
       }
     }
 
+    def constructorImpls : Iterator[String] = cfg.ifEnabled(Features.Constructors) {
+      cfg.clazz.getConstructors.toIterator.flatMap { c =>
+        space ++ JNIMethod.getConstructorImpl(c)
+      }
+    }
+
+    def fieldGetterImpls : Iterator[String] = cfg.ifEnabled(Features.Fields) {
+      cfg.clazz.getFields.toIterator.flatMap { f =>
+        space ++ JNIMethod.getFieldGetterImpl(f)
+      }
+    }
+
     commented(LicenseHeader()) ++ space ++
     "#include \"%s\"".format(headerFileName).iter ++ space ++
     "#include \"JNI.h\"".iter ++ "#include <assert.h>".iter ++ space ++
     namespace("jni") {
-      initImpl ++ methodsImpls
-    } ++ space
+      initImpl ++ methodsImpls ++ constructorImpls ++ fieldGetterImpls
+    }
   }
 
 }

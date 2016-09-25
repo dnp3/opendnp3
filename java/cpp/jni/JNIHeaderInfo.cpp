@@ -36,5 +36,9 @@ namespace jni
 
         return true;
     }
-}
 
+    jobject HeaderInfo::init6(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2, jobject arg3, jobject arg4, jobject arg5)
+    {
+        return env->NewObject(this->clazz, this->init6Constructor, arg0, arg1, arg2, arg3, arg4, arg5);
+    }
+}

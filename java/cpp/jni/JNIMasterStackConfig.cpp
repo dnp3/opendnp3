@@ -39,5 +39,14 @@ namespace jni
 
         return true;
     }
-}
 
+    jobject MasterStackConfig::getmaster(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->masterField);
+    }
+
+    jobject MasterStackConfig::getlink(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->linkField);
+    }
+}

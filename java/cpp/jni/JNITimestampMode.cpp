@@ -42,4 +42,3 @@ namespace jni
         return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
     }
 }
-

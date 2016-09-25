@@ -1,6 +1,6 @@
 package com.automatak.dnp3.codegen
 
-import java.lang.reflect.{Constructor, Method}
+import java.lang.reflect.{Constructor, Method, Field}
 
 object JNIMethod {
 
@@ -49,8 +49,10 @@ object JNIMethod {
           case "void" => "void"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
+      } else {
+        clazz.fqcn
       }
-      clazz.fqcn
+
     }
   }
 
@@ -65,11 +67,12 @@ object JNIMethod {
         clazz.getTypeName match {
           case "boolean" => "Boolean"
           case "int" => "Int"
-          case "void" => "void"
+          case "void" => "Void"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
+      } else {
+        "Object"
       }
-      "Object"
     }
   }
 
@@ -123,17 +126,41 @@ object JNIMethod {
 
   }
 
-  def getConstructorSignature(method: Constructor[_], className: Option[String] = None) : String = {
+  def getConstructorSignature(constructor: Constructor[_], className: Option[String] = None) : String = {
 
 
-    def arguments = method.getParameters.map(p => "%s %s".format(getType(p.getType.getClass), p.getName)).mkString(", ")
+    def arguments = constructor.getParameters.map(p => "%s %s".format(getType(p.getType.getClass), p.getName)).mkString(", ")
 
     if(arguments.isEmpty) {
-      "jobject %sinit%d(JNIEnv* env)".format(className.map(n => "%s::".format(n)).getOrElse(""), method.getParameterCount)
+      "jobject %sinit%d(JNIEnv* env)".format(className.map(n => "%s::".format(n)).getOrElse(""), constructor.getParameterCount)
     }
     else {
-      "jobject %sinit%d(JNIEnv* env, %s)".format(className.map(n => "%s::".format(n)).getOrElse(""), method.getParameterCount, arguments)
+      "jobject %sinit%d(JNIEnv* env, %s)".format(className.map(n => "%s::".format(n)).getOrElse(""), constructor.getParameterCount, arguments)
     }
 
+  }
+
+  def getConstructorImpl(constructor: Constructor[_])(implicit i: Indentation) : Iterator[String] = {
+
+    def args : String = if(constructor.getParameterCount == 0) "" else {
+      constructor.getParameters.map(p => p.getName).mkString(", ")
+    }
+
+    JNIMethod.getConstructorSignature(constructor, Some(constructor.getDeclaringClass.getSimpleName)).iter ++ bracket {
+      "return env->NewObject(this->clazz, this->init%dConstructor, %s);".format(
+        constructor.getParameterCount,
+        args
+      ).iter
+    }
+
+  }
+
+  def getFieldGetterImpl(f : Field)(implicit i: Indentation) : Iterator[String] = {
+
+    def fieldType : String = getReturnType(f.getType)
+
+    "%s %s::get%s(JNIEnv* env, jobject instance)".format(getType(f.getType), f.getDeclaringClass.getSimpleName, f.getName).iter  ++ bracket {
+      "return env->Get%sField(instance, this->%sField);".format(fieldType, f.getName).iter
+    }
   }
 }

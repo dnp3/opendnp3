@@ -41,7 +41,7 @@ object Generator {
 
   def main(args: Array[String]): Unit = {
 
-    //JNIClassGenerator(enumeration(classOf[GroupVariation])).header.foreach(println)
+   // JNIClassGenerator(ClassConfig(classOf[MasterConfig], Set(Features.Fields))).impl.foreach(println)
 
     classes.foreach { c =>
 

@@ -32,8 +32,8 @@ namespace jni
         bool init(JNIEnv* env);
 
         // field getter methods
-        jobject getmaster(JNIEnv* env);
-        jobject getlink(JNIEnv* env);
+        jobject getmaster(JNIEnv* env, jobject instance);
+        jobject getlink(JNIEnv* env, jobject instance);
 
         private:
 

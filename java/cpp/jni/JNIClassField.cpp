@@ -31,10 +31,14 @@ namespace jni
         this->clazz = env->FindClass("Lcom/automatak/dnp3/ClassField;");
         if(!this->clazz) return false;
 
-        this->bitfieldField = env->GetFieldID(this->clazz, "bitfield", "Lint;");
+        this->bitfieldField = env->GetFieldID(this->clazz, "bitfield", "I");
         if(!this->bitfieldField) return false;
 
         return true;
     }
-}
 
+    jint ClassField::getbitfield(JNIEnv* env, jobject instance)
+    {
+        return env->GetIntField(instance, this->bitfieldField);
+    }
+}

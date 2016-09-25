@@ -31,19 +31,19 @@ namespace jni
         this->clazz = env->FindClass("Lcom/automatak/dnp3/LinkLayerConfig;");
         if(!this->clazz) return false;
 
-        this->isMasterField = env->GetFieldID(this->clazz, "isMaster", "Lboolean;");
+        this->isMasterField = env->GetFieldID(this->clazz, "isMaster", "Z");
         if(!this->isMasterField) return false;
 
-        this->useConfirmsField = env->GetFieldID(this->clazz, "useConfirms", "Lboolean;");
+        this->useConfirmsField = env->GetFieldID(this->clazz, "useConfirms", "Z");
         if(!this->useConfirmsField) return false;
 
-        this->numRetryField = env->GetFieldID(this->clazz, "numRetry", "Lint;");
+        this->numRetryField = env->GetFieldID(this->clazz, "numRetry", "I");
         if(!this->numRetryField) return false;
 
-        this->localAddrField = env->GetFieldID(this->clazz, "localAddr", "Lint;");
+        this->localAddrField = env->GetFieldID(this->clazz, "localAddr", "I");
         if(!this->localAddrField) return false;
 
-        this->remoteAddrField = env->GetFieldID(this->clazz, "remoteAddr", "Lint;");
+        this->remoteAddrField = env->GetFieldID(this->clazz, "remoteAddr", "I");
         if(!this->remoteAddrField) return false;
 
         this->responseTimeoutField = env->GetFieldID(this->clazz, "responseTimeout", "Ljava/time/Duration;");
@@ -54,5 +54,39 @@ namespace jni
 
         return true;
     }
-}
 
+    jboolean LinkLayerConfig::getisMaster(JNIEnv* env, jobject instance)
+    {
+        return env->GetBooleanField(instance, this->isMasterField);
+    }
+
+    jboolean LinkLayerConfig::getuseConfirms(JNIEnv* env, jobject instance)
+    {
+        return env->GetBooleanField(instance, this->useConfirmsField);
+    }
+
+    jint LinkLayerConfig::getnumRetry(JNIEnv* env, jobject instance)
+    {
+        return env->GetIntField(instance, this->numRetryField);
+    }
+
+    jint LinkLayerConfig::getlocalAddr(JNIEnv* env, jobject instance)
+    {
+        return env->GetIntField(instance, this->localAddrField);
+    }
+
+    jint LinkLayerConfig::getremoteAddr(JNIEnv* env, jobject instance)
+    {
+        return env->GetIntField(instance, this->remoteAddrField);
+    }
+
+    jobject LinkLayerConfig::getresponseTimeout(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->responseTimeoutField);
+    }
+
+    jobject LinkLayerConfig::getkeepAliveTimeout(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->keepAliveTimeoutField);
+    }
+}

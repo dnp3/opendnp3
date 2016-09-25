@@ -32,13 +32,13 @@ namespace jni
         bool init(JNIEnv* env);
 
         // field getter methods
-        jboolean getisMaster(JNIEnv* env);
-        jboolean getuseConfirms(JNIEnv* env);
-        jint getnumRetry(JNIEnv* env);
-        jint getlocalAddr(JNIEnv* env);
-        jint getremoteAddr(JNIEnv* env);
-        jobject getresponseTimeout(JNIEnv* env);
-        jobject getkeepAliveTimeout(JNIEnv* env);
+        jboolean getisMaster(JNIEnv* env, jobject instance);
+        jboolean getuseConfirms(JNIEnv* env, jobject instance);
+        jint getnumRetry(JNIEnv* env, jobject instance);
+        jint getlocalAddr(JNIEnv* env, jobject instance);
+        jint getremoteAddr(JNIEnv* env, jobject instance);
+        jobject getresponseTimeout(JNIEnv* env, jobject instance);
+        jobject getkeepAliveTimeout(JNIEnv* env, jobject instance);
 
         private:
 

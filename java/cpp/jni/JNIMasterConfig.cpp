@@ -37,10 +37,10 @@ namespace jni
         this->timeSyncModeField = env->GetFieldID(this->clazz, "timeSyncMode", "Lcom/automatak/dnp3/enums/TimeSyncMode;");
         if(!this->timeSyncModeField) return false;
 
-        this->disableUnsolOnStartupField = env->GetFieldID(this->clazz, "disableUnsolOnStartup", "Lboolean;");
+        this->disableUnsolOnStartupField = env->GetFieldID(this->clazz, "disableUnsolOnStartup", "Z");
         if(!this->disableUnsolOnStartupField) return false;
 
-        this->ignoreRestartIINField = env->GetFieldID(this->clazz, "ignoreRestartIIN", "Lboolean;");
+        this->ignoreRestartIINField = env->GetFieldID(this->clazz, "ignoreRestartIIN", "Z");
         if(!this->ignoreRestartIINField) return false;
 
         this->unsolClassMaskField = env->GetFieldID(this->clazz, "unsolClassMask", "Lcom/automatak/dnp3/ClassField;");
@@ -49,7 +49,7 @@ namespace jni
         this->startupIntegrityClassMaskField = env->GetFieldID(this->clazz, "startupIntegrityClassMask", "Lcom/automatak/dnp3/ClassField;");
         if(!this->startupIntegrityClassMaskField) return false;
 
-        this->integrityOnEventOverflowIINField = env->GetFieldID(this->clazz, "integrityOnEventOverflowIIN", "Lboolean;");
+        this->integrityOnEventOverflowIINField = env->GetFieldID(this->clazz, "integrityOnEventOverflowIIN", "Z");
         if(!this->integrityOnEventOverflowIINField) return false;
 
         this->eventScanOnEventsAvailableClassMaskField = env->GetFieldID(this->clazz, "eventScanOnEventsAvailableClassMask", "Lcom/automatak/dnp3/ClassField;");
@@ -61,13 +61,72 @@ namespace jni
         this->taskStartTimeoutField = env->GetFieldID(this->clazz, "taskStartTimeout", "Ljava/time/Duration;");
         if(!this->taskStartTimeoutField) return false;
 
-        this->maxTxFragSizeField = env->GetFieldID(this->clazz, "maxTxFragSize", "Lint;");
+        this->maxTxFragSizeField = env->GetFieldID(this->clazz, "maxTxFragSize", "I");
         if(!this->maxTxFragSizeField) return false;
 
-        this->maxRxFragSizeField = env->GetFieldID(this->clazz, "maxRxFragSize", "Lint;");
+        this->maxRxFragSizeField = env->GetFieldID(this->clazz, "maxRxFragSize", "I");
         if(!this->maxRxFragSizeField) return false;
 
         return true;
     }
-}
 
+    jobject MasterConfig::getresponseTimeout(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->responseTimeoutField);
+    }
+
+    jobject MasterConfig::gettimeSyncMode(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->timeSyncModeField);
+    }
+
+    jboolean MasterConfig::getdisableUnsolOnStartup(JNIEnv* env, jobject instance)
+    {
+        return env->GetBooleanField(instance, this->disableUnsolOnStartupField);
+    }
+
+    jboolean MasterConfig::getignoreRestartIIN(JNIEnv* env, jobject instance)
+    {
+        return env->GetBooleanField(instance, this->ignoreRestartIINField);
+    }
+
+    jobject MasterConfig::getunsolClassMask(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->unsolClassMaskField);
+    }
+
+    jobject MasterConfig::getstartupIntegrityClassMask(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->startupIntegrityClassMaskField);
+    }
+
+    jboolean MasterConfig::getintegrityOnEventOverflowIIN(JNIEnv* env, jobject instance)
+    {
+        return env->GetBooleanField(instance, this->integrityOnEventOverflowIINField);
+    }
+
+    jobject MasterConfig::geteventScanOnEventsAvailableClassMask(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->eventScanOnEventsAvailableClassMaskField);
+    }
+
+    jobject MasterConfig::gettaskRetryPeriod(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->taskRetryPeriodField);
+    }
+
+    jobject MasterConfig::gettaskStartTimeout(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->taskStartTimeoutField);
+    }
+
+    jint MasterConfig::getmaxTxFragSize(JNIEnv* env, jobject instance)
+    {
+        return env->GetIntField(instance, this->maxTxFragSizeField);
+    }
+
+    jint MasterConfig::getmaxRxFragSize(JNIEnv* env, jobject instance)
+    {
+        return env->GetIntField(instance, this->maxRxFragSizeField);
+    }
+}

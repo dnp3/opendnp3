@@ -36,5 +36,9 @@ namespace jni
 
         return true;
     }
-}
 
+    jobject DoubleBitBinaryInput::init3(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2)
+    {
+        return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+    }
+}
