@@ -17,7 +17,9 @@
 * the License.
 */
 
-#include "jni.h"
+#include "JNI.h"
+
+#include "../jni/JCache.h"
 
 #include <assert.h>
 
@@ -26,7 +28,7 @@ using namespace std;
 jint JNI_OnLoad(JavaVM *vm, void *reserved)
 {			
 	JNI::Initialize(vm);
-	return OPENDNP3_JNI_VERSION;
+	return jni::JCache::init(JNI::GetEnv()) ? OPENDNP3_JNI_VERSION : JNI_ERR;	
 }
 
 JNIEnv* JNI::GetEnv()
