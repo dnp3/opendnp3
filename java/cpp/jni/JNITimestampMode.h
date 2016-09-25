@@ -27,9 +27,11 @@ namespace jni
 {
     class TimestampMode
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // methods
         jobject fromType(JNIEnv* env, jint arg0);

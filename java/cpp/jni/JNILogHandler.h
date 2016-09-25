@@ -27,9 +27,11 @@ namespace jni
 {
     class LogHandler
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // methods
         void log(JNIEnv* env, jobject instance, jobject arg0);

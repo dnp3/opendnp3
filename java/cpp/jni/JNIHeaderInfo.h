@@ -27,9 +27,11 @@ namespace jni
 {
     class HeaderInfo
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // constructor methods
         jobject init6(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2, jboolean arg3, jboolean arg4, jint arg5);

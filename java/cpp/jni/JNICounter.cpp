@@ -20,9 +20,6 @@
 
 #include "JNICounter.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool Counter::init(JNIEnv* env)

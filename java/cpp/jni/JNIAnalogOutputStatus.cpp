@@ -20,9 +20,6 @@
 
 #include "JNIAnalogOutputStatus.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool AnalogOutputStatus::init(JNIEnv* env)

@@ -20,9 +20,6 @@
 
 #include "JNIQualifierCode.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool QualifierCode::init(JNIEnv* env)

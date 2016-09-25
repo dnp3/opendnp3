@@ -29,31 +29,6 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
 	return OPENDNP3_JNI_VERSION;
 }
 
-// initialize static objects
-JavaVM * JNI::vm(nullptr);
-
-
-jobject JNI::CreateGlobalRef(jobject ref)
-{
-	return GetEnv()->NewGlobalRef(ref);
-}
-
-void JNI::DeleteGlobalRef(jobject ref)
-{
-	GetEnv()->DeleteGlobalRef(ref);
-}
-
-bool JNI::AttachCurrentThread()
-{
-	JNIEnv* env;	
-	return vm->AttachCurrentThread((void**)&env, nullptr) == 0;
-}
-
-bool JNI::DetachCurrentThread()
-{
-	return vm->DetachCurrentThread() == 0;
-}
-
 JNIEnv* JNI::GetEnv()
 {
 	JNIEnv* env = nullptr;
@@ -66,10 +41,37 @@ JNIEnv* JNI::GetEnv()
 void JNI::Initialize(JavaVM *vmin)
 {
 	assert(vmin);
-	JNI::vm = vmin;		
+	JNI::vm = vmin;
+}
+
+bool JNI::AttachCurrentThread()
+{
+	JNIEnv* env;
+	return vm->AttachCurrentThread((void**)&env, nullptr) == 0;
+}
+
+bool JNI::DetachCurrentThread()
+{
+	return vm->DetachCurrentThread() == 0;
+}
+
+// initialize static objects
+JavaVM * JNI::vm(nullptr);
+
+jobject JNI::CreateGlobalRef(jobject ref)
+{
+	return GetEnv()->NewGlobalRef(ref);
+}
+
+void JNI::DeleteGlobalRef(jobject ref)
+{
+	GetEnv()->DeleteGlobalRef(ref);
 }
 
 
+
+
+/*
 jclass JNI::FindClass(JNIEnv* env, const FQCN& fqcn)
 {
 	auto ret = env->FindClass(fqcn.value);
@@ -149,3 +151,4 @@ jobject JNI::GetObjectField(JNIEnv* env, jobject obj, const FieldId& id, const F
 	assert(ret);
 	return ret;
 }
+*/

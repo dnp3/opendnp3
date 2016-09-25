@@ -27,9 +27,11 @@ namespace jni
 {
     class AnalogInput
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // constructor methods
         jobject init3(JNIEnv* env, jdouble arg0, jbyte arg1, jlong arg2);

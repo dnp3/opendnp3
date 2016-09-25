@@ -18,33 +18,28 @@
  */
 #include "ConfigReader.h"
 
-#include "JNI.h"
-#include "JNIStrings.h"
-
-#include <iostream>
+#include "../jni/JCache.h"
 
 using namespace openpal;
 using namespace opendnp3;
 
-MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* env, jobject jCfg)
-{
-	using namespace classes::MasterStackConfig;
-
+MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* env, jobject jcfg)
+{	
 	MasterStackConfig cfg;
 		
-	cfg.link = ConvertLinkConfig(env, JNI::GetObjectField(env, jCfg, fields::link, classes::LinkLayerConfig::fqcn));
-	cfg.master = ConvertMasterConfig(env, JNI::GetObjectField(env, jCfg, fields::master, classes::MasterConfig::fqcn));
+	cfg.link = ConvertLinkConfig(env, jni::JCache::masterStackConfig.getlink(env, jcfg));
+	cfg.master = ConvertMasterConfig(env, jni::JCache::masterStackConfig.getmaster(env, jcfg));
 		
 	return cfg;
 }
 
 MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
-{
-	using namespace classes::MasterConfig;
-
+{	
 	MasterParams cfg;	
 
-	cfg.responseTimeout = ConvertDuration(env, JNI::GetObjectField(env, jcfg, fields::responseTimeout, classes::Duration::fqcn));
+	cfg.responseTimeout = ConvertDuration(env, jni::JCache::masterConfig.getresponseTimeout(env, jcfg));
+
+/*
 	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, fields::timeSyncMode, classes::TimeSyncMode::fqcn));
 	cfg.disableUnsolOnStartup = JNI::GetBoolField(env, jcfg, fields::disableUnsolOnStartup);
 	cfg.ignoreRestartIIN = JNI::GetBoolField(env, jcfg, fields::ignoreRestartIIN);
@@ -55,16 +50,18 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 	cfg.taskStartTimeout = ConvertDuration(env, JNI::GetObjectField(env, jcfg, fields::taskStartTimeout, classes::Duration::fqcn));
 	cfg.maxTxFragSize = JNI::GetIntField(env, jcfg, fields::maxTxFragSize);
 	cfg.maxRxFragSize = JNI::GetIntField(env, jcfg, fields::maxRxFragSize);
+*/
 
 	return cfg;
 }
 
 LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 {
-	using namespace classes::LinkLayerConfig;
+	
 
 	LinkConfig cfg(true, false);
 	
+	/*
 	cfg.IsMaster = JNI::GetBoolField(env, jlinkcfg, fields::isMaster);
 	cfg.UseConfirms = JNI::GetBoolField(env, jlinkcfg, fields::useConfirms);
 	cfg.NumRetry = JNI::GetIntField(env, jlinkcfg, fields::numRetry);
@@ -72,7 +69,8 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 	cfg.RemoteAddr = static_cast<uint16_t>(JNI::GetIntField(env, jlinkcfg, fields::remoteAddr));
 	cfg.Timeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::responseTimeout, classes::Duration::fqcn));
 	cfg.KeepAliveTimeout = ConvertDuration(env, JNI::GetObjectField(env, jlinkcfg, fields::keepAliveTimeout, classes::Duration::fqcn));	
-	
+	*/
+
 	return cfg;
 }
 
@@ -152,12 +150,6 @@ return cfg;
 }
 */
 
-jint ConfigReader::GetEnumId(JNIEnv* env, jobject jenum)
-{
-	jmethodID mid = JNI::GetMethod(env, jenum, classes::AnyEnum::methods::toType);
-	return env->CallIntMethod(jenum, mid);
-}
-
 /*
 DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* env, jobject jCfg)
 {
@@ -203,17 +195,13 @@ return cfg;
 */
 
 openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
-{
-	const auto clazz = JNI::GetClassForObject(env, jduration);
-	const auto method = JNI::GetMethod(env, jduration, classes::Duration::methods::toMillis);	
-	const jlong value = env->CallLongMethod(jduration, method);	
-
-	return TimeDuration::Milliseconds(value);
+{		
+	return TimeDuration::Milliseconds(jni::JCache::duration.toMillis(env, jduration));
 }
 
 opendnp3::ClassField ConfigReader::ConvertClassField(JNIEnv* env, jobject jclassmask)
-{
-	const jint value = JNI::GetIntField(env, jclassmask, classes::ClassField::fields::bitfield);
+{	
+	jint value = jni::JCache::classField.getbitfield(env, jclassmask);
 	return ClassField(static_cast<uint8_t>(value));
 }
 

@@ -27,9 +27,11 @@ namespace jni
 {
     class IndexedValue
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // constructor methods
         jobject init2(JNIEnv* env, jobject arg0, jint arg1);

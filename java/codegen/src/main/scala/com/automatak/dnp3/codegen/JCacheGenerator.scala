@@ -16,10 +16,12 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
       includeGuards("OPENDNP3_JNITYPES") {
         "#include \"openpal/util/Uncopyable.h\"".iter ++ space ++
         classIncludes ++ space ++
-        structDef("JCache: private openpal::StaticOnly") {
-          "static bool init(JNIEnv* env);".iter ++ space ++
-            instances
-        }
+          namespace("jni") {
+            structDef("JCache: private openpal::StaticOnly") {
+              "static bool init(JNIEnv* env);".iter ++ space ++
+                instances
+            }
+          }
       }
   }
 
@@ -50,11 +52,9 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
 
     commented(LicenseHeader()) ++ space ++
       "#include \"JCache.h\"".iter ++ space ++
-      staticInitializers ++ space ++ jcacheInit
-
-
-
-
+      namespace("jni") {
+        staticInitializers ++ space ++ jcacheInit
+      }
   }
 
 }

@@ -42,11 +42,16 @@ public:
 
 	static JNIEnv* GetEnv();
 
+	static bool AttachCurrentThread();
+	static bool DetachCurrentThread();
+
 	static jobject CreateGlobalRef(jobject ref);
 	static void DeleteGlobalRef(jobject ref);
+
+/*
+
 	
-	static bool AttachCurrentThread();
-	static bool DetachCurrentThread();	
+	
 
 	// --- methods requiring an ENV ---
 
@@ -67,7 +72,7 @@ public:
 	static bool GetBoolField(JNIEnv* env, jobject obj, const FieldId& id);
 	static jdouble GetDoubleField(JNIEnv* env, jobject obj, const FieldId& id);
 	static jobject GetObjectField(JNIEnv* env, jobject obj, const FieldId& id, const FQCN& fqcn);
-	
+*/	
 
 private:
 	

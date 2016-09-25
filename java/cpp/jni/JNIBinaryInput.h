@@ -27,9 +27,11 @@ namespace jni
 {
     class BinaryInput
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // constructor methods
         jobject init3(JNIEnv* env, jboolean arg0, jbyte arg1, jlong arg2);

@@ -18,24 +18,24 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNIGroupVariation.h"
+#include "JNIDuration.h"
 
 namespace jni
 {
-    bool GroupVariation::init(JNIEnv* env)
+    bool Duration::init(JNIEnv* env)
     {
 
-        this->clazz = env->FindClass("Lcom/automatak/dnp3/enums/GroupVariation;");
+        this->clazz = env->FindClass("Ljava/time/Duration;");
         if(!this->clazz) return false;
 
-        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
-        if(!this->fromTypeMethod) return false;
+        this->toMillisMethod = env->GetMethodID(this->clazz, "toMillis", "()J");
+        if(!this->toMillisMethod) return false;
 
         return true;
     }
 
-    jobject GroupVariation::fromType(JNIEnv* env, jint arg0)
+    jlong Duration::toMillis(JNIEnv* env, jobject instance)
     {
-        return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+        return env->CallLongMethod(instance, this->toMillisMethod);
     }
 }

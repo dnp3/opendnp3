@@ -20,9 +20,6 @@
 
 #include "JNIHeaderInfo.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool HeaderInfo::init(JNIEnv* env)

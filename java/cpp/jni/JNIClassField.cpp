@@ -20,9 +20,6 @@
 
 #include "JNIClassField.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool ClassField::init(JNIEnv* env)

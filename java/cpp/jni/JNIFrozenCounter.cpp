@@ -20,9 +20,6 @@
 
 #include "JNIFrozenCounter.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool FrozenCounter::init(JNIEnv* env)

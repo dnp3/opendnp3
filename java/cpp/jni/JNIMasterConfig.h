@@ -27,9 +27,11 @@ namespace jni
 {
     class MasterConfig
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // field getter methods
         jobject getresponseTimeout(JNIEnv* env, jobject instance);

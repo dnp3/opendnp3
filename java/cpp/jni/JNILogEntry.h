@@ -27,9 +27,11 @@ namespace jni
 {
     class LogEntry
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // constructor methods
         jobject init4(JNIEnv* env, jint arg0, jstring arg1, jstring arg2, jstring arg3);

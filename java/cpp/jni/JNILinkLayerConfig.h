@@ -27,9 +27,11 @@ namespace jni
 {
     class LinkLayerConfig
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // field getter methods
         jboolean getisMaster(JNIEnv* env, jobject instance);

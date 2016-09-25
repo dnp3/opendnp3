@@ -20,9 +20,6 @@
 
 #include "JNITimestampMode.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool TimestampMode::init(JNIEnv* env)

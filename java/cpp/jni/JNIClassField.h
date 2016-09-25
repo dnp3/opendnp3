@@ -27,9 +27,11 @@ namespace jni
 {
     class ClassField
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // field getter methods
         jint getbitfield(JNIEnv* env, jobject instance);

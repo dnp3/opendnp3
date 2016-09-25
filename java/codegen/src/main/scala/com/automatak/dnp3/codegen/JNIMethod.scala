@@ -70,6 +70,7 @@ object JNIMethod {
         clazz.getTypeName match {
           case "boolean" => "Boolean"
           case "int" => "Int"
+          case "long" => "Long"
           case "void" => "Void"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }

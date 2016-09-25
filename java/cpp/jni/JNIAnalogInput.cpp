@@ -20,9 +20,6 @@
 
 #include "JNIAnalogInput.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool AnalogInput::init(JNIEnv* env)

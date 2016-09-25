@@ -20,9 +20,6 @@
 
 #include "JNILogEntry.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool LogEntry::init(JNIEnv* env)

@@ -19,8 +19,6 @@
 #ifndef OPENDNP3_SOEHANDLERADAPTER_H
 #define OPENDNP3_SOEHANDLERADAPTER_H
 
-#include <jni.h>
-
 #include <opendnp3/master/ISOEHandler.h>
 
 #include "GlobalRef.h"
@@ -53,38 +51,7 @@ private:
 	jobject Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
 
 	GlobalRef proxy;
-		
-	// cached JNI initialized on first usage ids
-	bool initialized = false;
-
-	jmethodID startMethod = nullptr;
-	jmethodID endMethod = nullptr;
-
-	jmethodID processBIMethod = nullptr;
-	jmethodID processDBIMethod = nullptr;
-	jmethodID processAIMethod = nullptr;
-	jmethodID processCMethod = nullptr;
-	jmethodID processFCMethod = nullptr;
-	jmethodID processBOSMethod = nullptr;
-	jmethodID processAOSMethod = nullptr;
-	jmethodID processOSMethod = nullptr;
-
-	// cached header info stuff
-	ClassMethodPair headerInfoConstructor;
-	ClassMethodPair gvFromType;	
-	ClassMethodPair qualiferCodefromType;
-	ClassMethodPair timestampModefromType;
-
-	// cached measurement type stuff
-	ClassMethodPair binaryConstructor;
-	ClassMethodPair doubleBinaryConstructor;
-	ClassMethodPair analogConstructor;
-	ClassMethodPair counterConstructor;
-	ClassMethodPair frozenCounterConstructor;
-	ClassMethodPair boStatusConstructor;
-	ClassMethodPair aoStatusConstructor;
-
-	ClassMethodPair indexedValueConstructor;
+			
 };
 
 #endif

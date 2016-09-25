@@ -36,7 +36,8 @@ object Generator {
     ClassConfig(classOf[Counter], Set(Features.Constructors)),
     ClassConfig(classOf[FrozenCounter], Set(Features.Constructors)),
     ClassConfig(classOf[BinaryOutputStatus], Set(Features.Constructors)),
-    ClassConfig(classOf[AnalogOutputStatus], Set(Features.Constructors))
+    ClassConfig(classOf[AnalogOutputStatus], Set(Features.Constructors)),
+    ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodEquals("toMillis"))
   )
 
   def main(args: Array[String]): Unit = {

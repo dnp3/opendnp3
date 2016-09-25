@@ -42,30 +42,35 @@
 #include "JNIFrozenCounter.h"
 #include "JNIBinaryOutputStatus.h"
 #include "JNIAnalogOutputStatus.h"
+#include "JNIDuration.h"
 
-struct JCache: private openpal::StaticOnly
+namespace jni
 {
-    static bool init(JNIEnv* env);
+    struct JCache: private openpal::StaticOnly
+    {
+        static bool init(JNIEnv* env);
 
-    static jni::MasterStackConfig masterStackConfig;
-    static jni::MasterConfig masterConfig;
-    static jni::LinkLayerConfig linkLayerConfig;
-    static jni::LogEntry logEntry;
-    static jni::LogHandler logHandler;
-    static jni::ClassField classField;
-    static jni::SOEHandler sOEHandler;
-    static jni::HeaderInfo headerInfo;
-    static jni::GroupVariation groupVariation;
-    static jni::QualifierCode qualifierCode;
-    static jni::TimestampMode timestampMode;
-    static jni::IndexedValue indexedValue;
-    static jni::BinaryInput binaryInput;
-    static jni::DoubleBitBinaryInput doubleBitBinaryInput;
-    static jni::AnalogInput analogInput;
-    static jni::Counter counter;
-    static jni::FrozenCounter frozenCounter;
-    static jni::BinaryOutputStatus binaryOutputStatus;
-    static jni::AnalogOutputStatus analogOutputStatus;
-};
+        static jni::MasterStackConfig masterStackConfig;
+        static jni::MasterConfig masterConfig;
+        static jni::LinkLayerConfig linkLayerConfig;
+        static jni::LogEntry logEntry;
+        static jni::LogHandler logHandler;
+        static jni::ClassField classField;
+        static jni::SOEHandler sOEHandler;
+        static jni::HeaderInfo headerInfo;
+        static jni::GroupVariation groupVariation;
+        static jni::QualifierCode qualifierCode;
+        static jni::TimestampMode timestampMode;
+        static jni::IndexedValue indexedValue;
+        static jni::BinaryInput binaryInput;
+        static jni::DoubleBitBinaryInput doubleBitBinaryInput;
+        static jni::AnalogInput analogInput;
+        static jni::Counter counter;
+        static jni::FrozenCounter frozenCounter;
+        static jni::BinaryOutputStatus binaryOutputStatus;
+        static jni::AnalogOutputStatus analogOutputStatus;
+        static jni::Duration duration;
+    };
+}
 
 #endif

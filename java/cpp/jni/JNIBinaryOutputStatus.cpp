@@ -20,9 +20,6 @@
 
 #include "JNIBinaryOutputStatus.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool BinaryOutputStatus::init(JNIEnv* env)

@@ -18,24 +18,31 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNIGroupVariation.h"
+#ifndef OPENDNP3JAVA_JNIDURATION_H
+#define OPENDNP3JAVA_JNIDURATION_H
+
+#include <jni.h>
 
 namespace jni
 {
-    bool GroupVariation::init(JNIEnv* env)
+    class Duration
     {
+        friend struct JCache;
 
-        this->clazz = env->FindClass("Lcom/automatak/dnp3/enums/GroupVariation;");
-        if(!this->clazz) return false;
+        bool init(JNIEnv* env);
 
-        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
-        if(!this->fromTypeMethod) return false;
+        public:
 
-        return true;
-    }
+        // methods
+        jlong toMillis(JNIEnv* env, jobject instance);
 
-    jobject GroupVariation::fromType(JNIEnv* env, jint arg0)
-    {
-        return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
-    }
+        private:
+
+        jclass clazz = nullptr;
+
+        // method ids
+        jmethodID toMillisMethod = nullptr;
+    };
 }
+
+#endif

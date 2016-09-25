@@ -44,8 +44,9 @@ case class JNIClassGenerator(cfg: ClassConfig) {
         "#include <jni.h>".iter ++ space ++
         namespace("jni") {
           classDef(cfg.clazz.getSimpleName) {
-              "public:".iter ++ space ++
-              initSignature ++
+              "friend struct JCache;".iter ++ space ++
+              initSignature ++ space ++
+              "public:".iter ++
               constructorSignatures ++ methodSignatures ++ fieldGetters ++
               space ++ "private:".iter ++ space ++
               classMember ++ constructorMembers ++ methodsMembers ++ fieldMembers
@@ -130,7 +131,6 @@ case class JNIClassGenerator(cfg: ClassConfig) {
 
     commented(LicenseHeader()) ++ space ++
     "#include \"%s\"".format(headerFileName).iter ++ space ++
-    "#include \"JNI.h\"".iter ++ "#include <assert.h>".iter ++ space ++
     namespace("jni") {
       initImpl ++ methodsImpls ++ constructorImpls ++ fieldGetterImpls
     }

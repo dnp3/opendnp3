@@ -20,9 +20,6 @@
 
 #include "JNIIndexedValue.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool IndexedValue::init(JNIEnv* env)

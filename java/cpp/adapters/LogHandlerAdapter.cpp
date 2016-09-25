@@ -18,9 +18,10 @@
  */
 
 #include "LogHandlerAdapter.h"
-#include <assert.h>
 
 #include "../jni/JCache.h"
+
+using namespace jni;
 
 LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(proxy)
 {}

@@ -20,9 +20,6 @@
 
 #include "JNILinkLayerConfig.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool LinkLayerConfig::init(JNIEnv* env)

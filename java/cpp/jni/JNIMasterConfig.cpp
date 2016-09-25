@@ -20,9 +20,6 @@
 
 #include "JNIMasterConfig.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool MasterConfig::init(JNIEnv* env)

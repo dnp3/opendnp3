@@ -27,9 +27,11 @@ namespace jni
 {
     class MasterStackConfig
     {
-        public:
+        friend struct JCache;
 
         bool init(JNIEnv* env);
+
+        public:
 
         // field getter methods
         jobject getmaster(JNIEnv* env, jobject instance);

@@ -20,9 +20,6 @@
 
 #include "JNIBinaryInput.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool BinaryInput::init(JNIEnv* env)

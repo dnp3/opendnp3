@@ -20,9 +20,6 @@
 
 #include "JNIDoubleBitBinaryInput.h"
 
-#include "JNI.h"
-#include <assert.h>
-
 namespace jni
 {
     bool DoubleBitBinaryInput::init(JNIEnv* env)
