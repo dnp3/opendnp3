@@ -34,6 +34,11 @@ namespace jni
         return true;
     }
 
+    void TimestampMode::cleanup(JNIEnv* env)
+    {
+        env->DeleteGlobalRef(this->clazz);
+    }
+
     jobject TimestampMode::fromType(JNIEnv* env, jint arg0)
     {
         return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);

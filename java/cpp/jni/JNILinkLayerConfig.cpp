@@ -52,6 +52,11 @@ namespace jni
         return true;
     }
 
+    void LinkLayerConfig::cleanup(JNIEnv* env)
+    {
+        env->DeleteGlobalRef(this->clazz);
+    }
+
     jboolean LinkLayerConfig::getisMaster(JNIEnv* env, jobject instance)
     {
         return env->GetBooleanField(instance, this->isMasterField);

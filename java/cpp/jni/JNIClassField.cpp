@@ -34,6 +34,11 @@ namespace jni
         return true;
     }
 
+    void ClassField::cleanup(JNIEnv* env)
+    {
+        env->DeleteGlobalRef(this->clazz);
+    }
+
     jint ClassField::getbitfield(JNIEnv* env, jobject instance)
     {
         return env->GetIntField(instance, this->bitfieldField);

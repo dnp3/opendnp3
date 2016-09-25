@@ -49,6 +49,7 @@ namespace jni
     struct JCache: private openpal::StaticOnly
     {
         static bool init(JNIEnv* env);
+        static void cleanup(JNIEnv* env);
 
         static jni::MasterStackConfig MasterStackConfig;
         static jni::MasterConfig MasterConfig;

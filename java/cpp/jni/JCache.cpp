@@ -89,4 +89,28 @@ namespace jni
         if(!success) return false;
         return true;
     }
+
+    void JCache::cleanup(JNIEnv* env)
+    {
+        MasterStackConfig.cleanup(env);
+        MasterConfig.cleanup(env);
+        LinkLayerConfig.cleanup(env);
+        LogEntry.cleanup(env);
+        LogHandler.cleanup(env);
+        ClassField.cleanup(env);
+        SOEHandler.cleanup(env);
+        HeaderInfo.cleanup(env);
+        GroupVariation.cleanup(env);
+        QualifierCode.cleanup(env);
+        TimestampMode.cleanup(env);
+        IndexedValue.cleanup(env);
+        BinaryInput.cleanup(env);
+        DoubleBitBinaryInput.cleanup(env);
+        AnalogInput.cleanup(env);
+        Counter.cleanup(env);
+        FrozenCounter.cleanup(env);
+        BinaryOutputStatus.cleanup(env);
+        AnalogOutputStatus.cleanup(env);
+        Duration.cleanup(env);
+    }
 }

@@ -31,6 +31,11 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
 	return jni::JCache::init(JNI::GetEnv()) ? OPENDNP3_JNI_VERSION : JNI_ERR;	
 }
 
+void JNI_OnUnload(JavaVM *vm, void *reserved)
+{	
+	jni::JCache::cleanup(JNI::GetEnv());
+}
+
 JNIEnv* JNI::GetEnv()
 {
 	JNIEnv* env = nullptr;

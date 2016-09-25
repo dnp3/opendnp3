@@ -30,6 +30,7 @@ namespace jni
         friend struct JCache;
 
         bool init(JNIEnv* env);
+        void cleanup(JNIEnv* env);
 
         public:
 

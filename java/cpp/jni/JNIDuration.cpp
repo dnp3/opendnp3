@@ -34,6 +34,11 @@ namespace jni
         return true;
     }
 
+    void Duration::cleanup(JNIEnv* env)
+    {
+        env->DeleteGlobalRef(this->clazz);
+    }
+
     jlong Duration::toMillis(JNIEnv* env, jobject instance)
     {
         return env->CallLongMethod(instance, this->toMillisMethod);

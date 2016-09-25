@@ -39,13 +39,15 @@ case class JNIClassGenerator(cfg: ClassConfig) {
 
     def initSignature: Iterator[String] = "bool init(JNIEnv* env);".iter
 
+    def cleanupSignature: Iterator[String] = "void cleanup(JNIEnv* env);".iter
+
     commented(LicenseHeader()) ++ space ++
       includeGuards("JNI%s".format(cfg.clazz.getSimpleName)) {
         "#include <jni.h>".iter ++ space ++
         namespace("jni") {
           classDef(cfg.clazz.getSimpleName) {
               "friend struct JCache;".iter ++ space ++
-              initSignature ++ space ++
+              initSignature ++ cleanupSignature ++ space ++
               "public:".iter ++
               constructorSignatures ++ methodSignatures ++ fieldGetters ++
               space ++ "private:".iter ++ space ++
@@ -111,6 +113,12 @@ case class JNIClassGenerator(cfg: ClassConfig) {
       }
     }
 
+    def cleanupImpl : Iterator[String] = {
+      "void %s::cleanup(JNIEnv* env)".format(cfg.clazz.getSimpleName).iter ++ bracket {
+        "env->DeleteGlobalRef(this->clazz);".iter
+      }
+    }
+
     def methodsImpls : Iterator[String] = cfg.ifEnabled(Features.Methods) {
       cfg.methods.toIterator.flatMap { m =>
         space ++ JNIMethod.getImpl(m)
@@ -132,7 +140,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     commented(LicenseHeader()) ++ space ++
     "#include \"%s\"".format(headerFileName).iter ++ space ++
     namespace("jni") {
-      initImpl ++ methodsImpls ++ constructorImpls ++ fieldGetterImpls
+      initImpl ++ space ++ cleanupImpl ++ methodsImpls ++ constructorImpls ++ fieldGetterImpls
     }
   }
 

@@ -37,6 +37,11 @@ namespace jni
         return true;
     }
 
+    void MasterStackConfig::cleanup(JNIEnv* env)
+    {
+        env->DeleteGlobalRef(this->clazz);
+    }
+
     jobject MasterStackConfig::getmaster(JNIEnv* env, jobject instance)
     {
         return env->GetObjectField(instance, this->masterField);

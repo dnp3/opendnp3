@@ -67,6 +67,11 @@ namespace jni
         return true;
     }
 
+    void MasterConfig::cleanup(JNIEnv* env)
+    {
+        env->DeleteGlobalRef(this->clazz);
+    }
+
     jobject MasterConfig::getresponseTimeout(JNIEnv* env, jobject instance)
     {
         return env->GetObjectField(instance, this->responseTimeoutField);

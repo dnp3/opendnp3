@@ -47,7 +47,6 @@ public class DNP3ManagerFactory {
         }
     }
 
-
     /**
      *
      * @param concurrency The number of threads that will be allocated to the underlying thread pool.
@@ -55,17 +54,6 @@ public class DNP3ManagerFactory {
      */
     public static DNP3Manager createManager(int concurrency, LogHandler handler) throws DNP3Exception
     {
-        /*
-        if(!initialized) {
-
-            if(init_jni_cache()) {
-                initialized = true;
-            } else {
-                throw new DNP3Exception("Unable to initialize JNI cache");
-            }
-        }
-        */
-
         return new ManagerImpl(concurrency, handler);
     }
 
@@ -80,5 +68,5 @@ public class DNP3ManagerFactory {
 
     private DNP3ManagerFactory()
     {}
-    
+
 }

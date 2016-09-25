@@ -34,6 +34,11 @@ namespace jni
         return true;
     }
 
+    void QualifierCode::cleanup(JNIEnv* env)
+    {
+        env->DeleteGlobalRef(this->clazz);
+    }
+
     jobject QualifierCode::fromType(JNIEnv* env, jint arg0)
     {
         return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);

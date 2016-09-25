@@ -18,7 +18,9 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
         classIncludes ++ space ++
           namespace("jni") {
             structDef("JCache: private openpal::StaticOnly") {
-              "static bool init(JNIEnv* env);".iter ++ space ++
+              "static bool init(JNIEnv* env);".iter ++
+                "static void cleanup(JNIEnv* env);".iter ++
+                space ++
                 instances
             }
           }
@@ -44,6 +46,14 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
       }
     }
 
+    def jcacheCleanup = {
+      "void JCache::cleanup(JNIEnv* env)".iter ++ bracket {
+        classes.iterator.flatMap { c =>
+          "%s.cleanup(env);".format(c.clazz.getSimpleName).iter
+        }
+      }
+    }
+
     def staticInitializers : Iterator[String] = {
       classes.iterator.flatMap { c =>
         "jni::%s JCache::%s;".format(c.clazz.getSimpleName, c.clazz.getSimpleName).iter
@@ -53,7 +63,7 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
     commented(LicenseHeader()) ++ space ++
       "#include \"JCache.h\"".iter ++ space ++
       namespace("jni") {
-        staticInitializers ++ space ++ jcacheInit
+        staticInitializers ++ space ++ jcacheInit ++ space ++ jcacheCleanup
       }
   }
 

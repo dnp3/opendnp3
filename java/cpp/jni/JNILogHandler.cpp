@@ -34,6 +34,11 @@ namespace jni
         return true;
     }
 
+    void LogHandler::cleanup(JNIEnv* env)
+    {
+        env->DeleteGlobalRef(this->clazz);
+    }
+
     void LogHandler::log(JNIEnv* env, jobject instance, jobject arg0)
     {
         env->CallVoidMethod(instance, this->logMethod, arg0);
