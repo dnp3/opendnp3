@@ -46,6 +46,7 @@ object JNIMethod {
         clazz.getTypeName match {
           case "boolean" => "Z"
           case "int" => "I"
+          case "void" => "void"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
       }
@@ -53,16 +54,73 @@ object JNIMethod {
     }
   }
 
+  def getReturnType(clazz: Class[_]): String = clazz match {
+
+    case `classOfInt` => "Int"
+    case `classOfLong` => "Long"
+    case `classOfBool` => "Boolean"
+    case `classOfDouble` => "Double"
+    case _ => {
+      if(clazz.isPrimitive) {
+        clazz.getTypeName match {
+          case "boolean" => "Boolean"
+          case "int" => "Int"
+          case "void" => "void"
+          case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
+        }
+      }
+      "Object"
+    }
+  }
+
   def getSignature(method: Method, className: Option[String] = None) : String = {
 
     def returnType = getType(method.getReturnType)
 
-    def arguments = method.getParameters.map(p => "%s %s".format(getType(p.getType.getClass), p.getName)).mkString(", ")
+    def arguments = {
+      if(method.getParameterCount == 0) "" else {
+        ", " + method.getParameters.map(p => "%s %s".format(getType(p.getType), p.getName)).mkString(", ")
+      }
+    }
 
-    if(arguments.isEmpty)
-      "%s %s%s(JNIEnv* env)".format(returnType, className.map(n => "%s::".format(n)).getOrElse(""), method.getName)
-    else
-      "%s %s%s(JNIEnv* env, %s)".format(returnType, className.map(n => "%s::".format(n)).getOrElse(""), method.getName, arguments)
+    def prefix = className.map(n => "%s::".format(n)).getOrElse("")
+
+    def additionalArgs = if(method.isStatic) "" else ", jobject instance"
+
+    "%s %s%s(JNIEnv* env%s%s)".format(returnType, prefix, method.getName, additionalArgs, arguments)
+  }
+
+  def getImpl(method: Method)(implicit i: Indentation) : Iterator[String] = {
+
+    def returnPrefix : String = if(method.isVoid) "" else "return "
+
+    def args : String = if(method.getParameterCount == 0) "" else {
+      ", " + method.getParameters.map(p => p.getName).mkString(", ")
+    }
+
+    def callMethod : String = {
+      if(method.isStatic) {
+        "%senv->CallStatic%sMethod(this->clazz, this->%sMethod%s);".format(
+          returnPrefix,
+          getReturnType(method.getReturnType),
+          method.getName,
+          args
+        )
+      }
+      else {
+        "%senv->Call%sMethod(instance, this->%sMethod%s);".format(
+          returnPrefix,
+          getReturnType(method.getReturnType),
+          method.getName,
+          args
+        )
+      }
+    }
+
+    JNIMethod.getSignature(method, Some(method.getDeclaringClass.getSimpleName)).iter ++ bracket {
+      callMethod.iter
+    }
+
   }
 
   def getConstructorSignature(method: Constructor[_], className: Option[String] = None) : String = {

@@ -36,5 +36,10 @@ namespace jni
 
         return true;
     }
+
+    void LogHandler::log(JNIEnv* env, jobject instance, jobject arg0)
+    {
+        env->CallObjectMethod(instance, this->logMethod, arg0);
+    }
 }
 

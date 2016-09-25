@@ -32,7 +32,7 @@ namespace jni
         bool init(JNIEnv* env);
 
         // methods
-        jobject fromType(JNIEnv* env, jobject arg0);
+        jobject fromType(JNIEnv* env, jint arg0);
 
         private:
 

@@ -36,5 +36,10 @@ namespace jni
 
         return true;
     }
+
+    jobject TimestampMode::fromType(JNIEnv* env, jint arg0)
+    {
+        return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+    }
 }
 

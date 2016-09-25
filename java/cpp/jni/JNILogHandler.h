@@ -32,7 +32,7 @@ namespace jni
         bool init(JNIEnv* env);
 
         // methods
-        void log(JNIEnv* env, jobject arg0);
+        void log(JNIEnv* env, jobject instance, jobject arg0);
 
         private:
 

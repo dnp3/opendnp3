@@ -105,15 +105,19 @@ case class JNIClassGenerator(cfg: ClassConfig) {
         constructorInit ++ methodInit ++ fieldInit ++
         space ++ "return true;".iter
       }
+    }
 
-
+    def methodsImpls : Iterator[String] = cfg.ifEnabled(Features.Methods) {
+      cfg.methods.toIterator.flatMap { m =>
+        space ++ JNIMethod.getImpl(m)
+      }
     }
 
     commented(LicenseHeader()) ++ space ++
     "#include \"%s\"".format(headerFileName).iter ++ space ++
     "#include \"JNI.h\"".iter ++ "#include <assert.h>".iter ++ space ++
     namespace("jni") {
-      initImpl
+      initImpl ++ methodsImpls
     } ++ space
   }
 

@@ -26,12 +26,12 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
   def impl(implicit indent: Indentation): Iterator[String] = {
 
     def instances : Iterator[String] = {
-      classes.map {
+      classes.flatMap {
         c => {
           "success = j%s.init(env);".format(c.clazz.getSimpleName).iter ++
           "if(!success) return false;".iter
         }
-      }.flatten.toIterator
+      }.toIterator
     }
 
     commented(LicenseHeader()) ++ space ++

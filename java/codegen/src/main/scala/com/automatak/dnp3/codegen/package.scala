@@ -1,7 +1,7 @@
 package com.automatak.dnp3
 
 import java.nio.charset.Charset
-import java.lang.reflect.{Constructor, Method}
+import java.lang.reflect.{Constructor, Method, Modifier}
 import java.nio.file.{Files, Path, StandardOpenOption}
 
 package object codegen {
@@ -13,6 +13,10 @@ package object codegen {
   implicit class RichMethod(m: Method) {
 
     def jniSignature : String = org.objectweb.asm.Type.getMethodDescriptor(m)
+
+    def isStatic : Boolean = Modifier.isStatic(m.getModifiers)
+
+    def isVoid : Boolean = m.getReturnType().equals(Void.TYPE)
 
   }
 
