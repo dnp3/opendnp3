@@ -72,8 +72,8 @@ int main(int argc, char* argv[])
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
 	auto master = pChannel->AddMaster(
-	                  "master",										// id for logging
-	                  PrintingSOEHandler::Instance(),					// callback for data processing
+	                  "master",											// id for logging
+	                  PrintingSOEHandler::Create(),						// callback for data processing
 	                  asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
 	                  stackConfig										// stack configuration
 	              );

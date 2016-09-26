@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
 	// returns a thread-safe interface used for sending commands.
 	auto pMaster = pChannel->AddMaster(
 	                   "master",										// id for logging
-	                   PrintingSOEHandler::Instance(),					// callback for data processing
+	                   PrintingSOEHandler::Create(),					// callback for data processing
 	                   asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
 	                   stackConfig										// stack configuration
 	               );

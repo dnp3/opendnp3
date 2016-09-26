@@ -137,7 +137,7 @@ void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 	phys->executor.BlockFor(set);
 }
 
-IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMasterApplication& application, const MasterStackConfig& config)
+IMaster* DNP3Channel::AddMaster(char const* id, std::shared_ptr<opendnp3::ISOEHandler> SOEHandler, IMasterApplication& application, const MasterStackConfig& config)
 {
 	auto add = [&]() -> IMaster*
 	{

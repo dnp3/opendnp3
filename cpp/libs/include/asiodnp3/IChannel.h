@@ -39,6 +39,8 @@
 #include "IOutstation.h"
 #include "DestructorHook.h"
 
+#include <memory>
+
 namespace asiodnp3
 {
 
@@ -88,7 +90,7 @@ public:
 	* @return interface representing the running master
 	*/
 	virtual IMaster* AddMaster(		char const* id,
-	                                opendnp3::ISOEHandler& SOEHandler,
+	                                std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	                                opendnp3::IMasterApplication& application,
 	                                const opendnp3::MasterStackConfig& config) = 0;
 

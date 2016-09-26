@@ -25,6 +25,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <memory>
 
 namespace asiodnp3
 {
@@ -40,9 +41,9 @@ public:
 	PrintingSOEHandler()
 	{}
 
-	static ISOEHandler& Instance()
+	static std::shared_ptr<ISOEHandler> Create()
 	{
-		return instance;
+		return std::make_shared<PrintingSOEHandler>();
 	}
 
 	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override final;

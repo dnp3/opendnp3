@@ -214,7 +214,7 @@ IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numV
 	return outstation;
 }
 
-IMaster* ConfigureMaster(DNP3Manager& manager, ISOEHandler& handler, int levels)
+IMaster* ConfigureMaster(DNP3Manager& manager, std::shared_ptr<ISOEHandler> handler, int levels)
 {
 	auto client = manager.AddTCPClient("client", levels, ChannelRetry::Default(), "127.0.0.1", "127.0.0.1", 20000);
 
@@ -237,7 +237,7 @@ TEST_CASE(SUITE("TestEventIntegration"))
 	const uint16_t NUM_VALUES = 100;							// size of the static database. we'll rotate through indices
 
 
-	EventReceiver eventrx(NUM_TO_SEND, MAX_OUTSTANDING, NUM_VALUES);
+	auto eventrx = std::make_shared<EventReceiver>(NUM_TO_SEND, MAX_OUTSTANDING, NUM_VALUES);
 
 	DNP3Manager manager(2);
 	//manager.AddLogSubscriber(ConsoleLogger::Instance());
@@ -245,6 +245,6 @@ TEST_CASE(SUITE("TestEventIntegration"))
 	auto outstation = ConfigureOutstation(manager, LEVELS, NUM_VALUES, EVENT_BUFFER_SIZE);
 	auto master = ConfigureMaster(manager, eventrx, LEVELS);
 
-	while (!eventrx.LoadAndWait(outstation, std::chrono::seconds(3)));
+	while (!eventrx->LoadAndWait(outstation, std::chrono::seconds(3)));
 }
 

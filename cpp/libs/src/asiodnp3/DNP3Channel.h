@@ -74,7 +74,7 @@ public:
 	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) override final;
 
 	virtual IMaster* AddMaster(char const* id,
-	                           opendnp3::ISOEHandler& SOEHandler,
+							   std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	                           opendnp3::IMasterApplication& application,
 	                           const opendnp3::MasterStackConfig& config) override final;
 

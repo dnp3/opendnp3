@@ -23,6 +23,8 @@
 
 #include <opendnp3/master/ISOEHandler.h>
 
+#include <memory>
+
 namespace opendnp3
 {
 
@@ -31,9 +33,9 @@ class NullSOEHandler : public ISOEHandler
 
 public:
 
-	static ISOEHandler& Instance()
+	static std::shared_ptr<ISOEHandler> Create()
 	{
-		return instance;
+		return std::shared_ptr<NullSOEHandler>(new NullSOEHandler());
 	}
 
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override final {}
