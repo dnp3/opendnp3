@@ -25,12 +25,6 @@
 #include <functional>
 #include <openpal/util/Uncopyable.h>
 
-
-extern "C" {
-	jint JNI_OnLoad(JavaVM *vm, void *reserved);
-	void JNI_OnUnload(JavaVM *vm, void *reserved);
-}
-
 #define OPENDNP3_JNI_VERSION JNI_VERSION_1_8  
 
 class JNI : private openpal::StaticOnly

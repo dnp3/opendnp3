@@ -25,13 +25,13 @@
 
 using namespace std;
 
-jint JNI_OnLoad(JavaVM *vm, void *reserved)
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
 {			
 	JNI::Initialize(vm);
 	return jni::JCache::init(JNI::GetEnv()) ? OPENDNP3_JNI_VERSION : JNI_ERR;	
 }
 
-void JNI_OnUnload(JavaVM *vm, void *reserved)
+JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved)
 {	
 	jni::JCache::cleanup(JNI::GetEnv());
 }
