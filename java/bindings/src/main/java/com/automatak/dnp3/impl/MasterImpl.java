@@ -19,6 +19,8 @@
 package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.*;
+import com.automatak.dnp3.enums.TaskCompletion;
+import scala.collection.Iterable$;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -60,7 +62,7 @@ class MasterImpl implements Master {
     public CompletableFuture<CommandTaskResult> selectAndOperate(CommandHeaders headers, TaskConfig config)
     {
         CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
+        result.complete(new CommandTaskResult(TaskCompletion.FAILURE_INTERNAL_ERROR, null));
         return result;
     }
 
@@ -68,88 +70,68 @@ class MasterImpl implements Master {
     public CompletableFuture<CommandTaskResult> directOperate(CommandHeaders headers, TaskConfig config)
     {
         CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
+        result.complete(new CommandTaskResult(TaskCompletion.FAILURE_INTERNAL_ERROR, null));
         return result;
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> selectAndOperateCROB(ControlRelayOutputBlock command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return selectAndOperate(CommandHeader.fromSingleCROB(command, index), config);
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> selectAndOperateAOInt32(AnalogOutputInt32 command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return selectAndOperate(CommandHeader.fromSingleAO32(command, index), config);
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> selectAndOperateAOInt16(AnalogOutputInt16 command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return selectAndOperate(CommandHeader.fromSingleAO16(command, index), config);
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> selectAndOperateAOFloat32(AnalogOutputFloat32 command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return selectAndOperate(CommandHeader.fromSingleAOFloat32(command, index), config);
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> selectAndOperateAODouble64(AnalogOutputDouble64 command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return selectAndOperate(CommandHeader.fromSingleAODouble64(command, index), config);
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> directOperateCROB(ControlRelayOutputBlock command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return directOperate(CommandHeader.fromSingleCROB(command, index), config);
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> directOperateAOInt32(AnalogOutputInt32 command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return directOperate(CommandHeader.fromSingleAO32(command, index), config);
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> directOperateAOInt16(AnalogOutputInt16 command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return directOperate(CommandHeader.fromSingleAO16(command, index), config);
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> directOperateAOFloat32(AnalogOutputFloat32 command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return directOperate(CommandHeader.fromSingleAOFloat32(command, index), config);
     }
 
     @Override
     public CompletableFuture<CommandTaskResult> directOperateAODouble64(AnalogOutputDouble64 command, int index, TaskConfig config)
     {
-        CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        result.completeExceptionally(new DNP3Exception("not implemented"));
-        return result;
+        return directOperate(CommandHeader.fromSingleAODouble64(command, index), config);
     }
 
     private native void enable_native(long nativePointer);

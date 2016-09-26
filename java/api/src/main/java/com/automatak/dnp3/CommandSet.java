@@ -1,15 +1,17 @@
 package com.automatak.dnp3;
 
+import java.util.ArrayList;
+
 /// <summary>
 /// A command set collects headers and can replay their values back to a builder
 /// </summary>
 public class CommandSet implements CommandHeaders
 {
-        private final Iterable<CommandHeaders> headers;
+        private final ArrayList<CommandHeaders> headers = new ArrayList<>();
 
-        private CommandSet(Iterable<CommandHeaders> headers)
+        public CommandSet(Iterable<CommandHeaders> headers)
         {
-            this.headers=headers;
+            headers.forEach((h) -> this.headers.add(h));
         }
 
         public static CommandHeaders from(Iterable<CommandHeaders> headers)

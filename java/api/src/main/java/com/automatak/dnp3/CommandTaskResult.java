@@ -7,19 +7,17 @@ import com.automatak.dnp3.enums.TaskCompletion;
  */
 public class CommandTaskResult
 {
-    public CommandTaskResult(com.automatak.dnp3.enums.TaskCompletion summary, Iterable<CommandPointResult> results)
+    public CommandTaskResult(TaskCompletion summary, Iterable<CommandPointResult> results)
     {
         this.summary = summary;
         this.results = results;
     }
 
-/*    TODO
     @Override
     public String toString()
     {
-        return String.format("Summary: %s Results: [%s]", summary, String.join("; ", results));
+        return String.format("Summary: %s Results: [%s]", summary, "TODO");
     }
-*/
 
     public final TaskCompletion summary;
     public final Iterable<CommandPointResult> results;

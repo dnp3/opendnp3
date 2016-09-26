@@ -79,7 +79,7 @@ public class MasterDemo {
             else {
                 ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);
                 CompletableFuture<CommandTaskResult> future = master.selectAndOperateCROB(crob, 0, TaskConfig.getDefault());
-                System.out.println("Command result: " + future.get().toString());
+                System.out.println("Command result: " + future.get());
             }
         }
     }
