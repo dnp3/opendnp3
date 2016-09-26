@@ -37,12 +37,12 @@ class ChannelImpl implements Channel {
         long ret = get_native_master(nativePointer, id, handler, application, config);
 
         if(ret == 0) {
-            throw new DNP3Exception("Unable to create channel");
+            throw new DNP3Exception("Unable to create master");
         }
 
         shutdown_native(ret);
 
-        throw new DNP3Exception("Unable to create channel");
+        throw new DNP3Exception("Unable to create master");
     }
 
     @Override
