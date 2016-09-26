@@ -146,37 +146,37 @@ namespace Automatak
 
 			Binary^ Conversions::ConvertMeas(opendnp3::Binary meas)
 			{
-				return gcnew Binary(meas.value, meas.quality, TimeStamp::Convert(meas.time));
+				return gcnew Binary(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
 			}
 
 			DoubleBitBinary^ Conversions::ConvertMeas(opendnp3::DoubleBitBinary meas)
 			{
-				return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.quality, TimeStamp::Convert(meas.time));
+				return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.flags.value, TimeStamp::Convert(meas.time));
 			}
 
 			Analog^ Conversions::ConvertMeas(opendnp3::Analog meas)
 			{
-				return gcnew Analog(meas.value, meas.quality, TimeStamp::Convert(meas.time));
+				return gcnew Analog(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
 			}
 
 			Counter^ Conversions::ConvertMeas(opendnp3::Counter meas)
 			{
-				return gcnew Counter(meas.value, meas.quality, TimeStamp::Convert(meas.time));
+				return gcnew Counter(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
 			}
 
 			FrozenCounter^ Conversions::ConvertMeas(opendnp3::FrozenCounter meas)
 			{
-				return gcnew FrozenCounter(meas.value, meas.quality, TimeStamp::Convert(meas.time));
+				return gcnew FrozenCounter(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
 			}
 
 			AnalogOutputStatus^ Conversions::ConvertMeas(opendnp3::AnalogOutputStatus meas)
 			{
-				return gcnew AnalogOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));
+				return gcnew AnalogOutputStatus(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
 			}
 
 			BinaryOutputStatus^ Conversions::ConvertMeas(opendnp3::BinaryOutputStatus meas)
 			{
-				return gcnew BinaryOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));
+				return gcnew BinaryOutputStatus(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
 			}
 
 			OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& meas)

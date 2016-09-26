@@ -62,22 +62,11 @@ namespace Automatak
 
 				opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
 
-				auto pSOEHandler = new SOEHandlerAdapter(handler);
-				auto pApplication = new MasterApplicationAdapter<opendnp3::IMasterApplication>(application);
+				auto SOEAdapter = std::shared_ptr<opendnp3::ISOEHandler>(new SOEHandlerAdapter(handler));
+				auto appAdapter = std::shared_ptr<opendnp3::IMasterApplication>(new MasterApplicationAdapter<opendnp3::IMasterApplication>(application));
 
-				auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg);
-				if (pMaster == nullptr)
-				{
-					delete pSOEHandler;
-					delete pApplication;
-					return nullptr;
-				}
-				else
-				{
-					pMaster->DeleteOnDestruct(pSOEHandler);
-					pMaster->DeleteOnDestruct(pApplication);
-					return gcnew MasterAdapter(pMaster);
-				}
+				auto master = pChannel->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, cfg);
+				return (master == nullptr) ? nullptr : gcnew MasterAdapter(master);
 			}	
 
 			IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config)
@@ -86,37 +75,35 @@ namespace Automatak
 
 				opendnp3::OutstationStackConfig cfg = Conversions::ConvertConfig(config);
 
-				auto pCommand = new OutstationCommandHandlerAdapter(cmdHandler);
-				auto pApplication = new OutstationApplicationAdapter(application);
+				auto commandAdapter = std::shared_ptr<opendnp3::ICommandHandler>(new OutstationCommandHandlerAdapter(cmdHandler));
+				auto appAdapter = std::shared_ptr<opendnp3::IOutstationApplication>(new OutstationApplicationAdapter(application));
 
-				auto pOutstation = pChannel->AddOutstation(stdLoggerId.c_str(), *pCommand, *pApplication, Conversions::ConvertConfig(config));
-				if (pOutstation == nullptr)
-				{
-					delete pCommand;
-					delete pApplication;
+				auto outstation = pChannel->AddOutstation(stdLoggerId.c_str(), commandAdapter, appAdapter, Conversions::ConvertConfig(config));
+				if (outstation == nullptr)
+				{					
 					return nullptr;
 				}
 				else
-				{
-					pOutstation->DeleteOnDestruct(pCommand);
-					pOutstation->DeleteOnDestruct(pApplication);
-					ApplyDatabaseSettings(pOutstation->GetConfigView(), config->databaseTemplate);
-					return gcnew OutstationAdapter(pOutstation);
+				{		
+
+					ApplyDatabaseSettings(outstation->GetConfigView(), config->databaseTemplate);
+					return gcnew OutstationAdapter(outstation);
 				}
 			}
 
 			void ChannelAdapter::ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate)
-			{
-				ApplyIndexClazzAndVariations<BinaryRecord, opendnp3::Binary>(dbTemplate->binaries, view.binaries);
-				ApplyIndexClazzAndVariations<DoubleBinaryRecord, opendnp3::DoubleBitBinary>(dbTemplate->doubleBinaries, view.doubleBinaries);
-				ApplyIndexClazzAndVariations<BinaryOutputStatusRecord, opendnp3::BinaryOutputStatus>(dbTemplate->binaryOutputStatii, view.binaryOutputStatii);
+			{				
+				ApplyIndexClazzAndVariations<BinaryRecord, opendnp3::BinarySpec>(dbTemplate->binaries, view.binaries);
+				ApplyIndexClazzAndVariations<DoubleBinaryRecord, opendnp3::DoubleBitBinarySpec>(dbTemplate->doubleBinaries, view.doubleBinaries);
+				ApplyIndexClazzAndVariations<BinaryOutputStatusRecord, opendnp3::BinaryOutputStatusSpec>(dbTemplate->binaryOutputStatii, view.binaryOutputStatii);
 				
-				ApplyIndexClazzDeadbandsAndVariations<CounterRecord, opendnp3::Counter>(dbTemplate->counters, view.counters);
-				ApplyIndexClazzDeadbandsAndVariations<FrozenCounterRecord, opendnp3::FrozenCounter>(dbTemplate->frozenCounters, view.frozenCounters);
-				ApplyIndexClazzDeadbandsAndVariations<AnalogRecord, opendnp3::Analog>(dbTemplate->analogs, view.analogs);
-				ApplyIndexClazzDeadbandsAndVariations<AnalogOutputStatusRecord, opendnp3::AnalogOutputStatus>(dbTemplate->analogOutputStatii, view.analogOutputStatii);
+				ApplyIndexClazzDeadbandsAndVariations<CounterRecord, opendnp3::CounterSpec>(dbTemplate->counters, view.counters);
+				ApplyIndexClazzDeadbandsAndVariations<FrozenCounterRecord, opendnp3::FrozenCounterSpec>(dbTemplate->frozenCounters, view.frozenCounters);
+				ApplyIndexClazzDeadbandsAndVariations<AnalogRecord, opendnp3::AnalogSpec>(dbTemplate->analogs, view.analogs);
+				ApplyIndexClazzDeadbandsAndVariations<AnalogOutputStatusRecord, opendnp3::AnalogOutputStatusSpec>(dbTemplate->analogOutputStatii, view.analogOutputStatii);
 
-				ApplyStaticVariation<TimeAndIntervalRecord, opendnp3::TimeAndInterval>(dbTemplate->timeAndIntervals, view.timeAndIntervals);				
+				ApplyStaticVariation<TimeAndIntervalRecord, opendnp3::TimeAndIntervalSpec>(dbTemplate->timeAndIntervals, view.timeAndIntervals);
+		
 			}
 
 			void ChannelAdapter::ApplySettings(IReadOnlyList<BinaryRecord^>^ list, openpal::ArrayView < opendnp3::Cell<opendnp3::Binary>, uint16_t>& view)

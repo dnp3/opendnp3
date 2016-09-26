@@ -13,7 +13,6 @@
 #include <opendnp3/gen/LinkStatus.h>
 
 #include <opendnp3/app/MeasurementTypes.h>
-#include <opendnp3/app/TimeAndInterval.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/AnalogOutput.h>
 #include <opendnp3/app/OctetString.h>
