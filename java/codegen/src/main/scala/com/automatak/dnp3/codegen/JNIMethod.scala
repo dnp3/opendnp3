@@ -51,6 +51,7 @@ object JNIMethod {
           case "int" => "I"
           case "void" => "void"
           case "byte" => "B"
+          case "long" => "J"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
       } else {
@@ -149,11 +150,11 @@ object JNIMethod {
   def getConstructorImpl(constructor: Constructor[_])(implicit i: Indentation) : Iterator[String] = {
 
     def args : String = if(constructor.getParameterCount == 0) "" else {
-      constructor.getParameters.map(p => p.getName).mkString(", ")
+      ", " + constructor.getParameters.map(p => p.getName).mkString(", ")
     }
 
     JNIMethod.getConstructorSignature(constructor, Some(constructor.getDeclaringClass.getSimpleName)).iter ++ bracket {
-      "return env->NewObject(this->clazz, this->init%dConstructor, %s);".format(
+      "return env->NewObject(this->clazz, this->init%dConstructor%s);".format(
         constructor.getParameterCount,
         args
       ).iter

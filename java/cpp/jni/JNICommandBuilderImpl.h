@@ -18,14 +18,14 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIMASTERAPPLICATION_H
-#define OPENDNP3JAVA_JNIMASTERAPPLICATION_H
+#ifndef OPENDNP3JAVA_JNICOMMANDBUILDERIMPL_H
+#define OPENDNP3JAVA_JNICOMMANDBUILDERIMPL_H
 
 #include <jni.h>
 
 namespace jni
 {
-    class MasterApplication
+    class CommandBuilderImpl
     {
         friend struct JCache;
 
@@ -34,25 +34,21 @@ namespace jni
 
         public:
 
-        // methods
-        void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
-        void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
-        jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
-        jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
-        jobject getClassAssignments(JNIEnv* env, jobject instance);
+        // constructor methods
+        jobject init0(JNIEnv* env);
+
+        // field getter methods
+        jlong getnativePointer(JNIEnv* env, jobject instance);
 
         private:
 
         jclass clazz = nullptr;
 
-        // method ids
-        jmethodID onReceiveIINMethod = nullptr;
-        jmethodID onTaskStartMethod = nullptr;
-        jmethodID onTaskCompleteMethod = nullptr;
-        jmethodID assignClassDuringStartupMethod = nullptr;
-        jmethodID getMillisecondsSinceEpochMethod = nullptr;
-        jmethodID getClassAssignmentsMethod = nullptr;
+        // constructor method ids
+        jmethodID init0Constructor = nullptr;
+
+        // field ids
+        jfieldID nativePointerField = nullptr;
     };
 }
 

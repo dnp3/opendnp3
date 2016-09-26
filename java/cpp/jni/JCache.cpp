@@ -47,7 +47,6 @@ namespace jni
     jni::TimeSyncMode JCache::TimeSyncMode;
     jni::MasterApplication JCache::MasterApplication;
     jni::IINField JCache::IINField;
-    jni::TaskConfig JCache::TaskConfig;
     jni::MasterTaskType JCache::MasterTaskType;
     jni::TaskId JCache::TaskId;
     jni::TaskInfo JCache::TaskInfo;
@@ -58,6 +57,13 @@ namespace jni
     jni::Range JCache::Range;
     jni::CommandProcessor JCache::CommandProcessor;
     jni::Stack JCache::Stack;
+    jni::CommandBuilderImpl JCache::CommandBuilderImpl;
+    jni::CommandHeaders JCache::CommandHeaders;
+    jni::CommandTaskResult JCache::CommandTaskResult;
+    jni::CommandPointResult JCache::CommandPointResult;
+    jni::CommandPointState JCache::CommandPointState;
+    jni::CommandStatus JCache::CommandStatus;
+    jni::CompletableFuture JCache::CompletableFuture;
 
     bool JCache::init(JNIEnv* env)
     {
@@ -113,8 +119,6 @@ namespace jni
         if(!success) return false;
         success = IINField.init(env);
         if(!success) return false;
-        success = TaskConfig.init(env);
-        if(!success) return false;
         success = MasterTaskType.init(env);
         if(!success) return false;
         success = TaskId.init(env);
@@ -134,6 +138,20 @@ namespace jni
         success = CommandProcessor.init(env);
         if(!success) return false;
         success = Stack.init(env);
+        if(!success) return false;
+        success = CommandBuilderImpl.init(env);
+        if(!success) return false;
+        success = CommandHeaders.init(env);
+        if(!success) return false;
+        success = CommandTaskResult.init(env);
+        if(!success) return false;
+        success = CommandPointResult.init(env);
+        if(!success) return false;
+        success = CommandPointState.init(env);
+        if(!success) return false;
+        success = CommandStatus.init(env);
+        if(!success) return false;
+        success = CompletableFuture.init(env);
         if(!success) return false;
         return true;
     }
@@ -165,7 +183,6 @@ namespace jni
         TimeSyncMode.cleanup(env);
         MasterApplication.cleanup(env);
         IINField.cleanup(env);
-        TaskConfig.cleanup(env);
         MasterTaskType.cleanup(env);
         TaskId.cleanup(env);
         TaskInfo.cleanup(env);
@@ -176,5 +193,12 @@ namespace jni
         Range.cleanup(env);
         CommandProcessor.cleanup(env);
         Stack.cleanup(env);
+        CommandBuilderImpl.cleanup(env);
+        CommandHeaders.cleanup(env);
+        CommandTaskResult.cleanup(env);
+        CommandPointResult.cleanup(env);
+        CommandPointState.cleanup(env);
+        CommandStatus.cleanup(env);
+        CompletableFuture.cleanup(env);
     }
 }

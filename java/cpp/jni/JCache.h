@@ -48,7 +48,6 @@
 #include "JNITimeSyncMode.h"
 #include "JNIMasterApplication.h"
 #include "JNIIINField.h"
-#include "JNITaskConfig.h"
 #include "JNIMasterTaskType.h"
 #include "JNITaskId.h"
 #include "JNITaskInfo.h"
@@ -59,6 +58,13 @@
 #include "JNIRange.h"
 #include "JNICommandProcessor.h"
 #include "JNIStack.h"
+#include "JNICommandBuilderImpl.h"
+#include "JNICommandHeaders.h"
+#include "JNICommandTaskResult.h"
+#include "JNICommandPointResult.h"
+#include "JNICommandPointState.h"
+#include "JNICommandStatus.h"
+#include "JNICompletableFuture.h"
 
 namespace jni
 {
@@ -92,7 +98,6 @@ namespace jni
         static jni::TimeSyncMode TimeSyncMode;
         static jni::MasterApplication MasterApplication;
         static jni::IINField IINField;
-        static jni::TaskConfig TaskConfig;
         static jni::MasterTaskType MasterTaskType;
         static jni::TaskId TaskId;
         static jni::TaskInfo TaskInfo;
@@ -103,6 +108,13 @@ namespace jni
         static jni::Range Range;
         static jni::CommandProcessor CommandProcessor;
         static jni::Stack Stack;
+        static jni::CommandBuilderImpl CommandBuilderImpl;
+        static jni::CommandHeaders CommandHeaders;
+        static jni::CommandTaskResult CommandTaskResult;
+        static jni::CommandPointResult CommandPointResult;
+        static jni::CommandPointState CommandPointState;
+        static jni::CommandStatus CommandStatus;
+        static jni::CompletableFuture CompletableFuture;
     };
 }
 

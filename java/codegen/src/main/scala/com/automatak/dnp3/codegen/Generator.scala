@@ -1,9 +1,11 @@
 package com.automatak.dnp3.codegen
 
 import java.nio.file.FileSystems
+import java.util.concurrent.CompletableFuture
 
 import com.automatak.dnp3._
 import com.automatak.dnp3.enums._
+import com.automatak.dnp3.impl.CommandBuilderImpl
 
 object Generator {
 
@@ -52,7 +54,6 @@ object Generator {
     enumeration(classOf[TimeSyncMode]),
     ClassConfig(classOf[MasterApplication], Set(Features.Methods)),
     ClassConfig(classOf[IINField], Set(Features.Constructors)),
-    ClassConfig(classOf[TaskConfig], Set(Features.Constructors)),
     enumeration(classOf[MasterTaskType]),
     ClassConfig(classOf[TaskId], Set(Features.Constructors)),
     ClassConfig(classOf[TaskInfo], Set(Features.Constructors)),
@@ -62,7 +63,14 @@ object Generator {
     ClassConfig(classOf[ClassAssignment], Set(Features.Fields)),
     ClassConfig(classOf[Range], Set(Features.Fields, Features.Methods), MethodFilter.nameEquals("isDefined")),
     ClassConfig(classOf[CommandProcessor], Set(Features.Methods)),
-    ClassConfig(classOf[Stack], Set(Features.Methods))
+    ClassConfig(classOf[Stack], Set(Features.Methods)),
+    ClassConfig(classOf[CommandBuilderImpl], Set(Features.Fields, Features.Constructors)),
+    ClassConfig(classOf[CommandHeaders], Set(Features.Methods)),
+    ClassConfig(classOf[CommandTaskResult], Set(Features.Constructors)),
+    ClassConfig(classOf[CommandPointResult], Set(Features.Constructors)),
+    enumeration(classOf[CommandPointState]),
+    enumeration(classOf[CommandStatus]),
+    ClassConfig(classOf[CompletableFuture[_]], Set(Features.Methods), MethodFilter.nameEquals("complete"))
   )
 
   def main(args: Array[String]): Unit = {

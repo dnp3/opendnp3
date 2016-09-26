@@ -2,6 +2,8 @@ package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.TaskCompletion;
 
+import java.util.Iterator;
+
 /**
  * Result type returned for CommandSet based command requests
  */
@@ -16,7 +18,16 @@ public class CommandTaskResult
     @Override
     public String toString()
     {
-        return String.format("Summary: %s Results: [%s]", summary, "TODO");
+        Iterator<CommandPointResult> iter = results.iterator();
+        StringBuilder sb = new StringBuilder();
+
+        while (iter.hasNext())
+        {
+            sb.append(iter.next());
+            sb.append(iter.hasNext() ? ", " : "");
+        }
+        
+        return String.format("Summary: %s Results: { %s }", summary, sb.toString());
     }
 
     public final TaskCompletion summary;

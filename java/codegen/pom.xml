@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.automatak.dnp3</groupId>
-            <artifactId>opendnp3-api</artifactId>
+            <artifactId>opendnp3-bindings</artifactId>
             <version>${opendnp3.version}</version>
             <scope>compile</scope>
         </dependency>

@@ -28,63 +28,56 @@ public interface CommandProcessor {
     /**
      * Select and operate a set of headers
      * @param headers A collection of command headers
-     * @param config Configuration for the task
      * @return value representing the future completion of the commands
      */
-    CompletableFuture<CommandTaskResult> selectAndOperate(CommandHeaders headers, TaskConfig config);
+    CompletableFuture<CommandTaskResult> selectAndOperate(CommandHeaders headers);
 
     /**
      * Direct operate a set of headers
      * @param headers A collection of command headers
-     * @param config Configuration for the task
      * @return value representing the future completion of the commands
      */
-    CompletableFuture<CommandTaskResult> directOperate(CommandHeaders headers, TaskConfig config);
+    CompletableFuture<CommandTaskResult> directOperate(CommandHeaders headers);
 
     /**
      * Select and operate a ControlRelayOutputBlock (Group12Variation1)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return value representing the future completion of the command
      */
-    CompletableFuture<CommandTaskResult> selectAndOperateCROB(ControlRelayOutputBlock command, int index, TaskConfig config);
+    CompletableFuture<CommandTaskResult> selectAndOperateCROB(ControlRelayOutputBlock command, int index);
 
     /**
      * Select and operate a 32-bit integer AnalogOutput (Group41Variation1)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return value representing the future completion of the command
      */
-    CompletableFuture<CommandTaskResult> selectAndOperateAOInt32(AnalogOutputInt32 command, int index, TaskConfig config);
+    CompletableFuture<CommandTaskResult> selectAndOperateAOInt32(AnalogOutputInt32 command, int index);
 
     /**
      * Select and operate a 16-bit integer AnalogOutput (Group41Variation2)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return value representing the future completion of the command
      */
-    CompletableFuture<CommandTaskResult> selectAndOperateAOInt16(AnalogOutputInt16 command, int index, TaskConfig config);
+    CompletableFuture<CommandTaskResult> selectAndOperateAOInt16(AnalogOutputInt16 command, int index);
 
     /**
      * Select and operate single precision AnalogOutput (Group41Variation3)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return value representing the future completion of the command
      */
-    CompletableFuture<CommandTaskResult> selectAndOperateAOFloat32(AnalogOutputFloat32 command, int index, TaskConfig config);
+    CompletableFuture<CommandTaskResult> selectAndOperateAOFloat32(AnalogOutputFloat32 command, int index);
 
     /**
      * Select and operate double precision AnalogOutput (Group41Variation4)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return value representing the future completion of the command
      */
-    CompletableFuture<CommandTaskResult> selectAndOperateAODouble64(AnalogOutputDouble64 command, int index, TaskConfig config);
+    CompletableFuture<CommandTaskResult> selectAndOperateAODouble64(AnalogOutputDouble64 command, int index);
 
     /**
      * Direct operate a ControlRelayOutputBlock (Group12Variation1)
@@ -93,42 +86,37 @@ public interface CommandProcessor {
      * @param config Configuration for the task
      * @return future to the result of the operation
      */
-    CompletableFuture<CommandTaskResult> directOperateCROB(ControlRelayOutputBlock command, int index, TaskConfig config);
+    CompletableFuture<CommandTaskResult> directOperateCROB(ControlRelayOutputBlock command, int index);
 
     /**
      * Direct operate a 32-bit integer AnalogOutput (Group41Variation1)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return value representing the future completion of the command
      */
-    CompletableFuture<CommandTaskResult> directOperateAOInt32(AnalogOutputInt32 command, int index, TaskConfig config);
+    CompletableFuture<CommandTaskResult> directOperateAOInt32(AnalogOutputInt32 command, int index);
 
     /**
      * Direct operate a 16-bit integer AnalogOutput (Group41Variation2)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return value representing the future completion of the command
      */
-    CompletableFuture<CommandTaskResult> directOperateAOInt16(AnalogOutputInt16 command, int index, TaskConfig config);
+    CompletableFuture<CommandTaskResult> directOperateAOInt16(AnalogOutputInt16 command, int index);
 
     /**
      * Direct operate a single precision AnalogOutput (Group41Variation3)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return value representing the future completion of the command
      */
-    CompletableFuture<CommandTaskResult> directOperateAOFloat32(AnalogOutputFloat32 command, int index, TaskConfig config);
+    CompletableFuture<CommandTaskResult> directOperateAOFloat32(AnalogOutputFloat32 command, int index);
 
     /**
      * Direct operate  a double precision AnalogOutput (Group41Variation4)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return value representing the future completion of the command
      */
-    CompletableFuture<CommandTaskResult> directOperateAODouble64(AnalogOutputDouble64 command, int index, TaskConfig config);
-
+    CompletableFuture<CommandTaskResult> directOperateAODouble64(AnalogOutputDouble64 command, int index);
 }

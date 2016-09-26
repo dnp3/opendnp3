@@ -20,7 +20,7 @@ public class CommandPointResult
     @Override
     public String toString()
     {
-        return String.format("Header: %d Index: %d State: %s Status: %s", headerIndex, requestIndex, state, status);
+        return String.format("Result(header: %d index: %d State: %s Status: %s)", headerIndex, requestIndex, state, status);
     }
 
 
