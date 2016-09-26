@@ -75,10 +75,25 @@ public:
 	template <class T>
 	void Add(std::initializer_list<Indexed<T>> items)
 	{
-		auto& header = this->StartHeader<T>();
-		for (auto& command : items)
-		{
-			header.Add(command.value, command.index);
+		if (!items.size() == 0) {
+			auto& header = this->StartHeader<T>();
+			for (auto& command : items)
+			{
+				header.Add(command.value, command.index);
+			}
+		}
+	}
+
+	/// Convenience functions that can build an entire header in one call
+	template <class T>
+	void Add(std::vector<Indexed<T>> items)
+	{
+		if (!items.empty()) {
+			auto& header = this->StartHeader<T>();
+			for (auto& command : items)
+			{
+				header.Add(command.value, command.index);
+			}
 		}
 	}
 

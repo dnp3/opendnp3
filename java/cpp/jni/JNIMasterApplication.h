@@ -35,24 +35,24 @@ namespace jni
         public:
 
         // methods
-        void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
-        void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
-        jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
         jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
         jobject getClassAssignments(JNIEnv* env, jobject instance);
+        jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
+        void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
+        void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+        void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
 
         private:
 
         jclass clazz = nullptr;
 
         // method ids
-        jmethodID onReceiveIINMethod = nullptr;
-        jmethodID onTaskStartMethod = nullptr;
-        jmethodID onTaskCompleteMethod = nullptr;
-        jmethodID assignClassDuringStartupMethod = nullptr;
         jmethodID getMillisecondsSinceEpochMethod = nullptr;
         jmethodID getClassAssignmentsMethod = nullptr;
+        jmethodID assignClassDuringStartupMethod = nullptr;
+        jmethodID onTaskCompleteMethod = nullptr;
+        jmethodID onTaskStartMethod = nullptr;
+        jmethodID onReceiveIINMethod = nullptr;
     };
 }
 

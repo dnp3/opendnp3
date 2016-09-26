@@ -37,12 +37,20 @@ namespace jni
         // constructor methods
         jobject init2(JNIEnv* env, jobject arg0, jint arg1);
 
+        // field getter methods
+        jobject getvalue(JNIEnv* env, jobject instance);
+        jint getindex(JNIEnv* env, jobject instance);
+
         private:
 
         jclass clazz = nullptr;
 
         // constructor method ids
         jmethodID init2Constructor = nullptr;
+
+        // field ids
+        jfieldID valueField = nullptr;
+        jfieldID indexField = nullptr;
     };
 }
 

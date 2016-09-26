@@ -31,6 +31,12 @@ namespace jni
         this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(Ljava/lang/Object;I)V");
         if(!this->init2Constructor) return false;
 
+        this->valueField = env->GetFieldID(this->clazz, "value", "Ljava/lang/Object;");
+        if(!this->valueField) return false;
+
+        this->indexField = env->GetFieldID(this->clazz, "index", "I");
+        if(!this->indexField) return false;
+
         return true;
     }
 
@@ -42,5 +48,15 @@ namespace jni
     jobject IndexedValue::init2(JNIEnv* env, jobject arg0, jint arg1)
     {
         return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+    }
+
+    jobject IndexedValue::getvalue(JNIEnv* env, jobject instance)
+    {
+        return env->GetObjectField(instance, this->valueField);
+    }
+
+    jint IndexedValue::getindex(JNIEnv* env, jobject instance)
+    {
+        return env->GetIntField(instance, this->indexField);
     }
 }

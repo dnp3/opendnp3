@@ -18,36 +18,36 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNIGroupVariation.h"
+#include "JNIControlCode.h"
 
 namespace jni
 {
-    bool GroupVariation::init(JNIEnv* env)
+    bool ControlCode::init(JNIEnv* env)
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/GroupVariation;");
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/ControlCode;");
         this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
         env->DeleteLocalRef(clazzTemp);
 
         this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
         if(!this->toTypeMethod) return false;
 
-        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
+        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/ControlCode;");
         if(!this->fromTypeMethod) return false;
 
         return true;
     }
 
-    void GroupVariation::cleanup(JNIEnv* env)
+    void ControlCode::cleanup(JNIEnv* env)
     {
         env->DeleteGlobalRef(this->clazz);
     }
 
-    jint GroupVariation::toType(JNIEnv* env, jobject instance)
+    jint ControlCode::toType(JNIEnv* env, jobject instance)
     {
         return env->CallIntMethod(instance, this->toTypeMethod);
     }
 
-    jobject GroupVariation::fromType(JNIEnv* env, jint arg0)
+    jobject ControlCode::fromType(JNIEnv* env, jint arg0)
     {
         return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
     }

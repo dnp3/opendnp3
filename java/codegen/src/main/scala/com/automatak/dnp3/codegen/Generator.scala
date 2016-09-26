@@ -40,7 +40,7 @@ object Generator {
     enumeration(classOf[GroupVariation]),
     enumeration(classOf[QualifierCode]),
     enumeration(classOf[TimestampMode]),
-    ClassConfig(classOf[IndexedValue[_]], Set(Features.Constructors)),
+    ClassConfig(classOf[IndexedValue[_]], Set(Features.Constructors, Features.Fields)),
     ClassConfig(classOf[BinaryInput], Set(Features.Constructors)),
     ClassConfig(classOf[DoubleBitBinaryInput], Set(Features.Constructors)),
     ClassConfig(classOf[AnalogInput], Set(Features.Constructors)),
@@ -70,7 +70,13 @@ object Generator {
     ClassConfig(classOf[CommandPointResult], Set(Features.Constructors)),
     enumeration(classOf[CommandPointState]),
     enumeration(classOf[CommandStatus]),
-    ClassConfig(classOf[CompletableFuture[_]], Set(Features.Methods), MethodFilter.nameEquals("complete"))
+    ClassConfig(classOf[CompletableFuture[_]], Set(Features.Methods), MethodFilter.nameEquals("complete")),
+    ClassConfig(classOf[ControlRelayOutputBlock], Set(Features.Fields)),
+    ClassConfig(classOf[AnalogOutputInt16], Set(Features.Fields)),
+    ClassConfig(classOf[AnalogOutputInt32], Set(Features.Fields)),
+    ClassConfig(classOf[AnalogOutputFloat32], Set(Features.Fields)),
+    ClassConfig(classOf[AnalogOutputDouble64], Set(Features.Fields)),
+    enumeration(classOf[ControlCode])
   )
 
   def main(args: Array[String]): Unit = {

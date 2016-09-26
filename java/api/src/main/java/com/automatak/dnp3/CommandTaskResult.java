@@ -26,7 +26,7 @@ public class CommandTaskResult
             sb.append(iter.next());
             sb.append(iter.hasNext() ? ", " : "");
         }
-        
+
         return String.format("Summary: %s Results: { %s }", summary, sb.toString());
     }
 

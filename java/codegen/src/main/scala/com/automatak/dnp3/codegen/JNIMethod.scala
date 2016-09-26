@@ -28,6 +28,8 @@ object JNIMethod {
           case "int" => "jint"
           case "byte" => "jbyte"
           case "long" => "jlong"
+          case "float" => "jfloat"
+          case "short" => "jshort"
           case "double" => "jdouble"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
@@ -52,6 +54,9 @@ object JNIMethod {
           case "void" => "void"
           case "byte" => "B"
           case "long" => "J"
+          case "short" => "S"
+          case "float" => "F"
+          case "double" => "D"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
       } else {
@@ -75,6 +80,9 @@ object JNIMethod {
           case "long" => "Long"
           case "void" => "Void"
           case "byte" => "Byte"
+          case "short" => "Short"
+          case "float" => "Float"
+          case "double" => "Double"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
       } else {

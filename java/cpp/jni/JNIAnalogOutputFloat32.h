@@ -18,14 +18,14 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNITIMESYNCMODE_H
-#define OPENDNP3JAVA_JNITIMESYNCMODE_H
+#ifndef OPENDNP3JAVA_JNIANALOGOUTPUTFLOAT32_H
+#define OPENDNP3JAVA_JNIANALOGOUTPUTFLOAT32_H
 
 #include <jni.h>
 
 namespace jni
 {
-    class TimeSyncMode
+    class AnalogOutputFloat32
     {
         friend struct JCache;
 
@@ -34,17 +34,17 @@ namespace jni
 
         public:
 
-        // methods
-        jint toType(JNIEnv* env, jobject instance);
-        jobject fromType(JNIEnv* env, jint arg0);
+        // field getter methods
+        jfloat getvalue(JNIEnv* env, jobject instance);
+        jobject getstatus(JNIEnv* env, jobject instance);
 
         private:
 
         jclass clazz = nullptr;
 
-        // method ids
-        jmethodID toTypeMethod = nullptr;
-        jmethodID fromTypeMethod = nullptr;
+        // field ids
+        jfieldID valueField = nullptr;
+        jfieldID statusField = nullptr;
     };
 }
 

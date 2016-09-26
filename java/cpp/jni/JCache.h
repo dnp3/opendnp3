@@ -65,6 +65,12 @@
 #include "JNICommandPointState.h"
 #include "JNICommandStatus.h"
 #include "JNICompletableFuture.h"
+#include "JNIControlRelayOutputBlock.h"
+#include "JNIAnalogOutputInt16.h"
+#include "JNIAnalogOutputInt32.h"
+#include "JNIAnalogOutputFloat32.h"
+#include "JNIAnalogOutputDouble64.h"
+#include "JNIControlCode.h"
 
 namespace jni
 {
@@ -115,6 +121,12 @@ namespace jni
         static jni::CommandPointState CommandPointState;
         static jni::CommandStatus CommandStatus;
         static jni::CompletableFuture CompletableFuture;
+        static jni::ControlRelayOutputBlock ControlRelayOutputBlock;
+        static jni::AnalogOutputInt16 AnalogOutputInt16;
+        static jni::AnalogOutputInt32 AnalogOutputInt32;
+        static jni::AnalogOutputFloat32 AnalogOutputFloat32;
+        static jni::AnalogOutputDouble64 AnalogOutputDouble64;
+        static jni::ControlCode ControlCode;
     };
 }
 

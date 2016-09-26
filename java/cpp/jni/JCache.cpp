@@ -64,6 +64,12 @@ namespace jni
     jni::CommandPointState JCache::CommandPointState;
     jni::CommandStatus JCache::CommandStatus;
     jni::CompletableFuture JCache::CompletableFuture;
+    jni::ControlRelayOutputBlock JCache::ControlRelayOutputBlock;
+    jni::AnalogOutputInt16 JCache::AnalogOutputInt16;
+    jni::AnalogOutputInt32 JCache::AnalogOutputInt32;
+    jni::AnalogOutputFloat32 JCache::AnalogOutputFloat32;
+    jni::AnalogOutputDouble64 JCache::AnalogOutputDouble64;
+    jni::ControlCode JCache::ControlCode;
 
     bool JCache::init(JNIEnv* env)
     {
@@ -153,6 +159,18 @@ namespace jni
         if(!success) return false;
         success = CompletableFuture.init(env);
         if(!success) return false;
+        success = ControlRelayOutputBlock.init(env);
+        if(!success) return false;
+        success = AnalogOutputInt16.init(env);
+        if(!success) return false;
+        success = AnalogOutputInt32.init(env);
+        if(!success) return false;
+        success = AnalogOutputFloat32.init(env);
+        if(!success) return false;
+        success = AnalogOutputDouble64.init(env);
+        if(!success) return false;
+        success = ControlCode.init(env);
+        if(!success) return false;
         return true;
     }
 
@@ -200,5 +218,11 @@ namespace jni
         CommandPointState.cleanup(env);
         CommandStatus.cleanup(env);
         CompletableFuture.cleanup(env);
+        ControlRelayOutputBlock.cleanup(env);
+        AnalogOutputInt16.cleanup(env);
+        AnalogOutputInt32.cleanup(env);
+        AnalogOutputFloat32.cleanup(env);
+        AnalogOutputDouble64.cleanup(env);
+        ControlCode.cleanup(env);
     }
 }

@@ -18,14 +18,14 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNITIMESYNCMODE_H
-#define OPENDNP3JAVA_JNITIMESYNCMODE_H
+#ifndef OPENDNP3JAVA_JNICONTROLCODE_H
+#define OPENDNP3JAVA_JNICONTROLCODE_H
 
 #include <jni.h>
 
 namespace jni
 {
-    class TimeSyncMode
+    class ControlCode
     {
         friend struct JCache;
 

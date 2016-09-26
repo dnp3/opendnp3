@@ -1,10 +1,13 @@
 #include "com_automatak_dnp3_impl_MasterImpl.h"
 
 #include "jni/JCache.h"
+#include "adapters/GlobalRef.h"
 #include "adapters/JNI.h"
 
 #include "asiodnp3/IMaster.h"
 #include "opendnp3/master/CommandSet.h"
+
+#include <memory>
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_enable_1native
 (JNIEnv* env, jobject, jlong native)
@@ -35,8 +38,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_select_1and_1oper
 	jni::JCache::CommandHeaders.build(env, headers, builder); // send the commands to the builder
 	auto set = (opendnp3::CommandSet*) jni::JCache::CommandBuilderImpl.getnativePointer(env, builder);	
 	
-	auto refToFuture = env->NewGlobalRef(future);
-	auto callback = [refToFuture](const opendnp3::ICommandTaskResult& result)
+	auto sharedf = std::make_shared<GlobalRef>(future);
+	auto callback = [sharedf](const opendnp3::ICommandTaskResult& result)
 	{
 		const auto env = JNI::GetEnv();
 		const auto jsummary = jni::JCache::TaskCompletion.fromType(env, static_cast<jint>(result.summary));
@@ -53,9 +56,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_select_1and_1oper
 
 		const auto jtaskresult = jni::JCache::CommandTaskResult.init2(env, jsummary, jlist);
 		
-		jni::JCache::CompletableFuture.complete(env, refToFuture, jtaskresult); // invoke the future
-
-		env->DeleteGlobalRef(refToFuture); 
+		jni::JCache::CompletableFuture.complete(env, *sharedf, jtaskresult); // invoke the future		
 	};
 
 	auto master = (asiodnp3::IMaster*) native;

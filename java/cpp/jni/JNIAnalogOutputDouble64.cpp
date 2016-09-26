@@ -18,37 +18,37 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNIGroupVariation.h"
+#include "JNIAnalogOutputDouble64.h"
 
 namespace jni
 {
-    bool GroupVariation::init(JNIEnv* env)
+    bool AnalogOutputDouble64::init(JNIEnv* env)
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/GroupVariation;");
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputDouble64;");
         this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
         env->DeleteLocalRef(clazzTemp);
 
-        this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-        if(!this->toTypeMethod) return false;
+        this->valueField = env->GetFieldID(this->clazz, "value", "D");
+        if(!this->valueField) return false;
 
-        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
-        if(!this->fromTypeMethod) return false;
+        this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
+        if(!this->statusField) return false;
 
         return true;
     }
 
-    void GroupVariation::cleanup(JNIEnv* env)
+    void AnalogOutputDouble64::cleanup(JNIEnv* env)
     {
         env->DeleteGlobalRef(this->clazz);
     }
 
-    jint GroupVariation::toType(JNIEnv* env, jobject instance)
+    jdouble AnalogOutputDouble64::getvalue(JNIEnv* env, jobject instance)
     {
-        return env->CallIntMethod(instance, this->toTypeMethod);
+        return env->GetDoubleField(instance, this->valueField);
     }
 
-    jobject GroupVariation::fromType(JNIEnv* env, jint arg0)
+    jobject AnalogOutputDouble64::getstatus(JNIEnv* env, jobject instance)
     {
-        return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+        return env->GetObjectField(instance, this->statusField);
     }
 }

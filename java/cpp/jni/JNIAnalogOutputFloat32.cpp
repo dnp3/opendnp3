@@ -18,37 +18,37 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNIGroupVariation.h"
+#include "JNIAnalogOutputFloat32.h"
 
 namespace jni
 {
-    bool GroupVariation::init(JNIEnv* env)
+    bool AnalogOutputFloat32::init(JNIEnv* env)
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/GroupVariation;");
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputFloat32;");
         this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
         env->DeleteLocalRef(clazzTemp);
 
-        this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-        if(!this->toTypeMethod) return false;
+        this->valueField = env->GetFieldID(this->clazz, "value", "F");
+        if(!this->valueField) return false;
 
-        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
-        if(!this->fromTypeMethod) return false;
+        this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
+        if(!this->statusField) return false;
 
         return true;
     }
 
-    void GroupVariation::cleanup(JNIEnv* env)
+    void AnalogOutputFloat32::cleanup(JNIEnv* env)
     {
         env->DeleteGlobalRef(this->clazz);
     }
 
-    jint GroupVariation::toType(JNIEnv* env, jobject instance)
+    jfloat AnalogOutputFloat32::getvalue(JNIEnv* env, jobject instance)
     {
-        return env->CallIntMethod(instance, this->toTypeMethod);
+        return env->GetFloatField(instance, this->valueField);
     }
 
-    jobject GroupVariation::fromType(JNIEnv* env, jint arg0)
+    jobject AnalogOutputFloat32::getstatus(JNIEnv* env, jobject instance)
     {
-        return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+        return env->GetObjectField(instance, this->statusField);
     }
 }
