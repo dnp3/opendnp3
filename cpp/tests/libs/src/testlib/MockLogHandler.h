@@ -25,6 +25,7 @@
 
 #include <string>
 #include <queue>
+#include <mutex>
 
 namespace testlib
 {
@@ -74,6 +75,7 @@ public:
 
 protected:
 
+	std::mutex qMutex;
 	bool outputToStdIO;
 	std::deque<LogRecord> messages;
 

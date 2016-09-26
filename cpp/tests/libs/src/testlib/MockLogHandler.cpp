@@ -57,10 +57,11 @@ MockLogHandler::MockLogHandler(uint32_t filters) :
 
 void MockLogHandler::Log(const LogEntry& entry)
 {
+	std::lock_guard<std::mutex> lock(qMutex);
 	if (outputToStdIO)
 	{
 		std::cout << entry.GetMessage() << std::endl;
-	}
+	}	
 
 	messages.push_back(entry);
 }

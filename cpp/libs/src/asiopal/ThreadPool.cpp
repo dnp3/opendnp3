@@ -76,7 +76,7 @@ std::shared_ptr<ThreadPool> ThreadPool::Create(
 }
 
 ThreadPool::~ThreadPool()
-{
+{	
 	this->Shutdown();
 	threads.clear();
 }
@@ -90,7 +90,7 @@ void ThreadPool::Shutdown()
 		for (auto& thread : threads)
 		{
 			thread->join();
-		}
+		}		
 	}
 }
 
