@@ -31,4 +31,9 @@ public class BinaryOutputStatus extends Measurement
         super(quality, timestamp);
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return String.format("BinaryOutputStatus(%b, 0x%x, %d)", value, quality, timestamp);
+    }
 }

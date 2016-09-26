@@ -43,24 +43,52 @@ public class PrintingSOEHandler implements SOEHandler {
     }
 
     @Override
-    public void processBI(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values) {}
+    public void processBI(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values)
+    {
+        System.out.println(info);
+        values.forEach((meas) -> System.out.println(meas));
+    }
 
     @Override
-    public void processDBI(HeaderInfo info, Iterable<IndexedValue<DoubleBitBinaryInput>> values) {}
+    public void processDBI(HeaderInfo info, Iterable<IndexedValue<DoubleBitBinaryInput>> values)
+    {
+        System.out.println(info);
+        values.forEach((meas) -> System.out.println(meas));
+    }
 
     @Override
-    public void processAI(HeaderInfo info, Iterable<IndexedValue<AnalogInput>> values) {}
+    public void processAI(HeaderInfo info, Iterable<IndexedValue<AnalogInput>> values)
+    {
+        System.out.println(info);
+        values.forEach((meas) -> System.out.println(meas));
+    }
 
     @Override
-    public void processC(HeaderInfo info, Iterable<IndexedValue<Counter>> values) {}
+    public void processC(HeaderInfo info, Iterable<IndexedValue<Counter>> values)
+    {
+        System.out.println(info);
+        values.forEach((meas) -> System.out.println(meas));
+    }
 
     @Override
-    public void processFC(HeaderInfo info, Iterable<IndexedValue<FrozenCounter>> values) {}
+    public void processFC(HeaderInfo info, Iterable<IndexedValue<FrozenCounter>> values)
+    {
+        System.out.println(info);
+        values.forEach((meas) -> System.out.println(meas));
+    }
 
     @Override
-    public void processBOS(HeaderInfo info, Iterable<IndexedValue<BinaryOutputStatus>> values) {}
+    public void processBOS(HeaderInfo info, Iterable<IndexedValue<BinaryOutputStatus>> values)
+    {
+        System.out.println(info);
+        values.forEach((meas) -> System.out.println(meas));
+    }
 
     @Override
-    public void processAOS(HeaderInfo info, Iterable<IndexedValue<AnalogOutputStatus>> values) {}
+    public void processAOS(HeaderInfo info, Iterable<IndexedValue<AnalogOutputStatus>> values)
+    {
+        System.out.println(info);
+        values.forEach((meas) -> System.out.println(meas));
+    }
 
 }

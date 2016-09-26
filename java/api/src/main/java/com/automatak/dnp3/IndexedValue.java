@@ -14,4 +14,9 @@ public class IndexedValue<T>
         this.value = value;
         this.index = index;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%d - %s", index, value);
+    }
 }

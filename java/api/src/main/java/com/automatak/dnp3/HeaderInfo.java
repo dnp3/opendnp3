@@ -16,6 +16,11 @@ public class HeaderInfo
         this.headerIndex = headerIndex;
     }
 
+    @Override
+    public String toString() {
+        return String.format("HeaderInfo(%s, %s, timestamp: %s, isEvent: %b, flagsValid: %b, #: %d)", variation, qualifier, tsmode, isEvent, flagsValid, headerIndex);
+    }
+
     /**
      * An enum representing the group and variation for this header
      */

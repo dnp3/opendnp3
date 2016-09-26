@@ -37,4 +37,8 @@ public class AnalogInput extends Measurement
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Analog(%f, 0x%x, %d)", value, quality, timestamp);
+    }
 }

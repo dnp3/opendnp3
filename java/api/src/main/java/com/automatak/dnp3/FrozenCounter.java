@@ -32,4 +32,8 @@ public class FrozenCounter extends Measurement
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return String.format("FrozenCounter(%b, 0x%x, %d)", value, quality, timestamp);
+    }
 }

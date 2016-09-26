@@ -34,4 +34,8 @@ public class DoubleBitBinaryInput extends Measurement
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return String.format("DoubleBitBinaryInput(%s, 0x%x, %d)", value, quality, timestamp);
+    }
 }

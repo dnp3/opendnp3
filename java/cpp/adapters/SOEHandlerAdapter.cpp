@@ -110,7 +110,7 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 {
 	auto create = [](JNIEnv* env, const AnalogOutputStatus& value) -> jobject { return jni::JCache::AnalogOutputStatus.init3(env, value.value, value.flags.value, value.time); };
 	auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) { jni::JCache::SOEHandler.processAOS(env, proxy, hinfo, list); };
-
+	
 	this->Process(info, values, create, call);
 }
 
