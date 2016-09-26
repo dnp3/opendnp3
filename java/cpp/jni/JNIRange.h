@@ -38,8 +38,6 @@ namespace jni
         jboolean isDefined(JNIEnv* env, jobject instance);
 
         // field getter methods
-        jint getMIN_INDEX(JNIEnv* env, jobject instance);
-        jint getMAX_INDEX(JNIEnv* env, jobject instance);
         jint getstart(JNIEnv* env, jobject instance);
         jint getstop(JNIEnv* env, jobject instance);
 
@@ -51,8 +49,6 @@ namespace jni
         jmethodID isDefinedMethod = nullptr;
 
         // field ids
-        jfieldID MIN_INDEXField = nullptr;
-        jfieldID MAX_INDEXField = nullptr;
         jfieldID startField = nullptr;
         jfieldID stopField = nullptr;
     };

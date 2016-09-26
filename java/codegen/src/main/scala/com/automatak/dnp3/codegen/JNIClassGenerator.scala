@@ -30,11 +30,11 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     }
 
     def fieldMembers: Iterator[String] = cfg.ifEnabled(Features.Fields) {
-      space ++ "// field ids".iter ++ cfg.clazz.getDeclaredFields.map(f => "jfieldID %sField = nullptr;".format(f.getName)).toIterator
+      space ++ "// field ids".iter ++ cfg.clazz.getFields.map(f => "jfieldID %sField = nullptr;".format(f.getName)).toIterator
     }
 
     def fieldGetters: Iterator[String] = cfg.ifEnabled(Features.Fields) {
-      space ++ "// field getter methods".iter ++ cfg.clazz.getDeclaredFields.map(f => "%s get%s(JNIEnv* env, jobject instance);".format(JNIMethod.getType(f.getType), f.getName)).toIterator
+      space ++ "// field getter methods".iter ++ cfg.clazz.getFields.map(f => "%s get%s(JNIEnv* env, jobject instance);".format(JNIMethod.getType(f.getType), f.getName)).toIterator
     }
 
     def initSignature: Iterator[String] = "bool init(JNIEnv* env);".iter

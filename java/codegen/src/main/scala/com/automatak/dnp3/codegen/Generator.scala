@@ -60,7 +60,9 @@ object Generator {
     ClassConfig(classOf[java.lang.Iterable[_]], Set(Features.Methods), MethodFilter.nameEquals("iterator")),
     ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next")),
     ClassConfig(classOf[ClassAssignment], Set(Features.Fields)),
-    ClassConfig(classOf[Range], Set(Features.Fields, Features.Methods), MethodFilter.nameEquals("isDefined"))
+    ClassConfig(classOf[Range], Set(Features.Fields, Features.Methods), MethodFilter.nameEquals("isDefined")),
+    ClassConfig(classOf[CommandProcessor], Set(Features.Methods)),
+    ClassConfig(classOf[Stack], Set(Features.Methods))
   )
 
   def main(args: Array[String]): Unit = {

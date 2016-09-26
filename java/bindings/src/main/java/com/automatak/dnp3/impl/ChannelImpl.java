@@ -40,7 +40,7 @@ class ChannelImpl implements Channel {
             throw new DNP3Exception("Unable to create master");
         }
 
-        return null;
+        return new MasterImpl(ret);
     }
 
     @Override

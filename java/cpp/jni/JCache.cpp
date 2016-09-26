@@ -56,6 +56,8 @@ namespace jni
     jni::Iterator JCache::Iterator;
     jni::ClassAssignment JCache::ClassAssignment;
     jni::Range JCache::Range;
+    jni::CommandProcessor JCache::CommandProcessor;
+    jni::Stack JCache::Stack;
 
     bool JCache::init(JNIEnv* env)
     {
@@ -129,6 +131,10 @@ namespace jni
         if(!success) return false;
         success = Range.init(env);
         if(!success) return false;
+        success = CommandProcessor.init(env);
+        if(!success) return false;
+        success = Stack.init(env);
+        if(!success) return false;
         return true;
     }
 
@@ -168,5 +174,7 @@ namespace jni
         Iterator.cleanup(env);
         ClassAssignment.cleanup(env);
         Range.cleanup(env);
+        CommandProcessor.cleanup(env);
+        Stack.cleanup(env);
     }
 }

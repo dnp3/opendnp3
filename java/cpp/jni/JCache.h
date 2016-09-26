@@ -57,6 +57,8 @@
 #include "JNIIterator.h"
 #include "JNIClassAssignment.h"
 #include "JNIRange.h"
+#include "JNICommandProcessor.h"
+#include "JNIStack.h"
 
 namespace jni
 {
@@ -99,6 +101,8 @@ namespace jni
         static jni::Iterator Iterator;
         static jni::ClassAssignment ClassAssignment;
         static jni::Range Range;
+        static jni::CommandProcessor CommandProcessor;
+        static jni::Stack Stack;
     };
 }
 

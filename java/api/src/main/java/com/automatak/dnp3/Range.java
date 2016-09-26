@@ -2,10 +2,10 @@ package com.automatak.dnp3;
 
 public class Range {
 
-    public static final int MIN_INDEX = 0;
-    public static final int MAX_INDEX = 65535;
+    private static final int MIN_INDEX = 0;
+    private static final int MAX_INDEX = 65535;
 
-    public static Range From(int start, int stop) {
+    public static Range from(int start, int stop) {
         return new Range(start, stop);
     }
 

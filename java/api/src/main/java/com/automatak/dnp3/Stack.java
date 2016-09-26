@@ -24,8 +24,17 @@ package com.automatak.dnp3;
 public interface Stack {
 
     /**
-     * Permanently shutdown the stack. Calling shutdown() more than once or continuing to use any child objects
-     * of the stack can cause a failure.
+     * Synchronously enable communications
+     */
+    void enable();
+
+    /**
+     * Synchronously disable communications
+     */
+    void disable();
+
+    /**
+     * Synchronously shutdown the endpoint. No more calls are allowed after this call.
      */
     void shutdown();
 

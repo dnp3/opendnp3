@@ -21,11 +21,7 @@ package com.automatak.dnp3;
 /**
  * Interface representing a master station
  */
-public interface Master extends Stack {
+public interface Master extends Stack, CommandProcessor {
 
-    /**
-     * @return Interface used to dispatch command requests
-     */
-    CommandProcessor getCommandProcessor();
 
 }

@@ -31,12 +31,6 @@ namespace jni
         this->isDefinedMethod = env->GetMethodID(this->clazz, "isDefined", "()Z");
         if(!this->isDefinedMethod) return false;
 
-        this->MIN_INDEXField = env->GetFieldID(this->clazz, "MIN_INDEX", "I");
-        if(!this->MIN_INDEXField) return false;
-
-        this->MAX_INDEXField = env->GetFieldID(this->clazz, "MAX_INDEX", "I");
-        if(!this->MAX_INDEXField) return false;
-
         this->startField = env->GetFieldID(this->clazz, "start", "I");
         if(!this->startField) return false;
 
@@ -54,16 +48,6 @@ namespace jni
     jboolean Range::isDefined(JNIEnv* env, jobject instance)
     {
         return env->CallBooleanMethod(instance, this->isDefinedMethod);
-    }
-
-    jint Range::getMIN_INDEX(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->MIN_INDEXField);
-    }
-
-    jint Range::getMAX_INDEX(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->MAX_INDEXField);
     }
 
     jint Range::getstart(JNIEnv* env, jobject instance)

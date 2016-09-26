@@ -18,14 +18,14 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIQUALIFIERCODE_H
-#define OPENDNP3JAVA_JNIQUALIFIERCODE_H
+#ifndef OPENDNP3JAVA_JNISTACK_H
+#define OPENDNP3JAVA_JNISTACK_H
 
 #include <jni.h>
 
 namespace jni
 {
-    class QualifierCode
+    class Stack
     {
         friend struct JCache;
 
@@ -35,16 +35,18 @@ namespace jni
         public:
 
         // methods
-        jobject fromType(JNIEnv* env, jint arg0);
-        jint toType(JNIEnv* env, jobject instance);
+        void shutdown(JNIEnv* env, jobject instance);
+        void disable(JNIEnv* env, jobject instance);
+        void enable(JNIEnv* env, jobject instance);
 
         private:
 
         jclass clazz = nullptr;
 
         // method ids
-        jmethodID fromTypeMethod = nullptr;
-        jmethodID toTypeMethod = nullptr;
+        jmethodID shutdownMethod = nullptr;
+        jmethodID disableMethod = nullptr;
+        jmethodID enableMethod = nullptr;
     };
 }
 

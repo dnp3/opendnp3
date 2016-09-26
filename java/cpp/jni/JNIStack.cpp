@@ -18,37 +18,45 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNIMasterTaskType.h"
+#include "JNIStack.h"
 
 namespace jni
 {
-    bool MasterTaskType::init(JNIEnv* env)
+    bool Stack::init(JNIEnv* env)
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/MasterTaskType;");
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Stack;");
         this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
         env->DeleteLocalRef(clazzTemp);
 
-        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/MasterTaskType;");
-        if(!this->fromTypeMethod) return false;
+        this->shutdownMethod = env->GetMethodID(this->clazz, "shutdown", "()V");
+        if(!this->shutdownMethod) return false;
 
-        this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-        if(!this->toTypeMethod) return false;
+        this->disableMethod = env->GetMethodID(this->clazz, "disable", "()V");
+        if(!this->disableMethod) return false;
+
+        this->enableMethod = env->GetMethodID(this->clazz, "enable", "()V");
+        if(!this->enableMethod) return false;
 
         return true;
     }
 
-    void MasterTaskType::cleanup(JNIEnv* env)
+    void Stack::cleanup(JNIEnv* env)
     {
         env->DeleteGlobalRef(this->clazz);
     }
 
-    jobject MasterTaskType::fromType(JNIEnv* env, jint arg0)
+    void Stack::shutdown(JNIEnv* env, jobject instance)
     {
-        return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+        env->CallVoidMethod(instance, this->shutdownMethod);
     }
 
-    jint MasterTaskType::toType(JNIEnv* env, jobject instance)
+    void Stack::disable(JNIEnv* env, jobject instance)
     {
-        return env->CallIntMethod(instance, this->toTypeMethod);
+        env->CallVoidMethod(instance, this->disableMethod);
+    }
+
+    void Stack::enable(JNIEnv* env, jobject instance)
+    {
+        env->CallVoidMethod(instance, this->enableMethod);
     }
 }
