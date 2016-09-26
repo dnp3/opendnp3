@@ -21,10 +21,6 @@ object Generator {
   def listMethods = MethodFilter.nameEquals("add", Some(1))
   def listConstructors = ConstructorFilter.withParamTypes(List("int"))
 
-  implicit val indent = CppIndentation
-
- // val javaGenPath = FileSystems.getDefault.getPath("./cpp/adapters/JNIStrings.h");
-
   val javaJNIPath = FileSystems.getDefault.getPath("./cpp/jni/");
 
   // all the classes to generate C++ info on
@@ -80,7 +76,9 @@ object Generator {
   ).sortBy(_.clazz.getSimpleName)
 
   def main(args: Array[String]): Unit = {
-    
+
+    implicit val indent = CppIndentation
+
     classes.foreach { c =>
 
       val gen = JNIClassGenerator(c)
