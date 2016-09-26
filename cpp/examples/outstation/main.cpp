@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
+	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), stackConfig);
 
 	// You can optionally change the default reporting variations or class assignment prior to enabling the outstation
 	ConfigureDatabase(outstation->GetConfigView());

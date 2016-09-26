@@ -52,7 +52,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		auto pClient = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "", 20000);
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000);
 
-		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), OutstationStackConfig(DatabaseTemplate()));
+		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
 
 		pOutstation->Enable();
@@ -69,7 +69,7 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		auto pClient = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "", 20000);
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000);
 
-		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), OutstationStackConfig(DatabaseTemplate()));
+		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
 
 		pOutstation->Enable();
@@ -90,7 +90,7 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 		auto pClient = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "127.0.0.1", 20000);
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000);
 
-		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), OutstationStackConfig(DatabaseTemplate()));
+		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
 
 		pMaster->Enable();

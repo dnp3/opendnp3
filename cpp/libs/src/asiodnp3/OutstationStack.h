@@ -40,15 +40,16 @@ public:
 	OutstationStack(
 	    std::unique_ptr<openpal::LogRoot> root,
 	    openpal::IExecutor& executor,
-	    opendnp3::ICommandHandler& commandHandler,
-	    opendnp3::IOutstationApplication& application,
+		std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+		std::shared_ptr<opendnp3::IOutstationApplication> application,
 	    const opendnp3::OutstationStackConfig& config,
 	    IStackLifecycle& lifecycle);
 
 
 private:
 
-
+	std::shared_ptr<opendnp3::ICommandHandler> commandHandler;
+	std::shared_ptr<opendnp3::IOutstationApplication> application;
 	opendnp3::OContext ocontext;
 };
 

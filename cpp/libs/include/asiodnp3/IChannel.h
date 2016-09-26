@@ -104,8 +104,8 @@ public:
 	* @return interface representing the running outstations
 	*/
 	virtual IOutstation* AddOutstation( char const* id,
-	                                    opendnp3::ICommandHandler& commandHandler,
-	                                    opendnp3::IOutstationApplication& application,
+										std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+										std::shared_ptr<opendnp3::IOutstationApplication> application,
 	                                    const opendnp3::OutstationStackConfig& config) = 0;
 
 };

@@ -23,6 +23,8 @@
 
 #include "ICommandHandler.h"
 
+#include <memory>
+
 namespace opendnp3
 {
 
@@ -95,16 +97,13 @@ public:
 class SuccessCommandHandler : public SimpleCommandHandler
 {
 public:
-	static SuccessCommandHandler& Instance()
+	static std::shared_ptr<ICommandHandler> Create()
 	{
-		return handler;
+		return std::shared_ptr<ICommandHandler>(new SuccessCommandHandler());
 	}
 
-private:
-	static SuccessCommandHandler handler;
-
 protected:
-	SuccessCommandHandler();
+	SuccessCommandHandler() : SimpleCommandHandler(CommandStatus::SUCCESS) {}
 };
 
 }

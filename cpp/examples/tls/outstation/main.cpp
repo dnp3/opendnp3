@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
 	std::error_code ec;
 
 	// Create a TCP server (listener)
-	auto pChannel = manager.AddTLSClient(
+	auto channel = manager.AddTLSClient(
 	                    "server",
 	                    FILTERS,
 	                    ChannelRetry::Default(),
@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
 
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console
-	pChannel->AddStateListener([](ChannelState state)
+	channel->AddStateListener([](ChannelState state)
 	{
 		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
 	});
@@ -125,13 +125,13 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto pOutstation = pChannel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
+	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), stackConfig);
 
 	// You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-	ConfigureDatabase(pOutstation->GetConfigView());
+	ConfigureDatabase(outstation->GetConfigView());
 
 	// Enable the outstation and start communications
-	pOutstation->Enable();
+	outstation->Enable();
 
 	// variables used in example loop
 	string input;
@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
 
-		MeasUpdate tx(pOutstation, UTCTimeSource::Instance().Now());
+		MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
 
 		for (char& c : input)
 		{

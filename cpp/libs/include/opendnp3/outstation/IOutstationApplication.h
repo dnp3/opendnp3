@@ -35,6 +35,8 @@
 
 #include "opendnp3/outstation/ApplicationIIN.h"
 
+#include <memory>
+
 namespace opendnp3
 {
 
@@ -142,13 +144,15 @@ class DefaultOutstationApplication : public IOutstationApplication
 {
 public:
 
-	static IOutstationApplication& Instance();
+	static std::shared_ptr<IOutstationApplication> Create()
+	{
+		return std::shared_ptr<IOutstationApplication>(new DefaultOutstationApplication());
+	}
 
 protected:
 
 	DefaultOutstationApplication() {}
-
-	static DefaultOutstationApplication m_instance;
+	
 };
 
 }

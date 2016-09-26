@@ -209,7 +209,7 @@ IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numV
 	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(eventBufferSize);
 	stackConfig.outstation.params.allowUnsolicited = true;
 
-	auto outstation = server->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
+	auto outstation = server->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), stackConfig);
 	outstation->Enable();
 	return outstation;
 }

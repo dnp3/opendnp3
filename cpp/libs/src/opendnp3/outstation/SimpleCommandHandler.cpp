@@ -103,13 +103,6 @@ void SimpleCommandHandler::End()
 	++numEnd;
 }
 
-SuccessCommandHandler::SuccessCommandHandler() : SimpleCommandHandler(CommandStatus::SUCCESS)
-{
-
-}
-
-SuccessCommandHandler SuccessCommandHandler::handler;
-
 }
 
 

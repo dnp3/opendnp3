@@ -153,7 +153,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, std::shared_ptr<opendnp3::ISOEHa
 	return phys->executor.ReturnBlockFor<IMaster*>(add);
 }
 
-IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
+IOutstation* DNP3Channel::AddOutstation(char const* id, std::shared_ptr<ICommandHandler> commandHandler, std::shared_ptr<IOutstationApplication> application, const OutstationStackConfig& config)
 {
 	auto add = [this, id, &commandHandler, &application, config]() -> IOutstation*
 	{
