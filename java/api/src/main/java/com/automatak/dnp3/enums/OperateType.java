@@ -48,4 +48,19 @@ public enum OperateType
   {
     this.id = id;
   }
+
+  public static OperateType fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0x0):
+        return SelectBeforeOperate;
+      case(0x1):
+        return DirectOperate;
+      case(0x2):
+        return DirectOperateNoAck;
+      default:
+        return SelectBeforeOperate;
+    }
+  }
 }

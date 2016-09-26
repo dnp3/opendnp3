@@ -49,6 +49,10 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
         Iterator("this.id = id;")
     }
 
+    def create = Iterator("public static %s create(int value)".format(enum.name)) ++ bracket {
+      Iterator("return new %s(value);".format(enum.name))
+    }
+
     def toType = Iterator(List("public ", getEnumType(enum.enumType), " toType()").mkString) ++ bracket {
       Iterator("return id;")
     }
@@ -57,14 +61,12 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
       inner
     }
 
-    def switch = new SwitchModelRenderer[EnumValue](v => enum.render(v.value))(v => v.name).render(enum.nonDefaultValues, enum.default)
+    def switch = new SwitchModelRenderer[EnumValue](v => enum.render(v.value))(v => v.name).render(enum.nonDefaultValues, enum.defaultOrHead)
 
-    def fromTypeLines : Iterator[String] = enum.defaultValue match {
-      case None => Iterator.empty
-      case Some(x) =>  space ++
-        fromType {
+    def fromTypeLines : Iterator[String] = {
+      space ++ fromType {
           switch
-        }
+      }
     }
 
     summary(enum.comments.toIterator) ++

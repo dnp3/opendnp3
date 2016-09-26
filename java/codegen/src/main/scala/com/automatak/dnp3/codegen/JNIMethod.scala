@@ -50,6 +50,7 @@ object JNIMethod {
           case "boolean" => "Z"
           case "int" => "I"
           case "void" => "void"
+          case "byte" => "B"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
       } else {
@@ -72,6 +73,7 @@ object JNIMethod {
           case "int" => "Int"
           case "long" => "Long"
           case "void" => "Void"
+          case "byte" => "Byte"
           case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
         }
       } else {

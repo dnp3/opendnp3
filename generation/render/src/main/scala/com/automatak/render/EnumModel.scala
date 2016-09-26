@@ -70,5 +70,10 @@ case class EnumModel(name: String, comments: List[String], enumType: EnumModel.T
     case None => throw new Exception(name + " does not have a default value")
   }
 
+  def defaultOrHead : EnumValue = defaultValue match {
+    case Some(x) => x
+    case None => nonDefaultValues.head
+  }
+
   def qualified(ev: EnumValue): String = List(name,"::",ev.name).mkString
 }

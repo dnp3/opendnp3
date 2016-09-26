@@ -52,4 +52,21 @@ public enum PointClass
   {
     this.id = id;
   }
+
+  public static PointClass fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0x1):
+        return Class0;
+      case(0x2):
+        return Class1;
+      case(0x4):
+        return Class2;
+      case(0x8):
+        return Class3;
+      default:
+        return Class0;
+    }
+  }
 }

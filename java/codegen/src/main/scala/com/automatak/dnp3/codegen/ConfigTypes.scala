@@ -16,7 +16,7 @@ object MethodFilter {
     override def matches(method: Method): Boolean = true
   }
 
-  def strictlyEqual(string: String, args: Option[Int] = None) = new MethodFilter {
+  def nameEquals(string: String, args: Option[Int] = None) = new MethodFilter {
     override def matches(method: Method): Boolean = {
       method.getName == string && args.map(_ == method.getParameterCount).getOrElse(true)
     }
@@ -24,6 +24,12 @@ object MethodFilter {
 
   def any(filters: MethodFilter*) : MethodFilter = new MethodFilter {
     override def matches(method: Method): Boolean = filters.exists(_.matches(method))
+  }
+
+  def equalsAny(names: String*) = new MethodFilter {
+    override def matches(method: Method): Boolean = {
+      names.exists(_ == method.getName)
+    }
   }
 }
 

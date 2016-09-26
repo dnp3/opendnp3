@@ -39,4 +39,21 @@ public enum EventCounterVariation
   {
     this.id = id;
   }
+
+  public static EventCounterVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group22Var1;
+      case(1):
+        return Group22Var2;
+      case(2):
+        return Group22Var5;
+      case(3):
+        return Group22Var6;
+      default:
+        return Group22Var1;
+    }
+  }
 }

@@ -36,4 +36,15 @@ public enum StaticSecurityStatVariation
   {
     this.id = id;
   }
+
+  public static StaticSecurityStatVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group121Var1;
+      default:
+        return Group121Var1;
+    }
+  }
 }

@@ -41,4 +41,25 @@ public enum StaticFrozenCounterVariation
   {
     this.id = id;
   }
+
+  public static StaticFrozenCounterVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group21Var1;
+      case(1):
+        return Group21Var2;
+      case(2):
+        return Group21Var5;
+      case(3):
+        return Group21Var6;
+      case(4):
+        return Group21Var9;
+      case(5):
+        return Group21Var10;
+      default:
+        return Group21Var1;
+    }
+  }
 }

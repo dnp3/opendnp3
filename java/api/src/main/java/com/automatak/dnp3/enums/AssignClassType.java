@@ -43,4 +43,27 @@ public enum AssignClassType
   {
     this.id = id;
   }
+
+  public static AssignClassType fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0x0):
+        return BinaryInput;
+      case(0x1):
+        return DoubleBinaryInput;
+      case(0x2):
+        return Counter;
+      case(0x3):
+        return FrozenCounter;
+      case(0x4):
+        return AnalogInput;
+      case(0x5):
+        return BinaryOutputStatus;
+      case(0x6):
+        return AnalogOutputStatus;
+      default:
+        return BinaryInput;
+    }
+  }
 }

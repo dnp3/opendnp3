@@ -22,7 +22,9 @@
 
 #include <jni.h>
 #include <string>
+#include <functional>
 #include <openpal/util/Uncopyable.h>
+
 
 extern "C" {
 	jint JNI_OnLoad(JavaVM *vm, void *reserved);
@@ -46,6 +48,9 @@ public:
 
 	static jobject CreateGlobalRef(jobject ref);
 	static void DeleteGlobalRef(jobject ref);
+	
+	static void Iterate(JNIEnv* env, jobject iterable, const std::function<void(jobject)>& callback);
+	
 
 private:
 	

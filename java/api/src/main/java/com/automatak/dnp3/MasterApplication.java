@@ -23,9 +23,9 @@ public interface MasterApplication extends LinkStatusListener {
     /**
      * Called whenever a task starts
      * @param type The type of the task
-     * @param userId The user assigned id
+     * @param id The user assigned id
      */
-    void onTaskStart(MasterTaskType type, int userId);
+    void onTaskStart(MasterTaskType type, TaskId id);
 
     /**
      * Task completion notification for built-in and user defined tasks

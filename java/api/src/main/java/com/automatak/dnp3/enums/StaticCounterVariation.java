@@ -39,4 +39,21 @@ public enum StaticCounterVariation
   {
     this.id = id;
   }
+
+  public static StaticCounterVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group20Var1;
+      case(1):
+        return Group20Var2;
+      case(2):
+        return Group20Var5;
+      case(3):
+        return Group20Var6;
+      default:
+        return Group20Var1;
+    }
+  }
 }

@@ -43,4 +43,29 @@ public enum EventAnalogVariation
   {
     this.id = id;
   }
+
+  public static EventAnalogVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group32Var1;
+      case(1):
+        return Group32Var2;
+      case(2):
+        return Group32Var3;
+      case(3):
+        return Group32Var4;
+      case(4):
+        return Group32Var5;
+      case(5):
+        return Group32Var6;
+      case(6):
+        return Group32Var7;
+      case(7):
+        return Group32Var8;
+      default:
+        return Group32Var1;
+    }
+  }
 }

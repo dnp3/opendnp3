@@ -46,6 +46,16 @@
 #include "JNIArrayList.h"
 #include "JNIDoubleBit.h"
 #include "JNITimeSyncMode.h"
+#include "JNIMasterApplication.h"
+#include "JNIIINField.h"
+#include "JNITaskConfig.h"
+#include "JNIMasterTaskType.h"
+#include "JNITaskId.h"
+#include "JNITaskInfo.h"
+#include "JNITaskCompletion.h"
+#include "JNIIterable.h"
+#include "JNIIterator.h"
+#include "JNIClassAssignment.h"
 
 namespace jni
 {
@@ -77,6 +87,16 @@ namespace jni
         static jni::ArrayList ArrayList;
         static jni::DoubleBit DoubleBit;
         static jni::TimeSyncMode TimeSyncMode;
+        static jni::MasterApplication MasterApplication;
+        static jni::IINField IINField;
+        static jni::TaskConfig TaskConfig;
+        static jni::MasterTaskType MasterTaskType;
+        static jni::TaskId TaskId;
+        static jni::TaskInfo TaskInfo;
+        static jni::TaskCompletion TaskCompletion;
+        static jni::Iterable Iterable;
+        static jni::Iterator Iterator;
+        static jni::ClassAssignment ClassAssignment;
     };
 }
 

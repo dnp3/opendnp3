@@ -60,4 +60,25 @@ public enum CommandPointState
   {
     this.id = id;
   }
+
+  public static CommandPointState fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return INIT;
+      case(1):
+        return SELECT_SUCCESS;
+      case(2):
+        return SELECT_MISMATCH;
+      case(3):
+        return SELECT_FAIL;
+      case(4):
+        return OPERATE_FAIL;
+      case(5):
+        return SUCCESS;
+      default:
+        return INIT;
+    }
+  }
 }

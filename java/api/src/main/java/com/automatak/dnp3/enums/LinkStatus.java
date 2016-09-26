@@ -44,4 +44,17 @@ public enum LinkStatus
   {
     this.id = id;
   }
+
+  public static LinkStatus fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return UNRESET;
+      case(1):
+        return RESET;
+      default:
+        return UNRESET;
+    }
+  }
 }

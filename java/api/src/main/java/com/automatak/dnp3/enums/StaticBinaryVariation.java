@@ -37,4 +37,17 @@ public enum StaticBinaryVariation
   {
     this.id = id;
   }
+
+  public static StaticBinaryVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group1Var1;
+      case(1):
+        return Group1Var2;
+      default:
+        return Group1Var1;
+    }
+  }
 }

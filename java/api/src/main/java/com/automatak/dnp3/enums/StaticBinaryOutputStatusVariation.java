@@ -36,4 +36,15 @@ public enum StaticBinaryOutputStatusVariation
   {
     this.id = id;
   }
+
+  public static StaticBinaryOutputStatusVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group10Var2;
+      default:
+        return Group10Var2;
+    }
+  }
 }

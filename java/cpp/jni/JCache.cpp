@@ -45,6 +45,16 @@ namespace jni
     jni::ArrayList JCache::ArrayList;
     jni::DoubleBit JCache::DoubleBit;
     jni::TimeSyncMode JCache::TimeSyncMode;
+    jni::MasterApplication JCache::MasterApplication;
+    jni::IINField JCache::IINField;
+    jni::TaskConfig JCache::TaskConfig;
+    jni::MasterTaskType JCache::MasterTaskType;
+    jni::TaskId JCache::TaskId;
+    jni::TaskInfo JCache::TaskInfo;
+    jni::TaskCompletion JCache::TaskCompletion;
+    jni::Iterable JCache::Iterable;
+    jni::Iterator JCache::Iterator;
+    jni::ClassAssignment JCache::ClassAssignment;
 
     bool JCache::init(JNIEnv* env)
     {
@@ -96,6 +106,26 @@ namespace jni
         if(!success) return false;
         success = TimeSyncMode.init(env);
         if(!success) return false;
+        success = MasterApplication.init(env);
+        if(!success) return false;
+        success = IINField.init(env);
+        if(!success) return false;
+        success = TaskConfig.init(env);
+        if(!success) return false;
+        success = MasterTaskType.init(env);
+        if(!success) return false;
+        success = TaskId.init(env);
+        if(!success) return false;
+        success = TaskInfo.init(env);
+        if(!success) return false;
+        success = TaskCompletion.init(env);
+        if(!success) return false;
+        success = Iterable.init(env);
+        if(!success) return false;
+        success = Iterator.init(env);
+        if(!success) return false;
+        success = ClassAssignment.init(env);
+        if(!success) return false;
         return true;
     }
 
@@ -124,5 +154,15 @@ namespace jni
         ArrayList.cleanup(env);
         DoubleBit.cleanup(env);
         TimeSyncMode.cleanup(env);
+        MasterApplication.cleanup(env);
+        IINField.cleanup(env);
+        TaskConfig.cleanup(env);
+        MasterTaskType.cleanup(env);
+        TaskId.cleanup(env);
+        TaskInfo.cleanup(env);
+        TaskCompletion.cleanup(env);
+        Iterable.cleanup(env);
+        Iterator.cleanup(env);
+        ClassAssignment.cleanup(env);
     }
 }

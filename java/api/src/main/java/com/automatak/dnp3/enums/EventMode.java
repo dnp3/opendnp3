@@ -48,4 +48,19 @@ public enum EventMode
   {
     this.id = id;
   }
+
+  public static EventMode fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0x0):
+        return Detect;
+      case(0x1):
+        return Force;
+      case(0x2):
+        return Suppress;
+      default:
+        return Detect;
+    }
+  }
 }

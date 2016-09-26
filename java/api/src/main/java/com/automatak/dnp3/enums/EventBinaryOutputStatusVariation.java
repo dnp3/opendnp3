@@ -37,4 +37,17 @@ public enum EventBinaryOutputStatusVariation
   {
     this.id = id;
   }
+
+  public static EventBinaryOutputStatusVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group11Var1;
+      case(1):
+        return Group11Var2;
+      default:
+        return Group11Var1;
+    }
+  }
 }

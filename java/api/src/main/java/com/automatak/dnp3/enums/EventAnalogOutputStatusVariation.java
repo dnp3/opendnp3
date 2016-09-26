@@ -43,4 +43,29 @@ public enum EventAnalogOutputStatusVariation
   {
     this.id = id;
   }
+
+  public static EventAnalogOutputStatusVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group42Var1;
+      case(1):
+        return Group42Var2;
+      case(2):
+        return Group42Var3;
+      case(3):
+        return Group42Var4;
+      case(4):
+        return Group42Var5;
+      case(5):
+        return Group42Var6;
+      case(6):
+        return Group42Var7;
+      case(7):
+        return Group42Var8;
+      default:
+        return Group42Var1;
+    }
+  }
 }

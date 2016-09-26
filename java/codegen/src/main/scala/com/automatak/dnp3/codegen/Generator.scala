@@ -12,11 +12,11 @@ object Generator {
     ClassConfig(
       clazz,
       Set(Features.Methods),
-      MethodFilter.any(MethodFilter.strictlyEqual("fromType"), MethodFilter.strictlyEqual("toType"))
+      MethodFilter.any(MethodFilter.nameEquals("fromType"), MethodFilter.nameEquals("toType"))
     )
   }
 
-  def listMethods = MethodFilter.strictlyEqual("add", Some(1))
+  def listMethods = MethodFilter.nameEquals("add", Some(1))
   def listConstructors = ConstructorFilter.withParamTypes(List("int"))
 
   implicit val indent = CppIndentation
@@ -46,10 +46,20 @@ object Generator {
     ClassConfig(classOf[FrozenCounter], Set(Features.Constructors)),
     ClassConfig(classOf[BinaryOutputStatus], Set(Features.Constructors)),
     ClassConfig(classOf[AnalogOutputStatus], Set(Features.Constructors)),
-    ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodFilter.strictlyEqual("toMillis")),
+    ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodFilter.nameEquals("toMillis")),
     ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), listMethods, listConstructors),
     enumeration(classOf[DoubleBit]),
-    enumeration(classOf[TimeSyncMode])
+    enumeration(classOf[TimeSyncMode]),
+    ClassConfig(classOf[MasterApplication], Set(Features.Methods)),
+    ClassConfig(classOf[IINField], Set(Features.Constructors)),
+    ClassConfig(classOf[TaskConfig], Set(Features.Constructors)),
+    enumeration(classOf[MasterTaskType]),
+    ClassConfig(classOf[TaskId], Set(Features.Constructors)),
+    ClassConfig(classOf[TaskInfo], Set(Features.Constructors)),
+    enumeration(classOf[TaskCompletion]),
+    ClassConfig(classOf[java.lang.Iterable[_]], Set(Features.Methods), MethodFilter.nameEquals("iterator")),
+    ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next")),
+    ClassConfig(classOf[ClassAssignment], Set(Features.Fields))
   )
 
   def main(args: Array[String]): Unit = {

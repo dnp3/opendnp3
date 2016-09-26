@@ -36,4 +36,15 @@ public enum StaticTimeAndIntervalVariation
   {
     this.id = id;
   }
+
+  public static StaticTimeAndIntervalVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group50Var4;
+      default:
+        return Group50Var4;
+    }
+  }
 }

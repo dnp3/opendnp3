@@ -38,4 +38,19 @@ public enum EventDoubleBinaryVariation
   {
     this.id = id;
   }
+
+  public static EventDoubleBinaryVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group4Var1;
+      case(1):
+        return Group4Var2;
+      case(2):
+        return Group4Var3;
+      default:
+        return Group4Var1;
+    }
+  }
 }

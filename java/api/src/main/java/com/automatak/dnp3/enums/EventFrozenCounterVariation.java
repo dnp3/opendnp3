@@ -39,4 +39,21 @@ public enum EventFrozenCounterVariation
   {
     this.id = id;
   }
+
+  public static EventFrozenCounterVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group23Var1;
+      case(1):
+        return Group23Var2;
+      case(2):
+        return Group23Var5;
+      case(3):
+        return Group23Var6;
+      default:
+        return Group23Var1;
+    }
+  }
 }

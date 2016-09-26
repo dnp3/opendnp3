@@ -68,4 +68,29 @@ public enum AnalogQuality
   {
     this.id = id;
   }
+
+  public static AnalogQuality fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0x1):
+        return ONLINE;
+      case(0x2):
+        return RESTART;
+      case(0x4):
+        return COMM_LOST;
+      case(0x8):
+        return REMOTE_FORCED;
+      case(0x10):
+        return LOCAL_FORCED;
+      case(0x20):
+        return OVERRANGE;
+      case(0x40):
+        return REFERENCE_ERR;
+      case(0x80):
+        return RESERVED;
+      default:
+        return ONLINE;
+    }
+  }
 }

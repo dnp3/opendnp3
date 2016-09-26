@@ -41,4 +41,25 @@ public enum StaticAnalogVariation
   {
     this.id = id;
   }
+
+  public static StaticAnalogVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group30Var1;
+      case(1):
+        return Group30Var2;
+      case(2):
+        return Group30Var3;
+      case(3):
+        return Group30Var4;
+      case(4):
+        return Group30Var5;
+      case(5):
+        return Group30Var6;
+      default:
+        return Group30Var1;
+    }
+  }
 }

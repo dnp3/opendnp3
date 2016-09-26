@@ -44,4 +44,17 @@ public enum RestartType
   {
     this.id = id;
   }
+
+  public static RestartType fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return COLD;
+      case(1):
+        return WARM;
+      default:
+        return COLD;
+    }
+  }
 }

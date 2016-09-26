@@ -48,4 +48,19 @@ public enum RestartMode
   {
     this.id = id;
   }
+
+  public static RestartMode fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return UNSUPPORTED;
+      case(1):
+        return SUPPORTED_DELAY_FINE;
+      case(2):
+        return SUPPORTED_DELAY_COARSE;
+      default:
+        return UNSUPPORTED;
+    }
+  }
 }

@@ -5,7 +5,7 @@ public class TaskId
     public final int id;
     public final boolean isValid;
 
-    TaskId(int id, boolean isDefined)
+    public TaskId(int id, boolean isDefined)
     {
         this.id = id;
         this.isValid = isDefined;

@@ -39,4 +39,21 @@ public enum StaticAnalogOutputStatusVariation
   {
     this.id = id;
   }
+
+  public static StaticAnalogOutputStatusVariation fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group40Var1;
+      case(1):
+        return Group40Var2;
+      case(2):
+        return Group40Var3;
+      case(3):
+        return Group40Var4;
+      default:
+        return Group40Var1;
+    }
+  }
 }

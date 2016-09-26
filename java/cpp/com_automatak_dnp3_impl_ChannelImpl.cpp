@@ -27,6 +27,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 	auto config = ConfigReader::ConvertMasterStackConfig(env, jconfig);
 
 	auto hadapter = std::make_shared<SOEHandlerAdapter>(handler);
+	//auto appadapter
 
 
 	return 0;

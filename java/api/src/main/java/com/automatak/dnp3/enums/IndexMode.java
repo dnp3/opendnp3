@@ -44,4 +44,17 @@ public enum IndexMode
   {
     this.id = id;
   }
+
+  public static IndexMode fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0x0):
+        return Contiguous;
+      case(0x1):
+        return Discontiguous;
+      default:
+        return Contiguous;
+    }
+  }
 }

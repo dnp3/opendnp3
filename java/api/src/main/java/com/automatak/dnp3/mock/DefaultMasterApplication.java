@@ -1,9 +1,6 @@
 package com.automatak.dnp3.mock;
 
-import com.automatak.dnp3.ClassAssignment;
-import com.automatak.dnp3.IINField;
-import com.automatak.dnp3.MasterApplication;
-import com.automatak.dnp3.TaskInfo;
+import com.automatak.dnp3.*;
 import com.automatak.dnp3.enums.LinkStatus;
 import com.automatak.dnp3.enums.MasterTaskType;
 
@@ -29,7 +26,7 @@ public class DefaultMasterApplication implements MasterApplication
     public void onReceiveIIN(IINField iin)
     {}
 
-    public void onTaskStart(MasterTaskType type, int userId)
+    public void onTaskStart(MasterTaskType type, TaskId userId)
     {}
 
     public void onTaskComplete(TaskInfo info)
