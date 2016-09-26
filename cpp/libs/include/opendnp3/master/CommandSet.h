@@ -75,7 +75,8 @@ public:
 	template <class T>
 	void Add(std::initializer_list<Indexed<T>> items)
 	{
-		if (!items.size() == 0) {
+		if (!items.size() == 0)
+		{
 			auto& header = this->StartHeader<T>();
 			for (auto& command : items)
 			{
@@ -88,7 +89,8 @@ public:
 	template <class T>
 	void Add(std::vector<Indexed<T>> items)
 	{
-		if (!items.empty()) {
+		if (!items.empty())
+		{
 			auto& header = this->StartHeader<T>();
 			for (auto& command : items)
 			{

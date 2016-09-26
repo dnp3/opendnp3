@@ -36,7 +36,7 @@ public:
 	MasterStack(
 	    std::unique_ptr<openpal::LogRoot> root,
 	    asiopal::ASIOExecutor& executor,
-		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	    std::shared_ptr<opendnp3::IMasterApplication> application,
 	    const opendnp3::MasterStackConfig& config,
 	    IStackLifecycle& lifecycle,

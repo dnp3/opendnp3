@@ -61,15 +61,15 @@ int main(int argc, char* argv[])
 
 	// Connect via a TCPClient socket to a outstation
 	auto channel = manager.AddTLSClient(
-	                    "tls-client",
-	                    FILTERS,
-	                    ChannelRetry::Default(),
-	                    "127.0.0.1",
-	                    "0.0.0.0",
-	                    20001,
-	                    TLSConfig(peerCertificate, privateKey, privateKey),
-	                    ec
-	                );
+	                   "tls-client",
+	                   FILTERS,
+	                   ChannelRetry::Default(),
+	                   "127.0.0.1",
+	                   "0.0.0.0",
+	                   20001,
+	                   TLSConfig(peerCertificate, privateKey, privateKey),
+	                   ec
+	               );
 
 	if (ec)
 	{
@@ -102,11 +102,11 @@ int main(int argc, char* argv[])
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
 	auto master = channel->AddMaster(
-	                   "master",										// id for logging
-	                   PrintingSOEHandler::Create(),					// callback for data processing
-	                   asiodnp3::DefaultMasterApplication::Create(),	// master application instance
-	                   stackConfig										// stack configuration
-	               );
+	                  "master",										// id for logging
+	                  PrintingSOEHandler::Create(),					// callback for data processing
+	                  asiodnp3::DefaultMasterApplication::Create(),	// master application instance
+	                  stackConfig										// stack configuration
+	              );
 
 
 	// do an integrity poll (Class 3/2/1/0) once per minute
@@ -139,7 +139,7 @@ int main(int argc, char* argv[])
 		case('d') :
 			master->PerformFunction("disable unsol", FunctionCode::DISABLE_UNSOLICITED,
 			{ Header::AllObjects(60, 2), Header::AllObjects(60, 3), Header::AllObjects(60, 4) }
-			                        );
+			                       );
 			break;
 		case('r') :
 			{

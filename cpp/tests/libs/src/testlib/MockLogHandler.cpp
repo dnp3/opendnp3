@@ -61,7 +61,7 @@ void MockLogHandler::Log(const LogEntry& entry)
 	if (outputToStdIO)
 	{
 		std::cout << entry.GetMessage() << std::endl;
-	}	
+	}
 
 	messages.push_back(entry);
 }

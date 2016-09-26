@@ -42,7 +42,7 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 	const int NUM_OPS = 1000;
 
 	uint32_t counter[NUM_STRAND] = { 0 };
-	testlib::MockLogHandler log;	
+	testlib::MockLogHandler log;
 
 	auto pool = ThreadPool::Create(&log, levels::NORMAL, NUM_THREAD);
 

@@ -35,8 +35,8 @@ namespace asiodnp3
 MasterStack::MasterStack(
     std::unique_ptr<LogRoot> root,
     asiopal::ASIOExecutor& executor,
-	std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-	std::shared_ptr<opendnp3::IMasterApplication> application,
+    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+    std::shared_ptr<opendnp3::IMasterApplication> application,
     const MasterStackConfig& config,
     IStackLifecycle& lifecycle,
     opendnp3::ITaskLock& taskLock) :

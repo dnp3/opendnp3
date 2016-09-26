@@ -80,9 +80,7 @@ object Generator {
   ).sortBy(_.clazz.getSimpleName)
 
   def main(args: Array[String]): Unit = {
-
-   // JNIClassGenerator(ClassConfig(classOf[MasterConfig], Set(Features.Fields))).impl.foreach(println)
-
+    
     classes.foreach { c =>
 
       val gen = JNIClassGenerator(c)

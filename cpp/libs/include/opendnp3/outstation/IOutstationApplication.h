@@ -152,7 +152,7 @@ public:
 protected:
 
 	DefaultOutstationApplication() {}
-	
+
 };
 
 }

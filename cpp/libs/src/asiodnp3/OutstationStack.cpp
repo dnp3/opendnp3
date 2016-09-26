@@ -30,8 +30,8 @@ namespace asiodnp3
 OutstationStack::OutstationStack(
     std::unique_ptr<openpal::LogRoot> root,
     openpal::IExecutor& executor,
-	std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-	std::shared_ptr<opendnp3::IOutstationApplication> application,
+    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+    std::shared_ptr<opendnp3::IOutstationApplication> application,
     const OutstationStackConfig& config,
     IStackLifecycle& lifecycle) :
 

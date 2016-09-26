@@ -74,15 +74,15 @@ public:
 	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) override final;
 
 	virtual IMaster* AddMaster(char const* id,
-							   std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+	                           std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	                           std::shared_ptr<opendnp3::IMasterApplication> application,
 	                           const opendnp3::MasterStackConfig& config) override final;
 
 
 
 	virtual IOutstation* AddOutstation(char const* id,
-									   std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-									   std::shared_ptr<opendnp3::IOutstationApplication> application,
+	                                   std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+	                                   std::shared_ptr<opendnp3::IOutstationApplication> application,
 	                                   const opendnp3::OutstationStackConfig& config) override final;
 
 	// -----------------------------------------------------------------------
