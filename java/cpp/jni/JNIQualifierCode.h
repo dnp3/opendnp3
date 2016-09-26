@@ -35,16 +35,16 @@ namespace jni
         public:
 
         // methods
-        jobject fromType(JNIEnv* env, jint arg0);
         jint toType(JNIEnv* env, jobject instance);
+        jobject fromType(JNIEnv* env, jint arg0);
 
         private:
 
         jclass clazz = nullptr;
 
         // method ids
-        jmethodID fromTypeMethod = nullptr;
         jmethodID toTypeMethod = nullptr;
+        jmethodID fromTypeMethod = nullptr;
     };
 }
 

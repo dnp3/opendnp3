@@ -59,7 +59,8 @@ object Generator {
     enumeration(classOf[TaskCompletion]),
     ClassConfig(classOf[java.lang.Iterable[_]], Set(Features.Methods), MethodFilter.nameEquals("iterator")),
     ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next")),
-    ClassConfig(classOf[ClassAssignment], Set(Features.Fields))
+    ClassConfig(classOf[ClassAssignment], Set(Features.Fields)),
+    ClassConfig(classOf[Range], Set(Features.Fields, Features.Methods), MethodFilter.nameEquals("isDefined"))
   )
 
   def main(args: Array[String]): Unit = {

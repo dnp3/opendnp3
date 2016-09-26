@@ -18,14 +18,14 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNITIMESYNCMODE_H
-#define OPENDNP3JAVA_JNITIMESYNCMODE_H
+#ifndef OPENDNP3JAVA_JNIRANGE_H
+#define OPENDNP3JAVA_JNIRANGE_H
 
 #include <jni.h>
 
 namespace jni
 {
-    class TimeSyncMode
+    class Range
     {
         friend struct JCache;
 
@@ -35,16 +35,26 @@ namespace jni
         public:
 
         // methods
-        jint toType(JNIEnv* env, jobject instance);
-        jobject fromType(JNIEnv* env, jint arg0);
+        jboolean isDefined(JNIEnv* env, jobject instance);
+
+        // field getter methods
+        jint getMIN_INDEX(JNIEnv* env, jobject instance);
+        jint getMAX_INDEX(JNIEnv* env, jobject instance);
+        jint getstart(JNIEnv* env, jobject instance);
+        jint getstop(JNIEnv* env, jobject instance);
 
         private:
 
         jclass clazz = nullptr;
 
         // method ids
-        jmethodID toTypeMethod = nullptr;
-        jmethodID fromTypeMethod = nullptr;
+        jmethodID isDefinedMethod = nullptr;
+
+        // field ids
+        jfieldID MIN_INDEXField = nullptr;
+        jfieldID MAX_INDEXField = nullptr;
+        jfieldID startField = nullptr;
+        jfieldID stopField = nullptr;
     };
 }
 

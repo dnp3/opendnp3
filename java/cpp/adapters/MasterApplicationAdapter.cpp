@@ -67,7 +67,23 @@ void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT
 	const auto jiterable = jni::JCache::MasterApplication.getClassAssignments(env, proxy);
 
 	auto write = [&](jobject assigment) {
-		// TODO convert the assignment and write the header
+		
+		const auto jpointclazz = jni::JCache::ClassAssignment.getclazz(env, assigment);
+		const auto jgroup = jni::JCache::ClassAssignment.getgroup(env, assigment);
+		const auto jvariation = jni::JCache::ClassAssignment.getvariation(env, assigment);
+		const auto jrange = jni::JCache::ClassAssignment.getrange(env, assigment);
+
+		if (jni::JCache::Range.isDefined(env, jrange))
+		{
+			const auto jstart = jni::JCache::Range.getstart(env, jrange);
+			const auto jstop = jni::JCache::Range.getstop(env, jrange);
+
+			fun(Header::Range16(jgroup, jvariation, static_cast<uint16_t>(jstart), static_cast<uint16_t>(jstop)));
+		}
+		else
+		{
+			fun(Header::AllObjects(jgroup, jvariation));
+		}	
 	};
 
 	JNI::Iterate(env, jiterable, write);
