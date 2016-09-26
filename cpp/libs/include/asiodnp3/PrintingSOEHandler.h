@@ -118,9 +118,6 @@ private:
 		return opendnp3::DoubleBitToString(meas.value);
 	}
 
-
-
-	static PrintingSOEHandler instance;
 };
 
 }

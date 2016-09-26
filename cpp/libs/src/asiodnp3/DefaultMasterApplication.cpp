@@ -27,13 +27,6 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-DefaultMasterApplication DefaultMasterApplication::instance;
-
-IMasterApplication& DefaultMasterApplication::Instance()
-{
-	return instance;
-}
-
 openpal::UTCTimestamp DefaultMasterApplication::Now()
 {
 	auto time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();

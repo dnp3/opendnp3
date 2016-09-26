@@ -37,7 +37,7 @@ public:
 	    std::unique_ptr<openpal::LogRoot> root,
 	    asiopal::ASIOExecutor& executor,
 		std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-	    opendnp3::IMasterApplication& application,
+	    std::shared_ptr<opendnp3::IMasterApplication> application,
 	    const opendnp3::MasterStackConfig& config,
 	    IStackLifecycle& lifecycle,
 	    opendnp3::ITaskLock& taskLock
@@ -46,6 +46,7 @@ public:
 protected:
 
 	std::shared_ptr<opendnp3::ISOEHandler> SOEHandler;
+	std::shared_ptr<opendnp3::IMasterApplication> application;
 	opendnp3::MContext mcontext;
 };
 

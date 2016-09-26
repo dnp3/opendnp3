@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 	auto master = pChannel->AddMaster(
 	                  "master",											// id for logging
 	                  PrintingSOEHandler::Create(),						// callback for data processing
-	                  asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
+	                  asiodnp3::DefaultMasterApplication::Create(),		// master application instance
 	                  stackConfig										// stack configuration
 	              );
 

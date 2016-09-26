@@ -36,13 +36,14 @@ MasterStack::MasterStack(
     std::unique_ptr<LogRoot> root,
     asiopal::ASIOExecutor& executor,
 	std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-    opendnp3::IMasterApplication& application,
+	std::shared_ptr<opendnp3::IMasterApplication> application,
     const MasterStackConfig& config,
     IStackLifecycle& lifecycle,
     opendnp3::ITaskLock& taskLock) :
-	MasterStackBase<IMaster>(std::move(root), executor, application, config, lifecycle),
+	MasterStackBase<IMaster>(std::move(root), executor, *application, config, lifecycle),
 	SOEHandler(SOEHandler),
-	mcontext(executor, this->root->logger, stack.transport, *SOEHandler, application,  config.master, taskLock)
+	application(application),
+	mcontext(executor, this->root->logger, stack.transport, *SOEHandler, *application,  config.master, taskLock)
 {
 	this->SetContext(mcontext);
 }

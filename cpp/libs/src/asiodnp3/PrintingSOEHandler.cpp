@@ -26,8 +26,6 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-PrintingSOEHandler PrintingSOEHandler::instance;
-
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
 	return PrintAll(info, values);

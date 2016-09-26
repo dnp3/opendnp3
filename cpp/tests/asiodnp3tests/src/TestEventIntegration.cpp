@@ -220,7 +220,7 @@ IMaster* ConfigureMaster(DNP3Manager& manager, std::shared_ptr<ISOEHandler> hand
 
 	MasterStackConfig mconfig;
 	mconfig.master.startupIntegrityClassMask = ClassField::None(); //disable integrity poll so we don't have to worry about static values coming back
-	auto master = client->AddMaster("master", handler, DefaultMasterApplication::Instance(), mconfig);
+	auto master = client->AddMaster("master", handler, DefaultMasterApplication::Create(), mconfig);
 	master->Enable();
 	return master;
 }
