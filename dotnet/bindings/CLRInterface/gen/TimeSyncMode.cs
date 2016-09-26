@@ -26,12 +26,12 @@ namespace Automatak.DNP3.Interface
   public enum TimeSyncMode : byte
   {
     /// <summary>
-    /// don't perform a time-sync
-    /// </summary>
-    None = 0,
-    /// <summary>
     /// synchronize the outstation's time using the serial time sync procedure
     /// </summary>
-    SerialTimeSync = 1
+    SerialTimeSync = 1,
+    /// <summary>
+    /// don't perform a time-sync
+    /// </summary>
+    None = 0
   }
 }

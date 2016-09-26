@@ -44,6 +44,7 @@ namespace jni
     jni::Duration JCache::Duration;
     jni::ArrayList JCache::ArrayList;
     jni::DoubleBit JCache::DoubleBit;
+    jni::TimeSyncMode JCache::TimeSyncMode;
 
     bool JCache::init(JNIEnv* env)
     {
@@ -93,6 +94,8 @@ namespace jni
         if(!success) return false;
         success = DoubleBit.init(env);
         if(!success) return false;
+        success = TimeSyncMode.init(env);
+        if(!success) return false;
         return true;
     }
 
@@ -120,5 +123,6 @@ namespace jni
         Duration.cleanup(env);
         ArrayList.cleanup(env);
         DoubleBit.cleanup(env);
+        TimeSyncMode.cleanup(env);
     }
 }

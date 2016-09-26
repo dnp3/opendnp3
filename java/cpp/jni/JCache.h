@@ -45,6 +45,7 @@
 #include "JNIDuration.h"
 #include "JNIArrayList.h"
 #include "JNIDoubleBit.h"
+#include "JNITimeSyncMode.h"
 
 namespace jni
 {
@@ -75,6 +76,7 @@ namespace jni
         static jni::Duration Duration;
         static jni::ArrayList ArrayList;
         static jni::DoubleBit DoubleBit;
+        static jni::TimeSyncMode TimeSyncMode;
     };
 }
 

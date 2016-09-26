@@ -30,10 +30,10 @@ namespace opendnp3 {
 */
 enum class TimeSyncMode : uint8_t
 {
-  /// don't perform a time-sync
-  None = 0,
   /// synchronize the outstation's time using the serial time sync procedure
-  SerialTimeSync = 1
+  SerialTimeSync = 1,
+  /// don't perform a time-sync
+  None = 0
 };
 
 

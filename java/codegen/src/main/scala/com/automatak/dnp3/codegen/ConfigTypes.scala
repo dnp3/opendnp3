@@ -21,6 +21,10 @@ object MethodFilter {
       method.getName == string && args.map(_ == method.getParameterCount).getOrElse(true)
     }
   }
+
+  def any(filters: MethodFilter*) : MethodFilter = new MethodFilter {
+    override def matches(method: Method): Boolean = filters.exists(_.matches(method))
+  }
 }
 
 trait ConstructorFilter {

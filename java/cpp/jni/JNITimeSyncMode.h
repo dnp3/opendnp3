@@ -10,7 +10,7 @@
 // 
 // This file is auto-generated. Do not edit manually
 // 
-// Copyright 2013 Automatak LLC
+// Copyright 2016 Automatak LLC
 // 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
@@ -18,41 +18,34 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-package com.automatak.dnp3.enums;
-/**
-* Determines what the master station does when it sees the NEED_TIME iin bit
-*/
-public enum TimeSyncMode
+#ifndef OPENDNP3JAVA_JNITIMESYNCMODE_H
+#define OPENDNP3JAVA_JNITIMESYNCMODE_H
+
+#include <jni.h>
+
+namespace jni
 {
-  /**
-  * synchronize the outstation's time using the serial time sync procedure
-  */
-  SerialTimeSync(1),
-  /**
-  * don't perform a time-sync
-  */
-  None(0);
-
-  private final int id;
-
-  public int toType()
-  {
-    return id;
-  }
-
-  TimeSyncMode(int id)
-  {
-    this.id = id;
-  }
-
-  public static TimeSyncMode fromType(int arg)
-  {
-    switch(arg)
+    class TimeSyncMode
     {
-      case(1):
-        return SerialTimeSync;
-      default:
-        return None;
-    }
-  }
+        friend struct JCache;
+
+        bool init(JNIEnv* env);
+        void cleanup(JNIEnv* env);
+
+        public:
+
+        // methods
+        jobject fromType(JNIEnv* env, jint arg0);
+        jint toType(JNIEnv* env, jobject instance);
+
+        private:
+
+        jclass clazz = nullptr;
+
+        // method ids
+        jmethodID fromTypeMethod = nullptr;
+        jmethodID toTypeMethod = nullptr;
+    };
 }
+
+#endif

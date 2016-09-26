@@ -18,17 +18,17 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNITimestampMode.h"
+#include "JNITimeSyncMode.h"
 
 namespace jni
 {
-    bool TimestampMode::init(JNIEnv* env)
+    bool TimeSyncMode::init(JNIEnv* env)
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/TimestampMode;");
+        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/TimeSyncMode;");
         this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
         env->DeleteLocalRef(clazzTemp);
 
-        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/TimestampMode;");
+        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/TimeSyncMode;");
         if(!this->fromTypeMethod) return false;
 
         this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
@@ -37,17 +37,17 @@ namespace jni
         return true;
     }
 
-    void TimestampMode::cleanup(JNIEnv* env)
+    void TimeSyncMode::cleanup(JNIEnv* env)
     {
         env->DeleteGlobalRef(this->clazz);
     }
 
-    jobject TimestampMode::fromType(JNIEnv* env, jint arg0)
+    jobject TimeSyncMode::fromType(JNIEnv* env, jint arg0)
     {
         return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
     }
 
-    jint TimestampMode::toType(JNIEnv* env, jobject instance)
+    jint TimeSyncMode::toType(JNIEnv* env, jobject instance)
     {
         return env->CallIntMethod(instance, this->toTypeMethod);
     }

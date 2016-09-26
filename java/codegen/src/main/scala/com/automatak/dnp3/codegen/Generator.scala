@@ -8,7 +8,13 @@ import com.automatak.dnp3.enums._
 object Generator {
 
 
-  def enumeration(clazz: Class[_]) = ClassConfig(clazz, Set(Features.Methods), MethodFilter.strictlyEqual("fromType"))
+  def enumeration(clazz: Class[_]): ClassConfig = {
+    ClassConfig(
+      clazz,
+      Set(Features.Methods),
+      MethodFilter.any(MethodFilter.strictlyEqual("fromType"), MethodFilter.strictlyEqual("toType"))
+    )
+  }
 
   def listMethods = MethodFilter.strictlyEqual("add", Some(1))
   def listConstructors = ConstructorFilter.withParamTypes(List("int"))
@@ -42,7 +48,8 @@ object Generator {
     ClassConfig(classOf[AnalogOutputStatus], Set(Features.Constructors)),
     ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodFilter.strictlyEqual("toMillis")),
     ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), listMethods, listConstructors),
-    enumeration(classOf[DoubleBit])
+    enumeration(classOf[DoubleBit]),
+    enumeration(classOf[TimeSyncMode])
   )
 
   def main(args: Array[String]): Unit = {

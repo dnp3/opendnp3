@@ -49,9 +49,9 @@ public:
 private:	
 
 	template <class T, class CreateMeas, class CallProxy>
-	void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<T>>& values, const CreateMeas& measFun, const CallProxy& proxyFun);
+	void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<T>>& values, const CreateMeas& createMeas, const CallProxy& callProxy);
 
-	jobject Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
+	static jobject Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
 
 	GlobalRef proxy;
 			

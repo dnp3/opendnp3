@@ -36,6 +36,7 @@ namespace jni
 
         // methods
         jobject fromType(JNIEnv* env, jint arg0);
+        jint toType(JNIEnv* env, jobject instance);
 
         private:
 
@@ -43,6 +44,7 @@ namespace jni
 
         // method ids
         jmethodID fromTypeMethod = nullptr;
+        jmethodID toTypeMethod = nullptr;
     };
 }
 

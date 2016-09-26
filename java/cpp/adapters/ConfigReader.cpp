@@ -39,20 +39,20 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 {	
 	MasterParams cfg;	
 
-	//cfg.responseTimeout = ConvertDuration(env, jni::JCache::MasterConfig.getresponseTimeout(env, jcfg));
+	auto& config = jni::JCache::MasterConfig;
+	auto& dur = jni::JCache::Duration;
 
-/*
-	cfg.timeSyncMode = (TimeSyncMode) GetEnumId(env, JNI::GetObjectField(env, jcfg, fields::timeSyncMode, classes::TimeSyncMode::fqcn));
-	cfg.disableUnsolOnStartup = JNI::GetBoolField(env, jcfg, fields::disableUnsolOnStartup);
-	cfg.ignoreRestartIIN = JNI::GetBoolField(env, jcfg, fields::ignoreRestartIIN);
-	cfg.unsolClassMask = ConvertClassField(env, JNI::GetObjectField(env, jcfg, fields::unsolClassMask, classes::ClassField::fqcn));
-	cfg.startupIntegrityClassMask = ConvertClassField(env, JNI::GetObjectField(env, jcfg, fields::startupIntegrityClassMask, classes::ClassField::fqcn));
-	cfg.integrityOnEventOverflowIIN = JNI::GetBoolField(env, jcfg, fields::integrityOnEventOverflowIIN);
-	cfg.taskRetryPeriod = ConvertDuration(env, JNI::GetObjectField(env, jcfg, fields::taskRetryPeriod, classes::Duration::fqcn));
-	cfg.taskStartTimeout = ConvertDuration(env, JNI::GetObjectField(env, jcfg, fields::taskStartTimeout, classes::Duration::fqcn));
-	cfg.maxTxFragSize = JNI::GetIntField(env, jcfg, fields::maxTxFragSize);
-	cfg.maxRxFragSize = JNI::GetIntField(env, jcfg, fields::maxRxFragSize);
-*/
+	cfg.responseTimeout = TimeDuration::Milliseconds(dur.toMillis(env, config.getresponseTimeout(env, jcfg)));
+	cfg.timeSyncMode = static_cast<TimeSyncMode>(jni::JCache::TimeSyncMode.toType(env, config.gettimeSyncMode(env, jcfg)));
+	cfg.disableUnsolOnStartup = !!config.getdisableUnsolOnStartup(env, jcfg);
+	cfg.ignoreRestartIIN = !!config.getignoreRestartIIN(env, jcfg);
+	cfg.unsolClassMask = ConvertClassField(env, config.getunsolClassMask(env, jcfg));
+	cfg.startupIntegrityClassMask = ConvertClassField(env, config.getstartupIntegrityClassMask(env, jcfg));
+	cfg.integrityOnEventOverflowIIN = !!config.getintegrityOnEventOverflowIIN(env, jcfg);
+	cfg.taskRetryPeriod = TimeDuration::Milliseconds(dur.toMillis(env, config.gettaskRetryPeriod(env, jcfg)));
+	cfg.taskStartTimeout = TimeDuration::Milliseconds(dur.toMillis(env, config.gettaskStartTimeout(env, jcfg)));
+	cfg.maxTxFragSize = config.getmaxTxFragSize(env, jcfg);
+	cfg.maxRxFragSize = config.getmaxRxFragSize(env, jcfg);
 
 	return cfg;
 }

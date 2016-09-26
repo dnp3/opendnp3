@@ -9,10 +9,11 @@ object TimeSyncMode {
     "Determines what the master station does when it sees the NEED_TIME iin bit"
   )
 
-  def apply(): EnumModel = EnumModel("TimeSyncMode", comments, EnumModel.UInt8, codes, None, Base10)
+  def defaultValue = EnumValue("None", 0, "don't perform a time-sync")
+
+  def apply(): EnumModel = EnumModel("TimeSyncMode", comments, EnumModel.UInt8, codes, Some(defaultValue), Base10)
 
   private val codes = List(
-    EnumValue("None", 0, "don't perform a time-sync"),
     EnumValue("SerialTimeSync", 1, "synchronize the outstation's time using the serial time sync procedure")
   )
 

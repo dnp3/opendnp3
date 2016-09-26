@@ -31,6 +31,9 @@ namespace jni
         this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
         if(!this->fromTypeMethod) return false;
 
+        this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
+        if(!this->toTypeMethod) return false;
+
         return true;
     }
 
@@ -42,5 +45,10 @@ namespace jni
     jobject GroupVariation::fromType(JNIEnv* env, jint arg0)
     {
         return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+    }
+
+    jint GroupVariation::toType(JNIEnv* env, jobject instance)
+    {
+        return env->CallIntMethod(instance, this->toTypeMethod);
     }
 }
