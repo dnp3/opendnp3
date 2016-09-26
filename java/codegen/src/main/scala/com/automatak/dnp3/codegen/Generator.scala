@@ -77,7 +77,7 @@ object Generator {
     ClassConfig(classOf[AnalogOutputFloat32], Set(Features.Fields)),
     ClassConfig(classOf[AnalogOutputDouble64], Set(Features.Fields)),
     enumeration(classOf[ControlCode])
-  )
+  ).sortBy(_.clazz.getSimpleName)
 
   def main(args: Array[String]): Unit = {
 

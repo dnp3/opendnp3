@@ -23,54 +23,54 @@
 
 #include "openpal/util/Uncopyable.h"
 
-#include "JNIMasterStackConfig.h"
-#include "JNIMasterConfig.h"
+#include "JNIAnalogInput.h"
+#include "JNIAnalogOutputDouble64.h"
+#include "JNIAnalogOutputFloat32.h"
+#include "JNIAnalogOutputInt16.h"
+#include "JNIAnalogOutputInt32.h"
+#include "JNIAnalogOutputStatus.h"
+#include "JNIArrayList.h"
+#include "JNIBinaryInput.h"
+#include "JNIBinaryOutputStatus.h"
+#include "JNIClassAssignment.h"
+#include "JNIClassField.h"
+#include "JNICommandBuilderImpl.h"
+#include "JNICommandHeaders.h"
+#include "JNICommandPointResult.h"
+#include "JNICommandPointState.h"
+#include "JNICommandProcessor.h"
+#include "JNICommandStatus.h"
+#include "JNICommandTaskResult.h"
+#include "JNICompletableFuture.h"
+#include "JNIControlCode.h"
+#include "JNIControlRelayOutputBlock.h"
+#include "JNICounter.h"
+#include "JNIDoubleBit.h"
+#include "JNIDoubleBitBinaryInput.h"
+#include "JNIDuration.h"
+#include "JNIFrozenCounter.h"
+#include "JNIGroupVariation.h"
+#include "JNIHeaderInfo.h"
+#include "JNIIINField.h"
+#include "JNIIndexedValue.h"
+#include "JNIIterable.h"
+#include "JNIIterator.h"
 #include "JNILinkLayerConfig.h"
 #include "JNILogEntry.h"
 #include "JNILogHandler.h"
-#include "JNIClassField.h"
-#include "JNISOEHandler.h"
-#include "JNIHeaderInfo.h"
-#include "JNIGroupVariation.h"
-#include "JNIQualifierCode.h"
-#include "JNITimestampMode.h"
-#include "JNIIndexedValue.h"
-#include "JNIBinaryInput.h"
-#include "JNIDoubleBitBinaryInput.h"
-#include "JNIAnalogInput.h"
-#include "JNICounter.h"
-#include "JNIFrozenCounter.h"
-#include "JNIBinaryOutputStatus.h"
-#include "JNIAnalogOutputStatus.h"
-#include "JNIDuration.h"
-#include "JNIArrayList.h"
-#include "JNIDoubleBit.h"
-#include "JNITimeSyncMode.h"
 #include "JNIMasterApplication.h"
-#include "JNIIINField.h"
+#include "JNIMasterConfig.h"
+#include "JNIMasterStackConfig.h"
 #include "JNIMasterTaskType.h"
+#include "JNIQualifierCode.h"
+#include "JNIRange.h"
+#include "JNISOEHandler.h"
+#include "JNIStack.h"
+#include "JNITaskCompletion.h"
 #include "JNITaskId.h"
 #include "JNITaskInfo.h"
-#include "JNITaskCompletion.h"
-#include "JNIIterable.h"
-#include "JNIIterator.h"
-#include "JNIClassAssignment.h"
-#include "JNIRange.h"
-#include "JNICommandProcessor.h"
-#include "JNIStack.h"
-#include "JNICommandBuilderImpl.h"
-#include "JNICommandHeaders.h"
-#include "JNICommandTaskResult.h"
-#include "JNICommandPointResult.h"
-#include "JNICommandPointState.h"
-#include "JNICommandStatus.h"
-#include "JNICompletableFuture.h"
-#include "JNIControlRelayOutputBlock.h"
-#include "JNIAnalogOutputInt16.h"
-#include "JNIAnalogOutputInt32.h"
-#include "JNIAnalogOutputFloat32.h"
-#include "JNIAnalogOutputDouble64.h"
-#include "JNIControlCode.h"
+#include "JNITimeSyncMode.h"
+#include "JNITimestampMode.h"
 
 namespace jni
 {
@@ -79,54 +79,54 @@ namespace jni
         static bool init(JNIEnv* env);
         static void cleanup(JNIEnv* env);
 
-        static jni::MasterStackConfig MasterStackConfig;
-        static jni::MasterConfig MasterConfig;
+        static jni::AnalogInput AnalogInput;
+        static jni::AnalogOutputDouble64 AnalogOutputDouble64;
+        static jni::AnalogOutputFloat32 AnalogOutputFloat32;
+        static jni::AnalogOutputInt16 AnalogOutputInt16;
+        static jni::AnalogOutputInt32 AnalogOutputInt32;
+        static jni::AnalogOutputStatus AnalogOutputStatus;
+        static jni::ArrayList ArrayList;
+        static jni::BinaryInput BinaryInput;
+        static jni::BinaryOutputStatus BinaryOutputStatus;
+        static jni::ClassAssignment ClassAssignment;
+        static jni::ClassField ClassField;
+        static jni::CommandBuilderImpl CommandBuilderImpl;
+        static jni::CommandHeaders CommandHeaders;
+        static jni::CommandPointResult CommandPointResult;
+        static jni::CommandPointState CommandPointState;
+        static jni::CommandProcessor CommandProcessor;
+        static jni::CommandStatus CommandStatus;
+        static jni::CommandTaskResult CommandTaskResult;
+        static jni::CompletableFuture CompletableFuture;
+        static jni::ControlCode ControlCode;
+        static jni::ControlRelayOutputBlock ControlRelayOutputBlock;
+        static jni::Counter Counter;
+        static jni::DoubleBit DoubleBit;
+        static jni::DoubleBitBinaryInput DoubleBitBinaryInput;
+        static jni::Duration Duration;
+        static jni::FrozenCounter FrozenCounter;
+        static jni::GroupVariation GroupVariation;
+        static jni::HeaderInfo HeaderInfo;
+        static jni::IINField IINField;
+        static jni::IndexedValue IndexedValue;
+        static jni::Iterable Iterable;
+        static jni::Iterator Iterator;
         static jni::LinkLayerConfig LinkLayerConfig;
         static jni::LogEntry LogEntry;
         static jni::LogHandler LogHandler;
-        static jni::ClassField ClassField;
-        static jni::SOEHandler SOEHandler;
-        static jni::HeaderInfo HeaderInfo;
-        static jni::GroupVariation GroupVariation;
-        static jni::QualifierCode QualifierCode;
-        static jni::TimestampMode TimestampMode;
-        static jni::IndexedValue IndexedValue;
-        static jni::BinaryInput BinaryInput;
-        static jni::DoubleBitBinaryInput DoubleBitBinaryInput;
-        static jni::AnalogInput AnalogInput;
-        static jni::Counter Counter;
-        static jni::FrozenCounter FrozenCounter;
-        static jni::BinaryOutputStatus BinaryOutputStatus;
-        static jni::AnalogOutputStatus AnalogOutputStatus;
-        static jni::Duration Duration;
-        static jni::ArrayList ArrayList;
-        static jni::DoubleBit DoubleBit;
-        static jni::TimeSyncMode TimeSyncMode;
         static jni::MasterApplication MasterApplication;
-        static jni::IINField IINField;
+        static jni::MasterConfig MasterConfig;
+        static jni::MasterStackConfig MasterStackConfig;
         static jni::MasterTaskType MasterTaskType;
+        static jni::QualifierCode QualifierCode;
+        static jni::Range Range;
+        static jni::SOEHandler SOEHandler;
+        static jni::Stack Stack;
+        static jni::TaskCompletion TaskCompletion;
         static jni::TaskId TaskId;
         static jni::TaskInfo TaskInfo;
-        static jni::TaskCompletion TaskCompletion;
-        static jni::Iterable Iterable;
-        static jni::Iterator Iterator;
-        static jni::ClassAssignment ClassAssignment;
-        static jni::Range Range;
-        static jni::CommandProcessor CommandProcessor;
-        static jni::Stack Stack;
-        static jni::CommandBuilderImpl CommandBuilderImpl;
-        static jni::CommandHeaders CommandHeaders;
-        static jni::CommandTaskResult CommandTaskResult;
-        static jni::CommandPointResult CommandPointResult;
-        static jni::CommandPointState CommandPointState;
-        static jni::CommandStatus CommandStatus;
-        static jni::CompletableFuture CompletableFuture;
-        static jni::ControlRelayOutputBlock ControlRelayOutputBlock;
-        static jni::AnalogOutputInt16 AnalogOutputInt16;
-        static jni::AnalogOutputInt32 AnalogOutputInt32;
-        static jni::AnalogOutputFloat32 AnalogOutputFloat32;
-        static jni::AnalogOutputDouble64 AnalogOutputDouble64;
-        static jni::ControlCode ControlCode;
+        static jni::TimeSyncMode TimeSyncMode;
+        static jni::TimestampMode TimestampMode;
     };
 }
 
