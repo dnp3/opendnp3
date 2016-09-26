@@ -10,6 +10,9 @@ object Generator {
 
   def enumeration(clazz: Class[_]) = ClassConfig(clazz, Set(Features.Methods), MethodFilter.strictlyEqual("fromType"))
 
+  def listMethods = MethodFilter.strictlyEqual("add", Some(1))
+  def listConstructors = ConstructorFilter.withParamTypes(List("int"))
+
   implicit val indent = CppIndentation
 
  // val javaGenPath = FileSystems.getDefault.getPath("./cpp/adapters/JNIStrings.h");
@@ -38,7 +41,8 @@ object Generator {
     ClassConfig(classOf[BinaryOutputStatus], Set(Features.Constructors)),
     ClassConfig(classOf[AnalogOutputStatus], Set(Features.Constructors)),
     ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodFilter.strictlyEqual("toMillis")),
-    ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), MethodFilter.strictlyEqual("add", Some(1)), ConstructorFilter.withParamTypes(List("int")))
+    ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), listMethods, listConstructors),
+    enumeration(classOf[DoubleBit])
   )
 
   def main(args: Array[String]): Unit = {

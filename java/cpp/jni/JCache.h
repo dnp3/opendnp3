@@ -44,6 +44,7 @@
 #include "JNIAnalogOutputStatus.h"
 #include "JNIDuration.h"
 #include "JNIArrayList.h"
+#include "JNIDoubleBit.h"
 
 namespace jni
 {
@@ -73,6 +74,7 @@ namespace jni
         static jni::AnalogOutputStatus AnalogOutputStatus;
         static jni::Duration Duration;
         static jni::ArrayList ArrayList;
+        static jni::DoubleBit DoubleBit;
     };
 }
 

@@ -43,6 +43,7 @@ namespace jni
     jni::AnalogOutputStatus JCache::AnalogOutputStatus;
     jni::Duration JCache::Duration;
     jni::ArrayList JCache::ArrayList;
+    jni::DoubleBit JCache::DoubleBit;
 
     bool JCache::init(JNIEnv* env)
     {
@@ -90,6 +91,8 @@ namespace jni
         if(!success) return false;
         success = ArrayList.init(env);
         if(!success) return false;
+        success = DoubleBit.init(env);
+        if(!success) return false;
         return true;
     }
 
@@ -116,5 +119,6 @@ namespace jni
         AnalogOutputStatus.cleanup(env);
         Duration.cleanup(env);
         ArrayList.cleanup(env);
+        DoubleBit.cleanup(env);
     }
 }
