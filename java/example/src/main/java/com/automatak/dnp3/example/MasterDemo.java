@@ -58,7 +58,7 @@ public class MasterDemo {
     static void run(DNP3Manager manager) throws Exception
     {
         // Create a tcp channel class that will connect to the loopback
-        Channel channel = manager.addTCPClient("client", LogMasks.NORMAL, ChannelRetry.getDefault(), "127.0.0.1", "0.0.0.0", 20000);
+        Channel channel = manager.addTCPClient("client", LogMasks.NORMAL | LogMasks.APP_COMMS, ChannelRetry.getDefault(), "127.0.0.1", "0.0.0.0", 20000);
 
         // You can modify the defaults to change the way the master behaves
         MasterStackConfig config = new MasterStackConfig();
@@ -66,8 +66,10 @@ public class MasterDemo {
         // Create a master instance, pass in a simple singleton to print received values to the console
         Master master = channel.addMaster("master", PrintingSOEHandler.getInstance(), DefaultMasterApplication.getInstance(), config);
 
+        /*
         // This sub-interface can issue command requests
         CommandProcessor processor = master.getCommandProcessor();
+        */
 
         // all this cruft just to read a line of text in Java. Oh the humanity.
         InputStreamReader converter = new InputStreamReader(System.in);
@@ -78,9 +80,11 @@ public class MasterDemo {
             String line = in.readLine();
             if(line.equals("quit")) break;
             else {
+                /*
                 ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);
                 CompletableFuture<CommandTaskResult> future = processor.selectAndOperate(crob, 0, TaskConfig.getDefault());
                 System.out.println("Command result: " + future.get().toString());
+                */
             }
         }
     }

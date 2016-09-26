@@ -22,6 +22,13 @@
 
 using namespace opendnp3;
 	
+openpal::UTCTimestamp MasterApplicationAdapter::Now()
+{
+	const auto env = JNI::GetEnv();
+	const auto ms = jni::JCache::MasterApplication.getMillisecondsSinceEpoch(env, proxy);
+	return openpal::UTCTimestamp(ms);
+}
+
 void MasterApplicationAdapter::OnReceiveIIN(const IINField& iin)
 {
 	const auto env = JNI::GetEnv();

@@ -65,7 +65,7 @@ public class MasterConfig {
      * Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
      * A mask equal to 0 means no startup integrity scan will be performed
      */
-    public ClassField startupIntegrityClassMask = ClassField.none();
+    public ClassField startupIntegrityClassMask = ClassField.allClasses();
 
     /**
      * Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected

@@ -43,8 +43,7 @@ public class PrintingSOEHandler implements SOEHandler {
     }
 
     @Override
-    public void processBI(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values)
-    {}
+    public void processBI(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values) {}
 
     @Override
     public void processDBI(HeaderInfo info, Iterable<IndexedValue<DoubleBitBinaryInput>> values) {}

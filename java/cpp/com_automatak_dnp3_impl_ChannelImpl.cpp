@@ -5,6 +5,9 @@
 
 #include "adapters/ConfigReader.h"
 #include "adapters/SOEHandlerAdapter.h"
+#include "adapters/MasterApplicationAdapter.h"
+
+#include "adapters/CString.h"
 
 #include <memory>
 
@@ -20,16 +23,20 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
 
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
-(JNIEnv* env, jobject, jlong native, jstring id, jobject handler, jobject application, jobject jconfig)
+(JNIEnv* env, jobject, jlong native, jstring jid, jobject handler, jobject application, jobject jconfig)
 {
 	const auto channel = (IChannel*)native;
 
 	auto config = ConfigReader::ConvertMasterStackConfig(env, jconfig);
+	auto soeAdapter = std::make_shared<SOEHandlerAdapter>(handler);
+	auto appAdapter = std::make_shared<MasterApplicationAdapter>(application);
 
-	auto hadapter = std::make_shared<SOEHandlerAdapter>(handler);
-	//auto appadapter
+	CString id(env, jid);
 
+	auto master = channel->AddMaster(id, soeAdapter, appAdapter, config);
 
-	return 0;
+	master->Enable();
+
+	return (jlong) master;
 }
 
