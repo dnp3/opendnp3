@@ -16,18 +16,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3;
+package com.automatak.dnp3.mock;
 
+import com.automatak.dnp3.*;
 import com.automatak.dnp3.enums.ChannelState;
 
-/**
- * Callback interface invoked when the state of a communication channel changes
- */
-public interface ChannelStateListener {
+public class PrintingChannelListener implements ChannelListener {
 
-    /**
-     * Invoked when the state changes
-     * @param state State enumeration
-     */
-    void onStateChange(ChannelState state);
+    private static PrintingChannelListener instance = new PrintingChannelListener();
+
+    public static ChannelListener getInstance() {
+        return instance;
+    }
+
+    private PrintingChannelListener(){}
+
+    @Override
+    public  void onStateChange(ChannelState state)
+    {
+        System.out.println("Channel state: " + state);
+    }
 }

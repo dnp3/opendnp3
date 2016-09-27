@@ -16,27 +16,32 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3.impl;
+#ifndef OPENDNP3_CHANNELLISTENERADAPTER_H
+#define OPENDNP3_CHANNELLISTENERADAPTER_H
 
-import com.automatak.dnp3.ChannelStateListener;
-import com.automatak.dnp3.enums.ChannelState;
+#include "asiodnp3/IChannelListener.h"
 
-/**
- * Proxy class that makes marshalling the channel state enumeration easier
- */
-class ChannelStateProxy {
+#include "GlobalRef.h"
 
-    private final ChannelStateListener listener;
+#include "../jni/JCache.h"
 
-    public ChannelStateProxy(ChannelStateListener listener)
-    {
-        this.listener = listener;
-    }
+class ChannelListenerAdapter : public asiodnp3::IChannelListener
+{
+public:
 
-    public void onStateChange(int state)
-    {
-        listener.onStateChange(ChannelState.fromType(state));
-    }
+	ChannelListenerAdapter(jobject proxy) : proxy(proxy) {}
 
+	virtual void OnStateChange(opendnp3::ChannelState state) override
+	{
+		const auto env = JNI::GetEnv();
+		const auto jstate = jni::JCache::ChannelState.fromType(env, static_cast<jint>(state));
+		jni::JCache::ChannelListener.onStateChange(env, proxy, jstate);
+	}
 
-}
+private:	
+
+	GlobalRef proxy;
+			
+};
+
+#endif

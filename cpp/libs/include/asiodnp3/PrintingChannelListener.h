@@ -38,7 +38,7 @@ class PrintingChannelListener final : public IChannelListener, private openpal::
 {
 public:
 
-	virtual void OnStateChange(opendnp3::ChannelState& state) override
+	virtual void OnStateChange(opendnp3::ChannelState state) override
 	{
 		std::cout << "channel state change: " << opendnp3::ChannelStateToString(state) << std::endl;
 	}

@@ -38,7 +38,7 @@ public:
 	/*
 	* Receive callbacks for state transitions on the channels executor
 	*/
-	virtual void OnStateChange(opendnp3::ChannelState& state) = 0;
+	virtual void OnStateChange(opendnp3::ChannelState state) = 0;
 
 };
 

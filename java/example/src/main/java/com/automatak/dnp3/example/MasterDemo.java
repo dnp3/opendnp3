@@ -23,6 +23,7 @@ import com.automatak.dnp3.enums.CommandStatus;
 import com.automatak.dnp3.enums.ControlCode;
 import com.automatak.dnp3.impl.DNP3ManagerFactory;
 import com.automatak.dnp3.mock.DefaultMasterApplication;
+import com.automatak.dnp3.mock.PrintingChannelListener;
 import com.automatak.dnp3.mock.PrintingLogHandler;
 import com.automatak.dnp3.mock.PrintingSOEHandler;
 
@@ -58,7 +59,15 @@ public class MasterDemo {
     static void run(DNP3Manager manager) throws Exception
     {
         // Create a tcp channel class that will connect to the loopback
-        Channel channel = manager.addTCPClient("client", LogMasks.NORMAL | LogMasks.APP_COMMS, ChannelRetry.getDefault(), "127.0.0.1", "0.0.0.0", 20000);
+        Channel channel = manager.addTCPClient(
+                "client",
+                LogMasks.NORMAL | LogMasks.APP_COMMS,
+                ChannelRetry.getDefault(),
+                "127.0.0.1",
+                "0.0.0.0",
+                20000,
+                PrintingChannelListener.getInstance()
+        );
 
         // You can modify the defaults to change the way the master behaves
         MasterStackConfig config = new MasterStackConfig();

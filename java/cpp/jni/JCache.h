@@ -32,6 +32,8 @@
 #include "JNIArrayList.h"
 #include "JNIBinaryInput.h"
 #include "JNIBinaryOutputStatus.h"
+#include "JNIChannelListener.h"
+#include "JNIChannelState.h"
 #include "JNIClassAssignment.h"
 #include "JNIClassField.h"
 #include "JNICommandBuilderImpl.h"
@@ -88,6 +90,8 @@ namespace jni
         static jni::ArrayList ArrayList;
         static jni::BinaryInput BinaryInput;
         static jni::BinaryOutputStatus BinaryOutputStatus;
+        static jni::ChannelListener ChannelListener;
+        static jni::ChannelState ChannelState;
         static jni::ClassAssignment ClassAssignment;
         static jni::ClassField ClassField;
         static jni::CommandBuilderImpl CommandBuilderImpl;

@@ -36,9 +36,9 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
-    public Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port) throws DNP3Exception
+    public Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port, ChannelListener listener) throws DNP3Exception
     {
-        long ptr = get_native_channel_tcp_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), address, adapter, port);
+        long ptr = get_native_channel_tcp_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), address, adapter, port, listener);
 
         if(ptr == 0) {
            throw new DNP3Exception("Unable to create channel");
@@ -48,9 +48,9 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
-    public Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port) throws DNP3Exception
+    public Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port, ChannelListener listener) throws DNP3Exception
     {
-        long ptr = get_native_channel_tcp_server(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), endpoint, port);
+        long ptr = get_native_channel_tcp_server(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), endpoint, port, listener);
 
         if(ptr == 0) {
             throw new DNP3Exception("Unable to create channel");
@@ -60,7 +60,7 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
-    public Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings) throws DNP3Exception
+    public Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings, ChannelListener listener) throws DNP3Exception
     {
         long ptr = get_native_channel_serial(
                 this.pointer,
@@ -73,7 +73,8 @@ class ManagerImpl implements DNP3Manager {
                 settings.dataBits,
                 settings.parity.toInt(),
                 settings.stopBits,
-                settings.flowControl.toInt()
+                settings.flowControl.toInt(),
+                listener
         );
 
         if(ptr == 0) {
@@ -96,9 +97,9 @@ class ManagerImpl implements DNP3Manager {
     private native long create_native_manager(int concurrency, LogHandler handler);
     private native void shutdown_native_manager(long nativePointer);
 
-    private native long get_native_channel_tcp_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String address, String adapter, int port);
-    private native long get_native_channel_tcp_server(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String endpoint, int port);
-    private native long get_native_channel_serial(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl);
+    private native long get_native_channel_tcp_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String address, String adapter, int port, ChannelListener listener);
+    private native long get_native_channel_tcp_server(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String endpoint, int port, ChannelListener listener);
+    private native long get_native_channel_serial(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl, ChannelListener listener);
 
 
 }

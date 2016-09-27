@@ -5,6 +5,7 @@
 
 #include "adapters/CString.h"
 #include "adapters/LogHandlerAdapter.h"
+#include "adapters/ChannelListenerAdapter.h"
 
 using namespace asiodnp3;
 using namespace opendnp3;
@@ -29,7 +30,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_shutdown_1native
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jhost, jstring jadapter, jint jport)
+(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jhost, jstring jadapter, jint jport, jobject jlistener)
 {
 	const auto manager = (DNP3Manager*) native;
 
@@ -38,17 +39,19 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	CString adapter(env, jadapter);
 	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
 
-	return (jlong) manager->AddTCPClient(id, jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), nullptr);	
+	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+
+	return (jlong) manager->AddTCPClient(id, jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), listener);	
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-(JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jint)
+(JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jint, jobject jlistener)
 {
 	return 0;
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
-(JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jint, jint, jint, jint, jint)
+(JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jint, jint, jint, jint, jint, jobject jlistener)
 {
 	return 0;
 }

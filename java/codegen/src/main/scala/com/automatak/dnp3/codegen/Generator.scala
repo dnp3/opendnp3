@@ -72,7 +72,9 @@ object Generator {
     ClassConfig(classOf[AnalogOutputInt32], Set(Features.Fields)),
     ClassConfig(classOf[AnalogOutputFloat32], Set(Features.Fields)),
     ClassConfig(classOf[AnalogOutputDouble64], Set(Features.Fields)),
-    enumeration(classOf[ControlCode])
+    enumeration(classOf[ControlCode]),
+    enumeration(classOf[ChannelState]),
+    ClassConfig(classOf[ChannelListener], Set(Features.Methods))
   ).sortBy(_.clazz.getSimpleName)
 
   def main(args: Array[String]): Unit = {

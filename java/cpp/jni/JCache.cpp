@@ -31,6 +31,8 @@ namespace jni
     jni::ArrayList JCache::ArrayList;
     jni::BinaryInput JCache::BinaryInput;
     jni::BinaryOutputStatus JCache::BinaryOutputStatus;
+    jni::ChannelListener JCache::ChannelListener;
+    jni::ChannelState JCache::ChannelState;
     jni::ClassAssignment JCache::ClassAssignment;
     jni::ClassField JCache::ClassField;
     jni::CommandBuilderImpl JCache::CommandBuilderImpl;
@@ -92,6 +94,10 @@ namespace jni
         success = BinaryInput.init(env);
         if(!success) return false;
         success = BinaryOutputStatus.init(env);
+        if(!success) return false;
+        success = ChannelListener.init(env);
+        if(!success) return false;
+        success = ChannelState.init(env);
         if(!success) return false;
         success = ClassAssignment.init(env);
         if(!success) return false;
@@ -185,6 +191,8 @@ namespace jni
         ArrayList.cleanup(env);
         BinaryInput.cleanup(env);
         BinaryOutputStatus.cleanup(env);
+        ChannelListener.cleanup(env);
+        ChannelState.cleanup(env);
         ClassAssignment.cleanup(env);
         ClassField.cleanup(env);
         CommandBuilderImpl.cleanup(env);
