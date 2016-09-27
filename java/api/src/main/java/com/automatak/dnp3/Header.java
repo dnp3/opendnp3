@@ -2,6 +2,8 @@ package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.QualifierCode;
 
+import java.util.Arrays;
+
 /**
  * Represents a header that can be used to specify various types of master tasks
  */
@@ -29,6 +31,27 @@ public class Header
     {
         return String.format("g{%d}v{%d} - {%s}", group, variation, qualifier);
     }
+
+    public static Iterable<Header> getIntegrity()
+    {
+        return Arrays.asList(
+            Header.allObjects((byte)60,(byte)1),
+            Header.allObjects((byte)60,(byte)2),
+            Header.allObjects((byte)60,(byte)3),
+            Header.allObjects((byte)60,(byte)4)
+        );
+    }
+
+    public static Iterable<Header> getEventClasses()
+    {
+        return Arrays.asList(
+                Header.allObjects((byte)60,(byte)2),
+                Header.allObjects((byte)60,(byte)3),
+                Header.allObjects((byte)60,(byte)4)
+        );
+    }
+
+
 
     /**
      * Header requesting all objects of the given type or class (in the case of Group 60 objects) are returned.

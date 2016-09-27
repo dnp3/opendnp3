@@ -30,6 +30,7 @@ import com.automatak.dnp3.mock.PrintingSOEHandler;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -75,6 +76,9 @@ public class MasterDemo {
         // Create a master instance, pass in a simple singleton to print received values to the console
         Master master = channel.addMaster("master", PrintingSOEHandler.getInstance(), DefaultMasterApplication.getInstance(), config);
 
+        // do an integrity scan once per minute
+        master.addPeriodicScan(Duration.ofMinutes(1), Header.getIntegrity());
+
         master.enable();
 
         // all this cruft just to read a line of text in Java. Oh the humanity.
@@ -84,13 +88,21 @@ public class MasterDemo {
         while (true) {
             System.out.println("Enter something to issue a command or type <quit> to exit");
             String line = in.readLine();
-            if(line.equals("quit")) break;
-            else {
-                ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);
-                master.selectAndOperateCROB(crob, 0).thenAccept(
-                        //asynchronously print the result of the command operation
-                        (CommandTaskResult result) -> System.out.println(result)
-                );
+            switch(line)
+            {
+                case("quit"):
+                    return;
+                case("crob"):
+                    ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);
+                    master.selectAndOperateCROB(crob, 0).thenAccept(
+                            //asynchronously print the result of the command operation
+                            (CommandTaskResult result) -> System.out.println(result)
+                    );
+                case("scan"):
+                    master.scan(Header.getEventClasses());
+                default:
+                    System.out.println("Unknown command: " + line);
+                    break;
             }
         }
     }
