@@ -31,10 +31,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, IndexMode indexMode_, StaticTypeBitField allowedClass0Types) :
+Database::Database(const DatabaseSizes& dbSizes, IEventReceiver& eventReceiver, IndexMode indexMode_, StaticTypeBitField allowedClass0Types) :
 	pEventReceiver(&eventReceiver),
 	indexMode(indexMode_),
-	buffers(dbTemplate, allowedClass0Types, indexMode_)
+	buffers(dbSizes, allowedClass0Types, indexMode_)
 {
 
 }

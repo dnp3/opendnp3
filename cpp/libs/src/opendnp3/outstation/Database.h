@@ -38,7 +38,7 @@ class Database : public IDatabase, private openpal::Uncopyable
 {
 public:
 
-	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, IndexMode indexMode, StaticTypeBitField allowedClass0Types);
+	Database(const DatabaseSizes&, IEventReceiver& eventReceiver, IndexMode indexMode, StaticTypeBitField allowedClass0Types);
 
 	// ------- IDatabase --------------
 

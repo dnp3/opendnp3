@@ -23,7 +23,7 @@
 
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
-#include "opendnp3/outstation/DatabaseTemplate.h"
+#include "opendnp3/outstation/DatabaseSizes.h"
 #include "opendnp3/link/LinkConfig.h"
 
 namespace opendnp3
@@ -36,18 +36,17 @@ namespace opendnp3
 struct OutstationStackConfig
 {
 
-	OutstationStackConfig(const DatabaseTemplate& dbTemplate_) :
-		dbTemplate(dbTemplate_),
+	OutstationStackConfig(const DatabaseSizes& dbSizes) :
+		dbSizes(dbSizes),
 		link(false, false)
 	{
 
 	}
 
-	OutstationStackConfig() : link(false, false)
-	{}
+	OutstationStackConfig() = delete;
 
 	// Configuration of the database
-	DatabaseTemplate dbTemplate;
+	DatabaseSizes dbSizes;
 
 	/// Outstation config
 	OutstationConfig outstation;

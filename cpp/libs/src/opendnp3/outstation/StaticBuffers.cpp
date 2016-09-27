@@ -23,15 +23,15 @@
 namespace opendnp3
 {
 
-StaticBuffers::StaticBuffers(const DatabaseTemplate& dbTemplate) :
-	binaries(dbTemplate.numBinary),
-	doubleBinaries(dbTemplate.numDoubleBinary),
-	analogs(dbTemplate.numAnalog),
-	counters(dbTemplate.numCounter),
-	frozenCounters(dbTemplate.numFrozenCounter),
-	binaryOutputStatii(dbTemplate.numBinaryOutputStatus),
-	analogOutputStatii(dbTemplate.numAnalogOutputStatus),
-	timeAndIntervals(dbTemplate.numTimeAndInterval)
+StaticBuffers::StaticBuffers(const DatabaseSizes& dbSizes) :
+	binaries(dbSizes.numBinary),
+	doubleBinaries(dbSizes.numDoubleBinary),
+	analogs(dbSizes.numAnalog),
+	counters(dbSizes.numCounter),
+	frozenCounters(dbSizes.numFrozenCounter),
+	binaryOutputStatii(dbSizes.numBinaryOutputStatus),
+	analogOutputStatii(dbSizes.numAnalogOutputStatus),
+	timeAndIntervals(dbSizes.numTimeAndInterval)
 {
 	this->SetDefaultIndices<BinarySpec>();
 	this->SetDefaultIndices<DoubleBitBinarySpec>();

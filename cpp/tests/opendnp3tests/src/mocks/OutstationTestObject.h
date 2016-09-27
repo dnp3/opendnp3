@@ -44,8 +44,7 @@ class OutstationTestObject
 {
 
 public:
-	OutstationTestObject(const OutstationConfig& config,
-	                     const DatabaseTemplate& dbTemplate = DatabaseTemplate());
+	OutstationTestObject(const OutstationConfig& config, const DatabaseSizes& dbSizes = DatabaseSizes::Empty());
 
 
 	uint32_t SendToOutstation(const std::string& hex);

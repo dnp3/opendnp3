@@ -38,7 +38,7 @@ OutstationStack::OutstationStack(
 	OutstationStackBase(std::move(root), executor, *application, config, lifecycle),
 	commandHandler(commandHandler),
 	application(application),
-	ocontext(config.outstation, config.dbTemplate, this->root->logger, executor, stack.transport, *commandHandler, *application)
+	ocontext(config.outstation, config.dbSizes, this->root->logger, executor, stack.transport, *commandHandler, *application)
 {
 	this->SetContext(ocontext);
 }

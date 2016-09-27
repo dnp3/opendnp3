@@ -204,8 +204,7 @@ IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numV
 {
 	auto server = manager.AddTCPServer("server", levels, ChannelRetry::Default(), "127.0.0.1", 20000, nullptr);
 
-	OutstationStackConfig stackConfig;
-	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(numValues);
+	OutstationStackConfig stackConfig(DatabaseSizes::AllTypes(numValues));
 	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(eventBufferSize);
 	stackConfig.outstation.params.allowUnsolicited = true;
 

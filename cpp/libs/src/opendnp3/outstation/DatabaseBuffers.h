@@ -26,7 +26,7 @@
 #include "opendnp3/gen/IndexMode.h"
 
 #include "opendnp3/outstation/IndexSearch.h"
-#include "opendnp3/outstation/DatabaseTemplate.h"
+#include "opendnp3/outstation/DatabaseSizes.h"
 #include "opendnp3/outstation/StaticBuffers.h"
 #include "opendnp3/outstation/SelectedRanges.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
@@ -46,7 +46,7 @@ class DatabaseBuffers : public IStaticSelector, public IResponseLoader, public I
 {
 public:
 
-	DatabaseBuffers(const DatabaseTemplate&, StaticTypeBitField allowedClass0Types, IndexMode indexMode);
+	DatabaseBuffers(const DatabaseSizes&, StaticTypeBitField allowedClass0Types, IndexMode indexMode);
 
 	// ------- IStaticSelector -------------
 

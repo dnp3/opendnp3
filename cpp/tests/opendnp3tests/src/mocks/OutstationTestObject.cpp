@@ -29,14 +29,14 @@ namespace opendnp3
 
 OutstationTestObject::OutstationTestObject(
     const OutstationConfig& config,
-    const DatabaseTemplate& dbTemplate
+    const DatabaseSizes& dbSizes
 ) :
 	log(),
 	exe(),
 	lower(),
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
-	context(config, dbTemplate, log.root.logger, exe, lower, cmdHandler, application)
+	context(config, dbSizes, log.root.logger, exe, lower, cmdHandler, application)
 {
 	lower.SetUpperLayer(context);
 }

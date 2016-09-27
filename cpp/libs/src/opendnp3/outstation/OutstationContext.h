@@ -53,7 +53,7 @@ class OContext : public IUpperLayer
 public:
 
 	OContext(	const OutstationConfig& config,
-	            const DatabaseTemplate& dbTemplate,
+	            const DatabaseSizes& dbSizes,
 	            openpal::Logger logger,
 	            openpal::IExecutor& executor,
 	            ILowerLayer& lower,

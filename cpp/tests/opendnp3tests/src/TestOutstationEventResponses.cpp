@@ -50,7 +50,7 @@ TEST_CASE(SUITE("ReadDiscontiguousEvent"))
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig(5);
 	config.params.indexMode = IndexMode::Discontiguous;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1));
+	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(1));
 	t.LowerLayerUp();
 
 	t.Transaction([](IDatabase & db)
@@ -66,7 +66,7 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 {
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1));
+	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(1));
 	t.LowerLayerUp();
 
 	t.Transaction([](IDatabase & db)
@@ -86,7 +86,7 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(100));
+	OutstationTestObject t(config, DatabaseSizes::AllTypes(100));
 
 	t.LowerLayerUp();
 
@@ -110,7 +110,7 @@ TEST_CASE(SUITE("EventBufferOverflowAndClear"))
 {
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(2);
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(100));
+	OutstationTestObject t(config, DatabaseSizes::AllTypes(100));
 
 	t.LowerLayerUp();
 
@@ -138,7 +138,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 {
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
+	OutstationTestObject t(config, DatabaseSizes::AllTypes(1));
 	t.LowerLayerUp();
 
 	auto view = t.context.GetConfigView();
@@ -188,7 +188,7 @@ const std::function<void(DatabaseConfigView& db)>& configure = [](DatabaseConfig
 
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(5));
+	OutstationTestObject t(config, DatabaseSizes::AllTypes(5));
 
 	auto view = t.context.GetConfigView();
 	configure(view);

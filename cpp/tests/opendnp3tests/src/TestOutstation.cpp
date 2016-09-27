@@ -229,7 +229,7 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 {
 	OutstationConfig cfg;
-	OutstationTestObject t(cfg, DatabaseTemplate());
+	OutstationTestObject t(cfg, DatabaseSizes::Empty());
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
@@ -250,7 +250,7 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 TEST_CASE(SUITE("MixedVariationAssignments"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(2));
+	OutstationTestObject t(config, DatabaseSizes::AnalogOnly(2));
 
 	{
 		// configure two different default variations
@@ -271,7 +271,7 @@ TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
 {
 	OutstationConfig config;
 	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes().Except(StaticTypeBitmask::DoubleBinaryInput);
-	OutstationTestObject t(config, DatabaseTemplate(1, 1)); // 1 binary and 1 double binary
+	OutstationTestObject t(config, DatabaseSizes(1, 1, 0, 0, 0, 0, 0, 0)); // 1 binary and 1 double binary
 
 	t.LowerLayerUp();
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
@@ -282,7 +282,7 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 {
 	OutstationConfig config;
 	config.params.maxTxFragSize = 20; // override to use a fragment length of 20
-	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(8));
+	OutstationTestObject t(config, DatabaseSizes::AnalogOnly(8));
 	t.LowerLayerUp();
 
 
@@ -329,7 +329,7 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 void NewTestStaticRead(const std::string& request, const std::string& response)
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
+	OutstationTestObject t(config, DatabaseSizes::AllTypes(1));
 	t.LowerLayerUp();
 
 	t.SendToOutstation(request);
@@ -341,7 +341,7 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 void TestTimeAndIntervalRead(const std::string& request)
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
+	OutstationTestObject t(config, DatabaseSizes::TimeAndIntervalOnly(1));
 	t.LowerLayerUp();
 
 	t.Transaction(
@@ -373,7 +373,7 @@ TEST_CASE(SUITE("TimeAndIntervalViaDirectRangeRequest"))
 TEST_CASE(SUITE("TestTimeAndIntervalWrite"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
+	OutstationTestObject t(config, DatabaseSizes::TimeAndIntervalOnly(1));
 	t.LowerLayerUp();
 
 	t.application.supportsWriteTimeAndInterval = true;
@@ -442,7 +442,7 @@ TEST_CASE(SUITE("ReadGrp40Var0ViaIntegrity"))
 TEST_CASE(SUITE("ReadByRangeHeader"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(10));
+	OutstationTestObject t(config, DatabaseSizes::AnalogOnly(10));
 	t.LowerLayerUp();
 
 	t.Transaction([](IDatabase & db)
@@ -460,7 +460,7 @@ TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeIntegrityScan"))
 	// this will tell the outstation to use discontiguous index mode, but we won't change the address assignments
 	OutstationConfig config;
 	config.params.indexMode = IndexMode::Discontiguous;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(2));
+	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(2));
 	t.LowerLayerUp();
 
 	t.SendToOutstation(hex::IntegrityPoll(0));
@@ -473,7 +473,7 @@ TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeRangeScan"))
 	// this will tell the outstation to use discontiguous index mode, but we won't change the address assignments
 	OutstationConfig config;
 	config.params.indexMode = IndexMode::Discontiguous;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(2));
+	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(2));
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 01 02 00 00 01");
@@ -486,7 +486,7 @@ std::string QueryDiscontiguousBinary(const std::string& request)
 	OutstationConfig config;
 	config.params.indexMode = IndexMode::Discontiguous;
 
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(3));
+	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(3));
 
 	// assign virtual indices to the database specified above
 	auto view = t.context.GetConfigView();
@@ -561,7 +561,7 @@ TEST_CASE(SUITE("ReadDiscontiguousAllDataWithRangeError"))
 }
 
 template <class PointType>
-void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp, const std::function<void (DatabaseConfigView&)>& configure)
+void TestStaticType(const OutstationConfig& config, const DatabaseSizes& tmp, PointType value, const std::string& rsp, const std::function<void (DatabaseConfigView&)>& configure)
 {
 	OutstationTestObject t(config, tmp);
 
@@ -588,13 +588,13 @@ void TestStaticCounter(StaticCounterVariation variation, T value, const std::str
 	{
 		view.counters[0].variation = variation;
 	};
-	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), value, response, configure);
+	TestStaticType<Counter>(cfg, DatabaseSizes::CounterOnly(1), value, response, configure);
 }
 
 TEST_CASE(SUITE("ReadGrp1Var1"))
 {
 	OutstationConfig cfg;
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(10));
+	OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(10));
 
 	{
 		auto view = t.context.GetConfigView();
@@ -617,7 +617,7 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 {
 	OutstationConfig cfg;
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(2));
+	OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(2));
 
 	{
 		auto view = t.context.GetConfigView();
@@ -664,7 +664,7 @@ void TestStaticAnalog(StaticAnalogVariation variation, T value, const std::strin
 	{
 		view.analogs[0].variation = variation;
 	};
-	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), value, response, configure);
+	TestStaticType<Analog>(cfg, DatabaseSizes::AnalogOnly(1), value, response, configure);
 }
 
 TEST_CASE(SUITE("ReadGrp30Var2"))
@@ -696,7 +696,7 @@ template <class T>
 void TestStaticBinaryOutputStatus(T value, const std::string& response)
 {
 	OutstationConfig cfg;
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
+	OutstationTestObject t(cfg, DatabaseSizes::BinaryOutputStatusOnly(1));
 	t.LowerLayerUp();
 
 	t.Transaction([value](IDatabase & db)
@@ -721,7 +721,7 @@ void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T
 	{
 		view.analogOutputStatii[0].variation = variation;
 	};
-	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), value, response, configure);
+	TestStaticType<AnalogOutputStatus>(cfg, DatabaseSizes::AnalogOutputStatusOnly(1), value, response, configure);
 }
 
 TEST_CASE(SUITE("ReadGrp40Var1"))

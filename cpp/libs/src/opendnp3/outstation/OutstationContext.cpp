@@ -49,7 +49,7 @@ namespace opendnp3
 
 OContext::OContext(
     const OutstationConfig& config,
-    const DatabaseTemplate& dbTemplate,
+    const DatabaseSizes& dbSizes,
     openpal::Logger logger_,
     openpal::IExecutor& executor,
     ILowerLayer& lower,
@@ -62,7 +62,7 @@ OContext::OContext(
 	pCommandHandler(&commandHandler),
 	pApplication(&application),
 	eventBuffer(config.eventBufferConfig),
-	database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
+	database(dbSizes, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
 	rspContext(database.GetResponseLoader(), eventBuffer),
 	params(config.params),
 	isOnline(false),

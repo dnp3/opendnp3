@@ -82,9 +82,9 @@ class DatabaseTestObject
 {
 public:
 
-	DatabaseTestObject(const DatabaseTemplate& dbTemplate, IndexMode mode = IndexMode::Contiguous, StaticTypeBitField allowedClass0 = StaticTypeBitField::AllTypes()) :
+	DatabaseTestObject(const DatabaseSizes& dbSizes, IndexMode mode = IndexMode::Contiguous, StaticTypeBitField allowedClass0 = StaticTypeBitField::AllTypes()) :
 		buffer(),
-		db(dbTemplate, buffer, mode, allowedClass0)
+		db(dbSizes, buffer, mode, allowedClass0)
 	{
 
 	}

@@ -24,7 +24,7 @@
 #include "opendnp3/outstation/DatabaseConfigView.h"
 
 #include "opendnp3/outstation/Cell.h"
-#include "opendnp3/outstation/DatabaseTemplate.h"
+#include "opendnp3/outstation/DatabaseSizes.h"
 
 #include <openpal/container/Array.h>
 #include <openpal/util/Uncopyable.h>
@@ -41,7 +41,7 @@ class StaticBuffers : private openpal::Uncopyable
 
 public:
 
-	explicit StaticBuffers(const DatabaseTemplate& dbTemplate);
+	explicit StaticBuffers(const DatabaseSizes& dbSizes);
 
 	DatabaseConfigView GetView() const;
 

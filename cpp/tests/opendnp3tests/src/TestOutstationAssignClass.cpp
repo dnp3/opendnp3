@@ -64,7 +64,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 	const uint16_t NUM_BINARY = 5;
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(NUM_BINARY));
+	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(NUM_BINARY));
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 
@@ -88,7 +88,7 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 	const uint16_t NUM_BINARY = 5;
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(NUM_BINARY));
+	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(NUM_BINARY));
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 
@@ -111,7 +111,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
 	const uint16_t NUM_BINARY = 5;
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(NUM_BINARY));
+	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(NUM_BINARY));
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 
@@ -139,7 +139,7 @@ TEST_CASE(SUITE("AcceptsMultipleAssignsmentPerMessage"))
 	const uint16_t NUM_ANALOG = 10;
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate(NUM_BINARY, 0, NUM_ANALOG));
+	OutstationTestObject t(config, DatabaseSizes(NUM_BINARY, 0, NUM_ANALOG, 0, 0, 0, 0, 0));
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 

@@ -101,10 +101,9 @@ int main(int argc, char* argv[])
 
 	// The main object for a outstation. The defaults are useable,
 	// but understanding the options are important.
-	OutstationStackConfig stackConfig;
+	OutstationStackConfig stackConfig(DatabaseSizes::AllTypes(10));
 
-	// You must specify the shape of your database and the size of the event buffers
-	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
+	// specify the maximum size of the event buffers
 	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
 
 	// you can override an default outstation parameters here
