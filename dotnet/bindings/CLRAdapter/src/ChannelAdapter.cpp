@@ -79,13 +79,12 @@ namespace Automatak
 				auto appAdapter = std::shared_ptr<opendnp3::IOutstationApplication>(new OutstationApplicationAdapter(application));
 
 				auto outstation = pChannel->AddOutstation(stdLoggerId.c_str(), commandAdapter, appAdapter, Conversions::ConvertConfig(config));
-				if (outstation == nullptr)
+				if (outstation)
 				{					
 					return nullptr;
 				}
 				else
 				{		
-
 					ApplyDatabaseSettings(outstation->GetConfigView(), config->databaseTemplate);
 					return gcnew OutstationAdapter(outstation);
 				}
