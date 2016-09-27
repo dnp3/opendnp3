@@ -21,7 +21,6 @@
 #ifndef ASIODNP3_OUTSTATIONSTACKBASE_H
 #define ASIODNP3_OUTSTATIONSTACKBASE_H
 
-#include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/outstation/OutstationContext.h>
@@ -35,6 +34,7 @@
 #include "asiodnp3/IStackLifecycle.h"
 #include "asiodnp3/IOutstation.h"
 #include "asiodnp3/ILinkBind.h"
+#include "asiodnp3/OutstationStackConfig.h"
 
 namespace asiodnp3
 {
@@ -49,7 +49,7 @@ public:
 	    std::unique_ptr<openpal::LogRoot> root,
 	    openpal::IExecutor& executor,
 	    opendnp3::ILinkListener& listener,
-	    const opendnp3::OutstationStackConfig& config,
+	    const OutstationStackConfig& config,
 	    IStackLifecycle& lifecycle
 	) :
 		root(std::move(root)),

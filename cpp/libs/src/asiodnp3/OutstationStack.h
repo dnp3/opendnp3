@@ -42,7 +42,7 @@ public:
 	    openpal::IExecutor& executor,
 	    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
 	    std::shared_ptr<opendnp3::IOutstationApplication> application,
-	    const opendnp3::OutstationStackConfig& config,
+	    const OutstationStackConfig& config,
 	    IStackLifecycle& lifecycle);
 
 

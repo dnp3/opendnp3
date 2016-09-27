@@ -38,7 +38,7 @@ public:
 	    asiopal::ASIOExecutor& executor,
 	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	    std::shared_ptr<opendnp3::IMasterApplication> application,
-	    const opendnp3::MasterStackConfig& config,
+	    const MasterStackConfig& config,
 	    IStackLifecycle& lifecycle,
 	    opendnp3::ITaskLock& taskLock
 	);

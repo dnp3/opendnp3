@@ -23,7 +23,6 @@
 
 #include <openpal/logging/LogRoot.h>
 
-#include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 #include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/outstation/ICommandHandler.h>
@@ -36,6 +35,7 @@
 #include "asiodnp3/StackLifecycle.h"
 #include "asiodnp3/LinkLayerRouter.h"
 #include "asiodnp3/IChannelListener.h"
+#include "asiodnp3/OutstationStackConfig.h"
 
 #include <memory>
 
@@ -70,14 +70,14 @@ public:
 	virtual IMaster* AddMaster(char const* id,
 	                           std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	                           std::shared_ptr<opendnp3::IMasterApplication> application,
-	                           const opendnp3::MasterStackConfig& config) override final;
+	                           const MasterStackConfig& config) override final;
 
 
 
 	virtual IOutstation* AddOutstation(char const* id,
 	                                   std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
 	                                   std::shared_ptr<opendnp3::IOutstationApplication> application,
-	                                   const opendnp3::OutstationStackConfig& config) override final;
+	                                   const OutstationStackConfig& config) override final;
 
 	// -----------------------------------------------------------------------
 

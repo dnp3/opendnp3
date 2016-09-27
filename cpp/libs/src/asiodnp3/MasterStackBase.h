@@ -22,7 +22,6 @@
 #define ASIODNP3_MASTERSTACKBASE_H
 
 #include <opendnp3/link/ILinkSession.h>
-#include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/MasterContext.h>
 #include <opendnp3/transport/TransportStack.h>
 
@@ -33,6 +32,7 @@
 #include "asiodnp3/ILinkBind.h"
 
 #include "Conversions.h"
+#include "asiodnp3/MasterStackConfig.h"
 
 #include <assert.h>
 
@@ -48,7 +48,7 @@ public:
 	    std::unique_ptr<openpal::LogRoot> root,
 	    asiopal::ASIOExecutor& executor,
 	    opendnp3::ILinkListener& listener,
-	    const opendnp3::MasterStackConfig& config,
+	    const MasterStackConfig& config,
 	    IStackLifecycle& lifecycle
 	) :
 		root(std::move(root)),
