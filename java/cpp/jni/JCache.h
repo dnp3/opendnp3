@@ -52,6 +52,7 @@
 #include "JNIDuration.h"
 #include "JNIFrozenCounter.h"
 #include "JNIGroupVariation.h"
+#include "JNIHeader.h"
 #include "JNIHeaderInfo.h"
 #include "JNIIINField.h"
 #include "JNIIndexedValue.h"
@@ -110,6 +111,7 @@ namespace jni
         static jni::Duration Duration;
         static jni::FrozenCounter FrozenCounter;
         static jni::GroupVariation GroupVariation;
+        static jni::Header Header;
         static jni::HeaderInfo HeaderInfo;
         static jni::IINField IINField;
         static jni::IndexedValue IndexedValue;

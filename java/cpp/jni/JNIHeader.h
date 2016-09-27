@@ -18,14 +18,14 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIMASTERAPPLICATION_H
-#define OPENDNP3JAVA_JNIMASTERAPPLICATION_H
+#ifndef OPENDNP3JAVA_JNIHEADER_H
+#define OPENDNP3JAVA_JNIHEADER_H
 
 #include <jni.h>
 
 namespace jni
 {
-    class MasterApplication
+    class Header
     {
         friend struct JCache;
 
@@ -34,25 +34,25 @@ namespace jni
 
         public:
 
-        // methods
-        void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
-        void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
-        void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        jobject getClassAssignments(JNIEnv* env, jobject instance);
-        jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
-        jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
+        // field getter methods
+        jbyte getgroup(JNIEnv* env, jobject instance);
+        jbyte getvariation(JNIEnv* env, jobject instance);
+        jobject getqualifier(JNIEnv* env, jobject instance);
+        jint getcount(JNIEnv* env, jobject instance);
+        jint getstart(JNIEnv* env, jobject instance);
+        jint getstop(JNIEnv* env, jobject instance);
 
         private:
 
         jclass clazz = nullptr;
 
-        // method ids
-        jmethodID onTaskCompleteMethod = nullptr;
-        jmethodID onReceiveIINMethod = nullptr;
-        jmethodID onTaskStartMethod = nullptr;
-        jmethodID getClassAssignmentsMethod = nullptr;
-        jmethodID getMillisecondsSinceEpochMethod = nullptr;
-        jmethodID assignClassDuringStartupMethod = nullptr;
+        // field ids
+        jfieldID groupField = nullptr;
+        jfieldID variationField = nullptr;
+        jfieldID qualifierField = nullptr;
+        jfieldID countField = nullptr;
+        jfieldID startField = nullptr;
+        jfieldID stopField = nullptr;
     };
 }
 

@@ -51,6 +51,7 @@ namespace jni
     jni::Duration JCache::Duration;
     jni::FrozenCounter JCache::FrozenCounter;
     jni::GroupVariation JCache::GroupVariation;
+    jni::Header JCache::Header;
     jni::HeaderInfo JCache::HeaderInfo;
     jni::IINField JCache::IINField;
     jni::IndexedValue JCache::IndexedValue;
@@ -135,6 +136,8 @@ namespace jni
         if(!success) return false;
         success = GroupVariation.init(env);
         if(!success) return false;
+        success = Header.init(env);
+        if(!success) return false;
         success = HeaderInfo.init(env);
         if(!success) return false;
         success = IINField.init(env);
@@ -211,6 +214,7 @@ namespace jni
         Duration.cleanup(env);
         FrozenCounter.cleanup(env);
         GroupVariation.cleanup(env);
+        Header.cleanup(env);
         HeaderInfo.cleanup(env);
         IINField.cleanup(env);
         IndexedValue.cleanup(env);

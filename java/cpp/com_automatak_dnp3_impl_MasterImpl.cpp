@@ -86,3 +86,76 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_direct_1operate_1
 	operate(env, native, headers, future, directOp);
 }
 
+bool ConvertJHeader(JNIEnv* env, jobject jheader, opendnp3::Header& header)
+{
+	const auto group = jni::JCache::Header.getgroup(env, jheader);
+	const auto var = jni::JCache::Header.getvariation(env, jheader);
+	const auto qualifier = opendnp3::QualifierCodeFromType(static_cast<uint8_t>(jni::JCache::QualifierCode.toType(env, jni::JCache::Header.getqualifier(env, jheader))));
+	const auto count = jni::JCache::Header.getcount(env, jheader);
+	const auto start = jni::JCache::Header.getstart(env, jheader);
+	const auto stop = jni::JCache::Header.getstop(env, jheader);
+
+	switch (qualifier)
+	{
+	case(opendnp3::QualifierCode::ALL_OBJECTS):
+		header = opendnp3::Header::AllObjects(group, var);		
+		return true;
+	case(opendnp3::QualifierCode::UINT8_CNT):
+		header = opendnp3::Header::Count8(group, var, static_cast<uint8_t>(count));
+		return true;
+	case(opendnp3::QualifierCode::UINT16_CNT):
+		header = opendnp3::Header::Count16(group, var, static_cast<uint16_t>(count));
+		return true;
+	case(opendnp3::QualifierCode::UINT8_START_STOP):
+		header = opendnp3::Header::Range8(group, var, static_cast<uint8_t>(start), static_cast<uint8_t>(stop));
+		return true;
+	case(opendnp3::QualifierCode::UINT16_START_STOP):
+		header = opendnp3::Header::Range16(group, var, static_cast<uint16_t>(start), static_cast<uint16_t>(stop));
+		return true;
+	default:
+		return false;
+	}
+}
+
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native
+(JNIEnv* env, jobject, jlong native, jobject jheaders)
+{
+	auto& master = *(asiodnp3::IMaster*) native;
+
+	std::vector<opendnp3::Header> headers;
+
+	auto process = [&](jobject jheader) {
+		opendnp3::Header header;
+		if (ConvertJHeader(env, jheader, header))
+		{
+			headers.push_back(header);
+		}
+	};
+
+	JNI::Iterate(env, jheaders, process);
+
+	master.Scan(headers);
+}
+
+
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1scan_1native
+(JNIEnv* env, jobject, jlong native, jobject jduration, jobject jheaders)
+{
+	auto& master = *(asiodnp3::IMaster*) native;
+
+	std::vector<opendnp3::Header> headers;
+
+	auto process = [&](jobject jheader) {
+		opendnp3::Header header;
+		if (ConvertJHeader(env, jheader, header))
+		{
+			headers.push_back(header);
+		}
+	};
+
+	JNI::Iterate(env, jheaders, process);
+
+	auto period = openpal::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
+
+	master.AddScan(period, headers);
+}

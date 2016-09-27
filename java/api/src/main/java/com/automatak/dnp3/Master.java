@@ -18,10 +18,38 @@
  */
 package com.automatak.dnp3;
 
+import java.time.Duration;
+
 /**
  * Interface representing a master station
  */
 public interface Master extends Stack, CommandProcessor {
 
+    /**
+     * Perform a one time scan with the supplied headers
+     * @param headers The request headers for the READ
+     */
+    void scan(Iterable<Header> headers);
+
+    /**
+     * Add a periodic scan with the supplied headers
+     * @param period The period at which to perform the scan
+     * @param headers The request headers for the READ
+     */
+    void addPeriodicScan(Duration period, Iterable<Header> headers);
+
+
+    /**
+     * Perform a one time scan with the supplied headers
+     * @param header The request header for the READ
+     */
+    void scan(Header header);
+
+    /**
+     * Add a periodic scan with the supplied headers
+     * @param period The period at which to perform the scan
+     * @param header The request header for the READ
+     */
+    void addPeriodicScan(Duration period, Header header);
 
 }

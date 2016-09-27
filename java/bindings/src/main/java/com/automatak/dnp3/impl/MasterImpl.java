@@ -20,6 +20,8 @@ package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.*;
 
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 class MasterImpl implements Master {
@@ -49,6 +51,30 @@ class MasterImpl implements Master {
             shutdown_native(nativePointer);
             nativePointer = 0;
         }
+    }
+
+    @Override
+    public void scan(Iterable<Header> headers)
+    {
+        this.scan_native(this.nativePointer, headers);
+    }
+
+    @Override
+    public void addPeriodicScan(Duration period, Header header)
+    {
+        this.add_periodic_scan_native(this.nativePointer, period, Arrays.asList(header));
+    }
+
+    @Override
+    public void scan(Header header)
+    {
+        this.scan_native(this.nativePointer, Arrays.asList(header));
+    }
+
+    @Override
+    public void addPeriodicScan(Duration period, Iterable<Header> headers)
+    {
+        this.add_periodic_scan_native(this.nativePointer, period, headers);
     }
 
     public MasterImpl(long nativePointer)
@@ -138,4 +164,7 @@ class MasterImpl implements Master {
 
     private native void select_and_operate_native(long nativePointer, CommandHeaders headers, CompletableFuture<CommandTaskResult> future);
     private native void direct_operate_native(long nativePointer, CommandHeaders headers, CompletableFuture<CommandTaskResult> future);
+
+    private native void scan_native(long nativePointer, Iterable<Header> headers);
+    private native void add_periodic_scan_native(long nativePointer, Duration period, Iterable<Header> headers);
 }
