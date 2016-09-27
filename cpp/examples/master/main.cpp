@@ -23,6 +23,7 @@
 #include <asiodnp3/ConsoleLogger.h>
 #include <asiodnp3/DefaultMasterApplication.h>
 #include <asiodnp3/PrintingCommandCallback.h>
+#include <asiodnp3/PrintingChannelListener.h>
 
 #include <asiopal/UTCTimeSource.h>
 
@@ -36,7 +37,6 @@ using namespace opendnp3;
 
 int main(int argc, char* argv[])
 {
-
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
@@ -45,14 +45,7 @@ int main(int argc, char* argv[])
 	DNP3Manager manager(1, ConsoleLogger::Create());
 
 	// Connect via a TCPClient socket to a outstation
-	auto pChannel = manager.AddTCPClient("tcpclient", FILTERS, ChannelRetry::Default(), "127.0.0.1", "0.0.0.0", 20000);
-
-	// Optionally, you can bind listeners to the channel to get state change notifications
-	// This listener just prints the changes to the console
-	pChannel->AddStateListener([](ChannelState state)
-	{
-		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
-	});
+	auto channel = manager.AddTCPClient("tcpclient", FILTERS, ChannelRetry::Default(), "127.0.0.1", "0.0.0.0", 20000, PrintingChannelListener::Create());
 
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
@@ -71,7 +64,7 @@ int main(int argc, char* argv[])
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
-	auto master = pChannel->AddMaster(
+	auto master = channel->AddMaster(
 	                  "master",											// id for logging
 	                  PrintingSOEHandler::Create(),						// callback for data processing
 	                  asiodnp3::DefaultMasterApplication::Create(),		// master application instance
@@ -149,7 +142,7 @@ int main(int argc, char* argv[])
 			{
 				channelCommsLoggingEnabled = !channelCommsLoggingEnabled;
 				auto levels = channelCommsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
-				pChannel->SetLogFilters(levels);
+				channel->SetLogFilters(levels);
 				std::cout << "Channel logging set to: " << levels << std::endl;
 				break;
 			}

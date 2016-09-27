@@ -26,6 +26,7 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 #include <opendnp3/link/ChannelRetry.h>
+#include <opendnp3/outstation/ICommandHandler.h>
 
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/Synchronized.h>
@@ -34,15 +35,9 @@
 #include "asiodnp3/IChannel.h"
 #include "asiodnp3/StackLifecycle.h"
 #include "asiodnp3/LinkLayerRouter.h"
+#include "asiodnp3/IChannelListener.h"
 
 #include <memory>
-
-namespace opendnp3
-{
-class ICommandHandler;
-class ITimeWriteHandler;
-}
-
 
 namespace asiodnp3
 {
@@ -50,7 +45,7 @@ namespace asiodnp3
 class IStack;
 class IOutstation;
 
-class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
+class DNP3Channel : public IChannel
 {
 
 public:
@@ -58,6 +53,7 @@ public:
 	DNP3Channel(
 	    std::unique_ptr<openpal::LogRoot> root,
 	    const opendnp3::ChannelRetry& retry,
+	    std::shared_ptr<IChannelListener> listener,
 	    std::unique_ptr<asiopal::PhysicalLayerASIO> phys
 	);
 
@@ -70,8 +66,6 @@ public:
 	virtual openpal::LogFilters GetLogFilters() const override final;
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final;
-
-	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) override final;
 
 	virtual IMaster* AddMaster(char const* id,
 	                           std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
@@ -99,8 +93,6 @@ private:
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);
 
-	virtual void OnStateChange(opendnp3::ChannelState state) override final;
-
 	void CheckForFinalShutdown();
 
 	openpal::Action0 shutdownHandler;
@@ -110,9 +102,6 @@ private:
 	std::unique_ptr<openpal::LogRoot> root;
 
 	asiopal::Synchronized<bool>* pShutdownHandler;
-
-	opendnp3::ChannelState channelState;
-	std::vector<std::function<void(opendnp3::ChannelState)>> callbacks;
 
 	LinkLayerRouter router;
 	StackLifecycle stacks;

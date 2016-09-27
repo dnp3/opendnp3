@@ -28,11 +28,13 @@
 #include <opendnp3/link/IFrameSink.h>
 #include <opendnp3/link/ILinkTx.h>
 #include <opendnp3/link/ChannelRetry.h>
-#include <opendnp3/link/IChannelStateListener.h>
 #include <opendnp3/master/MultidropTaskLock.h>
+
+#include "asiodnp3/IChannelListener.h"
 
 #include <vector>
 #include <deque>
+#include <memory>
 
 namespace openpal
 {
@@ -61,7 +63,7 @@ public:
 	                openpal::IExecutor& executor,
 	                openpal::IPhysicalLayer*,
 	                const opendnp3::ChannelRetry& retry,
-	                opendnp3::IChannelStateListener* pStateHandler = nullptr,
+	                std::shared_ptr<IChannelListener> listener = nullptr,
 	                opendnp3::LinkChannelStatistics* pStatistics = nullptr);
 
 	opendnp3::ITaskLock& GetTaskLock()
@@ -152,7 +154,7 @@ private:
 	void CheckForSend();
 
 	opendnp3::MultidropTaskLock taskLock;
-	opendnp3::IChannelStateListener* pStateHandler;
+	std::shared_ptr<IChannelListener> listener;
 	openpal::Action0 shutdownHandler;
 
 	std::vector<Record> records;

@@ -20,6 +20,7 @@
  */
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/PrintingSOEHandler.h>
+#include <asiodnp3/PrintingChannelListener.h>
 #include <asiodnp3/ConsoleLogger.h>
 #include <asiodnp3/DefaultMasterApplication.h>
 #include <asiodnp3/PrintingCommandCallback.h>
@@ -68,6 +69,7 @@ int main(int argc, char* argv[])
 	                   "0.0.0.0",
 	                   20001,
 	                   TLSConfig(peerCertificate, privateKey, privateKey),
+	                   PrintingChannelListener::Create(),
 	                   ec
 	               );
 
@@ -76,13 +78,6 @@ int main(int argc, char* argv[])
 		std::cout << "Unable to create tls client: " << ec.message() << std::endl;
 		return ec.value();
 	}
-
-	// Optionally, you can bind listeners to the channel to get state change notifications
-	// This listener just prints the changes to the console
-	channel->AddStateListener([](ChannelState state)
-	{
-		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
-	});
 
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.

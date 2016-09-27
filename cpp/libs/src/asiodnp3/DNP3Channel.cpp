@@ -35,15 +35,15 @@ namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
-    std::unique_ptr<LogRoot> root_,
+    std::unique_ptr<LogRoot> rootin,
     const ChannelRetry& retry,
-    std::unique_ptr<asiopal::PhysicalLayerASIO> phys_) :
+    std::shared_ptr<IChannelListener> listener,
+    std::unique_ptr<asiopal::PhysicalLayerASIO> physin) :
 
-	phys(std::move(phys_)),
-	root(std::move(root_)),
+	phys(std::move(physin)),
+	root(std::move(rootin)),
 	pShutdownHandler(nullptr),
-	channelState(ChannelState::CLOSED),
-	router(root->logger, phys->executor, phys.get(), retry, this, &statistics),
+	router(root->logger, phys->executor, phys.get(), retry, listener, &statistics),
 	stacks(router, phys->executor)
 {
 	phys->SetChannelStatistics(&statistics);
@@ -53,26 +53,6 @@ DNP3Channel::DNP3Channel(
 		this->CheckForFinalShutdown();
 	};
 	router.SetShutdownHandler(Action0::Bind(onShutdown));
-}
-
-void DNP3Channel::OnStateChange(ChannelState state)
-{
-	channelState = state;
-	for (auto& cb : callbacks)
-	{
-		cb(state);
-	}
-	this->CheckForFinalShutdown();
-}
-
-void DNP3Channel::AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener)
-{
-	auto lambda = [this, listener]()
-	{
-		this->callbacks.push_back(listener);
-		listener(channelState);
-	};
-	phys->executor.strand.post(lambda);
 }
 
 // comes from the outside, so we need to synchronize

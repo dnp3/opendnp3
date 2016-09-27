@@ -18,59 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "ChannelSet.h"
+#ifndef ASIODNP3_ICHANNELLISTENER_H
+#define ASIODNP3_ICHANNELLISTENER_H
 
-#include "DNP3Channel.h"
-
-#include <asiopal/PhysicalLayerBase.h>
-
-using namespace openpal;
-using namespace asiopal;
-using namespace opendnp3;
+#include <opendnp3/gen/ChannelState.h>
 
 namespace asiodnp3
 {
 
-ChannelSet::~ChannelSet()
+/**
+* Callback interface for receiving information about a running channel
+*/
+class IChannelListener
 {
-	this->Shutdown();
-}
+public:
 
-void ChannelSet::Shutdown()
-{
-	std::vector<DNP3Channel*> channelscopy;
+	virtual ~IChannelListener() {}
 
-	for (auto pChannel : channels) channelscopy.push_back(pChannel);
+	/*
+	* Receive callbacks for state transitions on the channels executor
+	*/
+	virtual void OnStateChange(opendnp3::ChannelState& state) = 0;
 
-	for (auto pChannel : channelscopy) pChannel->Shutdown();
-
-	assert(channels.empty());
-}
-
-IChannel* ChannelSet::CreateChannel(
-
-    std::unique_ptr<LogRoot> root,
-    const ChannelRetry& retry,
-    std::shared_ptr<IChannelListener> listener,
-    std::unique_ptr<asiopal::PhysicalLayerASIO> phys)
-{
-	auto channel = new DNP3Channel(std::move(root), retry, listener, std::move(phys));
-
-	auto onShutdown = [this, channel]()
-	{
-		this->OnShutdown(channel);
-	};
-	channel->SetShutdownHandler(Action0::Bind(onShutdown));
-	channels.insert(channel);
-	return channel;
-}
-
-void ChannelSet::OnShutdown(DNP3Channel* channel)
-{
-	channels.erase(channel);
-	delete channel;
-}
-
-
+};
 
 }
+
+#endif

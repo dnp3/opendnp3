@@ -31,6 +31,8 @@
 
 #include <opendnp3/link/ChannelRetry.h>
 
+#include "asiodnp3/IChannelListener.h"
+
 namespace asiopal
 {
 class ASIOExecutor;
@@ -52,6 +54,7 @@ public:
 
 	IChannel* CreateChannel(	std::unique_ptr<openpal::LogRoot> root,
 	                            const opendnp3::ChannelRetry& retry,
+	                            std::shared_ptr<IChannelListener> listener,
 	                            std::unique_ptr<asiopal::PhysicalLayerASIO> phys);
 
 

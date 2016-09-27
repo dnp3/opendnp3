@@ -53,12 +53,6 @@ public:
 
 	virtual ~IChannel() {}
 
-	/*
-	* Receive callbacks for state transitions on the channels executor
-	* You'll receive one callback immediately with the current state
-	*/
-	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) = 0;
-
 	/**
 	* Synchronously read the channel statistics
 	*/

@@ -202,7 +202,7 @@ private:
 
 IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numValues, uint16_t eventBufferSize)
 {
-	auto server = manager.AddTCPServer("server", levels, ChannelRetry::Default(), "127.0.0.1", 20000);
+	auto server = manager.AddTCPServer("server", levels, ChannelRetry::Default(), "127.0.0.1", 20000, nullptr);
 
 	OutstationStackConfig stackConfig;
 	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(numValues);
@@ -216,7 +216,7 @@ IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numV
 
 IMaster* ConfigureMaster(DNP3Manager& manager, std::shared_ptr<ISOEHandler> handler, int levels)
 {
-	auto client = manager.AddTCPClient("client", levels, ChannelRetry::Default(), "127.0.0.1", "127.0.0.1", 20000);
+	auto client = manager.AddTCPClient("client", levels, ChannelRetry::Default(), "127.0.0.1", "127.0.0.1", 20000, nullptr);
 
 	MasterStackConfig mconfig;
 	mconfig.master.startupIntegrityClassMask = ClassField::None(); //disable integrity poll so we don't have to worry about static values coming back

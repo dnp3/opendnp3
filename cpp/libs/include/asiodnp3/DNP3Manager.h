@@ -28,6 +28,7 @@
 #include <opendnp3/link/ChannelRetry.h>
 
 #include <asiodnp3/IChannel.h>
+#include <asiodnp3/IChannelListener.h>
 #include <asiopal/SerialTypes.h>
 
 #ifdef OPENDNP3_USE_TLS
@@ -83,6 +84,7 @@ public:
 	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
+	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @return A channel interface
 	*/
 	IChannel* AddTCPClient(
@@ -91,7 +93,8 @@ public:
 	    const opendnp3::ChannelRetry& retry,
 	    const std::string& host,
 	    const std::string& local,
-	    uint16_t port);
+	    uint16_t port,
+	    std::shared_ptr<IChannelListener> listener);
 
 	/**
 	* Add a persistent TCP server channel. Only accepts a single connection at a time.
@@ -101,6 +104,7 @@ public:
 	* @param retry Retry parameters for failed channels
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
+	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @return A channel interface
 	*/
 	IChannel* AddTCPServer(
@@ -108,7 +112,8 @@ public:
 	    uint32_t levels,
 	    const opendnp3::ChannelRetry& retry,
 	    const std::string& endpoint,
-	    uint16_t port);
+	    uint16_t port,
+	    std::shared_ptr<IChannelListener> listener);
 
 	/**
 	* Add a persistent TCP serial channel
@@ -117,13 +122,15 @@ public:
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
 	* @param retry Retry parameters for failed channels
 	* @param settings settings object that fully parameterizes the serial port
+	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @return A channel interface
 	*/
 	IChannel* AddSerial(
 	    char const* id,
 	    uint32_t levels,
 	    const opendnp3::ChannelRetry& retry,
-	    asiopal::SerialSettings settings);
+	    asiopal::SerialSettings settings,
+	    std::shared_ptr<IChannelListener> listener);
 
 
 #ifdef OPENDNP3_USE_TLS
@@ -140,6 +147,7 @@ public:
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
 	* @param config TLS configuration information
+	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @param ec An error code. If set, a nullptr will be returned
 	* @return A channel interface
 	*/
@@ -151,6 +159,7 @@ public:
 	    const std::string& local,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,
+	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
 
 
@@ -165,6 +174,7 @@ public:
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param config TLS configuration information
+	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @param ec An error code. If set, a nullptr will be returned
 	* @return A channel interface
 	*/
@@ -175,6 +185,7 @@ public:
 	    const std::string& endpoint,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,
+	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
 
 #endif

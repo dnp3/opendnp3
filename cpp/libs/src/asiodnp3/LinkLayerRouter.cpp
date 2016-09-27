@@ -42,13 +42,13 @@ LinkLayerRouter::LinkLayerRouter(	openpal::Logger logger,
                                     openpal::IExecutor& executor,
                                     IPhysicalLayer* pPhys,
                                     const ChannelRetry& retry,
-                                    IChannelStateListener* pStateHandler_,
-                                    LinkChannelStatistics* pStatistics_) :
+                                    std::shared_ptr<IChannelListener> listener,
+                                    LinkChannelStatistics* pStatistics) :
 
 	PhysicalLayerMonitor(logger, executor, pPhys, retry),
-	pStateHandler(pStateHandler_),
-	pStatistics(pStatistics_),
-	parser(logger, pStatistics_),
+	listener(listener),
+	pStatistics(pStatistics),
+	parser(logger, pStatistics),
 	isTransmitting(false)
 {}
 
@@ -275,9 +275,9 @@ void LinkLayerRouter::BeginTransmit(const openpal::RSlice& buffer, ILinkSession&
 
 void LinkLayerRouter::OnStateChange(ChannelState state)
 {
-	if (this->pStateHandler)
+	if (this->listener)
 	{
-		pStateHandler->OnStateChange(state);
+		listener->OnStateChange(state);
 	}
 }
 
