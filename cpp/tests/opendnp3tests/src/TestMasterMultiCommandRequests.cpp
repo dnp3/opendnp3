@@ -36,7 +36,7 @@ using namespace openpal;
 
 #define SUITE(name) "MasterMultiCommandRequestsTestSuite - " name
 
-TEST_CASE(SUITE("AnEmptyHeaderFailsTheTaskWithInternalError"))
+TEST_CASE(SUITE("command set ignores empty headers"))
 {
 	MasterTestObject t(NoStartupTasks());
 	t.context.OnLowerLayerUp();
@@ -45,21 +45,13 @@ TEST_CASE(SUITE("AnEmptyHeaderFailsTheTaskWithInternalError"))
 
 	CommandSet commands;
 	commands.Add<ControlRelayOutputBlock>({});
-	commands.Add<ControlRelayOutputBlock>({ WithIndex(crob, 1), WithIndex(crob, 7) });
+	commands.Add<ControlRelayOutputBlock>({ WithIndex(crob, 1) });
 
 	CommandCallbackQueue queue;
 	t.context.DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 
-	// nothing should have been written because the request formatting fails
-	REQUIRE(t.lower.PopWriteAsHex() == "");
-
-	REQUIRE(queue.PopOnlyEqualValue(
-	            TaskCompletion::FAILURE_INTERNAL_ERROR,
-	{
-		CommandPointResult(1, 1, CommandPointState::INIT, CommandStatus::UNDEFINED),
-		CommandPointResult(1, 7, CommandPointState::INIT, CommandStatus::UNDEFINED)
-	}
-	        ));
+	// writes just the 2nd call to Add()
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
 }
 
 TEST_CASE(SUITE("DirectOperateTwoCROB"))
