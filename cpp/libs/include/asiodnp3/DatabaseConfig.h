@@ -18,45 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_OUTSTATIONSTACKCONFIG_H
-#define OPENDNP3_OUTSTATIONSTACKCONFIG_H
+#ifndef ASIODNP3_DATABASECONFIG_H
+#define ASIODNP3_DATABASECONFIG_H
 
-#include "opendnp3/outstation/OutstationConfig.h"
-#include "opendnp3/outstation/EventBufferConfig.h"
+#include "opendnp3/outstation/MeasurementConfig.h"
+
 #include "opendnp3/outstation/DatabaseSizes.h"
-#include "opendnp3/link/LinkConfig.h"
 
-namespace opendnp3
+#include <vector>
+
+namespace asiodnp3
 {
 
-/**
-	A composite configuration struct that contains all the config
-	information for a dnp3 outstation stack
-*/
-struct OutstationStackConfig
+class DatabaseConfig : openpal::Uncopyable
 {
+	public:
 
-	OutstationStackConfig(const DatabaseSizes& dbSizes) :
-		dbSizes(dbSizes),
-		link(false, false)
-	{
+	DatabaseConfig(opendnp3::DatabaseSizes& sizes) : 
+		binary(sizes.numBinary)
+	{}
 
-	}
-
-	OutstationStackConfig() = delete;
-
-	// Configuration of the database
-	DatabaseSizes dbSizes;
-
-	/// Outstation config
-	OutstationConfig outstation;
-
-	/// Link layer config
-	LinkConfig link;
-
+	std::vector<opendnp3::BinaryConfig> binary;
 };
 
 }
 
 #endif
-

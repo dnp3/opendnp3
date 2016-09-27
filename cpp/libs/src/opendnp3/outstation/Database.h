@@ -181,7 +181,7 @@ bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::type_t& value, E
 
 			if (pEventReceiver)
 			{
-				pEventReceiver->Update(Event<Spec>(value, cell.vIndex, ec, cell.metadata.variation));
+				pEventReceiver->Update(Event<Spec>(value, cell.vIndex, ec, cell.metadata.evariation));
 			}
 		}
 	}

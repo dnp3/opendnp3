@@ -28,13 +28,14 @@
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/master/IMasterApplication.h>
 
-#include <opendnp3/outstation/OutstationStackConfig.h>
+
 #include <opendnp3/outstation/ICommandHandler.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 
+#include "OutstationStackConfig.h"
 #include "IMaster.h"
 #include "IOutstation.h"
 #include "DestructorHook.h"
@@ -99,8 +100,8 @@ public:
 	*/
 	virtual IOutstation* AddOutstation( char const* id,
 	                                    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-	                                    std::shared_ptr<opendnp3::IOutstationApplication> application,
-	                                    const opendnp3::OutstationStackConfig& config) = 0;
+	                                    std::shared_ptr<opendnp3::IOutstationApplication> application,										
+	                                    const OutstationStackConfig& config) = 0;
 
 };
 

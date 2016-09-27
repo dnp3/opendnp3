@@ -42,7 +42,7 @@ struct EventMetadata
 
 	PointClass clazz;
 	meas_type_t lastEvent;
-	typename Spec::EventVariation variation;
+	typename Spec::EventVariation evariation;
 
 	void SetEventValue(const meas_type_t& value)
 	{
@@ -51,7 +51,7 @@ struct EventMetadata
 
 protected:
 
-	EventMetadata() : clazz(PointClass::Class1), lastEvent(), variation(Spec::DefaultEventVariation)
+	EventMetadata() : clazz(PointClass::Class1), lastEvent(), evariation(Spec::DefaultEventVariation)
 	{}
 };
 
