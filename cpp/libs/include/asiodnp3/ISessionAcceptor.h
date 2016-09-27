@@ -23,8 +23,8 @@
 
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/master/IMasterApplication.h>
-#include <opendnp3/master/MasterStackConfig.h>
 
+#include "asiodnp3/MasterStackConfig.h"
 #include "asiodnp3/IMasterSession.h"
 
 #include <memory>
@@ -45,7 +45,7 @@ public:
 	    const std::string& sessionid,
 	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	    std::shared_ptr<opendnp3::IMasterApplication> application,
-	    const opendnp3::MasterStackConfig& config
+	    const MasterStackConfig& config
 	) = 0;
 };
 

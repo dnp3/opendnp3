@@ -21,13 +21,11 @@
 #ifndef ASIODNP3_MASTERSESSIONSTACK_H
 #define ASIODNP3_MASTERSESSIONSTACK_H
 
-#include "asiodnp3/IMasterSession.h"
-
 #include <opendnp3/master/MasterContext.h>
-#include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/transport/TransportStack.h>
 
-
+#include "asiodnp3/IMasterSession.h"
+#include "asiodnp3/MasterStackConfig.h"
 
 namespace asiopal
 {
@@ -53,7 +51,7 @@ public:
 	    std::shared_ptr<opendnp3::IMasterApplication> application,
 	    std::shared_ptr<LinkSession> session,
 	    opendnp3::ILinkTx& linktx,
-	    const opendnp3::MasterStackConfig& config
+	    const MasterStackConfig& config
 	);
 
 	void OnLowerLayerUp();
@@ -97,7 +95,7 @@ private:
 	    std::shared_ptr<opendnp3::IMasterApplication> application,
 	    std::shared_ptr<LinkSession> session,
 	    opendnp3::ILinkTx& linktx,
-	    const opendnp3::MasterStackConfig& config
+	    const MasterStackConfig& config
 	);
 
 	std::shared_ptr<asiopal::StrandExecutor> m_executor;

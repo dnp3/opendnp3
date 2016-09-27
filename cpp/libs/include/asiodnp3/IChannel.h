@@ -24,10 +24,8 @@
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 
-#include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/master/IMasterApplication.h>
-
 
 #include <opendnp3/outstation/ICommandHandler.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
@@ -35,10 +33,11 @@
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 
-#include "OutstationStackConfig.h"
 #include "IMaster.h"
 #include "IOutstation.h"
 #include "DestructorHook.h"
+#include "MasterStackConfig.h"
+#include "OutstationStackConfig.h"
 
 #include <memory>
 
@@ -87,7 +86,7 @@ public:
 	virtual IMaster* AddMaster(		char const* id,
 	                                std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	                                std::shared_ptr<opendnp3::IMasterApplication> application,
-	                                const opendnp3::MasterStackConfig& config) = 0;
+	                                const MasterStackConfig& config) = 0;
 
 	/**
 	* Add an outstation to the channel

@@ -45,7 +45,7 @@ openpal::TimeDuration DefaultListenCallbacks::GetFirstFrameTimeout()
 
 void DefaultListenCallbacks::OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor)
 {
-	opendnp3::MasterStackConfig config;
+	MasterStackConfig config;
 
 	// full implementations will look up config information for the SRC address
 

@@ -24,6 +24,7 @@
 
 using namespace openpal;
 using namespace opendnp3;
+using namespace asiodnp3;
 
 MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* env, jobject jcfg)
 {	

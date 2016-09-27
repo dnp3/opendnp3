@@ -76,7 +76,7 @@ private:
 	    const std::string& loggerid,
 	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	    std::shared_ptr<opendnp3::IMasterApplication> application,
-	    const opendnp3::MasterStackConfig& config) override;
+	    const MasterStackConfig& config) override;
 
 	void Start();
 

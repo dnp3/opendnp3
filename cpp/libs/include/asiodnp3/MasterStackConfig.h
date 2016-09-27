@@ -18,13 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_MASTERSTACKCONFIG_H
-#define OPENDNP3_MASTERSTACKCONFIG_H
+#ifndef ASIODNP3_MASTERSTACKCONFIG_H
+#define ASIODNP3_MASTERSTACKCONFIG_H
 
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/link/LinkConfig.h"
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 /** A composite configuration struct that contains all the config
@@ -36,10 +36,10 @@ struct MasterStackConfig
 	{}
 
 	/// Master config
-	MasterParams master;
+	opendnp3::MasterParams master;
 
 	/// Link layer config
-	LinkConfig link;
+	opendnp3::LinkConfig link;
 };
 
 }

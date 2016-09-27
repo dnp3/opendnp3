@@ -22,13 +22,13 @@
 #include <jni.h>
 #include <string>
 
-#include <opendnp3/master/MasterStackConfig.h>
+#include "asiodnp3/MasterStackConfig.h"
 
 class ConfigReader
 {
 public:
 
-	static opendnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* env, jobject jconfig);
+	static asiodnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* env, jobject jconfig);
 	
 	//static opendnp3::SlaveStackConfig ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jcfg);
 

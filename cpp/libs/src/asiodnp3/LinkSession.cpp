@@ -143,8 +143,7 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
     const std::string& loggerid,
     std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
     std::shared_ptr<opendnp3::IMasterApplication> application,
-    const opendnp3::MasterStackConfig& config
-)
+    const MasterStackConfig& config)
 {
 	if (m_stack)
 	{
