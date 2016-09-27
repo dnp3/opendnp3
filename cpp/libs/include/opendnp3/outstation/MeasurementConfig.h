@@ -38,25 +38,25 @@ struct StaticConfig
 };
 
 template <class Info>
-struct DeadbandConfig
-{
-	typename Info::ValueType deadband = 0;
-};
-
-template <class Info>
-struct EventConfig
+struct EventConfig : StaticConfig<Info>
 {
 	PointClass clazz;
 	typename Info::EventVariation evariation = Info::DefaultEventVariation;
 };
 
-class BinaryConfig : public StaticConfig<BinaryInfo>, public EventConfig<BinaryInfo> {};
-class DoubleBitBinaryConfig : public StaticConfig<DoubleBitBinaryInfo>, public EventConfig<DoubleBitBinaryInfo> {};
-class AnalogConfig : public StaticConfig<AnalogInfo>, public EventConfig<AnalogInfo>, public DeadbandConfig<AnalogInfo> {};
-class CounterConfig : public StaticConfig<CounterInfo>, public EventConfig<CounterInfo>, public DeadbandConfig<CounterInfo> {};
-class FrozenCounterConfig : public StaticConfig<FrozenCounterInfo>, public EventConfig<FrozenCounterInfo>, public DeadbandConfig<FrozenCounterInfo> {};
-class BOStatusConfig : public StaticConfig<BinaryOutputStatusInfo>, public EventConfig<BinaryOutputStatusInfo> {};
-class AOStatusConfig : public StaticConfig<AnalogOutputStatusInfo>, public EventConfig<AnalogOutputStatusInfo> {};
+template <class Info>
+struct DeadbandConfig : EventConfig<Info>
+{
+	typename Info::ValueType deadband = 0;
+};
+
+class BinaryConfig : public EventConfig<BinaryInfo> {};
+class DoubleBitBinaryConfig : public EventConfig<DoubleBitBinaryInfo> {};
+class AnalogConfig : public DeadbandConfig<AnalogInfo> {};
+class CounterConfig : public DeadbandConfig<CounterInfo> {};
+class FrozenCounterConfig : public DeadbandConfig<FrozenCounterInfo> {};
+class BOStatusConfig : public EventConfig<BinaryOutputStatusInfo> {};
+class AOStatusConfig : public EventConfig<AnalogOutputStatusInfo> {};
 class TimeAndIntervalConfig : public StaticConfig<TimeAndIntervalInfo> {};
 class SecurityStatConfig {};
 
