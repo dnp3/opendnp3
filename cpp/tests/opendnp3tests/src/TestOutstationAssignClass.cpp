@@ -75,7 +75,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 	auto view = t.context.GetConfigView();
 	for (uint16_t i = 0; i < NUM_BINARY; ++i)
 	{
-		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class2);
+		REQUIRE(view.binaries[0].config.clazz == PointClass::Class2);
 	}
 
 	REQUIRE(t.application.classAssignments.size() == 1);
@@ -100,7 +100,7 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 	auto view = t.context.GetConfigView();
 	for (uint16_t i = 0; i < NUM_BINARY; ++i)
 	{
-		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class2);
+		REQUIRE(view.binaries[0].config.clazz == PointClass::Class2);
 	}
 
 	REQUIRE(t.application.classAssignments.size() == 1);
@@ -121,12 +121,12 @@ TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
 
 	auto view = t.context.GetConfigView();
 
-	REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class1);
+	REQUIRE(view.binaries[0].config.clazz == PointClass::Class1);
 	for (uint16_t i = 2; i < 3; ++i)
 	{
-		REQUIRE(view.binaries[i].metadata.clazz == PointClass::Class2);
+		REQUIRE(view.binaries[i].config.clazz == PointClass::Class2);
 	}
-	REQUIRE(view.binaries[4].metadata.clazz == PointClass::Class1);
+	REQUIRE(view.binaries[4].config.clazz == PointClass::Class1);
 
 	REQUIRE(t.application.classAssignments.size() == 1);
 	auto assignment = t.application.classAssignments.front();

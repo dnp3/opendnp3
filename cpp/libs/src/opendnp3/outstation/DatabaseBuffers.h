@@ -203,7 +203,7 @@ IINField DatabaseBuffers::GenericSelect(
 				{
 					view[i].selection.selected = true;
 					view[i].selection.value = view[i].value;
-					auto var = useDefault ? view[i].variation : variation;
+					auto var = useDefault ? view[i].config.svariation : variation;
 					view[i].selection.variation = CheckForPromotion<T>(view[i].selection.value, var);
 				}
 			}
@@ -269,7 +269,7 @@ Range DatabaseBuffers::AssignClassTo(PointClass clazz, const Range& range)
 	auto clipped = range.Intersection(RangeOf(view.Size()));
 	for (auto i = clipped.start; i <= clipped.stop; ++i)
 	{
-		view[i].metadata.clazz = clazz;
+		view[i].config.clazz = clazz;
 	}
 	return clipped;
 }

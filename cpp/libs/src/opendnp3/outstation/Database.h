@@ -159,7 +159,7 @@ template <class Spec>
 bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::type_t& value, EventMode mode)
 {
 	EventClass ec;
-	if (ConvertToEventClass(cell.metadata.clazz, ec))
+	if (ConvertToEventClass(cell.config.clazz, ec))
 	{
 		bool createEvent = false;
 
@@ -169,7 +169,7 @@ bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::type_t& value, E
 			createEvent = true;
 			break;
 		case(EventMode::Detect):
-			createEvent = cell.metadata.IsEvent(value);
+			createEvent = cell.event.IsEvent(cell.config, value);
 			break;
 		default:
 			break;
@@ -177,11 +177,11 @@ bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::type_t& value, E
 
 		if (createEvent)
 		{
-			cell.metadata.lastEvent = value;
+			cell.event.lastEvent = value;
 
 			if (pEventReceiver)
 			{
-				pEventReceiver->Update(Event<Spec>(value, cell.vIndex, ec, cell.metadata.evariation));
+				pEventReceiver->Update(Event<Spec>(value, cell.config.vIndex, ec, cell.config.evariation));
 			}
 		}
 	}

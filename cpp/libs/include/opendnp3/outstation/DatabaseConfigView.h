@@ -57,17 +57,6 @@ public:
 	    openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals_
 	);
 
-	// ------------ Helper functions for setting initial value ------
-
-	void SetInitialValue(const Binary& meas, uint16_t index);
-	void SetInitialValue(const DoubleBitBinary& meas, uint16_t index);
-	void SetInitialValue(const Analog& meas, uint16_t index);
-	void SetInitialValue(const Counter& meas, uint16_t index);
-	void SetInitialValue(const FrozenCounter& meas, uint16_t index);
-	void SetInitialValue(const BinaryOutputStatus& meas, uint16_t index);
-	void SetInitialValue(const AnalogOutputStatus& meas, uint16_t index);
-	void SetInitialValue(const TimeAndInterval& meas, uint16_t index);
-
 	//  ----------- Views of the underlying storage ---------
 
 	openpal::ArrayView<Cell<BinarySpec>, uint16_t> binaries;

@@ -29,18 +29,23 @@ namespace opendnp3
 {
 
 // All entries have this information
-template <class Info>
-struct StaticConfig
+struct IndexConfig
 {
 	// virtual index for discontiguous data, as opposed to the raw array index
-	uint16_t vIndex = 0; 
+	uint16_t vIndex = 0;	
+};
+
+// All entries have this information
+template <class Info>
+struct StaticConfig : IndexConfig
+{		
 	typename Info::StaticVariation svariation = Info::DefaultStaticVariation;
 };
 
 template <class Info>
 struct EventConfig : StaticConfig<Info>
 {
-	PointClass clazz;
+	PointClass clazz = PointClass::Class1;
 	typename Info::EventVariation evariation = Info::DefaultEventVariation;
 };
 
@@ -56,9 +61,9 @@ class AnalogConfig : public DeadbandConfig<AnalogInfo> {};
 class CounterConfig : public DeadbandConfig<CounterInfo> {};
 class FrozenCounterConfig : public DeadbandConfig<FrozenCounterInfo> {};
 class BOStatusConfig : public EventConfig<BinaryOutputStatusInfo> {};
-class AOStatusConfig : public EventConfig<AnalogOutputStatusInfo> {};
+class AOStatusConfig : public DeadbandConfig<AnalogOutputStatusInfo> {};
 class TimeAndIntervalConfig : public StaticConfig<TimeAndIntervalInfo> {};
-class SecurityStatConfig {};
+class SecurityStatConfig : public IndexConfig {};
 
 }
 

@@ -143,9 +143,9 @@ TEST_CASE(SUITE("MultipleClasses"))
 
 	auto view = t.context.GetConfigView();
 
-	view.binaries[0].metadata.clazz = PointClass::Class1;
-	view.analogs[0].metadata.clazz = PointClass::Class2;
-	view.counters[0].metadata.clazz = PointClass::Class3;
+	view.binaries[0].config.clazz = PointClass::Class1;
+	view.analogs[0].config.clazz = PointClass::Class2;
+	view.counters[0].config.clazz = PointClass::Class3;
 
 	t.Transaction([](IDatabase & db)
 	{
@@ -243,9 +243,9 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
 {
 	auto configure = [](DatabaseConfigView & view)
 	{
-		view.binaries[0].metadata.clazz = PointClass::Class1;
-		view.binaries[1].metadata.clazz = PointClass::Class2;
-		view.binaries[2].metadata.clazz = PointClass::Class3;
+		view.binaries[0].config.clazz = PointClass::Class1;
+		view.binaries[1].config.clazz = PointClass::Class2;
+		view.binaries[2].config.clazz = PointClass::Class3;
 	};
 
 	auto update = [](IDatabase & db)

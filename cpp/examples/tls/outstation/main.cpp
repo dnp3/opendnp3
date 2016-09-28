@@ -44,9 +44,9 @@ using namespace asiodnp3;
 void ConfigureDatabase(DatabaseConfigView view)
 {
 	// example of configuring analog index 0 for Class2 with floating point variations by default
-	view.analogs[0].variation = StaticAnalogVariation::Group30Var5;
-	view.analogs[0].metadata.clazz = PointClass::Class2;
-	view.analogs[0].metadata.evariation = EventAnalogVariation::Group32Var7;
+	view.analogs[0].config.svariation = StaticAnalogVariation::Group30Var5;
+	view.analogs[0].config.clazz = PointClass::Class2;
+	view.analogs[0].config.evariation = EventAnalogVariation::Group32Var7;
 }
 
 int main(int argc, char* argv[])

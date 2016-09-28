@@ -70,9 +70,9 @@ TEST_CASE(SUITE("UnsolData"))
 	OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(3));
 
 	auto view = t.context.GetConfigView();
-	view.binaries[0].metadata.clazz = PointClass::Class1;
-	view.binaries[1].metadata.clazz = PointClass::Class2;
-	view.binaries[2].metadata.clazz = PointClass::Class3;
+	view.binaries[0].config.clazz = PointClass::Class1;
+	view.binaries[1].config.clazz = PointClass::Class2;
+	view.binaries[2].config.clazz = PointClass::Class3;
 
 	t.LowerLayerUp();
 

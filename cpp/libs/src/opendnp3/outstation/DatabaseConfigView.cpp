@@ -43,53 +43,6 @@ DatabaseConfigView::DatabaseConfigView(
 	timeAndIntervals(timeAndIntervals_)
 {}
 
-void DatabaseConfigView::SetInitialValue(const Binary& meas, uint16_t index)
-{
-	binaries[index].value = meas;
-	binaries[index].metadata.lastEvent = meas;
-}
-
-void DatabaseConfigView::SetInitialValue(const DoubleBitBinary& meas, uint16_t index)
-{
-	doubleBinaries[index].value = meas;
-	doubleBinaries[index].metadata.lastEvent = meas;
-}
-
-void DatabaseConfigView::SetInitialValue(const Analog& meas, uint16_t index)
-{
-	analogs[index].value = meas;
-	analogs[index].metadata.lastEvent = meas;
-}
-
-void DatabaseConfigView::SetInitialValue(const Counter& meas, uint16_t index)
-{
-	counters[index].value = meas;
-	counters[index].metadata.lastEvent = meas;
-}
-
-void DatabaseConfigView::SetInitialValue(const FrozenCounter& meas, uint16_t index)
-{
-	frozenCounters[index].value = meas;
-	frozenCounters[index].metadata.lastEvent = meas;
-}
-
-void DatabaseConfigView::SetInitialValue(const BinaryOutputStatus& meas, uint16_t index)
-{
-	binaryOutputStatii[index].value = meas;
-	binaryOutputStatii[index].metadata.lastEvent = meas;
-}
-
-void DatabaseConfigView::SetInitialValue(const AnalogOutputStatus& meas, uint16_t index)
-{
-	analogOutputStatii[index].value = meas;
-	analogOutputStatii[index].metadata.lastEvent = meas;
-}
-
-void DatabaseConfigView::SetInitialValue(const TimeAndInterval& meas, uint16_t index)
-{
-	timeAndIntervals[index].value = meas;
-}
-
 }
 
 

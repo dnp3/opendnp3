@@ -33,10 +33,10 @@ using namespace opendnp3;
 IndexSearch::Result TestResultLengthFour(uint16_t index)
 {
 	Array<Cell<BinarySpec>, uint16_t> values(4);
-	values[0].vIndex = 1;
-	values[1].vIndex = 3;
-	values[2].vIndex = 7;
-	values[3].vIndex = 9;
+	values[0].config.vIndex = 1;
+	values[1].config.vIndex = 3;
+	values[2].config.vIndex = 7;
+	values[3].config.vIndex = 9;
 
 	return IndexSearch::FindClosestRawIndex(values.ToView(), index);
 }
@@ -86,10 +86,10 @@ TEST_CASE(SUITE("FindsNextBiggestIndex"))
 Range TestRangeSearch(const Range& range)
 {
 	Array<Cell<BinarySpec>, uint16_t> values(4);
-	values[0].vIndex = 1;
-	values[1].vIndex = 3;
-	values[2].vIndex = 7;
-	values[3].vIndex = 9;
+	values[0].config.vIndex = 1;
+	values[1].config.vIndex = 3;
+	values[2].config.vIndex = 7;
+	values[3].config.vIndex = 9;
 
 	return IndexSearch::FindRawRange(values.ToView(), range);
 }

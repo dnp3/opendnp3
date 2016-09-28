@@ -255,8 +255,8 @@ TEST_CASE(SUITE("MixedVariationAssignments"))
 	{
 		// configure two different default variations
 		auto view = t.context.GetConfigView();
-		view.analogs[0].variation = StaticAnalogVariation::Group30Var1;
-		view.analogs[1].variation = StaticAnalogVariation::Group30Var2;
+		view.analogs[0].config.svariation = StaticAnalogVariation::Group30Var1;
+		view.analogs[1].config.svariation = StaticAnalogVariation::Group30Var2;
 	}
 
 	t.LowerLayerUp();
@@ -490,9 +490,9 @@ std::string QueryDiscontiguousBinary(const std::string& request)
 
 	// assign virtual indices to the database specified above
 	auto view = t.context.GetConfigView();
-	view.binaries[0].vIndex = 2;
-	view.binaries[1].vIndex = 4;
-	view.binaries[2].vIndex = 5;
+	view.binaries[0].config.vIndex = 2;
+	view.binaries[1].config.vIndex = 4;
+	view.binaries[2].config.vIndex = 5;
 
 	t.LowerLayerUp();
 
@@ -586,7 +586,7 @@ void TestStaticCounter(StaticCounterVariation variation, T value, const std::str
 	OutstationConfig cfg;
 	auto configure = [variation](DatabaseConfigView & view)
 	{
-		view.counters[0].variation = variation;
+		view.counters[0].config.svariation = variation;
 	};
 	TestStaticType<Counter>(cfg, DatabaseSizes::CounterOnly(1), value, response, configure);
 }
@@ -600,8 +600,8 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 		auto view = t.context.GetConfigView();
 		auto setValue = [](Cell<BinarySpec>& cell) -> void
 		{
-			cell.SetInitialValue(Binary(false));
-			cell.variation = StaticBinaryVariation::Group1Var1;
+			cell.value = Binary(false);
+			cell.config.svariation = StaticBinaryVariation::Group1Var1;
 		};
 
 		view.binaries.foreach(setValue);
@@ -623,7 +623,7 @@ TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 		auto view = t.context.GetConfigView();
 		auto setVariation = [](Cell<BinarySpec>& cell) -> void
 		{
-			cell.variation = StaticBinaryVariation::Group1Var1;
+			cell.config.svariation = StaticBinaryVariation::Group1Var1;
 		};
 
 		view.binaries.foreach(setVariation);
@@ -662,7 +662,7 @@ void TestStaticAnalog(StaticAnalogVariation variation, T value, const std::strin
 	OutstationConfig cfg;
 	auto configure = [variation](DatabaseConfigView & view)
 	{
-		view.analogs[0].variation = variation;
+		view.analogs[0].config.svariation = variation;
 	};
 	TestStaticType<Analog>(cfg, DatabaseSizes::AnalogOnly(1), value, response, configure);
 }
@@ -719,7 +719,7 @@ void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T
 	OutstationConfig cfg;
 	auto configure = [variation](DatabaseConfigView & view)
 	{
-		view.analogOutputStatii[0].variation = variation;
+		view.analogOutputStatii[0].config.svariation = variation;
 	};
 	TestStaticType<AnalogOutputStatus>(cfg, DatabaseSizes::AnalogOutputStatusOnly(1), value, response, configure);
 }

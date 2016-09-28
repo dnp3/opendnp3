@@ -21,7 +21,6 @@
 #ifndef OPENDNP3_CELL_H
 #define OPENDNP3_CELL_H
 
-
 namespace opendnp3
 {
 
@@ -45,23 +44,13 @@ struct SelectedValue
 template <class Spec>
 struct Cell
 {
-	typedef typename Spec::type_t meas_type_t;
+	typedef typename Spec::type_t meas_type_t;		
 
-	Cell() : value(), vIndex(0), variation(Spec::DefaultStaticVariation)
-	{}
+	meas_type_t value;					// current value
+	typename Spec::config_t config;		// configuration
+	typename Spec::event_t event;		// event cell
+	SelectedValue<Spec> selection;		// selected value
 
-	void SetInitialValue(const meas_type_t& value_)
-	{
-		value = value_;
-		metadata.SetEventValue(value_);
-	}
-
-	meas_type_t value;
-	uint16_t vIndex; // virtual index for discontiguous data, as opposed to the raw array index
-	typename Spec::StaticVariation variation;
-	typename Spec::MetadataType metadata;
-
-	SelectedValue<Spec> selection;
 };
 
 

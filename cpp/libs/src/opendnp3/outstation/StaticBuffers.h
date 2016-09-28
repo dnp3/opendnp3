@@ -57,7 +57,7 @@ private:
 		auto view = GetArrayView<Spec>();
 		for (uint16_t i = 0; i < view.Size(); ++i)
 		{
-			view[i].vIndex = i;
+			view[i].config.vIndex = i;
 		}
 	}
 

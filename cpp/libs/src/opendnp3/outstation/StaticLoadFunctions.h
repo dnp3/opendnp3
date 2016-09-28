@@ -68,13 +68,13 @@ template <class Spec, class IndexType >
 bool LoadWithRangeIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view, RangeWriteIterator<IndexType, typename Spec::type_t>& iterator, Range& range)
 {
 	const Cell<Spec>& start = view[range.start];
-	uint16_t nextIndex = start.vIndex;
+	uint16_t nextIndex = start.config.vIndex;
 
 	while (
 	    range.IsValid() &&
 	    view[range.start].selection.selected &&
 	    (view[range.start].selection.variation == start.selection.variation) &&
-	    (view[range.start].vIndex == nextIndex)
+	    (view[range.start].config.vIndex == nextIndex)
 	)
 	{
 		if (iterator.Write(view[range.start].selection.value))
@@ -98,13 +98,13 @@ bool LoadWithBitfieldIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view, Bi
 {
 	const Cell<Spec>& start = view[range.start];
 
-	uint16_t nextIndex = start.vIndex;
+	uint16_t nextIndex = start.config.vIndex;
 
 	while (
 	    range.IsValid() &&
 	    view[range.start].selection.selected &&
 	    (view[range.start].selection.variation == start.selection.variation) &&
-	    (view[range.start].vIndex == nextIndex)
+	    (view[range.start].config.vIndex == nextIndex)
 	)
 	{
 		if (iterator.Write(view[range.start].selection.value.value))
@@ -126,8 +126,8 @@ bool LoadWithBitfieldIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view, Bi
 template <class Spec, class GV>
 bool WriteSingleBitfield(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
-	auto start = view[range.start].vIndex;
-	auto stop = view[range.stop].vIndex;
+	auto start = view[range.start].config.vIndex;
+	auto stop = view[range.stop].config.vIndex;
 	auto mapped = Range::From(start, stop);
 
 	if (mapped.IsOneByte())
@@ -142,15 +142,12 @@ bool WriteSingleBitfield(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderW
 	}
 }
 
-/*
-bool (*Function)(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range);
-*/
 
 template <class Spec, class Serializer>
 bool WriteWithSerializer(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
-	auto start = view[range.start].vIndex;
-	auto stop = view[range.stop].vIndex;
+	auto start = view[range.start].config.vIndex;
+	auto stop = view[range.stop].config.vIndex;
 	auto mapped = Range::From(start, stop);
 
 	if (mapped.IsOneByte())

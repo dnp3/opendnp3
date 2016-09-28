@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_EVENTMETADATA_H
-#define OPENDNP3_EVENTMETADATA_H
+#ifndef OPENDNP3_EVENTTYPES_H
+#define OPENDNP3_EVENTTYPES_H
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/gen/PointClass.h"
@@ -28,15 +28,14 @@ namespace opendnp3
 {
 
 /// A null object for types that have no metadata
-template <class Spec>
-struct EmptyMetadata
+struct EmptyEventType
 {
-	void SetEventValue(const typename Spec::type_t& value) {}
+	//void SetEventValue(const typename Spec::type_t& value) {}
 };
 
 /// Base class for different types of event metadata
 template <class Spec>
-struct EventMetadata
+struct EventTypeBase
 {
 	typedef typename Spec::type_t meas_type_t;
 
@@ -51,38 +50,33 @@ struct EventMetadata
 
 protected:
 
-	EventMetadata() : clazz(PointClass::Class1), lastEvent(), evariation(Spec::DefaultEventVariation)
+	EventTypeBase() : clazz(PointClass::Class1), lastEvent(), evariation(Spec::DefaultEventVariation)
 	{}
 };
 
 /// Metatype w/o a deadband
 template <class Spec>
-struct SimpleEventMetadata : EventMetadata<Spec>
+struct SimpleEventType : EventTypeBase<Spec>
 {
 	typedef typename Spec::type_t meas_type_t;
 
-	SimpleEventMetadata() : EventMetadata<Spec>()
+	SimpleEventType() : EventTypeBase<Spec>()
 	{}
 
-	bool IsEvent(const meas_type_t& newValue) const
+	bool IsEvent(const typename Spec::config_t& config, const meas_type_t& newValue) const
 	{
 		return Spec::IsEvent(this->lastEvent, newValue);
 	}
 };
 
 /// Structure for holding metadata information on points that have support deadbanding
-template <class Spec, class DeadbandType>
-struct DeadbandMetadata : EventMetadata<Spec>
-{
-	DeadbandMetadata() : EventMetadata<Spec>(), deadband(0)
-	{}
-
-	bool IsEvent(const typename Spec::type_t& newValue) const
+template <class Spec>
+struct DeadbandEventType : SimpleEventType<Spec>
+{	
+	bool IsEvent(const typename Spec::config_t& config, const typename Spec::type_t& newValue) const
 	{
-		return Spec::IsEvent(this->lastEvent, newValue, deadband);
-	}
-
-	DeadbandType deadband;
+		return Spec::IsEvent(this->lastEvent, newValue, config.deadband);
+	}	
 };
 
 

@@ -78,7 +78,7 @@ Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& vie
 		uint16_t start = FindClosestRawIndex(view, range.start).index;
 		uint16_t stop = FindClosestRawIndex(view, range.stop).index;
 
-		if (view[start].vIndex < range.start)
+		if (view[start].config.vIndex < range.start)
 		{
 			if (start < openpal::MaxValue<uint16_t>())
 			{
@@ -90,7 +90,7 @@ Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& vie
 			}
 		}
 
-		if (view[stop].vIndex > range.stop)
+		if (view[stop].config.vIndex > range.stop)
 		{
 			if (stop > 0)
 			{
@@ -128,7 +128,7 @@ IndexSearch::Result IndexSearch::FindClosestRawIndex(const openpal::ArrayView<Ce
 		{
 			midpoint = GetMidpoint(lower, upper);
 
-			auto index = view[midpoint].vIndex;
+			auto index = view[midpoint].config.vIndex;
 
 			if (index == vIndex)
 			{

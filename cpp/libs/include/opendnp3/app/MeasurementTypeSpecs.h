@@ -21,37 +21,8 @@
 #ifndef OPENDNP3_MEASUREMENTTYPESPECS_H
 #define OPENDNP3_MEASUREMENTTYPESPECS_H
 
-#include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/SecurityStat.h"
-
-#include "opendnp3/app/EventType.h"
-#include "opendnp3/app/EventMetadata.h"
-#include "opendnp3/app/EventTriggers.h"
-
-#include "opendnp3/gen/StaticBinaryVariation.h"
-#include "opendnp3/gen/StaticDoubleBinaryVariation.h"
-#include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
-#include "opendnp3/gen/StaticCounterVariation.h"
-#include "opendnp3/gen/StaticFrozenCounterVariation.h"
-#include "opendnp3/gen/StaticAnalogVariation.h"
-#include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
-#include "opendnp3/gen/StaticTimeAndIntervalVariation.h"
-#include "opendnp3/gen/StaticSecurityStatVariation.h"
-
-#include "opendnp3/gen/EventBinaryVariation.h"
-#include "opendnp3/gen/EventDoubleBinaryVariation.h"
-#include "opendnp3/gen/EventBinaryOutputStatusVariation.h"
-#include "opendnp3/gen/EventCounterVariation.h"
-#include "opendnp3/gen/EventFrozenCounterVariation.h"
-#include "opendnp3/gen/EventAnalogVariation.h"
-#include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
-#include "opendnp3/gen/EventSecurityStatVariation.h"
-
-#include "opendnp3/gen/StaticTypeBitmask.h"
-
-#include "opendnp3/gen/BinaryQuality.h"
-
-#include "openpal/util/Uncopyable.h"
+#include "opendnp3/outstation/MeasurementConfig.h"
+#include "opendnp3/app/EventTypes.h"
 
 namespace opendnp3
 {
@@ -69,7 +40,8 @@ struct BinarySpec : private openpal::StaticOnly
 	typedef bool ValueType;
 	typedef EventBinaryVariation EventVariation;
 	typedef StaticBinaryVariation StaticVariation;
-	typedef SimpleEventMetadata<BinarySpec> MetadataType;
+	typedef BinaryConfig config_t;	
+	typedef SimpleEventType<BinarySpec> event_t;
 
 	inline static bool IsQualityOnlineOnly(const Binary& binary)
 	{
@@ -94,7 +66,8 @@ struct DoubleBitBinarySpec : private openpal::StaticOnly
 	typedef DoubleBit ValueType;
 	typedef EventDoubleBinaryVariation EventVariation;
 	typedef StaticDoubleBinaryVariation StaticVariation;
-	typedef SimpleEventMetadata<DoubleBitBinarySpec> MetadataType;
+	typedef DoubleBitBinaryConfig config_t;
+	typedef SimpleEventType<DoubleBitBinarySpec> event_t;
 
 	inline static bool IsEvent(const DoubleBitBinary& oldValue, const DoubleBitBinary& newValue)
 	{
@@ -116,7 +89,8 @@ public:
 	typedef bool ValueType;
 	typedef EventBinaryOutputStatusVariation EventVariation;
 	typedef StaticBinaryOutputStatusVariation StaticVariation;
-	typedef SimpleEventMetadata<BinaryOutputStatusSpec> MetadataType;
+	typedef BOStatusConfig config_t;
+	typedef SimpleEventType<BinaryOutputStatusSpec> event_t;
 
 	inline static bool IsEvent(const BinaryOutputStatus& oldValue, const BinaryOutputStatus& newValue)
 	{
@@ -137,7 +111,8 @@ struct AnalogSpec : private openpal::StaticOnly
 	typedef double ValueType;
 	typedef EventAnalogVariation EventVariation;
 	typedef StaticAnalogVariation StaticVariation;
-	typedef DeadbandMetadata<AnalogSpec, double> MetadataType;
+	typedef AnalogConfig config_t;
+	typedef DeadbandEventType<AnalogSpec> event_t;
 
 	inline static bool IsEvent(const Analog& oldValue, const Analog& newValue, double deadband)
 	{
@@ -157,7 +132,8 @@ struct CounterSpec : private openpal::StaticOnly
 	typedef uint32_t ValueType;
 	typedef EventCounterVariation EventVariation;
 	typedef StaticCounterVariation StaticVariation;
-	typedef DeadbandMetadata<CounterSpec, uint32_t> MetadataType;
+	typedef CounterConfig config_t;
+	typedef DeadbandEventType<CounterSpec> event_t;
 
 	inline static bool IsEvent(const Counter& oldValue, const Counter& newValue, uint32_t deadband)
 	{
@@ -184,7 +160,8 @@ struct FrozenCounterSpec : private openpal::StaticOnly
 	typedef uint32_t ValueType;
 	typedef EventFrozenCounterVariation EventVariation;
 	typedef StaticFrozenCounterVariation StaticVariation;
-	typedef DeadbandMetadata<FrozenCounterSpec, uint32_t> MetadataType;
+	typedef FrozenCounterConfig config_t;
+	typedef DeadbandEventType<FrozenCounterSpec> event_t;
 
 	inline static bool IsEvent(const FrozenCounter& oldValue, const FrozenCounter& newValue, uint32_t deadband)
 	{
@@ -211,7 +188,8 @@ struct AnalogOutputStatusSpec : private openpal::StaticOnly
 	typedef double ValueType;
 	typedef EventAnalogOutputStatusVariation EventVariation;
 	typedef StaticAnalogOutputStatusVariation StaticVariation;
-	typedef DeadbandMetadata<AnalogOutputStatusSpec, double> MetadataType;
+	typedef AOStatusConfig config_t;
+	typedef DeadbandEventType<AnalogOutputStatusSpec> event_t;
 
 	inline static bool IsEvent(const AnalogOutputStatus& oldValue, const AnalogOutputStatus& newValue, double deadband)
 	{
@@ -227,7 +205,8 @@ struct TimeAndIntervalSpec : private openpal::StaticOnly
 	const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;
 
 	typedef StaticTimeAndIntervalVariation StaticVariation;
-	typedef EmptyMetadata<TimeAndIntervalSpec> MetadataType;
+	typedef TimeAndIntervalConfig config_t;
+	typedef EmptyEventType event_t;
 };
 
 struct SecurityStatSpec : private openpal::StaticOnly
@@ -241,7 +220,8 @@ struct SecurityStatSpec : private openpal::StaticOnly
 	typedef SecurityStat::Value ValueType;
 	typedef EventSecurityStatVariation EventVariation;
 	typedef StaticSecurityStatVariation StaticVariation;
-	typedef DeadbandMetadata<SecurityStatSpec, uint32_t> MetadataType;
+	typedef SecurityStatConfig config_t;
+	typedef EmptyEventType event_t;
 
 	inline static bool IsEvent(const SecurityStat& oldValue, const SecurityStat& newValue, uint32_t deadband)
 	{
