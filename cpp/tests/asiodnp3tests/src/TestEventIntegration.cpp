@@ -46,7 +46,7 @@ class EventReceiver final : public ISOEHandler
 
 public:
 
-	EventReceiver(uint32_t numToSend, uint32_t maxOutstanding, std::uint16_t numValues) :
+	EventReceiver(size_t numToSend, size_t maxOutstanding, std::uint16_t numValues) :
 		m_tx_sequence(0),
 		m_rx_sequence(0),
 		m_num_remaining(numToSend),
@@ -111,7 +111,7 @@ public:
 
 private:
 
-	uint32_t ProcessRxValues()
+	size_t ProcessRxValues()
 	{
 		for (auto& value : m_rx_values)
 		{
@@ -152,7 +152,7 @@ private:
 		return NUM;
 	}
 
-	uint32_t LoadNewValues(IOutstation* outstation)
+	size_t LoadNewValues(IOutstation* outstation)
 	{
 		const auto TX_SAFELY = MAX_OUTSTANDING - m_num_outstanding;
 		const auto TX_MAX = TX_SAFELY > m_num_remaining ? m_num_remaining : TX_SAFELY;
@@ -164,14 +164,14 @@ private:
 
 		// send some random fraction of what's allowed to be sent
 		// this makes the test less deterministic and more realistic
-		std::uniform_int_distribution<uint32_t> dis(1, TX_MAX);
+		std::uniform_int_distribution<size_t> dis(1, TX_MAX);
 		const auto TX_NUM = dis(m_gen);
 
 		MeasUpdate tx(outstation);
 
 		for (uint32_t i = 0; i < TX_NUM; ++i)
 		{
-			Analog a(m_tx_sequence);
+			Analog a(static_cast<double>(m_tx_sequence));
 			const uint16_t index = m_tx_sequence % NUM_VALUES;
 			tx.Update(a, index);
 
@@ -186,14 +186,14 @@ private:
 
 	std::vector<Indexed<Analog>> m_rx_values;
 
-	std::uint32_t m_tx_sequence;
-	std::uint32_t m_rx_sequence;
+	std::size_t m_tx_sequence;
+	std::size_t m_rx_sequence;
 
 
-	std::uint32_t m_num_remaining;
-	uint32_t m_num_outstanding;
+	std::size_t m_num_remaining;
+	size_t m_num_outstanding;
 
-	const uint32_t MAX_OUTSTANDING;
+	const size_t MAX_OUTSTANDING;
 	const std::uint16_t NUM_VALUES;
 
 	std::mutex m_mutex;
