@@ -35,9 +35,9 @@ CommandTaskResult::CommandTaskResult(TaskCompletion result, const CommandSet::He
 
 /// --- Implement ICollection<CommandResult> ----
 
-uint32_t CommandTaskResult::Count() const
+size_t CommandTaskResult::Count() const
 {
-	uint32_t count = 0;
+	size_t count = 0;
 	for (auto& header : *m_vector)
 	{
 		count += header->Count();

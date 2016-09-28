@@ -34,11 +34,11 @@ class ArrayCollection : public ICollection<T>
 {
 public:
 
-	ArrayCollection(const T* pArray_, uint32_t count) : pArray(pArray_), COUNT(count)
+	ArrayCollection(const T* pArray_, size_t count) : pArray(pArray_), COUNT(count)
 	{}
 
 
-	virtual uint32_t Count() const override final
+	virtual size_t Count() const override final
 	{
 		return COUNT;
 	}
@@ -54,7 +54,7 @@ public:
 private:
 
 	const T* pArray;
-	const uint32_t COUNT;
+	const size_t COUNT;
 };
 
 template <class T, class U, class Transform>
@@ -62,12 +62,12 @@ class TransformedCollection : public ICollection < U >
 {
 public:
 
-	TransformedCollection(const ICollection<T>& input_, Transform transform_) :
-		input(&input_),
-		transform(transform_)
+	TransformedCollection(const ICollection<T>& input, Transform transform) :
+		input(&input),
+		transform(transform)
 	{}
 
-	virtual uint32_t Count() const override final
+	virtual size_t Count() const override final
 	{
 		return input->Count();
 	}

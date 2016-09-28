@@ -70,7 +70,7 @@ public:
 
 	// --- Implement ICollection<Indexed<CommandResponse>> ----
 
-	virtual uint32_t Count() const override;
+	virtual size_t Count() const override;
 
 	virtual void Foreach(IVisitor<CommandState>& visitor) const override;
 
@@ -192,7 +192,7 @@ void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& 
 }
 
 template <class T>
-uint32_t TypedCommandHeader<T>::Count() const
+size_t TypedCommandHeader<T>::Count() const
 {
 	return m_records.size();
 }

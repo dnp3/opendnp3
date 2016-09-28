@@ -61,10 +61,10 @@ struct ChannelStatistics
 	uint32_t numClose;
 
 	/// The number of bytes received
-	uint32_t numBytesRx;
+	size_t numBytesRx;
 
 	/// The number of bytes transmitted
-	uint32_t numBytesTx;
+	size_t numBytesTx;
 };
 }
 

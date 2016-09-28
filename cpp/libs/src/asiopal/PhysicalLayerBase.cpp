@@ -291,7 +291,7 @@ void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 	}
 }
 
-void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuffer, uint32_t numRead)
+void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuffer, size_t numRead)
 {
 	if (state.isReading)
 	{
@@ -311,7 +311,7 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuf
 
 			if (!state.isClosing)
 			{
-				RSlice buffer(pBuffer, numRead);
+				RSlice buffer(pBuffer, static_cast<uint32_t>(numRead));
 				this->DoReadCallback(buffer);
 			}
 		}
@@ -324,7 +324,7 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuf
 	}
 }
 
-void PhysicalLayerBase::OnWriteCallback(const std::error_code& err, uint32_t numWritten)
+void PhysicalLayerBase::OnWriteCallback(const std::error_code& err, size_t numWritten)
 {
 	if (state.isWriting)
 	{

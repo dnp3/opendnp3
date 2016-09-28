@@ -43,7 +43,7 @@ void operate(JNIEnv* env, jlong native, jobject headers, jobject future, const F
 	{
 		const auto env = JNI::GetEnv();
 		const auto jsummary = jni::JCache::TaskCompletion.fromType(env, static_cast<jint>(result.summary));
-		const auto jlist = jni::JCache::ArrayList.init1(env, result.Count());
+		const auto jlist = jni::JCache::ArrayList.init1(env, static_cast<jint>(result.Count()));
 
 		auto addToJList = [&](const opendnp3::CommandPointResult& cpr) {
 			const auto jstate = jni::JCache::CommandPointState.fromType(env, static_cast<jint>(cpr.state));

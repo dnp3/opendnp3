@@ -100,7 +100,7 @@ void LoopbackPhysicalLayer::CheckForReadDispatch()
 {
 	if(!mBytesForReading.IsEmpty() && mWritten.size() > 0)
 	{
-		uint32_t num = (mBytesForReading.Size() < mWritten.size()) ? mBytesForReading.Size() : mWritten.size();
+		size_t num = (mBytesForReading.Size() < mWritten.size()) ? mBytesForReading.Size() : mWritten.size();
 
 		for(size_t i = 0; i < num; ++i)
 		{

@@ -72,10 +72,12 @@ TEST_CASE(SUITE("ClientConnectionRejected"))
 
 	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
-	for(size_t i = 0; i < 2; ++i)
+	for(uint32_t i = 0; i < 2; ++i)
 	{
 		t.mTCPClient.BeginOpen();
-		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
+		auto condition = [&]() -> bool { return t.mClientAdapter.OpenFailureEquals(i+1); };
+
+		REQUIRE(t.ProceedUntil(condition));
 	}
 }
 
@@ -83,12 +85,13 @@ TEST_CASE(SUITE("ClientConnectionCanceled"))
 {
 	PhysTestObject t;
 
-	for(size_t i = 0; i < 2; ++i)
+	for(uint32_t i = 0; i < 2; ++i)
 	{
 		t.mTCPClient.BeginOpen();
 		t.mTCPClient.BeginClose();
+		auto condition = [&]() -> bool { return t.mClientAdapter.OpenFailureEquals(i + 1); };
 
-		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
+		REQUIRE(t.ProceedUntil(condition));
 	}
 }
 
@@ -96,12 +99,12 @@ TEST_CASE(SUITE("ServerAcceptCanceled"))
 {
 	PhysTestObject t;
 
-	for(size_t i = 0; i < 2; ++i)
+	for(uint32_t i = 0; i < 2; ++i)
 	{
 		t.mTCPServer.BeginOpen();
 		t.mTCPServer.BeginClose();
-
-		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mServerAdapter, i + 1)));
+		auto condition = [&]() -> bool { return t.mServerAdapter.OpenFailureEquals(i + 1); };
+		REQUIRE(t.ProceedUntil(condition));
 	}
 }
 
@@ -175,7 +178,7 @@ TEST_CASE(SUITE("ServerCloseWhileOpeningKillsAcceptor"))
 
 	REQUIRE(0 ==  t.mClientAdapter.GetNumOpenFailure());
 
-	for(size_t i = 0; i < 5; ++i)
+	for(uint32_t i = 0; i < 5; ++i)
 	{
 		t.mTCPServer.BeginOpen();
 		t.mTCPServer.BeginClose();
@@ -195,7 +198,7 @@ TEST_CASE(SUITE("ServerCloseAfterOpeningKillsAcceptor"))
 
 	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
-	for(size_t i = 0; i < 5; ++i)
+	for(uint32_t i = 0; i < 5; ++i)
 	{
 		t.mTCPServer.BeginOpen();
 		t.mTCPClient.BeginOpen();

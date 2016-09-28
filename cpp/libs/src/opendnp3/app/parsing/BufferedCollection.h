@@ -31,13 +31,13 @@ class BufferedCollection : public ICollection<T>
 {
 public:
 
-	BufferedCollection(const openpal::RSlice& buffer_, uint32_t count, const ReadFunc& readFunc_) :
-		buffer(buffer_),
+	BufferedCollection(const openpal::RSlice& buffer, size_t count, const ReadFunc& readFunc) :
+		buffer(buffer),
 		COUNT(count),
-		readFunc(readFunc_)
+		readFunc(readFunc)
 	{}
 
-	virtual uint32_t Count() const override final
+	virtual size_t Count() const override final
 	{
 		return COUNT;
 	}
@@ -56,7 +56,7 @@ public:
 private:
 
 	openpal::RSlice buffer;
-	const uint32_t COUNT;
+	const size_t COUNT;
 	ReadFunc readFunc;
 };
 

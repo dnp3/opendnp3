@@ -70,7 +70,7 @@ public:
 	/**
 	* The number of elements in the collection
 	*/
-	virtual uint32_t Count() const = 0;
+	virtual size_t Count() const = 0;
 
 	/**
 	* Visit all the elements of a collection

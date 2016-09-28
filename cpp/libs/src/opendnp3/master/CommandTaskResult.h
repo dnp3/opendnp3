@@ -39,7 +39,7 @@ public:
 
 	/// --- Implement ICollection<CommandResult> ----
 
-	virtual uint32_t Count() const override;
+	virtual size_t Count() const override;
 	virtual void Foreach(IVisitor<CommandPointResult>& visitor) const override;
 
 private:

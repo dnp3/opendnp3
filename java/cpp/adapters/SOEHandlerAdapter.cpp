@@ -41,7 +41,7 @@ void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3
 
 	auto jinfo = Convert(env, info);
 
-	auto jlist = jni::JCache::ArrayList.init1(env, values.Count());
+	auto jlist = jni::JCache::ArrayList.init1(env, static_cast<jint>(values.Count()));
 
 	auto add = [&](const Indexed<T>& meas) {
 		auto jvalue = createMeas(env, meas.value);

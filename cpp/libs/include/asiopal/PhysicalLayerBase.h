@@ -160,8 +160,8 @@ protected:
 
 	//Internally produced events
 	void OnOpenCallback(const std::error_code& err);
-	void OnReadCallback(const std::error_code& err, uint8_t* pBuffer, uint32_t numRead);
-	void OnWriteCallback(const std::error_code& errr, uint32_t  numWritten);
+	void OnReadCallback(const std::error_code& err, uint8_t* pBuffer, size_t numRead);
+	void OnWriteCallback(const std::error_code& errr, size_t  numWritten);
 
 	openpal::Logger logger;
 	openpal::IExecutor* pExecutor;
