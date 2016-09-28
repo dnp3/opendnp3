@@ -24,10 +24,9 @@ package com.automatak.dnp3;
 public interface Outstation extends Stack {
 
     /**
-     *
-     * @return Interface used to load data into the outstation
+     * Load some new measurement values into the outstation
+     * @param changeSet
      */
-    SOEHandler getDataObserver();
-
+    void load(ChangeSet changeSet);
 
 }

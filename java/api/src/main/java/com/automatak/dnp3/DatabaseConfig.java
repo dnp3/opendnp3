@@ -27,7 +27,6 @@ import java.util.function.Function;
  */
 public class DatabaseConfig {
 
-
     public final List<BinaryConfig> binary;
     public final List<DoubleBinaryConfig> doubleBinary;
     public final List<AnalogConfig> analog;
@@ -35,7 +34,6 @@ public class DatabaseConfig {
     public final List<FrozenCounterConfig> frozenCounter;
     public final List<BinaryOutputStatusConfig> boStatus;
     public final List<AnalogOutputStatusConfig> aoStatus;
-    public final List<TimeAndIntervalConfig> timeAndInterval;
 
     private static <T> List<T> initialize(int num, Function<Integer, T> factory)
     {
@@ -44,7 +42,7 @@ public class DatabaseConfig {
         return list;
     }
 
-    public DatabaseConfig(int numBinary, int numDoubleBinary, int numAnalog, int numCounter, int numFrozenCounter, int numBOStatus, int numAOStatus, int numTimeAndInterval)
+    public DatabaseConfig(int numBinary, int numDoubleBinary, int numAnalog, int numCounter, int numFrozenCounter, int numBOStatus, int numAOStatus)
     {
         this.binary = initialize(numBinary, BinaryConfig::new);
         this.doubleBinary= initialize(numDoubleBinary, DoubleBinaryConfig::new);
@@ -53,7 +51,6 @@ public class DatabaseConfig {
         this.frozenCounter = initialize(numFrozenCounter, FrozenCounterConfig::new);
         this.boStatus = initialize(numBOStatus, BinaryOutputStatusConfig::new);
         this.aoStatus = initialize(numAOStatus, AnalogOutputStatusConfig::new);
-        this.timeAndInterval = initialize(numTimeAndInterval, TimeAndIntervalConfig::new);
     }
 
 }
