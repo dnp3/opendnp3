@@ -47,19 +47,19 @@ public:
 	OutstationTestObject(const OutstationConfig& config, const DatabaseSizes& dbSizes = DatabaseSizes::Empty());
 
 
-	uint32_t SendToOutstation(const std::string& hex);
+	size_t SendToOutstation(const std::string& hex);
 
-	uint32_t LowerLayerUp();
+	size_t LowerLayerUp();
 
-	uint32_t LowerLayerDown();
+	size_t LowerLayerDown();
 
-	uint32_t OnSendResult(bool isSuccess);
+	size_t OnSendResult(bool isSuccess);
 
 	size_t NumPendingTimers() const;
 
 	bool AdvanceToNextTimer();
 
-	uint32_t AdvanceTime(const openpal::TimeDuration& td);
+	size_t AdvanceTime(const openpal::TimeDuration& td);
 
 	testlib::MockLogHandler log;
 

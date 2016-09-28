@@ -41,25 +41,25 @@ OutstationTestObject::OutstationTestObject(
 	lower.SetUpperLayer(context);
 }
 
-uint32_t OutstationTestObject::LowerLayerUp()
+size_t OutstationTestObject::LowerLayerUp()
 {
 	context.OnLowerLayerUp();
 	return exe.RunMany();
 }
 
-uint32_t OutstationTestObject::LowerLayerDown()
+size_t OutstationTestObject::LowerLayerDown()
 {
 	context.OnLowerLayerDown();
 	return exe.RunMany();
 }
 
-uint32_t OutstationTestObject::OnSendResult(bool isSuccess)
+size_t OutstationTestObject::OnSendResult(bool isSuccess)
 {
 	context.OnSendResult(isSuccess);
 	return exe.RunMany();
 }
 
-uint32_t OutstationTestObject::SendToOutstation(const std::string& hex)
+size_t OutstationTestObject::SendToOutstation(const std::string& hex)
 {
 	HexSequence hs(hex);
 	context.OnReceive(hs.ToRSlice());
@@ -83,7 +83,7 @@ bool OutstationTestObject::AdvanceToNextTimer()
 	}
 }
 
-uint32_t OutstationTestObject::AdvanceTime(const openpal::TimeDuration& td)
+size_t OutstationTestObject::AdvanceTime(const openpal::TimeDuration& td)
 {
 	exe.AdvanceTime(td);
 	return exe.RunMany();
