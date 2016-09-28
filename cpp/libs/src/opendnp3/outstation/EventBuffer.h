@@ -63,7 +63,7 @@ public:
 		this->UpdateAny(evt);
 	}
 	virtual void Update(const Event<AnalogSpec>& evt) override final
-	{		
+	{
 		this->UpdateAny(evt);
 	}
 	virtual void Update(const Event<CounterSpec>& evt) override final
@@ -179,7 +179,7 @@ void EventBuffer::UpdateAny(const Event<Spec>& evt)
 		{
 			this->overflow = true;
 			RemoveOldestEventOfType(Spec::EventTypeEnum);
-		}		
+		}
 
 		// Add the event, the Reset() ensures that selected/written == false
 		events.Add(SOERecord(evt.value, evt.index, evt.clazz, evt.variation))->value.Reset();

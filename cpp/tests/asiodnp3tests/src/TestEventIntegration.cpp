@@ -92,14 +92,14 @@ public:
 
 		std::unique_lock<std::mutex> lock(m_mutex);
 
-		const auto RX_NUM = this->ProcessRxValues();		
+		const auto RX_NUM = this->ProcessRxValues();
 
 		if (m_num_remaining == 0)
 		{
 			return true;
 		}
 
-		const auto TX_NUM = this->LoadNewValues(outstation);		
+		const auto TX_NUM = this->LoadNewValues(outstation);
 
 		if (m_condition.wait_for(lock, timeout) == cv_status::timeout)
 		{
@@ -170,11 +170,11 @@ private:
 		MeasUpdate tx(outstation);
 
 		for (uint32_t i = 0; i < TX_NUM; ++i)
-		{			
+		{
 			Analog a(m_tx_sequence);
 			const uint16_t index = m_tx_sequence % NUM_VALUES;
 			tx.Update(a, index);
-			
+
 			//std::cout << "transmitting: (" << index << ") - " << a.value << std::endl;
 
 			++m_tx_sequence;
@@ -205,7 +205,7 @@ private:
 };
 
 IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numValues, uint16_t eventBufferSize)
-{	
+{
 	auto server = manager.AddTCPServer("server", levels, ChannelRetry::Default(), "127.0.0.1", 20000, nullptr);
 
 	OutstationStackConfig stackConfig(DatabaseSizes::AllTypes(numValues));

@@ -58,7 +58,7 @@ public:
 	/**
 	* @return stack statistics counters
 	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;	
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
 protected:
 

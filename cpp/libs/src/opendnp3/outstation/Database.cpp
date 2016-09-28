@@ -50,7 +50,7 @@ bool Database::Update(const DoubleBitBinary& value, uint16_t index, EventMode mo
 }
 
 bool Database::Update(const Analog& value, uint16_t index, EventMode mode)
-{	
+{
 	return this->UpdateEvent<AnalogSpec>(value, index, mode);
 }
 

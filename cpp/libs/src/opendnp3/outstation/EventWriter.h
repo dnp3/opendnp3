@@ -90,7 +90,7 @@ private:
 				{
 					auto evt = record.ReadEvent<Spec>();
 					if (header.Write(evt.value, evt.index))
-					{						
+					{
 						record.written = true;
 						recorder.RecordWritten(record.clazz, record.type);
 					}

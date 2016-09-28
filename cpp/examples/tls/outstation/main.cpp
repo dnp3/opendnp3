@@ -45,7 +45,7 @@ void ConfigureDatabase(DatabaseConfig& config)
 {
 	// example of configuring analog index 0 for Class2 with floating point variations by default
 	config.analog[0].clazz = PointClass::Class2;
-	config.analog[0].svariation = StaticAnalogVariation::Group30Var5;	
+	config.analog[0].svariation = StaticAnalogVariation::Group30Var5;
 	config.analog[0].evariation = EventAnalogVariation::Group32Var7;
 }
 
@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), stackConfig);	
+	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), stackConfig);
 
 	// Enable the outstation and start communications
 	outstation->Enable();

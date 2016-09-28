@@ -68,7 +68,7 @@ public:
 		};
 
 		pLifecycle->GetExecutor().BlockFor(set);
-	}	
+	}
 
 	virtual void SetRestartIIN() override final
 	{
