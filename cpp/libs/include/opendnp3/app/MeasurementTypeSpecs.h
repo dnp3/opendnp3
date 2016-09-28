@@ -28,18 +28,8 @@ namespace opendnp3
 {
 
 
-struct BinarySpec : private openpal::StaticOnly
-{
-	typedef Binary type_t;
-
-	static const EventType EventTypeEnum = EventType::Binary;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
-	static const EventBinaryVariation DefaultEventVariation = EventBinaryVariation::Group2Var1;
-	static const StaticBinaryVariation DefaultStaticVariation = StaticBinaryVariation::Group1Var2;
-
-	typedef bool ValueType;
-	typedef EventBinaryVariation EventVariation;
-	typedef StaticBinaryVariation StaticVariation;
+struct BinarySpec : public BinaryInfo
+{	
 	typedef BinaryConfig config_t;	
 	typedef SimpleEventCell<BinarySpec> event_cell_t;
 
@@ -54,18 +44,8 @@ struct BinarySpec : private openpal::StaticOnly
 	}
 };
 
-struct DoubleBitBinarySpec : private openpal::StaticOnly
-{
-	typedef DoubleBitBinary type_t;
-
-	static const EventType EventTypeEnum = EventType::DoubleBitBinary;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
-	static const EventDoubleBinaryVariation DefaultEventVariation = EventDoubleBinaryVariation::Group4Var1;
-	static const StaticDoubleBinaryVariation DefaultStaticVariation = StaticDoubleBinaryVariation::Group3Var2;
-
-	typedef DoubleBit ValueType;
-	typedef EventDoubleBinaryVariation EventVariation;
-	typedef StaticDoubleBinaryVariation StaticVariation;
+struct DoubleBitBinarySpec : public DoubleBitBinaryInfo
+{		
 	typedef DoubleBitBinaryConfig config_t;
 	typedef SimpleEventCell<DoubleBitBinarySpec> event_cell_t;
 
@@ -75,20 +55,8 @@ struct DoubleBitBinarySpec : private openpal::StaticOnly
 	}
 };
 
-class BinaryOutputStatusSpec : private openpal::StaticOnly
-{
-public:
-
-	typedef BinaryOutputStatus type_t;
-
-	static const EventType EventTypeEnum = EventType::BinaryOutputStatus;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
-	static const EventBinaryOutputStatusVariation DefaultEventVariation = EventBinaryOutputStatusVariation::Group11Var1;
-	static const StaticBinaryOutputStatusVariation DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
-
-	typedef bool ValueType;
-	typedef EventBinaryOutputStatusVariation EventVariation;
-	typedef StaticBinaryOutputStatusVariation StaticVariation;
+struct BinaryOutputStatusSpec : public BinaryOutputStatusInfo
+{	
 	typedef BOStatusConfig config_t;
 	typedef SimpleEventCell<BinaryOutputStatusSpec> event_cell_t;
 
@@ -99,18 +67,8 @@ public:
 };
 
 
-struct AnalogSpec : private openpal::StaticOnly
-{
-	typedef Analog type_t;
-
-	static const EventType EventTypeEnum = EventType::Analog;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogInput;
-	static const EventAnalogVariation DefaultEventVariation = EventAnalogVariation::Group32Var1;
-	static const StaticAnalogVariation DefaultStaticVariation = StaticAnalogVariation::Group30Var1;
-
-	typedef double ValueType;
-	typedef EventAnalogVariation EventVariation;
-	typedef StaticAnalogVariation StaticVariation;
+struct AnalogSpec : public AnalogInfo
+{	
 	typedef AnalogConfig config_t;
 	typedef DeadbandEventCell<AnalogSpec> event_cell_t;
 
@@ -120,18 +78,8 @@ struct AnalogSpec : private openpal::StaticOnly
 	}
 };
 
-struct CounterSpec : private openpal::StaticOnly
-{
-	typedef Counter type_t;
-
-	static const EventType EventTypeEnum = EventType::Counter;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::Counter;
-	static const EventCounterVariation DefaultEventVariation = EventCounterVariation::Group22Var1;
-	static const StaticCounterVariation DefaultStaticVariation = StaticCounterVariation::Group20Var1;
-
-	typedef uint32_t ValueType;
-	typedef EventCounterVariation EventVariation;
-	typedef StaticCounterVariation StaticVariation;
+struct CounterSpec : public CounterInfo
+{	
 	typedef CounterConfig config_t;
 	typedef DeadbandEventCell<CounterSpec> event_cell_t;
 
@@ -148,18 +96,8 @@ struct CounterSpec : private openpal::StaticOnly
 	}
 };
 
-struct FrozenCounterSpec : private openpal::StaticOnly
-{
-	typedef FrozenCounter type_t;
-
-	static const EventType EventTypeEnum = EventType::FrozenCounter;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
-	static const EventFrozenCounterVariation DefaultEventVariation = EventFrozenCounterVariation::Group23Var1;
-	static const StaticFrozenCounterVariation DefaultStaticVariation = StaticFrozenCounterVariation::Group21Var1;
-
-	typedef uint32_t ValueType;
-	typedef EventFrozenCounterVariation EventVariation;
-	typedef StaticFrozenCounterVariation StaticVariation;
+struct FrozenCounterSpec : public FrozenCounterInfo
+{	
 	typedef FrozenCounterConfig config_t;
 	typedef DeadbandEventCell<FrozenCounterSpec> event_cell_t;
 
@@ -176,18 +114,8 @@ struct FrozenCounterSpec : private openpal::StaticOnly
 	}
 };
 
-struct AnalogOutputStatusSpec : private openpal::StaticOnly
-{
-	typedef AnalogOutputStatus type_t;
-
-	static const EventType EventTypeEnum = EventType::AnalogOutputStatus;
-	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
-	static const EventAnalogOutputStatusVariation DefaultEventVariation = EventAnalogOutputStatusVariation::Group42Var1;
-	static const StaticAnalogOutputStatusVariation DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
-
-	typedef double ValueType;
-	typedef EventAnalogOutputStatusVariation EventVariation;
-	typedef StaticAnalogOutputStatusVariation StaticVariation;
+struct AnalogOutputStatusSpec : public AnalogOutputStatusInfo
+{	
 	typedef AOStatusConfig config_t;
 	typedef DeadbandEventCell<AnalogOutputStatusSpec> event_cell_t;
 
@@ -197,29 +125,14 @@ struct AnalogOutputStatusSpec : private openpal::StaticOnly
 	}
 };
 
-struct TimeAndIntervalSpec : private openpal::StaticOnly
-{
-	typedef TimeAndInterval type_t;
-
-	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
-	const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;
-
-	typedef StaticTimeAndIntervalVariation StaticVariation;
+struct TimeAndIntervalSpec : public TimeAndIntervalInfo
+{	
 	typedef TimeAndIntervalConfig config_t;
 	typedef EmptyEventCell event_cell_t;
 };
 
-struct SecurityStatSpec : private openpal::StaticOnly
-{
-	typedef SecurityStat type_t;
-
-	const static EventType EventTypeEnum = EventType::SecurityStat;
-	const static EventSecurityStatVariation DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
-	const static StaticSecurityStatVariation DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
-
-	typedef SecurityStat::Value ValueType;
-	typedef EventSecurityStatVariation EventVariation;
-	typedef StaticSecurityStatVariation StaticVariation;
+struct SecurityStatSpec : public SecurityStatInfo
+{	
 	typedef SecurityStatConfig config_t;
 	typedef EmptyEventCell event_cell_t;
 
