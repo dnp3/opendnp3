@@ -50,7 +50,7 @@ namespace Automatak
 				std::string stdAddress = Conversions::ConvertString(address);
 				uint16_t stdPort = port;
 
-				auto channel = pManager->AddTCPClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort);
+				auto channel = pManager->AddTCPClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, nullptr);
 				if (channel)
 				{
 					auto adapter = gcnew ChannelAdapter(channel);
@@ -69,7 +69,7 @@ namespace Automatak
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
 				uint16_t stdPort = port;
 
-				auto channel = pManager->AddTCPServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort);
+				auto channel = pManager->AddTCPServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, nullptr);
 				if (channel)
 				{
 					auto adapter = gcnew ChannelAdapter(channel);
@@ -89,7 +89,7 @@ namespace Automatak
 				uint16_t stdPort = port;
 								
 				std::error_code ec;
-				auto channel = pManager->AddTLSClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, Conversions::Convert(config), ec);
+				auto channel = pManager->AddTLSClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, Conversions::Convert(config), nullptr, ec);
 				if (ec)
 				{
 					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
@@ -110,7 +110,7 @@ namespace Automatak
 
 				
 				std::error_code ec;
-				auto channel = pManager->AddTLSServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, Conversions::Convert(config), ec);
+				auto channel = pManager->AddTLSServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, Conversions::Convert(config), nullptr, ec);
 				if (ec)
 				{
 					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
@@ -128,7 +128,7 @@ namespace Automatak
 				std::string stdName = Conversions::ConvertString(id);
 				auto s = Conversions::ConvertSerialSettings(settings);
 
-				auto channel = pManager->AddSerial(stdName.c_str(), filters, Conversions::Convert(retry), s);
+				auto channel = pManager->AddSerial(stdName.c_str(), filters, Conversions::Convert(retry), s, nullptr);
 				if (channel)
 				{
 					auto adapter = gcnew ChannelAdapter(channel);

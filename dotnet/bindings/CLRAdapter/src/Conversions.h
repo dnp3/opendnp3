@@ -23,13 +23,14 @@
 #include <opendnp3/app/parsing/ICollection.h>
 #include <opendnp3/app/GroupVariationID.h>
 
-#include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/ICommandTaskResult.h>
 
-#include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 #include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/link/LinkHeaderFields.h>
+
+#include <asiodnp3/OutstationStackConfig.h>
+#include <asiodnp3/MasterStackConfig.h>
 
 #include "CollectionAdapter.h"
 
@@ -145,10 +146,8 @@ namespace Automatak
 				static opendnp3::MasterParams ConvertConfig(MasterConfig^ config);
 				static opendnp3::OutstationConfig ConvertConfig(OutstationConfig^ config, opendnp3::IndexMode indexMode);
 				static opendnp3::OutstationParams ConvertConfig(OutstationParams^ config, opendnp3::IndexMode indexMode);
-				static opendnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
-				static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);
-
-				static opendnp3::DatabaseTemplate ConvertConfig(DatabaseTemplate^ config);
+				static asiodnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
+				static asiodnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);				
 
 				static opendnp3::GroupVariationID Convert(PointClass clazz);
 
@@ -175,6 +174,41 @@ namespace Automatak
 					return adapter.GetValues();
 				}
 
+				private:
+
+					static void ApplyConfig(DatabaseTemplate^ lhs, asiodnp3::DatabaseConfig& rhs);
+
+					template <class Info, class Source, class Target>
+					static void ConvertStaticConfig(Source^ source, Target& target)
+					{
+						for (int i = 0; i < source->Count; ++i)
+						{
+							target[i].vIndex = source[i]->index;
+							target[i].svariation = (typename Info::static_variation_t) source[i]->staticVariation;
+						}	
+					}
+
+					template <class Info, class Source, class Target>
+					static void ConvertEventConfig(Source^ source, Target& target)
+					{
+						ConvertStaticConfig<Info>(source, target);
+
+						for (int i = 0; i < source->Count; ++i)
+						{							
+							target[i].evariation = (typename Info::event_variation_t) source[i]->eventVariation;
+						}
+					}
+
+					template <class Info, class Source, class Target>
+					static void ConvertDeadbandConfig(Source^ source, Target& target)
+					{
+						ConvertEventConfig<Info>(source, target);
+
+						for (int i = 0; i < source->Count; ++i)
+						{
+							target[i].deadband = source[i]->deadband;
+						}
+					}
 			};
 
 		}

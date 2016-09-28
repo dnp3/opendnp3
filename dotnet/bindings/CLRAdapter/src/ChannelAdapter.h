@@ -41,44 +41,7 @@ namespace Automatak
 
 				asiodnp3::IChannel* pChannel;				
 
-				static void ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate);
-
-				static void ApplySettings(IReadOnlyList<BinaryRecord^>^ list, openpal::ArrayView < opendnp3::Cell<opendnp3::Binary>, uint16_t>& view);
-
-				template <class Managed, class Native>
-				static void ApplyStaticVariation(IReadOnlyList<Managed^>^ list, openpal::ArrayView < opendnp3::Cell<Native>, uint16_t>& view)
-				{
-					for (int i = 0; i < view.Size(); ++i)
-					{
-						view[i].vIndex = list[i]->index;
-						view[i].variation = (typename Native::StaticVariation) list[i]->staticVariation;						
-					}
-				}
-
-				template <class Managed, class Native>
-				static void ApplyIndexClazzAndVariations(IReadOnlyList<Managed^>^ list, openpal::ArrayView < opendnp3::Cell<Native>, uint16_t>& view)
-				{
-					for (int i = 0; i < view.Size(); ++i)
-					{						
-						view[i].vIndex = list[i]->index;						
-						view[i].variation = (typename Native::StaticVariation) list[i]->staticVariation;
-						view[i].metadata.variation = (typename Native::EventVariation) list[i]->eventVariation;
-						view[i].metadata.clazz = (opendnp3::PointClass) list[i]->clazz;
-					}
-				}
-
-				template <class Managed, class Native>
-				static void ApplyIndexClazzDeadbandsAndVariations(IReadOnlyList<Managed^>^ list, openpal::ArrayView < opendnp3::Cell<Native>, uint16_t>& view)
-				{
-					for (int i = 0; i < view.Size(); ++i)
-					{
-						view[i].vIndex = list[i]->index;
-						view[i].variation = (typename Native::StaticVariation) list[i]->staticVariation;
-						view[i].metadata.variation = (typename Native::EventVariation) list[i]->eventVariation;
-						view[i].metadata.deadband = list[i]->deadband;
-						view[i].metadata.clazz = (opendnp3::PointClass) list[i]->clazz;
-					}
-				}
+				
 				
 			};
 

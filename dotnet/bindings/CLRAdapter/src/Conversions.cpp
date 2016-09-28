@@ -396,37 +396,49 @@ namespace Automatak
 				return mp;
 			}
 
-			opendnp3::MasterStackConfig Conversions::ConvertConfig(MasterStackConfig^ config)
+			asiodnp3::MasterStackConfig Conversions::ConvertConfig(MasterStackConfig^ config)
 			{
-				opendnp3::MasterStackConfig cfg;
+				asiodnp3::MasterStackConfig cfg;
 				cfg.master = ConvertConfig(config->master);
 				cfg.link = ConvertConfig(config->link);
 				return cfg;
 			}
 
-			opendnp3::OutstationStackConfig Conversions::ConvertConfig(OutstationStackConfig^ config)
-			{
-				opendnp3::OutstationStackConfig cfg;
-				cfg.dbTemplate = ConvertConfig(config->databaseTemplate);
+			asiodnp3::OutstationStackConfig Conversions::ConvertConfig(OutstationStackConfig^ config)
+			{										
+				opendnp3::DatabaseSizes sizes(
+					config->databaseTemplate->binaries->Count,
+					config->databaseTemplate->doubleBinaries->Count,
+					config->databaseTemplate->analogs->Count,
+					config->databaseTemplate->counters->Count,
+					config->databaseTemplate->frozenCounters->Count,
+					config->databaseTemplate->binaryOutputStatii->Count,
+					config->databaseTemplate->analogOutputStatii->Count,
+					config->databaseTemplate->timeAndIntervals->Count
+				);
+
+
+				asiodnp3::OutstationStackConfig cfg(sizes);
+
+				ApplyConfig(config->databaseTemplate, cfg.dbConfig);
+
 				IndexMode indexMode = config->databaseTemplate->GetIndexMode();
 				cfg.outstation = ConvertConfig(config->outstation, (opendnp3::IndexMode) indexMode);
 				cfg.link = ConvertConfig(config->link);
 				return cfg;
 			}
 
-			opendnp3::DatabaseTemplate Conversions::ConvertConfig(DatabaseTemplate^ config)
+			void Conversions::ApplyConfig(DatabaseTemplate^ lhs, asiodnp3::DatabaseConfig& rhs)
 			{
-				return opendnp3::DatabaseTemplate(
-					config->binaries->Count,
-					config->doubleBinaries->Count,
-					config->analogs->Count,
-					config->counters->Count,
-					config->frozenCounters->Count,
-					config->binaryOutputStatii->Count,
-					config->analogOutputStatii->Count,
-					config->timeAndIntervals->Count
-				);								
-			}
+				ConvertEventConfig<opendnp3::BinaryInfo>(lhs->binaries, rhs.binary);
+				ConvertEventConfig<opendnp3::DoubleBitBinaryInfo>(lhs->doubleBinaries, rhs.doubleBinary);
+				ConvertDeadbandConfig<opendnp3::AnalogInfo>(lhs->analogs, rhs.analog);
+				ConvertDeadbandConfig<opendnp3::CounterInfo>(lhs->counters, rhs.counter);
+				ConvertDeadbandConfig<opendnp3::FrozenCounterInfo>(lhs->frozenCounters, rhs.frozenCounter);
+				ConvertEventConfig<opendnp3::BinaryOutputStatusInfo>(lhs->binaryOutputStatii, rhs.boStatus);
+				ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo>(lhs->analogOutputStatii, rhs.aoStatus);
+				ConvertStaticConfig<opendnp3::TimeAndIntervalInfo>(lhs->timeAndIntervals, rhs.timeAndInterval);
+			}			
 
 			opendnp3::GroupVariationID Conversions::Convert(PointClass clazz)
 			{
