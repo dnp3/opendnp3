@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 	// but understanding the options are important.
 	OutstationStackConfig stackConfig(DatabaseSizes::AllTypes(10));
 
-	// Specify the maximum size of the event buffers	
+	// Specify the maximum size of the event buffers
 	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
 
 	// you can override an default outstation parameters here

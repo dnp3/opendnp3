@@ -95,10 +95,10 @@ private:
 	static bool ConvertToEventClass(PointClass pc, EventClass& ec);
 
 	template <class Spec>
-	bool UpdateEvent(const typename Spec::type_t& value, uint16_t index, EventMode mode);
+	bool UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode);
 
 	template <class Spec>
-	bool UpdateAny(Cell<Spec>& cell, const typename Spec::type_t& value, EventMode mode);
+	bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
 
 	// stores the most recent values, selected values, and metadata
 	DatabaseBuffers buffers;
@@ -120,7 +120,7 @@ uint16_t Database::GetRawIndex(uint16_t index)
 }
 
 template <class Spec>
-bool Database::UpdateEvent(const typename Spec::type_t& value, uint16_t index, EventMode mode)
+bool Database::UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode)
 {
 	auto rawIndex = GetRawIndex<Spec>(index);
 	auto view = buffers.buffers.GetArrayView<Spec>();
@@ -156,7 +156,7 @@ bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16
 */
 
 template <class Spec>
-bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::type_t& value, EventMode mode)
+bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode)
 {
 	EventClass ec;
 	if (ConvertToEventClass(cell.config.clazz, ec))

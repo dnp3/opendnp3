@@ -73,11 +73,11 @@ private:
 	}
 
 	template <class Spec>
-	static Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<typename Spec::type_t> serializer, typename Spec::event_variation_t variation)
+	static Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<typename Spec::meas_t> serializer, typename Spec::event_variation_t variation)
 	{
 		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
 
-		auto header = writer.IterateOverCountWithPrefix<openpal::UInt16, typename Spec::type_t>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer);
+		auto header = writer.IterateOverCountWithPrefix<openpal::UInt16, typename Spec::meas_t>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer);
 
 		openpal::ListNode<SOERecord>* pCurrent = nullptr;
 
@@ -115,14 +115,14 @@ private:
 	}
 
 	template <class Spec, class CTOType>
-	static Result WriteCTOTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<typename Spec::type_t> serializer, typename Spec::event_variation_t variation)
+	static Result WriteCTOTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<typename Spec::meas_t> serializer, typename Spec::event_variation_t variation)
 	{
 		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
 
 		CTOType cto;
 		cto.time = pLocation->value.GetTime();
 
-		auto header = writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, typename Spec::type_t, CTOType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto);
+		auto header = writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, typename Spec::meas_t, CTOType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto);
 
 		openpal::ListNode<SOERecord>* pCurrent = nullptr;
 

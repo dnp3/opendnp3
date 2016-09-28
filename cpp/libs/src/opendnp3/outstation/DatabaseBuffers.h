@@ -99,7 +99,7 @@ private:
 
 	//specialization for binary in cpp file
 	template <class Spec>
-	static typename Spec::StaticVariation  CheckForPromotion(const typename Spec::type_t& value, typename Spec::StaticVariation variation)
+	static typename Spec::static_variation_t  CheckForPromotion(const typename Spec::meas_t& value, typename Spec::static_variation_t variation)
 	{
 		return variation;
 	}
@@ -111,7 +111,7 @@ private:
 	    Range range,
 	    openpal::ArrayView<Cell<T>, uint16_t> view,
 	    bool useDefault,
-	    typename T::StaticVariation variation
+	    typename T::static_variation_t variation
 	);
 
 	template <class Spec>
@@ -130,18 +130,18 @@ private:
 	IINField SelectAll()
 	{
 		auto view = buffers.GetArrayView<T>();
-		return GenericSelect(RangeOf(view.Size()), view, true, typename T::StaticVariation());
+		return GenericSelect(RangeOf(view.Size()), view, true, typename T::static_variation_t());
 	}
 
 	template <class T>
-	IINField SelectAllUsing(typename T::StaticVariation variation)
+	IINField SelectAllUsing(typename T::static_variation_t variation)
 	{
 		auto view = buffers.GetArrayView<T>();
 		return GenericSelect(RangeOf(view.Size()), view, false, variation);
 	}
 
 	template <class T>
-	IINField SelectVirtualRange(const Range& range, bool usedefault, typename T::StaticVariation variation)
+	IINField SelectVirtualRange(const Range& range, bool usedefault, typename T::static_variation_t variation)
 	{
 		if (indexMode == IndexMode::Discontiguous)
 		{
@@ -167,11 +167,11 @@ private:
 	template <class T>
 	IINField SelectRange(const Range& range)
 	{
-		return SelectVirtualRange<T>(range, true, typename T::StaticVariation());
+		return SelectVirtualRange<T>(range, true, typename T::static_variation_t());
 	}
 
 	template <class T>
-	IINField SelectRangeUsing(const Range& range, typename T::StaticVariation variation)
+	IINField SelectRangeUsing(const Range& range, typename T::static_variation_t variation)
 	{
 		return SelectVirtualRange<T>(range, false, variation);
 	}
@@ -182,7 +182,7 @@ IINField DatabaseBuffers::GenericSelect(
     Range range,
     openpal::ArrayView<Cell<T>, uint16_t> view,
     bool useDefault,
-    typename T::StaticVariation variation)
+    typename T::static_variation_t variation)
 {
 	if (range.IsValid())
 	{

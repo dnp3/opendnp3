@@ -29,8 +29,8 @@ namespace opendnp3
 
 
 struct BinarySpec : public BinaryInfo
-{	
-	typedef BinaryConfig config_t;	
+{
+	typedef BinaryConfig config_t;
 	typedef SimpleEventCell<BinarySpec> event_cell_t;
 
 	inline static bool IsQualityOnlineOnly(const Binary& binary)
@@ -45,7 +45,7 @@ struct BinarySpec : public BinaryInfo
 };
 
 struct DoubleBitBinarySpec : public DoubleBitBinaryInfo
-{		
+{
 	typedef DoubleBitBinaryConfig config_t;
 	typedef SimpleEventCell<DoubleBitBinarySpec> event_cell_t;
 
@@ -56,7 +56,7 @@ struct DoubleBitBinarySpec : public DoubleBitBinaryInfo
 };
 
 struct BinaryOutputStatusSpec : public BinaryOutputStatusInfo
-{	
+{
 	typedef BOStatusConfig config_t;
 	typedef SimpleEventCell<BinaryOutputStatusSpec> event_cell_t;
 
@@ -68,7 +68,7 @@ struct BinaryOutputStatusSpec : public BinaryOutputStatusInfo
 
 
 struct AnalogSpec : public AnalogInfo
-{	
+{
 	typedef AnalogConfig config_t;
 	typedef DeadbandEventCell<AnalogSpec> event_cell_t;
 
@@ -79,7 +79,7 @@ struct AnalogSpec : public AnalogInfo
 };
 
 struct CounterSpec : public CounterInfo
-{	
+{
 	typedef CounterConfig config_t;
 	typedef DeadbandEventCell<CounterSpec> event_cell_t;
 
@@ -97,7 +97,7 @@ struct CounterSpec : public CounterInfo
 };
 
 struct FrozenCounterSpec : public FrozenCounterInfo
-{	
+{
 	typedef FrozenCounterConfig config_t;
 	typedef DeadbandEventCell<FrozenCounterSpec> event_cell_t;
 
@@ -115,7 +115,7 @@ struct FrozenCounterSpec : public FrozenCounterInfo
 };
 
 struct AnalogOutputStatusSpec : public AnalogOutputStatusInfo
-{	
+{
 	typedef AOStatusConfig config_t;
 	typedef DeadbandEventCell<AnalogOutputStatusSpec> event_cell_t;
 
@@ -126,13 +126,13 @@ struct AnalogOutputStatusSpec : public AnalogOutputStatusInfo
 };
 
 struct TimeAndIntervalSpec : public TimeAndIntervalInfo
-{	
+{
 	typedef TimeAndIntervalConfig config_t;
 	typedef EmptyEventCell event_cell_t;
 };
 
 struct SecurityStatSpec : public SecurityStatInfo
-{	
+{
 	typedef SecurityStatConfig config_t;
 	typedef EmptyEventCell event_cell_t;
 

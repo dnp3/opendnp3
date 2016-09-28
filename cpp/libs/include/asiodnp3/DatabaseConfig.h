@@ -32,9 +32,9 @@ namespace asiodnp3
 
 class DatabaseConfig : openpal::Uncopyable
 {
-	public:
+public:
 
-	DatabaseConfig(opendnp3::DatabaseSizes& sizes) : 
+	DatabaseConfig(opendnp3::DatabaseSizes& sizes) :
 		binary(sizes.numBinary)
 	{}
 

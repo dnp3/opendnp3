@@ -32,14 +32,14 @@ namespace opendnp3
 struct IndexConfig
 {
 	// virtual index for discontiguous data, as opposed to the raw array index
-	uint16_t vIndex = 0;	
+	uint16_t vIndex = 0;
 };
 
 // All entries have this information
 template <class Info>
 struct StaticConfig : IndexConfig
-{		
-	typename Info::StaticVariation svariation = Info::DefaultStaticVariation;
+{
+	typename Info::static_variation_t svariation = Info::DefaultStaticVariation;
 };
 
 template <class Info>

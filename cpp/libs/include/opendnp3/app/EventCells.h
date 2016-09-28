@@ -30,20 +30,18 @@ namespace opendnp3
 /// A null object for types that have no metadata
 struct EmptyEventCell
 {
-	
+
 };
 
 /// Base class for different types of event metadata
 template <class Spec>
 struct EventCellBase
 {
-	typedef typename Spec::type_t meas_type_t;
-
 	PointClass clazz;
-	meas_type_t lastEvent;
+	typename Spec::meas_t lastEvent;
 	typename Spec::event_variation_t evariation;
 
-	void SetEventValue(const meas_type_t& value)
+	void SetEventValue(const typename Spec::meas_t& value)
 	{
 		lastEvent = value;
 	}
@@ -58,9 +56,7 @@ protected:
 template <class Spec>
 struct SimpleEventCell : EventCellBase<Spec>
 {
-	typedef typename Spec::type_t meas_type_t;	
-
-	bool IsEvent(const typename Spec::config_t& config, const meas_type_t& newValue) const
+	bool IsEvent(const typename Spec::config_t& config, const typename Spec::meas_t& newValue) const
 	{
 		return Spec::IsEvent(this->lastEvent, newValue);
 	}
@@ -69,11 +65,11 @@ struct SimpleEventCell : EventCellBase<Spec>
 /// Structure for holding metadata information on points that have support deadbanding
 template <class Spec>
 struct DeadbandEventCell : SimpleEventCell<Spec>
-{	
-	bool IsEvent(const typename Spec::config_t& config, const typename Spec::type_t& newValue) const
+{
+	bool IsEvent(const typename Spec::config_t& config, const typename Spec::meas_t& newValue) const
 	{
 		return Spec::IsEvent(this->lastEvent, newValue, config.deadband);
-	}	
+	}
 };
 
 

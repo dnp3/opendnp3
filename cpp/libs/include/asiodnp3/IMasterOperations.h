@@ -67,7 +67,7 @@ public:
 	*/
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
-	/**	
+	/**
 	* Add a scan that requests all objects using qualifier code 0x06
 	* @ return A proxy class used to manipulate the scan
 	*/

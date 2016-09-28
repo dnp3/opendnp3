@@ -34,7 +34,7 @@ class ILinkSession;
 class OutstationStack: public OutstationStackBase<IOutstation>
 {
 public:
-	
+
 	OutstationStack(
 	    std::unique_ptr<openpal::LogRoot> root,
 	    openpal::IExecutor& executor,

@@ -44,7 +44,7 @@ struct Evented
 template <typename Spec>
 struct Event : public Evented
 {
-	typedef typename Spec::type_t meas_type_t;
+	typedef typename Spec::meas_t meas_type_t;
 
 	Event(const meas_type_t& value, uint16_t index, EventClass clazz, typename Spec::event_variation_t variation) :
 		Evented(index, clazz),

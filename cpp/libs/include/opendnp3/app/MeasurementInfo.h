@@ -56,119 +56,119 @@ namespace opendnp3
 
 struct BinaryInfo : private openpal::StaticOnly
 {
-	typedef Binary type_t;
+	typedef Binary meas_t;
 	typedef bool value_t;
 	typedef EventBinaryVariation event_variation_t;
-	typedef StaticBinaryVariation StaticVariation;
+	typedef StaticBinaryVariation static_variation_t;
 
 	static const EventType EventTypeEnum = EventType::Binary;
 	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
 	static const event_variation_t DefaultEventVariation = EventBinaryVariation::Group2Var1;
-	static const StaticBinaryVariation DefaultStaticVariation = StaticBinaryVariation::Group1Var2;	
+	static const static_variation_t DefaultStaticVariation = StaticBinaryVariation::Group1Var2;
 };
 
 struct DoubleBitBinaryInfo : private openpal::StaticOnly
 {
-	typedef DoubleBitBinary type_t;
+	typedef DoubleBitBinary meas_t;
 	typedef DoubleBit value_t;
 	typedef EventDoubleBinaryVariation event_variation_t;
-	typedef StaticDoubleBinaryVariation StaticVariation;
+	typedef StaticDoubleBinaryVariation static_variation_t;
 
 	static const EventType EventTypeEnum = EventType::DoubleBitBinary;
 	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
 	static const event_variation_t DefaultEventVariation = EventDoubleBinaryVariation::Group4Var1;
-	static const StaticDoubleBinaryVariation DefaultStaticVariation = StaticDoubleBinaryVariation::Group3Var2;		
+	static const static_variation_t DefaultStaticVariation = StaticDoubleBinaryVariation::Group3Var2;
 };
 
 class BinaryOutputStatusInfo : private openpal::StaticOnly
 {
 public:
 
-	typedef BinaryOutputStatus type_t;
+	typedef BinaryOutputStatus meas_t;
 	typedef bool value_t;
 	typedef EventBinaryOutputStatusVariation event_variation_t;
-	typedef StaticBinaryOutputStatusVariation StaticVariation;
+	typedef StaticBinaryOutputStatusVariation static_variation_t;
 
 	static const EventType EventTypeEnum = EventType::BinaryOutputStatus;
 	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
 	static const event_variation_t DefaultEventVariation = EventBinaryOutputStatusVariation::Group11Var1;
-	static const StaticBinaryOutputStatusVariation DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
+	static const static_variation_t DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
 
-	
+
 };
 
 
 struct AnalogInfo : private openpal::StaticOnly
 {
-	typedef Analog type_t;
+	typedef Analog meas_t;
 	typedef double value_t;
 	typedef EventAnalogVariation event_variation_t;
-	typedef StaticAnalogVariation StaticVariation;
+	typedef StaticAnalogVariation static_variation_t;
 
 	static const EventType EventTypeEnum = EventType::Analog;
 	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogInput;
 	static const event_variation_t DefaultEventVariation = EventAnalogVariation::Group32Var1;
-	static const StaticAnalogVariation DefaultStaticVariation = StaticAnalogVariation::Group30Var1;	
+	static const static_variation_t DefaultStaticVariation = StaticAnalogVariation::Group30Var1;
 };
 
 struct CounterInfo : private openpal::StaticOnly
 {
-	typedef Counter type_t;
+	typedef Counter meas_t;
 	typedef uint32_t value_t;
 	typedef EventCounterVariation event_variation_t;
-	typedef StaticCounterVariation StaticVariation;
+	typedef StaticCounterVariation static_variation_t;
 
 	static const EventType EventTypeEnum = EventType::Counter;
 	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::Counter;
 	static const event_variation_t DefaultEventVariation = EventCounterVariation::Group22Var1;
-	static const StaticCounterVariation DefaultStaticVariation = StaticCounterVariation::Group20Var1;		
+	static const static_variation_t DefaultStaticVariation = StaticCounterVariation::Group20Var1;
 };
 
 struct FrozenCounterInfo : private openpal::StaticOnly
 {
-	typedef FrozenCounter type_t;
+	typedef FrozenCounter meas_t;
 	typedef uint32_t value_t;
 	typedef EventFrozenCounterVariation event_variation_t;
-	typedef StaticFrozenCounterVariation StaticVariation;
+	typedef StaticFrozenCounterVariation static_variation_t;
 
 	static const EventType EventTypeEnum = EventType::FrozenCounter;
 	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
 	static const event_variation_t DefaultEventVariation = EventFrozenCounterVariation::Group23Var1;
-	static const StaticVariation DefaultStaticVariation = StaticFrozenCounterVariation::Group21Var1;
+	static const static_variation_t DefaultStaticVariation = StaticFrozenCounterVariation::Group21Var1;
 };
 
 struct AnalogOutputStatusInfo : private openpal::StaticOnly
 {
-	typedef AnalogOutputStatus type_t;
+	typedef AnalogOutputStatus meas_t;
 	typedef double value_t;
 	typedef EventAnalogOutputStatusVariation event_variation_t;
-	typedef StaticAnalogOutputStatusVariation StaticVariation;
+	typedef StaticAnalogOutputStatusVariation static_variation_t;
 
 	static const EventType EventTypeEnum = EventType::AnalogOutputStatus;
 	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
 	static const event_variation_t DefaultEventVariation = EventAnalogOutputStatusVariation::Group42Var1;
-	static const StaticAnalogOutputStatusVariation DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
+	static const static_variation_t DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
 };
 
 struct TimeAndIntervalInfo : private openpal::StaticOnly
 {
-	typedef TimeAndInterval type_t;
-	typedef StaticTimeAndIntervalVariation StaticVariation;
+	typedef TimeAndInterval meas_t;
+	typedef StaticTimeAndIntervalVariation static_variation_t;
 
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
-	const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;		
+	const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;
 };
 
 struct SecurityStatInfo : private openpal::StaticOnly
 {
-	typedef SecurityStat type_t;
+	typedef SecurityStat meas_t;
 	typedef SecurityStat::Value value_t;
 	typedef EventSecurityStatVariation event_variation_t;
-	typedef StaticSecurityStatVariation StaticVariation;
+	typedef StaticSecurityStatVariation static_variation_t;
 
 	const static EventType EventTypeEnum = EventType::SecurityStat;
 	const static event_variation_t DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
-	const static StaticSecurityStatVariation DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;		
+	const static static_variation_t DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
 };
 
 }

@@ -79,11 +79,11 @@ public:
 	SOERecord(const SecurityStat& meas, uint16_t index, EventClass clazz, EventSecurityStatVariation var);
 
 	template <class Spec>
-	EventInstance<typename Spec::type_t> ReadEvent()
+	EventInstance<typename Spec::meas_t> ReadEvent()
 	{
-		return EventInstance <typename Spec::type_t>
+		return EventInstance <typename Spec::meas_t>
 		{
-			typename Spec::type_t(GetValue<Spec>().value, flags, time), index
+			typename Spec::meas_t(GetValue<Spec>().value, flags, time), index
 		};
 	}
 

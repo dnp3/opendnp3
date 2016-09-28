@@ -82,13 +82,13 @@ struct DatabaseSizes
 	}
 
 	DatabaseSizes(uint16_t numBinary,
-	                 uint16_t numDoubleBinary,
-	                 uint16_t numAnalog,
-	                 uint16_t numCounter,
-	                 uint16_t numFrozenCounter,
-	                 uint16_t numBinaryOutputStatus,
-	                 uint16_t numAnalogOutputStatus,
-	                 uint16_t numTimeAndInterval) :
+	              uint16_t numDoubleBinary,
+	              uint16_t numAnalog,
+	              uint16_t numCounter,
+	              uint16_t numFrozenCounter,
+	              uint16_t numBinaryOutputStatus,
+	              uint16_t numAnalogOutputStatus,
+	              uint16_t numTimeAndInterval) :
 
 		numBinary(numBinary),
 		numDoubleBinary(numDoubleBinary),

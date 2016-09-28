@@ -34,8 +34,8 @@ struct SelectedValue
 	{}
 
 	bool selected;
-	typename Spec::type_t value;
-	typename Spec::StaticVariation variation;
+	typename Spec::meas_t value;
+	typename Spec::static_variation_t variation;
 };
 
 /**
@@ -44,9 +44,7 @@ struct SelectedValue
 template <class Spec>
 struct Cell
 {
-	typedef typename Spec::type_t meas_type_t;		
-
-	meas_type_t value;						// current value
+	typename Spec::meas_t value;			// current value
 	typename Spec::config_t config;			// configuration
 	typename Spec::event_cell_t event;		// event cell
 	SelectedValue<Spec> selection;			// selected value

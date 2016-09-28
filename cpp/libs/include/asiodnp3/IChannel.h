@@ -99,7 +99,7 @@ public:
 	*/
 	virtual IOutstation* AddOutstation( char const* id,
 	                                    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-	                                    std::shared_ptr<opendnp3::IOutstationApplication> application,										
+	                                    std::shared_ptr<opendnp3::IOutstationApplication> application,
 	                                    const OutstationStackConfig& config) = 0;
 
 };

@@ -65,7 +65,7 @@ StaticWriter<TimeAndIntervalSpec>::Function GetStaticWriter(StaticTimeAndInterva
 StaticWriter<SecurityStatSpec>::Function GetStaticWriter(StaticSecurityStatVariation variation);
 
 template <class Spec, class IndexType >
-bool LoadWithRangeIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view, RangeWriteIterator<IndexType, typename Spec::type_t>& iterator, Range& range)
+bool LoadWithRangeIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view, RangeWriteIterator<IndexType, typename Spec::meas_t>& iterator, Range& range)
 {
 	const Cell<Spec>& start = view[range.start];
 	uint16_t nextIndex = start.config.vIndex;
