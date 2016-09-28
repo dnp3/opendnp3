@@ -25,23 +25,23 @@ public class OutstationStackConfig {
      */
     public final LinkLayerConfig linkConfig = new LinkLayerConfig(false);
 
-
-    /**
-     * Configuration for the outstation (everything but the database layout)
-     */
-    public final OutstationConfig outstationConfig = new OutstationConfig();
-
     /**
      * Outstation database configuration
      */
     public final DatabaseConfig databaseConfig;
 
     /**
+     * Configuration for the outstation (everything but the database layout)
+     */
+    public final OutstationConfig outstationConfig;
+
+    /**
      * Constructor for an outstation stack with sensible defaults
      * @param databaseConfig Database layout for the outstation
      */
-    public OutstationStackConfig(DatabaseConfig databaseConfig)
+    public OutstationStackConfig(DatabaseConfig databaseConfig, EventBufferConfig eventBufferConfig)
     {
         this.databaseConfig = databaseConfig;
+        this.outstationConfig = new OutstationConfig(eventBufferConfig);
     }
 }

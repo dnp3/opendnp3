@@ -62,7 +62,7 @@ struct OutstationParams
 	/// The maximum fragment size the outstation will be able to receive
 	uint32_t maxRxFragSize = DEFAULT_MAX_APDU_SIZE;
 
-	/// Global enabled / disable for unsolicted messages. If false, the NULL unsolicited message is not even sent
+	/// Global enabled / disable for unsolicited messages. If false, the NULL unsolicited message is not even sent
 	bool allowUnsolicited = false;
 
 	/// A bitmask type that specifies the types allowed in a class 0 reponse

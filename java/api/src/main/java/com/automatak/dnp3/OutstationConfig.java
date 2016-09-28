@@ -20,6 +20,8 @@ package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.*;
 
+import java.time.Duration;
+
 /**
  * Configuration class that controls how an outstation behaves
  */
@@ -28,18 +30,26 @@ public class OutstationConfig {
     /**
      * Outstation constructor with reasonable defaults
      */
-    public OutstationConfig()
+    public OutstationConfig(EventBufferConfig eventBufferConfig)
     {
-
+        this.eventBufferConfig = eventBufferConfig;
     }
 
-    public IndexMode indexMode = IndexMode.Contiguous;
+    /**
+     * Maximum events buffered for each type
+     */
+    public final EventBufferConfig eventBufferConfig;
 
 
     /**
-     * The maximum number of controls the slave will attempt to process from a single APDU, defaults to 1
+     * Controls the index mode
      */
-    public int maxControls = 1;
+    public IndexMode indexMode = IndexMode.Contiguous;
+
+    /**
+     * The maximum number of controls the outstation will attempt to process from a single APDU
+     */
+    public short maxControlsPerRequest = 16;
 
     /**
      * if true, fully disables unsolicited mode as if the slave didn't support it, defaults to false
@@ -47,101 +57,32 @@ public class OutstationConfig {
     public boolean disableUnsol = false;
 
     /**
-     * controls what unsol classes are enabled by default. defaults to Class 1, 2, & 3
-     *
-     * Use PointClass.getMask to set this value
+     * How long the outstation will allow an operate to proceed after a prior select
      */
-    public int unsolMask = PointClassMasks.ALL_EVENTS;
+    public Duration selectTimeout = Duration.ofSeconds(10);
 
     /**
-     * if true, the outstation will request time synchronization on an interval. Defaults to false.
+     * Timeout for solicited confirms
      */
-    public boolean allowTimeSync = false;
-
+    public Duration solConfirmTimeout = Duration.ofSeconds(5);
 
     /**
-     * The period of time sync interval in milliseconds. Defaults to 10 minutes (10 * 60 * 1000)
+     * Timeout for unsolicited retries
      */
-    public long timeSyncPeriodMs = 10 * 60 * 1000;
+    public Duration unsolRetryTimeout = Duration.ofSeconds(5);
 
     /**
-     * The amount of time in milliseconds the slave will wait before sending new unsolicited data ( <= 0 == immediately, no delay). Defaults to 200ms.
+     * The maximum fragment size the outstation will use for fragments it sends
      */
-    public  long unsolPackDelayMs = 200;
+    public int maxTxFragSize = 2048;
 
     /**
-     * How long the slave will wait in milliseconds before retrying an unsuccessful unsolicited response  Defaults to 2000ms.
+     * The maximum fragment size the outstation will be able to receive
      */
-    public long unsolRetryDelayMs = 2000;
+    public int maxRxFragSize = 2048;
 
     /**
-     * Maximum delay between a Select and an Operate
+     * Global enabled / disable for unsolicited messages. If false, the NULL unsolicited message is not even sent
      */
-    public long selectTimeoutMs = 5000;
-
-    /**
-     * The maximum fragment size the slave will use for data it sends. Defaults to 2048.
-     */
-    public int maxFragSize = 2048;
-
-    /**
-     * The number of objects to store in the VtoWriter queue. Defaults to 1024.
-     */
-    public int vtoWriterQueueSize = 1024;
-
-    /**
-     * The number of binary events the slave will buffer before overflowing (defaults to 1000)
-     */
-    public int maxBinaryEvents = 1000;
-
-    /**
-     * The number of analog events the slave will buffer before overflowing (defaults to 1000)
-     */
-    public int maxAnalogEvents = 1000;
-
-    /**
-     * The number of counter events the slave will buffer before overflowing (defaults to 1000)
-     */
-    public int maxCounterEvents = 1000;
-
-    /**
-     * The number of vto events the slave will buffer before overflowing (defaults to 100)
-     */
-    public int maxVtoEvents = 100;
-
-    /**
-     * The default group/variation to use for static binary responses (default 1:2)
-     */
-    public StaticBinaryVariation staticBinaryInput  = StaticBinaryVariation.Group1Var2;
-
-    /**
-     * The default group/variation to use for static analog responses (default 30:1)
-     */
-    public StaticAnalogVariation staticAnalogInput = StaticAnalogVariation.Group30Var1;
-
-    /**
-     * The default group/variation to use for static counter responses (default 20:1)
-     */
-    public StaticCounterVariation staticCounter = StaticCounterVariation.Group20Var1;
-
-    /**
-     * The default group/variation to use for static AnalogOutput status responses (default 40:1)
-     */
-    public StaticAnalogOutputStatusVariation staticAnalogOutputStatus =  StaticAnalogOutputStatusVariation.Group40Var1;
-
-    /**
-     * The default group/variation to use for binary event responses (default 2:1)
-     */
-    public EventBinaryVariation eventBinaryInput = EventBinaryVariation.Group2Var1;
-
-    /**
-     * The default group/variation to use for analog event responses (default 32:1)
-     */
-    public EventAnalogVariation eventAnalogInput = EventAnalogVariation.Group32Var1;
-
-    /**
-     * The default group/variation to use for counter event responses (default 22:1)
-     */
-    public EventCounterVariation eventCounter = EventCounterVariation.Group22Var1;
-
+    public boolean allowUnsolicited = false;
 }
