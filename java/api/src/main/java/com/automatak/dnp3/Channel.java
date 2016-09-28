@@ -31,6 +31,7 @@ public interface Channel {
 
     /**
      * Adds a master to the channel
+     *
      * @param loggerId name of the logger that will be assigned to this stack
      * @param handler where measurements will be sent as they are received from the outstation
      * @param application  master application instance
@@ -39,5 +40,14 @@ public interface Channel {
      */
     Master addMaster(String loggerId, SOEHandler handler, MasterApplication application, MasterStackConfig config) throws DNP3Exception;
 
-
+    /**
+     * Adds an outstation to the channel
+     *
+     * @param id name of the logger that will be assigned to this stack
+     * @param commandHandler where command requests are sent to be handled in application code
+     * @param application outstation application instance
+     * @param config configuration information for the outstation stack
+     * @return reference to the created outstation
+     */
+    Outstation addOutstation(String id, CommandHandler commandHandler, OutstationApplication application, OutstationStackConfig config) throws DNP3Exception;
 }

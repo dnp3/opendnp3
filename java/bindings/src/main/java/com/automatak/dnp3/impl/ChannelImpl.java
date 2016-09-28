@@ -44,6 +44,12 @@ class ChannelImpl implements Channel {
     }
 
     @Override
+    public Outstation addOutstation(String id, CommandHandler commandHandler, OutstationApplication application, OutstationStackConfig config) throws DNP3Exception
+    {
+        throw new DNP3Exception("outstation not implemented");
+    }
+
+    @Override
     public synchronized void shutdown()
     {
         if(nativePointer != 0)
