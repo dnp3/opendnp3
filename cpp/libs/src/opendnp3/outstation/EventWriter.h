@@ -28,7 +28,6 @@
 #include "opendnp3/outstation/SOERecord.h"
 #include "opendnp3/outstation/IEventRecorder.h"
 
-
 namespace opendnp3
 {
 
@@ -91,7 +90,7 @@ private:
 				{
 					auto evt = record.ReadEvent<Spec>();
 					if (header.Write(evt.value, evt.index))
-					{
+					{						
 						record.written = true;
 						recorder.RecordWritten(record.clazz, record.type);
 					}

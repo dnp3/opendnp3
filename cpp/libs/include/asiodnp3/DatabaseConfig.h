@@ -44,7 +44,16 @@ public:
 		boStatus(sizes.numBinaryOutputStatus),
 		aoStatus(sizes.numAnalogOutputStatus),
 		timeAndInterval(sizes.numTimeAndInterval)
-	{}
+	{
+		InitIndices(binary);
+		InitIndices(doubleBinary);
+		InitIndices(analog);
+		InitIndices(counter);
+		InitIndices(frozenCounter);
+		InitIndices(boStatus);
+		InitIndices(aoStatus);
+		InitIndices(timeAndInterval);
+	}
 
 	const opendnp3::DatabaseSizes sizes;
 
@@ -56,6 +65,17 @@ public:
 	openpal::Array<opendnp3::BOStatusConfig, uint16_t> boStatus;
 	openpal::Array<opendnp3::AOStatusConfig, uint16_t> aoStatus;
 	openpal::Array<opendnp3::TimeAndIntervalConfig, uint16_t> timeAndInterval;
+
+private:
+
+	template <class T>
+	void InitIndices(T& values)
+	{
+		for (auto i = 0; i < values.Size(); ++i)
+		{
+			values[i].vIndex = i;
+		}
+	}
 };
 
 }

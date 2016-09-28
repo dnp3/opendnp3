@@ -33,7 +33,6 @@
 #include <mutex>
 #include <condition_variable>
 #include <stdexcept>
-#include <iostream>
 #include <random>
 
 using namespace std;
@@ -93,16 +92,14 @@ public:
 
 		std::unique_lock<std::mutex> lock(m_mutex);
 
-		const auto RX_NUM = this->ProcessRxValues();
-		//std::cout << "rx: " << RX_NUM << std::endl;
+		const auto RX_NUM = this->ProcessRxValues();		
 
 		if (m_num_remaining == 0)
 		{
 			return true;
 		}
 
-		const auto TX_NUM = this->LoadNewValues(outstation);
-		//std::cout << "tx: " << TX_NUM << std::endl;
+		const auto TX_NUM = this->LoadNewValues(outstation);		
 
 		if (m_condition.wait_for(lock, timeout) == cv_status::timeout)
 		{
@@ -118,6 +115,7 @@ private:
 	{
 		for (auto& value : m_rx_values)
 		{
+			//std::cout << "received: (" << value.index << ") - " << value.value.value << " qual: " << static_cast<int>(value.value.flags.value) << std::endl;
 
 			if (value.value.value != m_rx_sequence)
 			{
@@ -126,8 +124,10 @@ private:
 
 			if (value.index != (m_rx_sequence % NUM_VALUES))
 			{
-				throw std::logic_error("Unexpected rx value");
+				throw std::logic_error("Unexpected rx index");
 			}
+
+			//std::cout << "done" << std::endl;
 
 			++m_rx_sequence;
 		}
@@ -170,9 +170,13 @@ private:
 		MeasUpdate tx(outstation);
 
 		for (uint32_t i = 0; i < TX_NUM; ++i)
-		{
+		{			
 			Analog a(m_tx_sequence);
-			tx.Update(a, m_tx_sequence % NUM_VALUES);
+			const uint16_t index = m_tx_sequence % NUM_VALUES;
+			tx.Update(a, index);
+			
+			//std::cout << "transmitting: (" << index << ") - " << a.value << std::endl;
+
 			++m_tx_sequence;
 		}
 
@@ -201,7 +205,7 @@ private:
 };
 
 IOutstation* ConfigureOutstation(DNP3Manager& manager, int levels, uint16_t numValues, uint16_t eventBufferSize)
-{
+{	
 	auto server = manager.AddTCPServer("server", levels, ChannelRetry::Default(), "127.0.0.1", 20000, nullptr);
 
 	OutstationStackConfig stackConfig(DatabaseSizes::AllTypes(numValues));
@@ -238,8 +242,7 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
 	auto eventrx = std::make_shared<EventReceiver>(NUM_TO_SEND, MAX_OUTSTANDING, NUM_VALUES);
 
-	DNP3Manager manager(2);
-	//manager.AddLogSubscriber(ConsoleLogger::Instance());
+	DNP3Manager manager(2);// , ConsoleLogger::Create());
 
 	auto outstation = ConfigureOutstation(manager, LEVELS, NUM_VALUES, EVENT_BUFFER_SIZE);
 	auto master = ConfigureMaster(manager, eventrx, LEVELS);
