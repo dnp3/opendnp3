@@ -46,13 +46,13 @@ template <class Info>
 struct EventConfig : StaticConfig<Info>
 {
 	PointClass clazz = PointClass::Class1;
-	typename Info::EventVariation evariation = Info::DefaultEventVariation;
+	typename Info::event_variation_t evariation = Info::DefaultEventVariation;
 };
 
 template <class Info>
 struct DeadbandConfig : EventConfig<Info>
 {
-	typename Info::ValueType deadband = 0;
+	typename Info::value_t deadband = 0;
 };
 
 class BinaryConfig : public EventConfig<BinaryInfo> {};

@@ -34,9 +34,9 @@ namespace opendnp3
 template <class Spec>
 struct ValueAndVariation
 {
-	typename Spec::ValueType value;
-	typename Spec::EventVariation defaultVariation;
-	typename Spec::EventVariation selectedVariation;
+	typename Spec::value_t value;
+	typename Spec::event_variation_t defaultVariation;
+	typename Spec::event_variation_t selectedVariation;
 
 	void SelectDefaultVariation()
 	{

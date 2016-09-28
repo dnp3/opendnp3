@@ -46,17 +46,17 @@ struct Event : public Evented
 {
 	typedef typename Spec::type_t meas_type_t;
 
-	Event(const meas_type_t& value_, uint16_t index_, EventClass clazz_, typename Spec::EventVariation variation_) :
-		Evented(index_, clazz_),
-		value(value_),
-		variation(variation_)
+	Event(const meas_type_t& value, uint16_t index, EventClass clazz, typename Spec::event_variation_t variation) :
+		Evented(index, clazz),
+		value(value),
+		variation(variation)
 	{}
 
 	Event() : Evented(), value(), variation()
 	{}
 
 	meas_type_t value;
-	typename Spec::EventVariation variation;
+	typename Spec::event_variation_t variation;
 };
 
 } //end namespace

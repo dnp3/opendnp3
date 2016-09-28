@@ -125,17 +125,17 @@ private:
 	IINField SelectByClass(const ClassField& field, uint32_t max);
 
 	template <class Spec>
-	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename Spec::EventVariation var);
+	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename Spec::event_variation_t var);
 
 	template <class Spec>
 	IINField SelectByType(int32_t max)
 	{
-		GenericSelectByType<Spec>(max, true, typename Spec::EventVariation());
+		GenericSelectByType<Spec>(max, true, typename Spec::event_variation_t());
 		return IINField();
 	}
 
 	template <class Spec>
-	IINField SelectByType(int32_t max, typename Spec::EventVariation var)
+	IINField SelectByType(int32_t max, typename Spec::event_variation_t var)
 	{
 		GenericSelectByType<Spec>(max, false, var);
 		return IINField();
@@ -188,7 +188,7 @@ void EventBuffer::UpdateAny(const Event<Spec>& evt)
 }
 
 template <class Spec>
-uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typename Spec::EventVariation var)
+uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typename Spec::event_variation_t var)
 {
 	uint32_t num = 0;
 	auto iter = events.Iterate();

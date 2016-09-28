@@ -41,7 +41,7 @@ struct EventCellBase
 
 	PointClass clazz;
 	meas_type_t lastEvent;
-	typename Spec::EventVariation evariation;
+	typename Spec::event_variation_t evariation;
 
 	void SetEventValue(const meas_type_t& value)
 	{

@@ -73,7 +73,7 @@ private:
 	}
 
 	template <class Spec>
-	static Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<typename Spec::type_t> serializer, typename Spec::EventVariation variation)
+	static Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<typename Spec::type_t> serializer, typename Spec::event_variation_t variation)
 	{
 		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
 
@@ -115,7 +115,7 @@ private:
 	}
 
 	template <class Spec, class CTOType>
-	static Result WriteCTOTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<typename Spec::type_t> serializer, typename Spec::EventVariation variation)
+	static Result WriteCTOTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<typename Spec::type_t> serializer, typename Spec::event_variation_t variation)
 	{
 		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
 
