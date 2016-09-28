@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_EVENTTYPES_H
-#define OPENDNP3_EVENTTYPES_H
+#ifndef OPENDNP3_EVENTCELLS_H
+#define OPENDNP3_EVENTCELLS_H
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/gen/PointClass.h"
@@ -28,14 +28,14 @@ namespace opendnp3
 {
 
 /// A null object for types that have no metadata
-struct EmptyEventType
+struct EmptyEventCell
 {
-	//void SetEventValue(const typename Spec::type_t& value) {}
+	
 };
 
 /// Base class for different types of event metadata
 template <class Spec>
-struct EventTypeBase
+struct EventCellBase
 {
 	typedef typename Spec::type_t meas_type_t;
 
@@ -50,18 +50,15 @@ struct EventTypeBase
 
 protected:
 
-	EventTypeBase() : clazz(PointClass::Class1), lastEvent(), evariation(Spec::DefaultEventVariation)
+	EventCellBase() : clazz(PointClass::Class1), lastEvent(), evariation(Spec::DefaultEventVariation)
 	{}
 };
 
 /// Metatype w/o a deadband
 template <class Spec>
-struct SimpleEventType : EventTypeBase<Spec>
+struct SimpleEventCell : EventCellBase<Spec>
 {
-	typedef typename Spec::type_t meas_type_t;
-
-	SimpleEventType() : EventTypeBase<Spec>()
-	{}
+	typedef typename Spec::type_t meas_type_t;	
 
 	bool IsEvent(const typename Spec::config_t& config, const meas_type_t& newValue) const
 	{
@@ -71,7 +68,7 @@ struct SimpleEventType : EventTypeBase<Spec>
 
 /// Structure for holding metadata information on points that have support deadbanding
 template <class Spec>
-struct DeadbandEventType : SimpleEventType<Spec>
+struct DeadbandEventCell : SimpleEventCell<Spec>
 {	
 	bool IsEvent(const typename Spec::config_t& config, const typename Spec::type_t& newValue) const
 	{

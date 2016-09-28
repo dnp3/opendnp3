@@ -46,10 +46,10 @@ struct Cell
 {
 	typedef typename Spec::type_t meas_type_t;		
 
-	meas_type_t value;					// current value
-	typename Spec::config_t config;		// configuration
-	typename Spec::event_t event;		// event cell
-	SelectedValue<Spec> selection;		// selected value
+	meas_type_t value;						// current value
+	typename Spec::config_t config;			// configuration
+	typename Spec::event_cell_t event;		// event cell
+	SelectedValue<Spec> selection;			// selected value
 
 };
 

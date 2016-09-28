@@ -22,7 +22,7 @@
 #define OPENDNP3_MEASUREMENTTYPESPECS_H
 
 #include "opendnp3/outstation/MeasurementConfig.h"
-#include "opendnp3/app/EventTypes.h"
+#include "opendnp3/app/EventCells.h"
 
 namespace opendnp3
 {
@@ -41,7 +41,7 @@ struct BinarySpec : private openpal::StaticOnly
 	typedef EventBinaryVariation EventVariation;
 	typedef StaticBinaryVariation StaticVariation;
 	typedef BinaryConfig config_t;	
-	typedef SimpleEventType<BinarySpec> event_t;
+	typedef SimpleEventCell<BinarySpec> event_cell_t;
 
 	inline static bool IsQualityOnlineOnly(const Binary& binary)
 	{
@@ -67,7 +67,7 @@ struct DoubleBitBinarySpec : private openpal::StaticOnly
 	typedef EventDoubleBinaryVariation EventVariation;
 	typedef StaticDoubleBinaryVariation StaticVariation;
 	typedef DoubleBitBinaryConfig config_t;
-	typedef SimpleEventType<DoubleBitBinarySpec> event_t;
+	typedef SimpleEventCell<DoubleBitBinarySpec> event_cell_t;
 
 	inline static bool IsEvent(const DoubleBitBinary& oldValue, const DoubleBitBinary& newValue)
 	{
@@ -90,7 +90,7 @@ public:
 	typedef EventBinaryOutputStatusVariation EventVariation;
 	typedef StaticBinaryOutputStatusVariation StaticVariation;
 	typedef BOStatusConfig config_t;
-	typedef SimpleEventType<BinaryOutputStatusSpec> event_t;
+	typedef SimpleEventCell<BinaryOutputStatusSpec> event_cell_t;
 
 	inline static bool IsEvent(const BinaryOutputStatus& oldValue, const BinaryOutputStatus& newValue)
 	{
@@ -112,7 +112,7 @@ struct AnalogSpec : private openpal::StaticOnly
 	typedef EventAnalogVariation EventVariation;
 	typedef StaticAnalogVariation StaticVariation;
 	typedef AnalogConfig config_t;
-	typedef DeadbandEventType<AnalogSpec> event_t;
+	typedef DeadbandEventCell<AnalogSpec> event_cell_t;
 
 	inline static bool IsEvent(const Analog& oldValue, const Analog& newValue, double deadband)
 	{
@@ -133,7 +133,7 @@ struct CounterSpec : private openpal::StaticOnly
 	typedef EventCounterVariation EventVariation;
 	typedef StaticCounterVariation StaticVariation;
 	typedef CounterConfig config_t;
-	typedef DeadbandEventType<CounterSpec> event_t;
+	typedef DeadbandEventCell<CounterSpec> event_cell_t;
 
 	inline static bool IsEvent(const Counter& oldValue, const Counter& newValue, uint32_t deadband)
 	{
@@ -161,7 +161,7 @@ struct FrozenCounterSpec : private openpal::StaticOnly
 	typedef EventFrozenCounterVariation EventVariation;
 	typedef StaticFrozenCounterVariation StaticVariation;
 	typedef FrozenCounterConfig config_t;
-	typedef DeadbandEventType<FrozenCounterSpec> event_t;
+	typedef DeadbandEventCell<FrozenCounterSpec> event_cell_t;
 
 	inline static bool IsEvent(const FrozenCounter& oldValue, const FrozenCounter& newValue, uint32_t deadband)
 	{
@@ -189,7 +189,7 @@ struct AnalogOutputStatusSpec : private openpal::StaticOnly
 	typedef EventAnalogOutputStatusVariation EventVariation;
 	typedef StaticAnalogOutputStatusVariation StaticVariation;
 	typedef AOStatusConfig config_t;
-	typedef DeadbandEventType<AnalogOutputStatusSpec> event_t;
+	typedef DeadbandEventCell<AnalogOutputStatusSpec> event_cell_t;
 
 	inline static bool IsEvent(const AnalogOutputStatus& oldValue, const AnalogOutputStatus& newValue, double deadband)
 	{
@@ -206,7 +206,7 @@ struct TimeAndIntervalSpec : private openpal::StaticOnly
 
 	typedef StaticTimeAndIntervalVariation StaticVariation;
 	typedef TimeAndIntervalConfig config_t;
-	typedef EmptyEventType event_t;
+	typedef EmptyEventCell event_cell_t;
 };
 
 struct SecurityStatSpec : private openpal::StaticOnly
@@ -221,7 +221,7 @@ struct SecurityStatSpec : private openpal::StaticOnly
 	typedef EventSecurityStatVariation EventVariation;
 	typedef StaticSecurityStatVariation StaticVariation;
 	typedef SecurityStatConfig config_t;
-	typedef EmptyEventType event_t;
+	typedef EmptyEventCell event_cell_t;
 
 	inline static bool IsEvent(const SecurityStat& oldValue, const SecurityStat& newValue, uint32_t deadband)
 	{
