@@ -23,6 +23,7 @@
 
 #include "opendnp3/outstation/MeasurementConfig.h"
 #include "opendnp3/app/EventCells.h"
+#include "opendnp3/app/EventTriggers.h"
 
 namespace opendnp3
 {

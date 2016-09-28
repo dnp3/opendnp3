@@ -25,7 +25,6 @@
 #include "opendnp3/app/SecurityStat.h"
 
 #include "opendnp3/app/EventType.h"
-#include "opendnp3/app/EventTriggers.h"
 
 #include "opendnp3/gen/StaticBinaryVariation.h"
 #include "opendnp3/gen/StaticDoubleBinaryVariation.h"
