@@ -18,53 +18,48 @@
  */
 package com.automatak.dnp3.example;
 
+import com.automatak.dnp3.*;
+import com.automatak.dnp3.impl.DNP3ManagerFactory;
+import com.automatak.dnp3.mock.DefaultOutstationApplication;
+import com.automatak.dnp3.mock.PrintingChannelListener;
+import com.automatak.dnp3.mock.PrintingLogHandler;
+import com.automatak.dnp3.mock.SuccessCommandHandler;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /**
  * Example master than can be run against the example outstation
  */
-
-/*
 public class OutstationDemo {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws Exception {
 
         // create the root class with a thread pool size of 1
-        DNP3Manager manager = DNP3ManagerFactory.createManager(1);
+        DNP3Manager manager = DNP3ManagerFactory.createManager(1, PrintingLogHandler.getInstance());
 
-        // You can send the log messages anywhere you want
-        // but PrintingLogSubscriber just prints them to the console
-        manager.addLogSubscriber(PrintingLogSubscriber.getInstance());
 
         // Create a tcp channel class that will connect to the loopback
-        Channel channel = manager.addTCPServer("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
-
-        // You can optionally add a listener to receive state changes on the channel
-        channel.addStateListener(new ChannelStateListener() {
-            @Override
-            public void onStateChange(ChannelState state) {
-                System.out.println("server state: " + state);
-            }
-        });
-
-        // Outstation will have 5 of every measurement type
-        DatabaseConfig db = new DatabaseConfig(5,5,5,5,5);
+        Channel channel = manager.addTCPServer(
+                "client",
+                LogMasks.NORMAL | LogMasks.APP_COMMS,
+                ChannelRetry.getDefault(),
+                "127.0.0.1",
+                20000,
+                PrintingChannelListener.getInstance()
+        );
 
         // Create the default outstation configuration
-        OutstationStackConfig config = new OutstationStackConfig(db);
-        config.outstationConfig.staticAnalogInput = StaticAnalogResponse.GROUP30_VAR1;
+        OutstationStackConfig config = new OutstationStackConfig(DatabaseConfig.allValues(5), EventBufferConfig.allTypes(50));
+
 
         // Create an Outstation instance, pass in a simple a command handler that responds successfully to everything
-        Outstation outstation = channel.addOutstation("outstation", LogLevel.INTERPRET, SuccessCommandHandler.getInstance(), config);
-
-        // You can optionally add a listener to receive state changes on the stack
-        outstation.addStateListener(new StackStateListener() {
-            @Override
-            public void onStateChange(StackState state) {
-                System.out.println("Outstation state: " + state);
-            }
-        });
-
-        // This sub-interface allows us to load data into the outstation
-        DataObserver data = outstation.getDataObserver();
+        Outstation outstation = channel.addOutstation(
+                "outstation",
+                SuccessCommandHandler.getInstance(),
+                DefaultOutstationApplication.getInstance(),
+                config
+        );
 
         // all this stuff just to read a line of text in Java. Oh the humanity.
         String line = "";
@@ -78,14 +73,12 @@ public class OutstationDemo {
             line = in.readLine();
             if(line.equals("quit")) break;
             else {
-                data.start();
-                data.update(new Counter(i, CounterInputQuality.ONLINE.toByte(), 0), 0);
-                data.end();
-                ++i;
+                OutstationChangeSet set = new OutstationChangeSet();
+                set.update(new Counter(i,(byte) 0x01, 0), 0);
+                outstation.load(set);
             }
         }
 
         manager.shutdown();
     }
 }
-*/

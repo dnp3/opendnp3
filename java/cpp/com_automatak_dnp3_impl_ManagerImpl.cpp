@@ -45,9 +45,17 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-(JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jint, jobject jlistener)
+(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jadapter, jint jport, jobject jlistener)
 {
-	return 0;
+	const auto manager = (DNP3Manager*) native;
+
+	CString id(env, jid);	
+	CString adapter(env, jadapter);
+	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+
+	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+
+	return (jlong) manager->AddTCPServer(id, jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), listener);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial

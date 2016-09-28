@@ -36,3 +36,9 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 	return (jlong) channel->AddMaster(id, soeAdapter, appAdapter, config);	 
 }
 
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1outstation
+(JNIEnv* env, jobject, jlong native, jstring id, jobject commandAdapter, jobject application, jobject jconfig)
+{
+	return 0;
+}
+

@@ -7,15 +7,24 @@ import com.automatak.dnp3.enums.LinkStatus;
  */
 public interface LinkStatusListener
 {
-    /// Called when a the reset/unreset status of the link layer changes
-    void OnStateChange(LinkStatus value);
+    /**
+     * Called when a the reset/unreset status of the link layer changes
+     * @param value
+     */
+    void onStateChange(LinkStatus value);
 
-    /// Called when a keep alive message is transmitted
-    void OnKeepAliveInitiated();
+    /**
+     * Called when a keep alive message is transmitted
+     */
+    void onKeepAliveInitiated();
 
-    /// Called when a keep alive message (request link status) receives no response
-    void OnKeepAliveFailure();
+    /**
+     * Called when a keep alive message (request link status) receives no response
+     */
+    void onKeepAliveFailure();
 
-    /// Called when a keep alive message receives a valid response
-    void OnKeepAliveSuccess();
+    /**
+     * Called when a keep alive message receives a valid response
+     */
+    void onKeepAliveSuccess();
 }

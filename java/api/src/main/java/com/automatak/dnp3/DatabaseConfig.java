@@ -42,6 +42,11 @@ public class DatabaseConfig {
         return list;
     }
 
+    public static DatabaseConfig allValues(int num)
+    {
+        return new DatabaseConfig(0,0,0,0,0,0,0);
+    }
+
     public DatabaseConfig(int numBinary, int numDoubleBinary, int numAnalog, int numCounter, int numFrozenCounter, int numBOStatus, int numAOStatus)
     {
         this.binary = initialize(numBinary, BinaryConfig::new);

@@ -17,37 +17,46 @@ public class DefaultMasterApplication implements MasterApplication
 
     private DefaultMasterApplication() {}
 
-
+    @Override
     public long getMillisecondsSinceEpoch()
     {
         return System.currentTimeMillis();
     }
 
+    @Override
     public void onReceiveIIN(IINField iin)
     {}
 
+    @Override
     public void onTaskStart(MasterTaskType type, TaskId userId)
     {}
 
+    @Override
     public void onTaskComplete(TaskInfo info)
     {}
 
+    @Override
     public boolean assignClassDuringStartup()
     {
         return false;
     }
 
+    @Override
     public Iterable<ClassAssignment> getClassAssignments()
     {
         return Collections.emptyList();
     }
 
-    public void OnStateChange(LinkStatus value){}
+    @Override
+    public void onStateChange(LinkStatus value){}
 
-    public void OnKeepAliveInitiated(){}
+    @Override
+    public void onKeepAliveInitiated(){}
 
-    public void OnKeepAliveFailure(){}
+    @Override
+    public void onKeepAliveFailure(){}
 
-    public void OnKeepAliveSuccess(){}
+    @Override
+    public void onKeepAliveSuccess(){}
 
 }
