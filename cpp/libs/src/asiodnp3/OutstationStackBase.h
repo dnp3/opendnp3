@@ -68,12 +68,7 @@ public:
 		};
 
 		pLifecycle->GetExecutor().BlockFor(set);
-	}
-
-	virtual opendnp3::DatabaseConfigView GetConfigView() override final
-	{
-		return this->pContext->GetConfigView();
-	}
+	}	
 
 	virtual void SetRestartIIN() override final
 	{

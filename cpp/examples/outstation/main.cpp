@@ -41,12 +41,12 @@ using namespace openpal;
 using namespace asiopal;
 using namespace asiodnp3;
 
-void ConfigureDatabase(DatabaseConfigView view)
+void ConfigureDatabase(DatabaseConfig& config)
 {
 	// example of configuring analog index 0 for Class2 with floating point variations by default
-	view.analogs[0].config.svariation = StaticAnalogVariation::Group30Var5;
-	view.analogs[0].config.clazz = PointClass::Class2;
-	view.analogs[0].config.evariation = EventAnalogVariation::Group32Var7;
+	config.analog[0].clazz = PointClass::Class2;
+	config.analog[0].svariation = StaticAnalogVariation::Group30Var5;	
+	config.analog[0].evariation = EventAnalogVariation::Group32Var7;
 }
 
 int main(int argc, char* argv[])
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), stackConfig);
 
 	// You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-	ConfigureDatabase(outstation->GetConfigView());
+	ConfigureDatabase(stackConfig.dbConfig);
 
 	// Enable the outstation and start communications
 	outstation->Enable();

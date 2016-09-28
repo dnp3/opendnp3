@@ -27,6 +27,15 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
+template <class T, class U>
+void assign(const T& config, U& view)
+{
+	for (auto i = 0; i < view.Size(); ++i)
+	{
+		view[i].config = config[i];
+	}
+}
+
 OutstationStack::OutstationStack(
     std::unique_ptr<openpal::LogRoot> root,
     openpal::IExecutor& executor,
@@ -38,9 +47,22 @@ OutstationStack::OutstationStack(
 	OutstationStackBase(std::move(root), executor, *application, config, lifecycle),
 	commandHandler(commandHandler),
 	application(application),
-	ocontext(config.outstation, config.dbSizes, this->root->logger, executor, stack.transport, *commandHandler, *application)
+	ocontext(config.outstation, config.dbConfig.sizes, this->root->logger, executor, stack.transport, *commandHandler, *application)
 {
 	this->SetContext(ocontext);
+
+	// apply the database configuration
+	auto view = ocontext.GetConfigView();
+
+	assign(config.dbConfig.binary, view.binaries);
+	assign(config.dbConfig.doubleBinary, view.doubleBinaries);
+	assign(config.dbConfig.analog, view.analogs);
+	assign(config.dbConfig.counter, view.counters);
+	assign(config.dbConfig.frozenCounter, view.frozenCounters);
+	assign(config.dbConfig.boStatus, view.binaryOutputStatii);
+	assign(config.dbConfig.aoStatus, view.analogOutputStatii);
+	assign(config.dbConfig.timeAndInterval, view.timeAndIntervals);
+	
 }
 
 }

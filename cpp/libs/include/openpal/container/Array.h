@@ -36,7 +36,7 @@ namespace openpal
 * Template type for a dynamically allocated array
 */
 template <class ValueType, class IndexType>
-class Array : public HasSize<IndexType>, private openpal::Uncopyable
+class Array : public HasSize<IndexType>//, private openpal::Uncopyable
 {
 
 public:
@@ -80,13 +80,6 @@ public:
 		return buffer[index];
 	}
 
-	void resize(IndexType aSize)
-	{
-		delete[] buffer;
-		buffer = new ValueType[aSize];
-		this->size = aSize;
-	}
-
 	template <class Action>
 	void foreach(const Action& action) const
 	{
@@ -123,7 +116,7 @@ protected:
 
 private:
 
-	Array& operator=(const Array&);
+	Array& operator=(const Array&) = delete;
 };
 
 }

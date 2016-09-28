@@ -24,8 +24,6 @@
 #include "IStack.h"
 
 #include <opendnp3/outstation/IDatabase.h>
-#include <opendnp3/outstation/DatabaseConfigView.h>
-
 #include <openpal/logging/LogFilters.h>
 
 namespace asiodnp3
@@ -60,13 +58,7 @@ public:
 	/**
 	* @return stack statistics counters
 	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
-
-	/**
-	* Get a view of the raw buffers in the database. This can be used to configure each point before execution.
-	* @return View of static values and metadata.
-	*/
-	virtual opendnp3::DatabaseConfigView GetConfigView() = 0;
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;	
 
 protected:
 

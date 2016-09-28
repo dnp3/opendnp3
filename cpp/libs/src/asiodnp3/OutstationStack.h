@@ -43,7 +43,6 @@ public:
 	    const OutstationStackConfig& config,
 	    IStackLifecycle& lifecycle);
 
-
 private:
 
 	std::shared_ptr<opendnp3::ICommandHandler> commandHandler;

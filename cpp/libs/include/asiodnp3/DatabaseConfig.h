@@ -25,20 +25,37 @@
 
 #include "opendnp3/outstation/DatabaseSizes.h"
 
-#include <vector>
+#include "openpal/container/Array.h"
 
 namespace asiodnp3
 {
 
-class DatabaseConfig : openpal::Uncopyable
+class DatabaseConfig
 {
 public:
 
-	DatabaseConfig(opendnp3::DatabaseSizes& sizes) :
-		binary(sizes.numBinary)
+	DatabaseConfig(const opendnp3::DatabaseSizes& sizes) :
+		sizes(sizes),
+		binary(sizes.numBinary),
+		doubleBinary(sizes.numDoubleBinary),
+		analog(sizes.numAnalog),
+		counter(sizes.numCounter),
+		frozenCounter(sizes.numFrozenCounter),
+		boStatus(sizes.numBinaryOutputStatus),
+		aoStatus(sizes.numAnalogOutputStatus),
+		timeAndInterval(sizes.numTimeAndInterval)
 	{}
 
-	std::vector<opendnp3::BinaryConfig> binary;
+	const opendnp3::DatabaseSizes sizes;
+
+	openpal::Array<opendnp3::BinaryConfig, uint16_t> binary;
+	openpal::Array<opendnp3::DoubleBitBinaryConfig, uint16_t> doubleBinary;
+	openpal::Array<opendnp3::AnalogConfig, uint16_t> analog;
+	openpal::Array<opendnp3::CounterConfig, uint16_t> counter;
+	openpal::Array<opendnp3::FrozenCounterConfig, uint16_t> frozenCounter;
+	openpal::Array<opendnp3::BOStatusConfig, uint16_t> boStatus;
+	openpal::Array<opendnp3::AOStatusConfig, uint16_t> aoStatus;
+	openpal::Array<opendnp3::TimeAndIntervalConfig, uint16_t> timeAndInterval;
 };
 
 }

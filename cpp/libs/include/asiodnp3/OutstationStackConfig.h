@@ -24,6 +24,7 @@
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/DatabaseSizes.h"
+#include "asiodnp3/DatabaseConfig.h"
 #include "opendnp3/link/LinkConfig.h"
 
 namespace asiodnp3
@@ -37,7 +38,7 @@ struct OutstationStackConfig
 {
 
 	OutstationStackConfig(const opendnp3::DatabaseSizes& dbSizes) :
-		dbSizes(dbSizes),
+		dbConfig(dbSizes),
 		link(false, false)
 	{
 
@@ -46,7 +47,7 @@ struct OutstationStackConfig
 	OutstationStackConfig() = delete;
 
 	// Configuration of the database
-	opendnp3::DatabaseSizes dbSizes;
+	DatabaseConfig dbConfig;
 
 	/// Outstation config
 	opendnp3::OutstationConfig outstation;
