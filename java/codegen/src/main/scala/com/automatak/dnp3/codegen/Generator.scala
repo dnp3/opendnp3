@@ -9,22 +9,32 @@ import com.automatak.dnp3.impl.CommandBuilderImpl
 
 object Generator {
 
-
-  def enumeration(clazz: Class[_]): ClassConfig = {
-    ClassConfig(
-      clazz,
-      Set(Features.Methods),
-      MethodFilter.any(MethodFilter.nameEquals("fromType"), MethodFilter.nameEquals("toType"))
-    )
-  }
-
   def listMethods = MethodFilter.nameEquals("add", Some(1))
   def listConstructors = ConstructorFilter.withParamTypes(List("int"))
 
   val javaJNIPath = FileSystems.getDefault.getPath("./cpp/jni/");
 
+  def enumerations : List[ClassConfig] = List(
+    classOf[GroupVariation],
+    classOf[QualifierCode],
+    classOf[TimestampMode],
+    classOf[DoubleBit],
+    classOf[TimeSyncMode],
+    classOf[MasterTaskType],
+    classOf[TaskCompletion],
+    classOf[CommandPointState],
+    classOf[CommandStatus],
+    classOf[ControlCode],
+    classOf[ChannelState],
+    classOf[PointClass]
+  ).map(e => ClassConfig(
+    e,
+    Set(Features.Methods),
+    MethodFilter.any(MethodFilter.nameEquals("fromType"), MethodFilter.nameEquals("toType"))
+  ))
+
   // all the classes to generate C++ info on
-  def classes : List[ClassConfig] = List(
+  def custom : List[ClassConfig] = List(
     ClassConfig(classOf[MasterStackConfig], Set(Features.Fields)),
     ClassConfig(classOf[MasterConfig], Set(Features.Fields)),
     ClassConfig(classOf[LinkLayerConfig], Set(Features.Fields)),
@@ -33,9 +43,6 @@ object Generator {
     ClassConfig(classOf[ClassField], Set(Features.Fields)),
     ClassConfig(classOf[SOEHandler], Set(Features.Methods)),
     ClassConfig(classOf[HeaderInfo], Set(Features.Constructors)),
-    enumeration(classOf[GroupVariation]),
-    enumeration(classOf[QualifierCode]),
-    enumeration(classOf[TimestampMode]),
     ClassConfig(classOf[IndexedValue[_]], Set(Features.Constructors, Features.Fields)),
     ClassConfig(classOf[BinaryInput], Set(Features.Constructors)),
     ClassConfig(classOf[DoubleBitBinaryInput], Set(Features.Constructors)),
@@ -46,14 +53,10 @@ object Generator {
     ClassConfig(classOf[AnalogOutputStatus], Set(Features.Constructors)),
     ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodFilter.nameEquals("toMillis")),
     ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), listMethods, listConstructors),
-    enumeration(classOf[DoubleBit]),
-    enumeration(classOf[TimeSyncMode]),
     ClassConfig(classOf[MasterApplication], Set(Features.Methods)),
     ClassConfig(classOf[IINField], Set(Features.Constructors)),
-    enumeration(classOf[MasterTaskType]),
     ClassConfig(classOf[TaskId], Set(Features.Constructors)),
     ClassConfig(classOf[TaskInfo], Set(Features.Constructors)),
-    enumeration(classOf[TaskCompletion]),
     ClassConfig(classOf[java.lang.Iterable[_]], Set(Features.Methods), MethodFilter.nameEquals("iterator")),
     ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next")),
     ClassConfig(classOf[ClassAssignment], Set(Features.Fields)),
@@ -64,20 +67,17 @@ object Generator {
     ClassConfig(classOf[CommandHeaders], Set(Features.Methods)),
     ClassConfig(classOf[CommandTaskResult], Set(Features.Constructors)),
     ClassConfig(classOf[CommandPointResult], Set(Features.Constructors)),
-    enumeration(classOf[CommandPointState]),
-    enumeration(classOf[CommandStatus]),
     ClassConfig(classOf[CompletableFuture[_]], Set(Features.Methods), MethodFilter.nameEquals("complete")),
     ClassConfig(classOf[ControlRelayOutputBlock], Set(Features.Fields)),
     ClassConfig(classOf[AnalogOutputInt16], Set(Features.Fields)),
     ClassConfig(classOf[AnalogOutputInt32], Set(Features.Fields)),
     ClassConfig(classOf[AnalogOutputFloat32], Set(Features.Fields)),
     ClassConfig(classOf[AnalogOutputDouble64], Set(Features.Fields)),
-    enumeration(classOf[ControlCode]),
-    enumeration(classOf[ChannelState]),
     ClassConfig(classOf[ChannelListener], Set(Features.Methods)),
-    ClassConfig(classOf[Header], Set(Features.Fields)),
-    enumeration(classOf[PointClass])
-  ).sortBy(_.clazz.getSimpleName)
+    ClassConfig(classOf[Header], Set(Features.Fields))
+  )
+
+  def classes = (enumerations ::: custom).sortBy(_.clazz.getSimpleName)
 
   def main(args: Array[String]): Unit = {
 

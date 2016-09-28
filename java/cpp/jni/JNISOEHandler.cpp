@@ -28,20 +28,17 @@ namespace jni
         this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
         env->DeleteLocalRef(clazzTemp);
 
-        this->endMethod = env->GetMethodID(this->clazz, "end", "()V");
-        if(!this->endMethod) return false;
-
         this->startMethod = env->GetMethodID(this->clazz, "start", "()V");
         if(!this->startMethod) return false;
 
-        this->processDBIMethod = env->GetMethodID(this->clazz, "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V");
-        if(!this->processDBIMethod) return false;
-
-        this->processAOSMethod = env->GetMethodID(this->clazz, "processAOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V");
-        if(!this->processAOSMethod) return false;
+        this->endMethod = env->GetMethodID(this->clazz, "end", "()V");
+        if(!this->endMethod) return false;
 
         this->processCMethod = env->GetMethodID(this->clazz, "processC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V");
         if(!this->processCMethod) return false;
+
+        this->processDBIMethod = env->GetMethodID(this->clazz, "processDBI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V");
+        if(!this->processDBIMethod) return false;
 
         this->processAIMethod = env->GetMethodID(this->clazz, "processAI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V");
         if(!this->processAIMethod) return false;
@@ -55,6 +52,9 @@ namespace jni
         this->processFCMethod = env->GetMethodID(this->clazz, "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V");
         if(!this->processFCMethod) return false;
 
+        this->processAOSMethod = env->GetMethodID(this->clazz, "processAOS", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V");
+        if(!this->processAOSMethod) return false;
+
         return true;
     }
 
@@ -63,29 +63,24 @@ namespace jni
         env->DeleteGlobalRef(this->clazz);
     }
 
-    void SOEHandler::end(JNIEnv* env, jobject instance)
-    {
-        env->CallVoidMethod(instance, this->endMethod);
-    }
-
     void SOEHandler::start(JNIEnv* env, jobject instance)
     {
         env->CallVoidMethod(instance, this->startMethod);
     }
 
-    void SOEHandler::processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
+    void SOEHandler::end(JNIEnv* env, jobject instance)
     {
-        env->CallVoidMethod(instance, this->processDBIMethod, arg0, arg1);
-    }
-
-    void SOEHandler::processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
-    {
-        env->CallVoidMethod(instance, this->processAOSMethod, arg0, arg1);
+        env->CallVoidMethod(instance, this->endMethod);
     }
 
     void SOEHandler::processC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
     {
         env->CallVoidMethod(instance, this->processCMethod, arg0, arg1);
+    }
+
+    void SOEHandler::processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
+    {
+        env->CallVoidMethod(instance, this->processDBIMethod, arg0, arg1);
     }
 
     void SOEHandler::processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
@@ -106,5 +101,10 @@ namespace jni
     void SOEHandler::processFC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
     {
         env->CallVoidMethod(instance, this->processFCMethod, arg0, arg1);
+    }
+
+    void SOEHandler::processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
+    {
+        env->CallVoidMethod(instance, this->processAOSMethod, arg0, arg1);
     }
 }
