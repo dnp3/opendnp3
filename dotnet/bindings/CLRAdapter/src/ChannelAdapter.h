@@ -20,16 +20,14 @@ namespace Automatak
 			{
 			public:
 
-				ChannelAdapter(asiodnp3::IChannel* pChannel_) : pChannel(pChannel_)
+				ChannelAdapter(asiodnp3::IChannel* channel) : channel(channel)
 				{}
 
 				virtual LogFilter GetLogFilters() sealed;
 
 				virtual IChannelStatistics^ GetChannelStatistics() sealed;
 
-				virtual void SetLogFilters(LogFilter filters) sealed;
-
-				virtual void AddStateListener(System::Action<ChannelState>^ listener) sealed;
+				virtual void SetLogFilters(LogFilter filters) sealed;				
 
 				virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplication^ application, MasterStackConfig^ config) sealed;
 
@@ -39,7 +37,7 @@ namespace Automatak
 
 			private:
 
-				asiodnp3::IChannel* pChannel;				
+				asiodnp3::IChannel* channel;				
 
 				
 				

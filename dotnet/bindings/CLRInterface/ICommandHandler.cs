@@ -32,7 +32,15 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public interface ICommandHandler
     {
-        
+        /// <summary>
+        /// Called before any other method calls
+        /// </summary>
+        void Start();
+
+        /// <summary>
+        /// Called after all other method calls
+        /// </summary>
+        void End();
 
         /// <summary>
         /// Query application if it supports a ControlRelayOutputBlock (Group12Var1)

@@ -32,18 +32,40 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public interface IOutstationApplication : ILinkStatusListener
     {
+        /// <summary>
+        /// true of the outstation should allow absolute time to be written
+        /// </summary>
         bool SupportsWriteAbsoluteTime { get; }
 
+        /// <summary>
+        /// Called when the master writes the time
+        /// </summary>
+        /// <param name="millisecSinceEpoch">milliseconds since Unix epoch</param>
+        /// <returns>true, if the wrote is successful</returns>
         bool WriteAbsoluteTime(UInt64 millisecSinceEpoch);
 
         bool SupportsWriteTimeAndInterval();
 
         bool WriteTimeAndInterval(IEnumerable<IndexedValue<TimeAndInterval>> values);
 
+        /// <summary>
+        /// Query about class assigment support
+        /// </summary>
+        /// <returns>true if the outstation supports assigning class</returns>
         bool SupportsAssignClass();
 
+        /// <summary>
+        /// Called when the master assigns class to a particular type of measurements
+        /// </summary>
+        /// <param name="type">the type of the assignment</param>
+        /// <param name="clazz">the class assigned</param>
+        /// <param name="start">the start of the measurement range</param>
+        /// <param name="stop">the end of the measurement range</param>
         void RecordClassAssignment(AssignClassType type, PointClass clazz, UInt16 start, UInt16 stop);
 
+        /// <summary>
+        /// Application controlled IIN bits
+        /// </summary>
         ApplicationIIN ApplicationIndications
         {
             get;

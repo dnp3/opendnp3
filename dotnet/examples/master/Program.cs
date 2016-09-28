@@ -47,10 +47,7 @@ namespace DotNetMasterDemo
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
             
-            var channel = mgr.AddTCPClient("client", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000);
-            
-            //optionally, add a listener for the channel state
-            channel.AddStateListener(state => Console.WriteLine("channel state: " + state));            
+            var channel = mgr.AddTCPClient("client", LogLevels.NORMAL | LogLevels.APP_COMMS, ChannelRetry.Default, "127.0.0.1", 20000);                       
 
             var config = new MasterStackConfig();                      
 

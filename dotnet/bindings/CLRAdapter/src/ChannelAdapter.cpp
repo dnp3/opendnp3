@@ -26,28 +26,20 @@ namespace Automatak
 
 			LogFilter ChannelAdapter::GetLogFilters()
 			{
-				return LogFilter(pChannel->GetLogFilters().GetBitfield());
+				return LogFilter(channel->GetLogFilters().GetBitfield());
 			}
 
 			IChannelStatistics^ ChannelAdapter::GetChannelStatistics()
 			{
-				auto stats = pChannel->GetChannelStatistics();
+				auto stats = channel->GetChannelStatistics();
 				return Conversions::ConvertChannelStats(stats);
 			}
 
 			void ChannelAdapter::SetLogFilters(LogFilter filters)
 			{
 				openpal::LogFilters flags(filters.Flags);
-				pChannel->SetLogFilters(flags);
-			}
-
-			void ChannelAdapter::AddStateListener(System::Action<ChannelState>^ listener)
-			{
-				auto convert = std::bind(&Conversions::ConvertChannelState, std::placeholders::_1);
-				auto pConverter = new EventConverter<opendnp3::ChannelState, Automatak::DNP3::Interface::ChannelState>(convert, listener);
-				std::function<void(opendnp3::ChannelState)> trigger = pConverter->GetTrigger();				
-				pChannel->DeleteOnDestruct(pConverter);
-			}
+				channel->SetLogFilters(flags);
+			}			
 
 			void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)
 			{
@@ -64,7 +56,7 @@ namespace Automatak
 				auto SOEAdapter = std::shared_ptr<opendnp3::ISOEHandler>(new SOEHandlerAdapter(handler));
 				auto appAdapter = std::shared_ptr<opendnp3::IMasterApplication>(new MasterApplicationAdapter<opendnp3::IMasterApplication>(application));
 
-				auto master = pChannel->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, cfg);
+				auto master = channel->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, cfg);
 				return (master == nullptr) ? nullptr : gcnew MasterAdapter(master);
 			}	
 
@@ -77,13 +69,13 @@ namespace Automatak
 				auto commandAdapter = std::shared_ptr<opendnp3::ICommandHandler>(new OutstationCommandHandlerAdapter(cmdHandler));
 				auto appAdapter = std::shared_ptr<opendnp3::IOutstationApplication>(new OutstationApplicationAdapter(application));
 
-				auto outstation = pChannel->AddOutstation(stdLoggerId.c_str(), commandAdapter, appAdapter, Conversions::ConvertConfig(config));
+				auto outstation = channel->AddOutstation(stdLoggerId.c_str(), commandAdapter, appAdapter, Conversions::ConvertConfig(config));
 				return outstation ? gcnew OutstationAdapter(outstation) : nullptr;
 			}			
 
 			void ChannelAdapter::Shutdown()
 			{
-				pChannel->Shutdown();
+				channel->Shutdown();
 			}
 
 		}

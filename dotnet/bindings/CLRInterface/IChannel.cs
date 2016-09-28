@@ -67,15 +67,8 @@ namespace Automatak.DNP3.Interface
         /// <param name="commandHandler">where command requests are sent to be handled in application code</param>
         /// <param name="application">outstation application instance</param>
         /// <param name="config">configuration information for the outstation stack</param>
-        /// <returns>reference to the created master</returns>
-		IOutstation AddOutstation(String id, ICommandHandler commandHandler, IOutstationApplication application, OutstationStackConfig config);
-
-        /// <summary>
-        /// Add a listener for changes to the channel state. All callbacks come from the thread pool.
-		/// An immediate callback will be made with the current state.		
-        /// </summary>
-        /// <param name="listener">Action to callback with the state enumeration </param>
-        void AddStateListener(Action<ChannelState> listener);
+        /// <returns>reference to the created outstation</returns>
+		IOutstation AddOutstation(String id, ICommandHandler commandHandler, IOutstationApplication application, OutstationStackConfig config);        
 
         /// <summary>
         /// Shutdown the channel and all stacks that have been added. Calling shutdown more than once or
