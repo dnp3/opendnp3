@@ -64,6 +64,7 @@ namespace jni
     jni::MasterConfig JCache::MasterConfig;
     jni::MasterStackConfig JCache::MasterStackConfig;
     jni::MasterTaskType JCache::MasterTaskType;
+    jni::PointClass JCache::PointClass;
     jni::QualifierCode JCache::QualifierCode;
     jni::Range JCache::Range;
     jni::SOEHandler JCache::SOEHandler;
@@ -162,6 +163,8 @@ namespace jni
         if(!success) return false;
         success = MasterTaskType.init(env);
         if(!success) return false;
+        success = PointClass.init(env);
+        if(!success) return false;
         success = QualifierCode.init(env);
         if(!success) return false;
         success = Range.init(env);
@@ -227,6 +230,7 @@ namespace jni
         MasterConfig.cleanup(env);
         MasterStackConfig.cleanup(env);
         MasterTaskType.cleanup(env);
+        PointClass.cleanup(env);
         QualifierCode.cleanup(env);
         Range.cleanup(env);
         SOEHandler.cleanup(env);

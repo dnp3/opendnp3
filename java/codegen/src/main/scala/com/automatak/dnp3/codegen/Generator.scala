@@ -75,7 +75,8 @@ object Generator {
     enumeration(classOf[ControlCode]),
     enumeration(classOf[ChannelState]),
     ClassConfig(classOf[ChannelListener], Set(Features.Methods)),
-    ClassConfig(classOf[Header], Set(Features.Fields))
+    ClassConfig(classOf[Header], Set(Features.Fields)),
+    enumeration(classOf[PointClass])
   ).sortBy(_.clazz.getSimpleName)
 
   def main(args: Array[String]): Unit = {

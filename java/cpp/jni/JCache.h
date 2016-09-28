@@ -65,6 +65,7 @@
 #include "JNIMasterConfig.h"
 #include "JNIMasterStackConfig.h"
 #include "JNIMasterTaskType.h"
+#include "JNIPointClass.h"
 #include "JNIQualifierCode.h"
 #include "JNIRange.h"
 #include "JNISOEHandler.h"
@@ -124,6 +125,7 @@ namespace jni
         static jni::MasterConfig MasterConfig;
         static jni::MasterStackConfig MasterStackConfig;
         static jni::MasterTaskType MasterTaskType;
+        static jni::PointClass PointClass;
         static jni::QualifierCode QualifierCode;
         static jni::Range Range;
         static jni::SOEHandler SOEHandler;

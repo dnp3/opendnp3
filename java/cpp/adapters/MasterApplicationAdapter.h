@@ -21,6 +21,8 @@
 
 #include <opendnp3/master/IMasterApplication.h>
 
+#include "opendnp3/gen/PointClass.h"
+
 #include "GlobalRef.h"
 
 class MasterApplicationAdapter : public opendnp3::IMasterApplication
@@ -38,6 +40,8 @@ public:
 	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun)  override;
 	
 private:	
+
+	static opendnp3::Header Convert(opendnp3::PointClass clazz);
 
 	GlobalRef proxy;			
 };

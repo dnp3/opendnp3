@@ -18,14 +18,14 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIMASTERAPPLICATION_H
-#define OPENDNP3JAVA_JNIMASTERAPPLICATION_H
+#ifndef OPENDNP3JAVA_JNIPOINTCLASS_H
+#define OPENDNP3JAVA_JNIPOINTCLASS_H
 
 #include <jni.h>
 
 namespace jni
 {
-    class MasterApplication
+    class PointClass
     {
         friend struct JCache;
 
@@ -35,24 +35,16 @@ namespace jni
         public:
 
         // methods
-        void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
-        void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
-        jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
-        jobject getClassAssignments(JNIEnv* env, jobject instance);
-        jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
+        jint toType(JNIEnv* env, jobject instance);
+        jobject fromType(JNIEnv* env, jint arg0);
 
         private:
 
         jclass clazz = nullptr;
 
         // method ids
-        jmethodID onReceiveIINMethod = nullptr;
-        jmethodID onTaskStartMethod = nullptr;
-        jmethodID onTaskCompleteMethod = nullptr;
-        jmethodID getMillisecondsSinceEpochMethod = nullptr;
-        jmethodID getClassAssignmentsMethod = nullptr;
-        jmethodID assignClassDuringStartupMethod = nullptr;
+        jmethodID toTypeMethod = nullptr;
+        jmethodID fromTypeMethod = nullptr;
     };
 }
 
