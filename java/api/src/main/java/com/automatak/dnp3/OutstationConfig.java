@@ -33,6 +33,9 @@ public class OutstationConfig {
 
     }
 
+    public IndexMode indexMode = IndexMode.Contiguous;
+
+
     /**
      * The maximum number of controls the slave will attempt to process from a single APDU, defaults to 1
      */

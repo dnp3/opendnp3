@@ -18,8 +18,6 @@
  */
 
 /**
- * A package of mock callback implementations.
- *
- * Not useful for real world applications, but good for demos.
+ * A package of generated enum classes
  */
-package com.automatak.dnp3.mock;
+package com.automatak.dnp3.enums;
