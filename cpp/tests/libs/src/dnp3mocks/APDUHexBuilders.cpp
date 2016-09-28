@@ -325,7 +325,7 @@ std::string UserStatusChangeRequest(
 	apdu.SetControl(AppControlField(true, true, false, false, seq));
 	apdu.SetFunction(FunctionCode::AUTH_REQUEST);
 
-	RSlice name(reinterpret_cast<const uint8_t*>(userName.c_str()), userName.size());
+	RSlice name(reinterpret_cast<const uint8_t*>(userName.c_str()), static_cast<uint32_t>(userName.size()));
 	HexSequence userPublicKeyBuffer(userPublicKeyHex);
 	HexSequence certificationDataBuffer(certificationDataHex);
 
@@ -358,7 +358,7 @@ std::string BeginUpdateKeyChangeRequest(
 	apdu.SetControl(AppControlField(true, true, false, false, seq));
 	apdu.SetFunction(FunctionCode::AUTH_REQUEST);
 
-	RSlice name(reinterpret_cast<const uint8_t*>(username.c_str()), username.size());
+	RSlice name(reinterpret_cast<const uint8_t*>(username.c_str()), static_cast<uint32_t>(username.size()));
 	HexSequence challenge(masterChallenge);
 
 	apdu.GetWriter().WriteFreeFormat(Group120Var11(method, name, challenge));
