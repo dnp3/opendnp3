@@ -27,19 +27,6 @@ import java.time.Duration;
  */
 public class OutstationConfig {
 
-    /**
-     * Outstation constructor with reasonable defaults
-     */
-    public OutstationConfig(EventBufferConfig eventBufferConfig)
-    {
-        this.eventBufferConfig = eventBufferConfig;
-    }
-
-    /**
-     * Maximum events buffered for each type
-     */
-    public final EventBufferConfig eventBufferConfig;
-
 
     /**
      * Controls the index mode

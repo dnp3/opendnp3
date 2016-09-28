@@ -26,14 +26,19 @@ public class OutstationStackConfig {
     public final LinkLayerConfig linkConfig = new LinkLayerConfig(false);
 
     /**
+     * Configuration for the outstation (everything but the database layout)
+     */
+    public final OutstationConfig outstationConfig = new OutstationConfig();
+
+    /**
      * Outstation database configuration
      */
     public final DatabaseConfig databaseConfig;
 
     /**
-     * Configuration for the outstation (everything but the database layout)
+     * Maximum events buffered for each type
      */
-    public final OutstationConfig outstationConfig;
+    public final EventBufferConfig eventBufferConfig;
 
     /**
      * Constructor for an outstation stack with sensible defaults
@@ -42,6 +47,6 @@ public class OutstationStackConfig {
     public OutstationStackConfig(DatabaseConfig databaseConfig, EventBufferConfig eventBufferConfig)
     {
         this.databaseConfig = databaseConfig;
-        this.outstationConfig = new OutstationConfig(eventBufferConfig);
+        this.eventBufferConfig = eventBufferConfig;
     }
 }

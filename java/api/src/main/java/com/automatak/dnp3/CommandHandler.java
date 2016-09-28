@@ -19,6 +19,7 @@
 package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.CommandStatus;
+import com.automatak.dnp3.enums.OperateType;
 
 /**
  * Outstation application code implements this interface to handle command requests from a master
@@ -26,12 +27,22 @@ import com.automatak.dnp3.enums.CommandStatus;
 public interface CommandHandler {
 
     /**
+     * Called when an ASDU containing commands begins
+     */
+    void start();
+
+    /**
+     * Called when an ASDU containing commands begins
+     */
+    void end();
+
+    /**
      * Select a ControlRelayOutputBlock (Group12Var1)
      * @param command command object
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(ControlRelayOutputBlock command, long index);
+    CommandStatus select(ControlRelayOutputBlock command, int index);
 
     /**
      * Select a 32-bit integer AnalogOutput (Group41Var1)
@@ -39,7 +50,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(AnalogOutputInt32 command, long index);
+    CommandStatus select(AnalogOutputInt32 command, int index);
 
     /**
      * Select a 16-bit integer AnalogOutput (Group41Var2)
@@ -47,7 +58,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(AnalogOutputInt16 command, long index);
+    CommandStatus select(AnalogOutputInt16 command, int index);
 
     /**
      * Select a single precision AnalogOutput (Group41Var3)
@@ -55,7 +66,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(AnalogOutputFloat32 command, long index);
+    CommandStatus select(AnalogOutputFloat32 command, int index);
 
     /**
      * Select a double precision AnalogOutput (Group41Var4)
@@ -63,86 +74,51 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(AnalogOutputDouble64 command, long index);
+    CommandStatus select(AnalogOutputDouble64 command, int index);
 
     /**
      * Operate a ControlRelayOutputBlock (Group12Var1)
      * @param command command object
      * @param index request index
+     * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(ControlRelayOutputBlock command, long index);
+    CommandStatus operate(ControlRelayOutputBlock command, int index, OperateType opType);
 
     /**
      * Operate a 32-bit integer AnalogOutput (Group41Var1)
      * @param command command object
      * @param index request index
+     * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(AnalogOutputInt32 command, long index);
+    CommandStatus operate(AnalogOutputInt32 command, int index, OperateType opType);
 
     /**
      * Operate a 16-bit integer AnalogOutput (Group41Var2)
      * @param command command object
      * @param index request index
+     * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(AnalogOutputInt16 command, long index);
+    CommandStatus operate(AnalogOutputInt16 command, int index, OperateType opType);
 
     /**
      * Operate a single precision AnalogOutput (Group41Var3)
      * @param command command object
      * @param index request index
+     * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(AnalogOutputFloat32 command, long index);
+    CommandStatus operate(AnalogOutputFloat32 command, int index, OperateType opType);
 
     /**
      * Operate a double precision AnalogOutput (Group41Var4)
      * @param command command object
      * @param index request index
+     * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(AnalogOutputDouble64 command, long index);
-
-    /**
-     * DirectOperate a ControlRelayOutputBlock (Group12Var1)
-     * @param command command object
-     * @param index request index
-     * @return Enumeration representing the result of the request
-     */
-    CommandStatus directOperate(ControlRelayOutputBlock command, long index);
-
-    /**
-     * DirectOperate a 32-bit integer AnalogOutput (Group41Var1)
-     * @param command command object
-     * @param index request index
-     * @return Enumeration representing the result of the request
-     */
-    CommandStatus directOperate(AnalogOutputInt32 command, long index);
-
-    /**
-     * DirectOperate a 16-bit integer AnalogOutput (Group41Var2)
-     * @param command command object
-     * @param index request index
-     * @return Enumeration representing the result of the request
-     */
-    CommandStatus directOperate(AnalogOutputInt16 command, long index);
-
-    /**
-     * DirectOperate a single precision AnalogOutput (Group41Var3)
-     * @param command command object
-     * @param index request index
-     * @return Enumeration representing the result of the request
-     */
-    CommandStatus directOperate(AnalogOutputFloat32 command, long index);
-
-    /**
-     * DirectOperate a double precision AnalogOutput (Group41Var4)
-     * @param command command object
-     * @param index request index
-     * @return Enumeration representing the result of the request
-     */
-    CommandStatus directOperate(AnalogOutputDouble64 command, long index);
+    CommandStatus operate(AnalogOutputDouble64 command, int index, OperateType opType);
 
 }

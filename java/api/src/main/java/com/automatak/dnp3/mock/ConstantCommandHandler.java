@@ -21,6 +21,7 @@ package com.automatak.dnp3.mock;
 
 import com.automatak.dnp3.*;
 import com.automatak.dnp3.enums.CommandStatus;
+import com.automatak.dnp3.enums.OperateType;
 
 public class ConstantCommandHandler implements CommandHandler {
 
@@ -30,65 +31,53 @@ public class ConstantCommandHandler implements CommandHandler {
     {
         this.status = status;
     }
-    public CommandStatus select(ControlRelayOutputBlock command, long index)
+
+    @Override
+    public void start() {}
+
+    @Override
+    public void end() {}
+    
+    public CommandStatus select(ControlRelayOutputBlock command, int index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputInt32 command, long index)
+    public CommandStatus select(AnalogOutputInt32 command, int index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputInt16 command, long index)
+    public CommandStatus select(AnalogOutputInt16 command, int index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputFloat32 command, long index)
+    public CommandStatus select(AnalogOutputFloat32 command, int index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputDouble64 command, long index)
+    public CommandStatus select(AnalogOutputDouble64 command, int index)
     {
         return status;
     }
 
-    public CommandStatus operate(ControlRelayOutputBlock command, long index)
+    public CommandStatus operate(ControlRelayOutputBlock command, int index, OperateType opType)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputInt32 command, long index)
+    public CommandStatus operate(AnalogOutputInt32 command, int index, OperateType opType)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputInt16 command, long index)
+    public CommandStatus operate(AnalogOutputInt16 command, int index, OperateType opType)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputFloat32 command, long index)
+    public CommandStatus operate(AnalogOutputFloat32 command, int index, OperateType opType)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputDouble64 command, long index)
+    public CommandStatus operate(AnalogOutputDouble64 command, int index, OperateType opType)
     {
         return status;
     }
-    public CommandStatus directOperate(ControlRelayOutputBlock command, long index)
-    {
-        return status;
-    }
-    public CommandStatus directOperate(AnalogOutputInt32 command, long index)
-    {
-        return status;
-    }
-    public CommandStatus directOperate(AnalogOutputInt16 command, long index)
-    {
-        return status;
-    }
-    public CommandStatus directOperate(AnalogOutputFloat32 command, long index)
-    {
-        return status;
-    }
-    public CommandStatus directOperate(AnalogOutputDouble64 command, long index)
-    {
-        return status;
-    }
+    
 }

@@ -20,43 +20,40 @@ package com.automatak.dnp3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Configuration class for the outstation database
  */
 public class DatabaseConfig {
 
-    public final List<EventPointRecord> binaryInputs;
-    public final List<DeadbandPointRecord> analogInputs;
-    public final List<EventPointRecord> counterInputs;
-    public final List<PointRecord> binaryOutputStatii;
-    public final List<PointRecord> analogOutputStatii;
 
-    /**
-     * Construct a default database with given size. Then override settings for individual points.
-     * @param numBinary number of binary input point
-     * @param numAnalog number of analog input points
-     * @param numCounter number of counter points
-     * @param numBinaryOutputStatus number of binary output status points
-     * @param numAnalogOutputStatus number of analog output status points
-     */
-    public DatabaseConfig(int numBinary, int numAnalog, int numCounter, int numBinaryOutputStatus, int numAnalogOutputStatus)
+    public final List<BinaryConfig> binary;
+    public final List<DoubleBinaryConfig> doubleBinary;
+    public final List<AnalogConfig> analog;
+    public final List<CounterConfig> counter;
+    public final List<FrozenCounterConfig> frozenCounter;
+    public final List<BinaryOutputStatusConfig> boStatus;
+    public final List<AnalogOutputStatusConfig> aoStatus;
+    public final List<TimeAndIntervalConfig> timeAndInterval;
+
+    private static <T> List<T> initialize(int num, Function<Integer, T> factory)
     {
-        this.binaryInputs = new ArrayList<EventPointRecord>(numBinary);
-        for(int i=0; i<numBinary; ++i) this.binaryInputs.add(new EventPointRecord());
+        ArrayList<T> list = new ArrayList<>(num);
+        for(int i=0; i< num; ++i) list.add(factory.apply(i));
+        return list;
+    }
 
-        this.analogInputs = new ArrayList<DeadbandPointRecord>(numAnalog);
-        for(int i=0; i<numAnalog; ++i) this.analogInputs.add(new DeadbandPointRecord());
-
-        this.counterInputs = new ArrayList<EventPointRecord>(numCounter);
-        for(int i=0; i<numCounter; ++i) this.counterInputs.add(new EventPointRecord());
-
-        this.binaryOutputStatii = new ArrayList<PointRecord>(numBinaryOutputStatus);
-        for(int i=0; i<numBinaryOutputStatus; ++i) this.binaryOutputStatii.add(new PointRecord());
-
-        this.analogOutputStatii = new ArrayList<PointRecord>(numAnalogOutputStatus);
-        for(int i=0; i<numAnalogOutputStatus; ++i) this.analogOutputStatii.add(new PointRecord());
-
+    public DatabaseConfig(int numBinary, int numDoubleBinary, int numAnalog, int numCounter, int numFrozenCounter, int numBOStatus, int numAOStatus, int numTimeAndInterval)
+    {
+        this.binary = initialize(numBinary, BinaryConfig::new);
+        this.doubleBinary= initialize(numDoubleBinary, DoubleBinaryConfig::new);
+        this.analog = initialize(numAnalog, AnalogConfig::new);
+        this.counter = initialize(numCounter, CounterConfig::new);
+        this.frozenCounter = initialize(numFrozenCounter, FrozenCounterConfig::new);
+        this.boStatus = initialize(numBOStatus, BinaryOutputStatusConfig::new);
+        this.aoStatus = initialize(numAOStatus, AnalogOutputStatusConfig::new);
+        this.timeAndInterval = initialize(numTimeAndInterval, TimeAndIntervalConfig::new);
     }
 
 }
