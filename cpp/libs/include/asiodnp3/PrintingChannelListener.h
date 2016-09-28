@@ -23,7 +23,7 @@
 
 #include "asiodnp3/IChannelListener.h"
 
-#include <openpal\util\Uncopyable.h>
+#include "openpal/util/Uncopyable.h"
 
 #include <iostream>
 #include <memory>
