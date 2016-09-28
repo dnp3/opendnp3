@@ -38,6 +38,21 @@ public class OutstationDemo {
         // create the root class with a thread pool size of 1
         DNP3Manager manager = DNP3ManagerFactory.createManager(1, PrintingLogHandler.getInstance());
 
+        try {
+            run(manager);
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Exception: " + ex.getMessage());
+        }
+        finally {
+            // This call is needed b/c the thread-pool will stop the application from exiting
+            // and the finalizer isn't guaranteed to run b/c the GC might not be collected during main() exit
+            manager.shutdown();
+        }
+    }
+
+    public static void run(DNP3Manager manager) throws Exception {
 
         // Create a tcp channel class that will connect to the loopback
         Channel channel = manager.addTCPServer(
@@ -78,7 +93,5 @@ public class OutstationDemo {
                 outstation.load(set);
             }
         }
-
-        manager.shutdown();
     }
 }

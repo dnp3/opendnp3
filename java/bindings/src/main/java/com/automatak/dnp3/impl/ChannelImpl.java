@@ -49,7 +49,7 @@ class ChannelImpl implements Channel {
         long ret = get_native_outstation(nativePointer, id, new CommandHandlerAdapter(commandHandler), application, config);
 
         if(ret == 0) {
-            throw new DNP3Exception("Unable to create master");
+            throw new DNP3Exception("Unable to create outstation");
         }
 
         return new OutstationImpl(ret);
