@@ -21,9 +21,9 @@
 #ifndef ASIODNP3_IOUTSTATION_H
 #define ASIODNP3_IOUTSTATION_H
 
-#include "IStack.h"
+#include "asiodnp3/IStack.h"
+#include "asiodnp3/ChangeSet.h"
 
-#include <opendnp3/outstation/IDatabase.h>
 #include <openpal/logging/LogFilters.h>
 
 namespace asiodnp3
@@ -60,24 +60,10 @@ public:
 	*/
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
-protected:
-
-	//// --- These methods are protected and are only intened to be used by the MeasUpdate friend class ----
-
-	/*
-	* return the non-thread safe database the outstation uses
+	/**
+	* Apply a measurement changeset to the outstation
 	*/
-	virtual opendnp3::IDatabase& GetDatabase() = 0;
-
-	/*
-	* return the executor used by the outstation
-	*/
-	virtual openpal::IExecutor& GetExecutor() = 0;
-
-	/*
-	* force the outstation to check for updates
-	*/
-	virtual void CheckForUpdates() = 0;
+	virtual void Apply(ChangeSet& changes) = 0;
 
 };
 

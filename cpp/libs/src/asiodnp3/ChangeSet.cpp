@@ -18,16 +18,60 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+
 #include "asiodnp3/ChangeSet.h"
+
+using namespace opendnp3;
 
 namespace asiodnp3
 {
-void ChangeSet::Add(const UpdateFun& fun)
+
+void ChangeSet::Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	this->Add([meas, index, mode](opendnp3::IDatabase& db) { db.Update(meas, index, mode); });
+}
+
+void ChangeSet::Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	this->Add([meas, index, mode](opendnp3::IDatabase& db) { db.Update(meas, index, mode); });
+}
+
+void ChangeSet::Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	this->Add([meas, index, mode](opendnp3::IDatabase& db) { db.Update(meas, index, mode); });
+}
+
+void ChangeSet::Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	this->Add([meas, index, mode](opendnp3::IDatabase& db) { db.Update(meas, index, mode); });
+}
+
+void ChangeSet::Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	this->Add([meas, index, mode](opendnp3::IDatabase& db) { db.Update(meas, index, mode); });
+}
+
+void ChangeSet::Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	this->Add([meas, index, mode](opendnp3::IDatabase& db) { db.Update(meas, index, mode); });
+}
+
+void ChangeSet::Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	this->Add([meas, index, mode](opendnp3::IDatabase& db) { db.Update(meas, index, mode); });
+}
+
+void ChangeSet::Update(const opendnp3::TimeAndInterval& meas, uint16_t index)
+{
+	this->Add([meas, index](opendnp3::IDatabase& db) { db.Update(meas, index); });
+}
+
+void ChangeSet::Add(const update_func_t& fun)
 {
 	updates.push_back(fun);
 }
 
-void ChangeSet::ApplyAll(opendnp3::IDatabase& db)
+void ChangeSet::Apply(opendnp3::IDatabase& db)
 {
 	for (auto& update : updates)
 	{

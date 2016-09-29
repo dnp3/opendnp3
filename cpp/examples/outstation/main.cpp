@@ -22,7 +22,6 @@
 #include <asiodnp3/PrintingSOEHandler.h>
 #include <asiodnp3/PrintingChannelListener.h>
 #include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/MeasUpdate.h>
 
 #include <asiopal/UTCTimeSource.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -113,29 +112,37 @@ int main(int argc, char* argv[])
 			{
 			case('c') :
 				{
-					MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
-					tx.Update(Counter(count), 0);
+					ChangeSet changes;
+					changes.Update(Counter(count), 0);
+					outstation->Apply(changes);
+					
 					++count;
 					break;
 				}
 			case('a') :
 				{
-					MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
-					tx.Update(Analog(value), 0);
+					ChangeSet changes;
+					changes.Update(Analog(value), 0);
+					outstation->Apply(changes);
+					
 					value += 1;
 					break;
 				}
 			case('b') :
 				{
-					MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
-					tx.Update(Binary(binary), 0);
+					ChangeSet changes;
+					changes.Update(Binary(binary), 0);
+					outstation->Apply(changes);
+					
 					binary = !binary;
 					break;
 				}
 			case('d') :
 				{
-					MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
-					tx.Update(DoubleBitBinary(dbit), 0);
+					ChangeSet changes;
+					changes.Update(DoubleBitBinary(dbit), 0);
+					outstation->Apply(changes);
+
 					dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
 					break;
 				}

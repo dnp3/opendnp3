@@ -22,7 +22,7 @@
 #include <asiodnp3/PrintingSOEHandler.h>
 #include <asiodnp3/PrintingChannelListener.h>
 #include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/MeasUpdate.h>
+#include <asiodnp3/ChangeSet.h>
 
 #include <asiopal/UTCTimeSource.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -138,35 +138,35 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
-		std::cin >> input;
+		std::cin >> input;		
 
-		MeasUpdate tx(outstation, UTCTimeSource::Instance().Now());
+		ChangeSet changes;
 
 		for (char& c : input)
-		{
+		{			
 			switch (c)
 			{
 			case('c') :
-				{
-					tx.Update(Counter(count), 0);
+				{					
+					changes.Update(Counter(count), 0);
 					++count;
 					break;
 				}
 			case('a') :
-				{
-					tx.Update(Analog(value), 0);
+				{					
+					changes.Update(Analog(value), 0);
 					value += 1;
 					break;
 				}
 			case('b') :
-				{
-					tx.Update(Binary(binary), 0);
+				{					
+					changes.Update(Binary(binary), 0);
 					binary = !binary;
 					break;
 				}
 			case('d') :
 				{
-					tx.Update(DoubleBitBinary(dbit), 0);
+					changes.Update(DoubleBitBinary(dbit), 0);
 					dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
 					break;
 				}
@@ -181,6 +181,7 @@ int main(int argc, char* argv[])
 			}
 		}
 
+		if (!changes.IsEmpty()) {}
 	}
 
 	return 0;

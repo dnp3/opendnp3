@@ -27,7 +27,6 @@
 #include <asiodnp3/DefaultMasterApplication.h>
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/MeasUpdate.h>
 
 #include <thread>
 #include <mutex>
@@ -165,20 +164,22 @@ private:
 		// send some random fraction of what's allowed to be sent
 		// this makes the test less deterministic and more realistic
 		std::uniform_int_distribution<size_t> dis(1, TX_MAX);
-		const auto TX_NUM = dis(m_gen);
+		const auto TX_NUM = dis(m_gen);		
 
-		MeasUpdate tx(outstation);
+		ChangeSet changes;
 
 		for (uint32_t i = 0; i < TX_NUM; ++i)
 		{
 			Analog a(static_cast<double>(m_tx_sequence));
 			const uint16_t index = m_tx_sequence % NUM_VALUES;
-			tx.Update(a, index);
+			changes.Update(a, index);
 
 			//std::cout << "transmitting: (" << index << ") - " << a.value << std::endl;
 
 			++m_tx_sequence;
 		}
+
+		outstation->Apply(changes);
 
 		m_num_outstanding += TX_NUM;
 		return TX_NUM;

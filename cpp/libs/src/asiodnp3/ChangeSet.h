@@ -36,17 +36,33 @@ class ChangeSet : private openpal::Uncopyable
 
 public:
 
-	typedef std::function<void(opendnp3::IDatabase&)> UpdateFun;
+	ChangeSet() {}
 
-	void Add(const UpdateFun& fun);
+	ChangeSet(ChangeSet&& other) : updates(std::move(other.updates))
+	{
+	
+	}
 
-	void ApplyAll(opendnp3::IDatabase&);
+	void Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	void Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	void Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	void Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	void Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	void Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	void Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	void Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
+
+	void Apply(opendnp3::IDatabase&);
 
 	bool IsEmpty() const;
 
 private:
 
-	std::vector<UpdateFun> updates;
+	typedef std::function<void(opendnp3::IDatabase&)> update_func_t;
+
+	void Add(const update_func_t& fun);
+
+	std::vector<update_func_t> updates;
 };
 
 }

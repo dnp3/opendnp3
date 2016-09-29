@@ -37,7 +37,7 @@
 #include "asiodnp3/OutstationStackConfig.h"
 
 namespace asiodnp3
-{
+{	
 
 /// templated base class so that things can be shared between vanilla and SA interfaces
 template <class Interface>
@@ -116,21 +116,19 @@ public:
 		return stack.link;
 	}
 
-private:
-
-	virtual opendnp3::IDatabase& GetDatabase() override final
+	virtual void Apply(ChangeSet& changes) override final
 	{
-		return this->pContext->GetDatabase();
-	}
+		// C++11 lambdas don't support move semantics
+		auto moveable_changes = std::make_shared<ChangeSet>(std::move(changes));
 
-	virtual openpal::IExecutor& GetExecutor() override final
-	{
-		return pLifecycle->GetExecutor();
-	}
+		auto task = [this, moveable_changes]() {
 
-	virtual void CheckForUpdates() override final
-	{
-		this->pContext->CheckForTaskStart();
+			moveable_changes->Apply(this->pContext->GetDatabase());
+			this->pContext->CheckForTaskStart(); // force the outstation to check for updates
+
+		};
+
+		this->pLifecycle->GetExecutor().PostLambda(task);
 	}
 
 protected:
