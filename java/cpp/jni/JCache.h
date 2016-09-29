@@ -38,9 +38,7 @@
 #include "JNIChannelState.h"
 #include "JNIClassAssignment.h"
 #include "JNIClassField.h"
-#include "JNICommandBuilderImpl.h"
 #include "JNICommandHandler.h"
-#include "JNICommandHeaders.h"
 #include "JNICommandPointResult.h"
 #include "JNICommandPointState.h"
 #include "JNICommandProcessor.h"
@@ -104,9 +102,7 @@ namespace jni
         static cache::ChannelState ChannelState;
         static cache::ClassAssignment ClassAssignment;
         static cache::ClassField ClassField;
-        static cache::CommandBuilderImpl CommandBuilderImpl;
         static cache::CommandHandler CommandHandler;
-        static cache::CommandHeaders CommandHeaders;
         static cache::CommandPointResult CommandPointResult;
         static cache::CommandPointState CommandPointState;
         static cache::CommandProcessor CommandProcessor;

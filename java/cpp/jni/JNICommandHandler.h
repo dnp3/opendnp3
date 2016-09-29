@@ -41,16 +41,16 @@ namespace jni
             // methods
             void start(JNIEnv* env, jobject instance);
             void end(JNIEnv* env, jobject instance);
-            jobject operateAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            jobject selectAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject selectCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject operateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
             jobject operateAOI32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
+            jobject operateAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
             jobject selectAOI32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
             jobject selectAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject operateAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            jobject operateAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
             jobject selectAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            jobject selectAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            jobject selectCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            jobject operateAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
+            jobject operateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
+            jobject operateAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
 
             private:
 
@@ -59,16 +59,16 @@ namespace jni
             // method ids
             jmethodID startMethod = nullptr;
             jmethodID endMethod = nullptr;
-            jmethodID operateAOF32Method = nullptr;
-            jmethodID selectAOF32Method = nullptr;
-            jmethodID selectCROBMethod = nullptr;
-            jmethodID operateCROBMethod = nullptr;
             jmethodID operateAOI32Method = nullptr;
+            jmethodID operateAOF32Method = nullptr;
             jmethodID selectAOI32Method = nullptr;
             jmethodID selectAOI16Method = nullptr;
-            jmethodID operateAOD64Method = nullptr;
-            jmethodID operateAOI16Method = nullptr;
             jmethodID selectAOD64Method = nullptr;
+            jmethodID selectAOF32Method = nullptr;
+            jmethodID selectCROBMethod = nullptr;
+            jmethodID operateAOD64Method = nullptr;
+            jmethodID operateCROBMethod = nullptr;
+            jmethodID operateAOI16Method = nullptr;
         };
     }
 }

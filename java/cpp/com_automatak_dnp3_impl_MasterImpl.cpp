@@ -32,11 +32,9 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native
 }
 
 template <class Fun>
-void operate(JNIEnv* env, jlong native, jobject headers, jobject future, const Fun& operate)
+void operate(JNIEnv* env, jlong native, jlong nativeCommandSet, jobject future, const Fun& operate)
 {
-	auto builder = jni::JCache::CommandBuilderImpl.init0(env);
-	jni::JCache::CommandHeaders.build(env, headers, builder); // send the commands to the builder
-	auto& set = *(opendnp3::CommandSet*) jni::JCache::CommandBuilderImpl.getnativePointer(env, builder);
+	auto& set = *(opendnp3::CommandSet*) nativeCommandSet;
 
 	auto sharedf = std::make_shared<GlobalRef>(future);
 	auto callback = [sharedf](const opendnp3::ICommandTaskResult& result)
@@ -64,26 +62,26 @@ void operate(JNIEnv* env, jlong native, jobject headers, jobject future, const F
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_select_1and_1operate_1native
-(JNIEnv* env, jobject, jlong native, jobject headers, jobject future)
+(JNIEnv* env, jobject, jlong native, jlong nativeCommandSet, jobject future)
 {
 	auto sbo = [](asiodnp3::IMaster& master, opendnp3::CommandSet& commandset, const opendnp3::CommandCallbackT& callback) -> void 
 	{
 		master.SelectAndOperate(std::move(commandset), callback);
 	};
 
-	operate(env, native, headers, future, sbo);
+	operate(env, native, nativeCommandSet, future, sbo);
 }
 
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_direct_1operate_1native
-(JNIEnv*  env, jobject, jlong native, jobject headers, jobject future)
+(JNIEnv*  env, jobject, jlong native, jlong nativeCommandSet, jobject future)
 {
 	auto directOp = [](asiodnp3::IMaster& master, opendnp3::CommandSet& commandset, const opendnp3::CommandCallbackT& callback) -> void
 	{
 		master.DirectOperate(std::move(commandset), callback);
 	};
 
-	operate(env, native, headers, future, directOp);
+	operate(env, native, nativeCommandSet, future, directOp);
 }
 
 bool ConvertJHeader(JNIEnv* env, jobject jheader, opendnp3::Header& header)

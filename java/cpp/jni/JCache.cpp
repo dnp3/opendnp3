@@ -37,9 +37,7 @@ namespace jni
     cache::ChannelState JCache::ChannelState;
     cache::ClassAssignment JCache::ClassAssignment;
     cache::ClassField JCache::ClassField;
-    cache::CommandBuilderImpl JCache::CommandBuilderImpl;
     cache::CommandHandler JCache::CommandHandler;
-    cache::CommandHeaders JCache::CommandHeaders;
     cache::CommandPointResult JCache::CommandPointResult;
     cache::CommandPointState JCache::CommandPointState;
     cache::CommandProcessor JCache::CommandProcessor;
@@ -115,11 +113,7 @@ namespace jni
         if(!success) return false;
         success = ClassField.init(env);
         if(!success) return false;
-        success = CommandBuilderImpl.init(env);
-        if(!success) return false;
         success = CommandHandler.init(env);
-        if(!success) return false;
-        success = CommandHeaders.init(env);
         if(!success) return false;
         success = CommandPointResult.init(env);
         if(!success) return false;
@@ -221,9 +215,7 @@ namespace jni
         ChannelState.cleanup(env);
         ClassAssignment.cleanup(env);
         ClassField.cleanup(env);
-        CommandBuilderImpl.cleanup(env);
         CommandHandler.cleanup(env);
-        CommandHeaders.cleanup(env);
         CommandPointResult.cleanup(env);
         CommandPointState.cleanup(env);
         CommandProcessor.cleanup(env);

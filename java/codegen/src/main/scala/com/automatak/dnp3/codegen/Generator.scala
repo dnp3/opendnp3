@@ -5,7 +5,6 @@ import java.util.concurrent.CompletableFuture
 
 import com.automatak.dnp3._
 import com.automatak.dnp3.enums._
-import com.automatak.dnp3.impl.CommandBuilderImpl
 
 object Generator {
 
@@ -75,8 +74,6 @@ object Generator {
     ClassConfig(classOf[TaskInfo], Set(Features.Constructors)),
     ClassConfig(classOf[ClassAssignment], Set(Features.Fields)),
     ClassConfig(classOf[Range], Set(Features.Fields, Features.Methods), MethodFilter.nameEquals("isDefined")),
-    ClassConfig(classOf[CommandBuilderImpl], Set(Features.Fields, Features.Constructors)),
-    ClassConfig(classOf[CommandHeaders], Set(Features.Methods)),
     ClassConfig(classOf[CommandTaskResult], Set(Features.Constructors)),
     ClassConfig(classOf[CommandPointResult], Set(Features.Constructors)),
     ClassConfig(classOf[CompletableFuture[_]], Set(Features.Methods), MethodFilter.nameEquals("complete")),

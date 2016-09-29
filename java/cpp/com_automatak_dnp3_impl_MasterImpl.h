@@ -34,18 +34,18 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native
 /*
  * Class:     com_automatak_dnp3_impl_MasterImpl
  * Method:    select_and_operate_native
- * Signature: (JLcom/automatak/dnp3/CommandHeaders;Ljava/util/concurrent/CompletableFuture;)V
+ * Signature: (JJLjava/util/concurrent/CompletableFuture;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_select_1and_1operate_1native
-  (JNIEnv *, jobject, jlong, jobject, jobject);
+  (JNIEnv *, jobject, jlong, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_MasterImpl
  * Method:    direct_operate_native
- * Signature: (JLcom/automatak/dnp3/CommandHeaders;Ljava/util/concurrent/CompletableFuture;)V
+ * Signature: (JJLjava/util/concurrent/CompletableFuture;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_direct_1operate_1native
-  (JNIEnv *, jobject, jlong, jobject, jobject);
+  (JNIEnv *, jobject, jlong, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_MasterImpl

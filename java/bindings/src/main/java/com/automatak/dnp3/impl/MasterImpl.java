@@ -86,7 +86,9 @@ class MasterImpl implements Master {
     public CompletableFuture<CommandTaskResult> selectAndOperate(CommandHeaders headers)
     {
         CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        this.select_and_operate_native(nativePointer, headers, result);
+        CommandBuilderImpl builder = new CommandBuilderImpl();
+        headers.build(builder);
+        this.select_and_operate_native(nativePointer, builder.nativePointer, result);
         return result;
     }
 
@@ -94,7 +96,9 @@ class MasterImpl implements Master {
     public CompletableFuture<CommandTaskResult> directOperate(CommandHeaders headers)
     {
         CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        this.direct_operate_native(nativePointer, headers, result);
+        CommandBuilderImpl builder = new CommandBuilderImpl();
+        headers.build(builder);
+        this.direct_operate_native(nativePointer, builder.nativePointer, result);
         return result;
     }
 
@@ -162,8 +166,8 @@ class MasterImpl implements Master {
     private native void disable_native(long nativePointer);
     private native void shutdown_native(long nativePointer);
 
-    private native void select_and_operate_native(long nativePointer, CommandHeaders headers, CompletableFuture<CommandTaskResult> future);
-    private native void direct_operate_native(long nativePointer, CommandHeaders headers, CompletableFuture<CommandTaskResult> future);
+    private native void select_and_operate_native(long nativePointer, long nativeCommandSetPointer, CompletableFuture<CommandTaskResult> future);
+    private native void direct_operate_native(long nativePointer, long nativeCommandSetPointer, CompletableFuture<CommandTaskResult> future);
 
     private native void scan_native(long nativePointer, Iterable<Header> headers);
     private native void add_periodic_scan_native(long nativePointer, Duration period, Iterable<Header> headers);
