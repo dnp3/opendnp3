@@ -76,6 +76,8 @@ public class OutstationDemo {
                 config
         );
 
+        outstation.enable();
+
         // all this stuff just to read a line of text in Java. Oh the humanity.
         String line = "";
         InputStreamReader converter = new InputStreamReader(System.in);
