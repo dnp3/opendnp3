@@ -56,6 +56,7 @@ object Generator {
   // all the classes to generate C++ info on
   def custom : List[ClassConfig] = List(
     ClassConfig(classOf[MasterStackConfig], Set(Features.Fields)),
+    ClassConfig(classOf[OutstationStackConfig], Set(Features.Fields)),
     ClassConfig(classOf[MasterConfig], Set(Features.Fields)),
     ClassConfig(classOf[LinkLayerConfig], Set(Features.Fields)),
     ClassConfig(classOf[LogEntry], Set(Features.Constructors)),

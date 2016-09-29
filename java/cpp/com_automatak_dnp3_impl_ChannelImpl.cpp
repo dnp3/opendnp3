@@ -39,14 +39,16 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1outstation
-(JNIEnv* env, jobject, jlong native, jstring id, jobject commandHandler, jobject application, jobject jconfig)
+(JNIEnv* env, jobject, jlong native, jstring jid, jobject commandHandler, jobject application, jobject jconfig)
 {
 	const auto channel = (IChannel*) native;
 
+	auto config = ConfigReader::ConvertOutstationStackConfig(env, jconfig);
 	auto commandHandlerAdapter = std::make_shared<CommandHandlerAdapter>(application);
 	auto applicationAdapter = std::make_shared<OutstationApplicationAdapter>(application);
 
+	CString id(env, jid);
 
-	return 0;
+	return (jlong)channel->AddOutstation(id, commandHandlerAdapter, applicationAdapter, config);
 }
 

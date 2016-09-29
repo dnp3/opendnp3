@@ -70,6 +70,7 @@
 #include "JNIMasterTaskType.h"
 #include "JNIOperateType.h"
 #include "JNIOutstationApplication.h"
+#include "JNIOutstationStackConfig.h"
 #include "JNIPointClass.h"
 #include "JNIQualifierCode.h"
 #include "JNIRange.h"
@@ -135,6 +136,7 @@ namespace jni
         static cache::MasterTaskType MasterTaskType;
         static cache::OperateType OperateType;
         static cache::OutstationApplication OutstationApplication;
+        static cache::OutstationStackConfig OutstationStackConfig;
         static cache::PointClass PointClass;
         static cache::QualifierCode QualifierCode;
         static cache::Range Range;

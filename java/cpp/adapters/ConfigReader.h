@@ -23,14 +23,14 @@
 #include <string>
 
 #include "asiodnp3/MasterStackConfig.h"
+#include "asiodnp3/OutstationStackConfig.h"
 
 class ConfigReader
 {
 public:
 
 	static asiodnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* env, jobject jconfig);
-
-	//static opendnp3::SlaveStackConfig ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jcfg);
+	static asiodnp3::OutstationStackConfig ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig);
 
 private:
 
@@ -38,15 +38,11 @@ private:
 	static opendnp3::MasterParams ConvertMasterConfig(JNIEnv* apEnv, jobject jcfg);
 
 	/*
-	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* apEnv, jobject jcfg);
-	static opendnp3::DeviceTemplate ConvertDatabaseConfig(JNIEnv* apEnv, jobject jcfg);
+	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* env, jobject jcfg);
+	static opendnp3::DeviceTemplate ConvertDatabaseConfig(JNIEnv* env, jobject jcfg);
 	*/
 
 	static opendnp3::ClassField ConvertClassField(JNIEnv* env, jobject jclassmask);
-
-	static jint GetEnumId(JNIEnv* apEnv, jobject jenum);
-
-
 };
 
 #endif

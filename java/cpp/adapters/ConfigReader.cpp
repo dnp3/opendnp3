@@ -75,6 +75,17 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 	return cfg;
 }
 
+OutstationStackConfig ConfigReader::ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig)
+{
+	OutstationStackConfig config(DatabaseSizes::AllTypes(1));
+	
+	//TODO!
+
+	config.link = ConvertLinkConfig(env, jni::JCache::OutstationStackConfig.getlinkConfig(env, jconfig));
+
+	return config;
+}
+
 /*
 SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* env, jobject jCfg)
 {

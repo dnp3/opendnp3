@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIDOUBLEBIT_H
-#define OPENDNP3JAVA_JNIDOUBLEBIT_H
+#ifndef OPENDNP3JAVA_JNIOUTSTATIONSTACKCONFIG_H
+#define OPENDNP3JAVA_JNIOUTSTATIONSTACKCONFIG_H
 
 #include <jni.h>
 
@@ -29,7 +29,7 @@ namespace jni
 
     namespace cache
     {
-        class DoubleBit
+        class OutstationStackConfig
         {
             friend struct JCache;
 
@@ -38,17 +38,21 @@ namespace jni
 
             public:
 
-            // methods
-            jobject fromType(JNIEnv* env, jint arg0);
-            jint toType(JNIEnv* env, jobject instance);
+            // field getter methods
+            jobject getlinkConfig(JNIEnv* env, jobject instance);
+            jobject getoutstationConfig(JNIEnv* env, jobject instance);
+            jobject getdatabaseConfig(JNIEnv* env, jobject instance);
+            jobject geteventBufferConfig(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
-            // method ids
-            jmethodID fromTypeMethod = nullptr;
-            jmethodID toTypeMethod = nullptr;
+            // field ids
+            jfieldID linkConfigField = nullptr;
+            jfieldID outstationConfigField = nullptr;
+            jfieldID databaseConfigField = nullptr;
+            jfieldID eventBufferConfigField = nullptr;
         };
     }
 }

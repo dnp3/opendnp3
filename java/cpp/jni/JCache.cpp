@@ -69,6 +69,7 @@ namespace jni
     cache::MasterTaskType JCache::MasterTaskType;
     cache::OperateType JCache::OperateType;
     cache::OutstationApplication JCache::OutstationApplication;
+    cache::OutstationStackConfig JCache::OutstationStackConfig;
     cache::PointClass JCache::PointClass;
     cache::QualifierCode JCache::QualifierCode;
     cache::Range JCache::Range;
@@ -178,6 +179,8 @@ namespace jni
         if(!success) return false;
         success = OutstationApplication.init(env);
         if(!success) return false;
+        success = OutstationStackConfig.init(env);
+        if(!success) return false;
         success = PointClass.init(env);
         if(!success) return false;
         success = QualifierCode.init(env);
@@ -250,6 +253,7 @@ namespace jni
         MasterTaskType.cleanup(env);
         OperateType.cleanup(env);
         OutstationApplication.cleanup(env);
+        OutstationStackConfig.cleanup(env);
         PointClass.cleanup(env);
         QualifierCode.cleanup(env);
         Range.cleanup(env);
