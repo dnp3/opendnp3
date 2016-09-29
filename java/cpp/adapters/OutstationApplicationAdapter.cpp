@@ -57,9 +57,9 @@ ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 	const auto env = JNI::GetEnv();
 	const auto jiin = JCache::OutstationApplication.getApplicationIIN(env, proxy);
 	ApplicationIIN iin;
-	iin.configCorrupt = JCache::ApplicationIIN.getconfigCorrupt(env, jiin);
-	iin.deviceTrouble = JCache::ApplicationIIN.getdeviceTrouble(env, jiin);
-	iin.localControl = JCache::ApplicationIIN.getlocalControl(env, jiin);
-	iin.needTime = JCache::ApplicationIIN.getneedTime(env, jiin);
+	iin.configCorrupt = !!JCache::ApplicationIIN.getconfigCorrupt(env, jiin);
+	iin.deviceTrouble = !!JCache::ApplicationIIN.getdeviceTrouble(env, jiin);
+	iin.localControl = !!JCache::ApplicationIIN.getlocalControl(env, jiin);
+	iin.needTime = !!JCache::ApplicationIIN.getneedTime(env, jiin);
 	return iin;
 }

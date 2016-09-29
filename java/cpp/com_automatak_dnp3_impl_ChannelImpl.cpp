@@ -6,6 +6,8 @@
 #include "adapters/ConfigReader.h"
 #include "adapters/SOEHandlerAdapter.h"
 #include "adapters/MasterApplicationAdapter.h"
+#include "adapters/OutstationApplicationAdapter.h"
+#include "adapters/CommandHandlerAdapter.h"
 
 #include "adapters/CString.h"
 
@@ -39,6 +41,12 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1outstation
 (JNIEnv* env, jobject, jlong native, jstring id, jobject commandHandler, jobject application, jobject jconfig)
 {
+	const auto channel = (IChannel*) native;
+
+	auto commandHandlerAdapter = std::make_shared<CommandHandlerAdapter>(application);
+	auto applicationAdapter = std::make_shared<OutstationApplicationAdapter>(application);
+
+
 	return 0;
 }
 
