@@ -279,9 +279,9 @@ namespace Automatak
 				s.deviceName = ConvertString(settings->port);
 				s.baud = settings->baud;
 				s.dataBits = settings->dataBits;
-				s.stopBits = (asiopal::StopBits) settings->stopBits;
-				s.parity = (asiopal::ParityType) settings->parity;
-				s.flowType = (asiopal::FlowType) settings->flowControl;
+				s.stopBits = (opendnp3::StopBits) settings->stopBits;
+				s.parity = (opendnp3::Parity) settings->parity;
+				s.flowType = (opendnp3::FlowControl) settings->flowControl;
 				return s;
 			}
 

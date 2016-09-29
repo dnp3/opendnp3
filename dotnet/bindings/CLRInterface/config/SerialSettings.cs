@@ -28,35 +28,6 @@ using System.Text;
 namespace Automatak.DNP3.Interface
 {
     /// <summary>
-    /// Serial port parity enumeration
-    /// </summary>
-    public enum Parity {
-	    NONE,
-	    EVEN,
-	    ODD
-    }
-
-    /// <summary>
-    /// Serial port flow control enumeration
-    /// </summary>
-    public enum FlowControl {
-	    NONE,
-	    HARDWARE,
-	    XONXOFF
-    }
-    
-    /// <summary>
-    /// Serial port stop bits enumeration
-    /// </summary>
-    public enum StopBits
-    {
-	    NONE,
-	    ONE,
-	    ONE_POINT_FIVE,
-	    TWO
-    };
-
-    /// <summary>
     /// Settings class for  serial port
     /// </summary>
     public class SerialSettings {

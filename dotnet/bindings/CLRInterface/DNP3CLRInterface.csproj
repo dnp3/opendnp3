@@ -90,6 +90,7 @@
     <Compile Include="gen\EventDoubleBinaryVariation.cs" />
     <Compile Include="gen\EventFrozenCounterVariation.cs" />
     <Compile Include="gen\EventMode.cs" />
+    <Compile Include="gen\FlowControl.cs" />
     <Compile Include="gen\FunctionCode.cs" />
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="gen\LinkStatus.cs" />
     <Compile Include="gen\MasterTaskType.cs" />
     <Compile Include="gen\OperateType.cs" />
+    <Compile Include="gen\Parity.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\QualifierCode.cs" />
     <Compile Include="gen\RestartMode.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="gen\StaticFrozenCounterVariation.cs" />
     <Compile Include="gen\StaticTimeAndIntervalVariation.cs" />
     <Compile Include="gen\StaticTypeBitmask.cs" />
+    <Compile Include="gen\StopBits.cs" />
     <Compile Include="gen\TaskCompletion.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
