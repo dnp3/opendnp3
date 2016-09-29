@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 Automatak, LLC
+ * Copyright 2013-2016 Automatak, LLC
  *
  * Licensed to Automatak, LLC (www.automatak.com) under one or more
  * contributor license agreements. See the NOTICE file distributed with this
@@ -16,7 +16,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 /**
  * A package of mock callback implementations.
  *
