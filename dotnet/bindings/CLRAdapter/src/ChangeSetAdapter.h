@@ -2,7 +2,6 @@
 #define __CHANGESET_ADAPTER_H_
 
 #include <asiodnp3/IOutstation.h>
-#include <asiodnp3/MeasUpdate.h>
 
 #include <vcclr.h>
 
@@ -18,7 +17,7 @@ namespace Automatak
 			{
 			public:
 
-				ChangeSetAdapter(asiodnp3::IOutstation& proxy);
+				ChangeSetAdapter();
 
 				~ChangeSetAdapter();
 				
@@ -31,12 +30,11 @@ namespace Automatak
 				virtual void Update(AnalogOutputStatus^ update, System::UInt16 index, EventMode mode);
 				virtual void Update(TimeAndInterval^ update, System::UInt16 index);							
 
-				void Apply();
+				void Apply(asiodnp3::IOutstation& proxy);
 								
 			private:
-
-				asiodnp3::IOutstation* pProxy;
-				asiodnp3::MeasUpdate* pUpdate;
+				
+				asiodnp3::ChangeSet* changes;
 			};
 			
 			struct FuncConverter

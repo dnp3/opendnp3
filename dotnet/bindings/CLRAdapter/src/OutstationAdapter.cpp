@@ -22,9 +22,9 @@ namespace Automatak
 
 			void OutstationAdapter::Load(IChangeSet^ changes)
 			{
-				auto adapter = gcnew ChangeSetAdapter(*pOutstation);
+				auto adapter = gcnew ChangeSetAdapter();
 				changes->Apply(adapter);
-				adapter->Apply();
+				adapter->Apply(*pOutstation);
 			}			
 
 			void OutstationAdapter::SetRestartIIN()

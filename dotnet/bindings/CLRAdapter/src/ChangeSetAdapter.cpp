@@ -10,63 +10,57 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
-			ChangeSetAdapter::ChangeSetAdapter(asiodnp3::IOutstation& proxy) : 
-				pProxy(&proxy),
-				pUpdate(new asiodnp3::MeasUpdate(&proxy))
+			ChangeSetAdapter::ChangeSetAdapter() : changes(new asiodnp3::ChangeSet())
 			{}
 
 			ChangeSetAdapter::~ChangeSetAdapter()
 			{
-				delete pUpdate;
+				delete changes;
 			}
 
-			void ChangeSetAdapter::Apply()
+			void ChangeSetAdapter::Apply(asiodnp3::IOutstation& proxy)
 			{
-				if (pUpdate)
-				{
-					delete pUpdate;
-					pUpdate = nullptr;
-				}
+				proxy.Apply(*changes);				
 			}
 
 			void ChangeSetAdapter::Update(Binary^ update, System::UInt16 index, EventMode mode)
 			{
-				pUpdate->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
+				changes->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
 			}
 			
 			void ChangeSetAdapter::Update(DoubleBitBinary^ update, System::UInt16 index, EventMode mode)
 			{
-				pUpdate->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
+				changes->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
 			}
 
 			void ChangeSetAdapter::Update(Analog^ update, System::UInt16 index, EventMode mode)
 			{
-				pUpdate->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
+				changes->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
 			}
 
 			void ChangeSetAdapter::Update(Counter^ update, System::UInt16 index, EventMode mode)
 			{
-				pUpdate->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
+				changes->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
 			}
 
 			void ChangeSetAdapter::Update(FrozenCounter^ update, System::UInt16 index, EventMode mode)
 			{
-				pUpdate->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
+				changes->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
 			}
 			
 			void ChangeSetAdapter::Update(BinaryOutputStatus^ update, System::UInt16 index, EventMode mode)
 			{
-				pUpdate->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
+				changes->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
 			}
 
 			void ChangeSetAdapter::Update(AnalogOutputStatus^ update, System::UInt16 index, EventMode mode)
 			{
-				pUpdate->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
+				changes->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
 			}
 
 			void ChangeSetAdapter::Update(TimeAndInterval^ update, System::UInt16 index)
 			{
-				pUpdate->Update(Conversions::ConvertMeas(update), index);
+				changes->Update(Conversions::ConvertMeas(update), index);
 			}			
 		}
 	}
