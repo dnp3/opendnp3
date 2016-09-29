@@ -1,15 +1,15 @@
 /**
  * Copyright 2013 Automatak, LLC
- *
+ * <p>
  * Licensed to Automatak, LLC (www.automatak.com) under one or more
  * contributor license agreements. See the NOTICE file distributed with this
  * work for additional information regarding copyright ownership. Automatak, LLC
  * licenses this file to you under the Apache License Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain
  * a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0.html
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -35,22 +35,19 @@ public class DatabaseConfig {
     public final List<BinaryOutputStatusConfig> boStatus;
     public final List<AnalogOutputStatusConfig> aoStatus;
 
-    private static <T> List<T> initialize(int num, Function<Integer, T> factory)
-    {
+    private static <T> List<T> initialize(int num, Function<Integer, T> factory) {
         ArrayList<T> list = new ArrayList<>(num);
-        for(int i=0; i< num; ++i) list.add(factory.apply(i));
+        for (int i = 0; i < num; ++i) list.add(factory.apply(i));
         return list;
     }
 
-    public static DatabaseConfig allValues(int num)
-    {
-        return new DatabaseConfig(0,0,0,0,0,0,0);
+    public static DatabaseConfig allValues(int num) {
+        return new DatabaseConfig(num, num, num, num, num, num, num);
     }
 
-    public DatabaseConfig(int numBinary, int numDoubleBinary, int numAnalog, int numCounter, int numFrozenCounter, int numBOStatus, int numAOStatus)
-    {
+    public DatabaseConfig(int numBinary, int numDoubleBinary, int numAnalog, int numCounter, int numFrozenCounter, int numBOStatus, int numAOStatus) {
         this.binary = initialize(numBinary, BinaryConfig::new);
-        this.doubleBinary= initialize(numDoubleBinary, DoubleBinaryConfig::new);
+        this.doubleBinary = initialize(numDoubleBinary, DoubleBinaryConfig::new);
         this.analog = initialize(numAnalog, AnalogConfig::new);
         this.counter = initialize(numCounter, CounterConfig::new);
         this.frozenCounter = initialize(numFrozenCounter, FrozenCounterConfig::new);

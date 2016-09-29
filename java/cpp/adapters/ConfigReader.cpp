@@ -19,6 +19,7 @@
 #include "ConfigReader.h"
 
 #include "../jni/JCache.h"
+#include "JNI.h"
 
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 
@@ -94,13 +95,13 @@ OutstationStackConfig ConfigReader::ConvertOutstationStackConfig(JNIEnv* env, jo
 	        static_cast<uint16_t>(list.size(env, db.getaoStatus(env, jdb))),
 	        0
 	    )
-	);
+	);	
 
 	config.link = ConvertLinkConfig(env, cfg.getlinkConfig(env, jconfig));
 	config.outstation.eventBufferConfig = ConvertEventBufferConfig(env, cfg.geteventBufferConfig(env, jconfig));
 	config.outstation.params = ConvertOutstationConfig(env, cfg.getoutstationConfig(env, jconfig));
 
-	ConvertDatabase(env, cfg.getdatabaseConfig(env, jconfig), config.dbConfig);
+	ConvertDatabase(env, cfg.getdatabaseConfig(env, jconfig), config.dbConfig);	
 
 	return config;
 }
@@ -149,7 +150,16 @@ openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jdurati
 
 void ConfigReader::ConvertDatabase(JNIEnv* env, jobject jdb, asiodnp3::DatabaseConfig& cfg)
 {
-	auto& db = jni::JCache::DatabaseConfig;
+	auto& db = jni::JCache::DatabaseConfig;	
+
+	JNI::IterateWithIndex(env, db.getbinary(env, jdb), [&](jobject meas, int index) { cfg.binary[index] = ConvertBinaryConfig(env, meas); });
+	JNI::IterateWithIndex(env, db.getdoubleBinary(env, jdb), [&](jobject meas, int index) { cfg.doubleBinary[index] = ConvertDoubleBinaryConfig(env, meas); });
+	JNI::IterateWithIndex(env, db.getanalog(env, jdb), [&](jobject meas, int index) { cfg.analog[index] = ConvertAnalogConfig(env, meas); });
+	JNI::IterateWithIndex(env, db.getcounter(env, jdb), [&](jobject meas, int index) { cfg.counter[index] = ConvertCounterConfig(env, meas); });
+	JNI::IterateWithIndex(env, db.getfrozenCounter(env, jdb), [&](jobject meas, int index) { cfg.frozenCounter[index] = ConvertFrozenCounterConfig(env, meas); });
+	JNI::IterateWithIndex(env, db.getboStatus(env, jdb), [&](jobject meas, int index) { cfg.boStatus[index] = ConvertBOStatusConfig(env, meas); });
+	JNI::IterateWithIndex(env, db.getaoStatus(env, jdb), [&](jobject meas, int index) { cfg.aoStatus[index] = ConvertAOStatusConfig(env, meas); });
+
 }
 
 

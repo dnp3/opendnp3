@@ -45,6 +45,8 @@ public:
 
 	static void Iterate(JNIEnv* env, jobject iterable, const std::function<void(jobject)>& callback);
 
+	static void IterateWithIndex(JNIEnv* env, jobject iterable, const std::function<void(jobject, int)>& callback);
+
 
 private:
 

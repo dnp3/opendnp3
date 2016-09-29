@@ -83,5 +83,16 @@ void JNI::Iterate(JNIEnv* env, jobject iterable, const std::function<void(jobjec
 	{
 		callback(jni::JCache::Iterator.next(env, iterator));
 	}
+}
 
+void JNI::IterateWithIndex(JNIEnv* env, jobject iterable, const std::function<void(jobject, int)>& callback)
+{
+	const auto iterator = jni::JCache::Iterable.iterator(env, iterable);
+
+	int i = 0;
+	while (jni::JCache::Iterator.hasNext(env, iterator))
+	{
+		callback(jni::JCache::Iterator.next(env, iterator), i);
+		++i;
+	}
 }
