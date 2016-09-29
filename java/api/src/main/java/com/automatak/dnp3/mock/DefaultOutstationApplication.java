@@ -31,7 +31,7 @@ public class DefaultOutstationApplication implements OutstationApplication
     public void recordClassAssignment(AssignClassType type, PointClass clazz, int start, int stop) {}
 
     @Override
-    public ApplicationIIN getApplicationIIN() { return ApplicationIIN.none; }
+    public ApplicationIIN getApplicationIIN() { return ApplicationIIN.none(); }
 
     @Override
     public void onStateChange(LinkStatus value) {}

@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNICOMMANDSTATUS_H
-#define OPENDNP3JAVA_JNICOMMANDSTATUS_H
+#ifndef OPENDNP3JAVA_JNIAPPLICATIONIIN_H
+#define OPENDNP3JAVA_JNIAPPLICATIONIIN_H
 
 #include <jni.h>
 
@@ -29,7 +29,7 @@ namespace jni
 
     namespace cache
     {
-        class CommandStatus
+        class ApplicationIIN
         {
             friend struct JCache;
 
@@ -38,17 +38,21 @@ namespace jni
 
             public:
 
-            // methods
-            jint toType(JNIEnv* env, jobject instance);
-            jobject fromType(JNIEnv* env, jint arg0);
+            // field getter methods
+            jboolean getneedTime(JNIEnv* env, jobject instance);
+            jboolean getlocalControl(JNIEnv* env, jobject instance);
+            jboolean getdeviceTrouble(JNIEnv* env, jobject instance);
+            jboolean getconfigCorrupt(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
-            // method ids
-            jmethodID toTypeMethod = nullptr;
-            jmethodID fromTypeMethod = nullptr;
+            // field ids
+            jfieldID needTimeField = nullptr;
+            jfieldID localControlField = nullptr;
+            jfieldID deviceTroubleField = nullptr;
+            jfieldID configCorruptField = nullptr;
         };
     }
 }

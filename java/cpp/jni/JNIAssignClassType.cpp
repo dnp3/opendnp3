@@ -18,38 +18,38 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNIControlCode.h"
+#include "JNIAssignClassType.h"
 
 namespace jni
 {
     namespace cache
     {
-        bool ControlCode::init(JNIEnv* env)
+        bool AssignClassType::init(JNIEnv* env)
         {
-            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/ControlCode;");
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/AssignClassType;");
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
             this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
             if(!this->toTypeMethod) return false;
 
-            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/ControlCode;");
+            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/AssignClassType;");
             if(!this->fromTypeMethod) return false;
 
             return true;
         }
 
-        void ControlCode::cleanup(JNIEnv* env)
+        void AssignClassType::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jint ControlCode::toType(JNIEnv* env, jobject instance)
+        jint AssignClassType::toType(JNIEnv* env, jobject instance)
         {
             return env->CallIntMethod(instance, this->toTypeMethod);
         }
 
-        jobject ControlCode::fromType(JNIEnv* env, jint arg0)
+        jobject AssignClassType::fromType(JNIEnv* env, jint arg0)
         {
             return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
         }

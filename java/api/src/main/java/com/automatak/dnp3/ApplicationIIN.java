@@ -17,7 +17,9 @@ public class ApplicationIIN
         this.configCorrupt =  configCorrupt;
     }
 
-    public static ApplicationIIN none = new ApplicationIIN(false, false, false, false);
+    public static ApplicationIIN none(){
+        return new ApplicationIIN(false, false, false, false);
+    }
 
     public final boolean needTime;
     public final boolean localControl;

@@ -29,7 +29,9 @@
 #include "JNIAnalogOutputInt16.h"
 #include "JNIAnalogOutputInt32.h"
 #include "JNIAnalogOutputStatus.h"
+#include "JNIApplicationIIN.h"
 #include "JNIArrayList.h"
+#include "JNIAssignClassType.h"
 #include "JNIBinaryInput.h"
 #include "JNIBinaryOutputStatus.h"
 #include "JNIChannelListener.h"
@@ -67,6 +69,7 @@
 #include "JNIMasterStackConfig.h"
 #include "JNIMasterTaskType.h"
 #include "JNIOperateType.h"
+#include "JNIOutstationApplication.h"
 #include "JNIPointClass.h"
 #include "JNIQualifierCode.h"
 #include "JNIRange.h"
@@ -91,7 +94,9 @@ namespace jni
         static cache::AnalogOutputInt16 AnalogOutputInt16;
         static cache::AnalogOutputInt32 AnalogOutputInt32;
         static cache::AnalogOutputStatus AnalogOutputStatus;
+        static cache::ApplicationIIN ApplicationIIN;
         static cache::ArrayList ArrayList;
+        static cache::AssignClassType AssignClassType;
         static cache::BinaryInput BinaryInput;
         static cache::BinaryOutputStatus BinaryOutputStatus;
         static cache::ChannelListener ChannelListener;
@@ -129,6 +134,7 @@ namespace jni
         static cache::MasterStackConfig MasterStackConfig;
         static cache::MasterTaskType MasterTaskType;
         static cache::OperateType OperateType;
+        static cache::OutstationApplication OutstationApplication;
         static cache::PointClass PointClass;
         static cache::QualifierCode QualifierCode;
         static cache::Range Range;

@@ -28,7 +28,9 @@ namespace jni
     cache::AnalogOutputInt16 JCache::AnalogOutputInt16;
     cache::AnalogOutputInt32 JCache::AnalogOutputInt32;
     cache::AnalogOutputStatus JCache::AnalogOutputStatus;
+    cache::ApplicationIIN JCache::ApplicationIIN;
     cache::ArrayList JCache::ArrayList;
+    cache::AssignClassType JCache::AssignClassType;
     cache::BinaryInput JCache::BinaryInput;
     cache::BinaryOutputStatus JCache::BinaryOutputStatus;
     cache::ChannelListener JCache::ChannelListener;
@@ -66,6 +68,7 @@ namespace jni
     cache::MasterStackConfig JCache::MasterStackConfig;
     cache::MasterTaskType JCache::MasterTaskType;
     cache::OperateType JCache::OperateType;
+    cache::OutstationApplication JCache::OutstationApplication;
     cache::PointClass JCache::PointClass;
     cache::QualifierCode JCache::QualifierCode;
     cache::Range JCache::Range;
@@ -93,7 +96,11 @@ namespace jni
         if(!success) return false;
         success = AnalogOutputStatus.init(env);
         if(!success) return false;
+        success = ApplicationIIN.init(env);
+        if(!success) return false;
         success = ArrayList.init(env);
+        if(!success) return false;
+        success = AssignClassType.init(env);
         if(!success) return false;
         success = BinaryInput.init(env);
         if(!success) return false;
@@ -169,6 +176,8 @@ namespace jni
         if(!success) return false;
         success = OperateType.init(env);
         if(!success) return false;
+        success = OutstationApplication.init(env);
+        if(!success) return false;
         success = PointClass.init(env);
         if(!success) return false;
         success = QualifierCode.init(env);
@@ -200,7 +209,9 @@ namespace jni
         AnalogOutputInt16.cleanup(env);
         AnalogOutputInt32.cleanup(env);
         AnalogOutputStatus.cleanup(env);
+        ApplicationIIN.cleanup(env);
         ArrayList.cleanup(env);
+        AssignClassType.cleanup(env);
         BinaryInput.cleanup(env);
         BinaryOutputStatus.cleanup(env);
         ChannelListener.cleanup(env);
@@ -238,6 +249,7 @@ namespace jni
         MasterStackConfig.cleanup(env);
         MasterTaskType.cleanup(env);
         OperateType.cleanup(env);
+        OutstationApplication.cleanup(env);
         PointClass.cleanup(env);
         QualifierCode.cleanup(env);
         Range.cleanup(env);

@@ -27,7 +27,8 @@ object Generator {
     classOf[ControlCode],
     classOf[ChannelState],
     classOf[PointClass],
-    classOf[OperateType]
+    classOf[OperateType],
+    classOf[AssignClassType]
   ).map(e => ClassConfig(
     e,
     Set(Features.Methods),
@@ -38,6 +39,7 @@ object Generator {
     classOf[LogHandler],
     classOf[SOEHandler],
     classOf[MasterApplication],
+    classOf[OutstationApplication],
     classOf[CommandProcessor],
     classOf[Stack],
     classOf[ChannelListener],
@@ -82,7 +84,8 @@ object Generator {
     ClassConfig(classOf[AnalogOutputInt32], Set(Features.Fields, Features.Constructors)),
     ClassConfig(classOf[AnalogOutputFloat32], Set(Features.Fields, Features.Constructors)),
     ClassConfig(classOf[AnalogOutputDouble64], Set(Features.Fields, Features.Constructors)),
-    ClassConfig(classOf[Header], Set(Features.Fields))
+    ClassConfig(classOf[Header], Set(Features.Fields)),
+    ClassConfig(classOf[ApplicationIIN], Set(Features.Fields))
   )
 
   def classes = (enumerations ::: interfaces ::: javaTypes ::: custom).sortBy(_.clazz.getSimpleName)

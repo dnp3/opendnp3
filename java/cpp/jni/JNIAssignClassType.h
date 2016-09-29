@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNICOMMANDSTATUS_H
-#define OPENDNP3JAVA_JNICOMMANDSTATUS_H
+#ifndef OPENDNP3JAVA_JNIASSIGNCLASSTYPE_H
+#define OPENDNP3JAVA_JNIASSIGNCLASSTYPE_H
 
 #include <jni.h>
 
@@ -29,7 +29,7 @@ namespace jni
 
     namespace cache
     {
-        class CommandStatus
+        class AssignClassType
         {
             friend struct JCache;
 
