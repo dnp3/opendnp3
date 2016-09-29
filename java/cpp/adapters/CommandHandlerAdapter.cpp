@@ -25,7 +25,7 @@
 using namespace opendnp3;
 using namespace jni;
 
-void CommandHandlerAdapter::Start() 
+void CommandHandlerAdapter::Start()
 {
 	const auto env = JNI::GetEnv();
 	JCache::CommandHandler.start(env, proxy);
@@ -44,7 +44,7 @@ CommandStatus CommandHandlerAdapter::Select(const ControlRelayOutputBlock& comma
 	const auto jstatus = JCache::CommandHandler.selectCROB(env, proxy, jcommand, index);
 	return CommandStatusFromType(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
-	
+
 CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType)
 {
 	const auto env = JNI::GetEnv();
@@ -112,7 +112,7 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputDouble64& command,
 	const auto jstatus = JCache::CommandHandler.selectAOD64(env, proxy, jcommand, index);
 	return CommandStatusFromType(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
-	
+
 CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType)
 {
 	const auto env = JNI::GetEnv();
@@ -153,4 +153,4 @@ jobject CommandHandlerAdapter::Convert(JNIEnv* env, const AnalogOutputDouble64& 
 	const auto jcommandstatus = JCache::CommandStatus.fromType(env, CommandStatusToType(command.status));
 	return JCache::AnalogOutputDouble64.init2(env, command.value, jcommandstatus);
 }
-	
+

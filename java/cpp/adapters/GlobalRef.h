@@ -30,7 +30,7 @@
 class GlobalRef : private openpal::Uncopyable
 {
 	jobject reference;
-	
+
 public:
 
 	GlobalRef(jobject reference) : reference(JNI::CreateGlobalRef(reference))
@@ -45,13 +45,13 @@ public:
 	{
 		return reference;
 	}
-/*
-	operator jobject& ()
-	{
-		return reference;
-	}
-*/
-	
+	/*
+		operator jobject& ()
+		{
+			return reference;
+		}
+	*/
+
 };
 
 #endif

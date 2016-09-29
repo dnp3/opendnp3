@@ -229,11 +229,5 @@ add_custom_target(
 	format
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMAND astyle -R ./cpp/*.h ./cpp/*.cpp --options=./config/astyle.cfg --exclude=./cpp/libs/include/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/objects
+	COMMAND astyle -R ./java/cpp/adapters/*.h ./java/cpp/adapters/*.cpp --options=./config/astyle.cfg
 )
-
-
-#add_custom_target(
-#	generate_java_sources
-#	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#	COMMAND swig -I./cpp/libs/include -c++ -java -outdir ./java/src -package com.automatak.dnp3 ./java/java.i
-#)

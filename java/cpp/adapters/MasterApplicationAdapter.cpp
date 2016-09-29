@@ -21,7 +21,7 @@
 #include "../jni/JCache.h"
 
 using namespace opendnp3;
-	
+
 openpal::UTCTimestamp MasterApplicationAdapter::Now()
 {
 	const auto env = JNI::GetEnv();
@@ -48,7 +48,7 @@ void MasterApplicationAdapter::OnTaskComplete(const TaskInfo& info)
 {
 	const auto env = JNI::GetEnv();
 	const auto jtype = jni::JCache::MasterTaskType.fromType(env, static_cast<jint>(info.type));
-	const auto jresult = jni::JCache::TaskCompletion.fromType(env, static_cast<jint>(info.result));	
+	const auto jresult = jni::JCache::TaskCompletion.fromType(env, static_cast<jint>(info.result));
 	const auto jtaskid = jni::JCache::TaskId.init2(env, info.id.GetId(), info.id.IsDefined());
 
 	auto jinfo = jni::JCache::TaskInfo.init3(env, jtype, jresult, jtaskid);
@@ -58,7 +58,7 @@ void MasterApplicationAdapter::OnTaskComplete(const TaskInfo& info)
 bool MasterApplicationAdapter::AssignClassDuringStartup()
 {
 	const auto env = JNI::GetEnv();
-	return !!jni::JCache::MasterApplication.assignClassDuringStartup(env, proxy);	
+	return !!jni::JCache::MasterApplication.assignClassDuringStartup(env, proxy);
 }
 
 void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT& fun)
@@ -66,8 +66,9 @@ void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT
 	const auto env = JNI::GetEnv();
 	const auto jiterable = jni::JCache::MasterApplication.getClassAssignments(env, proxy);
 
-	auto write = [&](jobject assigment) {
-				
+	auto write = [&](jobject assigment)
+	{
+
 		// TODO - the point class isn't used!!!
 		const auto clazz = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::ClassAssignment.getclazz(env, assigment)));
 		const auto jgroup = jni::JCache::ClassAssignment.getgroup(env, assigment);
@@ -88,7 +89,7 @@ void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT
 		else
 		{
 			fun(Header::AllObjects(jgroup, jvariation));
-		}	
+		}
 	};
 
 	JNI::Iterate(env, jiterable, write);
@@ -98,14 +99,14 @@ opendnp3::Header MasterApplicationAdapter::Convert(opendnp3::PointClass clazz)
 {
 	switch (clazz)
 	{
-		case(PointClass::Class0):
-			return Header::AllObjects(60, 1);
-		case(PointClass::Class1):
-			return Header::AllObjects(60, 2);
-		case(PointClass::Class2):
-			return Header::AllObjects(60, 3);
-		default:
-			return Header::AllObjects(60, 4);
+	case(PointClass::Class0):
+		return Header::AllObjects(60, 1);
+	case(PointClass::Class1):
+		return Header::AllObjects(60, 2);
+	case(PointClass::Class2):
+		return Header::AllObjects(60, 3);
+	default:
+		return Header::AllObjects(60, 4);
 	}
 }
 

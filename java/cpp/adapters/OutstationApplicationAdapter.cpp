@@ -29,7 +29,7 @@ bool OutstationApplicationAdapter::SupportsWriteAbsoluteTime()
 	const auto env = JNI::GetEnv();
 	return !!JCache::OutstationApplication.supportsWriteAbsoluteTime(env, proxy);
 }
-	
+
 bool OutstationApplicationAdapter::WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp)
 {
 	const auto env = JNI::GetEnv();
@@ -41,7 +41,7 @@ bool OutstationApplicationAdapter::SupportsAssignClass()
 	const auto env = JNI::GetEnv();
 	return !!JCache::OutstationApplication.supportsAssignClass(env, proxy);
 }
-	
+
 void OutstationApplicationAdapter::RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop)
 {
 	const auto env = JNI::GetEnv();
@@ -52,10 +52,10 @@ void OutstationApplicationAdapter::RecordClassAssignment(AssignClassType type, P
 	JCache::OutstationApplication.recordClassAssignment(env, proxy, jtype, jclazz, start, stop);
 }
 
-ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const 
+ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 {
 	const auto env = JNI::GetEnv();
-	const auto jiin = JCache::OutstationApplication.getApplicationIIN(env, proxy);	
+	const auto jiin = JCache::OutstationApplication.getApplicationIIN(env, proxy);
 	ApplicationIIN iin;
 	iin.configCorrupt = JCache::ApplicationIIN.getconfigCorrupt(env, jiin);
 	iin.deviceTrouble = JCache::ApplicationIIN.getdeviceTrouble(env, jiin);

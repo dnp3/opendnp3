@@ -31,19 +31,19 @@ public:
 
 	MasterApplicationAdapter(jobject proxy) : proxy(proxy) {}
 
-	virtual openpal::UTCTimestamp Now() override;	
+	virtual openpal::UTCTimestamp Now() override;
 
-	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override;	
-	virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override;	
-	virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override;	
-	virtual bool AssignClassDuringStartup() override;	
+	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override;
+	virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override;
+	virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override;
+	virtual bool AssignClassDuringStartup() override;
 	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun)  override;
-	
-private:	
+
+private:
 
 	static opendnp3::Header Convert(opendnp3::PointClass clazz);
 
-	GlobalRef proxy;			
+	GlobalRef proxy;
 };
 
 #endif

@@ -27,14 +27,14 @@ LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(proxy)
 {}
 
 void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
-{					
-	const auto env = JNI::GetEnv();	
-	
+{
+	const auto env = JNI::GetEnv();
+
 	const jint level = entry.GetFilters().GetBitfield();
 	const jstring id = env->NewStringUTF(entry.GetAlias());
 	const jstring location = env->NewStringUTF(entry.GetLocation());
 	const jstring msg = env->NewStringUTF(entry.GetMessage());
-	
+
 	auto jentry = JCache::LogEntry.init4(env, level, id, location, msg);
 
 	JCache::LogHandler.log(env, proxy, jentry);

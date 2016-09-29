@@ -32,8 +32,8 @@ public:
 	virtual void Log(const openpal::LogEntry& entry);
 
 private:
-	
-	GlobalRef proxy;	
+
+	GlobalRef proxy;
 };
 
 #endif

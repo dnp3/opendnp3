@@ -32,7 +32,7 @@ class CString : private openpal::Uncopyable
 
 public:
 
-	CString(JNIEnv* env, jstring jstr) : 
+	CString(JNIEnv* env, jstring jstr) :
 		env(env),
 		jstr(jstr),
 		cstr(env->GetStringUTFChars(jstr, nullptr))
@@ -48,11 +48,11 @@ public:
 		return std::string(cstr);
 	}
 
-	operator const char*() const
+	operator const char* () const
 	{
 		return cstr;
 	}
-	
+
 };
 
 #endif

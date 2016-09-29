@@ -28,21 +28,20 @@ class OutstationApplicationAdapter : public opendnp3::IOutstationApplication
 public:
 
 	OutstationApplicationAdapter(jobject proxy) : proxy(proxy) {}
-	
+
 	virtual bool SupportsWriteAbsoluteTime() override;
-	
-	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override;		
-		
+
+	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override;
+
 	virtual bool SupportsAssignClass() override;
-	
+
 	virtual void RecordClassAssignment(opendnp3::AssignClassType type, opendnp3::PointClass clazz, uint16_t start, uint16_t stop) override;
 
 	virtual opendnp3::ApplicationIIN GetApplicationIIN() const override;
-		
-private:	
-	
 
-	GlobalRef proxy;			
+private:
+
+	GlobalRef proxy;
 };
 
 #endif

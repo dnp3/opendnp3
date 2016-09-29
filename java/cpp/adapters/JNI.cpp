@@ -25,14 +25,14 @@
 
 using namespace std;
 
-JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
-{			
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
+{
 	JNI::Initialize(vm);
-	return jni::JCache::init(JNI::GetEnv()) ? OPENDNP3_JNI_VERSION : JNI_ERR;	
+	return jni::JCache::init(JNI::GetEnv()) ? OPENDNP3_JNI_VERSION : JNI_ERR;
 }
 
-JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved)
-{	
+JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved)
+{
 	jni::JCache::cleanup(JNI::GetEnv());
 }
 
@@ -45,7 +45,7 @@ JNIEnv* JNI::GetEnv()
 	return env;
 }
 
-void JNI::Initialize(JavaVM *vmin)
+void JNI::Initialize(JavaVM* vmin)
 {
 	assert(vmin);
 	JNI::vm = vmin;
@@ -63,7 +63,7 @@ bool JNI::DetachCurrentThread()
 }
 
 // initialize static objects
-JavaVM * JNI::vm(nullptr);
+JavaVM* JNI::vm(nullptr);
 
 jobject JNI::CreateGlobalRef(jobject ref)
 {

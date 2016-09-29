@@ -25,7 +25,7 @@
 #include <functional>
 #include <openpal/util/Uncopyable.h>
 
-#define OPENDNP3_JNI_VERSION JNI_VERSION_1_8  
+#define OPENDNP3_JNI_VERSION JNI_VERSION_1_8
 
 class JNI : private openpal::StaticOnly
 {
@@ -33,7 +33,7 @@ class JNI : private openpal::StaticOnly
 public:
 
 	// called once during JNI_OnLoad
-	static void Initialize(JavaVM *vm);
+	static void Initialize(JavaVM* vm);
 
 	static JNIEnv* GetEnv();
 
@@ -42,13 +42,13 @@ public:
 
 	static jobject CreateGlobalRef(jobject ref);
 	static void DeleteGlobalRef(jobject ref);
-	
+
 	static void Iterate(JNIEnv* env, jobject iterable, const std::function<void(jobject)>& callback);
-	
+
 
 private:
-	
-	static JavaVM *vm;
+
+	static JavaVM* vm;
 };
 
 #endif

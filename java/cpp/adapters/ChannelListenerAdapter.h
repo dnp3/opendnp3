@@ -38,10 +38,10 @@ public:
 		jni::JCache::ChannelListener.onStateChange(env, proxy, jstate);
 	}
 
-private:	
+private:
 
 	GlobalRef proxy;
-			
+
 };
 
 #endif

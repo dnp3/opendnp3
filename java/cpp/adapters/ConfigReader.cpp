@@ -27,18 +27,18 @@ using namespace opendnp3;
 using namespace asiodnp3;
 
 MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* env, jobject jcfg)
-{	
+{
 	MasterStackConfig cfg;
-		
+
 	cfg.link = ConvertLinkConfig(env, jni::JCache::MasterStackConfig.getlink(env, jcfg));
 	cfg.master = ConvertMasterConfig(env, jni::JCache::MasterStackConfig.getmaster(env, jcfg));
-		
+
 	return cfg;
 }
 
 MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
-{	
-	MasterParams cfg;	
+{
+	MasterParams cfg;
 
 	auto& config = jni::JCache::MasterConfig;
 	auto& dur = jni::JCache::Duration;
@@ -59,17 +59,17 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 }
 
 LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
-{	
+{
 	LinkConfig cfg(true, false);
-	
+
 	auto& ref = jni::JCache::LinkLayerConfig;
-		
-	cfg.IsMaster = !!ref.getisMaster(env, jlinkcfg);	
-	cfg.UseConfirms = !!ref.getuseConfirms(env, jlinkcfg);	
+
+	cfg.IsMaster = !!ref.getisMaster(env, jlinkcfg);
+	cfg.UseConfirms = !!ref.getuseConfirms(env, jlinkcfg);
 	cfg.NumRetry = ref.getnumRetry(env, jlinkcfg);
 	cfg.LocalAddr = static_cast<uint16_t>(ref.getlocalAddr(env, jlinkcfg));
-	cfg.RemoteAddr = static_cast<uint16_t>(ref.getremoteAddr(env, jlinkcfg));	
-	cfg.Timeout = TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, ref.getresponseTimeout(env, jlinkcfg)));	
+	cfg.RemoteAddr = static_cast<uint16_t>(ref.getremoteAddr(env, jlinkcfg));
+	cfg.Timeout = TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, ref.getresponseTimeout(env, jlinkcfg)));
 	cfg.KeepAliveTimeout = TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, ref.getkeepAliveTimeout(env, jlinkcfg)));
 
 	return cfg;
@@ -196,7 +196,7 @@ return cfg;
 */
 
 opendnp3::ClassField ConfigReader::ConvertClassField(JNIEnv* env, jobject jclassmask)
-{	
+{
 	jint value = jni::JCache::ClassField.getbitfield(env, jclassmask);
 	return ClassField(static_cast<uint8_t>(value));
 }
