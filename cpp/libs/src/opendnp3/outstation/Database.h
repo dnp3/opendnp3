@@ -34,7 +34,7 @@ namespace opendnp3
 /**
 The database coordinates all updates of measurement data
 */
-class Database : public IDatabase, private openpal::Uncopyable
+class Database final : public IDatabase, private openpal::Uncopyable
 {
 public:
 
@@ -42,13 +42,13 @@ public:
 
 	// ------- IDatabase --------------
 
-	virtual bool Update(const Binary&, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Update(const DoubleBitBinary&, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Update(const Analog&, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Update(const Counter&, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Update(const FrozenCounter&, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Update(const Binary&, uint16_t, EventMode = EventMode::Detect) override;
+	virtual bool Update(const DoubleBitBinary&, uint16_t, EventMode = EventMode::Detect) override;
+	virtual bool Update(const Analog&, uint16_t, EventMode = EventMode::Detect) override;
+	virtual bool Update(const Counter&, uint16_t, EventMode = EventMode::Detect) override;
+	virtual bool Update(const FrozenCounter&, uint16_t, EventMode = EventMode::Detect) override;
+	virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
+	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
 	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
 
 	virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override final;
@@ -128,25 +128,6 @@ bool Database::UpdateEvent(const typename Spec::meas_t& value, uint16_t index, E
 		return false;
 	}
 }
-
-/*
-template <class T>
-bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, EventMode mode)
-{
-	auto rawIndex = GetRawIndex<T>(index);
-	auto view = buffers.buffers.GetArrayView<T>();
-
-	if (view.Contains(rawIndex))
-	{
-		this->UpdateAny(view[rawIndex], modify.Apply(view[rawIndex].value), mode);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-*/
 
 template <class Spec>
 bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode)

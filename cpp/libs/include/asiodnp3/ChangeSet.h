@@ -40,7 +40,7 @@ public:
 
 	ChangeSet(ChangeSet&& other) : updates(std::move(other.updates))
 	{
-	
+
 	}
 
 	void Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
@@ -53,6 +53,8 @@ public:
 	void Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
 
 	void Apply(opendnp3::IDatabase&);
+
+	size_t Size() const;
 
 	bool IsEmpty() const;
 

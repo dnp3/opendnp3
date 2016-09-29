@@ -164,7 +164,7 @@ private:
 		// send some random fraction of what's allowed to be sent
 		// this makes the test less deterministic and more realistic
 		std::uniform_int_distribution<size_t> dis(1, TX_MAX);
-		const auto TX_NUM = dis(m_gen);		
+		const auto TX_NUM = dis(m_gen);
 
 		ChangeSet changes;
 

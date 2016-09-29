@@ -138,28 +138,28 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
-		std::cin >> input;		
+		std::cin >> input;
 
 		ChangeSet changes;
 
 		for (char& c : input)
-		{			
+		{
 			switch (c)
 			{
 			case('c') :
-				{					
+				{
 					changes.Update(Counter(count), 0);
 					++count;
 					break;
 				}
 			case('a') :
-				{					
+				{
 					changes.Update(Analog(value), 0);
 					value += 1;
 					break;
 				}
 			case('b') :
-				{					
+				{
 					changes.Update(Binary(binary), 0);
 					binary = !binary;
 					break;

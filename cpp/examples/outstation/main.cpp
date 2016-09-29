@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
 					ChangeSet changes;
 					changes.Update(Counter(count), 0);
 					outstation->Apply(changes);
-					
+
 					++count;
 					break;
 				}
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
 					ChangeSet changes;
 					changes.Update(Analog(value), 0);
 					outstation->Apply(changes);
-					
+
 					value += 1;
 					break;
 				}
@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
 					ChangeSet changes;
 					changes.Update(Binary(binary), 0);
 					outstation->Apply(changes);
-					
+
 					binary = !binary;
 					break;
 				}

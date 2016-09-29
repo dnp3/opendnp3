@@ -37,7 +37,7 @@
 #include "asiodnp3/OutstationStackConfig.h"
 
 namespace asiodnp3
-{	
+{
 
 /// templated base class so that things can be shared between vanilla and SA interfaces
 template <class Interface>
@@ -53,9 +53,9 @@ public:
 	    IStackLifecycle& lifecycle
 	) :
 		root(std::move(root)),
-		pLifecycle(&lifecycle),
+		lifecycle(&lifecycle),
 		stack(this->root->logger, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
-		pContext(nullptr)
+		context(nullptr)
 	{}
 
 	// ------- implement IOutstation -------
@@ -67,7 +67,7 @@ public:
 			this->root->SetFilters(filters);
 		};
 
-		pLifecycle->GetExecutor().BlockFor(set);
+		lifecycle->GetExecutor().BlockFor(set);
 	}
 
 	virtual void SetRestartIIN() override final
@@ -75,24 +75,24 @@ public:
 		// this doesn't need to be synchronous, just post it
 		auto lambda = [this]()
 		{
-			this->pContext->SetRestartIIN();
+			this->context->SetRestartIIN();
 		};
-		pLifecycle->GetExecutor().strand.post(lambda);
+		lifecycle->GetExecutor().strand.post(lambda);
 	}
 
 	virtual bool Enable() override final
 	{
-		return pLifecycle->EnableRoute(&stack.link);
+		return lifecycle->EnableRoute(&stack.link);
 	}
 
 	virtual bool Disable() override final
 	{
-		return pLifecycle->DisableRoute(&stack.link);
+		return lifecycle->DisableRoute(&stack.link);
 	}
 
 	virtual void Shutdown() override final
 	{
-		pLifecycle->Shutdown(&stack.link, this);
+		lifecycle->Shutdown(&stack.link, this);
 	}
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override final
@@ -101,7 +101,7 @@ public:
 		{
 			return statistics;
 		};
-		return pLifecycle->GetExecutor().ReturnBlockFor<opendnp3::StackStatistics>(get);
+		return lifecycle->GetExecutor().ReturnBlockFor<opendnp3::StackStatistics>(get);
 	}
 
 	// ------- implement ILinkBind ---------
@@ -119,16 +119,17 @@ public:
 	virtual void Apply(ChangeSet& changes) override final
 	{
 		// C++11 lambdas don't support move semantics
-		auto moveable_changes = std::make_shared<ChangeSet>(std::move(changes));
+		auto pchanges = std::make_shared<ChangeSet>(std::move(changes));
 
-		auto task = [this, moveable_changes]() {
+		auto task = [this, pchanges]()
+		{
 
-			moveable_changes->Apply(this->pContext->GetDatabase());
-			this->pContext->CheckForTaskStart(); // force the outstation to check for updates
+			pchanges->Apply(this->context->GetDatabase());
 
+			this->context->CheckForTaskStart(); // force the outstation to check for updates
 		};
 
-		this->pLifecycle->GetExecutor().PostLambda(task);
+		this->lifecycle->GetExecutor().PostLambda(task);
 	}
 
 protected:
@@ -136,17 +137,17 @@ protected:
 	void SetContext(opendnp3::OContext& context)
 	{
 		this->stack.transport.SetAppLayer(context);
-		this->pContext = &context;
+		this->context = &context;
 	}
 
 	std::unique_ptr<openpal::LogRoot> root;
 	opendnp3::StackStatistics statistics;
-	IStackLifecycle* pLifecycle;
+	IStackLifecycle* lifecycle;
 	opendnp3::TransportStack stack;
 
 private:
 
-	opendnp3::OContext* pContext;
+	opendnp3::OContext* context;
 };
 
 }

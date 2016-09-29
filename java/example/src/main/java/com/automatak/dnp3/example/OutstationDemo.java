@@ -93,6 +93,7 @@ public class OutstationDemo {
                 OutstationChangeSet set = new OutstationChangeSet();
                 set.update(new Counter(i,(byte) 0x01, 0), 0);
                 outstation.apply(set);
+                ++i;
             }
         }
     }

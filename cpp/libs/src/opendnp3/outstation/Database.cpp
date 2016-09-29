@@ -26,6 +26,7 @@
 
 #include <assert.h>
 
+
 using namespace openpal;
 
 namespace opendnp3
