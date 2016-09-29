@@ -25,35 +25,40 @@
 
 namespace jni
 {
-    class Header
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class Header
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // field getter methods
-        jbyte getgroup(JNIEnv* env, jobject instance);
-        jbyte getvariation(JNIEnv* env, jobject instance);
-        jobject getqualifier(JNIEnv* env, jobject instance);
-        jint getcount(JNIEnv* env, jobject instance);
-        jint getstart(JNIEnv* env, jobject instance);
-        jint getstop(JNIEnv* env, jobject instance);
+            // field getter methods
+            jbyte getgroup(JNIEnv* env, jobject instance);
+            jbyte getvariation(JNIEnv* env, jobject instance);
+            jobject getqualifier(JNIEnv* env, jobject instance);
+            jint getcount(JNIEnv* env, jobject instance);
+            jint getstart(JNIEnv* env, jobject instance);
+            jint getstop(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // field ids
-        jfieldID groupField = nullptr;
-        jfieldID variationField = nullptr;
-        jfieldID qualifierField = nullptr;
-        jfieldID countField = nullptr;
-        jfieldID startField = nullptr;
-        jfieldID stopField = nullptr;
-    };
+            // field ids
+            jfieldID groupField = nullptr;
+            jfieldID variationField = nullptr;
+            jfieldID qualifierField = nullptr;
+            jfieldID countField = nullptr;
+            jfieldID startField = nullptr;
+            jfieldID stopField = nullptr;
+        };
+    }
 }
 
 #endif

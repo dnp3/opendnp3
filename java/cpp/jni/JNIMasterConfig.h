@@ -25,47 +25,52 @@
 
 namespace jni
 {
-    class MasterConfig
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class MasterConfig
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // field getter methods
-        jobject getresponseTimeout(JNIEnv* env, jobject instance);
-        jobject gettimeSyncMode(JNIEnv* env, jobject instance);
-        jboolean getdisableUnsolOnStartup(JNIEnv* env, jobject instance);
-        jboolean getignoreRestartIIN(JNIEnv* env, jobject instance);
-        jobject getunsolClassMask(JNIEnv* env, jobject instance);
-        jobject getstartupIntegrityClassMask(JNIEnv* env, jobject instance);
-        jboolean getintegrityOnEventOverflowIIN(JNIEnv* env, jobject instance);
-        jobject geteventScanOnEventsAvailableClassMask(JNIEnv* env, jobject instance);
-        jobject gettaskRetryPeriod(JNIEnv* env, jobject instance);
-        jobject gettaskStartTimeout(JNIEnv* env, jobject instance);
-        jint getmaxTxFragSize(JNIEnv* env, jobject instance);
-        jint getmaxRxFragSize(JNIEnv* env, jobject instance);
+            // field getter methods
+            jobject getresponseTimeout(JNIEnv* env, jobject instance);
+            jobject gettimeSyncMode(JNIEnv* env, jobject instance);
+            jboolean getdisableUnsolOnStartup(JNIEnv* env, jobject instance);
+            jboolean getignoreRestartIIN(JNIEnv* env, jobject instance);
+            jobject getunsolClassMask(JNIEnv* env, jobject instance);
+            jobject getstartupIntegrityClassMask(JNIEnv* env, jobject instance);
+            jboolean getintegrityOnEventOverflowIIN(JNIEnv* env, jobject instance);
+            jobject geteventScanOnEventsAvailableClassMask(JNIEnv* env, jobject instance);
+            jobject gettaskRetryPeriod(JNIEnv* env, jobject instance);
+            jobject gettaskStartTimeout(JNIEnv* env, jobject instance);
+            jint getmaxTxFragSize(JNIEnv* env, jobject instance);
+            jint getmaxRxFragSize(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // field ids
-        jfieldID responseTimeoutField = nullptr;
-        jfieldID timeSyncModeField = nullptr;
-        jfieldID disableUnsolOnStartupField = nullptr;
-        jfieldID ignoreRestartIINField = nullptr;
-        jfieldID unsolClassMaskField = nullptr;
-        jfieldID startupIntegrityClassMaskField = nullptr;
-        jfieldID integrityOnEventOverflowIINField = nullptr;
-        jfieldID eventScanOnEventsAvailableClassMaskField = nullptr;
-        jfieldID taskRetryPeriodField = nullptr;
-        jfieldID taskStartTimeoutField = nullptr;
-        jfieldID maxTxFragSizeField = nullptr;
-        jfieldID maxRxFragSizeField = nullptr;
-    };
+            // field ids
+            jfieldID responseTimeoutField = nullptr;
+            jfieldID timeSyncModeField = nullptr;
+            jfieldID disableUnsolOnStartupField = nullptr;
+            jfieldID ignoreRestartIINField = nullptr;
+            jfieldID unsolClassMaskField = nullptr;
+            jfieldID startupIntegrityClassMaskField = nullptr;
+            jfieldID integrityOnEventOverflowIINField = nullptr;
+            jfieldID eventScanOnEventsAvailableClassMaskField = nullptr;
+            jfieldID taskRetryPeriodField = nullptr;
+            jfieldID taskStartTimeoutField = nullptr;
+            jfieldID maxTxFragSizeField = nullptr;
+            jfieldID maxRxFragSizeField = nullptr;
+        };
+    }
 }
 
 #endif

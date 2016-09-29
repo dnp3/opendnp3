@@ -25,27 +25,38 @@
 
 namespace jni
 {
-    class AnalogOutputFloat32
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class AnalogOutputFloat32
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // field getter methods
-        jfloat getvalue(JNIEnv* env, jobject instance);
-        jobject getstatus(JNIEnv* env, jobject instance);
+            // constructor methods
+            jobject init2(JNIEnv* env, jfloat arg0, jobject arg1);
 
-        private:
+            // field getter methods
+            jfloat getvalue(JNIEnv* env, jobject instance);
+            jobject getstatus(JNIEnv* env, jobject instance);
 
-        jclass clazz = nullptr;
+            private:
 
-        // field ids
-        jfieldID valueField = nullptr;
-        jfieldID statusField = nullptr;
-    };
+            jclass clazz = nullptr;
+
+            // constructor method ids
+            jmethodID init2Constructor = nullptr;
+
+            // field ids
+            jfieldID valueField = nullptr;
+            jfieldID statusField = nullptr;
+        };
+    }
 }
 
 #endif

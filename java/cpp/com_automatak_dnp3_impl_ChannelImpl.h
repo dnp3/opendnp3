@@ -26,7 +26,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 /*
  * Class:     com_automatak_dnp3_impl_ChannelImpl
  * Method:    get_native_outstation
- * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/impl/CommandHandlerAdapter;Lcom/automatak/dnp3/OutstationApplication;Lcom/automatak/dnp3/OutstationStackConfig;)J
+ * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/CommandHandler;Lcom/automatak/dnp3/OutstationApplication;Lcom/automatak/dnp3/OutstationStackConfig;)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1outstation
   (JNIEnv *, jobject, jlong, jstring, jobject, jobject, jobject);

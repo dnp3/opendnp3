@@ -25,37 +25,42 @@
 
 namespace jni
 {
-    class LinkLayerConfig
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class LinkLayerConfig
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // field getter methods
-        jboolean getisMaster(JNIEnv* env, jobject instance);
-        jboolean getuseConfirms(JNIEnv* env, jobject instance);
-        jint getnumRetry(JNIEnv* env, jobject instance);
-        jint getlocalAddr(JNIEnv* env, jobject instance);
-        jint getremoteAddr(JNIEnv* env, jobject instance);
-        jobject getresponseTimeout(JNIEnv* env, jobject instance);
-        jobject getkeepAliveTimeout(JNIEnv* env, jobject instance);
+            // field getter methods
+            jboolean getisMaster(JNIEnv* env, jobject instance);
+            jboolean getuseConfirms(JNIEnv* env, jobject instance);
+            jint getnumRetry(JNIEnv* env, jobject instance);
+            jint getlocalAddr(JNIEnv* env, jobject instance);
+            jint getremoteAddr(JNIEnv* env, jobject instance);
+            jobject getresponseTimeout(JNIEnv* env, jobject instance);
+            jobject getkeepAliveTimeout(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // field ids
-        jfieldID isMasterField = nullptr;
-        jfieldID useConfirmsField = nullptr;
-        jfieldID numRetryField = nullptr;
-        jfieldID localAddrField = nullptr;
-        jfieldID remoteAddrField = nullptr;
-        jfieldID responseTimeoutField = nullptr;
-        jfieldID keepAliveTimeoutField = nullptr;
-    };
+            // field ids
+            jfieldID isMasterField = nullptr;
+            jfieldID useConfirmsField = nullptr;
+            jfieldID numRetryField = nullptr;
+            jfieldID localAddrField = nullptr;
+            jfieldID remoteAddrField = nullptr;
+            jfieldID responseTimeoutField = nullptr;
+            jfieldID keepAliveTimeoutField = nullptr;
+        };
+    }
 }
 
 #endif

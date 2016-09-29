@@ -42,7 +42,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(ControlRelayOutputBlock command, int index);
+    CommandStatus selectCROB(ControlRelayOutputBlock command, int index);
 
     /**
      * Select a 32-bit integer AnalogOutput (Group41Var1)
@@ -50,7 +50,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(AnalogOutputInt32 command, int index);
+    CommandStatus selectAOI32(AnalogOutputInt32 command, int index);
 
     /**
      * Select a 16-bit integer AnalogOutput (Group41Var2)
@@ -58,7 +58,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(AnalogOutputInt16 command, int index);
+    CommandStatus selectAOI16(AnalogOutputInt16 command, int index);
 
     /**
      * Select a single precision AnalogOutput (Group41Var3)
@@ -66,7 +66,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(AnalogOutputFloat32 command, int index);
+    CommandStatus selectAOF32(AnalogOutputFloat32 command, int index);
 
     /**
      * Select a double precision AnalogOutput (Group41Var4)
@@ -74,7 +74,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus select(AnalogOutputDouble64 command, int index);
+    CommandStatus selectAOD64(AnalogOutputDouble64 command, int index);
 
     /**
      * Operate a ControlRelayOutputBlock (Group12Var1)
@@ -83,7 +83,7 @@ public interface CommandHandler {
      * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(ControlRelayOutputBlock command, int index, OperateType opType);
+    CommandStatus operateCROB(ControlRelayOutputBlock command, int index, OperateType opType);
 
     /**
      * Operate a 32-bit integer AnalogOutput (Group41Var1)
@@ -92,7 +92,7 @@ public interface CommandHandler {
      * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(AnalogOutputInt32 command, int index, OperateType opType);
+    CommandStatus operateAOI32(AnalogOutputInt32 command, int index, OperateType opType);
 
     /**
      * Operate a 16-bit integer AnalogOutput (Group41Var2)
@@ -101,7 +101,7 @@ public interface CommandHandler {
      * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(AnalogOutputInt16 command, int index, OperateType opType);
+    CommandStatus operateAOI16(AnalogOutputInt16 command, int index, OperateType opType);
 
     /**
      * Operate a single precision AnalogOutput (Group41Var3)
@@ -110,7 +110,7 @@ public interface CommandHandler {
      * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(AnalogOutputFloat32 command, int index, OperateType opType);
+    CommandStatus operateAOF32(AnalogOutputFloat32 command, int index, OperateType opType);
 
     /**
      * Operate a double precision AnalogOutput (Group41Var4)
@@ -119,6 +119,6 @@ public interface CommandHandler {
      * @param opType The type of the operation (SBO, DO, DONoAck)
      * @return Enumeration representing the result of the request
      */
-    CommandStatus operate(AnalogOutputDouble64 command, int index, OperateType opType);
+    CommandStatus operateAOD64(AnalogOutputDouble64 command, int index, OperateType opType);
 
 }

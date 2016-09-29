@@ -25,29 +25,34 @@
 
 namespace jni
 {
-    class Stack
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class Stack
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        void shutdown(JNIEnv* env, jobject instance);
-        void disable(JNIEnv* env, jobject instance);
-        void enable(JNIEnv* env, jobject instance);
+            // methods
+            void shutdown(JNIEnv* env, jobject instance);
+            void disable(JNIEnv* env, jobject instance);
+            void enable(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID shutdownMethod = nullptr;
-        jmethodID disableMethod = nullptr;
-        jmethodID enableMethod = nullptr;
-    };
+            // method ids
+            jmethodID shutdownMethod = nullptr;
+            jmethodID disableMethod = nullptr;
+            jmethodID enableMethod = nullptr;
+        };
+    }
 }
 
 #endif

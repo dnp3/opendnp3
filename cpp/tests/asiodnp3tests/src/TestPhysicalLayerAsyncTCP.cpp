@@ -75,7 +75,7 @@ TEST_CASE(SUITE("ClientConnectionRejected"))
 	for(uint32_t i = 0; i < 2; ++i)
 	{
 		t.mTCPClient.BeginOpen();
-		auto condition = [&]() -> bool { return t.mClientAdapter.OpenFailureEquals(i+1); };
+		auto condition = [&]() -> bool { return t.mClientAdapter.OpenFailureEquals(i + 1); };
 
 		REQUIRE(t.ProceedUntil(condition));
 	}

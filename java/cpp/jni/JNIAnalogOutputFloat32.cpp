@@ -22,33 +22,44 @@
 
 namespace jni
 {
-    bool AnalogOutputFloat32::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputFloat32;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool AnalogOutputFloat32::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputFloat32;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->valueField = env->GetFieldID(this->clazz, "value", "F");
-        if(!this->valueField) return false;
+            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(FLcom/automatak/dnp3/enums/CommandStatus;)V");
+            if(!this->init2Constructor) return false;
 
-        this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
-        if(!this->statusField) return false;
+            this->valueField = env->GetFieldID(this->clazz, "value", "F");
+            if(!this->valueField) return false;
 
-        return true;
-    }
+            this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
+            if(!this->statusField) return false;
 
-    void AnalogOutputFloat32::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+            return true;
+        }
 
-    jfloat AnalogOutputFloat32::getvalue(JNIEnv* env, jobject instance)
-    {
-        return env->GetFloatField(instance, this->valueField);
-    }
+        void AnalogOutputFloat32::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject AnalogOutputFloat32::getstatus(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->statusField);
+        jobject AnalogOutputFloat32::init2(JNIEnv* env, jfloat arg0, jobject arg1)
+        {
+            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+        }
+
+        jfloat AnalogOutputFloat32::getvalue(JNIEnv* env, jobject instance)
+        {
+            return env->GetFloatField(instance, this->valueField);
+        }
+
+        jobject AnalogOutputFloat32::getstatus(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->statusField);
+        }
     }
 }

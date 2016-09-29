@@ -22,41 +22,44 @@
 
 namespace jni
 {
-    bool IndexedValue::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/IndexedValue;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool IndexedValue::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/IndexedValue;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(Ljava/lang/Object;I)V");
-        if(!this->init2Constructor) return false;
+            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(Ljava/lang/Object;I)V");
+            if(!this->init2Constructor) return false;
 
-        this->valueField = env->GetFieldID(this->clazz, "value", "Ljava/lang/Object;");
-        if(!this->valueField) return false;
+            this->valueField = env->GetFieldID(this->clazz, "value", "Ljava/lang/Object;");
+            if(!this->valueField) return false;
 
-        this->indexField = env->GetFieldID(this->clazz, "index", "I");
-        if(!this->indexField) return false;
+            this->indexField = env->GetFieldID(this->clazz, "index", "I");
+            if(!this->indexField) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void IndexedValue::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void IndexedValue::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject IndexedValue::init2(JNIEnv* env, jobject arg0, jint arg1)
-    {
-        return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
-    }
+        jobject IndexedValue::init2(JNIEnv* env, jobject arg0, jint arg1)
+        {
+            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+        }
 
-    jobject IndexedValue::getvalue(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->valueField);
-    }
+        jobject IndexedValue::getvalue(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->valueField);
+        }
 
-    jint IndexedValue::getindex(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->indexField);
+        jint IndexedValue::getindex(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->indexField);
+        }
     }
 }

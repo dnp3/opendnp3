@@ -22,49 +22,52 @@
 
 namespace jni
 {
-    bool ClassAssignment::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/ClassAssignment;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool ClassAssignment::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/ClassAssignment;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->groupField = env->GetFieldID(this->clazz, "group", "B");
-        if(!this->groupField) return false;
+            this->groupField = env->GetFieldID(this->clazz, "group", "B");
+            if(!this->groupField) return false;
 
-        this->variationField = env->GetFieldID(this->clazz, "variation", "B");
-        if(!this->variationField) return false;
+            this->variationField = env->GetFieldID(this->clazz, "variation", "B");
+            if(!this->variationField) return false;
 
-        this->clazzField = env->GetFieldID(this->clazz, "clazz", "Lcom/automatak/dnp3/enums/PointClass;");
-        if(!this->clazzField) return false;
+            this->clazzField = env->GetFieldID(this->clazz, "clazz", "Lcom/automatak/dnp3/enums/PointClass;");
+            if(!this->clazzField) return false;
 
-        this->rangeField = env->GetFieldID(this->clazz, "range", "Lcom/automatak/dnp3/Range;");
-        if(!this->rangeField) return false;
+            this->rangeField = env->GetFieldID(this->clazz, "range", "Lcom/automatak/dnp3/Range;");
+            if(!this->rangeField) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void ClassAssignment::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void ClassAssignment::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jbyte ClassAssignment::getgroup(JNIEnv* env, jobject instance)
-    {
-        return env->GetByteField(instance, this->groupField);
-    }
+        jbyte ClassAssignment::getgroup(JNIEnv* env, jobject instance)
+        {
+            return env->GetByteField(instance, this->groupField);
+        }
 
-    jbyte ClassAssignment::getvariation(JNIEnv* env, jobject instance)
-    {
-        return env->GetByteField(instance, this->variationField);
-    }
+        jbyte ClassAssignment::getvariation(JNIEnv* env, jobject instance)
+        {
+            return env->GetByteField(instance, this->variationField);
+        }
 
-    jobject ClassAssignment::getclazz(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->clazzField);
-    }
+        jobject ClassAssignment::getclazz(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->clazzField);
+        }
 
-    jobject ClassAssignment::getrange(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->rangeField);
+        jobject ClassAssignment::getrange(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->rangeField);
+        }
     }
 }

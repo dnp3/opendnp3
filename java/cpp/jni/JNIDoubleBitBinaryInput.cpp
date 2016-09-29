@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool DoubleBitBinaryInput::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/DoubleBitBinaryInput;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool DoubleBitBinaryInput::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/DoubleBitBinaryInput;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/DoubleBit;BJ)V");
-        if(!this->init3Constructor) return false;
+            this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/DoubleBit;BJ)V");
+            if(!this->init3Constructor) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void DoubleBitBinaryInput::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void DoubleBitBinaryInput::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject DoubleBitBinaryInput::init3(JNIEnv* env, jobject arg0, jbyte arg1, jlong arg2)
-    {
-        return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+        jobject DoubleBitBinaryInput::init3(JNIEnv* env, jobject arg0, jbyte arg1, jlong arg2)
+        {
+            return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+        }
     }
 }

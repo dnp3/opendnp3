@@ -45,13 +45,16 @@ case class JNIClassGenerator(cfg: ClassConfig) {
       includeGuards("JNI%s".format(cfg.clazz.getSimpleName)) {
         "#include <jni.h>".iter ++ space ++
         namespace("jni") {
-          classDef(cfg.clazz.getSimpleName) {
+          "struct JCache;".iter ++ space ++
+          namespace("cache") {
+            classDef(cfg.clazz.getSimpleName) {
               "friend struct JCache;".iter ++ space ++
-              initSignature ++ cleanupSignature ++ space ++
-              "public:".iter ++
-              constructorSignatures ++ methodSignatures ++ fieldGetters ++
-              space ++ "private:".iter ++ space ++
-              classMember ++ constructorMembers ++ methodsMembers ++ fieldMembers
+                initSignature ++ cleanupSignature ++ space ++
+                "public:".iter ++
+                constructorSignatures ++ methodSignatures ++ fieldGetters ++
+                space ++ "private:".iter ++ space ++
+                classMember ++ constructorMembers ++ methodsMembers ++ fieldMembers
+            }
           }
         }
       }
@@ -140,7 +143,9 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     commented(LicenseHeader()) ++ space ++
     "#include \"%s\"".format(headerFileName).iter ++ space ++
     namespace("jni") {
-      initImpl ++ space ++ cleanupImpl ++ methodsImpls ++ constructorImpls ++ fieldGetterImpls
+      namespace("cache") {
+        initImpl ++ space ++ cleanupImpl ++ methodsImpls ++ constructorImpls ++ fieldGetterImpls
+      }
     }
   }
 

@@ -25,41 +25,46 @@
 
 namespace jni
 {
-    class SOEHandler
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class SOEHandler
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        void start(JNIEnv* env, jobject instance);
-        void end(JNIEnv* env, jobject instance);
-        void processC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processBOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processFC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            // methods
+            void end(JNIEnv* env, jobject instance);
+            void start(JNIEnv* env, jobject instance);
+            void processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processBOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processFC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID startMethod = nullptr;
-        jmethodID endMethod = nullptr;
-        jmethodID processCMethod = nullptr;
-        jmethodID processDBIMethod = nullptr;
-        jmethodID processAIMethod = nullptr;
-        jmethodID processBIMethod = nullptr;
-        jmethodID processBOSMethod = nullptr;
-        jmethodID processFCMethod = nullptr;
-        jmethodID processAOSMethod = nullptr;
-    };
+            // method ids
+            jmethodID endMethod = nullptr;
+            jmethodID startMethod = nullptr;
+            jmethodID processDBIMethod = nullptr;
+            jmethodID processBOSMethod = nullptr;
+            jmethodID processAOSMethod = nullptr;
+            jmethodID processCMethod = nullptr;
+            jmethodID processBIMethod = nullptr;
+            jmethodID processFCMethod = nullptr;
+            jmethodID processAIMethod = nullptr;
+        };
+    }
 }
 
 #endif

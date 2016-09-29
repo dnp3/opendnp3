@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool Iterable::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Ljava/lang/Iterable;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool Iterable::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Ljava/lang/Iterable;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->iteratorMethod = env->GetMethodID(this->clazz, "iterator", "()Ljava/util/Iterator;");
-        if(!this->iteratorMethod) return false;
+            this->iteratorMethod = env->GetMethodID(this->clazz, "iterator", "()Ljava/util/Iterator;");
+            if(!this->iteratorMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void Iterable::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void Iterable::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject Iterable::iterator(JNIEnv* env, jobject instance)
-    {
-        return env->CallObjectMethod(instance, this->iteratorMethod);
+        jobject Iterable::iterator(JNIEnv* env, jobject instance)
+        {
+            return env->CallObjectMethod(instance, this->iteratorMethod);
+        }
     }
 }

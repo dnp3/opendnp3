@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class Iterable
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class Iterable
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        jobject iterator(JNIEnv* env, jobject instance);
+            // methods
+            jobject iterator(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID iteratorMethod = nullptr;
-    };
+            // method ids
+            jmethodID iteratorMethod = nullptr;
+        };
+    }
 }
 
 #endif

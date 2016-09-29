@@ -22,33 +22,36 @@
 
 namespace jni
 {
-    bool TimestampMode::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/TimestampMode;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool TimestampMode::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/TimestampMode;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-        if(!this->toTypeMethod) return false;
+            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/TimestampMode;");
+            if(!this->fromTypeMethod) return false;
 
-        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/TimestampMode;");
-        if(!this->fromTypeMethod) return false;
+            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
+            if(!this->toTypeMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void TimestampMode::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void TimestampMode::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jint TimestampMode::toType(JNIEnv* env, jobject instance)
-    {
-        return env->CallIntMethod(instance, this->toTypeMethod);
-    }
+        jobject TimestampMode::fromType(JNIEnv* env, jint arg0)
+        {
+            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+        }
 
-    jobject TimestampMode::fromType(JNIEnv* env, jint arg0)
-    {
-        return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+        jint TimestampMode::toType(JNIEnv* env, jobject instance)
+        {
+            return env->CallIntMethod(instance, this->toTypeMethod);
+        }
     }
 }

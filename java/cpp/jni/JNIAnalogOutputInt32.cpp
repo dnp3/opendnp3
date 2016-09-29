@@ -22,33 +22,44 @@
 
 namespace jni
 {
-    bool AnalogOutputInt32::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputInt32;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool AnalogOutputInt32::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputInt32;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->valueField = env->GetFieldID(this->clazz, "value", "I");
-        if(!this->valueField) return false;
+            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(ILcom/automatak/dnp3/enums/CommandStatus;)V");
+            if(!this->init2Constructor) return false;
 
-        this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
-        if(!this->statusField) return false;
+            this->valueField = env->GetFieldID(this->clazz, "value", "I");
+            if(!this->valueField) return false;
 
-        return true;
-    }
+            this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
+            if(!this->statusField) return false;
 
-    void AnalogOutputInt32::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+            return true;
+        }
 
-    jint AnalogOutputInt32::getvalue(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->valueField);
-    }
+        void AnalogOutputInt32::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject AnalogOutputInt32::getstatus(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->statusField);
+        jobject AnalogOutputInt32::init2(JNIEnv* env, jint arg0, jobject arg1)
+        {
+            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+        }
+
+        jint AnalogOutputInt32::getvalue(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->valueField);
+        }
+
+        jobject AnalogOutputInt32::getstatus(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->statusField);
+        }
     }
 }

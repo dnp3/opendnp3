@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class CommandTaskResult
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class CommandTaskResult
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // constructor methods
-        jobject init2(JNIEnv* env, jobject arg0, jobject arg1);
+            // constructor methods
+            jobject init2(JNIEnv* env, jobject arg0, jobject arg1);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // constructor method ids
-        jmethodID init2Constructor = nullptr;
-    };
+            // constructor method ids
+            jmethodID init2Constructor = nullptr;
+        };
+    }
 }
 
 #endif

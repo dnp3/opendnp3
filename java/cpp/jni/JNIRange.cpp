@@ -22,41 +22,44 @@
 
 namespace jni
 {
-    bool Range::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Range;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool Range::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Range;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->isDefinedMethod = env->GetMethodID(this->clazz, "isDefined", "()Z");
-        if(!this->isDefinedMethod) return false;
+            this->isDefinedMethod = env->GetMethodID(this->clazz, "isDefined", "()Z");
+            if(!this->isDefinedMethod) return false;
 
-        this->startField = env->GetFieldID(this->clazz, "start", "I");
-        if(!this->startField) return false;
+            this->startField = env->GetFieldID(this->clazz, "start", "I");
+            if(!this->startField) return false;
 
-        this->stopField = env->GetFieldID(this->clazz, "stop", "I");
-        if(!this->stopField) return false;
+            this->stopField = env->GetFieldID(this->clazz, "stop", "I");
+            if(!this->stopField) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void Range::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void Range::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jboolean Range::isDefined(JNIEnv* env, jobject instance)
-    {
-        return env->CallBooleanMethod(instance, this->isDefinedMethod);
-    }
+        jboolean Range::isDefined(JNIEnv* env, jobject instance)
+        {
+            return env->CallBooleanMethod(instance, this->isDefinedMethod);
+        }
 
-    jint Range::getstart(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->startField);
-    }
+        jint Range::getstart(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->startField);
+        }
 
-    jint Range::getstop(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->stopField);
+        jint Range::getstop(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->stopField);
+        }
     }
 }

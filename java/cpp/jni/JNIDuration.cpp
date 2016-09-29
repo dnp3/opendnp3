@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool Duration::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Ljava/time/Duration;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool Duration::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Ljava/time/Duration;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->toMillisMethod = env->GetMethodID(this->clazz, "toMillis", "()J");
-        if(!this->toMillisMethod) return false;
+            this->toMillisMethod = env->GetMethodID(this->clazz, "toMillis", "()J");
+            if(!this->toMillisMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void Duration::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void Duration::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jlong Duration::toMillis(JNIEnv* env, jobject instance)
-    {
-        return env->CallLongMethod(instance, this->toMillisMethod);
+        jlong Duration::toMillis(JNIEnv* env, jobject instance)
+        {
+            return env->CallLongMethod(instance, this->toMillisMethod);
+        }
     }
 }

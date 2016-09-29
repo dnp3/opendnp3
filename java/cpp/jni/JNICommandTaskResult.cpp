@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool CommandTaskResult::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/CommandTaskResult;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool CommandTaskResult::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/CommandTaskResult;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/TaskCompletion;Ljava/lang/Iterable;)V");
-        if(!this->init2Constructor) return false;
+            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/TaskCompletion;Ljava/lang/Iterable;)V");
+            if(!this->init2Constructor) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void CommandTaskResult::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void CommandTaskResult::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject CommandTaskResult::init2(JNIEnv* env, jobject arg0, jobject arg1)
-    {
-        return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+        jobject CommandTaskResult::init2(JNIEnv* env, jobject arg0, jobject arg1)
+        {
+            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+        }
     }
 }

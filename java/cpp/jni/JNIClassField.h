@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class ClassField
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class ClassField
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // field getter methods
-        jint getbitfield(JNIEnv* env, jobject instance);
+            // field getter methods
+            jint getbitfield(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // field ids
-        jfieldID bitfieldField = nullptr;
-    };
+            // field ids
+            jfieldID bitfieldField = nullptr;
+        };
+    }
 }
 
 #endif

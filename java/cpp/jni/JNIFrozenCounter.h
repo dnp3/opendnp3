@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class FrozenCounter
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class FrozenCounter
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // constructor methods
-        jobject init3(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2);
+            // constructor methods
+            jobject init3(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // constructor method ids
-        jmethodID init3Constructor = nullptr;
-    };
+            // constructor method ids
+            jmethodID init3Constructor = nullptr;
+        };
+    }
 }
 
 #endif

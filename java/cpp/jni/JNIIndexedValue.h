@@ -25,33 +25,38 @@
 
 namespace jni
 {
-    class IndexedValue
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class IndexedValue
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // constructor methods
-        jobject init2(JNIEnv* env, jobject arg0, jint arg1);
+            // constructor methods
+            jobject init2(JNIEnv* env, jobject arg0, jint arg1);
 
-        // field getter methods
-        jobject getvalue(JNIEnv* env, jobject instance);
-        jint getindex(JNIEnv* env, jobject instance);
+            // field getter methods
+            jobject getvalue(JNIEnv* env, jobject instance);
+            jint getindex(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // constructor method ids
-        jmethodID init2Constructor = nullptr;
+            // constructor method ids
+            jmethodID init2Constructor = nullptr;
 
-        // field ids
-        jfieldID valueField = nullptr;
-        jfieldID indexField = nullptr;
-    };
+            // field ids
+            jfieldID valueField = nullptr;
+            jfieldID indexField = nullptr;
+        };
+    }
 }
 
 #endif

@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class CommandHeaders
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class CommandHeaders
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        void build(JNIEnv* env, jobject instance, jobject arg0);
+            // methods
+            void build(JNIEnv* env, jobject instance, jobject arg0);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID buildMethod = nullptr;
-    };
+            // method ids
+            jmethodID buildMethod = nullptr;
+        };
+    }
 }
 
 #endif

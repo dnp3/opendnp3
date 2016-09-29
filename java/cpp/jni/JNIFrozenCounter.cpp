@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool FrozenCounter::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/FrozenCounter;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool FrozenCounter::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/FrozenCounter;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(JBJ)V");
-        if(!this->init3Constructor) return false;
+            this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(JBJ)V");
+            if(!this->init3Constructor) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void FrozenCounter::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void FrozenCounter::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject FrozenCounter::init3(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2)
-    {
-        return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+        jobject FrozenCounter::init3(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2)
+        {
+            return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+        }
     }
 }

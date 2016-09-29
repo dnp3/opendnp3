@@ -22,33 +22,36 @@
 
 namespace jni
 {
-    bool MasterStackConfig::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/MasterStackConfig;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool MasterStackConfig::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/MasterStackConfig;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->masterField = env->GetFieldID(this->clazz, "master", "Lcom/automatak/dnp3/MasterConfig;");
-        if(!this->masterField) return false;
+            this->masterField = env->GetFieldID(this->clazz, "master", "Lcom/automatak/dnp3/MasterConfig;");
+            if(!this->masterField) return false;
 
-        this->linkField = env->GetFieldID(this->clazz, "link", "Lcom/automatak/dnp3/LinkLayerConfig;");
-        if(!this->linkField) return false;
+            this->linkField = env->GetFieldID(this->clazz, "link", "Lcom/automatak/dnp3/LinkLayerConfig;");
+            if(!this->linkField) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void MasterStackConfig::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void MasterStackConfig::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject MasterStackConfig::getmaster(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->masterField);
-    }
+        jobject MasterStackConfig::getmaster(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->masterField);
+        }
 
-    jobject MasterStackConfig::getlink(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->linkField);
+        jobject MasterStackConfig::getlink(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->linkField);
+        }
     }
 }

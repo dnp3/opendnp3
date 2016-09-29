@@ -22,33 +22,36 @@
 
 namespace jni
 {
-    bool Iterator::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Ljava/util/Iterator;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool Iterator::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Ljava/util/Iterator;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->hasNextMethod = env->GetMethodID(this->clazz, "hasNext", "()Z");
-        if(!this->hasNextMethod) return false;
+            this->hasNextMethod = env->GetMethodID(this->clazz, "hasNext", "()Z");
+            if(!this->hasNextMethod) return false;
 
-        this->nextMethod = env->GetMethodID(this->clazz, "next", "()Ljava/lang/Object;");
-        if(!this->nextMethod) return false;
+            this->nextMethod = env->GetMethodID(this->clazz, "next", "()Ljava/lang/Object;");
+            if(!this->nextMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void Iterator::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void Iterator::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jboolean Iterator::hasNext(JNIEnv* env, jobject instance)
-    {
-        return env->CallBooleanMethod(instance, this->hasNextMethod);
-    }
+        jboolean Iterator::hasNext(JNIEnv* env, jobject instance)
+        {
+            return env->CallBooleanMethod(instance, this->hasNextMethod);
+        }
 
-    jobject Iterator::next(JNIEnv* env, jobject instance)
-    {
-        return env->CallObjectMethod(instance, this->nextMethod);
+        jobject Iterator::next(JNIEnv* env, jobject instance)
+        {
+            return env->CallObjectMethod(instance, this->nextMethod);
+        }
     }
 }

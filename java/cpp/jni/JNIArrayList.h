@@ -25,31 +25,36 @@
 
 namespace jni
 {
-    class ArrayList
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class ArrayList
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // constructor methods
-        jobject init1(JNIEnv* env, jint arg0);
+            // constructor methods
+            jobject init1(JNIEnv* env, jint arg0);
 
-        // methods
-        jboolean add(JNIEnv* env, jobject instance, jobject arg0);
+            // methods
+            jboolean add(JNIEnv* env, jobject instance, jobject arg0);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // constructor method ids
-        jmethodID init1Constructor = nullptr;
+            // constructor method ids
+            jmethodID init1Constructor = nullptr;
 
-        // method ids
-        jmethodID addMethod = nullptr;
-    };
+            // method ids
+            jmethodID addMethod = nullptr;
+        };
+    }
 }
 
 #endif

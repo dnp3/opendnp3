@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class TaskInfo
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class TaskInfo
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // constructor methods
-        jobject init3(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2);
+            // constructor methods
+            jobject init3(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // constructor method ids
-        jmethodID init3Constructor = nullptr;
-    };
+            // constructor method ids
+            jmethodID init3Constructor = nullptr;
+        };
+    }
 }
 
 #endif

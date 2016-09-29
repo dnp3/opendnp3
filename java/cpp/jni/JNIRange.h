@@ -25,33 +25,38 @@
 
 namespace jni
 {
-    class Range
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class Range
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        jboolean isDefined(JNIEnv* env, jobject instance);
+            // methods
+            jboolean isDefined(JNIEnv* env, jobject instance);
 
-        // field getter methods
-        jint getstart(JNIEnv* env, jobject instance);
-        jint getstop(JNIEnv* env, jobject instance);
+            // field getter methods
+            jint getstart(JNIEnv* env, jobject instance);
+            jint getstop(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID isDefinedMethod = nullptr;
+            // method ids
+            jmethodID isDefinedMethod = nullptr;
 
-        // field ids
-        jfieldID startField = nullptr;
-        jfieldID stopField = nullptr;
-    };
+            // field ids
+            jfieldID startField = nullptr;
+            jfieldID stopField = nullptr;
+        };
+    }
 }
 
 #endif

@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class CompletableFuture
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class CompletableFuture
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        jboolean complete(JNIEnv* env, jobject instance, jobject arg0);
+            // methods
+            jboolean complete(JNIEnv* env, jobject instance, jobject arg0);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID completeMethod = nullptr;
-    };
+            // method ids
+            jmethodID completeMethod = nullptr;
+        };
+    }
 }
 
 #endif

@@ -22,33 +22,36 @@
 
 namespace jni
 {
-    bool CommandBuilderImpl::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/impl/CommandBuilderImpl;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool CommandBuilderImpl::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/impl/CommandBuilderImpl;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init0Constructor = env->GetMethodID(this->clazz, "<init>", "()V");
-        if(!this->init0Constructor) return false;
+            this->init0Constructor = env->GetMethodID(this->clazz, "<init>", "()V");
+            if(!this->init0Constructor) return false;
 
-        this->nativePointerField = env->GetFieldID(this->clazz, "nativePointer", "J");
-        if(!this->nativePointerField) return false;
+            this->nativePointerField = env->GetFieldID(this->clazz, "nativePointer", "J");
+            if(!this->nativePointerField) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void CommandBuilderImpl::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void CommandBuilderImpl::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject CommandBuilderImpl::init0(JNIEnv* env)
-    {
-        return env->NewObject(this->clazz, this->init0Constructor);
-    }
+        jobject CommandBuilderImpl::init0(JNIEnv* env)
+        {
+            return env->NewObject(this->clazz, this->init0Constructor);
+        }
 
-    jlong CommandBuilderImpl::getnativePointer(JNIEnv* env, jobject instance)
-    {
-        return env->GetLongField(instance, this->nativePointerField);
+        jlong CommandBuilderImpl::getnativePointer(JNIEnv* env, jobject instance)
+        {
+            return env->GetLongField(instance, this->nativePointerField);
+        }
     }
 }

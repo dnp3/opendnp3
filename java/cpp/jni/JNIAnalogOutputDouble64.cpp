@@ -22,33 +22,44 @@
 
 namespace jni
 {
-    bool AnalogOutputDouble64::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputDouble64;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool AnalogOutputDouble64::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputDouble64;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->valueField = env->GetFieldID(this->clazz, "value", "D");
-        if(!this->valueField) return false;
+            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(DLcom/automatak/dnp3/enums/CommandStatus;)V");
+            if(!this->init2Constructor) return false;
 
-        this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
-        if(!this->statusField) return false;
+            this->valueField = env->GetFieldID(this->clazz, "value", "D");
+            if(!this->valueField) return false;
 
-        return true;
-    }
+            this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
+            if(!this->statusField) return false;
 
-    void AnalogOutputDouble64::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+            return true;
+        }
 
-    jdouble AnalogOutputDouble64::getvalue(JNIEnv* env, jobject instance)
-    {
-        return env->GetDoubleField(instance, this->valueField);
-    }
+        void AnalogOutputDouble64::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject AnalogOutputDouble64::getstatus(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->statusField);
+        jobject AnalogOutputDouble64::init2(JNIEnv* env, jdouble arg0, jobject arg1)
+        {
+            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+        }
+
+        jdouble AnalogOutputDouble64::getvalue(JNIEnv* env, jobject instance)
+        {
+            return env->GetDoubleField(instance, this->valueField);
+        }
+
+        jobject AnalogOutputDouble64::getstatus(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->statusField);
+        }
     }
 }

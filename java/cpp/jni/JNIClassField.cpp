@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool ClassField::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/ClassField;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool ClassField::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/ClassField;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->bitfieldField = env->GetFieldID(this->clazz, "bitfield", "I");
-        if(!this->bitfieldField) return false;
+            this->bitfieldField = env->GetFieldID(this->clazz, "bitfield", "I");
+            if(!this->bitfieldField) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void ClassField::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void ClassField::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jint ClassField::getbitfield(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->bitfieldField);
+        jint ClassField::getbitfield(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->bitfieldField);
+        }
     }
 }

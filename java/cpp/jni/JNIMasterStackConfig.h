@@ -25,27 +25,32 @@
 
 namespace jni
 {
-    class MasterStackConfig
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class MasterStackConfig
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // field getter methods
-        jobject getmaster(JNIEnv* env, jobject instance);
-        jobject getlink(JNIEnv* env, jobject instance);
+            // field getter methods
+            jobject getmaster(JNIEnv* env, jobject instance);
+            jobject getlink(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // field ids
-        jfieldID masterField = nullptr;
-        jfieldID linkField = nullptr;
-    };
+            // field ids
+            jfieldID masterField = nullptr;
+            jfieldID linkField = nullptr;
+        };
+    }
 }
 
 #endif

@@ -25,33 +25,44 @@
 
 namespace jni
 {
-    class ControlRelayOutputBlock
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class ControlRelayOutputBlock
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // field getter methods
-        jobject getfunction(JNIEnv* env, jobject instance);
-        jshort getcount(JNIEnv* env, jobject instance);
-        jlong getonTimeMs(JNIEnv* env, jobject instance);
-        jlong getoffTimeMs(JNIEnv* env, jobject instance);
-        jobject getstatus(JNIEnv* env, jobject instance);
+            // constructor methods
+            jobject init5(JNIEnv* env, jobject arg0, jshort arg1, jlong arg2, jlong arg3, jobject arg4);
 
-        private:
+            // field getter methods
+            jobject getfunction(JNIEnv* env, jobject instance);
+            jshort getcount(JNIEnv* env, jobject instance);
+            jlong getonTimeMs(JNIEnv* env, jobject instance);
+            jlong getoffTimeMs(JNIEnv* env, jobject instance);
+            jobject getstatus(JNIEnv* env, jobject instance);
 
-        jclass clazz = nullptr;
+            private:
 
-        // field ids
-        jfieldID functionField = nullptr;
-        jfieldID countField = nullptr;
-        jfieldID onTimeMsField = nullptr;
-        jfieldID offTimeMsField = nullptr;
-        jfieldID statusField = nullptr;
-    };
+            jclass clazz = nullptr;
+
+            // constructor method ids
+            jmethodID init5Constructor = nullptr;
+
+            // field ids
+            jfieldID functionField = nullptr;
+            jfieldID countField = nullptr;
+            jfieldID onTimeMsField = nullptr;
+            jfieldID offTimeMsField = nullptr;
+            jfieldID statusField = nullptr;
+        };
+    }
 }
 
 #endif

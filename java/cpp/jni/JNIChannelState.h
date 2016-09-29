@@ -25,27 +25,32 @@
 
 namespace jni
 {
-    class ChannelState
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class ChannelState
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        jint toType(JNIEnv* env, jobject instance);
-        jobject fromType(JNIEnv* env, jint arg0);
+            // methods
+            jobject fromType(JNIEnv* env, jint arg0);
+            jint toType(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID toTypeMethod = nullptr;
-        jmethodID fromTypeMethod = nullptr;
-    };
+            // method ids
+            jmethodID fromTypeMethod = nullptr;
+            jmethodID toTypeMethod = nullptr;
+        };
+    }
 }
 
 #endif

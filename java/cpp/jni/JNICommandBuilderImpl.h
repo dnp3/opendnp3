@@ -25,31 +25,36 @@
 
 namespace jni
 {
-    class CommandBuilderImpl
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class CommandBuilderImpl
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // constructor methods
-        jobject init0(JNIEnv* env);
+            // constructor methods
+            jobject init0(JNIEnv* env);
 
-        // field getter methods
-        jlong getnativePointer(JNIEnv* env, jobject instance);
+            // field getter methods
+            jlong getnativePointer(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // constructor method ids
-        jmethodID init0Constructor = nullptr;
+            // constructor method ids
+            jmethodID init0Constructor = nullptr;
 
-        // field ids
-        jfieldID nativePointerField = nullptr;
-    };
+            // field ids
+            jfieldID nativePointerField = nullptr;
+        };
+    }
 }
 
 #endif

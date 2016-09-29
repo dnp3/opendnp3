@@ -26,12 +26,30 @@ object Generator {
     classOf[CommandStatus],
     classOf[ControlCode],
     classOf[ChannelState],
-    classOf[PointClass]
+    classOf[PointClass],
+    classOf[OperateType]
   ).map(e => ClassConfig(
     e,
     Set(Features.Methods),
     MethodFilter.any(MethodFilter.nameEquals("fromType"), MethodFilter.nameEquals("toType"))
   ))
+
+  def interfaces : List[ClassConfig] = List(
+    classOf[LogHandler],
+    classOf[SOEHandler],
+    classOf[MasterApplication],
+    classOf[CommandProcessor],
+    classOf[Stack],
+    classOf[ChannelListener],
+    classOf[CommandHandler]
+  ).map(c => ClassConfig(c, Set(Features.Methods)))
+
+  def javaTypes : List[ClassConfig] = List(
+    ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodFilter.nameEquals("toMillis")),
+    ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), listMethods, listConstructors),
+    ClassConfig(classOf[java.lang.Iterable[_]], Set(Features.Methods), MethodFilter.nameEquals("iterator")),
+    ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next"))
+  )
 
   // all the classes to generate C++ info on
   def custom : List[ClassConfig] = List(
@@ -39,9 +57,7 @@ object Generator {
     ClassConfig(classOf[MasterConfig], Set(Features.Fields)),
     ClassConfig(classOf[LinkLayerConfig], Set(Features.Fields)),
     ClassConfig(classOf[LogEntry], Set(Features.Constructors)),
-    ClassConfig(classOf[LogHandler], Set(Features.Methods)),
     ClassConfig(classOf[ClassField], Set(Features.Fields)),
-    ClassConfig(classOf[SOEHandler], Set(Features.Methods)),
     ClassConfig(classOf[HeaderInfo], Set(Features.Constructors)),
     ClassConfig(classOf[IndexedValue[_]], Set(Features.Constructors, Features.Fields)),
     ClassConfig(classOf[BinaryInput], Set(Features.Constructors)),
@@ -51,33 +67,25 @@ object Generator {
     ClassConfig(classOf[FrozenCounter], Set(Features.Constructors)),
     ClassConfig(classOf[BinaryOutputStatus], Set(Features.Constructors)),
     ClassConfig(classOf[AnalogOutputStatus], Set(Features.Constructors)),
-    ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodFilter.nameEquals("toMillis")),
-    ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), listMethods, listConstructors),
-    ClassConfig(classOf[MasterApplication], Set(Features.Methods)),
     ClassConfig(classOf[IINField], Set(Features.Constructors)),
     ClassConfig(classOf[TaskId], Set(Features.Constructors)),
     ClassConfig(classOf[TaskInfo], Set(Features.Constructors)),
-    ClassConfig(classOf[java.lang.Iterable[_]], Set(Features.Methods), MethodFilter.nameEquals("iterator")),
-    ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next")),
     ClassConfig(classOf[ClassAssignment], Set(Features.Fields)),
     ClassConfig(classOf[Range], Set(Features.Fields, Features.Methods), MethodFilter.nameEquals("isDefined")),
-    ClassConfig(classOf[CommandProcessor], Set(Features.Methods)),
-    ClassConfig(classOf[Stack], Set(Features.Methods)),
     ClassConfig(classOf[CommandBuilderImpl], Set(Features.Fields, Features.Constructors)),
     ClassConfig(classOf[CommandHeaders], Set(Features.Methods)),
     ClassConfig(classOf[CommandTaskResult], Set(Features.Constructors)),
     ClassConfig(classOf[CommandPointResult], Set(Features.Constructors)),
     ClassConfig(classOf[CompletableFuture[_]], Set(Features.Methods), MethodFilter.nameEquals("complete")),
-    ClassConfig(classOf[ControlRelayOutputBlock], Set(Features.Fields)),
-    ClassConfig(classOf[AnalogOutputInt16], Set(Features.Fields)),
-    ClassConfig(classOf[AnalogOutputInt32], Set(Features.Fields)),
-    ClassConfig(classOf[AnalogOutputFloat32], Set(Features.Fields)),
-    ClassConfig(classOf[AnalogOutputDouble64], Set(Features.Fields)),
-    ClassConfig(classOf[ChannelListener], Set(Features.Methods)),
+    ClassConfig(classOf[ControlRelayOutputBlock], Set(Features.Fields, Features.Constructors)),
+    ClassConfig(classOf[AnalogOutputInt16], Set(Features.Fields, Features.Constructors)),
+    ClassConfig(classOf[AnalogOutputInt32], Set(Features.Fields, Features.Constructors)),
+    ClassConfig(classOf[AnalogOutputFloat32], Set(Features.Fields, Features.Constructors)),
+    ClassConfig(classOf[AnalogOutputDouble64], Set(Features.Fields, Features.Constructors)),
     ClassConfig(classOf[Header], Set(Features.Fields))
   )
 
-  def classes = (enumerations ::: custom).sortBy(_.clazz.getSimpleName)
+  def classes = (enumerations ::: interfaces ::: javaTypes ::: custom).sortBy(_.clazz.getSimpleName)
 
   def main(args: Array[String]): Unit = {
 

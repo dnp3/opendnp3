@@ -22,33 +22,36 @@
 
 namespace jni
 {
-    bool GroupVariation::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/GroupVariation;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool GroupVariation::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/GroupVariation;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-        if(!this->toTypeMethod) return false;
+            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
+            if(!this->fromTypeMethod) return false;
 
-        this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/GroupVariation;");
-        if(!this->fromTypeMethod) return false;
+            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
+            if(!this->toTypeMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void GroupVariation::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void GroupVariation::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jint GroupVariation::toType(JNIEnv* env, jobject instance)
-    {
-        return env->CallIntMethod(instance, this->toTypeMethod);
-    }
+        jobject GroupVariation::fromType(JNIEnv* env, jint arg0)
+        {
+            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+        }
 
-    jobject GroupVariation::fromType(JNIEnv* env, jint arg0)
-    {
-        return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+        jint GroupVariation::toType(JNIEnv* env, jobject instance)
+        {
+            return env->CallIntMethod(instance, this->toTypeMethod);
+        }
     }
 }

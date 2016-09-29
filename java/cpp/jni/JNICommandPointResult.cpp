@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool CommandPointResult::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/CommandPointResult;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool CommandPointResult::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/CommandPointResult;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init4Constructor = env->GetMethodID(this->clazz, "<init>", "(IILcom/automatak/dnp3/enums/CommandPointState;Lcom/automatak/dnp3/enums/CommandStatus;)V");
-        if(!this->init4Constructor) return false;
+            this->init4Constructor = env->GetMethodID(this->clazz, "<init>", "(IILcom/automatak/dnp3/enums/CommandPointState;Lcom/automatak/dnp3/enums/CommandStatus;)V");
+            if(!this->init4Constructor) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void CommandPointResult::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void CommandPointResult::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject CommandPointResult::init4(JNIEnv* env, jint arg0, jint arg1, jobject arg2, jobject arg3)
-    {
-        return env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3);
+        jobject CommandPointResult::init4(JNIEnv* env, jint arg0, jint arg1, jobject arg2, jobject arg3)
+        {
+            return env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3);
+        }
     }
 }

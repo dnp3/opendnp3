@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class LogEntry
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class LogEntry
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // constructor methods
-        jobject init4(JNIEnv* env, jint arg0, jstring arg1, jstring arg2, jstring arg3);
+            // constructor methods
+            jobject init4(JNIEnv* env, jint arg0, jstring arg1, jstring arg2, jstring arg3);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // constructor method ids
-        jmethodID init4Constructor = nullptr;
-    };
+            // constructor method ids
+            jmethodID init4Constructor = nullptr;
+        };
+    }
 }
 
 #endif

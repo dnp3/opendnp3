@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool ChannelListener::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/ChannelListener;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool ChannelListener::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/ChannelListener;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->onStateChangeMethod = env->GetMethodID(this->clazz, "onStateChange", "(Lcom/automatak/dnp3/enums/ChannelState;)V");
-        if(!this->onStateChangeMethod) return false;
+            this->onStateChangeMethod = env->GetMethodID(this->clazz, "onStateChange", "(Lcom/automatak/dnp3/enums/ChannelState;)V");
+            if(!this->onStateChangeMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void ChannelListener::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void ChannelListener::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    void ChannelListener::onStateChange(JNIEnv* env, jobject instance, jobject arg0)
-    {
-        env->CallVoidMethod(instance, this->onStateChangeMethod, arg0);
+        void ChannelListener::onStateChange(JNIEnv* env, jobject instance, jobject arg0)
+        {
+            env->CallVoidMethod(instance, this->onStateChangeMethod, arg0);
+        }
     }
 }

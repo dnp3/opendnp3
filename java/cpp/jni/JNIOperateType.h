@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIDOUBLEBIT_H
-#define OPENDNP3JAVA_JNIDOUBLEBIT_H
+#ifndef OPENDNP3JAVA_JNIOPERATETYPE_H
+#define OPENDNP3JAVA_JNIOPERATETYPE_H
 
 #include <jni.h>
 
@@ -29,7 +29,7 @@ namespace jni
 
     namespace cache
     {
-        class DoubleBit
+        class OperateType
         {
             friend struct JCache;
 

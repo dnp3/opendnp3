@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool Counter::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Counter;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool Counter::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Counter;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(JBJ)V");
-        if(!this->init3Constructor) return false;
+            this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(JBJ)V");
+            if(!this->init3Constructor) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void Counter::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void Counter::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject Counter::init3(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2)
-    {
-        return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+        jobject Counter::init3(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2)
+        {
+            return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+        }
     }
 }

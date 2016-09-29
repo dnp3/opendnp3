@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class LogHandler
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class LogHandler
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        void log(JNIEnv* env, jobject instance, jobject arg0);
+            // methods
+            void log(JNIEnv* env, jobject instance, jobject arg0);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID logMethod = nullptr;
-    };
+            // method ids
+            jmethodID logMethod = nullptr;
+        };
+    }
 }
 
 #endif

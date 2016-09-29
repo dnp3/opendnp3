@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool AnalogInput::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogInput;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool AnalogInput::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogInput;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(DBJ)V");
-        if(!this->init3Constructor) return false;
+            this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(DBJ)V");
+            if(!this->init3Constructor) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void AnalogInput::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void AnalogInput::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject AnalogInput::init3(JNIEnv* env, jdouble arg0, jbyte arg1, jlong arg2)
-    {
-        return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+        jobject AnalogInput::init3(JNIEnv* env, jdouble arg0, jbyte arg1, jlong arg2)
+        {
+            return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+        }
     }
 }

@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool CompletableFuture::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Ljava/util/concurrent/CompletableFuture;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool CompletableFuture::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Ljava/util/concurrent/CompletableFuture;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->completeMethod = env->GetMethodID(this->clazz, "complete", "(Ljava/lang/Object;)Z");
-        if(!this->completeMethod) return false;
+            this->completeMethod = env->GetMethodID(this->clazz, "complete", "(Ljava/lang/Object;)Z");
+            if(!this->completeMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void CompletableFuture::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void CompletableFuture::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jboolean CompletableFuture::complete(JNIEnv* env, jobject instance, jobject arg0)
-    {
-        return env->CallBooleanMethod(instance, this->completeMethod, arg0);
+        jboolean CompletableFuture::complete(JNIEnv* env, jobject instance, jobject arg0)
+        {
+            return env->CallBooleanMethod(instance, this->completeMethod, arg0);
+        }
     }
 }

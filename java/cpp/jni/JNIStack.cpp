@@ -22,41 +22,44 @@
 
 namespace jni
 {
-    bool Stack::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Stack;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool Stack::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Stack;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->shutdownMethod = env->GetMethodID(this->clazz, "shutdown", "()V");
-        if(!this->shutdownMethod) return false;
+            this->shutdownMethod = env->GetMethodID(this->clazz, "shutdown", "()V");
+            if(!this->shutdownMethod) return false;
 
-        this->disableMethod = env->GetMethodID(this->clazz, "disable", "()V");
-        if(!this->disableMethod) return false;
+            this->disableMethod = env->GetMethodID(this->clazz, "disable", "()V");
+            if(!this->disableMethod) return false;
 
-        this->enableMethod = env->GetMethodID(this->clazz, "enable", "()V");
-        if(!this->enableMethod) return false;
+            this->enableMethod = env->GetMethodID(this->clazz, "enable", "()V");
+            if(!this->enableMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void Stack::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void Stack::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    void Stack::shutdown(JNIEnv* env, jobject instance)
-    {
-        env->CallVoidMethod(instance, this->shutdownMethod);
-    }
+        void Stack::shutdown(JNIEnv* env, jobject instance)
+        {
+            env->CallVoidMethod(instance, this->shutdownMethod);
+        }
 
-    void Stack::disable(JNIEnv* env, jobject instance)
-    {
-        env->CallVoidMethod(instance, this->disableMethod);
-    }
+        void Stack::disable(JNIEnv* env, jobject instance)
+        {
+            env->CallVoidMethod(instance, this->disableMethod);
+        }
 
-    void Stack::enable(JNIEnv* env, jobject instance)
-    {
-        env->CallVoidMethod(instance, this->enableMethod);
+        void Stack::enable(JNIEnv* env, jobject instance)
+        {
+            env->CallVoidMethod(instance, this->enableMethod);
+        }
     }
 }

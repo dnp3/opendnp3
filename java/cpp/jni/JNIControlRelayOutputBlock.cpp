@@ -22,57 +22,68 @@
 
 namespace jni
 {
-    bool ControlRelayOutputBlock::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/ControlRelayOutputBlock;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool ControlRelayOutputBlock::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/ControlRelayOutputBlock;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->functionField = env->GetFieldID(this->clazz, "function", "Lcom/automatak/dnp3/enums/ControlCode;");
-        if(!this->functionField) return false;
+            this->init5Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/ControlCode;SJJLcom/automatak/dnp3/enums/CommandStatus;)V");
+            if(!this->init5Constructor) return false;
 
-        this->countField = env->GetFieldID(this->clazz, "count", "S");
-        if(!this->countField) return false;
+            this->functionField = env->GetFieldID(this->clazz, "function", "Lcom/automatak/dnp3/enums/ControlCode;");
+            if(!this->functionField) return false;
 
-        this->onTimeMsField = env->GetFieldID(this->clazz, "onTimeMs", "J");
-        if(!this->onTimeMsField) return false;
+            this->countField = env->GetFieldID(this->clazz, "count", "S");
+            if(!this->countField) return false;
 
-        this->offTimeMsField = env->GetFieldID(this->clazz, "offTimeMs", "J");
-        if(!this->offTimeMsField) return false;
+            this->onTimeMsField = env->GetFieldID(this->clazz, "onTimeMs", "J");
+            if(!this->onTimeMsField) return false;
 
-        this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
-        if(!this->statusField) return false;
+            this->offTimeMsField = env->GetFieldID(this->clazz, "offTimeMs", "J");
+            if(!this->offTimeMsField) return false;
 
-        return true;
-    }
+            this->statusField = env->GetFieldID(this->clazz, "status", "Lcom/automatak/dnp3/enums/CommandStatus;");
+            if(!this->statusField) return false;
 
-    void ControlRelayOutputBlock::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+            return true;
+        }
 
-    jobject ControlRelayOutputBlock::getfunction(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->functionField);
-    }
+        void ControlRelayOutputBlock::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jshort ControlRelayOutputBlock::getcount(JNIEnv* env, jobject instance)
-    {
-        return env->GetShortField(instance, this->countField);
-    }
+        jobject ControlRelayOutputBlock::init5(JNIEnv* env, jobject arg0, jshort arg1, jlong arg2, jlong arg3, jobject arg4)
+        {
+            return env->NewObject(this->clazz, this->init5Constructor, arg0, arg1, arg2, arg3, arg4);
+        }
 
-    jlong ControlRelayOutputBlock::getonTimeMs(JNIEnv* env, jobject instance)
-    {
-        return env->GetLongField(instance, this->onTimeMsField);
-    }
+        jobject ControlRelayOutputBlock::getfunction(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->functionField);
+        }
 
-    jlong ControlRelayOutputBlock::getoffTimeMs(JNIEnv* env, jobject instance)
-    {
-        return env->GetLongField(instance, this->offTimeMsField);
-    }
+        jshort ControlRelayOutputBlock::getcount(JNIEnv* env, jobject instance)
+        {
+            return env->GetShortField(instance, this->countField);
+        }
 
-    jobject ControlRelayOutputBlock::getstatus(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->statusField);
+        jlong ControlRelayOutputBlock::getonTimeMs(JNIEnv* env, jobject instance)
+        {
+            return env->GetLongField(instance, this->onTimeMsField);
+        }
+
+        jlong ControlRelayOutputBlock::getoffTimeMs(JNIEnv* env, jobject instance)
+        {
+            return env->GetLongField(instance, this->offTimeMsField);
+        }
+
+        jobject ControlRelayOutputBlock::getstatus(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->statusField);
+        }
     }
 }

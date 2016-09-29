@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class ChannelListener
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class ChannelListener
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        void onStateChange(JNIEnv* env, jobject instance, jobject arg0);
+            // methods
+            void onStateChange(JNIEnv* env, jobject instance, jobject arg0);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID onStateChangeMethod = nullptr;
-    };
+            // method ids
+            jmethodID onStateChangeMethod = nullptr;
+        };
+    }
 }
 
 #endif

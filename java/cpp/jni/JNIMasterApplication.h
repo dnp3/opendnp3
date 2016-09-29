@@ -25,35 +25,40 @@
 
 namespace jni
 {
-    class MasterApplication
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class MasterApplication
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        jobject getClassAssignments(JNIEnv* env, jobject instance);
-        jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
-        jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
-        void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
-        void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-        void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
+            // methods
+            jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
+            jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
+            jobject getClassAssignments(JNIEnv* env, jobject instance);
+            void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
+            void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID getClassAssignmentsMethod = nullptr;
-        jmethodID assignClassDuringStartupMethod = nullptr;
-        jmethodID getMillisecondsSinceEpochMethod = nullptr;
-        jmethodID onTaskCompleteMethod = nullptr;
-        jmethodID onTaskStartMethod = nullptr;
-        jmethodID onReceiveIINMethod = nullptr;
-    };
+            // method ids
+            jmethodID getMillisecondsSinceEpochMethod = nullptr;
+            jmethodID assignClassDuringStartupMethod = nullptr;
+            jmethodID getClassAssignmentsMethod = nullptr;
+            jmethodID onReceiveIINMethod = nullptr;
+            jmethodID onTaskStartMethod = nullptr;
+            jmethodID onTaskCompleteMethod = nullptr;
+        };
+    }
 }
 
 #endif

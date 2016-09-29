@@ -25,31 +25,36 @@
 
 namespace jni
 {
-    class ClassAssignment
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class ClassAssignment
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // field getter methods
-        jbyte getgroup(JNIEnv* env, jobject instance);
-        jbyte getvariation(JNIEnv* env, jobject instance);
-        jobject getclazz(JNIEnv* env, jobject instance);
-        jobject getrange(JNIEnv* env, jobject instance);
+            // field getter methods
+            jbyte getgroup(JNIEnv* env, jobject instance);
+            jbyte getvariation(JNIEnv* env, jobject instance);
+            jobject getclazz(JNIEnv* env, jobject instance);
+            jobject getrange(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // field ids
-        jfieldID groupField = nullptr;
-        jfieldID variationField = nullptr;
-        jfieldID clazzField = nullptr;
-        jfieldID rangeField = nullptr;
-    };
+            // field ids
+            jfieldID groupField = nullptr;
+            jfieldID variationField = nullptr;
+            jfieldID clazzField = nullptr;
+            jfieldID rangeField = nullptr;
+        };
+    }
 }
 
 #endif

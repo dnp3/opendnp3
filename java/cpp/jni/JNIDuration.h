@@ -25,25 +25,30 @@
 
 namespace jni
 {
-    class Duration
+    struct JCache;
+
+    namespace cache
     {
-        friend struct JCache;
+        class Duration
+        {
+            friend struct JCache;
 
-        bool init(JNIEnv* env);
-        void cleanup(JNIEnv* env);
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-        public:
+            public:
 
-        // methods
-        jlong toMillis(JNIEnv* env, jobject instance);
+            // methods
+            jlong toMillis(JNIEnv* env, jobject instance);
 
-        private:
+            private:
 
-        jclass clazz = nullptr;
+            jclass clazz = nullptr;
 
-        // method ids
-        jmethodID toMillisMethod = nullptr;
-    };
+            // method ids
+            jmethodID toMillisMethod = nullptr;
+        };
+    }
 }
 
 #endif

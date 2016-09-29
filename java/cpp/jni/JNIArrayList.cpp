@@ -22,33 +22,36 @@
 
 namespace jni
 {
-    bool ArrayList::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Ljava/util/ArrayList;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool ArrayList::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Ljava/util/ArrayList;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init1Constructor = env->GetMethodID(this->clazz, "<init>", "(I)V");
-        if(!this->init1Constructor) return false;
+            this->init1Constructor = env->GetMethodID(this->clazz, "<init>", "(I)V");
+            if(!this->init1Constructor) return false;
 
-        this->addMethod = env->GetMethodID(this->clazz, "add", "(Ljava/lang/Object;)Z");
-        if(!this->addMethod) return false;
+            this->addMethod = env->GetMethodID(this->clazz, "add", "(Ljava/lang/Object;)Z");
+            if(!this->addMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void ArrayList::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void ArrayList::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jboolean ArrayList::add(JNIEnv* env, jobject instance, jobject arg0)
-    {
-        return env->CallBooleanMethod(instance, this->addMethod, arg0);
-    }
+        jboolean ArrayList::add(JNIEnv* env, jobject instance, jobject arg0)
+        {
+            return env->CallBooleanMethod(instance, this->addMethod, arg0);
+        }
 
-    jobject ArrayList::init1(JNIEnv* env, jint arg0)
-    {
-        return env->NewObject(this->clazz, this->init1Constructor, arg0);
+        jobject ArrayList::init1(JNIEnv* env, jint arg0)
+        {
+            return env->NewObject(this->clazz, this->init1Constructor, arg0);
+        }
     }
 }

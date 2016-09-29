@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool CommandHeaders::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/CommandHeaders;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool CommandHeaders::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/CommandHeaders;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->buildMethod = env->GetMethodID(this->clazz, "build", "(Lcom/automatak/dnp3/CommandBuilder;)V");
-        if(!this->buildMethod) return false;
+            this->buildMethod = env->GetMethodID(this->clazz, "build", "(Lcom/automatak/dnp3/CommandBuilder;)V");
+            if(!this->buildMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void CommandHeaders::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void CommandHeaders::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    void CommandHeaders::build(JNIEnv* env, jobject instance, jobject arg0)
-    {
-        env->CallVoidMethod(instance, this->buildMethod, arg0);
+        void CommandHeaders::build(JNIEnv* env, jobject instance, jobject arg0)
+        {
+            env->CallVoidMethod(instance, this->buildMethod, arg0);
+        }
     }
 }

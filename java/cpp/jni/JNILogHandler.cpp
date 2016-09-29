@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool LogHandler::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/LogHandler;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool LogHandler::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/LogHandler;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->logMethod = env->GetMethodID(this->clazz, "log", "(Lcom/automatak/dnp3/LogEntry;)V");
-        if(!this->logMethod) return false;
+            this->logMethod = env->GetMethodID(this->clazz, "log", "(Lcom/automatak/dnp3/LogEntry;)V");
+            if(!this->logMethod) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void LogHandler::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void LogHandler::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    void LogHandler::log(JNIEnv* env, jobject instance, jobject arg0)
-    {
-        env->CallVoidMethod(instance, this->logMethod, arg0);
+        void LogHandler::log(JNIEnv* env, jobject instance, jobject arg0)
+        {
+            env->CallVoidMethod(instance, this->logMethod, arg0);
+        }
     }
 }

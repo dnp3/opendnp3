@@ -22,65 +22,68 @@
 
 namespace jni
 {
-    bool Header::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Header;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool Header::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Header;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->groupField = env->GetFieldID(this->clazz, "group", "B");
-        if(!this->groupField) return false;
+            this->groupField = env->GetFieldID(this->clazz, "group", "B");
+            if(!this->groupField) return false;
 
-        this->variationField = env->GetFieldID(this->clazz, "variation", "B");
-        if(!this->variationField) return false;
+            this->variationField = env->GetFieldID(this->clazz, "variation", "B");
+            if(!this->variationField) return false;
 
-        this->qualifierField = env->GetFieldID(this->clazz, "qualifier", "Lcom/automatak/dnp3/enums/QualifierCode;");
-        if(!this->qualifierField) return false;
+            this->qualifierField = env->GetFieldID(this->clazz, "qualifier", "Lcom/automatak/dnp3/enums/QualifierCode;");
+            if(!this->qualifierField) return false;
 
-        this->countField = env->GetFieldID(this->clazz, "count", "I");
-        if(!this->countField) return false;
+            this->countField = env->GetFieldID(this->clazz, "count", "I");
+            if(!this->countField) return false;
 
-        this->startField = env->GetFieldID(this->clazz, "start", "I");
-        if(!this->startField) return false;
+            this->startField = env->GetFieldID(this->clazz, "start", "I");
+            if(!this->startField) return false;
 
-        this->stopField = env->GetFieldID(this->clazz, "stop", "I");
-        if(!this->stopField) return false;
+            this->stopField = env->GetFieldID(this->clazz, "stop", "I");
+            if(!this->stopField) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void Header::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void Header::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jbyte Header::getgroup(JNIEnv* env, jobject instance)
-    {
-        return env->GetByteField(instance, this->groupField);
-    }
+        jbyte Header::getgroup(JNIEnv* env, jobject instance)
+        {
+            return env->GetByteField(instance, this->groupField);
+        }
 
-    jbyte Header::getvariation(JNIEnv* env, jobject instance)
-    {
-        return env->GetByteField(instance, this->variationField);
-    }
+        jbyte Header::getvariation(JNIEnv* env, jobject instance)
+        {
+            return env->GetByteField(instance, this->variationField);
+        }
 
-    jobject Header::getqualifier(JNIEnv* env, jobject instance)
-    {
-        return env->GetObjectField(instance, this->qualifierField);
-    }
+        jobject Header::getqualifier(JNIEnv* env, jobject instance)
+        {
+            return env->GetObjectField(instance, this->qualifierField);
+        }
 
-    jint Header::getcount(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->countField);
-    }
+        jint Header::getcount(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->countField);
+        }
 
-    jint Header::getstart(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->startField);
-    }
+        jint Header::getstart(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->startField);
+        }
 
-    jint Header::getstop(JNIEnv* env, jobject instance)
-    {
-        return env->GetIntField(instance, this->stopField);
+        jint Header::getstop(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->stopField);
+        }
     }
 }

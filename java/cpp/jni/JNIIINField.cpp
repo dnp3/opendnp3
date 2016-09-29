@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool IINField::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/IINField;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool IINField::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/IINField;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(BB)V");
-        if(!this->init2Constructor) return false;
+            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(BB)V");
+            if(!this->init2Constructor) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void IINField::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void IINField::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject IINField::init2(JNIEnv* env, jbyte arg0, jbyte arg1)
-    {
-        return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+        jobject IINField::init2(JNIEnv* env, jbyte arg0, jbyte arg1)
+        {
+            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+        }
     }
 }

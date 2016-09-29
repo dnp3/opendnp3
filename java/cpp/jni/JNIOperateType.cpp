@@ -18,32 +18,40 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNITaskId.h"
+#include "JNIOperateType.h"
 
 namespace jni
 {
     namespace cache
     {
-        bool TaskId::init(JNIEnv* env)
+        bool OperateType::init(JNIEnv* env)
         {
-            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/TaskId;");
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/OperateType;");
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(IZ)V");
-            if(!this->init2Constructor) return false;
+            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/OperateType;");
+            if(!this->fromTypeMethod) return false;
+
+            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
+            if(!this->toTypeMethod) return false;
 
             return true;
         }
 
-        void TaskId::cleanup(JNIEnv* env)
+        void OperateType::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject TaskId::init2(JNIEnv* env, jint arg0, jboolean arg1)
+        jobject OperateType::fromType(JNIEnv* env, jint arg0)
         {
-            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+        }
+
+        jint OperateType::toType(JNIEnv* env, jobject instance)
+        {
+            return env->CallIntMethod(instance, this->toTypeMethod);
         }
     }
 }

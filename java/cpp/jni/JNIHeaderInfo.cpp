@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool HeaderInfo::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/HeaderInfo;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool HeaderInfo::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/HeaderInfo;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init6Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/GroupVariation;Lcom/automatak/dnp3/enums/QualifierCode;Lcom/automatak/dnp3/enums/TimestampMode;ZZI)V");
-        if(!this->init6Constructor) return false;
+            this->init6Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/GroupVariation;Lcom/automatak/dnp3/enums/QualifierCode;Lcom/automatak/dnp3/enums/TimestampMode;ZZI)V");
+            if(!this->init6Constructor) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void HeaderInfo::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void HeaderInfo::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject HeaderInfo::init6(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2, jboolean arg3, jboolean arg4, jint arg5)
-    {
-        return env->NewObject(this->clazz, this->init6Constructor, arg0, arg1, arg2, arg3, arg4, arg5);
+        jobject HeaderInfo::init6(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2, jboolean arg3, jboolean arg4, jint arg5)
+        {
+            return env->NewObject(this->clazz, this->init6Constructor, arg0, arg1, arg2, arg3, arg4, arg5);
+        }
     }
 }

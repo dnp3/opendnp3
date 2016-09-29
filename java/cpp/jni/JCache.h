@@ -37,6 +37,7 @@
 #include "JNIClassAssignment.h"
 #include "JNIClassField.h"
 #include "JNICommandBuilderImpl.h"
+#include "JNICommandHandler.h"
 #include "JNICommandHeaders.h"
 #include "JNICommandPointResult.h"
 #include "JNICommandPointState.h"
@@ -65,6 +66,7 @@
 #include "JNIMasterConfig.h"
 #include "JNIMasterStackConfig.h"
 #include "JNIMasterTaskType.h"
+#include "JNIOperateType.h"
 #include "JNIPointClass.h"
 #include "JNIQualifierCode.h"
 #include "JNIRange.h"
@@ -83,58 +85,60 @@ namespace jni
         static bool init(JNIEnv* env);
         static void cleanup(JNIEnv* env);
 
-        static jni::AnalogInput AnalogInput;
-        static jni::AnalogOutputDouble64 AnalogOutputDouble64;
-        static jni::AnalogOutputFloat32 AnalogOutputFloat32;
-        static jni::AnalogOutputInt16 AnalogOutputInt16;
-        static jni::AnalogOutputInt32 AnalogOutputInt32;
-        static jni::AnalogOutputStatus AnalogOutputStatus;
-        static jni::ArrayList ArrayList;
-        static jni::BinaryInput BinaryInput;
-        static jni::BinaryOutputStatus BinaryOutputStatus;
-        static jni::ChannelListener ChannelListener;
-        static jni::ChannelState ChannelState;
-        static jni::ClassAssignment ClassAssignment;
-        static jni::ClassField ClassField;
-        static jni::CommandBuilderImpl CommandBuilderImpl;
-        static jni::CommandHeaders CommandHeaders;
-        static jni::CommandPointResult CommandPointResult;
-        static jni::CommandPointState CommandPointState;
-        static jni::CommandProcessor CommandProcessor;
-        static jni::CommandStatus CommandStatus;
-        static jni::CommandTaskResult CommandTaskResult;
-        static jni::CompletableFuture CompletableFuture;
-        static jni::ControlCode ControlCode;
-        static jni::ControlRelayOutputBlock ControlRelayOutputBlock;
-        static jni::Counter Counter;
-        static jni::DoubleBit DoubleBit;
-        static jni::DoubleBitBinaryInput DoubleBitBinaryInput;
-        static jni::Duration Duration;
-        static jni::FrozenCounter FrozenCounter;
-        static jni::GroupVariation GroupVariation;
-        static jni::Header Header;
-        static jni::HeaderInfo HeaderInfo;
-        static jni::IINField IINField;
-        static jni::IndexedValue IndexedValue;
-        static jni::Iterable Iterable;
-        static jni::Iterator Iterator;
-        static jni::LinkLayerConfig LinkLayerConfig;
-        static jni::LogEntry LogEntry;
-        static jni::LogHandler LogHandler;
-        static jni::MasterApplication MasterApplication;
-        static jni::MasterConfig MasterConfig;
-        static jni::MasterStackConfig MasterStackConfig;
-        static jni::MasterTaskType MasterTaskType;
-        static jni::PointClass PointClass;
-        static jni::QualifierCode QualifierCode;
-        static jni::Range Range;
-        static jni::SOEHandler SOEHandler;
-        static jni::Stack Stack;
-        static jni::TaskCompletion TaskCompletion;
-        static jni::TaskId TaskId;
-        static jni::TaskInfo TaskInfo;
-        static jni::TimeSyncMode TimeSyncMode;
-        static jni::TimestampMode TimestampMode;
+        static cache::AnalogInput AnalogInput;
+        static cache::AnalogOutputDouble64 AnalogOutputDouble64;
+        static cache::AnalogOutputFloat32 AnalogOutputFloat32;
+        static cache::AnalogOutputInt16 AnalogOutputInt16;
+        static cache::AnalogOutputInt32 AnalogOutputInt32;
+        static cache::AnalogOutputStatus AnalogOutputStatus;
+        static cache::ArrayList ArrayList;
+        static cache::BinaryInput BinaryInput;
+        static cache::BinaryOutputStatus BinaryOutputStatus;
+        static cache::ChannelListener ChannelListener;
+        static cache::ChannelState ChannelState;
+        static cache::ClassAssignment ClassAssignment;
+        static cache::ClassField ClassField;
+        static cache::CommandBuilderImpl CommandBuilderImpl;
+        static cache::CommandHandler CommandHandler;
+        static cache::CommandHeaders CommandHeaders;
+        static cache::CommandPointResult CommandPointResult;
+        static cache::CommandPointState CommandPointState;
+        static cache::CommandProcessor CommandProcessor;
+        static cache::CommandStatus CommandStatus;
+        static cache::CommandTaskResult CommandTaskResult;
+        static cache::CompletableFuture CompletableFuture;
+        static cache::ControlCode ControlCode;
+        static cache::ControlRelayOutputBlock ControlRelayOutputBlock;
+        static cache::Counter Counter;
+        static cache::DoubleBit DoubleBit;
+        static cache::DoubleBitBinaryInput DoubleBitBinaryInput;
+        static cache::Duration Duration;
+        static cache::FrozenCounter FrozenCounter;
+        static cache::GroupVariation GroupVariation;
+        static cache::Header Header;
+        static cache::HeaderInfo HeaderInfo;
+        static cache::IINField IINField;
+        static cache::IndexedValue IndexedValue;
+        static cache::Iterable Iterable;
+        static cache::Iterator Iterator;
+        static cache::LinkLayerConfig LinkLayerConfig;
+        static cache::LogEntry LogEntry;
+        static cache::LogHandler LogHandler;
+        static cache::MasterApplication MasterApplication;
+        static cache::MasterConfig MasterConfig;
+        static cache::MasterStackConfig MasterStackConfig;
+        static cache::MasterTaskType MasterTaskType;
+        static cache::OperateType OperateType;
+        static cache::PointClass PointClass;
+        static cache::QualifierCode QualifierCode;
+        static cache::Range Range;
+        static cache::SOEHandler SOEHandler;
+        static cache::Stack Stack;
+        static cache::TaskCompletion TaskCompletion;
+        static cache::TaskId TaskId;
+        static cache::TaskInfo TaskInfo;
+        static cache::TimeSyncMode TimeSyncMode;
+        static cache::TimestampMode TimestampMode;
     };
 }
 

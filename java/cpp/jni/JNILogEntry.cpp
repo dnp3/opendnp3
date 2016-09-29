@@ -22,25 +22,28 @@
 
 namespace jni
 {
-    bool LogEntry::init(JNIEnv* env)
+    namespace cache
     {
-        auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/LogEntry;");
-        this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-        env->DeleteLocalRef(clazzTemp);
+        bool LogEntry::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/LogEntry;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-        this->init4Constructor = env->GetMethodID(this->clazz, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
-        if(!this->init4Constructor) return false;
+            this->init4Constructor = env->GetMethodID(this->clazz, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
+            if(!this->init4Constructor) return false;
 
-        return true;
-    }
+            return true;
+        }
 
-    void LogEntry::cleanup(JNIEnv* env)
-    {
-        env->DeleteGlobalRef(this->clazz);
-    }
+        void LogEntry::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-    jobject LogEntry::init4(JNIEnv* env, jint arg0, jstring arg1, jstring arg2, jstring arg3)
-    {
-        return env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3);
+        jobject LogEntry::init4(JNIEnv* env, jint arg0, jstring arg1, jstring arg2, jstring arg3)
+        {
+            return env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3);
+        }
     }
 }
