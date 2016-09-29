@@ -27,7 +27,24 @@ object Generator {
     classOf[ChannelState],
     classOf[PointClass],
     classOf[OperateType],
-    classOf[AssignClassType]
+    classOf[AssignClassType],
+
+    classOf[StaticBinaryVariation],
+    classOf[StaticDoubleBinaryVariation],
+    classOf[StaticAnalogVariation],
+    classOf[StaticCounterVariation],
+    classOf[StaticFrozenCounterVariation],
+    classOf[StaticAnalogOutputStatusVariation],
+    classOf[StaticBinaryOutputStatusVariation],
+
+    classOf[EventBinaryVariation],
+    classOf[EventDoubleBinaryVariation],
+    classOf[EventAnalogVariation],
+    classOf[EventCounterVariation],
+    classOf[EventFrozenCounterVariation],
+    classOf[EventAnalogOutputStatusVariation],
+    classOf[EventBinaryOutputStatusVariation]
+
   ).map(e => ClassConfig(
     e,
     Set(Features.Methods),
@@ -88,7 +105,15 @@ object Generator {
     ClassConfig(classOf[Header], Set(Features.Fields)),
     ClassConfig(classOf[ApplicationIIN], Set(Features.Fields)),
     ClassConfig(classOf[EventBufferConfig], Set(Features.Fields)),
-    ClassConfig(classOf[DatabaseConfig], Set(Features.Fields))
+    ClassConfig(classOf[DatabaseConfig], Set(Features.Fields)),
+    ClassConfig(classOf[EventConfig], Set(Features.Fields)),
+    ClassConfig(classOf[BinaryConfig], Set(Features.Fields)),
+    ClassConfig(classOf[DoubleBinaryConfig], Set(Features.Fields)),
+    ClassConfig(classOf[AnalogConfig], Set(Features.Fields)),
+    ClassConfig(classOf[CounterConfig], Set(Features.Fields)),
+    ClassConfig(classOf[FrozenCounterConfig], Set(Features.Fields)),
+    ClassConfig(classOf[BinaryOutputStatusConfig], Set(Features.Fields)),
+    ClassConfig(classOf[AnalogOutputStatusConfig], Set(Features.Fields))
   )
 
   def classes = (enumerations ::: interfaces ::: javaTypes ::: custom).sortBy(_.clazz.getSimpleName)

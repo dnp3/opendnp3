@@ -23,17 +23,21 @@
 
 #include "openpal/util/Uncopyable.h"
 
+#include "JNIAnalogConfig.h"
 #include "JNIAnalogInput.h"
 #include "JNIAnalogOutputDouble64.h"
 #include "JNIAnalogOutputFloat32.h"
 #include "JNIAnalogOutputInt16.h"
 #include "JNIAnalogOutputInt32.h"
 #include "JNIAnalogOutputStatus.h"
+#include "JNIAnalogOutputStatusConfig.h"
 #include "JNIApplicationIIN.h"
 #include "JNIArrayList.h"
 #include "JNIAssignClassType.h"
+#include "JNIBinaryConfig.h"
 #include "JNIBinaryInput.h"
 #include "JNIBinaryOutputStatus.h"
+#include "JNIBinaryOutputStatusConfig.h"
 #include "JNIChannelListener.h"
 #include "JNIChannelState.h"
 #include "JNIClassAssignment.h"
@@ -48,12 +52,23 @@
 #include "JNIControlCode.h"
 #include "JNIControlRelayOutputBlock.h"
 #include "JNICounter.h"
+#include "JNICounterConfig.h"
 #include "JNIDatabaseConfig.h"
+#include "JNIDoubleBinaryConfig.h"
 #include "JNIDoubleBit.h"
 #include "JNIDoubleBitBinaryInput.h"
 #include "JNIDuration.h"
+#include "JNIEventAnalogOutputStatusVariation.h"
+#include "JNIEventAnalogVariation.h"
+#include "JNIEventBinaryOutputStatusVariation.h"
+#include "JNIEventBinaryVariation.h"
 #include "JNIEventBufferConfig.h"
+#include "JNIEventConfig.h"
+#include "JNIEventCounterVariation.h"
+#include "JNIEventDoubleBinaryVariation.h"
+#include "JNIEventFrozenCounterVariation.h"
 #include "JNIFrozenCounter.h"
+#include "JNIFrozenCounterConfig.h"
 #include "JNIGroupVariation.h"
 #include "JNIHeader.h"
 #include "JNIHeaderInfo.h"
@@ -79,6 +94,13 @@
 #include "JNIRange.h"
 #include "JNISOEHandler.h"
 #include "JNIStack.h"
+#include "JNIStaticAnalogOutputStatusVariation.h"
+#include "JNIStaticAnalogVariation.h"
+#include "JNIStaticBinaryOutputStatusVariation.h"
+#include "JNIStaticBinaryVariation.h"
+#include "JNIStaticCounterVariation.h"
+#include "JNIStaticDoubleBinaryVariation.h"
+#include "JNIStaticFrozenCounterVariation.h"
 #include "JNITaskCompletion.h"
 #include "JNITaskId.h"
 #include "JNITaskInfo.h"
@@ -92,17 +114,21 @@ namespace jni
         static bool init(JNIEnv* env);
         static void cleanup(JNIEnv* env);
 
+        static cache::AnalogConfig AnalogConfig;
         static cache::AnalogInput AnalogInput;
         static cache::AnalogOutputDouble64 AnalogOutputDouble64;
         static cache::AnalogOutputFloat32 AnalogOutputFloat32;
         static cache::AnalogOutputInt16 AnalogOutputInt16;
         static cache::AnalogOutputInt32 AnalogOutputInt32;
         static cache::AnalogOutputStatus AnalogOutputStatus;
+        static cache::AnalogOutputStatusConfig AnalogOutputStatusConfig;
         static cache::ApplicationIIN ApplicationIIN;
         static cache::ArrayList ArrayList;
         static cache::AssignClassType AssignClassType;
+        static cache::BinaryConfig BinaryConfig;
         static cache::BinaryInput BinaryInput;
         static cache::BinaryOutputStatus BinaryOutputStatus;
+        static cache::BinaryOutputStatusConfig BinaryOutputStatusConfig;
         static cache::ChannelListener ChannelListener;
         static cache::ChannelState ChannelState;
         static cache::ClassAssignment ClassAssignment;
@@ -117,12 +143,23 @@ namespace jni
         static cache::ControlCode ControlCode;
         static cache::ControlRelayOutputBlock ControlRelayOutputBlock;
         static cache::Counter Counter;
+        static cache::CounterConfig CounterConfig;
         static cache::DatabaseConfig DatabaseConfig;
+        static cache::DoubleBinaryConfig DoubleBinaryConfig;
         static cache::DoubleBit DoubleBit;
         static cache::DoubleBitBinaryInput DoubleBitBinaryInput;
         static cache::Duration Duration;
+        static cache::EventAnalogOutputStatusVariation EventAnalogOutputStatusVariation;
+        static cache::EventAnalogVariation EventAnalogVariation;
+        static cache::EventBinaryOutputStatusVariation EventBinaryOutputStatusVariation;
+        static cache::EventBinaryVariation EventBinaryVariation;
         static cache::EventBufferConfig EventBufferConfig;
+        static cache::EventConfig EventConfig;
+        static cache::EventCounterVariation EventCounterVariation;
+        static cache::EventDoubleBinaryVariation EventDoubleBinaryVariation;
+        static cache::EventFrozenCounterVariation EventFrozenCounterVariation;
         static cache::FrozenCounter FrozenCounter;
+        static cache::FrozenCounterConfig FrozenCounterConfig;
         static cache::GroupVariation GroupVariation;
         static cache::Header Header;
         static cache::HeaderInfo HeaderInfo;
@@ -148,6 +185,13 @@ namespace jni
         static cache::Range Range;
         static cache::SOEHandler SOEHandler;
         static cache::Stack Stack;
+        static cache::StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariation;
+        static cache::StaticAnalogVariation StaticAnalogVariation;
+        static cache::StaticBinaryOutputStatusVariation StaticBinaryOutputStatusVariation;
+        static cache::StaticBinaryVariation StaticBinaryVariation;
+        static cache::StaticCounterVariation StaticCounterVariation;
+        static cache::StaticDoubleBinaryVariation StaticDoubleBinaryVariation;
+        static cache::StaticFrozenCounterVariation StaticFrozenCounterVariation;
         static cache::TaskCompletion TaskCompletion;
         static cache::TaskId TaskId;
         static cache::TaskInfo TaskInfo;

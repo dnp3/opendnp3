@@ -3,13 +3,13 @@ package com.automatak.dnp3;
 import com.automatak.dnp3.enums.EventFrozenCounterVariation;
 import com.automatak.dnp3.enums.StaticFrozenCounterVariation;
 
-public class FrozenCounterConfig extends DeadbandConfig<Integer> {
+public class FrozenCounterConfig extends EventConfig {
+
     public FrozenCounterConfig(int index) {
-        super(index, 0);
-        this.eventVariation = EventFrozenCounterVariation.Group23Var1;
-        this.staticVariation = StaticFrozenCounterVariation.Group21Var1;
+        super(index);
     }
 
-    public EventFrozenCounterVariation eventVariation;
-    public StaticFrozenCounterVariation staticVariation;
+    public int deadband = 0;
+    public EventFrozenCounterVariation eventVariation = EventFrozenCounterVariation.Group23Var1;
+    public StaticFrozenCounterVariation staticVariation = StaticFrozenCounterVariation.Group21Var1;
 }

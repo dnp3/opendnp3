@@ -2,12 +2,13 @@ package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.PointClass;
 
-public class EventConfig extends IndexedConfig {
+public class EventConfig {
 
     public EventConfig(int vIndex) {
-        super(vIndex);
+        this.vIndex = vIndex;
         this.clazz = PointClass.Class1;
     }
 
-    PointClass clazz;
+    public int vIndex;
+    public PointClass clazz;
 }

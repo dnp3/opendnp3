@@ -1,6 +1,6 @@
 package com.automatak.dnp3.codegen
 
-import java.lang.reflect.{Constructor, Method}
+import java.lang.reflect.{Constructor, Field, Method, Modifier}
 
 object Features extends Enumeration {
   val Fields, Methods, Constructors = Value
@@ -63,5 +63,7 @@ case class ClassConfig(clazz: Class[_], features : Set[Features.Value], mfilter:
   def methods : Array[Method] = clazz.getDeclaredMethods.filter(mfilter.matches)
 
   def constructors : Array[Constructor[_]] = clazz.getConstructors.filter(cfilter.matches)
+
+  def fields : Array[Field] = clazz.getDeclaredFields.filter(f => !Modifier.isStatic(f.getModifiers))
 }
 

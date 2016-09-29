@@ -42,7 +42,16 @@ private:
 	static opendnp3::OutstationParams ConvertOutstationConfig(JNIEnv* env, jobject jconfig);
 	static openpal::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
 	static void ConvertDatabase(JNIEnv* env, jobject jdb, asiodnp3::DatabaseConfig& cfg);
+
+	static opendnp3::BinaryConfig ConvertBinaryConfig(JNIEnv* env, jobject jconfig);
+	static opendnp3::DoubleBitBinaryConfig ConvertDoubleBinaryConfig(JNIEnv* env, jobject jconfig);
+	static opendnp3::AnalogConfig ConvertAnalogConfig(JNIEnv* env, jobject jconfig);
+	static opendnp3::CounterConfig ConvertCounterConfig(JNIEnv* env, jobject jconfig);
+	static opendnp3::FrozenCounterConfig ConvertFrozenCounterConfig(JNIEnv* env, jobject jconfig);
+	static opendnp3::BOStatusConfig ConvertBOStatusConfig(JNIEnv* env, jobject jconfig);
+	static opendnp3::AOStatusConfig ConvertAOStatusConfig(JNIEnv* env, jobject jconfig);
 };
 
 #endif
+
 
