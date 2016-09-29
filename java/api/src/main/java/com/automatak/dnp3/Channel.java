@@ -37,6 +37,7 @@ public interface Channel {
      * @param application  master application instance
      * @param config configuration information for the master stack
      * @return reference to the created master
+     * @throws DNP3Exception if any error occurs while creating the master
      */
     Master addMaster(String loggerId, SOEHandler handler, MasterApplication application, MasterStackConfig config) throws DNP3Exception;
 
@@ -48,6 +49,7 @@ public interface Channel {
      * @param application outstation application instance
      * @param config configuration information for the outstation stack
      * @return reference to the created outstation
+     * @throws DNP3Exception if any error occurs while creating the outstation
      */
     Outstation addOutstation(String id, CommandHandler commandHandler, OutstationApplication application, OutstationStackConfig config) throws DNP3Exception;
 }

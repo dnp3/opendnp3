@@ -37,6 +37,7 @@ public interface DNP3Manager {
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @param listener Optional listener (can be null) for monitoring the state of the channel
      * @return A channel interface
+     * @throws DNP3Exception if an error occurs creating the channel
      */
     Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port, ChannelListener listener) throws DNP3Exception;
 
@@ -47,8 +48,9 @@ public interface DNP3Manager {
      * @param retry Retry configuration for the channel
      * @param endpoint TThe address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
-     *             * @param listener Optional listener (can be null) for monitoring the state of the channel
+     * @param listener Optional listener (can be null) for monitoring the state of the channel
      * @return A channel interface
+     * @throws DNP3Exception if an error occurs creating the channel
      */
     Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port, ChannelListener listener) throws DNP3Exception;
 
@@ -60,7 +62,8 @@ public interface DNP3Manager {
      * @param retry Retry configuration for the channel
      * @param settings Configuration for the serial port
      * @param listener Optional listener (can be null) for monitoring the state of the channel
-     * @return
+     * @throws DNP3Exception if an error occurs creating the channel
+     * @return a channel interface
      */
     Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings, ChannelListener listener) throws DNP3Exception;
 

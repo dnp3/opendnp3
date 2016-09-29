@@ -42,7 +42,14 @@ public class EventBufferConfig {
     }
 
     /**
-     * Construct the class specifying the maximum number of events for each type individually.
+     * Construct the class specifying the maximum number of events for each type individually
+     * @param maxBinaryEvents maximum number of event for this type
+     * @param maxDoubleBinaryEvents maximum number of event for this type
+     * @param maxAnalogEvents maximum number of event for this type
+     * @param maxCounterEvents maximum number of event for this type
+     * @param maxFrozenCounterEvents maximum number of event for this type
+     * @param maxBinaryOutputStatusEvents maximum number of event for this type
+     * @param maxAnalogOutputStatusEvents maximum number of event for this type
      */
     public EventBufferConfig(
             int maxBinaryEvents,

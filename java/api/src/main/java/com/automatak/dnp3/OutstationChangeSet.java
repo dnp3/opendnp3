@@ -34,7 +34,7 @@ public class OutstationChangeSet implements Database, ChangeSet {
     @Override
     public void apply(Database database) {
 
-        for (Consumer action : updates) {
+        for (Consumer<Database> action : updates) {
             action.accept(database);
         }
     }

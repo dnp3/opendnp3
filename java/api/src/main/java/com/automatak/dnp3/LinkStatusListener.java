@@ -27,7 +27,7 @@ public interface LinkStatusListener
 {
     /**
      * Called when a the reset/unreset status of the link layer changes
-     * @param value
+     * @param value the current state of the link layer
      */
     void onStateChange(LinkStatus value);
 

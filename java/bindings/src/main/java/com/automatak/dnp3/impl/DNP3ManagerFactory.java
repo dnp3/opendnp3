@@ -48,8 +48,10 @@ public class DNP3ManagerFactory {
     }
 
     /**
+     * Returns a DNP3Manager with the thread pool size manually specified
      *
-     * @param concurrency The number of threads that will be allocated to the underlying thread pool.
+     * @param concurrency The number of threads that will be allocated to the underlying thread pool
+     * @param handler logging callback interface
      * @return Root management interface from which the entire class hierarchy is retrieved
      */
     public static DNP3Manager createManager(int concurrency, LogHandler handler) throws DNP3Exception
@@ -59,6 +61,9 @@ public class DNP3ManagerFactory {
 
     /**
      * Returns a DNP3Manager with the thread pool automatically allocated to the number of processors/cores
+     *
+     * @param handler logging callback interface
+     *
      * @return Root management interface from which the entire class hierarchy is retrieved
      */
     public static DNP3Manager createManager(LogHandler handler) throws DNP3Exception

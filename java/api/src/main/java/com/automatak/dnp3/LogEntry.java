@@ -23,6 +23,13 @@ package com.automatak.dnp3;
  */
 public class LogEntry {
 
+    /**
+     * Construct a new log entry
+     * @param level the value of the associated log level
+     * @param id the id of the logger
+     * @param location location of the message in the underlying C++
+     * @param message the log message
+     */
     public LogEntry(int level, String id, String location, String message)
     {
         this.level = level;
@@ -37,8 +44,7 @@ public class LogEntry {
     public final int level;
 
     /**
-     *
-     * @return Name of the logger by which the event was recorded
+     * Name of the logger by which the event was recorded
      */
     public final String id;
 

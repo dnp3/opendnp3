@@ -83,7 +83,6 @@ public interface CommandProcessor {
      * Direct operate a ControlRelayOutputBlock (Group12Variation1)
      * @param command command data
      * @param index index of request
-     * @param config Configuration for the task
      * @return future to the result of the operation
      */
     CompletableFuture<CommandTaskResult> directOperateCROB(ControlRelayOutputBlock command, int index);

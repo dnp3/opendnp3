@@ -2,6 +2,8 @@ package com.automatak.dnp3.codegen
 
 import java.lang.reflect.{Constructor, Field, Method, Modifier}
 
+import scala.language.existentials
+
 object Features extends Enumeration {
   val Fields, Methods, Constructors = Value
 }
