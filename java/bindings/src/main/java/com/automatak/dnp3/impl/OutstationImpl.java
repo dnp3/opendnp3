@@ -52,8 +52,11 @@ class OutstationImpl implements Outstation {
     }
 
     @Override
-    public void load(ChangeSet changeSet) {
+    public void apply(ChangeSet changeSet) {
 
+        ChangeSetImpl impl = new ChangeSetImpl();
+        changeSet.apply(impl);
+        this.apply_native(this.nativePointer, impl.nativePointer);
     }
 
     private native void enable_native(long nativePointer);
@@ -61,4 +64,6 @@ class OutstationImpl implements Outstation {
     private native void disable_native(long nativePointer);
 
     private native void shutdown_native(long nativePointer);
+
+    private native void apply_native(long nativePointer, long nativeChangeSet);
 }

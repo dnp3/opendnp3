@@ -92,7 +92,7 @@ public class OutstationDemo {
             else {
                 OutstationChangeSet set = new OutstationChangeSet();
                 set.update(new Counter(i,(byte) 0x01, 0), 0);
-                outstation.load(set);
+                outstation.apply(set);
             }
         }
     }

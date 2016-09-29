@@ -27,6 +27,6 @@ public interface Outstation extends Stack {
      * Load some new measurement values into the outstation
      * @param changeSet
      */
-    void load(ChangeSet changeSet);
+    void apply(ChangeSet changeSet);
 
 }

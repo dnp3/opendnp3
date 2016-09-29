@@ -31,6 +31,14 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_disable_1nati
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_shutdown_1native
   (JNIEnv *, jobject, jlong);
 
+/*
+ * Class:     com_automatak_dnp3_impl_OutstationImpl
+ * Method:    apply_native
+ * Signature: (JJ)V
+ */
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_apply_1native
+  (JNIEnv *, jobject, jlong, jlong);
+
 #ifdef __cplusplus
 }
 #endif

@@ -28,7 +28,8 @@ object DNPCppEnumGroup {
     UserRole(),
     Parity(),
     StopBits(),
-    FlowControl()
+    FlowControl(),
+    FlagsType()
   ).map(x => EnumConfig(x, true, true))
 
   private def simpleEnums = (List(

@@ -11,6 +11,55 @@ public interface Database
      * Update a value in the database
      * @param value measurement to update
      * @param index index of measurement
+     */
+    void update(BinaryInput value, int index);
+
+    /**
+     * Update a value in the database
+     * @param value measurement to update
+     * @param index index of measurement
+     */
+    void update(DoubleBitBinaryInput value, int index);
+
+    /**
+     * Update a value in the database
+     * @param value measurement to update
+     * @param index index of measurement
+     */
+    void update(AnalogInput value, int index);
+
+    /**
+     * Update a value in the database
+     * @param value measurement to update
+     * @param index index of measurement
+     */
+    void update(Counter value, int index);
+
+    /**
+     * Update a value in the database
+     * @param value measurement to update
+     * @param index index of measurement
+     */
+    void update(FrozenCounter value, int index);
+
+    /**
+     * Update a value in the database
+     * @param value measurement to update
+     * @param index index of measurement
+     */
+    void update(BinaryOutputStatus value, int index);
+
+    /**
+     * Update a value in the database
+     * @param value measurement to update
+     * @param index index of measurement
+     */
+    void update(AnalogOutputStatus value, int index);
+
+    /**
+     * Update a value in the database
+     * @param value measurement to update
+     * @param index index of measurement
      * @param mode EventMode to use
      */
     void update(BinaryInput value, int index, EventMode mode);

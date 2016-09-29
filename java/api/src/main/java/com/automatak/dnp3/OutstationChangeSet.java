@@ -21,30 +21,37 @@ public class OutstationChangeSet implements Database, ChangeSet {
         }
     }
 
+    @Override
     public void update(BinaryInput update, int index) {
         updates.add((Database db) -> db.update(update, index, EventMode.Detect));
     }
 
+    @Override
     public void update(DoubleBitBinaryInput update, int index) {
         updates.add((Database db) -> db.update(update, index, EventMode.Detect));
     }
 
+    @Override
     public void update(AnalogInput update, int index) {
         updates.add((Database db) -> db.update(update, index, EventMode.Detect));
     }
 
+    @Override
     public void update(Counter update, int index) {
         updates.add((Database db) -> db.update(update, index, EventMode.Detect));
     }
 
+    @Override
     public void update(FrozenCounter update, int index) {
         updates.add((Database db) -> db.update(update, index, EventMode.Detect));
     }
 
+    @Override
     public void update(BinaryOutputStatus update, int index) {
         updates.add((Database db) -> db.update(update, index, EventMode.Detect));
     }
 
+    @Override
     public void update(AnalogOutputStatus update, int index) {
         updates.add((Database db) -> db.update(update, index, EventMode.Detect));
     }

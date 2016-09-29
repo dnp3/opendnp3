@@ -51,14 +51,7 @@ public:
 	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
 
-	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t, EventMode = EventMode::Detect) override final;
-	virtual bool Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index) override final;
+	virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override final;
 
 	// ------- Misc ---------------
 
