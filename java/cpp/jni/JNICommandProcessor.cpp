@@ -30,26 +30,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->selectAndOperateAODouble64Method = env->GetMethodID(this->clazz, "selectAndOperateAODouble64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateAODouble64Method) return false;
+            this->selectAndOperateMethod = env->GetMethodID(this->clazz, "selectAndOperate", "(Lcom/automatak/dnp3/CommandHeaders;)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->selectAndOperateMethod) return false;
 
-            this->selectAndOperateCROBMethod = env->GetMethodID(this->clazz, "selectAndOperateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateCROBMethod) return false;
-
-            this->selectAndOperateAOInt32Method = env->GetMethodID(this->clazz, "selectAndOperateAOInt32", "(Lcom/automatak/dnp3/AnalogOutputInt32;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateAOInt32Method) return false;
-
-            this->directOperateAODouble64Method = env->GetMethodID(this->clazz, "directOperateAODouble64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateAODouble64Method) return false;
-
-            this->directOperateAOInt32Method = env->GetMethodID(this->clazz, "directOperateAOInt32", "(Lcom/automatak/dnp3/AnalogOutputInt32;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateAOInt32Method) return false;
-
-            this->directOperateAOInt16Method = env->GetMethodID(this->clazz, "directOperateAOInt16", "(Lcom/automatak/dnp3/AnalogOutputInt16;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateAOInt16Method) return false;
-
-            this->directOperateCROBMethod = env->GetMethodID(this->clazz, "directOperateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateCROBMethod) return false;
+            this->directOperateMethod = env->GetMethodID(this->clazz, "directOperate", "(Lcom/automatak/dnp3/CommandHeaders;)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->directOperateMethod) return false;
 
             this->directOperateAOFloat32Method = env->GetMethodID(this->clazz, "directOperateAOFloat32", "(Lcom/automatak/dnp3/AnalogOutputFloat32;I)Ljava/util/concurrent/CompletableFuture;");
             if(!this->directOperateAOFloat32Method) return false;
@@ -57,14 +42,29 @@ namespace jni
             this->selectAndOperateAOInt16Method = env->GetMethodID(this->clazz, "selectAndOperateAOInt16", "(Lcom/automatak/dnp3/AnalogOutputInt16;I)Ljava/util/concurrent/CompletableFuture;");
             if(!this->selectAndOperateAOInt16Method) return false;
 
+            this->selectAndOperateAOInt32Method = env->GetMethodID(this->clazz, "selectAndOperateAOInt32", "(Lcom/automatak/dnp3/AnalogOutputInt32;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->selectAndOperateAOInt32Method) return false;
+
             this->selectAndOperateAOFloat32Method = env->GetMethodID(this->clazz, "selectAndOperateAOFloat32", "(Lcom/automatak/dnp3/AnalogOutputFloat32;I)Ljava/util/concurrent/CompletableFuture;");
             if(!this->selectAndOperateAOFloat32Method) return false;
 
-            this->directOperateMethod = env->GetMethodID(this->clazz, "directOperate", "(Lcom/automatak/dnp3/CommandHeaders;)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateMethod) return false;
+            this->selectAndOperateAODouble64Method = env->GetMethodID(this->clazz, "selectAndOperateAODouble64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->selectAndOperateAODouble64Method) return false;
 
-            this->selectAndOperateMethod = env->GetMethodID(this->clazz, "selectAndOperate", "(Lcom/automatak/dnp3/CommandHeaders;)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateMethod) return false;
+            this->directOperateCROBMethod = env->GetMethodID(this->clazz, "directOperateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->directOperateCROBMethod) return false;
+
+            this->directOperateAOInt16Method = env->GetMethodID(this->clazz, "directOperateAOInt16", "(Lcom/automatak/dnp3/AnalogOutputInt16;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->directOperateAOInt16Method) return false;
+
+            this->directOperateAOInt32Method = env->GetMethodID(this->clazz, "directOperateAOInt32", "(Lcom/automatak/dnp3/AnalogOutputInt32;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->directOperateAOInt32Method) return false;
+
+            this->directOperateAODouble64Method = env->GetMethodID(this->clazz, "directOperateAODouble64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->directOperateAODouble64Method) return false;
+
+            this->selectAndOperateCROBMethod = env->GetMethodID(this->clazz, "selectAndOperateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->selectAndOperateCROBMethod) return false;
 
             return true;
         }
@@ -74,39 +74,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject CommandProcessor::selectAndOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        jobject CommandProcessor::selectAndOperate(JNIEnv* env, jobject instance, jobject arg0)
         {
-            return env->CallObjectMethod(instance, this->selectAndOperateAODouble64Method, arg0, arg1);
+            return env->CallObjectMethod(instance, this->selectAndOperateMethod, arg0);
         }
 
-        jobject CommandProcessor::selectAndOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        jobject CommandProcessor::directOperate(JNIEnv* env, jobject instance, jobject arg0)
         {
-            return env->CallObjectMethod(instance, this->selectAndOperateCROBMethod, arg0, arg1);
-        }
-
-        jobject CommandProcessor::selectAndOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
-        {
-            return env->CallObjectMethod(instance, this->selectAndOperateAOInt32Method, arg0, arg1);
-        }
-
-        jobject CommandProcessor::directOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
-        {
-            return env->CallObjectMethod(instance, this->directOperateAODouble64Method, arg0, arg1);
-        }
-
-        jobject CommandProcessor::directOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
-        {
-            return env->CallObjectMethod(instance, this->directOperateAOInt32Method, arg0, arg1);
-        }
-
-        jobject CommandProcessor::directOperateAOInt16(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
-        {
-            return env->CallObjectMethod(instance, this->directOperateAOInt16Method, arg0, arg1);
-        }
-
-        jobject CommandProcessor::directOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
-        {
-            return env->CallObjectMethod(instance, this->directOperateCROBMethod, arg0, arg1);
+            return env->CallObjectMethod(instance, this->directOperateMethod, arg0);
         }
 
         jobject CommandProcessor::directOperateAOFloat32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
@@ -119,19 +94,44 @@ namespace jni
             return env->CallObjectMethod(instance, this->selectAndOperateAOInt16Method, arg0, arg1);
         }
 
+        jobject CommandProcessor::selectAndOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        {
+            return env->CallObjectMethod(instance, this->selectAndOperateAOInt32Method, arg0, arg1);
+        }
+
         jobject CommandProcessor::selectAndOperateAOFloat32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
         {
             return env->CallObjectMethod(instance, this->selectAndOperateAOFloat32Method, arg0, arg1);
         }
 
-        jobject CommandProcessor::directOperate(JNIEnv* env, jobject instance, jobject arg0)
+        jobject CommandProcessor::selectAndOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
         {
-            return env->CallObjectMethod(instance, this->directOperateMethod, arg0);
+            return env->CallObjectMethod(instance, this->selectAndOperateAODouble64Method, arg0, arg1);
         }
 
-        jobject CommandProcessor::selectAndOperate(JNIEnv* env, jobject instance, jobject arg0)
+        jobject CommandProcessor::directOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
         {
-            return env->CallObjectMethod(instance, this->selectAndOperateMethod, arg0);
+            return env->CallObjectMethod(instance, this->directOperateCROBMethod, arg0, arg1);
+        }
+
+        jobject CommandProcessor::directOperateAOInt16(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        {
+            return env->CallObjectMethod(instance, this->directOperateAOInt16Method, arg0, arg1);
+        }
+
+        jobject CommandProcessor::directOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        {
+            return env->CallObjectMethod(instance, this->directOperateAOInt32Method, arg0, arg1);
+        }
+
+        jobject CommandProcessor::directOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        {
+            return env->CallObjectMethod(instance, this->directOperateAODouble64Method, arg0, arg1);
+        }
+
+        jobject CommandProcessor::selectAndOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        {
+            return env->CallObjectMethod(instance, this->selectAndOperateCROBMethod, arg0, arg1);
         }
     }
 }

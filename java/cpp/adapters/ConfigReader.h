@@ -41,6 +41,7 @@ private:
 	static opendnp3::EventBufferConfig ConvertEventBufferConfig(JNIEnv* env, jobject jeventconfig);
 	static opendnp3::OutstationParams ConvertOutstationConfig(JNIEnv* env, jobject jconfig);
 	static openpal::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
+	static void ConvertDatabase(JNIEnv* env, jobject jdb, asiodnp3::DatabaseConfig& cfg);
 };
 
 #endif

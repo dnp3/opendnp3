@@ -77,12 +77,30 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 
 OutstationStackConfig ConfigReader::ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig)
 {
-	OutstationStackConfig config(DatabaseSizes::AllTypes(1));
+	auto& cfg = jni::JCache::OutstationStackConfig;
+	auto& list = jni::JCache::List;
+	auto& db = jni::JCache::DatabaseConfig;
 
-	config.link = ConvertLinkConfig(env, jni::JCache::OutstationStackConfig.getlinkConfig(env, jconfig));
-	config.outstation.eventBufferConfig = ConvertEventBufferConfig(env, jni::JCache::OutstationStackConfig.geteventBufferConfig(env, jconfig));
-	config.outstation.params = ConvertOutstationConfig(env, jni::JCache::OutstationStackConfig.getoutstationConfig(env, jconfig));
-	//TODO - databaseconfig !
+	const auto jdb = cfg.getdatabaseConfig(env, jconfig);
+
+	OutstationStackConfig config(
+	    DatabaseSizes(
+	        static_cast<uint16_t>(list.size(env, db.getbinary(env, jdb))),
+	        static_cast<uint16_t>(list.size(env, db.getdoubleBinary(env, jdb))),
+	        static_cast<uint16_t>(list.size(env, db.getanalog(env, jdb))),
+	        static_cast<uint16_t>(list.size(env, db.getcounter(env, jdb))),
+	        static_cast<uint16_t>(list.size(env, db.getfrozenCounter(env, jdb))),
+	        static_cast<uint16_t>(list.size(env, db.getboStatus(env, jdb))),
+	        static_cast<uint16_t>(list.size(env, db.getaoStatus(env, jdb))),
+	        0
+	    )
+	);
+
+	config.link = ConvertLinkConfig(env, cfg.getlinkConfig(env, jconfig));
+	config.outstation.eventBufferConfig = ConvertEventBufferConfig(env, cfg.geteventBufferConfig(env, jconfig));
+	config.outstation.params = ConvertOutstationConfig(env, cfg.getoutstationConfig(env, jconfig));
+
+	ConvertDatabase(env, cfg.getdatabaseConfig(env, jconfig), config.dbConfig);
 
 	return config;
 }
@@ -110,7 +128,7 @@ opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jo
 {
 	opendnp3::OutstationParams config;
 
-	auto& cfg = jni::JCache::OutstationConfig;	
+	auto& cfg = jni::JCache::OutstationConfig;
 
 	config.indexMode = static_cast<IndexMode>(jni::JCache::IndexMode.toType(env, cfg.getindexMode(env, jconfig)));
 	config.maxControlsPerRequest = static_cast<uint8_t>(cfg.getmaxControlsPerRequest(env, jconfig));
@@ -120,13 +138,18 @@ opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jo
 	config.maxTxFragSize = cfg.getmaxTxFragSize(env, jconfig);
 	config.maxRxFragSize = cfg.getmaxRxFragSize(env, jconfig);
 	config.allowUnsolicited = !!cfg.getallowUnsolicited(env, jconfig);
-	
+
 	return config;
 }
 
 openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
 {
 	return openpal::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
+}
+
+void ConfigReader::ConvertDatabase(JNIEnv* env, jobject jdb, asiodnp3::DatabaseConfig& cfg)
+{
+	auto& db = jni::JCache::DatabaseConfig;
 }
 
 

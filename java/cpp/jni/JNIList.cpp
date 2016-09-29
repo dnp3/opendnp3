@@ -18,39 +18,32 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIDOUBLEBIT_H
-#define OPENDNP3JAVA_JNIDOUBLEBIT_H
-
-#include <jni.h>
+#include "JNIList.h"
 
 namespace jni
 {
-    struct JCache;
-
     namespace cache
     {
-        class DoubleBit
+        bool List::init(JNIEnv* env)
         {
-            friend struct JCache;
+            auto clazzTemp = env->FindClass("Ljava/util/List;");
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-            bool init(JNIEnv* env);
-            void cleanup(JNIEnv* env);
+            this->sizeMethod = env->GetMethodID(this->clazz, "size", "()I");
+            if(!this->sizeMethod) return false;
 
-            public:
+            return true;
+        }
 
-            // methods
-            jobject fromType(JNIEnv* env, jint arg0);
-            jint toType(JNIEnv* env, jobject instance);
+        void List::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-            private:
-
-            jclass clazz = nullptr;
-
-            // method ids
-            jmethodID fromTypeMethod = nullptr;
-            jmethodID toTypeMethod = nullptr;
-        };
+        jint List::size(JNIEnv* env, jobject instance)
+        {
+            return env->CallIntMethod(instance, this->sizeMethod);
+        }
     }
 }
-
-#endif

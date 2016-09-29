@@ -47,6 +47,7 @@ namespace jni
     cache::ControlCode JCache::ControlCode;
     cache::ControlRelayOutputBlock JCache::ControlRelayOutputBlock;
     cache::Counter JCache::Counter;
+    cache::DatabaseConfig JCache::DatabaseConfig;
     cache::DoubleBit JCache::DoubleBit;
     cache::DoubleBitBinaryInput JCache::DoubleBitBinaryInput;
     cache::Duration JCache::Duration;
@@ -61,6 +62,7 @@ namespace jni
     cache::Iterable JCache::Iterable;
     cache::Iterator JCache::Iterator;
     cache::LinkLayerConfig JCache::LinkLayerConfig;
+    cache::List JCache::List;
     cache::LogEntry JCache::LogEntry;
     cache::LogHandler JCache::LogHandler;
     cache::MasterApplication JCache::MasterApplication;
@@ -136,6 +138,8 @@ namespace jni
         if(!success) return false;
         success = Counter.init(env);
         if(!success) return false;
+        success = DatabaseConfig.init(env);
+        if(!success) return false;
         success = DoubleBit.init(env);
         if(!success) return false;
         success = DoubleBitBinaryInput.init(env);
@@ -163,6 +167,8 @@ namespace jni
         success = Iterator.init(env);
         if(!success) return false;
         success = LinkLayerConfig.init(env);
+        if(!success) return false;
+        success = List.init(env);
         if(!success) return false;
         success = LogEntry.init(env);
         if(!success) return false;
@@ -234,6 +240,7 @@ namespace jni
         ControlCode.cleanup(env);
         ControlRelayOutputBlock.cleanup(env);
         Counter.cleanup(env);
+        DatabaseConfig.cleanup(env);
         DoubleBit.cleanup(env);
         DoubleBitBinaryInput.cleanup(env);
         Duration.cleanup(env);
@@ -248,6 +255,7 @@ namespace jni
         Iterable.cleanup(env);
         Iterator.cleanup(env);
         LinkLayerConfig.cleanup(env);
+        List.cleanup(env);
         LogEntry.cleanup(env);
         LogHandler.cleanup(env);
         MasterApplication.cleanup(env);

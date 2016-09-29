@@ -48,6 +48,7 @@
 #include "JNIControlCode.h"
 #include "JNIControlRelayOutputBlock.h"
 #include "JNICounter.h"
+#include "JNIDatabaseConfig.h"
 #include "JNIDoubleBit.h"
 #include "JNIDoubleBitBinaryInput.h"
 #include "JNIDuration.h"
@@ -62,6 +63,7 @@
 #include "JNIIterable.h"
 #include "JNIIterator.h"
 #include "JNILinkLayerConfig.h"
+#include "JNIList.h"
 #include "JNILogEntry.h"
 #include "JNILogHandler.h"
 #include "JNIMasterApplication.h"
@@ -115,6 +117,7 @@ namespace jni
         static cache::ControlCode ControlCode;
         static cache::ControlRelayOutputBlock ControlRelayOutputBlock;
         static cache::Counter Counter;
+        static cache::DatabaseConfig DatabaseConfig;
         static cache::DoubleBit DoubleBit;
         static cache::DoubleBitBinaryInput DoubleBitBinaryInput;
         static cache::Duration Duration;
@@ -129,6 +132,7 @@ namespace jni
         static cache::Iterable Iterable;
         static cache::Iterator Iterator;
         static cache::LinkLayerConfig LinkLayerConfig;
+        static cache::List List;
         static cache::LogEntry LogEntry;
         static cache::LogHandler LogHandler;
         static cache::MasterApplication MasterApplication;

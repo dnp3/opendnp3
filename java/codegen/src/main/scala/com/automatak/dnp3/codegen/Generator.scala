@@ -48,6 +48,7 @@ object Generator {
 
   def javaTypes : List[ClassConfig] = List(
     ClassConfig(classOf[java.time.Duration], Set(Features.Methods), MethodFilter.nameEquals("toMillis")),
+    ClassConfig(classOf[java.util.List[_]], Set(Features.Methods), MethodFilter.nameEquals("size")),
     ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), listMethods, listConstructors),
     ClassConfig(classOf[java.lang.Iterable[_]], Set(Features.Methods), MethodFilter.nameEquals("iterator")),
     ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next"))
@@ -86,7 +87,8 @@ object Generator {
     ClassConfig(classOf[AnalogOutputDouble64], Set(Features.Fields, Features.Constructors)),
     ClassConfig(classOf[Header], Set(Features.Fields)),
     ClassConfig(classOf[ApplicationIIN], Set(Features.Fields)),
-    ClassConfig(classOf[EventBufferConfig], Set(Features.Fields))
+    ClassConfig(classOf[EventBufferConfig], Set(Features.Fields)),
+    ClassConfig(classOf[DatabaseConfig], Set(Features.Fields))
   )
 
   def classes = (enumerations ::: interfaces ::: javaTypes ::: custom).sortBy(_.clazz.getSimpleName)
