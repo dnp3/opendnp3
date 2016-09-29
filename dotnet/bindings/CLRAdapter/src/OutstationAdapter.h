@@ -17,7 +17,7 @@ namespace Automatak
 			{
 			public:
 
-				OutstationAdapter(asiodnp3::IOutstation* pOutstation);
+				OutstationAdapter(asiodnp3::IOutstation* outstation);
 
 				virtual void SetLogFilters(LogFilter filters);
 
@@ -34,7 +34,8 @@ namespace Automatak
 				virtual IStackStatistics^ GetStackStatistics();
 
 			private:
-				asiodnp3::IOutstation* pOutstation;				
+
+				asiodnp3::IOutstation* outstation;				
 			};
 
 		}

@@ -12,44 +12,44 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* pOutstation_) : pOutstation(pOutstation_)				
+			OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* outstation) : outstation(outstation)				
 			{}
 
 			void OutstationAdapter::SetLogFilters(LogFilter filters)
 			{
-				pOutstation->SetLogFilters(filters.Flags);
+				outstation->SetLogFilters(filters.Flags);
 			}
 
 			void OutstationAdapter::Load(IChangeSet^ changes)
 			{
 				auto adapter = gcnew ChangeSetAdapter();
 				changes->Apply(adapter);
-				adapter->Apply(*pOutstation);
+				adapter->Apply(*outstation);
 			}			
 
 			void OutstationAdapter::SetRestartIIN()
 			{
-				pOutstation->SetRestartIIN();
+				outstation->SetRestartIIN();
 			}
 
 			void OutstationAdapter::Shutdown()
 			{
-				pOutstation->Shutdown();
+				outstation->Shutdown();
 			}
 
 			void OutstationAdapter::Enable()
 			{
-				pOutstation->Enable();
+				outstation->Enable();
 			}
 
 			void OutstationAdapter::Disable()
 			{
-				pOutstation->Disable();
+				outstation->Disable();
 			}
 
 			IStackStatistics^ OutstationAdapter::GetStackStatistics()
 			{
-				auto stats = pOutstation->GetStackStatistics();
+				auto stats = outstation->GetStackStatistics();
 				return Conversions::ConvertStackStats(stats);
 			}
 
