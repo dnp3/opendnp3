@@ -59,9 +59,26 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
-(JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jint, jint, jint, jint, jint, jobject jlistener)
+(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jsdevice, jint jbaudRate, jint jdatabits, jint jparity, jint jstopbits, jint jflowcontrol, jobject jlistener)
 {
-	return 0;
+	const auto manager = (DNP3Manager*)native;
+
+	CString id(env, jid);
+	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+	CString sdevice(env, jsdevice);
+
+	asiopal::SerialSettings settings;
+	settings.asyncOpenDelay = openpal::TimeDuration::Milliseconds(100);
+	settings.baud = jbaudRate;
+	settings.dataBits = jdatabits;
+	settings.deviceName = sdevice;
+	settings.flowType = opendnp3::FlowControlFromType(static_cast<uint8_t>(jflowcontrol));
+	settings.parity = opendnp3::ParityFromType(static_cast<uint8_t>(jparity));
+	settings.stopBits = opendnp3::StopBitsFromType(static_cast<uint8_t>(jstopbits));
+
+	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+
+	return (jlong)manager->AddSerial(id, jlevels, retry, settings, listener);
 }
 
 

@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.FlowControl;
+import com.automatak.dnp3.enums.Parity;
+
 /**
  * Settings class uses to configure a serial port
  */
@@ -56,7 +59,7 @@ public class SerialSettings {
      */
     public SerialSettings(String port, int baudRate)
     {
-        this(port, baudRate, 8, Parity.PAR_NONE, 1, FlowControl.FLOW_NONE);
+        this(port, baudRate, 8, Parity.None, 1, FlowControl.None);
     }
 
 

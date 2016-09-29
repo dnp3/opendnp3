@@ -71,9 +71,9 @@ class ManagerImpl implements DNP3Manager {
                 settings.port,
                 settings.baudRate,
                 settings.dataBits,
-                settings.parity.toInt(),
+                settings.parity.toType(),
                 settings.stopBits,
-                settings.flowControl.toInt(),
+                settings.flowControl.toType(),
                 listener
         );
 

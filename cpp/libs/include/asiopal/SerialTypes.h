@@ -21,40 +21,16 @@
 #ifndef ASIOPAL_SERIALTYPES_H
 #define ASIOPAL_SERIALTYPES_H
 
-#include <string>
+#include "openpal/executor/TimeDuration.h"
 
-#include <openpal/executor/TimeDuration.h>
+#include "opendnp3/gen/Parity.h"
+#include "opendnp3/gen/FlowControl.h"
+#include "opendnp3/gen/StopBits.h"
+
+#include <string>
 
 namespace asiopal
 {
-
-/// Enumeration for setting serial port parity
-enum class ParityType
-{
-	NONE,
-	EVEN,
-	ODD
-};
-
-/// Enumeration for setting serial port flow control
-enum class FlowType
-{
-	NONE,
-	HARDWARE,
-	XONXOFF
-};
-
-/// Enumeration for stop bits
-enum class StopBits
-{
-	NONE,
-	ONE,
-	ONE_POINT_FIVE,
-	TWO
-};
-
-ParityType GetParityFromInt(int parity);
-FlowType GetFlowTypeFromInt(int parity);
 
 /// Settings structure for the serial port
 struct SerialSettings
@@ -64,9 +40,9 @@ struct SerialSettings
 	SerialSettings() :
 		baud(9600),
 		dataBits(8),
-		stopBits(StopBits::ONE),
-		parity(ParityType::NONE),
-		flowType(FlowType::NONE),
+		stopBits(opendnp3::StopBits::One),
+		parity(opendnp3::Parity::None),
+		flowType(opendnp3::FlowControl::None),
 		asyncOpenDelay(openpal::TimeDuration::Milliseconds(500))
 	{}
 
@@ -80,13 +56,13 @@ struct SerialSettings
 	int dataBits;
 
 	/// Stop bits, usually set to 1
-	StopBits stopBits;
+	opendnp3::StopBits stopBits;
 
 	/// Parity setting for the port, usually PAR_NONE
-	ParityType parity;
+	opendnp3::Parity parity;
 
 	/// Flow control setting, usually FLOW_NONE
-	FlowType flowType;
+	opendnp3::FlowControl flowType;
 
 	/// Some physical layers need time to "settle" so that the first tx isn't lost
 	openpal::TimeDuration asyncOpenDelay;

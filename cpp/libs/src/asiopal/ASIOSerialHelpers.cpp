@@ -28,6 +28,7 @@
 #include <asio.hpp>
 
 using namespace asio;
+using namespace opendnp3;
 
 namespace asiopal
 {
@@ -35,19 +36,19 @@ namespace asiopal
 //////////////////////////////////////////////
 //	Private Helpers
 //////////////////////////////////////////////
-serial_port_base::stop_bits ConvertStopBits(StopBits aStopBits)
+serial_port_base::stop_bits ConvertStopBits(opendnp3::StopBits stopBits)
 {
 	serial_port_base::stop_bits::type t = serial_port_base::stop_bits::one;
 
-	switch(aStopBits)
+	switch(stopBits)
 	{
-	case(StopBits::ONE):
+	case(opendnp3::StopBits::One):
 		t = serial_port_base::stop_bits::one;
 		break;
-	case(StopBits::ONE_POINT_FIVE) :
+	case(opendnp3::StopBits::OnePointFive) :
 		t = serial_port_base::stop_bits::onepointfive;
 		break;
-	case(StopBits::TWO) :
+	case(opendnp3::StopBits::Two) :
 		t = serial_port_base::stop_bits::two;
 		break;
 	default:
@@ -57,19 +58,19 @@ serial_port_base::stop_bits ConvertStopBits(StopBits aStopBits)
 	return serial_port_base::stop_bits(t);
 }
 
-serial_port_base::flow_control ConvertFlow(FlowType aFlowType)
+serial_port_base::flow_control ConvertFlow(opendnp3::FlowControl flowType)
 {
 	serial_port_base::flow_control::type t = serial_port_base::flow_control::none;
 
-	switch(aFlowType)
+	switch(flowType)
 	{
-	case(FlowType::NONE):
+	case(opendnp3::FlowControl::None):
 		t = serial_port_base::flow_control::none;
 		break;
-	case(FlowType::XONXOFF) :
+	case(opendnp3::FlowControl::XONXOFF) :
 		t = serial_port_base::flow_control::software;
 		break;
-	case(FlowType::HARDWARE) :
+	case(opendnp3::FlowControl::Hardware) :
 		t = serial_port_base::flow_control::hardware;
 		break;
 	default:
@@ -89,16 +90,16 @@ serial_port_base::baud_rate ConvertBaud(int aBaud)
 	return serial_port_base::baud_rate(static_cast<unsigned int>(aBaud));
 }
 
-serial_port_base::parity ConvertParity(ParityType aParity)
+serial_port_base::parity ConvertParity(opendnp3::Parity parity)
 {
 	serial_port_base::parity::type t = serial_port_base::parity::none;
 
-	switch(aParity)
+	switch(parity)
 	{
-	case(ParityType::EVEN):
+	case(opendnp3::Parity::Even):
 		t = serial_port_base::parity::even;
 		break;
-	case(ParityType::ODD) :
+	case(opendnp3::Parity::Odd) :
 		t = serial_port_base::parity::odd;
 		break;
 	default:

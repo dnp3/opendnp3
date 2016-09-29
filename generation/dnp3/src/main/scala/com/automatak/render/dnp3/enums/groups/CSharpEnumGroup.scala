@@ -33,7 +33,10 @@ object CSharpEnumGroup {
     RestartType(),
     OperateType(),
     LinkFunction(),
-    LinkStatus()
+    LinkStatus(),
+    Parity(),
+    StopBits(),
+    FlowControl()
   ) ::: DefaultVariations.enums ::: QualityMasks.enums
 
 

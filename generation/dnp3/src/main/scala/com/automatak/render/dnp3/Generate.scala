@@ -3,7 +3,7 @@ package com.automatak.render.dnp3
 import java.nio.file.FileSystems
 
 import com.automatak.render.dnp3.enums.generators.{CSharpEnumGenerator, CppEnumGenerator, JavaEnumGenerator}
-import com.automatak.render.dnp3.enums.groups.{CSharpEnumGroup, DNPCppEnumGroup, JavaEnumGroup}
+import com.automatak.render.dnp3.enums.groups.{CSharpEnumGroup, DNPCppEnumGroup}
 import com.automatak.render.dnp3.objects.generators.{AttributeGenerator, GroupVariationFileGenerator}
 
 object Generate {
