@@ -37,12 +37,10 @@ private:
 	static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* env, jobject jconfig);
 	static opendnp3::MasterParams ConvertMasterConfig(JNIEnv* apEnv, jobject jcfg);
 
-	/*
-	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* env, jobject jcfg);
-	static opendnp3::DeviceTemplate ConvertDatabaseConfig(JNIEnv* env, jobject jcfg);
-	*/
-
 	static opendnp3::ClassField ConvertClassField(JNIEnv* env, jobject jclassmask);
+	static opendnp3::EventBufferConfig ConvertEventBufferConfig(JNIEnv* env, jobject jeventconfig);
+	static opendnp3::OutstationParams ConvertOutstationConfig(JNIEnv* env, jobject jconfig);
+	static openpal::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
 };
 
 #endif

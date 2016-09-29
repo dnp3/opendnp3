@@ -42,7 +42,8 @@ object Generator {
     classOf[CommandProcessor],
     classOf[Stack],
     classOf[ChannelListener],
-    classOf[CommandHandler]
+    classOf[CommandHandler],
+    classOf[IndexMode]
   ).map(c => ClassConfig(c, Set(Features.Methods)))
 
   def javaTypes : List[ClassConfig] = List(
@@ -57,6 +58,7 @@ object Generator {
     ClassConfig(classOf[MasterStackConfig], Set(Features.Fields)),
     ClassConfig(classOf[OutstationStackConfig], Set(Features.Fields)),
     ClassConfig(classOf[MasterConfig], Set(Features.Fields)),
+    ClassConfig(classOf[OutstationConfig], Set(Features.Fields)),
     ClassConfig(classOf[LinkLayerConfig], Set(Features.Fields)),
     ClassConfig(classOf[LogEntry], Set(Features.Constructors)),
     ClassConfig(classOf[ClassField], Set(Features.Fields)),
@@ -83,7 +85,8 @@ object Generator {
     ClassConfig(classOf[AnalogOutputFloat32], Set(Features.Fields, Features.Constructors)),
     ClassConfig(classOf[AnalogOutputDouble64], Set(Features.Fields, Features.Constructors)),
     ClassConfig(classOf[Header], Set(Features.Fields)),
-    ClassConfig(classOf[ApplicationIIN], Set(Features.Fields))
+    ClassConfig(classOf[ApplicationIIN], Set(Features.Fields)),
+    ClassConfig(classOf[EventBufferConfig], Set(Features.Fields))
   )
 
   def classes = (enumerations ::: interfaces ::: javaTypes ::: custom).sortBy(_.clazz.getSimpleName)

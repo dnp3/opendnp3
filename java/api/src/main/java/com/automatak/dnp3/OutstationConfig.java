@@ -39,11 +39,6 @@ public class OutstationConfig {
     public short maxControlsPerRequest = 16;
 
     /**
-     * if true, fully disables unsolicited mode as if the slave didn't support it, defaults to false
-     */
-    public boolean disableUnsol = false;
-
-    /**
      * How long the outstation will allow an operate to proceed after a prior select
      */
     public Duration selectTimeout = Duration.ofSeconds(10);

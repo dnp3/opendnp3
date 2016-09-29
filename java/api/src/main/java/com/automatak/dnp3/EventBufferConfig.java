@@ -45,25 +45,25 @@ public class EventBufferConfig {
     }
 
     /// The number of binary events the outstation will buffer before overflowing
-    int maxBinaryEvents;
+    public int maxBinaryEvents;
 
     /// The number of double bit binary events the outstation will buffer before overflowing
-    int maxDoubleBinaryEvents;
+    public int maxDoubleBinaryEvents;
 
     /// The number of analog events the outstation will buffer before overflowing
-    int maxAnalogEvents;
+    public int maxAnalogEvents;
 
     /// The number of counter events the outstation will buffer before overflowing
-    int maxCounterEvents;
+    public int maxCounterEvents;
 
     /// The number of frozen counter events the outstation will buffer before overflowing
-    int maxFrozenCounterEvents;
+    public int maxFrozenCounterEvents;
 
     /// The number of binary output status events the outstation will buffer before overflowing
-    int maxBinaryOutputStatusEvents;
+    public int maxBinaryOutputStatusEvents;
 
     /// The number of analog output status events the outstation will buffer before overflowing
-    int maxAnalogOutputStatusEvents;
+    public int maxAnalogOutputStatusEvents;
 
 };
 

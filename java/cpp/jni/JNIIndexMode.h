@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIMASTERAPPLICATION_H
-#define OPENDNP3JAVA_JNIMASTERAPPLICATION_H
+#ifndef OPENDNP3JAVA_JNIINDEXMODE_H
+#define OPENDNP3JAVA_JNIINDEXMODE_H
 
 #include <jni.h>
 
@@ -29,7 +29,7 @@ namespace jni
 
     namespace cache
     {
-        class MasterApplication
+        class IndexMode
         {
             friend struct JCache;
 
@@ -39,24 +39,20 @@ namespace jni
             public:
 
             // methods
-            jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
-            jobject getClassAssignments(JNIEnv* env, jobject instance);
-            jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
-            void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
-            void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
+            jobject values(JNIEnv* env);
+            jobject valueOf(JNIEnv* env, jstring arg0);
+            jint toType(JNIEnv* env, jobject instance);
+            jobject fromType(JNIEnv* env, jint arg0);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID assignClassDuringStartupMethod = nullptr;
-            jmethodID getClassAssignmentsMethod = nullptr;
-            jmethodID getMillisecondsSinceEpochMethod = nullptr;
-            jmethodID onTaskStartMethod = nullptr;
-            jmethodID onTaskCompleteMethod = nullptr;
-            jmethodID onReceiveIINMethod = nullptr;
+            jmethodID valuesMethod = nullptr;
+            jmethodID valueOfMethod = nullptr;
+            jmethodID toTypeMethod = nullptr;
+            jmethodID fromTypeMethod = nullptr;
         };
     }
 }

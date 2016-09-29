@@ -51,11 +51,13 @@
 #include "JNIDoubleBit.h"
 #include "JNIDoubleBitBinaryInput.h"
 #include "JNIDuration.h"
+#include "JNIEventBufferConfig.h"
 #include "JNIFrozenCounter.h"
 #include "JNIGroupVariation.h"
 #include "JNIHeader.h"
 #include "JNIHeaderInfo.h"
 #include "JNIIINField.h"
+#include "JNIIndexMode.h"
 #include "JNIIndexedValue.h"
 #include "JNIIterable.h"
 #include "JNIIterator.h"
@@ -68,6 +70,7 @@
 #include "JNIMasterTaskType.h"
 #include "JNIOperateType.h"
 #include "JNIOutstationApplication.h"
+#include "JNIOutstationConfig.h"
 #include "JNIOutstationStackConfig.h"
 #include "JNIPointClass.h"
 #include "JNIQualifierCode.h"
@@ -115,11 +118,13 @@ namespace jni
         static cache::DoubleBit DoubleBit;
         static cache::DoubleBitBinaryInput DoubleBitBinaryInput;
         static cache::Duration Duration;
+        static cache::EventBufferConfig EventBufferConfig;
         static cache::FrozenCounter FrozenCounter;
         static cache::GroupVariation GroupVariation;
         static cache::Header Header;
         static cache::HeaderInfo HeaderInfo;
         static cache::IINField IINField;
+        static cache::IndexMode IndexMode;
         static cache::IndexedValue IndexedValue;
         static cache::Iterable Iterable;
         static cache::Iterator Iterator;
@@ -132,6 +137,7 @@ namespace jni
         static cache::MasterTaskType MasterTaskType;
         static cache::OperateType OperateType;
         static cache::OutstationApplication OutstationApplication;
+        static cache::OutstationConfig OutstationConfig;
         static cache::OutstationStackConfig OutstationStackConfig;
         static cache::PointClass PointClass;
         static cache::QualifierCode QualifierCode;

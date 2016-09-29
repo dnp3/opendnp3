@@ -39,22 +39,22 @@ namespace jni
             public:
 
             // methods
-            jboolean supportsWriteAbsoluteTime(JNIEnv* env, jobject instance);
-            jboolean writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0);
             void recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3);
-            jboolean supportsAssignClass(JNIEnv* env, jobject instance);
             jobject getApplicationIIN(JNIEnv* env, jobject instance);
+            jboolean supportsAssignClass(JNIEnv* env, jobject instance);
+            jboolean writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0);
+            jboolean supportsWriteAbsoluteTime(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID supportsWriteAbsoluteTimeMethod = nullptr;
-            jmethodID writeAbsoluteTimeMethod = nullptr;
             jmethodID recordClassAssignmentMethod = nullptr;
-            jmethodID supportsAssignClassMethod = nullptr;
             jmethodID getApplicationIINMethod = nullptr;
+            jmethodID supportsAssignClassMethod = nullptr;
+            jmethodID writeAbsoluteTimeMethod = nullptr;
+            jmethodID supportsWriteAbsoluteTimeMethod = nullptr;
         };
     }
 }

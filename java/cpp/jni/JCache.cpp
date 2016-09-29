@@ -50,11 +50,13 @@ namespace jni
     cache::DoubleBit JCache::DoubleBit;
     cache::DoubleBitBinaryInput JCache::DoubleBitBinaryInput;
     cache::Duration JCache::Duration;
+    cache::EventBufferConfig JCache::EventBufferConfig;
     cache::FrozenCounter JCache::FrozenCounter;
     cache::GroupVariation JCache::GroupVariation;
     cache::Header JCache::Header;
     cache::HeaderInfo JCache::HeaderInfo;
     cache::IINField JCache::IINField;
+    cache::IndexMode JCache::IndexMode;
     cache::IndexedValue JCache::IndexedValue;
     cache::Iterable JCache::Iterable;
     cache::Iterator JCache::Iterator;
@@ -67,6 +69,7 @@ namespace jni
     cache::MasterTaskType JCache::MasterTaskType;
     cache::OperateType JCache::OperateType;
     cache::OutstationApplication JCache::OutstationApplication;
+    cache::OutstationConfig JCache::OutstationConfig;
     cache::OutstationStackConfig JCache::OutstationStackConfig;
     cache::PointClass JCache::PointClass;
     cache::QualifierCode JCache::QualifierCode;
@@ -139,6 +142,8 @@ namespace jni
         if(!success) return false;
         success = Duration.init(env);
         if(!success) return false;
+        success = EventBufferConfig.init(env);
+        if(!success) return false;
         success = FrozenCounter.init(env);
         if(!success) return false;
         success = GroupVariation.init(env);
@@ -148,6 +153,8 @@ namespace jni
         success = HeaderInfo.init(env);
         if(!success) return false;
         success = IINField.init(env);
+        if(!success) return false;
+        success = IndexMode.init(env);
         if(!success) return false;
         success = IndexedValue.init(env);
         if(!success) return false;
@@ -172,6 +179,8 @@ namespace jni
         success = OperateType.init(env);
         if(!success) return false;
         success = OutstationApplication.init(env);
+        if(!success) return false;
+        success = OutstationConfig.init(env);
         if(!success) return false;
         success = OutstationStackConfig.init(env);
         if(!success) return false;
@@ -228,11 +237,13 @@ namespace jni
         DoubleBit.cleanup(env);
         DoubleBitBinaryInput.cleanup(env);
         Duration.cleanup(env);
+        EventBufferConfig.cleanup(env);
         FrozenCounter.cleanup(env);
         GroupVariation.cleanup(env);
         Header.cleanup(env);
         HeaderInfo.cleanup(env);
         IINField.cleanup(env);
+        IndexMode.cleanup(env);
         IndexedValue.cleanup(env);
         Iterable.cleanup(env);
         Iterator.cleanup(env);
@@ -245,6 +256,7 @@ namespace jni
         MasterTaskType.cleanup(env);
         OperateType.cleanup(env);
         OutstationApplication.cleanup(env);
+        OutstationConfig.cleanup(env);
         OutstationStackConfig.cleanup(env);
         PointClass.cleanup(env);
         QualifierCode.cleanup(env);

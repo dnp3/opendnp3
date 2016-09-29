@@ -79,137 +79,54 @@ OutstationStackConfig ConfigReader::ConvertOutstationStackConfig(JNIEnv* env, jo
 {
 	OutstationStackConfig config(DatabaseSizes::AllTypes(1));
 
-	//TODO!
-
 	config.link = ConvertLinkConfig(env, jni::JCache::OutstationStackConfig.getlinkConfig(env, jconfig));
+	config.outstation.eventBufferConfig = ConvertEventBufferConfig(env, jni::JCache::OutstationStackConfig.geteventBufferConfig(env, jconfig));
+	config.outstation.params = ConvertOutstationConfig(env, jni::JCache::OutstationStackConfig.getoutstationConfig(env, jconfig));
+	//TODO - databaseconfig !
 
 	return config;
 }
-
-/*
-SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* env, jobject jCfg)
-{
-SlaveStackConfig cfg;
-
-cfg.link = ConvertLinkConfig(env, JNIHelpers::GetObjectField(env, jCfg, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;"));
-cfg.app = ConvertAppConfig(env, JNIHelpers::GetObjectField(env, jCfg, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;"));
-cfg.slave = ConvertOutstationConfig(env, JNIHelpers::GetObjectField(env, jCfg, "outstationConfig", "Lcom/automatak/dnp3/OutstationConfig;"));
-cfg.device = ConvertDatabaseConfig(env, JNIHelpers::GetObjectField(env, jCfg, "databaseConfig", "Lcom/automatak/dnp3/DatabaseConfig;"));
-
-return cfg;
-}
-
-SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* env, jobject jCfg)
-{
-SlaveConfig cfg;
-
-cfg.mMaxControls  = JNIHelpers::GetIntField(env, jCfg, "maxControls");
-cfg.mDisableUnsol = JNIHelpers::GetBoolField(env, jCfg, "disableUnsol");
-cfg.mUnsolMask  = ClassMask(JNIHelpers::GetIntField(env, jCfg, "unsolMask"));
-cfg.mAllowTimeSync = JNIHelpers::GetBoolField(env, jCfg, "allowTimeSync");
-cfg.mTimeSyncPeriod  = JNIHelpers::GetLongField(env, jCfg, "timeSyncPeriodMs");
-cfg.mUnsolPackDelay  = JNIHelpers::GetLongField(env, jCfg, "unsolPackDelayMs");
-cfg.mUnsolRetryDelay  = JNIHelpers::GetLongField(env, jCfg, "unsolRetryDelayMs");
-cfg.mSelectTimeout = JNIHelpers::GetLongField(env, jCfg, "selectTimeoutMs");
-cfg.mMaxFragSize  = JNIHelpers::GetIntField(env, jCfg, "maxFragSize");
-cfg.mVtoWriterQueueSize = JNIHelpers::GetIntField(env, jCfg, "vtoWriterQueueSize");
-
-jint maxBinaryEvents = JNIHelpers::GetIntField(env, jCfg, "maxBinaryEvents");
-jint maxAnalogEvents = JNIHelpers::GetIntField(env, jCfg, "maxAnalogEvents");
-jint maxCounterEvents = JNIHelpers::GetIntField(env, jCfg, "maxCounterEvents");
-jint maxVtoEvents = JNIHelpers::GetIntField(env, jCfg, "maxVtoEvents");
-
-cfg.mEventMaxConfig = EventMaxConfig(maxBinaryEvents, maxAnalogEvents, maxCounterEvents, maxVtoEvents);
-
-
-{
-jobject jenum = JNIHelpers::GetObjectField(env, jCfg, "staticBinaryInput", "Lcom/automatak/dnp3/StaticBinaryResponse;");
-cfg.mStaticBinary = ConvertStaticBinary(GetEnumId(env, jenum));
-}
-
-
-{
-jobject jenum = JNIHelpers::GetObjectField(env, jCfg, "staticAnalogInput", "Lcom/automatak/dnp3/StaticAnalogResponse;");
-cfg.mStaticAnalog = ConvertStaticAnalog(GetEnumId(env, jenum));
-}
-
-{
-jobject jenum = JNIHelpers::GetObjectField(env, jCfg, "staticCounter", "Lcom/automatak/dnp3/StaticCounterResponse;");
-cfg.mStaticCounter = ConvertStaticCounter(GetEnumId(env, jenum));
-}
-
-{
-jobject jenum = JNIHelpers::GetObjectField(env, jCfg, "staticAnalogOutputStatus", "Lcom/automatak/dnp3/StaticAnalogOutputStatusResponse;");
-cfg.mStaticSetpointStatus = ConvertStaticAnalogOutputStatus(GetEnumId(env, jenum));
-}
-
-{
-jobject jenum = JNIHelpers::GetObjectField(env, jCfg, "eventBinaryInput", "Lcom/automatak/dnp3/EventBinaryResponse;");
-cfg.mEventBinary = ConvertEventBinary(GetEnumId(env, jenum));
-}
-
-{
-jobject jenum = JNIHelpers::GetObjectField(env, jCfg, "eventAnalogInput", "Lcom/automatak/dnp3/EventAnalogResponse;");
-cfg.mEventAnalog = ConvertEventAnalog(GetEnumId(env, jenum));
-}
-
-{
-jobject jenum = JNIHelpers::GetObjectField(env, jCfg, "eventCounter", "Lcom/automatak/dnp3/EventCounterResponse;");
-cfg.mEventCounter = ConvertEventCounter(GetEnumId(env, jenum));
-}
-
-return cfg;
-}
-*/
-
-/*
-DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* env, jobject jCfg)
-{
-DeviceTemplate cfg;
-
-{
-jobject list = JNIHelpers::GetObjectField(env, jCfg, "binaryInputs", "Ljava/util/List;");
-JNIHelpers::IterateOverListOfObjects(env, list, [&](jobject record) {
-int mask = JNIHelpers::GetIntField(env, record, "pointClass");
-cfg.mBinary.push_back(EventPointRecord(IntToPointClass(mask)));
-});
-}
-{
-jobject list = JNIHelpers::GetObjectField(env, jCfg, "analogInputs", "Ljava/util/List;");
-JNIHelpers::IterateOverListOfObjects(env, list, [&](jobject record) {
-int mask = JNIHelpers::GetIntField(env, record, "pointClass");
-double db = JNIHelpers::GetDoubleField(env, record, "deadband");
-cfg.mAnalog.push_back(DeadbandPointRecord(IntToPointClass(mask), db));
-});
-}
-{
-jobject list = JNIHelpers::GetObjectField(env, jCfg, "counterInputs", "Ljava/util/List;");
-JNIHelpers::IterateOverListOfObjects(env, list, [&](jobject record) {
-int mask = JNIHelpers::GetIntField(env, record, "pointClass");
-cfg.mCounter.push_back(EventPointRecord(IntToPointClass(mask)));
-});
-}
-{
-jobject list = JNIHelpers::GetObjectField(env, jCfg, "binaryOutputStatii", "Ljava/util/List;");
-JNIHelpers::IterateOverListOfObjects(env, list, [&](jobject record) {
-cfg.mControlStatus.push_back(PointRecord());
-});
-}
-{
-jobject list = JNIHelpers::GetObjectField(env, jCfg, "analogOutputStatii", "Ljava/util/List;");
-JNIHelpers::IterateOverListOfObjects(env, list, [&](jobject record) {
-cfg.mSetpointStatus.push_back(PointRecord());
-});
-}
-
-return cfg;
-}
-*/
 
 opendnp3::ClassField ConfigReader::ConvertClassField(JNIEnv* env, jobject jclassmask)
 {
 	jint value = jni::JCache::ClassField.getbitfield(env, jclassmask);
 	return ClassField(static_cast<uint8_t>(value));
+}
+
+opendnp3::EventBufferConfig ConfigReader::ConvertEventBufferConfig(JNIEnv* env, jobject jeventconfig)
+{
+	return opendnp3::EventBufferConfig(
+	           static_cast<uint16_t>(jni::JCache::EventBufferConfig.getmaxBinaryEvents(env, jeventconfig)),
+	           static_cast<uint16_t>(jni::JCache::EventBufferConfig.getmaxDoubleBinaryEvents(env, jeventconfig)),
+	           static_cast<uint16_t>(jni::JCache::EventBufferConfig.getmaxAnalogEvents(env, jeventconfig)),
+	           static_cast<uint16_t>(jni::JCache::EventBufferConfig.getmaxCounterEvents(env, jeventconfig)),
+	           static_cast<uint16_t>(jni::JCache::EventBufferConfig.getmaxFrozenCounterEvents(env, jeventconfig)),
+	           static_cast<uint16_t>(jni::JCache::EventBufferConfig.getmaxBinaryOutputStatusEvents(env, jeventconfig)),
+	           static_cast<uint16_t>(jni::JCache::EventBufferConfig.getmaxAnalogOutputStatusEvents(env, jeventconfig))
+	       );
+}
+
+opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jobject jconfig)
+{
+	opendnp3::OutstationParams config;
+
+	auto& cfg = jni::JCache::OutstationConfig;	
+
+	config.indexMode = static_cast<IndexMode>(jni::JCache::IndexMode.toType(env, cfg.getindexMode(env, jconfig)));
+	config.maxControlsPerRequest = static_cast<uint8_t>(cfg.getmaxControlsPerRequest(env, jconfig));
+	config.selectTimeout = ConvertDuration(env, cfg.getselectTimeout(env, jconfig));
+	config.solConfirmTimeout = ConvertDuration(env, cfg.getsolConfirmTimeout(env, jconfig));
+	config.unsolRetryTimeout = ConvertDuration(env, cfg.getunsolRetryTimeout(env, jconfig));
+	config.maxTxFragSize = cfg.getmaxTxFragSize(env, jconfig);
+	config.maxRxFragSize = cfg.getmaxRxFragSize(env, jconfig);
+	config.allowUnsolicited = !!cfg.getallowUnsolicited(env, jconfig);
+	
+	return config;
+}
+
+openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
+{
+	return openpal::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
 }
 
 
