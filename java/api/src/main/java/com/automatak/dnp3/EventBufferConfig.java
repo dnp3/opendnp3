@@ -16,11 +16,11 @@ public class EventBufferConfig {
      * Construct the class using the same maximum for all types. This is mainly used for demo purposes.
      * You probably don't want to use this method unless your implementation actually reports every type.
      *
-     * @param sizes size parameter for every type
+     * @param num size parameter for every type
      * @return a new EventBufferConfig instance
      */
-    public static EventBufferConfig allTypes(int sizes) {
-        return new EventBufferConfig(0, 0, 0, 0, 0, 0, 0);
+    public static EventBufferConfig allTypes(int num) {
+        return new EventBufferConfig(num, num, num, num, num, num, num);
     }
 
     /**

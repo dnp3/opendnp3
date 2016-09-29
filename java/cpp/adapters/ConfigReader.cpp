@@ -182,7 +182,7 @@ typename Spec::config_t ConvertDeadbandType(JNIEnv* env, jobject jconfig, Config
 	cfg.clazz = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::EventConfig.getclazz(env, jconfig)));
 	cfg.svariation = static_cast<typename Spec::static_variation_t>(svariation.toType(env, cache.getstaticVariation(env, jconfig)));
 	cfg.evariation = static_cast<typename Spec::event_variation_t>(evariation.toType(env, cache.geteventVariation(env, jconfig)));
-	cfg.deadband = cache.getdeadband(env, jconfig);
+	cfg.deadband = cache.getdeadband(env, jconfig);	
 	return cfg;
 }
 
