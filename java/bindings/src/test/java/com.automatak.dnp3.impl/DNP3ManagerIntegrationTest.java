@@ -49,7 +49,7 @@ public class DNP3ManagerIntegrationTest extends TestCase {
         }
         catch(DNP3Exception ex)
         {
-
+            throw new RuntimeException(ex);
         }
         finally {
             if(manager != null) {
