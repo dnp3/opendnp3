@@ -44,7 +44,7 @@ public class DNP3ManagerIntegrationTest extends TestCase {
     {
         DNP3Manager manager= null;
         try {
-            manager = DNP3ManagerFactory.createManager(new NullLogHandler());
+            manager = DNP3ManagerFactory.createManager(1, new NullLogHandler());
             func.accept(manager);
         }
         catch(DNP3Exception ex)
