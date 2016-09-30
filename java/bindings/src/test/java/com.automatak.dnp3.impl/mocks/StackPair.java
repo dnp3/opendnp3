@@ -57,7 +57,7 @@ public class StackPair {
 
             this.master = client.addMaster(
                     String.format("master:%d", port),
-                    PrintingSOEHandler.getInstance(),
+                    this.soeHandler,
                     DefaultMasterApplication.getInstance(),
                     getMasterStackConfig());
 
@@ -83,8 +83,11 @@ public class StackPair {
         this.serverListener.waitFor(ChannelState.OPEN, duration);
     }
 
-    final Master master;
-    final Outstation outstation;
     final BlockingChannelListener clientListener = new BlockingChannelListener();
     final BlockingChannelListener serverListener = new BlockingChannelListener();
+    final QueuedSOEHandler soeHandler = new QueuedSOEHandler();
+
+    final Master master;
+    final Outstation outstation;
+
 }

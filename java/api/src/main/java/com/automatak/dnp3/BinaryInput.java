@@ -36,4 +36,5 @@ public class BinaryInput extends Measurement
     public String toString() {
         return String.format("BinaryInput(%b, 0x%x, %d)", value, quality, timestamp);
     }
+
 }

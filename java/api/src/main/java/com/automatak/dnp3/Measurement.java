@@ -32,4 +32,8 @@ public abstract class Measurement {
         this.timestamp = timestamp;
     }
 
+    public boolean isEqual(Measurement other)
+    {
+        return (quality == other.quality) && (timestamp == other.timestamp);
+    }
 }
