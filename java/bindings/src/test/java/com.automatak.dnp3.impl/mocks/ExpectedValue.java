@@ -14,6 +14,8 @@ public class ExpectedValue {
         AOStatusType
     }
 
+    public static final ExpectedValue.Type[] ALL_TYPES = ExpectedValue.Type.values();
+
     final int index;
     final Measurement measurement;
     final Type type;
@@ -70,10 +72,6 @@ public class ExpectedValue {
 
         if(this.index != other.index)
         {
-            return false;
-        }
-
-        if(!this.measurement.isEqual(other.measurement)) {
             return false;
         }
 

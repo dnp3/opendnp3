@@ -3,24 +3,31 @@ package com.automatak.dnp3.impl.mocks;
 
 import com.automatak.dnp3.*;
 import com.automatak.dnp3.enums.ChannelState;
+import com.automatak.dnp3.enums.DoubleBit;
+import com.automatak.dnp3.enums.EventMode;
 import com.automatak.dnp3.mock.DefaultMasterApplication;
 import com.automatak.dnp3.mock.DefaultOutstationApplication;
-import com.automatak.dnp3.mock.PrintingSOEHandler;
 import com.automatak.dnp3.mock.SuccessCommandHandler;
 
 import java.time.Duration;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.Random;
 
 public class StackPair {
 
     public static final int LEVELS = LogLevels.INFO;
-    public static final int NUM_POINTS_PER_TYPE = 50;
-    public static final int EVENT_BUFFER_SIZE = 50;
 
-    static OutstationStackConfig getOutstationConfig()
+    final int NUM_POINTS_PER_TYPE;
+    final int EVENTS_PER_ITERATION;
+
+    static OutstationStackConfig getOutstationConfig(int numPointsPerType, int eventBufferSize)
     {
         OutstationStackConfig config = new OutstationStackConfig(
-                DatabaseConfig.allValues(NUM_POINTS_PER_TYPE), EventBufferConfig.allTypes(EVENT_BUFFER_SIZE)
+                DatabaseConfig.allValues(numPointsPerType), EventBufferConfig.allTypes(eventBufferSize)
         );
+
+        config.outstationConfig.allowUnsolicited = true;
 
         return config;
     }
@@ -31,18 +38,22 @@ public class StackPair {
 
         config.master.disableUnsolOnStartup = false;
         config.master.startupIntegrityClassMask = ClassField.none();
-        config.master.unsolClassMask = ClassField.none();
+        config.master.unsolClassMask = ClassField.allEventClasses();
 
         return config;
     }
 
-    public StackPair(DNP3Manager manager, int port)
+    public StackPair(DNP3Manager manager, int port, int numPointsPerType, int eventsPerIteration)
     {
+        this.NUM_POINTS_PER_TYPE = numPointsPerType;
+        this.EVENTS_PER_ITERATION = eventsPerIteration;
+
         try {
 
             Channel client = manager.addTCPClient(
                     String.format("client:%d", port),
-                    LEVELS, ChannelRetry.getDefault(),
+                    LEVELS,
+                    ChannelRetry.getDefault(),
                     "127.0.0.1",
                     "127.0.0.1",
                     port,
@@ -50,7 +61,8 @@ public class StackPair {
 
             Channel server = manager.addTCPServer(
                     String.format("server:%d", port),
-                    LEVELS, ChannelRetry.getDefault(),
+                    LEVELS | LogLevels.APP_HEADER_TX | LogLevels.APP_OBJECT_TX,
+                    ChannelRetry.getDefault(),
                     "127.0.0.1",
                     port,
                     serverListener);
@@ -65,7 +77,7 @@ public class StackPair {
                     String.format("outstation:%d", port),
                     SuccessCommandHandler.getInstance(),
                     DefaultOutstationApplication.getInstance(),
-                    getOutstationConfig());
+                    getOutstationConfig(numPointsPerType, eventsPerIteration));
         }
         catch(DNP3Exception ex)
         {
@@ -74,7 +86,6 @@ public class StackPair {
 
         this.outstation.enable();
         this.master.enable();
-
     }
 
     public void waitForChannelsOpen(Duration duration)
@@ -83,9 +94,94 @@ public class StackPair {
         this.serverListener.waitFor(ChannelState.OPEN, duration);
     }
 
+    // transmit some random values via the outstation
+    public int sendRandomValues()
+    {
+        final OutstationChangeSet set = new OutstationChangeSet();
+
+        for(int i = 0; i < this.EVENTS_PER_ITERATION; ++i)
+        {
+           this.queueRandomType(set);
+        }
+
+        this.outstation.apply(set);
+
+        return this.EVENTS_PER_ITERATION;
+    }
+
+    public void awaitSentValues(Duration duration)
+    {
+        this.soeHandler.expect(sentValues, duration);
+    }
+
+    public void queueRandomType(OutstationChangeSet set)
+    {
+        final int index = random.nextInt(NUM_POINTS_PER_TYPE);
+
+        final ExpectedValue.Type type = getRandomElement(ExpectedValue.ALL_TYPES);
+
+        // Note: It's important to use EventMode force here, because otherwise changes might not happen b/c of random value collisions
+
+        switch(type)
+        {
+            case BinaryType: {
+                BinaryInput v = new BinaryInput(random.nextBoolean(), (byte) 0x01, 0);
+                set.update(v, index, EventMode.Force);
+                sentValues.add(new ExpectedValue(v, index));
+                break;
+            }
+            case DoubleBinaryType: {
+                DoubleBitBinaryInput v = new DoubleBitBinaryInput(getRandomElement(DoubleBit.values()), (byte) 0x01, 0);
+                set.update(v, index, EventMode.Force);
+                sentValues.add(new ExpectedValue(v, index));
+                break;
+            }
+            case CounterType: {
+                Counter v = new Counter(random.nextInt(65535), (byte) 0x01, 0);
+                set.update(v, index, EventMode.Force);
+                sentValues.add(new ExpectedValue(v, index));
+                break;
+            }
+            case FrozenCounterType: {
+                FrozenCounter v = new FrozenCounter(random.nextInt(65535), (byte) 0x01, 0);
+                set.update(v, index, EventMode.Force);
+                sentValues.add(new ExpectedValue(v, index));
+                break;
+            }
+            case AnalogType: {
+                AnalogInput v = new AnalogInput(random.nextInt(65535), (byte) 0x01, 0);
+                set.update(v, index, EventMode.Force);
+                sentValues.add(new ExpectedValue(v, index));
+                break;
+            }
+            case BOStatusType: {
+                BinaryOutputStatus v = new BinaryOutputStatus(random.nextBoolean(), (byte) 0x01, 0);
+                set.update(v, index, EventMode.Force);
+                sentValues.add(new ExpectedValue(v, index));
+                break;
+            }
+            case AOStatusType: {
+                AnalogOutputStatus v = new AnalogOutputStatus(random.nextInt(65535), (byte) 0x01, 0);
+                set.update(v, index, EventMode.Force);
+                sentValues.add(new ExpectedValue(v, index));
+                break;
+            }
+            default:
+                throw new RuntimeException("unknown random type: " + type);
+        }
+
+    }
+
+    public <T> T getRandomElement(T[] items)
+    {
+        return items[random.nextInt(items.length)];
+    }
+
     final BlockingChannelListener clientListener = new BlockingChannelListener();
     final BlockingChannelListener serverListener = new BlockingChannelListener();
     final QueuedSOEHandler soeHandler = new QueuedSOEHandler();
+    final Queue<ExpectedValue> sentValues = new ArrayDeque<>();
+    final Random random = new Random();
 
     final Master master;
     final Outstation outstation;

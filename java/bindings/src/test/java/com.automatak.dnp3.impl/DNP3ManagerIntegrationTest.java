@@ -33,6 +33,10 @@ import java.util.function.Consumer;
 public class DNP3ManagerIntegrationTest extends TestCase {
 
     static final int NUM_STACKS = 100;
+    static final int NUM_EVENTS_PER_STACK = 1000;
+    static final int NUM_POINTS_PER_EVENT_TYPE = 50;
+    static final int EVENTS_PER_ITERATION = 50;
+
     static final int START_PORT = 20000;
 
 
@@ -62,13 +66,23 @@ public class DNP3ManagerIntegrationTest extends TestCase {
         withManager(manager ->  {
 
             for(int i = 0; i < NUM_STACKS; ++i) {
-                StackPair pair = new StackPair(manager, START_PORT+i);
+                StackPair pair = new StackPair(manager, START_PORT+i, NUM_POINTS_PER_EVENT_TYPE, EVENTS_PER_ITERATION);
                 stacks.add(pair);
             }
 
-            stacks.forEach(stack -> stack.waitForChannelsOpen(Duration.ofSeconds(5)));
+            stacks.forEach(pair -> pair.waitForChannelsOpen(Duration.ofSeconds(5)));
 
 
+            int num_sent = 0;
+
+            while(num_sent < NUM_EVENTS_PER_STACK) {
+
+                stacks.forEach(pair -> pair.sendRandomValues());
+
+                stacks.forEach(pair -> pair.awaitSentValues(Duration.ofSeconds(5)));
+
+                num_sent += EVENTS_PER_ITERATION;
+            }
         });
 
     }
