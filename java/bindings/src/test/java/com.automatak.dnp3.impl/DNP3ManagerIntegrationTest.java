@@ -22,10 +22,10 @@ import com.automatak.dnp3.DNP3Exception;
 import com.automatak.dnp3.DNP3Manager;
 import com.automatak.dnp3.impl.mocks.NullLogHandler;
 import com.automatak.dnp3.impl.mocks.StackPair;
-import com.automatak.dnp3.mock.PrintingLogHandler;
 import junit.framework.*;
 
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -65,6 +65,10 @@ public class DNP3ManagerIntegrationTest extends TestCase {
                 StackPair pair = new StackPair(manager, START_PORT+i);
                 stacks.add(pair);
             }
+
+            stacks.forEach(stack -> stack.waitForChannelsOpen(Duration.ofSeconds(5)));
+
+
         });
 
     }

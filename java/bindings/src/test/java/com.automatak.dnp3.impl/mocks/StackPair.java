@@ -2,10 +2,13 @@ package com.automatak.dnp3.impl.mocks;
 
 
 import com.automatak.dnp3.*;
+import com.automatak.dnp3.enums.ChannelState;
 import com.automatak.dnp3.mock.DefaultMasterApplication;
 import com.automatak.dnp3.mock.DefaultOutstationApplication;
 import com.automatak.dnp3.mock.PrintingSOEHandler;
 import com.automatak.dnp3.mock.SuccessCommandHandler;
+
+import java.time.Duration;
 
 public class StackPair {
 
@@ -43,14 +46,14 @@ public class StackPair {
                     "127.0.0.1",
                     "127.0.0.1",
                     port,
-                    new NullChannelListener());
+                    clientListener);
 
             Channel server = manager.addTCPServer(
                     String.format("server:%d", port),
                     LEVELS, ChannelRetry.getDefault(),
                     "127.0.0.1",
                     port,
-                    new NullChannelListener());
+                    serverListener);
 
             this.master = client.addMaster(
                     String.format("master:%d", port),
@@ -69,11 +72,19 @@ public class StackPair {
             throw new RuntimeException(ex);
         }
 
-
         this.outstation.enable();
         this.master.enable();
+
+    }
+
+    public void waitForChannelsOpen(Duration duration)
+    {
+        this.clientListener.waitFor(ChannelState.OPEN, duration);
+        this.serverListener.waitFor(ChannelState.OPEN, duration);
     }
 
     final Master master;
     final Outstation outstation;
+    final BlockingChannelListener clientListener = new BlockingChannelListener();
+    final BlockingChannelListener serverListener = new BlockingChannelListener();
 }
