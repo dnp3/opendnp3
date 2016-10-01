@@ -22,22 +22,28 @@
 #include "StackPair.h"
 
 #include "asiodnp3/DefaultMasterApplication.h"
-
 #include "opendnp3/outstation/SimpleCommandHandler.h"
 
 #include <sstream>
+#include <iostream>
+#include <exception>
+
+using namespace opendnp3;
 
 namespace asiodnp3 {
 
 	StackPair::StackPair(DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration) :
 		NUM_POINTS_PER_TYPE(numPointsPerType),
 		EVENTS_PER_ITERATION(eventsPerIteration),
-		rx_queue(std::make_shared<SynchronizedQueue<opendnp3::ExpectedValue>>()),
-		soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>(rx_queue)),
+		soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>()),
 		clientListener(std::make_shared<QueuedChannelListener>()),
 		serverListener(std::make_shared<QueuedChannelListener>()),
 		master(CreateMaster(manager, port, this->soeHandler, this->clientListener)),
-		outstation(CreateOutstation(manager, port, numPointsPerType, eventsPerIteration, this->serverListener))
+		outstation(CreateOutstation(manager, port, numPointsPerType, eventsPerIteration, this->serverListener)),
+		index_distribution(0, numPointsPerType-1),
+		type_distribution(0,6),
+		bool_distribution(0,1),
+		int_distribution(0, 32767)
 	{
 		this->outstation->Enable();
 		this->master->Enable();		
@@ -47,6 +53,96 @@ namespace asiodnp3 {
 	{
 		return this->clientListener->WaitForState(opendnp3::ChannelState::OPEN, timeout) &&
 			this->serverListener->WaitForState(opendnp3::ChannelState::OPEN, timeout);
+	}
+
+	void StackPair::SendRandomValues()
+	{
+		ChangeSet set;
+		for (uint32_t i = 0; i < EVENTS_PER_ITERATION; ++i)
+		{
+			this->tx_values.push_back(this->AddRandomValue(set));
+		}
+		this->outstation->Apply(set);
+	}
+
+	void StackPair::WaitToRxValues(std::chrono::steady_clock::duration timeout)
+	{
+		while (!this->tx_values.empty())
+		{
+			std::deque<ExpectedValue> rx_values;
+			this->soeHandler->values.DrainTo(rx_values, timeout);
+
+			if (rx_values.empty()) {
+				throw std::exception("No values received within timeout");
+			}
+
+			// compare values
+
+			while (!rx_values.empty())
+			{
+				if (tx_values.empty())
+				{
+					throw std::exception("more values received than transmited");
+				}
+
+				const auto& rx = rx_values.front();
+				const auto& tx = tx_values.front();
+
+				if (!rx.Equals(tx))
+				{
+					std::ostringstream oss;
+					oss << rx << " != " << tx;
+					std::runtime_error(oss.str());
+				}
+
+				rx_values.pop_front();
+				tx_values.pop_front();
+			}
+		}
+	}
+
+	ExpectedValue StackPair::AddRandomValue(ChangeSet& set)
+	{
+		const auto index = index_distribution(generator);
+
+		switch (type_distribution(generator))
+		{
+			case(0): {
+				opendnp3::Binary value(bool_distribution(generator) == 0);
+				set.Update(value, index, EventMode::Force);
+				return ExpectedValue(value, index);
+			}
+			case(1): {
+				opendnp3::DoubleBitBinary value(static_cast<DoubleBit>(bool_distribution(generator)));
+				set.Update(value, index, EventMode::Force);
+				return ExpectedValue(value, index);
+			}
+			case(2): {
+				opendnp3::Analog value(static_cast<double>(int_distribution(generator)));
+				set.Update(value, index, EventMode::Force);
+				return ExpectedValue(value, index);
+			}
+			case(3): {
+				opendnp3::Counter value(int_distribution(generator));
+				set.Update(value, index, EventMode::Force);
+				return ExpectedValue(value, index);
+			}
+			case(4): {
+				opendnp3::FrozenCounter value(int_distribution(generator));
+				set.Update(value, index, EventMode::Force);
+				return ExpectedValue(value, index);
+			}
+			case(5): {
+				opendnp3::BinaryOutputStatus value(bool_distribution(generator) == 0);
+				set.Update(value, index, EventMode::Force);
+				return ExpectedValue(value, index);
+			}
+			default: {
+				opendnp3::AnalogOutputStatus value(static_cast<double>(int_distribution(generator)));
+				set.Update(value, index, EventMode::Force);
+				return ExpectedValue(value, index);
+			}
+		}
 	}
 
 	OutstationStackConfig StackPair::GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize)

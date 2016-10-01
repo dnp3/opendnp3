@@ -26,6 +26,8 @@
 
 #include "mocks/StackPair.h"
 
+#include <iostream>
+
 using namespace opendnp3;
 using namespace asiodnp3;
 
@@ -38,8 +40,11 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
 	const uint16_t NUM_POINTS_PER_TYPE = 50;
 	const uint16_t EVENTS_PER_ITERATION = 50;
+	const int NUM_ITERATIONS = 10;
+
+	const auto TIMEOUT = std::chrono::seconds(5);
 	
-	DNP3Manager manager(1);
+	DNP3Manager manager(8);
 	
 	std::vector<std::unique_ptr<StackPair>> pairs;
 	
@@ -51,7 +56,24 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
 	for (auto& pair : pairs)
 	{
-		pair->WaitForChannelsOnline(std::chrono::seconds(5));
+		pair->WaitForChannelsOnline(TIMEOUT);
 	}
+
+	for (int i = 0; i < NUM_ITERATIONS; ++i) {
+
+		//std::cout << "iteration: " << i << std::endl;
+
+		for (auto& pair : pairs)
+		{
+			pair->SendRandomValues();
+		}
+
+		for (auto& pair : pairs)
+		{
+			pair->WaitToRxValues(TIMEOUT);
+		}
+	}
+
+
 }
 

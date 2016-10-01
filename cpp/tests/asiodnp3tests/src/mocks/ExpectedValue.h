@@ -43,15 +43,40 @@ namespace opendnp3
 
 	class ExpectedValue final
 	{
-		int64_t value;
-		uint16_t index;
-		ValueType type;
-
 		ExpectedValue(int64_t value, uint16_t index, ValueType type) :
 			value(value), index(index), type(type)
 		{}
 
 	public:
+
+		static const char* ToString(ValueType vt)
+		{
+			switch (vt)
+			{
+				case(ValueType::Binary):
+					return "Binary";
+				case(ValueType::DoubleBitBinary):
+					return "DoubleBitBinary";
+				case(ValueType::Analog):
+					return "Analog";
+				case(ValueType::Counter):
+					return "Counter";
+				case(ValueType::FrozenCounter):
+					return "FrozenCounter";
+				case(ValueType::AnalogOutputStatus):
+				default:
+					return "BinaryOutputStatus";
+			}
+		}
+
+		bool Equals(const ExpectedValue& other) const
+		{
+			return (type == other.type) && (index == other.index) && (value == other.value);
+		}
+
+		int64_t value;
+		uint16_t index;
+		ValueType type;
 
 		ExpectedValue(const Binary& value, uint16_t index) : ExpectedValue(value.value, index, ValueType::Binary) {}
 		ExpectedValue(const DoubleBitBinary& value, uint16_t index) : ExpectedValue(static_cast<int64_t>(value.value), index, ValueType::DoubleBitBinary) {}
@@ -62,6 +87,11 @@ namespace opendnp3
 		ExpectedValue(const BinaryOutputStatus& value, uint16_t index) : ExpectedValue(value.value, index, ValueType::BinaryOutputStatus) {}
 	};
 
+	inline std::ostream& operator<<(std::ostream& os, const ExpectedValue& v)
+	{
+		os << v.index << " - " << ExpectedValue::ToString(v.type) << "(" << v.value << ")";
+		return os;
+	}
 }
 
 #endif

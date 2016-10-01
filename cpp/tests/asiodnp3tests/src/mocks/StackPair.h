@@ -29,6 +29,8 @@
 #include "QueuedChannelListener.h"
 
 #include <memory>
+#include <random>
+#include <deque>
 
 namespace asiodnp3 {
 
@@ -38,7 +40,6 @@ namespace asiodnp3 {
 
 		const uint16_t NUM_POINTS_PER_TYPE;
 		const uint32_t EVENTS_PER_ITERATION;
-		std::shared_ptr<asiodnp3::SynchronizedQueue<opendnp3::ExpectedValue>> rx_queue;
 		const std::shared_ptr<opendnp3::QueuingSOEHandler> soeHandler;
 		
 		std::shared_ptr<QueuedChannelListener> clientListener;
@@ -46,6 +47,15 @@ namespace asiodnp3 {
 
 		IMaster* const master;
 		IOutstation* const outstation;
+
+		std::default_random_engine generator;
+
+		std::uniform_int_distribution<uint16_t> index_distribution;
+		std::uniform_int_distribution<int> type_distribution;
+		std::uniform_int_distribution<int> bool_distribution;
+		std::uniform_int_distribution<uint16_t> int_distribution;
+
+		std::deque<opendnp3::ExpectedValue> tx_values;
 	
 		static OutstationStackConfig GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize);
 		static MasterStackConfig GetMasterStackConfig();
@@ -55,11 +65,18 @@ namespace asiodnp3 {
 
 		static std::string GetId(const char* name, uint16_t port);
 
+		opendnp3::ExpectedValue AddRandomValue(asiodnp3::ChangeSet& set);
+
+
 	public:
 
 		StackPair(DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration);
 
-		bool WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);		
+		bool WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);
+
+		void SendRandomValues();
+
+		void WaitToRxValues(std::chrono::steady_clock::duration timeout);
 	};
 
 }
