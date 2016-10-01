@@ -21,6 +21,8 @@
 #ifndef OPENDNP3_ICOLLECTION_H
 #define OPENDNP3_ICOLLECTION_H
 
+#include <cstddef>
+
 namespace opendnp3
 {
 

@@ -42,6 +42,7 @@
 #ifndef OPENPAL_CHANNELSTATISTICS_H
 #define OPENPAL_CHANNELSTATISTICS_H
 
+#include <cstddef>
 #include <cstdint>
 
 namespace openpal
