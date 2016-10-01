@@ -26,36 +26,45 @@
 
 #include "ExpectedValue.h"
 
-#include <vector>
+#include "SynchronizedQueue.h"
+
 #include <mutex>
+#include <vector>
 
 namespace opendnp3 {
 
 	class QueuingSOEHandler final : public opendnp3::ISOEHandler
-	{
-		std::mutex m_mutex;
-		std::vector<ExpectedValue> rx_values;
+	{		
+
+		asiodnp3::SynchronizedQueue<ExpectedValue> rx_values;
+		
+		std::mutex mutex;
+		std::vector<ExpectedValue> temp;
 
 		template <class T>
 		void ProcessAny(const ICollection<Indexed<T>>& values)
 		{
 			auto add = [this](const Indexed<T>& item)
 			{
-				rx_values.push_back(ExpectedValue(item.value, item.index));
+				temp.push_back(ExpectedValue(item.value, item.index));
 			};
 
 			values.ForeachItem(add);
 		}
 		
 	public:
-
-		virtual void Start() override
+	
+		virtual void Start() override 
 		{
-			m_mutex.lock();
+			mutex.lock();
 		}
-		virtual void End()  override
+		
+		virtual void End() override 
 		{
-			m_mutex.unlock();
+			this->rx_values.AddMany(temp);
+			temp.clear();
+
+			mutex.unlock();
 		}
 
 		virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override { this->ProcessAny(values); }		

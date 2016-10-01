@@ -19,39 +19,43 @@
  * to you under the terms of the License.
  */
 
-#include <catch.hpp>
+#ifndef OPENDNP3_QUEUEDCHANNELISTENER_H
+#define OPENDNP3_QUEUEDCHANNELISTENER_H
 
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/ConsoleLogger.h>
+#include "SynchronizedQueue.h"
 
-#include "mocks/StackPair.h"
+#include "asiodnp3/IChannelListener.h"
 
-using namespace opendnp3;
-using namespace asiodnp3;
-
-#define SUITE(name) "EventIntegrationTestSuite - " name
-
-TEST_CASE(SUITE("TestEventIntegration"))
-{
-	const uint16_t START_PORT = 20000;
-	const uint16_t NUM_STACK_PAIRS = 100;
-
-	const uint16_t NUM_POINTS_PER_TYPE = 50;
-	const uint16_t EVENTS_PER_ITERATION = 50;
-	
-	DNP3Manager manager(1);
-	
-	std::vector<std::unique_ptr<StackPair>> pairs;
-	
-	for (uint16_t i = 0; i < NUM_STACK_PAIRS; ++i)
+namespace asiodnp3
+{	
+	class QueuedChannelListener : public IChannelListener
 	{
-		auto pair = std::make_unique<StackPair>(manager, START_PORT + i, NUM_POINTS_PER_TYPE, EVENTS_PER_ITERATION);
-		pairs.push_back(std::move(pair));
-	}
+		SynchronizedQueue<opendnp3::ChannelState> states;
 
-	for (auto& pair : pairs)
-	{
-		pair->WaitForChannelsOnline(std::chrono::seconds(5));
-	}
+		public:
+			
+		virtual void OnStateChange(opendnp3::ChannelState state) override
+		{
+			states.Add(state);
+		}
+
+		bool WaitForState(opendnp3::ChannelState state, std::chrono::steady_clock::duration timeout)
+		{
+			std::vector<opendnp3::ChannelState> output;
+			while (states.DrainTo(output, timeout) > 0)
+			{
+				for (auto& s : output) {					
+					if (s == state) return true;
+				}
+				output.clear();
+			}
+
+			return false;
+		}
+
+	};
+
 }
+
+#endif
 

@@ -33,13 +33,20 @@ namespace asiodnp3 {
 		NUM_POINTS_PER_TYPE(numPointsPerType),
 		EVENTS_PER_ITERATION(eventsPerIteration),
 		soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>()),
-		master(CreateMaster(manager, port, this->soeHandler)),
-		outstation(CreateOutstation(manager, port, numPointsPerType, eventsPerIteration))
+		clientListener(std::make_shared<QueuedChannelListener>()),
+		serverListener(std::make_shared<QueuedChannelListener>()),
+		master(CreateMaster(manager, port, this->soeHandler, this->clientListener)),
+		outstation(CreateOutstation(manager, port, numPointsPerType, eventsPerIteration, this->serverListener))
 	{
 		this->outstation->Enable();
 		this->master->Enable();		
 	}
 	
+	bool StackPair::WaitForChannelsOnline(std::chrono::steady_clock::duration timeout)
+	{
+		return this->clientListener->WaitForState(opendnp3::ChannelState::OPEN, timeout) &&
+			this->serverListener->WaitForState(opendnp3::ChannelState::OPEN, timeout);
+	}
 
 	OutstationStackConfig StackPair::GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize)
 	{
@@ -62,7 +69,7 @@ namespace asiodnp3 {
 		return config;
 	}
 
-	IMaster* StackPair::CreateMaster(DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler)
+	IMaster* StackPair::CreateMaster(DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler, std::shared_ptr<IChannelListener> listener)
 	{
 		auto channel = manager.AddTCPClient(
 			GetId("client", port).c_str(),
@@ -71,7 +78,7 @@ namespace asiodnp3 {
 			"127.0.0.1",
 			"127.0.0.1",
 			port,
-			nullptr
+			listener
 		);
 
 		return channel->AddMaster(
@@ -82,7 +89,7 @@ namespace asiodnp3 {
 		);
 	}
 	
-	IOutstation* StackPair::CreateOutstation(DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize)
+	IOutstation* StackPair::CreateOutstation(DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener)
 	{
 		auto channel = manager.AddTCPServer(
 			GetId("server", port).c_str(),
@@ -90,7 +97,7 @@ namespace asiodnp3 {
 			opendnp3::ChannelRetry::Default(),
 			"127.0.0.1",			
 			port,
-			nullptr
+			listener
 		);
 
 		return channel->AddOutstation(
