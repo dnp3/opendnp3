@@ -9,7 +9,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/settings.cmake)
 
 # various optional libraries and projects
 
-option(FULL "Build all optional projects (secauth, demos, tests)" OFF)
+option(DNP3_ALL "Build all optional projects (secauth, demos, tests)" OFF)
 option(DNP3_TEST "Build tests" OFF)
 option(DNP3_DEMO "Build demo applications" OFF)
 option(DNP3_DECODER "Build the decoder library" OFF)
@@ -21,7 +21,7 @@ option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
 option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
 
-if(FULL)
+if(DNP3_ALL)
 	set(DNP3_DEMO ON)
 	set(DNP3_TEST ON)
 	set(DNP3_TLS ON)
