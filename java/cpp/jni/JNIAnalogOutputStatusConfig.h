@@ -31,7 +31,7 @@ namespace jni
     {
         class AnalogOutputStatusConfig
         {
-            friend struct JCache;
+            friend struct jni::JCache;
 
             bool init(JNIEnv* env);
             void cleanup(JNIEnv* env);

@@ -48,7 +48,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
           "struct JCache;".iter ++ space ++
           namespace("cache") {
             classDef(cfg.clazz.getSimpleName) {
-              "friend struct JCache;".iter ++ space ++
+              "friend struct jni::JCache;".iter ++ space ++
                 initSignature ++ cleanupSignature ++ space ++
                 "public:".iter ++
                 constructorSignatures ++ methodSignatures ++ fieldGetters ++

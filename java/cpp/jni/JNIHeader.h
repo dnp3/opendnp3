@@ -31,7 +31,7 @@ namespace jni
     {
         class Header
         {
-            friend struct JCache;
+            friend struct jni::JCache;
 
             bool init(JNIEnv* env);
             void cleanup(JNIEnv* env);
