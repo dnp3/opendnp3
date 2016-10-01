@@ -32,7 +32,8 @@ namespace asiodnp3 {
 	StackPair::StackPair(DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration) :
 		NUM_POINTS_PER_TYPE(numPointsPerType),
 		EVENTS_PER_ITERATION(eventsPerIteration),
-		soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>()),
+		rx_queue(std::make_shared<SynchronizedQueue<opendnp3::ExpectedValue>>()),
+		soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>(rx_queue)),
 		clientListener(std::make_shared<QueuedChannelListener>()),
 		serverListener(std::make_shared<QueuedChannelListener>()),
 		master(CreateMaster(manager, port, this->soeHandler, this->clientListener)),

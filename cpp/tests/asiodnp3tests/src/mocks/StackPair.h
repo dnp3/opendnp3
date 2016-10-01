@@ -38,6 +38,7 @@ namespace asiodnp3 {
 
 		const uint16_t NUM_POINTS_PER_TYPE;
 		const uint32_t EVENTS_PER_ITERATION;
+		std::shared_ptr<asiodnp3::SynchronizedQueue<opendnp3::ExpectedValue>> rx_queue;
 		const std::shared_ptr<opendnp3::QueuingSOEHandler> soeHandler;
 		
 		std::shared_ptr<QueuedChannelListener> clientListener;
@@ -58,7 +59,7 @@ namespace asiodnp3 {
 
 		StackPair(DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration);
 
-		bool WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);
+		bool WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);		
 	};
 
 }

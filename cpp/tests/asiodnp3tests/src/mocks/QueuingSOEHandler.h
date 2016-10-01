@@ -36,7 +36,7 @@ namespace opendnp3 {
 	class QueuingSOEHandler final : public opendnp3::ISOEHandler
 	{		
 
-		asiodnp3::SynchronizedQueue<ExpectedValue> rx_values;
+		std::shared_ptr<asiodnp3::SynchronizedQueue<opendnp3::ExpectedValue>> dest;
 		
 		std::mutex mutex;
 		std::vector<ExpectedValue> temp;
@@ -53,6 +53,11 @@ namespace opendnp3 {
 		}
 		
 	public:
+
+		QueuingSOEHandler(std::shared_ptr<asiodnp3::SynchronizedQueue<opendnp3::ExpectedValue>> dest) : dest(dest)
+		{
+		
+		}
 	
 		virtual void Start() override 
 		{
@@ -61,9 +66,8 @@ namespace opendnp3 {
 		
 		virtual void End() override 
 		{
-			this->rx_values.AddMany(temp);
+			dest->AddMany(temp);
 			temp.clear();
-
 			mutex.unlock();
 		}
 
