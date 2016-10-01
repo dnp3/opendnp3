@@ -8,9 +8,10 @@ set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPEND
 include(${PROJECT_SOURCE_DIR}/cmake/settings.cmake)
 
 # various optional libraries and projects
-option(DEMO "Build demo applications" OFF)
-option(TEST "Build tests" OFF)
+
 option(FULL "Build all optional projects (secauth, demos, tests)" OFF)
+option(DNP3_TEST "Build tests" OFF)
+option(DNP3_DEMO "Build demo applications" OFF)
 option(DNP3_DECODER "Build the decoder library" OFF)
 option(DNP3_TLS "Build TLS client/server support")
 option(DNP3_JAVA "Build the Java bindings")
@@ -21,8 +22,8 @@ option(STATICLIBS "Builds static versions of all installed libraries" OFF)
 option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
 
 if(FULL)
-	set(DEMO ON)
-	set(TEST ON)
+	set(DNP3_DEMO ON)
+	set(DNP3_TEST ON)
 	set(DNP3_TLS ON)
 	set(DNP3_DECODER ON)
 	set(DNP3_JAVA ON)
@@ -136,7 +137,7 @@ endif()
 set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
 install(DIRECTORY ./cpp/libs/include/ DESTINATION include ${INSTALL_ARGS})
 
-if(DEMO)
+if(DNP3_DEMO)
 
   # ----- master demo executable -----
   add_executable(master-demo ./cpp/examples/master/main.cpp)
@@ -186,7 +187,7 @@ if(DEMO)
 
 endif()
 
-if(TEST)
+if(DNP3_TEST)
 
   enable_testing()
 
