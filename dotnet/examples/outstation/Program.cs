@@ -37,9 +37,7 @@ namespace DotNetOutstationDemo
             
             var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, ChannelRetry.Default, "0.0.0.0", 20000, ChannelListener.Print());            
 
-            var config = new OutstationStackConfig();
-
-            config.link.keepAliveTimeout = TimeSpan.MaxValue;
+            var config = new OutstationStackConfig();            
 
             // configure the various measurements in our database
             config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1, 0);
