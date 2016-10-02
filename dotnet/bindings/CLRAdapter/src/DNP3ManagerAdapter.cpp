@@ -46,14 +46,12 @@ namespace Automatak
 
 			IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ address, System::UInt16 port, Automatak::DNP3::Interface::IChannelListener^ listener)
 			{
-
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdAddress = Conversions::ConvertString(address);
-				uint16_t stdPort = port;
-
+				
 				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
 
-				auto channel = this->manager->AddTCPClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, listenAdapter);
+				auto channel = this->manager->AddTCPClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", port, listenAdapter);
 
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
@@ -62,11 +60,10 @@ namespace Automatak
 			{
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
-				uint16_t stdPort = port;
-
+				
 				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
 
-				auto channel = this->manager->AddTCPServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, listenAdapter);
+				auto channel = this->manager->AddTCPServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, port, listenAdapter);
 
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
@@ -75,12 +72,11 @@ namespace Automatak
 			{
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdAddress = Conversions::ConvertString(address);
-				uint16_t stdPort = port;
-
+				
 				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
 								
 				std::error_code ec;
-				auto channel = this->manager->AddTLSClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, Conversions::Convert(config), listenAdapter, ec);
+				auto channel = this->manager->AddTLSClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", port, Conversions::Convert(config), listenAdapter, ec);
 				if (ec)
 				{
 					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
@@ -95,12 +91,11 @@ namespace Automatak
 			{
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
-				uint16_t stdPort = port;
-
+				
 				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
 				
 				std::error_code ec;
-				auto channel = this->manager->AddTLSServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, Conversions::Convert(config), listenAdapter, ec);
+				auto channel = this->manager->AddTLSServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, port, Conversions::Convert(config), listenAdapter, ec);
 				if (ec)
 				{
 					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
