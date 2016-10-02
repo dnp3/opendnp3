@@ -35,7 +35,6 @@
 
 #include "IMaster.h"
 #include "IOutstation.h"
-#include "DestructorHook.h"
 #include "MasterStackConfig.h"
 #include "OutstationStackConfig.h"
 
@@ -47,7 +46,7 @@ namespace asiodnp3
 /**
 * Represents a communication channel upon which masters and outstations can be bound.
 */
-class IChannel : public DestructorHook
+class IChannel
 {
 public:
 

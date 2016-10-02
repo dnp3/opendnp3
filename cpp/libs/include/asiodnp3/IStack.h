@@ -21,8 +21,6 @@
 #ifndef ASIODNP3_ISTACK_H
 #define ASIODNP3_ISTACK_H
 
-#include "DestructorHook.h"
-
 #include <openpal/executor/IExecutor.h>
 
 #include <opendnp3/StackStatistics.h>
@@ -38,7 +36,7 @@ namespace asiodnp3
 /**
 * Base class for masters or outstations
 */
-class IStack : public DestructorHook
+class IStack
 {
 public:
 
