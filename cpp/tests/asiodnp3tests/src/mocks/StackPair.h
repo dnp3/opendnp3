@@ -35,9 +35,8 @@
 namespace asiodnp3 {
 
 	class StackPair final : openpal::Uncopyable
-	{	
-		static const uint32_t LEVELS = opendnp3::levels::NORMAL;
-
+	{			
+		const uint16_t PORT;
 		const uint16_t NUM_POINTS_PER_TYPE;
 		const uint32_t EVENTS_PER_ITERATION;
 		const std::shared_ptr<opendnp3::QueuingSOEHandler> soeHandler;
@@ -60,8 +59,8 @@ namespace asiodnp3 {
 		static OutstationStackConfig GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize);
 		static MasterStackConfig GetMasterStackConfig();
 
-		static IMaster* CreateMaster(DNP3Manager&, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler>, std::shared_ptr<IChannelListener> listener);
-		static IOutstation* CreateOutstation(DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
+		static IMaster* CreateMaster(uint32_t levels, DNP3Manager&, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler>, std::shared_ptr<IChannelListener> listener);
+		static IOutstation* CreateOutstation(uint32_t levels, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
 
 		static std::string GetId(const char* name, uint16_t port);
 
@@ -70,7 +69,7 @@ namespace asiodnp3 {
 
 	public:
 
-		StackPair(DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration);
+		StackPair(uint32_t levels, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration);
 
 		bool WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);
 

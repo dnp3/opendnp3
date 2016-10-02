@@ -32,14 +32,15 @@ using namespace opendnp3;
 
 namespace asiodnp3 {
 
-	StackPair::StackPair(DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration) :
+	StackPair::StackPair(uint32_t levels, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration) :
+		PORT(port),
 		NUM_POINTS_PER_TYPE(numPointsPerType),
 		EVENTS_PER_ITERATION(eventsPerIteration),
 		soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>()),
 		clientListener(std::make_shared<QueuedChannelListener>()),
 		serverListener(std::make_shared<QueuedChannelListener>()),
-		master(CreateMaster(manager, port, this->soeHandler, this->clientListener)),
-		outstation(CreateOutstation(manager, port, numPointsPerType, eventsPerIteration, this->serverListener)),
+		master(CreateMaster(levels, manager, port, this->soeHandler, this->clientListener)),
+		outstation(CreateOutstation(levels, manager, port, numPointsPerType, 3*eventsPerIteration, this->serverListener)),
 		index_distribution(0, numPointsPerType-1),
 		type_distribution(0,6),
 		bool_distribution(0,1),
@@ -73,23 +74,25 @@ namespace asiodnp3 {
 			this->soeHandler->values.DrainTo(rx_values, timeout);
 
 			if (rx_values.empty()) {
-				throw std::exception("No values received within timeout");
+				std::ostringstream oss;
+				oss << "No values received within timeout: " << PORT;
+				throw std::runtime_error(oss.str());
 			}
 
 			// compare values
 
 			while (!rx_values.empty())
 			{
-				if (tx_values.empty())
-				{
-					throw std::exception("more values received than transmited");
+				if (tx_values.empty()) {
+					std::ostringstream oss;
+					oss << "more values received than transmited: " << PORT;
+					throw std::runtime_error(oss.str());
 				}
 
 				const auto& rx = rx_values.front();
 				const auto& tx = tx_values.front();
 
-				if (!rx.Equals(tx))
-				{
+				if (!rx.Equals(tx)) {
 					std::ostringstream oss;
 					oss << rx << " != " << tx;
 					std::runtime_error(oss.str());
@@ -149,6 +152,7 @@ namespace asiodnp3 {
 	{
 		OutstationStackConfig config(opendnp3::DatabaseSizes::AllTypes(numPointsPerType));
 
+		config.outstation.params.unsolConfirmTimeout = openpal::TimeDuration::Seconds(1);
 		config.outstation.eventBufferConfig = opendnp3::EventBufferConfig::AllTypes(eventBufferSize);
 		config.outstation.params.allowUnsolicited = true;
 
@@ -158,7 +162,8 @@ namespace asiodnp3 {
 	MasterStackConfig StackPair::GetMasterStackConfig()
 	{
 		MasterStackConfig config;
-
+		
+		config.master.responseTimeout = config.master.taskRetryPeriod = openpal::TimeDuration::Seconds(1);
 		config.master.disableUnsolOnStartup = false;
 		config.master.startupIntegrityClassMask = opendnp3::ClassField::None();
 		config.master.unsolClassMask = opendnp3::ClassField::AllEventClasses();
@@ -166,11 +171,11 @@ namespace asiodnp3 {
 		return config;
 	}
 
-	IMaster* StackPair::CreateMaster(DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler, std::shared_ptr<IChannelListener> listener)
+	IMaster* StackPair::CreateMaster(uint32_t levels, DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler, std::shared_ptr<IChannelListener> listener)
 	{
 		auto channel = manager.AddTCPClient(
 			GetId("client", port).c_str(),
-			LEVELS,
+			levels,
 			opendnp3::ChannelRetry::Default(),
 			"127.0.0.1",
 			"127.0.0.1",
@@ -186,11 +191,11 @@ namespace asiodnp3 {
 		);
 	}
 	
-	IOutstation* StackPair::CreateOutstation(DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener)
+	IOutstation* StackPair::CreateOutstation(uint32_t levels, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener)
 	{
 		auto channel = manager.AddTCPServer(
 			GetId("server", port).c_str(),
-			LEVELS,
+			levels,
 			opendnp3::ChannelRetry::Default(),
 			"127.0.0.1",			
 			port,
