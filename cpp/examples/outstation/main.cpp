@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 
 	// The main object for a outstation. The defaults are useable,
 	// but understanding the options are important.
-	OutstationStackConfig config(DatabaseSizes::AllTypes(10));	
+	OutstationStackConfig config(DatabaseSizes::AllTypes(10));
 
 	// Specify the maximum size of the event buffers
 	config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);

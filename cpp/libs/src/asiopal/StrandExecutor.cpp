@@ -44,7 +44,7 @@ std::shared_ptr<StrandExecutor> StrandExecutor::Create(std::shared_ptr<ThreadPoo
 }
 
 MonotonicTimestamp StrandExecutor::GetTime()
-{	
+{
 	return TimeConversions::Convert(steady_clock_t::now());
 }
 
