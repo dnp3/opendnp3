@@ -12,39 +12,39 @@ namespace Automatak
 		namespace Adapter
 		{				
 
-				MasterOperationsAdapter::MasterOperationsAdapter(asiodnp3::IMasterOperations* operations) : m_operations(operations)
+				MasterOperationsAdapter::MasterOperationsAdapter(asiodnp3::IMasterOperations* operations) : operations(operations)
 				{}				
 
 				IStackStatistics^ MasterOperationsAdapter::GetStackStatistics()
 				{
-					auto stats = m_operations->GetStackStatistics();
+					auto stats = operations->GetStackStatistics();
 					return Conversions::ConvertStackStats(stats);
 				}	
 
 				void MasterOperationsAdapter::SetLogFilters(LogFilter flags)
 				{
-					m_operations->SetLogFilters(flags.Flags);
+					operations->SetLogFilters(flags.Flags);
 				}
 			
 				Task<TaskCompletion>^ MasterOperationsAdapter::Scan(IEnumerable<Header^>^ headers, TaskConfig^ config)
 				{
 					auto proxy = gcnew TaskCompletionProxy(config->callback);
 					auto vec = MasterConversions::ConvertToVectorOfHeaders(headers);
-					m_operations->Scan(vec, MasterConversions::Convert(config, proxy));
+					operations->Scan(vec, MasterConversions::Convert(config, proxy));
 					return proxy->CompletionTask;
 				}
 
 				Task<TaskCompletion>^ MasterOperationsAdapter::ScanAllObjects(System::Byte group, System::Byte variation, TaskConfig^ config)
 				{
 					auto proxy = gcnew TaskCompletionProxy(config->callback);
-					m_operations->ScanAllObjects(opendnp3::GroupVariationID(group, variation), MasterConversions::Convert(config, proxy));
+					operations->ScanAllObjects(opendnp3::GroupVariationID(group, variation), MasterConversions::Convert(config, proxy));
 					return proxy->CompletionTask;
 				}
 
 				Task<TaskCompletion>^ MasterOperationsAdapter::ScanClasses(ClassField field, TaskConfig^ config)
 				{
 					auto proxy = gcnew TaskCompletionProxy(config->callback);
-					m_operations->ScanClasses(Conversions::ConvertClassField(field), MasterConversions::Convert(config, proxy));
+					operations->ScanClasses(Conversions::ConvertClassField(field), MasterConversions::Convert(config, proxy));
 					return proxy->CompletionTask;
 				}
 				
@@ -52,14 +52,14 @@ namespace Automatak
 				{
 					opendnp3::GroupVariationID gvid(group, variation);
 					auto proxy = gcnew TaskCompletionProxy(config->callback);
-					m_operations->ScanRange(gvid, start, stop, MasterConversions::Convert(config, proxy));
+					operations->ScanRange(gvid, start, stop, MasterConversions::Convert(config, proxy));
 					return proxy->CompletionTask;
 				}
 
 				Task<TaskCompletion>^ MasterOperationsAdapter::Write(TimeAndInterval^ value, System::UInt16 index, TaskConfig^ config)
 				{
 					auto proxy = gcnew TaskCompletionProxy(config->callback);
-					m_operations->Write(Conversions::ConvertMeas(value), index, MasterConversions::Convert(config, proxy));
+					operations->Write(Conversions::ConvertMeas(value), index, MasterConversions::Convert(config, proxy));
 					return proxy->CompletionTask;
 				}
 
@@ -67,7 +67,7 @@ namespace Automatak
 				{
 					auto tcs = gcnew TaskCompletionSource<RestartResultType^>();
 
-					m_operations->Restart((opendnp3::RestartType) restartType,  CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
+					operations->Restart((opendnp3::RestartType) restartType,  CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
 
 					return tcs->Task;
 				}
@@ -77,48 +77,48 @@ namespace Automatak
 					auto proxy = gcnew TaskCompletionProxy(config->callback);
 					auto vec = MasterConversions::ConvertToVectorOfHeaders(headers);
 					auto nativeName = Conversions::ConvertString(name);
-					m_operations->PerformFunction(nativeName, (opendnp3::FunctionCode) func, vec, MasterConversions::Convert(config, proxy));
+					operations->PerformFunction(nativeName, (opendnp3::FunctionCode) func, vec, MasterConversions::Convert(config, proxy));
 					return proxy->CompletionTask;
 				}
 
 				IMasterScan^ MasterOperationsAdapter::AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, TaskConfig^ config)
 				{
 					auto vec = MasterConversions::ConvertToVectorOfHeaders(headers);
-					auto scan = m_operations->AddScan(Conversions::ConvertTimespan(period), vec, MasterConversions::Convert(config));
+					auto scan = operations->AddScan(Conversions::ConvertTimespan(period), vec, MasterConversions::Convert(config));
 					return gcnew MasterScanAdapter(scan);
 				}
 
 				IMasterScan^ MasterOperationsAdapter::AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, TaskConfig^ config)
 				{
 					opendnp3::GroupVariationID gvid(group, variation);
-					auto scan = m_operations->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
+					auto scan = operations->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
 					return gcnew MasterScanAdapter(scan);
 				}
 
 				IMasterScan^ MasterOperationsAdapter::AddClassScan(ClassField field, System::TimeSpan period, TaskConfig^ config)
 				{
-					auto scan = m_operations->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
+					auto scan = operations->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
 					return gcnew MasterScanAdapter(scan);
 				}
 
 				IMasterScan^ MasterOperationsAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, TaskConfig^ config)
 				{
 					opendnp3::GroupVariationID gvid(group, variation);
-					auto scan = m_operations->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
+					auto scan = operations->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
 					return gcnew MasterScanAdapter(scan);
 				}
 												
 				Task<CommandTaskResult^>^ MasterOperationsAdapter::SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config)
 				{
 					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();					
-					m_operations->SelectAndOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
+					operations->SelectAndOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
 					return tcs->Task;
 				}
 
 				Task<CommandTaskResult^>^ MasterOperationsAdapter::DirectOperate(ICommandHeaders^ headers, TaskConfig^ config)
 				{
 					auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();
-					m_operations->DirectOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
+					operations->DirectOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
 					return tcs->Task;
 				}
 

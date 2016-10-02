@@ -57,7 +57,7 @@ namespace Automatak
 				auto appAdapter = std::shared_ptr<opendnp3::IMasterApplication>(new MasterApplicationAdapter<opendnp3::IMasterApplication>(application));
 
 				auto master = channel->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, cfg);
-				return (master == nullptr) ? nullptr : gcnew MasterAdapter(master);
+				return master ? gcnew MasterAdapter(master) : nullptr;
 			}	
 
 			IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config)

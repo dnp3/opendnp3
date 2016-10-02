@@ -70,7 +70,7 @@ namespace Automatak
 
 			private:				
 				
-				asiodnp3::IMasterOperations* m_operations;
+				asiodnp3::IMasterOperations* operations;
 			};
 
 		}
