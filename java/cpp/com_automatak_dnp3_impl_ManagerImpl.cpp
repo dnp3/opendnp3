@@ -59,7 +59,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	return (jlong) manager->AddTCPClient(id, jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), listener);	
+	return (jlong) manager->AddTCPClient(id.str(), jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), listener);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
@@ -73,7 +73,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	return (jlong) manager->AddTCPServer(id, jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), listener);
+	return (jlong) manager->AddTCPServer(id.str(), jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), listener);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
@@ -96,7 +96,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	return (jlong)manager->AddSerial(id, jlevels, retry, settings, listener);
+	return (jlong)manager->AddSerial(id.str(), jlevels, retry, settings, listener);
 }
 
 

@@ -63,8 +63,8 @@ public:
 	DNP3Manager(
 	    uint32_t concurrencyHint,
 	    std::shared_ptr<openpal::ILogHandler> handler = std::shared_ptr<openpal::ILogHandler>(),
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
 	);
 
 	~DNP3Manager();
@@ -88,7 +88,7 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTCPClient(
-	    char const* id,
+	    const std::string& id,
 	    uint32_t levels,
 	    const opendnp3::ChannelRetry& retry,
 	    const std::string& host,
@@ -108,7 +108,7 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTCPServer(
-	    char const* id,
+		const std::string& id,
 	    uint32_t levels,
 	    const opendnp3::ChannelRetry& retry,
 	    const std::string& endpoint,
@@ -126,7 +126,7 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddSerial(
-	    char const* id,
+		const std::string& id,
 	    uint32_t levels,
 	    const opendnp3::ChannelRetry& retry,
 	    asiopal::SerialSettings settings,
@@ -152,7 +152,7 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTLSClient(
-	    char const* id,
+		const std::string& id,
 	    uint32_t levels,
 	    const opendnp3::ChannelRetry& retry,
 	    const std::string& host,
@@ -179,7 +179,7 @@ public:
 	* @return A channel interface
 	*/
 	IChannel* AddTLSServer(
-	    char const* id,
+		const std::string& id,
 	    uint32_t levels,
 	    const opendnp3::ChannelRetry& retry,
 	    const std::string& endpoint,

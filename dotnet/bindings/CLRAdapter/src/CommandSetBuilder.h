@@ -29,7 +29,7 @@ namespace Automatak
 
 			private:
 				
-				opendnp3::CommandSet* m_commands;
+				opendnp3::CommandSet* commands;
 			};
 
 		}

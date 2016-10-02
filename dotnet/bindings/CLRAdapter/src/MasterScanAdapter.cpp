@@ -12,19 +12,20 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			MasterScanAdapter::MasterScanAdapter(const opendnp3::MasterScan& scan)
+			MasterScanAdapter::MasterScanAdapter(const opendnp3::MasterScan& scan) : 
+				scan(new opendnp3::MasterScan(scan))
 			{
-				pScan = new opendnp3::MasterScan(scan);								
+				
 			}
 
 			MasterScanAdapter::~MasterScanAdapter()
 			{
-				delete pScan;				
+				delete scan;				
 			}			
 
 			void MasterScanAdapter::Demand()
 			{
-				pScan->Demand();
+				scan->Demand();
 			}
 
 		}

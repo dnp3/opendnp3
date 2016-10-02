@@ -66,16 +66,7 @@
     <ClInclude Include="src\TaskCallbackAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MasterApplicationAdapterSA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MasterConversions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MasterAdapterSA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SAConversions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CallbackAdapters.h">

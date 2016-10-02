@@ -33,7 +33,7 @@ namespace Automatak
 
 			private:
 				
-				std::shared_ptr<asiodnp3::IMasterSession>* m_proxy;
+				std::shared_ptr<asiodnp3::IMasterSession>* proxy;
 			};
 
 		}

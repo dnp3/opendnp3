@@ -25,7 +25,7 @@ namespace Automatak
 
 			private:
 				
-				asiopal::IListener* m_proxy;
+				asiopal::IListener* proxy;
 			};
 
 		}

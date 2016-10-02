@@ -167,9 +167,7 @@
     <ClInclude Include="src\Lock.h" />
     <ClInclude Include="src\LogAdapter.h" />
     <ClInclude Include="src\MasterAdapter.h" />
-    <ClInclude Include="src\MasterAdapterSA.h" />
     <ClInclude Include="src\MasterApplicationAdapter.h" />
-    <ClInclude Include="src\MasterApplicationAdapterSA.h" />
     <ClInclude Include="src\MasterConversions.h" />
     <ClInclude Include="src\MasterOperationsAdapter.h" />
     <ClInclude Include="src\MasterScanAdapter.h" />
@@ -177,7 +175,6 @@
     <ClInclude Include="src\OutstationAdapter.h" />
     <ClInclude Include="src\OutstationApplicationAdapter.h" />
     <ClInclude Include="src\OutstationCommandHandlerAdapter.h" />
-    <ClInclude Include="src\SAConversions.h" />
     <ClInclude Include="src\SessionAcceptorAdapter.h" />
     <ClInclude Include="src\SOEHandlerAdapter.h" />
     <ClInclude Include="src\TaskCallbackAdapter.h" />

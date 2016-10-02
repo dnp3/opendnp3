@@ -30,7 +30,7 @@ namespace Automatak
 
 			private:
 								
-				asiodnp3::ISessionAcceptor* m_proxy;
+				asiodnp3::ISessionAcceptor* proxy;
 			};
 
 		}

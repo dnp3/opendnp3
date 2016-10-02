@@ -4,18 +4,17 @@ namespace Automatak {
 	namespace DNP3 {
 		namespace Adapter {
 
-			ListenerAdapter::ListenerAdapter(asiopal::IListener* proxy)
-				: m_proxy(proxy)
+			ListenerAdapter::ListenerAdapter(asiopal::IListener* proxy): proxy(proxy)
 			{
 			
 			}			
 
 			void ListenerAdapter::BeginShutdown()
 			{
-				if (m_proxy)
+				if (proxy)
 				{
-					m_proxy->BeginShutdown();
-					m_proxy = nullptr;
+					proxy->BeginShutdown();
+					proxy = nullptr;
 				}				
 			}
 		}

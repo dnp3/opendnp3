@@ -30,7 +30,7 @@ namespace Automatak
 
 				private:
 
-				opendnp3::MasterScan* pScan;								
+				opendnp3::MasterScan* scan;								
 			};
 
 		}

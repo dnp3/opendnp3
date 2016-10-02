@@ -8,7 +8,7 @@
 namespace Automatak { namespace DNP3 { namespace Adapter {
 
 SessionAcceptorAdapter::SessionAcceptorAdapter(asiodnp3::ISessionAcceptor& proxy) :	
-	m_proxy(&proxy)
+	proxy(&proxy)
 {}
 
 IMasterSession^ SessionAcceptorAdapter::AcceptSession(
@@ -27,7 +27,7 @@ IMasterSession^ SessionAcceptorAdapter::AcceptSession(
 		new MasterApplicationAdapter<opendnp3::IMasterApplication>(application)
 	);
 	
-	auto session = m_proxy->AcceptSession(id, handler, app, mconfig);
+	auto session = proxy->AcceptSession(id, handler, app, mconfig);
 
 	if (!session)
 	{
