@@ -293,12 +293,7 @@ namespace Automatak
 			openpal::TimeDuration Conversions::ConvertTimespan(System::TimeSpan ts)
 			{
 				return ConvertMilliseconds(ts.Ticks / System::TimeSpan::TicksPerMillisecond);
-			}
-
-			opendnp3::ChannelRetry Conversions::Convert(ChannelRetry^ retry)
-			{
-				return opendnp3::ChannelRetry(ConvertTimespan(retry->minRetryDelay), ConvertTimespan(retry->maxRetryDelay));
-			}
+			}		
 
 			System::TimeSpan Conversions::ConvertTimeDuration(const openpal::TimeDuration& duration)
 			{
@@ -323,7 +318,6 @@ namespace Automatak
 					Conversions::ConvertString(config->cipherList)
 				);
 			}
-
 
 			opendnp3::LinkConfig Conversions::ConvertConfig(LinkConfig^ config)
 			{
