@@ -22,6 +22,8 @@
 #include "asiopal/StrandExecutor.h"
 #include "asiopal/StrandTimer.h"
 
+#include "asiopal/TimeConversions.h"
+
 #include <chrono>
 
 using namespace openpal;
@@ -42,24 +44,25 @@ std::shared_ptr<StrandExecutor> StrandExecutor::Create(std::shared_ptr<ThreadPoo
 }
 
 MonotonicTimestamp StrandExecutor::GetTime()
-{
-	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(asiopal_steady_clock::now().time_since_epoch()).count();
-	return openpal::MonotonicTimestamp(millisec);
+{	
+	return TimeConversions::Convert(steady_clock_t::now());
 }
 
 ITimer* StrandExecutor::Start(const TimeDuration& delay, const Action0& runnable)
 {
-	auto expiration = asiopal_steady_clock::now() + std::chrono::milliseconds(delay.GetMilliseconds());
+	const auto now = steady_clock_t::now();
+	const auto max_ms = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::time_point::max() - now).count();
+	const auto expiration = (delay.milliseconds > max_ms) ? steady_clock_t::time_point::max() : (now + std::chrono::milliseconds(delay.milliseconds));
+
 	return Start(expiration, runnable);
 }
 
 ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const Action0& runnable)
 {
-	asiopal_steady_clock::time_point expiration(std::chrono::milliseconds(time.milliseconds));
-	return Start(expiration, runnable);
+	return Start(TimeConversions::Convert(time), runnable);
 }
 
-openpal::ITimer* StrandExecutor::Start(const asiopal_steady_clock::time_point& expiration, const openpal::Action0& runnable)
+openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expiration, const openpal::Action0& runnable)
 {
 	auto self(shared_from_this());
 	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->m_strand.get_io_service()));

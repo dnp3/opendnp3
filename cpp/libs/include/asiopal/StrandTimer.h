@@ -50,7 +50,7 @@ private:
 
 	StrandTimer(asio::io_service& service);
 
-	asio::basic_waitable_timer< asiopal::asiopal_steady_clock > m_timer;
+	asio::basic_waitable_timer< asiopal::steady_clock_t > m_timer;
 };
 
 }

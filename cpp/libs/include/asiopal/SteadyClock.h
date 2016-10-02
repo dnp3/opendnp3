@@ -68,12 +68,12 @@ struct SteadyClockWindows
 };
 
 // use this custom steady clock
-typedef SteadyClockWindows asiopal_steady_clock;
+typedef SteadyClockWindows steady_clock_t;
 
 #else
 
 // In all other situations use the normal steady clock
-typedef std::chrono::steady_clock asiopal_steady_clock;
+typedef std::chrono::steady_clock steady_clock_t;
 
 #endif
 

@@ -65,7 +65,7 @@ private:
 
 	bool canceled;
 
-	asio::basic_waitable_timer< asiopal::asiopal_steady_clock > timer;
+	asio::basic_waitable_timer< asiopal::steady_clock_t > timer;
 };
 
 }

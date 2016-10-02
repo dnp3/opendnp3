@@ -29,59 +29,59 @@
 
 namespace asiodnp3
 {
-	template <class T>
-	class SynchronizedQueue
+template <class T>
+class SynchronizedQueue
+{
+	std::deque<T> queue;
+	std::mutex mutex;
+	std::condition_variable cv;
+
+public:
+
+	template <class U>
+	void AddMany(const U& collection)
 	{
-		std::deque<T> queue;
-		std::mutex mutex;
-		std::condition_variable cv;
-
-		public:
-			
-		template <class U>
-		void AddMany(const U& collection)
 		{
-			{
-				std::unique_lock<std::mutex> lock(mutex);
-				for (auto& item : collection)
-				{
-					queue.push_back(item);
-				}
-			}			
-			cv.notify_one();
-		}
-		
-		void Add(const T& item)
-		{
-			{
-				std::unique_lock<std::mutex> lock(mutex);
-				queue.push_back(item);				
-			}
-			cv.notify_one();
-		}
-
-		template <class U>
-		size_t DrainTo(U& collection, const std::chrono::steady_clock::duration& duration)
-		{
-			const auto timeout = std::chrono::steady_clock::now() + duration;
-			
 			std::unique_lock<std::mutex> lock(mutex);
-						
-			cv.wait_until(lock, timeout, [this]() -> bool { return !this->queue.empty(); });
-			
-			for (auto& item : queue)
+			for (auto& item : collection)
 			{
-				collection.push_back(item);
+				queue.push_back(item);
 			}
+		}
+		cv.notify_one();
+	}
 
-			const auto ret = queue.size();
+	void Add(const T& item)
+	{
+		{
+			std::unique_lock<std::mutex> lock(mutex);
+			queue.push_back(item);
+		}
+		cv.notify_one();
+	}
 
-			queue.clear();
+	template <class U>
+	size_t DrainTo(U& collection, const std::chrono::steady_clock::duration& duration)
+	{
+		const auto timeout = std::chrono::steady_clock::now() + duration;
 
-			return ret;
+		std::unique_lock<std::mutex> lock(mutex);
+
+		cv.wait_until(lock, timeout, [this]() -> bool { return !this->queue.empty(); });
+
+		for (auto& item : queue)
+		{
+			collection.push_back(item);
 		}
 
-	};
+		const auto ret = queue.size();
+
+		queue.clear();
+
+		return ret;
+	}
+
+};
 
 }
 

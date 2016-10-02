@@ -71,7 +71,7 @@ public:
 	asio::strand m_strand;
 
 private:
-	openpal::ITimer* Start(const asiopal_steady_clock::time_point& expiration, const openpal::Action0& runnable);
+	openpal::ITimer* Start(const steady_clock_t::time_point& expiration, const openpal::Action0& runnable);
 
 	StrandExecutor(std::shared_ptr<ThreadPool> pool);
 };

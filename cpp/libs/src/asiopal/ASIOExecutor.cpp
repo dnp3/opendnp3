@@ -21,10 +21,12 @@
 #include "asiopal/ASIOExecutor.h"
 
 #include "asiopal/TimerASIO.h"
-#include "asiopal/SteadyClock.h"
+#include "asiopal/TimeConversions.h"
+
 
 #include <asio.hpp>
 #include <functional>
+#include <cstdint>
 
 using namespace std;
 
@@ -83,6 +85,12 @@ void ASIOExecutor::InitiateShutdown(Synchronized<bool>& handler)
 	this->CheckForShutdown();
 }
 
+int64_t ASIOExecutor::BoundedMillis(int64_t ms)
+{
+	const int64_t maximum = INT64_MAX / (1000 * 1000);
+	return (ms > maximum) ? maximum : ms;
+}
+
 void ASIOExecutor::CheckForShutdown()
 {
 	if (pShutdownSignal)
@@ -102,23 +110,24 @@ void ASIOExecutor::CheckForShutdown()
 
 openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 {
-	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(asiopal_steady_clock::now().time_since_epoch()).count();
-	return openpal::MonotonicTimestamp(millisec);
+	return TimeConversions::Convert(steady_clock_t::now());
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& delay, const openpal::Action0& runnable)
 {
-	auto expiration = asiopal_steady_clock::now() + std::chrono::milliseconds(delay.GetMilliseconds());
+	const auto now = steady_clock_t::now();
+	const auto max_ms = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::time_point::max() - now).count();
+	const auto expiration = (delay.milliseconds > max_ms) ? steady_clock_t::time_point::max() : (now + std::chrono::milliseconds(delay.milliseconds));
+
 	return Start(expiration, runnable);
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& time, const openpal::Action0& runnable)
 {
-	asiopal_steady_clock::time_point expiration(std::chrono::milliseconds(time.milliseconds));
-	return Start(expiration, runnable);
+	return Start(TimeConversions::Convert(time), runnable);
 }
 
-openpal::ITimer* ASIOExecutor::Start(const asiopal_steady_clock::time_point& tp, const openpal::Action0& runnable)
+openpal::ITimer* ASIOExecutor::Start(const steady_clock_t::time_point& tp, const openpal::Action0& runnable)
 {
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_at(tp);

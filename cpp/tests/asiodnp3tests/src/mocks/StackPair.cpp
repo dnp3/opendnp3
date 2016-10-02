@@ -30,192 +30,203 @@
 
 using namespace opendnp3;
 
-namespace asiodnp3 {
+namespace asiodnp3
+{
 
-	StackPair::StackPair(uint32_t levels, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration) :
-		PORT(port),
-		NUM_POINTS_PER_TYPE(numPointsPerType),
-		EVENTS_PER_ITERATION(eventsPerIteration),
-		soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>()),
-		clientListener(std::make_shared<QueuedChannelListener>()),
-		serverListener(std::make_shared<QueuedChannelListener>()),
-		master(CreateMaster(levels, manager, port, this->soeHandler, this->clientListener)),
-		outstation(CreateOutstation(levels, manager, port, numPointsPerType, 3*eventsPerIteration, this->serverListener)),
-		index_distribution(0, numPointsPerType-1),
-		type_distribution(0,6),
-		bool_distribution(0,1),
-		int_distribution(0, 32767)
-	{
-		this->outstation->Enable();
-		this->master->Enable();		
-	}
-	
-	bool StackPair::WaitForChannelsOnline(std::chrono::steady_clock::duration timeout)
-	{
-		return this->clientListener->WaitForState(opendnp3::ChannelState::OPEN, timeout) &&
-			this->serverListener->WaitForState(opendnp3::ChannelState::OPEN, timeout);
-	}
+StackPair::StackPair(uint32_t levels, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration) :
+	PORT(port),
+	NUM_POINTS_PER_TYPE(numPointsPerType),
+	EVENTS_PER_ITERATION(eventsPerIteration),
+	soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>()),
+	clientListener(std::make_shared<QueuedChannelListener>()),
+	serverListener(std::make_shared<QueuedChannelListener>()),
+	master(CreateMaster(levels, manager, port, this->soeHandler, this->clientListener)),
+	outstation(CreateOutstation(levels, manager, port, numPointsPerType, 3 * eventsPerIteration, this->serverListener)),
+	index_distribution(0, numPointsPerType - 1),
+	type_distribution(0, 6),
+	bool_distribution(0, 1),
+	int_distribution(0, 32767)
+{
+	this->outstation->Enable();
+	this->master->Enable();
+}
 
-	void StackPair::SendRandomValues()
+bool StackPair::WaitForChannelsOnline(std::chrono::steady_clock::duration timeout)
+{
+	return this->clientListener->WaitForState(opendnp3::ChannelState::OPEN, timeout) &&
+	       this->serverListener->WaitForState(opendnp3::ChannelState::OPEN, timeout);
+}
+
+void StackPair::SendRandomValues()
+{
+	ChangeSet set;
+	for (uint32_t i = 0; i < EVENTS_PER_ITERATION; ++i)
 	{
-		ChangeSet set;
-		for (uint32_t i = 0; i < EVENTS_PER_ITERATION; ++i)
+		this->tx_values.push_back(this->AddRandomValue(set));
+	}
+	this->outstation->Apply(set);
+}
+
+void StackPair::WaitToRxValues(std::chrono::steady_clock::duration timeout)
+{
+	while (!this->tx_values.empty())
+	{
+		std::deque<ExpectedValue> rx_values;
+		this->soeHandler->values.DrainTo(rx_values, timeout);
+
+		if (rx_values.empty())
 		{
-			this->tx_values.push_back(this->AddRandomValue(set));
+			std::ostringstream oss;
+			oss << "No values received within timeout: " << PORT;
+			throw std::runtime_error(oss.str());
 		}
-		this->outstation->Apply(set);
-	}
 
-	void StackPair::WaitToRxValues(std::chrono::steady_clock::duration timeout)
-	{
-		while (!this->tx_values.empty())
+		// compare values
+
+		while (!rx_values.empty())
 		{
-			std::deque<ExpectedValue> rx_values;
-			this->soeHandler->values.DrainTo(rx_values, timeout);
-
-			if (rx_values.empty()) {
+			if (tx_values.empty())
+			{
 				std::ostringstream oss;
-				oss << "No values received within timeout: " << PORT;
+				oss << "more values received than transmited: " << PORT;
 				throw std::runtime_error(oss.str());
 			}
 
-			// compare values
+			const auto& rx = rx_values.front();
+			const auto& tx = tx_values.front();
 
-			while (!rx_values.empty())
+			if (!rx.Equals(tx))
 			{
-				if (tx_values.empty()) {
-					std::ostringstream oss;
-					oss << "more values received than transmited: " << PORT;
-					throw std::runtime_error(oss.str());
-				}
-
-				const auto& rx = rx_values.front();
-				const auto& tx = tx_values.front();
-
-				if (!rx.Equals(tx)) {
-					std::ostringstream oss;
-					oss << rx << " != " << tx;
-					std::runtime_error(oss.str());
-				}
-
-				rx_values.pop_front();
-				tx_values.pop_front();
+				std::ostringstream oss;
+				oss << rx << " != " << tx;
+				std::runtime_error(oss.str());
 			}
+
+			rx_values.pop_front();
+			tx_values.pop_front();
 		}
 	}
+}
 
-	ExpectedValue StackPair::AddRandomValue(ChangeSet& set)
+ExpectedValue StackPair::AddRandomValue(ChangeSet& set)
+{
+	const auto index = index_distribution(generator);
+
+	switch (type_distribution(generator))
 	{
-		const auto index = index_distribution(generator);
-
-		switch (type_distribution(generator))
+	case(0):
 		{
-			case(0): {
-				opendnp3::Binary value(bool_distribution(generator) == 0);
-				set.Update(value, index, EventMode::Force);
-				return ExpectedValue(value, index);
-			}
-			case(1): {
-				opendnp3::DoubleBitBinary value(static_cast<DoubleBit>(bool_distribution(generator)));
-				set.Update(value, index, EventMode::Force);
-				return ExpectedValue(value, index);
-			}
-			case(2): {
-				opendnp3::Analog value(static_cast<double>(int_distribution(generator)));
-				set.Update(value, index, EventMode::Force);
-				return ExpectedValue(value, index);
-			}
-			case(3): {
-				opendnp3::Counter value(int_distribution(generator));
-				set.Update(value, index, EventMode::Force);
-				return ExpectedValue(value, index);
-			}
-			case(4): {
-				opendnp3::FrozenCounter value(int_distribution(generator));
-				set.Update(value, index, EventMode::Force);
-				return ExpectedValue(value, index);
-			}
-			case(5): {
-				opendnp3::BinaryOutputStatus value(bool_distribution(generator) == 0);
-				set.Update(value, index, EventMode::Force);
-				return ExpectedValue(value, index);
-			}
-			default: {
-				opendnp3::AnalogOutputStatus value(static_cast<double>(int_distribution(generator)));
-				set.Update(value, index, EventMode::Force);
-				return ExpectedValue(value, index);
-			}
+			opendnp3::Binary value(bool_distribution(generator) == 0);
+			set.Update(value, index, EventMode::Force);
+			return ExpectedValue(value, index);
+		}
+	case(1):
+		{
+			opendnp3::DoubleBitBinary value(static_cast<DoubleBit>(bool_distribution(generator)));
+			set.Update(value, index, EventMode::Force);
+			return ExpectedValue(value, index);
+		}
+	case(2):
+		{
+			opendnp3::Analog value(static_cast<double>(int_distribution(generator)));
+			set.Update(value, index, EventMode::Force);
+			return ExpectedValue(value, index);
+		}
+	case(3):
+		{
+			opendnp3::Counter value(int_distribution(generator));
+			set.Update(value, index, EventMode::Force);
+			return ExpectedValue(value, index);
+		}
+	case(4):
+		{
+			opendnp3::FrozenCounter value(int_distribution(generator));
+			set.Update(value, index, EventMode::Force);
+			return ExpectedValue(value, index);
+		}
+	case(5):
+		{
+			opendnp3::BinaryOutputStatus value(bool_distribution(generator) == 0);
+			set.Update(value, index, EventMode::Force);
+			return ExpectedValue(value, index);
+		}
+	default:
+		{
+			opendnp3::AnalogOutputStatus value(static_cast<double>(int_distribution(generator)));
+			set.Update(value, index, EventMode::Force);
+			return ExpectedValue(value, index);
 		}
 	}
+}
 
-	OutstationStackConfig StackPair::GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize)
-	{
-		OutstationStackConfig config(opendnp3::DatabaseSizes::AllTypes(numPointsPerType));
+OutstationStackConfig StackPair::GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize)
+{
+	OutstationStackConfig config(opendnp3::DatabaseSizes::AllTypes(numPointsPerType));
 
-		config.outstation.params.unsolConfirmTimeout = openpal::TimeDuration::Seconds(1);
-		config.outstation.eventBufferConfig = opendnp3::EventBufferConfig::AllTypes(eventBufferSize);
-		config.outstation.params.allowUnsolicited = true;
+	config.outstation.params.unsolConfirmTimeout = openpal::TimeDuration::Seconds(1);
+	config.outstation.eventBufferConfig = opendnp3::EventBufferConfig::AllTypes(eventBufferSize);
+	config.outstation.params.allowUnsolicited = true;
 
-		return config;
-	}
+	return config;
+}
 
-	MasterStackConfig StackPair::GetMasterStackConfig()
-	{
-		MasterStackConfig config;
-		
-		config.master.responseTimeout = config.master.taskRetryPeriod = openpal::TimeDuration::Seconds(1);
-		config.master.disableUnsolOnStartup = false;
-		config.master.startupIntegrityClassMask = opendnp3::ClassField::None();
-		config.master.unsolClassMask = opendnp3::ClassField::AllEventClasses();
+MasterStackConfig StackPair::GetMasterStackConfig()
+{
+	MasterStackConfig config;
 
-		return config;
-	}
+	config.master.responseTimeout = config.master.taskRetryPeriod = openpal::TimeDuration::Seconds(1);
+	config.master.disableUnsolOnStartup = false;
+	config.master.startupIntegrityClassMask = opendnp3::ClassField::None();
+	config.master.unsolClassMask = opendnp3::ClassField::AllEventClasses();
 
-	IMaster* StackPair::CreateMaster(uint32_t levels, DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler, std::shared_ptr<IChannelListener> listener)
-	{
-		auto channel = manager.AddTCPClient(
-			GetId("client", port).c_str(),
-			levels,
-			opendnp3::ChannelRetry::Default(),
-			"127.0.0.1",
-			"127.0.0.1",
-			port,
-			listener
-		);
+	return config;
+}
 
-		return channel->AddMaster(
-			GetId("master", port).c_str(),
-			soehandler,
-			DefaultMasterApplication::Create(),
-			GetMasterStackConfig()
-		);
-	}
-	
-	IOutstation* StackPair::CreateOutstation(uint32_t levels, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener)
-	{
-		auto channel = manager.AddTCPServer(
-			GetId("server", port).c_str(),
-			levels,
-			opendnp3::ChannelRetry::Default(),
-			"127.0.0.1",			
-			port,
-			listener
-		);
+IMaster* StackPair::CreateMaster(uint32_t levels, DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler, std::shared_ptr<IChannelListener> listener)
+{
+	auto channel = manager.AddTCPClient(
+	                   GetId("client", port).c_str(),
+	                   levels,
+	                   opendnp3::ChannelRetry::Default(),
+	                   "127.0.0.1",
+	                   "127.0.0.1",
+	                   port,
+	                   listener
+	               );
 
-		return channel->AddOutstation(
-			GetId("outstation", port).c_str(),
-			opendnp3::SuccessCommandHandler::Create(),
-			opendnp3::DefaultOutstationApplication::Create(),
-			GetOutstationStackConfig(numPointsPerType, eventBufferSize)
-		);
-	}
+	return channel->AddMaster(
+	           GetId("master", port).c_str(),
+	           soehandler,
+	           DefaultMasterApplication::Create(),
+	           GetMasterStackConfig()
+	       );
+}
 
-	std::string StackPair::GetId(const char* name, uint16_t port)
-	{
-		std::ostringstream oss;
-		oss << name << ":" << port;
-		return oss.str();
-	}
+IOutstation* StackPair::CreateOutstation(uint32_t levels, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener)
+{
+	auto channel = manager.AddTCPServer(
+	                   GetId("server", port).c_str(),
+	                   levels,
+	                   opendnp3::ChannelRetry::Default(),
+	                   "127.0.0.1",
+	                   port,
+	                   listener
+	               );
+
+	return channel->AddOutstation(
+	           GetId("outstation", port).c_str(),
+	           opendnp3::SuccessCommandHandler::Create(),
+	           opendnp3::DefaultOutstationApplication::Create(),
+	           GetOutstationStackConfig(numPointsPerType, eventBufferSize)
+	       );
+}
+
+std::string StackPair::GetId(const char* name, uint16_t port)
+{
+	std::ostringstream oss;
+	oss << name << ":" << port;
+	return oss.str();
+}
 }
 
 

@@ -50,11 +50,13 @@ public:
 		return milliseconds;
 	}
 
+	T milliseconds;
+
 protected:
-	TimeDurationBase(T aMilliseconds) : milliseconds(aMilliseconds)
+
+	TimeDurationBase(T milliseconds) : milliseconds(milliseconds)
 	{}
 
-	T milliseconds;
 };
 
 

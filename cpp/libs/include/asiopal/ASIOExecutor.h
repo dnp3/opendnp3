@@ -65,6 +65,8 @@ public:
 
 private:
 
+	static int64_t BoundedMillis(int64_t milliseconds);
+
 	void InitiateShutdown(Synchronized<bool>& handler);
 
 	void CheckForShutdown();
@@ -73,7 +75,7 @@ private:
 
 	TimerASIO* GetTimer();
 
-	openpal::ITimer* Start(const asiopal_steady_clock::time_point& tp, const openpal::Action0& runnable);
+	openpal::ITimer* Start(const steady_clock_t::time_point& tp, const openpal::Action0& runnable);
 
 	void StartTimer(TimerASIO*, const openpal::Action0& runnable);
 

@@ -43,11 +43,11 @@ TEST_CASE(SUITE("TestEventIntegration"))
 	const uint32_t LEVELS = flags::ERR | flags::WARN;
 
 	const auto TIMEOUT = std::chrono::seconds(10);
-	
+
 	DNP3Manager manager(4);
-	
+
 	std::vector<std::unique_ptr<StackPair>> pairs;
-	
+
 	for (uint16_t i = 0; i < NUM_STACK_PAIRS; ++i)
 	{
 		auto pair = std::make_unique<StackPair>(LEVELS, manager, START_PORT + i, NUM_POINTS_PER_TYPE, EVENTS_PER_ITERATION);
@@ -59,7 +59,8 @@ TEST_CASE(SUITE("TestEventIntegration"))
 		pair->WaitForChannelsOnline(TIMEOUT);
 	}
 
-	for (int i = 0; i < NUM_ITERATIONS; ++i) {			
+	for (int i = 0; i < NUM_ITERATIONS; ++i)
+	{
 
 		for (auto& pair : pairs)
 		{
@@ -69,7 +70,7 @@ TEST_CASE(SUITE("TestEventIntegration"))
 		for (auto& pair : pairs)
 		{
 			pair->WaitToRxValues(TIMEOUT);
-		}		
-	}	
+		}
+	}
 }
 

@@ -77,7 +77,7 @@ private:
 	void Run(int threadnum);
 
 	std::shared_ptr<asio::io_service> ioservice;
-	asio::basic_waitable_timer< asiopal::asiopal_steady_clock > infiniteTimer;
+	asio::basic_waitable_timer< asiopal::steady_clock_t > infiniteTimer;
 	std::vector<std::unique_ptr<std::thread>> threads;
 };
 

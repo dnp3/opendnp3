@@ -19,44 +19,21 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_QUEUEDCHANNELISTENER_H
-#define OPENDNP3_QUEUEDCHANNELISTENER_H
+#include "asiopal/TimeConversions.h"
 
-#include "SynchronizedQueue.h"
-
-#include "asiodnp3/IChannelListener.h"
-
-namespace asiodnp3
+namespace asiopal
 {
-class QueuedChannelListener : public IChannelListener
+
+steady_clock_t::time_point TimeConversions::Convert(const openpal::MonotonicTimestamp& timestamp)
 {
-	SynchronizedQueue<opendnp3::ChannelState> states;
-
-public:
-
-	virtual void OnStateChange(opendnp3::ChannelState state) override
-	{
-		states.Add(state);
-	}
-
-	bool WaitForState(opendnp3::ChannelState state, std::chrono::steady_clock::duration timeout)
-	{
-		std::vector<opendnp3::ChannelState> output;
-		while (states.DrainTo(output, timeout) > 0)
-		{
-			for (auto& s : output)
-			{
-				if (s == state) return true;
-			}
-			output.clear();
-		}
-
-		return false;
-	}
-
-};
-
+	return (timestamp.milliseconds > MAX_MILLISECONDS) ? steady_clock_t::time_point::max() : steady_clock_t::time_point(std::chrono::milliseconds(timestamp.milliseconds));
 }
 
-#endif
+openpal::MonotonicTimestamp TimeConversions::Convert(const steady_clock_t::time_point& timestamp)
+{
+	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(timestamp.time_since_epoch()).count();
+	return openpal::MonotonicTimestamp(ms);
+}
+
+}
 

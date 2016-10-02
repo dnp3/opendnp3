@@ -22,7 +22,7 @@
 #ifndef OPENDNP3_STACKPAIR_H
 #define OPENDNP3_STACKPAIR_H
 
-#include "asiodnp3/DNP3Manager.h" 
+#include "asiodnp3/DNP3Manager.h"
 #include "opendnp3/LogLevels.h"
 
 #include "QueuingSOEHandler.h"
@@ -32,51 +32,52 @@
 #include <random>
 #include <deque>
 
-namespace asiodnp3 {
+namespace asiodnp3
+{
 
-	class StackPair final : openpal::Uncopyable
-	{			
-		const uint16_t PORT;
-		const uint16_t NUM_POINTS_PER_TYPE;
-		const uint32_t EVENTS_PER_ITERATION;
-		const std::shared_ptr<opendnp3::QueuingSOEHandler> soeHandler;
-		
-		std::shared_ptr<QueuedChannelListener> clientListener;
-		std::shared_ptr<QueuedChannelListener> serverListener;
+class StackPair final : openpal::Uncopyable
+{
+	const uint16_t PORT;
+	const uint16_t NUM_POINTS_PER_TYPE;
+	const uint32_t EVENTS_PER_ITERATION;
+	const std::shared_ptr<opendnp3::QueuingSOEHandler> soeHandler;
 
-		IMaster* const master;
-		IOutstation* const outstation;
+	std::shared_ptr<QueuedChannelListener> clientListener;
+	std::shared_ptr<QueuedChannelListener> serverListener;
 
-		std::default_random_engine generator;
+	IMaster* const master;
+	IOutstation* const outstation;
 
-		std::uniform_int_distribution<uint16_t> index_distribution;
-		std::uniform_int_distribution<int> type_distribution;
-		std::uniform_int_distribution<int> bool_distribution;
-		std::uniform_int_distribution<uint16_t> int_distribution;
+	std::default_random_engine generator;
 
-		std::deque<opendnp3::ExpectedValue> tx_values;
-	
-		static OutstationStackConfig GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize);
-		static MasterStackConfig GetMasterStackConfig();
+	std::uniform_int_distribution<uint16_t> index_distribution;
+	std::uniform_int_distribution<int> type_distribution;
+	std::uniform_int_distribution<int> bool_distribution;
+	std::uniform_int_distribution<uint16_t> int_distribution;
 
-		static IMaster* CreateMaster(uint32_t levels, DNP3Manager&, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler>, std::shared_ptr<IChannelListener> listener);
-		static IOutstation* CreateOutstation(uint32_t levels, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
+	std::deque<opendnp3::ExpectedValue> tx_values;
 
-		static std::string GetId(const char* name, uint16_t port);
+	static OutstationStackConfig GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize);
+	static MasterStackConfig GetMasterStackConfig();
 
-		opendnp3::ExpectedValue AddRandomValue(asiodnp3::ChangeSet& set);
+	static IMaster* CreateMaster(uint32_t levels, DNP3Manager&, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler>, std::shared_ptr<IChannelListener> listener);
+	static IOutstation* CreateOutstation(uint32_t levels, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
+
+	static std::string GetId(const char* name, uint16_t port);
+
+	opendnp3::ExpectedValue AddRandomValue(asiodnp3::ChangeSet& set);
 
 
-	public:
+public:
 
-		StackPair(uint32_t levels, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration);
+	StackPair(uint32_t levels, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration);
 
-		bool WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);
+	bool WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);
 
-		void SendRandomValues();
+	void SendRandomValues();
 
-		void WaitToRxValues(std::chrono::steady_clock::duration timeout);
-	};
+	void WaitToRxValues(std::chrono::steady_clock::duration timeout);
+};
 
 }
 

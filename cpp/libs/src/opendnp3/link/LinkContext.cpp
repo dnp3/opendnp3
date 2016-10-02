@@ -68,7 +68,7 @@ bool LinkContext::OnLowerLayerUp()
 
 	const auto now = this->pExecutor->GetTime();
 
-	this->isOnline = true;	
+	this->isOnline = true;
 
 	this->lastMessageTimestamp = now; // no reason to trigger a keep-alive until we've actually expired
 
@@ -320,8 +320,11 @@ void LinkContext::StartResponseTimer()
 }
 
 void LinkContext::StartKeepAliveTimer(const MonotonicTimestamp& expiration)
-{	
-	auto callback = [this]() { this->OnKeepAliveTimeout(); };
+{
+	auto callback = [this]()
+	{
+		this->OnKeepAliveTimeout();
+	};
 
 	this->keepAliveTimer.Start(expiration, callback);
 }

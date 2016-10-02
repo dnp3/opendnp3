@@ -62,7 +62,7 @@ void DNP3Manager::Shutdown()
 }
 
 IChannel* DNP3Manager::AddTCPClient(
-	const std::string& id,
+    const std::string& id,
     uint32_t levels,
     const opendnp3::ChannelRetry& retry,
     const std::string& host,
@@ -76,7 +76,7 @@ IChannel* DNP3Manager::AddTCPClient(
 }
 
 IChannel* DNP3Manager::AddTCPServer(
-	const std::string& id,
+    const std::string& id,
     uint32_t levels,
     const opendnp3::ChannelRetry& retry,
     const std::string& endpoint,
@@ -92,7 +92,7 @@ IChannel* DNP3Manager::AddTCPServer(
 }
 
 IChannel* DNP3Manager::AddSerial(
-	const std::string& id,
+    const std::string& id,
     uint32_t levels,
     const opendnp3::ChannelRetry& retry,
     asiopal::SerialSettings settings,
@@ -109,7 +109,7 @@ IChannel* DNP3Manager::AddSerial(
 #ifdef OPENDNP3_USE_TLS
 
 IChannel* DNP3Manager::AddTLSClient(
-	const std::string& id,
+    const std::string& id,
     uint32_t levels,
     const opendnp3::ChannelRetry& retry,
     const std::string& host,
@@ -127,7 +127,7 @@ IChannel* DNP3Manager::AddTLSClient(
 }
 
 IChannel* DNP3Manager::AddTLSServer(
-	const std::string& id,
+    const std::string& id,
     uint32_t levels,
     const opendnp3::ChannelRetry& retry,
     const std::string& endpoint,

@@ -24,6 +24,7 @@
 
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/ThreadPool.h>
+#include <asiopal/TimeConversions.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -61,10 +62,16 @@ private:
 
 #define SUITE(name) "TimersTestSuite - " name
 
-TEST_CASE(SUITE("TestOrderedDispatch"))
+TEST_CASE(SUITE("Time conversions do not overflow"))
+{
+	const auto tp = TimeConversions::Convert(openpal::MonotonicTimestamp::Max());
+	const auto max = asiopal::steady_clock_t::time_point::max();
+	REQUIRE(tp == max);
+}
+
+TEST_CASE(SUITE("Test ordered dispatch"))
 {
 	const int NUM = 10000;
-
 
 	testlib::MockLogHandler log;
 	asiopal::ThreadPool pool(&log, levels::NORMAL, 4);
@@ -98,7 +105,7 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 }
 
 
-TEST_CASE(SUITE("ExpirationAndReuse"))
+TEST_CASE(SUITE("expiration and reuse"))
 {
 	MockTimerHandler mth;
 	auto pTimerHandler = &mth;
@@ -119,7 +126,7 @@ TEST_CASE(SUITE("ExpirationAndReuse"))
 	REQUIRE(pT1 ==  pT2); //The ASIO implementation should reuse timers
 }
 
-TEST_CASE(SUITE("Cancelation"))
+TEST_CASE(SUITE("cancelation"))
 {
 	MockTimerHandler mth;
 	auto pTimerHandler = &mth;
@@ -140,7 +147,7 @@ TEST_CASE(SUITE("Cancelation"))
 }
 
 
-TEST_CASE(SUITE("MultipleOutstanding"))
+TEST_CASE(SUITE("multiple outstanding"))
 {
 	MockTimerHandler mth1;
 	MockTimerHandler mth2;
