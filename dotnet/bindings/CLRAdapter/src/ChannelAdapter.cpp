@@ -49,22 +49,18 @@ namespace Automatak
 
 			IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handler, IMasterApplication^ application, MasterStackConfig^ config)
 			{
-				std::string stdLoggerId = Conversions::ConvertString(loggerId);
-
-				asiodnp3::MasterStackConfig cfg(Conversions::ConvertConfig(config));
+				std::string stdLoggerId = Conversions::ConvertString(loggerId);				
 
 				auto SOEAdapter = std::shared_ptr<opendnp3::ISOEHandler>(new SOEHandlerAdapter(handler));
 				auto appAdapter = std::shared_ptr<opendnp3::IMasterApplication>(new MasterApplicationAdapter<opendnp3::IMasterApplication>(application));
 
-				auto master = channel->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, cfg);
+				auto master = channel->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, Conversions::ConvertConfig(config));
 				return master ? gcnew MasterAdapter(master) : nullptr;
 			}	
 
 			IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config)
 			{
-				std::string stdLoggerId = Conversions::ConvertString(loggerId);
-
-				asiodnp3::OutstationStackConfig cfg = Conversions::ConvertConfig(config);
+				std::string stdLoggerId = Conversions::ConvertString(loggerId);				
 
 				auto commandAdapter = std::shared_ptr<opendnp3::ICommandHandler>(new OutstationCommandHandlerAdapter(cmdHandler));
 				auto appAdapter = std::shared_ptr<opendnp3::IOutstationApplication>(new OutstationApplicationAdapter(application));
