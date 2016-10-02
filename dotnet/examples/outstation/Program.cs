@@ -35,7 +35,7 @@ namespace DotNetOutstationDemo
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
             
-            var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, ChannelRetry.Default, "0.0.0.0", 20000);            
+            var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, ChannelRetry.Default, "0.0.0.0", 20000, ChannelListener.Print());            
 
             var config = new OutstationStackConfig();
 

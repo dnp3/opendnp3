@@ -124,6 +124,7 @@
     <Compile Include="gen\UserRole.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="IChannel.cs" />
+    <Compile Include="IChannelListener.cs" />
     <Compile Include="IChannelStatistics.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>

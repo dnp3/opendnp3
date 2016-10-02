@@ -105,6 +105,9 @@
     <ClInclude Include="src\ListenerAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ChannelListenerAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
