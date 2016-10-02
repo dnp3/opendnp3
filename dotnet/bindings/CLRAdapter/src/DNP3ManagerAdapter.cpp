@@ -54,16 +54,8 @@ namespace Automatak
 				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
 
 				auto channel = this->manager->AddTCPClient(stdName.c_str(), filters, Conversions::Convert(retry), stdAddress, "", stdPort, listenAdapter);
-				if (channel)
-				{
-					auto adapter = gcnew ChannelAdapter(channel);
-					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-					return adapter;
-				}
-				else
-				{
-					return nullptr;
-				}
+
+				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
 
 			IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::IChannelListener^ listener)
@@ -75,16 +67,8 @@ namespace Automatak
 				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
 
 				auto channel = this->manager->AddTCPServer(stdName.c_str(), filters, Conversions::Convert(retry), stdEndpoint, stdPort, listenAdapter);
-				if (channel)
-				{
-					auto adapter = gcnew ChannelAdapter(channel);
-					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-					return adapter;
-				}
-				else
-				{
-					return nullptr;
-				}
+
+				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
 
 			IChannel^ DNP3ManagerAdapter::AddTLSClient(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ address, System::UInt16 port, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
@@ -103,9 +87,7 @@ namespace Automatak
 				}
 				else
 				{
-					auto adapter = gcnew ChannelAdapter(channel);
-					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-					return adapter;						
+					return channel ? gcnew ChannelAdapter(channel) : nullptr;
 				}								
 			}
 			
@@ -125,9 +107,7 @@ namespace Automatak
 				}
 				else
 				{
-					auto adapter = gcnew ChannelAdapter(channel);
-					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-					return adapter;
+					return channel ? gcnew ChannelAdapter(channel) : nullptr;
 				}				
 			}
 
@@ -139,16 +119,8 @@ namespace Automatak
 				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
 
 				auto channel = this->manager->AddSerial(stdName.c_str(), filters, Conversions::Convert(retry), s, listenAdapter);
-				if (channel)
-				{
-					auto adapter = gcnew ChannelAdapter(channel);
-					channel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-					return adapter;
-				}
-				else
-				{
-					return nullptr;
-				}
+				
+				return channel ? gcnew ChannelAdapter(channel) : nullptr;				
 			}		
 
 		}
