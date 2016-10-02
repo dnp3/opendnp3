@@ -65,7 +65,7 @@ void PhysicalLayerTCPServer::DoOpen()
 			{
 				this->OnOpenCallback(ec);
 			};
-			pExecutor->PostLambda(lambda);
+			pExecutor->Post(lambda);
 		}
 		else
 		{
@@ -77,7 +77,7 @@ void PhysicalLayerTCPServer::DoOpen()
 				{
 					this->OnOpenCallback(ec);
 				};
-				pExecutor->PostLambda(lambda);
+				pExecutor->Post(lambda);
 			}
 			else
 			{
@@ -89,7 +89,7 @@ void PhysicalLayerTCPServer::DoOpen()
 					{
 						this->OnOpenCallback(ec);
 					};
-					pExecutor->PostLambda(lambda);
+					pExecutor->Post(lambda);
 				}
 				else
 				{
@@ -100,7 +100,7 @@ void PhysicalLayerTCPServer::DoOpen()
 						{
 							this->OnOpenCallback(ec);
 						};
-						pExecutor->PostLambda(lambda);
+						pExecutor->Post(lambda);
 					}
 					else
 					{

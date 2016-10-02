@@ -48,7 +48,7 @@ MonotonicTimestamp StrandExecutor::GetTime()
 	return TimeConversions::Convert(steady_clock_t::now());
 }
 
-ITimer* StrandExecutor::Start(const TimeDuration& delay, const Action0& runnable)
+ITimer* StrandExecutor::Start(const TimeDuration& delay, const action_t& runnable)
 {
 	const auto now = steady_clock_t::now();
 	const auto max_ms = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::time_point::max() - now).count();
@@ -57,12 +57,12 @@ ITimer* StrandExecutor::Start(const TimeDuration& delay, const Action0& runnable
 	return Start(expiration, runnable);
 }
 
-ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const Action0& runnable)
+ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const action_t& runnable)
 {
 	return Start(TimeConversions::Convert(time), runnable);
 }
 
-openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expiration, const openpal::Action0& runnable)
+openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable)
 {
 	auto self(shared_from_this());
 	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->m_strand.get_io_service()));
@@ -74,7 +74,7 @@ openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expirat
 	{
 		if (!ec)   // an error indicate timer was canceled
 		{
-			runnable.Apply();
+			runnable();
 		}
 	};
 
@@ -83,12 +83,12 @@ openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expirat
 	return timer.get();
 }
 
-void StrandExecutor::Post(const Action0& runnable)
+void StrandExecutor::Post(const action_t& runnable)
 {
 	auto self(shared_from_this());
 	auto callback = [self, runnable]()
 	{
-		runnable.Apply();
+		runnable();
 	};
 	m_strand.post(callback);
 }

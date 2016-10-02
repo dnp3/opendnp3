@@ -325,7 +325,7 @@ void MContext::PostCheckForTask()
 	{
 		this->CheckForTask();
 	};
-	this->pExecutor->PostLambda(callback);
+	this->pExecutor->Post(callback);
 }
 
 MasterScan MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)

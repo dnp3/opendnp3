@@ -55,8 +55,8 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 		};
 		for (int i = 0; i < NUM_OPS; ++i)
 		{
-			exe->PostLambda(increment);
-			exe->StartLambda(TimeDuration::Milliseconds(0), increment);
+			exe->Post(increment);
+			exe->Start(TimeDuration::Milliseconds(0), increment);
 		}
 	};
 

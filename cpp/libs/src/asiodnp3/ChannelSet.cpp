@@ -60,7 +60,7 @@ IChannel* ChannelSet::CreateChannel(
 	{
 		this->OnShutdown(channel);
 	};
-	channel->SetShutdownHandler(Action0::Bind(onShutdown));
+	channel->SetShutdownHandler(onShutdown);
 	channels.insert(channel);
 	return channel;
 }

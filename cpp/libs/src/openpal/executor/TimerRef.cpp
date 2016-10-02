@@ -56,7 +56,7 @@ bool TimerRef::Cancel()
 	}
 }
 
-bool TimerRef::Start(const TimeDuration& timeout, const openpal::Action0& action)
+bool TimerRef::StartAction(const TimeDuration& timeout, const action_t& action)
 {
 	if (pTimer)
 	{
@@ -69,7 +69,7 @@ bool TimerRef::Start(const TimeDuration& timeout, const openpal::Action0& action
 	}
 }
 
-bool TimerRef::Start(const MonotonicTimestamp& expiration, const openpal::Action0& action)
+bool TimerRef::StartAction(const MonotonicTimestamp& expiration, const action_t& action)
 {
 	if (pTimer)
 	{
@@ -82,7 +82,7 @@ bool TimerRef::Start(const MonotonicTimestamp& expiration, const openpal::Action
 	}
 }
 
-void TimerRef::Restart(const TimeDuration& timeout, const openpal::Action0& action)
+void TimerRef::RestartAction(const TimeDuration& timeout, const action_t& action)
 {
 	if (pTimer)
 	{
@@ -92,7 +92,7 @@ void TimerRef::Restart(const TimeDuration& timeout, const openpal::Action0& acti
 	pTimer = pExecutor->Start(timeout, action);
 }
 
-void TimerRef::Restart(const MonotonicTimestamp& expiration, const openpal::Action0& action)
+void TimerRef::RestartAction(const MonotonicTimestamp& expiration, const action_t& action)
 {
 	if (pTimer)
 	{

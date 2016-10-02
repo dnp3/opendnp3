@@ -82,7 +82,7 @@ public:
 	// -----------------------------------------------------------------------
 
 	// Helper functions only available inside DNP3Manager
-	void SetShutdownHandler(const openpal::Action0& action);
+	void SetShutdownHandler(const openpal::action_t& action);
 
 
 private:
@@ -95,7 +95,7 @@ private:
 
 	void CheckForFinalShutdown();
 
-	openpal::Action0 shutdownHandler;
+	openpal::action_t shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;
 
 	std::unique_ptr<asiopal::PhysicalLayerASIO> phys;

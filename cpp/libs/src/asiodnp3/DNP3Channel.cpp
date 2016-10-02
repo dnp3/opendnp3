@@ -52,7 +52,7 @@ DNP3Channel::DNP3Channel(
 	{
 		this->CheckForFinalShutdown();
 	};
-	router.SetShutdownHandler(Action0::Bind(onShutdown));
+	router.SetShutdownHandler(onShutdown);
 }
 
 // comes from the outside, so we need to synchronize
@@ -72,7 +72,7 @@ void DNP3Channel::Shutdown()
 	// With the router shutdown, wait for any remaining timers
 	phys->executor.WaitForShutdown();
 
-	shutdownHandler.Apply();
+	shutdownHandler();
 }
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()
@@ -149,7 +149,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, std::shared_ptr<ICommand
 	return phys->executor.ReturnBlockFor<IOutstation*>(add);
 }
 
-void DNP3Channel::SetShutdownHandler(const openpal::Action0& action)
+void DNP3Channel::SetShutdownHandler(const openpal::action_t& action)
 {
 	shutdownHandler = action;
 }

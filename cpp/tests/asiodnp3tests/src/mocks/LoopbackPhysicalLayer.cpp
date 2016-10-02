@@ -45,7 +45,7 @@ void LoopbackPhysicalLayer::DoOpen()
 	{
 		this->OnOpenCallback(std::error_code(0, std::generic_category()));
 	};
-	executor.PostLambda(lambda);
+	executor.Post(lambda);
 }
 
 void LoopbackPhysicalLayer::DoOpenSuccess()
@@ -66,7 +66,7 @@ void LoopbackPhysicalLayer::DoClose()
 		{
 			this->OnReadCallback(std::error_code(1, std::generic_category()), nullptr, 0);
 		};
-		executor.PostLambda(lambda);
+		executor.Post(lambda);
 	}
 }
 
@@ -90,7 +90,7 @@ void LoopbackPhysicalLayer::DoWrite(const openpal::RSlice& arBuffer)
 		this->OnWriteCallback(std::error_code(0, std::generic_category()), size);
 	};
 
-	executor.PostLambda(lambda);
+	executor.Post(lambda);
 
 	//now check to see if this write will dispatch a read
 	this->CheckForReadDispatch();
@@ -115,7 +115,7 @@ void LoopbackPhysicalLayer::CheckForReadDispatch()
 			this->OnReadCallback(std::error_code(0, std::generic_category()), mBytesForReading, num);
 		};
 
-		executor.PostLambda(lambda);
+		executor.Post(lambda);
 	}
 
 }

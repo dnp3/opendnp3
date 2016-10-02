@@ -93,7 +93,7 @@ TEST_CASE(SUITE("Test ordered dispatch"))
 			last = i;
 		};
 
-		executor.PostLambda(lambda);
+		executor.Post(lambda);
 	}
 
 	// post a null event to flush all prior posts
@@ -112,15 +112,15 @@ TEST_CASE(SUITE("expiration and reuse"))
 	asio::io_service service;
 	ASIOExecutor exe(service);
 
-	auto lambda = [pTimerHandler]()
+	auto action = [pTimerHandler]()
 	{
 		pTimerHandler->OnExpiration();
 	};
-	auto runnable = Action0::Bind(lambda);
-	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), runnable);
+
+	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), action);
 	REQUIRE(1 ==  service.run_one());
 	REQUIRE(1 ==  mth.GetCount());
-	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), runnable);
+	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), action);
 	service.reset();
 	REQUIRE(1 ==  service.run_one());
 	REQUIRE(pT1 ==  pT2); //The ASIO implementation should reuse timers
@@ -132,15 +132,15 @@ TEST_CASE(SUITE("cancelation"))
 	auto pTimerHandler = &mth;
 	asio::io_service service;
 	ASIOExecutor exe(service);
-	auto lambda = [pTimerHandler]()
+	auto action = [pTimerHandler]()
 	{
 		pTimerHandler->OnExpiration();
 	};
-	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), Action0::Bind(lambda));
+	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), action);
 	pT1->Cancel();
 	REQUIRE(1 ==  service.run_one());
 	REQUIRE(0 ==  mth.GetCount());
-	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), Action0::Bind(lambda));
+	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), action);
 	service.reset();
 	REQUIRE(1 ==  service.run_one());
 	REQUIRE(pT1 ==  pT2);
@@ -158,18 +158,18 @@ TEST_CASE(SUITE("multiple outstanding"))
 	ASIOExecutor ts(service);
 
 
-	auto lambda1 = [pTimerHandler1]()
+	auto action1 = [pTimerHandler1]()
 	{
 		pTimerHandler1->OnExpiration();
 	};
-	auto lambda2 = [pTimerHandler2]()
+	auto action2 = [pTimerHandler2]()
 	{
 		pTimerHandler2->OnExpiration();
 	};
 
 
-	ITimer* pT1 = ts.Start(TimeDuration::Milliseconds(0), Action0::Bind(lambda1));
-	ITimer* pT2 = ts.Start(TimeDuration::Milliseconds(100), Action0::Bind(lambda2));
+	ITimer* pT1 = ts.Start(TimeDuration::Milliseconds(0), action1);
+	ITimer* pT2 = ts.Start(TimeDuration::Milliseconds(100), action2);
 
 	REQUIRE(pT1 != pT2);
 

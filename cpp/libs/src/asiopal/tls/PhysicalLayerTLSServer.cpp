@@ -63,7 +63,7 @@ void PhysicalLayerTLSServer::DoOpen()
 		{
 			this->OnOpenCallback(ec);
 		};
-		pExecutor->PostLambda(callback);
+		pExecutor->Post(callback);
 	}
 	else
 	{

@@ -68,7 +68,7 @@ void TransportLayer::BeginTransmit(const RSlice& apdu)
 		{
 			this->OnSendResult(false);
 		};
-		pExecutor->PostLambda(lambda);
+		pExecutor->Post(lambda);
 		return;
 	}
 
@@ -86,7 +86,7 @@ void TransportLayer::BeginTransmit(const RSlice& apdu)
 		{
 			this->OnSendResult(false);
 		};
-		pExecutor->PostLambda(lambda);
+		pExecutor->Post(lambda);
 		return;
 	}
 

@@ -23,12 +23,15 @@
 
 #include "ITimer.h"
 #include "TimeDuration.h"
-#include "Action0.h"
 #include "IMonotonicTimeSource.h"
+
+#include <functional>
 
 
 namespace openpal
 {
+
+typedef std::function<void()> action_t;
 
 /**
  * Interface for posting events to a queue.  Events can be posted for
@@ -44,25 +47,14 @@ public:
 	virtual ~IExecutor() {}
 
 	/// @return a new timer based on a relative time duration
-	virtual ITimer* Start(const TimeDuration& duration, const Action0& action) = 0;
+	virtual ITimer* Start(const TimeDuration& duration, const action_t& action) = 0;
 
 	/// @return a new timer based on an absolute timestamp of the monotonic clock
-	virtual ITimer* Start(const MonotonicTimestamp& expiration, const Action0& action) = 0;
+	virtual ITimer* Start(const MonotonicTimestamp& expiration, const action_t& action) = 0;
 
 	/// @return Thread-safe way to post an event to be handled asynchronously
-	virtual void Post(const Action0& action) = 0;
+	virtual void Post(const action_t& action) = 0;
 
-	template <class Lambda>
-	void PostLambda(Lambda& lambda)
-	{
-		this->Post(Action0::Bind<Lambda>(lambda));
-	}
-
-	template <class Lambda>
-	ITimer* StartLambda(const TimeDuration& duration, Lambda& lambda)
-	{
-		return this->Start(duration, Action0::Bind<Lambda>(lambda));
-	}
 };
 
 }

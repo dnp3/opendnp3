@@ -70,12 +70,13 @@ public:
 private:
 
 	// restart the timer, return false if already active
-	bool Start(const TimeDuration& timeout, const openpal::Action0& action);
-	bool Start(const MonotonicTimestamp& expiration, const openpal::Action0& action);
+	bool StartAction(const TimeDuration& timeout, const action_t& action);
+	bool StartAction(const MonotonicTimestamp& expiration, const action_t& action);
 
 	// Start a new timer, canceling any existing timer
-	void Restart(const TimeDuration& expiration, const openpal::Action0& action);
-	void Restart(const MonotonicTimestamp& expiration, const openpal::Action0& action);
+	void RestartAction(const TimeDuration& expiration, const action_t& action);
+	void RestartAction(const MonotonicTimestamp& expiration, const action_t& action);
+
 
 	IExecutor* pExecutor;
 	ITimer* pTimer;
@@ -91,7 +92,7 @@ bool TimerRef::Start(const TimeDuration& timeout, const Lambda& action)
 		pTimer = nullptr;
 		action();
 	};
-	return this->Start(timeout, Action0::Bind(proxy));
+	return this->StartAction(timeout, proxy);
 }
 
 template <class Lambda>
@@ -102,7 +103,7 @@ bool TimerRef::Start(const MonotonicTimestamp& expiration, const Lambda& action)
 		pTimer = nullptr;
 		action();
 	};
-	return this->Start(expiration, Action0::Bind(proxy));
+	return this->StartAction(expiration, proxy);
 }
 
 template <class Lambda>
@@ -113,7 +114,7 @@ void TimerRef::Restart(const TimeDuration& timeout, const Lambda& action)
 		pTimer = nullptr;
 		action();
 	};
-	this->Restart(timeout, Action0::Bind(proxy));
+	this->RestartAction(timeout, proxy);
 }
 
 template <class Lambda>
@@ -124,7 +125,7 @@ void TimerRef::Restart(const MonotonicTimestamp& expiration, const Lambda& actio
 		pTimer = nullptr;
 		action();
 	};
-	this->Restart(expiration, Action0::Bind(proxy));
+	this->RestartAction(expiration, proxy);
 }
 
 }

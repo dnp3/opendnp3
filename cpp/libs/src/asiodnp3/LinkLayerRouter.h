@@ -72,7 +72,7 @@ public:
 	}
 
 	// called when the router shuts down
-	void SetShutdownHandler(const openpal::Action0& action);
+	void SetShutdownHandler(const openpal::action_t& action);
 
 	// Query to see if a route is in use
 	bool IsRouteInUse(const opendnp3::Route& route);
@@ -155,7 +155,7 @@ private:
 
 	opendnp3::MultidropTaskLock taskLock;
 	std::shared_ptr<IChannelListener> listener;
-	openpal::Action0 shutdownHandler;
+	openpal::action_t shutdownHandler;
 
 	std::vector<Record> records;
 	std::deque<Transmission>  transmitQueue;

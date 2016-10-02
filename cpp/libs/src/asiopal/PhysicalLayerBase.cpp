@@ -196,7 +196,7 @@ void PhysicalLayerBase::BeginWrite(const openpal::RSlice& buffer)
 			{
 				this->DoWriteSuccess();
 			};
-			pExecutor->PostLambda(callback);
+			pExecutor->Post(callback);
 		}
 	}
 	else
@@ -221,7 +221,7 @@ void PhysicalLayerBase::BeginRead(WSlice& buffer)
 			{
 				this->DoReadCallback(RSlice());
 			};
-			pExecutor->PostLambda(callback);
+			pExecutor->Post(callback);
 		}
 	}
 	else

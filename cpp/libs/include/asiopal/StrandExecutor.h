@@ -52,9 +52,9 @@ public:
 	/// ---- Implement IExecutor -----
 
 	virtual openpal::MonotonicTimestamp GetTime() override;
-	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Action0& runnable)  override;
-	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Action0& runnable)  override;
-	virtual void Post(const openpal::Action0& runnable) override;
+	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::action_t& runnable)  override;
+	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::action_t& runnable)  override;
+	virtual void Post(const openpal::action_t& runnable) override;
 
 	template <class T>
 	void PostToStrand(const T& action);
@@ -71,7 +71,7 @@ public:
 	asio::strand m_strand;
 
 private:
-	openpal::ITimer* Start(const steady_clock_t::time_point& expiration, const openpal::Action0& runnable);
+	openpal::ITimer* Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable);
 
 	StrandExecutor(std::shared_ptr<ThreadPool> pool);
 };

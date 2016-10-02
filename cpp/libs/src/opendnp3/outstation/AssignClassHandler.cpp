@@ -145,7 +145,7 @@ void AssignClassHandler::NotifyApplicationOfAssignment(AssignClassType type, Poi
 			pApplication->RecordClassAssignment(type, clazz, range.start, range.stop);
 		};
 
-		pExecutor->PostLambda(callback);
+		pExecutor->Post(callback);
 	}
 }
 

@@ -52,7 +52,7 @@ LinkLayerRouter::LinkLayerRouter(	openpal::Logger logger,
 	isTransmitting(false)
 {}
 
-void LinkLayerRouter::SetShutdownHandler(const Action0& action)
+void LinkLayerRouter::SetShutdownHandler(const openpal::action_t& action)
 {
 	this->shutdownHandler = action;
 }
@@ -283,7 +283,7 @@ void LinkLayerRouter::OnStateChange(ChannelState state)
 
 void LinkLayerRouter::OnShutdown()
 {
-	shutdownHandler.Apply();
+	if (shutdownHandler) shutdownHandler();
 }
 
 bool LinkLayerRouter::HasEnabledContext()

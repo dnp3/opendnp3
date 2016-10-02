@@ -129,7 +129,7 @@ public:
 			this->context->CheckForTaskStart(); // force the outstation to check for updates
 		};
 
-		this->lifecycle->GetExecutor().PostLambda(task);
+		this->lifecycle->GetExecutor().Post(task);
 	}
 
 protected:

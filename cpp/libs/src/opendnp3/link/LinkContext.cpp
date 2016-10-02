@@ -267,7 +267,7 @@ void LinkContext::CompleteSendOperation(bool success)
 			this->pUpperLayer->OnSendResult(success);
 		};
 
-		pExecutor->PostLambda(callback);
+		pExecutor->Post(callback);
 	}
 }
 
@@ -435,8 +435,6 @@ bool LinkContext::TryPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 
 	return false;
 }
-
-
 
 }
 

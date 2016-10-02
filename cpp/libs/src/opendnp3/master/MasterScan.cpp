@@ -51,7 +51,7 @@ bool MasterScan::Demand()
 		{
 			pTask->Demand();
 		};
-		pExecutor->PostLambda(action);
+		pExecutor->Post(action);
 		demandCallback();
 		return true;
 	}
