@@ -43,7 +43,10 @@ public:
 	bool IsMin() const;
 
 	MonotonicTimestamp();
+
 	explicit MonotonicTimestamp(int64_t milliseconds);
+
+	// overflow capped to maximum value
 	MonotonicTimestamp Add(const TimeDuration& duration) const;
 
 	int64_t milliseconds;

@@ -80,6 +80,8 @@ int main(int argc, char* argv[])
 	config.link.LocalAddr = 10;
 	config.link.RemoteAddr = 1;
 
+	config.link.KeepAliveTimeout = openpal::TimeDuration::Max();
+
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.

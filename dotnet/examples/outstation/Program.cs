@@ -39,6 +39,8 @@ namespace DotNetOutstationDemo
 
             var config = new OutstationStackConfig();
 
+            config.link.keepAliveTimeout = TimeSpan.MaxValue;
+
             // configure the various measurements in our database
             config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1, 0);
             config.databaseTemplate.binaries[0].clazz = PointClass.Class2;               

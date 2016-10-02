@@ -27,6 +27,8 @@
 
 #include "opendnp3/ErrorCodes.h"
 
+#include "openpal/util/Limits.h"
+
 
 using namespace openpal;
 
@@ -64,12 +66,13 @@ bool LinkContext::OnLowerLayerUp()
 		return false;
 	}
 
-	this->isOnline = true;
+	const auto now = this->pExecutor->GetTime();
 
-	auto now = this->pExecutor->GetTime();
+	this->isOnline = true;	
+
 	this->lastMessageTimestamp = now; // no reason to trigger a keep-alive until we've actually expired
-	MonotonicTimestamp expiration(now.milliseconds + config.KeepAliveTimeout.GetMilliseconds());
-	this->StartKeepAliveTimer(MonotonicTimestamp(now.milliseconds + config.KeepAliveTimeout.GetMilliseconds()));
+
+	this->StartKeepAliveTimer(now.Add(config.KeepAliveTimeout));
 
 	pListener->OnStateChange(opendnp3::LinkStatus::UNRESET);
 
@@ -283,7 +286,7 @@ void LinkContext::TryStartTransmission()
 
 void LinkContext::OnKeepAliveTimeout()
 {
-	auto now = this->pExecutor->GetTime();
+	const auto now = this->pExecutor->GetTime();
 
 	auto elapsed = now.milliseconds - this->lastMessageTimestamp.milliseconds;
 
@@ -293,9 +296,7 @@ void LinkContext::OnKeepAliveTimeout()
 		this->keepAliveTimeout = true;
 	}
 
-	// No matter what, reschedule the timer based on last message timestamp
-	MonotonicTimestamp expiration(this->lastMessageTimestamp.milliseconds + config.KeepAliveTimeout);
-	this->StartKeepAliveTimer(expiration);
+	this->StartKeepAliveTimer(now.Add(config.KeepAliveTimeout));
 
 	this->TryStartTransmission();
 }
@@ -319,11 +320,10 @@ void LinkContext::StartResponseTimer()
 }
 
 void LinkContext::StartKeepAliveTimer(const MonotonicTimestamp& expiration)
-{
-	this->keepAliveTimer.Start(expiration, [this]()
-	{
-		this->OnKeepAliveTimeout();
-	});
+{	
+	auto callback = [this]() { this->OnKeepAliveTimeout(); };
+
+	this->keepAliveTimer.Start(expiration, callback);
 }
 
 void LinkContext::CancelTimer()

@@ -54,7 +54,9 @@ MonotonicTimestamp::MonotonicTimestamp(int64_t aMilliseconds) : milliseconds(aMi
 
 MonotonicTimestamp MonotonicTimestamp::Add(const TimeDuration& duration) const
 {
-	return MonotonicTimestamp(milliseconds + duration.GetMilliseconds());
+	const auto maximum = INT64_MAX - this->milliseconds;
+
+	return duration.GetMilliseconds() >= maximum ? MonotonicTimestamp::Max() : MonotonicTimestamp(milliseconds + duration.GetMilliseconds());
 }
 
 bool operator==(const MonotonicTimestamp& first, const MonotonicTimestamp& second)
