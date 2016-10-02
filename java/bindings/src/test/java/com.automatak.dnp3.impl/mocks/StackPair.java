@@ -45,6 +45,8 @@ public class StackPair {
                 DatabaseConfig.allValues(numPointsPerType), EventBufferConfig.allTypes(eventBufferSize)
         );
 
+        config.outstationConfig.unsolRetryTimeout = Duration.ofSeconds(1);
+
         config.outstationConfig.allowUnsolicited = true;
 
         return config;
@@ -53,6 +55,10 @@ public class StackPair {
     static MasterStackConfig getMasterStackConfig()
     {
         MasterStackConfig config = new MasterStackConfig();
+
+        config.master.responseTimeout = Duration.ofSeconds(1);
+        config.master.taskRetryPeriod = Duration.ofSeconds(1);
+
 
         config.master.disableUnsolOnStartup = false;
         config.master.startupIntegrityClassMask = ClassField.none();

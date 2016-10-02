@@ -33,18 +33,19 @@ import java.util.function.Consumer;
 public class DNP3ManagerIntegrationTest extends TestCase {
 
     static final int NUM_STACKS = 100;
-    static final int NUM_EVENTS_PER_STACK = 1000;
     static final int NUM_POINTS_PER_EVENT_TYPE = 50;
+    static final int NUM_ITERATIONS = 10;
     static final int EVENTS_PER_ITERATION = 50;
-
     static final int START_PORT = 20000;
 
+    static final int NUM_THREADS_IN_POOL = 4;
+    static final Duration TIMEOUT = Duration.ofSeconds(10);
 
-    static void withManager(Consumer<DNP3Manager> func)
+    static void withManager(int numThreads, Consumer<DNP3Manager> func)
     {
         DNP3Manager manager= null;
         try {
-            manager = DNP3ManagerFactory.createManager(1, new NullLogHandler());
+            manager = DNP3ManagerFactory.createManager(numThreads, new NullLogHandler());
             func.accept(manager);
         }
         catch(DNP3Exception ex)
@@ -63,26 +64,21 @@ public class DNP3ManagerIntegrationTest extends TestCase {
 
         List<StackPair> stacks = new ArrayList<>();
 
-        withManager(manager ->  {
+        withManager(NUM_THREADS_IN_POOL, manager ->  {
 
             for(int i = 0; i < NUM_STACKS; ++i) {
-                StackPair pair = new StackPair(manager, START_PORT+i, NUM_POINTS_PER_EVENT_TYPE, EVENTS_PER_ITERATION);
+                StackPair pair = new StackPair(manager, START_PORT+i, NUM_POINTS_PER_EVENT_TYPE, 2*EVENTS_PER_ITERATION);
                 stacks.add(pair);
             }
 
-            stacks.forEach(pair -> pair.waitForChannelsOpen(Duration.ofSeconds(5)));
+            stacks.forEach(pair -> pair.waitForChannelsOpen(TIMEOUT));
 
-
-            int num_sent = 0;
-
-            while(num_sent < NUM_EVENTS_PER_STACK) {
+            for(int i = 0; i < NUM_ITERATIONS; ++i) {
 
                 stacks.forEach(pair -> pair.sendRandomValues());
-
-                stacks.forEach(pair -> pair.awaitSentValues(Duration.ofSeconds(5)));
-
-                num_sent += EVENTS_PER_ITERATION;
+                stacks.forEach(pair -> pair.awaitSentValues(TIMEOUT));
             }
+
         });
 
     }

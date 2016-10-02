@@ -35,90 +35,61 @@ public class ExpectedValue {
     public static final ExpectedValue.Type[] ALL_TYPES = ExpectedValue.Type.values();
 
     final int index;
-    final Measurement measurement;
+    final long value;
     final Type type;
 
     public ExpectedValue(BinaryInput measurement, int index)
     {
-        this(measurement, index, Type.BinaryType);
+        this(measurement.value ? 1 : 0, index, Type.BinaryType);
     }
 
     public ExpectedValue(DoubleBitBinaryInput measurement, int index)
     {
-        this(measurement, index, Type.DoubleBinaryType);
+        this(measurement.value.toType(), index, Type.DoubleBinaryType);
     }
 
     public ExpectedValue(AnalogInput measurement, int index)
     {
-        this(measurement, index, Type.AnalogType);
+        this((long)measurement.value, index, Type.AnalogType);
     }
 
     public ExpectedValue(Counter measurement, int index)
     {
-        this(measurement, index, Type.CounterType);
+        this(measurement.value, index, Type.CounterType);
     }
 
     public ExpectedValue(FrozenCounter measurement, int index)
     {
-        this(measurement, index, Type.FrozenCounterType);
+        this(measurement.value, index, Type.FrozenCounterType);
     }
 
     public ExpectedValue(BinaryOutputStatus measurement, int index)
     {
-        this(measurement, index, Type.BOStatusType);
+        this(measurement.value ? 1 : 0, index, Type.BOStatusType);
     }
 
     public ExpectedValue(AnalogOutputStatus measurement, int index)
     {
-        this(measurement, index, Type.AOStatusType);
+        this((long)measurement.value, index, Type.AOStatusType);
     }
 
 
-    ExpectedValue(Measurement measurement, int index, Type type)
+    ExpectedValue(long value, int index, Type type)
     {
+        this.value = value;
         this.index = index;
-        this.measurement = measurement;
         this.type = type;
     }
 
     public boolean isEqual(ExpectedValue other)
     {
-        if(this.type != other.type)
-        {
-            return false;
-        }
-
-        if(this.index != other.index)
-        {
-            return false;
-        }
-
-        switch(this.type)
-        {
-            case BinaryType:
-                return ((BinaryInput)measurement).value == ((BinaryInput) other.measurement).value;
-            case DoubleBinaryType:
-                return ((DoubleBitBinaryInput)measurement).value == ((DoubleBitBinaryInput) other.measurement).value;
-            case AnalogType:
-                return ((AnalogInput)measurement).value == ((AnalogInput) other.measurement).value;
-            case CounterType:
-                return ((Counter)measurement).value == ((Counter) other.measurement).value;
-            case FrozenCounterType:
-                return ((FrozenCounter)measurement).value == ((FrozenCounter) other.measurement).value;
-            case BOStatusType:
-                return ((BinaryOutputStatus)measurement).value == ((BinaryOutputStatus) other.measurement).value;
-            case AOStatusType:
-                return ((AnalogOutputStatus)measurement).value == ((AnalogOutputStatus) other.measurement).value;
-            default:
-                throw new RuntimeException("unknown type: " + this.type);
-        }
-
+        return (this.type == other.type) && (this.index == other.index) && (this.value == other.value);
     }
 
     @Override
     public String toString()
     {
-        return String.format("%d - %s", index, this.measurement);
+        return String.format("%d - %s(%d)", index, this.type, this.value);
     }
 
 }
