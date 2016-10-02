@@ -65,28 +65,28 @@ int main(int argc, char* argv[])
 
 	// The main object for a outstation. The defaults are useable,
 	// but understanding the options are important.
-	OutstationStackConfig stackConfig(DatabaseSizes::AllTypes(10));
+	OutstationStackConfig config(DatabaseSizes::AllTypes(10));	
 
 	// Specify the maximum size of the event buffers
-	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
+	config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
 
 	// you can override an default outstation parameters here
 	// in this example, we've enabled the oustation to use unsolicted reporting
 	// if the master enables it
-	stackConfig.outstation.params.allowUnsolicited = true;
+	config.outstation.params.allowUnsolicited = true;
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
-	stackConfig.link.LocalAddr = 10;
-	stackConfig.link.RemoteAddr = 1;
+	config.link.LocalAddr = 10;
+	config.link.RemoteAddr = 1;
 
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), stackConfig);
+	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), config);
 
 	// You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-	ConfigureDatabase(stackConfig.dbConfig);
+	ConfigureDatabase(config.dbConfig);
 
 	// Enable the outstation and start communications
 	outstation->Enable();
