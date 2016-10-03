@@ -100,7 +100,7 @@ if(DNP3_DECODER)
 endif()
 
 # ---- asiopal library ----
-file(GLOB_RECURSE asiopal_HPP ./cpp/libs/src/asiopal/*.cpp ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)
+file(GLOB_RECURSE asiopal_HPP ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)
 if(DNP3_TLS)
   file(GLOB_RECURSE asiopal_CPP ./cpp/libs/src/asiopal/*.cpp)
 else()
