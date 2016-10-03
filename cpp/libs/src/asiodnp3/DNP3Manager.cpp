@@ -33,6 +33,7 @@
 #endif
 
 #include "asiodnp3/ManagerImpl.h"
+#include "asiodnp3/ErrorCodes.h"
 
 using namespace openpal;
 
@@ -125,7 +126,7 @@ IChannel* DNP3Manager::AddTLSClient(
 	            );
 	return ec ? nullptr : impl->channels.CreateChannel(std::move(root), retry, listener, std::move(phys));
 #else
-	ec = std::error_code(-1, std::generic_category()); // TODO - something descriptive here
+	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
 #endif
 }
@@ -148,7 +149,7 @@ IChannel* DNP3Manager::AddTLSServer(
 	            );
 	return ec ? nullptr : impl->channels.CreateChannel(std::move(root), retry, listener, std::move(phys));
 #else
-	ec = std::error_code(-1, std::generic_category()); // TODO - something descriptive here
+	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
 #endif
 }
