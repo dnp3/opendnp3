@@ -23,7 +23,7 @@
 
 #include "asiopal/tls/PhysicalLayerTLSBase.h"
 
-#include "asiopal/tls/TLSConfig.h"
+#include "asiopal/TLSConfig.h"
 
 #include "asiopal/LoggingConnectionCondition.h"
 

@@ -24,7 +24,8 @@
 #include <openpal/logging/Logger.h>
 
 #include <asiopal/tls/TLSServer.h>
-#include <asiopal/tls/TLSConfig.h>
+
+#include <asiopal/TLSConfig.h>
 #include <asiopal/IResourceManager.h>
 
 #include "asiodnp3/IListenCallbacks.h"

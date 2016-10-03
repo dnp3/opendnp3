@@ -31,9 +31,7 @@
 
 #include <asiodnp3/IListenCallbacks.h>
 
-#ifdef OPENDNP3_USE_TLS
-#include <asiopal/tls/TLSConfig.h>
-#endif
+#include <asiopal/TLSConfig.h>
 
 #include <cstdint>
 #include <memory>
@@ -62,7 +60,6 @@ public:
 	    std::error_code& ec
 	);
 
-#ifdef OPENDNP3_USE_TLS
 	std::shared_ptr<asiopal::IListener> CreateListener(
 	    std::string loggerid,
 	    openpal::LogFilters loglevel,
@@ -71,7 +68,6 @@ public:
 	    std::shared_ptr<IListenCallbacks> callbacks,
 	    std::error_code& ec
 	);
-#endif
 
 private:
 

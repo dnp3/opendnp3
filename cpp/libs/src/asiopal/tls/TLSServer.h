@@ -24,7 +24,7 @@
 #include "asiopal/ThreadPool.h"
 #include "asiopal/IPEndpoint.h"
 #include "asiopal/IListener.h"
-#include "asiopal/tls/TLSConfig.h"
+#include "asiopal/TLSConfig.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/LogRoot.h>

@@ -21,7 +21,7 @@
 #ifndef ASIOPAL_SSLCONTEXT_H
 #define ASIOPAL_SSLCONTEXT_H
 
-#include "asiopal/tls/TLSConfig.h"
+#include "asiopal/TLSConfig.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/Logger.h>

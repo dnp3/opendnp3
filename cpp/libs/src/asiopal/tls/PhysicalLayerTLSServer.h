@@ -18,32 +18,50 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef ASIOPAL_PHYSICAL_LAYER_TLS_SERVER_H
+#define ASIOPAL_PHYSICAL_LAYER_TLS_SERVER_H
 
-#include "asiopal/tls/TLSConfig.h"
+#include "asiopal/tls/PhysicalLayerTLSBase.h"
+
+#include "asiopal/TLSConfig.h"
 
 namespace asiopal
 {
 
-TLSConfig::TLSConfig(
-    const std::string& peerCertFilePath_,
-    const std::string& localCertFilePath_,
-    const std::string& privateKeyFilePath_,
-    int maxVerifyDepth_,
-    bool allowTLSv10_,
-    bool allowTLSv11_,
-    bool allowTLSv12_,
-    const std::string& cipherList_
-) :
-	peerCertFilePath(peerCertFilePath_),
-	localCertFilePath(localCertFilePath_),
-	privateKeyFilePath(privateKeyFilePath_),
-	maxVerifyDepth(maxVerifyDepth_),
-	allowTLSv10(allowTLSv10_),
-	allowTLSv11(allowTLSv11_),
-	allowTLSv12(allowTLSv12_),
-	cipherList(cipherList_)
-{}
+/**
+* Implementation of a TLS server
+*/
+class PhysicalLayerTLSServer final : public PhysicalLayerTLSBase
+{
+public:
+	PhysicalLayerTLSServer(
+	    openpal::Logger logger,
+	    asio::io_service& service,
+	    const std::string& endpoint,
+	    uint16_t port,
+	    const TLSConfig& config,
+	    std::error_code& ec
+	);
 
+	// --- Implement the remainging actions ---
+	void DoOpen() override;
+	void DoOpeningClose() override; //override this to cancel the acceptor instead of the socket
+	void DoOpenSuccess() override;
+	void DoOpenCallback() override;
+
+private:
+
+	void HandleAcceptResult(const std::error_code& ec);
+
+	void OpenAcceptorAndListen(std::error_code& ec);
+
+	void CloseAcceptor();
+
+	std::string localEndpointString;
+	asio::ip::tcp::endpoint localEndpoint;
+	asio::ip::tcp::endpoint remoteEndpoint;
+	asio::ip::tcp::acceptor acceptor;
+};
 }
 
-
+#endif

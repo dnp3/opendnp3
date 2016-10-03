@@ -30,10 +30,8 @@
 #include <asiodnp3/IChannel.h>
 #include <asiodnp3/IChannelListener.h>
 #include <asiopal/SerialTypes.h>
+#include <asiopal/TLSConfig.h>
 
-#ifdef OPENDNP3_USE_TLS
-#include <asiopal/tls/TLSConfig.h>
-#endif
 
 #include <memory>
 #include <system_error>
@@ -132,9 +130,6 @@ public:
 	    asiopal::SerialSettings settings,
 	    std::shared_ptr<IChannelListener> listener);
 
-
-#ifdef OPENDNP3_USE_TLS
-
 	/**
 	* Add a TLS client channel
 	*
@@ -187,8 +182,6 @@ public:
 	    const asiopal::TLSConfig& config,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
-
-#endif
 
 private:
 
