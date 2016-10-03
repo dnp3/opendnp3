@@ -25,9 +25,25 @@
 
 namespace opendnp3
 {
+
 Header Header::AllObjects(uint8_t group, uint8_t variation)
 {
 	return Header(group, variation);
+}
+
+Header Header::From(PointClass pc)
+{
+	switch (pc)
+	{
+	case(PointClass::Class0):
+		return Header::AllObjects(60, 1);
+	case(PointClass::Class1):
+		return Header::AllObjects(60, 2);
+	case(PointClass::Class2):
+		return Header::AllObjects(60, 3);
+	default:
+		return Header::AllObjects(60, 4);
+	}
 }
 
 Header Header::Range8(uint8_t group, uint8_t variation, uint8_t start, uint8_t stop)

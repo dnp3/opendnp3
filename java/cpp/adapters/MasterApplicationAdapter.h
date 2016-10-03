@@ -39,9 +39,7 @@ public:
 	virtual bool AssignClassDuringStartup() override;
 	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun)  override;
 
-private:
-
-	static opendnp3::Header Convert(opendnp3::PointClass clazz);
+private:	
 
 	GlobalRef proxy;
 };

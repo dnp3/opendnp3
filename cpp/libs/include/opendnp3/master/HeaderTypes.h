@@ -25,6 +25,7 @@
 
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/app/GroupVariationID.h"
+#include "opendnp3/gen/PointClass.h"
 
 namespace opendnp3
 {
@@ -86,6 +87,11 @@ public:
 	* Create an all objects (0x06) header
 	*/
 	static Header AllObjects(uint8_t group, uint8_t variation);
+
+	/**
+	* Create an all objects (0x06) header
+	*/
+	static Header From(PointClass pc);
 
 	/**
 	* Create a 8-bit start stop header (0x00)

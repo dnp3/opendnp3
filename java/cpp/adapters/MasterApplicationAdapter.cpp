@@ -74,7 +74,7 @@ void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT
 		const auto jrange = jni::JCache::ClassAssignment.getrange(env, assigment);
 
 		// write the group 60 header
-		fun(Convert(clazz));
+		fun(Header::From(clazz));
 
 		// write the header for the assigned type
 		if (jni::JCache::Range.isDefined(env, jrange))
@@ -93,18 +93,5 @@ void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT
 	JNI::Iterate(env, jiterable, write);
 }
 
-opendnp3::Header MasterApplicationAdapter::Convert(opendnp3::PointClass clazz)
-{
-	switch (clazz)
-	{
-	case(PointClass::Class0):
-		return Header::AllObjects(60, 1);
-	case(PointClass::Class1):
-		return Header::AllObjects(60, 2);
-	case(PointClass::Class2):
-		return Header::AllObjects(60, 3);
-	default:
-		return Header::AllObjects(60, 4);
-	}
-}
+
 
