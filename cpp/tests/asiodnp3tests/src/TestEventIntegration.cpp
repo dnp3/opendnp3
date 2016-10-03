@@ -44,7 +44,7 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
 	const auto TIMEOUT = std::chrono::seconds(10);
 
-	DNP3Manager manager(4);
+	DNP3Manager manager(4, ConsoleLogger::Create(true));
 
 	std::vector<std::unique_ptr<StackPair>> pairs;
 

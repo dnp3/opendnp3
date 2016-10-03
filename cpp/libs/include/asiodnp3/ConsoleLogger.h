@@ -33,27 +33,23 @@ namespace asiodnp3
 std::ostringstream& operator<<(std::ostringstream& ss, const openpal::LogFilters& filters);
 
 /**
-* Singleton class that prints all log messages to the console
-*
-*
+* LogHandler that prints all log messages to the console
 */
 class ConsoleLogger final : public openpal::ILogHandler, private openpal::Uncopyable
 {
 
-public:
+public:	
 
-	ConsoleLogger();
+	virtual void Log(const openpal::LogEntry& entry) override;	
 
-	virtual void Log(const openpal::LogEntry& entry) override;
-
-	void SetPrintLocation(bool printLocation);
-
-	static std::shared_ptr<openpal::ILogHandler>Create()
+	static std::shared_ptr<openpal::ILogHandler>Create(bool printLocation = false)
 	{
-		return std::make_shared<ConsoleLogger>();
+		return std::make_shared<ConsoleLogger>(printLocation);
 	};
 
-private:
+	ConsoleLogger(bool printLocation) : printLocation(printLocation) {}
+
+private:	
 
 	bool printLocation;
 

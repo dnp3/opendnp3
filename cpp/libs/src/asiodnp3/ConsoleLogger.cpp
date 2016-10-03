@@ -34,16 +34,6 @@ using namespace std::chrono;
 namespace asiodnp3
 {
 
-ConsoleLogger::ConsoleLogger() : printLocation(false)
-{
-
-}
-
-void ConsoleLogger::SetPrintLocation(bool printLocation_)
-{
-	printLocation = printLocation_;
-}
-
 void ConsoleLogger::Log(const openpal::LogEntry& entry)
 {
 	auto time = std::chrono::high_resolution_clock::now();
