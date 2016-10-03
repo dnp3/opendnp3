@@ -57,11 +57,11 @@ class StackPair final : openpal::Uncopyable
 
 	std::deque<opendnp3::ExpectedValue> tx_values;
 
-	static OutstationStackConfig GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize);
-	static MasterStackConfig GetMasterStackConfig();
+	static OutstationStackConfig GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize, openpal::TimeDuration timeout);
+	static MasterStackConfig GetMasterStackConfig(openpal::TimeDuration timeout);
 
-	static IMaster* CreateMaster(uint32_t levels, DNP3Manager&, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler>, std::shared_ptr<IChannelListener> listener);
-	static IOutstation* CreateOutstation(uint32_t levels, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
+	static IMaster* CreateMaster(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler>, std::shared_ptr<IChannelListener> listener);
+	static IOutstation* CreateOutstation(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
 
 	static std::string GetId(const char* name, uint16_t port);
 
@@ -70,7 +70,7 @@ class StackPair final : openpal::Uncopyable
 
 public:
 
-	StackPair(uint32_t levels, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration);
+	StackPair(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration);
 
 	bool WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);
 

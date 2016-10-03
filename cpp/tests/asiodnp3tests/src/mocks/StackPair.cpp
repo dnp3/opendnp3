@@ -33,15 +33,15 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-StackPair::StackPair(uint32_t levels, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration) :
+StackPair::StackPair(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration) :
 	PORT(port),
 	NUM_POINTS_PER_TYPE(numPointsPerType),
 	EVENTS_PER_ITERATION(eventsPerIteration),
 	soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>()),
 	clientListener(std::make_shared<QueuedChannelListener>()),
 	serverListener(std::make_shared<QueuedChannelListener>()),
-	master(CreateMaster(levels, manager, port, this->soeHandler, this->clientListener)),
-	outstation(CreateOutstation(levels, manager, port, numPointsPerType, 3 * eventsPerIteration, this->serverListener)),
+	master(CreateMaster(levels, timeout, manager, port, this->soeHandler, this->clientListener)),
+	outstation(CreateOutstation(levels, timeout, manager, port, numPointsPerType, 3 * eventsPerIteration, this->serverListener)),
 	index_distribution(0, numPointsPerType - 1),
 	type_distribution(0, 6),
 	bool_distribution(0, 1),
@@ -159,22 +159,23 @@ ExpectedValue StackPair::AddRandomValue(ChangeSet& set)
 	}
 }
 
-OutstationStackConfig StackPair::GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize)
+OutstationStackConfig StackPair::GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize, openpal::TimeDuration timeout)
 {
 	OutstationStackConfig config(opendnp3::DatabaseSizes::AllTypes(numPointsPerType));
 
-	config.outstation.params.unsolConfirmTimeout = openpal::TimeDuration::Seconds(1);
+	config.outstation.params.unsolConfirmTimeout = timeout;
 	config.outstation.eventBufferConfig = opendnp3::EventBufferConfig::AllTypes(eventBufferSize);
 	config.outstation.params.allowUnsolicited = true;
 
 	return config;
 }
 
-MasterStackConfig StackPair::GetMasterStackConfig()
+MasterStackConfig StackPair::GetMasterStackConfig(openpal::TimeDuration timeout)
 {
 	MasterStackConfig config;
 
-	config.master.responseTimeout = config.master.taskRetryPeriod = openpal::TimeDuration::Seconds(1);
+	config.master.responseTimeout = timeout;
+	config.master.taskRetryPeriod = timeout;
 	config.master.disableUnsolOnStartup = false;
 	config.master.startupIntegrityClassMask = opendnp3::ClassField::None();
 	config.master.unsolClassMask = opendnp3::ClassField::AllEventClasses();
@@ -182,7 +183,7 @@ MasterStackConfig StackPair::GetMasterStackConfig()
 	return config;
 }
 
-IMaster* StackPair::CreateMaster(uint32_t levels, DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler, std::shared_ptr<IChannelListener> listener)
+IMaster* StackPair::CreateMaster(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler, std::shared_ptr<IChannelListener> listener)
 {
 	auto channel = manager.AddTCPClient(
 	                   GetId("client", port).c_str(),
@@ -198,11 +199,11 @@ IMaster* StackPair::CreateMaster(uint32_t levels, DNP3Manager& manager, uint16_t
 	           GetId("master", port).c_str(),
 	           soehandler,
 	           DefaultMasterApplication::Create(),
-	           GetMasterStackConfig()
+	           GetMasterStackConfig(timeout)
 	       );
 }
 
-IOutstation* StackPair::CreateOutstation(uint32_t levels, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener)
+IOutstation* StackPair::CreateOutstation(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener)
 {
 	auto channel = manager.AddTCPServer(
 	                   GetId("server", port).c_str(),
@@ -217,7 +218,7 @@ IOutstation* StackPair::CreateOutstation(uint32_t levels, DNP3Manager& manager, 
 	           GetId("outstation", port).c_str(),
 	           opendnp3::SuccessCommandHandler::Create(),
 	           opendnp3::DefaultOutstationApplication::Create(),
-	           GetOutstationStackConfig(numPointsPerType, eventBufferSize)
+	           GetOutstationStackConfig(numPointsPerType, eventBufferSize, timeout)
 	       );
 }
 

@@ -38,25 +38,26 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
 	const uint16_t NUM_POINTS_PER_TYPE = 50;
 	const uint16_t EVENTS_PER_ITERATION = 50;
-	const int NUM_ITERATIONS = 100;
+	const int NUM_ITERATIONS = 10;
 
 	const uint32_t LEVELS = flags::ERR | flags::WARN;
 
-	const auto TIMEOUT = std::chrono::seconds(10);
+	const auto TEST_TIMEOUT = std::chrono::seconds(5);
+	const auto STACK_TIMEOUT = openpal::TimeDuration::Seconds(1);
 
-	DNP3Manager manager(4, ConsoleLogger::Create(true));
+	DNP3Manager manager(4);
 
 	std::vector<std::unique_ptr<StackPair>> pairs;
 
 	for (uint16_t i = 0; i < NUM_STACK_PAIRS; ++i)
 	{
-		auto pair = std::make_unique<StackPair>(LEVELS, manager, START_PORT + i, NUM_POINTS_PER_TYPE, EVENTS_PER_ITERATION);
+		auto pair = std::make_unique<StackPair>(LEVELS, STACK_TIMEOUT, manager, START_PORT + i, NUM_POINTS_PER_TYPE, EVENTS_PER_ITERATION);
 		pairs.push_back(std::move(pair));
 	}
 
 	for (auto& pair : pairs)
 	{
-		pair->WaitForChannelsOnline(TIMEOUT);
+		pair->WaitForChannelsOnline(TEST_TIMEOUT);
 	}
 
 	for (int i = 0; i < NUM_ITERATIONS; ++i)
@@ -69,7 +70,7 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
 		for (auto& pair : pairs)
 		{
-			pair->WaitToRxValues(TIMEOUT);
+			pair->WaitToRxValues(TEST_TIMEOUT);
 		}
 	}
 }
