@@ -30,16 +30,13 @@ std::string ErrorCategory::message(int ev) const
 {
 	switch (ev)
 	{
-	case(errors::SHUTTING_DOWN) :
+	case(static_cast<int>(Error::SHUTTING_DOWN)) :
 		return "The operation was requested while the resource was shutting down";
+	case(static_cast<int>(Error::NO_TLS_SUPPORT)) :
+		return "Not built with TLS support";
 	default:
 		return "unknown error";
 	};
-}
-
-std::error_code make_error_code(errors::Error err)
-{
-	return std::error_code(err, ErrorCategory::Instance());
 }
 
 }

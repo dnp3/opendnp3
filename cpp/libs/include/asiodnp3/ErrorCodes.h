@@ -23,25 +23,16 @@
 #define ASIODNP3_ERRORCODES_H
 
 #include <system_error>
-#include <string>
 
-#if (defined WIN32 && (_MSC_VER < 1900))
-#define NOEXCEPT
-#else
-#define NOEXCEPT noexcept
-#endif
 
 namespace asiodnp3
 {
-namespace errors
-{
-enum Error : int
-{
-	// --- shutdown errors ---
-	SHUTTING_DOWN
-};
 
-}
+enum class Error : int
+{
+	SHUTTING_DOWN,
+	NO_TLS_SUPPORT
+};
 
 class ErrorCategory final : public std::error_category
 {
@@ -52,10 +43,11 @@ public:
 		return instance;
 	}
 
-	virtual const char* name() const NOEXCEPT
+	virtual const char* name() const noexcept
 	{
-		return "DNP3 Errors";
+		return "dnp3";
 	}
+
 	virtual std::string message(int ev) const;
 
 private:
@@ -66,16 +58,21 @@ private:
 	static ErrorCategory instance;
 };
 
-std::error_code make_error_code(errors::Error err);
+inline std::error_code make_error_code(Error err)
+{
+	return std::error_code(static_cast<int>(err), ErrorCategory::Instance());
 }
+
+}
+
 
 namespace std
 {
+
 template <>
-struct is_error_code_enum<asiodnp3::errors::Error> : public true_type {};
+struct is_error_code_enum<asiodnp3::Error> : public true_type {};
+
 }
-
-
 
 
 #endif

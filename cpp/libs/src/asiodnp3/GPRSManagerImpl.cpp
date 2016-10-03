@@ -30,6 +30,7 @@
 
 #include "opendnp3/LogLevels.h"
 
+
 namespace asiodnp3
 {
 
@@ -51,7 +52,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 
 	if (m_is_shutting_down)
 	{
-		ec = make_error_code(errors::Error::SHUTTING_DOWN);
+		ec = make_error_code(Error::SHUTTING_DOWN);
 		return nullptr;
 	}
 
@@ -109,10 +110,14 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 
 	this->m_resources.push_back(server);
 	return server;
+
 #else
-	ec = std::error_code(-1, std::generic_category()); // TODO - something descriptive here
+
+	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
+
 #endif
+
 }
 
 
