@@ -299,7 +299,8 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuf
 
 		if(err)
 		{
-			if (!state.isClosing) {
+			if (!state.isClosing)
+			{
 				SIMPLE_LOG_BLOCK(logger, logflags::WARN, err.message().c_str());
 			}
 			if(state.CanClose()) this->StartClose();

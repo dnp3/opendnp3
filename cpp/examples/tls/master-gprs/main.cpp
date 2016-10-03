@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 	const auto NUM_THREAD = std::thread::hardware_concurrency();
 
 	auto callbacks = std::make_shared<DefaultListenCallbacks>();
-	
+
 	// This is the main point of interaction with the stack
 	GPRSManager manager(NUM_THREAD, ConsoleLogger::Create());
 

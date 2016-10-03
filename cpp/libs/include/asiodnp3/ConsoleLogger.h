@@ -38,9 +38,9 @@ std::ostringstream& operator<<(std::ostringstream& ss, const openpal::LogFilters
 class ConsoleLogger final : public openpal::ILogHandler, private openpal::Uncopyable
 {
 
-public:	
+public:
 
-	virtual void Log(const openpal::LogEntry& entry) override;	
+	virtual void Log(const openpal::LogEntry& entry) override;
 
 	static std::shared_ptr<openpal::ILogHandler>Create(bool printLocation = false)
 	{
@@ -49,7 +49,7 @@ public:
 
 	ConsoleLogger(bool printLocation) : printLocation(printLocation) {}
 
-private:	
+private:
 
 	bool printLocation;
 
