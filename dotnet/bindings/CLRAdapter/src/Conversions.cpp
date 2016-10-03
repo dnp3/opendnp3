@@ -5,14 +5,6 @@
 
 using namespace Automatak::DNP3::Interface;
 
-/*
-#ifdef ERROR
-#undef ERROR
-#endif
-*/
-
-#include <iostream>
-
 namespace Automatak
 {
 	namespace DNP3
@@ -422,9 +414,7 @@ namespace Automatak
 
 				IndexMode indexMode = config->databaseTemplate->GetIndexMode();
 				cfg.outstation = ConvertConfig(config->outstation, (opendnp3::IndexMode) indexMode);
-				cfg.link = ConvertConfig(config->link);
-
-				std::cout << "Keepalive: " << cfg.link.KeepAliveTimeout.GetMilliseconds() << std::endl;
+				cfg.link = ConvertConfig(config->link);				
 
 				return cfg;
 			}
