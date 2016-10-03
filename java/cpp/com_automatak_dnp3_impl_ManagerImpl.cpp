@@ -25,9 +25,32 @@
 #include "adapters/LogHandlerAdapter.h"
 #include "adapters/ChannelListenerAdapter.h"
 
+#include "jni/JCache.h"
+
 using namespace asiodnp3;
 using namespace opendnp3;
 using namespace openpal;
+
+asiopal::TLSConfig ConvertTLSConfig(JNIEnv* env, jobject jconfig)
+{
+	auto& ref = jni::JCache::TLSConfig;
+
+	CString peerCertFilePath(env, ref.getpeerCertFilePath(env, jconfig));
+	CString localCertFilePath(env, ref.getlocalCertFilePath(env, jconfig));
+	CString privateKeyFilePath(env, ref.getprivateKeyFilePath(env, jconfig));
+	CString cipherList(env, ref.getcipherList(env, jconfig));
+
+	return asiopal::TLSConfig(
+		peerCertFilePath.str(),
+		localCertFilePath.str(),
+		privateKeyFilePath.str(),
+		ref.getmaxVerifyDepth(env, jconfig),
+		!!ref.getallowTLSv10(env, jconfig),
+		!!ref.getallowTLSv11(env, jconfig),
+		!!ref.getallowTLSv12(env, jconfig),
+		cipherList.str()
+	);
+}
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager
 (JNIEnv* env, jobject, jint concurreny, jobject loghandler)
@@ -76,6 +99,47 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	return (jlong) manager->AddTCPServer(id.str(), jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), listener);
 }
 
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client
+(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jhost, jstring jadapter, jint jport, jobject jtlsconfig, jobject jlistener)
+{
+	const auto manager = (DNP3Manager*)native;
+
+	CString id(env, jid);
+	CString host(env, jhost);
+	CString adapter(env, jadapter);
+	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+
+	auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
+
+	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+
+	std::error_code ec;
+
+	auto ret = manager->AddTLSClient(id.str(), jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
+
+	return ec ? 0 : (long) ret;
+}
+
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1server
+(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jadapter, jint jport, jobject jtlsconfig, jobject jlistener)
+{
+	const auto manager = (DNP3Manager*)native;
+
+	CString id(env, jid);
+	CString adapter(env, jadapter);
+	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+
+	auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
+
+	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+
+	std::error_code ec;
+
+	auto ret = manager->AddTLSServer(id.str(), jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
+
+	return ec ? 0 : (long)ret;
+}
+
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
 (JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jsdevice, jint jbaudRate, jint jdatabits, jint jparity, jint jstopbits, jint jflowcontrol, jobject jlistener)
 {
@@ -98,5 +162,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	return (jlong)manager->AddSerial(id.str(), jlevels, retry, settings, listener);
 }
+
+
 
 

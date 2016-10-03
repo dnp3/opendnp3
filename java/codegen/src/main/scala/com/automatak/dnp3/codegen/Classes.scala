@@ -113,7 +113,8 @@ object Classes {
     ClassConfig(classOf[CounterConfig], Set(Features.Fields)),
     ClassConfig(classOf[FrozenCounterConfig], Set(Features.Fields)),
     ClassConfig(classOf[BinaryOutputStatusConfig], Set(Features.Fields)),
-    ClassConfig(classOf[AnalogOutputStatusConfig], Set(Features.Fields))
+    ClassConfig(classOf[AnalogOutputStatusConfig], Set(Features.Fields)),
+    ClassConfig(classOf[TLSConfig], Set(Features.Fields))
   )
 
 

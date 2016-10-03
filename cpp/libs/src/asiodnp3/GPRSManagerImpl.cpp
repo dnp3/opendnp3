@@ -89,7 +89,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 
 	if (m_is_shutting_down)
 	{
-		ec = make_error_code(errors::Error::SHUTTING_DOWN);
+		ec = make_error_code(Error::SHUTTING_DOWN);
 		return nullptr;
 	}
 

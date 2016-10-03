@@ -174,8 +174,10 @@ object JNIMethod {
 
     def fieldType : String = getReturnType(f.getType)
 
+    def cast : String = if(f.getType == classOf[String]) "(jstring) " else ""
+
     "%s %s::get%s(JNIEnv* env, jobject instance)".format(getType(f.getType), f.getDeclaringClass.getSimpleName, f.getName).iter  ++ bracket {
-      "return env->Get%sField(instance, this->%sField);".format(fieldType, f.getName).iter
+      "return %senv->Get%sField(instance, this->%sField);".format(cast, fieldType, f.getName).iter
     }
   }
 }
