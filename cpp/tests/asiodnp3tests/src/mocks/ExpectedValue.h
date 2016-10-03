@@ -27,6 +27,8 @@
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/gen/StaticTypeBitmask.h"
 
+#include <sstream>
+
 namespace opendnp3
 {
 
@@ -92,6 +94,7 @@ inline std::ostream& operator<<(std::ostream& os, const ExpectedValue& v)
 	os << v.index << " - " << ExpectedValue::ToString(v.type) << "(" << v.value << ")";
 	return os;
 }
+
 }
 
 #endif

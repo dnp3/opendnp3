@@ -24,6 +24,8 @@
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/ConsoleLogger.h>
 
+#include <memory>
+
 #include "mocks/StackPair.h"
 
 using namespace opendnp3;
