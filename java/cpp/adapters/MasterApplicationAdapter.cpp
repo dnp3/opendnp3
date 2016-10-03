@@ -67,9 +67,7 @@ void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT
 	const auto jiterable = jni::JCache::MasterApplication.getClassAssignments(env, proxy);
 
 	auto write = [&](jobject assigment)
-	{
-
-		// TODO - the point class isn't used!!!
+	{		
 		const auto clazz = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::ClassAssignment.getclazz(env, assigment)));
 		const auto jgroup = jni::JCache::ClassAssignment.getgroup(env, assigment);
 		const auto jvariation = jni::JCache::ClassAssignment.getvariation(env, assigment);
