@@ -26,6 +26,7 @@
 #include <openpal/util/ToHex.h>
 #include <openpal/serialization/Serialization.h>
 
+#include <opendnp3/objects/Group1.h>
 #include <opendnp3/objects/Group2.h>
 #include <opendnp3/objects/Group12.h>
 #include <opendnp3/objects/Group20.h>
@@ -87,6 +88,50 @@ TEST_CASE(SUITE("RangeWriteIteratorStartStop"))
 	}
 
 	REQUIRE("C0 81 00 00 14 06 00 02 03 09 00 07 00" ==  ToHex(response.ToRSlice()));
+}
+
+TEST_CASE(SUITE("RangeIterator UInt8 boundary condition"))
+{
+	APDUResponse response(APDUHelpers::Response());
+	auto writer = response.GetWriter();
+
+	{
+		auto iterator = writer.IterateOverRange<UInt8, Binary>(QualifierCode::UINT8_START_STOP, Group1Var2::Inst(), 0);
+
+		for (int i = 0; i < 256; ++i)
+		{
+			REQUIRE(iterator.Write(Binary(true)));
+		}
+
+		REQUIRE_FALSE(iterator.Write(Binary(true)));
+	}
+
+	std::string beginsWith("C0 81 00 00 01 02 00 00 FF");
+	auto truncated = ToHex(response.ToRSlice()).substr(0, beginsWith.size());
+
+	REQUIRE(beginsWith == truncated);
+}
+
+TEST_CASE(SUITE("CountIterator UInt8 boundary condition"))
+{
+	APDUResponse response(APDUHelpers::Response());
+	auto writer = response.GetWriter();
+
+	{
+		auto iterator = writer.IterateOverCount<UInt8, Binary>(QualifierCode::UINT8_CNT, Group1Var2::Inst());
+
+		for (int i = 0; i < 255; ++i)
+		{
+			REQUIRE(iterator.Write(Binary(true)));
+		}
+
+		REQUIRE_FALSE(iterator.Write(Binary(true)));
+	}
+
+	std::string beginsWith("C0 81 00 00 01 02 07 FF");
+	auto truncated = ToHex(response.ToRSlice()).substr(0, beginsWith.size());
+
+	REQUIRE(beginsWith == truncated);
 }
 
 TEST_CASE(SUITE("EmptyHeadersWhenNotEnoughSpaceForSingleValue"))
