@@ -63,7 +63,7 @@ public:
 
 	bool Write(const WriteType& value)
 	{
-		if (isValid && (serializer.Size() <= pPosition->Size()))
+		if (isValid && (serializer.Size() <= pPosition->Size()) && (count < CountType::Max))
 		{
 			serializer.Write(value, *this->pPosition);
 			++count;
