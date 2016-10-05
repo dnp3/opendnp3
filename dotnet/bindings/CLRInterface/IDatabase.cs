@@ -103,6 +103,6 @@ namespace Automatak.DNP3.Interface
         /// <param name="index"></param>
         /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
         /// <returns> true if the point exists </returns>
-        void Update(TimeAndInterval update, System.UInt16 index);             
+        void Update(TimeAndInterval update, System.UInt16 index);                
 	}
 }

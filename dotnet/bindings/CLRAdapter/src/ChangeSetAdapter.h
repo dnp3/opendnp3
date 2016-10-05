@@ -36,35 +36,7 @@ namespace Automatak
 				
 				asiodnp3::ChangeSet* changes;
 			};
-			
-			struct FuncConverter
-			{
-				template <class Native, class Managed>
-				static bool Invoke(asiodnp3::MeasUpdate* pUpdate, System::Func<Managed^, Managed^>^ func, uint16_t index, opendnp3::EventMode mode)
-				{
-					gcroot<System::Func<Managed^, Managed^>^> root(func);
-
-					auto apply = [&](const Native& value)
-					{
-						return Conversions::ConvertMeas(root->Invoke(Conversions::ConvertMeas(value)));
-					};
-
-					return pDatabase->Modify(openpal::Function1<const Native&, Native>::Bind(apply), index, mode);
-				}
-
-				template <class Native, class Managed>
-				static bool Invoke(opendnp3::IDatabase* pDatabase, System::Func<Managed^, Managed^>^ func, uint16_t index)
-				{
-					gcroot<System::Func<Managed^, Managed^>^> root(func);
-
-					auto apply = [&](const Native& value)
-					{
-						return Conversions::ConvertMeas(root->Invoke(Conversions::ConvertMeas(value)));
-					};
-
-					return pDatabase->Modify(openpal::Function1<const Native&, Native>::Bind(apply), index);
-				}
-			};			
+								
 			
 		}
 	}

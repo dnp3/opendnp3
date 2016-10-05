@@ -5,7 +5,7 @@ using namespace System;
 using namespace Automatak::DNP3::Interface;
 
 #include <opendnp3/link/ChannelRetry.h>
-#include <asiopal/tls/TLSConfig.h>
+#include <asiopal/TLSConfig.h>
 
 namespace asiodnp3
 {
