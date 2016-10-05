@@ -95,22 +95,22 @@ bool Database::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t fla
 {
 	switch (type)
 	{
-		case(FlagsType::BinaryInput):
-			return Modify<BinarySpec>(start, stop, flags);
-		case(FlagsType::DoubleBinaryInput):
-			return Modify<DoubleBitBinarySpec>(start, stop, flags);
-		case(FlagsType::AnalogInput):
-			return Modify<AnalogSpec>(start, stop, flags);
-		case(FlagsType::Counter):
-			return Modify<CounterSpec>(start, stop, flags);
-		case(FlagsType::FrozenCounter):
-			return Modify<FrozenCounterSpec>(start, stop, flags);
-		case(FlagsType::BinaryOutputStatus):
-			return Modify<BinaryOutputStatusSpec>(start, stop, flags);
-		case(FlagsType::AnalogOutputStatus):
-			return Modify<AnalogOutputStatusSpec>(start, stop, flags);
+	case(FlagsType::BinaryInput):
+		return Modify<BinarySpec>(start, stop, flags);
+	case(FlagsType::DoubleBinaryInput):
+		return Modify<DoubleBitBinarySpec>(start, stop, flags);
+	case(FlagsType::AnalogInput):
+		return Modify<AnalogSpec>(start, stop, flags);
+	case(FlagsType::Counter):
+		return Modify<CounterSpec>(start, stop, flags);
+	case(FlagsType::FrozenCounter):
+		return Modify<FrozenCounterSpec>(start, stop, flags);
+	case(FlagsType::BinaryOutputStatus):
+		return Modify<BinaryOutputStatusSpec>(start, stop, flags);
+	case(FlagsType::AnalogOutputStatus):
+		return Modify<AnalogOutputStatusSpec>(start, stop, flags);
 	}
-	
+
 	return false;
 }
 
@@ -187,7 +187,7 @@ bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, E
 		if (createEvent)
 		{
 			cell.event.lastEvent = value;
-			eventReceiver->Update(Event<Spec>(value, cell.config.vIndex, ec, cell.config.evariation));			
+			eventReceiver->Update(Event<Spec>(value, cell.config.vIndex, ec, cell.config.evariation));
 		}
 	}
 

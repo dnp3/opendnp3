@@ -41,7 +41,7 @@ public:
 	virtual IResponseLoader& GetResponseLoader() = 0;
 
 	virtual IStaticSelector& GetStaticSelector() = 0;
-	
+
 	virtual IClassAssigner& GetClassAssigner() = 0;
 
 

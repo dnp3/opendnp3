@@ -84,7 +84,7 @@ public:
 	);
 
 private:
-	
+
 	std::unique_ptr<GPRSManagerImpl> impl;
 
 };

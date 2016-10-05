@@ -72,7 +72,7 @@ public:
 	);
 
 private:
-		
+
 
 	virtual bool Register(std::shared_ptr<asiopal::IResource> resource) override;
 	virtual void Unregister(std::shared_ptr<asiopal::IResource> resource) override;

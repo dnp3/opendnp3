@@ -32,7 +32,6 @@
 #include <asiopal/SerialTypes.h>
 #include <asiopal/TLSConfig.h>
 
-
 #include <memory>
 #include <system_error>
 

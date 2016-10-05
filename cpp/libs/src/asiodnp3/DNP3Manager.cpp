@@ -20,25 +20,10 @@
  */
 #include "asiodnp3/DNP3Manager.h"
 
-#include <opendnp3/LogLevels.h>
-
-#include <asiopal/PhysicalLayerSerial.h>
-#include <asiopal/PhysicalLayerTCPClient.h>
-#include <asiopal/PhysicalLayerTCPServer.h>
-
-#ifdef OPENDNP3_USE_TLS
-#include <asiopal/tls/PhysicalLayerTLSClient.h>
-#include <asiopal/tls/PhysicalLayerTLSServer.h>
-#endif
-
 #include "asiodnp3/DNP3ManagerImpl.h"
-#include "asiodnp3/ErrorCodes.h"
-
-using namespace openpal;
 
 namespace asiodnp3
 {
-
 
 DNP3Manager::DNP3Manager(
     uint32_t concurrencyHint,
@@ -50,15 +35,11 @@ DNP3Manager::DNP3Manager(
 
 }
 
-// this has to be here b/c of forward declared ManagerImpl
-DNP3Manager::~DNP3Manager()
-{
-
-}
+DNP3Manager::~DNP3Manager() = default;
 
 void DNP3Manager::Shutdown()
 {
-	impl->channels.Shutdown();
+	impl->Shutdown();
 }
 
 IChannel* DNP3Manager::AddTCPClient(
@@ -70,9 +51,7 @@ IChannel* DNP3Manager::AddTCPClient(
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
-	auto root = std::unique_ptr<LogRoot>(new LogRoot(impl->handler.get(), id.c_str(), levels));
-	auto phys = std::unique_ptr<asiopal::PhysicalLayerTCPClient>(new asiopal::PhysicalLayerTCPClient(root->logger, impl->threadpool.GetIOService(), host, local, port));
-	return impl->channels.CreateChannel(std::move(root), retry, listener, std::move(phys));
+	return this->impl->AddTCPClient(id, levels, retry, host, local, port, listener);
 }
 
 IChannel* DNP3Manager::AddTCPServer(
@@ -83,12 +62,7 @@ IChannel* DNP3Manager::AddTCPServer(
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
-
-	auto root = std::unique_ptr<LogRoot>(new LogRoot(impl->handler.get(), id.c_str(), levels));
-	auto phys = std::unique_ptr<asiopal::PhysicalLayerTCPServer>(
-	                new asiopal::PhysicalLayerTCPServer(root->logger, impl->threadpool.GetIOService(), endpoint, port)
-	            );
-	return impl->channels.CreateChannel(std::move(root), retry, listener, std::move(phys));
+	return this->impl->AddTCPServer(id, levels, retry, endpoint, port, listener);
 }
 
 IChannel* DNP3Manager::AddSerial(
@@ -98,12 +72,7 @@ IChannel* DNP3Manager::AddSerial(
     asiopal::SerialSettings settings,
     std::shared_ptr<IChannelListener> listener)
 {
-
-	auto root = std::unique_ptr<LogRoot>(new LogRoot(impl->handler.get(), id.c_str(), levels));
-	auto phys = std::unique_ptr<asiopal::PhysicalLayerSerial>(
-	                new asiopal::PhysicalLayerSerial(root->logger, impl->threadpool.GetIOService(), settings)
-	            );
-	return impl->channels.CreateChannel(std::move(root), retry, listener, std::move(phys));
+	return this->impl->AddSerial(id, levels, retry, settings, listener);
 }
 
 IChannel* DNP3Manager::AddTLSClient(
@@ -117,17 +86,7 @@ IChannel* DNP3Manager::AddTLSClient(
     std::shared_ptr<IChannelListener> listener,
     std::error_code& ec)
 {
-#ifdef OPENDNP3_USE_TLS
-
-	auto root = std::unique_ptr<LogRoot>(new LogRoot(impl->handler.get(), id.c_str(), levels));
-	auto phys = std::unique_ptr<asiopal::PhysicalLayerTLSClient>(
-	                new asiopal::PhysicalLayerTLSClient(root->logger, impl->threadpool.GetIOService(), host, local, port, config, ec)
-	            );
-	return ec ? nullptr : impl->channels.CreateChannel(std::move(root), retry, listener, std::move(phys));
-#else
-	ec = Error::NO_TLS_SUPPORT;
-	return nullptr;
-#endif
+	return this->impl->AddTLSClient(id, levels, retry, host, local, port, config, listener, ec);
 }
 
 IChannel* DNP3Manager::AddTLSServer(
@@ -140,17 +99,7 @@ IChannel* DNP3Manager::AddTLSServer(
     std::shared_ptr<IChannelListener> listener,
     std::error_code& ec)
 {
-
-#ifdef OPENDNP3_USE_TLS
-	auto root = std::unique_ptr<LogRoot>(new LogRoot(impl->handler.get(), id.c_str(), levels));
-	auto phys = std::unique_ptr<asiopal::PhysicalLayerTLSServer>(
-	                new asiopal::PhysicalLayerTLSServer(root->logger, impl->threadpool.GetIOService(), endpoint, port, config, ec)
-	            );
-	return ec ? nullptr : impl->channels.CreateChannel(std::move(root), retry, listener, std::move(phys));
-#else
-	ec = Error::NO_TLS_SUPPORT;
-	return nullptr;
-#endif
+	return this->impl->AddTLSServer(id, levels, retry, endpoint, port, config, listener, ec);
 }
 
 }

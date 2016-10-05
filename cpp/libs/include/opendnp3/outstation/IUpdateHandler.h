@@ -116,7 +116,7 @@ public:
 	* @param flags the new value of the flags
 	*/
 	virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) = 0;
-	
+
 };
 
 }

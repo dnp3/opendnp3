@@ -28,7 +28,7 @@ namespace asiodnp3
 
 void ChangeSet::Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler& handler)
+	this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
@@ -36,7 +36,7 @@ void ChangeSet::Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::E
 
 void ChangeSet::Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler& handler)
+	this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
@@ -44,7 +44,7 @@ void ChangeSet::Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, op
 
 void ChangeSet::Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler& handler)
+	this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
@@ -52,7 +52,7 @@ void ChangeSet::Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::E
 
 void ChangeSet::Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler& handler)
+	this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
@@ -60,7 +60,7 @@ void ChangeSet::Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::
 
 void ChangeSet::Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler& handler)
+	this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
@@ -68,7 +68,7 @@ void ChangeSet::Update(const opendnp3::FrozenCounter& meas, uint16_t index, open
 
 void ChangeSet::Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler& handler)
+	this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
@@ -76,7 +76,7 @@ void ChangeSet::Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index,
 
 void ChangeSet::Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler& handler)
+	this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
@@ -84,7 +84,7 @@ void ChangeSet::Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index,
 
 void ChangeSet::Update(const opendnp3::TimeAndInterval& meas, uint16_t index)
 {
-	this->Add([meas, index](IUpdateHandler& handler)
+	this->Add([meas, index](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index);
 	});
@@ -92,7 +92,7 @@ void ChangeSet::Update(const opendnp3::TimeAndInterval& meas, uint16_t index)
 
 void ChangeSet::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
 {
-	this->Add([=](IUpdateHandler& handler)
+	this->Add([ = ](IUpdateHandler & handler)
 	{
 		handler.Modify(type, start, stop, flags);
 	});

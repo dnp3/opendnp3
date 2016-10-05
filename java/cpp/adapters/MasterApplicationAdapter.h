@@ -39,7 +39,7 @@ public:
 	virtual bool AssignClassDuringStartup() override;
 	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun)  override;
 
-private:	
+private:
 
 	GlobalRef proxy;
 };

@@ -44,7 +44,7 @@ public:
 	RangeWriteIterator(typename IndexType::Type start_, const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position) :
 		start(start_),
 		serializer(serializer_),
-		count(0),		
+		count(0),
 		isValid(position.Size() >= 2 * IndexType::SIZE),
 		range(position),
 		pPosition(&position)
@@ -88,7 +88,7 @@ private:
 
 	typename IndexType::Type start;
 	openpal::Serializer<WriteType> serializer;
-	uint32_t count;	
+	uint32_t count;
 
 	bool isValid;
 
