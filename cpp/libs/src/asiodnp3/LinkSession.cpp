@@ -106,7 +106,7 @@ void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSe
 		}
 	};
 
-	this->m_channel->BeginWrite(buffer, m_executor->m_strand.wrap(callback));
+	this->m_channel->BeginWrite(buffer, m_executor->strand.wrap(callback));
 }
 
 bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
@@ -210,7 +210,7 @@ void LinkSession::BeginReceive()
 	};
 
 	auto dest = m_parser.WriteBuff();
-	m_channel->BeginRead(dest, m_executor->m_strand.wrap(callback));
+	m_channel->BeginRead(dest, m_executor->strand.wrap(callback));
 }
 
 }

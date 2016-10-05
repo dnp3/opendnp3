@@ -33,9 +33,11 @@ class NullSOEHandler : public ISOEHandler
 
 public:
 
+	NullSOEHandler() = default;
+
 	static std::shared_ptr<ISOEHandler> Create()
 	{
-		return std::shared_ptr<NullSOEHandler>(new NullSOEHandler());
+		return std::make_shared<NullSOEHandler>();
 	}
 
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override final {}
@@ -57,8 +59,7 @@ protected:
 	void End() override final {}
 
 private:
-	NullSOEHandler()
-	{}
+	
 
 	static NullSOEHandler instance;
 };

@@ -39,7 +39,7 @@ std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
     const MasterStackConfig& config
 )
 {
-	return std::shared_ptr<MasterSessionStack>(new MasterSessionStack(logger, executor, SOEHandler, application, session, linktx, config));
+	return std::make_shared<MasterSessionStack>(logger, executor, SOEHandler, application, session, linktx, config);
 }
 
 MasterSessionStack::MasterSessionStack(
@@ -88,7 +88,7 @@ void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)
 		this->m_session->SetLogFilters(filters);
 	};
 
-	this->m_executor->m_strand.post(set);
+	this->m_executor->strand.post(set);
 }
 
 void MasterSessionStack::BeginShutdown()
@@ -99,7 +99,7 @@ void MasterSessionStack::BeginShutdown()
 		session->BeginShutdown();
 	};
 
-	m_executor->m_strand.post(shutdown);
+	m_executor->strand.post(shutdown);
 }
 
 StackStatistics MasterSessionStack::GetStackStatistics()
@@ -146,42 +146,42 @@ void MasterSessionStack::Scan(const std::vector<Header>& headers, const TaskConf
 	auto self(shared_from_this());
 	auto builder = ConvertToLambda(headers);
 	auto action = [self, builder, config]() -> void { self->m_context.Scan(builder, config); };
-	return m_executor->m_strand.post(action);
+	return m_executor->strand.post(action);
 }
 
 void MasterSessionStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config)
 {
 	auto self(shared_from_this());
 	auto action = [self, gvId, config]() -> void { self->m_context.ScanAllObjects(gvId, config); };
-	return m_executor->m_strand.post(action);
+	return m_executor->strand.post(action);
 }
 
 void MasterSessionStack::ScanClasses(const ClassField& field, const TaskConfig& config)
 {
 	auto self(shared_from_this());
 	auto action = [self, field, config]() -> void { self->m_context.ScanClasses(field, config); };
-	return m_executor->m_strand.post(action);
+	return m_executor->strand.post(action);
 }
 
 void MasterSessionStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config)
 {
 	auto self(shared_from_this());
 	auto action = [self, gvId, start, stop, config]() -> void { self->m_context.ScanRange(gvId, start, stop, config); };
-	return m_executor->m_strand.post(action);
+	return m_executor->strand.post(action);
 }
 
 void MasterSessionStack::Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config)
 {
 	auto self(shared_from_this());
 	auto action = [self, value, index, config]() -> void { self->m_context.Write(value, index, config); };
-	return m_executor->m_strand.post(action);
+	return m_executor->strand.post(action);
 }
 
 void MasterSessionStack::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 {
 	auto self(shared_from_this());
 	auto action = [self, op, callback, config]() -> void { self->m_context.Restart(op, callback, config); };
-	return m_executor->m_strand.post(action);
+	return m_executor->strand.post(action);
 }
 
 void MasterSessionStack::PerformFunction(const std::string& name, FunctionCode func, const std::vector<Header>& headers, const TaskConfig& config)
@@ -189,7 +189,7 @@ void MasterSessionStack::PerformFunction(const std::string& name, FunctionCode f
 	auto self(shared_from_this());
 	auto builder = ConvertToLambda(headers);
 	auto action = [self, name, func, builder, config]() -> void { self->m_context.PerformFunction(name, func, builder, config); };
-	return m_executor->m_strand.post(action);
+	return m_executor->strand.post(action);
 }
 
 /// --- ICommandProcessor ---
@@ -205,7 +205,7 @@ void MasterSessionStack::SelectAndOperate(CommandSet&& commands, const CommandCa
 	{
 		self->m_context.SelectAndOperate(std::move(*set), callback, config);
 	};
-	m_executor->m_strand.post(action);
+	m_executor->strand.post(action);
 }
 
 void MasterSessionStack::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
@@ -219,7 +219,7 @@ void MasterSessionStack::DirectOperate(CommandSet&& commands, const CommandCallb
 	{
 		self->m_context.DirectOperate(std::move(*set), callback, config);
 	};
-	m_executor->m_strand.post(action);
+	m_executor->strand.post(action);
 }
 }
 

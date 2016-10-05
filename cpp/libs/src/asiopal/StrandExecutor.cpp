@@ -32,15 +32,15 @@ namespace asiopal
 {
 
 StrandExecutor::StrandExecutor(std::shared_ptr<ThreadPool> pool) :
-	m_pool(pool),
-	m_strand(pool->GetIOService())
+	pool(pool),
+	strand(pool->GetIOService())
 {
 
 }
 
 std::shared_ptr<StrandExecutor> StrandExecutor::Create(std::shared_ptr<ThreadPool> pool)
 {
-	return std::shared_ptr<StrandExecutor>(new StrandExecutor(pool));
+	return std::make_shared<StrandExecutor>(pool);
 }
 
 MonotonicTimestamp StrandExecutor::GetTime()
@@ -52,7 +52,7 @@ ITimer* StrandExecutor::Start(const TimeDuration& delay, const action_t& runnabl
 {
 	const auto now = steady_clock_t::now();
 	const auto max_ms = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::time_point::max() - now).count();
-	const auto expiration = (delay.milliseconds > max_ms) ? steady_clock_t::time_point::max() : (now + std::chrono::milliseconds(delay.milliseconds));
+	const auto expiration = (delay.milliseconds > max_ms) ? steady_clock_t::time_point::max() : (now + std::chrono::milliseconds(delay.milliseconds));	
 
 	return Start(expiration, runnable);
 }
@@ -65,7 +65,7 @@ ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const action_t& ru
 openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable)
 {
 	auto self(shared_from_this());
-	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->m_strand.get_io_service()));
+	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->strand.get_io_service()));
 
 	timer->m_timer.expires_at(expiration);
 
@@ -78,7 +78,7 @@ openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expirat
 		}
 	};
 
-	timer->m_timer.async_wait(m_strand.wrap(callback));
+	timer->m_timer.async_wait(strand.wrap(callback));
 
 	return timer.get();
 }
@@ -90,7 +90,7 @@ void StrandExecutor::Post(const action_t& runnable)
 	{
 		runnable();
 	};
-	m_strand.post(callback);
+	strand.post(callback);
 }
 
 }

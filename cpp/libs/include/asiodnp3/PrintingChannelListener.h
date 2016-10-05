@@ -45,12 +45,11 @@ public:
 
 	static std::shared_ptr<IChannelListener> Create()
 	{
-		return std::shared_ptr<IChannelListener>(new PrintingChannelListener());
+		return std::make_shared<PrintingChannelListener>();
 	}
 
-private:
-
 	PrintingChannelListener() {}
+	
 };
 
 }

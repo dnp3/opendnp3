@@ -36,7 +36,7 @@ public:
 
 	static std::shared_ptr<IMasterApplication> Create()
 	{
-		return std::shared_ptr<IMasterApplication>(new DefaultMasterApplication());
+		return std::make_shared<DefaultMasterApplication>();
 	}
 
 	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final {}

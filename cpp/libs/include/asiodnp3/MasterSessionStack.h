@@ -86,8 +86,6 @@ public:
 	virtual void SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
 	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
 
-private:
-
 	MasterSessionStack(
 	    openpal::Logger logger,
 	    std::shared_ptr<asiopal::StrandExecutor> executor,
@@ -97,6 +95,8 @@ private:
 	    opendnp3::ILinkTx& linktx,
 	    const MasterStackConfig& config
 	);
+
+private:
 
 	std::shared_ptr<asiopal::StrandExecutor> m_executor;
 	std::shared_ptr<opendnp3::ISOEHandler> m_handler;

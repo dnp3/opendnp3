@@ -47,6 +47,8 @@ class StrandExecutor final :
 
 public:
 
+	StrandExecutor(std::shared_ptr<ThreadPool> pool);
+
 	static std::shared_ptr<StrandExecutor> Create(std::shared_ptr<ThreadPool> pool);
 
 	/// ---- Implement IExecutor -----
@@ -65,27 +67,28 @@ public:
 private:
 
 	// we hold a shared_ptr to the pool so that it cannot dissapear while the strand is still executing
-	std::shared_ptr<ThreadPool> m_pool;
+	std::shared_ptr<ThreadPool> pool;
 
-public:
-	asio::strand m_strand;
+public:	
+
+	asio::strand strand;
 
 private:
 	openpal::ITimer* Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable);
 
-	StrandExecutor(std::shared_ptr<ThreadPool> pool);
+	
 };
 
 template <class T>
 void StrandExecutor::PostToStrand(const T& action)
 {
-	m_strand.post(action);
+	strand.post(action);
 }
 
 template <class T>
 T StrandExecutor::ReturnFrom(const std::function<T()>& action)
 {
-	if (m_strand.running_in_this_thread())
+	if (strand.running_in_this_thread())
 	{
 		return action();
 	}
@@ -100,7 +103,7 @@ T StrandExecutor::ReturnFrom(const std::function<T()>& action)
 			ready.set_value(action());
 		};
 
-		m_strand.post(run);
+		strand.post(run);
 
 		future.wait();
 		return future.get();

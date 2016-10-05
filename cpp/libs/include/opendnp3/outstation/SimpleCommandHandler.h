@@ -97,12 +97,12 @@ public:
 class SuccessCommandHandler : public SimpleCommandHandler
 {
 public:
+
 	static std::shared_ptr<ICommandHandler> Create()
 	{
-		return std::shared_ptr<ICommandHandler>(new SuccessCommandHandler());
+		return std::make_shared<SuccessCommandHandler>();
 	}
 
-protected:
 	SuccessCommandHandler() : SimpleCommandHandler(CommandStatus::SUCCESS) {}
 };
 

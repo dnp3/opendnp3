@@ -146,12 +146,10 @@ public:
 
 	static std::shared_ptr<IOutstationApplication> Create()
 	{
-		return std::shared_ptr<IOutstationApplication>(new DefaultOutstationApplication());
+		return std::make_shared<DefaultOutstationApplication>();
 	}
 
-protected:
-
-	DefaultOutstationApplication() {}
+	DefaultOutstationApplication() = default;
 
 };
 
