@@ -51,6 +51,7 @@ public:
 	void Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::TimeAndInterval& meas, uint16_t index);	
+	void Modify(opendnp3::FlagsType type, uint16_t start, uint16_t stop, uint8_t flags);
 
 	void Apply(opendnp3::IUpdateHandler&);
 

@@ -90,6 +90,14 @@ void ChangeSet::Update(const opendnp3::TimeAndInterval& meas, uint16_t index)
 	});
 }
 
+void ChangeSet::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
+{
+	this->Add([=](IUpdateHandler& handler)
+	{
+		handler.Modify(type, start, stop, flags);
+	});
+}
+
 void ChangeSet::Add(const update_func_t& fun)
 {
 	updates.push_back(fun);
