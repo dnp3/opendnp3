@@ -23,12 +23,14 @@
 
 #include <asiopal/IListener.h>
 #include <asiopal/IPEndpoint.h>
-#include <openpal/logging/ILogHandler.h>
-#include <asiodnp3/IListenCallbacks.h>
-
 #include <asiopal/TLSConfig.h>
 
+#include <openpal/logging/ILogHandler.h>
+
+#include <asiodnp3/IListenCallbacks.h>
+
 #include <system_error>
+#include <memory>
 
 namespace asiodnp3
 {
@@ -82,8 +84,8 @@ public:
 	);
 
 private:
-
-	GPRSManagerImpl* m_impl;
+	
+	std::unique_ptr<GPRSManagerImpl> impl;
 
 };
 

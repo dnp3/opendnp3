@@ -29,18 +29,15 @@ namespace asiodnp3
 {
 
 GPRSManager::GPRSManager(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler) :
-	m_impl(new GPRSManagerImpl(concurrencyHint, handler))
+	impl(std::make_unique<GPRSManagerImpl>(concurrencyHint, handler))
 {}
 
 
-GPRSManager::~GPRSManager()
-{
-	delete m_impl;
-}
+GPRSManager::~GPRSManager() = default;
 
 void GPRSManager::BeginShutdown()
 {
-	m_impl->BeginShutdown();
+	impl->BeginShutdown();
 }
 
 std::shared_ptr<asiopal::IListener> GPRSManager::CreateListener(
@@ -51,7 +48,7 @@ std::shared_ptr<asiopal::IListener> GPRSManager::CreateListener(
     std::error_code& ec
 )
 {
-	return m_impl->CreateListener(loggerid, loglevel, endpoint, callbacks, ec);
+	return impl->CreateListener(loggerid, loglevel, endpoint, callbacks, ec);
 }
 
 #ifdef OPENDNP3_USE_TLS
@@ -65,7 +62,7 @@ std::shared_ptr<asiopal::IListener> GPRSManager::CreateListener(
     std::error_code& ec
 )
 {
-	return m_impl->CreateListener(loggerid, loglevel, endpoint, config, callbacks, ec);
+	return impl->CreateListener(loggerid, loglevel, endpoint, config, callbacks, ec);
 }
 
 #endif

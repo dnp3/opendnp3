@@ -48,6 +48,8 @@ class GPRSManagerImpl final :
 
 public:
 
+	GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler);
+
 	~GPRSManagerImpl();
 
 	void BeginShutdown();
@@ -70,10 +72,7 @@ public:
 	);
 
 private:
-
-	friend class GPRSManager;
-
-	GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler);
+		
 
 	virtual bool Register(std::shared_ptr<asiopal::IResource> resource) override;
 	virtual void Unregister(std::shared_ptr<asiopal::IResource> resource) override;
