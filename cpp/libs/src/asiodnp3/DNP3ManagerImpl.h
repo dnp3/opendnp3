@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef ASIODNP3_MANAGER_IMPL_H
-#define ASIODNP3_MANAGER_IMPL_H
+#ifndef ASIODNP3_DNP3MANAGERIMPL_H
+#define ASIODNP3_DNP3MANAGERIMPL_H
 
 #include <openpal/logging/ILogHandler.h>
 
@@ -35,21 +35,22 @@
 namespace asiodnp3
 {
 
-class ManagerImpl : private openpal::Uncopyable
+class DNP3ManagerImpl : private openpal::Uncopyable
 {
 
 public:
 
-	ManagerImpl(
+	DNP3ManagerImpl(
 	    uint32_t concurrencyHint,
 	    std::shared_ptr<openpal::ILogHandler> handler,
 	    std::function<void()> onThreadStart,
 	    std::function<void()> onThreadExit
 	) :
 		handler(handler),
-		threadpool(handler.get(), opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
-		channels()
+		threadpool(handler.get(), opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit)		
 	{}
+
+
 
 	std::shared_ptr<openpal::ILogHandler> handler;
 	asiopal::ThreadPool threadpool;

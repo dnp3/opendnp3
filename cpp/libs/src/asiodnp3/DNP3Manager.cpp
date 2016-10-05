@@ -20,7 +20,6 @@
  */
 #include "asiodnp3/DNP3Manager.h"
 
-
 #include <opendnp3/LogLevels.h>
 
 #include <asiopal/PhysicalLayerSerial.h>
@@ -32,7 +31,7 @@
 #include <asiopal/tls/PhysicalLayerTLSServer.h>
 #endif
 
-#include "asiodnp3/ManagerImpl.h"
+#include "asiodnp3/DNP3ManagerImpl.h"
 #include "asiodnp3/ErrorCodes.h"
 
 using namespace openpal;
@@ -46,7 +45,7 @@ DNP3Manager::DNP3Manager(
     std::shared_ptr<openpal::ILogHandler> handler,
     std::function<void()> onThreadStart,
     std::function<void()> onThreadExit) :
-	impl(new ManagerImpl(concurrencyHint, handler, onThreadStart, onThreadExit))
+	impl(std::make_unique<DNP3ManagerImpl>(concurrencyHint, handler, onThreadStart, onThreadExit))
 {
 
 }

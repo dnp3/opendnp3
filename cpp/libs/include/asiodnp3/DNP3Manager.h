@@ -39,7 +39,7 @@
 namespace asiodnp3
 {
 
-class ManagerImpl;
+class DNP3ManagerImpl;
 
 
 /**
@@ -185,7 +185,7 @@ public:
 
 private:
 
-	std::unique_ptr<ManagerImpl> impl;
+	std::unique_ptr<DNP3ManagerImpl> impl;
 
 };
 
