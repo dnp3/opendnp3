@@ -18,27 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IDATABASE_H
-#define OPENDNP3_IDATABASE_H
+#ifndef OPENDNP3_IUPDATEHANDLER_H
+#define OPENDNP3_IUPDATEHANDLER_H
 
 #include "opendnp3/app/MeasurementTypes.h"
-
 #include "opendnp3/gen/EventMode.h"
 #include "opendnp3/gen/FlagsType.h"
 
 namespace opendnp3
 {
-class IResponseLoader;
-class IStaticSelector;
-class IClassAssigner;
+
 /**
 * An interface used to update measurement values.
 */
-class IDatabase
+class IUpdateHandler
 {
 public:
 
-	virtual ~IDatabase() {}
+	virtual ~IUpdateHandler() {}
 
 	/**
 	* Update a Binary measurement
@@ -119,11 +116,7 @@ public:
 	* @param flags the new value of the flags
 	*/
 	virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) = 0;
-
-
-	virtual IResponseLoader& GetResponseLoader() = 0;
-	virtual IStaticSelector& GetStaticSelector() = 0;
-	virtual IClassAssigner& GetClassAssigner() = 0;
+	
 };
 
 }

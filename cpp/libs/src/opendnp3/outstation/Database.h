@@ -49,9 +49,8 @@ public:
 	virtual bool Update(const FrozenCounter&, uint16_t, EventMode = EventMode::Detect) override;
 	virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
 	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
-	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
-
-	virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override final;
+	virtual bool Update(const TimeAndInterval&, uint16_t) override;
+	virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override;
 
 	// ------- Misc ---------------
 
@@ -81,9 +80,8 @@ private:
 	template <class Spec>
 	uint16_t GetRawIndex(uint16_t index);
 
-	IEventReceiver* pEventReceiver;
+	IEventReceiver* eventReceiver;
 	IndexMode indexMode;
-
 
 	static bool ConvertToEventClass(PointClass pc, EventClass& ec);
 
@@ -93,76 +91,14 @@ private:
 	template <class Spec>
 	bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
 
+	template <class Spec>
+	bool Modify(uint16_t start, uint16_t stop, uint8_t flags);
+
 	// stores the most recent values, selected values, and metadata
 	DatabaseBuffers buffers;
 };
 
-template <class Spec>
-uint16_t Database::GetRawIndex(uint16_t index)
-{
-	if (indexMode == IndexMode::Contiguous)
-	{
-		return index;
-	}
-	else
-	{
-		auto view = buffers.buffers.GetArrayView<Spec>();
-		auto result = IndexSearch::FindClosestRawIndex(view, index);
-		return result.match ? result.index : openpal::MaxValue<uint16_t>();
-	}
-}
 
-template <class Spec>
-bool Database::UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode)
-{
-	auto rawIndex = GetRawIndex<Spec>(index);
-	auto view = buffers.buffers.GetArrayView<Spec>();
-
-	if (view.Contains(rawIndex))
-	{
-		this->UpdateAny(view[rawIndex], value, mode);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-template <class Spec>
-bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode)
-{
-	EventClass ec;
-	if (ConvertToEventClass(cell.config.clazz, ec))
-	{
-		bool createEvent = false;
-
-		switch (mode)
-		{
-		case(EventMode::Force) :
-			createEvent = true;
-			break;
-		case(EventMode::Detect):
-			createEvent = cell.event.IsEvent(cell.config, value);
-			break;
-		default:
-			break;
-		}
-
-		if (createEvent)
-		{
-			cell.event.lastEvent = value;
-
-			if (pEventReceiver)
-			{
-				pEventReceiver->Update(Event<Spec>(value, cell.config.vIndex, ec, cell.config.evariation));
-			}
-		}
-	}
-
-	cell.value = value;
-	return true;
-}
 
 }
 

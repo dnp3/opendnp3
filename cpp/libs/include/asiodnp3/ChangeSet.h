@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_CHANGESET_H
 #define ASIODNP3_CHANGESET_H
 
-#include <opendnp3/outstation/IDatabase.h>
+#include <opendnp3/outstation/IUpdateHandler.h>
 
 #include <openpal/util/Uncopyable.h>
 
@@ -50,9 +50,9 @@ public:
 	void Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	void Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
+	void Update(const opendnp3::TimeAndInterval& meas, uint16_t index);	
 
-	void Apply(opendnp3::IDatabase&);
+	void Apply(opendnp3::IUpdateHandler&);
 
 	size_t Size() const;
 
@@ -60,7 +60,7 @@ public:
 
 private:
 
-	typedef std::function<void(opendnp3::IDatabase&)> update_func_t;
+	typedef std::function<void(opendnp3::IUpdateHandler&)> update_func_t;
 
 	void Add(const update_func_t& fun);
 

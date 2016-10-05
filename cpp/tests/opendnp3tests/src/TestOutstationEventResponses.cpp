@@ -53,7 +53,7 @@ TEST_CASE(SUITE("ReadDiscontiguousEvent"))
 	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(1));
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true), 0);
 	});
@@ -69,7 +69,7 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(1));
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true, 0x01), 0);
 	});
@@ -90,7 +90,7 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Analog(0x1234, 0x01), 0x17); // 0x 12 34 00 00 in little endian
 		db.Update(Binary(true, 0x01), 0x10);
@@ -114,7 +114,7 @@ TEST_CASE(SUITE("EventBufferOverflowAndClear"))
 
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true, 0x01), 0);  // this event is lost in the overflow
 		db.Update(Binary(true, 0x01), 1);
@@ -147,7 +147,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 	view.analogs[0].config.clazz = PointClass::Class2;
 	view.counters[0].config.clazz = PointClass::Class3;
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true), 0);
 		db.Update(Analog(3), 0);
@@ -181,7 +181,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 
 void TestEventRead(	const std::string& request,
                     const std::string& response,
-                    const std::function<void(IDatabase& db)>& loadFun,
+                    const std::function<void(IUpdateHandler& db)>& loadFun,
 const std::function<void(DatabaseConfigView& db)>& configure = [](DatabaseConfigView& view) {}
                   )
 {
@@ -195,7 +195,7 @@ const std::function<void(DatabaseConfigView& db)>& configure = [](DatabaseConfig
 
 	t.LowerLayerUp();
 
-	t.Transaction([&](IDatabase & db)
+	t.Transaction([&](IUpdateHandler & db)
 	{
 		loadFun(db);
 	});
@@ -206,7 +206,7 @@ const std::function<void(DatabaseConfigView& db)>& configure = [](DatabaseConfig
 
 TEST_CASE(SUITE("Class1"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01), 0);
 	};
@@ -216,7 +216,7 @@ TEST_CASE(SUITE("Class1"))
 
 TEST_CASE(SUITE("Class1OneByteLimitedCount"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01), 2);
 		db.Update(Binary(true, 0x01), 1);
@@ -228,7 +228,7 @@ TEST_CASE(SUITE("Class1OneByteLimitedCount"))
 
 TEST_CASE(SUITE("Class1TwoByteLimitedCount"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01), 2);
 		db.Update(Binary(true, 0x01), 1);
@@ -248,7 +248,7 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
 		view.binaries[2].config.clazz = PointClass::Class3;
 	};
 
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01), 0);
 
@@ -266,7 +266,7 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
 
 TEST_CASE(SUITE("ReadGrp2Var0"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01), 0);
 	};
@@ -277,7 +277,7 @@ TEST_CASE(SUITE("ReadGrp2Var0"))
 
 TEST_CASE(SUITE("ReadGrp22Var0"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Counter(0, 0x01), 0);
 	};
@@ -287,7 +287,7 @@ TEST_CASE(SUITE("ReadGrp22Var0"))
 
 TEST_CASE(SUITE("ReadGrp32Var0"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Analog(0.0, 0x01), 0);
 	};
@@ -297,7 +297,7 @@ TEST_CASE(SUITE("ReadGrp32Var0"))
 
 TEST_CASE(SUITE("ReadGrp2Var1"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01), 3);
 	};
@@ -307,7 +307,7 @@ TEST_CASE(SUITE("ReadGrp2Var1"))
 
 TEST_CASE(SUITE("ReadGrp2Var1LimitedCount"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01), 3);
 		db.Update(Binary(true, 0x01), 2);
@@ -320,7 +320,7 @@ TEST_CASE(SUITE("ReadGrp2Var1LimitedCount"))
 
 TEST_CASE(SUITE("ReadGrp2Var2"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
 	};
@@ -330,7 +330,7 @@ TEST_CASE(SUITE("ReadGrp2Var2"))
 
 TEST_CASE(SUITE("ReadGrp2Var3SingleValue"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
 	};
@@ -340,7 +340,7 @@ TEST_CASE(SUITE("ReadGrp2Var3SingleValue"))
 
 TEST_CASE(SUITE("ReadGrp2Var3TwoValues"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
 		db.Update(Binary(true, 0x01, DNPTime(0x4579)), 4);
@@ -353,7 +353,7 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValues"))
 
 TEST_CASE(SUITE("ReadGrp2Var3TwoValuesNegativeDifference"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
 		db.Update(Binary(true, 0x01, DNPTime(0x4570)), 4);
@@ -370,7 +370,7 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesNegativeDifference"))
 
 TEST_CASE(SUITE("ReadGrp2Var3TwoValuesDifferenceTooBigForCTO"))
 {
-	auto update = [](IDatabase & db)
+	auto update = [](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01, DNPTime(0x000000)), 3);
 		db.Update(Binary(true, 0x01, DNPTime(0x010000)), 4);

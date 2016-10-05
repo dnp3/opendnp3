@@ -124,7 +124,7 @@ public:
 		auto task = [this, pchanges]()
 		{
 
-			pchanges->Apply(this->context->GetDatabase());
+			pchanges->Apply(this->context->GetUpdateHanlder());
 
 			this->context->CheckForTaskStart(); // force the outstation to check for updates
 		};

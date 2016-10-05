@@ -32,10 +32,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(const DatabaseSizes& dbSizes, IEventReceiver& eventReceiver, IndexMode indexMode_, StaticTypeBitField allowedClass0Types) :
-	pEventReceiver(&eventReceiver),
-	indexMode(indexMode_),
-	buffers(dbSizes, allowedClass0Types, indexMode_)
+Database::Database(const DatabaseSizes& dbSizes, IEventReceiver& eventReceiver, IndexMode indexMode, StaticTypeBitField allowedClass0Types) :
+	eventReceiver(&eventReceiver),
+	indexMode(indexMode),
+	buffers(dbSizes, allowedClass0Types, indexMode)
 {
 
 }
@@ -93,7 +93,24 @@ bool Database::Update(const TimeAndInterval& value, uint16_t index)
 
 bool Database::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
 {
-	// TODO!
+	switch (type)
+	{
+		case(FlagsType::BinaryInput):
+			return Modify<BinarySpec>(start, stop, flags);
+		case(FlagsType::DoubleBinaryInput):
+			return Modify<DoubleBitBinarySpec>(start, stop, flags);
+		case(FlagsType::AnalogInput):
+			return Modify<AnalogSpec>(start, stop, flags);
+		case(FlagsType::Counter):
+			return Modify<CounterSpec>(start, stop, flags);
+		case(FlagsType::FrozenCounter):
+			return Modify<FrozenCounterSpec>(start, stop, flags);
+		case(FlagsType::BinaryOutputStatus):
+			return Modify<BinaryOutputStatusSpec>(start, stop, flags);
+		case(FlagsType::AnalogOutputStatus):
+			return Modify<AnalogOutputStatusSpec>(start, stop, flags);
+	}
+	
 	return false;
 }
 
@@ -111,6 +128,94 @@ bool Database::ConvertToEventClass(PointClass pc, EventClass& ec)
 		ec = EventClass::EC3;
 		return true;
 	default:
+		return false;
+	}
+}
+
+template <class Spec>
+uint16_t Database::GetRawIndex(uint16_t index)
+{
+	if (indexMode == IndexMode::Contiguous)
+	{
+		return index;
+	}
+	else
+	{
+		auto view = buffers.buffers.GetArrayView<Spec>();
+		auto result = IndexSearch::FindClosestRawIndex(view, index);
+		return result.match ? result.index : openpal::MaxValue<uint16_t>();
+	}
+}
+
+template <class Spec>
+bool Database::UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode)
+{
+	auto rawIndex = GetRawIndex<Spec>(index);
+	auto view = buffers.buffers.GetArrayView<Spec>();
+
+	if (view.Contains(rawIndex))
+	{
+		this->UpdateAny(view[rawIndex], value, mode);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template <class Spec>
+bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode)
+{
+	EventClass ec;
+	if (ConvertToEventClass(cell.config.clazz, ec))
+	{
+		bool createEvent = false;
+
+		switch (mode)
+		{
+		case(EventMode::Force):
+			createEvent = true;
+			break;
+		case(EventMode::Detect):
+			createEvent = cell.event.IsEvent(cell.config, value);
+			break;
+		default:
+			break;
+		}
+
+		if (createEvent)
+		{
+			cell.event.lastEvent = value;
+			eventReceiver->Update(Event<Spec>(value, cell.config.vIndex, ec, cell.config.evariation));			
+		}
+	}
+
+	cell.value = value;
+	return true;
+}
+
+template <class Spec>
+bool Database::Modify(uint16_t start, uint16_t stop, uint8_t flags)
+{
+	auto rawStart = GetRawIndex<Spec>(start);
+	auto rawStop = GetRawIndex<Spec>(stop);
+
+	auto view = buffers.buffers.GetArrayView<Spec>();
+
+	if (view.Contains(rawStart) && view.Contains(rawStop) && (rawStart <= rawStop))
+	{
+		for (uint16_t i = rawStart; i <= rawStop; ++i)
+		{
+			auto copy = view[i].value;
+			copy.flags = flags;
+			this->UpdateAny(view[i], copy, EventMode::Detect);
+		}
+
+		return true;
+	}
+	else
+	{
 		return false;
 	}
 }

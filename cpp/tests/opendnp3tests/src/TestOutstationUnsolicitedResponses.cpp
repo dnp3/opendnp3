@@ -82,7 +82,7 @@ TEST_CASE(SUITE("UnsolData"))
 
 	// do a transaction before the layer comes online to prove that the null transaction
 	// is occuring before unsol data is sent
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01), 2);
 	});
@@ -109,7 +109,7 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true, 0x01), 0);
 		db.Update(Binary(false, 0x01), 0);
@@ -143,7 +143,7 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
 	t.SendToOutstation(hex::UnsolConfirm(0));
 	REQUIRE(t.lower.PopWriteAsHex() ==  "");
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Analog(7, 0x01), 1);
 		db.Update(Analog(13, 0x01), 3);
@@ -177,7 +177,7 @@ void WriteDuringUnsol(bool beforeTx)
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true, 0x01), 0);
 	});
@@ -230,7 +230,7 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true, 0x01), 0);
 	});
@@ -270,7 +270,7 @@ TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true, 0x01), 0);
 	});
@@ -305,7 +305,7 @@ TEST_CASE(SUITE("RepeatRequestDuringUnsol"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(0));
 	t.OnSendResult(true);
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true, 0x01), 1);
 	});
@@ -334,7 +334,7 @@ TEST_CASE(SUITE("UnsolEnable"))
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
 	// do a transaction to show that unsol data is not being reported yet
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(false, 0x01), 0);
 	});

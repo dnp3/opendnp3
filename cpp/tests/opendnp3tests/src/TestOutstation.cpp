@@ -286,7 +286,7 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 	t.LowerLayerUp();
 
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		for (uint16_t i = 0; i < 8; i++)
 		{
@@ -345,7 +345,7 @@ void TestTimeAndIntervalRead(const std::string& request)
 	t.LowerLayerUp();
 
 	t.Transaction(
-	    [](IDatabase & db)
+	    [](IUpdateHandler & db)
 	{
 		db.Update(TimeAndInterval(DNPTime(9), 3, IntervalUnits::Days), 0);
 	}
@@ -445,7 +445,7 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 	OutstationTestObject t(config, DatabaseSizes::AnalogOnly(10));
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Analog(42, 0x01), 5);
 		db.Update(Analog(41, 0x01), 6);
@@ -496,7 +496,7 @@ std::string QueryDiscontiguousBinary(const std::string& request)
 
 	t.LowerLayerUp();
 
-	t.Transaction([](IDatabase & db)
+	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true, 0x01), 2, EventMode::Suppress);
 		db.Update(Binary(false, 0x01), 4, EventMode::Suppress);
@@ -570,7 +570,7 @@ void TestStaticType(const OutstationConfig& config, const DatabaseSizes& tmp, Po
 
 	t.LowerLayerUp();
 
-	t.Transaction([value](IDatabase & db)
+	t.Transaction([value](IUpdateHandler & db)
 	{
 		db.Update(PointType(value), 0);
 	});
@@ -699,7 +699,7 @@ void TestStaticBinaryOutputStatus(T value, const std::string& response)
 	OutstationTestObject t(cfg, DatabaseSizes::BinaryOutputStatusOnly(1));
 	t.LowerLayerUp();
 
-	t.Transaction([value](IDatabase & db)
+	t.Transaction([value](IUpdateHandler & db)
 	{
 		db.Update(BinaryOutputStatus(value, 0x01), 0);
 	});

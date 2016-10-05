@@ -96,7 +96,7 @@ public:
 
 	void SetRestartIIN();
 
-	IDatabase& GetDatabase();
+	IUpdateHandler& GetUpdateHanlder();
 
 	DatabaseConfigView GetConfigView();
 

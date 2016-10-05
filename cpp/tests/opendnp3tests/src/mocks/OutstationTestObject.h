@@ -63,10 +63,10 @@ public:
 
 	testlib::MockLogHandler log;
 
-	void Transaction(const std::function<void (IDatabase&)>& apply)
+	void Transaction(const std::function<void (IUpdateHandler&)>& apply)
 	{
-		auto& db = context.GetDatabase();
-		apply(db);
+		//auto& handler = context.GetUpdateHanlder();
+		apply(context.GetUpdateHanlder());
 		context.CheckForTaskStart();
 	}
 

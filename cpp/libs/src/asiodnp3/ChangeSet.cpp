@@ -28,65 +28,65 @@ namespace asiodnp3
 
 void ChangeSet::Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](opendnp3::IDatabase & db)
+	this->Add([meas, index, mode](IUpdateHandler& handler)
 	{
-		db.Update(meas, index, mode);
+		handler.Update(meas, index, mode);
 	});
 }
 
 void ChangeSet::Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](opendnp3::IDatabase & db)
+	this->Add([meas, index, mode](IUpdateHandler& handler)
 	{
-		db.Update(meas, index, mode);
+		handler.Update(meas, index, mode);
 	});
 }
 
 void ChangeSet::Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](opendnp3::IDatabase & db)
+	this->Add([meas, index, mode](IUpdateHandler& handler)
 	{
-		db.Update(meas, index, mode);
+		handler.Update(meas, index, mode);
 	});
 }
 
 void ChangeSet::Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](opendnp3::IDatabase & db)
+	this->Add([meas, index, mode](IUpdateHandler& handler)
 	{
-		db.Update(meas, index, mode);
+		handler.Update(meas, index, mode);
 	});
 }
 
 void ChangeSet::Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](opendnp3::IDatabase & db)
+	this->Add([meas, index, mode](IUpdateHandler& handler)
 	{
-		db.Update(meas, index, mode);
+		handler.Update(meas, index, mode);
 	});
 }
 
 void ChangeSet::Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](opendnp3::IDatabase & db)
+	this->Add([meas, index, mode](IUpdateHandler& handler)
 	{
-		db.Update(meas, index, mode);
+		handler.Update(meas, index, mode);
 	});
 }
 
 void ChangeSet::Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](opendnp3::IDatabase & db)
+	this->Add([meas, index, mode](IUpdateHandler& handler)
 	{
-		db.Update(meas, index, mode);
+		handler.Update(meas, index, mode);
 	});
 }
 
 void ChangeSet::Update(const opendnp3::TimeAndInterval& meas, uint16_t index)
 {
-	this->Add([meas, index](opendnp3::IDatabase & db)
+	this->Add([meas, index](IUpdateHandler& handler)
 	{
-		db.Update(meas, index);
+		handler.Update(meas, index);
 	});
 }
 
@@ -95,11 +95,11 @@ void ChangeSet::Add(const update_func_t& fun)
 	updates.push_back(fun);
 }
 
-void ChangeSet::Apply(opendnp3::IDatabase& db)
+void ChangeSet::Apply(IUpdateHandler& handler)
 {
 	for (auto& update : updates)
 	{
-		update(db);
+		update(handler);
 	}
 }
 
