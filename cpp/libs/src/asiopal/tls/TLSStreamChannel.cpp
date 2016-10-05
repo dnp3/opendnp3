@@ -29,7 +29,7 @@ TLSStreamChannel::TLSStreamChannel(std::shared_ptr<asio::ssl::stream<asio::ip::t
 
 std::unique_ptr<IAsyncChannel> TLSStreamChannel::Create(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
-	return std::unique_ptr<IAsyncChannel>(new TLSStreamChannel(stream));
+	return std::make_unique<TLSStreamChannel>(stream);
 }
 
 void TLSStreamChannel::BeginRead(openpal::WSlice& dest, const ReadCallbackT& callback)

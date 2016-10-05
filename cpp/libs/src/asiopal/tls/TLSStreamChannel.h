@@ -30,7 +30,10 @@ namespace asiopal
 {
 class TLSStreamChannel final : public IAsyncChannel
 {
+
 public:
+
+	TLSStreamChannel(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
 
 	static std::unique_ptr<IAsyncChannel> Create(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
 
@@ -40,11 +43,9 @@ public:
 
 private:
 
-	TLSStreamChannel(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
-
 	std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> m_stream;
-
 };
+
 }
 
 #endif

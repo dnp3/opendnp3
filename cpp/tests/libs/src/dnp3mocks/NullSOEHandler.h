@@ -59,7 +59,7 @@ protected:
 	void End() override final {}
 
 private:
-	
+
 
 	static NullSOEHandler instance;
 };

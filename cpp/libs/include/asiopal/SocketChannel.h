@@ -31,6 +31,8 @@ class SocketChannel final : public IAsyncChannel
 {
 public:
 
+	SocketChannel(asio::ip::tcp::socket socket);
+
 	static std::unique_ptr<IAsyncChannel> Create(asio::ip::tcp::socket socket);
 
 	virtual void BeginRead(openpal::WSlice& buffer, const ReadCallbackT& callback) override;
@@ -38,8 +40,6 @@ public:
 	virtual void BeginShutdown(const ShutdownCallbackT& callback)  override;
 
 private:
-
-	SocketChannel(asio::ip::tcp::socket socket);
 
 	asio::ip::tcp::socket m_socket;
 

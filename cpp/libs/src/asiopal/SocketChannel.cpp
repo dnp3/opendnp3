@@ -25,7 +25,7 @@ namespace asiopal
 {
 std::unique_ptr<IAsyncChannel> SocketChannel::Create(asio::ip::tcp::socket socket)
 {
-	return std::unique_ptr<IAsyncChannel>(new SocketChannel(std::move(socket)));
+	return std::make_unique<SocketChannel>(std::move(socket));
 }
 
 SocketChannel::SocketChannel(asio::ip::tcp::socket socket) : m_socket(std::move(socket))

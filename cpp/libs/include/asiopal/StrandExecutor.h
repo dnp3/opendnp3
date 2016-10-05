@@ -69,14 +69,14 @@ private:
 	// we hold a shared_ptr to the pool so that it cannot dissapear while the strand is still executing
 	std::shared_ptr<ThreadPool> pool;
 
-public:	
+public:
 
 	asio::strand strand;
 
 private:
 	openpal::ITimer* Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable);
 
-	
+
 };
 
 template <class T>

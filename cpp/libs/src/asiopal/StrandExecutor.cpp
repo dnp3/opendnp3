@@ -52,7 +52,7 @@ ITimer* StrandExecutor::Start(const TimeDuration& delay, const action_t& runnabl
 {
 	const auto now = steady_clock_t::now();
 	const auto max_ms = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::time_point::max() - now).count();
-	const auto expiration = (delay.milliseconds > max_ms) ? steady_clock_t::time_point::max() : (now + std::chrono::milliseconds(delay.milliseconds));	
+	const auto expiration = (delay.milliseconds > max_ms) ? steady_clock_t::time_point::max() : (now + std::chrono::milliseconds(delay.milliseconds));
 
 	return Start(expiration, runnable);
 }
