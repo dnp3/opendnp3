@@ -37,13 +37,13 @@ public:
 
 	static std::unique_ptr<IAsyncChannel> Create(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
 
-	virtual void BeginRead(openpal::WSlice& buffer, const ReadCallbackT& callback) override;
-	virtual void BeginWrite(const openpal::RSlice& buffer, const WriteCallbackT& callback)  override;
-	virtual void BeginShutdown(const ShutdownCallbackT& callback)  override;
+	virtual void BeginRead(openpal::WSlice& buffer, const read_callback_t& callback) override;
+	virtual void BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback)  override;
+	virtual void BeginShutdown(const shutdown_callback_t& callback)  override;
 
 private:
 
-	std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> m_stream;
+	std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;
 };
 
 }

@@ -24,7 +24,7 @@
 namespace asiopal
 {
 
-TLSStreamChannel::TLSStreamChannel(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) : m_stream(stream)
+TLSStreamChannel::TLSStreamChannel(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) : stream(stream)
 {}
 
 std::unique_ptr<IAsyncChannel> TLSStreamChannel::Create(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
@@ -32,22 +32,22 @@ std::unique_ptr<IAsyncChannel> TLSStreamChannel::Create(std::shared_ptr<asio::ss
 	return std::make_unique<TLSStreamChannel>(stream);
 }
 
-void TLSStreamChannel::BeginRead(openpal::WSlice& dest, const ReadCallbackT& callback)
+void TLSStreamChannel::BeginRead(openpal::WSlice& dest, const read_callback_t& callback)
 {
-	m_stream->async_read_some(asio::buffer(dest, dest.Size()), callback);
+	stream->async_read_some(asio::buffer(dest, dest.Size()), callback);
 }
 
-void TLSStreamChannel::BeginWrite(const openpal::RSlice& data, const WriteCallbackT& callback)
+void TLSStreamChannel::BeginWrite(const openpal::RSlice& data, const write_callback_t& callback)
 {
-	asio::async_write(*m_stream, asio::buffer(data, data.Size()), callback);
+	asio::async_write(*stream, asio::buffer(data, data.Size()), callback);
 }
 
-void TLSStreamChannel::BeginShutdown(const ShutdownCallbackT& callback)
+void TLSStreamChannel::BeginShutdown(const shutdown_callback_t& callback)
 {
 	// TODO - should we perform an async shutdown on the TLS stream?
 	std::error_code ec;
-	m_stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec);
-	m_stream->lowest_layer().close(ec);
+	stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec);
+	stream->lowest_layer().close(ec);
 	callback();
 }
 

@@ -28,25 +28,25 @@ std::unique_ptr<IAsyncChannel> SocketChannel::Create(asio::ip::tcp::socket socke
 	return std::make_unique<SocketChannel>(std::move(socket));
 }
 
-SocketChannel::SocketChannel(asio::ip::tcp::socket socket) : m_socket(std::move(socket))
+SocketChannel::SocketChannel(asio::ip::tcp::socket socket) : socket(std::move(socket))
 {
 
 }
 
-void SocketChannel::BeginRead(openpal::WSlice& dest, const ReadCallbackT& callback)
+void SocketChannel::BeginRead(openpal::WSlice& dest, const read_callback_t& callback)
 {
-	m_socket.async_read_some(asio::buffer(dest, dest.Size()), callback);
+	socket.async_read_some(asio::buffer(dest, dest.Size()), callback);
 }
 
-void SocketChannel::BeginWrite(const openpal::RSlice& buffer, const WriteCallbackT& callback)
+void SocketChannel::BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback)
 {
-	asio::async_write(m_socket, asio::buffer(buffer, buffer.Size()), callback);
+	asio::async_write(socket, asio::buffer(buffer, buffer.Size()), callback);
 }
 
-void SocketChannel::BeginShutdown(const ShutdownCallbackT& callback)
+void SocketChannel::BeginShutdown(const shutdown_callback_t& callback)
 {
-	m_socket.shutdown(asio::socket_base::shutdown_type::shutdown_both);
-	m_socket.close();
+	socket.shutdown(asio::socket_base::shutdown_type::shutdown_both);
+	socket.close();
 	callback();
 }
 
