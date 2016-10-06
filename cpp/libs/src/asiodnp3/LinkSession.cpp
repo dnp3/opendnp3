@@ -79,7 +79,7 @@ void LinkSession::BeginShutdown()
 	auto shutdown = [self]()
 	{
 		self->first_frame_timer.Cancel();
-		self->channel->BeginShutdown([self](const std::error_code& ec) {});
+		self->channel->BeginShutdown([self](const std::error_code & ec) {});
 	};
 	this->executor->PostToStrand(shutdown);
 }
@@ -132,7 +132,7 @@ bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		{
 			SIMPLE_LOG_BLOCK(this->log_root.logger, flags::WARN, "No master created. Closing socket.");
 			auto self(shared_from_this());
-			this->channel->BeginShutdown([self](const std::error_code& ec) {});
+			this->channel->BeginShutdown([self](const std::error_code & ec) {});
 		}
 	}
 
@@ -155,14 +155,14 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 	this->log_root.Rename(loggerid.c_str());
 
 	this->stack = MasterSessionStack::Create(
-	                    this->log_root.logger,
-						this->executor,
-	                    SOEHandler,
-	                    application,
-	                    shared_from_this(),
-	                    *this,
-	                    config
-	                );
+	                  this->log_root.logger,
+	                  this->executor,
+	                  SOEHandler,
+	                  application,
+	                  shared_from_this(),
+	                  *this,
+	                  config
+	              );
 
 	return stack;
 }
@@ -172,7 +172,7 @@ void LinkSession::Start()
 	auto timeout = [this]()
 	{
 		SIMPLE_LOG_BLOCK(this->log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
-		this->channel->BeginShutdown([](const std::error_code& ec) {});
+		this->channel->BeginShutdown([](const std::error_code & ec) {});
 	};
 
 	this->first_frame_timer.Start(this->callbacks->GetFirstFrameTimeout(), timeout);

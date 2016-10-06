@@ -42,11 +42,11 @@ void SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
 	if (ec) return;
 
 	Configure(settings, port, ec);
-	
+
 	if (ec)
 	{
-		port.close();	
-	}	
+		port.close();
+	}
 }
 
 void SerialChannel::BeginRead(openpal::WSlice& buffer, const read_callback_t& callback)
