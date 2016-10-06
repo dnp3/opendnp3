@@ -48,7 +48,7 @@ void TLSStreamChannel::BeginShutdown(const shutdown_callback_t& callback)
 	std::error_code ec;
 	stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec);
 	stream->lowest_layer().close(ec);
-	callback();
+	callback(ec);
 }
 
 }

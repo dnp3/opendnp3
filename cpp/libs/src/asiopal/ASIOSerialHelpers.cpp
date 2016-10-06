@@ -109,7 +109,7 @@ serial_port_base::parity ConvertParity(opendnp3::Parity parity)
 	return serial_port_base::parity(t);
 }
 
-bool Configure(SerialSettings& settings, asio::serial_port& port, error_code& ec)
+bool Configure(const SerialSettings& settings, asio::serial_port& port, error_code& ec)
 {
 	//Set all the various options
 	port.set_option(ConvertBaud(settings.baud), ec);

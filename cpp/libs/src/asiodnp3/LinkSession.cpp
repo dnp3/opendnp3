@@ -79,7 +79,7 @@ void LinkSession::BeginShutdown()
 	auto shutdown = [self]()
 	{
 		self->m_first_frame_timer.Cancel();
-		self->m_channel->BeginShutdown([self]() {});
+		self->m_channel->BeginShutdown([self](const std::error_code& ec) {});
 	};
 	m_executor->PostToStrand(shutdown);
 }
@@ -132,7 +132,7 @@ bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		{
 			SIMPLE_LOG_BLOCK(m_log_root.logger, flags::WARN, "No master created. Closing socket.");
 			auto self(shared_from_this());
-			this->m_channel->BeginShutdown([self]() {});
+			this->m_channel->BeginShutdown([self](const std::error_code& ec) {});
 		}
 	}
 
@@ -172,7 +172,7 @@ void LinkSession::Start()
 	auto timeout = [this]()
 	{
 		SIMPLE_LOG_BLOCK(this->m_log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
-		this->m_channel->BeginShutdown([]() {});
+		this->m_channel->BeginShutdown([](const std::error_code& ec) {});
 	};
 
 	m_first_frame_timer.Start(m_callbacks->GetFirstFrameTimeout(), timeout);

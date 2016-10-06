@@ -19,36 +19,53 @@
 * to you under the terms of the License.
 */
 
-#include "asiopal/SocketChannel.h"
+#include "asiopal/SerialChannel.h"
+
+#include "asiopal/ASIOSerialHelpers.h"
+
 
 namespace asiopal
 {
-std::unique_ptr<IAsyncChannel> SocketChannel::Create(asio::ip::tcp::socket socket)
+
+
+SerialChannel::SerialChannel(asio::io_service& service) : port(service)
+{}
+
+std::unique_ptr<SerialChannel> SerialChannel::Create(asio::io_service& service)
 {
-	return std::make_unique<SocketChannel>(std::move(socket));
+	return std::make_unique<SerialChannel>(service);
 }
 
-SocketChannel::SocketChannel(asio::ip::tcp::socket socket) : socket(std::move(socket))
+void SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
 {
+	port.open(settings.deviceName, ec);
+	if (ec) return;
 
+	Configure(settings, port, ec);
+	
+	if (ec)
+	{
+		port.close();	
+	}	
 }
 
-void SocketChannel::BeginRead(openpal::WSlice& dest, const read_callback_t& callback)
+void SerialChannel::BeginRead(openpal::WSlice& buffer, const read_callback_t& callback)
 {
-	socket.async_read_some(asio::buffer(dest, dest.Size()), callback);
+	port.async_read_some(asio::buffer(buffer, buffer.Size()), callback);
 }
 
-void SocketChannel::BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback)
+void SerialChannel::BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback)
 {
-	asio::async_write(socket, asio::buffer(buffer, buffer.Size()), callback);
+	async_write(port, asio::buffer(buffer, buffer.Size()), callback);
 }
 
-void SocketChannel::BeginShutdown(const shutdown_callback_t& callback)
+void SerialChannel::BeginShutdown(const shutdown_callback_t& callback)
 {
 	std::error_code ec;
-	socket.shutdown(asio::socket_base::shutdown_type::shutdown_both, ec);
-	socket.close(ec);
+	port.close(ec);
 	callback(ec);
 }
 
 }
+
+

@@ -27,8 +27,10 @@
 
 namespace asiopal
 {
+
 class SocketChannel final : public IAsyncChannel
 {
+
 public:
 
 	SocketChannel(asio::ip::tcp::socket socket);
@@ -44,6 +46,7 @@ private:
 	asio::ip::tcp::socket socket;
 
 };
+
 }
 
 #endif

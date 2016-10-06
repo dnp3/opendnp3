@@ -18,37 +18,40 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
+#ifndef ASIOPAL_SERIALCHANNEL_H
+#define ASIOPAL_SERIALCHANNEL_H
 
-#include "asiopal/SocketChannel.h"
+#include "IAsyncChannel.h"
+
+#include "asiopal/SerialTypes.h"
+
+#include <asio.hpp>
+#include <asio/serial_port.hpp>
 
 namespace asiopal
 {
-std::unique_ptr<IAsyncChannel> SocketChannel::Create(asio::ip::tcp::socket socket)
-{
-	return std::make_unique<SocketChannel>(std::move(socket));
-}
 
-SocketChannel::SocketChannel(asio::ip::tcp::socket socket) : socket(std::move(socket))
+class SerialChannel final : public IAsyncChannel
 {
 
-}
+public:
 
-void SocketChannel::BeginRead(openpal::WSlice& dest, const read_callback_t& callback)
-{
-	socket.async_read_some(asio::buffer(dest, dest.Size()), callback);
-}
+	SerialChannel(asio::io_service& service);
 
-void SocketChannel::BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback)
-{
-	asio::async_write(socket, asio::buffer(buffer, buffer.Size()), callback);
-}
+	static std::unique_ptr<SerialChannel> Create(asio::io_service& service);
 
-void SocketChannel::BeginShutdown(const shutdown_callback_t& callback)
-{
-	std::error_code ec;
-	socket.shutdown(asio::socket_base::shutdown_type::shutdown_both, ec);
-	socket.close(ec);
-	callback(ec);
-}
+	void Open(const SerialSettings& settings, std::error_code& ec);
+
+	virtual void BeginRead(openpal::WSlice& buffer, const read_callback_t& callback) override;
+	virtual void BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback)  override;
+	virtual void BeginShutdown(const shutdown_callback_t& callback)  override;
+
+private:
+
+	asio::basic_serial_port<> port;
+
+};
 
 }
+
+#endif
