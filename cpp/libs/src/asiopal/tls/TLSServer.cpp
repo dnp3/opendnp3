@@ -40,12 +40,12 @@ TLSServer::TLSServer(
     const TLSConfig& config,
     std::error_code& ec
 ) :
-	m_pool(pool),
-	m_root(std::move(root)),
-	m_ctx(m_root.logger, true, config, ec),
-	m_endpoint(ip::tcp::v4(), endpoint.port),
-	m_acceptor(pool->GetIOService()),
-	m_session_id(0)
+	pool(pool),
+	root(std::move(root)),
+	ctx(root.logger, true, config, ec),
+	endpoint(ip::tcp::v4(), endpoint.port),
+	acceptor(pool->GetIOService()),
+	session_id(0)
 {
 	if (!ec)
 	{
@@ -55,7 +55,7 @@ TLSServer::TLSServer(
 
 void TLSServer::BeginShutdown()
 {
-	m_acceptor.close();
+	this->acceptor.close();
 }
 
 std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::error_code& ec)
@@ -67,31 +67,31 @@ std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::er
 		return ec;
 	}
 
-	m_endpoint.address(address);
+	this->endpoint.address(address);
 
-	if (m_acceptor.open(m_endpoint.protocol(), ec)) return ec;
-	if (m_acceptor.set_option(ip::tcp::acceptor::reuse_address(true), ec)) return ec;
-	if (m_acceptor.bind(m_endpoint, ec)) return ec;
+	if (this->acceptor.open(this->endpoint.protocol(), ec)) return ec;
+	if (this->acceptor.set_option(ip::tcp::acceptor::reuse_address(true), ec)) return ec;
+	if (this->acceptor.bind(this->endpoint, ec)) return ec;
 
-	if (m_acceptor.listen(socket_base::max_connections, ec)) return ec;
+	if (this->acceptor.listen(socket_base::max_connections, ec)) return ec;
 
 
 	std::ostringstream oss;
-	oss << m_endpoint;
-	FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+	oss << this->endpoint;
+	FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
 	return ec;
 }
 
 void TLSServer::StartAccept(std::error_code& ec)
 {
-	const auto ID = this->m_session_id;
-	++this->m_session_id;
+	const auto ID = this->session_id;
+	++this->session_id;
 
 	// this ensures that the TCPListener is never deleted during an active callback
 	auto self(shared_from_this());
 
 	// this could be a unique_ptr once move semantics are supported in lambdas
-	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(m_pool->GetIOService(), self->m_ctx.value);
+	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(this->pool->GetIOService(), self->ctx.value);
 
 	if (!ec)
 	{
@@ -108,7 +108,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(self->m_root.logger, flags::INFO, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->root.logger, flags::INFO, ec.message().c_str());
 			self->OnShutdown();
 			return;
 		}
@@ -121,7 +121,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 			std::ostringstream oss;
 			oss << stream->lowest_layer().remote_endpoint();
 
-			FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "Remote endpoint rejected: %s", oss.str().c_str());
+			FORMAT_LOG_BLOCK(self->root.logger, flags::INFO, "Remote endpoint rejected: %s", oss.str().c_str());
 
 			stream->lowest_layer().close();
 			return;
@@ -133,7 +133,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 		{
 			if (ec)
 			{
-				FORMAT_LOG_BLOCK(self->m_root.logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
+				FORMAT_LOG_BLOCK(self->root.logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
 				return;
 			}
 
@@ -146,7 +146,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 
 	if (!ec)
 	{
-		m_acceptor.async_accept(stream->lowest_layer(), accept_cb);
+		this->acceptor.async_accept(stream->lowest_layer(), accept_cb);
 	}
 }
 }

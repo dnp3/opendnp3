@@ -70,15 +70,15 @@ private:
 
 protected:
 
-	std::shared_ptr<ThreadPool> m_pool;
-	openpal::LogRoot m_root;
+	std::shared_ptr<ThreadPool> pool;
+	openpal::LogRoot root;
 
 private:
 
-	asio::ip::tcp::endpoint m_endpoint;
-	asio::ip::tcp::acceptor m_acceptor;
-	asio::ip::tcp::socket m_socket;
-	uint64_t m_session_id;
+	asio::ip::tcp::endpoint endpoint;
+	asio::ip::tcp::acceptor acceptor;
+	asio::ip::tcp::socket socket;
+	uint64_t session_id;
 };
 
 }

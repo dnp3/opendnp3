@@ -63,8 +63,8 @@ MasterTCPServer::MasterTCPServer(
     std::error_code& ec
 ) :
 	TCPServer(pool, std::move(root), endpoint, ec),
-	m_manager(&shutdown),
-	m_callbacks(callbacks)
+	manager(&shutdown),
+	callbacks(callbacks)
 {
 
 }
@@ -74,23 +74,23 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket
 	std::ostringstream oss;
 	oss << socket.remote_endpoint();
 
-	if (m_callbacks->AcceptConnection(sessionid, socket.remote_endpoint().address().to_string()))
+	if (this->callbacks->AcceptConnection(sessionid, socket.remote_endpoint().address().to_string()))
 	{
-		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 
 		LinkSession::Create(
-		    m_root.Clone(SessionIdToString(sessionid).c_str()),
+		    root.Clone(SessionIdToString(sessionid).c_str()),
 		    sessionid,
-		    *m_manager,
-		    m_callbacks,
-		    StrandExecutor::Create(m_pool),
+		    *this->manager,
+			this->callbacks,
+		    StrandExecutor::Create(this->pool),
 		    SocketChannel::Create(std::move(socket))
 		);
 	}
 	else
 	{
 		socket.close();
-		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
 	}
 }
 
@@ -103,7 +103,7 @@ std::string MasterTCPServer::SessionIdToString(uint64_t sessionid)
 
 void MasterTCPServer::OnShutdown()
 {
-	m_manager->Unregister(shared_from_this());
+	this->manager->Unregister(shared_from_this());
 }
 
 }

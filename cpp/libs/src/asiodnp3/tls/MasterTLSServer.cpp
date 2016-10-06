@@ -61,15 +61,15 @@ MasterTLSServer::MasterTLSServer(
     const TLSConfig& config,
     std::error_code& ec) :
 	TLSServer(pool, std::move(root), endpoint, config, ec),
-	m_manager(&shutdown),
-	m_callbacks(callbacks)
+	manager(&shutdown),
+	callbacks(callbacks)
 {
 
 }
 
 void MasterTLSServer::OnShutdown()
 {
-	m_manager->Unregister(shared_from_this());
+	manager->Unregister(shared_from_this());
 }
 
 
@@ -78,14 +78,14 @@ bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::
 	std::ostringstream oss;
 	oss << remote;
 
-	if (m_callbacks->AcceptConnection(sessionid, remote.address().to_string()))
+	if (this->callbacks->AcceptConnection(sessionid, remote.address().to_string()))
 	{
-		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 		return true;
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
 		return false;
 	}
 }
@@ -96,7 +96,7 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 
 	if (!preverified)
 	{
-		FORMAT_LOG_BLOCK(this->m_root.logger, flags::WARN, "Error verifying certificate at depth: %d", depth);
+		FORMAT_LOG_BLOCK(this->root.logger, flags::WARN, "Error verifying certificate at depth: %d", depth);
 		return preverified;
 	}
 
@@ -105,9 +105,9 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	char subjectName[512];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 512);
 
-	FORMAT_LOG_BLOCK(this->m_root.logger, flags::INFO, "Depth: %d - Verified certificate: %s", depth, subjectName);
+	FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Depth: %d - Verified certificate: %s", depth, subjectName);
 
-	return this->m_callbacks->AcceptCertificate(
+	return this->callbacks->AcceptCertificate(
 	           sessionid,
 	           X509Info(
 	               depth,
@@ -120,11 +120,11 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
 	LinkSession::Create(
-	    m_root.Clone(SessionIdToString(sessionid).c_str()),
+	    root.Clone(SessionIdToString(sessionid).c_str()),
 	    sessionid,
-	    *m_manager,
-	    m_callbacks,
-	    StrandExecutor::Create(m_pool),
+	    *manager,
+	    callbacks,
+	    StrandExecutor::Create(pool),
 	    TLSStreamChannel::Create(stream)
 	);
 }

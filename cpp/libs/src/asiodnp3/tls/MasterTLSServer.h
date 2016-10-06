@@ -49,8 +49,8 @@ public:
 
 private:
 
-	asiopal::IResourceManager* m_manager;
-	std::shared_ptr<IListenCallbacks> m_callbacks;
+	asiopal::IResourceManager* manager;
+	std::shared_ptr<IListenCallbacks> callbacks;
 
 	MasterTLSServer(
 	    asiopal::IResourceManager& shutdown,

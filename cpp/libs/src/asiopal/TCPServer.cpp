@@ -34,19 +34,19 @@ namespace asiopal
 {
 
 TCPServer::TCPServer(std::shared_ptr<ThreadPool> pool, openpal::LogRoot root, IPEndpoint endpoint, std::error_code& ec) :
-	m_pool(pool),
-	m_root(std::move(root)),
-	m_endpoint(ip::tcp::v4(), endpoint.port),
-	m_acceptor(pool->GetIOService()),
-	m_socket(pool->GetIOService()),
-	m_session_id(0)
+	pool(pool),
+	root(std::move(root)),
+	endpoint(ip::tcp::v4(), endpoint.port),
+	acceptor(pool->GetIOService()),
+	socket(pool->GetIOService()),
+	session_id(0)
 {
 	this->Configure(endpoint.address, ec);
 }
 
 void TCPServer::BeginShutdown()
 {
-	m_acceptor.close();
+	acceptor.close();
 }
 
 void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
@@ -58,35 +58,35 @@ void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
 		return;
 	}
 
-	m_endpoint.address(address);
-	m_acceptor.open(m_endpoint.protocol(), ec);
+	endpoint.address(address);
+	acceptor.open(this->endpoint.protocol(), ec);
 
 	if (ec)
 	{
 		return;
 	}
 
-	m_acceptor.set_option(ip::tcp::acceptor::reuse_address(true), ec);
+	acceptor.set_option(ip::tcp::acceptor::reuse_address(true), ec);
 
 	if (ec)
 	{
 		return;
 	}
 
-	m_acceptor.bind(m_endpoint, ec);
+	acceptor.bind(this->endpoint, ec);
 
 	if (ec)
 	{
 		return;
 	}
 
-	m_acceptor.listen(socket_base::max_connections, ec);
+	acceptor.listen(socket_base::max_connections, ec);
 
 	if (!ec)
 	{
 		std::ostringstream oss;
-		oss << m_endpoint;
-		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+		oss << this->endpoint;
+		FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
 	}
 }
 
@@ -98,22 +98,22 @@ void TCPServer::StartAccept()
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(self->m_root.logger, flags::INFO, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->root.logger, flags::INFO, ec.message().c_str());
 			self->OnShutdown();
 		}
 		else
 		{
-			const auto ID = self->m_session_id;
-			++self->m_session_id;
+			const auto ID = self->session_id;
+			++self->session_id;
 
 			// method responsible for closing
-			self->AcceptConnection(ID, std::move(self->m_socket));
+			self->AcceptConnection(ID, std::move(self->socket));
 			self->StartAccept();
 		}
 	};
 
 
-	m_acceptor.async_accept(m_socket, callback);
+	this->acceptor.async_accept(socket, callback);
 }
 
 }
