@@ -24,6 +24,7 @@
 #include "opendnp3/link/ILinkTx.h"
 
 #include "asiodnp3/IChannelListener.h"
+
 #include "asiopal/IO.h"
 #include "asiopal/IAsyncChannel.h"
 
@@ -32,6 +33,11 @@
 namespace asiodnp3
 {
 
+/**
+
+Manages I/O for a number of link contexts
+
+*/	
 class IOHandler : public opendnp3::ILinkTx
 {
 
