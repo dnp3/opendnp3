@@ -18,29 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_IOSERVICE_H
-#define ASIOPAL_IOSERVICE_H
+#ifndef ASIODNP3_IOHANDLER_H
+#define ASIODNP3_IOHANDLER_H
 
-#include <asio.hpp>
+#include "opendnp3/link/ILinkTx.h"
 
-namespace asiopal
+#include "asiodnp3/IChannelListener.h"
+#include "asiopal/IO.h"
+#include "asiopal/IAsyncChannel.h"
+
+#include <memory>
+
+namespace asiodnp3
 {
 
-/**
-*	Container class for an asio::io_service
-*/
-class IOService
+class IOHandler : public opendnp3::ILinkTx
 {
 
 public:
 
-	virtual ~IOService() {}
+	IOHandler(
+		std::shared_ptr<asiopal::IO> io,
+		std::shared_ptr<IChannelListener> listener
+	);
 
-	asio::io_service service;
+	/// --- implement ILinkTx ---
+	
+	virtual void BeginTransmit(const openpal::RSlice& data, opendnp3::ILinkSession& context) override;
 
+protected:
+
+private:
+
+	std::shared_ptr<asiopal::IO> io;
+	std::shared_ptr<IChannelListener> listener;
+	
+	// current value of the channel, may be null
+	std::unique_ptr<asiopal::IAsyncChannel> channel;
 };
 
 }
 
-
 #endif
+

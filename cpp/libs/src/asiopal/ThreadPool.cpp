@@ -37,8 +37,7 @@ ThreadPool::ThreadPool(
     uint32_t levels,
     uint32_t concurrency,
     std::function<void()> onThreadStart,
-    std::function<void()> onThreadExit) :
-	IOService(),
+    std::function<void()> onThreadExit) :	
 	root(handler, "threadpool", levels),
 	onThreadStart(onThreadStart),
 	onThreadExit(onThreadExit),

@@ -40,13 +40,13 @@ namespace asiodnp3
 std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::IOService> ioservice,
+    std::shared_ptr<asiopal::IO> io,
     openpal::LogRoot root,
     asiopal::IPEndpoint endpoint,
     std::error_code& ec
 )
 {
-	auto ret = std::make_shared<MasterTCPServer>(shutdown, callbacks, ioservice, std::move(root), endpoint, ec);
+	auto ret = std::make_shared<MasterTCPServer>(shutdown, callbacks, io, std::move(root), endpoint, ec);
 	if (!ec)
 	{
 		ret->StartAccept();
@@ -57,12 +57,12 @@ std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 MasterTCPServer::MasterTCPServer(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::IOService> ioservice,
+    std::shared_ptr<asiopal::IO> io,
     openpal::LogRoot root,
     asiopal::IPEndpoint endpoint,
     std::error_code& ec
 ) :
-	TCPServer(ioservice, std::move(root), endpoint, ec),
+	TCPServer(io, std::move(root), endpoint, ec),
 	manager(&shutdown),
 	callbacks(callbacks)
 {
@@ -83,7 +83,7 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket
 		    sessionid,
 		    *this->manager,
 		    this->callbacks,
-		    StrandExecutor::Create(this->ioservice),
+		    StrandExecutor::Create(this->io),
 		    SocketChannel::Create(std::move(socket))
 		);
 	}

@@ -33,12 +33,12 @@ using namespace opendnp3;
 namespace asiopal
 {
 
-TCPServer::TCPServer(std::shared_ptr<IOService> ioservice, openpal::LogRoot root, IPEndpoint endpoint, std::error_code& ec) :
-	ioservice(ioservice),
+TCPServer::TCPServer(std::shared_ptr<IO> io, openpal::LogRoot root, IPEndpoint endpoint, std::error_code& ec) :
+	io(io),
 	root(std::move(root)),
 	endpoint(ip::tcp::v4(), endpoint.port),
-	acceptor(ioservice->service),
-	socket(ioservice->service),
+	acceptor(io->service),
+	socket(io->service),
 	session_id(0)
 {
 	this->Configure(endpoint.address, ec);

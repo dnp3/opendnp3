@@ -30,6 +30,7 @@
 
 namespace asiopal
 {
+
 typedef std::function<void (const std::error_code& ec, std::size_t num)> read_callback_t;
 typedef std::function<void (const std::error_code& ec, std::size_t num)> write_callback_t;
 typedef std::function<void (const std::error_code& ec)> shutdown_callback_t;

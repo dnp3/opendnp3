@@ -18,64 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_THREADPOOL_H
-#define ASIOPAL_THREADPOOL_H
+#ifndef ASIOPAL_IO_H
+#define ASIOPAL_IO_H
 
-#include <openpal/logging/LogRoot.h>
-
-#include "IO.h"
-
-#include <functional>
-#include <thread>
-#include <memory>
-
-#include "asiopal/SteadyClock.h"
+#include <asio.hpp>
 
 namespace asiopal
 {
 
 /**
-*	A thread pool that calls asio::io_service::run
+*	Container class for an asio::io_service
 */
-class ThreadPool : public IO
+class IO
 {
+
 public:
 
-	friend class ThreadPoolTest;
+	virtual ~IO() {}
 
-	ThreadPool(
-	    openpal::ILogHandler* handler,
-	    uint32_t levels,
-	    uint32_t concurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
-	);
+	asio::io_service service;
 
-	static std::shared_ptr<ThreadPool> Create(
-	    openpal::ILogHandler* handler,
-	    uint32_t levels,
-	    uint32_t concurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
-	);
-
-	~ThreadPool();
-
-	void Shutdown();
-
-private:
-
-	openpal::LogRoot root;
-
-	std::function<void ()> onThreadStart;
-	std::function<void ()> onThreadExit;
-
-	bool isShutdown;
-
-	void Run(int threadnum);
-
-	asio::basic_waitable_timer< asiopal::steady_clock_t > infiniteTimer;
-	std::vector<std::unique_ptr<std::thread>> threads;
 };
 
 }

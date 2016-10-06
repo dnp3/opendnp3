@@ -21,7 +21,7 @@
 #ifndef ASIOPAL_TCPSERVER_H
 #define ASIOPAL_TCPSERVER_H
 
-#include "asiopal/IOService.h"
+#include "asiopal/IO.h"
 #include "asiopal/IPEndpoint.h"
 #include "asiopal/IListener.h"
 
@@ -51,7 +51,7 @@ public:
 protected:
 
 	TCPServer(
-	    std::shared_ptr<IOService> ioservice,
+	    std::shared_ptr<IO> io,
 	    openpal::LogRoot root,
 	    IPEndpoint endpoint,
 	    std::error_code& ec
@@ -70,7 +70,7 @@ private:
 
 protected:
 
-	std::shared_ptr<IOService> ioservice;
+	std::shared_ptr<IO> io;
 	openpal::LogRoot root;
 
 private:

@@ -43,7 +43,7 @@ public:
 	static std::shared_ptr<MasterTCPServer> Create(
 	    asiopal::IResourceManager& shutdown,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::IOService> ioservice,
+	    std::shared_ptr<asiopal::IO> io,
 	    openpal::LogRoot root,
 	    asiopal::IPEndpoint endpoint,
 	    std::error_code& ec
@@ -52,7 +52,7 @@ public:
 	MasterTCPServer(
 	    asiopal::IResourceManager& shutdown,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::IOService> ioservice,
+	    std::shared_ptr<asiopal::IO> io,
 	    openpal::LogRoot root,
 	    asiopal::IPEndpoint endpoint,
 	    std::error_code& ec

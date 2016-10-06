@@ -31,16 +31,16 @@ using namespace openpal;
 namespace asiopal
 {
 
-StrandExecutor::StrandExecutor(std::shared_ptr<IOService> ioservice) :
-	ioservice(ioservice),
-	strand(ioservice->service)
+StrandExecutor::StrandExecutor(std::shared_ptr<IO> io) :
+	io(io),
+	strand(io->service)
 {
 
 }
 
-std::shared_ptr<StrandExecutor> StrandExecutor::Create(std::shared_ptr<IOService> ioservice)
+std::shared_ptr<StrandExecutor> StrandExecutor::Create(std::shared_ptr<IO> io)
 {
-	return std::make_shared<StrandExecutor>(ioservice);
+	return std::make_shared<StrandExecutor>(io);
 }
 
 MonotonicTimestamp StrandExecutor::GetTime()

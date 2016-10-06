@@ -24,7 +24,7 @@
 #include <openpal/executor/IExecutor.h>
 #include <openpal/util/Uncopyable.h>
 
-#include "asiopal/IOService.h"
+#include "asiopal/IO.h"
 #include "asiopal/SteadyClock.h"
 
 #include <future>
@@ -47,9 +47,9 @@ class StrandExecutor final :
 
 public:
 
-	StrandExecutor(std::shared_ptr<IOService> service);
+	StrandExecutor(std::shared_ptr<IO> io);
 
-	static std::shared_ptr<StrandExecutor> Create(std::shared_ptr<IOService> service);
+	static std::shared_ptr<StrandExecutor> Create(std::shared_ptr<IO> io);
 
 	/// ---- Implement IExecutor -----
 
@@ -67,7 +67,7 @@ public:
 private:
 
 	// we hold a shared_ptr to the pool so that it cannot dissapear while the strand is still executing
-	std::shared_ptr<IOService> ioservice;
+	std::shared_ptr<IO> io;
 
 public:
 

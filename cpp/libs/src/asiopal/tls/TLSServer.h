@@ -21,7 +21,7 @@
 #ifndef ASIOPAL_TLSSERVER_H
 #define ASIOPAL_TLSSERVER_H
 
-#include "asiopal/IOService.h"
+#include "asiopal/IO.h"
 #include "asiopal/IPEndpoint.h"
 #include "asiopal/IListener.h"
 #include "asiopal/TLSConfig.h"
@@ -52,7 +52,7 @@ public:
 protected:
 
 	TLSServer(
-	    std::shared_ptr<IOService> ioservice,
+	    std::shared_ptr<IO> io,
 	    openpal::LogRoot root,
 	    IPEndpoint endpoint,
 	    const TLSConfig& tlsConfig,
@@ -77,7 +77,7 @@ private:
 
 protected:
 
-	std::shared_ptr<IOService> ioservice;
+	std::shared_ptr<IO> io;
 	openpal::LogRoot root;
 
 private:
