@@ -50,12 +50,12 @@ public:
 	);
 
 	MasterTCPServer(
-		asiopal::IResourceManager& shutdown,
-		std::shared_ptr<IListenCallbacks> callbacks,
-		std::shared_ptr<asiopal::IOService> ioservice,
-		openpal::LogRoot root,
-		asiopal::IPEndpoint endpoint,
-		std::error_code& ec
+	    asiopal::IResourceManager& shutdown,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::shared_ptr<asiopal::IOService> ioservice,
+	    openpal::LogRoot root,
+	    asiopal::IPEndpoint endpoint,
+	    std::error_code& ec
 	);
 
 private:
@@ -64,7 +64,7 @@ private:
 	std::shared_ptr<IListenCallbacks> callbacks;
 
 	static std::string SessionIdToString(uint64_t sessionid);
-	
+
 	virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) override;
 	virtual void OnShutdown() override;
 };

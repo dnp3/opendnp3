@@ -23,9 +23,6 @@
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
-#include <chrono>
-#include <sstream>
-
 #include <asiopal/SteadyClock.h>
 
 using namespace std;
@@ -35,18 +32,18 @@ using namespace openpal;
 namespace asiopal
 {
 
-ThreadPool::ThreadPool(	
+ThreadPool::ThreadPool(
     openpal::ILogHandler* handler,
     uint32_t levels,
     uint32_t concurrency,
     std::function<void()> onThreadStart,
     std::function<void()> onThreadExit) :
-        IOService(),
-        root(handler, "threadpool", levels),
-        onThreadStart(onThreadStart),
-        onThreadExit(onThreadExit),
-        isShutdown(false),	
-        infiniteTimer(service)
+	IOService(),
+	root(handler, "threadpool", levels),
+	onThreadStart(onThreadStart),
+	onThreadExit(onThreadExit),
+	isShutdown(false),
+	infiniteTimer(service)
 {
 	if(concurrency == 0)
 	{

@@ -40,7 +40,7 @@ namespace asiodnp3
 std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-	std::shared_ptr<asiopal::IOService> ioservice,
+    std::shared_ptr<asiopal::IOService> ioservice,
     openpal::LogRoot root,
     asiopal::IPEndpoint endpoint,
     std::error_code& ec
@@ -57,7 +57,7 @@ std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 MasterTCPServer::MasterTCPServer(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-	std::shared_ptr<asiopal::IOService> ioservice,
+    std::shared_ptr<asiopal::IOService> ioservice,
     openpal::LogRoot root,
     asiopal::IPEndpoint endpoint,
     std::error_code& ec

@@ -38,7 +38,7 @@ namespace asiodnp3
 std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-	std::shared_ptr<asiopal::IOService> ioservice,
+    std::shared_ptr<asiopal::IOService> ioservice,
     LogRoot root,
     IPEndpoint endpoint,
     const TLSConfig& config,

@@ -34,7 +34,7 @@ namespace asiopal
 {
 
 TLSServer::TLSServer(
-	std::shared_ptr<IOService> ioservice,
+    std::shared_ptr<IOService> ioservice,
     openpal::LogRoot root,
     IPEndpoint endpoint,
     const TLSConfig& config,

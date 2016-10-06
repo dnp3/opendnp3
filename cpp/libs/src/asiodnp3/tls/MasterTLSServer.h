@@ -55,7 +55,7 @@ private:
 	MasterTLSServer(
 	    asiopal::IResourceManager& shutdown,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-		std::shared_ptr<asiopal::IOService> ioservice,
+	    std::shared_ptr<asiopal::IOService> ioservice,
 	    openpal::LogRoot root,
 	    asiopal::IPEndpoint endpoint,
 	    const asiopal::TLSConfig& config,
