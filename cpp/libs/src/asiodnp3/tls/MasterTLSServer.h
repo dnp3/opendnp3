@@ -40,7 +40,7 @@ public:
 	static std::shared_ptr<MasterTLSServer> Create(
 	    asiopal::IResourceManager& shutdown,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::ThreadPool> pool,
+	    std::shared_ptr<asiopal::IOService> ioservice,
 	    openpal::LogRoot root,
 	    asiopal::IPEndpoint endpoint,
 	    const asiopal::TLSConfig& config,
@@ -55,7 +55,7 @@ private:
 	MasterTLSServer(
 	    asiopal::IResourceManager& shutdown,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::ThreadPool> pool,
+		std::shared_ptr<asiopal::IOService> ioservice,
 	    openpal::LogRoot root,
 	    asiopal::IPEndpoint endpoint,
 	    const asiopal::TLSConfig& config,

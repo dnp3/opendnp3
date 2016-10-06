@@ -75,7 +75,7 @@ TEST_CASE(SUITE("Test ordered dispatch"))
 
 	testlib::MockLogHandler log;
 	asiopal::ThreadPool pool(&log, levels::NORMAL, 4);
-	asiopal::ASIOExecutor executor(pool.GetIOService());
+	asiopal::ASIOExecutor executor(pool.service);
 
 	bool monotonic = true;
 	int count = 0;

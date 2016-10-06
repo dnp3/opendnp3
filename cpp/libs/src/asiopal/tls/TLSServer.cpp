@@ -34,17 +34,17 @@ namespace asiopal
 {
 
 TLSServer::TLSServer(
-    std::shared_ptr<ThreadPool> pool,
+	std::shared_ptr<IOService> ioservice,
     openpal::LogRoot root,
     IPEndpoint endpoint,
     const TLSConfig& config,
     std::error_code& ec
 ) :
-	pool(pool),
+	ioservice(ioservice),
 	root(std::move(root)),
 	ctx(root.logger, true, config, ec),
 	endpoint(ip::tcp::v4(), endpoint.port),
-	acceptor(pool->GetIOService()),
+	acceptor(ioservice->service),
 	session_id(0)
 {
 	if (!ec)
@@ -91,7 +91,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 	auto self(shared_from_this());
 
 	// this could be a unique_ptr once move semantics are supported in lambdas
-	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(this->pool->GetIOService(), self->ctx.value);
+	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(this->ioservice->service, self->ctx.value);
 
 	if (!ec)
 	{

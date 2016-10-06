@@ -35,24 +35,25 @@ using namespace openpal;
 namespace asiopal
 {
 
-ThreadPool::ThreadPool(
+ThreadPool::ThreadPool(	
     openpal::ILogHandler* handler,
     uint32_t levels,
     uint32_t concurrency,
-    std::function<void()> onThreadStart_,
-    std::function<void()> onThreadExit_) :
-	root(handler, "threadpool", levels),
-	onThreadStart(onThreadStart_),
-	onThreadExit(onThreadExit_),
-	isShutdown(false),
-	ioservice(std::make_shared<asio::io_service>()),
-	infiniteTimer(*ioservice)
+    std::function<void()> onThreadStart,
+    std::function<void()> onThreadExit) :
+        IOService(),
+        root(handler, "threadpool", levels),
+        onThreadStart(onThreadStart),
+        onThreadExit(onThreadExit),
+        isShutdown(false),	
+        infiniteTimer(service)
 {
 	if(concurrency == 0)
 	{
 		concurrency = 1;
 		SIMPLE_LOG_BLOCK(root.logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
+
 	infiniteTimer.expires_at(asiopal::steady_clock_t::time_point::max());
 	infiniteTimer.async_wait([](const std::error_code&) {});
 	for(uint32_t i = 0; i < concurrency; ++i)
@@ -94,18 +95,13 @@ void ThreadPool::Shutdown()
 	}
 }
 
-asio::io_service& ThreadPool::GetIOService()
-{
-	return *ioservice;
-}
-
 void ThreadPool::Run(int threadnum)
 {
 	onThreadStart();
 
 	FORMAT_LOG_BLOCK(root.logger, logflags::INFO, "Starting thread (%d)", threadnum);
 
-	ioservice->run();
+	service.run();
 
 	FORMAT_LOG_BLOCK(root.logger, logflags::INFO, "Exiting thread (%d)", threadnum);
 

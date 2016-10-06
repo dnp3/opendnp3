@@ -51,7 +51,7 @@ TEST_CASE(SUITE("CleanConstructionDestruction"))
 TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 {
 	ThreadPool pool(nullptr, levels::NORMAL, 4);
-	for(size_t i = 0; i < 100000; ++i) pool.GetIOService().post([]() {});
+	for(size_t i = 0; i < 100000; ++i) pool.service.post([]() {});
 }
 
 
@@ -63,7 +63,7 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 
 	{
 		ThreadPool pool(nullptr, levels::NORMAL, 8);
-		strand s1(pool.GetIOService());
+		strand s1(pool.service);
 
 		auto increment = [&count1]()
 		{
@@ -86,14 +86,14 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 	{
 		ThreadPool pool(nullptr, levels::NORMAL, 8);
 
-		strand s1(pool.GetIOService());
+		strand s1(pool.service);
 
 		auto increment = [&count1]()
 		{
 			++count1;
 		};
 
-		for (size_t i = 0; i < ITERATIONS; ++i) pool.GetIOService().post(s1.wrap(increment));
+		for (size_t i = 0; i < ITERATIONS; ++i) pool.service.post(s1.wrap(increment));
 	}
 
 	REQUIRE(count1 == ITERATIONS);

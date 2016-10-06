@@ -38,13 +38,13 @@ namespace asiodnp3
 std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::ThreadPool> pool,
+	std::shared_ptr<asiopal::IOService> ioservice,
     LogRoot root,
     IPEndpoint endpoint,
     const TLSConfig& config,
     std::error_code& ec)
 {
-	auto ret = std::shared_ptr<MasterTLSServer>(new MasterTLSServer(shutdown, callbacks, pool, std::move(root), endpoint, config, ec));
+	auto ret = std::shared_ptr<MasterTLSServer>(new MasterTLSServer(shutdown, callbacks, ioservice, std::move(root), endpoint, config, ec));
 	if (!ec)
 	{
 		ret->StartAccept(ec);
@@ -55,12 +55,12 @@ std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
 MasterTLSServer::MasterTLSServer(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::ThreadPool> pool,
+    std::shared_ptr<asiopal::IOService> ioservice,
     LogRoot root,
     IPEndpoint endpoint,
     const TLSConfig& config,
     std::error_code& ec) :
-	TLSServer(pool, std::move(root), endpoint, config, ec),
+	TLSServer(ioservice, std::move(root), endpoint, config, ec),
 	manager(&shutdown),
 	callbacks(callbacks)
 {
@@ -124,7 +124,7 @@ void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl
 	    sessionid,
 	    *manager,
 	    callbacks,
-	    StrandExecutor::Create(pool),
+	    StrandExecutor::Create(ioservice),
 	    TLSStreamChannel::Create(stream)
 	);
 }

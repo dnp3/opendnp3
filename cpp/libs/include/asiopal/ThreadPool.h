@@ -23,7 +23,7 @@
 
 #include <openpal/logging/LogRoot.h>
 
-#include <asio.hpp>
+#include "IOService.h"
 
 #include <functional>
 #include <thread>
@@ -37,7 +37,7 @@ namespace asiopal
 /**
 *	A thread pool that calls asio::io_service::run
 */
-class ThreadPool
+class ThreadPool : public IOService
 {
 public:
 
@@ -61,8 +61,6 @@ public:
 
 	~ThreadPool();
 
-	asio::io_service& GetIOService();
-
 	void Shutdown();
 
 private:
@@ -76,7 +74,6 @@ private:
 
 	void Run(int threadnum);
 
-	std::shared_ptr<asio::io_service> ioservice;
 	asio::basic_waitable_timer< asiopal::steady_clock_t > infiniteTimer;
 	std::vector<std::unique_ptr<std::thread>> threads;
 };
