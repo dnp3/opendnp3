@@ -91,20 +91,20 @@ private:
 	    std::unique_ptr<asiopal::IAsyncChannel> channel
 	);
 
-	openpal::LogRoot m_log_root;
-	const uint64_t m_session_id;
+	openpal::LogRoot log_root;
+	const uint64_t session_id;
 
-	asiopal::IResourceManager* m_manager;
-	std::shared_ptr<IListenCallbacks> m_callbacks;
-	opendnp3::LinkChannelStatistics m_stats;
-	opendnp3::LinkLayerParser m_parser;
-	std::shared_ptr<asiopal::StrandExecutor> m_executor;
-	openpal::TimerRef m_first_frame_timer;
-	opendnp3::Route m_route;
+	asiopal::IResourceManager* manager;
+	std::shared_ptr<IListenCallbacks> callbacks;
+	opendnp3::LinkChannelStatistics stats;
+	opendnp3::LinkLayerParser parser;
+	std::shared_ptr<asiopal::StrandExecutor> executor;
+	openpal::TimerRef first_frame_timer;
+	opendnp3::Route route;
 
 
-	std::unique_ptr<asiopal::IAsyncChannel> m_channel;
-	std::shared_ptr<MasterSessionStack> m_stack;	// initialized to null
+	std::unique_ptr<asiopal::IAsyncChannel> channel;
+	std::shared_ptr<MasterSessionStack> stack;	// initialized to null
 };
 }
 
