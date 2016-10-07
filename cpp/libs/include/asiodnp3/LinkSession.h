@@ -53,9 +53,16 @@ public:
 	    openpal::LogRoot logroot,
 	    uint64_t sessionid,
 	    asiopal::IResourceManager& manager,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::StrandExecutor> executor,
-	    std::unique_ptr<asiopal::IAsyncChannel> channel
+	    std::shared_ptr<IListenCallbacks> callbacks,	    
+	    std::shared_ptr<asiopal::IAsyncChannel> channel
+	);
+
+	LinkSession(
+		openpal::LogRoot logroot,
+		uint64_t sessionid,
+		asiopal::IResourceManager& manager,
+		std::shared_ptr<IListenCallbacks> callbacks,		
+		std::shared_ptr<asiopal::IAsyncChannel> channel
 	);
 
 	// override IResource
@@ -80,16 +87,7 @@ private:
 
 	void Start();
 
-	void BeginReceive();
-
-	LinkSession(
-	    openpal::LogRoot logroot,
-	    uint64_t sessionid,
-	    asiopal::IResourceManager& manager,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::StrandExecutor> executor,
-	    std::unique_ptr<asiopal::IAsyncChannel> channel
-	);
+	void BeginReceive();	
 
 	openpal::LogRoot log_root;
 	const uint64_t session_id;
@@ -97,13 +95,12 @@ private:
 	asiopal::IResourceManager* manager;
 	std::shared_ptr<IListenCallbacks> callbacks;
 	opendnp3::LinkChannelStatistics stats;
-	opendnp3::LinkLayerParser parser;
-	std::shared_ptr<asiopal::StrandExecutor> executor;
+	opendnp3::LinkLayerParser parser;	
 	openpal::TimerRef first_frame_timer;
 	opendnp3::Route route;
 
 
-	std::unique_ptr<asiopal::IAsyncChannel> channel;
+	std::shared_ptr<asiopal::IAsyncChannel> channel;
 	std::shared_ptr<MasterSessionStack> stack;	// initialized to null
 };
 }

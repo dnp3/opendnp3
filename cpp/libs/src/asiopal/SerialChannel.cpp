@@ -27,13 +27,12 @@
 namespace asiopal
 {
 
-
-SerialChannel::SerialChannel(asio::io_service& service) : port(service)
+SerialChannel::SerialChannel(std::shared_ptr<StrandExecutor> executor) : IAsyncChannel(executor), port(executor->strand.get_io_service())
 {}
 
-std::unique_ptr<SerialChannel> SerialChannel::Create(asio::io_service& service)
+std::shared_ptr<SerialChannel> SerialChannel::Create(std::shared_ptr<StrandExecutor> executor)
 {
-	return std::make_unique<SerialChannel>(service);
+	return std::make_shared<SerialChannel>(executor);
 }
 
 void SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
@@ -49,21 +48,20 @@ void SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
 	}
 }
 
-void SerialChannel::BeginRead(openpal::WSlice& buffer, const read_callback_t& callback)
+void SerialChannel::BeginReadImpl(openpal::WSlice& buffer, const read_callback_t& callback)
 {
 	port.async_read_some(asio::buffer(buffer, buffer.Size()), callback);
 }
 
-void SerialChannel::BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback)
+void SerialChannel::BeginWriteImpl(const openpal::RSlice& buffer, const write_callback_t& callback)
 {
 	async_write(port, asio::buffer(buffer, buffer.Size()), callback);
 }
 
-void SerialChannel::BeginShutdown(const shutdown_callback_t& callback)
+void SerialChannel::BeginShutdownImpl()
 {
 	std::error_code ec;
-	port.close(ec);
-	callback(ec);
+	port.close(ec);	
 }
 
 }

@@ -82,9 +82,8 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket
 		    root.Clone(SessionIdToString(sessionid).c_str()),
 		    sessionid,
 		    *this->manager,
-		    this->callbacks,
-		    StrandExecutor::Create(this->io),
-		    SocketChannel::Create(std::move(socket))
+		    this->callbacks,		    
+		    SocketChannel::Create(StrandExecutor::Create(this->io), std::move(socket))
 		);
 	}
 	else

@@ -36,16 +36,14 @@ LinkSession::LinkSession(
     openpal::LogRoot logroot,
     uint64_t sessionid,
     asiopal::IResourceManager& manager,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<StrandExecutor> executor,
-    std::unique_ptr<asiopal::IAsyncChannel> channel) :
+    std::shared_ptr<IListenCallbacks> callbacks,    
+    std::shared_ptr<asiopal::IAsyncChannel> channel) :
 	log_root(std::move(logroot)),
 	session_id(sessionid),
 	manager(&manager),
 	callbacks(callbacks),
-	parser(log_root.logger, &stats),
-	executor(executor),
-	first_frame_timer(*executor),
+	parser(log_root.logger, &stats),	
+	first_frame_timer(*channel->executor),
 	channel(std::move(channel))
 {
 
@@ -55,11 +53,10 @@ std::shared_ptr<LinkSession> LinkSession::Create(
     openpal::LogRoot logroot,
     uint64_t sessionid,
     asiopal::IResourceManager& manager,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<StrandExecutor> executor,
-    std::unique_ptr<asiopal::IAsyncChannel> channel)
+    std::shared_ptr<IListenCallbacks> callbacks,    
+    std::shared_ptr<asiopal::IAsyncChannel> channel)
 {
-	auto ret = std::shared_ptr<LinkSession>(new LinkSession(std::move(logroot), sessionid, manager, callbacks, executor, std::move(channel)));
+	auto ret = std::make_shared<LinkSession>(std::move(logroot), sessionid, manager, callbacks, channel);
 
 	if (manager.Register(ret))
 	{
@@ -79,9 +76,9 @@ void LinkSession::BeginShutdown()
 	auto shutdown = [self]()
 	{
 		self->first_frame_timer.Cancel();
-		self->channel->BeginShutdown([self](const std::error_code & ec) {});
+		self->channel->BeginShutdown();
 	};
-	this->executor->PostToStrand(shutdown);
+	this->channel->executor->strand.post(shutdown);
 }
 
 void LinkSession::SetLogFilters(openpal::LogFilters filters)
@@ -106,7 +103,7 @@ void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSe
 		}
 	};
 
-	this->channel->BeginWrite(buffer, this->executor->strand.wrap(callback));
+	this->channel->BeginWrite(buffer, callback);
 }
 
 bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
@@ -132,7 +129,7 @@ bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		{
 			SIMPLE_LOG_BLOCK(this->log_root.logger, flags::WARN, "No master created. Closing socket.");
 			auto self(shared_from_this());
-			this->channel->BeginShutdown([self](const std::error_code & ec) {});
+			this->channel->BeginShutdown();
 		}
 	}
 
@@ -156,7 +153,7 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 
 	this->stack = MasterSessionStack::Create(
 	                  this->log_root.logger,
-	                  this->executor,
+	                  this->channel->executor,
 	                  SOEHandler,
 	                  application,
 	                  shared_from_this(),
@@ -172,7 +169,7 @@ void LinkSession::Start()
 	auto timeout = [this]()
 	{
 		SIMPLE_LOG_BLOCK(this->log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
-		this->channel->BeginShutdown([](const std::error_code & ec) {});
+		this->channel->BeginShutdown();
 	};
 
 	this->first_frame_timer.Start(this->callbacks->GetFirstFrameTimeout(), timeout);
@@ -210,7 +207,7 @@ void LinkSession::BeginReceive()
 	};
 
 	auto dest = parser.WriteBuff();
-	channel->BeginRead(dest, executor->strand.wrap(callback));
+	channel->BeginRead(dest, callback);
 }
 
 }

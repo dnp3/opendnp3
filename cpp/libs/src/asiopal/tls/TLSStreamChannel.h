@@ -23,25 +23,25 @@
 
 #include "asiopal/IAsyncChannel.h"
 
-#include <asio.hpp>
 #include <asio/ssl.hpp>
 
 namespace asiopal
 {
+
 class TLSStreamChannel final : public IAsyncChannel
 {
 
 public:
+	
+	static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<StrandExecutor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
 
-	TLSStreamChannel(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
-
-	static std::unique_ptr<IAsyncChannel> Create(std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
-
-	virtual void BeginRead(openpal::WSlice& buffer, const read_callback_t& callback) override;
-	virtual void BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback)  override;
-	virtual void BeginShutdown(const shutdown_callback_t& callback)  override;
+	TLSStreamChannel(std::shared_ptr<StrandExecutor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
 
 private:
+
+	virtual void BeginReadImpl(openpal::WSlice& buffer, const read_callback_t& callback) override;
+	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const write_callback_t& callback)  override;
+	virtual void BeginShutdownImpl()  override;
 
 	std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;
 };

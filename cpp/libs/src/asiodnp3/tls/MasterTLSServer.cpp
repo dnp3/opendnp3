@@ -123,9 +123,8 @@ void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl
 	    root.Clone(SessionIdToString(sessionid).c_str()),
 	    sessionid,
 	    *manager,
-	    callbacks,
-	    StrandExecutor::Create(this->io),
-	    TLSStreamChannel::Create(stream)
+	    callbacks,	    
+	    TLSStreamChannel::Create(StrandExecutor::Create(this->io), stream)
 	);
 }
 

@@ -22,8 +22,11 @@
 #define ASIODNP3_IOHANDLER_H
 
 #include "opendnp3/link/ILinkTx.h"
+#include "opendnp3/Route.h"
 
 #include "asiodnp3/IChannelListener.h"
+
+#include "openpal/logging/Logger.h"
 
 #include "asiopal/IO.h"
 #include "asiopal/IAsyncChannel.h"
@@ -44,6 +47,7 @@ class IOHandler : public opendnp3::ILinkTx
 public:
 
 	IOHandler(
+		openpal::Logger logger,
 		std::shared_ptr<asiopal::IO> io,
 		std::shared_ptr<IChannelListener> listener
 	);
@@ -52,15 +56,61 @@ public:
 	
 	virtual void BeginTransmit(const openpal::RSlice& data, opendnp3::ILinkSession& context) override;
 
+
+	// Bind a link layer session to the handler
+	bool AddContext(opendnp3::ILinkSession& session, const opendnp3::Route& route);
+	
+	// Begin sending messages to the context	
+	bool Enable(opendnp3::ILinkSession& session);
+	
+	// Stop sending messages to this session
+	bool Disable(opendnp3::ILinkSession& session);
+
+	// Remove this session entirely
+	bool Remove(opendnp3::ILinkSession& session);
+
 protected:
 
-private:
+	virtual void Enable() = 0;
 
+	virtual void Suspend() = 0;
+
+	virtual void StartNewChannel() = 0;
+
+	virtual std::shared_ptr<IOHandler> GetShared() = 0;
+
+	void OnNewChannel(std::shared_ptr<asiopal::IAsyncChannel> channel);
+
+private:	
+	
+	// Query to see if a route is in use
+	bool IsRouteInUse(const opendnp3::Route& route) const;
+	bool IsSessionInUse(opendnp3::ILinkSession& session) const;
+	bool IsAnySessionEnabled() const;
+
+	struct Session
+	{
+		Session(opendnp3::ILinkSession& session, const opendnp3::Route& route) :
+			session(&session),
+			route(route),
+			enabled(false)
+		{}
+
+		Session() : session(nullptr), enabled(false) {}
+
+		opendnp3::ILinkSession* session;
+		opendnp3::Route route;
+		bool enabled;
+	};
+
+	std::vector<Session> records;
+
+	openpal::Logger logger;
 	std::shared_ptr<asiopal::IO> io;
 	std::shared_ptr<IChannelListener> listener;
-	
+		
 	// current value of the channel, may be null
-	std::unique_ptr<asiopal::IAsyncChannel> channel;
+	std::shared_ptr<asiopal::IAsyncChannel> channel;
 };
 
 }
