@@ -18,56 +18,52 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_MASTERTLSSERVER_H
-#define ASIOPAL_MASTERTLSSERVER_H
+#ifndef ASIOPAL_MASTERTLSSERVERHANDLER_H
+#define ASIOPAL_MASTERTLSSERVERHANDLER_H
 
-#include <openpal/logging/Logger.h>
+#include <openpal/logging/LogRoot.h>
 
-#include <asiopal/tls/TLSServer.h>
+#include <asiopal/tls/ITLSServerHandler.h>
 
 #include <asiopal/TLSConfig.h>
+#include <asiopal/IPEndpoint.h>
 #include <asiopal/IResourceManager.h>
 
 #include "asiodnp3/IListenCallbacks.h"
 
 namespace asiodnp3
 {
-class MasterTLSServer final : public asiopal::TLSServer
+
+class MasterTLSServerHandler final : public asiopal::ITLSServerHandler, std::enable_shared_from_this<MasterTLSServerHandler>
 {
 
 public:
 
-	MasterTLSServer(
-	    asiopal::IResourceManager& shutdown,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::StrandExecutor> executor,
+	MasterTLSServerHandler(
 	    openpal::LogRoot root,
-	    asiopal::IPEndpoint endpoint,
-	    const asiopal::TLSConfig& config,
-	    std::error_code& ec
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    asiopal::IResourceManager& manager
 	);
 
-	static std::shared_ptr<MasterTLSServer> Create(
-	    asiopal::IResourceManager& shutdown,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::StrandExecutor> executor,
+	static std::shared_ptr<MasterTLSServerHandler> Create(
 	    openpal::LogRoot root,
-	    asiopal::IPEndpoint endpoint,
-	    const asiopal::TLSConfig& config,
-	    std::error_code& ec
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    asiopal::IResourceManager& manager
 	);
 
-private:
 
-	asiopal::IResourceManager* manager;
-	std::shared_ptr<IListenCallbacks> callbacks;
-
-	virtual void OnShutdown() override;
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
 	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override;
 	virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;
 
+private:
+
+	openpal::LogRoot root;
+	std::shared_ptr<IListenCallbacks> callbacks;
+	asiopal::IResourceManager& manager;
+
 	static std::string SessionIdToString(uint64_t sessionid);
+
 };
 
 }

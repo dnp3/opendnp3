@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "asiodnp3/tls/MasterTLSServer.h"
+#include "asiodnp3/tls/MasterTLSServerHandler.h"
 
 #include "asiodnp3/LinkSession.h"
 
@@ -35,45 +35,26 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
-    IResourceManager& shutdown,
+std::shared_ptr<MasterTLSServerHandler> MasterTLSServerHandler::Create(
+    openpal::LogRoot root,
     std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::StrandExecutor> executor,
-    LogRoot root,
-    IPEndpoint endpoint,
-    const TLSConfig& config,
-    std::error_code& ec)
+    IResourceManager& manager)
 {
-	auto ret = std::make_shared<MasterTLSServer>(shutdown, callbacks, executor, std::move(root), endpoint, config, ec);
-	if (!ec)
-	{
-		ret->StartAccept(ec);
-	}
-	return ret;
+	return std::make_shared<MasterTLSServerHandler>(std::move(root), callbacks, manager);
 }
 
-MasterTLSServer::MasterTLSServer(
-    IResourceManager& shutdown,
+MasterTLSServerHandler::MasterTLSServerHandler(
+    openpal::LogRoot root,
     std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::StrandExecutor> executor,
-    LogRoot root,
-    IPEndpoint endpoint,
-    const TLSConfig& config,
-    std::error_code& ec) :
-	TLSServer(executor, std::move(root), endpoint, config, ec),
-	manager(&shutdown),
-	callbacks(callbacks)
+    IResourceManager& manager) :
+	root(std::move(root)),
+	callbacks(callbacks),
+	manager(manager)
 {
 
 }
 
-void MasterTLSServer::OnShutdown()
-{
-	manager->Unregister(shared_from_this());
-}
-
-
-bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote)
+bool MasterTLSServerHandler::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote)
 {
 	std::ostringstream oss;
 	oss << remote;
@@ -90,7 +71,7 @@ bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::
 	}
 }
 
-bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx)
+bool MasterTLSServerHandler::VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx)
 {
 	int depth = X509_STORE_CTX_get_error_depth(ctx.native_handle());
 
@@ -117,18 +98,18 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	       );
 }
 
-void MasterTLSServer::AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
+void MasterTLSServerHandler::AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
 	LinkSession::Create(
 	    root.Clone(SessionIdToString(sessionid).c_str()),
 	    sessionid,
-	    *manager,
+	    manager,
 	    callbacks,
 	    TLSStreamChannel::Create(executor->Fork(), stream)	// run the link session in a new strand
 	);
 }
 
-std::string MasterTLSServer::SessionIdToString(uint64_t sessionid)
+std::string MasterTLSServerHandler::SessionIdToString(uint64_t sessionid)
 {
 	std::ostringstream oss;
 	oss << "session-" << sessionid;
