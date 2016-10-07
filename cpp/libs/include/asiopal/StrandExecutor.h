@@ -62,7 +62,7 @@ public:
 	void PostToStrand(const T& action);
 
 	template <class T>
-	T ReturnFrom(const std::function<T()>& action);
+	T ReturnFrom(const std::function<T()>& action);	
 
 private:
 
@@ -70,6 +70,12 @@ private:
 	std::shared_ptr<IO> io;
 
 public:
+
+	// Create a new StrandExecutor that shares the underling std::shared_ptr<IO>
+	std::shared_ptr<StrandExecutor> Fork() const
+	{
+		return Create(this->io);
+	}
 
 	asio::strand strand;
 
@@ -92,22 +98,21 @@ T StrandExecutor::ReturnFrom(const std::function<T()>& action)
 	{
 		return action();
 	}
-	else
+	
+	std::promise<T> ready;
+
+	auto future = ready.get_future();
+
+	auto run = [&]
 	{
-		std::promise<T> ready;
+		ready.set_value(action());
+	};
 
-		auto future = ready.get_future();
+	strand.post(run);
 
-		auto run = [&]
-		{
-			ready.set_value(action());
-		};
+	future.wait();
 
-		strand.post(run);
-
-		future.wait();
-		return future.get();
-	}
+	return future.get();	
 }
 
 }

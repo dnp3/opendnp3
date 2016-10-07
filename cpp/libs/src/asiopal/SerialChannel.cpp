@@ -48,12 +48,12 @@ void SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
 	}
 }
 
-void SerialChannel::BeginReadImpl(openpal::WSlice& buffer, const read_callback_t& callback)
+void SerialChannel::BeginReadImpl(openpal::WSlice& buffer, const io_callback_t& callback)
 {
 	port.async_read_some(asio::buffer(buffer, buffer.Size()), callback);
 }
 
-void SerialChannel::BeginWriteImpl(const openpal::RSlice& buffer, const write_callback_t& callback)
+void SerialChannel::BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback)
 {
 	async_write(port, asio::buffer(buffer, buffer.Size()), callback);
 }

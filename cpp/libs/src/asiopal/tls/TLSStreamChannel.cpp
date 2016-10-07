@@ -34,12 +34,12 @@ std::shared_ptr<IAsyncChannel> TLSStreamChannel::Create(std::shared_ptr<StrandEx
 	return std::make_shared<TLSStreamChannel>(executor, stream);
 }
 
-void TLSStreamChannel::BeginReadImpl(openpal::WSlice& dest, const read_callback_t& callback)
+void TLSStreamChannel::BeginReadImpl(openpal::WSlice& dest, const io_callback_t& callback)
 {
 	stream->async_read_some(asio::buffer(dest, dest.Size()), callback);
 }
 
-void TLSStreamChannel::BeginWriteImpl(const openpal::RSlice& data, const write_callback_t& callback)
+void TLSStreamChannel::BeginWriteImpl(const openpal::RSlice& data, const io_callback_t& callback)
 {
 	asio::async_write(*stream, asio::buffer(data, data.Size()), callback);
 }

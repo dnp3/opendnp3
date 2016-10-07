@@ -77,16 +77,16 @@ private:
 	virtual bool Register(std::shared_ptr<asiopal::IResource> resource) override;
 	virtual void Unregister(std::shared_ptr<asiopal::IResource> resource) override;
 
-	std::mutex m_mutex;
+	std::mutex mutex;
 
-	std::shared_ptr<openpal::ILogHandler> m_log_handler;
-	openpal::LogRoot m_log_root;
-	bool m_is_shutting_down;
-	openpal::ILogHandler* m_log;
-	std::vector<std::shared_ptr<asiopal::IResource>> m_resources;
+	std::shared_ptr<openpal::ILogHandler> log_handler;
+	openpal::LogRoot log_root;
+	bool is_shutting_down;
+
+	std::vector<std::shared_ptr<asiopal::IResource>> resources;
 
 	/// this will be the first thing to be destroyed forcing all handlers to be run
-	std::shared_ptr<asiopal::ThreadPool> m_pool;
+	std::shared_ptr<asiopal::ThreadPool> pool;
 
 };
 

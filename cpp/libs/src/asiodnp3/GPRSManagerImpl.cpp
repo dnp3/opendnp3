@@ -37,8 +37,9 @@ namespace asiodnp3
 GPRSManagerImpl::~GPRSManagerImpl()
 {
 	this->BeginShutdown();
+
 	// block on the pool until it is gone
-	this->m_pool->Shutdown();
+	this->pool->Shutdown();
 }
 
 std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
@@ -48,9 +49,9 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
     std::shared_ptr<IListenCallbacks> callbacks,
     std::error_code& ec)
 {
-	std::lock_guard <std::mutex> lock(m_mutex);
+	std::lock_guard <std::mutex> lock(this->mutex);
 
-	if (m_is_shutting_down)
+	if (this->is_shutting_down)
 	{
 		ec = make_error_code(Error::SHUTTING_DOWN);
 		return nullptr;
@@ -59,8 +60,8 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	auto server = asiodnp3::MasterTCPServer::Create(
 	                  *this,
 	                  callbacks,
-	                  m_pool,
-	                  m_log_root.Clone(loggerid.c_str(), loglevel),
+					  asiopal::StrandExecutor::Create(this->pool),
+					  this->log_root.Clone(loggerid.c_str(), loglevel),
 	                  endpoint,
 	                  ec
 	              );
@@ -70,7 +71,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		return nullptr;
 	}
 
-	this->m_resources.push_back(server);
+	this->resources.push_back(server);
 	return server;
 }
 
@@ -85,9 +86,9 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 
 #ifdef OPENDNP3_USE_TLS
 
-	std::lock_guard <std::mutex> lock(m_mutex);
+	std::lock_guard <std::mutex> lock(this->mutex);
 
-	if (m_is_shutting_down)
+	if (this->is_shutting_down)
 	{
 		ec = make_error_code(Error::SHUTTING_DOWN);
 		return nullptr;
@@ -96,8 +97,8 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	auto server = asiodnp3::MasterTLSServer::Create(
 	                  *this,
 	                  callbacks,
-	                  m_pool,
-	                  m_log_root.Clone(loggerid.c_str(), loglevel),
+				      asiopal::StrandExecutor::Create(this->pool),
+					  this->log_root.Clone(loggerid.c_str(), loglevel),
 	                  endpoint,
 	                  config,
 	                  ec
@@ -108,7 +109,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		return nullptr;
 	}
 
-	this->m_resources.push_back(server);
+	this->resources.push_back(server);
 	return server;
 
 #else
@@ -123,46 +124,45 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 
 void GPRSManagerImpl::BeginShutdown()
 {
-	std::lock_guard <std::mutex> lock(m_mutex);
+	std::lock_guard <std::mutex> lock(this->mutex);
 
-	this->m_is_shutting_down = true;
+	this->is_shutting_down = true;
 
-	for (auto& resource : m_resources)
+	for (auto& resource : this->resources)
 	{
 		resource->BeginShutdown();
 	}
 }
 
 GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler) :
-	m_mutex(),
-	m_log_handler(handler),
-	m_log_root(handler.get(), "gprs-manager", opendnp3::levels::NORMAL),
-	m_is_shutting_down(false),
-	m_log(handler.get()),
-	m_pool(asiopal::ThreadPool::Create(handler.get(), concurrencyHint, opendnp3::flags::INFO))
+	mutex(),
+	log_handler(handler),
+	log_root(handler.get(), "gprs-manager", opendnp3::levels::NORMAL),
+	is_shutting_down(false),	
+	pool(asiopal::ThreadPool::Create(handler.get(), concurrencyHint, opendnp3::flags::INFO))
 {}
 
 bool GPRSManagerImpl::Register(std::shared_ptr<asiopal::IResource> resource)
 {
-	std::lock_guard <std::mutex> lock(m_mutex);
-	if (m_is_shutting_down)
+	std::lock_guard <std::mutex> lock(this->mutex);
+	if (this->is_shutting_down)
 	{
 		return false;
 	}
-	m_resources.push_back(resource);
+	this->resources.push_back(resource);
 	return true;
 }
 
 void GPRSManagerImpl::Unregister(std::shared_ptr<asiopal::IResource> resource)
 {
-	std::lock_guard <std::mutex> lock(m_mutex);
+	std::lock_guard <std::mutex> lock(this->mutex);
 
 	auto is_match = [resource](const std::shared_ptr<asiopal::IResource>& other) -> bool
 	{
 		return resource == other;
 	};
 
-	m_resources.erase(std::remove_if(m_resources.begin(), m_resources.end(), is_match), m_resources.end());
+	this->resources.erase(std::remove_if(this->resources.begin(), this->resources.end(), is_match), this->resources.end());
 
 }
 
