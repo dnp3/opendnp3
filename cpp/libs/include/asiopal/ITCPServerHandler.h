@@ -32,7 +32,7 @@ class ITCPServerHandler
 {
 
 public:
-	
+
 	virtual ~ITCPServerHandler() {}
 
 	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket) = 0;

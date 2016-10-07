@@ -54,13 +54,13 @@ public:
 	}
 
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
-	
+
 	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override;
-	
+
 	virtual void AcceptStream(
-		uint64_t sessionid,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream
+	    uint64_t sessionid,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream
 	) override;
 
 private:

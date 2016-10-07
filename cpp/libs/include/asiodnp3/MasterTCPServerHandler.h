@@ -42,30 +42,30 @@ class MasterTCPServerHandler final : public asiopal::ITCPServerHandler
 public:
 
 	MasterTCPServerHandler(
-		openpal::LogRoot root,
-		std::shared_ptr<IListenCallbacks> callbacks,
-		asiopal::IResourceManager& manager
+	    openpal::LogRoot root,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    asiopal::IResourceManager& manager
 	);
 
 	static std::shared_ptr<MasterTCPServerHandler> Create(
-		openpal::LogRoot root,
-		std::shared_ptr<IListenCallbacks> callbacks,
-		asiopal::IResourceManager& manager)
+	    openpal::LogRoot root,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    asiopal::IResourceManager& manager)
 	{
 		return std::make_shared<MasterTCPServerHandler>(std::move(root), callbacks, manager);
 	}
-	
+
 
 private:
 
 	openpal::LogRoot root;
 	std::shared_ptr<IListenCallbacks> callbacks;
 	asiopal::IResourceManager& manager;
-	
+
 
 	static std::string SessionIdToString(uint64_t sessionid);
 
-	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket) override;	
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket) override;
 };
 
 }

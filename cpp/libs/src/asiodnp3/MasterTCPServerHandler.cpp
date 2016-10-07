@@ -38,11 +38,11 @@ namespace asiodnp3
 {
 
 MasterTCPServerHandler::MasterTCPServerHandler(
-	openpal::LogRoot root,
-	std::shared_ptr<IListenCallbacks> callbacks,
-	asiopal::IResourceManager& manager
+    openpal::LogRoot root,
+    std::shared_ptr<IListenCallbacks> callbacks,
+    asiopal::IResourceManager& manager
 ) :
-	root(std::move(root)),	
+	root(std::move(root)),
 	callbacks(callbacks),
 	manager(manager)
 {

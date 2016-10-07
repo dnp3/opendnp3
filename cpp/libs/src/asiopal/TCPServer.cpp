@@ -34,20 +34,20 @@ namespace asiopal
 {
 
 TCPServer::TCPServer(
-	std::shared_ptr<StrandExecutor> executor,
-	std::shared_ptr<ITCPServerHandler> handler,
-	IResourceManager& manager,
-	openpal::LogRoot root,
-	IPEndpoint endpoint, 
-	std::error_code& ec) :
-        executor(executor),
-		handler(handler),
-		manager(manager),
-        root(std::move(root)),
-        endpoint(ip::tcp::v4(), endpoint.port),
-        acceptor(executor->strand.get_io_service()),
-        socket(executor->strand.get_io_service()),
-        session_id(0)
+    std::shared_ptr<StrandExecutor> executor,
+    std::shared_ptr<ITCPServerHandler> handler,
+    IResourceManager& manager,
+    openpal::LogRoot root,
+    IPEndpoint endpoint,
+    std::error_code& ec) :
+	executor(executor),
+	handler(handler),
+	manager(manager),
+	root(std::move(root)),
+	endpoint(ip::tcp::v4(), endpoint.port),
+	acceptor(executor->strand.get_io_service()),
+	socket(executor->strand.get_io_service()),
+	session_id(0)
 {
 	this->Configure(endpoint.address, ec);
 }

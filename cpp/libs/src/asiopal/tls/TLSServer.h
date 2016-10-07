@@ -40,7 +40,7 @@ namespace asiopal
 */
 class TLSServer final :
 	public IListener,
-	private std::enable_shared_from_this<TLSServer>,	
+	private std::enable_shared_from_this<TLSServer>,
 	private openpal::Uncopyable
 {
 

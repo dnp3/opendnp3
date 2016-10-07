@@ -61,19 +61,19 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	}
 
 	auto handler = asiodnp3::MasterTCPServerHandler::Create(
-		this->log_root.Clone(loggerid.c_str(), loglevel),
-		callbacks,
-		*this
-	);
+	                   this->log_root.Clone(loggerid.c_str(), loglevel),
+	                   callbacks,
+	                   *this
+	               );
 
-	auto server = asiopal::TCPServer::Create(				
-		asiopal::StrandExecutor::Create(this->pool),
-		handler,
-		*this,
-		this->log_root.Clone(loggerid.c_str(), loglevel),
-		endpoint,
-		ec
-	);
+	auto server = asiopal::TCPServer::Create(
+	                  asiopal::StrandExecutor::Create(this->pool),
+	                  handler,
+	                  *this,
+	                  this->log_root.Clone(loggerid.c_str(), loglevel),
+	                  endpoint,
+	                  ec
+	              );
 
 	if (ec)
 	{

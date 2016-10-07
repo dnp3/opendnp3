@@ -38,7 +38,7 @@ namespace asiopal
 *
 * Meant to be used exclusively as a shared_ptr
 */
-class TCPServer final :	
+class TCPServer final :
 	public IListener,
 	private std::enable_shared_from_this<TCPServer>,
 	private openpal::Uncopyable
@@ -48,25 +48,25 @@ public:
 
 	TCPServer(
 	    std::shared_ptr<StrandExecutor> executor,
-		std::shared_ptr<ITCPServerHandler> handler,
-		IResourceManager& manager,
+	    std::shared_ptr<ITCPServerHandler> handler,
+	    IResourceManager& manager,
 	    openpal::LogRoot root,
 	    IPEndpoint endpoint,
 	    std::error_code& ec
 	);
 
 	static std::shared_ptr<TCPServer> Create(
-		std::shared_ptr<StrandExecutor> executor,
-		std::shared_ptr<ITCPServerHandler> handler,
-		IResourceManager& manager,
-		openpal::LogRoot root,
-		IPEndpoint endpoint,
-		std::error_code& ec)
+	    std::shared_ptr<StrandExecutor> executor,
+	    std::shared_ptr<ITCPServerHandler> handler,
+	    IResourceManager& manager,
+	    openpal::LogRoot root,
+	    IPEndpoint endpoint,
+	    std::error_code& ec)
 	{
 		auto ret = std::make_shared<TCPServer>(executor, handler, manager, std::move(root), endpoint, ec);
-		
+
 		if (ec) return nullptr;
-		else 
+		else
 		{
 			ret->StartAccept();
 			return ret;
@@ -74,7 +74,7 @@ public:
 	}
 
 	/// Stop listening for connections, permanently shutting down the listener
-	void BeginShutdown() override;			
+	void BeginShutdown() override;
 
 private:
 
