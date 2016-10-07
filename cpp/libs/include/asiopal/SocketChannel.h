@@ -29,17 +29,17 @@ namespace asiopal
 class SocketChannel final : public IAsyncChannel
 {
 
-public:	
+public:
 
 	static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<StrandExecutor> executor, asio::ip::tcp::socket socket);
 
 	SocketChannel(std::shared_ptr<StrandExecutor> executor, asio::ip::tcp::socket socket);
-	
+
 protected:
 
 	virtual void BeginReadImpl(openpal::WSlice& buffer, const io_callback_t& callback) override;
 	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback)  override;
-	virtual void BeginShutdownImpl()  override;	
+	virtual void BeginShutdownImpl()  override;
 
 private:
 

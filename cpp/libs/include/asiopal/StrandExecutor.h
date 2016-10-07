@@ -62,7 +62,7 @@ public:
 	void PostToStrand(const T& action);
 
 	template <class T>
-	T ReturnFrom(const std::function<T()>& action);	
+	T ReturnFrom(const std::function<T()>& action);
 
 private:
 
@@ -98,7 +98,7 @@ T StrandExecutor::ReturnFrom(const std::function<T()>& action)
 	{
 		return action();
 	}
-	
+
 	std::promise<T> ready;
 
 	auto future = ready.get_future();
@@ -112,7 +112,7 @@ T StrandExecutor::ReturnFrom(const std::function<T()>& action)
 
 	future.wait();
 
-	return future.get();	
+	return future.get();
 }
 
 }

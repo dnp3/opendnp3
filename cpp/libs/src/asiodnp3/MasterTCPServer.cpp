@@ -40,7 +40,7 @@ namespace asiodnp3
 std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-	std::shared_ptr<asiopal::StrandExecutor> executor,
+    std::shared_ptr<asiopal::StrandExecutor> executor,
     openpal::LogRoot root,
     asiopal::IPEndpoint endpoint,
     std::error_code& ec
@@ -57,7 +57,7 @@ std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
 MasterTCPServer::MasterTCPServer(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-	std::shared_ptr<asiopal::StrandExecutor> executor,
+    std::shared_ptr<asiopal::StrandExecutor> executor,
     openpal::LogRoot root,
     asiopal::IPEndpoint endpoint,
     std::error_code& ec
@@ -82,7 +82,7 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr
 		    root.Clone(SessionIdToString(sessionid).c_str()),
 		    sessionid,
 		    *this->manager,
-		    this->callbacks,		    
+		    this->callbacks,
 		    SocketChannel::Create(executor->Fork(), std::move(socket))	// run the link session in its own strand
 		);
 	}

@@ -52,7 +52,7 @@ public:
 	MasterTCPServer(
 	    asiopal::IResourceManager& shutdown,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-		std::shared_ptr<asiopal::StrandExecutor> executor,
+	    std::shared_ptr<asiopal::StrandExecutor> executor,
 	    openpal::LogRoot root,
 	    asiopal::IPEndpoint endpoint,
 	    std::error_code& ec

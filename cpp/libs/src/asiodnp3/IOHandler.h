@@ -40,29 +40,29 @@ namespace asiodnp3
 
 Manages I/O for a number of link contexts
 
-*/	
+*/
 class IOHandler : public opendnp3::ILinkTx
 {
 
 public:
 
 	IOHandler(
-		openpal::Logger logger,
-		std::shared_ptr<asiopal::IO> io,
-		std::shared_ptr<IChannelListener> listener
+	    openpal::Logger logger,
+	    std::shared_ptr<asiopal::IO> io,
+	    std::shared_ptr<IChannelListener> listener
 	);
 
 	/// --- implement ILinkTx ---
-	
+
 	virtual void BeginTransmit(const openpal::RSlice& data, opendnp3::ILinkSession& context) override;
 
 
 	// Bind a link layer session to the handler
 	bool AddContext(opendnp3::ILinkSession& session, const opendnp3::Route& route);
-	
-	// Begin sending messages to the context	
+
+	// Begin sending messages to the context
 	bool Enable(opendnp3::ILinkSession& session);
-	
+
 	// Stop sending messages to this session
 	bool Disable(opendnp3::ILinkSession& session);
 
@@ -81,8 +81,8 @@ protected:
 
 	void OnNewChannel(std::shared_ptr<asiopal::IAsyncChannel> channel);
 
-private:	
-	
+private:
+
 	// Query to see if a route is in use
 	bool IsRouteInUse(const opendnp3::Route& route) const;
 	bool IsSessionInUse(opendnp3::ILinkSession& session) const;
@@ -108,7 +108,7 @@ private:
 	openpal::Logger logger;
 	std::shared_ptr<asiopal::IO> io;
 	std::shared_ptr<IChannelListener> listener;
-		
+
 	// current value of the channel, may be null
 	std::shared_ptr<asiopal::IAsyncChannel> channel;
 };

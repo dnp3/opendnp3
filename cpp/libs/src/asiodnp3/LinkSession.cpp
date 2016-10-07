@@ -36,13 +36,13 @@ LinkSession::LinkSession(
     openpal::LogRoot logroot,
     uint64_t sessionid,
     asiopal::IResourceManager& manager,
-    std::shared_ptr<IListenCallbacks> callbacks,    
+    std::shared_ptr<IListenCallbacks> callbacks,
     std::shared_ptr<asiopal::IAsyncChannel> channel) :
 	log_root(std::move(logroot)),
 	session_id(sessionid),
 	manager(&manager),
 	callbacks(callbacks),
-	parser(log_root.logger, &stats),	
+	parser(log_root.logger, &stats),
 	first_frame_timer(*channel->executor),
 	channel(std::move(channel))
 {
@@ -53,7 +53,7 @@ std::shared_ptr<LinkSession> LinkSession::Create(
     openpal::LogRoot logroot,
     uint64_t sessionid,
     asiopal::IResourceManager& manager,
-    std::shared_ptr<IListenCallbacks> callbacks,    
+    std::shared_ptr<IListenCallbacks> callbacks,
     std::shared_ptr<asiopal::IAsyncChannel> channel)
 {
 	auto ret = std::make_shared<LinkSession>(std::move(logroot), sessionid, manager, callbacks, channel);

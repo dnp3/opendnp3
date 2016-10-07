@@ -47,7 +47,7 @@ void SocketChannel::BeginShutdownImpl()
 {
 	std::error_code ec;
 	socket.shutdown(asio::socket_base::shutdown_type::shutdown_both, ec);
-	socket.close(ec);	
+	socket.close(ec);
 }
 
 }

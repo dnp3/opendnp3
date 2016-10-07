@@ -34,7 +34,7 @@ namespace asiopal
 {
 
 TLSServer::TLSServer(
-	std::shared_ptr<StrandExecutor> executor,
+    std::shared_ptr<StrandExecutor> executor,
     openpal::LogRoot root,
     IPEndpoint endpoint,
     const TLSConfig& config,
@@ -93,16 +93,14 @@ void TLSServer::StartAccept(std::error_code& ec)
 	// this could be a unique_ptr once move semantics are supported in lambdas
 	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(this->executor->strand.get_io_service(), self->ctx.value);
 
-	if (!ec)
+	auto verify = [this, ID](bool preverified, asio::ssl::verify_context & ctx)
 	{
+		return this->VerifyCallback(ID, preverified, ctx);
+	};
 
-		auto verify = [this, ID](bool preverified, asio::ssl::verify_context & ctx)
-		{
-			return this->VerifyCallback(ID, preverified, ctx);
-		};
+	stream->set_verify_callback(verify, ec);
 
-		stream->set_verify_callback(verify, ec);
-	}
+	if (ec) return;
 
 	auto accept_cb = [self, stream, ID](std::error_code ec) -> void
 	{
@@ -125,7 +123,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 
 			stream->lowest_layer().close();
 			return;
-		}		
+		}
 
 		auto handshake_cb = [stream, ID, self](const std::error_code & ec)
 		{
@@ -142,11 +140,9 @@ void TLSServer::StartAccept(std::error_code& ec)
 		stream->async_handshake(asio::ssl::stream_base::server, handshake_cb);
 	};
 
-	if (!ec)
-	{
-		this->acceptor.async_accept(stream->lowest_layer(), accept_cb);
-	}
+	this->acceptor.async_accept(stream->lowest_layer(), accept_cb);
 }
+
 }
 
 

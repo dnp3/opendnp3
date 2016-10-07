@@ -32,7 +32,7 @@ class TLSStreamChannel final : public IAsyncChannel
 {
 
 public:
-	
+
 	static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<StrandExecutor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
 
 	TLSStreamChannel(std::shared_ptr<StrandExecutor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);

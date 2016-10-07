@@ -49,7 +49,7 @@ void TLSStreamChannel::BeginShutdownImpl()
 	// TODO - should we perform an async shutdown on the TLS stream?
 	std::error_code ec;
 	stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec);
-	stream->lowest_layer().close(ec);	
+	stream->lowest_layer().close(ec);
 }
 
 }

@@ -38,19 +38,19 @@ class MasterTLSServer final : public asiopal::TLSServer
 public:
 
 	MasterTLSServer(
-		asiopal::IResourceManager& shutdown,
-		std::shared_ptr<IListenCallbacks> callbacks,
-		std::shared_ptr<asiopal::StrandExecutor> executor,
-		openpal::LogRoot root,
-		asiopal::IPEndpoint endpoint,
-		const asiopal::TLSConfig& config,
-		std::error_code& ec
+	    asiopal::IResourceManager& shutdown,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::shared_ptr<asiopal::StrandExecutor> executor,
+	    openpal::LogRoot root,
+	    asiopal::IPEndpoint endpoint,
+	    const asiopal::TLSConfig& config,
+	    std::error_code& ec
 	);
 
 	static std::shared_ptr<MasterTLSServer> Create(
 	    asiopal::IResourceManager& shutdown,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-		std::shared_ptr<asiopal::StrandExecutor> executor,
+	    std::shared_ptr<asiopal::StrandExecutor> executor,
 	    openpal::LogRoot root,
 	    asiopal::IPEndpoint endpoint,
 	    const asiopal::TLSConfig& config,
@@ -61,7 +61,7 @@ private:
 
 	asiopal::IResourceManager* manager;
 	std::shared_ptr<IListenCallbacks> callbacks;
-	
+
 	virtual void OnShutdown() override;
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
 	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override;

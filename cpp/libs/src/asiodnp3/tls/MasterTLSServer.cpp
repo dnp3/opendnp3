@@ -38,7 +38,7 @@ namespace asiodnp3
 std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-	std::shared_ptr<asiopal::StrandExecutor> executor,
+    std::shared_ptr<asiopal::StrandExecutor> executor,
     LogRoot root,
     IPEndpoint endpoint,
     const TLSConfig& config,
@@ -55,7 +55,7 @@ std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
 MasterTLSServer::MasterTLSServer(
     IResourceManager& shutdown,
     std::shared_ptr<IListenCallbacks> callbacks,
-	std::shared_ptr<asiopal::StrandExecutor> executor,
+    std::shared_ptr<asiopal::StrandExecutor> executor,
     LogRoot root,
     IPEndpoint endpoint,
     const TLSConfig& config,
@@ -123,7 +123,7 @@ void MasterTLSServer::AcceptStream(uint64_t sessionid, const std::shared_ptr<Str
 	    root.Clone(SessionIdToString(sessionid).c_str()),
 	    sessionid,
 	    *manager,
-	    callbacks,	    
+	    callbacks,
 	    TLSStreamChannel::Create(executor->Fork(), stream)	// run the link session in a new strand
 	);
 }

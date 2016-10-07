@@ -60,8 +60,8 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	auto server = asiodnp3::MasterTCPServer::Create(
 	                  *this,
 	                  callbacks,
-					  asiopal::StrandExecutor::Create(this->pool),
-					  this->log_root.Clone(loggerid.c_str(), loglevel),
+	                  asiopal::StrandExecutor::Create(this->pool),
+	                  this->log_root.Clone(loggerid.c_str(), loglevel),
 	                  endpoint,
 	                  ec
 	              );
@@ -97,8 +97,8 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	auto server = asiodnp3::MasterTLSServer::Create(
 	                  *this,
 	                  callbacks,
-				      asiopal::StrandExecutor::Create(this->pool),
-					  this->log_root.Clone(loggerid.c_str(), loglevel),
+	                  asiopal::StrandExecutor::Create(this->pool),
+	                  this->log_root.Clone(loggerid.c_str(), loglevel),
 	                  endpoint,
 	                  config,
 	                  ec
@@ -138,7 +138,7 @@ GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openp
 	mutex(),
 	log_handler(handler),
 	log_root(handler.get(), "gprs-manager", opendnp3::levels::NORMAL),
-	is_shutting_down(false),	
+	is_shutting_down(false),
 	pool(asiopal::ThreadPool::Create(handler.get(), concurrencyHint, opendnp3::flags::INFO))
 {}
 

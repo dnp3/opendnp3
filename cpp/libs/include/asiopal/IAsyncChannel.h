@@ -37,11 +37,11 @@ namespace asiopal
 
 class IAsyncChannel : public std::enable_shared_from_this<IAsyncChannel>, private openpal::Uncopyable
 {
-public:	
+public:
 
 	IAsyncChannel(std::shared_ptr<StrandExecutor> executor) : executor(executor)
 	{}
-	
+
 	virtual ~IAsyncChannel() {}
 
 	template <class IOCallback>
@@ -49,7 +49,7 @@ public:
 
 	template <class IOCallback>
 	inline bool BeginWrite(const openpal::RSlice& buffer, const IOCallback& callback);
-		
+
 	inline bool BeginShutdown()
 	{
 		if (this->shuttingDown) return false;
@@ -59,10 +59,16 @@ public:
 		return true;
 	}
 
-	inline bool CanRead() const { return !(reading || shuttingDown); }
-	
+	inline bool CanRead() const
+	{
+		return !(reading || shuttingDown);
+	}
 
-	inline bool CanWrite() const { return !(writing || shuttingDown); }
+
+	inline bool CanWrite() const
+	{
+		return !(writing || shuttingDown);
+	}
 
 	std::shared_ptr<StrandExecutor> executor;
 
@@ -72,8 +78,8 @@ protected:
 	bool writing = false;
 	bool shuttingDown = false;
 
-	typedef std::function<void(const std::error_code& ec, std::size_t num)> io_callback_t;	
-	
+	typedef std::function<void(const std::error_code& ec, std::size_t num)> io_callback_t;
+
 
 	virtual void BeginReadImpl(openpal::WSlice& buffer, const io_callback_t& callback) = 0;
 	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback) = 0;
@@ -88,7 +94,7 @@ bool IAsyncChannel::BeginRead(openpal::WSlice& buffer, const IOCallback& callbac
 
 	std::shared_ptr<IAsyncChannel> self(this->shared_from_this());
 
-	auto cbwrap = [self, buffer, callback](const std::error_code& ec, std::size_t num)
+	auto cbwrap = [self, buffer, callback](const std::error_code & ec, std::size_t num)
 	{
 		self->reading = false;
 		if (!self->shuttingDown)
@@ -110,7 +116,7 @@ bool IAsyncChannel::BeginWrite(const openpal::RSlice& buffer, const IOCallback& 
 
 	std::shared_ptr<IAsyncChannel> self(this->shared_from_this());
 
-	auto cbwrap = [self, buffer, callback](const std::error_code& ec, std::size_t num)
+	auto cbwrap = [self, buffer, callback](const std::error_code & ec, std::size_t num)
 	{
 		self->writing = false;
 		if (!self->shuttingDown)

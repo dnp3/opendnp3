@@ -36,11 +36,11 @@ class SerialChannel final : public IAsyncChannel
 public:
 
 	SerialChannel(std::shared_ptr<StrandExecutor> executor);
-	
+
 	static std::shared_ptr<SerialChannel> Create(std::shared_ptr<StrandExecutor> executor);
 
 	void Open(const SerialSettings& settings, std::error_code& ec);
-		
+
 private:
 
 	virtual void BeginReadImpl(openpal::WSlice& buffer, const io_callback_t& callback) override;

@@ -61,7 +61,7 @@ void SerialChannel::BeginWriteImpl(const openpal::RSlice& buffer, const io_callb
 void SerialChannel::BeginShutdownImpl()
 {
 	std::error_code ec;
-	port.close(ec);	
+	port.close(ec);
 }
 
 }
