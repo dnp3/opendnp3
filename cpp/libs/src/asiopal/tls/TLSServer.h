@@ -64,7 +64,7 @@ protected:
 	/// inherited flass defines what to do with these callbacks
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) = 0;
 	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) = 0;
-	virtual void AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
+	virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
 
 
 	/// Inherited class defines what happens when the server shuts down

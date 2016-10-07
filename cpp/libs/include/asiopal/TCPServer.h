@@ -59,8 +59,8 @@ protected:
 
 	void StartAccept();
 
-	/// inherited flass defines what to do with
-	virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) = 0;
+	/// inherited class defines what to do with this
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket) = 0;
 
 	/// Inherited class defines what happens when the server shuts down
 	virtual void OnShutdown() = 0;

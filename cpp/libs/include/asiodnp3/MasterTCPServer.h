@@ -65,7 +65,7 @@ private:
 
 	static std::string SessionIdToString(uint64_t sessionid);
 
-	virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) override;
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket) override;
 	virtual void OnShutdown() override;
 };
 

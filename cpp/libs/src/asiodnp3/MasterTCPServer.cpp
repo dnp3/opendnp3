@@ -69,7 +69,7 @@ MasterTCPServer::MasterTCPServer(
 
 }
 
-void MasterTCPServer::AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket socket)
+void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket socket)
 {
 	std::ostringstream oss;
 	oss << socket.remote_endpoint();
@@ -83,7 +83,7 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket
 		    sessionid,
 		    *this->manager,
 		    this->callbacks,		    
-		    SocketChannel::Create(this->executor->Fork(), std::move(socket))	// run the link session in its own strand
+		    SocketChannel::Create(executor->Fork(), std::move(socket))	// run the link session in its own strand
 		);
 	}
 	else

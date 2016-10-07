@@ -117,14 +117,14 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	       );
 }
 
-void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
+void MasterTLSServer::AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
 	LinkSession::Create(
 	    root.Clone(SessionIdToString(sessionid).c_str()),
 	    sessionid,
 	    *manager,
 	    callbacks,	    
-	    TLSStreamChannel::Create(this->executor->Fork(), stream)	// run the link session in a new strand
+	    TLSStreamChannel::Create(executor->Fork(), stream)	// run the link session in a new strand
 	);
 }
 

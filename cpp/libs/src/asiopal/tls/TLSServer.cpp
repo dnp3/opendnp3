@@ -125,9 +125,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 
 			stream->lowest_layer().close();
 			return;
-		}
-
-		// at this point
+		}		
 
 		auto handshake_cb = [stream, ID, self](const std::error_code & ec)
 		{
@@ -137,7 +135,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 				return;
 			}
 
-			self->AcceptStream(ID, stream);
+			self->AcceptStream(ID, self->executor, stream);
 		};
 
 		// Begin the TLS handshake
