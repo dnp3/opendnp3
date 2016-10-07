@@ -146,10 +146,10 @@ void TLSServer::StartAccept(std::error_code& ec)
 		};
 
 		// Begin the TLS handshake
-		stream->async_handshake(asio::ssl::stream_base::server, handshake_cb);
+		stream->async_handshake(asio::ssl::stream_base::server, self->executor->strand.wrap(handshake_cb));
 	};
 
-	this->acceptor.async_accept(stream->lowest_layer(), accept_cb);
+	this->acceptor.async_accept(stream->lowest_layer(), this->executor->strand.wrap(accept_cb));
 }
 
 }

@@ -126,7 +126,7 @@ void TCPServer::StartAccept()
 	};
 
 
-	this->acceptor.async_accept(socket, callback);
+	this->acceptor.async_accept(socket, this->executor->strand.wrap(callback));
 }
 
 }
