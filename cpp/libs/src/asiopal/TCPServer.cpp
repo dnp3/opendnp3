@@ -33,13 +33,21 @@ using namespace opendnp3;
 namespace asiopal
 {
 
-TCPServer::TCPServer(std::shared_ptr<StrandExecutor> executor, openpal::LogRoot root, IPEndpoint endpoint, std::error_code& ec) :
-	executor(executor),
-	root(std::move(root)),
-	endpoint(ip::tcp::v4(), endpoint.port),
-	acceptor(executor->strand.get_io_service()),
-	socket(executor->strand.get_io_service()),
-	session_id(0)
+TCPServer::TCPServer(
+	std::shared_ptr<StrandExecutor> executor,
+	std::shared_ptr<ITCPServerHandler> handler,
+	IResourceManager& manager,
+	openpal::LogRoot root,
+	IPEndpoint endpoint, 
+	std::error_code& ec) :
+        executor(executor),
+		handler(handler),
+		manager(manager),
+        root(std::move(root)),
+        endpoint(ip::tcp::v4(), endpoint.port),
+        acceptor(executor->strand.get_io_service()),
+        socket(executor->strand.get_io_service()),
+        session_id(0)
 {
 	this->Configure(endpoint.address, ec);
 }
@@ -47,6 +55,11 @@ TCPServer::TCPServer(std::shared_ptr<StrandExecutor> executor, openpal::LogRoot 
 void TCPServer::BeginShutdown()
 {
 	acceptor.close();
+}
+
+void TCPServer::Shutdown()
+{
+	this->manager.Unregister(this->shared_from_this());
 }
 
 void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
@@ -99,7 +112,7 @@ void TCPServer::StartAccept()
 		if (ec)
 		{
 			SIMPLE_LOG_BLOCK(self->root.logger, flags::INFO, ec.message().c_str());
-			self->OnShutdown();
+			self->Shutdown();
 		}
 		else
 		{
@@ -107,7 +120,7 @@ void TCPServer::StartAccept()
 			++self->session_id;
 
 			// method responsible for closing
-			self->AcceptConnection(ID, self->executor, std::move(self->socket));
+			self->handler->AcceptConnection(ID, self->executor, std::move(self->socket));
 			self->StartAccept();
 		}
 	};

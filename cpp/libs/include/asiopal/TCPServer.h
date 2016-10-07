@@ -21,9 +21,9 @@
 #ifndef ASIOPAL_TCPSERVER_H
 #define ASIOPAL_TCPSERVER_H
 
-#include "asiopal/StrandExecutor.h"
-#include "asiopal/IPEndpoint.h"
 #include "asiopal/IListener.h"
+#include "asiopal/IPEndpoint.h"
+#include "asiopal/ITCPServerHandler.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/LogRoot.h>
@@ -32,48 +32,63 @@
 
 namespace asiopal
 {
+
 /**
 * Binds and listens on an IPv4 TCP port
 *
 * Meant to be used exclusively as a shared_ptr
 */
-class TCPServer :
-	public std::enable_shared_from_this<TCPServer>,
+class TCPServer final :	
 	public IListener,
+	private std::enable_shared_from_this<TCPServer>,
 	private openpal::Uncopyable
 {
 
 public:
 
-	/// Stop listening for connections, permanently shutting down the listener
-	void BeginShutdown() override final;
-
-protected:
-
 	TCPServer(
 	    std::shared_ptr<StrandExecutor> executor,
+		std::shared_ptr<ITCPServerHandler> handler,
+		IResourceManager& manager,
 	    openpal::LogRoot root,
 	    IPEndpoint endpoint,
 	    std::error_code& ec
 	);
 
+	static std::shared_ptr<TCPServer> Create(
+		std::shared_ptr<StrandExecutor> executor,
+		std::shared_ptr<ITCPServerHandler> handler,
+		IResourceManager& manager,
+		openpal::LogRoot root,
+		IPEndpoint endpoint,
+		std::error_code& ec)
+	{
+		auto ret = std::make_shared<TCPServer>(executor, handler, manager, std::move(root), endpoint, ec);
+		
+		if (ec) return nullptr;
+		else 
+		{
+			ret->StartAccept();
+			return ret;
+		}
+	}
+
+	/// Stop listening for connections, permanently shutting down the listener
+	void BeginShutdown() override;			
+
+private:
+
 	void StartAccept();
 
-	/// inherited class defines what to do with this
-	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket) = 0;
+	void Shutdown();
 
-	/// Inherited class defines what happens when the server shuts down
-	virtual void OnShutdown() = 0;
-
-private:
 	void Configure(const std::string& adapter, std::error_code& ec);
 
-protected:
-
 	std::shared_ptr<StrandExecutor> executor;
-	openpal::LogRoot root;
+	std::shared_ptr<ITCPServerHandler> handler;
+	IResourceManager& manager;
 
-private:
+	openpal::LogRoot root;
 
 	asio::ip::tcp::endpoint endpoint;
 	asio::ip::tcp::acceptor acceptor;

@@ -35,14 +35,6 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-std::shared_ptr<MasterTLSServerHandler> MasterTLSServerHandler::Create(
-    openpal::LogRoot root,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    IResourceManager& manager)
-{
-	return std::make_shared<MasterTLSServerHandler>(std::move(root), callbacks, manager);
-}
-
 MasterTLSServerHandler::MasterTLSServerHandler(
     openpal::LogRoot root,
     std::shared_ptr<IListenCallbacks> callbacks,

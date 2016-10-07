@@ -21,8 +21,10 @@
 
 #include "asiodnp3/GPRSManagerImpl.h"
 
-#include "asiodnp3/MasterTCPServer.h"
 #include "asiodnp3/ErrorCodes.h"
+
+#include "asiopal/TCPServer.h"
+#include "asiodnp3/MasterTCPServerHandler.h"
 
 #ifdef OPENDNP3_USE_TLS
 #include "asiopal/tls/TLSServer.h"
@@ -58,14 +60,20 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		return nullptr;
 	}
 
-	auto server = asiodnp3::MasterTCPServer::Create(
-	                  *this,
-	                  callbacks,
-	                  asiopal::StrandExecutor::Create(this->pool),
-	                  this->log_root.Clone(loggerid.c_str(), loglevel),
-	                  endpoint,
-	                  ec
-	              );
+	auto handler = asiodnp3::MasterTCPServerHandler::Create(
+		this->log_root.Clone(loggerid.c_str(), loglevel),
+		callbacks,
+		*this
+	);
+
+	auto server = asiopal::TCPServer::Create(				
+		asiopal::StrandExecutor::Create(this->pool),
+		handler,
+		*this,
+		this->log_root.Clone(loggerid.c_str(), loglevel),
+		endpoint,
+		ec
+	);
 
 	if (ec)
 	{
@@ -73,6 +81,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	}
 
 	this->resources.push_back(server);
+
 	return server;
 }
 

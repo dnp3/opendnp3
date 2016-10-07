@@ -34,7 +34,7 @@
 namespace asiodnp3
 {
 
-class MasterTLSServerHandler final : public asiopal::ITLSServerHandler, std::enable_shared_from_this<MasterTLSServerHandler>
+class MasterTLSServerHandler final : public asiopal::ITLSServerHandler
 {
 
 public:
@@ -48,13 +48,20 @@ public:
 	static std::shared_ptr<MasterTLSServerHandler> Create(
 	    openpal::LogRoot root,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    asiopal::IResourceManager& manager
-	);
-
+	    asiopal::IResourceManager& manager)
+	{
+		return std::make_shared<MasterTLSServerHandler>(std::move(root), callbacks, manager);
+	}
 
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
+	
 	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override;
-	virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;
+	
+	virtual void AcceptStream(
+		uint64_t sessionid,
+		const std::shared_ptr<asiopal::StrandExecutor>& executor,
+		std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream
+	) override;
 
 private:
 

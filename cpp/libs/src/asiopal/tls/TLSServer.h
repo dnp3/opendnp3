@@ -39,8 +39,8 @@ namespace asiopal
 * Meant to be used exclusively as a shared_ptr
 */
 class TLSServer final :
-	public std::enable_shared_from_this<TLSServer>,
 	public IListener,
+	private std::enable_shared_from_this<TLSServer>,	
 	private openpal::Uncopyable
 {
 
@@ -65,19 +65,24 @@ public:
 	    const TLSConfig& tlsConfig,
 	    std::error_code& ec)
 	{
-		return std::make_shared<TLSServer>(executor, handler, manager, std::move(root), endpoint, tlsConfig, ec);
+		auto ret = std::make_shared<TLSServer>(executor, handler, manager, std::move(root), endpoint, tlsConfig, ec);
+		if (ec) return nullptr;
+		else
+		{
+			ret->StartAccept(ec);
+			if (ec) return nullptr;
+			return ret;
+		}
 	}
 
 	/// Stop listening for connections, permanently shutting down the listener
 	void BeginShutdown() override;
 
-protected:
-
-	void StartAccept(std::error_code& ec);
+private:
 
 	void OnShutdown();
 
-private:
+	void StartAccept(std::error_code& ec);
 
 	std::error_code ConfigureContext(const TLSConfig& config, std::error_code& ec);
 	std::error_code ConfigureListener(const std::string& adapter, std::error_code& ec);

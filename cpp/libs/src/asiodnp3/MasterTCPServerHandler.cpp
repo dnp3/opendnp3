@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "asiodnp3/MasterTCPServer.h"
+#include "asiodnp3/MasterTCPServerHandler.h"
 
 #include "asiodnp3/LinkSession.h"
 
@@ -37,39 +37,19 @@ using namespace asiopal;
 namespace asiodnp3
 {
 
-std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
-    IResourceManager& shutdown,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::StrandExecutor> executor,
-    openpal::LogRoot root,
-    asiopal::IPEndpoint endpoint,
-    std::error_code& ec
-)
-{
-	auto ret = std::make_shared<MasterTCPServer>(shutdown, callbacks, executor, std::move(root), endpoint, ec);
-	if (!ec)
-	{
-		ret->StartAccept();
-	}
-	return ret;
-}
-
-MasterTCPServer::MasterTCPServer(
-    IResourceManager& shutdown,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::StrandExecutor> executor,
-    openpal::LogRoot root,
-    asiopal::IPEndpoint endpoint,
-    std::error_code& ec
+MasterTCPServerHandler::MasterTCPServerHandler(
+	openpal::LogRoot root,
+	std::shared_ptr<IListenCallbacks> callbacks,
+	asiopal::IResourceManager& manager
 ) :
-	TCPServer(executor, std::move(root), endpoint, ec),
-	manager(&shutdown),
-	callbacks(callbacks)
+	root(std::move(root)),	
+	callbacks(callbacks),
+	manager(manager)
 {
 
 }
 
-void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket socket)
+void MasterTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket socket)
 {
 	std::ostringstream oss;
 	oss << socket.remote_endpoint();
@@ -81,7 +61,7 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr
 		LinkSession::Create(
 		    root.Clone(SessionIdToString(sessionid).c_str()),
 		    sessionid,
-		    *this->manager,
+		    this->manager,
 		    this->callbacks,
 		    SocketChannel::Create(executor->Fork(), std::move(socket))	// run the link session in its own strand
 		);
@@ -93,16 +73,11 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr
 	}
 }
 
-std::string MasterTCPServer::SessionIdToString(uint64_t sessionid)
+std::string MasterTCPServerHandler::SessionIdToString(uint64_t sessionid)
 {
 	std::ostringstream oss;
 	oss << "session-" << sessionid;
 	return oss.str();
-}
-
-void MasterTCPServer::OnShutdown()
-{
-	this->manager->Unregister(shared_from_this());
 }
 
 }
