@@ -51,14 +51,14 @@ public:
 
 	static std::shared_ptr<LinkSession> Create(
 	    openpal::LogRoot logroot,
-	    uint64_t sessionid,	    
+	    uint64_t sessionid,
 	    std::shared_ptr<IListenCallbacks> callbacks,
 	    std::shared_ptr<asiopal::IAsyncChannel> channel
 	);
 
 	LinkSession(
 	    openpal::LogRoot logroot,
-	    uint64_t sessionid,	    
+	    uint64_t sessionid,
 	    std::shared_ptr<IListenCallbacks> callbacks,
 	    std::shared_ptr<asiopal::IAsyncChannel> channel
 	);
@@ -89,7 +89,7 @@ private:
 
 	openpal::LogRoot log_root;
 	const uint64_t session_id;
-	
+
 	std::shared_ptr<IListenCallbacks> callbacks;
 	opendnp3::LinkChannelStatistics stats;
 	opendnp3::LinkLayerParser parser;

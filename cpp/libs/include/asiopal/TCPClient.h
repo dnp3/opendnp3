@@ -49,11 +49,11 @@ public:
 	);
 
 	bool Cancel();
-	
+
 	bool BeginConnect(const std::shared_ptr<ITCPClientHandler>& handler);
 
 private:
-	
+
 	bool PostConnectError(const std::shared_ptr<ITCPClientHandler>& handler, const std::error_code& ec);
 
 	bool connecting = false;

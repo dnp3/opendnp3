@@ -34,11 +34,11 @@ namespace asiodnp3
 
 LinkSession::LinkSession(
     openpal::LogRoot logroot,
-    uint64_t sessionid,    
+    uint64_t sessionid,
     std::shared_ptr<IListenCallbacks> callbacks,
     std::shared_ptr<asiopal::IAsyncChannel> channel) :
 	log_root(std::move(logroot)),
-	session_id(sessionid),	
+	session_id(sessionid),
 	callbacks(callbacks),
 	parser(log_root.logger, &stats),
 	first_frame_timer(*channel->executor),
@@ -49,11 +49,11 @@ LinkSession::LinkSession(
 
 std::shared_ptr<LinkSession> LinkSession::Create(
     openpal::LogRoot logroot,
-    uint64_t sessionid,    
+    uint64_t sessionid,
     std::shared_ptr<IListenCallbacks> callbacks,
     std::shared_ptr<asiopal::IAsyncChannel> channel)
 {
-	return std::make_shared<LinkSession>(std::move(logroot), sessionid, callbacks, channel);	
+	return std::make_shared<LinkSession>(std::move(logroot), sessionid, callbacks, channel);
 }
 
 void LinkSession::BeginShutdown()

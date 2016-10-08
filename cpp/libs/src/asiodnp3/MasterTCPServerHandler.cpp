@@ -59,16 +59,19 @@ void MasterTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::sha
 		FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 
 		auto session = LinkSession::Create(
-		    root.Clone(SessionIdToString(sessionid).c_str()),
-		    sessionid,		    
-		    this->callbacks,
-		    SocketChannel::Create(executor->Fork(), std::move(socket))	// run the link session in its own strand
-		);
-			
+		                   root.Clone(SessionIdToString(sessionid).c_str()),
+		                   sessionid,
+		                   this->callbacks,
+		                   SocketChannel::Create(executor->Fork(), std::move(socket))	// run the link session in its own strand
+		               );
+
 		if (this->manager.Attach(session))
 		{
 			auto pmanager = &this->manager;
-			session->SetShutdownAction([session, pmanager]() { pmanager->Detach(session); });
+			session->SetShutdownAction([session, pmanager]()
+			{
+				pmanager->Detach(session);
+			});
 		}
 		else
 		{

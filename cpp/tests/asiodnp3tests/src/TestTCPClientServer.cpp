@@ -26,51 +26,25 @@
 
 #include "testlib/MockLogHandler.h"
 
+#include "mocks/MockIO.h"
+
+#include <sstream>
+
 using namespace openpal;
 using namespace asiopal;
-
-class MockIO final : public IO, public std::enable_shared_from_this<MockIO>
-{
-
-public:
-
-	static std::shared_ptr<MockIO> Create()
-	{
-		return std::make_shared<MockIO>();
-	}	
-
-	std::shared_ptr<StrandExecutor> Executor()
-	{
-		return StrandExecutor::Create(this->shared_from_this());
-	}
-	
-	size_t RunUntil(const std::function<bool ()>& condition, std::chrono::steady_clock::duration timeout = std::chrono::seconds(1))
-	{		
-		size_t iterations = 0;
-		const auto start = std::chrono::steady_clock::now();
-
-		while (!condition())
-		{
-			++iterations;
-			std::error_code ec;
-			this->service.poll_one(ec);
-			if (ec) throw std::logic_error(ec.message());
-			this->service.reset();
-
-			const auto now = std::chrono::steady_clock::now();
-			if ((now - start) > timeout) {
-				throw std::logic_error("timeout while waiting for condition");
-			}
-		}
-	
-		return iterations;
-	}
-};
 
 class MockTCPServerHandler final : public ITCPServerHandler
 {
 
 public:
+
+	~MockTCPServerHandler()
+	{
+		if (channel)
+		{
+			channel->Shutdown();
+		}
+	}
 
 	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket) override
 	{
@@ -84,7 +58,7 @@ public:
 		this->channel = SocketChannel::Create(executor, std::move(socket));
 	}
 
-	size_t num_accept = 0;	
+	size_t num_accept = 0;
 	std::shared_ptr<IAsyncChannel> channel;
 };
 
@@ -94,7 +68,7 @@ class MockTCPClientHandler final : public ITCPClientHandler
 public:
 
 	virtual void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec) override
-	{		
+	{
 		if (ec)
 		{
 			++this->num_error;
@@ -106,6 +80,14 @@ public:
 		}
 	}
 
+	~MockTCPClientHandler()
+	{
+		if (channel)
+		{
+			channel->Shutdown();
+		}
+	}
+
 	size_t num_connect = 0;
 	size_t num_error = 0;
 	std::shared_ptr<IAsyncChannel> channel;
@@ -113,29 +95,40 @@ public:
 
 #define SUITE(name) "TCPClientServerSuite - " name
 
-TEST_CASE(SUITE("TestStateClosed"))
+TEST_CASE(SUITE("Client and server can connect"))
 {
-	testlib::MockLogHandler log;
+	auto iteration = []() {
 
-	auto io = MockIO::Create();	
-	auto shandler = std::make_shared<MockTCPServerHandler>();
-	auto chandler = std::make_shared<MockTCPClientHandler>();
-	
-	auto client = TCPClient::Create(io->Executor(), "127.0.0.1", "0.0.0.0", 20000);
+		testlib::MockLogHandler log;
 
-	std::error_code ec;
-	auto server = TCPServer::Create(io->Executor(), shandler, log.root.Clone("server"), IPEndpoint::AllAdapters(20000), ec);
-	REQUIRE_FALSE(ec); // now bound and listening
-		
-	REQUIRE(client->BeginConnect(chandler));
+		auto io = MockIO::Create();
+		auto shandler = std::make_shared<MockTCPServerHandler>();
+		auto chandler = std::make_shared<MockTCPClientHandler>();
 
-	auto condition = [&]() -> bool
-	{
-		return (shandler->num_accept == 1) && (chandler->num_connect == 1);
+		auto client = TCPClient::Create(io->Executor(), "127.0.0.1", "0.0.0.0", 20000);
+
+		std::error_code ec;
+		auto server = TCPServer::Create(io->Executor(), shandler, log.root.Clone("server"), IPEndpoint::AllAdapters(20000), ec);
+		REQUIRE_FALSE(ec); // now bound and listening
+
+		REQUIRE(client->BeginConnect(chandler));
+
+		auto condition = [&]() -> bool
+		{
+			return (shandler->num_accept == 1) && (chandler->num_connect == 1);
+		};
+
+		REQUIRE(io->RunUntil(condition) == 2);
+
+		server->BeginShutdown();
+
+		REQUIRE(io->RunUntilOutOfWork() == 1); //  the accept failure callback
 	};
 
-	REQUIRE(io->RunUntil(condition) == 2);
+	// run multiple times to ensure the test is cleaning up after itself in terms of system resources
+	for (int i = 0; i < 5; ++i) iteration();
 }
+
 
 
 
