@@ -25,7 +25,7 @@
 #include "asiopal/ITCPServerHandler.h"
 #include "asiopal/IAsyncChannel.h"
 
-#include <memory>
+#include <deque>
 
 namespace asiopal
 {
@@ -35,12 +35,19 @@ class MockTCPServerHandler final : public ITCPServerHandler
 
 public:
 
-	~MockTCPServerHandler();
-
 	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket) override;
 
-	size_t num_accept = 0;
-	std::shared_ptr<IAsyncChannel> channel;
+	~MockTCPServerHandler()
+	{
+		for (auto& channel : channels)
+		{
+			channel->Shutdown();
+		}
+
+		this->channels.clear();
+	}
+
+	std::deque<std::shared_ptr<IAsyncChannel>> channels;
 };
 
 }

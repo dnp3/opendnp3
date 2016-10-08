@@ -34,19 +34,10 @@ void MockTCPClientHandler::OnConnect(const std::shared_ptr<StrandExecutor>& exec
 	}
 	else
 	{
-		++this->num_connect;
-		this->channel = SocketChannel::Create(executor, std::move(socket));
+		this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
 	}
 }
 
-MockTCPClientHandler::~MockTCPClientHandler()
-{
-	if (this->channel)
-	{
-		this->channel->Shutdown();
-		this->channel.reset();
-	}
-}
 }
 
 

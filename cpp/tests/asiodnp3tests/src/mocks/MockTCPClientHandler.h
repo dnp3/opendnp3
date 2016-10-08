@@ -25,7 +25,7 @@
 #include "asiopal/ITCPClientHandler.h"
 #include "asiopal/IAsyncChannel.h"
 
-#include <memory>
+#include <deque>
 
 namespace asiopal
 {
@@ -36,11 +36,20 @@ public:
 
 	virtual void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec) override;
 
-	~MockTCPClientHandler();
+	~MockTCPClientHandler()
+	{
+		for (auto& channel : channels)
+		{
+			channel->Shutdown();
+		}
 
-	size_t num_connect = 0;
+		this->channels.clear();
+	}
+
 	size_t num_error = 0;
-	std::shared_ptr<IAsyncChannel> channel;
+	
+	std::deque<std::shared_ptr<IAsyncChannel>> channels;
+
 };
 
 }

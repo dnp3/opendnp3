@@ -26,25 +26,9 @@
 namespace asiopal
 {
 
-MockTCPServerHandler::~MockTCPServerHandler()
-{
-	if (this->channel)
-	{
-		this->channel->Shutdown();
-		this->channel.reset();
-	}
-}
-
 void MockTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket)
 {
-	++this->num_accept;
-
-	if (this->channel)
-	{
-		this->channel->Shutdown();
-	}
-
-	this->channel = SocketChannel::Create(executor, std::move(socket));
+	this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
 }
 
 }

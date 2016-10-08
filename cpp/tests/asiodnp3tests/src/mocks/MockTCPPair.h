@@ -58,32 +58,34 @@ public:
 	{
 		this->server->BeginShutdown();
 		this->client->Cancel();
+
+		// drop all of our shared_ptrs
+		this->server.reset();
+		this->client.reset();
+		this->chandler.reset();
+		this->shandler.reset();
+
 		this->io->RunUntilOutOfWork();
 	}
 
-	void Connect()
+	void Connect(size_t num = 1)
 	{
 		if (!this->client->BeginConnect(this->chandler))
 		{
 			throw std::logic_error("BeginConnect returned false");
 		}
 
-		auto connected = [&]() -> bool
+		auto connected = [this, num]() -> bool
 		{
-			return (this->shandler->num_accept == 1) && (this->chandler->num_connect == 1);
+			return this->NumConnectionsEqual(num);
 		};
 
 		io->CompleteInXIterations(2, connected);
 	}
 
-	std::shared_ptr<IAsyncChannel> ClientChannel()
+	bool NumConnectionsEqual(size_t num) const
 	{
-		return chandler->channel;
-	}
-
-	std::shared_ptr<IAsyncChannel> ServerChannel()
-	{
-		return shandler->channel;
+		return (this->shandler->channels.size() == num) && (this->chandler->channels.size() == num);
 	}
 
 private:

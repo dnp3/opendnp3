@@ -22,6 +22,8 @@
 
 #include "mocks/MockTCPPair.h"
 
+#include <iostream>
+
 using namespace asiopal;
 
 #define SUITE(name) "TCPClientServerSuite - " name
@@ -32,12 +34,16 @@ TEST_CASE(SUITE("Client and server can connect"))
 	{
 		auto io = std::make_shared<MockIO>();
 		MockTCPPair pair(io, 20000);
-		pair.Connect();
+		pair.Connect(1); 
 	};
 
 	// run multiple times to ensure the test is cleaning up after itself in terms of system resources
-	for (int i = 0; i < 10; ++i) iteration();
+	for (int i = 0; i < 10; ++i) {
+		iteration();
+	}
 }
+
+
 
 
 
