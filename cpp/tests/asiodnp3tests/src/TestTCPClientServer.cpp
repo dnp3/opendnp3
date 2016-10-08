@@ -67,7 +67,7 @@ public:
 	}
 };
 
-class MockServerHandler final : public ITCPServerHandler
+class MockTCPServerHandler final : public ITCPServerHandler
 {
 
 public:
@@ -88,6 +88,29 @@ public:
 	std::shared_ptr<IAsyncChannel> channel;
 };
 
+class MockTCPClientHandler final
+{
+
+public:
+
+	void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec)
+	{		
+		if (ec)
+		{
+			++this->num_error;
+		}
+		else
+		{
+			++this->num_connect;
+			this->channel = SocketChannel::Create(executor, std::move(socket));
+		}
+	}
+
+	size_t num_connect = 0;
+	size_t num_error = 0;
+	std::shared_ptr<IAsyncChannel> channel;
+};
+
 
 
 #define SUITE(name) "TCPClientServerSuite - " name
@@ -97,7 +120,8 @@ TEST_CASE(SUITE("TestStateClosed"))
 	testlib::MockLogHandler log;
 
 	auto io = MockIO::Create();	
-	auto shandler = std::make_shared<MockServerHandler>();
+	auto shandler = std::make_shared<MockTCPServerHandler>();
+	MockTCPClientHandler chandler;
 	
 	std::error_code ec;
 	auto server = TCPServer::Create(io->Executor(), shandler, log.root.Clone("server"), IPEndpoint::AllAdapters(20000), ec);
@@ -105,18 +129,16 @@ TEST_CASE(SUITE("TestStateClosed"))
 	
 	auto client = TCPClient::Create(io->Executor(), "127.0.0.1", "0.0.0.0", 20000);
 
-	uint32_t clientConnect = 0;
-
-	auto callback = [&](asio::ip::tcp::socket socket, const std::error_code& ec)
-	{
-		++clientConnect;
+	auto connectcb = [&chandler](asio::ip::tcp::socket socket, const std::shared_ptr<StrandExecutor>& executor, const std::error_code& ec)
+	{ 
+		chandler.OnConnect(executor, std::move(socket), ec);
 	};
 
-	REQUIRE(client->BeginConnect(callback));
+	REQUIRE(client->BeginConnect(connectcb));
 
 	auto condition = [&]() -> bool
 	{
-		return (shandler->num_accept == 1) && (clientConnect == 1);
+		return (shandler->num_accept == 1) && (chandler.num_connect == 1);
 	};
 
 	REQUIRE(io->RunUntil(condition) == 2);

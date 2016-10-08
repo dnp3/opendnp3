@@ -100,7 +100,7 @@ bool TCPClient::BeginConnect(const Callback& callback)
 			self->connecting = false;
 			if (!self->canceled)
 			{
-				callback(std::move(self->socket), ec);
+				callback(std::move(self->socket), self->executor, ec);
 			}
 		};
 
@@ -118,7 +118,7 @@ bool TCPClient::PostConnectError(const Callback& callback, const std::error_code
 		self->connecting = false;
 		if (!self->canceled)
 		{
-			callback(std::move(self->socket), ec);
+			callback(std::move(self->socket), self->executor, ec);
 		}
 	};
 	executor->strand.post(cb);
