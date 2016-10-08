@@ -66,7 +66,8 @@ void MockIO::CompleteInXIterations(size_t expectedIterations, const std::functio
 
 	while (!condition())
 	{
-		if (iterations == expectedIterations) {
+		if (iterations == expectedIterations)
+		{
 			std::ostringstream oss;
 			oss << "not complete after " << iterations << " iterations";
 			throw std::logic_error(oss.str());
@@ -86,7 +87,8 @@ void MockIO::CompleteInXIterations(size_t expectedIterations, const std::functio
 		this->service.reset();
 	}
 
-	if (iterations != expectedIterations) {
+	if (iterations != expectedIterations)
+	{
 		std::ostringstream oss;
 		oss << "completed after " << iterations << " iterations, (expected " << expectedIterations << ")";
 		throw std::logic_error(oss.str());

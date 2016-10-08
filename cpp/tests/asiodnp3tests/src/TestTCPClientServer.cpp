@@ -20,16 +20,8 @@
  */
 #include <catch.hpp>
 
-#include "asiopal/TCPServer.h"
-#include "asiopal/TCPClient.h"
+#include "mocks/MockTCPPair.h"
 
-#include "testlib/MockLogHandler.h"
-
-#include "mocks/MockIO.h"
-#include "mocks/MockTCPServerHandler.h"
-#include "mocks/MockTCPClientHandler.h"
-
-using namespace openpal;
 using namespace asiopal;
 
 #define SUITE(name) "TCPClientServerSuite - " name
@@ -38,35 +30,13 @@ TEST_CASE(SUITE("Client and server can connect"))
 {
 	auto iteration = []()
 	{
-
-		testlib::MockLogHandler log;
-		auto io = MockIO::Create();
-
-		auto shandler = std::make_shared<MockTCPServerHandler>();
-		auto chandler = std::make_shared<MockTCPClientHandler>();
-
-		auto client = TCPClient::Create(io->Executor(), IPEndpoint::Localhost(20000), "127.0.0.1");
-
-		std::error_code ec;
-		auto server = TCPServer::Create(io->Executor(), shandler, log.root.Clone("server"), IPEndpoint::Localhost(20000), ec);
-		REQUIRE_FALSE(ec); // now bound and listening
-
-		REQUIRE(client->BeginConnect(chandler));
-
-		auto condition = [&]() -> bool
-		{
-			return (shandler->num_accept == 1) && (chandler->num_connect == 1);
-		};
-
-		io->CompleteInXIterations(2, condition);
-
-		server->BeginShutdown();
-
-		REQUIRE(io->RunUntilOutOfWork() == 1); //  the accept failure callback
+		auto io = std::make_shared<MockIO>();
+		MockTCPPair pair(io, 20000);
+		pair.Connect();
 	};
 
 	// run multiple times to ensure the test is cleaning up after itself in terms of system resources
-	for (int i = 0; i < 5; ++i) iteration();
+	for (int i = 0; i < 10; ++i) iteration();
 }
 
 

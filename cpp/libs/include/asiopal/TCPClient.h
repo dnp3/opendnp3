@@ -35,7 +35,7 @@ public:
 
 	static std::shared_ptr<TCPClient> Create(
 	    std::shared_ptr<StrandExecutor> executor,
-		const IPEndpoint& remote,
+	    const IPEndpoint& remote,
 	    const std::string& adapter)
 	{
 		return std::make_shared<TCPClient>(executor, remote, adapter);
@@ -43,7 +43,7 @@ public:
 
 	TCPClient(
 	    std::shared_ptr<StrandExecutor> executor,
-		const IPEndpoint& remote,
+	    const IPEndpoint& remote,
 	    const std::string& adapter
 	);
 
