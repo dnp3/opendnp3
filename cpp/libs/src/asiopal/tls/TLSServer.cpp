@@ -88,7 +88,7 @@ std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::er
 
 void TLSServer::OnShutdown()
 {
-	this->manager.Unregister(this->shared_from_this());
+	this->manager.Detach(this->shared_from_this());
 }
 
 void TLSServer::StartAccept(std::error_code& ec)

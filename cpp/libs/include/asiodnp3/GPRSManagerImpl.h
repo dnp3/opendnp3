@@ -21,10 +21,10 @@
 #ifndef ASIODNP3_GPRSMANAGERIMPL_H
 #define ASIODNP3_GPRSMANAGERIMPL_H
 
-#include <asiopal/ThreadPool.h>
-#include <asiopal/IResourceManager.h>
 #include <asiopal/IListener.h>
+#include <asiopal/ThreadPool.h>
 #include <asiopal/IPEndpoint.h>
+#include <asiopal/ResourceManagerBase.h>
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/LogRoot.h>
@@ -43,7 +43,7 @@ namespace asiodnp3
 
 class GPRSManagerImpl final :
 	private openpal::Uncopyable,
-	private asiopal::IResourceManager
+	private asiopal::ResourceManagerBase
 {
 
 public:
@@ -73,18 +73,10 @@ public:
 
 private:
 
-
-	virtual bool Register(std::shared_ptr<asiopal::IResource> resource) override;
-	virtual void Unregister(std::shared_ptr<asiopal::IResource> resource) override;
-
-	std::mutex mutex;
-
 	std::shared_ptr<openpal::ILogHandler> log_handler;
+	
 	openpal::LogRoot log_root;
-	bool is_shutting_down;
-
-	std::vector<std::shared_ptr<asiopal::IResource>> resources;
-
+	
 	/// this will be the first thing to be destroyed forcing all handlers to be run
 	std::shared_ptr<asiopal::ThreadPool> pool;
 

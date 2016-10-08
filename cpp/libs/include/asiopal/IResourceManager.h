@@ -26,6 +26,9 @@
 namespace asiopal
 {
 
+/**
+*	Anything that can be shutdown
+*/
 class IResource
 {
 public:
@@ -35,16 +38,20 @@ public:
 	virtual void BeginShutdown() = 0;
 };
 
+/** 
+*	Tracks otherwise orphaned resources running on a thread pool
+*/
 class IResourceManager
 {
 
 public:
 
-	/// Returns false if the manager is shutting down - calling code
-	/// should dispose of the resource if it can't be registered
-	virtual bool Register(std::shared_ptr<IResource> resource) = 0;
-
-	virtual void Unregister(std::shared_ptr<IResource> resource) = 0;
+	/// Attach a resource to the manager
+	/// Returns false if the manager is shutting down, and starts the shutdown of the resource immediately
+	virtual bool Attach(std::shared_ptr<IResource> resource) = 0;
+	
+	/// Detach the resource from the manager
+	virtual void Detach(std::shared_ptr<IResource> resource) = 0;
 
 };
 

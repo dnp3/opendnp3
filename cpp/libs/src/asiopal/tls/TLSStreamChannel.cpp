@@ -29,11 +29,6 @@ TLSStreamChannel::TLSStreamChannel(std::shared_ptr<StrandExecutor> executor, std
 	stream(stream)
 {}
 
-std::shared_ptr<IAsyncChannel> TLSStreamChannel::Create(std::shared_ptr<StrandExecutor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
-{
-	return std::make_shared<TLSStreamChannel>(executor, stream);
-}
-
 void TLSStreamChannel::BeginReadImpl(openpal::WSlice& dest, const io_callback_t& callback)
 {
 	stream->async_read_some(asio::buffer(dest, dest.Size()), callback);

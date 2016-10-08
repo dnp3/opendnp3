@@ -58,7 +58,7 @@ std::shared_ptr<LinkSession> LinkSession::Create(
 {
 	auto ret = std::make_shared<LinkSession>(std::move(logroot), sessionid, manager, callbacks, channel);
 
-	if (manager.Register(ret))
+	if (manager.Attach(ret))
 	{
 		ret->Start();
 	}
@@ -194,7 +194,7 @@ void LinkSession::BeginReceive()
 
 			self->callbacks->OnConnectionClose(self->session_id, self->stack);
 
-			self->manager->Unregister(self);
+			self->manager->Detach(self);
 
 			// release our reference to the stack
 			self->stack.reset();

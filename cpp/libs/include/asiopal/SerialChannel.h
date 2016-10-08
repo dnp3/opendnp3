@@ -35,11 +35,14 @@ class SerialChannel final : public IAsyncChannel
 
 public:
 
-	SerialChannel(std::shared_ptr<StrandExecutor> executor);
+	static std::shared_ptr<SerialChannel> Create(std::shared_ptr<StrandExecutor> executor)
+	{
+		return std::make_shared<SerialChannel>(executor);
+	}
 
-	static std::shared_ptr<SerialChannel> Create(std::shared_ptr<StrandExecutor> executor);
+	SerialChannel(std::shared_ptr<StrandExecutor> executor);	
 
-	void Open(const SerialSettings& settings, std::error_code& ec);
+	bool Open(const SerialSettings& settings, std::error_code& ec);
 
 private:
 

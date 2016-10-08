@@ -18,39 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_LOGGING_CONNECTION_CONDITION_H
-#define ASIOPAL_LOGGING_CONNECTION_CONDITION_H
+#include <catch.hpp>
 
-#include <openpal/logging/LogMacros.h>
-#include <openpal/logging/LogLevels.h>
+#include "asiopal/TCPServer.h"
+#include "asiopal/TCPClient.h"
 
-namespace asiopal
-{
+using namespace openpal;
+using namespace asiopal;
 
-class LoggingConnectionCondition
+class MockIO final : public IO, private std::enable_shared_from_this<MockIO>
 {
 
 public:
 
-	LoggingConnectionCondition(openpal::Logger logger) : logger(logger)
-	{}
-
-	template <typename Iterator>
-	Iterator operator()(const std::error_code& ec, Iterator next)
+	static std::shared_ptr<MockIO> Create()
 	{
-		if (ec)
-		{
-			FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
-		}
-
-		return next;
+		return std::make_shared<MockIO>();
 	}
 
-private:
+	std::shared_ptr<StrandExecutor> Executor()
+	{
+		return StrandExecutor::Create(this->shared_from_this());
+	}
 
-	openpal::Logger logger;
 };
 
+
+
+#define SUITE(name) "TCPClientServerSuite - " name
+
+TEST_CASE(SUITE("TestStateClosed"))
+{
+	auto io = MockIO::Create();
+	
 }
 
-#endif
+
+
+
+
+
+

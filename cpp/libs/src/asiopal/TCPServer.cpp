@@ -59,7 +59,7 @@ void TCPServer::BeginShutdown()
 
 void TCPServer::Shutdown()
 {
-	this->manager.Unregister(this->shared_from_this());
+	this->manager.Detach(this->shared_from_this());
 }
 
 void TCPServer::Configure(const std::string& adapter, std::error_code& ec)

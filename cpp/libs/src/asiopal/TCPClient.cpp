@@ -18,37 +18,41 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_TLSSTREAMCHANNEL_H
-#define ASIOPAL_TLSSTREAMCHANNEL_H
 
-#include "asiopal/IAsyncChannel.h"
-
-#include <asio/ssl.hpp>
+#include "asiopal/TCPClient.h"
 
 namespace asiopal
 {
 
-class TLSStreamChannel final : public IAsyncChannel
+TCPClient::TCPClient(
+	std::shared_ptr<StrandExecutor> executor,
+	const std::string& host,
+	const std::string& adapter,
+	uint16_t port) :
+	    executor(executor),
+	    socket(executor->strand.get_io_service()),
+	    host(host),
+	    adapter(adapter),
+	    remoteEndpoint(asio::ip::tcp::v4(), port),
+	    localEndpoint(),
+	    resolver(executor->strand.get_io_service())	  
+{}
+
+	
+bool TCPClient::Cancel()
 {
-
-public:
-
-	static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<StrandExecutor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
+	if (this->canceled || !this->connecting)
 	{
-		return std::make_shared<TLSStreamChannel>(executor, stream);
+		return false;
 	}
 
-	TLSStreamChannel(std::shared_ptr<StrandExecutor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
+	std::error_code ec;
+	socket.cancel(ec);
+	this->canceled = true;
+	return true;
+}
 
-private:
-
-	virtual void BeginReadImpl(openpal::WSlice& buffer, const io_callback_t& callback) override;
-	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback)  override;
-	virtual void ShutdownImpl()  override;
-
-	std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;
-};
 
 }
 
-#endif
+
