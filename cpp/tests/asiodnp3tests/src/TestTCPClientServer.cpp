@@ -22,82 +22,23 @@
 
 #include "asiopal/TCPServer.h"
 #include "asiopal/TCPClient.h"
-#include "asiopal/SocketChannel.h"
 
 #include "testlib/MockLogHandler.h"
 
 #include "mocks/MockIO.h"
+#include "mocks/MockTCPServerHandler.h"
+#include "mocks/MockTCPClientHandler.h"
 
-#include <sstream>
 
 using namespace openpal;
 using namespace asiopal;
-
-class MockTCPServerHandler final : public ITCPServerHandler
-{
-
-public:
-
-	~MockTCPServerHandler()
-	{
-		if (channel)
-		{
-			channel->Shutdown();
-		}
-	}
-
-	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket) override
-	{
-		++this->num_accept;
-
-		if (this->channel)
-		{
-			this->channel->Shutdown();
-		}
-
-		this->channel = SocketChannel::Create(executor, std::move(socket));
-	}
-
-	size_t num_accept = 0;
-	std::shared_ptr<IAsyncChannel> channel;
-};
-
-class MockTCPClientHandler final : public ITCPClientHandler
-{
-
-public:
-
-	virtual void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec) override
-	{
-		if (ec)
-		{
-			++this->num_error;
-		}
-		else
-		{
-			++this->num_connect;
-			this->channel = SocketChannel::Create(executor, std::move(socket));
-		}
-	}
-
-	~MockTCPClientHandler()
-	{
-		if (channel)
-		{
-			channel->Shutdown();
-		}
-	}
-
-	size_t num_connect = 0;
-	size_t num_error = 0;
-	std::shared_ptr<IAsyncChannel> channel;
-};
 
 #define SUITE(name) "TCPClientServerSuite - " name
 
 TEST_CASE(SUITE("Client and server can connect"))
 {
-	auto iteration = []() {
+	auto iteration = []()
+	{
 
 		testlib::MockLogHandler log;
 
