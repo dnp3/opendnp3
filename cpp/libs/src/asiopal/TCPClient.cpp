@@ -27,15 +27,15 @@ namespace asiopal
 {
 
 TCPClient::TCPClient(
-    std::shared_ptr<StrandExecutor> executor,
-    const std::string& host,
-    const std::string& adapter,
-    uint16_t port) :
+	std::shared_ptr<StrandExecutor> executor,
+	const IPEndpoint& remote,
+	const std::string& adapter
+) :
 	executor(executor),
 	socket(executor->strand.get_io_service()),
-	host(host),
+	host(remote.address),
 	adapter(adapter),
-	remoteEndpoint(asio::ip::tcp::v4(), port),
+	remoteEndpoint(asio::ip::tcp::v4(), remote.port),
 	localEndpoint(),
 	resolver(executor->strand.get_io_service())
 {}

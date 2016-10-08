@@ -41,15 +41,15 @@ TEST_CASE(SUITE("Client and server can connect"))
 	{
 
 		testlib::MockLogHandler log;
-
 		auto io = MockIO::Create();
+
 		auto shandler = std::make_shared<MockTCPServerHandler>();
 		auto chandler = std::make_shared<MockTCPClientHandler>();
 
-		auto client = TCPClient::Create(io->Executor(), "127.0.0.1", "0.0.0.0", 20000);
+		auto client = TCPClient::Create(io->Executor(), IPEndpoint::Localhost(20000), "127.0.0.1");
 
 		std::error_code ec;
-		auto server = TCPServer::Create(io->Executor(), shandler, log.root.Clone("server"), IPEndpoint::AllAdapters(20000), ec);
+		auto server = TCPServer::Create(io->Executor(), shandler, log.root.Clone("server"), IPEndpoint::Localhost(20000), ec);
 		REQUIRE_FALSE(ec); // now bound and listening
 
 		REQUIRE(client->BeginConnect(chandler));

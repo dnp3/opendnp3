@@ -23,6 +23,7 @@
 
 #include "asiopal/StrandExecutor.h"
 #include "asiopal/ITCPClientHandler.h"
+#include "asiopal/IPEndpoint.h"
 
 namespace asiopal
 {
@@ -34,18 +35,16 @@ public:
 
 	static std::shared_ptr<TCPClient> Create(
 	    std::shared_ptr<StrandExecutor> executor,
-	    const std::string& host,
-	    const std::string& adapter,
-	    uint16_t port)
+		const IPEndpoint& remote,
+	    const std::string& adapter)
 	{
-		return std::make_shared<TCPClient>(executor, host, adapter, port);
+		return std::make_shared<TCPClient>(executor, remote, adapter);
 	}
 
 	TCPClient(
 	    std::shared_ptr<StrandExecutor> executor,
-	    const std::string& host,
-	    const std::string& adapter,
-	    uint16_t port
+		const IPEndpoint& remote,
+	    const std::string& adapter
 	);
 
 	bool Cancel();
