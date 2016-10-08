@@ -27,7 +27,7 @@
 namespace asiopal
 {
 
-class TCPClient final : private std::enable_shared_from_this<TCPClient>
+class TCPClient final : public std::enable_shared_from_this<TCPClient>, private openpal::Uncopyable
 {
 
 public:
@@ -104,7 +104,8 @@ bool TCPClient::BeginConnect(const Callback& callback)
 			}
 		};
 
-		socket.async_connect(remoteEndpoint, executor.strand.wrap(callback));
+		socket.async_connect(remoteEndpoint, executor->strand.wrap(cb));
+		return true;
 	}
 }
 

@@ -40,7 +40,7 @@ namespace asiopal
 */
 class TCPServer final :
 	public IListener,
-	private std::enable_shared_from_this<TCPServer>,
+	public std::enable_shared_from_this<TCPServer>,
 	private openpal::Uncopyable
 {
 
