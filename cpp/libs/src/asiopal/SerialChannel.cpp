@@ -58,7 +58,7 @@ void SerialChannel::BeginWriteImpl(const openpal::RSlice& buffer, const io_callb
 	async_write(port, asio::buffer(buffer, buffer.Size()), callback);
 }
 
-void SerialChannel::BeginShutdownImpl()
+void SerialChannel::ShutdownImpl()
 {
 	std::error_code ec;
 	port.close(ec);

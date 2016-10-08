@@ -43,7 +43,7 @@ void SocketChannel::BeginWriteImpl(const openpal::RSlice& buffer, const io_callb
 	asio::async_write(socket, asio::buffer(buffer, buffer.Size()), callback);
 }
 
-void SocketChannel::BeginShutdownImpl()
+void SocketChannel::ShutdownImpl()
 {
 	std::error_code ec;
 	socket.shutdown(asio::socket_base::shutdown_type::shutdown_both, ec);

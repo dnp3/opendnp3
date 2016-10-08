@@ -44,7 +44,7 @@ void TLSStreamChannel::BeginWriteImpl(const openpal::RSlice& data, const io_call
 	asio::async_write(*stream, asio::buffer(data, data.Size()), callback);
 }
 
-void TLSStreamChannel::BeginShutdownImpl()
+void TLSStreamChannel::ShutdownImpl()
 {
 	// TODO - should we perform an async shutdown on the TLS stream?
 	std::error_code ec;

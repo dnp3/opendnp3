@@ -50,12 +50,12 @@ public:
 	template <class IOCallback>
 	inline bool BeginWrite(const openpal::RSlice& buffer, const IOCallback& callback);
 
-	inline bool BeginShutdown()
+	inline bool Shutdown()
 	{
 		if (this->shuttingDown) return false;
 		this->shuttingDown = true;
 
-		this->BeginShutdownImpl();
+		this->ShutdownImpl();
 		return true;
 	}
 
@@ -83,16 +83,17 @@ protected:
 
 	virtual void BeginReadImpl(openpal::WSlice& buffer, const io_callback_t& callback) = 0;
 	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback) = 0;
-	virtual void BeginShutdownImpl() = 0;
+	virtual void ShutdownImpl() = 0;
 };
 
 template <class IOCallback>
 bool IAsyncChannel::BeginRead(openpal::WSlice& buffer, const IOCallback& callback)
 {
-	if (this->reading || this->shuttingDown) return false;
+	if (!this->CanRead()) return false;
+
 	this->reading = true;
 
-	std::shared_ptr<IAsyncChannel> self(this->shared_from_this());
+	auto self(this->shared_from_this());
 
 	auto cbwrap = [self, buffer, callback](const std::error_code & ec, std::size_t num)
 	{
@@ -111,10 +112,11 @@ bool IAsyncChannel::BeginRead(openpal::WSlice& buffer, const IOCallback& callbac
 template <class IOCallback>
 bool IAsyncChannel::BeginWrite(const openpal::RSlice& buffer, const IOCallback& callback)
 {
-	if (this->writing || this->shuttingDown) return false;
+	if (!this->CanWrite()) return false;
+
 	this->writing = true;
 
-	std::shared_ptr<IAsyncChannel> self(this->shared_from_this());
+	auto self(this->shared_from_this()); // prevent destruction while there's a callback pending
 
 	auto cbwrap = [self, buffer, callback](const std::error_code & ec, std::size_t num)
 	{
@@ -123,7 +125,6 @@ bool IAsyncChannel::BeginWrite(const openpal::RSlice& buffer, const IOCallback& 
 		{
 			callback(ec, num);
 		}
-
 	};
 
 	this->BeginWriteImpl(buffer, this->executor->strand.wrap(cbwrap));

@@ -39,7 +39,7 @@ protected:
 
 	virtual void BeginReadImpl(openpal::WSlice& buffer, const io_callback_t& callback) override;
 	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback)  override;
-	virtual void BeginShutdownImpl()  override;
+	virtual void ShutdownImpl()  override;
 
 private:
 
