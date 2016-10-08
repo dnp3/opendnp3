@@ -22,7 +22,7 @@
 #define ASIOPAL_TCPCLIENT_H
 
 #include "asiopal/StrandExecutor.h"
-#include "asiopal/SocketHelpers.h"
+#include "asiopal/ITCPClientHandler.h"
 
 namespace asiopal
 {
@@ -49,14 +49,12 @@ public:
 	);
 
 	bool Cancel();
-
-	template <class Callback>
-	bool BeginConnect(const Callback& callback);
+	
+	bool BeginConnect(const std::shared_ptr<ITCPClientHandler>& handler);
 
 private:
-
-	template <class Callback>
-	bool PostConnectError(const Callback& callback, const std::error_code& ec);
+	
+	bool PostConnectError(const std::shared_ptr<ITCPClientHandler>& handler, const std::error_code& ec);
 
 	bool connecting = false;
 	bool canceled = false;
@@ -69,61 +67,6 @@ private:
 	asio::ip::tcp::endpoint localEndpoint;
 	asio::ip::tcp::resolver resolver;
 };
-
-template <class Callback>
-bool TCPClient::BeginConnect(const Callback& callback)
-{
-	if (connecting || canceled) return false;
-
-	this->connecting = true;
-
-	std::error_code ec;
-	SocketHelpers::BindToLocalAddress(this->adapter, this->localEndpoint, this->socket, ec);
-
-	if (ec)
-	{
-		return this->PostConnectError(callback, ec);
-	}
-
-	const auto address = asio::ip::address::from_string(this->host, ec);
-	if (ec)
-	{
-		return this->PostConnectError(callback, ec);
-		// TODO handle DNS resolution
-	}
-	else
-	{
-		remoteEndpoint.address(address);
-		auto self = this->shared_from_this();
-		auto cb = [self, callback](const std::error_code & ec)
-		{
-			self->connecting = false;
-			if (!self->canceled)
-			{
-				callback(std::move(self->socket), self->executor, ec);
-			}
-		};
-
-		socket.async_connect(remoteEndpoint, executor->strand.wrap(cb));
-		return true;
-	}
-}
-
-template <class Callback>
-bool TCPClient::PostConnectError(const Callback& callback, const std::error_code& ec)
-{
-	auto self = this->shared_from_this();
-	auto cb = [self, ec, callback]()
-	{
-		self->connecting = false;
-		if (!self->canceled)
-		{
-			callback(std::move(self->socket), self->executor, ec);
-		}
-	};
-	executor->strand.post(cb);
-	return true;
-}
 
 }
 

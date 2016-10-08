@@ -88,12 +88,12 @@ public:
 	std::shared_ptr<IAsyncChannel> channel;
 };
 
-class MockTCPClientHandler final
+class MockTCPClientHandler final : public ITCPClientHandler
 {
 
 public:
 
-	void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec)
+	virtual void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec) override
 	{		
 		if (ec)
 		{
@@ -111,8 +111,6 @@ public:
 	std::shared_ptr<IAsyncChannel> channel;
 };
 
-
-
 #define SUITE(name) "TCPClientServerSuite - " name
 
 TEST_CASE(SUITE("TestStateClosed"))
@@ -121,24 +119,19 @@ TEST_CASE(SUITE("TestStateClosed"))
 
 	auto io = MockIO::Create();	
 	auto shandler = std::make_shared<MockTCPServerHandler>();
-	MockTCPClientHandler chandler;
-	
-	std::error_code ec;
-	auto server = TCPServer::Create(io->Executor(), shandler, log.root.Clone("server"), IPEndpoint::AllAdapters(20000), ec);
-	REQUIRE_FALSE(ec); // now bound and listening
+	auto chandler = std::make_shared<MockTCPClientHandler>();
 	
 	auto client = TCPClient::Create(io->Executor(), "127.0.0.1", "0.0.0.0", 20000);
 
-	auto connectcb = [&chandler](asio::ip::tcp::socket socket, const std::shared_ptr<StrandExecutor>& executor, const std::error_code& ec)
-	{ 
-		chandler.OnConnect(executor, std::move(socket), ec);
-	};
-
-	REQUIRE(client->BeginConnect(connectcb));
+	std::error_code ec;
+	auto server = TCPServer::Create(io->Executor(), shandler, log.root.Clone("server"), IPEndpoint::AllAdapters(20000), ec);
+	REQUIRE_FALSE(ec); // now bound and listening
+		
+	REQUIRE(client->BeginConnect(chandler));
 
 	auto condition = [&]() -> bool
 	{
-		return (shandler->num_accept == 1) && (chandler.num_connect == 1);
+		return (shandler->num_accept == 1) && (chandler->num_connect == 1);
 	};
 
 	REQUIRE(io->RunUntil(condition) == 2);

@@ -21,6 +21,8 @@
 
 #include "asiopal/TCPClient.h"
 
+#include "asiopal/SocketHelpers.h"
+
 namespace asiopal
 {
 
@@ -52,6 +54,58 @@ bool TCPClient::Cancel()
 	return true;
 }
 
+bool TCPClient::BeginConnect(const std::shared_ptr<ITCPClientHandler>& handler)
+{
+	if (connecting || canceled) return false;
+
+	this->connecting = true;
+
+	std::error_code ec;
+	SocketHelpers::BindToLocalAddress(this->adapter, this->localEndpoint, this->socket, ec);
+
+	if (ec)
+	{
+		return this->PostConnectError(handler, ec);
+	}
+
+	const auto address = asio::ip::address::from_string(this->host, ec);
+	if (ec)
+	{
+		return this->PostConnectError(handler, ec);
+		// TODO handle DNS resolution
+	}
+	else
+	{
+		remoteEndpoint.address(address);
+		auto self = this->shared_from_this();
+		auto cb = [self, handler](const std::error_code & ec)
+		{
+			self->connecting = false;
+			if (!self->canceled)
+			{
+				handler->OnConnect(self->executor, std::move(self->socket), ec);
+			}
+		};
+
+		socket.async_connect(remoteEndpoint, executor->strand.wrap(cb));
+		return true;
+	}
+}
+
+bool TCPClient::PostConnectError(const std::shared_ptr<ITCPClientHandler>& handler, const std::error_code& ec)
+{
+	auto self = this->shared_from_this();
+	auto cb = [self, ec, handler]()
+	{
+		self->connecting = false;
+		if (!self->canceled)
+		{
+			handler->OnConnect(self->executor, std::move(self->socket), ec);
+		}
+	};
+	executor->strand.post(cb);
+	return true;
+}
 
 }
 
