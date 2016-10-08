@@ -29,7 +29,6 @@
 #include "mocks/MockTCPServerHandler.h"
 #include "mocks/MockTCPClientHandler.h"
 
-
 using namespace openpal;
 using namespace asiopal;
 
@@ -59,7 +58,7 @@ TEST_CASE(SUITE("Client and server can connect"))
 			return (shandler->num_accept == 1) && (chandler->num_connect == 1);
 		};
 
-		REQUIRE(io->RunUntil(condition) == 2);
+		io->CompleteInXIterations(2, condition);
 
 		server->BeginShutdown();
 

@@ -26,7 +26,7 @@
 namespace asiopal
 {
 
-size_t MockIO::RunUntil(const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout)
+size_t MockIO::RunUntilTimeout(const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout)
 {
 	size_t iterations = 0;
 	const auto start = std::chrono::steady_clock::now();
@@ -58,6 +58,39 @@ size_t MockIO::RunUntil(const std::function<bool()>& condition, std::chrono::ste
 	}
 
 	return iterations;
+}
+
+void MockIO::CompleteInXIterations(size_t expectedIterations, const std::function<bool()>& condition)
+{
+	size_t iterations = 0;
+
+	while (!condition())
+	{
+		if (iterations == expectedIterations) {
+			std::ostringstream oss;
+			oss << "not complete after " << iterations << " iterations";
+			throw std::logic_error(oss.str());
+		}
+
+		std::error_code ec;
+		const auto num = this->service.poll_one(ec);
+		if (ec) throw std::logic_error(ec.message());
+		if (num == 0)
+		{
+			std::ostringstream oss;
+			oss << "no progress after " << iterations << " iterations";
+			throw std::logic_error(oss.str());
+		}
+
+		++iterations;
+		this->service.reset();
+	}
+
+	if (iterations != expectedIterations) {
+		std::ostringstream oss;
+		oss << "completed after " << iterations << " iterations, (expected " << expectedIterations << ")";
+		throw std::logic_error(oss.str());
+	}
 }
 
 size_t MockIO::RunUntilOutOfWork()

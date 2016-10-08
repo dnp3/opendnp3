@@ -44,7 +44,9 @@ public:
 		return StrandExecutor::Create(this->shared_from_this());
 	}
 
-	size_t RunUntil(const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
+	size_t RunUntilTimeout(const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
+
+	void CompleteInXIterations(size_t iterations, const std::function<bool()>& condition);
 
 	size_t RunUntilOutOfWork();
 
