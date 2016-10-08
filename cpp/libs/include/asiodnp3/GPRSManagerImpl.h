@@ -74,9 +74,9 @@ public:
 private:
 
 	std::shared_ptr<openpal::ILogHandler> log_handler;
-	
+
 	openpal::LogRoot log_root;
-	
+
 	/// this will be the first thing to be destroyed forcing all handlers to be run
 	std::shared_ptr<asiopal::ThreadPool> pool;
 

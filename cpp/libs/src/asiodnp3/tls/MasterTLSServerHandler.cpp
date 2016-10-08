@@ -92,13 +92,22 @@ bool MasterTLSServerHandler::VerifyCallback(uint64_t sessionid, bool preverified
 
 void MasterTLSServerHandler::AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
-	LinkSession::Create(
+	auto session = LinkSession::Create(
 	    root.Clone(SessionIdToString(sessionid).c_str()),
-	    sessionid,
-	    manager,
+	    sessionid,	    
 	    callbacks,
 	    TLSStreamChannel::Create(executor->Fork(), stream)	// run the link session in a new strand
 	);
+
+	if (this->manager.Attach(session))
+	{
+		auto pmanager = &this->manager;
+		session->SetShutdownAction([session, pmanager]() { pmanager->Detach(session); });
+	}
+	else
+	{
+		session->BeginShutdown();
+	}
 }
 
 std::string MasterTLSServerHandler::SessionIdToString(uint64_t sessionid)

@@ -22,9 +22,12 @@
 #define ASIOPAL_IRESOURCEMANAGER_H
 
 #include <memory>
+#include <functional>
 
 namespace asiopal
 {
+
+typedef std::function<void()> shutdown_action_t;
 
 /**
 *	Anything that can be shutdown
@@ -36,9 +39,29 @@ public:
 	virtual ~IResource() {}
 
 	virtual void BeginShutdown() = 0;
+
+	void SetShutdownAction(shutdown_action_t action)
+	{
+		this->on_shutdown = action;
+	}
+
+protected:
+
+	void OnShutdown()
+	{
+		if (on_shutdown)
+		{
+			on_shutdown();
+			on_shutdown = nullptr;
+		}
+	}
+
+private:
+
+	shutdown_action_t on_shutdown;
 };
 
-/** 
+/**
 *	Tracks otherwise orphaned resources running on a thread pool
 */
 class IResourceManager
@@ -49,7 +72,7 @@ public:
 	/// Attach a resource to the manager
 	/// Returns false if the manager is shutting down, and starts the shutdown of the resource immediately
 	virtual bool Attach(std::shared_ptr<IResource> resource) = 0;
-	
+
 	/// Detach the resource from the manager
 	virtual void Detach(std::shared_ptr<IResource> resource) = 0;
 

@@ -49,7 +49,6 @@ public:
 	TCPServer(
 	    std::shared_ptr<StrandExecutor> executor,
 	    std::shared_ptr<ITCPServerHandler> handler,
-	    IResourceManager& manager,
 	    openpal::LogRoot root,
 	    IPEndpoint endpoint,
 	    std::error_code& ec
@@ -58,12 +57,11 @@ public:
 	static std::shared_ptr<TCPServer> Create(
 	    std::shared_ptr<StrandExecutor> executor,
 	    std::shared_ptr<ITCPServerHandler> handler,
-	    IResourceManager& manager,
 	    openpal::LogRoot root,
 	    IPEndpoint endpoint,
 	    std::error_code& ec)
 	{
-		auto ret = std::make_shared<TCPServer>(executor, handler, manager, std::move(root), endpoint, ec);
+		auto ret = std::make_shared<TCPServer>(executor, handler, std::move(root), endpoint, ec);
 
 		if (ec) return nullptr;
 		else
@@ -80,13 +78,10 @@ private:
 
 	void StartAccept();
 
-	void Shutdown();
-
 	void Configure(const std::string& adapter, std::error_code& ec);
 
 	std::shared_ptr<StrandExecutor> executor;
 	std::shared_ptr<ITCPServerHandler> handler;
-	IResourceManager& manager;
 
 	openpal::LogRoot root;
 

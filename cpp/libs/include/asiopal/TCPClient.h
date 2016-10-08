@@ -33,19 +33,19 @@ class TCPClient final : private std::enable_shared_from_this<TCPClient>
 public:
 
 	static std::shared_ptr<TCPClient> Create(
-		std::shared_ptr<StrandExecutor> executor,
-		const std::string& host,
-		const std::string& adapter,
-		uint16_t port)
+	    std::shared_ptr<StrandExecutor> executor,
+	    const std::string& host,
+	    const std::string& adapter,
+	    uint16_t port)
 	{
 		return std::make_shared<TCPClient>(executor, host, adapter, port);
 	}
 
 	TCPClient(
-		std::shared_ptr<StrandExecutor> executor,
-		const std::string& host,
-		const std::string& adapter,
-		uint16_t port
+	    std::shared_ptr<StrandExecutor> executor,
+	    const std::string& host,
+	    const std::string& adapter,
+	    uint16_t port
 	);
 
 	bool Cancel();
@@ -57,7 +57,7 @@ private:
 
 	template <class Callback>
 	bool PostConnectError(const Callback& callback, const std::error_code& ec);
-	
+
 	bool connecting = false;
 	bool canceled = false;
 
@@ -75,12 +75,13 @@ bool TCPClient::BeginConnect(const Callback& callback)
 {
 	if (connecting || canceled) return false;
 
-	this->connecting = true;	
+	this->connecting = true;
 
 	std::error_code ec;
 	SocketHelpers::BindToLocalAddress(this->adapter, this->localEndpoint, this->socket, ec);
-	
-	if (ec) {		
+
+	if (ec)
+	{
 		return this->PostConnectError(callback, ec);
 	}
 
@@ -97,7 +98,8 @@ bool TCPClient::BeginConnect(const Callback& callback)
 		auto cb = [self, callback](const std::error_code & ec)
 		{
 			self->connecting = false;
-			if (!self->canceled) {
+			if (!self->canceled)
+			{
 				callback(std::move(self->socket), ec);
 			}
 		};
@@ -113,7 +115,8 @@ bool TCPClient::PostConnectError(const Callback& callback, const std::error_code
 	auto cb = [self, ec, callback]()
 	{
 		self->connecting = false;
-		if (!self->canceled) {
+		if (!self->canceled)
+		{
 			callback(std::move(self->socket), ec);
 		}
 	};

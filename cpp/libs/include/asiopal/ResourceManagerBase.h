@@ -48,7 +48,7 @@ public:
 
 		return true;
 	}
-	
+
 	virtual void Detach(std::shared_ptr<IResource> resource)  override final
 	{
 		std::lock_guard <std::mutex> lock(this->resource_mutex);
@@ -76,19 +76,24 @@ protected:
 	}
 
 	template <class R, class T>
-	std::shared_ptr<R> CreateResource(const T& create)
+	std::shared_ptr<R> BindResource(const T& create)
 	{
 		std::lock_guard <std::mutex> lock(this->resource_mutex);
-		if (this->is_shutting_down) 
+		if (this->is_shutting_down)
 		{
 			return nullptr;
 		}
 		else
 		{
 			auto item = create();
+			auto shutdown = [item, this]()
+			{
+				this->Detach(item);
+			};
+			item->SetShutdownAction(shutdown);
 			this->resources.push_back(item);
 			return item;
-		}		
+		}
 	}
 
 private:

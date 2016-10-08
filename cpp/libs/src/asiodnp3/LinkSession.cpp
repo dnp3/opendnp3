@@ -34,13 +34,11 @@ namespace asiodnp3
 
 LinkSession::LinkSession(
     openpal::LogRoot logroot,
-    uint64_t sessionid,
-    asiopal::IResourceManager& manager,
+    uint64_t sessionid,    
     std::shared_ptr<IListenCallbacks> callbacks,
     std::shared_ptr<asiopal::IAsyncChannel> channel) :
 	log_root(std::move(logroot)),
-	session_id(sessionid),
-	manager(&manager),
+	session_id(sessionid),	
 	callbacks(callbacks),
 	parser(log_root.logger, &stats),
 	first_frame_timer(*channel->executor),
@@ -51,23 +49,11 @@ LinkSession::LinkSession(
 
 std::shared_ptr<LinkSession> LinkSession::Create(
     openpal::LogRoot logroot,
-    uint64_t sessionid,
-    asiopal::IResourceManager& manager,
+    uint64_t sessionid,    
     std::shared_ptr<IListenCallbacks> callbacks,
     std::shared_ptr<asiopal::IAsyncChannel> channel)
 {
-	auto ret = std::make_shared<LinkSession>(std::move(logroot), sessionid, manager, callbacks, channel);
-
-	if (manager.Attach(ret))
-	{
-		ret->Start();
-	}
-	else
-	{
-		ret->BeginShutdown();
-	}
-
-	return ret;
+	return std::make_shared<LinkSession>(std::move(logroot), sessionid, callbacks, channel);	
 }
 
 void LinkSession::BeginShutdown()
@@ -194,7 +180,8 @@ void LinkSession::BeginReceive()
 
 			self->callbacks->OnConnectionClose(self->session_id, self->stack);
 
-			self->manager->Detach(self);
+			// run any shutdown actions
+			self->OnShutdown();
 
 			// release our reference to the stack
 			self->stack.reset();

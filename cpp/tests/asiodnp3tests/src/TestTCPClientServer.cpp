@@ -50,7 +50,7 @@ public:
 TEST_CASE(SUITE("TestStateClosed"))
 {
 	auto io = MockIO::Create();
-	
+
 }
 
 

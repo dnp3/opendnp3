@@ -40,7 +40,7 @@ public:
 		return std::make_shared<SerialChannel>(executor);
 	}
 
-	SerialChannel(std::shared_ptr<StrandExecutor> executor);	
+	SerialChannel(std::shared_ptr<StrandExecutor> executor);
 
 	bool Open(const SerialSettings& settings, std::error_code& ec);
 

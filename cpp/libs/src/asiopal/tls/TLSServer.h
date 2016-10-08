@@ -49,7 +49,6 @@ public:
 	TLSServer(
 	    std::shared_ptr<StrandExecutor> executor,
 	    std::shared_ptr<ITLSServerHandler> handler,
-	    IResourceManager& manager,
 	    openpal::LogRoot root,
 	    IPEndpoint endpoint,
 	    const TLSConfig& tlsConfig,
@@ -59,13 +58,12 @@ public:
 	static std::shared_ptr<TLSServer> Create(
 	    std::shared_ptr<StrandExecutor> executor,
 	    std::shared_ptr<ITLSServerHandler> handler,
-	    IResourceManager& manager,
 	    openpal::LogRoot root,
 	    IPEndpoint endpoint,
 	    const TLSConfig& tlsConfig,
 	    std::error_code& ec)
 	{
-		auto ret = std::make_shared<TLSServer>(executor, handler, manager, std::move(root), endpoint, tlsConfig, ec);
+		auto ret = std::make_shared<TLSServer>(executor, handler, std::move(root), endpoint, tlsConfig, ec);
 		if (ec) return nullptr;
 		else
 		{
@@ -80,8 +78,6 @@ public:
 
 private:
 
-	void OnShutdown();
-
 	void StartAccept(std::error_code& ec);
 
 	std::error_code ConfigureContext(const TLSConfig& config, std::error_code& ec);
@@ -89,7 +85,6 @@ private:
 
 	std::shared_ptr<StrandExecutor> executor;
 	std::shared_ptr<ITLSServerHandler> handler;
-	IResourceManager& manager;
 	openpal::LogRoot root;
 
 	SSLContext ctx;

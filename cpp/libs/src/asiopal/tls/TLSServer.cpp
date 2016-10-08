@@ -36,7 +36,6 @@ namespace asiopal
 TLSServer::TLSServer(
     std::shared_ptr<StrandExecutor> executor,
     std::shared_ptr<ITLSServerHandler> handler,
-    IResourceManager& manager,
     openpal::LogRoot root,
     IPEndpoint endpoint,
     const TLSConfig& config,
@@ -44,7 +43,6 @@ TLSServer::TLSServer(
 ) :
 	executor(executor),
 	handler(handler),
-	manager(manager),
 	root(std::move(root)),
 	ctx(root.logger, true, config, ec),
 	endpoint(ip::tcp::v4(), endpoint.port),
@@ -84,11 +82,6 @@ std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::er
 	oss << this->endpoint;
 	FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
 	return ec;
-}
-
-void TLSServer::OnShutdown()
-{
-	this->manager.Detach(this->shared_from_this());
 }
 
 void TLSServer::StartAccept(std::error_code& ec)
