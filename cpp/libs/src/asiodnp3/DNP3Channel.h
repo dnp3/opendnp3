@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_DNP3CHANNEL_H
 #define ASIODNP3_DNP3CHANNEL_H
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include <opendnp3/link/LinkChannelStatistics.h>
 #include <opendnp3/link/ChannelRetry.h>
@@ -51,7 +51,7 @@ class DNP3Channel : public IChannel
 public:
 
 	DNP3Channel(
-	    std::unique_ptr<openpal::LogRoot> root,
+		const openpal::Logger& logger,
 	    const opendnp3::ChannelRetry& retry,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::unique_ptr<asiopal::PhysicalLayerASIO> phys
@@ -99,7 +99,7 @@ private:
 	opendnp3::LinkChannelStatistics statistics;
 
 	std::unique_ptr<asiopal::PhysicalLayerASIO> phys;
-	std::unique_ptr<openpal::LogRoot> root;
+	openpal::Logger logger;
 
 	asiopal::Synchronized<bool>* pShutdownHandler;
 

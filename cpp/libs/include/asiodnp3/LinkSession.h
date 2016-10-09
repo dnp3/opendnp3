@@ -22,7 +22,7 @@
 #ifndef ASIODNP3_LINKSESSION_H
 #define ASIODNP3_LINKSESSION_H
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/executor/TimerRef.h>
 
 #include <opendnp3/link/LinkLayerParser.h>
@@ -50,14 +50,16 @@ class LinkSession final :
 public:
 
 	static std::shared_ptr<LinkSession> Create(
-	    openpal::LogRoot logroot,
-	    uint64_t sessionid,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::IAsyncChannel> channel
-	);
+		const openpal::Logger& logger,
+		uint64_t sessionid,
+		std::shared_ptr<IListenCallbacks> callbacks,
+		std::shared_ptr<asiopal::IAsyncChannel> channel)
+	{
+		return std::make_shared<LinkSession>(logger, sessionid, callbacks, channel);
+	}
 
 	LinkSession(
-	    openpal::LogRoot logroot,
+		const openpal::Logger& logger,
 	    uint64_t sessionid,
 	    std::shared_ptr<IListenCallbacks> callbacks,
 	    std::shared_ptr<asiopal::IAsyncChannel> channel
@@ -87,7 +89,7 @@ private:
 
 	void BeginReceive();
 
-	openpal::LogRoot log_root;
+	openpal::Logger logger;
 	const uint64_t session_id;
 
 	std::shared_ptr<IListenCallbacks> callbacks;

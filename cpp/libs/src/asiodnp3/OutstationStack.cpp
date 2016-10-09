@@ -37,17 +37,17 @@ void assign(const T& config, U& view)
 }
 
 OutstationStack::OutstationStack(
-    std::unique_ptr<openpal::LogRoot> root,
+	const openpal::Logger& logger,
     openpal::IExecutor& executor,
     std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
     std::shared_ptr<opendnp3::IOutstationApplication> application,
     const OutstationStackConfig& config,
     IStackLifecycle& lifecycle) :
 
-	OutstationStackBase(std::move(root), executor, *application, config, lifecycle),
+	OutstationStackBase(logger, executor, *application, config, lifecycle),
 	commandHandler(commandHandler),
 	application(application),
-	ocontext(config.outstation, config.dbConfig.sizes, this->root->logger, executor, stack.transport, *commandHandler, *application)
+	ocontext(config.outstation, config.dbConfig.sizes, logger, executor, stack.transport, *commandHandler, *application)
 {
 	this->SetContext(ocontext);
 

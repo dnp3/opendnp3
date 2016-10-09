@@ -45,15 +45,15 @@ class MasterStackBase : public Interface, public ILinkBind
 public:
 
 	MasterStackBase(
-	    std::unique_ptr<openpal::LogRoot> root,
+		const openpal::Logger& logger,
 	    asiopal::ASIOExecutor& executor,
 	    opendnp3::ILinkListener& listener,
 	    const MasterStackConfig& config,
 	    IStackLifecycle& lifecycle
 	) :
-		root(std::move(root)),
+		logger(logger),
 		pLifecycle(&lifecycle),
-		stack(this->root->logger, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
+		stack(logger, executor, listener, config.master.maxRxFragSize, &statistics, config.link),
 		pASIOExecutor(&executor),
 		pContext(nullptr)
 	{
@@ -81,7 +81,7 @@ public:
 	{
 		auto set = [this, filters]()
 		{
-			this->root->SetFilters(filters);
+			this->logger.SetFilters(filters);
 		};
 
 		pLifecycle->GetExecutor().BlockFor(set);
@@ -255,7 +255,7 @@ protected:
 		this->stack.transport.SetAppLayer(context);
 	}
 
-	std::unique_ptr<openpal::LogRoot> root;
+	openpal::Logger logger;
 	opendnp3::StackStatistics statistics;
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;

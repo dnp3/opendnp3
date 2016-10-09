@@ -24,7 +24,7 @@
 #include <openpal/channel/IPhysicalLayerCallbacks.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/executor/TimeDuration.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/link/ChannelRetry.h>

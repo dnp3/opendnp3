@@ -49,12 +49,12 @@ void ChannelSet::Shutdown()
 
 IChannel* ChannelSet::CreateChannel(
 
-    std::unique_ptr<LogRoot> root,
+	const openpal::Logger& logger,
     const ChannelRetry& retry,
     std::shared_ptr<IChannelListener> listener,
     std::unique_ptr<asiopal::PhysicalLayerASIO> phys)
 {
-	auto channel = new DNP3Channel(std::move(root), retry, listener, std::move(phys));
+	auto channel = new DNP3Channel(logger, retry, listener, std::move(phys));
 
 	auto onShutdown = [this, channel]()
 	{

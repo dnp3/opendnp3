@@ -52,7 +52,7 @@ public:
 
 	~ChannelSet();
 
-	IChannel* CreateChannel(	std::unique_ptr<openpal::LogRoot> root,
+	IChannel* CreateChannel(	const openpal::Logger& logger,
 	                            const opendnp3::ChannelRetry& retry,
 	                            std::shared_ptr<IChannelListener> listener,
 	                            std::unique_ptr<asiopal::PhysicalLayerASIO> phys);

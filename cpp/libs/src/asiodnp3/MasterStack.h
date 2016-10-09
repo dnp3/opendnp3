@@ -34,7 +34,7 @@ class MasterStack : public MasterStackBase<IMaster>
 public:
 
 	MasterStack(
-	    std::unique_ptr<openpal::LogRoot> root,
+	    const openpal::Logger& logger,
 	    asiopal::ASIOExecutor& executor,
 	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	    std::shared_ptr<opendnp3::IMasterApplication> application,

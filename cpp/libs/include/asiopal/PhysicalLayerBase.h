@@ -23,7 +23,7 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/channel/IPhysicalLayer.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include <system_error>
 #include <assert.h>

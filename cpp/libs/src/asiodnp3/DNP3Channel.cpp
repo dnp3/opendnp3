@@ -35,15 +35,15 @@ namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
-    std::unique_ptr<LogRoot> rootin,
+	const openpal::Logger& logger,
     const ChannelRetry& retry,
     std::shared_ptr<IChannelListener> listener,
     std::unique_ptr<asiopal::PhysicalLayerASIO> physin) :
 
 	phys(std::move(physin)),
-	root(std::move(rootin)),
+	logger(logger),
 	pShutdownHandler(nullptr),
-	router(root->logger, phys->executor, phys.get(), retry, listener, &statistics),
+	router(logger, phys->executor, phys.get(), retry, listener, &statistics),
 	stacks(router, phys->executor)
 {
 	phys->SetChannelStatistics(&statistics);
@@ -103,7 +103,7 @@ openpal::LogFilters DNP3Channel::GetLogFilters() const
 {
 	auto get = [this]()
 	{
-		return root->GetFilters();
+		return this->logger.GetFilters();
 	};
 	return phys->executor.ReturnBlockFor<LogFilters>(get);
 }
@@ -112,7 +112,7 @@ void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 {
 	auto set = [this, filters]()
 	{
-		root->SetFilters(filters);
+		this->logger.SetFilters(filters);
 	};
 	phys->executor.BlockFor(set);
 }
@@ -123,8 +123,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, std::shared_ptr<opendnp3::ISOEHa
 	{
 		auto factory = [&]() -> MasterStack*
 		{
-			auto root = std::unique_ptr<openpal::LogRoot>(new openpal::LogRoot(*this->root.get(), id));
-			return new MasterStack(std::move(root), this->phys->executor, SOEHandler, application, config, stacks, router.GetTaskLock());
+			return new MasterStack(this->logger.Detach(id), this->phys->executor, SOEHandler, application, config, stacks, router.GetTaskLock());
 		};
 
 		return this->AddStack<MasterStack>(config.link, factory);
@@ -139,8 +138,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, std::shared_ptr<ICommand
 	{
 		auto factory = [&]()
 		{
-			auto root = std::unique_ptr<openpal::LogRoot>(new openpal::LogRoot(*this->root.get(), id));
-			return new OutstationStack(std::move(root), this->phys->executor, commandHandler, application, config, stacks);
+			return new OutstationStack(this->logger.Detach(id), this->phys->executor, commandHandler, application, config, stacks);
 		};
 
 		return this->AddStack<OutstationStack>(config.link, factory);
@@ -160,7 +158,7 @@ T* DNP3Channel::AddStack(const opendnp3::LinkConfig& link, const std::function<T
 	Route route(link.RemoteAddr, link.LocalAddr);
 	if (router.IsRouteInUse(route))
 	{
-		FORMAT_LOG_BLOCK(root->logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
+		FORMAT_LOG_BLOCK(this->logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
 		return nullptr;
 	}
 	else

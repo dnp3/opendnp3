@@ -40,20 +40,45 @@ public:
 
 	struct Settings
 	{
-		Settings(const std::string& id, int32_t levels) : id(id), levels(levels)
+		Settings(const std::string& id, openpal::LogFilters levels) : id(id), levels(levels)
 		{}
 
 		std::string id;
-		int32_t levels;
+		openpal::LogFilters levels;
 	};
 
-	Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, int32_t levels);
+	Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, openpal::LogFilters levels);
 
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
 
+	Logger Detach(const std::string& id) const
+	{
+		return Logger(this->backend, std::make_shared<Settings>(id, this->settings->levels));
+	}
+
 	bool IsEnabled(const LogFilters& filters) const;
 
+	LogFilters GetFilters() const 
+	{
+		return this->settings->levels;
+	}
+
+	void SetFilters(const openpal::LogFilters& filters)
+	{
+		this->settings->levels = filters;
+	}
+
+	void Rename(const std::string& id)
+	{
+		this->settings->id = id;
+	}
+
 private:
+
+	Logger(const std::shared_ptr<ILogHandler>& backend, const std::shared_ptr<Settings>& settings) :
+		backend(backend),
+		settings(settings)
+	{}
 
 	Logger() = delete;
 	Logger& operator=(const Logger&) = delete;

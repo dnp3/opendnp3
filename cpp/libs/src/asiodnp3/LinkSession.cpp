@@ -33,27 +33,18 @@ namespace asiodnp3
 {
 
 LinkSession::LinkSession(
-    openpal::LogRoot logroot,
+    const openpal::Logger& logger,
     uint64_t sessionid,
     std::shared_ptr<IListenCallbacks> callbacks,
     std::shared_ptr<asiopal::IAsyncChannel> channel) :
-	log_root(std::move(logroot)),
+	logger(logger),
 	session_id(sessionid),
 	callbacks(callbacks),
-	parser(log_root.logger, &stats),
+	parser(logger, &stats),
 	first_frame_timer(*channel->executor),
 	channel(std::move(channel))
 {
 
-}
-
-std::shared_ptr<LinkSession> LinkSession::Create(
-    openpal::LogRoot logroot,
-    uint64_t sessionid,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::IAsyncChannel> channel)
-{
-	return std::make_shared<LinkSession>(std::move(logroot), sessionid, callbacks, channel);
 }
 
 void LinkSession::BeginShutdown()
@@ -69,7 +60,7 @@ void LinkSession::BeginShutdown()
 
 void LinkSession::SetLogFilters(openpal::LogFilters filters)
 {
-	this->log_root.SetFilters(filters);
+	this->logger.SetFilters(filters);
 }
 
 void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
@@ -80,7 +71,7 @@ void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSe
 		if (ec)
 		{
 			// we'll let the failed read close the session
-			SIMPLE_LOG_BLOCK(self->log_root.logger, flags::WARN, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
 			session.OnTransmitResult(false);
 		}
 		else
@@ -113,7 +104,7 @@ bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		}
 		else
 		{
-			SIMPLE_LOG_BLOCK(this->log_root.logger, flags::WARN, "No master created. Closing socket.");
+			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "No master created. Closing socket.");
 			auto self(shared_from_this());
 			this->channel->Shutdown();
 		}
@@ -130,15 +121,15 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 {
 	if (this->stack)
 	{
-		SIMPLE_LOG_BLOCK(this->log_root.logger, flags::ERR, "SocketSession already has a master bound");
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "SocketSession already has a master bound");
 		return nullptr;
 	}
 
 	// rename the logger id to something meaningful
-	this->log_root.Rename(loggerid.c_str());
+	this->logger.Rename(loggerid.c_str());
 
 	this->stack = MasterSessionStack::Create(
-	                  this->log_root.logger,
+	                  this->logger,
 	                  this->channel->executor,
 	                  SOEHandler,
 	                  application,
@@ -154,7 +145,7 @@ void LinkSession::Start()
 {
 	auto timeout = [this]()
 	{
-		SIMPLE_LOG_BLOCK(this->log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
 		this->channel->Shutdown();
 	};
 
@@ -170,7 +161,7 @@ void LinkSession::BeginReceive()
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(self->log_root.logger, flags::WARN, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
 
 			// if we created a master stack, tell it to shutdown
 			if (self->stack)

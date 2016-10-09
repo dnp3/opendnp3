@@ -24,14 +24,14 @@
 namespace openpal
 {
 
-Logger::Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, int32_t levels) : 
+Logger::Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, openpal::LogFilters levels) :
 	backend(backend),
 	settings(std::make_shared<Settings>(id, levels))
 {}
 
 bool Logger::IsEnabled(const LogFilters& filters) const
 {
-	return backend && filters.IsSet(settings->levels);
+	return backend && (settings->levels & filters);
 }
 
 void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)

@@ -27,11 +27,7 @@
 #include <openpal/container/RSlice.h>
 #include <openpal/container/WSlice.h>
 #include <openpal/util/Uncopyable.h>
-
-namespace openpal
-{
-class Logger;
-}
+#include <openpal/logging/Logger.h>
 
 namespace opendnp3
 {
