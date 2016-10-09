@@ -18,10 +18,11 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_TESTER_H_
-#define __LOG_TESTER_H_
 
-#include <openpal/logging/LogRoot.h>
+#ifndef OPENPAL_MOCKLOGHANDLER_H
+#define OPENPAL_MOCKLOGHANDLER_H
+
+#include <openpal/logging/Logger.h>
 
 #include <string>
 #include <queue>
@@ -48,7 +49,6 @@ class MockLogHandler : public openpal::ILogHandler
 {
 
 public:
-	MockLogHandler(uint32_t filters = ~0);
 
 	void WriteToStdIo();
 
@@ -71,12 +71,10 @@ public:
 
 	void Pop(openpal::ILogHandler& log);
 
-	openpal::LogRoot root;
-
 protected:
 
 	std::mutex qMutex;
-	bool outputToStdIO;
+	bool outputToStdIO = false;
 	std::deque<LogRecord> messages;
 
 };

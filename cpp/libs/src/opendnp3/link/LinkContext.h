@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_LINK_CONTEXT_H
 #define OPENDNP3_LINK_CONTEXT_H
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/executor/TimerRef.h>
 #include <openpal/container/Settable.h>

@@ -25,7 +25,7 @@
 #include "TransportTx.h"
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/LayerInterfaces.h"
 #include "opendnp3/StackStatistics.h"

@@ -47,17 +47,10 @@ LogRecord::LogRecord(const LogEntry& entry) :
 
 }
 
-MockLogHandler::MockLogHandler(uint32_t filters) :
-	root(this, "test", filters),
-	outputToStdIO(false)
-{
-
-}
-
-
 void MockLogHandler::Log(const LogEntry& entry)
 {
 	std::lock_guard<std::mutex> lock(qMutex);
+
 	if (outputToStdIO)
 	{
 		std::cout << entry.GetMessage() << std::endl;
@@ -139,7 +132,9 @@ int MockLogHandler::ClearLog()
 
 void MockLogHandler::Log(const std::string& location, const std::string& message)
 {
-	root.logger.Log(openpal::logflags::EVENT, location.c_str(), message.c_str());
+	this->Log(
+		LogEntry("test", openpal::logflags::EVENT, location.c_str(), message.c_str(), -1)
+	);
 }
 
 void MockLogHandler::WriteToStdIo()

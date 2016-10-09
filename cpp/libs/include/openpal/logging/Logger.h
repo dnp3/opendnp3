@@ -21,38 +21,44 @@
 #ifndef OPENPAL_LOGGER_H
 #define OPENPAL_LOGGER_H
 
-#include "LogEntry.h"
-#include "LogFilters.h"
+#include "openpal/logging/ILogHandler.h"
 
-#include "openpal/util/Uncopyable.h"
+#include <memory>
+#include <string>
 
 namespace openpal
 {
 
-class LogRoot;
 
 /**
 * A copyable facade over a LogRoot class
 */
 class Logger
 {
-	friend class LogRoot;
-
+	
 public:
+
+	struct Settings
+	{
+		Settings(const std::string& id, int32_t levels) : id(id), levels(levels)
+		{}
+
+		std::string id;
+		int32_t levels;
+	};
+
+	Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, int32_t levels);
 
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
 
 	bool IsEnabled(const LogFilters& filters) const;
 
-	bool HasAny(const LogFilters& filters) const;
-
 private:
 
 	Logger() = delete;
 
-	Logger(LogRoot* pRoot);
-
-	LogRoot* pRoot;
+	std::shared_ptr<ILogHandler> backend;
+	std::shared_ptr<Settings> settings;
 };
 
 }
