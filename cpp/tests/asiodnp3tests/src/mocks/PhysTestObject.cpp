@@ -28,8 +28,8 @@ namespace opendnp3
 PhysTestObject::PhysTestObject(uint32_t filters, bool aAutoRead) :
 	TestObjectASIO(),
 	log(),
-	mTCPClient(log.root.logger, this->GetService(), "127.0.0.1", "127.0.0.1", 50000),
-	mTCPServer(log.root.logger, this->GetService(), "127.0.0.1", 50000),
+	mTCPClient(log.logger, this->GetService(), "127.0.0.1", "127.0.0.1", 50000),
+	mTCPServer(log.logger, this->GetService(), "127.0.0.1", 50000),
 	mClientAdapter(mTCPClient, aAutoRead),
 	mServerAdapter(mTCPServer, aAutoRead)
 {

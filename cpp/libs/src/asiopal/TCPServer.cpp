@@ -36,12 +36,12 @@ namespace asiopal
 TCPServer::TCPServer(
     std::shared_ptr<StrandExecutor> executor,
     std::shared_ptr<ITCPServerHandler> handler,
-    openpal::LogRoot root,
+	const openpal::Logger& logger,
     IPEndpoint endpoint,
     std::error_code& ec) :
 	executor(executor),
 	handler(handler),
-	root(std::move(root)),
+	logger(logger),
 	endpoint(ip::tcp::v4(), endpoint.port),
 	acceptor(executor->strand.get_io_service()),
 	socket(executor->strand.get_io_service()),
@@ -92,7 +92,7 @@ void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
 	{
 		std::ostringstream oss;
 		oss << this->endpoint;
-		FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Listening on: %s", oss.str().c_str());
 	}
 }
 
@@ -104,7 +104,7 @@ void TCPServer::StartAccept()
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(self->root.logger, flags::INFO, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->logger, flags::INFO, ec.message().c_str());
 			self->OnShutdown();
 		}
 		else

@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include "mocks/PhysLoopback.h"
 #include "mocks/MockPhysicalLayer.h"
@@ -41,16 +41,14 @@ public:
 
 	LoopbackTest(uint32_t filters = levels::NORMAL) :
 		log(),
-		root(&log, "test", filters),
 		exe(),
-		phys(root.logger, exe),
-		loopback(root.logger, exe, &phys)
+		phys(log.logger, exe),
+		loopback(log.logger, exe, &phys)
 	{
 		loopback.Start();
 	}
 
 	testlib::MockLogHandler log;
-	openpal::LogRoot root;
 	testlib::MockExecutor exe;
 	MockPhysicalLayer phys;
 	PhysLoopback loopback;

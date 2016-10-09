@@ -21,7 +21,7 @@
 #ifndef ASIOPAL_MASTERTLSSERVERHANDLER_H
 #define ASIOPAL_MASTERTLSSERVERHANDLER_H
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include <asiopal/tls/ITLSServerHandler.h>
 
@@ -40,17 +40,17 @@ class MasterTLSServerHandler final : public asiopal::ITLSServerHandler
 public:
 
 	MasterTLSServerHandler(
-	    openpal::LogRoot root,
+		const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
 	    asiopal::IResourceManager& manager
 	);
 
 	static std::shared_ptr<MasterTLSServerHandler> Create(
-	    openpal::LogRoot root,
+		const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
 	    asiopal::IResourceManager& manager)
 	{
-		return std::make_shared<MasterTLSServerHandler>(std::move(root), callbacks, manager);
+		return std::make_shared<MasterTLSServerHandler>(logger, callbacks, manager);
 	}
 
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
@@ -65,7 +65,7 @@ public:
 
 private:
 
-	openpal::LogRoot root;
+	openpal::Logger logger;
 	std::shared_ptr<IListenCallbacks> callbacks;
 	asiopal::IResourceManager& manager;
 

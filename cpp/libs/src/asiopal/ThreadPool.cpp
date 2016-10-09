@@ -33,12 +33,12 @@ namespace asiopal
 {
 
 ThreadPool::ThreadPool(
-    openpal::ILogHandler* handler,
+	const openpal::Logger& logger,
     uint32_t levels,
     uint32_t concurrency,
     std::function<void()> onThreadStart,
     std::function<void()> onThreadExit) :
-	root(handler, "threadpool", levels),
+	logger(logger),
 	onThreadStart(onThreadStart),
 	onThreadExit(onThreadExit),
 	isShutdown(false),
@@ -47,7 +47,7 @@ ThreadPool::ThreadPool(
 	if(concurrency == 0)
 	{
 		concurrency = 1;
-		SIMPLE_LOG_BLOCK(root.logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
+		SIMPLE_LOG_BLOCK(this->logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
 
 	infiniteTimer.expires_at(asiopal::steady_clock_t::time_point::max());
@@ -63,13 +63,13 @@ ThreadPool::ThreadPool(
 }
 
 std::shared_ptr<ThreadPool> ThreadPool::Create(
-    openpal::ILogHandler* handler,
+	const openpal::Logger& logger,
     uint32_t levels,
     uint32_t concurrency,
     std::function<void()> onThreadStart,
     std::function<void()> onThreadExit)
 {
-	return std::make_shared<ThreadPool>(handler, levels, concurrency, onThreadStart, onThreadExit);
+	return std::make_shared<ThreadPool>(logger, levels, concurrency, onThreadStart, onThreadExit);
 }
 
 ThreadPool::~ThreadPool()
@@ -95,11 +95,11 @@ void ThreadPool::Run(int threadnum)
 {
 	onThreadStart();
 
-	FORMAT_LOG_BLOCK(root.logger, logflags::INFO, "Starting thread (%d)", threadnum);
+	FORMAT_LOG_BLOCK(this->logger, logflags::INFO, "Starting thread (%d)", threadnum);
 
 	service.run();
 
-	FORMAT_LOG_BLOCK(root.logger, logflags::INFO, "Exiting thread (%d)", threadnum);
+	FORMAT_LOG_BLOCK(this->logger, logflags::INFO, "Exiting thread (%d)", threadnum);
 
 	onThreadExit();
 }

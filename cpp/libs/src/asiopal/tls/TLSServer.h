@@ -26,7 +26,7 @@
 #include "asiopal/TLSConfig.h"
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include "asiopal/tls/SSLContext.h"
 #include "asiopal/tls/ITLSServerHandler.h"
@@ -49,7 +49,7 @@ public:
 	TLSServer(
 	    std::shared_ptr<StrandExecutor> executor,
 	    std::shared_ptr<ITLSServerHandler> handler,
-	    openpal::LogRoot root,
+	    const openpal::Logger& logger,
 	    IPEndpoint endpoint,
 	    const TLSConfig& tlsConfig,
 	    std::error_code& ec
@@ -58,12 +58,12 @@ public:
 	static std::shared_ptr<TLSServer> Create(
 	    std::shared_ptr<StrandExecutor> executor,
 	    std::shared_ptr<ITLSServerHandler> handler,
-	    openpal::LogRoot root,
+		const openpal::Logger& logger,
 	    IPEndpoint endpoint,
 	    const TLSConfig& tlsConfig,
 	    std::error_code& ec)
 	{
-		auto ret = std::make_shared<TLSServer>(executor, handler, std::move(root), endpoint, tlsConfig, ec);
+		auto ret = std::make_shared<TLSServer>(executor, handler, logger, endpoint, tlsConfig, ec);
 		if (ec) return nullptr;
 		else
 		{
@@ -85,7 +85,7 @@ private:
 
 	std::shared_ptr<StrandExecutor> executor;
 	std::shared_ptr<ITLSServerHandler> handler;
-	openpal::LogRoot root;
+	openpal::Logger logger;
 
 	SSLContext ctx;
 	asio::ip::tcp::endpoint endpoint;

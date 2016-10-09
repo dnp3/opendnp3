@@ -47,15 +47,17 @@ GPRSManagerImpl::~GPRSManagerImpl()
 
 std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
     std::string loggerid,
-    openpal::LogFilters loglevel,
+    openpal::LogFilters levels,
     asiopal::IPEndpoint endpoint,
     std::shared_ptr<IListenCallbacks> callbacks,
     std::error_code& ec)
 {
 	auto create = [&]() -> std::shared_ptr<asiopal::IListener>
 	{
+		auto newlogger = this->logger.Detach(loggerid, levels);
+
 		auto handler = asiodnp3::MasterTCPServerHandler::Create(
-		    this->log_root.Clone(loggerid.c_str(), loglevel),
+			newlogger,
 		    callbacks,
 		    *this
 		);
@@ -63,7 +65,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		return asiopal::TCPServer::Create(
 		    asiopal::StrandExecutor::Create(this->pool),
 		    handler,
-		    this->log_root.Clone(loggerid.c_str(), loglevel),
+			newlogger,
 		    endpoint,
 		    ec
 		);
@@ -81,7 +83,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 
 std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
     std::string loggerid,
-    openpal::LogFilters loglevel,
+    openpal::LogFilters levels,
     asiopal::IPEndpoint endpoint,
     const asiopal::TLSConfig& config,
     std::shared_ptr<IListenCallbacks> callbacks,
@@ -92,9 +94,10 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 
 	auto create = [&]() -> std::shared_ptr<asiopal::IListener>
 	{
+		auto newlogger = this->logger.Detach(loggerid, levels);
 
 		auto handler = asiodnp3::MasterTLSServerHandler::Create(
-		    this->log_root.Clone(loggerid.c_str(), loglevel),
+			newlogger,
 		    callbacks,
 		    *this
 		);
@@ -102,7 +105,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		return asiopal::TLSServer::Create(
 		    asiopal::StrandExecutor::Create(this->pool),
 		    handler,
-		    this->log_root.Clone(loggerid.c_str(), loglevel),
+			newlogger,
 		    endpoint,
 		    config,
 		    ec
@@ -135,10 +138,8 @@ void GPRSManagerImpl::BeginShutdown()
 }
 
 GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler) :
-	log_handler(handler),
-	log_root(handler.get(), "gprs-manager", opendnp3::levels::NORMAL),
-
-	pool(asiopal::ThreadPool::Create(handler.get(), concurrencyHint, opendnp3::flags::INFO))
+	logger(handler, "manager", opendnp3::levels::NORMAL),
+	pool(asiopal::ThreadPool::Create(logger, concurrencyHint, opendnp3::flags::INFO))
 {}
 
 }

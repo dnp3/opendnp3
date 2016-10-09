@@ -38,11 +38,11 @@ namespace asiodnp3
 {
 
 MasterTCPServerHandler::MasterTCPServerHandler(
-    openpal::LogRoot root,
+	const openpal::Logger& logger,
     std::shared_ptr<IListenCallbacks> callbacks,
     asiopal::IResourceManager& manager
 ) :
-	root(std::move(root)),
+	logger(logger),
 	callbacks(callbacks),
 	manager(manager)
 {
@@ -56,10 +56,10 @@ void MasterTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::sha
 
 	if (this->callbacks->AcceptConnection(sessionid, socket.remote_endpoint().address().to_string()))
 	{
-		FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 
 		auto session = LinkSession::Create(
-		                   root.Clone(SessionIdToString(sessionid).c_str()),
+		                   this->logger.Detach(SessionIdToString(sessionid)),
 		                   sessionid,
 		                   this->callbacks,
 		                   SocketChannel::Create(executor->Fork(), std::move(socket))	// run the link session in its own strand
@@ -81,7 +81,7 @@ void MasterTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::sha
 	else
 	{
 		socket.close();
-		FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
 	}
 }
 

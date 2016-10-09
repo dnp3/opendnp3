@@ -66,16 +66,13 @@ void TestLoopback(TransportLoopbackTestObject* pTest, uint32_t numBytes)
 
 TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 {
-	auto level = levels::NORMAL;
-
 	LinkConfig cfgA(true, true);
 	LinkConfig cfgB(false, true);
 
 	testlib::MockLogHandler log;
-	LogRoot root(&log, "test", level);
 	asio::io_service service;
-	LoopbackPhysicalLayer phys(root.logger, service);
-	TransportLoopbackTestObject t(root.logger, service, phys.executor, &phys, cfgA, cfgB);
+	LoopbackPhysicalLayer phys(log.logger, service);
+	TransportLoopbackTestObject t(log.logger, service, phys.executor, &phys, cfgA, cfgB);
 
 	TestLoopback(&t, opendnp3::DEFAULT_MAX_APDU_SIZE);
 }

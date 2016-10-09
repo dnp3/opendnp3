@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/ThreadPool.h>
@@ -74,7 +74,7 @@ TEST_CASE(SUITE("Test ordered dispatch"))
 	const int NUM = 10000;
 
 	testlib::MockLogHandler log;
-	asiopal::ThreadPool pool(&log, levels::NORMAL, 4);
+	asiopal::ThreadPool pool(log.logger, levels::NORMAL, 4);
 	asiopal::ASIOExecutor executor(pool.service);
 
 	bool monotonic = true;

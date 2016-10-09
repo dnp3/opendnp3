@@ -25,9 +25,9 @@
 #include <asiopal/ASIOExecutor.h>
 #include <asiodnp3/ConsoleLogger.h>
 
-#include <openpal/logging/LogRoot.h>
-
 #include <opendnp3/LogLevels.h>
+
+#include <testlib/MockLogHandler.h>
 
 #include <thread>
 
@@ -45,12 +45,14 @@ using namespace asiodnp3;
 
 TEST_CASE(SUITE("CleanConstructionDestruction"))
 {
-	ThreadPool pool(nullptr, levels::NORMAL, 4);
+	testlib::MockLogHandler backend;
+	ThreadPool pool(backend.logger, levels::NORMAL, 4);
 }
 
 TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 {
-	ThreadPool pool(nullptr, levels::NORMAL, 4);
+	testlib::MockLogHandler backend;
+	ThreadPool pool(backend.logger, levels::NORMAL, 4);
 	for(size_t i = 0; i < 100000; ++i) pool.service.post([]() {});
 }
 
@@ -62,7 +64,8 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 	int count1 = 0;
 
 	{
-		ThreadPool pool(nullptr, levels::NORMAL, 8);
+		testlib::MockLogHandler backend;
+		ThreadPool pool(backend.logger, levels::NORMAL, 8);
 		strand s1(pool.service);
 
 		auto increment = [&count1]()
@@ -84,7 +87,8 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 	int count1 = 0;
 
 	{
-		ThreadPool pool(nullptr, levels::NORMAL, 8);
+		testlib::MockLogHandler backend;
+		ThreadPool pool(backend.logger, levels::NORMAL, 8);
 
 		strand s1(pool.service);
 

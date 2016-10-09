@@ -87,8 +87,8 @@ public:
 	TestObject(uint32_t filters = levels::NORMAL) :
 		log(),
 		exe(),
-		phys(log.root.logger, exe),
-		monitor(log.root.logger, exe, phys)
+		phys(log.logger, exe),
+		monitor(log.logger, exe, phys)
 	{}
 
 	testlib::MockLogHandler log;

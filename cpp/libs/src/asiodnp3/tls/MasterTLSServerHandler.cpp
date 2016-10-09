@@ -36,10 +36,10 @@ namespace asiodnp3
 {
 
 MasterTLSServerHandler::MasterTLSServerHandler(
-    openpal::LogRoot root,
+    const openpal::Logger& logger,
     std::shared_ptr<IListenCallbacks> callbacks,
     IResourceManager& manager) :
-	root(std::move(root)),
+	logger(logger),
 	callbacks(callbacks),
 	manager(manager)
 {
@@ -53,12 +53,12 @@ bool MasterTLSServerHandler::AcceptConnection(uint64_t sessionid, const asio::ip
 
 	if (this->callbacks->AcceptConnection(sessionid, remote.address().to_string()))
 	{
-		FORMAT_LOG_BLOCK(root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 		return true;
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK(root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
 		return false;
 	}
 }
@@ -69,7 +69,7 @@ bool MasterTLSServerHandler::VerifyCallback(uint64_t sessionid, bool preverified
 
 	if (!preverified)
 	{
-		FORMAT_LOG_BLOCK(this->root.logger, flags::WARN, "Error verifying certificate at depth: %d", depth);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Error verifying certificate at depth: %d", depth);
 		return preverified;
 	}
 
@@ -78,7 +78,7 @@ bool MasterTLSServerHandler::VerifyCallback(uint64_t sessionid, bool preverified
 	char subjectName[512];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 512);
 
-	FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Depth: %d - Verified certificate: %s", depth, subjectName);
+	FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Depth: %d - Verified certificate: %s", depth, subjectName);
 
 	return this->callbacks->AcceptCertificate(
 	           sessionid,
@@ -93,7 +93,7 @@ bool MasterTLSServerHandler::VerifyCallback(uint64_t sessionid, bool preverified
 void MasterTLSServerHandler::AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
 	auto session = LinkSession::Create(
-	                   root.Clone(SessionIdToString(sessionid).c_str()),
+	                   this->logger.Detach(SessionIdToString(sessionid)),
 	                   sessionid,
 	                   callbacks,
 	                   TLSStreamChannel::Create(executor->Fork(), stream)	// run the link session in a new strand

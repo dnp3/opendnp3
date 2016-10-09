@@ -46,7 +46,7 @@ public:
 		chandler(std::make_shared<MockTCPClientHandler>()),
 		shandler(std::make_shared<MockTCPServerHandler>()),
 		client(TCPClient::Create(io->Executor(), IPEndpoint::Localhost(port), "127.0.0.1")),
-		server(TCPServer::Create(io->Executor(), this->shandler, this->log.root.Clone("server"), IPEndpoint::Localhost(20000), ec))
+		server(TCPServer::Create(io->Executor(), this->shandler, this->log.logger.Detach("server"), IPEndpoint::Localhost(20000), ec))
 	{
 		if (ec)
 		{

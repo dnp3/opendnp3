@@ -26,7 +26,7 @@
 #include "asiopal/ITCPServerHandler.h"
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include <memory>
 
@@ -49,7 +49,7 @@ public:
 	TCPServer(
 	    std::shared_ptr<StrandExecutor> executor,
 	    std::shared_ptr<ITCPServerHandler> handler,
-	    openpal::LogRoot root,
+	    const openpal::Logger& logger,
 	    IPEndpoint endpoint,
 	    std::error_code& ec
 	);
@@ -57,11 +57,11 @@ public:
 	static std::shared_ptr<TCPServer> Create(
 	    std::shared_ptr<StrandExecutor> executor,
 	    std::shared_ptr<ITCPServerHandler> handler,
-	    openpal::LogRoot root,
+		const openpal::Logger& logger,
 	    IPEndpoint endpoint,
 	    std::error_code& ec)
 	{
-		auto ret = std::make_shared<TCPServer>(executor, handler, std::move(root), endpoint, ec);
+		auto ret = std::make_shared<TCPServer>(executor, handler, logger, endpoint, ec);
 
 		if (ec) return nullptr;
 		else
@@ -83,7 +83,7 @@ private:
 	std::shared_ptr<StrandExecutor> executor;
 	std::shared_ptr<ITCPServerHandler> handler;
 
-	openpal::LogRoot root;
+	openpal::Logger logger;
 
 	asio::ip::tcp::endpoint endpoint;
 	asio::ip::tcp::acceptor acceptor;

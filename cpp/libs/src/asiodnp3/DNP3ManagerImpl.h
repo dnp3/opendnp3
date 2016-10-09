@@ -22,7 +22,7 @@
 #ifndef ASIODNP3_DNP3MANAGERIMPL_H
 #define ASIODNP3_DNP3MANAGERIMPL_H
 
-#include <openpal/logging/ILogHandler.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/util/Uncopyable.h>
 
 #include <asiopal/ThreadPool.h>
@@ -97,7 +97,7 @@ public:
 
 private:
 
-	std::shared_ptr<openpal::ILogHandler> handler;
+	openpal::Logger logger;
 	asiopal::ThreadPool threadpool;
 	ChannelSet channels;
 };

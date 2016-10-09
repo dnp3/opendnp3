@@ -56,6 +56,16 @@ public:
 		return Logger(this->backend, std::make_shared<Settings>(id, this->settings->levels));
 	}
 
+	Logger Detach(const std::string& id, openpal::LogFilters levels) const
+	{
+		return Logger(this->backend, std::make_shared<Settings>(id, levels));
+	}
+
+	Logger Detach(openpal::LogFilters levels) const
+	{
+		return Logger(this->backend, std::make_shared<Settings>(this->settings->id, levels));
+	}
+
 	bool IsEnabled(const LogFilters& filters) const;
 
 	LogFilters GetFilters() const 

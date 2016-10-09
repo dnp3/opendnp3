@@ -21,7 +21,7 @@
 #ifndef ASIOPAL_THREADPOOL_H
 #define ASIOPAL_THREADPOOL_H
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include "asiopal/IO.h"
 
@@ -44,19 +44,19 @@ public:
 	friend class ThreadPoolTest;
 
 	ThreadPool(
-	    openpal::ILogHandler* handler,
+		const openpal::Logger& logger,
 	    uint32_t levels,
 	    uint32_t concurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
 	);
 
 	static std::shared_ptr<ThreadPool> Create(
-	    openpal::ILogHandler* handler,
+	    const openpal::Logger& logger,
 	    uint32_t levels,
 	    uint32_t concurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
 	);
 
 
@@ -66,7 +66,7 @@ public:
 
 private:
 
-	openpal::LogRoot root;
+	openpal::Logger logger;
 
 	std::function<void ()> onThreadStart;
 	std::function<void ()> onThreadExit;

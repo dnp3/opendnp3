@@ -21,7 +21,7 @@
 #ifndef ASIOPAL_MASTERTCPSERVERHANDLER_H
 #define ASIOPAL_MASTERTCPSERVERHANDLER_H
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include <asiopal/ITCPServerHandler.h>
 #include <asiopal/IResourceManager.h>
@@ -42,23 +42,23 @@ class MasterTCPServerHandler final : public asiopal::ITCPServerHandler
 public:
 
 	MasterTCPServerHandler(
-	    openpal::LogRoot root,
+	    const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
 	    asiopal::IResourceManager& manager
 	);
 
 	static std::shared_ptr<MasterTCPServerHandler> Create(
-	    openpal::LogRoot root,
+		const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
 	    asiopal::IResourceManager& manager)
 	{
-		return std::make_shared<MasterTCPServerHandler>(std::move(root), callbacks, manager);
+		return std::make_shared<MasterTCPServerHandler>(logger, callbacks, manager);
 	}
 
 
 private:
 
-	openpal::LogRoot root;
+	openpal::Logger logger;
 	std::shared_ptr<IListenCallbacks> callbacks;
 	asiopal::IResourceManager& manager;
 

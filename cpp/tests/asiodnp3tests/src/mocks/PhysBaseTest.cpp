@@ -25,10 +25,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysBaseTest::PhysBaseTest(uint32_t filters, bool aImmediate) :
+PhysBaseTest::PhysBaseTest(uint32_t filters, bool immediate) :
 	log(),
 	exe(),
-	phys(log.root.logger, exe),
+	phys(log.logger, exe),
 	adapter(phys, false)
 {
 	adapter.SetUpperLayer(upper);

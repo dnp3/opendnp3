@@ -30,14 +30,14 @@ namespace opendnp3
 TransportStackPair::TransportStackPair(
     LinkConfig aClientCfg,
     LinkConfig aServerCfg,
-    openpal::LogRoot& root,
+	openpal::Logger logger,
     asio::io_service& service,
     uint16_t aPort) :
 
-	mClient(root.logger, service, "127.0.0.1", "127.0.0.1", aPort),
-	mServer(root.logger, service, "127.0.0.1", aPort),
-	mClientStack(root.logger, mClient.executor, mClient, aClientCfg),
-	mServerStack(root.logger, mServer.executor, mServer, aServerCfg)
+	mClient(logger, service, "127.0.0.1", "127.0.0.1", aPort),
+	mServer(logger, service, "127.0.0.1", aPort),
+	mClientStack(logger, mClient.executor, mClient, aClientCfg),
+	mServerStack(logger, mServer.executor, mServer, aServerCfg)
 {
 
 }

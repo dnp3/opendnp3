@@ -36,15 +36,15 @@ namespace asiopal
 TLSServer::TLSServer(
     std::shared_ptr<StrandExecutor> executor,
     std::shared_ptr<ITLSServerHandler> handler,
-    openpal::LogRoot root,
+	const openpal::Logger& logger,
     IPEndpoint endpoint,
     const TLSConfig& config,
     std::error_code& ec
 ) :
 	executor(executor),
 	handler(handler),
-	root(std::move(root)),
-	ctx(root.logger, true, config, ec),
+	logger(logger),
+	ctx(logger, true, config, ec),
 	endpoint(ip::tcp::v4(), endpoint.port),
 	acceptor(executor->strand.get_io_service()),
 	session_id(0)
@@ -80,7 +80,7 @@ std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::er
 
 	std::ostringstream oss;
 	oss << this->endpoint;
-	FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+	FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Listening on: %s", oss.str().c_str());
 	return ec;
 }
 
@@ -108,7 +108,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(self->root.logger, flags::INFO, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->logger, flags::INFO, ec.message().c_str());
 			self->OnShutdown();
 			return;
 		}
@@ -121,7 +121,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 			std::ostringstream oss;
 			oss << stream->lowest_layer().remote_endpoint();
 
-			FORMAT_LOG_BLOCK(self->root.logger, flags::INFO, "Remote endpoint rejected: %s", oss.str().c_str());
+			FORMAT_LOG_BLOCK(self->logger, flags::INFO, "Remote endpoint rejected: %s", oss.str().c_str());
 
 			stream->lowest_layer().close();
 			return;
@@ -131,7 +131,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 		{
 			if (ec)
 			{
-				FORMAT_LOG_BLOCK(self->root.logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
+				FORMAT_LOG_BLOCK(self->logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
 				return;
 			}
 

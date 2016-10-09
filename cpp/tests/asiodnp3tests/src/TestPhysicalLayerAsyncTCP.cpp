@@ -25,7 +25,7 @@
 
 #include <asiopal/ASIOExecutor.h>
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include "mocks/PhysLoopback.h"
 #include "mocks/TestObjectASIO.h"
@@ -232,13 +232,12 @@ TEST_CASE(SUITE("Loopback"))
 	const size_t ITERATIONS = MACRO_LOOPBACK_ITERATIONS;
 
 	testlib::MockLogHandler log;
-	LogRoot root(&log, "test", levels::NORMAL);
 	TestObjectASIO test;
-	PhysicalLayerTCPServer server(root.logger, test.GetService(), "127.0.0.1", 30000);
-	PhysLoopback loopback(root.logger, server.executor, &server);
+	PhysicalLayerTCPServer server(log.logger, test.GetService(), "127.0.0.1", 30000);
+	PhysLoopback loopback(log.logger, server.executor, &server);
 	loopback.Start();
 
-	PhysicalLayerTCPClient client(root.logger, test.GetService(), "127.0.0.1", "127.0.0.1", 30000);
+	PhysicalLayerTCPClient client(log.logger, test.GetService(), "127.0.0.1", "127.0.0.1", 30000);
 	LowerLayerToPhysAdapter adapter(client);
 	MockUpperLayer upper;
 	adapter.SetUpperLayer(upper);

@@ -27,7 +27,7 @@
 #include <asiopal/ResourceManagerBase.h>
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include <asiodnp3/IListenCallbacks.h>
 
@@ -73,9 +73,7 @@ public:
 
 private:
 
-	std::shared_ptr<openpal::ILogHandler> log_handler;
-
-	openpal::LogRoot log_root;
+	openpal::Logger logger;
 
 	/// this will be the first thing to be destroyed forcing all handlers to be run
 	std::shared_ptr<asiopal::ThreadPool> pool;
