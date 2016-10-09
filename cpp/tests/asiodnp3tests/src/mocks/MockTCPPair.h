@@ -39,14 +39,13 @@ class MockTCPPair
 
 public:
 
-	MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port) :
-		ec(),
+	MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec = std::error_code()) :
 		io(io),
 		log(),
 		chandler(std::make_shared<MockTCPClientHandler>()),
 		shandler(std::make_shared<MockTCPServerHandler>()),
 		client(TCPClient::Create(io->Executor(), IPEndpoint::Localhost(port), "127.0.0.1")),
-		server(TCPServer::Create(io->Executor(), this->shandler, this->log.logger.Detach("server"), IPEndpoint::Localhost(20000), ec))
+		server(TCPServer::Create(io->Executor(), shandler, log.logger, IPEndpoint::Localhost(20000), ec))
 	{
 		if (ec)
 		{
@@ -58,14 +57,6 @@ public:
 	{
 		this->server->BeginShutdown();
 		this->client->Cancel();
-
-		// drop all of our shared_ptrs
-		this->server.reset();
-		this->client.reset();
-		this->chandler.reset();
-		this->shandler.reset();
-
-		this->io->RunUntilOutOfWork();
 	}
 
 	void Connect(size_t num = 1)
@@ -89,8 +80,6 @@ public:
 	}
 
 private:
-
-	std::error_code ec;
 
 	std::shared_ptr<MockIO> io;
 	testlib::MockLogHandler log;
