@@ -22,7 +22,7 @@
 #define OPENDNP3_MASTERCONTEXT_H
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/container/Buffer.h>
 #include <openpal/executor/TimerRef.h>
 

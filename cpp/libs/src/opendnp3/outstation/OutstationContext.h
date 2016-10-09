@@ -38,7 +38,7 @@
 #include "opendnp3/outstation/IOutstationApplication.h"
 
 #include <openpal/executor/TimerRef.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/container/Pair.h>
 
 namespace opendnp3
@@ -101,8 +101,6 @@ public:
 	DatabaseConfigView GetConfigView();
 
 	/// ---- Processing functions --------
-
-
 
 	void ProcessAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects);
 

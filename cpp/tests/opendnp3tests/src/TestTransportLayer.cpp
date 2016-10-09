@@ -39,7 +39,7 @@ TEST_CASE(SUITE("RepeatSendsDoNotLogOrChangeStatistics"))
 {
 	MockLogHandler log;
 	StackStatistics stats;
-	TransportTx transmitter(log.root.logger, &stats);
+	TransportTx transmitter(log.logger, &stats);
 	HexSequence hs("12 34 56");
 	transmitter.Configure(hs.ToRSlice());
 

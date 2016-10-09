@@ -45,16 +45,28 @@ public:
 	int				errorCode;
 };
 
-class MockLogHandler : public openpal::ILogHandler
+struct MockLogHandlerImpl : public openpal::ILogHandler
+{
+	virtual void Log(const openpal::LogEntry& entry) override;
+
+	std::mutex mutex;
+	bool outputToStdIO = false;
+	std::deque<LogRecord> messages;
+};
+
+class MockLogHandler
 {
 
 public:
 
+	MockLogHandler() :
+		impl(std::make_shared<MockLogHandlerImpl>()),
+		logger(impl, "test", ~0)
+	{}
+
 	void WriteToStdIo();
 
-	void Log(const std::string& location, const std::string& msg);
-
-	void Log( const openpal::LogEntry& entry);
+	void Log(const std::string& location, const std::string& message);
 
 	int32_t PopFilter();
 
@@ -65,19 +77,28 @@ public:
 	bool PopErrorCode(int code);
 
 	int ClearLog();
+	
 	int NextErrorCode();
+	
 	bool GetNextEntry(LogRecord& record);
+
 	bool IsLogErrorFree();
 
 	void Pop(openpal::ILogHandler& log);
 
-protected:
+private:
 
-	std::mutex qMutex;
-	bool outputToStdIO = false;
-	std::deque<LogRecord> messages;
+	std::shared_ptr<MockLogHandlerImpl> impl;
+	
+public:
+
+	openpal::Logger logger;
 
 };
+
+
+
+
 
 
 }

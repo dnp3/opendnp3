@@ -56,6 +56,7 @@ public:
 private:
 
 	Logger() = delete;
+	Logger& operator=(const Logger&) = delete;
 
 	std::shared_ptr<ILogHandler> backend;
 	std::shared_ptr<Settings> settings;

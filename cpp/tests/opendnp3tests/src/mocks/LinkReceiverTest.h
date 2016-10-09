@@ -41,7 +41,7 @@ public:
 	LinkParserTest(bool aImmediate = false) :
 		log(),
 		sink(),
-		parser(log.root.logger)
+		parser(log.logger)
 	{}
 
 	void WriteData(const openpal::RSlice& input)
