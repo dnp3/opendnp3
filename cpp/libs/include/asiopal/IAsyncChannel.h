@@ -123,7 +123,7 @@ bool IAsyncChannel::BeginWrite(const openpal::RSlice& buffer, const IOCallback& 
 		self->writing = false;
 		if (!self->shuttingDown)
 		{
-			callback(ec, num);
+			callback(ec);
 		}
 	};
 

@@ -45,7 +45,15 @@ IOHandler::IOHandler(
 
 void IOHandler::BeginTransmit(const RSlice& buffer, ILinkSession& context)
 {
-
+	if (this->channel)
+	{		
+		this->txQueue.push_back(Transmission(buffer, &context));	
+		this->CheckForSend();
+	}
+	else
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Router received transmit request while offline");
+	}
 }
 
 bool IOHandler::AddContext(ILinkSession& session, const Route& route)
@@ -84,7 +92,7 @@ bool IOHandler::Enable(ILinkSession& session)
 
 	if (this->channel) iter->session->OnLowerLayerUp();
 
-	this->Enable();
+	this->BeginChannelAccept();
 
 	return true;
 }
@@ -109,7 +117,7 @@ bool IOHandler::Disable(ILinkSession& session)
 		iter->session->OnLowerLayerDown();
 	}
 
-	if (!this->IsAnySessionEnabled()) this->Suspend();
+	if (!this->IsAnySessionEnabled()) this->SuspendChannelAccept();
 
 	return true;
 }
@@ -129,7 +137,7 @@ bool IOHandler::Remove(ILinkSession& session)
 
 	sessions.erase(iter);
 
-	if (!this->IsAnySessionEnabled()) this->Suspend();
+	if (!this->IsAnySessionEnabled()) this->SuspendChannelAccept();
 
 	return true;
 }
@@ -143,6 +151,8 @@ void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& chan
 
 bool IOHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
+	++statistics.numLinkFrameRx;
+
 	ILinkSession* dest = GetEnabledSession(Route(header.src, header.dest));
 	
 	if (dest)
@@ -166,6 +176,7 @@ void IOHandler::BeginRead()
 		{
 			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
 			this->Reset();
+			this->OnChannelShutdown();
 		}
 		else
 		{
@@ -175,6 +186,32 @@ void IOHandler::BeginRead()
 	};
 
 	this->channel->BeginRead(this->parser.WriteBuff(), cb);
+}
+
+void IOHandler::CheckForSend()
+{
+	if (this->txQueue.empty() || !this->channel || !this->channel->CanWrite()) return;
+			
+	++statistics.numLinkFrameTx;
+	auto tx = this->txQueue.front();
+		
+	// we don't need to capture shared_ptr here, b/c shutting down an 
+	// IAsyncChannel guarantees that the callback isn't invoked
+	auto cb = [this](const std::error_code& ec)
+	{
+		if (ec)
+		{
+			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
+			this->Reset();
+			this->OnChannelShutdown();
+		}
+		else
+		{
+			this->CheckForSend();
+		}
+	};
+
+	this->channel->BeginWrite(tx.txdata, cb);		
 }
 
 opendnp3::ILinkSession* IOHandler::GetEnabledSession(const opendnp3::Route& route)
@@ -221,29 +258,28 @@ bool IOHandler::IsAnySessionEnabled() const
 
 void IOHandler::Reset()
 {
-	if (this->channel)
+	if (!this->channel) return;
+	
+	// shutdown the existing channel
+	this->channel->Shutdown();
+
+	// reset the state of the parser
+	this->parser.Reset();		
+
+	// clear any pending tranmissions
+	this->txQueue.clear();
+
+	// notify any sessions that are online that this layer is offline
+	for (auto& item : this->sessions)
 	{
-		// shutdown the existing channel
-		this->channel->Shutdown();
-
-		// reset the state of the parser
-		this->parser.Reset();		
-
-		// clear any pending tranmissions
-		this->txQueue.clear();
-
-		// notify any sessions that are online that this layer is offline
-		for (auto& item : this->sessions)
+		if (item.enabled) 
 		{
-			if (item.enabled) 
-			{
-				item.session->OnLowerLayerDown();
-			}			
-		}
-
-		// drop the reference to the channel
-		this->channel.reset();
+			item.session->OnLowerLayerDown();
+		}			
 	}
+
+	// drop the reference to the channel
+	this->channel.reset();	
 }
 
 }

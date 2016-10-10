@@ -68,7 +68,7 @@ void LinkSession::SetLogFilters(openpal::LogFilters filters)
 void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
 {
 	auto self(shared_from_this());
-	auto callback = [self, buffer, &session](const std::error_code & ec, std::size_t num)
+	auto callback = [self, buffer, &session](const std::error_code & ec)
 	{
 		if (ec)
 		{

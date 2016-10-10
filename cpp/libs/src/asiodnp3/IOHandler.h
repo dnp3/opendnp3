@@ -74,10 +74,10 @@ public:
 protected:
 
 	// Implemented by super class to begin the process of creating the first channel
-	virtual void Enable() = 0;
+	virtual void BeginChannelAccept() = 0;
 
 	// Stop any asynchronous channel creation operations
-	virtual void Suspend() = 0;
+	virtual void SuspendChannelAccept() = 0;
 
 	// Called when a currently active channel shuts dwon
 	virtual void OnChannelShutdown() = 0;	
@@ -95,7 +95,9 @@ private:
 	bool IsSessionInUse(opendnp3::ILinkSession& session) const;
 	bool IsAnySessionEnabled() const;
 	void Reset();
-	void BeginRead();	
+	void BeginRead();
+	void CheckForSend();
+
 	opendnp3::ILinkSession* GetEnabledSession(const opendnp3::Route&);
 
 	struct Session
