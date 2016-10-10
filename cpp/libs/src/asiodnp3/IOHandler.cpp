@@ -154,12 +154,18 @@ void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& chan
 	this->channel = channel;
 
 	this->BeginRead();
+
+	for (auto& session : this->sessions)
+	{
+		if (session.enabled)
+		{
+			session.session->OnLowerLayerUp();
+		}
+	}
 }
 
 bool IOHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
-{
-	++statistics.numLinkFrameRx;
-
+{	
 	ILinkSession* dest = GetEnabledSession(Route(header.src, header.dest));
 
 	if (dest)

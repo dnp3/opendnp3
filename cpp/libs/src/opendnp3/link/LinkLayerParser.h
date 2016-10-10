@@ -52,7 +52,7 @@ public:
 
 	/// @param logger_ Logger that the receiver is to use.
 	/// @param pSink_ Completely parsed frames are sent to this interface
-	LinkLayerParser(const openpal::Logger& logger, LinkChannelStatistics* pStatistics_ = nullptr);
+	LinkLayerParser(const openpal::Logger& logger, LinkChannelStatistics* statistics = nullptr);
 
 	/// Called when valid data has been written to the current buffer write position
 	/// Parses the new data and calls the specified frame sink
