@@ -41,9 +41,7 @@ public:
 		for (auto& channel : channels)
 		{
 			channel->Shutdown();
-		}
-
-		this->channels.clear();
+		}		
 	}
 
 	size_t num_error = 0;

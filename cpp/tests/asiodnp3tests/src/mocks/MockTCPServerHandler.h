@@ -45,8 +45,6 @@ public:
 		{
 			channel->Shutdown();
 		}
-
-		this->channels.clear();
 	}
 
 	std::deque<std::shared_ptr<IAsyncChannel>> channels;
