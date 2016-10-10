@@ -18,12 +18,12 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_MASTERTLSSERVERHANDLER_H
-#define ASIOPAL_MASTERTLSSERVERHANDLER_H
+#ifndef ASIOPAL_MASTERTLSSERVER_H
+#define ASIOPAL_MASTERTLSSERVER_H
 
 #include <openpal/logging/Logger.h>
 
-#include <asiopal/tls/ITLSServerHandler.h>
+#include <asiopal/tls/TLSServer.h>
 
 #include <asiopal/TLSConfig.h>
 #include <asiopal/IPEndpoint.h>
@@ -34,23 +34,42 @@
 namespace asiodnp3
 {
 
-class MasterTLSServerHandler final : public asiopal::ITLSServerHandler
+class MasterTLSServer final : public asiopal::TLSServer
 {
 
 public:
 
-	MasterTLSServerHandler(
-	    const openpal::Logger& logger,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    const std::shared_ptr<asiopal::ResourceManager>& manager
+	MasterTLSServer(
+		const openpal::Logger& logger,
+		std::shared_ptr<asiopal::StrandExecutor> executor,		
+		asiopal::IPEndpoint endpoint,
+		const asiopal::TLSConfig& tlsConfig,
+		std::shared_ptr<IListenCallbacks> callbacks,
+		const std::shared_ptr<asiopal::ResourceManager>& manager,
+		std::error_code& ec	    	    
 	);
 
-	static std::shared_ptr<MasterTLSServerHandler> Create(
-	    const openpal::Logger& logger,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    const std::shared_ptr<asiopal::ResourceManager>& manager)
+	static std::shared_ptr<MasterTLSServer> Create(
+		const openpal::Logger& logger,
+		std::shared_ptr<asiopal::StrandExecutor> executor,		
+		asiopal::IPEndpoint endpoint,
+		const asiopal::TLSConfig& tlsConfig,
+		std::shared_ptr<IListenCallbacks> callbacks,
+		const std::shared_ptr<asiopal::ResourceManager>& manager,
+		std::error_code& ec)
 	{
-		return std::make_shared<MasterTLSServerHandler>(logger, callbacks, manager);
+		auto ret = std::make_shared<MasterTLSServer>(logger, executor, endpoint, tlsConfig, callbacks, manager, ec);
+
+		if (ec) return nullptr;
+
+		ret->StartAccept(ec);
+
+		if (ec)
+		{
+			return nullptr;
+		}
+
+		return ret;
 	}
 
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
@@ -63,11 +82,10 @@ public:
 	    std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream
 	) override;
 
-	virtual void OnShutdown(const std::shared_ptr<asiopal::IResource>& server) override;
+	virtual void OnShutdown() override;
 
 private:
-
-	openpal::Logger logger;
+	
 	std::shared_ptr<IListenCallbacks> callbacks;
 	std::shared_ptr<asiopal::ResourceManager> manager;
 

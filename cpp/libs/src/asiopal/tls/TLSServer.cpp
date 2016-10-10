@@ -34,16 +34,14 @@ namespace asiopal
 {
 
 TLSServer::TLSServer(
-    std::shared_ptr<StrandExecutor> executor,
-    std::shared_ptr<ITLSServerHandler> handler,
-    const openpal::Logger& logger,
+	const openpal::Logger& logger,
+	std::shared_ptr<StrandExecutor> executor,
     IPEndpoint endpoint,
     const TLSConfig& config,
     std::error_code& ec
 ) :
-	executor(executor),
-	handler(handler),
 	logger(logger),
+	executor(executor),	
 	ctx(logger, true, config, ec),
 	endpoint(ip::tcp::v4(), endpoint.port),
 	acceptor(executor->strand.get_io_service()),
@@ -97,7 +95,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 
 	auto verify = [this, ID](bool preverified, asio::ssl::verify_context & ctx)
 	{
-		return this->handler->VerifyCallback(ID, preverified, ctx);
+		return this->VerifyCallback(ID, preverified, ctx);
 	};
 
 	stream->set_verify_callback(verify, ec);
@@ -109,14 +107,14 @@ void TLSServer::StartAccept(std::error_code& ec)
 		if (ec)
 		{
 			SIMPLE_LOG_BLOCK(self->logger, flags::INFO, ec.message().c_str());
-			self->handler->OnShutdown(self);
+			self->OnShutdown();
 			return;
 		}
 
 		// begin accepting another session
 		self->StartAccept(ec);
 
-		if (!self->handler->AcceptConnection(ID, stream->lowest_layer().remote_endpoint()))
+		if (!self->AcceptConnection(ID, stream->lowest_layer().remote_endpoint()))
 		{
 			std::ostringstream oss;
 			oss << stream->lowest_layer().remote_endpoint();
@@ -135,7 +133,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 				return;
 			}
 
-			self->handler->AcceptStream(ID, self->executor, stream);
+			self->AcceptStream(ID, self->executor, stream);
 		};
 
 		// Begin the TLS handshake
