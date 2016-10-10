@@ -91,14 +91,14 @@ private:
 	struct Session
 	{
 		Session(opendnp3::ILinkSession& session, const opendnp3::Route& route) :
-			session(&session),
-			route(route)			
+			route(route),
+			session(&session)			
 		{}
 
 		Session() = default;
 		
-		opendnp3::Route route;
 		bool enabled = false;
+		opendnp3::Route route;		
 		opendnp3::ILinkSession* session = nullptr;
 	};
 
