@@ -21,9 +21,9 @@
 #ifndef ASIOPAL_TCPSERVER_H
 #define ASIOPAL_TCPSERVER_H
 
-#include "asiopal/IListener.h"
 #include "asiopal/IPEndpoint.h"
-#include "asiopal/ITCPServerHandler.h"
+#include "asiopal/StrandExecutor.h"
+#include "asiopal/IListener.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/Logger.h>
@@ -38,52 +38,43 @@ namespace asiopal
 *
 * Meant to be used exclusively as a shared_ptr
 */
-class TCPServer final :
-	public IListener,
+class TCPServer :
 	public std::enable_shared_from_this<TCPServer>,
+	public IListener,
 	private openpal::Uncopyable
 {
 
 public:
 
 	TCPServer(
-	    std::shared_ptr<StrandExecutor> executor,
-	    std::shared_ptr<ITCPServerHandler> handler,
 	    const openpal::Logger& logger,
+	    std::shared_ptr<StrandExecutor> executor,
 	    IPEndpoint endpoint,
 	    std::error_code& ec
 	);
 
-	static std::shared_ptr<TCPServer> Create(
-	    std::shared_ptr<StrandExecutor> executor,
-	    std::shared_ptr<ITCPServerHandler> handler,
-		const openpal::Logger& logger,
-	    IPEndpoint endpoint,
-	    std::error_code& ec)
-	{
-		auto ret = std::make_shared<TCPServer>(executor, handler, logger, endpoint, ec);
+	/// Implement IListener
+	void BeginShutdown() override final;
 
-		if (ec) return nullptr;
-		else
-		{
-			ret->StartAccept();
-			return ret;
-		}
-	}
+protected:
 
-	/// Stop listening for connections, permanently shutting down the listener
-	void BeginShutdown() override;
+	/// Inherited classes must define these functions
+
+	virtual void OnShutdown() = 0;
+
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket) = 0;
+
+	/// Start asynchronously accepting connections on the strand
+	void StartAccept();
+
+
+	openpal::Logger logger;
+	std::shared_ptr<StrandExecutor> executor;
 
 private:
 
-	void StartAccept();
-
 	void Configure(const std::string& adapter, std::error_code& ec);
 
-	std::shared_ptr<StrandExecutor> executor;
-	std::shared_ptr<ITCPServerHandler> handler;
-
-	openpal::Logger logger;
 
 	asio::ip::tcp::endpoint endpoint;
 	asio::ip::tcp::acceptor acceptor;

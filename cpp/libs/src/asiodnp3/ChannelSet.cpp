@@ -49,7 +49,7 @@ void ChannelSet::Shutdown()
 
 IChannel* ChannelSet::CreateChannel(
 
-	const openpal::Logger& logger,
+    const openpal::Logger& logger,
     const ChannelRetry& retry,
     std::shared_ptr<IChannelListener> listener,
     std::unique_ptr<asiopal::PhysicalLayerASIO> phys)

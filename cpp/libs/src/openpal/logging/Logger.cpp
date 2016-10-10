@@ -39,13 +39,13 @@ void Logger::Log(const LogFilters& filters, char const* location, char const* me
 	if (backend)
 	{
 		backend->Log(
-			LogEntry(
-				this->settings->id.c_str(),
-				filters,
-				location,
-				message,
-				errorCode
-			)
+		    LogEntry(
+		        this->settings->id.c_str(),
+		        filters,
+		        location,
+		        message,
+		        errorCode
+		    )
 		);
 	}
 }

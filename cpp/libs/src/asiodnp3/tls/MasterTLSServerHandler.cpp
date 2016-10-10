@@ -38,7 +38,7 @@ namespace asiodnp3
 MasterTLSServerHandler::MasterTLSServerHandler(
     const openpal::Logger& logger,
     std::shared_ptr<IListenCallbacks> callbacks,
-	const std::shared_ptr<asiopal::ResourceManager>& manager) :
+    const std::shared_ptr<asiopal::ResourceManager>& manager) :
 	logger(logger),
 	callbacks(callbacks),
 	manager(manager)
@@ -94,16 +94,17 @@ void MasterTLSServerHandler::AcceptStream(uint64_t sessionid, const std::shared_
 {
 	auto channel = TLSStreamChannel::Create(executor->Fork(), stream); 	// run the link session in a new strand
 
-	auto create = [&]() -> std::shared_ptr<LinkSession> {
+	auto create = [&]() -> std::shared_ptr<LinkSession>
+	{
 		return LinkSession::Create(
-			this->logger.Detach(SessionIdToString(sessionid)),
-			sessionid,
-			this->manager,
-			callbacks,
-			channel
+		    this->logger.Detach(SessionIdToString(sessionid)),
+		    sessionid,
+		    this->manager,
+		    callbacks,
+		    channel
 		);
 	};
-	
+
 	if (!this->manager->Bind<LinkSession>(create))
 	{
 		channel->Shutdown();

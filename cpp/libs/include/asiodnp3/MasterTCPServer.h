@@ -18,13 +18,14 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_MASTERTCPSERVERHANDLER_H
-#define ASIOPAL_MASTERTCPSERVERHANDLER_H
+#ifndef ASIOPAL_MASTERTCPSERVER_H
+#define ASIOPAL_MASTERTCPSERVER_H
 
 #include <openpal/logging/Logger.h>
 
-#include <asiopal/ITCPServerHandler.h>
+#include <asiopal/TCPServer.h>
 #include <asiopal/ResourceManager.h>
+#include <asiopal/IListener.h>
 #include <asiopal/IPEndpoint.h>
 
 #include "asiodnp3/IListenCallbacks.h"
@@ -36,36 +37,49 @@ namespace asiodnp3
 *
 * Meant to be used exclusively as a shared_ptr
 */
-class MasterTCPServerHandler final : public asiopal::ITCPServerHandler
+class MasterTCPServer final : public asiopal::TCPServer
 {
 
 public:
 
-	MasterTCPServerHandler(
+	MasterTCPServer(
 	    const openpal::Logger& logger,
+	    std::shared_ptr<asiopal::StrandExecutor> executor,
+	    asiopal::IPEndpoint endpoint,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    const std::shared_ptr<asiopal::ResourceManager>& manager
+	    const std::shared_ptr<asiopal::ResourceManager>& manager,
+	    std::error_code& ec
 	);
 
-	static std::shared_ptr<MasterTCPServerHandler> Create(
-		const openpal::Logger& logger,
+	static std::shared_ptr<MasterTCPServer> Create(
+	    const openpal::Logger& logger,
+	    std::shared_ptr<asiopal::StrandExecutor> executor,
+	    asiopal::IPEndpoint endpoint,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-		const std::shared_ptr<asiopal::ResourceManager>& manager)
+	    const std::shared_ptr<asiopal::ResourceManager>& manager,
+	    std::error_code& ec)
 	{
-		return std::make_shared<MasterTCPServerHandler>(logger, callbacks, manager);
+		auto server = std::make_shared<MasterTCPServer>(logger, executor, endpoint, callbacks, manager, ec);
+
+		if (!ec)
+		{
+			server->StartAccept();
+		}
+
+		return server;
 	}
 
 
 private:
 
-	openpal::Logger logger;
 	std::shared_ptr<IListenCallbacks> callbacks;
 	std::shared_ptr<asiopal::ResourceManager> manager;
 
-
 	static std::string SessionIdToString(uint64_t sessionid);
 
-	virtual void OnShutdown(const std::shared_ptr<asiopal::IResource>& server) override;
+	// implement the virutal methods from TCPServer
+
+	virtual void OnShutdown() override;
 
 	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket) override;
 };

@@ -35,7 +35,7 @@ namespace openpal
 */
 class Logger
 {
-	
+
 public:
 
 	struct Settings
@@ -68,7 +68,7 @@ public:
 
 	bool IsEnabled(const LogFilters& filters) const;
 
-	LogFilters GetFilters() const 
+	LogFilters GetFilters() const
 	{
 		return this->settings->levels;
 	}

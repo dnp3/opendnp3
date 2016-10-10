@@ -41,11 +41,11 @@ public:
 		for (auto& channel : channels)
 		{
 			channel->Shutdown();
-		}		
+		}
 	}
 
 	size_t num_error = 0;
-	
+
 	std::deque<std::shared_ptr<IAsyncChannel>> channels;
 
 };

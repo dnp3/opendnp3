@@ -24,10 +24,9 @@
 
 #include "MockIO.h"
 #include "MockTCPClientHandler.h"
-#include "MockTCPServerHandler.h"
+#include "MockTCPServer.h"
 
 #include "asiopal/TCPClient.h"
-#include "asiopal/TCPServer.h"
 
 #include "testlib/MockLogHandler.h"
 
@@ -42,15 +41,14 @@ public:
 	MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec = std::error_code()) :
 		io(io),
 		log(),
-		chandler(std::make_shared<MockTCPClientHandler>()),
-		shandler(std::make_shared<MockTCPServerHandler>()),
+		chandler(std::make_shared<MockTCPClientHandler>()),		
 		client(TCPClient::Create(io->Executor(), IPEndpoint::Localhost(port), "127.0.0.1")),
-		server(TCPServer::Create(io->Executor(), shandler, log.logger, IPEndpoint::Localhost(20000), ec))
+		server(MockTCPServer::Create(log.logger, io->Executor(), IPEndpoint::Localhost(20000), ec))
 	{
 		if (ec)
 		{
 			throw std::logic_error(ec.message());
-		}
+		}		
 	}
 
 	~MockTCPPair()
@@ -76,17 +74,16 @@ public:
 
 	bool NumConnectionsEqual(size_t num) const
 	{
-		return (this->shandler->channels.size() == num) && (this->chandler->channels.size() == num);
+		return (this->server->channels.size() == num) && (this->chandler->channels.size() == num);
 	}
 
 private:
 
 	std::shared_ptr<MockIO> io;
 	testlib::MockLogHandler log;
-	std::shared_ptr<MockTCPClientHandler> chandler;
-	std::shared_ptr<MockTCPServerHandler> shandler;
-	std::shared_ptr<TCPClient> client;
-	std::shared_ptr<TCPServer> server;
+	std::shared_ptr<MockTCPClientHandler> chandler;	
+	std::shared_ptr<TCPClient> client;	
+	std::shared_ptr<MockTCPServer> server;
 };
 
 }

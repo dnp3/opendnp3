@@ -36,7 +36,7 @@ class OutstationStack: public OutstationStackBase<IOutstation>
 public:
 
 	OutstationStack(
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    openpal::IExecutor& executor,
 	    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
 	    std::shared_ptr<opendnp3::IOutstationApplication> application,

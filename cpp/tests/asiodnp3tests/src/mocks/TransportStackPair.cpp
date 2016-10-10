@@ -30,7 +30,7 @@ namespace opendnp3
 TransportStackPair::TransportStackPair(
     LinkConfig aClientCfg,
     LinkConfig aServerCfg,
-	openpal::Logger logger,
+    openpal::Logger logger,
     asio::io_service& service,
     uint16_t aPort) :
 

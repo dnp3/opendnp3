@@ -77,9 +77,9 @@ public:
 	bool PopErrorCode(int code);
 
 	int ClearLog();
-	
+
 	int NextErrorCode();
-	
+
 	bool GetNextEntry(LogRecord& record);
 
 	bool IsLogErrorFree();
@@ -89,7 +89,7 @@ public:
 private:
 
 	std::shared_ptr<MockLogHandlerImpl> impl;
-	
+
 public:
 
 	openpal::Logger logger;

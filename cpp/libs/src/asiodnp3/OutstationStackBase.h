@@ -46,7 +46,7 @@ class OutstationStackBase : public Interface, public ILinkBind
 public:
 
 	OutstationStackBase(
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    openpal::IExecutor& executor,
 	    opendnp3::ILinkListener& listener,
 	    const OutstationStackConfig& config,

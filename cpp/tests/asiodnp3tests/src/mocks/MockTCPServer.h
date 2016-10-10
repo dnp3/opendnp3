@@ -19,27 +19,58 @@
  * to you under the terms of the License.
  */
 
-#ifndef ASIOPAL_MOCKTCPSERVERHANDLER_H
-#define ASIOPAL_MOCKTCPSERVERHANDLER_H
+#ifndef ASIOPAL_MOCKTCPSERVER_H
+#define ASIOPAL_MOCKTCPSERVER_H
 
-#include "asiopal/ITCPServerHandler.h"
+#include "asiopal/TCPServer.h"
 #include "asiopal/IAsyncChannel.h"
+#include "asiopal/SocketChannel.h"
 
 #include <deque>
 
 namespace asiopal
 {
 
-class MockTCPServerHandler final : public ITCPServerHandler
+class MockTCPServer final : public TCPServer
 {
 
 public:
 
-	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket) override;
+	MockTCPServer(
+		const openpal::Logger& logger,
+		std::shared_ptr<StrandExecutor> executor,
+		IPEndpoint endpoint,
+		std::error_code& ec
+	) : TCPServer(logger, executor, endpoint, ec)
+	{
+		
+	}
 
-	virtual void OnShutdown(const std::shared_ptr<IResource>& server) override {}
+	static std::shared_ptr<MockTCPServer> Create(
+		const openpal::Logger& logger,
+		std::shared_ptr<StrandExecutor> executor,
+		IPEndpoint endpoint,
+		std::error_code& ec)
+	{
+		auto server = std::make_shared<MockTCPServer>(logger, executor, endpoint, ec);
 
-	~MockTCPServerHandler()
+		if (!ec)
+		{
+			server->StartAccept();
+		}
+
+		return server;
+	}
+
+
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket) override
+	{
+		this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
+	}
+
+	virtual void OnShutdown() override {}
+
+	~MockTCPServer()
 	{
 		for (auto& channel : channels)
 		{

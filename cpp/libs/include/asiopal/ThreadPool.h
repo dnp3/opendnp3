@@ -44,19 +44,19 @@ public:
 	friend class ThreadPoolTest;
 
 	ThreadPool(
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    uint32_t levels,
 	    uint32_t concurrency,
-		std::function<void()> onThreadStart = []() {},
-		std::function<void()> onThreadExit = []() {}
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
 	);
 
 	static std::shared_ptr<ThreadPool> Create(
 	    const openpal::Logger& logger,
 	    uint32_t levels,
 	    uint32_t concurrency,
-		std::function<void()> onThreadStart = []() {},
-		std::function<void()> onThreadExit = []() {}
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
 	);
 
 

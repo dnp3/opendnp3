@@ -45,7 +45,7 @@ class MasterStackBase : public Interface, public ILinkBind
 public:
 
 	MasterStackBase(
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    asiopal::ASIOExecutor& executor,
 	    opendnp3::ILinkListener& listener,
 	    const MasterStackConfig& config,

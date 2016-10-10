@@ -39,7 +39,7 @@ public:
 	static std::shared_ptr<ResourceManager> Create()
 	{
 		return std::make_shared<ResourceManager>();
-	}	
+	}
 
 	virtual void OnShutdown(const std::shared_ptr<IResource>& resource)  override
 	{
@@ -78,7 +78,7 @@ public:
 		}
 		else
 		{
-			auto item = create();			
+			auto item = create();
 			this->resources.push_back(item);
 			return item;
 		}
@@ -87,7 +87,7 @@ public:
 private:
 
 	std::mutex mutex;
-	bool is_shutting_down = false;	
+	bool is_shutting_down = false;
 	std::vector<std::shared_ptr<asiopal::IResource>> resources;
 
 };

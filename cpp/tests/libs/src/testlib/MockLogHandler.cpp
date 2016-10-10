@@ -134,7 +134,7 @@ int MockLogHandler::ClearLog()
 void MockLogHandler::Log(const std::string& location, const std::string& message)
 {
 	this->impl->Log(
-		LogEntry("test", openpal::logflags::EVENT, location.c_str(), message.c_str(), -1)
+	    LogEntry("test", openpal::logflags::EVENT, location.c_str(), message.c_str(), -1)
 	);
 }
 

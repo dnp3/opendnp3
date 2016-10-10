@@ -35,13 +35,13 @@ namespace asiodnp3
 LinkSession::LinkSession(
     const openpal::Logger& logger,
     uint64_t sessionid,
-	const std::shared_ptr<IShutdownHandler>& shutdown,
+    const std::shared_ptr<IShutdownHandler>& shutdown,
     const std::shared_ptr<IListenCallbacks>& callbacks,
     const std::shared_ptr<asiopal::IAsyncChannel>& channel) :
 	logger(logger),
 	session_id(sessionid),
 	shutdown(shutdown),
-	callbacks(callbacks),	
+	callbacks(callbacks),
 	parser(logger, &stats),
 	first_frame_timer(*channel->executor),
 	channel(std::move(channel))

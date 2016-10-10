@@ -33,7 +33,7 @@ namespace asiopal
 {
 
 ThreadPool::ThreadPool(
-	const openpal::Logger& logger,
+    const openpal::Logger& logger,
     uint32_t levels,
     uint32_t concurrency,
     std::function<void()> onThreadStart,
@@ -63,7 +63,7 @@ ThreadPool::ThreadPool(
 }
 
 std::shared_ptr<ThreadPool> ThreadPool::Create(
-	const openpal::Logger& logger,
+    const openpal::Logger& logger,
     uint32_t levels,
     uint32_t concurrency,
     std::function<void()> onThreadStart,

@@ -22,9 +22,7 @@
 #include "asiodnp3/GPRSManagerImpl.h"
 
 #include "asiodnp3/ErrorCodes.h"
-
-#include "asiopal/TCPServer.h"
-#include "asiodnp3/MasterTCPServerHandler.h"
+#include "asiodnp3/MasterTCPServer.h"
 
 #ifdef OPENDNP3_USE_TLS
 #include "asiopal/tls/TLSServer.h"
@@ -54,21 +52,12 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 {
 	auto create = [&]() -> std::shared_ptr<asiopal::IListener>
 	{
-		auto newlogger = this->logger.Detach(loggerid, levels);
-
-		auto handler = asiodnp3::MasterTCPServerHandler::Create(
-			newlogger,
-		    callbacks,
-			this->resources
-		);
-
-		/** TODO: The server needs to take the shutdown hander!!! */
-
-		return asiopal::TCPServer::Create(
+		return asiodnp3::MasterTCPServer::Create(
+		    this->logger.Detach(loggerid, levels),
 		    asiopal::StrandExecutor::Create(this->pool),
-		    handler,
-			newlogger,
 		    endpoint,
+		    callbacks,
+		    this->resources,
 		    ec
 		);
 	};
@@ -99,7 +88,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		auto newlogger = this->logger.Detach(loggerid, levels);
 
 		auto handler = asiodnp3::MasterTLSServerHandler::Create(
-			newlogger,
+		    newlogger,
 		    callbacks,
 		    this->resources
 		);
@@ -107,7 +96,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 		return asiopal::TLSServer::Create(
 		    asiopal::StrandExecutor::Create(this->pool),
 		    handler,
-			newlogger,
+		    newlogger,
 		    endpoint,
 		    config,
 		    ec

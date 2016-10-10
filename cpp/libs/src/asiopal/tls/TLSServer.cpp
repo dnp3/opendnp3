@@ -36,7 +36,7 @@ namespace asiopal
 TLSServer::TLSServer(
     std::shared_ptr<StrandExecutor> executor,
     std::shared_ptr<ITLSServerHandler> handler,
-	const openpal::Logger& logger,
+    const openpal::Logger& logger,
     IPEndpoint endpoint,
     const TLSConfig& config,
     std::error_code& ec

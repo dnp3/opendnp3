@@ -33,7 +33,7 @@ namespace asiodnp3
 {
 
 MasterStack::MasterStack(
-	const Logger& logger,
+    const Logger& logger,
     asiopal::ASIOExecutor& executor,
     std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
     std::shared_ptr<opendnp3::IMasterApplication> application,

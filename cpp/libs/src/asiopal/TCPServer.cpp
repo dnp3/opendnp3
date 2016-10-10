@@ -34,13 +34,11 @@ namespace asiopal
 {
 
 TCPServer::TCPServer(
+    const openpal::Logger& logger,
     std::shared_ptr<StrandExecutor> executor,
-    std::shared_ptr<ITCPServerHandler> handler,
-	const openpal::Logger& logger,
     IPEndpoint endpoint,
     std::error_code& ec) :
 	executor(executor),
-	handler(handler),
 	logger(logger),
 	endpoint(ip::tcp::v4(), endpoint.port),
 	acceptor(executor->strand.get_io_service()),
@@ -52,7 +50,13 @@ TCPServer::TCPServer(
 
 void TCPServer::BeginShutdown()
 {
-	acceptor.close();
+	std::error_code ec;
+	this->acceptor.close(ec);
+
+	if (ec)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
+	}
 }
 
 void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
@@ -105,7 +109,7 @@ void TCPServer::StartAccept()
 		if (ec)
 		{
 			SIMPLE_LOG_BLOCK(self->logger, flags::INFO, ec.message().c_str());
-			self->handler->OnShutdown(self);
+			self->OnShutdown();
 		}
 		else
 		{
@@ -113,7 +117,7 @@ void TCPServer::StartAccept()
 			++self->session_id;
 
 			// method responsible for closing
-			self->handler->AcceptConnection(ID, self->executor, std::move(self->socket));
+			self->AcceptConnection(ID, self->executor, std::move(self->socket));
 			self->StartAccept();
 		}
 	};

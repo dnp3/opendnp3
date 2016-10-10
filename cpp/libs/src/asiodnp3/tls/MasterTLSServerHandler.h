@@ -40,15 +40,15 @@ class MasterTLSServerHandler final : public asiopal::ITLSServerHandler
 public:
 
 	MasterTLSServerHandler(
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
 	    const std::shared_ptr<asiopal::ResourceManager>& manager
 	);
 
 	static std::shared_ptr<MasterTLSServerHandler> Create(
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-		const std::shared_ptr<asiopal::ResourceManager>& manager)
+	    const std::shared_ptr<asiopal::ResourceManager>& manager)
 	{
 		return std::make_shared<MasterTLSServerHandler>(logger, callbacks, manager);
 	}

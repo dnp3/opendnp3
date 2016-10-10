@@ -51,7 +51,7 @@ class DNP3Channel : public IChannel
 public:
 
 	DNP3Channel(
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    const opendnp3::ChannelRetry& retry,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::unique_ptr<asiopal::PhysicalLayerASIO> phys

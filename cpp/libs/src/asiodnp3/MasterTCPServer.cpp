@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "asiodnp3/MasterTCPServerHandler.h"
+#include "asiodnp3/MasterTCPServer.h"
 
 #include "asiodnp3/LinkSession.h"
 
@@ -37,24 +37,27 @@ using namespace asiopal;
 namespace asiodnp3
 {
 
-MasterTCPServerHandler::MasterTCPServerHandler(
-	const openpal::Logger& logger,
+MasterTCPServer::MasterTCPServer(
+    const openpal::Logger& logger,
+    std::shared_ptr<asiopal::StrandExecutor> executor,
+    asiopal::IPEndpoint endpoint,
     std::shared_ptr<IListenCallbacks> callbacks,
-	const std::shared_ptr<asiopal::ResourceManager>& manager
+    const std::shared_ptr<asiopal::ResourceManager>& manager,
+    std::error_code& ec
 ) :
-	logger(logger),
+	TCPServer(logger, executor, endpoint, ec),
 	callbacks(callbacks),
 	manager(manager)
 {
 
 }
 
-void MasterTCPServerHandler::OnShutdown(const std::shared_ptr<IResource>& server)
+void MasterTCPServer::OnShutdown()
 {
-	this->manager->OnShutdown(server);
+	this->manager->OnShutdown(this->shared_from_this());
 }
 
-void MasterTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket socket)
+void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket socket)
 {
 	std::ostringstream oss;
 	oss << socket.remote_endpoint();
@@ -65,13 +68,14 @@ void MasterTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::sha
 
 		auto channel = SocketChannel::Create(executor->Fork(), std::move(socket));	// run the link session in its own strand
 
-		auto create = [&]() -> std::shared_ptr<LinkSession> {
+		auto create = [&]() -> std::shared_ptr<LinkSession>
+		{
 			return LinkSession::Create(
-				this->logger.Detach(SessionIdToString(sessionid)),
-				sessionid,
-				this->manager,
-				this->callbacks,
-				channel
+			    this->logger.Detach(SessionIdToString(sessionid)),
+			    sessionid,
+			    this->manager,
+			    this->callbacks,
+			    channel
 			);
 		};
 
@@ -87,7 +91,7 @@ void MasterTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::sha
 	}
 }
 
-std::string MasterTCPServerHandler::SessionIdToString(uint64_t sessionid)
+std::string MasterTCPServer::SessionIdToString(uint64_t sessionid)
 {
 	std::ostringstream oss;
 	oss << "session-" << sessionid;

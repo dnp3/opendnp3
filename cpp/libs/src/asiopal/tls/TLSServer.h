@@ -58,7 +58,7 @@ public:
 	static std::shared_ptr<TLSServer> Create(
 	    std::shared_ptr<StrandExecutor> executor,
 	    std::shared_ptr<ITLSServerHandler> handler,
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    IPEndpoint endpoint,
 	    const TLSConfig& tlsConfig,
 	    std::error_code& ec)
