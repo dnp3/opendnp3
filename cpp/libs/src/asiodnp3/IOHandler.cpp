@@ -37,8 +37,11 @@ IOHandler::IOHandler(
 ) :
 	logger(logger),
 	io(io),
-	listener(listener)
-{}
+	listener(listener),	
+	parser(logger, &statistics)
+{
+
+}
 
 void IOHandler::BeginTransmit(const RSlice& buffer, ILinkSession& context)
 {

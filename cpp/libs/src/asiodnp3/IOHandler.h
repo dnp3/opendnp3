@@ -27,6 +27,7 @@
 #include "asiodnp3/IChannelListener.h"
 
 #include "openpal/logging/Logger.h"
+#include "opendnp3/link/LinkLayerParser.h"
 
 #include "asiopal/IO.h"
 #include "asiopal/IAsyncChannel.h"
@@ -105,10 +106,15 @@ private:
 	std::vector<Session> records;
 
 	openpal::Logger logger;
-	std::shared_ptr<asiopal::IO> io;
-	std::shared_ptr<IChannelListener> listener;
 
-	// current value of the channel, may be null
+	const std::shared_ptr<asiopal::IO> io;
+	const std::shared_ptr<IChannelListener> listener;
+	
+	opendnp3::LinkChannelStatistics statistics;
+	opendnp3::LinkLayerParser parser;
+
+
+	// current value of the channel, may be empty
 	std::shared_ptr<asiopal::IAsyncChannel> channel;
 };
 
