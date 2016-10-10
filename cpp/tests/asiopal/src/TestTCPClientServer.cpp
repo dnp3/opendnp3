@@ -50,7 +50,7 @@ TEST_CASE(SUITE("Client and server can connect"))
 	};
 
 	// run multiple times to ensure the test is cleaning up after itself in terms of system resources
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
 		iteration();
 		//std::cout << "iteration: " << i << " complete" << std::endl;

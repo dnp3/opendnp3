@@ -60,9 +60,23 @@ size_t MockIO::RunUntilTimeout(const std::function<bool()>& condition, std::chro
 	return iterations;
 }
 
-void MockIO::CompleteInXIterations(size_t expectedIterations, const std::function<bool()>& condition)
+void MockIO::CompleteInXIterations(size_t expectedIterations, const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout)
 {
 	size_t iterations = 0;
+
+	asio::basic_waitable_timer<std::chrono::steady_clock> timer(this->service, timeout);
+
+	bool run_timer = false;
+	
+	timer.async_wait([&](const std::error_code& ec)
+	{
+		run_timer = true;
+
+		if (!ec)
+		{
+			throw std::logic_error("timeout before completion");
+		}
+	});
 
 	while (!condition())
 	{
@@ -74,7 +88,7 @@ void MockIO::CompleteInXIterations(size_t expectedIterations, const std::functio
 		}
 
 		std::error_code ec;
-		const auto num = this->service.poll_one(ec);
+		const auto num = this->service.run_one(ec);
 		if (ec) throw std::logic_error(ec.message());
 		if (num == 0)
 		{
@@ -93,6 +107,16 @@ void MockIO::CompleteInXIterations(size_t expectedIterations, const std::functio
 		oss << "completed after " << iterations << " iterations, (expected " << expectedIterations << ")";
 		throw std::logic_error(oss.str());
 	}
+
+	timer.cancel();
+
+	this->service.run_one();
+
+	if (!run_timer)
+	{
+		throw std::logic_error("timer did not run as next action");
+	}
+	
 }
 
 size_t MockIO::RunUntilOutOfWork()
