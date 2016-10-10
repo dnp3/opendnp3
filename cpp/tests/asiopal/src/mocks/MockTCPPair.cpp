@@ -45,7 +45,12 @@ MockTCPPair::~MockTCPPair()
 
 void MockTCPPair::Connect(size_t num)
 {
-	if (!this->client->BeginConnect(this->chandler))
+	auto callback = [handler = this->chandler](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec)
+	{
+		handler->OnConnect(executor, std::move(socket), ec);
+	};
+
+	if (!this->client->BeginConnect(callback))
 	{
 		throw std::logic_error("BeginConnect returned false");
 	}

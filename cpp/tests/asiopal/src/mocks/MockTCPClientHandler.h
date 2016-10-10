@@ -22,19 +22,18 @@
 #ifndef ASIOPAL_MOCKTCPCLIENTHANDLER_H
 #define ASIOPAL_MOCKTCPCLIENTHANDLER_H
 
-#include "asiopal/ITCPClientHandler.h"
 #include "asiopal/IAsyncChannel.h"
 
 #include <deque>
 
 namespace asiopal
 {
-class MockTCPClientHandler final : public ITCPClientHandler
+class MockTCPClientHandler final
 {
 
 public:
 
-	virtual void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec) override;
+	void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec);
 
 	~MockTCPClientHandler();
 

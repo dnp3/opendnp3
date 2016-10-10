@@ -22,7 +22,6 @@
 #define ASIOPAL_TCPCLIENT_H
 
 #include "asiopal/StrandExecutor.h"
-#include "asiopal/ITCPClientHandler.h"
 #include "asiopal/IPEndpoint.h"
 
 namespace asiopal
@@ -33,13 +32,15 @@ class TCPClient final : public std::enable_shared_from_this<TCPClient>, private 
 
 public:
 
+	typedef std::function<void(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket, const std::error_code& ec)> connect_callback_t;
+
 	static std::shared_ptr<TCPClient> Create(
 	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& remote,
 	    const std::string& adapter)
 	{
 		return std::make_shared<TCPClient>(executor, remote, adapter);
-	}
+	}	
 
 	TCPClient(
 	    const std::shared_ptr<StrandExecutor>& executor,
@@ -48,12 +49,12 @@ public:
 	);
 
 	bool Cancel();
-
-	bool BeginConnect(const std::shared_ptr<ITCPClientHandler>& handler);
+	
+	bool BeginConnect(const connect_callback_t& callback);
 
 private:
 
-	bool PostConnectError(const std::shared_ptr<ITCPClientHandler>& handler, const std::error_code& ec);
+	bool PostConnectError(const connect_callback_t& callback, const std::error_code& ec);
 
 	bool connecting = false;
 	bool canceled = false;
@@ -66,6 +67,7 @@ private:
 	asio::ip::tcp::endpoint localEndpoint;
 	asio::ip::tcp::resolver resolver;
 };
+
 
 }
 

@@ -54,7 +54,7 @@ bool TCPClient::Cancel()
 	return true;
 }
 
-bool TCPClient::BeginConnect(const std::shared_ptr<ITCPClientHandler>& handler)
+bool TCPClient::BeginConnect(const connect_callback_t& callback)
 {
 	if (connecting || canceled) return false;
 
@@ -65,25 +65,25 @@ bool TCPClient::BeginConnect(const std::shared_ptr<ITCPClientHandler>& handler)
 
 	if (ec)
 	{
-		return this->PostConnectError(handler, ec);
+		return this->PostConnectError(callback, ec);
 	}
 
 	const auto address = asio::ip::address::from_string(this->host, ec);
 	if (ec)
 	{
-		return this->PostConnectError(handler, ec);
+		return this->PostConnectError(callback, ec);
 		// TODO handle DNS resolution
 	}
 	else
 	{
 		remoteEndpoint.address(address);
 		auto self = this->shared_from_this();
-		auto cb = [self, handler](const std::error_code & ec)
+		auto cb = [self, callback](const std::error_code & ec)
 		{
 			self->connecting = false;
 			if (!self->canceled)
 			{
-				handler->OnConnect(self->executor, std::move(self->socket), ec);
+				callback(self->executor, std::move(self->socket), ec);
 			}
 		};
 
@@ -92,15 +92,15 @@ bool TCPClient::BeginConnect(const std::shared_ptr<ITCPClientHandler>& handler)
 	}
 }
 
-bool TCPClient::PostConnectError(const std::shared_ptr<ITCPClientHandler>& handler, const std::error_code& ec)
+bool TCPClient::PostConnectError(const connect_callback_t& callback, const std::error_code& ec)
 {
 	auto self = this->shared_from_this();
-	auto cb = [self, ec, handler]()
+	auto cb = [self, ec, callback]()
 	{
 		self->connecting = false;
 		if (!self->canceled)
 		{
-			handler->OnConnect(self->executor, std::move(self->socket), ec);
+			callback(self->executor, std::move(self->socket), ec);
 		}
 	};
 	executor->strand.post(cb);
