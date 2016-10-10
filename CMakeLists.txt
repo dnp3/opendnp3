@@ -208,21 +208,21 @@ if(DNP3_TEST)
   set_target_properties(dnp3mocks PROPERTIES FOLDER tests/mocks)
 
   # ----- openpal tests -----
-  file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp ./cpp/tests/openpaltests/src/*.h)
+  file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpal/src/*.cpp ./cpp/tests/openpal/src/*.h)
   add_executable (testopenpal ${openpal_TESTSRC})
   target_link_libraries (testopenpal LINK_PUBLIC testlib ${PTHREAD})
   set_target_properties(testopenpal PROPERTIES FOLDER tests)
   add_test(testopenpal testopenpal)
 
   # ----- opendnp3 tests -----
-  file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp ./cpp/tests/opendnp3tests/src/*.h)
+  file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3/src/*.cpp ./cpp/tests/opendnp3/src/*.h)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})
   target_link_libraries (testopendnp3 LINK_PUBLIC dnp3mocks ${PTHREAD})
   set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
   add_test(testopendnp3 testopendnp3)
 
   # ----- asiodnp3 tests -----
-  file(GLOB_RECURSE asiodnp3_TESTSRC ./cpp/tests/asiodnp3tests/src/*.cpp ./cpp/tests/asiodnp3tests/src/*.h)
+  file(GLOB_RECURSE asiodnp3_TESTSRC ./cpp/tests/asiodnp3/src/*.cpp ./cpp/tests/asiodnp3/src/*.h)
   add_executable (testasiodnp3 ${asiodnp3_TESTSRC})
   target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
   set_target_properties(testasiodnp3 PROPERTIES FOLDER tests)
