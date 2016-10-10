@@ -47,10 +47,18 @@ void TCPClientChannelFactory::Shutdown()
 	this->Reset();
 }
 
-
 void TCPClientChannelFactory::BeginChannelAccept(const channel_callback_t& callback)
 {
-	this->StartConnect(this->retry.minOpenRetry, callback);
+	// this call needs to be idempotent
+	if (!this->is_connecting) 
+	{
+		if (!this->client)
+		{
+			this->client = TCPClient::Create(executor, remote, adapter);
+		}
+		
+		this->StartConnect(this->client, this->retry.minOpenRetry, callback);
+	}	
 }
 
 void TCPClientChannelFactory::SuspendChannelAccept()
@@ -60,35 +68,31 @@ void TCPClientChannelFactory::SuspendChannelAccept()
 
 void TCPClientChannelFactory::OnChannelShutdown(const channel_callback_t& callback)
 {
-
-	this->StartConnect(this->retry.minOpenRetry, callback);
+	this->BeginChannelAccept(callback);
 }
 
-void TCPClientChannelFactory::StartConnect(const openpal::TimeDuration& delay, const channel_callback_t& callback)
-{
-	this->Reset();
-
-	this->client = TCPClient::Create(executor, remote, adapter);
+void TCPClientChannelFactory::StartConnect(const std::shared_ptr<TCPClient>& client, const openpal::TimeDuration& delay, const channel_callback_t& callback)
+{			
+	this->is_connecting = true;
 
 	auto self(shared_from_this());
-	auto cb = [self, delay, callback](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
+	auto cb = [self, delay, client, callback](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
 	{
 
 		if (ec)
-		{
-			self->Reset();
-
+		{			
 			const auto newDelay = self->retry.strategy.GetNextDelay(delay, self->retry.maxOpenRetry);
 
-			auto cb = [self, newDelay, callback]()
+			auto cb = [self, newDelay, client, callback]()
 			{
-				self->StartConnect(newDelay, callback);
+				self->StartConnect(client, newDelay, callback);
 			};
 
 			self->retrytimer.Start(delay, cb);
 		}
 		else
-		{
+		{		
+			self->is_connecting = false;
 			callback(SocketChannel::Create(executor, std::move(socket)));
 		}
 	};
@@ -103,6 +107,8 @@ void TCPClientChannelFactory::Reset()
 		this->client->Cancel();
 		this->client.reset();
 	}
+
+	this->is_connecting = false;
 
 	retrytimer.Cancel();
 }

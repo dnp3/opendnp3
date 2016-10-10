@@ -91,7 +91,6 @@ private:
 	void BeginRead();
 	void CheckForSend();
 
-
 	opendnp3::ILinkSession* GetEnabledSession(const opendnp3::Route&);
 
 	struct Session

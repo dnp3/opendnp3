@@ -61,9 +61,11 @@ public:
 
 private:
 
-	void StartConnect(const openpal::TimeDuration& delay, const channel_callback_t& callback);
+	void StartConnect(const std::shared_ptr<TCPClient>& client, const openpal::TimeDuration& delay, const channel_callback_t& callback);
 
 	void Reset();
+
+	bool is_connecting = false;
 
 	openpal::Logger logger;
 

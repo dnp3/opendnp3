@@ -90,10 +90,15 @@ bool IOHandler::Enable(ILinkSession& session)
 
 	iter->enabled = true;
 
-	if (this->channel) iter->session->OnLowerLayerUp();
-
-	this->factory->BeginChannelAccept([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel) { this->OnNewChannel(channel); });
-
+	if (this->channel)
+	{
+		iter->session->OnLowerLayerUp();
+	}
+	else 
+	{
+		this->factory->BeginChannelAccept([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel) { this->OnNewChannel(channel); });
+	}
+	
 	return true;
 }
 
