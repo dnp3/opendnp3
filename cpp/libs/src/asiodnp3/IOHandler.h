@@ -92,15 +92,14 @@ private:
 	{
 		Session(opendnp3::ILinkSession& session, const opendnp3::Route& route) :
 			session(&session),
-			route(route),
-			enabled(false)
+			route(route)			
 		{}
 
-		Session() : session(nullptr), enabled(false) {}
-
-		opendnp3::ILinkSession* session;
+		Session() = default;
+		
 		opendnp3::Route route;
-		bool enabled;
+		bool enabled = false;
+		opendnp3::ILinkSession* session = nullptr;
 	};
 
 	std::vector<Session> records;
