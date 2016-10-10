@@ -50,15 +50,15 @@ void TCPClientChannelFactory::Shutdown()
 void TCPClientChannelFactory::BeginChannelAccept(const channel_callback_t& callback)
 {
 	// this call needs to be idempotent
-	if (!this->is_connecting) 
+	if (!this->is_connecting)
 	{
 		if (!this->client)
 		{
 			this->client = TCPClient::Create(executor, remote, adapter);
 		}
-		
+
 		this->StartConnect(this->client, this->retry.minOpenRetry, callback);
-	}	
+	}
 }
 
 void TCPClientChannelFactory::SuspendChannelAccept()
@@ -72,7 +72,7 @@ void TCPClientChannelFactory::OnChannelShutdown(const channel_callback_t& callba
 }
 
 void TCPClientChannelFactory::StartConnect(const std::shared_ptr<TCPClient>& client, const openpal::TimeDuration& delay, const channel_callback_t& callback)
-{			
+{
 	this->is_connecting = true;
 
 	auto self(shared_from_this());
@@ -80,7 +80,7 @@ void TCPClientChannelFactory::StartConnect(const std::shared_ptr<TCPClient>& cli
 	{
 
 		if (ec)
-		{			
+		{
 			const auto newDelay = self->retry.strategy.GetNextDelay(delay, self->retry.maxOpenRetry);
 
 			auto cb = [self, newDelay, client, callback]()
@@ -91,7 +91,7 @@ void TCPClientChannelFactory::StartConnect(const std::shared_ptr<TCPClient>& cli
 			self->retrytimer.Start(delay, cb);
 		}
 		else
-		{		
+		{
 			self->is_connecting = false;
 			callback(SocketChannel::Create(executor, std::move(socket)));
 		}

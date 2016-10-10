@@ -123,7 +123,7 @@ private:
 	std::vector<Session> sessions;
 	std::deque<Transmission>  txQueue;
 
-	openpal::Logger logger;	
+	openpal::Logger logger;
 	const std::shared_ptr<asiopal::IChannelFactory> factory;
 	const std::shared_ptr<IChannelListener> listener;
 

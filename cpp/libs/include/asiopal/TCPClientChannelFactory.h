@@ -37,26 +37,26 @@ class TCPClientChannelFactory final : public IChannelFactory, public std::enable
 public:
 
 	std::shared_ptr<TCPClientChannelFactory> Create(
-		const openpal::Logger& logger,
-		const std::shared_ptr<StrandExecutor>& executor,
-		const ChannelRetry& retry,
-		const IPEndpoint& remote,
-		const std::string& adapter) 
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<StrandExecutor>& executor,
+	    const ChannelRetry& retry,
+	    const IPEndpoint& remote,
+	    const std::string& adapter)
 	{
 		return std::make_shared<TCPClientChannelFactory>(logger, executor, retry, remote, adapter);
 	}
 
 	TCPClientChannelFactory(
-		const openpal::Logger& logger,
-		const std::shared_ptr<StrandExecutor>& executor,
-		const ChannelRetry& retry,
-		const IPEndpoint& remote,
-		const std::string& adapter
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<StrandExecutor>& executor,
+	    const ChannelRetry& retry,
+	    const IPEndpoint& remote,
+	    const std::string& adapter
 	);
 
-	virtual void Shutdown() override;	
+	virtual void Shutdown() override;
 	virtual void BeginChannelAccept(const channel_callback_t& callback) override;
-	virtual void SuspendChannelAccept() override;	
+	virtual void SuspendChannelAccept() override;
 	virtual void OnChannelShutdown(const channel_callback_t& callback) override;
 
 private:

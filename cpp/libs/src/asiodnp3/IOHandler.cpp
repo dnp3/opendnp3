@@ -31,11 +31,11 @@ namespace asiodnp3
 {
 
 IOHandler::IOHandler(
-    Logger logger,   
-	std::shared_ptr<asiopal::IChannelFactory> factory,
+    Logger logger,
+    std::shared_ptr<asiopal::IChannelFactory> factory,
     std::shared_ptr<IChannelListener> listener
 ) :
-	logger(logger),	
+	logger(logger),
 	factory(factory),
 	listener(listener),
 	parser(logger, &statistics)
@@ -94,11 +94,14 @@ bool IOHandler::Enable(ILinkSession& session)
 	{
 		iter->session->OnLowerLayerUp();
 	}
-	else 
+	else
 	{
-		this->factory->BeginChannelAccept([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel) { this->OnNewChannel(channel); });
+		this->factory->BeginChannelAccept([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
+		{
+			this->OnNewChannel(channel);
+		});
 	}
-	
+
 	return true;
 }
 
@@ -165,7 +168,7 @@ void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& chan
 }
 
 bool IOHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
-{	
+{
 	ILinkSession* dest = GetEnabledSession(Route(header.src, header.dest));
 
 	if (dest)
@@ -189,7 +192,10 @@ void IOHandler::BeginRead()
 		{
 			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
 			this->Reset();
-			this->factory->OnChannelShutdown([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel) { this->OnNewChannel(channel); });
+			this->factory->OnChannelShutdown([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
+			{
+				this->OnNewChannel(channel);
+			});
 		}
 		else
 		{
@@ -216,7 +222,10 @@ void IOHandler::CheckForSend()
 		{
 			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
 			this->Reset();
-			this->factory->OnChannelShutdown([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel) { this->OnNewChannel(channel); });
+			this->factory->OnChannelShutdown([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
+			{
+				this->OnNewChannel(channel);
+			});
 		}
 		else
 		{

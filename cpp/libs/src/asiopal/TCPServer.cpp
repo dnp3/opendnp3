@@ -38,8 +38,8 @@ TCPServer::TCPServer(
     const std::shared_ptr<StrandExecutor>& executor,
     const IPEndpoint& endpoint,
     std::error_code& ec) :
-	executor(executor),
 	logger(logger),
+	executor(executor),
 	endpoint(ip::tcp::v4(), endpoint.port),
 	acceptor(executor->strand.get_io_service()),
 	socket(executor->strand.get_io_service())
