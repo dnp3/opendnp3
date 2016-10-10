@@ -29,7 +29,7 @@ SocketChannel::SocketChannel(std::shared_ptr<StrandExecutor> executor, asio::ip:
 
 }
 
-void SocketChannel::BeginReadImpl(openpal::WSlice& dest, const io_callback_t& callback)
+void SocketChannel::BeginReadImpl(openpal::WSlice dest, const io_callback_t& callback)
 {
 	socket.async_read_some(asio::buffer(dest, dest.Size()), callback);
 }

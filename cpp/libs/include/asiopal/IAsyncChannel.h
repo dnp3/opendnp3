@@ -45,7 +45,7 @@ public:
 	virtual ~IAsyncChannel() {}
 
 	template <class IOCallback>
-	inline bool BeginRead(openpal::WSlice& buffer, const IOCallback& callback);
+	inline bool BeginRead(const openpal::WSlice& buffer, const IOCallback& callback);
 
 	template <class IOCallback>
 	inline bool BeginWrite(const openpal::RSlice& buffer, const IOCallback& callback);
@@ -80,14 +80,13 @@ protected:
 
 	typedef std::function<void(const std::error_code& ec, std::size_t num)> io_callback_t;
 
-
-	virtual void BeginReadImpl(openpal::WSlice& buffer, const io_callback_t& callback) = 0;
+	virtual void BeginReadImpl(openpal::WSlice buffer, const io_callback_t& callback) = 0;
 	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback) = 0;
 	virtual void ShutdownImpl() = 0;
 };
 
 template <class IOCallback>
-bool IAsyncChannel::BeginRead(openpal::WSlice& buffer, const IOCallback& callback)
+bool IAsyncChannel::BeginRead(const openpal::WSlice& buffer, const IOCallback& callback)
 {
 	if (!this->CanRead()) return false;
 

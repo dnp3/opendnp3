@@ -46,7 +46,7 @@ bool SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
 	return true;
 }
 
-void SerialChannel::BeginReadImpl(openpal::WSlice& buffer, const io_callback_t& callback)
+void SerialChannel::BeginReadImpl(openpal::WSlice buffer, const io_callback_t& callback)
 {
 	port.async_read_some(asio::buffer(buffer, buffer.Size()), callback);
 }
