@@ -32,7 +32,8 @@
 #include "asiopal/IO.h"
 #include "asiopal/IAsyncChannel.h"
 
-#include <memory>
+#include <vector>
+#include <deque>
 
 namespace asiodnp3
 {
@@ -42,7 +43,7 @@ namespace asiodnp3
 Manages I/O for a number of link contexts
 
 */
-class IOHandler : public opendnp3::ILinkTx
+class IOHandler : public opendnp3::ILinkTx, private opendnp3::IFrameSink
 {
 
 public:
@@ -72,22 +73,30 @@ public:
 
 protected:
 
+	// Implemented by super class to begin the process of creating the first channel
 	virtual void Enable() = 0;
 
+	// Stop any asynchronous channel creation operations
 	virtual void Suspend() = 0;
 
-	virtual void StartNewChannel() = 0;
+	// Called when a currently active channel shuts dwon
+	virtual void OnChannelShutdown() = 0;	
 
-	virtual std::shared_ptr<IOHandler> GetShared() = 0;
-
-	void OnNewChannel(std::shared_ptr<asiopal::IAsyncChannel> channel);
+	// Called by the super class when a new channel becomes available
+	void OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel);
 
 private:
+
+	// called by the parser when a complete frame is read
+	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
 	// Query to see if a route is in use
 	bool IsRouteInUse(const opendnp3::Route& route) const;
 	bool IsSessionInUse(opendnp3::ILinkSession& session) const;
 	bool IsAnySessionEnabled() const;
+	void Reset();
+	void BeginRead();	
+	opendnp3::ILinkSession* GetEnabledSession(const opendnp3::Route&);
 
 	struct Session
 	{
@@ -103,7 +112,21 @@ private:
 		opendnp3::ILinkSession* session = nullptr;
 	};
 
-	std::vector<Session> records;
+	struct Transmission
+	{
+		Transmission(const openpal::RSlice& txdata, opendnp3::ILinkSession* session) :
+			txdata(txdata),
+			session(session)
+		{}
+
+		Transmission() = default;
+
+		openpal::RSlice txdata;
+		opendnp3::ILinkSession* session = nullptr;
+	};
+
+	std::vector<Session> sessions;
+	std::deque<Transmission>  txQueue;
 
 	openpal::Logger logger;
 
@@ -112,7 +135,6 @@ private:
 	
 	opendnp3::LinkChannelStatistics statistics;
 	opendnp3::LinkLayerParser parser;
-
 
 	// current value of the channel, may be empty
 	std::shared_ptr<asiopal::IAsyncChannel> channel;

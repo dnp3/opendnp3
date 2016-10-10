@@ -62,7 +62,7 @@ bool IOHandler::AddContext(ILinkSession& session, const Route& route)
 		return false;
 	}
 
-	records.push_back(Session(session, route)); // record is always disabled by default
+	sessions.push_back(Session(session, route)); // record is always disabled by default
 
 	return true;
 }
@@ -74,9 +74,9 @@ bool IOHandler::Enable(ILinkSession& session)
 		return rec.session == &session;
 	};
 
-	const auto iter = std::find_if(records.begin(), records.end(), matches);
+	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
 
-	if (iter == records.end()) return false;
+	if (iter == sessions.end()) return false;
 
 	if (iter->enabled) return true; // already enabled
 
@@ -96,9 +96,9 @@ bool IOHandler::Disable(ILinkSession& session)
 		return rec.session == &session;
 	};
 
-	const auto iter = std::find_if(records.begin(), records.end(), matches);
+	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
 
-	if (iter == records.end()) return false;
+	if (iter == sessions.end()) return false;
 
 	if (!iter->enabled) return true; // already disabled
 
@@ -121,22 +121,72 @@ bool IOHandler::Remove(ILinkSession& session)
 		return rec.session == &session;
 	};
 
-	const auto iter = std::find_if(records.begin(), records.end(), matches);
+	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
 
-	if (iter == records.end()) return false;
+	if (iter == sessions.end()) return false;
 
 	iter->session->OnLowerLayerDown();
 
-	records.erase(iter);
+	sessions.erase(iter);
 
 	if (!this->IsAnySessionEnabled()) this->Suspend();
 
 	return true;
 }
 
-void IOHandler::OnNewChannel(std::shared_ptr<asiopal::IAsyncChannel> channel)
+void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 {
+	this->Reset();
+	this->channel = channel;
+	this->BeginRead();
+}
 
+bool IOHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
+{
+	ILinkSession* dest = GetEnabledSession(Route(header.src, header.dest));
+	
+	if (dest)
+	{
+		return dest->OnFrame(header, userdata);
+	}
+	else
+	{
+		FORMAT_LOG_BLOCK_WITH_CODE(this->logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route, source: %i, dest %i", header.src, header.dest);		
+		return false;
+	}
+}
+
+void IOHandler::BeginRead()
+{
+	// we don't need to capture shared_ptr here, b/c shutting down an 
+	// IAsyncChannel guarantees that the callback isn't invoked
+	auto cb = [this](const std::error_code& ec, std::size_t num)
+	{
+		if (ec)
+		{
+			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
+			this->Reset();
+		}
+		else
+		{
+			this->parser.OnRead(num, *this);
+			this->BeginRead();
+		}
+	};
+
+	this->channel->BeginRead(this->parser.WriteBuff(), cb);
+}
+
+opendnp3::ILinkSession* IOHandler::GetEnabledSession(const opendnp3::Route& route)
+{
+	auto matches = [route](const Session& session)
+	{
+		return session.enabled && session.route.Equals(route);
+	};
+
+	auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
+
+	return (iter == sessions.end()) ? nullptr : iter->session;
 }
 
 bool IOHandler::IsRouteInUse(const Route& route) const
@@ -146,7 +196,7 @@ bool IOHandler::IsRouteInUse(const Route& route) const
 		return record.route.Equals(route);
 	};
 
-	return std::find_if(records.begin(), records.end(), matches) != records.end();
+	return std::find_if(sessions.begin(), sessions.end(), matches) != sessions.end();
 }
 
 bool IOHandler::IsSessionInUse(opendnp3::ILinkSession& session) const
@@ -156,7 +206,7 @@ bool IOHandler::IsSessionInUse(opendnp3::ILinkSession& session) const
 		return (record.session == &session);
 	};
 
-	return std::find_if(records.begin(), records.end(), matches) != records.end();
+	return std::find_if(sessions.begin(), sessions.end(), matches) != sessions.end();
 }
 
 bool IOHandler::IsAnySessionEnabled() const
@@ -166,7 +216,34 @@ bool IOHandler::IsAnySessionEnabled() const
 		return record.enabled;
 	};
 
-	return std::find_if(records.begin(), records.end(), matches) != records.end();
+	return std::find_if(sessions.begin(), sessions.end(), matches) != sessions.end();
+}
+
+void IOHandler::Reset()
+{
+	if (this->channel)
+	{
+		// shutdown the existing channel
+		this->channel->Shutdown();
+
+		// reset the state of the parser
+		this->parser.Reset();		
+
+		// clear any pending tranmissions
+		this->txQueue.clear();
+
+		// notify any sessions that are online that this layer is offline
+		for (auto& item : this->sessions)
+		{
+			if (item.enabled) 
+			{
+				item.session->OnLowerLayerDown();
+			}			
+		}
+
+		// drop the reference to the channel
+		this->channel.reset();
+	}
 }
 
 }
