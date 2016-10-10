@@ -37,6 +37,8 @@ public:
 
 	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket) override;
 
+	virtual void OnShutdown(const std::shared_ptr<IResource>& server) override {}
+
 	~MockTCPServerHandler()
 	{
 		for (auto& channel : channels)

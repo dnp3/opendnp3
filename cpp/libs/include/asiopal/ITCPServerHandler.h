@@ -22,6 +22,7 @@
 #define ASIOPAL_ITCPSERVERHANDLER_H
 
 #include "asiopal/StrandExecutor.h"
+#include "asiopal/IResourceManager.h"
 
 #include <memory>
 
@@ -35,7 +36,9 @@ public:
 
 	virtual ~ITCPServerHandler() {}
 
-	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket) = 0;
+	virtual void OnShutdown(const std::shared_ptr<IResource>& server) = 0;
+
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket) = 0;	
 
 };
 

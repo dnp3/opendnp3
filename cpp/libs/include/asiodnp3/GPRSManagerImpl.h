@@ -24,7 +24,7 @@
 #include <asiopal/IListener.h>
 #include <asiopal/ThreadPool.h>
 #include <asiopal/IPEndpoint.h>
-#include <asiopal/ResourceManagerBase.h>
+#include <asiopal/ResourceManager.h>
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/Logger.h>
@@ -41,9 +41,7 @@
 namespace asiodnp3
 {
 
-class GPRSManagerImpl final :
-	private openpal::Uncopyable,
-	private asiopal::ResourceManagerBase
+class GPRSManagerImpl final : private openpal::Uncopyable
 {
 
 public:
@@ -74,6 +72,9 @@ public:
 private:
 
 	openpal::Logger logger;
+
+	// Tracks otherwise orphaned resource
+	std::shared_ptr<asiopal::ResourceManager> resources;	
 
 	/// this will be the first thing to be destroyed forcing all handlers to be run
 	std::shared_ptr<asiopal::ThreadPool> pool;

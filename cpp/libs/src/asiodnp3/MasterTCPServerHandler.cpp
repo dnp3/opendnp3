@@ -40,13 +40,18 @@ namespace asiodnp3
 MasterTCPServerHandler::MasterTCPServerHandler(
 	const openpal::Logger& logger,
     std::shared_ptr<IListenCallbacks> callbacks,
-    asiopal::IResourceManager& manager
+	const std::shared_ptr<asiopal::ResourceManager>& manager
 ) :
 	logger(logger),
 	callbacks(callbacks),
 	manager(manager)
 {
 
+}
+
+void MasterTCPServerHandler::OnShutdown(const std::shared_ptr<IResource>& server)
+{
+	this->manager->OnShutdown(server);
 }
 
 void MasterTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket socket)
@@ -58,24 +63,21 @@ void MasterTCPServerHandler::AcceptConnection(uint64_t sessionid, const std::sha
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 
-		auto session = LinkSession::Create(
-		                   this->logger.Detach(SessionIdToString(sessionid)),
-		                   sessionid,
-		                   this->callbacks,
-		                   SocketChannel::Create(executor->Fork(), std::move(socket))	// run the link session in its own strand
-		               );
+		auto channel = SocketChannel::Create(executor->Fork(), std::move(socket));	// run the link session in its own strand
 
-		if (this->manager.Attach(session))
+		auto create = [&]() -> std::shared_ptr<LinkSession> {
+			return LinkSession::Create(
+				this->logger.Detach(SessionIdToString(sessionid)),
+				sessionid,
+				this->manager,
+				this->callbacks,
+				channel
+			);
+		};
+
+		if (!this->manager->Bind<LinkSession>(create))
 		{
-			auto pmanager = &this->manager;
-			session->SetShutdownAction([session, pmanager]()
-			{
-				pmanager->Detach(session);
-			});
-		}
-		else
-		{
-			session->BeginShutdown();
+			channel->Shutdown();
 		}
 	}
 	else

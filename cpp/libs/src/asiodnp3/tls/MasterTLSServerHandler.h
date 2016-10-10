@@ -27,7 +27,7 @@
 
 #include <asiopal/TLSConfig.h>
 #include <asiopal/IPEndpoint.h>
-#include <asiopal/IResourceManager.h>
+#include <asiopal/ResourceManager.h>
 
 #include "asiodnp3/IListenCallbacks.h"
 
@@ -42,13 +42,13 @@ public:
 	MasterTLSServerHandler(
 		const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    asiopal::IResourceManager& manager
+	    const std::shared_ptr<asiopal::ResourceManager>& manager
 	);
 
 	static std::shared_ptr<MasterTLSServerHandler> Create(
 		const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    asiopal::IResourceManager& manager)
+		const std::shared_ptr<asiopal::ResourceManager>& manager)
 	{
 		return std::make_shared<MasterTLSServerHandler>(logger, callbacks, manager);
 	}
@@ -63,11 +63,13 @@ public:
 	    std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream
 	) override;
 
+	virtual void OnShutdown(const std::shared_ptr<asiopal::IResource>& server) override;
+
 private:
 
 	openpal::Logger logger;
 	std::shared_ptr<IListenCallbacks> callbacks;
-	asiopal::IResourceManager& manager;
+	std::shared_ptr<asiopal::ResourceManager> manager;
 
 	static std::string SessionIdToString(uint64_t sessionid);
 

@@ -38,7 +38,7 @@ namespace asiodnp3
 MasterTLSServerHandler::MasterTLSServerHandler(
     const openpal::Logger& logger,
     std::shared_ptr<IListenCallbacks> callbacks,
-    IResourceManager& manager) :
+	const std::shared_ptr<asiopal::ResourceManager>& manager) :
 	logger(logger),
 	callbacks(callbacks),
 	manager(manager)
@@ -92,25 +92,27 @@ bool MasterTLSServerHandler::VerifyCallback(uint64_t sessionid, bool preverified
 
 void MasterTLSServerHandler::AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
-	auto session = LinkSession::Create(
-	                   this->logger.Detach(SessionIdToString(sessionid)),
-	                   sessionid,
-	                   callbacks,
-	                   TLSStreamChannel::Create(executor->Fork(), stream)	// run the link session in a new strand
-	               );
+	auto channel = TLSStreamChannel::Create(executor->Fork(), stream); 	// run the link session in a new strand
 
-	if (this->manager.Attach(session))
+	auto create = [&]() -> std::shared_ptr<LinkSession> {
+		return LinkSession::Create(
+			this->logger.Detach(SessionIdToString(sessionid)),
+			sessionid,
+			this->manager,
+			callbacks,
+			channel
+		);
+	};
+	
+	if (!this->manager->Bind<LinkSession>(create))
 	{
-		auto pmanager = &this->manager;
-		session->SetShutdownAction([session, pmanager]()
-		{
-			pmanager->Detach(session);
-		});
+		channel->Shutdown();
 	}
-	else
-	{
-		session->BeginShutdown();
-	}
+}
+
+void MasterTLSServerHandler::OnShutdown(const std::shared_ptr<asiopal::IResource>& server)
+{
+	this->manager->OnShutdown(server);
 }
 
 std::string MasterTLSServerHandler::SessionIdToString(uint64_t sessionid)

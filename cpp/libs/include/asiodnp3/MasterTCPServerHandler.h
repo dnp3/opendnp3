@@ -24,7 +24,7 @@
 #include <openpal/logging/Logger.h>
 
 #include <asiopal/ITCPServerHandler.h>
-#include <asiopal/IResourceManager.h>
+#include <asiopal/ResourceManager.h>
 #include <asiopal/IPEndpoint.h>
 
 #include "asiodnp3/IListenCallbacks.h"
@@ -44,13 +44,13 @@ public:
 	MasterTCPServerHandler(
 	    const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    asiopal::IResourceManager& manager
+	    const std::shared_ptr<asiopal::ResourceManager>& manager
 	);
 
 	static std::shared_ptr<MasterTCPServerHandler> Create(
 		const openpal::Logger& logger,
 	    std::shared_ptr<IListenCallbacks> callbacks,
-	    asiopal::IResourceManager& manager)
+		const std::shared_ptr<asiopal::ResourceManager>& manager)
 	{
 		return std::make_shared<MasterTCPServerHandler>(logger, callbacks, manager);
 	}
@@ -60,10 +60,12 @@ private:
 
 	openpal::Logger logger;
 	std::shared_ptr<IListenCallbacks> callbacks;
-	asiopal::IResourceManager& manager;
+	std::shared_ptr<asiopal::ResourceManager> manager;
 
 
 	static std::string SessionIdToString(uint64_t sessionid);
+
+	virtual void OnShutdown(const std::shared_ptr<asiopal::IResource>& server) override;
 
 	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket) override;
 };

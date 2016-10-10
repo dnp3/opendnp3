@@ -18,40 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_RESOURCEMANAGERBASE_H
-#define ASIOPAL_RESOURCEMANAGERBASE_H
+#ifndef ASIOPAL_RESOURCEMANAGER_H
+#define ASIOPAL_RESOURCEMANAGER_H
 
 #include "IResourceManager.h"
 
 #include <mutex>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 namespace asiopal
 {
 
-class ResourceManagerBase : public IResourceManager
+class ResourceManager final : public IShutdownHandler
 {
 
 public:
 
-	virtual bool Attach(std::shared_ptr<IResource> resource) override final
+	static std::shared_ptr<ResourceManager> Create()
 	{
-		std::lock_guard <std::mutex> lock(this->resource_mutex);
+		return std::make_shared<ResourceManager>();
+	}	
 
-		if (this->is_shutting_down)
-		{
-			return false;
-		}
-
-		this->resources.push_back(resource);
-
-		return true;
-	}
-
-	virtual void Detach(std::shared_ptr<IResource> resource)  override final
+	virtual void OnShutdown(const std::shared_ptr<IResource>& resource)  override
 	{
-		std::lock_guard <std::mutex> lock(this->resource_mutex);
+		std::lock_guard <std::mutex> lock(this->mutex);
 
 		auto is_match = [resource](const std::shared_ptr<asiopal::IResource>& other) -> bool
 		{
@@ -61,11 +53,9 @@ public:
 		this->resources.erase(std::remove_if(this->resources.begin(), this->resources.end(), is_match), this->resources.end());
 	}
 
-protected:
-
-	void ShutdownResources()
+	void Shutdown()
 	{
-		std::lock_guard <std::mutex> lock(this->resource_mutex);
+		std::lock_guard <std::mutex> lock(this->mutex);
 
 		this->is_shutting_down = true;
 
@@ -73,24 +63,22 @@ protected:
 		{
 			resource->BeginShutdown();
 		}
+
+		resources.clear();
 	}
 
 	template <class R, class T>
-	std::shared_ptr<R> BindResource(const T& create)
+	std::shared_ptr<R> Bind(const T& create)
 	{
-		std::lock_guard <std::mutex> lock(this->resource_mutex);
+		std::lock_guard <std::mutex> lock(this->mutex);
+
 		if (this->is_shutting_down)
 		{
 			return nullptr;
 		}
 		else
 		{
-			auto item = create();
-			auto shutdown = [item, this]()
-			{
-				this->Detach(item);
-			};
-			item->SetShutdownAction(shutdown);
+			auto item = create();			
 			this->resources.push_back(item);
 			return item;
 		}
@@ -98,8 +86,8 @@ protected:
 
 private:
 
-	bool is_shutting_down = false;
-	std::mutex resource_mutex;
+	std::mutex mutex;
+	bool is_shutting_down = false;	
 	std::vector<std::shared_ptr<asiopal::IResource>> resources;
 
 };

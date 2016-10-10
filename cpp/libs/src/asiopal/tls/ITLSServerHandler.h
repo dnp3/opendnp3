@@ -21,11 +21,11 @@
 #ifndef ASIOPAL_ITLSSERVER_H
 #define ASIOPAL_ITLSSERVER_H
 
+#include "asiopal/StrandExecutor.h"
+#include "asiopal/IResourceManager.h"
 
 #include <memory>
 #include <asio/ssl.hpp>
-
-#include "asiopal/StrandExecutor.h"
 
 namespace asiopal
 {
@@ -43,7 +43,7 @@ public:
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) = 0;
 	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) = 0;
 	virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
-
+	virtual void OnShutdown(const std::shared_ptr<IResource>& server) = 0;
 };
 
 }

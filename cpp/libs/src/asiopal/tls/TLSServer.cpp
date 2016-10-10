@@ -109,7 +109,7 @@ void TLSServer::StartAccept(std::error_code& ec)
 		if (ec)
 		{
 			SIMPLE_LOG_BLOCK(self->logger, flags::INFO, ec.message().c_str());
-			self->OnShutdown();
+			self->handler->OnShutdown(self);
 			return;
 		}
 
