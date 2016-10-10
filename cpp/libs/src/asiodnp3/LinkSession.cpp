@@ -106,7 +106,7 @@ bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		}
 		else
 		{
-			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "No master created. Closing socket.");			
+			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "No master created. Closing socket.");
 			this->channel->Shutdown();
 		}
 	}

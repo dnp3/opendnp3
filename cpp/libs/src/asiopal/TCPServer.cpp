@@ -42,7 +42,7 @@ TCPServer::TCPServer(
 	logger(logger),
 	endpoint(ip::tcp::v4(), endpoint.port),
 	acceptor(executor->strand.get_io_service()),
-	socket(executor->strand.get_io_service())	
+	socket(executor->strand.get_io_service())
 {
 	this->Configure(endpoint.address, ec);
 }

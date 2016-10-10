@@ -47,12 +47,12 @@ class TLSServer :
 public:
 
 	TLSServer(
-		const openpal::Logger& logger,
-	    const std::shared_ptr<StrandExecutor>& executor,	    	    
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& endpoint,
 	    const TLSConfig& config,
 	    std::error_code& ec
-	);	
+	);
 
 	/// Stop listening for connections, permanently shutting down the listener
 	void BeginShutdown() override;
@@ -71,10 +71,10 @@ protected:
 	openpal::Logger logger;
 	std::shared_ptr<StrandExecutor> executor;
 
-private:	
+private:
 
 	std::error_code ConfigureContext(const TLSConfig& config, std::error_code& ec);
-	std::error_code ConfigureListener(const std::string& adapter, std::error_code& ec);	
+	std::error_code ConfigureListener(const std::string& adapter, std::error_code& ec);
 
 	SSLContext ctx;
 	asio::ip::tcp::endpoint endpoint;

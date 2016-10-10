@@ -34,14 +34,14 @@ namespace asiopal
 {
 
 TLSServer::TLSServer(
-	const openpal::Logger& logger,
-	const std::shared_ptr<StrandExecutor>& executor,
+    const openpal::Logger& logger,
+    const std::shared_ptr<StrandExecutor>& executor,
     const IPEndpoint& endpoint,
     const TLSConfig& config,
     std::error_code& ec
 ) :
 	logger(logger),
-	executor(executor),	
+	executor(executor),
 	ctx(logger, true, config, ec),
 	endpoint(ip::tcp::v4(), endpoint.port),
 	acceptor(executor->strand.get_io_service()),

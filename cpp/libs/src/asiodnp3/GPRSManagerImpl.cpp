@@ -83,15 +83,15 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 #ifdef OPENDNP3_USE_TLS
 
 	auto create = [&]() -> std::shared_ptr<asiopal::IListener>
-	{		
+	{
 		return asiodnp3::MasterTLSServer::Create(
-			this->logger.Detach(loggerid, levels),
-			asiopal::StrandExecutor::Create(this->pool),
-			endpoint,
-			config,
+		    this->logger.Detach(loggerid, levels),
+		    asiopal::StrandExecutor::Create(this->pool),
+		    endpoint,
+		    config,
 		    callbacks,
 		    this->resources,
-			ec
+		    ec
 		);
 	};
 

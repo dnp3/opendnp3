@@ -19,34 +19,52 @@
  * to you under the terms of the License.
  */
 
-#ifndef ASIOPAL_MOCKTCPCLIENTHANDLER_H
-#define ASIOPAL_MOCKTCPCLIENTHANDLER_H
-
-#include "asiopal/ITCPClientHandler.h"
-#include "asiopal/IAsyncChannel.h"
-
-#include <deque>
+#include "MockTCPPair.h"
 
 namespace asiopal
 {
-class MockTCPClientHandler final : public ITCPClientHandler
+
+MockTCPPair::MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec) :
+	log(),
+	io(io),
+	chandler(std::make_shared<MockTCPClientHandler>()),
+	client(TCPClient::Create(io->Executor(), IPEndpoint::Localhost(port), "127.0.0.1")),
+	server(MockTCPServer::Create(log.logger, io->Executor(), IPEndpoint::Localhost(20000), ec))
 {
+	if (ec)
+	{
+		throw std::logic_error(ec.message());
+	}
+}
 
-public:
+MockTCPPair::~MockTCPPair()
+{
+	this->server->BeginShutdown();
+	this->client->Cancel();
+}
 
-	virtual void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec) override;
+void MockTCPPair::Connect(size_t num)
+{
+	if (!this->client->BeginConnect(this->chandler))
+	{
+		throw std::logic_error("BeginConnect returned false");
+	}
 
-	~MockTCPClientHandler();
+	auto connected = [this, num]() -> bool
+	{
+		return this->NumConnectionsEqual(num);
+	};
 
-	size_t num_error = 0;
+	io->CompleteInXIterations(2, connected);
+}
 
-	std::deque<std::shared_ptr<IAsyncChannel>> channels;
-
-};
+bool MockTCPPair::NumConnectionsEqual(size_t num) const
+{
+	return (this->server->channels.size() == num) && (this->chandler->channels.size() == num);
+}
 
 }
 
-#endif
 
 
 

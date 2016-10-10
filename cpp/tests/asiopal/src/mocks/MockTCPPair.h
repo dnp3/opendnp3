@@ -38,51 +38,20 @@ class MockTCPPair
 
 public:
 
-	MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec = std::error_code()) :
-		io(io),
-		log(),
-		chandler(std::make_shared<MockTCPClientHandler>()),		
-		client(TCPClient::Create(io->Executor(), IPEndpoint::Localhost(port), "127.0.0.1")),
-		server(MockTCPServer::Create(log.logger, io->Executor(), IPEndpoint::Localhost(20000), ec))
-	{
-		if (ec)
-		{
-			throw std::logic_error(ec.message());
-		}		
-	}
+	MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec = std::error_code());
 
-	~MockTCPPair()
-	{
-		this->server->BeginShutdown();
-		this->client->Cancel();
-	}
+	~MockTCPPair();
 
-	void Connect(size_t num = 1)
-	{
-		if (!this->client->BeginConnect(this->chandler))
-		{
-			throw std::logic_error("BeginConnect returned false");
-		}
+	void Connect(size_t num = 1);
 
-		auto connected = [this, num]() -> bool
-		{
-			return this->NumConnectionsEqual(num);
-		};
-
-		io->CompleteInXIterations(2, connected);
-	}
-
-	bool NumConnectionsEqual(size_t num) const
-	{
-		return (this->server->channels.size() == num) && (this->chandler->channels.size() == num);
-	}
+	bool NumConnectionsEqual(size_t num) const;
 
 private:
 
-	std::shared_ptr<MockIO> io;
 	testlib::MockLogHandler log;
-	std::shared_ptr<MockTCPClientHandler> chandler;	
-	std::shared_ptr<TCPClient> client;	
+	std::shared_ptr<MockIO> io;
+	std::shared_ptr<MockTCPClientHandler> chandler;
+	std::shared_ptr<TCPClient> client;
 	std::shared_ptr<MockTCPServer> server;
 };
 

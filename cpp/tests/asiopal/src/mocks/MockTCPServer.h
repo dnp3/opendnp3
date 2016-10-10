@@ -37,20 +37,20 @@ class MockTCPServer final : public TCPServer
 public:
 
 	MockTCPServer(
-		const openpal::Logger& logger,
-		std::shared_ptr<StrandExecutor> executor,
-		IPEndpoint endpoint,
-		std::error_code& ec
+	    const openpal::Logger& logger,
+	    std::shared_ptr<StrandExecutor> executor,
+	    IPEndpoint endpoint,
+	    std::error_code& ec
 	) : TCPServer(logger, executor, endpoint, ec)
 	{
-		
+
 	}
 
 	static std::shared_ptr<MockTCPServer> Create(
-		const openpal::Logger& logger,
-		std::shared_ptr<StrandExecutor> executor,
-		IPEndpoint endpoint,
-		std::error_code& ec)
+	    const openpal::Logger& logger,
+	    std::shared_ptr<StrandExecutor> executor,
+	    IPEndpoint endpoint,
+	    std::error_code& ec)
 	{
 		auto server = std::make_shared<MockTCPServer>(logger, executor, endpoint, ec);
 

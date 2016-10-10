@@ -36,13 +36,13 @@ namespace asiodnp3
 {
 
 MasterTLSServer::MasterTLSServer(
-	const openpal::Logger& logger,
-	const std::shared_ptr<asiopal::StrandExecutor>& executor,
-	const asiopal::IPEndpoint& endpoint,
-	const asiopal::TLSConfig& config,
-	const std::shared_ptr<IListenCallbacks>& callbacks,
-	const std::shared_ptr<asiopal::ResourceManager>& manager,
-	std::error_code& ec
+    const openpal::Logger& logger,
+    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const asiopal::IPEndpoint& endpoint,
+    const asiopal::TLSConfig& config,
+    const std::shared_ptr<IListenCallbacks>& callbacks,
+    const std::shared_ptr<asiopal::ResourceManager>& manager,
+    std::error_code& ec
 ) :
 	TLSServer(logger, executor, endpoint, config, ec),
 	callbacks(callbacks),

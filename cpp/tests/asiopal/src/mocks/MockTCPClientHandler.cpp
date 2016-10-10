@@ -38,6 +38,14 @@ void MockTCPClientHandler::OnConnect(const std::shared_ptr<StrandExecutor>& exec
 	}
 }
 
+MockTCPClientHandler::~MockTCPClientHandler()
+{
+	for (auto& channel : channels)
+	{
+		channel->Shutdown();
+	}
+}
+
 }
 
 

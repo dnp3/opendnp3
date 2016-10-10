@@ -45,17 +45,17 @@ public:
 	MasterTCPServer(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		const asiopal::IPEndpoint& endpoint,
-		const std::shared_ptr<IListenCallbacks>& callbacks,
+	    const asiopal::IPEndpoint& endpoint,
+	    const std::shared_ptr<IListenCallbacks>& callbacks,
 	    const std::shared_ptr<asiopal::ResourceManager>& manager,
 	    std::error_code& ec
 	);
 
 	static std::shared_ptr<MasterTCPServer> Create(
 	    const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		const asiopal::IPEndpoint& endpoint,
-		const std::shared_ptr<IListenCallbacks>& callbacks,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const asiopal::IPEndpoint& endpoint,
+	    const std::shared_ptr<IListenCallbacks>& callbacks,
 	    const std::shared_ptr<asiopal::ResourceManager>& manager,
 	    std::error_code& ec)
 	{

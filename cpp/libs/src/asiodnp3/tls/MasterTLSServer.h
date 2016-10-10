@@ -40,23 +40,23 @@ class MasterTLSServer final : public asiopal::TLSServer
 public:
 
 	MasterTLSServer(
-		const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		const asiopal::IPEndpoint& endpoint,
-		const asiopal::TLSConfig& tlsConfig,
-		const std::shared_ptr<IListenCallbacks>& callbacks,
-		const std::shared_ptr<asiopal::ResourceManager>& manager,
-		std::error_code& ec	    	    
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const asiopal::IPEndpoint& endpoint,
+	    const asiopal::TLSConfig& tlsConfig,
+	    const std::shared_ptr<IListenCallbacks>& callbacks,
+	    const std::shared_ptr<asiopal::ResourceManager>& manager,
+	    std::error_code& ec
 	);
 
 	static std::shared_ptr<MasterTLSServer> Create(
-		const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::StrandExecutor> executor,
-		const asiopal::IPEndpoint endpoint,
-		const asiopal::TLSConfig& tlsConfig,
-		const std::shared_ptr<IListenCallbacks> callbacks,
-		const std::shared_ptr<asiopal::ResourceManager>& manager,
-		std::error_code& ec)
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::StrandExecutor> executor,
+	    const asiopal::IPEndpoint endpoint,
+	    const asiopal::TLSConfig& tlsConfig,
+	    const std::shared_ptr<IListenCallbacks> callbacks,
+	    const std::shared_ptr<asiopal::ResourceManager>& manager,
+	    std::error_code& ec)
 	{
 		auto ret = std::make_shared<MasterTLSServer>(logger, executor, endpoint, tlsConfig, callbacks, manager, ec);
 
@@ -85,7 +85,7 @@ public:
 	virtual void OnShutdown() override;
 
 private:
-	
+
 	std::shared_ptr<IListenCallbacks> callbacks;
 	std::shared_ptr<asiopal::ResourceManager> manager;
 
