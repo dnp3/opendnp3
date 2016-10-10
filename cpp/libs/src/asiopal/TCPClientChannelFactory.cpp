@@ -21,10 +21,10 @@
 
 #include "asiopal/TCPClientChannelFactory.h"
 
+#include "asiopal/SocketChannel.h"
+
 namespace asiopal
 {
-
-
 
 TCPClientChannelFactory::TCPClientChannelFactory(
     const openpal::Logger& logger,
@@ -70,21 +70,22 @@ void TCPClientChannelFactory::StartConnect(const openpal::TimeDuration& delay, c
 
 	this->client = TCPClient::Create(executor, remote, adapter);
 
-	auto cb = [this, delay, callback](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
+	auto self(shared_from_this());
+	auto cb = [self, delay, callback](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
 	{
 
 		if (ec)
 		{
-			this->Reset();
+			self->Reset();
 
-			const auto newDelay = retry.strategy.GetNextDelay(delay, retry.maxOpenRetry);
+			const auto newDelay = self->retry.strategy.GetNextDelay(delay, self->retry.maxOpenRetry);
 
-			auto cb = [this, newDelay, callback]()
+			auto cb = [self, newDelay, callback]()
 			{
-				this->StartConnect(newDelay, callback);
+				self->StartConnect(newDelay, callback);
 			};
 
-			this->retrytimer.Start(delay, cb);
+			self->retrytimer.Start(delay, cb);
 		}
 		else
 		{
@@ -105,6 +106,7 @@ void TCPClientChannelFactory::Reset()
 
 	retrytimer.Cancel();
 }
+
 }
 
 

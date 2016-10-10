@@ -31,12 +31,12 @@ namespace asiodnp3
 {
 
 IOHandler::IOHandler(
-    Logger logger,
-    std::shared_ptr<asiopal::IO> io,
+    Logger logger,   
+	std::shared_ptr<asiopal::IChannelFactory> factory,
     std::shared_ptr<IChannelListener> listener
 ) :
-	logger(logger),
-	io(io),
+	logger(logger),	
+	factory(factory),
 	listener(listener),
 	parser(logger, &statistics)
 {
@@ -92,7 +92,7 @@ bool IOHandler::Enable(ILinkSession& session)
 
 	if (this->channel) iter->session->OnLowerLayerUp();
 
-	this->BeginChannelAccept();
+	this->factory->BeginChannelAccept([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel) { this->OnNewChannel(channel); });
 
 	return true;
 }
@@ -117,7 +117,7 @@ bool IOHandler::Disable(ILinkSession& session)
 		iter->session->OnLowerLayerDown();
 	}
 
-	if (!this->IsAnySessionEnabled()) this->SuspendChannelAccept();
+	if (!this->IsAnySessionEnabled()) this->factory->SuspendChannelAccept();
 
 	return true;
 }
@@ -137,7 +137,7 @@ bool IOHandler::Remove(ILinkSession& session)
 
 	sessions.erase(iter);
 
-	if (!this->IsAnySessionEnabled()) this->SuspendChannelAccept();
+	if (!this->IsAnySessionEnabled()) this->factory->SuspendChannelAccept();
 
 	return true;
 }
@@ -178,7 +178,7 @@ void IOHandler::BeginRead()
 		{
 			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
 			this->Reset();
-			this->OnChannelShutdown();
+			this->factory->OnChannelShutdown([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel) { this->OnNewChannel(channel); });
 		}
 		else
 		{
@@ -205,7 +205,7 @@ void IOHandler::CheckForSend()
 		{
 			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
 			this->Reset();
-			this->OnChannelShutdown();
+			this->factory->OnChannelShutdown([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel) { this->OnNewChannel(channel); });
 		}
 		else
 		{

@@ -29,7 +29,7 @@
 #include "openpal/logging/Logger.h"
 #include "opendnp3/link/LinkLayerParser.h"
 
-#include "asiopal/IO.h"
+#include "asiopal/IChannelFactory.h"
 #include "asiopal/IAsyncChannel.h"
 
 #include <vector>
@@ -50,14 +50,13 @@ public:
 
 	IOHandler(
 	    openpal::Logger logger,
-	    std::shared_ptr<asiopal::IO> io,
+	    std::shared_ptr<asiopal::IChannelFactory> factory,
 	    std::shared_ptr<IChannelListener> listener
 	);
 
 	/// --- implement ILinkTx ---
 
 	virtual void BeginTransmit(const openpal::RSlice& data, opendnp3::ILinkSession& context) override;
-
 
 	// Bind a link layer session to the handler
 	bool AddContext(opendnp3::ILinkSession& session, const opendnp3::Route& route);
@@ -70,17 +69,6 @@ public:
 
 	// Remove this session entirely
 	bool Remove(opendnp3::ILinkSession& session);
-
-protected:
-
-	// Implemented by super class to begin the process of creating the first channel
-	virtual void BeginChannelAccept() = 0;
-
-	// Stop any asynchronous channel creation operations
-	virtual void SuspendChannelAccept() = 0;
-
-	// Called when a currently active channel shuts down unexpectedly
-	virtual void OnChannelShutdown() = 0;
 
 private:
 
@@ -136,9 +124,8 @@ private:
 	std::vector<Session> sessions;
 	std::deque<Transmission>  txQueue;
 
-	openpal::Logger logger;
-
-	const std::shared_ptr<asiopal::IO> io;
+	openpal::Logger logger;	
+	const std::shared_ptr<asiopal::IChannelFactory> factory;
 	const std::shared_ptr<IChannelListener> listener;
 
 	opendnp3::LinkChannelStatistics statistics;

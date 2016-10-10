@@ -24,7 +24,6 @@
 #include "asiopal/IChannelFactory.h"
 #include "asiopal/TCPClient.h"
 #include "asiopal/ChannelRetry.h"
-#include "asiopal/SocketChannel.h"
 
 #include "openpal/logging/Logger.h"
 #include "openpal/executor/TimerRef.h"
@@ -36,6 +35,16 @@ class TCPClientChannelFactory final : public IChannelFactory, public std::enable
 {
 
 public:
+
+	std::shared_ptr<TCPClientChannelFactory> Create(
+		const openpal::Logger& logger,
+		const std::shared_ptr<StrandExecutor>& executor,
+		const ChannelRetry& retry,
+		const IPEndpoint& remote,
+		const std::string& adapter) 
+	{
+		return std::make_shared<TCPClientChannelFactory>(logger, executor, retry, remote, adapter);
+	}
 
 	TCPClientChannelFactory(
 		const openpal::Logger& logger,
