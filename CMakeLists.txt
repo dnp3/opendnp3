@@ -221,6 +221,13 @@ if(DNP3_TEST)
   set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
   add_test(testopendnp3 testopendnp3)
 
+  # ----- asiopal tests -----
+  file(GLOB_RECURSE asiopal_TESTSRC ./cpp/tests/asiopal/src/*.cpp ./cpp/tests/asiopal/src/*.h)
+  add_executable (testasiopal ${asiopal_TESTSRC})
+  target_link_libraries (testasiopal LINK_PUBLIC asiopal testlib ${PTHREAD})
+  set_target_properties(testasiopal PROPERTIES FOLDER tests)
+  add_test(testasiopal testasiopal)
+
   # ----- asiodnp3 tests -----
   file(GLOB_RECURSE asiodnp3_TESTSRC ./cpp/tests/asiodnp3/src/*.cpp ./cpp/tests/asiodnp3/src/*.h)
   add_executable (testasiodnp3 ${asiodnp3_TESTSRC})
