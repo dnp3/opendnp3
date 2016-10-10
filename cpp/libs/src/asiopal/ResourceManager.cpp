@@ -18,57 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_RESOURCEMANAGER_H
-#define ASIOPAL_RESOURCEMANAGER_H
 
-#include "IResourceManager.h"
-
-#include <set>
-#include <mutex>
-#include <memory>
+#include "asiopal/ResourceManager.h"
 
 namespace asiopal
 {
-
-class ResourceManager final : public IShutdownHandler
-{	
-
-public:
-
-	static std::shared_ptr<ResourceManager> Create()
+	void ResourceManager::OnShutdown(const std::shared_ptr<IResource>& resource)
 	{
-		return std::make_shared<ResourceManager>();
+		std::lock_guard <std::mutex> lock(this->mutex);		
+		this->resources.erase(resource);
 	}
 
-	virtual void OnShutdown(const std::shared_ptr<IResource>& resource)  override;
-
-	void Shutdown();
-
-	template <class R, class T>
-	std::shared_ptr<R> Bind(const T& create)
+	void ResourceManager::Shutdown()
 	{
 		std::lock_guard <std::mutex> lock(this->mutex);
 
-		if (this->is_shutting_down)
+		this->is_shutting_down = true;
+
+		for (auto& resource : this->resources)
 		{
-			return nullptr;
+			resource->BeginShutdown();
 		}
-		else
-		{
-			auto item = create();
-			this->resources.insert(item);
-			return item;
-		}
+
+		resources.clear();
 	}
-
-private:	
-
-	std::mutex mutex;
-	bool is_shutting_down = false;
-	std::set<std::shared_ptr<asiopal::IResource>> resources;
-
-};
-
 }
 
-#endif

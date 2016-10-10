@@ -63,6 +63,7 @@ bool IOHandler::AddContext(ILinkSession& session, const Route& route)
 	}
 
 	records.push_back(Session(session, route)); // record is always disabled by default
+
 	return true;
 }
 
