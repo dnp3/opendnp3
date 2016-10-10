@@ -29,7 +29,7 @@
 #include <openpal/logging/Logger.h>
 #include <openpal/executor/TimeDuration.h>
 
-#include <opendnp3/link/ChannelRetry.h>
+#include <asiopal/ChannelRetry.h>
 
 #include "asiodnp3/IChannelListener.h"
 
@@ -53,7 +53,7 @@ public:
 	~ChannelSet();
 
 	IChannel* CreateChannel(	const openpal::Logger& logger,
-	                            const opendnp3::ChannelRetry& retry,
+	                            const asiopal::ChannelRetry& retry,
 	                            std::shared_ptr<IChannelListener> listener,
 	                            std::unique_ptr<asiopal::PhysicalLayerASIO> phys);
 

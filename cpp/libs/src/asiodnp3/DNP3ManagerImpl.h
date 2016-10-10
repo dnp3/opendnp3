@@ -53,7 +53,7 @@ public:
 	IChannel* AddTCPClient(
 	    const std::string& id,
 	    uint32_t levels,
-	    const opendnp3::ChannelRetry& retry,
+	    const asiopal::ChannelRetry& retry,
 	    const std::string& host,
 	    const std::string& local,
 	    uint16_t port,
@@ -62,7 +62,7 @@ public:
 	IChannel* AddTCPServer(
 	    const std::string& id,
 	    uint32_t levels,
-	    const opendnp3::ChannelRetry& retry,
+	    const asiopal::ChannelRetry& retry,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener);
@@ -70,14 +70,14 @@ public:
 	IChannel* AddSerial(
 	    const std::string& id,
 	    uint32_t levels,
-	    const opendnp3::ChannelRetry& retry,
+	    const asiopal::ChannelRetry& retry,
 	    asiopal::SerialSettings settings,
 	    std::shared_ptr<IChannelListener> listener);
 
 	IChannel* AddTLSClient(
 	    const std::string& id,
 	    uint32_t levels,
-	    const opendnp3::ChannelRetry& retry,
+	    const asiopal::ChannelRetry& retry,
 	    const std::string& host,
 	    const std::string& local,
 	    uint16_t port,
@@ -88,7 +88,7 @@ public:
 	IChannel* AddTLSServer(
 	    const std::string& id,
 	    uint32_t levels,
-	    const opendnp3::ChannelRetry& retry,
+	    const asiopal::ChannelRetry& retry,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,

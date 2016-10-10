@@ -188,7 +188,7 @@ IMaster* StackPair::CreateMaster(uint32_t levels, openpal::TimeDuration timeout,
 	auto channel = manager.AddTCPClient(
 	                   GetId("client", port).c_str(),
 	                   levels,
-	                   opendnp3::ChannelRetry::Default(),
+	                   asiopal::ChannelRetry::Default(),
 	                   "127.0.0.1",
 	                   "127.0.0.1",
 	                   port,
@@ -208,7 +208,7 @@ IOutstation* StackPair::CreateOutstation(uint32_t levels, openpal::TimeDuration 
 	auto channel = manager.AddTCPServer(
 	                   GetId("server", port).c_str(),
 	                   levels,
-	                   opendnp3::ChannelRetry::Default(),
+	                   asiopal::ChannelRetry::Default(),
 	                   "127.0.0.1",
 	                   port,
 	                   listener

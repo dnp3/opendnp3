@@ -51,7 +51,7 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mTransB(logger, executor, DEFAULT_MAX_APDU_SIZE),
 	mLinkA(logger, executor, mTransA, listener, aCfgA),
 	mLinkB(logger, executor, mTransB, listener, aCfgB),
-	mRouter(logger, executor, apPhys, ChannelRetry::Default())
+	mRouter(logger, executor, apPhys, asiopal::ChannelRetry::Default())
 {
 	Route routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);
 	Route routeB(mCfgB.RemoteAddr, mCfgB.LocalAddr);

@@ -30,7 +30,7 @@ LinkLayerRouterTest::LinkLayerRouterTest(uint32_t filters) :
 	exe(),
 	phys(log.logger, exe),
 	router(log.logger, exe, &phys,
-	       ChannelRetry(TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100))
+	       asiopal::ChannelRetry(TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100))
 	      )
 {
 

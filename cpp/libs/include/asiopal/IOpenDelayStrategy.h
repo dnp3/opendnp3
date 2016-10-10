@@ -18,14 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IOPENDELAYSTRATEGY_H
-#define OPENDNP3_IOPENDELAYSTRATEGY_H
+#ifndef ASIOPAL_IOPENDELAYSTRATEGY_H
+#define ASIOPAL_IOPENDELAYSTRATEGY_H
 
 #include <openpal/executor/TimeDuration.h>
 
 #include <openpal/util/Uncopyable.h>
 
-namespace opendnp3
+namespace asiopal
 {
 
 /**

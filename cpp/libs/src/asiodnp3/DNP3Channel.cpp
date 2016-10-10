@@ -36,7 +36,7 @@ namespace asiodnp3
 
 DNP3Channel::DNP3Channel(
     const openpal::Logger& logger,
-    const ChannelRetry& retry,
+    const asiopal::ChannelRetry& retry,
     std::shared_ptr<IChannelListener> listener,
     std::unique_ptr<asiopal::PhysicalLayerASIO> physin) :
 

@@ -145,7 +145,9 @@ bool IOHandler::Remove(ILinkSession& session)
 void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 {
 	this->Reset();
+
 	this->channel = channel;
+	
 	this->BeginRead();
 }
 

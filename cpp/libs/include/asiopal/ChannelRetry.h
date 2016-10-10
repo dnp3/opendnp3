@@ -23,10 +23,10 @@
 
 #include <openpal/executor/TimeDuration.h>
 
-#include <opendnp3/link/IOpenDelayStrategy.h>
+#include "asiopal/IOpenDelayStrategy.h"
 
 
-namespace opendnp3
+namespace asiopal
 {
 
 /// Class used to configure how channel failures are retried

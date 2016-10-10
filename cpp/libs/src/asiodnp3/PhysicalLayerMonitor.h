@@ -27,7 +27,7 @@
 #include <openpal/logging/Logger.h>
 
 #include <opendnp3/gen/ChannelState.h>
-#include <opendnp3/link/ChannelRetry.h>
+#include <asiopal/ChannelRetry.h>
 
 namespace openpal
 {
@@ -50,7 +50,7 @@ public:
 	PhysicalLayerMonitor(	openpal::Logger logger,
 	                        openpal::IExecutor& executor,
 	                        openpal::IPhysicalLayer*,
-	                        const opendnp3::ChannelRetry& retry);
+	                        const asiopal::ChannelRetry& retry);
 
 	/** Begin monitor execution, retry indefinitely on failure - Idempotent*/
 	void Start();
@@ -126,7 +126,7 @@ private:
 
 	void DoFinalShutdown();
 
-	opendnp3::ChannelRetry retry;
+	asiopal::ChannelRetry retry;
 
 	openpal::TimeDuration currentRetry;
 };

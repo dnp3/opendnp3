@@ -32,7 +32,7 @@ namespace opendnp3
 
 TransportIntegrationStack::TransportIntegrationStack(openpal::Logger logger, openpal::IExecutor& executor, IPhysicalLayer& phys, LinkConfig aCfg) :
 	listener(),
-	router(logger, executor, &phys, ChannelRetry::Default()),
+	router(logger, executor, &phys, asiopal::ChannelRetry::Default()),
 	transport(logger, executor, DEFAULT_MAX_APDU_SIZE),
 	link(logger, executor, transport, listener, aCfg)
 {

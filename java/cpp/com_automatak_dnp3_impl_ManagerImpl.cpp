@@ -27,9 +27,11 @@
 
 #include "jni/JCache.h"
 
+using namespace openpal;
+using namespace asiopal;
 using namespace asiodnp3;
 using namespace opendnp3;
-using namespace openpal;
+
 
 asiopal::TLSConfig ConvertTLSConfig(JNIEnv* env, jobject jconfig)
 {

@@ -24,12 +24,12 @@
 #include <openpal/logging/Logger.h>
 
 #include <opendnp3/link/LinkChannelStatistics.h>
-#include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/outstation/ICommandHandler.h>
 
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/Synchronized.h>
 #include <asiopal/PhysicalLayerASIO.h>
+#include <asiopal/ChannelRetry.h>
 
 #include "asiodnp3/IChannel.h"
 #include "asiodnp3/StackLifecycle.h"
@@ -52,7 +52,7 @@ public:
 
 	DNP3Channel(
 	    const openpal::Logger& logger,
-	    const opendnp3::ChannelRetry& retry,
+	    const asiopal::ChannelRetry& retry,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::unique_ptr<asiopal::PhysicalLayerASIO> phys
 	);

@@ -27,9 +27,9 @@
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/link/IFrameSink.h>
 #include <opendnp3/link/ILinkTx.h>
-#include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/master/MultidropTaskLock.h>
 
+#include <asiopal/ChannelRetry.h>
 #include "asiodnp3/IChannelListener.h"
 
 #include <vector>
@@ -62,7 +62,7 @@ public:
 	LinkLayerRouter(openpal::Logger logger,
 	                openpal::IExecutor& executor,
 	                openpal::IPhysicalLayer*,
-	                const opendnp3::ChannelRetry& retry,
+	                const asiopal::ChannelRetry& retry,
 	                std::shared_ptr<IChannelListener> listener = nullptr,
 	                opendnp3::LinkChannelStatistics* pStatistics = nullptr);
 

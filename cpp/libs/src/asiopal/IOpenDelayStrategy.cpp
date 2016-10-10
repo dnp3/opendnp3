@@ -18,28 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include "asiopal/IOpenDelayStrategy.h"
 
-#include "opendnp3/link/ChannelRetry.h"
 
-using namespace openpal;
-
-namespace opendnp3
+namespace asiopal
 {
 
-ChannelRetry::ChannelRetry(
-    openpal::TimeDuration minOpenRetry_,
-    openpal::TimeDuration maxOpenRetry_,
-    IOpenDelayStrategy& strategy_
-) :
-	minOpenRetry(minOpenRetry_),
-	maxOpenRetry(maxOpenRetry_),
-	strategy(strategy_)
-{}
+ExponentialBackoffStrategy ExponentialBackoffStrategy::instance;
 
-ChannelRetry ChannelRetry::Default()
+IOpenDelayStrategy& ExponentialBackoffStrategy::Instance()
 {
-	return ChannelRetry(TimeDuration::Seconds(1), TimeDuration::Minutes(1));
+	return instance;
+}
+
+openpal::TimeDuration ExponentialBackoffStrategy::GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const
+{
+	int64_t doubled = 2 * current.GetMilliseconds();
+	return (doubled > max.GetMilliseconds()) ? max : openpal::TimeDuration::Milliseconds(doubled);
 }
 
 }
+
 

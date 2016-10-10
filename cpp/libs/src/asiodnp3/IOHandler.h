@@ -79,13 +79,18 @@ protected:
 	// Stop any asynchronous channel creation operations
 	virtual void SuspendChannelAccept() = 0;
 
-	// Called when a currently active channel shuts dwon
-	virtual void OnChannelShutdown() = 0;	
-
-	// Called by the super class when a new channel becomes available
-	void OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel);
+	// Called when a currently active channel shuts down unexpectedly
+	virtual void OnChannelShutdown() = 0;
 
 private:
+
+	// Called when a new channel is available
+	void OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel);
+
+	inline void UpdateListener(opendnp3::ChannelState state)
+	{
+		if (listener) listener->OnStateChange(state);
+	}
 
 	// called by the parser when a complete frame is read
 	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
@@ -97,6 +102,7 @@ private:
 	void Reset();
 	void BeginRead();
 	void CheckForSend();
+	
 
 	opendnp3::ILinkSession* GetEnabledSession(const opendnp3::Route&);
 

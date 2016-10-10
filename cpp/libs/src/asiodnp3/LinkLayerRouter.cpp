@@ -41,7 +41,7 @@ namespace asiodnp3
 LinkLayerRouter::LinkLayerRouter(	openpal::Logger logger,
                                     openpal::IExecutor& executor,
                                     IPhysicalLayer* pPhys,
-                                    const ChannelRetry& retry,
+                                    const asiopal::ChannelRetry& retry,
                                     std::shared_ptr<IChannelListener> listener,
                                     LinkChannelStatistics* pStatistics) :
 
