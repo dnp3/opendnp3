@@ -102,7 +102,7 @@ private:
 	void Reset();
 	void BeginRead();
 	void CheckForSend();
-	
+
 
 	opendnp3::ILinkSession* GetEnabledSession(const opendnp3::Route&);
 
@@ -110,13 +110,13 @@ private:
 	{
 		Session(opendnp3::ILinkSession& session, const opendnp3::Route& route) :
 			route(route),
-			session(&session)			
+			session(&session)
 		{}
 
 		Session() = default;
-		
+
 		bool enabled = false;
-		opendnp3::Route route;		
+		opendnp3::Route route;
 		opendnp3::ILinkSession* session = nullptr;
 	};
 
@@ -140,7 +140,7 @@ private:
 
 	const std::shared_ptr<asiopal::IO> io;
 	const std::shared_ptr<IChannelListener> listener;
-	
+
 	opendnp3::LinkChannelStatistics statistics;
 	opendnp3::LinkLayerParser parser;
 

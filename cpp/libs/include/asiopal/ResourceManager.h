@@ -31,7 +31,7 @@ namespace asiopal
 {
 
 class ResourceManager final : public IShutdownHandler
-{	
+{
 
 public:
 
@@ -61,7 +61,7 @@ public:
 		}
 	}
 
-private:	
+private:
 
 	std::mutex mutex;
 	bool is_shutting_down = false;

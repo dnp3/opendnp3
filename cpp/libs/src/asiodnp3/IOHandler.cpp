@@ -37,7 +37,7 @@ IOHandler::IOHandler(
 ) :
 	logger(logger),
 	io(io),
-	listener(listener),	
+	listener(listener),
 	parser(logger, &statistics)
 {
 
@@ -46,8 +46,8 @@ IOHandler::IOHandler(
 void IOHandler::BeginTransmit(const RSlice& buffer, ILinkSession& context)
 {
 	if (this->channel)
-	{		
-		this->txQueue.push_back(Transmission(buffer, &context));	
+	{
+		this->txQueue.push_back(Transmission(buffer, &context));
 		this->CheckForSend();
 	}
 	else
@@ -147,7 +147,7 @@ void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& chan
 	this->Reset();
 
 	this->channel = channel;
-	
+
 	this->BeginRead();
 }
 
@@ -156,23 +156,23 @@ bool IOHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& u
 	++statistics.numLinkFrameRx;
 
 	ILinkSession* dest = GetEnabledSession(Route(header.src, header.dest));
-	
+
 	if (dest)
 	{
 		return dest->OnFrame(header, userdata);
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(this->logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route, source: %i, dest %i", header.src, header.dest);		
+		FORMAT_LOG_BLOCK_WITH_CODE(this->logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route, source: %i, dest %i", header.src, header.dest);
 		return false;
 	}
 }
 
 void IOHandler::BeginRead()
 {
-	// we don't need to capture shared_ptr here, b/c shutting down an 
+	// we don't need to capture shared_ptr here, b/c shutting down an
 	// IAsyncChannel guarantees that the callback isn't invoked
-	auto cb = [this](const std::error_code& ec, std::size_t num)
+	auto cb = [this](const std::error_code & ec, std::size_t num)
 	{
 		if (ec)
 		{
@@ -193,13 +193,13 @@ void IOHandler::BeginRead()
 void IOHandler::CheckForSend()
 {
 	if (this->txQueue.empty() || !this->channel || !this->channel->CanWrite()) return;
-			
+
 	++statistics.numLinkFrameTx;
 	auto tx = this->txQueue.front();
-		
-	// we don't need to capture shared_ptr here, b/c shutting down an 
+
+	// we don't need to capture shared_ptr here, b/c shutting down an
 	// IAsyncChannel guarantees that the callback isn't invoked
-	auto cb = [this](const std::error_code& ec)
+	auto cb = [this](const std::error_code & ec)
 	{
 		if (ec)
 		{
@@ -213,12 +213,12 @@ void IOHandler::CheckForSend()
 		}
 	};
 
-	this->channel->BeginWrite(tx.txdata, cb);		
+	this->channel->BeginWrite(tx.txdata, cb);
 }
 
 opendnp3::ILinkSession* IOHandler::GetEnabledSession(const opendnp3::Route& route)
 {
-	auto matches = [route](const Session& session)
+	auto matches = [route](const Session & session)
 	{
 		return session.enabled && session.route.Equals(route);
 	};
@@ -261,12 +261,12 @@ bool IOHandler::IsAnySessionEnabled() const
 void IOHandler::Reset()
 {
 	if (!this->channel) return;
-	
+
 	// shutdown the existing channel
 	this->channel->Shutdown();
 
 	// reset the state of the parser
-	this->parser.Reset();		
+	this->parser.Reset();
 
 	// clear any pending tranmissions
 	this->txQueue.clear();
@@ -274,14 +274,14 @@ void IOHandler::Reset()
 	// notify any sessions that are online that this layer is offline
 	for (auto& item : this->sessions)
 	{
-		if (item.enabled) 
+		if (item.enabled)
 		{
 			item.session->OnLowerLayerDown();
-		}			
+		}
 	}
 
 	// drop the reference to the channel
-	this->channel.reset();	
+	this->channel.reset();
 }
 
 }

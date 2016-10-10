@@ -32,8 +32,8 @@
 namespace asiopal
 {
 
-class TCPClientChannelFactory final : public IChannelFactory, private ITCPClientHandler, public std::enable_shared_from_this<TCPClientChannelFactory>
-{	
+class TCPClientChannelFactory final : public IChannelFactory, public std::enable_shared_from_this<TCPClientChannelFactory>
+{
 
 public:
 
@@ -43,91 +43,23 @@ public:
 		const ChannelRetry& retry,
 		const IPEndpoint& remote,
 		const std::string& adapter
-	) :		
-		logger(logger),
-		executor(executor),
-		retry(retry),
-		currentDelay(retry.minOpenRetry),
-		remote(remote),
-		adapter(adapter),
-		retrytimer(*executor.get())
-	{}
+	);
 
-
-	virtual void Shutdown() override
-	{
-		this->Reset();
-	}
-
-	// Begin the process of acquiring channels
-	virtual void BeginChannelAccept(const channel_callback_t& callback) override
-	{
-		this->Reset();
-
-		this->client = TCPClient::Create(executor, remote, adapter);
-
-		this->client->BeginConnect(this->shared_from_this());
-	}
-
-	// Stop the process of acquiring channels
-	virtual void SuspendChannelAccept() override
-	{
-		this->Reset();
-	}
-
-	// Called when a currently active channel shuts down unexpectedly. May cause the factory to acquire another channel	
-	virtual void OnChannelShutdown(const channel_callback_t& callback) override
-	{
-		this->Reset();
-		
-		this->client = TCPClient::Create(executor, remote, adapter);
-
-		this->client->BeginConnect(this->shared_from_this());
-	}
+	virtual void Shutdown() override;	
+	virtual void BeginChannelAccept(const channel_callback_t& callback) override;
+	virtual void SuspendChannelAccept() override;	
+	virtual void OnChannelShutdown(const channel_callback_t& callback) override;
 
 private:
 
-	virtual void OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec) override
-	{
-		if (ec)
-		{
-			
-			const auto delay = retry.strategy.GetNextDelay(this->currentDelay, retry.maxOpenRetry);
-			this->Reset();
-			this->currentDelay = delay;
+	void StartConnect(const openpal::TimeDuration& delay, const channel_callback_t& callback);
 
-			auto callback = [this]() 
-			{
-				this->client = TCPClient::Create(this->executor, remote, adapter);
-				this->client->BeginConnect(this->shared_from_this());
-			};
-
-			this->retrytimer.Start(delay, callback);
-		}
-		else
-		{
-
-		}
-	}
-
-	void Reset()
-	{
-		if (this->client)
-		{
-			this->client->Cancel();
-			this->client.reset();			
-		}
-
-		retrytimer.Cancel();
-
-		this->currentDelay = retry.minOpenRetry;
-	}	
+	void Reset();
 
 	openpal::Logger logger;
 
 	const std::shared_ptr<StrandExecutor> executor;
 	const ChannelRetry retry;
-	openpal::TimeDuration currentDelay;
 	const IPEndpoint remote;
 	const std::string adapter;
 

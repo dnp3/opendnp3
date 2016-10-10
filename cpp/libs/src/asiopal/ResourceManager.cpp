@@ -23,24 +23,24 @@
 
 namespace asiopal
 {
-	void ResourceManager::OnShutdown(const std::shared_ptr<IResource>& resource)
+void ResourceManager::OnShutdown(const std::shared_ptr<IResource>& resource)
+{
+	std::lock_guard <std::mutex> lock(this->mutex);
+	this->resources.erase(resource);
+}
+
+void ResourceManager::Shutdown()
+{
+	std::lock_guard <std::mutex> lock(this->mutex);
+
+	this->is_shutting_down = true;
+
+	for (auto& resource : this->resources)
 	{
-		std::lock_guard <std::mutex> lock(this->mutex);		
-		this->resources.erase(resource);
+		resource->BeginShutdown();
 	}
 
-	void ResourceManager::Shutdown()
-	{
-		std::lock_guard <std::mutex> lock(this->mutex);
-
-		this->is_shutting_down = true;
-
-		for (auto& resource : this->resources)
-		{
-			resource->BeginShutdown();
-		}
-
-		resources.clear();
-	}
+	resources.clear();
+}
 }
 

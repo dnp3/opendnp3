@@ -44,9 +44,9 @@ public:
 	// Stop the process of acquiring channels
 	virtual void SuspendChannelAccept() = 0;
 
-	// Called when a currently active channel shuts down unexpectedly. May cause the factory to acquire another channel	
+	// Called when a currently active channel shuts down unexpectedly. May cause the factory to acquire another channel
 	virtual void OnChannelShutdown(const channel_callback_t& callback) = 0;
-	
+
 
 };
 

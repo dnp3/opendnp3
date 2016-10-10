@@ -40,7 +40,7 @@ public:
 	    const std::string& adapter)
 	{
 		return std::make_shared<TCPClient>(executor, remote, adapter);
-	}	
+	}
 
 	TCPClient(
 	    const std::shared_ptr<StrandExecutor>& executor,
@@ -49,7 +49,7 @@ public:
 	);
 
 	bool Cancel();
-	
+
 	bool BeginConnect(const connect_callback_t& callback);
 
 private:
