@@ -41,20 +41,20 @@ public:
 
 	MasterTLSServer(
 		const openpal::Logger& logger,
-		std::shared_ptr<asiopal::StrandExecutor> executor,		
-		asiopal::IPEndpoint endpoint,
+		const std::shared_ptr<asiopal::StrandExecutor>& executor,
+		const asiopal::IPEndpoint& endpoint,
 		const asiopal::TLSConfig& tlsConfig,
-		std::shared_ptr<IListenCallbacks> callbacks,
+		const std::shared_ptr<IListenCallbacks>& callbacks,
 		const std::shared_ptr<asiopal::ResourceManager>& manager,
 		std::error_code& ec	    	    
 	);
 
 	static std::shared_ptr<MasterTLSServer> Create(
 		const openpal::Logger& logger,
-		std::shared_ptr<asiopal::StrandExecutor> executor,		
-		asiopal::IPEndpoint endpoint,
+		const std::shared_ptr<asiopal::StrandExecutor> executor,
+		const asiopal::IPEndpoint endpoint,
 		const asiopal::TLSConfig& tlsConfig,
-		std::shared_ptr<IListenCallbacks> callbacks,
+		const std::shared_ptr<IListenCallbacks> callbacks,
 		const std::shared_ptr<asiopal::ResourceManager>& manager,
 		std::error_code& ec)
 	{

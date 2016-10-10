@@ -48,8 +48,8 @@ public:
 
 	TCPServer(
 	    const openpal::Logger& logger,
-	    std::shared_ptr<StrandExecutor> executor,
-	    IPEndpoint endpoint,
+	    const std::shared_ptr<StrandExecutor>& executor,
+	    const IPEndpoint& endpoint,
 	    std::error_code& ec
 	);
 
@@ -67,7 +67,6 @@ protected:
 	/// Start asynchronously accepting connections on the strand
 	void StartAccept();
 
-
 	openpal::Logger logger;
 	std::shared_ptr<StrandExecutor> executor;
 
@@ -75,11 +74,10 @@ private:
 
 	void Configure(const std::string& adapter, std::error_code& ec);
 
-
 	asio::ip::tcp::endpoint endpoint;
 	asio::ip::tcp::acceptor acceptor;
 	asio::ip::tcp::socket socket;
-	uint64_t session_id;
+	uint64_t session_id = 0;
 };
 
 }

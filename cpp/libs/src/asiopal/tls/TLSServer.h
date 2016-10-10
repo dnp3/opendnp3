@@ -48,9 +48,9 @@ public:
 
 	TLSServer(
 		const openpal::Logger& logger,
-	    std::shared_ptr<StrandExecutor> executor,	    	    
-	    IPEndpoint endpoint,
-	    const TLSConfig& tlsConfig,
+	    const std::shared_ptr<StrandExecutor>& executor,	    	    
+	    const IPEndpoint& endpoint,
+	    const TLSConfig& config,
 	    std::error_code& ec
 	);	
 

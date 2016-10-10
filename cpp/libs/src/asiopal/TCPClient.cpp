@@ -27,7 +27,7 @@ namespace asiopal
 {
 
 TCPClient::TCPClient(
-    std::shared_ptr<StrandExecutor> executor,
+	const std::shared_ptr<StrandExecutor>& executor,
     const IPEndpoint& remote,
     const std::string& adapter
 ) :

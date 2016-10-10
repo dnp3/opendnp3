@@ -35,15 +35,14 @@ namespace asiopal
 
 TCPServer::TCPServer(
     const openpal::Logger& logger,
-    std::shared_ptr<StrandExecutor> executor,
-    IPEndpoint endpoint,
+    const std::shared_ptr<StrandExecutor>& executor,
+    const IPEndpoint& endpoint,
     std::error_code& ec) :
 	executor(executor),
 	logger(logger),
 	endpoint(ip::tcp::v4(), endpoint.port),
 	acceptor(executor->strand.get_io_service()),
-	socket(executor->strand.get_io_service()),
-	session_id(0)
+	socket(executor->strand.get_io_service())	
 {
 	this->Configure(endpoint.address, ec);
 }

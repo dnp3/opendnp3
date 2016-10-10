@@ -34,7 +34,7 @@ class TCPClient final : public std::enable_shared_from_this<TCPClient>, private 
 public:
 
 	static std::shared_ptr<TCPClient> Create(
-	    std::shared_ptr<StrandExecutor> executor,
+	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& remote,
 	    const std::string& adapter)
 	{
@@ -42,7 +42,7 @@ public:
 	}
 
 	TCPClient(
-	    std::shared_ptr<StrandExecutor> executor,
+		const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& remote,
 	    const std::string& adapter
 	);
