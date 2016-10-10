@@ -26,38 +26,30 @@
 namespace asiopal
 {
 
-MockIO::Timeout::Timeout(std::shared_ptr<MockIO> io, std::chrono::steady_clock::duration timeout) : 
+MockIO::Timeout::Timeout(asio::io_service& service, std::chrono::steady_clock::duration timeout) :
 	io(io),
-	timer(io->service, timeout)
+	timer(std::make_shared<asio::basic_waitable_timer<std::chrono::steady_clock>>(service, timeout))
 {
-	auto callback = [this](const std::error_code& ec)
+	auto callback = [t = timer](const std::error_code& ec)
 	{
-		this->timer_fired = true;
-
 		if (!ec)
 		{
 			throw std::logic_error("timeout before completion");
 		}
 	};
 
-	this->timer.async_wait(callback);
+	this->timer->async_wait(callback);
 }
 
 MockIO::Timeout::~Timeout()
 {
-	this->timer.cancel();
-
-	while (!this->timer_fired)
-	{
-		this->io->service.poll_one();
-		this->io->service.reset();
-	}
+	this->timer->cancel();
 }
 
 size_t MockIO::RunUntilTimeout(const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout)
 {
 	size_t iterations = 0;
-	Timeout to(this->shared_from_this(), timeout);
+	Timeout to(this->service, timeout);
 
 	while (!condition())
 	{
@@ -83,7 +75,7 @@ void MockIO::CompleteInXIterations(size_t expectedIterations, const std::functio
 {
 	size_t iterations = 0;
 
-	Timeout to(this->shared_from_this(), timeout);
+	Timeout to(this->service, timeout);
 
 	while (!condition())
 	{

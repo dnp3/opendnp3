@@ -36,16 +36,14 @@ class MockIO final : public IO, public std::enable_shared_from_this<MockIO>
 
 	public:
 		
-		Timeout(std::shared_ptr<MockIO> io, std::chrono::steady_clock::duration timeout);
-
+		Timeout(asio::io_service& service, std::chrono::steady_clock::duration timeout);
+		
 		~Timeout();
 		
-
 	private:
 
 		std::shared_ptr<MockIO> io;
-		bool timer_fired = false;
-		asio::basic_waitable_timer<std::chrono::steady_clock> timer;
+		std::shared_ptr<asio::basic_waitable_timer<std::chrono::steady_clock>> timer;
 	};
 
 public:
