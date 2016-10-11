@@ -32,7 +32,7 @@ namespace asiodnp3
 /**
 * Base class for masters or outstations
 */
-class StackBase
+class StackBase : public std::enable_shared_from_this<StackBase>
 {
 public:
 
@@ -44,6 +44,17 @@ public:
 		const std::shared_ptr<IOHandler>& iohandler,
 		uint32_t maxRxFragSize,
 		const opendnp3::LinkConfig& config);
+
+	static std::shared_ptr<StackBase> Create(
+		const openpal::Logger& logger,
+		const std::shared_ptr<asiopal::StrandExecutor>& executor,
+		const std::shared_ptr<opendnp3::ILinkListener>& listener,
+		const std::shared_ptr<IOHandler>& iohandler,
+		uint32_t maxRxFragSize,
+		const opendnp3::LinkConfig& config)
+	{
+		return std::make_shared<StackBase>(logger, executor, listener, iohandler, maxRxFragSize, config);
+	}
 
 	bool Enable();
 

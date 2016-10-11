@@ -42,12 +42,12 @@ OutstationStack::OutstationStack(
 	const std::shared_ptr<IOHandler>& iohandler,
     const OutstationStackConfig& config) :
 
-	stack(logger, executor, application, iohandler, config.outstation.params.maxRxFragSize, config.link),	
+	stack(StackBase::Create(logger, executor, application, iohandler, config.outstation.params.maxRxFragSize, config.link)),	
 	commandHandler(commandHandler),
 	application(application),	
-	ocontext(config.outstation, config.dbConfig.sizes, logger, *executor.get(), stack.tstack.transport, *commandHandler, *application)
+	ocontext(config.outstation, config.dbConfig.sizes, logger, *executor.get(), stack->tstack.transport, *commandHandler, *application)
 {
-	this->stack.tstack.transport.SetAppLayer(ocontext);
+	this->stack->tstack.transport.SetAppLayer(ocontext);
 
 	// apply the database configuration
 	auto view = ocontext.GetConfigView();
@@ -67,9 +67,9 @@ void OutstationStack::SetLogFilters(const openpal::LogFilters& filters)
 {
 	auto set = [self = this->shared_from_this(), filters]()
 	{
-		self->stack.logger.SetFilters(filters);
+		self->stack->logger.SetFilters(filters);
 	};
-	this->stack.executor->PostToStrand(set);
+	this->stack->executor->PostToStrand(set);
 }
 
 void OutstationStack::SetRestartIIN()
@@ -79,7 +79,7 @@ void OutstationStack::SetRestartIIN()
 	{
 		self->ocontext.SetRestartIIN();
 	};
-	this->stack.executor->PostToStrand(set);
+	this->stack->executor->PostToStrand(set);
 }
 
 void OutstationStack::Apply(ChangeSet& changes)
@@ -93,7 +93,7 @@ void OutstationStack::Apply(ChangeSet& changes)
 		self->ocontext.CheckForTaskStart(); // force the outstation to check for updates
 	};
 
-	this->stack.executor->PostToStrand(task);
+	this->stack->executor->PostToStrand(task);
 }
 
 }

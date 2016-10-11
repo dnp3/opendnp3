@@ -41,9 +41,9 @@ StackBase::StackBase(
 
 bool StackBase::Enable()
 {
-	auto task = [this]() -> bool
+	auto task = [self = this->shared_from_this()]() -> bool
 	{
-		return this->iohandler->Enable(this->tstack.link);
+		return self->iohandler->Enable(self->tstack.link);
 	};
 
 	return this->executor->ReturnFrom<bool>(task);
@@ -51,9 +51,9 @@ bool StackBase::Enable()
 
 bool StackBase::Disable()
 {
-	auto task = [this]() -> bool
+	auto task = [self = this->shared_from_this()]() -> bool
 	{
-		return this->iohandler->Disable(this->tstack.link);
+		return self->iohandler->Disable(self->tstack.link);
 	};
 
 	return this->executor->ReturnFrom<bool>(task);
@@ -61,9 +61,9 @@ bool StackBase::Disable()
 
 void StackBase::Shutdown()
 {
-	auto task = [this]() -> bool
+	auto task = [self = this->shared_from_this()]() -> bool
 	{
-		return this->iohandler->Remove(this->tstack.link);
+		return self->iohandler->Remove(self->tstack.link);
 	};
 
 	auto remove = this->executor->ReturnFrom<bool>(task);
@@ -73,7 +73,7 @@ void StackBase::Shutdown()
 
 opendnp3::StackStatistics StackBase::GetStackStatistics()
 {
-	auto get = [this] () -> opendnp3::StackStatistics { return this->statistics; };
+	auto get = [self = this->shared_from_this()] () -> opendnp3::StackStatistics { return self->statistics; };
 
 	return this->executor->ReturnFrom<opendnp3::StackStatistics>(get);
 }

@@ -64,22 +64,22 @@ public:
 
 	virtual bool Enable() override
 	{
-		return stack.Enable();
+		return stack->Enable();
 	}
 
 	virtual bool Disable() override
 	{
-		return stack.Disable();
+		return stack->Disable();
 	}
 
 	virtual void Shutdown() override
 	{
-		stack.Shutdown();
+		stack->Shutdown();
 	}
 	
 	virtual opendnp3::StackStatistics GetStackStatistics() override
 	{
-		return stack.GetStackStatistics();
+		return stack->GetStackStatistics();
 	}
 
 	// --------- Implement IOutstation ---------
@@ -93,7 +93,7 @@ public:
 
 private:
 
-	StackBase stack;
+	const std::shared_ptr<StackBase> stack;
 	const std::shared_ptr<opendnp3::ICommandHandler> commandHandler;
 	const std::shared_ptr<opendnp3::IOutstationApplication> application;	
 	opendnp3::OContext ocontext;
