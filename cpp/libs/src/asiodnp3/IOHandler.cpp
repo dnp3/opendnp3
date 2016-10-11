@@ -293,28 +293,28 @@ bool IOHandler::IsAnySessionEnabled() const
 
 void IOHandler::Reset()
 {
-	if (!this->channel) return;
+	if (this->channel)
+	{
+		// shutdown the existing channel and drop the reference to it
+		this->channel->Shutdown();
+		this->channel.reset();
 
-	// shutdown the existing channel
-	this->channel->Shutdown();
+		// notify any sessions that are online that this layer is offline
+		for (auto& item : this->sessions)
+		{
+			if (item.enabled)
+			{
+				item.session->OnLowerLayerDown();
+			}
+		}
+	}
 
+	
 	// reset the state of the parser
 	this->parser.Reset();
 
 	// clear any pending tranmissions
-	this->txQueue.clear();
-
-	// notify any sessions that are online that this layer is offline
-	for (auto& item : this->sessions)
-	{
-		if (item.enabled)
-		{
-			item.session->OnLowerLayerDown();
-		}
-	}
-
-	// drop the reference to the channel
-	this->channel.reset();
+	this->txQueue.clear();		
 }
 
 }

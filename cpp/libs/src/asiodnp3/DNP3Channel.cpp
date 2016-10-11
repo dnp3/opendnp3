@@ -98,12 +98,12 @@ void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 
 IMaster* DNP3Channel::AddMaster(const std::string& id, std::shared_ptr<opendnp3::ISOEHandler> SOEHandler, std::shared_ptr<opendnp3::IMasterApplication> application, const MasterStackConfig& config)
 {
-	return nullptr;
+	throw std::logic_error("not implemented");
 }
 
 IOutstation* DNP3Channel::AddOutstation(const std::string& id, std::shared_ptr<ICommandHandler> commandHandler, std::shared_ptr<IOutstationApplication> application, const OutstationStackConfig& config)
 {
-	return nullptr;
+	throw std::logic_error("not implemented");
 }
 
 template <class T>
