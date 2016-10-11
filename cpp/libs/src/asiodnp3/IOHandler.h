@@ -54,6 +54,13 @@ public:
 	    std::shared_ptr<IChannelListener> listener
 	);
 
+	const opendnp3::LinkChannelStatistics& Statistics() const
+	{
+		return this->statistics;
+	}
+
+	void Shutdown();
+
 	/// --- implement ILinkTx ---
 
 	virtual void BeginTransmit(const openpal::RSlice& data, opendnp3::ILinkSession& context) override;
@@ -68,7 +75,7 @@ public:
 	bool Disable(opendnp3::ILinkSession& session);
 
 	// Remove this session entirely
-	bool Remove(opendnp3::ILinkSession& session);
+	bool Remove(opendnp3::ILinkSession& session);	
 
 private:
 

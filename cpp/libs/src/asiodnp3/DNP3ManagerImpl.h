@@ -22,16 +22,19 @@
 #ifndef ASIODNP3_DNP3MANAGERIMPL_H
 #define ASIODNP3_DNP3MANAGERIMPL_H
 
-#include <openpal/logging/Logger.h>
-#include <openpal/util/Uncopyable.h>
+#include "openpal/logging/Logger.h"
+#include "openpal/util/Uncopyable.h"
 
-#include <asiopal/ThreadPool.h>
-#include <asiopal/SerialTypes.h>
-#include <asiopal/TLSConfig.h>
+#include "asiopal/ThreadPool.h"
+#include "asiopal/SerialTypes.h"
+#include "asiopal/TLSConfig.h"
+#include "asiopal/ChannelRetry.h"
+#include "asiopal/ResourceManager.h"
 
-#include <opendnp3/LogLevels.h>
+#include "opendnp3/LogLevels.h"
 
-#include "asiodnp3/ChannelSet.h"
+#include "asiodnp3/IChannel.h"
+#include "asiodnp3/IChannelListener.h"
 
 namespace asiodnp3
 {
@@ -99,7 +102,8 @@ private:
 
 	openpal::Logger logger;
 	asiopal::ThreadPool threadpool;
-	ChannelSet channels;
+	std::shared_ptr<asiopal::ResourceManager> channels;
+	
 };
 
 }

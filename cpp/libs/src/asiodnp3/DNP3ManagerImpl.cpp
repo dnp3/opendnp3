@@ -23,13 +23,9 @@
 
 #include <opendnp3/LogLevels.h>
 
-#include <asiopal/PhysicalLayerSerial.h>
-#include <asiopal/PhysicalLayerTCPClient.h>
-#include <asiopal/PhysicalLayerTCPServer.h>
 
 #ifdef OPENDNP3_USE_TLS
-#include <asiopal/tls/PhysicalLayerTLSClient.h>
-#include <asiopal/tls/PhysicalLayerTLSServer.h>
+
 #endif
 
 #include "asiodnp3/ErrorCodes.h"
@@ -46,12 +42,17 @@ DNP3ManagerImpl::DNP3ManagerImpl(
     std::function<void()> onThreadExit
 ) :
 	logger(handler, "manager", opendnp3::levels::ALL),
-	threadpool(logger, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit)
+	threadpool(logger, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
+	channels(asiopal::ResourceManager::Create())
 {}
 
 void DNP3ManagerImpl::Shutdown()
 {
-	channels.Shutdown();
+	if (channels)
+	{
+		channels->Shutdown();
+		channels.reset();
+	}
 }
 
 IChannel* DNP3ManagerImpl::AddTCPClient(
@@ -64,8 +65,7 @@ IChannel* DNP3ManagerImpl::AddTCPClient(
     std::shared_ptr<IChannelListener> listener)
 {
 	auto clogger = this->logger.Detach(id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerTCPClient>(clogger, this->threadpool.service, host, local, port);
-	return this->channels.CreateChannel(clogger, retry, listener, std::move(phys));
+	return nullptr;
 }
 
 IChannel* DNP3ManagerImpl::AddTCPServer(
@@ -77,8 +77,7 @@ IChannel* DNP3ManagerImpl::AddTCPServer(
     std::shared_ptr<IChannelListener> listener)
 {
 	auto clogger = this->logger.Detach(id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerTCPServer>(clogger, this->threadpool.service, endpoint, port);
-	return this->channels.CreateChannel(clogger, retry, listener, std::move(phys));
+	return nullptr;
 }
 
 IChannel* DNP3ManagerImpl::AddSerial(
@@ -89,8 +88,7 @@ IChannel* DNP3ManagerImpl::AddSerial(
     std::shared_ptr<IChannelListener> listener)
 {
 	auto clogger = this->logger.Detach(id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerSerial>(clogger, this->threadpool.service, settings);
-	return this->channels.CreateChannel(clogger, retry, listener, std::move(phys));
+	return nullptr;
 }
 
 IChannel* DNP3ManagerImpl::AddTLSClient(
@@ -107,8 +105,7 @@ IChannel* DNP3ManagerImpl::AddTLSClient(
 
 #ifdef OPENDNP3_USE_TLS
 	auto clogger = this->logger.Detach(id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerTLSClient>(clogger, this->threadpool.service, host, local, port, config, ec);
-	return ec ? nullptr : this->channels.CreateChannel(clogger, retry, listener, std::move(phys));
+	return nullptr;
 #else
 	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
@@ -129,8 +126,7 @@ IChannel* DNP3ManagerImpl::AddTLSServer(
 
 #ifdef OPENDNP3_USE_TLS
 	auto clogger = this->logger.Detach(id, levels);
-	auto phys = std::make_unique<asiopal::PhysicalLayerTLSServer>(clogger, this->threadpool.service, endpoint, port, config, ec);
-	return ec ? nullptr : this->channels.CreateChannel(clogger, retry, listener, std::move(phys));
+	return nullptr;
 #else
 	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;

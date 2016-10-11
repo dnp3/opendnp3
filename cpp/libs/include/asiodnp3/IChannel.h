@@ -82,7 +82,7 @@ public:
 	*
 	* @return interface representing the running master
 	*/
-	virtual IMaster* AddMaster(		char const* id,
+	virtual IMaster* AddMaster(		const std::string& id,
 	                                std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	                                std::shared_ptr<opendnp3::IMasterApplication> application,
 	                                const MasterStackConfig& config) = 0;
@@ -96,7 +96,7 @@ public:
 	* @param config Configuration object that controls how the outstation behaves
 	* @return interface representing the running outstations
 	*/
-	virtual IOutstation* AddOutstation( char const* id,
+	virtual IOutstation* AddOutstation( const std::string& id,
 	                                    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
 	                                    std::shared_ptr<opendnp3::IOutstationApplication> application,
 	                                    const OutstationStackConfig& config) = 0;
