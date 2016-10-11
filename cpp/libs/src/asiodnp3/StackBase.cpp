@@ -29,6 +29,7 @@ StackBase::StackBase(
         const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    const std::shared_ptr<opendnp3::ILinkListener>& listener,
         const std::shared_ptr<IOHandler>& iohandler,
+		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 	    uint32_t maxRxFragSize,
 	    const opendnp3::LinkConfig& config
 ) :
@@ -36,6 +37,7 @@ StackBase::StackBase(
 	statistics(),
 	executor(executor),
 	iohandler(iohandler),
+	shutdown(shutdown),
 	tstack(logger, *executor.get(), *listener.get(),  maxRxFragSize, &statistics, config)
 {}
 
@@ -59,11 +61,16 @@ bool StackBase::Disable()
 	return this->executor->ReturnFrom<bool>(task);
 }
 
-void StackBase::Shutdown()
+void StackBase::Shutdown(const std::shared_ptr<asiopal::IResource>& resource)
 {
-	auto task = [self = this->shared_from_this()]() -> bool
+	auto task = [self = this->shared_from_this(), resource]() -> bool
 	{
 		return self->iohandler->Remove(self->tstack.link);
+
+		if (auto sd = self->shutdown.lock())
+		{
+			sd->OnShutdown(resource);
+		}
 	};
 
 	auto remove = this->executor->ReturnFrom<bool>(task);

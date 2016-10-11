@@ -34,9 +34,9 @@ namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
-    const openpal::Logger& logger,
+    const Logger& logger,
     const std::shared_ptr<asiopal::StrandExecutor>& executor,
-    std::unique_ptr<IOHandler> iohandler,
+	const std::shared_ptr<IOHandler>& iohandler,
     const std::weak_ptr<asiopal::IShutdownHandler>& shutdown) :
 
 	logger(logger),
@@ -76,7 +76,7 @@ LinkChannelStatistics DNP3Channel::GetChannelStatistics()
 	return this->executor->ReturnFrom<LinkChannelStatistics>(get);
 }
 
-openpal::LogFilters DNP3Channel::GetLogFilters() const
+LogFilters DNP3Channel::GetLogFilters() const
 {
 	auto get = [this]()
 	{
@@ -85,7 +85,7 @@ openpal::LogFilters DNP3Channel::GetLogFilters() const
 	return this->executor->ReturnFrom<LogFilters>(get);
 }
 
-void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
+void DNP3Channel::SetLogFilters(const LogFilters& filters)
 {
 	auto set = [self = this->shared_from_this(), filters]()
 	{
@@ -94,33 +94,36 @@ void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 	this->executor->PostToStrand(set);
 }
 
-std::shared_ptr<IMaster> DNP3Channel::AddMaster(const std::string& id, std::shared_ptr<opendnp3::ISOEHandler> SOEHandler, std::shared_ptr<opendnp3::IMasterApplication> application, const MasterStackConfig& config)
+std::shared_ptr<IMaster> DNP3Channel::AddMaster(const std::string& id, std::shared_ptr<ISOEHandler> SOEHandler, std::shared_ptr<IMasterApplication> application, const MasterStackConfig& config)
 {
-	throw std::logic_error("not implemented");
+	auto stack = MasterStack::Create(this->logger.Detach(id), this->executor, SOEHandler, application, this->iohandler, this->resources, config, this->tasklock);
+	
+	return this->AddStack(config.link, stack->GetLink(), stack);
+	
 }
 
 std::shared_ptr<IOutstation> DNP3Channel::AddOutstation(const std::string& id, std::shared_ptr<ICommandHandler> commandHandler, std::shared_ptr<IOutstationApplication> application, const OutstationStackConfig& config)
 {
-	throw std::logic_error("not implemented");
+	auto stack = OutstationStack::Create(this->logger.Detach(id), this->executor, commandHandler, application, this->iohandler, this->resources, config);
+
+	return this->AddStack(config.link, stack->GetLink(), stack);
 }
 
 template <class T>
-T* DNP3Channel::AddStack(const opendnp3::LinkConfig& link, const std::function<T* ()>& factory)
+std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, opendnp3::ILinkSession& session, const std::shared_ptr<T>& stack)
 {
-	Route route(link.RemoteAddr, link.LocalAddr);
-	if (router.IsRouteInUse(route))
-	{
-		FORMAT_LOG_BLOCK(this->logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
-		return nullptr;
-	}
-	else
-	{
-		auto pStack = factory();
-		stacks.Add(pStack);
-		pStack->SetLinkRouter(router);
-		router.AddContext(pStack->GetLinkContext(), route);
-		return pStack;
-	}
+
+	auto create = [stack, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this(), &session]() {
+
+		auto add = [route, self, &session]() -> bool
+		{
+			return self->iohandler->AddContext(session, route);
+		};
+
+		return self->executor->ReturnFrom<bool>(add) ? stack : nullptr;
+	};
+	
+	return this->resources->Bind<T>(create);
 }
 
 }

@@ -46,6 +46,7 @@ public:
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
 		const std::shared_ptr<IOHandler>& iohandler,
+		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 	    const OutstationStackConfig& config);
 
 	static std::shared_ptr<OutstationStack> Create(
@@ -54,10 +55,16 @@ public:
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
 		const std::shared_ptr<IOHandler>& iohandler,
+		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 	    const OutstationStackConfig& config
 	)
 	{
-		return std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, config);		
+		return std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, shutdown, config);		
+	}
+
+	opendnp3::ILinkSession& GetLink()
+	{
+		return stack->tstack.link;
 	}
 
 	// --------- Implement IStack ---------
@@ -74,7 +81,7 @@ public:
 
 	virtual void Shutdown() override
 	{
-		stack->Shutdown();
+		stack->Shutdown(this->shared_from_this());
 	}
 	
 	virtual opendnp3::StackStatistics GetStackStatistics() override

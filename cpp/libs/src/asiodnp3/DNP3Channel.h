@@ -25,6 +25,7 @@
 #include "asiodnp3/IChannel.h"
 #include "asiodnp3/IOHandler.h"
 #include "asiopal/ResourceManager.h"
+#include "opendnp3/master/MultidropTaskLock.h"
 
 namespace asiodnp3
 {
@@ -37,14 +38,14 @@ public:
 	DNP3Channel(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
-	    std::unique_ptr<IOHandler> iohandler,
+	    const std::shared_ptr<IOHandler>& iohandler,
 	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown
 	);
 
 	static std::shared_ptr<DNP3Channel> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
-	    std::unique_ptr<IOHandler> iohandler,
+		const std::shared_ptr<IOHandler>& iohandler,
 	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown)
 	{
 		return std::make_shared<DNP3Channel>(logger, executor, std::move(iohandler), shutdown);
@@ -76,14 +77,16 @@ private:
 
 	// ----- generic method for adding a stack ------
 	template <class T>
-	T* AddStack(const opendnp3::LinkConfig& link, const std::function<T* ()>& factory);
+	std::shared_ptr<T> AddStack(const opendnp3::LinkConfig& link, opendnp3::ILinkSession& session, const std::shared_ptr<T>& stack);
 
 	openpal::Logger logger;
 	const std::shared_ptr<asiopal::StrandExecutor> executor;
-	const std::unique_ptr<IOHandler> iohandler;
+	const std::shared_ptr<IOHandler> iohandler;
 	const std::weak_ptr<asiopal::IShutdownHandler> shutdown;
-
 	std::shared_ptr<asiopal::ResourceManager> resources;
+	opendnp3::MultidropTaskLock tasklock;
+	
+
 };
 
 }

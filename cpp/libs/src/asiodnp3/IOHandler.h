@@ -77,6 +77,9 @@ public:
 	// Remove this session entirely
 	bool Remove(opendnp3::ILinkSession& session);
 
+	// Query to see if a route is in use
+	bool IsRouteInUse(const opendnp3::Route& route) const;
+
 private:
 
 	// Called when a new channel is available
@@ -90,8 +93,7 @@ private:
 	// called by the parser when a complete frame is read
 	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
-	// Query to see if a route is in use
-	bool IsRouteInUse(const opendnp3::Route& route) const;
+	
 	bool IsSessionInUse(opendnp3::ILinkSession& session) const;
 	bool IsAnySessionEnabled() const;
 	void Reset();

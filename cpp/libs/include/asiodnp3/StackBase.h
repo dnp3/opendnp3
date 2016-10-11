@@ -23,6 +23,7 @@
 
 #include "asiodnp3/IStack.h"
 #include "asiopal/StrandExecutor.h"
+#include "asiopal/IResourceManager.h"
 #include "asiodnp3/IOHandler.h"
 #include "opendnp3/transport/TransportStack.h"
 
@@ -42,6 +43,7 @@ public:
 		const std::shared_ptr<asiopal::StrandExecutor>& executor, 
 		const std::shared_ptr<opendnp3::ILinkListener>& listener,
 		const std::shared_ptr<IOHandler>& iohandler,
+		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 		uint32_t maxRxFragSize,
 		const opendnp3::LinkConfig& config);
 
@@ -50,17 +52,18 @@ public:
 		const std::shared_ptr<asiopal::StrandExecutor>& executor,
 		const std::shared_ptr<opendnp3::ILinkListener>& listener,
 		const std::shared_ptr<IOHandler>& iohandler,
+		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 		uint32_t maxRxFragSize,
 		const opendnp3::LinkConfig& config)
 	{
-		return std::make_shared<StackBase>(logger, executor, listener, iohandler, maxRxFragSize, config);
+		return std::make_shared<StackBase>(logger, executor, listener, iohandler, shutdown, maxRxFragSize, config);
 	}
 
 	bool Enable();
 
 	bool Disable();
 
-	void Shutdown();
+	void Shutdown(const std::shared_ptr<asiopal::IResource>& resource);
 
 	opendnp3::StackStatistics GetStackStatistics();
 
@@ -71,6 +74,7 @@ public:
 	opendnp3::StackStatistics statistics;
 	const std::shared_ptr<asiopal::StrandExecutor> executor;
 	const std::shared_ptr<IOHandler> iohandler;
+	const std::weak_ptr<asiopal::IShutdownHandler> shutdown;
 	opendnp3::TransportStack tstack;
 
 };

@@ -43,6 +43,7 @@ public:
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
 		const std::shared_ptr<IOHandler>& iohandler,
+		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 	    const MasterStackConfig& config,		
 	    opendnp3::ITaskLock& taskLock
 	);
@@ -53,11 +54,17 @@ public:
 		const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 		const std::shared_ptr<opendnp3::IMasterApplication>& application,
 		const std::shared_ptr<IOHandler>& iohandler,
+		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 		const MasterStackConfig& config,
 		opendnp3::ITaskLock& taskLock
 	)
 	{
-		return std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, config, taskLock);
+		return std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, shutdown, config, taskLock);
+	}
+
+	opendnp3::ILinkSession& GetLink()
+	{
+		return stack->tstack.link;
 	}
 
 	// --------- Implement IStack ---------
@@ -74,7 +81,7 @@ public:
 
 	virtual void Shutdown() override
 	{
-		stack->Shutdown();
+		stack->Shutdown(this->shared_from_this());
 	}
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override

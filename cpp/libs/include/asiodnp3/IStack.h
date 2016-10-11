@@ -23,13 +23,15 @@
 
 #include <opendnp3/StackStatistics.h>
 
+#include "asiopal/IResourceManager.h"
+
 namespace asiodnp3
 {
 
 /**
 * Base class for masters or outstations
 */
-class IStack
+class IStack : public asiopal::IResource
 {
 public:
 
@@ -43,12 +45,7 @@ public:
 	/**
 	* Synchronously disable communications
 	*/
-	virtual bool Disable() = 0;
-
-	/**
-	* Synchronously shutdown the endpoint. No more calls are allowed after this call.
-	*/
-	virtual void Shutdown() = 0;
+	virtual bool Disable() = 0;	
 
 	/**
 	* @return stack statistics counters

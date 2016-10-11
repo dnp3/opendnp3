@@ -39,10 +39,11 @@ MasterStack::MasterStack(
     const std::shared_ptr<ISOEHandler>& SOEHandler,
     const std::shared_ptr<IMasterApplication>& application,
 	const std::shared_ptr<IOHandler>& iohandler,
+	const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
     const MasterStackConfig& config,
     ITaskLock& taskLock) :
 
-	stack(StackBase::Create(logger, executor, application, iohandler, config.master.maxRxFragSize, config.link)),
+	stack(StackBase::Create(logger, executor, application, iohandler, shutdown, config.master.maxRxFragSize, config.link)),
 	SOEHandler(SOEHandler),
 	application(application),	
 	mcontext(*executor.get(), logger, stack->tstack.transport, *SOEHandler, *application,  config.master, taskLock)

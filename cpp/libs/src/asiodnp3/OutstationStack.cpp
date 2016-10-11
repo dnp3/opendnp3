@@ -40,9 +40,10 @@ OutstationStack::OutstationStack(
     const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
     const std::shared_ptr<opendnp3::IOutstationApplication>& application,
 	const std::shared_ptr<IOHandler>& iohandler,
+	const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
     const OutstationStackConfig& config) :
 
-	stack(StackBase::Create(logger, executor, application, iohandler, config.outstation.params.maxRxFragSize, config.link)),	
+	stack(StackBase::Create(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link)),	
 	commandHandler(commandHandler),
 	application(application),	
 	ocontext(config.outstation, config.dbConfig.sizes, logger, *executor.get(), stack->tstack.transport, *commandHandler, *application)
