@@ -23,6 +23,7 @@
 
 #include "asiopal/StrandExecutor.h"
 #include "asiopal/IPEndpoint.h"
+#include "asiopal/LoggingConnectionCondition.h"
 
 namespace asiopal
 {
@@ -35,14 +36,16 @@ public:
 	typedef std::function<void(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket, const std::error_code& ec)> connect_callback_t;
 
 	static std::shared_ptr<TCPClient> Create(
+		const openpal::Logger& logger,
 	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& remote,
 	    const std::string& adapter)
 	{
-		return std::make_shared<TCPClient>(executor, remote, adapter);
+		return std::make_shared<TCPClient>(logger, executor, remote, adapter);
 	}
 
 	TCPClient(
+		const openpal::Logger& logger,
 	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& remote,
 	    const std::string& adapter
@@ -54,11 +57,12 @@ public:
 
 private:
 
-	bool PostConnectError(const connect_callback_t& callback, const std::error_code& ec);
+	bool PostConnectError(const connect_callback_t& callback, const std::error_code& ec);	
 
 	bool connecting = false;
 	bool canceled = false;
 
+	LoggingConnectionCondition condition;
 	std::shared_ptr<StrandExecutor> executor;
 	asio::ip::tcp::socket socket;
 	const std::string host;

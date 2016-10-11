@@ -28,7 +28,7 @@ MockTCPPair::MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_c
 	log(),
 	io(io),
 	chandler(std::make_shared<MockTCPClientHandler>()),
-	client(TCPClient::Create(io->Executor(), IPEndpoint::Localhost(port), "127.0.0.1")),
+	client(TCPClient::Create(log.logger, io->Executor(), IPEndpoint::Localhost(port), "127.0.0.1")),
 	server(MockTCPServer::Create(log.logger, io->Executor(), IPEndpoint::Localhost(20000), ec))
 {
 	if (ec)

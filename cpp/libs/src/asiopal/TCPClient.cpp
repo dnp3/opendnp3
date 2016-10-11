@@ -27,10 +27,12 @@ namespace asiopal
 {
 
 TCPClient::TCPClient(
+	const openpal::Logger& logger,
     const std::shared_ptr<StrandExecutor>& executor,
     const IPEndpoint& remote,
     const std::string& adapter
 ) :
+	condition(logger),
 	executor(executor),
 	socket(executor->strand.get_io_service()),
 	host(remote.address),
@@ -50,6 +52,7 @@ bool TCPClient::Cancel()
 
 	std::error_code ec;
 	socket.cancel(ec);
+	resolver.cancel();
 	this->canceled = true;
 	return true;
 }
@@ -69,15 +72,41 @@ bool TCPClient::BeginConnect(const connect_callback_t& callback)
 	}
 
 	const auto address = asio::ip::address::from_string(this->host, ec);
+	auto self = this->shared_from_this();
 	if (ec)
 	{
-		return this->PostConnectError(callback, ec);
-		// TODO handle DNS resolution
+		// Try DNS resolution instead		
+		auto cb = [self, callback](const std::error_code & ec, asio::ip::tcp::resolver::iterator endpoints)
+		{
+			if (ec)
+			{
+				self->PostConnectError(callback, ec);
+			}
+			else
+			{
+				// attempt a connection to each endpoint in the iterator until we connect
+				auto cb = [self, callback](const std::error_code & ec, asio::ip::tcp::resolver::iterator endpoints)
+				{
+					callback(self->executor, std::move(self->socket), ec);
+				};
+
+				asio::async_connect(self->socket, endpoints, self->condition, self->executor->strand.wrap(cb));
+			}
+		};
+
+		std::stringstream portstr;
+		portstr << remoteEndpoint.port();
+		
+		resolver.async_resolve(
+			asio::ip::tcp::resolver::query(host, portstr.str()),
+			executor->strand.wrap(cb)
+		);
+
+		return true;
 	}
 	else
 	{
-		remoteEndpoint.address(address);
-		auto self = this->shared_from_this();
+		remoteEndpoint.address(address);		
 		auto cb = [self, callback](const std::error_code & ec)
 		{
 			self->connecting = false;

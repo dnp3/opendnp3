@@ -54,7 +54,7 @@ void TCPClientChannelFactory::BeginChannelAccept(const channel_callback_t& callb
 	{
 		if (!this->client)
 		{
-			this->client = TCPClient::Create(executor, remote, adapter);
+			this->client = TCPClient::Create(logger, executor, remote, adapter);
 		}
 
 		this->StartConnect(this->client, this->retry.minOpenRetry, callback);
