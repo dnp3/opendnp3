@@ -32,7 +32,6 @@
 #include <asiopal/StrandExecutor.h>
 
 #include "asiodnp3/IOutstation.h"
-#include "asiodnp3/ILinkBind.h"
 #include "asiodnp3/OutstationStackConfig.h"
 
 namespace asiodnp3
@@ -40,7 +39,7 @@ namespace asiodnp3
 
 /// templated base class so that things can be shared between vanilla and SA interfaces
 template <class Interface>
-class OutstationStackBase : public Interface, public ILinkBind
+class OutstationStackBase : public Interface
 {
 public:
 
@@ -108,12 +107,12 @@ public:
 
 	// ------- implement ILinkBind ---------
 
-	virtual void SetLinkRouter(opendnp3::ILinkTx& router) override final
+	void SetLinkRouter(opendnp3::ILinkTx& router)
 	{
 		stack.link.SetRouter(router);
 	}
 
-	virtual opendnp3::ILinkSession& GetLinkContext() override final
+	opendnp3::ILinkSession& GetLinkContext()
 	{
 		return stack.link;
 	}

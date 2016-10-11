@@ -28,7 +28,6 @@
 #include "asiopal/StrandExecutor.h"
 
 #include "asiodnp3/IMaster.h"
-#include "asiodnp3/ILinkBind.h"
 
 #include "Conversions.h"
 #include "asiodnp3/MasterStackConfig.h"
@@ -39,7 +38,7 @@ namespace asiodnp3
 {
 
 template <class Interface>
-class MasterStackBase : public Interface, public ILinkBind
+class MasterStackBase : public Interface
 {
 public:
 
@@ -232,12 +231,12 @@ public:
 
 	// ------- implement ILinkBind ---------
 
-	virtual void SetLinkRouter(opendnp3::ILinkTx& router) override final
+	void SetLinkRouter(opendnp3::ILinkTx& router)
 	{
 		stack.link.SetRouter(router);
 	}
 
-	virtual opendnp3::ILinkSession& GetLinkContext() override final
+	opendnp3::ILinkSession& GetLinkContext()
 	{
 		return stack.link;
 	}
