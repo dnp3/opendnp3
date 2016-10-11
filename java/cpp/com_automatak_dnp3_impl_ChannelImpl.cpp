@@ -35,17 +35,23 @@ using namespace asiodnp3;
 using namespace opendnp3;
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
-(JNIEnv* env, jobject, jlong native)
+(JNIEnv* env, jobject, jlong native, jboolean callshutdown)
 {
-	const auto channel = (IChannel*) native;
-	channel->Shutdown();
+	const auto channel = (std::shared_ptr<IChannel>*) native;
+
+	if (callshutdown)
+	{
+		(*channel)->Shutdown();
+	}
+	
+	delete channel; // drop our reference
 }
 
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
 (JNIEnv* env, jobject, jlong native, jstring jid, jobject handler, jobject application, jobject jconfig)
 {
-	const auto channel = (IChannel*)native;
+	const auto channel = (std::shared_ptr<IChannel>*) native;
 
 	auto config = ConfigReader::ConvertMasterStackConfig(env, jconfig);
 	auto soeAdapter = std::make_shared<SOEHandlerAdapter>(handler);
@@ -53,13 +59,13 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 
 	CString id(env, jid);
 
-	return (jlong) channel->AddMaster(id.str(), soeAdapter, appAdapter, config);	 
+	return (jlong) (*channel)->AddMaster(id.str(), soeAdapter, appAdapter, config);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1outstation
 (JNIEnv* env, jobject, jlong native, jstring jid, jobject commandHandler, jobject application, jobject jconfig)
 {
-	const auto channel = (IChannel*) native;
+	const auto channel = (std::shared_ptr<IChannel>*) native;
 
 	auto config = ConfigReader::ConvertOutstationStackConfig(env, jconfig);
 	auto commandHandlerAdapter = std::make_shared<CommandHandlerAdapter>(application);
@@ -67,6 +73,6 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ou
 
 	CString id(env, jid);
 
-	return (jlong)channel->AddOutstation(id.str(), commandHandlerAdapter, applicationAdapter, config);
+	return (jlong) (*channel)->AddOutstation(id.str(), commandHandlerAdapter, applicationAdapter, config);
 }
 

@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     com_automatak_dnp3_impl_ChannelImpl
  * Method:    shutdown_native
- * Signature: (J)V
+ * Signature: (JZ)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
-  (JNIEnv *, jobject, jlong);
+  (JNIEnv *, jobject, jlong, jboolean);
 
 /*
  * Class:     com_automatak_dnp3_impl_ChannelImpl

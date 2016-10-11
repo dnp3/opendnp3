@@ -32,11 +32,26 @@ class ChannelImpl implements Channel {
     }
 
     @Override
-    public Master addMaster(String id, SOEHandler handler, MasterApplication application, MasterStackConfig config) throws DNP3Exception
+    public void finalize()
     {
+        if(nativePointer != 0)
+        {
+            this.shutdown_native(this.nativePointer, false); // release the reference, but don't call channel shutdown
+        }
+    }
+
+    @Override
+    public synchronized Master addMaster(String id, SOEHandler handler, MasterApplication application, MasterStackConfig config) throws DNP3Exception
+    {
+        if(this.nativePointer == 0)
+        {
+            throw new DNP3Exception("The channel has been shut down");
+        }
+
         long ret = get_native_master(nativePointer, id, handler, application, config);
 
-        if(ret == 0) {
+        if(ret == 0)
+        {
             throw new DNP3Exception("Unable to create master");
         }
 
@@ -44,11 +59,17 @@ class ChannelImpl implements Channel {
     }
 
     @Override
-    public Outstation addOutstation(String id, CommandHandler commandHandler, OutstationApplication application, OutstationStackConfig config) throws DNP3Exception
+    public synchronized Outstation addOutstation(String id, CommandHandler commandHandler, OutstationApplication application, OutstationStackConfig config) throws DNP3Exception
     {
+        if(this.nativePointer == 0)
+        {
+            throw new DNP3Exception("The channel has been shut down");
+        }
+
         long ret = get_native_outstation(nativePointer, id, commandHandler, application, config);
 
-        if(ret == 0) {
+        if(ret == 0)
+        {
             throw new DNP3Exception("Unable to create outstation");
         }
 
@@ -60,12 +81,12 @@ class ChannelImpl implements Channel {
     {
         if(nativePointer != 0)
         {
-            this.shutdown_native(nativePointer);
+            this.shutdown_native(nativePointer, true);
             nativePointer = 0;
         }
     }
 
-    private native void shutdown_native(long nativePointer);
+    private native void shutdown_native(long nativePointer, boolean callShutdown);
     private native long get_native_master(long nativePointer, String id, SOEHandler handler, MasterApplication application, MasterStackConfig config);
     private native long get_native_outstation(long nativePointer, String id, CommandHandler commandHandler, OutstationApplication application, OutstationStackConfig config);
 }
