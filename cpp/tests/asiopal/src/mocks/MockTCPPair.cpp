@@ -39,7 +39,7 @@ MockTCPPair::MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_c
 
 MockTCPPair::~MockTCPPair()
 {
-	this->server->BeginShutdown();
+	this->server->Shutdown();
 	this->client->Cancel();
 }
 

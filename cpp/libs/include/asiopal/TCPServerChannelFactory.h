@@ -61,7 +61,7 @@ class TCPServerChannelFactory final : public IChannelFactory, public std::enable
 
 public:
 
-	std::shared_ptr<TCPServerChannelFactory> Create(
+	static std::shared_ptr<TCPServerChannelFactory> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& endpoint,

@@ -92,11 +92,10 @@ void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)
 }
 
 void MasterSessionStack::BeginShutdown()
-{
-	auto session = m_session;
-	auto shutdown = [session]()
+{	
+	auto shutdown = [session = m_session]()
 	{
-		session->BeginShutdown();
+		session->Shutdown();
 	};
 
 	m_executor->strand.post(shutdown);

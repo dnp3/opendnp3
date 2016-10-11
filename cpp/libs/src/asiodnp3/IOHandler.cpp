@@ -43,6 +43,19 @@ IOHandler::IOHandler(
 
 }
 
+void IOHandler::Shutdown()
+{
+	if (factory)
+	{
+		this->factory->Shutdown();
+
+		if (channel)
+		{
+			this->channel->Shutdown();			
+		}		
+	}
+}
+
 void IOHandler::BeginTransmit(const RSlice& buffer, ILinkSession& context)
 {
 	if (this->channel)

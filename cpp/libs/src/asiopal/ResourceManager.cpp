@@ -37,7 +37,7 @@ void ResourceManager::Shutdown()
 
 	for (auto& resource : this->resources)
 	{
-		resource->BeginShutdown();
+		resource->Shutdown();
 	}
 
 	resources.clear();

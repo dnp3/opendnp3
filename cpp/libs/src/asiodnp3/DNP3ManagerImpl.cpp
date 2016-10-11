@@ -29,8 +29,14 @@
 #endif
 
 #include "asiodnp3/ErrorCodes.h"
+#include "asiodnp3/IOHandler.h"
+#include "asiodnp3/DNP3Channel.h"
+
+#include "asiopal/TCPClientChannelFactory.h"
+#include "asiopal/TCPServerChannelFactory.h"
 
 using namespace openpal;
+using namespace asiopal;
 
 namespace asiodnp3
 {
@@ -42,8 +48,8 @@ DNP3ManagerImpl::DNP3ManagerImpl(
     std::function<void()> onThreadExit
 ) :
 	logger(handler, "manager", opendnp3::levels::ALL),
-	threadpool(logger, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
-	resources(asiopal::ResourceManager::Create())
+	threadpool(ThreadPool::Create(logger, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit)),
+	resources(ResourceManager::Create())
 {}
 
 void DNP3ManagerImpl::Shutdown()
@@ -58,33 +64,48 @@ void DNP3ManagerImpl::Shutdown()
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
     const std::string& id,
     uint32_t levels,
-    const asiopal::ChannelRetry& retry,
+    const ChannelRetry& retry,
     const std::string& host,
     const std::string& local,
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
-	auto clogger = this->logger.Detach(id, levels);
-	return nullptr;
+	auto create = [&]()  {
+		auto clogger = this->logger.Detach(id, levels);
+		auto executor = StrandExecutor::Create(this->threadpool);
+		auto factory = TCPClientChannelFactory::Create(clogger, executor, retry, IPEndpoint(host, port), local);
+		auto iohandler = std::make_unique<IOHandler>(clogger, factory, listener);
+		return DNP3Channel::Create(clogger, executor, std::move(iohandler), this->resources);
+	};
+
+	return this->resources->Bind<IChannel>(create);
 }
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
     const std::string& id,
     uint32_t levels,
-    const asiopal::ChannelRetry& retry,
+    const ChannelRetry& retry,
     const std::string& endpoint,
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
-	auto clogger = this->logger.Detach(id, levels);
-	return nullptr;
+	auto create = [&]() {
+		std::error_code ec;
+		auto clogger = this->logger.Detach(id, levels);
+		auto executor = StrandExecutor::Create(this->threadpool);
+		auto factory = TCPServerChannelFactory::Create(clogger, executor, IPEndpoint(endpoint, port), ec);
+		auto iohandler = std::make_unique<IOHandler>(clogger, factory, listener);
+		return ec ? nullptr : DNP3Channel::Create(clogger, executor, std::move(iohandler), this->resources);
+	};
+
+	return this->resources->Bind<IChannel>(create);
 }
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddSerial(
     const std::string& id,
     uint32_t levels,
-    const asiopal::ChannelRetry& retry,
-    asiopal::SerialSettings settings,
+    const ChannelRetry& retry,
+    SerialSettings settings,
     std::shared_ptr<IChannelListener> listener)
 {
 	//ec = Error::NO_SERIAL_SUPPORT;
@@ -94,11 +115,11 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddSerial(
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(
     const std::string& id,
     uint32_t levels,
-    const asiopal::ChannelRetry& retry,
+    const ChannelRetry& retry,
     const std::string& host,
     const std::string& local,
     uint16_t port,
-    const asiopal::TLSConfig& config,
+    const TLSConfig& config,
     std::shared_ptr<IChannelListener> listener,
     std::error_code& ec)
 {
@@ -116,10 +137,10 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
     const std::string& id,
     uint32_t levels,
-    const asiopal::ChannelRetry& retry,
+    const ChannelRetry& retry,
     const std::string& endpoint,
     uint16_t port,
-    const asiopal::TLSConfig& config,
+    const TLSConfig& config,
     std::shared_ptr<IChannelListener> listener,
     std::error_code& ec)
 {

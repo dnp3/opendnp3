@@ -61,7 +61,7 @@ void TCPServerChannelFactory::Shutdown()
 {
 	if (this->server)
 	{
-		this->server->BeginShutdown();
+		this->server->Shutdown();
 		this->server.reset();
 	}
 }
@@ -94,7 +94,7 @@ void TCPServerChannelFactory::SuspendChannelAccept()
 {
 	if (this->server)
 	{
-		this->server->BeginShutdown();
+		this->server->Shutdown();
 		this->server.reset();
 	}
 }

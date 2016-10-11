@@ -56,7 +56,10 @@ public:
 		else
 		{
 			auto item = create();
-			this->resources.insert(item);
+			if (item)
+			{
+				this->resources.insert(item);
+			}			
 			return item;
 		}
 	}

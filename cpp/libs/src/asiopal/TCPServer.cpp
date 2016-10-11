@@ -47,7 +47,7 @@ TCPServer::TCPServer(
 	this->Configure(endpoint.address, ec);
 }
 
-void TCPServer::BeginShutdown()
+void TCPServer::Shutdown()
 {
 	std::error_code ec;
 	this->acceptor.close(ec);

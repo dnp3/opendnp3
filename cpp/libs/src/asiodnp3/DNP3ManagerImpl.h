@@ -101,7 +101,7 @@ public:
 private:
 
 	openpal::Logger logger;
-	asiopal::ThreadPool threadpool;
+	std::shared_ptr<asiopal::ThreadPool> threadpool;
 	std::shared_ptr<asiopal::ResourceManager> resources;
 	
 };

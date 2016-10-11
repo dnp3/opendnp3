@@ -68,7 +68,7 @@ public:
 	);
 
 	// override IResource
-	void BeginShutdown() override;
+	void Shutdown() override;
 
 	void SetLogFilters(openpal::LogFilters filters);
 

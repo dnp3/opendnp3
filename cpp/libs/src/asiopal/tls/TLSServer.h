@@ -55,7 +55,7 @@ public:
 	);
 
 	/// Stop listening for connections, permanently shutting down the listener
-	void BeginShutdown() override;
+	void Shutdown() override;
 
 protected:
 

@@ -53,7 +53,7 @@ TLSServer::TLSServer(
 	}
 }
 
-void TLSServer::BeginShutdown()
+void TLSServer::Shutdown()
 {
 	this->acceptor.close();
 }

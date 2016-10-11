@@ -35,7 +35,7 @@ public:
 
 	virtual ~IResource() {}
 
-	virtual void BeginShutdown() = 0;
+	virtual void Shutdown() = 0;
 
 };
 

@@ -54,7 +54,7 @@ public:
 	);
 
 	/// Implement IListener
-	void BeginShutdown() override final;
+	void Shutdown() override final;
 
 protected:
 

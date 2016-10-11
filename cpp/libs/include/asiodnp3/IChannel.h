@@ -33,6 +33,8 @@
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 
+#include "asiopal/IResourceManager.h"
+
 #include "IMaster.h"
 #include "IOutstation.h"
 #include "MasterStackConfig.h"
@@ -46,7 +48,7 @@ namespace asiodnp3
 /**
 * Represents a communication channel upon which masters and outstations can be bound.
 */
-class IChannel
+class IChannel : public asiopal::IResource
 {
 public:
 
@@ -55,12 +57,7 @@ public:
 	/**
 	* Synchronously read the channel statistics
 	*/
-	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() = 0;
-
-	/**
-	* synchronously shutdown the channel
-	*/
-	virtual void Shutdown() = 0;
+	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() = 0;	
 
 	/**
 	*  @return The current logger settings for this channel

@@ -37,14 +37,24 @@ public:
 	DNP3Channel(
 	    const openpal::Logger& logger,
 		const std::shared_ptr<asiopal::StrandExecutor>& executor,
-	    const std::shared_ptr<IOHandler> iohandler
+	    std::unique_ptr<IOHandler> iohandler,
+		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown
 	);
 
+	static std::shared_ptr<DNP3Channel> Create(
+		const openpal::Logger& logger,
+		const std::shared_ptr<asiopal::StrandExecutor>& executor,
+		std::unique_ptr<IOHandler> iohandler,
+		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown)
+	{
+		return std::make_shared<DNP3Channel>(logger, executor, std::move(iohandler), shutdown);
+	}
+	
 	// ----------------------- Implement IChannel -----------------------
 
-	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override;
-
 	void Shutdown() override;
+
+	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override;	
 
 	virtual openpal::LogFilters GetLogFilters() const override;
 
@@ -70,7 +80,8 @@ private:
 
 	openpal::Logger logger;
 	const std::shared_ptr<asiopal::StrandExecutor> executor;	
-	const std::shared_ptr<IOHandler> iohandler;
+	const std::unique_ptr<IOHandler> iohandler;
+	const std::weak_ptr<asiopal::IShutdownHandler> shutdown;
 
 	std::shared_ptr<asiopal::ResourceManager> resources;
 };

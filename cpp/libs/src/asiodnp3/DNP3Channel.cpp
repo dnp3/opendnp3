@@ -38,12 +38,14 @@ namespace asiodnp3
 DNP3Channel::DNP3Channel(
 	const openpal::Logger& logger,
 	const std::shared_ptr<asiopal::StrandExecutor>& executor,
-	const std::shared_ptr<IOHandler> iohandler) :
+	std::unique_ptr<IOHandler> iohandler,
+	const std::weak_ptr<asiopal::IShutdownHandler>& shutdown) :
 
 	logger(logger),
 	executor(executor),
-	iohandler(iohandler),
-	resources(ResourceManager::Create())
+	iohandler(std::move(iohandler)),
+	resources(ResourceManager::Create()),
+	shutdown(shutdown)
 {
 	
 }
@@ -53,6 +55,11 @@ void DNP3Channel::Shutdown()
 {	
 	if (resources) // have we been shutdown yet?
 	{
+		if (auto sd = this->shutdown.lock())
+		{
+			sd->OnShutdown(this->shared_from_this());
+		}
+
 		// shutdown the IO handler
 		this->iohandler->Shutdown();
 
@@ -81,9 +88,8 @@ openpal::LogFilters DNP3Channel::GetLogFilters() const
 }
 
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
-{
-	auto self(this->shared_from_this());
-	auto set = [self, filters]()
+{	
+	auto set = [self = this->shared_from_this(), filters]()
 	{
 		self->logger.SetFilters(filters);
 	};
