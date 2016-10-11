@@ -31,9 +31,9 @@ namespace asiodnp3
 {
 
 IOHandler::IOHandler(
-    Logger logger,
-    std::shared_ptr<asiopal::IChannelFactory> factory,
-    std::shared_ptr<IChannelListener> listener
+    const openpal::Logger& logger,
+    const std::shared_ptr<asiopal::IChannelFactory>& factory,
+    const std::shared_ptr<IChannelListener>& listener
 ) :
 	logger(logger),
 	factory(factory),
@@ -51,8 +51,8 @@ void IOHandler::Shutdown()
 
 		if (channel)
 		{
-			this->channel->Shutdown();			
-		}		
+			this->channel->Shutdown();
+		}
 	}
 }
 
@@ -309,12 +309,12 @@ void IOHandler::Reset()
 		}
 	}
 
-	
+
 	// reset the state of the parser
 	this->parser.Reset();
 
 	// clear any pending tranmissions
-	this->txQueue.clear();		
+	this->txQueue.clear();
 }
 
 }

@@ -34,16 +34,18 @@ namespace asiodnp3
 MasterStack::MasterStack(
     const Logger& logger,
     const std::shared_ptr<StrandExecutor>& executor,
-    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-    std::shared_ptr<opendnp3::IMasterApplication> application,
+    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+    const std::shared_ptr<opendnp3::IMasterApplication>& application,
     const MasterStackConfig& config,
     opendnp3::ITaskLock& taskLock) :
-	MasterStackBase<IMaster>(logger, executor, *application, config),
+
+	executor(executor),
 	SOEHandler(SOEHandler),
 	application(application),
-	mcontext(*executor.get(), logger, stack.transport, *SOEHandler, *application,  config.master, taskLock)
+	tstack(logger, *executor.get(), *application.get(), config.master.maxRxFragSize, nullptr, config.link), // TODO - statistics
+	mcontext(*executor.get(), logger, tstack.transport, *SOEHandler, *application,  config.master, taskLock)
 {
-	this->SetContext(mcontext);
+	this->tstack.transport.SetAppLayer(mcontext);
 }
 
 }

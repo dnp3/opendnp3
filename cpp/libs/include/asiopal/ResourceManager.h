@@ -59,7 +59,7 @@ public:
 			if (item)
 			{
 				this->resources.insert(item);
-			}			
+			}
 			return item;
 		}
 	}

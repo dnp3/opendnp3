@@ -49,9 +49,9 @@ class IOHandler : public opendnp3::ILinkTx, private opendnp3::IFrameSink
 public:
 
 	IOHandler(
-	    openpal::Logger logger,
-	    std::shared_ptr<asiopal::IChannelFactory> factory,
-	    std::shared_ptr<IChannelListener> listener
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::IChannelFactory>& factory,
+	    const std::shared_ptr<IChannelListener>& listener
 	);
 
 	const opendnp3::LinkChannelStatistics& Statistics() const
@@ -75,7 +75,7 @@ public:
 	bool Disable(opendnp3::ILinkSession& session);
 
 	// Remove this session entirely
-	bool Remove(opendnp3::ILinkSession& session);	
+	bool Remove(opendnp3::ILinkSession& session);
 
 private:
 

@@ -50,7 +50,7 @@ LinkSession::LinkSession(
 }
 
 void LinkSession::Shutdown()
-{	
+{
 	auto shutdown = [self = shared_from_this()]()
 	{
 		self->first_frame_timer.Cancel();
@@ -65,7 +65,7 @@ void LinkSession::SetLogFilters(openpal::LogFilters filters)
 }
 
 void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
-{	
+{
 	auto callback = [self = shared_from_this(), buffer, &session](const std::error_code & ec)
 	{
 		if (ec)

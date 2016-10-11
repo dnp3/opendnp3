@@ -35,6 +35,8 @@ public:
 
 	virtual ~IMasterSession() {}
 
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
+
 	virtual void BeginShutdown() = 0;
 
 };

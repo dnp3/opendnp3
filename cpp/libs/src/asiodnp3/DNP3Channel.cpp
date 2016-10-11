@@ -34,10 +34,10 @@ namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
-	const openpal::Logger& logger,
-	const std::shared_ptr<asiopal::StrandExecutor>& executor,
-	std::unique_ptr<IOHandler> iohandler,
-	const std::weak_ptr<asiopal::IShutdownHandler>& shutdown) :
+    const openpal::Logger& logger,
+    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    std::unique_ptr<IOHandler> iohandler,
+    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown) :
 
 	logger(logger),
 	executor(executor),
@@ -45,12 +45,12 @@ DNP3Channel::DNP3Channel(
 	resources(ResourceManager::Create()),
 	shutdown(shutdown)
 {
-	
+
 }
 
 // comes from the outside, so we need to synchronize
 void DNP3Channel::Shutdown()
-{	
+{
 	if (resources) // have we been shutdown yet?
 	{
 		if (auto sd = this->shutdown.lock())
@@ -86,12 +86,12 @@ openpal::LogFilters DNP3Channel::GetLogFilters() const
 }
 
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
-{	
+{
 	auto set = [self = this->shared_from_this(), filters]()
 	{
 		self->logger.SetFilters(filters);
 	};
-	this->executor->PostToStrand(set);	
+	this->executor->PostToStrand(set);
 }
 
 IMaster* DNP3Channel::AddMaster(const std::string& id, std::shared_ptr<opendnp3::ISOEHandler> SOEHandler, std::shared_ptr<opendnp3::IMasterApplication> application, const MasterStackConfig& config)

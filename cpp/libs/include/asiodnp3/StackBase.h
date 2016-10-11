@@ -18,49 +18,52 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_IOUTSTATION_H
-#define ASIODNP3_IOUTSTATION_H
+#ifndef ASIODNP3_STACKBASE_H
+#define ASIODNP3_STACKBASE_H
 
 #include "asiodnp3/IStack.h"
-#include "asiodnp3/ChangeSet.h"
-
-#include <openpal/logging/LogFilters.h>
+#include "asiopal/StrandExecutor.h"
+#include "asiodnp3/IOHandler.h"
+#include "opendnp3/transport/TransportStack.h"
 
 namespace asiodnp3
 {
 
 /**
-* Interface representing a running outstation.
-* To get a data observer interface to load measurements on the outstation:-
-\code
-	IMeasurementLoader* pDataObserver = pOutstation->GetDataObserver()
-\endcode
+* Base class for masters or outstations
 */
-class IOutstation : public IStack
+class StackBase
 {
-	friend class MeasUpdate;
-
 public:
 
-	virtual ~IOutstation() {}
 
-	/**
-	*  @param filters Adjust the filters to this value
-	*/
-	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
+	StackBase(
+		const openpal::Logger& logger, 
+		const std::shared_ptr<asiopal::StrandExecutor>& executor, 
+		const std::shared_ptr<opendnp3::ILinkListener>& listener,
+		const std::shared_ptr<IOHandler>& iohandler,
+		uint32_t maxRxFragSize,
+		const opendnp3::LinkConfig& config);
 
-	/**
-	* Sets the restart IIN bit. Normally applications should not
-	* touch this bit, but it is provided for simulating restarts.
-	*/
-	virtual void SetRestartIIN() = 0;
+	bool Enable();
 
-	/**
-	* Apply a measurement changeset to the outstation
-	*/
-	virtual void Apply(ChangeSet& changes) = 0;
+	bool Disable();
+
+	void Shutdown();
+
+	opendnp3::StackStatistics GetStackStatistics();
+
+
+	// members
+
+	openpal::Logger logger;
+	opendnp3::StackStatistics statistics;
+	const std::shared_ptr<asiopal::StrandExecutor> executor;
+	const std::shared_ptr<IOHandler> iohandler;
+	opendnp3::TransportStack tstack;
 
 };
+
 
 }
 

@@ -35,28 +35,28 @@ class TCPServerChannelFactory final : public IChannelFactory, public std::enable
 {
 	class Server final : public TCPServer
 	{
-		public:
+	public:
 
-			Server(
-				const openpal::Logger& logger,
-				const std::shared_ptr<StrandExecutor>& executor,
-				const IPEndpoint& endpoint,
-				std::error_code& ec				
-			);
+		Server(
+		    const openpal::Logger& logger,
+		    const std::shared_ptr<StrandExecutor>& executor,
+		    const IPEndpoint& endpoint,
+		    std::error_code& ec
+		);
 
-			void StartAcceptingConnection(const channel_callback_t& callback)
-			{
-				this->callback = callback;
-				this->StartAccept();
-			}
-				
-		private:
+		void StartAcceptingConnection(const channel_callback_t& callback)
+		{
+			this->callback = callback;
+			this->StartAccept();
+		}
 
-			channel_callback_t callback;
+	private:
 
-			virtual void OnShutdown() override {}
+		channel_callback_t callback;
 
-			virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket) override;
+		virtual void OnShutdown() override {}
+
+		virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket) override;
 	};
 
 public:
@@ -65,7 +65,7 @@ public:
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& endpoint,
-		std::error_code& ec)
+	    std::error_code& ec)
 	{
 		return std::make_shared<TCPServerChannelFactory>(logger, executor, endpoint, ec);
 	}
@@ -74,7 +74,7 @@ public:
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& endpoint,
-		std::error_code& ec
+	    std::error_code& ec
 	);
 
 
@@ -83,12 +83,12 @@ private:
 	virtual void Shutdown() override;
 	virtual void BeginChannelAccept(const channel_callback_t& callback) override;
 	virtual void SuspendChannelAccept() override;
-	virtual void OnChannelShutdown(const channel_callback_t& callback) override {} // do nothing as we're always accepting if we're online	
+	virtual void OnChannelShutdown(const channel_callback_t& callback) override {} // do nothing as we're always accepting if we're online
 
 	openpal::Logger logger;
 	const std::shared_ptr<StrandExecutor> executor;
 	const IPEndpoint endpoint;
-	
+
 	std::shared_ptr<Server> server;
 
 };

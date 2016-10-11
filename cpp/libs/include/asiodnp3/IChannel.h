@@ -57,7 +57,7 @@ public:
 	/**
 	* Synchronously read the channel statistics
 	*/
-	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() = 0;	
+	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() = 0;
 
 	/**
 	*  @return The current logger settings for this channel

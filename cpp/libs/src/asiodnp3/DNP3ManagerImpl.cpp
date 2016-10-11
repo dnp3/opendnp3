@@ -70,7 +70,8 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
-	auto create = [&]()  {
+	auto create = [&]()
+	{
 		auto clogger = this->logger.Detach(id, levels);
 		auto executor = StrandExecutor::Create(this->threadpool);
 		auto factory = TCPClientChannelFactory::Create(clogger, executor, retry, IPEndpoint(host, port), local);
@@ -89,7 +90,8 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
-	auto create = [&]() {
+	auto create = [&]()
+	{
 		std::error_code ec;
 		auto clogger = this->logger.Detach(id, levels);
 		auto executor = StrandExecutor::Create(this->threadpool);

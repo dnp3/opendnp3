@@ -45,12 +45,12 @@ public:
 
 	OutstationStackBase(
 	    const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    opendnp3::ILinkListener& listener,
-	    const OutstationStackConfig& config	    
+	    const OutstationStackConfig& config
 	) :
 		logger(logger),
-		executor(executor),		
+		executor(executor),
 		stack(logger, *executor.get(), listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
 		context(nullptr)
 	{}
@@ -63,7 +63,7 @@ public:
 		auto set = [this, filters]()
 		{
 			this->logger.SetFilters(filters);
-		};		
+		};
 		lifecycle->GetExecutor().BlockFor(set);
 		*/
 		// TODO
@@ -81,7 +81,7 @@ public:
 
 	virtual bool Enable() override final
 	{
-		// TODO 
+		// TODO
 		return false;
 	}
 
@@ -143,7 +143,7 @@ protected:
 
 	openpal::Logger logger;
 	const std::shared_ptr<asiopal::StrandExecutor> executor;
-	opendnp3::StackStatistics statistics;	
+	opendnp3::StackStatistics statistics;
 	opendnp3::TransportStack stack;
 
 private:

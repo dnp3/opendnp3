@@ -103,7 +103,7 @@ private:
 	openpal::Logger logger;
 	std::shared_ptr<asiopal::ThreadPool> threadpool;
 	std::shared_ptr<asiopal::ResourceManager> resources;
-	
+
 };
 
 }

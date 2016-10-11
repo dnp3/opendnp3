@@ -31,10 +31,10 @@ namespace asiopal
 {
 
 TCPServerChannelFactory::Server::Server(
-	const openpal::Logger& logger,
-	const std::shared_ptr<StrandExecutor>& executor,
-	const IPEndpoint& endpoint,
-	std::error_code& ec	
+    const openpal::Logger& logger,
+    const std::shared_ptr<StrandExecutor>& executor,
+    const IPEndpoint& endpoint,
+    std::error_code& ec
 ) :
 	TCPServer(logger, executor, endpoint, ec)
 {}
@@ -48,13 +48,13 @@ TCPServerChannelFactory::TCPServerChannelFactory(
     const openpal::Logger& logger,
     const std::shared_ptr<StrandExecutor>& executor,
     const IPEndpoint& endpoint,
-	std::error_code& ec
+    std::error_code& ec
 ) : logger(logger),
 	executor(executor),
 	endpoint(endpoint),
 	server(std::make_shared<Server>(logger, executor, endpoint, ec))
 {
-	
+
 }
 
 void TCPServerChannelFactory::Shutdown()

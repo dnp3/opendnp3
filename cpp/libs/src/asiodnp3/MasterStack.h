@@ -21,7 +21,11 @@
 #ifndef ASIODNP3_MASTERSTACK_H
 #define ASIODNP3_MASTERSTACK_H
 
-#include "MasterStackBase.h"
+#include "asiodnp3/IMaster.h"
+#include "asiodnp3/MasterStackConfig.h"
+#include "opendnp3/transport/TransportStack.h"
+
+#include "asiopal/StrandExecutor.h"
 
 #include <opendnp3/master/MasterContext.h>
 
@@ -29,23 +33,25 @@ namespace asiodnp3
 {
 
 
-class MasterStack : public MasterStackBase<IMaster>
+class MasterStack : public IMaster
 {
 public:
 
 	MasterStack(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
-	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-	    std::shared_ptr<opendnp3::IMasterApplication> application,
-	    const MasterStackConfig& config,	    
+	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const MasterStackConfig& config,
 	    opendnp3::ITaskLock& taskLock
 	);
 
 protected:
 
-	std::shared_ptr<opendnp3::ISOEHandler> SOEHandler;
-	std::shared_ptr<opendnp3::IMasterApplication> application;
+	const std::shared_ptr<asiopal::StrandExecutor> executor;
+	const std::shared_ptr<opendnp3::ISOEHandler> SOEHandler;
+	const std::shared_ptr<opendnp3::IMasterApplication> application;
+	opendnp3::TransportStack tstack;
 	opendnp3::MContext mcontext;
 };
 

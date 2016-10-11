@@ -44,13 +44,13 @@ public:
 
 	MasterStackBase(
 	    const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    opendnp3::ILinkListener& listener,
-	    const MasterStackConfig& config	    
+	    const MasterStackConfig& config
 	) :
-		logger(logger),		
+		logger(logger),
 		executor(executor),
-		stack(logger, *executor.get(), listener, config.master.maxRxFragSize, &statistics, config.link),		
+		stack(logger, *executor.get(), listener, config.master.maxRxFragSize, &statistics, config.link),
 		pContext(nullptr)
 	{
 
@@ -280,12 +280,12 @@ protected:
 		this->stack.transport.SetAppLayer(context);
 	}
 
-	
+
 	openpal::Logger logger;
 	const std::shared_ptr<asiopal::StrandExecutor> executor;
-	opendnp3::StackStatistics statistics;	
+	opendnp3::StackStatistics statistics;
 	opendnp3::TransportStack stack;
-	
+
 
 private:
 

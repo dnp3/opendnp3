@@ -36,17 +36,18 @@ void assign(const T& config, U& view)
 
 OutstationStack::OutstationStack(
     const openpal::Logger& logger,
-	const std::shared_ptr<asiopal::StrandExecutor>& executor,
-    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-    std::shared_ptr<opendnp3::IOutstationApplication> application,
+    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
+    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
+	const std::shared_ptr<IOHandler>& iohandler,
     const OutstationStackConfig& config) :
 
-	OutstationStackBase(logger, executor, *application, config),
+	stack(logger, executor, application, iohandler, config.outstation.params.maxRxFragSize, config.link),	
 	commandHandler(commandHandler),
-	application(application),
-	ocontext(config.outstation, config.dbConfig.sizes, logger, *executor.get(), stack.transport, *commandHandler, *application)
+	application(application),	
+	ocontext(config.outstation, config.dbConfig.sizes, logger, *executor.get(), stack.tstack.transport, *commandHandler, *application)
 {
-	this->SetContext(ocontext);
+	this->stack.tstack.transport.SetAppLayer(ocontext);
 
 	// apply the database configuration
 	auto view = ocontext.GetConfigView();
@@ -59,7 +60,40 @@ OutstationStack::OutstationStack(
 	assign(config.dbConfig.boStatus, view.binaryOutputStatii);
 	assign(config.dbConfig.aoStatus, view.analogOutputStatii);
 	assign(config.dbConfig.timeAndInterval, view.timeAndIntervals);
+}
 
+
+void OutstationStack::SetLogFilters(const openpal::LogFilters& filters)
+{
+	auto set = [self = this->shared_from_this(), filters]()
+	{
+		self->stack.logger.SetFilters(filters);
+	};
+	this->stack.executor->PostToStrand(set);
+}
+
+void OutstationStack::SetRestartIIN()
+{
+	// this doesn't need to be synchronous, just post it
+	auto set = [self = this->shared_from_this()]()
+	{
+		self->ocontext.SetRestartIIN();
+	};
+	this->stack.executor->PostToStrand(set);
+}
+
+void OutstationStack::Apply(ChangeSet& changes)
+{
+	// C++11 lambdas don't support move semantics
+	auto pchanges = std::make_shared<ChangeSet>(std::move(changes));
+
+	auto task = [self = this->shared_from_this(), pchanges]()
+	{
+		pchanges->Apply(self->ocontext.GetUpdateHanlder());
+		self->ocontext.CheckForTaskStart(); // force the outstation to check for updates
+	};
+
+	this->stack.executor->PostToStrand(task);
 }
 
 }

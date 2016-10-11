@@ -21,31 +21,81 @@
 #ifndef ASIODNP3_OUTSTATIONSTACK_H
 #define ASIODNP3_OUTSTATIONSTACK_H
 
-#include "OutstationStackBase.h"
+#include "asiodnp3/IOutstation.h"
 
-#include <opendnp3/outstation/OutstationContext.h>
+#include "asiopal/StrandExecutor.h"
+#include "opendnp3/outstation/OutstationContext.h"
+#include "opendnp3/transport/TransportStack.h"
+#include "asiodnp3/OutstationStackConfig.h"
+#include "asiodnp3/StackBase.h"
+#include "asiodnp3/IOHandler.h"
 
 namespace asiodnp3
 {
 
-class ILinkSession;
-
-/** @section desc A stack object for a master */
-class OutstationStack: public OutstationStackBase<IOutstation>
+/**
+* A stack object for an outstation
+*/
+class OutstationStack final : public IOutstation, public std::enable_shared_from_this<OutstationStack>
 {
 public:
 
 	OutstationStack(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
-	    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-	    std::shared_ptr<opendnp3::IOutstationApplication> application,
+	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
+	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
+		const std::shared_ptr<IOHandler>& iohandler,
 	    const OutstationStackConfig& config);
+
+	static std::shared_ptr<OutstationStack> Create(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
+	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
+		const std::shared_ptr<IOHandler>& iohandler,
+	    const OutstationStackConfig& config
+	)
+	{
+		return std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, config);		
+	}
+
+	// --------- Implement IStack ---------
+
+	virtual bool Enable() override
+	{
+		return stack.Enable();
+	}
+
+	virtual bool Disable() override
+	{
+		return stack.Disable();
+	}
+
+	virtual void Shutdown() override
+	{
+		stack.Shutdown();
+	}
+	
+	virtual opendnp3::StackStatistics GetStackStatistics() override
+	{
+		return stack.GetStackStatistics();
+	}
+
+	// --------- Implement IOutstation ---------
+
+
+	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
+	
+	virtual void SetRestartIIN() override;
+	
+	virtual void Apply(ChangeSet& changes) override;
 
 private:
 
-	std::shared_ptr<opendnp3::ICommandHandler> commandHandler;
-	std::shared_ptr<opendnp3::IOutstationApplication> application;
+	StackBase stack;
+	const std::shared_ptr<opendnp3::ICommandHandler> commandHandler;
+	const std::shared_ptr<opendnp3::IOutstationApplication> application;	
 	opendnp3::OContext ocontext;
 };
 
