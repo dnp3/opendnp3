@@ -36,7 +36,7 @@ public:
 	typedef std::function<void(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket, const std::error_code& ec)> connect_callback_t;
 
 	static std::shared_ptr<TCPClient> Create(
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& remote,
 	    const std::string& adapter)
@@ -45,7 +45,7 @@ public:
 	}
 
 	TCPClient(
-		const openpal::Logger& logger,
+	    const openpal::Logger& logger,
 	    const std::shared_ptr<StrandExecutor>& executor,
 	    const IPEndpoint& remote,
 	    const std::string& adapter
@@ -57,7 +57,7 @@ public:
 
 private:
 
-	bool PostConnectError(const connect_callback_t& callback, const std::error_code& ec);	
+	bool PostConnectError(const connect_callback_t& callback, const std::error_code& ec);
 
 	bool connecting = false;
 	bool canceled = false;

@@ -27,7 +27,7 @@ namespace asiopal
 {
 
 TCPClient::TCPClient(
-	const openpal::Logger& logger,
+    const openpal::Logger& logger,
     const std::shared_ptr<StrandExecutor>& executor,
     const IPEndpoint& remote,
     const std::string& adapter
@@ -75,7 +75,7 @@ bool TCPClient::BeginConnect(const connect_callback_t& callback)
 	auto self = this->shared_from_this();
 	if (ec)
 	{
-		// Try DNS resolution instead		
+		// Try DNS resolution instead
 		auto cb = [self, callback](const std::error_code & ec, asio::ip::tcp::resolver::iterator endpoints)
 		{
 			if (ec)
@@ -96,17 +96,17 @@ bool TCPClient::BeginConnect(const connect_callback_t& callback)
 
 		std::stringstream portstr;
 		portstr << remoteEndpoint.port();
-		
+
 		resolver.async_resolve(
-			asio::ip::tcp::resolver::query(host, portstr.str()),
-			executor->strand.wrap(cb)
+		    asio::ip::tcp::resolver::query(host, portstr.str()),
+		    executor->strand.wrap(cb)
 		);
 
 		return true;
 	}
 	else
 	{
-		remoteEndpoint.address(address);		
+		remoteEndpoint.address(address);
 		auto cb = [self, callback](const std::error_code & ec)
 		{
 			self->connecting = false;

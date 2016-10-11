@@ -30,7 +30,7 @@ MockIO::Timeout::Timeout(asio::io_service& service, std::chrono::steady_clock::d
 	io(io),
 	timer(std::make_shared<asio::basic_waitable_timer<std::chrono::steady_clock>>(service, timeout))
 {
-	auto callback = [t = timer](const std::error_code& ec)
+	auto callback = [t = timer](const std::error_code & ec)
 	{
 		if (!ec)
 		{
@@ -106,7 +106,7 @@ void MockIO::CompleteInXIterations(size_t expectedIterations, const std::functio
 		oss << "completed after " << iterations << " iterations, (expected " << expectedIterations << ")";
 		throw std::logic_error(oss.str());
 	}
-	
+
 }
 
 size_t MockIO::RunUntilOutOfWork()
