@@ -41,7 +41,7 @@ DNP3Channel::DNP3Channel(
 
 	logger(logger),
 	executor(executor),
-	iohandler(std::move(iohandler)),
+	iohandler(iohandler),
 	resources(ResourceManager::Create()),
 	shutdown(shutdown)
 {

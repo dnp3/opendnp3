@@ -107,12 +107,14 @@ bool IOHandler::Enable(ILinkSession& session)
 	{
 		iter->session->OnLowerLayerUp();
 	}
-	else
-	{
-		this->factory->BeginChannelAccept([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
+	else		
+	{		
+		auto cb = [self = this->shared_from_this()](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 		{
-			this->OnNewChannel(channel);
-		});
+			self->OnNewChannel(channel);
+		};
+
+		this->factory->BeginChannelAccept(cb);
 	}
 
 	return true;
@@ -199,21 +201,25 @@ void IOHandler::BeginRead()
 {
 	// we don't need to capture shared_ptr here, b/c shutting down an
 	// IAsyncChannel guarantees that the callback isn't invoked
-	auto cb = [this](const std::error_code & ec, std::size_t num)
+	auto cb = [self = shared_from_this()](const std::error_code & ec, std::size_t num)
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
-			this->Reset();
-			this->factory->OnChannelShutdown([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
+			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
+			self->Reset();
+
+			auto cb = [self](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 			{
-				this->OnNewChannel(channel);
-			});
+				self->OnNewChannel(channel);
+			};
+
+
+			self->factory->OnChannelShutdown(cb);
 		}
 		else
 		{
-			this->parser.OnRead(num, *this);
-			this->BeginRead();
+			self->parser.OnRead(num, *self);
+			self->BeginRead();
 		}
 	};
 
@@ -229,20 +235,24 @@ void IOHandler::CheckForSend()
 
 	// we don't need to capture shared_ptr here, b/c shutting down an
 	// IAsyncChannel guarantees that the callback isn't invoked
-	auto cb = [this](const std::error_code & ec)
+	auto cb = [self = this->shared_from_this()](const std::error_code & ec)
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
-			this->Reset();
-			this->factory->OnChannelShutdown([this](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
+			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
+			self->Reset();
+
+			auto cb = [self](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 			{
-				this->OnNewChannel(channel);
-			});
+				self->OnNewChannel(channel);
+			};
+
+
+			self->factory->OnChannelShutdown(cb);
 		}
 		else
 		{
-			this->CheckForSend();
+			self->CheckForSend();
 		}
 	};
 

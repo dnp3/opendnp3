@@ -48,7 +48,7 @@ public:
 		const std::shared_ptr<IOHandler>& iohandler,
 	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown)
 	{
-		return std::make_shared<DNP3Channel>(logger, executor, std::move(iohandler), shutdown);
+		return std::make_shared<DNP3Channel>(logger, executor, iohandler, shutdown);
 	}
 
 	// ----------------------- Implement IChannel -----------------------

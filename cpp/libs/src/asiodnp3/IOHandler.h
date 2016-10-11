@@ -43,7 +43,7 @@ namespace asiodnp3
 Manages I/O for a number of link contexts
 
 */
-class IOHandler : public opendnp3::ILinkTx, private opendnp3::IFrameSink
+class IOHandler : public opendnp3::ILinkTx, private opendnp3::IFrameSink, public std::enable_shared_from_this<IOHandler>
 {
 
 public:
@@ -53,6 +53,15 @@ public:
 	    const std::shared_ptr<asiopal::IChannelFactory>& factory,
 	    const std::shared_ptr<IChannelListener>& listener
 	);
+
+	static std::shared_ptr<IOHandler> Create(
+		const openpal::Logger& logger,
+		const std::shared_ptr<asiopal::IChannelFactory>& factory,
+		const std::shared_ptr<IChannelListener>& listener
+	)
+	{
+		return std::make_shared<IOHandler>(logger, factory, listener);
+	}
 
 	const opendnp3::LinkChannelStatistics& Statistics() const
 	{
