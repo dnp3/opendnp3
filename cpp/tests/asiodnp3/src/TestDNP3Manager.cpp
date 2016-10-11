@@ -48,18 +48,16 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		DNP3Manager manager(std::thread::hardware_concurrency(), ConsoleLogger::Create());
+		DNP3Manager manager(std::thread::hardware_concurrency());
 
-		auto client = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr);
-		auto server = manager.AddTCPServer("server", levels::ALL, ChannelRetry::Default(), "0.0.0.0", 20000, nullptr);
+		auto client = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr);
+		auto server = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000, nullptr);
 
 		auto outstation = server->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseSizes::Empty()));
 		auto master = client->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
 
 		outstation->Enable();
-		master->Enable();
-
-		std::this_thread::sleep_for(std::chrono::minutes(10));
+		master->Enable();		
 	}
 }
 

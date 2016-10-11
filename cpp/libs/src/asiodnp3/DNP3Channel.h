@@ -51,6 +51,8 @@ public:
 		return std::make_shared<DNP3Channel>(logger, executor, iohandler, shutdown);
 	}
 
+	~DNP3Channel();
+
 	// ----------------------- Implement IChannel -----------------------
 
 	void Shutdown() override;

@@ -48,6 +48,14 @@ DNP3Channel::DNP3Channel(
 
 }
 
+DNP3Channel::~DNP3Channel()
+{
+	if (resources)
+	{
+		resources->Shutdown();
+	}
+}
+
 // comes from the outside, so we need to synchronize
 void DNP3Channel::Shutdown()
 {

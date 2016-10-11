@@ -56,8 +56,7 @@ void DNP3ManagerImpl::Shutdown()
 {
 	if (resources)
 	{
-		resources->Shutdown();
-		resources.reset();
+		resources->Shutdown();		
 	}
 }
 
