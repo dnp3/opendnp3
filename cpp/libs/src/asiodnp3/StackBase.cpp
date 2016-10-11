@@ -39,7 +39,9 @@ StackBase::StackBase(
 	iohandler(iohandler),
 	shutdown(shutdown),
 	tstack(logger, *executor.get(), *listener.get(),  maxRxFragSize, &statistics, config)
-{}
+{
+	tstack.link.SetRouter(*iohandler);
+}
 
 bool StackBase::Enable()
 {

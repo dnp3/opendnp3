@@ -83,10 +83,8 @@ private:
 	const std::shared_ptr<asiopal::StrandExecutor> executor;
 	const std::shared_ptr<IOHandler> iohandler;
 	const std::weak_ptr<asiopal::IShutdownHandler> shutdown;
-	std::shared_ptr<asiopal::ResourceManager> resources;
-	opendnp3::MultidropTaskLock tasklock;
+	std::shared_ptr<asiopal::ResourceManager> resources;	
 	
-
 };
 
 }

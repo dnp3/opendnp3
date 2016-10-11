@@ -96,7 +96,7 @@ void DNP3Channel::SetLogFilters(const LogFilters& filters)
 
 std::shared_ptr<IMaster> DNP3Channel::AddMaster(const std::string& id, std::shared_ptr<ISOEHandler> SOEHandler, std::shared_ptr<IMasterApplication> application, const MasterStackConfig& config)
 {
-	auto stack = MasterStack::Create(this->logger.Detach(id), this->executor, SOEHandler, application, this->iohandler, this->resources, config, this->tasklock);
+	auto stack = MasterStack::Create(this->logger.Detach(id), this->executor, SOEHandler, application, this->iohandler, this->resources, config, this->iohandler->TaskLock());
 	
 	return this->AddStack(config.link, stack->GetLink(), stack);
 	

@@ -28,6 +28,7 @@
 
 #include "openpal/logging/Logger.h"
 #include "opendnp3/link/LinkLayerParser.h"
+#include "opendnp3/master/MultidropTaskLock.h"
 
 #include "asiopal/IChannelFactory.h"
 #include "asiopal/IAsyncChannel.h"
@@ -66,6 +67,11 @@ public:
 	const opendnp3::LinkChannelStatistics& Statistics() const
 	{
 		return this->statistics;
+	}
+
+	opendnp3::ITaskLock& TaskLock()
+	{
+		return this->taskLock;
 	}
 
 	void Shutdown();
@@ -150,6 +156,8 @@ private:
 
 	// current value of the channel, may be empty
 	std::shared_ptr<asiopal::IAsyncChannel> channel;
+
+	opendnp3::MultidropTaskLock taskLock;
 };
 
 }

@@ -101,9 +101,8 @@ void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
 
 void TCPServer::StartAccept()
 {
-	// this ensures that the TCPListener is never deleted during an active callback
-	auto self(shared_from_this());
-	auto callback = [self](std::error_code ec)
+	// this ensures that the TCPListener is never deleted during an active callback	
+	auto callback = [self = shared_from_this()](std::error_code ec)
 	{
 		if (ec)
 		{
@@ -115,6 +114,9 @@ void TCPServer::StartAccept()
 			const auto ID = self->session_id;
 			++self->session_id;
 
+		
+			FORMAT_LOG_BLOCK(self->logger, flags::INFO, "Accepted connection from: %s", self->remote_endpoint.address().to_string().c_str());
+
 			// method responsible for closing
 			self->AcceptConnection(ID, self->executor, std::move(self->socket));
 			self->StartAccept();
@@ -122,7 +124,7 @@ void TCPServer::StartAccept()
 	};
 
 
-	this->acceptor.async_accept(socket, this->executor->strand.wrap(callback));
+	this->acceptor.async_accept(socket, remote_endpoint, this->executor->strand.wrap(callback));
 }
 
 }

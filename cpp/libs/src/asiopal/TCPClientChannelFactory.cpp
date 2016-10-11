@@ -74,13 +74,14 @@ void TCPClientChannelFactory::OnChannelShutdown(const channel_callback_t& callba
 void TCPClientChannelFactory::StartConnect(const std::shared_ptr<TCPClient>& client, const openpal::TimeDuration& delay, const channel_callback_t& callback)
 {
 	this->is_connecting = true;
-
-	auto self(shared_from_this());
-	auto cb = [self, delay, client, callback](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
+	
+	auto cb = [self = shared_from_this(), delay, client, callback](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
 	{
 
 		if (ec)
 		{
+			FORMAT_LOG_BLOCK(self->logger, openpal::logflags::INFO, "Error Connecting: %s", ec.message().c_str());
+
 			const auto newDelay = self->retry.strategy.GetNextDelay(delay, self->retry.maxOpenRetry);
 
 			auto cb = [self, newDelay, client, callback]()
@@ -93,6 +94,9 @@ void TCPClientChannelFactory::StartConnect(const std::shared_ptr<TCPClient>& cli
 		else
 		{
 			self->is_connecting = false;
+
+			FORMAT_LOG_BLOCK(self->logger, openpal::logflags::INFO, "Connected to: %s", self->remote.address.c_str());
+
 			callback(SocketChannel::Create(executor, std::move(socket)));
 		}
 	};

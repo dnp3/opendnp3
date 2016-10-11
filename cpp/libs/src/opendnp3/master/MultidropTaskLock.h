@@ -40,6 +40,7 @@ public:
 	{
 		m_is_online = true;
 	}
+
 	void SetOffline()
 	{
 		m_is_online = false;
