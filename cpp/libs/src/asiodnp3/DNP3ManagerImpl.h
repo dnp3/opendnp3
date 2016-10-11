@@ -53,7 +53,7 @@ public:
 
 	void Shutdown();
 
-	IChannel* AddTCPClient(
+	std::shared_ptr<IChannel> AddTCPClient(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,
@@ -62,7 +62,7 @@ public:
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener);
 
-	IChannel* AddTCPServer(
+	std::shared_ptr<IChannel> AddTCPServer(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,
@@ -70,14 +70,14 @@ public:
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener);
 
-	IChannel* AddSerial(
+	std::shared_ptr<IChannel> AddSerial(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,
 	    asiopal::SerialSettings settings,
 	    std::shared_ptr<IChannelListener> listener);
 
-	IChannel* AddTLSClient(
+	std::shared_ptr<IChannel> AddTLSClient(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,
@@ -88,7 +88,7 @@ public:
 	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
 
-	IChannel* AddTLSServer(
+	std::shared_ptr<IChannel> AddTLSServer(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,
@@ -102,7 +102,7 @@ private:
 
 	openpal::Logger logger;
 	asiopal::ThreadPool threadpool;
-	std::shared_ptr<asiopal::ResourceManager> channels;
+	std::shared_ptr<asiopal::ResourceManager> resources;
 	
 };
 

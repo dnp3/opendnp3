@@ -83,9 +83,9 @@ public:
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
-	* @return A channel interface
+	* @return shared_ptr to a channel interface
 	*/
-	IChannel* AddTCPClient(
+	std::shared_ptr<IChannel> AddTCPClient(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,
@@ -103,9 +103,9 @@ public:
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
-	* @return A channel interface
+	* @return shared_ptr to a channel interface
 	*/
-	IChannel* AddTCPServer(
+	std::shared_ptr<IChannel> AddTCPServer(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,
@@ -121,9 +121,9 @@ public:
 	* @param retry Retry parameters for failed channels
 	* @param settings settings object that fully parameterizes the serial port
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
-	* @return A channel interface
+	* @return shared_ptr to a channel interface
 	*/
-	IChannel* AddSerial(
+	std::shared_ptr<IChannel> AddSerial(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,
@@ -144,9 +144,9 @@ public:
 	* @param config TLS configuration information
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @param ec An error code. If set, a nullptr will be returned
-	* @return A channel interface
+	* @return shared_ptr to a channel interface
 	*/
-	IChannel* AddTLSClient(
+	std::shared_ptr<IChannel> AddTLSClient(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,
@@ -171,9 +171,9 @@ public:
 	* @param config TLS configuration information
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @param ec An error code. If set, a nullptr will be returned
-	* @return A channel interface
+	* @return shared_ptr to a channel interface
 	*/
-	IChannel* AddTLSServer(
+	std::shared_ptr<IChannel> AddTLSServer(
 	    const std::string& id,
 	    uint32_t levels,
 	    const asiopal::ChannelRetry& retry,

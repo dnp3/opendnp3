@@ -32,7 +32,6 @@ using namespace asiopal;
 using namespace asiodnp3;
 using namespace opendnp3;
 
-
 asiopal::TLSConfig ConvertTLSConfig(JNIEnv* env, jobject jconfig)
 {
 	auto& ref = jni::JCache::TLSConfig;
@@ -84,7 +83,9 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	return (jlong) manager->AddTCPClient(id.str(), jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), listener);
+	auto channel = manager->AddTCPClient(id.str(), jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), listener);
+
+	return (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
@@ -98,7 +99,9 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	return (jlong) manager->AddTCPServer(id.str(), jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), listener);
+	auto channel = manager->AddTCPServer(id.str(), jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), listener);
+
+	return (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client
@@ -117,9 +120,9 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	std::error_code ec;
 
-	auto ret = manager->AddTLSClient(id.str(), jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
+	auto channel = manager->AddTLSClient(id.str(), jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
 
-	return ec ? 0 : (long) ret;
+	return (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1server
@@ -137,9 +140,9 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	std::error_code ec;
 
-	auto ret = manager->AddTLSServer(id.str(), jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
+	auto channel = manager->AddTLSServer(id.str(), jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
 
-	return ec ? 0 : (long)ret;
+	return ec ? 0 : (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
@@ -162,7 +165,9 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	return (jlong)manager->AddSerial(id.str(), jlevels, retry, settings, listener);
+	auto channel = manager->AddSerial(id.str(), jlevels, retry, settings, listener);
+
+	return (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
 

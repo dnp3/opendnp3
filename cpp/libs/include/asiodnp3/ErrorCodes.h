@@ -31,7 +31,8 @@ namespace asiodnp3
 enum class Error : int
 {
 	SHUTTING_DOWN,
-	NO_TLS_SUPPORT
+	NO_TLS_SUPPORT,
+	NO_SERIAL_SUPPORT
 };
 
 class ErrorCategory final : public std::error_category

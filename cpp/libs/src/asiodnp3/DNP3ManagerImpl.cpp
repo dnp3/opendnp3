@@ -43,19 +43,19 @@ DNP3ManagerImpl::DNP3ManagerImpl(
 ) :
 	logger(handler, "manager", opendnp3::levels::ALL),
 	threadpool(logger, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
-	channels(asiopal::ResourceManager::Create())
+	resources(asiopal::ResourceManager::Create())
 {}
 
 void DNP3ManagerImpl::Shutdown()
 {
-	if (channels)
+	if (resources)
 	{
-		channels->Shutdown();
-		channels.reset();
+		resources->Shutdown();
+		resources.reset();
 	}
 }
 
-IChannel* DNP3ManagerImpl::AddTCPClient(
+std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
     const std::string& id,
     uint32_t levels,
     const asiopal::ChannelRetry& retry,
@@ -68,7 +68,7 @@ IChannel* DNP3ManagerImpl::AddTCPClient(
 	return nullptr;
 }
 
-IChannel* DNP3ManagerImpl::AddTCPServer(
+std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
     const std::string& id,
     uint32_t levels,
     const asiopal::ChannelRetry& retry,
@@ -80,18 +80,18 @@ IChannel* DNP3ManagerImpl::AddTCPServer(
 	return nullptr;
 }
 
-IChannel* DNP3ManagerImpl::AddSerial(
+std::shared_ptr<IChannel> DNP3ManagerImpl::AddSerial(
     const std::string& id,
     uint32_t levels,
     const asiopal::ChannelRetry& retry,
     asiopal::SerialSettings settings,
     std::shared_ptr<IChannelListener> listener)
 {
-	auto clogger = this->logger.Detach(id, levels);
+	//ec = Error::NO_SERIAL_SUPPORT;
 	return nullptr;
 }
 
-IChannel* DNP3ManagerImpl::AddTLSClient(
+std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(
     const std::string& id,
     uint32_t levels,
     const asiopal::ChannelRetry& retry,
@@ -104,7 +104,7 @@ IChannel* DNP3ManagerImpl::AddTLSClient(
 {
 
 #ifdef OPENDNP3_USE_TLS
-	auto clogger = this->logger.Detach(id, levels);
+	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
 #else
 	ec = Error::NO_TLS_SUPPORT;
@@ -113,7 +113,7 @@ IChannel* DNP3ManagerImpl::AddTLSClient(
 
 }
 
-IChannel* DNP3ManagerImpl::AddTLSServer(
+std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
     const std::string& id,
     uint32_t levels,
     const asiopal::ChannelRetry& retry,
@@ -125,7 +125,7 @@ IChannel* DNP3ManagerImpl::AddTLSServer(
 {
 
 #ifdef OPENDNP3_USE_TLS
-	auto clogger = this->logger.Detach(id, levels);
+	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
 #else
 	ec = Error::NO_TLS_SUPPORT;
