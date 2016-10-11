@@ -77,12 +77,12 @@ public:
 	* @param application The master application bound to the master session
 	* @param config Configuration object that controls how the master behaves
 	*
-	* @return interface representing the running master
+	* @return shared_ptr to the running master
 	*/
-	virtual IMaster* AddMaster(		const std::string& id,
-	                                std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-	                                std::shared_ptr<opendnp3::IMasterApplication> application,
-	                                const MasterStackConfig& config) = 0;
+	virtual std::shared_ptr<IMaster>  AddMaster(const std::string& id,
+	                                            std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+	                                            std::shared_ptr<opendnp3::IMasterApplication> application,
+	                                            const MasterStackConfig& config) = 0;
 
 	/**
 	* Add an outstation to the channel
@@ -91,12 +91,12 @@ public:
 	* @param commandHandler Callback object for handling command requests
 	* @param application Callback object for user code
 	* @param config Configuration object that controls how the outstation behaves
-	* @return interface representing the running outstations
+	* @return shared_ptr to the running outstation
 	*/
-	virtual IOutstation* AddOutstation( const std::string& id,
-	                                    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-	                                    std::shared_ptr<opendnp3::IOutstationApplication> application,
-	                                    const OutstationStackConfig& config) = 0;
+	virtual std::shared_ptr<IOutstation>  AddOutstation( const std::string& id,
+	                                      std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+	                                      std::shared_ptr<opendnp3::IOutstationApplication> application,
+	                                      const OutstationStackConfig& config) = 0;
 
 };
 

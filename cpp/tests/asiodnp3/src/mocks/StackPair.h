@@ -45,8 +45,8 @@ class StackPair final : openpal::Uncopyable
 	std::shared_ptr<QueuedChannelListener> clientListener;
 	std::shared_ptr<QueuedChannelListener> serverListener;
 
-	IMaster* const master;
-	IOutstation* const outstation;
+	const std::shared_ptr<IMaster> master;
+	const std::shared_ptr<IOutstation> outstation;
 
 	std::default_random_engine generator;
 
@@ -60,8 +60,8 @@ class StackPair final : openpal::Uncopyable
 	static OutstationStackConfig GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize, openpal::TimeDuration timeout);
 	static MasterStackConfig GetMasterStackConfig(openpal::TimeDuration timeout);
 
-	static IMaster* CreateMaster(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler>, std::shared_ptr<IChannelListener> listener);
-	static IOutstation* CreateOutstation(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
+	static std::shared_ptr<IMaster> CreateMaster(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler>, std::shared_ptr<IChannelListener> listener);
+	static std::shared_ptr<IOutstation> CreateOutstation(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
 
 	static std::string GetId(const char* name, uint16_t port);
 

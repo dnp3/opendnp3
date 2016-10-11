@@ -183,7 +183,7 @@ MasterStackConfig StackPair::GetMasterStackConfig(openpal::TimeDuration timeout)
 	return config;
 }
 
-IMaster* StackPair::CreateMaster(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler, std::shared_ptr<IChannelListener> listener)
+std::shared_ptr<IMaster> StackPair::CreateMaster(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager& manager, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler> soehandler, std::shared_ptr<IChannelListener> listener)
 {
 	auto channel = manager.AddTCPClient(
 	                   GetId("client", port).c_str(),
@@ -203,7 +203,7 @@ IMaster* StackPair::CreateMaster(uint32_t levels, openpal::TimeDuration timeout,
 	       );
 }
 
-IOutstation* StackPair::CreateOutstation(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener)
+std::shared_ptr<IOutstation> StackPair::CreateOutstation(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener)
 {
 	auto channel = manager.AddTCPServer(
 	                   GetId("server", port).c_str(),
