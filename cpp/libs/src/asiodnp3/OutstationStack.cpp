@@ -20,8 +20,6 @@
  */
 #include "OutstationStack.h"
 
-#include <asiopal/ASIOExecutor.h>
-
 using namespace opendnp3;
 
 namespace asiodnp3
@@ -38,16 +36,15 @@ void assign(const T& config, U& view)
 
 OutstationStack::OutstationStack(
     const openpal::Logger& logger,
-    openpal::IExecutor& executor,
+	const std::shared_ptr<asiopal::StrandExecutor>& executor,
     std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
     std::shared_ptr<opendnp3::IOutstationApplication> application,
-    const OutstationStackConfig& config,
-    IStackLifecycle& lifecycle) :
+    const OutstationStackConfig& config) :
 
-	OutstationStackBase(logger, executor, *application, config, lifecycle),
+	OutstationStackBase(logger, executor, *application, config),
 	commandHandler(commandHandler),
 	application(application),
-	ocontext(config.outstation, config.dbConfig.sizes, logger, executor, stack.transport, *commandHandler, *application)
+	ocontext(config.outstation, config.dbConfig.sizes, logger, *executor.get(), stack.transport, *commandHandler, *application)
 {
 	this->SetContext(ocontext);
 

@@ -37,11 +37,10 @@ public:
 
 	OutstationStack(
 	    const openpal::Logger& logger,
-	    openpal::IExecutor& executor,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
 	    std::shared_ptr<opendnp3::IOutstationApplication> application,
-	    const OutstationStackConfig& config,
-	    IStackLifecycle& lifecycle);
+	    const OutstationStackConfig& config);
 
 private:
 

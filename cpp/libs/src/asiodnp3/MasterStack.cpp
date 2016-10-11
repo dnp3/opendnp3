@@ -24,9 +24,8 @@
 
 #include <opendnp3/master/MasterContext.h>
 
-#include <asiopal/ASIOExecutor.h>
-
 using namespace openpal;
+using namespace asiopal;
 using namespace opendnp3;
 
 namespace asiodnp3
@@ -34,16 +33,15 @@ namespace asiodnp3
 
 MasterStack::MasterStack(
     const Logger& logger,
-    asiopal::ASIOExecutor& executor,
+    const std::shared_ptr<StrandExecutor>& executor,
     std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
     std::shared_ptr<opendnp3::IMasterApplication> application,
     const MasterStackConfig& config,
-    IStackLifecycle& lifecycle,
     opendnp3::ITaskLock& taskLock) :
-	MasterStackBase<IMaster>(logger, executor, *application, config, lifecycle),
+	MasterStackBase<IMaster>(logger, executor, *application, config),
 	SOEHandler(SOEHandler),
 	application(application),
-	mcontext(executor, logger, stack.transport, *SOEHandler, *application,  config.master, taskLock)
+	mcontext(*executor.get(), logger, stack.transport, *SOEHandler, *application,  config.master, taskLock)
 {
 	this->SetContext(mcontext);
 }

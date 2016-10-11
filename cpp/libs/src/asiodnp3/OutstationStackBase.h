@@ -29,9 +29,8 @@
 #include <opendnp3/link/ILinkListener.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <asiopal/ASIOExecutor.h>
+#include <asiopal/StrandExecutor.h>
 
-#include "asiodnp3/IStackLifecycle.h"
 #include "asiodnp3/IOutstation.h"
 #include "asiodnp3/ILinkBind.h"
 #include "asiodnp3/OutstationStackConfig.h"
@@ -47,14 +46,13 @@ public:
 
 	OutstationStackBase(
 	    const openpal::Logger& logger,
-	    openpal::IExecutor& executor,
+		const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    opendnp3::ILinkListener& listener,
-	    const OutstationStackConfig& config,
-	    IStackLifecycle& lifecycle
+	    const OutstationStackConfig& config	    
 	) :
 		logger(logger),
-		lifecycle(&lifecycle),
-		stack(logger, executor, listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
+		executor(executor),		
+		stack(logger, *executor.get(), listener, config.outstation.params.maxRxFragSize, &statistics, config.link),
 		context(nullptr)
 	{}
 
@@ -62,12 +60,14 @@ public:
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final
 	{
+		/*
 		auto set = [this, filters]()
 		{
 			this->logger.SetFilters(filters);
-		};
-
+		};		
 		lifecycle->GetExecutor().BlockFor(set);
+		*/
+		// TODO
 	}
 
 	virtual void SetRestartIIN() override final
@@ -77,22 +77,24 @@ public:
 		{
 			this->context->SetRestartIIN();
 		};
-		lifecycle->GetExecutor().strand.post(lambda);
+		this->executor->PostToStrand(lambda);
 	}
 
 	virtual bool Enable() override final
 	{
-		return lifecycle->EnableRoute(&stack.link);
+		// TODO 
+		return false;
 	}
 
 	virtual bool Disable() override final
 	{
-		return lifecycle->DisableRoute(&stack.link);
+		// TODO
+		return false;
 	}
 
 	virtual void Shutdown() override final
 	{
-		lifecycle->Shutdown(&stack.link, this);
+		// TODO
 	}
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override final
@@ -101,7 +103,7 @@ public:
 		{
 			return statistics;
 		};
-		return lifecycle->GetExecutor().ReturnBlockFor<opendnp3::StackStatistics>(get);
+		return this->executor->ReturnFrom<opendnp3::StackStatistics>(get);
 	}
 
 	// ------- implement ILinkBind ---------
@@ -129,7 +131,7 @@ public:
 			this->context->CheckForTaskStart(); // force the outstation to check for updates
 		};
 
-		this->lifecycle->GetExecutor().Post(task);
+		this->executor->PostToStrand(task);
 	}
 
 protected:
@@ -141,8 +143,8 @@ protected:
 	}
 
 	openpal::Logger logger;
-	opendnp3::StackStatistics statistics;
-	IStackLifecycle* lifecycle;
+	const std::shared_ptr<asiopal::StrandExecutor> executor;
+	opendnp3::StackStatistics statistics;	
 	opendnp3::TransportStack stack;
 
 private:

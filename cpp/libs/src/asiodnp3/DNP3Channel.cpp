@@ -20,8 +20,6 @@
  */
 #include "DNP3Channel.h"
 
-#include <asiopal/PhysicalLayerBase.h>
-
 #include <openpal/logging/LogMacros.h>
 #include <opendnp3/LogLevels.h>
 

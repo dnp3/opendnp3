@@ -35,11 +35,10 @@ public:
 
 	MasterStack(
 	    const openpal::Logger& logger,
-	    asiopal::ASIOExecutor& executor,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
 	    std::shared_ptr<opendnp3::IMasterApplication> application,
-	    const MasterStackConfig& config,
-	    IStackLifecycle& lifecycle,
+	    const MasterStackConfig& config,	    
 	    opendnp3::ITaskLock& taskLock
 	);
 
