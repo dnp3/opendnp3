@@ -45,7 +45,7 @@ public:
 	static std::shared_ptr<DNP3Channel> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		const std::shared_ptr<IOHandler>& iohandler,
+	    const std::shared_ptr<IOHandler>& iohandler,
 	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown)
 	{
 		return std::make_shared<DNP3Channel>(logger, executor, iohandler, shutdown);
