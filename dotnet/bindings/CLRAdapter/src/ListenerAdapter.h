@@ -15,7 +15,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
-			private ref class ListenerAdapter sealed : IListener
+			private ref class ListenerAdapter sealed : Interface::IListener
 			{
 			public:
 
