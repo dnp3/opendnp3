@@ -56,8 +56,7 @@ LinkContext::LinkContext(
 	isOnline(false),
 	isRemoteReset(false),
 	keepAliveTimeout(false),
-	lastMessageTimestamp(executor->GetTime()),
-	pRouter(nullptr),
+	lastMessageTimestamp(executor->GetTime()),	
 	pPriState(&PLLS_Idle::Instance()),
 	pSecState(&SLLS_NotReset::Instance()),
 	listener(listener),
@@ -182,7 +181,7 @@ void LinkContext::QueueTransmit(const RSlice& buffer, bool primary)
 	if (txMode == LinkTransmitMode::Idle)
 	{
 		txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
-		pRouter->BeginTransmit(buffer, *pSession);
+		linktx->BeginTransmit(buffer, *pSession);
 	}
 	else
 	{
@@ -421,7 +420,7 @@ bool LinkContext::TryPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 {
 	if (this->txMode == LinkTransmitMode::Idle && pending.IsSet())
 	{
-		this->pRouter->BeginTransmit(pending.Get(), *pSession);
+		this->linktx->BeginTransmit(pending.Get(), *pSession);
 		pending.Clear();
 		this->txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
 		return true;

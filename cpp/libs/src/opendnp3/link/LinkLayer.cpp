@@ -31,8 +31,8 @@ LinkLayer::LinkLayer(const openpal::Logger& logger, const std::shared_ptr<openpa
 
 void LinkLayer::SetRouter(ILinkTx& router)
 {
-	assert(ctx.pRouter == nullptr);
-	ctx.pRouter = &router;
+	assert(ctx.linktx == nullptr);
+	ctx.linktx = &router;
 }
 
 ////////////////////////////////

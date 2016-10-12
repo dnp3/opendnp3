@@ -136,8 +136,8 @@ public:
 	bool keepAliveTimeout;
 	openpal::MonotonicTimestamp lastMessageTimestamp;
 
+	ILinkTx* linktx = nullptr;
 
-	ILinkTx* pRouter;
 	PriStateBase* pPriState;
 	SecStateBase* pSecState;
 	
