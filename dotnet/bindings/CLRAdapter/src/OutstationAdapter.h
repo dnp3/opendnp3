@@ -17,7 +17,10 @@ namespace Automatak
 			{
 			public:
 
-				OutstationAdapter(asiodnp3::IOutstation* outstation);
+				OutstationAdapter(const std::shared_ptr<asiodnp3::IOutstation>& outstation);
+
+				~OutstationAdapter() { this ->!OutstationAdapter(); }
+				!OutstationAdapter();
 
 				virtual void SetLogFilters(LogFilter filters);
 
@@ -35,7 +38,7 @@ namespace Automatak
 
 			private:
 
-				asiodnp3::IOutstation* outstation;				
+				std::shared_ptr<asiodnp3::IOutstation>* outstation;
 			};
 
 		}

@@ -14,13 +14,7 @@ namespace Automatak
 
 				MasterOperationsAdapter::MasterOperationsAdapter(asiodnp3::IMasterOperations* operations) : operations(operations)
 				{}				
-
-				IStackStatistics^ MasterOperationsAdapter::GetStackStatistics()
-				{
-					auto stats = operations->GetStackStatistics();
-					return Conversions::ConvertStackStats(stats);
-				}	
-
+			
 				void MasterOperationsAdapter::SetLogFilters(LogFilter flags)
 				{
 					operations->SetLogFilters(flags.Flags);

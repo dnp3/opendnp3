@@ -10,19 +10,14 @@ MasterSessionAdapter::MasterSessionAdapter(std::shared_ptr<asiodnp3::IMasterSess
 
 }
 
-MasterSessionAdapter::~MasterSessionAdapter()
-{
-	this->!MasterSessionAdapter();
-}
-
-MasterSessionAdapter::!MasterSessionAdapter()
-{
-	delete proxy;
-}
-
 void MasterSessionAdapter::BeginShutdown()
 {
 	(*proxy)->BeginShutdown();
+}
+
+Interface::IStackStatistics^ MasterSessionAdapter::GetStackStatistics()
+{
+	return Conversions::ConvertStackStats((*proxy)->GetStackStatistics());
 }
 
 }}}

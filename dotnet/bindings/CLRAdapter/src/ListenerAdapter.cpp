@@ -13,7 +13,7 @@ namespace Automatak {
 			{
 				if (proxy)
 				{
-					proxy->BeginShutdown();
+					proxy->Shutdown();
 					proxy = nullptr;
 				}				
 			}

@@ -26,7 +26,6 @@
 #include <opendnp3/master/ICommandTaskResult.h>
 
 #include <opendnp3/link/LinkChannelStatistics.h>
-#include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/link/LinkHeaderFields.h>
 
 #include <asiodnp3/OutstationStackConfig.h>
@@ -34,6 +33,7 @@
 
 #include "CollectionAdapter.h"
 
+#include <asiopal/ChannelRetry.h>
 #include <asiopal/SerialTypes.h>
 #include <asiopal/IPEndpoint.h>
 #include <asiopal/TLSConfig.h>
