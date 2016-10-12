@@ -136,10 +136,7 @@ public:
 	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
 
 protected:
-
-
-	const std::shared_ptr<opendnp3::ISOEHandler> SOEHandler;
-	const std::shared_ptr<opendnp3::IMasterApplication> application;
+	
 	opendnp3::MContext mcontext;
 };
 

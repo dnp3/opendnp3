@@ -98,9 +98,7 @@ public:
 
 private:
 
-	std::shared_ptr<asiopal::StrandExecutor> m_executor;
-	std::shared_ptr<opendnp3::ISOEHandler> m_handler;
-	std::shared_ptr<opendnp3::IMasterApplication> m_application;
+	std::shared_ptr<asiopal::StrandExecutor> m_executor;		
 	std::shared_ptr<LinkSession> m_session;
 	opendnp3::StackStatistics m_statistics;
 	opendnp3::TransportStack m_stack;

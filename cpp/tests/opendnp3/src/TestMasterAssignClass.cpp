@@ -36,8 +36,8 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	MasterTestObject t(NoStartupTasks());
 
 	// configure the mock application to do assign class on startup
-	t.application.assignClassHeaders.push_back(Header::AllObjects(60, 2));
-	t.application.assignClassHeaders.push_back(Header::AllObjects(3, 0));
+	t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));
+	t.application->assignClassHeaders.push_back(Header::AllObjects(3, 0));
 
 	t.context.OnLowerLayerUp();
 
@@ -51,11 +51,11 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	REQUIRE(t.exe->NumPendingTimers() == 1);
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
-	REQUIRE(t.application.taskStartEvents.size() == 1);
-	REQUIRE(t.application.taskStartEvents[0] == MasterTaskType::ASSIGN_CLASS);
+	REQUIRE(t.application->taskStartEvents.size() == 1);
+	REQUIRE(t.application->taskStartEvents[0] == MasterTaskType::ASSIGN_CLASS);
 
-	REQUIRE(t.application.taskCompletionEvents.size() == 1);
-	REQUIRE(t.application.taskCompletionEvents[0].result == TaskCompletion::SUCCESS);
+	REQUIRE(t.application->taskCompletionEvents.size() == 1);
+	REQUIRE(t.application->taskCompletionEvents[0].result == TaskCompletion::SUCCESS);
 }
 
 TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))
@@ -65,8 +65,8 @@ TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))
 	MasterTestObject t(params);
 
 	// configure the mock application to do assign class on startup
-	t.application.assignClassHeaders.push_back(Header::AllObjects(60, 2));
-	t.application.assignClassHeaders.push_back(Header::AllObjects(3, 0));
+	t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));
+	t.application->assignClassHeaders.push_back(Header::AllObjects(3, 0));
 
 	t.context.OnLowerLayerUp();
 

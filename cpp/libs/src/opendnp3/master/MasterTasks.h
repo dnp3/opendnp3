@@ -45,7 +45,7 @@ class MasterTasks
 
 public:
 
-	MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
+	MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application, ISOEHandler& SOEHandler);
 
 	void Initialize(MasterScheduler& scheduler);
 

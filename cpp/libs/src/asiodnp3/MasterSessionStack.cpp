@@ -51,13 +51,11 @@ MasterSessionStack::MasterSessionStack(
 	opendnp3::ILinkTx& linktx,
 	const MasterStackConfig& config
 ) :
-	m_executor(executor),
-	m_handler(SOEHandler),
-	m_application(application),
+	m_executor(executor),	
 	m_session(session),
 	m_statistics(),
 	m_stack(logger, m_executor, application, config.master.maxRxFragSize, &m_statistics, config.link),
-	m_context(logger, m_executor, *m_stack.transport, *SOEHandler, *application, config.master, NullTaskLock::Instance())
+	m_context(logger, m_executor, *m_stack.transport, SOEHandler, application, config.master, NullTaskLock::Instance())
 {
 	m_stack.link.SetRouter(linktx);
 	m_stack.transport->SetAppLayer(m_context);

@@ -42,8 +42,8 @@ MContext::MContext(
 	const openpal::Logger& logger,
 	const std::shared_ptr<openpal::IExecutor>& executor,	
     ILowerLayer& lower,
-    ISOEHandler& SOEHandler,
-    opendnp3::IMasterApplication& application,
+	const std::shared_ptr<ISOEHandler>& SOEHandler,
+	const std::shared_ptr<IMasterApplication>& application,
     const MasterParams& params_,
     ITaskLock& taskLock
 ) :
@@ -51,15 +51,15 @@ MContext::MContext(
 	executor(executor),
 	pLower(&lower),
 	params(params_),
-	pSOEHandler(&SOEHandler),
+	SOEHandler(SOEHandler),	
+	application(application),
 	pTaskLock(&taskLock),
-	pApplication(&application),
 	isOnline(false),
 	isSending(false),
 	responseTimer(*executor),
 	scheduleTimer(*executor),
 	taskStartTimeoutTimer(*executor),
-	tasks(params, logger, application, SOEHandler, application),
+	tasks(params, logger, *application, *SOEHandler),
 	scheduler(*this),
 	txBuffer(params.maxTxFragSize),
 	tstate(TaskState::IDLE)
@@ -195,12 +195,12 @@ void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& head
 
 void MContext::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
-	this->ScheduleAdhocTask(CommandTask::FDirectOperate(std::move(commands), *pApplication, callback, config, logger));
+	this->ScheduleAdhocTask(CommandTask::FDirectOperate(std::move(commands), *application, callback, config, logger));
 }
 
 void MContext::SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
-	this->ScheduleAdhocTask(CommandTask::FSelectAndOperate(std::move(commands), *pApplication, callback, config, logger));
+	this->ScheduleAdhocTask(CommandTask::FSelectAndOperate(std::move(commands), *application, callback, config, logger));
 }
 
 void MContext::ProcessAPDU(const APDUResponseHeader& header, const RSlice& objects)
@@ -253,7 +253,7 @@ void MContext::ProcessIIN(const IINField& iin)
 		this->tasks.eventScan.Demand();
 	}
 
-	this->pApplication->OnReceiveIIN(iin);
+	this->application->OnReceiveIIN(iin);
 }
 
 void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const RSlice& objects)
@@ -264,7 +264,7 @@ void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, cons
 		return;
 	}
 
-	auto result = MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler);
+	auto result = MeasurementHandler::ProcessMeasurements(objects, logger, SOEHandler.get());
 
 	if ((result == ParseResult::OK) && header.control.CON)
 	{
@@ -330,7 +330,7 @@ void MContext::PostCheckForTask()
 
 MasterScan MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto pTask = new UserPollTask(builder, true, period, params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
+	auto pTask = new UserPollTask(builder, true, period, params.taskRetryPeriod, *application, *SOEHandler, logger, config);
 	this->ScheduleRecurringPollTask(pTask);
 	auto callback = [this]()
 	{
@@ -368,7 +368,7 @@ MasterScan MContext::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_
 
 void MContext::Scan(const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), params.taskRetryPeriod, *pApplication, *pSOEHandler, logger, config);
+	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), params.taskRetryPeriod, *application, *SOEHandler, logger, config);
 	this->ScheduleAdhocTask(pTask);
 }
 
@@ -406,19 +406,19 @@ void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig co
 		return writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto pTask = new EmptyResponseTask(*this->pApplication, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, this->logger, config);
+	auto pTask = new EmptyResponseTask(*this->application, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, this->logger, config);
 	this->ScheduleAdhocTask(pTask);
 }
 
 void MContext::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 {
-	auto pTask = new RestartOperationTask(*this->pApplication, op, callback, this->logger, config);
+	auto pTask = new RestartOperationTask(*this->application, op, callback, this->logger, config);
 	this->ScheduleAdhocTask(pTask);
 }
 
 void MContext::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto pTask = new EmptyResponseTask(*this->pApplication, name, func, builder, this->logger, config);
+	auto pTask = new EmptyResponseTask(*this->application, name, func, builder, this->logger, config);
 	this->ScheduleAdhocTask(pTask);
 }
 

@@ -25,7 +25,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& app, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
+MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& app, ISOEHandler& SOEHandler) :
 	enableUnsol(app, params.unsolClassMask, params.taskRetryPeriod, logger),
 	clearRestart(app, params.taskRetryPeriod, logger),
 	assignClass(app, params.taskRetryPeriod, logger),

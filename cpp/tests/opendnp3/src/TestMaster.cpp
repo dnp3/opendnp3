@@ -73,8 +73,8 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 	t.context.OnSendResult(true);
 	REQUIRE(t.exe->NumPendingTimers() == 2);
 	t.SendToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
-	REQUIRE(t.meas.TotalReceived() == 1);
-	REQUIRE((Binary(true, 0x01) == t.meas.binarySOE[2].meas));
+	REQUIRE(t.meas->TotalReceived() == 1);
+	REQUIRE((Binary(true, 0x01) == t.meas->binarySOE[2].meas));
 }
 
 TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
@@ -222,12 +222,12 @@ TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 	REQUIRE(t.lower.PopWriteAsHex() ==  hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 	t.SendToMaster("80 81 00 00 01 02 00 02 02 81"); // partial response FIR = 1, FIN = 0
-	REQUIRE(1 == t.meas.TotalReceived());
-	REQUIRE((Binary(true, 0x01) == t.meas.binarySOE[2].meas));
+	REQUIRE(1 == t.meas->TotalReceived());
+	REQUIRE((Binary(true, 0x01) == t.meas->binarySOE[2].meas));
 	REQUIRE(0 == t.lower.NumWrites());
 	t.SendToMaster("41 81 00 00 01 02 00 03 03 02"); // final response FIR = 0, FIN = 1
-	REQUIRE(2 == t.meas.TotalReceived());
-	REQUIRE((Binary(false, 0x02) == t.meas.binarySOE[3].meas));
+	REQUIRE(2 == t.meas->TotalReceived());
+	REQUIRE((Binary(false, 0x02) == t.meas->binarySOE[3].meas));
 }
 
 TEST_CASE(SUITE("EventPoll"))
@@ -245,8 +245,8 @@ TEST_CASE(SUITE("EventPoll"))
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 02 01 17 01 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
-	REQUIRE(t.meas.TotalReceived() == 1);
-	REQUIRE((Binary(true, 0x01) == t.meas.binarySOE[2].meas));
+	REQUIRE(t.meas->TotalReceived() == 1);
+	REQUIRE((Binary(true, 0x01) == t.meas->binarySOE[2].meas));
 
 	REQUIRE(t.exe->RunMany() > 0);
 
@@ -254,8 +254,8 @@ TEST_CASE(SUITE("EventPoll"))
 	t.context.OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 02 01 17 01 03 01"); //group 2 var 1, index = 3, 0x81 = Online, true
 
-	REQUIRE(t.meas.TotalReceived() == 2);
-	REQUIRE((Binary(false, 0x01) == t.meas.binarySOE[3].meas));
+	REQUIRE(t.meas->TotalReceived() == 2);
+	REQUIRE((Binary(false, 0x01) == t.meas->binarySOE[3].meas));
 }
 
 TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
@@ -266,7 +266,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 	// Group 111 (0x6F) Variation (length), 1 byte count / 1 byte index (4), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
 	t.SendToMaster("D0 82 00 00 6F 05 17 01 04 68 65 6C 6C 6F");
 
-	REQUIRE("68 65 6C 6C 6F" ==  ToHex(t.meas.octetStringSOE[4].meas.ToRSlice()));
+	REQUIRE("68 65 6C 6C 6F" ==  ToHex(t.meas->octetStringSOE[4].meas.ToRSlice()));
 }
 
 TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
@@ -284,7 +284,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 	// Group 110 (0x6E) Variation(length), start = 3, stop = 3
 	t.SendToMaster("C0 81 00 00 6E 01 00 03 03 AA");
 
-	REQUIRE("AA" ==  ToHex(t.meas.octetStringSOE[3].meas.ToRSlice()));
+	REQUIRE("AA" ==  ToHex(t.meas->octetStringSOE[3].meas.ToRSlice()));
 }
 
 TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))
@@ -304,14 +304,14 @@ TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))
 	// g2v3, index 8, t = 3, true/online
 	t.SendToMaster("C0 81 00 00 33 01 07 01 03 00 00 00 00 00 02 03 17 01 07 81 02 00 02 03 17 01 08 81 03 00");
 
-	REQUIRE(t.meas.binarySOE.size() == 2);
+	REQUIRE(t.meas->binarySOE.size() == 2);
 	{
-		auto record = t.meas.binarySOE[7];
+		auto record = t.meas->binarySOE[7];
 		REQUIRE(record.meas.time == 5);
 		REQUIRE(record.info.gv == GroupVariation::Group2Var3);
 	}
 	{
-		auto record = t.meas.binarySOE[8];
+		auto record = t.meas->binarySOE[8];
 		REQUIRE(record.meas.time == 6);
 		REQUIRE(record.info.gv == GroupVariation::Group2Var3);
 	}
@@ -331,10 +331,10 @@ TEST_CASE(SUITE("ParsesGroup50Var4"))
 
 	t.SendToMaster("C0 81 00 00 32 04 00 00 00 09 00 00 00 00 00 03 00 00 00 05");
 
-	REQUIRE(1 == t.meas.timeAndIntervalSOE.size());
-	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.interval == 3);
-	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.time == 9);
-	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.GetUnitsEnum() == IntervalUnits::Days);
+	REQUIRE(1 == t.meas->timeAndIntervalSOE.size());
+	REQUIRE(t.meas->timeAndIntervalSOE[0].meas.interval == 3);
+	REQUIRE(t.meas->timeAndIntervalSOE[0].meas.time == 9);
+	REQUIRE(t.meas->timeAndIntervalSOE[0].meas.GetUnitsEnum() == IntervalUnits::Days);
 }
 
 TEST_CASE(SUITE("RestartViaNullUnsol"))
@@ -413,7 +413,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
 
-	t.application.time = 100;
+	t.application->time = 100;
 	t.exe->RunMany();
 
 	REQUIRE(t.lower.NumWrites() == 0);
@@ -431,7 +431,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::MeasureDelay(1));
 	t.context.OnSendResult(true);
-	t.application.time += 100; //advance time by 100ms so that the master sees 100ms for a response
+	t.application->time += 100; //advance time by 100ms so that the master sees 100ms for a response
 	t.SendToMaster("C1 81 10 00 34 02 07 01 0A 00"); // still need time, 52 Var 2, delay == 10ms
 
 	t.exe->RunMany();
@@ -455,8 +455,8 @@ TEST_CASE(SUITE("ReceiveCTOSynchronized"))
 
 	t.SendToMaster("D0 82 00 00 33 01 07 01 03 00 00 00 00 00 02 03 28 01 00 07 00 81 01 00");
 
-	REQUIRE(t.meas.TotalReceived() == 1);
-	auto record = t.meas.binarySOE[7];
+	REQUIRE(t.meas->TotalReceived() == 1);
+	auto record = t.meas->binarySOE[7];
 	bool equal = record.meas == Binary(true, 0x01, DNPTime(0x04)); //timestamp is 4
 	REQUIRE(equal);
 	REQUIRE(record.info.tsmode == TimestampMode::SYNCHRONIZED);
@@ -471,8 +471,8 @@ TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
 	// same as above, but with Group 51 Var 2
 	t.SendToMaster("D0 82 00 00 33 02 07 01 03 00 00 00 00 00 02 03 28 01 00 07 00 81 01 00");
 
-	REQUIRE(t.meas.TotalReceived() == 1);
-	auto record = t.meas.binarySOE[7];
+	REQUIRE(t.meas->TotalReceived() == 1);
+	auto record = t.meas->binarySOE[7];
 	bool equal = record.meas == Binary(true, 0x01, DNPTime(0x04)); //timestamp is 4
 	REQUIRE(equal);
 	REQUIRE(record.info.tsmode == TimestampMode::UNSYNCHRONIZED);
@@ -492,8 +492,8 @@ TEST_CASE(SUITE("ReceiveIINinResponses"))
 	// response with IIN retart bit
 	t.SendToMaster("C0 81 80 00");
 
-	REQUIRE(t.application.rxIIN.size() == 1);
-	REQUIRE(t.application.rxIIN[0].IsSet(IINBit::DEVICE_RESTART));
+	REQUIRE(t.application->rxIIN.size() == 1);
+	REQUIRE(t.application->rxIIN[0].IsSet(IINBit::DEVICE_RESTART));
 }
 
 TEST_CASE(SUITE("ReceiveIINUnsol"))
@@ -504,8 +504,8 @@ TEST_CASE(SUITE("ReceiveIINUnsol"))
 
 	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::DEVICE_TROUBLE)));
 
-	REQUIRE(t.application.rxIIN.size() == 1);
-	REQUIRE(t.application.rxIIN[0].IsSet(IINBit::DEVICE_TROUBLE));
+	REQUIRE(t.application->rxIIN.size() == 1);
+	REQUIRE(t.application->rxIIN[0].IsSet(IINBit::DEVICE_TROUBLE));
 }
 
 TEST_CASE(SUITE("EventScanOnEventsAvailableIIN"))

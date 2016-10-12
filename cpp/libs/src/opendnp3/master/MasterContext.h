@@ -68,8 +68,8 @@ public:
 		const openpal::Logger& logger,
 		const std::shared_ptr<openpal::IExecutor>& executor,	    
 	    ILowerLayer& lower,
-	    ISOEHandler& SOEHandler,
-	    opendnp3::IMasterApplication& application,
+		const std::shared_ptr<ISOEHandler>& SOEHandler,
+		const std::shared_ptr<IMasterApplication>& application,
 	    const MasterParams& params,
 	    ITaskLock& taskLock
 	);
@@ -80,9 +80,9 @@ public:
 
 	// ------- configuration --------
 	MasterParams params;
-	ISOEHandler* pSOEHandler;
-	ITaskLock* pTaskLock;
-	IMasterApplication* pApplication;
+	const std::shared_ptr<ISOEHandler> SOEHandler;
+	const std::shared_ptr<IMasterApplication> application;
+	ITaskLock* pTaskLock;	
 
 
 	// ------- dynamic state ---------

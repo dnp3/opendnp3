@@ -43,10 +43,8 @@ MasterStack::MasterStack(
     const MasterStackConfig& config,
     ITaskLock& taskLock) :
 
-	StackBase(logger, executor, application, iohandler, shutdown, config.master.maxRxFragSize, config.link),
-	SOEHandler(SOEHandler),
-	application(application),
-	mcontext(logger, executor, *tstack.transport, *SOEHandler, *application,  config.master, taskLock)
+	StackBase(logger, executor, application, iohandler, shutdown, config.master.maxRxFragSize, config.link),	
+	mcontext(logger, executor, *tstack.transport, SOEHandler, application,  config.master, taskLock)
 {
 	tstack.transport->SetAppLayer(mcontext);
 }
