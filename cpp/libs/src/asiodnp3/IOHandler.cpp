@@ -56,11 +56,11 @@ void IOHandler::Shutdown()
 	}
 }
 
-void IOHandler::BeginTransmit(const RSlice& buffer, ILinkSession& context)
+void IOHandler::BeginTransmit(const std::shared_ptr<opendnp3::ILinkSession>& session, const RSlice& data)
 {
 	if (this->channel)
 	{
-		this->txQueue.push_back(Transmission(buffer, &context));
+		this->txQueue.push_back(Transmission(data, session));
 		this->CheckForSend();
 	}
 	else
@@ -69,7 +69,7 @@ void IOHandler::BeginTransmit(const RSlice& buffer, ILinkSession& context)
 	}
 }
 
-bool IOHandler::AddContext(ILinkSession& session, const Route& route)
+bool IOHandler::AddContext(const std::shared_ptr<opendnp3::ILinkSession>& session, const Route& route)
 {
 	if (this->IsRouteInUse(route))
 	{
@@ -88,11 +88,11 @@ bool IOHandler::AddContext(ILinkSession& session, const Route& route)
 	return true;
 }
 
-bool IOHandler::Enable(ILinkSession& session)
+bool IOHandler::Enable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 {
 	auto matches = [&](const Session & rec)
 	{
-		return rec.session == &session;
+		return rec.session == session;
 	};
 
 	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
@@ -120,11 +120,11 @@ bool IOHandler::Enable(ILinkSession& session)
 	return true;
 }
 
-bool IOHandler::Disable(ILinkSession& session)
+bool IOHandler::Disable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 {
 	auto matches = [&](const Session & rec)
 	{
-		return rec.session == &session;
+		return rec.session == session;
 	};
 
 	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
@@ -145,11 +145,11 @@ bool IOHandler::Disable(ILinkSession& session)
 	return true;
 }
 
-bool IOHandler::Remove(ILinkSession& session)
+bool IOHandler::Remove(const std::shared_ptr<opendnp3::ILinkSession>& session)
 {
 	auto matches = [&](const Session & rec)
 	{
-		return rec.session == &session;
+		return rec.session == session;
 	};
 
 	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
@@ -236,11 +236,12 @@ void IOHandler::CheckForSend()
 	if (this->txQueue.empty() || !this->channel || !this->channel->CanWrite()) return;
 
 	++statistics.numLinkFrameTx;
-	auto tx = this->txQueue.front();
+	const auto tx = this->txQueue.front();
+	this->txQueue.pop_front();
 
 	// we don't need to capture shared_ptr here, b/c shutting down an
 	// IAsyncChannel guarantees that the callback isn't invoked
-	auto cb = [self = this->shared_from_this()](const std::error_code & ec)
+	auto cb = [self = this->shared_from_this(), session = tx.session](const std::error_code & ec)
 	{
 		if (ec)
 		{
@@ -256,9 +257,7 @@ void IOHandler::CheckForSend()
 			self->factory->OnChannelShutdown(cb);
 		}
 		else
-		{
-			auto session = self->txQueue.front().session;
-			self->txQueue.pop_front();
+		{			
 			self->CheckForSend();
 			session->OnTransmitResult(true);
 		}
@@ -276,7 +275,7 @@ opendnp3::ILinkSession* IOHandler::GetEnabledSession(const opendnp3::Route& rout
 
 	auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
 
-	return (iter == sessions.end()) ? nullptr : iter->session;
+	return (iter == sessions.end()) ? nullptr : iter->session.get();
 }
 
 bool IOHandler::IsRouteInUse(const Route& route) const
@@ -289,11 +288,11 @@ bool IOHandler::IsRouteInUse(const Route& route) const
 	return std::find_if(sessions.begin(), sessions.end(), matches) != sessions.end();
 }
 
-bool IOHandler::IsSessionInUse(opendnp3::ILinkSession& session) const
+bool IOHandler::IsSessionInUse(const std::shared_ptr<opendnp3::ILinkSession>& session) const
 {
 	auto matches = [&](const Session & record)
 	{
-		return (record.session == &session);
+		return (record.session == session);
 	};
 
 	return std::find_if(sessions.begin(), sessions.end(), matches) != sessions.end();

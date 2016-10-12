@@ -33,10 +33,10 @@ namespace asiodnp3
 /**
 * Base class for masters or outstations
 */
-class StackBase : public std::enable_shared_from_this<StackBase>
+class StackBase
 {
-public:
 
+protected:
 
 	StackBase(
 		const openpal::Logger& logger, 
@@ -45,30 +45,16 @@ public:
 		const std::shared_ptr<IOHandler>& iohandler,
 		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 		uint32_t maxRxFragSize,
-		const opendnp3::LinkConfig& config);
-
-	static std::shared_ptr<StackBase> Create(
-		const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		const std::shared_ptr<opendnp3::ILinkListener>& listener,
-		const std::shared_ptr<IOHandler>& iohandler,
-		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
-		uint32_t maxRxFragSize,
-		const opendnp3::LinkConfig& config)
-	{
-		return std::make_shared<StackBase>(logger, executor, listener, iohandler, shutdown, maxRxFragSize, config);
-	}
-
-	bool Enable();
-
-	bool Disable();
-
-	void Shutdown(const std::shared_ptr<asiopal::IResource>& resource);
-
-	opendnp3::StackStatistics GetStackStatistics();
-
-
-	// members
+		const opendnp3::LinkConfig& config) :
+	logger(logger),
+	statistics(),
+	executor(executor),
+	iohandler(iohandler),
+	shutdown(shutdown),
+	tstack(logger, *executor.get(), *listener.get(),  maxRxFragSize, &statistics, config)
+   {
+	
+   }
 
 	openpal::Logger logger;
 	opendnp3::StackStatistics statistics;

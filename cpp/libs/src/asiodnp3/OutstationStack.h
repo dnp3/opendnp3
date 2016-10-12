@@ -36,7 +36,7 @@ namespace asiodnp3
 /**
 * A stack object for an outstation
 */
-class OutstationStack final : public IOutstation, public std::enable_shared_from_this<OutstationStack>
+class OutstationStack final : public IOutstation, public opendnp3::ILinkSession, private StackBase, public std::enable_shared_from_this<OutstationStack>
 {
 public:
 
@@ -60,33 +60,38 @@ public:
 	)
 	{
 		return std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, shutdown, config);		
-	}
-
-	opendnp3::ILinkSession& GetLink()
-	{
-		return stack->tstack.link;
-	}
+	}	
 
 	// --------- Implement IStack ---------
 
-	virtual bool Enable() override
-	{
-		return stack->Enable();
-	}
+	virtual bool Enable() override;
 
-	virtual bool Disable() override
-	{
-		return stack->Disable();
-	}
+	virtual bool Disable() override;
 
-	virtual void Shutdown() override
-	{
-		stack->Shutdown(this->shared_from_this());
-	}
+	virtual void Shutdown() override;
 	
-	virtual opendnp3::StackStatistics GetStackStatistics() override
+	virtual opendnp3::StackStatistics GetStackStatistics() override;
+
+	// --------- Implement ILinkSession ---------
+
+	virtual bool OnTransmitResult(bool success) override
 	{
-		return stack->GetStackStatistics();
+		return this->tstack.link.OnTransmitResult(success);
+	}
+
+	virtual bool OnLowerLayerUp() override
+	{
+		return this->tstack.link.OnLowerLayerUp();
+	}
+
+	virtual bool OnLowerLayerDown() override
+	{
+		return this->tstack.link.OnLowerLayerDown();
+	}
+
+	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
+	{
+		return this->tstack.link.OnFrame(header, userdata);
 	}
 
 	// --------- Implement IOutstation ---------
@@ -99,8 +104,7 @@ public:
 	virtual void Apply(ChangeSet& changes) override;
 
 private:
-
-	const std::shared_ptr<StackBase> stack;
+	
 	const std::shared_ptr<opendnp3::ICommandHandler> commandHandler;
 	const std::shared_ptr<opendnp3::IOutstationApplication> application;	
 	opendnp3::OContext ocontext;

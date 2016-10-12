@@ -109,7 +109,7 @@ std::shared_ptr<IMaster> DNP3Channel::AddMaster(const std::string& id, std::shar
 {
 	auto stack = MasterStack::Create(this->logger.Detach(id), this->executor, SOEHandler, application, this->iohandler, this->resources, config, this->iohandler->TaskLock());
 	
-	return this->AddStack(config.link, stack->GetLink(), stack);
+	return this->AddStack(config.link, stack);
 	
 }
 
@@ -117,18 +117,18 @@ std::shared_ptr<IOutstation> DNP3Channel::AddOutstation(const std::string& id, s
 {
 	auto stack = OutstationStack::Create(this->logger.Detach(id), this->executor, commandHandler, application, this->iohandler, this->resources, config);
 
-	return this->AddStack(config.link, stack->GetLink(), stack);
+	return this->AddStack(config.link, stack);
 }
 
 template <class T>
-std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, opendnp3::ILinkSession& session, const std::shared_ptr<T>& stack)
+std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, const std::shared_ptr<T>& stack)
 {
 
-	auto create = [stack, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this(), &session]() {
+	auto create = [stack, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this()]() {
 
-		auto add = [route, self, &session]() -> bool
+		auto add = [stack, route, self]() -> bool
 		{
-			return self->iohandler->AddContext(session, route);
+			return self->iohandler->AddContext(stack, route);
 		};
 
 		return self->executor->ReturnFrom<bool>(add) ? stack : nullptr;

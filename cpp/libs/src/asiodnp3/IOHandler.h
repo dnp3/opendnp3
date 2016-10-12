@@ -44,7 +44,7 @@ namespace asiodnp3
 Manages I/O for a number of link contexts
 
 */
-class IOHandler : public opendnp3::ILinkTx, private opendnp3::IFrameSink, public std::enable_shared_from_this<IOHandler>
+class IOHandler : private opendnp3::IFrameSink, public std::enable_shared_from_this<IOHandler>
 {
 
 public:
@@ -78,19 +78,19 @@ public:
 
 	/// --- implement ILinkTx ---
 
-	virtual void BeginTransmit(const openpal::RSlice& data, opendnp3::ILinkSession& context) override;
+	void BeginTransmit(const std::shared_ptr<opendnp3::ILinkSession>& session, const openpal::RSlice& data);
 
 	// Bind a link layer session to the handler
-	bool AddContext(opendnp3::ILinkSession& session, const opendnp3::Route& route);
+	bool AddContext(const std::shared_ptr<opendnp3::ILinkSession>& session, const opendnp3::Route& route);
 
 	// Begin sending messages to the context
-	bool Enable(opendnp3::ILinkSession& session);
+	bool Enable(const std::shared_ptr<opendnp3::ILinkSession>& session);
 
 	// Stop sending messages to this session
-	bool Disable(opendnp3::ILinkSession& session);
+	bool Disable(const std::shared_ptr<opendnp3::ILinkSession>& session);
 
 	// Remove this session entirely
-	bool Remove(opendnp3::ILinkSession& session);
+	bool Remove(const std::shared_ptr<opendnp3::ILinkSession>& session);
 
 	// Query to see if a route is in use
 	bool IsRouteInUse(const opendnp3::Route& route) const;
@@ -109,7 +109,7 @@ private:
 	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
 	
-	bool IsSessionInUse(opendnp3::ILinkSession& session) const;
+	bool IsSessionInUse(const std::shared_ptr<opendnp3::ILinkSession>& session) const;
 	bool IsAnySessionEnabled() const;
 	void Reset();
 	void BeginRead();
@@ -119,21 +119,21 @@ private:
 
 	struct Session
 	{
-		Session(opendnp3::ILinkSession& session, const opendnp3::Route& route) :
+		Session(const std::shared_ptr<opendnp3::ILinkSession>& session, const opendnp3::Route& route) :
 			route(route),
-			session(&session)
+			session(session)
 		{}
 
 		Session() = default;
 
 		bool enabled = false;
 		opendnp3::Route route;
-		opendnp3::ILinkSession* session = nullptr;
+		std::shared_ptr<opendnp3::ILinkSession> session;
 	};
 
 	struct Transmission
 	{
-		Transmission(const openpal::RSlice& txdata, opendnp3::ILinkSession* session) :
+		Transmission(const openpal::RSlice& txdata, const std::shared_ptr<opendnp3::ILinkSession>& session) :
 			txdata(txdata),
 			session(session)
 		{}
@@ -141,7 +141,7 @@ private:
 		Transmission() = default;
 
 		openpal::RSlice txdata;
-		opendnp3::ILinkSession* session = nullptr;
+		std::shared_ptr<opendnp3::ILinkSession> session;
 	};
 
 	std::vector<Session> sessions;

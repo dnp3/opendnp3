@@ -31,11 +31,10 @@
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/link/LinkHeader.h"
 #include "opendnp3/link/LinkChannelStatistics.h"
+#include "opendnp3/link/IFrameSink.h"
 
 namespace opendnp3
 {
-
-class IFrameSink;
 
 /// Parses FT3 frames
 class LinkLayerParser

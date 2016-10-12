@@ -43,12 +43,12 @@ OutstationStack::OutstationStack(
 	const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
     const OutstationStackConfig& config) :
 
-	stack(StackBase::Create(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link)),	
+	StackBase(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link),	
 	commandHandler(commandHandler),
 	application(application),	
-	ocontext(config.outstation, config.dbConfig.sizes, logger, *executor.get(), stack->tstack.transport, *commandHandler, *application)
+	ocontext(config.outstation, config.dbConfig.sizes, logger, *executor.get(), tstack.transport, *commandHandler, *application)
 {
-	this->stack->tstack.transport.SetAppLayer(ocontext);
+	this->tstack.transport.SetAppLayer(ocontext);
 
 	// apply the database configuration
 	auto view = ocontext.GetConfigView();
@@ -64,13 +64,37 @@ OutstationStack::OutstationStack(
 }
 
 
+bool OutstationStack::Enable()
+{
+	auto action = [self = shared_from_this()]{ return self->iohandler->Enable(self); };
+	return this->executor->ReturnFrom<bool>(action);
+}
+
+bool OutstationStack::Disable()
+{
+	auto action = [self = shared_from_this()]{ return self->iohandler->Disable(self); };
+	return this->executor->ReturnFrom<bool>(action);
+}
+
+void OutstationStack::Shutdown()
+{
+	auto action = [self = shared_from_this()]{ return self->iohandler->Remove(self); };
+	this->executor->PostToStrand(action);
+}
+
+opendnp3::StackStatistics OutstationStack::GetStackStatistics()
+{
+	auto get = [self = shared_from_this()]{ return self->statistics; };
+	return this->executor->ReturnFrom<StackStatistics>(get);
+}
+
 void OutstationStack::SetLogFilters(const openpal::LogFilters& filters)
 {
 	auto set = [self = this->shared_from_this(), filters]()
 	{
-		self->stack->logger.SetFilters(filters);
+		self->logger.SetFilters(filters);
 	};
-	this->stack->executor->PostToStrand(set);
+	this->executor->PostToStrand(set);
 }
 
 void OutstationStack::SetRestartIIN()
@@ -80,7 +104,7 @@ void OutstationStack::SetRestartIIN()
 	{
 		self->ocontext.SetRestartIIN();
 	};
-	this->stack->executor->PostToStrand(set);
+	this->executor->PostToStrand(set);
 }
 
 void OutstationStack::Apply(ChangeSet& changes)
@@ -94,7 +118,7 @@ void OutstationStack::Apply(ChangeSet& changes)
 		self->ocontext.CheckForTaskStart(); // force the outstation to check for updates
 	};
 
-	this->stack->executor->PostToStrand(task);
+	this->executor->PostToStrand(task);
 }
 
 }

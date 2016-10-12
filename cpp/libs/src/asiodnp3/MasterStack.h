@@ -33,7 +33,7 @@ namespace asiodnp3
 {
 
 
-class MasterStack : public IMaster, public std::enable_shared_from_this<MasterStack>
+class MasterStack : public IMaster, public opendnp3::ILinkSession, private StackBase, public std::enable_shared_from_this<MasterStack>
 {
 public:
 
@@ -60,33 +60,38 @@ public:
 	)
 	{
 		return std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, shutdown, config, taskLock);
-	}
-
-	opendnp3::ILinkSession& GetLink()
-	{
-		return stack->tstack.link;
-	}
+	}	
 
 	// --------- Implement IStack ---------
 
-	virtual bool Enable() override
+	virtual bool Enable() override;	
+
+	virtual bool Disable() override;
+	
+	virtual void Shutdown() override;
+	
+	virtual opendnp3::StackStatistics GetStackStatistics() override;
+
+	// --------- Implement ILinkSession ---------
+
+	virtual bool OnTransmitResult(bool success) override
 	{
-		return stack->Enable();
+		return this->tstack.link.OnTransmitResult(success);
+	}
+	
+	virtual bool OnLowerLayerUp() override
+	{
+		return this->tstack.link.OnLowerLayerUp();
+	}
+	
+	virtual bool OnLowerLayerDown() override
+	{
+		return this->tstack.link.OnLowerLayerDown();
 	}
 
-	virtual bool Disable() override
+	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
-		return stack->Disable();
-	}
-
-	virtual void Shutdown() override
-	{
-		stack->Shutdown(this->shared_from_this());
-	}
-
-	virtual opendnp3::StackStatistics GetStackStatistics() override
-	{
-		return stack->GetStackStatistics();
+		return this->tstack.link.OnFrame(header, userdata);
 	}
 
 	// --------- Implement IMasterOperations ---------
@@ -123,7 +128,7 @@ public:
 
 protected:
 
-	const std::shared_ptr<StackBase> stack;
+	
 	const std::shared_ptr<opendnp3::ISOEHandler> SOEHandler;
 	const std::shared_ptr<opendnp3::IMasterApplication> application;	
 	opendnp3::MContext mcontext;
