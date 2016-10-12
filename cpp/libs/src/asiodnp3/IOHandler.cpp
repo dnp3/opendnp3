@@ -49,8 +49,11 @@ void IOHandler::Shutdown()
 	{
 		this->factory->Shutdown();
 
+		this->UpdateListener(ChannelState::SHUTDOWN);
+
 		if (channel)
 		{
+
 			this->channel->Shutdown();
 		}
 	}
@@ -114,6 +117,7 @@ bool IOHandler::Enable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 			self->OnNewChannel(channel);
 		};
 
+		this->UpdateListener(ChannelState::OPENING);
 		this->factory->BeginChannelAccept(cb);
 	}
 
@@ -140,7 +144,12 @@ bool IOHandler::Disable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 		iter->session->OnLowerLayerDown();
 	}
 
-	if (!this->IsAnySessionEnabled()) this->factory->SuspendChannelAccept();
+	if (!this->IsAnySessionEnabled())
+	{
+		this->Reset();
+
+		this->factory->SuspendChannelAccept();
+	}
 
 	return true;
 }
@@ -156,14 +165,17 @@ bool IOHandler::Remove(const std::shared_ptr<opendnp3::ILinkSession>& session)
 
 	if (iter == sessions.end()) return false;
 
-	if (iter->enabled)
+	if (iter->enabled && channel)
 	{
 		iter->session->OnLowerLayerDown();
 	}
 
 	sessions.erase(iter);
 
-	if (!this->IsAnySessionEnabled()) this->factory->SuspendChannelAccept();
+	if (!this->IsAnySessionEnabled()) 
+	{
+		this->factory->SuspendChannelAccept();
+	}
 
 	return true;
 }
@@ -173,6 +185,8 @@ void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& chan
 	this->Reset();
 
 	this->channel = channel;
+
+	this->UpdateListener(ChannelState::OPEN);
 
 	this->BeginRead();
 
@@ -218,7 +232,7 @@ void IOHandler::BeginRead()
 				self->OnNewChannel(channel);
 			};
 
-
+			self->UpdateListener(ChannelState::OPENING);
 			self->factory->OnChannelShutdown(cb);
 		}
 		else
@@ -253,7 +267,7 @@ void IOHandler::CheckForSend()
 				self->OnNewChannel(channel);
 			};
 
-
+			self->UpdateListener(ChannelState::OPENING);
 			self->factory->OnChannelShutdown(cb);
 		}
 		else
@@ -315,6 +329,8 @@ void IOHandler::Reset()
 		// shutdown the existing channel and drop the reference to it
 		this->channel->Shutdown();
 		this->channel.reset();
+
+		this->UpdateListener(ChannelState::CLOSED);
 
 		// notify any sessions that are online that this layer is offline
 		for (auto& item : this->sessions)

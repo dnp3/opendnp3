@@ -72,13 +72,13 @@ public:
 	);
 
 	static std::shared_ptr<MContext> Create(
-		const openpal::Logger& logger,
-		const std::shared_ptr<openpal::IExecutor>& executor,
-		const std::shared_ptr<ILowerLayer>& lower,
-		const std::shared_ptr<ISOEHandler>& SOEHandler,
-		const std::shared_ptr<IMasterApplication>& application,
-		const MasterParams& params,
-		ITaskLock& taskLock
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<openpal::IExecutor>& executor,
+	    const std::shared_ptr<ILowerLayer>& lower,
+	    const std::shared_ptr<ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<IMasterApplication>& application,
+	    const MasterParams& params,
+	    ITaskLock& taskLock
 	)
 	{
 		return std::make_shared<MContext>(logger, executor, lower, SOEHandler, application, params, taskLock);
