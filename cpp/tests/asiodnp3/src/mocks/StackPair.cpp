@@ -51,10 +51,17 @@ StackPair::StackPair(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager
 	this->master->Enable();
 }
 
-bool StackPair::WaitForChannelsOnline(std::chrono::steady_clock::duration timeout)
+void StackPair::WaitForChannelsOnline(std::chrono::steady_clock::duration timeout)
 {
-	return this->clientListener->WaitForState(opendnp3::ChannelState::OPEN, timeout) &&
-	       this->serverListener->WaitForState(opendnp3::ChannelState::OPEN, timeout);
+	if (!this->clientListener->WaitForState(opendnp3::ChannelState::OPEN, timeout))
+	{
+		throw std::runtime_error("client timed out before opening");
+	}
+
+	if (!this->serverListener->WaitForState(opendnp3::ChannelState::OPEN, timeout))
+	{
+		throw std::runtime_error("server timed out before opening");
+	}
 }
 
 void StackPair::SendRandomValues()

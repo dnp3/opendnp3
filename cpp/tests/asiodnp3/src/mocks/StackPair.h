@@ -72,7 +72,7 @@ public:
 
 	StackPair(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration);
 
-	bool WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);
+	void WaitForChannelsOnline(std::chrono::steady_clock::duration timeout);
 
 	void SendRandomValues();
 

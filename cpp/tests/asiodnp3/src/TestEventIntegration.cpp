@@ -36,18 +36,18 @@ using namespace asiodnp3;
 TEST_CASE(SUITE("TestEventIntegration"))
 {
 	const uint16_t START_PORT = 20000;
-	const uint16_t NUM_STACK_PAIRS = 100;
+	const uint16_t NUM_STACK_PAIRS = 1;
 
-	const uint16_t NUM_POINTS_PER_TYPE = 50;
+	const uint16_t NUM_POINTS_PER_TYPE = 1;
 	const uint16_t EVENTS_PER_ITERATION = 50;
-	const int NUM_ITERATIONS = 10;
+	const int NUM_ITERATIONS = 1;
 
-	const uint32_t LEVELS = flags::ERR | flags::WARN;
+	const uint32_t LEVELS = levels::ALL;// flags::ERR | flags::WARN;
 
 	const auto TEST_TIMEOUT = std::chrono::seconds(5);
 	const auto STACK_TIMEOUT = openpal::TimeDuration::Seconds(1);
 
-	DNP3Manager manager(4);
+	DNP3Manager manager(4, ConsoleLogger::Create());
 
 	std::vector<std::unique_ptr<StackPair>> pairs;
 
