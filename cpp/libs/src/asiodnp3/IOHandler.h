@@ -115,19 +115,60 @@ private:
 	void BeginRead();
 	void CheckForSend();
 
-	opendnp3::ILinkSession* GetEnabledSession(const opendnp3::Route&);
+	bool SendToSession(const opendnp3::Route& route, const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata);
 
-	struct Session
+	class Session
 	{
+
+	public:
+
 		Session(const std::shared_ptr<opendnp3::ILinkSession>& session, const opendnp3::Route& route) :
 			route(route),
 			session(session)
-		{}
+		{}		
 
 		Session() = default;
+		
+		inline bool Matches(const std::shared_ptr<opendnp3::ILinkSession>& session) const { return this->session == session; }
+		inline bool Matches(const opendnp3::Route& route) const { return this->route.Equals(route); }
+
+		inline bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
+		{
+			return this->session->OnFrame(header, userdata);
+		}
+
+		inline bool LowerLayerUp() 
+		{ 
+			if (enabled && !online) 
+			{
+				online = true;
+				return this->session->OnLowerLayerUp();				 
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		inline bool LowerLayerDown() 
+		{ 
+			if (enabled && online)
+			{
+				online = false;				
+				return this->session->OnLowerLayerDown();
+			}
+			else
+			{
+				return false;
+			}
+		}
 
 		bool enabled = false;
-		opendnp3::Route route;
+
+	private:
+
+		opendnp3::Route route;		
+		bool online = false;
 		std::shared_ptr<opendnp3::ILinkSession> session;
 	};
 

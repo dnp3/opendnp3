@@ -95,7 +95,7 @@ bool IOHandler::Enable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 {
 	auto matches = [&](const Session & rec)
 	{
-		return rec.session == session;
+		return rec.Matches(session);
 	};
 
 	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
@@ -108,7 +108,7 @@ bool IOHandler::Enable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 
 	if (this->channel)
 	{
-		iter->session->OnLowerLayerUp();
+		iter->LowerLayerUp();
 	}
 	else
 	{
@@ -128,7 +128,7 @@ bool IOHandler::Disable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 {
 	auto matches = [&](const Session & rec)
 	{
-		return rec.session == session;
+		return rec.Matches(session);
 	};
 
 	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
@@ -141,7 +141,7 @@ bool IOHandler::Disable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 
 	if (channel)
 	{
-		iter->session->OnLowerLayerDown();
+		iter->LowerLayerDown();
 	}
 
 	if (!this->IsAnySessionEnabled())
@@ -158,16 +158,16 @@ bool IOHandler::Remove(const std::shared_ptr<opendnp3::ILinkSession>& session)
 {
 	auto matches = [&](const Session & rec)
 	{
-		return rec.session == session;
+		return rec.Matches(session);
 	};
 
 	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
 
 	if (iter == sessions.end()) return false;
 
-	if (iter->enabled && channel)
+	if (channel)
 	{
-		iter->session->OnLowerLayerDown();
+		iter->LowerLayerDown();		
 	}
 
 	sessions.erase(iter);
@@ -194,20 +194,15 @@ void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& chan
 
 	for (auto& session : this->sessions)
 	{
-		if (session.enabled)
-		{
-			session.session->OnLowerLayerUp();
-		}
+		session.LowerLayerUp();
 	}
 }
 
 bool IOHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
-	ILinkSession* dest = GetEnabledSession(Route(header.src, header.dest));
-
-	if (dest)
+	if (this->SendToSession(Route(header.src, header.dest), header, userdata))
 	{
-		return dest->OnFrame(header, userdata);
+		return true;
 	}
 	else
 	{
@@ -280,23 +275,30 @@ void IOHandler::CheckForSend()
 	this->channel->BeginWrite(tx.txdata, cb);
 }
 
-opendnp3::ILinkSession* IOHandler::GetEnabledSession(const opendnp3::Route& route)
+bool IOHandler::SendToSession(const opendnp3::Route& route, const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
 	auto matches = [route](const Session & session)
 	{
-		return session.enabled && session.route.Equals(route);
+		return session.enabled && session.Matches(route);
 	};
 
-	auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
+	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
 
-	return (iter == sessions.end()) ? nullptr : iter->session.get();
+	if (iter == sessions.end())
+	{
+		return false;
+	}
+	else
+	{
+		return iter->OnFrame(header, userdata);		
+	}	
 }
 
 bool IOHandler::IsRouteInUse(const Route& route) const
 {
 	auto matches = [route](const Session & record)
 	{
-		return record.route.Equals(route);
+		return record.Matches(route);
 	};
 
 	return std::find_if(sessions.begin(), sessions.end(), matches) != sessions.end();
@@ -306,7 +308,7 @@ bool IOHandler::IsSessionInUse(const std::shared_ptr<opendnp3::ILinkSession>& se
 {
 	auto matches = [&](const Session & record)
 	{
-		return (record.session == session);
+		return record.Matches(session);
 	};
 
 	return std::find_if(sessions.begin(), sessions.end(), matches) != sessions.end();
@@ -335,10 +337,7 @@ void IOHandler::Reset()
 		// notify any sessions that are online that this layer is offline
 		for (auto& item : this->sessions)
 		{
-			if (item.enabled)
-			{
-				item.session->OnLowerLayerDown();
-			}
+			item.LowerLayerDown();			
 		}
 	}
 
