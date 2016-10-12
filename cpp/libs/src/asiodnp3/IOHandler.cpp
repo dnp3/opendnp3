@@ -222,7 +222,7 @@ void IOHandler::BeginRead()
 		}
 		else
 		{
-			self->parser.OnRead(num, *self);
+			self->parser.OnRead(static_cast<uint32_t>(num), *self);
 			self->BeginRead();
 		}
 	};
