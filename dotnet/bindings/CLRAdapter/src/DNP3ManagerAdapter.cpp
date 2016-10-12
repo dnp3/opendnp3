@@ -135,7 +135,7 @@ namespace Automatak
 					throw gcnew System::Exception("An error occured configuring your TCP listener. Check you log.");
 				}
 
-				return gcnew ListenerAdapter(listener.get());
+				return gcnew ListenerAdapter(listener);
 			}
 
 			Interface::IListener^ DNP3ManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, IListenCallbacks^ callbacks)
@@ -154,7 +154,7 @@ namespace Automatak
 					throw gcnew System::Exception("An error occured configuring your TLS listener. Check you log.");
 				}
 
-				return gcnew ListenerAdapter(listener.get());
+				return gcnew ListenerAdapter(listener);
 			}
 
 			asiopal::ChannelRetry DNP3ManagerAdapter::Convert(Interface::ChannelRetry^ retry)

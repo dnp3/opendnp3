@@ -152,9 +152,6 @@
     <ClCompile Include="src\SessionAcceptorAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ListenerAdapter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\MasterAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
