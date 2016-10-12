@@ -26,8 +26,6 @@
 
 #include "Conversions.h"
 
-#include <iostream>
-
 using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
@@ -68,20 +66,11 @@ bool MasterStack::Disable()
 void MasterStack::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()] 
-	{ 
-		std::cout << "begin master shutdown" << std::endl;
-		return self->iohandler->Remove(self); 
-		std::cout << "end master shutdown" << std::endl;
+	{ 		
+		return self->iohandler->Remove(self); 		
 	};
 
-	this->executor->BlockUntil(shutdown);
-
-	auto flush = [self = shared_from_this()]()
-	{
-		std::cout << "Master: flushing strand" << std::endl;
-	};
-
-	this->executor->BlockUntil(flush);
+	this->executor->BlockUntilAndFlush(shutdown);
 }
 
 StackStatistics MasterStack::GetStackStatistics()

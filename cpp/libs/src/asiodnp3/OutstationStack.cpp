@@ -20,8 +20,8 @@
  */
 #include "OutstationStack.h"
 
-#include <iostream>
-
+using namespace openpal;
+using namespace asiopal;
 using namespace opendnp3;
 
 namespace asiodnp3
@@ -37,12 +37,12 @@ void assign(const T& config, U& view)
 }
 
 OutstationStack::OutstationStack(
-    const openpal::Logger& logger,
-    const std::shared_ptr<asiopal::StrandExecutor>& executor,
-    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
-    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
+    const Logger& logger,
+    const std::shared_ptr<StrandExecutor>& executor,
+    const std::shared_ptr<ICommandHandler>& commandHandler,
+    const std::shared_ptr<IOutstationApplication>& application,
     const std::shared_ptr<IOHandler>& iohandler,
-    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+    const std::weak_ptr<IShutdownHandler>& shutdown,
     const OutstationStackConfig& config) :
 
 	StackBase(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link),
@@ -81,29 +81,20 @@ bool OutstationStack::Disable()
 void OutstationStack::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()]
-	{
-		std::cout << "begin outstation shutdown" << std::endl;
-		return self->iohandler->Remove(self);
-		std::cout << "end outstation shutdown" << std::endl;
+	{		
+		return self->iohandler->Remove(self);	
 	};
 
-	this->executor->BlockUntil(shutdown);
-
-	auto flush = [self = shared_from_this()]()
-	{
-		std::cout << "Outstation: flushing strand" << std::endl;
-	};
-
-	this->executor->BlockUntil(flush);
+	this->executor->BlockUntilAndFlush(shutdown);	
 }
 
-opendnp3::StackStatistics OutstationStack::GetStackStatistics()
+StackStatistics OutstationStack::GetStackStatistics()
 {
 	auto get = [self = shared_from_this()] { return self->statistics; };
 	return this->executor->ReturnFrom<StackStatistics>(get);
 }
 
-void OutstationStack::SetLogFilters(const openpal::LogFilters& filters)
+void OutstationStack::SetLogFilters(const LogFilters& filters)
 {
 	auto set = [self = this->shared_from_this(), filters]()
 	{

@@ -109,4 +109,10 @@ void StrandExecutor::BlockUntil(const std::function<void()>& action)
 	future.wait();
 }
 
+void StrandExecutor::BlockUntilAndFlush(const std::function<void()>& action)
+{
+	this->BlockUntil(action);
+	this->BlockUntil([](){});	
+}
+
 }

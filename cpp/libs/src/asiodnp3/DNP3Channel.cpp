@@ -26,8 +26,6 @@
 #include "MasterStack.h"
 #include "OutstationStack.h"
 
-#include <iostream>
-
 using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
@@ -59,20 +57,11 @@ DNP3Channel::~DNP3Channel()
 void DNP3Channel::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()]()
-	{
-		std::cout << "Begin channel shutdown" << std::endl;
+	{		
 		self->ShutdownImpl();
-		std::cout << "end channel shutdown" << std::endl;
 	};
 
-	this->executor->BlockUntil(shutdown);
-
-	auto flush = [self = shared_from_this()]()
-	{
-		std::cout << "Channel: flushing strand" << std::endl;
-	};
-
-	this->executor->BlockUntil(flush);
+	this->executor->BlockUntilAndFlush(shutdown);
 }
 
 void DNP3Channel::ShutdownImpl()

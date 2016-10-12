@@ -66,6 +66,8 @@ public:
 
 	void BlockUntil(const std::function<void ()>& action);
 
+	void BlockUntilAndFlush(const std::function<void()>& action);
+
 private:
 
 	// we hold a shared_ptr to the pool so that it cannot dissapear while the strand is still executing
