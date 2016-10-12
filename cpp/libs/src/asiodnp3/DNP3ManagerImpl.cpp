@@ -79,8 +79,8 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
 	{
 		auto clogger = this->logger.Detach(id, levels);
 		auto executor = StrandExecutor::Create(this->io);
-		auto iohandler = TCPClientIOHandler::Create(clogger, listener, executor, retry, IPEndpoint(host, port), local);		
-		return DNP3Channel::Create(clogger, executor, iohandler, this->resources);		
+		auto iohandler = TCPClientIOHandler::Create(clogger, listener, executor, retry, IPEndpoint(host, port), local);
+		return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
 	};
 
 	return this->resources->Bind<IChannel>(create);
@@ -99,8 +99,8 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
 		std::error_code ec;
 		auto clogger = this->logger.Detach(id, levels);
 		auto executor = StrandExecutor::Create(this->io);
-		auto iohandler = TCPServerIOHandler::Create(clogger, listener, executor, IPEndpoint(endpoint, port), ec);				
-		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);		
+		auto iohandler = TCPServerIOHandler::Create(clogger, listener, executor, IPEndpoint(endpoint, port), ec);
+		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
 	};
 
 	return this->resources->Bind<IChannel>(create);

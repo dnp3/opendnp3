@@ -42,10 +42,10 @@ class TCPServerIOHandler final : public IOHandler
 		typedef std::function<void(const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket)> callback_t;
 
 		Server(
-			const openpal::Logger& logger,
-			const std::shared_ptr<asiopal::StrandExecutor>& executor,
-			const asiopal::IPEndpoint& endpoint,
-			std::error_code& ec
+		    const openpal::Logger& logger,
+		    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+		    const asiopal::IPEndpoint& endpoint,
+		    std::error_code& ec
 		) :
 			TCPServer(logger, executor, endpoint, ec)
 		{}
@@ -68,21 +68,21 @@ class TCPServerIOHandler final : public IOHandler
 public:
 
 	static std::shared_ptr<TCPServerIOHandler> Create(
-		const openpal::Logger& logger,
-		const std::shared_ptr<IChannelListener>& listener,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		const asiopal::IPEndpoint& endpoint,
-		std::error_code& ec)
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<IChannelListener>& listener,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const asiopal::IPEndpoint& endpoint,
+	    std::error_code& ec)
 	{
 		return std::make_shared<TCPServerIOHandler>(logger, listener, executor, endpoint, ec);
 	}
 
 	TCPServerIOHandler(
 	    const openpal::Logger& logger,
-		const std::shared_ptr<IChannelListener>& listener,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,	    
+	    const std::shared_ptr<IChannelListener>& listener,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
-		std::error_code& ec
+	    std::error_code& ec
 	);
 
 protected:
@@ -94,7 +94,7 @@ protected:
 
 private:
 
-	const std::shared_ptr<asiopal::StrandExecutor> executor;		
+	const std::shared_ptr<asiopal::StrandExecutor> executor;
 	const asiopal::IPEndpoint endpoint;
 	std::shared_ptr<Server> server;
 };

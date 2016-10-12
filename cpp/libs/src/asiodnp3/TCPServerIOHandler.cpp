@@ -38,13 +38,13 @@ void TCPServerIOHandler::Server::AcceptConnection(uint64_t sessionid, const std:
 {
 	this->callback(executor, std::move(socket));
 }
-	
+
 TCPServerIOHandler::TCPServerIOHandler(
-	const openpal::Logger& logger,
-	const std::shared_ptr<IChannelListener>& listener,
-	const std::shared_ptr<asiopal::StrandExecutor>& executor,
-	const asiopal::IPEndpoint& endpoint,
-	std::error_code& ec
+    const openpal::Logger& logger,
+    const std::shared_ptr<IChannelListener>& listener,
+    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const asiopal::IPEndpoint& endpoint,
+    std::error_code& ec
 ) :
 	IOHandler(logger, listener),
 	executor(executor),
@@ -68,7 +68,7 @@ void TCPServerIOHandler::BeginChannelAccept()
 	};
 
 	if (this->server)
-	{		
+	{
 		this->server->StartAcceptingConnection(callback);
 	}
 	else

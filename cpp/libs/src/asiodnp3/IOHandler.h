@@ -30,7 +30,6 @@
 #include "opendnp3/link/LinkLayerParser.h"
 #include "opendnp3/master/MultidropTaskLock.h"
 
-#include "asiopal/IChannelFactory.h"
 #include "asiopal/IAsyncChannel.h"
 
 #include <vector>
