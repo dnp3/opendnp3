@@ -107,8 +107,8 @@ bool IOHandler::Enable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 	{
 		iter->session->OnLowerLayerUp();
 	}
-	else		
-	{		
+	else
+	{
 		auto cb = [self = this->shared_from_this()](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 		{
 			self->OnNewChannel(channel);
@@ -160,7 +160,7 @@ bool IOHandler::Remove(const std::shared_ptr<opendnp3::ILinkSession>& session)
 	{
 		iter->session->OnLowerLayerDown();
 	}
-	
+
 	sessions.erase(iter);
 
 	if (!this->IsAnySessionEnabled()) this->factory->SuspendChannelAccept();
@@ -257,7 +257,7 @@ void IOHandler::CheckForSend()
 			self->factory->OnChannelShutdown(cb);
 		}
 		else
-		{			
+		{
 			self->CheckForSend();
 			session->OnTransmitResult(true);
 		}

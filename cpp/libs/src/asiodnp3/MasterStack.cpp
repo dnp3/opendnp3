@@ -38,51 +38,51 @@ MasterStack::MasterStack(
     const std::shared_ptr<StrandExecutor>& executor,
     const std::shared_ptr<ISOEHandler>& SOEHandler,
     const std::shared_ptr<IMasterApplication>& application,
-	const std::shared_ptr<IOHandler>& iohandler,
-	const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+    const std::shared_ptr<IOHandler>& iohandler,
+    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
     const MasterStackConfig& config,
     ITaskLock& taskLock) :
 
 	StackBase(logger, executor, application, iohandler, shutdown, config.master.maxRxFragSize, config.link),
 	SOEHandler(SOEHandler),
-	application(application),	
+	application(application),
 	mcontext(*executor.get(), logger, tstack.transport, *SOEHandler, *application,  config.master, taskLock)
 {
-	tstack.transport.SetAppLayer(mcontext);	
+	tstack.transport.SetAppLayer(mcontext);
 }
 
 bool MasterStack::Enable()
 {
-	auto action = [self = shared_from_this()]{ return self->iohandler->Enable(self); };
-	return this->executor->ReturnFrom<bool>(action);	
+	auto action = [self = shared_from_this()] { return self->iohandler->Enable(self); };
+	return this->executor->ReturnFrom<bool>(action);
 }
 
 bool MasterStack::Disable()
 {
-	auto action = [self = shared_from_this()]{ return self->iohandler->Disable(self); };
+	auto action = [self = shared_from_this()] { return self->iohandler->Disable(self); };
 	return this->executor->ReturnFrom<bool>(action);
 }
 
 void MasterStack::Shutdown()
 {
-	auto action = [self = shared_from_this()]{ return self->iohandler->Remove(self); };
+	auto action = [self = shared_from_this()] { return self->iohandler->Remove(self); };
 	this->executor->BlockUntil(action);
 }
 
 StackStatistics MasterStack::GetStackStatistics()
 {
-	auto get = [self = shared_from_this()]{ return self->statistics; };
+	auto get = [self = shared_from_this()] { return self->statistics; };
 	return this->executor->ReturnFrom<StackStatistics>(get);
 }
 
-void MasterStack::SetLogFilters(const openpal::LogFilters& filters) 
+void MasterStack::SetLogFilters(const openpal::LogFilters& filters)
 {
 	auto set = [self = this->shared_from_this(), filters]()
 	{
 		self->logger.SetFilters(filters);
 	};
 
-	this->executor->PostToStrand(set);	
+	this->executor->PostToStrand(set);
 }
 
 MasterScan MasterStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
@@ -124,7 +124,7 @@ MasterScan MasterStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint
 }
 
 void MasterStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)
-{	
+{
 	auto add = [self = this->shared_from_this(), builder = ConvertToLambda(headers), config]()
 	{
 		return self->mcontext.Scan(builder, config);
@@ -192,7 +192,7 @@ void MasterStack::SelectAndOperate(opendnp3::CommandSet&& commands, const opendn
 	auto set = std::make_shared<opendnp3::CommandSet>(std::move(commands));
 
 	auto action = [self = this->shared_from_this(), set, config, callback]()
-	{		
+	{
 		self->mcontext.SelectAndOperate(std::move(*set), callback, config);
 	};
 

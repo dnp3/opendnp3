@@ -39,22 +39,22 @@ class StackBase
 protected:
 
 	StackBase(
-		const openpal::Logger& logger, 
-		const std::shared_ptr<asiopal::StrandExecutor>& executor, 
-		const std::shared_ptr<opendnp3::ILinkListener>& listener,
-		const std::shared_ptr<IOHandler>& iohandler,
-		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
-		uint32_t maxRxFragSize,
-		const opendnp3::LinkConfig& config) :
-	logger(logger),
-	statistics(),
-	executor(executor),
-	iohandler(iohandler),
-	shutdown(shutdown),
-	tstack(logger, *executor.get(), *listener.get(),  maxRxFragSize, &statistics, config)
-   {
-	
-   }
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<opendnp3::ILinkListener>& listener,
+	    const std::shared_ptr<IOHandler>& iohandler,
+	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    uint32_t maxRxFragSize,
+	    const opendnp3::LinkConfig& config) :
+		logger(logger),
+		statistics(),
+		executor(executor),
+		iohandler(iohandler),
+		shutdown(shutdown),
+		tstack(logger, *executor.get(), *listener.get(),  maxRxFragSize, &statistics, config)
+	{
+
+	}
 
 	openpal::Logger logger;
 	opendnp3::StackStatistics statistics;

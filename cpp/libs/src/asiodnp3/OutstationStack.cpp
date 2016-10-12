@@ -39,13 +39,13 @@ OutstationStack::OutstationStack(
     const std::shared_ptr<asiopal::StrandExecutor>& executor,
     const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
     const std::shared_ptr<opendnp3::IOutstationApplication>& application,
-	const std::shared_ptr<IOHandler>& iohandler,
-	const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+    const std::shared_ptr<IOHandler>& iohandler,
+    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
     const OutstationStackConfig& config) :
 
-	StackBase(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link),	
+	StackBase(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link),
 	commandHandler(commandHandler),
-	application(application),	
+	application(application),
 	ocontext(config.outstation, config.dbConfig.sizes, logger, *executor.get(), tstack.transport, *commandHandler, *application)
 {
 	this->tstack.transport.SetAppLayer(ocontext);
@@ -66,25 +66,25 @@ OutstationStack::OutstationStack(
 
 bool OutstationStack::Enable()
 {
-	auto action = [self = shared_from_this()]{ return self->iohandler->Enable(self); };
+	auto action = [self = shared_from_this()] { return self->iohandler->Enable(self); };
 	return this->executor->ReturnFrom<bool>(action);
 }
 
 bool OutstationStack::Disable()
 {
-	auto action = [self = shared_from_this()]{ return self->iohandler->Disable(self); };
+	auto action = [self = shared_from_this()] { return self->iohandler->Disable(self); };
 	return this->executor->ReturnFrom<bool>(action);
 }
 
 void OutstationStack::Shutdown()
 {
-	auto action = [self = shared_from_this()]{ return self->iohandler->Remove(self); };
+	auto action = [self = shared_from_this()] { return self->iohandler->Remove(self); };
 	this->executor->BlockUntil(action);
 }
 
 opendnp3::StackStatistics OutstationStack::GetStackStatistics()
 {
-	auto get = [self = shared_from_this()]{ return self->statistics; };
+	auto get = [self = shared_from_this()] { return self->statistics; };
 	return this->executor->ReturnFrom<StackStatistics>(get);
 }
 

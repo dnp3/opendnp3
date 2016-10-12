@@ -57,7 +57,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		auto master = client->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
 
 		outstation->Enable();
-		master->Enable();		
+		master->Enable();
 	}
 }
 

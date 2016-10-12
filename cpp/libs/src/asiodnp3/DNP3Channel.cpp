@@ -55,8 +55,11 @@ DNP3Channel::~DNP3Channel()
 
 // comes from the outside, so we need to synchronize
 void DNP3Channel::Shutdown()
-{	
-	auto action = [self = shared_from_this()]() { self->ShutdownImpl(); };
+{
+	auto action = [self = shared_from_this()]()
+	{
+		self->ShutdownImpl();
+	};
 	this->executor->BlockUntil(action);
 }
 
@@ -108,9 +111,9 @@ void DNP3Channel::SetLogFilters(const LogFilters& filters)
 std::shared_ptr<IMaster> DNP3Channel::AddMaster(const std::string& id, std::shared_ptr<ISOEHandler> SOEHandler, std::shared_ptr<IMasterApplication> application, const MasterStackConfig& config)
 {
 	auto stack = MasterStack::Create(this->logger.Detach(id), this->executor, SOEHandler, application, this->iohandler, this->resources, config, this->iohandler->TaskLock());
-	
+
 	return this->AddStack(config.link, stack);
-	
+
 }
 
 std::shared_ptr<IOutstation> DNP3Channel::AddOutstation(const std::string& id, std::shared_ptr<ICommandHandler> commandHandler, std::shared_ptr<IOutstationApplication> application, const OutstationStackConfig& config)
@@ -124,7 +127,8 @@ template <class T>
 std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, const std::shared_ptr<T>& stack)
 {
 
-	auto create = [stack, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this()]() {
+	auto create = [stack, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this()]()
+	{
 
 		auto add = [stack, route, self]() -> bool
 		{
@@ -133,7 +137,7 @@ std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, const std::shar
 
 		return self->executor->ReturnFrom<bool>(add) ? stack : nullptr;
 	};
-	
+
 	return this->resources->Bind<T>(create);
 }
 
