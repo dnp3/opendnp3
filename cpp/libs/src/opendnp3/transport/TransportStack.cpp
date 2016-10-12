@@ -25,11 +25,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportStack::TransportStack(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>& executor, ILinkListener& listener, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config) :
-	transport(logger, maxRxFragSize, pStatistics),
+TransportStack::TransportStack(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<opendnp3::ILinkListener>& listener, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config) :
+	transport(std::make_shared<TransportLayer>(logger, maxRxFragSize, pStatistics)),
 	link(logger, executor, transport, listener, config)
 {
-	transport.SetLinkLayer(link);
+	transport->SetLinkLayer(link);
 }
 
 }

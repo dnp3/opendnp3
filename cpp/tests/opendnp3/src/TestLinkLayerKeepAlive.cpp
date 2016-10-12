@@ -59,11 +59,11 @@ TEST_CASE(SUITE("ForwardsKeepAliveTimeouts"))
 	t.link.OnLowerLayerUp();
 
 	REQUIRE(t.exe->NumPendingTimers() == 1);
-	REQUIRE(t.listener.numKeepAliveTransmissions == 0);
+	REQUIRE(t.listener->numKeepAliveTransmissions == 0);
 
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.listener.numKeepAliveTransmissions == 1);
+	REQUIRE(t.listener->numKeepAliveTransmissions == 1);
 }
 
 TEST_CASE(SUITE("KeepAliveFailureCallbackIsInvokedOnTimeout"))
@@ -75,7 +75,7 @@ TEST_CASE(SUITE("KeepAliveFailureCallbackIsInvokedOnTimeout"))
 	t.link.OnLowerLayerUp();
 
 	REQUIRE(t.exe->NumPendingTimers() == 1);
-	REQUIRE(t.listener.numKeepAliveTransmissions == 0);
+	REQUIRE(t.listener->numKeepAliveTransmissions == 0);
 
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
@@ -86,7 +86,7 @@ TEST_CASE(SUITE("KeepAliveFailureCallbackIsInvokedOnTimeout"))
 	REQUIRE(t.exe->NumPendingTimers() == 2);
 	t.exe->AdvanceTime(config.Timeout);
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.listener.numKeepAliveFailure == 1);
+	REQUIRE(t.listener->numKeepAliveFailure == 1);
 }
 
 TEST_CASE(SUITE("KeepAliveSuccessCallbackIsInvokedWhenLinkStatusReceived"))
@@ -98,7 +98,7 @@ TEST_CASE(SUITE("KeepAliveSuccessCallbackIsInvokedWhenLinkStatusReceived"))
 	t.link.OnLowerLayerUp();
 
 	REQUIRE(t.exe->NumPendingTimers() == 1);
-	REQUIRE(t.listener.numKeepAliveTransmissions == 0);
+	REQUIRE(t.listener->numKeepAliveTransmissions == 0);
 
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
@@ -108,7 +108,7 @@ TEST_CASE(SUITE("KeepAliveSuccessCallbackIsInvokedWhenLinkStatusReceived"))
 	t.link.OnTransmitResult(true);
 	REQUIRE(t.exe->NumPendingTimers() == 2);
 	t.OnFrame(LinkFunction::SEC_LINK_STATUS, false, false, false, 1, 1024);
-	REQUIRE(t.listener.numKeepAliveReplys == 1);
+	REQUIRE(t.listener->numKeepAliveReplys == 1);
 	REQUIRE(t.exe->NumPendingTimers() == 1);
 }
 
@@ -123,7 +123,7 @@ TEST_CASE(SUITE("KeepAliveIsPeriodicOnFailure"))
 	for (int count = 0; count < 3; ++count)
 	{
 		REQUIRE(t.exe->NumPendingTimers() == 1);
-		REQUIRE(t.listener.numKeepAliveTransmissions == count);
+		REQUIRE(t.listener->numKeepAliveTransmissions == count);
 
 		REQUIRE(t.exe->AdvanceToNextTimer());
 		REQUIRE(t.exe->RunMany() > 0);
@@ -135,7 +135,7 @@ TEST_CASE(SUITE("KeepAliveIsPeriodicOnFailure"))
 
 		t.exe->AdvanceTime(config.Timeout);
 		REQUIRE(t.exe->RunMany() > 0);
-		REQUIRE(t.listener.numKeepAliveFailure == (count + 1));
+		REQUIRE(t.listener->numKeepAliveFailure == (count + 1));
 	}
 }
 
@@ -150,7 +150,7 @@ TEST_CASE(SUITE("KeepAliveIsPeriodicOnSuccess"))
 	for (int count = 0; count < 3; ++count)
 	{
 		REQUIRE(t.exe->NumPendingTimers() == 1);
-		REQUIRE(t.listener.numKeepAliveTransmissions == count);
+		REQUIRE(t.listener->numKeepAliveTransmissions == count);
 
 		REQUIRE(t.exe->AdvanceToNextTimer());
 		REQUIRE(t.exe->RunMany() > 0);
@@ -160,7 +160,7 @@ TEST_CASE(SUITE("KeepAliveIsPeriodicOnSuccess"))
 		t.link.OnTransmitResult(true);
 		REQUIRE(t.exe->NumPendingTimers() == 2);
 		t.OnFrame(LinkFunction::SEC_LINK_STATUS, false, false, false, 1, 1024);
-		REQUIRE(t.listener.numKeepAliveReplys == (count + 1));
+		REQUIRE(t.listener->numKeepAliveReplys == (count + 1));
 	}
 }
 

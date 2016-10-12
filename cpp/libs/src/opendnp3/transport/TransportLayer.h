@@ -56,11 +56,13 @@ public:
 	virtual bool OnSendResult(bool isSuccess) override final;
 
 	void SetAppLayer(IUpperLayer& upperLayer);
+
 	void SetLinkLayer(ILinkLayer& linkLayer);
 
 private:
 
 	openpal::Logger logger;
+
 	IUpperLayer* pUpperLayer;
 	ILinkLayer* pLinkLayer;
 

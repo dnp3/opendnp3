@@ -31,12 +31,12 @@ namespace opendnp3
 LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	log(),
 	exe(std::make_shared<testlib::MockExecutor>()),
-	listener(),
-	upper(),
+	listener(std::make_shared<MockLinkListener>()),
+	upper(std::make_shared<MockTransportLayer>()),
 	link(log.logger, exe, upper, listener, config),
 	numTotalWrites(0)
 {
-	upper.SetLinkLayer(link);
+	upper->SetLinkLayer(link);
 	link.SetRouter(*this);
 }
 

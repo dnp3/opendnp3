@@ -38,8 +38,8 @@ namespace opendnp3
 LinkContext::LinkContext(
 	const openpal::Logger& logger, 
 	const std::shared_ptr<openpal::IExecutor>& executor, 
-	IUpperLayer& upper, 
-	opendnp3::ILinkListener& linkListener, 
+	const std::shared_ptr<IUpperLayer>& upper,
+	const std::shared_ptr<opendnp3::ILinkListener>& listener,
 	ILinkSession& session, 
 	const LinkConfig& config) 
 :
@@ -60,9 +60,9 @@ LinkContext::LinkContext(
 	pRouter(nullptr),
 	pPriState(&PLLS_Idle::Instance()),
 	pSecState(&SLLS_NotReset::Instance()),
-	pListener(&linkListener),
-	pSession(&session),
-	pUpperLayer(&upper)
+	listener(listener),
+	upper(upper),
+	pSession(&session)	
 {}
 
 bool LinkContext::OnLowerLayerUp()
@@ -81,12 +81,8 @@ bool LinkContext::OnLowerLayerUp()
 
 	this->StartKeepAliveTimer(now.Add(config.KeepAliveTimeout));
 
-	pListener->OnStateChange(opendnp3::LinkStatus::UNRESET);
-
-	if (pUpperLayer)
-	{
-		this->pUpperLayer->OnLowerLayerUp();
-	}
+	listener->OnStateChange(opendnp3::LinkStatus::UNRESET);
+	upper->OnLowerLayerUp();
 
 	return true;
 }
@@ -113,12 +109,8 @@ bool LinkContext::OnLowerLayerDown()
 	pPriState = &PLLS_Idle::Instance();
 	pSecState = &SLLS_NotReset::Instance();
 
-	pListener->OnStateChange(opendnp3::LinkStatus::UNRESET);
-
-	if (pUpperLayer)
-	{
-		this->pUpperLayer->OnLowerLayerDown();
-	}
+	listener->OnStateChange(opendnp3::LinkStatus::UNRESET);
+	upper->OnLowerLayerDown();
 
 	return true;
 }
@@ -256,26 +248,21 @@ bool LinkContext::Retry()
 }
 
 void LinkContext::PushDataUp(const openpal::RSlice& data)
-{
-	if (pUpperLayer)
-	{
-		pUpperLayer->OnReceive(data);
-	}
+{	
+	upper->OnReceive(data);	
 }
 
 void LinkContext::CompleteSendOperation(bool success)
 {
 	this->pSegments = nullptr;
-
-	if (pUpperLayer)
+	
+	auto callback = [upper = upper, success]()
 	{
-		auto callback = [upper = this->pUpperLayer, success]()
-		{
-			upper->OnSendResult(success);
-		};
+		upper->OnSendResult(success);
+	};
 
-		this->executor->Post(callback);
-	}
+	this->executor->Post(callback);
+	
 }
 
 void LinkContext::TryStartTransmission()
@@ -345,13 +332,13 @@ void LinkContext::FailKeepAlive(bool timeout)
 {
 	if (timeout)
 	{
-		this->pListener->OnKeepAliveFailure();
+		this->listener->OnKeepAliveFailure();
 	}
 }
 
 void LinkContext::CompleteKeepAlive()
 {
-	this->pListener->OnKeepAliveSuccess();
+	this->listener->OnKeepAliveSuccess();
 }
 
 bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)

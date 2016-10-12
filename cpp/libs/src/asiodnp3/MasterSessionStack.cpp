@@ -56,11 +56,11 @@ MasterSessionStack::MasterSessionStack(
 	m_application(application),
 	m_session(session),
 	m_statistics(),
-	m_stack(logger, *m_executor, *application, config.master.maxRxFragSize, &m_statistics, config.link),
-	m_context(*m_executor, logger, m_stack.transport, *SOEHandler, *application, config.master, NullTaskLock::Instance())
+	m_stack(logger, m_executor, application, config.master.maxRxFragSize, &m_statistics, config.link),
+	m_context(*m_executor, logger, *m_stack.transport, *SOEHandler, *application, config.master, NullTaskLock::Instance())
 {
 	m_stack.link.SetRouter(linktx);
-	m_stack.transport.SetAppLayer(m_context);
+	m_stack.transport->SetAppLayer(m_context);
 }
 
 void MasterSessionStack::OnLowerLayerUp()

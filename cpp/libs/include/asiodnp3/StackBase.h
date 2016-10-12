@@ -51,7 +51,7 @@ protected:
 		executor(executor),
 		iohandler(iohandler),
 		shutdown(shutdown),
-		tstack(logger, *executor.get(), *listener.get(),  maxRxFragSize, &statistics, config)
+		tstack(logger, executor, listener,  maxRxFragSize, &statistics, config)
 	{
 
 	}

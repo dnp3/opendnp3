@@ -48,9 +48,9 @@ MasterStack::MasterStack(
 	StackBase(logger, executor, application, iohandler, shutdown, config.master.maxRxFragSize, config.link),
 	SOEHandler(SOEHandler),
 	application(application),
-	mcontext(*executor.get(), logger, tstack.transport, *SOEHandler, *application,  config.master, taskLock)
+	mcontext(*executor.get(), logger, *tstack.transport, *SOEHandler, *application,  config.master, taskLock)
 {
-	tstack.transport.SetAppLayer(mcontext);
+	tstack.transport->SetAppLayer(mcontext);
 }
 
 bool MasterStack::Enable()

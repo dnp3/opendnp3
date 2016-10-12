@@ -52,8 +52,9 @@ public:
 
 	testlib::MockLogHandler log;
 	std::shared_ptr<testlib::MockExecutor> exe;
-	MockLinkListener listener;
-	MockTransportLayer upper;
+	std::shared_ptr<MockLinkListener> listener;
+	std::shared_ptr<MockTransportLayer> upper;
+	
 	LinkLayer link;
 
 	std::string PopLastWriteAsHex();
