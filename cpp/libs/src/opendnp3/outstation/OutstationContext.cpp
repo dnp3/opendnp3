@@ -53,14 +53,14 @@ OContext::OContext(
 	const openpal::Logger& logger,
 	const std::shared_ptr<openpal::IExecutor>& executor,
 	const std::shared_ptr<ILowerLayer>& lower,
-    ICommandHandler& commandHandler,
-    IOutstationApplication& application) :
+	const std::shared_ptr<ICommandHandler>& commandHandler,
+	const std::shared_ptr<IOutstationApplication>& application) :
 
 	logger(logger),
 	executor(executor),
 	lower(lower),
-	pCommandHandler(&commandHandler),
-	pApplication(&application),
+	commandHandler(commandHandler),
+	application(application),
 	eventBuffer(config.eventBufferConfig),
 	database(dbSizes, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
 	rspContext(database.GetResponseLoader(), eventBuffer),
@@ -433,7 +433,7 @@ bool OContext::CanTransmit() const
 
 IINField OContext::GetResponseIIN()
 {
-	return this->staticIIN | this->GetDynamicIIN() | this->pApplication->GetApplicationIIN().ToIIN();
+	return this->staticIIN | this->GetDynamicIIN() | this->application->GetApplicationIIN().ToIIN();
 }
 
 IINField OContext::GetDynamicIIN()
@@ -569,7 +569,7 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
 
 IINField OContext::HandleWrite(const openpal::RSlice& objects)
 {
-	WriteHandler handler(*this->pApplication, &this->staticIIN);
+	WriteHandler handler(*this->application, &this->staticIIN);
 	auto result = APDUParser::Parse(objects, handler, &this->logger);
 	return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
@@ -584,7 +584,7 @@ IINField OContext::HandleDirectOperate(const openpal::RSlice& objects, OperateTy
 	}
 	else
 	{
-		CommandActionAdapter adapter(this->pCommandHandler, false, opType);
+		CommandActionAdapter adapter(this->commandHandler.get(), false, opType);
 		CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, pWriter);
 		auto result = APDUParser::Parse(objects, handler, &this->logger);
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
@@ -602,7 +602,7 @@ IINField OContext::HandleSelect(const openpal::RSlice& objects, HeaderWriter& wr
 	else
 	{
 		// the 'OperateType' is just ignored  since it's a select
-		CommandActionAdapter adapter(this->pCommandHandler, true, OperateType::DirectOperate);
+		CommandActionAdapter adapter(this->commandHandler.get(), true, OperateType::DirectOperate);
 		CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
 		auto result = APDUParser::Parse(objects, handler, &this->logger);
 		if (result == ParseResult::OK)
@@ -636,7 +636,7 @@ IINField OContext::HandleOperate(const openpal::RSlice& objects, HeaderWriter& w
 
 		if (result == CommandStatus::SUCCESS)
 		{
-			CommandActionAdapter adapter(this->pCommandHandler, false, OperateType::SelectBeforeOperate);
+			CommandActionAdapter adapter(this->commandHandler.get(), false, OperateType::SelectBeforeOperate);
 			CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
 			auto result = APDUParser::Parse(objects, handler, &this->logger);
 			return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
@@ -668,7 +668,7 @@ IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRest
 {
 	if (objects.IsEmpty())
 	{
-		auto mode = isWarmRestart ? this->pApplication->WarmRestartSupport() : this->pApplication->ColdRestartSupport();
+		auto mode = isWarmRestart ? this->application->WarmRestartSupport() : this->application->ColdRestartSupport();
 
 		switch (mode)
 		{
@@ -676,7 +676,7 @@ IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRest
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 		case(RestartMode::SUPPORTED_DELAY_COARSE) :
 			{
-				auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
+				auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
 				if (pWriter)
 				{
 					Group52Var1 coarse;
@@ -687,7 +687,7 @@ IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRest
 			}
 		default:
 			{
-				auto delay = isWarmRestart ? this->pApplication->WarmRestart() : this->pApplication->ColdRestart();
+				auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
 				if (pWriter)
 				{
 					Group52Var2 fine;
@@ -707,9 +707,9 @@ IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRest
 
 IINField OContext::HandleAssignClass(const openpal::RSlice& objects)
 {
-	if (this->pApplication->SupportsAssignClass())
+	if (this->application->SupportsAssignClass())
 	{
-		AssignClassHandler handler(*this->executor, *this->pApplication, this->database.GetClassAssigner());
+		AssignClassHandler handler(*this->executor, *this->application, this->database.GetClassAssigner());
 		auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}

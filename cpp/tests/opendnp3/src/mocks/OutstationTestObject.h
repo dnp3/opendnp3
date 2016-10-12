@@ -77,8 +77,8 @@ private:
 public:
 
 	const std::shared_ptr<MockLowerLayer> lower;
-	MockCommandHandler cmdHandler;
-	MockOutstationApplication application;
+	const std::shared_ptr<MockCommandHandler> cmdHandler;
+	const std::shared_ptr<MockOutstationApplication> application;
 	OContext context;
 };
 

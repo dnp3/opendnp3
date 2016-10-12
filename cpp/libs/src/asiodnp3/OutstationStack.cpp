@@ -45,10 +45,8 @@ OutstationStack::OutstationStack(
     const std::weak_ptr<IShutdownHandler>& shutdown,
     const OutstationStackConfig& config) :
 
-	StackBase(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link),
-	commandHandler(commandHandler),
-	application(application),
-	ocontext(config.outstation, config.dbConfig.sizes, logger, executor, tstack.transport, *commandHandler, *application)
+	StackBase(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link),	
+	ocontext(config.outstation, config.dbConfig.sizes, logger, executor, tstack.transport, commandHandler, application)
 {
 	this->tstack.transport->SetAppLayer(ocontext);
 

@@ -57,8 +57,8 @@ public:
 	            const openpal::Logger& logger,
 	            const std::shared_ptr<openpal::IExecutor>& executor,
 	            const std::shared_ptr<ILowerLayer>& lower,
-	            ICommandHandler& commandHandler,
-	            IOutstationApplication& application);
+				const std::shared_ptr<ICommandHandler>& commandHandler,
+				const std::shared_ptr<IOutstationApplication>& application);
 
 public:
 
@@ -164,8 +164,8 @@ public:
 	openpal::Logger logger;
 	const std::shared_ptr<openpal::IExecutor> executor;
 	const std::shared_ptr<ILowerLayer> lower;
-	ICommandHandler* const pCommandHandler;
-	IOutstationApplication* const pApplication;
+	const std::shared_ptr<ICommandHandler> commandHandler;
+	const std::shared_ptr<IOutstationApplication> application;
 
 	// ------ Database, event buffer, and response tracking
 	EventBuffer eventBuffer;

@@ -113,9 +113,7 @@ public:
 	virtual void Apply(ChangeSet& changes) override;
 
 private:
-
-	const std::shared_ptr<opendnp3::ICommandHandler> commandHandler;
-	const std::shared_ptr<opendnp3::IOutstationApplication> application;
+	
 	opendnp3::OContext ocontext;
 };
 

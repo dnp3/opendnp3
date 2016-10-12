@@ -50,10 +50,10 @@ TEST_CASE(SUITE("ApplicationIINBits"))
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	t.application.appIIN.deviceTrouble = true;
-	t.application.appIIN.localControl = true;
-	t.application.appIIN.configCorrupt = true;
-	t.application.appIIN.needTime = true;
+	t.application->appIIN.deviceTrouble = true;
+	t.application->appIIN.localControl = true;
+	t.application->appIIN.configCorrupt = true;
+	t.application->appIIN.needTime = true;
 
 	t.SendToOutstation("C0 01"); // blank read
 	// All 4 bits + restart
@@ -82,8 +82,8 @@ TEST_CASE(SUITE("ColdRestart"))
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
 	t.OnSendResult(true);
 
-	t.application.coldRestartSupport = RestartMode::SUPPORTED_DELAY_FINE;
-	t.application.coldRestartTimeDelay = 1;
+	t.application->coldRestartSupport = RestartMode::SUPPORTED_DELAY_FINE;
+	t.application->coldRestartTimeDelay = 1;
 
 
 	t.SendToOutstation("C1 0D");
@@ -101,8 +101,8 @@ TEST_CASE(SUITE("WarmRestart"))
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
 	t.OnSendResult(true);
 
-	t.application.warmRestartSupport = RestartMode::SUPPORTED_DELAY_COARSE;
-	t.application.warmRestartTimeDelay = 65535;
+	t.application->warmRestartSupport = RestartMode::SUPPORTED_DELAY_COARSE;
+	t.application->warmRestartTimeDelay = 65535;
 
 
 	t.SendToOutstation("C1 0E");
@@ -209,8 +209,8 @@ TEST_CASE(SUITE("WriteTimeDate"))
 
 	t.SendToOutstation("C1 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00");
-	REQUIRE(t.application.timestamps.size() == 1);
-	REQUIRE(t.application.timestamps.front().msSinceEpoch == 1234);
+	REQUIRE(t.application->timestamps.size() == 1);
+	REQUIRE(t.application->timestamps.front().msSinceEpoch == 1234);
 
 }
 
@@ -220,10 +220,10 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	t.application.allowTimeWrite = false;
+	t.application->allowTimeWrite = false;
 	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04"); // param error
-	REQUIRE(t.application.timestamps.size() == 0);
+	REQUIRE(t.application->timestamps.size() == 0);
 }
 
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
@@ -234,7 +234,7 @@ TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 
 	t.SendToOutstation("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04"); // param error +  need time still set
-	REQUIRE(t.application.timestamps.empty());
+	REQUIRE(t.application->timestamps.empty());
 }
 
 TEST_CASE(SUITE("BlankIntegrityPoll"))
@@ -376,15 +376,15 @@ TEST_CASE(SUITE("TestTimeAndIntervalWrite"))
 	OutstationTestObject t(config, DatabaseSizes::TimeAndIntervalOnly(1));
 	t.LowerLayerUp();
 
-	t.application.supportsWriteTimeAndInterval = true;
+	t.application->supportsWriteTimeAndInterval = true;
 
 	// write g50v4 using 2-octet count & index prefix
 	t.SendToOutstation("C0 02 32 04 28 01 00 07 00 09 00 00 00 00 00 03 00 00 00 05");
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 
-	REQUIRE(t.application.timeAndIntervals.size() == 1);
-	REQUIRE(t.application.timeAndIntervals[0].index == 7);
-	REQUIRE(t.application.timeAndIntervals[0].value.time == 9);
+	REQUIRE(t.application->timeAndIntervals.size() == 1);
+	REQUIRE(t.application->timeAndIntervals[0].index == 7);
+	REQUIRE(t.application->timeAndIntervals[0].value.time == 9);
 }
 
 // ---- Static data reads ----- //

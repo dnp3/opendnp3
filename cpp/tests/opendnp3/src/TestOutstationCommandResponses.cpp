@@ -37,7 +37,7 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	t.cmdHandler.SetResponse(CommandStatus::NOT_SUPPORTED);
+	t.cmdHandler->SetResponse(CommandStatus::NOT_SUPPORTED);
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
@@ -45,8 +45,8 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 	// conformance requires IIN 2.2 to be set whenever the command status is not supported
 	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 81 80 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CommandStatus::NOT_SUPPORTED
 
-	REQUIRE(t.cmdHandler.numStart == 1);
-	REQUIRE(t.cmdHandler.numEnd == 1);
+	REQUIRE(t.cmdHandler->numStart == 1);
+	REQUIRE(t.cmdHandler->numEnd == 1);
 }
 
 TEST_CASE(SUITE("UnknownCodeIsEchoed"))
@@ -55,7 +55,7 @@ TEST_CASE(SUITE("UnknownCodeIsEchoed"))
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	t.cmdHandler.SetResponse(CommandStatus::NOT_SUPPORTED);
+	t.cmdHandler->SetResponse(CommandStatus::NOT_SUPPORTED);
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 AA 01 01 00 00 00 01 00 00 00 00");
@@ -193,24 +193,24 @@ TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	REQUIRE(0 ==  t.cmdHandler.NumInvocations());
+	REQUIRE(0 ==  t.cmdHandler->NumInvocations());
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
-	REQUIRE(1 == t.cmdHandler.NumInvocations());
+	REQUIRE(1 == t.cmdHandler->NumInvocations());
 	t.OnSendResult(true);
 
 	// operate the first time with correct sequence #
 	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(2 == t.cmdHandler.NumInvocations());
+	REQUIRE(2 == t.cmdHandler->NumInvocations());
 	t.OnSendResult(true);
 
 	// operate again with same sequence number, should respond success but not really do an operation
 	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(2 == t.cmdHandler.NumInvocations());
+	REQUIRE(2 == t.cmdHandler->NumInvocations());
 	t.OnSendResult(true);
 }
 
@@ -344,7 +344,7 @@ TEST_CASE(SUITE("DirectOperateNoResponseGroup12Var1"))
 	{
 		t.SendToOutstation(directOperateNoACK);
 		REQUIRE(t.lower->PopWriteAsHex() == "");
-		REQUIRE(t.cmdHandler.NumInvocations() == i);
+		REQUIRE(t.cmdHandler->NumInvocations() == i);
 	}
 }
 
@@ -381,8 +381,8 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 	t.SendToOutstation("C1 05 29 03 17 01 01 00 00 C7 42 00");
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00 29 03 17 01 01 00 00 C7 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
-	REQUIRE(t.cmdHandler.aoFloat32Ops.size() == 1);
-	auto op = t.cmdHandler.aoFloat32Ops[0];
+	REQUIRE(t.cmdHandler->aoFloat32Ops.size() == 1);
+	auto op = t.cmdHandler->aoFloat32Ops[0];
 
 	REQUIRE(op.value.value == Approx(99.5).epsilon(1e-6));
 	REQUIRE(op.index == 1);
@@ -401,8 +401,8 @@ TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00 29 04 17 01 01 00 00 00 00 00 00 58 40 00"); // 0x00 status == CommandStatus::SUCCESS
 
 
-	REQUIRE(t.cmdHandler.aoDouble64Ops.size() == 1);
-	auto op = t.cmdHandler.aoDouble64Ops[0];
+	REQUIRE(t.cmdHandler->aoDouble64Ops.size() == 1);
+	auto op = t.cmdHandler->aoDouble64Ops[0];
 
 	REQUIRE(op.value.value == Approx(96.0).epsilon(1e-6));
 	REQUIRE(op.index == 1);

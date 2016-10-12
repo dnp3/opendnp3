@@ -43,20 +43,20 @@ TEST_CASE(SUITE("RejectsWithFuncNotSupportedIfAppDoesNotSupport"))
 	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01");
 
-	REQUIRE(t.application.classAssignments.empty());
+	REQUIRE(t.application->classAssignments.empty());
 }
 
 TEST_CASE(SUITE("RejectsWithParamErrorIfNoType"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.application.supportsAssignClass = true;
+	t.application->supportsAssignClass = true;
 	t.LowerLayerUp();
 
 	// assign binaries to class 2
 	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04");
-	REQUIRE(t.application.classAssignments.empty());
+	REQUIRE(t.application->classAssignments.empty());
 }
 
 TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
@@ -65,7 +65,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 
 	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(NUM_BINARY));
-	t.application.supportsAssignClass = true;
+	t.application->supportsAssignClass = true;
 	t.LowerLayerUp();
 
 	// assign binaries to class 2
@@ -78,8 +78,8 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 		REQUIRE(view.binaries[0].config.clazz == PointClass::Class2);
 	}
 
-	REQUIRE(t.application.classAssignments.size() == 1);
-	auto assignment = t.application.classAssignments.front();
+	REQUIRE(t.application->classAssignments.size() == 1);
+	auto assignment = t.application->classAssignments.front();
 	REQUIRE(assignment == std::make_tuple(AssignClassType::BinaryInput, PointClass::Class2, 0, 4));
 }
 
@@ -89,7 +89,7 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 
 	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(NUM_BINARY));
-	t.application.supportsAssignClass = true;
+	t.application->supportsAssignClass = true;
 	t.LowerLayerUp();
 
 	// assign binaries 0 -> 5 (invalid range) to class 2
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 		REQUIRE(view.binaries[0].config.clazz == PointClass::Class2);
 	}
 
-	REQUIRE(t.application.classAssignments.size() == 1);
+	REQUIRE(t.application->classAssignments.size() == 1);
 }
 
 TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
@@ -112,7 +112,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
 
 	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(NUM_BINARY));
-	t.application.supportsAssignClass = true;
+	t.application->supportsAssignClass = true;
 	t.LowerLayerUp();
 
 	// assign binaries 2 - 3 to class 2
@@ -128,8 +128,8 @@ TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
 	}
 	REQUIRE(view.binaries[4].config.clazz == PointClass::Class1);
 
-	REQUIRE(t.application.classAssignments.size() == 1);
-	auto assignment = t.application.classAssignments.front();
+	REQUIRE(t.application->classAssignments.size() == 1);
+	auto assignment = t.application->classAssignments.front();
 	REQUIRE(assignment == std::make_tuple(AssignClassType::BinaryInput, PointClass::Class2, 2, 3));
 }
 
@@ -140,18 +140,18 @@ TEST_CASE(SUITE("AcceptsMultipleAssignsmentPerMessage"))
 
 	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseSizes(NUM_BINARY, 0, NUM_ANALOG, 0, 0, 0, 0, 0));
-	t.application.supportsAssignClass = true;
+	t.application->supportsAssignClass = true;
 	t.LowerLayerUp();
 
 	// assign binaries 2 - 3 to class 2 - assign all analogs to class 3
 	t.SendToOutstation("C0 16 3C 03 06 01 00 01 02 00 03 00 3C 04 06 1E 00 06");
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 
-	REQUIRE(t.application.classAssignments.size() == 2);
-	auto assignment = t.application.classAssignments.front();
+	REQUIRE(t.application->classAssignments.size() == 2);
+	auto assignment = t.application->classAssignments.front();
 	REQUIRE(assignment == std::make_tuple(AssignClassType::BinaryInput, PointClass::Class2, 2, 3));
-	t.application.classAssignments.pop_front();
-	assignment = t.application.classAssignments.front();
+	t.application->classAssignments.pop_front();
+	assignment = t.application->classAssignments.front();
 	REQUIRE(assignment == std::make_tuple(AssignClassType::AnalogInput, PointClass::Class3, 0, 9));
 
 }
