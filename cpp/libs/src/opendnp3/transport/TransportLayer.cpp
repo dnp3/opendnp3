@@ -35,10 +35,10 @@ namespace opendnp3
 {
 
 
-TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
+TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* statistics) :
 	logger(logger),		
-	receiver(logger, maxRxFragSize, pStatistics),
-	transmitter(logger, pStatistics)
+	receiver(logger, maxRxFragSize, statistics),
+	transmitter(logger, statistics)
 {
 
 }
@@ -76,6 +76,7 @@ bool TransportLayer::BeginTransmit(const RSlice& apdu)
 	isSending = true;
 	transmitter.Configure(apdu);
 	lower->Send(transmitter);
+
 	return true;
 }
 
