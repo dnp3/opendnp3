@@ -30,11 +30,15 @@
 #include "asiopal/TLSConfig.h"
 #include "asiopal/ChannelRetry.h"
 #include "asiopal/ResourceManager.h"
+#include "asiopal/IListener.h"
+#include "asiopal/IPEndpoint.h"
 
 #include "opendnp3/LogLevels.h"
 
 #include "asiodnp3/IChannel.h"
 #include "asiodnp3/IChannelListener.h"
+#include "asiodnp3/IListenCallbacks.h"
+
 
 namespace asiodnp3
 {
@@ -99,6 +103,23 @@ public:
 	    const asiopal::TLSConfig& config,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
+
+	std::shared_ptr<asiopal::IListener> CreateListener(
+		std::string loggerid,
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		const std::shared_ptr<IListenCallbacks>& callbacks,
+		std::error_code& ec
+	);
+
+	std::shared_ptr<asiopal::IListener> CreateListener(
+		std::string loggerid,
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		const asiopal::TLSConfig& config,
+		const std::shared_ptr<IListenCallbacks>& callbacks,
+		std::error_code& ec
+	);
 
 private:
 

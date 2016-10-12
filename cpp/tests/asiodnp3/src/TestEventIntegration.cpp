@@ -38,7 +38,7 @@ using namespace asiodnp3;
 TEST_CASE(SUITE("TestEventIntegration"))
 {
 	const uint16_t START_PORT = 20000;
-	const uint16_t NUM_STACK_PAIRS = 10;	
+	const uint16_t NUM_STACK_PAIRS = 10;
 
 	const uint16_t NUM_POINTS_PER_TYPE = 50;
 	const uint16_t EVENTS_PER_ITERATION = 50;

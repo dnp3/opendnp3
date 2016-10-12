@@ -26,12 +26,15 @@
 
 #include <opendnp3/gen/ChannelState.h>
 
-
 #include <asiodnp3/IChannel.h>
 #include <asiodnp3/IChannelListener.h>
+#include <asiodnp3/IListenCallbacks.h>
+
 #include <asiopal/SerialTypes.h>
 #include <asiopal/ChannelRetry.h>
 #include <asiopal/TLSConfig.h>
+#include <asiopal/IListener.h>
+#include <asiopal/IPEndpoint.h>
 
 #include <memory>
 #include <system_error>
@@ -183,6 +186,29 @@ public:
 	    const asiopal::TLSConfig& config,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
+
+	/**
+	* Create a TCP listener that will be used to accept incoming connections
+	*/
+	std::shared_ptr<asiopal::IListener> CreateListener(
+		std::string loggerid,
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		std::shared_ptr<IListenCallbacks> callbacks,
+		std::error_code& ec
+	);
+
+	/**
+	* Create a TLS listener that will be used to accept incoming connections
+	*/
+	std::shared_ptr<asiopal::IListener> CreateListener(
+		std::string loggerid,
+		openpal::LogFilters loglevel,
+		asiopal::IPEndpoint endpoint,
+		const asiopal::TLSConfig& config,
+		std::shared_ptr<IListenCallbacks> callbacks,
+		std::error_code& ec
+	);
 
 private:
 

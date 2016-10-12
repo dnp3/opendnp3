@@ -23,20 +23,21 @@
 
 #include <opendnp3/LogLevels.h>
 
-
 #ifdef OPENDNP3_USE_TLS
-
+#include "asiodnp3/tls/MasterTLSServer.h"
 #endif
 
 #include "asiodnp3/ErrorCodes.h"
 #include "asiodnp3/IOHandler.h"
 #include "asiodnp3/DNP3Channel.h"
+#include "asiodnp3/MasterTCPServer.h"
 
 #include "asiopal/TCPClientChannelFactory.h"
 #include "asiopal/TCPServerChannelFactory.h"
 
 using namespace openpal;
 using namespace asiopal;
+using namespace opendnp3;
 
 namespace asiodnp3
 {
@@ -159,6 +160,77 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
 #else
 	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
+#endif
+
+}
+
+std::shared_ptr<asiopal::IListener> DNP3ManagerImpl::CreateListener(
+	std::string loggerid,
+	openpal::LogFilters levels,
+	asiopal::IPEndpoint endpoint,
+	const std::shared_ptr<IListenCallbacks>& callbacks,
+	std::error_code& ec)
+{
+	auto create = [&]() -> std::shared_ptr<asiopal::IListener>
+	{
+		return asiodnp3::MasterTCPServer::Create(
+			this->logger.Detach(loggerid, levels),
+			asiopal::StrandExecutor::Create(this->io),
+			endpoint,
+			callbacks,
+			this->resources,
+			ec
+		);
+	};
+
+	auto listener = this->resources->Bind<asiopal::IListener>(create);
+
+	if (!listener)
+	{
+		ec = Error::SHUTTING_DOWN;
+	}
+
+	return listener;
+}
+
+std::shared_ptr<asiopal::IListener> DNP3ManagerImpl::CreateListener(
+	std::string loggerid,
+	openpal::LogFilters levels,
+	asiopal::IPEndpoint endpoint,
+	const asiopal::TLSConfig& config,
+	const std::shared_ptr<IListenCallbacks>& callbacks,
+	std::error_code& ec)
+{
+
+#ifdef OPENDNP3_USE_TLS
+
+	auto create = [&]() -> std::shared_ptr<asiopal::IListener>
+	{
+		return asiodnp3::MasterTLSServer::Create(
+			this->logger.Detach(loggerid, levels),
+			asiopal::StrandExecutor::Create(this->io),
+			endpoint,
+			config,
+			callbacks,
+			this->resources,
+			ec
+		);
+	};
+
+	auto listener = this->resources->Bind<asiopal::IListener>(create);
+
+	if (!listener)
+	{
+		ec = Error::SHUTTING_DOWN;
+	}
+
+	return listener;
+
+#else
+
+	ec = Error::NO_TLS_SUPPORT;
+	return nullptr;
+
 #endif
 
 }
