@@ -45,8 +45,8 @@ public:
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
-		const std::shared_ptr<IOHandler>& iohandler,
-		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<IOHandler>& iohandler,
+	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 	    const OutstationStackConfig& config);
 
 	static std::shared_ptr<OutstationStack> Create(
@@ -54,17 +54,17 @@ public:
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
-		const std::shared_ptr<IOHandler>& iohandler,
-		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<IOHandler>& iohandler,
+	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
 	    const OutstationStackConfig& config
 	)
 	{
-		auto ret = std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, shutdown, config);		
+		auto ret = std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, shutdown, config);
 
 		ret->tstack.link.SetRouter(*ret);
 
 		return ret;
-	}	
+	}
 
 	// --------- Implement IStack ---------
 
@@ -73,7 +73,7 @@ public:
 	virtual bool Disable() override;
 
 	virtual void Shutdown() override;
-	
+
 	virtual opendnp3::StackStatistics GetStackStatistics() override;
 
 	// --------- Implement ILinkSession ---------
@@ -107,15 +107,15 @@ public:
 
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
-	
+
 	virtual void SetRestartIIN() override;
-	
+
 	virtual void Apply(ChangeSet& changes) override;
 
 private:
-	
+
 	const std::shared_ptr<opendnp3::ICommandHandler> commandHandler;
-	const std::shared_ptr<opendnp3::IOutstationApplication> application;	
+	const std::shared_ptr<opendnp3::IOutstationApplication> application;
 	opendnp3::OContext ocontext;
 };
 

@@ -45,7 +45,7 @@ public:
 	/**
 	* Synchronously disable communications
 	*/
-	virtual bool Disable() = 0;	
+	virtual bool Disable() = 0;
 
 	/**
 	* @return stack statistics counters

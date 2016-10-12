@@ -34,12 +34,21 @@
 namespace asiodnp3
 {
 
+GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler) :
+	logger(handler, "manager", opendnp3::levels::NORMAL),
+	resources(asiopal::ResourceManager::Create()),
+	io(std::make_shared<asiopal::IO>()),
+	pool(logger, io, concurrencyHint, opendnp3::flags::INFO)
+{}
+
 GPRSManagerImpl::~GPRSManagerImpl()
 {
-	this->BeginShutdown();
+	this->BeginShutdown();	
+}
 
-	// block on the pool until it is gone
-	this->pool->Shutdown();
+void GPRSManagerImpl::BeginShutdown()
+{
+	this->resources->Shutdown();
 }
 
 std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
@@ -53,7 +62,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	{
 		return asiodnp3::MasterTCPServer::Create(
 		    this->logger.Detach(loggerid, levels),
-		    asiopal::StrandExecutor::Create(this->pool),
+		    asiopal::StrandExecutor::Create(this->io),
 		    endpoint,
 		    callbacks,
 		    this->resources,
@@ -86,7 +95,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 	{
 		return asiodnp3::MasterTLSServer::Create(
 		    this->logger.Detach(loggerid, levels),
-		    asiopal::StrandExecutor::Create(this->pool),
+		    asiopal::StrandExecutor::Create(this->io),
 		    endpoint,
 		    config,
 		    callbacks,
@@ -114,16 +123,7 @@ std::shared_ptr<asiopal::IListener> GPRSManagerImpl::CreateListener(
 }
 
 
-void GPRSManagerImpl::BeginShutdown()
-{
-	this->resources->Shutdown();
-}
 
-GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openpal::ILogHandler> handler) :
-	logger(handler, "manager", opendnp3::levels::NORMAL),
-	resources(asiopal::ResourceManager::Create()),
-	pool(asiopal::ThreadPool::Create(logger, concurrencyHint, opendnp3::flags::INFO))
-{}
 
 }
 

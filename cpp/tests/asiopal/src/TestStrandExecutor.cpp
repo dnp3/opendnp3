@@ -44,11 +44,12 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 	uint32_t counter[NUM_STRAND] = { 0 };
 	testlib::MockLogHandler log;
 
-	auto pool = ThreadPool::Create(log.logger, levels::NORMAL, NUM_THREAD);
+	auto io = std::make_shared<IO>();
+	ThreadPool pool(log.logger, io, levels::NORMAL, NUM_THREAD);
 
 	auto setup = [&](uint32_t& counter)
 	{
-		auto exe = StrandExecutor::Create(pool);
+		auto exe = StrandExecutor::Create(io);
 		auto increment = [&]()
 		{
 			++counter;
@@ -65,7 +66,7 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 		setup(counter[i]);
 	}
 
-	pool->Shutdown();
+	pool.Shutdown();
 
 	for (int i = 0; i < NUM_STRAND; ++i)
 	{
@@ -78,18 +79,20 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 	const int NUM_THREAD = 10;
 	testlib::MockLogHandler log;
 	int counter = 0;
+	
+	auto io = std::make_shared<IO>();
 
-	auto pool = ThreadPool::Create(log.logger, levels::NORMAL, NUM_THREAD);
-	auto exe = StrandExecutor::Create(pool);
-
-
-	for (int i = 0; i < 100; ++i)
 	{
-		auto getvalue = []() -> int { return 1; };
-		counter += exe->ReturnFrom<int>(getvalue);
-	}
+		ThreadPool pool(log.logger, io, levels::NORMAL, NUM_THREAD);
+		auto exe = StrandExecutor::Create(io);
 
-	pool->Shutdown();
+
+		for (int i = 0; i < 100; ++i)
+		{
+			auto getvalue = []() -> int { return 1; };
+			counter += exe->ReturnFrom<int>(getvalue);
+		}
+	}	
 
 
 	REQUIRE(counter == 100);

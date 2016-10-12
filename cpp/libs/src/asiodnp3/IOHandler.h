@@ -56,9 +56,9 @@ public:
 	);
 
 	static std::shared_ptr<IOHandler> Create(
-		const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::IChannelFactory>& factory,
-		const std::shared_ptr<IChannelListener>& listener
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::IChannelFactory>& factory,
+	    const std::shared_ptr<IChannelListener>& listener
 	)
 	{
 		return std::make_shared<IOHandler>(logger, factory, listener);
@@ -108,7 +108,7 @@ private:
 	// called by the parser when a complete frame is read
 	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
-	
+
 	bool IsSessionInUse(const std::shared_ptr<opendnp3::ILinkSession>& session) const;
 	bool IsAnySessionEnabled() const;
 	void Reset();

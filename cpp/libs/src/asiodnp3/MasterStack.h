@@ -42,21 +42,21 @@ public:
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
-		const std::shared_ptr<IOHandler>& iohandler,
-		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
-	    const MasterStackConfig& config,		
+	    const std::shared_ptr<IOHandler>& iohandler,
+	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const MasterStackConfig& config,
 	    opendnp3::ITaskLock& taskLock
 	);
 
 	static std::shared_ptr<MasterStack> Create(
-		const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
-		const std::shared_ptr<opendnp3::IMasterApplication>& application,
-		const std::shared_ptr<IOHandler>& iohandler,
-		const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
-		const MasterStackConfig& config,
-		opendnp3::ITaskLock& taskLock
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const std::shared_ptr<IOHandler>& iohandler,
+	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const MasterStackConfig& config,
+	    opendnp3::ITaskLock& taskLock
 	)
 	{
 		auto ret = std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, shutdown, config, taskLock);
@@ -64,16 +64,16 @@ public:
 		ret->tstack.link.SetRouter(*ret);
 
 		return ret;
-	}	
+	}
 
 	// --------- Implement IStack ---------
 
-	virtual bool Enable() override;	
+	virtual bool Enable() override;
 
 	virtual bool Disable() override;
-	
+
 	virtual void Shutdown() override;
-	
+
 	virtual opendnp3::StackStatistics GetStackStatistics() override;
 
 	// --------- Implement ILinkSession ---------
@@ -82,12 +82,12 @@ public:
 	{
 		return this->tstack.link.OnTransmitResult(success);
 	}
-	
+
 	virtual bool OnLowerLayerUp() override
 	{
 		return this->tstack.link.OnLowerLayerUp();
 	}
-	
+
 	virtual bool OnLowerLayerDown() override
 	{
 		return this->tstack.link.OnLowerLayerDown();
@@ -97,7 +97,7 @@ public:
 	{
 		return this->tstack.link.OnFrame(header, userdata);
 	}
-	
+
 	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& context)
 	{
 		this->iohandler->BeginTransmit(shared_from_this(), buffer);
@@ -124,9 +124,9 @@ public:
 	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const opendnp3::TaskConfig& config) override;
 
 	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config) override;
-	
+
 	virtual void Restart(opendnp3::RestartType op, const opendnp3::RestartOperationCallbackT& callback, opendnp3::TaskConfig config) override;
-	
+
 	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
 
 	// ------- implement ICommandProcessor ---------
@@ -137,9 +137,9 @@ public:
 
 protected:
 
-	
+
 	const std::shared_ptr<opendnp3::ISOEHandler> SOEHandler;
-	const std::shared_ptr<opendnp3::IMasterApplication> application;	
+	const std::shared_ptr<opendnp3::IMasterApplication> application;
 	opendnp3::MContext mcontext;
 };
 

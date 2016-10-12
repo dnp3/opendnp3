@@ -76,8 +76,10 @@ private:
 	// Tracks otherwise orphaned resource
 	std::shared_ptr<asiopal::ResourceManager> resources;
 
+	std::shared_ptr<asiopal::IO> io;
+
 	/// this will be the first thing to be destroyed forcing all handlers to be run
-	std::shared_ptr<asiopal::ThreadPool> pool;
+	asiopal::ThreadPool pool;
 
 };
 

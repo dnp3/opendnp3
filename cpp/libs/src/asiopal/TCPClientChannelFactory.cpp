@@ -74,7 +74,7 @@ void TCPClientChannelFactory::OnChannelShutdown(const channel_callback_t& callba
 void TCPClientChannelFactory::StartConnect(const std::shared_ptr<TCPClient>& client, const openpal::TimeDuration& delay, const channel_callback_t& callback)
 {
 	this->is_connecting = true;
-	
+
 	auto cb = [self = shared_from_this(), delay, client, callback](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
 	{
 

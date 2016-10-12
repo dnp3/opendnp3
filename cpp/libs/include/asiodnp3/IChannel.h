@@ -80,9 +80,9 @@ public:
 	* @return shared_ptr to the running master
 	*/
 	virtual std::shared_ptr<IMaster>  AddMaster(const std::string& id,
-	                                            std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-	                                            std::shared_ptr<opendnp3::IMasterApplication> application,
-	                                            const MasterStackConfig& config) = 0;
+	        std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+	        std::shared_ptr<opendnp3::IMasterApplication> application,
+	        const MasterStackConfig& config) = 0;
 
 	/**
 	* Add an outstation to the channel
@@ -94,9 +94,9 @@ public:
 	* @return shared_ptr to the running outstation
 	*/
 	virtual std::shared_ptr<IOutstation>  AddOutstation( const std::string& id,
-	                                      std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-	                                      std::shared_ptr<opendnp3::IOutstationApplication> application,
-	                                      const OutstationStackConfig& config) = 0;
+	        std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+	        std::shared_ptr<opendnp3::IOutstationApplication> application,
+	        const OutstationStackConfig& config) = 0;
 
 };
 

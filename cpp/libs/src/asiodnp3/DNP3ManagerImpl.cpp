@@ -48,7 +48,8 @@ DNP3ManagerImpl::DNP3ManagerImpl(
     std::function<void()> onThreadExit
 ) :
 	logger(handler, "manager", opendnp3::levels::ALL),
-	threadpool(ThreadPool::Create(logger, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit)),
+	io(std::make_shared<asiopal::IO>()),
+	threadpool(logger, io, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
 	resources(ResourceManager::Create())
 {}
 
@@ -56,7 +57,7 @@ void DNP3ManagerImpl::Shutdown()
 {
 	if (resources)
 	{
-		resources->Shutdown();		
+		resources->Shutdown();
 	}
 }
 
@@ -72,7 +73,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
 	auto create = [&]()
 	{
 		auto clogger = this->logger.Detach(id, levels);
-		auto executor = StrandExecutor::Create(this->threadpool);
+		auto executor = StrandExecutor::Create(this->io);
 		auto factory = TCPClientChannelFactory::Create(clogger, executor, retry, IPEndpoint(host, port), local);
 		auto iohandler = IOHandler::Create(clogger, factory, listener);
 		return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
@@ -93,7 +94,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
 	{
 		std::error_code ec;
 		auto clogger = this->logger.Detach(id, levels);
-		auto executor = StrandExecutor::Create(this->threadpool);
+		auto executor = StrandExecutor::Create(this->io);
 		auto factory = TCPServerChannelFactory::Create(clogger, executor, IPEndpoint(endpoint, port), ec);
 		auto iohandler = IOHandler::Create(clogger, factory, listener);
 		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);

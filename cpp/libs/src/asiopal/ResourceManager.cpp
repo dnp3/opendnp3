@@ -47,7 +47,7 @@ void ResourceManager::Shutdown()
 	for (auto& resource : copy)
 	{
 		resource->Shutdown();
-	}	
+	}
 }
 
 }

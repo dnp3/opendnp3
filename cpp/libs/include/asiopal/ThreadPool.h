@@ -37,7 +37,7 @@ namespace asiopal
 /**
 *	A thread pool that calls asio::io_service::run
 */
-class ThreadPool : public IO
+class ThreadPool
 {
 public:
 
@@ -45,20 +45,12 @@ public:
 
 	ThreadPool(
 	    const openpal::Logger& logger,
+		const std::shared_ptr<IO>& io,
 	    uint32_t levels,
-	    uint32_t concurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+        uint32_t concurrency,
+        std::function<void()> onThreadStart = []() {},
+        std::function<void()> onThreadExit = []() {}
 	);
-
-	static std::shared_ptr<ThreadPool> Create(
-	    const openpal::Logger& logger,
-	    uint32_t levels,
-	    uint32_t concurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
-	);
-
 
 	~ThreadPool();
 
@@ -67,6 +59,7 @@ public:
 private:
 
 	openpal::Logger logger;
+	const std::shared_ptr<IO> io;
 
 	std::function<void ()> onThreadStart;
 	std::function<void ()> onThreadExit;

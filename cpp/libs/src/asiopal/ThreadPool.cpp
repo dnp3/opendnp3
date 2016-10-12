@@ -34,15 +34,17 @@ namespace asiopal
 
 ThreadPool::ThreadPool(
     const openpal::Logger& logger,
+	const std::shared_ptr<IO>& io,
     uint32_t levels,
     uint32_t concurrency,
     std::function<void()> onThreadStart,
     std::function<void()> onThreadExit) :
 	logger(logger),
+	io(io),
 	onThreadStart(onThreadStart),
 	onThreadExit(onThreadExit),
 	isShutdown(false),
-	infiniteTimer(service)
+	infiniteTimer(io->service)
 {
 	if(concurrency == 0)
 	{
@@ -60,16 +62,6 @@ ThreadPool::ThreadPool(
 		};
 		threads.push_back(std::unique_ptr<thread>(new thread(run)));
 	}
-}
-
-std::shared_ptr<ThreadPool> ThreadPool::Create(
-    const openpal::Logger& logger,
-    uint32_t levels,
-    uint32_t concurrency,
-    std::function<void()> onThreadStart,
-    std::function<void()> onThreadExit)
-{
-	return std::make_shared<ThreadPool>(logger, levels, concurrency, onThreadStart, onThreadExit);
 }
 
 ThreadPool::~ThreadPool()
@@ -97,7 +89,7 @@ void ThreadPool::Run(int threadnum)
 
 	FORMAT_LOG_BLOCK(this->logger, logflags::INFO, "Starting thread (%d)", threadnum);
 
-	service.run();
+	this->io->service.run();
 
 	FORMAT_LOG_BLOCK(this->logger, logflags::INFO, "Exiting thread (%d)", threadnum);
 

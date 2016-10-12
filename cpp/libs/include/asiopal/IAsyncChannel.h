@@ -90,7 +90,7 @@ bool IAsyncChannel::BeginRead(const openpal::WSlice& buffer, const IOCallback& c
 {
 	if (!this->CanRead()) return false;
 
-	this->reading = true;	
+	this->reading = true;
 
 	auto cbwrap = [self = shared_from_this(), buffer, callback](const std::error_code & ec, std::size_t num)
 	{
@@ -111,7 +111,7 @@ bool IAsyncChannel::BeginWrite(const openpal::RSlice& buffer, const IOCallback& 
 {
 	if (!this->CanWrite()) return false;
 
-	this->writing = true;	
+	this->writing = true;
 
 	auto cbwrap = [self = shared_from_this(), buffer, callback](const std::error_code & ec, std::size_t num)
 	{
