@@ -62,9 +62,10 @@ std::string MockLowerLayer::PopWriteAsHex()
 	}
 }
 
-void MockLowerLayer::BeginTransmit(const openpal::RSlice& output)
+bool MockLowerLayer::BeginTransmit(const openpal::RSlice& output)
 {
 	this->sendQueue.push(output);
+	return true;
 }
 
 void MockLowerLayer::SendUp(const openpal::RSlice& arBuffer)

@@ -46,7 +46,7 @@ public:
 
 	/// ILowerLayer
 
-	virtual void BeginTransmit(const openpal::RSlice&) override final;
+	virtual bool BeginTransmit(const openpal::RSlice&) override final;
 
 	/// IUpperLayer
 

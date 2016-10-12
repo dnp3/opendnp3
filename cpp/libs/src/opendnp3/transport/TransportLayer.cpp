@@ -47,36 +47,36 @@ TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFrag
 // Actions
 ///////////////////////////////////////
 
-void TransportLayer::BeginTransmit(const RSlice& apdu)
+bool TransportLayer::BeginTransmit(const RSlice& apdu)
 {
 	if (!isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
-		return;
+		return false;
 	}
-
 
 	if (apdu.IsEmpty())
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");		
-		return;
+		return false;
 	}
 
 	if (isSending)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
-		return;
+		return false;
 	}
 
 	if (!lower)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");		
-		return;
+		return false;
 	}
 
 	isSending = true;
 	transmitter.Configure(apdu);
 	lower->Send(transmitter);
+	return true;
 }
 
 ///////////////////////////////////////
