@@ -30,6 +30,15 @@ class OutstationImpl implements Outstation {
     }
 
     @Override
+    public void finalize()
+    {
+        if(nativePointer != 0)
+        {
+            this.shutdown_native(this.nativePointer, false); // release the reference, but don't call channel shutdown
+        }
+    }
+
+    @Override
     public synchronized void enable() {
         if (nativePointer != 0) {
             enable_native(nativePointer);
@@ -46,7 +55,7 @@ class OutstationImpl implements Outstation {
     @Override
     public synchronized void shutdown() {
         if (nativePointer != 0) {
-            shutdown_native(nativePointer);
+            shutdown_native(nativePointer, true);
             nativePointer = 0;
         }
     }
@@ -63,7 +72,7 @@ class OutstationImpl implements Outstation {
 
     private native void disable_native(long nativePointer);
 
-    private native void shutdown_native(long nativePointer);
+    private native void shutdown_native(long nativePointer, boolean callShutdown);
 
     private native void apply_native(long nativePointer, long nativeChangeSet);
 }
