@@ -57,9 +57,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		auto master = client->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
 
 		outstation->Enable();
-		master->Enable();
-
-		//std::this_thread::sleep_for(std::chrono::seconds(60));
+		master->Enable();		
 	}
 }
 
