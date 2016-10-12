@@ -26,6 +26,8 @@
 #include "MasterStack.h"
 #include "OutstationStack.h"
 
+#include <iostream>
+
 using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
@@ -37,7 +39,7 @@ DNP3Channel::DNP3Channel(
     const Logger& logger,
     const std::shared_ptr<asiopal::StrandExecutor>& executor,
     const std::shared_ptr<IOHandler>& iohandler,
-    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown) :
+    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown) :
 
 	logger(logger),
 	executor(executor),
@@ -56,29 +58,38 @@ DNP3Channel::~DNP3Channel()
 // comes from the outside, so we need to synchronize
 void DNP3Channel::Shutdown()
 {
-	auto action = [self = shared_from_this()]()
+	auto shutdown = [self = shared_from_this()]()
 	{
+		std::cout << "Begin channel shutdown" << std::endl;
 		self->ShutdownImpl();
+		std::cout << "end channel shutdown" << std::endl;
 	};
-	this->executor->BlockUntil(action);
+
+	this->executor->BlockUntil(shutdown);
+
+	auto flush = [self = shared_from_this()]()
+	{
+		std::cout << "Channel: flushing strand" << std::endl;
+	};
+
+	this->executor->BlockUntil(flush);
 }
 
 void DNP3Channel::ShutdownImpl()
 {
-	if (this->resources) // have we been shutdown yet?
-	{
-		if (auto sd = this->shutdown.lock())
-		{
-			sd->OnShutdown(this->shared_from_this());
-		}
+	if (!this->resources) return;
+	
+	// shutdown the IO handler
+	this->iohandler->Shutdown();
+	this->iohandler.reset();
 
-		// shutdown the IO handler
-		this->iohandler->Shutdown();
+	// shutdown any remaining channels
+	this->resources->Shutdown();
+	this->resources.reset();	
 
-		// shutdown any remaining channels
-		this->resources->Shutdown();
-		this->resources.reset();
-	}
+	// let the manager know we've shutdown
+	this->shutdown->OnShutdown(this->shared_from_this());
+	this->shutdown.reset();
 }
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()
@@ -105,7 +116,7 @@ void DNP3Channel::SetLogFilters(const LogFilters& filters)
 	{
 		self->logger.SetFilters(filters);
 	};
-	this->executor->PostToStrand(set);
+	this->executor->strand.post(set);
 }
 
 std::shared_ptr<IMaster> DNP3Channel::AddMaster(const std::string& id, std::shared_ptr<ISOEHandler> SOEHandler, std::shared_ptr<IMasterApplication> application, const MasterStackConfig& config)

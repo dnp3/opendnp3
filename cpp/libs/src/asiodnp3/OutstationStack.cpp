@@ -94,7 +94,7 @@ void OutstationStack::SetLogFilters(const openpal::LogFilters& filters)
 	{
 		self->logger.SetFilters(filters);
 	};
-	this->executor->PostToStrand(set);
+	this->executor->strand.post(set);
 }
 
 void OutstationStack::SetRestartIIN()
@@ -104,7 +104,7 @@ void OutstationStack::SetRestartIIN()
 	{
 		self->ocontext.SetRestartIIN();
 	};
-	this->executor->PostToStrand(set);
+	this->executor->strand.post(set);
 }
 
 void OutstationStack::Apply(ChangeSet& changes)
@@ -118,7 +118,7 @@ void OutstationStack::Apply(ChangeSet& changes)
 		self->ocontext.CheckForTaskStart(); // force the outstation to check for updates
 	};
 
-	this->executor->PostToStrand(task);
+	this->executor->strand.post(task);
 }
 
 }

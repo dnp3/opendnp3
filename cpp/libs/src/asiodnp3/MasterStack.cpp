@@ -26,6 +26,8 @@
 
 #include "Conversions.h"
 
+#include <iostream>
+
 using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
@@ -65,8 +67,21 @@ bool MasterStack::Disable()
 
 void MasterStack::Shutdown()
 {
-	auto action = [self = shared_from_this()] { return self->iohandler->Remove(self); };
-	this->executor->BlockUntil(action);
+	auto shutdown = [self = shared_from_this()] 
+	{ 
+		std::cout << "begin master shutdown" << std::endl;
+		return self->iohandler->Remove(self); 
+		std::cout << "end master shutdown" << std::endl;
+	};
+
+	this->executor->BlockUntil(shutdown);
+
+	auto flush = [self = shared_from_this()]()
+	{
+		std::cout << "Master: flushing strand" << std::endl;
+	};
+
+	this->executor->BlockUntil(flush);
 }
 
 StackStatistics MasterStack::GetStackStatistics()
@@ -82,7 +97,7 @@ void MasterStack::SetLogFilters(const openpal::LogFilters& filters)
 		self->logger.SetFilters(filters);
 	};
 
-	this->executor->PostToStrand(set);
+	this->executor->strand.post(set);
 }
 
 MasterScan MasterStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
@@ -129,7 +144,7 @@ void MasterStack::Scan(const std::vector<Header>& headers, const TaskConfig& con
 	{
 		return self->mcontext.Scan(builder, config);
 	};
-	return this->executor->PostToStrand(add);
+	return this->executor->strand.post(add);
 }
 
 void MasterStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config)
@@ -138,7 +153,7 @@ void MasterStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config
 	{
 		return self->mcontext.ScanAllObjects(gvId, config);
 	};
-	return this->executor->PostToStrand(add);
+	return this->executor->strand.post(add);
 }
 
 void MasterStack::ScanClasses(const ClassField& field, const TaskConfig& config)
@@ -147,7 +162,7 @@ void MasterStack::ScanClasses(const ClassField& field, const TaskConfig& config)
 	{
 		return self->mcontext.ScanClasses(field, config);
 	};
-	return this->executor->PostToStrand(add);
+	return this->executor->strand.post(add);
 }
 
 void MasterStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config)
@@ -156,7 +171,7 @@ void MasterStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop
 	{
 		return self->mcontext.ScanRange(gvId, start, stop, config);
 	};
-	return this->executor->PostToStrand(add);
+	return this->executor->strand.post(add);
 }
 
 void MasterStack::Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config)
@@ -165,7 +180,7 @@ void MasterStack::Write(const TimeAndInterval& value, uint16_t index, const Task
 	{
 		return self->mcontext.Write(value, index, config);
 	};
-	return this->executor->PostToStrand(add);
+	return this->executor->strand.post(add);
 }
 
 void MasterStack::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
@@ -174,7 +189,7 @@ void MasterStack::Restart(RestartType op, const RestartOperationCallbackT& callb
 	{
 		return self->mcontext.Restart(op, callback, config);
 	};
-	return this->executor->PostToStrand(add);
+	return this->executor->strand.post(add);
 }
 
 void MasterStack::PerformFunction(const std::string& name, FunctionCode func, const std::vector<Header>& headers, const TaskConfig& config)
@@ -183,7 +198,7 @@ void MasterStack::PerformFunction(const std::string& name, FunctionCode func, co
 	{
 		return self->mcontext.PerformFunction(name, func, builder, config);
 	};
-	return this->executor->PostToStrand(add);
+	return this->executor->strand.post(add);
 }
 
 void MasterStack::SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
@@ -196,7 +211,7 @@ void MasterStack::SelectAndOperate(opendnp3::CommandSet&& commands, const opendn
 		self->mcontext.SelectAndOperate(std::move(*set), callback, config);
 	};
 
-	this->executor->PostToStrand(action);
+	this->executor->strand.post(action);
 }
 
 void MasterStack::DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
@@ -209,7 +224,7 @@ void MasterStack::DirectOperate(opendnp3::CommandSet&& commands, const opendnp3:
 		self->mcontext.DirectOperate(std::move(*set), callback, config);
 	};
 
-	this->executor->PostToStrand(action);
+	this->executor->strand.post(action);
 }
 
 }

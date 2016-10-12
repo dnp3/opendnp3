@@ -31,16 +31,11 @@ using namespace openpal;
 namespace asiopal
 {
 
-StrandExecutor::StrandExecutor(std::shared_ptr<IO> io) :
+StrandExecutor::StrandExecutor(const std::shared_ptr<IO>& io) :
 	io(io),
 	strand(io->service)
 {
 
-}
-
-std::shared_ptr<StrandExecutor> StrandExecutor::Create(std::shared_ptr<IO> io)
-{
-	return std::make_shared<StrandExecutor>(io);
 }
 
 MonotonicTimestamp StrandExecutor::GetTime()
@@ -63,14 +58,13 @@ ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const action_t& ru
 }
 
 openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable)
-{
-	auto self(shared_from_this());
-	auto timer = std::shared_ptr<StrandTimer>(new StrandTimer(this->strand.get_io_service()));
+{	
+	auto timer = std::make_shared<StrandTimer>(this->strand.get_io_service());
 
-	timer->m_timer.expires_at(expiration);
+	timer->timer.expires_at(expiration);
 
 	// neither the executor nor the timer can be deleted while the timer is still active
-	auto callback = [timer, self, runnable](const std::error_code & ec)
+	auto callback = [timer, runnable, self = shared_from_this()](const std::error_code & ec)
 	{
 		if (!ec)   // an error indicate timer was canceled
 		{
@@ -78,15 +72,14 @@ openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expirat
 		}
 	};
 
-	timer->m_timer.async_wait(strand.wrap(callback));
+	timer->timer.async_wait(strand.wrap(callback));
 
 	return timer.get();
 }
 
 void StrandExecutor::Post(const action_t& runnable)
-{
-	auto self(shared_from_this());
-	auto callback = [self, runnable]()
+{	
+	auto callback = [runnable, self = shared_from_this()]()
 	{
 		runnable();
 	};

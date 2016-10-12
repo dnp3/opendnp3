@@ -47,19 +47,19 @@ class StrandExecutor final :
 
 public:
 
-	StrandExecutor(std::shared_ptr<IO> io);
+	StrandExecutor(const std::shared_ptr<IO>& io);
 
-	static std::shared_ptr<StrandExecutor> Create(std::shared_ptr<IO> io);
+	static std::shared_ptr<StrandExecutor> Create(const std::shared_ptr<IO>& io)
+	{
+		return std::make_shared<StrandExecutor>(io);
+	}
 
 	/// ---- Implement IExecutor -----
 
 	virtual openpal::MonotonicTimestamp GetTime() override;
 	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::action_t& runnable)  override;
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::action_t& runnable)  override;
-	virtual void Post(const openpal::action_t& runnable) override;
-
-	template <class T>
-	void PostToStrand(const T& action);
+	virtual void Post(const openpal::action_t& runnable) override;	
 
 	template <class T>
 	T ReturnFrom(const std::function<T()>& action);
@@ -82,16 +82,10 @@ public:
 	asio::strand strand;
 
 private:
+
 	openpal::ITimer* Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable);
 
-
 };
-
-template <class T>
-void StrandExecutor::PostToStrand(const T& action)
-{
-	strand.post(action);
-}
 
 template <class T>
 T StrandExecutor::ReturnFrom(const std::function<T()>& action)

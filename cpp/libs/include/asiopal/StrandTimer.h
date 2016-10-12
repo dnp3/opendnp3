@@ -43,14 +43,15 @@ class StrandTimer final : public openpal::ITimer, private openpal::Uncopyable
 
 public:
 
-	virtual void Cancel() override;
-	virtual openpal::MonotonicTimestamp ExpiresAt() override;
-
-private:
-
 	StrandTimer(asio::io_service& service);
 
-	asio::basic_waitable_timer< asiopal::steady_clock_t > m_timer;
+	virtual void Cancel() override;
+
+	virtual openpal::MonotonicTimestamp ExpiresAt() override;
+
+private:	
+
+	asio::basic_waitable_timer< asiopal::steady_clock_t > timer;
 };
 
 }

@@ -30,16 +30,16 @@ namespace asiopal
 
 void StrandTimer::Cancel()
 {
-	m_timer.cancel();
+	timer.cancel();
 }
 
 MonotonicTimestamp StrandTimer::ExpiresAt()
 {
-	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(m_timer.expires_at().time_since_epoch()).count();
+	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(timer.expires_at().time_since_epoch()).count();
 	return MonotonicTimestamp(millisec);
 }
 
-StrandTimer::StrandTimer(asio::io_service& service) : m_timer(service)
+StrandTimer::StrandTimer(asio::io_service& service) : timer(service)
 {}
 
 }
