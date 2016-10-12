@@ -42,7 +42,6 @@ class MockIO final : public IO, public std::enable_shared_from_this<MockIO>
 
 	private:
 
-		std::shared_ptr<MockIO> io;
 		std::shared_ptr<asio::basic_waitable_timer<std::chrono::steady_clock>> timer;
 	};
 

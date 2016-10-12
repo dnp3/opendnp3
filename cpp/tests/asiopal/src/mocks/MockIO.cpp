@@ -27,7 +27,6 @@ namespace asiopal
 {
 
 MockIO::Timeout::Timeout(asio::io_service& service, std::chrono::steady_clock::duration timeout) :
-	io(io),
 	timer(std::make_shared<asio::basic_waitable_timer<std::chrono::steady_clock>>(service, timeout))
 {
 	auto callback = [t = timer](const std::error_code & ec)
