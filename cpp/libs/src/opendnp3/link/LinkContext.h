@@ -33,11 +33,11 @@
 #include "opendnp3/link/LinkLayerConstants.h"
 #include "opendnp3/link/LinkConfig.h"
 #include "opendnp3/link/ILinkListener.h"
+#include "opendnp3/link/ILinkTx.h"
 
 namespace opendnp3
 {
 
-class ILinkTx;
 class PriStateBase;
 class SecStateBase;
 

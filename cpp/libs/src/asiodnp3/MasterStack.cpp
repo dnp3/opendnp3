@@ -48,7 +48,7 @@ MasterStack::MasterStack(
 	application(application),	
 	mcontext(*executor.get(), logger, tstack.transport, *SOEHandler, *application,  config.master, taskLock)
 {
-	tstack.transport.SetAppLayer(mcontext);
+	tstack.transport.SetAppLayer(mcontext);	
 }
 
 bool MasterStack::Enable()
@@ -66,7 +66,7 @@ bool MasterStack::Disable()
 void MasterStack::Shutdown()
 {
 	auto action = [self = shared_from_this()]{ return self->iohandler->Remove(self); };
-	this->executor->PostToStrand(action);
+	this->executor->BlockUntil(action);
 }
 
 StackStatistics MasterStack::GetStackStatistics()

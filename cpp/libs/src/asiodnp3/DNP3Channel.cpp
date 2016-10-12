@@ -57,7 +57,7 @@ DNP3Channel::~DNP3Channel()
 void DNP3Channel::Shutdown()
 {	
 	auto action = [self = shared_from_this()]() { self->ShutdownImpl(); };
-	this->executor->PostToStrand(action);
+	this->executor->BlockUntil(action);
 }
 
 void DNP3Channel::ShutdownImpl()

@@ -79,7 +79,7 @@ bool OutstationStack::Disable()
 void OutstationStack::Shutdown()
 {
 	auto action = [self = shared_from_this()]{ return self->iohandler->Remove(self); };
-	this->executor->PostToStrand(action);
+	this->executor->BlockUntil(action);
 }
 
 opendnp3::StackStatistics OutstationStack::GetStackStatistics()

@@ -63,6 +63,8 @@ public:
 
 	template <class T>
 	T ReturnFrom(const std::function<T()>& action);
+	
+	void BlockUntil(const std::function<void ()>& action);
 
 private:
 
@@ -114,6 +116,7 @@ T StrandExecutor::ReturnFrom(const std::function<T()>& action)
 
 	return future.get();
 }
+
 
 }
 

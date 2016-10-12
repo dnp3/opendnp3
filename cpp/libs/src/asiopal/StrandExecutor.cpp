@@ -93,4 +93,27 @@ void StrandExecutor::Post(const action_t& runnable)
 	strand.post(callback);
 }
 
+void StrandExecutor::BlockUntil(const std::function<void()>& action)
+{
+	if (strand.running_in_this_thread())
+	{
+		action();
+		return;
+	}
+
+	std::promise<bool> ready;
+
+	auto future = ready.get_future();
+
+	auto run = [&]
+	{
+		action();
+		ready.set_value(true);
+	};
+
+	strand.post(run);
+
+	future.wait();
+}
+
 }

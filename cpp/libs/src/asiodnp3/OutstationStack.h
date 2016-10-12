@@ -36,7 +36,7 @@ namespace asiodnp3
 /**
 * A stack object for an outstation
 */
-class OutstationStack final : public IOutstation, public opendnp3::ILinkSession, private StackBase, public std::enable_shared_from_this<OutstationStack>
+class OutstationStack final : public IOutstation, public opendnp3::ILinkSession, public opendnp3::ILinkTx, private StackBase, public std::enable_shared_from_this<OutstationStack>
 {
 public:
 
@@ -59,7 +59,11 @@ public:
 	    const OutstationStackConfig& config
 	)
 	{
-		return std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, shutdown, config);		
+		auto ret = std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, shutdown, config);		
+
+		ret->tstack.link.SetRouter(*ret);
+
+		return ret;
 	}	
 
 	// --------- Implement IStack ---------
@@ -92,6 +96,11 @@ public:
 	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
 		return this->tstack.link.OnFrame(header, userdata);
+	}
+
+	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& context)
+	{
+		this->iohandler->BeginTransmit(shared_from_this(), buffer);
 	}
 
 	// --------- Implement IOutstation ---------

@@ -73,8 +73,8 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		auto outstation = server->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseSizes::Empty()));
 		auto master = client->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
 
-		outstation->Enable();
-		master->Enable();
+		REQUIRE(outstation->Enable());
+		REQUIRE(master->Enable());
 
 		outstation->Shutdown();
 		master->Shutdown();

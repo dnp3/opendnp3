@@ -33,7 +33,7 @@ namespace asiodnp3
 {
 
 
-class MasterStack : public IMaster, public opendnp3::ILinkSession, private StackBase, public std::enable_shared_from_this<MasterStack>
+class MasterStack : public IMaster, public opendnp3::ILinkSession, public opendnp3::ILinkTx, private StackBase, public std::enable_shared_from_this<MasterStack>
 {
 public:
 
@@ -59,7 +59,11 @@ public:
 		opendnp3::ITaskLock& taskLock
 	)
 	{
-		return std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, shutdown, config, taskLock);
+		auto ret = std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, shutdown, config, taskLock);
+
+		ret->tstack.link.SetRouter(*ret);
+
+		return ret;
 	}	
 
 	// --------- Implement IStack ---------
@@ -92,6 +96,11 @@ public:
 	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
 		return this->tstack.link.OnFrame(header, userdata);
+	}
+	
+	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& context)
+	{
+		this->iohandler->BeginTransmit(shared_from_this(), buffer);
 	}
 
 	// --------- Implement IMasterOperations ---------
