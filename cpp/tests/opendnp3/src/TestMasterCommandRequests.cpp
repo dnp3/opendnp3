@@ -74,7 +74,7 @@ TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 
 	t.context.OnLowerLayerUp();
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 
 	// while we're waiting for a reponse, submit a control
@@ -84,8 +84,8 @@ TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 	{
 		CommandSet commands({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) });
 		t.context.SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
-		t.exe.AdvanceTime(params.taskStartTimeout);
-		REQUIRE(t.exe.RunMany() > 0);
+		t.exe->AdvanceTime(params.taskStartTimeout);
+		REQUIRE(t.exe->RunMany() > 0);
 		REQUIRE(1 == queue.values.size());
 		REQUIRE(TaskCompletion::FAILURE_START_TIMEOUT == queue.values.front().summary);
 		queue.values.pop_front();
@@ -109,13 +109,13 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + crob);
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + crob); // OPERATE
 	t.context.OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 " + crob);
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
 
@@ -141,16 +141,16 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
 	t.SendToMaster("E0 81 00 00 " + crob); // confirm bit set
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 00"); // confirm
 	t.context.OnSendResult(true);
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + crob); // OPERATE
 	t.context.OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 " + crob);
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
 	REQUIRE(
@@ -176,8 +176,8 @@ TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
 
-	t.exe.AdvanceTime(config.responseTimeout);
-	t.exe.RunMany();
+	t.exe->AdvanceTime(config.responseTimeout);
+	t.exe->RunMany();
 
 	REQUIRE(
 	    queue.PopOnlyEqualValue(
@@ -225,7 +225,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(queue.PopOnlyEqualValue(
 	            TaskCompletion::SUCCESS,
@@ -249,7 +249,7 @@ TEST_CASE(SUITE("ControlExecutionSelectBadFIRFIN"))
 
 	t.SendToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(queue.PopOnlyEqualValue(
 	            TaskCompletion::FAILURE_BAD_RESPONSE,
@@ -265,7 +265,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	// check that a read request was made on startup
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
@@ -281,7 +281,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 
 	t.SendToMaster("C0 81 00 00"); //now master gets response to integrity
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 03 " + crob); //select
 }
@@ -300,7 +300,7 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	    queue.Callback(), TaskConfig::Default()
 	);
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
@@ -325,15 +325,15 @@ TEST_CASE(SUITE("ResponseTimeout"))
 	    CommandSet({ WithIndex(ao, 1) }),
 	    queue.Callback(), TaskConfig::Default()
 	);
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
 	REQUIRE(queue.values.empty());
 
-	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe->AdvanceToNextTimer());
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(queue.PopOnlyEqualValue(
 	            TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
@@ -348,12 +348,12 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 	MasterTestObject t(params);
 	t.context.OnLowerLayerUp();
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.context.OnSendResult(true);
-	REQUIRE(t.exe.AdvanceToNextTimer());
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->AdvanceToNextTimer());
+	REQUIRE(t.exe->RunMany() > 0);
 
 	// while we're waiting for a response to the disable unsol, initiate a command seqeunce
 	CommandCallbackQueue queue;
@@ -368,9 +368,9 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
 	REQUIRE(queue.values.empty());
 
-	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe->AdvanceToNextTimer());
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(queue.PopOnlyEqualValue(
 	            TaskCompletion::FAILURE_RESPONSE_TIMEOUT,
@@ -388,21 +388,21 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 	CommandCallbackQueue queue;
 
 	t.context.SelectAndOperate(CommandSet({WithIndex(command, 1)}), queue.Callback(), TaskConfig::Default());
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE((t.lower.PopWriteAsHex() == ("C0 03 " + hex)));
 	t.context.OnSendResult(true);
 	REQUIRE(queue.values.empty());
 	t.SendToMaster("C0 81 00 00 " + hex);
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE((t.lower.PopWriteAsHex() == ("C1 04 " + hex)));
 	t.context.OnSendResult(true);
 	REQUIRE(queue.values.empty());
 	t.SendToMaster("C1 81 00 00 " + hex);
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(queue.PopOnlyEqualValue(
 	            TaskCompletion::SUCCESS,

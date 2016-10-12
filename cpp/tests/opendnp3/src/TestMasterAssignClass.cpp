@@ -41,14 +41,14 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 
 	t.context.OnLowerLayerUp();
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 16 3C 02 06 03 00 06");
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00");
 
-	t.exe.RunMany();
-	REQUIRE(t.exe.NumPendingTimers() == 1);
+	t.exe->RunMany();
+	REQUIRE(t.exe->NumPendingTimers() == 1);
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
 	REQUIRE(t.application.taskStartEvents.size() == 1);
@@ -70,7 +70,7 @@ TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))
 
 	t.context.OnLowerLayerUp();
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 

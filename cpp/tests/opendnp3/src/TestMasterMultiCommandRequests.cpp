@@ -75,7 +75,7 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + crobstr);
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
 
@@ -114,13 +114,13 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + headers);
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + headers); // operate
 	t.context.OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 " + headers);
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
 

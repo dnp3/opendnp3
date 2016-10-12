@@ -39,8 +39,8 @@ using namespace openpal;
 namespace opendnp3
 {
 MContext::MContext(
-    IExecutor& executor,
-    openpal::Logger logger,
+	const openpal::Logger& logger,
+	const std::shared_ptr<openpal::IExecutor>& executor,	
     ILowerLayer& lower,
     ISOEHandler& SOEHandler,
     opendnp3::IMasterApplication& application,
@@ -48,7 +48,7 @@ MContext::MContext(
     ITaskLock& taskLock
 ) :
 	logger(logger),
-	pExecutor(&executor),
+	executor(executor),
 	pLower(&lower),
 	params(params_),
 	pSOEHandler(&SOEHandler),
@@ -56,9 +56,9 @@ MContext::MContext(
 	pApplication(&application),
 	isOnline(false),
 	isSending(false),
-	responseTimer(executor),
-	scheduleTimer(executor),
-	taskStartTimeoutTimer(executor),
+	responseTimer(*executor),
+	scheduleTimer(*executor),
+	taskStartTimeoutTimer(*executor),
 	tasks(params, logger, application, SOEHandler, application),
 	scheduler(*this),
 	txBuffer(params.maxTxFragSize),
@@ -85,7 +85,7 @@ bool MContext::OnLowerLayerDown()
 		return false;
 	}
 
-	auto now = pExecutor->GetTime();
+	auto now = executor->GetTime();
 	scheduler.Shutdown(now);
 
 	if (pActiveTask.IsDefined())
@@ -325,7 +325,7 @@ void MContext::PostCheckForTask()
 	{
 		this->CheckForTask();
 	};
-	this->pExecutor->Post(callback);
+	this->executor->Post(callback);
 }
 
 MasterScan MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
@@ -336,7 +336,7 @@ MasterScan MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT&
 	{
 		this->PostCheckForTask();
 	};
-	return MasterScan(*pExecutor, pTask, callback);
+	return MasterScan(*executor, pTask, callback);
 }
 
 MasterScan MContext::AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config)
@@ -426,7 +426,7 @@ void MContext::SetTaskStartTimeout(const openpal::MonotonicTimestamp& time)
 {
 	auto action = [this]()
 	{
-		this->scheduler.CheckTaskStartTimeout(pExecutor->GetTime());
+		this->scheduler.CheckTaskStartTimeout(executor->GetTime());
 	};
 
 	this->taskStartTimeoutTimer.Restart(time, action);
@@ -447,7 +447,7 @@ void MContext::ScheduleRecurringPollTask(IMasterTask* pTask)
 
 void MContext::ScheduleAdhocTask(IMasterTask* pTask)
 {
-	const auto NOW = this->pExecutor->GetTime();
+	const auto NOW = this->executor->GetTime();
 
 	pTask->ConfigureStartExpiration(NOW.Add(params.taskStartTimeout));
 
@@ -492,7 +492,7 @@ MContext::TaskState MContext::ResumeActiveTask()
 	/// try to build a requst for the task
 	if (!this->pActiveTask->BuildRequest(request, this->solSeq))
 	{
-		pActiveTask->OnInternalError(pExecutor->GetTime());
+		pActiveTask->OnInternalError(executor->GetTime());
 		this->CompleteActiveTask();
 		return TaskState::IDLE;
 	}
@@ -554,7 +554,7 @@ MContext::TaskState MContext::StartTask_Idle()
 	}
 
 	MonotonicTimestamp next;
-	auto task = this->scheduler.GetNext(pExecutor->GetTime(), next);
+	auto task = this->scheduler.GetNext(executor->GetTime(), next);
 
 	if (task.IsDefined())
 	{
@@ -596,7 +596,7 @@ MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeade
 
 	this->solSeq.Increment();
 
-	auto now = this->pExecutor->GetTime();
+	auto now = this->executor->GetTime();
 
 	auto result = this->pActiveTask->OnResponse(header, objects, now);
 
@@ -621,7 +621,7 @@ MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeade
 
 MContext::TaskState MContext::OnResponseTimeout_WaitForResponse()
 {
-	auto now = this->pExecutor->GetTime();
+	auto now = this->executor->GetTime();
 	this->pActiveTask->OnResponseTimeout(now);
 	this->solSeq.Increment();
 	this->CompleteActiveTask();

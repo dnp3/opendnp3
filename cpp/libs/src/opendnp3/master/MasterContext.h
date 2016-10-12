@@ -65,8 +65,8 @@ protected:
 public:
 
 	MContext(
-	    openpal::IExecutor& executor,
-	    openpal::Logger logger,
+		const openpal::Logger& logger,
+		const std::shared_ptr<openpal::IExecutor>& executor,	    
 	    ILowerLayer& lower,
 	    ISOEHandler& SOEHandler,
 	    opendnp3::IMasterApplication& application,
@@ -75,7 +75,7 @@ public:
 	);
 
 	openpal::Logger logger;
-	openpal::IExecutor* pExecutor;
+	const std::shared_ptr<openpal::IExecutor> executor;
 	ILowerLayer* pLower;
 
 	// ------- configuration --------

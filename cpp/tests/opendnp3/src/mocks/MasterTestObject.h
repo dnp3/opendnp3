@@ -46,7 +46,7 @@ public:
 	void SendToMaster(const std::string& hex);
 
 	testlib::MockLogHandler log;
-	testlib::MockExecutor exe;
+	std::shared_ptr<testlib::MockExecutor> exe;
 	MockSOEHandler meas;
 	MockLowerLayer lower;
 	MockMasterApplication application;

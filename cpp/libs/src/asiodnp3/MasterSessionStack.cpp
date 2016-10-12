@@ -30,26 +30,26 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
-    openpal::Logger logger,
-    std::shared_ptr<asiopal::StrandExecutor> executor,
-    std::shared_ptr<ISOEHandler> SOEHandler,
-    std::shared_ptr<IMasterApplication> application,
-    std::shared_ptr<LinkSession> session,
-    ILinkTx& linktx,
-    const MasterStackConfig& config
+	const openpal::Logger& logger,
+	const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+	const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	const std::shared_ptr<LinkSession>& session,
+	opendnp3::ILinkTx& linktx,
+	const MasterStackConfig& config
 )
 {
 	return std::make_shared<MasterSessionStack>(logger, executor, SOEHandler, application, session, linktx, config);
 }
 
 MasterSessionStack::MasterSessionStack(
-    openpal::Logger logger,
-    std::shared_ptr<asiopal::StrandExecutor> executor,
-    std::shared_ptr<ISOEHandler> SOEHandler,
-    std::shared_ptr<IMasterApplication> application,
-    std::shared_ptr<LinkSession> session,
-    ILinkTx& linktx,
-    const MasterStackConfig& config
+	const openpal::Logger& logger,
+	const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+	const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	const std::shared_ptr<LinkSession>& session,
+	opendnp3::ILinkTx& linktx,
+	const MasterStackConfig& config
 ) :
 	m_executor(executor),
 	m_handler(SOEHandler),
@@ -57,7 +57,7 @@ MasterSessionStack::MasterSessionStack(
 	m_session(session),
 	m_statistics(),
 	m_stack(logger, m_executor, application, config.master.maxRxFragSize, &m_statistics, config.link),
-	m_context(*m_executor, logger, *m_stack.transport, *SOEHandler, *application, config.master, NullTaskLock::Instance())
+	m_context(logger, m_executor, *m_stack.transport, *SOEHandler, *application, config.master, NullTaskLock::Instance())
 {
 	m_stack.link.SetRouter(linktx);
 	m_stack.transport->SetAppLayer(m_context);

@@ -46,12 +46,12 @@ TEST_CASE(SUITE("ReceiveUnsolBeforeTransmit"))
 
 	t.SendToMaster(hex::NullUnsolicited(0, IINField::Empty()));
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::UnsolConfirm(0));
 	t.context.OnSendResult(true);
 
-	t.exe.RunMany();
+	t.exe->RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 }

@@ -40,11 +40,11 @@ MasterParams NoStartupTasks()
 
 MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) :
 	log(),
-	exe(),
+	exe(std::make_shared<MockExecutor>()),
 	meas(),
 	lower(),
 	application(),
-	context(exe, log.logger, lower, meas, application, params, lock)
+	context(log.logger, exe, lower, meas, application, params, lock)
 {}
 
 void MasterTestObject::SendToMaster(const std::string& hex)
