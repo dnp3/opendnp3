@@ -33,10 +33,10 @@ class TransportStack
 
 public:
 
-	TransportStack(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<opendnp3::ILinkListener>& listener, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config);
+	TransportStack(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<opendnp3::ILinkListener>& listener, uint32_t maxRxFragSize, StackStatistics* statistics, const LinkConfig& config);	
 
 	std::shared_ptr<TransportLayer> transport;
-	LinkLayer link;
+	std::shared_ptr<LinkLayer> link;
 };
 
 }

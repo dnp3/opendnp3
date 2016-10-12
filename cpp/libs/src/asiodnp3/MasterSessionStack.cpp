@@ -57,18 +57,18 @@ MasterSessionStack::MasterSessionStack(
 	stack(logger, executor, application, config.master.maxRxFragSize, &statistics, config.link),
 	context(MContext::Create(logger, executor, stack.transport, SOEHandler, application, config.master, NullTaskLock::Instance()))
 {
-	stack.link.SetRouter(linktx);
+	stack.link->SetRouter(linktx);
 	stack.transport->SetAppLayer(*context);
 }
 
 void MasterSessionStack::OnLowerLayerUp()
 {
-	stack.link.OnLowerLayerUp();
+	stack.link->OnLowerLayerUp();
 }
 
 void MasterSessionStack::OnLowerLayerDown()
 {
-	stack.link.OnLowerLayerDown();
+	stack.link->OnLowerLayerDown();
 
 	// now we can release the socket session
 	session.reset();
@@ -76,7 +76,7 @@ void MasterSessionStack::OnLowerLayerDown()
 
 bool MasterSessionStack::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
-	return stack.link.OnFrame(header, userdata);
+	return stack.link->OnFrame(header, userdata);
 }
 
 void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)

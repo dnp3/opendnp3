@@ -61,7 +61,7 @@ public:
 	{
 		auto ret = std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, shutdown, config);
 
-		ret->tstack.link.SetRouter(*ret);
+		ret->tstack.link->SetRouter(*ret);
 
 		return ret;
 	}
@@ -80,22 +80,22 @@ public:
 
 	virtual bool OnTransmitResult(bool success) override
 	{
-		return this->tstack.link.OnTransmitResult(success);
+		return this->tstack.link->OnTransmitResult(success);
 	}
 
 	virtual bool OnLowerLayerUp() override
 	{
-		return this->tstack.link.OnLowerLayerUp();
+		return this->tstack.link->OnLowerLayerUp();
 	}
 
 	virtual bool OnLowerLayerDown() override
 	{
-		return this->tstack.link.OnLowerLayerDown();
+		return this->tstack.link->OnLowerLayerDown();
 	}
 
 	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
 	{
-		return this->tstack.link.OnFrame(header, userdata);
+		return this->tstack.link->OnFrame(header, userdata);
 	}
 
 	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& context)
