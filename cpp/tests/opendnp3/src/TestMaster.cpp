@@ -56,7 +56,7 @@ TEST_CASE(SUITE("IntegrityOnStartup"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 
 TEST_CASE(SUITE("SolicitedResponseWithData"))
@@ -69,7 +69,7 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 	REQUIRE(t.exe->NumPendingTimers() == 2);
 	t.SendToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
@@ -86,19 +86,19 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 	REQUIRE(t.exe->RunMany() > 0);
 
 	// disable unsol on grp 60 var2, var3, var4
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.context.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(0));
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(1));
 	t.context.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(1));
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
 	t.context.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(2));
 
@@ -114,19 +114,19 @@ TEST_CASE(SUITE("TimeoutDuringStartup"))
 	t.context.OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.context.OnSendResult(true);
 
 	// timeout the task
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany());
 
-	REQUIRE(t.lower.NumWrites() == 0);
+	REQUIRE(t.lower->NumWrites() == 0);
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany());
 
 	// repeat the disable unsol
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 1, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 1, ClassField::AllEventClasses()));
 }
 
 TEST_CASE(SUITE("SolicitedResponseTimeout"))
@@ -139,7 +139,7 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
@@ -147,7 +147,7 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	REQUIRE(t.exe->NumPendingTimers() == 2);
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(1));
 }
 
 TEST_CASE(SUITE("AllObjectsScan"))
@@ -160,7 +160,7 @@ TEST_CASE(SUITE("AllObjectsScan"))
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 01 6E 00 06");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 01 6E 00 06");
 }
 
 TEST_CASE(SUITE("ClassScanCanRepeat"))
@@ -175,7 +175,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(0));
 
@@ -186,7 +186,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 	REQUIRE(t.exe->NextTimerExpiration().milliseconds == 10000);
 	t.exe->AdvanceTime(TimeDuration::Seconds(10));
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(1));
 }
 
 TEST_CASE(SUITE("SolicitedResponseLayerDown"))
@@ -199,7 +199,7 @@ TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnLowerLayerDown();
 
 	t.context.OnLowerLayerUp();
@@ -207,7 +207,7 @@ TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 
 TEST_CASE(SUITE("SolicitedMultiFragResponse"))
@@ -219,12 +219,12 @@ TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() ==  hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 	t.SendToMaster("80 81 00 00 01 02 00 02 02 81"); // partial response FIR = 1, FIN = 0
 	REQUIRE(1 == t.meas->TotalReceived());
 	REQUIRE((Binary(true, 0x01) == t.meas->binarySOE[2].meas));
-	REQUIRE(0 == t.lower.NumWrites());
+	REQUIRE(0 == t.lower->NumWrites());
 	t.SendToMaster("41 81 00 00 01 02 00 03 03 02"); // final response FIR = 0, FIN = 1
 	REQUIRE(2 == t.meas->TotalReceived());
 	REQUIRE((Binary(false, 0x02) == t.meas->binarySOE[3].meas));
@@ -241,7 +241,7 @@ TEST_CASE(SUITE("EventPoll"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 01 3C 02 06 3C 03 06");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 01 3C 02 06 3C 03 06");
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 02 01 17 01 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
@@ -250,7 +250,7 @@ TEST_CASE(SUITE("EventPoll"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 01 3C 04 06");
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 01 3C 04 06");
 	t.context.OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 02 01 17 01 03 01"); //group 2 var 1, index = 3, 0x81 = Online, true
 
@@ -277,7 +277,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 
 	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
@@ -296,7 +296,7 @@ TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 
 	// g51v1, t = 3,
@@ -326,7 +326,7 @@ TEST_CASE(SUITE("ParsesGroup50Var4"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 
 	t.SendToMaster("C0 81 00 00 32 04 00 00 00 09 00 00 00 00 00 03 00 00 00 05");
@@ -351,11 +351,11 @@ TEST_CASE(SUITE("RestartViaNullUnsol"))
 	t.context.OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.NumWrites() == 0);
+	REQUIRE(t.lower->NumWrites() == 0);
 	t.SendToMaster("F0 82 80 00");
-	REQUIRE(t.lower.PopWriteAsHex() == hex::Confirm(0, true));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::Confirm(0, true));
 	t.context.OnSendResult(true);
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 02 50 01 00 07 07 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 02 50 01 00 07 07 00");
 }
 
 TEST_CASE(SUITE("DisableAutomatedRestartClear"))
@@ -373,11 +373,11 @@ TEST_CASE(SUITE("DisableAutomatedRestartClear"))
 	t.context.OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.NumWrites() == 0);
+	REQUIRE(t.lower->NumWrites() == 0);
 	t.SendToMaster("F0 82 80 00");
-	REQUIRE(t.lower.PopWriteAsHex() == hex::Confirm(0, true));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::Confirm(0, true));
 	t.context.OnSendResult(true);
-	REQUIRE(t.lower.NumWrites() == 0);
+	REQUIRE(t.lower->NumWrites() == 0);
 }
 
 TEST_CASE(SUITE("RestartDuringStartup"))
@@ -390,20 +390,20 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.context.OnSendResult(false);
 
 	t.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(1));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClearRestartIIN(1));
 	t.context.OnSendResult(false);
 	t.SendToMaster(hex::EmptyResponse(1));
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
 }
 
 TEST_CASE(SUITE("RestartAndTimeBits"))
@@ -416,20 +416,20 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 	t.application->time = 100;
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.NumWrites() == 0);
+	REQUIRE(t.lower->NumWrites() == 0);
 
 	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART) | IINField(IINBit::NEED_TIME)));
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::UnsolConfirm(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::UnsolConfirm(0));
 	t.context.OnSendResult(true);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClearRestartIIN(0));
 	t.context.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty()));
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::MeasureDelay(1));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::MeasureDelay(1));
 	t.context.OnSendResult(true);
 	t.application->time += 100; //advance time by 100ms so that the master sees 100ms for a response
 	t.SendToMaster("C1 81 10 00 34 02 07 01 0A 00"); // still need time, 52 Var 2, delay == 10ms
@@ -438,13 +438,13 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	// Write group 50 var 1
 	// 200-100-10/2 = 45 => 45 + 200 - 0xF5
-	REQUIRE(t.lower.PopWriteAsHex() == "C2 02 32 01 07 01 F5 00 00 00 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C2 02 32 01 07 01 F5 00 00 00 00 00");
 	t.context.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty())); // time bit is now clear
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.NumWrites() ==  0); // no more packets
+	REQUIRE(t.lower->NumWrites() ==  0); // no more packets
 }
 
 TEST_CASE(SUITE("ReceiveCTOSynchronized"))
@@ -486,7 +486,7 @@ TEST_CASE(SUITE("ReceiveIINinResponses"))
 
 	auto scan = t.context.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 
 	// response with IIN retart bit
@@ -520,21 +520,21 @@ TEST_CASE(SUITE("EventScanOnEventsAvailableIIN"))
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EventPoll(0, params.eventScanOnEventsAvailableClassMask));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::EventPoll(0, params.eventScanOnEventsAvailableClassMask));
 	t.context.OnSendResult(true);
 
 	t.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::CLASS2_EVENTS)));
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EventPoll(1, params.eventScanOnEventsAvailableClassMask));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::EventPoll(1, params.eventScanOnEventsAvailableClassMask));
 	t.context.OnSendResult(true);
 
 	t.SendToMaster(hex::EmptyResponse(1, IINField(IINBit::CLASS3_EVENTS)));
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.NumWrites() == 0);
+	REQUIRE(t.lower->NumWrites() == 0);
 }
 
 TEST_CASE(SUITE("AdhocScanWorksWithUnsolicitedDisabled"))
@@ -547,12 +547,12 @@ TEST_CASE(SUITE("AdhocScanWorksWithUnsolicitedDisabled"))
 	t.context.ScanClasses(ClassField::AllEventClasses());
 
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.context.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(0));
 
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
 }
 
 TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
@@ -579,10 +579,10 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
 
 	t.context.Write(TimeAndInterval(DNPTime(3), 4, IntervalUnits::Days), 7, TaskConfig::With(callback));
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 02 32 04 28 01 00 07 00 03 00 00 00 00 00 04 00 00 00 05");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 02 32 04 28 01 00 07 00 03 00 00 00 00 00 04 00 00 00 05");
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	REQUIRE(t.lower->PopWriteAsHex() == "");
 
 	REQUIRE(callback.numStart == 1);
 	REQUIRE(callback.results.size() == 1);
@@ -599,10 +599,10 @@ TEST_CASE(SUITE("Cold restart fails with empty response"))
 
 	t.context.Restart(RestartType::COLD, queue.Callback());
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 0D"); // cold restart
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 0D"); // cold restart
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	REQUIRE(t.lower->PopWriteAsHex() == "");
 
 	REQUIRE(queue.responses.size() == 1);
 	REQUIRE(queue.responses[0].summary == TaskCompletion::FAILURE_BAD_RESPONSE);
@@ -618,10 +618,10 @@ TEST_CASE(SUITE("Warm restart fails with empty response"))
 
 	t.context.Restart(RestartType::WARM, queue.Callback());
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 0E"); // warm restart
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 0E"); // warm restart
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 34 01 07 01 BB BB");
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	REQUIRE(t.lower->PopWriteAsHex() == "");
 
 	REQUIRE(queue.responses.size() == 1);
 	REQUIRE(queue.responses[0].summary == TaskCompletion::SUCCESS);

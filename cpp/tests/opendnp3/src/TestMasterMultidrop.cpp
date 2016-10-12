@@ -49,8 +49,8 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 	t1.exe->RunMany();
 	t2.exe->RunMany();
 
-	REQUIRE(t1.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
-	REQUIRE(t2.lower.PopWriteAsHex() == "");
+	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t2.lower->PopWriteAsHex() == "");
 
 	t1.context.OnSendResult(true);
 	t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
@@ -58,8 +58,8 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 	t1.exe->RunMany();
 	t2.exe->RunMany();
 
-	REQUIRE(t1.lower.PopWriteAsHex() == "");
-	REQUIRE(t2.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t1.lower->PopWriteAsHex() == "");
+	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 
 	t2.context.OnSendResult(true);
 	t2.SendToMaster(hex::EmptyResponse(0));
@@ -67,8 +67,8 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 	t1.exe->RunMany();
 	t2.exe->RunMany();
 
-	REQUIRE(t1.lower.PopWriteAsHex() == hex::ClearRestartIIN(1));
-	REQUIRE(t2.lower.PopWriteAsHex() == "");
+	REQUIRE(t1.lower->PopWriteAsHex() == hex::ClearRestartIIN(1));
+	REQUIRE(t2.lower->PopWriteAsHex() == "");
 }
 
 TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock"))
@@ -88,8 +88,8 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock")
 	t1.exe->RunMany();
 	t2.exe->RunMany();
 
-	REQUIRE(t1.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
-	REQUIRE(t2.lower.PopWriteAsHex() == "");
+	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t2.lower->PopWriteAsHex() == "");
 
 	t1.context.OnSendResult(true);
 	// instead of sending a reply, shutdown the first master
@@ -98,7 +98,7 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock")
 	t1.exe->RunMany();
 	t2.exe->RunMany();
 
-	REQUIRE(t1.lower.PopWriteAsHex() == "");
-	REQUIRE(t2.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t1.lower->PopWriteAsHex() == "");
+	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 

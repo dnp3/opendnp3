@@ -48,7 +48,7 @@ public:
 	testlib::MockLogHandler log;
 	std::shared_ptr<testlib::MockExecutor> exe;
 	std::shared_ptr<MockSOEHandler> meas;
-	MockLowerLayer lower;
+	std::shared_ptr<MockLowerLayer> lower;
 	std::shared_ptr<MockMasterApplication> application;
 	MContext context;
 };

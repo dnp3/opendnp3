@@ -42,9 +42,6 @@
 #include "opendnp3/master/HeaderBuilder.h"
 #include "opendnp3/master/RestartOperationResult.h"
 
-
-#include <deque>
-
 namespace opendnp3
 {
 /*
@@ -67,7 +64,7 @@ public:
 	MContext(
 		const openpal::Logger& logger,
 		const std::shared_ptr<openpal::IExecutor>& executor,	    
-	    ILowerLayer& lower,
+	    const std::shared_ptr<ILowerLayer>& lower,
 		const std::shared_ptr<ISOEHandler>& SOEHandler,
 		const std::shared_ptr<IMasterApplication>& application,
 	    const MasterParams& params,
@@ -76,7 +73,7 @@ public:
 
 	openpal::Logger logger;
 	const std::shared_ptr<openpal::IExecutor> executor;
-	ILowerLayer* pLower;
+	const std::shared_ptr<ILowerLayer> lower;
 
 	// ------- configuration --------
 	MasterParams params;
@@ -86,8 +83,8 @@ public:
 
 
 	// ------- dynamic state ---------
-	bool isOnline;
-	bool isSending;
+	bool isOnline = false;
+	bool isSending = false;
 	AppSeqNum solSeq;
 	AppSeqNum unsolSeq;
 	openpal::ManagedPtr<IMasterTask> pActiveTask;

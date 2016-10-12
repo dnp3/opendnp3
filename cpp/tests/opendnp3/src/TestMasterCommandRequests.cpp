@@ -75,7 +75,7 @@ TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
 	t.context.OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 
 	// while we're waiting for a reponse, submit a control
 	CommandCallbackQueue queue;
@@ -105,19 +105,19 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 03 " + crob); // SELECT
+	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + crob);
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + crob); // OPERATE
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + crob); // OPERATE
 	t.context.OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 " + crob);
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
+	REQUIRE(t.lower->PopWriteAsHex() == ""); //nore more packets
 
 	REQUIRE(queue.PopOnlyEqualValue(
 	            TaskCompletion::SUCCESS,
@@ -138,21 +138,21 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
 	t.SendToMaster("E0 81 00 00 " + crob); // confirm bit set
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 00"); // confirm
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 00"); // confirm
 	t.context.OnSendResult(true);
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + crob); // OPERATE
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + crob); // OPERATE
 	t.context.OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 " + crob);
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
+	REQUIRE(t.lower->PopWriteAsHex() == ""); //nore more packets
 	REQUIRE(
 	    queue.PopOnlyEqualValue(
 	        TaskCompletion::SUCCESS,
@@ -173,7 +173,7 @@ TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 	    queue.Callback(), TaskConfig::Default()
 	);
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
 
 	t.exe->AdvanceTime(config.responseTimeout);
@@ -199,7 +199,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	    queue.Callback(), TaskConfig::Default()
 	);
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context.OnSendResult(true);
 
 	t.context.OnLowerLayerDown();
@@ -268,7 +268,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	t.exe->RunMany();
 
 	// check that a read request was made on startup
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context.OnSendResult(true);
 
 	//issue a command while the master is waiting for a response from the outstation
@@ -283,7 +283,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 
 	t.exe->RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 03 " + crob); //select
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 03 " + crob); //select
 }
 
 TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
@@ -302,8 +302,8 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
-	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
+	REQUIRE(t.lower->NumWrites() == 0); //nore more packets
 	REQUIRE(queue.values.empty());
 	t.context.OnLowerLayerDown();
 
@@ -327,8 +327,8 @@ TEST_CASE(SUITE("ResponseTimeout"))
 	);
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
-	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
+	REQUIRE(t.lower->NumWrites() == 0); //nore more packets
 	REQUIRE(queue.values.empty());
 
 	REQUIRE(t.exe->AdvanceToNextTimer());
@@ -350,7 +350,7 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.context.OnSendResult(true);
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
@@ -364,8 +364,8 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 	);
 
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
-	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
+	REQUIRE(t.lower->NumWrites() == 0); //nore more packets
 	REQUIRE(queue.values.empty());
 
 	REQUIRE(t.exe->AdvanceToNextTimer());
@@ -390,14 +390,14 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 	t.context.SelectAndOperate(CommandSet({WithIndex(command, 1)}), queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE((t.lower.PopWriteAsHex() == ("C0 03 " + hex)));
+	REQUIRE((t.lower->PopWriteAsHex() == ("C0 03 " + hex)));
 	t.context.OnSendResult(true);
 	REQUIRE(queue.values.empty());
 	t.SendToMaster("C0 81 00 00 " + hex);
 
 	t.exe->RunMany();
 
-	REQUIRE((t.lower.PopWriteAsHex() == ("C1 04 " + hex)));
+	REQUIRE((t.lower->PopWriteAsHex() == ("C1 04 " + hex)));
 	t.context.OnSendResult(true);
 	REQUIRE(queue.values.empty());
 	t.SendToMaster("C1 81 00 00 " + hex);

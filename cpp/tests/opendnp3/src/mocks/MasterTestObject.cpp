@@ -42,7 +42,7 @@ MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) 
 	log(),
 	exe(std::make_shared<MockExecutor>()),
 	meas(std::make_shared<MockSOEHandler>()),
-	lower(),
+	lower(std::make_shared<MockLowerLayer>()),
 	application(std::make_shared<MockMasterApplication>()),
 	context(log.logger, exe, lower, meas, application, params, lock)
 {}

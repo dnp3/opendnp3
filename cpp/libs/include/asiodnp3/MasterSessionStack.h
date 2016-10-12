@@ -98,11 +98,11 @@ public:
 
 private:
 
-	std::shared_ptr<asiopal::StrandExecutor> m_executor;		
-	std::shared_ptr<LinkSession> m_session;
-	opendnp3::StackStatistics m_statistics;
-	opendnp3::TransportStack m_stack;
-	opendnp3::MContext m_context;
+	std::shared_ptr<asiopal::StrandExecutor> executor;		
+	std::shared_ptr<LinkSession> session;
+	opendnp3::StackStatistics statistics;
+	opendnp3::TransportStack stack;
+	opendnp3::MContext context;
 };
 
 }

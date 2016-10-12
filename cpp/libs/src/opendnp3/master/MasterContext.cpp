@@ -41,21 +41,19 @@ namespace opendnp3
 MContext::MContext(
 	const openpal::Logger& logger,
 	const std::shared_ptr<openpal::IExecutor>& executor,	
-    ILowerLayer& lower,
+	const std::shared_ptr<ILowerLayer>& lower,
 	const std::shared_ptr<ISOEHandler>& SOEHandler,
 	const std::shared_ptr<IMasterApplication>& application,
-    const MasterParams& params_,
+    const MasterParams& params,
     ITaskLock& taskLock
 ) :
 	logger(logger),
 	executor(executor),
-	pLower(&lower),
-	params(params_),
+	lower(lower),
+	params(params),
 	SOEHandler(SOEHandler),	
 	application(application),
-	pTaskLock(&taskLock),
-	isOnline(false),
-	isSending(false),
+	pTaskLock(&taskLock),	
 	responseTimer(*executor),
 	scheduleTimer(*executor),
 	taskStartTimeoutTimer(*executor),
@@ -307,7 +305,7 @@ void MContext::Transmit(const RSlice& data)
 	logging::ParseAndLogRequestTx(this->logger, data);
 	assert(!this->isSending);
 	this->isSending = true;
-	this->pLower->BeginTransmit(data);
+	this->lower->BeginTransmit(data);
 }
 
 void MContext::StartResponseTimer()
