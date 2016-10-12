@@ -104,23 +104,23 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(
 }
 
 std::shared_ptr<asiopal::IListener> DNP3Manager::CreateListener(
-	std::string loggerid,
-	openpal::LogFilters loglevel,
-	asiopal::IPEndpoint endpoint,
-	std::shared_ptr<IListenCallbacks> callbacks,
-	std::error_code& ec
+    std::string loggerid,
+    openpal::LogFilters loglevel,
+    asiopal::IPEndpoint endpoint,
+    std::shared_ptr<IListenCallbacks> callbacks,
+    std::error_code& ec
 )
 {
 	return impl->CreateListener(loggerid, loglevel, endpoint, callbacks, ec);
 }
 
 std::shared_ptr<asiopal::IListener> DNP3Manager::CreateListener(
-	std::string loggerid,
-	openpal::LogFilters loglevel,
-	asiopal::IPEndpoint endpoint,
-	const asiopal::TLSConfig& config,
-	std::shared_ptr<IListenCallbacks> callbacks,
-	std::error_code& ec
+    std::string loggerid,
+    openpal::LogFilters loglevel,
+    asiopal::IPEndpoint endpoint,
+    const asiopal::TLSConfig& config,
+    std::shared_ptr<IListenCallbacks> callbacks,
+    std::error_code& ec
 )
 {
 	return impl->CreateListener(loggerid, loglevel, endpoint, config, callbacks, ec);

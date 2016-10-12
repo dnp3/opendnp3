@@ -191,23 +191,23 @@ public:
 	* Create a TCP listener that will be used to accept incoming connections
 	*/
 	std::shared_ptr<asiopal::IListener> CreateListener(
-		std::string loggerid,
-		openpal::LogFilters loglevel,
-		asiopal::IPEndpoint endpoint,
-		std::shared_ptr<IListenCallbacks> callbacks,
-		std::error_code& ec
+	    std::string loggerid,
+	    openpal::LogFilters loglevel,
+	    asiopal::IPEndpoint endpoint,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::error_code& ec
 	);
 
 	/**
 	* Create a TLS listener that will be used to accept incoming connections
 	*/
 	std::shared_ptr<asiopal::IListener> CreateListener(
-		std::string loggerid,
-		openpal::LogFilters loglevel,
-		asiopal::IPEndpoint endpoint,
-		const asiopal::TLSConfig& config,
-		std::shared_ptr<IListenCallbacks> callbacks,
-		std::error_code& ec
+	    std::string loggerid,
+	    openpal::LogFilters loglevel,
+	    asiopal::IPEndpoint endpoint,
+	    const asiopal::TLSConfig& config,
+	    std::shared_ptr<IListenCallbacks> callbacks,
+	    std::error_code& ec
 	);
 
 private:

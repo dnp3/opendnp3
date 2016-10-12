@@ -28,12 +28,10 @@
 #endif
 
 #include "asiodnp3/ErrorCodes.h"
-#include "asiodnp3/IOHandler.h"
 #include "asiodnp3/DNP3Channel.h"
 #include "asiodnp3/MasterTCPServer.h"
-
-#include "asiopal/TCPClientChannelFactory.h"
-#include "asiopal/TCPServerChannelFactory.h"
+#include "asiodnp3/TCPClientIOHandler.h"
+#include "asiodnp3/TCPServerIOHandler.h"
 
 using namespace openpal;
 using namespace asiopal;
@@ -77,13 +75,12 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
-	auto create = [&]()
+	auto create = [&]() -> std::shared_ptr<IChannel>
 	{
 		auto clogger = this->logger.Detach(id, levels);
 		auto executor = StrandExecutor::Create(this->io);
-		auto factory = TCPClientChannelFactory::Create(clogger, executor, retry, IPEndpoint(host, port), local);
-		auto iohandler = IOHandler::Create(clogger, factory, listener);
-		return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
+		auto iohandler = TCPClientIOHandler::Create(clogger, listener, executor, retry, IPEndpoint(host, port), local);		
+		return DNP3Channel::Create(clogger, executor, iohandler, this->resources);		
 	};
 
 	return this->resources->Bind<IChannel>(create);
@@ -97,14 +94,13 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
-	auto create = [&]()
+	auto create = [&]() -> std::shared_ptr<IChannel>
 	{
 		std::error_code ec;
 		auto clogger = this->logger.Detach(id, levels);
 		auto executor = StrandExecutor::Create(this->io);
-		auto factory = TCPServerChannelFactory::Create(clogger, executor, IPEndpoint(endpoint, port), ec);
-		auto iohandler = IOHandler::Create(clogger, factory, listener);
-		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
+		auto iohandler = TCPServerIOHandler::Create(clogger, listener, executor, IPEndpoint(endpoint, port), ec);				
+		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);		
 	};
 
 	return this->resources->Bind<IChannel>(create);
@@ -165,21 +161,21 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
 }
 
 std::shared_ptr<asiopal::IListener> DNP3ManagerImpl::CreateListener(
-	std::string loggerid,
-	openpal::LogFilters levels,
-	asiopal::IPEndpoint endpoint,
-	const std::shared_ptr<IListenCallbacks>& callbacks,
-	std::error_code& ec)
+    std::string loggerid,
+    openpal::LogFilters levels,
+    asiopal::IPEndpoint endpoint,
+    const std::shared_ptr<IListenCallbacks>& callbacks,
+    std::error_code& ec)
 {
 	auto create = [&]() -> std::shared_ptr<asiopal::IListener>
 	{
 		return asiodnp3::MasterTCPServer::Create(
-			this->logger.Detach(loggerid, levels),
-			asiopal::StrandExecutor::Create(this->io),
-			endpoint,
-			callbacks,
-			this->resources,
-			ec
+		    this->logger.Detach(loggerid, levels),
+		    asiopal::StrandExecutor::Create(this->io),
+		    endpoint,
+		    callbacks,
+		    this->resources,
+		    ec
 		);
 	};
 
@@ -194,12 +190,12 @@ std::shared_ptr<asiopal::IListener> DNP3ManagerImpl::CreateListener(
 }
 
 std::shared_ptr<asiopal::IListener> DNP3ManagerImpl::CreateListener(
-	std::string loggerid,
-	openpal::LogFilters levels,
-	asiopal::IPEndpoint endpoint,
-	const asiopal::TLSConfig& config,
-	const std::shared_ptr<IListenCallbacks>& callbacks,
-	std::error_code& ec)
+    std::string loggerid,
+    openpal::LogFilters levels,
+    asiopal::IPEndpoint endpoint,
+    const asiopal::TLSConfig& config,
+    const std::shared_ptr<IListenCallbacks>& callbacks,
+    std::error_code& ec)
 {
 
 #ifdef OPENDNP3_USE_TLS
@@ -207,13 +203,13 @@ std::shared_ptr<asiopal::IListener> DNP3ManagerImpl::CreateListener(
 	auto create = [&]() -> std::shared_ptr<asiopal::IListener>
 	{
 		return asiodnp3::MasterTLSServer::Create(
-			this->logger.Detach(loggerid, levels),
-			asiopal::StrandExecutor::Create(this->io),
-			endpoint,
-			config,
-			callbacks,
-			this->resources,
-			ec
+		    this->logger.Detach(loggerid, levels),
+		    asiopal::StrandExecutor::Create(this->io),
+		    endpoint,
+		    config,
+		    callbacks,
+		    this->resources,
+		    ec
 		);
 	};
 

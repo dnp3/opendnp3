@@ -32,11 +32,9 @@ namespace asiodnp3
 
 IOHandler::IOHandler(
     const openpal::Logger& logger,
-    const std::shared_ptr<asiopal::IChannelFactory>& factory,
     const std::shared_ptr<IChannelListener>& listener
 ) :
 	logger(logger),
-	factory(factory),
 	listener(listener),
 	parser(logger, &statistics)
 {
@@ -45,15 +43,16 @@ IOHandler::IOHandler(
 
 void IOHandler::Shutdown()
 {
-	if (factory)
+	if (!isShutdown)
 	{
-		this->factory->Shutdown();
+		this->isShutdown = true;
+
+		this->ShutdownImpl();
 
 		this->UpdateListener(ChannelState::SHUTDOWN);
 
 		if (channel)
 		{
-
 			this->channel->Shutdown();
 		}
 	}
@@ -112,13 +111,9 @@ bool IOHandler::Enable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 	}
 	else
 	{
-		auto cb = [self = this->shared_from_this()](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
-		{
-			self->OnNewChannel(channel);
-		};
-
 		this->UpdateListener(ChannelState::OPENING);
-		this->factory->BeginChannelAccept(cb);
+
+		this->BeginChannelAccept();
 	}
 
 	return true;
@@ -147,8 +142,7 @@ bool IOHandler::Disable(const std::shared_ptr<opendnp3::ILinkSession>& session)
 	if (!this->IsAnySessionEnabled())
 	{
 		this->Reset();
-
-		this->factory->SuspendChannelAccept();
+		this->SuspendChannelAccept();
 	}
 
 	return true;
@@ -167,14 +161,14 @@ bool IOHandler::Remove(const std::shared_ptr<opendnp3::ILinkSession>& session)
 
 	if (channel)
 	{
-		iter->LowerLayerDown();		
+		iter->LowerLayerDown();
 	}
 
 	sessions.erase(iter);
 
-	if (!this->IsAnySessionEnabled()) 
+	if (!this->IsAnySessionEnabled())
 	{
-		this->factory->SuspendChannelAccept();
+		this->SuspendChannelAccept();
 	}
 
 	return true;
@@ -220,15 +214,11 @@ void IOHandler::BeginRead()
 		if (ec)
 		{
 			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
+
 			self->Reset();
 
-			auto cb = [self](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
-			{
-				self->OnNewChannel(channel);
-			};
-
 			self->UpdateListener(ChannelState::OPENING);
-			self->factory->OnChannelShutdown(cb);
+			self->OnChannelShutdown();
 		}
 		else
 		{
@@ -263,7 +253,7 @@ void IOHandler::CheckForSend()
 			};
 
 			self->UpdateListener(ChannelState::OPENING);
-			self->factory->OnChannelShutdown(cb);
+			self->OnChannelShutdown();
 		}
 		else
 		{
@@ -290,8 +280,8 @@ bool IOHandler::SendToSession(const opendnp3::Route& route, const opendnp3::Link
 	}
 	else
 	{
-		return iter->OnFrame(header, userdata);		
-	}	
+		return iter->OnFrame(header, userdata);
+	}
 }
 
 bool IOHandler::IsRouteInUse(const Route& route) const
@@ -337,7 +327,7 @@ void IOHandler::Reset()
 		// notify any sessions that are online that this layer is offline
 		for (auto& item : this->sessions)
 		{
-			item.LowerLayerDown();			
+			item.LowerLayerDown();
 		}
 	}
 

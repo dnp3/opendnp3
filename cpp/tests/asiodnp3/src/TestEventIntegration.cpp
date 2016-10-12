@@ -38,13 +38,13 @@ using namespace asiodnp3;
 TEST_CASE(SUITE("TestEventIntegration"))
 {
 	const uint16_t START_PORT = 20000;
-	const uint16_t NUM_STACK_PAIRS = 10;
+	const uint16_t NUM_STACK_PAIRS = 1;
 
 	const uint16_t NUM_POINTS_PER_TYPE = 50;
 	const uint16_t EVENTS_PER_ITERATION = 50;
-	const int NUM_ITERATIONS = 1000;
+	const int NUM_ITERATIONS = 1;
 
-	const uint32_t LEVELS = flags::ERR | flags::WARN;
+	const uint32_t LEVELS = levels::ALL;// flags::ERR | flags::WARN;
 
 	const auto TEST_TIMEOUT = std::chrono::seconds(5);
 	const auto STACK_TIMEOUT = openpal::TimeDuration::Seconds(1);
@@ -52,7 +52,7 @@ TEST_CASE(SUITE("TestEventIntegration"))
 	// run with at least a concurrency of 2, but more if there are more cores
 	const auto concurreny = std::max<unsigned int>(std::thread::hardware_concurrency(), 2);
 
-	DNP3Manager manager(concurreny);
+	DNP3Manager manager(concurreny, ConsoleLogger::Create());
 
 	std::vector<std::unique_ptr<StackPair>> pairs;
 

@@ -105,20 +105,20 @@ public:
 	    std::error_code& ec);
 
 	std::shared_ptr<asiopal::IListener> CreateListener(
-		std::string loggerid,
-		openpal::LogFilters loglevel,
-		asiopal::IPEndpoint endpoint,
-		const std::shared_ptr<IListenCallbacks>& callbacks,
-		std::error_code& ec
+	    std::string loggerid,
+	    openpal::LogFilters loglevel,
+	    asiopal::IPEndpoint endpoint,
+	    const std::shared_ptr<IListenCallbacks>& callbacks,
+	    std::error_code& ec
 	);
 
 	std::shared_ptr<asiopal::IListener> CreateListener(
-		std::string loggerid,
-		openpal::LogFilters loglevel,
-		asiopal::IPEndpoint endpoint,
-		const asiopal::TLSConfig& config,
-		const std::shared_ptr<IListenCallbacks>& callbacks,
-		std::error_code& ec
+	    std::string loggerid,
+	    openpal::LogFilters loglevel,
+	    asiopal::IPEndpoint endpoint,
+	    const asiopal::TLSConfig& config,
+	    const std::shared_ptr<IListenCallbacks>& callbacks,
+	    std::error_code& ec
 	);
 
 private:

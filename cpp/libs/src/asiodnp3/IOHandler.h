@@ -51,18 +51,8 @@ public:
 
 	IOHandler(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::IChannelFactory>& factory,
 	    const std::shared_ptr<IChannelListener>& listener
 	);
-
-	static std::shared_ptr<IOHandler> Create(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::IChannelFactory>& factory,
-	    const std::shared_ptr<IChannelListener>& listener
-	)
-	{
-		return std::make_shared<IOHandler>(logger, factory, listener);
-	}
 
 	const opendnp3::LinkChannelStatistics& Statistics() const
 	{
@@ -95,10 +85,30 @@ public:
 	// Query to see if a route is in use
 	bool IsRouteInUse(const opendnp3::Route& route) const;
 
+protected:
+
+	// start getting a new channel
+	virtual void BeginChannelAccept() = 0;
+
+	// stop getting new channels
+	virtual void SuspendChannelAccept() = 0;
+
+	// shutdown any additional state
+	virtual void ShutdownImpl() = 0;
+
+	// the current channel has closed, start getting a new one
+	virtual void OnChannelShutdown() = 0;
+
+	// Called by the super class when a new channel is available
+	void OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel);
+
+	openpal::Logger logger;
+
+	const std::shared_ptr<IChannelListener> listener;
+
 private:
 
-	// Called when a new channel is available
-	void OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel);
+	bool isShutdown = false;
 
 	inline void UpdateListener(opendnp3::ChannelState state)
 	{
@@ -125,36 +135,42 @@ private:
 		Session(const std::shared_ptr<opendnp3::ILinkSession>& session, const opendnp3::Route& route) :
 			route(route),
 			session(session)
-		{}		
+		{}
 
 		Session() = default;
-		
-		inline bool Matches(const std::shared_ptr<opendnp3::ILinkSession>& session) const { return this->session == session; }
-		inline bool Matches(const opendnp3::Route& route) const { return this->route.Equals(route); }
+
+		inline bool Matches(const std::shared_ptr<opendnp3::ILinkSession>& session) const
+		{
+			return this->session == session;
+		}
+		inline bool Matches(const opendnp3::Route& route) const
+		{
+			return this->route.Equals(route);
+		}
 
 		inline bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
 		{
 			return this->session->OnFrame(header, userdata);
 		}
 
-		inline bool LowerLayerUp() 
-		{ 
-			if (enabled && !online) 
+		inline bool LowerLayerUp()
+		{
+			if (enabled && !online)
 			{
 				online = true;
-				return this->session->OnLowerLayerUp();				 
+				return this->session->OnLowerLayerUp();
 			}
 			else
 			{
 				return false;
 			}
 		}
-		
-		inline bool LowerLayerDown() 
-		{ 
+
+		inline bool LowerLayerDown()
+		{
 			if (enabled && online)
 			{
-				online = false;				
+				online = false;
 				return this->session->OnLowerLayerDown();
 			}
 			else
@@ -167,7 +183,7 @@ private:
 
 	private:
 
-		opendnp3::Route route;		
+		opendnp3::Route route;
 		bool online = false;
 		std::shared_ptr<opendnp3::ILinkSession> session;
 	};
@@ -187,10 +203,6 @@ private:
 
 	std::vector<Session> sessions;
 	std::deque<Transmission>  txQueue;
-
-	openpal::Logger logger;
-	const std::shared_ptr<asiopal::IChannelFactory> factory;
-	const std::shared_ptr<IChannelListener> listener;
 
 	opendnp3::LinkChannelStatistics statistics;
 	opendnp3::LinkLayerParser parser;
