@@ -79,7 +79,7 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 	const int NUM_THREAD = 10;
 	testlib::MockLogHandler log;
 	int counter = 0;
-	
+
 	auto io = std::make_shared<IO>();
 
 	{
@@ -92,7 +92,7 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 			auto getvalue = []() -> int { return 1; };
 			counter += exe->ReturnFrom<int>(getvalue);
 		}
-	}	
+	}
 
 
 	REQUIRE(counter == 100);

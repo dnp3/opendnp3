@@ -53,11 +53,17 @@ DNP3ManagerImpl::DNP3ManagerImpl(
 	resources(ResourceManager::Create())
 {}
 
+DNP3ManagerImpl::~DNP3ManagerImpl()
+{
+	this->Shutdown();
+}
+
 void DNP3ManagerImpl::Shutdown()
 {
 	if (resources)
 	{
 		resources->Shutdown();
+		resources.reset();
 	}
 }
 

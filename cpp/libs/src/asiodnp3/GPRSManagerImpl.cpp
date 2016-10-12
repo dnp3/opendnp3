@@ -43,7 +43,7 @@ GPRSManagerImpl::GPRSManagerImpl(uint32_t concurrencyHint, std::shared_ptr<openp
 
 GPRSManagerImpl::~GPRSManagerImpl()
 {
-	this->BeginShutdown();	
+	this->BeginShutdown();
 }
 
 void GPRSManagerImpl::BeginShutdown()

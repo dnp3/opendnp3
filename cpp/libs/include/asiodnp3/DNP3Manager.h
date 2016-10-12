@@ -67,6 +67,7 @@ public:
 
 	~DNP3Manager();
 
+
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop
 	* the thead pool.

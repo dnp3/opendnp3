@@ -45,11 +45,11 @@ public:
 
 	ThreadPool(
 	    const openpal::Logger& logger,
-		const std::shared_ptr<IO>& io,
+	    const std::shared_ptr<IO>& io,
 	    uint32_t levels,
-        uint32_t concurrency,
-        std::function<void()> onThreadStart = []() {},
-        std::function<void()> onThreadExit = []() {}
+	    uint32_t concurrency,
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
 	);
 
 	~ThreadPool();

@@ -51,6 +51,8 @@ public:
 	    std::function<void()> onThreadExit
 	);
 
+	~DNP3ManagerImpl();
+
 	void Shutdown();
 
 	std::shared_ptr<IChannel> AddTCPClient(

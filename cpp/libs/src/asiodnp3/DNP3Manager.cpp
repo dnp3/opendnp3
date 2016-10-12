@@ -36,9 +36,7 @@ DNP3Manager::DNP3Manager(
 }
 
 DNP3Manager::~DNP3Manager()
-{
-	impl->Shutdown();
-}
+{}
 
 void DNP3Manager::Shutdown()
 {
