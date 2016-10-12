@@ -55,10 +55,10 @@ MasterSessionStack::MasterSessionStack(
 	session(session),
 	statistics(),
 	stack(logger, executor, application, config.master.maxRxFragSize, &statistics, config.link),
-	context(logger, executor, stack.transport, SOEHandler, application, config.master, NullTaskLock::Instance())
+	context(MContext::Create(logger, executor, stack.transport, SOEHandler, application, config.master, NullTaskLock::Instance()))
 {
 	stack.link.SetRouter(linktx);
-	stack.transport->SetAppLayer(context);
+	stack.transport->SetAppLayer(*context);
 }
 
 void MasterSessionStack::OnLowerLayerUp()
@@ -111,69 +111,69 @@ StackStatistics MasterSessionStack::GetStackStatistics()
 MasterScan MasterSessionStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
 {
 	auto builder = ConvertToLambda(headers);
-	auto get = [self = shared_from_this(), period, builder, config]() -> MasterScan { return self->context.AddScan(period, builder, config); };
+	auto get = [self = shared_from_this(), period, builder, config]() -> MasterScan { return self->context->AddScan(period, builder, config); };
 	return executor->ReturnFrom<MasterScan>(get);
 }
 
 MasterScan MasterSessionStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
 {
-	auto get = [self = shared_from_this(), gvId, period, config] { return self->context.AddAllObjectsScan(gvId, period, config); };
+	auto get = [self = shared_from_this(), gvId, period, config] { return self->context->AddAllObjectsScan(gvId, period, config); };
 	return executor->ReturnFrom<MasterScan>(get);
 }
 
 MasterScan MasterSessionStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
 {
-	auto get = [self = shared_from_this(), field, period, config] { return self->context.AddClassScan(field, period, config); };
+	auto get = [self = shared_from_this(), field, period, config] { return self->context->AddClassScan(field, period, config); };
 	return executor->ReturnFrom<MasterScan>(get);
 }
 
 MasterScan MasterSessionStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
 {
-	auto get = [self = shared_from_this(), gvId, start, stop, period, config] { return self->context.AddRangeScan(gvId, start, stop, period, config); };
+	auto get = [self = shared_from_this(), gvId, start, stop, period, config] { return self->context->AddRangeScan(gvId, start, stop, period, config); };
 	return executor->ReturnFrom<MasterScan>(get);
 }
 
 void MasterSessionStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)
 {
 	auto builder = ConvertToLambda(headers);
-	auto action = [self = shared_from_this(), builder, config]() -> void { self->context.Scan(builder, config); };
+	auto action = [self = shared_from_this(), builder, config]() -> void { self->context->Scan(builder, config); };
 	return executor->strand.post(action);
 }
 
 void MasterSessionStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config)
 {
-	auto action = [self = shared_from_this(), gvId, config]() -> void { self->context.ScanAllObjects(gvId, config); };
+	auto action = [self = shared_from_this(), gvId, config]() -> void { self->context->ScanAllObjects(gvId, config); };
 	return executor->strand.post(action);
 }
 
 void MasterSessionStack::ScanClasses(const ClassField& field, const TaskConfig& config)
 {
-	auto action = [self = shared_from_this(), field, config]() -> void { self->context.ScanClasses(field, config); };
+	auto action = [self = shared_from_this(), field, config]() -> void { self->context->ScanClasses(field, config); };
 	return executor->strand.post(action);
 }
 
 void MasterSessionStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config)
 {
-	auto action = [self = shared_from_this(), gvId, start, stop, config]() -> void { self->context.ScanRange(gvId, start, stop, config); };
+	auto action = [self = shared_from_this(), gvId, start, stop, config]() -> void { self->context->ScanRange(gvId, start, stop, config); };
 	return executor->strand.post(action);
 }
 
 void MasterSessionStack::Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config)
 {
-	auto action = [self = shared_from_this(), value, index, config]() -> void { self->context.Write(value, index, config); };
+	auto action = [self = shared_from_this(), value, index, config]() -> void { self->context->Write(value, index, config); };
 	return executor->strand.post(action);
 }
 
 void MasterSessionStack::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 {
-	auto action = [self = shared_from_this(), op, callback, config]() -> void { self->context.Restart(op, callback, config); };
+	auto action = [self = shared_from_this(), op, callback, config]() -> void { self->context->Restart(op, callback, config); };
 	return executor->strand.post(action);
 }
 
 void MasterSessionStack::PerformFunction(const std::string& name, FunctionCode func, const std::vector<Header>& headers, const TaskConfig& config)
 {
 	auto builder = ConvertToLambda(headers);
-	auto action = [self = shared_from_this(), name, func, builder, config]() -> void { self->context.PerformFunction(name, func, builder, config); };
+	auto action = [self = shared_from_this(), name, func, builder, config]() -> void { self->context->PerformFunction(name, func, builder, config); };
 	return executor->strand.post(action);
 }
 
@@ -186,7 +186,7 @@ void MasterSessionStack::SelectAndOperate(CommandSet&& commands, const CommandCa
 
 	auto action = [self = shared_from_this(), set, config, callback]() -> void
 	{
-		self->context.SelectAndOperate(std::move(*set), callback, config);
+		self->context->SelectAndOperate(std::move(*set), callback, config);
 	};
 	executor->strand.post(action);
 }
@@ -198,7 +198,7 @@ void MasterSessionStack::DirectOperate(CommandSet&& commands, const CommandCallb
 
 	auto action = [self = shared_from_this(), set, config, callback]() -> void
 	{
-		self->context.DirectOperate(std::move(*set), callback, config);
+		self->context->DirectOperate(std::move(*set), callback, config);
 	};
 	executor->strand.post(action);
 }

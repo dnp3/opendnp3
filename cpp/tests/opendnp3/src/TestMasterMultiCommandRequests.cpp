@@ -39,7 +39,7 @@ using namespace openpal;
 TEST_CASE(SUITE("command set ignores empty headers"))
 {
 	MasterTestObject t(NoStartupTasks());
-	t.context.OnLowerLayerUp();
+	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
 
@@ -48,7 +48,7 @@ TEST_CASE(SUITE("command set ignores empty headers"))
 	commands.Add<ControlRelayOutputBlock>({ WithIndex(crob, 1) });
 
 	CommandCallbackQueue queue;
-	t.context.DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+	t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 
 	// writes just the 2nd call to Add()
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 05 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
@@ -61,7 +61,7 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 
 
 	MasterTestObject t(NoStartupTasks());
-	t.context.OnLowerLayerUp();
+	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
 
@@ -69,10 +69,10 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 	commands.Add<ControlRelayOutputBlock>({ WithIndex(crob, 1), WithIndex(crob, 7) });
 
 	CommandCallbackQueue queue;
-	t.context.DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+	t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 
 	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 05 " + crobstr); // DO
-	t.context.OnSendResult(true);
+	t.context->OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + crobstr);
 
 	t.exe->RunMany();
@@ -98,7 +98,7 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 
 
 	MasterTestObject t(NoStartupTasks());
-	t.context.OnLowerLayerUp();
+	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
 	AnalogOutputInt16 ao(0x1234);
@@ -108,16 +108,16 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 	commands.Add<AnalogOutputInt16>({ WithIndex(ao, 8) });
 
 	CommandCallbackQueue queue;
-	t.context.SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+	t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + headers); // select
-	t.context.OnSendResult(true);
+	t.context->OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + headers);
 
 	t.exe->RunMany();
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + headers); // operate
-	t.context.OnSendResult(true);
+	t.context->OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 " + headers);
 
 	t.exe->RunMany();

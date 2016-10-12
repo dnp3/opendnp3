@@ -43,8 +43,8 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 	MasterTestObject t1(params, taskLock);
 	MasterTestObject t2(params, taskLock);
 
-	t1.context.OnLowerLayerUp();
-	t2.context.OnLowerLayerUp();
+	t1.context->OnLowerLayerUp();
+	t2.context->OnLowerLayerUp();
 
 	t1.exe->RunMany();
 	t2.exe->RunMany();
@@ -52,7 +52,7 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	REQUIRE(t2.lower->PopWriteAsHex() == "");
 
-	t1.context.OnSendResult(true);
+	t1.context->OnSendResult(true);
 	t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
 
 	t1.exe->RunMany();
@@ -61,7 +61,7 @@ TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 	REQUIRE(t1.lower->PopWriteAsHex() == "");
 	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 
-	t2.context.OnSendResult(true);
+	t2.context->OnSendResult(true);
 	t2.SendToMaster(hex::EmptyResponse(0));
 
 	t1.exe->RunMany();
@@ -82,8 +82,8 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock")
 	MasterTestObject t1(params, taskLock);
 	MasterTestObject t2(params, taskLock);
 
-	t1.context.OnLowerLayerUp();
-	t2.context.OnLowerLayerUp();
+	t1.context->OnLowerLayerUp();
+	t2.context->OnLowerLayerUp();
 
 	t1.exe->RunMany();
 	t2.exe->RunMany();
@@ -91,9 +91,9 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock")
 	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	REQUIRE(t2.lower->PopWriteAsHex() == "");
 
-	t1.context.OnSendResult(true);
+	t1.context->OnSendResult(true);
 	// instead of sending a reply, shutdown the first master
-	t1.context.OnLowerLayerDown();
+	t1.context->OnLowerLayerDown();
 
 	t1.exe->RunMany();
 	t2.exe->RunMany();

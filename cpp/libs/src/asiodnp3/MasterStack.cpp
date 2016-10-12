@@ -44,9 +44,9 @@ MasterStack::MasterStack(
     ITaskLock& taskLock) :
 
 	StackBase(logger, executor, application, iohandler, shutdown, config.master.maxRxFragSize, config.link),
-	mcontext(logger, executor, tstack.transport, SOEHandler, application,  config.master, taskLock)
+	mcontext(MContext::Create(logger, executor, tstack.transport, SOEHandler, application,  config.master, taskLock))
 {
-	tstack.transport->SetAppLayer(mcontext);
+	tstack.transport->SetAppLayer(*mcontext);
 }
 
 bool MasterStack::Enable()
@@ -93,7 +93,7 @@ MasterScan MasterStack::AddScan(openpal::TimeDuration period, const std::vector<
 	auto builder = ConvertToLambda(headers);
 	auto add = [self = this->shared_from_this(), builder, period, config]()
 	{
-		return self->mcontext.AddScan(period, builder, config);
+		return self->mcontext->AddScan(period, builder, config);
 	};
 	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
 }
@@ -102,7 +102,7 @@ MasterScan MasterStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDu
 {
 	auto add = [self = this->shared_from_this(), gvId, period, config]()
 	{
-		return self->mcontext.AddAllObjectsScan(gvId, period, config);
+		return self->mcontext->AddAllObjectsScan(gvId, period, config);
 	};
 	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
 }
@@ -111,7 +111,7 @@ MasterScan MasterStack::AddClassScan(const ClassField& field, openpal::TimeDurat
 {
 	auto add = [self = this->shared_from_this(), field, period, config]()
 	{
-		return self->mcontext.AddClassScan(field, period, config);
+		return self->mcontext->AddClassScan(field, period, config);
 	};
 
 	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
@@ -121,7 +121,7 @@ MasterScan MasterStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint
 {
 	auto add = [self = this->shared_from_this(), gvId, start, stop, period, config]()
 	{
-		return self->mcontext.AddRangeScan(gvId, start, stop, period, config);
+		return self->mcontext->AddRangeScan(gvId, start, stop, period, config);
 	};
 	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
 }
@@ -130,7 +130,7 @@ void MasterStack::Scan(const std::vector<Header>& headers, const TaskConfig& con
 {
 	auto add = [self = this->shared_from_this(), builder = ConvertToLambda(headers), config]()
 	{
-		return self->mcontext.Scan(builder, config);
+		return self->mcontext->Scan(builder, config);
 	};
 	return this->executor->strand.post(add);
 }
@@ -139,7 +139,7 @@ void MasterStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config
 {
 	auto add = [self = this->shared_from_this(), gvId, config]()
 	{
-		return self->mcontext.ScanAllObjects(gvId, config);
+		return self->mcontext->ScanAllObjects(gvId, config);
 	};
 	return this->executor->strand.post(add);
 }
@@ -148,7 +148,7 @@ void MasterStack::ScanClasses(const ClassField& field, const TaskConfig& config)
 {
 	auto add = [self = this->shared_from_this(), field, config]()
 	{
-		return self->mcontext.ScanClasses(field, config);
+		return self->mcontext->ScanClasses(field, config);
 	};
 	return this->executor->strand.post(add);
 }
@@ -157,7 +157,7 @@ void MasterStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop
 {
 	auto add = [self = this->shared_from_this(), gvId, start, stop, config]()
 	{
-		return self->mcontext.ScanRange(gvId, start, stop, config);
+		return self->mcontext->ScanRange(gvId, start, stop, config);
 	};
 	return this->executor->strand.post(add);
 }
@@ -166,7 +166,7 @@ void MasterStack::Write(const TimeAndInterval& value, uint16_t index, const Task
 {
 	auto add = [self = this->shared_from_this(), value, index, config]()
 	{
-		return self->mcontext.Write(value, index, config);
+		return self->mcontext->Write(value, index, config);
 	};
 	return this->executor->strand.post(add);
 }
@@ -175,7 +175,7 @@ void MasterStack::Restart(RestartType op, const RestartOperationCallbackT& callb
 {
 	auto add = [self = this->shared_from_this(), op, callback, config]()
 	{
-		return self->mcontext.Restart(op, callback, config);
+		return self->mcontext->Restart(op, callback, config);
 	};
 	return this->executor->strand.post(add);
 }
@@ -184,7 +184,7 @@ void MasterStack::PerformFunction(const std::string& name, FunctionCode func, co
 {
 	auto add = [self = this->shared_from_this(), name, func, builder = ConvertToLambda(headers), config]()
 	{
-		return self->mcontext.PerformFunction(name, func, builder, config);
+		return self->mcontext->PerformFunction(name, func, builder, config);
 	};
 	return this->executor->strand.post(add);
 }
@@ -196,7 +196,7 @@ void MasterStack::SelectAndOperate(opendnp3::CommandSet&& commands, const opendn
 
 	auto action = [self = this->shared_from_this(), set, config, callback]()
 	{
-		self->mcontext.SelectAndOperate(std::move(*set), callback, config);
+		self->mcontext->SelectAndOperate(std::move(*set), callback, config);
 	};
 
 	this->executor->strand.post(action);
@@ -209,7 +209,7 @@ void MasterStack::DirectOperate(opendnp3::CommandSet&& commands, const opendnp3:
 
 	auto action = [self = this->shared_from_this(), set, config, callback]()
 	{
-		self->mcontext.DirectOperate(std::move(*set), callback, config);
+		self->mcontext->DirectOperate(std::move(*set), callback, config);
 	};
 
 	this->executor->strand.post(action);

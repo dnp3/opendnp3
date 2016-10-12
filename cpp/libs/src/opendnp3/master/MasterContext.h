@@ -47,7 +47,7 @@ namespace opendnp3
 /*
 	All of the mutable state and configuration for a master
 */
-class MContext : public IUpperLayer, private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
+class MContext : public IUpperLayer, public std::enable_shared_from_this<MContext>, private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
 {
 
 protected:
@@ -70,6 +70,19 @@ public:
 	    const MasterParams& params,
 	    ITaskLock& taskLock
 	);
+
+	static std::shared_ptr<MContext> Create(
+		const openpal::Logger& logger,
+		const std::shared_ptr<openpal::IExecutor>& executor,
+		const std::shared_ptr<ILowerLayer>& lower,
+		const std::shared_ptr<ISOEHandler>& SOEHandler,
+		const std::shared_ptr<IMasterApplication>& application,
+		const MasterParams& params,
+		ITaskLock& taskLock
+	)
+	{
+		return std::make_shared<MContext>(logger, executor, lower, SOEHandler, application, params, taskLock);
+	}
 
 	openpal::Logger logger;
 	const std::shared_ptr<openpal::IExecutor> executor;

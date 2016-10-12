@@ -137,7 +137,7 @@ public:
 
 protected:
 
-	opendnp3::MContext mcontext;
+	std::shared_ptr<opendnp3::MContext> mcontext;
 };
 
 }

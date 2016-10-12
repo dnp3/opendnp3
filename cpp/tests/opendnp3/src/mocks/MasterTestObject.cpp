@@ -44,13 +44,13 @@ MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) 
 	meas(std::make_shared<MockSOEHandler>()),
 	lower(std::make_shared<MockLowerLayer>()),
 	application(std::make_shared<MockMasterApplication>()),
-	context(log.logger, exe, lower, meas, application, params, lock)
+	context(std::make_shared<MContext>(log.logger, exe, lower, meas, application, params, lock))
 {}
 
 void MasterTestObject::SendToMaster(const std::string& hex)
 {
 	HexSequence hs(hex);
-	context.OnReceive(hs.ToRSlice());
+	context->OnReceive(hs.ToRSlice());
 }
 
 }

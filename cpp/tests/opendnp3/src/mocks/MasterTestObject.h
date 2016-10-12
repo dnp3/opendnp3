@@ -50,7 +50,7 @@ public:
 	std::shared_ptr<MockSOEHandler> meas;
 	std::shared_ptr<MockLowerLayer> lower;
 	std::shared_ptr<MockMasterApplication> application;
-	MContext context;
+	std::shared_ptr<MContext> context;
 };
 
 }

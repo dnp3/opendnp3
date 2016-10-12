@@ -319,9 +319,9 @@ void MContext::StartResponseTimer()
 
 void MContext::PostCheckForTask()
 {
-	auto callback = [this]()
+	auto callback = [self = shared_from_this()]()
 	{
-		this->CheckForTask();
+		self->CheckForTask();
 	};
 	this->executor->Post(callback);
 }

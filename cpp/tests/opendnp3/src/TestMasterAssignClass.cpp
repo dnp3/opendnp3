@@ -39,12 +39,12 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));
 	t.application->assignClassHeaders.push_back(Header::AllObjects(3, 0));
 
-	t.context.OnLowerLayerUp();
+	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 16 3C 02 06 03 00 06");
-	t.context.OnSendResult(true);
+	t.context->OnSendResult(true);
 	t.SendToMaster("C0 81 00 00");
 
 	t.exe->RunMany();
@@ -68,7 +68,7 @@ TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))
 	t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));
 	t.application->assignClassHeaders.push_back(Header::AllObjects(3, 0));
 
-	t.context.OnLowerLayerUp();
+	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
 
