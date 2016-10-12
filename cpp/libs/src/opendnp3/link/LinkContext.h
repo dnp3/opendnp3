@@ -55,7 +55,7 @@ class LinkContext
 
 public:
 
-	LinkContext(openpal::Logger logger, openpal::IExecutor&, IUpperLayer& upper, opendnp3::ILinkListener&, ILinkSession& session, const LinkConfig&);
+	LinkContext(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>&, IUpperLayer& upper, opendnp3::ILinkListener&, ILinkSession& session, const LinkConfig&);
 
 
 	/// ---- helpers for dealing with the FCB bits ----
@@ -124,7 +124,9 @@ public:
 	ITransportSegment* pSegments;
 	LinkTransmitMode txMode;
 	uint32_t numRetryRemaining;
-	openpal::IExecutor* pExecutor;
+
+	const std::shared_ptr<openpal::IExecutor> executor;
+
 	openpal::TimerRef rspTimeoutTimer;
 	openpal::TimerRef keepAliveTimer;
 	bool nextReadFCB;
@@ -133,6 +135,8 @@ public:
 	bool isRemoteReset;
 	bool keepAliveTimeout;
 	openpal::MonotonicTimestamp lastMessageTimestamp;
+
+
 	ILinkTx* pRouter;
 	PriStateBase* pPriState;
 	SecStateBase* pSecState;

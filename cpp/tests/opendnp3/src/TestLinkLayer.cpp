@@ -241,7 +241,7 @@ TEST_CASE(SUITE("SendUnconfirmed"))
 	REQUIRE(t.NumTotalWrites() ==  1);
 	t.link.OnTransmitResult(true);
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.upper.GetState().successCnt ==  1);
 	REQUIRE(t.NumTotalWrites() ==  1);
@@ -257,7 +257,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	t.link.Send(segments);
 	t.link.OnTransmitResult(true);
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.upper.CountersEqual(1, 0));
 	t.link.OnLowerLayerDown(); //take it down during the middle of a send
@@ -289,8 +289,8 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 	REQUIRE(t.upper.CountersEqual(0, 0));
 
 	REQUIRE(t.log.IsLogErrorFree());
-	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe->AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(0, 1));
 	REQUIRE(t.log.PopOneEntry(flags::WARN));
 }
@@ -308,8 +308,8 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	t.link.Send(segments);
 	REQUIRE(t.NumTotalWrites() == 1);
 	t.link.OnTransmitResult(true);
-	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunMany() > 0); // timeout the wait for Ack
+	t.exe->AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe->RunMany() > 0); // timeout the wait for Ack
 
 	REQUIRE(t.upper.CountersEqual(0, 0)); //check that the send is still occuring
 	REQUIRE(t.NumTotalWrites() == 2);
@@ -323,8 +323,8 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 
 	t.link.OnTransmitResult(true);
 
-	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunMany() > 0); //timeout the ACK
+	t.exe->AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe->RunMany() > 0); //timeout the ACK
 	REQUIRE(t.upper.CountersEqual(0, 1));
 
 	// Test retry reset
@@ -334,8 +334,8 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.log.IsLogErrorFree());
-	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe->AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(0, 1)); //check that the send is still occuring
 }
 
@@ -357,7 +357,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	t.link.OnTransmitResult(true);
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);
 
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(1, 0));
 
 	segments.Reset();
@@ -366,14 +366,14 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.log.IsLogErrorFree());
-	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne()); // timeout
+	t.exe->AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe->RunOne()); // timeout
 	REQUIRE(t.upper.CountersEqual(1, 0)); //check that the send is still occuring
 	REQUIRE(t.NumTotalWrites() ==  4);
 	t.link.OnTransmitResult(true);
 
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(2, 0));
 
 	// Test retry reset
@@ -383,8 +383,8 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.log.IsLogErrorFree());
-	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne());
+	t.exe->AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe->RunOne());
 	REQUIRE(t.upper.CountersEqual(2, 0)); //check that the send is still occuring
 }
 
@@ -406,15 +406,15 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	REQUIRE(t.NumTotalWrites() ==  2);
 	t.link.OnTransmitResult(true);
 
-	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunMany() > 0); //timeout the ConfData, check that it retransmits
+	t.exe->AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe->RunMany() > 0); //timeout the ConfData, check that it retransmits
 	REQUIRE(t.NumTotalWrites() ==  3);
 
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, IncrementHex(0x00, 250)));
 	t.link.OnTransmitResult(true);
 
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.NumTotalWrites() ==  3);
 	REQUIRE(t.upper.CountersEqual(1, 0));
 }
@@ -435,8 +435,8 @@ TEST_CASE(SUITE("ResetLinkRetries"))
 		REQUIRE(t.NumTotalWrites() ==  i); // sends link retry
 		REQUIRE(t.PopLastWriteAsHex() == LinkHex::ResetLinkStates(true, 1024, 1));
 		t.link.OnTransmitResult(true);
-		t.exe.AdvanceTime(cfg.Timeout);
-		REQUIRE(t.exe.RunMany() > 0); //timeout
+		t.exe->AdvanceTime(cfg.Timeout);
+		REQUIRE(t.exe->RunMany() > 0); //timeout
 	}
 
 	REQUIRE(t.NumTotalWrites() ==  4);
@@ -487,8 +487,8 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, IncrementHex(0x00, 250))); // check that data was sent
 	t.link.OnTransmitResult(true);
 
-	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunMany() > 0); //trigger the timeout callback
+	t.exe->AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe->RunMany() > 0); //trigger the timeout callback
 	REQUIRE(t.upper.CountersEqual(0, 1));
 }
 
@@ -507,7 +507,7 @@ TEST_CASE(SUITE("SendDataSuccess"))
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);
 	t.link.OnTransmitResult(true);
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);
-	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.upper.CountersEqual(1, 0));
 
 	segments.Reset();

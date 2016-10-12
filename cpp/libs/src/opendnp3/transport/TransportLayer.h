@@ -42,7 +42,7 @@ class TransportLayer : public IUpperLayer, public ILowerLayer
 
 public:
 
-	TransportLayer(openpal::Logger logger, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics_ = nullptr);
+	TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* pStatistics_ = nullptr);
 
 	/// ILowerLayer
 
@@ -66,9 +66,7 @@ private:
 
 	// ---- state ----
 	bool isOnline;
-	bool isSending;
-
-	openpal::IExecutor* pExecutor;
+	bool isSending;	
 
 	// ----- Transmitter and Receiver Classes ------
 	TransportRx receiver;

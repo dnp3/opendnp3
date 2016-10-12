@@ -35,13 +35,12 @@ namespace opendnp3
 {
 
 
-TransportLayer::TransportLayer(openpal::Logger logger, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
+TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
 	logger(logger),
 	pUpperLayer(nullptr),
 	pLinkLayer(nullptr),
 	isOnline(false),
-	isSending(false),
-	pExecutor(&executor),
+	isSending(false),	
 	receiver(logger, maxRxFragSize, pStatistics),
 	transmitter(logger, pStatistics)
 {
@@ -63,15 +62,9 @@ void TransportLayer::BeginTransmit(const RSlice& apdu)
 
 	if (apdu.IsEmpty())
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
-		auto lambda = [this]()
-		{
-			this->OnSendResult(false);
-		};
-		pExecutor->Post(lambda);
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");		
 		return;
 	}
-
 
 	if (isSending)
 	{
@@ -81,12 +74,7 @@ void TransportLayer::BeginTransmit(const RSlice& apdu)
 
 	if (!pLinkLayer)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
-		auto lambda = [this]()
-		{
-			this->OnSendResult(false);
-		};
-		pExecutor->Post(lambda);
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");		
 		return;
 	}
 

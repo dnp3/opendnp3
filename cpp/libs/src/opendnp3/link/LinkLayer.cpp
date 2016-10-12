@@ -25,7 +25,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(openpal::Logger logger, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& listener, const LinkConfig& config) :
+LinkLayer::LinkLayer(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>& executor, IUpperLayer& upper, opendnp3::ILinkListener& listener, const LinkConfig& config) :
 	ctx(logger, executor, upper, listener, *this, config)
 {}
 

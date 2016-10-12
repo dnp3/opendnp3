@@ -51,7 +51,7 @@ public:
 	static LinkConfig DefaultConfig();
 
 	testlib::MockLogHandler log;
-	testlib::MockExecutor exe;
+	std::shared_ptr<testlib::MockExecutor> exe;
 	MockLinkListener listener;
 	MockTransportLayer upper;
 	LinkLayer link;

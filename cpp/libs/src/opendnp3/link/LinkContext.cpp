@@ -35,21 +35,28 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkContext::LinkContext(openpal::Logger logger, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config) :
+LinkContext::LinkContext(
+	const openpal::Logger& logger, 
+	const std::shared_ptr<openpal::IExecutor>& executor, 
+	IUpperLayer& upper, 
+	opendnp3::ILinkListener& linkListener, 
+	ILinkSession& session, 
+	const LinkConfig& config) 
+:
 	logger(logger),
 	config(config),
 	pSegments(nullptr),
 	txMode(LinkTransmitMode::Idle),
 	numRetryRemaining(0),
-	pExecutor(&executor),
-	rspTimeoutTimer(executor),
-	keepAliveTimer(executor),
+	executor(executor),
+	rspTimeoutTimer(*executor),
+	keepAliveTimer(*executor),
 	nextReadFCB(false),
 	nextWriteFCB(false),
 	isOnline(false),
 	isRemoteReset(false),
 	keepAliveTimeout(false),
-	lastMessageTimestamp(executor.GetTime()),
+	lastMessageTimestamp(executor->GetTime()),
 	pRouter(nullptr),
 	pPriState(&PLLS_Idle::Instance()),
 	pSecState(&SLLS_NotReset::Instance()),
@@ -66,7 +73,7 @@ bool LinkContext::OnLowerLayerUp()
 		return false;
 	}
 
-	const auto now = this->pExecutor->GetTime();
+	const auto now = this->executor->GetTime();
 
 	this->isOnline = true;
 
@@ -262,12 +269,12 @@ void LinkContext::CompleteSendOperation(bool success)
 
 	if (pUpperLayer)
 	{
-		auto callback = [this, success]()
+		auto callback = [upper = this->pUpperLayer, success]()
 		{
-			this->pUpperLayer->OnSendResult(success);
+			upper->OnSendResult(success);
 		};
 
-		pExecutor->Post(callback);
+		this->executor->Post(callback);
 	}
 }
 
@@ -286,7 +293,7 @@ void LinkContext::TryStartTransmission()
 
 void LinkContext::OnKeepAliveTimeout()
 {
-	const auto now = this->pExecutor->GetTime();
+	const auto now = this->executor->GetTime();
 
 	auto elapsed = now.milliseconds - this->lastMessageTimestamp.milliseconds;
 
@@ -361,7 +368,7 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 	}
 
 	// reset the keep-alive timestamp
-	this->lastMessageTimestamp = this->pExecutor->GetTime();
+	this->lastMessageTimestamp = this->executor->GetTime();
 
 	switch (header.func)
 	{

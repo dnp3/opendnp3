@@ -20,6 +20,8 @@
  */
 #include "OutstationStack.h"
 
+#include <iostream>
+
 using namespace opendnp3;
 
 namespace asiodnp3
@@ -78,8 +80,21 @@ bool OutstationStack::Disable()
 
 void OutstationStack::Shutdown()
 {
-	auto action = [self = shared_from_this()] { return self->iohandler->Remove(self); };
-	this->executor->BlockUntil(action);
+	auto shutdown = [self = shared_from_this()]
+	{
+		std::cout << "begin outstation shutdown" << std::endl;
+		return self->iohandler->Remove(self);
+		std::cout << "end outstation shutdown" << std::endl;
+	};
+
+	this->executor->BlockUntil(shutdown);
+
+	auto flush = [self = shared_from_this()]()
+	{
+		std::cout << "Outstation: flushing strand" << std::endl;
+	};
+
+	this->executor->BlockUntil(flush);
 }
 
 opendnp3::StackStatistics OutstationStack::GetStackStatistics()

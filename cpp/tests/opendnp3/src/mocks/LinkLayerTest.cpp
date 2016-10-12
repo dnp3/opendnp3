@@ -30,7 +30,7 @@ namespace opendnp3
 
 LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	log(),
-	exe(),
+	exe(std::make_shared<testlib::MockExecutor>()),
 	listener(),
 	upper(),
 	link(log.logger, exe, upper, listener, config),

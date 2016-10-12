@@ -31,7 +31,7 @@ namespace opendnp3
 class TransportStack
 {
 public:
-	TransportStack(openpal::Logger logger, openpal::IExecutor& executor, ILinkListener& listener, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config);
+	TransportStack(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>& executor, ILinkListener& listener, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config);
 
 	TransportLayer transport;
 	LinkLayer link;
