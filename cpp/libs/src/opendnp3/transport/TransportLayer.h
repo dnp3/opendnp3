@@ -63,12 +63,12 @@ private:
 
 	openpal::Logger logger;
 
-	IUpperLayer* pUpperLayer;
-	ILinkLayer* pLinkLayer;
+	IUpperLayer* upper = nullptr;
+	ILinkLayer* lower = nullptr;
 
 	// ---- state ----
-	bool isOnline;
-	bool isSending;	
+	bool isOnline = false;
+	bool isSending = false;
 
 	// ----- Transmitter and Receiver Classes ------
 	TransportRx receiver;

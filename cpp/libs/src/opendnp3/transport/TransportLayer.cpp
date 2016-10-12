@@ -36,11 +36,7 @@ namespace opendnp3
 
 
 TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
-	logger(logger),
-	pUpperLayer(nullptr),
-	pLinkLayer(nullptr),
-	isOnline(false),
-	isSending(false),	
+	logger(logger),		
 	receiver(logger, maxRxFragSize, pStatistics),
 	transmitter(logger, pStatistics)
 {
@@ -72,7 +68,7 @@ void TransportLayer::BeginTransmit(const RSlice& apdu)
 		return;
 	}
 
-	if (!pLinkLayer)
+	if (!lower)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");		
 		return;
@@ -80,7 +76,7 @@ void TransportLayer::BeginTransmit(const RSlice& apdu)
 
 	isSending = true;
 	transmitter.Configure(apdu);
-	pLinkLayer->Send(transmitter);
+	lower->Send(transmitter);
 }
 
 ///////////////////////////////////////
@@ -92,9 +88,9 @@ bool TransportLayer::OnReceive(const RSlice& tpdu)
 	if (isOnline)
 	{
 		auto apdu = receiver.ProcessReceive(tpdu);
-		if (apdu.IsNotEmpty() && pUpperLayer)
+		if (apdu.IsNotEmpty() && upper)
 		{
-			pUpperLayer->OnReceive(apdu);
+			upper->OnReceive(apdu);
 		}
 		return true;
 	}
@@ -121,9 +117,9 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 
 	isSending = false;
 
-	if (pUpperLayer)
+	if (upper)
 	{
-		pUpperLayer->OnSendResult(isSuccess);
+		upper->OnSendResult(isSuccess);
 	}
 
 	return true;
@@ -131,14 +127,14 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 
 void TransportLayer::SetAppLayer(IUpperLayer& upperLayer)
 {
-	assert(pUpperLayer == nullptr);
-	pUpperLayer = &upperLayer;
+	assert(!upper);
+	upper = &upperLayer;
 }
 
 void TransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
 {
-	assert(pLinkLayer == nullptr);
-	pLinkLayer = &linkLayer;
+	assert(!lower);
+	lower = &linkLayer;
 }
 
 bool TransportLayer::OnLowerLayerUp()
@@ -150,9 +146,9 @@ bool TransportLayer::OnLowerLayerUp()
 	}
 
 	isOnline = true;
-	if (pUpperLayer)
+	if (upper)
 	{
-		pUpperLayer->OnLowerLayerUp();
+		upper->OnLowerLayerUp();
 	}
 	return true;
 }
@@ -169,9 +165,9 @@ bool TransportLayer::OnLowerLayerDown()
 	isSending = false;
 	receiver.Reset();
 
-	if (pUpperLayer)
+	if (upper)
 	{
-		pUpperLayer->OnLowerLayerDown();
+		upper->OnLowerLayerDown();
 	}
 
 	return true;
