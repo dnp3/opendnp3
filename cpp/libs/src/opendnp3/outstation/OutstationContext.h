@@ -54,8 +54,8 @@ public:
 
 	OContext(	const OutstationConfig& config,
 	            const DatabaseSizes& dbSizes,
-	            openpal::Logger logger,
-	            openpal::IExecutor& executor,
+	            const openpal::Logger& logger,
+	            const std::shared_ptr<openpal::IExecutor>& executor,
 	            ILowerLayer& lower,
 	            ICommandHandler& commandHandler,
 	            IOutstationApplication& application);
@@ -162,7 +162,7 @@ public:
 
 	// ------ resources --------
 	openpal::Logger logger;
-	openpal::IExecutor* const pExecutor;
+	const std::shared_ptr<openpal::IExecutor> executor;
 	ILowerLayer* const pLower;
 	ICommandHandler* const pCommandHandler;
 	IOutstationApplication* const pApplication;

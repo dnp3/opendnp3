@@ -32,7 +32,7 @@ OutstationTestObject::OutstationTestObject(
     const DatabaseSizes& dbSizes
 ) :
 	log(),
-	exe(),
+	exe(std::make_shared<MockExecutor>()),
 	lower(),
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
@@ -44,38 +44,38 @@ OutstationTestObject::OutstationTestObject(
 size_t OutstationTestObject::LowerLayerUp()
 {
 	context.OnLowerLayerUp();
-	return exe.RunMany();
+	return exe->RunMany();
 }
 
 size_t OutstationTestObject::LowerLayerDown()
 {
 	context.OnLowerLayerDown();
-	return exe.RunMany();
+	return exe->RunMany();
 }
 
 size_t OutstationTestObject::OnSendResult(bool isSuccess)
 {
 	context.OnSendResult(isSuccess);
-	return exe.RunMany();
+	return exe->RunMany();
 }
 
 size_t OutstationTestObject::SendToOutstation(const std::string& hex)
 {
 	HexSequence hs(hex);
 	context.OnReceive(hs.ToRSlice());
-	return exe.RunMany();
+	return exe->RunMany();
 }
 
 size_t OutstationTestObject::NumPendingTimers() const
 {
-	return exe.NumPendingTimers();
+	return exe->NumPendingTimers();
 }
 
 bool OutstationTestObject::AdvanceToNextTimer()
 {
-	if (exe.AdvanceToNextTimer())
+	if (exe->AdvanceToNextTimer())
 	{
-		return exe.RunMany() > 0;
+		return exe->RunMany() > 0;
 	}
 	else
 	{
@@ -85,8 +85,8 @@ bool OutstationTestObject::AdvanceToNextTimer()
 
 size_t OutstationTestObject::AdvanceTime(const openpal::TimeDuration& td)
 {
-	exe.AdvanceTime(td);
-	return exe.RunMany();
+	exe->AdvanceTime(td);
+	return exe->RunMany();
 }
 
 }

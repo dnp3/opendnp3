@@ -72,7 +72,7 @@ public:
 
 private:
 
-	testlib::MockExecutor exe;
+	std::shared_ptr<testlib::MockExecutor> exe;
 
 public:
 

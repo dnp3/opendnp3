@@ -50,14 +50,14 @@ namespace opendnp3
 OContext::OContext(
     const OutstationConfig& config,
     const DatabaseSizes& dbSizes,
-    openpal::Logger logger_,
-    openpal::IExecutor& executor,
+	const openpal::Logger& logger,
+	const std::shared_ptr<openpal::IExecutor>& executor,
     ILowerLayer& lower,
     ICommandHandler& commandHandler,
     IOutstationApplication& application) :
 
-	logger(logger_),
-	pExecutor(&executor),
+	logger(logger),
+	executor(executor),
 	pLower(&lower),
 	pCommandHandler(&commandHandler),
 	pApplication(&application),
@@ -68,7 +68,7 @@ OContext::OContext(
 	isOnline(false),
 	isTransmitting(false),
 	staticIIN(IINBit::DEVICE_RESTART),
-	confirmTimer(executor),
+	confirmTimer(*executor),
 	deferred(config.params.maxRxFragSize),
 	sol(config.params.maxTxFragSize),
 	unsol(config.params.maxTxFragSize)
@@ -609,7 +609,7 @@ IINField OContext::HandleSelect(const openpal::RSlice& objects, HeaderWriter& wr
 		{
 			if (handler.AllCommandsSuccessful())
 			{
-				this->control.Select(this->sol.seq.num, this->pExecutor->GetTime(), objects);
+				this->control.Select(this->sol.seq.num, this->executor->GetTime(), objects);
 			}
 
 			return handler.Errors();
@@ -631,7 +631,7 @@ IINField OContext::HandleOperate(const openpal::RSlice& objects, HeaderWriter& w
 	}
 	else
 	{
-		auto now = this->pExecutor->GetTime();
+		auto now = this->executor->GetTime();
 		auto result = this->control.ValidateSelection(this->sol.seq.num, now, this->params.selectTimeout, objects);
 
 		if (result == CommandStatus::SUCCESS)
@@ -709,7 +709,7 @@ IINField OContext::HandleAssignClass(const openpal::RSlice& objects)
 {
 	if (this->pApplication->SupportsAssignClass())
 	{
-		AssignClassHandler handler(*this->pExecutor, *this->pApplication, this->database.GetClassAssigner());
+		AssignClassHandler handler(*this->executor, *this->pApplication, this->database.GetClassAssigner());
 		auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
