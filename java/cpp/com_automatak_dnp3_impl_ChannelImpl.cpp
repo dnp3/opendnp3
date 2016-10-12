@@ -35,18 +35,18 @@ using namespace asiodnp3;
 using namespace opendnp3;
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
-(JNIEnv* env, jobject, jlong native, jboolean callshutdown)
+(JNIEnv* env, jobject, jlong native)
 {
 	const auto channel = (std::shared_ptr<IChannel>*) native;
-
-	if (callshutdown)
-	{
-		(*channel)->Shutdown();
-	}
-	
-	delete channel; // drop our reference
+	(*channel)->Shutdown();		
 }
 
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_destroy_1native
+(JNIEnv *, jobject, jlong native)
+{
+	const auto channel = (std::shared_ptr<IChannel>*) native;
+	delete channel; // drop our reference
+}
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
 (JNIEnv* env, jobject, jlong native, jstring jid, jobject handler, jobject application, jobject jconfig)

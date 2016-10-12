@@ -36,13 +36,17 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_disable_1nati
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_shutdown_1native
-(JNIEnv* env, jobject, jlong native, jboolean callShutdown)
+(JNIEnv* env, jobject, jlong native)
 {
 	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	if (callShutdown)
-	{
-		(*outstation)->Shutdown();
-	}
+	(*outstation)->Shutdown();
+}
+
+
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_destroy_1native
+(JNIEnv *, jobject, jlong native)
+{
+	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;	
 	delete outstation;
 }
 

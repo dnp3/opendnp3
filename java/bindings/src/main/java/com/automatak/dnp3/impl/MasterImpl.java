@@ -36,92 +36,68 @@ class MasterImpl implements Master {
     @Override
     public void finalize()
     {
-        if(nativePointer != 0)
-        {
-            this.shutdown_native(this.nativePointer, false); // release the reference, but don't call channel shutdown
-        }
+        this.destroy_native(this.nativePointer);
     }
 
     @Override
-    public synchronized void enable()
+    public void enable()
     {
-        if(nativePointer != 0) {
-            enable_native(nativePointer);
-        }
+        enable_native(nativePointer);
     }
 
     @Override
-    public synchronized void disable()
+    public void disable()
     {
-        if(nativePointer != 0) {
-            disable_native(nativePointer);
-        }
+        disable_native(nativePointer);
     }
 
     @Override
-    public synchronized void shutdown()
+    public void shutdown()
     {
-        if(nativePointer != 0) {
-            shutdown_native(nativePointer, true);
-            nativePointer = 0;
-        }
+        shutdown_native(nativePointer);
     }
 
     @Override
-    public synchronized void scan(Iterable<Header> headers)
+    public void scan(Iterable<Header> headers)
     {
         this.scan_native(this.nativePointer, headers);
     }
 
     @Override
-    public synchronized void addPeriodicScan(Duration period, Header header)
+    public void addPeriodicScan(Duration period, Header header)
     {
         this.add_periodic_scan_native(this.nativePointer, period, Arrays.asList(header));
     }
 
     @Override
-    public synchronized void scan(Header header)
+    public void scan(Header header)
     {
         this.scan_native(this.nativePointer, Arrays.asList(header));
     }
 
     @Override
-    public synchronized void addPeriodicScan(Duration period, Iterable<Header> headers)
+    public void addPeriodicScan(Duration period, Iterable<Header> headers)
     {
         this.add_periodic_scan_native(this.nativePointer, period, headers);
     }
 
     @Override
-    public synchronized CompletableFuture<CommandTaskResult> selectAndOperate(CommandHeaders headers)
+    public CompletableFuture<CommandTaskResult> selectAndOperate(CommandHeaders headers)
     {
         CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        if(this.nativePointer == 0)
-        {
-            result.completeExceptionally(new DNP3Exception("Channel has been shutdown"));
-        }
-        else
-        {
-            CommandBuilderImpl builder = new CommandBuilderImpl();
-            headers.build(builder);
-            this.select_and_operate_native(nativePointer, builder.nativePointer, result);
-        }
+        CommandBuilderImpl builder = new CommandBuilderImpl();
+        headers.build(builder);
+        this.select_and_operate_native(nativePointer, builder.nativePointer, result);
         return result;
     }
 
     @Override
-    public synchronized CompletableFuture<CommandTaskResult> directOperate(CommandHeaders headers)
+    public CompletableFuture<CommandTaskResult> directOperate(CommandHeaders headers)
     {
         CompletableFuture<CommandTaskResult> result = new CompletableFuture<>();
-        if(this.nativePointer == 0)
-        {
-            result.completeExceptionally(new DNP3Exception("Channel has been shutdown"));
-        }
-        else
-            {
-            CommandBuilderImpl builder = new CommandBuilderImpl();
-            headers.build(builder);
-            this.direct_operate_native(nativePointer, builder.nativePointer, result);
-        }
+        CommandBuilderImpl builder = new CommandBuilderImpl();
+        headers.build(builder);
+        this.direct_operate_native(nativePointer, builder.nativePointer, result);
         return result;
     }
 
@@ -187,7 +163,8 @@ class MasterImpl implements Master {
 
     private native void enable_native(long nativePointer);
     private native void disable_native(long nativePointer);
-    private native void shutdown_native(long nativePointer, boolean callShutdown);
+    private native void shutdown_native(long nativePointer);
+    private native void destroy_native(long nativePointer);
 
     private native void select_and_operate_native(long nativePointer, long nativeCommandSetPointer, CompletableFuture<CommandTaskResult> future);
     private native void direct_operate_native(long nativePointer, long nativeCommandSetPointer, CompletableFuture<CommandTaskResult> future);

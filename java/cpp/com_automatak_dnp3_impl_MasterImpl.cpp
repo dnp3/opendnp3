@@ -43,15 +43,17 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_disable_1native
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native
-(JNIEnv* env, jobject, jlong native, jboolean callshutdown)
+(JNIEnv* env, jobject, jlong native)
 {
 	const auto master = (std::shared_ptr<asiodnp3::IMaster>*) native;
+	(*master)->Shutdown();
+}
 
-	if (callshutdown)
-	{
-		(*master)->Shutdown();
-	}
 
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_destroy_1native
+(JNIEnv *, jobject, jlong native)
+{
+	const auto master = (std::shared_ptr<asiodnp3::IMaster>*) native;	
 	delete master;
 }
 
