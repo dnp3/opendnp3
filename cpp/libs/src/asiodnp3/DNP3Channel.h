@@ -86,7 +86,7 @@ private:
 	openpal::Logger logger;
 	const std::shared_ptr<asiopal::StrandExecutor> executor;
 
-	std::shared_ptr<IOHandler> iohandler;	
+	std::shared_ptr<IOHandler> iohandler;
 	std::shared_ptr<asiopal::IShutdownHandler> shutdown;
 	std::shared_ptr<asiopal::ResourceManager> resources;
 

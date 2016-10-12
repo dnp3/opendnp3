@@ -57,8 +57,8 @@ public:
 	            const openpal::Logger& logger,
 	            const std::shared_ptr<openpal::IExecutor>& executor,
 	            const std::shared_ptr<ILowerLayer>& lower,
-				const std::shared_ptr<ICommandHandler>& commandHandler,
-				const std::shared_ptr<IOutstationApplication>& application);
+	            const std::shared_ptr<ICommandHandler>& commandHandler,
+	            const std::shared_ptr<IOutstationApplication>& application);
 
 public:
 

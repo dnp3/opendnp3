@@ -62,11 +62,11 @@ protected:
 public:
 
 	MContext(
-		const openpal::Logger& logger,
-		const std::shared_ptr<openpal::IExecutor>& executor,	    
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<openpal::IExecutor>& executor,
 	    const std::shared_ptr<ILowerLayer>& lower,
-		const std::shared_ptr<ISOEHandler>& SOEHandler,
-		const std::shared_ptr<IMasterApplication>& application,
+	    const std::shared_ptr<ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<IMasterApplication>& application,
 	    const MasterParams& params,
 	    ITaskLock& taskLock
 	);
@@ -79,7 +79,7 @@ public:
 	MasterParams params;
 	const std::shared_ptr<ISOEHandler> SOEHandler;
 	const std::shared_ptr<IMasterApplication> application;
-	ITaskLock* pTaskLock;	
+	ITaskLock* pTaskLock;
 
 
 	// ------- dynamic state ---------

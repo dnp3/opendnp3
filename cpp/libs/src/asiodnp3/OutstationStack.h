@@ -36,7 +36,7 @@ namespace asiodnp3
 /**
 * A stack object for an outstation
 */
-class OutstationStack final : public IOutstation, public opendnp3::ILinkSession, public opendnp3::ILinkTx, private StackBase, public std::enable_shared_from_this<OutstationStack>
+class OutstationStack final : public IOutstation, public opendnp3::ILinkSession, public opendnp3::ILinkTx, public std::enable_shared_from_this<OutstationStack>, private StackBase
 {
 public:
 
@@ -113,7 +113,7 @@ public:
 	virtual void Apply(ChangeSet& changes) override;
 
 private:
-	
+
 	opendnp3::OContext ocontext;
 };
 

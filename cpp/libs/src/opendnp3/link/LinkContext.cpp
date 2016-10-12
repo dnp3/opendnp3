@@ -36,13 +36,13 @@ namespace opendnp3
 {
 
 LinkContext::LinkContext(
-	const openpal::Logger& logger, 
-	const std::shared_ptr<openpal::IExecutor>& executor, 
-	const std::shared_ptr<IUpperLayer>& upper,
-	const std::shared_ptr<opendnp3::ILinkListener>& listener,
-	ILinkSession& session, 
-	const LinkConfig& config) 
-:
+    const openpal::Logger& logger,
+    const std::shared_ptr<openpal::IExecutor>& executor,
+    const std::shared_ptr<IUpperLayer>& upper,
+    const std::shared_ptr<opendnp3::ILinkListener>& listener,
+    ILinkSession& session,
+    const LinkConfig& config)
+	:
 	logger(logger),
 	config(config),
 	pSegments(nullptr),
@@ -56,12 +56,12 @@ LinkContext::LinkContext(
 	isOnline(false),
 	isRemoteReset(false),
 	keepAliveTimeout(false),
-	lastMessageTimestamp(executor->GetTime()),	
+	lastMessageTimestamp(executor->GetTime()),
 	pPriState(&PLLS_Idle::Instance()),
 	pSecState(&SLLS_NotReset::Instance()),
 	listener(listener),
 	upper(upper),
-	pSession(&session)	
+	pSession(&session)
 {}
 
 bool LinkContext::OnLowerLayerUp()
@@ -247,21 +247,21 @@ bool LinkContext::Retry()
 }
 
 void LinkContext::PushDataUp(const openpal::RSlice& data)
-{	
-	upper->OnReceive(data);	
+{
+	upper->OnReceive(data);
 }
 
 void LinkContext::CompleteSendOperation(bool success)
 {
 	this->pSegments = nullptr;
-	
+
 	auto callback = [upper = upper, success]()
 	{
 		upper->OnSendResult(success);
 	};
 
 	this->executor->Post(callback);
-	
+
 }
 
 void LinkContext::TryStartTransmission()

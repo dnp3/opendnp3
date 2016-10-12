@@ -39,11 +39,11 @@ using namespace openpal;
 namespace opendnp3
 {
 MContext::MContext(
-	const openpal::Logger& logger,
-	const std::shared_ptr<openpal::IExecutor>& executor,	
-	const std::shared_ptr<ILowerLayer>& lower,
-	const std::shared_ptr<ISOEHandler>& SOEHandler,
-	const std::shared_ptr<IMasterApplication>& application,
+    const openpal::Logger& logger,
+    const std::shared_ptr<openpal::IExecutor>& executor,
+    const std::shared_ptr<ILowerLayer>& lower,
+    const std::shared_ptr<ISOEHandler>& SOEHandler,
+    const std::shared_ptr<IMasterApplication>& application,
     const MasterParams& params,
     ITaskLock& taskLock
 ) :
@@ -51,9 +51,9 @@ MContext::MContext(
 	executor(executor),
 	lower(lower),
 	params(params),
-	SOEHandler(SOEHandler),	
+	SOEHandler(SOEHandler),
 	application(application),
-	pTaskLock(&taskLock),	
+	pTaskLock(&taskLock),
 	responseTimer(*executor),
 	scheduleTimer(*executor),
 	taskStartTimeoutTimer(*executor),

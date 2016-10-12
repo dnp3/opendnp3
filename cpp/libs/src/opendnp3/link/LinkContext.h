@@ -140,11 +140,11 @@ public:
 
 	PriStateBase* pPriState;
 	SecStateBase* pSecState;
-	
+
 	const std::shared_ptr<opendnp3::ILinkListener> listener;
 	const std::shared_ptr<IUpperLayer> upper;
 
-	ILinkSession* pSession;	
+	ILinkSession* pSession;
 };
 
 }

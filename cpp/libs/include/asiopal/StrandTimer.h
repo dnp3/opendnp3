@@ -49,7 +49,7 @@ public:
 
 	virtual openpal::MonotonicTimestamp ExpiresAt() override;
 
-private:	
+private:
 
 	asio::basic_waitable_timer< asiopal::steady_clock_t > timer;
 };

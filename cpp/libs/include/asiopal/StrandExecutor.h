@@ -59,7 +59,7 @@ public:
 	virtual openpal::MonotonicTimestamp GetTime() override;
 	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::action_t& runnable)  override;
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::action_t& runnable)  override;
-	virtual void Post(const openpal::action_t& runnable) override;	
+	virtual void Post(const openpal::action_t& runnable) override;
 
 	template <class T>
 	T ReturnFrom(const std::function<T()>& action);

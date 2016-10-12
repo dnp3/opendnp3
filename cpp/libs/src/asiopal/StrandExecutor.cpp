@@ -58,7 +58,7 @@ ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const action_t& ru
 }
 
 openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable)
-{	
+{
 	auto timer = std::make_shared<StrandTimer>(this->strand.get_io_service());
 
 	timer->timer.expires_at(expiration);
@@ -78,7 +78,7 @@ openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expirat
 }
 
 void StrandExecutor::Post(const action_t& runnable)
-{	
+{
 	auto callback = [runnable, self = shared_from_this()]()
 	{
 		runnable();
@@ -112,7 +112,7 @@ void StrandExecutor::BlockUntil(const std::function<void()>& action)
 void StrandExecutor::BlockUntilAndFlush(const std::function<void()>& action)
 {
 	this->BlockUntil(action);
-	this->BlockUntil([](){});	
+	this->BlockUntil([]() {});
 }
 
 }

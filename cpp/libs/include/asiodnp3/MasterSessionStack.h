@@ -46,10 +46,10 @@ public:
 
 	static std::shared_ptr<MasterSessionStack> Create(
 	    const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
-		const std::shared_ptr<opendnp3::IMasterApplication>& application,
-		const std::shared_ptr<LinkSession>& session,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const std::shared_ptr<LinkSession>& session,
 	    opendnp3::ILinkTx& linktx,
 	    const MasterStackConfig& config
 	);
@@ -87,18 +87,18 @@ public:
 	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
 
 	MasterSessionStack(
-		const openpal::Logger& logger,
-		const std::shared_ptr<asiopal::StrandExecutor>& executor,
-		const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
-		const std::shared_ptr<opendnp3::IMasterApplication>& application,
-		const std::shared_ptr<LinkSession>& session,
-		opendnp3::ILinkTx& linktx,
-		const MasterStackConfig& config
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const std::shared_ptr<LinkSession>& session,
+	    opendnp3::ILinkTx& linktx,
+	    const MasterStackConfig& config
 	);
 
 private:
 
-	std::shared_ptr<asiopal::StrandExecutor> executor;		
+	std::shared_ptr<asiopal::StrandExecutor> executor;
 	std::shared_ptr<LinkSession> session;
 	opendnp3::StackStatistics statistics;
 	opendnp3::TransportStack stack;

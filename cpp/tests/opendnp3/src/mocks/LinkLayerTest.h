@@ -54,7 +54,7 @@ public:
 	std::shared_ptr<testlib::MockExecutor> exe;
 	std::shared_ptr<MockLinkListener> listener;
 	std::shared_ptr<MockTransportLayer> upper;
-	
+
 	LinkLayer link;
 
 	std::string PopLastWriteAsHex();

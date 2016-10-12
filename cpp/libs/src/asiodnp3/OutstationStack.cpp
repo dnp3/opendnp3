@@ -45,7 +45,7 @@ OutstationStack::OutstationStack(
     const std::shared_ptr<IShutdownHandler>& shutdown,
     const OutstationStackConfig& config) :
 
-	StackBase(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link),	
+	StackBase(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link),
 	ocontext(config.outstation, config.dbConfig.sizes, logger, executor, tstack.transport, commandHandler, application)
 {
 	this->tstack.transport->SetAppLayer(ocontext);
@@ -79,12 +79,12 @@ bool OutstationStack::Disable()
 void OutstationStack::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()]
-	{		
+	{
 		self->iohandler->Remove(self);
 		self->shutdown->OnShutdown(self);
 	};
 
-	this->executor->BlockUntilAndFlush(shutdown);	
+	this->executor->BlockUntilAndFlush(shutdown);
 }
 
 StackStatistics OutstationStack::GetStackStatistics()

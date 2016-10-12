@@ -36,7 +36,7 @@ namespace opendnp3
 
 
 TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* statistics) :
-	logger(logger),		
+	logger(logger),
 	receiver(logger, maxRxFragSize, statistics),
 	transmitter(logger, statistics)
 {
@@ -57,7 +57,7 @@ bool TransportLayer::BeginTransmit(const RSlice& apdu)
 
 	if (apdu.IsEmpty())
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");		
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
 		return false;
 	}
 
@@ -69,7 +69,7 @@ bool TransportLayer::BeginTransmit(const RSlice& apdu)
 
 	if (!lower)
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");		
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
 		return false;
 	}
 

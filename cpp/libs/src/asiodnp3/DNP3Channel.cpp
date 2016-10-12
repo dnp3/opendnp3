@@ -57,7 +57,7 @@ DNP3Channel::~DNP3Channel()
 void DNP3Channel::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()]()
-	{		
+	{
 		self->ShutdownImpl();
 	};
 
@@ -67,14 +67,14 @@ void DNP3Channel::Shutdown()
 void DNP3Channel::ShutdownImpl()
 {
 	if (!this->resources) return;
-	
+
 	// shutdown the IO handler
 	this->iohandler->Shutdown();
 	this->iohandler.reset();
 
 	// shutdown any remaining channels
 	this->resources->Shutdown();
-	this->resources.reset();	
+	this->resources.reset();
 
 	// let the manager know we've shutdown
 	this->shutdown->OnShutdown(this->shared_from_this());

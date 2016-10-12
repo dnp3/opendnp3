@@ -33,7 +33,7 @@ namespace asiodnp3
 {
 
 
-class MasterStack : public IMaster, public opendnp3::ILinkSession, public opendnp3::ILinkTx, private StackBase, public std::enable_shared_from_this<MasterStack>
+class MasterStack : public IMaster, public opendnp3::ILinkSession, public opendnp3::ILinkTx, public std::enable_shared_from_this<MasterStack>, private StackBase
 {
 public:
 
@@ -136,7 +136,7 @@ public:
 	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
 
 protected:
-	
+
 	opendnp3::MContext mcontext;
 };
 

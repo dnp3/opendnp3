@@ -50,11 +50,11 @@ namespace opendnp3
 OContext::OContext(
     const OutstationConfig& config,
     const DatabaseSizes& dbSizes,
-	const openpal::Logger& logger,
-	const std::shared_ptr<openpal::IExecutor>& executor,
-	const std::shared_ptr<ILowerLayer>& lower,
-	const std::shared_ptr<ICommandHandler>& commandHandler,
-	const std::shared_ptr<IOutstationApplication>& application) :
+    const openpal::Logger& logger,
+    const std::shared_ptr<openpal::IExecutor>& executor,
+    const std::shared_ptr<ILowerLayer>& lower,
+    const std::shared_ptr<ICommandHandler>& commandHandler,
+    const std::shared_ptr<IOutstationApplication>& application) :
 
 	logger(logger),
 	executor(executor),
