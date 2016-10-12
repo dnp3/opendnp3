@@ -46,7 +46,7 @@ public:
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
 	    const OutstationStackConfig& config);
 
 	static std::shared_ptr<OutstationStack> Create(
@@ -55,7 +55,7 @@ public:
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
 	    const OutstationStackConfig& config
 	)
 	{

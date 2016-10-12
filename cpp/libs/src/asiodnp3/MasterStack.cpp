@@ -39,7 +39,7 @@ MasterStack::MasterStack(
     const std::shared_ptr<ISOEHandler>& SOEHandler,
     const std::shared_ptr<IMasterApplication>& application,
     const std::shared_ptr<IOHandler>& iohandler,
-    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
     const MasterStackConfig& config,
     ITaskLock& taskLock) :
 
@@ -65,7 +65,8 @@ void MasterStack::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()] 
 	{ 		
-		return self->iohandler->Remove(self); 		
+		self->iohandler->Remove(self);
+		self->shutdown->OnShutdown(self);
 	};
 
 	this->executor->BlockUntilAndFlush(shutdown);

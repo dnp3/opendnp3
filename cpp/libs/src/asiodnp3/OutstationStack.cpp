@@ -42,7 +42,7 @@ OutstationStack::OutstationStack(
     const std::shared_ptr<ICommandHandler>& commandHandler,
     const std::shared_ptr<IOutstationApplication>& application,
     const std::shared_ptr<IOHandler>& iohandler,
-    const std::weak_ptr<IShutdownHandler>& shutdown,
+    const std::shared_ptr<IShutdownHandler>& shutdown,
     const OutstationStackConfig& config) :
 
 	StackBase(logger, executor, application, iohandler, shutdown, config.outstation.params.maxRxFragSize, config.link),	
@@ -80,7 +80,8 @@ void OutstationStack::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()]
 	{		
-		return self->iohandler->Remove(self);	
+		self->iohandler->Remove(self);
+		self->shutdown->OnShutdown(self);
 	};
 
 	this->executor->BlockUntilAndFlush(shutdown);	

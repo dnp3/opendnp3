@@ -43,7 +43,7 @@ protected:
 	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
 	    const std::shared_ptr<opendnp3::ILinkListener>& listener,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
 	    uint32_t maxRxFragSize,
 	    const opendnp3::LinkConfig& config) :
 		logger(logger),
@@ -60,7 +60,7 @@ protected:
 	opendnp3::StackStatistics statistics;
 	const std::shared_ptr<asiopal::StrandExecutor> executor;
 	const std::shared_ptr<IOHandler> iohandler;
-	const std::weak_ptr<asiopal::IShutdownHandler> shutdown;
+	const std::shared_ptr<asiopal::IShutdownHandler> shutdown;
 	opendnp3::TransportStack tstack;
 
 };

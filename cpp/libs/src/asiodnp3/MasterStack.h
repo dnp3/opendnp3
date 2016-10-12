@@ -43,7 +43,7 @@ public:
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
 	    const MasterStackConfig& config,
 	    opendnp3::ITaskLock& taskLock
 	);
@@ -54,7 +54,7 @@ public:
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::weak_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
 	    const MasterStackConfig& config,
 	    opendnp3::ITaskLock& taskLock
 	)
