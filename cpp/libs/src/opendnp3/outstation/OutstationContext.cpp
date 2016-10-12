@@ -52,13 +52,13 @@ OContext::OContext(
     const DatabaseSizes& dbSizes,
 	const openpal::Logger& logger,
 	const std::shared_ptr<openpal::IExecutor>& executor,
-    ILowerLayer& lower,
+	const std::shared_ptr<ILowerLayer>& lower,
     ICommandHandler& commandHandler,
     IOutstationApplication& application) :
 
 	logger(logger),
 	executor(executor),
-	pLower(&lower),
+	lower(lower),
 	pCommandHandler(&commandHandler),
 	pApplication(&application),
 	eventBuffer(config.eventBufferConfig),
@@ -264,7 +264,7 @@ void OContext::BeginTx(const openpal::RSlice& response)
 {
 	logging::ParseAndLogResponseTx(this->logger, response);
 	this->isTransmitting = true;
-	this->pLower->BeginTransmit(response);
+	this->lower->BeginTransmit(response);
 	this->Increment(SecurityStatIndex::TOTAL_MESSAGES_TX);
 }
 

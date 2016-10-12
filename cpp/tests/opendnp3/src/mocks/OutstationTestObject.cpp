@@ -33,12 +33,12 @@ OutstationTestObject::OutstationTestObject(
 ) :
 	log(),
 	exe(std::make_shared<MockExecutor>()),
-	lower(),
+	lower(std::make_shared<MockLowerLayer>()),
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
 	context(config, dbSizes, log.logger, exe, lower, cmdHandler, application)
 {
-	lower.SetUpperLayer(context);
+	lower->SetUpperLayer(context);
 }
 
 size_t OutstationTestObject::LowerLayerUp()

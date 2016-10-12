@@ -56,7 +56,7 @@ public:
 	            const DatabaseSizes& dbSizes,
 	            const openpal::Logger& logger,
 	            const std::shared_ptr<openpal::IExecutor>& executor,
-	            ILowerLayer& lower,
+	            const std::shared_ptr<ILowerLayer>& lower,
 	            ICommandHandler& commandHandler,
 	            IOutstationApplication& application);
 
@@ -163,7 +163,7 @@ public:
 	// ------ resources --------
 	openpal::Logger logger;
 	const std::shared_ptr<openpal::IExecutor> executor;
-	ILowerLayer* const pLower;
+	const std::shared_ptr<ILowerLayer> lower;
 	ICommandHandler* const pCommandHandler;
 	IOutstationApplication* const pApplication;
 

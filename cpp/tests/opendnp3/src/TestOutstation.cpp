@@ -41,7 +41,7 @@ TEST_CASE(SUITE("UnsupportedFunction"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 10"); // func = initialize application (16)
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + func not supported
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + func not supported
 }
 
 TEST_CASE(SUITE("ApplicationIINBits"))
@@ -57,7 +57,7 @@ TEST_CASE(SUITE("ApplicationIINBits"))
 
 	t.SendToOutstation("C0 01"); // blank read
 	// All 4 bits + restart
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 F0 20");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 F0 20");
 }
 
 TEST_CASE(SUITE("ReadUnknownObject"))
@@ -68,7 +68,7 @@ TEST_CASE(SUITE("ReadUnknownObject"))
 
 	// from the conformance tests, respond with IIN 2-1
 	t.SendToOutstation("C0 01 00 00 06");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 02"); // IIN = device restart + unknown object
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 02"); // IIN = device restart + unknown object
 }
 
 TEST_CASE(SUITE("ColdRestart"))
@@ -79,7 +79,7 @@ TEST_CASE(SUITE("ColdRestart"))
 
 	// try first with support turned off
 	t.SendToOutstation("C0 0D");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
 	t.OnSendResult(true);
 
 	t.application.coldRestartSupport = RestartMode::SUPPORTED_DELAY_FINE;
@@ -87,7 +87,7 @@ TEST_CASE(SUITE("ColdRestart"))
 
 
 	t.SendToOutstation("C1 0D");
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 34 02 07 01 01 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00 34 02 07 01 01 00");
 }
 
 TEST_CASE(SUITE("WarmRestart"))
@@ -98,7 +98,7 @@ TEST_CASE(SUITE("WarmRestart"))
 
 	// try first with support turned off
 	t.SendToOutstation("C0 0E");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
 	t.OnSendResult(true);
 
 	t.application.warmRestartSupport = RestartMode::SUPPORTED_DELAY_COARSE;
@@ -106,7 +106,7 @@ TEST_CASE(SUITE("WarmRestart"))
 
 
 	t.SendToOutstation("C1 0E");
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 34 01 07 01 FF FF");
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00 34 01 07 01 FF FF");
 }
 
 
@@ -134,7 +134,7 @@ TEST_CASE(SUITE("NoResponseToNoAckCodes"))
 		auto request = ToHex(bytes, 2, true);
 
 		t.SendToOutstation(request);
-		REQUIRE(t.lower.PopWriteAsHex() == "");
+		REQUIRE(t.lower->PopWriteAsHex() == "");
 
 		++sequence;
 	}
@@ -147,7 +147,7 @@ TEST_CASE(SUITE("WriteIIN"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation(hex::ClearRestartIIN(0));
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::EmptyResponse(0));
 }
 
 TEST_CASE(SUITE("WriteIINEnabled"))
@@ -157,7 +157,7 @@ TEST_CASE(SUITE("WriteIINEnabled"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 50 01 00 07 07 01");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04");
 }
 
 TEST_CASE(SUITE("WriteIINWrongBit"))
@@ -167,7 +167,7 @@ TEST_CASE(SUITE("WriteIINWrongBit"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 50 01 00 04 04 01");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04");
 }
 
 TEST_CASE(SUITE("WriteNonWriteObject"))
@@ -177,7 +177,7 @@ TEST_CASE(SUITE("WriteNonWriteObject"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 01 02 00 07 07 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01");
 }
 
 TEST_CASE(SUITE("DelayMeasure"))
@@ -187,7 +187,7 @@ TEST_CASE(SUITE("DelayMeasure"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 17"); //delay measure
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
 }
 
 TEST_CASE(SUITE("DelayMeasureExtraData"))
@@ -197,7 +197,7 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 17 DE AD BE EF"); //delay measure
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04"); // param error
 }
 
 TEST_CASE(SUITE("WriteTimeDate"))
@@ -208,7 +208,7 @@ TEST_CASE(SUITE("WriteTimeDate"))
 
 
 	t.SendToOutstation("C1 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00");
 	REQUIRE(t.application.timestamps.size() == 1);
 	REQUIRE(t.application.timestamps.front().msSinceEpoch == 1234);
 
@@ -222,7 +222,7 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 
 	t.application.allowTimeWrite = false;
 	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04"); // param error
 	REQUIRE(t.application.timestamps.size() == 0);
 }
 
@@ -233,7 +233,7 @@ TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error +  need time still set
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04"); // param error +  need time still set
 	REQUIRE(t.application.timestamps.empty());
 }
 
@@ -244,7 +244,7 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 }
 
 TEST_CASE(SUITE("MixedVariationAssignments"))
@@ -264,7 +264,7 @@ TEST_CASE(SUITE("MixedVariationAssignments"))
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 
 	// check that the response uses both g30v1 & g30v2
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00 1E 02 00 01 01 02 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00 1E 02 00 01 01 02 00 00");
 }
 
 TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
@@ -275,7 +275,7 @@ TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
 
 	t.LowerLayerUp();
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 00 00 02");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 02 00 00 00 02");
 }
 
 TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
@@ -299,20 +299,20 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 
 	// Response should be (30,1)x2 per fragment, quality ONLINE, value 0
 	// 4 fragment response, first 3 fragments should be confirmed, last one shouldn't be
-	REQUIRE(t.lower.PopWriteAsHex() == "A0 81 80 00 1E 01 00 00 01 01 00 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "A0 81 80 00 1E 01 00 00 01 01 00 00 00 00 01 00 00 00 00");
 	t.OnSendResult(true);
 	t.SendToOutstation("C0 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "21 81 80 00 1E 01 00 02 03 01 00 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "21 81 80 00 1E 01 00 02 03 01 00 00 00 00 01 00 00 00 00");
 	t.OnSendResult(true);
 	t.SendToOutstation("C1 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "22 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "22 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
 	t.OnSendResult(true);
 	t.SendToOutstation("C2 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "43 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "43 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");
 	t.OnSendResult(true);
 	t.SendToOutstation("C3 00");
 
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	REQUIRE(t.lower->PopWriteAsHex() == "");
 }
 
 TEST_CASE(SUITE("ReadFuncNotSupported"))
@@ -322,7 +322,7 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 0C 01 06"); //try to read 12/1 (control block)
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); //restart/func not supported
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); //restart/func not supported
 }
 
 
@@ -333,7 +333,7 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 	t.LowerLayerUp();
 
 	t.SendToOutstation(request);
-	REQUIRE(t.lower.PopWriteAsHex() == response);
+	REQUIRE(t.lower->PopWriteAsHex() == response);
 }
 
 // ---- Group50Var4 TimeAndInterval support ----- //
@@ -352,7 +352,7 @@ void TestTimeAndIntervalRead(const std::string& request)
 	);
 
 	t.SendToOutstation(request);
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 32 04 00 00 00 09 00 00 00 00 00 03 00 00 00 05");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 32 04 00 00 00 09 00 00 00 00 00 03 00 00 00 05");
 }
 
 TEST_CASE(SUITE("TimeAndIntervalViaIntegrity"))
@@ -380,7 +380,7 @@ TEST_CASE(SUITE("TestTimeAndIntervalWrite"))
 
 	// write g50v4 using 2-octet count & index prefix
 	t.SendToOutstation("C0 02 32 04 28 01 00 07 00 09 00 00 00 00 00 03 00 00 00 05");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 
 	REQUIRE(t.application.timeAndIntervals.size() == 1);
 	REQUIRE(t.application.timeAndIntervals[0].index == 7);
@@ -452,7 +452,7 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 	});
 
 	t.SendToOutstation("C2 01 1E 02 00 05 06"); // read 30 var 2, [05 : 06]
-	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 1E 02 00 05 06 01 2A 00 01 29 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C2 81 80 00 1E 02 00 05 06 01 2A 00 01 29 00");
 }
 
 TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeIntegrityScan"))
@@ -465,7 +465,7 @@ TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeIntegrityScan"))
 
 	t.SendToOutstation(hex::IntegrityPoll(0));
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
 }
 
 TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeRangeScan"))
@@ -478,7 +478,7 @@ TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeRangeScan"))
 
 	t.SendToOutstation("C0 01 01 02 00 00 01");
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
 }
 
 std::string QueryDiscontiguousBinary(const std::string& request)
@@ -503,7 +503,7 @@ std::string QueryDiscontiguousBinary(const std::string& request)
 	});
 
 	t.SendToOutstation(request);
-	return t.lower.PopWriteAsHex();
+	return t.lower->PopWriteAsHex();
 }
 
 TEST_CASE(SUITE("ReadDiscontiguousClass0"))
@@ -577,7 +577,7 @@ void TestStaticType(const OutstationConfig& config, const DatabaseSizes& tmp, Po
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 
-	REQUIRE((t.lower.PopWriteAsHex() == rsp));
+	REQUIRE((t.lower->PopWriteAsHex() == rsp));
 }
 
 template <class T>
@@ -611,7 +611,7 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 01 00 00 09 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 01 00 00 09 00 00");
 }
 
 TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
@@ -633,7 +633,7 @@ TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
 }
 
 TEST_CASE(SUITE("ReadGrp20Var1"))
@@ -705,7 +705,7 @@ void TestStaticBinaryOutputStatus(T value, const std::string& response)
 	});
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
-	REQUIRE((t.lower.PopWriteAsHex() == response));
+	REQUIRE((t.lower->PopWriteAsHex() == response));
 }
 
 TEST_CASE(SUITE("ReadGrp10Var2"))

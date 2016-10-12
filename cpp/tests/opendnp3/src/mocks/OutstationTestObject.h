@@ -72,11 +72,11 @@ public:
 
 private:
 
-	std::shared_ptr<testlib::MockExecutor> exe;
+	const std::shared_ptr<testlib::MockExecutor> exe;
 
 public:
 
-	MockLowerLayer lower;
+	const std::shared_ptr<MockLowerLayer> lower;
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
 	OContext context;

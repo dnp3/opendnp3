@@ -41,7 +41,7 @@ TEST_CASE(SUITE("RejectsWithFuncNotSupportedIfAppDoesNotSupport"))
 
 	// assign binaries to class 2
 	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01");
 
 	REQUIRE(t.application.classAssignments.empty());
 }
@@ -55,7 +55,7 @@ TEST_CASE(SUITE("RejectsWithParamErrorIfNoType"))
 
 	// assign binaries to class 2
 	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04");
 	REQUIRE(t.application.classAssignments.empty());
 }
 
@@ -70,7 +70,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 
 	// assign binaries to class 2
 	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 
 	auto view = t.context.GetConfigView();
 	for (uint16_t i = 0; i < NUM_BINARY; ++i)
@@ -94,7 +94,7 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 
 	// assign binaries 0 -> 5 (invalid range) to class 2
 	t.SendToOutstation("C0 16 3C 03 06 01 00 01 00 00 05 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04");
 
 	//despite the invalid range, the outstation should assign the values that it does have
 	auto view = t.context.GetConfigView();
@@ -117,7 +117,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
 
 	// assign binaries 2 - 3 to class 2
 	t.SendToOutstation("C0 16 3C 03 06 01 00 01 02 00 03 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 
 	auto view = t.context.GetConfigView();
 
@@ -145,7 +145,7 @@ TEST_CASE(SUITE("AcceptsMultipleAssignsmentPerMessage"))
 
 	// assign binaries 2 - 3 to class 2 - assign all analogs to class 3
 	t.SendToOutstation("C0 16 3C 03 06 01 00 01 02 00 03 00 3C 04 06 1E 00 06");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 
 	REQUIRE(t.application.classAssignments.size() == 2);
 	auto assignment = t.application.classAssignments.front();

@@ -40,7 +40,7 @@ TEST_CASE(SUITE("NullUnsolOnStartup"))
 	t.LowerLayerUp();
 
 	// Null UNSOL, FIR, FIN, CON, UNS, w/ restart and need-time IIN
-	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
 }
 
 TEST_CASE(SUITE("UnsolRetryDelay"))
@@ -52,14 +52,14 @@ TEST_CASE(SUITE("UnsolRetryDelay"))
 
 
 	// check for the startup null unsol packet, but fail the transaction
-	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
 	t.OnSendResult(true);
 
 	REQUIRE(t.NumPendingTimers() ==  1); // confirm timer
 	REQUIRE(t.AdvanceToNextTimer());
 
 	// immediately retries with new sequence #
-	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(1, IINField(IINBit::DEVICE_RESTART)));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(1, IINField(IINBit::DEVICE_RESTART)));
 }
 
 TEST_CASE(SUITE("UnsolData"))
@@ -76,7 +76,7 @@ TEST_CASE(SUITE("UnsolData"))
 
 	t.LowerLayerUp();
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	REQUIRE(t.lower->PopWriteAsHex() ==  hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
@@ -90,10 +90,10 @@ TEST_CASE(SUITE("UnsolData"))
 
 	// should immediately try to send another unsol packet,
 	// Grp2Var1, qual 0x17, count 1, index 2, quality+val == 0x01
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 02 00 01");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 02 00 01");
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(1));
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	REQUIRE(t.lower->PopWriteAsHex() == "");
 }
 
 TEST_CASE(SUITE("UnsolEventBufferOverflow"))
@@ -105,7 +105,7 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 	OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(1));
 
 	t.LowerLayerUp();
-	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
@@ -120,11 +120,11 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 	// Grp2Var1, qual 0x17, count 2, index 0
 	// The last two values should be published, 0x01 and 0x81 (false and true)
 	// the first value is lost off the front of the buffer
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(1));
 
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	REQUIRE(t.lower->PopWriteAsHex() == "");
 }
 
 TEST_CASE(SUITE("UnsolMultiFragments"))
@@ -138,10 +138,10 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
 
 	t.LowerLayerUp();
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  hex::NullUnsolicited(0));
+	REQUIRE(t.lower->PopWriteAsHex() ==  hex::NullUnsolicited(0));
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
-	REQUIRE(t.lower.PopWriteAsHex() ==  "");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "");
 
 	t.Transaction([](IUpdateHandler & db)
 	{
@@ -151,16 +151,16 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
 
 
 	// Only enough room to in the APDU to carry a single value
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 82 00 20 01 28 01 00 01 00 01 07 00 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "F1 82 82 00 20 01 28 01 00 01 00 01 07 00 00 00");
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(1));
 
 	// should immediately try to send another unsol packet
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F2 82 80 00 20 01 28 01 00 03 00 01 0D 00 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "F2 82 80 00 20 01 28 01 00 03 00 01 0D 00 00 00");
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(2));
 
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	REQUIRE(t.lower->PopWriteAsHex() == "");
 }
 
 void WriteDuringUnsol(bool beforeTx)
@@ -173,7 +173,7 @@ void WriteDuringUnsol(bool beforeTx)
 
 	t.LowerLayerUp();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0));
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
@@ -182,7 +182,7 @@ void WriteDuringUnsol(bool beforeTx)
 		db.Update(Binary(true, 0x01), 0);
 	});
 
-	REQUIRE(t.lower.PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 00 00 81");
+	REQUIRE(t.lower->PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 00 00 81");
 
 	if (beforeTx)
 	{
@@ -196,11 +196,11 @@ void WriteDuringUnsol(bool beforeTx)
 	}
 
 	// check that we get a response to this immediately without the confirm
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::EmptyResponse(0));
 
 	// now send the confirm to the outstation
 	t.SendToOutstation(hex::UnsolConfirm(1));
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	REQUIRE(t.lower->PopWriteAsHex() == "");
 }
 
 // Test that non-read fragments are immediately responded to while
@@ -226,7 +226,7 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 
 	t.LowerLayerUp();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0));
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
@@ -235,7 +235,7 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 		db.Update(Binary(true, 0x01), 0);
 	});
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
 
 	auto readClass1 = "C0 01 3C 02 06";
 
@@ -252,7 +252,7 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 
 	t.SendToOutstation(hex::UnsolConfirm(1));
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 00");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 81 80 00");
 }
 
 
@@ -266,7 +266,7 @@ TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 
 	t.LowerLayerUp();
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "F0 82 80 00");
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
@@ -275,7 +275,7 @@ TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 		db.Update(Binary(true, 0x01), 0);
 	});
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
 	t.OnSendResult(true);
 
 	// send a read request that will be overwritten
@@ -284,7 +284,7 @@ TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 	//now send a write IIN request, and test that the outstation answers immediately
 	t.SendToOutstation("C0 02 50 01 00 07 07 00");
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 81 00 00");
 }
 
 TEST_CASE(SUITE("RepeatRequestDuringUnsol"))
@@ -297,24 +297,24 @@ TEST_CASE(SUITE("RepeatRequestDuringUnsol"))
 
 	t.LowerLayerUp();
 
-	REQUIRE(t.lower.PopWriteAsHex() == "F0 82 80 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "F0 82 80 00");
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
 	t.SendToOutstation(hex::ClearRestartIIN(0));
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::EmptyResponse(0));
 	t.OnSendResult(true);
 
 	t.Transaction([](IUpdateHandler & db)
 	{
 		db.Update(Binary(true, 0x01), 1);
 	});
-	REQUIRE(t.lower.PopWriteAsHex() == "F1 82 00 00 02 01 28 01 00 01 00 81");
+	REQUIRE(t.lower->PopWriteAsHex() == "F1 82 00 00 02 01 28 01 00 01 00 81");
 	t.OnSendResult(true);
 
 	// while waiting for a confirm, repeat the previous request, byte-for-byte
 	t.SendToOutstation(hex::ClearRestartIIN(0));
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::EmptyResponse(0));
 	t.OnSendResult(true);
 
 }
@@ -329,7 +329,7 @@ TEST_CASE(SUITE("UnsolEnable"))
 
 	t.LowerLayerUp();
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  hex::NullUnsolicited(0));
+	REQUIRE(t.lower->PopWriteAsHex() ==  hex::NullUnsolicited(0));
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
@@ -339,15 +339,15 @@ TEST_CASE(SUITE("UnsolEnable"))
 		db.Update(Binary(false, 0x01), 0);
 	});
 
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	REQUIRE(t.lower->PopWriteAsHex() == "");
 
 	// Enable unsol class 1
 	t.SendToOutstation("C0 14 3C 02 06");
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 82 00");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 81 82 00");
 	t.OnSendResult(true);
 
 	// should automatically send the previous data as unsol
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 01");
+	REQUIRE(t.lower->PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 01");
 }
 
 
@@ -359,7 +359,7 @@ TEST_CASE(SUITE("UnsolEnableDisableFailure"))
 
 	t.LowerLayerUp();
 	t.SendToOutstation("C0 14 3C 02 06");
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 01"); //FUNC_NOT_SUPPORTED
+	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 81 80 01"); //FUNC_NOT_SUPPORTED
 }
 
 
