@@ -32,7 +32,7 @@ class OutstationImpl implements Outstation {
     @Override
     public void finalize()
     {
-        this.disable_native(this.nativePointer);
+        this.destroy_native(this.nativePointer);
     }
 
     @Override
