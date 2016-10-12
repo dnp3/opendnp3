@@ -77,6 +77,8 @@ public:
 
 private:
 
+	void ShutdownImpl();
+
 	// ----- generic method for adding a stack ------
 	template <class T>
 	std::shared_ptr<T> AddStack(const opendnp3::LinkConfig& link, opendnp3::ILinkSession& session, const std::shared_ptr<T>& stack);

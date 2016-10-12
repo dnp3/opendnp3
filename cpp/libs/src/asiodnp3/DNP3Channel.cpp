@@ -50,16 +50,19 @@ DNP3Channel::DNP3Channel(
 
 DNP3Channel::~DNP3Channel()
 {
-	if (resources)
-	{
-		resources->Shutdown();
-	}
+	this->ShutdownImpl();
 }
 
 // comes from the outside, so we need to synchronize
 void DNP3Channel::Shutdown()
+{	
+	auto action = [self = shared_from_this()]() { self->ShutdownImpl(); };
+	this->executor->PostToStrand(action);
+}
+
+void DNP3Channel::ShutdownImpl()
 {
-	if (resources) // have we been shutdown yet?
+	if (this->resources) // have we been shutdown yet?
 	{
 		if (auto sd = this->shutdown.lock())
 		{

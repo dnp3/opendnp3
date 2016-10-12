@@ -90,11 +90,9 @@ bool IAsyncChannel::BeginRead(const openpal::WSlice& buffer, const IOCallback& c
 {
 	if (!this->CanRead()) return false;
 
-	this->reading = true;
+	this->reading = true;	
 
-	auto self(this->shared_from_this());
-
-	auto cbwrap = [self, buffer, callback](const std::error_code & ec, std::size_t num)
+	auto cbwrap = [self = shared_from_this(), buffer, callback](const std::error_code & ec, std::size_t num)
 	{
 		self->reading = false;
 		if (!self->shuttingDown)
@@ -113,11 +111,9 @@ bool IAsyncChannel::BeginWrite(const openpal::RSlice& buffer, const IOCallback& 
 {
 	if (!this->CanWrite()) return false;
 
-	this->writing = true;
+	this->writing = true;	
 
-	auto self(this->shared_from_this()); // prevent destruction while there's a callback pending
-
-	auto cbwrap = [self, buffer, callback](const std::error_code & ec, std::size_t num)
+	auto cbwrap = [self = shared_from_this(), buffer, callback](const std::error_code & ec, std::size_t num)
 	{
 		self->writing = false;
 		if (!self->shuttingDown)

@@ -67,12 +67,14 @@ void StackBase::Shutdown(const std::shared_ptr<asiopal::IResource>& resource)
 {
 	auto task = [self = this->shared_from_this(), resource]() -> bool
 	{
-		return self->iohandler->Remove(self->tstack.link);
+		auto result = self->iohandler->Remove(self->tstack.link);
 
 		if (auto sd = self->shutdown.lock())
 		{
 			sd->OnShutdown(resource);
 		}
+
+		return result;
 	};
 
 	auto remove = this->executor->ReturnFrom<bool>(task);

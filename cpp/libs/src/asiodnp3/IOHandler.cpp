@@ -156,8 +156,11 @@ bool IOHandler::Remove(ILinkSession& session)
 
 	if (iter == sessions.end()) return false;
 
-	iter->session->OnLowerLayerDown();
-
+	if (iter->enabled)
+	{
+		iter->session->OnLowerLayerDown();
+	}
+	
 	sessions.erase(iter);
 
 	if (!this->IsAnySessionEnabled()) this->factory->SuspendChannelAccept();
