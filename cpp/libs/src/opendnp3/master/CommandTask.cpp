@@ -33,26 +33,26 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IMasterTask* CommandTask::FDirectOperate(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger)
+std::shared_ptr<IMasterTask> CommandTask::CreateDirectOperate(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger)
 {
-	auto task = new CommandTask(std::move(set), app, callback, config, logger);
+	auto task = std::make_shared<CommandTask>(std::move(set), app, callback, config, logger);
 	task->LoadDirectOperate();
 	return task;
 }
 
 
-IMasterTask* CommandTask::FSelectAndOperate(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger)
+std::shared_ptr<IMasterTask> CommandTask::CreateSelectAndOperate(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger)
 {
-	auto task = new CommandTask(std::move(set), app, callback, config, logger);
+	auto task = std::make_shared<CommandTask>(std::move(set), app, callback, config, logger);
 	task->LoadSelectAndOperate();
 	return task;
 }
 
-CommandTask::CommandTask(CommandSet&& commands_, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger) :
+CommandTask::CommandTask(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger) :
 	IMasterTask(app, MonotonicTimestamp::Min(), logger, config),
 	statusResult(CommandStatus::UNDEFINED),
 	commandCallback(callback),
-	commands(std::move(commands_))
+	commands(std::move(commands))
 {
 
 }

@@ -100,7 +100,7 @@ public:
 	bool isSending = false;
 	AppSeqNum solSeq;
 	AppSeqNum unsolSeq;
-	openpal::ManagedPtr<IMasterTask> pActiveTask;
+	std::shared_ptr<IMasterTask> activeTask;
 	openpal::TimerRef responseTimer;
 	openpal::TimerRef scheduleTimer;
 	openpal::TimerRef taskStartTimeoutTimer;
@@ -126,7 +126,7 @@ public:
 
 	virtual void RecordLastRequest(const openpal::RSlice& apdu) {}
 
-	virtual bool MeetsUserRequirements(const IMasterTask& task)
+	virtual bool MeetsUserRequirements(const std::shared_ptr<IMasterTask>& task)
 	{
 		return true;
 	}
@@ -176,7 +176,7 @@ public:
 
 	/// public state manipulation actions
 
-	TaskState BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
+	TaskState BeginNewTask(const std::shared_ptr<IMasterTask>& task);
 
 	TaskState ResumeActiveTask();
 
@@ -202,7 +202,7 @@ public:
 
 private:
 
-	void ScheduleRecurringPollTask(IMasterTask* pTask);
+	void ScheduleRecurringPollTask(const std::shared_ptr<IMasterTask>& task);
 
 	virtual void OnPendingTask() override
 	{
@@ -215,7 +215,7 @@ private:
 
 protected:
 
-	void ScheduleAdhocTask(IMasterTask* pTask);
+	void ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task);
 
 	/// state switch lookups
 	TaskState OnStartEvent();

@@ -21,14 +21,18 @@
 #ifndef OPENDNP3_MASTERSCAN_H
 #define OPENDNP3_MASTERSCAN_H
 
-#include <openpal/executor/IExecutor.h>
+#include <memory>
 
-#include <functional>
+namespace openpal
+{
+	class IExecutor;
+}
 
 namespace opendnp3
 {
 
 class IMasterTask;
+class MContext;
 
 /**
 * Provides access to a permanently bound scan
@@ -37,9 +41,9 @@ class MasterScan
 {
 public:
 
-	MasterScan();
+	MasterScan() = default;
 
-	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask, const std::function<void()>& demandCallback);
+	MasterScan(const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<MContext>& context);
 
 	/// Request that the scan be performed as soon as possible
 	bool Demand();
@@ -48,9 +52,10 @@ public:
 
 private:
 
-	openpal::IExecutor* pExecutor;
-	IMasterTask* pTask;
-	std::function<void()> demandCallback;
+	std::shared_ptr<openpal::IExecutor> executor;
+	std::shared_ptr<IMasterTask> task;
+	std::shared_ptr<MContext> context;
+
 };
 
 }
