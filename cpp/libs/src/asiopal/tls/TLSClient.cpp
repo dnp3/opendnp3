@@ -48,7 +48,15 @@ TLSClient::TLSClient(
 
 bool TLSClient::Cancel()
 {
-	return false;
+	if (this->canceled)
+	{
+		return false;
+	}
+
+	std::error_code ec;	
+	resolver.cancel();
+	this->canceled = true;
+	return true;
 }
 
 bool TLSClient::BeginConnect(const connect_callback_t& callback)
@@ -62,7 +70,15 @@ bool TLSClient::BeginConnect(const connect_callback_t& callback)
 
 	if (ec)
 	{
-		this->executor->strand.post([executor = executor, callback, stream, ec] { callback(executor, stream, ec); });
+		auto cb = [self = shared_from_this(), callback, stream, ec]
+		{
+			if (!self->canceled)
+			{
+				callback(self->executor, stream, ec);
+			}
+		};
+
+		this->executor->strand.post(cb);
 		return true;
 	}
 
@@ -107,7 +123,10 @@ void TLSClient::HandleResolveResult(
 {
 	if (ec)
 	{
-		callback(this->executor, stream, ec);
+		if (!this->canceled)
+		{
+			callback(this->executor, stream, ec);
+		}		
 	}
 	else
 	{
@@ -128,13 +147,19 @@ void TLSClient::HandleConnectResult(
 {
 	if (ec)
 	{
-		callback(this->executor, stream, ec);
+		if (!this->canceled)
+		{
+			callback(this->executor, stream, ec);
+		}		
 	}
 	else
 	{
 		auto cb = [self = shared_from_this(), callback, stream](const std::error_code & ec)
 		{
-			callback(self->executor, stream, ec);
+			if (!self->canceled)
+			{
+				callback(self->executor, stream, ec);
+			}
 		};
 
 		stream->async_handshake(asio::ssl::stream_base::client, executor->strand.wrap(cb));

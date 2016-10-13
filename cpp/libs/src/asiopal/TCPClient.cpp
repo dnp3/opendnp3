@@ -78,20 +78,7 @@ bool TCPClient::BeginConnect(const connect_callback_t& callback)
 		// Try DNS resolution instead
 		auto cb = [self, callback](const std::error_code & ec, asio::ip::tcp::resolver::iterator endpoints)
 		{
-			if (ec)
-			{
-				self->PostConnectError(callback, ec);
-			}
-			else
-			{
-				// attempt a connection to each endpoint in the iterator until we connect
-				auto cb = [self, callback](const std::error_code & ec, asio::ip::tcp::resolver::iterator endpoints)
-				{
-					callback(self->executor, std::move(self->socket), ec);
-				};
-
-				asio::async_connect(self->socket, endpoints, self->condition, self->executor->strand.wrap(cb));
-			}
+			self->HandleResolveResult(callback, endpoints, ec);
 		};
 
 		std::stringstream portstr;
@@ -121,10 +108,31 @@ bool TCPClient::BeginConnect(const connect_callback_t& callback)
 	}
 }
 
-bool TCPClient::PostConnectError(const connect_callback_t& callback, const std::error_code& ec)
+void TCPClient::HandleResolveResult(
+	const connect_callback_t& callback,
+	const asio::ip::tcp::resolver::iterator& endpoints,
+	const std::error_code& ec
+)
 {
-	auto self = this->shared_from_this();
-	auto cb = [self, ec, callback]()
+	if (ec)
+	{
+		this->PostConnectError(callback, ec);
+	}
+	else
+	{
+		// attempt a connection to each endpoint in the iterator until we connect
+		auto cb = [self = shared_from_this(), callback](const std::error_code & ec, asio::ip::tcp::resolver::iterator endpoints)
+		{
+			callback(self->executor, std::move(self->socket), ec);
+		};
+
+		asio::async_connect(this->socket, endpoints, this->condition, this->executor->strand.wrap(cb));
+	}
+}
+
+bool TCPClient::PostConnectError(const connect_callback_t& callback, const std::error_code& ec)
+{	
+	auto cb = [self = shared_from_this(), ec, callback]()
 	{
 		self->connecting = false;
 		if (!self->canceled)
