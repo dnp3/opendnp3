@@ -39,7 +39,7 @@ namespace asiodnp3
 
 MasterTCPServer::MasterTCPServer(
     const openpal::Logger& logger,
-    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const std::shared_ptr<asiopal::Executor>& executor,
     const asiopal::IPEndpoint& endpoint,
     const std::shared_ptr<IListenCallbacks>& callbacks,
     const std::shared_ptr<asiopal::ResourceManager>& manager,
@@ -57,7 +57,7 @@ void MasterTCPServer::OnShutdown()
 	this->manager->OnShutdown(this->shared_from_this());
 }
 
-void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket socket)
+void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket socket)
 {
 	std::ostringstream oss;
 	oss << socket.remote_endpoint();

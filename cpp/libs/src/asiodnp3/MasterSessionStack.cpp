@@ -21,7 +21,7 @@
 
 #include "asiodnp3/MasterSessionStack.h"
 
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 #include "asiodnp3/Conversions.h"
 #include "asiodnp3/LinkSession.h"
 
@@ -31,7 +31,7 @@ namespace asiodnp3
 {
 std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
     const openpal::Logger& logger,
-    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const std::shared_ptr<asiopal::Executor>& executor,
     const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
     const std::shared_ptr<opendnp3::IMasterApplication>& application,
     const std::shared_ptr<LinkSession>& session,
@@ -44,7 +44,7 @@ std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
 
 MasterSessionStack::MasterSessionStack(
     const openpal::Logger& logger,
-    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const std::shared_ptr<asiopal::Executor>& executor,
     const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
     const std::shared_ptr<opendnp3::IMasterApplication>& application,
     const std::shared_ptr<LinkSession>& session,

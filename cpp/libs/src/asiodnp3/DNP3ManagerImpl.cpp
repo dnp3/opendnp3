@@ -78,7 +78,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
 	auto create = [&]() -> std::shared_ptr<IChannel>
 	{
 		auto clogger = this->logger.Detach(id, levels);
-		auto executor = StrandExecutor::Create(this->io);
+		auto executor = Executor::Create(this->io);
 		auto iohandler = TCPClientIOHandler::Create(clogger, listener, executor, retry, IPEndpoint(host, port), local);
 		return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
 	};
@@ -98,7 +98,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
 	{
 		std::error_code ec;
 		auto clogger = this->logger.Detach(id, levels);
-		auto executor = StrandExecutor::Create(this->io);
+		auto executor = Executor::Create(this->io);
 		auto iohandler = TCPServerIOHandler::Create(clogger, listener, executor, IPEndpoint(endpoint, port), ec);
 		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
 	};
@@ -171,7 +171,7 @@ std::shared_ptr<asiopal::IListener> DNP3ManagerImpl::CreateListener(
 	{
 		return asiodnp3::MasterTCPServer::Create(
 		    this->logger.Detach(loggerid, levels),
-		    asiopal::StrandExecutor::Create(this->io),
+		    asiopal::Executor::Create(this->io),
 		    endpoint,
 		    callbacks,
 		    this->resources,
@@ -204,7 +204,7 @@ std::shared_ptr<asiopal::IListener> DNP3ManagerImpl::CreateListener(
 	{
 		return asiodnp3::MasterTLSServer::Create(
 		    this->logger.Detach(loggerid, levels),
-		    asiopal::StrandExecutor::Create(this->io),
+		    asiopal::Executor::Create(this->io),
 		    endpoint,
 		    config,
 		    callbacks,

@@ -37,7 +37,7 @@ namespace asiodnp3
 
 MasterTLSServer::MasterTLSServer(
     const openpal::Logger& logger,
-    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const std::shared_ptr<asiopal::Executor>& executor,
     const asiopal::IPEndpoint& endpoint,
     const asiopal::TLSConfig& config,
     const std::shared_ptr<IListenCallbacks>& callbacks,
@@ -95,7 +95,7 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	       );
 }
 
-void MasterTLSServer::AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
+void MasterTLSServer::AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
 	auto channel = TLSStreamChannel::Create(executor->Fork(), stream); 	// run the link session in a new strand
 

@@ -37,14 +37,14 @@ public:
 
 	DNP3Channel(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<IOHandler>& iohandler,
 	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown
 	);
 
 	static std::shared_ptr<DNP3Channel> Create(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<IOHandler>& iohandler,
 	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown)
 	{
@@ -84,7 +84,7 @@ private:
 	std::shared_ptr<T> AddStack(const opendnp3::LinkConfig& link, const std::shared_ptr<T>& stack);
 
 	openpal::Logger logger;
-	const std::shared_ptr<asiopal::StrandExecutor> executor;
+	const std::shared_ptr<asiopal::Executor> executor;
 
 	std::shared_ptr<IOHandler> iohandler;
 	std::shared_ptr<asiopal::IShutdownHandler> shutdown;

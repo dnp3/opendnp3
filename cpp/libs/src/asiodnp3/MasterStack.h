@@ -39,7 +39,7 @@ public:
 
 	MasterStack(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
@@ -50,7 +50,7 @@ public:
 
 	static std::shared_ptr<MasterStack> Create(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,

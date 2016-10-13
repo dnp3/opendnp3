@@ -31,7 +31,7 @@ namespace asiodnp3
 TCPClientIOHandler::TCPClientIOHandler(
     const openpal::Logger& logger,
     const std::shared_ptr<IChannelListener>& listener,
-    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const std::shared_ptr<asiopal::Executor>& executor,
     const asiopal::ChannelRetry& retry,
     const asiopal::IPEndpoint& remote,
     const std::string& adapter
@@ -77,7 +77,7 @@ void TCPClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TCPClient>&
 {
 	this->is_connecting = true;
 
-	auto cb = [ =, self = shared_from_this()](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
+	auto cb = [ =, self = shared_from_this()](const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
 	{
 
 		if (ec)

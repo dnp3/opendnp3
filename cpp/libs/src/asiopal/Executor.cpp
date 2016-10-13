@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#include "asiopal/StrandExecutor.h"
-#include "asiopal/StrandTimer.h"
+#include "asiopal/Executor.h"
+#include "asiopal/Timer.h"
 
 #include "asiopal/TimeConversions.h"
 
@@ -31,19 +31,19 @@ using namespace openpal;
 namespace asiopal
 {
 
-StrandExecutor::StrandExecutor(const std::shared_ptr<IO>& io) :
+Executor::Executor(const std::shared_ptr<IO>& io) :
 	io(io),
 	strand(io->service)
 {
 
 }
 
-MonotonicTimestamp StrandExecutor::GetTime()
+MonotonicTimestamp Executor::GetTime()
 {
 	return TimeConversions::Convert(steady_clock_t::now());
 }
 
-ITimer* StrandExecutor::Start(const TimeDuration& delay, const action_t& runnable)
+ITimer* Executor::Start(const TimeDuration& delay, const action_t& runnable)
 {
 	const auto now = steady_clock_t::now();
 	const auto max_ms = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::time_point::max() - now).count();
@@ -52,14 +52,14 @@ ITimer* StrandExecutor::Start(const TimeDuration& delay, const action_t& runnabl
 	return Start(expiration, runnable);
 }
 
-ITimer* StrandExecutor::Start(const MonotonicTimestamp& time, const action_t& runnable)
+ITimer* Executor::Start(const MonotonicTimestamp& time, const action_t& runnable)
 {
 	return Start(TimeConversions::Convert(time), runnable);
 }
 
-openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable)
+openpal::ITimer* Executor::Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable)
 {
-	auto timer = std::make_shared<StrandTimer>(this->strand.get_io_service());
+	auto timer = std::make_shared<Timer>(this->strand.get_io_service());
 
 	timer->timer.expires_at(expiration);
 
@@ -77,7 +77,7 @@ openpal::ITimer* StrandExecutor::Start(const steady_clock_t::time_point& expirat
 	return timer.get();
 }
 
-void StrandExecutor::Post(const action_t& runnable)
+void Executor::Post(const action_t& runnable)
 {
 	auto callback = [runnable, self = shared_from_this()]()
 	{
@@ -86,7 +86,7 @@ void StrandExecutor::Post(const action_t& runnable)
 	strand.post(callback);
 }
 
-void StrandExecutor::BlockUntil(const std::function<void()>& action)
+void Executor::BlockUntil(const std::function<void()>& action)
 {
 	if (strand.running_in_this_thread())
 	{
@@ -109,7 +109,7 @@ void StrandExecutor::BlockUntil(const std::function<void()>& action)
 	future.wait();
 }
 
-void StrandExecutor::BlockUntilAndFlush(const std::function<void()>& action)
+void Executor::BlockUntilAndFlush(const std::function<void()>& action)
 {
 	this->BlockUntil(action);
 	this->BlockUntil([]() {});

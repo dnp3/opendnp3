@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "asiopal/StrandTimer.h"
+#include "asiopal/Timer.h"
 
 #include <chrono>
 
@@ -28,18 +28,18 @@ using namespace openpal;
 namespace asiopal
 {
 
-void StrandTimer::Cancel()
+void Timer::Cancel()
 {
 	timer.cancel();
 }
 
-MonotonicTimestamp StrandTimer::ExpiresAt()
+MonotonicTimestamp Timer::ExpiresAt()
 {
 	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(timer.expires_at().time_since_epoch()).count();
 	return MonotonicTimestamp(millisec);
 }
 
-StrandTimer::StrandTimer(asio::io_service& service) : timer(service)
+Timer::Timer(asio::io_service& service) : timer(service)
 {}
 
 }

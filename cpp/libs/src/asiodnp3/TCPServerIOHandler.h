@@ -39,11 +39,11 @@ class TCPServerIOHandler final : public IOHandler
 	{
 	public:
 
-		typedef std::function<void(const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket)> callback_t;
+		typedef std::function<void(const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket)> callback_t;
 
 		Server(
 		    const openpal::Logger& logger,
-		    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+		    const std::shared_ptr<asiopal::Executor>& executor,
 		    const asiopal::IPEndpoint& endpoint,
 		    std::error_code& ec
 		) :
@@ -62,7 +62,7 @@ class TCPServerIOHandler final : public IOHandler
 
 		virtual void OnShutdown() override {}
 
-		virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket) override;
+		virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket) override;
 	};
 
 public:
@@ -70,7 +70,7 @@ public:
 	static std::shared_ptr<TCPServerIOHandler> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<IChannelListener>& listener,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
 	    std::error_code& ec)
 	{
@@ -80,7 +80,7 @@ public:
 	TCPServerIOHandler(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<IChannelListener>& listener,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
 	    std::error_code& ec
 	);
@@ -94,7 +94,7 @@ protected:
 
 private:
 
-	const std::shared_ptr<asiopal::StrandExecutor> executor;
+	const std::shared_ptr<asiopal::Executor> executor;
 	const asiopal::IPEndpoint endpoint;
 	std::shared_ptr<Server> server;
 };

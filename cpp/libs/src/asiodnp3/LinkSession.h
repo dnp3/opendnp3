@@ -30,7 +30,7 @@
 #include <opendnp3/link/LinkChannelStatistics.h>
 #include <opendnp3/Route.h>
 
-#include <asiopal/StrandExecutor.h>
+#include <asiopal/Executor.h>
 #include <asiopal/IResourceManager.h>
 #include <asiopal/IAsyncChannel.h>
 

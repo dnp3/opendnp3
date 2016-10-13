@@ -34,7 +34,7 @@ namespace asiodnp3
 {
 
 
-void TCPServerIOHandler::Server::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket socket)
+void TCPServerIOHandler::Server::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket socket)
 {
 	this->callback(executor, std::move(socket));
 }
@@ -42,7 +42,7 @@ void TCPServerIOHandler::Server::AcceptConnection(uint64_t sessionid, const std:
 TCPServerIOHandler::TCPServerIOHandler(
     const openpal::Logger& logger,
     const std::shared_ptr<IChannelListener>& listener,
-    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const std::shared_ptr<asiopal::Executor>& executor,
     const asiopal::IPEndpoint& endpoint,
     std::error_code& ec
 ) :
@@ -62,7 +62,7 @@ void TCPServerIOHandler::ShutdownImpl()
 
 void TCPServerIOHandler::BeginChannelAccept()
 {
-	auto callback = [self = shared_from_this(), this](const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket socket)
+	auto callback = [self = shared_from_this(), this](const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket socket)
 	{
 		this->OnNewChannel(SocketChannel::Create(executor, std::move(socket)));
 	};

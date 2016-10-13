@@ -24,7 +24,7 @@
 namespace asiopal
 {
 
-SocketChannel::SocketChannel(std::shared_ptr<StrandExecutor> executor, asio::ip::tcp::socket socket) : IAsyncChannel(executor), socket(std::move(socket))
+SocketChannel::SocketChannel(std::shared_ptr<Executor> executor, asio::ip::tcp::socket socket) : IAsyncChannel(executor), socket(std::move(socket))
 {
 
 }

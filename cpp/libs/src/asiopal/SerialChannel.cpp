@@ -27,7 +27,7 @@
 namespace asiopal
 {
 
-SerialChannel::SerialChannel(std::shared_ptr<StrandExecutor> executor) : IAsyncChannel(executor), port(executor->strand.get_io_service())
+SerialChannel::SerialChannel(std::shared_ptr<Executor> executor) : IAsyncChannel(executor), port(executor->strand.get_io_service())
 {}
 
 bool SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)

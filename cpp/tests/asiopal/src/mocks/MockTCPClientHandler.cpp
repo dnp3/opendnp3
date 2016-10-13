@@ -26,7 +26,7 @@
 namespace asiopal
 {
 
-void MockTCPClientHandler::OnConnect(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec)
+void MockTCPClientHandler::OnConnect(const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec)
 {
 	if (ec)
 	{

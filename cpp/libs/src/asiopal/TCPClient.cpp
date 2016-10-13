@@ -28,7 +28,7 @@ namespace asiopal
 
 TCPClient::TCPClient(
     const openpal::Logger& logger,
-    const std::shared_ptr<StrandExecutor>& executor,
+    const std::shared_ptr<Executor>& executor,
     const IPEndpoint& remote,
     const std::string& adapter
 ) :

@@ -21,7 +21,7 @@
 #ifndef ASIOPAL_TCPCLIENT_H
 #define ASIOPAL_TCPCLIENT_H
 
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 #include "asiopal/IPEndpoint.h"
 #include "asiopal/LoggingConnectionCondition.h"
 
@@ -33,11 +33,11 @@ class TCPClient final : public std::enable_shared_from_this<TCPClient>, private 
 
 public:
 
-	typedef std::function<void(const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket, const std::error_code& ec)> connect_callback_t;
+	typedef std::function<void(const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket, const std::error_code& ec)> connect_callback_t;
 
 	static std::shared_ptr<TCPClient> Create(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<StrandExecutor>& executor,
+	    const std::shared_ptr<Executor>& executor,
 	    const IPEndpoint& remote,
 	    const std::string& adapter)
 	{
@@ -46,7 +46,7 @@ public:
 
 	TCPClient(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<StrandExecutor>& executor,
+	    const std::shared_ptr<Executor>& executor,
 	    const IPEndpoint& remote,
 	    const std::string& adapter
 	);
@@ -63,7 +63,7 @@ private:
 	bool canceled = false;
 
 	LoggingConnectionCondition condition;
-	std::shared_ptr<StrandExecutor> executor;
+	std::shared_ptr<Executor> executor;
 	asio::ip::tcp::socket socket;
 	const std::string host;
 	const std::string adapter;

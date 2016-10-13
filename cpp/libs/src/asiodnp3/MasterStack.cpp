@@ -35,7 +35,7 @@ namespace asiodnp3
 
 MasterStack::MasterStack(
     const Logger& logger,
-    const std::shared_ptr<StrandExecutor>& executor,
+    const std::shared_ptr<Executor>& executor,
     const std::shared_ptr<ISOEHandler>& SOEHandler,
     const std::shared_ptr<IMasterApplication>& application,
     const std::shared_ptr<IOHandler>& iohandler,

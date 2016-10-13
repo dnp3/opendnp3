@@ -45,7 +45,7 @@ MockTCPPair::~MockTCPPair()
 
 void MockTCPPair::Connect(size_t num)
 {
-	auto callback = [handler = this->chandler](const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec)
+	auto callback = [handler = this->chandler](const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec)
 	{
 		handler->OnConnect(executor, std::move(socket), ec);
 	};

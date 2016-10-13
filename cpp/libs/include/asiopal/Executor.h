@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_STRANDEXECUTOR_H
-#define ASIOPAL_STRANDEXECUTOR_H
+#ifndef ASIOPAL_EXECUTOR_H
+#define ASIOPAL_EXECUTOR_H
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/util/Uncopyable.h>
@@ -39,19 +39,19 @@ namespace asiopal
 * Shutdown life-cycle guarantees are provided by using std::shared_ptr
 *
 */
-class StrandExecutor final :
+class Executor final :
 	public openpal::IExecutor,
-	public std::enable_shared_from_this<StrandExecutor>,
+	public std::enable_shared_from_this<Executor>,
 	private openpal::Uncopyable
 {
 
 public:
 
-	StrandExecutor(const std::shared_ptr<IO>& io);
+	Executor(const std::shared_ptr<IO>& io);
 
-	static std::shared_ptr<StrandExecutor> Create(const std::shared_ptr<IO>& io)
+	static std::shared_ptr<Executor> Create(const std::shared_ptr<IO>& io)
 	{
-		return std::make_shared<StrandExecutor>(io);
+		return std::make_shared<Executor>(io);
 	}
 
 	/// ---- Implement IExecutor -----
@@ -75,8 +75,8 @@ private:
 
 public:
 
-	// Create a new StrandExecutor that shares the underling std::shared_ptr<IO>
-	std::shared_ptr<StrandExecutor> Fork() const
+	// Create a new Executor that shares the underling std::shared_ptr<IO>
+	std::shared_ptr<Executor> Fork() const
 	{
 		return Create(this->io);
 	}
@@ -90,7 +90,7 @@ private:
 };
 
 template <class T>
-T StrandExecutor::ReturnFrom(const std::function<T()>& action)
+T Executor::ReturnFrom(const std::function<T()>& action)
 {
 	if (strand.running_in_this_thread())
 	{

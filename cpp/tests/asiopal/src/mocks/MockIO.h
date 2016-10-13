@@ -22,7 +22,7 @@
 #ifndef ASIOPAL_MOCKIO_H
 #define ASIOPAL_MOCKIO_H
 
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 
 #include <memory>
 
@@ -52,9 +52,9 @@ public:
 		return std::make_shared<MockIO>();
 	}
 
-	std::shared_ptr<StrandExecutor> Executor()
+	std::shared_ptr<Executor> Executor()
 	{
-		return StrandExecutor::Create(this->shared_from_this());
+		return Executor::Create(this->shared_from_this());
 	}
 
 	size_t RunUntilTimeout(const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));

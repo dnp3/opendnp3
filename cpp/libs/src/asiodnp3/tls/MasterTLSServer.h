@@ -41,7 +41,7 @@ public:
 
 	MasterTLSServer(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
 	    const asiopal::TLSConfig& tlsConfig,
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
@@ -51,7 +51,7 @@ public:
 
 	static std::shared_ptr<MasterTLSServer> Create(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor> executor,
+	    const std::shared_ptr<asiopal::Executor> executor,
 	    const asiopal::IPEndpoint endpoint,
 	    const asiopal::TLSConfig& tlsConfig,
 	    const std::shared_ptr<IListenCallbacks> callbacks,
@@ -78,7 +78,7 @@ public:
 
 	virtual void AcceptStream(
 	    uint64_t sessionid,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream
 	) override;
 

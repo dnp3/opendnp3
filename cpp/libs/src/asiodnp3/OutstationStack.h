@@ -23,7 +23,7 @@
 
 #include "asiodnp3/IOutstation.h"
 
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 #include "opendnp3/outstation/OutstationContext.h"
 #include "opendnp3/transport/TransportStack.h"
 #include "asiodnp3/OutstationStackConfig.h"
@@ -42,7 +42,7 @@ public:
 
 	OutstationStack(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
@@ -51,7 +51,7 @@ public:
 
 	static std::shared_ptr<OutstationStack> Create(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,

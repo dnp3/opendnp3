@@ -24,7 +24,7 @@
 #include "asiopal/IPEndpoint.h"
 #include "asiopal/IListener.h"
 #include "asiopal/TLSConfig.h"
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/Logger.h>
@@ -48,7 +48,7 @@ public:
 
 	TLSServer(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<StrandExecutor>& executor,
+	    const std::shared_ptr<Executor>& executor,
 	    const IPEndpoint& endpoint,
 	    const TLSConfig& config,
 	    std::error_code& ec
@@ -63,13 +63,13 @@ protected:
 
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) = 0;
 	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) = 0;
-	virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
+	virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
 	virtual void OnShutdown() = 0;
 
 	void StartAccept(std::error_code& ec);
 
 	openpal::Logger logger;
-	std::shared_ptr<StrandExecutor> executor;
+	std::shared_ptr<Executor> executor;
 
 private:
 

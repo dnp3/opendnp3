@@ -44,7 +44,7 @@ public:
 
 	MasterTCPServer(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
 	    const std::shared_ptr<asiopal::ResourceManager>& manager,
@@ -53,7 +53,7 @@ public:
 
 	static std::shared_ptr<MasterTCPServer> Create(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
 	    const std::shared_ptr<asiopal::ResourceManager>& manager,
@@ -81,7 +81,7 @@ private:
 
 	virtual void OnShutdown() override;
 
-	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::StrandExecutor>& executor, asio::ip::tcp::socket) override;
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket) override;
 };
 
 }

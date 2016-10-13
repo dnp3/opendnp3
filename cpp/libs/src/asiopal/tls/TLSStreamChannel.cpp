@@ -24,7 +24,7 @@
 namespace asiopal
 {
 
-TLSStreamChannel::TLSStreamChannel(std::shared_ptr<StrandExecutor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) :
+TLSStreamChannel::TLSStreamChannel(std::shared_ptr<Executor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) :
 	IAsyncChannel(executor),
 	stream(stream)
 {}

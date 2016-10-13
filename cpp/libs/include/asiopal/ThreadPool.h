@@ -24,7 +24,7 @@
 #include <openpal/logging/Logger.h>
 
 #include "asiopal/SteadyClock.h"
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 
 #include <functional>
 #include <thread>
@@ -52,9 +52,9 @@ public:
 
 	~ThreadPool();
 
-	inline std::shared_ptr<StrandExecutor> Executor() const 
+	inline std::shared_ptr<Executor> CreateExecutor() const 
 	{
-		return StrandExecutor::Create(io);
+		return Executor::Create(io);
 	}
 
 	void Shutdown();

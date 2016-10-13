@@ -35,7 +35,7 @@ namespace asiodnp3
 
 DNP3Channel::DNP3Channel(
     const Logger& logger,
-    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+    const std::shared_ptr<asiopal::Executor>& executor,
     const std::shared_ptr<IOHandler>& iohandler,
     const std::shared_ptr<asiopal::IShutdownHandler>& shutdown) :
 

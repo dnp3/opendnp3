@@ -22,7 +22,7 @@
 #define ASIOPAL_TCPSERVER_H
 
 #include "asiopal/IPEndpoint.h"
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 #include "asiopal/IListener.h"
 
 #include <openpal/util/Uncopyable.h>
@@ -48,7 +48,7 @@ public:
 
 	TCPServer(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<StrandExecutor>& executor,
+	    const std::shared_ptr<Executor>& executor,
 	    const IPEndpoint& endpoint,
 	    std::error_code& ec
 	);
@@ -62,13 +62,13 @@ protected:
 
 	virtual void OnShutdown() = 0;
 
-	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket) = 0;
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket) = 0;
 
 	/// Start asynchronously accepting connections on the strand
 	void StartAccept();
 
 	openpal::Logger logger;
-	std::shared_ptr<StrandExecutor> executor;
+	std::shared_ptr<Executor> executor;
 
 private:
 

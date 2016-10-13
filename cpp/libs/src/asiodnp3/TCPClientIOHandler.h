@@ -40,7 +40,7 @@ public:
 	static std::shared_ptr<TCPClientIOHandler> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<IChannelListener>& listener,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::ChannelRetry& retry,
 	    const asiopal::IPEndpoint& remote,
 	    const std::string& adapter)
@@ -51,7 +51,7 @@ public:
 	TCPClientIOHandler(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<IChannelListener>& listener,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::ChannelRetry& retry,
 	    const asiopal::IPEndpoint& remote,
 	    const std::string& adapter
@@ -72,7 +72,7 @@ private:
 
 	bool is_connecting = false;
 
-	const std::shared_ptr<asiopal::StrandExecutor> executor;
+	const std::shared_ptr<asiopal::Executor> executor;
 	const asiopal::ChannelRetry retry;
 	const asiopal::IPEndpoint remote;
 	const std::string adapter;

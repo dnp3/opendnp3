@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include <asiopal/ThreadPool.h>
-#include <asiopal/StrandExecutor.h>
+#include <asiopal/Executor.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -31,7 +31,7 @@ using namespace openpal;
 using namespace opendnp3;
 using namespace asiopal;
 
-#define SUITE(name) "StrandExecutorTestSuite - " name
+#define SUITE(name) "ExecutorTestSuite - " name
 
 TEST_CASE(SUITE("Test automatic resource reclaimation"))
 {
@@ -47,7 +47,7 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 
 	auto setup = [&](uint32_t& counter)
 	{
-		auto exe = pool.Executor();
+		auto exe = pool.CreateExecutor();
 		auto increment = [&]()
 		{
 			++counter;
@@ -83,7 +83,7 @@ TEST_CASE(SUITE("Executor dispatch is from only one thread at a time"))
 
 	{
 		ThreadPool pool(Logger::Empty(), io, NUM_THREAD);
-		auto exe = pool.Executor();
+		auto exe = pool.CreateExecutor();
 
 		for (int i = 0; i < NUM_OPS; ++i)
 		{
@@ -107,7 +107,7 @@ TEST_CASE(SUITE("Executor dispatch is in same order as post order"))
 
 	{
 		ThreadPool pool(Logger::Empty(), io, NUM_THREAD);
-		auto exe = pool.Executor();
+		auto exe = pool.CreateExecutor();
 
 		for (int i = 0; i < NUM_OPS; ++i)
 		{
@@ -141,7 +141,7 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 
 	{
 		ThreadPool pool(Logger::Empty(), io, NUM_THREAD);
-		auto exe = StrandExecutor::Create(io);
+		auto exe = pool.CreateExecutor();
 
 
 		for (int i = 0; i < 100; ++i)

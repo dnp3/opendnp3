@@ -38,7 +38,7 @@ void assign(const T& config, U& view)
 
 OutstationStack::OutstationStack(
     const Logger& logger,
-    const std::shared_ptr<StrandExecutor>& executor,
+    const std::shared_ptr<Executor>& executor,
     const std::shared_ptr<ICommandHandler>& commandHandler,
     const std::shared_ptr<IOutstationApplication>& application,
     const std::shared_ptr<IOHandler>& iohandler,

@@ -38,7 +38,7 @@ public:
 
 	MockTCPServer(
 	    const openpal::Logger& logger,
-	    std::shared_ptr<StrandExecutor> executor,
+	    std::shared_ptr<Executor> executor,
 	    IPEndpoint endpoint,
 	    std::error_code& ec
 	) : TCPServer(logger, executor, endpoint, ec)
@@ -48,7 +48,7 @@ public:
 
 	static std::shared_ptr<MockTCPServer> Create(
 	    const openpal::Logger& logger,
-	    std::shared_ptr<StrandExecutor> executor,
+	    std::shared_ptr<Executor> executor,
 	    IPEndpoint endpoint,
 	    std::error_code& ec)
 	{
@@ -63,7 +63,7 @@ public:
 	}
 
 
-	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<StrandExecutor>& executor, asio::ip::tcp::socket socket) override
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket) override
 	{
 		this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
 	}

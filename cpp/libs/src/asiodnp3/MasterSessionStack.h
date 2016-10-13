@@ -29,7 +29,7 @@
 
 namespace asiopal
 {
-class StrandExecutor;
+class Executor;
 }
 
 namespace asiodnp3
@@ -46,7 +46,7 @@ public:
 
 	static std::shared_ptr<MasterSessionStack> Create(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
 	    const std::shared_ptr<LinkSession>& session,
@@ -88,7 +88,7 @@ public:
 
 	MasterSessionStack(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
 	    const std::shared_ptr<LinkSession>& session,
@@ -98,7 +98,7 @@ public:
 
 private:
 
-	std::shared_ptr<asiopal::StrandExecutor> executor;
+	std::shared_ptr<asiopal::Executor> executor;
 	std::shared_ptr<LinkSession> session;
 	opendnp3::StackStatistics statistics;
 	opendnp3::TransportStack stack;

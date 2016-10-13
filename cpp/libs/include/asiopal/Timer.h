@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_STRANDTIMER_H
-#define ASIOPAL_STRANDTIMER_H
+#ifndef ASIOPAL_TIMER_H
+#define ASIOPAL_TIMER_H
 
 #include <asio.hpp>
 
@@ -37,13 +37,13 @@ namespace asiopal
 * Implementation of openpal::ITimer backed by asio::basic_waitable_timer<steady_clock>
 *
 */
-class StrandTimer final : public openpal::ITimer, private openpal::Uncopyable
+class Timer final : public openpal::ITimer, private openpal::Uncopyable
 {
-	friend class StrandExecutor;
+	friend class Executor;
 
 public:
 
-	StrandTimer(asio::io_service& service);
+	Timer(asio::io_service& service);
 
 	virtual void Cancel() override;
 

@@ -25,7 +25,7 @@
 #include <openpal/container/RSlice.h>
 #include <openpal/util/Uncopyable.h>
 
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 
 #include <functional>
 #include <system_error>
@@ -39,7 +39,7 @@ class IAsyncChannel : public std::enable_shared_from_this<IAsyncChannel>, privat
 {
 public:
 
-	IAsyncChannel(std::shared_ptr<StrandExecutor> executor) : executor(executor)
+	IAsyncChannel(std::shared_ptr<Executor> executor) : executor(executor)
 	{}
 
 	virtual ~IAsyncChannel() {}
@@ -70,7 +70,7 @@ public:
 		return !(writing || shuttingDown);
 	}
 
-	std::shared_ptr<StrandExecutor> executor;
+	std::shared_ptr<Executor> executor;
 
 protected:
 

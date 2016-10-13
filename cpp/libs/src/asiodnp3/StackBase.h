@@ -22,7 +22,7 @@
 #define ASIODNP3_STACKBASE_H
 
 #include "asiodnp3/IStack.h"
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 #include "asiopal/IResourceManager.h"
 #include "asiodnp3/IOHandler.h"
 #include "opendnp3/transport/TransportStack.h"
@@ -40,7 +40,7 @@ protected:
 
 	StackBase(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::StrandExecutor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ILinkListener>& listener,
 	    const std::shared_ptr<IOHandler>& iohandler,
 	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
@@ -58,7 +58,7 @@ protected:
 
 	openpal::Logger logger;
 	opendnp3::StackStatistics statistics;
-	const std::shared_ptr<asiopal::StrandExecutor> executor;
+	const std::shared_ptr<asiopal::Executor> executor;
 	const std::shared_ptr<IOHandler> iohandler;
 	const std::shared_ptr<asiopal::IShutdownHandler> shutdown;
 	opendnp3::TransportStack tstack;
