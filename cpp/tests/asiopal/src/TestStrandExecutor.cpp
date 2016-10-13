@@ -95,6 +95,43 @@ TEST_CASE(SUITE("Executor dispatch is from only one thread at a time"))
 	REQUIRE(sum == NUM_OPS);
 }
 
+TEST_CASE(SUITE("Executor dispatch is in same order as post order"))
+{
+	const int NUM_THREAD = 10;
+	const int NUM_OPS = 1000;
+
+	auto io = std::make_shared<IO>();
+
+	int order = 0;
+	bool is_ordered = true;
+
+	{
+		ThreadPool pool(Logger::Empty(), io, NUM_THREAD);
+		auto exe = pool.Executor();
+
+		for (int i = 0; i < NUM_OPS; ++i)
+		{
+			auto test_order = [i, &order, &is_ordered]() 
+			{ 
+				if (is_ordered)
+				{
+					if (i == order)
+					{
+						++order;
+					}
+					else
+					{
+						is_ordered = false;
+					}
+				}
+			};
+			exe->Post(test_order);
+		}
+	}
+
+	REQUIRE(is_ordered);
+}
+
 TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 {
 	const int NUM_THREAD = 10;	
