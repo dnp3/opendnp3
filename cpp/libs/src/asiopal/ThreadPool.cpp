@@ -34,8 +34,7 @@ namespace asiopal
 
 ThreadPool::ThreadPool(
     const openpal::Logger& logger,
-    const std::shared_ptr<IO>& io,
-    uint32_t levels,
+    const std::shared_ptr<IO>& io,    
     uint32_t concurrency,
     std::function<void()> onThreadStart,
     std::function<void()> onThreadExit) :
@@ -60,7 +59,7 @@ ThreadPool::ThreadPool(
 		{
 			this->Run(i);
 		};
-		threads.push_back(std::unique_ptr<thread>(new thread(run)));
+		threads.push_back(std::make_unique<thread>(run));
 	}
 }
 

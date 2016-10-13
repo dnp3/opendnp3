@@ -23,13 +23,12 @@
 
 #include <openpal/logging/Logger.h>
 
-#include "asiopal/IO.h"
+#include "asiopal/SteadyClock.h"
+#include "asiopal/StrandExecutor.h"
 
 #include <functional>
 #include <thread>
 #include <memory>
-
-#include "asiopal/SteadyClock.h"
 
 namespace asiopal
 {
@@ -45,14 +44,18 @@ public:
 
 	ThreadPool(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<IO>& io,
-	    uint32_t levels,
+	    const std::shared_ptr<IO>& io,	    
 	    uint32_t concurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}
 	);
 
 	~ThreadPool();
+
+	inline std::shared_ptr<StrandExecutor> Executor() const 
+	{
+		return StrandExecutor::Create(io);
+	}
 
 	void Shutdown();
 

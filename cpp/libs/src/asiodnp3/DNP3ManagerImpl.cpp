@@ -48,7 +48,7 @@ DNP3ManagerImpl::DNP3ManagerImpl(
 ) :
 	logger(handler, "manager", opendnp3::levels::ALL),
 	io(std::make_shared<asiopal::IO>()),
-	threadpool(logger, io, opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit),
+	threadpool(logger, io, concurrencyHint, onThreadStart, onThreadExit),
 	resources(ResourceManager::Create())
 {}
 

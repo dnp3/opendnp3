@@ -49,6 +49,11 @@ public:
 
 	Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, openpal::LogFilters levels);
 
+	static Logger Empty()
+	{
+		return Logger(nullptr, "", 0);
+	}
+
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
 
 	Logger Detach(const std::string& id) const
