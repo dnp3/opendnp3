@@ -75,10 +75,12 @@ if(DNP3_TLS)
 
 	find_package(OpenSSL REQUIRED)
 	message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
-
 	if(WIN32)
 		include_directories(${OPENSSL_INCLUDE_DIR})
+	else()
+		set(OPENSSL_LIBRARIES "crypto;ssl")
 	endif()
+
 endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
@@ -118,6 +120,7 @@ else()
 endif()
 add_library(asiopal ${LIB_TYPE} ${asiopal_HPP} ${asiopal_CPP})
 if(DNP3_TLS)
+  message("asiopal ssl libraries ${OPENSSL_LIBRARIES}")
   target_link_libraries(asiopal openpal ${OPENSSL_LIBRARIES})
 else()
   target_link_libraries(asiopal openpal)
@@ -197,7 +200,7 @@ if(DNP3_DEMO)
 	target_link_libraries (master-gprs-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
 	set_target_properties(master-gprs-tls-demo PROPERTIES FOLDER demos/tls)
 
-	endif()
+   endif()
 
 endif()
 
@@ -234,7 +237,7 @@ if(DNP3_TEST)
   # ----- asiopal tests -----
   file(GLOB_RECURSE asiopal_TESTSRC ./cpp/tests/asiopal/src/*.cpp ./cpp/tests/asiopal/src/*.h)
   add_executable (testasiopal ${asiopal_TESTSRC})
-  target_link_libraries (testasiopal LINK_PUBLIC asiopal testlib ${PTHREAD})
+  target_link_libraries (testasiopal LINK_PUBLIC asiopal testlib crypto ssl ${PTHREAD})
   set_target_properties(testasiopal PROPERTIES FOLDER tests)
   add_test(testasiopal testasiopal)
 
