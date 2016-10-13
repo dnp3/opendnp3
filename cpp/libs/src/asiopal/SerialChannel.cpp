@@ -32,6 +32,7 @@ SerialChannel::SerialChannel(std::shared_ptr<Executor> executor) : IAsyncChannel
 
 bool SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
 {
+	this->shuttingDown = false;
 	port.open(settings.deviceName, ec);
 	if (ec) return false;
 

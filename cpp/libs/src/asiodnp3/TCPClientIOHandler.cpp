@@ -74,7 +74,7 @@ void TCPClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TCPClient>&
 		{
 			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Error Connecting: %s", ec.message().c_str());
 
-			const auto newDelay = this->retry.strategy.GetNextDelay(delay, this->retry.maxOpenRetry);
+			const auto newDelay = this->retry.NextDelay(delay);
 
 			auto cb = [self, newDelay, client, this]()
 			{

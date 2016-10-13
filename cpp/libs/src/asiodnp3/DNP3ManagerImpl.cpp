@@ -33,6 +33,7 @@
 #include "asiodnp3/MasterTCPServer.h"
 #include "asiodnp3/TCPClientIOHandler.h"
 #include "asiodnp3/TCPServerIOHandler.h"
+#include "asiodnp3/SerialIOHandler.h"
 
 using namespace openpal;
 using namespace asiopal;
@@ -114,8 +115,15 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddSerial(
     SerialSettings settings,
     std::shared_ptr<IChannelListener> listener)
 {
-	//ec = Error::NO_SERIAL_SUPPORT;
-	return nullptr;
+	auto create = [&]() -> std::shared_ptr<IChannel>
+	{
+		auto clogger = this->logger.Detach(id, levels);
+		auto executor = Executor::Create(this->io);
+		auto iohandler = SerialIOHandler::Create(clogger, listener, executor, retry, settings);
+		return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
+	};
+
+	return this->resources->Bind<IChannel>(create);
 }
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(

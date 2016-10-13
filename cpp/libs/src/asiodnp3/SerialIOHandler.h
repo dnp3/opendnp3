@@ -18,47 +18,42 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_TLSCLIENTIOHANDLER_H
-#define ASIOPAL_TLSCLIENTIOHANDLER_H
+#ifndef ASIOPAL_SERIALIOHANDLER_H
+#define ASIOPAL_SERIALIOHANDLER_H
 
 #include "asiodnp3/IOHandler.h"
 
 #include "asiopal/ChannelRetry.h"
 #include "asiopal/IPEndpoint.h"
-#include "asiopal/TCPClient.h"
-#include "asiopal/TLSConfig.h"
-#include "asiopal/tls/TLSClient.h"
+#include "asiopal/SerialTypes.h"
+#include "asiopal/SerialChannel.h"
 
 #include "openpal/executor/TimerRef.h"
 
 namespace asiodnp3
 {
 
-class TLSClientIOHandler final : public IOHandler
+class SerialIOHandler final : public IOHandler
 {
 
 public:
 
-	static std::shared_ptr<TLSClientIOHandler> Create(
+	static std::shared_ptr<SerialIOHandler> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
-	    const asiopal::TLSConfig& config,
 	    const asiopal::ChannelRetry& retry,
-	    const asiopal::IPEndpoint& remote,
-	    const std::string& adapter)
+	    const asiopal::SerialSettings& settings)
 	{
-		return std::make_shared<TLSClientIOHandler>(logger, listener, executor, config, retry, remote, adapter);
+		return std::make_shared<SerialIOHandler>(logger, listener, executor, retry, settings);
 	}
 
-	TLSClientIOHandler(
+	SerialIOHandler(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
-	    const asiopal::TLSConfig& config,
 	    const asiopal::ChannelRetry& retry,
-	    const asiopal::IPEndpoint& remote,
-	    const std::string& adapter
+	    const asiopal::SerialSettings& settings
 	);
 
 protected:
@@ -70,18 +65,14 @@ protected:
 
 private:
 
-	void StartConnect(const std::shared_ptr<asiopal::TLSClient>& client, const openpal::TimeDuration& delay);
+	void TryOpen(const openpal::TimeDuration& retry);
 
 	void ResetState();
 
 	const std::shared_ptr<asiopal::Executor> executor;
-	const asiopal::TLSConfig config;
 	const asiopal::ChannelRetry retry;
-	const asiopal::IPEndpoint remote;
-	const std::string adapter;
-
-	// current value of the client
-	std::shared_ptr<asiopal::TLSClient> client;
+	const asiopal::SerialSettings settings;
+	const std::shared_ptr<asiopal::SerialChannel> port;
 
 	// connection retry timer
 	openpal::TimerRef retrytimer;

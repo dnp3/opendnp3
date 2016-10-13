@@ -54,6 +54,14 @@ public:
 	openpal::TimeDuration minOpenRetry;
 	/// maximum connection retry interval on failure
 	openpal::TimeDuration maxOpenRetry;
+
+	openpal::TimeDuration NextDelay(const openpal::TimeDuration& current) const
+	{
+		return strategy.GetNextDelay(current, maxOpenRetry);
+	}
+
+private:
+
 	//// Strategy to use (default to exponential backoff)
 	IOpenDelayStrategy& strategy;
 

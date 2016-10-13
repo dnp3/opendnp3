@@ -30,13 +30,13 @@ namespace asiodnp3
 {
 
 TLSClientIOHandler::TLSClientIOHandler(
-	const openpal::Logger& logger,
-	const std::shared_ptr<IChannelListener>& listener,
-	const std::shared_ptr<asiopal::Executor>& executor,
-	const asiopal::TLSConfig& config,
-	const asiopal::ChannelRetry& retry,
-	const asiopal::IPEndpoint& remote,		
-	const std::string& adapter
+    const openpal::Logger& logger,
+    const std::shared_ptr<IChannelListener>& listener,
+    const std::shared_ptr<asiopal::Executor>& executor,
+    const asiopal::TLSConfig& config,
+    const asiopal::ChannelRetry& retry,
+    const asiopal::IPEndpoint& remote,
+    const std::string& adapter
 ) :
 	IOHandler(logger, listener),
 	executor(executor),
@@ -60,12 +60,12 @@ void TLSClientIOHandler::BeginChannelAccept()
 
 	if (ec)
 	{
-		this->client.reset();		
+		this->client.reset();
 	}
 	else
 	{
 		this->StartConnect(this->client, this->retry.minOpenRetry);
-	}	
+	}
 }
 
 void TLSClientIOHandler::SuspendChannelAccept()
@@ -73,20 +73,20 @@ void TLSClientIOHandler::SuspendChannelAccept()
 	this->ResetState();
 }
 
-void TLSClientIOHandler::OnChannelShutdown() 
+void TLSClientIOHandler::OnChannelShutdown()
 {
 	this->BeginChannelAccept();
 }
 
 void TLSClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TLSClient>& client, const openpal::TimeDuration& delay)
 {
-	auto cb = [=, self = shared_from_this()](const std::shared_ptr<Executor>& executor, const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream, const std::error_code & ec) -> void
+	auto cb = [ =, self = shared_from_this()](const std::shared_ptr<Executor>& executor, const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream, const std::error_code & ec) -> void
 	{
 		if (ec)
 		{
 			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Error Connecting: %s", ec.message().c_str());
 
-			const auto newDelay = this->retry.strategy.GetNextDelay(delay, this->retry.maxOpenRetry);
+			const auto newDelay = this->retry.NextDelay(delay);
 
 			auto cb = [self, newDelay, client, this]()
 			{
