@@ -24,7 +24,7 @@
 namespace asiopal
 {
 
-TLSStreamChannel::TLSStreamChannel(std::shared_ptr<Executor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) :
+TLSStreamChannel::TLSStreamChannel(const std::shared_ptr<Executor>& executor, const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream) :
 	IAsyncChannel(executor),
 	stream(stream)
 {}
@@ -40,11 +40,18 @@ void TLSStreamChannel::BeginWriteImpl(const openpal::RSlice& data, const io_call
 }
 
 void TLSStreamChannel::ShutdownImpl()
-{
-	// TODO - should we perform an async shutdown on the TLS stream?
+{	
 	std::error_code ec;
-	stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec);
-	stream->lowest_layer().close(ec);
+
+	auto callback = [stream = stream](const std::error_code& ec) 
+	{
+		// regardless of what happens with the TLS shutdown, close the socket now
+		std::error_code ec1;
+		stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec1);
+		stream->lowest_layer().close(ec1);
+	};
+
+	stream->async_shutdown(callback);		
 }
 
 }

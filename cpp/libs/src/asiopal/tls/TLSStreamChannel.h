@@ -33,12 +33,12 @@ class TLSStreamChannel final : public IAsyncChannel
 
 public:
 
-	static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<Executor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
+	static std::shared_ptr<IAsyncChannel> Create(const std::shared_ptr<Executor>& executor, const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream)
 	{
 		return std::make_shared<TLSStreamChannel>(executor, stream);
 	}
 
-	TLSStreamChannel(std::shared_ptr<Executor> executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
+	TLSStreamChannel(const std::shared_ptr<Executor>& executor, const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream);
 
 private:
 
@@ -46,7 +46,7 @@ private:
 	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback)  override;
 	virtual void ShutdownImpl()  override;
 
-	std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;
+	const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;
 };
 
 }
