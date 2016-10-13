@@ -148,7 +148,14 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(
 		return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
 	};
 
-	return this->resources->Bind<IChannel>(create);
+	auto channel = this->resources->Bind<IChannel>(create);
+
+	if (!channel)
+	{
+		ec = Error::SHUTTING_DOWN;
+	}
+
+	return channel;
 #else
 	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
@@ -177,7 +184,15 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
 		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
 	};
 
-	return this->resources->Bind<IChannel>(create);
+	auto channel = this->resources->Bind<IChannel>(create);
+
+	if (!channel)
+	{
+		ec = Error::SHUTTING_DOWN;
+	}
+
+	return channel;
+
 #else
 	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
