@@ -52,7 +52,7 @@ public:
 		return std::make_shared<MockIO>();
 	}
 
-	std::shared_ptr<Executor> Executor()
+	std::shared_ptr<Executor> GetExecutor()
 	{
 		return Executor::Create(this->shared_from_this());
 	}

@@ -1,9 +1,19 @@
 cmake_minimum_required (VERSION 2.8)
+
 project (opendnp3)
 set(OPENDNP3_MAJOR_VERSION 2)
 set(OPENDNP3_MINOR_VERSION 1)
 set(OPENDNP3_MICRO_VERSION 0)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING
+      "Choose the type of build, options are: Debug Release
+RelWithDebInfo MinSizeRel."
+      FORCE)
+endif()
+
+message("CMake build is: ${CMAKE_BUILD_TYPE}")
 
 include(${PROJECT_SOURCE_DIR}/cmake/settings.cmake)
 
