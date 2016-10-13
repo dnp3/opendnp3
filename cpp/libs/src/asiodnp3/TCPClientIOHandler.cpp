@@ -51,16 +51,8 @@ void TCPClientIOHandler::ShutdownImpl()
 
 void TCPClientIOHandler::BeginChannelAccept()
 {
-	// this call needs to be idempotent
-	if (!this->is_connecting)
-	{
-		if (!this->client)
-		{
-			this->client = TCPClient::Create(logger, executor, remote, adapter);
-		}
-
-		this->StartConnect(this->client, this->retry.minOpenRetry);
-	}
+	this->client = TCPClient::Create(logger, executor, remote, adapter);
+	this->StartConnect(this->client, this->retry.minOpenRetry);	
 }
 
 void TCPClientIOHandler::SuspendChannelAccept()
@@ -75,11 +67,9 @@ void TCPClientIOHandler::OnChannelShutdown()
 
 void TCPClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TCPClient>& client, const openpal::TimeDuration& delay)
 {
-	this->is_connecting = true;
-
+		
 	auto cb = [ =, self = shared_from_this()](const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
 	{
-
 		if (ec)
 		{
 			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Error Connecting: %s", ec.message().c_str());
@@ -94,9 +84,7 @@ void TCPClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TCPClient>&
 			this->retrytimer.Start(delay, cb);
 		}
 		else
-		{
-			this->is_connecting = false;
-
+		{			
 			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connected to: %s", this->remote.address.c_str());
 
 			this->OnNewChannel(SocketChannel::Create(executor, std::move(socket)));
@@ -114,8 +102,6 @@ void TCPClientIOHandler::ResetState()
 		this->client->Cancel();
 		this->client.reset();
 	}
-
-	this->is_connecting = false;
 
 	retrytimer.Cancel();
 }
