@@ -69,8 +69,11 @@ void MasterStack::Shutdown()
 
 		// this forces the MasterStack to hang around long enough for any
 		// previously submitted post operations to complete
-		auto detach = [self]() { self->manager->Detach(self); };
-		self->executor->strand.post(detach);		
+		auto detach = [self]()
+		{
+			self->manager->Detach(self);
+		};
+		self->executor->strand.post(detach);
 	};
 
 	this->executor->BlockUntilAndFlush(shutdown);

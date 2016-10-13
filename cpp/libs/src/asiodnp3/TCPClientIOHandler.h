@@ -68,7 +68,7 @@ private:
 
 	void StartConnect(const std::shared_ptr<asiopal::TCPClient>& client, const openpal::TimeDuration& delay);
 
-	void ResetState();	
+	void ResetState();
 
 	const std::shared_ptr<asiopal::Executor> executor;
 	const asiopal::ChannelRetry retry;

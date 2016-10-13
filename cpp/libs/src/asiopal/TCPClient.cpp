@@ -34,9 +34,9 @@ TCPClient::TCPClient(
 ) :
 	condition(logger),
 	executor(executor),
-	socket(executor->strand.get_io_service()),
 	host(remote.address),
 	adapter(adapter),
+	socket(executor->strand.get_io_service()),
 	remoteEndpoint(asio::ip::tcp::v4(), remote.port),
 	localEndpoint(),
 	resolver(executor->strand.get_io_service())

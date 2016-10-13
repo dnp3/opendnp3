@@ -329,7 +329,7 @@ void MContext::PostCheckForTask()
 MasterScan MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
 {
 	auto task = std::make_shared<UserPollTask>(builder, true, period, params.taskRetryPeriod, *application, *SOEHandler, logger, config);
-	this->ScheduleRecurringPollTask(task);	
+	this->ScheduleRecurringPollTask(task);
 	return MasterScan(executor, task, shared_from_this());
 }
 
@@ -444,7 +444,7 @@ void MContext::ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task)
 	const auto NOW = this->executor->GetTime();
 
 	task->ConfigureStartExpiration(NOW.Add(params.taskStartTimeout));
-	
+
 	if (this->isOnline)
 	{
 		if (this->MeetsUserRequirements(task))

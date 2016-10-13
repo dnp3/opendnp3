@@ -34,11 +34,11 @@ MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logg
 	timeSync(std::make_shared<SerialTimeSyncTask>(app, logger)),
 	eventScan(std::make_shared<EventScanTask>(app, SOEHandler, params.eventScanOnEventsAvailableClassMask, params.taskRetryPeriod, logger))
 {
-	
+
 }
 
 void MasterTasks::Initialize(MasterScheduler& scheduler)
-{	
+{
 	scheduler.Schedule(enableUnsol);
 	scheduler.Schedule(clearRestart);
 	scheduler.Schedule(assignClass);

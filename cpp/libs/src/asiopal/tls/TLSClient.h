@@ -18,37 +18,47 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef ASIOPAL_TCPCLIENT_H
-#define ASIOPAL_TCPCLIENT_H
+#ifndef ASIOPAL_TLSCLIENT_H
+#define ASIOPAL_TLSCLIENT_H
 
 #include "asiopal/Executor.h"
 #include "asiopal/IPEndpoint.h"
 #include "asiopal/LoggingConnectionCondition.h"
+#include "asiopal/TLSConfig.h"
+
+#include "asiopal/tls/SSLContext.h"
+
+#include <asio/ssl.hpp>
 
 namespace asiopal
 {
 
-class TCPClient final : public std::enable_shared_from_this<TCPClient>, private openpal::Uncopyable
+class TLSClient final : public std::enable_shared_from_this<TLSClient>, private openpal::Uncopyable
 {
 
 public:
 
-	typedef std::function<void(const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket, const std::error_code& ec)> connect_callback_t;
+	typedef std::function<void(const std::shared_ptr<Executor>& executor, const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream, const std::error_code& ec)> connect_callback_t;
 
-	static std::shared_ptr<TCPClient> Create(
+	static std::shared_ptr<TLSClient> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<Executor>& executor,
 	    const IPEndpoint& remote,
-	    const std::string& adapter)
+	    const std::string& adapter,
+	    const TLSConfig& config,
+	    std::error_code& ec)
 	{
-		return std::make_shared<TCPClient>(logger, executor, remote, adapter);
+		auto ret = std::make_shared<TLSClient>(logger, executor, remote, adapter, config, ec);
+		return ec ? nullptr : ret;
 	}
 
-	TCPClient(
+	TLSClient(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<Executor>& executor,
 	    const IPEndpoint& remote,
-	    const std::string& adapter
+	    const std::string& adapter,
+	    const TLSConfig& config,
+	    std::error_code& ec
 	);
 
 	bool Cancel();
@@ -57,16 +67,26 @@ public:
 
 private:
 
-	bool PostConnectError(const connect_callback_t& callback, const std::error_code& ec);
+	void HandleResolveResult(
+	    const connect_callback_t& callback,
+	    const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
+	    const asio::ip::tcp::resolver::iterator& endpoints,
+	    const std::error_code& ec
+	);
 
-	bool connecting = false;
+	void HandleConnectResult(
+	    const connect_callback_t& callback,
+	    const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
+	    const std::error_code& ec
+	);
+
 	bool canceled = false;
 
 	LoggingConnectionCondition condition;
 	const std::shared_ptr<Executor> executor;
 	const std::string host;
 	const std::string adapter;
-	asio::ip::tcp::socket socket;
+	SSLContext ctx;
 	asio::ip::tcp::endpoint remoteEndpoint;
 	asio::ip::tcp::endpoint localEndpoint;
 	asio::ip::tcp::resolver resolver;

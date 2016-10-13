@@ -84,7 +84,10 @@ void OutstationStack::Shutdown()
 
 		// this forces the MasterStack to hang around long enough for any
 		// previously submitted post operations to complete
-		auto detach = [self]() { self->manager->Detach(self); };
+		auto detach = [self]()
+		{
+			self->manager->Detach(self);
+		};
 		self->executor->strand.post(detach);
 	};
 

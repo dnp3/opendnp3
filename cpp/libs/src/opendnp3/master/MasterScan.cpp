@@ -49,7 +49,7 @@ bool MasterScan::Demand()
 			task->Demand();
 			context->CheckForTask();
 		};
-		executor->Post(action);		
+		executor->Post(action);
 		return true;
 	}
 	else

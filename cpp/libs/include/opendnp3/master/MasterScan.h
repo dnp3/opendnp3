@@ -25,7 +25,7 @@
 
 namespace openpal
 {
-	class IExecutor;
+class IExecutor;
 }
 
 namespace opendnp3
