@@ -42,6 +42,7 @@ public:
 		if (ec)
 		{
 			++num_error;
+			throw std::logic_error(ec.message());
 		}
 		else
 		{

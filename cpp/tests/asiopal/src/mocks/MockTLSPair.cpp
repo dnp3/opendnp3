@@ -30,7 +30,7 @@ namespace asiopal
 		io(io),
 		chandler(std::make_shared<MockTLSClientHandler>()),
 		client(TLSClient::Create(log.logger, io->GetExecutor(), IPEndpoint::Localhost(port), "127.0.0.1", client, ec)),
-		server(MockTLSServer::Create(log.logger, io->GetExecutor(), IPEndpoint::Localhost(20000), server, ec))
+		server(ec ? nullptr : MockTLSServer::Create(log.logger, io->GetExecutor(), IPEndpoint::Localhost(port), server, ec))
 	{
 		if (ec)
 		{
@@ -64,7 +64,7 @@ namespace asiopal
 			return this->NumConnectionsEqual(num);
 		};
 
-		io->CompleteInXIterations(2, connected);
+		io->CompleteInXIterations(10, connected);
 	}
 
 	bool MockTLSPair::NumConnectionsEqual(size_t num) const

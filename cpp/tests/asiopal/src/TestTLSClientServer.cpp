@@ -36,14 +36,30 @@ void WithIO(const F& fun)
 	io->RunUntilOutOfWork();
 }
 
-TEST_CASE(SUITE("client and server can connect"))
+std::string File(const std::string& file)
 {
+	std::ostringstream oss;
+	oss << "../cpp/tests/asiopal/tls-certs/" << file;
+	return oss.str();
+}
+
+TEST_CASE(SUITE("client and server can connect"))
+{		
 	auto iteration = []()
-	{
+	{		
 		auto test = [](const std::shared_ptr<MockIO>& io)
 		{
-			//MockTLSPair pair(io, 20000);
-			//pair.Connect(1);
+			auto key1 = File("entity1_key.pem");
+			auto key2 = File("entity2_key.pem");
+			auto cert1 = File("entity1_cert.pem");
+			auto cert2 = File("entity2_cert.pem");
+
+			TLSConfig cfg1(cert2, cert1, key1);
+			TLSConfig cfg2(cert1, cert2, key2);
+			
+			MockTLSPair pair(io, 20001, cfg1, cfg2);
+
+			pair.Connect(1);
 		};
 
 		WithIO(test);

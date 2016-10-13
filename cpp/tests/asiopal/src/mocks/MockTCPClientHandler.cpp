@@ -31,6 +31,7 @@ void MockTCPClientHandler::OnConnect(const std::shared_ptr<Executor>& executor, 
 	if (ec)
 	{
 		++this->num_error;
+		throw std::logic_error(ec.message());
 	}
 	else
 	{

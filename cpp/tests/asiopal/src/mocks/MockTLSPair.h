@@ -46,9 +46,10 @@ public:
 
 	bool NumConnectionsEqual(size_t num) const;
 
-private:
-
 	testlib::MockLogHandler log;
+
+private:
+	
 	std::shared_ptr<MockIO> io;
 	std::shared_ptr<MockTLSClientHandler> chandler;
 	std::shared_ptr<TLSClient> client;
