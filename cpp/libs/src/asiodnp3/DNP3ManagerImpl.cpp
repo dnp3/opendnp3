@@ -26,6 +26,7 @@
 #ifdef OPENDNP3_USE_TLS
 #include "asiodnp3/tls/MasterTLSServer.h"
 #include "asiodnp3/tls/TLSClientIOHandler.h"
+#include "asiodnp3/tls/TLSServerIOHandler.h"
 #endif
 
 #include "asiodnp3/ErrorCodes.h"
@@ -167,8 +168,16 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
 {
 
 #ifdef OPENDNP3_USE_TLS
-	ec = Error::NO_TLS_SUPPORT;
-	return nullptr;
+	auto create = [&]() -> std::shared_ptr<IChannel>
+	{
+		std::error_code ec;
+		auto clogger = this->logger.Detach(id, levels);
+		auto executor = Executor::Create(this->io);
+		auto iohandler = TLSServerIOHandler::Create(clogger, listener, executor, IPEndpoint(endpoint, port), config, ec);
+		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
+	};
+
+	return this->resources->Bind<IChannel>(create);
 #else
 	ec = Error::NO_TLS_SUPPORT;
 	return nullptr;
