@@ -46,7 +46,7 @@ public:
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const OutstationStackConfig& config);
 
 	static std::shared_ptr<OutstationStack> Create(
@@ -55,11 +55,11 @@ public:
 	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
 	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const OutstationStackConfig& config
 	)
 	{
-		auto ret = std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, shutdown, config);
+		auto ret = std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, manager, config);
 
 		ret->tstack.link->SetRouter(*ret);
 

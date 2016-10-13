@@ -43,7 +43,7 @@ public:
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const MasterStackConfig& config,
 	    opendnp3::ITaskLock& taskLock
 	);
@@ -54,12 +54,12 @@ public:
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const MasterStackConfig& config,
 	    opendnp3::ITaskLock& taskLock
 	)
 	{
-		auto ret = std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, shutdown, config, taskLock);
+		auto ret = std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, manager, config, taskLock);
 
 		ret->tstack.link->SetRouter(*ret);
 

@@ -30,7 +30,7 @@
 namespace asiopal
 {
 
-class ResourceManager final : public IShutdownHandler
+class ResourceManager final : public IResourceManager
 {
 
 public:
@@ -40,7 +40,7 @@ public:
 		return std::make_shared<ResourceManager>();
 	}
 
-	virtual void OnShutdown(const std::shared_ptr<IResource>& resource)  override;
+	virtual void Detach(const std::shared_ptr<IResource>& resource)  override;
 
 	void Shutdown();
 

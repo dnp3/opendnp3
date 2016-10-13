@@ -118,7 +118,7 @@ void MasterTLSServer::AcceptStream(uint64_t sessionid, const std::shared_ptr<Exe
 
 void MasterTLSServer::OnShutdown()
 {
-	this->manager->OnShutdown(this->shared_from_this());
+	this->manager->Detach(this->shared_from_this());
 }
 
 std::string MasterTLSServer::SessionIdToString(uint64_t sessionid)

@@ -37,12 +37,12 @@ DNP3Channel::DNP3Channel(
     const Logger& logger,
     const std::shared_ptr<asiopal::Executor>& executor,
     const std::shared_ptr<IOHandler>& iohandler,
-    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown) :
+    const std::shared_ptr<asiopal::IResourceManager>& manager) :
 
 	logger(logger),
 	executor(executor),
 	iohandler(iohandler),
-	shutdown(shutdown),
+	manager(manager),
 	resources(ResourceManager::Create())
 {
 
@@ -77,8 +77,8 @@ void DNP3Channel::ShutdownImpl()
 	this->resources.reset();
 
 	// let the manager know we've shutdown
-	this->shutdown->OnShutdown(this->shared_from_this());
-	this->shutdown.reset();
+	this->manager->Detach(this->shared_from_this());
+	this->manager.reset();
 }
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()

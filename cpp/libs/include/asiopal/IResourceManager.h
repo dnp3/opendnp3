@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIOPAL_ISHUTDOWNHANLDER_H
-#define ASIOPAL_ISHUTDOWNHANLDER_H
+#ifndef ASIOPAL_IRESOURCEMANAGER_H
+#define ASIOPAL_IRESOURCEMANAGER_H
 
 #include <memory>
 
@@ -39,15 +39,16 @@ public:
 
 };
 
-struct IShutdownHandler
+struct IResourceManager
 {
 
 public:
 
-	virtual ~IShutdownHandler() {}
+	virtual ~IResourceManager() {}
 
-	/// notify the handler that the resource is shutting down
-	virtual void OnShutdown(const std::shared_ptr<IResource>& resource) = 0;
+	/// notify the handler that the resource is shutting down, and it doesn't
+	/// have to track it anymore
+	virtual void Detach(const std::shared_ptr<IResource>& resource) = 0;
 
 };
 

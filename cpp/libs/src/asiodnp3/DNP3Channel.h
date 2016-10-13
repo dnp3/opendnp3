@@ -39,16 +39,16 @@ public:
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown
+	    const std::shared_ptr<asiopal::IResourceManager>& manager
 	);
 
 	static std::shared_ptr<DNP3Channel> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown)
+	    const std::shared_ptr<asiopal::IResourceManager>& manager)
 	{
-		return std::make_shared<DNP3Channel>(logger, executor, iohandler, shutdown);
+		return std::make_shared<DNP3Channel>(logger, executor, iohandler, manager);
 	}
 
 	~DNP3Channel();
@@ -87,7 +87,7 @@ private:
 	const std::shared_ptr<asiopal::Executor> executor;
 
 	std::shared_ptr<IOHandler> iohandler;
-	std::shared_ptr<asiopal::IShutdownHandler> shutdown;
+	std::shared_ptr<asiopal::IResourceManager> manager;
 	std::shared_ptr<asiopal::ResourceManager> resources;
 
 };

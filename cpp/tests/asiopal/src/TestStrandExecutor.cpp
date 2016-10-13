@@ -138,6 +138,7 @@ TEST_CASE(SUITE("Executor dispatch is in same order as post order"))
 TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 {
 	const int NUM_THREAD = 10;
+	const int NUM_ACTIONS = 100;
 	int counter = 0;
 
 	auto io = std::make_shared<IO>();
@@ -147,7 +148,7 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 		auto exe = pool.CreateExecutor();
 
 
-		for (int i = 0; i < 100; ++i)
+		for (int i = 0; i < NUM_ACTIONS; ++i)
 		{
 			auto getvalue = []() -> int { return 1; };
 			counter += exe->ReturnFrom<int>(getvalue);
@@ -155,7 +156,7 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 	}
 
 
-	REQUIRE(counter == 100);
+	REQUIRE(counter == NUM_ACTIONS);
 
 }
 

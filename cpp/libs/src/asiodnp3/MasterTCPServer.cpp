@@ -54,7 +54,7 @@ MasterTCPServer::MasterTCPServer(
 
 void MasterTCPServer::OnShutdown()
 {
-	this->manager->OnShutdown(this->shared_from_this());
+	this->manager->Detach(this->shared_from_this());
 }
 
 void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket socket)

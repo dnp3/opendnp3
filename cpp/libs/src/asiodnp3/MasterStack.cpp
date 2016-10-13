@@ -39,11 +39,11 @@ MasterStack::MasterStack(
     const std::shared_ptr<ISOEHandler>& SOEHandler,
     const std::shared_ptr<IMasterApplication>& application,
     const std::shared_ptr<IOHandler>& iohandler,
-    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
+    const std::shared_ptr<asiopal::IResourceManager>& manager,
     const MasterStackConfig& config,
     ITaskLock& taskLock) :
 
-	StackBase(logger, executor, application, iohandler, shutdown, config.master.maxRxFragSize, config.link),
+	StackBase(logger, executor, application, iohandler, manager, config.master.maxRxFragSize, config.link),
 	mcontext(MContext::Create(logger, executor, tstack.transport, SOEHandler, application,  config.master, taskLock))
 {
 	tstack.transport->SetAppLayer(*mcontext);
@@ -66,7 +66,11 @@ void MasterStack::Shutdown()
 	auto shutdown = [self = shared_from_this()]
 	{
 		self->iohandler->Remove(self);
-		self->shutdown->OnShutdown(self);
+
+		// this forces the MasterStack to hang around long enough for any
+		// previously submitted post operations to complete
+		auto detach = [self]() { self->manager->Detach(self); };
+		self->executor->strand.post(detach);		
 	};
 
 	this->executor->BlockUntilAndFlush(shutdown);

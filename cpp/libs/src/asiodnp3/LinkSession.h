@@ -52,17 +52,17 @@ public:
 	static std::shared_ptr<LinkSession> Create(
 	    const openpal::Logger& logger,
 	    uint64_t sessionid,
-	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
 	    const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 	{
-		return std::make_shared<LinkSession>(logger, sessionid, shutdown, callbacks, channel);
+		return std::make_shared<LinkSession>(logger, sessionid, manager, callbacks, channel);
 	}
 
 	LinkSession(
 	    const openpal::Logger& logger,
 	    uint64_t sessionid,
-	    const std::shared_ptr<asiopal::IShutdownHandler>& shutdown,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
 	    const std::shared_ptr<asiopal::IAsyncChannel>& channel
 	);
@@ -94,7 +94,7 @@ private:
 	openpal::Logger logger;
 	const uint64_t session_id;
 
-	std::shared_ptr<asiopal::IShutdownHandler> shutdown;
+	std::shared_ptr<asiopal::IResourceManager> manager;
 	std::shared_ptr<IListenCallbacks> callbacks;
 	opendnp3::LinkChannelStatistics stats;
 	opendnp3::LinkLayerParser parser;
