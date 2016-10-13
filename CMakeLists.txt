@@ -77,7 +77,7 @@ if(DNP3_TLS)
 	message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 	if(WIN32)
 		include_directories(${OPENSSL_INCLUDE_DIR})
-	else()
+	else()	    
 		set(OPENSSL_LIBRARIES "crypto;ssl")
 	endif()
 
@@ -237,7 +237,7 @@ if(DNP3_TEST)
   # ----- asiopal tests -----
   file(GLOB_RECURSE asiopal_TESTSRC ./cpp/tests/asiopal/src/*.cpp ./cpp/tests/asiopal/src/*.h)
   add_executable (testasiopal ${asiopal_TESTSRC})
-  target_link_libraries (testasiopal LINK_PUBLIC asiopal testlib crypto ssl ${PTHREAD})
+  target_link_libraries (testasiopal LINK_PUBLIC asiopal testlib ${PTHREAD})
   set_target_properties(testasiopal PROPERTIES FOLDER tests)
   add_test(testasiopal testasiopal)
 
