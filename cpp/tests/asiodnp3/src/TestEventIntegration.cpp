@@ -38,11 +38,11 @@ using namespace asiodnp3;
 TEST_CASE(SUITE("TestEventIntegration"))
 {
 	const uint16_t START_PORT = 20000;
-	const uint16_t NUM_STACK_PAIRS = 10;
+	const uint16_t NUM_STACK_PAIRS = 100;
 
 	const uint16_t NUM_POINTS_PER_TYPE = 50;
 	const uint16_t EVENTS_PER_ITERATION = 50;
-	const int NUM_ITERATIONS = 1000;
+	const int NUM_ITERATIONS = 100;
 
 	const uint32_t LEVELS = flags::ERR | flags::WARN;
 
@@ -87,8 +87,8 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
 	const auto total_events_transferred = static_cast<uint64_t>(NUM_STACK_PAIRS) * static_cast<uint64_t>(EVENTS_PER_ITERATION) * static_cast<uint64_t>(NUM_ITERATIONS);
 
-	const auto rate = (total_events_transferred / milliseconds.count()) * 1000;
+	const auto rate = (total_events_transferred * 1000) / milliseconds.count();
 
-	std::cout << total_events_transferred << " in " << milliseconds.count() << " ms == " << rate << " events per/sec" << std::endl;
+	//std::cout << total_events_transferred << " in " << milliseconds.count() << " ms == " << rate << " events per/sec" << std::endl;
 }
 
