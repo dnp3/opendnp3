@@ -44,7 +44,7 @@ public:
 
 	ThreadPool(
 	    const openpal::Logger& logger,
-	    const std::shared_ptr<IO>& io,	    
+	    const std::shared_ptr<IO>& io,
 	    uint32_t concurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}
@@ -52,7 +52,7 @@ public:
 
 	~ThreadPool();
 
-	inline std::shared_ptr<Executor> CreateExecutor() const 
+	inline std::shared_ptr<Executor> CreateExecutor() const
 	{
 		return Executor::Create(io);
 	}

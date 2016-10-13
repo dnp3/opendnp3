@@ -39,7 +39,7 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 	const int NUM_STRAND = 100;
 	const int NUM_OPS = 1000;
 
-	uint32_t counter[NUM_STRAND] = { 0 };	
+	uint32_t counter[NUM_STRAND] = { 0 };
 
 	auto io = std::make_shared<IO>();
 
@@ -74,8 +74,8 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 
 TEST_CASE(SUITE("Executor dispatch is from only one thread at a time"))
 {
-	const int NUM_THREAD = 10;	
-	const int NUM_OPS = 1000;	
+	const int NUM_THREAD = 10;
+	const int NUM_OPS = 1000;
 
 	auto io = std::make_shared<IO>();
 
@@ -87,7 +87,10 @@ TEST_CASE(SUITE("Executor dispatch is from only one thread at a time"))
 
 		for (int i = 0; i < NUM_OPS; ++i)
 		{
-			auto increment = [&sum]() { ++sum; };
+			auto increment = [&sum]()
+			{
+				++sum;
+			};
 			exe->Post(increment);
 		}
 	}
@@ -111,8 +114,8 @@ TEST_CASE(SUITE("Executor dispatch is in same order as post order"))
 
 		for (int i = 0; i < NUM_OPS; ++i)
 		{
-			auto test_order = [i, &order, &is_ordered]() 
-			{ 
+			auto test_order = [i, &order, &is_ordered]()
+			{
 				if (is_ordered)
 				{
 					if (i == order)
@@ -134,7 +137,7 @@ TEST_CASE(SUITE("Executor dispatch is in same order as post order"))
 
 TEST_CASE(SUITE("Test ReturnFrom<T>()"))
 {
-	const int NUM_THREAD = 10;	
+	const int NUM_THREAD = 10;
 	int counter = 0;
 
 	auto io = std::make_shared<IO>();
