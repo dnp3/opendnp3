@@ -23,6 +23,7 @@
 #include "mocks/MockTLSPair.h"
 
 #include <iostream>
+#include <fstream>
 
 using namespace asiopal;
 
@@ -36,23 +37,36 @@ void WithIO(const F& fun)
 	io->RunUntilOutOfWork();
 }
 
-std::string File(const std::string& file)
+std::string get_path(const std::string& file)
 {
 	std::ostringstream oss;
 	oss << "../cpp/tests/asiopal/tls-certs/" << file;
 	return oss.str();
 }
 
+bool exists(const std::string& file)
+{
+	std::ifstream infile(file);
+	return infile.good();
+}
+
 TEST_CASE(SUITE("client and server can connect"))
-{		
-	auto iteration = []()
+{
+	const auto key1 = get_path("entity1_key.pem");
+	const auto key2 = get_path("entity2_key.pem");
+	const auto cert1 = get_path("entity1_cert.pem");
+	const auto cert2 = get_path("entity2_cert.pem");
+
+	if (!(exists(key1) && exists(key2) && exists(cert1) && exists(cert2)))
+	{
+		throw std::logic_error("Could not locate one or more of the test TLS certificates. Expected to be run from the project root directory");
+	}
+
+	auto iteration = [=]()
 	{		
-		auto test = [](const std::shared_ptr<MockIO>& io)
+		auto test = [=](const std::shared_ptr<MockIO>& io)
 		{
-			auto key1 = File("entity1_key.pem");
-			auto key2 = File("entity2_key.pem");
-			auto cert1 = File("entity1_cert.pem");
-			auto cert2 = File("entity2_cert.pem");
+			
 
 			TLSConfig cfg1(cert2, cert1, key1);
 			TLSConfig cfg2(cert1, cert2, key2);
