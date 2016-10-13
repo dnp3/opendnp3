@@ -53,7 +53,7 @@ bool TLSClient::Cancel()
 		return false;
 	}
 
-	std::error_code ec;	
+	std::error_code ec;
 	resolver.cancel();
 	this->canceled = true;
 	return true;
@@ -126,7 +126,7 @@ void TLSClient::HandleResolveResult(
 		if (!this->canceled)
 		{
 			callback(this->executor, stream, ec);
-		}		
+		}
 	}
 	else
 	{
@@ -150,7 +150,7 @@ void TLSClient::HandleConnectResult(
 		if (!this->canceled)
 		{
 			callback(this->executor, stream, ec);
-		}		
+		}
 	}
 	else
 	{

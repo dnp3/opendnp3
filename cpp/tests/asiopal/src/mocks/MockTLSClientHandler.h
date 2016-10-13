@@ -19,24 +19,43 @@
  * to you under the terms of the License.
  */
 
-#ifndef ASIOPAL_MOCKTCPCLIENTHANDLER_H
-#define ASIOPAL_MOCKTCPCLIENTHANDLER_H
+#ifndef ASIOPAL_MOCKTLSCLIENTHANDLER_H
+#define ASIOPAL_MOCKTLSCLIENTHANDLER_H
 
 #include "asiopal/IAsyncChannel.h"
 
+#include "asiopal/tls/TLSStreamChannel.h"
+
 #include <deque>
+#include <asio/ssl.hpp>
 
 namespace asiopal
 {
 
-class MockTCPClientHandler final
+class MockTLSClientHandler final
 {
 
 public:
 
-	void OnConnect(const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec);
+	void OnConnect(const std::shared_ptr<Executor>& executor, const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream, const std::error_code& ec)
+	{
+		if (ec)
+		{
+			++num_error;
+		}
+		else
+		{
+			channels.push_back(TLSStreamChannel::Create(executor, stream));
+		}
+	}
 
-	~MockTCPClientHandler();
+	~MockTLSClientHandler()
+	{
+		for (auto& channel : channels)
+		{
+			channel->Shutdown();
+		}
+	}
 
 	size_t num_error = 0;
 

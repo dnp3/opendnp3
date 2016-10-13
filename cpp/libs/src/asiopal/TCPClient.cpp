@@ -109,9 +109,9 @@ bool TCPClient::BeginConnect(const connect_callback_t& callback)
 }
 
 void TCPClient::HandleResolveResult(
-	const connect_callback_t& callback,
-	const asio::ip::tcp::resolver::iterator& endpoints,
-	const std::error_code& ec
+    const connect_callback_t& callback,
+    const asio::ip::tcp::resolver::iterator& endpoints,
+    const std::error_code& ec
 )
 {
 	if (ec)
@@ -131,7 +131,7 @@ void TCPClient::HandleResolveResult(
 }
 
 bool TCPClient::PostConnectError(const connect_callback_t& callback, const std::error_code& ec)
-{	
+{
 	auto cb = [self = shared_from_this(), ec, callback]()
 	{
 		self->connecting = false;

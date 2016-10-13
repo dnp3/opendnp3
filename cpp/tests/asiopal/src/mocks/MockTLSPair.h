@@ -19,35 +19,45 @@
  * to you under the terms of the License.
  */
 
-#ifndef ASIOPAL_MOCKTCPCLIENTHANDLER_H
-#define ASIOPAL_MOCKTCPCLIENTHANDLER_H
+#ifndef ASIOPAL_MOCKTLSPAIR_H
+#define ASIOPAL_MOCKTLSPAIR_H
 
-#include "asiopal/IAsyncChannel.h"
+#include "MockIO.h"
+#include "MockTLSClientHandler.h"
+#include "MockTLSServer.h"
 
-#include <deque>
+#include "asiopal/tls/TLSClient.h"
+
+#include "testlib/MockLogHandler.h"
 
 namespace asiopal
 {
 
-class MockTCPClientHandler final
+class MockTLSPair
 {
 
 public:
 
-	void OnConnect(const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec);
+	MockTLSPair(std::shared_ptr<MockIO> io, uint16_t port, const TLSConfig& client, const TLSConfig& server, std::error_code ec = std::error_code());
 
-	~MockTCPClientHandler();
+	~MockTLSPair();
 
-	size_t num_error = 0;
+	void Connect(size_t num = 1);
 
-	std::deque<std::shared_ptr<IAsyncChannel>> channels;
+	bool NumConnectionsEqual(size_t num) const;
 
+private:
+
+	testlib::MockLogHandler log;
+	std::shared_ptr<MockIO> io;
+	std::shared_ptr<MockTLSClientHandler> chandler;
+	std::shared_ptr<TLSClient> client;
+	std::shared_ptr<MockTLSServer> server;
 };
 
 }
 
 #endif
-
 
 
 

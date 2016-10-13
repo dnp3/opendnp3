@@ -58,12 +58,12 @@ public:
 private:
 
 	void HandleResolveResult(
-		const connect_callback_t& callback,		
-		const asio::ip::tcp::resolver::iterator& endpoints,
-		const std::error_code& ec
+	    const connect_callback_t& callback,
+	    const asio::ip::tcp::resolver::iterator& endpoints,
+	    const std::error_code& ec
 	);
 
-	bool PostConnectError(const connect_callback_t& callback, const std::error_code& ec);	
+	bool PostConnectError(const connect_callback_t& callback, const std::error_code& ec);
 
 	bool connecting = false;
 	bool canceled = false;
