@@ -326,14 +326,14 @@ void MContext::PostCheckForTask()
 	this->executor->Post(callback);
 }
 
-MasterScan MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
+std::shared_ptr<IMasterTask> MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
 {
 	auto task = std::make_shared<UserPollTask>(builder, true, period, params.taskRetryPeriod, *application, *SOEHandler, logger, config);
 	this->ScheduleRecurringPollTask(task);
-	return MasterScan(executor, task, shared_from_this());
+	return task;
 }
 
-MasterScan MContext::AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config)
+std::shared_ptr<IMasterTask> MContext::AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config)
 {
 	auto build = [field](HeaderWriter & writer) -> bool
 	{
@@ -342,7 +342,7 @@ MasterScan MContext::AddClassScan(const ClassField& field, openpal::TimeDuration
 	return this->AddScan(period, build, config);
 }
 
-MasterScan MContext::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config)
+std::shared_ptr<IMasterTask> MContext::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config)
 {
 	auto build = [gvId](HeaderWriter & writer) -> bool
 	{
@@ -351,7 +351,7 @@ MasterScan MContext::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDurat
 	return this->AddScan(period, build, config);
 }
 
-MasterScan MContext::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config)
+std::shared_ptr<IMasterTask> MContext::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config)
 {
 	auto build = [gvId, start, stop](HeaderWriter & writer) -> bool
 	{

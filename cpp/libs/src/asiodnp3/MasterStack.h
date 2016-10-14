@@ -33,7 +33,7 @@ namespace asiodnp3
 {
 
 
-class MasterStack : public IMaster, public opendnp3::ILinkSession, public opendnp3::ILinkTx, public std::enable_shared_from_this<MasterStack>, private StackBase
+class MasterStack : public IMaster, public opendnp3::ILinkSession, public opendnp3::ILinkTx, public opendnp3::ITaskCheck, public std::enable_shared_from_this<MasterStack>, public StackBase
 {
 public:
 
@@ -75,6 +75,11 @@ public:
 	virtual void Shutdown() override;
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override;
+
+	virtual void CheckForTask() override
+	{
+		this->mcontext->CheckForTask();
+	}
 
 	// --------- Implement ILinkSession ---------
 

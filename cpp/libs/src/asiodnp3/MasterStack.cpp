@@ -63,20 +63,7 @@ bool MasterStack::Disable()
 
 void MasterStack::Shutdown()
 {
-	auto shutdown = [self = shared_from_this()]
-	{
-		self->iohandler->Remove(self);
-
-		// this forces the MasterStack to hang around long enough for any
-		// previously submitted post operations to complete
-		auto detach = [self]()
-		{
-			self->manager->Detach(self);
-		};
-		self->executor->strand.post(detach);
-	};
-
-	this->executor->BlockUntilAndFlush(shutdown);
+	this->PerformShutdown(shared_from_this());
 }
 
 StackStatistics MasterStack::GetStackStatistics()
@@ -102,7 +89,7 @@ MasterScan MasterStack::AddScan(openpal::TimeDuration period, const std::vector<
 	{
 		return self->mcontext->AddScan(period, builder, config);
 	};
-	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
+	return MasterScan(executor, executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), shared_from_this());
 }
 
 MasterScan MasterStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
@@ -111,7 +98,7 @@ MasterScan MasterStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDu
 	{
 		return self->mcontext->AddAllObjectsScan(gvId, period, config);
 	};
-	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
+	return MasterScan(executor, executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), shared_from_this());
 }
 
 MasterScan MasterStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
@@ -120,8 +107,7 @@ MasterScan MasterStack::AddClassScan(const ClassField& field, openpal::TimeDurat
 	{
 		return self->mcontext->AddClassScan(field, period, config);
 	};
-
-	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
+	return MasterScan(executor, executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), shared_from_this());
 }
 
 MasterScan MasterStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
@@ -130,7 +116,7 @@ MasterScan MasterStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint
 	{
 		return self->mcontext->AddRangeScan(gvId, start, stop, period, config);
 	};
-	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
+	return MasterScan(executor, executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), shared_from_this());
 }
 
 void MasterStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)

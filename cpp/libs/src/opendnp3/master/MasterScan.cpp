@@ -27,10 +27,10 @@
 namespace opendnp3
 {
 
-MasterScan::MasterScan(const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<MContext>& context) :
+MasterScan::MasterScan(const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<ITaskCheck>& check) :
 	executor(executor),
 	task(task),
-	context(context)
+	check(check)
 {
 
 }
@@ -44,10 +44,10 @@ bool MasterScan::Demand()
 {
 	if (IsDefined())
 	{
-		auto action = [task = task, context = context]()
+		auto action = [task = task, check = check]()
 		{
 			task->Demand();
-			context->CheckForTask();
+			check->CheckForTask();
 		};
 		executor->Post(action);
 		return true;

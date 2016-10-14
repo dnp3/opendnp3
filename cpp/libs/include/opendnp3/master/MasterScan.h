@@ -25,14 +25,20 @@
 
 namespace openpal
 {
-class IExecutor;
+  class IExecutor;
 }
 
 namespace opendnp3
 {
 
 class IMasterTask;
-class MContext;
+
+struct ITaskCheck
+{
+	virtual ~ITaskCheck() {}
+
+	virtual void CheckForTask() = 0;
+};
 
 /**
 * Provides access to a permanently bound scan
@@ -43,7 +49,7 @@ public:
 
 	MasterScan() = default;
 
-	MasterScan(const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<MContext>& context);
+	MasterScan(const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<ITaskCheck>& context);
 
 	/// Request that the scan be performed as soon as possible
 	bool Demand();
@@ -52,9 +58,9 @@ public:
 
 private:
 
-	std::shared_ptr<openpal::IExecutor> executor;
-	std::shared_ptr<IMasterTask> task;
-	std::shared_ptr<MContext> context;
+	const std::shared_ptr<openpal::IExecutor> executor;
+	const std::shared_ptr<IMasterTask> task;
+	const std::shared_ptr<ITaskCheck> check;
 
 };
 

@@ -78,20 +78,7 @@ bool OutstationStack::Disable()
 
 void OutstationStack::Shutdown()
 {
-	auto shutdown = [self = shared_from_this()]
-	{
-		self->iohandler->Remove(self);
-
-		// this forces the MasterStack to hang around long enough for any
-		// previously submitted post operations to complete
-		auto detach = [self]()
-		{
-			self->manager->Detach(self);
-		};
-		self->executor->strand.post(detach);
-	};
-
-	this->executor->BlockUntilAndFlush(shutdown);
+	this->PerformShutdown(shared_from_this());
 }
 
 StackStatistics OutstationStack::GetStackStatistics()

@@ -38,7 +38,6 @@
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
-#include "opendnp3/master/MasterScan.h"
 #include "opendnp3/master/HeaderBuilder.h"
 #include "opendnp3/master/RestartOperationResult.h"
 
@@ -148,13 +147,13 @@ public:
 
 	/// -----  public methods used to add tasks -----
 
-	MasterScan AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+	std::shared_ptr<IMasterTask> AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 
-	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+	std::shared_ptr<IMasterTask> AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
-	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+	std::shared_ptr<IMasterTask> AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
-	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+	std::shared_ptr<IMasterTask> AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
 	/// ---- Single shot immediate scans ----
 

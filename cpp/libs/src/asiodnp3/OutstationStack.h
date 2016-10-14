@@ -36,7 +36,7 @@ namespace asiodnp3
 /**
 * A stack object for an outstation
 */
-class OutstationStack final : public IOutstation, public opendnp3::ILinkSession, public opendnp3::ILinkTx, public std::enable_shared_from_this<OutstationStack>, private StackBase
+class OutstationStack final : public IOutstation, public opendnp3::ILinkSession, public opendnp3::ILinkTx, public std::enable_shared_from_this<OutstationStack>, public StackBase
 {
 public:
 

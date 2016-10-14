@@ -111,26 +111,26 @@ StackStatistics MasterSessionStack::GetStackStatistics()
 MasterScan MasterSessionStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
 {
 	auto builder = ConvertToLambda(headers);
-	auto get = [self = shared_from_this(), period, builder, config]() -> MasterScan { return self->context->AddScan(period, builder, config); };
-	return executor->ReturnFrom<MasterScan>(get);
+	auto get = [self = shared_from_this(), period, builder, config](){ return self->context->AddScan(period, builder, config); };
+	return MasterScan(executor, executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), shared_from_this());
 }
 
 MasterScan MasterSessionStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
 {
 	auto get = [self = shared_from_this(), gvId, period, config] { return self->context->AddAllObjectsScan(gvId, period, config); };
-	return executor->ReturnFrom<MasterScan>(get);
+	return MasterScan(executor, executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), shared_from_this());
 }
 
 MasterScan MasterSessionStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
 {
 	auto get = [self = shared_from_this(), field, period, config] { return self->context->AddClassScan(field, period, config); };
-	return executor->ReturnFrom<MasterScan>(get);
+	return MasterScan(executor, executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), shared_from_this());
 }
 
 MasterScan MasterSessionStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
 {
 	auto get = [self = shared_from_this(), gvId, start, stop, period, config] { return self->context->AddRangeScan(gvId, start, stop, period, config); };
-	return executor->ReturnFrom<MasterScan>(get);
+	return MasterScan(executor, executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), shared_from_this());
 }
 
 void MasterSessionStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)
