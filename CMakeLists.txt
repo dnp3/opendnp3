@@ -77,10 +77,7 @@ if(DNP3_TLS)
 	message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 	if(WIN32)
 		include_directories(${OPENSSL_INCLUDE_DIR})
-	else()	    
-		set(OPENSSL_LIBRARIES "crypto;ssl")
 	endif()
-
 endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
@@ -113,15 +110,17 @@ endif()
 
 # ---- asiopal library ----
 file(GLOB_RECURSE asiopal_HPP ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)
+
 if(DNP3_TLS)
-  file(GLOB_RECURSE asiopal_CPP ./cpp/libs/src/asiopal/*.cpp)
+  file(GLOB_RECURSE asiopal_CPP ./cpp/libs/src/asiopal/*.cpp)  
 else()  	
   file(GLOB asiopal_CPP ./cpp/libs/src/asiopal/*.cpp)
 endif()
+
 add_library(asiopal ${LIB_TYPE} ${asiopal_HPP} ${asiopal_CPP})
+
 if(DNP3_TLS)
-  message("asiopal ssl libraries ${OPENSSL_LIBRARIES}")
-  target_link_libraries(asiopal openpal ${OPENSSL_LIBRARIES})
+    target_link_libraries(asiopal openpal ${OPENSSL_LIBRARIES})
 else()
   target_link_libraries(asiopal openpal)
 endif()
@@ -170,9 +169,6 @@ if(DNP3_DEMO)
   add_executable(outstation-demo ./cpp/examples/outstation/main.cpp)
   target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(outstation-demo PROPERTIES FOLDER demos)
-
-  # When linking the demos, asiopal requires network libraries
-  target_link_libraries (asiopal LINK_PUBLIC ${NET_LIBS})
 
   if(DNP3_DECODE)
 
