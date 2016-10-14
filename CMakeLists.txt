@@ -119,11 +119,12 @@ endif()
 
 add_library(asiopal ${LIB_TYPE} ${asiopal_HPP} ${asiopal_CPP})
 
+set(asiopal_link_libraries "openpal")
 if(DNP3_TLS)
-    target_link_libraries(asiopal openpal ${OPENSSL_LIBRARIES})
-else()
-  target_link_libraries(asiopal openpal)
+    set(asiopal_link_libraries "${asiopal_link_libraries};${OPENSSL_LIBRARIES}")
 endif()
+
+target_link_libraries(asiopal ${asiopal_link_libraries})
 install(TARGETS asiopal DESTINATION lib)
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
