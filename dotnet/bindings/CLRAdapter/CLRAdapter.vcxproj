@@ -159,7 +159,6 @@
     <ClInclude Include="src\CommandSetBuilder.h" />
     <ClInclude Include="src\Conversions.h" />
     <ClInclude Include="src\DNP3ManagerAdapter.h" />
-    <ClInclude Include="src\DNP3SessionManagerAdapter.h" />
     <ClInclude Include="src\EventConverter.h" />
     <ClInclude Include="src\ICommandHeaderWorkAround.h" />
     <ClInclude Include="src\ListenCallbacksAdapter.h" />
@@ -187,9 +186,7 @@
     <ClCompile Include="src\CommandSetBuilder.cpp" />
     <ClCompile Include="src\Conversions.cpp" />
     <ClCompile Include="src\DNP3ManagerAdapter.cpp" />
-    <ClCompile Include="src\DNP3SessionManagerAdapter.cpp" />
     <ClCompile Include="src\ListenCallbacksAdapter.cpp" />
-    <ClCompile Include="src\ListenerAdapter.cpp" />
     <ClCompile Include="src\LogAdapter.cpp" />
     <ClCompile Include="src\MasterAdapter.cpp" />
     <ClCompile Include="src\MasterConversions.cpp" />

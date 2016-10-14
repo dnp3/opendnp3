@@ -21,17 +21,18 @@
 #ifndef ASIOPAL_TCPSERVER_H
 #define ASIOPAL_TCPSERVER_H
 
-#include "asiopal/IOService.h"
 #include "asiopal/IPEndpoint.h"
+#include "asiopal/Executor.h"
 #include "asiopal/IListener.h"
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include <memory>
 
 namespace asiopal
 {
+
 /**
 * Binds and listens on an IPv4 TCP port
 *
@@ -45,40 +46,39 @@ class TCPServer :
 
 public:
 
-	/// Stop listening for connections, permanently shutting down the listener
-	void BeginShutdown() override final;
-
-protected:
-
 	TCPServer(
-	    std::shared_ptr<IOService> ioservice,
-	    openpal::LogRoot root,
-	    IPEndpoint endpoint,
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<Executor>& executor,
+	    const IPEndpoint& endpoint,
 	    std::error_code& ec
 	);
 
-	void StartAccept();
-
-	/// inherited flass defines what to do with
-	virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) = 0;
-
-	/// Inherited class defines what happens when the server shuts down
-	virtual void OnShutdown() = 0;
-
-private:
-	void Configure(const std::string& adapter, std::error_code& ec);
+	/// Implement IListener
+	void Shutdown() override final;
 
 protected:
 
-	std::shared_ptr<IOService> ioservice;
-	openpal::LogRoot root;
+	/// Inherited classes must define these functions
+
+	virtual void OnShutdown() = 0;
+
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket) = 0;
+
+	/// Start asynchronously accepting connections on the strand
+	void StartAccept();
+
+	openpal::Logger logger;
+	std::shared_ptr<Executor> executor;
 
 private:
+
+	void Configure(const std::string& adapter, std::error_code& ec);
 
 	asio::ip::tcp::endpoint endpoint;
 	asio::ip::tcp::acceptor acceptor;
 	asio::ip::tcp::socket socket;
-	uint64_t session_id;
+	asio::ip::tcp::endpoint remote_endpoint;
+	uint64_t session_id = 0;
 };
 
 }

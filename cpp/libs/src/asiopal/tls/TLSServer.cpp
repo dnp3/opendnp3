@@ -34,17 +34,17 @@ namespace asiopal
 {
 
 TLSServer::TLSServer(
-    std::shared_ptr<IOService> ioservice,
-    openpal::LogRoot root,
-    IPEndpoint endpoint,
+    const openpal::Logger& logger,
+    const std::shared_ptr<Executor>& executor,
+    const IPEndpoint& endpoint,
     const TLSConfig& config,
     std::error_code& ec
 ) :
-	ioservice(ioservice),
-	root(std::move(root)),
-	ctx(root.logger, true, config, ec),
+	logger(logger),
+	executor(executor),
+	ctx(logger, true, config, ec),
 	endpoint(ip::tcp::v4(), endpoint.port),
-	acceptor(ioservice->service),
+	acceptor(executor->strand.get_io_service()),
 	session_id(0)
 {
 	if (!ec)
@@ -53,7 +53,7 @@ TLSServer::TLSServer(
 	}
 }
 
-void TLSServer::BeginShutdown()
+void TLSServer::Shutdown()
 {
 	this->acceptor.close();
 }
@@ -78,7 +78,7 @@ std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::er
 
 	std::ostringstream oss;
 	oss << this->endpoint;
-	FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+	FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Listening on: %s", oss.str().c_str());
 	return ec;
 }
 
@@ -91,24 +91,22 @@ void TLSServer::StartAccept(std::error_code& ec)
 	auto self(shared_from_this());
 
 	// this could be a unique_ptr once move semantics are supported in lambdas
-	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(this->ioservice->service, self->ctx.value);
+	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(this->executor->strand.get_io_service(), self->ctx.value);
 
-	if (!ec)
+	auto verify = [this, ID](bool preverified, asio::ssl::verify_context & ctx)
 	{
+		return this->VerifyCallback(ID, preverified, ctx);
+	};
 
-		auto verify = [this, ID](bool preverified, asio::ssl::verify_context & ctx)
-		{
-			return this->VerifyCallback(ID, preverified, ctx);
-		};
+	stream->set_verify_callback(verify, ec);
 
-		stream->set_verify_callback(verify, ec);
-	}
+	if (ec) return;
 
 	auto accept_cb = [self, stream, ID](std::error_code ec) -> void
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(self->root.logger, flags::INFO, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->logger, flags::INFO, ec.message().c_str());
 			self->OnShutdown();
 			return;
 		}
@@ -121,34 +119,30 @@ void TLSServer::StartAccept(std::error_code& ec)
 			std::ostringstream oss;
 			oss << stream->lowest_layer().remote_endpoint();
 
-			FORMAT_LOG_BLOCK(self->root.logger, flags::INFO, "Remote endpoint rejected: %s", oss.str().c_str());
+			FORMAT_LOG_BLOCK(self->logger, flags::INFO, "Remote endpoint rejected: %s", oss.str().c_str());
 
 			stream->lowest_layer().close();
 			return;
 		}
 
-		// at this point
-
 		auto handshake_cb = [stream, ID, self](const std::error_code & ec)
 		{
 			if (ec)
 			{
-				FORMAT_LOG_BLOCK(self->root.logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
+				FORMAT_LOG_BLOCK(self->logger, flags::INFO, "TLS handshake failed: %s", ec.message().c_str());
 				return;
 			}
 
-			self->AcceptStream(ID, stream);
+			self->AcceptStream(ID, self->executor, stream);
 		};
 
 		// Begin the TLS handshake
-		stream->async_handshake(asio::ssl::stream_base::server, handshake_cb);
+		stream->async_handshake(asio::ssl::stream_base::server, self->executor->strand.wrap(handshake_cb));
 	};
 
-	if (!ec)
-	{
-		this->acceptor.async_accept(stream->lowest_layer(), accept_cb);
-	}
+	this->acceptor.async_accept(stream->lowest_layer(), this->executor->strand.wrap(accept_cb));
 }
+
 }
 
 

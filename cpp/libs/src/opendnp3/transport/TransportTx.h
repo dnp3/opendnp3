@@ -33,8 +33,6 @@
 namespace opendnp3
 {
 
-class TransportLayer;
-
 /**
 State/validation for the DNP3 transport layer's send channel.
 */

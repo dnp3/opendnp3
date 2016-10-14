@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2013-2016 Automatak, LLC
  *
  * Licensed to Automatak, LLC (www.automatak.com) under one or more

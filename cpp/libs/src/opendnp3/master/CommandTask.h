@@ -47,8 +47,10 @@ class CommandTask : public IMasterTask
 
 public:
 
-	static IMasterTask* FDirectOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
-	static IMasterTask* FSelectAndOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
+	CommandTask(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
+
+	static std::shared_ptr<IMasterTask> CreateDirectOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
+	static std::shared_ptr<IMasterTask> CreateSelectAndOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
 
 	virtual char const* Name() const override final
 	{
@@ -89,8 +91,6 @@ private:
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 
 	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
-
-	CommandTask(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const TaskConfig& config, openpal::Logger logger);
 
 	ResponseResult ProcessResponse(const openpal::RSlice& objects);
 

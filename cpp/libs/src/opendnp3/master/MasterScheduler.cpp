@@ -37,13 +37,13 @@ MasterScheduler::MasterScheduler(ITaskFilter& filter) :
 
 }
 
-void MasterScheduler::Schedule(openpal::ManagedPtr<IMasterTask> pTask)
+void MasterScheduler::Schedule(const std::shared_ptr<IMasterTask>& task)
 {
-	m_tasks.push_back(std::move(pTask));
+	m_tasks.push_back(task);
 	this->RecalculateTaskStartTimeout();
 }
 
-std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
+std::vector<std::shared_ptr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
 {
 	auto runningBest = m_tasks.begin();
 
@@ -65,14 +65,14 @@ std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNext
 	return runningBest;
 }
 
-openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimestamp& now, MonotonicTimestamp& next)
+std::shared_ptr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimestamp& now, MonotonicTimestamp& next)
 {
 	auto elem = GetNextTask(now);
 
 	if (elem == m_tasks.end())
 	{
 		next = MonotonicTimestamp::Max();
-		return ManagedPtr<IMasterTask>();
+		return nullptr;
 	}
 	else
 	{
@@ -81,14 +81,14 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimesta
 
 		if (EXPIRED && CAN_RUN)
 		{
-			ManagedPtr<IMasterTask> ret(std::move(*elem));
+			std::shared_ptr<IMasterTask> ret = *elem;
 			m_tasks.erase(elem);
 			return ret;
 		}
 		else
 		{
 			next = CAN_RUN ? (*elem)->ExpirationTime() : MonotonicTimestamp::Max();
-			return ManagedPtr<IMasterTask>();
+			return nullptr;
 		}
 	}
 }
@@ -98,7 +98,7 @@ void MasterScheduler::Shutdown(const MonotonicTimestamp& now)
 	m_tasks.clear();
 }
 
-bool MasterScheduler::IsTimedOut(const MonotonicTimestamp& now, openpal::ManagedPtr<IMasterTask>& task)
+bool MasterScheduler::IsTimedOut(const MonotonicTimestamp& now, const std::shared_ptr<IMasterTask>& task)
 {
 	if (task->IsRecurring() || task->StartExpirationTime() > now)
 	{
@@ -112,7 +112,7 @@ bool MasterScheduler::IsTimedOut(const MonotonicTimestamp& now, openpal::Managed
 
 void MasterScheduler::CheckTaskStartTimeout(const openpal::MonotonicTimestamp& now)
 {
-	auto timedOut = [this, now](openpal::ManagedPtr<IMasterTask>& task)
+	auto timedOut = [this, now](const std::shared_ptr<IMasterTask>& task)
 	{
 		return this->IsTimedOut(now, task);
 	};

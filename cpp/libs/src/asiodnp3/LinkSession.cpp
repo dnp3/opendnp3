@@ -33,71 +33,45 @@ namespace asiodnp3
 {
 
 LinkSession::LinkSession(
-    openpal::LogRoot logroot,
+    const openpal::Logger& logger,
     uint64_t sessionid,
-    asiopal::IResourceManager& manager,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<StrandExecutor> executor,
-    std::unique_ptr<asiopal::IAsyncChannel> channel) :
-	log_root(std::move(logroot)),
+    const std::shared_ptr<IResourceManager>& manager,
+    const std::shared_ptr<IListenCallbacks>& callbacks,
+    const std::shared_ptr<asiopal::IAsyncChannel>& channel) :
+	logger(logger),
 	session_id(sessionid),
-	manager(&manager),
+	manager(manager),
 	callbacks(callbacks),
-	parser(log_root.logger, &stats),
-	executor(executor),
-	first_frame_timer(*executor),
+	parser(logger, &stats),
+	first_frame_timer(*channel->executor),
 	channel(std::move(channel))
 {
 
 }
 
-std::shared_ptr<LinkSession> LinkSession::Create(
-    openpal::LogRoot logroot,
-    uint64_t sessionid,
-    asiopal::IResourceManager& manager,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<StrandExecutor> executor,
-    std::unique_ptr<asiopal::IAsyncChannel> channel)
+void LinkSession::Shutdown()
 {
-	auto ret = std::shared_ptr<LinkSession>(new LinkSession(std::move(logroot), sessionid, manager, callbacks, executor, std::move(channel)));
-
-	if (manager.Register(ret))
-	{
-		ret->Start();
-	}
-	else
-	{
-		ret->BeginShutdown();
-	}
-
-	return ret;
-}
-
-void LinkSession::BeginShutdown()
-{
-	auto self(shared_from_this());
-	auto shutdown = [self]()
+	auto shutdown = [self = shared_from_this()]()
 	{
 		self->first_frame_timer.Cancel();
-		self->channel->BeginShutdown([self](const std::error_code & ec) {});
+		self->channel->Shutdown();
 	};
-	this->executor->PostToStrand(shutdown);
+	this->channel->executor->strand.post(shutdown);
 }
 
 void LinkSession::SetLogFilters(openpal::LogFilters filters)
 {
-	this->log_root.SetFilters(filters);
+	this->logger.SetFilters(filters);
 }
 
 void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
 {
-	auto self(shared_from_this());
-	auto callback = [self, buffer, &session](const std::error_code & ec, std::size_t num)
+	auto callback = [self = shared_from_this(), buffer, &session](const std::error_code & ec)
 	{
 		if (ec)
 		{
 			// we'll let the failed read close the session
-			SIMPLE_LOG_BLOCK(self->log_root.logger, flags::WARN, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
 			session.OnTransmitResult(false);
 		}
 		else
@@ -106,7 +80,7 @@ void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSe
 		}
 	};
 
-	this->channel->BeginWrite(buffer, this->executor->strand.wrap(callback));
+	this->channel->BeginWrite(buffer, callback);
 }
 
 bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
@@ -130,9 +104,8 @@ bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		}
 		else
 		{
-			SIMPLE_LOG_BLOCK(this->log_root.logger, flags::WARN, "No master created. Closing socket.");
-			auto self(shared_from_this());
-			this->channel->BeginShutdown([self](const std::error_code & ec) {});
+			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "No master created. Closing socket.");
+			this->channel->Shutdown();
 		}
 	}
 
@@ -147,16 +120,16 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 {
 	if (this->stack)
 	{
-		SIMPLE_LOG_BLOCK(this->log_root.logger, flags::ERR, "SocketSession already has a master bound");
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "SocketSession already has a master bound");
 		return nullptr;
 	}
 
 	// rename the logger id to something meaningful
-	this->log_root.Rename(loggerid.c_str());
+	this->logger.Rename(loggerid.c_str());
 
 	this->stack = MasterSessionStack::Create(
-	                  this->log_root.logger,
-	                  this->executor,
+	                  this->logger,
+	                  this->channel->executor,
 	                  SOEHandler,
 	                  application,
 	                  shared_from_this(),
@@ -169,10 +142,11 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 
 void LinkSession::Start()
 {
-	auto timeout = [this]()
+	auto self(shared_from_this());
+	auto timeout = [self]()
 	{
-		SIMPLE_LOG_BLOCK(this->log_root.logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
-		this->channel->BeginShutdown([](const std::error_code & ec) {});
+		SIMPLE_LOG_BLOCK(self->logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
+		self->channel->Shutdown();
 	};
 
 	this->first_frame_timer.Start(this->callbacks->GetFirstFrameTimeout(), timeout);
@@ -187,7 +161,7 @@ void LinkSession::BeginReceive()
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(self->log_root.logger, flags::WARN, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
 
 			// if we created a master stack, tell it to shutdown
 			if (self->stack)
@@ -197,7 +171,8 @@ void LinkSession::BeginReceive()
 
 			self->callbacks->OnConnectionClose(self->session_id, self->stack);
 
-			self->manager->Unregister(self);
+			// run any shutdown actions
+			self->manager->Detach(self);
 
 			// release our reference to the stack
 			self->stack.reset();
@@ -210,7 +185,7 @@ void LinkSession::BeginReceive()
 	};
 
 	auto dest = parser.WriteBuff();
-	channel->BeginRead(dest, executor->strand.wrap(callback));
+	channel->BeginRead(dest, callback);
 }
 
 }

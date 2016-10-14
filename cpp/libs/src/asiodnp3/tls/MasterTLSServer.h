@@ -26,48 +26,71 @@
 #include <asiopal/tls/TLSServer.h>
 
 #include <asiopal/TLSConfig.h>
-#include <asiopal/IResourceManager.h>
+#include <asiopal/IPEndpoint.h>
+#include <asiopal/ResourceManager.h>
 
 #include "asiodnp3/IListenCallbacks.h"
 
 namespace asiodnp3
 {
+
 class MasterTLSServer final : public asiopal::TLSServer
 {
 
 public:
 
-	static std::shared_ptr<MasterTLSServer> Create(
-	    asiopal::IResourceManager& shutdown,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::IOService> ioservice,
-	    openpal::LogRoot root,
-	    asiopal::IPEndpoint endpoint,
-	    const asiopal::TLSConfig& config,
+	MasterTLSServer(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::Executor>& executor,
+	    const asiopal::IPEndpoint& endpoint,
+	    const asiopal::TLSConfig& tlsConfig,
+	    const std::shared_ptr<IListenCallbacks>& callbacks,
+	    const std::shared_ptr<asiopal::ResourceManager>& manager,
 	    std::error_code& ec
 	);
+
+	static std::shared_ptr<MasterTLSServer> Create(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::Executor> executor,
+	    const asiopal::IPEndpoint endpoint,
+	    const asiopal::TLSConfig& tlsConfig,
+	    const std::shared_ptr<IListenCallbacks> callbacks,
+	    const std::shared_ptr<asiopal::ResourceManager>& manager,
+	    std::error_code& ec)
+	{
+		auto ret = std::make_shared<MasterTLSServer>(logger, executor, endpoint, tlsConfig, callbacks, manager, ec);
+
+		if (ec) return nullptr;
+
+		ret->StartAccept(ec);
+
+		if (ec)
+		{
+			return nullptr;
+		}
+
+		return ret;
+	}
+
+	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
+
+	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override;
+
+	virtual void AcceptStream(
+	    uint64_t sessionid,
+	    const std::shared_ptr<asiopal::Executor>& executor,
+	    std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream
+	) override;
+
+	virtual void OnShutdown() override;
 
 private:
 
-	asiopal::IResourceManager* manager;
 	std::shared_ptr<IListenCallbacks> callbacks;
-
-	MasterTLSServer(
-	    asiopal::IResourceManager& shutdown,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::IOService> ioservice,
-	    openpal::LogRoot root,
-	    asiopal::IPEndpoint endpoint,
-	    const asiopal::TLSConfig& config,
-	    std::error_code& ec
-	);
-
-	virtual void OnShutdown() override;
-	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
-	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override;
-	virtual void AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;
+	std::shared_ptr<asiopal::ResourceManager> manager;
 
 	static std::string SessionIdToString(uint64_t sessionid);
+
 };
 
 }

@@ -57,11 +57,6 @@ public:
 	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
 
 	/**
-	* @return stack statistics counters
-	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
-
-	/**
 	* Add a recurring user-defined scan from a vector of headers
 	* @ return A proxy class used to manipulate the scan
 	*/

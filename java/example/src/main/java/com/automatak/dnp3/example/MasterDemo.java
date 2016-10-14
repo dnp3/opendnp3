@@ -98,8 +98,10 @@ public class MasterDemo {
                             //asynchronously print the result of the command operation
                             (CommandTaskResult result) -> System.out.println(result)
                     );
+                    break;
                 case("scan"):
                     master.scan(Header.getEventClasses());
+                    break;
                 default:
                     System.out.println("Unknown command: " + line);
                     break;

@@ -25,7 +25,7 @@
 #include <opendnp3/link/LinkHeaderFields.h>
 
 #include "asiodnp3/ISessionAcceptor.h"
-#include "asiodnp3/tls/X509Info.h"
+#include "asiodnp3/X509Info.h"
 
 namespace asiodnp3
 {
@@ -77,7 +77,7 @@ public:
 	* @param sessionid Incrementing id used to uniquely identify the session
 	* @param session Possibly NULL shared_ptr to the master session if it was created
 	*/
-	virtual void OnConnectionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) = 0;
+	virtual void OnConnectionClose(uint64_t sessionid, const std::shared_ptr<IMasterSession>& session) = 0;
 };
 
 }

@@ -22,9 +22,7 @@ namespace Automatak
 			{
 			public:
 
-				MasterOperationsAdapter(asiodnp3::IMasterOperations* operations);
-
-				virtual IStackStatistics^ GetStackStatistics();			
+				MasterOperationsAdapter(asiodnp3::IMasterOperations* operations);						
 
 				virtual void SetLogFilters(LogFilter flags);				
 			

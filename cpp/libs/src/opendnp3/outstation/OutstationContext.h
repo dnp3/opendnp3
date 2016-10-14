@@ -38,7 +38,7 @@
 #include "opendnp3/outstation/IOutstationApplication.h"
 
 #include <openpal/executor/TimerRef.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/container/Pair.h>
 
 namespace opendnp3
@@ -54,11 +54,11 @@ public:
 
 	OContext(	const OutstationConfig& config,
 	            const DatabaseSizes& dbSizes,
-	            openpal::Logger logger,
-	            openpal::IExecutor& executor,
-	            ILowerLayer& lower,
-	            ICommandHandler& commandHandler,
-	            IOutstationApplication& application);
+	            const openpal::Logger& logger,
+	            const std::shared_ptr<openpal::IExecutor>& executor,
+	            const std::shared_ptr<ILowerLayer>& lower,
+	            const std::shared_ptr<ICommandHandler>& commandHandler,
+	            const std::shared_ptr<IOutstationApplication>& application);
 
 public:
 
@@ -101,8 +101,6 @@ public:
 	DatabaseConfigView GetConfigView();
 
 	/// ---- Processing functions --------
-
-
 
 	void ProcessAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects);
 
@@ -164,10 +162,10 @@ public:
 
 	// ------ resources --------
 	openpal::Logger logger;
-	openpal::IExecutor* const pExecutor;
-	ILowerLayer* const pLower;
-	ICommandHandler* const pCommandHandler;
-	IOutstationApplication* const pApplication;
+	const std::shared_ptr<openpal::IExecutor> executor;
+	const std::shared_ptr<ILowerLayer> lower;
+	const std::shared_ptr<ICommandHandler> commandHandler;
+	const std::shared_ptr<IOutstationApplication> application;
 
 	// ------ Database, event buffer, and response tracking
 	EventBuffer eventBuffer;

@@ -24,7 +24,9 @@
 #include <openpal/logging/Logger.h>
 
 #include <asiopal/TCPServer.h>
-#include <asiopal/IResourceManager.h>
+#include <asiopal/ResourceManager.h>
+#include <asiopal/IListener.h>
+#include <asiopal/IPEndpoint.h>
 
 #include "asiodnp3/IListenCallbacks.h"
 
@@ -40,33 +42,46 @@ class MasterTCPServer final : public asiopal::TCPServer
 
 public:
 
-	static std::shared_ptr<MasterTCPServer> Create(
-	    asiopal::IResourceManager& shutdown,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::IOService> ioservice,
-	    openpal::LogRoot root,
-	    asiopal::IPEndpoint endpoint,
+	MasterTCPServer(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::Executor>& executor,
+	    const asiopal::IPEndpoint& endpoint,
+	    const std::shared_ptr<IListenCallbacks>& callbacks,
+	    const std::shared_ptr<asiopal::ResourceManager>& manager,
 	    std::error_code& ec
 	);
 
-	MasterTCPServer(
-	    asiopal::IResourceManager& shutdown,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::shared_ptr<asiopal::IOService> ioservice,
-	    openpal::LogRoot root,
-	    asiopal::IPEndpoint endpoint,
-	    std::error_code& ec
-	);
+	static std::shared_ptr<MasterTCPServer> Create(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::Executor>& executor,
+	    const asiopal::IPEndpoint& endpoint,
+	    const std::shared_ptr<IListenCallbacks>& callbacks,
+	    const std::shared_ptr<asiopal::ResourceManager>& manager,
+	    std::error_code& ec)
+	{
+		auto server = std::make_shared<MasterTCPServer>(logger, executor, endpoint, callbacks, manager, ec);
+
+		if (!ec)
+		{
+			server->StartAccept();
+		}
+
+		return server;
+	}
+
 
 private:
 
-	asiopal::IResourceManager* manager;
 	std::shared_ptr<IListenCallbacks> callbacks;
+	std::shared_ptr<asiopal::ResourceManager> manager;
 
 	static std::string SessionIdToString(uint64_t sessionid);
 
-	virtual void AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket) override;
+	// implement the virutal methods from TCPServer
+
 	virtual void OnShutdown() override;
+
+	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket) override;
 };
 
 }

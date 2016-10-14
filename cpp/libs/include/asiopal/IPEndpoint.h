@@ -31,19 +31,19 @@ class IPEndpoint
 
 public:
 
-	IPEndpoint(const std::string& address_, uint16_t port_) :
-		address(address_),
-		port(port_)
-	{}
-
-	IPEndpoint(uint16_t port_) :
-		address("127.0.0.1"),
-		port(port_)
+	IPEndpoint(const std::string& address, uint16_t port) :
+		address(address),
+		port(port)
 	{}
 
 	static IPEndpoint AllAdapters(uint16_t port)
 	{
 		return IPEndpoint("0.0.0.0", port);
+	}
+
+	static IPEndpoint Localhost(uint16_t port)
+	{
+		return IPEndpoint("127.0.0.1", port);
 	}
 
 	std::string address;

@@ -21,28 +21,111 @@
 #ifndef ASIOPAL_IASYNCCHANNEL_H
 #define ASIOPAL_IASYNCCHANNEL_H
 
-#include <functional>
-#include <system_error>
-
 #include <openpal/container/WSlice.h>
 #include <openpal/container/RSlice.h>
 #include <openpal/util/Uncopyable.h>
 
+#include "asiopal/Executor.h"
+
+#include <functional>
+#include <system_error>
+#include <memory>
+
 namespace asiopal
 {
-typedef std::function<void (const std::error_code& ec, std::size_t num)> read_callback_t;
-typedef std::function<void (const std::error_code& ec, std::size_t num)> write_callback_t;
-typedef std::function<void (const std::error_code& ec)> shutdown_callback_t;
 
-class IAsyncChannel : private openpal::Uncopyable
+
+class IAsyncChannel : public std::enable_shared_from_this<IAsyncChannel>, private openpal::Uncopyable
 {
 public:
+
+	IAsyncChannel(std::shared_ptr<Executor> executor) : executor(executor)
+	{}
+
 	virtual ~IAsyncChannel() {}
 
-	virtual void BeginRead(openpal::WSlice& buffer, const read_callback_t& callback) = 0;
-	virtual void BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback) = 0;
-	virtual void BeginShutdown(const shutdown_callback_t& callback) = 0;
+	template <class IOCallback>
+	inline bool BeginRead(const openpal::WSlice& buffer, const IOCallback& callback);
+
+	template <class IOCallback>
+	inline bool BeginWrite(const openpal::RSlice& buffer, const IOCallback& callback);
+
+	inline bool Shutdown()
+	{
+		if (this->shuttingDown) return false;
+		this->shuttingDown = true;
+
+		this->ShutdownImpl();
+		return true;
+	}
+
+	inline bool CanRead() const
+	{
+		return !(reading || shuttingDown);
+	}
+
+
+	inline bool CanWrite() const
+	{
+		return !(writing || shuttingDown);
+	}
+
+	std::shared_ptr<Executor> executor;
+
+protected:
+
+	bool reading = false;
+	bool writing = false;
+	bool shuttingDown = false;
+
+	typedef std::function<void(const std::error_code& ec, std::size_t num)> io_callback_t;
+
+	virtual void BeginReadImpl(openpal::WSlice buffer, const io_callback_t& callback) = 0;
+	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback) = 0;
+	virtual void ShutdownImpl() = 0;
 };
+
+template <class IOCallback>
+bool IAsyncChannel::BeginRead(const openpal::WSlice& buffer, const IOCallback& callback)
+{
+	if (!this->CanRead()) return false;
+
+	this->reading = true;
+
+	auto cbwrap = [self = shared_from_this(), buffer, callback](const std::error_code & ec, std::size_t num)
+	{
+		self->reading = false;
+		if (!self->shuttingDown)
+		{
+			callback(ec, num);
+		}
+	};
+
+	this->BeginReadImpl(buffer, this->executor->strand.wrap(cbwrap));
+
+	return true;
+}
+
+template <class IOCallback>
+bool IAsyncChannel::BeginWrite(const openpal::RSlice& buffer, const IOCallback& callback)
+{
+	if (!this->CanWrite()) return false;
+
+	this->writing = true;
+
+	auto cbwrap = [self = shared_from_this(), buffer, callback](const std::error_code & ec, std::size_t num)
+	{
+		self->writing = false;
+		if (!self->shuttingDown)
+		{
+			callback(ec);
+		}
+	};
+
+	this->BeginWriteImpl(buffer, this->executor->strand.wrap(cbwrap));
+	return true;
+}
+
 }
 
 #endif

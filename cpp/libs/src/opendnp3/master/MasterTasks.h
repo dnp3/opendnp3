@@ -45,24 +45,25 @@ class MasterTasks
 
 public:
 
-	MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
+	MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application, ISOEHandler& SOEHandler);
 
 	void Initialize(MasterScheduler& scheduler);
 
 	// master tasks that can be "failed" (startup and in response to IIN bits)
-	EnableUnsolicitedTask enableUnsol;
-	ClearRestartTask clearRestart;
-	AssignClassTask assignClass;
-	StartupIntegrityPoll startupIntegrity;
-	DisableUnsolicitedTask disableUnsol;
-	SerialTimeSyncTask timeSync;
-	EventScanTask eventScan;
+	const std::shared_ptr<EnableUnsolicitedTask> enableUnsol;
+	const std::shared_ptr<ClearRestartTask> clearRestart;
+	const std::shared_ptr<AssignClassTask> assignClass;
+	const std::shared_ptr<StartupIntegrityPoll> startupIntegrity;
+	const std::shared_ptr<DisableUnsolicitedTask> disableUnsol;
+	const std::shared_ptr<SerialTimeSyncTask >timeSync;
+	const std::shared_ptr<EventScanTask> eventScan;
 
-	void BindTask(IMasterTask* pTask);
+
+	void BindTask(const std::shared_ptr<IMasterTask>& task);
 
 private:
 
-	std::vector<std::unique_ptr<IMasterTask>> boundTasks;
+	std::vector<std::shared_ptr<IMasterTask>> boundTasks;
 
 };
 

@@ -20,7 +20,7 @@
 
     <properties>
         <junit.version>4.9</junit.version>
-        <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
+        <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <maven-javadoc-plugin.version>2.9</maven-javadoc-plugin.version>
         <maven-scala.plugin.version>3.1.3</maven-scala.plugin.version>
         <scala.version>2.11.8</scala.version>
@@ -78,24 +78,28 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <version>${maven-license-plugin.version}</version>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license-maven-plugin.version}</version>
                 <configuration>
-                    <basedir>../</basedir>
                     <strictCheck>true</strictCheck>
                     <failIfMissing>true</failIfMissing>
-                    <aggregate>true</aggregate>
                     <header>AUTOMATAK_FILE_HEADER</header>
                     <mapping>
-                        <hpp>JAVADOC_STYLE</hpp>
+                        <h>SLASHSTAR_STYLE</h>
+                        <hpp>SLASHSTAR_STYLE</hpp>
+                        <cpp>SLASHSTAR_STYLE</cpp>
                         <application>JAVADOC_STYLE</application>
                     </mapping>
+		    <excludes>
+                      <exclude>*/enums/*.java</exclude>
+                    </excludes>
                     <includes>
-                        <include>**/*.java</include>
+			<!-- THIS IS BROKEN. The above exclude isn't working. Disable this for the moment -->
+                        <!--<include>**/*.java</include>-->
                         <include>cpp/*.cpp</include>
                         <include>cpp/*.hpp</include>
-                    </includes>
+                    </includes>                    
                 </configuration>
                 <executions>
                     <execution>

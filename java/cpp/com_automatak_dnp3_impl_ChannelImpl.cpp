@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2013-2016 Automatak, LLC
  *
  * Licensed to Automatak, LLC (www.automatak.com) under one or more
@@ -16,7 +16,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 #include "com_automatak_dnp3_impl_ChannelImpl.h"
 
 #include <asiodnp3/IChannel.h>
@@ -37,15 +36,21 @@ using namespace opendnp3;
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
 (JNIEnv* env, jobject, jlong native)
 {
-	const auto channel = (IChannel*) native;
-	channel->Shutdown();
+	const auto channel = (std::shared_ptr<IChannel>*) native;
+	(*channel)->Shutdown();		
 }
 
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_destroy_1native
+(JNIEnv *, jobject, jlong native)
+{
+	const auto channel = (std::shared_ptr<IChannel>*) native;
+	delete channel; // drop our reference
+}
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
 (JNIEnv* env, jobject, jlong native, jstring jid, jobject handler, jobject application, jobject jconfig)
 {
-	const auto channel = (IChannel*)native;
+	const auto channel = (std::shared_ptr<IChannel>*) native;
 
 	auto config = ConfigReader::ConvertMasterStackConfig(env, jconfig);
 	auto soeAdapter = std::make_shared<SOEHandlerAdapter>(handler);
@@ -53,13 +58,15 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 
 	CString id(env, jid);
 
-	return (jlong) channel->AddMaster(id, soeAdapter, appAdapter, config);	 
+	auto stack = (*channel)->AddMaster(id.str(), soeAdapter, appAdapter, config);	
+
+	return (jlong) new std::shared_ptr<IMaster>(stack);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1outstation
 (JNIEnv* env, jobject, jlong native, jstring jid, jobject commandHandler, jobject application, jobject jconfig)
 {
-	const auto channel = (IChannel*) native;
+	const auto channel = (std::shared_ptr<IChannel>*) native;
 
 	auto config = ConfigReader::ConvertOutstationStackConfig(env, jconfig);
 	auto commandHandlerAdapter = std::make_shared<CommandHandlerAdapter>(application);
@@ -67,6 +74,8 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ou
 
 	CString id(env, jid);
 
-	return (jlong)channel->AddOutstation(id, commandHandlerAdapter, applicationAdapter, config);
+	auto stack = (*channel)->AddOutstation(id.str(), commandHandlerAdapter, applicationAdapter, config);
+
+	return (jlong) new std::shared_ptr<IOutstation>(stack);
 }
 

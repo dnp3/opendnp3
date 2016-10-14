@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
 using Automatak.DNP3.Adapter;
@@ -13,7 +9,7 @@ namespace DotNetMasterGPRSDemo
     {
         static int Main(string[] args)
         {
-            var manager = DNP3SessionManagerFactory.CreateManager(4, new PrintingLogAdapter());
+            var manager = DNP3ManagerFactory.CreateManager(4, new PrintingLogAdapter());
 
             var listener = manager.CreateListener("listener", LogLevels.ALL, IPEndpoint.Localhost(20000), new DefaultListenCallbacks());
 

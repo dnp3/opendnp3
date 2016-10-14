@@ -20,8 +20,15 @@ namespace Automatak
 			{
 			public:
 
-				ChannelAdapter(asiodnp3::IChannel* channel) : channel(channel)
-				{}
+				ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel) : channel(new std::shared_ptr<asiodnp3::IChannel>(channel))
+				{}			
+
+				~ChannelAdapter() { this ->!ChannelAdapter(); }
+
+				!ChannelAdapter()
+				{
+					delete channel;
+				}
 
 				virtual LogFilter GetLogFilters() sealed;
 
@@ -37,7 +44,7 @@ namespace Automatak
 
 			private:
 
-				asiodnp3::IChannel* channel;				
+				std::shared_ptr<asiodnp3::IChannel>* channel;
 
 				
 				

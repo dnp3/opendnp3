@@ -103,6 +103,27 @@ namespace Automatak.DNP3.Interface
         /// <param name="settings">Configuration struct for the serial port</param>
         /// <param name="listener">Callback interface for the channel</param>
         /// <returns>A channel interface</returns>
-        IChannel AddSerial(String id, UInt32 filters, ChannelRetry retry, SerialSettings settings, IChannelListener listener);      
+        IChannel AddSerial(String id, UInt32 filters, ChannelRetry retry, SerialSettings settings, IChannelListener listener);
+
+        /// <summary>
+        /// Create a new TCP listener an bind it to the specified callback interface
+        /// </summary>
+        /// <param name="loggerid"></param>
+        /// <param name="filters"></param>
+        /// <param name="endpoint"></param>
+        /// <param name="callbacks"></param>
+        /// <returns>A listener which can be canceled</returns>        
+        IListener CreateListener(string loggerid, UInt32 filters, IPEndpoint endpoint, IListenCallbacks callbacks);
+
+        /// <summary>
+        /// Create a new TLS listener an bind it to the specified callback interface
+        /// </summary>
+        /// <param name="loggerid"></param>
+        /// <param name="filters"></param>
+        /// <param name="endpoint"></param>
+        /// <param name="config"></param>
+        /// <param name="callbacks"></param>
+        /// <returns>A listener which can be canceled</returns>        
+        IListener CreateListener(string loggerid, UInt32 filters, IPEndpoint endpoint, TLSConfig config, IListenCallbacks callbacks);
     }
 }

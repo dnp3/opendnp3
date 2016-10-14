@@ -47,7 +47,7 @@ public:
 
 	virtual void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override;
 
-	virtual void OnConnectionClose(uint64_t sessionid, std::shared_ptr<IMasterSession> session) override;
+	virtual void OnConnectionClose(uint64_t sessionid, const std::shared_ptr<IMasterSession>& session) override;
 
 private:
 

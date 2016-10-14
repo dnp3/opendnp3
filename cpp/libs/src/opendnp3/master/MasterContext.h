@@ -22,7 +22,7 @@
 #define OPENDNP3_MASTERCONTEXT_H
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/container/Buffer.h>
 #include <openpal/executor/TimerRef.h>
 
@@ -42,15 +42,12 @@
 #include "opendnp3/master/HeaderBuilder.h"
 #include "opendnp3/master/RestartOperationResult.h"
 
-
-#include <deque>
-
 namespace opendnp3
 {
 /*
 	All of the mutable state and configuration for a master
 */
-class MContext : public IUpperLayer, private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
+class MContext : public IUpperLayer, public std::enable_shared_from_this<MContext>, private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
 {
 
 protected:
@@ -65,32 +62,45 @@ protected:
 public:
 
 	MContext(
-	    openpal::IExecutor& executor,
-	    openpal::Logger logger,
-	    ILowerLayer& lower,
-	    ISOEHandler& SOEHandler,
-	    opendnp3::IMasterApplication& application,
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<openpal::IExecutor>& executor,
+	    const std::shared_ptr<ILowerLayer>& lower,
+	    const std::shared_ptr<ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<IMasterApplication>& application,
 	    const MasterParams& params,
 	    ITaskLock& taskLock
 	);
 
+	static std::shared_ptr<MContext> Create(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<openpal::IExecutor>& executor,
+	    const std::shared_ptr<ILowerLayer>& lower,
+	    const std::shared_ptr<ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<IMasterApplication>& application,
+	    const MasterParams& params,
+	    ITaskLock& taskLock
+	)
+	{
+		return std::make_shared<MContext>(logger, executor, lower, SOEHandler, application, params, taskLock);
+	}
+
 	openpal::Logger logger;
-	openpal::IExecutor* pExecutor;
-	ILowerLayer* pLower;
+	const std::shared_ptr<openpal::IExecutor> executor;
+	const std::shared_ptr<ILowerLayer> lower;
 
 	// ------- configuration --------
 	MasterParams params;
-	ISOEHandler* pSOEHandler;
+	const std::shared_ptr<ISOEHandler> SOEHandler;
+	const std::shared_ptr<IMasterApplication> application;
 	ITaskLock* pTaskLock;
-	IMasterApplication* pApplication;
 
 
 	// ------- dynamic state ---------
-	bool isOnline;
-	bool isSending;
+	bool isOnline = false;
+	bool isSending = false;
 	AppSeqNum solSeq;
 	AppSeqNum unsolSeq;
-	openpal::ManagedPtr<IMasterTask> pActiveTask;
+	std::shared_ptr<IMasterTask> activeTask;
 	openpal::TimerRef responseTimer;
 	openpal::TimerRef scheduleTimer;
 	openpal::TimerRef taskStartTimeoutTimer;
@@ -116,7 +126,7 @@ public:
 
 	virtual void RecordLastRequest(const openpal::RSlice& apdu) {}
 
-	virtual bool MeetsUserRequirements(const IMasterTask& task)
+	virtual bool MeetsUserRequirements(const std::shared_ptr<IMasterTask>& task)
 	{
 		return true;
 	}
@@ -166,7 +176,7 @@ public:
 
 	/// public state manipulation actions
 
-	TaskState BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
+	TaskState BeginNewTask(const std::shared_ptr<IMasterTask>& task);
 
 	TaskState ResumeActiveTask();
 
@@ -192,7 +202,7 @@ public:
 
 private:
 
-	void ScheduleRecurringPollTask(IMasterTask* pTask);
+	void ScheduleRecurringPollTask(const std::shared_ptr<IMasterTask>& task);
 
 	virtual void OnPendingTask() override
 	{
@@ -205,7 +215,7 @@ private:
 
 protected:
 
-	void ScheduleAdhocTask(IMasterTask* pTask);
+	void ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task);
 
 	/// state switch lookups
 	TaskState OnStartEvent();

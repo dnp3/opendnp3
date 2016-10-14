@@ -21,14 +21,9 @@
 #ifndef ASIODNP3_ISTACK_H
 #define ASIODNP3_ISTACK_H
 
-#include <openpal/executor/IExecutor.h>
-
 #include <opendnp3/StackStatistics.h>
-#include <opendnp3/link/ILinkListener.h>
 
-#include <vector>
-#include <functional>
-
+#include "asiopal/IResourceManager.h"
 
 namespace asiodnp3
 {
@@ -36,7 +31,7 @@ namespace asiodnp3
 /**
 * Base class for masters or outstations
 */
-class IStack
+class IStack : public asiopal::IResource
 {
 public:
 
@@ -53,9 +48,9 @@ public:
 	virtual bool Disable() = 0;
 
 	/**
-	* Synchronously shutdown the endpoint. No more calls are allowed after this call.
+	* @return stack statistics counters
 	*/
-	virtual void Shutdown() = 0;
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
 };
 

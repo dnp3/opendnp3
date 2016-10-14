@@ -21,13 +21,13 @@
 #ifndef ASIOPAL_TLSSERVER_H
 #define ASIOPAL_TLSSERVER_H
 
-#include "asiopal/IOService.h"
 #include "asiopal/IPEndpoint.h"
 #include "asiopal/IListener.h"
 #include "asiopal/TLSConfig.h"
+#include "asiopal/Executor.h"
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include "asiopal/tls/SSLContext.h"
 
@@ -39,48 +39,42 @@ namespace asiopal
 * Meant to be used exclusively as a shared_ptr
 */
 class TLSServer :
-	public std::enable_shared_from_this<TLSServer>,
 	public IListener,
+	public std::enable_shared_from_this<TLSServer>,
 	private openpal::Uncopyable
 {
 
 public:
 
-	/// Stop listening for connections, permanently shutting down the listener
-	void BeginShutdown() override final;
-
-protected:
-
 	TLSServer(
-	    std::shared_ptr<IOService> ioservice,
-	    openpal::LogRoot root,
-	    IPEndpoint endpoint,
-	    const TLSConfig& tlsConfig,
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<Executor>& executor,
+	    const IPEndpoint& endpoint,
+	    const TLSConfig& config,
 	    std::error_code& ec
 	);
 
-	void StartAccept(std::error_code& ec);
+	/// Stop listening for connections, permanently shutting down the listener
+	void Shutdown() override;
 
-	/// inherited flass defines what to do with these callbacks
+protected:
+
+	// Inherited classes must implement these methods
+
 	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) = 0;
 	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) = 0;
-	virtual void AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
-
-
-	/// Inherited class defines what happens when the server shuts down
+	virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
 	virtual void OnShutdown() = 0;
+
+	void StartAccept(std::error_code& ec);
+
+	openpal::Logger logger;
+	std::shared_ptr<Executor> executor;
 
 private:
 
 	std::error_code ConfigureContext(const TLSConfig& config, std::error_code& ec);
 	std::error_code ConfigureListener(const std::string& adapter, std::error_code& ec);
-
-protected:
-
-	std::shared_ptr<IOService> ioservice;
-	openpal::LogRoot root;
-
-private:
 
 	SSLContext ctx;
 	asio::ip::tcp::endpoint endpoint;

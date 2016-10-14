@@ -28,9 +28,9 @@ using namespace opendnp3;
 
 namespace asiopal
 {
-SSLContext::SSLContext(openpal::Logger logger, bool server, const TLSConfig& config, std::error_code& ec) :
+SSLContext::SSLContext(const openpal::Logger& logger, bool server, const TLSConfig& config, std::error_code& ec) :
 	value(server ? asio::ssl::context_base::sslv23_server : asio::ssl::context_base::sslv23_client),
-	m_logger(logger)
+	logger(logger)
 {
 	this->ApplyConfig(config, server, ec);
 }
@@ -64,13 +64,13 @@ std::error_code SSLContext::ApplyConfig(const TLSConfig& config, bool server, st
 
 	if (value.set_options(OPTIONS, ec))
 	{
-		FORMAT_LOG_BLOCK(m_logger, flags::ERR, "Error calling ssl::context::set_options(..): %s", ec.message().c_str());
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::set_options(..): %s", ec.message().c_str());
 		return ec;
 	}
 
 	if (value.set_verify_depth(config.maxVerifyDepth, ec))
 	{
-		FORMAT_LOG_BLOCK(m_logger, flags::ERR, "Error calling ssl::context::set_verify_depth(..): %s", ec.message().c_str());
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::set_verify_depth(..): %s", ec.message().c_str());
 		return ec;
 	}
 
@@ -80,7 +80,7 @@ std::error_code SSLContext::ApplyConfig(const TLSConfig& config, bool server, st
 		if (SSL_CTX_set_cipher_list(value.native_handle(), config.cipherList.c_str()) == 0)
 		{
 			ec = asio::error_code();
-			FORMAT_LOG_BLOCK(m_logger, flags::ERR, "Error calling ssl::context::set_cipher_list(..): %s", ec.message().c_str());
+			FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::set_cipher_list(..): %s", ec.message().c_str());
 			return ec;
 		}
 	}
@@ -88,27 +88,27 @@ std::error_code SSLContext::ApplyConfig(const TLSConfig& config, bool server, st
 	// verify the peer certificate
 	if (value.set_verify_mode(GetVerifyMode(server), ec))
 	{
-		FORMAT_LOG_BLOCK(m_logger, flags::ERR, "Error calling ssl::context::set_verify_mode(..): %s", ec.message().c_str());
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::set_verify_mode(..): %s", ec.message().c_str());
 		return ec;
 	}
 
 	// The public certificate file used to verify the peer
 	if (value.load_verify_file(config.peerCertFilePath, ec))
 	{
-		FORMAT_LOG_BLOCK(m_logger, flags::ERR, "Error calling ssl::context::load_verify_file(..): %s", ec.message().c_str());
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::load_verify_file(..): %s", ec.message().c_str());
 		return ec;
 	}
 
 	// the certificate we present to the server + the private key we use are placed into the same file
 	if (value.use_certificate_chain_file(config.localCertFilePath, ec))
 	{
-		FORMAT_LOG_BLOCK(m_logger, flags::ERR, "Error calling ssl::context::use_certificate_chain_file(..): %s", ec.message().c_str());
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::use_certificate_chain_file(..): %s", ec.message().c_str());
 		return ec;
 	}
 
 	if (value.use_private_key_file(config.privateKeyFilePath, asio::ssl::context_base::file_format::pem, ec))
 	{
-		FORMAT_LOG_BLOCK(m_logger, flags::ERR, "Error calling ssl::context::use_private_key_file(..): %s", ec.message().c_str());
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::use_private_key_file(..): %s", ec.message().c_str());
 	}
 
 	return ec;

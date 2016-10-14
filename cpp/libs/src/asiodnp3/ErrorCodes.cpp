@@ -34,6 +34,8 @@ std::string ErrorCategory::message(int ev) const
 		return "The operation was requested while the resource was shutting down";
 	case(static_cast<int>(Error::NO_TLS_SUPPORT)) :
 		return "Not built with TLS support";
+	case(static_cast<int>(Error::NO_SERIAL_SUPPORT)):
+		return "Not built with serial support";
 	default:
 		return "unknown error";
 	};

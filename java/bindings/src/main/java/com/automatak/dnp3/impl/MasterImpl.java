@@ -28,29 +28,33 @@ class MasterImpl implements Master {
 
     private long nativePointer;
 
-    @Override
-    public synchronized void enable()
+    public MasterImpl(long nativePointer)
     {
-        if(nativePointer != 0) {
-            enable_native(nativePointer);
-        }
+        this.nativePointer = nativePointer;
     }
 
     @Override
-    public synchronized void disable()
+    public void finalize()
     {
-        if(nativePointer != 0) {
-            disable_native(nativePointer);
-        }
+        this.destroy_native(this.nativePointer);
     }
 
     @Override
-    public synchronized void shutdown()
+    public void enable()
     {
-        if(nativePointer != 0) {
-            shutdown_native(nativePointer);
-            nativePointer = 0;
-        }
+        enable_native(nativePointer);
+    }
+
+    @Override
+    public void disable()
+    {
+        disable_native(nativePointer);
+    }
+
+    @Override
+    public void shutdown()
+    {
+        shutdown_native(nativePointer);
     }
 
     @Override
@@ -75,11 +79,6 @@ class MasterImpl implements Master {
     public void addPeriodicScan(Duration period, Iterable<Header> headers)
     {
         this.add_periodic_scan_native(this.nativePointer, period, headers);
-    }
-
-    public MasterImpl(long nativePointer)
-    {
-        this.nativePointer = nativePointer;
     }
 
     @Override
@@ -165,6 +164,7 @@ class MasterImpl implements Master {
     private native void enable_native(long nativePointer);
     private native void disable_native(long nativePointer);
     private native void shutdown_native(long nativePointer);
+    private native void destroy_native(long nativePointer);
 
     private native void select_and_operate_native(long nativePointer, long nativeCommandSetPointer, CompletableFuture<CommandTaskResult> future);
     private native void direct_operate_native(long nativePointer, long nativeCommandSetPointer, CompletableFuture<CommandTaskResult> future);

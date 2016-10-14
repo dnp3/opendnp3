@@ -24,28 +24,202 @@
 
 #include <opendnp3/master/MasterContext.h>
 
-#include <asiopal/ASIOExecutor.h>
+#include "Conversions.h"
 
 using namespace openpal;
+using namespace asiopal;
 using namespace opendnp3;
 
 namespace asiodnp3
 {
 
 MasterStack::MasterStack(
-    std::unique_ptr<LogRoot> root,
-    asiopal::ASIOExecutor& executor,
-    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-    std::shared_ptr<opendnp3::IMasterApplication> application,
+    const Logger& logger,
+    const std::shared_ptr<Executor>& executor,
+    const std::shared_ptr<ISOEHandler>& SOEHandler,
+    const std::shared_ptr<IMasterApplication>& application,
+    const std::shared_ptr<IOHandler>& iohandler,
+    const std::shared_ptr<asiopal::IResourceManager>& manager,
     const MasterStackConfig& config,
-    IStackLifecycle& lifecycle,
-    opendnp3::ITaskLock& taskLock) :
-	MasterStackBase<IMaster>(std::move(root), executor, *application, config, lifecycle),
-	SOEHandler(SOEHandler),
-	application(application),
-	mcontext(executor, this->root->logger, stack.transport, *SOEHandler, *application,  config.master, taskLock)
+    ITaskLock& taskLock) :
+
+	StackBase(logger, executor, application, iohandler, manager, config.master.maxRxFragSize, config.link),
+	mcontext(MContext::Create(logger, executor, tstack.transport, SOEHandler, application,  config.master, taskLock))
 {
-	this->SetContext(mcontext);
+	tstack.transport->SetAppLayer(*mcontext);
+}
+
+bool MasterStack::Enable()
+{
+	auto action = [self = shared_from_this()] { return self->iohandler->Enable(self); };
+	return this->executor->ReturnFrom<bool>(action);
+}
+
+bool MasterStack::Disable()
+{
+	auto action = [self = shared_from_this()] { return self->iohandler->Disable(self); };
+	return this->executor->ReturnFrom<bool>(action);
+}
+
+void MasterStack::Shutdown()
+{
+	auto shutdown = [self = shared_from_this()]
+	{
+		self->iohandler->Remove(self);
+
+		// this forces the MasterStack to hang around long enough for any
+		// previously submitted post operations to complete
+		auto detach = [self]()
+		{
+			self->manager->Detach(self);
+		};
+		self->executor->strand.post(detach);
+	};
+
+	this->executor->BlockUntilAndFlush(shutdown);
+}
+
+StackStatistics MasterStack::GetStackStatistics()
+{
+	auto get = [self = shared_from_this()] { return self->statistics; };
+	return this->executor->ReturnFrom<StackStatistics>(get);
+}
+
+void MasterStack::SetLogFilters(const openpal::LogFilters& filters)
+{
+	auto set = [self = this->shared_from_this(), filters]()
+	{
+		self->logger.SetFilters(filters);
+	};
+
+	this->executor->strand.post(set);
+}
+
+MasterScan MasterStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
+{
+	auto builder = ConvertToLambda(headers);
+	auto add = [self = this->shared_from_this(), builder, period, config]()
+	{
+		return self->mcontext->AddScan(period, builder, config);
+	};
+	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
+}
+
+MasterScan MasterStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
+{
+	auto add = [self = this->shared_from_this(), gvId, period, config]()
+	{
+		return self->mcontext->AddAllObjectsScan(gvId, period, config);
+	};
+	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
+}
+
+MasterScan MasterStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
+{
+	auto add = [self = this->shared_from_this(), field, period, config]()
+	{
+		return self->mcontext->AddClassScan(field, period, config);
+	};
+
+	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
+}
+
+MasterScan MasterStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
+{
+	auto add = [self = this->shared_from_this(), gvId, start, stop, period, config]()
+	{
+		return self->mcontext->AddRangeScan(gvId, start, stop, period, config);
+	};
+	return this->executor->ReturnFrom<opendnp3::MasterScan>(add);
+}
+
+void MasterStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)
+{
+	auto add = [self = this->shared_from_this(), builder = ConvertToLambda(headers), config]()
+	{
+		return self->mcontext->Scan(builder, config);
+	};
+	return this->executor->strand.post(add);
+}
+
+void MasterStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config)
+{
+	auto add = [self = this->shared_from_this(), gvId, config]()
+	{
+		return self->mcontext->ScanAllObjects(gvId, config);
+	};
+	return this->executor->strand.post(add);
+}
+
+void MasterStack::ScanClasses(const ClassField& field, const TaskConfig& config)
+{
+	auto add = [self = this->shared_from_this(), field, config]()
+	{
+		return self->mcontext->ScanClasses(field, config);
+	};
+	return this->executor->strand.post(add);
+}
+
+void MasterStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config)
+{
+	auto add = [self = this->shared_from_this(), gvId, start, stop, config]()
+	{
+		return self->mcontext->ScanRange(gvId, start, stop, config);
+	};
+	return this->executor->strand.post(add);
+}
+
+void MasterStack::Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config)
+{
+	auto add = [self = this->shared_from_this(), value, index, config]()
+	{
+		return self->mcontext->Write(value, index, config);
+	};
+	return this->executor->strand.post(add);
+}
+
+void MasterStack::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
+{
+	auto add = [self = this->shared_from_this(), op, callback, config]()
+	{
+		return self->mcontext->Restart(op, callback, config);
+	};
+	return this->executor->strand.post(add);
+}
+
+void MasterStack::PerformFunction(const std::string& name, FunctionCode func, const std::vector<Header>& headers, const TaskConfig& config)
+{
+	auto add = [self = this->shared_from_this(), name, func, builder = ConvertToLambda(headers), config]()
+	{
+		return self->mcontext->PerformFunction(name, func, builder, config);
+	};
+	return this->executor->strand.post(add);
+}
+
+void MasterStack::SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
+{
+	/// this is to work around the fact that c++11 doesn't have generic move capture
+	auto set = std::make_shared<opendnp3::CommandSet>(std::move(commands));
+
+	auto action = [self = this->shared_from_this(), set, config, callback]()
+	{
+		self->mcontext->SelectAndOperate(std::move(*set), callback, config);
+	};
+
+	this->executor->strand.post(action);
+}
+
+void MasterStack::DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config)
+{
+	/// this is to work around the fact that c++11 doesn't have generic move capture
+	auto set = std::make_shared<opendnp3::CommandSet>(std::move(commands));
+
+	auto action = [self = this->shared_from_this(), set, config, callback]()
+	{
+		self->mcontext->DirectOperate(std::move(*set), callback, config);
+	};
+
+	this->executor->strand.post(action);
 }
 
 }

@@ -35,43 +35,21 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-std::shared_ptr<MasterTLSServer> MasterTLSServer::Create(
-    IResourceManager& shutdown,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::IOService> ioservice,
-    LogRoot root,
-    IPEndpoint endpoint,
-    const TLSConfig& config,
-    std::error_code& ec)
-{
-	auto ret = std::shared_ptr<MasterTLSServer>(new MasterTLSServer(shutdown, callbacks, ioservice, std::move(root), endpoint, config, ec));
-	if (!ec)
-	{
-		ret->StartAccept(ec);
-	}
-	return ret;
-}
-
 MasterTLSServer::MasterTLSServer(
-    IResourceManager& shutdown,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::shared_ptr<asiopal::IOService> ioservice,
-    LogRoot root,
-    IPEndpoint endpoint,
-    const TLSConfig& config,
-    std::error_code& ec) :
-	TLSServer(ioservice, std::move(root), endpoint, config, ec),
-	manager(&shutdown),
-	callbacks(callbacks)
+    const openpal::Logger& logger,
+    const std::shared_ptr<asiopal::Executor>& executor,
+    const asiopal::IPEndpoint& endpoint,
+    const asiopal::TLSConfig& config,
+    const std::shared_ptr<IListenCallbacks>& callbacks,
+    const std::shared_ptr<asiopal::ResourceManager>& manager,
+    std::error_code& ec
+) :
+	TLSServer(logger, executor, endpoint, config, ec),
+	callbacks(callbacks),
+	manager(manager)
 {
 
 }
-
-void MasterTLSServer::OnShutdown()
-{
-	manager->Unregister(shared_from_this());
-}
-
 
 bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote)
 {
@@ -80,12 +58,12 @@ bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::
 
 	if (this->callbacks->AcceptConnection(sessionid, remote.address().to_string()))
 	{
-		FORMAT_LOG_BLOCK(root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 		return true;
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK(root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
 		return false;
 	}
 }
@@ -96,7 +74,7 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 
 	if (!preverified)
 	{
-		FORMAT_LOG_BLOCK(this->root.logger, flags::WARN, "Error verifying certificate at depth: %d", depth);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Error verifying certificate at depth: %d", depth);
 		return preverified;
 	}
 
@@ -105,7 +83,7 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	char subjectName[512];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 512);
 
-	FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Depth: %d - Verified certificate: %s", depth, subjectName);
+	FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Depth: %d - Verified certificate: %s", depth, subjectName);
 
 	return this->callbacks->AcceptCertificate(
 	           sessionid,
@@ -117,16 +95,30 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	       );
 }
 
-void MasterTLSServer::AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
+void MasterTLSServer::AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
-	LinkSession::Create(
-	    root.Clone(SessionIdToString(sessionid).c_str()),
-	    sessionid,
-	    *manager,
-	    callbacks,
-	    StrandExecutor::Create(ioservice),
-	    TLSStreamChannel::Create(stream)
-	);
+	auto channel = TLSStreamChannel::Create(executor->Fork(), stream); 	// run the link session in a new strand
+
+	auto create = [&]() -> std::shared_ptr<LinkSession>
+	{
+		return LinkSession::Create(
+		    this->logger.Detach(SessionIdToString(sessionid)),
+		    sessionid,
+		    this->manager,
+		    callbacks,
+		    channel
+		);
+	};
+
+	if (!this->manager->Bind<LinkSession>(create))
+	{
+		channel->Shutdown();
+	}
+}
+
+void MasterTLSServer::OnShutdown()
+{
+	this->manager->Detach(this->shared_from_this());
 }
 
 std::string MasterTLSServer::SessionIdToString(uint64_t sessionid)

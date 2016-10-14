@@ -16,18 +16,23 @@ namespace Automatak
 			{
 			public:
 
-				MasterAdapter(asiodnp3::IMaster* master);
+				MasterAdapter(const std::shared_ptr<asiodnp3::IMaster>& master);
 
+				~MasterAdapter() { this ->!MasterAdapter(); }
+				!MasterAdapter();
+			
 				virtual void Enable();
 
 				virtual void Disable();
 
 				virtual void Shutdown();
+
+				virtual Interface::IStackStatistics^ GetStackStatistics();
 				
 
 			private:				
 				
-				asiodnp3::IMaster* master;				
+				std::shared_ptr<asiodnp3::IMaster>* master;				
 			};
 
 		}

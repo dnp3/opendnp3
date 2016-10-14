@@ -33,20 +33,29 @@ using namespace opendnp3;
 namespace asiopal
 {
 
-TCPServer::TCPServer(std::shared_ptr<IOService> ioservice, openpal::LogRoot root, IPEndpoint endpoint, std::error_code& ec) :
-	ioservice(ioservice),
-	root(std::move(root)),
+TCPServer::TCPServer(
+    const openpal::Logger& logger,
+    const std::shared_ptr<Executor>& executor,
+    const IPEndpoint& endpoint,
+    std::error_code& ec) :
+	logger(logger),
+	executor(executor),
 	endpoint(ip::tcp::v4(), endpoint.port),
-	acceptor(ioservice->service),
-	socket(ioservice->service),
-	session_id(0)
+	acceptor(executor->strand.get_io_service()),
+	socket(executor->strand.get_io_service())
 {
 	this->Configure(endpoint.address, ec);
 }
 
-void TCPServer::BeginShutdown()
+void TCPServer::Shutdown()
 {
-	acceptor.close();
+	std::error_code ec;
+	this->acceptor.close(ec);
+
+	if (ec)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
+	}
 }
 
 void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
@@ -86,19 +95,18 @@ void TCPServer::Configure(const std::string& adapter, std::error_code& ec)
 	{
 		std::ostringstream oss;
 		oss << this->endpoint;
-		FORMAT_LOG_BLOCK(this->root.logger, flags::INFO, "Listening on: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Listening on: %s", oss.str().c_str());
 	}
 }
 
 void TCPServer::StartAccept()
 {
 	// this ensures that the TCPListener is never deleted during an active callback
-	auto self(shared_from_this());
-	auto callback = [self](std::error_code ec)
+	auto callback = [self = shared_from_this()](std::error_code ec)
 	{
 		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(self->root.logger, flags::INFO, ec.message().c_str());
+			SIMPLE_LOG_BLOCK(self->logger, flags::INFO, ec.message().c_str());
 			self->OnShutdown();
 		}
 		else
@@ -106,14 +114,17 @@ void TCPServer::StartAccept()
 			const auto ID = self->session_id;
 			++self->session_id;
 
+
+			FORMAT_LOG_BLOCK(self->logger, flags::INFO, "Accepted connection from: %s", self->remote_endpoint.address().to_string().c_str());
+
 			// method responsible for closing
-			self->AcceptConnection(ID, std::move(self->socket));
+			self->AcceptConnection(ID, self->executor, std::move(self->socket));
 			self->StartAccept();
 		}
 	};
 
 
-	this->acceptor.async_accept(socket, callback);
+	this->acceptor.async_accept(socket, remote_endpoint, this->executor->strand.wrap(callback));
 }
 
 }

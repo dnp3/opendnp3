@@ -20,39 +20,36 @@
  */
 #include "opendnp3/master/MasterScan.h"
 
-#include <openpal/executor/IExecutor.h>
-
+#include "openpal/executor/IExecutor.h"
+#include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/IMasterTask.h"
 
 namespace opendnp3
 {
 
-MasterScan::MasterScan() : pExecutor(nullptr), pTask(nullptr)
-{}
-
-MasterScan::MasterScan(openpal::IExecutor& executor, IMasterTask* pTask_, const std::function<void()>& demandCallback_) :
-	pExecutor(&executor),
-	pTask(pTask_),
-	demandCallback(demandCallback_)
+MasterScan::MasterScan(const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<MContext>& context) :
+	executor(executor),
+	task(task),
+	context(context)
 {
 
 }
 
 bool MasterScan::IsDefined() const
 {
-	return pExecutor && pTask;
+	return executor && task;
 }
 
 bool MasterScan::Demand()
 {
 	if (IsDefined())
 	{
-		auto action = [this]()
+		auto action = [task = task, context = context]()
 		{
-			pTask->Demand();
+			task->Demand();
+			context->CheckForTask();
 		};
-		pExecutor->Post(action);
-		demandCallback();
+		executor->Post(action);
 		return true;
 	}
 	else

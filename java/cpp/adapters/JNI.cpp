@@ -39,8 +39,7 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved)
 JNIEnv* JNI::GetEnv()
 {
 	JNIEnv* env = nullptr;
-	jint ret = vm->GetEnv((void**)&env, OPENDNP3_JNI_VERSION);
-	assert(ret == 0);
+	vm->GetEnv((void**)&env, OPENDNP3_JNI_VERSION);
 	assert(env);
 	return env;
 }

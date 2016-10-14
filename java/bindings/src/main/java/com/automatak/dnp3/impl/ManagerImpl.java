@@ -30,14 +30,19 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
-    public void finalize()
+    public synchronized void finalize()
     {
         this.shutdown();
     }
 
     @Override
-    public Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port, ChannelListener listener) throws DNP3Exception
+    public synchronized Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port, ChannelListener listener) throws DNP3Exception
     {
+        if(this.pointer == 0)
+        {
+            throw new DNP3Exception("Manager has been shutdown");
+        }
+
         long ptr = get_native_channel_tcp_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), address, adapter, port, listener);
 
         if(ptr == 0) {
@@ -48,8 +53,13 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
-    public Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port, ChannelListener listener) throws DNP3Exception
+    public synchronized Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port, ChannelListener listener) throws DNP3Exception
     {
+        if(this.pointer == 0)
+        {
+            throw new DNP3Exception("Manager has been shutdown");
+        }
+
         long ptr = get_native_channel_tcp_server(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), endpoint, port, listener);
 
         if(ptr == 0) {
@@ -60,8 +70,13 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
-    public Channel addTLSClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port, TLSConfig config, ChannelListener listener) throws DNP3Exception
+    public synchronized Channel addTLSClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port, TLSConfig config, ChannelListener listener) throws DNP3Exception
     {
+        if(this.pointer == 0)
+        {
+            throw new DNP3Exception("Manager has been shutdown");
+        }
+
         long ptr = get_native_channel_tls_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), address, adapter, port, config, listener);
 
         if(ptr == 0) {
@@ -72,8 +87,13 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
-    public Channel addTLSServer(String id, int levels, ChannelRetry retry, String endpoint, int port, TLSConfig config, ChannelListener listener) throws DNP3Exception
+    public synchronized Channel addTLSServer(String id, int levels, ChannelRetry retry, String endpoint, int port, TLSConfig config, ChannelListener listener) throws DNP3Exception
     {
+        if(this.pointer == 0)
+        {
+            throw new DNP3Exception("Manager has been shutdown");
+        }
+
         long ptr = get_native_channel_tls_server(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), endpoint, port, config, listener);
 
         if(ptr == 0) {
@@ -84,8 +104,13 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
-    public Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings, ChannelListener listener) throws DNP3Exception
+    public synchronized Channel addSerial(String id, int levels, ChannelRetry retry, SerialSettings settings, ChannelListener listener) throws DNP3Exception
     {
+        if(this.pointer == 0)
+        {
+            throw new DNP3Exception("Manager has been shutdown");
+        }
+
         long ptr = get_native_channel_serial(
                 this.pointer,
                 id,

@@ -34,12 +34,10 @@ enum class ChannelState : uint8_t
   CLOSED = 0,
   /// trying to open
   OPENING = 1,
-  /// waiting to open
-  WAITING = 2,
   /// open
-  OPEN = 3,
+  OPEN = 2,
   /// stopped and will never do anything again
-  SHUTDOWN = 4
+  SHUTDOWN = 3
 };
 
 char const* ChannelStateToString(ChannelState arg);

@@ -71,6 +71,8 @@ public class DNP3ManagerIntegrationTest extends TestCase {
                 stacks.add(pair);
             }
 
+            final long start = System.currentTimeMillis();
+
             stacks.forEach(pair -> pair.waitForChannelsOpen(TIMEOUT));
 
             for(int i = 0; i < NUM_ITERATIONS; ++i) {
@@ -79,6 +81,11 @@ public class DNP3ManagerIntegrationTest extends TestCase {
                 stacks.forEach(pair -> pair.awaitSentValues(TIMEOUT));
             }
 
+            final long ELASPED_MS = System.currentTimeMillis() - start;
+            final long TOTAL_EVENTS = NUM_STACKS*NUM_ITERATIONS*EVENTS_PER_ITERATION;
+            final long RATE = (TOTAL_EVENTS * 1000)/ ELASPED_MS;
+
+            System.out.println(String.format("%d events in %d ms == %d events/sec", TOTAL_EVENTS, ELASPED_MS, RATE));
         });
 
     }

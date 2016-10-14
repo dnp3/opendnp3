@@ -25,7 +25,7 @@
 #include "TransportTx.h"
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/LayerInterfaces.h"
 #include "opendnp3/StackStatistics.h"
@@ -42,11 +42,11 @@ class TransportLayer : public IUpperLayer, public ILowerLayer
 
 public:
 
-	TransportLayer(openpal::Logger logger, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics_ = nullptr);
+	TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* statistics = nullptr);
 
 	/// ILowerLayer
 
-	virtual void BeginTransmit(const openpal::RSlice&) override final;
+	virtual bool BeginTransmit(const openpal::RSlice&) override final;
 
 	/// IUpperLayer
 
@@ -56,19 +56,19 @@ public:
 	virtual bool OnSendResult(bool isSuccess) override final;
 
 	void SetAppLayer(IUpperLayer& upperLayer);
+
 	void SetLinkLayer(ILinkLayer& linkLayer);
 
 private:
 
 	openpal::Logger logger;
-	IUpperLayer* pUpperLayer;
-	ILinkLayer* pLinkLayer;
+
+	IUpperLayer* upper = nullptr;
+	ILinkLayer* lower = nullptr;
 
 	// ---- state ----
-	bool isOnline;
-	bool isSending;
-
-	openpal::IExecutor* pExecutor;
+	bool isOnline = false;
+	bool isSending = false;
 
 	// ----- Transmitter and Receiver Classes ------
 	TransportRx receiver;

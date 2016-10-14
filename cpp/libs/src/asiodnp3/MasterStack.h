@@ -21,7 +21,11 @@
 #ifndef ASIODNP3_MASTERSTACK_H
 #define ASIODNP3_MASTERSTACK_H
 
-#include "MasterStackBase.h"
+#include "asiodnp3/IMaster.h"
+#include "asiodnp3/MasterStackConfig.h"
+#include "opendnp3/transport/TransportStack.h"
+
+#include "asiodnp3/StackBase.h"
 
 #include <opendnp3/master/MasterContext.h>
 
@@ -29,25 +33,111 @@ namespace asiodnp3
 {
 
 
-class MasterStack : public MasterStackBase<IMaster>
+class MasterStack : public IMaster, public opendnp3::ILinkSession, public opendnp3::ILinkTx, public std::enable_shared_from_this<MasterStack>, private StackBase
 {
 public:
 
 	MasterStack(
-	    std::unique_ptr<openpal::LogRoot> root,
-	    asiopal::ASIOExecutor& executor,
-	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-	    std::shared_ptr<opendnp3::IMasterApplication> application,
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::Executor>& executor,
+	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const std::shared_ptr<IOHandler>& iohandler,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const MasterStackConfig& config,
-	    IStackLifecycle& lifecycle,
 	    opendnp3::ITaskLock& taskLock
 	);
 
+	static std::shared_ptr<MasterStack> Create(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::Executor>& executor,
+	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const std::shared_ptr<IOHandler>& iohandler,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
+	    const MasterStackConfig& config,
+	    opendnp3::ITaskLock& taskLock
+	)
+	{
+		auto ret = std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, manager, config, taskLock);
+
+		ret->tstack.link->SetRouter(*ret);
+
+		return ret;
+	}
+
+	// --------- Implement IStack ---------
+
+	virtual bool Enable() override;
+
+	virtual bool Disable() override;
+
+	virtual void Shutdown() override;
+
+	virtual opendnp3::StackStatistics GetStackStatistics() override;
+
+	// --------- Implement ILinkSession ---------
+
+	virtual bool OnTransmitResult(bool success) override
+	{
+		return this->tstack.link->OnTransmitResult(success);
+	}
+
+	virtual bool OnLowerLayerUp() override
+	{
+		return this->tstack.link->OnLowerLayerUp();
+	}
+
+	virtual bool OnLowerLayerDown() override
+	{
+		return this->tstack.link->OnLowerLayerDown();
+	}
+
+	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
+	{
+		return this->tstack.link->OnFrame(header, userdata);
+	}
+
+	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& context)
+	{
+		this->iohandler->BeginTransmit(shared_from_this(), buffer);
+	}
+
+	// --------- Implement IMasterOperations ---------
+
+	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
+
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
+
+	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
+
+	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
+
+	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
+
+	virtual void Scan(const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
+
+	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config) override;
+
+	virtual void ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config) override;
+
+	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, const opendnp3::TaskConfig& config) override;
+
+	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, const opendnp3::TaskConfig& config) override;
+
+	virtual void Restart(opendnp3::RestartType op, const opendnp3::RestartOperationCallbackT& callback, opendnp3::TaskConfig config) override;
+
+	virtual void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
+
+	// ------- implement ICommandProcessor ---------
+
+	virtual void SelectAndOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
+
+	virtual void DirectOperate(opendnp3::CommandSet&& commands, const opendnp3::CommandCallbackT& callback, const opendnp3::TaskConfig& config) override;
+
 protected:
 
-	std::shared_ptr<opendnp3::ISOEHandler> SOEHandler;
-	std::shared_ptr<opendnp3::IMasterApplication> application;
-	opendnp3::MContext mcontext;
+	std::shared_ptr<opendnp3::MContext> mcontext;
 };
 
 }

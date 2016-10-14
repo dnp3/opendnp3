@@ -56,11 +56,6 @@ public:
 	virtual void SetRestartIIN() = 0;
 
 	/**
-	* @return stack statistics counters
-	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
-
-	/**
 	* Apply a measurement changeset to the outstation
 	*/
 	virtual void Apply(ChangeSet& changes) = 0;

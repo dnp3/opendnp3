@@ -21,7 +21,7 @@
 
 #include "asiodnp3/MasterSessionStack.h"
 
-#include "asiopal/StrandExecutor.h"
+#include "asiopal/Executor.h"
 #include "asiodnp3/Conversions.h"
 #include "asiodnp3/LinkSession.h"
 
@@ -30,12 +30,12 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
-    openpal::Logger logger,
-    std::shared_ptr<asiopal::StrandExecutor> executor,
-    std::shared_ptr<ISOEHandler> SOEHandler,
-    std::shared_ptr<IMasterApplication> application,
-    std::shared_ptr<LinkSession> session,
-    ILinkTx& linktx,
+    const openpal::Logger& logger,
+    const std::shared_ptr<asiopal::Executor>& executor,
+    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+    const std::shared_ptr<LinkSession>& session,
+    opendnp3::ILinkTx& linktx,
     const MasterStackConfig& config
 )
 {
@@ -43,183 +43,164 @@ std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
 }
 
 MasterSessionStack::MasterSessionStack(
-    openpal::Logger logger,
-    std::shared_ptr<asiopal::StrandExecutor> executor,
-    std::shared_ptr<ISOEHandler> SOEHandler,
-    std::shared_ptr<IMasterApplication> application,
-    std::shared_ptr<LinkSession> session,
-    ILinkTx& linktx,
+    const openpal::Logger& logger,
+    const std::shared_ptr<asiopal::Executor>& executor,
+    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
+    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+    const std::shared_ptr<LinkSession>& session,
+    opendnp3::ILinkTx& linktx,
     const MasterStackConfig& config
 ) :
-	m_executor(executor),
-	m_handler(SOEHandler),
-	m_application(application),
-	m_session(session),
-	m_statistics(),
-	m_stack(logger, *m_executor, *application, config.master.maxRxFragSize, &m_statistics, config.link),
-	m_context(*m_executor, logger, m_stack.transport, *SOEHandler, *application, config.master, NullTaskLock::Instance())
+	executor(executor),
+	session(session),
+	statistics(),
+	stack(logger, executor, application, config.master.maxRxFragSize, &statistics, config.link),
+	context(MContext::Create(logger, executor, stack.transport, SOEHandler, application, config.master, NullTaskLock::Instance()))
 {
-	m_stack.link.SetRouter(linktx);
-	m_stack.transport.SetAppLayer(m_context);
+	stack.link->SetRouter(linktx);
+	stack.transport->SetAppLayer(*context);
 }
 
 void MasterSessionStack::OnLowerLayerUp()
 {
-	m_stack.link.OnLowerLayerUp();
+	stack.link->OnLowerLayerUp();
 }
 
 void MasterSessionStack::OnLowerLayerDown()
 {
-	m_stack.link.OnLowerLayerDown();
+	stack.link->OnLowerLayerDown();
 
 	// now we can release the socket session
-	m_session.reset();
+	session.reset();
 }
 
 bool MasterSessionStack::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
-	return m_stack.link.OnFrame(header, userdata);
+	return stack.link->OnFrame(header, userdata);
 }
 
 void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)
 {
 	auto set = [this, filters]()
 	{
-		this->m_session->SetLogFilters(filters);
+		this->session->SetLogFilters(filters);
 	};
 
-	this->m_executor->strand.post(set);
+	this->executor->strand.post(set);
 }
 
 void MasterSessionStack::BeginShutdown()
 {
-	auto session = m_session;
-	auto shutdown = [session]()
+	auto shutdown = [session = session]()
 	{
-		session->BeginShutdown();
+		session->Shutdown();
 	};
 
-	m_executor->strand.post(shutdown);
+	executor->strand.post(shutdown);
 }
 
 StackStatistics MasterSessionStack::GetStackStatistics()
 {
-	auto self(shared_from_this());
-	auto get = [self ]()
+	auto get = [self = shared_from_this()]()
 	{
-		return self->m_statistics;
+		return self->statistics;
 	};
-	return m_executor->ReturnFrom<StackStatistics>(get);
+	return executor->ReturnFrom<StackStatistics>(get);
 }
 
 MasterScan MasterSessionStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
 {
-	auto self(shared_from_this());
 	auto builder = ConvertToLambda(headers);
-	auto get = [self, period, builder, config]() -> MasterScan { return self->m_context.AddScan(period, builder, config); };
-	return m_executor->ReturnFrom<MasterScan>(get);
+	auto get = [self = shared_from_this(), period, builder, config]() -> MasterScan { return self->context->AddScan(period, builder, config); };
+	return executor->ReturnFrom<MasterScan>(get);
 }
 
 MasterScan MasterSessionStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
 {
-	auto self(shared_from_this());
-	auto get = [self, gvId, period, config] { return self->m_context.AddAllObjectsScan(gvId, period, config); };
-	return m_executor->ReturnFrom<MasterScan>(get);
+	auto get = [self = shared_from_this(), gvId, period, config] { return self->context->AddAllObjectsScan(gvId, period, config); };
+	return executor->ReturnFrom<MasterScan>(get);
 }
 
 MasterScan MasterSessionStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
 {
-	auto self(shared_from_this());
-	auto get = [self, field, period, config] { return self->m_context.AddClassScan(field, period, config); };
-	return m_executor->ReturnFrom<MasterScan>(get);
+	auto get = [self = shared_from_this(), field, period, config] { return self->context->AddClassScan(field, period, config); };
+	return executor->ReturnFrom<MasterScan>(get);
 }
 
 MasterScan MasterSessionStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
 {
-	auto self(shared_from_this());
-	auto get = [self, gvId, start, stop, period, config] { return self->m_context.AddRangeScan(gvId, start, stop, period, config); };
-	return m_executor->ReturnFrom<MasterScan>(get);
+	auto get = [self = shared_from_this(), gvId, start, stop, period, config] { return self->context->AddRangeScan(gvId, start, stop, period, config); };
+	return executor->ReturnFrom<MasterScan>(get);
 }
 
 void MasterSessionStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)
 {
-	auto self(shared_from_this());
 	auto builder = ConvertToLambda(headers);
-	auto action = [self, builder, config]() -> void { self->m_context.Scan(builder, config); };
-	return m_executor->strand.post(action);
+	auto action = [self = shared_from_this(), builder, config]() -> void { self->context->Scan(builder, config); };
+	return executor->strand.post(action);
 }
 
 void MasterSessionStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config)
 {
-	auto self(shared_from_this());
-	auto action = [self, gvId, config]() -> void { self->m_context.ScanAllObjects(gvId, config); };
-	return m_executor->strand.post(action);
+	auto action = [self = shared_from_this(), gvId, config]() -> void { self->context->ScanAllObjects(gvId, config); };
+	return executor->strand.post(action);
 }
 
 void MasterSessionStack::ScanClasses(const ClassField& field, const TaskConfig& config)
 {
-	auto self(shared_from_this());
-	auto action = [self, field, config]() -> void { self->m_context.ScanClasses(field, config); };
-	return m_executor->strand.post(action);
+	auto action = [self = shared_from_this(), field, config]() -> void { self->context->ScanClasses(field, config); };
+	return executor->strand.post(action);
 }
 
 void MasterSessionStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config)
 {
-	auto self(shared_from_this());
-	auto action = [self, gvId, start, stop, config]() -> void { self->m_context.ScanRange(gvId, start, stop, config); };
-	return m_executor->strand.post(action);
+	auto action = [self = shared_from_this(), gvId, start, stop, config]() -> void { self->context->ScanRange(gvId, start, stop, config); };
+	return executor->strand.post(action);
 }
 
 void MasterSessionStack::Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config)
 {
-	auto self(shared_from_this());
-	auto action = [self, value, index, config]() -> void { self->m_context.Write(value, index, config); };
-	return m_executor->strand.post(action);
+	auto action = [self = shared_from_this(), value, index, config]() -> void { self->context->Write(value, index, config); };
+	return executor->strand.post(action);
 }
 
 void MasterSessionStack::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 {
-	auto self(shared_from_this());
-	auto action = [self, op, callback, config]() -> void { self->m_context.Restart(op, callback, config); };
-	return m_executor->strand.post(action);
+	auto action = [self = shared_from_this(), op, callback, config]() -> void { self->context->Restart(op, callback, config); };
+	return executor->strand.post(action);
 }
 
 void MasterSessionStack::PerformFunction(const std::string& name, FunctionCode func, const std::vector<Header>& headers, const TaskConfig& config)
 {
-	auto self(shared_from_this());
 	auto builder = ConvertToLambda(headers);
-	auto action = [self, name, func, builder, config]() -> void { self->m_context.PerformFunction(name, func, builder, config); };
-	return m_executor->strand.post(action);
+	auto action = [self = shared_from_this(), name, func, builder, config]() -> void { self->context->PerformFunction(name, func, builder, config); };
+	return executor->strand.post(action);
 }
 
 /// --- ICommandProcessor ---
 
 void MasterSessionStack::SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
-	auto self(shared_from_this());
-
 	// this is required b/c move capture not supported in C++11
 	auto set = std::make_shared<CommandSet>(std::move(commands));
 
-	auto action = [self, set, config, callback]() -> void
+	auto action = [self = shared_from_this(), set, config, callback]() -> void
 	{
-		self->m_context.SelectAndOperate(std::move(*set), callback, config);
+		self->context->SelectAndOperate(std::move(*set), callback, config);
 	};
-	m_executor->strand.post(action);
+	executor->strand.post(action);
 }
 
 void MasterSessionStack::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
-	auto self(shared_from_this());
-
 	// this is required b/c move capture not supported in C++11
 	auto set = std::make_shared<CommandSet>(std::move(commands));
 
-	auto action = [self, set, config, callback]() -> void
+	auto action = [self = shared_from_this(), set, config, callback]() -> void
 	{
-		self->m_context.DirectOperate(std::move(*set), callback, config);
+		self->context->DirectOperate(std::move(*set), callback, config);
 	};
-	m_executor->strand.post(action);
+	executor->strand.post(action);
 }
 }
 
