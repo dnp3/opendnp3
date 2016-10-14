@@ -18,52 +18,47 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_MASTERSCAN_H
-#define OPENDNP3_MASTERSCAN_H
+#include "asiodnp3/MasterScan.h"
 
-#include <memory>
+#include "openpal/executor/IExecutor.h"
+#include "opendnp3/master/MasterContext.h"
+#include "opendnp3/master/IMasterTask.h"
 
-namespace openpal
+using namespace openpal;
+using namespace opendnp3;
+
+namespace asiodnp3
 {
-  class IExecutor;
-}
 
-namespace opendnp3
+MasterScan::MasterScan(const std::shared_ptr<IExecutor>& executor, const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<ITaskCheck>& check) :
+	executor(executor),
+	task(task),
+	check(check)
 {
-
-class IMasterTask;
-
-struct ITaskCheck
-{
-	virtual ~ITaskCheck() {}
-
-	virtual void CheckForTask() = 0;
-};
-
-/**
-* Provides access to a permanently bound scan
-*/
-class MasterScan
-{
-public:
-
-	MasterScan() = default;
-
-	MasterScan(const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<ITaskCheck>& context);
-
-	/// Request that the scan be performed as soon as possible
-	bool Demand();
-
-	bool IsDefined() const;
-
-private:
-
-	const std::shared_ptr<openpal::IExecutor> executor;
-	const std::shared_ptr<IMasterTask> task;
-	const std::shared_ptr<ITaskCheck> check;
-
-};
 
 }
 
-#endif
+bool MasterScan::IsDefined() const
+{
+	return executor && task;
+}
+
+bool MasterScan::Demand()
+{
+	if (IsDefined())
+	{
+		auto action = [task = task, check = check]()
+		{
+			task->Demand();
+			check->CheckForTask();
+		};
+		executor->Post(action);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+}
