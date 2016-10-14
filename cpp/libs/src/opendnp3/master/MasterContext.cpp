@@ -310,18 +310,18 @@ void MContext::Transmit(const RSlice& data)
 
 void MContext::StartResponseTimer()
 {
-	auto timeout = [self = shared_from_this()]()
+	auto timeout = [this]()
 	{
-		self->OnResponseTimeout();
+		this->OnResponseTimeout();
 	};
 	this->responseTimer.Start(this->params.responseTimeout, timeout);
 }
 
 void MContext::PostCheckForTask()
 {
-	auto callback = [self = shared_from_this()]()
+	auto callback = [this]()
 	{
-		self->CheckForTask();
+		this->CheckForTask();
 	};
 	this->executor->Post(callback);
 }

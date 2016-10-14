@@ -30,29 +30,23 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-MasterScan::MasterScan(const std::shared_ptr<IExecutor>& executor, const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<ITaskCheck>& check) :
-	executor(executor),
+MasterScan::MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<ITaskActions>& actions) :	
 	task(task),
-	check(check)
+	actions(actions)
 {
 
 }
 
 bool MasterScan::IsDefined() const
 {
-	return executor && task;
+	return task && actions;
 }
 
 bool MasterScan::Demand()
 {
 	if (IsDefined())
 	{
-		auto action = [task = task, check = check]()
-		{
-			task->Demand();
-			check->CheckForTask();
-		};
-		executor->Post(action);
+		actions->Demand(task);
 		return true;
 	}
 	else

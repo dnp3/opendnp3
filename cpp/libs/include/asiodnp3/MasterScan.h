@@ -38,11 +38,11 @@ namespace asiodnp3
 
 
 
-struct ITaskCheck
+struct ITaskActions
 {
-	virtual ~ITaskCheck() {}
+	virtual ~ITaskActions() {}
 
-	virtual void CheckForTask() = 0;
+	virtual void Demand(const std::shared_ptr<opendnp3::IMasterTask>& task) = 0;
 };
 
 /**
@@ -54,7 +54,7 @@ public:
 
 	MasterScan() = default;
 
-	MasterScan(const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<ITaskCheck>& context);
+	MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<ITaskActions>& actions);
 
 	/// Request that the scan be performed as soon as possible
 	bool Demand();
@@ -62,10 +62,9 @@ public:
 	bool IsDefined() const;
 
 private:
-
-	const std::shared_ptr<openpal::IExecutor> executor;
+	
 	const std::shared_ptr<opendnp3::IMasterTask> task;
-	const std::shared_ptr<ITaskCheck> check;
+	const std::shared_ptr<ITaskActions> actions;
 
 };
 

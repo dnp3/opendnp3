@@ -40,7 +40,7 @@ class LinkSession;
 /**
 * Interface that represents an ephemeral master session
 */
-class MasterSessionStack final : public IMasterSession, public ITaskCheck, public std::enable_shared_from_this<MasterSessionStack>
+class MasterSessionStack final : public IMasterSession, public ITaskActions, public std::enable_shared_from_this<MasterSessionStack>
 {
 public:
 
@@ -62,10 +62,7 @@ public:
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
 
-	virtual void CheckForTask() override
-	{
-		this->context->CheckForTask();
-	}
+	virtual void Demand(const std::shared_ptr<opendnp3::IMasterTask>& task) override;
 
 	/// --- IGPRSMaster ---
 
@@ -107,7 +104,7 @@ private:
 	std::shared_ptr<LinkSession> session;
 	opendnp3::StackStatistics statistics;
 	opendnp3::TransportStack stack;
-	std::shared_ptr<opendnp3::MContext> context;
+	opendnp3::MContext context;
 };
 
 }
