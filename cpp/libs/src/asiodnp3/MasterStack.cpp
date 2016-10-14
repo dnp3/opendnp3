@@ -95,29 +95,32 @@ void MasterStack::SetLogFilters(const openpal::LogFilters& filters)
 MasterScan MasterStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
 {
 	auto builder = ConvertToLambda(headers);
-	auto add = [self = this->shared_from_this(), builder, period, config]()
+	auto self = shared_from_this();	
+	auto add = [self, builder, period, config]()
 	{
 		return self->mcontext.AddScan(period, builder, config);
 	};
-	return MasterScan(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), shared_from_this());
+	return MasterScan(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), self);
 }
 
 MasterScan MasterStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
 {
-	auto add = [self = this->shared_from_this(), gvId, period, config]()
+	auto self = shared_from_this();
+	auto add = [self, gvId, period, config]()
 	{
 		return self->mcontext.AddAllObjectsScan(gvId, period, config);
 	};
-	return MasterScan(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), shared_from_this());
+	return MasterScan(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), self);
 }
 
 MasterScan MasterStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
 {
-	auto add = [self = this->shared_from_this(), field, period, config]()
+	auto self = shared_from_this();
+	auto add = [self, field, period, config]()
 	{
 		return self->mcontext.AddClassScan(field, period, config);
 	};
-	return MasterScan(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), shared_from_this());
+	return MasterScan(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), self);
 }
 
 MasterScan MasterStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
