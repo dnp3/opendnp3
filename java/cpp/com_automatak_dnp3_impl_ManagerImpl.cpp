@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2013-2016 Automatak, LLC
  *
  * Licensed to Automatak, LLC (www.automatak.com) under one or more
@@ -16,7 +16,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 #include "com_automatak_dnp3_impl_ManagerImpl.h"
 
 #include <asiodnp3/DNP3Manager.h>
