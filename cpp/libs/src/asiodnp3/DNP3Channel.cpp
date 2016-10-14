@@ -53,12 +53,12 @@ DNP3Channel::~DNP3Channel()
 	this->ShutdownImpl();
 }
 
-// comes from the outside, so we need to synchronize
+// comes from the outside, so we need to post
 void DNP3Channel::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()]()
 	{
-		self->ShutdownImpl();
+		self->ShutdownImpl();		
 	};
 
 	this->executor->BlockUntilAndFlush(shutdown);
@@ -76,9 +76,15 @@ void DNP3Channel::ShutdownImpl()
 	this->resources->Shutdown();
 	this->resources.reset();
 
-	// let the manager know we've shutdown
-	this->manager->Detach(this->shared_from_this());
-	this->manager.reset();
+	// posting ensures that we run this after 
+	// and callbacks created by calls above
+	auto detach = [self = shared_from_this()]
+	{
+		self->manager->Detach(self);
+		self->manager.reset();
+	};
+
+	this->executor->strand.post(detach);	
 }
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()
