@@ -100,6 +100,12 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 	return this;
 }
 
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
+{
+	ocontext.BeginResponseTx(ocontext.sol.tx.GetLastResponse());
+	return this;
+}
+
 // --------------------- OutstationStateSolConfirmWait ----------------------
 
 OutstationStateSolicitedConfirmWait OutstationStateSolicitedConfirmWait::instance;
@@ -122,6 +128,14 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadR
 	ocontext.deferred.Set(header, objects);
 	ocontext.confirmTimer.Cancel();
 	return &OutstationSolicitedStateIdle::Inst();
+}
+
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnRepeatReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
+{
+	ocontext.BeginResponseTx(ocontext.sol.tx.GetLastResponse());
+	ocontext.confirmTimer.Cancel();
+	ocontext.StartSolicitedConfirmTimer();
+	return this;
 }
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OContext& ocontext, const APDUHeader& header)
