@@ -33,7 +33,7 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 		m_proxy->OnFirstFrame(sessionid, linkheader, adapter);
 	}
 
-	void ListenCallbacksAdapter::OnConnectionClose(uint64_t sessionid, std::shared_ptr<asiodnp3::IMasterSession> session)
+	void ListenCallbacksAdapter::OnConnectionClose(uint64_t sessionid, const std::shared_ptr<asiodnp3::IMasterSession>& session)
 	{	
 
 		m_proxy->OnConnectionClose(sessionid, session ? gcnew MasterSessionAdapter(session) : nullptr);
