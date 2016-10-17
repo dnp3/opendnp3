@@ -44,20 +44,49 @@ using namespace openpal;
 
 const int ITERATIONS = 100;
 
+struct Channels
+{
+	Channels(DNP3Manager& manager) :
+		client(manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr)),
+		server(manager.AddTCPServer("server", levels::ALL, ChannelRetry::Default(), "0.0.0.0", 20000, nullptr))		
+	{
+
+	}
+
+	std::shared_ptr<IChannel> client;
+	std::shared_ptr<IChannel> server;
+};
+
+struct Components : Channels
+{
+	Components(DNP3Manager& manager) : 
+		Channels(manager),
+		outstation(server->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseSizes::Empty()))),
+		master(client->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig()))
+	{
+	
+	}
+
+	void Enable()
+	{
+		outstation->Enable();
+		master->Enable();
+	}
+
+	
+	std::shared_ptr<IOutstation> outstation;
+	std::shared_ptr<IMaster> master;
+};
+
+
+
 TEST_CASE(SUITE("ConstructionDestruction"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
-
-		auto client = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr);
-		auto server = manager.AddTCPServer("server", levels::ALL, ChannelRetry::Default(), "0.0.0.0", 20000, nullptr);
-
-		auto outstation = server->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseSizes::Empty()));
-		auto master = client->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
-
-		outstation->Enable();
-		master->Enable();
+		Components components(manager);
+		components.Enable();
 	}
 }
 
@@ -66,18 +95,12 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
+		Components components(manager);
+		components.Enable();
 
-		auto client = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr);
-		auto server = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000, nullptr);
-
-		auto outstation = server->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseSizes::Empty()));
-		auto master = client->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
-
-		REQUIRE(outstation->Enable());
-		REQUIRE(master->Enable());
-
-		outstation->Shutdown();
-		master->Shutdown();
+		// manually shutdown the stacks prior automatic cleanup
+		components.outstation->Shutdown();
+		components.master->Shutdown();
 	}
 
 }
@@ -87,18 +110,12 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
+		Components components(manager);
+		components.Enable();
 
-		auto client = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "127.0.0.1", 20000, nullptr);
-		auto server = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000, nullptr);
-
-		auto outstation = server->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseSizes::Empty()));
-		auto master = client->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
-
-		master->Enable();
-		outstation->Enable();
-
-		client->Shutdown();
-		server->Shutdown();
+		// manually shutdown the channels prior automatic cleanup
+		components.client->Shutdown();
+		components.server->Shutdown();
 	}
 }
 
@@ -107,12 +124,10 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
+		Channels channels(manager);
 
-		auto client = manager.AddTCPClient("client", levels::NORMAL, ChannelRetry::Default(), "127.0.0.1", "127.0.0.1", 20000, nullptr);
-		auto server = manager.AddTCPServer("server", levels::NORMAL, ChannelRetry::Default(), "0.0.0.0", 20000, nullptr);
-
-		client->Shutdown();
-		server->Shutdown();
+		channels.client->Shutdown();
+		channels.server->Shutdown();
 	}
 }
 
