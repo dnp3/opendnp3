@@ -69,7 +69,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ou
 	const auto channel = (std::shared_ptr<IChannel>*) native;
 
 	auto config = ConfigReader::ConvertOutstationStackConfig(env, jconfig);
-	auto commandHandlerAdapter = std::make_shared<CommandHandlerAdapter>(application);
+	auto commandHandlerAdapter = std::make_shared<CommandHandlerAdapter>(commandHandler);
 	auto applicationAdapter = std::make_shared<OutstationApplicationAdapter>(application);
 
 	CString id(env, jid);
