@@ -141,9 +141,8 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 }
 
 void LinkSession::Start()
-{
-	auto self(shared_from_this());
-	auto timeout = [self]()
+{	
+	auto timeout = [self = shared_from_this()]()
 	{
 		SIMPLE_LOG_BLOCK(self->logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
 		self->channel->Shutdown();

@@ -56,7 +56,11 @@ public:
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
 	    const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 	{
-		return std::make_shared<LinkSession>(logger, sessionid, manager, callbacks, channel);
+		auto session = std::make_shared<LinkSession>(logger, sessionid, manager, callbacks, channel);
+
+		session->Start();
+		
+		return session;
 	}
 
 	LinkSession(
