@@ -21,22 +21,14 @@
 #ifndef ASIODNP3_MASTERSCAN_H
 #define ASIODNP3_MASTERSCAN_H
 
+#include "openpal/executor/IExecutor.h"
+#include "opendnp3/master/IMasterTask.h"
+#include "asiodnp3/IMasterScan.h"
+
 #include <memory>
-
-namespace openpal
-{
-  class IExecutor;
-}
-
-namespace opendnp3
-{
-  class IMasterTask;
-}
 
 namespace asiodnp3
 {
-
-
 
 struct ITaskActions
 {
@@ -48,7 +40,7 @@ struct ITaskActions
 /**
 * Provides access to a permanently bound scan
 */
-class MasterScan
+class MasterScan final : public IMasterScan
 {
 public:
 
@@ -56,10 +48,13 @@ public:
 
 	MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<ITaskActions>& actions);
 
-	/// Request that the scan be performed as soon as possible
-	bool Demand();
+	static std::shared_ptr<MasterScan> Create(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<ITaskActions>& actions)
+	{
+		return std::make_shared<MasterScan>(task, actions);
+	}
 
-	bool IsDefined() const;
+	/// Request that the scan be performed as soon as possible
+	virtual bool Demand() override;	
 
 private:
 	

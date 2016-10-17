@@ -116,9 +116,6 @@
     <ClCompile Include="src\LogAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MasterScanAdapter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\OutstationAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

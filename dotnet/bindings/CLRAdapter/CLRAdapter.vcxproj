@@ -191,7 +191,6 @@
     <ClCompile Include="src\MasterAdapter.cpp" />
     <ClCompile Include="src\MasterConversions.cpp" />
     <ClCompile Include="src\MasterOperationsAdapter.cpp" />
-    <ClCompile Include="src\MasterScanAdapter.cpp" />
     <ClCompile Include="src\MasterSessionAdapter.cpp" />
     <ClCompile Include="src\OutstationAdapter.cpp" />
     <ClCompile Include="src\OutstationApplicationAdapter.cpp" />

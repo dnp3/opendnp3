@@ -26,6 +26,7 @@
 
 #include "asiodnp3/IMasterSession.h"
 #include "asiodnp3/MasterStackConfig.h"
+#include "asiodnp3/MasterScan.h"
 
 namespace asiopal
 {
@@ -71,10 +72,10 @@ public:
 	/// --- ICommandOperations ---
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override;
-	virtual MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
-	virtual MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
-	virtual MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
-	virtual MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
+	virtual std::shared_ptr<IMasterScan> AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
+	virtual std::shared_ptr<IMasterScan> AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
+	virtual std::shared_ptr<IMasterScan> AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
+	virtual std::shared_ptr<IMasterScan> AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config) override;
 	virtual void Scan(const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config) override;
 	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, const opendnp3::TaskConfig& config) override;
 	virtual void ScanClasses(const opendnp3::ClassField& field, const opendnp3::TaskConfig& config) override;

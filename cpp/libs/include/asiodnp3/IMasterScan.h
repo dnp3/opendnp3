@@ -18,28 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "asiodnp3/MasterScan.h"
-
-#include "openpal/executor/IExecutor.h"
-#include "opendnp3/master/MasterContext.h"
-#include "opendnp3/master/IMasterTask.h"
-
-using namespace openpal;
-using namespace opendnp3;
+#ifndef ASIODNP3_IMASTERSCAN_H
+#define ASIODNP3_IMASTERSCAN_H
 
 namespace asiodnp3
 {
 
-MasterScan::MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<ITaskActions>& actions) :	
-	task(task),
-	actions(actions)
+/**
+* Interface for interacting w/ a permanently bound scan
+*/
+class IMasterScan
 {
+public:
+
+	virtual ~IMasterScan() {}
+	
+	/// Request that the scan be performed as soon as possible
+	virtual bool Demand() = 0;
+
+};
 
 }
-bool MasterScan::Demand()
-{	
-	actions->Demand(task);
-	return true;
-}
 
-}
+#endif
