@@ -37,7 +37,7 @@
 #include <asiopal/SerialTypes.h>
 #include <asiopal/IPEndpoint.h>
 #include <asiopal/TLSConfig.h>
-#include <asiodnp3/tls/X509Info.h>
+#include <asiodnp3/X509Info.h>
 
 using namespace System::Collections::Generic;
 using namespace Automatak::DNP3::Interface;

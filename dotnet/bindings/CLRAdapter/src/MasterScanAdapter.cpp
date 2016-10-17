@@ -12,8 +12,8 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			MasterScanAdapter::MasterScanAdapter(const opendnp3::MasterScan& scan) : 
-				scan(new opendnp3::MasterScan(scan))
+			MasterScanAdapter::MasterScanAdapter(const asiodnp3::MasterScan& scan) : 
+				scan(new asiodnp3::MasterScan(scan))
 			{
 				
 			}

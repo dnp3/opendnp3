@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/master/MasterScan.h>
+#include <asiodnp3/MasterScan.h>
 #include <vcclr.h>
 
 using namespace Automatak::DNP3::Interface;
@@ -22,7 +22,7 @@ namespace Automatak
 			{
 				public:
 
-				MasterScanAdapter(const opendnp3::MasterScan& scan);
+				MasterScanAdapter(const asiodnp3::MasterScan& scan);
 
 				~MasterScanAdapter();
 
@@ -30,7 +30,7 @@ namespace Automatak
 
 				private:
 
-				opendnp3::MasterScan* scan;								
+				asiodnp3::MasterScan* scan;
 			};
 
 		}

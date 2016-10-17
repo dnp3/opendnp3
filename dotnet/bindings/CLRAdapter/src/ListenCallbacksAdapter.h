@@ -24,7 +24,7 @@ namespace Automatak
 				virtual bool AcceptCertificate(uint64_t sessionid, const asiodnp3::X509Info& info) override;
 				virtual openpal::TimeDuration GetFirstFrameTimeout() override;
 				virtual void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, asiodnp3::ISessionAcceptor& acceptor) override;
-				virtual void OnConnectionClose(uint64_t sessionid, std::shared_ptr<asiodnp3::IMasterSession> session) override;
+				virtual void OnConnectionClose(uint64_t sessionid, const std::shared_ptr<asiodnp3::IMasterSession>& session) override;
 				
 
 			private:
