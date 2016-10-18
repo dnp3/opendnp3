@@ -42,7 +42,7 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
 	const uint16_t NUM_POINTS_PER_TYPE = 50;
 	const uint16_t EVENTS_PER_ITERATION = 50;
-	const int NUM_ITERATIONS = 1000;
+	const int NUM_ITERATIONS = 10000;
 
 	const uint32_t LEVELS = flags::ERR | flags::WARN;
 

@@ -66,23 +66,50 @@ void LinkSession::SetLogFilters(openpal::LogFilters filters)
 	this->logger.SetFilters(filters);
 }
 
-void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
+void LinkSession::OnReadComplete(const std::error_code& ec, size_t num)
 {
-	auto callback = [self = shared_from_this(), buffer, &session](const std::error_code & ec)
+	if (ec)
 	{
-		if (ec)
-		{
-			// we'll let the failed read close the session
-			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
-			session.OnTransmitResult(false);
-		}
-		else
-		{
-			session.OnTransmitResult(true);
-		}
-	};
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
 
-	this->channel->BeginWrite(buffer, callback);
+		// if we created a master stack, tell it to shutdown
+		if (this->stack)
+		{
+			this->stack->OnLowerLayerDown();
+		}
+
+		this->callbacks->OnConnectionClose(this->session_id, this->stack);
+
+		// run any shutdown actions
+		this->manager->Detach(shared_from_this());
+
+		// release our reference to the stack
+		this->stack.reset();
+	}
+	else
+	{
+		this->parser.OnRead(static_cast<uint32_t>(num), *this);
+		this->BeginReceive();
+	}
+}
+
+void LinkSession::OnWriteComplete(const std::error_code& ec, size_t num)
+{
+	if (ec)
+	{
+		// we'll let the failed read close the session
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
+		this->stack->OnTransmitComplete(false);
+	}
+	else
+	{
+		this->stack->OnTransmitComplete(true);
+	}
+}
+
+void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
+{	
+	this->channel->BeginWrite(buffer);
 }
 
 bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
@@ -144,6 +171,8 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 
 void LinkSession::Start()
 {	
+	this->channel->SetCallbacks(shared_from_this());
+
 	auto timeout = [self = shared_from_this()]()
 	{
 		SIMPLE_LOG_BLOCK(self->logger, flags::ERR, "Timed out before receving a frame. Closing socket.");
@@ -156,37 +185,9 @@ void LinkSession::Start()
 }
 
 void LinkSession::BeginReceive()
-{
-	auto self(shared_from_this());
-	auto callback = [self](const std::error_code & ec, std::size_t num)
-	{
-		if (ec)
-		{
-			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
-
-			// if we created a master stack, tell it to shutdown
-			if (self->stack)
-			{
-				self->stack->OnLowerLayerDown();
-			}
-
-			self->callbacks->OnConnectionClose(self->session_id, self->stack);
-
-			// run any shutdown actions
-			self->manager->Detach(self);
-
-			// release our reference to the stack
-			self->stack.reset();
-		}
-		else
-		{
-			self->parser.OnRead(static_cast<uint32_t>(num), *self);
-			self->BeginReceive();
-		}
-	};
-
+{	
 	auto dest = parser.WriteBuff();
-	channel->BeginRead(dest, callback);
+	channel->BeginRead(dest);
 }
 
 }

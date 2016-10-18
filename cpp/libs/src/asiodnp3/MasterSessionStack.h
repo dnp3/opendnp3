@@ -61,6 +61,8 @@ public:
 
 	bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata);
 
+	void OnTransmitComplete(bool success);
+
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
 
 	virtual void Demand(const std::shared_ptr<opendnp3::IMasterTask>& task) override;

@@ -34,6 +34,7 @@
 #include <dnp3mocks/NullSOEHandler.h>
 
 #include <thread>
+#include <iostream>
 
 using namespace opendnp3;
 using namespace asiodnp3;
@@ -83,10 +84,10 @@ struct Components : Channels
 TEST_CASE(SUITE("ConstructionDestruction"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
-	{
+	{		
 		DNP3Manager manager(std::thread::hardware_concurrency());
 		Components components(manager);
-		components.Enable();
+		components.Enable();				
 	}
 }
 

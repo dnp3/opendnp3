@@ -47,15 +47,54 @@ void IOHandler::Shutdown()
 	{
 		this->isShutdown = true;
 
+		this->Reset();
+
 		this->ShutdownImpl();
 
-		this->UpdateListener(ChannelState::SHUTDOWN);
-
-		if (channel)
-		{
-			this->channel->Shutdown();
-		}
+		this->UpdateListener(ChannelState::SHUTDOWN);		
 	}
+}
+
+void IOHandler::OnReadComplete(const std::error_code& ec, size_t num)
+{	
+	if (ec)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
+
+		this->Reset();
+
+		this->UpdateListener(ChannelState::OPENING);
+		this->OnChannelShutdown();
+	}
+	else
+	{
+		this->parser.OnRead(static_cast<uint32_t>(num), *this);
+		this->BeginRead();
+	}
+}
+
+void IOHandler::OnWriteComplete(const std::error_code& ec, size_t num)
+{
+
+		if (ec)
+		{
+			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
+			this->Reset();			
+
+			this->UpdateListener(ChannelState::OPENING);
+			this->OnChannelShutdown();
+		}
+		else
+		{	
+			if (!this->txQueue.empty())
+			{
+				this->txQueue.front().session->OnTransmitResult(true);
+				this->txQueue.pop_front();
+			}
+			
+			this->CheckForSend();
+		}
+
 }
 
 void IOHandler::BeginTransmit(const std::shared_ptr<opendnp3::ILinkSession>& session, const RSlice& data)
@@ -176,9 +215,11 @@ bool IOHandler::Remove(const std::shared_ptr<opendnp3::ILinkSession>& session)
 
 void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 {
-	this->Reset();
-
+	this->Reset();	
+		
 	this->channel = channel;
+
+	this->channel->SetCallbacks(shared_from_this());
 
 	this->UpdateListener(ChannelState::OPEN);
 
@@ -207,62 +248,15 @@ bool IOHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& u
 
 void IOHandler::BeginRead()
 {
-	// we don't need to capture shared_ptr here, b/c shutting down an
-	// IAsyncChannel guarantees that the callback isn't invoked
-	auto cb = [self = shared_from_this()](const std::error_code & ec, std::size_t num)
-	{
-		if (ec)
-		{
-			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
-
-			self->Reset();
-
-			self->UpdateListener(ChannelState::OPENING);
-			self->OnChannelShutdown();
-		}
-		else
-		{
-			self->parser.OnRead(static_cast<uint32_t>(num), *self);
-			self->BeginRead();
-		}
-	};
-
-	this->channel->BeginRead(this->parser.WriteBuff(), cb);
+	this->channel->BeginRead(this->parser.WriteBuff());
 }
 
 void IOHandler::CheckForSend()
 {
 	if (this->txQueue.empty() || !this->channel || !this->channel->CanWrite()) return;
 
-	++statistics.numLinkFrameTx;
-	const auto tx = this->txQueue.front();
-	this->txQueue.pop_front();
-
-	// we don't need to capture shared_ptr here, b/c shutting down an
-	// IAsyncChannel guarantees that the callback isn't invoked
-	auto cb = [self = this->shared_from_this(), session = tx.session](const std::error_code & ec)
-	{
-		if (ec)
-		{
-			SIMPLE_LOG_BLOCK(self->logger, flags::WARN, ec.message().c_str());
-			self->Reset();
-
-			auto cb = [self](const std::shared_ptr<asiopal::IAsyncChannel>& channel)
-			{
-				self->OnNewChannel(channel);
-			};
-
-			self->UpdateListener(ChannelState::OPENING);
-			self->OnChannelShutdown();
-		}
-		else
-		{
-			self->CheckForSend();
-			session->OnTransmitResult(true);
-		}
-	};
-
-	this->channel->BeginWrite(tx.txdata, cb);
+	++statistics.numLinkFrameTx;			
+	this->channel->BeginWrite(this->txQueue.front().txdata);
 }
 
 bool IOHandler::SendToSession(const opendnp3::Route& route, const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)

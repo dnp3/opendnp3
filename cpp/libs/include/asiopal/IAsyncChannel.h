@@ -30,6 +30,7 @@
 
 #include <functional>
 #include <memory>
+#include <iostream>
 
 namespace asiopal
 {
@@ -41,7 +42,10 @@ public:
 	IAsyncChannel(const std::shared_ptr<Executor>& executor) : executor(executor)
 	{}
 
-	virtual ~IAsyncChannel() {}
+	virtual ~IAsyncChannel() 
+	{
+		//std::cout << "channel destructor" << std::endl;
+	}
 
 	void SetCallbacks(const std::shared_ptr<IChannelCallbacks>& callbacks)
 	{
@@ -80,37 +84,37 @@ public:
 	}
 
 	inline bool Shutdown()
-	{
-		if (!callbacks) return false;
+	{					
+		if (this->is_shutting_down) return false;
+
+		this->is_shutting_down = true;
+
+		this->ShutdownImpl();		
+
+		// keep the channel alive until it's not reading or writing
+		auto action = [self = shared_from_this()](){ self->CheckForShutdown(self); };
 		
-		this->callbacks.reset();
-
-		this->ShutdownImpl();
-
-		// ensure that the channel hangs around long enough for any callbacks to complete
-		executor->strand.post([self = shared_from_this()](){});
+		this->executor->strand.post(action);		
 
 		return true;
 	}
 
 	inline bool CanRead() const
 	{
-		return callbacks && !reading;
+		return callbacks && !is_shutting_down && !reading;
 	}
 
 
 	inline bool CanWrite() const
 	{
-		return callbacks && !writing;
+		return callbacks && !is_shutting_down && !writing;
 	}
-
-protected:
 
 	inline void OnReadCallback(const std::error_code& ec, size_t num)
 	{
 		this->reading = false;
-		if (this->callbacks)
-		{
+		if (this->callbacks && !is_shutting_down)
+		{			
 			this->callbacks->OnReadComplete(ec, num);
 		}
 	}
@@ -119,16 +123,36 @@ protected:
 	inline void OnWriteCallback(const std::error_code& ec, size_t num)
 	{
 		this->writing = false;
-		if (this->callbacks)
+		if (this->callbacks && !is_shutting_down)
 		{
 			this->callbacks->OnWriteComplete(ec, num);
 		}
 	}
 
+protected:
+
 	const std::shared_ptr<Executor> executor;
 
 private:
 
+	void CheckForShutdown(std::shared_ptr<IAsyncChannel> self)
+	{
+		if (self->reading || self->writing)
+		{			
+			auto action = [self]()
+			{
+				self->CheckForShutdown(self);
+			};
+
+			self->executor->strand.post(action);			
+		}
+		else
+		{
+			self->callbacks.reset(); // drop the callbacks
+		}
+	}
+
+	bool is_shutting_down = false;
 	std::shared_ptr<IChannelCallbacks> callbacks;
 
 	bool reading = false;

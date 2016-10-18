@@ -43,7 +43,7 @@ namespace asiodnp3
 Manages I/O for a number of link contexts
 
 */
-class IOHandler : private opendnp3::IFrameSink, public std::enable_shared_from_this<IOHandler>
+class IOHandler : private opendnp3::IFrameSink, public asiopal::IChannelCallbacks, public std::enable_shared_from_this<IOHandler>
 {
 
 public:
@@ -52,6 +52,8 @@ public:
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<IChannelListener>& listener
 	);
+
+	virtual ~IOHandler() {}
 
 	const opendnp3::LinkChannelStatistics& Statistics() const
 	{
@@ -85,6 +87,14 @@ public:
 	bool IsRouteInUse(const opendnp3::Route& route) const;
 
 protected:
+
+	// ------ Implement IChannelCallbacks -----
+
+	virtual void OnReadComplete(const std::error_code& ec, size_t num) override final;
+
+	virtual void OnWriteComplete(const std::error_code& ec, size_t num) override final;
+
+	// ------ Super classes will implement these -----
 
 	// start getting a new channel
 	virtual void BeginChannelAccept() = 0;

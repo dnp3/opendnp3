@@ -41,6 +41,7 @@ namespace asiodnp3
 {
 class LinkSession final :
 	public opendnp3::ILinkTx,
+	public asiopal::IChannelCallbacks,
 	private opendnp3::IFrameSink,
 	public std::enable_shared_from_this<LinkSession>,
 	public asiopal::IResource,
@@ -79,6 +80,11 @@ public:
 	void SetLogFilters(openpal::LogFilters filters);
 
 private:
+
+	// IChannelCallbacks
+	virtual void OnReadComplete(const std::error_code& ec, size_t num) override;
+
+	virtual void OnWriteComplete(const std::error_code& ec, size_t num) override;
 
 	// ILinkTx
 	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session) override;
