@@ -29,14 +29,24 @@ TLSStreamChannel::TLSStreamChannel(const std::shared_ptr<Executor>& executor, co
 	stream(stream)
 {}
 
-void TLSStreamChannel::BeginReadImpl(openpal::WSlice dest, const io_callback_t& callback)
+void TLSStreamChannel::BeginReadImpl(openpal::WSlice dest)
 {
-	stream->async_read_some(asio::buffer(dest, dest.Size()), callback);
+	auto callback = [this](const std::error_code& ec, size_t num)
+	{
+		this->OnReadCallback(ec, num);
+	};
+
+	stream->async_read_some(asio::buffer(dest, dest.Size()), this->executor->strand.wrap(callback));
 }
 
-void TLSStreamChannel::BeginWriteImpl(const openpal::RSlice& data, const io_callback_t& callback)
+void TLSStreamChannel::BeginWriteImpl(const openpal::RSlice& data)
 {
-	asio::async_write(*stream, asio::buffer(data, data.Size()), callback);
+	auto callback = [this](const std::error_code& ec, size_t num)
+	{
+		this->OnWriteCallback(ec, num);
+	};
+
+	asio::async_write(*stream, asio::buffer(data, data.Size()), this->executor->strand.wrap(callback));
 }
 
 void TLSStreamChannel::ShutdownImpl()

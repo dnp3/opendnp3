@@ -18,42 +18,23 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
+#ifndef ASIOPAL_ICHANNELCALLBACKS_H
+#define ASIOPAL_ICHANNELCALLBACKS_H
 
-#include "asiopal/SocketChannel.h"
+#include <system_error>
 
 namespace asiopal
 {
 
-SocketChannel::SocketChannel(std::shared_ptr<Executor> executor, asio::ip::tcp::socket socket) : IAsyncChannel(executor), socket(std::move(socket))
+struct IChannelCallbacks
 {
+	virtual ~IChannelCallbacks() {};
+
+	virtual void OnReadComplete(const std::error_code& ec, size_t num) = 0;
+	virtual void OnWriteComplete(const std::error_code& ec, size_t num) = 0;
+};
+
 
 }
 
-void SocketChannel::BeginReadImpl(openpal::WSlice dest)
-{
-	auto callback = [this](const std::error_code& ec, size_t num)
-	{
-		this->OnReadCallback(ec, num);
-	};
-
-	socket.async_read_some(asio::buffer(dest, dest.Size()), this->executor->strand.wrap(callback));
-}
-
-void SocketChannel::BeginWriteImpl(const openpal::RSlice& buffer)
-{
-	auto callback = [this](const std::error_code& ec, size_t num)
-	{
-		this->OnWriteCallback(ec, num);
-	};
-
-	asio::async_write(socket, asio::buffer(buffer, buffer.Size()), this->executor->strand.wrap(callback));
-}
-
-void SocketChannel::ShutdownImpl()
-{
-	std::error_code ec;
-	socket.shutdown(asio::socket_base::shutdown_type::shutdown_both, ec);
-	socket.close(ec);
-}
-
-}
+#endif

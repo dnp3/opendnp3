@@ -31,8 +31,7 @@ SerialChannel::SerialChannel(std::shared_ptr<Executor> executor) : IAsyncChannel
 {}
 
 bool SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
-{
-	this->shuttingDown = false;
+{	
 	port.open(settings.deviceName, ec);
 	if (ec) return false;
 
@@ -47,14 +46,24 @@ bool SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
 	return true;
 }
 
-void SerialChannel::BeginReadImpl(openpal::WSlice buffer, const io_callback_t& callback)
+void SerialChannel::BeginReadImpl(openpal::WSlice buffer)
 {
-	port.async_read_some(asio::buffer(buffer, buffer.Size()), callback);
+	auto callback = [this](const std::error_code& ec, size_t num)
+	{
+		this->OnReadCallback(ec, num);
+	};
+
+	port.async_read_some(asio::buffer(buffer, buffer.Size()), this->executor->strand.wrap(callback));
 }
 
-void SerialChannel::BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback)
+void SerialChannel::BeginWriteImpl(const openpal::RSlice& buffer)
 {
-	async_write(port, asio::buffer(buffer, buffer.Size()), callback);
+	auto callback = [this](const std::error_code& ec, size_t num)
+	{
+		this->OnWriteCallback(ec, num);
+	};
+
+	async_write(port, asio::buffer(buffer, buffer.Size()), this->executor->strand.wrap(callback));
 }
 
 void SerialChannel::ShutdownImpl()

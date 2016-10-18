@@ -42,8 +42,8 @@ public:
 
 private:
 
-	virtual void BeginReadImpl(openpal::WSlice buffer, const io_callback_t& callback) override;
-	virtual void BeginWriteImpl(const openpal::RSlice& buffer, const io_callback_t& callback)  override;
+	virtual void BeginReadImpl(openpal::WSlice buffer) override;
+	virtual void BeginWriteImpl(const openpal::RSlice& buffer)  override;
 	virtual void ShutdownImpl()  override;
 
 	const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;
