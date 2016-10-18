@@ -29,7 +29,8 @@ option(DNP3_JAVA "Build the Java bindings" OFF)
 # other options off-by-default that you can enable
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
-option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
+option(COVERAGE "Builds the libraries with coverage info for gcov (gcc only)" OFF)
+option(PROFILE "Builds the libraries with profiling support (gcc only)" OFF)
 
 if(DNP3_ALL)
 	message("enabling all optional components")
