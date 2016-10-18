@@ -35,7 +35,7 @@ using namespace asiodnp3;
 
 #define SUITE(name) "PerformanceTestSuite - " name
 
-TEST_CASE(SUITE("TestEventIntegration"))
+TEST_CASE(SUITE("PointsPerSecond"))
 {
 	const uint16_t START_PORT = 20000;
 	const uint16_t NUM_STACK_PAIRS = 10;
@@ -50,9 +50,11 @@ TEST_CASE(SUITE("TestEventIntegration"))
 	const auto STACK_TIMEOUT = openpal::TimeDuration::Seconds(1);
 
 	// run with at least a concurrency of 2, but more if there are more cores
-	const auto concurreny = std::max<unsigned int>(std::thread::hardware_concurrency(), 2);
+	const auto concurrency = std::max<unsigned int>(std::thread::hardware_concurrency(), 2);
 
-	DNP3Manager manager(concurreny);
+	std::cout << "Concurrency: " << concurrency << std::endl;
+
+	DNP3Manager manager(concurrency);
 
 	std::vector<std::unique_ptr<PerformanceStackPair>> pairs;
 
@@ -82,7 +84,7 @@ TEST_CASE(SUITE("TestEventIntegration"))
 			pair->WaitForValues(TEST_TIMEOUT);
 		}
 
-		//std::cout << "iteration: " << i << std::endl;
+		std::cout << "iteration: " << i << std::endl;
 	}
 
 	const auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start);
