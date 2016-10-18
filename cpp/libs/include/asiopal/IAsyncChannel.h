@@ -108,13 +108,15 @@ public:
 	inline bool CanWrite() const
 	{
 		return callbacks && !is_shutting_down && !writing;
-	}
+	}	
+
+protected:
 
 	inline void OnReadCallback(const std::error_code& ec, size_t num)
 	{
 		this->reading = false;
 		if (this->callbacks && !is_shutting_down)
-		{			
+		{
 			this->callbacks->OnReadComplete(ec, num);
 		}
 	}
@@ -128,8 +130,6 @@ public:
 			this->callbacks->OnWriteComplete(ec, num);
 		}
 	}
-
-protected:
 
 	const std::shared_ptr<Executor> executor;
 
