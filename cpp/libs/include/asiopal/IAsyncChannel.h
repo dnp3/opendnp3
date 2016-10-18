@@ -39,7 +39,7 @@ class IAsyncChannel : public std::enable_shared_from_this<IAsyncChannel>, privat
 {
 public:
 
-	IAsyncChannel(std::shared_ptr<Executor> executor) : executor(executor)
+	IAsyncChannel(const std::shared_ptr<Executor>& executor) : executor(executor)
 	{}
 
 	virtual ~IAsyncChannel() {}
@@ -53,9 +53,13 @@ public:
 	inline bool Shutdown()
 	{
 		if (this->shuttingDown) return false;
+		
 		this->shuttingDown = true;
-
 		this->ShutdownImpl();
+
+		// ensure that the channel hangs around long enough for any callbacks to complete
+		executor->strand.post([self = shared_from_this()](){});
+
 		return true;
 	}
 
@@ -92,10 +96,10 @@ bool IAsyncChannel::BeginRead(const openpal::WSlice& buffer, const IOCallback& c
 
 	this->reading = true;
 
-	auto cbwrap = [self = shared_from_this(), buffer, callback](const std::error_code & ec, std::size_t num)
+	auto cbwrap = [this, buffer, callback](const std::error_code & ec, std::size_t num)
 	{
-		self->reading = false;
-		if (!self->shuttingDown)
+		this->reading = false;
+		if (!this->shuttingDown)
 		{
 			callback(ec, num);
 		}
@@ -113,10 +117,10 @@ bool IAsyncChannel::BeginWrite(const openpal::RSlice& buffer, const IOCallback& 
 
 	this->writing = true;
 
-	auto cbwrap = [self = shared_from_this(), buffer, callback](const std::error_code & ec, std::size_t num)
+	auto cbwrap = [this, buffer, callback](const std::error_code & ec, std::size_t num)
 	{
-		self->writing = false;
-		if (!self->shuttingDown)
+		this->writing = false;
+		if (!this->shuttingDown)
 		{
 			callback(ec);
 		}
