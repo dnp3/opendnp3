@@ -37,14 +37,16 @@ LinkSession::LinkSession(
     uint64_t sessionid,
     const std::shared_ptr<IResourceManager>& manager,
     const std::shared_ptr<IListenCallbacks>& callbacks,
+	const std::shared_ptr<asiopal::Executor>& executor,
     const std::shared_ptr<asiopal::IAsyncChannel>& channel) :
 	logger(logger),
 	session_id(sessionid),
 	manager(manager),
 	callbacks(callbacks),
+	executor(executor),
 	parser(logger, &stats),
-	first_frame_timer(*channel->executor),
-	channel(std::move(channel))
+	first_frame_timer(*executor),
+	channel(channel)
 {
 
 }
@@ -56,7 +58,7 @@ void LinkSession::Shutdown()
 		self->first_frame_timer.Cancel();
 		self->channel->Shutdown();
 	};
-	this->channel->executor->strand.post(shutdown);
+	this->executor->Post(shutdown);
 }
 
 void LinkSession::SetLogFilters(openpal::LogFilters filters)
@@ -129,7 +131,7 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 
 	this->stack = MasterSessionStack::Create(
 	                  this->logger,
-	                  this->channel->executor,
+	                  this->executor,
 	                  SOEHandler,
 	                  application,
 	                  shared_from_this(),
