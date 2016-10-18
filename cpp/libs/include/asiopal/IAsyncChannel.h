@@ -74,9 +74,11 @@ public:
 		return !(writing || shuttingDown);
 	}
 
-	std::shared_ptr<Executor> executor;
+	
 
 protected:
+
+	std::shared_ptr<Executor> executor;
 
 	bool reading = false;
 	bool writing = false;
