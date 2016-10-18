@@ -37,20 +37,20 @@ using namespace testlib;
 TEST_CASE(SUITE("Responds to repeat READ request with same octets as last repsond"))
 {
 	OutstationConfig config;	
-	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(1));
+	OutstationTestObject t(config, DatabaseSizes::AnalogOnly(1));
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 1E 00 06");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00");
 	t.OnSendResult(true);
 
 	// change the value in the outstation
-	t.Transaction([](IDatabase& db){
+	t.Transaction([](IUpdateHandler& db){
 		db.Update(Analog(1, 0x01), 0);
 	});
 
 	// repeat the read request
 	t.SendToOutstation("C0 01 1E 00 06");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00");
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00");
 }
 
