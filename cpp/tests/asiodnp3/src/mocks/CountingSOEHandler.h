@@ -25,6 +25,7 @@
 #include "opendnp3/master/ISOEHandler.h"
 
 #include <mutex>
+#include <condition_variable>
 
 namespace opendnp3
 {
