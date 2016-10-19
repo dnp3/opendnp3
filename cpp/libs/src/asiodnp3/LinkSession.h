@@ -55,10 +55,9 @@ public:
 	    uint64_t sessionid,
 	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
-	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 	{
-		auto session = std::make_shared<LinkSession>(logger, sessionid, manager, callbacks, executor, channel);
+		auto session = std::make_shared<LinkSession>(logger, sessionid, manager, callbacks, channel);
 
 		session->Start();
 
@@ -70,7 +69,6 @@ public:
 	    uint64_t sessionid,
 	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
-	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<asiopal::IAsyncChannel>& channel
 	);
 
@@ -109,15 +107,15 @@ private:
 	openpal::Logger logger;
 	const uint64_t session_id;
 
-	std::shared_ptr<asiopal::IResourceManager> manager;
-	std::shared_ptr<IListenCallbacks> callbacks;
-	std::shared_ptr<asiopal::Executor> executor;
+	const std::shared_ptr<asiopal::IResourceManager> manager;
+	const std::shared_ptr<IListenCallbacks> callbacks;
+	const std::shared_ptr<asiopal::IAsyncChannel> channel;
+
 	opendnp3::LinkChannelStatistics stats;
 	opendnp3::LinkLayerParser parser;
 	openpal::TimerRef first_frame_timer;
 	opendnp3::Route route;
 
-	std::shared_ptr<asiopal::IAsyncChannel> channel;
 	std::shared_ptr<MasterSessionStack> stack;	// initialized to null
 };
 }

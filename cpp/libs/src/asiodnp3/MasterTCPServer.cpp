@@ -75,7 +75,6 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr
 			    sessionid,
 			    this->manager,
 			    this->callbacks,
-			    this->executor,
 			    channel
 			);
 		};

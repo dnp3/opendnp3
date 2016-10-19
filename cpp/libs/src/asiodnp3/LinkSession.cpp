@@ -37,16 +37,14 @@ LinkSession::LinkSession(
     uint64_t sessionid,
     const std::shared_ptr<IResourceManager>& manager,
     const std::shared_ptr<IListenCallbacks>& callbacks,
-    const std::shared_ptr<asiopal::Executor>& executor,
     const std::shared_ptr<asiopal::IAsyncChannel>& channel) :
 	logger(logger),
 	session_id(sessionid),
 	manager(manager),
 	callbacks(callbacks),
-	executor(executor),
+	channel(channel),
 	parser(logger, &stats),
-	first_frame_timer(*executor),
-	channel(channel)
+	first_frame_timer(*channel->executor)
 {
 
 }
@@ -58,12 +56,13 @@ void LinkSession::Shutdown()
 		self->ShutdownImpl();
 	};
 
-	this->executor->BlockUntilAndFlush(shutdown);
+	this->channel->executor->BlockUntilAndFlush(shutdown);
 }
 
 void LinkSession::ShutdownImpl()
 {
 	if(this->is_shutdown) return;
+
 	this->is_shutdown = true;
 
 	this->callbacks->OnConnectionClose(this->session_id, this->stack);
@@ -82,7 +81,7 @@ void LinkSession::ShutdownImpl()
 		self->manager->Detach(self);
 	};
 
-	this->executor->strand.post(detach);
+	this->channel->executor->strand.post(detach);
 }
 
 void LinkSession::SetLogFilters(openpal::LogFilters filters)
@@ -144,7 +143,7 @@ bool LinkSession::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		else
 		{
 			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "No master created. Closing socket.");
-			this->channel->Shutdown();
+			this->ShutdownImpl();
 		}
 	}
 
@@ -168,7 +167,7 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 
 	this->stack = MasterSessionStack::Create(
 	                  this->logger,
-	                  this->executor,
+	                  this->channel->executor,
 	                  SOEHandler,
 	                  application,
 	                  shared_from_this(),

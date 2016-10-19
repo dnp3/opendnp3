@@ -109,6 +109,8 @@ public:
 		return callbacks && !is_shutting_down && !writing;
 	}
 
+	const std::shared_ptr<Executor> executor;
+
 protected:
 
 	inline void OnReadCallback(const std::error_code& ec, size_t num)
@@ -128,10 +130,7 @@ protected:
 		{
 			this->callbacks->OnWriteComplete(ec, num);
 		}
-	}
-
-	const std::shared_ptr<Executor> executor;
-
+	}	
 
 private:
 

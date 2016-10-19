@@ -42,7 +42,7 @@ using namespace openpal;
 
 #define SUITE(name) "MasterServerSmokeTestSuite - " name
 
-const int ITERATIONS = 100;
+const int ITERATIONS = 10;
 
 struct TestChannels
 {
