@@ -42,34 +42,27 @@ using namespace openpal;
 
 #define SUITE(name) "MasterServerSmokeTestSuite - " name
 
-const int ITERATIONS = 10;
-
-struct TestChannels
+struct TestComponents
 {
-	TestChannels(DNP3Manager& manager, std::error_code& ec) :
-		client(manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr)),
+	TestComponents(DNP3Manager& manager, int numOutstations, std::error_code& ec) :
 		listener(manager.CreateListener("listener", levels::ALL, IPEndpoint::Localhost(20000), std::make_shared<DefaultListenCallbacks>(), ec))
 	{
+		for(int i = 0; i < numOutstations; ++i)
+		{
+			auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr);
+			auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), GetConfig());
 
-	}
-
-
-	std::shared_ptr<IChannel> client;
-	std::shared_ptr<IListener> listener;
-};
-
-struct TestComponents : public TestChannels
-{
-	TestComponents(DNP3Manager& manager, std::error_code& ec) :
-		TestChannels(manager, ec),
-		outstation(client->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), GetConfig()))
-	{
-
+			this->channels.push_back(channel);
+			this->outstations.push_back(outstation);
+		}
 	}
 
 	void Enable()
 	{
-		outstation->Enable();
+		for(auto& outstation : outstations)
+		{
+			outstation->Enable();		
+		}	
 	}
 
 	static OutstationStackConfig GetConfig()
@@ -79,11 +72,13 @@ struct TestComponents : public TestChannels
 		return config;
 	}
 
-
-	std::shared_ptr<IOutstation> outstation;
+	std::shared_ptr<IListener> listener;
+	std::vector<std::shared_ptr<IChannel>> channels;
+	std::vector<std::shared_ptr<IOutstation>> outstations;
 };
 
-
+const int ITERATIONS = 5;
+const int NUM_OUTSTATIONS = 5;
 
 TEST_CASE(SUITE("ConstructionDestruction"))
 {
@@ -91,7 +86,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
 		std::error_code ec;
-		TestComponents components(manager, ec);
+		TestComponents components(manager, NUM_OUTSTATIONS, ec);
 		if (ec) throw std::logic_error(ec.message());
 		components.Enable();
 	}
