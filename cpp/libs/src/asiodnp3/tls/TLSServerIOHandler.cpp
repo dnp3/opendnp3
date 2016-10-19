@@ -39,12 +39,12 @@ void TLSServerIOHandler::Server::AcceptStream(uint64_t sessionid, const std::sha
 }
 
 TLSServerIOHandler::TLSServerIOHandler(
-	const openpal::Logger& logger,
-	const std::shared_ptr<IChannelListener>& listener,
-	const std::shared_ptr<asiopal::Executor>& executor,
-	const asiopal::IPEndpoint& endpoint,
-	const asiopal::TLSConfig& config,
-	std::error_code& ec
+    const openpal::Logger& logger,
+    const std::shared_ptr<IChannelListener>& listener,
+    const std::shared_ptr<asiopal::Executor>& executor,
+    const asiopal::IPEndpoint& endpoint,
+    const asiopal::TLSConfig& config,
+    std::error_code& ec
 ) :
 	IOHandler(logger, listener),
 	executor(executor),
@@ -68,19 +68,19 @@ void TLSServerIOHandler::BeginChannelAccept()
 	{
 		this->OnNewChannel(channel);
 	};
-	
+
 	std::error_code ec;
 	this->server = std::make_shared<Server>(this->logger, this->executor, this->endpoint, this->config, ec);
 
 	if (ec)
 	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());			
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());
 	}
 	else
 	{
 		this->server->StartAcceptingConnection(callback, ec);
 		FORMAT_LOG_BLOCK(this->logger, flags::ERR, "Unable to begin accepting connections: %s", ec.message().c_str());
-	}	
+	}
 }
 
 void TLSServerIOHandler::SuspendChannelAccept()

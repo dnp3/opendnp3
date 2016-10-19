@@ -77,7 +77,7 @@ void MasterStack::Demand(const std::shared_ptr<opendnp3::IMasterTask>& task)
 	auto action = [task, self = shared_from_this()]
 	{
 		task->Demand();
-	self->mcontext.CheckForTask();
+		self->mcontext.CheckForTask();
 	};
 	this->executor->strand.post(action);
 }
@@ -95,7 +95,7 @@ void MasterStack::SetLogFilters(const openpal::LogFilters& filters)
 std::shared_ptr<IMasterScan> MasterStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
 {
 	auto builder = ConvertToLambda(headers);
-	auto self = shared_from_this();	
+	auto self = shared_from_this();
 	auto add = [self, builder, period, config]()
 	{
 		return self->mcontext.AddScan(period, builder, config);

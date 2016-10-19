@@ -52,7 +52,7 @@ struct TestChannels
 	{
 
 	}
-	
+
 
 	std::shared_ptr<IChannel> client;
 	std::shared_ptr<IListener> listener;
@@ -64,12 +64,12 @@ struct TestComponents : public TestChannels
 		TestChannels(manager, ec),
 		outstation(client->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), GetConfig()))
 	{
-	
+
 	}
 
 	void Enable()
 	{
-		outstation->Enable();		
+		outstation->Enable();
 	}
 
 	static OutstationStackConfig GetConfig()
@@ -79,8 +79,8 @@ struct TestComponents : public TestChannels
 		return config;
 	}
 
-	
-	std::shared_ptr<IOutstation> outstation;	
+
+	std::shared_ptr<IOutstation> outstation;
 };
 
 
@@ -93,7 +93,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		std::error_code ec;
 		TestComponents components(manager, ec);
 		if (ec) throw std::logic_error(ec.message());
-		components.Enable();		
+		components.Enable();
 	}
 }
 

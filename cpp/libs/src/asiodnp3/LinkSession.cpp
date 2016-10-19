@@ -37,7 +37,7 @@ LinkSession::LinkSession(
     uint64_t sessionid,
     const std::shared_ptr<IResourceManager>& manager,
     const std::shared_ptr<IListenCallbacks>& callbacks,
-	const std::shared_ptr<asiopal::Executor>& executor,
+    const std::shared_ptr<asiopal::Executor>& executor,
     const std::shared_ptr<asiopal::IAsyncChannel>& channel) :
 	logger(logger),
 	session_id(sessionid),
@@ -55,28 +55,34 @@ void LinkSession::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()]()
 	{
-		self->ShutdownImpl();		
+		self->ShutdownImpl();
 	};
 
-	this->executor->Post(shutdown);
+	this->executor->BlockUntilAndFlush(shutdown);
 }
 
 void LinkSession::ShutdownImpl()
 {
+	if(this->is_shutdown) return;
+	this->is_shutdown = true;
+
 	this->callbacks->OnConnectionClose(this->session_id, this->stack);
 
 	if (this->stack)
 	{
 		this->stack->OnLowerLayerDown();
-		this->stack.reset();
 	}
 
 	this->first_frame_timer.Cancel();
 
 	this->channel->Shutdown();
-	this->channel.reset();
 
-	this->manager->Detach(shared_from_this());
+	auto detach = [self = shared_from_this()]()
+	{
+		self->manager->Detach(self);
+	};
+
+	this->executor->strand.post(detach);
 }
 
 void LinkSession::SetLogFilters(openpal::LogFilters filters)
@@ -101,7 +107,7 @@ void LinkSession::OnReadComplete(const std::error_code& ec, size_t num)
 void LinkSession::OnWriteComplete(const std::error_code& ec, size_t num)
 {
 	if (ec)
-	{		
+	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
 		this->ShutdownImpl();
 	}
@@ -112,7 +118,7 @@ void LinkSession::OnWriteComplete(const std::error_code& ec, size_t num)
 }
 
 void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
-{	
+{
 	this->channel->BeginWrite(buffer);
 }
 
@@ -174,7 +180,7 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 }
 
 void LinkSession::Start()
-{	
+{
 	this->channel->SetCallbacks(shared_from_this());
 
 	auto timeout = [self = shared_from_this()]()
@@ -189,7 +195,7 @@ void LinkSession::Start()
 }
 
 void LinkSession::BeginReceive()
-{	
+{
 	auto dest = parser.WriteBuff();
 	channel->BeginRead(dest);
 }

@@ -31,7 +31,7 @@ SocketChannel::SocketChannel(std::shared_ptr<Executor> executor, asio::ip::tcp::
 
 void SocketChannel::BeginReadImpl(openpal::WSlice dest)
 {
-	auto callback = [this](const std::error_code& ec, size_t num)
+	auto callback = [this](const std::error_code & ec, size_t num)
 	{
 		this->OnReadCallback(ec, num);
 	};
@@ -41,7 +41,7 @@ void SocketChannel::BeginReadImpl(openpal::WSlice dest)
 
 void SocketChannel::BeginWriteImpl(const openpal::RSlice& buffer)
 {
-	auto callback = [this](const std::error_code& ec, size_t num)
+	auto callback = [this](const std::error_code & ec, size_t num)
 	{
 		this->OnWriteCallback(ec, num);
 	};

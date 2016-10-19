@@ -51,12 +51,12 @@ void IOHandler::Shutdown()
 
 		this->ShutdownImpl();
 
-		this->UpdateListener(ChannelState::SHUTDOWN);		
+		this->UpdateListener(ChannelState::SHUTDOWN);
 	}
 }
 
 void IOHandler::OnReadComplete(const std::error_code& ec, size_t num)
-{	
+{
 	if (ec)
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
@@ -76,24 +76,24 @@ void IOHandler::OnReadComplete(const std::error_code& ec, size_t num)
 void IOHandler::OnWriteComplete(const std::error_code& ec, size_t num)
 {
 
-		if (ec)
-		{
-			SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
-			this->Reset();			
+	if (ec)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
+		this->Reset();
 
-			this->UpdateListener(ChannelState::OPENING);
-			this->OnChannelShutdown();
+		this->UpdateListener(ChannelState::OPENING);
+		this->OnChannelShutdown();
+	}
+	else
+	{
+		if (!this->txQueue.empty())
+		{
+			this->txQueue.front().session->OnTransmitResult(true);
+			this->txQueue.pop_front();
 		}
-		else
-		{	
-			if (!this->txQueue.empty())
-			{
-				this->txQueue.front().session->OnTransmitResult(true);
-				this->txQueue.pop_front();
-			}
-			
-			this->CheckForSend();
-		}
+
+		this->CheckForSend();
+	}
 
 }
 
@@ -215,8 +215,8 @@ bool IOHandler::Remove(const std::shared_ptr<opendnp3::ILinkSession>& session)
 
 void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 {
-	this->Reset();	
-		
+	this->Reset();
+
 	this->channel = channel;
 
 	this->channel->SetCallbacks(shared_from_this());
@@ -255,7 +255,7 @@ void IOHandler::CheckForSend()
 {
 	if (this->txQueue.empty() || !this->channel || !this->channel->CanWrite()) return;
 
-	++statistics.numLinkFrameTx;			
+	++statistics.numLinkFrameTx;
 	this->channel->BeginWrite(this->txQueue.front().txdata);
 }
 

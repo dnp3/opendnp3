@@ -31,7 +31,7 @@ TLSStreamChannel::TLSStreamChannel(const std::shared_ptr<Executor>& executor, co
 
 void TLSStreamChannel::BeginReadImpl(openpal::WSlice dest)
 {
-	auto callback = [this](const std::error_code& ec, size_t num)
+	auto callback = [this](const std::error_code & ec, size_t num)
 	{
 		this->OnReadCallback(ec, num);
 	};
@@ -41,7 +41,7 @@ void TLSStreamChannel::BeginReadImpl(openpal::WSlice dest)
 
 void TLSStreamChannel::BeginWriteImpl(const openpal::RSlice& data)
 {
-	auto callback = [this](const std::error_code& ec, size_t num)
+	auto callback = [this](const std::error_code & ec, size_t num)
 	{
 		this->OnWriteCallback(ec, num);
 	};

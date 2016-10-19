@@ -68,7 +68,7 @@ public:
 	    const std::shared_ptr<IMasterApplication>& application,
 	    const MasterParams& params,
 	    ITaskLock& taskLock
-	);	
+	);
 
 	openpal::Logger logger;
 	const std::shared_ptr<openpal::IExecutor> executor;

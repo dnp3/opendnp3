@@ -32,7 +32,7 @@ class IMasterScan
 public:
 
 	virtual ~IMasterScan() {}
-	
+
 	/// Request that the scan be performed as soon as possible
 	virtual bool Demand() = 0;
 

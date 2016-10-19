@@ -34,7 +34,7 @@ class CountingSOEHandler final : public opendnp3::ISOEHandler
 {
 	std::mutex mutex;
 	std::condition_variable cv;
-	size_t count = 0;	
+	size_t count = 0;
 
 public:
 
@@ -46,7 +46,7 @@ public:
 		if (!cv.wait_for(lock, timeout, equals_num))
 		{
 			throw std::logic_error("timeout waiting for count");
-		}		
+		}
 		count -= num;
 	}
 
@@ -56,7 +56,7 @@ public:
 	}
 
 	virtual void End() override
-	{		
+	{
 		mutex.unlock();
 		cv.notify_all();
 	}
@@ -90,7 +90,7 @@ public:
 		count += values.Count();
 	}
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override 
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override
 	{
 		count += values.Count();
 	}
@@ -100,17 +100,17 @@ public:
 		count += values.Count();
 	}
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override 
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override
 	{
 		count += values.Count();
 	}
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override 
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override
 	{
 		count += values.Count();
 	}
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override 
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override
 	{
 		count += values.Count();
 	}

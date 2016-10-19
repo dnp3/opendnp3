@@ -126,7 +126,10 @@ StackStatistics MasterSessionStack::GetStackStatistics()
 std::shared_ptr<IMasterScan> MasterSessionStack::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, const TaskConfig& config)
 {
 	auto builder = ConvertToLambda(headers);
-	auto get = [self = shared_from_this(), period, builder, config](){ return self->context.AddScan(period, builder, config); };
+	auto get = [self = shared_from_this(), period, builder, config]()
+	{
+		return self->context.AddScan(period, builder, config);
+	};
 	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), shared_from_this());
 }
 

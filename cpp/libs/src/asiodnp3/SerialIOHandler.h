@@ -71,7 +71,7 @@ private:
 
 	const std::shared_ptr<asiopal::Executor> executor;
 	const asiopal::ChannelRetry retry;
-	const asiopal::SerialSettings settings;	
+	const asiopal::SerialSettings settings;
 
 	// connection retry timer
 	openpal::TimerRef retrytimer;

@@ -47,7 +47,7 @@ class PerformanceStackPair final : openpal::Uncopyable
 	std::shared_ptr<QueuedChannelListener> serverListener;
 
 	const std::shared_ptr<IMaster> master;
-	const std::shared_ptr<IOutstation> outstation;	
+	const std::shared_ptr<IOutstation> outstation;
 
 	static OutstationStackConfig GetOutstationStackConfig(uint16_t numPointsPerType, uint16_t eventBufferSize, openpal::TimeDuration timeout);
 	static MasterStackConfig GetMasterStackConfig(openpal::TimeDuration timeout);
@@ -55,7 +55,7 @@ class PerformanceStackPair final : openpal::Uncopyable
 	static std::shared_ptr<IMaster> CreateMaster(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, std::shared_ptr<opendnp3::ISOEHandler>, std::shared_ptr<IChannelListener> listener);
 	static std::shared_ptr<IOutstation> CreateOutstation(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
 
-	static std::string GetId(const char* name, uint16_t port);	
+	static std::string GetId(const char* name, uint16_t port);
 	void AddValue(uint32_t i, ChangeSet& set);
 
 public:
@@ -68,7 +68,7 @@ public:
 
 	void WaitForValues(std::chrono::steady_clock::duration timeout);
 
-	
+
 
 };
 

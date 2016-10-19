@@ -55,7 +55,7 @@ protected:
 	{
 
 	}
-	
+
 	template <class T>
 	void PerformShutdown(const std::shared_ptr<T>& self);
 
@@ -75,14 +75,14 @@ void StackBase::PerformShutdown(const std::shared_ptr<T>& self)
 	{
 		self->iohandler->Remove(self);
 
-	    // since posting to a strand from the strand is ordered, posting
-	    // this forces the MasterStack to hang around long enough for
-	    // any previously submitted post operations on the strand to complete
-	    auto detach = [self]()
-	    {
-		    self->manager->Detach(self);
-	    };
-	    self->executor->strand.post(detach);
+		// since posting to a strand from the strand is ordered, posting
+		// this forces the MasterStack to hang around long enough for
+		// any previously submitted post operations on the strand to complete
+		auto detach = [self]()
+		{
+			self->manager->Detach(self);
+		};
+		self->executor->strand.post(detach);
 	};
 
 	this->executor->BlockUntilAndFlush(shutdown);

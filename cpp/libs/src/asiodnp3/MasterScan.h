@@ -54,10 +54,10 @@ public:
 	}
 
 	/// Request that the scan be performed as soon as possible
-	virtual bool Demand() override;	
+	virtual bool Demand() override;
 
 private:
-	
+
 	const std::shared_ptr<opendnp3::IMasterTask> task;
 	const std::shared_ptr<ITaskActions> actions;
 

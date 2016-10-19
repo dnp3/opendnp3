@@ -49,7 +49,7 @@ struct Channels
 {
 	Channels(DNP3Manager& manager) :
 		client(manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr)),
-		server(manager.AddTCPServer("server", levels::ALL, ChannelRetry::Default(), "0.0.0.0", 20000, nullptr))		
+		server(manager.AddTCPServer("server", levels::ALL, ChannelRetry::Default(), "0.0.0.0", 20000, nullptr))
 	{
 
 	}
@@ -60,12 +60,12 @@ struct Channels
 
 struct Components : Channels
 {
-	Components(DNP3Manager& manager) : 
+	Components(DNP3Manager& manager) :
 		Channels(manager),
 		outstation(server->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(DatabaseSizes::Empty()))),
 		master(client->AddMaster("master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig()))
 	{
-	
+
 	}
 
 	void Enable()
@@ -74,7 +74,7 @@ struct Components : Channels
 		master->Enable();
 	}
 
-	
+
 	std::shared_ptr<IOutstation> outstation;
 	std::shared_ptr<IMaster> master;
 };
@@ -84,10 +84,10 @@ struct Components : Channels
 TEST_CASE(SUITE("ConstructionDestruction"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
-	{		
+	{
 		DNP3Manager manager(std::thread::hardware_concurrency());
 		Components components(manager);
-		components.Enable();				
+		components.Enable();
 	}
 }
 

@@ -148,7 +148,7 @@ OutstationSolicitedStateBase* OContext::OnReceiveSolRequest(const APDUHeader& he
 			if (this->history.FullyEqualsLastRequest(header, objects))
 			{
 				if (header.function == FunctionCode::READ)
-				{					
+				{
 					return this->sol.pState->OnRepeatReadRequest(*this, header, objects);
 				}
 				else

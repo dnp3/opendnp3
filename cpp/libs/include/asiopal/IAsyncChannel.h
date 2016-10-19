@@ -63,7 +63,7 @@ public:
 			return false;
 		}
 	}
-	
+
 	inline bool BeginWrite(const openpal::RSlice& buffer)
 	{
 		assert(callbacks);
@@ -76,21 +76,24 @@ public:
 		else
 		{
 			return false;
-		}	
+		}
 	}
 
 	inline bool Shutdown()
-	{					
+	{
 		if (this->is_shutting_down) return false;
 
 		this->is_shutting_down = true;
 
-		this->ShutdownImpl();		
+		this->ShutdownImpl();
 
 		// keep the channel alive until it's not reading or writing
-		auto action = [self = shared_from_this()](){ self->CheckForShutdown(self); };
-		
-		this->executor->strand.post(action);		
+		auto action = [self = shared_from_this()]()
+		{
+			self->CheckForShutdown(self);
+		};
+
+		this->executor->strand.post(action);
 
 		return true;
 	}
@@ -104,7 +107,7 @@ public:
 	inline bool CanWrite() const
 	{
 		return callbacks && !is_shutting_down && !writing;
-	}	
+	}
 
 protected:
 
@@ -128,20 +131,20 @@ protected:
 	}
 
 	const std::shared_ptr<Executor> executor;
-	
+
 
 private:
 
 	void CheckForShutdown(std::shared_ptr<IAsyncChannel> self)
 	{
 		if (self->reading || self->writing)
-		{			
+		{
 			auto action = [self]()
 			{
 				self->CheckForShutdown(self);
 			};
 
-			self->executor->strand.post(action);			
+			self->executor->strand.post(action);
 		}
 		else
 		{
@@ -149,12 +152,12 @@ private:
 		}
 	}
 
-	
+
 	std::shared_ptr<IChannelCallbacks> callbacks;
 
 	bool is_shutting_down = false;
 	bool reading = false;
-	bool writing = false;	
+	bool writing = false;
 
 	virtual void BeginReadImpl(openpal::WSlice buffer) = 0;
 	virtual void BeginWriteImpl(const openpal::RSlice& buffer) = 0;

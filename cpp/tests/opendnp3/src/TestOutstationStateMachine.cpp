@@ -36,7 +36,7 @@ using namespace testlib;
 
 TEST_CASE(SUITE("Responds to repeat READ request with same octets as last repsond"))
 {
-	OutstationConfig config;	
+	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseSizes::AnalogOnly(1));
 	t.LowerLayerUp();
 
@@ -45,7 +45,8 @@ TEST_CASE(SUITE("Responds to repeat READ request with same octets as last repson
 	t.OnSendResult(true);
 
 	// change the value in the outstation
-	t.Transaction([](IUpdateHandler& db){
+	t.Transaction([](IUpdateHandler & db)
+	{
 		db.Update(Analog(1, 0x01), 0);
 	});
 

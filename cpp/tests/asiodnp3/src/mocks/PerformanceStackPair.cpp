@@ -75,28 +75,28 @@ void PerformanceStackPair::AddValue(uint32_t i, ChangeSet& set)
 	const uint16_t index = i % NUM_POINTS_PER_TYPE;
 
 	switch (i % 7)
-	{		
-		case(0):
-			set.Update(Binary(i % 2 == 0), index, EventMode::Force);
-			break;		
-		case(1):					
-			set.Update(DoubleBitBinary(i % 2 == 0 ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF), index, EventMode::Force);
-			break;
-		case(2):		
-			set.Update(Analog(i), index, EventMode::Force);
-			break;
-		case(3):					
-			set.Update(Counter(i), index, EventMode::Force);
-			break;		
-		case(4):
-			set.Update(FrozenCounter(i), index, EventMode::Force);
-			break;
-		case(5):
-			set.Update(BinaryOutputStatus(i % 2 == 0), index, EventMode::Force);
-			break;
-		default:
-			set.Update(AnalogOutputStatus(i), index, EventMode::Force);
-			break;
+	{
+	case(0):
+		set.Update(Binary(i % 2 == 0), index, EventMode::Force);
+		break;
+	case(1):
+		set.Update(DoubleBitBinary(i % 2 == 0 ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF), index, EventMode::Force);
+		break;
+	case(2):
+		set.Update(Analog(i), index, EventMode::Force);
+		break;
+	case(3):
+		set.Update(Counter(i), index, EventMode::Force);
+		break;
+	case(4):
+		set.Update(FrozenCounter(i), index, EventMode::Force);
+		break;
+	case(5):
+		set.Update(BinaryOutputStatus(i % 2 == 0), index, EventMode::Force);
+		break;
+	default:
+		set.Update(AnalogOutputStatus(i), index, EventMode::Force);
+		break;
 	}
 }
 

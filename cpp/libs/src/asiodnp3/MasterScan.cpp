@@ -30,14 +30,14 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-MasterScan::MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<ITaskActions>& actions) :	
+MasterScan::MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<ITaskActions>& actions) :
 	task(task),
 	actions(actions)
 {
 
 }
 bool MasterScan::Demand()
-{	
+{
 	actions->Demand(task);
 	return true;
 }

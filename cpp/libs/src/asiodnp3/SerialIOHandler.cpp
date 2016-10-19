@@ -75,13 +75,13 @@ void SerialIOHandler::TryOpen(const openpal::TimeDuration& timeout)
 		this->retrytimer.Start(timeout, callback);
 	}
 	else
-	{		
+	{
 		this->OnNewChannel(port);
 	}
 }
 
 void SerialIOHandler::ResetState()
-{	
+{
 	retrytimer.Cancel();
 }
 

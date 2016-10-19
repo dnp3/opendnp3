@@ -55,13 +55,13 @@ public:
 	    uint64_t sessionid,
 	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
-		const std::shared_ptr<asiopal::Executor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 	{
 		auto session = std::make_shared<LinkSession>(logger, sessionid, manager, callbacks, executor, channel);
 
 		session->Start();
-		
+
 		return session;
 	}
 
@@ -70,7 +70,7 @@ public:
 	    uint64_t sessionid,
 	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const std::shared_ptr<IListenCallbacks>& callbacks,
-		const std::shared_ptr<asiopal::Executor>& executor,
+	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<asiopal::IAsyncChannel>& channel
 	);
 
@@ -105,6 +105,7 @@ private:
 
 	void BeginReceive();
 
+	bool is_shutdown = false;
 	openpal::Logger logger;
 	const uint64_t session_id;
 

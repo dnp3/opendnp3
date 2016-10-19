@@ -58,7 +58,7 @@ void DNP3Channel::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()]()
 	{
-		self->ShutdownImpl();		
+		self->ShutdownImpl();
 	};
 
 	this->executor->BlockUntilAndFlush(shutdown);
@@ -76,7 +76,7 @@ void DNP3Channel::ShutdownImpl()
 	this->resources->Shutdown();
 	this->resources.reset();
 
-	// posting ensures that we run this after 
+	// posting ensures that we run this after
 	// and callbacks created by calls above
 	auto detach = [self = shared_from_this()]
 	{
@@ -84,7 +84,7 @@ void DNP3Channel::ShutdownImpl()
 		self->manager.reset();
 	};
 
-	this->executor->strand.post(detach);	
+	this->executor->strand.post(detach);
 }
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()

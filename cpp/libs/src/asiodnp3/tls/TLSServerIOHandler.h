@@ -45,7 +45,7 @@ class TLSServerIOHandler final : public IOHandler
 		    const openpal::Logger& logger,
 		    const std::shared_ptr<asiopal::Executor>& executor,
 		    const asiopal::IPEndpoint& endpoint,
-			const asiopal::TLSConfig& config,
+		    const asiopal::TLSConfig& config,
 		    std::error_code& ec
 		) :
 			TLSServer(logger, executor, endpoint, config, ec)
@@ -61,11 +61,17 @@ class TLSServerIOHandler final : public IOHandler
 
 		callback_t callback;
 
-		virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override { return true; }
-		virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override { return preverified; }		
+		virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override
+		{
+			return true;
+		}
+		virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override
+		{
+			return preverified;
+		}
 		virtual void OnShutdown() override {}
 
-		virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<asiopal::Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;	
+		virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<asiopal::Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;
 	};
 
 public:
@@ -75,7 +81,7 @@ public:
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
-		const asiopal::TLSConfig& config,
+	    const asiopal::TLSConfig& config,
 	    std::error_code& ec)
 	{
 		return std::make_shared<TLSServerIOHandler>(logger, listener, executor, endpoint, config, ec);
@@ -86,7 +92,7 @@ public:
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
-		const asiopal::TLSConfig& config,
+	    const asiopal::TLSConfig& config,
 	    std::error_code& ec
 	);
 

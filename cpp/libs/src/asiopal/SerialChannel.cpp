@@ -31,7 +31,7 @@ SerialChannel::SerialChannel(std::shared_ptr<Executor> executor) : IAsyncChannel
 {}
 
 bool SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
-{		
+{
 	port.open(settings.deviceName, ec);
 	if (ec) return false;
 
@@ -48,7 +48,7 @@ bool SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
 
 void SerialChannel::BeginReadImpl(openpal::WSlice buffer)
 {
-	auto callback = [this](const std::error_code& ec, size_t num)
+	auto callback = [this](const std::error_code & ec, size_t num)
 	{
 		this->OnReadCallback(ec, num);
 	};
@@ -58,7 +58,7 @@ void SerialChannel::BeginReadImpl(openpal::WSlice buffer)
 
 void SerialChannel::BeginWriteImpl(const openpal::RSlice& buffer)
 {
-	auto callback = [this](const std::error_code& ec, size_t num)
+	auto callback = [this](const std::error_code & ec, size_t num)
 	{
 		this->OnWriteCallback(ec, num);
 	};
