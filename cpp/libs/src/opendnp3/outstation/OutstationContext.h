@@ -122,7 +122,7 @@ public:
 
 	bool ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects);
 
-	bool StartSolicitedConfirmTimer();
+	void RestartSolicitedConfirmTimer();
 
 	bool StartUnsolicitedConfirmTimer();
 

@@ -133,8 +133,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadR
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnRepeatReadRequest(OContext& ocontext, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ocontext.BeginResponseTx(ocontext.sol.tx.GetLastResponse());
-	ocontext.confirmTimer.Cancel();
-	ocontext.StartSolicitedConfirmTimer();
+	ocontext.RestartSolicitedConfirmTimer();
 	return this;
 }
 

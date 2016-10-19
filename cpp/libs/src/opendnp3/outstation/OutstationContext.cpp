@@ -343,14 +343,15 @@ void OContext::CheckForUnsolicited()
 	}
 }
 
-bool OContext::StartSolicitedConfirmTimer()
+void OContext::RestartSolicitedConfirmTimer()
 {
 	auto timeout = [&]()
 	{
 		this->sol.pState = this->sol.pState->OnConfirmTimeout(*this);
 		this->CheckForTaskStart();
 	};
-	return this->confirmTimer.Start(this->params.unsolConfirmTimeout, timeout);
+	
+	this->confirmTimer.Restart(this->params.unsolConfirmTimeout, timeout);
 }
 
 bool OContext::StartUnsolicitedConfirmTimer()
@@ -393,7 +394,7 @@ OutstationSolicitedStateBase* OContext::RespondToReadRequest(const APDUHeader& h
 
 	if (result.second.CON)
 	{
-		this->StartSolicitedConfirmTimer();
+		this->RestartSolicitedConfirmTimer();
 		return &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	else
@@ -416,7 +417,7 @@ OutstationSolicitedStateBase* OContext::ContinueMultiFragResponse(const AppSeqNu
 
 	if (control.CON)
 	{
-		this->StartSolicitedConfirmTimer();
+		this->RestartSolicitedConfirmTimer();
 		return &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	else
