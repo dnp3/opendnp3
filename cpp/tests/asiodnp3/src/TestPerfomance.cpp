@@ -84,7 +84,7 @@ TEST_CASE(SUITE("PointsPerSecond"))
 			pair->WaitForValues(TEST_TIMEOUT);
 		}
 
-		std::cout << "iteration: " << i << std::endl;
+		//std::cout << "iteration: " << i << std::endl;
 	}
 
 	const auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start);
