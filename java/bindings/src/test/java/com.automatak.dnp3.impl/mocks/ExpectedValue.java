@@ -89,7 +89,7 @@ public class ExpectedValue {
     @Override
     public String toString()
     {
-        return String.format("%d - %s(%d)", index, this.type, this.value);
+        return String.format("[%d - %s(%d)]", index, this.type, this.value);
     }
 
 }
