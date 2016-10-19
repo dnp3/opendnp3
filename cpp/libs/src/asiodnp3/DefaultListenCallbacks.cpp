@@ -65,6 +65,10 @@ void DefaultListenCallbacks::OnConnectionClose(uint64_t sessionid, const std::sh
 	// shared_ptr can be used with == operator also
 }
 
+void DefaultListenCallbacks::OnCertificateError(uint64_t sessionid, const X509Info& info, int error)
+{
+}
+
 std::string DefaultListenCallbacks::SessionIdToString(uint64_t id)
 {
 	std::ostringstream oss;

@@ -39,6 +39,11 @@ namespace Automatak { namespace DNP3 { namespace Adapter {
 		m_proxy->OnConnectionClose(sessionid, session ? gcnew MasterSessionAdapter(session) : nullptr);
 	}
 
+	void ListenCallbacksAdapter::OnCertificateError(uint64_t sessionid, const asiodnp3::X509Info& info, int error)
+	{
+		m_proxy->OnCertificateError(sessionid, Conversions::Convert(info), error);
+	}
+
 }}}
 
 

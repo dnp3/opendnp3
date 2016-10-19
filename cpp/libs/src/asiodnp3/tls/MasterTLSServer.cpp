@@ -77,24 +77,26 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	char subjectName[512];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 512);
 
+	X509Info info(
+		depth,
+		RSlice(cert->sha1_hash, SHA_DIGEST_LENGTH), // the thumbprint
+		std::string(subjectName)
+	);
+
 	if (!preverified)
 	{
 		int err = X509_STORE_CTX_get_error(ctx.native_handle());
 		
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Error verifying certificate at depth: %d subject: %s error: %d:%s", depth, subjectName, err, X509_verify_cert_error_string(err));
+
+		this->callbacks->OnCertificateError(sessionid, info, err);
+
 		return preverified;
 	}
 
 	FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Verified certificate at depth: %d subject: %s", depth, subjectName);
 
-	return this->callbacks->AcceptCertificate(
-	           sessionid,
-	           X509Info(
-	               depth,
-	               RSlice(cert->sha1_hash, SHA_DIGEST_LENGTH), // the thumbprint
-	               std::string(subjectName)
-	           )
-	       );
+	return this->callbacks->AcceptCertificate(sessionid, info);
 }
 
 void MasterTLSServer::AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)

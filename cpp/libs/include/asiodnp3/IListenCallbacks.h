@@ -78,6 +78,15 @@ public:
 	* @param session Possibly NULL shared_ptr to the master session if it was created
 	*/
 	virtual void OnConnectionClose(uint64_t sessionid, const std::shared_ptr<IMasterSession>& session) = 0;
+
+	/**
+	* Called when a certificate fails verification
+	*
+	* @param sessionid Incrementing id used to uniquely identify the session
+	* @param info Information from the x509 certificate
+	* @param error Error code with reason for failed verification
+	*/
+	virtual void OnCertificateError(uint64_t sessionid, const X509Info& info, int error) = 0;
 };
 
 }

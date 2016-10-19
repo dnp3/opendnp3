@@ -49,6 +49,8 @@ public:
 
 	virtual void OnConnectionClose(uint64_t sessionid, const std::shared_ptr<IMasterSession>& session) override;
 
+	virtual void OnCertificateError(uint64_t sessionid, const X509Info& info, int error) override;
+
 private:
 
 	std::string SessionIdToString(uint64_t id);
