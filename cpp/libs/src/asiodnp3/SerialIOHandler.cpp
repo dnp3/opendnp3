@@ -35,7 +35,6 @@ SerialIOHandler::SerialIOHandler(
 	executor(executor),
 	retry(retry),
 	settings(settings),
-	port(std::make_shared<asiopal::SerialChannel>(executor)),
 	retrytimer(*executor)
 {}
 
@@ -61,8 +60,10 @@ void SerialIOHandler::OnChannelShutdown()
 
 void SerialIOHandler::TryOpen(const openpal::TimeDuration& timeout)
 {
+	auto port = std::make_shared<asiopal::SerialChannel>(executor);
+
 	std::error_code ec;
-	this->port->Open(settings, ec);
+	port->Open(settings, ec);
 
 	if (ec)
 	{
@@ -74,15 +75,13 @@ void SerialIOHandler::TryOpen(const openpal::TimeDuration& timeout)
 		this->retrytimer.Start(timeout, callback);
 	}
 	else
-	{
+	{		
 		this->OnNewChannel(port);
 	}
 }
 
 void SerialIOHandler::ResetState()
-{
-	this->port->Shutdown();
-
+{	
 	retrytimer.Cancel();
 }
 

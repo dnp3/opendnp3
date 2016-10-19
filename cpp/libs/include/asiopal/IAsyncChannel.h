@@ -128,6 +128,7 @@ protected:
 	}
 
 	const std::shared_ptr<Executor> executor;
+	
 
 private:
 
@@ -148,9 +149,10 @@ private:
 		}
 	}
 
-	bool is_shutting_down = false;
+	
 	std::shared_ptr<IChannelCallbacks> callbacks;
 
+	bool is_shutting_down = false;
 	bool reading = false;
 	bool writing = false;	
 
