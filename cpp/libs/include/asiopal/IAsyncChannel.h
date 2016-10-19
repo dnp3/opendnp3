@@ -30,7 +30,6 @@
 
 #include <functional>
 #include <memory>
-#include <iostream>
 
 namespace asiopal
 {
@@ -42,10 +41,7 @@ public:
 	IAsyncChannel(const std::shared_ptr<Executor>& executor) : executor(executor)
 	{}
 
-	virtual ~IAsyncChannel() 
-	{
-		//std::cout << "channel destructor" << std::endl;
-	}
+	virtual ~IAsyncChannel() {}
 
 	void SetCallbacks(const std::shared_ptr<IChannelCallbacks>& callbacks)
 	{
