@@ -22,6 +22,7 @@ import com.automatak.dnp3.DNP3Exception;
 import com.automatak.dnp3.DNP3Manager;
 import com.automatak.dnp3.impl.mocks.NullLogHandler;
 import com.automatak.dnp3.impl.mocks.StackPair;
+import com.automatak.dnp3.mock.PrintingLogHandler;
 import junit.framework.*;
 
 
@@ -32,7 +33,7 @@ import java.util.function.Consumer;
 
 public class DNP3ManagerIntegrationTest extends TestCase {
 
-    static final int NUM_STACKS = 100;
+    static final int NUM_STACKS = 10;
     static final int NUM_POINTS_PER_EVENT_TYPE = 50;
     static final int NUM_ITERATIONS = 10;
     static final int EVENTS_PER_ITERATION = 50;
@@ -67,7 +68,7 @@ public class DNP3ManagerIntegrationTest extends TestCase {
         withManager(NUM_THREADS_IN_POOL, manager ->  {
 
             for(int i = 0; i < NUM_STACKS; ++i) {
-                StackPair pair = new StackPair(manager, START_PORT+i, NUM_POINTS_PER_EVENT_TYPE, 2*EVENTS_PER_ITERATION);
+                StackPair pair = new StackPair(manager, START_PORT+i, NUM_POINTS_PER_EVENT_TYPE, EVENTS_PER_ITERATION);
                 stacks.add(pair);
             }
 

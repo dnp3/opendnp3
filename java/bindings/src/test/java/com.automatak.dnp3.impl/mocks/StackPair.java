@@ -29,8 +29,10 @@ import com.automatak.dnp3.mock.SuccessCommandHandler;
 
 import java.time.Duration;
 import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class StackPair {
 
@@ -101,7 +103,7 @@ public class StackPair {
                     String.format("outstation:%d", port),
                     SuccessCommandHandler.getInstance(),
                     DefaultOutstationApplication.getInstance(),
-                    getOutstationConfig(numPointsPerType, eventsPerIteration));
+                    getOutstationConfig(numPointsPerType, 2*eventsPerIteration));
         }
         catch(DNP3Exception ex)
         {
@@ -125,7 +127,9 @@ public class StackPair {
 
         for(int i = 0; i < this.EVENTS_PER_ITERATION; ++i)
         {
-           this.queueRandomType(set);
+
+           ExpectedValue value = this.addRandomValue(set);
+           this.sentValues.add(value);
         }
 
         this.outstation.apply(set);
@@ -135,10 +139,37 @@ public class StackPair {
 
     public void awaitSentValues(Duration duration)
     {
-        this.soeHandler.expect(sentValues, duration);
+        final int total = sentValues.size();
+
+        List<ExpectedValue> receivedValues = soeHandler.waitForValues(duration);
+
+        if(receivedValues == null)
+        {
+            throw new RuntimeException("No values received within timeout");
+        }
+
+        if(receivedValues.size() != sentValues.size())
+        {
+            throw new RuntimeException(String.format("# sent (%d) != # received (%d)", total, receivedValues.size()));
+        }
+
+        int numValidated = 0;
+
+        for(ExpectedValue received : receivedValues)
+        {
+            ExpectedValue expected = sentValues.poll();
+
+            if(!expected.isEqual(received))
+            {
+                throw new RuntimeException(String.format("received %s != expected %s w/ num validated %d", received, expected, numValidated));
+            }
+
+            ++numValidated;
+        }
+
     }
 
-    public void queueRandomType(OutstationChangeSet set)
+    public ExpectedValue addRandomValue(OutstationChangeSet set)
     {
         final int index = random.nextInt(NUM_POINTS_PER_TYPE);
 
@@ -151,44 +182,37 @@ public class StackPair {
             case BinaryType: {
                 BinaryInput v = new BinaryInput(random.nextBoolean(), (byte) 0x01, 0);
                 set.update(v, index, EventMode.Force);
-                sentValues.add(new ExpectedValue(v, index));
-                break;
+                return new ExpectedValue(v, index);
             }
             case DoubleBinaryType: {
                 DoubleBitBinaryInput v = new DoubleBitBinaryInput(getRandomElement(DoubleBit.values()), (byte) 0x01, 0);
                 set.update(v, index, EventMode.Force);
-                sentValues.add(new ExpectedValue(v, index));
-                break;
+                return new ExpectedValue(v, index);
             }
             case CounterType: {
                 Counter v = new Counter(random.nextInt(65535), (byte) 0x01, 0);
                 set.update(v, index, EventMode.Force);
-                sentValues.add(new ExpectedValue(v, index));
-                break;
+                return new ExpectedValue(v, index);
             }
             case FrozenCounterType: {
                 FrozenCounter v = new FrozenCounter(random.nextInt(65535), (byte) 0x01, 0);
                 set.update(v, index, EventMode.Force);
-                sentValues.add(new ExpectedValue(v, index));
-                break;
+                return new ExpectedValue(v, index);
             }
             case AnalogType: {
                 AnalogInput v = new AnalogInput(random.nextInt(65535), (byte) 0x01, 0);
                 set.update(v, index, EventMode.Force);
-                sentValues.add(new ExpectedValue(v, index));
-                break;
+                return new ExpectedValue(v, index);
             }
             case BOStatusType: {
                 BinaryOutputStatus v = new BinaryOutputStatus(random.nextBoolean(), (byte) 0x01, 0);
                 set.update(v, index, EventMode.Force);
-                sentValues.add(new ExpectedValue(v, index));
-                break;
+                return new ExpectedValue(v, index);
             }
             case AOStatusType: {
                 AnalogOutputStatus v = new AnalogOutputStatus(random.nextInt(65535), (byte) 0x01, 0);
                 set.update(v, index, EventMode.Force);
-                sentValues.add(new ExpectedValue(v, index));
-                break;
+                return new ExpectedValue(v, index);
             }
             default:
                 throw new RuntimeException("unknown random type: " + type);
@@ -205,7 +229,7 @@ public class StackPair {
     final BlockingChannelListener serverListener = new BlockingChannelListener();
     final QueuedSOEHandler soeHandler = new QueuedSOEHandler();
     final Queue<ExpectedValue> sentValues = new ArrayDeque<>();
-    final Random random = new Random();
+    final Random random = new Random(0);
 
     final Master master;
     final Outstation outstation;
