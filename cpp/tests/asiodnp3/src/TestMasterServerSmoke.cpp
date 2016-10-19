@@ -52,11 +52,7 @@ struct TestChannels
 	{
 
 	}
-
-	~TestChannels()
-	{
 	
-	}
 
 	std::shared_ptr<IChannel> client;
 	std::shared_ptr<IListener> listener;
@@ -67,11 +63,6 @@ struct TestComponents : public TestChannels
 	TestComponents(DNP3Manager& manager, std::error_code& ec) :
 		TestChannels(manager, ec),
 		outstation(client->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), GetConfig()))
-	{
-	
-	}
-
-	~TestComponents()
 	{
 	
 	}

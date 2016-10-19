@@ -55,10 +55,28 @@ void LinkSession::Shutdown()
 {
 	auto shutdown = [self = shared_from_this()]()
 	{
-		self->first_frame_timer.Cancel();
-		self->channel->Shutdown();
+		self->ShutdownImpl();		
 	};
+
 	this->executor->Post(shutdown);
+}
+
+void LinkSession::ShutdownImpl()
+{
+	this->callbacks->OnConnectionClose(this->session_id, this->stack);
+
+	if (this->stack)
+	{
+		this->stack->OnLowerLayerDown();
+		this->stack.reset();
+	}
+
+	this->first_frame_timer.Cancel();
+
+	this->channel->Shutdown();
+	this->channel.reset();
+
+	this->manager->Detach(shared_from_this());
 }
 
 void LinkSession::SetLogFilters(openpal::LogFilters filters)
@@ -71,20 +89,7 @@ void LinkSession::OnReadComplete(const std::error_code& ec, size_t num)
 	if (ec)
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
-
-		// if we created a master stack, tell it to shutdown
-		if (this->stack)
-		{
-			this->stack->OnLowerLayerDown();
-		}
-
-		this->callbacks->OnConnectionClose(this->session_id, this->stack);
-
-		// run any shutdown actions
-		this->manager->Detach(shared_from_this());
-
-		// release our reference to the stack
-		this->stack.reset();
+		this->ShutdownImpl();
 	}
 	else
 	{
@@ -96,10 +101,9 @@ void LinkSession::OnReadComplete(const std::error_code& ec, size_t num)
 void LinkSession::OnWriteComplete(const std::error_code& ec, size_t num)
 {
 	if (ec)
-	{
-		// we'll let the failed read close the session
+	{		
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
-		this->stack->OnTransmitComplete(false);
+		this->ShutdownImpl();
 	}
 	else
 	{

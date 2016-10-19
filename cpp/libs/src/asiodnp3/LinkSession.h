@@ -81,6 +81,8 @@ public:
 
 private:
 
+	void ShutdownImpl();
+
 	// IChannelCallbacks
 	virtual void OnReadComplete(const std::error_code& ec, size_t num) override;
 
