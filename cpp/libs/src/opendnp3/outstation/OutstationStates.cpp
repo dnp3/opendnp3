@@ -37,13 +37,13 @@ StateIdle StateIdle::instance;
 
 OutstationState& StateIdle::OnConfirm(OContext& ctx, const APDUHeader& header)
 {
-	FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "Unexpected confirm while IDLE with sequence: %u", header.control.SEQ);
+	FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "unexpected confirm while IDLE with sequence: %u", header.control.SEQ);
 	return StateIdle::Inst();
 }
 
 OutstationState& StateIdle::OnConfirmTimeout(OContext& ctx)
 {
-	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Unexpected confirm timeout");
+	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "unexpected confirm timeout");
 	return StateIdle::Inst();
 }
 
@@ -84,7 +84,7 @@ OutstationState& StateSolicitedConfirmWait::OnConfirm(OContext& ctx, const APDUH
 
 	if (!ctx.sol.seq.confirmNum.Equals(header.control.SEQ))
 	{
-		FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "Solicited confirm with wrong seq: %u, expected: %u", header.control.SEQ, ctx.sol.seq.confirmNum.Get());
+		FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "solicited confirm with wrong seq: %u, expected: %u", header.control.SEQ, ctx.sol.seq.confirmNum.Get());
 		return *this;
 	}
 
@@ -104,7 +104,7 @@ OutstationState& StateSolicitedConfirmWait::OnConfirm(OContext& ctx, const APDUH
 
 OutstationState& StateSolicitedConfirmWait::OnConfirmTimeout(OContext& ctx)
 {
-	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Solicited confirm timeout");
+	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "solicited confirm timeout");
 	return StateIdle::Inst();
 }
 
@@ -149,7 +149,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirm(OContext& ctx, const APD
 
 	if (!ctx.unsol.seq.confirmNum.Equals(header.control.SEQ))
 	{
-		FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "Unsolicited confirm with wrong seq: %u, expected: %u", header.control.SEQ, ctx.unsol.seq.confirmNum.Get());
+		FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "unsolicited confirm with wrong seq: %u, expected: %u", header.control.SEQ, ctx.unsol.seq.confirmNum.Get());
 		return *this;
 	}
 
@@ -170,7 +170,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirm(OContext& ctx, const APD
 
 OutstationState& StateUnsolicitedConfirmWait::OnConfirmTimeout(OContext& ctx)
 {
-	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Unsolicited confirm timeout");
+	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "unsolicited confirm timeout");
 
 	if (ctx.unsol.completedNull)
 	{
