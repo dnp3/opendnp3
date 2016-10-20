@@ -40,19 +40,27 @@ public:
 		return response;
 	}
 
-	void Record(const openpal::RSlice& view)
+	void Record(const AppControlField& control, const openpal::RSlice& view)
 	{
-		lastResponse = view;
+		this->control = control;
+		this->lastResponse = view;
 	}
 
-	openpal::RSlice GetLastResponse()
+	const openpal::RSlice& GetLastResponse() const
 	{
 		return lastResponse;
+	}
+
+	const AppControlField& GetLastControl() const
+	{
+		return control;
 	}
 
 private:
 
 	openpal::RSlice lastResponse;
+	AppControlField control;
+
 	openpal::Buffer buffer;
 };
 

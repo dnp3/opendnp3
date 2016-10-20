@@ -36,6 +36,7 @@
 #include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
+#include "opendnp3/outstation/OutstationStates.h"
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/Logger.h>
@@ -72,17 +73,17 @@ public:
 
 	virtual bool OnReceive(const openpal::RSlice& fragment) override final;
 
-	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
+	/// ---- Helper functions that operate on the current state, and may return a new state ----
 
-	OutstationSolicitedStateBase* ContinueMultiFragResponse(const AppSeqNum& seq);
+	OutstationState& ContinueMultiFragResponse(const AppSeqNum& seq);
 
-	OutstationSolicitedStateBase* RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	OutstationState& RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	OutstationSolicitedStateBase* RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	OutstationState& RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	OutstationState& ProcessNewRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	OutstationState& OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
 	/// ----- method overridable for implementing SA or other extensions ----
 
@@ -112,9 +113,9 @@ public:
 
 	void ParseHeader(const openpal::RSlice& apdu);
 
-	void BeginResponseTx(const openpal::RSlice& response);
+	void BeginResponseTx(const AppControlField& control, const openpal::RSlice& response);
 
-	void BeginUnsolTx(const openpal::RSlice& response);
+	void BeginUnsolTx(const AppControlField& control, const openpal::RSlice& response);
 
 	void BeginTx(const openpal::RSlice& response);
 
@@ -122,9 +123,7 @@ public:
 
 	bool ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects);
 
-	void RestartSolicitedConfirmTimer();
-
-	bool StartUnsolicitedConfirmTimer();
+	void RestartConfirmTimer();	
 
 	void CheckForUnsolicited();
 
@@ -189,6 +188,7 @@ public:
 	// ------ Dynamic state related to solicited and unsolicited modes ------
 	OutstationSolState  sol;
 	OutstationUnsolState unsol;
+	OutstationState& state = StateIdle::Inst();
 };
 
 
