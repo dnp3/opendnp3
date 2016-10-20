@@ -102,7 +102,7 @@ private:
 /*
 * waiting for a confirm to a solicited read response
 */
-class StateSolicitedConfirmWait : public OutstationState, private openpal::Uncopyable
+class StateSolicitedConfirmWait final : public OutstationState, private openpal::Uncopyable
 {
 
 public:
@@ -136,7 +136,7 @@ private:
 /*
 * waiting for a confirm to an unsolicited read response
 */
-class StateUnsolicitedConfirmWait : public OutstationState, private openpal::Uncopyable
+class StateUnsolicitedConfirmWait final : public OutstationState, private openpal::Uncopyable
 {
 
 public:
