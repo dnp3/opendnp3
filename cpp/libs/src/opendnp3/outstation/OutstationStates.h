@@ -22,9 +22,9 @@
 #define OPENDNP3_OUTSTATIONSTATES_H
 
 #include "opendnp3/app/APDUHeader.h"
-#include "opendnp3/app/APDUWrapper.h"
 
 #include <openpal/util/Uncopyable.h>
+#include <openpal/container/RSlice.h>
 
 namespace opendnp3
 {
@@ -34,7 +34,7 @@ class OContext;
 /**
  * Base class for the outstation states
  */
-class OutstationState
+class OutstationState : private openpal::Uncopyable
 {
 public:
 
@@ -61,7 +61,7 @@ public:
 
 };
 
-class StateIdle final : public OutstationState, private openpal::Uncopyable
+class StateIdle final : public OutstationState 
 {
 
 public:
@@ -102,7 +102,7 @@ private:
 /*
 * waiting for a confirm to a solicited read response
 */
-class StateSolicitedConfirmWait final : public OutstationState, private openpal::Uncopyable
+class StateSolicitedConfirmWait final : public OutstationState
 {
 
 public:
@@ -136,7 +136,7 @@ private:
 /*
 * waiting for a confirm to an unsolicited read response
 */
-class StateUnsolicitedConfirmWait final : public OutstationState, private openpal::Uncopyable
+class StateUnsolicitedConfirmWait final : public OutstationState
 {
 
 public:
