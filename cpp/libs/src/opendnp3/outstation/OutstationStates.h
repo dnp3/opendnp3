@@ -43,6 +43,8 @@ public:
 		return false;
 	}
 
+	virtual const char* Name() = 0;
+
 	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) = 0;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) = 0;
@@ -68,6 +70,8 @@ public:
 	{
 		return true;
 	}
+
+	virtual const char* Name() override { return "Idle"; }
 
 	inline static OutstationState& Inst()
 	{
@@ -108,6 +112,8 @@ public:
 		return instance;
 	}
 
+	virtual const char* Name() override { return "SolicitedConfirmWait"; }
+
 	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) override;
@@ -139,6 +145,8 @@ public:
 	{
 		return instance;
 	}
+
+	virtual const char* Name() override { return "UnsolicitedConfirmWait"; }
 
 	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
 

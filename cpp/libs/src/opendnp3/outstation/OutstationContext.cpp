@@ -97,7 +97,7 @@ bool OContext::OnLowerLayerDown()
 		return false;
 	}
 
-	this->state = StateIdle::Inst();
+	this->state = &StateIdle::Inst();
 
 	isOnline = false;
 	isTransmitting = false;
@@ -151,11 +151,11 @@ OutstationState& OContext::OnReceiveSolRequest(const APDUHeader& header, const o
 			{
 				if (header.function == FunctionCode::READ)
 				{
-					return this->state.OnRepeatReadRequest(*this, header, objects);
+					return this->state->OnRepeatReadRequest(*this, header, objects);
 				}
 				else
 				{
-					return this->state.OnRepeatNonReadRequest(*this, header, objects);
+					return this->state->OnRepeatNonReadRequest(*this, header, objects);
 				}
 			}
 			else // new operation with same SEQ
@@ -180,11 +180,11 @@ OutstationState& OContext::ProcessNewRequest(const APDUHeader& header, const ope
 
 	if (header.function == FunctionCode::READ)
 	{
-		return this->state.OnNewReadRequest(*this, header, objects);
+		return this->state->OnNewReadRequest(*this, header, objects);
 	}
 	else
 	{
-		return this->state.OnNewNonReadRequest(*this, header, objects);
+		return this->state->OnNewNonReadRequest(*this, header, objects);
 	}
 }
 
@@ -230,14 +230,14 @@ void OContext::ProcessRequest(const APDUHeader& header, const openpal::RSlice& o
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));
 	}
 	else
-	{
-		this->state = this->OnReceiveSolRequest(header, objects);
+	{		
+		this->state = &this->OnReceiveSolRequest(header, objects);
 	}
 }
 
 void OContext::ProcessConfirm(const APDUHeader& header)
 {
-	this->state = this->state.OnConfirm(*this, header);
+	this->state = &this->state->OnConfirm(*this, header);
 }
 
 void OContext::BeginResponseTx(const AppControlField& control, const RSlice& response)
@@ -285,7 +285,7 @@ bool OContext::ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects
 	{
 		if (header.function == FunctionCode::READ)
 		{
-			if (this->state.IsIdle())
+			if (this->state->IsIdle())
 			{
 				this->ProcessRequest(header, objects);
 				return true;
@@ -305,7 +305,7 @@ bool OContext::ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects
 
 void OContext::CheckForUnsolicited()
 {
-	if (this->CanTransmit() && this->state.IsIdle() && this->params.allowUnsolicited)
+	if (this->CanTransmit() && this->state->IsIdle() && this->params.allowUnsolicited)
 	{
 		if (this->unsol.completedNull)
 		{
@@ -322,7 +322,7 @@ void OContext::CheckForUnsolicited()
 
 				build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
 				this->RestartConfirmTimer();
-				this->state = StateUnsolicitedConfirmWait::Inst();
+				this->state = &StateUnsolicitedConfirmWait::Inst();
 				this->BeginUnsolTx(response.GetControl(), response.ToRSlice());
 			}
 		}
@@ -332,7 +332,7 @@ void OContext::CheckForUnsolicited()
 			auto response = this->unsol.tx.Start();
 			build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
 			this->RestartConfirmTimer();
-			this->state = StateUnsolicitedConfirmWait::Inst();
+			this->state = &StateUnsolicitedConfirmWait::Inst();
 			this->BeginUnsolTx(response.GetControl(), response.ToRSlice());
 		}
 	}
@@ -342,7 +342,7 @@ void OContext::RestartConfirmTimer()
 {
 	auto timeout = [&]()
 	{
-		this->state = this->state.OnConfirmTimeout(*this);
+		this->state = &this->state->OnConfirmTimeout(*this);
 		this->CheckForTaskStart();
 	};
 

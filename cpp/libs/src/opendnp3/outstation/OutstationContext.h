@@ -188,7 +188,7 @@ public:
 	// ------ Dynamic state related to solicited and unsolicited modes ------
 	OutstationSolState  sol;
 	OutstationUnsolState unsol;
-	OutstationState& state = StateIdle::Inst();
+	OutstationState* state = &StateIdle::Inst();
 };
 
 
