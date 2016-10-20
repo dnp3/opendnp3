@@ -61,8 +61,8 @@ struct TestComponents
 	{
 		for(auto& outstation : outstations)
 		{
-			outstation->Enable();		
-		}	
+			outstation->Enable();
+		}
 	}
 
 	static OutstationStackConfig GetConfig()

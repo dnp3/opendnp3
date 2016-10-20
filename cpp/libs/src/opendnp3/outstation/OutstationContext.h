@@ -123,7 +123,7 @@ public:
 
 	bool ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects);
 
-	void RestartConfirmTimer();	
+	void RestartConfirmTimer();
 
 	void CheckForUnsolicited();
 

@@ -345,7 +345,7 @@ void OContext::RestartConfirmTimer()
 		this->state = this->state.OnConfirmTimeout(*this);
 		this->CheckForTaskStart();
 	};
-	
+
 	this->confirmTimer.Restart(this->params.unsolConfirmTimeout, timeout);
 }
 

@@ -34,8 +34,8 @@ namespace opendnp3
 // ------------- StateIdle ----------------
 
 StateIdle StateIdle::instance;
-	
-OutstationState& StateIdle::OnConfirm(OContext& ctx, const APDUHeader& header) 
+
+OutstationState& StateIdle::OnConfirm(OContext& ctx, const APDUHeader& header)
 {
 	FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "Unexpected confirm while IDLE with sequence: %u", header.control.SEQ);
 	return StateIdle::Inst();
@@ -47,9 +47,9 @@ OutstationState& StateIdle::OnConfirmTimeout(OContext& ctx)
 	return StateIdle::Inst();
 }
 
-OutstationState& StateIdle::OnNewReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects) 
+OutstationState& StateIdle::OnNewReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
-	return ctx.RespondToReadRequest(header, objects);	
+	return ctx.RespondToReadRequest(header, objects);
 }
 
 OutstationState& StateIdle::OnNewNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
@@ -57,13 +57,13 @@ OutstationState& StateIdle::OnNewNonReadRequest(OContext& ctx, const APDUHeader&
 	return ctx.RespondToNonReadRequest(header, objects);
 }
 
-OutstationState& StateIdle::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects) 
+OutstationState& StateIdle::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(),  ctx.sol.tx.GetLastResponse());
 	return *this;
 }
 
-OutstationState& StateIdle::OnRepeatReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects) 
+OutstationState& StateIdle::OnRepeatReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(), ctx.sol.tx.GetLastResponse());
 	return *this;
@@ -74,7 +74,7 @@ OutstationState& StateIdle::OnRepeatReadRequest(OContext& ctx, const APDUHeader&
 
 StateSolicitedConfirmWait StateSolicitedConfirmWait::instance;
 
-OutstationState& StateSolicitedConfirmWait::OnConfirm(OContext& ctx, const APDUHeader& header) 
+OutstationState& StateSolicitedConfirmWait::OnConfirm(OContext& ctx, const APDUHeader& header)
 {
 	if (header.control.UNS)
 	{
@@ -99,10 +99,10 @@ OutstationState& StateSolicitedConfirmWait::OnConfirm(OContext& ctx, const APDUH
 	else
 	{
 		return StateIdle::Inst();
-	}	
+	}
 }
 
-OutstationState& StateSolicitedConfirmWait::OnConfirmTimeout(OContext& ctx) 
+OutstationState& StateSolicitedConfirmWait::OnConfirmTimeout(OContext& ctx)
 {
 	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Solicited confirm timeout");
 	return StateIdle::Inst();
@@ -120,17 +120,17 @@ OutstationState& StateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx, c
 	return ctx.RespondToNonReadRequest(header, objects);
 }
 
-OutstationState& StateSolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects) 
+OutstationState& StateSolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ctx.confirmTimer.Cancel();
 	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(), ctx.sol.tx.GetLastResponse());
 	return *this;
 }
 
-OutstationState& StateSolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects) 
+OutstationState& StateSolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ctx.RestartConfirmTimer();
-	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(), ctx.sol.tx.GetLastResponse());	
+	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(), ctx.sol.tx.GetLastResponse());
 	return *this;
 }
 
@@ -164,19 +164,19 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirm(OContext& ctx, const APD
 	{
 		ctx.unsol.completedNull = true;
 	}
-	
+
 	return StateIdle::Inst();
 }
 
-OutstationState& StateUnsolicitedConfirmWait::OnConfirmTimeout(OContext& ctx) 
+OutstationState& StateUnsolicitedConfirmWait::OnConfirmTimeout(OContext& ctx)
 {
 	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Unsolicited confirm timeout");
-	
+
 	if (ctx.unsol.completedNull)
 	{
 		ctx.eventBuffer.Unselect();
 	}
-	
+
 	return StateIdle::Inst();
 }
 
@@ -190,7 +190,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx,
 {
 	ctx.deferred.Reset();
 	ctx.confirmTimer.Cancel();
-	return ctx.RespondToNonReadRequest(header, objects);	
+	return ctx.RespondToNonReadRequest(header, objects);
 }
 
 OutstationState& StateUnsolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
@@ -199,7 +199,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnRepeatNonReadRequest(OContext& c
 	return *this;
 }
 
-OutstationState& StateUnsolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects) 
+OutstationState& StateUnsolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ctx.deferred.Set(header, objects);
 	return *this;

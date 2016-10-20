@@ -130,7 +130,7 @@ protected:
 		{
 			this->callbacks->OnWriteComplete(ec, num);
 		}
-	}	
+	}
 
 private:
 

@@ -37,7 +37,7 @@ public:
 	{}
 
 	void Reset() {}
-		
+
 	OutstationSeqNum seq;
 	TxBuffer tx;
 };
@@ -47,16 +47,16 @@ class OutstationUnsolState : private openpal::Uncopyable
 public:
 
 	OutstationUnsolState(uint32_t maxTxSize) :
-		completedNull(false),		
+		completedNull(false),
 		tx(maxTxSize)
-	{}	
+	{}
 
 	void Reset()
 	{
-		completedNull = false;		
+		completedNull = false;
 	}
 
-	bool completedNull;	
+	bool completedNull;
 	OutstationSeqNum seq;
 	TxBuffer tx;
 };

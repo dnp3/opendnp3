@@ -31,13 +31,6 @@ namespace opendnp3
 
 class OContext;
 
-enum class StateEnum
-{
-	Idle,
-	SolConfirmWait,
-	UnsolConfirmWait
-};
-
 /**
  * Base class for the outstation states
  */
@@ -45,9 +38,12 @@ class OutstationState
 {
 public:
 
-	virtual StateEnum GetEnum() = 0;
+	virtual bool IsIdle()
+	{
+		return false;
+	}
 
-	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) = 0;	
+	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) = 0;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) = 0;
 
@@ -61,8 +57,6 @@ public:
 
 
 
-	inline bool IsIdle() { return GetEnum() == StateEnum::Idle; }
-
 };
 
 class StateIdle final : public OutstationState, private openpal::Uncopyable
@@ -70,11 +64,17 @@ class StateIdle final : public OutstationState, private openpal::Uncopyable
 
 public:
 
-	virtual StateEnum GetEnum() { return StateEnum::Idle; }
+	virtual bool IsIdle() override
+	{
+		return true;
+	}
 
-	inline static OutstationState& Inst() { return instance; }
+	inline static OutstationState& Inst()
+	{
+		return instance;
+	}
 
-	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;	
+	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) override;
 
@@ -103,11 +103,12 @@ class StateSolicitedConfirmWait : public OutstationState, private openpal::Uncop
 
 public:
 
-	virtual StateEnum GetEnum() { return StateEnum::SolConfirmWait; }	
+	inline static OutstationState& Inst()
+	{
+		return instance;
+	}
 
-	inline static OutstationState& Inst() { return instance; }
-
-	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;	
+	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) override;
 
@@ -134,11 +135,12 @@ class StateUnsolicitedConfirmWait : public OutstationState, private openpal::Unc
 
 public:
 
-	virtual StateEnum GetEnum() { return StateEnum::UnsolConfirmWait; }
+	inline static OutstationState& Inst()
+	{
+		return instance;
+	}
 
-	inline static OutstationState& Inst() { return instance; }
-
-	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;	
+	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) override;
 
