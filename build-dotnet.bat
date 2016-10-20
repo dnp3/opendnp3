@@ -28,7 +28,7 @@ IF EXIST build RMDIR build /s /q
 MKDIR build\lib
 CD build
 
-cmake .. -DCMAKE_INSTALL_PREFIX=lib -DFULL=ON -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G"Visual Studio 14 2015"
+cmake .. -DCMAKE_INSTALL_PREFIX=lib -DDNP3_TEST=ON -DDNP3_TLS=ON -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G"Visual Studio 14 2015"
 msbuild opendnp3.sln /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM%
 msbuild INSTALL.vcxproj /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM%
 msbuild ..\dotnet\bindings.sln /target:Clean

@@ -16,7 +16,7 @@ build_script:
 - cmd: MKDIR build
 - cmd: CD build
 - cmd: MKDIR lib
-- cmd: cmake .. -DCMAKE_INSTALL_PREFIX=lib -DFULL=ON -DCMAKE_BUILD_TYPE=Release
+- cmd: cmake .. -DCMAKE_INSTALL_PREFIX=lib -DDNP3_TEST=ON -DDNP3_TLS=ON -DCMAKE_BUILD_TYPE=Release
 - cmd: msbuild opendnp3.sln /p:Configuration=Release /p:Platform=Win32
 - cmd: msbuild INSTALL.vcxproj /p:Configuration=Release /p:Platform=Win32
 - cmd: cd ..
