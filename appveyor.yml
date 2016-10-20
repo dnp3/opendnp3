@@ -2,35 +2,21 @@ version: 2.0.{build}
 branches:
   only:
   - 2.0.x
-os: Visual Studio 2013
+  - vs2015
+os: Visual Studio 2015
 configuration: Release
 platform: x86
 clone_folder: C:\projects\dnp3
 environment:
-  ASIO_HOME: C:\asio\asio-1.10.6\include
   OSSL_LIB32_DIR: C:\OpenSSL-Win32\lib\VC
   OPENDNP3_DIR: C:\projects\dnp3\build\lib
 install:
-- ps: >-
-    if (-not (Test-Path C:\asio)){
-      Start-FileDownload "https://github.com/chriskohlhoff/asio/archive/asio-1-10-6.zip" -FileName asio-1-10-6.zip
-      7z x -y asio-1-10-6.zip
-      New-Item C:\asio -ItemType Directory
-      Move-Item .\asio-asio-1-10-6\asio C:\asio\asio-1.10.6
-    }
-- ps: >-
-    if (-not (Test-Path C:\OpenSSL-Win32)){
-      Start-FileDownload "https://slproweb.com/download/Win32OpenSSL-1_0_2e.exe" -FileName "Win32OpenSSL-1_0_2e.exe"
-      Start-Process "Win32OpenSSL-1_0_2e.exe" -ArgumentList "/silent /verysilent /sp- /suppressmsgboxes" -Wait
-    }
-cache:
-- C:\asio
-- C:\OpenSSL-Win32
+- git submodule update --init --recursive
 build_script:
 - cmd: MKDIR build
 - cmd: CD build
 - cmd: MKDIR lib
-- cmd: cmake .. -DCMAKE_INSTALL_PREFIX=lib -DFULL=ON -DCMAKE_BUILD_TYPE=Release
+- cmd: cmake .. -DCMAKE_INSTALL_PREFIX=lib -DDNP3_TEST=ON -DDNP3_TLS=ON -DCMAKE_BUILD_TYPE=Release
 - cmd: msbuild opendnp3.sln /p:Configuration=Release /p:Platform=Win32
 - cmd: msbuild INSTALL.vcxproj /p:Configuration=Release /p:Platform=Win32
 - cmd: cd ..

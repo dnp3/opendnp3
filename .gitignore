@@ -99,6 +99,8 @@ unittest.log
 
 # visual studio generated files
 ipch
+*.db
+*.opendb
 **/**/Debug
 **/**/Release
 java/Debug
