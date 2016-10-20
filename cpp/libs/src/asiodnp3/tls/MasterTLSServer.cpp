@@ -71,28 +71,32 @@ bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::
 bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx)
 {
 	int depth = X509_STORE_CTX_get_error_depth(ctx.native_handle());
-
-	if (!preverified)
-	{
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Error verifying certificate at depth: %d", depth);
-		return preverified;
-	}
-
+	
 	// lookup the subject name
 	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
 	char subjectName[512];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 512);
 
-	FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Depth: %d - Verified certificate: %s", depth, subjectName);
+	X509Info info(
+		depth,
+		RSlice(cert->sha1_hash, SHA_DIGEST_LENGTH), // the thumbprint
+		std::string(subjectName)
+	);
 
-	return this->callbacks->AcceptCertificate(
-	           sessionid,
-	           X509Info(
-	               depth,
-	               RSlice(cert->sha1_hash, SHA_DIGEST_LENGTH), // the thumbprint
-	               std::string(subjectName)
-	           )
-	       );
+	if (!preverified)
+	{
+		int err = X509_STORE_CTX_get_error(ctx.native_handle());
+		
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Error verifying certificate at depth: %d subject: %s error: %d:%s", depth, subjectName, err, X509_verify_cert_error_string(err));
+
+		this->callbacks->OnCertificateError(sessionid, info, err);
+
+		return preverified;
+	}
+
+	FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Verified certificate at depth: %d subject: %s", depth, subjectName);
+
+	return this->callbacks->AcceptCertificate(sessionid, info);
 }
 
 void MasterTLSServer::AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)

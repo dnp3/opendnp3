@@ -56,7 +56,10 @@ namespace Automatak.DNP3.Interface
 
         public void OnConnectionClose(UInt64 sessionid, IMasterSession session)
         {
-            Console.WriteLine(String.Format("Session closed: {0}", sessionid));            
+        }
+
+        public void OnCertificateError(UInt64 sessionid, X509Info info, int error)
+        {
         }
 
         private string SessionIdToString(UInt64 sessionid)

@@ -65,5 +65,13 @@ namespace Automatak.DNP3.Interface
         /// <param name="sessionid">Incrementing id used to uniquely identify the session</param>
         /// <param name="session">Possibly null reference to the master session</param>
         void OnConnectionClose(UInt64 sessionid, IMasterSession session);
+
+        /// <summary>
+        /// Called when a certificate fails verification
+        /// </summary>
+        /// <param name="sessionid">Incrementing id used to uniquely identify the session</param>
+        /// <param name="info">Information from the x509 certificate</param>
+        /// <param name="error">Error code with reason for failed verification</param>
+        void OnCertificateError(UInt64 sessionid, X509Info info, int error);
     }   
 }
