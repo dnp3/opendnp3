@@ -30,10 +30,8 @@ namespace asiopal
 /**
 * TLS configuration information
 */
-class TLSConfig
+struct TLSConfig
 {
-public:
-
 	/**
 	* Construct a TLS configuration
 	*
