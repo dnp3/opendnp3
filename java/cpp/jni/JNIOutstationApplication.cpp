@@ -30,20 +30,20 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->writeAbsoluteTimeMethod = env->GetMethodID(this->clazz, "writeAbsoluteTime", "(J)Z");
-            if(!this->writeAbsoluteTimeMethod) return false;
-
-            this->recordClassAssignmentMethod = env->GetMethodID(this->clazz, "recordClassAssignment", "(Lcom/automatak/dnp3/enums/AssignClassType;Lcom/automatak/dnp3/enums/PointClass;II)V");
-            if(!this->recordClassAssignmentMethod) return false;
-
-            this->supportsWriteAbsoluteTimeMethod = env->GetMethodID(this->clazz, "supportsWriteAbsoluteTime", "()Z");
-            if(!this->supportsWriteAbsoluteTimeMethod) return false;
-
             this->supportsAssignClassMethod = env->GetMethodID(this->clazz, "supportsAssignClass", "()Z");
             if(!this->supportsAssignClassMethod) return false;
 
             this->getApplicationIINMethod = env->GetMethodID(this->clazz, "getApplicationIIN", "()Lcom/automatak/dnp3/ApplicationIIN;");
             if(!this->getApplicationIINMethod) return false;
+
+            this->supportsWriteAbsoluteTimeMethod = env->GetMethodID(this->clazz, "supportsWriteAbsoluteTime", "()Z");
+            if(!this->supportsWriteAbsoluteTimeMethod) return false;
+
+            this->recordClassAssignmentMethod = env->GetMethodID(this->clazz, "recordClassAssignment", "(Lcom/automatak/dnp3/enums/AssignClassType;Lcom/automatak/dnp3/enums/PointClass;II)V");
+            if(!this->recordClassAssignmentMethod) return false;
+
+            this->writeAbsoluteTimeMethod = env->GetMethodID(this->clazz, "writeAbsoluteTime", "(J)Z");
+            if(!this->writeAbsoluteTimeMethod) return false;
 
             return true;
         }
@@ -51,21 +51,6 @@ namespace jni
         void OutstationApplication::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
-        }
-
-        jboolean OutstationApplication::writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0)
-        {
-            return env->CallBooleanMethod(instance, this->writeAbsoluteTimeMethod, arg0);
-        }
-
-        void OutstationApplication::recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3)
-        {
-            env->CallVoidMethod(instance, this->recordClassAssignmentMethod, arg0, arg1, arg2, arg3);
-        }
-
-        jboolean OutstationApplication::supportsWriteAbsoluteTime(JNIEnv* env, jobject instance)
-        {
-            return env->CallBooleanMethod(instance, this->supportsWriteAbsoluteTimeMethod);
         }
 
         jboolean OutstationApplication::supportsAssignClass(JNIEnv* env, jobject instance)
@@ -76,6 +61,21 @@ namespace jni
         jobject OutstationApplication::getApplicationIIN(JNIEnv* env, jobject instance)
         {
             return env->CallObjectMethod(instance, this->getApplicationIINMethod);
+        }
+
+        jboolean OutstationApplication::supportsWriteAbsoluteTime(JNIEnv* env, jobject instance)
+        {
+            return env->CallBooleanMethod(instance, this->supportsWriteAbsoluteTimeMethod);
+        }
+
+        void OutstationApplication::recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3)
+        {
+            env->CallVoidMethod(instance, this->recordClassAssignmentMethod, arg0, arg1, arg2, arg3);
+        }
+
+        jboolean OutstationApplication::writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0)
+        {
+            return env->CallBooleanMethod(instance, this->writeAbsoluteTimeMethod, arg0);
         }
     }
 }
