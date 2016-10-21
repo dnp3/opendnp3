@@ -230,7 +230,7 @@ void OContext::ProcessRequest(const APDUHeader& header, const openpal::RSlice& o
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));
 	}
 	else
-	{		
+	{
 		this->state = &this->OnReceiveSolRequest(header, objects);
 	}
 }
@@ -349,7 +349,7 @@ void OContext::RestartConfirmTimer()
 	this->confirmTimer.Restart(this->params.unsolConfirmTimeout, timeout);
 }
 
-OutstationState& OContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects)
+void OContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	this->history.RecordLastProcessedRequest(header, objects);
 
@@ -360,7 +360,6 @@ OutstationState& OContext::RespondToNonReadRequest(const APDUHeader& header, con
 	auto iin = this->HandleNonReadResponse(header, objects, writer);
 	response.SetIIN(iin | this->GetResponseIIN());
 	this->BeginResponseTx(response.GetControl(), response.ToRSlice());
-	return StateIdle::Inst();
 }
 
 OutstationState& OContext::RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects)

@@ -77,13 +77,13 @@ public:
 
 	OutstationState& ContinueMultiFragResponse(const AppSeqNum& seq);
 
-	OutstationState& RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
-
 	OutstationState& RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
 	OutstationState& ProcessNewRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
 	OutstationState& OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects);
+
+	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
 	/// ----- method overridable for implementing SA or other extensions ----
 

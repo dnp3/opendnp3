@@ -61,7 +61,7 @@ public:
 
 };
 
-class StateIdle final : public OutstationState 
+class StateIdle final : public OutstationState
 {
 
 public:
@@ -71,7 +71,10 @@ public:
 		return true;
 	}
 
-	virtual const char* Name() override { return "Idle"; }
+	virtual const char* Name() override
+	{
+		return "Idle";
+	}
 
 	inline static OutstationState& Inst()
 	{
@@ -112,7 +115,10 @@ public:
 		return instance;
 	}
 
-	virtual const char* Name() override { return "SolicitedConfirmWait"; }
+	virtual const char* Name() override
+	{
+		return "SolicitedConfirmWait";
+	}
 
 	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
 
@@ -146,7 +152,10 @@ public:
 		return instance;
 	}
 
-	virtual const char* Name() override { return "UnsolicitedConfirmWait"; }
+	virtual const char* Name() override
+	{
+		return "UnsolicitedConfirmWait";
+	}
 
 	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
 

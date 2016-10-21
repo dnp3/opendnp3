@@ -54,7 +54,8 @@ OutstationState& StateIdle::OnNewReadRequest(OContext& ctx, const APDUHeader& he
 
 OutstationState& StateIdle::OnNewNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
-	return ctx.RespondToNonReadRequest(header, objects);
+	ctx.RespondToNonReadRequest(header, objects);
+	return *this;
 }
 
 OutstationState& StateIdle::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
@@ -117,7 +118,8 @@ OutstationState& StateSolicitedConfirmWait::OnNewReadRequest(OContext& ctx, cons
 OutstationState& StateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ctx.confirmTimer.Cancel();
-	return ctx.RespondToNonReadRequest(header, objects);
+	ctx.RespondToNonReadRequest(header, objects);
+	return StateIdle::Inst();
 }
 
 OutstationState& StateSolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
@@ -190,7 +192,8 @@ OutstationState& StateUnsolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx,
 {
 	ctx.deferred.Reset();
 	ctx.confirmTimer.Cancel();
-	return ctx.RespondToNonReadRequest(header, objects);
+	ctx.RespondToNonReadRequest(header, objects);
+	return *this;
 }
 
 OutstationState& StateUnsolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
