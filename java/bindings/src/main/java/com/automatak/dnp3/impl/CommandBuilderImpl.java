@@ -20,7 +20,7 @@ package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.*;
 
-public class CommandBuilderImpl implements CommandBuilder {
+class CommandBuilderImpl implements CommandBuilder {
 
     public final long nativePointer;
 
