@@ -96,7 +96,7 @@ private:
 
 	OutstationState& OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);			
+	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
 	/// ---- Processing functions --------
 

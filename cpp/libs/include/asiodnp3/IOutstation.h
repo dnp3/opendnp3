@@ -31,10 +31,6 @@ namespace asiodnp3
 
 /**
 * Interface representing a running outstation.
-* To get a data observer interface to load measurements on the outstation:-
-\code
-	IMeasurementLoader* pDataObserver = pOutstation->GetDataObserver()
-\endcode
 */
 class IOutstation : public IStack
 {
