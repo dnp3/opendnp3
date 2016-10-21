@@ -50,6 +50,9 @@ namespace opendnp3
 ///
 class OContext : public IUpperLayer
 {
+	friend class StateIdle;
+	friend class StateSolicitedConfirmWait;
+	friend class StateUnsolicitedConfirmWait;
 
 public:
 
@@ -61,8 +64,6 @@ public:
 	            const std::shared_ptr<ICommandHandler>& commandHandler,
 	            const std::shared_ptr<IOutstationApplication>& application);
 
-public:
-
 	/// ----- Implement IUpperLayer ------
 
 	virtual bool OnLowerLayerUp() override;
@@ -72,6 +73,18 @@ public:
 	virtual bool OnSendResult(bool isSuccess) override final;
 
 	virtual bool OnReceive(const openpal::RSlice& fragment) override final;
+
+	/// --- Other public members ----
+
+	void CheckForTaskStart();
+
+	IUpdateHandler& GetUpdateHanlder();
+
+	DatabaseConfigView GetConfigView();
+
+	void SetRestartIIN();
+
+private:
 
 	/// ---- Helper functions that operate on the current state, and may return a new state ----
 
@@ -83,17 +96,7 @@ public:
 
 	OutstationState& OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);	
-
-	void CheckForTaskStart();
-
-	/// ---- External helpers ----
-
-	void SetRestartIIN();
-
-	IUpdateHandler& GetUpdateHanlder();
-
-	DatabaseConfigView GetConfigView();
+	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);			
 
 	/// ---- Processing functions --------
 
