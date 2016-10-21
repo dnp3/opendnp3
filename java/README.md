@@ -34,6 +34,6 @@ https://github.com/automatak/dnp3/blob/development/java/cpp/adapters/JNI.cpp#L31
 
 This approach has a few benefits:
 
-1) The hand-written code never has to deal with strings or variable length function signatures.
-2) All of the jclass, jmethodid, and jfieldid stuff is optimally cached.
-3) Changes to java classes usually result in compile-time errors.
+1. The hand-written code never has to deal with strings or variable length function signatures.
+2. All of the jclass, jmethodid, and jfieldid stuff is optimally cached.
+3. Changes to java classes usually result in compile-time errors.
