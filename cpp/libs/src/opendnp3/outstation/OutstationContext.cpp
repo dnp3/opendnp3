@@ -133,8 +133,6 @@ bool OContext::OnReceive(const openpal::RSlice& fragment)
 		return false;
 	}
 
-
-	this->Increment(SecurityStatIndex::TOTAL_MESSAGES_RX);
 	this->ParseHeader(fragment);
 	this->CheckForTaskStart();
 	return true;
@@ -186,12 +184,6 @@ OutstationState& OContext::ProcessNewRequest(const APDUHeader& header, const ope
 	{
 		return this->state->OnNewNonReadRequest(*this, header, objects);
 	}
-}
-
-void OContext::ReceiveParsedHeader(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
-{
-	// this look strange, but this method is overridable for SA
-	this->ProcessAPDU(apdu, header, objects);
 }
 
 void OContext::ProcessAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
@@ -259,7 +251,6 @@ void OContext::BeginTx(const openpal::RSlice& response)
 	logging::ParseAndLogResponseTx(this->logger, response);
 	this->isTransmitting = true;
 	this->lower->BeginTransmit(response);
-	this->Increment(SecurityStatIndex::TOTAL_MESSAGES_TX);
 }
 
 void OContext::CheckForDeferredRequest()
@@ -461,8 +452,7 @@ void OContext::ParseHeader(const openpal::RSlice& apdu)
 
 	auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
 
-	// this method is virtual, and the implementation may vary for SA
-	this->ReceiveParsedHeader(apdu, header, objects);
+	this->ProcessAPDU(apdu, header, objects);
 }
 
 void OContext::CheckForTaskStart()

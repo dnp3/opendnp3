@@ -83,15 +83,9 @@ public:
 
 	OutstationState& OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);	
 
-	/// ----- method overridable for implementing SA or other extensions ----
-
-	virtual void ReceiveParsedHeader(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects);
-
-	virtual void CheckForTaskStart();
-
-	virtual void Increment(SecurityStatIndex index) {}
+	void CheckForTaskStart();
 
 	/// ---- External helpers ----
 
