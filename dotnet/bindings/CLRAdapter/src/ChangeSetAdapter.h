@@ -2,6 +2,7 @@
 #define __CHANGESET_ADAPTER_H_
 
 #include <asiodnp3/IOutstation.h>
+#include <asiodnp3/UpdateBuilder.h>
 
 #include <vcclr.h>
 
@@ -34,7 +35,7 @@ namespace Automatak
 								
 			private:
 				
-				asiodnp3::ChangeSet* changes;
+				asiodnp3::UpdateBuilder* builder;
 			};
 								
 			
