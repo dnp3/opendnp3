@@ -106,13 +106,11 @@ void OutstationStack::SetRestartIIN()
 	this->executor->strand.post(set);
 }
 
-void OutstationStack::Apply(ChangeSet& changes)
+void OutstationStack::Apply(const Updates& updates)
 {
-	changes.Lock(); // don't allow any further updates since we're about to share w/ another thread
-
-	auto task = [self = this->shared_from_this(), changes]()
+	auto task = [self = this->shared_from_this(), updates]()
 	{
-		changes.Apply(self->ocontext.GetUpdateHanlder());
+		updates.Apply(self->ocontext.GetUpdateHanlder());
 		self->ocontext.CheckForTaskStart(); // force the outstation to check for updates
 	};
 

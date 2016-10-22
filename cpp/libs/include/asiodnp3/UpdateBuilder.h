@@ -18,24 +18,18 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_CHANGESET_H
-#define ASIODNP3_CHANGESET_H
+#ifndef ASIODNP3_UPDATEBUILDER_H
+#define ASIODNP3_UPDATEBUILDER_H
 
-#include <opendnp3/outstation/IUpdateHandler.h>
-
-#include <vector>
-#include <memory>
-#include <functional>
+#include "asiodnp3/Updates.h"
 
 namespace asiodnp3
 {
 
-class ChangeSet : public opendnp3::IUpdateHandler
+class UpdateBuilder : public opendnp3::IUpdateHandler
 {
 
 public:
-
-	void Lock();
 
 	bool Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	bool Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
@@ -47,25 +41,13 @@ public:
 	bool Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
 	bool Modify(opendnp3::FlagsType type, uint16_t start, uint16_t stop, uint8_t flags);
 
-	void Apply(opendnp3::IUpdateHandler&) const;
-
-	size_t Size() const;
-
-	bool IsEmpty() const;
+	Updates Build() const;
 
 private:
 
-	typedef std::function<void(opendnp3::IUpdateHandler&)> update_func_t;
-
-	struct SharedData
-	{
-		std::vector<update_func_t> updates;
-		bool is_locked = false;
-	};
-
 	bool Add(const update_func_t& fun);
 
-	const std::shared_ptr<SharedData> shared = std::make_shared<SharedData>();
+	std::shared_ptr<shared_updates_t> updates = std::make_shared<shared_updates_t>();
 };
 
 }

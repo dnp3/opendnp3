@@ -28,6 +28,8 @@
 #include "CountingSOEHandler.h"
 #include "QueuedChannelListener.h"
 
+#include "asiodnp3/UpdateBuilder.h"
+
 #include <memory>
 #include <random>
 #include <deque>
@@ -56,7 +58,7 @@ class PerformanceStackPair final : openpal::Uncopyable
 	static std::shared_ptr<IOutstation> CreateOutstation(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager&, uint16_t port, uint16_t numPointsPerType, uint16_t eventBufferSize, std::shared_ptr<IChannelListener> listener);
 
 	static std::string GetId(const char* name, uint16_t port);
-	void AddValue(uint32_t i, ChangeSet& set);
+	void AddValue(uint32_t i, UpdateBuilder& builder);
 
 public:
 

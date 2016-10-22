@@ -22,7 +22,7 @@
 #include <asiodnp3/PrintingSOEHandler.h>
 #include <asiodnp3/PrintingChannelListener.h>
 #include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/ChangeSet.h>
+#include <asiodnp3/UpdateBuilder.h>
 
 #include <asiopal/UTCTimeSource.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -140,7 +140,7 @@ int main(int argc, char* argv[])
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
 
-		ChangeSet changes;
+		UpdateBuilder builder;
 
 		for (char& c : input)
 		{
@@ -148,25 +148,25 @@ int main(int argc, char* argv[])
 			{
 			case('c') :
 				{
-					changes.Update(Counter(count), 0);
+					builder.Update(Counter(count), 0);
 					++count;
 					break;
 				}
 			case('a') :
 				{
-					changes.Update(Analog(value), 0);
+					builder.Update(Analog(value), 0);
 					value += 1;
 					break;
 				}
 			case('b') :
 				{
-					changes.Update(Binary(binary), 0);
+					builder.Update(Binary(binary), 0);
 					binary = !binary;
 					break;
 				}
 			case('d') :
 				{
-					changes.Update(DoubleBitBinary(dbit), 0);
+					builder.Update(DoubleBitBinary(dbit), 0);
 					dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
 					break;
 				}
@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		if (!changes.IsEmpty()) {}
+		outstation->Apply(builder.Build());
 	}
 
 	return 0;
