@@ -23,37 +23,31 @@
 
 #include <opendnp3/outstation/IUpdateHandler.h>
 
-#include <openpal/util/Uncopyable.h>
-
 #include <vector>
+#include <memory>
 #include <functional>
 
 namespace asiodnp3
 {
 
-class ChangeSet : private openpal::Uncopyable
+class ChangeSet : public opendnp3::IUpdateHandler
 {
 
 public:
 
-	ChangeSet() {}
+	void Lock();
 
-	ChangeSet(ChangeSet&& other) : updates(std::move(other.updates))
-	{
+	bool Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	bool Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	bool Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	bool Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	bool Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	bool Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	bool Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	bool Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
+	bool Modify(opendnp3::FlagsType type, uint16_t start, uint16_t stop, uint8_t flags);
 
-	}
-
-	void Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	void Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
-	void Modify(opendnp3::FlagsType type, uint16_t start, uint16_t stop, uint8_t flags);
-
-	void Apply(opendnp3::IUpdateHandler&);
+	void Apply(opendnp3::IUpdateHandler&) const;
 
 	size_t Size() const;
 
@@ -63,9 +57,15 @@ private:
 
 	typedef std::function<void(opendnp3::IUpdateHandler&)> update_func_t;
 
-	void Add(const update_func_t& fun);
+	struct SharedData
+	{
+		std::vector<update_func_t> updates;
+		bool is_locked = false;
+	};
 
-	std::vector<update_func_t> updates;
+	bool Add(const update_func_t& fun);
+
+	const std::shared_ptr<SharedData> shared = std::make_shared<SharedData>();
 };
 
 }

@@ -26,86 +26,96 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-void ChangeSet::Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode)
+void ChangeSet::Lock()
 {
-	this->Add([meas, index, mode](IUpdateHandler & handler)
+	this->shared->is_locked = true;
+}
+
+bool ChangeSet::Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	return this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
 }
 
-void ChangeSet::Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode)
+bool ChangeSet::Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler & handler)
+	return this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
 }
 
-void ChangeSet::Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode)
+bool ChangeSet::Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler & handler)
+	return this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
 }
 
-void ChangeSet::Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode)
+bool ChangeSet::Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler & handler)
+	return this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
 }
 
-void ChangeSet::Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode)
+bool ChangeSet::Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler & handler)
+	return this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
 }
 
-void ChangeSet::Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
+bool ChangeSet::Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler & handler)
+	return this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
 }
 
-void ChangeSet::Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
+bool ChangeSet::Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([meas, index, mode](IUpdateHandler & handler)
+	return this->Add([meas, index, mode](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index, mode);
 	});
 }
 
-void ChangeSet::Update(const opendnp3::TimeAndInterval& meas, uint16_t index)
+bool ChangeSet::Update(const opendnp3::TimeAndInterval& meas, uint16_t index)
 {
-	this->Add([meas, index](IUpdateHandler & handler)
+	return this->Add([meas, index](IUpdateHandler & handler)
 	{
 		handler.Update(meas, index);
 	});
 }
 
-void ChangeSet::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
+bool ChangeSet::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
 {
-	this->Add([ = ](IUpdateHandler & handler)
+	return this->Add([ = ](IUpdateHandler & handler)
 	{
 		handler.Modify(type, start, stop, flags);
 	});
 }
 
-void ChangeSet::Add(const update_func_t& fun)
+bool ChangeSet::Add(const update_func_t& fun)
 {
-	updates.push_back(fun);
+	if (shared->is_locked) return false;
+	else {
+		shared->updates.push_back(fun);
+		return true;
+	}
+		
 }
 
-void ChangeSet::Apply(IUpdateHandler& handler)
+void ChangeSet::Apply(IUpdateHandler& handler) const
 {
-	for (auto& update : updates)
+	for (auto& update : shared->updates)
 	{
 		update(handler);
 	}
@@ -113,12 +123,12 @@ void ChangeSet::Apply(IUpdateHandler& handler)
 
 size_t ChangeSet::Size() const
 {
-	return updates.size();
+	return shared->updates.size();
 }
 
 bool ChangeSet::IsEmpty() const
 {
-	return updates.empty();
+	return shared->updates.empty();
 }
 
 }
