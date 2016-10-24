@@ -21,6 +21,8 @@
 #ifndef OPENDNP3_LINKCHANNELSTATISTICS_H
 #define OPENDNP3_LINKCHANNELSTATISTICS_H
 
+#include <cstddef>
+
 namespace opendnp3
 {
 
