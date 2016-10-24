@@ -66,12 +66,12 @@ void StackPair::WaitForChannelsOnline(std::chrono::steady_clock::duration timeou
 
 void StackPair::SendRandomValues()
 {
-	ChangeSet set;
+	UpdateBuilder builder;
 	for (uint32_t i = 0; i < EVENTS_PER_ITERATION; ++i)
 	{
-		this->tx_values.push_back(this->AddRandomValue(set));
+		this->tx_values.push_back(this->AddRandomValue(builder));
 	}
-	this->outstation->Apply(set);
+	this->outstation->Apply(builder.Build());
 }
 
 void StackPair::WaitToRxValues(std::chrono::steady_clock::duration timeout)
@@ -115,7 +115,7 @@ void StackPair::WaitToRxValues(std::chrono::steady_clock::duration timeout)
 	}
 }
 
-ExpectedValue StackPair::AddRandomValue(ChangeSet& set)
+ExpectedValue StackPair::AddRandomValue(UpdateBuilder& builder)
 {
 	const auto index = index_distribution(generator);
 
@@ -124,43 +124,43 @@ ExpectedValue StackPair::AddRandomValue(ChangeSet& set)
 	case(0):
 		{
 			opendnp3::Binary value(bool_distribution(generator) == 0);
-			set.Update(value, index, EventMode::Force);
+			builder.Update(value, index, EventMode::Force);
 			return ExpectedValue(value, index);
 		}
 	case(1):
 		{
 			opendnp3::DoubleBitBinary value(static_cast<DoubleBit>(bool_distribution(generator)));
-			set.Update(value, index, EventMode::Force);
+			builder.Update(value, index, EventMode::Force);
 			return ExpectedValue(value, index);
 		}
 	case(2):
 		{
 			opendnp3::Analog value(static_cast<double>(int_distribution(generator)));
-			set.Update(value, index, EventMode::Force);
+			builder.Update(value, index, EventMode::Force);
 			return ExpectedValue(value, index);
 		}
 	case(3):
 		{
 			opendnp3::Counter value(int_distribution(generator));
-			set.Update(value, index, EventMode::Force);
+			builder.Update(value, index, EventMode::Force);
 			return ExpectedValue(value, index);
 		}
 	case(4):
 		{
 			opendnp3::FrozenCounter value(int_distribution(generator));
-			set.Update(value, index, EventMode::Force);
+			builder.Update(value, index, EventMode::Force);
 			return ExpectedValue(value, index);
 		}
 	case(5):
 		{
 			opendnp3::BinaryOutputStatus value(bool_distribution(generator) == 0);
-			set.Update(value, index, EventMode::Force);
+			builder.Update(value, index, EventMode::Force);
 			return ExpectedValue(value, index);
 		}
 	default:
 		{
 			opendnp3::AnalogOutputStatus value(static_cast<double>(int_distribution(generator)));
-			set.Update(value, index, EventMode::Force);
+			builder.Update(value, index, EventMode::Force);
 			return ExpectedValue(value, index);
 		}
 	}

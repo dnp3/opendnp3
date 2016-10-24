@@ -18,44 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_IOUTSTATION_H
-#define ASIODNP3_IOUTSTATION_H
+#ifndef ASIODNP3_UPDATES_H
+#define ASIODNP3_UPDATES_H
 
-#include "asiodnp3/IStack.h"
-#include "asiodnp3/Updates.h"
+#include <vector>
+#include <memory>
+#include <functional>
 
-#include <openpal/logging/LogFilters.h>
+#include "opendnp3/outstation/IUpdateHandler.h"
 
 namespace asiodnp3
 {
 
-/**
-* Interface representing a running outstation.
-*/
-class IOutstation : public IStack
+typedef std::function<void(opendnp3::IUpdateHandler&)> update_func_t;
+typedef std::vector<update_func_t> shared_updates_t;
+
+class Updates
 {
-	friend class MeasUpdate;
+	friend class UpdateBuilder;
 
 public:
 
-	virtual ~IOutstation() {}
+	void Apply(opendnp3::IUpdateHandler& handler) const
+	{
+		if (!updates) return;
 
-	/**
-	*  @param filters Adjust the filters to this value
-	*/
-	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
+		for(auto& update : *updates)
+		{
+			update(handler);
+		}
+	}
 
-	/**
-	* Sets the restart IIN bit. Normally applications should not
-	* touch this bit, but it is provided for simulating restarts.
-	*/
-	virtual void SetRestartIIN() = 0;
+private:
 
-	/**
-	* Apply a set of measurement updates to the outstation
-	*/
-	virtual void Apply(const Updates& updates) = 0;
+	Updates(const std::shared_ptr<shared_updates_t>& updates) : updates(updates) {}
 
+	const std::shared_ptr<shared_updates_t> updates;
 };
 
 }

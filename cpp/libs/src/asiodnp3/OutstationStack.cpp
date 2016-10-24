@@ -106,14 +106,11 @@ void OutstationStack::SetRestartIIN()
 	this->executor->strand.post(set);
 }
 
-void OutstationStack::Apply(ChangeSet& changes)
+void OutstationStack::Apply(const Updates& updates)
 {
-	// C++11 lambdas don't support move semantics
-	auto pchanges = std::make_shared<ChangeSet>(std::move(changes));
-
-	auto task = [self = this->shared_from_this(), pchanges]()
+	auto task = [self = this->shared_from_this(), updates]()
 	{
-		pchanges->Apply(self->ocontext.GetUpdateHanlder());
+		updates.Apply(self->ocontext.GetUpdateHanlder());
 		self->ocontext.CheckForTaskStart(); // force the outstation to check for updates
 	};
 

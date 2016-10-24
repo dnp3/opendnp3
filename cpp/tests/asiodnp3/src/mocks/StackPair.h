@@ -23,10 +23,12 @@
 #define OPENDNP3_STACKPAIR_H
 
 #include "asiodnp3/DNP3Manager.h"
+#include "asiodnp3/UpdateBuilder.h"
 #include "opendnp3/LogLevels.h"
 
 #include "QueuingSOEHandler.h"
 #include "QueuedChannelListener.h"
+
 
 #include <memory>
 #include <random>
@@ -65,7 +67,7 @@ class StackPair final : openpal::Uncopyable
 
 	static std::string GetId(const char* name, uint16_t port);
 
-	opendnp3::ExpectedValue AddRandomValue(asiodnp3::ChangeSet& set);
+	opendnp3::ExpectedValue AddRandomValue(asiodnp3::UpdateBuilder& builder);
 
 
 public:

@@ -110,7 +110,7 @@ public:
 
 	virtual void SetRestartIIN() override;
 
-	virtual void Apply(ChangeSet& changes) override;
+	virtual void Apply(const Updates& updates) override;
 
 private:
 

@@ -19,6 +19,7 @@
 #include "com_automatak_dnp3_impl_OutstationImpl.h"
 
 #include "asiodnp3/IOutstation.h"
+#include "asiodnp3/UpdateBuilder.h"
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_enable_1native
 (JNIEnv* env, jobject, jlong native)
@@ -53,6 +54,6 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_apply_1native
 (JNIEnv* env, jobject, jlong native, jlong nativeChangeSet)
 {
 	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	auto changeSet = (asiodnp3::ChangeSet*) nativeChangeSet;
-	(*outstation)->Apply(*changeSet);
+	auto builder = (asiodnp3::UpdateBuilder*) nativeChangeSet;
+	(*outstation)->Apply(builder->Build());
 }

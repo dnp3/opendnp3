@@ -22,6 +22,7 @@
 #include <asiodnp3/PrintingSOEHandler.h>
 #include <asiodnp3/PrintingChannelListener.h>
 #include <asiodnp3/ConsoleLogger.h>
+#include <asiodnp3/UpdateBuilder.h>
 
 #include <asiopal/UTCTimeSource.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -114,36 +115,35 @@ int main(int argc, char* argv[])
 			{
 			case('c') :
 				{
-					ChangeSet changes;
-					changes.Update(Counter(count), 0);
-					outstation->Apply(changes);
-
+					UpdateBuilder builder;
+					builder.Update(Counter(count), 0);
+					outstation->Apply(builder.Build());
 					++count;
 					break;
 				}
 			case('a') :
 				{
-					ChangeSet changes;
-					changes.Update(Analog(value), 0);
-					outstation->Apply(changes);
+					UpdateBuilder builder;
+					builder.Update(Analog(value), 0);
+					outstation->Apply(builder.Build());
 
 					value += 1;
 					break;
 				}
 			case('b') :
 				{
-					ChangeSet changes;
-					changes.Update(Binary(binary), 0);
-					outstation->Apply(changes);
+					UpdateBuilder builder;
+					builder.Update(Binary(binary), 0);
+					outstation->Apply(builder.Build());
 
 					binary = !binary;
 					break;
 				}
 			case('d') :
 				{
-					ChangeSet changes;
-					changes.Update(DoubleBitBinary(dbit), 0);
-					outstation->Apply(changes);
+					UpdateBuilder builder;
+					builder.Update(DoubleBitBinary(dbit), 0);
+					outstation->Apply(builder.Build());
 
 					dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
 					break;
