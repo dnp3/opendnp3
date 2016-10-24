@@ -68,6 +68,8 @@ void IOHandler::OnReadComplete(const std::error_code& ec, size_t num)
 	}
 	else
 	{
+		this->statistics.numBytesRx += num;
+
 		this->parser.OnRead(static_cast<uint32_t>(num), *this);
 		this->BeginRead();
 	}
@@ -86,6 +88,8 @@ void IOHandler::OnWriteComplete(const std::error_code& ec, size_t num)
 	}
 	else
 	{
+		this->statistics.numBytesTx += num;
+
 		if (!this->txQueue.empty())
 		{
 			this->txQueue.front().session->OnTransmitResult(true);
@@ -217,6 +221,8 @@ void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& chan
 {
 	this->Reset();
 
+	++this->statistics.numOpen;
+
 	this->channel = channel;
 
 	this->channel->SetCallbacks(shared_from_this());
@@ -315,6 +321,8 @@ void IOHandler::Reset()
 		// shutdown the existing channel and drop the reference to it
 		this->channel->Shutdown();
 		this->channel.reset();
+
+		++this->statistics.numClose;
 
 		this->UpdateListener(ChannelState::CLOSED);
 

@@ -84,7 +84,9 @@ void TLSClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TLSClient>&
 	{
 		if (ec)
 		{
-			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Error Connecting: %s", ec.message().c_str());
+			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::WARN, "Error Connecting: %s", ec.message().c_str());
+
+			++this->statistics.numOpenFail;
 
 			const auto newDelay = this->retry.NextDelay(delay);
 

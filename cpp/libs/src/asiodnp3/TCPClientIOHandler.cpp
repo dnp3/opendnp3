@@ -72,9 +72,11 @@ void TCPClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TCPClient>&
 	{
 		if (ec)
 		{
-			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Error Connecting: %s", ec.message().c_str());
+			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::WARN, "Error Connecting: %s", ec.message().c_str());
 
-			const auto newDelay = this->retry.NextDelay(delay);
+			++this->statistics.numOpenFail;
+
+			const auto newDelay = this->retry.NextDelay(delay);			
 
 			auto cb = [self, newDelay, client, this]()
 			{

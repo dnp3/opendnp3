@@ -112,8 +112,8 @@ protected:
 	void OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel);
 
 	openpal::Logger logger;
-
 	const std::shared_ptr<IChannelListener> listener;
+	opendnp3::LinkChannelStatistics statistics;
 
 private:
 
@@ -212,8 +212,7 @@ private:
 
 	std::vector<Session> sessions;
 	std::deque<Transmission>  txQueue;
-
-	opendnp3::LinkChannelStatistics statistics;
+	
 	opendnp3::LinkLayerParser parser;
 
 	// current value of the channel, may be empty

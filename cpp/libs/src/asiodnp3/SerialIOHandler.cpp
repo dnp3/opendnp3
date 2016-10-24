@@ -21,6 +21,9 @@
 
 #include "asiodnp3/SerialIOHandler.h"
 
+#include "openpal/logging/LogMacros.h"
+#include "opendnp3/LogLevels.h"
+
 namespace asiodnp3
 {
 
@@ -67,6 +70,10 @@ void SerialIOHandler::TryOpen(const openpal::TimeDuration& timeout)
 
 	if (ec)
 	{
+		FORMAT_LOG_BLOCK(this->logger, openpal::logflags::WARN, "Error Connecting: %s", ec.message().c_str());
+
+		++this->statistics.numOpenFail;
+
 		auto callback = [this, timeout]()
 		{
 			this->TryOpen(this->retry.NextDelay(timeout));
