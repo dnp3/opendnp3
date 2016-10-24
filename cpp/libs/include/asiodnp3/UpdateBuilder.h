@@ -26,28 +26,31 @@
 namespace asiodnp3
 {
 
-class UpdateBuilder : public opendnp3::IUpdateHandler
+class UpdateBuilder
 {
 
 public:
 
-	bool Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	bool Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	bool Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	bool Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	bool Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	bool Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	bool Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
-	bool Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
-	bool Modify(opendnp3::FlagsType type, uint16_t start, uint16_t stop, uint8_t flags);
+	UpdateBuilder& Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	UpdateBuilder& Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	UpdateBuilder& Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	UpdateBuilder& Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	UpdateBuilder& Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	UpdateBuilder& Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	UpdateBuilder& Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	UpdateBuilder& Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
+	UpdateBuilder& Modify(opendnp3::FlagsType type, uint16_t start, uint16_t stop, uint8_t flags);
 
 	Updates Build() const;
 
 private:
 
-	bool Add(const update_func_t& fun);
+	template <class T>
+	UpdateBuilder& AddMeas(const T& meas, uint16_t index, opendnp3::EventMode mode);
 
-	std::shared_ptr<shared_updates_t> updates = std::make_shared<shared_updates_t>();
+	void Add(const update_func_t& fun);
+
+	std::shared_ptr<shared_updates_t> updates;
 };
 
 }

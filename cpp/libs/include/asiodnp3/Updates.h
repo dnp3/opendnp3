@@ -49,6 +49,11 @@ public:
 		}
 	}
 
+	bool IsEmpty() const
+	{
+		return updates ? updates->empty() : true;
+	}
+
 private:
 
 	Updates(const std::shared_ptr<shared_updates_t>& updates) : updates(updates) {}

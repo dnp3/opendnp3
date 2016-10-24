@@ -108,6 +108,8 @@ void OutstationStack::SetRestartIIN()
 
 void OutstationStack::Apply(const Updates& updates)
 {
+	if (updates.IsEmpty()) return;
+
 	auto task = [self = this->shared_from_this(), updates]()
 	{
 		updates.Apply(self->ocontext.GetUpdateHanlder());

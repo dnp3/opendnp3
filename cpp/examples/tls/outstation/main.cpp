@@ -49,6 +49,16 @@ void ConfigureDatabase(DatabaseConfig& config)
 	config.analog[0].evariation = EventAnalogVariation::Group32Var7;
 }
 
+struct State
+{
+	uint32_t count = 0;
+	double value = 0;
+	bool binary = false;
+	DoubleBit dbit = DoubleBit::DETERMINED_OFF;
+};
+
+void AddUpdates(UpdateBuilder& builder, State& state, const std::string& arguments);
+
 int main(int argc, char* argv[])
 {
 	if (argc != 4)
@@ -129,60 +139,58 @@ int main(int argc, char* argv[])
 
 	// variables used in example loop
 	string input;
-	uint32_t count = 0;
-	double value = 0;
-	bool binary = false;
-	DoubleBit dbit = DoubleBit::DETERMINED_OFF;
+	State state;
 
 	while (true)
 	{
 		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
-		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
+		std::cout << "c = counter, b = binary, d = doublebit, a = analog, 'quit' = exit" << std::endl;
 		std::cin >> input;
 
-		UpdateBuilder builder;
-
-		for (char& c : input)
+		if (input == "quit") return 0;
+		else
 		{
-			switch (c)
-			{
-			case('c') :
-				{
-					builder.Update(Counter(count), 0);
-					++count;
-					break;
-				}
-			case('a') :
-				{
-					builder.Update(Analog(value), 0);
-					value += 1;
-					break;
-				}
-			case('b') :
-				{
-					builder.Update(Binary(binary), 0);
-					binary = !binary;
-					break;
-				}
-			case('d') :
-				{
-					builder.Update(DoubleBitBinary(dbit), 0);
-					dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
-					break;
-				}
-			case('x') :
-
-				// DNP3Manager destructor cleanups up everything automagically
-				return 0;
-
-			default:
-				std::cout << "No action registered for: " << c << std::endl;
-				break;
-			}
+			UpdateBuilder builder;
+			AddUpdates(builder, state, input);
+			outstation->Apply(builder.Build());
 		}
-
-		outstation->Apply(builder.Build());
 	}
 
 	return 0;
+}
+
+void AddUpdates(UpdateBuilder& builder, State& state, const std::string& arguments)
+{
+	for (const char& c : arguments)
+	{
+		switch (c)
+		{
+		case('c'):
+			{
+				builder.Update(Counter(state.count), 0);
+				++state.count;
+				break;
+			}
+		case('a'):
+			{
+				builder.Update(Analog(state.value), 0);
+				state.value += 1;
+				break;
+			}
+		case('b'):
+			{
+				builder.Update(Binary(state.binary), 0);
+				state.binary = !state.binary;
+				break;
+			}
+		case('d'):
+			{
+				builder.Update(DoubleBitBinary(state.dbit), 0);
+				state.dbit = (state.dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
+				break;
+			}
+		default:
+			break;
+		}
+	}
 }
