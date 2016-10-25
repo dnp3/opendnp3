@@ -105,4 +105,7 @@ public class QueuedSOEHandler implements SOEHandler {
     {
         this.add(values, v -> new ExpectedValue(v.value, v.index));
     }
+
+    @Override
+    public void processDNPTime(HeaderInfo info, Iterable<DNPTime> values) {}
 }

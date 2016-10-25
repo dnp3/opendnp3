@@ -36,52 +36,59 @@ public interface SOEHandler {
     void end();
 
     /**
-     * Process a single value
+     * Process a collection of values
      * @param info information about the header from which the value came
      * @param values the measurement values
      */
     void processBI(HeaderInfo info, Iterable<IndexedValue<BinaryInput>> values);
 
     /**
-     * Process a single value
+     * Process a collection of values
      * @param info information about the header from which the value came
      * @param values the measurement values
      */
     void processDBI(HeaderInfo info, Iterable<IndexedValue<DoubleBitBinaryInput>> values);
 
     /**
-     * Process a single value
+     * Process a collection of values
      * @param info information about the header from which the value came
      * @param values the measurement values
      */
     void processAI(HeaderInfo info, Iterable<IndexedValue<AnalogInput>> values);
 
     /**
-     * Process a single value
+     * Process a collection of values
      * @param info information about the header from which the value came
      * @param values the measurement value
      */
     void processC(HeaderInfo info, Iterable<IndexedValue<Counter>> values);
 
     /**
-     * Process a single value
+     * Process a collection of values
      * @param info information about the header from which the value came
      * @param values the measurement values
      */
     void processFC(HeaderInfo info, Iterable<IndexedValue<FrozenCounter>> values);
 
     /**
-     * Process a single value
+     * Process a collection of values
      * @param info information about the header from which the value came
      * @param values the measurement values
      */
     void processBOS(HeaderInfo info, Iterable<IndexedValue<BinaryOutputStatus>> values);
 
     /**
-     * Process a single value
+     * Process a collection of values
      * @param info information about the header from which the value came
      * @param values the measurement values
      */
     void processAOS(HeaderInfo info, Iterable<IndexedValue<AnalogOutputStatus>> values);
+
+    /**
+     * Process a collection of values
+     * @param info information about the header from which the value came
+     * @param values the measurement values
+     */
+    void processDNPTime(HeaderInfo info, Iterable<DNPTime> values);
 
 }

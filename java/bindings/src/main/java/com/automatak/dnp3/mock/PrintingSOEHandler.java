@@ -91,4 +91,10 @@ public class PrintingSOEHandler implements SOEHandler {
         values.forEach((meas) -> System.out.println(meas));
     }
 
+    @Override
+    public void processDNPTime(HeaderInfo info, Iterable<DNPTime> values)
+    {
+        System.out.println(info);
+        values.forEach((meas) -> System.out.println(meas));
+    }
 }
