@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIMASTERAPPLICATION_H
-#define OPENDNP3JAVA_JNIMASTERAPPLICATION_H
+#ifndef OPENDNP3JAVA_JNIDNPTIME_H
+#define OPENDNP3JAVA_JNIDNPTIME_H
 
 #include <jni.h>
 
@@ -29,7 +29,7 @@ namespace jni
 
     namespace cache
     {
-        class MasterApplication
+        class DNPTime
         {
             friend struct jni::JCache;
 
@@ -38,25 +38,15 @@ namespace jni
 
             public:
 
-            // methods
-            jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
-            jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
-            jobject getClassAssignments(JNIEnv* env, jobject instance);
-            void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
-            void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
-            void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            // constructor methods
+            jobject init1(JNIEnv* env, jlong arg0);
 
             private:
 
             jclass clazz = nullptr;
 
-            // method ids
-            jmethodID getMillisecondsSinceEpochMethod = nullptr;
-            jmethodID assignClassDuringStartupMethod = nullptr;
-            jmethodID getClassAssignmentsMethod = nullptr;
-            jmethodID onTaskCompleteMethod = nullptr;
-            jmethodID onReceiveIINMethod = nullptr;
-            jmethodID onTaskStartMethod = nullptr;
+            // constructor method ids
+            jmethodID init1Constructor = nullptr;
         };
     }
 }

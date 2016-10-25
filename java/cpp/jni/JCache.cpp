@@ -52,6 +52,7 @@ namespace jni
     cache::ControlRelayOutputBlock JCache::ControlRelayOutputBlock;
     cache::Counter JCache::Counter;
     cache::CounterConfig JCache::CounterConfig;
+    cache::DNPTime JCache::DNPTime;
     cache::DatabaseConfig JCache::DatabaseConfig;
     cache::DoubleBinaryConfig JCache::DoubleBinaryConfig;
     cache::DoubleBit JCache::DoubleBit;
@@ -139,6 +140,7 @@ namespace jni
         && ControlRelayOutputBlock.init(env)
         && Counter.init(env)
         && CounterConfig.init(env)
+        && DNPTime.init(env)
         && DatabaseConfig.init(env)
         && DoubleBinaryConfig.init(env)
         && DoubleBit.init(env)
@@ -228,6 +230,7 @@ namespace jni
         ControlRelayOutputBlock.cleanup(env);
         Counter.cleanup(env);
         CounterConfig.cleanup(env);
+        DNPTime.cleanup(env);
         DatabaseConfig.cleanup(env);
         DoubleBinaryConfig.cleanup(env);
         DoubleBit.cleanup(env);
