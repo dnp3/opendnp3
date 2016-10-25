@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_LINKCHANNELSTATISTICS_H
-#define OPENDNP3_LINKCHANNELSTATISTICS_H
+#ifndef OPENDNP3_LINKSTATISTICS_H
+#define OPENDNP3_LINKSTATISTICS_H
 
 #include <cstddef>
 
@@ -29,8 +29,35 @@ namespace opendnp3
 /**
 * Counters for the channel and the DNP3 link layer
 */
-struct LinkChannelStatistics
+struct LinkStatistics
 {	
+	struct Parser
+	{
+		/// Number of frames discared due to header CRC errors
+		size_t numHeaderCrcError = 0;
+
+		/// Number of frames discared due to body CRC errors
+		size_t numBodyCrcError = 0;
+
+		/// Number of frames received
+		size_t numLinkFrameRx = 0;
+
+		/// Number of frames detected with bad / malformed contents
+		size_t numBadLinkFrameRx = 0;
+
+		/// number of bad LEN fields received (malformed frame)
+		size_t numBadLength = 0;
+
+		/// number of bad function codes (malformed frame)
+		size_t numBadFunctionCode = 0;
+
+		/// number of FCV / function code mismtaches (malformed frame)
+		size_t numBadFCV = 0;
+
+		/// number of frames w/ unexpected FCB bit set (malformed frame)
+		size_t numBadFCB = 0;
+	};
+
 	/// The number of times the channel has successfully opened
 	size_t numOpen = 0;
 
@@ -44,20 +71,16 @@ struct LinkChannelStatistics
 	size_t numBytesRx = 0;
 
 	/// The number of bytes transmitted
-	size_t numBytesTx = 0;
-
-	/// Number of frames discared due to CRC errors
-	size_t numCrcError = 0;
+	size_t numBytesTx = 0;	
 
 	/// Number of frames transmitted
 	size_t numLinkFrameTx = 0;
 
-	/// Number of frames received
-	size_t numLinkFrameRx = 0;
-
-	/// Number of frames detected with bad / malformed contents
-	size_t numBadLinkFrameRx = 0;
+	// statistics for the parser
+	Parser parser;
+	
 };
+
 }
 
 #endif

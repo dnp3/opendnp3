@@ -39,7 +39,7 @@ class TransportRx
 {
 
 public:
-	TransportRx(const openpal::Logger&, uint32_t maxRxFragSize, StackStatistics* pStatistics);
+	TransportRx(const openpal::Logger&, uint32_t maxRxFragSize);
 
 	openpal::RSlice ProcessReceive(const openpal::RSlice& input);
 
@@ -54,7 +54,7 @@ private:
 	bool ValidateHeader(bool fir, uint8_t sequence);
 
 	openpal::Logger logger;
-	StackStatistics* pStatistics;
+	StackStatistics::Transport::Rx statistics;
 
 	openpal::Buffer rxBuffer;
 	uint32_t numBytesRead;

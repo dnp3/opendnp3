@@ -42,7 +42,7 @@ class TransportLayer : public IUpperLayer, public ILowerLayer
 
 public:
 
-	TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* statistics = nullptr);
+	TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize);
 
 	/// ILowerLayer
 

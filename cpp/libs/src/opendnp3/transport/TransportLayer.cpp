@@ -35,10 +35,10 @@ namespace opendnp3
 {
 
 
-TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* statistics) :
+TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize) :
 	logger(logger),
-	receiver(logger, maxRxFragSize, statistics),
-	transmitter(logger, statistics)
+	receiver(logger, maxRxFragSize),
+	transmitter(logger)
 {
 
 }

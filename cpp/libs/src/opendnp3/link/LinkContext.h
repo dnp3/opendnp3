@@ -34,6 +34,7 @@
 #include "opendnp3/link/LinkConfig.h"
 #include "opendnp3/link/ILinkListener.h"
 #include "opendnp3/link/ILinkTx.h"
+#include "opendnp3/StackStatistics.h"
 
 namespace opendnp3
 {
@@ -135,6 +136,7 @@ public:
 	bool isRemoteReset;
 	bool keepAliveTimeout;
 	openpal::MonotonicTimestamp lastMessageTimestamp;
+	StackStatistics::Link statistics;
 
 	ILinkTx* linktx = nullptr;
 

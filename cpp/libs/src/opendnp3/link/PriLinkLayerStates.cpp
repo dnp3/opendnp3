@@ -38,25 +38,29 @@ namespace opendnp3
 
 PriStateBase& PriStateBase::OnAck(LinkContext& ctx, bool rxBuffFull)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
+	++ctx.statistics.numUnexpectedFrame;
+	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Frame context not understood");
 	return *this;
 }
 
 PriStateBase& PriStateBase::OnNack(LinkContext& ctx, bool rxBuffFull)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
+	++ctx.statistics.numUnexpectedFrame;
+	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Frame context not understood");
 	return *this;
 }
 
 PriStateBase& PriStateBase::OnLinkStatus(LinkContext& ctx, bool rxBuffFull)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
+	++ctx.statistics.numUnexpectedFrame;
+	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Frame context not understood");
 	return *this;
 }
 
 PriStateBase& PriStateBase::OnNotSupported(LinkContext& ctx, bool rxBuffFull)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(ctx.logger, flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
+	++ctx.statistics.numUnexpectedFrame;
+	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Frame context not understood");
 	return *this;
 }
 

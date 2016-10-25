@@ -33,10 +33,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportTx::TransportTx(const openpal::Logger& logger_, StackStatistics* pStatistics_) :
-	logger(logger_),
-	pStatistics(pStatistics_),
-	tpduCount(0)
+TransportTx::TransportTx(const openpal::Logger& logger) : logger(logger)
 {}
 
 void TransportTx::Configure(const openpal::RSlice& output)
@@ -70,12 +67,9 @@ openpal::RSlice TransportTx::GetSegment()
 		tpduBuffer()[0] = GetHeader(fir, fin, sequence);
 
 		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence.Get(), numToSend);
-
-		if (pStatistics)
-		{
-			++pStatistics->numTransportTx;
-		}
-
+		
+		++statistics.numTransportTx;
+		
 		auto segment = tpduBuffer.ToRSlice(numToSend + 1);
 		txSegment.Set(segment);
 		return segment;

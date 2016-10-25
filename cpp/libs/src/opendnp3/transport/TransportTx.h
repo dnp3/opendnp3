@@ -41,7 +41,7 @@ class TransportTx : public ITransportSegment
 
 public:
 
-	TransportTx(const openpal::Logger& logger, StackStatistics* pStatistics);
+	TransportTx(const openpal::Logger& logger);
 
 	void Configure(const openpal::RSlice& output);
 
@@ -66,9 +66,9 @@ private:
 	openpal::StaticBuffer<MAX_TPDU_LENGTH> tpduBuffer;
 
 	openpal::Logger logger;
-	StackStatistics* pStatistics;
+	StackStatistics::Transport::Tx statistics;
 	TransportSeqNum sequence;
-	uint32_t tpduCount;
+	uint32_t tpduCount = 0;
 };
 
 }

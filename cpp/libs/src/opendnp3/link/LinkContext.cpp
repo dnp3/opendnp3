@@ -394,21 +394,22 @@ bool LinkContext::Validate(bool isMaster, uint16_t src, uint16_t dest)
 {
 	if (isMaster == config.IsMaster)
 	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
-		                           (isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));
-
+		++statistics.numBadMasterBit;
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, (isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));
 		return false;
 	}
 
 	if (dest != config.LocalAddr)
 	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_DESTINATION, "Frame for unknown destintation");
+		++statistics.numUnknownDestination;
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame for unknown destintation");
 		return false;
 	}
 
 	if (src != config.RemoteAddr)
 	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_SOURCE, "Frame from unknwon source");
+		++statistics.numUnknownSource;
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame from unknwon source");
 		return false;
 	}
 

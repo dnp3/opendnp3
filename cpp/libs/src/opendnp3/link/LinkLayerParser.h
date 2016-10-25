@@ -30,7 +30,7 @@
 #include "opendnp3/link/ShiftableBuffer.h"
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/link/LinkHeader.h"
-#include "opendnp3/link/LinkChannelStatistics.h"
+#include "opendnp3/link/LinkStatistics.h"
 #include "opendnp3/link/IFrameSink.h"
 
 namespace opendnp3
@@ -47,11 +47,11 @@ class LinkLayerParser
 		Complete
 	};
 
-public:
+public:	
 
 	/// @param logger_ Logger that the receiver is to use.
 	/// @param pSink_ Completely parsed frames are sent to this interface
-	LinkLayerParser(const openpal::Logger& logger, LinkChannelStatistics* statistics = nullptr);
+	LinkLayerParser(const openpal::Logger& logger);
 
 	/// Called when valid data has been written to the current buffer write position
 	/// Parses the new data and calls the specified frame sink
@@ -63,6 +63,11 @@ public:
 
 	/// Resets the state of parser
 	void Reset();
+
+	const LinkStatistics::Parser& Statistics() const 
+	{
+		return this->statistics;
+	}
 
 private:
 
@@ -83,7 +88,7 @@ private:
 	void TransferUserData();
 
 	openpal::Logger logger;
-	LinkChannelStatistics* pStatistics;
+	LinkStatistics::Parser statistics;
 
 	LinkHeader header;
 
