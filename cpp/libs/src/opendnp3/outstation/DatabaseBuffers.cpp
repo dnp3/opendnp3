@@ -20,9 +20,7 @@
  */
 #include "DatabaseBuffers.h"
 
-#include <openpal/logging/LogMacros.h>
-
-#include "opendnp3/ErrorCodes.h"
+#include "openpal/logging/LogMacros.h"
 
 #include <assert.h>
 

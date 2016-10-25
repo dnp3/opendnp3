@@ -25,10 +25,7 @@
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/link/ILinkTx.h"
 
-#include "opendnp3/ErrorCodes.h"
-
 #include "openpal/util/Limits.h"
-
 
 using namespace openpal;
 

@@ -22,8 +22,6 @@
 
 #include <openpal/logging/LogMacros.h>
 
-#include "opendnp3/ErrorCodes.h"
-
 #include "opendnp3/objects/Group2.h"
 #include "opendnp3/objects/Group4.h"
 #include "opendnp3/objects/Group11.h"

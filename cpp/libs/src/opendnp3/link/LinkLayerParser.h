@@ -25,8 +25,6 @@
 #include <openpal/container/WSlice.h>
 #include <openpal/logging/Logger.h>
 
-#include "opendnp3/ErrorCodes.h"
-
 #include "opendnp3/link/ShiftableBuffer.h"
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/link/LinkHeader.h"

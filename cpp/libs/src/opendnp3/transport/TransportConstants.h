@@ -21,8 +21,6 @@
 #ifndef OPENDNP3_TRANSPORTCONSTANTS_H
 #define OPENDNP3_TRANSPORTCONSTANTS_H
 
-#include "opendnp3/ErrorCodes.h"
-
 #include <cstdint>
 
 namespace opendnp3

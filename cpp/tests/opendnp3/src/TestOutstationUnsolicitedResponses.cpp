@@ -24,9 +24,6 @@
 
 #include <dnp3mocks/APDUHexBuilders.h>
 
-#include <opendnp3/ErrorCodes.h>
-
-
 using namespace std;
 using namespace opendnp3;
 using namespace openpal;

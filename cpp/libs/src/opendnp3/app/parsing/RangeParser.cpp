@@ -20,13 +20,8 @@
  */
 #include "RangeParser.h"
 
-#include "opendnp3/ErrorCodes.h"
-
 #include "opendnp3/objects/Group1.h"
-
 #include "opendnp3/objects/Group3.h"
-
-
 #include "opendnp3/objects/Group10.h"
 #include "opendnp3/objects/Group20.h"
 #include "opendnp3/objects/Group21.h"
@@ -36,10 +31,7 @@
 
 #include "opendnp3/app/parsing/BufferedCollection.h"
 
-
 #include <openpal/logging/LogMacros.h>
-
-
 
 namespace opendnp3
 {

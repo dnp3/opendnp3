@@ -22,10 +22,7 @@
 
 #include <openpal/logging/LogMacros.h>
 
-#include "opendnp3/ErrorCodes.h"
-
 #include <assert.h>
-
 
 using namespace openpal;
 

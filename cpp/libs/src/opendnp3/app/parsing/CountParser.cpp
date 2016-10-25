@@ -20,7 +20,6 @@
  */
 #include "CountParser.h"
 
-#include "opendnp3/ErrorCodes.h"
 #include "opendnp3/LogLevels.h"
 
 #include <openpal/logging/LogMacros.h>
@@ -28,10 +27,10 @@
 namespace opendnp3
 {
 
-CountParser::CountParser(uint16_t count_, uint32_t requiredSize_, HandleFun handler_) :
-	count(count_),
-	requiredSize(requiredSize_),
-	handler(handler_)
+CountParser::CountParser(uint16_t count, uint32_t requiredSize, HandleFun handler) :
+	count(count),
+	requiredSize(requiredSize),
+	handler(handler)
 {
 
 }

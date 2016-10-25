@@ -20,7 +20,6 @@
  */
 #include "ObjectHeaderParser.h"
 
-#include "opendnp3/ErrorCodes.h"
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/app/GroupVariationRecord.h"
 

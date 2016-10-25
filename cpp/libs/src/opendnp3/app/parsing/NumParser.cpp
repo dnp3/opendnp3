@@ -24,16 +24,15 @@
 #include <openpal/serialization/Serialization.h>
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/ErrorCodes.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-NumParser::NumParser(ReadFun pReadFun_, uint8_t size_) :
-	pReadFun(pReadFun_),
-	size(size_)
+NumParser::NumParser(ReadFun pReadFun, uint8_t size) :
+	pReadFun(pReadFun),
+	size(size)
 {
 
 }

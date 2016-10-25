@@ -20,8 +20,6 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/ErrorCodes.h>
-
 #include <openpal/util/ToHex.h>
 
 #include "mocks/BufferSegment.h"

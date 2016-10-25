@@ -20,9 +20,7 @@
  */
 #include "APDUParser.h"
 
-
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/ErrorCodes.h"
 
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/app/GroupVariationRecord.h"
