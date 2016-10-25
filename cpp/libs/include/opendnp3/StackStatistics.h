@@ -34,16 +34,16 @@ struct StackStatistics
 	struct Link
 	{
 		/// number of unexpected frames
-		size_t numUnexpectedFrame = 0;
+		uint32_t numUnexpectedFrame = 0;
 
 		/// frames received w/ wrong master bit
-		size_t numBadMasterBit = 0;
+		uint32_t numBadMasterBit = 0;
 
 		/// frames received for an unknown destination
-		size_t numUnknownDestination = 0;
+		uint32_t numUnknownDestination = 0;
 
 		/// frames received for an unknown source
-		size_t numUnknownSource = 0;
+		uint32_t numUnknownSource = 0;
 	};
 
 	struct Transport
@@ -51,25 +51,25 @@ struct StackStatistics
 		struct Rx
 		{
 			/// Number of valid TPDU's received
-			size_t numTransportRx = 0;
+			uint32_t numTransportRx = 0;
 
 			/// Number of TPDUs dropped due to malformed contents
-			size_t numTransportErrorRx = 0;
+			uint32_t numTransportErrorRx = 0;
 
 			/// Number of times received data was too big for reassembly buffer
-			size_t numTransportBufferOverflow = 0;
+			uint32_t numTransportBufferOverflow = 0;
 
 			/// number of times transport buffer is discard due to new FIR
-			size_t numTransportDiscard = 0;
+			uint32_t numTransportDiscard = 0;
 
 			/// number of segments ignored due to bad FIR/FIN or SEQ
-			size_t numTransportIgnore = 0;
+			uint32_t numTransportIgnore = 0;
 		};
 
 		struct Tx
 		{
 			/// Number of TPDUs transmitted
-			size_t numTransportTx = 0;
+			uint32_t numTransportTx = 0;
 		};
 
 		Transport() = default;
