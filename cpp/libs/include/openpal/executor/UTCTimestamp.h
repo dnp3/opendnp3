@@ -33,13 +33,13 @@ class UTCTimestamp
 {
 
 public:
-	UTCTimestamp() : msSinceEpoch(0)
+
+	UTCTimestamp() = default;
+
+	UTCTimestamp(uint64_t msSinceEpoch) : msSinceEpoch(msSinceEpoch)
 	{}
 
-	UTCTimestamp(uint64_t msSinceEpoch_) : msSinceEpoch(msSinceEpoch_)
-	{}
-
-	uint64_t msSinceEpoch;
+	uint64_t msSinceEpoch = 0;
 
 };
 
