@@ -59,6 +59,8 @@ public:
 
 	void SetLinkLayer(ILinkLayer& linkLayer);
 
+	StackStatistics::Transport GetStatistics() const;
+
 private:
 
 	openpal::Logger logger;

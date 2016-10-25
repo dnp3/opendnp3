@@ -212,7 +212,7 @@ private:
 
 	std::vector<Session> sessions;
 	std::deque<Transmission>  txQueue;
-	
+
 	opendnp3::LinkLayerParser parser;
 
 	// current value of the channel, may be empty

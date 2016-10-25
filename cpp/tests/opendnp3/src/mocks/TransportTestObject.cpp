@@ -35,10 +35,10 @@ using namespace testlib;
 namespace opendnp3
 {
 
-TransportTestObject::TransportTestObject(bool aOpenOnStart, uint32_t filters, bool aImmediate) :
+TransportTestObject::TransportTestObject(bool openOnStart, uint32_t maxRxFragmentSize) :
 	log(),
 	exe(),
-	transport(log.logger, DEFAULT_MAX_APDU_SIZE)
+	transport(log.logger, maxRxFragmentSize)
 {
 	link.SetUpperLayer(transport);
 	transport.SetLinkLayer(link);
@@ -46,7 +46,7 @@ TransportTestObject::TransportTestObject(bool aOpenOnStart, uint32_t filters, bo
 	upper.SetLowerLayer(transport);
 	transport.SetAppLayer(upper);
 
-	if (aOpenOnStart)
+	if (openOnStart)
 	{
 		transport.OnLowerLayerUp();
 	}

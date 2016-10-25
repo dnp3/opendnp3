@@ -43,7 +43,7 @@ void Logger::Log(const LogFilters& filters, const char* location, const char* me
 		        this->settings->id.c_str(),
 		        filters,
 		        location,
-		        message		        
+		        message
 		    )
 		);
 	}

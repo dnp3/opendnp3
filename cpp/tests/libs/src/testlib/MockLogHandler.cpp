@@ -34,7 +34,7 @@ LogRecord::LogRecord(const LogEntry& entry) :
 	id(entry.loggerid),
 	filters(entry.filters),
 	location(entry.location),
-	message(entry.message)	
+	message(entry.message)
 {
 
 }

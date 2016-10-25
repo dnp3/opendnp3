@@ -76,7 +76,7 @@ void TCPClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TCPClient>&
 
 			++this->statistics.numOpenFail;
 
-			const auto newDelay = this->retry.NextDelay(delay);			
+			const auto newDelay = this->retry.NextDelay(delay);
 
 			auto cb = [self, newDelay, client, this]()
 			{

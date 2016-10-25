@@ -63,8 +63,8 @@ public:
 		return isOnline;
 	}
 
-	void SendDown(const std::string&);
-	void SendDown(const openpal::RSlice& arBuffer);
+	bool SendDown(const std::string&);
+	bool SendDown(const openpal::RSlice& arBuffer);
 
 	bool CountersEqual(size_t success, size_t failure)
 	{

@@ -45,6 +45,11 @@ public:
 
 	void Reset();
 
+	const StackStatistics::Transport::Rx& Statistics() const
+	{
+		return statistics;
+	}
+
 private:
 
 	openpal::WSlice GetAvailable();

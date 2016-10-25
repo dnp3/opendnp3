@@ -47,7 +47,7 @@ class LinkLayerParser
 		Complete
 	};
 
-public:	
+public:
 
 	/// @param logger_ Logger that the receiver is to use.
 	/// @param pSink_ Completely parsed frames are sent to this interface
@@ -64,7 +64,7 @@ public:
 	/// Resets the state of parser
 	void Reset();
 
-	const LinkStatistics::Parser& Statistics() const 
+	const LinkStatistics::Parser& Statistics() const
 	{
 		return this->statistics;
 	}

@@ -58,7 +58,7 @@ public:
 
 	void SetLinkLayer(ILinkLayer& linkLayer);
 
-	void SendDown(ITransportSegment& segments);
+	bool SendDown(ITransportSegment& segments);
 
 	bool IsOnline() const
 	{

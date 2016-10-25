@@ -30,7 +30,7 @@ namespace openpal
 {
 
 /**
-* An event recorded by the logging framework. 
+* An event recorded by the logging framework.
 */
 class LogEntry : openpal::Uncopyable
 {
@@ -39,18 +39,18 @@ public:
 
 	LogEntry() = delete;
 
-	LogEntry(const char * loggerid, const LogFilters& filters, const char* location, const char* message) :
+	LogEntry(const char* loggerid, const LogFilters& filters, const char* location, const char* message) :
 		loggerid(loggerid),
 		filters(filters),
 		location(location),
 		message(message)
 	{}
 
-	
+
 	const char* loggerid;
 	LogFilters filters;
 	const char* location;
-	const char*	message;	
+	const char*	message;
 };
 
 }

@@ -29,6 +29,11 @@ LinkLayer::LinkLayer(const openpal::Logger& logger, const std::shared_ptr<openpa
 	ctx(logger, executor, upper, listener, *this, config)
 {}
 
+const StackStatistics::Link& LinkLayer::GetStatistics() const
+{
+	return this->ctx.statistics;
+}
+
 void LinkLayer::SetRouter(ILinkTx& router)
 {
 	assert(ctx.linktx == nullptr);
@@ -39,12 +44,16 @@ void LinkLayer::SetRouter(ILinkTx& router)
 // ILowerLayer
 ////////////////////////////////
 
-void LinkLayer::Send(ITransportSegment& segments)
+bool LinkLayer::Send(ITransportSegment& segments)
 {
+	if (!ctx.isOnline) return false;
+
 	if (ctx.SetTxSegment(segments))
 	{
 		ctx.TryStartTransmission();
 	}
+
+	return true;
 }
 
 ////////////////////////////////

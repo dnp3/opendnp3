@@ -30,7 +30,7 @@ namespace opendnp3
 * Counters for the channel and the DNP3 link layer
 */
 struct LinkStatistics
-{	
+{
 	struct Parser
 	{
 		/// Number of frames discared due to header CRC errors
@@ -71,14 +71,14 @@ struct LinkStatistics
 	size_t numBytesRx = 0;
 
 	/// The number of bytes transmitted
-	size_t numBytesTx = 0;	
+	size_t numBytesTx = 0;
 
 	/// Number of frames transmitted
 	size_t numLinkFrameTx = 0;
 
 	// statistics for the parser
 	Parser parser;
-	
+
 };
 
 }

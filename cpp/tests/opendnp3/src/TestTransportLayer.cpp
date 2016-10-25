@@ -38,18 +38,17 @@ using namespace testlib;
 TEST_CASE(SUITE("RepeatSendsDoNotLogOrChangeStatistics"))
 {
 	MockLogHandler log;
-	StackStatistics stats;
-	TransportTx transmitter(log.logger, &stats);
+	TransportTx tx(log.logger);
 	HexSequence hs("12 34 56");
-	transmitter.Configure(hs.ToRSlice());
+	tx.Configure(hs.ToRSlice());
 
-	auto segment1 = transmitter.GetSegment();
+	auto segment1 = tx.GetSegment();
 	REQUIRE("C0 12 34 56" == ToHex(segment1));
-	REQUIRE(1 == stats.numTransportTx);
+	REQUIRE(tx.Statistics().numTransportTx == 1);
 
-	auto segment2 = transmitter.GetSegment();
+	auto segment2 = tx.GetSegment();
 	REQUIRE("C0 12 34 56" == ToHex(segment2));
-	REQUIRE(1 == stats.numTransportTx);
+	REQUIRE(tx.Statistics().numTransportTx == 1);
 }
 
 // make sure an invalid state exception gets thrown
@@ -59,14 +58,10 @@ TEST_CASE(SUITE("StateOffline"))
 {
 	TransportTestObject test;
 
-	test.upper.SendDown("00");
-	REQUIRE(test.log.PopOneEntry(flags::ERR));
-	test.link.SendUp("");
-	REQUIRE(test.log.PopOneEntry(flags::ERR));
-	test.transport.OnSendResult(true);
-	REQUIRE(test.log.PopOneEntry(flags::ERR));
-	test.transport.OnLowerLayerDown();
-	REQUIRE(test.log.PopOneEntry(flags::ERR));
+	REQUIRE_FALSE(test.upper.SendDown("00"));
+	REQUIRE_FALSE(test.link.SendUp(""));
+	REQUIRE_FALSE(test.transport.OnSendResult(true));
+	REQUIRE_FALSE(test.transport.OnLowerLayerDown());
 }
 
 TEST_CASE(SUITE("StateReady"))
@@ -80,27 +75,9 @@ TEST_CASE(SUITE("StateReady"))
 	test.transport.OnLowerLayerUp();
 	REQUIRE(test.upper.IsOnline());
 
-	// check that these actions all log errors
-	test.transport.OnLowerLayerUp();
-	REQUIRE(test.log.PopOneEntry(flags::ERR));
-	test.transport.OnSendResult(true);
-	REQUIRE(test.log.PopOneEntry(flags::ERR));
-}
 
-TEST_CASE(SUITE("ReceiveBadArguments"))
-{
-	TransportTestObject test(true);
-
-	//check that the wrong aruments throw argument exceptions, and it's doesn't go to the sending state
-	test.link.SendUp("");
-	REQUIRE(TLERR_NO_HEADER ==  test.log.NextErrorCode());
-
-	test.link.SendUp("FF");
-	REQUIRE(-1 ==  test.log.NextErrorCode());
-
-	test.link.SendUp(test.GetData("C0", 0, 250)); // length 251
-
-	REQUIRE(-1 ==  test.log.NextErrorCode());
+	REQUIRE_FALSE(test.transport.OnLowerLayerUp());
+	REQUIRE_FALSE(test.transport.OnSendResult(true));
 }
 
 TEST_CASE(SUITE("AllowsHeaderOnlyFinalFrame"))
@@ -118,7 +95,7 @@ TEST_CASE(SUITE("ReceiveNoFIR"))
 	TransportTestObject test(true);
 	//try sending a non-FIR w/ no prior packet
 	test.link.SendUp("80 77"); // _/FIN
-	REQUIRE(test.log.NextErrorCode() ==  TLERR_MESSAGE_WITHOUT_FIR);
+	REQUIRE(test.transport.GetStatistics().rx.numTransportIgnore == 1);
 }
 
 TEST_CASE(SUITE("ReceiveWrongSequence"))
@@ -127,16 +104,14 @@ TEST_CASE(SUITE("ReceiveWrongSequence"))
 	//send a FIR, followed by a FIN w/ the wrong sequence
 	test.link.SendUp(test.GetData("40")); // FIR/_/0
 	test.link.SendUp(test.GetData("82")); // _/FIN/2
-	REQUIRE(test.log.NextErrorCode() ==  TLERR_BAD_SEQUENCE);
+	REQUIRE(test.transport.GetStatistics().rx.numTransportIgnore == 1);
 }
 
 TEST_CASE(SUITE("PacketsCanBeOfVaryingSize"))
 {
 	TransportTestObject test(true);
 	test.link.SendUp("40 0A 0B 0C"); // FIR/_/0
-	REQUIRE(test.log.IsLogErrorFree());
 	test.link.SendUp("81 0D 0E 0F"); // _/FIN/1
-	REQUIRE(test.log.IsLogErrorFree());
 	REQUIRE("0A 0B 0C 0D 0E 0F" ==  test.upper.GetBufferAsHexString());
 }
 
@@ -162,27 +137,28 @@ TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
 		test.link.SendUp(s);
 	}
 
-	REQUIRE(test.log.IsLogErrorFree());
 	REQUIRE(test.upper.BufferEqualsHex(apdu)); //check that the correct data was written
 }
 
 TEST_CASE(SUITE("ReceiveBufferOverflow"))
 {
-	TransportTestObject test(true);
+	TransportTestObject test(true, 4); // maximum ASDU size of 4
 
-	uint32_t num_packets = CalcMaxPackets(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
-	uint32_t last_packet_length = CalcLastPacketSize(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
+	REQUIRE(test.link.SendUp("40 11 22 33")); // FIN = 0, FIR = 1, SEQ = 0
 
-	//send 1 more packet than possible
-	vector<string> packets;
-	string apdu = test.GeneratePacketSequence(packets, num_packets + 1, last_packet_length);
-	for(string s : packets)
 	{
-		test.link.SendUp(s);
+		auto stats = test.transport.GetStatistics().rx;
+		REQUIRE(stats.numTransportRx == 1);
+		REQUIRE(stats.numTransportBufferOverflow == 0);
 	}
 
-	REQUIRE(test.upper.IsBufferEmpty());
-	REQUIRE(test.log.NextErrorCode() ==  TLERR_BUFFER_FULL);
+	REQUIRE(test.link.SendUp("81 44 55")); // FIN = 0, FIR = 1, SEQ = 1
+
+	{
+		auto stats = test.transport.GetStatistics().rx;
+		REQUIRE(stats.numTransportRx == 2);
+		REQUIRE(stats.numTransportBufferOverflow == 1);
+	}
 }
 
 TEST_CASE(SUITE("ReceiveNewFir"))
@@ -194,14 +170,7 @@ TEST_CASE(SUITE("ReceiveNewFir"))
 
 	test.link.SendUp("C0 AB CD");	// FIR/FIN/0
 	REQUIRE("AB CD" ==  test.upper.GetBufferAsHexString());
-	REQUIRE(test.log.NextErrorCode() == TLERR_NEW_FIR_MID_SEQUENCE); //make sure it logs the dropped frames
-}
-
-TEST_CASE(SUITE("SendArguments"))
-{
-	TransportTestObject test(true);
-	test.upper.SendDown("");
-	REQUIRE(test.log.PopOneEntry(flags::ERR));
+	REQUIRE(test.transport.GetStatistics().rx.numTransportDiscard == 1);
 }
 
 TEST_CASE(SUITE("StateSending"))
@@ -209,14 +178,13 @@ TEST_CASE(SUITE("StateSending"))
 	TransportTestObject test(true);
 
 	// this puts the layer into the Sending state
-	test.upper.SendDown("11");
+	REQUIRE(test.upper.SendDown("11"));
 	REQUIRE("C0 11" ==  test.link.PopWriteAsHex()); //FIR/FIN SEQ=0
 
 	// Check that while we're sending, all other send requests are rejected
-	test.upper.SendDown("00");
-	REQUIRE(test.log.PopUntil(flags::ERR));
-	test.transport.OnLowerLayerUp();
-	REQUIRE(test.log.PopUntil(flags::ERR));
+	REQUIRE_FALSE(test.upper.SendDown("00"));
+
+	REQUIRE_FALSE(test.transport.OnLowerLayerUp());
 
 	//while we are sending, we should still be able to receive data as normal
 	test.link.SendUp("C0 77");
@@ -226,8 +194,7 @@ TEST_CASE(SUITE("StateSending"))
 	test.transport.OnSendResult(true);
 	REQUIRE(test.upper.GetState().mSuccessCnt ==  1);
 
-	test.transport.OnSendResult(true);
-	REQUIRE(test.log.PopUntil(flags::ERR));
+	REQUIRE_FALSE(test.transport.OnSendResult(true));
 }
 
 TEST_CASE(SUITE("SendFailure"))

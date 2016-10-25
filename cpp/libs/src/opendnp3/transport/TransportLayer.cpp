@@ -138,6 +138,11 @@ void TransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
 	lower = &linkLayer;
 }
 
+StackStatistics::Transport TransportLayer::GetStatistics() const
+{
+	return StackStatistics::Transport(this->receiver.Statistics(), this->transmitter.Statistics());
+}
+
 bool TransportLayer::OnLowerLayerUp()
 {
 	if (isOnline)
@@ -159,7 +164,7 @@ bool TransportLayer::OnLowerLayerDown()
 	if (!isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already offline");
-		return true;
+		return false;
 	}
 
 	isOnline = false;

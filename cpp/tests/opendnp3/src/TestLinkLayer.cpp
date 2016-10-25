@@ -45,12 +45,9 @@ TEST_CASE(SUITE("ClosedState"))
 {
 	LinkLayerTest t;
 	BufferSegment segment(250, "00");
-	t.upper->SendDown(segment);
-	REQUIRE(t.log.PopOneEntry(flags::ERR));
-	t.link.OnLowerLayerDown();
-	REQUIRE(t.log.PopOneEntry(flags::ERR));
-	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 2);
-	REQUIRE(t.log.PopOneEntry(flags::ERR));
+	REQUIRE_FALSE(t.upper->SendDown(segment));
+	REQUIRE_FALSE(t.link.OnLowerLayerDown());
+	REQUIRE_FALSE(t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 2));
 }
 
 // Prove that the upper layer is notified when the lower layer comes online
@@ -59,10 +56,9 @@ TEST_CASE(SUITE("ForwardsOnLowerLayerUp"))
 	LinkLayerTest t;
 
 	REQUIRE_FALSE(t.upper->IsOnline());
-	t.link.OnLowerLayerUp();
+	REQUIRE(t.link.OnLowerLayerUp());
 	REQUIRE(t.upper->IsOnline());
-	t.link.OnLowerLayerUp();
-	REQUIRE(t.log.PopUntil(flags::ERR));
+	REQUIRE_FALSE(t.link.OnLowerLayerUp());
 }
 
 // Check that once the layer comes up, validation errors can occur
@@ -70,7 +66,7 @@ TEST_CASE(SUITE("ValidatesMasterOutstationBit"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	t.OnFrame(LinkFunction::SEC_ACK, true, false, false, 1, 1024);
-	REQUIRE(t.log.PopErrorCode(DLERR_WRONG_MASTER_BIT));
+	REQUIRE(t.link.GetStatistics().numBadMasterBit == 1);
 }
 
 // Only process frames from your designated remote address
@@ -78,7 +74,7 @@ TEST_CASE(SUITE("ValidatesSourceAddress"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1023);
-	REQUIRE(t.log.PopErrorCode(DLERR_UNKNOWN_SOURCE));
+	REQUIRE(t.link.GetStatistics().numUnknownSource == 1);
 }
 
 // This should actually never happen when using the LinkLayerRouter
@@ -87,7 +83,7 @@ TEST_CASE(SUITE("ValidatesDestinationAddress"))
 {
 	LinkLayerTest t;  t.link.OnLowerLayerUp();
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 2, 1024);
-	REQUIRE(t.log.PopErrorCode(DLERR_UNKNOWN_DESTINATION));
+	REQUIRE(t.link.GetStatistics().numUnknownDestination == 1);
 }
 
 // Show that the base state of idle logs SecToPri frames as errors
@@ -95,9 +91,8 @@ TEST_CASE(SUITE("SecToPriNoContext"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 
-	REQUIRE(t.log.IsLogErrorFree());
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_LPDU);
+	REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
 }
 
 // Show that the base state of idle forwards unconfirmed user data
@@ -106,7 +101,6 @@ TEST_CASE(SUITE("UnconfirmedDataPassedUpFromIdleUnreset"))
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	ByteStr bs(250, 0);
 	t.OnFrame(LinkFunction::PRI_UNCONFIRMED_USER_DATA, false, false, false, 1, 1024, bs.ToRSlice());
-	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.upper->receivedQueue.front() == bs.ToHex());
 }
 
@@ -117,7 +111,7 @@ TEST_CASE(SUITE("ConfirmedDataIgnoredFromIdleUnreset"))
 	ByteStr bs(250, 0);
 	t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, false, false, 1, 1024, bs.ToRSlice());
 	REQUIRE(t.upper->receivedQueue.empty());
-	REQUIRE(t.log.NextErrorCode() == DLERR_UNEXPECTED_LPDU);
+	REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
 }
 
 // Secondary Reset Links
@@ -150,7 +144,6 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::Ack(true, false, 1024, 1));
 	REQUIRE(t.upper->receivedQueue.empty()); //data should not be passed up!
-	REQUIRE(t.log.PopUntil(flags::WARN));
 }
 
 // When we get another reset links when we're already reset,
@@ -185,13 +178,11 @@ TEST_CASE(SUITE("SecondaryResetConfirmedUserData"))
 	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.upper->receivedQueue.front() == bytes.ToHex());
-	REQUIRE(t.log.IsLogErrorFree());
 	t.upper->receivedQueue.clear();
 
 	t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, true, false, 1, 1024, bytes.ToRSlice()); //send with wrong FCB
 	REQUIRE(t.NumTotalWrites() ==  3); //should still get an ACK
 	REQUIRE(t.upper->receivedQueue.empty()); //but no data
-	REQUIRE(t.log.PopUntil(flags::WARN));
 }
 
 TEST_CASE(SUITE("RequestStatusOfLink"))
@@ -219,7 +210,6 @@ TEST_CASE(SUITE("TestLinkStates"))
 	t.link.OnLowerLayerUp();
 	t.OnFrame(LinkFunction::PRI_TEST_LINK_STATES, false, false, false, 1, 1024);
 	REQUIRE(t.NumTotalWrites() == 0);
-	REQUIRE(t.log.PopOneEntry(flags::WARN));
 
 	t.OnFrame(LinkFunction::PRI_RESET_LINK_STATES, false, false, false, 1, 1024);
 	REQUIRE(t.NumTotalWrites() ==  1);
@@ -288,11 +278,9 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::ResetLinkStates(true, 1024, 1));
 	REQUIRE(t.upper->CountersEqual(0, 0));
 
-	REQUIRE(t.log.IsLogErrorFree());
 	t.exe->AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.upper->CountersEqual(0, 1));
-	REQUIRE(t.log.PopOneEntry(flags::WARN));
 }
 
 TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
@@ -333,7 +321,6 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	REQUIRE(t.NumTotalWrites() ==  4);
 	t.link.OnTransmitResult(true);
 
-	REQUIRE(t.log.IsLogErrorFree());
 	t.exe->AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.upper->CountersEqual(0, 1)); //check that the send is still occuring
@@ -365,7 +352,6 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	REQUIRE(t.NumTotalWrites() ==  3);
 	t.link.OnTransmitResult(true);
 
-	REQUIRE(t.log.IsLogErrorFree());
 	t.exe->AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe->RunOne()); // timeout
 	REQUIRE(t.upper->CountersEqual(1, 0)); //check that the send is still occuring
@@ -382,7 +368,6 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	REQUIRE(t.NumTotalWrites() ==  5);	// Should now be waiting for an ACK with active timer
 	t.link.OnTransmitResult(true);
 
-	REQUIRE(t.log.IsLogErrorFree());
 	t.exe->AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe->RunOne());
 	REQUIRE(t.upper->CountersEqual(2, 0)); //check that the send is still occuring

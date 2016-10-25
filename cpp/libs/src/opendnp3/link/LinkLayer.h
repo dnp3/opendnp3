@@ -45,7 +45,9 @@ public:
 
 	// ---- Events from above: ILinkLayer ----
 
-	virtual void Send(ITransportSegment& segments) override;
+	virtual bool Send(ITransportSegment& segments) override;
+
+	const StackStatistics::Link& GetStatistics() const;
 
 private:
 

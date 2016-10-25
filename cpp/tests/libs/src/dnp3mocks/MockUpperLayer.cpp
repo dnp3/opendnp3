@@ -78,18 +78,15 @@ bool MockUpperLayer::OnLowerLayerDown()
 	return true;
 }
 
-void MockUpperLayer::SendDown(const openpal::RSlice& buffer)
+bool MockUpperLayer::SendDown(const openpal::RSlice& buffer)
 {
-	if (this->pLowerLayer)
-	{
-		pLowerLayer->BeginTransmit(buffer);
-	}
+	return this->pLowerLayer ? pLowerLayer->BeginTransmit(buffer) : false;
 }
 
-void MockUpperLayer::SendDown(const std::string& hex)
+bool MockUpperLayer::SendDown(const std::string& hex)
 {
 	HexSequence hs(hex);
-	this->SendDown(hs.ToRSlice());
+	return this->SendDown(hs.ToRSlice());
 }
 
 }

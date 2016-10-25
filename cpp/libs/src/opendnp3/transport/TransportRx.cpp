@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 TransportRx::TransportRx(const Logger& logger, uint32_t maxRxFragSize) :
-	logger(logger),	
+	logger(logger),
 	rxBuffer(maxRxFragSize),
 	numBytesRead(0)
 {
@@ -59,6 +59,8 @@ openpal::WSlice TransportRx::GetAvailable()
 
 RSlice TransportRx::ProcessReceive(const RSlice& input)
 {
+	++statistics.numTransportRx;
+
 	if (input.IsEmpty())
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Received tpdu with no header");
@@ -77,7 +79,7 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 
 	if (!this->ValidateHeader(FIR, SEQ))
 	{
-		++statistics.numTransportErrorRx;		
+		++statistics.numTransportErrorRx;
 		return RSlice::Empty();
 	}
 
@@ -85,15 +87,11 @@ RSlice TransportRx::ProcessReceive(const RSlice& input)
 
 	if (payload.Size() > available.Size())
 	{
-		++statistics.numTransportErrorRx;
+		++statistics.numTransportBufferOverflow;
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Exceeded the buffer size before a complete fragment was read");
 		this->ClearRxBuffer();
 		return RSlice::Empty();
 	}
-
-	
-	++statistics.numTransportRx;
-	
 
 	payload.CopyTo(available);
 

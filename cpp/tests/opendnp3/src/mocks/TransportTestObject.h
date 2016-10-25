@@ -21,17 +21,18 @@
 #ifndef __TRANSPORT_TEST_OBJECT_H_
 #define __TRANSPORT_TEST_OBJECT_H_
 
-#include <opendnp3/transport/TransportLayer.h>
-#include <opendnp3/LogLevels.h>
+#include "opendnp3/transport/TransportLayer.h"
+#include "opendnp3/app/AppConstants.h"
+#include "opendnp3/LogLevels.h"
+
+#include "MockLinkLayer.h"
+#include "dnp3mocks/MockUpperLayer.h"
+
+#include "testlib/MockExecutor.h"
+#include "testlib/MockLogHandler.h"
 
 #include <vector>
 #include <string>
-
-#include "MockLinkLayer.h"
-#include <dnp3mocks/MockUpperLayer.h>
-
-#include <testlib/MockExecutor.h>
-#include <testlib/MockLogHandler.h>
 
 namespace opendnp3
 {
@@ -39,7 +40,7 @@ namespace opendnp3
 class TransportTestObject
 {
 public:
-	TransportTestObject(bool aOpenOnStart = false, uint32_t filters = levels::NORMAL, bool aImmediate = false);
+	TransportTestObject(bool openOnStart = false, uint32_t maxRxFragmentSize = DEFAULT_MAX_APDU_SIZE);
 
 	// Generate a complete packet sequence inside the vector and
 	// return the corresponding reassembled APDU

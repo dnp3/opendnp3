@@ -41,7 +41,7 @@ public:
 	std::string		id;
 	openpal::LogFilters		filters = 0;
 	std::string		location;
-	std::string		message;	
+	std::string		message;
 };
 
 struct MockLogHandlerImpl : public openpal::ILogHandler
@@ -65,11 +65,11 @@ public:
 
 	void WriteToStdIo();
 
-	void Log(const std::string& location, const std::string& message);	
+	void Log(const std::string& location, const std::string& message);
 
-	void ClearLog();	
+	void ClearLog();
 
-	bool GetNextEntry(LogRecord& record);	
+	bool GetNextEntry(LogRecord& record);
 
 private:
 

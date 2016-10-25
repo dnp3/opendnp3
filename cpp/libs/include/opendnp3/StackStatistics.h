@@ -56,26 +56,31 @@ struct StackStatistics
 			/// Number of TPDUs dropped due to malformed contents
 			size_t numTransportErrorRx = 0;
 
+			/// Number of times received data was too big for reassembly buffer
+			size_t numTransportBufferOverflow = 0;
+
 			/// number of times transport buffer is discard due to new FIR
 			size_t numTransportDiscard = 0;
 
 			/// number of segments ignored due to bad FIR/FIN or SEQ
 			size_t numTransportIgnore = 0;
 		};
-		
+
 		struct Tx
 		{
 			/// Number of TPDUs transmitted
 			size_t numTransportTx = 0;
-		};		
+		};
+
+		Transport(const Rx& rx, const Tx& tx) : rx(rx), tx(tx) {}
 
 		Rx rx;
 		Tx tx;
 	};
 
-	
+
 	Link link;
-	Transport transport;	
+	Transport transport;
 };
 
 }

@@ -37,13 +37,15 @@ class MockLinkLayer : public ILinkLayer, public HasUpperLayer
 
 public:
 
-	virtual void Send(ITransportSegment& segments) override final
+	virtual bool Send(ITransportSegment& segments) override final
 	{
 		while (segments.HasValue())
 		{
 			sends.push_back(testlib::ToHex(segments.GetSegment()));
 			segments.Advance();
 		}
+
+		return true;
 	}
 
 	std::string PopWriteAsHex()
@@ -54,14 +56,15 @@ public:
 		return ret;
 	}
 
-	void SendUp(const std::string& hex)
+	bool SendUp(const std::string& hex)
 	{
 		testlib::HexSequence hs(hex);
 		if (pUpperLayer)
 		{
 			auto buffer = hs.ToRSlice();
-			pUpperLayer->OnReceive(buffer);
+			return pUpperLayer->OnReceive(buffer);
 		}
+		return false;
 	}
 
 	std::vector<std::string> sends;

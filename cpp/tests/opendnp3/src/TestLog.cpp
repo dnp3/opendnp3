@@ -34,15 +34,6 @@ using namespace openpal;
 
 #define SUITE(name) "LogTest - " name
 
-TEST_CASE(SUITE("LogErrorCounting"))
-{
-	testlib::MockLogHandler log;
-	log.logger.Log(flags::EVENT, "location", "MessageMessage", 5);
-
-	REQUIRE(log.NextErrorCode() ==  5);
-	REQUIRE(log.NextErrorCode() ==  -1);
-}
-
 TEST_CASE(SUITE("FORMAT_SAFE macro truncates and null terminates"))
 {
 	char buffer[10];

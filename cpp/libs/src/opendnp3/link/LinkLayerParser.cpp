@@ -33,7 +33,7 @@ namespace opendnp3
 {
 
 LinkLayerParser::LinkLayerParser(const Logger& logger) :
-	logger(logger),	
+	logger(logger),
 	state(State::FindSync),
 	frameSize(0),
 	buffer(rxBuffer, LPDU_MAX_FRAME_SIZE)
@@ -59,7 +59,7 @@ void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink& sink)
 
 	while (ParseUntilComplete() == State::Complete)
 	{
-		++statistics.numLinkFrameRx;		
+		++statistics.numLinkFrameRx;
 		this->PushFrame(sink);
 		state = State::FindSync;
 	}
@@ -181,7 +181,7 @@ bool LinkLayerParser::ReadHeader()
 			return true;
 		}
 		else
-		{			
+		{
 			return false;
 		}
 	}
@@ -212,7 +212,7 @@ bool LinkLayerParser::ValidateBody()
 	else
 	{
 		++this->statistics.numBodyCrcError;
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "CRC failure in body");		
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "CRC failure in body");
 		return false;
 	}
 }
@@ -220,7 +220,7 @@ bool LinkLayerParser::ValidateBody()
 bool LinkLayerParser::ValidateHeaderParameters()
 {
 	if(!header.ValidLength())
-	{		
+	{
 		++statistics.numBadLength;
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "LENGTH out of range [5,255]: %i", header.GetLength());
 		return false;
@@ -324,7 +324,7 @@ bool LinkLayerParser::ValidateFunctionCode()
 
 		//now check the fcv
 		if(fcv_set != header.IsFcvDfcSet())
-		{			
+		{
 			++statistics.numBadFCV;
 			FORMAT_LOG_BLOCK(logger, flags::WARN, "Bad FCV for FUNCTION: %s", LinkFunctionToString(header.GetFuncEnum()));
 			return false;

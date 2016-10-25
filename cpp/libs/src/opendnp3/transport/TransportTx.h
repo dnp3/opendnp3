@@ -55,6 +55,11 @@ public:
 
 	virtual bool Advance() override final;
 
+	const StackStatistics::Transport::Tx& Statistics() const
+	{
+		return statistics;
+	}
+
 private:
 
 	// A wrapper to the APDU buffer that we're segmenting

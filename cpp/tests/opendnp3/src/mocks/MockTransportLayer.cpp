@@ -39,9 +39,9 @@ void MockTransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
 	this->pLinkLayer = &linkLayer;
 }
 
-void MockTransportLayer::SendDown(ITransportSegment& segments)
+bool MockTransportLayer::SendDown(ITransportSegment& segments)
 {
-	pLinkLayer->Send(segments);
+	return pLinkLayer->Send(segments);
 }
 
 bool MockTransportLayer::OnReceive(const openpal::RSlice& buffer)
