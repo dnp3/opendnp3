@@ -5,12 +5,12 @@ package com.automatak.dnp3;
  */
 public class DNPTime {
 
-    DNPTime(long msSinceEpoch)
+    public DNPTime(long msSinceEpoch)
     {
         this.msSinceEpoch = msSinceEpoch;
     }
 
-    final long msSinceEpoch;
+    public final long msSinceEpoch;
 
     @Override
     public String toString()
