@@ -24,59 +24,33 @@
 #include <cstdint>
 
 #include "LogFilters.h"
+#include "openpal/util/Uncopyable.h"
 
 namespace openpal
 {
 
 /**
-* An event recorded by the logging framework
+* An event recorded by the logging framework. 
 */
-class LogEntry
+class LogEntry : openpal::Uncopyable
 {
 
 public:
 
-	LogEntry();
+	LogEntry() = delete;
 
-	LogEntry(char const* alias, const LogFilters& filters, char const* location, char const* message, int errorCode);
+	LogEntry(const char * loggerid, const LogFilters& filters, const char* location, const char* message) :
+		loggerid(loggerid),
+		filters(filters),
+		location(location),
+		message(message)
+	{}
 
-	/// @return The alias of the logger that recorded the message
-	char const*	GetAlias() const
-	{
-		return alias;
-	}
-
-	/// @return The place in the source code where the message was recorded
-	char const*	GetLocation() const
-	{
-		return location;
-	}
-
-	/// @return body of the log message
-	char const* GetMessage() const
-	{
-		return message;
-	}
-
-	/// @return the log level of the message
-	const LogFilters& GetFilters() const
-	{
-		return filters;
-	}
-
-	/// @return the error code associated with the message
-	int	GetErrorCode() const
-	{
-		return errorCode;
-	}
-
-private:
-
-	char const*		alias;
-	LogFilters		filters;
-	char const*		location;
-	char const*		message;
-	int				errorCode;
+	
+	const char* loggerid;
+	LogFilters filters;
+	const char* location;
+	const char*	message;	
 };
 
 }

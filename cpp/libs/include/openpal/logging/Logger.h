@@ -54,7 +54,7 @@ public:
 		return Logger(nullptr, "", 0);
 	}
 
-	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
+	void Log(const LogFilters& filters, const char* location, const char* message);
 
 	Logger Detach(const std::string& id) const
 	{

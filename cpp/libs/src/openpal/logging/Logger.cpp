@@ -34,7 +34,7 @@ bool Logger::IsEnabled(const LogFilters& filters) const
 	return backend && (settings->levels & filters);
 }
 
-void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
+void Logger::Log(const LogFilters& filters, const char* location, const char* message)
 {
 	if (backend)
 	{
@@ -43,8 +43,7 @@ void Logger::Log(const LogFilters& filters, char const* location, char const* me
 		        this->settings->id.c_str(),
 		        filters,
 		        location,
-		        message,
-		        errorCode
+		        message		        
 		    )
 		);
 	}

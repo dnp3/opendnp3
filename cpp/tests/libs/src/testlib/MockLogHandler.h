@@ -35,14 +35,13 @@ class LogRecord
 {
 public:
 
-	LogRecord();
+	LogRecord() = default;
 	LogRecord(const openpal::LogEntry& entry);
 
 	std::string		id;
-	openpal::LogFilters		filters;
+	openpal::LogFilters		filters = 0;
 	std::string		location;
-	std::string		message;
-	int				errorCode;
+	std::string		message;	
 };
 
 struct MockLogHandlerImpl : public openpal::ILogHandler
@@ -66,25 +65,11 @@ public:
 
 	void WriteToStdIo();
 
-	void Log(const std::string& location, const std::string& message);
+	void Log(const std::string& location, const std::string& message);	
 
-	int32_t PopFilter();
+	void ClearLog();	
 
-	bool PopOneEntry(int32_t filter);
-
-	bool PopUntil(int32_t filter);
-
-	bool PopErrorCode(int code);
-
-	int ClearLog();
-
-	int NextErrorCode();
-
-	bool GetNextEntry(LogRecord& record);
-
-	bool IsLogErrorFree();
-
-	void Pop(openpal::ILogHandler& log);
+	bool GetNextEntry(LogRecord& record);	
 
 private:
 
