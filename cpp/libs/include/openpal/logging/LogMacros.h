@@ -41,28 +41,28 @@
 
 #else
 
-#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
+#define SIMPLE_LOG_BLOCK(logger, filters, message) \
 		if(logger.IsEnabled(filters)){ \
-			logger.Log(filters, LOCATION, message, code); \
+			logger.Log(filters, LOCATION, message); \
 		}
 
-#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message) \
+#define SIMPLE_LOGGER_BLOCK(pLogger, filters, message) \
 		if(pLogger && pLogger->IsEnabled(filters)){ \
-			pLogger->Log(filters, LOCATION, message, code); \
+			pLogger->Log(filters, LOCATION, message); \
 		}
 
-#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
+#define FORMAT_LOG_BLOCK(logger, filters, format, ...) \
 	if(logger.IsEnabled(filters)){ \
 		char message[openpal::MAX_LOG_ENTRY_SIZE]; \
 		SAFE_STRING_FORMAT(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
-		logger.Log(filters, LOCATION, message, code); \
+		logger.Log(filters, LOCATION, message); \
 	}
 
-#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
+#define FORMAT_LOGGER_BLOCK(pLogger, filters, format, ...) \
 	if(pLogger && pLogger->IsEnabled(filters)){ \
 		char message[openpal::MAX_LOG_ENTRY_SIZE]; \
 		SAFE_STRING_FORMAT(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
-		pLogger->Log(filters, LOCATION, message, code); \
+		pLogger->Log(filters, LOCATION, message); \
 	}
 
 #define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize) \
@@ -76,31 +76,16 @@
 
 #define SAFE_STRING_FORMAT(dest, size, format, ...)
 
-#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message)
+#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, message)
 
-#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message)
+#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, message)
 
-#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...)
+#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, format, ...)
 
-#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...)
+#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, format, ...)
 
 #define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize)
 
-#endif
+#endif // end OPENPAL_STRIP_LOGGING
 
-//macro to remove boiler-plate code for logging messages
-#define SIMPLE_LOG_BLOCK(logger, severity, message) \
-	SIMPLE_LOG_BLOCK_WITH_CODE(logger, severity, -1, message)
-
-//macro to remove boiler-plate code for logging messages
-#define SIMPLE_LOGGER_BLOCK(pLogger, severity, message) \
-	SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, severity, -1, message)
-
-#define FORMAT_LOGGER_BLOCK(pLogger, filters, format, ...) \
-	FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, -1, format, ##__VA_ARGS__);
-
-
-#define FORMAT_LOG_BLOCK(logger, filters, format, ...) \
-	FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, -1, format, ##__VA_ARGS__);
-
-#endif
+#endif // end include guards
