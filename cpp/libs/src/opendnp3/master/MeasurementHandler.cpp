@@ -215,6 +215,23 @@ IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICo
 	return this->LoadValuesWithTransformTo<SecurityStat>(header, values);
 }
 
+IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>&values)
+{
+	
+	auto transform = [](const Group50Var1& input) -> DNPTime 
+	{
+		return Convert(input);
+	};
+
+	auto collection = Map<Group50Var1, DNPTime>(values, transform);
+
+	this->CheckForTxStart();
+	HeaderRecord record = (HeaderRecord)header;
+	HeaderInfo info(record.enumeration, record.GetQualifierCode(), ModeFromType(record.enumeration), record.headerIndex);
+	this->pSOEHandler->Process(info, collection);
+	return IINField();
+}
+
 // ----------- Conversion routines from DNP3 types to API types -----------
 
 SecurityStat MeasurementHandler::Convert(const Group121Var1& meas)
@@ -230,6 +247,11 @@ SecurityStat MeasurementHandler::Convert(const Group122Var1& meas)
 SecurityStat MeasurementHandler::Convert(const Group122Var2& meas)
 {
 	return SecurityStat(meas.flags, meas.assocId, meas.value, meas.time);
+}
+
+DNPTime MeasurementHandler::Convert(const Group50Var1& meas)
+{
+	return DNPTime(meas.time);
 }
 
 }

@@ -26,19 +26,19 @@ namespace Automatak
 
 			LogFilter ChannelAdapter::GetLogFilters()
 			{
-				return LogFilter((*channel)->GetLogFilters().GetBitfield());
+				return LogFilter(channel->GetLogFilters().GetBitfield());
 			}
 
 			IChannelStatistics^ ChannelAdapter::GetChannelStatistics()
 			{
-				auto stats = (*channel)->GetChannelStatistics();
+				auto stats = channel->GetChannelStatistics();
 				return Conversions::ConvertChannelStats(stats);
 			}
 
 			void ChannelAdapter::SetLogFilters(LogFilter filters)
 			{
 				openpal::LogFilters flags(filters.Flags);
-				(*channel)->SetLogFilters(flags);
+				channel->SetLogFilters(flags);
 			}			
 
 			void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)
@@ -54,7 +54,7 @@ namespace Automatak
 				auto SOEAdapter = std::shared_ptr<opendnp3::ISOEHandler>(new SOEHandlerAdapter(handler));
 				auto appAdapter = std::shared_ptr<opendnp3::IMasterApplication>(new MasterApplicationAdapter<opendnp3::IMasterApplication>(application));
 
-				auto master = (*channel)->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, Conversions::ConvertConfig(config));
+				auto master = channel->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, Conversions::ConvertConfig(config));
 				return master ? gcnew MasterAdapter(master) : nullptr;
 			}	
 
@@ -65,13 +65,13 @@ namespace Automatak
 				auto commandAdapter = std::shared_ptr<opendnp3::ICommandHandler>(new OutstationCommandHandlerAdapter(cmdHandler));
 				auto appAdapter = std::shared_ptr<opendnp3::IOutstationApplication>(new OutstationApplicationAdapter(application));
 
-				auto outstation = (*channel)->AddOutstation(stdLoggerId.c_str(), commandAdapter, appAdapter, Conversions::ConvertConfig(config));
+				auto outstation = channel->AddOutstation(stdLoggerId.c_str(), commandAdapter, appAdapter, Conversions::ConvertConfig(config));
 				return outstation ? gcnew OutstationAdapter(outstation) : nullptr;
 			}			
 
 			void ChannelAdapter::Shutdown()
 			{
-				(*channel)->Shutdown();
+				channel->Shutdown();
 			}
 
 		}

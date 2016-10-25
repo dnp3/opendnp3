@@ -55,6 +55,7 @@ void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3
 	callProxy(env, proxy, jinfo, jlist);
 }
 
+
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
 	auto create = [](JNIEnv * env, const Binary & value) -> jobject { return jni::JCache::BinaryInput.init3(env, value.value, value.flags.value, value.time); };
@@ -134,6 +135,32 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 	};
 
 	this->Process(info, values, create, call);
+}
+
+void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<DNPTime>& values)
+{
+	auto create = [](JNIEnv * env, const DNPTime & value) -> jobject { return jni::JCache::DNPTime.init1(env, (jlong) value.value); };
+	auto call = [](JNIEnv * env, jobject proxy, jobject hinfo, jobject list)
+	{
+		jni::JCache::SOEHandler.processTime(env, proxy, hinfo, list);
+	};
+
+	const auto env = JNI::GetEnv();
+
+	auto jinfo = Convert(env, info);
+
+	auto jlist = jni::JCache::ArrayList.init1(env, static_cast<jint>(values.Count()));
+
+	auto add = [&](DNPTime meas)
+	{
+		auto jvalue = jni::JCache::DNPTime.init1(env, (jlong)meas.value);
+		jni::JCache::ArrayList.add(env, jlist, jvalue);
+	};
+
+	values.ForeachItem(add);
+
+	jni::JCache::SOEHandler.processTime(env, proxy, jinfo, jlist);	
+
 }
 
 jobject SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::HeaderInfo& info)

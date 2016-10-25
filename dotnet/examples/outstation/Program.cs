@@ -66,6 +66,8 @@ namespace DotNetOutstationDemo
                         {
                             binaryValue = !binaryValue;
                             ++analogValue;
+                            System.Console.WriteLine("Change Binary 0 to: " + binaryValue);
+                            System.Console.WriteLine("Change Analog 9 to: " + analogValue);
 
                             // create a changeset and load it 
                             var changeset = new ChangeSet();

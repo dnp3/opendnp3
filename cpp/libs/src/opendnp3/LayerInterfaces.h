@@ -52,6 +52,8 @@ public:
 };
 
 
+class ILowerLayer;
+
 class IUpperLayer : public IUpDown
 {
 
@@ -78,7 +80,7 @@ public:
 
 	virtual ~ILowerLayer() {}
 
-	virtual bool BeginTransmit(const openpal::RSlice&) = 0;
+	virtual void BeginTransmit(const openpal::RSlice&) = 0;
 };
 
 class HasLowerLayer

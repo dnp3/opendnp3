@@ -23,6 +23,9 @@
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
+#include <chrono>
+#include <sstream>
+
 #include <asiopal/SteadyClock.h>
 
 using namespace std;
@@ -33,24 +36,23 @@ namespace asiopal
 {
 
 ThreadPool::ThreadPool(
-    const openpal::Logger& logger,
-    const std::shared_ptr<IO>& io,
+    openpal::ILogHandler* handler,
+    uint32_t levels,
     uint32_t concurrency,
-    std::function<void()> onThreadStart,
-    std::function<void()> onThreadExit) :
-	logger(logger),
-	io(io),
-	onThreadStart(onThreadStart),
-	onThreadExit(onThreadExit),
+    std::function<void()> onThreadStart_,
+    std::function<void()> onThreadExit_) :
+	root(handler, "threadpool", levels),
+	onThreadStart(onThreadStart_),
+	onThreadExit(onThreadExit_),
 	isShutdown(false),
-	infiniteTimer(io->service)
+	ioservice(std::make_shared<asio::io_service>()),
+	infiniteTimer(*ioservice)
 {
 	if(concurrency == 0)
 	{
 		concurrency = 1;
-		SIMPLE_LOG_BLOCK(this->logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
+		SIMPLE_LOG_BLOCK(root.logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
-
 	infiniteTimer.expires_at(asiopal::steady_clock_t::time_point::max());
 	infiniteTimer.async_wait([](const std::error_code&) {});
 	for(uint32_t i = 0; i < concurrency; ++i)
@@ -59,8 +61,18 @@ ThreadPool::ThreadPool(
 		{
 			this->Run(i);
 		};
-		threads.push_back(std::make_unique<thread>(run));
+		threads.push_back(std::unique_ptr<thread>(new thread(run)));
 	}
+}
+
+std::shared_ptr<ThreadPool> ThreadPool::Create(
+    openpal::ILogHandler* handler,
+    uint32_t levels,
+    uint32_t concurrency,
+    std::function<void()> onThreadStart,
+    std::function<void()> onThreadExit)
+{
+	return std::make_shared<ThreadPool>(handler, levels, concurrency, onThreadStart, onThreadExit);
 }
 
 ThreadPool::~ThreadPool()
@@ -82,15 +94,20 @@ void ThreadPool::Shutdown()
 	}
 }
 
+asio::io_service& ThreadPool::GetIOService()
+{
+	return *ioservice;
+}
+
 void ThreadPool::Run(int threadnum)
 {
 	onThreadStart();
 
-	FORMAT_LOG_BLOCK(this->logger, logflags::INFO, "Starting thread (%d)", threadnum);
+	FORMAT_LOG_BLOCK(root.logger, logflags::INFO, "Starting thread (%d)", threadnum);
 
-	this->io->service.run();
+	ioservice->run();
 
-	FORMAT_LOG_BLOCK(this->logger, logflags::INFO, "Exiting thread (%d)", threadnum);
+	FORMAT_LOG_BLOCK(root.logger, logflags::INFO, "Exiting thread (%d)", threadnum);
 
 	onThreadExit();
 }

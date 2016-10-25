@@ -1,19 +1,9 @@
 cmake_minimum_required (VERSION 2.8)
-
 project (opendnp3)
 set(OPENDNP3_MAJOR_VERSION 2)
 set(OPENDNP3_MINOR_VERSION 1)
 set(OPENDNP3_MICRO_VERSION 0)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
-
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING
-      "Choose the type of build, options are: Debug Release
-RelWithDebInfo MinSizeRel."
-      FORCE)
-endif()
-
-message("CMake build is: ${CMAKE_BUILD_TYPE}")
 
 include(${PROJECT_SOURCE_DIR}/cmake/settings.cmake)
 
@@ -29,8 +19,7 @@ option(DNP3_JAVA "Build the Java bindings" OFF)
 # other options off-by-default that you can enable
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
-option(COVERAGE "Builds the libraries with coverage info for gcov (gcc only)" OFF)
-option(PROFILE "Builds the libraries with profiling support (gcc only)" OFF)
+option(COVERAGE "Builds the libraries with coverage info for gcov" OFF)
 
 if(DNP3_ALL)
 	message("enabling all optional components")
@@ -76,6 +65,7 @@ if(DNP3_TLS)
 
 	find_package(OpenSSL REQUIRED)
 	message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+
 	if(WIN32)
 		include_directories(${OPENSSL_INCLUDE_DIR})
 	endif()
@@ -111,21 +101,17 @@ endif()
 
 # ---- asiopal library ----
 file(GLOB_RECURSE asiopal_HPP ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asiopal/*.h)
-
 if(DNP3_TLS)
-  file(GLOB_RECURSE asiopal_CPP ./cpp/libs/src/asiopal/*.cpp)  
+  file(GLOB_RECURSE asiopal_CPP ./cpp/libs/src/asiopal/*.cpp)
 else()  	
   file(GLOB asiopal_CPP ./cpp/libs/src/asiopal/*.cpp)
 endif()
-
 add_library(asiopal ${LIB_TYPE} ${asiopal_HPP} ${asiopal_CPP})
-
-set(asiopal_link_libraries "openpal")
 if(DNP3_TLS)
-    set(asiopal_link_libraries "${asiopal_link_libraries};${OPENSSL_LIBRARIES}")
+  target_link_libraries(asiopal openpal ${OPENSSL_LIBRARIES})
+else()
+  target_link_libraries(asiopal openpal)
 endif()
-
-target_link_libraries(asiopal ${asiopal_link_libraries})
 install(TARGETS asiopal DESTINATION lib)
 set_target_properties(asiopal PROPERTIES FOLDER libs)
 
@@ -172,6 +158,9 @@ if(DNP3_DEMO)
   target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(outstation-demo PROPERTIES FOLDER demos)
 
+  # When linking the demos, asiopal requires network libraries
+  target_link_libraries (asiopal LINK_PUBLIC ${NET_LIBS})
+
   if(DNP3_DECODE)
 
     # ----- decoder executable -----
@@ -198,7 +187,7 @@ if(DNP3_DEMO)
 	target_link_libraries (master-gprs-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
 	set_target_properties(master-gprs-tls-demo PROPERTIES FOLDER demos/tls)
 
-   endif()
+	endif()
 
 endif()
 
@@ -219,28 +208,21 @@ if(DNP3_TEST)
   set_target_properties(dnp3mocks PROPERTIES FOLDER tests/mocks)
 
   # ----- openpal tests -----
-  file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpal/src/*.cpp ./cpp/tests/openpal/src/*.h)
+  file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp ./cpp/tests/openpaltests/src/*.h)
   add_executable (testopenpal ${openpal_TESTSRC})
   target_link_libraries (testopenpal LINK_PUBLIC testlib ${PTHREAD})
   set_target_properties(testopenpal PROPERTIES FOLDER tests)
   add_test(testopenpal testopenpal)
 
   # ----- opendnp3 tests -----
-  file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3/src/*.cpp ./cpp/tests/opendnp3/src/*.h)
+  file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp ./cpp/tests/opendnp3tests/src/*.h)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})
   target_link_libraries (testopendnp3 LINK_PUBLIC dnp3mocks ${PTHREAD})
   set_target_properties(testopendnp3 PROPERTIES FOLDER tests)
   add_test(testopendnp3 testopendnp3)
 
-  # ----- asiopal tests -----
-  file(GLOB_RECURSE asiopal_TESTSRC ./cpp/tests/asiopal/src/*.cpp ./cpp/tests/asiopal/src/*.h)
-  add_executable (testasiopal ${asiopal_TESTSRC})
-  target_link_libraries (testasiopal LINK_PUBLIC asiopal testlib ${PTHREAD})
-  set_target_properties(testasiopal PROPERTIES FOLDER tests)
-  add_test(testasiopal testasiopal)
-
   # ----- asiodnp3 tests -----
-  file(GLOB_RECURSE asiodnp3_TESTSRC ./cpp/tests/asiodnp3/src/*.cpp ./cpp/tests/asiodnp3/src/*.h)
+  file(GLOB_RECURSE asiodnp3_TESTSRC ./cpp/tests/asiodnp3tests/src/*.cpp ./cpp/tests/asiodnp3tests/src/*.h)
   add_executable (testasiodnp3 ${asiodnp3_TESTSRC})
   target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
   set_target_properties(testasiodnp3 PROPERTIES FOLDER tests)

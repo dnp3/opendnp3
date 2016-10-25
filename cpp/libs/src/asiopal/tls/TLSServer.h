@@ -21,13 +21,13 @@
 #ifndef ASIOPAL_TLSSERVER_H
 #define ASIOPAL_TLSSERVER_H
 
+#include "asiopal/ThreadPool.h"
 #include "asiopal/IPEndpoint.h"
 #include "asiopal/IListener.h"
 #include "asiopal/TLSConfig.h"
-#include "asiopal/Executor.h"
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/logging/Logger.h>
+#include <openpal/logging/LogRoot.h>
 
 #include "asiopal/tls/SSLContext.h"
 
@@ -39,48 +39,54 @@ namespace asiopal
 * Meant to be used exclusively as a shared_ptr
 */
 class TLSServer :
-	public IListener,
 	public std::enable_shared_from_this<TLSServer>,
+	public IListener,
 	private openpal::Uncopyable
 {
 
 public:
 
-	TLSServer(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<Executor>& executor,
-	    const IPEndpoint& endpoint,
-	    const TLSConfig& config,
-	    std::error_code& ec
-	);
-
 	/// Stop listening for connections, permanently shutting down the listener
-	void Shutdown() override;
+	void BeginShutdown() override final;
 
 protected:
 
-	// Inherited classes must implement these methods
-
-	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) = 0;
-	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) = 0;
-	virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
-	virtual void OnShutdown() = 0;
+	TLSServer(
+	    std::shared_ptr<ThreadPool> pool,
+	    openpal::LogRoot root,
+	    IPEndpoint endpoint,
+	    const TLSConfig& tlsConfig,
+	    std::error_code& ec
+	);
 
 	void StartAccept(std::error_code& ec);
 
-	openpal::Logger logger;
-	std::shared_ptr<Executor> executor;
+	/// inherited flass defines what to do with these callbacks
+	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) = 0;
+	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) = 0;
+	virtual void AcceptStream(uint64_t sessionid, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) = 0;
+
+
+	/// Inherited class defines what happens when the server shuts down
+	virtual void OnShutdown() = 0;
 
 private:
 
 	std::error_code ConfigureContext(const TLSConfig& config, std::error_code& ec);
 	std::error_code ConfigureListener(const std::string& adapter, std::error_code& ec);
 
-	SSLContext ctx;
-	asio::ip::tcp::endpoint endpoint;
-	asio::ip::tcp::acceptor acceptor;
+protected:
 
-	uint64_t session_id;
+	std::shared_ptr<ThreadPool> m_pool;
+	openpal::LogRoot m_root;
+
+private:
+
+	SSLContext m_ctx;
+	asio::ip::tcp::endpoint m_endpoint;
+	asio::ip::tcp::acceptor m_acceptor;
+
+	uint64_t m_session_id;
 };
 
 }

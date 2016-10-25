@@ -22,7 +22,7 @@ package com.automatak.dnp3.impl;
 import com.automatak.dnp3.*;
 import com.automatak.dnp3.enums.EventMode;
 
-class ChangeSetImpl implements Database {
+public class ChangeSetImpl implements Database {
 
     public final long nativePointer;
 

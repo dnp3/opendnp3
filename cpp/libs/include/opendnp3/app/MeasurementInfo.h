@@ -34,6 +34,7 @@
 #include "opendnp3/gen/StaticAnalogVariation.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/StaticTimeAndIntervalVariation.h"
+#include "opendnp3/gen/StaticDNPTimeVariation.h"
 #include "opendnp3/gen/StaticSecurityStatVariation.h"
 
 #include "opendnp3/gen/EventBinaryVariation.h"
@@ -157,6 +158,16 @@ struct TimeAndIntervalInfo : private openpal::StaticOnly
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
 	const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;
 };
+
+struct DNPTimeInfo : private openpal::StaticOnly
+{
+	typedef DNPTime meas_t;
+	typedef StaticDNPTimeVariation static_variation_t;
+
+	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DNPTime;
+	const static StaticDNPTimeVariation DefaultStaticVariation = StaticDNPTimeVariation::Group50Var1;
+};
+
 
 struct SecurityStatInfo : private openpal::StaticOnly
 {

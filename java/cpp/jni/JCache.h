@@ -53,6 +53,7 @@
 #include "JNIControlRelayOutputBlock.h"
 #include "JNICounter.h"
 #include "JNICounterConfig.h"
+#include "JNIDNPTime.h"
 #include "JNIDatabaseConfig.h"
 #include "JNIDoubleBinaryConfig.h"
 #include "JNIDoubleBit.h"
@@ -145,6 +146,7 @@ namespace jni
         static cache::ControlRelayOutputBlock ControlRelayOutputBlock;
         static cache::Counter Counter;
         static cache::CounterConfig CounterConfig;
+        static cache::DNPTime DNPTime;
         static cache::DatabaseConfig DatabaseConfig;
         static cache::DoubleBinaryConfig DoubleBinaryConfig;
         static cache::DoubleBit DoubleBit;

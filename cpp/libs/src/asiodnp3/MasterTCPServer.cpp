@@ -37,57 +37,60 @@ using namespace asiopal;
 namespace asiodnp3
 {
 
+std::shared_ptr<MasterTCPServer> MasterTCPServer::Create(
+    IResourceManager& shutdown,
+    std::shared_ptr<IListenCallbacks> callbacks,
+    std::shared_ptr<ThreadPool> pool,
+    openpal::LogRoot root,
+    asiopal::IPEndpoint endpoint,
+    std::error_code& ec
+)
+{
+	auto ret = std::shared_ptr<MasterTCPServer>(new MasterTCPServer(shutdown, callbacks, pool, std::move(root), endpoint, ec));
+	if (!ec)
+	{
+		ret->StartAccept();
+	}
+	return ret;
+}
+
 MasterTCPServer::MasterTCPServer(
-    const openpal::Logger& logger,
-    const std::shared_ptr<asiopal::Executor>& executor,
-    const asiopal::IPEndpoint& endpoint,
-    const std::shared_ptr<IListenCallbacks>& callbacks,
-    const std::shared_ptr<asiopal::ResourceManager>& manager,
+    IResourceManager& shutdown,
+    std::shared_ptr<IListenCallbacks> callbacks,
+    std::shared_ptr<ThreadPool> pool,
+    openpal::LogRoot root,
+    asiopal::IPEndpoint endpoint,
     std::error_code& ec
 ) :
-	TCPServer(logger, executor, endpoint, ec),
-	callbacks(callbacks),
-	manager(manager)
+	TCPServer(pool, std::move(root), endpoint, ec),
+	m_manager(&shutdown),
+	m_callbacks(callbacks)
 {
 
 }
 
-void MasterTCPServer::OnShutdown()
-{
-	this->manager->Detach(this->shared_from_this());
-}
-
-void MasterTCPServer::AcceptConnection(uint64_t sessionid, const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket socket)
+void MasterTCPServer::AcceptConnection(uint64_t sessionid, asio::ip::tcp::socket socket)
 {
 	std::ostringstream oss;
 	oss << socket.remote_endpoint();
 
-	if (this->callbacks->AcceptConnection(sessionid, socket.remote_endpoint().address().to_string()))
+	if (m_callbacks->AcceptConnection(sessionid, socket.remote_endpoint().address().to_string()))
 	{
-		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 
-		auto channel = SocketChannel::Create(executor->Fork(), std::move(socket));	// run the link session in its own strand
-
-		auto create = [&]() -> std::shared_ptr<LinkSession>
-		{
-			return LinkSession::Create(
-			    this->logger.Detach(SessionIdToString(sessionid)),
-			    sessionid,
-			    this->manager,
-			    this->callbacks,
-			    channel
-			);
-		};
-
-		if (!this->manager->Bind<LinkSession>(create))
-		{
-			channel->Shutdown();
-		}
+		LinkSession::Create(
+		    m_root.Clone(SessionIdToString(sessionid).c_str()),
+		    sessionid,
+		    *m_manager,
+		    m_callbacks,
+		    StrandExecutor::Create(m_pool),
+		    SocketChannel::Create(std::move(socket))
+		);
 	}
 	else
 	{
 		socket.close();
-		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
+		FORMAT_LOG_BLOCK(m_root.logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
 	}
 }
 
@@ -96,6 +99,11 @@ std::string MasterTCPServer::SessionIdToString(uint64_t sessionid)
 	std::ostringstream oss;
 	oss << "session-" << sessionid;
 	return oss.str();
+}
+
+void MasterTCPServer::OnShutdown()
+{
+	m_manager->Unregister(shared_from_this());
 }
 
 }

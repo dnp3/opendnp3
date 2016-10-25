@@ -30,27 +30,25 @@ class OutstationImpl implements Outstation {
     }
 
     @Override
-    public void finalize()
-    {
-        this.destroy_native(this.nativePointer);
+    public synchronized void enable() {
+        if (nativePointer != 0) {
+            enable_native(nativePointer);
+        }
     }
 
     @Override
-    public void enable()
-    {
-        this.enable_native(nativePointer);
+    public synchronized void disable() {
+        if (nativePointer != 0) {
+            disable_native(nativePointer);
+        }
     }
 
     @Override
-    public void disable()
-    {
-        this.disable_native(nativePointer);
-    }
-
-    @Override
-    public void shutdown()
-    {
-        this.shutdown_native(nativePointer);
+    public synchronized void shutdown() {
+        if (nativePointer != 0) {
+            shutdown_native(nativePointer);
+            nativePointer = 0;
+        }
     }
 
     @Override
@@ -66,8 +64,6 @@ class OutstationImpl implements Outstation {
     private native void disable_native(long nativePointer);
 
     private native void shutdown_native(long nativePointer);
-
-    private native void destroy_native(long nativePointer);
 
     private native void apply_native(long nativePointer, long nativeChangeSet);
 }

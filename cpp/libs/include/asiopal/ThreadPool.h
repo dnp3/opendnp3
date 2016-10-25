@@ -21,14 +21,15 @@
 #ifndef ASIOPAL_THREADPOOL_H
 #define ASIOPAL_THREADPOOL_H
 
-#include <openpal/logging/Logger.h>
+#include <openpal/logging/LogRoot.h>
 
-#include "asiopal/SteadyClock.h"
-#include "asiopal/Executor.h"
+#include <asio.hpp>
 
 #include <functional>
 #include <thread>
 #include <memory>
+
+#include "asiopal/SteadyClock.h"
 
 namespace asiopal
 {
@@ -43,8 +44,16 @@ public:
 	friend class ThreadPoolTest;
 
 	ThreadPool(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<IO>& io,
+	    openpal::ILogHandler* pHandler,
+	    uint32_t levels,
+	    uint32_t aConcurrency,
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
+	);
+
+	static std::shared_ptr<ThreadPool> Create(
+	    openpal::ILogHandler* pHandler,
+	    uint32_t levels,
 	    uint32_t concurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}
@@ -52,17 +61,13 @@ public:
 
 	~ThreadPool();
 
-	inline std::shared_ptr<Executor> CreateExecutor() const
-	{
-		return Executor::Create(io);
-	}
+	asio::io_service& GetIOService();
 
 	void Shutdown();
 
 private:
 
-	openpal::Logger logger;
-	const std::shared_ptr<IO> io;
+	openpal::LogRoot root;
 
 	std::function<void ()> onThreadStart;
 	std::function<void ()> onThreadExit;
@@ -71,6 +76,7 @@ private:
 
 	void Run(int threadnum);
 
+	std::shared_ptr<asio::io_service> ioservice;
 	asio::basic_waitable_timer< asiopal::steady_clock_t > infiniteTimer;
 	std::vector<std::unique_ptr<std::thread>> threads;
 };

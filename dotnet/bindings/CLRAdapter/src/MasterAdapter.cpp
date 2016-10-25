@@ -11,34 +11,22 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
-			MasterAdapter::MasterAdapter(const std::shared_ptr<asiodnp3::IMaster>& master) : 
-				MasterOperationsAdapter(master.get()), 
-				master(new std::shared_ptr<asiodnp3::IMaster>(master))
+			MasterAdapter::MasterAdapter(asiodnp3::IMaster* master) : MasterOperationsAdapter(master), master(master)
 			{}
-
-			MasterAdapter::!MasterAdapter()
-			{
-				delete master;				
-			}
 
 			void MasterAdapter::Enable()
 			{
-				(*master)->Enable();				
+				master->Enable();
 			}
 
 			void MasterAdapter::Disable()
 			{
-				(*master)->Disable();				
+				master->Disable();
 			}
 
 			void MasterAdapter::Shutdown()
 			{
-				(*master)->Shutdown();				
-			}
-
-			Interface::IStackStatistics^ MasterAdapter::GetStackStatistics()
-			{
-				return Conversions::ConvertStackStats((*master)->GetStackStatistics());
+				master->Shutdown();
 			}
 		}
 	}

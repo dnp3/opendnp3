@@ -23,37 +23,31 @@
 
 namespace asiopal
 {
+std::unique_ptr<IAsyncChannel> SocketChannel::Create(asio::ip::tcp::socket socket)
+{
+	return std::make_unique<SocketChannel>(std::move(socket));
+}
 
-SocketChannel::SocketChannel(std::shared_ptr<Executor> executor, asio::ip::tcp::socket socket) : IAsyncChannel(executor), socket(std::move(socket))
+SocketChannel::SocketChannel(asio::ip::tcp::socket socket) : socket(std::move(socket))
 {
 
 }
 
-void SocketChannel::BeginReadImpl(openpal::WSlice dest)
+void SocketChannel::BeginRead(openpal::WSlice& dest, const read_callback_t& callback)
 {
-	auto callback = [this](const std::error_code & ec, size_t num)
-	{
-		this->OnReadCallback(ec, num);
-	};
-
-	socket.async_read_some(asio::buffer(dest, dest.Size()), this->executor->strand.wrap(callback));
+	socket.async_read_some(asio::buffer(dest, dest.Size()), callback);
 }
 
-void SocketChannel::BeginWriteImpl(const openpal::RSlice& buffer)
+void SocketChannel::BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback)
 {
-	auto callback = [this](const std::error_code & ec, size_t num)
-	{
-		this->OnWriteCallback(ec, num);
-	};
-
-	asio::async_write(socket, asio::buffer(buffer, buffer.Size()), this->executor->strand.wrap(callback));
+	asio::async_write(socket, asio::buffer(buffer, buffer.Size()), callback);
 }
 
-void SocketChannel::ShutdownImpl()
+void SocketChannel::BeginShutdown(const shutdown_callback_t& callback)
 {
-	std::error_code ec;
-	socket.shutdown(asio::socket_base::shutdown_type::shutdown_both, ec);
-	socket.close(ec);
+	socket.shutdown(asio::socket_base::shutdown_type::shutdown_both);
+	socket.close();
+	callback();
 }
 
 }

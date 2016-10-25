@@ -43,7 +43,13 @@ public class DNP3ManagerFactory {
     static {
         if(System.getProperty("com.automatak.dnp3.nostaticload") == null)
         {
-            System.loadLibrary("opendnp3java");
+            try {
+                System.loadLibrary("opendnp3java");
+            }catch(Exception | UnsatisfiedLinkError ex)
+            {
+                System.out.println("Failed to load DLL");
+                throw ex;
+            }
         }
     }
 

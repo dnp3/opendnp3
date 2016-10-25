@@ -49,7 +49,7 @@ public:
 	openpal::RSlice PopWrite();
 	std::string PopWriteAsHex();
 
-	virtual bool BeginTransmit(const openpal::RSlice& arBuffer) override final;
+	virtual void BeginTransmit(const openpal::RSlice& arBuffer) override final;
 
 private:
 

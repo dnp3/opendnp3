@@ -42,6 +42,12 @@ struct Group50Var1
   static bool Write(const Group50Var1&, openpal::WSlice&);
 
   DNPTime time;
+
+  typedef DNPTime Target;
+  typedef DNPTimeSpec Spec;
+  static bool ReadTarget(openpal::RSlice&, DNPTime&);
+  static bool WriteTarget(const DNPTime&, openpal::WSlice&);
+  static DNP3Serializer<DNPTime> Inst() { return DNP3Serializer<DNPTime>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 // Time and Date - Indexed absolute time and long interval

@@ -29,11 +29,13 @@ namespace opendnp3
 /**
 * DNP3 source/destination address pair
 */
-struct Route
+class Route
 {
-	Route(uint16_t destination, uint16_t source) :
-		destination(destination),
-		source(source)
+
+public:
+	Route(uint16_t destination_, uint16_t source_) :
+		destination(destination_),
+		source(source_)
 	{}
 
 	Route() : destination(0), source(0) {}

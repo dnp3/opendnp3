@@ -21,85 +21,38 @@
 #ifndef OPENPAL_LOGGER_H
 #define OPENPAL_LOGGER_H
 
-#include "openpal/logging/ILogHandler.h"
+#include "LogEntry.h"
+#include "LogFilters.h"
 
-#include <memory>
-#include <string>
+#include "openpal/util/Uncopyable.h"
 
 namespace openpal
 {
 
+class LogRoot;
 
 /**
 * A copyable facade over a LogRoot class
 */
 class Logger
 {
+	friend class LogRoot;
 
 public:
 
-	struct Settings
-	{
-		Settings(const std::string& id, openpal::LogFilters levels) : id(id), levels(levels)
-		{}
-
-		std::string id;
-		openpal::LogFilters levels;
-	};
-
-	Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, openpal::LogFilters levels);
-
-	static Logger Empty()
-	{
-		return Logger(nullptr, "", 0);
-	}
-
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
-
-	Logger Detach(const std::string& id) const
-	{
-		return Logger(this->backend, std::make_shared<Settings>(id, this->settings->levels));
-	}
-
-	Logger Detach(const std::string& id, openpal::LogFilters levels) const
-	{
-		return Logger(this->backend, std::make_shared<Settings>(id, levels));
-	}
-
-	Logger Detach(openpal::LogFilters levels) const
-	{
-		return Logger(this->backend, std::make_shared<Settings>(this->settings->id, levels));
-	}
 
 	bool IsEnabled(const LogFilters& filters) const;
 
-	LogFilters GetFilters() const
-	{
-		return this->settings->levels;
-	}
-
-	void SetFilters(const openpal::LogFilters& filters)
-	{
-		this->settings->levels = filters;
-	}
-
-	void Rename(const std::string& id)
-	{
-		this->settings->id = id;
-	}
+	bool HasAny(const LogFilters& filters) const;
 
 private:
 
-	Logger(const std::shared_ptr<ILogHandler>& backend, const std::shared_ptr<Settings>& settings) :
-		backend(backend),
-		settings(settings)
-	{}
-
 	Logger() = delete;
-	Logger& operator=(const Logger&) = delete;
 
-	const std::shared_ptr<ILogHandler> backend;
-	const std::shared_ptr<Settings> settings;
+	Logger(LogRoot* pRoot);
+
+	LogRoot* pRoot;
 };
 
 }

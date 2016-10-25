@@ -66,7 +66,7 @@
 	}
 
 #define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize) \
-	if(logger.IsEnabled(filters)){ \
+	if(logger.HasAny(filters)){ \
 		LogHex(logger, filters, buffer, firstSize, otherSize); \
 	}
 

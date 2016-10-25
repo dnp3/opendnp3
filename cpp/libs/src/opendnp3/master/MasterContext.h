@@ -22,7 +22,7 @@
 #define OPENDNP3_MASTERCONTEXT_H
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/logging/Logger.h>
+#include <openpal/logging/LogRoot.h>
 #include <openpal/container/Buffer.h>
 #include <openpal/executor/TimerRef.h>
 
@@ -38,8 +38,12 @@
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
+#include "opendnp3/master/MasterScan.h"
 #include "opendnp3/master/HeaderBuilder.h"
 #include "opendnp3/master/RestartOperationResult.h"
+
+
+#include <deque>
 
 namespace opendnp3
 {
@@ -61,32 +65,32 @@ protected:
 public:
 
 	MContext(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<openpal::IExecutor>& executor,
-	    const std::shared_ptr<ILowerLayer>& lower,
-	    const std::shared_ptr<ISOEHandler>& SOEHandler,
-	    const std::shared_ptr<IMasterApplication>& application,
+	    openpal::IExecutor& executor,
+	    openpal::Logger logger,
+	    ILowerLayer& lower,
+	    ISOEHandler& SOEHandler,
+	    opendnp3::IMasterApplication& application,
 	    const MasterParams& params,
 	    ITaskLock& taskLock
 	);
 
 	openpal::Logger logger;
-	const std::shared_ptr<openpal::IExecutor> executor;
-	const std::shared_ptr<ILowerLayer> lower;
+	openpal::IExecutor* pExecutor;
+	ILowerLayer* pLower;
 
 	// ------- configuration --------
 	MasterParams params;
-	const std::shared_ptr<ISOEHandler> SOEHandler;
-	const std::shared_ptr<IMasterApplication> application;
+	ISOEHandler* pSOEHandler;
 	ITaskLock* pTaskLock;
+	IMasterApplication* pApplication;
 
 
 	// ------- dynamic state ---------
-	bool isOnline = false;
-	bool isSending = false;
+	bool isOnline;
+	bool isSending;
 	AppSeqNum solSeq;
 	AppSeqNum unsolSeq;
-	std::shared_ptr<IMasterTask> activeTask;
+	openpal::ManagedPtr<IMasterTask> pActiveTask;
 	openpal::TimerRef responseTimer;
 	openpal::TimerRef scheduleTimer;
 	openpal::TimerRef taskStartTimeoutTimer;
@@ -112,7 +116,7 @@ public:
 
 	virtual void RecordLastRequest(const openpal::RSlice& apdu) {}
 
-	virtual bool MeetsUserRequirements(const std::shared_ptr<IMasterTask>& task)
+	virtual bool MeetsUserRequirements(const IMasterTask& task)
 	{
 		return true;
 	}
@@ -134,13 +138,13 @@ public:
 
 	/// -----  public methods used to add tasks -----
 
-	std::shared_ptr<IMasterTask> AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+	MasterScan AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 
-	std::shared_ptr<IMasterTask> AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
-	std::shared_ptr<IMasterTask> AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
-	std::shared_ptr<IMasterTask> AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
 	/// ---- Single shot immediate scans ----
 
@@ -162,7 +166,7 @@ public:
 
 	/// public state manipulation actions
 
-	TaskState BeginNewTask(const std::shared_ptr<IMasterTask>& task);
+	TaskState BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
 
 	TaskState ResumeActiveTask();
 
@@ -188,7 +192,7 @@ public:
 
 private:
 
-	void ScheduleRecurringPollTask(const std::shared_ptr<IMasterTask>& task);
+	void ScheduleRecurringPollTask(IMasterTask* pTask);
 
 	virtual void OnPendingTask() override
 	{
@@ -201,7 +205,7 @@ private:
 
 protected:
 
-	void ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task);
+	void ScheduleAdhocTask(IMasterTask* pTask);
 
 	/// state switch lookups
 	TaskState OnStartEvent();

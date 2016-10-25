@@ -34,12 +34,16 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     OPENING = 1,
     /// <summary>
+    /// waiting to open
+    /// </summary>
+    WAITING = 2,
+    /// <summary>
     /// open
     /// </summary>
-    OPEN = 2,
+    OPEN = 3,
     /// <summary>
     /// stopped and will never do anything again
     /// </summary>
-    SHUTDOWN = 3
+    SHUTDOWN = 4
   }
 }

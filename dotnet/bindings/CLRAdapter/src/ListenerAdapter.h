@@ -15,31 +15,17 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
-			private ref class ListenerAdapter sealed : Interface::IListener
+			private ref class ListenerAdapter sealed : IListener
 			{
 			public:
 
-				ListenerAdapter(const std::shared_ptr<asiopal::IListener>& proxy) : proxy(new std::shared_ptr<asiopal::IListener>(proxy))
-				{}
+				ListenerAdapter(asiopal::IListener* proxy);				
 
-				ListenerAdapter::~ListenerAdapter()
-				{
-					this->!ListenerAdapter();
-				}
-
-				ListenerAdapter::!ListenerAdapter()
-				{
-					delete proxy;
-				}
-
-				virtual void BeginShutdown()
-				{
-					(*proxy)->Shutdown();
-				}
+				virtual void BeginShutdown();
 
 			private:
 				
-				const std::shared_ptr<asiopal::IListener>* proxy;
+				asiopal::IListener* proxy;
 			};
 
 		}

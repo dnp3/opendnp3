@@ -25,16 +25,12 @@
 #include <openpal/executor/TimeDuration.h>
 
 #include <opendnp3/gen/ChannelState.h>
+#include <opendnp3/link/ChannelRetry.h>
 
 #include <asiodnp3/IChannel.h>
 #include <asiodnp3/IChannelListener.h>
-#include <asiodnp3/IListenCallbacks.h>
-
 #include <asiopal/SerialTypes.h>
-#include <asiopal/ChannelRetry.h>
 #include <asiopal/TLSConfig.h>
-#include <asiopal/IListener.h>
-#include <asiopal/IPEndpoint.h>
 
 #include <memory>
 #include <system_error>
@@ -70,7 +66,6 @@ public:
 
 	~DNP3Manager();
 
-
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop
 	* the thead pool.
@@ -87,12 +82,12 @@ public:
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
 	* @param port Port of remote outstation is listening on
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
-	* @return shared_ptr to a channel interface
+	* @return A channel interface
 	*/
-	std::shared_ptr<IChannel> AddTCPClient(
+	IChannel* AddTCPClient(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    const std::string& host,
 	    const std::string& local,
 	    uint16_t port,
@@ -107,12 +102,12 @@ public:
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
-	* @return shared_ptr to a channel interface
+	* @return A channel interface
 	*/
-	std::shared_ptr<IChannel> AddTCPServer(
+	IChannel* AddTCPServer(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener);
@@ -125,12 +120,12 @@ public:
 	* @param retry Retry parameters for failed channels
 	* @param settings settings object that fully parameterizes the serial port
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
-	* @return shared_ptr to a channel interface
+	* @return A channel interface
 	*/
-	std::shared_ptr<IChannel> AddSerial(
+	IChannel* AddSerial(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    asiopal::SerialSettings settings,
 	    std::shared_ptr<IChannelListener> listener);
 
@@ -148,12 +143,12 @@ public:
 	* @param config TLS configuration information
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @param ec An error code. If set, a nullptr will be returned
-	* @return shared_ptr to a channel interface
+	* @return A channel interface
 	*/
-	std::shared_ptr<IChannel> AddTLSClient(
+	IChannel* AddTLSClient(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    const std::string& host,
 	    const std::string& local,
 	    uint16_t port,
@@ -175,40 +170,17 @@ public:
 	* @param config TLS configuration information
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @param ec An error code. If set, a nullptr will be returned
-	* @return shared_ptr to a channel interface
+	* @return A channel interface
 	*/
-	std::shared_ptr<IChannel> AddTLSServer(
+	IChannel* AddTLSServer(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
-
-	/**
-	* Create a TCP listener that will be used to accept incoming connections
-	*/
-	std::shared_ptr<asiopal::IListener> CreateListener(
-	    std::string loggerid,
-	    openpal::LogFilters loglevel,
-	    asiopal::IPEndpoint endpoint,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::error_code& ec
-	);
-
-	/**
-	* Create a TLS listener that will be used to accept incoming connections
-	*/
-	std::shared_ptr<asiopal::IListener> CreateListener(
-	    std::string loggerid,
-	    openpal::LogFilters loglevel,
-	    asiopal::IPEndpoint endpoint,
-	    const asiopal::TLSConfig& config,
-	    std::shared_ptr<IListenCallbacks> callbacks,
-	    std::error_code& ec
-	);
 
 private:
 

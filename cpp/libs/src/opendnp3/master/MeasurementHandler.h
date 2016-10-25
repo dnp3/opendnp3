@@ -96,7 +96,7 @@ private:
 	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
 	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values) override final;
 	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values) override final;
-
+	IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>&values) override final;
 
 	template <class Target, class Source>
 	IINField LoadValuesWithTransformTo(const HeaderRecord& record, const ICollection<Indexed<Source>>& values)
@@ -134,6 +134,7 @@ private:
 	static SecurityStat Convert(const Group121Var1& value);
 	static SecurityStat Convert(const Group122Var1& value);
 	static SecurityStat Convert(const Group122Var2& value);
+	static DNPTime Convert(const Group50Var1& value);
 
 	template <class T, class U>
 	static Indexed<U> Convert(const Indexed<T>& input)

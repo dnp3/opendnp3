@@ -35,10 +35,15 @@ namespace opendnp3
 {
 
 
-TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize, StackStatistics* statistics) :
+TransportLayer::TransportLayer(openpal::Logger logger, openpal::IExecutor& executor, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
 	logger(logger),
-	receiver(logger, maxRxFragSize, statistics),
-	transmitter(logger, statistics)
+	pUpperLayer(nullptr),
+	pLinkLayer(nullptr),
+	isOnline(false),
+	isSending(false),
+	pExecutor(&executor),
+	receiver(logger, maxRxFragSize, pStatistics),
+	transmitter(logger, pStatistics)
 {
 
 }
@@ -47,37 +52,47 @@ TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFrag
 // Actions
 ///////////////////////////////////////
 
-bool TransportLayer::BeginTransmit(const RSlice& apdu)
+void TransportLayer::BeginTransmit(const RSlice& apdu)
 {
 	if (!isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
-		return false;
+		return;
 	}
+
 
 	if (apdu.IsEmpty())
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
-		return false;
+		auto lambda = [this]()
+		{
+			this->OnSendResult(false);
+		};
+		pExecutor->Post(lambda);
+		return;
 	}
+
 
 	if (isSending)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
-		return false;
+		return;
 	}
 
-	if (!lower)
+	if (!pLinkLayer)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
-		return false;
+		auto lambda = [this]()
+		{
+			this->OnSendResult(false);
+		};
+		pExecutor->Post(lambda);
+		return;
 	}
 
 	isSending = true;
 	transmitter.Configure(apdu);
-	lower->Send(transmitter);
-
-	return true;
+	pLinkLayer->Send(transmitter);
 }
 
 ///////////////////////////////////////
@@ -89,9 +104,9 @@ bool TransportLayer::OnReceive(const RSlice& tpdu)
 	if (isOnline)
 	{
 		auto apdu = receiver.ProcessReceive(tpdu);
-		if (apdu.IsNotEmpty() && upper)
+		if (apdu.IsNotEmpty() && pUpperLayer)
 		{
-			upper->OnReceive(apdu);
+			pUpperLayer->OnReceive(apdu);
 		}
 		return true;
 	}
@@ -118,9 +133,9 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 
 	isSending = false;
 
-	if (upper)
+	if (pUpperLayer)
 	{
-		upper->OnSendResult(isSuccess);
+		pUpperLayer->OnSendResult(isSuccess);
 	}
 
 	return true;
@@ -128,14 +143,14 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 
 void TransportLayer::SetAppLayer(IUpperLayer& upperLayer)
 {
-	assert(!upper);
-	upper = &upperLayer;
+	assert(pUpperLayer == nullptr);
+	pUpperLayer = &upperLayer;
 }
 
 void TransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
 {
-	assert(!lower);
-	lower = &linkLayer;
+	assert(pLinkLayer == nullptr);
+	pLinkLayer = &linkLayer;
 }
 
 bool TransportLayer::OnLowerLayerUp()
@@ -147,9 +162,9 @@ bool TransportLayer::OnLowerLayerUp()
 	}
 
 	isOnline = true;
-	if (upper)
+	if (pUpperLayer)
 	{
-		upper->OnLowerLayerUp();
+		pUpperLayer->OnLowerLayerUp();
 	}
 	return true;
 }
@@ -166,9 +181,9 @@ bool TransportLayer::OnLowerLayerDown()
 	isSending = false;
 	receiver.Reset();
 
-	if (upper)
+	if (pUpperLayer)
 	{
-		upper->OnLowerLayerDown();
+		pUpperLayer->OnLowerLayerDown();
 	}
 
 	return true;

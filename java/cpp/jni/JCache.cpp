@@ -52,6 +52,7 @@ namespace jni
     cache::ControlRelayOutputBlock JCache::ControlRelayOutputBlock;
     cache::Counter JCache::Counter;
     cache::CounterConfig JCache::CounterConfig;
+    cache::DNPTime JCache::DNPTime;
     cache::DatabaseConfig JCache::DatabaseConfig;
     cache::DoubleBinaryConfig JCache::DoubleBinaryConfig;
     cache::DoubleBit JCache::DoubleBit;
@@ -109,91 +110,179 @@ namespace jni
 
     bool JCache::init(JNIEnv* env)
     {
-        return AnalogConfig.init(env)
-        && AnalogInput.init(env)
-        && AnalogOutputDouble64.init(env)
-        && AnalogOutputFloat32.init(env)
-        && AnalogOutputInt16.init(env)
-        && AnalogOutputInt32.init(env)
-        && AnalogOutputStatus.init(env)
-        && AnalogOutputStatusConfig.init(env)
-        && ApplicationIIN.init(env)
-        && ArrayList.init(env)
-        && AssignClassType.init(env)
-        && BinaryConfig.init(env)
-        && BinaryInput.init(env)
-        && BinaryOutputStatus.init(env)
-        && BinaryOutputStatusConfig.init(env)
-        && ChannelListener.init(env)
-        && ChannelState.init(env)
-        && ClassAssignment.init(env)
-        && ClassField.init(env)
-        && CommandHandler.init(env)
-        && CommandPointResult.init(env)
-        && CommandPointState.init(env)
-        && CommandProcessor.init(env)
-        && CommandStatus.init(env)
-        && CommandTaskResult.init(env)
-        && CompletableFuture.init(env)
-        && ControlCode.init(env)
-        && ControlRelayOutputBlock.init(env)
-        && Counter.init(env)
-        && CounterConfig.init(env)
-        && DatabaseConfig.init(env)
-        && DoubleBinaryConfig.init(env)
-        && DoubleBit.init(env)
-        && DoubleBitBinaryInput.init(env)
-        && Duration.init(env)
-        && EventAnalogOutputStatusVariation.init(env)
-        && EventAnalogVariation.init(env)
-        && EventBinaryOutputStatusVariation.init(env)
-        && EventBinaryVariation.init(env)
-        && EventBufferConfig.init(env)
-        && EventConfig.init(env)
-        && EventCounterVariation.init(env)
-        && EventDoubleBinaryVariation.init(env)
-        && EventFrozenCounterVariation.init(env)
-        && FrozenCounter.init(env)
-        && FrozenCounterConfig.init(env)
-        && GroupVariation.init(env)
-        && Header.init(env)
-        && HeaderInfo.init(env)
-        && IINField.init(env)
-        && IndexMode.init(env)
-        && IndexedValue.init(env)
-        && Iterable.init(env)
-        && Iterator.init(env)
-        && LinkLayerConfig.init(env)
-        && List.init(env)
-        && LogEntry.init(env)
-        && LogHandler.init(env)
-        && MasterApplication.init(env)
-        && MasterConfig.init(env)
-        && MasterStackConfig.init(env)
-        && MasterTaskType.init(env)
-        && OperateType.init(env)
-        && OutstationApplication.init(env)
-        && OutstationConfig.init(env)
-        && OutstationStackConfig.init(env)
-        && PointClass.init(env)
-        && QualifierCode.init(env)
-        && Range.init(env)
-        && SOEHandler.init(env)
-        && Stack.init(env)
-        && StaticAnalogOutputStatusVariation.init(env)
-        && StaticAnalogVariation.init(env)
-        && StaticBinaryOutputStatusVariation.init(env)
-        && StaticBinaryVariation.init(env)
-        && StaticCounterVariation.init(env)
-        && StaticDoubleBinaryVariation.init(env)
-        && StaticFrozenCounterVariation.init(env)
-        && TLSConfig.init(env)
-        && TaskCompletion.init(env)
-        && TaskId.init(env)
-        && TaskInfo.init(env)
-        && TimeSyncMode.init(env)
-        && TimestampMode.init(env)
-        ;
+        auto success = true;
+
+        success = AnalogConfig.init(env);
+        if(!success) return false;
+        success = AnalogInput.init(env);
+        if(!success) return false;
+        success = AnalogOutputDouble64.init(env);
+        if(!success) return false;
+        success = AnalogOutputFloat32.init(env);
+        if(!success) return false;
+        success = AnalogOutputInt16.init(env);
+        if(!success) return false;
+        success = AnalogOutputInt32.init(env);
+        if(!success) return false;
+        success = AnalogOutputStatus.init(env);
+        if(!success) return false;
+        success = AnalogOutputStatusConfig.init(env);
+        if(!success) return false;
+        success = ApplicationIIN.init(env);
+        if(!success) return false;
+        success = ArrayList.init(env);
+        if(!success) return false;
+        success = AssignClassType.init(env);
+        if(!success) return false;
+        success = BinaryConfig.init(env);
+        if(!success) return false;
+        success = BinaryInput.init(env);
+        if(!success) return false;
+        success = BinaryOutputStatus.init(env);
+        if(!success) return false;
+        success = BinaryOutputStatusConfig.init(env);
+        if(!success) return false;
+        success = ChannelListener.init(env);
+        if(!success) return false;
+        success = ChannelState.init(env);
+        if(!success) return false;
+        success = ClassAssignment.init(env);
+        if(!success) return false;
+        success = ClassField.init(env);
+        if(!success) return false;
+        success = CommandHandler.init(env);
+        if(!success) return false;
+        success = CommandPointResult.init(env);
+        if(!success) return false;
+        success = CommandPointState.init(env);
+        if(!success) return false;
+        success = CommandProcessor.init(env);
+        if(!success) return false;
+        success = CommandStatus.init(env);
+        if(!success) return false;
+        success = CommandTaskResult.init(env);
+        if(!success) return false;
+        success = CompletableFuture.init(env);
+        if(!success) return false;
+        success = ControlCode.init(env);
+        if(!success) return false;
+        success = ControlRelayOutputBlock.init(env);
+        if(!success) return false;
+        success = Counter.init(env);
+        if(!success) return false;
+        success = CounterConfig.init(env);
+        if(!success) return false;
+        success = DNPTime.init(env);
+        if(!success) return false;
+        success = DatabaseConfig.init(env);
+        if(!success) return false;
+        success = DoubleBinaryConfig.init(env);
+        if(!success) return false;
+        success = DoubleBit.init(env);
+        if(!success) return false;
+        success = DoubleBitBinaryInput.init(env);
+        if(!success) return false;
+        success = Duration.init(env);
+        if(!success) return false;
+        success = EventAnalogOutputStatusVariation.init(env);
+        if(!success) return false;
+        success = EventAnalogVariation.init(env);
+        if(!success) return false;
+        success = EventBinaryOutputStatusVariation.init(env);
+        if(!success) return false;
+        success = EventBinaryVariation.init(env);
+        if(!success) return false;
+        success = EventBufferConfig.init(env);
+        if(!success) return false;
+        success = EventConfig.init(env);
+        if(!success) return false;
+        success = EventCounterVariation.init(env);
+        if(!success) return false;
+        success = EventDoubleBinaryVariation.init(env);
+        if(!success) return false;
+        success = EventFrozenCounterVariation.init(env);
+        if(!success) return false;
+        success = FrozenCounter.init(env);
+        if(!success) return false;
+        success = FrozenCounterConfig.init(env);
+        if(!success) return false;
+        success = GroupVariation.init(env);
+        if(!success) return false;
+        success = Header.init(env);
+        if(!success) return false;
+        success = HeaderInfo.init(env);
+        if(!success) return false;
+        success = IINField.init(env);
+        if(!success) return false;
+        success = IndexMode.init(env);
+        if(!success) return false;
+        success = IndexedValue.init(env);
+        if(!success) return false;
+        success = Iterable.init(env);
+        if(!success) return false;
+        success = Iterator.init(env);
+        if(!success) return false;
+        success = LinkLayerConfig.init(env);
+        if(!success) return false;
+        success = List.init(env);
+        if(!success) return false;
+        success = LogEntry.init(env);
+        if(!success) return false;
+        success = LogHandler.init(env);
+        if(!success) return false;
+        success = MasterApplication.init(env);
+        if(!success) return false;
+        success = MasterConfig.init(env);
+        if(!success) return false;
+        success = MasterStackConfig.init(env);
+        if(!success) return false;
+        success = MasterTaskType.init(env);
+        if(!success) return false;
+        success = OperateType.init(env);
+        if(!success) return false;
+        success = OutstationApplication.init(env);
+        if(!success) return false;
+        success = OutstationConfig.init(env);
+        if(!success) return false;
+        success = OutstationStackConfig.init(env);
+        if(!success) return false;
+        success = PointClass.init(env);
+        if(!success) return false;
+        success = QualifierCode.init(env);
+        if(!success) return false;
+        success = Range.init(env);
+        if(!success) return false;
+        success = SOEHandler.init(env);
+        if(!success) return false;
+        success = Stack.init(env);
+        if(!success) return false;
+        success = StaticAnalogOutputStatusVariation.init(env);
+        if(!success) return false;
+        success = StaticAnalogVariation.init(env);
+        if(!success) return false;
+        success = StaticBinaryOutputStatusVariation.init(env);
+        if(!success) return false;
+        success = StaticBinaryVariation.init(env);
+        if(!success) return false;
+        success = StaticCounterVariation.init(env);
+        if(!success) return false;
+        success = StaticDoubleBinaryVariation.init(env);
+        if(!success) return false;
+        success = StaticFrozenCounterVariation.init(env);
+        if(!success) return false;
+        success = TLSConfig.init(env);
+        if(!success) return false;
+        success = TaskCompletion.init(env);
+        if(!success) return false;
+        success = TaskId.init(env);
+        if(!success) return false;
+        success = TaskInfo.init(env);
+        if(!success) return false;
+        success = TimeSyncMode.init(env);
+        if(!success) return false;
+        success = TimestampMode.init(env);
+        if(!success) return false;
+        return true;
     }
 
     void JCache::cleanup(JNIEnv* env)
@@ -228,6 +317,7 @@ namespace jni
         ControlRelayOutputBlock.cleanup(env);
         Counter.cleanup(env);
         CounterConfig.cleanup(env);
+        DNPTime.cleanup(env);
         DatabaseConfig.cleanup(env);
         DoubleBinaryConfig.cleanup(env);
         DoubleBit.cleanup(env);
