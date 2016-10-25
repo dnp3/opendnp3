@@ -68,6 +68,23 @@ void MeasurementHandler::CheckForTxStart()
 	}
 }
 
+IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
+{
+	this->CheckForTxStart();
+
+	auto transform = [](const Group50Var1 & input) -> DNPTime
+	{
+		return input.time;
+	};
+
+	auto collection = Map<Group50Var1, DNPTime>(values, transform);
+
+	HeaderInfo info(header.enumeration, header.GetQualifierCode(), TimestampMode::INVALID, header.headerIndex);
+	this->pSOEHandler->Process(info, collection);
+
+	return IINField();
+}
+
 IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values)
 {
 	Group51Var1 cto;

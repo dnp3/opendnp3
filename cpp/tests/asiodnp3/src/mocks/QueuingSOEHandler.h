@@ -70,30 +70,38 @@ public:
 	{
 		this->ProcessAny(values);
 	}
+
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override
 	{
 		this->ProcessAny(values);
 	}
+
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override
 	{
 		this->ProcessAny(values);
 	}
+
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override
 	{
 		this->ProcessAny(values);
 	}
+
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override
 	{
 		this->ProcessAny(values);
 	}
+
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override
 	{
 		this->ProcessAny(values);
 	}
+
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override
 	{
 		this->ProcessAny(values);
 	}
+
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override {}
 
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override {}
 	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override {}

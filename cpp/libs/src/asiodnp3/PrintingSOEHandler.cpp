@@ -128,4 +128,14 @@ void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Index
 	values.ForeachItem(print);
 }
 
+void PrintingSOEHandler::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values)
+{
+	auto print = [](const DNPTime & value)
+	{
+		std::cout << "DNPTime: " << value.value << std::endl;
+	};
+
+	values.ForeachItem(print);
+}
+
 }

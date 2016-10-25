@@ -114,6 +114,11 @@ public:
 	{
 		count += values.Count();
 	}
+
+	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override
+	{
+		count += values.Count();
+	}
 };
 
 }

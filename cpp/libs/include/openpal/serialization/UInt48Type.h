@@ -37,12 +37,10 @@ public:
 	UInt48Type() : value(0)
 	{}
 
-#ifndef SWIG
 	operator int64_t() const
 	{
 		return value;
 	}
-#endif
 
 	int64_t value;
 };

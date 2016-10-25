@@ -122,6 +122,15 @@ public:
 		this->RecordAny(info, values, this->securityStatSOE);
 	}
 
+	virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override final
+	{
+		values.ForeachItem([this](const DNPTime & value)
+		{
+			++this->soeCount;
+			this->timeSOE.push_back(value);
+		});
+	}
+
 	void Clear()
 	{
 		soeCount = 0;
@@ -138,6 +147,7 @@ public:
 		binaryCommandEventSOE.clear();
 		analogCommandEventSOE.clear();
 		securityStatSOE.clear();
+		timeSOE.clear();
 	}
 
 	std::map<uint16_t, Record<Binary>> binarySOE;
@@ -152,6 +162,7 @@ public:
 	std::map<uint16_t, Record<BinaryCommandEvent>> binaryCommandEventSOE;
 	std::map<uint16_t, Record<AnalogCommandEvent>> analogCommandEventSOE;
 	std::map<uint16_t, Record<SecurityStat>> securityStatSOE;
+	std::vector<DNPTime> timeSOE;
 
 protected:
 

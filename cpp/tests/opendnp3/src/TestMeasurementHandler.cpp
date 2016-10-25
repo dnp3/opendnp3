@@ -114,6 +114,22 @@ TEST_CASE(SUITE("parses g122v2 correctly"))
 	TestObjectHeaders(header, ParseResult::OK, verify);
 }
 
+TEST_CASE(SUITE("parses g50v1 correctly"))
+{
+	auto verify = [](MockSOEHandler & soe)
+	{
+		REQUIRE(soe.TotalReceived() == 2);
+		REQUIRE(soe.timeSOE.size() == 2);
+		REQUIRE(soe.timeSOE[0].value == 0xABABABABABAB);
+		REQUIRE(soe.timeSOE[1].value == 0xBCBCBCBCBCBC);
+	};
+
+	// g50v1 count of 2
+	auto objects = "32 01 07 02 AB AB AB AB AB AB BC BC BC BC BC BC";
+
+	TestObjectHeaders(objects, ParseResult::OK, verify);
+}
+
 ParseResult TestObjectHeaders(const std::string& objects, ParseResult expectedResult, const std::function<void(MockSOEHandler&)>& verify)
 {
 	MockSOEHandler soe;
