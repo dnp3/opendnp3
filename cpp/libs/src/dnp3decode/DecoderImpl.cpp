@@ -34,11 +34,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks_, openpal::Logger logger_) :
-	callbacks(&callbacks_),
-	logger(logger_),
-	link(logger_, nullptr),
-	transportRx(logger_, 2048, nullptr)
+DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks, const openpal::Logger& logger) :
+	callbacks(&callbacks),
+	logger(logger),
+	link(logger),
+	transportRx(logger, 2048)
 {}
 
 void DecoderImpl::DecodeLPDU(const openpal::RSlice& data)

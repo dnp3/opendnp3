@@ -39,7 +39,7 @@ class DecoderImpl final : private IFrameSink
 {
 public:
 
-	DecoderImpl(IDecoderCallbacks& callbacks, openpal::Logger logger);
+	DecoderImpl(IDecoderCallbacks& callbacks, const openpal::Logger& logger);
 
 	void DecodeLPDU(const openpal::RSlice& data);
 	void DecodeTPDU(const openpal::RSlice& data);
