@@ -72,12 +72,21 @@ struct StackStatistics
 			size_t numTransportTx = 0;
 		};
 
+		Transport() = default;
 		Transport(const Rx& rx, const Tx& tx) : rx(rx), tx(tx) {}
 
 		Rx rx;
 		Tx tx;
 	};
 
+	StackStatistics() = default;
+
+	StackStatistics(const Link& link, const Transport& transport) :
+		link(link),
+		transport(transport)
+	{
+
+	}
 
 	Link link;
 	Transport transport;

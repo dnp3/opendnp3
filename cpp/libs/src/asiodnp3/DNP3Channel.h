@@ -57,7 +57,7 @@ public:
 
 	void Shutdown() override;
 
-	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override;
+	virtual opendnp3::LinkStatistics GetStatistics() override;
 
 	virtual openpal::LogFilters GetLogFilters() const override;
 

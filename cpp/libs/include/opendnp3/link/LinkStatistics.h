@@ -58,25 +58,36 @@ struct LinkStatistics
 		size_t numBadFCB = 0;
 	};
 
-	/// The number of times the channel has successfully opened
-	size_t numOpen = 0;
+	struct Channel
+	{
+		/// The number of times the channel has successfully opened
+		size_t numOpen = 0;
 
-	/// The number of times the channel has failed to open
-	size_t numOpenFail = 0;
+		/// The number of times the channel has failed to open
+		size_t numOpenFail = 0;
 
-	/// The number of times the channel has closed either due to user intervention or an error
-	size_t numClose = 0;
+		/// The number of times the channel has closed either due to user intervention or an error
+		size_t numClose = 0;
 
-	/// The number of bytes received
-	size_t numBytesRx = 0;
+		/// The number of bytes received
+		size_t numBytesRx = 0;
 
-	/// The number of bytes transmitted
-	size_t numBytesTx = 0;
+		/// The number of bytes transmitted
+		size_t numBytesTx = 0;
 
-	/// Number of frames transmitted
-	size_t numLinkFrameTx = 0;
+		/// Number of frames transmitted
+		size_t numLinkFrameTx = 0;
+	};
 
-	// statistics for the parser
+	LinkStatistics() = default;
+
+	LinkStatistics(const Channel& channel, const Parser& parser) : channel(channel), parser(parser)
+	{}
+
+	/// statistics for the communicaiton channel
+	Channel channel;
+
+	/// statistics for the link parser
 	Parser parser;
 
 };

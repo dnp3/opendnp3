@@ -36,7 +36,7 @@ IOHandler::IOHandler(
 ) :
 	logger(logger),
 	listener(listener),
-	parser(logger, &statistics)
+	parser(logger)
 {
 
 }
@@ -247,7 +247,7 @@ bool IOHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& u
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(this->logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route, source: %i, dest %i", header.src, header.dest);
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Frame w/ unknown route, source: %i, dest %i", header.src, header.dest);
 		return false;
 	}
 }

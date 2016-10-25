@@ -53,8 +53,7 @@ MasterSessionStack::MasterSessionStack(
 ) :
 	executor(executor),
 	session(session),
-	statistics(),
-	stack(logger, executor, application, config.master.maxRxFragSize, &statistics, config.link),
+	stack(logger, executor, application, config.master.maxRxFragSize, config.link),
 	context(logger, executor, stack.transport, SOEHandler, application, config.master, NullTaskLock::Instance())
 {
 	stack.link->SetRouter(linktx);
@@ -116,9 +115,9 @@ void MasterSessionStack::BeginShutdown()
 
 StackStatistics MasterSessionStack::GetStackStatistics()
 {
-	auto get = [self = shared_from_this()]()
+	auto get = [self = shared_from_this()]() -> StackStatistics
 	{
-		return self->statistics;
+		return self->CreateStatistics();
 	};
 	return executor->ReturnFrom<StackStatistics>(get);
 }
@@ -220,6 +219,12 @@ void MasterSessionStack::DirectOperate(CommandSet&& commands, const CommandCallb
 	};
 	executor->strand.post(action);
 }
+
+opendnp3::StackStatistics MasterSessionStack::CreateStatistics() const
+{
+	return opendnp3::StackStatistics(this->stack.link->GetStatistics(), this->stack.transport->GetStatistics());
+}
+
 }
 
 

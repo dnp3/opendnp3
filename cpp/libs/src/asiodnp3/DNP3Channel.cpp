@@ -87,13 +87,13 @@ void DNP3Channel::ShutdownImpl()
 	this->executor->strand.post(detach);
 }
 
-LinkChannelStatistics DNP3Channel::GetChannelStatistics()
+LinkStatistics DNP3Channel::GetStatistics()
 {
 	auto get = [this]()
 	{
 		return this->iohandler->Statistics();
 	};
-	return this->executor->ReturnFrom<LinkChannelStatistics>(get);
+	return this->executor->ReturnFrom<LinkStatistics>(get);
 }
 
 LogFilters DNP3Channel::GetLogFilters() const

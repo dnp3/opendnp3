@@ -47,20 +47,23 @@ protected:
 	    uint32_t maxRxFragSize,
 	    const opendnp3::LinkConfig& config) :
 		logger(logger),
-		statistics(),
 		executor(executor),
 		iohandler(iohandler),
 		manager(manager),
-		tstack(logger, executor, listener,  maxRxFragSize, &statistics, config)
+		tstack(logger, executor, listener,  maxRxFragSize, config)
 	{
 
+	}
+
+	opendnp3::StackStatistics CreateStatistics() const
+	{
+		return opendnp3::StackStatistics(tstack.link->GetStatistics(), tstack.transport->GetStatistics());
 	}
 
 	template <class T>
 	void PerformShutdown(const std::shared_ptr<T>& self);
 
 	openpal::Logger logger;
-	opendnp3::StackStatistics statistics;
 	const std::shared_ptr<asiopal::Executor> executor;
 	const std::shared_ptr<IOHandler> iohandler;
 	const std::shared_ptr<asiopal::IResourceManager> manager;

@@ -43,7 +43,7 @@ LinkSession::LinkSession(
 	manager(manager),
 	callbacks(callbacks),
 	channel(channel),
-	parser(logger, &stats),
+	parser(logger),
 	first_frame_timer(*channel->executor)
 {
 

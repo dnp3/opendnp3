@@ -21,14 +21,14 @@
 #ifndef ASIODNP3_IOHANDLER_H
 #define ASIODNP3_IOHANDLER_H
 
-#include "opendnp3/link/ILinkTx.h"
 #include "opendnp3/Route.h"
+#include "opendnp3/link/ILinkTx.h"
+#include "opendnp3/link/LinkLayerParser.h"
+#include "opendnp3/master/MultidropTaskLock.h"
 
 #include "asiodnp3/IChannelListener.h"
 
 #include "openpal/logging/Logger.h"
-#include "opendnp3/link/LinkLayerParser.h"
-#include "opendnp3/master/MultidropTaskLock.h"
 
 #include "asiopal/IAsyncChannel.h"
 
@@ -55,9 +55,9 @@ public:
 
 	virtual ~IOHandler() {}
 
-	const opendnp3::LinkChannelStatistics& Statistics() const
+	opendnp3::LinkStatistics Statistics() const
 	{
-		return this->statistics;
+		return opendnp3::LinkStatistics(this->statistics, this->parser.Statistics());
 	}
 
 	opendnp3::ITaskLock& TaskLock()
@@ -113,7 +113,7 @@ protected:
 
 	openpal::Logger logger;
 	const std::shared_ptr<IChannelListener> listener;
-	opendnp3::LinkChannelStatistics statistics;
+	opendnp3::LinkStatistics::Channel statistics;
 
 private:
 

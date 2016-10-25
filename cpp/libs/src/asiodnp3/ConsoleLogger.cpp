@@ -41,18 +41,13 @@ void ConsoleLogger::Log(const openpal::LogEntry& entry)
 
 	ostringstream oss;
 
-	oss << "ms(" << num << ") " << LogFlagToString(entry.GetFilters().GetBitfield());
-	oss << " " << entry.GetAlias();
+	oss << "ms(" << num << ") " << LogFlagToString(entry.filters.GetBitfield());
+	oss << " " << entry.loggerid;
 	if (printLocation)
 	{
-		oss << " - " << entry.GetLocation();
+		oss << " - " << entry.location;
 	}
-	oss << " - " << entry.GetMessage();
-
-	if (entry.GetErrorCode() != -1)
-	{
-		oss << " - " << entry.GetErrorCode();
-	}
+	oss << " - " << entry.message;
 
 	std::unique_lock<std::mutex> lock(mutex);
 	std::cout << oss.str() << std::endl;

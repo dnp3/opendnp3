@@ -68,7 +68,10 @@ void MasterStack::Shutdown()
 
 StackStatistics MasterStack::GetStackStatistics()
 {
-	auto get = [self = shared_from_this()] { return self->statistics; };
+	auto get = [self = shared_from_this()]() -> StackStatistics
+	{
+		return self->GetStackStatistics();
+	};
 	return this->executor->ReturnFrom<StackStatistics>(get);
 }
 

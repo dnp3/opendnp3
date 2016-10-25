@@ -83,7 +83,10 @@ void OutstationStack::Shutdown()
 
 StackStatistics OutstationStack::GetStackStatistics()
 {
-	auto get = [self = shared_from_this()] { return self->statistics; };
+	auto get = [self = shared_from_this()]
+	{
+		return self->CreateStatistics();
+	};
 	return this->executor->ReturnFrom<StackStatistics>(get);
 }
 

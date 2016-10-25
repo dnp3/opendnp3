@@ -103,9 +103,10 @@ public:
 
 private:
 
+	opendnp3::StackStatistics CreateStatistics() const;
+
 	std::shared_ptr<asiopal::Executor> executor;
 	std::shared_ptr<LinkSession> session;
-	opendnp3::StackStatistics statistics;
 	opendnp3::TransportStack stack;
 	opendnp3::MContext context;
 };

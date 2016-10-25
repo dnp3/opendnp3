@@ -22,7 +22,7 @@
 #define ASIODNP3_ICHANNEL_H
 
 #include <opendnp3/gen/ChannelState.h>
-#include <opendnp3/link/LinkChannelStatistics.h>
+#include <opendnp3/link/LinkStatistics.h>
 
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/master/IMasterApplication.h>
@@ -57,7 +57,7 @@ public:
 	/**
 	* Synchronously read the channel statistics
 	*/
-	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() = 0;
+	virtual opendnp3::LinkStatistics GetStatistics() = 0;
 
 	/**
 	*  @return The current logger settings for this channel

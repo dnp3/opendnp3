@@ -27,7 +27,7 @@
 
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/link/ILinkTx.h>
-#include <opendnp3/link/LinkChannelStatistics.h>
+#include <opendnp3/link/LinkStatistics.h>
 #include <opendnp3/Route.h>
 
 #include <asiopal/Executor.h>
@@ -111,7 +111,6 @@ private:
 	const std::shared_ptr<IListenCallbacks> callbacks;
 	const std::shared_ptr<asiopal::IAsyncChannel> channel;
 
-	opendnp3::LinkChannelStatistics stats;
 	opendnp3::LinkLayerParser parser;
 	openpal::TimerRef first_frame_timer;
 	opendnp3::Route route;
