@@ -105,7 +105,7 @@ namespace Automatak
 			{
 				auto enumerable = Conversions::ToIndexedEnumerable<SecurityStat^>(values);
 				proxy->Process(GetInfo(info), enumerable);
-			}
+			}			
 
 		}
 	}
