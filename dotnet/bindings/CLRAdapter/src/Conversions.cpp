@@ -32,27 +32,31 @@ namespace Automatak
 				return (LinkStatus)aState;
 			}
 
-			IChannelStatistics^ Conversions::ConvertChannelStats(const opendnp3::LinkChannelStatistics& stats)
+			IChannelStatistics^ Conversions::ConvertChannelStats(const opendnp3::LinkStatistics& stats)
 			{
 				ChannelStatistics^ ret = gcnew ChannelStatistics();
-				ret->numBytesRx = stats.numBytesRx;
-				ret->numBytesTx = stats.numBytesTx;
-				ret->numOpen = stats.numOpen;
-				ret->numOpenFail = stats.numOpenFail;
-				ret->numClose = stats.numClose;
-				ret->numLinkFrameRx = stats.numLinkFrameRx;
-				ret->numLinkFrameTx = stats.numLinkFrameTx;
-				ret->numBadLinkFrameRx = stats.numBadLinkFrameRx;
-				ret->numCrcError = stats.numCrcError;
+				
+				ret->numBytesRx = stats.channel.numBytesRx;
+				ret->numBytesTx = stats.channel.numBytesTx;
+				ret->numOpen = stats.channel.numOpen;
+				ret->numOpenFail = stats.channel.numOpenFail;
+				ret->numClose = stats.channel.numClose;
+				ret->numLinkFrameRx = stats.parser.numLinkFrameRx;
+				ret->numLinkFrameTx = stats.channel.numLinkFrameTx;
+				ret->numBadLinkFrameRx = stats.parser.numBadFCB + stats.parser.numBadFCV + stats.parser.numBadFunctionCode + stats.parser.numBadLength;
+				ret->numCrcError = stats.parser.numBodyCrcError + stats.parser.numHeaderCrcError;
+
 				return ret;
 			}
 
 			IStackStatistics^ Conversions::ConvertStackStats(const opendnp3::StackStatistics& statistics)
 			{
 				StackStatistics^ ret = gcnew StackStatistics();
-				ret->numTransportErrorRx = statistics.numTransportErrorRx;
-				ret->numTransportRx = statistics.numTransportRx;
-				ret->numTransportTx = statistics.numTransportTx;
+				
+				ret->numTransportErrorRx = statistics.transport.rx.numTransportErrorRx;
+				ret->numTransportRx = statistics.transport.rx.numTransportRx;
+				ret->numTransportTx = statistics.transport.tx.numTransportTx;
+				
 				return ret;
 			}
 

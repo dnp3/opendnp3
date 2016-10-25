@@ -21,10 +21,6 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 
 namespace Automatak.DNP3.Interface
 {
@@ -39,15 +35,13 @@ namespace Automatak.DNP3.Interface
         /// <param name="filters">Bitfield for the message</param>
         /// <param name="alias">Logger alias that recorded the message</param>
         /// <param name="location">Location in the code</param>
-        /// <param name="message">Body of the message</param>        
-        /// <param name="errorCode">dnp3 error code</param>
-        public LogEntry(UInt32 filters, String alias, String location, String message, int errorCode)
+        /// <param name="message">Body of the message</param>                
+        public LogEntry(UInt32 filters, String alias, String location, String message)
         {
             this.filter = new LogFilter(filters);
             this.alias = alias;
             this.location = location;
-            this.message = message;            
-            this.errorCode = errorCode;            
+            this.message = message;                            
         }
 
         /// <summary>
@@ -68,12 +62,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Body of the message
         /// </summary>
-	    public readonly String message;
-
-        /// <summary>
-        /// dnp3 error code
-        /// </summary>
-	    public readonly int	errorCode;      
+	    public readonly String message;        
     }
 
     /// <summary>

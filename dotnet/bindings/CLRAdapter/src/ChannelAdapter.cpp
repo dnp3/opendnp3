@@ -31,7 +31,7 @@ namespace Automatak
 
 			IChannelStatistics^ ChannelAdapter::GetChannelStatistics()
 			{
-				auto stats = (*channel)->GetChannelStatistics();
+				auto stats = (*channel)->GetStatistics();
 				return Conversions::ConvertChannelStats(stats);
 			}
 

@@ -25,7 +25,7 @@
 
 #include <opendnp3/master/ICommandTaskResult.h>
 
-#include <opendnp3/link/LinkChannelStatistics.h>
+#include <opendnp3/link/LinkStatistics.h>
 #include <opendnp3/link/LinkHeaderFields.h>
 
 #include <asiodnp3/OutstationStackConfig.h>
@@ -72,7 +72,7 @@ namespace Automatak
 
 				static LinkStatus ConvertLinkStatus(opendnp3::LinkStatus aState);
 
-				static IChannelStatistics^ ConvertChannelStats(const opendnp3::LinkChannelStatistics& statistics);
+				static IChannelStatistics^ ConvertChannelStats(const opendnp3::LinkStatistics& statistics);
 
 				static IStackStatistics^ ConvertStackStats(const opendnp3::StackStatistics& statistics);
 

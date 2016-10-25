@@ -22,11 +22,11 @@ namespace Automatak
 			// logging error messages, etc
 			void LogAdapter::Log(const openpal::LogEntry& entry)
 			{
-				System::String^ alias = Conversions::ConvertString(entry.GetAlias());
-				System::String^ location = Conversions::ConvertString(entry.GetLocation());
-				System::String^ message = Conversions::ConvertString(entry.GetMessage());
+				System::String^ alias = Conversions::ConvertString(entry.loggerid);
+				System::String^ location = Conversions::ConvertString(entry.location);
+				System::String^ message = Conversions::ConvertString(entry.message);
 
-				Automatak::DNP3::Interface::LogEntry^ le = gcnew Automatak::DNP3::Interface::LogEntry(entry.GetFilters().GetBitfield(), alias, location, message, entry.GetErrorCode());
+				Automatak::DNP3::Interface::LogEntry^ le = gcnew Automatak::DNP3::Interface::LogEntry(entry.filters.GetBitfield(), alias, location, message);
 
 				proxy->Log(le);
 			}			
