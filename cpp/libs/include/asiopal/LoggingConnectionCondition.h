@@ -27,12 +27,13 @@
 namespace asiopal
 {
 
+
 class LoggingConnectionCondition
 {
 
 public:
 
-	LoggingConnectionCondition(openpal::Logger logger) : logger(logger)
+	LoggingConnectionCondition(openpal::Logger logger_) : logger(logger_)
 	{}
 
 	template <typename Iterator>
@@ -50,7 +51,6 @@ private:
 
 	openpal::Logger logger;
 };
-
 }
 
 #endif

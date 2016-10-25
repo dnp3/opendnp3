@@ -18,7 +18,6 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-
 #include "MockLogHandler.h"
 
 #include <openpal/logging/LogLevels.h>
@@ -48,24 +47,31 @@ LogRecord::LogRecord(const LogEntry& entry) :
 
 }
 
-void MockLogHandlerImpl::Log(const LogEntry& entry)
+MockLogHandler::MockLogHandler(uint32_t filters) :
+	root(this, "test", filters),
+	outputToStdIO(false)
 {
-	std::lock_guard<std::mutex> lock(this->mutex);
 
+}
+
+
+void MockLogHandler::Log(const LogEntry& entry)
+{
+	std::lock_guard<std::mutex> lock(qMutex);
 	if (outputToStdIO)
 	{
 		std::cout << entry.GetMessage() << std::endl;
 	}
 
-	this->messages.push_back(entry);
+	messages.push_back(entry);
 }
 
 int32_t MockLogHandler::PopFilter()
 {
-	if (impl->messages.size() > 0)
+	if (messages.size() > 0)
 	{
-		auto flags = impl->messages.front().filters.GetBitfield();
-		impl->messages.pop_front();
+		auto flags = messages.front().filters.GetBitfield();
+		messages.pop_front();
 		return flags;
 	}
 	else
@@ -76,11 +82,11 @@ int32_t MockLogHandler::PopFilter()
 
 bool MockLogHandler::PopOneEntry(int32_t filter)
 {
-	if (impl->messages.size() == 1)
+	if (messages.size() == 1)
 	{
-		if (impl->messages.front().filters.IsSet(filter))
+		if (messages.front().filters.IsSet(filter))
 		{
-			impl->messages.pop_front();
+			messages.pop_front();
 			return true;
 		}
 		else return false;
@@ -90,10 +96,10 @@ bool MockLogHandler::PopOneEntry(int32_t filter)
 
 bool MockLogHandler::PopErrorCode(int code)
 {
-	while (!impl->messages.empty())
+	while (!messages.empty())
 	{
-		bool match = impl->messages.front().errorCode == code;
-		impl->messages.pop_front();
+		bool match = messages.front().errorCode == code;
+		messages.pop_front();
 		if (match)
 		{
 			return true;
@@ -105,10 +111,10 @@ bool MockLogHandler::PopErrorCode(int code)
 
 bool MockLogHandler::PopUntil(int32_t filter)
 {
-	while (!impl->messages.empty())
+	while (!messages.empty())
 	{
-		bool match = impl->messages.front().filters.IsSet(filter);
-		impl->messages.pop_front();
+		bool match = messages.front().filters.IsSet(filter);
+		messages.pop_front();
 		if (match)
 		{
 			return true;
@@ -122,10 +128,10 @@ int MockLogHandler::ClearLog()
 {
 	int max = -1;
 	LogEntry le;
-	while (!impl->messages.empty())
+	while (!messages.empty())
 	{
-		if (impl->messages.front().errorCode > max) max = le.GetErrorCode();
-		impl->messages.pop_front();
+		if (messages.front().errorCode > max) max = le.GetErrorCode();
+		messages.pop_front();
 	}
 
 	return max;
@@ -133,23 +139,21 @@ int MockLogHandler::ClearLog()
 
 void MockLogHandler::Log(const std::string& location, const std::string& message)
 {
-	this->impl->Log(
-	    LogEntry("test", openpal::logflags::EVENT, location.c_str(), message.c_str(), -1)
-	);
+	root.logger.Log(openpal::logflags::EVENT, location.c_str(), message.c_str());
 }
 
 void MockLogHandler::WriteToStdIo()
 {
-	this->impl->outputToStdIO = true;
+	this->outputToStdIO = true;
 }
 
 int MockLogHandler::NextErrorCode()
 {
 	LogRecord rec;
-	while (!impl->messages.empty())
+	while (!messages.empty())
 	{
-		rec = impl->messages.front();
-		impl->messages.pop_front();
+		rec = messages.front();
+		messages.pop_front();
 		if (rec.errorCode >= 0)
 		{
 			return rec.errorCode;
@@ -160,11 +164,11 @@ int MockLogHandler::NextErrorCode()
 
 bool MockLogHandler::GetNextEntry(LogRecord& record)
 {
-	if (impl->messages.empty()) return false;
+	if (messages.empty()) return false;
 	else
 	{
-		record = impl->messages.front();
-		impl->messages.pop_front();
+		record = messages.front();
+		messages.pop_front();
 		return true;
 	}
 }

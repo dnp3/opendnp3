@@ -63,6 +63,7 @@ class FrozenCounterConfig : public DeadbandConfig<FrozenCounterInfo> {};
 class BOStatusConfig : public EventConfig<BinaryOutputStatusInfo> {};
 class AOStatusConfig : public DeadbandConfig<AnalogOutputStatusInfo> {};
 class TimeAndIntervalConfig : public StaticConfig<TimeAndIntervalInfo> {};
+class DNPTimeConfig : public StaticConfig<DNPTimeInfo> {};
 class SecurityStatConfig : public IndexConfig {};
 
 }

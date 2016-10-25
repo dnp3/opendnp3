@@ -38,12 +38,8 @@ if (UNIX)
 	endif ()
 
 	if(COVERAGE)
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -g -O0")
 	endif()
-
-	if(PROFILE)
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-        endif()
 
 	if (WERROR)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")

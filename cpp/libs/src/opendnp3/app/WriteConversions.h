@@ -236,6 +236,16 @@ struct ConvertGroup43Var8 : private openpal::StaticOnly
 };
 
 // Group 50
+struct ConvertGroup50Var1 : private openpal::StaticOnly
+{
+	static Group50Var1 Apply(const DNPTime& value)
+	{
+		Group50Var1 ret;
+		ret.time = value;		
+		return ret;
+	}
+};
+
 struct ConvertGroup50Var4 : private openpal::StaticOnly
 {
 	static Group50Var4 Apply(const TimeAndInterval& value)

@@ -38,14 +38,14 @@ class SSLContext : private openpal::Uncopyable
 
 public:
 
-	SSLContext(const openpal::Logger& logger, bool server, const TLSConfig& cfg, std::error_code&);
+	SSLContext(openpal::Logger logger, bool server, const TLSConfig& cfg, std::error_code&);
 
 
 	asio::ssl::context value;
 
 private:
 
-	openpal::Logger logger;
+	openpal::Logger m_logger;
 
 	static int GetVerifyMode(bool server);
 

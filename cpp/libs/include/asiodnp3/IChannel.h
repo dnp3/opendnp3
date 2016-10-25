@@ -33,8 +33,6 @@
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 
-#include "asiopal/IResourceManager.h"
-
 #include "IMaster.h"
 #include "IOutstation.h"
 #include "MasterStackConfig.h"
@@ -48,7 +46,7 @@ namespace asiodnp3
 /**
 * Represents a communication channel upon which masters and outstations can be bound.
 */
-class IChannel : public asiopal::IResource
+class IChannel
 {
 public:
 
@@ -58,6 +56,11 @@ public:
 	* Synchronously read the channel statistics
 	*/
 	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() = 0;
+
+	/**
+	* synchronously shutdown the channel
+	*/
+	virtual void Shutdown() = 0;
 
 	/**
 	*  @return The current logger settings for this channel
@@ -77,12 +80,12 @@ public:
 	* @param application The master application bound to the master session
 	* @param config Configuration object that controls how the master behaves
 	*
-	* @return shared_ptr to the running master
+	* @return interface representing the running master
 	*/
-	virtual std::shared_ptr<IMaster>  AddMaster(const std::string& id,
-	        std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-	        std::shared_ptr<opendnp3::IMasterApplication> application,
-	        const MasterStackConfig& config) = 0;
+	virtual IMaster* AddMaster(		char const* id,
+	                                std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+	                                std::shared_ptr<opendnp3::IMasterApplication> application,
+	                                const MasterStackConfig& config) = 0;
 
 	/**
 	* Add an outstation to the channel
@@ -91,12 +94,12 @@ public:
 	* @param commandHandler Callback object for handling command requests
 	* @param application Callback object for user code
 	* @param config Configuration object that controls how the outstation behaves
-	* @return shared_ptr to the running outstation
+	* @return interface representing the running outstations
 	*/
-	virtual std::shared_ptr<IOutstation>  AddOutstation( const std::string& id,
-	        std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-	        std::shared_ptr<opendnp3::IOutstationApplication> application,
-	        const OutstationStackConfig& config) = 0;
+	virtual IOutstation* AddOutstation( char const* id,
+	                                    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+	                                    std::shared_ptr<opendnp3::IOutstationApplication> application,
+	                                    const OutstationStackConfig& config) = 0;
 
 };
 

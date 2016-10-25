@@ -33,14 +33,6 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_shutdown_1nat
 
 /*
  * Class:     com_automatak_dnp3_impl_OutstationImpl
- * Method:    destroy_native
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_destroy_1native
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     com_automatak_dnp3_impl_OutstationImpl
  * Method:    apply_native
  * Signature: (JJ)V
  */

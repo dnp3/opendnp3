@@ -24,6 +24,7 @@
 #include <openpal/executor/TimerRef.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/Settable.h>
+#include <openpal/container/ManagedPtr.h>
 
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/IMasterTask.h"
@@ -32,7 +33,6 @@
 
 #include <vector>
 #include <functional>
-#include <memory>
 
 namespace opendnp3
 {
@@ -47,13 +47,13 @@ public:
 	/*
 	* Add a task to the scheduler
 	*/
-	void Schedule(const std::shared_ptr<IMasterTask>& task);
+	void Schedule(openpal::ManagedPtr<IMasterTask> pTask);
 
 	/**
 	* @return Task to start or undefined pointer if no task to start
 	* If there is no task to start, 'next' is set to the timestamp when the scheduler should be re-evaluated
 	*/
-	std::shared_ptr<IMasterTask> GetNext(const openpal::MonotonicTimestamp& now, openpal::MonotonicTimestamp& next);
+	openpal::ManagedPtr<IMasterTask> GetNext(const openpal::MonotonicTimestamp& now, openpal::MonotonicTimestamp& next);
 
 	/**
 	* Cleanup all existing tasks & cancel any timers
@@ -67,15 +67,15 @@ public:
 
 private:
 
-	bool IsTimedOut(const openpal::MonotonicTimestamp& now, const std::shared_ptr<IMasterTask>& task);
+	bool IsTimedOut(const openpal::MonotonicTimestamp& now, openpal::ManagedPtr<IMasterTask>& task);
 
 	void RecalculateTaskStartTimeout();
 
 
-	std::vector<std::shared_ptr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);
+	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);
 
 	ITaskFilter* m_filter;
-	std::vector<std::shared_ptr<IMasterTask>> m_tasks;
+	std::vector<openpal::ManagedPtr<IMasterTask>> m_tasks;
 };
 
 }

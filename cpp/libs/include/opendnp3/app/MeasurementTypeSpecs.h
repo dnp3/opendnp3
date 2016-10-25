@@ -132,6 +132,12 @@ struct TimeAndIntervalSpec : public TimeAndIntervalInfo
 	typedef EmptyEventCell event_cell_t;
 };
 
+struct DNPTimeSpec : public DNPTimeInfo
+{
+	typedef DNPTimeConfig config_t;
+	typedef EmptyEventCell event_cell_t;
+};
+
 struct SecurityStatSpec : public SecurityStatInfo
 {
 	typedef SecurityStatConfig config_t;

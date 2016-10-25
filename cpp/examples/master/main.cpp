@@ -127,10 +127,10 @@ int main(int argc, char* argv[])
 			// C++ destructor on DNP3Manager cleans everything up for you
 			return 0;
 		case('i'):
-			integrityScan->Demand();
+			integrityScan.Demand();
 			break;
 		case('e'):
-			exceptionScan->Demand();
+			exceptionScan.Demand();
 			break;
 		case('c'):
 			{

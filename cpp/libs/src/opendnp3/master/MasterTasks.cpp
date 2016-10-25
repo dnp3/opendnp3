@@ -25,37 +25,37 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& app, ISOEHandler& SOEHandler) :
-	enableUnsol(std::make_shared<EnableUnsolicitedTask>(app, params.unsolClassMask, params.taskRetryPeriod, logger)),
-	clearRestart(std::make_shared<ClearRestartTask>(app, params.taskRetryPeriod, logger)),
-	assignClass(std::make_shared<AssignClassTask>(app, params.taskRetryPeriod, logger)),
-	startupIntegrity(std::make_shared<StartupIntegrityPoll>(app, SOEHandler, params.startupIntegrityClassMask, params.taskRetryPeriod, logger)),
-	disableUnsol(std::make_shared<DisableUnsolicitedTask>(app, params.disableUnsolOnStartup, params.taskRetryPeriod, logger)),
-	timeSync(std::make_shared<SerialTimeSyncTask>(app, logger)),
-	eventScan(std::make_shared<EventScanTask>(app, SOEHandler, params.eventScanOnEventsAvailableClassMask, params.taskRetryPeriod, logger))
+MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& app, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
+	enableUnsol(app, params.unsolClassMask, params.taskRetryPeriod, logger),
+	clearRestart(app, params.taskRetryPeriod, logger),
+	assignClass(app, params.taskRetryPeriod, logger),
+	startupIntegrity(app, SOEHandler, params.startupIntegrityClassMask, params.taskRetryPeriod, logger),
+	disableUnsol(app, params.disableUnsolOnStartup, params.taskRetryPeriod, logger),
+	timeSync(app, logger),
+	eventScan(app, SOEHandler, params.eventScanOnEventsAvailableClassMask, params.taskRetryPeriod, logger)
 {
 
 }
 
 void MasterTasks::Initialize(MasterScheduler& scheduler)
 {
-	scheduler.Schedule(enableUnsol);
-	scheduler.Schedule(clearRestart);
-	scheduler.Schedule(assignClass);
-	scheduler.Schedule(startupIntegrity);
-	scheduler.Schedule(disableUnsol);
-	scheduler.Schedule(timeSync);
-	scheduler.Schedule(eventScan);
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&enableUnsol));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&clearRestart));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&assignClass));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&startupIntegrity));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&disableUnsol));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&timeSync));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&eventScan));
 
-	for (auto& task : boundTasks)
+	for (auto& pTask : boundTasks)
 	{
-		scheduler.Schedule(task);
+		scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask.get()));
 	}
 }
 
-void MasterTasks::BindTask(const std::shared_ptr<IMasterTask>& task)
+void MasterTasks::BindTask(IMasterTask* pTask)
 {
-	boundTasks.push_back(task);
+	boundTasks.push_back(std::unique_ptr<IMasterTask>(pTask));
 }
 
 }

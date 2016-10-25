@@ -18,11 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __LOG_TESTER_H_
+#define __LOG_TESTER_H_
 
-#ifndef OPENPAL_MOCKLOGHANDLER_H
-#define OPENPAL_MOCKLOGHANDLER_H
-
-#include <openpal/logging/Logger.h>
+#include <openpal/logging/LogRoot.h>
 
 #include <string>
 #include <queue>
@@ -45,28 +44,17 @@ public:
 	int				errorCode;
 };
 
-struct MockLogHandlerImpl : public openpal::ILogHandler
-{
-	virtual void Log(const openpal::LogEntry& entry) override;
-
-	std::mutex mutex;
-	bool outputToStdIO = false;
-	std::deque<LogRecord> messages;
-};
-
-class MockLogHandler
+class MockLogHandler : public openpal::ILogHandler
 {
 
 public:
-
-	MockLogHandler() :
-		impl(std::make_shared<MockLogHandlerImpl>()),
-		logger(impl, "test", ~0)
-	{}
+	MockLogHandler(uint32_t filters = ~0);
 
 	void WriteToStdIo();
 
-	void Log(const std::string& location, const std::string& message);
+	void Log(const std::string& location, const std::string& msg);
+
+	void Log( const openpal::LogEntry& entry);
 
 	int32_t PopFilter();
 
@@ -77,28 +65,21 @@ public:
 	bool PopErrorCode(int code);
 
 	int ClearLog();
-
 	int NextErrorCode();
-
 	bool GetNextEntry(LogRecord& record);
-
 	bool IsLogErrorFree();
 
 	void Pop(openpal::ILogHandler& log);
 
-private:
+	openpal::LogRoot root;
 
-	std::shared_ptr<MockLogHandlerImpl> impl;
+protected:
 
-public:
-
-	openpal::Logger logger;
+	std::mutex qMutex;
+	bool outputToStdIO;
+	std::deque<LogRecord> messages;
 
 };
-
-
-
-
 
 
 }

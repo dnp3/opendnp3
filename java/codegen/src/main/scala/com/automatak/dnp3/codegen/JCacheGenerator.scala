@@ -29,17 +29,20 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
 
   def impl(implicit indent: Indentation): Iterator[String] = {
 
-    def initAll : Iterator[String] = {
-      val entries = classes.map {
-        c => "%s.init(env)".format(c.clazz.getSimpleName)
+    def instances : Iterator[String] = {
+      classes.iterator.flatMap {
+        c => {
+          "success = %s.init(env);".format(c.clazz.getSimpleName).iter ++
+          "if(!success) return false;".iter
+        }
       }
-      
-      ("return " + entries.head).iter ++ entries.tail.map(s => "&& " + s).iterator ++ ";".iter
     }
 
     def jcacheInit = {
       "bool JCache::init(JNIEnv* env)".iter ++ bracket {
-        initAll
+        "auto success = true;".iter ++ space ++
+          instances ++
+          "return true;".iter
       }
     }
 

@@ -90,6 +90,9 @@
     <ClInclude Include="src\SessionAcceptorAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\DNP3SessionManagerAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\ListenerAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -116,6 +119,9 @@
     <ClCompile Include="src\LogAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\MasterScanAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\OutstationAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -137,6 +143,9 @@
     <ClCompile Include="src\CommandSetBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\DNP3SessionManagerAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\ListenCallbacksAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -149,10 +158,10 @@
     <ClCompile Include="src\SessionAcceptorAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MasterAdapter.cpp">
+    <ClCompile Include="src\ListenerAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\StdIOWorkaround.cpp">
+    <ClCompile Include="src\MasterAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

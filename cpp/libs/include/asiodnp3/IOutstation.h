@@ -22,7 +22,7 @@
 #define ASIODNP3_IOUTSTATION_H
 
 #include "asiodnp3/IStack.h"
-#include "asiodnp3/Updates.h"
+#include "asiodnp3/ChangeSet.h"
 
 #include <openpal/logging/LogFilters.h>
 
@@ -31,6 +31,10 @@ namespace asiodnp3
 
 /**
 * Interface representing a running outstation.
+* To get a data observer interface to load measurements on the outstation:-
+\code
+	IMeasurementLoader* pDataObserver = pOutstation->GetDataObserver()
+\endcode
 */
 class IOutstation : public IStack
 {
@@ -52,9 +56,14 @@ public:
 	virtual void SetRestartIIN() = 0;
 
 	/**
-	* Apply a set of measurement updates to the outstation
+	* @return stack statistics counters
 	*/
-	virtual void Apply(const Updates& updates) = 0;
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
+
+	/**
+	* Apply a measurement changeset to the outstation
+	*/
+	virtual void Apply(ChangeSet& changes) = 0;
 
 };
 

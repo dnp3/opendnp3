@@ -20,8 +20,8 @@
  */
 #include "OutstationStack.h"
 
-using namespace openpal;
-using namespace asiopal;
+#include <asiopal/ASIOExecutor.h>
+
 using namespace opendnp3;
 
 namespace asiodnp3
@@ -37,18 +37,19 @@ void assign(const T& config, U& view)
 }
 
 OutstationStack::OutstationStack(
-    const Logger& logger,
-    const std::shared_ptr<Executor>& executor,
-    const std::shared_ptr<ICommandHandler>& commandHandler,
-    const std::shared_ptr<IOutstationApplication>& application,
-    const std::shared_ptr<IOHandler>& iohandler,
-    const std::shared_ptr<IResourceManager>& manager,
-    const OutstationStackConfig& config) :
+    std::unique_ptr<openpal::LogRoot> root,
+    openpal::IExecutor& executor,
+    std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+    std::shared_ptr<opendnp3::IOutstationApplication> application,
+    const OutstationStackConfig& config,
+    IStackLifecycle& lifecycle) :
 
-	StackBase(logger, executor, application, iohandler, manager, config.outstation.params.maxRxFragSize, config.link),
-	ocontext(config.outstation, config.dbConfig.sizes, logger, executor, tstack.transport, commandHandler, application)
+	OutstationStackBase(std::move(root), executor, *application, config, lifecycle),
+	commandHandler(commandHandler),
+	application(application),
+	ocontext(config.outstation, config.dbConfig.sizes, this->root->logger, executor, stack.transport, *commandHandler, *application)
 {
-	this->tstack.transport->SetAppLayer(ocontext);
+	this->SetContext(ocontext);
 
 	// apply the database configuration
 	auto view = ocontext.GetConfigView();
@@ -61,62 +62,7 @@ OutstationStack::OutstationStack(
 	assign(config.dbConfig.boStatus, view.binaryOutputStatii);
 	assign(config.dbConfig.aoStatus, view.analogOutputStatii);
 	assign(config.dbConfig.timeAndInterval, view.timeAndIntervals);
-}
 
-
-bool OutstationStack::Enable()
-{
-	auto action = [self = shared_from_this()] { return self->iohandler->Enable(self); };
-	return this->executor->ReturnFrom<bool>(action);
-}
-
-bool OutstationStack::Disable()
-{
-	auto action = [self = shared_from_this()] { return self->iohandler->Disable(self); };
-	return this->executor->ReturnFrom<bool>(action);
-}
-
-void OutstationStack::Shutdown()
-{
-	this->PerformShutdown(shared_from_this());
-}
-
-StackStatistics OutstationStack::GetStackStatistics()
-{
-	auto get = [self = shared_from_this()] { return self->statistics; };
-	return this->executor->ReturnFrom<StackStatistics>(get);
-}
-
-void OutstationStack::SetLogFilters(const LogFilters& filters)
-{
-	auto set = [self = this->shared_from_this(), filters]()
-	{
-		self->logger.SetFilters(filters);
-	};
-	this->executor->strand.post(set);
-}
-
-void OutstationStack::SetRestartIIN()
-{
-	// this doesn't need to be synchronous, just post it
-	auto set = [self = this->shared_from_this()]()
-	{
-		self->ocontext.SetRestartIIN();
-	};
-	this->executor->strand.post(set);
-}
-
-void OutstationStack::Apply(const Updates& updates)
-{
-	if (updates.IsEmpty()) return;
-
-	auto task = [self = this->shared_from_this(), updates]()
-	{
-		updates.Apply(self->ocontext.GetUpdateHanlder());
-		self->ocontext.CheckForTaskStart(); // force the outstation to check for updates
-	};
-
-	this->executor->strand.post(task);
 }
 
 }

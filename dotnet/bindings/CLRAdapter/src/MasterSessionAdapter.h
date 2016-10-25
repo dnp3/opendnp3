@@ -24,21 +24,12 @@ namespace Automatak
 			public:
 
 				MasterSessionAdapter(std::shared_ptr<asiodnp3::IMasterSession> proxy);					
-				
-				MasterSessionAdapter::~MasterSessionAdapter()
-				{
-					this->!MasterSessionAdapter();
-				}
 
-				MasterSessionAdapter::!MasterSessionAdapter()
-				{
-					delete proxy;
-				}
+				~MasterSessionAdapter();
+				!MasterSessionAdapter();
 
 				/// --- implement IMasterSession ----				
 				virtual void BeginShutdown();
-
-				virtual Interface::IStackStatistics^ GetStackStatistics();
 
 			private:
 				

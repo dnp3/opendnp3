@@ -22,23 +22,16 @@
 #ifndef ASIODNP3_DNP3MANAGERIMPL_H
 #define ASIODNP3_DNP3MANAGERIMPL_H
 
-#include "openpal/logging/Logger.h"
-#include "openpal/util/Uncopyable.h"
+#include <openpal/logging/ILogHandler.h>
+#include <openpal/util/Uncopyable.h>
 
-#include "asiopal/ThreadPool.h"
-#include "asiopal/SerialTypes.h"
-#include "asiopal/TLSConfig.h"
-#include "asiopal/ChannelRetry.h"
-#include "asiopal/ResourceManager.h"
-#include "asiopal/IListener.h"
-#include "asiopal/IPEndpoint.h"
+#include <asiopal/ThreadPool.h>
+#include <asiopal/SerialTypes.h>
+#include <asiopal/TLSConfig.h>
 
-#include "opendnp3/LogLevels.h"
+#include <opendnp3/LogLevels.h>
 
-#include "asiodnp3/IChannel.h"
-#include "asiodnp3/IChannelListener.h"
-#include "asiodnp3/IListenCallbacks.h"
-
+#include "asiodnp3/ChannelSet.h"
 
 namespace asiodnp3
 {
@@ -55,38 +48,36 @@ public:
 	    std::function<void()> onThreadExit
 	);
 
-	~DNP3ManagerImpl();
-
 	void Shutdown();
 
-	std::shared_ptr<IChannel> AddTCPClient(
+	IChannel* AddTCPClient(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    const std::string& host,
 	    const std::string& local,
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener);
 
-	std::shared_ptr<IChannel> AddTCPServer(
+	IChannel* AddTCPServer(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener);
 
-	std::shared_ptr<IChannel> AddSerial(
+	IChannel* AddSerial(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    asiopal::SerialSettings settings,
 	    std::shared_ptr<IChannelListener> listener);
 
-	std::shared_ptr<IChannel> AddTLSClient(
+	IChannel* AddTLSClient(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    const std::string& host,
 	    const std::string& local,
 	    uint16_t port,
@@ -94,40 +85,21 @@ public:
 	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
 
-	std::shared_ptr<IChannel> AddTLSServer(
+	IChannel* AddTLSServer(
 	    const std::string& id,
 	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    const opendnp3::ChannelRetry& retry,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
 
-	std::shared_ptr<asiopal::IListener> CreateListener(
-	    std::string loggerid,
-	    openpal::LogFilters loglevel,
-	    asiopal::IPEndpoint endpoint,
-	    const std::shared_ptr<IListenCallbacks>& callbacks,
-	    std::error_code& ec
-	);
-
-	std::shared_ptr<asiopal::IListener> CreateListener(
-	    std::string loggerid,
-	    openpal::LogFilters loglevel,
-	    asiopal::IPEndpoint endpoint,
-	    const asiopal::TLSConfig& config,
-	    const std::shared_ptr<IListenCallbacks>& callbacks,
-	    std::error_code& ec
-	);
-
 private:
 
-	openpal::Logger logger;
-	const std::shared_ptr<asiopal::IO> io;
+	std::shared_ptr<openpal::ILogHandler> handler;
 	asiopal::ThreadPool threadpool;
-	std::shared_ptr<asiopal::ResourceManager> resources;
-
+	ChannelSet channels;
 };
 
 }

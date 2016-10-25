@@ -18,35 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-
 #include "openpal/logging/Logger.h"
+
+#include "openpal/logging/LogRoot.h"
+
+#include <assert.h>
+#include <cstring>
+
+using namespace std;
 
 namespace openpal
 {
 
-Logger::Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, openpal::LogFilters levels) :
-	backend(backend),
-	settings(std::make_shared<Settings>(id, levels))
+Logger::Logger(LogRoot* pRoot_) : pRoot(pRoot_)
 {}
 
 bool Logger::IsEnabled(const LogFilters& filters) const
 {
-	return backend && (settings->levels & filters);
+	return pRoot->IsEnabled(filters);
+}
+
+bool Logger::HasAny(const LogFilters& filters) const
+{
+	return pRoot->HasAny(filters);
 }
 
 void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
-	if (backend)
+	if (pRoot->IsEnabled(filters))
 	{
-		backend->Log(
-		    LogEntry(
-		        this->settings->id.c_str(),
-		        filters,
-		        location,
-		        message,
-		        errorCode
-		    )
-		);
+		pRoot->Log(filters, location, message, errorCode);
 	}
 }
 

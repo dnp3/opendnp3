@@ -21,42 +21,30 @@
 #ifndef OPENDNP3_LINKCHANNELSTATISTICS_H
 #define OPENDNP3_LINKCHANNELSTATISTICS_H
 
-#include <cstddef>
+#include <openpal/channel/ChannelStatistics.h>
 
 namespace opendnp3
 {
 
 /**
-* Counters for the channel and the DNP3 link layer
+* Extends openpal::ChannelStatistics with counters specific to the DNP3 link layer
 */
-struct LinkChannelStatistics
-{	
-	/// The number of times the channel has successfully opened
-	size_t numOpen = 0;
-
-	/// The number of times the channel has failed to open
-	size_t numOpenFail = 0;
-
-	/// The number of times the channel has closed either due to user intervention or an error
-	size_t numClose = 0;
-
-	/// The number of bytes received
-	size_t numBytesRx = 0;
-
-	/// The number of bytes transmitted
-	size_t numBytesTx = 0;
+struct LinkChannelStatistics : openpal::ChannelStatistics
+{
+	LinkChannelStatistics() : numCrcError(0), numLinkFrameTx(0), numLinkFrameRx(0), numBadLinkFrameRx(0)
+	{}
 
 	/// Number of frames discared due to CRC errors
-	size_t numCrcError = 0;
+	uint32_t numCrcError;
 
 	/// Number of frames transmitted
-	size_t numLinkFrameTx = 0;
+	uint32_t numLinkFrameTx;
 
 	/// Number of frames received
-	size_t numLinkFrameRx = 0;
+	uint32_t numLinkFrameRx;
 
 	/// Number of frames detected with bad / malformed contents
-	size_t numBadLinkFrameRx = 0;
+	uint32_t numBadLinkFrameRx;
 };
 }
 

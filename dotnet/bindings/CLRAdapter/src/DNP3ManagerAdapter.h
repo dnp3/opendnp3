@@ -4,7 +4,7 @@
 using namespace System;
 using namespace Automatak::DNP3::Interface;
 
-#include <asiopal/ChannelRetry.h>
+#include <opendnp3/link/ChannelRetry.h>
 #include <asiopal/TLSConfig.h>
 
 namespace asiodnp3
@@ -53,23 +53,19 @@ namespace Automatak
 
 				virtual void Shutdown() sealed;				
 
-				virtual IChannel^ AddTCPClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ address, System::UInt16 port, Interface::IChannelListener^ listener)  sealed;
-				virtual IChannel^ AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Interface::IChannelListener^ listener) sealed;
+				virtual IChannel^ AddTCPClient(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ address, System::UInt16 port, Interface::IChannelListener^ listener)  sealed;
+				virtual IChannel^ AddTCPServer(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Interface::IChannelListener^ listener) sealed;
 
-				virtual IChannel^ AddTLSClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ address, System::UInt16 port, Interface::TLSConfig^ config, Interface::IChannelListener^ listener)  sealed;
-				virtual IChannel^ AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Interface::TLSConfig^ config, Interface::IChannelListener^ listener) sealed;
+				virtual IChannel^ AddTLSClient(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ address, System::UInt16 port, Interface::TLSConfig^ config, Interface::IChannelListener^ listener)  sealed;
+				virtual IChannel^ AddTLSServer(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Interface::TLSConfig^ config, Interface::IChannelListener^ listener) sealed;
 				
-				virtual IChannel^ AddSerial(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Automatak::DNP3::Interface::SerialSettings^ settings, Interface::IChannelListener^ listener) sealed;
-
-				virtual Interface::IListener^ CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, IListenCallbacks^ callbacks) sealed;
-
-				virtual Interface::IListener^ CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, IListenCallbacks^ callbacks) sealed;
+				virtual IChannel^ AddSerial(System::String^ id, System::UInt32 filters, ChannelRetry^ retry, Automatak::DNP3::Interface::SerialSettings^ settings, Interface::IChannelListener^ listener) sealed;
 
 			private:			
 
 				asiodnp3::DNP3Manager* manager;								
 
-				static asiopal::ChannelRetry Convert(Interface::ChannelRetry^ retry);				
+				static opendnp3::ChannelRetry Convert(Interface::ChannelRetry^ retry);				
 			};
 
 		}

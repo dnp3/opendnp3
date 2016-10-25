@@ -44,6 +44,25 @@ bool Group50Var1::Write(const Group50Var1& arg, openpal::WSlice& buffer)
   return Format::Many(buffer, arg.time);
 }
 
+bool Group50Var1::ReadTarget(RSlice& buff, DNPTime& output)
+{
+  Group50Var1 value;
+  if(Read(buff, value))
+  {
+    output = DNPTimeFactory::From(value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool Group50Var1::WriteTarget(const DNPTime& value, openpal::WSlice& buff)
+{
+  return Group50Var1::Write(ConvertGroup50Var1::Apply(value), buff);
+}
+
 // ------- Group50Var4 -------
 
 Group50Var4::Group50Var4() : time(0), interval(0), units(0)

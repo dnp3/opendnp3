@@ -35,33 +35,27 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkContext::LinkContext(
-    const openpal::Logger& logger,
-    const std::shared_ptr<openpal::IExecutor>& executor,
-    const std::shared_ptr<IUpperLayer>& upper,
-    const std::shared_ptr<opendnp3::ILinkListener>& listener,
-    ILinkSession& session,
-    const LinkConfig& config)
-	:
+LinkContext::LinkContext(openpal::Logger logger, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& linkListener, ILinkSession& session, const LinkConfig& config) :
 	logger(logger),
 	config(config),
 	pSegments(nullptr),
 	txMode(LinkTransmitMode::Idle),
 	numRetryRemaining(0),
-	executor(executor),
-	rspTimeoutTimer(*executor),
-	keepAliveTimer(*executor),
+	pExecutor(&executor),
+	rspTimeoutTimer(executor),
+	keepAliveTimer(executor),
 	nextReadFCB(false),
 	nextWriteFCB(false),
 	isOnline(false),
 	isRemoteReset(false),
 	keepAliveTimeout(false),
-	lastMessageTimestamp(executor->GetTime()),
+	lastMessageTimestamp(executor.GetTime()),
+	pRouter(nullptr),
 	pPriState(&PLLS_Idle::Instance()),
 	pSecState(&SLLS_NotReset::Instance()),
-	listener(listener),
-	upper(upper),
-	pSession(&session)
+	pListener(&linkListener),
+	pSession(&session),
+	pUpperLayer(&upper)
 {}
 
 bool LinkContext::OnLowerLayerUp()
@@ -72,7 +66,7 @@ bool LinkContext::OnLowerLayerUp()
 		return false;
 	}
 
-	const auto now = this->executor->GetTime();
+	const auto now = this->pExecutor->GetTime();
 
 	this->isOnline = true;
 
@@ -80,8 +74,12 @@ bool LinkContext::OnLowerLayerUp()
 
 	this->StartKeepAliveTimer(now.Add(config.KeepAliveTimeout));
 
-	listener->OnStateChange(opendnp3::LinkStatus::UNRESET);
-	upper->OnLowerLayerUp();
+	pListener->OnStateChange(opendnp3::LinkStatus::UNRESET);
+
+	if (pUpperLayer)
+	{
+		this->pUpperLayer->OnLowerLayerUp();
+	}
 
 	return true;
 }
@@ -108,8 +106,12 @@ bool LinkContext::OnLowerLayerDown()
 	pPriState = &PLLS_Idle::Instance();
 	pSecState = &SLLS_NotReset::Instance();
 
-	listener->OnStateChange(opendnp3::LinkStatus::UNRESET);
-	upper->OnLowerLayerDown();
+	pListener->OnStateChange(opendnp3::LinkStatus::UNRESET);
+
+	if (pUpperLayer)
+	{
+		this->pUpperLayer->OnLowerLayerDown();
+	}
 
 	return true;
 }
@@ -181,7 +183,7 @@ void LinkContext::QueueTransmit(const RSlice& buffer, bool primary)
 	if (txMode == LinkTransmitMode::Idle)
 	{
 		txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
-		linktx->BeginTransmit(buffer, *pSession);
+		pRouter->BeginTransmit(buffer, *pSession);
 	}
 	else
 	{
@@ -248,20 +250,25 @@ bool LinkContext::Retry()
 
 void LinkContext::PushDataUp(const openpal::RSlice& data)
 {
-	upper->OnReceive(data);
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnReceive(data);
+	}
 }
 
 void LinkContext::CompleteSendOperation(bool success)
 {
 	this->pSegments = nullptr;
 
-	auto callback = [upper = upper, success]()
+	if (pUpperLayer)
 	{
-		upper->OnSendResult(success);
-	};
+		auto callback = [this, success]()
+		{
+			this->pUpperLayer->OnSendResult(success);
+		};
 
-	this->executor->Post(callback);
-
+		pExecutor->Post(callback);
+	}
 }
 
 void LinkContext::TryStartTransmission()
@@ -279,7 +286,7 @@ void LinkContext::TryStartTransmission()
 
 void LinkContext::OnKeepAliveTimeout()
 {
-	const auto now = this->executor->GetTime();
+	const auto now = this->pExecutor->GetTime();
 
 	auto elapsed = now.milliseconds - this->lastMessageTimestamp.milliseconds;
 
@@ -331,13 +338,13 @@ void LinkContext::FailKeepAlive(bool timeout)
 {
 	if (timeout)
 	{
-		this->listener->OnKeepAliveFailure();
+		this->pListener->OnKeepAliveFailure();
 	}
 }
 
 void LinkContext::CompleteKeepAlive()
 {
-	this->listener->OnKeepAliveSuccess();
+	this->pListener->OnKeepAliveSuccess();
 }
 
 bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
@@ -354,7 +361,7 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 	}
 
 	// reset the keep-alive timestamp
-	this->lastMessageTimestamp = this->executor->GetTime();
+	this->lastMessageTimestamp = this->pExecutor->GetTime();
 
 	switch (header.func)
 	{
@@ -420,7 +427,7 @@ bool LinkContext::TryPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 {
 	if (this->txMode == LinkTransmitMode::Idle && pending.IsSet())
 	{
-		this->linktx->BeginTransmit(pending.Get(), *pSession);
+		this->pRouter->BeginTransmit(pending.Get(), *pSession);
 		pending.Clear();
 		this->txMode = primary ? LinkTransmitMode::Primary : LinkTransmitMode::Secondary;
 		return true;

@@ -27,6 +27,7 @@
 
 #include <opendnp3/master/HeaderTypes.h>
 #include <opendnp3/master/TaskConfig.h>
+#include <opendnp3/master/MasterScan.h>
 #include <opendnp3/master/ICommandProcessor.h>
 #include <opendnp3/master/RestartOperationResult.h>
 
@@ -36,10 +37,7 @@
 #include <openpal/executor/TimeDuration.h>
 #include <openpal/logging/LogFilters.h>
 
-#include <asiodnp3/IMasterScan.h>
-
 #include <vector>
-#include <memory>
 
 namespace asiodnp3
 {
@@ -59,28 +57,33 @@ public:
 	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
 
 	/**
+	* @return stack statistics counters
+	*/
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
+
+	/**
 	* Add a recurring user-defined scan from a vector of headers
 	* @ return A proxy class used to manipulate the scan
 	*/
-	virtual std::shared_ptr<IMasterScan> AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<opendnp3::Header>& headers, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
 	* Add a scan that requests all objects using qualifier code 0x06
 	* @ return A proxy class used to manipulate the scan
 	*/
-	virtual std::shared_ptr<IMasterScan> AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual std::shared_ptr<IMasterScan> AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
 	* Add a start/stop (range) scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual std::shared_ptr<IMasterScan> AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
+	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const opendnp3::TaskConfig& config = opendnp3::TaskConfig::Default()) = 0;
 
 	/**
 	* Initiate a single user defined scan via a vector of headers

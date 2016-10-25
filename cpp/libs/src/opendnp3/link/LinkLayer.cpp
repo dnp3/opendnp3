@@ -25,14 +25,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<IUpperLayer>& upper, const std::shared_ptr<opendnp3::ILinkListener>& listener, const LinkConfig& config) :
+LinkLayer::LinkLayer(openpal::Logger logger, openpal::IExecutor& executor, IUpperLayer& upper, opendnp3::ILinkListener& listener, const LinkConfig& config) :
 	ctx(logger, executor, upper, listener, *this, config)
 {}
 
 void LinkLayer::SetRouter(ILinkTx& router)
 {
-	assert(ctx.linktx == nullptr);
-	ctx.linktx = &router;
+	assert(ctx.pRouter == nullptr);
+	ctx.pRouter = &router;
 }
 
 ////////////////////////////////

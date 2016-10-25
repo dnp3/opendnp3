@@ -21,148 +21,28 @@
 #ifndef ASIOPAL_IASYNCCHANNEL_H
 #define ASIOPAL_IASYNCCHANNEL_H
 
+#include <functional>
+#include <system_error>
+
 #include <openpal/container/WSlice.h>
 #include <openpal/container/RSlice.h>
 #include <openpal/util/Uncopyable.h>
 
-#include "asiopal/Executor.h"
-#include "asiopal/IChannelCallbacks.h"
-
-#include <functional>
-#include <memory>
-
 namespace asiopal
 {
+typedef std::function<void (const std::error_code& ec, std::size_t num)> read_callback_t;
+typedef std::function<void (const std::error_code& ec, std::size_t num)> write_callback_t;
+typedef std::function<void ()> shutdown_callback_t;
 
-class IAsyncChannel : public std::enable_shared_from_this<IAsyncChannel>, private openpal::Uncopyable
+class IAsyncChannel : private openpal::Uncopyable
 {
 public:
-
-	IAsyncChannel(const std::shared_ptr<Executor>& executor) : executor(executor)
-	{}
-
 	virtual ~IAsyncChannel() {}
 
-	void SetCallbacks(const std::shared_ptr<IChannelCallbacks>& callbacks)
-	{
-		assert(callbacks);
-		this->callbacks = callbacks;
-	}
-
-	inline bool BeginRead(const openpal::WSlice& buffer)
-	{
-		assert(callbacks);
-		if (this->CanRead())
-		{
-			this->reading = true;
-			this->BeginReadImpl(buffer);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	inline bool BeginWrite(const openpal::RSlice& buffer)
-	{
-		assert(callbacks);
-		if (this->CanWrite())
-		{
-			this->writing = true;
-			this->BeginWriteImpl(buffer);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	inline bool Shutdown()
-	{
-		if (this->is_shutting_down) return false;
-
-		this->is_shutting_down = true;
-
-		this->ShutdownImpl();
-
-		// keep the channel alive until it's not reading or writing
-		auto action = [self = shared_from_this()]()
-		{
-			self->CheckForShutdown(self);
-		};
-
-		this->executor->strand.post(action);
-
-		return true;
-	}
-
-	inline bool CanRead() const
-	{
-		return callbacks && !is_shutting_down && !reading;
-	}
-
-
-	inline bool CanWrite() const
-	{
-		return callbacks && !is_shutting_down && !writing;
-	}
-
-	const std::shared_ptr<Executor> executor;
-
-protected:
-
-	inline void OnReadCallback(const std::error_code& ec, size_t num)
-	{
-		this->reading = false;
-		if (this->callbacks && !is_shutting_down)
-		{
-			this->callbacks->OnReadComplete(ec, num);
-		}
-	}
-
-
-	inline void OnWriteCallback(const std::error_code& ec, size_t num)
-	{
-		this->writing = false;
-		if (this->callbacks && !is_shutting_down)
-		{
-			this->callbacks->OnWriteComplete(ec, num);
-		}
-	}
-
-private:
-
-	void CheckForShutdown(std::shared_ptr<IAsyncChannel> self)
-	{
-		if (self->reading || self->writing)
-		{
-			auto action = [self]()
-			{
-				self->CheckForShutdown(self);
-			};
-
-			self->executor->strand.post(action);
-		}
-		else
-		{
-			self->callbacks.reset(); // drop the callbacks
-		}
-	}
-
-
-	std::shared_ptr<IChannelCallbacks> callbacks;
-
-	bool is_shutting_down = false;
-	bool reading = false;
-	bool writing = false;
-
-	virtual void BeginReadImpl(openpal::WSlice buffer) = 0;
-	virtual void BeginWriteImpl(const openpal::RSlice& buffer) = 0;
-	virtual void ShutdownImpl() = 0;
+	virtual void BeginRead(openpal::WSlice& buffer, const read_callback_t& callback) = 0;
+	virtual void BeginWrite(const openpal::RSlice& buffer, const write_callback_t& callback) = 0;
+	virtual void BeginShutdown(const shutdown_callback_t& callback) = 0;
 };
-
 }
 
 #endif

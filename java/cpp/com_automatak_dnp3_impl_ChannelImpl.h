@@ -17,14 +17,6 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
 
 /*
  * Class:     com_automatak_dnp3_impl_ChannelImpl
- * Method:    destroy_native
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_destroy_1native
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     com_automatak_dnp3_impl_ChannelImpl
  * Method:    get_native_master
  * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/SOEHandler;Lcom/automatak/dnp3/MasterApplication;Lcom/automatak/dnp3/MasterStackConfig;)J
  */

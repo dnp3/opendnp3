@@ -124,6 +124,14 @@ struct TimeAndIntervalFactory : private openpal::StaticOnly
 	}
 };
 
+struct DNPTimeFactory : private openpal::StaticOnly
+{
+	inline static DNPTime From(DNPTime time)
+	{
+		return DNPTime(time);
+	}
+};
+
 struct ControlRelayOutputBlockFactory: private openpal::StaticOnly
 {
 	inline static ControlRelayOutputBlock From(

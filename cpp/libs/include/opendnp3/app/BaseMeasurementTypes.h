@@ -36,6 +36,8 @@ class Measurement
 {
 public:
 
+	virtual ~Measurement() {}
+
 	Flags flags;		//	bitfield that stores type specific quality information
 	DNPTime time;		//	timestamp associated with the measurement
 
