@@ -67,6 +67,8 @@ public:
 
 private:
 
+	void LogVerifyCallback(bool preverified, asio::ssl::verify_context & ctx);
+
 	void HandleResolveResult(
 	    const connect_callback_t& callback,
 	    const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
@@ -82,6 +84,7 @@ private:
 
 	bool canceled = false;
 
+	openpal::Logger logger;
 	LoggingConnectionCondition condition;
 	const std::shared_ptr<Executor> executor;
 	const std::string host;

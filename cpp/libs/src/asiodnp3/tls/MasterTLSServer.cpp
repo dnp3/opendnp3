@@ -70,12 +70,13 @@ bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::
 
 bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx)
 {
+	const int MAX_SUBJECT_NAME = 512;
 	int depth = X509_STORE_CTX_get_error_depth(ctx.native_handle());
 
 	// lookup the subject name
 	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
-	char subjectName[512];
-	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, 512);
+	char subjectName[MAX_SUBJECT_NAME];
+	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, MAX_SUBJECT_NAME);
 
 	X509Info info(
 	    depth,

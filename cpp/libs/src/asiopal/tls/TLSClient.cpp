@@ -23,17 +23,23 @@
 
 #include "asiopal/SocketHelpers.h"
 
+#include "opendnp3/LogLevels.h"
+
+using namespace openpal;
+using namespace opendnp3;
+
 namespace asiopal
 {
 
 TLSClient::TLSClient(
-    const openpal::Logger& logger,
+    const Logger& logger,
     const std::shared_ptr<Executor>& executor,
     const IPEndpoint& remote,
     const std::string& adapter,
     const TLSConfig& config,
     std::error_code& ec)
 	:
+	logger(logger),
 	condition(logger),
 	executor(executor),
 	host(remote.address),
@@ -65,7 +71,29 @@ bool TLSClient::BeginConnect(const connect_callback_t& callback)
 
 	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(this->executor->strand.get_io_service(), this->ctx.value);
 
+	auto verify = [self = shared_from_this()](bool preverified, asio::ssl::verify_context & ctx) -> bool
+	{	
+		self->LogVerifyCallback(preverified, ctx);
+		return preverified;
+	};
+	
 	std::error_code ec;
+	stream->set_verify_callback(verify, ec);
+
+	if (ec)
+	{
+		auto cb = [self = shared_from_this(), callback, stream, ec]
+		{
+			if (!self->canceled)
+			{
+				callback(self->executor, stream, ec);
+			}
+		};
+
+		this->executor->strand.post(cb);
+		return true;
+	}
+	
 	SocketHelpers::BindToLocalAddress(this->adapter, this->localEndpoint, stream->lowest_layer(), ec);
 
 	if (ec)
@@ -112,6 +140,28 @@ bool TLSClient::BeginConnect(const connect_callback_t& callback)
 
 		stream->lowest_layer().async_connect(remoteEndpoint, executor->strand.wrap(cb));
 		return true;
+	}
+}
+
+void TLSClient::LogVerifyCallback(bool preverified, asio::ssl::verify_context & ctx)
+{
+	const int MAX_SUBJECT_NAME = 512;
+
+	int depth = X509_STORE_CTX_get_error_depth(ctx.native_handle());
+
+	// lookup the subject name
+	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
+	char subjectName[MAX_SUBJECT_NAME];
+	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, MAX_SUBJECT_NAME);
+
+	if (preverified)
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Verified certificate at depth: %d subject: %s", depth, subjectName);
+	}
+	else
+	{
+		const int err = X509_STORE_CTX_get_error(ctx.native_handle());
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Error verifying certificate at depth: %d subject: %s error: %d:%s", depth, subjectName, err, X509_verify_cert_error_string(err));
 	}
 }
 
