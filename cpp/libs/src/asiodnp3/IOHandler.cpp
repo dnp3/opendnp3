@@ -68,7 +68,7 @@ void IOHandler::OnReadComplete(const std::error_code& ec, size_t num)
 	}
 	else
 	{
-		this->statistics.numBytesRx += num;
+		this->statistics.numBytesRx += static_cast<uint32_t>(num);
 
 		this->parser.OnRead(static_cast<uint32_t>(num), *this);
 		this->BeginRead();
@@ -88,7 +88,7 @@ void IOHandler::OnWriteComplete(const std::error_code& ec, size_t num)
 	}
 	else
 	{
-		this->statistics.numBytesTx += num;
+		this->statistics.numBytesTx += static_cast<uint32_t>(num);
 
 		if (!this->txQueue.empty())
 		{

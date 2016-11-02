@@ -27,6 +27,7 @@
 #include "adapters/CommandHandlerAdapter.h"
 
 #include "adapters/CString.h"
+#include "jni/JCache.h"
 
 #include <memory>
 
@@ -38,6 +39,36 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_set_1log_1level_
 {
 	const auto channel = (std::shared_ptr<IChannel>*) native;
 	(*channel)->SetLogFilters(levels);
+}
+
+JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1statistics_1native
+(JNIEnv* env, jobject, jlong native)
+{
+	const auto channel = (std::shared_ptr<IChannel>*) native;
+	auto stats = (*channel)->GetStatistics();
+
+	auto parserStats = jni::JCache::ParserStatistics.init7(
+		env,
+		stats.parser.numHeaderCrcError,
+		stats.parser.numBodyCrcError,
+		stats.parser.numLinkFrameRx,
+		stats.parser.numBadLength,
+		stats.parser.numBadFunctionCode,
+		stats.parser.numBadFCV,
+		stats.parser.numBadFCV
+	);
+
+	auto channelStats = jni::JCache::ChannelStatistics.init6(
+		env,
+		stats.channel.numOpen,
+		stats.channel.numOpenFail,
+		stats.channel.numClose,
+		stats.channel.numBytesRx,
+		stats.channel.numBytesTx,
+		stats.channel.numLinkFrameTx
+	);
+
+	return jni::JCache::LinkStatistics.init2(env, channelStats, parserStats);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
