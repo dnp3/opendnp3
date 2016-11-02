@@ -12,6 +12,6 @@ public class LinkStatistics {
         this.parser = parser;
     }
 
-    final ChannelStatistics channel;
-    final ParserStatistics parser;
+    public final ChannelStatistics channel;
+    public final ParserStatistics parser;
 }

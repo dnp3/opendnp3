@@ -14,7 +14,7 @@ public class StackStatistics
         this.transport = transport;
     }
 
-    final LinkLayerStatistics link;
-    final TransportStatistics transport;
+    public final LinkLayerStatistics link;
+    public final TransportStatistics transport;
 }
 
