@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2016 Automatak, LLC
+ * Copyright 2013 Automatak, LLC
  *
  * Licensed to Automatak, LLC (www.automatak.com) under one or more
  * contributor license agreements. See the NOTICE file distributed with this
@@ -16,38 +16,30 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3;
 
-/**
- * Represents a Outstation or Master.
- */
-public interface Stack {
+#include "Conversions.h"
 
-    /**
-     * Set the active log levels for the stack
-     * @param levels
-     */
-    void setLogLevel(int levels);
+jobject Conversions::ConvertStackStatistics(JNIEnv* env, const opendnp3::StackStatistics& stats)
+{
+	auto link = jni::JCache::LinkLayerStatistics.init4(
+		env,
+		stats.link.numUnexpectedFrame,
+		stats.link.numBadMasterBit,
+		stats.link.numUnknownDestination,
+		stats.link.numUnknownSource
+	);
 
-    /**
-     * Get statistics for the stack
-     * @return the statistics object
-     */
-    StackStatistics getStatistics();
+	auto transport = jni::JCache::TransportStatistics.init6(
+		env,
+		stats.transport.rx.numTransportRx,
+		stats.transport.tx.numTransportTx,
+		stats.transport.rx.numTransportErrorRx,
+		stats.transport.rx.numTransportBufferOverflow,
+		stats.transport.rx.numTransportDiscard,
+		stats.transport.rx.numTransportIgnore
+	);
 
-    /**
-     * Synchronously enable communications
-     */
-    void enable();
-
-    /**
-     * Synchronously disable communications
-     */
-    void disable();
-
-    /**
-     * Synchronously shutdown the endpoint. No more calls are allowed after this call.
-     */
-    void shutdown();
-
+	return jni::JCache::StackStatistics.init2(env, link, transport);
 }
+
+

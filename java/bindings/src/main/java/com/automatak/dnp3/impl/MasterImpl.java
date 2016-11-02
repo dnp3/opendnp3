@@ -46,6 +46,9 @@ class MasterImpl implements Master {
     }
 
     @Override
+    public StackStatistics getStatistics() { return this.get_statistics_native(this.nativePointer); }
+
+    @Override
     public void enable()
     {
         enable_native(nativePointer);
@@ -168,6 +171,7 @@ class MasterImpl implements Master {
     }
 
     private native void set_log_level_native(long nativePointer, int levels);
+    private native StackStatistics get_statistics_native(long nativePointer);
     private native void enable_native(long nativePointer);
     private native void disable_native(long nativePointer);
     private native void shutdown_native(long nativePointer);

@@ -20,6 +20,7 @@ package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.ChangeSet;
 import com.automatak.dnp3.Outstation;
+import com.automatak.dnp3.StackStatistics;
 
 class OutstationImpl implements Outstation {
 
@@ -40,6 +41,9 @@ class OutstationImpl implements Outstation {
     {
         this.set_log_level_native(this.nativePointer, levels);
     }
+
+    @Override
+    public StackStatistics getStatistics() { return this.get_statistics_native(this.nativePointer); }
 
     @Override
     public void enable()
@@ -68,14 +72,10 @@ class OutstationImpl implements Outstation {
     }
 
     private native void set_log_level_native(long nativePointer, int levels);
-
+    private native StackStatistics get_statistics_native(long nativePointer);
     private native void enable_native(long nativePointer);
-
     private native void disable_native(long nativePointer);
-
     private native void shutdown_native(long nativePointer);
-
     private native void destroy_native(long nativePointer);
-
     private native void apply_native(long nativePointer, long nativeChangeSet);
 }

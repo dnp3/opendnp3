@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2016 Automatak, LLC
+ * Copyright 2013 Automatak, LLC
  *
  * Licensed to Automatak, LLC (www.automatak.com) under one or more
  * contributor license agreements. See the NOTICE file distributed with this
@@ -16,38 +16,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3;
+#ifndef OPENDNP3_CONVERSIONS_H
+#define OPENDNP3_CONVERSIONS_H
 
-/**
- * Represents a Outstation or Master.
- */
-public interface Stack {
+#include "../jni/JCache.h"
 
-    /**
-     * Set the active log levels for the stack
-     * @param levels
-     */
-    void setLogLevel(int levels);
+#include "opendnp3/StackStatistics.h"
 
-    /**
-     * Get statistics for the stack
-     * @return the statistics object
-     */
-    StackStatistics getStatistics();
+class Conversions
+{
+public:
 
-    /**
-     * Synchronously enable communications
-     */
-    void enable();
+	static jobject ConvertStackStatistics(JNIEnv* env, const opendnp3::StackStatistics& stats);
 
-    /**
-     * Synchronously disable communications
-     */
-    void disable();
 
-    /**
-     * Synchronously shutdown the endpoint. No more calls are allowed after this call.
-     */
-    void shutdown();
+};
 
-}
+#endif
+
+

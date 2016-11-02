@@ -18,6 +18,8 @@
  */
 #include "com_automatak_dnp3_impl_OutstationImpl.h"
 
+#include "adapters/Conversions.h"
+
 #include "asiodnp3/IOutstation.h"
 #include "asiodnp3/UpdateBuilder.h"
 
@@ -25,7 +27,15 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_set_1log_1lev
 (JNIEnv* env, jobject, jlong native, jint levels)
 {
 	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	(*outstation)->SetLogFilters(levels);
+	(*outstation)->SetLogFilters(levels);	
+}
+
+JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_get_1statistics_1native
+(JNIEnv* env, jobject, jlong native)
+{
+	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
+	auto stats = (*outstation)->GetStackStatistics();	
+	return Conversions::ConvertStackStatistics(env, stats);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_enable_1native

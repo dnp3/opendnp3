@@ -17,6 +17,14 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_set_1log_1level_1
 
 /*
  * Class:     com_automatak_dnp3_impl_MasterImpl
+ * Method:    get_statistics_native
+ * Signature: (J)Lcom/automatak/dnp3/StackStatistics;
+ */
+JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1statistics_1native
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_automatak_dnp3_impl_MasterImpl
  * Method:    enable_native
  * Signature: (J)V
  */

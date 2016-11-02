@@ -20,7 +20,8 @@
 
 #include "jni/JCache.h"
 #include "adapters/GlobalRef.h"
-#include "adapters/JNI.h"
+#include "adapters/Conversions.h"
+
 
 #include "asiodnp3/IMaster.h"
 #include "opendnp3/master/CommandSet.h"
@@ -32,6 +33,14 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_set_1log_1level_1
 {
 	const auto master = (std::shared_ptr<asiodnp3::IMaster>*) native;
 	(*master)->SetLogFilters(levels);
+}
+
+JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1statistics_1native
+(JNIEnv* env, jobject, jlong native)
+{
+	const auto master = (std::shared_ptr<asiodnp3::IMaster>*) native;
+	auto stats = (*master)->GetStackStatistics();
+	return Conversions::ConvertStackStatistics(env, stats);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_enable_1native
