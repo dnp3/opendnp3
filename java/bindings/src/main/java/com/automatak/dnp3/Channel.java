@@ -36,6 +36,12 @@ public interface Channel {
     void setLogLevel(int levels);
 
     /**
+     * Get statistics for the channel
+     * @return the statistics object
+     */
+    LinkStatistics getStatistics();
+
+    /**
      * Adds a master to the channel
      *
      * @param loggerId name of the logger that will be assigned to this stack

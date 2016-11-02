@@ -17,6 +17,14 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_set_1log_1level_
 
 /*
  * Class:     com_automatak_dnp3_impl_ChannelImpl
+ * Method:    get_statistics_native
+ * Signature: (J)Lcom/automatak/dnp3/LinkStatistics;
+ */
+JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1statistics_1native
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_automatak_dnp3_impl_ChannelImpl
  * Method:    shutdown_native
  * Signature: (J)V
  */

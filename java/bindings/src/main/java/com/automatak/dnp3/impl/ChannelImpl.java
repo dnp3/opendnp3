@@ -44,6 +44,12 @@ class ChannelImpl implements Channel {
     }
 
     @Override
+    public LinkStatistics getStatistics()
+    {
+        return this.get_statistics_native(this.nativePointer);
+    }
+
+    @Override
     public synchronized Master addMaster(String id, SOEHandler handler, MasterApplication application, MasterStackConfig config) throws DNP3Exception
     {
         long ret = get_native_master(nativePointer, id, handler, application, config);
@@ -76,6 +82,7 @@ class ChannelImpl implements Channel {
     }
 
     private native void set_log_level_native(long nativePointer, int levels);
+    private native LinkStatistics get_statistics_native(long nativePointer);
     private native void shutdown_native(long nativePointer);
     private native void destroy_native(long nativePointer);
     private native long get_native_master(long nativePointer, String id, SOEHandler handler, MasterApplication application, MasterStackConfig config);
