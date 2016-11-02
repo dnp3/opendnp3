@@ -33,17 +33,14 @@ struct LinkStatistics
 {
 	struct Parser
 	{
-		/// Number of frames discared due to header CRC errors
+		/// Number of frames discarded due to header CRC errors
 		uint32_t numHeaderCrcError = 0;
 
-		/// Number of frames discared due to body CRC errors
+		/// Number of frames discarded due to body CRC errors
 		uint32_t numBodyCrcError = 0;
 
 		/// Number of frames received
-		uint32_t numLinkFrameRx = 0;
-
-		/// Number of frames detected with bad / malformed contents
-		uint32_t numBadLinkFrameRx = 0;
+		uint32_t numLinkFrameRx = 0;		
 
 		/// number of bad LEN fields received (malformed frame)
 		uint32_t numBadLength = 0;
@@ -51,7 +48,7 @@ struct LinkStatistics
 		/// number of bad function codes (malformed frame)
 		uint32_t numBadFunctionCode = 0;
 
-		/// number of FCV / function code mismtaches (malformed frame)
+		/// number of FCV / function code mismatches (malformed frame)
 		uint32_t numBadFCV = 0;
 
 		/// number of frames w/ unexpected FCB bit set (malformed frame)
