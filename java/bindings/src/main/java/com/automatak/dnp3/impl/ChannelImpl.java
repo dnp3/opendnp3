@@ -38,6 +38,12 @@ class ChannelImpl implements Channel {
     }
 
     @Override
+    public void setLogLevel(int levels)
+    {
+        this.set_log_level_native(this.nativePointer, levels);
+    }
+
+    @Override
     public synchronized Master addMaster(String id, SOEHandler handler, MasterApplication application, MasterStackConfig config) throws DNP3Exception
     {
         long ret = get_native_master(nativePointer, id, handler, application, config);
@@ -69,6 +75,7 @@ class ChannelImpl implements Channel {
         this.shutdown_native(nativePointer);
     }
 
+    private native void set_log_level_native(long nativePointer, int levels);
     private native void shutdown_native(long nativePointer);
     private native void destroy_native(long nativePointer);
     private native long get_native_master(long nativePointer, String id, SOEHandler handler, MasterApplication application, MasterStackConfig config);

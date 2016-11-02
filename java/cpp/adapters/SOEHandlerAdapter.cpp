@@ -137,21 +137,21 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 }
 
 void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values)
-{		
+{
 	const auto env = JNI::GetEnv();
 	const auto jinfo = Convert(env, info);
 
 	auto jlist = jni::JCache::ArrayList.init1(env, static_cast<jint>(values.Count()));
 
-	auto add = [&](const DNPTime& value)
+	auto add = [&](const DNPTime & value)
 	{
-		auto jvalue = jni::JCache::DNPTime.init1(env, value.value);		
+		auto jvalue = jni::JCache::DNPTime.init1(env, value.value);
 		jni::JCache::ArrayList.add(env, jlist, jvalue);
 	};
 
 	values.ForeachItem(add);
 
-	jni::JCache::SOEHandler.processDNPTime(env, proxy, jinfo, jlist);	
+	jni::JCache::SOEHandler.processDNPTime(env, proxy, jinfo, jlist);
 }
 
 jobject SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::HeaderInfo& info)

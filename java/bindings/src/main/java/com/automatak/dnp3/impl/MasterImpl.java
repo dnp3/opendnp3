@@ -40,6 +40,12 @@ class MasterImpl implements Master {
     }
 
     @Override
+    public void setLogLevel(int levels)
+    {
+        this.set_log_level_native(this.nativePointer, levels);
+    }
+
+    @Override
     public void enable()
     {
         enable_native(nativePointer);
@@ -161,6 +167,7 @@ class MasterImpl implements Master {
         return directOperate(CommandHeader.fromSingleAODouble64(command, index));
     }
 
+    private native void set_log_level_native(long nativePointer, int levels);
     private native void enable_native(long nativePointer);
     private native void disable_native(long nativePointer);
     private native void shutdown_native(long nativePointer);

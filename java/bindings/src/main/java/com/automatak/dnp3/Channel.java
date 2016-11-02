@@ -30,6 +30,12 @@ public interface Channel {
     void shutdown();
 
     /**
+     * Set the active log levels for the channel's logger
+     * @param levels
+     */
+    void setLogLevel(int levels);
+
+    /**
      * Adds a master to the channel
      *
      * @param loggerId name of the logger that will be assigned to this stack

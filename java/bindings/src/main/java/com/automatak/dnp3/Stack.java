@@ -24,6 +24,12 @@ package com.automatak.dnp3;
 public interface Stack {
 
     /**
+     * Set the active log levels for the stack
+     * @param levels
+     */
+    void setLogLevel(int levels);
+
+    /**
      * Synchronously enable communications
      */
     void enable();

@@ -72,11 +72,11 @@ bool TLSClient::BeginConnect(const connect_callback_t& callback)
 	auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(this->executor->strand.get_io_service(), this->ctx.value);
 
 	auto verify = [self = shared_from_this()](bool preverified, asio::ssl::verify_context & ctx) -> bool
-	{	
+	{
 		self->LogVerifyCallback(preverified, ctx);
 		return preverified;
 	};
-	
+
 	std::error_code ec;
 	stream->set_verify_callback(verify, ec);
 
@@ -93,7 +93,7 @@ bool TLSClient::BeginConnect(const connect_callback_t& callback)
 		this->executor->strand.post(cb);
 		return true;
 	}
-	
+
 	SocketHelpers::BindToLocalAddress(this->adapter, this->localEndpoint, stream->lowest_layer(), ec);
 
 	if (ec)
@@ -143,7 +143,7 @@ bool TLSClient::BeginConnect(const connect_callback_t& callback)
 	}
 }
 
-void TLSClient::LogVerifyCallback(bool preverified, asio::ssl::verify_context & ctx)
+void TLSClient::LogVerifyCallback(bool preverified, asio::ssl::verify_context& ctx)
 {
 	const int MAX_SUBJECT_NAME = 512;
 

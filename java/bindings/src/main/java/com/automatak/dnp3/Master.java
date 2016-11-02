@@ -25,6 +25,7 @@ import java.time.Duration;
  */
 public interface Master extends Stack, CommandProcessor {
 
+
     /**
      * Perform a one time scan with the supplied headers
      * @param headers The request headers for the READ

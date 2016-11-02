@@ -36,6 +36,12 @@ class OutstationImpl implements Outstation {
     }
 
     @Override
+    public void setLogLevel(int levels)
+    {
+        this.set_log_level_native(this.nativePointer, levels);
+    }
+
+    @Override
     public void enable()
     {
         this.enable_native(nativePointer);
@@ -60,6 +66,8 @@ class OutstationImpl implements Outstation {
         changeSet.apply(impl);
         this.apply_native(this.nativePointer, impl.nativePointer);
     }
+
+    private native void set_log_level_native(long nativePointer, int levels);
 
     private native void enable_native(long nativePointer);
 

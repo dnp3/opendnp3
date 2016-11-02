@@ -33,6 +33,13 @@
 using namespace asiodnp3;
 using namespace opendnp3;
 
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_set_1log_1level_1native
+(JNIEnv* env, jobject, jlong native, jint levels)
+{
+	const auto channel = (std::shared_ptr<IChannel>*) native;
+	(*channel)->SetLogFilters(levels);
+}
+
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
 (JNIEnv* env, jobject, jlong native)
 {

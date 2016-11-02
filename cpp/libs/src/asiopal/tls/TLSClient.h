@@ -67,7 +67,7 @@ public:
 
 private:
 
-	void LogVerifyCallback(bool preverified, asio::ssl::verify_context & ctx);
+	void LogVerifyCallback(bool preverified, asio::ssl::verify_context& ctx);
 
 	void HandleResolveResult(
 	    const connect_callback_t& callback,

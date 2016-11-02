@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     com_automatak_dnp3_impl_OutstationImpl
+ * Method:    set_log_level_native
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_set_1log_1level_1native
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     com_automatak_dnp3_impl_OutstationImpl
  * Method:    enable_native
  * Signature: (J)V
  */

@@ -27,6 +27,13 @@
 
 #include <memory>
 
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_set_1log_1level_1native
+(JNIEnv* env, jobject, jlong native, jint levels)
+{
+	const auto master = (std::shared_ptr<asiodnp3::IMaster>*) native;
+	(*master)->SetLogFilters(levels);
+}
+
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_enable_1native
 (JNIEnv* env, jobject, jlong native)
 {
