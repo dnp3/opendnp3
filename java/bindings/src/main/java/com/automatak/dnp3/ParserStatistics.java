@@ -27,35 +27,35 @@ public class ParserStatistics
     /**
      * Number of frames discarded due to header CRC errors
      */
-    final long numHeaderCrcError;
+    public final long numHeaderCrcError;
 
     /**
      * Number of frames discarded due to body CRC errors
      */
-    final long numBodyCrcError;
+    public final long numBodyCrcError;
 
     /**
      * Number of frames received
      */
-    final long numLinkFrameRx;
+    public final long numLinkFrameRx;
 
     /**
      * number of bad LEN fields received (malformed frame)
      */
-    final long numBadLength;
+    public final long numBadLength;
 
     /**
      * number of bad function codes (malformed frame)
      */
-    final long numBadFunctionCode;
+    public final long numBadFunctionCode;
 
     /**
      * number of FCV / function code mismatches (malformed frame)
      */
-    final long numBadFCV;
+    public final long numBadFCV;
 
     /**
      * number of frames w/ unexpected FCB bit set (malformed frame)
      */
-    final long numBadFCB;
+    public final long numBadFCB;
 }

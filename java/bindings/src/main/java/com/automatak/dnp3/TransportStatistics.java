@@ -22,30 +22,30 @@ public class TransportStatistics
     /**
      * Number of valid TPDU's received
      */
-    final long numTransportRx;
+    public final long numTransportRx;
 
     /**
      * Number of valid TPDU's transmitted
      */
-    final long numTransportTx;
+    public final long numTransportTx;
 
     /**
      * Number of TPDUs dropped due to malformed contents
      */
-    final long numTransportErrorRx;
+    public final long numTransportErrorRx;
 
     /**
      * Number of times received data was too big for reassembly buffer
      */
-    final long numTransportBufferOverflow;
+    public final long numTransportBufferOverflow;
 
     /**
      * number of times transport buffer is discard due to new FIR
      */
-    final long numTransportDiscard;
+    public final long numTransportDiscard;
 
     /**
      * number of segments ignored due to bad FIR/FIN or SEQ
      */
-    final long numTransportIgnore;
+    public final long numTransportIgnore;
 }

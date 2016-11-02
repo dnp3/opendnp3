@@ -20,20 +20,20 @@ public class ChannelStatistics
     }
 
     /// The number of times the channel has successfully opened
-    final long numOpen;
+    public final long numOpen;
 
     /// The number of times the channel has failed to open
-    final long numOpenFail;
+    public final long numOpenFail;
 
     /// The number of times the channel has closed either due to user intervention or an error
-    final long numClose;
+    public final long numClose;
 
     /// The number of bytes received
-    final long numBytesRx;
+    public final long numBytesRx;
 
     /// The number of bytes transmitted
-    final long numBytesTx;
+    public final long numBytesTx;
 
     /// Number of frames transmitted
-    final long numLinkFrameTx;
+    public final long numLinkFrameTx;
 }

@@ -20,20 +20,20 @@ public class LinkLayerStatistics {
     /**
      * number of unexpected frames
      */
-    final long numUnexpectedFrame;
+    public final long numUnexpectedFrame;
 
     /**
      * frames received w/ wrong master bit
      */
-    final long numBadMasterBit;
+    public final long numBadMasterBit;
 
     /**
      * frames received for an unknown destination
      */
-    final long numUnknownDestination;
+    public final long numUnknownDestination;
 
     /**
      * frames received for an unknown source
      */
-    final long numUnknownSource;
+    public final long numUnknownSource;
 }
