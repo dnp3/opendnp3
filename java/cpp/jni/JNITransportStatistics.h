@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNITASKCOMPLETION_H
-#define OPENDNP3JAVA_JNITASKCOMPLETION_H
+#ifndef OPENDNP3JAVA_JNITRANSPORTSTATISTICS_H
+#define OPENDNP3JAVA_JNITRANSPORTSTATISTICS_H
 
 #include <jni.h>
 
@@ -29,7 +29,7 @@ namespace jni
 
     namespace cache
     {
-        class TaskCompletion
+        class TransportStatistics
         {
             friend struct jni::JCache;
 
@@ -38,17 +38,15 @@ namespace jni
 
             public:
 
-            // methods
-            jint toType(JNIEnv* env, jobject instance);
-            jobject fromType(JNIEnv* env, jint arg0);
+            // constructor methods
+            jobject init6(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3, jlong arg4, jlong arg5);
 
             private:
 
             jclass clazz = nullptr;
 
-            // method ids
-            jmethodID toTypeMethod = nullptr;
-            jmethodID fromTypeMethod = nullptr;
+            // constructor method ids
+            jmethodID init6Constructor = nullptr;
         };
     }
 }

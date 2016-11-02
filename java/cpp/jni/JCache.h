@@ -80,6 +80,7 @@
 #include "JNIIterable.h"
 #include "JNIIterator.h"
 #include "JNILinkLayerConfig.h"
+#include "JNILinkLayerStatistics.h"
 #include "JNILinkStatistics.h"
 #include "JNIList.h"
 #include "JNILogEntry.h"
@@ -98,6 +99,7 @@
 #include "JNIRange.h"
 #include "JNISOEHandler.h"
 #include "JNIStack.h"
+#include "JNIStackStatistics.h"
 #include "JNIStaticAnalogOutputStatusVariation.h"
 #include "JNIStaticAnalogVariation.h"
 #include "JNIStaticBinaryOutputStatusVariation.h"
@@ -111,6 +113,7 @@
 #include "JNITaskInfo.h"
 #include "JNITimeSyncMode.h"
 #include "JNITimestampMode.h"
+#include "JNITransportStatistics.h"
 
 namespace jni
 {
@@ -176,6 +179,7 @@ namespace jni
         static cache::Iterable Iterable;
         static cache::Iterator Iterator;
         static cache::LinkLayerConfig LinkLayerConfig;
+        static cache::LinkLayerStatistics LinkLayerStatistics;
         static cache::LinkStatistics LinkStatistics;
         static cache::List List;
         static cache::LogEntry LogEntry;
@@ -194,6 +198,7 @@ namespace jni
         static cache::Range Range;
         static cache::SOEHandler SOEHandler;
         static cache::Stack Stack;
+        static cache::StackStatistics StackStatistics;
         static cache::StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariation;
         static cache::StaticAnalogVariation StaticAnalogVariation;
         static cache::StaticBinaryOutputStatusVariation StaticBinaryOutputStatusVariation;
@@ -207,6 +212,7 @@ namespace jni
         static cache::TaskInfo TaskInfo;
         static cache::TimeSyncMode TimeSyncMode;
         static cache::TimestampMode TimestampMode;
+        static cache::TransportStatistics TransportStatistics;
     };
 }
 

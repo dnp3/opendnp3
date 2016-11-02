@@ -30,11 +30,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/StaticDoubleBinaryVariation;");
-            if(!this->fromTypeMethod) return false;
-
             this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
             if(!this->toTypeMethod) return false;
+
+            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/StaticDoubleBinaryVariation;");
+            if(!this->fromTypeMethod) return false;
 
             return true;
         }
@@ -44,14 +44,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject StaticDoubleBinaryVariation::fromType(JNIEnv* env, jint arg0)
-        {
-            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
-        }
-
         jint StaticDoubleBinaryVariation::toType(JNIEnv* env, jobject instance)
         {
             return env->CallIntMethod(instance, this->toTypeMethod);
+        }
+
+        jobject StaticDoubleBinaryVariation::fromType(JNIEnv* env, jint arg0)
+        {
+            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
         }
     }
 }

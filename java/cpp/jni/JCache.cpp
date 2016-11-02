@@ -79,6 +79,7 @@ namespace jni
     cache::Iterable JCache::Iterable;
     cache::Iterator JCache::Iterator;
     cache::LinkLayerConfig JCache::LinkLayerConfig;
+    cache::LinkLayerStatistics JCache::LinkLayerStatistics;
     cache::LinkStatistics JCache::LinkStatistics;
     cache::List JCache::List;
     cache::LogEntry JCache::LogEntry;
@@ -97,6 +98,7 @@ namespace jni
     cache::Range JCache::Range;
     cache::SOEHandler JCache::SOEHandler;
     cache::Stack JCache::Stack;
+    cache::StackStatistics JCache::StackStatistics;
     cache::StaticAnalogOutputStatusVariation JCache::StaticAnalogOutputStatusVariation;
     cache::StaticAnalogVariation JCache::StaticAnalogVariation;
     cache::StaticBinaryOutputStatusVariation JCache::StaticBinaryOutputStatusVariation;
@@ -110,6 +112,7 @@ namespace jni
     cache::TaskInfo JCache::TaskInfo;
     cache::TimeSyncMode JCache::TimeSyncMode;
     cache::TimestampMode JCache::TimestampMode;
+    cache::TransportStatistics JCache::TransportStatistics;
 
     bool JCache::init(JNIEnv* env)
     {
@@ -170,6 +173,7 @@ namespace jni
         && Iterable.init(env)
         && Iterator.init(env)
         && LinkLayerConfig.init(env)
+        && LinkLayerStatistics.init(env)
         && LinkStatistics.init(env)
         && List.init(env)
         && LogEntry.init(env)
@@ -188,6 +192,7 @@ namespace jni
         && Range.init(env)
         && SOEHandler.init(env)
         && Stack.init(env)
+        && StackStatistics.init(env)
         && StaticAnalogOutputStatusVariation.init(env)
         && StaticAnalogVariation.init(env)
         && StaticBinaryOutputStatusVariation.init(env)
@@ -201,6 +206,7 @@ namespace jni
         && TaskInfo.init(env)
         && TimeSyncMode.init(env)
         && TimestampMode.init(env)
+        && TransportStatistics.init(env)
         ;
     }
 
@@ -263,6 +269,7 @@ namespace jni
         Iterable.cleanup(env);
         Iterator.cleanup(env);
         LinkLayerConfig.cleanup(env);
+        LinkLayerStatistics.cleanup(env);
         LinkStatistics.cleanup(env);
         List.cleanup(env);
         LogEntry.cleanup(env);
@@ -281,6 +288,7 @@ namespace jni
         Range.cleanup(env);
         SOEHandler.cleanup(env);
         Stack.cleanup(env);
+        StackStatistics.cleanup(env);
         StaticAnalogOutputStatusVariation.cleanup(env);
         StaticAnalogVariation.cleanup(env);
         StaticBinaryOutputStatusVariation.cleanup(env);
@@ -294,5 +302,6 @@ namespace jni
         TaskInfo.cleanup(env);
         TimeSyncMode.cleanup(env);
         TimestampMode.cleanup(env);
+        TransportStatistics.cleanup(env);
     }
 }

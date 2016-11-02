@@ -13,7 +13,7 @@ public class StackStatistics
         this.link = link;
         this.transport = transport;
     }
-    
+
     final LinkLayerStatistics link;
     final TransportStatistics transport;
 }

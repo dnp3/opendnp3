@@ -18,40 +18,32 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNIStaticBinaryVariation.h"
+#include "JNITransportStatistics.h"
 
 namespace jni
 {
     namespace cache
     {
-        bool StaticBinaryVariation::init(JNIEnv* env)
+        bool TransportStatistics::init(JNIEnv* env)
         {
-            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/StaticBinaryVariation;");
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/TransportStatistics;");
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-            if(!this->toTypeMethod) return false;
-
-            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/StaticBinaryVariation;");
-            if(!this->fromTypeMethod) return false;
+            this->init6Constructor = env->GetMethodID(this->clazz, "<init>", "(JJJJJJ)V");
+            if(!this->init6Constructor) return false;
 
             return true;
         }
 
-        void StaticBinaryVariation::cleanup(JNIEnv* env)
+        void TransportStatistics::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jint StaticBinaryVariation::toType(JNIEnv* env, jobject instance)
+        jobject TransportStatistics::init6(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3, jlong arg4, jlong arg5)
         {
-            return env->CallIntMethod(instance, this->toTypeMethod);
-        }
-
-        jobject StaticBinaryVariation::fromType(JNIEnv* env, jint arg0)
-        {
-            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+            return env->NewObject(this->clazz, this->init6Constructor, arg0, arg1, arg2, arg3, arg4, arg5);
         }
     }
 }

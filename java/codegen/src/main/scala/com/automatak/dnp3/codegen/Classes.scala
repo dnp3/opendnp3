@@ -118,7 +118,10 @@ object Classes {
     ClassConfig(classOf[DNPTime], Set(Features.Constructors)),
     ClassConfig(classOf[ParserStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[ChannelStatistics], Set(Features.Constructors)),
-    ClassConfig(classOf[LinkStatistics], Set(Features.Constructors))
+    ClassConfig(classOf[LinkStatistics], Set(Features.Constructors)),
+    ClassConfig(classOf[LinkLayerStatistics], Set(Features.Constructors)),
+    ClassConfig(classOf[TransportStatistics], Set(Features.Constructors)),
+    ClassConfig(classOf[StackStatistics], Set(Features.Constructors))
   )
 
 

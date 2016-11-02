@@ -36,11 +36,11 @@ namespace jni
             this->valueOfMethod = env->GetStaticMethodID(this->clazz, "valueOf", "(Ljava/lang/String;)Lcom/automatak/dnp3/enums/IndexMode;");
             if(!this->valueOfMethod) return false;
 
-            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/IndexMode;");
-            if(!this->fromTypeMethod) return false;
-
             this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
             if(!this->toTypeMethod) return false;
+
+            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/IndexMode;");
+            if(!this->fromTypeMethod) return false;
 
             return true;
         }
@@ -60,14 +60,14 @@ namespace jni
             return env->CallStaticObjectMethod(this->clazz, this->valueOfMethod, arg0);
         }
 
-        jobject IndexMode::fromType(JNIEnv* env, jint arg0)
-        {
-            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
-        }
-
         jint IndexMode::toType(JNIEnv* env, jobject instance)
         {
             return env->CallIntMethod(instance, this->toTypeMethod);
+        }
+
+        jobject IndexMode::fromType(JNIEnv* env, jint arg0)
+        {
+            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
         }
     }
 }

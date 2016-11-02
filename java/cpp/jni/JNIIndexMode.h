@@ -41,8 +41,8 @@ namespace jni
             // methods
             jobject values(JNIEnv* env);
             jobject valueOf(JNIEnv* env, jstring arg0);
-            jobject fromType(JNIEnv* env, jint arg0);
             jint toType(JNIEnv* env, jobject instance);
+            jobject fromType(JNIEnv* env, jint arg0);
 
             private:
 
@@ -51,8 +51,8 @@ namespace jni
             // method ids
             jmethodID valuesMethod = nullptr;
             jmethodID valueOfMethod = nullptr;
-            jmethodID fromTypeMethod = nullptr;
             jmethodID toTypeMethod = nullptr;
+            jmethodID fromTypeMethod = nullptr;
         };
     }
 }
