@@ -39,6 +39,7 @@ namespace jni
     cache::BinaryOutputStatusConfig JCache::BinaryOutputStatusConfig;
     cache::ChannelListener JCache::ChannelListener;
     cache::ChannelState JCache::ChannelState;
+    cache::ChannelStatistics JCache::ChannelStatistics;
     cache::ClassAssignment JCache::ClassAssignment;
     cache::ClassField JCache::ClassField;
     cache::CommandHandler JCache::CommandHandler;
@@ -78,6 +79,7 @@ namespace jni
     cache::Iterable JCache::Iterable;
     cache::Iterator JCache::Iterator;
     cache::LinkLayerConfig JCache::LinkLayerConfig;
+    cache::LinkStatistics JCache::LinkStatistics;
     cache::List JCache::List;
     cache::LogEntry JCache::LogEntry;
     cache::LogHandler JCache::LogHandler;
@@ -89,6 +91,7 @@ namespace jni
     cache::OutstationApplication JCache::OutstationApplication;
     cache::OutstationConfig JCache::OutstationConfig;
     cache::OutstationStackConfig JCache::OutstationStackConfig;
+    cache::ParserStatistics JCache::ParserStatistics;
     cache::PointClass JCache::PointClass;
     cache::QualifierCode JCache::QualifierCode;
     cache::Range JCache::Range;
@@ -127,6 +130,7 @@ namespace jni
         && BinaryOutputStatusConfig.init(env)
         && ChannelListener.init(env)
         && ChannelState.init(env)
+        && ChannelStatistics.init(env)
         && ClassAssignment.init(env)
         && ClassField.init(env)
         && CommandHandler.init(env)
@@ -166,6 +170,7 @@ namespace jni
         && Iterable.init(env)
         && Iterator.init(env)
         && LinkLayerConfig.init(env)
+        && LinkStatistics.init(env)
         && List.init(env)
         && LogEntry.init(env)
         && LogHandler.init(env)
@@ -177,6 +182,7 @@ namespace jni
         && OutstationApplication.init(env)
         && OutstationConfig.init(env)
         && OutstationStackConfig.init(env)
+        && ParserStatistics.init(env)
         && PointClass.init(env)
         && QualifierCode.init(env)
         && Range.init(env)
@@ -217,6 +223,7 @@ namespace jni
         BinaryOutputStatusConfig.cleanup(env);
         ChannelListener.cleanup(env);
         ChannelState.cleanup(env);
+        ChannelStatistics.cleanup(env);
         ClassAssignment.cleanup(env);
         ClassField.cleanup(env);
         CommandHandler.cleanup(env);
@@ -256,6 +263,7 @@ namespace jni
         Iterable.cleanup(env);
         Iterator.cleanup(env);
         LinkLayerConfig.cleanup(env);
+        LinkStatistics.cleanup(env);
         List.cleanup(env);
         LogEntry.cleanup(env);
         LogHandler.cleanup(env);
@@ -267,6 +275,7 @@ namespace jni
         OutstationApplication.cleanup(env);
         OutstationConfig.cleanup(env);
         OutstationStackConfig.cleanup(env);
+        ParserStatistics.cleanup(env);
         PointClass.cleanup(env);
         QualifierCode.cleanup(env);
         Range.cleanup(env);

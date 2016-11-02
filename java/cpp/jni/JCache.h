@@ -40,6 +40,7 @@
 #include "JNIBinaryOutputStatusConfig.h"
 #include "JNIChannelListener.h"
 #include "JNIChannelState.h"
+#include "JNIChannelStatistics.h"
 #include "JNIClassAssignment.h"
 #include "JNIClassField.h"
 #include "JNICommandHandler.h"
@@ -79,6 +80,7 @@
 #include "JNIIterable.h"
 #include "JNIIterator.h"
 #include "JNILinkLayerConfig.h"
+#include "JNILinkStatistics.h"
 #include "JNIList.h"
 #include "JNILogEntry.h"
 #include "JNILogHandler.h"
@@ -90,6 +92,7 @@
 #include "JNIOutstationApplication.h"
 #include "JNIOutstationConfig.h"
 #include "JNIOutstationStackConfig.h"
+#include "JNIParserStatistics.h"
 #include "JNIPointClass.h"
 #include "JNIQualifierCode.h"
 #include "JNIRange.h"
@@ -133,6 +136,7 @@ namespace jni
         static cache::BinaryOutputStatusConfig BinaryOutputStatusConfig;
         static cache::ChannelListener ChannelListener;
         static cache::ChannelState ChannelState;
+        static cache::ChannelStatistics ChannelStatistics;
         static cache::ClassAssignment ClassAssignment;
         static cache::ClassField ClassField;
         static cache::CommandHandler CommandHandler;
@@ -172,6 +176,7 @@ namespace jni
         static cache::Iterable Iterable;
         static cache::Iterator Iterator;
         static cache::LinkLayerConfig LinkLayerConfig;
+        static cache::LinkStatistics LinkStatistics;
         static cache::List List;
         static cache::LogEntry LogEntry;
         static cache::LogHandler LogHandler;
@@ -183,6 +188,7 @@ namespace jni
         static cache::OutstationApplication OutstationApplication;
         static cache::OutstationConfig OutstationConfig;
         static cache::OutstationStackConfig OutstationStackConfig;
+        static cache::ParserStatistics ParserStatistics;
         static cache::PointClass PointClass;
         static cache::QualifierCode QualifierCode;
         static cache::Range Range;

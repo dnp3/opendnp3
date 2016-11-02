@@ -115,7 +115,10 @@ object Classes {
     ClassConfig(classOf[BinaryOutputStatusConfig], Set(Features.Fields)),
     ClassConfig(classOf[AnalogOutputStatusConfig], Set(Features.Fields)),
     ClassConfig(classOf[TLSConfig], Set(Features.Fields)),
-    ClassConfig(classOf[DNPTime], Set(Features.Constructors))
+    ClassConfig(classOf[DNPTime], Set(Features.Constructors)),
+    ClassConfig(classOf[ParserStatistics], Set(Features.Constructors)),
+    ClassConfig(classOf[ChannelStatistics], Set(Features.Constructors)),
+    ClassConfig(classOf[LinkStatistics], Set(Features.Constructors))
   )
 
 

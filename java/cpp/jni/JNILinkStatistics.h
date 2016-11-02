@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNIOUTSTATIONAPPLICATION_H
-#define OPENDNP3JAVA_JNIOUTSTATIONAPPLICATION_H
+#ifndef OPENDNP3JAVA_JNILINKSTATISTICS_H
+#define OPENDNP3JAVA_JNILINKSTATISTICS_H
 
 #include <jni.h>
 
@@ -29,7 +29,7 @@ namespace jni
 
     namespace cache
     {
-        class OutstationApplication
+        class LinkStatistics
         {
             friend struct jni::JCache;
 
@@ -38,23 +38,15 @@ namespace jni
 
             public:
 
-            // methods
-            jboolean writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0);
-            void recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3);
-            jboolean supportsWriteAbsoluteTime(JNIEnv* env, jobject instance);
-            jboolean supportsAssignClass(JNIEnv* env, jobject instance);
-            jobject getApplicationIIN(JNIEnv* env, jobject instance);
+            // constructor methods
+            jobject init2(JNIEnv* env, jobject arg0, jobject arg1);
 
             private:
 
             jclass clazz = nullptr;
 
-            // method ids
-            jmethodID writeAbsoluteTimeMethod = nullptr;
-            jmethodID recordClassAssignmentMethod = nullptr;
-            jmethodID supportsWriteAbsoluteTimeMethod = nullptr;
-            jmethodID supportsAssignClassMethod = nullptr;
-            jmethodID getApplicationIINMethod = nullptr;
+            // constructor method ids
+            jmethodID init2Constructor = nullptr;
         };
     }
 }
