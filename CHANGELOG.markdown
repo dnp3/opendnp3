@@ -1,3 +1,14 @@
+### 2.2.0-RC1 (pending) ###
+* :star: Java bindings have been added to the project.
+* :wrench: DNP3Manager now returns shared_ptr<IChannel>. IChannel now returns shared_ptr<IMaster/IOutstation>. Shutdown is now idempotent on
+these interfaces used via shared_ptr.
+* :wrench: Channel, master, and outstation now accept all callback interfaces via shared_ptr.
+* :wrench: The external format for statistics has been changed to ease maintainence. Each class now owns the statistics it increments.
+* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/175) where the keep-alive timer would rapidly fire in C# if set to Timespan.MaxValue.
+* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/164) in the outstation state machine where it would incorrectly ignore repeat READ requests.
+* :beetle: Fixed a bug in the ASDU formatting where a request for a range of 255 measurement values would result in a malformed response.
+* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/173) in the TLS client that caused the channel to be unrecoverable after any disconnect.
+
 ### 2.1.0 ###
 * Minor formatting and documentation tweaks
 
