@@ -70,7 +70,7 @@ StackStatistics MasterStack::GetStackStatistics()
 {
 	auto get = [self = shared_from_this()]() -> StackStatistics
 	{
-		return self->GetStackStatistics();
+		return self->CreateStatistics();
 	};
 	return this->executor->ReturnFrom<StackStatistics>(get);
 }
