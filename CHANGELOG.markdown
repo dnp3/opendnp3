@@ -1,4 +1,4 @@
-### 2.2.0-RC1 (pending) ###
+### 2.2.0-RC1 ###
 * :star: Java bindings have been added to the project.
 * :wrench: DNP3Manager now returns shared_ptr<IChannel>. IChannel now returns shared_ptr<IMaster/IOutstation>. Shutdown is now idempotent on
 these interfaces used via shared_ptr.
