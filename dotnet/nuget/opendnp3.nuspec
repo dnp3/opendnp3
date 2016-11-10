@@ -14,8 +14,9 @@
 
 It depends on:
 
-1) Visual Studio 2013 C++ runtime
-2) openssl libeay32.dll</releaseNotes>
+1) Visual Studio 2015 C++ runtime
+2) openssl libeay32.dll
+        </releaseNotes>
         <copyright>Green Energy Corp, Automatak LLC, and contributors</copyright>
         <language>en-US</language>
         <tags>dnp3 SCADA protocol</tags>
