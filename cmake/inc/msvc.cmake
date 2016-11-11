@@ -12,7 +12,7 @@ if (WIN32)
       if (MINGW)
         # MINGW is a hybred between the Windows system and GCC compiler
         add_definitions(-D_WIN32_WINNT=0x0501)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
         set(LIB_TYPE STATIC) #default to static on MinGW
 
