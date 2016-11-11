@@ -22,7 +22,7 @@
 #ifndef ASIOPAL_MOCKTLSPAIR_H
 #define ASIOPAL_MOCKTLSPAIR_H
 
-#include "MockIO.h"
+#include "../../mocks/MockIO.h"
 #include "MockTLSClientHandler.h"
 #include "MockTLSServer.h"
 

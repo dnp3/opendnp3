@@ -233,7 +233,11 @@ if(DNP3_TEST)
   add_test(testopendnp3 testopendnp3)
 
   # ----- asiopal tests -----
-  file(GLOB_RECURSE asiopal_TESTSRC ./cpp/tests/asiopal/src/*.cpp ./cpp/tests/asiopal/src/*.h)
+  if(DNP3_TLS)
+    file(GLOB_RECURSE asiopal_TESTSRC ./cpp/tests/asiopal/src/*.cpp ./cpp/tests/asiopal/src/*.h)
+  else()
+    file(GLOB asiopal_TESTSRC ./cpp/tests/asiopal/src/*.cpp ./cpp/tests/asiopal/src/*.h ./cpp/tests/asiopal/src/mocks/*.cpp ./cpp/tests/asiopal/src/mocks/*.h)
+  endif()
   add_executable (testasiopal ${asiopal_TESTSRC})
   target_link_libraries (testasiopal LINK_PUBLIC asiopal testlib ${PTHREAD})
   set_target_properties(testasiopal PROPERTIES FOLDER tests)
