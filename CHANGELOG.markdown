@@ -1,5 +1,6 @@
 ### 2.2.0-RC1 ###
 * :star: Java bindings have been added to the project.
+* :star: New API for creating "masters as servers" (aka GPRS-based systems)
 * :wrench: DNP3Manager now returns shared_ptr<IChannel>. IChannel now returns shared_ptr<IMaster/IOutstation>. Shutdown is now idempotent on
 these interfaces used via shared_ptr.
 * :wrench: Channel, master, and outstation now accept all callback interfaces via shared_ptr.
