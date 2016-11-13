@@ -224,10 +224,7 @@ bool LinkLayerParser::ValidateHeaderParameters()
 		++statistics.numBadLength;
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "LENGTH out of range [5,255]: %i", header.GetLength());
 		return false;
-	}
-
-	// some combinations of these header parameters are invalid
-	// check for them here
+	}		
 
 	//Now make sure that the function code is known and that the FCV is appropriate
 	if (!this->ValidateFunctionCode())
@@ -239,54 +236,26 @@ bool LinkLayerParser::ValidateHeaderParameters()
 	frameSize = LinkFrame::CalcFrameSize(user_data_length);
 	LinkFunction func = header.GetFuncEnum();
 
-	// make sure that the presence/absence of user data
-	// matches the function code
-	if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
-	{
-		if(user_data_length > 0)
-		{
-			frameSize = LinkFrame::CalcFrameSize(user_data_length);
-		}
-		else
-		{
-			++statistics.numBadLength;
-			FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s", LinkFunctionToString(func));
-			return false;
-		}
-	}
-	else
-	{
-		if(user_data_length > 0)
-		{
-			++statistics.numBadLength;
-			FORMAT_LOG_BLOCK(logger, flags::ERR, "Unexpected LENGTH in frame: %i with FUNCTION: %s", user_data_length, LinkFunctionToString(func));
-			return false;
-		}
-
+	const bool has_payload = user_data_length > 0;
+	const bool should_have_payload = (func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA);
+	
+	// make sure that the presence/absence of user data matches the function code	
+	if(should_have_payload && !has_payload)
+	{		
+		++statistics.numBadLength;
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s", LinkFunctionToString(func));
+		return false;	
 	}
 
-	if(user_data_length > 0)
+	if (!should_have_payload && has_payload)
 	{
-		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
-		{
+		++statistics.numBadLength;
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Unexpected LENGTH in frame: %i with FUNCTION: %s", user_data_length, LinkFunctionToString(func));
+		return false;
+	}
 
-		}
-		else
-		{
-			++statistics.numBadLength;
-			FORMAT_LOG_BLOCK(logger, flags::ERR, "Unexpected LENGTH in frame: %i with FUNCTION: %s", user_data_length, LinkFunctionToString(func));
-			return false;
-		}
-	}
-	else
-	{
-		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
-		{
-			++statistics.numBadLength;
-			FORMAT_LOG_BLOCK(logger, flags::ERR, "User data packet received with zero payload. FUNCTION: %s", LinkFunctionToString(func));
-			return false;
-		}
-	}
+	// calculate the total frame size
+	frameSize = LinkFrame::CalcFrameSize(user_data_length);
 
 	return true;
 }
