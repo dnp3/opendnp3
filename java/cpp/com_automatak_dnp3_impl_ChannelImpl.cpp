@@ -98,7 +98,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 
 	auto stack = (*channel)->AddMaster(id.str(), soeAdapter, appAdapter, config);	
 
-	return (jlong) new std::shared_ptr<IMaster>(stack);
+	return stack ? (jlong) new std::shared_ptr<IMaster>(stack) : 0;
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1outstation
@@ -114,6 +114,6 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ou
 
 	auto stack = (*channel)->AddOutstation(id.str(), commandHandlerAdapter, applicationAdapter, config);
 
-	return (jlong) new std::shared_ptr<IOutstation>(stack);
+	return stack ? (jlong) new std::shared_ptr<IOutstation>(stack) : 0;
 }
 
