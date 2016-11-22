@@ -30,7 +30,7 @@ class ConfigReader
 public:
 
 	static asiodnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* env, jobject jconfig);
-	static asiodnp3::OutstationStackConfig ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig);	
+	static asiodnp3::OutstationStackConfig ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig);
 
 private:
 

@@ -22,22 +22,22 @@
 jobject Conversions::ConvertStackStatistics(JNIEnv* env, const opendnp3::StackStatistics& stats)
 {
 	auto link = jni::JCache::LinkLayerStatistics.init4(
-		env,
-		stats.link.numUnexpectedFrame,
-		stats.link.numBadMasterBit,
-		stats.link.numUnknownDestination,
-		stats.link.numUnknownSource
-	);
+	                env,
+	                stats.link.numUnexpectedFrame,
+	                stats.link.numBadMasterBit,
+	                stats.link.numUnknownDestination,
+	                stats.link.numUnknownSource
+	            );
 
 	auto transport = jni::JCache::TransportStatistics.init6(
-		env,
-		stats.transport.rx.numTransportRx,
-		stats.transport.tx.numTransportTx,
-		stats.transport.rx.numTransportErrorRx,
-		stats.transport.rx.numTransportBufferOverflow,
-		stats.transport.rx.numTransportDiscard,
-		stats.transport.rx.numTransportIgnore
-	);
+	                     env,
+	                     stats.transport.rx.numTransportRx,
+	                     stats.transport.tx.numTransportTx,
+	                     stats.transport.rx.numTransportErrorRx,
+	                     stats.transport.rx.numTransportBufferOverflow,
+	                     stats.transport.rx.numTransportDiscard,
+	                     stats.transport.rx.numTransportIgnore
+	                 );
 
 	return jni::JCache::StackStatistics.init2(env, link, transport);
 }

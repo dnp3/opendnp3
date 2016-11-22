@@ -40,7 +40,7 @@ struct LinkStatistics
 		uint32_t numBodyCrcError = 0;
 
 		/// Number of frames received
-		uint32_t numLinkFrameRx = 0;		
+		uint32_t numLinkFrameRx = 0;
 
 		/// number of bad LEN fields received (malformed frame)
 		uint32_t numBadLength = 0;
