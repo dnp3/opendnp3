@@ -95,13 +95,13 @@ int main(int argc, char* argv[])
 
 	config.link.KeepAliveTimeout = openpal::TimeDuration::Max();
 
+	// You can optionally change the default reporting variations or class assignment prior to enabling the outstation
+	ConfigureDatabase(config.dbConfig);
+
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), config);
-
-	// You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-	ConfigureDatabase(config.dbConfig);
+	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), config);	
 
 	// Enable the outstation and start communications
 	outstation->Enable();
