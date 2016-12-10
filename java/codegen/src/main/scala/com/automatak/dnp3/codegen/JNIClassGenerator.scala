@@ -34,7 +34,11 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     }
 
     def fieldGetters: Iterator[String] = cfg.ifEnabled(Features.Fields) {
-      space ++ "// field getter methods".iter ++ cfg.fields.map(f => "%s get%s(JNIEnv* env, jobject instance);".format(JNIMethod.getType(f.getType), f.getName)).toIterator
+
+      def returnType(f: Field) : String = {
+        if(f.getType.isPrimitive) JNIMethod.getType(f.getType) else "LocalRef<%s>".format(JNIMethod.getType(f.getType))
+      }
+      space ++ "// field getter methods".iter ++ cfg.fields.map(f => "%s get%s(JNIEnv* env, jobject instance);".format(returnType(f), f.getName)).toIterator
     }
 
     def initSignature: Iterator[String] = "bool init(JNIEnv* env);".iter

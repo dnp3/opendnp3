@@ -57,9 +57,9 @@ namespace jni
             return env->GetFloatField(instance, this->valueField);
         }
 
-        jobject AnalogOutputFloat32::getstatus(JNIEnv* env, jobject instance)
+        LocalRef<jobject> AnalogOutputFloat32::getstatus(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->statusField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->statusField));
         }
     }
 }

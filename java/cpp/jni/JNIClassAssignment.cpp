@@ -60,14 +60,14 @@ namespace jni
             return env->GetByteField(instance, this->variationField);
         }
 
-        jobject ClassAssignment::getclazz(JNIEnv* env, jobject instance)
+        LocalRef<jobject> ClassAssignment::getclazz(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->clazzField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->clazzField));
         }
 
-        jobject ClassAssignment::getrange(JNIEnv* env, jobject instance)
+        LocalRef<jobject> ClassAssignment::getrange(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->rangeField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->rangeField));
         }
     }
 }

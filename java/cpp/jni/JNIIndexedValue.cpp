@@ -52,9 +52,9 @@ namespace jni
             return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
         }
 
-        jobject IndexedValue::getvalue(JNIEnv* env, jobject instance)
+        LocalRef<jobject> IndexedValue::getvalue(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->valueField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->valueField));
         }
 
         jint IndexedValue::getindex(JNIEnv* env, jobject instance)

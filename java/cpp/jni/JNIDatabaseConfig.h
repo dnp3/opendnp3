@@ -41,13 +41,13 @@ namespace jni
             public:
 
             // field getter methods
-            jobject getbinary(JNIEnv* env, jobject instance);
-            jobject getdoubleBinary(JNIEnv* env, jobject instance);
-            jobject getanalog(JNIEnv* env, jobject instance);
-            jobject getcounter(JNIEnv* env, jobject instance);
-            jobject getfrozenCounter(JNIEnv* env, jobject instance);
-            jobject getboStatus(JNIEnv* env, jobject instance);
-            jobject getaoStatus(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getbinary(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getdoubleBinary(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getanalog(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getcounter(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getfrozenCounter(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getboStatus(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getaoStatus(JNIEnv* env, jobject instance);
 
             private:
 

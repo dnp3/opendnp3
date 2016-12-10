@@ -58,14 +58,14 @@ namespace jni
             return env->GetIntField(instance, this->deadbandField);
         }
 
-        jobject FrozenCounterConfig::geteventVariation(JNIEnv* env, jobject instance)
+        LocalRef<jobject> FrozenCounterConfig::geteventVariation(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->eventVariationField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventVariationField));
         }
 
-        jobject FrozenCounterConfig::getstaticVariation(JNIEnv* env, jobject instance)
+        LocalRef<jobject> FrozenCounterConfig::getstaticVariation(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->staticVariationField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->staticVariationField));
         }
     }
 }

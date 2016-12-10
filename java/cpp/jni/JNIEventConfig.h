@@ -42,7 +42,7 @@ namespace jni
 
             // field getter methods
             jint getvIndex(JNIEnv* env, jobject instance);
-            jobject getclazz(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getclazz(JNIEnv* env, jobject instance);
 
             private:
 

@@ -57,9 +57,9 @@ namespace jni
             return env->GetDoubleField(instance, this->valueField);
         }
 
-        jobject AnalogOutputDouble64::getstatus(JNIEnv* env, jobject instance)
+        LocalRef<jobject> AnalogOutputDouble64::getstatus(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->statusField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->statusField));
         }
     }
 }

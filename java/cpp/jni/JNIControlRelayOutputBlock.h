@@ -44,11 +44,11 @@ namespace jni
             LocalRef<jobject> init5(JNIEnv* env, jobject arg0, jshort arg1, jlong arg2, jlong arg3, jobject arg4);
 
             // field getter methods
-            jobject getfunction(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getfunction(JNIEnv* env, jobject instance);
             jshort getcount(JNIEnv* env, jobject instance);
             jlong getonTimeMs(JNIEnv* env, jobject instance);
             jlong getoffTimeMs(JNIEnv* env, jobject instance);
-            jobject getstatus(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getstatus(JNIEnv* env, jobject instance);
 
             private:
 

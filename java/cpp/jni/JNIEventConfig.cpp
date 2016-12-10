@@ -49,9 +49,9 @@ namespace jni
             return env->GetIntField(instance, this->vIndexField);
         }
 
-        jobject EventConfig::getclazz(JNIEnv* env, jobject instance)
+        LocalRef<jobject> EventConfig::getclazz(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->clazzField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->clazzField));
         }
     }
 }

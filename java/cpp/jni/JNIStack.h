@@ -44,8 +44,8 @@ namespace jni
             void shutdown(JNIEnv* env, jobject instance);
             void disable(JNIEnv* env, jobject instance);
             void enable(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getStatistics(JNIEnv* env, jobject instance);
             void setLogLevel(JNIEnv* env, jobject instance, jint arg0);
+            LocalRef<jobject> getStatistics(JNIEnv* env, jobject instance);
 
             private:
 
@@ -55,8 +55,8 @@ namespace jni
             jmethodID shutdownMethod = nullptr;
             jmethodID disableMethod = nullptr;
             jmethodID enableMethod = nullptr;
-            jmethodID getStatisticsMethod = nullptr;
             jmethodID setLogLevelMethod = nullptr;
+            jmethodID getStatisticsMethod = nullptr;
         };
     }
 }

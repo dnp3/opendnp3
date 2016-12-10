@@ -41,8 +41,8 @@ namespace jni
             public:
 
             // field getter methods
-            jobject geteventVariation(JNIEnv* env, jobject instance);
-            jobject getstaticVariation(JNIEnv* env, jobject instance);
+            LocalRef<jobject> geteventVariation(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getstaticVariation(JNIEnv* env, jobject instance);
 
             private:
 

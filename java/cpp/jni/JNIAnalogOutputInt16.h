@@ -45,7 +45,7 @@ namespace jni
 
             // field getter methods
             jshort getvalue(JNIEnv* env, jobject instance);
-            jobject getstatus(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getstatus(JNIEnv* env, jobject instance);
 
             private:
 

@@ -41,10 +41,10 @@ namespace jni
             public:
 
             // field getter methods
-            jobject getlinkConfig(JNIEnv* env, jobject instance);
-            jobject getoutstationConfig(JNIEnv* env, jobject instance);
-            jobject getdatabaseConfig(JNIEnv* env, jobject instance);
-            jobject geteventBufferConfig(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getlinkConfig(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getoutstationConfig(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getdatabaseConfig(JNIEnv* env, jobject instance);
+            LocalRef<jobject> geteventBufferConfig(JNIEnv* env, jobject instance);
 
             private:
 

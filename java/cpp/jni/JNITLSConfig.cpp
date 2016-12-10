@@ -62,19 +62,19 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jstring TLSConfig::getpeerCertFilePath(JNIEnv* env, jobject instance)
+        LocalRef<jstring> TLSConfig::getpeerCertFilePath(JNIEnv* env, jobject instance)
         {
-            return (jstring) env->GetObjectField(instance, this->peerCertFilePathField);
+            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->peerCertFilePathField));
         }
 
-        jstring TLSConfig::getlocalCertFilePath(JNIEnv* env, jobject instance)
+        LocalRef<jstring> TLSConfig::getlocalCertFilePath(JNIEnv* env, jobject instance)
         {
-            return (jstring) env->GetObjectField(instance, this->localCertFilePathField);
+            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->localCertFilePathField));
         }
 
-        jstring TLSConfig::getprivateKeyFilePath(JNIEnv* env, jobject instance)
+        LocalRef<jstring> TLSConfig::getprivateKeyFilePath(JNIEnv* env, jobject instance)
         {
-            return (jstring) env->GetObjectField(instance, this->privateKeyFilePathField);
+            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->privateKeyFilePathField));
         }
 
         jint TLSConfig::getmaxVerifyDepth(JNIEnv* env, jobject instance)
@@ -97,9 +97,9 @@ namespace jni
             return env->GetBooleanField(instance, this->allowTLSv12Field);
         }
 
-        jstring TLSConfig::getcipherList(JNIEnv* env, jobject instance)
+        LocalRef<jstring> TLSConfig::getcipherList(JNIEnv* env, jobject instance)
         {
-            return (jstring) env->GetObjectField(instance, this->cipherListField);
+            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->cipherListField));
         }
     }
 }

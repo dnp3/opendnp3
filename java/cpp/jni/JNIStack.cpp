@@ -39,11 +39,11 @@ namespace jni
             this->enableMethod = env->GetMethodID(this->clazz, "enable", "()V");
             if(!this->enableMethod) return false;
 
-            this->getStatisticsMethod = env->GetMethodID(this->clazz, "getStatistics", "()Lcom/automatak/dnp3/StackStatistics;");
-            if(!this->getStatisticsMethod) return false;
-
             this->setLogLevelMethod = env->GetMethodID(this->clazz, "setLogLevel", "(I)V");
             if(!this->setLogLevelMethod) return false;
+
+            this->getStatisticsMethod = env->GetMethodID(this->clazz, "getStatistics", "()Lcom/automatak/dnp3/StackStatistics;");
+            if(!this->getStatisticsMethod) return false;
 
             return true;
         }
@@ -68,14 +68,14 @@ namespace jni
             env->CallVoidMethod(instance, this->enableMethod);
         }
 
-        LocalRef<jobject> Stack::getStatistics(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->getStatisticsMethod));
-        }
-
         void Stack::setLogLevel(JNIEnv* env, jobject instance, jint arg0)
         {
             env->CallVoidMethod(instance, this->setLogLevelMethod, arg0);
+        }
+
+        LocalRef<jobject> Stack::getStatistics(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->getStatisticsMethod));
         }
     }
 }

@@ -41,16 +41,16 @@ namespace jni
             public:
 
             // field getter methods
-            jobject getresponseTimeout(JNIEnv* env, jobject instance);
-            jobject gettimeSyncMode(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getresponseTimeout(JNIEnv* env, jobject instance);
+            LocalRef<jobject> gettimeSyncMode(JNIEnv* env, jobject instance);
             jboolean getdisableUnsolOnStartup(JNIEnv* env, jobject instance);
             jboolean getignoreRestartIIN(JNIEnv* env, jobject instance);
-            jobject getunsolClassMask(JNIEnv* env, jobject instance);
-            jobject getstartupIntegrityClassMask(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getunsolClassMask(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getstartupIntegrityClassMask(JNIEnv* env, jobject instance);
             jboolean getintegrityOnEventOverflowIIN(JNIEnv* env, jobject instance);
-            jobject geteventScanOnEventsAvailableClassMask(JNIEnv* env, jobject instance);
-            jobject gettaskRetryPeriod(JNIEnv* env, jobject instance);
-            jobject gettaskStartTimeout(JNIEnv* env, jobject instance);
+            LocalRef<jobject> geteventScanOnEventsAvailableClassMask(JNIEnv* env, jobject instance);
+            LocalRef<jobject> gettaskRetryPeriod(JNIEnv* env, jobject instance);
+            LocalRef<jobject> gettaskStartTimeout(JNIEnv* env, jobject instance);
             jint getmaxTxFragSize(JNIEnv* env, jobject instance);
             jint getmaxRxFragSize(JNIEnv* env, jobject instance);
 

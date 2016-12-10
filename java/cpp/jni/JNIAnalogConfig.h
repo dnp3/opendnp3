@@ -42,8 +42,8 @@ namespace jni
 
             // field getter methods
             jdouble getdeadband(JNIEnv* env, jobject instance);
-            jobject geteventVariation(JNIEnv* env, jobject instance);
-            jobject getstaticVariation(JNIEnv* env, jobject instance);
+            LocalRef<jobject> geteventVariation(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getstaticVariation(JNIEnv* env, jobject instance);
 
             private:
 

@@ -59,39 +59,39 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject DatabaseConfig::getbinary(JNIEnv* env, jobject instance)
+        LocalRef<jobject> DatabaseConfig::getbinary(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->binaryField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->binaryField));
         }
 
-        jobject DatabaseConfig::getdoubleBinary(JNIEnv* env, jobject instance)
+        LocalRef<jobject> DatabaseConfig::getdoubleBinary(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->doubleBinaryField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->doubleBinaryField));
         }
 
-        jobject DatabaseConfig::getanalog(JNIEnv* env, jobject instance)
+        LocalRef<jobject> DatabaseConfig::getanalog(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->analogField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->analogField));
         }
 
-        jobject DatabaseConfig::getcounter(JNIEnv* env, jobject instance)
+        LocalRef<jobject> DatabaseConfig::getcounter(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->counterField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->counterField));
         }
 
-        jobject DatabaseConfig::getfrozenCounter(JNIEnv* env, jobject instance)
+        LocalRef<jobject> DatabaseConfig::getfrozenCounter(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->frozenCounterField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->frozenCounterField));
         }
 
-        jobject DatabaseConfig::getboStatus(JNIEnv* env, jobject instance)
+        LocalRef<jobject> DatabaseConfig::getboStatus(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->boStatusField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->boStatusField));
         }
 
-        jobject DatabaseConfig::getaoStatus(JNIEnv* env, jobject instance)
+        LocalRef<jobject> DatabaseConfig::getaoStatus(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->aoStatusField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->aoStatusField));
         }
     }
 }

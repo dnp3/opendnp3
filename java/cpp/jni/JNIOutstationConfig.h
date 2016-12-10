@@ -41,11 +41,11 @@ namespace jni
             public:
 
             // field getter methods
-            jobject getindexMode(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getindexMode(JNIEnv* env, jobject instance);
             jshort getmaxControlsPerRequest(JNIEnv* env, jobject instance);
-            jobject getselectTimeout(JNIEnv* env, jobject instance);
-            jobject getsolConfirmTimeout(JNIEnv* env, jobject instance);
-            jobject getunsolRetryTimeout(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getselectTimeout(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getsolConfirmTimeout(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getunsolRetryTimeout(JNIEnv* env, jobject instance);
             jint getmaxTxFragSize(JNIEnv* env, jobject instance);
             jint getmaxRxFragSize(JNIEnv* env, jobject instance);
             jboolean getallowUnsolicited(JNIEnv* env, jobject instance);

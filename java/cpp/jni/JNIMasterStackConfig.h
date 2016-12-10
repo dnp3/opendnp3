@@ -41,8 +41,8 @@ namespace jni
             public:
 
             // field getter methods
-            jobject getmaster(JNIEnv* env, jobject instance);
-            jobject getlink(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getmaster(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getlink(JNIEnv* env, jobject instance);
 
             private:
 

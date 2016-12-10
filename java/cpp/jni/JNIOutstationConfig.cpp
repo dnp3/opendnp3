@@ -62,9 +62,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject OutstationConfig::getindexMode(JNIEnv* env, jobject instance)
+        LocalRef<jobject> OutstationConfig::getindexMode(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->indexModeField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->indexModeField));
         }
 
         jshort OutstationConfig::getmaxControlsPerRequest(JNIEnv* env, jobject instance)
@@ -72,19 +72,19 @@ namespace jni
             return env->GetShortField(instance, this->maxControlsPerRequestField);
         }
 
-        jobject OutstationConfig::getselectTimeout(JNIEnv* env, jobject instance)
+        LocalRef<jobject> OutstationConfig::getselectTimeout(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->selectTimeoutField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->selectTimeoutField));
         }
 
-        jobject OutstationConfig::getsolConfirmTimeout(JNIEnv* env, jobject instance)
+        LocalRef<jobject> OutstationConfig::getsolConfirmTimeout(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->solConfirmTimeoutField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->solConfirmTimeoutField));
         }
 
-        jobject OutstationConfig::getunsolRetryTimeout(JNIEnv* env, jobject instance)
+        LocalRef<jobject> OutstationConfig::getunsolRetryTimeout(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->unsolRetryTimeoutField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->unsolRetryTimeoutField));
         }
 
         jint OutstationConfig::getmaxTxFragSize(JNIEnv* env, jobject instance)

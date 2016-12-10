@@ -57,9 +57,9 @@ namespace jni
             return env->GetIntField(instance, this->valueField);
         }
 
-        jobject AnalogOutputInt32::getstatus(JNIEnv* env, jobject instance)
+        LocalRef<jobject> AnalogOutputInt32::getstatus(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->statusField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->statusField));
         }
     }
 }

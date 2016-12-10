@@ -117,7 +117,7 @@ object JNIMethod {
 
       if(!method.getReturnType.isPrimitive())
       {
-        "return LocalRef<jobject>(env, "
+        "return LocalRef<%s>(env, ".format(getType(method.getReturnType))
       }
       else
       {
@@ -205,8 +205,17 @@ object JNIMethod {
 
     def cast : String = if(f.getType == classOf[String]) "(jstring) " else ""
 
-    "%s %s::get%s(JNIEnv* env, jobject instance)".format(getType(f.getType), f.getDeclaringClass.getSimpleName, f.getName).iter  ++ bracket {
-      "return %senv->Get%sField(instance, this->%sField);".format(cast, fieldType, f.getName).iter
+    if(f.getType.isPrimitive) {
+      "%s %s::get%s(JNIEnv* env, jobject instance)".format(getType(f.getType), f.getDeclaringClass.getSimpleName, f.getName).iter  ++ bracket {
+        "return %senv->Get%sField(instance, this->%sField);".format(cast, fieldType, f.getName).iter
+      }
     }
+    else {
+      "LocalRef<%s> %s::get%s(JNIEnv* env, jobject instance)".format(getType(f.getType), f.getDeclaringClass.getSimpleName, f.getName).iter  ++ bracket {
+        "return LocalRef<%s>(env, %senv->Get%sField(instance, this->%sField));".format(getType(f.getType), cast, fieldType, f.getName).iter
+      }
+    }
+
+
   }
 }

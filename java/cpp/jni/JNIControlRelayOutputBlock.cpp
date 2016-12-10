@@ -61,9 +61,9 @@ namespace jni
             return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init5Constructor, arg0, arg1, arg2, arg3, arg4));
         }
 
-        jobject ControlRelayOutputBlock::getfunction(JNIEnv* env, jobject instance)
+        LocalRef<jobject> ControlRelayOutputBlock::getfunction(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->functionField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->functionField));
         }
 
         jshort ControlRelayOutputBlock::getcount(JNIEnv* env, jobject instance)
@@ -81,9 +81,9 @@ namespace jni
             return env->GetLongField(instance, this->offTimeMsField);
         }
 
-        jobject ControlRelayOutputBlock::getstatus(JNIEnv* env, jobject instance)
+        LocalRef<jobject> ControlRelayOutputBlock::getstatus(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->statusField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->statusField));
         }
     }
 }

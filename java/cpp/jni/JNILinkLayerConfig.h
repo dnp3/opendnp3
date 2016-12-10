@@ -46,8 +46,8 @@ namespace jni
             jint getnumRetry(JNIEnv* env, jobject instance);
             jint getlocalAddr(JNIEnv* env, jobject instance);
             jint getremoteAddr(JNIEnv* env, jobject instance);
-            jobject getresponseTimeout(JNIEnv* env, jobject instance);
-            jobject getkeepAliveTimeout(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getresponseTimeout(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getkeepAliveTimeout(JNIEnv* env, jobject instance);
 
             private:
 

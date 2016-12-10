@@ -84,14 +84,14 @@ namespace jni
             return env->GetIntField(instance, this->remoteAddrField);
         }
 
-        jobject LinkLayerConfig::getresponseTimeout(JNIEnv* env, jobject instance)
+        LocalRef<jobject> LinkLayerConfig::getresponseTimeout(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->responseTimeoutField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->responseTimeoutField));
         }
 
-        jobject LinkLayerConfig::getkeepAliveTimeout(JNIEnv* env, jobject instance)
+        LocalRef<jobject> LinkLayerConfig::getkeepAliveTimeout(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->keepAliveTimeoutField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->keepAliveTimeoutField));
         }
     }
 }

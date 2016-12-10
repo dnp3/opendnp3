@@ -66,9 +66,9 @@ namespace jni
             return env->GetByteField(instance, this->variationField);
         }
 
-        jobject Header::getqualifier(JNIEnv* env, jobject instance)
+        LocalRef<jobject> Header::getqualifier(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->qualifierField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->qualifierField));
         }
 
         jint Header::getcount(JNIEnv* env, jobject instance)

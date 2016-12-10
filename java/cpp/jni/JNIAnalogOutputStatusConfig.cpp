@@ -58,14 +58,14 @@ namespace jni
             return env->GetDoubleField(instance, this->deadbandField);
         }
 
-        jobject AnalogOutputStatusConfig::geteventVariation(JNIEnv* env, jobject instance)
+        LocalRef<jobject> AnalogOutputStatusConfig::geteventVariation(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->eventVariationField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventVariationField));
         }
 
-        jobject AnalogOutputStatusConfig::getstaticVariation(JNIEnv* env, jobject instance)
+        LocalRef<jobject> AnalogOutputStatusConfig::getstaticVariation(JNIEnv* env, jobject instance)
         {
-            return env->GetObjectField(instance, this->staticVariationField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->staticVariationField));
         }
     }
 }
