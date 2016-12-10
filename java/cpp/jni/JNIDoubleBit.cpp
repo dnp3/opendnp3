@@ -44,9 +44,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject DoubleBit::fromType(JNIEnv* env, jint arg0)
+        LocalRef<jobject> DoubleBit::fromType(JNIEnv* env, jint arg0)
         {
-            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
         }
 
         jint DoubleBit::toType(JNIEnv* env, jobject instance)

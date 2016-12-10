@@ -44,7 +44,7 @@ namespace jni
             void shutdown(JNIEnv* env, jobject instance);
             void disable(JNIEnv* env, jobject instance);
             void enable(JNIEnv* env, jobject instance);
-            jobject getStatistics(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getStatistics(JNIEnv* env, jobject instance);
             void setLogLevel(JNIEnv* env, jobject instance, jint arg0);
 
             private:

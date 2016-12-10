@@ -42,7 +42,7 @@ namespace jni
 
             // methods
             jboolean hasNext(JNIEnv* env, jobject instance);
-            jobject next(JNIEnv* env, jobject instance);
+            LocalRef<jobject> next(JNIEnv* env, jobject instance);
 
             private:
 

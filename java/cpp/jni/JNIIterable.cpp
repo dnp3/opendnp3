@@ -41,9 +41,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject Iterable::iterator(JNIEnv* env, jobject instance)
+        LocalRef<jobject> Iterable::iterator(JNIEnv* env, jobject instance)
         {
-            return env->CallObjectMethod(instance, this->iteratorMethod);
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->iteratorMethod));
         }
     }
 }

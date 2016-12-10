@@ -49,9 +49,9 @@ namespace jni
             return env->CallBooleanMethod(instance, this->hasNextMethod);
         }
 
-        jobject Iterator::next(JNIEnv* env, jobject instance)
+        LocalRef<jobject> Iterator::next(JNIEnv* env, jobject instance)
         {
-            return env->CallObjectMethod(instance, this->nextMethod);
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->nextMethod));
         }
     }
 }

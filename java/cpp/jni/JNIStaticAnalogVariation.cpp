@@ -44,9 +44,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject StaticAnalogVariation::fromType(JNIEnv* env, jint arg0)
+        LocalRef<jobject> StaticAnalogVariation::fromType(JNIEnv* env, jint arg0)
         {
-            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
         }
 
         jint StaticAnalogVariation::toType(JNIEnv* env, jobject instance)

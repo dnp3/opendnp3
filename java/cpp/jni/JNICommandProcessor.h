@@ -41,18 +41,18 @@ namespace jni
             public:
 
             // methods
-            jobject selectAndOperate(JNIEnv* env, jobject instance, jobject arg0);
-            jobject directOperate(JNIEnv* env, jobject instance, jobject arg0);
-            jobject selectAndOperateAOFloat32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject selectAndOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject directOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject selectAndOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject directOperateAOFloat32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject directOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject directOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject selectAndOperateAOInt16(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject directOperateAOInt16(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            jobject selectAndOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> selectAndOperate(JNIEnv* env, jobject instance, jobject arg0);
+            LocalRef<jobject> directOperate(JNIEnv* env, jobject instance, jobject arg0);
+            LocalRef<jobject> selectAndOperateAOInt16(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> directOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> directOperateAOInt16(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> selectAndOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> directOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> selectAndOperateAOFloat32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> selectAndOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> directOperateAOFloat32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> directOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            LocalRef<jobject> selectAndOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
 
             private:
 
@@ -61,15 +61,15 @@ namespace jni
             // method ids
             jmethodID selectAndOperateMethod = nullptr;
             jmethodID directOperateMethod = nullptr;
+            jmethodID selectAndOperateAOInt16Method = nullptr;
+            jmethodID directOperateCROBMethod = nullptr;
+            jmethodID directOperateAOInt16Method = nullptr;
+            jmethodID selectAndOperateAODouble64Method = nullptr;
+            jmethodID directOperateAODouble64Method = nullptr;
             jmethodID selectAndOperateAOFloat32Method = nullptr;
             jmethodID selectAndOperateAOInt32Method = nullptr;
-            jmethodID directOperateAOInt32Method = nullptr;
-            jmethodID selectAndOperateAODouble64Method = nullptr;
             jmethodID directOperateAOFloat32Method = nullptr;
-            jmethodID directOperateAODouble64Method = nullptr;
-            jmethodID directOperateCROBMethod = nullptr;
-            jmethodID selectAndOperateAOInt16Method = nullptr;
-            jmethodID directOperateAOInt16Method = nullptr;
+            jmethodID directOperateAOInt32Method = nullptr;
             jmethodID selectAndOperateCROBMethod = nullptr;
         };
     }

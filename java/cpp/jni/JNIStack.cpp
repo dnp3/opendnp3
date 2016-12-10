@@ -68,9 +68,9 @@ namespace jni
             env->CallVoidMethod(instance, this->enableMethod);
         }
 
-        jobject Stack::getStatistics(JNIEnv* env, jobject instance)
+        LocalRef<jobject> Stack::getStatistics(JNIEnv* env, jobject instance)
         {
-            return env->CallObjectMethod(instance, this->getStatisticsMethod);
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->getStatisticsMethod));
         }
 
         void Stack::setLogLevel(JNIEnv* env, jobject instance, jint arg0)

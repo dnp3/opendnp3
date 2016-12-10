@@ -93,7 +93,10 @@ object JNIMethod {
 
   def getSignature(method: Method, className: Option[String] = None) : String = {
 
-    def returnType = getType(method.getReturnType)
+    def returnType = {
+      val value = getType(method.getReturnType)
+      if(value == "jobject") "LocalRef<jobject>" else value
+    }
 
     def arguments = {
       if(method.getParameterCount == 0) "" else {
@@ -110,7 +113,31 @@ object JNIMethod {
 
   def getImpl(method: Method)(implicit i: Indentation) : Iterator[String] = {
 
-    def returnPrefix : String = if(method.isVoid) "" else "return "
+    def returnPrefix : String = {
+
+      if(!method.getReturnType.isPrimitive())
+      {
+        "return LocalRef<jobject>(env, "
+      }
+      else
+      {
+        if(method.isVoid) "" else "return "
+      }
+
+    }
+
+    def returnSuffix : String = {
+
+      if(!method.getReturnType.isPrimitive())
+      {
+        ");"
+      }
+      else
+      {
+        ";"
+      }
+
+    }
 
     def args : String = if(method.getParameterCount == 0) "" else {
       ", " + method.getParameters.map(p => p.getName).mkString(", ")
@@ -118,19 +145,21 @@ object JNIMethod {
 
     def callMethod : String = {
       if(method.isStatic) {
-        "%senv->CallStatic%sMethod(this->clazz, this->%sMethod%s);".format(
+        "%senv->CallStatic%sMethod(this->clazz, this->%sMethod%s)%s".format(
           returnPrefix,
           getReturnType(method.getReturnType),
           method.getName,
-          args
+          args,
+          returnSuffix
         )
       }
       else {
-        "%senv->Call%sMethod(instance, this->%sMethod%s);".format(
+        "%senv->Call%sMethod(instance, this->%sMethod%s)%s".format(
           returnPrefix,
           getReturnType(method.getReturnType),
           method.getName,
-          args
+          args,
+          returnSuffix
         )
       }
     }

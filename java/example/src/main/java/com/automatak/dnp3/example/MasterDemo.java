@@ -77,7 +77,7 @@ public class MasterDemo {
         Master master = channel.addMaster("master", PrintingSOEHandler.getInstance(), DefaultMasterApplication.getInstance(), config);
 
         // do an integrity scan once per minute
-        master.addPeriodicScan(Duration.ofMinutes(1), Header.getIntegrity());
+        master.addPeriodicScan(Duration.ofMillis(1), Header.getIntegrity());
 
         master.enable();
 

@@ -41,7 +41,7 @@ namespace jni
             public:
 
             // methods
-            jobject iterator(JNIEnv* env, jobject instance);
+            LocalRef<jobject> iterator(JNIEnv* env, jobject instance);
 
             private:
 

@@ -50,19 +50,19 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject IndexMode::values(JNIEnv* env)
+        LocalRef<jobject> IndexMode::values(JNIEnv* env)
         {
-            return env->CallStaticObjectMethod(this->clazz, this->valuesMethod);
+            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->valuesMethod));
         }
 
-        jobject IndexMode::valueOf(JNIEnv* env, jstring arg0)
+        LocalRef<jobject> IndexMode::valueOf(JNIEnv* env, jstring arg0)
         {
-            return env->CallStaticObjectMethod(this->clazz, this->valueOfMethod, arg0);
+            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->valueOfMethod, arg0));
         }
 
-        jobject IndexMode::fromType(JNIEnv* env, jint arg0)
+        LocalRef<jobject> IndexMode::fromType(JNIEnv* env, jint arg0)
         {
-            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
         }
 
         jint IndexMode::toType(JNIEnv* env, jobject instance)

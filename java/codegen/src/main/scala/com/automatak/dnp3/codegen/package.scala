@@ -18,6 +18,8 @@ package object codegen {
 
     def isVoid : Boolean = m.getReturnType().equals(Void.TYPE)
 
+    def returnsObject : Boolean = m.getReturnType.isAssignableFrom(classOf[Object])
+
   }
 
   implicit class RichConstructor(c: Constructor[_]) {

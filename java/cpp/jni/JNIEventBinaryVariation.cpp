@@ -44,9 +44,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject EventBinaryVariation::fromType(JNIEnv* env, jint arg0)
+        LocalRef<jobject> EventBinaryVariation::fromType(JNIEnv* env, jint arg0)
         {
-            return env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0);
+            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
         }
 
         jint EventBinaryVariation::toType(JNIEnv* env, jobject instance)

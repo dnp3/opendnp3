@@ -41,9 +41,9 @@ namespace jni
             public:
 
             // methods
-            jobject values(JNIEnv* env);
-            jobject valueOf(JNIEnv* env, jstring arg0);
-            jobject fromType(JNIEnv* env, jint arg0);
+            LocalRef<jobject> values(JNIEnv* env);
+            LocalRef<jobject> valueOf(JNIEnv* env, jstring arg0);
+            LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
             jint toType(JNIEnv* env, jobject instance);
 
             private:

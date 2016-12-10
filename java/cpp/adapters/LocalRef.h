@@ -45,7 +45,7 @@ public:
 	{
 		if (ref != nullptr)
 		{
-			env->DeleteLocalRef(ref);
+			env->DeleteLocalRef(ref);			
 		}		
 	}
 
