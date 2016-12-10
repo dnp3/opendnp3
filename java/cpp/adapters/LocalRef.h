@@ -23,14 +23,16 @@
 #include <jni.h>
 #include <assert.h>
 
-#include "JNI.h"
-
 // RAII class for automatically disposing of local refs
 template <class T>
-class LocalRef : private openpal::Uncopyable
+class LocalRef
 {
 	JNIEnv* const env;
 	const T ref;
+
+	LocalRef(LocalRef&) = delete;
+
+	LocalRef& LocalRef::operator=(LocalRef&) = delete;
 
 public:
 
