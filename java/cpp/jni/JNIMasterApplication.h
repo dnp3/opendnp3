@@ -23,6 +23,8 @@
 
 #include <jni.h>
 
+#include "../adapters/LocalRef.h"
+
 namespace jni
 {
     struct JCache;
@@ -39,24 +41,24 @@ namespace jni
             public:
 
             // methods
-            jobject getClassAssignments(JNIEnv* env, jobject instance);
-            jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
-            jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
             void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
             void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
+            void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
+            jobject getClassAssignments(JNIEnv* env, jobject instance);
+            jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
+            jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID getClassAssignmentsMethod = nullptr;
-            jmethodID assignClassDuringStartupMethod = nullptr;
-            jmethodID getMillisecondsSinceEpochMethod = nullptr;
             jmethodID onTaskStartMethod = nullptr;
-            jmethodID onReceiveIINMethod = nullptr;
             jmethodID onTaskCompleteMethod = nullptr;
+            jmethodID onReceiveIINMethod = nullptr;
+            jmethodID getClassAssignmentsMethod = nullptr;
+            jmethodID getMillisecondsSinceEpochMethod = nullptr;
+            jmethodID assignClassDuringStartupMethod = nullptr;
         };
     }
 }

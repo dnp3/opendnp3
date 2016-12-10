@@ -41,9 +41,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject CommandPointResult::init4(JNIEnv* env, jint arg0, jint arg1, jobject arg2, jobject arg3)
+        LocalRef<jobject> CommandPointResult::init4(JNIEnv* env, jint arg0, jint arg1, jobject arg2, jobject arg3)
         {
-            return env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3);
+            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3));
         }
     }
 }

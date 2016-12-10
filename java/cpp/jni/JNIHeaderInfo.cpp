@@ -41,9 +41,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject HeaderInfo::init6(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2, jboolean arg3, jboolean arg4, jint arg5)
+        LocalRef<jobject> HeaderInfo::init6(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2, jboolean arg3, jboolean arg4, jint arg5)
         {
-            return env->NewObject(this->clazz, this->init6Constructor, arg0, arg1, arg2, arg3, arg4, arg5);
+            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init6Constructor, arg0, arg1, arg2, arg3, arg4, arg5));
         }
     }
 }

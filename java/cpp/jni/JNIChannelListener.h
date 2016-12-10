@@ -23,6 +23,8 @@
 
 #include <jni.h>
 
+#include "../adapters/LocalRef.h"
+
 namespace jni
 {
     struct JCache;

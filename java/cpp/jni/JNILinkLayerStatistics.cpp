@@ -41,9 +41,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject LinkLayerStatistics::init4(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3)
+        LocalRef<jobject> LinkLayerStatistics::init4(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3)
         {
-            return env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3);
+            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3));
         }
     }
 }

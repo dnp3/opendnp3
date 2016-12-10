@@ -49,9 +49,9 @@ namespace jni
             return env->CallBooleanMethod(instance, this->addMethod, arg0);
         }
 
-        jobject ArrayList::init1(JNIEnv* env, jint arg0)
+        LocalRef<jobject> ArrayList::init1(JNIEnv* env, jint arg0)
         {
-            return env->NewObject(this->clazz, this->init1Constructor, arg0);
+            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init1Constructor, arg0));
         }
     }
 }

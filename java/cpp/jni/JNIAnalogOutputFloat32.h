@@ -23,6 +23,8 @@
 
 #include <jni.h>
 
+#include "../adapters/LocalRef.h"
+
 namespace jni
 {
     struct JCache;
@@ -39,7 +41,7 @@ namespace jni
             public:
 
             // constructor methods
-            jobject init2(JNIEnv* env, jfloat arg0, jobject arg1);
+            LocalRef<jobject> init2(JNIEnv* env, jfloat arg0, jobject arg1);
 
             // field getter methods
             jfloat getvalue(JNIEnv* env, jobject instance);

@@ -31,9 +31,10 @@ void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
 	const auto env = JNI::GetEnv();
 
 	const jint level = entry.filters.GetBitfield();
-	const jstring id = env->NewStringUTF(entry.loggerid);
-	const jstring location = env->NewStringUTF(entry.location);
-	const jstring msg = env->NewStringUTF(entry.message);
+
+	LocalJString id(env, entry.loggerid);
+	LocalJString location(env, entry.location);
+	LocalJString msg(env, entry.message);
 
 	auto jentry = JCache::LogEntry.init4(env, level, id, location, msg);
 

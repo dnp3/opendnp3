@@ -147,10 +147,10 @@ object JNIMethod {
     def arguments = constructor.getParameters.map(p => "%s %s".format(getType(p.getType), p.getName)).mkString(", ")
 
     if(arguments.isEmpty) {
-      "jobject %sinit%d(JNIEnv* env)".format(className.map(n => "%s::".format(n)).getOrElse(""), constructor.getParameterCount)
+      "LocalRef<jobject> %sinit%d(JNIEnv* env)".format(className.map(n => "%s::".format(n)).getOrElse(""), constructor.getParameterCount)
     }
     else {
-      "jobject %sinit%d(JNIEnv* env, %s)".format(className.map(n => "%s::".format(n)).getOrElse(""), constructor.getParameterCount, arguments)
+      "LocalRef<jobject> %sinit%d(JNIEnv* env, %s)".format(className.map(n => "%s::".format(n)).getOrElse(""), constructor.getParameterCount, arguments)
     }
 
   }
@@ -162,7 +162,7 @@ object JNIMethod {
     }
 
     JNIMethod.getConstructorSignature(constructor, Some(constructor.getDeclaringClass.getSimpleName)).iter ++ bracket {
-      "return env->NewObject(this->clazz, this->init%dConstructor%s);".format(
+      "return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init%dConstructor%s));".format(
         constructor.getParameterCount,
         args
       ).iter

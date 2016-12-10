@@ -23,6 +23,8 @@
 
 #include <jni.h>
 
+#include "../adapters/LocalRef.h"
+
 namespace jni
 {
     struct JCache;
@@ -39,32 +41,32 @@ namespace jni
             public:
 
             // methods
-            void end(JNIEnv* env, jobject instance);
             void start(JNIEnv* env, jobject instance);
-            void processDNPTime(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void end(JNIEnv* env, jobject instance);
             void processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
             void processFC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processDNPTime(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
             void processBOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID endMethod = nullptr;
             jmethodID startMethod = nullptr;
-            jmethodID processDNPTimeMethod = nullptr;
-            jmethodID processCMethod = nullptr;
-            jmethodID processBIMethod = nullptr;
-            jmethodID processAOSMethod = nullptr;
-            jmethodID processDBIMethod = nullptr;
+            jmethodID endMethod = nullptr;
             jmethodID processAIMethod = nullptr;
+            jmethodID processBIMethod = nullptr;
+            jmethodID processCMethod = nullptr;
             jmethodID processFCMethod = nullptr;
+            jmethodID processDNPTimeMethod = nullptr;
             jmethodID processBOSMethod = nullptr;
+            jmethodID processDBIMethod = nullptr;
+            jmethodID processAOSMethod = nullptr;
         };
     }
 }

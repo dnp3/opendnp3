@@ -47,9 +47,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject AnalogOutputDouble64::init2(JNIEnv* env, jdouble arg0, jobject arg1)
+        LocalRef<jobject> AnalogOutputDouble64::init2(JNIEnv* env, jdouble arg0, jobject arg1)
         {
-            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
         }
 
         jdouble AnalogOutputDouble64::getvalue(JNIEnv* env, jobject instance)

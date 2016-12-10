@@ -41,9 +41,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject TaskId::init2(JNIEnv* env, jint arg0, jboolean arg1)
+        LocalRef<jobject> TaskId::init2(JNIEnv* env, jint arg0, jboolean arg1)
         {
-            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
         }
     }
 }

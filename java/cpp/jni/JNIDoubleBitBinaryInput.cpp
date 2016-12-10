@@ -41,9 +41,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject DoubleBitBinaryInput::init3(JNIEnv* env, jobject arg0, jbyte arg1, jlong arg2)
+        LocalRef<jobject> DoubleBitBinaryInput::init3(JNIEnv* env, jobject arg0, jbyte arg1, jlong arg2)
         {
-            return env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2);
+            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2));
         }
     }
 }

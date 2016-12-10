@@ -23,6 +23,8 @@
 
 #include <jni.h>
 
+#include "../adapters/LocalRef.h"
+
 namespace jni
 {
     struct JCache;
@@ -39,16 +41,16 @@ namespace jni
             public:
 
             // methods
-            jint toType(JNIEnv* env, jobject instance);
             jobject fromType(JNIEnv* env, jint arg0);
+            jint toType(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID toTypeMethod = nullptr;
             jmethodID fromTypeMethod = nullptr;
+            jmethodID toTypeMethod = nullptr;
         };
     }
 }

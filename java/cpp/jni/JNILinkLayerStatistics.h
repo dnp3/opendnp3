@@ -23,6 +23,8 @@
 
 #include <jni.h>
 
+#include "../adapters/LocalRef.h"
+
 namespace jni
 {
     struct JCache;
@@ -39,7 +41,7 @@ namespace jni
             public:
 
             // constructor methods
-            jobject init4(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3);
+            LocalRef<jobject> init4(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3);
 
             private:
 

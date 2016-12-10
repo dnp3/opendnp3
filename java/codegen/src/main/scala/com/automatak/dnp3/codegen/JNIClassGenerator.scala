@@ -44,6 +44,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     commented(LicenseHeader()) ++ space ++
       includeGuards("JNI%s".format(cfg.clazz.getSimpleName)) {
         "#include <jni.h>".iter ++ space ++
+        """#include "../adapters/LocalRef.h"""".iter ++ space ++
         namespace("jni") {
           "struct JCache;".iter ++ space ++
           namespace("cache") {

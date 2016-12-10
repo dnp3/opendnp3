@@ -47,9 +47,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject AnalogOutputInt32::init2(JNIEnv* env, jint arg0, jobject arg1)
+        LocalRef<jobject> AnalogOutputInt32::init2(JNIEnv* env, jint arg0, jobject arg1)
         {
-            return env->NewObject(this->clazz, this->init2Constructor, arg0, arg1);
+            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
         }
 
         jint AnalogOutputInt32::getvalue(JNIEnv* env, jobject instance)

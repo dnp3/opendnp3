@@ -56,9 +56,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jobject ControlRelayOutputBlock::init5(JNIEnv* env, jobject arg0, jshort arg1, jlong arg2, jlong arg3, jobject arg4)
+        LocalRef<jobject> ControlRelayOutputBlock::init5(JNIEnv* env, jobject arg0, jshort arg1, jlong arg2, jlong arg3, jobject arg4)
         {
-            return env->NewObject(this->clazz, this->init5Constructor, arg0, arg1, arg2, arg3, arg4);
+            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init5Constructor, arg0, arg1, arg2, arg3, arg4));
         }
 
         jobject ControlRelayOutputBlock::getfunction(JNIEnv* env, jobject instance)
