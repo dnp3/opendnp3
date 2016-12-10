@@ -154,7 +154,7 @@ void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3
 	jni::JCache::SOEHandler.processDNPTime(env, proxy, jinfo, jlist);
 }
 
-jobject SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::HeaderInfo& info)
+LocalRef<jobject> SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::HeaderInfo& info)
 {
 	auto gv = jni::JCache::GroupVariation.fromType(env, GroupVariationToType(info.gv));
 	auto qc = jni::JCache::QualifierCode.fromType(env, QualifierCodeToType(info.qualifier));

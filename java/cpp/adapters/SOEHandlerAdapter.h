@@ -22,6 +22,7 @@
 #include <opendnp3/master/ISOEHandler.h>
 
 #include "GlobalRef.h"
+#include "LocalRef.h"
 
 class SOEHandlerAdapter : public opendnp3::ISOEHandler
 {
@@ -52,7 +53,7 @@ private:
 	template <class T, class CreateMeas, class CallProxy>
 	void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<T>>& values, const CreateMeas& createMeas, const CallProxy& callProxy);
 
-	static jobject Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
+	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
 
 	GlobalRef proxy;
 
