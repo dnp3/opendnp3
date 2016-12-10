@@ -164,7 +164,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native
 
 	std::vector<opendnp3::Header> headers;
 
-	auto process = [&](jobject jheader) {
+	auto process = [&](LocalRef<jobject> jheader) {
 		opendnp3::Header header;
 		if (ConvertJHeader(env, jheader, header))
 		{
@@ -185,7 +185,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1sc
 
 	std::vector<opendnp3::Header> headers;
 
-	auto process = [&](jobject jheader) {
+	auto process = [&](LocalRef<jobject> jheader) {
 		opendnp3::Header header;
 		if (ConvertJHeader(env, jheader, header))
 		{

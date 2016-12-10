@@ -28,7 +28,7 @@ template <class T>
 class LocalRef
 {
 	JNIEnv* const env;
-	const T ref;
+	T ref;
 
 	LocalRef(LocalRef&) = delete;
 

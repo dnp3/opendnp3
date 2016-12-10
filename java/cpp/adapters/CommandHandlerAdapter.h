@@ -22,6 +22,7 @@
 #include <opendnp3/outstation/ICommandHandler.h>
 
 #include "GlobalRef.h"
+#include "LocalRef.h"
 
 class CommandHandlerAdapter : public opendnp3::ICommandHandler
 {
@@ -55,11 +56,11 @@ public:
 
 private:
 
-	static jobject Convert(JNIEnv* env, const opendnp3::ControlRelayOutputBlock& command);
-	static jobject Convert(JNIEnv* env, const opendnp3::AnalogOutputInt16& command);
-	static jobject Convert(JNIEnv* env, const opendnp3::AnalogOutputInt32& command);
-	static jobject Convert(JNIEnv* env, const opendnp3::AnalogOutputFloat32& command);
-	static jobject Convert(JNIEnv* env, const opendnp3::AnalogOutputDouble64& command);
+	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::ControlRelayOutputBlock& command);
+	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputInt16& command);
+	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputInt32& command);
+	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputFloat32& command);
+	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputDouble64& command);
 
 	GlobalRef proxy;
 

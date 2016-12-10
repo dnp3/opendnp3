@@ -34,7 +34,7 @@ public:
 	virtual void OnStateChange(opendnp3::ChannelState state) override
 	{
 		const auto env = JNI::GetEnv();
-		const auto jstate = jni::JCache::ChannelState.fromType(env, static_cast<jint>(state));
+		auto jstate = jni::JCache::ChannelState.fromType(env, static_cast<jint>(state));
 		jni::JCache::ChannelListener.onStateChange(env, proxy, jstate);
 	}
 

@@ -46,8 +46,8 @@ void OutstationApplicationAdapter::RecordClassAssignment(AssignClassType type, P
 {
 	const auto env = JNI::GetEnv();
 
-	const auto jtype = JCache::AssignClassType.fromType(env, static_cast<jint>(type));
-	const auto jclazz = JCache::PointClass.fromType(env, static_cast<jint>(clazz));
+	auto jtype = JCache::AssignClassType.fromType(env, static_cast<jint>(type));
+	auto jclazz = JCache::PointClass.fromType(env, static_cast<jint>(clazz));
 
 	JCache::OutstationApplication.recordClassAssignment(env, proxy, jtype, jclazz, start, stop);
 }
@@ -55,7 +55,7 @@ void OutstationApplicationAdapter::RecordClassAssignment(AssignClassType type, P
 ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 {
 	const auto env = JNI::GetEnv();
-	const auto jiin = JCache::OutstationApplication.getApplicationIIN(env, proxy);
+	auto jiin = JCache::OutstationApplication.getApplicationIIN(env, proxy);
 	ApplicationIIN iin;
 	iin.configCorrupt = !!JCache::ApplicationIIN.getconfigCorrupt(env, jiin);
 	iin.deviceTrouble = !!JCache::ApplicationIIN.getdeviceTrouble(env, jiin);

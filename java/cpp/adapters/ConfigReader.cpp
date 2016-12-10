@@ -152,31 +152,31 @@ void ConfigReader::ConvertDatabase(JNIEnv* env, jobject jdb, asiodnp3::DatabaseC
 {
 	auto& db = jni::JCache::DatabaseConfig;
 
-	JNI::IterateWithIndex(env, db.getbinary(env, jdb), [&](jobject meas, int index)
+	JNI::IterateWithIndex(env, db.getbinary(env, jdb), [&](LocalRef<jobject> meas, int index)
 	{
 		cfg.binary[index] = ConvertBinaryConfig(env, meas);
 	});
-	JNI::IterateWithIndex(env, db.getdoubleBinary(env, jdb), [&](jobject meas, int index)
+	JNI::IterateWithIndex(env, db.getdoubleBinary(env, jdb), [&](LocalRef<jobject> meas, int index)
 	{
 		cfg.doubleBinary[index] = ConvertDoubleBinaryConfig(env, meas);
 	});
-	JNI::IterateWithIndex(env, db.getanalog(env, jdb), [&](jobject meas, int index)
+	JNI::IterateWithIndex(env, db.getanalog(env, jdb), [&](LocalRef<jobject> meas, int index)
 	{
 		cfg.analog[index] = ConvertAnalogConfig(env, meas);
 	});
-	JNI::IterateWithIndex(env, db.getcounter(env, jdb), [&](jobject meas, int index)
+	JNI::IterateWithIndex(env, db.getcounter(env, jdb), [&](LocalRef<jobject> meas, int index)
 	{
 		cfg.counter[index] = ConvertCounterConfig(env, meas);
 	});
-	JNI::IterateWithIndex(env, db.getfrozenCounter(env, jdb), [&](jobject meas, int index)
+	JNI::IterateWithIndex(env, db.getfrozenCounter(env, jdb), [&](LocalRef<jobject> meas, int index)
 	{
 		cfg.frozenCounter[index] = ConvertFrozenCounterConfig(env, meas);
 	});
-	JNI::IterateWithIndex(env, db.getboStatus(env, jdb), [&](jobject meas, int index)
+	JNI::IterateWithIndex(env, db.getboStatus(env, jdb), [&](LocalRef<jobject> meas, int index)
 	{
 		cfg.boStatus[index] = ConvertBOStatusConfig(env, meas);
 	});
-	JNI::IterateWithIndex(env, db.getaoStatus(env, jdb), [&](jobject meas, int index)
+	JNI::IterateWithIndex(env, db.getaoStatus(env, jdb), [&](LocalRef<jobject> meas, int index)
 	{
 		cfg.aoStatus[index] = ConvertAOStatusConfig(env, meas);
 	});

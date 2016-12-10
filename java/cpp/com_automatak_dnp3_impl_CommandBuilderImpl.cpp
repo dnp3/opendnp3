@@ -43,7 +43,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1crob
 	const auto set = (CommandSet*) native;
 	
 	std::vector<Indexed<ControlRelayOutputBlock>> commands;
-	auto process = [&](jobject indexed) 
+	auto process = [&](LocalRef<jobject> indexed) 
 	{		
 		const auto jindex = jni::JCache::IndexedValue.getindex(env, indexed);
 		const auto jcommand = jni::JCache::IndexedValue.getvalue(env, indexed);

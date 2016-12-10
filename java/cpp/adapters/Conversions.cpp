@@ -19,7 +19,7 @@
 
 #include "Conversions.h"
 
-jobject Conversions::ConvertStackStatistics(JNIEnv* env, const opendnp3::StackStatistics& stats)
+LocalRef<jobject> Conversions::ConvertStackStatistics(JNIEnv* env, const opendnp3::StackStatistics& stats)
 {
 	auto link = jni::JCache::LinkLayerStatistics.init4(
 	                env,

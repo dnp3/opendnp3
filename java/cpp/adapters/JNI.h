@@ -25,6 +25,8 @@
 #include <functional>
 #include <openpal/util/Uncopyable.h>
 
+#include "LocalRef.h"
+
 #define OPENDNP3_JNI_VERSION JNI_VERSION_1_8
 
 class JNI : private openpal::StaticOnly
@@ -43,9 +45,9 @@ public:
 	static jobject CreateGlobalRef(jobject ref);
 	static void DeleteGlobalRef(jobject ref);
 
-	static void Iterate(JNIEnv* env, jobject iterable, const std::function<void(jobject)>& callback);
+	static void Iterate(JNIEnv* env, jobject iterable, const std::function<void(LocalRef<jobject>)>& callback);
 
-	static void IterateWithIndex(JNIEnv* env, jobject iterable, const std::function<void(jobject, int)>& callback);
+	static void IterateWithIndex(JNIEnv* env, jobject iterable, const std::function<void(LocalRef<jobject>, int)>& callback);
 
 
 private:

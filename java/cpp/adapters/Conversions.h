@@ -27,7 +27,7 @@ class Conversions
 {
 public:
 
-	static jobject ConvertStackStatistics(JNIEnv* env, const opendnp3::StackStatistics& stats);
+	static LocalRef<jobject> ConvertStackStatistics(JNIEnv* env, const opendnp3::StackStatistics& stats);
 
 
 };
