@@ -235,7 +235,9 @@ void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& chan
 
 	for (auto& session : this->sessions)
 	{
-		session.LowerLayerUp();
+		if (session.enabled) {
+			session.LowerLayerUp();
+		}		
 	}
 }
 

@@ -164,7 +164,7 @@ private:
 
 		inline bool LowerLayerUp()
 		{
-			if (enabled && !online)
+			if (!online)
 			{
 				online = true;
 				return this->session->OnLowerLayerUp();
@@ -177,7 +177,7 @@ private:
 
 		inline bool LowerLayerDown()
 		{
-			if (enabled && online)
+			if(online)
 			{
 				online = false;
 				return this->session->OnLowerLayerDown();
