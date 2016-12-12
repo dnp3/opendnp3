@@ -1,3 +1,7 @@
+### 2.2.0-RC2 (pending) ###
+* :beetle: Java bindings in 2.2.0-RC1 were leaking local references. Modified the bindings to use resource management class to ensure this doens't happen going forward.
+* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/187) in outstation/master enable/disable that put the session into an invalid state.
+
 ### 2.2.0-RC1 ###
 * :star: Java bindings have been added to the project.
 * :star: New API for creating "masters as servers" (aka GPRS-based systems)
