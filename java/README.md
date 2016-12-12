@@ -1,6 +1,6 @@
 # Java bindings
 
-The opendnp3 Java bindings are built as two separate pieces: normal Java JAR files and a native shared library
+The opendnp3 Java bindings are built as two separate pieces: a normal Java JAR file and a native shared library
 built from the companion C++ source.
 
 The JNI C++ code uses a code generator (in the 'codegen' folder) to create accessors for manipulating java objects
@@ -37,3 +37,4 @@ This approach has a few benefits:
 1. The hand-written code never has to deal with strings or variable length function signatures.
 2. All of the jclass, jmethodid, and jfieldid stuff is optimally cached.
 3. Changes to java classes usually result in compile-time errors.
+4. Management types like LocalRef<jobject> are returned to ensure there are no resource leaks.
