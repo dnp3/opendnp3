@@ -1,4 +1,4 @@
-### 2.2.0-RC2 (pending) ###
+### 2.2.0-RC2 ###
 * :beetle: Java bindings in 2.2.0-RC1 were leaking local references. Modified the bindings to use resource management class to ensure this doens't happen going forward.
 * :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/187) in outstation/master enable/disable that put the session into an invalid state.
 
