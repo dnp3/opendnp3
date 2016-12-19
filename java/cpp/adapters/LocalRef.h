@@ -32,7 +32,7 @@ class LocalRef
 
 	LocalRef(LocalRef&) = delete;
 
-	LocalRef& LocalRef::operator=(LocalRef&) = delete;
+	LocalRef& operator=(LocalRef&) = delete;
 
 public:
 
