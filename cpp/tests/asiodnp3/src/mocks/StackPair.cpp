@@ -106,7 +106,7 @@ void StackPair::WaitToRxValues(std::chrono::steady_clock::duration timeout)
 			{
 				std::ostringstream oss;
 				oss << rx << " != " << tx;
-				std::runtime_error(oss.str());
+				throw std::runtime_error(oss.str());
 			}
 
 			rx_values.pop_front();

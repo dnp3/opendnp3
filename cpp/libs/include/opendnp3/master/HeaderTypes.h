@@ -113,13 +113,12 @@ public:
 	*/
 	static Header Count16(uint8_t group, uint8_t variation, uint16_t count);
 
-	Header() : id(0, 0), type(HeaderType::AllObjects)
-	{}
+	Header(){}
 
 private:
 
 	opendnp3::GroupVariationID id;
-	HeaderType type;
+	HeaderType type = HeaderType::AllObjects;
 	HeaderUnion value;
 
 	Header(uint8_t group, uint8_t var);

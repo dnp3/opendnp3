@@ -163,7 +163,7 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 	}
 
 	// rename the logger id to something meaningful
-	this->logger.Rename(loggerid.c_str());
+	this->logger.Rename(loggerid);
 
 	this->stack = MasterSessionStack::Create(
 	                  this->logger,
