@@ -57,6 +57,11 @@
             <name>Sonatype Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+		<repository>
+			<id>percival</id>
+			<name>Percival Nexus</name>
+			<url>http://nexus.percivaleng.com:8081/nexus/repository/maven-public</url>
+		</repository>
     </distributionManagement>
 	
 	<repositories>
