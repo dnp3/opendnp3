@@ -76,13 +76,13 @@
 
 #define SAFE_STRING_FORMAT(dest, size, format, ...)
 
-#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, message)
+#define SIMPLE_LOG_BLOCK(logger, filters, message)
 
-#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, message)
+#define SIMPLE_LOGGER_BLOCK(pLogger, filters, message)
 
-#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, format, ...)
+#define FORMAT_LOG_BLOCK(logger, filters, format, ...)
 
-#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, format, ...)
+#define FORMAT_LOGGER_BLOCK(pLogger, filters, format, ...)
 
 #define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize)
 
