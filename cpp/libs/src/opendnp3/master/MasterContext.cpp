@@ -73,6 +73,9 @@ bool MContext::OnLowerLayerUp()
 	isOnline = true;
 	tasks.Initialize(scheduler);
 	this->PostCheckForTask();
+
+	this->application->OnOpen();
+
 	return true;
 }
 
@@ -102,6 +105,8 @@ bool MContext::OnLowerLayerDown()
 
 	solSeq = unsolSeq = 0;
 	isOnline = isSending = false;
+
+	this->application->OnClose();
 
 	return true;
 }

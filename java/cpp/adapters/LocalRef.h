@@ -38,15 +38,15 @@ public:
 
 	LocalRef(JNIEnv* env, T ref) : env(env), ref(ref)
 	{
-		
+
 	}
 
 	~LocalRef()
 	{
 		if (ref != nullptr)
 		{
-			env->DeleteLocalRef(ref);			
-		}		
+			env->DeleteLocalRef(ref);
+		}
 	}
 
 	LocalRef(LocalRef&& other) : env(other.env), ref(other.ref)
@@ -54,19 +54,22 @@ public:
 		other.ref = nullptr;
 	}
 
-	inline operator const T& () const { return ref; }
+	inline operator const T& () const
+	{
+		return ref;
+	}
 
 };
 
 class LocalJString : public LocalRef<jstring>
 {
-	
+
 public:
 
 	LocalJString(JNIEnv* env, const char* cstring) : LocalRef<jstring>(env, env->NewStringUTF(cstring))
 	{
 
-	}	
+	}
 
 };
 

@@ -113,7 +113,7 @@ public:
 	*/
 	static Header Count16(uint8_t group, uint8_t variation, uint16_t count);
 
-	Header(){}
+	Header() {}
 
 private:
 

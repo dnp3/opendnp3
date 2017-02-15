@@ -24,51 +24,70 @@
 #include <opendnp3/master/IMasterApplication.h>
 
 #include <vector>
+#include <deque>
 #include <functional>
 
 namespace opendnp3
 {
 
-class MockMasterApplication : public IMasterApplication
+class MockMasterApplication final : public IMasterApplication
 {
 
 public:
 
+	enum class State
+	{
+		OPEN,
+		CLOSED
+	};
+
 	MockMasterApplication() : time(0)
 	{}
 
-	virtual openpal::UTCTimestamp Now() override final
+	virtual openpal::UTCTimestamp Now() override
 	{
 		return openpal::UTCTimestamp(time);
 	}
 
-	virtual void OnReceiveIIN(const IINField& iin) override final
+	virtual void OnReceiveIIN(const IINField& iin) override
 	{
 		rxIIN.push_back(iin);
 	}
 
-	virtual void OnTaskStart(MasterTaskType type, TaskId id) override final
+	virtual void OnTaskStart(MasterTaskType type, TaskId id) override
 	{
 		taskStartEvents.push_back(type);
 	}
 
-	virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override final
+	virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override
 	{
 		taskCompletionEvents.push_back(info);
 	}
 
-	virtual bool AssignClassDuringStartup() override final
+	virtual void OnOpen() override
+	{
+		this->stateChanges.push_back(State::OPEN);
+	}
+
+	virtual void OnClose() override
+	{
+		this->stateChanges.push_back(State::CLOSED);
+	}
+
+	virtual bool AssignClassDuringStartup() override
 	{
 		return !assignClassHeaders.empty();
 	}
 
-	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override final
+	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override
 	{
 		for (auto& header : assignClassHeaders)
 		{
 			fun(header);
 		}
 	}
+
+	std::deque<State> stateChanges;
 
 
 	std::vector<opendnp3::Header> assignClassHeaders;

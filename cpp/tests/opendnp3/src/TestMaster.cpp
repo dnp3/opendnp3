@@ -37,14 +37,24 @@ using namespace testlib;
 
 #define SUITE(name) "MasterTestSuite - " name
 
-TEST_CASE(SUITE("InitialState"))
+TEST_CASE(SUITE("notifies application of state changes"))
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
 	MasterTestObject t(params);
 
+	REQUIRE(t.application->stateChanges.empty());
 	t.context->OnLowerLayerUp();
+
+	REQUIRE(t.application->stateChanges.size() == 1);
+	REQUIRE(t.application->stateChanges.front() == MockMasterApplication::State::OPEN);
+	t.application->stateChanges.pop_front();
+
 	t.context->OnLowerLayerDown();
+
+	REQUIRE(t.application->stateChanges.size() == 1);
+	REQUIRE(t.application->stateChanges.front() == MockMasterApplication::State::CLOSED);
+	t.application->stateChanges.pop_front();
 }
 
 TEST_CASE(SUITE("IntegrityOnStartup"))

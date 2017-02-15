@@ -57,6 +57,12 @@ public:
 	/// Task completion notification
 	virtual void OnTaskComplete(const TaskInfo& info) {}
 
+	/// Called when the application layer is opened
+	virtual void OnOpen() {}
+
+	/// Called when the application layer is closed
+	virtual void OnClose() {}
+
 	/// @return true if the master should do an assign class task during startup handshaking
 	virtual bool AssignClassDuringStartup()
 	{

@@ -64,7 +64,7 @@ bool MasterApplicationAdapter::AssignClassDuringStartup()
 void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT& fun)
 {
 	const auto env = JNI::GetEnv();
-	
+
 	auto jiterable = jni::JCache::MasterApplication.getClassAssignments(env, proxy);
 
 	auto write = [&](LocalRef<jobject> assigment)
