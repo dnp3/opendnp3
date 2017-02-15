@@ -27,7 +27,7 @@
 #include <asiopal/UTCTimeSource.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
-#include <opendnp3/outstation/Database.h>
+#include <opendnp3/outstation/IUpdateHandler.h>
 
 #include <opendnp3/LogLevels.h>
 
