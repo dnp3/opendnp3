@@ -55,6 +55,18 @@ void MasterApplicationAdapter::OnTaskComplete(const TaskInfo& info)
 	jni::JCache::MasterApplication.onTaskComplete(env, proxy, jinfo);
 }
 
+void MasterApplicationAdapter::OnOpen()
+{
+	const auto env = JNI::GetEnv();
+	jni::JCache::MasterApplication.onOpen(env, proxy);
+}
+
+void MasterApplicationAdapter::OnClose()
+{
+	const auto env = JNI::GetEnv();
+	jni::JCache::MasterApplication.onClose(env, proxy);
+}
+
 bool MasterApplicationAdapter::AssignClassDuringStartup()
 {
 	const auto env = JNI::GetEnv();

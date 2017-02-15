@@ -52,6 +52,16 @@ public interface MasterApplication extends LinkStatusListener {
     void onTaskComplete(TaskInfo info);
 
     /**
+     * Called when the application layer is opened
+     */
+    void onOpen();
+
+    /**
+     * Called when the application layer is closed
+     */
+    void onClose();
+
+    /**
      * Tells the master whether to assign class on startup
      * @return if true, the master will assign classes during startup
      */

@@ -30,6 +30,15 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
+            this->getMillisecondsSinceEpochMethod = env->GetMethodID(this->clazz, "getMillisecondsSinceEpoch", "()J");
+            if(!this->getMillisecondsSinceEpochMethod) return false;
+
+            this->onOpenMethod = env->GetMethodID(this->clazz, "onOpen", "()V");
+            if(!this->onOpenMethod) return false;
+
+            this->onCloseMethod = env->GetMethodID(this->clazz, "onClose", "()V");
+            if(!this->onCloseMethod) return false;
+
             this->onTaskStartMethod = env->GetMethodID(this->clazz, "onTaskStart", "(Lcom/automatak/dnp3/enums/MasterTaskType;Lcom/automatak/dnp3/TaskId;)V");
             if(!this->onTaskStartMethod) return false;
 
@@ -45,15 +54,27 @@ namespace jni
             this->assignClassDuringStartupMethod = env->GetMethodID(this->clazz, "assignClassDuringStartup", "()Z");
             if(!this->assignClassDuringStartupMethod) return false;
 
-            this->getMillisecondsSinceEpochMethod = env->GetMethodID(this->clazz, "getMillisecondsSinceEpoch", "()J");
-            if(!this->getMillisecondsSinceEpochMethod) return false;
-
             return true;
         }
 
         void MasterApplication::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
+        }
+
+        jlong MasterApplication::getMillisecondsSinceEpoch(JNIEnv* env, jobject instance)
+        {
+            return env->CallLongMethod(instance, this->getMillisecondsSinceEpochMethod);
+        }
+
+        void MasterApplication::onOpen(JNIEnv* env, jobject instance)
+        {
+            env->CallVoidMethod(instance, this->onOpenMethod);
+        }
+
+        void MasterApplication::onClose(JNIEnv* env, jobject instance)
+        {
+            env->CallVoidMethod(instance, this->onCloseMethod);
         }
 
         void MasterApplication::onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
@@ -79,11 +100,6 @@ namespace jni
         jboolean MasterApplication::assignClassDuringStartup(JNIEnv* env, jobject instance)
         {
             return env->CallBooleanMethod(instance, this->assignClassDuringStartupMethod);
-        }
-
-        jlong MasterApplication::getMillisecondsSinceEpoch(JNIEnv* env, jobject instance)
-        {
-            return env->CallLongMethod(instance, this->getMillisecondsSinceEpochMethod);
         }
     }
 }

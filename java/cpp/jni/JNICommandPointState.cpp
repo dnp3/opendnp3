@@ -30,11 +30,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-            if(!this->toTypeMethod) return false;
-
             this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/CommandPointState;");
             if(!this->fromTypeMethod) return false;
+
+            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
+            if(!this->toTypeMethod) return false;
 
             return true;
         }
@@ -44,14 +44,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jint CommandPointState::toType(JNIEnv* env, jobject instance)
-        {
-            return env->CallIntMethod(instance, this->toTypeMethod);
-        }
-
         LocalRef<jobject> CommandPointState::fromType(JNIEnv* env, jint arg0)
         {
             return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
+        }
+
+        jint CommandPointState::toType(JNIEnv* env, jobject instance)
+        {
+            return env->CallIntMethod(instance, this->toTypeMethod);
         }
     }
 }

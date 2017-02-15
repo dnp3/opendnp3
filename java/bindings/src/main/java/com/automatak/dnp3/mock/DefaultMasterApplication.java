@@ -54,6 +54,12 @@ public class DefaultMasterApplication implements MasterApplication
     {}
 
     @Override
+    public void onOpen(){}
+
+    @Override
+    public void onClose(){}
+
+    @Override
     public boolean assignClassDuringStartup()
     {
         return false;
