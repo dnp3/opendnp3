@@ -45,6 +45,18 @@ public class ClassField {
         return (pc.toType() & bitfield) != 0;
     }
 
+    public void set(PointClass pc, boolean value)
+    {
+        if(value)
+        {
+            this.bitfield |= pc.toType();
+        }
+        else
+        {
+            this.bitfield &= ~pc.toType();
+        }
+    }
+
     public static ClassField none() {
         return new ClassField(0);
     }
