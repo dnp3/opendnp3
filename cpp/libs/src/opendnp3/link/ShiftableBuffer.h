@@ -87,7 +87,7 @@ public:
 
 	/// Searches the read subsequence for 0x0564 sync bytes
 	/// @return true if both sync bytes were found in the buffer.
-	bool Sync();
+	bool Sync(uint32_t& skipCount);
 
 private:
 

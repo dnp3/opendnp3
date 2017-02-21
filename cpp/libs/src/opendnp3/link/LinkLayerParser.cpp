@@ -95,9 +95,16 @@ LinkLayerParser::State LinkLayerParser::ParseOneStep()
 
 LinkLayerParser::State LinkLayerParser::ParseSync()
 {
-	if (this->buffer.NumBytesRead() >= 10 && buffer.Sync())
+	if (this->buffer.NumBytesRead() >= 10)// && buffer.Sync())
 	{
-		return State::ReadHeader;
+		uint32_t skipCount = 0;
+		const auto synced = buffer.Sync(skipCount);
+		if (skipCount > 0)
+		{
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Skipped %u bytes seaching for start bytes", skipCount);
+		}
+
+		return synced ? State::ReadHeader : State::FindSync;
 	}
 	else
 	{

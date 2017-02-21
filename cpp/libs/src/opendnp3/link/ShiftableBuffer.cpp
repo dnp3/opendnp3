@@ -23,6 +23,7 @@
 #include <openpal/Configure.h>
 #include <assert.h>
 #include <cstring>
+#include <iostream>
 
 namespace opendnp3
 {
@@ -66,7 +67,7 @@ void ShiftableBuffer::AdvanceWrite(uint32_t aNumBytes)
 	writePos += aNumBytes;
 }
 
-bool ShiftableBuffer::Sync()
+bool ShiftableBuffer::Sync(uint32_t& skipCount)
 {
 	while (this->NumBytesRead() > 1) // at least 2 bytes
 	{
@@ -77,6 +78,7 @@ bool ShiftableBuffer::Sync()
 		else
 		{
 			this->AdvanceRead(1); // skip the first byte
+			++skipCount;
 		}
 	}
 

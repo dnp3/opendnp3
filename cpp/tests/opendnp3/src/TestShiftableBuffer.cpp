@@ -101,7 +101,8 @@ TEST_CASE(SUITE("SyncNoPattern"))
 
 	b.AdvanceWrite(100);
 
-	REQUIRE_FALSE(b.Sync());
+	uint32_t skipBytes = 0;
+	REQUIRE_FALSE(b.Sync(skipBytes));
 	REQUIRE(b.NumBytesRead() == 1); // 1 byte left since need 2 bytes to sync
 	REQUIRE(b.NumWriteBytes() ==  0);
 }
@@ -116,7 +117,8 @@ TEST_CASE(SUITE("SyncBeginning"))
 	memcpy(b.WriteBuff(), SYNC, 2);
 	b.AdvanceWrite(100);
 
-	REQUIRE(b.Sync());
+	uint32_t skipBytes = 0;
+	REQUIRE(b.Sync(skipBytes));
 	REQUIRE(b.NumBytesRead() == 100);
 	REQUIRE(b.NumWriteBytes() ==  0);
 
@@ -133,7 +135,8 @@ TEST_CASE(SUITE("SyncFullPattern"))
 	memcpy(b.WriteBuff() + 50, pattern, 2); //copy the pattern into the buffer
 	b.AdvanceWrite(100);
 
-	REQUIRE(b.Sync());
+	uint32_t skipBytes = 0;
+	REQUIRE(b.Sync(skipBytes));
 	REQUIRE(b.NumBytesRead() == 50);
 	REQUIRE(b.NumWriteBytes() ==  0);
 }
@@ -149,7 +152,8 @@ TEST_CASE(SUITE("SyncPartialPattern"))
 	b.WriteBuff()[97] = 0x05;
 	b.AdvanceWrite(98);
 
-	REQUIRE_FALSE(b.Sync());
+	uint32_t skipBytes = 0;
+	REQUIRE_FALSE(b.Sync(skipBytes));
 	REQUIRE(b.NumBytesRead() == 1);
 	REQUIRE(b.NumWriteBytes() ==  2);
 }
