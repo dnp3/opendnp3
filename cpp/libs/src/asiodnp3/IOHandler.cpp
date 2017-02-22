@@ -92,9 +92,9 @@ void IOHandler::OnWriteComplete(const std::error_code& ec, size_t num)
 
 		if (!this->txQueue.empty())
 		{
-			const auto transmission = this->txQueue.front();
+			const auto session = this->txQueue.front().session;
 			this->txQueue.pop_front();
-			transmission.session->OnTransmitResult(true);
+			session->OnTransmitResult(true);
 		}
 
 		this->CheckForSend();
