@@ -71,6 +71,16 @@ namespace Automatak
 					proxy->OnTaskComplete(MasterConversions::Convert(info));
 				}
 
+				virtual void OnOpen() override final
+				{
+					proxy->OnOpen();
+				}
+
+				virtual void OnClose() override final
+				{
+					proxy->OnClose();
+				}
+
 				virtual bool AssignClassDuringStartup() override final
 				{
 					return proxy->AssignClassDuringStartup();
