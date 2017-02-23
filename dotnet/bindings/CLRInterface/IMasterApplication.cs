@@ -55,7 +55,17 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="info">class containing information about the task completion</param>
         void OnTaskComplete(TaskInfo info);
-        
+
+        /// <summary>
+        /// Called when the application layer is opened
+        /// </summary>
+        void OnOpen();
+
+        /// <summary>
+        /// Called when the application layer is closed
+        /// </summary>
+        void OnClose();
+
         /// <summary>
         /// Tells the master whether to assign class on startup
         /// </summary>
@@ -125,6 +135,16 @@ namespace Automatak.DNP3.Interface
         }
 
         void IMasterApplication.OnTaskComplete(TaskInfo info)
+        {
+            // ignore these in the default application
+        }
+
+        void IMasterApplication.OnOpen()
+        {
+            // ignore these in the default application
+        }
+
+        void IMasterApplication.OnClose()
         {
             // ignore these in the default application
         }
