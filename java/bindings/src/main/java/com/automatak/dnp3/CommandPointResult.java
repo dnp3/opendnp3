@@ -42,8 +42,8 @@ public class CommandPointResult
     }
 
 
-    final int headerIndex;
-    final int requestIndex;
-    final CommandPointState state;
-    final CommandStatus status;
+    public final int headerIndex;
+    public final int requestIndex;
+    public final CommandPointState state;
+    public final CommandStatus status;
 }
