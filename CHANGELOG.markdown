@@ -1,3 +1,7 @@
+### 2.2.0-RC3 ###
+* :beetle: Fixed a [regression](https://github.com/automatak/dnp3/issues/195) whereby multi segment messages could be transmitted with trailing garbage.
+* :beetle: Fixed a bug whereby improper TLS shutdown from the remote host could result in an infinite loop. TLS shutdown is no longer utilized in favor of just a hard TCP close.
+
 ### 2.2.0-RC2 ###
 * :beetle: Java bindings in 2.2.0-RC1 were leaking local references. Modified the bindings to use resource management class to ensure this doens't happen going forward.
 * :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/187) in outstation/master enable/disable that put the session into an invalid state.
