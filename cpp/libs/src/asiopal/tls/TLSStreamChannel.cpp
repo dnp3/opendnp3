@@ -51,17 +51,10 @@ void TLSStreamChannel::BeginWriteImpl(const openpal::RSlice& data)
 
 void TLSStreamChannel::ShutdownImpl()
 {
+	// Don't bother with a TLS shutdown. Just shutdown the socket.
 	std::error_code ec;
-
-	auto callback = [stream = stream](const std::error_code & ec)
-	{
-		// regardless of what happens with the TLS shutdown, close the socket now
-		std::error_code ec1;
-		stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec1);
-		stream->lowest_layer().close(ec1);
-	};
-
-	stream->async_shutdown(callback);
+	stream->lowest_layer().shutdown(asio::socket_base::shutdown_both, ec);
+	stream->lowest_layer().close(ec);
 }
 
 }
