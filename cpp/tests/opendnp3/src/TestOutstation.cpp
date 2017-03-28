@@ -198,7 +198,7 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04"); // param error
 }
 
-TEST_CASE(SUITE("WriteTimeDate"))
+TEST_CASE(SUITE("WriteTimeDate - NonLAN"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
@@ -209,7 +209,48 @@ TEST_CASE(SUITE("WriteTimeDate"))
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00");
 	REQUIRE(t.application->timestamps.size() == 1);
 	REQUIRE(t.application->timestamps.front().msSinceEpoch == 1234);
+}
 
+TEST_CASE(SUITE("WriteTimeDateLAN - Rejects write without prior record current time"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();
+
+	t.SendToOutstation("C1 02 32 03 07 01 D2 04 00 00 00 00"); // write Grp50Var3, value = 1234 ms after epoch
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 04");	 // param error
+}
+
+TEST_CASE(SUITE("WriteTimeDateLAN - Rejects write with bad sequence number"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();
+
+	t.SendToOutstation("C0 18"); // record current time
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
+	t.OnSendResult(true);
+
+	t.SendToOutstation("C2 02 32 03 07 01 D2 04 00 00 00 00"); // write Grp50Var3, value = 1234 ms after epoch
+	REQUIRE(t.lower->PopWriteAsHex() == "C2 81 80 04");	 // param error
+}
+
+TEST_CASE(SUITE("WriteTimeDateLAN - Accepts write with correct sequence number"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();
+
+	t.AdvanceTime(TimeDuration::Milliseconds(10));
+	t.SendToOutstation("C0 18"); // record current time
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
+	t.OnSendResult(true);
+
+	t.AdvanceTime(TimeDuration::Milliseconds(20));
+	t.SendToOutstation("C1 02 32 03 07 01 D2 04 00 00 00 00"); // write Grp50Var3, value = 1234 ms after epoch
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00");	 // param error
+	REQUIRE(t.application->timestamps.size() == 1);
+	REQUIRE(t.application->timestamps.front().msSinceEpoch == 1254); // 1234 + difference of 20
 }
 
 TEST_CASE(SUITE("WriteTimeDateNotAsking"))
