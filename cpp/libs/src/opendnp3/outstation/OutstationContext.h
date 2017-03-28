@@ -30,6 +30,7 @@
 #include "opendnp3/outstation/DeferredRequest.h"
 #include "opendnp3/outstation/OutstationChannelStates.h"
 #include "opendnp3/outstation/ControlState.h"
+#include "opendnp3/outstation/TimeSyncState.h"
 #include "opendnp3/outstation/OutstationSeqNum.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/EventBuffer.h"
