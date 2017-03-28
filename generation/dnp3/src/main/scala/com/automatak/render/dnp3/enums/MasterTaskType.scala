@@ -15,11 +15,11 @@ object MasterTaskType {
       "DISABLE_UNSOLICITED",
       "ASSIGN_CLASS",
       "STARTUP_INTEGRITY_POLL",
-      "SERIAL_TIME_SYNC",
+      "NON_LAN_TIME_SYNC",
+      "LAN_TIME_SYNC",
       "ENABLE_UNSOLICITED",
       "AUTO_EVENT_SCAN",
-      "USER_TASK",
-      "SET_SESSION_KEYS"
+      "USER_TASK"
     )
   )
 

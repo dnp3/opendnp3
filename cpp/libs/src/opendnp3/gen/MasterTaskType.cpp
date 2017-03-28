@@ -34,16 +34,16 @@ char const* MasterTaskTypeToString(MasterTaskType arg)
       return "ASSIGN_CLASS";
     case(MasterTaskType::STARTUP_INTEGRITY_POLL):
       return "STARTUP_INTEGRITY_POLL";
-    case(MasterTaskType::SERIAL_TIME_SYNC):
-      return "SERIAL_TIME_SYNC";
+    case(MasterTaskType::NON_LAN_TIME_SYNC):
+      return "NON_LAN_TIME_SYNC";
+    case(MasterTaskType::LAN_TIME_SYNC):
+      return "LAN_TIME_SYNC";
     case(MasterTaskType::ENABLE_UNSOLICITED):
       return "ENABLE_UNSOLICITED";
     case(MasterTaskType::AUTO_EVENT_SCAN):
       return "AUTO_EVENT_SCAN";
     case(MasterTaskType::USER_TASK):
       return "USER_TASK";
-    case(MasterTaskType::SET_SESSION_KEYS):
-      return "SET_SESSION_KEYS";
     default:
       return "UNDEFINED";
   }

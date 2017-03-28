@@ -28,11 +28,11 @@ public enum MasterTaskType
   DISABLE_UNSOLICITED(1),
   ASSIGN_CLASS(2),
   STARTUP_INTEGRITY_POLL(3),
-  SERIAL_TIME_SYNC(4),
-  ENABLE_UNSOLICITED(5),
-  AUTO_EVENT_SCAN(6),
-  USER_TASK(7),
-  SET_SESSION_KEYS(8);
+  NON_LAN_TIME_SYNC(4),
+  LAN_TIME_SYNC(5),
+  ENABLE_UNSOLICITED(6),
+  AUTO_EVENT_SCAN(7),
+  USER_TASK(8);
 
   private final int id;
 
@@ -59,15 +59,15 @@ public enum MasterTaskType
       case(3):
         return STARTUP_INTEGRITY_POLL;
       case(4):
-        return SERIAL_TIME_SYNC;
+        return NON_LAN_TIME_SYNC;
       case(5):
-        return ENABLE_UNSOLICITED;
+        return LAN_TIME_SYNC;
       case(6):
-        return AUTO_EVENT_SCAN;
+        return ENABLE_UNSOLICITED;
       case(7):
-        return USER_TASK;
+        return AUTO_EVENT_SCAN;
       case(8):
-        return SET_SESSION_KEYS;
+        return USER_TASK;
       default:
         return CLEAR_RESTART;
     }
