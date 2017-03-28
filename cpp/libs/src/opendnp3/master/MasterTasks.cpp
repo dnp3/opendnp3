@@ -67,6 +67,19 @@ void MasterTasks::BindTask(const std::shared_ptr<IMasterTask>& task)
 	boundTasks.push_back(task);
 }
 
+bool MasterTasks::TryDemandTimeSync()
+{
+	if (this->timeSynchronization)
+	{
+		this->timeSynchronization->Demand();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 std::shared_ptr<IMasterTask> MasterTasks::GetTimeSyncTask(TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application)
 {
 	switch (mode)

@@ -47,13 +47,14 @@ public:
 	const std::shared_ptr<IMasterTask> disableUnsol;
 	const std::shared_ptr<IMasterTask> eventScan;
 
-	// same as above, but may be NULL based on configuration
-	const std::shared_ptr<IMasterTask> timeSynchronization;
-
+	bool TryDemandTimeSync();
 
 	void BindTask(const std::shared_ptr<IMasterTask>& task);
 
 private:
+
+	// same as above, but may be NULL based on configuration
+	const std::shared_ptr<IMasterTask> timeSynchronization;
 
 	static std::shared_ptr<IMasterTask> GetTimeSyncTask(TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application);
 

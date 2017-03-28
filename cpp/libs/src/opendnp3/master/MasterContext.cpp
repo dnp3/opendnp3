@@ -238,9 +238,9 @@ void MContext::ProcessIIN(const IINField& iin)
 		this->tasks.startupIntegrity->Demand();
 	}
 
-	if (iin.IsSet(IINBit::NEED_TIME) && this->tasks.timeSynchronization)
+	if (iin.IsSet(IINBit::NEED_TIME))
 	{
-		this->tasks.timeSynchronization->Demand();
+		this->tasks.TryDemandTimeSync();
 	}
 
 	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
