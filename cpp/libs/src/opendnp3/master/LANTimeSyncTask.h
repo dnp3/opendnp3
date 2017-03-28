@@ -33,6 +33,12 @@ namespace opendnp3
 class LANTimeSyncTask : public IMasterTask
 {
 
+	enum State
+	{
+		RECORD_CURRENT_TIME,
+		WRITE_TIME
+	};
+
 public:
 	LANTimeSyncTask(IMasterApplication& app, openpal::Logger logger);
 
@@ -74,14 +80,13 @@ private:
 
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 
-	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& header, const openpal::RSlice& objects);
+	ResponseResult OnResponseRecordCurrentTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
 	ResponseResult OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
 	virtual void Initialize() override final;
 
-	// < 0 implies the delay measure hasn't happened yet
-	int64_t delay;
+	State state = State::RECORD_CURRENT_TIME;
 
 	// what time we sent the delay meas
 	openpal::UTCTimestamp start;

@@ -21,9 +21,7 @@
 #include "LANTimeSyncTask.h"
 
 #include "opendnp3/objects/Group50.h"
-#include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/app/APDUBuilders.h"
-#include "opendnp3/master/TimeSyncHandler.h"
 
 #include <openpal/serialization/Serialization.h>
 
@@ -33,34 +31,31 @@ namespace opendnp3
 {
 
 LANTimeSyncTask::LANTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
-	IMasterTask(app, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
-	delay(-1)
+	IMasterTask(app, MonotonicTimestamp::Max(), logger, TaskConfig::Default())
 {}
 
 void LANTimeSyncTask::Initialize()
 {
-	delay = -1;
+	this->state = State::RECORD_CURRENT_TIME;
 }
 
 bool LANTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	if (delay < 0)
+	if (state  == State::RECORD_CURRENT_TIME)
 	{
-		start = pApplication->Now();
-		build::MeasureDelay(request, seq);
+		this->start = pApplication->Now();
+		build::RecordCurrentTime(request, seq);
+		return true;
 	}
 	else
 	{
-		auto now = pApplication->Now();
-		Group50Var1 time;
-		time.time = DNPTime(now.msSinceEpoch + delay);
+		Group50Var3 time;
+		time.time = DNPTime(this->start.msSinceEpoch);
 		request.SetFunction(FunctionCode::WRITE);
 		request.SetControl(AppControlField::Request(seq));
 		auto writer = request.GetWriter();
-		writer.WriteSingleValue<UInt8, Group50Var1>(QualifierCode::UINT8_CNT, time);
+		return writer.WriteSingleValue<UInt8, Group50Var3>(QualifierCode::UINT8_CNT, time);
 	}
-
-	return true;
 }
 
 IMasterTask::TaskState LANTimeSyncTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
@@ -76,42 +71,16 @@ IMasterTask::TaskState LANTimeSyncTask::OnTaskComplete(TaskCompletion result, op
 
 IMasterTask::ResponseResult LANTimeSyncTask::ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects)
 {
-	return (delay < 0) ? OnResponseDelayMeas(response, objects) : OnResponseWriteTime(response, objects);
+	return (state  == State::RECORD_CURRENT_TIME) ? OnResponseRecordCurrentTime(response, objects) : OnResponseWriteTime(response, objects);
 }
 
-IMasterTask::ResponseResult LANTimeSyncTask::OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::RSlice& objects)
+IMasterTask::ResponseResult LANTimeSyncTask::OnResponseRecordCurrentTime(const APDUResponseHeader& response, const openpal::RSlice& objects)
 {
-	if (ValidateSingleResponse(response))
-	{
-		TimeSyncHandler handler;
-		auto result = APDUParser::Parse(objects, handler, &logger);
-		if (result == ParseResult::OK)
-		{
-			uint16_t rtuTurnAroundTime;
-			if (handler.GetTimeDelay(rtuTurnAroundTime))
-			{
-				auto now = pApplication->Now();
-				auto sendReceieveTime = now.msSinceEpoch - start.msSinceEpoch;
+	if (!ValidateNullResponse(response, objects)) return ResponseResult::ERROR_BAD_RESPONSE;
 
-				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting
-				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;
+	this->state = State::WRITE_TIME;
 
-				return ResponseResult::OK_REPEAT;
-			}
-			else
-			{
-				return ResponseResult::ERROR_BAD_RESPONSE;
-			}
-		}
-		else
-		{
-			return ResponseResult::ERROR_BAD_RESPONSE;
-		}
-	}
-	else
-	{
-		return ResponseResult::ERROR_BAD_RESPONSE;
-	}
+	return ResponseResult::OK_REPEAT;
 }
 
 IMasterTask::ResponseResult LANTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects)

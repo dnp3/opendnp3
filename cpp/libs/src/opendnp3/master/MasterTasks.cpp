@@ -25,8 +25,9 @@
 #include "opendnp3/master/EnableUnsolicitedTask.h"
 #include "opendnp3/master/StartupIntegrityPoll.h"
 #include "opendnp3/master/DisableUnsolicitedTask.h"
-#include "opendnp3/master/SerialTimeSyncTask.h"
 #include "opendnp3/master/EventScanTask.h"
+#include "opendnp3/master/SerialTimeSyncTask.h"
+#include "opendnp3/master/LANTimeSyncTask.h"
 
 using namespace openpal;
 
@@ -86,6 +87,8 @@ std::shared_ptr<IMasterTask> MasterTasks::GetTimeSyncTask(TimeSyncMode mode, con
 	{
 	case(TimeSyncMode::NonLANTimeSync):
 		return std::make_shared<SerialTimeSyncTask>(application, logger);
+	case(TimeSyncMode::LANTimeSync):
+		return std::make_shared<LANTimeSyncTask>(application, logger);
 	default:
 		return nullptr;
 	}

@@ -47,6 +47,8 @@ void ClearRestartIIN(APDURequest& request, uint8_t seq = 0);
 
 void MeasureDelay(APDURequest& request, uint8_t seq = 0);
 
+void RecordCurrentTime(APDURequest& request, uint8_t seq = 0);
+
 // -------- responses -------------
 
 void NullUnsolicited(APDUResponse& response, uint8_t seq, const IINField& iin);
