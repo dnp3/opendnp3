@@ -151,6 +151,7 @@ private:
 	IINField HandleOperate(const openpal::RSlice& objects, HeaderWriter& writer);
 	IINField HandleDirectOperate(const openpal::RSlice& objects, OperateType opType, HeaderWriter* pWriter);
 	IINField HandleDelayMeasure(const openpal::RSlice& objects, HeaderWriter& writer);
+	IINField HandleRecordCurrentTime();
 	IINField HandleRestart(const openpal::RSlice& objects, bool isWarmRestart, HeaderWriter* pWriter);
 	IINField HandleAssignClass(const openpal::RSlice& objects);
 	IINField HandleDisableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer);
@@ -182,6 +183,9 @@ private:
 
 	// ------ Dynamic state related to controls ------
 	ControlState control;
+
+	// ------ Dynamic state related to time synchronization ------
+	TimeSyncState time;
 
 	// ------ Dynamic state related to solicited and unsolicited modes ------
 	OutstationSolState  sol;

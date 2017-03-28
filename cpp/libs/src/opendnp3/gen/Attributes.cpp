@@ -72,6 +72,8 @@ bool HasAbsoluteTime(GroupVariation gv)
         return true;
     case(GroupVariation::Group50Var1):
         return true;
+    case(GroupVariation::Group50Var3):
+        return true;
     case(GroupVariation::Group50Var4):
         return true;
     case(GroupVariation::Group51Var1):

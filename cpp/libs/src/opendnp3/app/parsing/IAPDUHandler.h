@@ -81,6 +81,7 @@ public:
 	void OnHeader(const FreeFormatHeader& header, const Group120Var15& value, const openpal::RSlice& object);
 
 	void OnHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
+	void OnHeader(const CountHeader& header, const ICollection<Group50Var3>& values);
 	void OnHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
 	void OnHeader(const CountHeader& header, const ICollection<Group51Var2>& values);
 	void OnHeader(const CountHeader& header, const ICollection<Group52Var1>& values);
@@ -164,6 +165,7 @@ protected:
 
 
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var3>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values);

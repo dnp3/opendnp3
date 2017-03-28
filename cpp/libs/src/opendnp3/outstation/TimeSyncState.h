@@ -23,6 +23,8 @@
 
 #include "opendnp3/app/AppSeqNum.h"
 
+#include "openpal/executor/MonotonicTimestamp.h"
+
 
 namespace opendnp3
 {

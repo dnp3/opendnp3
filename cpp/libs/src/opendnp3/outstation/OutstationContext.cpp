@@ -512,6 +512,8 @@ IINField OContext::HandleNonReadResponse(const APDUHeader& header, const openpal
 		return this->HandleAssignClass(objects);
 	case(FunctionCode::DELAY_MEASURE) :
 		return this->HandleDelayMeasure(objects, writer);
+	case(FunctionCode::RECORD_CURRENT_TIME):
+		return objects.IsEmpty() ? this->HandleRecordCurrentTime() : IINField(IINBit::PARAM_ERROR);
 	case(FunctionCode::DISABLE_UNSOLICITED) :
 		return this->params.allowUnsolicited ? this->HandleDisableUnsolicited(objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
 	case(FunctionCode::ENABLE_UNSOLICITED) :
@@ -543,7 +545,7 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
 
 IINField OContext::HandleWrite(const openpal::RSlice& objects)
 {
-	WriteHandler handler(*this->application, &this->staticIIN);
+	WriteHandler handler(*this->application, this->time, this->sol.seq.num, this->executor->GetTime(), &this->staticIIN);
 	auto result = APDUParser::Parse(objects, handler, &this->logger);
 	return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
@@ -638,44 +640,44 @@ IINField OContext::HandleDelayMeasure(const openpal::RSlice& objects, HeaderWrit
 	}
 }
 
+IINField OContext::HandleRecordCurrentTime()
+{
+	this->time.RecordCurrentTime(this->sol.seq.num, this->executor->GetTime());
+	return IINField::Empty();
+}
+
 IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRestart, HeaderWriter* pWriter)
 {
-	if (objects.IsEmpty())
-	{
-		auto mode = isWarmRestart ? this->application->WarmRestartSupport() : this->application->ColdRestartSupport();
+	if (objects.IsNotEmpty()) return IINField(IINBit::PARAM_ERROR);
 
-		switch (mode)
-		{
-		case(RestartMode::UNSUPPORTED) :
-			return IINField(IINBit::FUNC_NOT_SUPPORTED);
-		case(RestartMode::SUPPORTED_DELAY_COARSE) :
-			{
-				auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
-				if (pWriter)
-				{
-					Group52Var1 coarse;
-					coarse.time = delay;
-					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
-				}
-				return IINField::Empty();
-			}
-		default:
-			{
-				auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
-				if (pWriter)
-				{
-					Group52Var2 fine;
-					fine.time = delay;
-					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
-				}
-				return IINField::Empty();
-			}
-		}
-	}
-	else
+	auto mode = isWarmRestart ? this->application->WarmRestartSupport() : this->application->ColdRestartSupport();
+
+	switch (mode)
 	{
-		// there shouldn't be any trailing headers in restart requests, no need to even parse
-		return IINField(IINBit::PARAM_ERROR);
+	case(RestartMode::UNSUPPORTED) :
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	case(RestartMode::SUPPORTED_DELAY_COARSE) :
+		{
+			auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
+			if (pWriter)
+			{
+				Group52Var1 coarse;
+				coarse.time = delay;
+				pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
+			}
+			return IINField::Empty();
+		}
+	default:
+		{
+			auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
+			if (pWriter)
+			{
+				Group52Var2 fine;
+				fine.time = delay;
+				pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
+			}
+			return IINField::Empty();
+		}
 	}
 }
 

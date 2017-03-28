@@ -44,6 +44,20 @@ struct Group50Var1
   DNPTime time;
 };
 
+// Time and Date - Absolute Time at last recorded time
+struct Group50Var3
+{
+  static GroupVariationID ID() { return GroupVariationID(50,3); }
+
+  Group50Var3();
+
+  static uint32_t Size() { return 6; }
+  static bool Read(openpal::RSlice&, Group50Var3&);
+  static bool Write(const Group50Var3&, openpal::WSlice&);
+
+  DNPTime time;
+};
+
 // Time and Date - Indexed absolute time and long interval
 struct Group50Var4
 {

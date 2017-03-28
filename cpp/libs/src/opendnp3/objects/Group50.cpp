@@ -44,6 +44,21 @@ bool Group50Var1::Write(const Group50Var1& arg, openpal::WSlice& buffer)
   return Format::Many(buffer, arg.time);
 }
 
+// ------- Group50Var3 -------
+
+Group50Var3::Group50Var3() : time(0)
+{}
+
+bool Group50Var3::Read(RSlice& buffer, Group50Var3& output)
+{
+  return Parse::Many(buffer, output.time);
+}
+
+bool Group50Var3::Write(const Group50Var3& arg, openpal::WSlice& buffer)
+{
+  return Format::Many(buffer, arg.time);
+}
+
 // ------- Group50Var4 -------
 
 Group50Var4::Group50Var4() : time(0), interval(0), units(0)

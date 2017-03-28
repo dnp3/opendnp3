@@ -25,36 +25,43 @@
 #include "opendnp3/app/IINField.h"
 
 #include "opendnp3/outstation/IOutstationApplication.h"
+#include "opendnp3/outstation/TimeSyncState.h"
 
-#include <openpal/logging/Logger.h>
+#include "openpal/logging/Logger.h"
+#include "openpal/executor/MonotonicTimestamp.h"
 
 namespace opendnp3
 {
 
-class WriteHandler : public IAPDUHandler
+class WriteHandler final : public IAPDUHandler
 {
 public:
 
-	WriteHandler(IOutstationApplication& application, IINField* pWriteIIN_);
+	WriteHandler(IOutstationApplication& application, TimeSyncState& timeSyncState, AppSeqNum seq, openpal::MonotonicTimestamp now, IINField* pWriteIIN);
 
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override
 	{
 		return true;
 	}
 
 private:
 
-	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override final;
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override;
 
-	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& times) override final;
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& times) override;
 
-	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var3>& times) override;
 
-	IOutstationApplication* pApplication;
-	IINField* pWriteIIN;
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override;
 
-	bool wroteTime;
-	bool wroteIIN;
+	IOutstationApplication* application;
+	TimeSyncState* timeSyncState;
+	AppSeqNum seq;
+	openpal::MonotonicTimestamp now;
+	IINField* writeIIN;
+
+	bool wroteTime = false;
+	bool wroteIIN = false;
 };
 
 }
