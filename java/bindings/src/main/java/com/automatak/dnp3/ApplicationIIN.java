@@ -39,8 +39,8 @@ public class ApplicationIIN
         return new ApplicationIIN(false, false, false, false);
     }
 
-    public final boolean needTime;
-    public final boolean localControl;
-    public final boolean deviceTrouble;
-    public final boolean configCorrupt;
+    public boolean needTime;
+    public boolean localControl;
+    public boolean deviceTrouble;
+    public boolean configCorrupt;
 }
