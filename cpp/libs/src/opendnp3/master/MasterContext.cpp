@@ -241,7 +241,8 @@ void MContext::ProcessIIN(const IINField& iin)
 	{
 		switch (this->params.timeSyncMode)
 		{
-		case(TimeSyncMode::SerialTimeSync):
+		case(TimeSyncMode::NonLANTimeSync):
+		case(TimeSyncMode::LANTimeSync):
 			this->tasks.timeSync->Demand();
 			break;
 		default:
