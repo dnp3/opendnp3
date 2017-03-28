@@ -14,8 +14,8 @@ object TimeSyncMode {
   def apply(): EnumModel = EnumModel("TimeSyncMode", comments, EnumModel.UInt8, codes, Some(defaultValue), Base10)
 
   private val codes = List(
-    EnumValue("NonLANTimeSync", 1, "synchronize the outstation's time using the non-LAN time sync procedure"),
-    EnumValue("LANTimeSync", 2, "synchronize the outstation's time using the LAN time sync procedure")
+    EnumValue("NonLAN", 1, "synchronize the outstation's time using the non-LAN time sync procedure"),
+    EnumValue("LAN", 2, "synchronize the outstation's time using the LAN time sync procedure")
   )
 
 }

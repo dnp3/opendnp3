@@ -419,7 +419,7 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 TEST_CASE(SUITE("RestartAndTimeBits"))
 {
 	auto params = NoStartupTasks();
-	params.timeSyncMode = TimeSyncMode::NonLANTimeSync;
+	params.timeSyncMode = TimeSyncMode::NonLAN;
 	MasterTestObject t(params);
 	t.context->OnLowerLayerUp();
 

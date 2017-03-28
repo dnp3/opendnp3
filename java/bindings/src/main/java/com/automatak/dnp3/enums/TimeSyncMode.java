@@ -27,11 +27,11 @@ public enum TimeSyncMode
   /**
   * synchronize the outstation's time using the non-LAN time sync procedure
   */
-  NonLANTimeSync(1),
+  NonLAN(1),
   /**
   * synchronize the outstation's time using the LAN time sync procedure
   */
-  LANTimeSync(2),
+  LAN(2),
   /**
   * don't perform a time-sync
   */
@@ -54,9 +54,9 @@ public enum TimeSyncMode
     switch(arg)
     {
       case(1):
-        return NonLANTimeSync;
+        return NonLAN;
       case(2):
-        return LANTimeSync;
+        return LAN;
       default:
         return None;
     }

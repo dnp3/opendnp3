@@ -85,9 +85,9 @@ std::shared_ptr<IMasterTask> MasterTasks::GetTimeSyncTask(TimeSyncMode mode, con
 {
 	switch (mode)
 	{
-	case(TimeSyncMode::NonLANTimeSync):
+	case(TimeSyncMode::NonLAN):
 		return std::make_shared<SerialTimeSyncTask>(application, logger);
-	case(TimeSyncMode::LANTimeSync):
+	case(TimeSyncMode::LAN):
 		return std::make_shared<LANTimeSyncTask>(application, logger);
 	default:
 		return nullptr;
