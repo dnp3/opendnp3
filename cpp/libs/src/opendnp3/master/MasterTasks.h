@@ -23,13 +23,12 @@
 
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/IMasterApplication.h"
 
 #include <vector>
 
 namespace opendnp3
 {
-
-class IMasterApplication;
 
 class MasterTasks
 {
@@ -46,13 +45,17 @@ public:
 	const std::shared_ptr<IMasterTask> assignClass;
 	const std::shared_ptr<IMasterTask> startupIntegrity;
 	const std::shared_ptr<IMasterTask> disableUnsol;
-	const std::shared_ptr<IMasterTask> timeSync;
 	const std::shared_ptr<IMasterTask> eventScan;
+
+	// same as above, but may be NULL based on configuration
+	const std::shared_ptr<IMasterTask> timeSynchronization;
 
 
 	void BindTask(const std::shared_ptr<IMasterTask>& task);
 
 private:
+
+	static std::shared_ptr<IMasterTask> GetTimeSyncTask(TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application);
 
 	std::vector<std::shared_ptr<IMasterTask>> boundTasks;
 

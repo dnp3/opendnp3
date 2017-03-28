@@ -238,17 +238,9 @@ void MContext::ProcessIIN(const IINField& iin)
 		this->tasks.startupIntegrity->Demand();
 	}
 
-	if (iin.IsSet(IINBit::NEED_TIME))
+	if (iin.IsSet(IINBit::NEED_TIME) && this->tasks.timeSynchronization)
 	{
-		switch (this->params.timeSyncMode)
-		{
-		case(TimeSyncMode::NonLANTimeSync):
-		case(TimeSyncMode::LANTimeSync):
-			this->tasks.timeSync->Demand();
-			break;
-		default:
-			break;
-		}
+		this->tasks.timeSynchronization->Demand();
 	}
 
 	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||

@@ -39,8 +39,8 @@ MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logg
 	assignClass(std::make_shared<AssignClassTask>(app, params.taskRetryPeriod, logger)),
 	startupIntegrity(std::make_shared<StartupIntegrityPoll>(app, SOEHandler, params.startupIntegrityClassMask, params.taskRetryPeriod, logger)),
 	disableUnsol(std::make_shared<DisableUnsolicitedTask>(app, params.disableUnsolOnStartup, params.taskRetryPeriod, logger)),
-	timeSync(std::make_shared<SerialTimeSyncTask>(app, logger)),
-	eventScan(std::make_shared<EventScanTask>(app, SOEHandler, params.eventScanOnEventsAvailableClassMask, params.taskRetryPeriod, logger))
+	eventScan(std::make_shared<EventScanTask>(app, SOEHandler, params.eventScanOnEventsAvailableClassMask, params.taskRetryPeriod, logger)),
+	timeSynchronization(GetTimeSyncTask(params.timeSyncMode, logger, app))
 {
 
 }
@@ -52,8 +52,9 @@ void MasterTasks::Initialize(MasterScheduler& scheduler)
 	scheduler.Schedule(assignClass);
 	scheduler.Schedule(startupIntegrity);
 	scheduler.Schedule(disableUnsol);
-	scheduler.Schedule(timeSync);
 	scheduler.Schedule(eventScan);
+
+	if(timeSynchronization) scheduler.Schedule(timeSynchronization);
 
 	for (auto& task : boundTasks)
 	{
@@ -64,6 +65,17 @@ void MasterTasks::Initialize(MasterScheduler& scheduler)
 void MasterTasks::BindTask(const std::shared_ptr<IMasterTask>& task)
 {
 	boundTasks.push_back(task);
+}
+
+std::shared_ptr<IMasterTask> MasterTasks::GetTimeSyncTask(TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application)
+{
+	switch (mode)
+	{
+	case(TimeSyncMode::NonLANTimeSync):
+		return std::make_shared<SerialTimeSyncTask>(application, logger);
+	default:
+		return nullptr;
+	}
 }
 
 }
