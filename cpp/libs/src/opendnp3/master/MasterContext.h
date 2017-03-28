@@ -40,6 +40,10 @@
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/HeaderBuilder.h"
 #include "opendnp3/master/RestartOperationResult.h"
+#include "opendnp3/master/CommandSet.h"
+#include "opendnp3/master/CommandCallbackT.h"
+
+#include <deque>
 
 namespace opendnp3
 {

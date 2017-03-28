@@ -20,6 +20,14 @@
  */
 #include "MasterTasks.h"
 
+#include "opendnp3/master/ClearRestartTask.h"
+#include "opendnp3/master/AssignClassTask.h"
+#include "opendnp3/master/EnableUnsolicitedTask.h"
+#include "opendnp3/master/StartupIntegrityPoll.h"
+#include "opendnp3/master/DisableUnsolicitedTask.h"
+#include "opendnp3/master/SerialTimeSyncTask.h"
+#include "opendnp3/master/EventScanTask.h"
+
 using namespace openpal;
 
 namespace opendnp3

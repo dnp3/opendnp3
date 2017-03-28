@@ -28,6 +28,7 @@
 #include "opendnp3/master/MeasurementHandler.h"
 #include "opendnp3/master/EmptyResponseTask.h"
 #include "opendnp3/master/RestartOperationTask.h"
+#include "opendnp3/master/CommandTask.h"
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"
 
