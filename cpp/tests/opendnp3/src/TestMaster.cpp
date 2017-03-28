@@ -416,7 +416,7 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
 }
 
-TEST_CASE(SUITE("RestartAndTimeBits"))
+TEST_CASE(SUITE("performs non-LAN time synchronization"))
 {
 	auto params = NoStartupTasks();
 	params.timeSyncMode = TimeSyncMode::NonLAN;
@@ -455,6 +455,33 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 	t.exe->RunMany();
 
 	REQUIRE(t.lower->NumWrites() ==  0); // no more packets
+}
+
+TEST_CASE(SUITE("performs LAN time synchronization"))
+{
+	auto params = NoStartupTasks();
+	params.timeSyncMode = TimeSyncMode::LAN;
+	MasterTestObject t(params);
+	t.context->OnLowerLayerUp();
+
+	t.application->time = 100;
+	t.exe->RunMany();
+
+	REQUIRE(t.lower->NumWrites() == 0);
+
+	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::NEED_TIME)));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::UnsolConfirm(0));
+	t.context->OnSendResult(true);
+
+	REQUIRE(t.lower->PopWriteAsHex() == hex::RecordCurrentTime(0));
+	t.context->OnSendResult(true);
+	t.application->time += 100; //advance time by 100ms so that the master sees 100ms for a response
+	t.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::NEED_TIME)));
+
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 02 32 03 07 01 64 00 00 00 00 00");
+	t.context->OnSendResult(true);
+	t.exe->RunMany();
+	REQUIRE(t.lower->NumWrites() == 0);
 }
 
 TEST_CASE(SUITE("ReceiveCTOSynchronized"))

@@ -62,6 +62,8 @@ std::string ClearRestartIIN(uint8_t seq);
 
 std::string MeasureDelay(uint8_t seq);
 
+std::string RecordCurrentTime(uint8_t seq);
+
 std::string Control(opendnp3::FunctionCode code, uint8_t seq, const opendnp3::ControlRelayOutputBlock& crob, uint16_t index);
 
 // ----------- responses --------------
