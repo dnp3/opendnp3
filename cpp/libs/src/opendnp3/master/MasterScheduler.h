@@ -58,7 +58,7 @@ public:
 	* Cleanup all existing tasks & cancel any timers
 	*/
 	void Shutdown(const openpal::MonotonicTimestamp& now);
-	
+
 private:
 
 	/**

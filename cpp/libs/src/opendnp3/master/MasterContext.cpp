@@ -56,7 +56,7 @@ MContext::MContext(
 	application(application),
 	pTaskLock(&taskLock),
 	responseTimer(*executor),
-	scheduleTimer(*executor),	
+	scheduleTimer(*executor),
 	tasks(params, logger, *application, *SOEHandler),
 	scheduler(executor),
 	txBuffer(params.maxTxFragSize),
@@ -99,7 +99,7 @@ bool MContext::OnLowerLayerDown()
 
 	pTaskLock->Release(*this);
 
-	responseTimer.Cancel();	
+	responseTimer.Cancel();
 	scheduleTimer.Cancel();
 
 	solSeq = unsolSeq = 0;

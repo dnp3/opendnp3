@@ -145,12 +145,13 @@ void MasterScheduler::RecalculateTaskStartTimeout()
 		}
 	}
 
-	auto callback = [this]() { 
-		this->CheckTaskStartTimeout(); 
+	auto callback = [this]()
+	{
+		this->CheckTaskStartTimeout();
 	};
 
 	this->taskStartTimeoutTimer.Restart(min, callback);
-	
+
 }
 
 }

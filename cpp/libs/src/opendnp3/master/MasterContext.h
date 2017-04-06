@@ -91,7 +91,7 @@ public:
 	AppSeqNum unsolSeq;
 	std::shared_ptr<IMasterTask> activeTask;
 	openpal::TimerRef responseTimer;
-	openpal::TimerRef scheduleTimer;	
+	openpal::TimerRef scheduleTimer;
 	MasterTasks tasks;
 	MasterScheduler scheduler;
 	std::deque<APDUHeader> confirmQueue;
@@ -117,7 +117,7 @@ public:
 	virtual bool MeetsUserRequirements(const std::shared_ptr<IMasterTask>& task)
 	{
 		return true;
-	}	
+	}
 
 	/// methods for initiating command sequences
 
