@@ -46,7 +46,7 @@ protected:
 	{
 	public:
 
-		TaskState(openpal::MonotonicTimestamp expiration_, bool disabled_ = false) : disabled(disabled_), expiration(expiration_)
+		TaskState(openpal::MonotonicTimestamp expiration, bool disabled) : disabled(disabled), expiration(expiration)
 		{}
 
 		static TaskState Immediately()
@@ -73,6 +73,7 @@ protected:
 		openpal::MonotonicTimestamp expiration;
 
 	private:
+
 		TaskState() = delete;
 	};
 
