@@ -48,7 +48,7 @@ private:
 
 	static Result HigherPriority(const IMasterTask& lhs, const IMasterTask& rhs);
 
-	static bool Enabled(const IMasterTask& task, ITaskFilter& filter);
+	static bool Enabled(const IMasterTask& task);
 };
 
 }

@@ -77,9 +77,8 @@ std::shared_ptr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimestamp& 
 	else
 	{
 		const bool EXPIRED = (*elem)->ExpirationTime().milliseconds <= now.milliseconds;
-		const bool CAN_RUN = this->m_filter->CanRun(**elem);
 
-		if (EXPIRED && CAN_RUN)
+		if (EXPIRED)
 		{
 			std::shared_ptr<IMasterTask> ret = *elem;
 			m_tasks.erase(elem);
@@ -87,7 +86,7 @@ std::shared_ptr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimestamp& 
 		}
 		else
 		{
-			next = CAN_RUN ? (*elem)->ExpirationTime() : MonotonicTimestamp::Max();
+			next = (*elem)->ExpirationTime();
 			return nullptr;
 		}
 	}

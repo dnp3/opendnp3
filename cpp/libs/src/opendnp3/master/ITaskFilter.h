@@ -36,8 +36,6 @@ class ITaskFilter
 
 public:
 
-	virtual bool CanRun(const IMasterTask& task) = 0;
-
 	virtual void SetTaskStartTimeout(const openpal::MonotonicTimestamp& time) = 0;
 
 };

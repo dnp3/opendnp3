@@ -121,13 +121,6 @@ public:
 		return true;
 	}
 
-	/// ITaskFilter
-
-	virtual bool CanRun(const IMasterTask& task) override
-	{
-		return true;
-	}
-
 	virtual void SetTaskStartTimeout(const openpal::MonotonicTimestamp& time) override final;
 
 	/// methods for initiating command sequences
