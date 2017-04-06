@@ -42,7 +42,7 @@ class MasterScheduler
 
 public:
 
-	explicit MasterScheduler(ITaskFilter& filter);
+	explicit MasterScheduler(const std::shared_ptr<openpal::IExecutor>& executor, ITaskFilter& filter);
 
 	/*
 	* Add a task to the scheduler
@@ -74,6 +74,7 @@ private:
 
 	std::vector<std::shared_ptr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);
 
+	const std::shared_ptr<openpal::IExecutor> executor;
 	ITaskFilter* m_filter;
 	std::vector<std::shared_ptr<IMasterTask>> m_tasks;
 };

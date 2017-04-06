@@ -31,7 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::MasterScheduler(ITaskFilter& filter) :
+MasterScheduler::MasterScheduler(const std::shared_ptr<openpal::IExecutor>& executor, ITaskFilter& filter) :
+	executor(executor),
 	m_filter(&filter)
 {
 

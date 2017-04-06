@@ -59,7 +59,7 @@ MContext::MContext(
 	scheduleTimer(*executor),
 	taskStartTimeoutTimer(*executor),
 	tasks(params, logger, *application, *SOEHandler),
-	scheduler(*this),
+	scheduler(executor, *this),
 	txBuffer(params.maxTxFragSize),
 	tstate(TaskState::IDLE)
 {}
