@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MasterSchedulerImpl.h"
+#include "MasterSchedulerBackend.h"
 
 #include "opendnp3/master/TaskComparison.h"
 
@@ -31,20 +31,20 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterSchedulerImpl::MasterSchedulerImpl(const std::shared_ptr<openpal::IExecutor>& executor) :
+MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor) :
 	executor(executor),
 	taskStartTimeoutTimer(*executor)
 {
 
 }
 
-void MasterSchedulerImpl::Schedule(const std::shared_ptr<IMasterTask>& task)
+void MasterSchedulerBackend::Schedule(const std::shared_ptr<IMasterTask>& task)
 {
 	tasks.push_back(task);
 	this->RecalculateTaskStartTimeout();
 }
 
-std::vector<std::shared_ptr<IMasterTask>>::iterator MasterSchedulerImpl::GetNextTask(const MonotonicTimestamp& now)
+std::vector<std::shared_ptr<IMasterTask>>::iterator MasterSchedulerBackend::GetNextTask(const MonotonicTimestamp& now)
 {
 	auto runningBest = this->tasks.begin();
 
@@ -66,7 +66,7 @@ std::vector<std::shared_ptr<IMasterTask>>::iterator MasterSchedulerImpl::GetNext
 	return runningBest;
 }
 
-std::shared_ptr<IMasterTask> MasterSchedulerImpl::GetNext(const MonotonicTimestamp& now, MonotonicTimestamp& next)
+std::shared_ptr<IMasterTask> MasterSchedulerBackend::GetNext(const MonotonicTimestamp& now, MonotonicTimestamp& next)
 {
 	auto elem = GetNextTask(now);
 
@@ -93,13 +93,13 @@ std::shared_ptr<IMasterTask> MasterSchedulerImpl::GetNext(const MonotonicTimesta
 	}
 }
 
-void MasterSchedulerImpl::Shutdown(const MonotonicTimestamp& now)
+void MasterSchedulerBackend::Shutdown(const MonotonicTimestamp& now)
 {
 	this->taskStartTimeoutTimer.Cancel();
 	this->tasks.clear();
 }
 
-void MasterSchedulerImpl::CheckTaskStartTimeout()
+void MasterSchedulerBackend::CheckTaskStartTimeout()
 {
 	auto isTimedOut = [now = this->executor->GetTime()](const std::shared_ptr<IMasterTask>& task) -> bool
 	{
@@ -119,7 +119,7 @@ void MasterSchedulerImpl::CheckTaskStartTimeout()
 	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), isTimedOut), this->tasks.end());
 }
 
-void MasterSchedulerImpl::RecalculateTaskStartTimeout()
+void MasterSchedulerBackend::RecalculateTaskStartTimeout()
 {
 	auto min = MonotonicTimestamp::Max();
 
