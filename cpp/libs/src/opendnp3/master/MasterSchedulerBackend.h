@@ -21,16 +21,9 @@
 #ifndef OPENDNP3_MASTERSCHEDULERBACKEND_H
 #define OPENDNP3_MASTERSCHEDULERBACKEND_H
 
-#include <openpal/executor/TimerRef.h>
-#include <openpal/executor/IExecutor.h>
-#include <openpal/container/Settable.h>
-
-#include "opendnp3/master/UserPollTask.h"
-#include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/IScheduleCallback.h"
+#include "opendnp3/master/IMasterTaskRunner.h"
 
 #include <vector>
-#include <functional>
 #include <memory>
 
 namespace opendnp3
@@ -38,44 +31,33 @@ namespace opendnp3
 
 class MasterSchedulerBackend
 {
+	// Tasks are associated with a particular runner
+	struct TaskRecord
+	{		
+		TaskRecord() = delete;
+
+		TaskRecord(
+			const std::shared_ptr<IMasterTask>& task,
+			const std::shared_ptr<IMasterTaskRunner>& runner
+		) :
+			task(task),
+			runner(runner)
+		{}
+
+		std::shared_ptr<IMasterTask> task;
+		std::shared_ptr<IMasterTaskRunner> runner;
+	};
+
 
 public:
 
-	explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);
-
-	/*
-	* Add a task to the scheduler
-	*/
-	void Schedule(const std::shared_ptr<IMasterTask>& task);
-
-	/**
-	* @return Task to start or undefined pointer if no task to start
-	* If there is no task to start, 'next' is set to the timestamp when the scheduler should be re-evaluated
-	*/
-	std::shared_ptr<IMasterTask> GetNext(const openpal::MonotonicTimestamp& now, openpal::MonotonicTimestamp& next);
-
-	/**
-	* Cleanup all existing tasks & cancel any timers
-	*/
-	void Shutdown(const openpal::MonotonicTimestamp& now);
+	explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);	
 
 private:
 
-	/**
-	* Check if any tasks have exceeded their start timeout
-	*/
-	void CheckTaskStartTimeout();
-
-	//static bool IsTimedOut(const openpal::MonotonicTimestamp& now, const std::shared_ptr<IMasterTask>& task);
-
-	void RecalculateTaskStartTimeout();
-
-
-	std::vector<std::shared_ptr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);
-
 	const std::shared_ptr<openpal::IExecutor> executor;
-	openpal::TimerRef taskStartTimeoutTimer;
-	std::vector<std::shared_ptr<IMasterTask>> tasks;
+	
+	std::vector<TaskRecord> records;
 };
 
 }

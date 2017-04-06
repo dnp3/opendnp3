@@ -31,6 +31,9 @@ namespace opendnp3
 // forward declare the backend so we can erase its type
 class MasterSchedulerBackend;
 
+/**
+* Acts as a proxy to the backend scheduler so that session don't have to be aware there are other sessions
+*/
 class MasterSchedulerProxy : public IMasterScheduler
 {
 

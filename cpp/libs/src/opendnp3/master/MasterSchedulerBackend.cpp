@@ -20,123 +20,14 @@
  */
 #include "MasterSchedulerBackend.h"
 
-#include "opendnp3/master/TaskComparison.h"
-
-#include <openpal/executor/MonotonicTimestamp.h>
-
-#include <algorithm>
-
 using namespace openpal;
 
 namespace opendnp3
 {
 
-MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor) :
-	executor(executor),
-	taskStartTimeoutTimer(*executor)
+MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor) : 
+	executor(executor)	
 {
-
-}
-
-void MasterSchedulerBackend::Schedule(const std::shared_ptr<IMasterTask>& task)
-{
-	tasks.push_back(task);
-	this->RecalculateTaskStartTimeout();
-}
-
-std::vector<std::shared_ptr<IMasterTask>>::iterator MasterSchedulerBackend::GetNextTask(const MonotonicTimestamp& now)
-{
-	auto runningBest = this->tasks.begin();
-
-	if (!this->tasks.empty())
-	{
-		auto current = this->tasks.begin();
-		++current;
-
-		for (; current != this->tasks.end(); ++current)
-		{
-			auto result = TaskComparison::SelectHigherPriority(now, **runningBest, **current);
-			if (result == TaskComparison::Result::Right)
-			{
-				runningBest = current;
-			}
-		}
-	}
-
-	return runningBest;
-}
-
-std::shared_ptr<IMasterTask> MasterSchedulerBackend::GetNext(const MonotonicTimestamp& now, MonotonicTimestamp& next)
-{
-	auto elem = GetNextTask(now);
-
-	if (elem == this->tasks.end())
-	{
-		next = MonotonicTimestamp::Max();
-		return nullptr;
-	}
-	else
-	{
-		const bool EXPIRED = (*elem)->ExpirationTime().milliseconds <= now.milliseconds;
-
-		if (EXPIRED)
-		{
-			std::shared_ptr<IMasterTask> ret = *elem;
-			this->tasks.erase(elem);
-			return ret;
-		}
-		else
-		{
-			next = (*elem)->ExpirationTime();
-			return nullptr;
-		}
-	}
-}
-
-void MasterSchedulerBackend::Shutdown(const MonotonicTimestamp& now)
-{
-	this->taskStartTimeoutTimer.Cancel();
-	this->tasks.clear();
-}
-
-void MasterSchedulerBackend::CheckTaskStartTimeout()
-{
-	auto isTimedOut = [now = this->executor->GetTime()](const std::shared_ptr<IMasterTask>& task) -> bool
-	{
-		// TODO - make this functionality a method on the task itself
-
-		if (task->IsRecurring() || task->StartExpirationTime() > now)
-		{
-			return false;
-		}
-
-		task->OnStartTimeout(now);
-
-		return true;
-	};
-
-	// erase-remove idion (https://en.wikipedia.org/wiki/Erase-remove_idiom)
-	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), isTimedOut), this->tasks.end());
-}
-
-void MasterSchedulerBackend::RecalculateTaskStartTimeout()
-{
-	auto min = MonotonicTimestamp::Max();
-
-	for(auto& task : this->tasks)
-	{
-		if (!task->IsRecurring() && (task->StartExpirationTime() < min))
-		{
-			min = task->StartExpirationTime();
-		}
-	}
-
-	auto callback = [this]()
-	{
-		this->CheckTaskStartTimeout();
-	};
-
-	this->taskStartTimeoutTimer.Restart(min, callback);
 
 }
 
