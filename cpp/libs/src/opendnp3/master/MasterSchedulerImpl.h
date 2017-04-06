@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_MASTERSCHEDULERNEW_H
-#define OPENDNP3_MASTERSCHEDULERNEW_H
+#ifndef OPENDNP3_MASTERSCHEDULERIMPL_H
+#define OPENDNP3_MASTERSCHEDULERIMPL_H
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/executor/IExecutor.h>
@@ -36,12 +36,12 @@
 namespace opendnp3
 {
 
-class MasterSchedulerNew
+class MasterSchedulerImpl
 {
 
 public:
 
-	explicit MasterSchedulerNew(const std::shared_ptr<openpal::IExecutor>& executor);
+	explicit MasterSchedulerImpl(const std::shared_ptr<openpal::IExecutor>& executor);
 
 	/*
 	* Add a task to the scheduler
