@@ -25,7 +25,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs, ITaskFilter& filter)
+TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs)
 {
 	// if one of the tasks is disabled, pick the enabled one
 

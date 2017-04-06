@@ -56,10 +56,9 @@ MContext::MContext(
 	application(application),
 	pTaskLock(&taskLock),
 	responseTimer(*executor),
-	scheduleTimer(*executor),
-	taskStartTimeoutTimer(*executor),
+	scheduleTimer(*executor),	
 	tasks(params, logger, *application, *SOEHandler),
-	scheduler(executor, *this),
+	scheduler(executor),
 	txBuffer(params.maxTxFragSize),
 	tstate(TaskState::IDLE)
 {}
@@ -100,8 +99,7 @@ bool MContext::OnLowerLayerDown()
 
 	pTaskLock->Release(*this);
 
-	responseTimer.Cancel();
-	taskStartTimeoutTimer.Cancel();
+	responseTimer.Cancel();	
 	scheduleTimer.Cancel();
 
 	solSeq = unsolSeq = 0;
@@ -413,16 +411,6 @@ void MContext::PerformFunction(const std::string& name, opendnp3::FunctionCode f
 {
 	auto task = std::make_shared<EmptyResponseTask>(*this->application, name, func, builder, this->logger, config);
 	this->ScheduleAdhocTask(task);
-}
-
-void MContext::SetTaskStartTimeout(const openpal::MonotonicTimestamp& time)
-{
-	auto action = [this]()
-	{
-		this->scheduler.CheckTaskStartTimeout(executor->GetTime());
-	};
-
-	this->taskStartTimeoutTimer.Restart(time, action);
 }
 
 /// ------ private helpers ----------

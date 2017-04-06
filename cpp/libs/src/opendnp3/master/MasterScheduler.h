@@ -28,7 +28,6 @@
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/IScheduleCallback.h"
-#include "opendnp3/master/ITaskFilter.h"
 
 #include <vector>
 #include <functional>
@@ -42,7 +41,7 @@ class MasterScheduler
 
 public:
 
-	explicit MasterScheduler(const std::shared_ptr<openpal::IExecutor>& executor, ITaskFilter& filter);
+	explicit MasterScheduler(const std::shared_ptr<openpal::IExecutor>& executor);
 
 	/*
 	* Add a task to the scheduler
@@ -59,15 +58,15 @@ public:
 	* Cleanup all existing tasks & cancel any timers
 	*/
 	void Shutdown(const openpal::MonotonicTimestamp& now);
+	
+private:
 
 	/**
 	* Check if any tasks have exceeded their start timeout
 	*/
-	void CheckTaskStartTimeout(const openpal::MonotonicTimestamp& now);
+	void CheckTaskStartTimeout();
 
-private:
-
-	bool IsTimedOut(const openpal::MonotonicTimestamp& now, const std::shared_ptr<IMasterTask>& task);
+	//static bool IsTimedOut(const openpal::MonotonicTimestamp& now, const std::shared_ptr<IMasterTask>& task);
 
 	void RecalculateTaskStartTimeout();
 
@@ -75,7 +74,7 @@ private:
 	std::vector<std::shared_ptr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);
 
 	const std::shared_ptr<openpal::IExecutor> executor;
-	ITaskFilter* m_filter;
+	openpal::TimerRef taskStartTimeoutTimer;
 	std::vector<std::shared_ptr<IMasterTask>> m_tasks;
 };
 

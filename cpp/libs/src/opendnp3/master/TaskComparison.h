@@ -25,8 +25,6 @@
 #include <openpal/executor/MonotonicTimestamp.h>
 
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/ITaskFilter.h"
-
 
 namespace opendnp3
 {
@@ -42,7 +40,7 @@ public:
 		Same
 	};
 
-	static Result SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs, ITaskFilter& filter);
+	static Result SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs);
 
 private:
 

@@ -34,7 +34,6 @@
 #include "opendnp3/gen/RestartType.h"
 
 #include "opendnp3/master/MasterScheduler.h"
-#include "opendnp3/master/ITaskFilter.h"
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -50,7 +49,7 @@ namespace opendnp3
 /*
 	All of the mutable state and configuration for a master
 */
-class MContext : public IUpperLayer, private IScheduleCallback, private ITaskFilter, private openpal::Uncopyable
+class MContext : public IUpperLayer, private IScheduleCallback, private openpal::Uncopyable
 {
 
 protected:
@@ -92,8 +91,7 @@ public:
 	AppSeqNum unsolSeq;
 	std::shared_ptr<IMasterTask> activeTask;
 	openpal::TimerRef responseTimer;
-	openpal::TimerRef scheduleTimer;
-	openpal::TimerRef taskStartTimeoutTimer;
+	openpal::TimerRef scheduleTimer;	
 	MasterTasks tasks;
 	MasterScheduler scheduler;
 	std::deque<APDUHeader> confirmQueue;
@@ -119,9 +117,7 @@ public:
 	virtual bool MeetsUserRequirements(const std::shared_ptr<IMasterTask>& task)
 	{
 		return true;
-	}
-
-	virtual void SetTaskStartTimeout(const openpal::MonotonicTimestamp& time) override final;
+	}	
 
 	/// methods for initiating command sequences
 

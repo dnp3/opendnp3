@@ -31,9 +31,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::MasterScheduler(const std::shared_ptr<openpal::IExecutor>& executor, ITaskFilter& filter) :
+MasterScheduler::MasterScheduler(const std::shared_ptr<openpal::IExecutor>& executor) :
 	executor(executor),
-	m_filter(&filter)
+	taskStartTimeoutTimer(*executor)
 {
 
 }
@@ -55,7 +55,7 @@ std::vector<std::shared_ptr<IMasterTask>>::iterator MasterScheduler::GetNextTask
 
 		for (; current != m_tasks.end(); ++current)
 		{
-			auto result = TaskComparison::SelectHigherPriority(now, **runningBest, **current, *m_filter);
+			auto result = TaskComparison::SelectHigherPriority(now, **runningBest, **current);
 			if (result == TaskComparison::Result::Right)
 			{
 				runningBest = current;
@@ -95,9 +95,11 @@ std::shared_ptr<IMasterTask> MasterScheduler::GetNext(const MonotonicTimestamp& 
 
 void MasterScheduler::Shutdown(const MonotonicTimestamp& now)
 {
+	taskStartTimeoutTimer.Cancel();
 	m_tasks.clear();
 }
 
+/*
 bool MasterScheduler::IsTimedOut(const MonotonicTimestamp& now, const std::shared_ptr<IMasterTask>& task)
 {
 	if (task->IsRecurring() || task->StartExpirationTime() > now)
@@ -109,16 +111,26 @@ bool MasterScheduler::IsTimedOut(const MonotonicTimestamp& now, const std::share
 
 	return true;
 }
+*/
 
-void MasterScheduler::CheckTaskStartTimeout(const openpal::MonotonicTimestamp& now)
+void MasterScheduler::CheckTaskStartTimeout()
 {
-	auto timedOut = [this, now](const std::shared_ptr<IMasterTask>& task)
+	auto isTimedOut = [now = this->executor->GetTime()](const std::shared_ptr<IMasterTask>& task) -> bool
 	{
-		return this->IsTimedOut(now, task);
+		// TODO - make this functionality a method on the task itself
+
+		if (task->IsRecurring() || task->StartExpirationTime() > now)
+		{
+			return false;
+		}
+
+		task->OnStartTimeout(now);
+
+		return true;
 	};
 
 	// erase-remove idion (https://en.wikipedia.org/wiki/Erase-remove_idiom)
-	m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), timedOut), m_tasks.end());
+	m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), isTimedOut), m_tasks.end());
 }
 
 void MasterScheduler::RecalculateTaskStartTimeout()
@@ -133,7 +145,12 @@ void MasterScheduler::RecalculateTaskStartTimeout()
 		}
 	}
 
-	this->m_filter->SetTaskStartTimeout(min);
+	auto callback = [this]() { 
+		this->CheckTaskStartTimeout(); 
+	};
+
+	this->taskStartTimeoutTimer.Restart(min, callback);
+	
 }
 
 }
