@@ -22,7 +22,7 @@
 #define OPENDNP3_MASTERSCHEDULERBACKEND_H
 
 #include "opendnp3/master/IMasterTaskRunner.h"
-#include "opendnp3/master/MasterSchedulerProxy.h"
+#include "opendnp3/master/IMasterScheduler.h"
 
 #include <vector>
 #include <memory>
@@ -30,10 +30,8 @@
 namespace opendnp3
 {
 
-class MasterSchedulerBackend
+class MasterSchedulerBackend : public IMasterScheduler
 {
-
-public:
 
 	// Tasks are associated with a particular runner
 	struct Record
@@ -42,10 +40,10 @@ public:
 
 		Record(
 		    const std::shared_ptr<IMasterTask>& task,
-		    const std::shared_ptr<IMasterTaskRunner>& runner
+		    IMasterTaskRunner& runner
 		) :
 			task(task),
-			runner(runner)
+			runner(&runner)
 		{}
 
 		operator bool()
@@ -56,24 +54,27 @@ public:
 		void Clear()
 		{
 			this->task.reset();
-			this->runner.reset();
+			this->runner = nullptr;
 		}
 
 		std::shared_ptr<IMasterTask> task;
-		std::shared_ptr<IMasterTaskRunner> runner;
+		IMasterTaskRunner* runner = nullptr;
 	};
+
+public:
 
 	explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);
 
-	void Add(const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<IMasterTaskRunner>& runner);
+	void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner);
 
-	void RemoveTasks(const std::shared_ptr<IMasterTaskRunner>& runner);
+	void RemoveTasksFor(const IMasterTaskRunner& runner);
 
-	bool Complete();
+	bool CompleteCurrentFor(const IMasterTaskRunner& runner, bool reschedule);
 
 private:
 
 	bool taskCheckPending = false;
+
 	Record current;
 	std::vector<Record> tasks;
 
@@ -83,9 +84,20 @@ private:
 
 	const std::shared_ptr<openpal::IExecutor> executor;
 
-	static bool ShouldOtherRunBeforeCurrent(const openpal::MonotonicTimestamp& now, const Record& current, const Record& other);
+	enum class Comparison : uint8_t
+	{
+		LEFT,
+		RIGHT,
+		SAME
+	};
 
-	static bool IsEnabled(const Record& lhs);
+	static Comparison GetBestTaskToRun(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right);
+
+	static Comparison CompareEnabledStatus(const Record& left, const Record& right);
+
+	static Comparison ComparePriority(const Record& left, const Record& right);
+
+	static Comparison CompareTime(const openpal::MonotonicTimestamp& time, const Record& left, const Record& right);
 };
 
 }

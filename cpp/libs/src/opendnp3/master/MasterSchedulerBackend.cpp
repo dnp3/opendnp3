@@ -33,30 +33,35 @@ MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IE
 
 }
 
-void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<IMasterTaskRunner>& runner)
+void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner)
 {
 	this->tasks.push_back(Record(task, runner));
 	this->CheckForTaskRun();
 }
 
-void MasterSchedulerBackend::RemoveTasks(const std::shared_ptr<IMasterTaskRunner>& runner)
+void MasterSchedulerBackend::RemoveTasksFor(const IMasterTaskRunner& runner)
 {
-	auto ownedByRunner = [&runner](const Record & record) -> bool { return record.runner == runner;  };
+	auto isOwnedByRunner = [&](const Record & record) -> bool { return record.runner == &runner;  };
 
 	// move erase idiom
-	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), ownedByRunner), this->tasks.end());
+	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), isOwnedByRunner), this->tasks.end());
 }
 
-bool MasterSchedulerBackend::Complete()
+bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner, bool reschedule)
 {
+	// no active task
 	if (!this->current) return false;
 
-	if (this->current.task->IsRecurring())
+	// active task not for this runner
+	if (this->current.runner != &runner) return false;
+
+	if (reschedule && this->current.task->IsRecurring())
 	{
-		this->Add(this->current.task, this->current.runner);
+		this->Add(this->current.task, *this->current.runner);
 	}
 
 	this->current.Clear();
+
 	return true;
 }
 
@@ -87,7 +92,7 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 
 	while (other != this->tasks.end())
 	{
-		if (ShouldOtherRunBeforeCurrent(now, *best_task, *other))
+		if (GetBestTaskToRun(now, *best_task, *other) == Comparison::RIGHT)
 		{
 			best_task = other;
 		}
@@ -101,45 +106,89 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 	return true;
 }
 
-bool MasterSchedulerBackend::ShouldOtherRunBeforeCurrent(const openpal::MonotonicTimestamp& now, const Record& current, const Record& other)
+MasterSchedulerBackend::Comparison MasterSchedulerBackend::GetBestTaskToRun(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right)
 {
-	const auto BOTH_TASKS_ENABLED = IsEnabled(current) && IsEnabled(other);
+	const auto BEST_ENABLED = CompareEnabledStatus(left, right);
 
-	// if both tasks aren't enabled, only run the other task if it is enabled
-	if (!BOTH_TASKS_ENABLED)
+	if(BEST_ENABLED != Comparison::SAME)
 	{
-		return IsEnabled(other);
+		// if one task is disabled, return the other task
+		return BEST_ENABLED;
 	}
 
-	const auto FROM_SAME_RUNNER = current.runner == other.runner;
-	const auto CURRENT_HAS_BETTER_PRIORITY = current.task->Priority() < other.task->Priority();
+	const auto EARLIEST_EXPIRATION = CompareTime(now, left, right);
+	const auto BEST_PRIORITY = ComparePriority(left, right);
 
-	// If they're form the same runner, the current task is blocking, and the current task has better priority return false
-	if (FROM_SAME_RUNNER && current.task->BlocksLowerPriority() && CURRENT_HAS_BETTER_PRIORITY)
+	if (left.runner == right.runner)
 	{
-		return false;
+		switch (BEST_PRIORITY)
+		{
+		case(Comparison::LEFT):
+			if (left.task->BlocksLowerPriority()) return Comparison::LEFT;
+			break;
+		case(Comparison::RIGHT):
+			if (right.task->BlocksLowerPriority()) return Comparison::RIGHT;
+			break;
+		default:
+			break;
+		}
 	}
 
-	// find out which tasks are expired
-	const auto CURRENT_EXPIRED = current.task->ExpirationTime().milliseconds <= now.milliseconds;
-	const auto OTHER_EXPIRED = other.task->ExpirationTime().milliseconds <= now.milliseconds;
-	const auto OTHER_HAS_BETTER_PRIORITY = other.task->Priority() < current.task->Priority();
-
-	if (CURRENT_EXPIRED) return OTHER_EXPIRED && OTHER_HAS_BETTER_PRIORITY;
-
-	if (OTHER_EXPIRED) return true;
-
-	// both tasks are not expired, so compare based on time
-	// if the expirations times are equal, run other if it has better priority
-	if (other.task->ExpirationTime() == current.task->ExpirationTime()) return OTHER_HAS_BETTER_PRIORITY;
-
-	// only run other if its expiration time comes before the current
-	return other.task->ExpirationTime() < current.task->ExpirationTime();
+	// if the expiration times are the same, break based on priority, otherwise go with the expiration time
+	return (EARLIEST_EXPIRATION == Comparison::SAME) ? BEST_PRIORITY : EARLIEST_EXPIRATION;
 }
 
-bool MasterSchedulerBackend::IsEnabled(const Record& record)
+MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareTime(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right)
 {
-	return !record.task->ExpirationTime().IsMax();
+	// if tasks are already expired, the effective expiration time is NOW
+	const auto leftTime = (now > left.task->ExpirationTime()) ? left.task->ExpirationTime() : now;
+	const auto rightTime = (now > right.task->ExpirationTime()) ? right.task->ExpirationTime() : now;
+
+	if (leftTime > rightTime)
+	{
+		return Comparison::LEFT;
+	}
+	else if (rightTime > leftTime)
+	{
+		return Comparison::RIGHT;
+	}
+	else
+	{
+		return Comparison::SAME;
+	}
+}
+
+MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareEnabledStatus(const Record& left, const Record& right)
+{
+	if (left.task->ExpirationTime().IsMax()) // left is disabled, check the right
+	{
+		return right.task->ExpirationTime().IsMax() ? Comparison::SAME : Comparison::RIGHT;
+	}
+	else if(right.task->ExpirationTime().IsMax()) // left is enabled, right is disabled
+	{
+		return Comparison::LEFT;
+	}
+	else
+	{
+		// both tasks are enabled
+		return Comparison::SAME;
+	}
+}
+
+MasterSchedulerBackend::Comparison MasterSchedulerBackend::ComparePriority(const Record& left, const Record& right)
+{
+	if (left.task->Priority() < right.task->Priority())
+	{
+		return Comparison::LEFT;
+	}
+	else if (right.task->Priority() < right.task->Priority())
+	{
+		return Comparison::RIGHT;
+	}
+	else
+	{
+		return Comparison::SAME;
+	}
 }
 
 }

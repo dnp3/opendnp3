@@ -38,22 +38,24 @@ public:
 	* Add a single task to the scheduler. The tasks will be started asynchronously,
 	* i.e. not by the call to this method
 	*/
-	virtual void Add(const std::shared_ptr<IMasterTask>& task) = 0;
+	virtual void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) = 0;
 
 	/**
 	* Complete the task the currently running task. Reschedule only if it is as recurring task
 	*/
-	virtual void Complete() = 0;
+	virtual void RemoveTasksFor(const IMasterTaskRunner& runner) = 0;
 
 	/**
 	* Remove all tasks associated with this context
 	*/
-	virtual void Clear() = 0;
+	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner, bool reschedule) = 0;
 
-
-	void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks)
+	/**
+	* Add multiple tasks in one call
+	*/
+	void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks, IMasterTaskRunner& runner)
 	{
-		for (auto& task : tasks) this->Add(task);
+		for (auto& task : tasks) this->Add(task, runner);
 	}
 
 };
