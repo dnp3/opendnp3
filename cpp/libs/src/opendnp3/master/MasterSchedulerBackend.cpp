@@ -28,9 +28,17 @@ namespace opendnp3
 {
 
 MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor) :
-	executor(executor)
+	executor(executor),
+	taskTimer(*executor)
 {
 
+}
+
+void MasterSchedulerBackend::Shutdown()
+{
+	this->tasks.clear();
+	this->current.Clear();
+	this->taskTimer.Cancel();
 }
 
 void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner)
@@ -41,7 +49,7 @@ void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMast
 
 void MasterSchedulerBackend::RemoveTasksFor(const IMasterTaskRunner& runner)
 {
-	auto isOwnedByRunner = [&](const Record & record) -> bool { return record.runner == &runner;  };
+	auto isOwnedByRunner = [&](const Record & record) -> bool { return record.BelongsTo(runner);  };
 
 	// move erase idiom
 	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), isOwnedByRunner), this->tasks.end());
@@ -53,7 +61,7 @@ bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner,
 	if (!this->current) return false;
 
 	// active task not for this runner
-	if (this->current.runner != &runner) return false;
+	if (!this->current.BelongsTo(runner)) return false;
 
 	if (reschedule && this->current.task->IsRecurring())
 	{
@@ -100,10 +108,24 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 		++other;
 	}
 
-	this->current = *best_task;
-	this->tasks.erase(best_task);
-	this->current.runner->Run(this->current.task);
-	return true;
+	// is the task runnable now?
+	const auto IS_EXPIRED = now.milliseconds >= best_task->task->ExpirationTime().milliseconds;
+	if (IS_EXPIRED)
+	{
+		this->current = *best_task;
+		this->tasks.erase(best_task);
+		this->current.runner->Run(this->current.task);
+		return true;
+	}
+	else
+	{
+		auto callback = [this]()
+		{
+			this->CheckForTaskRun();
+		};
+		this->taskTimer.Restart(best_task->task->ExpirationTime(), callback);
+		return false;
+	}
 }
 
 MasterSchedulerBackend::Comparison MasterSchedulerBackend::GetBestTaskToRun(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right)

@@ -24,13 +24,15 @@
 #include "opendnp3/master/IMasterTaskRunner.h"
 #include "opendnp3/master/IMasterScheduler.h"
 
+#include "openpal/executor/TimerRef.h"
+
 #include <vector>
 #include <memory>
 
 namespace opendnp3
 {
 
-class MasterSchedulerBackend : public IMasterScheduler
+class MasterSchedulerBackend final : public IMasterScheduler
 {
 
 	// Tasks are associated with a particular runner
@@ -57,19 +59,30 @@ class MasterSchedulerBackend : public IMasterScheduler
 			this->runner = nullptr;
 		}
 
+		bool BelongsTo(const IMasterTaskRunner& runner) const
+		{
+			return this->runner == &runner;
+		}
+
 		std::shared_ptr<IMasterTask> task;
 		IMasterTaskRunner* runner = nullptr;
+
 	};
 
 public:
 
 	explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);
 
-	void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner);
+	void Shutdown();
 
-	void RemoveTasksFor(const IMasterTaskRunner& runner);
+	// ------- implement IMasterScheduler --------
 
-	bool CompleteCurrentFor(const IMasterTaskRunner& runner, bool reschedule);
+	virtual void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) override;
+
+	virtual void RemoveTasksFor(const IMasterTaskRunner& runner) override;
+
+	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner, bool reschedule) override;
+
 
 private:
 
@@ -83,6 +96,8 @@ private:
 	bool CheckForTaskRun();
 
 	const std::shared_ptr<openpal::IExecutor> executor;
+	openpal::TimerRef taskTimer;
+
 
 	enum class Comparison : uint8_t
 	{
