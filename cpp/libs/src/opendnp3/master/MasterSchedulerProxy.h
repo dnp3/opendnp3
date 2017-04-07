@@ -49,10 +49,9 @@ public:
 
 	~MasterSchedulerProxy();
 
+	virtual void Add(const std::shared_ptr<IMasterTask>& task) override;
 
-	virtual void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks) override;
-
-	virtual void Add(const std::shared_ptr<IMasterTask>& tasks) override;
+	virtual void Complete() override;
 
 	virtual void Clear() override;
 

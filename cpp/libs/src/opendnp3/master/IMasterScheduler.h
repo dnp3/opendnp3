@@ -35,21 +35,26 @@ class IMasterScheduler
 public:
 
 	/**
-	* Add a number of tasks to the scheduler. Tasks will be started asynchronously,
-	* i.e. not by the call to this method
-	*/
-	virtual void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks) = 0;
-
-	/**
 	* Add a single task to the scheduler. The tasks will be started asynchronously,
 	* i.e. not by the call to this method
 	*/
-	virtual void Add(const std::shared_ptr<IMasterTask>& tasks) = 0;
+	virtual void Add(const std::shared_ptr<IMasterTask>& task) = 0;
+
+	/**
+	* Complete the task the currently running task. Reschedule only if it is as recurring task
+	*/
+	virtual void Complete() = 0;
 
 	/**
 	* Remove all tasks associated with this context
 	*/
 	virtual void Clear() = 0;
+
+
+	void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks)
+	{
+		for (auto& task : tasks) this->Add(task);
+	}
 
 };
 

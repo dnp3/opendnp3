@@ -31,19 +31,19 @@ MasterSchedulerProxy::~MasterSchedulerProxy()
 
 }
 
-void MasterSchedulerProxy::Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks)
+void MasterSchedulerProxy::Add(const std::shared_ptr<IMasterTask>& task)
 {
-
+	this->backend->Add(task, this->runner);
 }
 
-void MasterSchedulerProxy::Add(const std::shared_ptr<IMasterTask>& tasks)
+void MasterSchedulerProxy::Complete()
 {
-
+	this->backend->Complete();
 }
 
 void MasterSchedulerProxy::Clear()
 {
-
+	this->backend->RemoveTasks(this->runner);
 }
 
 }

@@ -22,6 +22,7 @@
 #define OPENDNP3_MASTERSCHEDULERBACKEND_H
 
 #include "opendnp3/master/IMasterTaskRunner.h"
+#include "opendnp3/master/MasterSchedulerProxy.h"
 
 #include <vector>
 #include <memory>
@@ -31,33 +32,60 @@ namespace opendnp3
 
 class MasterSchedulerBackend
 {
-	// Tasks are associated with a particular runner
-	struct TaskRecord
-	{		
-		TaskRecord() = delete;
 
-		TaskRecord(
-			const std::shared_ptr<IMasterTask>& task,
-			const std::shared_ptr<IMasterTaskRunner>& runner
+public:
+
+	// Tasks are associated with a particular runner
+	struct Record
+	{
+		Record() = default;
+
+		Record(
+		    const std::shared_ptr<IMasterTask>& task,
+		    const std::shared_ptr<IMasterTaskRunner>& runner
 		) :
 			task(task),
 			runner(runner)
 		{}
 
+		operator bool()
+		{
+			return task && runner;
+		}
+
+		void Clear()
+		{
+			this->task.reset();
+			this->runner.reset();
+		}
+
 		std::shared_ptr<IMasterTask> task;
 		std::shared_ptr<IMasterTaskRunner> runner;
 	};
 
+	explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);
 
-public:
+	void Add(const std::shared_ptr<IMasterTask>& task, const std::shared_ptr<IMasterTaskRunner>& runner);
 
-	explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);	
+	void RemoveTasks(const std::shared_ptr<IMasterTaskRunner>& runner);
+
+	bool Complete();
 
 private:
 
+	bool taskCheckPending = false;
+	Record current;
+	std::vector<Record> tasks;
+
+	void PostCheckForTaskRun();
+
+	bool CheckForTaskRun();
+
 	const std::shared_ptr<openpal::IExecutor> executor;
-	
-	std::vector<TaskRecord> records;
+
+	static bool ShouldOtherRunBeforeCurrent(const openpal::MonotonicTimestamp& now, const Record& current, const Record& other);
+
+	static bool IsEnabled(const Record& lhs);
 };
 
 }
