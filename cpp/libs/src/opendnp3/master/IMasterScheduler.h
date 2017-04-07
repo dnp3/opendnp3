@@ -27,7 +27,7 @@ namespace opendnp3
 {
 
 /**
-* Interface used by master contexts to schedule tasks
+* Interface used by master sessions to schedule tasks
 */
 class IMasterScheduler
 {
