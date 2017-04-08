@@ -1,4 +1,7 @@
 ### 2.2.0-RC3 ###
+* :beetle: Fixed a [regression](https://github.com/automatak/dnp3/issues/197) in outstation whereby the session could hang indefinitely if a non-read request was received during UnsolConirmWait.
+
+### 2.2.0-RC3 ###
 * :beetle: Fixed a [regression](https://github.com/automatak/dnp3/issues/195) whereby multi segment messages could be transmitted with trailing garbage.
 * :beetle: Fixed a bug whereby improper TLS shutdown from the remote host could result in an infinite loop. TLS shutdown is no longer utilized in favor of just a hard TCP close.
 
