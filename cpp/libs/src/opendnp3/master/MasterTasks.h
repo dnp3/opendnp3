@@ -22,8 +22,9 @@
 #define OPENDNP3_MASTERTASKS_H
 
 #include "opendnp3/master/MasterParams.h"
-#include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/IMasterScheduler.h"
 #include "opendnp3/master/IMasterApplication.h"
+#include "opendnp3/master/ISOEHandler.h"
 
 #include <vector>
 
@@ -37,7 +38,7 @@ public:
 
 	MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application, ISOEHandler& SOEHandler);
 
-	void Initialize(MasterScheduler& scheduler);
+	void Initialize(IMasterScheduler& scheduler, IMasterTaskRunner& runner);
 
 	// master tasks that can be "failed" (startup and in response to IIN bits)
 	const std::shared_ptr<IMasterTask> enableUnsol;

@@ -81,7 +81,6 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 
 	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.context->OnSendResult(true);
-	REQUIRE(t.exe->NumPendingTimers() == 2);
 	t.SendToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 	REQUIRE(t.meas->TotalReceived() == 1);
 	REQUIRE((Binary(true, 0x01) == t.meas->binarySOE[2].meas));

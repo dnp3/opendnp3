@@ -79,9 +79,9 @@ public:
 
 	virtual void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) override;
 
-	virtual void RemoveTasksFor(const IMasterTaskRunner& runner) override;
+	virtual void SetRunnerOffline(const IMasterTaskRunner& runner) override;
 
-	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner, bool reschedule) override;
+	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) override;
 
 
 private:

@@ -25,8 +25,8 @@
 #include <testlib/MockLogHandler.h>
 
 #include <opendnp3/master/MasterContext.h>
+#include <opendnp3/master/MasterSchedulerBackend.h>
 #include <opendnp3/LogLevels.h>
-#include <deque>
 
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockSOEHandler.h>
@@ -41,7 +41,7 @@ class MasterTestObject
 {
 public:
 
-	MasterTestObject(const MasterParams& params, ITaskLock& lock = NullTaskLock::Instance());
+	MasterTestObject(const MasterParams& params);
 
 	void SendToMaster(const std::string& hex);
 
@@ -50,6 +50,7 @@ public:
 	std::shared_ptr<MockSOEHandler> meas;
 	std::shared_ptr<MockLowerLayer> lower;
 	std::shared_ptr<MockMasterApplication> application;
+	std::shared_ptr<MasterSchedulerBackend> scheduler;
 	std::shared_ptr<MContext> context;
 };
 

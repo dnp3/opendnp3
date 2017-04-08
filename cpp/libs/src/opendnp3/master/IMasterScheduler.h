@@ -22,6 +22,7 @@
 #define OPENDNP3_IMASTERSCHEDULER_H
 
 #include "opendnp3/master/IMasterTask.h"
+#include "IMasterTaskRunner.h"
 
 namespace opendnp3
 {
@@ -34,6 +35,8 @@ class IMasterScheduler
 
 public:
 
+	virtual ~IMasterScheduler() {}
+
 	/**
 	* Add a single task to the scheduler. The tasks will be started asynchronously,
 	* i.e. not by the call to this method
@@ -41,14 +44,14 @@ public:
 	virtual void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) = 0;
 
 	/**
-	* Complete the task the currently running task. Reschedule only if it is as recurring task
+	* Remove all tasks associated with this context, including the running one
 	*/
-	virtual void RemoveTasksFor(const IMasterTaskRunner& runner) = 0;
+	virtual void SetRunnerOffline(const IMasterTaskRunner& runner) = 0;
 
 	/**
-	* Remove all tasks associated with this context
+	*
 	*/
-	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner, bool reschedule) = 0;
+	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) = 0;
 
 	/**
 	* Add multiple tasks in one call

@@ -44,18 +44,39 @@ void MasterSchedulerBackend::Shutdown()
 void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner)
 {
 	this->tasks.push_back(Record(task, runner));
-	this->CheckForTaskRun();
+	this->PostCheckForTaskRun();
 }
 
-void MasterSchedulerBackend::RemoveTasksFor(const IMasterTaskRunner& runner)
+void MasterSchedulerBackend::SetRunnerOffline(const IMasterTaskRunner& runner)
 {
-	auto isOwnedByRunner = [&](const Record & record) -> bool { return record.BelongsTo(runner);  };
+	const auto now = this->executor->GetTime();
+
+	auto checkForOwnership = [now, &runner](const Record & record) -> bool
+	{
+		if (record.BelongsTo(runner))
+		{
+			if (!record.task->IsRecurring())
+			{
+				record.task->OnLowerLayerClose(now);
+			}
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
+
+	if (this->current && checkForOwnership(this->current)) this->current.Clear();
 
 	// move erase idiom
-	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), isOwnedByRunner), this->tasks.end());
+	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), checkForOwnership), this->tasks.end());
+
+	this->PostCheckForTaskRun();
 }
 
-bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner, bool reschedule)
+bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner)
 {
 	// no active task
 	if (!this->current) return false;
@@ -63,7 +84,7 @@ bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner,
 	// active task not for this runner
 	if (!this->current.BelongsTo(runner)) return false;
 
-	if (reschedule && this->current.task->IsRecurring())
+	if (this->current.task->IsRecurring())
 	{
 		this->Add(this->current.task, *this->current.runner);
 	}
@@ -94,18 +115,19 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 	const auto now = this->executor->GetTime();
 
 	// try to find a task that can run
-	auto best_task = this->tasks.begin();
-	if (best_task == this->tasks.end()) return false;
-	auto other = ++best_task;
+	auto current = this->tasks.begin();
+	auto best_task = current;
+	if (current == this->tasks.end()) return false;
+	++current;
 
-	while (other != this->tasks.end())
+	while (current != this->tasks.end())
 	{
-		if (GetBestTaskToRun(now, *best_task, *other) == Comparison::RIGHT)
+		if (GetBestTaskToRun(now, *best_task, *current) == Comparison::RIGHT)
 		{
-			best_task = other;
+			best_task = current;
 		}
 
-		++other;
+		++current;
 	}
 
 	// is the task runnable now?
@@ -203,7 +225,7 @@ MasterSchedulerBackend::Comparison MasterSchedulerBackend::ComparePriority(const
 	{
 		return Comparison::LEFT;
 	}
-	else if (right.task->Priority() < right.task->Priority())
+	else if (right.task->Priority() < left.task->Priority())
 	{
 		return Comparison::RIGHT;
 	}

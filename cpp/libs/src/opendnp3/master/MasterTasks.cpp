@@ -46,20 +46,18 @@ MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logg
 
 }
 
-void MasterTasks::Initialize(MasterScheduler& scheduler)
+void MasterTasks::Initialize(IMasterScheduler& scheduler, IMasterTaskRunner& runner)
 {
-	scheduler.Schedule(enableUnsol);
-	scheduler.Schedule(clearRestart);
-	scheduler.Schedule(assignClass);
-	scheduler.Schedule(startupIntegrity);
-	scheduler.Schedule(disableUnsol);
-	scheduler.Schedule(eventScan);
+	scheduler.Add(
+	{ enableUnsol, clearRestart, assignClass, startupIntegrity, disableUnsol, eventScan },
+	runner
+	);
 
-	if(timeSynchronization) scheduler.Schedule(timeSynchronization);
+	if (timeSynchronization) scheduler.Add(timeSynchronization, runner);
 
 	for (auto& task : boundTasks)
 	{
-		scheduler.Schedule(task);
+		scheduler.Add(task, runner);
 	}
 }
 

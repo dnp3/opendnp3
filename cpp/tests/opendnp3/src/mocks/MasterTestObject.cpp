@@ -38,13 +38,14 @@ MasterParams NoStartupTasks()
 	return params;
 }
 
-MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) :
+MasterTestObject::MasterTestObject(const MasterParams& params) :
 	log(),
 	exe(std::make_shared<MockExecutor>()),
 	meas(std::make_shared<MockSOEHandler>()),
 	lower(std::make_shared<MockLowerLayer>()),
 	application(std::make_shared<MockMasterApplication>()),
-	context(std::make_shared<MContext>(log.logger, exe, lower, meas, application, params, lock))
+	scheduler(std::make_shared<MasterSchedulerBackend>(exe)),
+	context(std::make_shared<MContext>(log.logger, exe, lower, meas, application, scheduler, params))
 {}
 
 void MasterTestObject::SendToMaster(const std::string& hex)
