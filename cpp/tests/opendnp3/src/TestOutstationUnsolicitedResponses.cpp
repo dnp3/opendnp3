@@ -30,14 +30,30 @@ using namespace openpal;
 
 #define SUITE(name) "OutstationUnsolicitedTestSuite - " name
 
-TEST_CASE(SUITE("NullUnsolOnStartup"))
+TEST_CASE(SUITE("sends null unsol on startup"))
 {
 	OutstationConfig cfg;  cfg.params.allowUnsolicited = true;
 	OutstationTestObject t(cfg);
 	t.LowerLayerUp();
 
-	// Null UNSOL, FIR, FIN, CON, UNS, w/ restart and need-time IIN
 	REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	REQUIRE(t.NumPendingTimers() == 1);
+}
+
+TEST_CASE(SUITE("Non-read during null unsol"))
+{
+	OutstationConfig cfg;  cfg.params.allowUnsolicited = true;
+	OutstationTestObject t(cfg);
+	t.LowerLayerUp();
+
+	REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	t.OnSendResult(true);
+	REQUIRE(t.lower->NumWrites() == 0);
+
+	// send any non-read message
+	t.SendToOutstation(hex::ClearRestartIIN(0));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::EmptyResponse(0));
+	REQUIRE(t.NumPendingTimers() == 1);
 }
 
 TEST_CASE(SUITE("UnsolRetryDelay"))
