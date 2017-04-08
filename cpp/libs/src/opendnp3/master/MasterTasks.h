@@ -48,7 +48,7 @@ public:
 	const std::shared_ptr<IMasterTask> disableUnsol;
 	const std::shared_ptr<IMasterTask> eventScan;
 
-	bool TryDemandTimeSync();
+	bool RequestImmediateTimeSync();
 
 	void BindTask(const std::shared_ptr<IMasterTask>& task);
 

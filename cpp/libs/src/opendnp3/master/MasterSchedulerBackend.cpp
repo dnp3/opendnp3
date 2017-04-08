@@ -29,7 +29,8 @@ namespace opendnp3
 
 MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor) :
 	executor(executor),
-	taskTimer(*executor)
+	taskTimer(*executor),
+	taskStartTimeout(*executor)
 {
 
 }
@@ -39,6 +40,7 @@ void MasterSchedulerBackend::Shutdown()
 	this->tasks.clear();
 	this->current.Clear();
 	this->taskTimer.Cancel();
+	this->taskStartTimeout.Cancel();
 }
 
 void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner)
@@ -91,7 +93,14 @@ bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner)
 
 	this->current.Clear();
 
+	this->PostCheckForTaskRun();
+
 	return true;
+}
+
+void MasterSchedulerBackend::Evaluate()
+{
+	this->PostCheckForTaskRun();
 }
 
 void MasterSchedulerBackend::PostCheckForTaskRun()
@@ -109,6 +118,8 @@ void MasterSchedulerBackend::PostCheckForTaskRun()
 bool MasterSchedulerBackend::CheckForTaskRun()
 {
 	this->taskCheckPending = false;
+
+	this->RestartTimeoutTimer();
 
 	if (this->current) return false;
 
@@ -136,18 +147,57 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 	{
 		this->current = *best_task;
 		this->tasks.erase(best_task);
-		this->current.runner->Run(this->current.task);
+		this->current.runner->Run(this->current.task);		
+
 		return true;
 	}
 	else
-	{
+	{		
 		auto callback = [this]()
 		{
 			this->CheckForTaskRun();
 		};
+
 		this->taskTimer.Restart(best_task->task->ExpirationTime(), callback);
+
 		return false;
 	}
+}
+
+void MasterSchedulerBackend::RestartTimeoutTimer()
+{
+	auto min = MonotonicTimestamp::Max();
+
+	for (auto& record : this->tasks)
+	{
+		if (!record.task->IsRecurring() && (record.task->StartExpirationTime() < min))
+		{
+			min = record.task->StartExpirationTime();
+		}
+	}
+
+	this->taskStartTimeout.Restart(min, [this]() { this->TimeoutTasks(); });	
+}
+
+void MasterSchedulerBackend::TimeoutTasks()
+{
+	// find the minimum start timeout value
+	auto isTimedOut = [now = this->executor->GetTime()](const Record& record) -> bool
+	{
+		if (record.task->IsRecurring() || record.task->StartExpirationTime() > now)
+		{
+			return false;
+		}
+
+		record.task->OnStartTimeout(now);
+
+		return true;
+	};
+
+	// erase-remove idion (https://en.wikipedia.org/wiki/Erase-remove_idiom)
+	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), isTimedOut), this->tasks.end());
+
+	this->RestartTimeoutTimer();
 }
 
 MasterSchedulerBackend::Comparison MasterSchedulerBackend::GetBestTaskToRun(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right)
@@ -188,11 +238,11 @@ MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareTime(const ope
 	const auto leftTime = (now > left.task->ExpirationTime()) ? left.task->ExpirationTime() : now;
 	const auto rightTime = (now > right.task->ExpirationTime()) ? right.task->ExpirationTime() : now;
 
-	if (leftTime > rightTime)
+	if (leftTime < rightTime)
 	{
 		return Comparison::LEFT;
 	}
-	else if (rightTime > leftTime)
+	else if (rightTime < leftTime)
 	{
 		return Comparison::RIGHT;
 	}

@@ -113,7 +113,7 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 
 	t.exe->RunMany();
 
-	REQUIRE(t.exe->NumPendingTimers() == 1);
+	REQUIRE(t.exe->NumPendingTimers() == 2);
 }
 
 TEST_CASE(SUITE("TimeoutDuringStartup"))
@@ -364,6 +364,7 @@ TEST_CASE(SUITE("RestartViaNullUnsol"))
 	t.SendToMaster("F0 82 80 00");
 	REQUIRE(t.lower->PopWriteAsHex() == hex::Confirm(0, true));
 	t.context->OnSendResult(true);
+	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 02 50 01 00 07 07 00");
 }
 
@@ -431,6 +432,7 @@ TEST_CASE(SUITE("performs non-LAN time synchronization"))
 
 	REQUIRE(t.lower->PopWriteAsHex() == hex::UnsolConfirm(0));
 	t.context->OnSendResult(true);
+	t.exe->RunMany();
 
 	REQUIRE(t.lower->PopWriteAsHex() == hex::ClearRestartIIN(0));
 	t.context->OnSendResult(true);
@@ -471,6 +473,8 @@ TEST_CASE(SUITE("performs LAN time synchronization"))
 	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::NEED_TIME)));
 	REQUIRE(t.lower->PopWriteAsHex() == hex::UnsolConfirm(0));
 	t.context->OnSendResult(true);
+
+	t.exe->RunMany();
 
 	REQUIRE(t.lower->PopWriteAsHex() == hex::RecordCurrentTime(0));
 	t.context->OnSendResult(true);

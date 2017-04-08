@@ -34,6 +34,8 @@
 namespace opendnp3
 {
 
+class IMasterScheduler; // break cycle
+
 /**
  * A generic interface for defining master request/response style tasks
  */
@@ -99,7 +101,7 @@ public:
 	};
 
 
-	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config);
+	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, const openpal::Logger& logger, TaskConfig config);
 
 
 	virtual ~IMasterTask();
@@ -203,9 +205,9 @@ public:
 	void OnStart();
 
 	/**
-	* Demand that the task run immediately by setting the expiration to 0
+	* Set the expiration time to minimum. The scheduler must also be informed
 	*/
-	void Demand();
+	void SetMinExpiration();
 
 protected:
 

@@ -54,6 +54,11 @@ public:
 	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) = 0;
 
 	/**
+	*  Called if task changes in such a way that it might be runnable sooner than scheduled
+	*/
+	virtual void Evaluate() = 0;
+
+	/**
 	* Add multiple tasks in one call
 	*/
 	void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks, IMasterTaskRunner& runner)

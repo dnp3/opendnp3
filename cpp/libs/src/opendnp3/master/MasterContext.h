@@ -50,7 +50,7 @@ namespace opendnp3
 class MContext : public IUpperLayer, private IMasterTaskRunner, private openpal::Uncopyable
 {
 
-protected:
+public:
 
 	enum class TaskState
 	{
@@ -58,8 +58,6 @@ protected:
 		TASK_READY,
 		WAIT_FOR_RESPONSE
 	};
-
-public:
 
 	MContext(
 	    const openpal::Logger& logger,
@@ -114,10 +112,10 @@ public:
 	// methods for initiating command sequences
 
 	void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
+
 	void SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
 
-
-	/// -----  public methods used to add tasks -----
+	// -----  public methods used to add tasks -----
 
 	std::shared_ptr<IMasterTask> AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 
@@ -127,7 +125,7 @@ public:
 
 	std::shared_ptr<IMasterTask> AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
 
-	/// ---- Single shot immediate scans ----
+	// ---- Single shot immediate scans ----
 
 	void Scan(const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 
@@ -145,9 +143,7 @@ public:
 
 	void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 
-	/// public state manipulation actions
-
-	TaskState BeginNewTask(const std::shared_ptr<IMasterTask>& task);
+	/// public state manipulation actions	
 
 	TaskState ResumeActiveTask();
 

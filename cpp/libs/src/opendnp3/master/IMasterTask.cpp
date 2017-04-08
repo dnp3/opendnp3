@@ -28,11 +28,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger_, TaskConfig config_) :
+IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, const openpal::Logger& logger, TaskConfig config) :
 	pApplication(&app),
-	logger(logger_),
+	logger(logger),
 	state(expiration, false),
-	config(config_),
+	config(config),
 	taskStartExpiration(MonotonicTimestamp::Max())
 {}
 
@@ -148,7 +148,7 @@ void IMasterTask::OnStart()
 	this->Initialize();
 }
 
-void IMasterTask::Demand()
+void IMasterTask::SetMinExpiration()
 {
 	this->state = TaskState::Immediately();
 }

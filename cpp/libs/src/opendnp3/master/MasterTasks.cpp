@@ -66,11 +66,11 @@ void MasterTasks::BindTask(const std::shared_ptr<IMasterTask>& task)
 	boundTasks.push_back(task);
 }
 
-bool MasterTasks::TryDemandTimeSync()
+bool MasterTasks::RequestImmediateTimeSync()
 {
 	if (this->timeSynchronization)
 	{
-		this->timeSynchronization->Demand();
+		this->timeSynchronization->SetMinExpiration();
 		return true;
 	}
 	else

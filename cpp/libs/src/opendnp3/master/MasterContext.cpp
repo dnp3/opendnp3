@@ -198,27 +198,30 @@ void MContext::ProcessIIN(const IINField& iin)
 {
 	if (iin.IsSet(IINBit::DEVICE_RESTART) && !this->params.ignoreRestartIIN)
 	{
-		this->tasks.clearRestart->Demand();
-		this->tasks.assignClass->Demand();
-		this->tasks.startupIntegrity->Demand();
-		this->tasks.enableUnsol->Demand();
+		this->tasks.clearRestart->SetMinExpiration();
+		this->tasks.assignClass->SetMinExpiration();
+		this->tasks.startupIntegrity->SetMinExpiration();
+		this->tasks.enableUnsol->SetMinExpiration();
+		this->scheduler->Evaluate();
 	}
 
 	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && this->params.integrityOnEventOverflowIIN)
 	{
-		this->tasks.startupIntegrity->Demand();
+		this->tasks.startupIntegrity->SetMinExpiration();
+		this->scheduler->Evaluate();
 	}
 
 	if (iin.IsSet(IINBit::NEED_TIME))
 	{
-		this->tasks.TryDemandTimeSync();
+		if (this->tasks.RequestImmediateTimeSync()) this->scheduler->Evaluate();
 	}
 
 	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
 	        (iin.IsSet(IINBit::CLASS2_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
 	        (iin.IsSet(IINBit::CLASS3_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass3()))
 	{
-		this->tasks.eventScan->Demand();
+		this->tasks.eventScan->SetMinExpiration();
+		this->scheduler->Evaluate();
 	}
 
 	this->application->OnReceiveIIN(iin);
@@ -382,6 +385,8 @@ bool MContext::Run(const std::shared_ptr<IMasterTask>& task)
 	if(this->activeTask || this->tstate != TaskState::IDLE) return false;
 
 	this->activeTask = task;
+	this->activeTask->OnStart();
+	FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->activeTask->Name());		
 
 	if (!this->isSending)
 	{
@@ -418,14 +423,6 @@ void MContext::ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task)
 		// can't run this task since we're offline so fail it immediately
 		task->OnLowerLayerClose(NOW);
 	}
-}
-
-MContext::TaskState MContext::BeginNewTask(const std::shared_ptr<IMasterTask>& task)
-{
-	this->activeTask = task;
-	this->activeTask->OnStart();
-	FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->activeTask->Name());
-	return this->ResumeActiveTask();
 }
 
 MContext::TaskState MContext::ResumeActiveTask()

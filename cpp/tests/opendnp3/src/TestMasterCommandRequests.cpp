@@ -66,10 +66,11 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 	}
 }
 
-TEST_CASE(SUITE("ControlsTimeoutAfterStartPeriodElapses"))
+TEST_CASE(SUITE("Controls timeout after start period elapses"))
 {
 	MasterParams params;
-	params.taskStartTimeout = TimeDuration::Milliseconds(100); // set to an intentionally value so that is < response timeout
+	params.responseTimeout = TimeDuration::Seconds(1);
+	params.taskStartTimeout = TimeDuration::Milliseconds(999); // 1 ms less than response timeout
 	MasterTestObject t(params);
 
 	t.context->OnLowerLayerUp();
@@ -101,6 +102,8 @@ TEST_CASE(SUITE("SelectAndOperate"))
 
 	CommandCallbackQueue queue;
 	t.context->SelectAndOperate(CommandSet({ WithIndex(command, 1) }), queue.Callback(), TaskConfig::Default());
+
+	t.exe->RunMany();
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
@@ -134,6 +137,8 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 
 	CommandCallbackQueue queue;
 	t.context->SelectAndOperate(CommandSet({ WithIndex(bo, 1) }), queue.Callback(), TaskConfig::Default());
+
+	t.exe->RunMany();
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
@@ -173,6 +178,8 @@ TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 	    queue.Callback(), TaskConfig::Default()
 	);
 
+	t.exe->RunMany();
+
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context->OnSendResult(true);
 
@@ -199,6 +206,8 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	    queue.Callback(), TaskConfig::Default()
 	);
 
+	t.exe->RunMany();
+
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob); // SELECT
 	t.context->OnSendResult(true);
 
@@ -221,6 +230,8 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	    CommandSet({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) }),
 	    queue.Callback(), TaskConfig::Default()
 	);
+
+	t.exe->RunMany();
 
 	t.context->OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
@@ -245,6 +256,9 @@ TEST_CASE(SUITE("ControlExecutionSelectBadFIRFIN"))
 	    CommandSet({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) }),
 	    queue.Callback(), TaskConfig::Default()
 	);
+
+	t.exe->RunMany();
+
 	t.context->OnSendResult(true);
 
 	t.SendToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
@@ -354,6 +368,7 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 	t.context->OnSendResult(true);
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
+	REQUIRE(t.context->tstate == MContext::TaskState::IDLE);
 
 	// while we're waiting for a response to the disable unsol, initiate a command seqeunce
 	CommandCallbackQueue queue;
@@ -363,6 +378,7 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 	    queue.Callback(), TaskConfig::Default()
 	);
 
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.lower->NumWrites() == 0); //nore more packets

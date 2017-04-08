@@ -83,6 +83,7 @@ public:
 
 	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) override;
 
+	virtual void Evaluate() override;
 
 private:
 
@@ -95,8 +96,13 @@ private:
 
 	bool CheckForTaskRun();
 
+	void RestartTimeoutTimer();
+
+	void TimeoutTasks();
+
 	const std::shared_ptr<openpal::IExecutor> executor;
 	openpal::TimerRef taskTimer;
+	openpal::TimerRef taskStartTimeout;
 
 
 	enum class Comparison : uint8_t
