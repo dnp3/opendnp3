@@ -102,28 +102,10 @@ void IMasterTask::OnStartTimeout(openpal::MonotonicTimestamp now)
 	this->NotifyResult(TaskCompletion::FAILURE_START_TIMEOUT);
 }
 
-void IMasterTask::OnNoUser(openpal::MonotonicTimestamp now)
-{
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NO_USER, now);
-	this->NotifyResult(TaskCompletion::FAILURE_NO_USER);
-}
-
 void IMasterTask::OnInternalError(openpal::MonotonicTimestamp now)
 {
 	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_INTERNAL_ERROR, now);
 	this->NotifyResult(TaskCompletion::FAILURE_INTERNAL_ERROR);
-}
-
-void IMasterTask::OnAuthenticationFailure(openpal::MonotonicTimestamp now)
-{
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_AUTHENTICATION, now);
-	this->NotifyResult(TaskCompletion::FAILURE_BAD_AUTHENTICATION);
-}
-
-void IMasterTask::OnAuthorizationFailure(openpal::MonotonicTimestamp now)
-{
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NOT_AUTHORIZED, now);
-	this->NotifyResult(TaskCompletion::FAILURE_NOT_AUTHORIZED);
 }
 
 void IMasterTask::NotifyResult(TaskCompletion result)

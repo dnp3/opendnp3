@@ -180,24 +180,9 @@ public:
 	void OnStartTimeout(openpal::MonotonicTimestamp now);
 
 	/**
-	* Called when a task is discared because it's user doesn't exist
-	*/
-	void OnNoUser(openpal::MonotonicTimestamp now);
-
-	/**
 	* Called when a task has an internal error of some sort like not being able to write a request
 	*/
-	void OnInternalError(openpal::MonotonicTimestamp now);
-
-	/**
-	* Called when the request is reject due to an authentication failure
-	*/
-	void OnAuthenticationFailure(openpal::MonotonicTimestamp now);
-
-	/**
-	* Called when the request is reject due to an authorization failure
-	*/
-	void OnAuthorizationFailure(openpal::MonotonicTimestamp now);
+	void OnInternalError(openpal::MonotonicTimestamp now);	
 
 	/**
 	* Called when the task first starts, before the first request is formatted
