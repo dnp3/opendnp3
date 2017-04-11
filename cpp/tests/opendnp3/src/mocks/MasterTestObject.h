@@ -41,17 +41,18 @@ class MasterTestObject
 {
 public:
 
-	MasterTestObject(const MasterParams& params);
+	MasterTestObject(const MasterParams& param, const std::shared_ptr<testlib::MockExecutor>& executor = nullptr, const std::shared_ptr<IMasterScheduler>& scheduler = nullptr);
 
 	void SendToMaster(const std::string& hex);
 
 	testlib::MockLogHandler log;
-	std::shared_ptr<testlib::MockExecutor> exe;
-	std::shared_ptr<MockSOEHandler> meas;
-	std::shared_ptr<MockLowerLayer> lower;
-	std::shared_ptr<MockMasterApplication> application;
-	std::shared_ptr<MasterSchedulerBackend> scheduler;
-	std::shared_ptr<MContext> context;
+
+	const std::shared_ptr<testlib::MockExecutor> exe;
+	const std::shared_ptr<MockSOEHandler> meas;
+	const std::shared_ptr<MockLowerLayer> lower;
+	const std::shared_ptr<MockMasterApplication> application;
+	const std::shared_ptr<IMasterScheduler> scheduler;
+	const std::shared_ptr<MContext> context;
 };
 
 }

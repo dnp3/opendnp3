@@ -30,46 +30,47 @@ using namespace opendnp3;
 
 #define SUITE(name) "MasterMultidropTestSuite - " name
 
-/* TODO
-
-TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
-{
-	MultidropTaskLock taskLock;
-	taskLock.SetOnline();
-
+TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
+{	
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
 
-	MasterTestObject t1(params, taskLock);
-	MasterTestObject t2(params, taskLock);
+	const auto executor = std::make_shared<testlib::MockExecutor>();
+	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
 
+	MasterTestObject t1(params, executor, scheduler);	
+	MasterTestObject t2(params, executor, scheduler);
+	
 	t1.context->OnLowerLayerUp();
 	t2.context->OnLowerLayerUp();
 
-	t1.exe->RunMany();
-	t2.exe->RunMany();
-
+	REQUIRE(executor->RunMany() > 0);
+	
 	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	REQUIRE(t2.lower->PopWriteAsHex() == "");
-
+	
 	t1.context->OnSendResult(true);
-	t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
+	t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));	
 
-	t1.exe->RunMany();
-	t2.exe->RunMany();
+	REQUIRE(executor->RunMany() > 0);
 
-	REQUIRE(t1.lower->PopWriteAsHex() == "");
-	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
-
-	t2.context->OnSendResult(true);
-	t2.SendToMaster(hex::EmptyResponse(0));
-
-	t1.exe->RunMany();
-	t2.exe->RunMany();
-
+	// The IIN clear has higher priority than the integrity poll, so it is run first
+	
 	REQUIRE(t1.lower->PopWriteAsHex() == hex::ClearRestartIIN(1));
 	REQUIRE(t2.lower->PopWriteAsHex() == "");
+	
+	t1.context->OnSendResult(true);
+	t1.SendToMaster(hex::EmptyResponse(1));
+
+	REQUIRE(executor->RunMany() > 0);
+	
+	// Finally, the 2nd master gets to run it's integrity poll
+
+	REQUIRE(t1.lower->PopWriteAsHex() == "");
+	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));	
 }
+
+/*
 
 TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock"))
 {
