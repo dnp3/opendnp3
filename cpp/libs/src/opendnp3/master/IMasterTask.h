@@ -222,7 +222,7 @@ protected:
 
 	virtual MasterTaskType GetTaskType() const = 0;
 
-	IMasterApplication* pApplication;
+	IMasterApplication* const application;
 	openpal::Logger logger;
 
 	// Validation helpers for various behaviors to avoid deep inheritance

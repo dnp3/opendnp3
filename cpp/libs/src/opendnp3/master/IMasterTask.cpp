@@ -29,7 +29,7 @@ namespace opendnp3
 {
 
 IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, const openpal::Logger& logger, TaskConfig config) :
-	pApplication(&app),
+	application(&app),
 	logger(logger),
 	state(expiration, false),
 	config(config),
@@ -133,7 +133,7 @@ void IMasterTask::NotifyResult(TaskCompletion result)
 		config.pCallback->OnComplete(result);
 	}
 
-	pApplication->OnTaskComplete(TaskInfo(this->GetTaskType(), result, config.taskId));
+	this->application->OnTaskComplete(TaskInfo(this->GetTaskType(), result, config.taskId));
 }
 
 void IMasterTask::OnStart()
@@ -143,7 +143,7 @@ void IMasterTask::OnStart()
 		config.pCallback->OnStart();
 	}
 
-	pApplication->OnTaskStart(this->GetTaskType(), config.taskId);
+	this->application->OnTaskStart(this->GetTaskType(), config.taskId);
 
 	this->Initialize();
 }

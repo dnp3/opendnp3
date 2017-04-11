@@ -46,12 +46,12 @@ bool SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (delay < 0)
 	{
-		start = pApplication->Now();
+		start = this->application->Now();
 		build::MeasureDelay(request, seq);
 	}
 	else
 	{
-		auto now = pApplication->Now();
+		auto now = this->application->Now();
 		Group50Var1 time;
 		time.time = DNPTime(now.msSinceEpoch + delay);
 		request.SetFunction(FunctionCode::WRITE);
@@ -90,7 +90,7 @@ IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDURe
 			uint16_t rtuTurnAroundTime;
 			if (handler.GetTimeDelay(rtuTurnAroundTime))
 			{
-				auto now = pApplication->Now();
+				auto now = this->application->Now();
 				auto sendReceieveTime = now.msSinceEpoch - start.msSinceEpoch;
 
 				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting

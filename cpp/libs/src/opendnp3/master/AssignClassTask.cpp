@@ -46,13 +46,13 @@ bool AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 		success &= header.WriteTo(writer);
 	};
 
-	pApplication->ConfigureAssignClassRequest(writeFun);
+	this->application->ConfigureAssignClassRequest(writeFun);
 	return success;
 }
 
 bool AssignClassTask::IsEnabled() const
 {
-	return pApplication->AssignClassDuringStartup();
+	return this->application->AssignClassDuringStartup();
 }
 
 IMasterTask::ResponseResult AssignClassTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)

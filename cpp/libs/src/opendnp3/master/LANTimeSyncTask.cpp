@@ -43,7 +43,7 @@ bool LANTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (state  == State::RECORD_CURRENT_TIME)
 	{
-		this->start = pApplication->Now();
+		this->start = this->application->Now();
 		build::RecordCurrentTime(request, seq);
 		return true;
 	}
