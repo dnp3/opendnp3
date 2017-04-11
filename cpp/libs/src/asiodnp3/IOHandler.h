@@ -24,7 +24,6 @@
 #include "opendnp3/Route.h"
 #include "opendnp3/link/ILinkTx.h"
 #include "opendnp3/link/LinkLayerParser.h"
-#include "opendnp3/master/MultidropTaskLock.h"
 
 #include "asiodnp3/IChannelListener.h"
 
@@ -58,12 +57,7 @@ public:
 	opendnp3::LinkStatistics Statistics() const
 	{
 		return opendnp3::LinkStatistics(this->statistics, this->parser.Statistics());
-	}
-
-	opendnp3::ITaskLock& TaskLock()
-	{
-		return this->taskLock;
-	}
+	}	
 
 	void Shutdown();
 
@@ -216,9 +210,7 @@ private:
 	opendnp3::LinkLayerParser parser;
 
 	// current value of the channel, may be empty
-	std::shared_ptr<asiopal::IAsyncChannel> channel;
-
-	opendnp3::MultidropTaskLock taskLock;
+	std::shared_ptr<asiopal::IAsyncChannel> channel;	
 };
 
 }

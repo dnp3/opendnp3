@@ -25,8 +25,6 @@
 #include <testlib/HexConversions.h>
 #include <dnp3mocks/APDUHexBuilders.h>
 
-#include <opendnp3/master/MultidropTaskLock.h>
-
 using namespace openpal;
 using namespace opendnp3;
 

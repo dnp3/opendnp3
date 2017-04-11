@@ -69,7 +69,6 @@ public:
 	        const MasterStackConfig& config) override;
 
 
-
 	virtual std::shared_ptr<IOutstation> AddOutstation(const std::string& id,
 	        std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
 	        std::shared_ptr<opendnp3::IOutstationApplication> application,

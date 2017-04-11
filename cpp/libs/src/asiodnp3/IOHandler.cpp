@@ -230,9 +230,7 @@ void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& chan
 
 	this->UpdateListener(ChannelState::OPEN);
 
-	this->BeginRead();
-
-	this->taskLock.SetOnline();
+	this->BeginRead();	
 
 	for (auto& session : this->sessions)
 	{
@@ -335,9 +333,7 @@ void IOHandler::Reset()
 		{
 			item.LowerLayerDown();
 		}
-	}
-
-	this->taskLock.SetOffline();
+	}	
 
 	// reset the state of the parser
 	this->parser.Reset();
