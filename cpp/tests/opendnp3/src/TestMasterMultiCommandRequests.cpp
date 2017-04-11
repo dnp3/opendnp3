@@ -50,6 +50,8 @@ TEST_CASE(SUITE("command set ignores empty headers"))
 	CommandCallbackQueue queue;
 	t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 
+	REQUIRE(t.exe->RunMany() > 0);
+
 	// writes just the 2nd call to Add()
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 05 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
 }
@@ -70,12 +72,14 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 
 	CommandCallbackQueue queue;
 	t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+	REQUIRE(t.exe->RunMany() > 0);
+
 
 	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 05 " + crobstr); // DO
 	t.context->OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + crobstr);
 
-	t.exe->RunMany();
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower->PopWriteAsHex() == ""); //nore more packets
 
@@ -109,18 +113,18 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 
 	CommandCallbackQueue queue;
 	t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + headers); // select
 	t.context->OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + headers);
-
-	t.exe->RunMany();
+	
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + headers); // operate
 	t.context->OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 " + headers);
 
-	t.exe->RunMany();
+	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower->PopWriteAsHex() == ""); //nore more packets
 

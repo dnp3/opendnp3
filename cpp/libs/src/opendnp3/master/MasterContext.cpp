@@ -384,6 +384,7 @@ bool MContext::Run(const std::shared_ptr<IMasterTask>& task)
 {
 	if(this->activeTask || this->tstate != TaskState::IDLE) return false;
 
+	this->tstate = TaskState::TASK_READY;
 	this->activeTask = task;
 	this->activeTask->OnStart();
 	FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->activeTask->Name());		
