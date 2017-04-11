@@ -474,7 +474,7 @@ MContext::TaskState MContext::OnResponseTimeoutEvent()
 {
 	switch (tstate)
 	{
-	case(TaskState::WAIT_FOR_RESPONSE) :
+	case(TaskState::WAIT_FOR_RESPONSE) :		
 		return OnResponseTimeout_WaitForResponse();
 	default:
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unexpected response timeout");
@@ -531,6 +531,8 @@ MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeade
 
 MContext::TaskState MContext::OnResponseTimeout_WaitForResponse()
 {
+	SIMPLE_LOG_BLOCK(logger, flags::WARN, "Timeout waiting for response");
+
 	auto now = this->executor->GetTime();
 	this->activeTask->OnResponseTimeout(now);
 	this->solSeq.Increment();

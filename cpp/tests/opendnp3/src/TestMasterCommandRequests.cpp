@@ -31,6 +31,8 @@
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
 
+#include <iostream>
+
 using namespace opendnp3;
 using namespace openpal;
 
@@ -69,26 +71,33 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 TEST_CASE(SUITE("Controls timeout after start period elapses"))
 {
 	MasterParams params;
-	params.responseTimeout = TimeDuration::Seconds(1);
-	params.taskStartTimeout = TimeDuration::Milliseconds(999); // 1 ms less than response timeout
+	params.responseTimeout = TimeDuration::Seconds(5000);
+	params.taskStartTimeout = TimeDuration::Milliseconds(100); // significantly less
 	MasterTestObject t(params);
-
+	
 	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));	
+	REQUIRE(t.context->OnSendResult(true));
 
 	// while we're waiting for a reponse, submit a control
 	CommandCallbackQueue queue;
 
 	for(int i = 0; i < 5; ++i)
-	{
+	{		
 		CommandSet commands({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) });
 		t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
-		t.exe->AdvanceTime(params.taskStartTimeout);
+
 		REQUIRE(t.exe->RunMany() > 0);
+		REQUIRE(queue.values.empty());
+		
+		t.exe->AdvanceTime(params.taskStartTimeout);
+		REQUIRE(t.exe->RunMany() > 0);	
+
 		REQUIRE(1 == queue.values.size());
-		REQUIRE(TaskCompletion::FAILURE_START_TIMEOUT == queue.values.front().summary);
+		REQUIRE(TaskCompletion::FAILURE_START_TIMEOUT == queue.values.front().summary);		
+
 		queue.values.pop_front();
 	}
 }
