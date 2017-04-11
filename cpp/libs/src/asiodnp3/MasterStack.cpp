@@ -38,13 +38,13 @@ MasterStack::MasterStack(
     const std::shared_ptr<Executor>& executor,
     const std::shared_ptr<ISOEHandler>& SOEHandler,
     const std::shared_ptr<IMasterApplication>& application,
+    const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler,
     const std::shared_ptr<IOHandler>& iohandler,
     const std::shared_ptr<asiopal::IResourceManager>& manager,
-    const MasterStackConfig& config,
-    ITaskLock& taskLock) :
-
+    const MasterStackConfig& config)
+	:
 	StackBase(logger, executor, application, iohandler, manager, config.master.maxRxFragSize, config.link),
-	mcontext(logger, executor, tstack.transport, SOEHandler, application,  config.master, taskLock)
+	mcontext(logger, executor, tstack.transport, SOEHandler, application, scheduler, config.master)
 {
 	tstack.transport->SetAppLayer(mcontext);
 }
@@ -75,16 +75,6 @@ StackStatistics MasterStack::GetStackStatistics()
 	return this->executor->ReturnFrom<StackStatistics>(get);
 }
 
-void MasterStack::Demand(const std::shared_ptr<opendnp3::IMasterTask>& task)
-{
-	auto action = [task, self = shared_from_this()]
-	{
-		task->Demand();
-		self->mcontext.CheckForTask();
-	};
-	this->executor->strand.post(action);
-}
-
 void MasterStack::SetLogFilters(const openpal::LogFilters& filters)
 {
 	auto set = [self = this->shared_from_this(), filters]()
@@ -103,7 +93,7 @@ std::shared_ptr<IMasterScan> MasterStack::AddScan(openpal::TimeDuration period, 
 	{
 		return self->mcontext.AddScan(period, builder, config);
 	};
-	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), self);
+	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
 std::shared_ptr<IMasterScan> MasterStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
@@ -113,7 +103,7 @@ std::shared_ptr<IMasterScan> MasterStack::AddAllObjectsScan(GroupVariationID gvI
 	{
 		return self->mcontext.AddAllObjectsScan(gvId, period, config);
 	};
-	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), self);
+	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
 std::shared_ptr<IMasterScan> MasterStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
@@ -123,7 +113,7 @@ std::shared_ptr<IMasterScan> MasterStack::AddClassScan(const ClassField& field, 
 	{
 		return self->mcontext.AddClassScan(field, period, config);
 	};
-	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), self);
+	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
 std::shared_ptr<IMasterScan> MasterStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
@@ -132,7 +122,7 @@ std::shared_ptr<IMasterScan> MasterStack::AddRangeScan(GroupVariationID gvId, ui
 	{
 		return self->mcontext.AddRangeScan(gvId, start, stop, period, config);
 	};
-	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), shared_from_this());
+	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
 void MasterStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)

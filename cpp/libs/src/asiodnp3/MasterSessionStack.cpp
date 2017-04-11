@@ -34,12 +34,13 @@ std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
     const std::shared_ptr<asiopal::Executor>& executor,
     const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
     const std::shared_ptr<opendnp3::IMasterApplication>& application,
+    const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler,
     const std::shared_ptr<LinkSession>& session,
     opendnp3::ILinkTx& linktx,
     const MasterStackConfig& config
 )
 {
-	return std::make_shared<MasterSessionStack>(logger, executor, SOEHandler, application, session, linktx, config);
+	return std::make_shared<MasterSessionStack>(logger, executor, SOEHandler, application, scheduler, session, linktx, config);
 }
 
 MasterSessionStack::MasterSessionStack(
@@ -47,14 +48,16 @@ MasterSessionStack::MasterSessionStack(
     const std::shared_ptr<asiopal::Executor>& executor,
     const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
     const std::shared_ptr<opendnp3::IMasterApplication>& application,
+    const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler,
     const std::shared_ptr<LinkSession>& session,
     opendnp3::ILinkTx& linktx,
     const MasterStackConfig& config
 ) :
 	executor(executor),
+	scheduler(scheduler),
 	session(session),
 	stack(logger, executor, application, config.master.maxRxFragSize, config.link),
-	context(logger, executor, stack.transport, SOEHandler, application, config.master, NullTaskLock::Instance())
+	context(logger, executor, stack.transport, SOEHandler, application, scheduler, config.master)
 {
 	stack.link->SetRouter(linktx);
 	stack.transport->SetAppLayer(context);
@@ -93,16 +96,6 @@ void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)
 	this->executor->strand.post(set);
 }
 
-void MasterSessionStack::Demand(const std::shared_ptr<opendnp3::IMasterTask>& task)
-{
-	auto action = [task, self = shared_from_this()]
-	{
-		task->Demand();
-		self->context.CheckForTask();
-	};
-	this->executor->strand.post(action);
-}
-
 void MasterSessionStack::BeginShutdown()
 {
 	auto shutdown = [session = session]()
@@ -129,25 +122,25 @@ std::shared_ptr<IMasterScan> MasterSessionStack::AddScan(openpal::TimeDuration p
 	{
 		return self->context.AddScan(period, builder, config);
 	};
-	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), shared_from_this());
+	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), this->scheduler);
 }
 
 std::shared_ptr<IMasterScan> MasterSessionStack::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, const TaskConfig& config)
 {
 	auto get = [self = shared_from_this(), gvId, period, config] { return self->context.AddAllObjectsScan(gvId, period, config); };
-	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), shared_from_this());
+	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), this->scheduler);
 }
 
 std::shared_ptr<IMasterScan> MasterSessionStack::AddClassScan(const ClassField& field, openpal::TimeDuration period, const TaskConfig& config)
 {
 	auto get = [self = shared_from_this(), field, period, config] { return self->context.AddClassScan(field, period, config); };
-	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), shared_from_this());
+	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), this->scheduler);
 }
 
 std::shared_ptr<IMasterScan> MasterSessionStack::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, const TaskConfig& config)
 {
 	auto get = [self = shared_from_this(), gvId, start, stop, period, config] { return self->context.AddRangeScan(gvId, start, stop, period, config); };
-	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), shared_from_this());
+	return MasterScan::Create(executor->ReturnFrom<std::shared_ptr<IMasterTask>>(get), this->scheduler);
 }
 
 void MasterSessionStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)

@@ -83,6 +83,8 @@ public:
 
 	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) override;
 
+	virtual void Demand(const std::shared_ptr<IMasterTask>& task) override;
+
 	virtual void Evaluate() override;
 
 private:

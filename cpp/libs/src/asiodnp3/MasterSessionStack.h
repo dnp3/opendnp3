@@ -41,7 +41,7 @@ class LinkSession;
 /**
 * Interface that represents an ephemeral master session
 */
-class MasterSessionStack final : public IMasterSession, public ITaskActions, public std::enable_shared_from_this<MasterSessionStack>
+class MasterSessionStack final : public IMasterSession, public std::enable_shared_from_this<MasterSessionStack>
 {
 public:
 
@@ -50,6 +50,7 @@ public:
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler,
 	    const std::shared_ptr<LinkSession>& session,
 	    opendnp3::ILinkTx& linktx,
 	    const MasterStackConfig& config
@@ -65,7 +66,6 @@ public:
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
 
-	virtual void Demand(const std::shared_ptr<opendnp3::IMasterTask>& task) override;
 
 	/// --- IGPRSMaster ---
 
@@ -96,6 +96,7 @@ public:
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler,
 	    const std::shared_ptr<LinkSession>& session,
 	    opendnp3::ILinkTx& linktx,
 	    const MasterStackConfig& config
@@ -105,8 +106,11 @@ private:
 
 	opendnp3::StackStatistics CreateStatistics() const;
 
-	std::shared_ptr<asiopal::Executor> executor;
+	const std::shared_ptr<asiopal::Executor> executor;
+	const std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
+
 	std::shared_ptr<LinkSession> session;
+
 	opendnp3::TransportStack stack;
 	opendnp3::MContext context;
 };

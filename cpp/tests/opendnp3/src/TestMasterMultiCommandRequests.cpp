@@ -118,7 +118,7 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + headers); // select
 	t.context->OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 " + headers);
-	
+
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + headers); // operate
 	t.context->OnSendResult(true);

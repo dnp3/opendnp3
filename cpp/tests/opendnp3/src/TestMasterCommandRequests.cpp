@@ -73,29 +73,29 @@ TEST_CASE(SUITE("Controls timeout after start period elapses"))
 	params.responseTimeout = TimeDuration::Seconds(5000);
 	params.taskStartTimeout = TimeDuration::Milliseconds(100); // significantly less
 	MasterTestObject t(params);
-	
+
 	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
-	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));	
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	REQUIRE(t.context->OnSendResult(true));
 
 	// while we're waiting for a reponse, submit a control
 	CommandCallbackQueue queue;
 
 	for(int i = 0; i < 5; ++i)
-	{		
+	{
 		CommandSet commands({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) });
 		t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 
 		REQUIRE(t.exe->RunMany() > 0);
 		REQUIRE(queue.values.empty());
-		
+
 		t.exe->AdvanceTime(params.taskStartTimeout);
-		REQUIRE(t.exe->RunMany() > 0);	
+		REQUIRE(t.exe->RunMany() > 0);
 
 		REQUIRE(1 == queue.values.size());
-		REQUIRE(TaskCompletion::FAILURE_START_TIMEOUT == queue.values.front().summary);		
+		REQUIRE(TaskCompletion::FAILURE_START_TIMEOUT == queue.values.front().summary);
 
 		queue.values.pop_front();
 	}
@@ -104,7 +104,7 @@ TEST_CASE(SUITE("Controls timeout after start period elapses"))
 
 TEST_CASE(SUITE("Layer down while still scheduled"))
 {
-	MasterParams params;	
+	MasterParams params;
 	MasterTestObject t(params);
 
 	t.context->OnLowerLayerUp();
@@ -115,7 +115,7 @@ TEST_CASE(SUITE("Layer down while still scheduled"))
 
 	// while we're waiting for a reponse, submit a control
 	CommandCallbackQueue queue;
-	
+
 	CommandSet commands({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) });
 	t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 	REQUIRE(t.exe->RunMany() > 0);

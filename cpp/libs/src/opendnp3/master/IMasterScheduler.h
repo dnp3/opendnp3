@@ -59,6 +59,11 @@ public:
 	virtual void Evaluate() = 0;
 
 	/**
+	* Run a task as soon as possible
+	*/
+	virtual void Demand(const std::shared_ptr<IMasterTask>& task) = 0;
+
+	/**
 	* Add multiple tasks in one call
 	*/
 	void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks, IMasterTaskRunner& runner)

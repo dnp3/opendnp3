@@ -190,7 +190,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnNewReadRequest(OContext& ctx, co
 
 OutstationState& StateUnsolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
-	ctx.deferred.Reset();	
+	ctx.deferred.Reset();
 	ctx.RespondToNonReadRequest(header, objects);
 	return *this;
 }

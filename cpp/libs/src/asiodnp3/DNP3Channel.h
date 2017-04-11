@@ -25,7 +25,7 @@
 #include "asiodnp3/IChannel.h"
 #include "asiodnp3/IOHandler.h"
 #include "asiopal/ResourceManager.h"
-#include "opendnp3/master/MultidropTaskLock.h"
+#include "opendnp3/master/IMasterScheduler.h"
 
 namespace asiodnp3
 {
@@ -85,6 +85,7 @@ private:
 
 	openpal::Logger logger;
 	const std::shared_ptr<asiopal::Executor> executor;
+	const std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
 
 	std::shared_ptr<IOHandler> iohandler;
 	std::shared_ptr<asiopal::IResourceManager> manager;

@@ -98,6 +98,17 @@ bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner)
 	return true;
 }
 
+void MasterSchedulerBackend::Demand(const std::shared_ptr<IMasterTask>& task)
+{
+	auto callback = [this, task]()
+	{
+		task->SetMinExpiration();
+		this->CheckForTaskRun();
+	};
+
+	this->executor->Post(callback);
+}
+
 void MasterSchedulerBackend::Evaluate()
 {
 	this->PostCheckForTaskRun();
@@ -147,12 +158,12 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 	{
 		this->current = *best_task;
 		this->tasks.erase(best_task);
-		this->current.runner->Run(this->current.task);		
+		this->current.runner->Run(this->current.task);
 
 		return true;
 	}
 	else
-	{		
+	{
 		auto callback = [this]()
 		{
 			this->CheckForTaskRun();
@@ -176,13 +187,16 @@ void MasterSchedulerBackend::RestartTimeoutTimer()
 		}
 	}
 
-	this->taskStartTimeout.Restart(min, [this]() { this->TimeoutTasks(); });	
+	this->taskStartTimeout.Restart(min, [this]()
+	{
+		this->TimeoutTasks();
+	});
 }
 
 void MasterSchedulerBackend::TimeoutTasks()
 {
 	// find the minimum start timeout value
-	auto isTimedOut = [now = this->executor->GetTime()](const Record& record) -> bool
+	auto isTimedOut = [now = this->executor->GetTime()](const Record & record) -> bool
 	{
 		if (record.task->IsRecurring() || record.task->StartExpirationTime() > now)
 		{

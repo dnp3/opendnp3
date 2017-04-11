@@ -387,7 +387,7 @@ bool MContext::Run(const std::shared_ptr<IMasterTask>& task)
 	this->tstate = TaskState::TASK_READY;
 	this->activeTask = task;
 	this->activeTask->OnStart();
-	FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->activeTask->Name());		
+	FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->activeTask->Name());
 
 	if (!this->isSending)
 	{
@@ -475,7 +475,7 @@ MContext::TaskState MContext::OnResponseTimeoutEvent()
 {
 	switch (tstate)
 	{
-	case(TaskState::WAIT_FOR_RESPONSE) :		
+	case(TaskState::WAIT_FOR_RESPONSE) :
 		return OnResponseTimeout_WaitForResponse();
 	default:
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unexpected response timeout");

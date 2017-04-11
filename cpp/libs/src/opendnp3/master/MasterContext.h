@@ -143,7 +143,7 @@ public:
 
 	void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 
-	/// public state manipulation actions	
+	/// public state manipulation actions
 
 	TaskState ResumeActiveTask();
 
