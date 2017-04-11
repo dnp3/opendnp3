@@ -49,7 +49,6 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
 	CommandCallbackQueue queue;
 
-
 	for (int i = 0; i < 10; ++i)
 	{
 		CommandSet commands({ WithIndex(crob, 7) });
@@ -100,6 +99,32 @@ TEST_CASE(SUITE("Controls timeout after start period elapses"))
 
 		queue.values.pop_front();
 	}
+}
+
+
+TEST_CASE(SUITE("Layer down while still scheduled"))
+{
+	MasterParams params;	
+	MasterTestObject t(params);
+
+	t.context->OnLowerLayerUp();
+
+	REQUIRE(t.exe->RunMany() > 0);
+	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	REQUIRE(t.context->OnSendResult(true));
+
+	// while we're waiting for a reponse, submit a control
+	CommandCallbackQueue queue;
+	
+	CommandSet commands({ WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1) });
+	t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+	REQUIRE(t.exe->RunMany() > 0);
+	REQUIRE(queue.values.empty());
+
+	// now close the context
+	t.context->OnLowerLayerDown();
+	REQUIRE(queue.values.size() == 1);
+	REQUIRE(TaskCompletion::FAILURE_NO_COMMS == queue.values.front().summary);
 }
 
 TEST_CASE(SUITE("SelectAndOperate"))
