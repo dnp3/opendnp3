@@ -70,24 +70,22 @@ TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
 	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));	
 }
 
-/*
-
-TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock"))
+TEST_CASE(SUITE("Shutting down a master causes 2nd master to run scheduled task"))
 {
-	MultidropTaskLock taskLock;
-	taskLock.SetOnline();
-
+	
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
 
-	MasterTestObject t1(params, taskLock);
-	MasterTestObject t2(params, taskLock);
+	const auto executor = std::make_shared<testlib::MockExecutor>();
+	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
+
+	MasterTestObject t1(params, executor, scheduler);
+	MasterTestObject t2(params, executor, scheduler);
 
 	t1.context->OnLowerLayerUp();
 	t2.context->OnLowerLayerUp();
 
-	t1.exe->RunMany();
-	t2.exe->RunMany();
+	REQUIRE(executor->RunMany() > 0);
 
 	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	REQUIRE(t2.lower->PopWriteAsHex() == "");
@@ -96,11 +94,8 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to acquire task lock")
 	// instead of sending a reply, shutdown the first master
 	t1.context->OnLowerLayerDown();
 
-	t1.exe->RunMany();
-	t2.exe->RunMany();
+	REQUIRE(executor->RunMany() > 0);
 
 	REQUIRE(t1.lower->PopWriteAsHex() == "");
 	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }
-
-*/
