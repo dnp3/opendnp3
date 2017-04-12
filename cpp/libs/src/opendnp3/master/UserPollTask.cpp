@@ -44,7 +44,7 @@ UserPollTask::UserPollTask(
 
 bool UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	rxCount = 0;
+	this->rxCount = 0;
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
 	auto writer = request.GetWriter();

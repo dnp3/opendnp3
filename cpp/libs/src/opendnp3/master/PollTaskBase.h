@@ -53,7 +53,7 @@ protected:
 
 	virtual void Initialize() override final;
 
-	uint16_t rxCount;
+	uint32_t rxCount = 0;
 	ISOEHandler* const handler;
 };
 
