@@ -18,45 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MasterTestObject.h"
 
-#include <asiodnp3/DefaultMasterApplication.h>
+#ifndef OPENDNP3_PERIODICTASK_H
+#define OPENDNP3_PERIODICTASK_H
 
-#include <testlib/BufferHelpers.h>
-
-using namespace testlib;
+#include "opendnp3/master/IMasterTask.h"
+#include "opendnp3/master/PeriodicTaskConfig.h"
+#include "opendnp3/master/TaskRetry.h"
 
 namespace opendnp3
 {
 
-MasterParams NoStartupTasks()
+class PeriodicTask : public IMasterTask
 {
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	params.startupIntegrityClassMask = 0;
-	params.unsolClassMask = 0;
-	return params;
-}
 
-MasterTestObject::MasterTestObject(
-    const MasterParams& params,
-    const std::shared_ptr<testlib::MockExecutor>& executor,
-    const std::shared_ptr<IMasterScheduler>& scheduler
-) :
-	log(),
-	exe(executor ? executor : std::make_shared<MockExecutor>()),
-	meas(std::make_shared<MockSOEHandler>()),
-	lower(std::make_shared<MockLowerLayer>()),
-	application(std::make_shared<MockMasterApplication>()),
-	scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
-	context(std::make_shared<MContext>(log.logger, exe, lower, meas, application, this->scheduler, params))
-{}
+public:
 
-void MasterTestObject::SendToMaster(const std::string& hex)
-{
-	HexSequence hs(hex);
-	context->OnReceive(hs.ToRSlice());
-}
+	PeriodicTask(IMasterApplication& app, const PeriodicTaskConfig& pconfig, const openpal::Logger& logger, TaskConfig config);
+
+	virtual ~PeriodicTask() {}
+
+private:
+
+	virtual TaskState OnTaskComplete(TaskCompletion completion, openpal::MonotonicTimestamp now) override final;
+
+	const openpal::TimeDuration period;
+	TaskRetry retry;
+};
 
 }
 
+#endif

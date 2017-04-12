@@ -16,7 +16,7 @@ object TaskCompletion {
        EnumValue("FAILURE_BAD_RESPONSE", 1, "A response was received from the outstation, but it was not valid"),
        EnumValue("FAILURE_RESPONSE_TIMEOUT", 2, "The task request did not receive a response within the timeout"),
        EnumValue("FAILURE_START_TIMEOUT", 3, "The start timeout expired before the task could begin running"),
-       EnumValue("FAILURE_INTERNAL_ERROR", 5, "The task failed because of some unexpected internal issue like bad configuration data")
+       EnumValue("FAILURE_MESSAGE_FORMAT_ERROR", 4, "The task failed because the master was unable to format the request")
   )
 
 }

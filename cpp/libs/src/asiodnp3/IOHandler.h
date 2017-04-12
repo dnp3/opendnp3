@@ -57,7 +57,7 @@ public:
 	opendnp3::LinkStatistics Statistics() const
 	{
 		return opendnp3::LinkStatistics(this->statistics, this->parser.Statistics());
-	}	
+	}
 
 	void Shutdown();
 
@@ -210,7 +210,7 @@ private:
 	opendnp3::LinkLayerParser parser;
 
 	// current value of the channel, may be empty
-	std::shared_ptr<asiopal::IAsyncChannel> channel;	
+	std::shared_ptr<asiopal::IAsyncChannel> channel;
 };
 
 }

@@ -18,45 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MasterTestObject.h"
 
-#include <asiodnp3/DefaultMasterApplication.h>
+#ifndef OPENDNP3_PERIODICCONFIG_H
+#define OPENDNP3_PERIODICCONFIG_H
 
-#include <testlib/BufferHelpers.h>
-
-using namespace testlib;
+#include "openpal/executor/MonotonicTimestamp.h"
 
 namespace opendnp3
 {
 
-MasterParams NoStartupTasks()
+/**
+* Configuration for periodic tasks
+*/
+class PeriodicTaskConfig
 {
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	params.startupIntegrityClassMask = 0;
-	params.unsolClassMask = 0;
-	return params;
-}
 
-MasterTestObject::MasterTestObject(
-    const MasterParams& params,
-    const std::shared_ptr<testlib::MockExecutor>& executor,
-    const std::shared_ptr<IMasterScheduler>& scheduler
-) :
-	log(),
-	exe(executor ? executor : std::make_shared<MockExecutor>()),
-	meas(std::make_shared<MockSOEHandler>()),
-	lower(std::make_shared<MockLowerLayer>()),
-	application(std::make_shared<MockMasterApplication>()),
-	scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
-	context(std::make_shared<MContext>(log.logger, exe, lower, meas, application, this->scheduler, params))
-{}
+public:
 
-void MasterTestObject::SendToMaster(const std::string& hex)
-{
-	HexSequence hs(hex);
-	context->OnReceive(hs.ToRSlice());
-}
+	PeriodicTaskConfig() = delete;
+
+	PeriodicTaskConfig(
+	    const openpal::TimeDuration& period,
+	    const openpal::MonotonicTimestamp& initialExpiration,
+	    const openpal::TimeDuration& minRetryTimeout,
+	    const openpal::TimeDuration& maxRetryTimeout
+	) :
+		period(period),
+		minRetryTimeout(minRetryTimeout),
+		maxRetryTimeout(maxRetryTimeout)
+	{}
+
+
+	const openpal::TimeDuration period;
+	const openpal::MonotonicTimestamp initialExpiration;
+	const openpal::TimeDuration minRetryTimeout;
+	const openpal::TimeDuration maxRetryTimeout;
+};
 
 }
 
+#endif

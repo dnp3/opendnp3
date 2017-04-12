@@ -87,9 +87,6 @@ public:
 		/// The response was bad, the task has failed
 		ERROR_BAD_RESPONSE,
 
-		/// An internal error occured like a failure calculating an HMAC
-		ERROR_INTERNAL_FAILURE,
-
 		/// The response was good and the task is complete
 		OK_FINAL,
 
@@ -180,9 +177,9 @@ public:
 	void OnStartTimeout(openpal::MonotonicTimestamp now);
 
 	/**
-	* Called when a task has an internal error of some sort like not being able to write a request
+	* Called when the master is unable to format the request associated with the task
 	*/
-	void OnInternalError(openpal::MonotonicTimestamp now);	
+	void OnMessageFormatError(openpal::MonotonicTimestamp now);
 
 	/**
 	* Called when the task first starts, before the first request is formatted

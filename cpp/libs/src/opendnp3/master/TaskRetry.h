@@ -18,45 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MasterTestObject.h"
 
-#include <asiodnp3/DefaultMasterApplication.h>
+#ifndef OPENDNP3_TASKRETRY_H
+#define OPENDNP3_TASKRETRY_H
 
-#include <testlib/BufferHelpers.h>
-
-using namespace testlib;
+#include "openpal/executor/MonotonicTimestamp.h"
 
 namespace opendnp3
 {
 
-MasterParams NoStartupTasks()
+/**
+* Tracks the min, max, and current retry timeouts for a task
+*/
+class TaskRetry
 {
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	params.startupIntegrityClassMask = 0;
-	params.unsolClassMask = 0;
-	return params;
+
+public:
+
+	TaskRetry(
+	    const openpal::TimeDuration& minRetryTimeout,
+	    const openpal::TimeDuration& maxRetryTimeout
+	);
+
+	/**
+	* Called when the task succeeds. Resets the retry timeout to the minimum.
+	*/
+	void OnSuccess();
+
+	/**
+	* Called when the task fails. Gets the next retry time
+	*/
+	openpal::MonotonicTimestamp GetRetryOnTimeout(const openpal::MonotonicTimestamp& now);
+
+private:
+
+	openpal::TimeDuration CalcNextRetryTimeout() const;
+
+	const openpal::TimeDuration minRetryTimeout;
+	const openpal::TimeDuration maxRetryTimeout;
+
+	openpal::TimeDuration nextRetryTimeout;
+
+};
+
 }
 
-MasterTestObject::MasterTestObject(
-    const MasterParams& params,
-    const std::shared_ptr<testlib::MockExecutor>& executor,
-    const std::shared_ptr<IMasterScheduler>& scheduler
-) :
-	log(),
-	exe(executor ? executor : std::make_shared<MockExecutor>()),
-	meas(std::make_shared<MockSOEHandler>()),
-	lower(std::make_shared<MockLowerLayer>()),
-	application(std::make_shared<MockMasterApplication>()),
-	scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
-	context(std::make_shared<MContext>(log.logger, exe, lower, meas, application, this->scheduler, params))
-{}
-
-void MasterTestObject::SendToMaster(const std::string& hex)
-{
-	HexSequence hs(hex);
-	context->OnReceive(hs.ToRSlice());
-}
-
-}
-
+#endif

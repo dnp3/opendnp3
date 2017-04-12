@@ -18,45 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MasterTestObject.h"
 
-#include <asiodnp3/DefaultMasterApplication.h>
-
-#include <testlib/BufferHelpers.h>
-
-using namespace testlib;
+#include "PeriodicTask.h"
 
 namespace opendnp3
 {
 
-MasterParams NoStartupTasks()
-{
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	params.startupIntegrityClassMask = 0;
-	params.unsolClassMask = 0;
-	return params;
-}
-
-MasterTestObject::MasterTestObject(
-    const MasterParams& params,
-    const std::shared_ptr<testlib::MockExecutor>& executor,
-    const std::shared_ptr<IMasterScheduler>& scheduler
-) :
-	log(),
-	exe(executor ? executor : std::make_shared<MockExecutor>()),
-	meas(std::make_shared<MockSOEHandler>()),
-	lower(std::make_shared<MockLowerLayer>()),
-	application(std::make_shared<MockMasterApplication>()),
-	scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
-	context(std::make_shared<MContext>(log.logger, exe, lower, meas, application, this->scheduler, params))
+PeriodicTask::PeriodicTask(IMasterApplication& app, const PeriodicTaskConfig& pconfig, const openpal::Logger& logger, TaskConfig config) :
+	IMasterTask(app, pconfig.initialExpiration, logger, config),
+	retry(retry)
 {}
 
-void MasterTestObject::SendToMaster(const std::string& hex)
+
+IMasterTask::TaskState PeriodicTask::OnTaskComplete(TaskCompletion completion, openpal::MonotonicTimestamp now)
 {
-	HexSequence hs(hex);
-	context->OnReceive(hs.ToRSlice());
+	switch (completion)
+	{
+
+	// retry immediately when the comms come back online
+	case(TaskCompletion::FAILURE_NO_COMMS):
+		return TaskState::Immediately();
+
+	// back-off exponentially using the task retry
+	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
+		return TaskState::Retry(retry.GetRetryOnTimeout(now));
+
+	case(TaskCompletion::SUCCESS):
+		{
+			retry.OnSuccess();
+			return period.IsNegative() ? TaskState::Infinite() : TaskState::Retry(now.Add(period));
+		}
+
+	default:
+		//anything else disables the task like format errors, or repsonse timeouts
+		return TaskState::Disabled();
+	}
 }
 
 }
+
 

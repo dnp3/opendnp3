@@ -18,45 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MasterTestObject.h"
 
-#include <asiodnp3/DefaultMasterApplication.h>
+#include "opendnp3/master/TaskRetry.h"
 
-#include <testlib/BufferHelpers.h>
-
-using namespace testlib;
+#include <limits>
 
 namespace opendnp3
 {
 
-MasterParams NoStartupTasks()
-{
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	params.startupIntegrityClassMask = 0;
-	params.unsolClassMask = 0;
-	return params;
-}
 
-MasterTestObject::MasterTestObject(
-    const MasterParams& params,
-    const std::shared_ptr<testlib::MockExecutor>& executor,
-    const std::shared_ptr<IMasterScheduler>& scheduler
+TaskRetry::TaskRetry(
+    const openpal::TimeDuration& minRetryTimeout,
+    const openpal::TimeDuration& maxRetryTimeout
 ) :
-	log(),
-	exe(executor ? executor : std::make_shared<MockExecutor>()),
-	meas(std::make_shared<MockSOEHandler>()),
-	lower(std::make_shared<MockLowerLayer>()),
-	application(std::make_shared<MockMasterApplication>()),
-	scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
-	context(std::make_shared<MContext>(log.logger, exe, lower, meas, application, this->scheduler, params))
+	minRetryTimeout(minRetryTimeout),
+	maxRetryTimeout(maxRetryTimeout),
+	nextRetryTimeout(minRetryTimeout)
 {}
 
-void MasterTestObject::SendToMaster(const std::string& hex)
+
+void TaskRetry::OnSuccess()
 {
-	HexSequence hs(hex);
-	context->OnReceive(hs.ToRSlice());
+	this->nextRetryTimeout = minRetryTimeout;
+}
+
+openpal::MonotonicTimestamp TaskRetry::GetRetryOnTimeout(const openpal::MonotonicTimestamp& now)
+{
+	const auto timeout = now.Add(this->nextRetryTimeout);
+	this->nextRetryTimeout = this->CalcNextRetryTimeout();
+	return timeout;
+}
+
+openpal::TimeDuration TaskRetry::CalcNextRetryTimeout() const
+{
+	const bool doubling_would_cause_mult_overflow = this->nextRetryTimeout.milliseconds >= (std::numeric_limits<int64_t>::max() / 2);
+
+	const auto doubled = doubling_would_cause_mult_overflow ? this->maxRetryTimeout : openpal::TimeDuration::Milliseconds(2 * this->minRetryTimeout.milliseconds);
+
+	return (doubled > this->maxRetryTimeout) ? this->maxRetryTimeout : doubled;
 }
 
 }
+
 

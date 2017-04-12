@@ -42,9 +42,9 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     FAILURE_START_TIMEOUT = 3,
     /// <summary>
-    /// The task failed because of some unexpected internal issue like bad configuration data
+    /// The task failed because the master was unable to format the request
     /// </summary>
-    FAILURE_INTERNAL_ERROR = 5,
+    FAILURE_MESSAGE_FORMAT_ERROR = 4,
     /// <summary>
     /// There is no communication with the outstation, so the task was not attempted
     /// </summary>

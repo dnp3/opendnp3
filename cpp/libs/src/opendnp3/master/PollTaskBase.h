@@ -38,7 +38,7 @@ class PollTaskBase : public IMasterTask, openpal::Uncopyable
 
 public:
 
-	PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config);
+	PollTaskBase(IMasterApplication& application, ISOEHandler& handler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config);
 
 	virtual const char* Name() const override final
 	{
@@ -54,7 +54,7 @@ protected:
 	virtual void Initialize() override final;
 
 	uint16_t rxCount;
-	ISOEHandler* pSOEHandler;
+	ISOEHandler* const handler;
 };
 
 } //end ns

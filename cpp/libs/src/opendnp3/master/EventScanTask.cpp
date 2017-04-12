@@ -57,10 +57,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes_, TimeDuration retryPeriod_, openpal::Logger logger) :
+EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, TimeDuration retryPeriod, openpal::Logger logger) :
 	PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
-	classes(classes_.OnlyEventClasses()),
-	retryPeriod(retryPeriod_)
+	classes(classes.OnlyEventClasses()),
+	retryPeriod(retryPeriod)
 {
 
 }

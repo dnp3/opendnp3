@@ -69,10 +69,6 @@ IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& re
 		this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_RESPONSE, now);
 		this->NotifyResult(TaskCompletion::FAILURE_BAD_RESPONSE);
 		break;
-	case(ResponseResult::ERROR_INTERNAL_FAILURE) :
-		this->state = this->OnTaskComplete(TaskCompletion::FAILURE_INTERNAL_ERROR, now);
-		this->NotifyResult(TaskCompletion::FAILURE_INTERNAL_ERROR);
-		break;
 	case(ResponseResult::OK_FINAL) :
 		this->state = this->OnTaskComplete(TaskCompletion::SUCCESS, now);
 		this->NotifyResult(TaskCompletion::SUCCESS);
@@ -102,10 +98,10 @@ void IMasterTask::OnStartTimeout(openpal::MonotonicTimestamp now)
 	this->NotifyResult(TaskCompletion::FAILURE_START_TIMEOUT);
 }
 
-void IMasterTask::OnInternalError(openpal::MonotonicTimestamp now)
+void IMasterTask::OnMessageFormatError(openpal::MonotonicTimestamp now)
 {
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_INTERNAL_ERROR, now);
-	this->NotifyResult(TaskCompletion::FAILURE_INTERNAL_ERROR);
+	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_MESSAGE_FORMAT_ERROR, now);
+	this->NotifyResult(TaskCompletion::FAILURE_MESSAGE_FORMAT_ERROR);
 }
 
 void IMasterTask::NotifyResult(TaskCompletion result)

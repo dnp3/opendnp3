@@ -41,9 +41,9 @@ public enum TaskCompletion
   */
   FAILURE_START_TIMEOUT(3),
   /**
-  * The task failed because of some unexpected internal issue like bad configuration data
+  * The task failed because the master was unable to format the request
   */
-  FAILURE_INTERNAL_ERROR(5),
+  FAILURE_MESSAGE_FORMAT_ERROR(4),
   /**
   * There is no communication with the outstation, so the task was not attempted
   */
@@ -73,8 +73,8 @@ public enum TaskCompletion
         return FAILURE_RESPONSE_TIMEOUT;
       case(3):
         return FAILURE_START_TIMEOUT;
-      case(5):
-        return FAILURE_INTERNAL_ERROR;
+      case(4):
+        return FAILURE_MESSAGE_FORMAT_ERROR;
       default:
         return FAILURE_NO_COMMS;
     }

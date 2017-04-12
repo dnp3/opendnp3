@@ -433,7 +433,7 @@ MContext::TaskState MContext::ResumeActiveTask()
 	/// try to build a requst for the task
 	if (!this->activeTask->BuildRequest(request, this->solSeq))
 	{
-		activeTask->OnInternalError(executor->GetTime());
+		activeTask->OnMessageFormatError(executor->GetTime());
 		this->CompleteActiveTask();
 		return TaskState::IDLE;
 	}

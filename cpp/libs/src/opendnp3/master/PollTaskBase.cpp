@@ -31,10 +31,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config) :
+PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& handler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config) :
 	IMasterTask(application, expiration, logger, config),
 	rxCount(0),
-	pSOEHandler(&soeHandler)
+	handler(&handler)
 {
 
 }
@@ -76,7 +76,7 @@ IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponse
 {
 	++rxCount;
 
-	if (MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler) == ParseResult::OK)
+	if (MeasurementHandler::ProcessMeasurements(objects, logger, handler) == ParseResult::OK)
 	{
 		if (header.control.FIN)
 		{

@@ -31,9 +31,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ClearRestartTask::ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
+ClearRestartTask::ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod, openpal::Logger logger) :
 	IMasterTask(application, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
-	retryPeriod(retryPeriod_)
+	retryPeriod(retryPeriod)
 {
 
 }
@@ -70,7 +70,7 @@ IMasterTask::TaskState ClearRestartTask::OnTaskComplete(TaskCompletion result, o
 {
 	switch (result)
 	{
-	// if the outstation ever rejects the task outright, disable this task so that it doesn't rapid-retry	
+	// if the outstation ever rejects the task outright, disable this task so that it doesn't rapid-retry
 	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
 		return TaskState::Disabled();
 

@@ -34,8 +34,8 @@ char const* TaskCompletionToString(TaskCompletion arg)
       return "FAILURE_RESPONSE_TIMEOUT";
     case(TaskCompletion::FAILURE_START_TIMEOUT):
       return "FAILURE_START_TIMEOUT";
-    case(TaskCompletion::FAILURE_INTERNAL_ERROR):
-      return "FAILURE_INTERNAL_ERROR";
+    case(TaskCompletion::FAILURE_MESSAGE_FORMAT_ERROR):
+      return "FAILURE_MESSAGE_FORMAT_ERROR";
     default:
       return "FAILURE_NO_COMMS";
   }

@@ -38,8 +38,8 @@ enum class TaskCompletion : uint8_t
   FAILURE_RESPONSE_TIMEOUT = 2,
   /// The start timeout expired before the task could begin running
   FAILURE_START_TIMEOUT = 3,
-  /// The task failed because of some unexpected internal issue like bad configuration data
-  FAILURE_INTERNAL_ERROR = 5,
+  /// The task failed because the master was unable to format the request
+  FAILURE_MESSAGE_FORMAT_ERROR = 4,
   /// There is no communication with the outstation, so the task was not attempted
   FAILURE_NO_COMMS = 255
 };
