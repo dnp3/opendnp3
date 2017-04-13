@@ -40,6 +40,7 @@ class LANTimeSyncTask : public IMasterTask
 	};
 
 public:
+
 	LANTimeSyncTask(IMasterApplication& app, openpal::Logger logger);
 
 	virtual char const* Name() const override final
@@ -75,8 +76,6 @@ private:
 	{
 		return true;
 	}
-
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 

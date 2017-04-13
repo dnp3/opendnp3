@@ -32,7 +32,7 @@ class DisableUnsolicitedTask final : public IMasterTask
 
 public:
 
-	DisableUnsolicitedTask(IMasterApplication& application, bool enabled, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+	DisableUnsolicitedTask(IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger);
 
 	virtual char const* Name() const override
 	{
@@ -58,22 +58,13 @@ public:
 
 private:
 
-	bool enabled;
-	openpal::TimeDuration retryPeriod;
-
 	virtual MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::DISABLE_UNSOLICITED;
 	}
 
-	virtual bool IsEnabled() const override
-	{
-		return enabled;
-	}
-
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override;
 
-	virtual TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 };
 
 

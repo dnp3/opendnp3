@@ -34,7 +34,7 @@ class AssignClassTask final : public IMasterTask
 
 public:
 
-	AssignClassTask(IMasterApplication& application, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+	AssignClassTask(IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger);
 
 	virtual char const* Name() const override
 	{
@@ -68,8 +68,6 @@ private:
 	}
 
 	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
-
-	virtual TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 
 	virtual bool IsEnabled() const override;
 

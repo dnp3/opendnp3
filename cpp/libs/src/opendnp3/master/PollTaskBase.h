@@ -33,12 +33,12 @@ class ISOEHandler;
 /**
  * Base class for measurement polls
  */
-class PollTaskBase : public IMasterTask, openpal::Uncopyable
+class PollTaskBase : public IMasterTask
 {
 
 public:
 
-	PollTaskBase(IMasterApplication& application, ISOEHandler& handler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config);
+	PollTaskBase(IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config);
 
 	virtual const char* Name() const override final
 	{

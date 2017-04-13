@@ -31,8 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& handler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config) :
-	IMasterTask(application, expiration, logger, config),	
+PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config) :
+	IMasterTask(application, behavior, logger, config),
 	handler(&handler)
 {
 
@@ -77,7 +77,7 @@ IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponse
 
 	if (MeasurementHandler::ProcessMeasurements(objects, logger, handler) == ParseResult::OK)
 	{
-		return header.control.FIN ? ResponseResult::OK_FINAL : ResponseResult::OK_CONTINUE;		
+		return header.control.FIN ? ResponseResult::OK_FINAL : ResponseResult::OK_CONTINUE;
 	}
 	else
 	{

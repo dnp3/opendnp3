@@ -31,7 +31,7 @@ namespace opendnp3
 {
 
 LANTimeSyncTask::LANTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
-	IMasterTask(app, MonotonicTimestamp::Max(), logger, TaskConfig::Default())
+	IMasterTask(app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
 {}
 
 void LANTimeSyncTask::Initialize()
@@ -55,17 +55,6 @@ bool LANTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 		request.SetControl(AppControlField::Request(seq));
 		auto writer = request.GetWriter();
 		return writer.WriteSingleValue<UInt8, Group50Var3>(QualifierCode::UINT8_CNT, time);
-	}
-}
-
-IMasterTask::TaskState LANTimeSyncTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	switch (result)
-	{
-	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-		return TaskState::Disabled();
-	default:
-		return TaskState::Infinite();
 	}
 }
 

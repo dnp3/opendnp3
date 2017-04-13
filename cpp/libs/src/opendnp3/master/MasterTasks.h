@@ -40,24 +40,47 @@ public:
 
 	void Initialize(IMasterScheduler& scheduler, IMasterTaskRunner& runner);
 
-	// master tasks that can be "failed" (startup and in response to IIN bits)
-	const std::shared_ptr<IMasterTask> enableUnsol;
-	const std::shared_ptr<IMasterTask> clearRestart;
-	const std::shared_ptr<IMasterTask> assignClass;
-	const std::shared_ptr<IMasterTask> startupIntegrity;
-	const std::shared_ptr<IMasterTask> disableUnsol;
-	const std::shared_ptr<IMasterTask> eventScan;
+	bool DemandTimeSync();
+	bool DemandEventScan();
+	bool DemandIntegrity();
 
-	bool RequestImmediateTimeSync();
+	void OnRestartDetected();
 
 	void BindTask(const std::shared_ptr<IMasterTask>& task);
 
 private:
 
-	// same as above, but may be NULL based on configuration
+	bool Demand(const std::shared_ptr<IMasterTask>& task)
+	{
+		if (task)
+		{
+			task->SetMinExpiration();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	inline static TaskBehavior RetryBehavior(const MasterParams& params)
+	{
+		return TaskBehavior::SingleImmediateExecutionWithRetry(params.taskRetryPeriod, params.maxTaskRetryPeriod);
+	}
+
+	const std::shared_ptr<IMasterTask> clearRestart;
+	const std::shared_ptr<IMasterTask> assignClass;
+	const std::shared_ptr<IMasterTask> startupIntegrity;
+	const std::shared_ptr<IMasterTask> eventScan;
+	const std::shared_ptr<IMasterTask> disableUnsol;
+	const std::shared_ptr<IMasterTask> enableUnsol;
 	const std::shared_ptr<IMasterTask> timeSynchronization;
 
+
+
 	static std::shared_ptr<IMasterTask> GetTimeSyncTask(TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application);
+	static std::shared_ptr<IMasterTask> GetEnableUnsolTask(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application);
+	static std::shared_ptr<IMasterTask> GetDisableUnsolTask(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application);
 
 	std::vector<std::shared_ptr<IMasterTask>> boundTasks;
 

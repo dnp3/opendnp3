@@ -21,35 +21,59 @@
 #ifndef OPENDNP3_EMPTY_RESPONSE_TASK_H
 #define OPENDNP3_EMPTY_RESPONSE_TASK_H
 
-#include "opendnp3/master/SimpleRequestTaskBase.h"
+#include "opendnp3/master/IMasterTask.h"
+#include "opendnp3/master/HeaderBuilder.h"
+#include "opendnp3/master/TaskPriority.h"
+
 
 #include <string>
 
 namespace opendnp3
 {
 
-class EmptyResponseTask : public SimpleRequestTaskBase
+class EmptyResponseTask final : public IMasterTask
 {
 
 public:
 
-	EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func, const HeaderBuilderT& format, openpal::Logger logger, const TaskConfig& config);
+	EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func, const HeaderBuilderT& format, openpal::MonotonicTimestamp startExpiration, openpal::Logger logger, const TaskConfig& config);
 
-	virtual char const* Name() const override final
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+
+	virtual char const* Name() const override
 	{
-		return m_name.c_str();
+		return name.c_str();
+	}
+
+	virtual bool IsRecurring() const override
+	{
+		return false;
+	}
+
+	virtual int Priority() const override
+	{
+		return priority::USER_REQUEST;
+	}
+
+	virtual bool BlocksLowerPriority() const override
+	{
+		return false;
 	}
 
 private:
 
-	std::string m_name;
+	virtual MasterTaskType GetTaskType() const
+	{
+		return MasterTaskType::USER_TASK;
+	}
+
+	const std::string name;
+
+	FunctionCode func;
+	HeaderBuilderT format;
 
 	IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
 
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final
-	{
-		return TaskState::Infinite();
-	}
 };
 
 } //end ns

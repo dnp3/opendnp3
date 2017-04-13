@@ -57,8 +57,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, TimeDuration retryPeriod, openpal::Logger logger) :
-	PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
+EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::Logger logger) :
+	PollTaskBase(application, soeHandler, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
 	classes(classes.OnlyEventClasses()),
 	retryPeriod(retryPeriod)
 {
@@ -76,20 +76,6 @@ bool EventScanTask::IsEnabled() const
 	return classes.HasEventClass();
 }
 
-IMasterTask::TaskState EventScanTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	switch (result)
-	{
-	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-		return TaskState::Disabled();
-
-	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-		return TaskState::Retry(now.Add(retryPeriod));
-
-	default:
-		return TaskState::Infinite();
-	}
-}
-
-
 } //end ns
+
+

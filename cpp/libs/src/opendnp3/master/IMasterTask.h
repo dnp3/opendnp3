@@ -30,6 +30,7 @@
 
 #include "opendnp3/master/TaskConfig.h"
 #include "opendnp3/master/IMasterApplication.h"
+#include "opendnp3/master/TaskBehavior.h"
 
 namespace opendnp3
 {
@@ -39,46 +40,8 @@ class IMasterScheduler; // break cycle
 /**
  * A generic interface for defining master request/response style tasks
  */
-class IMasterTask
+class IMasterTask : private openpal::Uncopyable
 {
-
-protected:
-
-	class TaskState
-	{
-	public:
-
-		TaskState(openpal::MonotonicTimestamp expiration, bool disabled) : disabled(disabled), expiration(expiration)
-		{}
-
-		static TaskState Immediately()
-		{
-			return TaskState(openpal::MonotonicTimestamp(0), false);
-		}
-
-		static TaskState Infinite()
-		{
-			return TaskState(openpal::MonotonicTimestamp::Max(), false);
-		}
-
-		static TaskState Retry(openpal::MonotonicTimestamp exp)
-		{
-			return TaskState(exp, false);
-		}
-
-		static TaskState Disabled()
-		{
-			return TaskState(openpal::MonotonicTimestamp::Max(), true);
-		}
-
-		bool disabled;
-		openpal::MonotonicTimestamp expiration;
-
-	private:
-
-		TaskState() = delete;
-	};
-
 
 public:
 
@@ -97,19 +60,9 @@ public:
 		OK_CONTINUE
 	};
 
-
-	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, const openpal::Logger& logger, TaskConfig config);
-
+	IMasterTask(IMasterApplication& app, const TaskBehavior& behavior, const openpal::Logger& logger, TaskConfig config);
 
 	virtual ~IMasterTask();
-
-	/**
-	*	Overridable for auth tasks
-	*/
-	virtual bool IsAuthTask() const
-	{
-		return false;
-	}
 
 	/**
 	*
@@ -138,11 +91,6 @@ public:
 	* The time when this task can run again.
 	*/
 	openpal::MonotonicTimestamp ExpirationTime() const;
-
-	/**
-	* Configure the start expiration time
-	*/
-	void ConfigureStartExpiration(openpal::MonotonicTimestamp time);
 
 	/**
 	* The time when this task expires if it is unable to start
@@ -198,9 +146,14 @@ protected:
 
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) = 0;
 
-	virtual TaskState OnTaskComplete(TaskCompletion completion, openpal::MonotonicTimestamp now) = 0;
+	void CompleteTask(TaskCompletion completion, openpal::MonotonicTimestamp now);
 
-	virtual bool IsEnabled() const = 0;
+	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) {}
+
+	virtual bool IsEnabled() const
+	{
+		return true;
+	}
 
 	virtual MasterTaskType GetTaskType() const = 0;
 
@@ -213,15 +166,14 @@ protected:
 	bool ValidateNoObjects(const openpal::RSlice& objects);
 	bool ValidateInternalIndications(const APDUResponseHeader& header);
 
-	void NotifyResult(TaskCompletion result);
 
 private:
 
 	IMasterTask();
 
-	TaskState state;
 	TaskConfig config;
-	openpal::MonotonicTimestamp taskStartExpiration;
+	TaskBehavior behavior;
+
 };
 
 }

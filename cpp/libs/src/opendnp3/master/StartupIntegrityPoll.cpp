@@ -36,10 +36,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StartupIntegrityPoll::StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, TimeDuration retryPeriod, openpal::Logger logger) :
-	PollTaskBase(app, soeHandler, openpal::MonotonicTimestamp(0), logger, TaskConfig::Default()),
-	classes(classes),
-	retryPeriod(retryPeriod)
+StartupIntegrityPoll::StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, const TaskBehavior& behavior, openpal::Logger logger) :
+	PollTaskBase(app, soeHandler, behavior, logger, TaskConfig::Default()),
+	classes(classes)
 {
 
 }
@@ -57,19 +56,6 @@ bool StartupIntegrityPoll::IsEnabled() const
 	return classes.HasAnyClass();
 }
 
-IMasterTask::TaskState StartupIntegrityPoll::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	switch (result)
-	{
-	case(TaskCompletion::FAILURE_NO_COMMS) :
-		return TaskState::Immediately();
-
-	case(TaskCompletion::SUCCESS) :
-		return TaskState::Infinite();
-
-	default:
-		return TaskState::Infinite();
-	}
-}
-
 } //end ns
+
+

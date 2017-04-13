@@ -170,12 +170,14 @@ void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& head
 
 void MContext::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
-	this->ScheduleAdhocTask(CommandTask::CreateDirectOperate(std::move(commands), *application, callback, config, logger));
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	this->ScheduleAdhocTask(CommandTask::CreateDirectOperate(std::move(commands), *application, callback, timeout, config, logger));
 }
 
 void MContext::SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
-	this->ScheduleAdhocTask(CommandTask::CreateSelectAndOperate(std::move(commands), *application, callback, config, logger));
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	this->ScheduleAdhocTask(CommandTask::CreateSelectAndOperate(std::move(commands), *application, callback, timeout, config, logger));
 }
 
 void MContext::ProcessAPDU(const APDUResponseHeader& header, const RSlice& objects)
@@ -198,30 +200,25 @@ void MContext::ProcessIIN(const IINField& iin)
 {
 	if (iin.IsSet(IINBit::DEVICE_RESTART) && !this->params.ignoreRestartIIN)
 	{
-		this->tasks.clearRestart->SetMinExpiration();
-		this->tasks.assignClass->SetMinExpiration();
-		this->tasks.startupIntegrity->SetMinExpiration();
-		this->tasks.enableUnsol->SetMinExpiration();
+		this->tasks.OnRestartDetected();
 		this->scheduler->Evaluate();
 	}
 
 	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && this->params.integrityOnEventOverflowIIN)
 	{
-		this->tasks.startupIntegrity->SetMinExpiration();
-		this->scheduler->Evaluate();
+		if(this->tasks.DemandIntegrity()) this->scheduler->Evaluate();
 	}
 
 	if (iin.IsSet(IINBit::NEED_TIME))
 	{
-		if (this->tasks.RequestImmediateTimeSync()) this->scheduler->Evaluate();
+		if (this->tasks.DemandTimeSync()) this->scheduler->Evaluate();
 	}
 
 	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
 	        (iin.IsSet(IINBit::CLASS2_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
 	        (iin.IsSet(IINBit::CLASS3_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass3()))
 	{
-		this->tasks.eventScan->SetMinExpiration();
-		this->scheduler->Evaluate();
+		if(this->tasks.DemandEventScan()) this->scheduler->Evaluate();
 	}
 
 	this->application->OnReceiveIIN(iin);
@@ -292,7 +289,7 @@ void MContext::StartResponseTimer()
 
 std::shared_ptr<IMasterTask> MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto task = std::make_shared<UserPollTask>(builder, true, period, params.taskRetryPeriod, *application, *SOEHandler, logger, config);
+	auto task = std::make_shared<UserPollTask>(builder, TaskBehavior::ImmediatePeriodic(period, params.taskRetryPeriod, params.maxTaskRetryPeriod), true, *application, *SOEHandler, logger, config);
 	this->ScheduleRecurringPollTask(task);
 	return task;
 }
@@ -326,7 +323,10 @@ std::shared_ptr<IMasterTask> MContext::AddRangeScan(GroupVariationID gvId, uint1
 
 void MContext::Scan(const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto task = std::make_shared<UserPollTask>(builder, false, TimeDuration::Max(), params.taskRetryPeriod, *application, *SOEHandler, logger, config);
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+
+	auto task = std::make_shared<UserPollTask>(builder, TaskBehavior::SingleExecutionNoRetry(timeout), false, *application, *SOEHandler, logger, config);
+
 	this->ScheduleAdhocTask(task);
 }
 
@@ -364,19 +364,22 @@ void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig co
 		return writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto task = std::make_shared<EmptyResponseTask>(*this->application, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, this->logger, config);
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	auto task = std::make_shared<EmptyResponseTask>(*this->application, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, timeout, this->logger, config);
 	this->ScheduleAdhocTask(task);
 }
 
 void MContext::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 {
-	auto task = std::make_shared<RestartOperationTask>(*this->application, op, callback, this->logger, config);
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	auto task = std::make_shared<RestartOperationTask>(*this->application, timeout, op, callback, this->logger, config);
 	this->ScheduleAdhocTask(task);
 }
 
 void MContext::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto task = std::make_shared<EmptyResponseTask>(*this->application, name, func, builder, this->logger, config);
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	auto task = std::make_shared<EmptyResponseTask>(*this->application, name, func, builder, timeout, this->logger, config);
 	this->ScheduleAdhocTask(task);
 }
 
@@ -411,10 +414,6 @@ void MContext::ScheduleRecurringPollTask(const std::shared_ptr<IMasterTask>& tas
 
 void MContext::ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task)
 {
-	const auto NOW = this->executor->GetTime();
-
-	task->ConfigureStartExpiration(NOW.Add(params.taskStartTimeout));
-
 	if (this->isOnline)
 	{
 		this->scheduler->Add(task, *this);
@@ -422,7 +421,7 @@ void MContext::ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task)
 	else
 	{
 		// can't run this task since we're offline so fail it immediately
-		task->OnLowerLayerClose(NOW);
+		task->OnLowerLayerClose(this->executor->GetTime());
 	}
 }
 

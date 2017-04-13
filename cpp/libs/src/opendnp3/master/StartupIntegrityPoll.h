@@ -39,7 +39,7 @@ class StartupIntegrityPoll final : public PollTaskBase
 
 public:
 
-	StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+	StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, const TaskBehavior& behavior, openpal::Logger logger);
 
 	virtual bool IsRecurring() const override
 	{
@@ -62,16 +62,12 @@ private:
 
 	ClassField classes;
 
-	openpal::TimeDuration retryPeriod;
-
 	virtual bool IsEnabled() const override;
 
 	virtual MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::STARTUP_INTEGRITY_POLL;
 	}
-
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 
 };
 

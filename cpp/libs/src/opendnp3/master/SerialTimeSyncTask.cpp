@@ -33,7 +33,7 @@ namespace opendnp3
 {
 
 SerialTimeSyncTask::SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
-	IMasterTask(app, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
+	IMasterTask(app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
 	delay(-1)
 {}
 
@@ -61,17 +61,6 @@ bool SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 
 	return true;
-}
-
-IMasterTask::TaskState SerialTimeSyncTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	switch (result)
-	{
-	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-		return TaskState::Disabled();
-	default:
-		return TaskState::Infinite();
-	}
 }
 
 IMasterTask::ResponseResult SerialTimeSyncTask::ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects)

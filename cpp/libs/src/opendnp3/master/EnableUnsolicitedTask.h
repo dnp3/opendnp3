@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
  * more contributor license agreements. See the NOTICE file distributed
  * with this work for additional information regarding copyright ownership.
@@ -45,7 +45,7 @@ class EnableUnsolicitedTask final : public IMasterTask
 
 public:
 
-	EnableUnsolicitedTask(IMasterApplication& app, ClassField enabledClasses, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+	EnableUnsolicitedTask(IMasterApplication& app, const TaskBehavior& behavior, ClassField enabledClasses, openpal::Logger logger);
 
 	virtual bool IsRecurring() const override
 	{
@@ -72,7 +72,6 @@ public:
 private:
 
 	ClassField enabledClasses;
-	openpal::TimeDuration retryPeriod;
 
 	virtual MasterTaskType GetTaskType() const override
 	{
@@ -82,8 +81,6 @@ private:
 	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
 
 	virtual bool IsEnabled() const override;
-
-	virtual TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 
 };
 

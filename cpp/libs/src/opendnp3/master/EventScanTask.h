@@ -38,7 +38,7 @@ class EventScanTask final : public PollTaskBase
 
 public:
 
-	EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+	EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::Logger logger);
 
 	virtual bool IsRecurring() const override
 	{
@@ -69,8 +69,6 @@ private:
 	}
 
 	virtual bool IsEnabled() const override;
-
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 
 };
 

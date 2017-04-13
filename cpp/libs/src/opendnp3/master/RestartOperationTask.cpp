@@ -23,21 +23,26 @@
 
 #include "opendnp3/master/TaskPriority.h"
 #include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/app/APDUBuilders.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-RestartOperationTask::RestartOperationTask(IMasterApplication& app, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config) :
-	SimpleRequestTaskBase(app, ToFunctionCode(operationType), priority::USER_REQUEST, [](HeaderWriter&)
-{
-	return true;
-}, logger, config),
-m_callback(callback),
-m_duration(TimeDuration::Min())
+RestartOperationTask::RestartOperationTask(IMasterApplication& app, const openpal::MonotonicTimestamp& startTimeout, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config) :
+	IMasterTask(app, TaskBehavior::SingleExecutionNoRetry(startTimeout), logger, config),
+	function((operationType == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART),
+	callback(callback)
 {
 
+}
+
+bool RestartOperationTask::BuildRequest(APDURequest& request, uint8_t seq)
+{
+	request.SetControl(AppControlField(true, true, false, false, seq));
+	request.SetFunction(this->function);
+	return true;
 }
 
 bool RestartOperationTask::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
@@ -57,9 +62,14 @@ bool RestartOperationTask::IsAllowed(uint32_t headerCount, GroupVariation gv, Qu
 	}
 }
 
+MasterTaskType RestartOperationTask::GetTaskType() const
+{
+	return MasterTaskType::USER_TASK;
+}
+
 char const* RestartOperationTask::Name() const
 {
-	return FunctionCodeToString(m_func);
+	return FunctionCodeToString(this->function);
 }
 
 IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
@@ -84,7 +94,7 @@ IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const IC
 	Group52Var1 value;
 	if (values.ReadOnlyValue(value))
 	{
-		this->m_duration = TimeDuration::Seconds(value.time);
+		this->duration = TimeDuration::Seconds(value.time);
 		return IINField::Empty();
 	}
 	else
@@ -98,7 +108,7 @@ IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const IC
 	Group52Var2 value;
 	if (values.ReadOnlyValue(value))
 	{
-		this->m_duration = TimeDuration::Milliseconds(value.time);
+		this->duration = TimeDuration::Milliseconds(value.time);
 		return IINField::Empty();
 	}
 	else
@@ -112,18 +122,17 @@ FunctionCode RestartOperationTask::ToFunctionCode(RestartType op)
 	return (op == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART;
 }
 
-IMasterTask::TaskState RestartOperationTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
+void RestartOperationTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
 	if (this->Errors().Any())
 	{
-		this->m_callback(RestartOperationResult(TaskCompletion::FAILURE_BAD_RESPONSE, m_duration));
+		this->callback(RestartOperationResult(TaskCompletion::FAILURE_BAD_RESPONSE, this->duration));
 	}
 	else
 	{
-		this->m_callback(RestartOperationResult(result, m_duration));
+		this->callback(RestartOperationResult(result, this->duration));
 	}
 
-	return TaskState::Infinite();
 }
 
 } //end ns
