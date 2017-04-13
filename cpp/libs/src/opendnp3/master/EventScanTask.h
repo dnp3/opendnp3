@@ -59,9 +59,7 @@ public:
 
 private:
 
-	ClassField classes;
-
-	openpal::TimeDuration retryPeriod;
+	const ClassField classes;
 
 	virtual MasterTaskType GetTaskType() const override
 	{

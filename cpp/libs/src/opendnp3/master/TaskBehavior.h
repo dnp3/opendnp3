@@ -91,7 +91,7 @@ public:
 
 private:
 
-	openpal::TimeDuration TaskBehavior::CalcNextRetryTimeout() const;
+	openpal::TimeDuration CalcNextRetryTimeout() const;
 
 	TaskBehavior() = delete;
 
