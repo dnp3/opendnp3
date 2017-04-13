@@ -159,6 +159,47 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(1));
 }
 
+TEST_CASE(SUITE("Retries use exponential backoff"))
+{
+	MasterParams params;
+	params.disableUnsolOnStartup = false;
+	MasterTestObject t(params);	
+	t.context->OnLowerLayerUp();
+
+	REQUIRE(t.exe->RunMany() > 0);
+
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+	t.context->OnSendResult(true);
+
+	// time out the response
+	REQUIRE(t.exe->AdvanceToNextTimer());
+	REQUIRE(t.exe->GetTime().milliseconds == 5000);
+	REQUIRE(t.exe->RunMany() > 0);	
+	REQUIRE(t.lower->PopWriteAsHex() == "");
+	
+	// advance to the retry
+	REQUIRE(t.exe->AdvanceToNextTimer());
+	REQUIRE(t.exe->GetTime().milliseconds == 10000);
+	REQUIRE(t.exe->RunMany() > 0);
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(1));
+	t.context->OnSendResult(true);
+
+	// time out the response
+	REQUIRE(t.exe->AdvanceToNextTimer());
+	REQUIRE(t.exe->GetTime().milliseconds == 15000);
+	REQUIRE(t.exe->RunMany() > 0);
+	REQUIRE(t.lower->PopWriteAsHex() == "");
+
+	// advance to the retry
+	REQUIRE(t.exe->AdvanceToNextTimer());
+	REQUIRE(t.exe->GetTime().milliseconds == 25000); // this time the retry doubles to 10 seconds
+	REQUIRE(t.exe->RunMany() > 0);
+	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(2));
+	t.context->OnSendResult(true);
+
+
+}
+
 TEST_CASE(SUITE("AllObjectsScan"))
 {
 	MasterTestObject t(NoStartupTasks());
