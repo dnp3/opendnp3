@@ -32,7 +32,7 @@ class DisableUnsolicitedTask final : public IMasterTask
 
 public:
 
-	DisableUnsolicitedTask(IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger);
+	DisableUnsolicitedTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger);
 
 	virtual char const* Name() const override
 	{

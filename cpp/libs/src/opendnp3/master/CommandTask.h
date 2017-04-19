@@ -47,10 +47,10 @@ class CommandTask : public IMasterTask
 
 public:
 
-	CommandTask(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
+	CommandTask(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
 
-	static std::shared_ptr<IMasterTask> CreateDirectOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
-	static std::shared_ptr<IMasterTask> CreateSelectAndOperate(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
+	static std::shared_ptr<IMasterTask> CreateDirectOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
+	static std::shared_ptr<IMasterTask> CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
 
 	virtual char const* Name() const override final
 	{

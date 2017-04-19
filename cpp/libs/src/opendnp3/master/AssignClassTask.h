@@ -27,14 +27,12 @@
 namespace opendnp3
 {
 
-class IMasterApplication;
-
 class AssignClassTask final : public IMasterTask
 {
 
 public:
 
-	AssignClassTask(IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger);
+	AssignClassTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger);
 
 	virtual char const* Name() const override
 	{

@@ -28,15 +28,20 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IMasterTask::IMasterTask(IMasterApplication& app, const TaskBehavior& behavior, const openpal::Logger& logger, TaskConfig config) :
+IMasterTask::IMasterTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const TaskBehavior& behavior, const openpal::Logger& logger, TaskConfig config) :
+	context(context),
 	application(&app),
 	logger(logger),
 	config(config),
 	behavior(behavior)
-{}
+{
+
+}
 
 IMasterTask::~IMasterTask()
 {
+	context->RemoveBlock(*this);
+
 	if (config.pCallback)
 	{
 		config.pCallback->OnDestroyed();
@@ -84,11 +89,15 @@ void IMasterTask::CompleteTask(TaskCompletion result, openpal::MonotonicTimestam
 
 	// back-off exponentially using the task retry
 	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
-		this->behavior.OnResponseTimeout(now);
-		break;
+		{
+			this->behavior.OnResponseTimeout(now);
+			if (this->BlocksLowerPriority()) this->context->AddBlock(*this);
+			break;
+		}
 
 	case(TaskCompletion::SUCCESS):
 		this->behavior.OnSuccess(now);
+		this->context->RemoveBlock(*this);
 		break;
 
 	/**
@@ -97,7 +106,10 @@ void IMasterTask::CompleteTask(TaskCompletion result, openpal::MonotonicTimestam
 	FAILURE_MESSAGE_FORMAT_ERROR
 	*/
 	default:
-		this->behavior.Disable();
+		{
+			this->behavior.Disable();
+			if (this->BlocksLowerPriority()) this->context->AddBlock(*this);
+		}
 	}
 
 	if (config.pCallback)

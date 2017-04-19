@@ -36,7 +36,7 @@ class EmptyResponseTask final : public IMasterTask
 
 public:
 
-	EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func, const HeaderBuilderT& format, openpal::MonotonicTimestamp startExpiration, openpal::Logger logger, const TaskConfig& config);
+	EmptyResponseTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const std::string& name, FunctionCode func, const HeaderBuilderT& format, openpal::MonotonicTimestamp startExpiration, openpal::Logger logger, const TaskConfig& config);
 
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 

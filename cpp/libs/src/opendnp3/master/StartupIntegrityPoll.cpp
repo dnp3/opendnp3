@@ -36,8 +36,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StartupIntegrityPoll::StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, const TaskBehavior& behavior, openpal::Logger logger) :
-	PollTaskBase(app, soeHandler, behavior, logger, TaskConfig::Default()),
+StartupIntegrityPoll::StartupIntegrityPoll(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, const TaskBehavior& behavior, openpal::Logger logger) :
+	PollTaskBase(context, app, soeHandler, behavior, logger, TaskConfig::Default()),
 	classes(classes)
 {
 

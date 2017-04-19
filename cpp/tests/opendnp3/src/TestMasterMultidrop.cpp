@@ -113,7 +113,7 @@ TEST_CASE(SUITE("Scheduler executes other session's tasks if a session is timing
 
 	const auto executor = std::make_shared<testlib::MockExecutor>();
 	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
-	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();	
+	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
 
 	MasterTestObject t1(params, "s1", log, executor, scheduler);
 	MasterTestObject t2(params, "s2", log, executor, scheduler);

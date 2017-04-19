@@ -38,7 +38,7 @@ class PollTaskBase : public IMasterTask
 
 public:
 
-	PollTaskBase(IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config);
+	PollTaskBase(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config);
 
 	virtual const char* Name() const override
 	{

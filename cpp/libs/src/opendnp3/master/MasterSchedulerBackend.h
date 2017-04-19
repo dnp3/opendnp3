@@ -118,6 +118,8 @@ private:
 
 	static Comparison CompareEnabledStatus(const Record& left, const Record& right);
 
+	static Comparison CompareBlockedStatus(const Record& left, const Record& right);
+
 	static Comparison ComparePriority(const Record& left, const Record& right);
 
 	static Comparison CompareTime(const openpal::MonotonicTimestamp& time, const Record& left, const Record& right);

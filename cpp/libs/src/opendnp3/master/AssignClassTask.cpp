@@ -29,8 +29,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AssignClassTask::AssignClassTask(IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger) :
-	IMasterTask(application, behavior, logger, TaskConfig::Default())
+AssignClassTask::AssignClassTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger) :
+	IMasterTask(context, application, behavior, logger, TaskConfig::Default())
 {}
 
 bool AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)

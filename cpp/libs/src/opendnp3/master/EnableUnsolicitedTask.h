@@ -45,7 +45,7 @@ class EnableUnsolicitedTask final : public IMasterTask
 
 public:
 
-	EnableUnsolicitedTask(IMasterApplication& app, const TaskBehavior& behavior, ClassField enabledClasses, openpal::Logger logger);
+	EnableUnsolicitedTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const TaskBehavior& behavior, ClassField enabledClasses, openpal::Logger logger);
 
 	virtual bool IsRecurring() const override
 	{

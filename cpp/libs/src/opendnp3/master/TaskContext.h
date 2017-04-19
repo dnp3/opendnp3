@@ -18,40 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "EnableUnsolicitedTask.h"
-#include "MasterTasks.h"
+#ifndef OPENDNP3_TASKCONTEXT_H
+#define OPENDNP3_TASKCONTEXT_H
 
-#include "opendnp3/app/APDUBuilders.h"
+#include "openpal/util/Uncopyable.h"
 
-#include <openpal/executor/IExecutor.h>
-
-using namespace openpal;
+#include <set>
 
 namespace opendnp3
 {
 
-EnableUnsolicitedTask::EnableUnsolicitedTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const TaskBehavior& behavior, ClassField enabledClasses, openpal::Logger logger) :
-	IMasterTask(context, app, behavior, logger, TaskConfig::Default()),
-	enabledClasses(enabledClasses)
+class IMasterTask; // break circular dependency
+
+/**
+ *
+ * Allows tasks requiring sequenced execution order to block lower priority tasks
+ *
+ * Every master session will initialize its tasks with a shared_ptr to a TaskContext
+ *
+ */
+class TaskContext : private openpal::Uncopyable
 {
+	std::set<const IMasterTask*> blocking_tasks;
+
+public:
+
+	void AddBlock(const IMasterTask& task);
+
+	void RemoveBlock(const IMasterTask& task);
+
+	bool IsBlocked(const IMasterTask& task) const;
+
+};
 
 }
 
-bool EnableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
-{
-	build::EnableUnsolicited(request, enabledClasses.OnlyEventClasses(), seq);
-	return true;
-}
-
-bool EnableUnsolicitedTask::IsEnabled() const
-{
-	return enabledClasses.HasEventClass();
-}
-
-IMasterTask::ResponseResult EnableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
-{
-	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
-}
-
-} //end ns
-
+#endif

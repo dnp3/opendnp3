@@ -28,6 +28,7 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
 
+#include "opendnp3/master/TaskContext.h"
 #include "opendnp3/master/TaskConfig.h"
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/TaskBehavior.h"
@@ -58,7 +59,7 @@ public:
 		OK_CONTINUE
 	};
 
-	IMasterTask(IMasterApplication& app, const TaskBehavior& behavior, const openpal::Logger& logger, TaskConfig config);
+	IMasterTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const TaskBehavior& behavior, const openpal::Logger& logger, TaskConfig config);
 
 	virtual ~IMasterTask();
 
@@ -72,12 +73,6 @@ public:
 	* The task's priority. Lower numbers are higher priority.
 	*/
 	virtual int Priority() const = 0;
-
-	/**
-	* Allows tasks to enter a blocking mode where lower priority
-	* tasks cannot run until this task completes
-	*/
-	virtual bool BlocksLowerPriority() const = 0;
 
 	/**
 	* Indicates if the task should be rescheduled (true) or discarded
@@ -137,6 +132,14 @@ public:
 	*/
 	void SetMinExpiration();
 
+	/**
+	* Check if the task is blocked from executing by another task
+	*/
+	bool IsBlocked() const
+	{
+		return this->context->IsBlocked(*this);
+	}
+
 protected:
 
 	// called during OnStart() to initialize any state for a new run
@@ -155,6 +158,7 @@ protected:
 
 	virtual MasterTaskType GetTaskType() const = 0;
 
+	const std::shared_ptr<TaskContext> context;
 	IMasterApplication* const application;
 	openpal::Logger logger;
 
@@ -166,6 +170,12 @@ protected:
 
 
 private:
+
+	/**
+	* Allows tasks to enter a blocking mode where lower priority
+	* tasks cannot run until this task completes
+	*/
+	virtual bool BlocksLowerPriority() const = 0;
 
 	IMasterTask();
 

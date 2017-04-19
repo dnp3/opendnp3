@@ -26,6 +26,7 @@ namespace opendnp3
 {
 
 UserPollTask::UserPollTask(
+    const std::shared_ptr<TaskContext>& context,
     const HeaderBuilderT& builder,
     const TaskBehavior& behavior,
     bool recurring,
@@ -34,7 +35,7 @@ UserPollTask::UserPollTask(
     openpal::Logger logger,
     TaskConfig config
 ) :
-	PollTaskBase(app, soeHandler, behavior, logger, config),
+	PollTaskBase(context, app, soeHandler, behavior, logger, config),
 	builder(builder),
 	recurring(recurring)
 {}

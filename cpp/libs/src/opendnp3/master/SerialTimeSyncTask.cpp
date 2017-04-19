@@ -32,8 +32,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SerialTimeSyncTask::SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
-	IMasterTask(app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
+SerialTimeSyncTask::SerialTimeSyncTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, openpal::Logger logger) :
+	IMasterTask(context, app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
 	delay(-1)
 {}
 

@@ -31,8 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ClearRestartTask::ClearRestartTask(IMasterApplication& application, openpal::Logger logger) :
-	IMasterTask(application, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
+ClearRestartTask::ClearRestartTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, openpal::Logger logger) :
+	IMasterTask(context, application, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
 {
 
 }

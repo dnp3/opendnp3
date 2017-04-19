@@ -57,8 +57,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::Logger logger) :
-	PollTaskBase(application, soeHandler, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
+EventScanTask::EventScanTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::Logger logger) :
+	PollTaskBase(context, application, soeHandler, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
 	classes(classes.OnlyEventClasses())
 {
 

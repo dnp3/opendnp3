@@ -216,31 +216,24 @@ void MasterSchedulerBackend::TimeoutTasks()
 
 MasterSchedulerBackend::Comparison MasterSchedulerBackend::GetBestTaskToRun(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right)
 {
-	const auto BEST_ENABLED = CompareEnabledStatus(left, right);
+	const auto BEST_ENABLED_STATUS = CompareEnabledStatus(left, right);
 
-	if(BEST_ENABLED != Comparison::SAME)
+	if(BEST_ENABLED_STATUS != Comparison::SAME)
 	{
 		// if one task is disabled, return the other task
-		return BEST_ENABLED;
+		return BEST_ENABLED_STATUS;
+	}
+
+	const auto BEST_BLOCKED_STATUS = CompareBlockedStatus(left, right);
+
+	if (BEST_BLOCKED_STATUS != Comparison::SAME)
+	{
+		// if one task is blocked and the other isn't, return the unblocked task
+		return BEST_BLOCKED_STATUS;
 	}
 
 	const auto EARLIEST_EXPIRATION = CompareTime(now, left, right);
 	const auto BEST_PRIORITY = ComparePriority(left, right);
-
-	if (left.runner == right.runner)
-	{
-		switch (BEST_PRIORITY)
-		{
-		case(Comparison::LEFT):
-			if (left.task->BlocksLowerPriority()) return Comparison::LEFT;
-			break;
-		case(Comparison::RIGHT):
-			if (right.task->BlocksLowerPriority()) return Comparison::RIGHT;
-			break;
-		default:
-			break;
-		}
-	}
 
 	// if the expiration times are the same, break based on priority, otherwise go with the expiration time
 	return (EARLIEST_EXPIRATION == Comparison::SAME) ? BEST_PRIORITY : EARLIEST_EXPIRATION;
@@ -280,6 +273,18 @@ MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareEnabledStatus(
 	{
 		// both tasks are enabled
 		return Comparison::SAME;
+	}
+}
+
+MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareBlockedStatus(const Record& left, const Record& right)
+{
+	if (left.task->IsBlocked())
+	{
+		return right.task->IsBlocked() ? Comparison::SAME : Comparison::RIGHT;
+	}
+	else
+	{
+		return right.task->IsBlocked() ? Comparison::LEFT : Comparison::SAME;
 	}
 }
 

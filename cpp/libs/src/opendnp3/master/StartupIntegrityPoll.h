@@ -39,7 +39,7 @@ class StartupIntegrityPoll final : public PollTaskBase
 
 public:
 
-	StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, const TaskBehavior& behavior, openpal::Logger logger);
+	StartupIntegrityPoll(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, const TaskBehavior& behavior, openpal::Logger logger);
 
 	virtual bool IsRecurring() const override
 	{

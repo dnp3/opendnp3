@@ -31,8 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config) :
-	IMasterTask(application, behavior, logger, config),
+PollTaskBase::PollTaskBase(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config) :
+	IMasterTask(context, application, behavior, logger, config),
 	handler(&handler)
 {
 

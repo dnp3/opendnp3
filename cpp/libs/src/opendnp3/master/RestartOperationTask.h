@@ -36,7 +36,7 @@ class RestartOperationTask final : public IMasterTask, private IAPDUHandler
 
 public:
 
-	RestartOperationTask(IMasterApplication& app, const openpal::MonotonicTimestamp& startTimeout, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config);
+	RestartOperationTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const openpal::MonotonicTimestamp& startTimeout, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config);
 
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 

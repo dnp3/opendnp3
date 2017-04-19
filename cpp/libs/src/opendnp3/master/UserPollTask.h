@@ -43,6 +43,7 @@ class UserPollTask final : public PollTaskBase
 public:
 
 	UserPollTask(
+	    const std::shared_ptr<TaskContext>& context,
 	    const HeaderBuilderT& builder,
 	    const TaskBehavior& behavior,
 	    bool recurring,

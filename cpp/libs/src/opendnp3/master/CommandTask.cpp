@@ -33,23 +33,23 @@ using namespace openpal;
 namespace opendnp3
 {
 
-std::shared_ptr<IMasterTask> CommandTask::CreateDirectOperate(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
+std::shared_ptr<IMasterTask> CommandTask::CreateDirectOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
 {
-	auto task = std::make_shared<CommandTask>(std::move(set), app, callback, startExpiration, config, logger);
+	auto task = std::make_shared<CommandTask>(context, std::move(set), app, callback, startExpiration, config, logger);
 	task->LoadDirectOperate();
 	return task;
 }
 
 
-std::shared_ptr<IMasterTask> CommandTask::CreateSelectAndOperate(CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
+std::shared_ptr<IMasterTask> CommandTask::CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
 {
-	auto task = std::make_shared<CommandTask>(std::move(set), app, callback, startExpiration, config, logger);
+	auto task = std::make_shared<CommandTask>(context, std::move(set), app, callback, startExpiration, config, logger);
 	task->LoadSelectAndOperate();
 	return task;
 }
 
-CommandTask::CommandTask(CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger) :
-	IMasterTask(app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
+CommandTask::CommandTask(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger) :
+	IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
 	statusResult(CommandStatus::UNDEFINED),
 	commandCallback(callback),
 	commands(std::move(commands))

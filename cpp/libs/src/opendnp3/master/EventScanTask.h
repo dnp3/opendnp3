@@ -38,7 +38,7 @@ class EventScanTask final : public PollTaskBase
 
 public:
 
-	EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::Logger logger);
+	EventScanTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::Logger logger);
 
 	virtual bool IsRecurring() const override
 	{

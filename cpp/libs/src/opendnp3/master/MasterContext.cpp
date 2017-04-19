@@ -171,13 +171,13 @@ void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& head
 void MContext::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
 	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
-	this->ScheduleAdhocTask(CommandTask::CreateDirectOperate(std::move(commands), *application, callback, timeout, config, logger));
+	this->ScheduleAdhocTask(CommandTask::CreateDirectOperate(this->tasks.context, std::move(commands), *application, callback, timeout, config, logger));
 }
 
 void MContext::SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
 	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
-	this->ScheduleAdhocTask(CommandTask::CreateSelectAndOperate(std::move(commands), *application, callback, timeout, config, logger));
+	this->ScheduleAdhocTask(CommandTask::CreateSelectAndOperate(this->tasks.context, std::move(commands), *application, callback, timeout, config, logger));
 }
 
 void MContext::ProcessAPDU(const APDUResponseHeader& header, const RSlice& objects)
@@ -289,7 +289,7 @@ void MContext::StartResponseTimer()
 
 std::shared_ptr<IMasterTask> MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto task = std::make_shared<UserPollTask>(builder, TaskBehavior::ImmediatePeriodic(period, params.taskRetryPeriod, params.maxTaskRetryPeriod), true, *application, *SOEHandler, logger, config);
+	auto task = std::make_shared<UserPollTask>(this->tasks.context, builder, TaskBehavior::ImmediatePeriodic(period, params.taskRetryPeriod, params.maxTaskRetryPeriod), true, *application, *SOEHandler, logger, config);
 	this->ScheduleRecurringPollTask(task);
 	return task;
 }
@@ -325,7 +325,7 @@ void MContext::Scan(const HeaderBuilderT& builder, TaskConfig config)
 {
 	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
 
-	auto task = std::make_shared<UserPollTask>(builder, TaskBehavior::SingleExecutionNoRetry(timeout), false, *application, *SOEHandler, logger, config);
+	auto task = std::make_shared<UserPollTask>(this->tasks.context, builder, TaskBehavior::SingleExecutionNoRetry(timeout), false, *application, *SOEHandler, logger, config);
 
 	this->ScheduleAdhocTask(task);
 }
@@ -365,21 +365,21 @@ void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig co
 	};
 
 	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
-	auto task = std::make_shared<EmptyResponseTask>(*this->application, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, timeout, this->logger, config);
+	auto task = std::make_shared<EmptyResponseTask>(this->tasks.context, *this->application, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, timeout, this->logger, config);
 	this->ScheduleAdhocTask(task);
 }
 
 void MContext::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 {
 	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
-	auto task = std::make_shared<RestartOperationTask>(*this->application, timeout, op, callback, this->logger, config);
+	auto task = std::make_shared<RestartOperationTask>(this->tasks.context, *this->application, timeout, op, callback, this->logger, config);
 	this->ScheduleAdhocTask(task);
 }
 
 void MContext::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config)
 {
 	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
-	auto task = std::make_shared<EmptyResponseTask>(*this->application, name, func, builder, timeout, this->logger, config);
+	auto task = std::make_shared<EmptyResponseTask>(this->tasks.context, *this->application, name, func, builder, timeout, this->logger, config);
 	this->ScheduleAdhocTask(task);
 }
 

@@ -27,8 +27,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EmptyResponseTask::EmptyResponseTask(IMasterApplication& app, const std::string& name, FunctionCode func, const std::function<bool(HeaderWriter&)>& format, openpal::MonotonicTimestamp startExpiration, openpal::Logger logger, const TaskConfig& config) :
-	IMasterTask(app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
+EmptyResponseTask::EmptyResponseTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const std::string& name, FunctionCode func, const std::function<bool(HeaderWriter&)>& format, openpal::MonotonicTimestamp startExpiration, openpal::Logger logger, const TaskConfig& config) :
+	IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
 	name(name),
 	func(func),
 	format(format)

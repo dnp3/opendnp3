@@ -30,8 +30,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-RestartOperationTask::RestartOperationTask(IMasterApplication& app, const openpal::MonotonicTimestamp& startTimeout, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config) :
-	IMasterTask(app, TaskBehavior::SingleExecutionNoRetry(startTimeout), logger, config),
+RestartOperationTask::RestartOperationTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const openpal::MonotonicTimestamp& startTimeout, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config) :
+	IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startTimeout), logger, config),
 	function((operationType == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART),
 	callback(callback)
 {

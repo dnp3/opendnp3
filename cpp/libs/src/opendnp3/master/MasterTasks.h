@@ -48,6 +48,8 @@ public:
 
 	void BindTask(const std::shared_ptr<IMasterTask>& task);
 
+	const std::shared_ptr<TaskContext> context;
+
 private:
 
 	bool Demand(const std::shared_ptr<IMasterTask>& task)
@@ -78,9 +80,9 @@ private:
 
 
 
-	static std::shared_ptr<IMasterTask> GetTimeSyncTask(TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application);
-	static std::shared_ptr<IMasterTask> GetEnableUnsolTask(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application);
-	static std::shared_ptr<IMasterTask> GetDisableUnsolTask(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application);
+	static std::shared_ptr<IMasterTask> GetTimeSyncTask(const std::shared_ptr<TaskContext>& context, TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application);
+	static std::shared_ptr<IMasterTask> GetEnableUnsolTask(const std::shared_ptr<TaskContext>& context, const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application);
+	static std::shared_ptr<IMasterTask> GetDisableUnsolTask(const std::shared_ptr<TaskContext>& context, const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application);
 
 	std::vector<std::shared_ptr<IMasterTask>> boundTasks;
 
