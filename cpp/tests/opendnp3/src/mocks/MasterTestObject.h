@@ -41,11 +41,17 @@ class MasterTestObject
 {
 public:
 
-	MasterTestObject(const MasterParams& param, const std::shared_ptr<testlib::MockExecutor>& executor = nullptr, const std::shared_ptr<IMasterScheduler>& scheduler = nullptr);
+	MasterTestObject(
+	    const MasterParams& param,
+	    const std::string& id = "test",
+	    const std::shared_ptr<openpal::ILogHandler>& log = nullptr,
+	    const std::shared_ptr<testlib::MockExecutor>& executor = nullptr,
+	    const std::shared_ptr<IMasterScheduler>& scheduler = nullptr
+	);
 
 	void SendToMaster(const std::string& hex);
 
-	testlib::MockLogHandler log;
+	const std::shared_ptr<openpal::ILogHandler> log;
 
 	const std::shared_ptr<testlib::MockExecutor> exe;
 	const std::shared_ptr<MockSOEHandler> meas;

@@ -28,6 +28,11 @@
 using namespace openpal;
 using namespace opendnp3;
 
+// helpers
+
+void ExpectRequestAndCauseResponseTimeout(MasterTestObject&, const std::string& expected);
+void ExpectRequestAndRespond(MasterTestObject&, const std::string& expected, const std::string& response);
+
 #define SUITE(name) "MasterMultidropTestSuite - " name
 
 TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
@@ -37,9 +42,10 @@ TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
 
 	const auto executor = std::make_shared<testlib::MockExecutor>();
 	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
+	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
 
-	MasterTestObject t1(params, executor, scheduler);
-	MasterTestObject t2(params, executor, scheduler);
+	MasterTestObject t1(params, "s1", log, executor, scheduler);
+	MasterTestObject t2(params, "s2", log, executor, scheduler);
 
 	t1.context->OnLowerLayerUp();
 	t2.context->OnLowerLayerUp();
@@ -78,9 +84,10 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to run scheduled task"
 
 	const auto executor = std::make_shared<testlib::MockExecutor>();
 	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
+	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
 
-	MasterTestObject t1(params, executor, scheduler);
-	MasterTestObject t2(params, executor, scheduler);
+	MasterTestObject t1(params, "s1", log, executor, scheduler);
+	MasterTestObject t2(params, "s2", log, executor, scheduler);
 
 	t1.context->OnLowerLayerUp();
 	t2.context->OnLowerLayerUp();
@@ -98,4 +105,46 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to run scheduled task"
 
 	REQUIRE(t1.lower->PopWriteAsHex() == "");
 	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+}
+
+TEST_CASE(SUITE("Scheduler executes other session's tasks if a session is timing out"))
+{
+	MasterParams params;
+
+	const auto executor = std::make_shared<testlib::MockExecutor>();
+	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
+	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
+
+	log->outputToStdIO = true;
+
+	MasterTestObject t1(params, "s1", log, executor, scheduler);
+	MasterTestObject t2(params, "s2", log, executor, scheduler);
+
+	t1.context->OnLowerLayerUp();
+	t2.context->OnLowerLayerUp();
+
+	REQUIRE(executor->RunMany() > 0);
+
+	ExpectRequestAndCauseResponseTimeout(t1, hex::DisableUnsol(0));
+	ExpectRequestAndRespond(t2, hex::DisableUnsol(0), hex::EmptyResponse(0));
+
+	// now session 2 should be able to run its integrity poll
+	ExpectRequestAndRespond(t2, hex::IntegrityPoll(1), hex::EmptyResponse(1));
+
+}
+
+void ExpectRequestAndCauseResponseTimeout(MasterTestObject& session, const std::string& expected)
+{
+	REQUIRE(session.lower->PopWriteAsHex() == expected);
+	REQUIRE(session.context->OnSendResult(true));
+	REQUIRE(session.exe->AdvanceToNextTimer());
+	REQUIRE(session.exe->RunMany() > 0);
+}
+
+void ExpectRequestAndRespond(MasterTestObject& session, const std::string& expected, const std::string& response)
+{
+	REQUIRE(session.lower->PopWriteAsHex() == expected);
+	REQUIRE(session.context->OnSendResult(true));
+	session.SendToMaster(response);
+	REQUIRE(session.exe->RunMany() > 0);
 }

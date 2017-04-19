@@ -46,6 +46,11 @@ public:
 		return true;
 	}
 
+	virtual const char* Name() const override
+	{
+		return "Startup Integrity Poll";
+	};
+
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
 	virtual int Priority() const override

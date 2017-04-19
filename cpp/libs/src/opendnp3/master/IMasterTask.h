@@ -35,8 +35,6 @@
 namespace opendnp3
 {
 
-class IMasterScheduler; // break cycle
-
 /**
  * A generic interface for defining master request/response style tasks
  */

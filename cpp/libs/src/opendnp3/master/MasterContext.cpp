@@ -154,8 +154,8 @@ void MContext::CompleteActiveTask()
 {
 	if (this->activeTask)
 	{
-		this->scheduler->CompleteCurrentFor(*this);
 		this->activeTask.reset();
+		this->scheduler->CompleteCurrentFor(*this);
 	}
 
 }

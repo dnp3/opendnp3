@@ -40,7 +40,7 @@ public:
 
 	PollTaskBase(IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config);
 
-	virtual const char* Name() const override final
+	virtual const char* Name() const override
 	{
 		return "Application Poll";
 	};

@@ -163,7 +163,7 @@ TEST_CASE(SUITE("Retries use exponential backoff"))
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	MasterTestObject t(params);	
+	MasterTestObject t(params);
 	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
@@ -174,9 +174,9 @@ TEST_CASE(SUITE("Retries use exponential backoff"))
 	// time out the response
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->GetTime().milliseconds == 5000);
-	REQUIRE(t.exe->RunMany() > 0);	
+	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.lower->PopWriteAsHex() == "");
-	
+
 	// advance to the retry
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->GetTime().milliseconds == 10000);
