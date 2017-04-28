@@ -136,27 +136,25 @@ TEST_CASE(SUITE("Scheduler still does integrity polls if exception scan set to h
 	const auto executor = std::make_shared<testlib::MockExecutor>();
 	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
 	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
-	
+
 
 	MasterTestObject t1(NoStartupTasks(), "s1", log, executor, scheduler);
 	MasterTestObject t2(NoStartupTasks(), "s2", log, executor, scheduler);
-	
+
 	auto integrity1 = t1.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(10));
 	auto event2 = t2.context->AddClassScan(ClassField::AllEventClasses(), TimeDuration::Seconds(100000));
 	auto integrity2 = t2.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(15));
-	
-	
+
+
 	t1.context->OnLowerLayerUp();
 	t2.context->OnLowerLayerUp();
 
 	REQUIRE(executor->RunMany() > 0);
-	
-	// All of the configured scans should execute immediately, in the order the layers go online, followed by the order they were added	
+
+	// All of the configured scans should execute immediately, in the order the layers go online, followed by the order they were added
 	ExpectRequestAndRespond(t1, hex::IntegrityPoll(0), hex::EmptyResponse(0));
 	ExpectRequestAndRespond(t2, hex::EventPoll(0), hex::EmptyResponse(0));
 	ExpectRequestAndRespond(t2, hex::IntegrityPoll(1), hex::EmptyResponse(1));
-	
-	log->outputToStdIO = true;
 
 	// ---- after all of the initial polls, they should then execute based on the expired periods ----
 
@@ -165,12 +163,18 @@ TEST_CASE(SUITE("Scheduler still does integrity polls if exception scan set to h
 	REQUIRE(executor->GetTime().milliseconds == 10000);
 	REQUIRE(executor->RunMany() > 0);
 	ExpectRequestAndRespond(t1, hex::IntegrityPoll(1), hex::EmptyResponse(1));
-	
+
 	// next is the integrity poll for S2
 	REQUIRE(executor->AdvanceToNextTimer());
 	REQUIRE(executor->GetTime().milliseconds == 15000);
 	REQUIRE(executor->RunMany() > 0);
 	ExpectRequestAndRespond(t2, hex::IntegrityPoll(2), hex::EmptyResponse(2));
+
+	// then the poll for S1 occurs again at t = 20000
+	REQUIRE(executor->AdvanceToNextTimer());
+	REQUIRE(executor->GetTime().milliseconds == 20000);
+	REQUIRE(executor->RunMany() > 0);
+	ExpectRequestAndRespond(t1, hex::IntegrityPoll(2), hex::EmptyResponse(2));
 }
 
 void ExpectRequestAndCauseResponseTimeout(MasterTestObject& session, const std::string& expected)

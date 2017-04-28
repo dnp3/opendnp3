@@ -86,6 +86,14 @@ public:
 	openpal::MonotonicTimestamp ExpirationTime() const;
 
 	/**
+	* Helper to test if the task is expired
+	*/
+	bool IsExpired(const openpal::MonotonicTimestamp& now) const
+	{
+		return now.milliseconds >= this->ExpirationTime().milliseconds;
+	}
+
+	/**
 	* The time when this task expires if it is unable to start
 	*/
 	openpal::MonotonicTimestamp StartExpirationTime() const;

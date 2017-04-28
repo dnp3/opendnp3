@@ -22,8 +22,6 @@
 
 #include <algorithm>
 
-#include <iostream>
-
 using namespace openpal;
 
 namespace opendnp3
@@ -146,8 +144,6 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 
 	while (current != this->tasks.end())
 	{
-		//std::cout << "Comparing: " << best_task->task->Name() << " to " << current->task->Name() << std::endl;		
-
 		if (GetBestTaskToRun(now, *best_task, *current) == Comparison::RIGHT)
 		{
 			best_task = current;
@@ -246,8 +242,8 @@ MasterSchedulerBackend::Comparison MasterSchedulerBackend::GetBestTaskToRun(cons
 MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareTime(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right)
 {
 	// if tasks are already expired, the effective expiration time is NOW
-	const auto leftTime = (now > left.task->ExpirationTime()) ? left.task->ExpirationTime() : now;
-	const auto rightTime = (now > right.task->ExpirationTime()) ? right.task->ExpirationTime() : now;
+	const auto leftTime = left.task->IsExpired(now) ? now : left.task->ExpirationTime();
+	const auto rightTime = right.task->IsExpired(now) ? now : right.task->ExpirationTime();
 
 	if (leftTime < rightTime)
 	{
