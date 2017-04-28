@@ -131,6 +131,33 @@ TEST_CASE(SUITE("Scheduler executes other session's tasks if a session is timing
 
 }
 
+TEST_CASE(SUITE("Scheduler still does integrity polls if exception scan set to high interval"))
+{
+	/*
+	MasterParams params = NoStartupTasks();
+
+
+	const auto executor = std::make_shared<testlib::MockExecutor>();
+	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
+	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
+
+	MasterTestObject t1(params, "s1", log, executor, scheduler);
+	MasterTestObject t2(params, "s2", log, executor, scheduler);
+
+	t1.context->OnLowerLayerUp();
+	t2.context->OnLowerLayerUp();
+
+	REQUIRE(executor->RunMany() > 0);
+
+	ExpectRequestAndCauseResponseTimeout(t1, hex::DisableUnsol(0));
+	ExpectRequestAndRespond(t2, hex::DisableUnsol(0), hex::EmptyResponse(0));
+
+	// now session 2 should be able to run its integrity poll
+	ExpectRequestAndRespond(t2, hex::IntegrityPoll(1), hex::EmptyResponse(1));
+	*/
+
+}
+
 void ExpectRequestAndCauseResponseTimeout(MasterTestObject& session, const std::string& expected)
 {
 	REQUIRE(session.lower->PopWriteAsHex() == expected);

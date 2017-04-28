@@ -33,8 +33,8 @@ MasterParams NoStartupTasks()
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	params.startupIntegrityClassMask = 0;
-	params.unsolClassMask = 0;
+	params.startupIntegrityClassMask = ClassField::None();
+	params.unsolClassMask = ClassField::None();
 	return params;
 }
 

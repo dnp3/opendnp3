@@ -73,7 +73,7 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	params.unsolClassMask = 0;
+	params.unsolClassMask = ClassField::None();
 	MasterTestObject t(params);
 	t.context->OnLowerLayerUp();
 
@@ -221,7 +221,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 
 	t.exe->RunMany();
 
-	auto scan = t.context->AddClassScan(~0, TimeDuration::Seconds(10));
+	auto scan = t.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(10));
 
 	REQUIRE(t.exe->RunMany() > 0);
 
@@ -322,7 +322,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 {
 	MasterTestObject t(NoStartupTasks());
-	t.context->AddClassScan(~0, TimeDuration::Seconds(1));
+	t.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(1));
 	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
@@ -435,7 +435,7 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 {
 
 	MasterParams params;
-	params.startupIntegrityClassMask = 0; //disable integrity poll
+	params.startupIntegrityClassMask = ClassField::None(); //disable integrity poll
 	MasterTestObject t(params);
 	t.context->OnLowerLayerUp();
 
@@ -592,7 +592,7 @@ TEST_CASE(SUITE("ReceiveIINUnsol"))
 TEST_CASE(SUITE("EventScanOnEventsAvailableIIN"))
 {
 	auto params = NoStartupTasks();
-	params.eventScanOnEventsAvailableClassMask = ClassField::CLASS_1 | ClassField::CLASS_2;
+	params.eventScanOnEventsAvailableClassMask = ClassField(ClassField::CLASS_1 | ClassField::CLASS_2);
 	MasterTestObject t(params);
 
 	t.context->OnLowerLayerUp();

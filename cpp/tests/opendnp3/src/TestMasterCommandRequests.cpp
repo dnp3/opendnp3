@@ -309,7 +309,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	params.unsolClassMask = 0;
+	params.unsolClassMask = ClassField::None();
 	MasterTestObject t(params);
 	t.context->OnLowerLayerUp();
 
