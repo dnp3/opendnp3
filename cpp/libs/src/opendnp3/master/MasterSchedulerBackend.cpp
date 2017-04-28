@@ -22,6 +22,8 @@
 
 #include <algorithm>
 
+#include <iostream>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -144,6 +146,8 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 
 	while (current != this->tasks.end())
 	{
+		//std::cout << "Comparing: " << best_task->task->Name() << " to " << current->task->Name() << std::endl;		
+
 		if (GetBestTaskToRun(now, *best_task, *current) == Comparison::RIGHT)
 		{
 			best_task = current;
