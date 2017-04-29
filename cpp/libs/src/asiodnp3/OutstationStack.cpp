@@ -115,7 +115,7 @@ void OutstationStack::Apply(const Updates& updates)
 
 	auto task = [self = this->shared_from_this(), updates]()
 	{
-		updates.Apply(self->ocontext.GetUpdateHanlder());
+		updates.Apply(self->ocontext.GetUpdateHandler());
 		self->ocontext.CheckForTaskStart(); // force the outstation to check for updates
 	};
 

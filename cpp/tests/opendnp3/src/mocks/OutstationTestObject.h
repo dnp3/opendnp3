@@ -65,8 +65,8 @@ public:
 
 	void Transaction(const std::function<void (IUpdateHandler&)>& apply)
 	{
-		//auto& handler = context.GetUpdateHanlder();
-		apply(context.GetUpdateHanlder());
+		//auto& handler = context.GetUpdateHandler();
+		apply(context.GetUpdateHandler());
 		context.CheckForTaskStart();
 	}
 
