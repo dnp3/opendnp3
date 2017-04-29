@@ -78,7 +78,7 @@ public:
 
 	void CheckForTaskStart();
 
-	IUpdateHandler& GetUpdateHanlder();
+	IUpdateHandler& GetUpdateHandler();
 
 	DatabaseConfigView GetConfigView();
 

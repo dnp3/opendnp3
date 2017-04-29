@@ -467,7 +467,7 @@ void OContext::SetRestartIIN()
 	this->staticIIN.SetBit(IINBit::DEVICE_RESTART);
 }
 
-IUpdateHandler& OContext::GetUpdateHanlder()
+IUpdateHandler& OContext::GetUpdateHandler()
 {
 	return this->database;
 }
