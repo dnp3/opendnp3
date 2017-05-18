@@ -1,3 +1,6 @@
+### 2.2.0-RC4 ###
+* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/200) where connection attempts were not retrieved after failed DNS resolution.
+
 ### 2.2.0-RC3 ###
 * :beetle: Fixed a [regression](https://github.com/automatak/dnp3/issues/197) in outstation whereby the session could hang indefinitely if a non-read request was received during UnsolConirmWait.
 
