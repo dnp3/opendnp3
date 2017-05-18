@@ -123,7 +123,11 @@ void TCPClient::HandleResolveResult(
 		// attempt a connection to each endpoint in the iterator until we connect
 		auto cb = [self = shared_from_this(), callback](const std::error_code & ec, asio::ip::tcp::resolver::iterator endpoints)
 		{
-			callback(self->executor, std::move(self->socket), ec);
+			self->connecting = false;
+			if (!self->canceled)
+			{
+				callback(self->executor, std::move(self->socket), ec);
+			}
 		};
 
 		asio::async_connect(this->socket, endpoints, this->condition, this->executor->strand.wrap(cb));

@@ -67,6 +67,7 @@ void TCPClientIOHandler::OnChannelShutdown()
 
 void TCPClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TCPClient>& client, const openpal::TimeDuration& delay)
 {
+	FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connecting to: %s", this->remote.address.c_str());
 
 	auto cb = [ =, self = shared_from_this()](const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
 	{
