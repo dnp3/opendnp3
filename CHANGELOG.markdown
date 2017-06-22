@@ -1,3 +1,6 @@
+### 2.2.0 ###
+* No changes from 2.2.0-RC5
+
 ### 2.2.0-RC5 ###
 * :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/200) where connection attempts were not retrieved after failed DNS resolution.
 
