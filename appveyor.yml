@@ -2,7 +2,6 @@ version: 2.0.{build}
 branches:
   only:
   - 2.0.x
-  - vs2015
 os: Visual Studio 2015
 configuration: Release
 platform: x86
@@ -11,6 +10,7 @@ environment:
   OSSL_LIB32_DIR: C:\OpenSSL-Win32\lib\VC
   OPENDNP3_DIR: C:\projects\dnp3\build\lib
 install:
+- git describe --tags --exact-match
 - git submodule update --init --recursive
 build_script:
 - cmd: MKDIR build
@@ -27,10 +27,12 @@ after_build:
       nuget pack dotnet\nuget\opendnp3.nuspec -Version "$env:APPVEYOR_REPO_TAG_NAME"
     }
 test_script:
+- cmd: c:\projects\dnp3\build\Release\testasiodnp3.exe
+- cmd: c:\projects\dnp3\build\Release\testasiopal.exe
 - cmd: c:\projects\dnp3\build\Release\testopendnp3.exe
 - cmd: c:\projects\dnp3\build\Release\testopenpal.exe
 artifacts:
-- path: '*.nupkg'
+- path: '**\*.nupkg'
   name: nuget
 deploy:
   provider: NuGet
