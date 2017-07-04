@@ -9,9 +9,8 @@ clone_folder: C:\projects\dnp3
 environment:
   OSSL_LIB32_DIR: C:\OpenSSL-Win32\lib\VC
   OPENDNP3_DIR: C:\projects\dnp3\build\lib
-init:
-- git describe --tags --exact-match & cmd /c exit 0
 install:
+- git describe --tags --exact-match & cmd /c exit 0
 - git submodule update --init --recursive
 build_script:
 - cmd: MKDIR build
