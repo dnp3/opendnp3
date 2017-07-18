@@ -19,10 +19,10 @@
  * to you under the terms of the License.
  */
 
-#include <openpal/logging/LogRoot.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/container/Buffer.h>
 
-#include <opendnp3/decoder/Decoder.h>
+#include <dnp3decode/Decoder.h>
 #include <opendnp3/LogLevels.h>
 #include <asiodnp3/ConsoleLogger.h>
 
@@ -56,9 +56,9 @@ Mode GetMode(const std::string& mode)
 
 int main(int argc, char* argv[])
 {
-	openpal::LogRoot log(&ConsoleLogger::Instance(), "decoder", LogFilters(~0));
+	openpal::Logger logger(ConsoleLogger::Create(), "decoder", LogFilters(~0));
 	IDecoderCallbacks callback;
-	Decoder decoder(callback, log.GetLogger());
+	Decoder decoder(callback, logger);
 
 	Buffer buffer(4096);
 
