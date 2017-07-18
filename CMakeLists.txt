@@ -172,7 +172,7 @@ if(DNP3_DEMO)
   target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(outstation-demo PROPERTIES FOLDER demos)
 
-  if(DNP3_DECODE)
+  if(DNP3_DECODER)
 
     # ----- decoder executable -----
     add_executable(decoder ./cpp/examples/decoder/main.cpp)
