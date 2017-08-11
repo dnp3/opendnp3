@@ -19,6 +19,7 @@
  * to you under the terms of the License.
  */
 
+#include <string>
 #include "asiodnp3/ErrorCodes.h"
 
 namespace asiodnp3
