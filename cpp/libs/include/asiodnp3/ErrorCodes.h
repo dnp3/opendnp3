@@ -23,6 +23,7 @@
 #define ASIODNP3_ERRORCODES_H
 
 #include <system_error>
+#include <string>
 
 
 namespace asiodnp3
