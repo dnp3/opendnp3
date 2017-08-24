@@ -34,11 +34,11 @@ enum class MasterTaskType : uint8_t
   DISABLE_UNSOLICITED = 1,
   ASSIGN_CLASS = 2,
   STARTUP_INTEGRITY_POLL = 3,
-  SERIAL_TIME_SYNC = 4,
-  ENABLE_UNSOLICITED = 5,
-  AUTO_EVENT_SCAN = 6,
-  USER_TASK = 7,
-  SET_SESSION_KEYS = 8
+  NON_LAN_TIME_SYNC = 4,
+  LAN_TIME_SYNC = 5,
+  ENABLE_UNSOLICITED = 6,
+  AUTO_EVENT_SCAN = 7,
+  USER_TASK = 8
 };
 
 char const* MasterTaskTypeToString(MasterTaskType arg);

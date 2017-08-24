@@ -25,9 +25,13 @@ package com.automatak.dnp3.enums;
 public enum TimeSyncMode
 {
   /**
-  * synchronize the outstation's time using the serial time sync procedure
+  * synchronize the outstation's time using the non-LAN time sync procedure
   */
-  SerialTimeSync(1),
+  NonLAN(1),
+  /**
+  * synchronize the outstation's time using the LAN time sync procedure
+  */
+  LAN(2),
   /**
   * don't perform a time-sync
   */
@@ -50,7 +54,9 @@ public enum TimeSyncMode
     switch(arg)
     {
       case(1):
-        return SerialTimeSync;
+        return NonLAN;
+      case(2):
+        return LAN;
       default:
         return None;
     }

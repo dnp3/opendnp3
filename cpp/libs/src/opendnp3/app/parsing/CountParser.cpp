@@ -94,6 +94,9 @@ ParseResult CountParser::ParseCountOfObjects(openpal::RSlice& buffer, const Head
 	case(GroupVariation::Group50Var1) :
 		return CountParser::From<Group50Var1>(count).Process(record, buffer, pHandler, pLogger);
 
+	case(GroupVariation::Group50Var3):
+		return CountParser::From<Group50Var3>(count).Process(record, buffer, pHandler, pLogger);
+
 	case(GroupVariation::Group51Var1) :
 		return CountParser::From<Group51Var1>(count).Process(record, buffer, pHandler, pLogger);
 

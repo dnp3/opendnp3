@@ -111,6 +111,12 @@ void MeasureDelay(APDURequest& request, uint8_t seq)
 	request.SetControl(AppControlField::Request(seq));
 }
 
+void RecordCurrentTime(APDURequest& request, uint8_t seq)
+{
+	request.SetFunction(FunctionCode::RECORD_CURRENT_TIME);
+	request.SetControl(AppControlField::Request(seq));
+}
+
 void NullUnsolicited(APDUResponse& response, uint8_t seq, const IINField& iin)
 {
 	response.SetControl(AppControlField(true, true, true, true, seq));

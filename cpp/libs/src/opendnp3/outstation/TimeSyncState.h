@@ -18,42 +18,60 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_APDUBUILDERS_H
-#define OPENDNP3_APDUBUILDERS_H
+#ifndef OPENDNP3_TIMESYNCSTATE_H
+#define OPENDNP3_TIMESYNCSTATE_H
 
-#include "opendnp3/app/APDURequest.h"
-#include "opendnp3/app/APDUResponse.h"
-#include "opendnp3/app/ClassField.h"
+#include "opendnp3/app/AppSeqNum.h"
+
+#include "openpal/executor/MonotonicTimestamp.h"
+
 
 namespace opendnp3
 {
-namespace build
+
+///
+/// Represent all of the mutable state for time synchornization
+///
+class TimeSyncState
 {
-// -------- requests -------------
 
-void ClassRequest(APDURequest& request, FunctionCode code, const ClassField& classes, uint8_t seq);
+public:
 
-bool WriteClassHeaders(HeaderWriter& writer, const ClassField& classes);
+	TimeSyncState() {}
 
-void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
+	void RecordCurrentTime(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now)
+	{
+		valid = true;
+		time = now;
+		expectedSeqNum = seq.Next();
+	}
 
-void ReadAllObjects(APDURequest& request, GroupVariationID gvId, uint8_t seq = 0);
+	bool CalcTimeDifference(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now)
+	{
+		if (!valid) return false;
+		if (!expectedSeqNum.Equals(seq)) return false;
+		if (now.milliseconds < time.milliseconds) return false;
 
-void DisableUnsolicited(APDURequest& request, uint8_t seq = 0);
+		this->difference = openpal::TimeDuration::Milliseconds(now.milliseconds - time.milliseconds);
+		this->valid = false;
 
-void EnableUnsolicited(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
+		return true;
+	}
 
-void ClearRestartIIN(APDURequest& request, uint8_t seq = 0);
+	openpal::TimeDuration GetDifference() const
+	{
+		return this->difference;
+	}
 
-void MeasureDelay(APDURequest& request, uint8_t seq = 0);
+private:
 
-void RecordCurrentTime(APDURequest& request, uint8_t seq = 0);
+	bool valid = false;
+	openpal::MonotonicTimestamp time;
+	openpal::TimeDuration difference;
+	AppSeqNum expectedSeqNum;
+};
 
-// -------- responses -------------
 
-void NullUnsolicited(APDUResponse& response, uint8_t seq, const IINField& iin);
-
-}
 }
 
 #endif

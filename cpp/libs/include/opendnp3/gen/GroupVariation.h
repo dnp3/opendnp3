@@ -120,6 +120,7 @@ enum class GroupVariation : uint16_t
   Group43Var7 = 0x2B07,
   Group43Var8 = 0x2B08,
   Group50Var1 = 0x3201,
+  Group50Var3 = 0x3203,
   Group50Var4 = 0x3204,
   Group51Var1 = 0x3301,
   Group51Var2 = 0x3302,

@@ -21,24 +21,14 @@
 #ifndef OPENDNP3_MASTERTASKS_H
 #define OPENDNP3_MASTERTASKS_H
 
-#include "opendnp3/master/ClearRestartTask.h"
-#include "opendnp3/master/AssignClassTask.h"
-#include "opendnp3/master/EnableUnsolicitedTask.h"
-#include "opendnp3/master/StartupIntegrityPoll.h"
-#include "opendnp3/master/DisableUnsolicitedTask.h"
-#include "opendnp3/master/SerialTimeSyncTask.h"
-#include "opendnp3/master/CommandTask.h"
-#include "opendnp3/master/EventScanTask.h"
-
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/IMasterApplication.h"
 
 #include <vector>
 
 namespace opendnp3
 {
-
-class IMasterApplication;
 
 class MasterTasks
 {
@@ -50,18 +40,23 @@ public:
 	void Initialize(MasterScheduler& scheduler);
 
 	// master tasks that can be "failed" (startup and in response to IIN bits)
-	const std::shared_ptr<EnableUnsolicitedTask> enableUnsol;
-	const std::shared_ptr<ClearRestartTask> clearRestart;
-	const std::shared_ptr<AssignClassTask> assignClass;
-	const std::shared_ptr<StartupIntegrityPoll> startupIntegrity;
-	const std::shared_ptr<DisableUnsolicitedTask> disableUnsol;
-	const std::shared_ptr<SerialTimeSyncTask >timeSync;
-	const std::shared_ptr<EventScanTask> eventScan;
+	const std::shared_ptr<IMasterTask> enableUnsol;
+	const std::shared_ptr<IMasterTask> clearRestart;
+	const std::shared_ptr<IMasterTask> assignClass;
+	const std::shared_ptr<IMasterTask> startupIntegrity;
+	const std::shared_ptr<IMasterTask> disableUnsol;
+	const std::shared_ptr<IMasterTask> eventScan;
 
+	bool TryDemandTimeSync();
 
 	void BindTask(const std::shared_ptr<IMasterTask>& task);
 
 private:
+
+	// same as above, but may be NULL based on configuration
+	const std::shared_ptr<IMasterTask> timeSynchronization;
+
+	static std::shared_ptr<IMasterTask> GetTimeSyncTask(TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application);
 
 	std::vector<std::shared_ptr<IMasterTask>> boundTasks;
 

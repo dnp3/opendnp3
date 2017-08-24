@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_SERIALTIMESYNCTASK_H
-#define OPENDNP3_SERIALTIMESYNCTASK_H
+#ifndef OPENDNP3_LANTIMESYNCTASK_H
+#define OPENDNP3_LANTIMESYNCTASK_H
 
 #include <openpal/executor/IUTCTimeSource.h>
 
@@ -30,15 +30,21 @@ namespace opendnp3
 {
 
 // Synchronizes the time on the outstation
-class SerialTimeSyncTask : public IMasterTask
+class LANTimeSyncTask : public IMasterTask
 {
 
+	enum State
+	{
+		RECORD_CURRENT_TIME,
+		WRITE_TIME
+	};
+
 public:
-	SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger);
+	LANTimeSyncTask(IMasterApplication& app, openpal::Logger logger);
 
 	virtual char const* Name() const override final
 	{
-		return "serial time sync";
+		return "LAN time sync";
 	}
 
 	virtual int Priority() const override final
@@ -62,7 +68,7 @@ private:
 
 	virtual MasterTaskType GetTaskType() const override final
 	{
-		return MasterTaskType::NON_LAN_TIME_SYNC;
+		return MasterTaskType::LAN_TIME_SYNC;
 	}
 
 	virtual bool IsEnabled() const override final
@@ -74,14 +80,13 @@ private:
 
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
 
-	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& header, const openpal::RSlice& objects);
+	ResponseResult OnResponseRecordCurrentTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
 	ResponseResult OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
 	virtual void Initialize() override final;
 
-	// < 0 implies the delay measure hasn't happened yet
-	int64_t delay;
+	State state = State::RECORD_CURRENT_TIME;
 
 	// what time we sent the delay meas
 	openpal::UTCTimestamp start;

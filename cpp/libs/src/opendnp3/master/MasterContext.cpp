@@ -28,6 +28,7 @@
 #include "opendnp3/master/MeasurementHandler.h"
 #include "opendnp3/master/EmptyResponseTask.h"
 #include "opendnp3/master/RestartOperationTask.h"
+#include "opendnp3/master/CommandTask.h"
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"
 
@@ -239,14 +240,7 @@ void MContext::ProcessIIN(const IINField& iin)
 
 	if (iin.IsSet(IINBit::NEED_TIME))
 	{
-		switch (this->params.timeSyncMode)
-		{
-		case(TimeSyncMode::SerialTimeSync):
-			this->tasks.timeSync->Demand();
-			break;
-		default:
-			break;
-		}
+		this->tasks.TryDemandTimeSync();
 	}
 
 	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
