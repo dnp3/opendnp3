@@ -92,21 +92,21 @@ include_directories(./cpp/tests/libs/src)
 file(GLOB_RECURSE openpal_SRC ./cpp/libs/src/openpal/*.cpp ./cpp/libs/src/openpal/*.h ./cpp/libs/include/openpal/*.h)
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
-set_target_properties(openpal PROPERTIES FOLDER libs)
+set_target_properties(openpal PROPERTIES FOLDER libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
 
 # ---- opendnp3 library ----
 file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/src/opendnp3/*.cpp ./cpp/libs/src/opendnp3/*.h ./cpp/libs/include/opendnp3/*.h)
 add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(opendnp3 openpal)
 install(TARGETS opendnp3 DESTINATION lib)
-set_target_properties(opendnp3 PROPERTIES FOLDER libs)
+set_target_properties(opendnp3 PROPERTIES FOLDER libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
 
 if(DNP3_DECODER)
   file(GLOB_RECURSE dnp3decode_SRC ./cpp/libs/src/dnp3decode/*.cpp ./cpp/libs/src/dnp3decode/*.h ./cpp/libs/include/dnp3decode/*.h)
   add_library(dnp3decode ${LIB_TYPE} ${dnp3decode_SRC})
   target_link_libraries(dnp3decode opendnp3)
   install(TARGETS dnp3decode DESTINATION lib)
-  set_target_properties(dnp3decode PROPERTIES FOLDER libs)
+  set_target_properties(dnp3decode PROPERTIES FOLDER libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
 endif()
 
 # ---- asiopal library ----
@@ -127,7 +127,7 @@ endif()
 
 target_link_libraries(asiopal ${asiopal_link_libraries})
 install(TARGETS asiopal DESTINATION lib)
-set_target_properties(asiopal PROPERTIES FOLDER libs)
+set_target_properties(asiopal PROPERTIES FOLDER libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
 
 # ---- asiodnp3 library ----
 file(GLOB_RECURSE asiodnp3_HPP ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiodnp3/*.h)
@@ -139,14 +139,14 @@ endif()
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_HPP} ${asiodnp3_CPP})
 target_link_libraries(asiodnp3 asiopal opendnp3)
 install(TARGETS asiodnp3 DESTINATION lib)
-set_target_properties(asiodnp3 PROPERTIES FOLDER libs)
+set_target_properties(asiodnp3 PROPERTIES FOLDER libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
 
 if(DNP3_JAVA)
   file(GLOB_RECURSE opendnp3java_SRC ./java/cpp/*.h ./java/cpp/*.cpp)
   add_library(opendnp3java SHARED ${opendnp3java_SRC})
   target_link_libraries(opendnp3java asiodnp3)
   install(TARGETS opendnp3java DESTINATION lib)
-  set_target_properties(opendnp3java PROPERTIES FOLDER libs)
+  set_target_properties(opendnp3java PROPERTIES FOLDER libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
 endif()
 
 # ----- install -----
