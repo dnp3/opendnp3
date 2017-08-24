@@ -46,9 +46,9 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 16 3C 02 06 03 00 06");
 	t.context->OnSendResult(true);
 	t.SendToMaster("C0 81 00 00");
-
 	t.exe->RunMany();
-	REQUIRE(t.exe->NumPendingTimers() == 1);
+
+	REQUIRE(t.context->tstate == MContext::TaskState::IDLE);
 	REQUIRE(t.lower->PopWriteAsHex() == "");
 
 	REQUIRE(t.application->taskStartEvents.size() == 1);

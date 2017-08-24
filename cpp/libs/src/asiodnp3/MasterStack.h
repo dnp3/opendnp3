@@ -32,7 +32,7 @@ namespace asiodnp3
 {
 
 
-class MasterStack : public IMaster, public opendnp3::ILinkSession, public opendnp3::ILinkTx, public ITaskActions, public std::enable_shared_from_this<MasterStack>, public StackBase
+class MasterStack : public IMaster, public opendnp3::ILinkSession, public opendnp3::ILinkTx, public std::enable_shared_from_this<MasterStack>, public StackBase
 {
 public:
 
@@ -41,10 +41,10 @@ public:
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler,
 	    const std::shared_ptr<IOHandler>& iohandler,
 	    const std::shared_ptr<asiopal::IResourceManager>& manager,
-	    const MasterStackConfig& config,
-	    opendnp3::ITaskLock& taskLock
+	    const MasterStackConfig& config
 	);
 
 	static std::shared_ptr<MasterStack> Create(
@@ -52,13 +52,13 @@ public:
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
 	    const std::shared_ptr<opendnp3::IMasterApplication>& application,
+	    const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler,
 	    const std::shared_ptr<IOHandler>& iohandler,
 	    const std::shared_ptr<asiopal::IResourceManager>& manager,
-	    const MasterStackConfig& config,
-	    opendnp3::ITaskLock& taskLock
+	    const MasterStackConfig& config
 	)
 	{
-		auto ret = std::make_shared<MasterStack>(logger, executor, SOEHandler, application, iohandler, manager, config, taskLock);
+		auto ret = std::make_shared<MasterStack>(logger, executor, SOEHandler, application, scheduler, iohandler, manager, config);
 
 		ret->tstack.link->SetRouter(*ret);
 
@@ -75,7 +75,6 @@ public:
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override;
 
-	virtual void Demand(const std::shared_ptr<opendnp3::IMasterTask>& task) override;
 
 	// --------- Implement ILinkSession ---------
 

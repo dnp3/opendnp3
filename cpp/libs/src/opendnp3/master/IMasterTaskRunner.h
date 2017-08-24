@@ -18,53 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ITASKLOCK_H
-#define OPENDNP3_ITASKLOCK_H
+#ifndef OPENDNP3_IMASTERTASKRUNNER_H
+#define OPENDNP3_IMASTERTASKRUNNER_H
 
-#include <openpal/util/Uncopyable.h>
-
-#include "opendnp3/master/IScheduleCallback.h"
+#include "opendnp3/master/IMasterTask.h"
 
 namespace opendnp3
 {
 
 /**
-	Interface used in multi-drop configurations (multiple masters on same channel)
-	to control task execution such that only 1 master is running a task at a time.
+* Interface used by the scheduler to start running a task on a particular master session
 */
-class ITaskLock
+class IMasterTaskRunner
 {
+
 public:
 
-	/// Acquire a lock
-	virtual bool Acquire(IScheduleCallback&) = 0;
+	/**
+	* Start running the task. The task runner will asynchronously make a call back to the scheduler
+	* when execution is complete
+	*
+	* @return true if the task can be started, false otherwise
+	*/
+	virtual bool Run(const std::shared_ptr<IMasterTask>& task) = 0;
 
-	/// Release a lock
-	virtual bool Release(IScheduleCallback&) = 0;
-
-};
-
-class NullTaskLock final : public ITaskLock, private openpal::Uncopyable
-{
-public:
-
-	virtual bool Acquire(IScheduleCallback&) override
-	{
-		return true;
-	}
-
-	virtual bool Release(IScheduleCallback&) override
-	{
-		return true;
-	}
-
-	static ITaskLock& Instance();
-
-private:
-
-	NullTaskLock() {}
-
-	static NullTaskLock instance;
 };
 
 }

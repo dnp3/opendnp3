@@ -30,8 +30,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LANTimeSyncTask::LANTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
-	IMasterTask(app, MonotonicTimestamp::Max(), logger, TaskConfig::Default())
+LANTimeSyncTask::LANTimeSyncTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, openpal::Logger logger) :
+	IMasterTask(context, app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
 {}
 
 void LANTimeSyncTask::Initialize()
@@ -43,7 +43,7 @@ bool LANTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (state  == State::RECORD_CURRENT_TIME)
 	{
-		this->start = pApplication->Now();
+		this->start = this->application->Now();
 		build::RecordCurrentTime(request, seq);
 		return true;
 	}
@@ -55,17 +55,6 @@ bool LANTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 		request.SetControl(AppControlField::Request(seq));
 		auto writer = request.GetWriter();
 		return writer.WriteSingleValue<UInt8, Group50Var3>(QualifierCode::UINT8_CNT, time);
-	}
-}
-
-IMasterTask::TaskState LANTimeSyncTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	switch (result)
-	{
-	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-		return TaskState::Disabled();
-	default:
-		return TaskState::Infinite();
 	}
 }
 

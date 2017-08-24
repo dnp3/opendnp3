@@ -45,7 +45,7 @@ void MockLogHandlerImpl::Log(const LogEntry& entry)
 
 	if (outputToStdIO)
 	{
-		std::cout << entry.message << std::endl;
+		std::cout << entry.loggerid << " - " << entry.message << std::endl;
 	}
 
 	this->messages.push_back(entry);

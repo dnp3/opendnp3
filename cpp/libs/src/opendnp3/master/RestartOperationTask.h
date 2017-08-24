@@ -21,8 +21,9 @@
 #ifndef OPENDNP3_RESTART_OPERATION_TASK_H
 #define OPENDNP3_RESTART_OPERATION_TASK_H
 
-#include "opendnp3/master/SimpleRequestTaskBase.h"
+#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/RestartOperationResult.h"
+#include "opendnp3/master/TaskPriority.h"
 #include "opendnp3/app/parsing/IAPDUHandler.h"
 
 #include "opendnp3/gen/RestartType.h"
@@ -30,12 +31,29 @@
 namespace opendnp3
 {
 
-class RestartOperationTask final : public SimpleRequestTaskBase, private IAPDUHandler
+class RestartOperationTask final : public IMasterTask, private IAPDUHandler
 {
 
 public:
 
-	RestartOperationTask(IMasterApplication& app, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config);
+	RestartOperationTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const openpal::MonotonicTimestamp& startTimeout, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config);
+
+	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+
+	virtual int Priority() const
+	{
+		return priority::USER_REQUEST;
+	}
+
+	virtual bool BlocksLowerPriority() const
+	{
+		return false;
+	}
+
+	virtual bool IsRecurring() const
+	{
+		return false;
+	}
 
 	virtual char const* Name() const override;
 
@@ -43,18 +61,21 @@ public:
 
 private:
 
+	virtual MasterTaskType GetTaskType() const override;
+
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;
 
 	static FunctionCode ToFunctionCode(RestartType op);
 
-	RestartOperationCallbackT m_callback;
-	openpal::TimeDuration m_duration;
+	const FunctionCode function;
+	RestartOperationCallbackT callback;
+	openpal::TimeDuration duration = openpal::TimeDuration::Min();
 
 
 	virtual IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
 
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
+	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 };
 
 } //end ns

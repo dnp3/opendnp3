@@ -18,27 +18,58 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ITASKFILTER_H
-#define OPENDNP3_ITASKFILTER_H
+#ifndef OPENDNP3_IMASTERSCHEDULER_H
+#define OPENDNP3_IMASTERSCHEDULER_H
 
 #include "opendnp3/master/IMasterTask.h"
-
-#include <openpal/executor/TimeDuration.h>
+#include "IMasterTaskRunner.h"
 
 namespace opendnp3
 {
 
 /**
-*	Evaluates a task to determine if it can run based on additional state information not available in the scheduler
+* Interface used by master sessions to schedule tasks
 */
-class ITaskFilter
+class IMasterScheduler
 {
 
 public:
 
-	virtual bool CanRun(const IMasterTask& task) = 0;
+	virtual ~IMasterScheduler() {}
 
-	virtual void SetTaskStartTimeout(const openpal::MonotonicTimestamp& time) = 0;
+	/**
+	* Add a single task to the scheduler. The tasks will be started asynchronously,
+	* i.e. not by the call to this method
+	*/
+	virtual void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) = 0;
+
+	/**
+	* Remove all tasks associated with this context, including the running one
+	*/
+	virtual void SetRunnerOffline(const IMasterTaskRunner& runner) = 0;
+
+	/**
+	*
+	*/
+	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) = 0;
+
+	/**
+	*  Called if task changes in such a way that it might be runnable sooner than scheduled
+	*/
+	virtual void Evaluate() = 0;
+
+	/**
+	* Run a task as soon as possible
+	*/
+	virtual void Demand(const std::shared_ptr<IMasterTask>& task) = 0;
+
+	/**
+	* Add multiple tasks in one call
+	*/
+	void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks, IMasterTaskRunner& runner)
+	{
+		for (auto& task : tasks) this->Add(task, runner);
+	}
 
 };
 

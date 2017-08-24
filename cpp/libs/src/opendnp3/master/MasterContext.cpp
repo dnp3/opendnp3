@@ -28,6 +28,7 @@
 #include "opendnp3/master/MeasurementHandler.h"
 #include "opendnp3/master/EmptyResponseTask.h"
 #include "opendnp3/master/RestartOperationTask.h"
+#include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/CommandTask.h"
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"
@@ -45,8 +46,8 @@ MContext::MContext(
     const std::shared_ptr<ILowerLayer>& lower,
     const std::shared_ptr<ISOEHandler>& SOEHandler,
     const std::shared_ptr<IMasterApplication>& application,
-    const MasterParams& params,
-    ITaskLock& taskLock
+    const std::shared_ptr<IMasterScheduler>& scheduler,
+    const MasterParams& params
 ) :
 	logger(logger),
 	executor(executor),
@@ -54,12 +55,9 @@ MContext::MContext(
 	params(params),
 	SOEHandler(SOEHandler),
 	application(application),
-	pTaskLock(&taskLock),
+	scheduler(scheduler),
 	responseTimer(*executor),
-	scheduleTimer(*executor),
-	taskStartTimeoutTimer(*executor),
 	tasks(params, logger, *application, *SOEHandler),
-	scheduler(*this),
 	txBuffer(params.maxTxFragSize),
 	tstate(TaskState::IDLE)
 {}
@@ -72,8 +70,8 @@ bool MContext::OnLowerLayerUp()
 	}
 
 	isOnline = true;
-	tasks.Initialize(scheduler);
-	this->PostCheckForTask();
+
+	tasks.Initialize(*this->scheduler, *this);
 
 	this->application->OnOpen();
 
@@ -87,26 +85,13 @@ bool MContext::OnLowerLayerDown()
 		return false;
 	}
 
-	auto now = executor->GetTime();
-	scheduler.Shutdown(now);
-
-	if (activeTask)
-	{
-		activeTask->OnLowerLayerClose(now);
-		activeTask.reset();
-	}
-
 	tstate = TaskState::IDLE;
-
-	pTaskLock->Release(*this);
-
 	responseTimer.Cancel();
-	taskStartTimeoutTimer.Cancel();
-	scheduleTimer.Cancel();
-
 	solSeq = unsolSeq = 0;
 	isOnline = isSending = false;
+	activeTask.reset();
 
+	this->scheduler->SetRunnerOffline(*this);
 	this->application->OnClose();
 
 	return true;
@@ -150,17 +135,11 @@ bool MContext::OnSendResult(bool isSucccess)
 	}
 
 	this->isSending = false;
-	this->CheckConfirmTransmit();
-	this->CheckForTask();
-	return true;
-}
 
-void MContext::CheckForTask()
-{
-	if (isOnline)
-	{
-		this->tstate = this->OnStartEvent();
-	}
+	this->tstate = this->OnTransmitComplete();
+	this->CheckConfirmTransmit();
+
+	return true;
 }
 
 void MContext::OnResponseTimeout()
@@ -175,18 +154,10 @@ void MContext::CompleteActiveTask()
 {
 	if (this->activeTask)
 	{
-		if (this->activeTask->IsRecurring())
-		{
-			this->scheduler.Schedule(std::move(this->activeTask));
-		}
-		else
-		{
-			this->activeTask.reset();
-		}
-
-		pTaskLock->Release(*this);
-		this->PostCheckForTask();
+		this->activeTask.reset();
+		this->scheduler->CompleteCurrentFor(*this);
 	}
+
 }
 
 void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& header, const RSlice& objects)
@@ -199,12 +170,14 @@ void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& head
 
 void MContext::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
-	this->ScheduleAdhocTask(CommandTask::CreateDirectOperate(std::move(commands), *application, callback, config, logger));
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	this->ScheduleAdhocTask(CommandTask::CreateDirectOperate(this->tasks.context, std::move(commands), *application, callback, timeout, config, logger));
 }
 
 void MContext::SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
-	this->ScheduleAdhocTask(CommandTask::CreateSelectAndOperate(std::move(commands), *application, callback, config, logger));
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	this->ScheduleAdhocTask(CommandTask::CreateSelectAndOperate(this->tasks.context, std::move(commands), *application, callback, timeout, config, logger));
 }
 
 void MContext::ProcessAPDU(const APDUResponseHeader& header, const RSlice& objects)
@@ -227,27 +200,25 @@ void MContext::ProcessIIN(const IINField& iin)
 {
 	if (iin.IsSet(IINBit::DEVICE_RESTART) && !this->params.ignoreRestartIIN)
 	{
-		this->tasks.clearRestart->Demand();
-		this->tasks.assignClass->Demand();
-		this->tasks.startupIntegrity->Demand();
-		this->tasks.enableUnsol->Demand();
+		this->tasks.OnRestartDetected();
+		this->scheduler->Evaluate();
 	}
 
 	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && this->params.integrityOnEventOverflowIIN)
 	{
-		this->tasks.startupIntegrity->Demand();
+		if(this->tasks.DemandIntegrity()) this->scheduler->Evaluate();
 	}
 
 	if (iin.IsSet(IINBit::NEED_TIME))
 	{
-		this->tasks.TryDemandTimeSync();
+		if (this->tasks.DemandTimeSync()) this->scheduler->Evaluate();
 	}
 
 	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
 	        (iin.IsSet(IINBit::CLASS2_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
 	        (iin.IsSet(IINBit::CLASS3_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass3()))
 	{
-		this->tasks.eventScan->Demand();
+		if(this->tasks.DemandEventScan()) this->scheduler->Evaluate();
 	}
 
 	this->application->OnReceiveIIN(iin);
@@ -316,18 +287,9 @@ void MContext::StartResponseTimer()
 	this->responseTimer.Start(this->params.responseTimeout, timeout);
 }
 
-void MContext::PostCheckForTask()
-{
-	auto callback = [this]()
-	{
-		this->CheckForTask();
-	};
-	this->executor->Post(callback);
-}
-
 std::shared_ptr<IMasterTask> MContext::AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto task = std::make_shared<UserPollTask>(builder, true, period, params.taskRetryPeriod, *application, *SOEHandler, logger, config);
+	auto task = std::make_shared<UserPollTask>(this->tasks.context, builder, TaskBehavior::ImmediatePeriodic(period, params.taskRetryPeriod, params.maxTaskRetryPeriod), true, *application, *SOEHandler, logger, config);
 	this->ScheduleRecurringPollTask(task);
 	return task;
 }
@@ -361,7 +323,10 @@ std::shared_ptr<IMasterTask> MContext::AddRangeScan(GroupVariationID gvId, uint1
 
 void MContext::Scan(const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto task = std::make_shared<UserPollTask>(builder, false, TimeDuration::Max(), params.taskRetryPeriod, *application, *SOEHandler, logger, config);
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+
+	auto task = std::make_shared<UserPollTask>(this->tasks.context, builder, TaskBehavior::SingleExecutionNoRetry(timeout), false, *application, *SOEHandler, logger, config);
+
 	this->ScheduleAdhocTask(task);
 }
 
@@ -399,30 +364,40 @@ void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig co
 		return writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto task = std::make_shared<EmptyResponseTask>(*this->application, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, this->logger, config);
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	auto task = std::make_shared<EmptyResponseTask>(this->tasks.context, *this->application, "WRITE TimeAndInterval", FunctionCode::WRITE, builder, timeout, this->logger, config);
 	this->ScheduleAdhocTask(task);
 }
 
 void MContext::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 {
-	auto task = std::make_shared<RestartOperationTask>(*this->application, op, callback, this->logger, config);
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	auto task = std::make_shared<RestartOperationTask>(this->tasks.context, *this->application, timeout, op, callback, this->logger, config);
 	this->ScheduleAdhocTask(task);
 }
 
 void MContext::PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config)
 {
-	auto task = std::make_shared<EmptyResponseTask>(*this->application, name, func, builder, this->logger, config);
+	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
+	auto task = std::make_shared<EmptyResponseTask>(this->tasks.context, *this->application, name, func, builder, timeout, this->logger, config);
 	this->ScheduleAdhocTask(task);
 }
 
-void MContext::SetTaskStartTimeout(const openpal::MonotonicTimestamp& time)
+bool MContext::Run(const std::shared_ptr<IMasterTask>& task)
 {
-	auto action = [this]()
-	{
-		this->scheduler.CheckTaskStartTimeout(executor->GetTime());
-	};
+	if(this->activeTask || this->tstate != TaskState::IDLE) return false;
 
-	this->taskStartTimeoutTimer.Restart(time, action);
+	this->tstate = TaskState::TASK_READY;
+	this->activeTask = task;
+	this->activeTask->OnStart();
+	FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->activeTask->Name());
+
+	if (!this->isSending)
+	{
+		this->tstate = this->ResumeActiveTask();
+	}
+
+	return true;
 }
 
 /// ------ private helpers ----------
@@ -433,58 +408,31 @@ void MContext::ScheduleRecurringPollTask(const std::shared_ptr<IMasterTask>& tas
 
 	if (this->isOnline)
 	{
-		this->scheduler.Schedule(task);
-		this->PostCheckForTask();
+		this->scheduler->Add(task, *this);
 	}
 }
 
 void MContext::ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task)
 {
-	const auto NOW = this->executor->GetTime();
-
-	task->ConfigureStartExpiration(NOW.Add(params.taskStartTimeout));
-
 	if (this->isOnline)
 	{
-		if (this->MeetsUserRequirements(task))
-		{
-			this->scheduler.Schedule(std::move(task));
-			this->CheckForTask();
-		}
-		else
-		{
-			// task is failed because an SA user doesn't exist
-			task->OnNoUser(NOW);
-		}
+		this->scheduler->Add(task, *this);
 	}
 	else
 	{
 		// can't run this task since we're offline so fail it immediately
-		task->OnLowerLayerClose(NOW);
+		task->OnLowerLayerClose(this->executor->GetTime());
 	}
-}
-
-MContext::TaskState MContext::BeginNewTask(const std::shared_ptr<IMasterTask>& task)
-{
-	this->activeTask = task;
-	this->activeTask->OnStart();
-	FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->activeTask->Name());
-	return this->ResumeActiveTask();
 }
 
 MContext::TaskState MContext::ResumeActiveTask()
 {
-	if (!this->pTaskLock->Acquire(*this))
-	{
-		return TaskState::TASK_READY;
-	}
-
 	APDURequest request(this->txBuffer.GetWSlice());
 
 	/// try to build a requst for the task
 	if (!this->activeTask->BuildRequest(request, this->solSeq))
 	{
-		activeTask->OnInternalError(executor->GetTime());
+		activeTask->OnMessageFormatError(executor->GetTime());
 		this->CompleteActiveTask();
 		return TaskState::IDLE;
 	}
@@ -499,6 +447,17 @@ MContext::TaskState MContext::ResumeActiveTask()
 
 //// --- State tables ---
 
+MContext::TaskState MContext::OnTransmitComplete()
+{
+	switch (tstate)
+	{
+	case(TaskState::TASK_READY):
+		return this->ResumeActiveTask();
+	default:
+		return tstate;
+	}
+}
+
 MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, const RSlice& objects)
 {
 	switch (tstate)
@@ -507,19 +466,6 @@ MContext::TaskState MContext::OnResponseEvent(const APDUResponseHeader& header, 
 		return OnResponse_WaitForResponse(header, objects);
 	default:
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Not expecting a response, sequence: %u", header.control.SEQ);
-		return tstate;
-	}
-}
-
-MContext::TaskState MContext::OnStartEvent()
-{
-	switch (tstate)
-	{
-	case(TaskState::IDLE) :
-		return StartTask_Idle();
-	case(TaskState::TASK_READY) :
-		return StartTask_TaskReady();
-	default:
 		return tstate;
 	}
 }
@@ -537,34 +483,6 @@ MContext::TaskState MContext::OnResponseTimeoutEvent()
 }
 
 //// --- State actions ----
-
-MContext::TaskState MContext::StartTask_Idle()
-{
-	if (this->isSending)
-	{
-		return TaskState::IDLE;
-	}
-
-	MonotonicTimestamp next;
-	auto task = this->scheduler.GetNext(executor->GetTime(), next);
-
-	if (task)
-	{
-		return this->BeginNewTask(task);
-	}
-	else
-	{
-		// restart the task timer
-		if (!next.IsMax())
-		{
-			scheduleTimer.Restart(next, [this]()
-			{
-				this->CheckForTask();
-			});
-		}
-		return TaskState::IDLE;
-	}
-}
 
 MContext::TaskState MContext::StartTask_TaskReady()
 {
@@ -613,6 +531,8 @@ MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeade
 
 MContext::TaskState MContext::OnResponseTimeout_WaitForResponse()
 {
+	SIMPLE_LOG_BLOCK(logger, flags::WARN, "Timeout waiting for response");
+
 	auto now = this->executor->GetTime();
 	this->activeTask->OnResponseTimeout(now);
 	this->solSeq.Increment();

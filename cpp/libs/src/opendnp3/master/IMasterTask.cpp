@@ -28,16 +28,20 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger_, TaskConfig config_) :
-	pApplication(&app),
-	logger(logger_),
-	state(expiration),
-	config(config_),
-	taskStartExpiration(MonotonicTimestamp::Max())
-{}
+IMasterTask::IMasterTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const TaskBehavior& behavior, const openpal::Logger& logger, TaskConfig config) :
+	context(context),
+	application(&app),
+	logger(logger),
+	config(config),
+	behavior(behavior)
+{
+
+}
 
 IMasterTask::~IMasterTask()
 {
+	context->RemoveBlock(*this);
+
 	if (config.pCallback)
 	{
 		config.pCallback->OnDestroyed();
@@ -46,36 +50,25 @@ IMasterTask::~IMasterTask()
 
 openpal::MonotonicTimestamp IMasterTask::ExpirationTime() const
 {
-	return (!state.disabled && this->IsEnabled()) ? state.expiration : MonotonicTimestamp::Max();
-}
-
-void IMasterTask::ConfigureStartExpiration(openpal::MonotonicTimestamp time)
-{
-	this->taskStartExpiration = time;
+	return this->IsEnabled() ? this->behavior.GetExpiration() : MonotonicTimestamp::Max();
 }
 
 openpal::MonotonicTimestamp IMasterTask::StartExpirationTime() const
 {
-	return taskStartExpiration;
+	return this->behavior.GetStartExpiration();
 }
 
 IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& response, const openpal::RSlice& objects, openpal::MonotonicTimestamp now)
 {
-	auto result = ProcessResponse(response, objects);
+	auto result = this->ProcessResponse(response, objects);
 
 	switch (result)
 	{
 	case(ResponseResult::ERROR_BAD_RESPONSE) :
-		this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_RESPONSE, now);
-		this->NotifyResult(TaskCompletion::FAILURE_BAD_RESPONSE);
-		break;
-	case(ResponseResult::ERROR_INTERNAL_FAILURE) :
-		this->state = this->OnTaskComplete(TaskCompletion::FAILURE_INTERNAL_ERROR, now);
-		this->NotifyResult(TaskCompletion::FAILURE_INTERNAL_ERROR);
+		this->CompleteTask(TaskCompletion::FAILURE_BAD_RESPONSE, now);
 		break;
 	case(ResponseResult::OK_FINAL) :
-		this->state = this->OnTaskComplete(TaskCompletion::SUCCESS, now);
-		this->NotifyResult(TaskCompletion::SUCCESS);
+		this->CompleteTask(TaskCompletion::SUCCESS, now);
 		break;
 	default:
 		break;
@@ -84,56 +77,71 @@ IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& re
 	return result;
 }
 
-void IMasterTask::OnResponseTimeout(openpal::MonotonicTimestamp now)
+void IMasterTask::CompleteTask(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_RESPONSE_TIMEOUT, now);
-	this->NotifyResult(TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
-}
+	switch (result)
+	{
 
-void IMasterTask::OnLowerLayerClose(openpal::MonotonicTimestamp now)
-{
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NO_COMMS, now);
-	this->NotifyResult(TaskCompletion::FAILURE_NO_COMMS);
-}
+	// retry immediately when the comms come back online
+	case(TaskCompletion::FAILURE_NO_COMMS):
+		this->behavior.Reset();
+		break;
 
-void IMasterTask::OnStartTimeout(openpal::MonotonicTimestamp now)
-{
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_START_TIMEOUT, now);
-	this->NotifyResult(TaskCompletion::FAILURE_START_TIMEOUT);
-}
+	// back-off exponentially using the task retry
+	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
+		{
+			this->behavior.OnResponseTimeout(now);
+			if (this->BlocksLowerPriority()) this->context->AddBlock(*this);
+			break;
+		}
 
-void IMasterTask::OnNoUser(openpal::MonotonicTimestamp now)
-{
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NO_USER, now);
-	this->NotifyResult(TaskCompletion::FAILURE_NO_USER);
-}
+	case(TaskCompletion::SUCCESS):
+		this->behavior.OnSuccess(now);
+		this->context->RemoveBlock(*this);
+		break;
 
-void IMasterTask::OnInternalError(openpal::MonotonicTimestamp now)
-{
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_INTERNAL_ERROR, now);
-	this->NotifyResult(TaskCompletion::FAILURE_INTERNAL_ERROR);
-}
+	/**
+	FAILURE_BAD_RESPONSE
+	FAILURE_START_TIMEOUT
+	FAILURE_MESSAGE_FORMAT_ERROR
+	*/
+	default:
+		{
+			this->behavior.Disable();
+			if (this->BlocksLowerPriority()) this->context->AddBlock(*this);
+		}
+	}
 
-void IMasterTask::OnAuthenticationFailure(openpal::MonotonicTimestamp now)
-{
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_BAD_AUTHENTICATION, now);
-	this->NotifyResult(TaskCompletion::FAILURE_BAD_AUTHENTICATION);
-}
-
-void IMasterTask::OnAuthorizationFailure(openpal::MonotonicTimestamp now)
-{
-	this->state = this->OnTaskComplete(TaskCompletion::FAILURE_NOT_AUTHORIZED, now);
-	this->NotifyResult(TaskCompletion::FAILURE_NOT_AUTHORIZED);
-}
-
-void IMasterTask::NotifyResult(TaskCompletion result)
-{
 	if (config.pCallback)
 	{
 		config.pCallback->OnComplete(result);
 	}
 
-	pApplication->OnTaskComplete(TaskInfo(this->GetTaskType(), result, config.taskId));
+	// notify the application
+	this->application->OnTaskComplete(TaskInfo(this->GetTaskType(), result, config.taskId));
+
+	// notify any super class implementations
+	this->OnTaskComplete(result, now);
+}
+
+void IMasterTask::OnResponseTimeout(openpal::MonotonicTimestamp now)
+{
+	this->CompleteTask(TaskCompletion::FAILURE_RESPONSE_TIMEOUT, now);
+}
+
+void IMasterTask::OnLowerLayerClose(openpal::MonotonicTimestamp now)
+{
+	this->CompleteTask(TaskCompletion::FAILURE_NO_COMMS, now);
+}
+
+void IMasterTask::OnStartTimeout(openpal::MonotonicTimestamp now)
+{
+	this->CompleteTask(TaskCompletion::FAILURE_START_TIMEOUT, now);
+}
+
+void IMasterTask::OnMessageFormatError(openpal::MonotonicTimestamp now)
+{
+	this->CompleteTask(TaskCompletion::FAILURE_MESSAGE_FORMAT_ERROR, now);
 }
 
 void IMasterTask::OnStart()
@@ -143,14 +151,14 @@ void IMasterTask::OnStart()
 		config.pCallback->OnStart();
 	}
 
-	pApplication->OnTaskStart(this->GetTaskType(), config.taskId);
+	this->application->OnTaskStart(this->GetTaskType(), config.taskId);
 
 	this->Initialize();
 }
 
-void IMasterTask::Demand()
+void IMasterTask::SetMinExpiration()
 {
-	this->state = TaskState::Immediately();
+	this->behavior.Reset();
 }
 
 bool IMasterTask::ValidateSingleResponse(const APDUResponseHeader& header)

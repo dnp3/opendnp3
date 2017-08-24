@@ -29,10 +29,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DisableUnsolicitedTask::DisableUnsolicitedTask(IMasterApplication& application, bool enabled_, TimeDuration retryPeriod_, openpal::Logger logger) :
-	IMasterTask(application, MonotonicTimestamp::Min(), logger, TaskConfig::Default()),
-	enabled(enabled_),
-	retryPeriod(retryPeriod_)
+DisableUnsolicitedTask::DisableUnsolicitedTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger) :
+	IMasterTask(context, application, behavior, logger, TaskConfig::Default())
 {
 
 }
@@ -46,24 +44,6 @@ bool DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 IMasterTask::ResponseResult DisableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
-}
-
-IMasterTask::TaskState DisableUnsolicitedTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	switch (result)
-	{
-	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-		return TaskState::Disabled();
-
-	case(TaskCompletion::FAILURE_NO_COMMS) :
-		return TaskState::Immediately();
-
-	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-		return TaskState::Retry(now.Add(retryPeriod));
-
-	default:
-		return TaskState::Infinite();
-	}
 }
 
 

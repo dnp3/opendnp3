@@ -29,9 +29,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AssignClassTask::AssignClassTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
-	IMasterTask(application, openpal::MonotonicTimestamp(0), logger, TaskConfig::Default()),
-	retryPeriod(retryPeriod_)
+AssignClassTask::AssignClassTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger) :
+	IMasterTask(context, application, behavior, logger, TaskConfig::Default())
 {}
 
 bool AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
@@ -46,33 +45,18 @@ bool AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 		success &= header.WriteTo(writer);
 	};
 
-	pApplication->ConfigureAssignClassRequest(writeFun);
+	this->application->ConfigureAssignClassRequest(writeFun);
 	return success;
 }
 
 bool AssignClassTask::IsEnabled() const
 {
-	return pApplication->AssignClassDuringStartup();
+	return this->application->AssignClassDuringStartup();
 }
 
 IMasterTask::ResponseResult AssignClassTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
-}
-
-IMasterTask::TaskState AssignClassTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	switch (result)
-	{
-	case(TaskCompletion::FAILURE_NO_COMMS) :
-		return TaskState::Immediately();
-
-	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-		return TaskState::Retry(now.Add(retryPeriod));
-
-	default:
-		return TaskState::Infinite();
-	}
 }
 
 } //end ns

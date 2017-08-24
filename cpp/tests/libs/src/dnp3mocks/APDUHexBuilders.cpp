@@ -55,6 +55,11 @@ std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
 	return ToHex(request.ToRSlice());
 }
 
+std::string DisableUnsol(uint8_t seq, const opendnp3::ClassField& field)
+{
+	return ClassTask(FunctionCode::DISABLE_UNSOLICITED, seq, field);
+}
+
 std::string IntegrityPoll(uint8_t seq, const ClassField& field)
 {
 	return ClassTask(FunctionCode::READ, seq, field);

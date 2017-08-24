@@ -18,66 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_SIMPLE_REQUEST_TASK_BASE_H
-#define OPENDNP3_SIMPLE_REQUEST_TASK_BASE_H
+
+#include "TaskContext.h"
 
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/HeaderBuilder.h"
-
-#include <string>
 
 namespace opendnp3
 {
 
-class IMasterApplication;
-
-class SimpleRequestTaskBase : public IMasterTask
+void TaskContext::AddBlock(const IMasterTask& task)
 {
+	this->blocking_tasks.insert(&task);
+}
 
-public:
+void TaskContext::RemoveBlock(const IMasterTask& task)
+{
+	this->blocking_tasks.erase(&task);
+}
 
-	SimpleRequestTaskBase(IMasterApplication& app, FunctionCode func, int taskPriority, const HeaderBuilderT& format, openpal::Logger logger, const TaskConfig& config);
-
-	virtual bool IsRecurring() const override final
+bool TaskContext::IsBlocked(const IMasterTask& task) const
+{
+	for (auto& blocking : this->blocking_tasks)
 	{
-		return false;
+		// is there a block with better priority that's not the same task?
+		if (blocking->Priority() < task.Priority() && (blocking != &task)) return true;
 	}
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+	return false;
+}
 
-	virtual int Priority(void) const override final
-	{
-		return m_priority;
-	}
+}
 
-	virtual bool BlocksLowerPriority() const override final
-	{
-		return false;
-	}
-
-protected:
-
-	const FunctionCode m_func;
-
-private:
-
-	const int m_priority;
-	const HeaderBuilderT m_format;
-
-
-	virtual bool IsEnabled() const override final
-	{
-		return true;
-	}
-
-	virtual MasterTaskType GetTaskType() const override final
-	{
-		return MasterTaskType::USER_TASK;
-	}
-
-};
-
-} //end ns
-
-
-#endif

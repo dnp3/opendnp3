@@ -39,12 +39,17 @@ class StartupIntegrityPoll final : public PollTaskBase
 
 public:
 
-	StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+	StartupIntegrityPoll(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, const TaskBehavior& behavior, openpal::Logger logger);
 
 	virtual bool IsRecurring() const override
 	{
 		return true;
 	}
+
+	virtual const char* Name() const override
+	{
+		return "Startup Integrity Poll";
+	};
 
 	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
@@ -62,16 +67,12 @@ private:
 
 	ClassField classes;
 
-	openpal::TimeDuration retryPeriod;
-
 	virtual bool IsEnabled() const override;
 
 	virtual MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::STARTUP_INTEGRITY_POLL;
 	}
-
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 
 };
 

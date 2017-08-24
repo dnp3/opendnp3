@@ -66,6 +66,9 @@ struct MasterParams
 	/// Time delay before retrying a failed task
 	openpal::TimeDuration taskRetryPeriod = openpal::TimeDuration::Seconds(5);
 
+	/// Maximum time delay before retrying a failed task. Backs off exponentially from taskRetryPeriod
+	openpal::TimeDuration maxTaskRetryPeriod = openpal::TimeDuration::Minutes(1);
+
 	/// Time delay before failing a non-recurring task (e.g. commands) that cannot start
 	openpal::TimeDuration taskStartTimeout = openpal::TimeDuration::Seconds(10);
 

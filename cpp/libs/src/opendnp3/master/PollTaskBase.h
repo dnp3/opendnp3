@@ -33,14 +33,14 @@ class ISOEHandler;
 /**
  * Base class for measurement polls
  */
-class PollTaskBase : public IMasterTask, openpal::Uncopyable
+class PollTaskBase : public IMasterTask
 {
 
 public:
 
-	PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config);
+	PollTaskBase(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config);
 
-	virtual const char* Name() const override final
+	virtual const char* Name() const override
 	{
 		return "Application Poll";
 	};
@@ -53,8 +53,8 @@ protected:
 
 	virtual void Initialize() override final;
 
-	uint16_t rxCount;
-	ISOEHandler* pSOEHandler;
+	uint32_t rxCount = 0;
+	ISOEHandler* const handler;
 };
 
 } //end ns

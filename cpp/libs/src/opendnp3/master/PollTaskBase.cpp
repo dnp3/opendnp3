@@ -31,24 +31,23 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config) :
-	IMasterTask(application, expiration, logger, config),
-	rxCount(0),
-	pSOEHandler(&soeHandler)
+PollTaskBase::PollTaskBase(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config) :
+	IMasterTask(context, application, behavior, logger, config),
+	handler(&handler)
 {
 
 }
 
 void PollTaskBase::Initialize()
 {
-	rxCount = 0;
+	this->rxCount = 0;
 }
 
 IMasterTask::ResponseResult PollTaskBase::ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects)
 {
 	if (header.control.FIR)
 	{
-		if (rxCount > 0)
+		if (this->rxCount > 0)
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");
 			return ResponseResult::ERROR_BAD_RESPONSE;
@@ -60,7 +59,7 @@ IMasterTask::ResponseResult PollTaskBase::ProcessResponse(const APDUResponseHead
 	}
 	else
 	{
-		if (rxCount > 0)
+		if (this->rxCount > 0)
 		{
 			return ProcessMeasurements(header, objects);
 		}
@@ -76,16 +75,9 @@ IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponse
 {
 	++rxCount;
 
-	if (MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler) == ParseResult::OK)
+	if (MeasurementHandler::ProcessMeasurements(objects, logger, handler) == ParseResult::OK)
 	{
-		if (header.control.FIN)
-		{
-			return ResponseResult::OK_FINAL;
-		}
-		else
-		{
-			return ResponseResult::OK_CONTINUE;
-		}
+		return header.control.FIN ? ResponseResult::OK_FINAL : ResponseResult::OK_CONTINUE;
 	}
 	else
 	{

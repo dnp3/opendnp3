@@ -28,8 +28,10 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
 
+#include "opendnp3/master/TaskContext.h"
 #include "opendnp3/master/TaskConfig.h"
 #include "opendnp3/master/IMasterApplication.h"
+#include "opendnp3/master/TaskBehavior.h"
 
 namespace opendnp3
 {
@@ -37,45 +39,8 @@ namespace opendnp3
 /**
  * A generic interface for defining master request/response style tasks
  */
-class IMasterTask
+class IMasterTask : private openpal::Uncopyable
 {
-
-protected:
-
-	class TaskState
-	{
-	public:
-
-		TaskState(openpal::MonotonicTimestamp expiration_, bool disabled_ = false) : disabled(disabled_), expiration(expiration_)
-		{}
-
-		static TaskState Immediately()
-		{
-			return TaskState(openpal::MonotonicTimestamp(0), false);
-		}
-
-		static TaskState Infinite()
-		{
-			return TaskState(openpal::MonotonicTimestamp::Max(), false);
-		}
-
-		static TaskState Retry(openpal::MonotonicTimestamp exp)
-		{
-			return TaskState(exp, false);
-		}
-
-		static TaskState Disabled()
-		{
-			return TaskState(openpal::MonotonicTimestamp::Max(), true);
-		}
-
-		bool disabled;
-		openpal::MonotonicTimestamp expiration;
-
-	private:
-		TaskState() = delete;
-	};
-
 
 public:
 
@@ -83,9 +48,6 @@ public:
 	{
 		/// The response was bad, the task has failed
 		ERROR_BAD_RESPONSE,
-
-		/// An internal error occured like a failure calculating an HMAC
-		ERROR_INTERNAL_FAILURE,
 
 		/// The response was good and the task is complete
 		OK_FINAL,
@@ -97,19 +59,9 @@ public:
 		OK_CONTINUE
 	};
 
-
-	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger, TaskConfig config);
-
+	IMasterTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const TaskBehavior& behavior, const openpal::Logger& logger, TaskConfig config);
 
 	virtual ~IMasterTask();
-
-	/**
-	*	Overridable for auth tasks
-	*/
-	virtual bool IsAuthTask() const
-	{
-		return false;
-	}
 
 	/**
 	*
@@ -123,12 +75,6 @@ public:
 	virtual int Priority() const = 0;
 
 	/**
-	* Allows tasks to enter a blocking mode where lower priority
-	* tasks cannot run until this task completes
-	*/
-	virtual bool BlocksLowerPriority() const = 0;
-
-	/**
 	* Indicates if the task should be rescheduled (true) or discarded
 	* after a single execution (false)
 	*/
@@ -140,9 +86,12 @@ public:
 	openpal::MonotonicTimestamp ExpirationTime() const;
 
 	/**
-	* Configure the start expiration time
+	* Helper to test if the task is expired
 	*/
-	void ConfigureStartExpiration(openpal::MonotonicTimestamp time);
+	bool IsExpired(const openpal::MonotonicTimestamp& now) const
+	{
+		return now.milliseconds >= this->ExpirationTime().milliseconds;
+	}
 
 	/**
 	* The time when this task expires if it is unable to start
@@ -177,24 +126,9 @@ public:
 	void OnStartTimeout(openpal::MonotonicTimestamp now);
 
 	/**
-	* Called when a task is discared because it's user doesn't exist
+	* Called when the master is unable to format the request associated with the task
 	*/
-	void OnNoUser(openpal::MonotonicTimestamp now);
-
-	/**
-	* Called when a task has an internal error of some sort like not being able to write a request
-	*/
-	void OnInternalError(openpal::MonotonicTimestamp now);
-
-	/**
-	* Called when the request is reject due to an authentication failure
-	*/
-	void OnAuthenticationFailure(openpal::MonotonicTimestamp now);
-
-	/**
-	* Called when the request is reject due to an authorization failure
-	*/
-	void OnAuthorizationFailure(openpal::MonotonicTimestamp now);
+	void OnMessageFormatError(openpal::MonotonicTimestamp now);
 
 	/**
 	* Called when the task first starts, before the first request is formatted
@@ -202,9 +136,17 @@ public:
 	void OnStart();
 
 	/**
-	* Demand that the task run immediately by setting the expiration to 0
+	* Set the expiration time to minimum. The scheduler must also be informed
 	*/
-	void Demand();
+	void SetMinExpiration();
+
+	/**
+	* Check if the task is blocked from executing by another task
+	*/
+	bool IsBlocked() const
+	{
+		return this->context->IsBlocked(*this);
+	}
 
 protected:
 
@@ -213,13 +155,19 @@ protected:
 
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) = 0;
 
-	virtual TaskState OnTaskComplete(TaskCompletion completion, openpal::MonotonicTimestamp now) = 0;
+	void CompleteTask(TaskCompletion completion, openpal::MonotonicTimestamp now);
 
-	virtual bool IsEnabled() const = 0;
+	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) {}
+
+	virtual bool IsEnabled() const
+	{
+		return true;
+	}
 
 	virtual MasterTaskType GetTaskType() const = 0;
 
-	IMasterApplication* pApplication;
+	const std::shared_ptr<TaskContext> context;
+	IMasterApplication* const application;
 	openpal::Logger logger;
 
 	// Validation helpers for various behaviors to avoid deep inheritance
@@ -228,15 +176,20 @@ protected:
 	bool ValidateNoObjects(const openpal::RSlice& objects);
 	bool ValidateInternalIndications(const APDUResponseHeader& header);
 
-	void NotifyResult(TaskCompletion result);
 
 private:
 
+	/**
+	* Allows tasks to enter a blocking mode where lower priority
+	* tasks cannot run until this task completes
+	*/
+	virtual bool BlocksLowerPriority() const = 0;
+
 	IMasterTask();
 
-	TaskState state;
 	TaskConfig config;
-	openpal::MonotonicTimestamp taskStartExpiration;
+	TaskBehavior behavior;
+
 };
 
 }

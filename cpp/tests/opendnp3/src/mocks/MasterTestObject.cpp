@@ -33,18 +33,25 @@ MasterParams NoStartupTasks()
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	params.startupIntegrityClassMask = 0;
-	params.unsolClassMask = 0;
+	params.startupIntegrityClassMask = ClassField::None();
+	params.unsolClassMask = ClassField::None();
 	return params;
 }
 
-MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) :
-	log(),
-	exe(std::make_shared<MockExecutor>()),
+MasterTestObject::MasterTestObject(
+    const MasterParams& params,
+    const std::string& id,
+    const std::shared_ptr <openpal::ILogHandler >& log,
+    const std::shared_ptr<testlib::MockExecutor>& executor,
+    const std::shared_ptr<IMasterScheduler>& scheduler
+) :
+	log(log),
+	exe(executor ? executor : std::make_shared<MockExecutor>()),
 	meas(std::make_shared<MockSOEHandler>()),
 	lower(std::make_shared<MockLowerLayer>()),
 	application(std::make_shared<MockMasterApplication>()),
-	context(std::make_shared<MContext>(log.logger, exe, lower, meas, application, params, lock))
+	scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
+	context(std::make_shared<MContext>(openpal::Logger(log, id, ~0), exe, lower, meas, application, this->scheduler, params))
 {}
 
 void MasterTestObject::SendToMaster(const std::string& hex)

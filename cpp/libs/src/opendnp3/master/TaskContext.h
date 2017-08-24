@@ -18,37 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKCOMPARISON_H
-#define OPENDNP3_TASKCOMPARISON_H
+#ifndef OPENDNP3_TASKCONTEXT_H
+#define OPENDNP3_TASKCONTEXT_H
 
-#include <openpal/util/Uncopyable.h>
-#include <openpal/executor/MonotonicTimestamp.h>
+#include "openpal/util/Uncopyable.h"
 
-#include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/ITaskFilter.h"
-
+#include <set>
 
 namespace opendnp3
 {
 
-class TaskComparison : private openpal::StaticOnly
+class IMasterTask; // break circular dependency
+
+/**
+ *
+ * Allows tasks requiring sequenced execution order to block lower priority tasks
+ *
+ * Every master session will initialize its tasks with a shared_ptr to a TaskContext
+ *
+ */
+class TaskContext : private openpal::Uncopyable
 {
+	std::set<const IMasterTask*> blocking_tasks;
+
 public:
 
-	enum class Result : uint8_t
-	{
-		Left,
-		Right,
-		Same
-	};
+	void AddBlock(const IMasterTask& task);
 
-	static Result SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs, ITaskFilter& filter);
+	void RemoveBlock(const IMasterTask& task);
 
-private:
+	bool IsBlocked(const IMasterTask& task) const;
 
-	static Result HigherPriority(const IMasterTask& lhs, const IMasterTask& rhs);
-
-	static bool Enabled(const IMasterTask& task, ITaskFilter& filter);
 };
 
 }

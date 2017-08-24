@@ -54,6 +54,8 @@ std::string IntegrityPoll(uint8_t seq, const opendnp3::ClassField& field = opend
 
 std::string ClassTask(opendnp3::FunctionCode fc, uint8_t seq, const opendnp3::ClassField& field = opendnp3::ClassField::AllClasses());
 
+std::string DisableUnsol(uint8_t seq, const opendnp3::ClassField& field = opendnp3::ClassField::AllEventClasses());
+
 std::string ClassPoll(uint8_t seq, opendnp3::PointClass pc);
 
 std::string EventPoll(uint8_t seq, const opendnp3::ClassField& field = opendnp3::ClassField::AllEventClasses());

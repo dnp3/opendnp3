@@ -43,10 +43,10 @@ class UserPollTask final : public PollTaskBase
 public:
 
 	UserPollTask(
+	    const std::shared_ptr<TaskContext>& context,
 	    const HeaderBuilderT& builder,
+	    const TaskBehavior& behavior,
 	    bool recurring,
-	    openpal::TimeDuration period,
-	    openpal::TimeDuration retryDelay,
 	    IMasterApplication& app,
 	    ISOEHandler& soeHandler,
 	    openpal::Logger logger,
@@ -77,8 +77,6 @@ public:
 
 private:
 
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
-
 	virtual MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::USER_TASK;
@@ -86,9 +84,7 @@ private:
 
 
 	HeaderBuilderT builder;
-	bool recurring;
-	openpal::TimeDuration period;
-	openpal::TimeDuration retryDelay;
+	const bool recurring;
 };
 
 

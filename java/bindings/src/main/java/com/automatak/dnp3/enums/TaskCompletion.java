@@ -41,21 +41,9 @@ public enum TaskCompletion
   */
   FAILURE_START_TIMEOUT(3),
   /**
-  * The task could not run because the specified user was not defined on the master (SA only)
+  * The task failed because the master was unable to format the request
   */
-  FAILURE_NO_USER(4),
-  /**
-  * The task failed because of some unexpected internal issue like bad configuration data
-  */
-  FAILURE_INTERNAL_ERROR(5),
-  /**
-  * The outstation rejected the operation do to a lack of valid session keys or the user not existing on the outstation (SA only)
-  */
-  FAILURE_BAD_AUTHENTICATION(6),
-  /**
-  * The outstation rejected the operation because the specified user is not authorized for the request that was made (SA only)
-  */
-  FAILURE_NOT_AUTHORIZED(7),
+  FAILURE_MESSAGE_FORMAT_ERROR(4),
   /**
   * There is no communication with the outstation, so the task was not attempted
   */
@@ -86,13 +74,7 @@ public enum TaskCompletion
       case(3):
         return FAILURE_START_TIMEOUT;
       case(4):
-        return FAILURE_NO_USER;
-      case(5):
-        return FAILURE_INTERNAL_ERROR;
-      case(6):
-        return FAILURE_BAD_AUTHENTICATION;
-      case(7):
-        return FAILURE_NOT_AUTHORIZED;
+        return FAILURE_MESSAGE_FORMAT_ERROR;
       default:
         return FAILURE_NO_COMMS;
     }

@@ -35,7 +35,7 @@ class ClearRestartTask final : public IMasterTask
 
 public:
 
-	ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+	ClearRestartTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, openpal::Logger logger);
 
 	virtual char const* Name() const override
 	{
@@ -71,11 +71,8 @@ private:
 		return true;
 	}
 
-	virtual IMasterTask::TaskState OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
-
 	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override;
 
-	openpal::TimeDuration retryPeriod;
 };
 
 } //end ns

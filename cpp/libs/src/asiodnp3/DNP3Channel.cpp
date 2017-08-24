@@ -20,8 +20,10 @@
  */
 #include "DNP3Channel.h"
 
-#include <openpal/logging/LogMacros.h>
-#include <opendnp3/LogLevels.h>
+#include "opendnp3/LogLevels.h"
+#include "opendnp3/master/MasterSchedulerBackend.h"
+
+#include "openpal/logging/LogMacros.h"
 
 #include "MasterStack.h"
 #include "OutstationStack.h"
@@ -41,6 +43,7 @@ DNP3Channel::DNP3Channel(
 
 	logger(logger),
 	executor(executor),
+	scheduler(std::make_shared<MasterSchedulerBackend>(executor)),
 	iohandler(iohandler),
 	manager(manager),
 	resources(ResourceManager::Create())
@@ -116,7 +119,7 @@ void DNP3Channel::SetLogFilters(const LogFilters& filters)
 
 std::shared_ptr<IMaster> DNP3Channel::AddMaster(const std::string& id, std::shared_ptr<ISOEHandler> SOEHandler, std::shared_ptr<IMasterApplication> application, const MasterStackConfig& config)
 {
-	auto stack = MasterStack::Create(this->logger.Detach(id), this->executor, SOEHandler, application, this->iohandler, this->resources, config, this->iohandler->TaskLock());
+	auto stack = MasterStack::Create(this->logger.Detach(id), this->executor, SOEHandler, application, this->scheduler, this->iohandler, this->resources, config);
 
 	return this->AddStack(config.link, stack);
 

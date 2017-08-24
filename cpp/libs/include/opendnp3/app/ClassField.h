@@ -38,9 +38,9 @@ public:
 
 	ClassField();
 
-	ClassField(PointClass pc);
+	explicit ClassField(PointClass pc);
 
-	ClassField(uint8_t mask_);
+	explicit ClassField(uint8_t mask_);
 
 	ClassField(bool class0, bool class1, bool class2, bool class3);
 

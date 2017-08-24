@@ -22,8 +22,9 @@
 #define OPENDNP3_MASTERTASKS_H
 
 #include "opendnp3/master/MasterParams.h"
-#include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/IMasterScheduler.h"
 #include "opendnp3/master/IMasterApplication.h"
+#include "opendnp3/master/ISOEHandler.h"
 
 #include <vector>
 
@@ -37,26 +38,51 @@ public:
 
 	MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application, ISOEHandler& SOEHandler);
 
-	void Initialize(MasterScheduler& scheduler);
+	void Initialize(IMasterScheduler& scheduler, IMasterTaskRunner& runner);
 
-	// master tasks that can be "failed" (startup and in response to IIN bits)
-	const std::shared_ptr<IMasterTask> enableUnsol;
-	const std::shared_ptr<IMasterTask> clearRestart;
-	const std::shared_ptr<IMasterTask> assignClass;
-	const std::shared_ptr<IMasterTask> startupIntegrity;
-	const std::shared_ptr<IMasterTask> disableUnsol;
-	const std::shared_ptr<IMasterTask> eventScan;
+	bool DemandTimeSync();
+	bool DemandEventScan();
+	bool DemandIntegrity();
 
-	bool TryDemandTimeSync();
+	void OnRestartDetected();
 
 	void BindTask(const std::shared_ptr<IMasterTask>& task);
 
+	const std::shared_ptr<TaskContext> context;
+
 private:
 
-	// same as above, but may be NULL based on configuration
+	bool Demand(const std::shared_ptr<IMasterTask>& task)
+	{
+		if (task)
+		{
+			task->SetMinExpiration();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	inline static TaskBehavior RetryBehavior(const MasterParams& params)
+	{
+		return TaskBehavior::SingleImmediateExecutionWithRetry(params.taskRetryPeriod, params.maxTaskRetryPeriod);
+	}
+
+	const std::shared_ptr<IMasterTask> clearRestart;
+	const std::shared_ptr<IMasterTask> assignClass;
+	const std::shared_ptr<IMasterTask> startupIntegrity;
+	const std::shared_ptr<IMasterTask> eventScan;
+	const std::shared_ptr<IMasterTask> disableUnsol;
+	const std::shared_ptr<IMasterTask> enableUnsol;
 	const std::shared_ptr<IMasterTask> timeSynchronization;
 
-	static std::shared_ptr<IMasterTask> GetTimeSyncTask(TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application);
+
+
+	static std::shared_ptr<IMasterTask> GetTimeSyncTask(const std::shared_ptr<TaskContext>& context, TimeSyncMode mode, const openpal::Logger& logger, IMasterApplication& application);
+	static std::shared_ptr<IMasterTask> GetEnableUnsolTask(const std::shared_ptr<TaskContext>& context, const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application);
+	static std::shared_ptr<IMasterTask> GetDisableUnsolTask(const std::shared_ptr<TaskContext>& context, const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application);
 
 	std::vector<std::shared_ptr<IMasterTask>> boundTasks;
 

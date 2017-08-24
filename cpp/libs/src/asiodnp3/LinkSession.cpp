@@ -21,9 +21,11 @@
 
 #include "asiodnp3/LinkSession.h"
 
-#include <openpal/logging/LogMacros.h>
+#include "openpal/logging/LogMacros.h"
 
-#include <opendnp3/LogLevels.h>
+#include "opendnp3/LogLevels.h"
+
+#include "opendnp3/master/MasterSchedulerBackend.h"
 
 using namespace openpal;
 using namespace asiopal;
@@ -170,6 +172,7 @@ std::shared_ptr<IMasterSession> LinkSession::AcceptSession(
 	                  this->channel->executor,
 	                  SOEHandler,
 	                  application,
+	                  std::make_shared<MasterSchedulerBackend>(this->channel->executor),
 	                  shared_from_this(),
 	                  *this,
 	                  config

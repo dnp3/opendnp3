@@ -31,9 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ClearRestartTask::ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
-	IMasterTask(application, MonotonicTimestamp::Max(), logger, TaskConfig::Default()),
-	retryPeriod(retryPeriod_)
+ClearRestartTask::ClearRestartTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, openpal::Logger logger) :
+	IMasterTask(context, application, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
 {
 
 }
@@ -63,22 +62,6 @@ IMasterTask::ResponseResult ClearRestartTask::ProcessResponse(const APDUResponse
 	else
 	{
 		return  ResponseResult::ERROR_BAD_RESPONSE;
-	}
-}
-
-IMasterTask::TaskState ClearRestartTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
-{
-	switch (result)
-	{
-	// if the outstation ever rejects the task outright, disable this task so that it doesn't rapid-retry
-	case(TaskCompletion::FAILURE_NOT_AUTHORIZED) :
-	case(TaskCompletion::FAILURE_BAD_RESPONSE) :
-		return TaskState::Disabled();
-
-	case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) :
-		return TaskState::Retry(now.Add(retryPeriod));
-	default:
-		return TaskState::Infinite();
 	}
 }
 
