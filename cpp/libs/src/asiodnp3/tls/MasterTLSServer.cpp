@@ -77,10 +77,15 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
 	char subjectName[MAX_SUBJECT_NAME];
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, MAX_SUBJECT_NAME);
+	unsigned char sha1_hash[SHA_DIGEST_LENGTH];
+	unsigned int sha1_hash_len;
+	if(!X509_digest(cert, EVP_sha1(), sha1_hash, &sha1_hash_len)) {
+		return false;
+	}
 
 	X509Info info(
 	    depth,
-	    RSlice(cert->sha1_hash, SHA_DIGEST_LENGTH), // the thumbprint
+	    RSlice(sha1_hash, sha1_hash_len), // the thumbprint
 	    std::string(subjectName)
 	);
 
