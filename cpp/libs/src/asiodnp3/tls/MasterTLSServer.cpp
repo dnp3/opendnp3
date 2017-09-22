@@ -79,7 +79,8 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
 	X509_NAME_oneline(X509_get_subject_name(cert), subjectName, MAX_SUBJECT_NAME);
 	unsigned char sha1_hash[SHA_DIGEST_LENGTH];
 	unsigned int sha1_hash_len;
-	if(!X509_digest(cert, EVP_sha1(), sha1_hash, &sha1_hash_len)) {
+	if(!X509_digest(cert, EVP_sha1(), sha1_hash, &sha1_hash_len))
+	{
 		return false;
 	}
 
