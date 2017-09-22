@@ -117,54 +117,51 @@ IndexSearch::Result IndexSearch::FindClosestRawIndex(const openpal::ArrayView<Ce
 	{
 		return Result(false, 0);
 	}
-	else
+
+	uint16_t lower = 0;
+	uint16_t upper = view.Size() - 1;
+
+	uint16_t midpoint = 0;
+
+	while (lower <= upper)
 	{
-		uint16_t lower = 0;
-		uint16_t upper = view.Size() - 1;
+		midpoint = GetMidpoint(lower, upper);
 
-		uint16_t midpoint = 0;
+		const auto index = view[midpoint].config.vIndex;
 
-		while (lower <= upper)
+		if (index == vIndex)
 		{
-			midpoint = GetMidpoint(lower, upper);
+			// exact match
+			return Result(true, midpoint);
+		}
 
-			auto index = view[midpoint].config.vIndex;
-
-			if (index == vIndex)
+		if (index < vIndex) // search the upper array
+		{
+			if (lower < openpal::MaxValue<uint16_t>())
 			{
-				return Result(true, midpoint);
+				lower = midpoint + 1;
 			}
 			else
 			{
-				if (index < vIndex) // search the upper array
-				{
-					if (lower < openpal::MaxValue<uint16_t>())
-					{
-						lower = midpoint + 1;
-					}
-					else
-					{
-						//we're at the upper limit
-						return Result(false, midpoint);
-					}
-				}
-				else
-				{
-					if (upper > 0)
-					{
-						upper = midpoint - 1;
-					}
-					else
-					{
-						//we're at the lower limit
-						return Result(false, midpoint);
-					}
-				}
+				//we're at the upper limit
+				return Result(false, midpoint);
 			}
 		}
-
-		return Result(false, midpoint);
+		else               // search the lower array
+		{
+			if (upper > 0 && midpoint > 0)
+			{
+				upper = midpoint - 1;
+			}
+			else
+			{
+				//we're at the lower limit
+				return Result(false, midpoint);
+			}
+		}
 	}
+
+	return Result(false, midpoint);
 }
 
 }

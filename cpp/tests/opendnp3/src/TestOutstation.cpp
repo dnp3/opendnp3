@@ -507,6 +507,28 @@ TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeIntegrityScan"))
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
 }
 
+TEST_CASE(SUITE("can safely update non-existent index in discontiguous index mode"))
+{
+	OutstationConfig config;
+	config.params.indexMode = IndexMode::Discontiguous;
+	OutstationTestObject t(config, DatabaseSizes::BinaryOnly(2));
+
+	auto view = t.context.GetConfigView();
+	for (int i = 0; i < 2; ++i)
+	{
+		view.binaries[i].config.clazz = PointClass::Class1;
+		view.binaries[i].config.svariation = StaticBinaryVariation::Group1Var2;
+		view.binaries[i].config.evariation = EventBinaryVariation::Group2Var3;
+		view.binaries[i].config.vIndex = i + 2;
+	}
+
+	// now send an update to boundary points that doesn't exist
+	REQUIRE_FALSE(t.context.GetUpdateHandler().Update(Binary(true), 0, EventMode::Suppress));
+	REQUIRE_FALSE(t.context.GetUpdateHandler().Update(Binary(true), 1, EventMode::Suppress));
+	// 2 & 3 exist
+	REQUIRE_FALSE(t.context.GetUpdateHandler().Update(Binary(true), 4, EventMode::Suppress));
+}
+
 TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeRangeScan"))
 {
 	// this will tell the outstation to use discontiguous index mode, but we won't change the address assignments
