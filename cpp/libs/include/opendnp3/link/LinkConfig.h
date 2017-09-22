@@ -81,6 +81,7 @@ struct LinkConfig
 	openpal::TimeDuration Timeout;
 
 	/// the interval for keep-alive messages (link status requests)
+	/// if set to TimeDuration::Max(), the keep-alive is disabled
 	openpal::TimeDuration KeepAliveTimeout;
 
 private:
