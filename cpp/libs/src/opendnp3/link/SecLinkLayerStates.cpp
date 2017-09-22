@@ -55,7 +55,7 @@ SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkContext& ctx, bool aFcb)
 SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkContext& ctx, bool aFcb, const openpal::RSlice&)
 {
 	++ctx.statistics.numUnexpectedFrame;
-	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored");
+	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored: secondary not reset");
 	return *this;
 }
 
@@ -106,7 +106,7 @@ SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkContext& ctx, bool fcb, const 
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Confirmed data w/ wrong FCB");
+		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored: unexpected frame count bit (FCB)");
 	}
 
 	return SLLS_TransmitWaitReset::Instance();
