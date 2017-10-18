@@ -39,19 +39,19 @@ public:
 
 	virtual opendnp3::ApplicationIIN GetApplicationIIN() const override;
 
-        virtual opendnp3::RestartMode ColdRestartSupport() const override;
+	virtual opendnp3::RestartMode ColdRestartSupport() const override;
 
-        virtual opendnp3::RestartMode WarmRestartSupport() const override;
+	virtual opendnp3::RestartMode WarmRestartSupport() const override;
 
-        virtual uint16_t ColdRestart();
+	virtual uint16_t ColdRestart();
 
-        virtual uint16_t WarmRestart();
+	virtual uint16_t WarmRestart();
 
 private:
 
 	GlobalRef proxy;
   
-        static opendnp3::RestartMode RestartModeFromValue(uint8_t arg);
+	static opendnp3::RestartMode RestartModeFromValue(uint8_t arg);
 };
 
 #endif

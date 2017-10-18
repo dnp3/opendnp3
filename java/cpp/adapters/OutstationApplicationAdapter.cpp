@@ -64,10 +64,9 @@ ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 	return iin;
 }
 
-
 RestartMode OutstationApplicationAdapter::ColdRestartSupport() const
 {
-    const auto env = JNI::GetEnv();
+	const auto env = JNI::GetEnv();
 	auto jmode = JCache::OutstationApplication.coldRestartSupport(env, proxy);
 	uint8_t jmodeVal = static_cast<uint8_t>(JCache::RestartMode.toType(env, jmode));
 	return RestartModeFromValue(jmodeVal);
@@ -75,8 +74,8 @@ RestartMode OutstationApplicationAdapter::ColdRestartSupport() const
 
 RestartMode OutstationApplicationAdapter::WarmRestartSupport() const
 {
-    const auto env = JNI::GetEnv();
-	auto jmode = JCache::OutstationApplication.coldRestartSupport(env, proxy);
+	const auto env = JNI::GetEnv();
+	auto jmode = JCache::OutstationApplication.warmRestartSupport(env, proxy);
 	uint8_t jmodeVal = static_cast<uint8_t>(JCache::RestartMode.toType(env, jmode));
 	return RestartModeFromValue(jmodeVal);
 }
