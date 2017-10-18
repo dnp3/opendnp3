@@ -63,3 +63,42 @@ ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 	iin.needTime = !!JCache::ApplicationIIN.getneedTime(env, jiin);
 	return iin;
 }
+
+
+RestartMode OutstationApplicationAdapter::ColdRestartSupport() const
+{
+    const auto env = JNI::GetEnv();
+	auto jmode = JCache::OutstationApplication.coldRestartSupport(env, proxy);
+	uint8_t jmodeVal = static_cast<uint8_t>(JCache::RestartMode.toType(env, jmode));
+	return RestartModeFromValue(jmodeVal);
+}
+
+RestartMode OutstationApplicationAdapter::WarmRestartSupport() const
+{
+    const auto env = JNI::GetEnv();
+	auto jmode = JCache::OutstationApplication.coldRestartSupport(env, proxy);
+	uint8_t jmodeVal = static_cast<uint8_t>(JCache::RestartMode.toType(env, jmode));
+	return RestartModeFromValue(jmodeVal);
+}
+
+
+uint16_t OutstationApplicationAdapter::ColdRestart()
+{
+    const auto env = JNI::GetEnv();
+    return JCache::OutstationApplication.coldRestart(env, proxy);
+}
+
+uint16_t OutstationApplicationAdapter::WarmRestart()
+{
+    const auto env = JNI::GetEnv();
+    return JCache::OutstationApplication.warmRestart(env, proxy);
+}
+
+opendnp3::RestartMode OutstationApplicationAdapter::RestartModeFromValue(uint8_t arg)
+{
+	switch (arg) {
+	case 1: return RestartMode::SUPPORTED_DELAY_FINE;
+	case 2: return RestartMode::SUPPORTED_DELAY_COARSE;
+	default: return RestartMode::UNSUPPORTED;
+	}
+}

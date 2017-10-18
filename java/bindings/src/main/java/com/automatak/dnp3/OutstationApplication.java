@@ -56,4 +56,22 @@ public interface OutstationApplication extends LinkStatusListener {
      * @return Application controlled IIN bits
      */
     ApplicationIIN getApplicationIIN();
+
+    /// Query the outstation for the cold restart mode it supports
+    RestartMode coldRestartSupport();
+
+    /// Query the outstation for the warm restart mode it supports
+    RestartMode warmRestartSupport();
+
+    /// The outstation should perform a complete restart.
+    /// See the DNP3 specification for a complete descripton of normal behavior
+    /// @return number of seconds or milliseconds until restart is complete. The value
+    /// is interpreted based on the Restart Mode returned from ColdRestartSupport()
+    int coldRestart();
+
+    /// The outstation should perform a partial restart of only the DNP3 application.
+    /// See the DNP3 specification for a complete descripton of normal behavior
+    /// @return number of seconds or milliseconds until restart is complete. The value
+    /// is interpreted based on the Restart Mode returned from WarmRestartSupport()
+    int warmRestart();
 }

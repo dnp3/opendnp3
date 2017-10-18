@@ -63,5 +63,23 @@ public class DefaultOutstationApplication implements OutstationApplication
     @Override
     public void onKeepAliveSuccess(){}
 
+    @Override
+    public RestartMode coldRestartSupport() {
+        return RestartMode.UNSUPPORTED;
+    }
 
+    @Override
+    public RestartMode warmRestartSupport() {
+        return RestartMode.UNSUPPORTED;
+    }
+
+    @Override
+    public int coldRestart() {
+        return 65535;
+    }
+
+    @Override
+    public int warmRestart() {
+        return 65535;
+    }
 }

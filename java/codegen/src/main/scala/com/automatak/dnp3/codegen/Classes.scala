@@ -28,6 +28,7 @@ object Classes {
     classOf[PointClass],
     classOf[OperateType],
     classOf[AssignClassType],
+	classOf[RestartMode],
 
     classOf[StaticBinaryVariation],
     classOf[StaticDoubleBinaryVariation],
