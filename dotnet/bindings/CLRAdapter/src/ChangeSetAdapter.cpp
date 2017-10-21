@@ -13,11 +13,11 @@ namespace Automatak
 			ChangeSetAdapter::ChangeSetAdapter() : builder(new asiodnp3::UpdateBuilder())
 			{}
 
-			ChangeSetAdapter::~ChangeSetAdapter()
+			ChangeSetAdapter::!ChangeSetAdapter()
 			{
 				delete builder;
 			}
-
+		
 			void ChangeSetAdapter::Apply(asiodnp3::IOutstation& proxy)
 			{
 				proxy.Apply(builder->Build());				
