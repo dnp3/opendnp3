@@ -21,9 +21,6 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Automatak.DNP3.Interface
 {
@@ -67,7 +64,8 @@ namespace Automatak.DNP3.Interface
         /// <returns>dnp3 milliseconds since unix epoch</returns>
         public static Int64 Convert(DateTime time)
 	    {
-            return (Int64) time.Subtract(epoch).TotalMilliseconds;
-	    }        
+            var ticks = time.ToUniversalTime().Subtract(epoch).Ticks;
+            return (ticks / TimeSpan.TicksPerMillisecond);
+        }        
     }
 }

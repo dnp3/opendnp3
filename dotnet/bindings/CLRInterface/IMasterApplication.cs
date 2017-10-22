@@ -109,8 +109,7 @@ namespace Automatak.DNP3.Interface
 
         UInt64 IMasterApplication.GetMillisecondsSinceEpoch()
         {
-            var ticks = DateTime.Now.ToUniversalTime().Subtract(epoch).Ticks;
-            return (UInt64) (ticks / TimeSpan.TicksPerMillisecond);
+            return (UInt64) TimeStamp.Convert(DateTime.Now);
         }
 
         void IMasterApplication.OnReceiveIIN(IINField iin)
