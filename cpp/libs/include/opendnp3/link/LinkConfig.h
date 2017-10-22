@@ -45,6 +45,7 @@ struct LinkConfig
 		NumRetry(numRetry),
 		LocalAddr(localAddr),
 		RemoteAddr(remoteAddr),
+		RespondToAnyRemote(false),
 		Timeout(timeout),
 		KeepAliveTimeout(keepAliveTimeout)
 	{}
@@ -58,6 +59,7 @@ struct LinkConfig
 		NumRetry(0),
 		LocalAddr(isMaster ? 1 : 1024),
 		RemoteAddr(isMaster ? 1024 : 1),
+		RespondToAnyRemote(false),
 		Timeout(openpal::TimeDuration::Seconds(1)),
 		KeepAliveTimeout(openpal::TimeDuration::Minutes(1))
 	{}
@@ -76,6 +78,9 @@ struct LinkConfig
 
 	/// dnp3 address of the remote device
 	uint16_t RemoteAddr;
+
+	/// respond to any source address that uses the address of this device
+	bool RespondToAnyRemote;
 
 	/// the response timeout in milliseconds for confirmed requests
 	openpal::TimeDuration Timeout;

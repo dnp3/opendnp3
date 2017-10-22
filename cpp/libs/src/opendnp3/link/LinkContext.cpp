@@ -345,8 +345,24 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		return false;
 	}
 
-	if (!this->Validate(header.isFromMaster, header.src, header.dest))
+	if (header.isFromMaster == config.IsMaster)
 	{
+		++statistics.numBadMasterBit;
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, (header.isFromMaster ? "Master frame received for master" : "Outstation frame received for outstation"));
+		return false;
+	}
+
+	if (header.dest != config.LocalAddr)
+	{
+		++statistics.numUnknownDestination;
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame for unknown destintation");
+		return false;
+	}
+
+	if (header.src != config.RemoteAddr)
+	{
+		++statistics.numUnknownSource;
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame from unknwon source");
 		return false;
 	}
 
@@ -386,33 +402,6 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		return false;
 	}
 }
-
-bool LinkContext::Validate(bool isMaster, uint16_t src, uint16_t dest)
-{
-	if (isMaster == config.IsMaster)
-	{
-		++statistics.numBadMasterBit;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, (isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));
-		return false;
-	}
-
-	if (dest != config.LocalAddr)
-	{
-		++statistics.numUnknownDestination;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame for unknown destintation");
-		return false;
-	}
-
-	if (src != config.RemoteAddr)
-	{
-		++statistics.numUnknownSource;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame from unknwon source");
-		return false;
-	}
-
-	return true;
-}
-
 
 bool LinkContext::TryPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 {

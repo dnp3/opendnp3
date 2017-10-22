@@ -110,7 +110,6 @@ public:
 	void FailKeepAlive(bool timeout);
 	void CompleteKeepAlive();
 	bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata);
-	bool Validate(bool isMaster, uint16_t src, uint16_t dest);
 	bool TryPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
 
 	// buffers used for primary and secondary requests
