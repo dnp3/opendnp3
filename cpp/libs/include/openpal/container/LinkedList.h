@@ -63,8 +63,6 @@ public:
 		return LinkedListIterator(pStart);
 	}
 
-
-
 	bool HasNext() const
 	{
 		return (pCurrent != nullptr);
