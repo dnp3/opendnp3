@@ -31,8 +31,8 @@ struct Addresses
 	Addresses() = delete;
 
 	Addresses(
-		uint16_t source,
-		uint16_t destination
+	    uint16_t source,
+	    uint16_t destination
 	) :
 		source(source),
 		destination(destination)

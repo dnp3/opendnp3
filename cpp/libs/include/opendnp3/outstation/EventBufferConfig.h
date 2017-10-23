@@ -61,8 +61,7 @@ struct EventBufferConfig
 	    uint16_t maxCounterEvents = 0,
 	    uint16_t maxFrozenCounterEvents = 0,
 	    uint16_t maxBinaryOutputStatusEvents = 0,
-	    uint16_t maxAnalogOutputStatusEvents = 0,
-	    uint16_t maxSecurityStatisticEvents = 0
+	    uint16_t maxAnalogOutputStatusEvents = 0
 	);
 
 	/// Returns the sum of all event count maximums (number of elements in preallocated buffer)
@@ -88,9 +87,6 @@ struct EventBufferConfig
 
 	/// The number of analog output status events the outstation will buffer before overflowing
 	uint16_t maxAnalogOutputStatusEvents;
-
-	/// The number of security statistic events the outstation will buffer before overflowing
-	uint16_t maxSecurityStatisticEvents;
 };
 
 }

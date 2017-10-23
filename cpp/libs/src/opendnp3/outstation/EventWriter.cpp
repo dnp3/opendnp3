@@ -73,8 +73,6 @@ EventWriter::Result EventWriter::LoadHeader(HeaderWriter& writer, IEventRecorder
 		return LoadHeaderBinaryOutputStatus(writer, recorder, pLocation);
 	case(EventType::AnalogOutputStatus) :
 		return LoadHeaderAnalogOutputStatus(writer, recorder, pLocation);
-	case(EventType::SecurityStat) :
-		return LoadHeaderSecurityStat(writer, recorder, pLocation);
 	default:
 		return Result(false, LinkedListIterator<SOERecord>::Undefined());
 	}
@@ -218,21 +216,6 @@ EventWriter::Result EventWriter::LoadHeaderAnalogOutputStatus(HeaderWriter& writ
 		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var8::Inst(), variation);
 	default:
 		return WriteTypeWithSerializer<AnalogOutputStatusSpec>(writer, recorder, pLocation, Group42Var1::Inst(), variation);
-	}
-}
-
-EventWriter::Result EventWriter::LoadHeaderSecurityStat(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
-{
-	auto variation = pLocation->value.GetValue<SecurityStatSpec>().selectedVariation;
-
-	switch (variation)
-	{
-	case(EventSecurityStatVariation::Group122Var1) :
-		return WriteTypeWithSerializer<SecurityStatSpec>(writer, recorder, pLocation, Group122Var1::Inst(), variation);
-	case(EventSecurityStatVariation::Group122Var2) :
-		return WriteTypeWithSerializer<SecurityStatSpec>(writer, recorder, pLocation, Group122Var2::Inst(), variation);
-	default:
-		return WriteTypeWithSerializer<SecurityStatSpec>(writer, recorder, pLocation, Group122Var1::Inst(), variation);
 	}
 }
 

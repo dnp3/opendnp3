@@ -165,7 +165,6 @@ struct SecurityStatInfo : private openpal::StaticOnly
 	typedef EventSecurityStatVariation event_variation_t;
 	typedef StaticSecurityStatVariation static_variation_t;
 
-	const static EventType EventTypeEnum = EventType::SecurityStat;
 	const static event_variation_t DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
 	const static static_variation_t DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
 };

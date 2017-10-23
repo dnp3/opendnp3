@@ -67,9 +67,6 @@ void SOERecord::SelectDefault()
 	case(EventType::AnalogOutputStatus) :
 		value.analogOutputStatus.SelectDefaultVariation();
 		break;
-	case(EventType::SecurityStat) :
-		value.securityStat.SelectDefaultVariation();
-		break;
 	}
 }
 
@@ -115,12 +112,6 @@ SOERecord::SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass
 	this->value.analogOutputStatus = ValueAndVariation < AnalogOutputStatusSpec > { meas.value, var, var };
 }
 
-SOERecord::SOERecord(const SecurityStat& meas, uint16_t index_, EventClass clazz_, EventSecurityStatVariation var) :
-	SOERecord(EventType::SecurityStat, clazz_, index_, meas.time, meas.quality)
-{
-	this->value.securityStat = ValueAndVariation < SecurityStatSpec > { meas.value, var, var };
-}
-
 void SOERecord::Select(EventBinaryVariation var)
 {
 	this->selected = true;
@@ -163,12 +154,6 @@ void SOERecord::Select(EventAnalogOutputStatusVariation var)
 	value.analogOutputStatus.selectedVariation = var;
 }
 
-void SOERecord::Select(EventSecurityStatVariation var)
-{
-	this->selected = true;
-	value.securityStat.selectedVariation = var;
-}
-
 template <>
 const ValueAndVariation<BinarySpec>& SOERecord::GetValue()
 {
@@ -209,12 +194,6 @@ template <>
 const ValueAndVariation<AnalogOutputStatusSpec>& SOERecord::GetValue()
 {
 	return value.analogOutputStatus;
-}
-
-template <>
-const ValueAndVariation<SecurityStatSpec>& SOERecord::GetValue()
-{
-	return value.securityStat;
 }
 
 }
