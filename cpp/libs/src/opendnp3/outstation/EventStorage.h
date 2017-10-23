@@ -43,15 +43,112 @@ public:
 
 	explicit EventStorage(const EventBufferConfig& config);
 
-	// --- these functions return true if an overflow occurs --- 
+	// ---- these functions return true if an overflow occurs ----
 
-	bool Update(const Event<BinarySpec>& evt);
-	bool Update(const Event<DoubleBitBinarySpec>& evt);
-	bool Update(const Event<AnalogSpec>& evt);
-	bool Update(const Event<CounterSpec>& evt);
-	bool Update(const Event<FrozenCounterSpec>& evt);
-	bool Update(const Event<BinaryOutputStatusSpec>& evt);
-	bool Update(const Event<AnalogOutputStatusSpec>& evt);
+	inline bool Update(const Event<BinarySpec>& evt)
+	{
+		return UpdateAny(evt, this->binary);
+	}
+
+	inline bool Update(const Event<DoubleBitBinarySpec>& evt)
+	{
+		return UpdateAny(evt, this->doubleBinary);
+	}
+	
+	inline bool Update(const Event<AnalogSpec>& evt)
+	{
+		return UpdateAny(evt, this->analog);
+	}
+	
+	inline bool Update(const Event<CounterSpec>& evt)
+	{
+		return UpdateAny(evt, this->counter);
+	}
+	
+	inline bool Update(const Event<FrozenCounterSpec>& evt)
+	{
+		return UpdateAny(evt, this->frozenCounter);
+	}
+	
+	inline bool Update(const Event<BinaryOutputStatusSpec>& evt)
+	{
+		return UpdateAny(evt, this->binaryOutputStatus);
+	}
+	
+	inline bool Update(const Event<AnalogOutputStatusSpec>& evt)
+	{
+		return UpdateAny(evt, this->analogOutputStatus);
+	}
+
+	inline uint32_t SelectBinary(EventBinaryVariation variation, uint32_t max)
+	{
+		return this->SelectAny(variation, max, this->binary);
+	}
+
+	inline uint32_t SelectBinary(uint32_t max)
+	{
+		return this->SelectAny(max, this->binary);
+	}
+
+	inline uint32_t SelectDoubleBinary(EventDoubleBinaryVariation variation, uint32_t max)
+	{
+		return this->SelectAny(variation, max, this->doubleBinary);
+	}
+
+	inline uint32_t SelectDoubleBinary(uint32_t max)
+	{
+		return this->SelectAny(max, this->doubleBinary);
+	}
+
+	inline uint32_t SelectAnalog(EventAnalogVariation variation, uint32_t max)
+	{
+		return this->SelectAny(variation, max, this->analog);
+	}
+
+	inline uint32_t SelectAnalog(uint32_t max)
+	{
+		return this->SelectAny(max, this->analog);
+	}
+
+	inline uint32_t SelectCounter(EventCounterVariation variation, uint32_t max)
+	{
+		return this->SelectAny(variation, max, this->counter);
+	}
+
+	inline uint32_t SelectCounter(uint32_t max)
+	{
+		return this->SelectAny(max, this->counter);
+	}
+
+	inline uint32_t SelectFrozenCounter(EventFrozenCounterVariation variation, uint32_t max)
+	{
+		return this->SelectAny(variation, max, this->frozenCounter);
+	}
+
+	inline uint32_t SelectFrozenCounter(uint32_t max)
+	{
+		return this->SelectAny(max, this->frozenCounter);
+	}
+
+	inline uint32_t SelectBinaryOutputStatus(EventBinaryOutputStatusVariation variation, uint32_t max)
+	{
+		return this->SelectAny(variation, max, this->binaryOutputStatus);
+	}
+
+	inline uint32_t SelectBinaryOutputStatus(uint32_t max)
+	{
+		return this->SelectAny(max, this->binaryOutputStatus);
+	}
+
+	inline uint32_t SelectAnalogOutputStatus(EventAnalogOutputStatusVariation variation, uint32_t max)
+	{
+		return this->SelectAny(variation, max, this->analogOutputStatus);
+	}
+
+	inline uint32_t SelectAnalogOutputStatus(uint32_t max)
+	{
+		return this->SelectAny(max, this->analogOutputStatus);
+	}
 
 private:
 
@@ -114,6 +211,12 @@ private:
 
 	template <class T>
 	bool UpdateAny(const Event<T>& evt, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
+
+	template <class T>
+	uint32_t SelectAny(typename T::event_variation_t variation, uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
+
+	template <class T>
+	uint32_t SelectAny(uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
 };
 
 template <class T>
@@ -157,6 +260,41 @@ bool EventStorage::UpdateAny(const Event<T>& evt, openpal::LinkedList<TypeRecord
 	return overflow;
 }
 
+template <class T>
+uint32_t EventStorage::SelectAny(typename T::event_variation_t variation, uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list)
+{
+	uint32_t num_selected = 0;
+	auto iter = list.Iterate();
+
+	while (iter.HasNext() && num_selected < max)
+	{
+		auto node = iter.Next();
+		node->value.record->value.selected = true;
+		node->value.record->value.type = T::EventTypeEnum;
+		node->value.selectedVariation = variation;
+		++num_selected;
+	}
+
+	return num_selected;
+}
+
+template <class T>
+uint32_t EventStorage::SelectAny(uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list)
+{
+	uint32_t num_selected = 0;
+	auto iter = list.Iterate();
+
+	while (iter.HasNext() && num_selected < max)
+	{
+		auto node = iter.Next();
+		node->value.record->value.selected = true;
+		node->value.record->value.type = T::EventTypeEnum;
+		node->value.selectedVariation = node->value.defaultVariation;
+		++num_selected;
+	}
+
+	return num_selected;
+}
 
 }
 

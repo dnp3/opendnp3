@@ -35,41 +35,6 @@ EventStorage::EventStorage(const EventBufferConfig& config) :
 	analogOutputStatus(config.maxAnalogOutputStatusEvents)
 {}
 
-bool EventStorage::Update(const Event<BinarySpec>& evt)
-{
-	return this->UpdateAny(evt, this->binary);
-}
-
-bool EventStorage::Update(const Event<DoubleBitBinarySpec>& evt)
-{
-	return this->UpdateAny(evt, this->doubleBinary);
-}
-
-bool EventStorage::Update(const Event<AnalogSpec>& evt)
-{
-	return this->UpdateAny(evt, this->analog);
-}
-
-bool EventStorage::Update(const Event<CounterSpec>& evt)
-{
-	return this->UpdateAny(evt, this->counter);
-}
-
-bool EventStorage::Update(const Event<FrozenCounterSpec>& evt)
-{
-	return this->UpdateAny(evt, this->frozenCounter);
-}
-
-bool EventStorage::Update(const Event<BinaryOutputStatusSpec>& evt)
-{
-	return this->UpdateAny(evt, this->binaryOutputStatus);
-}
-
-bool EventStorage::Update(const Event<AnalogOutputStatusSpec>& evt)
-{
-	return this->UpdateAny(evt, this->analogOutputStatus);
-}
-
 }
 
 
