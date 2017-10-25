@@ -31,9 +31,10 @@ namespace opendnp3
 {
 
 /*
-	Data-stucture for holding events. 
+	Data-stucture for holding events.
 
-	Only performs dynamic allocation at initialization
+	* Only performs dynamic allocation at initialization
+	* Maintains distinct lists for each type of event to optimize memory usage
 */
 
 class EventStorage
@@ -54,27 +55,27 @@ public:
 	{
 		return UpdateAny(evt, this->doubleBinary);
 	}
-	
+
 	inline bool Update(const Event<AnalogSpec>& evt)
 	{
 		return UpdateAny(evt, this->analog);
 	}
-	
+
 	inline bool Update(const Event<CounterSpec>& evt)
 	{
 		return UpdateAny(evt, this->counter);
 	}
-	
+
 	inline bool Update(const Event<FrozenCounterSpec>& evt)
 	{
 		return UpdateAny(evt, this->frozenCounter);
 	}
-	
+
 	inline bool Update(const Event<BinaryOutputStatusSpec>& evt)
 	{
 		return UpdateAny(evt, this->binaryOutputStatus);
 	}
-	
+
 	inline bool Update(const Event<AnalogOutputStatusSpec>& evt)
 	{
 		return UpdateAny(evt, this->analogOutputStatus);
@@ -152,26 +153,34 @@ public:
 
 private:
 
-	struct Record {
-		Record() = default;
+	struct EventRecord
+	{
 
-		Record(
-			EventType type,
-			uint16_t index,
-			EventClass clazz
+		enum State
+		{
+			queued,
+			selected,
+			written
+		};
+
+		EventRecord(
+		    EventType type,
+		    uint16_t index,
+		    EventClass clazz
 		) :
 			type(type),
 			index(index),
 			clazz(clazz)
 		{}
 
-		EventType type;
-		uint16_t index;
-		EventClass clazz;
+		EventRecord() = default;
 
-		void* typeNode = nullptr;
-		bool selected = false;
-		bool written = false;
+		EventType type = EventType::Binary;
+		uint16_t index = 0;
+		EventClass clazz = EventClass::EC1;
+
+		State state = State::queued;
+		void* storage = nullptr;
 	};
 
 	template <class T>
@@ -180,10 +189,10 @@ private:
 		TypeRecord() = default;
 
 		TypeRecord(
-			typename T::meas_t value,
-			typename T::event_variation_t defaultVariation,
-			typename T::event_variation_t selectedVariation,
-			openpal::ListNode<Record>* record
+		    typename T::meas_t value,
+		    typename T::event_variation_t defaultVariation,
+		    typename T::event_variation_t selectedVariation,
+		    openpal::ListNode<EventRecord>* record
 		) :
 			value(value),
 			defaultVariation(defaultVariation),
@@ -194,11 +203,11 @@ private:
 		typename T::meas_t value;
 		typename T::event_variation_t defaultVariation;
 		typename T::event_variation_t selectedVariation;
-		openpal::ListNode<Record>* record = nullptr;
+		openpal::ListNode<EventRecord>* record = nullptr;
 	};
 
 	// master list keeps the order
-	openpal::LinkedList<Record, uint32_t> events;
+	openpal::LinkedList<EventRecord, uint32_t> events;
 
 	// sub-lists just act as type-specific storage
 	openpal::LinkedList<TypeRecord<BinarySpec>, uint32_t> binary;
@@ -209,6 +218,8 @@ private:
 	openpal::LinkedList<TypeRecord<BinaryOutputStatusSpec>, uint32_t> binaryOutputStatus;
 	openpal::LinkedList<TypeRecord<AnalogOutputStatusSpec>, uint32_t> analogOutputStatus;
 
+	//EventClassCounters counters;
+
 	template <class T>
 	bool UpdateAny(const Event<T>& evt, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
 
@@ -217,6 +228,7 @@ private:
 
 	template <class T>
 	uint32_t SelectAny(uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
+
 };
 
 template <class T>
@@ -226,36 +238,42 @@ bool EventStorage::UpdateAny(const Event<T>& evt, openpal::LinkedList<TypeRecord
 	if (list.Capacity() == 0) return false;
 
 	bool overflow = false;
-	
+
 	if (list.IsFull())
 	{
 		// overflow condition, we must first remove a value
 		overflow = true;
 
 		const auto head = list.Head();
+		auto record = head->value.record;
+
+		// update the tracking counters
+		// this->counters.Remove(record->value.clazz, record->value.state);
 
 		// release the generic record
-		this->events.Remove(head->value.record);
+		this->events.Remove(record);
 		// then type specific storage
 		list.Remove(head);
 	}
 
 	const auto node = this->events.Add(
-		Record(
-			T::EventTypeEnum,
-			evt.index,
-			evt.clazz
-		)
-	);
+	                      EventRecord(
+	                          T::EventTypeEnum,
+	                          evt.index,
+	                          evt.clazz
+	                      )
+	                  );
 
-	node->value.typeNode = list.Add(
-		TypeRecord<T>(
-			evt.value,
-			evt.variation,
-			evt.variation,
-			node
-		)
-	);
+	node->value.storage = list.Add(
+	                          TypeRecord<T>(
+	                              evt.value,
+	                              evt.variation,
+	                              evt.variation,
+	                              node
+	                          )
+	                      );
+
+	//this->counters.Add(evt.clazz);
 
 	return overflow;
 }
@@ -269,10 +287,15 @@ uint32_t EventStorage::SelectAny(typename T::event_variation_t variation, uint32
 	while (iter.HasNext() && num_selected < max)
 	{
 		auto node = iter.Next();
-		node->value.record->value.selected = true;
-		node->value.record->value.type = T::EventTypeEnum;
-		node->value.selectedVariation = variation;
-		++num_selected;
+		auto record = node->value.record;
+		if (record->value.state == EventRecord::State::queued)
+		{
+			// if not previously selected
+			record->value.state = EventRecord::State::selected;
+			record->value.type = T::EventTypeEnum;
+			node->value.selectedVariation = variation;
+			++num_selected;
+		}
 	}
 
 	return num_selected;
@@ -287,10 +310,15 @@ uint32_t EventStorage::SelectAny(uint32_t max, openpal::LinkedList<TypeRecord<T>
 	while (iter.HasNext() && num_selected < max)
 	{
 		auto node = iter.Next();
-		node->value.record->value.selected = true;
-		node->value.record->value.type = T::EventTypeEnum;
-		node->value.selectedVariation = node->value.defaultVariation;
-		++num_selected;
+		auto record = node->value.record;
+		if (record->value.state == EventRecord::State::queued)
+		{
+			// if not previously selected
+			record->value.state = EventRecord::State::selected;
+			record->value.type = T::EventTypeEnum;
+			node->value.selectedVariation = node->value.defaultVariation;
+			++num_selected;
+		}
 	}
 
 	return num_selected;
