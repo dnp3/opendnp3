@@ -69,11 +69,80 @@ uint16_t EventStorage::WriteSome(EventWriteHandler& handler, event_iterator_t& i
 	{
 	case(EventType::Binary):
 		return WriteSomeOfType<BinaryInfo>(handler, iterator, *next);
+	case(EventType::DoubleBitBinary):
+		return WriteSomeOfType<DoubleBitBinaryInfo>(handler, iterator, *next);
+	case(EventType::Counter):
+		return WriteSomeOfType<CounterInfo>(handler, iterator, *next);
+	case(EventType::FrozenCounter):
+		return WriteSomeOfType<FrozenCounterInfo>(handler, iterator, *next);
+	case(EventType::Analog):
+		return WriteSomeOfType<AnalogInfo>(handler, iterator, *next);
+	case(EventType::BinaryOutputStatus):
+		return WriteSomeOfType<BinaryOutputStatusInfo>(handler, iterator, *next);
+	case(EventType::AnalogOutputStatus):
+		return WriteSomeOfType<AnalogOutputStatusInfo>(handler, iterator, *next);
 	default:
 		// this case should never happen, terminate
 		return 0;
 	}
 }
+
+template <class T>
+uint16_t EventStorage::WriteSomeOfType(
+	EventWriteHandler& handler,
+	event_iterator_t& iterator,
+	EventRecord& first
+)
+{
+	const auto variation = reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(first.storage)->value.selectedVariation;
+
+	// create a collection of a particular type / variation
+	EventCollectionImpl<T> collection(
+		iterator,
+		variation
+	);
+
+	handler.Write(variation, collection);
+
+	return collection.GetNumWritten();
+}
+
+template <class T>
+uint16_t EventStorage::EventCollectionImpl<T>::WriteSome(EventWriter<typename T::meas_t>& writer)
+{
+	EventRecord* record = this->iterator.CurrentValue();
+	TypeRecord<T>* data = &reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(record->storage)->value;
+
+	while (true) {
+
+		const auto success = writer.Write(data->value, record->index);
+		if (success)
+		{
+			record->state = EventRecord::State::written;
+			++this->num_written;
+
+			// see if the next value also matches type/varition
+			auto node = this->iterator.Next();
+			// we've hit the end
+			if (!node) return num_written;
+			record = &node->value;
+
+			// the next event isn't this type
+			if (record->type != T::EventTypeEnum) return num_written;
+
+			data = &reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(record->storage)->value;
+			// the next event will be reported using a different variation
+			if (data->selectedVariation != this->variation) return num_written;
+
+			// otherwise proceed to the next iteration!
+		}
+		else
+		{
+			return num_written;
+		}
+	}
+}
+
 
 }
 

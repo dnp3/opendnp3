@@ -89,74 +89,39 @@ public:
 
 	// ---- function used to select various events ----
 
-	inline uint32_t SelectBinary(EventBinaryVariation variation, uint32_t max)
+	inline uint32_t Select(bool useDefaultVariation, EventBinaryVariation variation, uint32_t max)
 	{
-		return this->SelectAny(variation, max, this->binary);
+		return this->SelectAny(useDefaultVariation, variation, max, this->binary);
 	}
 
-	inline uint32_t SelectBinary(uint32_t max)
+	inline uint32_t Select(bool useDefaultVariation, EventDoubleBinaryVariation variation, uint32_t max)
 	{
-		return this->SelectAny(max, this->binary);
+		return this->SelectAny(useDefaultVariation, variation, max, this->doubleBinary);
 	}
 
-	inline uint32_t SelectDoubleBinary(EventDoubleBinaryVariation variation, uint32_t max)
+	inline uint32_t Select(bool useDefaultVariation, EventAnalogVariation variation, uint32_t max)
 	{
-		return this->SelectAny(variation, max, this->doubleBinary);
+		return this->SelectAny(useDefaultVariation, variation, max, this->analog);
 	}
 
-	inline uint32_t SelectDoubleBinary(uint32_t max)
+	inline uint32_t Select(bool useDefaultVariation, EventCounterVariation variation, uint32_t max)
 	{
-		return this->SelectAny(max, this->doubleBinary);
+		return this->SelectAny(useDefaultVariation, variation, max, this->counter);
 	}
 
-	inline uint32_t SelectAnalog(EventAnalogVariation variation, uint32_t max)
+	inline uint32_t Select(bool useDefaultVariation, EventFrozenCounterVariation variation, uint32_t max)
 	{
-		return this->SelectAny(variation, max, this->analog);
+		return this->SelectAny(useDefaultVariation, variation, max, this->frozenCounter);
 	}
 
-	inline uint32_t SelectAnalog(uint32_t max)
+	inline uint32_t Select(bool useDefaultVariation, EventBinaryOutputStatusVariation variation, uint32_t max)
 	{
-		return this->SelectAny(max, this->analog);
+		return this->SelectAny(useDefaultVariation, variation, max, this->binaryOutputStatus);
 	}
 
-	inline uint32_t SelectCounter(EventCounterVariation variation, uint32_t max)
+	inline uint32_t Select(bool useDefaultVariation, EventAnalogOutputStatusVariation variation, uint32_t max)
 	{
-		return this->SelectAny(variation, max, this->counter);
-	}
-
-	inline uint32_t SelectCounter(uint32_t max)
-	{
-		return this->SelectAny(max, this->counter);
-	}
-
-	inline uint32_t SelectFrozenCounter(EventFrozenCounterVariation variation, uint32_t max)
-	{
-		return this->SelectAny(variation, max, this->frozenCounter);
-	}
-
-	inline uint32_t SelectFrozenCounter(uint32_t max)
-	{
-		return this->SelectAny(max, this->frozenCounter);
-	}
-
-	inline uint32_t SelectBinaryOutputStatus(EventBinaryOutputStatusVariation variation, uint32_t max)
-	{
-		return this->SelectAny(variation, max, this->binaryOutputStatus);
-	}
-
-	inline uint32_t SelectBinaryOutputStatus(uint32_t max)
-	{
-		return this->SelectAny(max, this->binaryOutputStatus);
-	}
-
-	inline uint32_t SelectAnalogOutputStatus(EventAnalogOutputStatusVariation variation, uint32_t max)
-	{
-		return this->SelectAny(variation, max, this->analogOutputStatus);
-	}
-
-	inline uint32_t SelectAnalogOutputStatus(uint32_t max)
-	{
-		return this->SelectAny(max, this->analogOutputStatus);
+		return this->SelectAny(useDefaultVariation, variation, max, this->analogOutputStatus);
 	}
 
 private:
@@ -248,10 +213,7 @@ private:
 	bool UpdateAny(const Event<T>& evt, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
 
 	template <class T>
-	uint32_t SelectAny(typename T::event_variation_t variation, uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
-
-	template <class T>
-	uint32_t SelectAny(uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
+	uint32_t SelectAny(bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
 
 	template <class T>
 	class EventCollectionImpl final : public EventCollection<typename T::meas_t>
@@ -278,9 +240,6 @@ private:
 
 		virtual uint16_t WriteSome(EventWriter<typename T::meas_t>& writer) override;
 
-	private:
-
-		bool WriteCurrent(EventWriter<typename T::meas_t>& writer);
 	};
 };
 
@@ -332,7 +291,7 @@ bool EventStorage::UpdateAny(const Event<T>& evt, openpal::LinkedList<TypeRecord
 }
 
 template <class T>
-uint32_t EventStorage::SelectAny(typename T::event_variation_t variation, uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list)
+uint32_t EventStorage::SelectAny(bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list)
 {
 	uint32_t num_selected = 0;
 	auto iter = list.Iterate();
@@ -346,106 +305,12 @@ uint32_t EventStorage::SelectAny(typename T::event_variation_t variation, uint32
 			// if not previously selected
 			record->value.state = EventRecord::State::selected;
 			record->value.type = T::EventTypeEnum;
-			node->value.selectedVariation = variation;
+			node->value.selectedVariation = useDefaultVariation ? node->value.defaultVariation : variation;
 			++num_selected;
 		}
 	}
 
 	return num_selected;
-}
-
-template <class T>
-uint32_t EventStorage::SelectAny(uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list)
-{
-	uint32_t num_selected = 0;
-	auto iter = list.Iterate();
-
-	while (iter.HasNext() && num_selected < max)
-	{
-		auto node = iter.Next();
-		auto record = node->value.record;
-		if (record->value.state == EventRecord::State::queued)
-		{
-			// if not previously selected
-			record->value.state = EventRecord::State::selected;
-			record->value.type = T::EventTypeEnum;
-			node->value.selectedVariation = node->value.defaultVariation;
-			++num_selected;
-		}
-	}
-
-	return num_selected;
-}
-
-template <class T>
-uint16_t EventStorage::WriteSomeOfType(
-	EventWriteHandler& handler,
-	event_iterator_t& iterator,
-	EventRecord& first
-)
-{
-	const auto variation = reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(first.storage)->value.selectedVariation;
-
-	// create a collection of a particular type / variation
-	EventCollectionImpl<T> collection(
-		iterator,
-		variation
-	);
-
-	handler.Write(variation, collection);
-
-	return collection.GetNumWritten();
-}
-
-template <class T>
-uint16_t EventStorage::EventCollectionImpl<T>::WriteSome(EventWriter<typename T::meas_t>& writer)
-{
-	EventRecord* record = this->iterator.CurrentValue();
-	TypeRecord<T>* data = &reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(record->storage)->value;
-
-	while (true) {
-
-		const auto success = writer.Write(data->value, record->index);
-		if(success)
-		{
-			record->state = EventRecord::State::written;
-			++this->num_written;
-
-			// see if the next value also matches type/varition
-			auto node = this->iterator.Next();
-			// we've hit the end
-			if(!node) return num_written;
-			record = &node->value;
-
-			// the next event isn't this type
-			if (record->type != T::EventTypeEnum) return num_written;
-
-			data = &reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(record->storage)->value;
-			// the next event will be reported using a different variation
-			if (data->selectedVariation != this->variation) return num_written;
-
-			// otherwise proceed to the next iteration!
-		}
-		else
-		{
-			return num_written;
-		}
-	}
-}
-
-template <class T>
-bool EventStorage::EventCollectionImpl<T>::WriteCurrent(EventWriter<typename T::meas_t>& writer)
-{
-	const auto record = this->iterator.CurrentValue();
-	const auto data = reinterpret_cast<openpal::ListNode<TypeRecord<T>*>(record->storage);
-
-	const auto result = writer.Write(data.value, record->index);
-	if (result)
-	{
-		record->state = EventRecord::State::written;
-		++this->num_written;
-	}
-	return result;
 }
 
 }
