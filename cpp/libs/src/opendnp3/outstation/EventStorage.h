@@ -276,9 +276,11 @@ private:
 			return num_written;
 		}
 
-		virtual void WriteSome(EventWriter<typename T::meas_t>& writer) override {
-			
-		}
+		virtual uint16_t WriteSome(EventWriter<typename T::meas_t>& writer) override;
+
+	private:
+
+		bool WriteCurrent(EventWriter<typename T::meas_t>& writer);
 	};
 };
 
@@ -393,6 +395,57 @@ uint16_t EventStorage::WriteSomeOfType(
 	handler.Write(variation, collection);
 
 	return collection.GetNumWritten();
+}
+
+template <class T>
+uint16_t EventStorage::EventCollectionImpl<T>::WriteSome(EventWriter<typename T::meas_t>& writer)
+{
+	EventRecord* record = this->iterator.CurrentValue();
+	TypeRecord<T>* data = &reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(record->storage)->value;
+
+	while (true) {
+
+		const auto success = writer.Write(data->value, record->index);
+		if(success)
+		{
+			record->state = EventRecord::State::written;
+			++this->num_written;
+
+			// see if the next value also matches type/varition
+			auto node = this->iterator.Next();
+			// we've hit the end
+			if(!node) return num_written;
+			record = &node->value;
+
+			// the next event isn't this type
+			if (record->type != T::EventTypeEnum) return num_written;
+
+			data = &reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(record->storage)->value;
+			// the next event will be reported using a different variation
+			if (data->selectedVariation != this->variation) return num_written;
+
+			// otherwise proceed to the next iteration!
+		}
+		else
+		{
+			return num_written;
+		}
+	}
+}
+
+template <class T>
+bool EventStorage::EventCollectionImpl<T>::WriteCurrent(EventWriter<typename T::meas_t>& writer)
+{
+	const auto record = this->iterator.CurrentValue();
+	const auto data = reinterpret_cast<openpal::ListNode<TypeRecord<T>*>(record->storage);
+
+	const auto result = writer.Write(data.value, record->index);
+	if (result)
+	{
+		record->state = EventRecord::State::written;
+		++this->num_written;
+	}
+	return result;
 }
 
 }

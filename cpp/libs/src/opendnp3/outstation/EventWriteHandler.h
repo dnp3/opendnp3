@@ -33,25 +33,19 @@
 
 namespace opendnp3
 {
+
 template <class T>
 class EventWriter
 {
 public:
-	enum class Result
-	{
-		ok,		// record was written
-		skip,	// record was not written, but ASDU is not full (try again)
-		full	// no more data can be written
-	};
-
-	virtual Result Write(const T& meas, uint16_t index) = 0;
+	virtual bool Write(const T& meas, uint16_t index) = 0;
 };
 
 template <class T>
 class EventCollection
 {
 public:
-	virtual void WriteSome(EventWriter<T>& handler) = 0;
+	virtual uint16_t WriteSome(EventWriter<T>& handler) = 0;
 };
 
 class EventWriteHandler
