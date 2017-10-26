@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_EVENTRECORD_H
-#define OPENDNP3_EVENTRECORD_H
+#ifndef OPENDNP3_EVENTWRITEHANDLER_H
+#define OPENDNP3_EVENTWRITEHANDLER_H
 
 #include "opendnp3/app/MeasurementTypes.h"
 
@@ -51,10 +51,10 @@ template <class T>
 class EventCollection
 {
 public:
-	virtual void Process(EventWriter<T>& handler) = 0;
+	virtual void WriteSome(EventWriter<T>& handler) = 0;
 };
 
-class EventWriteHandlers
+class EventWriteHandler
 {
 public:
 	virtual void Write(EventBinaryVariation variation, EventCollection<Binary>& items) = 0;

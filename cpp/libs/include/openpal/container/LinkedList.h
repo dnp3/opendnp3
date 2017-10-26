@@ -63,6 +63,19 @@ public:
 		return LinkedListIterator(pStart);
 	}
 
+	template <class T>
+	ValueType* Find(const T& matches)
+	{
+		while (pCurrent) {
+			if (matches(pCurrent->value)) {
+				return &(pCurrent->value);
+			}
+			pCurrent = pCurrent->next;
+		}
+
+		return nullptr;
+	}
+
 	bool HasNext() const
 	{
 		return (pCurrent != nullptr);

@@ -24,6 +24,7 @@
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/outstation/Event.h"
+#include "opendnp3/outstation/EventWriteHandler.h"
 
 #include <openpal/container/LinkedList.h>
 
@@ -43,6 +44,11 @@ class EventStorage
 public:
 
 	explicit EventStorage(const EventBufferConfig& config);
+
+	// write selected events to some handler
+
+	uint32_t Write(EventWriteHandler& handler);
+
 
 	// ---- these functions return true if an overflow occurs ----
 
@@ -80,6 +86,8 @@ public:
 	{
 		return UpdateAny(evt, this->analogOutputStatus);
 	}
+
+	// ---- function used to select various events ----
 
 	inline uint32_t SelectBinary(EventBinaryVariation variation, uint32_t max)
 	{
@@ -220,6 +228,22 @@ private:
 
 	//EventClassCounters counters;
 
+	typedef openpal::LinkedListIterator<EventRecord> event_iterator_t;
+
+	inline static bool IsSelected(const EventRecord& record)
+	{
+		return record.state == EventRecord::State::selected;
+	}
+
+	uint16_t WriteSome(EventWriteHandler& handler, event_iterator_t& iterator);
+
+	template <class T>
+	uint16_t WriteSomeOfType(
+		EventWriteHandler& handler,
+		event_iterator_t& iterator,
+		EventRecord& first
+	);
+
 	template <class T>
 	bool UpdateAny(const Event<T>& evt, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
 
@@ -229,6 +253,33 @@ private:
 	template <class T>
 	uint32_t SelectAny(uint32_t max, openpal::LinkedList<TypeRecord<T>, uint32_t>& list);
 
+	template <class T>
+	class EventCollectionImpl final : public EventCollection<typename T::meas_t>
+	{
+	private:
+		uint16_t num_written = 0;
+		event_iterator_t& iterator;
+		typename T::event_variation_t variation;
+		
+	public:
+		
+		EventCollectionImpl(
+			event_iterator_t& iterator,
+			typename T::event_variation_t variation
+		) :
+			iterator(iterator),
+			variation(variation)
+		{}
+		
+		uint16_t GetNumWritten() const
+		{
+			return num_written;
+		}
+
+		virtual void WriteSome(EventWriter<typename T::meas_t>& writer) override {
+			
+		}
+	};
 };
 
 template <class T>
@@ -322,6 +373,26 @@ uint32_t EventStorage::SelectAny(uint32_t max, openpal::LinkedList<TypeRecord<T>
 	}
 
 	return num_selected;
+}
+
+template <class T>
+uint16_t EventStorage::WriteSomeOfType(
+	EventWriteHandler& handler,
+	event_iterator_t& iterator,
+	EventRecord& first
+)
+{
+	const auto variation = reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(first.storage)->value.selectedVariation;
+
+	// create a collection of a particular type / variation
+	EventCollectionImpl<T> collection(
+		iterator,
+		variation
+	);
+
+	handler.Write(variation, collection);
+
+	return collection.GetNumWritten();
 }
 
 }

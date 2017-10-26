@@ -35,6 +35,46 @@ EventStorage::EventStorage(const EventBufferConfig& config) :
 	analogOutputStatus(config.maxAnalogOutputStatusEvents)
 {}
 
+uint32_t EventStorage::Write(EventWriteHandler& handler)
+{
+	// iterate over the selected events in the buffer
+	auto iterator = this->events.Iterate();
+
+	uint32_t total_num_written = 0;
+	while (true)
+	{
+		uint16_t num_written = this->WriteSome(handler, iterator);
+		if (num_written == 0)
+		{
+			return total_num_written;
+		}
+		else
+		{
+			total_num_written += num_written;
+		}
+	}
+	
+	return total_num_written;
+}
+
+uint16_t EventStorage::WriteSome(EventWriteHandler& handler, event_iterator_t& iterator)
+{
+	const auto next = iterator.Find(EventStorage::IsSelected);
+	
+	// we are out of selected events
+	if (!next) return 0;
+
+	// now enter a type-dependent write routine
+	switch (next->type)
+	{
+	case(EventType::Binary):
+		return WriteSomeOfType<BinaryInfo>(handler, iterator, *next);
+	default:
+		// this case should never happen, terminate
+		return 0;
+	}
+}
+
 }
 
 
