@@ -25,8 +25,11 @@
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/outstation/Event.h"
 #include "opendnp3/outstation/EventWriteHandler.h"
+#include "opendnp3/outstation/ClazzCount.h"
 
 #include <openpal/container/LinkedList.h>
+
+#include <limits>
 
 namespace opendnp3
 {
@@ -124,18 +127,19 @@ public:
 		return this->SelectAny(useDefaultVariation, variation, max, this->analogOutputStatus);
 	}
 
+	// select by class
+
+	uint32_t Select(EventClass clazz, uint32_t max);
+
+	inline uint32_t Select(EventClass clazz)
+	{
+		return Select(clazz, std::numeric_limits<uint32_t>::max());
+	}
+
 private:
 
 	struct EventRecord
 	{
-
-		enum State
-		{
-			queued,
-			selected,
-			written
-		};
-
 		EventRecord(
 		    EventType type,
 		    uint16_t index,
@@ -152,7 +156,7 @@ private:
 		uint16_t index = 0;
 		EventClass clazz = EventClass::EC1;
 
-		State state = State::queued;
+		EventState state = EventState::queued;
 		void* storage = nullptr;
 	};
 
@@ -191,13 +195,13 @@ private:
 	openpal::LinkedList<TypeRecord<BinaryOutputStatusSpec>, uint32_t> binaryOutputStatus;
 	openpal::LinkedList<TypeRecord<AnalogOutputStatusSpec>, uint32_t> analogOutputStatus;
 
-	//EventClassCounters counters;
+	EventClassCounters counters;
 
 	typedef openpal::LinkedListIterator<EventRecord> event_iterator_t;
 
 	inline static bool IsSelected(const EventRecord& record)
 	{
-		return record.state == EventRecord::State::selected;
+		return record.state == EventState::selected;
 	}
 
 	uint16_t WriteSome(EventWriteHandler& handler, event_iterator_t& iterator);
@@ -260,7 +264,7 @@ bool EventStorage::UpdateAny(const Event<T>& evt, openpal::LinkedList<TypeRecord
 		auto record = head->value.record;
 
 		// update the tracking counters
-		// this->counters.Remove(record->value.clazz, record->value.state);
+		this->counters.Remove(record->value.clazz, record->value.state);
 
 		// release the generic record
 		this->events.Remove(record);
@@ -285,7 +289,7 @@ bool EventStorage::UpdateAny(const Event<T>& evt, openpal::LinkedList<TypeRecord
 	                          )
 	                      );
 
-	//this->counters.Add(evt.clazz);
+	this->counters.Add(evt.clazz);
 
 	return overflow;
 }
@@ -300,10 +304,10 @@ uint32_t EventStorage::SelectAny(bool useDefaultVariation, typename T::event_var
 	{
 		auto node = iter.Next();
 		auto record = node->value.record;
-		if (record->value.state == EventRecord::State::queued)
+		if (record->value.state == EventState::queued)
 		{
 			// if not previously selected
-			record->value.state = EventRecord::State::selected;
+			record->value.state = EventState::selected;
 			record->value.type = T::EventTypeEnum;
 			node->value.selectedVariation = useDefaultVariation ? node->value.defaultVariation : variation;
 			++num_selected;

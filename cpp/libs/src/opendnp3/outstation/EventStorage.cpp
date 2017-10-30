@@ -35,6 +35,28 @@ EventStorage::EventStorage(const EventBufferConfig& config) :
 	analogOutputStatus(config.maxAnalogOutputStatusEvents)
 {}
 
+uint32_t EventStorage::Select(EventClass clazz, uint32_t max)
+{
+	uint32_t num_selected = 0;
+	auto iter = this->events.Iterate();
+
+	while (iter.HasNext() && num_selected < max)
+	{
+		auto node = iter.Next();
+		auto record = node->value;
+		if (node->value.state == EventState::queued && node->value.clazz == clazz)
+		{
+			// if not previously selected
+			node->value.state = EventState::selected;
+			// TODO - set the storage to use the default variation
+			//node->value.selectedVariation = useDefaultVariation ? node->value.defaultVariation : variation;
+			++num_selected;
+		}
+	}
+
+	return num_selected;
+}
+
 uint32_t EventStorage::Write(EventWriteHandler& handler)
 {
 	// iterate over the selected events in the buffer
@@ -118,11 +140,12 @@ uint16_t EventStorage::EventCollectionImpl<T>::WriteSome(EventWriter<typename T:
 		const auto success = writer.Write(data->value, record->index);
 		if (success)
 		{
-			record->state = EventRecord::State::written;
+			record->state = EventState::written;
 			++this->num_written;
 
 			// see if the next value also matches type/varition
-			auto node = this->iterator.Next();
+			this->iterator.Next();
+			auto node = this->iterator.Current();
 			// we've hit the end
 			if (!node) return num_written;
 			record = &node->value;
