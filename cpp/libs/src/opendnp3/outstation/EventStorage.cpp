@@ -25,26 +25,19 @@ namespace opendnp3
 {
 
 EventStorage::EventStorage(const EventBufferConfig& config) :
-	events(config.TotalEvents()),
-	binary(config.maxBinaryEvents),
-	doubleBinary(config.maxDoubleBinaryEvents),
-	analog(config.maxAnalogEvents),
-	counter(config.maxCounterEvents),
-	frozenCounter(config.maxFrozenCounterEvents),
-	binaryOutputStatus(config.maxBinaryOutputStatusEvents),
-	analogOutputStatus(config.maxAnalogOutputStatusEvents)
+	state(config)
 {}
 
 uint32_t EventStorage::Select(EventClass clazz, uint32_t max)
 {
 	uint32_t num_selected = 0;
-	auto iter = this->events.Iterate();
+	auto iter = this->state.events.Iterate();
 
 	while (iter.HasNext() && num_selected < max)
 	{
 		auto node = iter.Next();
 		auto record = node->value;
-		if (node->value.state == EventState::queued && node->value.clazz == clazz)
+		if (node->value.state == EventState::unselected && node->value.clazz == clazz)
 		{
 			// if not previously selected
 			node->value.state = EventState::selected;
@@ -60,7 +53,7 @@ uint32_t EventStorage::Select(EventClass clazz, uint32_t max)
 uint32_t EventStorage::Write(EventWriteHandler& handler)
 {
 	// iterate over the selected events in the buffer
-	auto iterator = this->events.Iterate();
+	auto iterator = this->state.events.Iterate();
 
 	uint32_t total_num_written = 0;
 	while (true)
@@ -86,6 +79,7 @@ uint16_t EventStorage::WriteSome(EventWriteHandler& handler, event_iterator_t& i
 	// we are out of selected events
 	if (!next) return 0;
 
+	/*
 	// now enter a type-dependent write routine
 	switch (next->type)
 	{
@@ -107,6 +101,8 @@ uint16_t EventStorage::WriteSome(EventWriteHandler& handler, event_iterator_t& i
 		// this case should never happen, terminate
 		return 0;
 	}
+	*/
+	return 0;
 }
 
 template <class T>
