@@ -21,6 +21,8 @@
 
 #include "EventWriting.h"
 
+#include "EventCollection.h"
+
 namespace opendnp3
 {
 
@@ -48,10 +50,12 @@ uint32_t EventWriting::Write(EventLists& lists, IEventWriteHandler& handler)
 
 uint16_t EventWriting::WriteSome(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler)
 {
-	const auto value = iterator.Find([](const EventRecord & record)
-	{
-		return record.state == EventState::selected;
-	});
+	const auto value = iterator.Find(
+		[](const EventRecord & record)
+		{
+			return record.state == EventState::selected;
+		}
+	);
 
 	if (!value) return 0; // no match
 
@@ -81,8 +85,10 @@ uint16_t EventWriting::WriteSomeOfType(event_iter_t& iterator, EventLists& lists
 {
 	const auto pos = iterator.CurrentValue();
 	const auto storage = reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(pos->storage_node);
+	
+	EventCollection<T> collection(iterator, storage->value.selectedVariation);
 
-	//handler.Write(storage->selectedVariation, )
+	handler.Write(storage->value.selectedVariation, storage->value.value.time, collection);
 
 	return 0;
 }
