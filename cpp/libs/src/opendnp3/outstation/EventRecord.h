@@ -64,6 +64,7 @@ public:
 	EventClass clazz = EventClass::EC1;
 	EventState state = EventState::unselected;
 
+	/*
 	template <class T>
 	uint32_t Select(T& selector)
 	{
@@ -89,8 +90,9 @@ public:
 			return 0;
 		}
 	}
+	*/
 
-private:
+//private:
 	EventType type = EventType::Binary;
 	void* storage_node = nullptr;
 };

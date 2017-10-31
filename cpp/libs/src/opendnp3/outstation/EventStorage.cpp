@@ -23,6 +23,7 @@
 
 #include "EventSelection.h"
 #include "EventUpdate.h"
+#include "EventWriting.h"
 
 namespace opendnp3
 {
@@ -113,7 +114,7 @@ uint32_t EventStorage::SelectByClass(EventClass clazz, uint32_t max)
 
 uint32_t EventStorage::Write(IEventWriteHandler& handler)
 {
-	return 0;
+	return EventWriting::Write(this->state, handler);
 }
 
 }
