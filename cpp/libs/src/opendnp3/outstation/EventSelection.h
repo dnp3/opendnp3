@@ -31,13 +31,13 @@ struct EventSelection : private openpal::StaticOnly
 	template <class T>
 	static uint32_t SelectByType(EventLists& lists, uint32_t max)
 	{
-		return this->SelectByType(true, 0, uint16_t max);
+		return SelectByType(lists, true, 0, uint16_t max);
 	}
 
 	template <class T>
-	uint32_t SelectByType(EventLists& lists, typename T::event_variation_t variation, uint32_t max)
+	static uint32_t SelectByType(EventLists& lists, typename T::event_variation_t variation, uint32_t max)
 	{
-		return this->SelectByType<T>(false, variation, max);
+		return SelectByType<T>(lists, false, variation, max);
 	}
 
 private:
@@ -54,7 +54,18 @@ uint32_t EventSelection::SelectByType(EventLists& lists, bool useDefaultVariatio
 
 	uint32_t num_selected = 0;
 
+	auto select = [&](TypedEventRecord<T>& node)
+	{
 
+		if (node.record->value.state == EventState::unselected)
+		{
+			node.record->value.state = EventState::selected;
+			node.selectedVariation = useDefaultVariation ? node.defaultVariation : variation;
+			++num_selected;
+		}
+	};
+
+	list.Foreach(select);
 
 	return num_selected;
 }

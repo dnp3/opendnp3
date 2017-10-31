@@ -41,6 +41,42 @@ openpal::LinkedList<TypedEventRecord<BinarySpec>, uint32_t>& EventLists::GetList
 	return this->binary;
 }
 
+template <>
+openpal::LinkedList<TypedEventRecord<DoubleBitBinarySpec>, uint32_t>& EventLists::GetList()
+{
+	return this->doubleBinary;
+}
+
+template <>
+openpal::LinkedList<TypedEventRecord<CounterSpec>, uint32_t>& EventLists::GetList()
+{
+	return this->counter;
+}
+
+template <>
+openpal::LinkedList<TypedEventRecord<FrozenCounterSpec>, uint32_t>& EventLists::GetList()
+{
+	return this->frozenCounter;
+}
+
+template <>
+openpal::LinkedList<TypedEventRecord<AnalogSpec>, uint32_t>& EventLists::GetList()
+{
+	return this->analog;
+}
+
+template <>
+openpal::LinkedList<TypedEventRecord<BinaryOutputStatusSpec>, uint32_t>& EventLists::GetList()
+{
+	return this->binaryOutputStatus;
+}
+
+template <>
+openpal::LinkedList<TypedEventRecord<AnalogOutputStatusSpec>, uint32_t>& EventLists::GetList()
+{
+	return this->analogOutputStatus;
+}
+
 }
 
 

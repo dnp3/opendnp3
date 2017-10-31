@@ -21,6 +21,8 @@
 
 #include "EventStorage.h"
 
+#include "EventSelection.h"
+
 namespace opendnp3
 {
 
@@ -65,37 +67,37 @@ bool EventStorage::Update(const Event<AnalogOutputStatusSpec>& evt)
 
 uint32_t EventStorage::Select(EventBinaryVariation variation, uint32_t max)
 {
-	return 0;
+	return EventSelection::SelectByType<BinarySpec>(this->state, variation, max);
 }
 
 uint32_t EventStorage::Select(EventDoubleBinaryVariation variation, uint32_t max)
 {
-	return 0;
+	return EventSelection::SelectByType<DoubleBitBinarySpec>(this->state, variation, max);
 }
 
 uint32_t EventStorage::Select(EventAnalogVariation variation, uint32_t max)
 {
-	return 0;
+	return EventSelection::SelectByType<AnalogSpec>(this->state, variation, max);
 }
 
 uint32_t EventStorage::Select(EventCounterVariation variation, uint32_t max)
 {
-	return 0;
+	return EventSelection::SelectByType<CounterSpec>(this->state, variation, max);
 }
 
 uint32_t EventStorage::Select(EventFrozenCounterVariation variation, uint32_t max)
 {
-	return 0;
+	return EventSelection::SelectByType<FrozenCounterSpec>(this->state, variation, max);
 }
 
 uint32_t EventStorage::Select(EventBinaryOutputStatusVariation variation, uint32_t max)
 {
-	return 0;
+	return EventSelection::SelectByType<BinaryOutputStatusSpec>(this->state, variation, max); return 0;
 }
 
 uint32_t EventStorage::Select(EventAnalogOutputStatusVariation variation, uint32_t max)
 {
-	return 0;
+	return EventSelection::SelectByType<AnalogOutputStatusSpec>(this->state, variation, max);
 }
 
 uint32_t EventStorage::Select(EventClass clazz, uint32_t max)
