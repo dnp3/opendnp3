@@ -37,13 +37,13 @@ public:
 
 	explicit ASDUEventWriteHandler(const HeaderWriter& writer) : writer(writer) {}
 
-	virtual uint16_t Write(EventBinaryVariation variation, EventCollection<Binary>& items) override;
-	virtual uint16_t Write(EventDoubleBinaryVariation variation, EventCollection<DoubleBitBinary>& items) override;
-	virtual uint16_t Write(EventCounterVariation variation, EventCollection<Counter>& items) override;
-	virtual uint16_t Write(EventFrozenCounterVariation variation, EventCollection<FrozenCounter>& items) override;
-	virtual uint16_t Write(EventAnalogVariation variation, EventCollection<Analog>& items) override;
-	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, EventCollection<BinaryOutputStatus>& items) override;
-	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, EventCollection<AnalogOutputStatus>& items) override;
+	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, EventCollection<Binary>& items) override;
+	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, EventCollection<DoubleBitBinary>& items) override;
+	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, EventCollection<Counter>& items) override;
+	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, EventCollection<FrozenCounter>& items) override;
+	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, EventCollection<Analog>& items) override;
+	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, EventCollection<BinaryOutputStatus>& items) override;
+	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, EventCollection<AnalogOutputStatus>& items) override;
 
 private:
 
