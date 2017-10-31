@@ -65,10 +65,25 @@ public:
 
 	void Expect(EventBinaryVariation variation, uint16_t count)
 	{
-		expected.push_back(
-		    Record { EventType::Binary, static_cast<uint8_t>(variation), count }
-		);
+		this->ExpectType<BinarySpec>(variation, count);
 	}
+
+	void Expect(EventDoubleBinaryVariation variation, uint16_t count)
+	{
+		this->ExpectType<DoubleBitBinarySpec>(variation, count);
+	}
+
+	void Expect(EventCounterVariation variation, uint16_t count)
+	{
+		this->ExpectType<CounterSpec>(variation, count);
+	}
+
+	void Expect(EventAnalogVariation variation, uint16_t count)
+	{
+		this->ExpectType<AnalogSpec>(variation, count);
+	}
+
+
 
 	void AssertEmpty()
 	{
@@ -115,6 +130,15 @@ public:
 	}
 
 private:
+
+	template <class T>
+	void ExpectType(typename T::event_variation_t variation, uint16_t count)
+	{
+		expected.push_back(
+			Record{ typename T::EventTypeEnum, static_cast<uint8_t>(variation), count }
+		);
+	}
+
 
 	template <class T>
 	uint16_t WriteAny(typename T::event_variation_t variation, IEventCollection<typename T::meas_t>& items);

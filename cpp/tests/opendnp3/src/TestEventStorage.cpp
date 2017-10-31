@@ -82,6 +82,34 @@ TEST_CASE(SUITE("calls write one time for same variation"))
 	handler.AssertEmpty();
 }
 
+TEST_CASE(SUITE("calls write multiple times for different types"))
+{
+	EventStorage storage(EventBufferConfig::AllTypes(10));
+
+	REQUIRE_FALSE(
+		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	);
+	REQUIRE_FALSE(
+		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
+	);
+	REQUIRE_FALSE(
+		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	);
+	
+	// select events by class	
+	REQUIRE(storage.SelectByClass(EventClass::EC1) == 3);
+
+	// set up the expected order
+	MockEventWriteHandler handler;
+	handler.Expect(EventAnalogVariation::Group32Var1, 1);
+	handler.Expect(EventBinaryVariation::Group2Var1, 1);
+	handler.Expect(EventAnalogVariation::Group32Var1, 1);
+
+	REQUIRE(storage.Write(handler) == 3);
+
+	handler.AssertEmpty();
+}
+
 
 
 
