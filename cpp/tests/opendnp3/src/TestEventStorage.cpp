@@ -35,23 +35,49 @@ TEST_CASE(SUITE("can construct"))
 	);
 }
 
-TEST_CASE(SUITE("can load and write Binary"))
+TEST_CASE(SUITE("calls write multiple times for different variations"))
 {
 	EventStorage storage(EventBufferConfig::AllTypes(10));
+
 	REQUIRE_FALSE(
-	    storage.Update(
-	        Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1)
-	    )
+		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
+	);
+	REQUIRE_FALSE(
+		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var2))
 	);
 
 	// select events by class
-	REQUIRE(storage.SelectByClass(EventClass::EC1) == 1);
+	REQUIRE(storage.SelectByClass(EventClass::EC1) == 2);
 
 	// set up the expected order
 	MockEventWriteHandler handler;
 	handler.Expect(EventBinaryVariation::Group2Var1, 1);
+	handler.Expect(EventBinaryVariation::Group2Var2, 1);
 
-	REQUIRE(storage.Write(handler) == 1);
+	REQUIRE(storage.Write(handler) == 2);
+
+	handler.AssertEmpty();
+}
+
+TEST_CASE(SUITE("calls write one time for same variation"))
+{
+	EventStorage storage(EventBufferConfig::AllTypes(10));
+
+	REQUIRE_FALSE(
+		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
+	);
+	REQUIRE_FALSE(
+		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
+	);
+
+	// select events by class
+	REQUIRE(storage.SelectByClass(EventClass::EC1) == 2);
+
+	// set up the expected order
+	MockEventWriteHandler handler;
+	handler.Expect(EventBinaryVariation::Group2Var1, 2);
+
+	REQUIRE(storage.Write(handler) == 2);
 
 	handler.AssertEmpty();
 }
