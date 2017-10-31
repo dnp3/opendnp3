@@ -80,7 +80,7 @@ private:
 
 public:
 
-	void Remove(EventClass clazz, EventState state)
+	void OnRemove(EventClass clazz, EventState state)
 	{
 		if (state == EventState::written)
 		{
@@ -89,12 +89,12 @@ public:
 		this->total.Decrement(clazz);
 	}
 
-	void Add(EventClass clazz)
+	void OnAdd(EventClass clazz)
 	{
 		this->total.Increment(clazz);
 	}
 
-	void Write(EventClass clazz)
+	void OnWrite(EventClass clazz)
 	{
 		this->written.Increment(clazz);
 	}

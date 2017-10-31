@@ -48,7 +48,6 @@ public:
 
 	uint32_t Write(IEventWriteHandler& handler);
 
-
 	// ---- these functions return true if an overflow occurs ----
 
 	bool Update(const Event<BinarySpec>& evt);
@@ -61,21 +60,21 @@ public:
 
 	// ---- function used to select distinct types ----
 
-	uint32_t Select(EventBinaryVariation variation, uint32_t max);
-	uint32_t Select(EventDoubleBinaryVariation variation, uint32_t max);
-	uint32_t Select(EventAnalogVariation variation, uint32_t max);
-	uint32_t Select(EventCounterVariation variation, uint32_t max);
-	uint32_t Select(EventFrozenCounterVariation variation, uint32_t max);
-	uint32_t Select(EventBinaryOutputStatusVariation variation, uint32_t max);
-	uint32_t Select(EventAnalogOutputStatusVariation variation, uint32_t max);
+	uint32_t SelectByType(EventBinaryVariation variation, uint32_t max);
+	uint32_t SelectByType(EventDoubleBinaryVariation variation, uint32_t max);
+	uint32_t SelectByType(EventAnalogVariation variation, uint32_t max);
+	uint32_t SelectByType(EventCounterVariation variation, uint32_t max);
+	uint32_t SelectByType(EventFrozenCounterVariation variation, uint32_t max);
+	uint32_t SelectByType(EventBinaryOutputStatusVariation variation, uint32_t max);
+	uint32_t SelectByType(EventAnalogOutputStatusVariation variation, uint32_t max);
 
-	// select by class
+	// ---- function used to select by event class ----
 
-	uint32_t Select(EventClass clazz, uint32_t max);
+	uint32_t SelectByClass(EventClass clazz, uint32_t max);
 
-	inline uint32_t Select(EventClass clazz)
+	inline uint32_t SelectByClass(EventClass clazz)
 	{
-		return Select(clazz, std::numeric_limits<uint32_t>::max());
+		return SelectByClass(clazz, std::numeric_limits<uint32_t>::max());
 	}
 
 private:
@@ -84,12 +83,6 @@ private:
 
 	typedef openpal::LinkedListIterator<EventRecord> event_iterator_t;
 
-	inline static bool IsSelected(const EventRecord& record)
-	{
-		return record.state == EventState::selected;
-	}
-
-	uint16_t WriteSome(IEventWriteHandler& handler, event_iterator_t& iterator);
 };
 
 }

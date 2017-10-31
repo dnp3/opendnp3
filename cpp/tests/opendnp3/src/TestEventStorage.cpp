@@ -45,7 +45,7 @@ TEST_CASE(SUITE("can load and write Binary"))
 	);
 
 	// select events by class
-	REQUIRE(storage.Select(EventClass::EC1) == 1);
+	REQUIRE(storage.SelectByClass(EventClass::EC1) == 1);
 
 	// set up the expected order
 	MockEventWriteHandler handler;
