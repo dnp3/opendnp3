@@ -112,12 +112,53 @@ uint32_t EventStorage::SelectByType(EventAnalogOutputStatusVariation variation, 
 	return EventSelection::SelectByType<AnalogOutputStatusSpec>(this->state, variation, max);
 }
 
-uint32_t EventStorage::SelectByClass(EventClass clazz)
+uint32_t EventStorage::SelectByType(EventType type, uint32_t max)
+{
+	switch (type)
+	{
+		case(EventType::Binary):
+			return EventSelection::SelectByType<BinarySpec>(this->state, max);
+		case(EventType::DoubleBitBinary):
+			return EventSelection::SelectByType<DoubleBitBinarySpec>(this->state, max);
+		case(EventType::Counter):
+			return EventSelection::SelectByType<CounterSpec>(this->state, max);
+		case(EventType::FrozenCounter):
+			return EventSelection::SelectByType<FrozenCounterSpec>(this->state, max);
+		case(EventType::Analog):
+			return EventSelection::SelectByType<AnalogSpec>(this->state, max);
+		case(EventType::BinaryOutputStatus):
+			return EventSelection::SelectByType<BinaryOutputStatusSpec>(this->state, max);
+		case(EventType::AnalogOutputStatus):
+			return EventSelection::SelectByType<AnalogOutputStatusSpec>(this->state, max);
+		default:
+			return 0;
+	}
+}
+
+uint32_t EventStorage::SelectByClass(const EventClass& clazz)
+{
+	return EventSelection::SelectByClass(
+		this->state,
+		ClassField(clazz),
+		std::numeric_limits<uint32_t>::max()
+	);
+}
+
+uint32_t EventStorage::SelectByClass(const EventClass& clazz, uint32_t max)
+{
+	return EventSelection::SelectByClass(
+		this->state,
+		ClassField(clazz),
+		max
+	);
+}
+
+uint32_t EventStorage::SelectByClass(const ClassField& clazz)
 {
 	return EventSelection::SelectByClass(this->state, clazz, std::numeric_limits<uint32_t>::max());
 }
 
-uint32_t EventStorage::SelectByClass(EventClass clazz, uint32_t max)
+uint32_t EventStorage::SelectByClass(const ClassField& clazz, uint32_t max)
 {
 	return EventSelection::SelectByClass(this->state, clazz, max);
 }
@@ -147,7 +188,7 @@ uint32_t EventStorage::ClearWritten()
 	return this->state.events.RemoveAll(written);
 }
 
-void EventStorage::Fail()
+void EventStorage::Unselect()
 {	
 	auto iterator = this->state.events.Iterate();
 

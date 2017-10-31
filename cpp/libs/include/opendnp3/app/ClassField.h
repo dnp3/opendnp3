@@ -38,7 +38,9 @@ public:
 
 	ClassField();
 
-	explicit ClassField(PointClass pc);
+	explicit ClassField(PointClass pc);		
+
+	explicit ClassField(EventClass ec);
 
 	explicit ClassField(uint8_t mask_);
 

@@ -44,6 +44,17 @@ ClassField::ClassField() : bitfield(0)
 ClassField::ClassField(PointClass pc) : bitfield(static_cast<uint8_t>(pc))
 {}
 
+ClassField::ClassField(EventClass ec) : 
+	ClassField(
+		false,
+		ec == EventClass::EC1,
+		ec == EventClass::EC2,
+		ec == EventClass::EC3
+	)
+{
+
+}
+
 ClassField::ClassField(bool class0, bool class1, bool class2, bool class3) : bitfield(0)
 {
 	bitfield = class0 ? ClassField::CLASS_0 : 0;
@@ -131,6 +142,7 @@ bool ClassField::HasAnyClass() const
 }
 
 }
+
 
 
 

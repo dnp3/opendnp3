@@ -24,6 +24,7 @@
 #include "opendnp3/outstation/Event.h"
 #include "opendnp3/outstation/IEventWriteHandler.h"
 #include "opendnp3/outstation/EventLists.h"
+#include "opendnp3/app/ClassField.h"
 
 #include <limits>
 
@@ -57,7 +58,7 @@ public:
 	uint32_t ClearWritten();
 
 	// all written and selected events are reverted to unselected state
-	void Fail();
+	void Unselect();
 
 	// ---- these functions return true if an overflow occurs ----
 
@@ -70,7 +71,7 @@ public:
 	bool Update(const Event<AnalogOutputStatusSpec>& evt);
 
 	// ---- function used to select distinct types ----
-
+	
 	uint32_t SelectByType(EventBinaryVariation variation, uint32_t max);
 	uint32_t SelectByType(EventDoubleBinaryVariation variation, uint32_t max);
 	uint32_t SelectByType(EventAnalogVariation variation, uint32_t max);
@@ -79,10 +80,15 @@ public:
 	uint32_t SelectByType(EventBinaryOutputStatusVariation variation, uint32_t max);
 	uint32_t SelectByType(EventAnalogOutputStatusVariation variation, uint32_t max);
 
-	// ---- function used to select by event class ----
+	uint32_t SelectByType(EventType type, uint32_t max);
 
-	uint32_t SelectByClass(EventClass clazz);
-	uint32_t SelectByClass(EventClass clazz, uint32_t max);
+	// ---- function used to select by event class ----
+	
+	uint32_t SelectByClass(const EventClass& clazz);
+	uint32_t SelectByClass(const EventClass& clazz, uint32_t max);
+
+	uint32_t SelectByClass(const ClassField& clazz);
+	uint32_t SelectByClass(const ClassField& clazz, uint32_t max);
 
 private:
 

@@ -22,6 +22,7 @@
 #define OPENDNP3_EVENTSELECTION_H
 
 #include "opendnp3/outstation/EventLists.h"
+#include "opendnp3/app/ClassField.h"
 
 namespace opendnp3
 {
@@ -31,26 +32,26 @@ struct EventSelection : private openpal::StaticOnly
 	template <class T>
 	static uint32_t SelectByType(EventLists& lists, uint32_t max)
 	{
-		return SelectByType(lists, true, 0, uint16_t max);
+		return SelectByTypeGeneric<T>(lists, true, static_cast<typename T::event_variation_t>(0), max);
 	}
 
 	template <class T>
 	static uint32_t SelectByType(EventLists& lists, typename T::event_variation_t variation, uint32_t max)
 	{
-		return SelectByType<T>(lists, false, variation, max);
-	}
+		return SelectByTypeGeneric<T>(lists, false, variation, max);
+	}	
 
-	static uint32_t SelectByClass(EventLists& lists, EventClass clazz, uint32_t max);
+	static uint32_t SelectByClass(EventLists& lists, const ClassField& clazz, uint32_t max);
 
 private:
 
 	template <class T>
-	static uint32_t SelectByType(EventLists& lists, bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max);
+	static uint32_t SelectByTypeGeneric(EventLists& lists, bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max);
 
 };
 
 template <class T>
-uint32_t EventSelection::SelectByType(EventLists& lists, bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max)
+uint32_t EventSelection::SelectByTypeGeneric(EventLists& lists, bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max)
 {
 	auto& list = lists.GetList<T>();
 

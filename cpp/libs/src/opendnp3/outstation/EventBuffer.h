@@ -24,12 +24,11 @@
 #include "opendnp3/outstation/IEventReceiver.h"
 #include "opendnp3/outstation/IEventSelector.h"
 #include "opendnp3/outstation/IResponseLoader.h"
-#include "opendnp3/outstation/IEventRecorder.h"
-#include "opendnp3/outstation/EventCount.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
-#include "opendnp3/outstation/SOERecord.h"
+#include "opendnp3/outstation/EventStorage.h"
+#include "opendnp3/app/ClassField.h"
 
-#include <openpal/container/LinkedList.h>
+
 
 namespace opendnp3
 {
@@ -45,7 +44,7 @@ namespace opendnp3
 	the selection criteria.
 */
 
-class EventBuffer : public IEventReceiver, public IEventSelector, public IResponseLoader, private IEventRecorder
+class EventBuffer final : public IEventReceiver, public IEventSelector, public IResponseLoader
 {
 
 public:
@@ -54,34 +53,13 @@ public:
 
 	// ------- IEventReceiver ------
 
-	virtual void Update(const Event<BinarySpec>& evt) override final
-	{
-		this->UpdateAny(evt);
-	}
-	virtual void Update(const Event<DoubleBitBinarySpec>& evt) override final
-	{
-		this->UpdateAny(evt);
-	}
-	virtual void Update(const Event<AnalogSpec>& evt) override final
-	{
-		this->UpdateAny(evt);
-	}
-	virtual void Update(const Event<CounterSpec>& evt) override final
-	{
-		this->UpdateAny(evt);
-	}
-	virtual void Update(const Event<FrozenCounterSpec>&  evt) override final
-	{
-		this->UpdateAny(evt);
-	}
-	virtual void Update(const Event<BinaryOutputStatusSpec>& evt) override final
-	{
-		this->UpdateAny(evt);
-	}
-	virtual void Update(const Event<AnalogOutputStatusSpec>& evt) override final
-	{
-		this->UpdateAny(evt);
-	}
+	virtual void Update(const Event<BinarySpec>& evt) override;
+	virtual void Update(const Event<DoubleBitBinarySpec>& evt) override;
+	virtual void Update(const Event<AnalogSpec>& evt) override;
+	virtual void Update(const Event<CounterSpec>& evt) override;
+	virtual void Update(const Event<FrozenCounterSpec>&  evt) override;
+	virtual void Update(const Event<BinaryOutputStatusSpec>& evt) override;
+	virtual void Update(const Event<AnalogOutputStatusSpec>& evt) override;
 
 	// ------- IEventSelector ------
 
@@ -99,13 +77,13 @@ public:
 
 	// ------- IEventRecorder-------
 
+	/*
 	virtual bool HasMoreUnwrittenEvents() const override final;
 
 	virtual void RecordWritten(EventClass ec, EventType et) override final;
+	*/
 
-	// ------- Misc -------
-
-	void SelectAllByClass(const ClassField& field);
+	// ------- Misc -------	
 
 	void ClearWritten(); // called when a transmission succeeds
 
@@ -113,109 +91,41 @@ public:
 
 	bool IsOverflown();
 
+	void SelectAllByClass(const ClassField& clazz);
+
 private:
 
-	inline bool HasUnwrittenEvents(EventClass ec) const
+	IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum);
+
+	template <class T>
+	IINField SelectByType(uint32_t max, T type)
 	{
-		return (totalCounts.NumOfClass(ec) - writtenCounts.NumOfClass(ec)) > 0;
+		this->storage.SelectByType(type, max);
+		return IINField::Empty();
 	}
 
-	IINField SelectMaxCount(GroupVariation gv, uint32_t maximum);
-
-	IINField SelectByClass(const ClassField& field, uint32_t max);
-
-	template <class Spec>
-	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename Spec::event_variation_t var);
-
-	template <class Spec>
-	IINField SelectByType(int32_t max)
+	template <class T>
+	void UpdateAny(const Event<T>& evt)
 	{
-		GenericSelectByType<Spec>(max, true, typename Spec::event_variation_t());
-		return IINField();
-	}
-
-	template <class Spec>
-	IINField SelectByType(int32_t max, typename Spec::event_variation_t var)
-	{
-		GenericSelectByType<Spec>(max, false, var);
-		return IINField();
-	}
-
-	void RemoveFromCounts(const SOERecord& record);
-
-	bool RemoveOldestEventOfType(EventType type);
-
-	template <class Spec>
-	void UpdateAny(const Event<Spec>& evt);
-
-	bool IsAnyTypeOverflown() const;
-	bool IsTypeOverflown(EventType type) const;
-
-	bool overflow;
-
-	EventBufferConfig config;
-
-	openpal::LinkedList<SOERecord, uint32_t> events;
-
-	// ---- trakcers
-
-	EventCount totalCounts;
-	EventCount selectedCounts;
-	EventCount writtenCounts;
-
-	bool HasEnoughSpaceToClearOverflow() const;
-};
-
-template <class Spec>
-void EventBuffer::UpdateAny(const Event<Spec>& evt)
-{
-	auto maxForType = config.GetMaxEventsForType(Spec::EventTypeEnum);
-
-	if (maxForType > 0)
-	{
-		auto currentCount = totalCounts.NumOfType(Spec::EventTypeEnum);
-
-		if (currentCount >= maxForType || events.IsFull())
+		if (this->storage.Update(evt))
 		{
 			this->overflow = true;
-			RemoveOldestEventOfType(Spec::EventTypeEnum);
 		}
-
-		// Add the event, the Reset() ensures that selected/written == false
-		events.Add(SOERecord(evt.value, evt.index, evt.clazz, evt.variation))->value.Reset();
-		totalCounts.Increment(evt.clazz, Spec::EventTypeEnum);
 	}
-}
-
-template <class Spec>
-uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typename Spec::event_variation_t var)
-{
-	uint32_t num = 0;
-	auto iter = events.Iterate();
-	const uint32_t remaining = totalCounts.NumOfType(Spec::EventTypeEnum) - selectedCounts.NumOfType(Spec::EventTypeEnum);
-
-	while (iter.HasNext() && (num < remaining) && (num < max))
+	
+	IINField SelectByClass(uint32_t max, EventClass clazz)
 	{
-		auto pNode = iter.Next();
-
-		if (pNode->value.type == Spec::EventTypeEnum)
-		{
-			if (useDefault)
-			{
-				pNode->value.SelectDefault();
-			}
-			else
-			{
-				pNode->value.Select(var);
-			}
-
-			selectedCounts.Increment(pNode->value.clazz, pNode->value.type);
-			++num;
-		}
+		this->storage.SelectByClass(clazz, max);
+		return IINField::Empty();
 	}
 
-	return num;
-}
+	bool overflow = false;
+	EventStorage storage;	
+
+	
+};
+
+
 
 }
 

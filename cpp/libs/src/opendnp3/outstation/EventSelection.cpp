@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-uint32_t EventSelection::SelectByClass(EventLists& lists, EventClass clazz, uint32_t max)
+uint32_t EventSelection::SelectByClass(EventLists& lists, const ClassField& clazz, uint32_t max)
 {
 	uint32_t num_selected = 0;
 	auto iter = lists.events.Iterate();
@@ -33,7 +33,7 @@ uint32_t EventSelection::SelectByClass(EventLists& lists, EventClass clazz, uint
 	{
 		auto node = iter.Next();
 		auto record = node->value;
-		if (node->value.state == EventState::unselected && node->value.clazz == clazz)
+		if (node->value.state == EventState::unselected && clazz.HasEventType(node->value.clazz))
 		{
 			// if not previously selected
 			node->value.state = EventState::selected;
