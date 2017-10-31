@@ -191,7 +191,8 @@ bool EventBuffer::Load(HeaderWriter& writer)
 {
 	ASDUEventWriteHandler handler(writer);
 	const auto num = this->storage.Write(handler);
-	return num > 0;
+	// all events were written
+	return !this->HasAnySelection();
 }
 
 ClassField EventBuffer::UnwrittenClassField() const
