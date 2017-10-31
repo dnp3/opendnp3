@@ -78,50 +78,50 @@ namespace opendnp3
 		}
 
 
-		virtual void Write(EventBinaryVariation variation, EventCollection<Binary>& items) override
+		virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, EventCollection<Binary>& items) override
 		{
-			this->WriteAny<BinarySpec>(variation, items);
+			return this->WriteAny<BinarySpec>(variation, items);
 		}
 
-		virtual void Write(EventDoubleBinaryVariation variation, EventCollection<DoubleBitBinary>& items) override
+		virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, EventCollection<DoubleBitBinary>& items) override
 		{
-			this->WriteAny<DoubleBitBinarySpec>(variation, items);
+			return this->WriteAny<DoubleBitBinarySpec>(variation, items);
 		}
 		
-		virtual void Write(EventCounterVariation variation, EventCollection<Counter>& items) override
+		virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, EventCollection<Counter>& items) override
 		{
-			this->WriteAny<CounterSpec>(variation, items);
+			return this->WriteAny<CounterSpec>(variation, items);
 		}
 
-		virtual void Write(EventFrozenCounterVariation variation, EventCollection<FrozenCounter>& items) override
+		virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, EventCollection<FrozenCounter>& items) override
 		{
-			this->WriteAny<FrozenCounterSpec>(variation, items);
+			return this->WriteAny<FrozenCounterSpec>(variation, items);
 		}
 
-		virtual void Write(EventAnalogVariation variation, EventCollection<Analog>& items) override
+		virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, EventCollection<Analog>& items) override
 		{
-			this->WriteAny<AnalogSpec>(variation, items);
+			return this->WriteAny<AnalogSpec>(variation, items);
 		}
 
-		virtual void Write(EventBinaryOutputStatusVariation variation, EventCollection<BinaryOutputStatus>& items) override
+		virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, EventCollection<BinaryOutputStatus>& items) override
 		{
-			this->WriteAny<BinaryOutputStatusSpec>(variation, items);
+			return this->WriteAny<BinaryOutputStatusSpec>(variation, items);
 		}
 
-		virtual void Write(EventAnalogOutputStatusVariation variation, EventCollection<AnalogOutputStatus>& items) override
+		virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, EventCollection<AnalogOutputStatus>& items) override
 		{
-			this->WriteAny<AnalogOutputStatusSpec>(variation, items);
+			return this->WriteAny<AnalogOutputStatusSpec>(variation, items);
 		}
 
 	private:
 
 		template <class T>
-		void WriteAny(typename T::event_variation_t variation, EventCollection<typename T::meas_t>& items);
+		uint16_t WriteAny(typename T::event_variation_t variation, EventCollection<typename T::meas_t>& items);
 		
 	};
 
 	template <class T>
-	void MockEventWriteHandler::WriteAny(typename T::event_variation_t variation, EventCollection<typename T::meas_t>& items)
+	uint16_t MockEventWriteHandler::WriteAny(typename T::event_variation_t variation, EventCollection<typename T::meas_t>& items)
 	{
 		if (this->expected.empty()) {
 			throw std::logic_error("no more write events expected");
@@ -151,6 +151,8 @@ namespace opendnp3
 			oss << "Unexpected count: " << static_cast<int>(variation);
 			throw std::logic_error(oss.str());
 		}
+
+		return count;
 	}
 }
 

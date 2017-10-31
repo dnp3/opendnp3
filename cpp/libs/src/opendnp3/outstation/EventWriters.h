@@ -49,7 +49,7 @@ namespace opendnp3
 		virtual bool Write(const T& meas, uint16_t index) override {
 			return iterator.IsValid() ? iterator.Write(meas, index) : false;
 		}
-	};
+	};	
 
 	class EventWriters
 	{
