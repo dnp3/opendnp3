@@ -112,15 +112,15 @@ uint16_t EventStorage::WriteSomeOfType(
 	EventRecord& first
 )
 {
-	const auto variation = reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(first.storage)->value.selectedVariation;
+	const auto& node = reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(first.storage)->value;		
 
 	// create a collection of a particular type / variation
 	EventCollectionImpl<T> collection(
 		iterator,
-		variation
+		node.selectedVariation
 	);
 
-	handler.Write(variation, collection);
+	handler.Write(node.selectedVariation, node.value.time, collection);
 
 	return collection.GetNumWritten();
 }

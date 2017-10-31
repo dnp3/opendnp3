@@ -51,13 +51,13 @@ public:
 class EventWriteHandler
 {
 public:
-	virtual void Write(EventBinaryVariation variation, EventCollection<Binary>& items) = 0;
-	virtual void Write(EventDoubleBinaryVariation variation, EventCollection<DoubleBitBinary>& items) = 0;
-	virtual void Write(EventCounterVariation variation, EventCollection<Counter>& items) = 0;
-	virtual void Write(EventFrozenCounterVariation variation, EventCollection<FrozenCounter>& items) = 0;
-	virtual void Write(EventAnalogVariation variation, EventCollection<Analog>& items) = 0;
-	virtual void Write(EventBinaryOutputStatusVariation variation, EventCollection<BinaryOutputStatus>& items) = 0;
-	virtual void Write(EventAnalogOutputStatusVariation variation, EventCollection<AnalogOutputStatus>& items) = 0;
+	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, EventCollection<Binary>& items) = 0;
+	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, EventCollection<DoubleBitBinary>& items) = 0;
+	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, EventCollection<Counter>& items) = 0;
+	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, EventCollection<FrozenCounter>& items) = 0;
+	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, EventCollection<Analog>& items) = 0;
+	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, EventCollection<BinaryOutputStatus>& items) = 0;
+	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, EventCollection<AnalogOutputStatus>& items) = 0;
 };
 }
 
