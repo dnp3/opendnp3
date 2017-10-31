@@ -69,12 +69,13 @@ EventRecord* EventWriting::FindNextSelected(event_iter_t& iter, EventType type)
 
 uint16_t EventWriting::WriteSome(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler)
 {
-	const auto value = iterator.Find(
-	                       [](const EventRecord & record)
+	// don't bother searching
+	if (lists.counters.selected == 0) return 0;
+
+	const auto value = iterator.Find([](const EventRecord & record)
 	{
 		return record.state == EventState::selected;
-	}
-	                   );
+	});
 
 	if (!value) return 0; // no match
 

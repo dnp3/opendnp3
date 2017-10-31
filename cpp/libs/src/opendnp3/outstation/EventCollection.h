@@ -68,6 +68,9 @@ uint16_t EventCollection<T>::WriteSome(IEventWriter<typename T::meas_t>& writer)
 template <class T>
 bool EventCollection<T>::WriteOne(IEventWriter<typename T::meas_t>& writer)
 {
+	// don't bother searching
+	if (this->counters.selected == 0) return false;
+
 	// find the next event with the same type and variation
 	const auto record = EventWriting::FindNextSelected(this->iterator, typename T::EventTypeEnum);
 
