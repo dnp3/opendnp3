@@ -33,7 +33,7 @@
 
 namespace opendnp3
 {
-	uint16_t ASDUEventWriteHandler::Write(EventBinaryVariation variation, const DNPTime& first, EventCollection<Binary>& items)
+	uint16_t ASDUEventWriteHandler::Write(EventBinaryVariation variation, const DNPTime& first, IEventCollection<Binary>& items)
 	{
 		switch (variation) {
 			case(EventBinaryVariation::Group2Var1):			
@@ -47,7 +47,7 @@ namespace opendnp3
 		}
 	}
 
-	uint16_t ASDUEventWriteHandler::Write(EventDoubleBinaryVariation variation, const DNPTime& first, EventCollection<DoubleBitBinary>& items)
+	uint16_t ASDUEventWriteHandler::Write(EventDoubleBinaryVariation variation, const DNPTime& first, IEventCollection<DoubleBitBinary>& items)
 	{
 		switch (variation)
 		{
@@ -62,7 +62,7 @@ namespace opendnp3
 		}
 	}
 
-	uint16_t ASDUEventWriteHandler::Write(EventCounterVariation variation, const DNPTime& first, EventCollection<Counter>& items)
+	uint16_t ASDUEventWriteHandler::Write(EventCounterVariation variation, const DNPTime& first, IEventCollection<Counter>& items)
 	{
 		switch (variation)
 		{
@@ -79,7 +79,7 @@ namespace opendnp3
 		}
 	}
 
-	uint16_t ASDUEventWriteHandler::Write(EventFrozenCounterVariation variation, const DNPTime& first, EventCollection<FrozenCounter>& items)
+	uint16_t ASDUEventWriteHandler::Write(EventFrozenCounterVariation variation, const DNPTime& first, IEventCollection<FrozenCounter>& items)
 	{
 		switch (variation)
 		{
@@ -96,7 +96,7 @@ namespace opendnp3
 		}
 	}
 
-	uint16_t ASDUEventWriteHandler::Write(EventAnalogVariation variation, const DNPTime& first, EventCollection<Analog>& items)
+	uint16_t ASDUEventWriteHandler::Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items)
 	{
 		switch (variation)
 		{
@@ -121,7 +121,7 @@ namespace opendnp3
 		}
 	}
 
-	uint16_t ASDUEventWriteHandler::Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, EventCollection<BinaryOutputStatus>& items)
+	uint16_t ASDUEventWriteHandler::Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items)
 	{
 		switch (variation)
 		{
@@ -134,7 +134,7 @@ namespace opendnp3
 		}
 	}
 
-	uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, EventCollection<AnalogOutputStatus>& items)
+	uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items)
 	{
 		switch (variation)
 		{

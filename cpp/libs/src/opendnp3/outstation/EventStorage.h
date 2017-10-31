@@ -22,7 +22,7 @@
 #define OPENDNP3_EVENTSTORAGE_H
 
 #include "opendnp3/outstation/Event.h"
-#include "opendnp3/outstation/EventWriteHandler.h"
+#include "opendnp3/outstation/IEventWriteHandler.h"
 #include "opendnp3/outstation/EventStorageState.h"
 
 #include <limits>
@@ -46,7 +46,7 @@ public:
 
 	// write selected events to some handler
 
-	uint32_t Write(EventWriteHandler& handler);
+	uint32_t Write(IEventWriteHandler& handler);
 
 
 	// ---- these functions return true if an overflow occurs ----
@@ -143,15 +143,16 @@ private:
 		return record.state == EventState::selected;
 	}
 
-	uint16_t WriteSome(EventWriteHandler& handler, event_iterator_t& iterator);
+	uint16_t WriteSome(IEventWriteHandler& handler, event_iterator_t& iterator);
 
 	template <class T>
 	uint16_t WriteSomeOfType(
-		EventWriteHandler& handler,
+		IEventWriteHandler& handler,
 		event_iterator_t& iterator,
 		EventRecord& first
 	);
 
+/**
 	template <class T>
 	class EventCollectionImpl final : public EventCollection<typename T::meas_t>
 	{
@@ -176,8 +177,9 @@ private:
 		}
 
 		virtual uint16_t WriteSome(EventWriter<typename T::meas_t>& writer) override;
-
 	};
+**/
+
 };
 
 }

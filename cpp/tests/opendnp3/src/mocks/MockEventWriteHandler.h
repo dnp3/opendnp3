@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "opendnp3/outstation/EventWriteHandler.h"
+#include "opendnp3/outstation/IEventWriteHandler.h"
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 
@@ -29,7 +29,7 @@
 
 namespace opendnp3
 {
-	class MockEventWriteHandler final : public EventWriteHandler
+	class MockEventWriteHandler final : public IEventWriteHandler
 	{
 		struct Record
 		{
@@ -43,7 +43,7 @@ namespace opendnp3
 	private:
 
 		template <class T>
-		class EventWriterImpl : public EventWriter<T>
+		class EventWriterImpl : public IEventWriter<T>
 		{
 		public:
 
@@ -78,37 +78,37 @@ namespace opendnp3
 		}
 
 
-		virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, EventCollection<Binary>& items) override
+		virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, IEventCollection<Binary>& items) override
 		{
 			return this->WriteAny<BinarySpec>(variation, items);
 		}
 
-		virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, EventCollection<DoubleBitBinary>& items) override
+		virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, IEventCollection<DoubleBitBinary>& items) override
 		{
 			return this->WriteAny<DoubleBitBinarySpec>(variation, items);
 		}
 		
-		virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, EventCollection<Counter>& items) override
+		virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, IEventCollection<Counter>& items) override
 		{
 			return this->WriteAny<CounterSpec>(variation, items);
 		}
 
-		virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, EventCollection<FrozenCounter>& items) override
+		virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, IEventCollection<FrozenCounter>& items) override
 		{
 			return this->WriteAny<FrozenCounterSpec>(variation, items);
 		}
 
-		virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, EventCollection<Analog>& items) override
+		virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items) override
 		{
 			return this->WriteAny<AnalogSpec>(variation, items);
 		}
 
-		virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, EventCollection<BinaryOutputStatus>& items) override
+		virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items) override
 		{
 			return this->WriteAny<BinaryOutputStatusSpec>(variation, items);
 		}
 
-		virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, EventCollection<AnalogOutputStatus>& items) override
+		virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items) override
 		{
 			return this->WriteAny<AnalogOutputStatusSpec>(variation, items);
 		}
@@ -116,12 +116,12 @@ namespace opendnp3
 	private:
 
 		template <class T>
-		uint16_t WriteAny(typename T::event_variation_t variation, EventCollection<typename T::meas_t>& items);
+		uint16_t WriteAny(typename T::event_variation_t variation, IEventCollection<typename T::meas_t>& items);
 		
 	};
 
 	template <class T>
-	uint16_t MockEventWriteHandler::WriteAny(typename T::event_variation_t variation, EventCollection<typename T::meas_t>& items)
+	uint16_t MockEventWriteHandler::WriteAny(typename T::event_variation_t variation, IEventCollection<typename T::meas_t>& items)
 	{
 		if (this->expected.empty()) {
 			throw std::logic_error("no more write events expected");

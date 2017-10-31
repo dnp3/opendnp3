@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_EVENTWRITEHANDLER_H
-#define OPENDNP3_EVENTWRITEHANDLER_H
+#ifndef OPENDNP3_IEVENTWRITEHANDLER_H
+#define OPENDNP3_IEVENTWRITEHANDLER_H
 
 #include "opendnp3/app/MeasurementTypes.h"
 
@@ -35,29 +35,29 @@ namespace opendnp3
 {
 
 template <class T>
-class EventWriter
+class IEventWriter
 {
 public:
 	virtual bool Write(const T& meas, uint16_t index) = 0;
 };
 
 template <class T>
-class EventCollection
+class IEventCollection
 {
 public:
-	virtual uint16_t WriteSome(EventWriter<T>& handler) = 0;
+	virtual uint16_t WriteSome(IEventWriter<T>& handler) = 0;
 };
 
-class EventWriteHandler
+class IEventWriteHandler
 {
 public:
-	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, EventCollection<Binary>& items) = 0;
-	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, EventCollection<DoubleBitBinary>& items) = 0;
-	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, EventCollection<Counter>& items) = 0;
-	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, EventCollection<FrozenCounter>& items) = 0;
-	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, EventCollection<Analog>& items) = 0;
-	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, EventCollection<BinaryOutputStatus>& items) = 0;
-	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, EventCollection<AnalogOutputStatus>& items) = 0;
+	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, IEventCollection<Binary>& items) = 0;
+	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, IEventCollection<DoubleBitBinary>& items) = 0;
+	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, IEventCollection<Counter>& items) = 0;
+	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, IEventCollection<FrozenCounter>& items) = 0;
+	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items) = 0;
+	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items) = 0;
+	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items) = 0;
 };
 }
 

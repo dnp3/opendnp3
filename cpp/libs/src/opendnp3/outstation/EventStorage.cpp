@@ -50,7 +50,7 @@ uint32_t EventStorage::Select(EventClass clazz, uint32_t max)
 	return num_selected;
 }
 
-uint32_t EventStorage::Write(EventWriteHandler& handler)
+uint32_t EventStorage::Write(IEventWriteHandler& handler)
 {
 	// iterate over the selected events in the buffer
 	auto iterator = this->state.events.Iterate();
@@ -61,24 +61,24 @@ uint32_t EventStorage::Write(EventWriteHandler& handler)
 		uint16_t num_written = this->WriteSome(handler, iterator);
 		if (num_written == 0)
 		{
+			// failed to make progress
 			return total_num_written;
 		}
 		else
 		{
 			total_num_written += num_written;
 		}
-	}
-	
-	return total_num_written;
+	}	
 }
 
-uint16_t EventStorage::WriteSome(EventWriteHandler& handler, event_iterator_t& iterator)
+uint16_t EventStorage::WriteSome(IEventWriteHandler& handler, event_iterator_t& iterator)
 {
 	const auto next = iterator.Find(EventStorage::IsSelected);
 	
 	// we are out of selected events
 	if (!next) return 0;
 
+	
 	/*
 	// now enter a type-dependent write routine
 	switch (next->type)
@@ -107,7 +107,7 @@ uint16_t EventStorage::WriteSome(EventWriteHandler& handler, event_iterator_t& i
 
 template <class T>
 uint16_t EventStorage::WriteSomeOfType(
-	EventWriteHandler& handler,
+	IEventWriteHandler& handler,
 	event_iterator_t& iterator,
 	EventRecord& first
 )
@@ -125,6 +125,7 @@ uint16_t EventStorage::WriteSomeOfType(
 	return collection.GetNumWritten();
 }
 
+/*
 template <class T>
 uint16_t EventStorage::EventCollectionImpl<T>::WriteSome(EventWriter<typename T::meas_t>& writer)
 {
@@ -161,6 +162,7 @@ uint16_t EventStorage::EventCollectionImpl<T>::WriteSome(EventWriter<typename T:
 		}
 	}
 }
+*/
 
 
 }

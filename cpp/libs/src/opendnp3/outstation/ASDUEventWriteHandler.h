@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_ASDUEVENTWRITEHANDLER_H
 #define OPENDNP3_ASDUEVENTWRITEHANDLER_H
 
-#include "opendnp3/outstation/EventWriteHandler.h"
+#include "opendnp3/outstation/IEventWriteHandler.h"
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/DNP3Serializer.h"
 
@@ -30,20 +30,20 @@
 namespace opendnp3
 {
 
-class ASDUEventWriteHandler final : public EventWriteHandler, private openpal::Uncopyable
+class ASDUEventWriteHandler final : public IEventWriteHandler, private openpal::Uncopyable
 {	
 
 public:
 
 	explicit ASDUEventWriteHandler(const HeaderWriter& writer) : writer(writer) {}
 
-	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, EventCollection<Binary>& items) override;
-	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, EventCollection<DoubleBitBinary>& items) override;
-	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, EventCollection<Counter>& items) override;
-	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, EventCollection<FrozenCounter>& items) override;
-	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, EventCollection<Analog>& items) override;
-	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, EventCollection<BinaryOutputStatus>& items) override;
-	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, EventCollection<AnalogOutputStatus>& items) override;
+	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, IEventCollection<Binary>& items) override;
+	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, IEventCollection<DoubleBitBinary>& items) override;
+	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, IEventCollection<Counter>& items) override;
+	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, IEventCollection<FrozenCounter>& items) override;
+	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items) override;
+	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items) override;
+	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items) override;
 
 private:
 
