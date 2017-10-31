@@ -28,8 +28,23 @@ namespace opendnp3
 {
 
 struct ClazzCount
-{
+{	
+
 public:
+
+	uint32_t Get(EventClass clazz) const
+	{
+		switch (clazz)
+		{
+		case(EventClass::EC1):
+			return num_class_1;
+		case(EventClass::EC2):
+			return num_class_2;
+			break;
+		default:
+			return num_class_3;
+		}
+	}
 
 	void Increment(EventClass clazz)
 	{
@@ -73,30 +88,44 @@ private:
 class EventClassCounters
 {
 
-private:
+public:
 
 	ClazzCount total;
 	ClazzCount written;
-
-public:
-
-	void OnRemove(EventClass clazz, EventState state)
-	{
-		if (state == EventState::written)
-		{
-			this->written.Decrement(clazz);
-		}
-		this->total.Decrement(clazz);
-	}
+	uint32_t selected = 0;
 
 	void OnAdd(EventClass clazz)
 	{
 		this->total.Increment(clazz);
 	}
 
+	void OnSelect()
+	{
+		++selected;		
+	}
+
 	void OnWrite(EventClass clazz)
 	{
+		// only selected events are written
+		--selected;
 		this->written.Increment(clazz);
+	}
+
+	void OnRemove(EventClass clazz, EventState state)
+	{
+		switch (state)
+		{
+			case(EventState::selected):
+				--selected;
+				break;
+			case(EventState::written):
+				this->written.Decrement(clazz);
+				break;
+			default:
+				break;
+		}		
+
+		this->total.Decrement(clazz);
 	}
 };
 }

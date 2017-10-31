@@ -80,6 +80,8 @@ bool EventUpdate::Update(EventLists& lists, const Event<T>& event)
 
 	record_node->value.SetStorageNode(typed_node);
 
+	lists.counters.OnAdd(event.clazz);
+
 	return overflow;
 }
 

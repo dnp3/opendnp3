@@ -40,6 +40,7 @@ uint32_t EventSelection::SelectByClass(EventLists& lists, EventClass clazz, uint
 			// TODO - set the storage to use the default variation
 			//node->value.selectedVariation = useDefaultVariation ? node->value.defaultVariation : variation;
 			++num_selected;
+			lists.counters.OnSelect();
 		}
 	}
 

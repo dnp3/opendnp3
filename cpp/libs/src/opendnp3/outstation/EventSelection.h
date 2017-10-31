@@ -63,6 +63,7 @@ uint32_t EventSelection::SelectByType(EventLists& lists, bool useDefaultVariatio
 		{
 			node.record->value.state = EventState::selected;
 			node.selectedVariation = useDefaultVariation ? node.defaultVariation : variation;
+			lists.counters.OnSelect();
 			++num_selected;
 		}
 	};

@@ -105,9 +105,9 @@ uint16_t EventWriting::WriteSomeOfType(event_iter_t& iterator, EventLists& lists
 	const auto pos = iterator.CurrentValue();
 	const auto storage = pos->StorageAs<T>();
 
-	EventCollection<T> collection(iterator, storage->value.selectedVariation);
+	EventCollection<T> collection(iterator, lists.counters, storage->value.selectedVariation);
 
-	return handler.Write(storage->value.selectedVariation, storage->value.value.time, collection);
+	return handler.Write(storage->value.selectedVariation, storage->value.value.time, collection);	
 }
 
 }

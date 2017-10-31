@@ -32,6 +32,16 @@ EventStorage::EventStorage(const EventBufferConfig& config) :
 	state(config)
 {}
 
+uint32_t EventStorage::NumSelected() const
+{
+	return this->state.counters.selected;
+}
+
+uint32_t EventStorage::NumUnwritten(EventClass clazz) const
+{
+	return this->state.counters.total.Get(clazz) - this->state.counters.written.Get(clazz);
+}
+
 bool EventStorage::Update(const Event<BinarySpec>& evt)
 {
 	return EventUpdate::Update(state, evt);

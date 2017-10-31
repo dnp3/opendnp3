@@ -33,15 +33,18 @@ class EventCollection final : public IEventCollection<typename T::meas_t>
 {
 private:	
 	openpal::LinkedListIterator<EventRecord>& iterator;
+	EventClassCounters& counters;
 	typename T::event_variation_t variation;
 
 public:
 
 	EventCollection(
 	    openpal::LinkedListIterator<EventRecord>& iterator,
+		EventClassCounters& counters,
 	    typename T::event_variation_t variation
 	) :
 		iterator(iterator),
+		counters(counters),
 		variation(variation)
 	{}	
 
@@ -78,8 +81,9 @@ bool EventCollection<T>::WriteOne(IEventWriter<typename T::meas_t>& writer)
 
 	// unable to write
 	if (!writer.Write(data->value.value, record->index)) return false;
-	
+		
 	// success!
+	this->counters.OnWrite(record->clazz);
 	record->state = EventState::written;
 	this->iterator.Next();
 	return true;
