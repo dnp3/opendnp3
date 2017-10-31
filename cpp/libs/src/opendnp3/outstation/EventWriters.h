@@ -108,7 +108,7 @@ private:
 			if (diff > openpal::UInt16::Max) return false;
 
 			auto copy = meas;
-			copy.time.value = meas.time - diff;
+			copy.time.value = diff;
 
 			return this->iterator.Write(copy, index);
 		}
