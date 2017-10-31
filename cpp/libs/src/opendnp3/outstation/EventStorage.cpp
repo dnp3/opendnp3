@@ -68,17 +68,17 @@ uint32_t EventStorage::Write(IEventWriteHandler& handler)
 		{
 			total_num_written += num_written;
 		}
-	}	
+	}
 }
 
 uint16_t EventStorage::WriteSome(IEventWriteHandler& handler, event_iterator_t& iterator)
 {
 	const auto next = iterator.Find(EventStorage::IsSelected);
-	
+
 	// we are out of selected events
 	if (!next) return 0;
 
-	
+
 	/*
 	// now enter a type-dependent write routine
 	switch (next->type)
@@ -107,17 +107,17 @@ uint16_t EventStorage::WriteSome(IEventWriteHandler& handler, event_iterator_t& 
 
 template <class T>
 uint16_t EventStorage::WriteSomeOfType(
-	IEventWriteHandler& handler,
-	event_iterator_t& iterator,
-	EventRecord& first
+    IEventWriteHandler& handler,
+    event_iterator_t& iterator,
+    EventRecord& first
 )
 {
-	const auto& node = reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(first.storage)->value;		
+	const auto& node = reinterpret_cast<openpal::ListNode<TypeRecord<T>>*>(first.storage)->value;
 
 	// create a collection of a particular type / variation
 	EventCollectionImpl<T> collection(
-		iterator,
-		node.selectedVariation
+	    iterator,
+	    node.selectedVariation
 	);
 
 	handler.Write(node.selectedVariation, node.value.time, collection);

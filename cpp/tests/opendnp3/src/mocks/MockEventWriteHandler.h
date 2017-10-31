@@ -29,130 +29,134 @@
 
 namespace opendnp3
 {
-	class MockEventWriteHandler final : public IEventWriteHandler
+class MockEventWriteHandler final : public IEventWriteHandler
+{
+	struct Record
 	{
-		struct Record
-		{
-			EventType type;
-			uint8_t variation;
-			uint16_t count;
-		};
-
-		std::deque<Record> expected;
-
-	private:
-
-		template <class T>
-		class EventWriterImpl : public IEventWriter<T>
-		{
-		public:
-
-			bool success = true;
-			std::vector<uint16_t> written_indices;
-
-			virtual bool Write(const T& meas, uint16_t index) override
-			{
-				if (success) {
-					written_indices.push_back(index);
-				}
-				return success;
-			}
-		};
-
-
-	public:
-
-		void Expect(EventBinaryVariation variation, uint16_t count)
-		{
-			expected.push_back(
-				Record { EventType::Binary, static_cast<uint8_t>(variation), count }
-			);
-		}
-
-		void AssertEmpty()
-		{
-			if (!this->expected.empty())
-			{
-				throw std::logic_error("more events expected");
-			}
-		}
-
-
-		virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, IEventCollection<Binary>& items) override
-		{
-			return this->WriteAny<BinarySpec>(variation, items);
-		}
-
-		virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, IEventCollection<DoubleBitBinary>& items) override
-		{
-			return this->WriteAny<DoubleBitBinarySpec>(variation, items);
-		}
-		
-		virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, IEventCollection<Counter>& items) override
-		{
-			return this->WriteAny<CounterSpec>(variation, items);
-		}
-
-		virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, IEventCollection<FrozenCounter>& items) override
-		{
-			return this->WriteAny<FrozenCounterSpec>(variation, items);
-		}
-
-		virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items) override
-		{
-			return this->WriteAny<AnalogSpec>(variation, items);
-		}
-
-		virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items) override
-		{
-			return this->WriteAny<BinaryOutputStatusSpec>(variation, items);
-		}
-
-		virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items) override
-		{
-			return this->WriteAny<AnalogOutputStatusSpec>(variation, items);
-		}
-
-	private:
-
-		template <class T>
-		uint16_t WriteAny(typename T::event_variation_t variation, IEventCollection<typename T::meas_t>& items);
-		
+		EventType type;
+		uint8_t variation;
+		uint16_t count;
 	};
 
+	std::deque<Record> expected;
+
+private:
+
 	template <class T>
-	uint16_t MockEventWriteHandler::WriteAny(typename T::event_variation_t variation, IEventCollection<typename T::meas_t>& items)
+	class EventWriterImpl : public IEventWriter<T>
 	{
-		if (this->expected.empty()) {
-			throw std::logic_error("no more write events expected");
-		}
+	public:
 
-		const auto record = this->expected.front();
-		this->expected.pop_front();
+		bool success = true;
+		std::vector<uint16_t> written_indices;
 
-		if (record.type != EventType::Binary) {
-			std::ostringstream oss;
-			oss << "Unexpected event type: " << static_cast<int>(record.type);
-			throw std::logic_error(oss.str());
-		}
-
-		if (record.variation != static_cast<uint8_t>(variation))
+		virtual bool Write(const T& meas, uint16_t index) override
 		{
-			std::ostringstream oss;
-			oss << "Unexpected variation: " << static_cast<int>(variation);
-			throw std::logic_error(oss.str());
+			if (success)
+			{
+				written_indices.push_back(index);
+			}
+			return success;
 		}
+	};
 
-		EventWriterImpl<typename T::meas_t> writer;
-		const uint16_t count = items.WriteSome(writer);
 
-		if (record.count != count) {
-			std::ostringstream oss;
-			oss << "Unexpected count: " << static_cast<int>(variation);
-			throw std::logic_error(oss.str());
-		}
+public:
 
-		return count;
+	void Expect(EventBinaryVariation variation, uint16_t count)
+	{
+		expected.push_back(
+		    Record { EventType::Binary, static_cast<uint8_t>(variation), count }
+		);
 	}
+
+	void AssertEmpty()
+	{
+		if (!this->expected.empty())
+		{
+			throw std::logic_error("more events expected");
+		}
+	}
+
+
+	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, IEventCollection<Binary>& items) override
+	{
+		return this->WriteAny<BinarySpec>(variation, items);
+	}
+
+	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, IEventCollection<DoubleBitBinary>& items) override
+	{
+		return this->WriteAny<DoubleBitBinarySpec>(variation, items);
+	}
+
+	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, IEventCollection<Counter>& items) override
+	{
+		return this->WriteAny<CounterSpec>(variation, items);
+	}
+
+	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, IEventCollection<FrozenCounter>& items) override
+	{
+		return this->WriteAny<FrozenCounterSpec>(variation, items);
+	}
+
+	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items) override
+	{
+		return this->WriteAny<AnalogSpec>(variation, items);
+	}
+
+	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items) override
+	{
+		return this->WriteAny<BinaryOutputStatusSpec>(variation, items);
+	}
+
+	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items) override
+	{
+		return this->WriteAny<AnalogOutputStatusSpec>(variation, items);
+	}
+
+private:
+
+	template <class T>
+	uint16_t WriteAny(typename T::event_variation_t variation, IEventCollection<typename T::meas_t>& items);
+
+};
+
+template <class T>
+uint16_t MockEventWriteHandler::WriteAny(typename T::event_variation_t variation, IEventCollection<typename T::meas_t>& items)
+{
+	if (this->expected.empty())
+	{
+		throw std::logic_error("no more write events expected");
+	}
+
+	const auto record = this->expected.front();
+	this->expected.pop_front();
+
+	if (record.type != EventType::Binary)
+	{
+		std::ostringstream oss;
+		oss << "Unexpected event type: " << static_cast<int>(record.type);
+		throw std::logic_error(oss.str());
+	}
+
+	if (record.variation != static_cast<uint8_t>(variation))
+	{
+		std::ostringstream oss;
+		oss << "Unexpected variation: " << static_cast<int>(variation);
+		throw std::logic_error(oss.str());
+	}
+
+	EventWriterImpl<typename T::meas_t> writer;
+	const uint16_t count = items.WriteSome(writer);
+
+	if (record.count != count)
+	{
+		std::ostringstream oss;
+		oss << "Unexpected count: " << static_cast<int>(variation);
+		throw std::logic_error(oss.str());
+	}
+
+	return count;
+}
 }
 

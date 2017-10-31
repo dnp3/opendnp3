@@ -21,7 +21,7 @@
 
 #include "opendnp3/outstation/EventStorageState.h"
 
-namespace opendnp3 
+namespace opendnp3
 {
 
 EventStorageState::EventStorageState(const EventBufferConfig& config) :

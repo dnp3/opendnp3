@@ -31,69 +31,69 @@
 
 namespace opendnp3
 {
+template <class T>
+struct TypedEventRecord;
+
+/**
+* Generic event information with an opaque pointer to
+* the specific event details
+*/
+class EventRecord
+{
+
+public:
+	EventRecord(
+	    uint16_t index,
+	    EventClass clazz
+	) :
+
+		index(index),
+		clazz(clazz)
+	{}
+
+	EventRecord() = default;
+
 	template <class T>
-	struct TypedEventRecord;
-
-	/**
-	* Generic event information with an opaque pointer to 
-	* the specific event details
-	*/
-	class EventRecord
+	void SetStorageNode(openpal::ListNode<TypedEventRecord<T>>* node)
 	{
+		this->type = typename T::EventTypeEnum;
+		this->storage_node = node;
+	}
 
-	public:
-		EventRecord(
-		    uint16_t index,
-		    EventClass clazz
-		) :
-			
-			index(index),
-			clazz(clazz)
-		{}
+	uint16_t index = 0;
+	EventClass clazz = EventClass::EC1;
+	EventState state = EventState::unselected;
 
-		EventRecord() = default;
+	template <class T>
+	uint32_t Select(T& selector)
+	{
+		if (!this->storage) return 0;
 
-		template <class T>
-		void SetStorageNode(openpal::ListNode<TypedEventRecord<T>>* node)
+		switch (type)
 		{
-			this->type = typename T::EventTypeEnum;
-			this->storage_node = node;
+		case(EventType::Binary):
+			return selector.handle(reinterpret_cast<openpal::ListNode<BinarySpec>*>(this->storage_node));
+		case(EventType::DoubleBitBinary):
+			return selector.handle(reinterpret_cast<openpal::ListNode<DoubleBitBinarySpec>*>(this->storage_node));
+		case(EventType::Counter):
+			return selector.handle(reinterpret_cast<openpal::ListNode<CounterSpec>*>(this->storage_node));
+		case(EventType::FrozenCounter):
+			return selector.handle(reinterpret_cast<openpal::ListNode<FrozenCounterSpec>*>(this->storage_node));
+		case(EventType::Analog):
+			return selector.handle(reinterpret_cast<openpal::ListNode<AnalogSpec>*>(this->storage_node));
+		case(EventType::BinaryOutputStatus):
+			return selector.handle(reinterpret_cast<openpal::ListNode<BinaryOutputStatusSpec>*>(this->storage_node));
+		case(EventType::AnalogOutputStatus):
+			return selector.handle(reinterpret_cast<openpal::ListNode<AnalogOutputStatusSpec>*>(this->storage_node));
+		default:
+			return 0;
 		}
+	}
 
-		uint16_t index = 0;
-		EventClass clazz = EventClass::EC1;
-		EventState state = EventState::unselected;
-
-		template <class T>
-		uint32_t Select(T& selector)
-		{
-			if (!this->storage) return 0;
-
-			switch (type)
-			{
-				case(EventType::Binary):
-					return selector.handle(reinterpret_cast<openpal::ListNode<BinarySpec>*>(this->storage_node));
-				case(EventType::DoubleBitBinary):
-					return selector.handle(reinterpret_cast<openpal::ListNode<DoubleBitBinarySpec>*>(this->storage_node));
-				case(EventType::Counter):
-					return selector.handle(reinterpret_cast<openpal::ListNode<CounterSpec>*>(this->storage_node));
-				case(EventType::FrozenCounter):
-					return selector.handle(reinterpret_cast<openpal::ListNode<FrozenCounterSpec>*>(this->storage_node));
-				case(EventType::Analog):
-					return selector.handle(reinterpret_cast<openpal::ListNode<AnalogSpec>*>(this->storage_node));
-				case(EventType::BinaryOutputStatus):
-					return selector.handle(reinterpret_cast<openpal::ListNode<BinaryOutputStatusSpec>*>(this->storage_node));
-				case(EventType::AnalogOutputStatus):
-					return selector.handle(reinterpret_cast<openpal::ListNode<AnalogOutputStatusSpec>*>(this->storage_node));
-				default:
-					return 0;
-			}
-		}
-		
-	private:
-		EventType type = EventType::Binary;
-		void* storage_node = nullptr;
-	};
+private:
+	EventType type = EventType::Binary;
+	void* storage_node = nullptr;
+};
 
 }
 

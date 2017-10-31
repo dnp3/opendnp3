@@ -147,38 +147,38 @@ private:
 
 	template <class T>
 	uint16_t WriteSomeOfType(
-		IEventWriteHandler& handler,
-		event_iterator_t& iterator,
-		EventRecord& first
+	    IEventWriteHandler& handler,
+	    event_iterator_t& iterator,
+	    EventRecord& first
 	);
 
-/**
-	template <class T>
-	class EventCollectionImpl final : public EventCollection<typename T::meas_t>
-	{
-	private:
-		uint16_t num_written = 0;
-		event_iterator_t& iterator;
-		typename T::event_variation_t variation;
-		
-	public:
-		
-		EventCollectionImpl(
-			event_iterator_t& iterator,
-			typename T::event_variation_t variation
-		) :
-			iterator(iterator),
-			variation(variation)
-		{}
-		
-		uint16_t GetNumWritten() const
+	/**
+		template <class T>
+		class EventCollectionImpl final : public EventCollection<typename T::meas_t>
 		{
-			return num_written;
-		}
+		private:
+			uint16_t num_written = 0;
+			event_iterator_t& iterator;
+			typename T::event_variation_t variation;
 
-		virtual uint16_t WriteSome(EventWriter<typename T::meas_t>& writer) override;
-	};
-**/
+		public:
+
+			EventCollectionImpl(
+				event_iterator_t& iterator,
+				typename T::event_variation_t variation
+			) :
+				iterator(iterator),
+				variation(variation)
+			{}
+
+			uint16_t GetNumWritten() const
+			{
+				return num_written;
+			}
+
+			virtual uint16_t WriteSome(EventWriter<typename T::meas_t>& writer) override;
+		};
+	**/
 
 };
 

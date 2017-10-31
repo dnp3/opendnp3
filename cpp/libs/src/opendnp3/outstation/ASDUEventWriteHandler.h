@@ -31,7 +31,7 @@ namespace opendnp3
 {
 
 class ASDUEventWriteHandler final : public IEventWriteHandler, private openpal::Uncopyable
-{	
+{
 
 public:
 

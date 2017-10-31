@@ -23,33 +23,34 @@
 
 #include "EventRecord.h"
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
-	/**
-	* Event details that vary by type
-	*/
-	template <class T>
-	struct TypedEventRecord
-	{
-		TypedEventRecord() = default;
+/**
+* Event details that vary by type
+*/
+template <class T>
+struct TypedEventRecord
+{
+	TypedEventRecord() = default;
 
-		TypedEventRecord(
-		    typename T::meas_t value,
-		    typename T::event_variation_t defaultVariation,
-		    typename T::event_variation_t selectedVariation,
-			openpal::ListNode<EventRecord>* record
-		) :
-			value(value),
-			defaultVariation(defaultVariation),
-			selectedVariation(selectedVariation),
-			record(record)
-		{}
+	TypedEventRecord(
+	    typename T::meas_t value,
+	    typename T::event_variation_t defaultVariation,
+	    typename T::event_variation_t selectedVariation,
+	    openpal::ListNode<EventRecord>* record
+	) :
+		value(value),
+		defaultVariation(defaultVariation),
+		selectedVariation(selectedVariation),
+		record(record)
+	{}
 
-		typename T::meas_t value;
-		typename T::event_variation_t defaultVariation;
-		typename T::event_variation_t selectedVariation;
-		openpal::ListNode<EventRecord>* record = nullptr;
-	};
+	typename T::meas_t value;
+	typename T::event_variation_t defaultVariation;
+	typename T::event_variation_t selectedVariation;
+	openpal::ListNode<EventRecord>* record = nullptr;
+};
 }
 
 #endif

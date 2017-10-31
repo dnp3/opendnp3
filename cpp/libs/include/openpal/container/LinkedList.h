@@ -66,8 +66,10 @@ public:
 	template <class T>
 	ValueType* Find(const T& matches)
 	{
-		while (pCurrent) {
-			if (matches(pCurrent->value)) {
+		while (pCurrent)
+		{
+			if (matches(pCurrent->value))
+			{
 				return &(pCurrent->value);
 			}
 			pCurrent = pCurrent->next;

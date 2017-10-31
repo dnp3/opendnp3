@@ -31,7 +31,7 @@ using namespace opendnp3;
 TEST_CASE(SUITE("can construct"))
 {
 	EventStorage storage(
-		EventBufferConfig::AllTypes(10)
+	    EventBufferConfig::AllTypes(10)
 	);
 }
 
@@ -39,9 +39,9 @@ TEST_CASE(SUITE("can load and write Binary"))
 {
 	EventStorage storage(EventBufferConfig::AllTypes(10));
 	REQUIRE_FALSE(
-		storage.Update(
-			Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1)
-		)
+	    storage.Update(
+	        Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1)
+	    )
 	);
 
 	// select events by class

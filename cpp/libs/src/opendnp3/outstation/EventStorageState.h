@@ -29,10 +29,11 @@
 
 #include "openpal/util/Uncopyable.h"
 
-namespace opendnp3 
+namespace opendnp3
 {
 
-struct EventStorageState : private openpal::Uncopyable {
+struct EventStorageState : private openpal::Uncopyable
+{
 
 	EventStorageState(const EventBufferConfig& config);
 
@@ -105,17 +106,17 @@ bool EventStorageState::UpdateAny(const Event<T>& evt)
 	}
 
 	const auto node = this->events.Add(
-		EventRecord(evt.index, evt.clazz)
-	);
+	                      EventRecord(evt.index, evt.clazz)
+	                  );
 
 	const auto typed = list.Add(
-		TypedEventRecord<T>(
-			evt.value,
-			evt.variation,
-			evt.variation,
-			node
-		)
-	);
+	                       TypedEventRecord<T>(
+	                           evt.value,
+	                           evt.variation,
+	                           evt.variation,
+	                           node
+	                       )
+	                   );
 
 	node->value.SetStorageNode(typed);
 
