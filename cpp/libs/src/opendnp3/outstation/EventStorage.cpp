@@ -28,6 +28,76 @@ EventStorage::EventStorage(const EventBufferConfig& config) :
 	state(config)
 {}
 
+bool EventStorage::Update(const Event<BinarySpec>& evt)
+{
+	return false;
+}
+
+bool EventStorage::Update(const Event<DoubleBitBinarySpec>& evt)
+{
+	return false;
+}
+
+bool EventStorage::Update(const Event<AnalogSpec>& evt)
+{
+	return false;
+}
+
+bool EventStorage::Update(const Event<CounterSpec>& evt)
+{
+	return false;
+}
+
+bool EventStorage::Update(const Event<FrozenCounterSpec>& evt)
+{
+	return false;
+}
+
+bool EventStorage::Update(const Event<BinaryOutputStatusSpec>& evt)
+{
+	return false;
+}
+
+bool EventStorage::Update(const Event<AnalogOutputStatusSpec>& evt)
+{
+	return false;
+}
+
+uint32_t EventStorage::Select(EventBinaryVariation variation, uint32_t max)
+{
+	return 0;
+}
+
+uint32_t EventStorage::Select(EventDoubleBinaryVariation variation, uint32_t max)
+{
+	return 0;
+}
+
+uint32_t EventStorage::Select(EventAnalogVariation variation, uint32_t max)
+{
+	return 0;
+}
+
+uint32_t EventStorage::Select(EventCounterVariation variation, uint32_t max)
+{
+	return 0;
+}
+
+uint32_t EventStorage::Select(EventFrozenCounterVariation variation, uint32_t max)
+{
+	return 0;
+}
+
+uint32_t EventStorage::Select(EventBinaryOutputStatusVariation variation, uint32_t max)
+{
+	return 0;
+}
+
+uint32_t EventStorage::Select(EventAnalogOutputStatusVariation variation, uint32_t max)
+{
+	return 0;
+}
+
 uint32_t EventStorage::Select(EventClass clazz, uint32_t max)
 {
 	uint32_t num_selected = 0;
@@ -105,6 +175,7 @@ uint16_t EventStorage::WriteSome(IEventWriteHandler& handler, event_iterator_t& 
 	return 0;
 }
 
+/*
 template <class T>
 uint16_t EventStorage::WriteSomeOfType(
     IEventWriteHandler& handler,
@@ -125,7 +196,7 @@ uint16_t EventStorage::WriteSomeOfType(
 	return collection.GetNumWritten();
 }
 
-/*
+
 template <class T>
 uint16_t EventStorage::EventCollectionImpl<T>::WriteSome(EventWriter<typename T::meas_t>& writer)
 {

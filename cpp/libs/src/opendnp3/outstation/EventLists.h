@@ -18,29 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_EVENTSTORAGESTATE_H
-#define OPENDNP3_EVENTSTORAGESTATE_H
+#ifndef OPENDNP3_EVENTLISTS_H
+#define OPENDNP3_EVENTLISTS_H
 
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/EventRecord.h"
 #include "opendnp3/outstation/TypedEventRecord.h"
 #include "opendnp3/outstation/ClazzCount.h"
-#include "opendnp3/outstation/Event.h"
 
 #include "openpal/util/Uncopyable.h"
 
 namespace opendnp3
 {
 
-struct EventStorageState : private openpal::Uncopyable
+struct EventLists : private openpal::Uncopyable
 {
 
-	EventStorageState(const EventBufferConfig& config);
+	EventLists() = delete;
 
-	EventStorageState() = delete;
+	EventLists(const EventBufferConfig& config);
 
 	// master list keeps the aggregate order and generic data
 	openpal::LinkedList<EventRecord, uint32_t> events;
+
+	template <class T>
+	openpal::LinkedList<TypedEventRecord<T>, uint32_t>& GetList();
+
+	EventClassCounters counters;
+
+private:
 
 	// sub-lists just act as type-specific storage
 	openpal::LinkedList<TypedEventRecord<BinarySpec>, uint32_t> binary;
@@ -51,34 +57,35 @@ struct EventStorageState : private openpal::Uncopyable
 	openpal::LinkedList<TypedEventRecord<BinaryOutputStatusSpec>, uint32_t> binaryOutputStatus;
 	openpal::LinkedList<TypedEventRecord<AnalogOutputStatusSpec>, uint32_t> analogOutputStatus;
 
-	EventClassCounters counters;
 
-	template <class T>
-	bool UpdateAny(const Event<T>& evt);
+	/*
+		template <class T>
+		bool UpdateAny(const Event<T>& evt);
 
-	template <class T>
-	uint32_t SelectByType(uint32_t max)
-	{
-		return this->SelectByType(true, 0, uint16_t max);
-	}
+		template <class T>
+		uint32_t SelectByType(uint32_t max)
+		{
+			return this->SelectByType(true, 0, uint16_t max);
+		}
 
-	template <class T>
-	uint32_t SelectByType(typename T::event_variation_t variation, uint32_t max)
-	{
-		return this->SelectByType<T>(false, variation, max);
-	}
+		template <class T>
+		uint32_t SelectByType(typename T::event_variation_t variation, uint32_t max)
+		{
+			return this->SelectByType<T>(false, variation, max);
+		}
 
-private:
+	private:
 
-	template <class T>
-	uint32_t SelectByType(bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max);
+		template <class T>
+		uint32_t SelectByType(bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max);
+	*/
 
-	template <class T>
-	openpal::LinkedList<TypedEventRecord<T>, uint32_t>& GetList();
+
 };
 
+/*
 template <class T>
-bool EventStorageState::UpdateAny(const Event<T>& evt)
+bool EventLists::UpdateAny(const Event<T>& evt)
 {
 	auto& list = this->GetList<T>();
 
@@ -126,16 +133,17 @@ bool EventStorageState::UpdateAny(const Event<T>& evt)
 }
 
 template <class T>
-uint32_t EventStorageState::SelectByType(bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max)
+uint32_t EventLists::SelectByType(bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max)
 {
 	auto& list = this->GetList<T>();
 
 	uint32_t num_selected = 0;
 
-	// TODO
+
 
 	return num_selected;
 }
+*/
 
 }
 

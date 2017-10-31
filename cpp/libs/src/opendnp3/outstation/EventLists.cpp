@@ -19,12 +19,12 @@
  * to you under the terms of the License.
  */
 
-#include "opendnp3/outstation/EventStorageState.h"
+#include "opendnp3/outstation/EventLists.h"
 
 namespace opendnp3
 {
 
-EventStorageState::EventStorageState(const EventBufferConfig& config) :
+EventLists::EventLists(const EventBufferConfig& config) :
 	events(config.TotalEvents()),
 	binary(config.maxBinaryEvents),
 	doubleBinary(config.maxDoubleBinaryEvents),
@@ -36,7 +36,7 @@ EventStorageState::EventStorageState(const EventBufferConfig& config) :
 {}
 
 template <>
-openpal::LinkedList<TypedEventRecord<BinarySpec>, uint32_t>& EventStorageState::GetList()
+openpal::LinkedList<TypedEventRecord<BinarySpec>, uint32_t>& EventLists::GetList()
 {
 	return this->binary;
 }

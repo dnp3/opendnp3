@@ -23,7 +23,7 @@
 
 #include "opendnp3/outstation/Event.h"
 #include "opendnp3/outstation/IEventWriteHandler.h"
-#include "opendnp3/outstation/EventStorageState.h"
+#include "opendnp3/outstation/EventLists.h"
 
 #include <limits>
 
@@ -51,77 +51,23 @@ public:
 
 	// ---- these functions return true if an overflow occurs ----
 
-	inline bool Update(const Event<BinarySpec>& evt)
-	{
-		return this->state.UpdateAny(evt);
-	}
+	bool Update(const Event<BinarySpec>& evt);
+	bool Update(const Event<DoubleBitBinarySpec>& evt);
+	bool Update(const Event<AnalogSpec>& evt);
+	bool Update(const Event<CounterSpec>& evt);
+	bool Update(const Event<FrozenCounterSpec>& evt);
+	bool Update(const Event<BinaryOutputStatusSpec>& evt);
+	bool Update(const Event<AnalogOutputStatusSpec>& evt);
 
-	inline bool Update(const Event<DoubleBitBinarySpec>& evt)
-	{
-		return this->state.UpdateAny(evt);
-	}
+	// ---- function used to select distinct types ----
 
-	inline bool Update(const Event<AnalogSpec>& evt)
-	{
-		return this->state.UpdateAny(evt);
-	}
-
-	inline bool Update(const Event<CounterSpec>& evt)
-	{
-		return this->state.UpdateAny(evt);
-	}
-
-	inline bool Update(const Event<FrozenCounterSpec>& evt)
-	{
-		return this->state.UpdateAny(evt);
-	}
-
-	inline bool Update(const Event<BinaryOutputStatusSpec>& evt)
-	{
-		return this->state.UpdateAny(evt);
-	}
-
-	inline bool Update(const Event<AnalogOutputStatusSpec>& evt)
-	{
-		return this->state.UpdateAny(evt);
-	}
-
-	// ---- function used to select various events ----
-
-	inline uint32_t Select(EventBinaryVariation variation, uint32_t max)
-	{
-		return this->state.SelectByType<BinarySpec>(variation, max);
-	}
-
-	inline uint32_t Select(EventDoubleBinaryVariation variation, uint32_t max)
-	{
-		return this->state.SelectByType<DoubleBitBinarySpec>(variation, max);
-	}
-
-	inline uint32_t Select(EventAnalogVariation variation, uint32_t max)
-	{
-		return this->state.SelectByType<AnalogSpec>(variation, max);
-	}
-
-	inline uint32_t Select(EventCounterVariation variation, uint32_t max)
-	{
-		return this->state.SelectByType<CounterSpec>(variation, max);
-	}
-
-	inline uint32_t Select(EventFrozenCounterVariation variation, uint32_t max)
-	{
-		return this->state.SelectByType<FrozenCounterSpec>(variation, max);
-	}
-
-	inline uint32_t Select(EventBinaryOutputStatusVariation variation, uint32_t max)
-	{
-		return this->state.SelectByType<BinaryOutputStatusSpec>(variation, max);
-	}
-
-	inline uint32_t Select(EventAnalogOutputStatusVariation variation, uint32_t max)
-	{
-		return this->state.SelectByType<AnalogOutputStatusSpec>(variation, max);
-	}
+	uint32_t Select(EventBinaryVariation variation, uint32_t max);
+	uint32_t Select(EventDoubleBinaryVariation variation, uint32_t max);
+	uint32_t Select(EventAnalogVariation variation, uint32_t max);
+	uint32_t Select(EventCounterVariation variation, uint32_t max);
+	uint32_t Select(EventFrozenCounterVariation variation, uint32_t max);
+	uint32_t Select(EventBinaryOutputStatusVariation variation, uint32_t max);
+	uint32_t Select(EventAnalogOutputStatusVariation variation, uint32_t max);
 
 	// select by class
 
@@ -134,7 +80,7 @@ public:
 
 private:
 
-	EventStorageState state;
+	EventLists state;
 
 	typedef openpal::LinkedListIterator<EventRecord> event_iterator_t;
 
@@ -144,42 +90,6 @@ private:
 	}
 
 	uint16_t WriteSome(IEventWriteHandler& handler, event_iterator_t& iterator);
-
-	template <class T>
-	uint16_t WriteSomeOfType(
-	    IEventWriteHandler& handler,
-	    event_iterator_t& iterator,
-	    EventRecord& first
-	);
-
-	/**
-		template <class T>
-		class EventCollectionImpl final : public EventCollection<typename T::meas_t>
-		{
-		private:
-			uint16_t num_written = 0;
-			event_iterator_t& iterator;
-			typename T::event_variation_t variation;
-
-		public:
-
-			EventCollectionImpl(
-				event_iterator_t& iterator,
-				typename T::event_variation_t variation
-			) :
-				iterator(iterator),
-				variation(variation)
-			{}
-
-			uint16_t GetNumWritten() const
-			{
-				return num_written;
-			}
-
-			virtual uint16_t WriteSome(EventWriter<typename T::meas_t>& writer) override;
-		};
-	**/
-
 };
 
 }
