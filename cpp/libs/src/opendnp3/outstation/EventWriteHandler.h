@@ -51,13 +51,13 @@ public:
 class EventWriteHandler
 {
 public:
-	virtual void Write(EventBinaryVariation variation, EventCollection<Binary>& items) = 0;
-	virtual void Write(EventDoubleBinaryVariation variation, EventCollection<DoubleBitBinary>& items) = 0;
-	virtual void Write(EventCounterVariation variation, EventCollection<Counter>& items) = 0;
-	virtual void Write(EventFrozenCounterVariation variation, EventCollection<FrozenCounter>& items) = 0;
-	virtual void Write(EventAnalogVariation variation, EventCollection<Analog>& items) = 0;
-	virtual void Write(EventBinaryOutputStatusVariation variation, EventCollection<BinaryOutputStatus>& items) = 0;
-	virtual void Write(EventAnalogOutputStatusVariation variation, EventCollection<AnalogOutputStatus>& items) = 0;
+	virtual uint16_t Write(EventBinaryVariation variation, EventCollection<Binary>& items) = 0;
+	virtual uint16_t Write(EventDoubleBinaryVariation variation, EventCollection<DoubleBitBinary>& items) = 0;
+	virtual uint16_t Write(EventCounterVariation variation, EventCollection<Counter>& items) = 0;
+	virtual uint16_t Write(EventFrozenCounterVariation variation, EventCollection<FrozenCounter>& items) = 0;
+	virtual uint16_t Write(EventAnalogVariation variation, EventCollection<Analog>& items) = 0;
+	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, EventCollection<BinaryOutputStatus>& items) = 0;
+	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, EventCollection<AnalogOutputStatus>& items) = 0;
 };
 }
 
