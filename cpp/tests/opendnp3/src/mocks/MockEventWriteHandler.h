@@ -132,7 +132,7 @@ uint16_t MockEventWriteHandler::WriteAny(typename T::event_variation_t variation
 	const auto record = this->expected.front();
 	this->expected.pop_front();
 
-	if (record.type != EventType::Binary)
+	if (record.type != typename T::EventTypeEnum)
 	{
 		std::ostringstream oss;
 		oss << "Unexpected event type: " << static_cast<int>(record.type);

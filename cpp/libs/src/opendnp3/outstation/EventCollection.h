@@ -37,8 +37,8 @@ private:
 public:
 
 	EventCollection(
-		openpal::LinkedListIterator<EventRecord>& iterator,
-		typename T::event_variation_t variation
+	    openpal::LinkedListIterator<EventRecord>& iterator,
+	    typename T::event_variation_t variation
 	) :
 		iterator(iterator),
 		variation(variation)
@@ -56,36 +56,33 @@ public:
 template <class T>
 uint16_t EventCollection<T>::WriteSome(IEventWriter<typename T::meas_t>& writer)
 {
-	EventRecord* record = this->iterator.CurrentValue();
-	TypedEventRecord<T>* data = &reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(record->storage_node)->value;
+	while (true)
+	{
 
-	while (true) {
+		EventRecord* record = this->iterator.CurrentValue();
+		TypedEventRecord<T>* data = &reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(record->storage_node)->value;
 
 		const auto success = writer.Write(data->value, record->index);
-		if (success)
-		{
-			record->state = EventState::written;
-			++this->num_written;
+		if (!success) return num_written;
 
-			// see if the next value also matches type/varition
-			auto node = this->iterator.Next();
-			// we've hit the end
-			if (!node) return num_written;
-			record = &node->value;
+		record->state = EventState::written;
+		++this->num_written;
 
-			// the next event isn't this type
-			if (record->type != T::EventTypeEnum) return num_written;
+		// see if the next value also matches type/varition
+		this->iterator.Next();
+		auto node = this->iterator.Current();
+		// we've hit the end
+		if (!node) return num_written;
+		record = &node->value;
 
-			data = &reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(record->storage_node)->value;
-			// the next event will be reported using a different variation
-			if (data->selectedVariation != this->variation) return num_written;
+		// the next event isn't this type
+		if (record->type != T::EventTypeEnum) return num_written;
 
-			// otherwise proceed to the next iteration!
-		}
-		else
-		{
-			return num_written;
-		}
+		data = &reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(record->storage_node)->value;
+		// the next event will be reported using a different variation
+		if (data->selectedVariation != this->variation) return num_written;
+
+		// otherwise proceed to the next iteration!
 	}
 }
 
