@@ -48,6 +48,25 @@ uint32_t EventWriting::Write(EventLists& lists, IEventWriteHandler& handler)
 	}
 }
 
+EventRecord* EventWriting::FindNextSelected(event_iter_t& iter, EventType type)
+{	
+	while (true)
+	{
+		auto current = iter.CurrentValue();
+		if (!current) return nullptr;
+
+		if (current->state == EventState::selected)
+		{
+			// we terminate here since the type has changed
+			return (current->type == type) ? current : nullptr;
+		}
+		else
+		{
+			iter.Next();
+		}
+	}
+}
+
 uint16_t EventWriting::WriteSome(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler)
 {
 	const auto value = iterator.Find(
@@ -84,7 +103,7 @@ template <class T>
 uint16_t EventWriting::WriteSomeOfType(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler)
 {
 	const auto pos = iterator.CurrentValue();
-	const auto storage = reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(pos->storage_node);
+	const auto storage = pos->StorageAs<T>();
 
 	EventCollection<T> collection(iterator, storage->value.selectedVariation);
 

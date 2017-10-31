@@ -32,11 +32,16 @@ class EventWriting : private openpal::StaticOnly
 {
 
 public:
+
+	typedef openpal::LinkedListIterator<EventRecord> event_iter_t;
+
 	static uint32_t Write(EventLists& lists, IEventWriteHandler& handler);
+
+	static EventRecord* FindNextSelected(event_iter_t& iter, EventType type);
 
 private:
 
-	typedef openpal::LinkedListIterator<EventRecord> event_iter_t;
+	
 
 	static uint16_t WriteSome(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler);
 

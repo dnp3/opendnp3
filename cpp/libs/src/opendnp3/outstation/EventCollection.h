@@ -23,14 +23,15 @@
 
 #include "opendnp3/outstation/IEventWriteHandler.h"
 
+#include "EventWriting.h"
+
 namespace opendnp3
 {
 
 template <class T>
 class EventCollection final : public IEventCollection<typename T::meas_t>
 {
-private:
-	uint16_t num_written = 0;
+private:	
 	openpal::LinkedListIterator<EventRecord>& iterator;
 	typename T::event_variation_t variation;
 
@@ -42,48 +43,46 @@ public:
 	) :
 		iterator(iterator),
 		variation(variation)
-	{}
-
-	uint16_t GetNumWritten() const
-	{
-		return num_written;
-	}
+	{}	
 
 	virtual uint16_t WriteSome(IEventWriter<typename T::meas_t>& writer) override;
 
+private:
+	
+	bool WriteOne(IEventWriter<typename T::meas_t>& writer);
 };
 
 template <class T>
 uint16_t EventCollection<T>::WriteSome(IEventWriter<typename T::meas_t>& writer)
 {
-	while (true)
-	{
-
-		EventRecord* record = this->iterator.CurrentValue();
-		TypedEventRecord<T>* data = &reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(record->storage_node)->value;
-
-		const auto success = writer.Write(data->value, record->index);
-		if (!success) return num_written;
-
-		record->state = EventState::written;
-		++this->num_written;
-
-		// see if the next value also matches type/varition
-		this->iterator.Next();
-		auto node = this->iterator.Current();
-		// we've hit the end
-		if (!node) return num_written;
-		record = &node->value;
-
-		// the next event isn't this type
-		if (record->type != T::EventTypeEnum) return num_written;
-
-		data = &reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(record->storage_node)->value;
-		// the next event will be reported using a different variation
-		if (data->selectedVariation != this->variation) return num_written;
-
-		// otherwise proceed to the next iteration!
+	uint16_t num_written = 0;
+	while (WriteOne(writer)) {
+		++num_written;
 	}
+	return num_written;
+}
+
+template <class T>
+bool EventCollection<T>::WriteOne(IEventWriter<typename T::meas_t>& writer)
+{
+	// find the next event with the same type and variation
+	const auto record = EventWriting::FindNextSelected(this->iterator, typename T::EventTypeEnum);
+
+	// nothing left to write
+	if (!record) return false;
+
+	const auto data = record->StorageAs<T>();
+
+	// wrong variation
+	if (data->value.selectedVariation != this->variation) return false;
+
+	// unable to write
+	if (!writer.Write(data->value.value, record->index)) return false;
+	
+	// success!
+	record->state = EventState::written;
+	this->iterator.Next();
+	return true;
 }
 
 }
