@@ -76,9 +76,6 @@ public:
 private:
 
 	EventLists state;
-
-	typedef openpal::LinkedListIterator<EventRecord> event_iterator_t;
-
 };
 
 }

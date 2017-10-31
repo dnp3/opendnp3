@@ -110,6 +110,46 @@ TEST_CASE(SUITE("calls write multiple times for different types"))
 	handler.AssertEmpty();
 }
 
+TEST_CASE(SUITE("zero-size doesn't overflow"))
+{
+	EventStorage storage(EventBufferConfig::AllTypes(0));
+
+	REQUIRE_FALSE(
+		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	);
+}
+
+TEST_CASE(SUITE("overflows as expected"))
+{
+	EventStorage storage(EventBufferConfig::AllTypes(1));
+
+	REQUIRE_FALSE(
+		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	);
+
+	REQUIRE(
+		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	);
+}
+
+TEST_CASE(SUITE("selected events discarded on overflow"))
+{
+	EventStorage storage(EventBufferConfig::AllTypes(1));
+
+	REQUIRE_FALSE(
+		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	);
+
+	REQUIRE(storage.SelectByClass(EventClass::EC1) == 1);
+
+	REQUIRE(
+		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	);
+
+	MockEventWriteHandler handler;
+	REQUIRE(storage.Write(handler) == 0);
+}
+
 
 
 
