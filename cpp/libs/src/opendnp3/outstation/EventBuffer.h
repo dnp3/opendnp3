@@ -73,15 +73,7 @@ public:
 
 	virtual bool HasAnySelection() const override final;
 
-	virtual bool Load(HeaderWriter& writer) override final;
-
-	// ------- IEventRecorder-------
-
-	/*
-	virtual bool HasMoreUnwrittenEvents() const override final;
-
-	virtual void RecordWritten(EventClass ec, EventType et) override final;
-	*/
+	virtual bool Load(HeaderWriter& writer) override final;	
 
 	// ------- Misc -------	
 
@@ -95,7 +87,7 @@ public:
 
 private:
 
-	IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum);
+	IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum);	
 
 	template <class T>
 	IINField SelectByType(uint32_t max, T type)

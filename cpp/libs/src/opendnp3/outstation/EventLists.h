@@ -46,9 +46,11 @@ struct EventLists : private openpal::Uncopyable
 
 	bool RemoveTypeStorage(EventRecord& node);
 
+	bool IsAnyTypeFull() const;
+
 	EventClassCounters counters;	
 
-private:
+private:	
 	
 	template <class T>
 	void RemoveType(EventRecord& record);

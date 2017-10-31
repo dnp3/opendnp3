@@ -32,6 +32,11 @@ EventStorage::EventStorage(const EventBufferConfig& config) :
 	state(config)
 {}
 
+bool EventStorage::IsAnyTypeFull() const
+{
+	return this->state.IsAnyTypeFull();
+}
+
 uint32_t EventStorage::NumSelected() const
 {
 	return this->state.counters.selected;

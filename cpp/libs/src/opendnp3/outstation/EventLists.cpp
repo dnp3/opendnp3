@@ -69,6 +69,18 @@ bool EventLists::RemoveTypeStorage(EventRecord& record)
 	return true;
 }
 
+bool EventLists::IsAnyTypeFull() const
+{
+	return
+		this->binary.IsFull() ||
+		this->doubleBinary.IsFull() ||
+		this->counter.IsFull() ||
+		this->frozenCounter.IsFull() ||
+		this->analog.IsFull() ||
+		this->binaryOutputStatus.IsFull() ||
+		this->analogOutputStatus.IsFull();
+}
+
 template <class T>
 void EventLists::RemoveType(EventRecord& record)
 {	

@@ -57,8 +57,9 @@ uint32_t EventSelection::SelectByTypeGeneric(EventLists& lists, bool useDefaultV
 
 	uint32_t num_selected = 0;
 
-	auto select = [&](TypedEventRecord<T>& node)
+	auto select = [&](TypedEventRecord<T>& node) -> bool
 	{
+		if (num_selected == max) return false;
 
 		if (node.record->value.state == EventState::unselected)
 		{
@@ -67,9 +68,11 @@ uint32_t EventSelection::SelectByTypeGeneric(EventLists& lists, bool useDefaultV
 			lists.counters.OnSelect();
 			++num_selected;
 		}
+
+		return true;
 	};
 
-	list.Foreach(select);
+	list.While(select);
 
 	return num_selected;
 }

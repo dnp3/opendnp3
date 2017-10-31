@@ -184,15 +184,15 @@ IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum)
 bool EventBuffer::HasAnySelection() const
 {
 	// are there any selected, but unwritten, events
-	return storage.NumUnwritten(EventClass::EC1) > 0 || storage.NumUnwritten(EventClass::EC2) > 0 || storage.NumUnwritten(EventClass::EC3) > 0;
+	return storage.NumSelected() > 0;
 }
 
 bool EventBuffer::Load(HeaderWriter& writer)
 {
 	ASDUEventWriteHandler handler(writer);
 	const auto num = this->storage.Write(handler);
-	// all events were written
-	return !this->HasAnySelection();
+	// all selected events were written
+	return this->storage.NumSelected() == 0;
 }
 
 ClassField EventBuffer::UnwrittenClassField() const
@@ -207,7 +207,7 @@ ClassField EventBuffer::UnwrittenClassField() const
 
 bool EventBuffer::IsOverflown()
 {
-	if (overflow)// TODO && HasEnoughSpaceToClearOverflow())
+	if (overflow && !this->storage.IsAnyTypeFull())
 	{
 		overflow = false;
 	}

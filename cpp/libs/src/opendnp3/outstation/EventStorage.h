@@ -45,6 +45,8 @@ public:
 
 	explicit EventStorage(const EventBufferConfig& config);
 
+	bool IsAnyTypeFull() const;
+
 	// number selected
 	uint32_t NumSelected() const;
 	
