@@ -44,9 +44,14 @@ struct EventLists : private openpal::Uncopyable
 	template <class T>
 	openpal::LinkedList<TypedEventRecord<T>, uint32_t>& GetList();
 
-	EventClassCounters counters;
+	bool RemoveTypeStorage(EventRecord& node);
+
+	EventClassCounters counters;	
 
 private:
+	
+	template <class T>
+	void RemoveType(EventRecord& record);
 
 	// sub-lists just act as type-specific storage
 	openpal::LinkedList<TypedEventRecord<BinarySpec>, uint32_t> binary;

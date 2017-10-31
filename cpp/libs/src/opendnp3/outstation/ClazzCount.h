@@ -27,56 +27,68 @@
 namespace opendnp3
 {
 
-struct ClazzCount
-{	
-
-public:
-
-	uint32_t Get(EventClass clazz) const
+	struct ClazzCount
 	{
-		switch (clazz)
-		{
-		case(EventClass::EC1):
-			return num_class_1;
-		case(EventClass::EC2):
-			return num_class_2;
-			break;
-		default:
-			return num_class_3;
-		}
-	}
 
-	void Increment(EventClass clazz)
-	{
-		switch (clazz)
-		{
-		case(EventClass::EC1):
-			++num_class_1;
-			break;
-		case(EventClass::EC2):
-			++num_class_2;
-			break;
-		default:
-			++num_class_3;
-			break;
-		}
-	}
+	public:
 
-	void Decrement(EventClass clazz)
-	{
-		switch (clazz)
+		void Reset()
 		{
-		case(EventClass::EC1):
-			--num_class_1;
-			break;
-		case(EventClass::EC2):
-			--num_class_2;
-			break;
-		default:
-			--num_class_3;
-			break;
+			this->num_class_1 = 0;
+			this->num_class_2 = 0;
+			this->num_class_3 = 0;
 		}
-	}
+
+		uint32_t Get(EventClass clazz) const
+		{
+			switch (clazz)
+			{
+			case(EventClass::EC1):
+				return num_class_1;
+			case(EventClass::EC2):
+				return num_class_2;
+				break;
+			default:
+				return num_class_3;
+			}
+		}
+
+		void Increment(EventClass clazz)
+		{
+			switch (clazz)
+			{
+			case(EventClass::EC1):
+				++num_class_1;
+				break;
+			case(EventClass::EC2):
+				++num_class_2;
+				break;
+			default:
+				++num_class_3;
+				break;
+			}
+		}
+
+		void Decrement(EventClass clazz)
+		{
+			switch (clazz)
+			{
+			case(EventClass::EC1):
+				--num_class_1;
+				break;
+			case(EventClass::EC2):
+				--num_class_2;
+				break;
+			default:
+				--num_class_3;
+				break;
+			}
+		}
+
+		bool Any() const {
+			return (num_class_1 > 0) || (num_class_2 > 0) || (num_class_3 > 0);
+		}
+
 
 private:
 
@@ -109,6 +121,12 @@ public:
 		// only selected events are written
 		--selected;
 		this->written.Increment(clazz);
+	}
+
+	void ResetOnFail()
+	{
+		this->selected = 0;
+		this->written.Reset();
 	}
 
 	void OnRemove(EventClass clazz, EventState state)

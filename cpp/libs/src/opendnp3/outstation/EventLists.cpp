@@ -35,6 +35,46 @@ EventLists::EventLists(const EventBufferConfig& config) :
 	analogOutputStatus(config.maxAnalogOutputStatusEvents)
 {}
 
+bool EventLists::RemoveTypeStorage(EventRecord& record)
+{	
+	// remove the type specific storage	
+	
+	switch (record.type)
+	{
+	case(EventType::Binary):
+		RemoveType<BinarySpec>(record);
+		break;
+	case(EventType::DoubleBitBinary):
+		RemoveType<DoubleBitBinarySpec>(record);
+		break;
+	case(EventType::Counter):
+		RemoveType<CounterSpec>(record);
+		break;
+	case(EventType::FrozenCounter):
+		RemoveType<FrozenCounterSpec>(record);
+		break;
+	case(EventType::Analog):
+		RemoveType<AnalogSpec>(record);
+		break;
+	case(EventType::BinaryOutputStatus):
+		RemoveType<BinaryOutputStatusSpec>(record);
+		break;
+	case(EventType::AnalogOutputStatus):
+		RemoveType<AnalogOutputStatusSpec>(record);
+		break;
+	default:
+		return false;
+	}	
+
+	return true;
+}
+
+template <class T>
+void EventLists::RemoveType(EventRecord& record)
+{	
+	this->GetList<T>().Remove(record.StorageAs<T>());
+}
+
 template <>
 openpal::LinkedList<TypedEventRecord<BinarySpec>, uint32_t>& EventLists::GetList()
 {

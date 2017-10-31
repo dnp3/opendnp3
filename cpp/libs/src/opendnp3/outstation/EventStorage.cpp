@@ -127,6 +127,40 @@ uint32_t EventStorage::Write(IEventWriteHandler& handler)
 	return EventWriting::Write(this->state, handler);
 }
 
+uint32_t EventStorage::ClearWritten()
+{	
+	auto iterator = this->state.events.Iterate();	
+
+	auto written = [this](EventRecord& record) -> bool {
+		if (record.state == EventState::written)
+		{
+			this->state.RemoveTypeStorage(record);
+			this->state.counters.OnRemove(record.clazz, record.state);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
+
+	return this->state.events.RemoveAll(written);
+}
+
+void EventStorage::Fail()
+{	
+	auto iterator = this->state.events.Iterate();
+
+	auto clear = [this](EventRecord& record) -> void {
+		record.state = EventState::unselected;
+	};
+
+	this->state.events.Foreach(clear);
+
+	// keep the total, but clear the selected/written
+	this->state.counters.ResetOnFail();	
+}
+
 }
 
 

@@ -48,12 +48,16 @@ public:
 	uint32_t NumSelected() const;
 	
 	// unselected/selected but not already written
-	uint32_t NumUnwritten(EventClass clazz) const;
-	
+	uint32_t NumUnwritten(EventClass clazz) const;	
 
 	// write selected events to some handler
-
 	uint32_t Write(IEventWriteHandler& handler);
+
+	// all written events go back to unselected state
+	uint32_t ClearWritten();
+
+	// all written and selected events are reverted to unselected state
+	void Fail();
 
 	// ---- these functions return true if an overflow occurs ----
 
