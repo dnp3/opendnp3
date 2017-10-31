@@ -101,28 +101,15 @@ uint32_t EventStorage::SelectByType(EventAnalogOutputStatusVariation variation, 
 	return EventSelection::SelectByType<AnalogOutputStatusSpec>(this->state, variation, max);
 }
 
-uint32_t EventStorage::SelectByClass(EventClass clazz, uint32_t max)
+uint32_t EventStorage::SelectByClass(EventClass clazz)
 {
-	uint32_t num_selected = 0;
-	auto iter = this->state.events.Iterate();
-
-	while (iter.HasNext() && num_selected < max)
-	{
-		auto node = iter.Next();
-		auto record = node->value;
-		if (node->value.state == EventState::unselected && node->value.clazz == clazz)
-		{
-			// if not previously selected
-			node->value.state = EventState::selected;
-			// TODO - set the storage to use the default variation
-			//node->value.selectedVariation = useDefaultVariation ? node->value.defaultVariation : variation;
-			++num_selected;
-		}
-	}
-
-	return num_selected;
+	return EventSelection::SelectByClass(this->state, clazz, std::numeric_limits<uint32_t>::max());
 }
 
+uint32_t EventStorage::SelectByClass(EventClass clazz, uint32_t max)
+{
+	return EventSelection::SelectByClass(this->state, clazz, max);
+}
 
 uint32_t EventStorage::Write(IEventWriteHandler& handler)
 {

@@ -70,12 +70,8 @@ public:
 
 	// ---- function used to select by event class ----
 
+	uint32_t SelectByClass(EventClass clazz);
 	uint32_t SelectByClass(EventClass clazz, uint32_t max);
-
-	inline uint32_t SelectByClass(EventClass clazz)
-	{
-		return SelectByClass(clazz, std::numeric_limits<uint32_t>::max());
-	}
 
 private:
 
