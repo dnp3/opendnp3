@@ -161,14 +161,8 @@ uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation
 }
 
 uint16_t ASDUEventWriteHandler::Write(EventOctetStringVariation variation, uint8_t firstSize, IEventCollection<OctetString>& items)
-{
-	/*
-	// octet strings just get written one at a time to the header
-	auto this->writer.IterateOverCountWithPrefix(QualifierCode::UINT16_CNT_UINT16_INDEX, DNP3Serializer)
-
-	return items.WriteSome()
-	*/
-	return 0;
+{	
+	return EventWriters::Write(firstSize, this->writer, items);
 }
 
 }
