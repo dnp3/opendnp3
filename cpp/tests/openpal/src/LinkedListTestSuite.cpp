@@ -29,7 +29,7 @@ using namespace openpal;
 
 TEST_CASE(SUITE("CorrectInitialState"))
 {
-	LinkedList<int, uint16_t> list(3);
+	LinkedList<int> list(3);
 
 	REQUIRE(list.IsEmpty());
 	REQUIRE(!list.IsFull());
@@ -38,7 +38,7 @@ TEST_CASE(SUITE("CorrectInitialState"))
 
 TEST_CASE(SUITE("AddsUntilFull"))
 {
-	LinkedList<int, uint16_t> list(3);
+	LinkedList<int> list(3);
 
 	REQUIRE(list.Add(1));
 	REQUIRE(list.Add(2));
@@ -52,7 +52,7 @@ TEST_CASE(SUITE("AddsUntilFull"))
 
 TEST_CASE(SUITE("CanRemoveHead"))
 {
-	LinkedList<int, uint16_t> list(3);
+	LinkedList<int> list(3);
 
 	auto one = list.Add(1);
 	list.Add(2);
@@ -69,7 +69,7 @@ TEST_CASE(SUITE("CanRemoveHead"))
 
 TEST_CASE(SUITE("CanRemoveTail"))
 {
-	LinkedList<int, uint16_t> list(3);
+	LinkedList<int> list(3);
 
 	list.Add(1);
 	list.Add(2);
@@ -86,7 +86,7 @@ TEST_CASE(SUITE("CanRemoveTail"))
 
 TEST_CASE(SUITE("CanRemoveMiddle"))
 {
-	LinkedList<int, uint16_t> list(3);
+	LinkedList<int> list(3);
 
 	list.Add(1);
 	auto two = list.Add(2);
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("CanRemoveMiddle"))
 
 TEST_CASE(SUITE("RemoveAllComplexQuery"))
 {
-	LinkedList<int, uint16_t> list(10);
+	LinkedList<int> list(10);
 
 	list.Add(2);
 	list.Add(3);
@@ -135,7 +135,7 @@ TEST_CASE(SUITE("RemoveAllComplexQuery"))
 
 TEST_CASE(SUITE("CanIterateOverValues"))
 {
-	LinkedList<int, uint16_t> list(3);
+	LinkedList<int> list(3);
 
 	list.Add(1);
 	list.Add(2);
@@ -154,7 +154,7 @@ TEST_CASE(SUITE("CanIterateOverValues"))
 
 TEST_CASE(SUITE("StaticLinkedList"))
 {
-	LinkedList<int, uint16_t> list(3);
+	LinkedList<int> list(3);
 
 	REQUIRE(list.Add(1));
 	REQUIRE(list.Add(2));
@@ -166,7 +166,7 @@ TEST_CASE(SUITE("StaticLinkedList"))
 
 TEST_CASE(SUITE("Insert at front of list"))
 {
-	LinkedList<int, uint16_t> list(3);
+	LinkedList<int> list(3);
 
 	REQUIRE(list.Add(7));
 
@@ -189,7 +189,7 @@ TEST_CASE(SUITE("Insert at front of list"))
 
 TEST_CASE(SUITE("Insert in center of list"))
 {
-	LinkedList<int, uint16_t> list(10);
+	LinkedList<int> list(10);
 
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(7));
@@ -215,7 +215,7 @@ TEST_CASE(SUITE("Insert in center of list"))
 
 TEST_CASE(SUITE("Insert at end of list"))
 {
-	LinkedList<int, uint16_t> list(10);
+	LinkedList<int> list(10);
 
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(4));

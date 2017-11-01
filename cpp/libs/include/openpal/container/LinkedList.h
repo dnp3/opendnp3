@@ -25,8 +25,12 @@
 
 #include "openpal/container/Array.h"
 
+#include <cstdio>
+
 namespace openpal
 {
+
+using list_size_type_t = uint32_t;
 
 template <class ValueType>
 class ListNode
@@ -41,7 +45,7 @@ private:
 	ListNode* prev;
 	ListNode* next;
 
-	template <class T, class U>
+	template <class T>
 	friend class LinkedList;
 
 	template <class T>
@@ -124,15 +128,15 @@ private:
 
 
 // A container adapter for a -linked list
-template <class ValueType, class IndexType>
-class LinkedList : public HasSize<IndexType>
+template <class ValueType>
+class LinkedList : public HasSize<list_size_type_t>
 {
 public:
 
 	typedef LinkedListIterator<ValueType> Iterator;
 
-	LinkedList(IndexType maxSize) :
-		HasSize<IndexType>(0),
+	LinkedList(list_size_type_t maxSize) :
+		HasSize<list_size_type_t>(0),
 		pHead(nullptr),
 		pTail(nullptr),
 		pFree(nullptr),
@@ -141,7 +145,7 @@ public:
 		Initialize();
 	}
 
-	IndexType Capacity() const
+	list_size_type_t Capacity() const
 	{
 		return underlying.Size();
 	}
@@ -207,9 +211,9 @@ public:
 	}
 
 	template <class Selector>
-	IndexType RemoveAll(Selector match)
+	list_size_type_t RemoveAll(Selector match)
 	{
-		IndexType count = 0;
+		list_size_type_t count = 0;
 
 		auto iter = this->Iterate();
 		auto pCurrent = iter.Next();
@@ -259,7 +263,7 @@ private:
 	ListNode<ValueType>* pTail;
 	ListNode<ValueType>* pFree;
 
-	Array<ListNode<ValueType>, IndexType> underlying;
+	Array<ListNode<ValueType>, list_size_type_t> underlying;
 
 	ListNode<ValueType>* Insert(const ValueType& value, ListNode<ValueType>* left, ListNode<ValueType>* right);
 
@@ -268,16 +272,16 @@ private:
 	void Initialize();
 };
 
-template <class ValueType, class IndexType>
-ListNode<ValueType>* LinkedList<ValueType, IndexType>::Add(const ValueType& value)
+template <class ValueType>
+ListNode<ValueType>* LinkedList<ValueType>::Add(const ValueType& value)
 {
 	return this->Insert(value, pTail, nullptr);
 }
 
 
-template <class ValueType, class IndexType>
+template <class ValueType>
 template <class LessThan>
-ListNode<ValueType>* LinkedList<ValueType, IndexType>::Insert(const ValueType& value, LessThan lt)
+ListNode<ValueType>* LinkedList<ValueType>::Insert(const ValueType& value, LessThan lt)
 {
 	if (pFree == nullptr)
 	{
@@ -301,8 +305,8 @@ ListNode<ValueType>* LinkedList<ValueType, IndexType>::Insert(const ValueType& v
 	}
 }
 
-template <class ValueType, class IndexType>
-ListNode<ValueType>* LinkedList<ValueType, IndexType>::Insert(const ValueType& value, ListNode<ValueType>* pLeft, ListNode<ValueType>* pRight)
+template <class ValueType>
+ListNode<ValueType>* LinkedList<ValueType>::Insert(const ValueType& value, ListNode<ValueType>* pLeft, ListNode<ValueType>* pRight)
 {
 	if (pFree == nullptr)
 	{
@@ -335,9 +339,9 @@ ListNode<ValueType>* LinkedList<ValueType, IndexType>::Insert(const ValueType& v
 	}
 }
 
-template <class ValueType, class IndexType>
+template <class ValueType>
 template <class Selector>
-ListNode<ValueType>* LinkedList<ValueType, IndexType>::FindFirst(Selector select)
+ListNode<ValueType>* LinkedList<ValueType>::FindFirst(Selector select)
 {
 	auto iter = this->Iterate();
 	while (iter.HasNext())
@@ -351,8 +355,8 @@ ListNode<ValueType>* LinkedList<ValueType, IndexType>::FindFirst(Selector select
 	return nullptr;
 }
 
-template <class ValueType, class IndexType>
-void LinkedList<ValueType, IndexType>::Remove(ListNode<ValueType>* apNode)
+template <class ValueType>
+void LinkedList<ValueType>::Remove(ListNode<ValueType>* apNode)
 {
 	if(apNode->prev == nullptr) // it's the head
 	{
@@ -381,28 +385,28 @@ void LinkedList<ValueType, IndexType>::Remove(ListNode<ValueType>* apNode)
 	--(this->size);
 }
 
-template <class ValueType, class IndexType>
-bool LinkedList<ValueType, IndexType>::IsFull() const
+template <class ValueType>
+bool LinkedList<ValueType>::IsFull() const
 {
 	return (pFree == nullptr);
 }
 
 
 
-template <class ValueType, class IndexType>
-void LinkedList<ValueType, IndexType>::Link(ListNode<ValueType>* first, ListNode<ValueType>* second)
+template <class ValueType>
+void LinkedList<ValueType>::Link(ListNode<ValueType>* first, ListNode<ValueType>* second)
 {
 	if(first) first->next = second;
 	if(second) second->prev = first;
 }
 
-template <class ValueType, class IndexType>
-void LinkedList<ValueType, IndexType>::Initialize()
+template <class ValueType>
+void LinkedList<ValueType>::Initialize()
 {
 	if(underlying.IsNotEmpty())
 	{
 		pFree = &underlying[0];
-		for(IndexType i = 1; i < underlying.Size(); ++i)
+		for(list_size_type_t i = 1; i < underlying.Size(); ++i)
 		{
 			Link(&underlying[i - 1], &underlying[i]);
 		}

@@ -44,10 +44,10 @@ public:
 	EventLists(const EventBufferConfig& config);
 
 	// master list keeps the aggregate order and generic data
-	openpal::LinkedList<EventRecord, uint32_t> events;
+	openpal::LinkedList<EventRecord> events;
 
 	template <class T>
-	openpal::LinkedList<TypedEventRecord<T>, uint32_t>& GetList();
+	openpal::LinkedList<TypedEventRecord<T>>& GetList();
 
 	bool IsAnyTypeFull() const;
 
@@ -57,14 +57,14 @@ private:
 
 
 	// sub-lists just act as type-specific storage
-	openpal::LinkedList<TypedEventRecord<BinarySpec>, uint32_t> binary;
-	openpal::LinkedList<TypedEventRecord<DoubleBitBinarySpec>, uint32_t> doubleBinary;
-	openpal::LinkedList<TypedEventRecord<AnalogSpec>, uint32_t> analog;
-	openpal::LinkedList<TypedEventRecord<CounterSpec>, uint32_t> counter;
-	openpal::LinkedList<TypedEventRecord<FrozenCounterSpec>, uint32_t> frozenCounter;
-	openpal::LinkedList<TypedEventRecord<BinaryOutputStatusSpec>, uint32_t> binaryOutputStatus;
-	openpal::LinkedList<TypedEventRecord<AnalogOutputStatusSpec>, uint32_t> analogOutputStatus;
-	openpal::LinkedList<TypedEventRecord<OctetStringSpec>, uint32_t> octetString;
+	openpal::LinkedList<TypedEventRecord<BinarySpec>> binary;
+	openpal::LinkedList<TypedEventRecord<DoubleBitBinarySpec>> doubleBinary;
+	openpal::LinkedList<TypedEventRecord<AnalogSpec>> analog;
+	openpal::LinkedList<TypedEventRecord<CounterSpec>> counter;
+	openpal::LinkedList<TypedEventRecord<FrozenCounterSpec>> frozenCounter;
+	openpal::LinkedList<TypedEventRecord<BinaryOutputStatusSpec>> binaryOutputStatus;
+	openpal::LinkedList<TypedEventRecord<AnalogOutputStatusSpec>> analogOutputStatus;
+	openpal::LinkedList<TypedEventRecord<OctetStringSpec>> octetString;
 };
 
 }
