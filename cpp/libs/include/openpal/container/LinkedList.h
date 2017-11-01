@@ -54,26 +54,27 @@ template <class T>
 class ListIterator
 {
 public:
+
 	static ListIterator<T> Undefined()
 	{
 		return ListIterator(nullptr);
 	}
 
-	static ListIterator<T> From(ListNode<T>* pStart)
+	static ListIterator<T> From(ListNode<T>* start)
 	{
-		return ListIterator(pStart);
+		return ListIterator(start);
 	}
 
 	template <class U>
 	T* Find(const U& matches)
 	{
-		while (pCurrent)
+		while (this->current)
 		{
-			if (matches(pCurrent->value))
+			if (matches(this->current->value))
 			{
-				return &(pCurrent->value);
+				return &(this->current->value);
 			}
-			pCurrent = pCurrent->next;
+			this->current = this->current->next;
 		}
 
 		return nullptr;
@@ -81,46 +82,33 @@ public:
 
 	bool HasNext() const
 	{
-		return (pCurrent != nullptr);
+		return this->current;
 	}
 
 	ListNode<T>* Next()
 	{
-		if (pCurrent == nullptr)
-		{
-			return nullptr;
-		}
-		else
-		{
-			auto pRet = pCurrent;
-			pCurrent = pCurrent->next;
-			return pRet;
-		}
+		if (!this->current) return nullptr;
+		auto ret = this->current;
+		this->current = this->current->next;
+		return ret;
 	}
 
-	ListNode<T>* Current()
+	inline ListNode<T>* Current()
 	{
-		return pCurrent;
+		return this->current;
 	}
 
-	T* CurrentValue()
+	inline T* CurrentValue()
 	{
-		if (pCurrent)
-		{
-			return &pCurrent->value;
-		}
-		else
-		{
-			return nullptr;
-		}
+		return (this->current) ? &(this->current->value) : nullptr;
 	}
 
 private:
 
-	ListIterator(ListNode<T>* pStart) : pCurrent(pStart)
+	ListIterator(ListNode<T>* start) : current(start)
 	{}
 
-	ListNode<T>* pCurrent;
+	ListNode<T>* current;
 };
 
 
