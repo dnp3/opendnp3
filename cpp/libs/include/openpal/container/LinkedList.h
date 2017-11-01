@@ -21,8 +21,6 @@
 #ifndef OPENPAL_LINKEDLIST_H
 #define OPENPAL_LINKEDLIST_H
 
-#include "ArrayView.h"
-
 #include "openpal/container/Array.h"
 
 #include <cstdio>
@@ -48,22 +46,22 @@ private:
 	friend class LinkedList;
 
 	template <class T>
-	friend class LinkedListIterator;
+	friend class ListIterator;
 };
 
 
 template <class T>
-class LinkedListIterator
+class ListIterator
 {
 public:
-	static LinkedListIterator<T> Undefined()
+	static ListIterator<T> Undefined()
 	{
-		return LinkedListIterator(nullptr);
+		return ListIterator(nullptr);
 	}
 
-	static LinkedListIterator<T> From(ListNode<T>* pStart)
+	static ListIterator<T> From(ListNode<T>* pStart)
 	{
-		return LinkedListIterator(pStart);
+		return ListIterator(pStart);
 	}
 
 	template <class U>
@@ -119,7 +117,7 @@ public:
 
 private:
 
-	LinkedListIterator(ListNode<T>* pStart) : pCurrent(pStart)
+	ListIterator(ListNode<T>* pStart) : pCurrent(pStart)
 	{}
 
 	ListNode<T>* pCurrent;
@@ -132,7 +130,7 @@ class LinkedList : public HasSize<list_size_type_t>
 {
 public:
 
-	typedef LinkedListIterator<T> Iterator;
+	typedef ListIterator<T> Iterator;
 
 	LinkedList(list_size_type_t maxSize) :
 		HasSize<list_size_type_t>(0),

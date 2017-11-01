@@ -32,14 +32,14 @@ template <class T>
 class EventCollection final : public IEventCollection<typename T::meas_t>
 {
 private:
-	openpal::LinkedListIterator<EventRecord>& iterator;
+	openpal::ListIterator<EventRecord>& iterator;
 	EventClassCounters& counters;
 	typename T::event_variation_t variation;
 
 public:
 
 	EventCollection(
-	    openpal::LinkedListIterator<EventRecord>& iterator,
+	    openpal::ListIterator<EventRecord>& iterator,
 	    EventClassCounters& counters,
 	    typename T::event_variation_t variation
 	) :
