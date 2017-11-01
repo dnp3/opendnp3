@@ -87,7 +87,10 @@ public:
 
 private:
 
-	IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum);	
+	bool overflow = false;
+	EventStorage storage;
+
+	IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum);
 
 	template <class T>
 	IINField SelectByType(uint32_t max, T type)
@@ -104,15 +107,12 @@ private:
 			this->overflow = true;
 		}
 	}
-	
+
 	IINField SelectByClass(uint32_t max, EventClass clazz)
 	{
 		this->storage.SelectByClass(clazz, max);
 		return IINField::Empty();
 	}
-
-	bool overflow = false;
-	EventStorage storage;	
 
 	
 };

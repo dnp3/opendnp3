@@ -35,7 +35,6 @@
 #include "opendnp3/outstation/CommandActionAdapter.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
 #include "opendnp3/outstation/ConstantCommandAction.h"
-#include "opendnp3/outstation/EventWriter.h"
 
 #include "opendnp3/outstation/ClassBasedRequestHandler.h"
 #include "opendnp3/outstation/AssignClassHandler.h"
