@@ -175,7 +175,7 @@ struct OctetStringSpec : public OctetStringInfo
 
 	inline static bool IsEvent(const OctetString& oldValue, const OctetString& newValue)
 	{
-		return oldValue.ToRSlice().Equals(newValue.ToRSlice());
+		return !oldValue.ToRSlice().Equals(newValue.ToRSlice());
 	}
 };
 

@@ -45,7 +45,9 @@ public:
 		return size;
 	}
 
-	openpal::RSlice ToRSlice() const;
+	bool Set(const openpal::RSlice&);
+
+	openpal::RSlice ToRSlice() const;	
 
 private:	
 

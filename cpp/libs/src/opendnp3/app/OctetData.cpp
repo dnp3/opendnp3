@@ -37,6 +37,16 @@ OctetData::OctetData(const RSlice& input) :
 	input.Take(size).CopyTo(dest);
 }
 
+bool OctetData::Set(const openpal::RSlice& input)
+{
+	if (input.Size() > MAX_SIZE) return false;
+	else {
+		auto dest = buffer.GetWSlice();
+		input.CopyTo(dest);
+		return true;
+	}
+}
+
 openpal::RSlice OctetData::ToRSlice() const
 {
 	return buffer.ToRSlice(size);

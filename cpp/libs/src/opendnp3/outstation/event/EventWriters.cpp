@@ -36,7 +36,7 @@ class OctetStringEventWriter : public IEventWriter<OctetString>
 	struct Serializer : public DNP3Serializer<OctetString>
 	{	
 		Serializer(uint8_t size) : DNP3Serializer(
-			GroupVariationID(110, size), 
+			GroupVariationID(111, size), 
 			size,
 			nullptr, // won't be used for reading
 			&Serializer::Write

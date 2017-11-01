@@ -32,7 +32,7 @@ using namespace openpal;
 
 #define SUITE(name) "OutstationEventResponsesTestSuite - " name
 
-TEST_CASE(SUITE("BlankExceptionScan"))
+TEST_CASE(SUITE("empty response when to class 1 when no events available"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
@@ -380,6 +380,59 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesDifferenceTooBigForCTO"))
 	auto rsp = header + cto1 + cto2;
 
 	TestEventRead("C0 01 02 03 06", rsp, update);
+}
+
+TEST_CASE(SUITE("reports octet string events w/ same size in same header"))
+{
+	OutstationConfig config;	
+	config.eventBufferConfig = EventBufferConfig::AllTypes(5);
+	OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(5));
+	t.LowerLayerUp();	
+
+	
+
+	auto update = [](IUpdateHandler & db)
+	{
+		uint8_t bytes[2] = { 0xCA, 0xFE };
+		OctetString data(RSlice(bytes, 2));
+
+		db.Update(data, 2);
+		db.Update(data, 1);
+	};
+
+	t.Transaction(update);
+
+	t.SendToOutstation("C0 01 3C 02 06"); // Read class 1
+	REQUIRE(t.lower->PopWriteAsHex() == "E0 81 80 00 6F 02 28 02 00 02 00 CA FE 01 00 CA FE");
+}
+
+TEST_CASE(SUITE("reports octet string events w/ different sizes in separate headers"))
+{
+	OutstationConfig config;
+	config.eventBufferConfig = EventBufferConfig::AllTypes(5);
+	OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(5));
+	t.LowerLayerUp();
+
+
+
+	auto update = [](IUpdateHandler & db)
+	{
+		{
+			uint8_t bytes[2] = { 0xCA, 0xFE };
+			OctetString data(RSlice(bytes, 2));
+			db.Update(data, 0);
+		}
+		{
+			uint8_t bytes[4] = { 0xCA, 0xFE, 0xBA, 0xBE };
+			OctetString data(RSlice(bytes, 4));
+			db.Update(data, 0);
+		}		
+	};
+
+	t.Transaction(update);
+
+	t.SendToOutstation("C0 01 3C 02 06"); // Read class 1
+	REQUIRE(t.lower->PopWriteAsHex() == "E0 81 80 00 6F 02 28 01 00 00 00 CA FE 6F 04 28 01 00 00 00 CA FE BA BE");
 }
 
 
