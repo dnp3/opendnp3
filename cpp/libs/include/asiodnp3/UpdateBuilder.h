@@ -38,6 +38,7 @@ public:
 	UpdateBuilder& Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	UpdateBuilder& Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	UpdateBuilder& Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
+	UpdateBuilder& Update(const opendnp3::OctetString& meas, uint16_t index, opendnp3::EventMode mode = opendnp3::EventMode::Detect);
 	UpdateBuilder& Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
 	UpdateBuilder& Modify(opendnp3::FlagsType type, uint16_t start, uint16_t stop, uint8_t flags);
 

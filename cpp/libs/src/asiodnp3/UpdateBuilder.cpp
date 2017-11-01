@@ -66,6 +66,11 @@ UpdateBuilder& UpdateBuilder::Update(const opendnp3::AnalogOutputStatus& meas, u
 	return this->AddMeas(meas, index, mode);
 }
 
+UpdateBuilder& UpdateBuilder::Update(const opendnp3::OctetString& meas, uint16_t index, opendnp3::EventMode mode)
+{
+	return this->AddMeas(meas, index, mode);
+}
+
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::TimeAndInterval& meas, uint16_t index)
 {
 	this->Add([ = ](IUpdateHandler & handler)
