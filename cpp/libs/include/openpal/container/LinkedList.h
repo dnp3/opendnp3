@@ -32,18 +32,17 @@ namespace openpal
 
 using list_size_type_t = uint32_t;
 
-template <class ValueType>
+template <class T>
 class ListNode
 {
 public:
-	ListNode() : value(), prev(nullptr), next(nullptr)
-	{}
+	ListNode() = default;
 
-	ValueType value;
+	T value;
 
 private:
-	ListNode* prev;
-	ListNode* next;
+	ListNode* prev = nullptr;
+	ListNode* next = nullptr;
 
 	template <class T>
 	friend class LinkedList;
@@ -53,22 +52,22 @@ private:
 };
 
 
-template <class ValueType>
+template <class T>
 class LinkedListIterator
 {
 public:
-	static LinkedListIterator<ValueType> Undefined()
+	static LinkedListIterator<T> Undefined()
 	{
 		return LinkedListIterator(nullptr);
 	}
 
-	static LinkedListIterator<ValueType> From(ListNode< ValueType>* pStart)
+	static LinkedListIterator<T> From(ListNode<T>* pStart)
 	{
 		return LinkedListIterator(pStart);
 	}
 
-	template <class T>
-	ValueType* Find(const T& matches)
+	template <class U>
+	T* Find(const U& matches)
 	{
 		while (pCurrent)
 		{
@@ -87,7 +86,7 @@ public:
 		return (pCurrent != nullptr);
 	}
 
-	ListNode< ValueType>* Next()
+	ListNode<T>* Next()
 	{
 		if (pCurrent == nullptr)
 		{
@@ -101,12 +100,12 @@ public:
 		}
 	}
 
-	ListNode< ValueType>* Current()
+	ListNode<T>* Current()
 	{
 		return pCurrent;
 	}
 
-	ValueType* CurrentValue()
+	T* CurrentValue()
 	{
 		if (pCurrent)
 		{
@@ -120,20 +119,20 @@ public:
 
 private:
 
-	LinkedListIterator(ListNode< ValueType>* pStart) : pCurrent(pStart)
+	LinkedListIterator(ListNode<T>* pStart) : pCurrent(pStart)
 	{}
 
-	ListNode<ValueType>* pCurrent;
+	ListNode<T>* pCurrent;
 };
 
 
 // A container adapter for a -linked list
-template <class ValueType>
+template <class T>
 class LinkedList : public HasSize<list_size_type_t>
 {
 public:
 
-	typedef LinkedListIterator<ValueType> Iterator;
+	typedef LinkedListIterator<T> Iterator;
 
 	LinkedList(list_size_type_t maxSize) :
 		HasSize<list_size_type_t>(0),
@@ -163,7 +162,7 @@ public:
 		}
 	}
 
-	inline ListNode<ValueType>* Head()
+	inline ListNode<T>* Head()
 	{
 		return pHead;
 	}
@@ -174,9 +173,9 @@ public:
 	}
 
 	template <class Selector>
-	ListNode<ValueType>* FindFirst(Selector select);
+	ListNode<T>* FindFirst(Selector select);
 
-	ListNode<ValueType>* Add(const ValueType& value);
+	ListNode<T>* Add(const T& value);
 
 	template <class Selector>
 	void While(Selector select)
@@ -200,7 +199,7 @@ public:
 	}
 
 	template <class Selector>
-	ListNode<ValueType>* RemoveFirst(Selector select)
+	ListNode<T>* RemoveFirst(Selector select)
 	{
 		auto pNode = this->FindFirst(select);
 		if (pNode)
@@ -235,7 +234,7 @@ public:
 		return count;
 	}
 
-	bool Remove(const ValueType& value)
+	bool Remove(const T& value)
 	{
 		auto iter = this->Iterate();
 		while (iter.HasNext())
@@ -251,37 +250,37 @@ public:
 	}
 
 	template <class LessThan>
-	ListNode<ValueType>* Insert(const ValueType& value, LessThan lt);
+	ListNode<T>* Insert(const T& value, LessThan lt);
 
-	void Remove(ListNode<ValueType>* apNode);
+	void Remove(ListNode<T>* apNode);
 
 	inline bool IsFull() const;
 
 private:
 
-	ListNode<ValueType>* pHead;
-	ListNode<ValueType>* pTail;
-	ListNode<ValueType>* pFree;
+	ListNode<T>* pHead;
+	ListNode<T>* pTail;
+	ListNode<T>* pFree;
 
-	Array<ListNode<ValueType>, list_size_type_t> underlying;
+	Array<ListNode<T>, list_size_type_t> underlying;
 
-	ListNode<ValueType>* Insert(const ValueType& value, ListNode<ValueType>* left, ListNode<ValueType>* right);
+	ListNode<T>* Insert(const T& value, ListNode<T>* left, ListNode<T>* right);
 
-	inline static void Link(ListNode<ValueType>* prev, ListNode<ValueType>* next);
+	inline static void Link(ListNode<T>* prev, ListNode<T>* next);
 
 	void Initialize();
 };
 
-template <class ValueType>
-ListNode<ValueType>* LinkedList<ValueType>::Add(const ValueType& value)
+template <class T>
+ListNode<T>* LinkedList<T>::Add(const T& value)
 {
 	return this->Insert(value, pTail, nullptr);
 }
 
 
-template <class ValueType>
+template <class T>
 template <class LessThan>
-ListNode<ValueType>* LinkedList<ValueType>::Insert(const ValueType& value, LessThan lt)
+ListNode<T>* LinkedList<T>::Insert(const T& value, LessThan lt)
 {
 	if (pFree == nullptr)
 	{
@@ -289,7 +288,7 @@ ListNode<ValueType>* LinkedList<ValueType>::Insert(const ValueType& value, LessT
 	}
 	else
 	{
-		auto query = [lt, value](const ValueType & v)
+		auto query = [lt, value](const T & v)
 		{
 			return lt(value, v);
 		};
@@ -305,8 +304,8 @@ ListNode<ValueType>* LinkedList<ValueType>::Insert(const ValueType& value, LessT
 	}
 }
 
-template <class ValueType>
-ListNode<ValueType>* LinkedList<ValueType>::Insert(const ValueType& value, ListNode<ValueType>* pLeft, ListNode<ValueType>* pRight)
+template <class T>
+ListNode<T>* LinkedList<T>::Insert(const T& value, ListNode<T>* pLeft, ListNode<T>* pRight)
 {
 	if (pFree == nullptr)
 	{
@@ -339,9 +338,9 @@ ListNode<ValueType>* LinkedList<ValueType>::Insert(const ValueType& value, ListN
 	}
 }
 
-template <class ValueType>
+template <class T>
 template <class Selector>
-ListNode<ValueType>* LinkedList<ValueType>::FindFirst(Selector select)
+ListNode<T>* LinkedList<T>::FindFirst(Selector select)
 {
 	auto iter = this->Iterate();
 	while (iter.HasNext())
@@ -355,8 +354,8 @@ ListNode<ValueType>* LinkedList<ValueType>::FindFirst(Selector select)
 	return nullptr;
 }
 
-template <class ValueType>
-void LinkedList<ValueType>::Remove(ListNode<ValueType>* apNode)
+template <class T>
+void LinkedList<T>::Remove(ListNode<T>* apNode)
 {
 	if(apNode->prev == nullptr) // it's the head
 	{
@@ -385,23 +384,23 @@ void LinkedList<ValueType>::Remove(ListNode<ValueType>* apNode)
 	--(this->size);
 }
 
-template <class ValueType>
-bool LinkedList<ValueType>::IsFull() const
+template <class T>
+bool LinkedList<T>::IsFull() const
 {
 	return (pFree == nullptr);
 }
 
 
 
-template <class ValueType>
-void LinkedList<ValueType>::Link(ListNode<ValueType>* first, ListNode<ValueType>* second)
+template <class T>
+void LinkedList<T>::Link(ListNode<T>* first, ListNode<T>* second)
 {
 	if(first) first->next = second;
 	if(second) second->prev = first;
 }
 
-template <class ValueType>
-void LinkedList<ValueType>::Initialize()
+template <class T>
+void LinkedList<T>::Initialize()
 {
 	if(underlying.IsNotEmpty())
 	{
