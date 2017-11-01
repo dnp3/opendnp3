@@ -32,7 +32,6 @@ uint32_t EventSelection::SelectByClass(EventLists& lists, const ClassField& claz
 	while (iter.HasNext() && num_selected < max)
 	{
 		auto node = iter.Next();
-		auto record = node->value;
 		if (node->value.state == EventState::unselected && clazz.HasEventType(node->value.clazz))
 		{
 			// if not previously selected

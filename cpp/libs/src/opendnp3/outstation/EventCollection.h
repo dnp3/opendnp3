@@ -72,7 +72,7 @@ bool EventCollection<T>::WriteOne(IEventWriter<typename T::meas_t>& writer)
 	if (this->counters.selected == 0) return false;
 
 	// find the next event with the same type and variation
-	const auto record = EventWriting::FindNextSelected(this->iterator, typename T::EventTypeEnum);
+	EventRecord* record = EventWriting::FindNextSelected(this->iterator, T::EventTypeEnum);
 
 	// nothing left to write
 	if (!record) return false;

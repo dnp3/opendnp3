@@ -135,7 +135,7 @@ private:
 	void ExpectType(typename T::event_variation_t variation, uint16_t count)
 	{
 		expected.push_back(
-			Record{ typename T::EventTypeEnum, static_cast<uint8_t>(variation), count }
+			Record{ T::EventTypeEnum, static_cast<uint8_t>(variation), count }
 		);
 	}
 
@@ -156,7 +156,7 @@ uint16_t MockEventWriteHandler::WriteAny(typename T::event_variation_t variation
 	const auto record = this->expected.front();
 	this->expected.pop_front();
 
-	if (record.type != typename T::EventTypeEnum)
+	if (record.type != T::EventTypeEnum)
 	{
 		std::ostringstream oss;
 		oss << "Unexpected event type: " << static_cast<int>(record.type);

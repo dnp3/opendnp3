@@ -39,9 +39,8 @@ namespace opendnp3
 	arbitrary parts of the list depending on what the user asks for in terms
 	of event type or Class1/2/3.
 
-	At worst, selection is O(n) in the SOE length but it has some type/class
-	tracking to avoid looping over the SOE list when there are no more events matching
-	the selection criteria.
+	At worst, selection is O(n) but it has some type/class tracking to avoid looping 
+	over the SOE list when there are no more events to be written.
 */
 
 class EventBuffer final : public IEventReceiver, public IEventSelector, public IResponseLoader
@@ -90,7 +89,7 @@ private:
 	bool overflow = false;
 	EventStorage storage;
 
-	IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum);
+	IINField SelectMaxCount(GroupVariation gv, uint32_t maximum);
 
 	template <class T>
 	IINField SelectByType(uint32_t max, T type)

@@ -56,14 +56,14 @@ public:
 	template <class T>
 	void SetStorageNode(openpal::ListNode<TypedEventRecord<T>>* node)
 	{
-		this->type = typename T::EventTypeEnum;
+		this->type = T::EventTypeEnum;
 		this->storage_node = node;
 	}
 
 	template <class T>
 	openpal::ListNode<TypedEventRecord<T>>* StorageAs()
 	{
-		if (type != typename T::EventTypeEnum) return nullptr;
+		if (type != T::EventTypeEnum) return nullptr;
 		return reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(storage_node);
 	}
 
