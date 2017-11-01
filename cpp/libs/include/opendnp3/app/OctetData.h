@@ -41,6 +41,10 @@ public:
 	OctetData();
 	OctetData(const openpal::RSlice& input);
 
+	inline uint8_t Size() const {
+		return size;
+	}
+
 	openpal::RSlice ToRSlice() const;
 
 private:	

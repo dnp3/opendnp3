@@ -38,14 +38,14 @@ public:
 
 	explicit ASDUEventWriteHandler(const HeaderWriter& writer) : writer(writer) {}
 
-	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, IEventCollection<Binary>& items) override;
-	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, IEventCollection<DoubleBitBinary>& items) override;
-	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, IEventCollection<Counter>& items) override;
-	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, IEventCollection<FrozenCounter>& items) override;
-	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items) override;
-	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items) override;
-	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items) override;
-	virtual uint16_t Write(EventOctetStringVariation variation, const DNPTime& first, IEventCollection<OctetString>& items) override;
+	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& firstTime, IEventCollection<Binary>& items) override;
+	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& firstTime, IEventCollection<DoubleBitBinary>& items) override;
+	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& firstTime, IEventCollection<Counter>& items) override;
+	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& firstTime, IEventCollection<FrozenCounter>& items) override;
+	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& firstTime, IEventCollection<Analog>& items) override;
+	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& firstTime, IEventCollection<BinaryOutputStatus>& items) override;
+	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& firstTime, IEventCollection<AnalogOutputStatus>& items) override;
+	virtual uint16_t Write(EventOctetStringVariation variation, uint8_t firstSize, IEventCollection<OctetString>& items) override;
 
 private:
 

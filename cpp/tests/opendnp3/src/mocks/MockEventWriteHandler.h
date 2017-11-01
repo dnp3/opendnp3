@@ -129,7 +129,7 @@ public:
 		return this->WriteAny<AnalogOutputStatusSpec>(variation, items);
 	}
 
-	virtual uint16_t Write(EventOctetStringVariation variation, const DNPTime& first, IEventCollection<OctetString>& items) override
+	virtual uint16_t Write(EventOctetStringVariation variation, uint8_t firstSize, IEventCollection<OctetString>& items) override
 	{
 		return this->WriteAny<OctetStringSpec>(variation, items);
 	}

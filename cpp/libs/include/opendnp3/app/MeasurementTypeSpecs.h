@@ -35,7 +35,7 @@ struct BinarySpec : public BinaryInfo
 	typedef BinaryConfig config_t;
 	typedef SimpleEventCell<BinarySpec> event_cell_t;
 
-	inline static DNPTime GetTime(const meas_t& value)
+	inline static DNPTime GetEventAttribute(const meas_t& value)
 	{
 		return value.time;
 	}
@@ -56,7 +56,7 @@ struct DoubleBitBinarySpec : public DoubleBitBinaryInfo
 	typedef DoubleBitBinaryConfig config_t;
 	typedef SimpleEventCell<DoubleBitBinarySpec> event_cell_t;
 
-	inline static DNPTime GetTime(const meas_t& value)
+	inline static DNPTime GetEventAttribute(const meas_t& value)
 	{
 		return value.time;
 	}
@@ -72,7 +72,7 @@ struct BinaryOutputStatusSpec : public BinaryOutputStatusInfo
 	typedef BOStatusConfig config_t;
 	typedef SimpleEventCell<BinaryOutputStatusSpec> event_cell_t;
 
-	inline static DNPTime GetTime(const meas_t& value)
+	inline static DNPTime GetEventAttribute(const meas_t& value)
 	{
 		return value.time;
 	}
@@ -89,7 +89,7 @@ struct AnalogSpec : public AnalogInfo
 	typedef AnalogConfig config_t;
 	typedef DeadbandEventCell<AnalogSpec> event_cell_t;
 
-	inline static DNPTime GetTime(const meas_t& value)
+	inline static DNPTime GetEventAttribute(const meas_t& value)
 	{
 		return value.time;
 	}
@@ -105,7 +105,7 @@ struct CounterSpec : public CounterInfo
 	typedef CounterConfig config_t;
 	typedef DeadbandEventCell<CounterSpec> event_cell_t;
 
-	inline static DNPTime GetTime(const meas_t& value)
+	inline static DNPTime GetEventAttribute(const meas_t& value)
 	{
 		return value.time;
 	}
@@ -128,7 +128,7 @@ struct FrozenCounterSpec : public FrozenCounterInfo
 	typedef FrozenCounterConfig config_t;
 	typedef DeadbandEventCell<FrozenCounterSpec> event_cell_t;
 
-	inline static DNPTime GetTime(const meas_t& value)
+	inline static DNPTime GetEventAttribute(const meas_t& value)
 	{
 		return value.time;
 	}
@@ -151,7 +151,7 @@ struct AnalogOutputStatusSpec : public AnalogOutputStatusInfo
 	typedef AOStatusConfig config_t;
 	typedef DeadbandEventCell<AnalogOutputStatusSpec> event_cell_t;
 
-	inline static DNPTime GetTime(const meas_t& value)
+	inline static DNPTime GetEventAttribute(const meas_t& value)
 	{
 		return value.time;
 	}
@@ -164,10 +164,10 @@ struct AnalogOutputStatusSpec : public AnalogOutputStatusInfo
 
 struct OctetStringSpec : public OctetStringInfo
 {
-	inline static DNPTime GetTime(const meas_t& value)
+	inline static uint8_t GetEventAttribute(const meas_t& value)
 	{
 		// octet strings don't have time
-		return DNPTime(0);
+		return value.Size();
 	}
 };
 
