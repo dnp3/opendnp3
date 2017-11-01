@@ -21,8 +21,9 @@
 #ifndef OPENDNP3_EVENTUPDATE_H
 #define OPENDNP3_EVENTUPDATE_H
 
-#include "opendnp3/outstation/EventLists.h"
 #include "opendnp3/outstation/Event.h"
+
+#include "EventLists.h"
 
 namespace opendnp3
 {

@@ -22,9 +22,10 @@
 #define OPENDNP3_EVENTSTORAGE_H
 
 #include "opendnp3/outstation/Event.h"
-#include "opendnp3/outstation/IEventWriteHandler.h"
-#include "opendnp3/outstation/EventLists.h"
 #include "opendnp3/app/ClassField.h"
+
+#include "IEventWriteHandler.h"
+#include "EventLists.h"
 
 #include <limits>
 

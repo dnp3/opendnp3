@@ -22,7 +22,8 @@
 #define OPENDNP3_CLAZZCOUNT_H
 
 #include "opendnp3/app/EventType.h"
-#include "opendnp3/outstation/EventState.h"
+
+#include "EventState.h"
 
 namespace opendnp3
 {

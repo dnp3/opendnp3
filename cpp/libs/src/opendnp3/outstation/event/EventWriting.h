@@ -21,9 +21,9 @@
 #ifndef OPENDNP3_EVENTWRITING_H
 #define OPENDNP3_EVENTWRITING_H
 
-#include "opendnp3/outstation/EventLists.h"
+#include "IEventWriteHandler.h"
 
-#include "opendnp3/outstation/IEventWriteHandler.h"
+#include "EventLists.h"
 
 namespace opendnp3
 {

@@ -21,8 +21,9 @@
 #ifndef OPENDNP3_EVENTSELECTION_H
 #define OPENDNP3_EVENTSELECTION_H
 
-#include "opendnp3/outstation/EventLists.h"
 #include "opendnp3/app/ClassField.h"
+
+#include "EventLists.h"
 
 namespace opendnp3
 {

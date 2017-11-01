@@ -21,7 +21,7 @@
 
 #include "ASDUEventWriteHandler.h"
 
-#include "opendnp3/outstation/EventWriters.h"
+#include "EventWriters.h"
 
 #include "opendnp3/objects/Group2.h"
 #include "opendnp3/objects/Group4.h"

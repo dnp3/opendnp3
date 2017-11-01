@@ -23,11 +23,12 @@
 #define OPENDNP3_EVENTWRITERS_H
 
 #include "openpal/serialization/Serialization.h"
-#include "opendnp3/outstation/IEventWriteHandler.h"
+
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/HeaderWriter.h"
-
 #include "opendnp3/objects/Group51.h"
+
+#include "IEventWriteHandler.h"
 
 namespace opendnp3
 {

@@ -21,11 +21,12 @@
 #ifndef OPENDNP3_ASDUEVENTWRITEHANDLER_H
 #define OPENDNP3_ASDUEVENTWRITEHANDLER_H
 
-#include "opendnp3/outstation/IEventWriteHandler.h"
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/DNP3Serializer.h"
 
 #include "openpal/util/Uncopyable.h"
+
+#include "IEventWriteHandler.h"
 
 namespace opendnp3
 {

@@ -22,11 +22,12 @@
 #define OPENDNP3_EVENTLISTS_H
 
 #include "opendnp3/outstation/EventBufferConfig.h"
-#include "opendnp3/outstation/EventRecord.h"
-#include "opendnp3/outstation/TypedEventRecord.h"
-#include "opendnp3/outstation/ClazzCount.h"
 
 #include "openpal/util/Uncopyable.h"
+
+#include "TypedEventRecord.h"
+#include "EventRecord.h"
+#include "ClazzCount.h"
 
 namespace opendnp3
 {

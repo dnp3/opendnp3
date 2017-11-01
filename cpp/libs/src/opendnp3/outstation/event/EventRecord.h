@@ -23,11 +23,11 @@
 #define OPENDNP3_EVENTRECORD_H
 
 #include "opendnp3/app/EventType.h"
-#include "opendnp3/outstation/EventState.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 
 #include "openpal/container/LinkedList.h"
 
+#include "EventState.h"
 
 namespace opendnp3
 {

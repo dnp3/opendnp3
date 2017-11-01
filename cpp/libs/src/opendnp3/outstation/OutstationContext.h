@@ -33,11 +33,12 @@
 #include "opendnp3/outstation/TimeSyncState.h"
 #include "opendnp3/outstation/OutstationSeqNum.h"
 #include "opendnp3/outstation/Database.h"
-#include "opendnp3/outstation/EventBuffer.h"
 #include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 #include "opendnp3/outstation/OutstationStates.h"
+
+#include "opendnp3/outstation/event/EventBuffer.h"
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/Logger.h>

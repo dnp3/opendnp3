@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "opendnp3/outstation/IEventWriteHandler.h"
+#include "opendnp3/outstation/event/IEventWriteHandler.h"
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 
