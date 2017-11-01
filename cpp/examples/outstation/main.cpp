@@ -55,11 +55,10 @@ struct State
 	double value = 0;
 	bool binary = false;
 	DoubleBit dbit = DoubleBit::DETERMINED_OFF;
+	uint8_t octetStringValue = 1;
 };
 
 void AddUpdates(UpdateBuilder& builder, State& state, const std::string& arguments);
-
-
 
 int main(int argc, char* argv[])
 {
@@ -113,7 +112,7 @@ int main(int argc, char* argv[])
 	while (true)
 	{
 		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
-		std::cout << "c = counter, b = binary, d = doublebit, a = analog, 'quit' = exit" << std::endl;
+		std::cout << "c = counter, b = binary, d = doublebit, a = analog, o = octet string, 'quit' = exit" << std::endl;
 		std::cin >> input;
 
 		if (input == "quit") return 0; // DNP3Manager destructor cleanups up everything automatically
@@ -157,6 +156,13 @@ void AddUpdates(UpdateBuilder& builder, State& state, const std::string& argumen
 			{
 				builder.Update(DoubleBitBinary(state.dbit), 0);
 				state.dbit = (state.dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
+				break;
+			}
+		case('o'):
+			{
+				OctetString value(openpal::RSlice(&state.octetStringValue, 1));
+				builder.Update(value, 0);
+				state.octetStringValue += 1;
 				break;
 			}
 		default:
