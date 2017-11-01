@@ -126,7 +126,7 @@ TEST_CASE(SUITE("EventBufferOverflowAndClear"))
 	REQUIRE("E1 81 82 08 02 01 28 01 00 01 00 81" == t.lower->PopWriteAsHex());
 	t.OnSendResult(true);
 	t.SendToOutstation(hex::SolicitedConfirm(1));
-	 
+
 	t.SendToOutstation("C0 01");
 	REQUIRE("C0 81 82 00" == t.lower->PopWriteAsHex());
 }

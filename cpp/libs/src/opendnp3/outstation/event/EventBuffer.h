@@ -38,7 +38,7 @@ namespace opendnp3
 	arbitrary parts of the list depending on what the user asks for in terms
 	of event type or Class1/2/3.
 
-	At worst, selection is O(n) but it has some type/class tracking to avoid looping 
+	At worst, selection is O(n) but it has some type/class tracking to avoid looping
 	over the SOE list when there are no more events to be written.
 */
 
@@ -71,9 +71,9 @@ public:
 
 	virtual bool HasAnySelection() const override final;
 
-	virtual bool Load(HeaderWriter& writer) override final;	
+	virtual bool Load(HeaderWriter& writer) override final;
 
-	// ------- Misc -------	
+	// ------- Misc -------
 
 	void ClearWritten(); // called when a transmission succeeds
 
@@ -112,7 +112,7 @@ private:
 		return IINField::Empty();
 	}
 
-	
+
 };
 
 

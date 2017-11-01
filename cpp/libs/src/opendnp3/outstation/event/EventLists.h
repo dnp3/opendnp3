@@ -49,10 +49,10 @@ struct EventLists : private openpal::Uncopyable
 
 	bool IsAnyTypeFull() const;
 
-	EventClassCounters counters;	
+	EventClassCounters counters;
 
-private:	
-	
+private:
+
 	template <class T>
 	void RemoveType(EventRecord& record);
 
@@ -63,7 +63,7 @@ private:
 	openpal::LinkedList<TypedEventRecord<CounterSpec>, uint32_t> counter;
 	openpal::LinkedList<TypedEventRecord<FrozenCounterSpec>, uint32_t> frozenCounter;
 	openpal::LinkedList<TypedEventRecord<BinaryOutputStatusSpec>, uint32_t> binaryOutputStatus;
-	openpal::LinkedList<TypedEventRecord<AnalogOutputStatusSpec>, uint32_t> analogOutputStatus;	
+	openpal::LinkedList<TypedEventRecord<AnalogOutputStatusSpec>, uint32_t> analogOutputStatus;
 };
 
 }

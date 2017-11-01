@@ -28,67 +28,68 @@
 namespace opendnp3
 {
 
-	struct ClazzCount
+struct ClazzCount
+{
+
+public:
+
+	void Reset()
 	{
+		this->num_class_1 = 0;
+		this->num_class_2 = 0;
+		this->num_class_3 = 0;
+	}
 
-	public:
-
-		void Reset()
+	uint32_t Get(EventClass clazz) const
+	{
+		switch (clazz)
 		{
-			this->num_class_1 = 0;
-			this->num_class_2 = 0;
-			this->num_class_3 = 0;
+		case(EventClass::EC1):
+			return num_class_1;
+		case(EventClass::EC2):
+			return num_class_2;
+			break;
+		default:
+			return num_class_3;
 		}
+	}
 
-		uint32_t Get(EventClass clazz) const
+	void Increment(EventClass clazz)
+	{
+		switch (clazz)
 		{
-			switch (clazz)
-			{
-			case(EventClass::EC1):
-				return num_class_1;
-			case(EventClass::EC2):
-				return num_class_2;
-				break;
-			default:
-				return num_class_3;
-			}
+		case(EventClass::EC1):
+			++num_class_1;
+			break;
+		case(EventClass::EC2):
+			++num_class_2;
+			break;
+		default:
+			++num_class_3;
+			break;
 		}
+	}
 
-		void Increment(EventClass clazz)
+	void Decrement(EventClass clazz)
+	{
+		switch (clazz)
 		{
-			switch (clazz)
-			{
-			case(EventClass::EC1):
-				++num_class_1;
-				break;
-			case(EventClass::EC2):
-				++num_class_2;
-				break;
-			default:
-				++num_class_3;
-				break;
-			}
+		case(EventClass::EC1):
+			--num_class_1;
+			break;
+		case(EventClass::EC2):
+			--num_class_2;
+			break;
+		default:
+			--num_class_3;
+			break;
 		}
+	}
 
-		void Decrement(EventClass clazz)
-		{
-			switch (clazz)
-			{
-			case(EventClass::EC1):
-				--num_class_1;
-				break;
-			case(EventClass::EC2):
-				--num_class_2;
-				break;
-			default:
-				--num_class_3;
-				break;
-			}
-		}
-
-		bool Any() const {
-			return (num_class_1 > 0) || (num_class_2 > 0) || (num_class_3 > 0);
-		}
+	bool Any() const
+	{
+		return (num_class_1 > 0) || (num_class_2 > 0) || (num_class_3 > 0);
+	}
 
 
 private:
@@ -114,7 +115,7 @@ public:
 
 	void OnSelect()
 	{
-		++selected;		
+		++selected;
 	}
 
 	void OnWrite(EventClass clazz)
@@ -134,15 +135,15 @@ public:
 	{
 		switch (state)
 		{
-			case(EventState::selected):
-				--selected;
-				break;
-			case(EventState::written):
-				this->written.Decrement(clazz);
-				break;
-			default:
-				break;
-		}		
+		case(EventState::selected):
+			--selected;
+			break;
+		case(EventState::written):
+			this->written.Decrement(clazz);
+			break;
+		default:
+			break;
+		}
 
 		this->total.Decrement(clazz);
 	}

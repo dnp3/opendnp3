@@ -38,7 +38,7 @@ public:
 
 	ClassField();
 
-	explicit ClassField(PointClass pc);		
+	explicit ClassField(PointClass pc);
 
 	explicit ClassField(EventClass ec);
 

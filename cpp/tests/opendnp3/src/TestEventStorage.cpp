@@ -40,10 +40,10 @@ TEST_CASE(SUITE("calls write multiple times for different variations"))
 	EventStorage storage(EventBufferConfig::AllTypes(10));
 
 	REQUIRE_FALSE(
-		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
+	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
 	);
 	REQUIRE_FALSE(
-		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var2))
+	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var2))
 	);
 
 	// select events by class
@@ -69,10 +69,10 @@ TEST_CASE(SUITE("calls write one time for same variation"))
 	EventStorage storage(EventBufferConfig::AllTypes(10));
 
 	REQUIRE_FALSE(
-		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
+	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
 	);
 	REQUIRE_FALSE(
-		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
+	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
 	);
 
 	// select events by class
@@ -96,16 +96,16 @@ TEST_CASE(SUITE("calls write multiple times for different types"))
 	EventStorage storage(EventBufferConfig::AllTypes(10));
 
 	REQUIRE_FALSE(
-		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
 	);
 	REQUIRE_FALSE(
-		storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
+	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
 	);
 	REQUIRE_FALSE(
-		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
 	);
-	
-	// select events by class	
+
+	// select events by class
 	REQUIRE(storage.SelectByClass(EventClass::EC1) == 3);
 
 	// set up the expected order
@@ -124,7 +124,7 @@ TEST_CASE(SUITE("zero-size doesn't overflow"))
 	EventStorage storage(EventBufferConfig::AllTypes(0));
 
 	REQUIRE_FALSE(
-		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
 	);
 }
 
@@ -135,14 +135,14 @@ TEST_CASE(SUITE("overflows as expected"))
 	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
 
 	REQUIRE_FALSE(
-		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
 	);
 
 	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 1);
 	REQUIRE(storage.NumSelected() == 0);
 
 	REQUIRE(
-		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
 	);
 
 	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 1);
@@ -153,13 +153,13 @@ TEST_CASE(SUITE("selected events discarded on overflow"))
 	EventStorage storage(EventBufferConfig::AllTypes(1));
 
 	REQUIRE_FALSE(
-		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
 	);
 
 	REQUIRE(storage.SelectByClass(EventClass::EC1) == 1);
 
 	REQUIRE(
-		storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
+	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
 	);
 
 	MockEventWriteHandler handler;

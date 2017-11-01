@@ -36,9 +36,9 @@ EventLists::EventLists(const EventBufferConfig& config) :
 {}
 
 bool EventLists::RemoveTypeStorage(EventRecord& record)
-{	
-	// remove the type specific storage	
-	
+{
+	// remove the type specific storage
+
 	switch (record.type)
 	{
 	case(EventType::Binary):
@@ -64,7 +64,7 @@ bool EventLists::RemoveTypeStorage(EventRecord& record)
 		break;
 	default:
 		return false;
-	}	
+	}
 
 	return true;
 }
@@ -72,18 +72,18 @@ bool EventLists::RemoveTypeStorage(EventRecord& record)
 bool EventLists::IsAnyTypeFull() const
 {
 	return
-		this->binary.IsFull() ||
-		this->doubleBinary.IsFull() ||
-		this->counter.IsFull() ||
-		this->frozenCounter.IsFull() ||
-		this->analog.IsFull() ||
-		this->binaryOutputStatus.IsFull() ||
-		this->analogOutputStatus.IsFull();
+	    this->binary.IsFull() ||
+	    this->doubleBinary.IsFull() ||
+	    this->counter.IsFull() ||
+	    this->frozenCounter.IsFull() ||
+	    this->analog.IsFull() ||
+	    this->binaryOutputStatus.IsFull() ||
+	    this->analogOutputStatus.IsFull();
 }
 
 template <class T>
 void EventLists::RemoveType(EventRecord& record)
-{	
+{
 	this->GetList<T>().Remove(record.StorageAs<T>());
 }
 

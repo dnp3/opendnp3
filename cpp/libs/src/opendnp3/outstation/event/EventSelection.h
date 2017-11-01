@@ -40,7 +40,7 @@ struct EventSelection : private openpal::StaticOnly
 	static uint32_t SelectByType(EventLists& lists, typename T::event_variation_t variation, uint32_t max)
 	{
 		return SelectByTypeGeneric<T>(lists, false, variation, max);
-	}	
+	}
 
 	static uint32_t SelectByClass(EventLists& lists, const ClassField& clazz, uint32_t max);
 

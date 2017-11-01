@@ -50,9 +50,9 @@ public:
 
 	// number selected
 	uint32_t NumSelected() const;
-	
+
 	// unselected/selected but not already written
-	uint32_t NumUnwritten(EventClass clazz) const;	
+	uint32_t NumUnwritten(EventClass clazz) const;
 
 	// write selected events to some handler
 	uint32_t Write(IEventWriteHandler& handler);
@@ -74,7 +74,7 @@ public:
 	bool Update(const Event<AnalogOutputStatusSpec>& evt);
 
 	// ---- function used to select distinct types ----
-	
+
 	uint32_t SelectByType(EventBinaryVariation variation, uint32_t max);
 	uint32_t SelectByType(EventDoubleBinaryVariation variation, uint32_t max);
 	uint32_t SelectByType(EventAnalogVariation variation, uint32_t max);
@@ -86,7 +86,7 @@ public:
 	uint32_t SelectByType(EventType type, uint32_t max);
 
 	// ---- function used to select by event class ----
-	
+
 	uint32_t SelectByClass(const EventClass& clazz);
 	uint32_t SelectByClass(const EventClass& clazz, uint32_t max);
 

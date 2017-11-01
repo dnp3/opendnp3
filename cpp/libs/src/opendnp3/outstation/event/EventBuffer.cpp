@@ -84,13 +84,13 @@ IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum)
 	switch (gv)
 	{
 	case(GroupVariation::Group2Var0) :
-		return this->SelectByType(maximum, EventType::Binary);		
+		return this->SelectByType(maximum, EventType::Binary);
 	case(GroupVariation::Group2Var1) :
 		return this->SelectByType(maximum, EventBinaryVariation::Group2Var1);
 	case(GroupVariation::Group2Var2) :
-		return this->SelectByType(maximum, EventBinaryVariation::Group2Var2);		
+		return this->SelectByType(maximum, EventBinaryVariation::Group2Var2);
 	case(GroupVariation::Group2Var3) :
-		return this->SelectByType(maximum, EventBinaryVariation::Group2Var3);		
+		return this->SelectByType(maximum, EventBinaryVariation::Group2Var3);
 
 	case(GroupVariation::Group4Var0) :
 		return this->SelectByType(maximum, EventType::DoubleBitBinary);
@@ -198,11 +198,11 @@ bool EventBuffer::Load(HeaderWriter& writer)
 ClassField EventBuffer::UnwrittenClassField() const
 {
 	return ClassField(
-		false,
-		storage.NumUnwritten(EventClass::EC1) > 0,
-		storage.NumUnwritten(EventClass::EC2) > 0,
-		storage.NumUnwritten(EventClass::EC3) > 0		
-	);
+	           false,
+	           storage.NumUnwritten(EventClass::EC1) > 0,
+	           storage.NumUnwritten(EventClass::EC2) > 0,
+	           storage.NumUnwritten(EventClass::EC3) > 0
+	       );
 }
 
 bool EventBuffer::IsOverflown()

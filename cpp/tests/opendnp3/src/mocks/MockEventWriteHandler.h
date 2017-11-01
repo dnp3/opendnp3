@@ -135,7 +135,7 @@ private:
 	void ExpectType(typename T::event_variation_t variation, uint16_t count)
 	{
 		expected.push_back(
-			Record{ T::EventTypeEnum, static_cast<uint8_t>(variation), count }
+		    Record{ T::EventTypeEnum, static_cast<uint8_t>(variation), count }
 		);
 	}
 

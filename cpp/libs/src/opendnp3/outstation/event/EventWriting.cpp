@@ -49,7 +49,7 @@ uint32_t EventWriting::Write(EventLists& lists, IEventWriteHandler& handler)
 }
 
 EventRecord* EventWriting::FindNextSelected(event_iter_t& iter, EventType type)
-{	
+{
 	while (true)
 	{
 		auto current = iter.CurrentValue();
@@ -108,7 +108,7 @@ uint16_t EventWriting::WriteSomeOfType(event_iter_t& iterator, EventLists& lists
 
 	EventCollection<T> collection(iterator, lists.counters, storage->value.selectedVariation);
 
-	return handler.Write(storage->value.selectedVariation, storage->value.value.time, collection);	
+	return handler.Write(storage->value.selectedVariation, storage->value.value.time, collection);
 }
 
 }

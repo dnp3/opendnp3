@@ -121,41 +121,41 @@ uint32_t EventStorage::SelectByType(EventType type, uint32_t max)
 {
 	switch (type)
 	{
-		case(EventType::Binary):
-			return EventSelection::SelectByType<BinarySpec>(this->state, max);
-		case(EventType::DoubleBitBinary):
-			return EventSelection::SelectByType<DoubleBitBinarySpec>(this->state, max);
-		case(EventType::Counter):
-			return EventSelection::SelectByType<CounterSpec>(this->state, max);
-		case(EventType::FrozenCounter):
-			return EventSelection::SelectByType<FrozenCounterSpec>(this->state, max);
-		case(EventType::Analog):
-			return EventSelection::SelectByType<AnalogSpec>(this->state, max);
-		case(EventType::BinaryOutputStatus):
-			return EventSelection::SelectByType<BinaryOutputStatusSpec>(this->state, max);
-		case(EventType::AnalogOutputStatus):
-			return EventSelection::SelectByType<AnalogOutputStatusSpec>(this->state, max);
-		default:
-			return 0;
+	case(EventType::Binary):
+		return EventSelection::SelectByType<BinarySpec>(this->state, max);
+	case(EventType::DoubleBitBinary):
+		return EventSelection::SelectByType<DoubleBitBinarySpec>(this->state, max);
+	case(EventType::Counter):
+		return EventSelection::SelectByType<CounterSpec>(this->state, max);
+	case(EventType::FrozenCounter):
+		return EventSelection::SelectByType<FrozenCounterSpec>(this->state, max);
+	case(EventType::Analog):
+		return EventSelection::SelectByType<AnalogSpec>(this->state, max);
+	case(EventType::BinaryOutputStatus):
+		return EventSelection::SelectByType<BinaryOutputStatusSpec>(this->state, max);
+	case(EventType::AnalogOutputStatus):
+		return EventSelection::SelectByType<AnalogOutputStatusSpec>(this->state, max);
+	default:
+		return 0;
 	}
 }
 
 uint32_t EventStorage::SelectByClass(const EventClass& clazz)
 {
 	return EventSelection::SelectByClass(
-		this->state,
-		ClassField(clazz),
-		std::numeric_limits<uint32_t>::max()
-	);
+	           this->state,
+	           ClassField(clazz),
+	           std::numeric_limits<uint32_t>::max()
+	       );
 }
 
 uint32_t EventStorage::SelectByClass(const EventClass& clazz, uint32_t max)
 {
 	return EventSelection::SelectByClass(
-		this->state,
-		ClassField(clazz),
-		max
-	);
+	           this->state,
+	           ClassField(clazz),
+	           max
+	       );
 }
 
 uint32_t EventStorage::SelectByClass(const ClassField& clazz)
@@ -174,8 +174,9 @@ uint32_t EventStorage::Write(IEventWriteHandler& handler)
 }
 
 uint32_t EventStorage::ClearWritten()
-{		
-	auto written = [this](EventRecord& record) -> bool {
+{
+	auto written = [this](EventRecord & record) -> bool
+	{
 		if (record.state == EventState::written)
 		{
 			this->state.RemoveTypeStorage(record);
@@ -192,15 +193,16 @@ uint32_t EventStorage::ClearWritten()
 }
 
 void EventStorage::Unselect()
-{		
-	auto clear = [this](EventRecord& record) -> void {
+{
+	auto clear = [this](EventRecord & record) -> void
+	{
 		record.state = EventState::unselected;
 	};
 
 	this->state.events.Foreach(clear);
 
 	// keep the total, but clear the selected/written
-	this->state.counters.ResetOnFail();	
+	this->state.counters.ResetOnFail();
 }
 
 }

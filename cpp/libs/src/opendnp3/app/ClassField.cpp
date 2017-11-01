@@ -44,12 +44,12 @@ ClassField::ClassField() : bitfield(0)
 ClassField::ClassField(PointClass pc) : bitfield(static_cast<uint8_t>(pc))
 {}
 
-ClassField::ClassField(EventClass ec) : 
+ClassField::ClassField(EventClass ec) :
 	ClassField(
-		false,
-		ec == EventClass::EC1,
-		ec == EventClass::EC2,
-		ec == EventClass::EC3
+	    false,
+	    ec == EventClass::EC1,
+	    ec == EventClass::EC2,
+	    ec == EventClass::EC3
 	)
 {
 
