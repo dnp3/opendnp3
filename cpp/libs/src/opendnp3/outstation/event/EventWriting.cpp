@@ -23,6 +23,8 @@
 
 #include "EventCollection.h"
 
+#include "IEventType.h"
+
 namespace opendnp3
 {
 
@@ -58,7 +60,7 @@ EventRecord* EventWriting::FindNextSelected(event_iter_t& iter, EventType type)
 		if (current->state == EventState::selected)
 		{
 			// we terminate here since the type has changed
-			return (current->type == type) ? current : nullptr;
+			return current->type->IsEqual(type) ? current : nullptr;
 		}
 		else
 		{
@@ -79,37 +81,9 @@ uint16_t EventWriting::WriteSome(event_iter_t& iterator, EventLists& lists, IEve
 
 	if (!value) return 0; // no match
 
-	switch (value->type)
-	{
-	case(EventType::Binary):
-		return WriteSomeOfType<BinarySpec>(iterator, lists, handler);
-	case(EventType::DoubleBitBinary):
-		return WriteSomeOfType<DoubleBitBinarySpec>(iterator, lists, handler);
-	case(EventType::Counter):
-		return WriteSomeOfType<CounterSpec>(iterator, lists, handler);
-	case(EventType::FrozenCounter):
-		return WriteSomeOfType<FrozenCounterSpec>(iterator, lists, handler);
-	case(EventType::Analog):
-		return WriteSomeOfType<AnalogSpec>(iterator, lists, handler);
-	case(EventType::BinaryOutputStatus):
-		return WriteSomeOfType<BinaryOutputStatusSpec>(iterator, lists, handler);
-	case(EventType::AnalogOutputStatus):
-		return WriteSomeOfType<AnalogOutputStatusSpec>(iterator, lists, handler);
-	default:
-		return 0;
-	}
+	return value->type->WriteSome(iterator, lists, handler);
 }
 
-template <class T>
-uint16_t EventWriting::WriteSomeOfType(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler)
-{
-	const auto pos = iterator.CurrentValue();
-	const auto storage = pos->StorageAs<T>();
-
-	EventCollection<T> collection(iterator, lists.counters, storage->value.selectedVariation);
-
-	return handler.Write(storage->value.selectedVariation, storage->value.value.time, collection);
-}
 
 }
 

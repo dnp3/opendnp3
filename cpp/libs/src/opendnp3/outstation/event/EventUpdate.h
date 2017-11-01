@@ -24,6 +24,7 @@
 #include "opendnp3/outstation/Event.h"
 
 #include "EventLists.h"
+#include "EventTypeImpl.h"
 
 namespace opendnp3
 {
@@ -32,7 +33,6 @@ struct EventUpdate : private openpal::StaticOnly
 {
 	template <class T>
 	static bool Update(EventLists& lists, const Event<T>& event);
-
 };
 
 template <class T>
@@ -79,7 +79,9 @@ bool EventUpdate::Update(EventLists& lists, const Event<T>& event)
 	                            )
 	                        );
 
-	record_node->value.SetStorageNode(typed_node);
+	// configure the typed storage
+	record_node->value.type = EventTypeImpl<T>::Instance();
+	record_node->value.storage_node = typed_node;
 
 	lists.counters.OnAdd(event.clazz);
 

@@ -32,8 +32,11 @@
 namespace opendnp3
 {
 
-struct EventLists : private openpal::Uncopyable
+typedef openpal::LinkedListIterator<EventRecord> event_iter_t;
+
+class EventLists : private openpal::Uncopyable
 {
+public:
 
 	EventLists() = delete;
 
@@ -45,16 +48,12 @@ struct EventLists : private openpal::Uncopyable
 	template <class T>
 	openpal::LinkedList<TypedEventRecord<T>, uint32_t>& GetList();
 
-	bool RemoveTypeStorage(EventRecord& node);
-
 	bool IsAnyTypeFull() const;
 
 	EventClassCounters counters;
 
 private:
 
-	template <class T>
-	void RemoveType(EventRecord& record);
 
 	// sub-lists just act as type-specific storage
 	openpal::LinkedList<TypedEventRecord<BinarySpec>, uint32_t> binary;

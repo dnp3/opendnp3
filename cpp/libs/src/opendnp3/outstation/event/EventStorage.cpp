@@ -179,7 +179,7 @@ uint32_t EventStorage::ClearWritten()
 	{
 		if (record.state == EventState::written)
 		{
-			this->state.RemoveTypeStorage(record);
+			record.type->RemoveTypeFromStorage(record, this->state);
 			this->state.counters.OnRemove(record.clazz, record.state);
 			return true;
 		}

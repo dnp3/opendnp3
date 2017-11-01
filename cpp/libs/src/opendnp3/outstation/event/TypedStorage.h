@@ -19,41 +19,23 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_EVENTRECORD_H
-#define OPENDNP3_EVENTRECORD_H
-
-#include "opendnp3/app/EventType.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
+#ifndef OPENDNP3_TYPEDSTORAGE_H
+#define OPENDNP3_TYPEDSTORAGE_H
 
 #include "openpal/container/LinkedList.h"
 
-#include "IEventType.h"
-
-#include "EventState.h"
-
+#include "TypedEventRecord.h"
 
 namespace opendnp3
 {
-
-/**
-* Generic event information with an opaque pointer to
-* the specific event details
-*/
-class EventRecord
+template <class T>
+struct TypedStorage : private openpal::StaticOnly
 {
 
-public:
-
-	EventRecord() = default;
-	EventRecord(uint16_t index, EventClass clazz);
-
-	uint16_t index = 0;
-	EventClass clazz = EventClass::EC1;
-	EventState state = EventState::unselected;
-
-	// always set as a unit
-	IEventType* type = nullptr;
-	void* storage_node = nullptr;
+	static inline openpal::ListNode<TypedEventRecord<T>>* Retrieve(EventRecord& record)
+	{
+		return reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(record.storage_node);
+	}
 };
 
 }

@@ -19,44 +19,21 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_EVENTRECORD_H
-#define OPENDNP3_EVENTRECORD_H
-
-#include "opendnp3/app/EventType.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
-
-#include "openpal/container/LinkedList.h"
-
-#include "IEventType.h"
-
-#include "EventState.h"
-
+#include "EventRecord.h"
 
 namespace opendnp3
 {
 
-/**
-* Generic event information with an opaque pointer to
-* the specific event details
-*/
-class EventRecord
-{
+EventRecord::EventRecord(
+    uint16_t index,
+    EventClass clazz
+) :
 
-public:
-
-	EventRecord() = default;
-	EventRecord(uint16_t index, EventClass clazz);
-
-	uint16_t index = 0;
-	EventClass clazz = EventClass::EC1;
-	EventState state = EventState::unselected;
-
-	// always set as a unit
-	IEventType* type = nullptr;
-	void* storage_node = nullptr;
-};
+	index(index),
+	clazz(clazz)
+{}
 
 }
 
-#endif
+
 

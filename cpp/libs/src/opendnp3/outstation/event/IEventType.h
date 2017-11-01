@@ -19,41 +19,45 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_EVENTRECORD_H
-#define OPENDNP3_EVENTRECORD_H
+#ifndef OPENDNP3_IEVENTTYPE_H
+#define OPENDNP3_IEVENTTYPE_H
 
 #include "opendnp3/app/EventType.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
-
 #include "openpal/container/LinkedList.h"
-
-#include "IEventType.h"
-
-#include "EventState.h"
-
 
 namespace opendnp3
 {
 
-/**
-* Generic event information with an opaque pointer to
-* the specific event details
-*/
-class EventRecord
+class EventLists;
+class IEventWriteHandler;
+class EventRecord;
+
+class IEventType
 {
 
 public:
+	const EventType value;
 
-	EventRecord() = default;
-	EventRecord(uint16_t index, EventClass clazz);
+	inline bool IsEqual(EventType type) const
+	{
+		return type == value;
+	}
 
-	uint16_t index = 0;
-	EventClass clazz = EventClass::EC1;
-	EventState state = EventState::unselected;
+	inline bool IsNotEqual(EventType type) const
+	{
+		return type != value;
+	}
 
-	// always set as a unit
-	IEventType* type = nullptr;
-	void* storage_node = nullptr;
+protected:
+	IEventType(EventType value) : value(value)
+	{}
+
+public:
+
+	virtual void SelectDefaultVariation(EventRecord& record) const = 0;
+	virtual uint16_t WriteSome(openpal::LinkedListIterator<EventRecord>& iterator, EventLists& lists, IEventWriteHandler& handler) const = 0;
+	virtual void RemoveTypeFromStorage(EventRecord& record, EventLists& lists) const = 0;
+
 };
 
 }

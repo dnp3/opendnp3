@@ -23,6 +23,7 @@
 
 #include "IEventWriteHandler.h"
 #include "EventWriting.h"
+#include "TypedStorage.h"
 
 namespace opendnp3
 {
@@ -77,7 +78,7 @@ bool EventCollection<T>::WriteOne(IEventWriter<typename T::meas_t>& writer)
 	// nothing left to write
 	if (!record) return false;
 
-	const auto data = record->StorageAs<T>();
+	const auto data = TypedStorage<T>::Retrieve(*record);
 
 	// wrong variation
 	if (data->value.selectedVariation != this->variation) return false;
