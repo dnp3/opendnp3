@@ -38,7 +38,7 @@ class OctetStringEventWriter : public IEventWriter<OctetString>
 		Serializer(uint8_t size) : DNP3Serializer(
 			GroupVariationID(110, size), 
 			size,
-			nullptr,
+			nullptr, // won't be used for reading
 			&Serializer::Write
 		)
 		{}

@@ -33,52 +33,57 @@ struct DatabaseSizes
 {
 	static DatabaseSizes BinaryOnly(uint16_t count)
 	{
-		return DatabaseSizes(count, 0, 0, 0, 0, 0, 0, 0);
+		return DatabaseSizes(count, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
 	static DatabaseSizes DoubleBinaryOnly(uint16_t count)
 	{
-		return DatabaseSizes(0, count, 0, 0, 0, 0, 0, 0);
+		return DatabaseSizes(0, count, 0, 0, 0, 0, 0, 0, 0);
 	}
 
 	static DatabaseSizes AnalogOnly(uint16_t count)
 	{
-		return DatabaseSizes(0, 0, count, 0, 0, 0, 0, 0);
+		return DatabaseSizes(0, 0, count, 0, 0, 0, 0, 0, 0);
 	}
 
 	static DatabaseSizes CounterOnly(uint16_t count)
 	{
-		return DatabaseSizes(0, 0, 0, count, 0, 0, 0, 0);
+		return DatabaseSizes(0, 0, 0, count, 0, 0, 0, 0, 0);
 	}
 
 	static DatabaseSizes FrozenCounterOnly(uint16_t count)
 	{
-		return DatabaseSizes(0, 0, 0, 0, count, 0, 0, 0);
+		return DatabaseSizes(0, 0, 0, 0, count, 0, 0, 0, 0);
 	}
 
 	static DatabaseSizes BinaryOutputStatusOnly(uint16_t count)
 	{
-		return DatabaseSizes(0, 0, 0, 0, 0, count, 0, 0);
+		return DatabaseSizes(0, 0, 0, 0, 0, count, 0, 0, 0);
 	}
 
 	static DatabaseSizes AnalogOutputStatusOnly(uint16_t count)
 	{
-		return DatabaseSizes(0, 0, 0, 0, 0, 0, count, 0);
+		return DatabaseSizes(0, 0, 0, 0, 0, 0, count, 0, 0);
 	}
 
 	static DatabaseSizes TimeAndIntervalOnly(uint16_t count)
 	{
-		return DatabaseSizes(0, 0, 0, 0, 0, 0, 0, count);
+		return DatabaseSizes(0, 0, 0, 0, 0, 0, 0, count, 0);
+	}
+
+	static DatabaseSizes OctetStringOnly(uint16_t count)
+	{
+		return DatabaseSizes(0, 0, 0, 0, 0, 0, 0, 0, count);
 	}
 
 	static DatabaseSizes AllTypes(uint16_t count)
 	{
-		return DatabaseSizes(count, count, count, count, count, count, count, count);
+		return DatabaseSizes(count, count, count, count, count, count, count, count, count);
 	}
 
 	static DatabaseSizes Empty()
 	{
-		return DatabaseSizes(0, 0, 0, 0, 0, 0, 0, 0);
+		return DatabaseSizes(0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
 	DatabaseSizes(uint16_t numBinary,
@@ -88,7 +93,8 @@ struct DatabaseSizes
 	              uint16_t numFrozenCounter,
 	              uint16_t numBinaryOutputStatus,
 	              uint16_t numAnalogOutputStatus,
-	              uint16_t numTimeAndInterval) :
+	              uint16_t numTimeAndInterval,
+				  uint16_t numOctetString) :
 
 		numBinary(numBinary),
 		numDoubleBinary(numDoubleBinary),
@@ -97,7 +103,8 @@ struct DatabaseSizes
 		numFrozenCounter(numFrozenCounter),
 		numBinaryOutputStatus(numBinaryOutputStatus),
 		numAnalogOutputStatus(numAnalogOutputStatus),
-		numTimeAndInterval(numTimeAndInterval)
+		numTimeAndInterval(numTimeAndInterval),
+		numOctetString(numOctetString)
 	{}
 
 	uint16_t numBinary;
@@ -108,6 +115,7 @@ struct DatabaseSizes
 	uint16_t numBinaryOutputStatus;
 	uint16_t numAnalogOutputStatus;
 	uint16_t numTimeAndInterval;
+	uint16_t numOctetString;
 
 };
 

@@ -62,6 +62,7 @@ class CounterConfig : public DeadbandConfig<CounterInfo> {};
 class FrozenCounterConfig : public DeadbandConfig<FrozenCounterInfo> {};
 class BOStatusConfig : public EventConfig<BinaryOutputStatusInfo> {};
 class AOStatusConfig : public DeadbandConfig<AnalogOutputStatusInfo> {};
+class OctetStringConfig : public EventConfig<OctetStringInfo> {};
 class TimeAndIntervalConfig : public StaticConfig<TimeAndIntervalInfo> {};
 class SecurityStatConfig : public IndexConfig {};
 

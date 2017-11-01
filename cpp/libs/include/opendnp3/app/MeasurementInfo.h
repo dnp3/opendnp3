@@ -35,6 +35,7 @@
 #include "opendnp3/gen/StaticAnalogVariation.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/StaticTimeAndIntervalVariation.h"
+#include "opendnp3/gen/StaticOctetStringVariation.h"
 #include "opendnp3/gen/StaticSecurityStatVariation.h"
 
 #include "opendnp3/gen/EventBinaryVariation.h"
@@ -152,9 +153,11 @@ struct OctetStringInfo : private openpal::StaticOnly
 {
 	typedef OctetString meas_t;
 	typedef EventOctetStringVariation event_variation_t;
+	typedef StaticOctetStringVariation static_variation_t;
 
 	static const EventType EventTypeEnum = EventType::OctetString;
 	static const event_variation_t DefaultEventVariation = EventOctetStringVariation::Group111Var0;
+	static const static_variation_t DefaultStaticVariation = StaticOctetStringVariation::Group110Var0;
 };
 
 struct TimeAndIntervalInfo : private openpal::StaticOnly

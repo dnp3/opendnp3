@@ -48,7 +48,6 @@ struct Cell
 	typename Spec::config_t config;			// configuration
 	typename Spec::event_cell_t event;		// event cell
 	SelectedValue<Spec> selection;			// selected value
-
 };
 
 

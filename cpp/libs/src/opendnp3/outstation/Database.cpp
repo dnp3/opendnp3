@@ -72,6 +72,11 @@ bool Database::Update(const AnalogOutputStatus& value, uint16_t index, EventMode
 	return this->UpdateEvent<AnalogOutputStatusSpec>(value, index, mode);
 }
 
+bool Database::Update(const OctetString& value, uint16_t index, EventMode mode)
+{
+	return this->UpdateEvent<OctetStringSpec>(value, index, mode);
+}
+
 bool Database::Update(const TimeAndInterval& value, uint16_t index)
 {
 	auto rawIndex = GetRawIndex<TimeAndIntervalSpec>(index);

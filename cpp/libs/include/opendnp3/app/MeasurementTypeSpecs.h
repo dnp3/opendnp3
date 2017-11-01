@@ -164,10 +164,18 @@ struct AnalogOutputStatusSpec : public AnalogOutputStatusInfo
 
 struct OctetStringSpec : public OctetStringInfo
 {
+	typedef OctetStringConfig config_t;
+	typedef SimpleEventCell<OctetStringSpec> event_cell_t;
+
 	inline static uint8_t GetEventAttribute(const meas_t& value)
 	{
 		// octet strings don't have time
 		return value.Size();
+	}
+
+	inline static bool IsEvent(const OctetString& oldValue, const OctetString& newValue)
+	{
+		return oldValue.ToRSlice().Equals(newValue.ToRSlice());
 	}
 };
 

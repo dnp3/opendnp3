@@ -310,7 +310,7 @@ TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
 {
 	OutstationConfig config;
 	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes().Except(StaticTypeBitmask::DoubleBinaryInput);
-	OutstationTestObject t(config, DatabaseSizes(1, 1, 0, 0, 0, 0, 0, 0)); // 1 binary and 1 double binary
+	OutstationTestObject t(config, DatabaseSizes(1, 1, 0, 0, 0, 0, 0, 0, 0)); // 1 binary and 1 double binary
 
 	t.LowerLayerUp();
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
