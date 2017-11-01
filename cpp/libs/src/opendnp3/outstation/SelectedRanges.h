@@ -76,6 +76,7 @@ private:
 	Range frozenCounters;
 	Range binaryOutputStatii;
 	Range analogOutputStatii;
+	Range octetString;
 	Range timeAndIntervals;
 	Range securityStats;
 };

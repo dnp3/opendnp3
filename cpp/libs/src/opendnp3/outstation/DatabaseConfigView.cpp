@@ -32,7 +32,7 @@ DatabaseConfigView::DatabaseConfigView(
     openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii,
     openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii,
     openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals,
-	openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> octetStrings
+    openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> octetStrings
 ) :
 	binaries(binaries),
 	doubleBinaries(doubleBinaries),

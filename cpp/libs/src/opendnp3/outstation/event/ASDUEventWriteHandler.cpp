@@ -161,7 +161,7 @@ uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation
 }
 
 uint16_t ASDUEventWriteHandler::Write(EventOctetStringVariation variation, uint8_t firstSize, IEventCollection<OctetString>& items)
-{	
+{
 	return EventWriters::Write(firstSize, this->writer, items);
 }
 

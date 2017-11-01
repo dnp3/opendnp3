@@ -36,7 +36,7 @@ EventBufferConfig::EventBufferConfig(
     uint16_t maxFrozenCounterEvents,
     uint16_t maxBinaryOutputStatusEvents,
     uint16_t maxAnalogOutputStatusEvents,
-	uint16_t maxOctetStringEvents
+    uint16_t maxOctetStringEvents
 ) :
 
 	maxBinaryEvents(maxBinaryEvents),
@@ -53,15 +53,15 @@ EventBufferConfig::EventBufferConfig(
 
 uint32_t EventBufferConfig::TotalEvents() const
 {
-	return	
-		maxBinaryEvents +
-		maxDoubleBinaryEvents +
-		maxAnalogEvents +
-		maxCounterEvents +
-		maxFrozenCounterEvents +
-		maxBinaryOutputStatusEvents +
-		maxAnalogOutputStatusEvents +
-		maxOctetStringEvents;
+	return
+	    maxBinaryEvents +
+	    maxDoubleBinaryEvents +
+	    maxAnalogEvents +
+	    maxCounterEvents +
+	    maxFrozenCounterEvents +
+	    maxBinaryOutputStatusEvents +
+	    maxAnalogOutputStatusEvents +
+	    maxOctetStringEvents;
 }
 
 

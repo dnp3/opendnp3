@@ -317,6 +317,28 @@ TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 02 00 00 00 02");
 }
 
+TEST_CASE(SUITE("octet strings can be returned as part of a class 0 scan"))
+{
+	OutstationConfig config;
+	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes();
+	OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(3));
+
+	t.LowerLayerUp();
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 6E 01 00 00 02 00 00 00");
+}
+
+TEST_CASE(SUITE("octet strings can be returned by reading g110v0"))
+{
+	OutstationConfig config;
+	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes();
+	OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(3));
+
+	t.LowerLayerUp();
+	t.SendToOutstation("C0 01 6E 00 06"); // g110v0
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 6E 01 00 00 02 00 00 00");
+}
+
 TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 {
 	OutstationConfig config;

@@ -384,12 +384,11 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesDifferenceTooBigForCTO"))
 
 TEST_CASE(SUITE("reports octet string events w/ same size in same header"))
 {
-	OutstationConfig config;	
+	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(5);
 	OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(5));
-	t.LowerLayerUp();	
+	t.LowerLayerUp();
 
-	
 
 	auto update = [](IUpdateHandler & db)
 	{
@@ -413,8 +412,6 @@ TEST_CASE(SUITE("reports octet string events w/ different sizes in separate head
 	OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(5));
 	t.LowerLayerUp();
 
-
-
 	auto update = [](IUpdateHandler & db)
 	{
 		{
@@ -426,7 +423,7 @@ TEST_CASE(SUITE("reports octet string events w/ different sizes in separate head
 			uint8_t bytes[4] = { 0xCA, 0xFE, 0xBA, 0xBE };
 			OctetString data(RSlice(bytes, 4));
 			db.Update(data, 0);
-		}		
+		}
 	};
 
 	t.Transaction(update);

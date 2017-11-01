@@ -37,6 +37,7 @@ bool SelectedRanges::HasAnySelection() const
 	    binaryOutputStatii.IsValid() ||
 	    analogOutputStatii.IsValid() ||
 	    timeAndIntervals.IsValid() ||
+	    octetString.IsValid() ||
 	    securityStats.IsValid();
 }
 
@@ -92,6 +93,12 @@ template <>
 Range& SelectedRanges::GetRangeRef<SecurityStatSpec>()
 {
 	return securityStats;
+}
+
+template <>
+Range& SelectedRanges::GetRangeRef<OctetStringSpec>()
+{
+	return octetString;
 }
 
 }

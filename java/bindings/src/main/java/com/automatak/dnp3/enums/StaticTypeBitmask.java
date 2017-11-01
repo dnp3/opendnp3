@@ -31,7 +31,8 @@ public enum StaticTypeBitmask
   AnalogInput(0x10),
   BinaryOutputStatus(0x20),
   AnalogOutputStatus(0x40),
-  TimeAndInterval(0x80);
+  TimeAndInterval(0x80),
+  OctetString(0x100);
 
   private final int id;
 
@@ -65,6 +66,8 @@ public enum StaticTypeBitmask
         return AnalogOutputStatus;
       case(0x80):
         return TimeAndInterval;
+      case(0x100):
+        return OctetString;
       default:
         return BinaryInput;
     }

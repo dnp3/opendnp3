@@ -60,9 +60,13 @@ StaticWriter<AnalogOutputStatusSpec>::Function GetStaticWriter(StaticAnalogOutpu
 
 StaticWriter<BinaryOutputStatusSpec>::Function GetStaticWriter(StaticBinaryOutputStatusVariation variation);
 
+StaticWriter<OctetStringSpec>::Function GetStaticWriter(StaticOctetStringVariation variation);
+
 StaticWriter<TimeAndIntervalSpec>::Function GetStaticWriter(StaticTimeAndIntervalVariation variation);
 
 StaticWriter<SecurityStatSpec>::Function GetStaticWriter(StaticSecurityStatVariation variation);
+
+bool WriteOctetString(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range);
 
 template <class Spec, class IndexType >
 bool LoadWithRangeIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view, RangeWriteIterator<IndexType, typename Spec::meas_t>& iterator, Range& range)

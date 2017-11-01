@@ -94,7 +94,7 @@ struct DatabaseSizes
 	              uint16_t numBinaryOutputStatus,
 	              uint16_t numAnalogOutputStatus,
 	              uint16_t numTimeAndInterval,
-				  uint16_t numOctetString) :
+	              uint16_t numOctetString) :
 
 		numBinary(numBinary),
 		numDoubleBinary(numDoubleBinary),

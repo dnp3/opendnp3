@@ -56,7 +56,7 @@ DatabaseConfigView StaticBuffers::GetView() const
 	           binaryOutputStatii.ToView(),
 	           analogOutputStatii.ToView(),
 	           timeAndIntervals.ToView(),
-			   octetStrings.ToView()
+	           octetStrings.ToView()
 	       );
 }
 

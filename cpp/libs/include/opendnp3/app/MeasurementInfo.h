@@ -156,6 +156,7 @@ struct OctetStringInfo : private openpal::StaticOnly
 	typedef StaticOctetStringVariation static_variation_t;
 
 	static const EventType EventTypeEnum = EventType::OctetString;
+	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::OctetString;
 	static const event_variation_t DefaultEventVariation = EventOctetStringVariation::Group111Var0;
 	static const static_variation_t DefaultStaticVariation = StaticOctetStringVariation::Group110Var0;
 };

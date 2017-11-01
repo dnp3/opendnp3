@@ -45,7 +45,7 @@ struct EventBufferConfig
 		You probably don't want to use this method unless your implementation actually reports every type.
 	*/
 	static EventBufferConfig AllTypes(uint16_t sizes);
-	
+
 	/**
 		Construct the class specifying the maximum number of events for each type individually.
 	*/
@@ -57,7 +57,7 @@ struct EventBufferConfig
 	    uint16_t maxFrozenCounterEvents = 0,
 	    uint16_t maxBinaryOutputStatusEvents = 0,
 	    uint16_t maxAnalogOutputStatusEvents = 0,
-		uint16_t maxOctetStringEvents = 0
+	    uint16_t maxOctetStringEvents = 0
 	);
 
 	// Returns the sum of all event count maximums (number of elements in preallocated buffer)

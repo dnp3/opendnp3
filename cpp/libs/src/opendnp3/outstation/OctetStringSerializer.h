@@ -18,46 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "opendnp3/app/OctetData.h"
 
-#include <openpal/container/WSlice.h>
-#include <openpal/util/Comparisons.h>
+#ifndef OPENDNP3_OCTETSTRINGSERIALIZER_H
+#define OPENDNP3_OCTETSTRINGSERIALIZER_H
 
-using namespace openpal;
+#include "opendnp3/app/DNP3Serializer.h"
+#include "opendnp3/app/OctetString.h"
 
 namespace opendnp3
 {
 
-OctetData::OctetData() : size(1)
+struct OctetStringSerializer : public DNP3Serializer<OctetString>
 {
+	OctetStringSerializer(bool isEvent, uint8_t size);
+
+	static bool Write(const OctetString& value, openpal::WSlice& buffer);
+};
 
 }
 
-OctetData::OctetData(const RSlice& input) :
-	size(openpal::Min<uint32_t>(MAX_SIZE, input.Size()))
-{
-	auto dest = buffer.GetWSlice();
-	input.Take(size).CopyTo(dest);
-}
-
-bool OctetData::Set(const openpal::RSlice& input)
-{
-	if (input.Size() > MAX_SIZE) return false;
-	else
-	{
-		auto dest = buffer.GetWSlice();
-		input.CopyTo(dest);
-		return true;
-	}
-}
-
-openpal::RSlice OctetData::ToRSlice() const
-{
-	return buffer.ToRSlice(size);
-}
-
-}
-
-
-
+#endif
 

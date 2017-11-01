@@ -81,7 +81,7 @@ public:
 	std::deque<Event<BinaryOutputStatusSpec>> binaryOutputStatusEvents;
 	std::deque<Event<AnalogOutputStatusSpec>> analogOutputStatusEvents;
 	std::deque<Event<OctetStringSpec>> octetStringEvents;
-	
+
 };
 
 class DatabaseTestObject

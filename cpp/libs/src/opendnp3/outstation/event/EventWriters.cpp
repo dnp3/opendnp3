@@ -21,50 +21,27 @@
 
 #include "EventWriters.h"
 
+#include "opendnp3/outstation/OctetStringSerializer.h"
+
 namespace opendnp3
 {
 
-class OctetStringSerializier : public DNP3Serializer<OctetString> 
-{	
-public:
-	OctetStringSerializier(uint8_t size) : DNP3Serializer(GroupVariationID(110, size), size, nullptr, nullptr)
-	{}
-};
-
 class OctetStringEventWriter : public IEventWriter<OctetString>
-{	
-	struct Serializer : public DNP3Serializer<OctetString>
-	{	
-		Serializer(uint8_t size) : DNP3Serializer(
-			GroupVariationID(111, size), 
-			size,
-			nullptr, // won't be used for reading
-			&Serializer::Write
-		)
-		{}
-
-		static bool Write(const OctetString& value, openpal::WSlice& buffer)
-		{			
-			if (value.Size() > buffer.Size()) return false;
-			value.ToRSlice().CopyTo(buffer);
-			return true;
-		}
-	};
-
-	const Serializer serializer;
+{
+	const OctetStringSerializer serializer;
 	PrefixedWriteIterator<openpal::UInt16, OctetString> iterator;
 
 public:
 
-	OctetStringEventWriter(HeaderWriter& writer, uint8_t size) : 		
-		serializer(size),
+	OctetStringEventWriter(HeaderWriter& writer, uint8_t size) :
+		serializer(true, size),
 		iterator(writer.IterateOverCountWithPrefix<openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer))
 	{}
 
 	virtual bool Write(const OctetString& meas, uint16_t index) override
 	{
 		if (meas.Size() != this->serializer.Size()) return false;
-		
+
 		return iterator.Write(meas, index);
 	}
 };
