@@ -190,8 +190,8 @@ bool EventBuffer::HasAnySelection() const
 bool EventBuffer::Load(HeaderWriter& writer)
 {
 	ASDUEventWriteHandler handler(writer);
-	const auto num = this->storage.Write(handler);
-	// all selected events were written
+	this->storage.Write(handler);
+	// all selected events were written?
 	return this->storage.NumSelected() == 0;
 }
 

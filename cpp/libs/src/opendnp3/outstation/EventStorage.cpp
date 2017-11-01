@@ -174,9 +174,7 @@ uint32_t EventStorage::Write(IEventWriteHandler& handler)
 }
 
 uint32_t EventStorage::ClearWritten()
-{	
-	auto iterator = this->state.events.Iterate();	
-
+{		
 	auto written = [this](EventRecord& record) -> bool {
 		if (record.state == EventState::written)
 		{
@@ -194,9 +192,7 @@ uint32_t EventStorage::ClearWritten()
 }
 
 void EventStorage::Unselect()
-{	
-	auto iterator = this->state.events.Iterate();
-
+{		
 	auto clear = [this](EventRecord& record) -> void {
 		record.state = EventState::unselected;
 	};
