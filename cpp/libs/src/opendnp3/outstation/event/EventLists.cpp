@@ -32,19 +32,21 @@ EventLists::EventLists(const EventBufferConfig& config) :
 	counter(config.maxCounterEvents),
 	frozenCounter(config.maxFrozenCounterEvents),
 	binaryOutputStatus(config.maxBinaryOutputStatusEvents),
-	analogOutputStatus(config.maxAnalogOutputStatusEvents)
+	analogOutputStatus(config.maxAnalogOutputStatusEvents),
+	octetString(config.maxOctetStringEvents)
 {}
 
 bool EventLists::IsAnyTypeFull() const
 {
 	return
-	    this->binary.IsFull() ||
-	    this->doubleBinary.IsFull() ||
-	    this->counter.IsFull() ||
-	    this->frozenCounter.IsFull() ||
-	    this->analog.IsFull() ||
-	    this->binaryOutputStatus.IsFull() ||
-	    this->analogOutputStatus.IsFull();
+		this->binary.IsFull() ||
+		this->doubleBinary.IsFull() ||
+		this->counter.IsFull() ||
+		this->frozenCounter.IsFull() ||
+		this->analog.IsFull() ||
+		this->binaryOutputStatus.IsFull() ||
+		this->analogOutputStatus.IsFull() ||
+		this->octetString.IsFull();
 }
 
 template <>
@@ -87,6 +89,12 @@ template <>
 openpal::LinkedList<TypedEventRecord<AnalogOutputStatusSpec>, uint32_t>& EventLists::GetList()
 {
 	return this->analogOutputStatus;
+}
+
+template <>
+openpal::LinkedList<TypedEventRecord<OctetStringSpec>, uint32_t>& EventLists::GetList()
+{
+	return this->octetString;
 }
 
 }

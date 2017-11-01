@@ -26,8 +26,6 @@
 namespace opendnp3
 {
 
-static const int NUM_OUTSTATION_EVENT_TYPES = 7;
-
 enum class EventType : uint16_t
 {
 	Binary = 0,
@@ -36,7 +34,8 @@ enum class EventType : uint16_t
 	FrozenCounter = 3,
 	DoubleBitBinary = 4,
 	BinaryOutputStatus = 5,
-	AnalogOutputStatus = 6
+	AnalogOutputStatus = 6,
+	OctetString = 7
 };
 
 enum class EventClass : uint8_t

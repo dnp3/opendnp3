@@ -45,6 +45,7 @@ public:
 	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items) override;
 	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items) override;
 	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items) override;
+	virtual uint16_t Write(EventOctetStringVariation variation, const DNPTime& first, IEventCollection<OctetString>& items) override;
 
 private:
 

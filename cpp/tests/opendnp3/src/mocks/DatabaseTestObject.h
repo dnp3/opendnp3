@@ -68,6 +68,11 @@ public:
 		analogOutputStatusEvents.push_back(evt);
 	}
 
+	void Update(const Event<OctetStringSpec>& evt) override
+	{
+		octetStringEvents.push_back(evt);
+	}
+
 	std::deque<Event<BinarySpec>> binaryEvents;
 	std::deque<Event<DoubleBitBinarySpec>> doubleBinaryEvents;
 	std::deque<Event<AnalogSpec>> analogEvents;
@@ -75,7 +80,8 @@ public:
 	std::deque<Event<FrozenCounterSpec>> frozenCounterEvents;
 	std::deque<Event<BinaryOutputStatusSpec>> binaryOutputStatusEvents;
 	std::deque<Event<AnalogOutputStatusSpec>> analogOutputStatusEvents;
-	std::deque<Event<SecurityStatSpec>> securityStatEvents;
+	std::deque<Event<OctetStringSpec>> octetStringEvents;
+	
 };
 
 class DatabaseTestObject

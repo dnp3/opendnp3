@@ -72,6 +72,7 @@ public:
 	bool Update(const Event<FrozenCounterSpec>& evt);
 	bool Update(const Event<BinaryOutputStatusSpec>& evt);
 	bool Update(const Event<AnalogOutputStatusSpec>& evt);
+	bool Update(const Event<OctetStringSpec>& evt);
 
 	// ---- function used to select distinct types ----
 

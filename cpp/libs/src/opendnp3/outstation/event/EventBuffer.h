@@ -58,6 +58,7 @@ public:
 	virtual void Update(const Event<FrozenCounterSpec>&  evt) override;
 	virtual void Update(const Event<BinaryOutputStatusSpec>& evt) override;
 	virtual void Update(const Event<AnalogOutputStatusSpec>& evt) override;
+	virtual void Update(const Event<OctetStringSpec>& evt) override;
 
 	// ------- IEventSelector ------
 

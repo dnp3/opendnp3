@@ -160,6 +160,13 @@ uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation
 	}
 }
 
+uint16_t ASDUEventWriteHandler::Write(EventOctetStringVariation variation, const DNPTime& first, IEventCollection<OctetString>& items)
+{
+	// The variation and time aren't relavent to octet strings
+	// TODO -
+	return 0;
+}
+
 }
 
 

@@ -64,6 +64,11 @@ void EventBuffer::Update(const Event<AnalogOutputStatusSpec>& evt)
 	this->UpdateAny(evt);
 }
 
+void EventBuffer::Update(const Event<OctetStringSpec>& evt)
+{
+	this->UpdateAny(evt);
+}
+
 void EventBuffer::Unselect()
 {
 	this->storage.Unselect();

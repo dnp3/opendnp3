@@ -22,6 +22,7 @@
 #define OPENDNP3_IEVENTWRITEHANDLER_H
 
 #include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/OctetString.h"
 
 #include "opendnp3/gen/EventBinaryVariation.h"
 #include "opendnp3/gen/EventDoubleBinaryVariation.h"
@@ -30,6 +31,7 @@
 #include "opendnp3/gen/EventAnalogVariation.h"
 #include "opendnp3/gen/EventBinaryOutputStatusVariation.h"
 #include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
+#include "opendnp3/gen/EventOctetStringVariation.h"
 
 namespace opendnp3
 {
@@ -58,6 +60,7 @@ public:
 	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items) = 0;
 	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items) = 0;
 	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items) = 0;
+	virtual uint16_t Write(EventOctetStringVariation variation, const DNPTime& first, IEventCollection<OctetString>& items) = 0;
 };
 }
 

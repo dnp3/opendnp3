@@ -60,7 +60,7 @@ public:
 
 		EventCollection<T> collection(iterator, lists.counters, type->value.selectedVariation);
 
-		return handler.Write(type->value.selectedVariation, type->value.value.time, collection);
+		return handler.Write(type->value.selectedVariation, T::GetTime(type->value.value), collection);
 	}
 
 	virtual void RemoveTypeFromStorage(EventRecord& record, EventLists& lists) const override

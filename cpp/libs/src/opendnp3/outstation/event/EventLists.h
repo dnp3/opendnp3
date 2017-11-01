@@ -23,6 +23,7 @@
 
 #include "opendnp3/outstation/EventBufferConfig.h"
 
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "openpal/util/Uncopyable.h"
 
 #include "TypedEventRecord.h"
@@ -63,6 +64,7 @@ private:
 	openpal::LinkedList<TypedEventRecord<FrozenCounterSpec>, uint32_t> frozenCounter;
 	openpal::LinkedList<TypedEventRecord<BinaryOutputStatusSpec>, uint32_t> binaryOutputStatus;
 	openpal::LinkedList<TypedEventRecord<AnalogOutputStatusSpec>, uint32_t> analogOutputStatus;
+	openpal::LinkedList<TypedEventRecord<OctetStringSpec>, uint32_t> octetString;
 };
 
 }

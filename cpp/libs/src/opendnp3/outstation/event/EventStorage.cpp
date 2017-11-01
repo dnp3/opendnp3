@@ -82,6 +82,11 @@ bool EventStorage::Update(const Event<AnalogOutputStatusSpec>& evt)
 	return EventUpdate::Update(state, evt);
 }
 
+bool EventStorage::Update(const Event<OctetStringSpec>& evt)
+{
+	return EventUpdate::Update(state, evt);
+}
+
 uint32_t EventStorage::SelectByType(EventBinaryVariation variation, uint32_t max)
 {
 	return EventSelection::SelectByType<BinarySpec>(this->state, variation, max);

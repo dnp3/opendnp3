@@ -51,6 +51,8 @@ public:
 
 	virtual void Update(const Event<AnalogOutputStatusSpec>& evt) = 0;
 
+	virtual void Update(const Event<OctetStringSpec>& evt) = 0;
+
 };
 
 }
