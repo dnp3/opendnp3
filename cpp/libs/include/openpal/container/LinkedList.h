@@ -177,8 +177,8 @@ public:
 
 	ListNode<T>* Add(const T& value);
 
-	template <class Selector>
-	void While(Selector select)
+	template <class U>
+	void While(const U& select)
 	{
 		auto iter = this->Iterate();
 		bool result = true;
@@ -188,29 +188,18 @@ public:
 		}
 	}
 
-	template <class Selector>
-	void Foreach(Selector select)
+	template <class U>
+	void Foreach(const U& action)
 	{
 		auto iter = this->Iterate();
 		while (iter.HasNext())
 		{
-			select(iter.Next()->value);
+			action(iter.Next()->value);
 		}
 	}
-
-	template <class Selector>
-	ListNode<T>* RemoveFirst(Selector select)
-	{
-		auto pNode = this->FindFirst(select);
-		if (pNode)
-		{
-			this->Remove(pNode);
-		}
-		return pNode;
-	}
-
-	template <class Selector>
-	list_size_type_t RemoveAll(Selector match)
+	
+	template <class U>
+	list_size_type_t RemoveAll(const U& match)
 	{
 		list_size_type_t count = 0;
 
@@ -233,24 +222,6 @@ public:
 
 		return count;
 	}
-
-	bool Remove(const T& value)
-	{
-		auto iter = this->Iterate();
-		while (iter.HasNext())
-		{
-			auto pNode = iter.Next();
-			if (pNode->value == value)
-			{
-				this->Remove(pNode);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	template <class LessThan>
-	ListNode<T>* Insert(const T& value, LessThan lt);
 
 	void Remove(ListNode<T>* apNode);
 
@@ -275,33 +246,6 @@ template <class T>
 ListNode<T>* LinkedList<T>::Add(const T& value)
 {
 	return this->Insert(value, pTail, nullptr);
-}
-
-
-template <class T>
-template <class LessThan>
-ListNode<T>* LinkedList<T>::Insert(const T& value, LessThan lt)
-{
-	if (pFree == nullptr)
-	{
-		return nullptr;
-	}
-	else
-	{
-		auto query = [lt, value](const T & v)
-		{
-			return lt(value, v);
-		};
-		auto pResult = this->FindFirst(query);
-		if (pResult)
-		{
-			return Insert(value, pResult->prev, pResult);
-		}
-		else
-		{
-			return Insert(value, pTail, nullptr);
-		}
-	}
 }
 
 template <class T>
