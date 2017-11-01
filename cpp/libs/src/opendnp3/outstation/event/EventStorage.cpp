@@ -122,6 +122,11 @@ uint32_t EventStorage::SelectByType(EventAnalogOutputStatusVariation variation, 
 	return EventSelection::SelectByType<AnalogOutputStatusSpec>(this->state, variation, max);
 }
 
+uint32_t EventStorage::SelectByType(EventOctetStringVariation variation, uint32_t max)
+{
+	return EventSelection::SelectByType<OctetStringSpec>(this->state, variation, max);
+}
+
 uint32_t EventStorage::SelectByType(EventType type, uint32_t max)
 {
 	switch (type)
@@ -140,6 +145,8 @@ uint32_t EventStorage::SelectByType(EventType type, uint32_t max)
 		return EventSelection::SelectByType<BinaryOutputStatusSpec>(this->state, max);
 	case(EventType::AnalogOutputStatus):
 		return EventSelection::SelectByType<AnalogOutputStatusSpec>(this->state, max);
+	case(EventType::OctetString):
+		return EventSelection::SelectByType<OctetStringSpec>(this->state, max);
 	default:
 		return 0;
 	}

@@ -83,6 +83,7 @@ public:
 	uint32_t SelectByType(EventFrozenCounterVariation variation, uint32_t max);
 	uint32_t SelectByType(EventBinaryOutputStatusVariation variation, uint32_t max);
 	uint32_t SelectByType(EventAnalogOutputStatusVariation variation, uint32_t max);
+	uint32_t SelectByType(EventOctetStringVariation variation, uint32_t max);
 
 	uint32_t SelectByType(EventType type, uint32_t max);
 

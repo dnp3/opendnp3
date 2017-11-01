@@ -181,6 +181,9 @@ IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum)
 	case(GroupVariation::Group60Var4):
 		return this->SelectByClass(maximum, EventClass::EC3);
 
+	case(GroupVariation::Group111Var0) :
+		return this->SelectByType(maximum, EventOctetStringVariation::Group111Var0);
+
 	default:
 		return IINBit::FUNC_NOT_SUPPORTED;
 	}
