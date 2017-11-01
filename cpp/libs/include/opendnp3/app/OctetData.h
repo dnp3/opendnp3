@@ -43,9 +43,7 @@ public:
 
 	openpal::RSlice ToRSlice() const;
 
-private:
-
-	void Initialize(const openpal::RSlice& buffer);
+private:	
 
 	openpal::StaticBuffer<MAX_SIZE> buffer;
 	uint8_t size;
