@@ -74,6 +74,7 @@ public:
 			{
 				return &(this->current->value);
 			}
+
 			this->current = this->current->next;
 		}
 
@@ -121,10 +122,7 @@ public:
 	typedef ListIterator<T> Iterator;
 
 	LinkedList(list_size_type_t maxSize) :
-		HasSize<list_size_type_t>(0),
-		pHead(nullptr),
-		pTail(nullptr),
-		pFree(nullptr),
+		HasSize<list_size_type_t>(0),		
 		underlying(maxSize)
 	{
 		Initialize();
@@ -150,12 +148,12 @@ public:
 
 	inline ListNode<T>* Head()
 	{
-		return pHead;
+		return this->head;
 	}
 
 	Iterator Iterate() const
 	{
-		return Iterator::From(pHead);
+		return Iterator::From(this->head);
 	}
 
 	template <class Selector>
@@ -215,9 +213,9 @@ public:
 
 private:
 
-	ListNode<T>* pHead;
-	ListNode<T>* pTail;
-	ListNode<T>* pFree;
+	ListNode<T>* head = nullptr;
+	ListNode<T>* tail = nullptr;
+	ListNode<T>* free = nullptr;
 
 	Array<ListNode<T>, list_size_type_t> underlying;
 
@@ -231,21 +229,21 @@ private:
 template <class T>
 ListNode<T>* LinkedList<T>::Add(const T& value)
 {
-	return this->Insert(value, pTail, nullptr);
+	return this->Insert(value, this->tail, nullptr);
 }
 
 template <class T>
 ListNode<T>* LinkedList<T>::Insert(const T& value, ListNode<T>* pLeft, ListNode<T>* pRight)
 {
-	if (pFree == nullptr)
+	if (this->free == nullptr)
 	{
 		return nullptr;
 	}
 	else
 	{
 		// initialize the new node, and increment the size
-		auto pNode = pFree;
-		pFree = pFree->next;
+		auto pNode = this->free;
+		this->free = this->free->next;
 		pNode->value = value;
 		++(this->size);
 
@@ -255,13 +253,13 @@ ListNode<T>* LinkedList<T>::Insert(const T& value, ListNode<T>* pLeft, ListNode<
 		// change of head
 		if (pLeft == nullptr)
 		{
-			pHead = pNode;
+			this->head = pNode;
 		}
 
 		// change of tail
 		if (pRight == nullptr)
 		{
-			pTail = pNode;
+			this->tail = pNode;
 		}
 
 		return pNode;
@@ -291,33 +289,33 @@ void LinkedList<T>::Remove(ListNode<T>* apNode)
 	{
 		if (apNode->next == nullptr)
 		{
-			pHead = pTail = nullptr; // list is now empty
+			this->head = this->tail = nullptr; // list is now empty
 		}
 		else
 		{
-			pHead = apNode->next; // head but not tail
+			this->head = apNode->next; // head but not tail
 		}
 	}
 	else
 	{
-		if(apNode->next == nullptr) pTail = apNode->prev; // was only the tail
+		if(apNode->next == nullptr) this->tail = apNode->prev; // was only the tail
 	}
 
 	// attach the adjacent nodes to eachother if they exist
 	Link(apNode->prev, apNode->next);
 
 	// Now that the data list is complete, attach the freed node to the front of the free list
-	apNode->next = pFree;
-	if(pFree != nullptr) pFree->prev = apNode;
+	apNode->next = this->free;
+	if(this->free != nullptr) this->free->prev = apNode;
 	apNode->prev = nullptr; // it's the head now
-	pFree = apNode;
+	this->free = apNode;
 	--(this->size);
 }
 
 template <class T>
 bool LinkedList<T>::IsFull() const
 {
-	return (pFree == nullptr);
+	return (this->free == nullptr);
 }
 
 
@@ -334,7 +332,7 @@ void LinkedList<T>::Initialize()
 {
 	if(underlying.IsNotEmpty())
 	{
-		pFree = &underlying[0];
+		this->free = &underlying[0];
 		for(list_size_type_t i = 1; i < underlying.Size(); ++i)
 		{
 			Link(&underlying[i - 1], &underlying[i]);
