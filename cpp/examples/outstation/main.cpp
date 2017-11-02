@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 	DNP3Manager manager(1, ConsoleLogger::Create());
 
 	// Create a TCP server (listener)
-	auto channel = manager.AddTCPServer("server", FILTERS, ChannelRetry::Default(), "0.0.0.0", 20000, PrintingChannelListener::Create());
+	auto channel = manager.AddTCPServer("server", FILTERS, "0.0.0.0", 20000, PrintingChannelListener::Create());
 
 	// The main object for a outstation. The defaults are useable,
 	// but understanding the options are important.

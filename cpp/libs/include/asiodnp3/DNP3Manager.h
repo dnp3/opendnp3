@@ -111,14 +111,14 @@ public:
 	*/
 	std::shared_ptr<IChannel> AddTCPServer(
 	    const std::string& id,
-	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    uint32_t levels,	    
 	    const std::string& endpoint,
 	    uint16_t port,
-	    std::shared_ptr<IChannelListener> listener);
+	    std::shared_ptr<IChannelListener> listener
+	);
 
 	/**
-	* Add a persistent TCP serial channel
+	* Add a persistent serial channel
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
@@ -168,8 +168,7 @@ public:
 	* @throw std::system_error Throws underlying ASIO exception of TLS configuration is invalid
 	*
 	* @param id Alias that will be used for logging purposes with this channel
-	* @param levels Bitfield that describes the logging level for this channel and associated sessions
-	* @param retry Retry parameters for failed channels
+	* @param levels Bitfield that describes the logging level for this channel and associated sessions	
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param config TLS configuration information
@@ -179,8 +178,7 @@ public:
 	*/
 	std::shared_ptr<IChannel> AddTLSServer(
 	    const std::string& id,
-	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    uint32_t levels,	    
 	    const std::string& endpoint,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,

@@ -88,17 +88,16 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jadapter, jint jport, jobject jlistener)
+(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jstring jadapter, jint jport, jobject jlistener)
 {
 	const auto manager = (DNP3Manager*) native;
 
 	CString id(env, jid);	
-	CString adapter(env, jadapter);
-	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+	CString adapter(env, jadapter);	
 
 	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	auto channel = manager->AddTCPServer(id.str(), jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), listener);
+	auto channel = manager->AddTCPServer(id.str(), jlevels, adapter.str(), static_cast<uint16_t>(jport), listener);
 
 	return (jlong) new std::shared_ptr<IChannel>(channel);
 }
@@ -125,13 +124,12 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1server
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jadapter, jint jport, jobject jtlsconfig, jobject jlistener)
+(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jstring jadapter, jint jport, jobject jtlsconfig, jobject jlistener)
 {
 	const auto manager = (DNP3Manager*)native;
 
 	CString id(env, jid);
-	CString adapter(env, jadapter);
-	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+	CString adapter(env, jadapter);	
 
 	auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
 
@@ -139,7 +137,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	std::error_code ec;
 
-	auto channel = manager->AddTLSServer(id.str(), jlevels, retry, adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
+	auto channel = manager->AddTLSServer(id.str(), jlevels, adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
 
 	return ec ? 0 : (jlong) new std::shared_ptr<IChannel>(channel);
 }

@@ -70,8 +70,7 @@ public:
 
 	std::shared_ptr<IChannel> AddTCPServer(
 	    const std::string& id,
-	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    uint32_t levels,	    
 	    const std::string& endpoint,
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener);
@@ -96,8 +95,7 @@ public:
 
 	std::shared_ptr<IChannel> AddTLSServer(
 	    const std::string& id,
-	    uint32_t levels,
-	    const asiopal::ChannelRetry& retry,
+	    uint32_t levels,	    
 	    const std::string& endpoint,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,

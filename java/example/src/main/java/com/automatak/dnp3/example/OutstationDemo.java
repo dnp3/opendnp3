@@ -58,7 +58,6 @@ public class OutstationDemo {
         Channel channel = manager.addTCPServer(
                 "client",
                 LogMasks.NORMAL | LogMasks.APP_COMMS,
-                ChannelRetry.getDefault(),
                 "127.0.0.1",
                 20000,
                 PrintingChannelListener.getInstance()

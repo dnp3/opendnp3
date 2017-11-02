@@ -88,7 +88,6 @@ public class StackPair {
             Channel server = manager.addTCPServer(
                     String.format("server:%d", port),
                     LEVELS | LogLevels.APP_HEADER_TX | LogLevels.APP_OBJECT_TX,
-                    ChannelRetry.getDefault(),
                     "127.0.0.1",
                     port,
                     serverListener);

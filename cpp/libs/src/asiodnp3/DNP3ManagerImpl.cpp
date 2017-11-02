@@ -91,8 +91,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
     const std::string& id,
-    uint32_t levels,
-    const ChannelRetry& retry,
+    uint32_t levels,    
     const std::string& endpoint,
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
@@ -165,8 +164,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
     const std::string& id,
-    uint32_t levels,
-    const ChannelRetry& retry,
+    uint32_t levels,    
     const std::string& endpoint,
     uint16_t port,
     const TLSConfig& config,

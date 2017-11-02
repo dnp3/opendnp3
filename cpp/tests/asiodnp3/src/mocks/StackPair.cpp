@@ -214,8 +214,7 @@ std::shared_ptr<IOutstation> StackPair::CreateOutstation(uint32_t levels, openpa
 {
 	auto channel = manager.AddTCPServer(
 	                   GetId("server", port).c_str(),
-	                   levels,
-	                   asiopal::ChannelRetry::Default(),
+	                   levels,	                   
 	                   "127.0.0.1",
 	                   port,
 	                   listener
