@@ -49,7 +49,7 @@ struct Channels
 {
 	Channels(DNP3Manager& manager) :
 		client(manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr)),
-		server(manager.AddTCPServer("server", levels::ALL, "0.0.0.0", 20000, nullptr))
+		server(manager.AddTCPServer("server", levels::ALL, ServerAcceptMode::CloseExisting, "0.0.0.0", 20000, nullptr))
 	{
 
 	}

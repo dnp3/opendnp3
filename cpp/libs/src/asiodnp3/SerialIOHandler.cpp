@@ -34,7 +34,7 @@ SerialIOHandler::SerialIOHandler(
     const asiopal::ChannelRetry& retry,
     const asiopal::SerialSettings& settings
 ) :
-	IOHandler(logger, listener),
+	IOHandler(logger,  false, listener),
 	executor(executor),
 	retry(retry),
 	settings(settings),

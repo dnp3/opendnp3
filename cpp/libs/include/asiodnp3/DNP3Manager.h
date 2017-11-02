@@ -25,6 +25,7 @@
 #include <openpal/executor/TimeDuration.h>
 
 #include <opendnp3/gen/ChannelState.h>
+#include <opendnp3/gen/ServerAcceptMode.h>
 
 #include <asiodnp3/IChannel.h>
 #include <asiodnp3/IChannelListener.h>
@@ -64,8 +65,8 @@ public:
 	DNP3Manager(
 	    uint32_t concurrencyHint,
 	    std::shared_ptr<openpal::ILogHandler> handler = std::shared_ptr<openpal::ILogHandler>(),
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
 	);
 
 	~DNP3Manager();
@@ -103,7 +104,7 @@ public:
 	*
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
-	* @param retry Retry parameters for failed channels
+	* @param mode Describes how new connections are treated when another session already exists
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
@@ -111,7 +112,8 @@ public:
 	*/
 	std::shared_ptr<IChannel> AddTCPServer(
 	    const std::string& id,
-	    uint32_t levels,	    
+	    uint32_t levels,
+		opendnp3::ServerAcceptMode mode,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener
@@ -168,7 +170,8 @@ public:
 	* @throw std::system_error Throws underlying ASIO exception of TLS configuration is invalid
 	*
 	* @param id Alias that will be used for logging purposes with this channel
-	* @param levels Bitfield that describes the logging level for this channel and associated sessions	
+	* @param levels Bitfield that describes the logging level for this channel and associated sessions
+	* @param mode Describes how new connections are treated when another session already exists
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
 	* @param config TLS configuration information
@@ -178,7 +181,8 @@ public:
 	*/
 	std::shared_ptr<IChannel> AddTLSServer(
 	    const std::string& id,
-	    uint32_t levels,	    
+	    uint32_t levels,
+		opendnp3::ServerAcceptMode mode,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,

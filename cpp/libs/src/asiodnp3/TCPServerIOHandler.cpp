@@ -41,12 +41,13 @@ void TCPServerIOHandler::Server::AcceptConnection(uint64_t sessionid, const std:
 
 TCPServerIOHandler::TCPServerIOHandler(
     const openpal::Logger& logger,
+	ServerAcceptMode mode,
     const std::shared_ptr<IChannelListener>& listener,
     const std::shared_ptr<asiopal::Executor>& executor,
     const asiopal::IPEndpoint& endpoint,
     std::error_code& ec
 ) :
-	IOHandler(logger, listener),
+	IOHandler(logger, mode == ServerAcceptMode::CloseExisting, listener),
 	executor(executor),
 	endpoint(endpoint)
 {}

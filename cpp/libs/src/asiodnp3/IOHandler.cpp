@@ -32,8 +32,10 @@ namespace asiodnp3
 
 IOHandler::IOHandler(
     const openpal::Logger& logger,
+	bool close_existing,
     const std::shared_ptr<IChannelListener>& listener
 ) :
+	close_existing(close_existing),
 	logger(logger),
 	listener(listener),
 	parser(logger)
@@ -219,10 +221,17 @@ bool IOHandler::Remove(const std::shared_ptr<opendnp3::ILinkSession>& session)
 }
 
 void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel)
-{
-	this->Reset();
+{		
+	// if we have an active channel, and we're configured to close new channels
+	// close the new channel instead
+	if(this->channel && !this->close_existing) {
+		channel->Shutdown();
+		return;
+	}
 
 	++this->statistics.numOpen;
+
+	this->Reset();	
 
 	this->channel = channel;
 
