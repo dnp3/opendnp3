@@ -35,7 +35,9 @@ enum class EventMode : uint8_t
   /// Force the creation of an event bypassing detection mechanism
   Force = 0x1,
   /// Never produce an event regardless of changes
-  Suppress = 0x2
+  Suppress = 0x2,
+  /// Send an event directly to the event buffer, bypassing the static value completely
+  EventOnly = 0x3
 };
 
 

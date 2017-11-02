@@ -152,7 +152,8 @@ uint16_t Database::GetRawIndex(uint16_t index)
 template <class Spec>
 bool Database::UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode)
 {
-	auto rawIndex = GetRawIndex<Spec>(index);
+	const auto rawIndex = GetRawIndex<Spec>(index);
+
 	auto view = buffers.buffers.GetArrayView<Spec>();
 
 	if (view.Contains(rawIndex))
@@ -169,32 +170,41 @@ bool Database::UpdateEvent(const typename Spec::meas_t& value, uint16_t index, E
 template <class Spec>
 bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode)
 {
-	EventClass ec;
-	if (ConvertToEventClass(cell.config.clazz, ec))
+	switch (mode)
 	{
-		bool createEvent = false;
-
-		switch (mode)
+	case(EventMode::Force):
+	case(EventMode::EventOnly):
+		this->TryCreateEvent(cell, value);
+		break;
+	case(EventMode::Detect):
+		if (cell.event.IsEvent(cell.config, value))
 		{
-		case(EventMode::Force):
-			createEvent = true;
-			break;
-		case(EventMode::Detect):
-			createEvent = cell.event.IsEvent(cell.config, value);
-			break;
-		default:
-			break;
+			this->TryCreateEvent(cell, value);
 		}
-
-		if (createEvent)
-		{
-			cell.event.lastEvent = value;
-			eventReceiver->Update(Event<Spec>(value, cell.config.vIndex, ec, cell.config.evariation));
-		}
+		break;
+	default:
+		break;
 	}
 
-	cell.value = value;
+	// we always update the static value unless the mode is EventOnly
+	if (mode != EventMode::EventOnly)
+	{
+		cell.value = value;
+	}
+
 	return true;
+}
+
+template <class Spec>
+void Database::TryCreateEvent(Cell<Spec>& cell, const typename Spec::meas_t& value)
+{
+	EventClass ec;
+	// don't create an event if point is assigned to Class 0
+	if (ConvertToEventClass(cell.config.clazz, ec))
+	{
+		cell.event.lastEvent = value;
+		this->eventReceiver->Update(Event<Spec>(value, cell.config.vIndex, ec, cell.config.evariation));
+	}
 }
 
 template <class Spec>

@@ -36,6 +36,10 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// Never produce an event regardless of changes
     /// </summary>
-    Suppress = 0x2
+    Suppress = 0x2,
+    /// <summary>
+    /// Send an event directly to the event buffer, bypassing the static value completely
+    /// </summary>
+    EventOnly = 0x3
   }
 }

@@ -93,6 +93,9 @@ private:
 	bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
 
 	template <class Spec>
+	void TryCreateEvent(Cell<Spec>& cell, const typename Spec::meas_t& value);
+
+	template <class Spec>
 	bool Modify(uint16_t start, uint16_t stop, uint8_t flags);
 
 	// stores the most recent values, selected values, and metadata
