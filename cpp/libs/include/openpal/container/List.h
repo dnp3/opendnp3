@@ -31,16 +31,16 @@ namespace openpal
 using list_size_type_t = uint32_t;
 
 template <class T>
-class ListNode
+class Node
 {
 public:
-	ListNode() = default;
+	Node() = default;
 
 	T value;
 
 private:
-	ListNode* prev = nullptr;
-	ListNode* next = nullptr;
+	Node* prev = nullptr;
+	Node* next = nullptr;
 
 	template <class T>
 	friend class List;	
@@ -56,7 +56,7 @@ public:
 	{
 	public:
 
-		static Iterator From(ListNode<T>* start)
+		static Iterator From(Node<T>* start)
 		{
 			return Iterator(start);
 		}
@@ -69,7 +69,7 @@ public:
 			return this->current;
 		}
 
-		ListNode<T>* Next()
+		Node<T>* Next()
 		{
 			if (!this->current) return nullptr;
 			auto ret = this->current;
@@ -77,7 +77,7 @@ public:
 			return ret;
 		}
 
-		inline ListNode<T>* Current()
+		inline Node<T>* Current()
 		{
 			return this->current;
 		}
@@ -89,10 +89,10 @@ public:
 
 	private:
 
-		Iterator(ListNode<T>* start) : current(start)
+		Iterator(Node<T>* start) : current(start)
 		{}
 
-		ListNode<T>* current;
+		Node<T>* current;
 	};
 
 	List(list_size_type_t maxSize) :
@@ -107,7 +107,7 @@ public:
 		return underlying.Size();
 	}	
 
-	inline ListNode<T>* Head()
+	inline Node<T>* Head()
 	{
 		return this->head;
 	}
@@ -117,7 +117,7 @@ public:
 		return Iterator::From(this->head);
 	}	
 
-	ListNode<T>* Add(const T& value);
+	Node<T>* Add(const T& value);
 	
 	template <class U>
 	void ForeachWhile(const U& select);
@@ -128,27 +128,27 @@ public:
 	template <class U>
 	list_size_type_t RemoveAll(const U& match);
 
-	void Remove(ListNode<T>* node);
+	void Remove(Node<T>* node);
 
 	inline bool IsFull() const;
 
 private:
 
-	ListNode<T>* head = nullptr;
-	ListNode<T>* tail = nullptr;
-	ListNode<T>* free = nullptr;
+	Node<T>* head = nullptr;
+	Node<T>* tail = nullptr;
+	Node<T>* free = nullptr;
 
-	Array<ListNode<T>, list_size_type_t> underlying;
+	Array<Node<T>, list_size_type_t> underlying;
 
-	ListNode<T>* Insert(const T& value, ListNode<T>* left, ListNode<T>* right);
+	Node<T>* Insert(const T& value, Node<T>* left, Node<T>* right);
 
-	inline static void Link(ListNode<T>* prev, ListNode<T>* next);
+	inline static void Link(Node<T>* prev, Node<T>* next);
 
 	void Initialize();
 };
 
 template <class T>
-ListNode<T>* List<T>::Add(const T& value)
+Node<T>* List<T>::Add(const T& value)
 {
 	return this->Insert(value, this->tail, nullptr);
 }
@@ -203,7 +203,7 @@ list_size_type_t List<T>::RemoveAll(const U& match)
 }
 
 template <class T>
-ListNode<T>* List<T>::Insert(const T& value, ListNode<T>* left, ListNode<T>* right)
+Node<T>* List<T>::Insert(const T& value, Node<T>* left, Node<T>* right)
 {
 	if (!this->free) return nullptr;
 
@@ -233,7 +233,7 @@ ListNode<T>* List<T>::Insert(const T& value, ListNode<T>* left, ListNode<T>* rig
 }
 
 template <class T>
-void List<T>::Remove(ListNode<T>* node)
+void List<T>::Remove(Node<T>* node)
 {
 	if(node == this->head) // change of head
 	{		
@@ -263,7 +263,7 @@ bool List<T>::IsFull() const
 }
 
 template <class T>
-void List<T>::Link(ListNode<T>* first, ListNode<T>* second)
+void List<T>::Link(Node<T>* first, Node<T>* second)
 {
 	if(first) first->next = second;
 	if(second) second->prev = first;

@@ -52,10 +52,10 @@ bool EventUpdate::Update(EventLists& lists, const Event<T>& event)
 
 		overflow = true;
 		const auto first = list.Head();
-		const openpal::ListNode<EventRecord>* record = first->value.record;
+		const auto record_node = first->value.record;
 
 		// remove the generic record
-		lists.counters.OnRemove(record->value.clazz, record->value.state);
+		lists.counters.OnRemove(record_node->value.clazz, record_node->value.state);
 		lists.events.Remove(first->value.record);
 
 		// remove the type specific record

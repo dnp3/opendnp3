@@ -32,9 +32,9 @@ template <class T>
 struct TypedStorage : private openpal::StaticOnly
 {
 
-	static inline openpal::ListNode<TypedEventRecord<T>>* Retrieve(EventRecord& record)
+	static inline openpal::Node<TypedEventRecord<T>>* Retrieve(EventRecord& record)
 	{
-		return reinterpret_cast<openpal::ListNode<TypedEventRecord<T>>*>(record.storage_node);
+		return reinterpret_cast<openpal::Node<TypedEventRecord<T>>*>(record.storage_node);
 	}
 };
 
