@@ -128,6 +128,7 @@ namespace Automatak
 				static opendnp3::AnalogOutputStatus ConvertMeas(AnalogOutputStatus^ meas);
 				static opendnp3::BinaryOutputStatus ConvertMeas(BinaryOutputStatus^ meas);
 				static opendnp3::TimeAndInterval ConvertMeas(TimeAndInterval^ meas);
+				static opendnp3::OctetString ConvertMeas(OctetString^ meas);
 				static opendnp3::BinaryCommandEvent ConvertMeas(BinaryCommandEvent^ meas);
 				static opendnp3::AnalogCommandEvent ConvertMeas(AnalogCommandEvent^ meas);
 

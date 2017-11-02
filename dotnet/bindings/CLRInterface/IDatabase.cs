@@ -97,6 +97,15 @@ namespace Automatak.DNP3.Interface
         void Update(AnalogOutputStatus update, System.UInt16 index, EventMode mode = EventMode.Detect);
 
         /// <summary>
+        /// Update an OctetString
+        /// </summary>
+        /// <param name="update">measurement to update</param>
+        /// <param name="index">index of measurement</param>
+        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
+        /// <returns> true if the point exists </returns>
+        void Update(OctetString update, System.UInt16 index, EventMode mode = EventMode.Detect);
+
+        /// <summary>
         /// Update a TimeAndInterval
         /// </summary>
         /// <param name="update"></param>

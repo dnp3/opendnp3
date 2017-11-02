@@ -295,7 +295,10 @@ namespace Automatak.DNP3.Interface
     {
         public OctetData(byte[] bytes)
         {
-            if (bytes.Length > 255) throw new ArgumentException("byte array cannot exceed length of 255", "bytes");
+            if (bytes.Length < 1 || bytes.Length > 255)
+            {
+                throw new ArgumentException("byte array length must be in interval [1,255]", "bytes");
+            }
             this.bytes = bytes;
         }
 
