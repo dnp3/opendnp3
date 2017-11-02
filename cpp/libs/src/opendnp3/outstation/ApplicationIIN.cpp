@@ -23,9 +23,6 @@
 namespace opendnp3
 {
 
-ApplicationIIN::ApplicationIIN() : needTime(false), localControl(false), deviceTrouble(false), configCorrupt(false)
-{}
-
 IINField ApplicationIIN::ToIIN() const
 {
 	IINField ret;
@@ -33,6 +30,7 @@ IINField ApplicationIIN::ToIIN() const
 	ret.SetBitToValue(IINBit::LOCAL_CONTROL, localControl);
 	ret.SetBitToValue(IINBit::CONFIG_CORRUPT, configCorrupt);
 	ret.SetBitToValue(IINBit::DEVICE_TROUBLE, deviceTrouble);
+	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, eventBufferOverflow);
 	return ret;
 }
 

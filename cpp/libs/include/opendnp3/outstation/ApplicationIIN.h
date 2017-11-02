@@ -38,12 +38,16 @@ class ApplicationIIN
 
 public:
 
-	ApplicationIIN();
+	ApplicationIIN() = default;
+	
+	// flags normally controlled by the application, not the stack
+	bool needTime = false;
+	bool localControl = false;
+	bool deviceTrouble = false;
+	bool configCorrupt = false;
 
-	bool needTime;
-	bool localControl;
-	bool deviceTrouble;
-	bool configCorrupt;
+	// this is only for appliactions that have an additional external event buffer that can overflow
+	bool eventBufferOverflow = false;
 
 	IINField ToIIN() const;
 
