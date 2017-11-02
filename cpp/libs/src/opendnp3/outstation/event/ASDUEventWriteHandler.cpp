@@ -33,7 +33,7 @@
 
 namespace opendnp3
 {
-uint16_t ASDUEventWriteHandler::Write(EventBinaryVariation variation, const DNPTime& first, IEventCollection<Binary>& items)
+uint16_t ASDUEventWriteHandler::Write(EventBinaryVariation variation, const Binary& first, IEventCollection<Binary>& items)
 {
 	switch (variation)
 	{
@@ -42,13 +42,13 @@ uint16_t ASDUEventWriteHandler::Write(EventBinaryVariation variation, const DNPT
 	case(EventBinaryVariation::Group2Var2):
 		return EventWriters::Write(this->writer, items, Group2Var2::Inst());
 	case(EventBinaryVariation::Group2Var3):
-		return EventWriters::WriteWithCTO(first, this->writer, items, Group2Var3::Inst());
+		return EventWriters::WriteWithCTO(first.time, this->writer, items, Group2Var3::Inst());
 	default:
 		return EventWriters::Write(this->writer, items, Group2Var1::Inst());
 	}
 }
 
-uint16_t ASDUEventWriteHandler::Write(EventDoubleBinaryVariation variation, const DNPTime& first, IEventCollection<DoubleBitBinary>& items)
+uint16_t ASDUEventWriteHandler::Write(EventDoubleBinaryVariation variation, const DoubleBitBinary& first, IEventCollection<DoubleBitBinary>& items)
 {
 	switch (variation)
 	{
@@ -57,13 +57,13 @@ uint16_t ASDUEventWriteHandler::Write(EventDoubleBinaryVariation variation, cons
 	case(EventDoubleBinaryVariation::Group4Var2):
 		return EventWriters::Write(this->writer, items, Group4Var2::Inst());
 	case(EventDoubleBinaryVariation::Group4Var3):
-		return EventWriters::WriteWithCTO(first, this->writer, items, Group4Var3::Inst());
+		return EventWriters::WriteWithCTO(first.time, this->writer, items, Group4Var3::Inst());
 	default:
 		return EventWriters::Write(this->writer, items, Group4Var1::Inst());
 	}
 }
 
-uint16_t ASDUEventWriteHandler::Write(EventCounterVariation variation, const DNPTime& first, IEventCollection<Counter>& items)
+uint16_t ASDUEventWriteHandler::Write(EventCounterVariation variation, const Counter& first, IEventCollection<Counter>& items)
 {
 	switch (variation)
 	{
@@ -80,7 +80,7 @@ uint16_t ASDUEventWriteHandler::Write(EventCounterVariation variation, const DNP
 	}
 }
 
-uint16_t ASDUEventWriteHandler::Write(EventFrozenCounterVariation variation, const DNPTime& first, IEventCollection<FrozenCounter>& items)
+uint16_t ASDUEventWriteHandler::Write(EventFrozenCounterVariation variation, const FrozenCounter& first, IEventCollection<FrozenCounter>& items)
 {
 	switch (variation)
 	{
@@ -97,7 +97,7 @@ uint16_t ASDUEventWriteHandler::Write(EventFrozenCounterVariation variation, con
 	}
 }
 
-uint16_t ASDUEventWriteHandler::Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items)
+uint16_t ASDUEventWriteHandler::Write(EventAnalogVariation variation, const Analog& first, IEventCollection<Analog>& items)
 {
 	switch (variation)
 	{
@@ -122,7 +122,7 @@ uint16_t ASDUEventWriteHandler::Write(EventAnalogVariation variation, const DNPT
 	}
 }
 
-uint16_t ASDUEventWriteHandler::Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items)
+uint16_t ASDUEventWriteHandler::Write(EventBinaryOutputStatusVariation variation, const BinaryOutputStatus& first, IEventCollection<BinaryOutputStatus>& items)
 {
 	switch (variation)
 	{
@@ -135,7 +135,7 @@ uint16_t ASDUEventWriteHandler::Write(EventBinaryOutputStatusVariation variation
 	}
 }
 
-uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items)
+uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation, const AnalogOutputStatus& first, IEventCollection<AnalogOutputStatus>& items)
 {
 	switch (variation)
 	{
@@ -160,9 +160,9 @@ uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation
 	}
 }
 
-uint16_t ASDUEventWriteHandler::Write(EventOctetStringVariation variation, uint8_t firstSize, IEventCollection<OctetString>& items)
+uint16_t ASDUEventWriteHandler::Write(EventOctetStringVariation variation, const OctetString& first, IEventCollection<OctetString>& items)
 {
-	return EventWriters::Write(firstSize, this->writer, items);
+	return EventWriters::Write(first.Size(), this->writer, items);
 }
 
 }

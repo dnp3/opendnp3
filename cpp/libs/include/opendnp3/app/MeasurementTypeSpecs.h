@@ -35,11 +35,6 @@ struct BinarySpec : public BinaryInfo
 	typedef BinaryConfig config_t;
 	typedef SimpleEventCell<BinarySpec> event_cell_t;
 
-	inline static DNPTime GetEventAttribute(const meas_t& value)
-	{
-		return value.time;
-	}
-
 	inline static bool IsQualityOnlineOnly(const Binary& binary)
 	{
 		return (binary.flags.value & 0b01111111) == static_cast<uint8_t>(BinaryQuality::ONLINE);
@@ -56,11 +51,6 @@ struct DoubleBitBinarySpec : public DoubleBitBinaryInfo
 	typedef DoubleBitBinaryConfig config_t;
 	typedef SimpleEventCell<DoubleBitBinarySpec> event_cell_t;
 
-	inline static DNPTime GetEventAttribute(const meas_t& value)
-	{
-		return value.time;
-	}
-
 	inline static bool IsEvent(const DoubleBitBinary& oldValue, const DoubleBitBinary& newValue)
 	{
 		return oldValue.flags.value != newValue.flags.value;
@@ -71,11 +61,6 @@ struct BinaryOutputStatusSpec : public BinaryOutputStatusInfo
 {
 	typedef BOStatusConfig config_t;
 	typedef SimpleEventCell<BinaryOutputStatusSpec> event_cell_t;
-
-	inline static DNPTime GetEventAttribute(const meas_t& value)
-	{
-		return value.time;
-	}
 
 	inline static bool IsEvent(const BinaryOutputStatus& oldValue, const BinaryOutputStatus& newValue)
 	{
@@ -89,11 +74,6 @@ struct AnalogSpec : public AnalogInfo
 	typedef AnalogConfig config_t;
 	typedef DeadbandEventCell<AnalogSpec> event_cell_t;
 
-	inline static DNPTime GetEventAttribute(const meas_t& value)
-	{
-		return value.time;
-	}
-
 	inline static bool IsEvent(const Analog& oldValue, const Analog& newValue, double deadband)
 	{
 		return measurements::IsEvent(newValue, oldValue, deadband);
@@ -104,11 +84,6 @@ struct CounterSpec : public CounterInfo
 {
 	typedef CounterConfig config_t;
 	typedef DeadbandEventCell<CounterSpec> event_cell_t;
-
-	inline static DNPTime GetEventAttribute(const meas_t& value)
-	{
-		return value.time;
-	}
 
 	inline static bool IsEvent(const Counter& oldValue, const Counter& newValue, uint32_t deadband)
 	{
@@ -128,11 +103,6 @@ struct FrozenCounterSpec : public FrozenCounterInfo
 	typedef FrozenCounterConfig config_t;
 	typedef DeadbandEventCell<FrozenCounterSpec> event_cell_t;
 
-	inline static DNPTime GetEventAttribute(const meas_t& value)
-	{
-		return value.time;
-	}
-
 	inline static bool IsEvent(const FrozenCounter& oldValue, const FrozenCounter& newValue, uint32_t deadband)
 	{
 		if (oldValue.flags.value != newValue.flags.value)
@@ -151,11 +121,6 @@ struct AnalogOutputStatusSpec : public AnalogOutputStatusInfo
 	typedef AOStatusConfig config_t;
 	typedef DeadbandEventCell<AnalogOutputStatusSpec> event_cell_t;
 
-	inline static DNPTime GetEventAttribute(const meas_t& value)
-	{
-		return value.time;
-	}
-
 	inline static bool IsEvent(const AnalogOutputStatus& oldValue, const AnalogOutputStatus& newValue, double deadband)
 	{
 		return measurements::IsEvent(newValue, oldValue, deadband);
@@ -166,12 +131,6 @@ struct OctetStringSpec : public OctetStringInfo
 {
 	typedef OctetStringConfig config_t;
 	typedef SimpleEventCell<OctetStringSpec> event_cell_t;
-
-	inline static uint8_t GetEventAttribute(const meas_t& value)
-	{
-		// octet strings don't have time
-		return value.Size();
-	}
 
 	inline static bool IsEvent(const OctetString& oldValue, const OctetString& newValue)
 	{

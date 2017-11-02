@@ -94,42 +94,42 @@ public:
 	}
 
 
-	virtual uint16_t Write(EventBinaryVariation variation, const DNPTime& first, IEventCollection<Binary>& items) override
+	virtual uint16_t Write(EventBinaryVariation variation, const Binary& first, IEventCollection<Binary>& items) override
 	{
 		return this->WriteAny<BinarySpec>(variation, items);
 	}
 
-	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DNPTime& first, IEventCollection<DoubleBitBinary>& items) override
+	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DoubleBitBinary& first, IEventCollection<DoubleBitBinary>& items) override
 	{
 		return this->WriteAny<DoubleBitBinarySpec>(variation, items);
 	}
 
-	virtual uint16_t Write(EventCounterVariation variation, const DNPTime& first, IEventCollection<Counter>& items) override
+	virtual uint16_t Write(EventCounterVariation variation, const Counter& first, IEventCollection<Counter>& items) override
 	{
 		return this->WriteAny<CounterSpec>(variation, items);
 	}
 
-	virtual uint16_t Write(EventFrozenCounterVariation variation, const DNPTime& first, IEventCollection<FrozenCounter>& items) override
+	virtual uint16_t Write(EventFrozenCounterVariation variation, const FrozenCounter& first, IEventCollection<FrozenCounter>& items) override
 	{
 		return this->WriteAny<FrozenCounterSpec>(variation, items);
 	}
 
-	virtual uint16_t Write(EventAnalogVariation variation, const DNPTime& first, IEventCollection<Analog>& items) override
+	virtual uint16_t Write(EventAnalogVariation variation, const Analog& first, IEventCollection<Analog>& items) override
 	{
 		return this->WriteAny<AnalogSpec>(variation, items);
 	}
 
-	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const DNPTime& first, IEventCollection<BinaryOutputStatus>& items) override
+	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const BinaryOutputStatus& first, IEventCollection<BinaryOutputStatus>& items) override
 	{
 		return this->WriteAny<BinaryOutputStatusSpec>(variation, items);
 	}
 
-	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const DNPTime& first, IEventCollection<AnalogOutputStatus>& items) override
+	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const AnalogOutputStatus& first, IEventCollection<AnalogOutputStatus>& items) override
 	{
 		return this->WriteAny<AnalogOutputStatusSpec>(variation, items);
 	}
 
-	virtual uint16_t Write(EventOctetStringVariation variation, uint8_t firstSize, IEventCollection<OctetString>& items) override
+	virtual uint16_t Write(EventOctetStringVariation variation, const OctetString& first, IEventCollection<OctetString>& items) override
 	{
 		return this->WriteAny<OctetStringSpec>(variation, items);
 	}
