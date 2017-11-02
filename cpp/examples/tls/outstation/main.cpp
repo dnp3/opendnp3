@@ -86,11 +86,10 @@ int main(int argc, char* argv[])
 	std::error_code ec;
 
 	// Create a TCP server (listener)
-	auto channel = manager.AddTLSClient(
+	auto channel = manager.AddTLSServer(
 	                   "server",
 	                   FILTERS,
-	                   ChannelRetry::Default(),
-	                   "127.0.0.1",
+	                   ServerAcceptMode::CloseExisting,	                   
 	                   "0.0.0.0",
 	                   20001,
 	                   TLSConfig(
