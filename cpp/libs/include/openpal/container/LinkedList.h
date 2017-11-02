@@ -123,7 +123,7 @@ public:
 		Initialize();
 	}
 
-	list_size_type_t Capacity() const
+	inline list_size_type_t Capacity() const
 	{
 		return underlying.Size();
 	}	
@@ -133,58 +133,21 @@ public:
 		return this->head;
 	}
 
-	Iterator Iterate() const
+	inline Iterator Iterate() const
 	{
 		return Iterator::From(this->head);
 	}	
 
 	ListNode<T>* Add(const T& value);
-
-	template <class U>
-	void While(const U& select)
-	{
-		auto iter = this->Iterate();
-		bool result = true;
-		while (result && iter.HasNext())
-		{
-			result = select(iter.Next()->value);
-		}
-	}
-
-	template <class U>
-	void Foreach(const U& action)
-	{
-		auto iter = this->Iterate();
-		while (iter.HasNext())
-		{
-			action(iter.Next()->value);
-		}
-	}
 	
 	template <class U>
-	list_size_type_t RemoveAll(const U& match)
-	{
-		list_size_type_t count = 0;
+	void ForeachWhile(const U& select);
 
-		auto iter = this->Iterate();
-		auto current = iter.Next();
-		while (current)
-		{
-			if (match(current->value))
-			{
-				auto removed = current;
-				current = iter.Next();
-				this->Remove(removed);
-				++count;
-			}
-			else
-			{
-				current = iter.Next();
-			}
-		}
-
-		return count;
-	}
+	template <class U>
+	void Foreach(const U& action);
+	
+	template <class U>
+	list_size_type_t RemoveAll(const U& match);
 
 	void Remove(ListNode<T>* node);
 
@@ -209,6 +172,55 @@ template <class T>
 ListNode<T>* LinkedList<T>::Add(const T& value)
 {
 	return this->Insert(value, this->tail, nullptr);
+}
+
+template <class T>
+template <class U>
+void LinkedList<T>::ForeachWhile(const U& select)
+{
+	auto iter = this->Iterate();
+	bool result = true;
+	while (result && iter.HasNext())
+	{
+		result = select(iter.Next()->value);
+	}
+}
+
+template <class T>
+template <class U>
+void LinkedList<T>::Foreach(const U& action)
+{
+	auto iter = this->Iterate();
+	while (iter.HasNext())
+	{
+		action(iter.Next()->value);
+	}
+}
+
+template <class T>
+template <class U>
+list_size_type_t LinkedList<T>::RemoveAll(const U& match)
+{
+	list_size_type_t count = 0;
+
+	auto iter = this->Iterate();
+	auto current = iter.Next();
+	while (current)
+	{
+		if (match(current->value))
+		{
+			auto removed = current;
+			current = iter.Next();
+			this->Remove(removed);
+			++count;
+		}
+		else
+		{
+			current = iter.Next();
+		}
+	}
+
+	return count;
 }
 
 template <class T>

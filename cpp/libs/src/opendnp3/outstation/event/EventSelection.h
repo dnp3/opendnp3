@@ -73,7 +73,7 @@ uint32_t EventSelection::SelectByTypeGeneric(EventLists& lists, bool useDefaultV
 		return true;
 	};
 
-	list.While(select);
+	list.ForeachWhile(select);
 
 	return num_selected;
 }
