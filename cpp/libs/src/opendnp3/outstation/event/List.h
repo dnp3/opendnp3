@@ -18,14 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_LIST_H
-#define OPENPAL_LIST_H
+#ifndef OPENDNP3_LIST_H
+#define OPENDNP3_LIST_H
 
 #include "openpal/container/Array.h"
 
 #include <cstdio>
 
-namespace openpal
+namespace opendnp3
 {
 
 using list_size_type_t = uint32_t;
@@ -48,7 +48,7 @@ private:
 
 // A container adapter for a -linked list
 template <class T>
-class List : public HasSize<list_size_type_t>
+class List : public openpal::HasSize<list_size_type_t>
 {
 public:
 
@@ -96,7 +96,7 @@ public:
 	};
 
 	List(list_size_type_t maxSize) :
-		HasSize<list_size_type_t>(0),
+		openpal::HasSize<list_size_type_t>(0),
 		underlying(maxSize)
 	{
 		Initialize();
@@ -138,7 +138,7 @@ private:
 	Node<T>* tail = nullptr;
 	Node<T>* free = nullptr;
 
-	Array<Node<T>, list_size_type_t> underlying;
+	openpal::Array<Node<T>, list_size_type_t> underlying;
 
 	Node<T>* Insert(const T& value, Node<T>* left, Node<T>* right);
 

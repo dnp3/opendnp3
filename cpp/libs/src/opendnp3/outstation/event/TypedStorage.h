@@ -22,8 +22,7 @@
 #ifndef OPENDNP3_TYPEDSTORAGE_H
 #define OPENDNP3_TYPEDSTORAGE_H
 
-#include "openpal/container/List.h"
-
+#include "List.h"
 #include "TypedEventRecord.h"
 
 namespace opendnp3
@@ -32,9 +31,9 @@ template <class T>
 struct TypedStorage : private openpal::StaticOnly
 {
 
-	static inline openpal::Node<TypedEventRecord<T>>* Retrieve(EventRecord& record)
+	static inline Node<TypedEventRecord<T>>* Retrieve(EventRecord& record)
 	{
-		return reinterpret_cast<openpal::Node<TypedEventRecord<T>>*>(record.storage_node);
+		return reinterpret_cast<Node<TypedEventRecord<T>>*>(record.storage_node);
 	}
 };
 

@@ -37,7 +37,7 @@ struct TypedEventRecord
 	TypedEventRecord(
 	    typename T::meas_t value,
 	    typename T::event_variation_t defaultVariation,
-	    openpal::Node<EventRecord>* record
+	    Node<EventRecord>* record
 	) :
 		value(value),
 		defaultVariation(defaultVariation),
@@ -48,7 +48,7 @@ struct TypedEventRecord
 	typename T::meas_t value;
 	typename T::event_variation_t defaultVariation;
 	typename T::event_variation_t selectedVariation;
-	openpal::Node<EventRecord>* record = nullptr;
+	Node<EventRecord>* record = nullptr;
 };
 }
 

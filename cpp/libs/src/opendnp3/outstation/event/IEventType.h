@@ -23,7 +23,8 @@
 #define OPENDNP3_IEVENTTYPE_H
 
 #include "opendnp3/app/EventType.h"
-#include "openpal/container/List.h"
+
+#include "List.h"
 
 namespace opendnp3
 {
@@ -55,7 +56,7 @@ protected:
 public:
 
 	virtual void SelectDefaultVariation(EventRecord& record) const = 0;
-	virtual uint16_t WriteSome(openpal::List<EventRecord>::Iterator& iterator, EventLists& lists, IEventWriteHandler& handler) const = 0;
+	virtual uint16_t WriteSome(List<EventRecord>::Iterator& iterator, EventLists& lists, IEventWriteHandler& handler) const = 0;
 	virtual void RemoveTypeFromStorage(EventRecord& record, EventLists& lists) const = 0;
 
 };

@@ -20,10 +20,9 @@
  */
 #include <catch.hpp>
 
-#include <openpal/container/Array.h>
-#include <openpal/container/List.h>
+#include "opendnp3/outstation/event/List.h"
 
-using namespace openpal;
+using namespace opendnp3;
 
 #define SUITE(name) "ListAdapter - " name
 

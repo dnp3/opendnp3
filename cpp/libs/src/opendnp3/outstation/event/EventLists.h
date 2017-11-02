@@ -33,7 +33,7 @@
 namespace opendnp3
 {
 
-typedef openpal::List<EventRecord>::Iterator event_iter_t;
+typedef List<EventRecord>::Iterator event_iter_t;
 
 class EventLists : private openpal::Uncopyable
 {
@@ -44,10 +44,10 @@ public:
 	EventLists(const EventBufferConfig& config);
 
 	// master list keeps the aggregate order and generic data
-	openpal::List<EventRecord> events;
+	List<EventRecord> events;
 
 	template <class T>
-	openpal::List<TypedEventRecord<T>>& GetList();
+	List<TypedEventRecord<T>>& GetList();
 
 	bool IsAnyTypeFull() const;
 
@@ -57,14 +57,14 @@ private:
 
 
 	// sub-lists just act as type-specific storage
-	openpal::List<TypedEventRecord<BinarySpec>> binary;
-	openpal::List<TypedEventRecord<DoubleBitBinarySpec>> doubleBinary;
-	openpal::List<TypedEventRecord<AnalogSpec>> analog;
-	openpal::List<TypedEventRecord<CounterSpec>> counter;
-	openpal::List<TypedEventRecord<FrozenCounterSpec>> frozenCounter;
-	openpal::List<TypedEventRecord<BinaryOutputStatusSpec>> binaryOutputStatus;
-	openpal::List<TypedEventRecord<AnalogOutputStatusSpec>> analogOutputStatus;
-	openpal::List<TypedEventRecord<OctetStringSpec>> octetString;
+	List<TypedEventRecord<BinarySpec>> binary;
+	List<TypedEventRecord<DoubleBitBinarySpec>> doubleBinary;
+	List<TypedEventRecord<AnalogSpec>> analog;
+	List<TypedEventRecord<CounterSpec>> counter;
+	List<TypedEventRecord<FrozenCounterSpec>> frozenCounter;
+	List<TypedEventRecord<BinaryOutputStatusSpec>> binaryOutputStatus;
+	List<TypedEventRecord<AnalogOutputStatusSpec>> analogOutputStatus;
+	List<TypedEventRecord<OctetStringSpec>> octetString;
 };
 
 }
