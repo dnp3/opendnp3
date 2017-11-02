@@ -149,10 +149,7 @@ public:
 	Iterator Iterate() const
 	{
 		return Iterator::From(this->head);
-	}
-
-	template <class Selector>
-	ListNode<T>* FindFirst(Selector select);
+	}	
 
 	ListNode<T>* Add(const T& value);
 
@@ -183,26 +180,26 @@ public:
 		list_size_type_t count = 0;
 
 		auto iter = this->Iterate();
-		auto pCurrent = iter.Next();
-		while (pCurrent)
+		auto current = iter.Next();
+		while (current)
 		{
-			if (match(pCurrent->value))
+			if (match(current->value))
 			{
-				auto pRemoved = pCurrent;
-				pCurrent = iter.Next();
-				this->Remove(pRemoved);
+				auto removed = current;
+				current = iter.Next();
+				this->Remove(removed);
 				++count;
 			}
 			else
 			{
-				pCurrent = iter.Next();
+				current = iter.Next();
 			}
 		}
 
 		return count;
 	}
 
-	void Remove(ListNode<T>* apNode);
+	void Remove(ListNode<T>* node);
 
 	inline bool IsFull() const;
 
@@ -258,48 +255,32 @@ ListNode<T>* LinkedList<T>::Insert(const T& value, ListNode<T>* left, ListNode<T
 }
 
 template <class T>
-template <class Selector>
-ListNode<T>* LinkedList<T>::FindFirst(Selector select)
+void LinkedList<T>::Remove(ListNode<T>* node)
 {
-	auto iter = this->Iterate();
-	while (iter.HasNext())
+	if(node->prev == nullptr) // it's the head
 	{
-		auto pNode = iter.Next();
-		if (select(pNode->value))
-		{
-			return pNode;
-		}
-	}
-	return nullptr;
-}
-
-template <class T>
-void LinkedList<T>::Remove(ListNode<T>* apNode)
-{
-	if(apNode->prev == nullptr) // it's the head
-	{
-		if (apNode->next == nullptr)
+		if (node->next == nullptr)
 		{
 			this->head = this->tail = nullptr; // list is now empty
 		}
 		else
 		{
-			this->head = apNode->next; // head but not tail
+			this->head = node->next; // head but not tail
 		}
 	}
 	else
 	{
-		if(apNode->next == nullptr) this->tail = apNode->prev; // was only the tail
+		if(node->next == nullptr) this->tail = node->prev; // was only the tail
 	}
 
 	// attach the adjacent nodes to eachother if they exist
-	Link(apNode->prev, apNode->next);
+	Link(node->prev, node->next);
 
 	// Now that the data list is complete, attach the freed node to the front of the free list
-	apNode->next = this->free;
-	if(this->free != nullptr) this->free->prev = apNode;
-	apNode->prev = nullptr; // it's the head now
-	this->free = apNode;
+	node->next = this->free;
+	if(this->free != nullptr) this->free->prev = node;
+	node->prev = nullptr; // it's the head now
+	this->free = node;
 	--(this->size);
 }
 
@@ -308,8 +289,6 @@ bool LinkedList<T>::IsFull() const
 {
 	return (this->free == nullptr);
 }
-
-
 
 template <class T>
 void LinkedList<T>::Link(ListNode<T>* first, ListNode<T>* second)
@@ -321,14 +300,13 @@ void LinkedList<T>::Link(ListNode<T>* first, ListNode<T>* second)
 template <class T>
 void LinkedList<T>::Initialize()
 {
-	if(underlying.IsNotEmpty())
+	if (underlying.IsEmpty()) return;
+	
+	this->free = &underlying[0];
+	for(list_size_type_t i = 1; i < underlying.Size(); ++i)
 	{
-		this->free = &underlying[0];
-		for(list_size_type_t i = 1; i < underlying.Size(); ++i)
-		{
-			Link(&underlying[i - 1], &underlying[i]);
-		}
-	}
+		Link(&underlying[i - 1], &underlying[i]);
+	}	
 }
 
 }
