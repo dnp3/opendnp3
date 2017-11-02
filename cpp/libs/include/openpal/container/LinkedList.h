@@ -54,12 +54,7 @@ template <class T>
 class ListIterator
 {
 public:
-
-	static ListIterator<T> Undefined()
-	{
-		return ListIterator(nullptr);
-	}
-
+	
 	static ListIterator<T> From(ListNode<T>* start)
 	{
 		return ListIterator(start);
@@ -233,37 +228,33 @@ ListNode<T>* LinkedList<T>::Add(const T& value)
 }
 
 template <class T>
-ListNode<T>* LinkedList<T>::Insert(const T& value, ListNode<T>* pLeft, ListNode<T>* pRight)
+ListNode<T>* LinkedList<T>::Insert(const T& value, ListNode<T>* left, ListNode<T>* right)
 {
-	if (this->free == nullptr)
+	if (!this->free) return nullptr;
+
+	// initialize the new node, and increment the size
+	auto new_node = this->free;
+	this->free = this->free->next;
+
+	new_node->value = value;
+	++(this->size);
+
+	this->Link(left, new_node);
+	this->Link(new_node, right);
+
+	// change of head
+	if (!left)
 	{
-		return nullptr;
+		this->head = new_node;
 	}
-	else
+
+	// change of tail
+	if (!right)
 	{
-		// initialize the new node, and increment the size
-		auto pNode = this->free;
-		this->free = this->free->next;
-		pNode->value = value;
-		++(this->size);
-
-		this->Link(pLeft, pNode);
-		this->Link(pNode, pRight);
-
-		// change of head
-		if (pLeft == nullptr)
-		{
-			this->head = pNode;
-		}
-
-		// change of tail
-		if (pRight == nullptr)
-		{
-			this->tail = pNode;
-		}
-
-		return pNode;
+		this->tail = new_node;
 	}
+
+	return new_node;
 }
 
 template <class T>
