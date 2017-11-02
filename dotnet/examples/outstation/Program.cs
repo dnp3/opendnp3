@@ -35,12 +35,12 @@ namespace DotNetOutstationDemo
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager(1, new PrintingLogAdapter());
             
-            var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, ChannelRetry.Default, "0.0.0.0", 20000, ChannelListener.Print());            
+            var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, "0.0.0.0", 20000, ChannelListener.Print());            
 
-            var config = new OutstationStackConfig();            
+            var config = new OutstationStackConfig();
 
             // configure the various measurements in our database
-            config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1, 0);
+            config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1, 0, 0);
             config.databaseTemplate.binaries[0].clazz = PointClass.Class2;               
             // ....           
             config.outstation.config.allowUnsolicited = true;            

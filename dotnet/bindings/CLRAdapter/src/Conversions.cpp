@@ -408,7 +408,8 @@ namespace Automatak
 					config->databaseTemplate->frozenCounters->Count,
 					config->databaseTemplate->binaryOutputStatii->Count,
 					config->databaseTemplate->analogOutputStatii->Count,
-					config->databaseTemplate->timeAndIntervals->Count
+					config->databaseTemplate->timeAndIntervals->Count,
+					config->databaseTemplate->octetStrings->Count
 				);
 
 

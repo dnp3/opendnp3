@@ -58,14 +58,14 @@ namespace Automatak
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
 
-			IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::IChannelListener^ listener)
+			IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 filters, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::IChannelListener^ listener)
 			{
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
 								
 				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
 
-				auto channel = this->manager->AddTCPServer(stdName.c_str(), filters, Convert(retry), stdEndpoint, port, listenAdapter);
+				auto channel = this->manager->AddTCPServer(stdName.c_str(), filters, stdEndpoint, port, listenAdapter);
 
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
@@ -89,7 +89,7 @@ namespace Automatak
 				}								
 			}
 			
-			IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
+			IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
 			{
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
@@ -97,7 +97,7 @@ namespace Automatak
 				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
 				
 				std::error_code ec;
-				auto channel = this->manager->AddTLSServer(stdName.c_str(), filters, Convert(retry), stdEndpoint, port, Conversions::Convert(config), listenAdapter, ec);
+				auto channel = this->manager->AddTLSServer(stdName.c_str(), filters, stdEndpoint, port, Conversions::Convert(config), listenAdapter, ec);
 				if (ec)
 				{
 					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));

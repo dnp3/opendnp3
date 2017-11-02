@@ -54,13 +54,12 @@ namespace Automatak.DNP3.Interface
         /// Add a TCP server channel. The channel does not try to listen until you add a stack.
         /// </summary>
         /// <param name="id">An id used for logging purposes</param>
-        /// <param name="filters">The starting level for logging output</param>
-        /// <param name="retry">Retry configuration for the channel</param>
+        /// <param name="filters">The starting level for logging output</param>        
         /// <param name="endpoint">The address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"</param>
         /// <param name="port">The port to listen on</param>
         /// <param name="listener">Callback interface for the channel</param>
         /// <returns>A channel interface</returns>
-        IChannel AddTCPServer(String id, UInt32 filters, ChannelRetry retry, String endpoint, UInt16 port, IChannelListener listener);
+        IChannel AddTCPServer(String id, UInt32 filters, String endpoint, UInt16 port, IChannelListener listener);
 
         /// <summary>
         /// Add a TLS client channel. The channel does not try to connect until you add a stack.
@@ -85,14 +84,13 @@ namespace Automatak.DNP3.Interface
         /// <exception cref="System.ArgumentException">If the TLS certificate/key information is invalid</exception>
         /// 
         /// <param name="id">An id used for logging purposes</param>
-        /// <param name="filters">The starting level for logging output</param>
-        /// <param name="retry">Retry configuration for the channel</param>
+        /// <param name="filters">The starting level for logging output</param>        
         /// <param name="endpoint">The address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"</param>
         /// <param name="port">The port to listen on</param>
         /// <param name="config">TLS configuration information</param>
         /// <param name="listener">Callback interface for the channel</param>
         /// <returns>A channel interface</returns>
-        IChannel AddTLSServer(String id, UInt32 filters, ChannelRetry retry, String endpoint, UInt16 port, TLSConfig config, IChannelListener listener);
+        IChannel AddTLSServer(String id, UInt32 filters, String endpoint, UInt16 port, TLSConfig config, IChannelListener listener);
 
         /// <summary>
         /// Add a serial channel. The port does not try to open until you add a stack.
