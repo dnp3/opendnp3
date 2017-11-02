@@ -55,7 +55,7 @@ protected:
 public:
 
 	virtual void SelectDefaultVariation(EventRecord& record) const = 0;
-	virtual uint16_t WriteSome(openpal::ListIterator<EventRecord>& iterator, EventLists& lists, IEventWriteHandler& handler) const = 0;
+	virtual uint16_t WriteSome(openpal::LinkedList<EventRecord>::Iterator& iterator, EventLists& lists, IEventWriteHandler& handler) const = 0;
 	virtual void RemoveTypeFromStorage(EventRecord& record, EventLists& lists) const = 0;
 
 };

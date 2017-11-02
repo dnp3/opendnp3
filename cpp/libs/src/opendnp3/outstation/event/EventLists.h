@@ -33,7 +33,7 @@
 namespace opendnp3
 {
 
-typedef openpal::ListIterator<EventRecord> event_iter_t;
+typedef openpal::LinkedList<EventRecord>::Iterator event_iter_t;
 
 class EventLists : private openpal::Uncopyable
 {

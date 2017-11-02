@@ -44,77 +44,60 @@ private:
 
 	template <class T>
 	friend class LinkedList;
-
+	/*
 	template <class T>
 	friend class ListIterator;
+	*/
 };
-
-
-template <class T>
-class ListIterator
-{
-public:
-	
-	static ListIterator<T> From(ListNode<T>* start)
-	{
-		return ListIterator(start);
-	}
-
-	template <class U>
-	T* Find(const U& matches)
-	{
-		while (this->current)
-		{
-			if (matches(this->current->value))
-			{
-				return &(this->current->value);
-			}
-
-			this->current = this->current->next;
-		}
-
-		return nullptr;
-	}
-
-	bool HasNext() const
-	{
-		return this->current;
-	}
-
-	ListNode<T>* Next()
-	{
-		if (!this->current) return nullptr;
-		auto ret = this->current;
-		this->current = this->current->next;
-		return ret;
-	}
-
-	inline ListNode<T>* Current()
-	{
-		return this->current;
-	}
-
-	inline T* CurrentValue()
-	{
-		return (this->current) ? &(this->current->value) : nullptr;
-	}
-
-private:
-
-	ListIterator(ListNode<T>* start) : current(start)
-	{}
-
-	ListNode<T>* current;
-};
-
 
 // A container adapter for a -linked list
 template <class T>
 class LinkedList : public HasSize<list_size_type_t>
 {
 public:
+	
+	class Iterator
+	{
+	public:
 
-	typedef ListIterator<T> Iterator;
+		static Iterator From(ListNode<T>* start)
+		{
+			return Iterator(start);
+		}
+
+		template <class U>
+		T* Find(const U& matches);
+
+		bool HasNext() const
+		{
+			return this->current;
+		}
+
+		ListNode<T>* Next()
+		{
+			if (!this->current) return nullptr;
+			auto ret = this->current;
+			this->current = this->current->next;
+			return ret;
+		}
+
+		inline ListNode<T>* Current()
+		{
+			return this->current;
+		}
+
+		inline T* CurrentValue()
+		{
+			return (this->current) ? &(this->current->value) : nullptr;
+		}
+
+	private:
+
+		Iterator(ListNode<T>* start) : current(start)
+		{}
+
+		ListNode<T>* current;
+	};
 
 	LinkedList(list_size_type_t maxSize) :
 		HasSize<list_size_type_t>(0),		
@@ -300,6 +283,23 @@ void LinkedList<T>::Initialize()
 	{
 		Link(&underlying[i - 1], &underlying[i]);
 	}	
+}
+
+template <class T>
+template <class U>
+T* LinkedList<T>::Iterator::Find(const U& matches)
+{
+	while (this->current)
+	{
+		if (matches(this->current->value))
+		{
+			return &(this->current->value);
+		}
+
+		this->current = this->current->next;
+	}
+
+	return nullptr;
 }
 
 }

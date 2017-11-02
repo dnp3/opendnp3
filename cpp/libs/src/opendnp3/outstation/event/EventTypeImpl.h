@@ -53,7 +53,7 @@ public:
 		node->value.selectedVariation = node->value.defaultVariation;
 	}
 
-	virtual uint16_t WriteSome(openpal::ListIterator<EventRecord>& iterator, EventLists& lists, IEventWriteHandler& handler) const override
+	virtual uint16_t WriteSome(openpal::LinkedList<EventRecord>::Iterator& iterator, EventLists& lists, IEventWriteHandler& handler) const override
 	{
 		const auto pos = iterator.CurrentValue();
 		const auto type = TypedStorage<T>::Retrieve(*pos);
