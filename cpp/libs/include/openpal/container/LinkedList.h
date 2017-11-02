@@ -256,37 +256,31 @@ ListNode<T>* LinkedList<T>::Insert(const T& value, ListNode<T>* left, ListNode<T
 template <class T>
 void LinkedList<T>::Remove(ListNode<T>* node)
 {
-	if(node->prev == nullptr) // it's the head
-	{
-		if (node->next == nullptr)
-		{
-			this->head = this->tail = nullptr; // list is now empty
-		}
-		else
-		{
-			this->head = node->next; // head but not tail
-		}
+	if(node == this->head) // change of head
+	{		
+		this->head = node->next;
 	}
-	else
+
+	if (node == this->tail) // change of tail
 	{
-		if(node->next == nullptr) this->tail = node->prev; // was only the tail
-	}
+		this->tail = this->tail->prev;
+	}	
 
 	// attach the adjacent nodes to eachother if they exist
-	Link(node->prev, node->next);
+	this->Link(node->prev, node->next);
 
-	// Now that the data list is complete, attach the freed node to the front of the free list
-	node->next = this->free;
-	if(this->free != nullptr) this->free->prev = node;
-	node->prev = nullptr; // it's the head now
-	this->free = node;
+	// node becomes the head of the free list	
+	node->prev = nullptr;
+	this->Link(node, this->free);
+	this->free = node;	
+
 	--(this->size);
 }
 
 template <class T>
 bool LinkedList<T>::IsFull() const
 {
-	return (this->free == nullptr);
+	return !(this->free);
 }
 
 template <class T>
