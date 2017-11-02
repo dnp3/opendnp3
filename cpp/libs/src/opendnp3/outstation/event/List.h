@@ -42,7 +42,7 @@ private:
 	Node* prev = nullptr;
 	Node* next = nullptr;
 
-	template <class T>
+	template <class U>
 	friend class List;
 };
 
