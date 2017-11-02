@@ -24,16 +24,16 @@
 namespace openpal
 {
 
-template <class SizeType>
+template <class W>
 class HasSize
 {
 
 public:
 
-	HasSize(SizeType size_) : size(size_)
+	HasSize(W size) : size(size)
 	{}
 
-	SizeType Size() const
+	W Size() const
 	{
 		return size;
 	}
@@ -50,7 +50,7 @@ public:
 
 protected:
 
-	SizeType size;
+	W size;
 
 };
 

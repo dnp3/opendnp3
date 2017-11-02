@@ -31,62 +31,53 @@ namespace openpal
 /**
 * Acts as a safe facade around an underlying array
 */
-template <class ValueType, class IndexType>
-class ArrayView : public HasSize<IndexType>
+template <class T, class W>
+class ArrayView : public HasSize<W>
 {
 
 public:
 
-	static ArrayView<ValueType, IndexType> Empty()
+	static ArrayView<T, W> Empty()
 	{
 		return ArrayView(nullptr, 0);
 	}
 
-	ArrayView(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
+	ArrayView(T* start, W size) : HasSize<W>(size), buffer(start)
 	{}
-
-	inline bool Contains(IndexType index) const
+	
+	inline bool Contains(W index) const
 	{
 		return index < this->size;
 	}
 
-	inline bool Contains(IndexType start, IndexType stop) const
+	inline bool Contains(W start, W stop) const
 	{
 		return (start < stop) && Contains(stop);
-	}
+	}	
 
-	inline ValueType& operator[](IndexType index)
+	inline T& operator[](W index)
 	{
 		assert(index < this->size);
 		return buffer[index];
 	}
 
-	inline const ValueType& operator[](IndexType index) const
+	inline const T& operator[](W index) const
 	{
 		assert(index < this->size);
 		return buffer[index];
 	}
-
+	
 	template <class Action>
 	void foreach(const Action& action)
 	{
-		for (IndexType i = 0; i < this->size; ++i)
+		for (W i = 0; i < this->size; ++i)
 		{
 			action(buffer[i]);
 		}
-	}
-
-	template <class Action>
-	void foreachIndex(const Action& action)
-	{
-		for (IndexType i = 0; i < this->size; ++i)
-		{
-			action(buffer[i], i);
-		}
-	}
+	}	
 
 private:
-	ValueType* buffer;
+	T* buffer;
 };
 
 
