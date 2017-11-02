@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_LINKEDLIST_H
-#define OPENPAL_LINKEDLIST_H
+#ifndef OPENPAL_LIST_H
+#define OPENPAL_LIST_H
 
 #include "openpal/container/Array.h"
 

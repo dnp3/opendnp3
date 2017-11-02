@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include <openpal/container/Array.h>
-#include <openpal/container/LinkedList.h>
+#include <openpal/container/List.h>
 
 using namespace openpal;
 

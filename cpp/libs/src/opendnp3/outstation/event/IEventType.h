@@ -23,7 +23,7 @@
 #define OPENDNP3_IEVENTTYPE_H
 
 #include "opendnp3/app/EventType.h"
-#include "openpal/container/LinkedList.h"
+#include "openpal/container/List.h"
 
 namespace opendnp3
 {

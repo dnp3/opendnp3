@@ -22,7 +22,7 @@
 #ifndef OPENDNP3_TYPEDSTORAGE_H
 #define OPENDNP3_TYPEDSTORAGE_H
 
-#include "openpal/container/LinkedList.h"
+#include "openpal/container/List.h"
 
 #include "TypedEventRecord.h"
 
