@@ -43,7 +43,7 @@ private:
 	Node* next = nullptr;
 
 	template <class T>
-	friend class List;	
+	friend class List;
 };
 
 // A container adapter for a -linked list
@@ -51,7 +51,7 @@ template <class T>
 class List : public HasSize<list_size_type_t>
 {
 public:
-	
+
 	class Iterator
 	{
 	public:
@@ -96,7 +96,7 @@ public:
 	};
 
 	List(list_size_type_t maxSize) :
-		HasSize<list_size_type_t>(0),		
+		HasSize<list_size_type_t>(0),
 		underlying(maxSize)
 	{
 		Initialize();
@@ -105,7 +105,7 @@ public:
 	inline list_size_type_t Capacity() const
 	{
 		return underlying.Size();
-	}	
+	}
 
 	inline Node<T>* Head()
 	{
@@ -115,16 +115,16 @@ public:
 	inline Iterator Iterate() const
 	{
 		return Iterator::From(this->head);
-	}	
+	}
 
 	Node<T>* Add(const T& value);
-	
+
 	template <class U>
 	void ForeachWhile(const U& select);
 
 	template <class U>
 	void Foreach(const U& action);
-	
+
 	template <class U>
 	list_size_type_t RemoveAll(const U& match);
 
@@ -236,22 +236,22 @@ template <class T>
 void List<T>::Remove(Node<T>* node)
 {
 	if(node == this->head) // change of head
-	{		
+	{
 		this->head = node->next;
 	}
 
 	if (node == this->tail) // change of tail
 	{
 		this->tail = this->tail->prev;
-	}	
+	}
 
 	// attach the adjacent nodes to eachother if they exist
 	this->Link(node->prev, node->next);
 
-	// node becomes the head of the free list	
+	// node becomes the head of the free list
 	node->prev = nullptr;
 	this->Link(node, this->free);
-	this->free = node;	
+	this->free = node;
 
 	--(this->size);
 }
@@ -273,12 +273,12 @@ template <class T>
 void List<T>::Initialize()
 {
 	if (underlying.IsEmpty()) return;
-	
+
 	this->free = &underlying[0];
 	for(list_size_type_t i = 1; i < underlying.Size(); ++i)
 	{
 		Link(&underlying[i - 1], &underlying[i]);
-	}	
+	}
 }
 
 template <class T>

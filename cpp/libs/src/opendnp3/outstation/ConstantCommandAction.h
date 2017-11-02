@@ -37,15 +37,30 @@ public:
 	ConstantCommandAction(CommandStatus status_) : status(status_)
 	{}
 
-	virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t aIndex) final { return status; }
+	virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t aIndex) final
+	{
+		return status;
+	}
 
-	virtual CommandStatus Action(const AnalogOutputInt16& command, uint16_t aIndex) final { return status; }
+	virtual CommandStatus Action(const AnalogOutputInt16& command, uint16_t aIndex) final
+	{
+		return status;
+	}
 
-	virtual CommandStatus Action(const AnalogOutputInt32& command, uint16_t aIndex) final { return status; }
+	virtual CommandStatus Action(const AnalogOutputInt32& command, uint16_t aIndex) final
+	{
+		return status;
+	}
 
-	virtual CommandStatus Action(const AnalogOutputFloat32& command, uint16_t aIndex) final { return status; }
+	virtual CommandStatus Action(const AnalogOutputFloat32& command, uint16_t aIndex) final
+	{
+		return status;
+	}
 
-	virtual CommandStatus Action(const AnalogOutputDouble64& command, uint16_t aIndex) final { return status; }
+	virtual CommandStatus Action(const AnalogOutputDouble64& command, uint16_t aIndex) final
+	{
+		return status;
+	}
 
 private:
 

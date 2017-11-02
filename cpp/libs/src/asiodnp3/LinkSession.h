@@ -40,13 +40,13 @@
 namespace asiodnp3
 {
 class LinkSession final :
-	public opendnp3::ILinkTx,
-	public asiopal::IChannelCallbacks,
-	private opendnp3::IFrameSink,
-	public std::enable_shared_from_this<LinkSession>,
-	public asiopal::IResource,
-	private ISessionAcceptor,
-	private openpal::Uncopyable
+		public opendnp3::ILinkTx,
+		public asiopal::IChannelCallbacks,
+		private opendnp3::IFrameSink,
+		public std::enable_shared_from_this<LinkSession>,
+		public asiopal::IResource,
+		private ISessionAcceptor,
+		private openpal::Uncopyable
 {
 public:
 
