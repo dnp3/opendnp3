@@ -23,6 +23,7 @@ import com.automatak.dnp3.*;
 import com.automatak.dnp3.enums.ChannelState;
 import com.automatak.dnp3.enums.DoubleBit;
 import com.automatak.dnp3.enums.EventMode;
+import com.automatak.dnp3.enums.ServerAcceptMode;
 import com.automatak.dnp3.mock.DefaultMasterApplication;
 import com.automatak.dnp3.mock.DefaultOutstationApplication;
 import com.automatak.dnp3.mock.SuccessCommandHandler;
@@ -88,6 +89,7 @@ public class StackPair {
             Channel server = manager.addTCPServer(
                     String.format("server:%d", port),
                     LEVELS | LogLevels.APP_HEADER_TX | LogLevels.APP_OBJECT_TX,
+                    ServerAcceptMode.CloseExisting,
                     "127.0.0.1",
                     port,
                     serverListener);

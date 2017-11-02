@@ -88,7 +88,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jstring jadapter, jint jport, jobject jlistener)
+(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jint jmode, jstring jadapter, jint jport, jobject jlistener)
 {
 	const auto manager = (DNP3Manager*) native;
 
@@ -97,7 +97,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	auto channel = manager->AddTCPServer(id.str(), jlevels, adapter.str(), static_cast<uint16_t>(jport), listener);
+	auto channel = manager->AddTCPServer(id.str(), jlevels, static_cast<ServerAcceptMode>(jmode), adapter.str(), static_cast<uint16_t>(jport), listener);
 
 	return (jlong) new std::shared_ptr<IChannel>(channel);
 }
@@ -124,7 +124,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1server
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jstring jadapter, jint jport, jobject jtlsconfig, jobject jlistener)
+(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jint jmode, jstring jadapter, jint jport, jobject jtlsconfig, jobject jlistener)
 {
 	const auto manager = (DNP3Manager*)native;
 
@@ -137,7 +137,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	std::error_code ec;
 
-	auto channel = manager->AddTLSServer(id.str(), jlevels, adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
+	auto channel = manager->AddTLSServer(id.str(), jlevels, static_cast<ServerAcceptMode>(jmode), adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
 
 	return ec ? 0 : (jlong) new std::shared_ptr<IChannel>(channel);
 }
