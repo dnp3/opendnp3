@@ -44,7 +44,7 @@ public:
 
 	ArrayView(T* start, W size) : HasSize<W>(size), buffer(start)
 	{}
-	
+
 	inline bool Contains(W index) const
 	{
 		return index < this->size;
@@ -53,7 +53,7 @@ public:
 	inline bool Contains(W start, W stop) const
 	{
 		return (start < stop) && Contains(stop);
-	}	
+	}
 
 	inline T& operator[](W index)
 	{
@@ -66,7 +66,7 @@ public:
 		assert(index < this->size);
 		return buffer[index];
 	}
-	
+
 	template <class Action>
 	void foreach(const Action& action)
 	{
@@ -74,7 +74,7 @@ public:
 		{
 			action(buffer[i]);
 		}
-	}	
+	}
 
 private:
 	T* buffer;

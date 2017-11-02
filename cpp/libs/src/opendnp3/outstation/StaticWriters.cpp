@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "StaticLoadFunctions.h"
+#include "StaticWriters.h"
 
 #include "opendnp3/objects/Group1.h"
 #include "opendnp3/objects/Group3.h"
@@ -28,7 +28,6 @@
 #include "opendnp3/objects/Group30.h"
 #include "opendnp3/objects/Group40.h"
 #include "opendnp3/objects/Group50.h"
-#include "opendnp3/objects/Group121.h"
 
 #include "opendnp3/outstation/OctetStringSerializer.h"
 
@@ -37,8 +36,106 @@ using namespace openpal;
 namespace opendnp3
 {
 
+template <class Spec, class IndexType >
+bool LoadWithRangeIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view, RangeWriteIterator<IndexType, typename Spec::meas_t>& iterator, Range& range)
+{
+	const Cell<Spec>& start = view[range.start];
+	uint16_t nextIndex = start.config.vIndex;
 
-StaticWriter<BinarySpec>::Function GetStaticWriter(StaticBinaryVariation variation)
+	while (
+	    range.IsValid() &&
+	    view[range.start].selection.selected &&
+	    (view[range.start].selection.variation == start.selection.variation) &&
+	    (view[range.start].config.vIndex == nextIndex)
+	)
+	{
+		if (iterator.Write(view[range.start].selection.value))
+		{
+			// deselect the value and advance the range
+			view[range.start].selection.selected = false;
+			range.Advance();
+			++nextIndex;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+template <class Spec, class IndexType>
+bool LoadWithBitfieldIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view, BitfieldRangeWriteIterator<IndexType>& iterator, Range& range)
+{
+	const Cell<Spec>& start = view[range.start];
+
+	uint16_t nextIndex = start.config.vIndex;
+
+	while (
+	    range.IsValid() &&
+	    view[range.start].selection.selected &&
+	    (view[range.start].selection.variation == start.selection.variation) &&
+	    (view[range.start].config.vIndex == nextIndex)
+	)
+	{
+		if (iterator.Write(view[range.start].selection.value.value))
+		{
+			// deselect the value and advance the range
+			view[range.start].selection.selected = false;
+			range.Advance();
+			++nextIndex;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+template <class Spec, class GV>
+bool WriteSingleBitfield(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+{
+	auto start = view[range.start].config.vIndex;
+	auto stop = view[range.stop].config.vIndex;
+	auto mapped = Range::From(start, stop);
+
+	if (mapped.IsOneByte())
+	{
+		auto iter = writer.IterateOverSingleBitfield<openpal::UInt8>(GV::ID(), QualifierCode::UINT8_START_STOP, static_cast<uint8_t>(mapped.start));
+		return LoadWithBitfieldIterator<Spec, openpal::UInt8>(view, iter, range);
+	}
+	else
+	{
+		auto iter = writer.IterateOverSingleBitfield<openpal::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, mapped.start);
+		return LoadWithBitfieldIterator<Spec, openpal::UInt16>(view, iter, range);
+	}
+}
+
+
+template <class Spec, class Serializer>
+bool WriteWithSerializer(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+{
+	auto start = view[range.start].config.vIndex;
+	auto stop = view[range.stop].config.vIndex;
+	auto mapped = Range::From(start, stop);
+
+	if (mapped.IsOneByte())
+	{
+		auto iter = writer.IterateOverRange<openpal::UInt8, typename Serializer::Target>(QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(mapped.start));
+		return LoadWithRangeIterator<Spec, openpal::UInt8>(view, iter, range);
+	}
+	else
+	{
+		auto iter = writer.IterateOverRange<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP, Serializer::Inst(), mapped.start);
+		return LoadWithRangeIterator<Spec, openpal::UInt16>(view, iter, range);
+	}
+}
+
+
+StaticWrite<BinarySpec>::func_t StaticWriters::Get(StaticBinaryVariation variation)
 {
 	switch (variation)
 	{
@@ -49,7 +146,7 @@ StaticWriter<BinarySpec>::Function GetStaticWriter(StaticBinaryVariation variati
 	}
 }
 
-StaticWriter<DoubleBitBinarySpec>::Function GetStaticWriter(StaticDoubleBinaryVariation variation)
+StaticWrite<DoubleBitBinarySpec>::func_t StaticWriters::Get(StaticDoubleBinaryVariation variation)
 {
 	switch (variation)
 	{
@@ -60,7 +157,7 @@ StaticWriter<DoubleBitBinarySpec>::Function GetStaticWriter(StaticDoubleBinaryVa
 	}
 }
 
-StaticWriter<AnalogSpec>::Function GetStaticWriter(StaticAnalogVariation variation)
+StaticWrite<AnalogSpec>::func_t StaticWriters::Get(StaticAnalogVariation variation)
 {
 	switch (variation)
 	{
@@ -75,7 +172,7 @@ StaticWriter<AnalogSpec>::Function GetStaticWriter(StaticAnalogVariation variati
 	}
 }
 
-StaticWriter<CounterSpec>::Function GetStaticWriter(StaticCounterVariation variation)
+StaticWrite<CounterSpec>::func_t StaticWriters::Get(StaticCounterVariation variation)
 {
 	switch (variation)
 	{
@@ -88,7 +185,7 @@ StaticWriter<CounterSpec>::Function GetStaticWriter(StaticCounterVariation varia
 	}
 }
 
-StaticWriter<FrozenCounterSpec>::Function GetStaticWriter(StaticFrozenCounterVariation variation)
+StaticWrite<FrozenCounterSpec>::func_t StaticWriters::Get(StaticFrozenCounterVariation variation)
 {
 	switch (variation)
 	{
@@ -98,7 +195,7 @@ StaticWriter<FrozenCounterSpec>::Function GetStaticWriter(StaticFrozenCounterVar
 	}
 }
 
-StaticWriter<BinaryOutputStatusSpec>::Function GetStaticWriter(StaticBinaryOutputStatusVariation variation)
+StaticWrite<BinaryOutputStatusSpec>::func_t StaticWriters::Get(StaticBinaryOutputStatusVariation variation)
 {
 	switch (variation)
 	{
@@ -108,7 +205,7 @@ StaticWriter<BinaryOutputStatusSpec>::Function GetStaticWriter(StaticBinaryOutpu
 	}
 }
 
-StaticWriter<AnalogOutputStatusSpec>::Function GetStaticWriter(StaticAnalogOutputStatusVariation variation)
+StaticWrite<AnalogOutputStatusSpec>::func_t StaticWriters::Get(StaticAnalogOutputStatusVariation variation)
 {
 	switch (variation)
 	{
@@ -121,20 +218,15 @@ StaticWriter<AnalogOutputStatusSpec>::Function GetStaticWriter(StaticAnalogOutpu
 	}
 }
 
-StaticWriter<OctetStringSpec>::Function GetStaticWriter(StaticOctetStringVariation variation)
+StaticWrite<OctetStringSpec>::func_t StaticWriters::Get(StaticOctetStringVariation variation)
 {
 	// variation is always the same
-	return &WriteOctetString;
+	return &Write;
 }
 
-StaticWriter<TimeAndIntervalSpec>::Function GetStaticWriter(StaticTimeAndIntervalVariation variation)
+StaticWrite<TimeAndIntervalSpec>::func_t StaticWriters::Get(StaticTimeAndIntervalVariation variation)
 {
 	return &WriteWithSerializer<TimeAndIntervalSpec, Group50Var4>;
-}
-
-StaticWriter<SecurityStatSpec>::Function GetStaticWriter(StaticSecurityStatVariation variation)
-{
-	return &WriteWithSerializer < SecurityStatSpec, Group121Var1 > ;
 }
 
 template <class Iterator>
@@ -159,7 +251,7 @@ uint16_t WriteSomeOctetString(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t
 	return num_written;
 }
 
-bool WriteOctetString(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+bool StaticWriters::Write(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
 	while (range.IsValid())
 	{
