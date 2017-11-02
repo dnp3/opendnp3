@@ -25,11 +25,11 @@
 
 using namespace openpal;
 
-#define SUITE(name) "LinkedListAdapter - " name
+#define SUITE(name) "ListAdapter - " name
 
 TEST_CASE(SUITE("CorrectInitialState"))
 {
-	LinkedList<int> list(3);
+	List<int> list(3);
 
 	REQUIRE(list.IsEmpty());
 	REQUIRE(!list.IsFull());
@@ -38,7 +38,7 @@ TEST_CASE(SUITE("CorrectInitialState"))
 
 TEST_CASE(SUITE("AddsUntilFull"))
 {
-	LinkedList<int> list(3);
+	List<int> list(3);
 
 	REQUIRE(list.Add(1));
 	REQUIRE(list.Add(2));
@@ -52,7 +52,7 @@ TEST_CASE(SUITE("AddsUntilFull"))
 
 TEST_CASE(SUITE("CanRemoveHead"))
 {
-	LinkedList<int> list(3);
+	List<int> list(3);
 
 	auto one = list.Add(1);
 	list.Add(2);
@@ -69,7 +69,7 @@ TEST_CASE(SUITE("CanRemoveHead"))
 
 TEST_CASE(SUITE("CanRemoveTail"))
 {
-	LinkedList<int> list(3);
+	List<int> list(3);
 
 	list.Add(1);
 	list.Add(2);
@@ -86,7 +86,7 @@ TEST_CASE(SUITE("CanRemoveTail"))
 
 TEST_CASE(SUITE("CanRemoveMiddle"))
 {
-	LinkedList<int> list(3);
+	List<int> list(3);
 
 	list.Add(1);
 	auto two = list.Add(2);
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("CanRemoveMiddle"))
 
 TEST_CASE(SUITE("RemoveAllComplexQuery"))
 {
-	LinkedList<int> list(10);
+	List<int> list(10);
 
 	list.Add(2);
 	list.Add(3);
@@ -135,7 +135,7 @@ TEST_CASE(SUITE("RemoveAllComplexQuery"))
 
 TEST_CASE(SUITE("CanIterateOverValues"))
 {
-	LinkedList<int> list(3);
+	List<int> list(3);
 
 	list.Add(1);
 	list.Add(2);

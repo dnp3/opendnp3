@@ -43,16 +43,12 @@ private:
 	ListNode* next = nullptr;
 
 	template <class T>
-	friend class LinkedList;
-	/*
-	template <class T>
-	friend class ListIterator;
-	*/
+	friend class List;	
 };
 
 // A container adapter for a -linked list
 template <class T>
-class LinkedList : public HasSize<list_size_type_t>
+class List : public HasSize<list_size_type_t>
 {
 public:
 	
@@ -99,7 +95,7 @@ public:
 		ListNode<T>* current;
 	};
 
-	LinkedList(list_size_type_t maxSize) :
+	List(list_size_type_t maxSize) :
 		HasSize<list_size_type_t>(0),		
 		underlying(maxSize)
 	{
@@ -152,14 +148,14 @@ private:
 };
 
 template <class T>
-ListNode<T>* LinkedList<T>::Add(const T& value)
+ListNode<T>* List<T>::Add(const T& value)
 {
 	return this->Insert(value, this->tail, nullptr);
 }
 
 template <class T>
 template <class U>
-void LinkedList<T>::ForeachWhile(const U& select)
+void List<T>::ForeachWhile(const U& select)
 {
 	auto iter = this->Iterate();
 	bool result = true;
@@ -171,7 +167,7 @@ void LinkedList<T>::ForeachWhile(const U& select)
 
 template <class T>
 template <class U>
-void LinkedList<T>::Foreach(const U& action)
+void List<T>::Foreach(const U& action)
 {
 	auto iter = this->Iterate();
 	while (iter.HasNext())
@@ -182,7 +178,7 @@ void LinkedList<T>::Foreach(const U& action)
 
 template <class T>
 template <class U>
-list_size_type_t LinkedList<T>::RemoveAll(const U& match)
+list_size_type_t List<T>::RemoveAll(const U& match)
 {
 	list_size_type_t count = 0;
 
@@ -207,7 +203,7 @@ list_size_type_t LinkedList<T>::RemoveAll(const U& match)
 }
 
 template <class T>
-ListNode<T>* LinkedList<T>::Insert(const T& value, ListNode<T>* left, ListNode<T>* right)
+ListNode<T>* List<T>::Insert(const T& value, ListNode<T>* left, ListNode<T>* right)
 {
 	if (!this->free) return nullptr;
 
@@ -237,7 +233,7 @@ ListNode<T>* LinkedList<T>::Insert(const T& value, ListNode<T>* left, ListNode<T
 }
 
 template <class T>
-void LinkedList<T>::Remove(ListNode<T>* node)
+void List<T>::Remove(ListNode<T>* node)
 {
 	if(node == this->head) // change of head
 	{		
@@ -261,20 +257,20 @@ void LinkedList<T>::Remove(ListNode<T>* node)
 }
 
 template <class T>
-bool LinkedList<T>::IsFull() const
+bool List<T>::IsFull() const
 {
 	return !(this->free);
 }
 
 template <class T>
-void LinkedList<T>::Link(ListNode<T>* first, ListNode<T>* second)
+void List<T>::Link(ListNode<T>* first, ListNode<T>* second)
 {
 	if(first) first->next = second;
 	if(second) second->prev = first;
 }
 
 template <class T>
-void LinkedList<T>::Initialize()
+void List<T>::Initialize()
 {
 	if (underlying.IsEmpty()) return;
 	
@@ -287,7 +283,7 @@ void LinkedList<T>::Initialize()
 
 template <class T>
 template <class U>
-T* LinkedList<T>::Iterator::Find(const U& matches)
+T* List<T>::Iterator::Find(const U& matches)
 {
 	while (this->current)
 	{

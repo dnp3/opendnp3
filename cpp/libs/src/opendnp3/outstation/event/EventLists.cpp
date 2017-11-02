@@ -50,49 +50,49 @@ bool EventLists::IsAnyTypeFull() const
 }
 
 template <>
-openpal::LinkedList<TypedEventRecord<BinarySpec>>& EventLists::GetList()
+openpal::List<TypedEventRecord<BinarySpec>>& EventLists::GetList()
 {
 	return this->binary;
 }
 
 template <>
-openpal::LinkedList<TypedEventRecord<DoubleBitBinarySpec>>& EventLists::GetList()
+openpal::List<TypedEventRecord<DoubleBitBinarySpec>>& EventLists::GetList()
 {
 	return this->doubleBinary;
 }
 
 template <>
-openpal::LinkedList<TypedEventRecord<CounterSpec>>& EventLists::GetList()
+openpal::List<TypedEventRecord<CounterSpec>>& EventLists::GetList()
 {
 	return this->counter;
 }
 
 template <>
-openpal::LinkedList<TypedEventRecord<FrozenCounterSpec>>& EventLists::GetList()
+openpal::List<TypedEventRecord<FrozenCounterSpec>>& EventLists::GetList()
 {
 	return this->frozenCounter;
 }
 
 template <>
-openpal::LinkedList<TypedEventRecord<AnalogSpec>>& EventLists::GetList()
+openpal::List<TypedEventRecord<AnalogSpec>>& EventLists::GetList()
 {
 	return this->analog;
 }
 
 template <>
-openpal::LinkedList<TypedEventRecord<BinaryOutputStatusSpec>>& EventLists::GetList()
+openpal::List<TypedEventRecord<BinaryOutputStatusSpec>>& EventLists::GetList()
 {
 	return this->binaryOutputStatus;
 }
 
 template <>
-openpal::LinkedList<TypedEventRecord<AnalogOutputStatusSpec>>& EventLists::GetList()
+openpal::List<TypedEventRecord<AnalogOutputStatusSpec>>& EventLists::GetList()
 {
 	return this->analogOutputStatus;
 }
 
 template <>
-openpal::LinkedList<TypedEventRecord<OctetStringSpec>>& EventLists::GetList()
+openpal::List<TypedEventRecord<OctetStringSpec>>& EventLists::GetList()
 {
 	return this->octetString;
 }
