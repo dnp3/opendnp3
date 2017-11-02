@@ -126,20 +126,7 @@ public:
 	list_size_type_t Capacity() const
 	{
 		return underlying.Size();
-	}
-
-	void Clear()
-	{
-		if (this->IsNotEmpty())
-		{
-			// link the remaining free list to the end of active list
-			this->Link(pTail, pFree);
-			// set the free pointer to the head
-			pFree = pHead;
-			pHead = pTail = nullptr;
-			this->size = 0;
-		}
-	}
+	}	
 
 	inline ListNode<T>* Head()
 	{
