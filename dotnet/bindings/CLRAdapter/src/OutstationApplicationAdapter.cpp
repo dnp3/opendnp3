@@ -79,6 +79,7 @@ namespace Automatak
 				iin.deviceTrouble = indications.deviceTrouble;
 				iin.localControl = indications.localControl;
 				iin.needTime = indications.needTime;
+				iin.eventBufferOverflow = indications.eventBufferOverflow;
 				return iin;
 			}
 
