@@ -166,7 +166,7 @@ TEST_CASE(SUITE("ReceiveNewFir"))
 	TransportTestObject test(true);
 
 	test.link.SendUp(test.GetData("40"));	// FIR/_/0
-	REQUIRE(test.upper.received.IsBufferEmpty());
+	REQUIRE(test.upper.received.IsEmpty());
 
 	test.link.SendUp("C0 AB CD");	// FIR/FIN/0
 	REQUIRE(test.upper.received.AsHex() == "AB CD");

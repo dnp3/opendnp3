@@ -35,12 +35,20 @@ using namespace openpal;
 namespace testlib
 {
 
-void DataSink::ClearBuffer()
+void DataSink::Write(const RSlice& data)
+{
+	for (size_t i = 0; i < data.Size(); ++i)
+	{
+		this->buffer.push_back(data[i]);
+	}
+}
+
+void DataSink::Clear()
 {	
 	buffer.clear();
 }
 
-bool DataSink::BufferEquals(const openpal::RSlice& data) const
+bool DataSink::Equals(const openpal::RSlice& data) const
 {
 	if (data.Size() != this->buffer.size()) return false;
 
@@ -58,14 +66,6 @@ std::string DataSink::AsHex(bool spaced) const
 	CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
 	for(size_t i = 0; i < this->buffer.size(); ++i) temp[i] = this->buffer[i];
 	return ToHex(temp.ToRSlice(), spaced);
-}
-
-void DataSink::WriteToBuffer(const RSlice& data)
-{	
-	for(size_t i = 0; i < data.Size(); ++i)
-	{
-		this->buffer.push_back(data[i]);
-	}	
 }
 
 } //end namespace

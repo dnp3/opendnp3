@@ -42,7 +42,7 @@ bool MockFrameSink::OnLowerLayerDown()
 
 void MockFrameSink::Reset()
 {
-	this->received.ClearBuffer();
+	this->received.Clear();
 	m_num_frames = 0;
 }
 
@@ -74,7 +74,7 @@ bool MockFrameSink::OnFrame(const LinkHeaderFields& header, const openpal::RSlic
 
 	if (userdata.IsNotEmpty())
 	{
-		this->received.WriteToBuffer(userdata);		
+		this->received.Write(userdata);		
 	}
 
 	return true;

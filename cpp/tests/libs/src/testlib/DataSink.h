@@ -36,23 +36,23 @@ public:
 
 	DataSink() = default;
 
-	bool BufferEquals(const openpal::RSlice& data) const;
+	void Write(const openpal::RSlice& data);
+
+	bool Equals(const openpal::RSlice& data) const;
 	
 	std::string AsHex(bool spaced = true) const;
 
-	bool IsBufferEmpty() const
+	inline bool IsEmpty() const
 	{
 		return buffer.size() == 0;
 	}
 	
-	void ClearBuffer();
+	void Clear();
 	
 	size_t Size() const
 	{
 		return buffer.size();
 	}		
-
-	void WriteToBuffer(const openpal::RSlice& data);
 
 private:
 
