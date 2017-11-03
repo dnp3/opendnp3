@@ -87,7 +87,7 @@ TEST_CASE(SUITE("AllowsHeaderOnlyFinalFrame"))
 	test.link.SendUp("41 DE AD BE EF");
 	test.link.SendUp("82");
 
-	REQUIRE(test.upper.GetBufferAsHexString() == "DE AD BE EF");
+	REQUIRE(test.upper.AsHex() == "DE AD BE EF");
 }
 
 TEST_CASE(SUITE("ReceiveNoFIR"))
@@ -112,7 +112,7 @@ TEST_CASE(SUITE("PacketsCanBeOfVaryingSize"))
 	TransportTestObject test(true);
 	test.link.SendUp("40 0A 0B 0C"); // FIR/_/0
 	test.link.SendUp("81 0D 0E 0F"); // _/FIN/1
-	REQUIRE("0A 0B 0C 0D 0E 0F" ==  test.upper.GetBufferAsHexString());
+	REQUIRE("0A 0B 0C 0D 0E 0F" ==  test.upper.AsHex());
 }
 
 TEST_CASE(SUITE("ReceiveSinglePacket"))
@@ -120,7 +120,7 @@ TEST_CASE(SUITE("ReceiveSinglePacket"))
 	TransportTestObject test(true);
 	//now try receiving 1 a single FIR/FIN with a magic value
 	test.link.SendUp("C0 77");
-	REQUIRE("77" ==  test.upper.GetBufferAsHexString());
+	REQUIRE("77" ==  test.upper.AsHex());
 }
 
 TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
@@ -169,7 +169,7 @@ TEST_CASE(SUITE("ReceiveNewFir"))
 	REQUIRE(test.upper.IsBufferEmpty());
 
 	test.link.SendUp("C0 AB CD");	// FIR/FIN/0
-	REQUIRE("AB CD" ==  test.upper.GetBufferAsHexString());
+	REQUIRE("AB CD" ==  test.upper.AsHex());
 	REQUIRE(test.transport.GetStatistics().rx.numTransportDiscard == 1);
 }
 

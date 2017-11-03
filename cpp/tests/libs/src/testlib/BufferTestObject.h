@@ -34,14 +34,14 @@ class BufferTestObject
 {	
 public:
 
-	BufferTestObject() = default;	
+	BufferTestObject() = default;
 
 	bool BufferEquals(const openpal::RSlice& data) const;
 	bool BufferEquals(const uint8_t*, size_t) const;
 	bool BufferEqualsHex(const std::string& hex) const;	
 	bool BufferContains(const std::string& text) const;
 
-	std::string GetBufferAsHexString(bool spaced = true) const;
+	std::string AsHex(bool spaced = true) const;
 
 	bool IsBufferEmpty() const
 	{

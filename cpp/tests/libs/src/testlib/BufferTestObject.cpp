@@ -70,7 +70,7 @@ bool BufferTestObject::BufferContains(const std::string& text) const
 	return s.find(text) != std::string::npos;
 }
 
-std::string BufferTestObject::GetBufferAsHexString(bool spaced) const
+std::string BufferTestObject::AsHex(bool spaced) const
 {	
 	CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
 	for(size_t i = 0; i < this->buffer.size(); ++i) temp[i] = this->buffer[i];
