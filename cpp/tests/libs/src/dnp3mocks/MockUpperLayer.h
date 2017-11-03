@@ -18,13 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_UPPER_LAYER_H_
-#define __MOCK_UPPER_LAYER_H_
+#ifndef OPENDNP3_MOCKUPPERLAYER_H
+#define OPENDNP3_MOCKUPPERLAYER_H
 
 
 #include <opendnp3/LayerInterfaces.h>
 
-#include <testlib/BufferTestObject.h>
+#include <testlib/DataSink.h>
 
 namespace opendnp3
 {
@@ -61,7 +61,7 @@ public:
 	virtual bool OnLowerLayerUp() override;
 	virtual bool OnLowerLayerDown() override;
 
-	testlib::BufferTestObject received;
+	testlib::DataSink received;
 
 private:
 	

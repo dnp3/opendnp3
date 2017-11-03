@@ -18,56 +18,48 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "BufferTestObject.h"
+#ifndef TESTLIB_DATASINK_H
+#define TESTLIB_DATASINK_H
 
-#include <testlib/BufferHelpers.h>
+#include <string>
+#include <vector>
+#include <cstdint>
 
-#include <memory>
-#include <stdexcept>
-
-#include <testlib/HexConversions.h>
-
-#include <openpal/util/ToHex.h>
-
-using namespace openpal;
+#include <openpal/container/RSlice.h>
 
 namespace testlib
 {
 
-void BufferTestObject::ClearBuffer()
-{
-	numWrites = 0;
-	buffer.clear();
-}
-
-bool BufferTestObject::BufferEquals(const openpal::RSlice& data) const
-{
-	if (data.Size() != this->buffer.size()) return false;
-
-	for (size_t i = 0; i < this->buffer.size(); i++) {
-		if (data[i] != this->buffer[i])
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-std::string BufferTestObject::AsHex(bool spaced) const
+class DataSink final
 {	
-	CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
-	for(size_t i = 0; i < this->buffer.size(); ++i) temp[i] = this->buffer[i];
-	return ToHex(temp.ToRSlice(), spaced);
-}
+public:
 
-void BufferTestObject::WriteToBuffer(const RSlice& data)
-{	
-	++(this->numWrites);
-	for(size_t i = 0; i < data.Size(); ++i)
+	DataSink() = default;
+
+	bool BufferEquals(const openpal::RSlice& data) const;
+	
+	std::string AsHex(bool spaced = true) const;
+
+	bool IsBufferEmpty() const
 	{
-		this->buffer.push_back(data[i]);
-	}	
+		return buffer.size() == 0;
+	}
+	
+	void ClearBuffer();
+	
+	size_t Size() const
+	{
+		return buffer.size();
+	}		
+
+	void WriteToBuffer(const openpal::RSlice& data);
+
+private:
+
+	std::vector<uint8_t> buffer;
+};
+
 }
 
-} //end namespace
+#endif
 

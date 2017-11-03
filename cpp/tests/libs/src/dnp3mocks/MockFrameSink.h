@@ -18,13 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_FRAME_SINK_H_
-#define __MOCK_FRAME_SINK_H_
+#ifndef OPENDNP3_MOCKFRAMESINK_H
+#define OPENDNP3_MOCKFRAMESINK_H
 
 #include <opendnp3/link/ILinkSession.h>
 #include <opendnp3/link/LinkLayerConstants.h>
 
-#include <testlib/BufferTestObject.h>
+#include <testlib/DataSink.h>
 
 #include <opendnp3/gen/LinkFunction.h>
 
@@ -66,7 +66,7 @@ public:
 	void AddAction(std::function<void ()> fun);
 
 
-	testlib::BufferTestObject received;
+	testlib::DataSink received;
 
 private:
 
