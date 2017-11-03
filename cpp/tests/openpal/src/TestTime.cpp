@@ -20,7 +20,6 @@
  */
 #include <catch.hpp>
 
-#include <testlib/Timeout.h>
 #include <testlib/StopWatch.h>
 
 #include <iostream>
@@ -32,16 +31,6 @@ using namespace std::chrono;
 using namespace testlib;
 
 #define SUITE(name) "TimeoutStopWatchTests - " name
-
-TEST_CASE(SUITE("TimeoutCorrectlyNotExpired"))
-{
-	//create a timeout of 1 millisecond
-	Timeout to(milliseconds(1000));
-
-	//check that the timeout starts out unexpired
-	REQUIRE(to.IsExpired() ==  false);
-	REQUIRE(to.Remaining() > milliseconds(1));
-}
 
 TEST_CASE(SUITE("StopWatchBasicTest"))
 {
