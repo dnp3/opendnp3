@@ -78,7 +78,7 @@ TEST_CASE(SUITE("ColdRestart"))
 	// try first with support turned off
 	t.SendToOutstation("C0 0D");
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	t.application->coldRestartSupport = RestartMode::SUPPORTED_DELAY_FINE;
 	t.application->coldRestartTimeDelay = 1;
@@ -97,7 +97,7 @@ TEST_CASE(SUITE("WarmRestart"))
 	// try first with support turned off
 	t.SendToOutstation("C0 0E");
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	t.application->warmRestartSupport = RestartMode::SUPPORTED_DELAY_COARSE;
 	t.application->warmRestartTimeDelay = 65535;
@@ -229,7 +229,7 @@ TEST_CASE(SUITE("WriteTimeDateLAN - Rejects write with bad sequence number"))
 
 	t.SendToOutstation("C0 18"); // record current time
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	t.SendToOutstation("C2 02 32 03 07 01 D2 04 00 00 00 00"); // write Grp50Var3, value = 1234 ms after epoch
 	REQUIRE(t.lower->PopWriteAsHex() == "C2 81 80 04");	 // param error
@@ -244,7 +244,7 @@ TEST_CASE(SUITE("WriteTimeDateLAN - Accepts write with correct sequence number")
 	t.AdvanceTime(TimeDuration::Milliseconds(10));
 	t.SendToOutstation("C0 18"); // record current time
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	t.AdvanceTime(TimeDuration::Milliseconds(20));
 	t.SendToOutstation("C1 02 32 03 07 01 D2 04 00 00 00 00"); // write Grp50Var3, value = 1234 ms after epoch
@@ -361,16 +361,16 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 	// Response should be (30,1)x2 per fragment, quality ONLINE, value 0
 	// 4 fragment response, first 3 fragments should be confirmed, last one shouldn't be
 	REQUIRE(t.lower->PopWriteAsHex() == "A0 81 80 00 1E 01 00 00 01 01 00 00 00 00 01 00 00 00 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 	t.SendToOutstation("C0 00");
 	REQUIRE(t.lower->PopWriteAsHex() == "21 81 80 00 1E 01 00 02 03 01 00 00 00 00 01 00 00 00 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 	t.SendToOutstation("C1 00");
 	REQUIRE(t.lower->PopWriteAsHex() == "22 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 	t.SendToOutstation("C2 00");
 	REQUIRE(t.lower->PopWriteAsHex() == "43 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 	t.SendToOutstation("C3 00");
 
 	REQUIRE(t.lower->PopWriteAsHex() == "");

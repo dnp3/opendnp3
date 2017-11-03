@@ -44,7 +44,7 @@ public:
 	// ILinkSession members
 	bool OnLowerLayerUp() override;
 	bool OnLowerLayerDown() override;
-	bool OnTransmitResult(bool success) override;
+	bool OnTxReady() override;
 
 	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 

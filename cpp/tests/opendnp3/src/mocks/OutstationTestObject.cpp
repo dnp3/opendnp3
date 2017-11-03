@@ -53,9 +53,9 @@ size_t OutstationTestObject::LowerLayerDown()
 	return exe->RunMany();
 }
 
-size_t OutstationTestObject::OnSendResult(bool isSuccess)
+size_t OutstationTestObject::OnTxReady()
 {
-	context.OnSendResult(isSuccess);
+	context.OnTxReady();
 	return exe->RunMany();
 }
 

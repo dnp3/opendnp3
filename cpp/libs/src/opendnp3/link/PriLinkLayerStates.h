@@ -40,7 +40,7 @@ public:
 	virtual PriStateBase& OnLinkStatus(LinkContext&, bool receiveBuffFull);
 	virtual PriStateBase& OnNotSupported(LinkContext&, bool receiveBuffFull);
 
-	virtual PriStateBase& OnTransmitResult(LinkContext&, bool success);
+	virtual PriStateBase& OnTxReady(LinkContext&);
 
 	virtual PriStateBase& OnTimeout(LinkContext&);
 
@@ -68,11 +68,11 @@ class PLLS_Idle final : public PriStateBase
 //  template wait state for send unconfirmed data
 /////////////////////////////////////////////////////////////////////////////
 
-class PLLS_SendUnconfirmedTransmitWait : public PriStateBase
+class PLLS_SendUnconfirmedTransmitWait final : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success) override;
+	virtual PriStateBase& OnTxReady(LinkContext& link) override;
 };
 
 
@@ -84,7 +84,7 @@ class PLLS_LinkResetTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkResetTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success) override;
+	virtual PriStateBase& OnTxReady(LinkContext& link) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ class PLLS_ConfUserDataTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfUserDataTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success) override;
+	virtual PriStateBase& OnTxReady(LinkContext& link) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait);
 
-	virtual PriStateBase& OnTransmitResult(LinkContext& link, bool success) override;
+	virtual PriStateBase& OnTxReady(LinkContext& link) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////

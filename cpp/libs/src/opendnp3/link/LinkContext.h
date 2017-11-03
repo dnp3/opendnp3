@@ -59,7 +59,7 @@ public:
 	LinkContext(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>&, const std::shared_ptr<IUpperLayer>&, const std::shared_ptr<opendnp3::ILinkListener>&, ILinkSession& session, const LinkConfig&);
 
 
-	/// ---- helpers for dealing with the FCB bits ----
+	// ---- helpers for dealing with the FCB bits ----
 
 	void ResetReadFCB()
 	{
@@ -78,13 +78,13 @@ public:
 		nextWriteFCB = !nextWriteFCB;
 	}
 
-	/// --- helpers for dealing with layer state transitations ---
+	// --- helpers for dealing with layer state transitations ---
 	bool OnLowerLayerUp();
 	bool OnLowerLayerDown();
-	bool OnTransmitResult(bool success);
+	bool OnTxReady();
 	bool SetTxSegment(ITransportSegment& segments);
 
-	/// --- helpers for formatting user data messages ---
+	// --- helpers for formatting user data messages ---
 	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu);
 	openpal::RSlice FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB);
 
@@ -95,12 +95,12 @@ public:
 	void QueueRequestLinkStatus();
 	void QueueTransmit(const openpal::RSlice& buffer, bool primary);
 
-	/// --- public members ----
+	// --- public members ----
 
 	void ResetRetry();
 	bool Retry();
 	void PushDataUp(const openpal::RSlice& data);
-	void CompleteSendOperation(bool success);
+	void CompleteSendOperation();
 	void TryStartTransmission();
 	void OnKeepAliveTimeout();
 	void OnResponseTimeout();

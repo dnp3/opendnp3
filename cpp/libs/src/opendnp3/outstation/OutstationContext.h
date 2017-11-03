@@ -72,7 +72,7 @@ public:
 
 	virtual bool OnLowerLayerDown() override;
 
-	virtual bool OnSendResult(bool isSuccess) override final;
+	virtual bool OnTxReady() override final;
 
 	virtual bool OnReceive(const openpal::RSlice& fragment) override final;
 

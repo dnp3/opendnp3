@@ -45,14 +45,13 @@ public:
 			Reset();
 		}
 
-		size_t mSuccessCnt;
-		size_t mFailureCnt;
-		size_t mNumLayerUp;
-		size_t mNumLayerDown;
+		size_t numTxReady;
+		size_t numLayerUp;
+		size_t numLayerDown;
 
 		void Reset()
 		{
-			mSuccessCnt = mFailureCnt = mNumLayerUp = mNumLayerDown = 0;
+			numTxReady = numLayerUp = numLayerUp = 0;
 		}
 	};
 
@@ -66,17 +65,11 @@ public:
 	bool SendDown(const std::string&);
 	bool SendDown(const openpal::RSlice& arBuffer);
 
-	bool CountersEqual(size_t success, size_t failure)
-	{
-		return mState.mSuccessCnt == success && mState.mFailureCnt == failure;
-	}
-
 	bool StateEquals(const State& s)
 	{
-		return (mState.mSuccessCnt == s.mSuccessCnt)
-		       && (mState.mFailureCnt == s.mFailureCnt)
-		       && (mState.mNumLayerUp == s.mNumLayerUp)
-		       && (mState.mNumLayerDown == s.mNumLayerDown);
+		return (mState.numTxReady == s.numTxReady)
+		       && (mState.numLayerUp == s.numLayerUp)
+		       && (mState.numLayerDown == s.numLayerDown);
 	}
 
 	void Reset()
@@ -95,7 +88,7 @@ public:
 
 	//these are the NVII delegates
 	virtual bool OnReceive(const openpal::RSlice& buffer) override final;
-	virtual bool OnSendResult(bool isSuccess) override final;
+	virtual bool OnTxReady() override final;
 	virtual bool OnLowerLayerUp() override final;
 	virtual bool OnLowerLayerDown() override final;
 

@@ -35,8 +35,7 @@ public:
 
 	void SendUp(const openpal::RSlice& arBuffer);
 	void SendUp(const std::string&);
-	void SendSuccess();
-	void SendFailure();
+	void SendComplete();
 	void ThisLayerUp();
 	void ThisLayerDown();
 

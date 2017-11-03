@@ -50,7 +50,7 @@ TEST_CASE(SUITE("ReceiveUnsolBeforeTransmit"))
 	REQUIRE(t.exe->RunMany());
 
 	REQUIRE(t.lower->PopWriteAsHex() == hex::UnsolConfirm(0));
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();
 
 	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }

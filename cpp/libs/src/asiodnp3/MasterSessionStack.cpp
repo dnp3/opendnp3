@@ -81,9 +81,9 @@ bool MasterSessionStack::OnFrame(const LinkHeaderFields& header, const openpal::
 	return stack.link->OnFrame(header, userdata);
 }
 
-void MasterSessionStack::OnTransmitComplete(bool success)
+void MasterSessionStack::OnTxReady()
 {
-	this->stack.link->OnTransmitResult(success);
+	this->stack.link->OnTxReady();
 }
 
 void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)

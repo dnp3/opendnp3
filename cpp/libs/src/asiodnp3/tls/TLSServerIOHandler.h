@@ -79,7 +79,7 @@ public:
 
 	static std::shared_ptr<TLSServerIOHandler> Create(
 	    const openpal::Logger& logger,
-		opendnp3::ServerAcceptMode mode,
+	    opendnp3::ServerAcceptMode mode,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
@@ -91,7 +91,7 @@ public:
 
 	TLSServerIOHandler(
 	    const openpal::Logger& logger,
-		opendnp3::ServerAcceptMode mode,
+	    opendnp3::ServerAcceptMode mode,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,

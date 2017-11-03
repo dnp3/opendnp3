@@ -61,7 +61,7 @@ bool MockFrameSink::CheckLastWithDFC(LinkFunction func, bool isMaster, bool aIsR
 	return  (m_last_header.fcvdfc == aIsRcvBuffFull) && CheckLast(func, isMaster, dest, src);
 }
 
-bool MockFrameSink::OnTransmitResult(bool success)
+bool MockFrameSink::OnTxReady()
 {
 	return true;
 }

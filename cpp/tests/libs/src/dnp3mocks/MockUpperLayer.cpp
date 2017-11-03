@@ -50,31 +50,23 @@ bool MockUpperLayer::OnReceive(const openpal::RSlice& input)
 	return true;
 }
 
-bool MockUpperLayer::OnSendResult(bool isSuccess)
+bool MockUpperLayer::OnTxReady()
 {
-	if (isSuccess)
-	{
-		++mState.mSuccessCnt;
-	}
-	else
-	{
-		++mState.mFailureCnt;
-	}
-
+	++mState.numTxReady;
 	return true;
 }
 
 bool MockUpperLayer::OnLowerLayerUp()
 {
 	isOnline = true;
-	++mState.mNumLayerUp;
+	++mState.numLayerUp;
 	return true;
 }
 
 bool MockUpperLayer::OnLowerLayerDown()
 {
 	isOnline = false;
-	++mState.mNumLayerDown;
+	++mState.numLayerDown;
 	return true;
 }
 

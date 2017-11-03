@@ -102,7 +102,7 @@ bool TransportLayer::OnReceive(const RSlice& tpdu)
 	}
 }
 
-bool TransportLayer::OnSendResult(bool isSuccess)
+bool TransportLayer::OnTxReady()
 {
 	if (!isOnline)
 	{
@@ -120,7 +120,7 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 
 	if (upper)
 	{
-		upper->OnSendResult(isSuccess);
+		upper->OnTxReady();
 	}
 
 	return true;

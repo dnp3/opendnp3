@@ -63,11 +63,8 @@ public:
 	// return false if the layer is down
 	virtual bool OnReceive(const openpal::RSlice&) = 0;
 
-	// Called by lower layer when a previously requested send operation succeeds or fails.
-	// Layers can only have 1 outstanding send operation. The callback is guaranteed
-	// unless the the OnLowerLayerDown() function is called beforehand
-	// return false if the layer is down or wasn't transmitting
-	virtual bool OnSendResult(bool isSucccess) = 0;
+	// Called by the lower layer when it is ready to transmit more data
+	virtual bool OnTxReady() = 0;
 
 };
 

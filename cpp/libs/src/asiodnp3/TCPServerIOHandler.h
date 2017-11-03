@@ -43,7 +43,7 @@ class TCPServerIOHandler final : public IOHandler
 		typedef std::function<void(const std::shared_ptr<asiopal::Executor>& executor, asio::ip::tcp::socket)> callback_t;
 
 		Server(
-		    const openpal::Logger& logger,			
+		    const openpal::Logger& logger,
 		    const std::shared_ptr<asiopal::Executor>& executor,
 		    const asiopal::IPEndpoint& endpoint,
 		    std::error_code& ec
@@ -70,7 +70,7 @@ public:
 
 	static std::shared_ptr<TCPServerIOHandler> Create(
 	    const openpal::Logger& logger,
-		opendnp3::ServerAcceptMode accept_mode,
+	    opendnp3::ServerAcceptMode accept_mode,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
@@ -81,7 +81,7 @@ public:
 
 	TCPServerIOHandler(
 	    const openpal::Logger& logger,
-		opendnp3::ServerAcceptMode accept_mode,
+	    opendnp3::ServerAcceptMode accept_mode,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,

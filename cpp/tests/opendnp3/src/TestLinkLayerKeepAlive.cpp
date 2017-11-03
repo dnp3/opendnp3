@@ -81,7 +81,7 @@ TEST_CASE(SUITE("KeepAliveFailureCallbackIsInvokedOnTimeout"))
 
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
 	REQUIRE(t.exe->NumPendingTimers() == 1);
-	t.link.OnTransmitResult(true);
+	t.link.OnTxReady();
 	REQUIRE(t.exe->NumPendingTimers() == 2);
 	t.exe->AdvanceTime(config.Timeout);
 	REQUIRE(t.exe->RunMany() > 0);
@@ -104,7 +104,7 @@ TEST_CASE(SUITE("KeepAliveSuccessCallbackIsInvokedWhenLinkStatusReceived"))
 
 	REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
 	REQUIRE(t.exe->NumPendingTimers() == 1);
-	t.link.OnTransmitResult(true);
+	t.link.OnTxReady();
 	REQUIRE(t.exe->NumPendingTimers() == 2);
 	t.OnFrame(LinkFunction::SEC_LINK_STATUS, false, false, false, 1, 1024);
 	REQUIRE(t.listener->numKeepAliveReplys == 1);
@@ -129,7 +129,7 @@ TEST_CASE(SUITE("KeepAliveIsPeriodicOnFailure"))
 
 		REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
 		REQUIRE(t.exe->NumPendingTimers() == 1);
-		t.link.OnTransmitResult(true);
+		t.link.OnTxReady();
 		REQUIRE(t.exe->NumPendingTimers() == 2);
 
 		t.exe->AdvanceTime(config.Timeout);
@@ -156,7 +156,7 @@ TEST_CASE(SUITE("KeepAliveIsPeriodicOnSuccess"))
 
 		REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
 		REQUIRE(t.exe->NumPendingTimers() == 1);
-		t.link.OnTransmitResult(true);
+		t.link.OnTxReady();
 		REQUIRE(t.exe->NumPendingTimers() == 2);
 		t.OnFrame(LinkFunction::SEC_LINK_STATUS, false, false, false, 1, 1024);
 		REQUIRE(t.listener->numKeepAliveReplys == (count + 1));

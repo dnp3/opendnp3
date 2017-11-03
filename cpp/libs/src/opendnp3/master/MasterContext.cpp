@@ -127,7 +127,7 @@ bool MContext::OnReceive(const openpal::RSlice& apdu)
 	return true;
 }
 
-bool MContext::OnSendResult(bool isSucccess)
+bool MContext::OnTxReady()
 {
 	if (!this->isOnline || !this->isSending)
 	{

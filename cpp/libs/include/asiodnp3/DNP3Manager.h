@@ -65,8 +65,8 @@ public:
 	DNP3Manager(
 	    uint32_t concurrencyHint,
 	    std::shared_ptr<openpal::ILogHandler> handler = std::shared_ptr<openpal::ILogHandler>(),
-		std::function<void()> onThreadStart = []() {},
-		std::function<void()> onThreadExit = []() {}
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
 	);
 
 	~DNP3Manager();
@@ -113,7 +113,7 @@ public:
 	std::shared_ptr<IChannel> AddTCPServer(
 	    const std::string& id,
 	    uint32_t levels,
-		opendnp3::ServerAcceptMode mode,
+	    opendnp3::ServerAcceptMode mode,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener
@@ -182,7 +182,7 @@ public:
 	std::shared_ptr<IChannel> AddTLSServer(
 	    const std::string& id,
 	    uint32_t levels,
-		opendnp3::ServerAcceptMode mode,
+	    opendnp3::ServerAcceptMode mode,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,

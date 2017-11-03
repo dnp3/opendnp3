@@ -53,7 +53,7 @@ public:
 
 	size_t LowerLayerDown();
 
-	size_t OnSendResult(bool isSuccess);
+	size_t OnTxReady();
 
 	size_t NumPendingTimers() const;
 

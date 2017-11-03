@@ -55,7 +55,7 @@ TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
 	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	REQUIRE(t2.lower->PopWriteAsHex() == "");
 
-	t1.context->OnSendResult(true);
+	t1.context->OnTxReady();
 	t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
 
 	REQUIRE(executor->RunMany() > 0);
@@ -65,7 +65,7 @@ TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
 	REQUIRE(t1.lower->PopWriteAsHex() == hex::ClearRestartIIN(1));
 	REQUIRE(t2.lower->PopWriteAsHex() == "");
 
-	t1.context->OnSendResult(true);
+	t1.context->OnTxReady();
 	t1.SendToMaster(hex::EmptyResponse(1));
 
 	REQUIRE(executor->RunMany() > 0);
@@ -97,7 +97,7 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to run scheduled task"
 	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 	REQUIRE(t2.lower->PopWriteAsHex() == "");
 
-	t1.context->OnSendResult(true);
+	t1.context->OnTxReady();
 	// instead of sending a reply, shutdown the first master
 	t1.context->OnLowerLayerDown();
 
@@ -180,7 +180,7 @@ TEST_CASE(SUITE("Scheduler still does integrity polls if exception scan set to h
 void ExpectRequestAndCauseResponseTimeout(MasterTestObject& session, const std::string& expected)
 {
 	REQUIRE(session.lower->PopWriteAsHex() == expected);
-	REQUIRE(session.context->OnSendResult(true));
+	REQUIRE(session.context->OnTxReady());
 	REQUIRE(session.exe->AdvanceToNextTimer());
 	REQUIRE(session.exe->RunMany() > 0);
 }
@@ -188,7 +188,7 @@ void ExpectRequestAndCauseResponseTimeout(MasterTestObject& session, const std::
 void ExpectRequestAndRespond(MasterTestObject& session, const std::string& expected, const std::string& response)
 {
 	REQUIRE(session.lower->PopWriteAsHex() == expected);
-	REQUIRE(session.context->OnSendResult(true));
+	REQUIRE(session.context->OnTxReady());
 	session.SendToMaster(response);
 	REQUIRE(session.exe->RunMany() > 0);
 }

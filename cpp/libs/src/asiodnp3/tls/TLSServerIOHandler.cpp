@@ -40,7 +40,7 @@ void TLSServerIOHandler::Server::AcceptStream(uint64_t sessionid, const std::sha
 
 TLSServerIOHandler::TLSServerIOHandler(
     const openpal::Logger& logger,
-	ServerAcceptMode mode,
+    ServerAcceptMode mode,
     const std::shared_ptr<IChannelListener>& listener,
     const std::shared_ptr<asiopal::Executor>& executor,
     const asiopal::IPEndpoint& endpoint,

@@ -34,7 +34,7 @@ namespace opendnp3
 // SecStateBase
 ////////////////////////////////////////
 
-SecStateBase& SecStateBase::OnTransmitResult(LinkContext& ctx, bool success)
+SecStateBase& SecStateBase::OnTxReady(LinkContext& ctx)
 {
 	FORMAT_LOG_BLOCK(ctx.logger, flags::ERR, "Invalid event for state: %s", this->Name());
 	return *this;

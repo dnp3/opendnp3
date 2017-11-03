@@ -82,19 +82,11 @@ void MockLowerLayer::SendUp(const std::string& arHexData)
 	this->SendUp(hs.ToRSlice());
 }
 
-void MockLowerLayer::SendSuccess()
+void MockLowerLayer::SendComplete()
 {
 	if (pUpperLayer)
 	{
-		pUpperLayer->OnSendResult(true);
-	}
-}
-
-void MockLowerLayer::SendFailure()
-{
-	if (pUpperLayer)
-	{
-		pUpperLayer->OnSendResult(false);
+		pUpperLayer->OnTxReady();
 	}
 }
 

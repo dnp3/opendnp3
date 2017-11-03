@@ -62,7 +62,7 @@ public:
 
 	bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata);
 
-	void OnTransmitComplete(bool success);
+	void OnTxReady();
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
 

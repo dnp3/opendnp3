@@ -114,7 +114,7 @@ void LinkSession::OnWriteComplete(const std::error_code& ec, size_t num)
 	}
 	else
 	{
-		this->stack->OnTransmitComplete(true);
+		this->stack->OnTxReady();
 	}
 }
 

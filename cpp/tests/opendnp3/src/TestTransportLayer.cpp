@@ -60,7 +60,7 @@ TEST_CASE(SUITE("StateOffline"))
 
 	REQUIRE_FALSE(test.upper.SendDown("00"));
 	REQUIRE_FALSE(test.link.SendUp(""));
-	REQUIRE_FALSE(test.transport.OnSendResult(true));
+	REQUIRE_FALSE(test.transport.OnTxReady());
 	REQUIRE_FALSE(test.transport.OnLowerLayerDown());
 }
 
@@ -77,7 +77,7 @@ TEST_CASE(SUITE("StateReady"))
 
 
 	REQUIRE_FALSE(test.transport.OnLowerLayerUp());
-	REQUIRE_FALSE(test.transport.OnSendResult(true));
+	REQUIRE_FALSE(test.transport.OnTxReady());
 }
 
 TEST_CASE(SUITE("AllowsHeaderOnlyFinalFrame"))
@@ -191,30 +191,10 @@ TEST_CASE(SUITE("StateSending"))
 	test.upper.BufferEqualsHex("77");
 
 	//this should put us back in the Ready state since it was a single tpdu send
-	test.transport.OnSendResult(true);
-	REQUIRE(test.upper.GetState().mSuccessCnt ==  1);
+	test.transport.OnTxReady();
+	REQUIRE(test.upper.GetState().numTxReady ==  1);
 
-	REQUIRE_FALSE(test.transport.OnSendResult(true));
-}
-
-TEST_CASE(SUITE("SendFailure"))
-{
-	TransportTestObject test(true);
-
-	// this puts the layer into the Sending state
-	test.upper.SendDown("11");
-	REQUIRE("C0 11" ==  test.link.PopWriteAsHex()); //FIR/FIN SEQ=0
-
-	//this should put us back in the Ready state
-	test.transport.OnSendResult(false);
-	REQUIRE(test.upper.GetState().mSuccessCnt ==  0);
-	REQUIRE(test.upper.GetState().mFailureCnt ==  1);
-
-	test.upper.SendDown("11");
-	REQUIRE("C1 11" ==  test.link.PopWriteAsHex()); // use next sequence number FIR/FIN SEQ=1
-	test.transport.OnSendResult(true);
-	REQUIRE(test.upper.GetState().mSuccessCnt ==  1);
-	REQUIRE(test.upper.GetState().mFailureCnt ==  1);
+	REQUIRE_FALSE(test.transport.OnTxReady());
 }
 
 TEST_CASE(SUITE("SendSuccess"))
@@ -224,13 +204,13 @@ TEST_CASE(SUITE("SendSuccess"))
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
 	REQUIRE("C0 11" ==  test.link.PopWriteAsHex()); //FIR/FIN SEQ=0
-	test.transport.OnSendResult(true);
+	test.transport.OnTxReady();
 
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
 	REQUIRE("C1 11" ==  test.link.PopWriteAsHex()); //FIR/FIN SEQ=1
-	test.transport.OnSendResult(true);
-	REQUIRE(test.upper.GetState().mSuccessCnt ==  2);
+	test.transport.OnTxReady();
+	REQUIRE(test.upper.GetState().numTxReady ==  2);
 }
 
 //if we're in the middle of a send and the layer goes down
@@ -264,7 +244,7 @@ TEST_CASE(SUITE("SendFullAPDU"))
 		REQUIRE(packets[i] == test.link.PopWriteAsHex());
 	}
 
-	test.transport.OnSendResult(true);
+	test.transport.OnTxReady();
 }
 
 

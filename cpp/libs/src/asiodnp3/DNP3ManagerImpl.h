@@ -71,8 +71,8 @@ public:
 
 	std::shared_ptr<IChannel> AddTCPServer(
 	    const std::string& id,
-	    uint32_t levels,	    
-		opendnp3::ServerAcceptMode mode,
+	    uint32_t levels,
+	    opendnp3::ServerAcceptMode mode,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener);
@@ -98,7 +98,7 @@ public:
 	std::shared_ptr<IChannel> AddTLSServer(
 	    const std::string& id,
 	    uint32_t levels,
-		opendnp3::ServerAcceptMode mode,
+	    opendnp3::ServerAcceptMode mode,
 	    const std::string& endpoint,
 	    uint16_t port,
 	    const asiopal::TLSConfig& config,

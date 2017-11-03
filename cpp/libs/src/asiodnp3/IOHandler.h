@@ -49,7 +49,7 @@ public:
 
 	IOHandler(
 	    const openpal::Logger& logger,
-		bool closeExisting,
+	    bool closeExisting,
 	    const std::shared_ptr<IChannelListener>& listener
 	);
 

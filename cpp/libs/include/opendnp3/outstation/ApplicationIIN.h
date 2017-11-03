@@ -39,7 +39,7 @@ class ApplicationIIN
 public:
 
 	ApplicationIIN() = default;
-	
+
 	// flags normally controlled by the application, not the stack
 	bool needTime = false;
 	bool localControl = false;

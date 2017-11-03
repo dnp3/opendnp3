@@ -78,9 +78,9 @@ public:
 
 	// --------- Implement ILinkSession ---------
 
-	virtual bool OnTransmitResult(bool success) override
+	virtual bool OnTxReady() override
 	{
-		return this->tstack.link->OnTransmitResult(success);
+		return this->tstack.link->OnTxReady();
 	}
 
 	virtual bool OnLowerLayerUp() override

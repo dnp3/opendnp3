@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 	auto channel = manager.AddTLSServer(
 	                   "server",
 	                   FILTERS,
-	                   ServerAcceptMode::CloseExisting,	                   
+	                   ServerAcceptMode::CloseExisting,
 	                   "0.0.0.0",
 	                   20001,
 	                   TLSConfig(

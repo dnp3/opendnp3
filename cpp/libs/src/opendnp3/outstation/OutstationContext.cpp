@@ -112,7 +112,7 @@ bool OContext::OnLowerLayerDown()
 	return true;
 }
 
-bool OContext::OnSendResult(bool isSuccess)
+bool OContext::OnTxReady()
 {
 	if (!isOnline || !isTransmitting)
 	{

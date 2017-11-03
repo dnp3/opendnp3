@@ -62,7 +62,7 @@ PriStateBase& PriStateBase::OnNotSupported(LinkContext& ctx, bool rxBuffFull)
 	return *this;
 }
 
-PriStateBase& PriStateBase::OnTransmitResult(LinkContext& ctx, bool success)
+PriStateBase& PriStateBase::OnTxReady(LinkContext& ctx)
 {
 	FORMAT_LOG_BLOCK(ctx.logger, flags::ERR, "Invalid action for state: %s", this->Name());
 	return *this;
@@ -134,7 +134,7 @@ PriStateBase& PLLS_Idle::TrySendRequestLinkStatus(LinkContext& ctx)
 
 PLLS_SendUnconfirmedTransmitWait PLLS_SendUnconfirmedTransmitWait::instance;
 
-PriStateBase& PLLS_SendUnconfirmedTransmitWait::OnTransmitResult(LinkContext& ctx, bool success)
+PriStateBase& PLLS_SendUnconfirmedTransmitWait::OnTxReady(LinkContext& ctx)
 {
 	if (ctx.pSegments->Advance())
 	{
@@ -144,7 +144,7 @@ PriStateBase& PLLS_SendUnconfirmedTransmitWait::OnTransmitResult(LinkContext& ct
 	}
 	else // we're done
 	{
-		ctx.CompleteSendOperation(success);
+		ctx.CompleteSendOperation();
 		return PLLS_Idle::Instance();
 	}
 }
@@ -156,19 +156,11 @@ PriStateBase& PLLS_SendUnconfirmedTransmitWait::OnTransmitResult(LinkContext& ct
 
 PLLS_LinkResetTransmitWait PLLS_LinkResetTransmitWait::instance;
 
-PriStateBase& PLLS_LinkResetTransmitWait::OnTransmitResult(LinkContext& ctx, bool success)
+PriStateBase& PLLS_LinkResetTransmitWait::OnTxReady(LinkContext& ctx)
 {
-	if (success)
-	{
-		// now we're waiting for an ACK
-		ctx.StartResponseTimer();
-		return PLLS_ResetLinkWait::Instance();
-	}
-	else
-	{
-		ctx.CompleteSendOperation(success);
-		return PLLS_Idle::Instance();
-	}
+	// now we're waiting for an ACK
+	ctx.StartResponseTimer();
+	return PLLS_ResetLinkWait::Instance();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -177,19 +169,11 @@ PriStateBase& PLLS_LinkResetTransmitWait::OnTransmitResult(LinkContext& ctx, boo
 
 PLLS_ConfUserDataTransmitWait PLLS_ConfUserDataTransmitWait::instance;
 
-PriStateBase& PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkContext& ctx, bool success)
+PriStateBase& PLLS_ConfUserDataTransmitWait::OnTxReady(LinkContext& ctx)
 {
-	if (success)
-	{
-		// now we're waiting on an ACK
-		ctx.StartResponseTimer();
-		return PLLS_ConfDataWait::Instance();
-	}
-	else
-	{
-		ctx.CompleteSendOperation(false);
-		return PLLS_Idle::Instance();
-	}
+	// now we're waiting on an ACK
+	ctx.StartResponseTimer();
+	return PLLS_ConfDataWait::Instance();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -198,19 +182,11 @@ PriStateBase& PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkContext& ctx, 
 
 PLLS_RequestLinkStatusTransmitWait PLLS_RequestLinkStatusTransmitWait::instance;
 
-PriStateBase& PLLS_RequestLinkStatusTransmitWait::OnTransmitResult(LinkContext& ctx, bool success)
+PriStateBase& PLLS_RequestLinkStatusTransmitWait::OnTxReady(LinkContext& ctx)
 {
-	if (success)
-	{
-		// now we're waiting on a LINK_STATUS
-		ctx.StartResponseTimer();
-		return PLLS_RequestLinkStatusWait::Instance();
-	}
-	else
-	{
-		ctx.FailKeepAlive(false);
-		return PLLS_Idle::Instance();
-	}
+	// now we're waiting on a LINK_STATUS
+	ctx.StartResponseTimer();
+	return PLLS_RequestLinkStatusWait::Instance();
 }
 
 
@@ -242,7 +218,7 @@ PriStateBase& PLLS_ResetLinkWait::OnTimeout(LinkContext& ctx)
 	else
 	{
 		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Link reset final timeout, no retries remain");
-		ctx.CompleteSendOperation(false);
+		ctx.CompleteSendOperation();
 		return PLLS_Idle::Instance();
 	}
 }
@@ -250,7 +226,7 @@ PriStateBase& PLLS_ResetLinkWait::OnTimeout(LinkContext& ctx)
 PriStateBase& PLLS_ResetLinkWait::Failure(LinkContext& ctx)
 {
 	ctx.CancelTimer();
-	ctx.CompleteSendOperation(false);
+	ctx.CompleteSendOperation();
 	return PLLS_Idle::Instance();
 }
 
@@ -273,7 +249,7 @@ PriStateBase& PLLS_ConfDataWait::OnAck(LinkContext& ctx, bool rxBuffFull)
 	}
 	else //we're done!
 	{
-		ctx.CompleteSendOperation(true);
+		ctx.CompleteSendOperation();
 		return PLLS_Idle::Instance();
 	}
 }
@@ -299,7 +275,7 @@ PriStateBase& PLLS_ConfDataWait::OnNack(LinkContext& ctx, bool rxBuffFull)
 PriStateBase& PLLS_ConfDataWait::Failure(LinkContext& ctx)
 {
 	ctx.CancelTimer();
-	ctx.CompleteSendOperation(false);
+	ctx.CompleteSendOperation();
 	return PLLS_Idle::Instance();
 }
 
@@ -316,7 +292,7 @@ PriStateBase& PLLS_ConfDataWait::OnTimeout(LinkContext& ctx)
 	{
 		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Confirmed data final timeout, no retries remain");
 		ctx.listener->OnStateChange(opendnp3::LinkStatus::UNRESET);
-		ctx.CompleteSendOperation(false);
+		ctx.CompleteSendOperation();
 		return PLLS_Idle::Instance();
 	}
 }

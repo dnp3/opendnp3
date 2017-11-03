@@ -57,8 +57,8 @@ std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(
 
 std::shared_ptr<IChannel> DNP3Manager::AddTCPServer(
     const std::string& id,
-    uint32_t levels,    
-	opendnp3::ServerAcceptMode mode,
+    uint32_t levels,
+    opendnp3::ServerAcceptMode mode,
     const std::string& endpoint,
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
@@ -93,7 +93,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(
 std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(
     const std::string& id,
     uint32_t levels,
-	opendnp3::ServerAcceptMode mode,
+    opendnp3::ServerAcceptMode mode,
     const std::string& endpoint,
     uint16_t port,
     const asiopal::TLSConfig& config,

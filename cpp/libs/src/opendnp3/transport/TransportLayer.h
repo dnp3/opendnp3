@@ -53,7 +53,7 @@ public:
 	virtual bool OnReceive(const openpal::RSlice&) override final;
 	virtual bool OnLowerLayerUp() override final;
 	virtual bool OnLowerLayerDown() override final;
-	virtual bool OnSendResult(bool isSuccess) override final;
+	virtual bool OnTxReady() override final;
 
 	void SetAppLayer(IUpperLayer& upperLayer);
 

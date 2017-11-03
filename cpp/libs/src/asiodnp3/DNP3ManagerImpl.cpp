@@ -91,8 +91,8 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
     const std::string& id,
-    uint32_t levels,    
-	ServerAcceptMode mode,
+    uint32_t levels,
+    ServerAcceptMode mode,
     const std::string& endpoint,
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
@@ -101,7 +101,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
 	{
 		std::error_code ec;
 		auto clogger = this->logger.Detach(id, levels);
-		auto executor = Executor::Create(this->io);		
+		auto executor = Executor::Create(this->io);
 		auto iohandler = TCPServerIOHandler::Create(clogger, mode, listener, executor, IPEndpoint(endpoint, port), ec);
 		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
 	};
@@ -166,7 +166,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
     const std::string& id,
     uint32_t levels,
-	ServerAcceptMode mode,
+    ServerAcceptMode mode,
     const std::string& endpoint,
     uint16_t port,
     const TLSConfig& config,
@@ -179,7 +179,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
 	{
 		std::error_code ec;
 		auto clogger = this->logger.Detach(id, levels);
-		auto executor = Executor::Create(this->io);		
+		auto executor = Executor::Create(this->io);
 		auto iohandler = TLSServerIOHandler::Create(clogger, mode, listener, executor, IPEndpoint(endpoint, port), config, ec);
 		return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
 	};

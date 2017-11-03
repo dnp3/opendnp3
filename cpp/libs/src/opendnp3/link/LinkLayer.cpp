@@ -70,9 +70,9 @@ bool LinkLayer::OnLowerLayerDown()
 	return ctx.OnLowerLayerDown();
 }
 
-bool LinkLayer::OnTransmitResult(bool success)
+bool LinkLayer::OnTxReady()
 {
-	auto ret = ctx.OnTransmitResult(success);
+	auto ret = ctx.OnTxReady();
 
 	if (ret)
 	{

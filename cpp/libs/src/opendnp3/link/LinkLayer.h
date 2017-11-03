@@ -40,7 +40,7 @@ public:
 
 	virtual bool OnLowerLayerUp() override;
 	virtual bool OnLowerLayerDown() override;
-	virtual bool OnTransmitResult(bool success) override;
+	virtual bool OnTxReady() override;
 	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
 
 	// ---- Events from above: ILinkLayer ----

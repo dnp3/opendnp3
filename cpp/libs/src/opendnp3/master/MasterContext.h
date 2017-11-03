@@ -101,7 +101,7 @@ public:
 
 	virtual bool OnReceive(const openpal::RSlice& apdu) override final;
 
-	virtual bool OnSendResult(bool isSucccess) override final;
+	virtual bool OnTxReady() override final;
 
 	// additional virtual methods that can be overriden to implement secure authentication
 

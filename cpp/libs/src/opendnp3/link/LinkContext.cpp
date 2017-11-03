@@ -129,7 +129,7 @@ bool LinkContext::SetTxSegment(ITransportSegment& segments)
 	return true;
 }
 
-bool LinkContext::OnTransmitResult(bool success)
+bool LinkContext::OnTxReady()
 {
 	if (this->txMode == LinkTransmitMode::Idle)
 	{
@@ -147,11 +147,11 @@ bool LinkContext::OnTransmitResult(bool success)
 	// now dispatch the completion event to the correct state handler
 	if (isPrimary)
 	{
-		this->pPriState = &this->pPriState->OnTransmitResult(*this, success);
+		this->pPriState = &this->pPriState->OnTxReady(*this);
 	}
 	else
 	{
-		this->pSecState = &this->pSecState->OnTransmitResult(*this, success);
+		this->pSecState = &this->pSecState->OnTxReady(*this);
 	}
 
 	return true;
@@ -248,13 +248,13 @@ void LinkContext::PushDataUp(const openpal::RSlice& data)
 	upper->OnReceive(data);
 }
 
-void LinkContext::CompleteSendOperation(bool success)
+void LinkContext::CompleteSendOperation()
 {
 	this->pSegments = nullptr;
 
-	auto callback = [upper = upper, success]()
+	auto callback = [upper = upper]()
 	{
-		upper->OnSendResult(success);
+		upper->OnTxReady();
 	};
 
 	this->executor->Post(callback);

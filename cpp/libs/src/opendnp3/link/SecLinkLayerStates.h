@@ -42,7 +42,7 @@ public:
 	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) = 0;
 	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const openpal::RSlice&) = 0;
 
-	virtual SecStateBase& OnTransmitResult(LinkContext& ctx, bool success);
+	virtual SecStateBase& OnTxReady(LinkContext& ctx);
 
 	//every concrete state implements this for logging purposes
 
@@ -62,7 +62,7 @@ protected:
 
 public:
 
-	virtual SecStateBase& OnTransmitResult(LinkContext& ctx, bool success) override final;
+	virtual SecStateBase& OnTxReady(LinkContext& ctx) override final;
 	virtual SecStateBase& OnResetLinkStates(LinkContext&) override final;
 	virtual SecStateBase& OnRequestLinkStatus(LinkContext&) override final;
 	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) override final;
@@ -71,9 +71,8 @@ public:
 
 
 template <class NextState>
-SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTransmitResult(LinkContext& ctx, bool success)
+SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTxReady(LinkContext& ctx)
 {
-	// with secondary replies, we dont' really care about success
 	return NextState::Instance();
 }
 
