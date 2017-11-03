@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef TESTLIB_BUFFERHELPERS_H_
-#define TESTLIB_BUFFERHELPERS_H_
+#ifndef TESTLIB_BUFFERHELPERS_H
+#define TESTLIB_BUFFERHELPERS_H
 
 #include "CopyableBuffer.h"
 
@@ -32,10 +32,9 @@ class ByteStr : public CopyableBuffer
 {
 
 public:
-	ByteStr(uint32_t aLength, uint8_t aSeed = 0);
-	ByteStr(const uint8_t* apData, uint32_t aLength);
-	ByteStr(const std::string& aChars);
-	bool operator==(const ByteStr& arRHS) const;
+	ByteStr(uint32_t length, uint8_t seed = 0);
+	ByteStr(const uint8_t* data, uint32_t length);	
+	bool operator==(const ByteStr& other) const;
 	std::string ToHex() const;
 };
 
@@ -45,7 +44,7 @@ public:
 class HexSequence : public ByteStr
 {
 public:
-	HexSequence(const std::string& aSequence);
+	HexSequence(const std::string& hex);
 
 	operator openpal::RSlice()
 	{
@@ -53,9 +52,9 @@ public:
 	}
 
 private:
-	std::string RemoveSpaces(const std::string& aSequence);
-	void RemoveSpacesInPlace(std::string& aSequence);
-	static uint32_t Validate(const std::string& aSequence);
+	std::string RemoveSpaces(const std::string& hex);
+	void RemoveSpacesInPlace(std::string& hex);
+	static uint32_t Validate(const std::string& hex);
 };
 
 }

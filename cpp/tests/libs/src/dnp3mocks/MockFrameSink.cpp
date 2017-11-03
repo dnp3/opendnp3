@@ -74,7 +74,7 @@ bool MockFrameSink::OnFrame(const LinkHeaderFields& header, const openpal::RSlic
 
 	if (userdata.IsNotEmpty())
 	{
-		this->received.Write(userdata);		
+		this->received.Write(userdata);
 	}
 
 	return true;

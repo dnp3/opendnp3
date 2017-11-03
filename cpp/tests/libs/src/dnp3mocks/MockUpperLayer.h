@@ -32,9 +32,9 @@ namespace opendnp3
 class MockUpperLayer final : public IUpperLayer, public HasLowerLayer
 {
 public:
-	
+
 	struct Counters
-	{				
+	{
 		size_t numTxReady = 0;
 		size_t numLayerUp = 0;
 		size_t numLayerDown = 0;
@@ -64,8 +64,8 @@ public:
 	testlib::DataSink received;
 
 private:
-	
-	bool isOnline;	
+
+	bool isOnline;
 	Counters counters;
 };
 

@@ -37,27 +37,20 @@ using namespace openpal;
 namespace testlib
 {
 
-ByteStr::ByteStr(uint32_t aLength, uint8_t aSeed) : CopyableBuffer(aLength)
+ByteStr::ByteStr(uint32_t length, uint8_t seed) : CopyableBuffer(length)
 {
-	for(size_t i = 0; i < aLength; ++i) mpBuff[i] = static_cast<uint8_t>((i + aSeed) % 256);
+	for(size_t i = 0; i < length; ++i) this->buffer[i] = static_cast<uint8_t>((i + seed) % 256);
 }
 
-ByteStr::ByteStr(const uint8_t* apData, uint32_t aLength) : CopyableBuffer(aLength)
-{
-	memcpy(mpBuff, apData, aLength);
-}
+ByteStr::ByteStr(const uint8_t* data, uint32_t length) : CopyableBuffer(data, length)
+{}
 
-ByteStr::ByteStr(const std::string& aChars) : CopyableBuffer(static_cast<uint32_t>(aChars.size()))
+bool ByteStr::operator==(const ByteStr& other) const
 {
-	memcpy(mpBuff, aChars.c_str(), aChars.size());
-}
-
-bool ByteStr::operator==(const ByteStr& arRHS) const
-{
-	if(Size() != arRHS.Size()) return false;
+	if(Size() != other.Size()) return false;
 
 	for(size_t i = 0; i < Size(); ++i)
-		if(mpBuff[i] != arRHS[i]) return false;
+		if(this->buffer[i] != other[i]) return false;
 
 	return true;
 }
@@ -67,10 +60,10 @@ std::string ByteStr::ToHex() const
 	return testlib::ToHex(ToRSlice());
 }
 
-HexSequence::HexSequence( const std::string& aSequence) :
-	ByteStr(Validate(RemoveSpaces(aSequence)))
+HexSequence::HexSequence( const std::string& hex) :
+	ByteStr(Validate(RemoveSpaces(hex)))
 {
-	std::string s = RemoveSpaces(aSequence);
+	std::string s = RemoveSpaces(hex);
 
 	size_t size = s.size();
 	for(size_t index = 0, pos = 0; pos < size; ++index, pos += 2)
@@ -80,15 +73,15 @@ HexSequence::HexSequence( const std::string& aSequence) :
 		ss << std::hex << s.substr(pos, 2);
 		if((ss >> val).fail())
 		{
-			throw std::invalid_argument(aSequence);
+			throw std::invalid_argument(hex);
 		}
-		mpBuff[index] = static_cast<uint8_t>(val);
+		this->buffer[index] = static_cast<uint8_t>(val);
 	}
 }
 
-std::string HexSequence::RemoveSpaces(const std::string& aSequence)
+std::string HexSequence::RemoveSpaces(const std::string& hex)
 {
-	std::string copy(aSequence);
+	std::string copy(hex);
 	RemoveSpacesInPlace(copy);
 	return copy;
 }

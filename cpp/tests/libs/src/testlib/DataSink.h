@@ -31,7 +31,7 @@ namespace testlib
 {
 
 class DataSink final
-{	
+{
 public:
 
 	DataSink() = default;
@@ -39,20 +39,20 @@ public:
 	void Write(const openpal::RSlice& data);
 
 	bool Equals(const openpal::RSlice& data) const;
-	
+
 	std::string AsHex(bool spaced = true) const;
 
 	inline bool IsEmpty() const
 	{
 		return buffer.size() == 0;
 	}
-	
+
 	void Clear();
-	
+
 	size_t Size() const
 	{
 		return buffer.size();
-	}		
+	}
 
 private:
 
