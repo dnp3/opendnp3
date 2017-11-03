@@ -87,7 +87,7 @@ TEST_CASE(SUITE("AllowsHeaderOnlyFinalFrame"))
 	test.link.SendUp("41 DE AD BE EF");
 	test.link.SendUp("82");
 
-	REQUIRE(test.upper.AsHex() == "DE AD BE EF");
+	REQUIRE(test.upper.received.AsHex() == "DE AD BE EF");
 }
 
 TEST_CASE(SUITE("ReceiveNoFIR"))
@@ -112,7 +112,7 @@ TEST_CASE(SUITE("PacketsCanBeOfVaryingSize"))
 	TransportTestObject test(true);
 	test.link.SendUp("40 0A 0B 0C"); // FIR/_/0
 	test.link.SendUp("81 0D 0E 0F"); // _/FIN/1
-	REQUIRE("0A 0B 0C 0D 0E 0F" ==  test.upper.AsHex());
+	REQUIRE(test.upper.received.AsHex() == "0A 0B 0C 0D 0E 0F");
 }
 
 TEST_CASE(SUITE("ReceiveSinglePacket"))
@@ -120,7 +120,7 @@ TEST_CASE(SUITE("ReceiveSinglePacket"))
 	TransportTestObject test(true);
 	//now try receiving 1 a single FIR/FIN with a magic value
 	test.link.SendUp("C0 77");
-	REQUIRE("77" ==  test.upper.AsHex());
+	REQUIRE(test.upper.received.AsHex() == "77");
 }
 
 TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
@@ -131,13 +131,13 @@ TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
 	uint32_t last_packet_length = CalcLastPacketSize(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
 
 	vector<string> packets;
-	string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
+	const string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
 	for(string s : packets)
 	{
 		test.link.SendUp(s);
 	}
 
-	REQUIRE(test.upper.BufferEqualsHex(apdu)); //check that the correct data was written
+	REQUIRE(test.upper.received.AsHex() == apdu); //check that the correct data was written
 }
 
 TEST_CASE(SUITE("ReceiveBufferOverflow"))
@@ -166,10 +166,10 @@ TEST_CASE(SUITE("ReceiveNewFir"))
 	TransportTestObject test(true);
 
 	test.link.SendUp(test.GetData("40"));	// FIR/_/0
-	REQUIRE(test.upper.IsBufferEmpty());
+	REQUIRE(test.upper.received.IsBufferEmpty());
 
 	test.link.SendUp("C0 AB CD");	// FIR/FIN/0
-	REQUIRE("AB CD" ==  test.upper.AsHex());
+	REQUIRE(test.upper.received.AsHex() == "AB CD");
 	REQUIRE(test.transport.GetStatistics().rx.numTransportDiscard == 1);
 }
 
@@ -188,7 +188,7 @@ TEST_CASE(SUITE("StateSending"))
 
 	//while we are sending, we should still be able to receive data as normal
 	test.link.SendUp("C0 77");
-	test.upper.BufferEqualsHex("77");
+	REQUIRE(test.upper.received.AsHex() == "77");
 
 	//this should put us back in the Ready state since it was a single tpdu send
 	test.transport.OnTxReady();

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BUFFER_TEST_OBJECT_H_
-#define __BUFFER_TEST_OBJECT_H_
+#ifndef OPENDNP3_BUFFER_TEST_OBJECT_H
+#define OPENDNP3_BUFFER_TEST_OBJECT_H
 
 #include <string>
 #include <vector>
@@ -30,17 +30,14 @@
 namespace testlib
 {
 
-class BufferTestObject
+class BufferTestObject final
 {	
 public:
 
 	BufferTestObject() = default;
 
 	bool BufferEquals(const openpal::RSlice& data) const;
-	bool BufferEquals(const uint8_t*, size_t) const;
-	bool BufferEqualsHex(const std::string& hex) const;	
-	bool BufferContains(const std::string& text) const;
-
+	
 	std::string AsHex(bool spaced = true) const;
 
 	bool IsBufferEmpty() const
@@ -65,10 +62,10 @@ public:
 		return numWrites;
 	}
 
-protected:
 	void WriteToBuffer(const openpal::RSlice& data);
 
-private:
+private:	
+
 	size_t numWrites = 0;
 	std::vector<uint8_t> buffer;
 };

@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-class MockUpperLayer final : public IUpperLayer, public HasLowerLayer, public testlib::BufferTestObject
+class MockUpperLayer final : public IUpperLayer, public HasLowerLayer
 {
 public:
 	
@@ -61,8 +61,10 @@ public:
 	virtual bool OnLowerLayerUp() override;
 	virtual bool OnLowerLayerDown() override;
 
-private:
+	testlib::BufferTestObject received;
 
+private:
+	
 	bool isOnline;	
 	Counters counters;
 };

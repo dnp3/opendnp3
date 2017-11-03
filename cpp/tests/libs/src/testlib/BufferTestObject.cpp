@@ -42,15 +42,9 @@ void BufferTestObject::ClearBuffer()
 
 bool BufferTestObject::BufferEquals(const openpal::RSlice& data) const
 {
-	return BufferEquals(data, data.Size());
-}
+	if (data.Size() != this->buffer.size()) return false;
 
-bool BufferTestObject::BufferEquals(const uint8_t* data, size_t count) const
-{
-
-	if(count != this->buffer.size()) return false;
-
-	for (size_t i = 0; i < count; i++) {
+	for (size_t i = 0; i < this->buffer.size(); i++) {
 		if (data[i] != this->buffer[i])
 		{
 			return false;
@@ -59,29 +53,11 @@ bool BufferTestObject::BufferEquals(const uint8_t* data, size_t count) const
 	return true;
 }
 
-bool BufferTestObject::BufferContains(const std::string& text) const
-{
-	std::string s;
-	for(size_t i = 0; i < this->buffer.size(); ++i)
-	{
-		std::string c(1, static_cast<char>(buffer[i]));
-		s.append(c);
-	}
-	return s.find(text) != std::string::npos;
-}
-
 std::string BufferTestObject::AsHex(bool spaced) const
 {	
 	CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
 	for(size_t i = 0; i < this->buffer.size(); ++i) temp[i] = this->buffer[i];
 	return ToHex(temp.ToRSlice(), spaced);
-}
-
-
-bool BufferTestObject::BufferEqualsHex(const std::string& hex) const
-{
-	HexSequence hs(hex);
-	return BufferEquals(hs, hs.Size());
 }
 
 void BufferTestObject::WriteToBuffer(const RSlice& data)

@@ -35,7 +35,7 @@ namespace opendnp3
 {
 
 
-class MockFrameSink : public ILinkSession, public testlib::BufferTestObject
+class MockFrameSink : public ILinkSession
 {
 public:
 
@@ -64,6 +64,9 @@ public:
 	// Add a function to execute the next time a frame is received
 	// This allows us to test re-entrant behaviors
 	void AddAction(std::function<void ()> fun);
+
+
+	testlib::BufferTestObject received;
 
 private:
 
