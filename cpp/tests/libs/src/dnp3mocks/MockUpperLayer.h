@@ -51,7 +51,7 @@ public:
 
 		void Reset()
 		{
-			numTxReady = numLayerUp = numLayerUp = 0;
+			numTxReady = numLayerUp = numLayerDown = 0;
 		}
 	};
 
