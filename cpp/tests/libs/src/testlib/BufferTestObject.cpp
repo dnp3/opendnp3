@@ -34,91 +34,63 @@ using namespace openpal;
 namespace testlib
 {
 
-BufferTestObject::BufferTestObject() :
-	mNumWrites(0)
-{
-
-}
-
-BufferTestObject::~BufferTestObject()
-{
-
-}
-
 void BufferTestObject::ClearBuffer()
 {
-	mNumWrites = 0;
-	mBuffer.clear();
+	numWrites = 0;
+	buffer.clear();
 }
 
-bool BufferTestObject::BufferEquals(const openpal::RSlice& arBuffer) const
+bool BufferTestObject::BufferEquals(const openpal::RSlice& data) const
 {
-	return BufferEquals(arBuffer, arBuffer.Size());
+	return BufferEquals(data, data.Size());
 }
 
-bool BufferTestObject::BufferEquals(const uint8_t* apData, size_t aNumBytes) const
+bool BufferTestObject::BufferEquals(const uint8_t* data, size_t count) const
 {
 
-	if(aNumBytes != mBuffer.size()) return false;
-	for(size_t i = 0; i < aNumBytes; i++)
-		if(apData[i] != mBuffer[i])
+	if(count != this->buffer.size()) return false;
+
+	for (size_t i = 0; i < count; i++) {
+		if (data[i] != this->buffer[i])
 		{
 			return false;
 		}
+	}
 	return true;
 }
 
-bool BufferTestObject::BufferContains(const std::string& arPattern) const
+bool BufferTestObject::BufferContains(const std::string& text) const
 {
 	std::string s;
-	for(size_t i = 0; i < mBuffer.size(); ++i)
+	for(size_t i = 0; i < this->buffer.size(); ++i)
 	{
-		std::string c(1, static_cast<char>(mBuffer[i]));
+		std::string c(1, static_cast<char>(buffer[i]));
 		s.append(c);
 	}
-	return s.find(arPattern) != std::string::npos;
+	return s.find(text) != std::string::npos;
 }
 
 std::string BufferTestObject::GetBufferAsHexString(bool spaced) const
-{
-	CopyableBuffer buffer(static_cast<uint32_t>(mBuffer.size()));
-	for(size_t i = 0; i < mBuffer.size(); ++i) buffer[i] = mBuffer[i];
-	return ToHex(buffer.ToRSlice(), spaced);
+{	
+	CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
+	for(size_t i = 0; i < this->buffer.size(); ++i) temp[i] = this->buffer[i];
+	return ToHex(temp.ToRSlice(), spaced);
 }
 
 
-bool BufferTestObject::BufferEqualsHex(const std::string& arData) const
+bool BufferTestObject::BufferEqualsHex(const std::string& hex) const
 {
-	HexSequence hs(arData);
+	HexSequence hs(hex);
 	return BufferEquals(hs, hs.Size());
 }
 
-bool BufferTestObject::BufferEqualsString(const std::string& arData) const
-{
-	if(arData.size() != mBuffer.size()) return false;
-	for(size_t i = 0; i < mBuffer.size(); i++)
-		if(arData[i] != mBuffer[i])
-		{
-			return false;
-		}
-	return true;
-}
-
-void BufferTestObject::WriteToBuffer(const RSlice& input)
-{
-	if((mBuffer.size() + input.Size()) > MAX_SIZE )
+void BufferTestObject::WriteToBuffer(const RSlice& data)
+{	
+	++(this->numWrites);
+	for(size_t i = 0; i < data.Size(); ++i)
 	{
-		throw std::invalid_argument("Max size exceeded");
-	}
-	else
-	{
-		++mNumWrites;
-
-		for(size_t i = 0; i < input.Size(); ++i)
-		{
-			mBuffer.push_back(input[i]);
-		}
-	}
+		this->buffer.push_back(data[i]);
+	}	
 }
 
 } //end namespace

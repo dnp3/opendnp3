@@ -31,45 +31,46 @@ namespace testlib
 {
 
 class BufferTestObject
-{
-	static const size_t MAX_SIZE = 1024 * 1024;
-
+{	
 public:
-	BufferTestObject();
-	~BufferTestObject();
 
-	bool BufferEquals(const openpal::RSlice& arBuffer) const;
+	BufferTestObject() = default;	
+
+	bool BufferEquals(const openpal::RSlice& data) const;
 	bool BufferEquals(const uint8_t*, size_t) const;
-	bool BufferEqualsHex(const std::string& arData) const;
-	bool BufferEqualsString(const std::string& arData) const;
-	bool BufferContains(const std::string& arData) const;
+	bool BufferEqualsHex(const std::string& hex) const;	
+	bool BufferContains(const std::string& text) const;
 
 	std::string GetBufferAsHexString(bool spaced = true) const;
 
-	bool IsBufferEmpty()
+	bool IsBufferEmpty() const
 	{
-		return mBuffer.size() == 0;
+		return buffer.size() == 0;
 	}
+	
 	void ClearBuffer();
-	size_t Size()
+	
+	size_t Size() const
 	{
-		return mBuffer.size();
+		return buffer.size();
 	}
-	bool SizeEquals(size_t aNum)
+
+	bool SizeEquals(size_t num)
 	{
-		return aNum == Size();
+		return num == Size();
 	}
-	size_t NumWrites()
+
+	size_t NumWrites() const
 	{
-		return mNumWrites;
+		return numWrites;
 	}
 
 protected:
-	void WriteToBuffer(const openpal::RSlice& arBuffer);
+	void WriteToBuffer(const openpal::RSlice& data);
 
 private:
-	size_t mNumWrites;
-	std::vector<uint8_t> mBuffer;
+	size_t numWrites = 0;
+	std::vector<uint8_t> buffer;
 };
 
 }

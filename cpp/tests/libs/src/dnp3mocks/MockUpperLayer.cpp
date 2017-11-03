@@ -40,15 +40,7 @@ MockUpperLayer::MockUpperLayer() : isOnline(false)
 
 bool MockUpperLayer::OnReceive(const openpal::RSlice& input)
 {
-	this->WriteToBuffer(input);
-
-	/*
-	if (mOnReceiveHandler)
-	{
-		mOnReceiveHandler(input);
-	}
-	*/
-
+	this->WriteToBuffer(input);	
 	return true;
 }
 
