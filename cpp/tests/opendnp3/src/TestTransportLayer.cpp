@@ -192,7 +192,7 @@ TEST_CASE(SUITE("StateSending"))
 
 	//this should put us back in the Ready state since it was a single tpdu send
 	test.transport.OnTxReady();
-	REQUIRE(test.upper.GetState().numTxReady ==  1);
+	REQUIRE(test.upper.GetCounters().numTxReady ==  1);
 
 	REQUIRE_FALSE(test.transport.OnTxReady());
 }
@@ -210,7 +210,7 @@ TEST_CASE(SUITE("SendSuccess"))
 	test.upper.SendDown("11");
 	REQUIRE("C1 11" ==  test.link.PopWriteAsHex()); //FIR/FIN SEQ=1
 	test.transport.OnTxReady();
-	REQUIRE(test.upper.GetState().numTxReady ==  2);
+	REQUIRE(test.upper.GetCounters().numTxReady ==  2);
 }
 
 //if we're in the middle of a send and the layer goes down

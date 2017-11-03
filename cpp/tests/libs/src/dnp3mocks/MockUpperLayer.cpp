@@ -42,37 +42,39 @@ bool MockUpperLayer::OnReceive(const openpal::RSlice& input)
 {
 	this->WriteToBuffer(input);
 
+	/*
 	if (mOnReceiveHandler)
 	{
 		mOnReceiveHandler(input);
 	}
+	*/
 
 	return true;
 }
 
 bool MockUpperLayer::OnTxReady()
 {
-	++mState.numTxReady;
+	++counters.numTxReady;
 	return true;
 }
 
 bool MockUpperLayer::OnLowerLayerUp()
 {
 	isOnline = true;
-	++mState.numLayerUp;
+	++counters.numLayerUp;
 	return true;
 }
 
 bool MockUpperLayer::OnLowerLayerDown()
 {
 	isOnline = false;
-	++mState.numLayerDown;
+	++counters.numLayerDown;
 	return true;
 }
 
-bool MockUpperLayer::SendDown(const openpal::RSlice& buffer)
+bool MockUpperLayer::SendDown(const openpal::RSlice& data)
 {
-	return this->pLowerLayer ? pLowerLayer->BeginTransmit(buffer) : false;
+	return this->pLowerLayer ? pLowerLayer->BeginTransmit(data) : false;
 }
 
 bool MockUpperLayer::SendDown(const std::string& hex)

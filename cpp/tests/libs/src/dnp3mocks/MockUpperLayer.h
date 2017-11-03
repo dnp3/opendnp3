@@ -24,35 +24,20 @@
 
 #include <opendnp3/LayerInterfaces.h>
 
-#include <functional>
-
 #include <testlib/BufferTestObject.h>
 
 namespace opendnp3
 {
 
-class MockUpperLayer : public IUpperLayer, public HasLowerLayer, public testlib::BufferTestObject
+class MockUpperLayer final : public IUpperLayer, public HasLowerLayer, public testlib::BufferTestObject
 {
 public:
-
-	typedef std::function<void (const openpal::RSlice&)> OnReceiveHandler;
-
-	struct State
-	{
-
-		State()
-		{
-			Reset();
-		}
-
-		size_t numTxReady;
-		size_t numLayerUp;
-		size_t numLayerDown;
-
-		void Reset()
-		{
-			numTxReady = numLayerUp = numLayerDown = 0;
-		}
+	
+	struct Counters
+	{				
+		size_t numTxReady = 0;
+		size_t numLayerUp = 0;
+		size_t numLayerDown = 0;
 	};
 
 	MockUpperLayer();
@@ -62,44 +47,24 @@ public:
 		return isOnline;
 	}
 
-	bool SendDown(const std::string&);
-	bool SendDown(const openpal::RSlice& arBuffer);
+	bool SendDown(const std::string& hex);
+	bool SendDown(const openpal::RSlice& data);
 
-	bool StateEquals(const State& s)
+	const Counters& GetCounters() const
 	{
-		return (mState.numTxReady == s.numTxReady)
-		       && (mState.numLayerUp == s.numLayerUp)
-		       && (mState.numLayerDown == s.numLayerDown);
-	}
-
-	void Reset()
-	{
-		mState.Reset();
-	}
-	State GetState()
-	{
-		return mState;
-	}
-
-	void SetReceiveHandler(const OnReceiveHandler& arHandler)
-	{
-		mOnReceiveHandler = arHandler;
+		return counters;
 	}
 
 	//these are the NVII delegates
-	virtual bool OnReceive(const openpal::RSlice& buffer) override final;
-	virtual bool OnTxReady() override final;
-	virtual bool OnLowerLayerUp() override final;
-	virtual bool OnLowerLayerDown() override final;
+	virtual bool OnReceive(const openpal::RSlice& buffer) override;
+	virtual bool OnTxReady() override;
+	virtual bool OnLowerLayerUp() override;
+	virtual bool OnLowerLayerDown() override;
 
 private:
 
-	bool isOnline;
-
-	OnReceiveHandler mOnReceiveHandler;
-	State mState;
-
-
+	bool isOnline;	
+	Counters counters;
 };
 
 
