@@ -279,21 +279,15 @@ void IOHandler::CheckForSend()
 
 bool IOHandler::SendToSession(const opendnp3::Route& route, const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
-	auto matches = [route](const Session & session)
-	{
-		return session.enabled && session.Matches(route);
-	};
+	bool accepted = false;
 
-	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
+	for (auto& session : sessions) {
+		if (session.enabled) {
+			accepted |= session.OnFrame(header, userdata);
+		}
+	}	
 
-	if (iter == sessions.end())
-	{
-		return false;
-	}
-	else
-	{
-		return iter->OnFrame(header, userdata);
-	}
+	return accepted;	
 }
 
 bool IOHandler::IsRouteInUse(const Route& route) const

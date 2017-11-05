@@ -354,8 +354,7 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 
 	if (header.dest != config.LocalAddr)
 	{
-		++statistics.numUnknownDestination;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame for unknown destintation");
+		++statistics.numUnknownDestination;		
 		return false;
 	}
 
