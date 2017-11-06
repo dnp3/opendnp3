@@ -39,14 +39,6 @@ AppControlField AppControlField::Request(uint8_t seq)
 	return AppControlField(true, true, false, false, seq);
 }
 
-AppControlField::AppControlField() :
-	FIR(true),
-	FIN(true),
-	CON(false),
-	UNS(false),
-	SEQ(0)
-{}
-
 AppControlField::AppControlField(bool fir, bool fin, bool con, bool uns, uint8_t seq) :
 	FIR(fir),
 	FIN(fin),

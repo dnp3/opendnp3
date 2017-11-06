@@ -32,36 +32,25 @@ const uint32_t APDU_REQUEST_HEADER_SIZE = 2;
 const uint32_t APDU_RESPONSE_HEADER_SIZE = 4;
 
 struct APDUHeader
-{
+{	
 	static APDUHeader SolicitedConfirm(uint8_t seq);
 	static APDUHeader UnsolicitedConfirm(uint8_t seq);
-	static APDUHeader Confirm(uint8_t seq, bool unsolicited);
+	static APDUHeader Confirm(uint8_t seq, bool unsolicited);	
 
-	APDUHeader() : function(FunctionCode::UNKNOWN), control(true, true, false, false)
-	{}
-
-	explicit APDUHeader(const AppControlField& control_) : function(FunctionCode::UNKNOWN), control(control_)
-	{}
-
+	APDUHeader() = default;
+		
 	bool Equals(const APDUHeader& header) const
 	{
 		return (header.function == function) && (header.control.ToByte() == control.ToByte());
-	}
+	}	
 
-	FunctionCode function;
+	FunctionCode function = FunctionCode::UNKNOWN;
 	AppControlField control;
 };
 
 struct APDUResponseHeader : public APDUHeader
-{
-	APDUResponseHeader(const AppControlField control_, const IINField& iin) : APDUHeader(control_), IIN(iin)
-	{}
-
-	explicit APDUResponseHeader(const IINField& iin) : IIN(iin)
-	{}
-
-	APDUResponseHeader()
-	{}
+{		
+	APDUResponseHeader() = default;	
 
 	IINField IIN;
 };

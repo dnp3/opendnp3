@@ -218,7 +218,6 @@ bool OContext::ProcessObjects(const Addresses& addresses, const APDUHeader& head
 	}
 }
 
-
 bool OContext::ProcessRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (header.control.UNS)

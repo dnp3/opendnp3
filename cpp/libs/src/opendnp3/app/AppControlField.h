@@ -34,7 +34,7 @@ struct AppControlField
 
 	static AppControlField Request(uint8_t seq);
 
-	AppControlField();
+	AppControlField() = default;
 
 	explicit AppControlField(uint8_t byte);
 
@@ -47,11 +47,11 @@ struct AppControlField
 		return FIR && FIN;
 	}
 
-	bool FIR;
-	bool FIN;
-	bool CON;
-	bool UNS;
-	uint8_t  SEQ;
+	bool FIR = true;
+	bool FIN = true;
+	bool CON = false;
+	bool UNS = false;
+	uint8_t  SEQ = 0;
 
 private:
 
