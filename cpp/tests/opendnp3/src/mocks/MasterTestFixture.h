@@ -43,7 +43,7 @@ public:
 
 	MasterTestFixture(
 	    const MasterParams& param,
-		const Addresses& = Addresses(1, 1024),
+	    const Addresses& = Addresses(1, 1024),
 	    const std::string& id = "test",
 	    const std::shared_ptr<openpal::ILogHandler>& log = nullptr,
 	    const std::shared_ptr<testlib::MockExecutor>& executor = nullptr,

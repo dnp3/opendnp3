@@ -24,9 +24,9 @@
 #include <opendnp3/link/ILinkSession.h>
 #include <opendnp3/link/LinkLayerConstants.h>
 
-#include <testlib/DataSink.h>
-
 #include <opendnp3/gen/LinkFunction.h>
+
+#include "DataSink.h"
 
 #include <functional>
 #include <queue>
@@ -65,8 +65,7 @@ public:
 	// This allows us to test re-entrant behaviors
 	void AddAction(std::function<void ()> fun);
 
-
-	testlib::DataSink received;
+	DataSink received;
 
 private:
 

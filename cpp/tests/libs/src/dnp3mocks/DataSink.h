@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef TESTLIB_DATASINK_H
-#define TESTLIB_DATASINK_H
+#ifndef OPENDNP3_DATASINK_H
+#define OPENDNP3_DATASINK_H
 
 #include <string>
 #include <vector>
@@ -27,7 +27,7 @@
 
 #include <openpal/container/RSlice.h>
 
-namespace testlib
+namespace opendnp3
 {
 
 class DataSink final

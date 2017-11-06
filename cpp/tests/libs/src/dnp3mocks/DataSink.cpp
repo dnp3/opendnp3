@@ -32,7 +32,7 @@
 
 using namespace openpal;
 
-namespace testlib
+namespace opendnp3
 {
 
 void DataSink::Write(const RSlice& data)
@@ -64,9 +64,9 @@ bool DataSink::Equals(const openpal::RSlice& data) const
 
 std::string DataSink::AsHex(bool spaced) const
 {
-	CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
+	testlib::CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
 	for(size_t i = 0; i < this->buffer.size(); ++i) temp[i] = this->buffer[i];
-	return ToHex(temp.ToRSlice(), spaced);
+	return testlib::ToHex(temp.ToRSlice(), spaced);
 }
 
 } //end namespace

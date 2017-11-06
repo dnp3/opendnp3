@@ -40,7 +40,7 @@ MasterParams NoStartupTasks()
 
 MasterTestFixture::MasterTestFixture(
     const MasterParams& params,
-	const Addresses& addresses,
+    const Addresses& addresses,
     const std::string& id,
     const std::shared_ptr <openpal::ILogHandler >& log,
     const std::shared_ptr<testlib::MockExecutor>& executor,

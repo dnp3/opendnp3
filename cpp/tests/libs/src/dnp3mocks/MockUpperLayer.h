@@ -21,10 +21,9 @@
 #ifndef OPENDNP3_MOCKUPPERLAYER_H
 #define OPENDNP3_MOCKUPPERLAYER_H
 
-
 #include <opendnp3/LayerInterfaces.h>
 
-#include <testlib/DataSink.h>
+#include "DataSink.h"
 
 namespace opendnp3
 {
@@ -61,7 +60,7 @@ public:
 	virtual bool OnLowerLayerUp() override;
 	virtual bool OnLowerLayerDown() override;
 
-	testlib::DataSink received;
+	DataSink received;
 
 private:
 

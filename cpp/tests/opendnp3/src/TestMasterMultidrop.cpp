@@ -44,7 +44,7 @@ TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
 	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
 	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
 
-	MasterTestFixture t1(params, Addresses(1,10), "s1", log, executor, scheduler);
+	MasterTestFixture t1(params, Addresses(1, 10), "s1", log, executor, scheduler);
 	MasterTestFixture t2(params, Addresses(1, 11), "s2", log, executor, scheduler);
 
 	t1.context->OnLowerLayerUp();
