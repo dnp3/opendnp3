@@ -41,15 +41,6 @@ size_t MockLowerLayer::NumWrites() const
 	return sendQueue.size();
 }
 
-/*
-openpal::RSlice MockLowerLayer::PopWrite()
-{
-	auto ret = sendQueue.front();
-	sendQueue.pop();
-	return ret.payload;
-}
-*/
-
 std::string MockLowerLayer::PopWriteAsHex()
 {
 	if (sendQueue.empty())
