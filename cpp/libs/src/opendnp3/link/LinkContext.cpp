@@ -157,18 +157,18 @@ bool LinkContext::OnTxReady()
 	return true;
 }
 
-openpal::RSlice LinkContext::FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB)
+openpal::RSlice LinkContext::FormatPrimaryBufferWithConfirmed(const Addresses& addr, const openpal::RSlice& tpdu, bool FCB)
 {
 	auto dest = this->priTxBuffer.GetWSlice();
-	auto output = LinkFrame::FormatConfirmedUserData(dest, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
+	auto output = LinkFrame::FormatConfirmedUserData(dest, config.IsMaster, FCB, addr.destination, addr.source, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;
 }
 
-RSlice LinkContext::FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu)
+RSlice LinkContext::FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const openpal::RSlice& tpdu)
 {
-	auto dest = this->priTxBuffer.GetWSlice();
-	auto output = LinkFrame::FormatUnconfirmedUserData(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
+	auto buffer = this->priTxBuffer.GetWSlice();
+	auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, addr.destination, addr.source, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;
 }

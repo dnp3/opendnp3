@@ -18,34 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ITRANSPORTSEGMENT_H
-#define OPENDNP3_ITRANSPORTSEGMENT_H
-
-#include <openpal/container/RSlice.h>
+#ifndef OPENDNP3_MESSAGE_H
+#define OPENDNP3_MESSAGE_H
 
 #include "opendnp3/link/Addresses.h"
+#include "openpal/container/RSlice.h"
 
 namespace opendnp3
 {
 
-class ITransportSegment
-{	
+struct Message
+{
+	Message() = default;
 
-public:
+	Message(
+		const Addresses& addresses,
+		const openpal::RSlice& payload
+	) :
+		addresses(addresses),
+		payload(payload)
+	{}
 
-	virtual ~ITransportSegment() {}
-
-	virtual const Addresses& GetAddresses() const = 0;
-
-	virtual bool HasValue() const = 0;
-
-	// Read the current segment with a specified max size
-	virtual openpal::RSlice GetSegment() = 0;
-
-	// move to the next segment, true if more segments available
-	virtual bool Advance() = 0;
+	Addresses addresses;
+	openpal::RSlice payload;
 };
 
 }
 
 #endif
+

@@ -57,7 +57,7 @@ public:
 	const std::shared_ptr<MockSOEHandler> meas;
 	const std::shared_ptr<MockLowerLayer> lower;
 	const std::shared_ptr<MockMasterApplication> application;
-	const std::shared_ptr<IMasterScheduler> scheduler;
+	const std::shared_ptr<IMasterScheduler> scheduler;	
 	const std::shared_ptr<MContext> context;
 };
 

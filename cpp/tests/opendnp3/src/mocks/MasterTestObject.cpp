@@ -51,7 +51,7 @@ MasterTestObject::MasterTestObject(
 	lower(std::make_shared<MockLowerLayer>()),
 	application(std::make_shared<MockMasterApplication>()),
 	scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
-	context(std::make_shared<MContext>(openpal::Logger(log, id, ~0), exe, lower, meas, application, this->scheduler, params))
+	context(std::make_shared<MContext>(Addresses(), openpal::Logger(log, id, ~0), exe, lower, meas, application, this->scheduler, params))
 {}
 
 void MasterTestObject::SendToMaster(const std::string& hex)

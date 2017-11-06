@@ -23,6 +23,8 @@
 
 #include <openpal/executor/TimeDuration.h>
 
+#include "Addresses.h"
+
 namespace opendnp3
 {
 
@@ -63,6 +65,10 @@ struct LinkConfig
 		Timeout(openpal::TimeDuration::Seconds(1)),
 		KeepAliveTimeout(openpal::TimeDuration::Minutes(1))
 	{}
+
+	inline Addresses GetAddresses() const {
+		return Addresses(this->LocalAddr, this->RemoteAddr);
+	}
 
 	/// The master/outstation bit set on all messages
 	bool IsMaster;

@@ -29,21 +29,27 @@
 namespace opendnp3
 {
 
-class BufferSegment : public ITransportSegment
+class BufferSegment final : public ITransportSegment
 {
 public:
+	
+	BufferSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses);
 
-	BufferSegment(uint32_t segmentSize, const std::string& hex);
+	virtual const Addresses& GetAddresses() const
+	{
+		return this->addresses;
+	}
 
-	virtual bool HasValue() const override final;
+	virtual bool HasValue() const override;
 
-	virtual openpal::RSlice GetSegment() override final;
+	virtual openpal::RSlice GetSegment() override;
 
-	virtual bool Advance() override final;
+	virtual bool Advance() override;
 
 	void Reset();
 
 private:
+	const Addresses addresses;
 	uint32_t segmentSize;
 	testlib::HexSequence hs;
 	openpal::RSlice remainder;

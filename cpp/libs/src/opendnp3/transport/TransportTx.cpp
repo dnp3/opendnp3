@@ -36,17 +36,17 @@ namespace opendnp3
 TransportTx::TransportTx(const openpal::Logger& logger) : logger(logger)
 {}
 
-void TransportTx::Configure(const openpal::RSlice& output)
+void TransportTx::Configure(const Message& message)
 {
-	assert(output.IsNotEmpty());
+	assert(message.payload.IsNotEmpty());	
 	txSegment.Clear();
-	this->apdu = output;
+	this->message = message;	
 	this->tpduCount = 0;
 }
 
 bool TransportTx::HasValue() const
 {
-	return apdu.Size() > 0;
+	return this->message.payload.Size() > 0;
 }
 
 openpal::RSlice TransportTx::GetSegment()
@@ -57,13 +57,13 @@ openpal::RSlice TransportTx::GetSegment()
 	}
 	else
 	{
-		uint32_t numToSend = (apdu.Size() < MAX_TPDU_PAYLOAD) ? apdu.Size() : MAX_TPDU_PAYLOAD;
+		const uint32_t numToSend = (this->message.payload.Size() < MAX_TPDU_PAYLOAD) ? this->message.payload.Size() : MAX_TPDU_PAYLOAD;
 
 		auto dest = tpduBuffer.GetWSlice().Skip(1);
-		apdu.Take(numToSend).CopyTo(dest);
+		this->message.payload.Take(numToSend).CopyTo(dest);
 
 		bool fir = (tpduCount == 0);
-		bool fin = (numToSend == apdu.Size());
+		bool fin = (numToSend == this->message.payload.Size());
 		tpduBuffer()[0] = GetHeader(fir, fin, sequence);
 
 		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence.Get(), numToSend);
@@ -80,11 +80,11 @@ openpal::RSlice TransportTx::GetSegment()
 bool TransportTx::Advance()
 {
 	txSegment.Clear();
-	uint32_t numToSend = apdu.Size() < MAX_TPDU_PAYLOAD ? apdu.Size() : MAX_TPDU_PAYLOAD;
-	apdu.Advance(numToSend);
+	uint32_t numToSend = this->message.payload.Size() < MAX_TPDU_PAYLOAD ? this->message.payload.Size() : MAX_TPDU_PAYLOAD;
+	this->message.payload.Advance(numToSend);
 	++tpduCount;
 	sequence.Increment();
-	return apdu.IsNotEmpty();
+	return this->message.payload.IsNotEmpty();
 }
 
 uint8_t TransportTx::GetHeader(bool fir, bool fin, uint8_t sequence)

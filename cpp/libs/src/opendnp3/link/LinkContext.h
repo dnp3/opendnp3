@@ -85,8 +85,8 @@ public:
 	bool SetTxSegment(ITransportSegment& segments);
 
 	// --- helpers for formatting user data messages ---
-	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu);
-	openpal::RSlice FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB);
+	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const openpal::RSlice& tpdu);
+	openpal::RSlice FormatPrimaryBufferWithConfirmed(const Addresses& addr, const openpal::RSlice& tpdu, bool FCB);
 
 	/// --- Helpers for queueing frames ---
 	void QueueAck();

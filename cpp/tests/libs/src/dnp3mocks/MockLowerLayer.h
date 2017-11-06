@@ -48,11 +48,11 @@ public:
 	openpal::RSlice PopWrite();
 	std::string PopWriteAsHex();
 
-	virtual bool BeginTransmit(const openpal::RSlice& arBuffer) override final;
+	virtual bool BeginTransmit(const Message& buffer) override final;
 
 private:
 
-	std::queue<openpal::RSlice> sendQueue;
+	std::queue<Message> sendQueue;
 };
 
 }

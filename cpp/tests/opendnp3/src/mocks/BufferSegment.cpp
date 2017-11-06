@@ -37,8 +37,9 @@ using namespace testlib;
 namespace opendnp3
 {
 
-BufferSegment::BufferSegment(uint32_t segmentSize_, const std::string& hex) :
-	segmentSize(segmentSize_),
+BufferSegment::BufferSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses) :
+	addresses(addresses),
+	segmentSize(segmentSize),
 	hs(hex),
 	remainder(hs.ToRSlice())
 {

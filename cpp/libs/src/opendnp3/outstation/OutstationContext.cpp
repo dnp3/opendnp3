@@ -47,6 +47,7 @@ namespace opendnp3
 {
 
 OContext::OContext(
+	const Addresses& addresses,
     const OutstationConfig& config,
     const DatabaseSizes& dbSizes,
     const openpal::Logger& logger,
@@ -55,6 +56,7 @@ OContext::OContext(
     const std::shared_ptr<ICommandHandler>& commandHandler,
     const std::shared_ptr<IOutstationApplication>& application) :
 
+	addresses(addresses),
 	logger(logger),
 	executor(executor),
 	lower(lower),
@@ -231,10 +233,10 @@ void OContext::ProcessConfirm(const APDUHeader& header)
 	this->state = &this->state->OnConfirm(*this, header);
 }
 
-void OContext::BeginResponseTx(const AppControlField& control, const RSlice& response)
+void OContext::BeginResponseTx(const Message& message, const AppControlField& control)
 {
-	this->sol.tx.Record(control, response);
-	this->BeginTx(response);
+	this->sol.tx.Record(control, message.payload);
+	this->BeginTx(message);
 }
 
 void OContext::BeginUnsolTx(const AppControlField& control, const RSlice& response)
@@ -242,14 +244,14 @@ void OContext::BeginUnsolTx(const AppControlField& control, const RSlice& respon
 	this->unsol.tx.Record(control, response);
 	this->unsol.seq.confirmNum = this->unsol.seq.num;
 	this->unsol.seq.num.Increment();
-	this->BeginTx(response);
+	this->BeginTx(Message(this->addresses, response));
 }
 
-void OContext::BeginTx(const openpal::RSlice& response)
+void OContext::BeginTx(const Message& message)
 {
-	logging::ParseAndLogResponseTx(this->logger, response);
+	logging::ParseAndLogResponseTx(this->logger, message.payload);
 	this->isTransmitting = true;
-	this->lower->BeginTransmit(response);
+	this->lower->BeginTransmit(message);
 }
 
 void OContext::CheckForDeferredRequest()
@@ -349,7 +351,10 @@ void OContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::
 	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
 	auto iin = this->HandleNonReadResponse(header, objects, writer);
 	response.SetIIN(iin | this->GetResponseIIN());
-	this->BeginResponseTx(response.GetControl(), response.ToRSlice());
+	this->BeginResponseTx(
+		Message(this->addresses, response.ToRSlice()),
+		response.GetControl()
+	);
 }
 
 OutstationState& OContext::RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects)
@@ -364,7 +369,10 @@ OutstationState& OContext::RespondToReadRequest(const APDUHeader& header, const 
 	this->sol.seq.confirmNum = header.control.SEQ;
 	response.SetControl(result.second);
 	response.SetIIN(result.first | this->GetResponseIIN());
-	this->BeginResponseTx(response.GetControl(), response.ToRSlice());
+	this->BeginResponseTx(
+		Message(this->addresses, response.ToRSlice()),
+		response.GetControl()
+	);
 
 	if (result.second.CON)
 	{
@@ -387,7 +395,10 @@ OutstationState& OContext::ContinueMultiFragResponse(const AppSeqNum& seq)
 	this->sol.seq.confirmNum = seq;
 	response.SetControl(control);
 	response.SetIIN(this->GetResponseIIN());
-	this->BeginResponseTx(response.GetControl(), response.ToRSlice());
+	this->BeginResponseTx(
+		Message(this->addresses, response.ToRSlice()),
+		response.GetControl()		
+	);
 
 	if (control.CON)
 	{

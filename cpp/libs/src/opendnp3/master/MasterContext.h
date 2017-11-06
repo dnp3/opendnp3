@@ -60,6 +60,7 @@ public:
 	};
 
 	MContext(
+		const Addresses& addresses,
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<openpal::IExecutor>& executor,
 	    const std::shared_ptr<ILowerLayer>& lower,
@@ -74,7 +75,8 @@ public:
 	const std::shared_ptr<ILowerLayer> lower;
 
 	// ------- configuration --------
-	MasterParams params;
+	const Addresses addresses;
+	const MasterParams params;
 	const std::shared_ptr<ISOEHandler> SOEHandler;
 	const std::shared_ptr<IMasterApplication> application;
 	const std::shared_ptr<IMasterScheduler> scheduler;

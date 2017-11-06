@@ -36,7 +36,7 @@ OutstationTestObject::OutstationTestObject(
 	lower(std::make_shared<MockLowerLayer>()),
 	cmdHandler(std::make_shared<MockCommandHandler>(CommandStatus::SUCCESS)),
 	application(std::make_shared<MockOutstationApplication>()),
-	context(config, dbSizes, log.logger, exe, lower, cmdHandler, application)
+	context(Addresses(), config, dbSizes, log.logger, exe, lower, cmdHandler, application)
 {
 	lower->SetUpperLayer(context);
 }

@@ -40,7 +40,7 @@ TEST_CASE(SUITE("RepeatSendsDoNotLogOrChangeStatistics"))
 	MockLogHandler log;
 	TransportTx tx(log.logger);
 	HexSequence hs("12 34 56");
-	tx.Configure(hs.ToRSlice());
+	tx.Configure(Message(Addresses(), hs.ToRSlice()));
 
 	auto segment1 = tx.GetSegment();
 	REQUIRE("C0 12 34 56" == ToHex(segment1));

@@ -29,6 +29,7 @@
 #include "opendnp3/link/ITransportSegment.h"
 #include "opendnp3/transport/TransportConstants.h"
 #include "opendnp3/transport/TransportSeqNum.h"
+#include "opendnp3/app/Message.h"
 
 namespace opendnp3
 {
@@ -36,24 +37,29 @@ namespace opendnp3
 /**
 State/validation for the DNP3 transport layer's send channel.
 */
-class TransportTx : public ITransportSegment
+class TransportTx final : public ITransportSegment
 {
 
 public:
 
 	TransportTx(const openpal::Logger& logger);
 
-	void Configure(const openpal::RSlice& output);
+	void Configure(const Message& message);
 
 	static uint8_t GetHeader(bool fir, bool fin, uint8_t sequence);
 
-	/// -------  IBufferSegment ------------
+	// -------  IBufferSegment ------------
 
-	virtual bool HasValue() const override final;
+	virtual const Addresses& GetAddresses() const override 
+	{
+		return this->message.addresses;
+	}
 
-	virtual openpal::RSlice GetSegment() override final;
+	virtual bool HasValue() const override;
 
-	virtual bool Advance() override final;
+	virtual openpal::RSlice GetSegment() override;
+
+	virtual bool Advance() override;
 
 	const StackStatistics::Transport::Tx& Statistics() const
 	{
@@ -62,8 +68,7 @@ public:
 
 private:
 
-	// A wrapper to the APDU buffer that we're segmenting
-	openpal::RSlice apdu;
+	Message message;
 
 	openpal::Settable<openpal::RSlice> txSegment;
 

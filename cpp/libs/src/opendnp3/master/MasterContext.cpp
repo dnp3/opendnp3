@@ -41,6 +41,7 @@ using namespace openpal;
 namespace opendnp3
 {
 MContext::MContext(
+	const Addresses& addresses,
     const openpal::Logger& logger,
     const std::shared_ptr<openpal::IExecutor>& executor,
     const std::shared_ptr<ILowerLayer>& lower,
@@ -52,6 +53,7 @@ MContext::MContext(
 	logger(logger),
 	executor(executor),
 	lower(lower),
+	addresses(addresses),
 	params(params),
 	SOEHandler(SOEHandler),
 	application(application),
@@ -275,7 +277,9 @@ void MContext::Transmit(const RSlice& data)
 	logging::ParseAndLogRequestTx(this->logger, data);
 	assert(!this->isSending);
 	this->isSending = true;
-	this->lower->BeginTransmit(data);
+	this->lower->BeginTransmit(
+		Message(this->addresses, data)
+	);
 }
 
 void MContext::StartResponseTimer()

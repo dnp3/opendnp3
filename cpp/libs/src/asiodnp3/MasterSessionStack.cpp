@@ -57,7 +57,7 @@ MasterSessionStack::MasterSessionStack(
 	scheduler(scheduler),
 	session(session),
 	stack(logger, executor, application, config.master.maxRxFragSize, config.link),
-	context(logger, executor, stack.transport, SOEHandler, application, scheduler, config.master)
+	context(Addresses(config.link.LocalAddr, config.link.RemoteAddr), logger, executor, stack.transport, SOEHandler, application, scheduler, config.master)
 {
 	stack.link->SetRouter(linktx);
 	stack.transport->SetAppLayer(context);

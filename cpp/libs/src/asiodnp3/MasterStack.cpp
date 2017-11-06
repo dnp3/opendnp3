@@ -44,7 +44,7 @@ MasterStack::MasterStack(
     const MasterStackConfig& config)
 	:
 	StackBase(logger, executor, application, iohandler, manager, config.master.maxRxFragSize, config.link),
-	mcontext(logger, executor, tstack.transport, SOEHandler, application, scheduler, config.master)
+	mcontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr), logger, executor, tstack.transport, SOEHandler, application, scheduler, config.master)
 {
 	tstack.transport->SetAppLayer(mcontext);
 }

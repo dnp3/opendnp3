@@ -21,10 +21,7 @@
 #ifndef OPENDNP3_LAYERINTERFACES_H
 #define OPENDNP3_LAYERINTERFACES_H
 
-#include <openpal/container/WSlice.h>
-#include <openpal/container/RSlice.h>
-
-#include "Route.h"
+#include "opendnp3/app/Message.h"
 
 #include <assert.h>
 
@@ -75,7 +72,7 @@ public:
 
 	virtual ~ILowerLayer() {}
 
-	virtual bool BeginTransmit(const openpal::RSlice&) = 0;
+	virtual bool BeginTransmit(const Message& message) = 0;
 };
 
 class HasLowerLayer

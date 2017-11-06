@@ -98,7 +98,7 @@ PLLS_Idle PLLS_Idle::instance;
 PriStateBase& PLLS_Idle::TrySendUnconfirmed(LinkContext& ctx, ITransportSegment& segments)
 {
 	auto first = segments.GetSegment();
-	auto output = ctx.FormatPrimaryBufferWithUnconfirmed(first);
+	auto output = ctx.FormatPrimaryBufferWithUnconfirmed(segments.GetAddresses(), first);
 	ctx.QueueTransmit(output, true);
 	return PLLS_SendUnconfirmedTransmitWait::Instance();
 }
@@ -108,7 +108,7 @@ PriStateBase& PLLS_Idle::TrySendConfirmed(LinkContext& ctx, ITransportSegment& s
 	if (ctx.isRemoteReset)
 	{
 		ctx.ResetRetry();
-		auto buffer = ctx.FormatPrimaryBufferWithConfirmed(segments.GetSegment(), ctx.nextWriteFCB);
+		auto buffer = ctx.FormatPrimaryBufferWithConfirmed(segments.GetAddresses(), segments.GetSegment(), ctx.nextWriteFCB);
 		ctx.QueueTransmit(buffer, true);
 		return PLLS_ConfUserDataTransmitWait::Instance();
 	}
@@ -138,7 +138,7 @@ PriStateBase& PLLS_SendUnconfirmedTransmitWait::OnTxReady(LinkContext& ctx)
 {
 	if (ctx.pSegments->Advance())
 	{
-		auto output = ctx.FormatPrimaryBufferWithUnconfirmed(ctx.pSegments->GetSegment());
+		auto output = ctx.FormatPrimaryBufferWithUnconfirmed(ctx.pSegments->GetAddresses(), ctx.pSegments->GetSegment());
 		ctx.QueueTransmit(output, true);
 		return *this;
 	}
@@ -201,7 +201,7 @@ PriStateBase& PLLS_ResetLinkWait::OnAck(LinkContext& ctx, bool rxBuffFull)
 	ctx.isRemoteReset = true;
 	ctx.ResetWriteFCB();
 	ctx.CancelTimer();
-	auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetSegment(), ctx.nextWriteFCB);
+	auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetAddresses(), ctx.pSegments->GetSegment(), ctx.nextWriteFCB);
 	ctx.QueueTransmit(buffer, true);
 	ctx.listener->OnStateChange(opendnp3::LinkStatus::RESET);
 	return PLLS_ConfUserDataTransmitWait::Instance();
@@ -243,7 +243,7 @@ PriStateBase& PLLS_ConfDataWait::OnAck(LinkContext& ctx, bool rxBuffFull)
 
 	if (ctx.pSegments->Advance())
 	{
-		auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetSegment(), ctx.nextWriteFCB);
+		auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetAddresses(), ctx.pSegments->GetSegment(), ctx.nextWriteFCB);
 		ctx.QueueTransmit(buffer, true);
 		return PLLS_ConfUserDataTransmitWait::Instance();
 	}
@@ -284,7 +284,7 @@ PriStateBase& PLLS_ConfDataWait::OnTimeout(LinkContext& ctx)
 	if (ctx.Retry())
 	{
 		FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "confirmed data timeout, retrying %u remaining", ctx.numRetryRemaining);
-		auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetSegment(), ctx.nextWriteFCB);
+		auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetAddresses(), ctx.pSegments->GetSegment(), ctx.nextWriteFCB);
 		ctx.QueueTransmit(buffer, true);
 		return PLLS_ConfUserDataTransmitWait::Instance();
 	}

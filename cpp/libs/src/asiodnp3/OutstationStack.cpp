@@ -46,7 +46,7 @@ OutstationStack::OutstationStack(
     const OutstationStackConfig& config) :
 
 	StackBase(logger, executor, application, iohandler, manager, config.outstation.params.maxRxFragSize, config.link),
-	ocontext(config.outstation, config.dbConfig.sizes, logger, executor, tstack.transport, commandHandler, application)
+	ocontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr), config.outstation, config.dbConfig.sizes, logger, executor, tstack.transport, commandHandler, application)
 {
 	this->tstack.transport->SetAppLayer(ocontext);
 

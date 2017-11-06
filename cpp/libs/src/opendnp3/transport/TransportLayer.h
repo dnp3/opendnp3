@@ -44,11 +44,11 @@ public:
 
 	TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize);
 
-	/// ILowerLayer
+	// ------ ILowerLayer ------
 
-	virtual bool BeginTransmit(const openpal::RSlice&) override final;
+	virtual bool BeginTransmit(const Message& message) override final;
 
-	/// IUpperLayer
+	// ------ IUpperLayer ------
 
 	virtual bool OnReceive(const openpal::RSlice&) override final;
 	virtual bool OnLowerLayerUp() override final;

@@ -42,7 +42,7 @@ using namespace testlib;
 TEST_CASE(SUITE("ClosedState"))
 {
 	LinkLayerTest t;
-	BufferSegment segment(250, "00");
+	BufferSegment segment(250, "00", Addresses());
 	REQUIRE_FALSE(t.upper->SendDown(segment));
 	REQUIRE_FALSE(t.link.OnLowerLayerDown());
 	REQUIRE_FALSE(t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 2));
@@ -224,7 +224,7 @@ TEST_CASE(SUITE("SendUnconfirmed"))
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
 
-	BufferSegment segment(250, IncrementHex(0, 250));
+	BufferSegment segment(250, IncrementHex(0, 250), Addresses());
 	t.link.Send(segment);
 	REQUIRE(t.NumTotalWrites() ==  1);
 	t.link.OnTxReady();
@@ -241,7 +241,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
 
-	BufferSegment segments(250, IncrementHex(0, 250));
+	BufferSegment segments(250, IncrementHex(0, 250), Addresses());
 	t.link.Send(segments);
 	t.link.OnTxReady();
 
@@ -267,7 +267,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
 
-	BufferSegment segments(250, IncrementHex(0, 250));
+	BufferSegment segments(250, IncrementHex(0, 250), cfg.GetAddresses());
 	t.link.Send(segments);
 	REQUIRE(t.NumTotalWrites() ==  1);
 	t.link.OnTxReady(); // reset link
@@ -289,7 +289,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
 
-	BufferSegment segments(250, IncrementHex(0, 250));
+	BufferSegment segments(250, IncrementHex(0, 250), cfg.GetAddresses());
 	t.link.Send(segments);
 	REQUIRE(t.NumTotalWrites() == 1);
 	t.link.OnTxReady();
@@ -332,7 +332,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
 
-	BufferSegment segments(250, IncrementHex(0, 250));
+	BufferSegment segments(250, IncrementHex(0, 250), cfg.GetAddresses());
 	t.link.Send(segments);
 	REQUIRE(t.NumTotalWrites() == 1);
 	t.link.OnTxReady();
@@ -379,7 +379,7 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 
 	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
 
-	BufferSegment segments(250, IncrementHex(0, 250));
+	BufferSegment segments(250, IncrementHex(0, 250), cfg.GetAddresses());
 	t.link.Send(segments);
 	t.link.OnTxReady();
 	REQUIRE(t.NumTotalWrites() ==  1); // Should now be waiting for an ACK with active timer
@@ -409,7 +409,7 @@ TEST_CASE(SUITE("ResetLinkRetries"))
 
 	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
 
-	BufferSegment segments(250, IncrementHex(0, 250));
+	BufferSegment segments(250, IncrementHex(0, 250), cfg.GetAddresses());
 	t.link.Send(segments);
 
 	for(int i = 1; i < 5; ++i)
@@ -432,7 +432,7 @@ TEST_CASE(SUITE("ConfirmedDataNackDFCClear"))
 
 	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
 
-	BufferSegment segments(250, IncrementHex(0, 250));
+	BufferSegment segments(250, IncrementHex(0, 250), cfg.GetAddresses());
 	t.link.Send(segments);
 	t.link.OnTxReady();
 	REQUIRE(t.NumTotalWrites() ==  1); // Should now be waiting for an ACK with active timer
@@ -457,7 +457,7 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
 
-	BufferSegment segments(250, IncrementHex(0, 250));
+	BufferSegment segments(250, IncrementHex(0, 250), cfg.GetAddresses());
 	t.link.Send(segments);
 	REQUIRE(t.NumTotalWrites() ==  1);
 	t.link.OnTxReady();
@@ -483,7 +483,7 @@ TEST_CASE(SUITE("SendDataSuccess"))
 	LinkLayerTest t(cfg);
 	t.link.OnLowerLayerUp();
 
-	BufferSegment segments(250, IncrementHex(0, 250));
+	BufferSegment segments(250, IncrementHex(0, 250), cfg.GetAddresses());
 	t.link.Send(segments);
 	t.link.OnTxReady();
 	t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);

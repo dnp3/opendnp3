@@ -25,6 +25,8 @@
 
 #include "opendnp3/gen/SecurityStatIndex.h"
 
+#include "opendnp3/link/Addresses.h"
+
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/RequestHistory.h"
 #include "opendnp3/outstation/DeferredRequest.h"
@@ -58,13 +60,16 @@ class OContext : public IUpperLayer
 
 public:
 
-	OContext(	const OutstationConfig& config,
+	OContext(
+				const Addresses& addresses,
+				const OutstationConfig& config,
 	            const DatabaseSizes& dbSizes,
 	            const openpal::Logger& logger,
 	            const std::shared_ptr<openpal::IExecutor>& executor,
 	            const std::shared_ptr<ILowerLayer>& lower,
 	            const std::shared_ptr<ICommandHandler>& commandHandler,
-	            const std::shared_ptr<IOutstationApplication>& application);
+	            const std::shared_ptr<IOutstationApplication>& application
+	);
 
 	/// ----- Implement IUpperLayer ------
 
@@ -112,11 +117,11 @@ private:
 
 	void ParseHeader(const openpal::RSlice& apdu);
 
-	void BeginResponseTx(const AppControlField& control, const openpal::RSlice& response);
+	void BeginResponseTx(const Message& message, const AppControlField& control);
 
 	void BeginUnsolTx(const AppControlField& control, const openpal::RSlice& response);
 
-	void BeginTx(const openpal::RSlice& response);
+	void BeginTx(const Message& message);
 
 	void CheckForDeferredRequest();
 
@@ -160,6 +165,7 @@ private:
 	IINField HandleCommandWithConstant(const openpal::RSlice& objects, HeaderWriter& writer, CommandStatus status);
 
 	// ------ resources --------
+	const Addresses addresses;
 	openpal::Logger logger;
 	const std::shared_ptr<openpal::IExecutor> executor;
 	const std::shared_ptr<ILowerLayer> lower;

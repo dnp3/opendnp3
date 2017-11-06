@@ -45,7 +45,7 @@ openpal::RSlice MockLowerLayer::PopWrite()
 {
 	auto ret = sendQueue.front();
 	sendQueue.pop();
-	return ret;
+	return ret.payload;
 }
 
 std::string MockLowerLayer::PopWriteAsHex()
@@ -58,13 +58,13 @@ std::string MockLowerLayer::PopWriteAsHex()
 	{
 		auto ret = sendQueue.front();
 		sendQueue.pop();
-		return ToHex(ret);
+		return ToHex(ret.payload);
 	}
 }
 
-bool MockLowerLayer::BeginTransmit(const openpal::RSlice& output)
+bool MockLowerLayer::BeginTransmit(const Message& message)
 {
-	this->sendQueue.push(output);
+	this->sendQueue.push(message);
 	return true;
 }
 

@@ -28,7 +28,7 @@ namespace opendnp3
 
 struct Addresses
 {
-	Addresses() = delete;
+	Addresses() = default;
 
 	Addresses(
 	    uint16_t source,
@@ -38,8 +38,8 @@ struct Addresses
 		destination(destination)
 	{}
 
-	uint16_t source;
-	uint16_t destination;
+	uint16_t source = 0;
+	uint16_t destination = 0;
 };
 
 }

@@ -60,13 +60,19 @@ OutstationState& StateIdle::OnNewNonReadRequest(OContext& ctx, const APDUHeader&
 
 OutstationState& StateIdle::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
-	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(),  ctx.sol.tx.GetLastResponse());
+	ctx.BeginResponseTx(
+		Message(ctx.addresses, ctx.sol.tx.GetLastResponse()),
+		ctx.sol.tx.GetLastControl()
+	);
 	return *this;
 }
 
 OutstationState& StateIdle::OnRepeatReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
-	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(), ctx.sol.tx.GetLastResponse());
+	ctx.BeginResponseTx(
+		Message(ctx.addresses, ctx.sol.tx.GetLastResponse()),
+		ctx.sol.tx.GetLastControl()
+	);
 	return *this;
 }
 
@@ -125,14 +131,20 @@ OutstationState& StateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx, c
 OutstationState& StateSolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ctx.confirmTimer.Cancel();
-	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(), ctx.sol.tx.GetLastResponse());
+	ctx.BeginResponseTx(
+		Message(ctx.addresses, ctx.sol.tx.GetLastResponse()),
+		ctx.sol.tx.GetLastControl()
+	);
 	return *this;
 }
 
 OutstationState& StateSolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	ctx.RestartConfirmTimer();
-	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(), ctx.sol.tx.GetLastResponse());
+	ctx.BeginResponseTx(
+		Message(ctx.addresses, ctx.sol.tx.GetLastResponse()),
+		ctx.sol.tx.GetLastControl()
+	);
 	return *this;
 }
 
@@ -197,7 +209,10 @@ OutstationState& StateUnsolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx,
 
 OutstationState& StateUnsolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const APDUHeader& header, const openpal::RSlice& objects)
 {
-	ctx.BeginResponseTx(ctx.sol.tx.GetLastControl(), ctx.sol.tx.GetLastResponse());
+	ctx.BeginResponseTx(
+		Message(ctx.addresses, ctx.sol.tx.GetLastResponse()),
+		ctx.sol.tx.GetLastControl()
+	);
 	return *this;
 }
 

@@ -47,7 +47,7 @@ TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFrag
 // Actions
 ///////////////////////////////////////
 
-bool TransportLayer::BeginTransmit(const RSlice& apdu)
+bool TransportLayer::BeginTransmit(const Message& message)
 {
 	if (!isOnline)
 	{
@@ -55,7 +55,7 @@ bool TransportLayer::BeginTransmit(const RSlice& apdu)
 		return false;
 	}
 
-	if (apdu.IsEmpty())
+	if (message.payload.IsEmpty())
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
 		return false;
@@ -74,7 +74,7 @@ bool TransportLayer::BeginTransmit(const RSlice& apdu)
 	}
 
 	isSending = true;
-	transmitter.Configure(apdu);
+	transmitter.Configure(message);
 	lower->Send(transmitter);
 
 	return true;

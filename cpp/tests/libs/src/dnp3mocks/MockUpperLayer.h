@@ -47,8 +47,8 @@ public:
 		return isOnline;
 	}
 
-	bool SendDown(const std::string& hex);
-	bool SendDown(const openpal::RSlice& data);
+	bool SendDown(const std::string& hex, const Addresses& addresses = Addresses());
+	bool SendDown(const openpal::RSlice& data, const Addresses& addresses = Addresses());
 
 	const Counters& GetCounters() const
 	{
