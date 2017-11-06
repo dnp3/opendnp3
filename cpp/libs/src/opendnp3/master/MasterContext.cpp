@@ -107,6 +107,18 @@ bool MContext::OnReceive(const Message& message)
 		return false;
 	}
 
+	if (message.addresses.destination != this->addresses.source)
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unknown destination address: %u", message.addresses.destination);
+		return false;
+	}
+
+	if (message.addresses.source != this->addresses.destination)
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unexpected message source: %u", message.addresses.source);
+		return false;
+	}
+
 	APDUResponseHeader header;
 	if (!APDUHeaderParser::ParseResponse(message.payload, header, &this->logger))
 	{

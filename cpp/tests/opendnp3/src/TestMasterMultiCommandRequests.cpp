@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "mocks/MasterTestObject.h"
+#include "mocks/MasterTestFixture.h"
 #include "mocks/MeasurementComparisons.h"
 
 #include <testlib/HexConversions.h>
@@ -38,7 +38,7 @@ using namespace openpal;
 
 TEST_CASE(SUITE("command set ignores empty headers"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
@@ -62,7 +62,7 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 	std::string crobstr = "0C 01 28 02 00 01 00 01 01 64 00 00 00 64 00 00 00 00 07 00 01 01 64 00 00 00 64 00 00 00 00";
 
 
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
@@ -101,7 +101,7 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 	std::string headers = crobstr + " " + aostr;
 
 
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);

@@ -38,12 +38,17 @@ struct Addresses
 		destination(destination)
 	{}
 
-	bool operator==(const Addresses& other) const
+	Addresses Reverse() const
+	{
+		return Addresses(this->destination, this->source);
+	}
+
+	inline bool operator==(const Addresses& other) const
 	{
 		return (this->source == other.source) && (this->destination == other.destination);
 	}
 
-	bool operator!=(const Addresses& other) const
+	inline bool operator!=(const Addresses& other) const
 	{
 		return !((*this) == other);
 	}

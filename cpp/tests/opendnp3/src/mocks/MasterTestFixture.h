@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_TEST_OBJECT_H_
-#define __MASTER_TEST_OBJECT_H_
+#ifndef OPENDNP3_MASTERTESTFIXTURE_H
+#define OPENDNP3_MASTERTESTFIXTURE_H
 
 #include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
@@ -37,22 +37,24 @@ namespace opendnp3
 
 MasterParams NoStartupTasks();
 
-class MasterTestObject
+class MasterTestFixture
 {
 public:
 
-	MasterTestObject(
+	MasterTestFixture(
 	    const MasterParams& param,
+		const Addresses& = Addresses(1, 1024),
 	    const std::string& id = "test",
 	    const std::shared_ptr<openpal::ILogHandler>& log = nullptr,
 	    const std::shared_ptr<testlib::MockExecutor>& executor = nullptr,
 	    const std::shared_ptr<IMasterScheduler>& scheduler = nullptr
 	);
 
-	void SendToMaster(const std::string& hex);
+	bool SendToMaster(const std::string& hex);
+
+	const Addresses addresses;
 
 	const std::shared_ptr<openpal::ILogHandler> log;
-
 	const std::shared_ptr<testlib::MockExecutor> exe;
 	const std::shared_ptr<MockSOEHandler> meas;
 	const std::shared_ptr<MockLowerLayer> lower;

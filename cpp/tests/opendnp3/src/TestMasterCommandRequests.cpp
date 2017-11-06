@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "mocks/MasterTestObject.h"
+#include "mocks/MasterTestFixture.h"
 #include "mocks/MeasurementComparisons.h"
 
 #include <testlib/HexConversions.h>
@@ -44,7 +44,7 @@ std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 TEST_CASE(SUITE("ControlExecutionClosedState"))
 {
 	MasterParams params;
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
 	CommandCallbackQueue queue;
@@ -72,7 +72,7 @@ TEST_CASE(SUITE("Controls timeout after start period elapses"))
 	MasterParams params;
 	params.responseTimeout = TimeDuration::Seconds(5000);
 	params.taskStartTimeout = TimeDuration::Milliseconds(100); // significantly less
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 
 	t.context->OnLowerLayerUp();
 
@@ -105,7 +105,7 @@ TEST_CASE(SUITE("Controls timeout after start period elapses"))
 TEST_CASE(SUITE("Layer down while still scheduled"))
 {
 	MasterParams params;
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 
 	t.context->OnLowerLayerUp();
 
@@ -129,7 +129,7 @@ TEST_CASE(SUITE("Layer down while still scheduled"))
 
 TEST_CASE(SUITE("SelectAndOperate"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock command(ControlCode::PULSE_ON);
@@ -164,7 +164,7 @@ TEST_CASE(SUITE("SelectAndOperate"))
 
 TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
@@ -203,7 +203,7 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
@@ -231,7 +231,7 @@ TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
@@ -256,7 +256,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
@@ -281,7 +281,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 TEST_CASE(SUITE("ControlExecutionSelectBadFIRFIN"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
@@ -310,7 +310,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
 	params.unsolClassMask = ClassField::None();
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 	t.context->OnLowerLayerUp();
 
 	t.exe->RunMany();
@@ -337,7 +337,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
@@ -363,7 +363,7 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 
 TEST_CASE(SUITE("ResponseTimeout"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
@@ -393,7 +393,7 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 {
 	auto params = NoStartupTasks();
 	params.disableUnsolOnStartup = true;
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
@@ -432,7 +432,7 @@ template <class T>
 void TestAnalogOutputExecution(const std::string& hex, const T& command)
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;

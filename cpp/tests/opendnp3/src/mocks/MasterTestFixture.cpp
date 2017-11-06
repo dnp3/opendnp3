@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MasterTestObject.h"
+#include "MasterTestFixture.h"
 
 #include <asiodnp3/DefaultMasterApplication.h>
 
@@ -38,26 +38,28 @@ MasterParams NoStartupTasks()
 	return params;
 }
 
-MasterTestObject::MasterTestObject(
+MasterTestFixture::MasterTestFixture(
     const MasterParams& params,
+	const Addresses& addresses,
     const std::string& id,
     const std::shared_ptr <openpal::ILogHandler >& log,
     const std::shared_ptr<testlib::MockExecutor>& executor,
     const std::shared_ptr<IMasterScheduler>& scheduler
 ) :
+	addresses(addresses),
 	log(log),
 	exe(executor ? executor : std::make_shared<MockExecutor>()),
 	meas(std::make_shared<MockSOEHandler>()),
 	lower(std::make_shared<MockLowerLayer>()),
 	application(std::make_shared<MockMasterApplication>()),
 	scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
-	context(std::make_shared<MContext>(Addresses(), openpal::Logger(log, id, ~0), exe, lower, meas, application, this->scheduler, params))
+	context(std::make_shared<MContext>(addresses, openpal::Logger(log, id, ~0), exe, lower, meas, application, this->scheduler, params))
 {}
 
-void MasterTestObject::SendToMaster(const std::string& hex)
+bool MasterTestFixture::SendToMaster(const std::string& hex)
 {
 	HexSequence hs(hex);
-	context->OnReceive(Message(Addresses(), hs.ToRSlice()));
+	return context->OnReceive(Message(this->addresses.Reverse(), hs.ToRSlice()));
 }
 
 }
