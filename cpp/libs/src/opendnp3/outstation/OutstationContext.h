@@ -99,9 +99,9 @@ private:
 
 	OutstationState& RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	OutstationState& ProcessNewRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	OutstationState& ProcessNewRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
 
-	OutstationState& OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	OutstationState& OnReceiveSolRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
 
 	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
@@ -109,9 +109,9 @@ private:
 
 	bool ProcessMessage(const Message& message);
 
-	bool ProcessObjects(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects);
+	bool ProcessObjects(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
 
-	bool ProcessRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	bool ProcessRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
 
 	bool ProcessRequestNoAck(const APDUHeader& header, const openpal::RSlice& objects);
 
@@ -127,7 +127,7 @@ private:
 
 	void CheckForDeferredRequest();
 
-	bool ProcessDeferredRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	bool ProcessDeferredRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
 
 	void RestartConfirmTimer();
 

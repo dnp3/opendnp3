@@ -141,7 +141,7 @@ bool OContext::OnReceive(const Message& message)
 	return true;
 }
 
-OutstationState& OContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects)
+OutstationState& OContext::OnReceiveSolRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	// analyze this request to see how it compares to the last request
 	if (this->history.HasLastRequest())
@@ -152,44 +152,44 @@ OutstationState& OContext::OnReceiveSolRequest(const APDUHeader& header, const o
 			{
 				if (header.function == FunctionCode::READ)
 				{
-					return this->state->OnRepeatReadRequest(*this, header, objects);
+					return this->state->OnRepeatReadRequest(*this, addresses, header, objects);
 				}
 				else
 				{
-					return this->state->OnRepeatNonReadRequest(*this, header, objects);
+					return this->state->OnRepeatNonReadRequest(*this, addresses, header, objects);
 				}
 			}
 			else // new operation with same SEQ
 			{
-				return this->ProcessNewRequest(header, objects);
+				return this->ProcessNewRequest(addresses, header, objects);
 			}
 		}
 		else  // completely new sequence #
 		{
-			return this->ProcessNewRequest(header, objects);
+			return this->ProcessNewRequest(addresses, header, objects);
 		}
 	}
 	else
 	{
-		return this->ProcessNewRequest(header, objects);
+		return this->ProcessNewRequest(addresses, header, objects);
 	}
 }
 
-OutstationState& OContext::ProcessNewRequest(const APDUHeader& header, const openpal::RSlice& objects)
+OutstationState& OContext::ProcessNewRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	this->sol.seq.num = header.control.SEQ;
 
 	if (header.function == FunctionCode::READ)
 	{
-		return this->state->OnNewReadRequest(*this, header, objects);
+		return this->state->OnNewReadRequest(*this, addresses, header, objects);
 	}
 	else
 	{
-		return this->state->OnNewNonReadRequest(*this, header, objects);
+		return this->state->OnNewNonReadRequest(*this, addresses, header, objects);
 	}
 }
 
-bool OContext::ProcessObjects(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
+bool OContext::ProcessObjects(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (Functions::IsNoAckFuncCode(header.function))
 	{
@@ -201,7 +201,7 @@ bool OContext::ProcessObjects(const openpal::RSlice& apdu, const APDUHeader& hea
 	{
 		if (this->isTransmitting)
 		{
-			this->deferred.Set(header, objects);
+			this->deferred.Set(addresses, header, objects);
 			return true;
 		}
 		else
@@ -212,14 +212,14 @@ bool OContext::ProcessObjects(const openpal::RSlice& apdu, const APDUHeader& hea
 			}
 			else
 			{
-				return this->ProcessRequest(header, objects);
+				return this->ProcessRequest(addresses, header, objects);
 			}
 		}
 	}
 }
 
 
-bool OContext::ProcessRequest(const APDUHeader& header, const openpal::RSlice& objects)
+bool OContext::ProcessRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (header.control.UNS)
 	{
@@ -228,7 +228,7 @@ bool OContext::ProcessRequest(const APDUHeader& header, const openpal::RSlice& o
 	}
 	else
 	{
-		this->state = &this->OnReceiveSolRequest(header, objects);
+		this->state = &this->OnReceiveSolRequest(addresses, header, objects);
 		return true;
 	}
 }
@@ -264,15 +264,15 @@ void OContext::CheckForDeferredRequest()
 {
 	if (this->CanTransmit() && this->deferred.IsSet())
 	{
-		auto handler = [this](const APDUHeader & header, const RSlice & objects)
+		auto handler = [this](const Addresses & addresses, const APDUHeader & header, const RSlice & objects)
 		{
-			return this->ProcessDeferredRequest(header, objects);
+			return this->ProcessDeferredRequest(addresses, header, objects);
 		};
 		this->deferred.Process(handler);
 	}
 }
 
-bool OContext::ProcessDeferredRequest(const APDUHeader& header, const openpal::RSlice& objects)
+bool OContext::ProcessDeferredRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (header.function == FunctionCode::CONFIRM)
 	{
@@ -285,7 +285,7 @@ bool OContext::ProcessDeferredRequest(const APDUHeader& header, const openpal::R
 		{
 			if (this->state->IsIdle())
 			{
-				this->ProcessRequest(header, objects);
+				this->ProcessRequest(addresses, header, objects);
 				return true;
 			}
 			else
@@ -295,7 +295,7 @@ bool OContext::ProcessDeferredRequest(const APDUHeader& header, const openpal::R
 		}
 		else
 		{
-			this->ProcessRequest(header, objects);
+			this->ProcessRequest(addresses, header, objects);
 			return true;
 		}
 	}
@@ -474,7 +474,7 @@ bool OContext::ProcessMessage(const Message& message)
 
 	const auto objects = message.payload.Skip(APDU_REQUEST_HEADER_SIZE);
 
-	return this->ProcessObjects(message.payload, header, objects);
+	return this->ProcessObjects(message.addresses, header, objects);
 }
 
 void OContext::CheckForTaskStart()

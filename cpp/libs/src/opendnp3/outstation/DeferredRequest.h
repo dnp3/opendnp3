@@ -23,6 +23,8 @@
 
 #include "opendnp3/app/APDUHeader.h"
 
+#include "opendnp3/link/Addresses.h"
+
 #include <openpal/container/Buffer.h>
 #include <openpal/util/Uncopyable.h>
 
@@ -45,7 +47,7 @@ public:
 
 	FunctionCode GetFunction() const;
 
-	void Set(APDUHeader header, openpal::RSlice objects);
+	void Set(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
 
 	template <class Handler>
 	bool Process(const Handler& handler);
@@ -55,6 +57,7 @@ private:
 	DeferredRequest() = delete;
 
 	bool isSet;
+	Addresses addresses;
 	APDUHeader header;
 	openpal::RSlice objects;
 	openpal::Buffer buffer;
@@ -66,7 +69,7 @@ bool DeferredRequest::Process(const Handler& handler)
 {
 	if (isSet)
 	{
-		bool processed = handler(header, objects);
+		bool processed = handler(this->addresses, this->header, this->objects);
 		isSet = !processed;
 		return processed;
 	}
