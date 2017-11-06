@@ -105,17 +105,19 @@ private:
 
 	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	/// ---- Processing functions --------
+	// ---- Processing functions --------
 
-	void ProcessAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects);
+	bool ProcessMessage(const Message& message);
 
-	void ProcessRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	bool ProcessObjects(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects);
 
-	void ProcessConfirm(const APDUHeader& header);
+	bool ProcessRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	/// ---- common helper methods ----
+	bool ProcessRequestNoAck(const APDUHeader& header, const openpal::RSlice& objects);
 
-	void ParseHeader(const openpal::RSlice& apdu);
+	bool ProcessConfirm(const APDUHeader& header);
+
+	// ---- common helper methods ----
 
 	void BeginResponseTx(const Message& message, const AppControlField& control);
 
@@ -125,7 +127,7 @@ private:
 
 	void CheckForDeferredRequest();
 
-	bool ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects);
+	bool ProcessDeferredRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
 	void RestartConfirmTimer();
 
@@ -146,9 +148,6 @@ private:
 	/// Handles read function codes. May trigger an unsolicited response
 	/// @return an IIN field and a partial AppControlField (missing sequence info)
 	openpal::Pair<IINField, AppControlField> HandleRead(const openpal::RSlice& objects, HeaderWriter& writer);
-
-	/// Handles no-response function codes.
-	void ProcessRequestNoAck(const APDUHeader& header, const openpal::RSlice& objects);
 
 	// ------ Function Handlers ------
 

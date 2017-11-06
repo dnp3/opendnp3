@@ -39,7 +39,7 @@ public:
 	void SendComplete();
 	void ThisLayerUp();
 	void ThisLayerDown();
-	
+
 	bool HasNoData() const;
 
 	size_t NumWrites() const;

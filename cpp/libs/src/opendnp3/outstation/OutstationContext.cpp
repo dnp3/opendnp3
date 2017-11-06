@@ -134,8 +134,10 @@ bool OContext::OnReceive(const Message& message)
 		return false;
 	}
 
-	this->ParseHeader(message.payload);
+	this->ProcessMessage(message);
+
 	this->CheckForTaskStart();
+
 	return true;
 }
 
@@ -187,50 +189,54 @@ OutstationState& OContext::ProcessNewRequest(const APDUHeader& header, const ope
 	}
 }
 
-void OContext::ProcessAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
+bool OContext::ProcessObjects(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (Functions::IsNoAckFuncCode(header.function))
 	{
 		// this is the only request we process while we are transmitting
 		// because it doesn't require a response of any kind
-		this->ProcessRequestNoAck(header, objects);
+		return this->ProcessRequestNoAck(header, objects);
 	}
 	else
 	{
 		if (this->isTransmitting)
 		{
 			this->deferred.Set(header, objects);
+			return true;
 		}
 		else
 		{
 			if (header.function == FunctionCode::CONFIRM)
 			{
-				this->ProcessConfirm(header);
+				return this->ProcessConfirm(header);
 			}
 			else
 			{
-				this->ProcessRequest(header, objects);
+				return this->ProcessRequest(header, objects);
 			}
 		}
 	}
 }
 
 
-void OContext::ProcessRequest(const APDUHeader& header, const openpal::RSlice& objects)
+bool OContext::ProcessRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (header.control.UNS)
 	{
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));
+		return false;
 	}
 	else
 	{
 		this->state = &this->OnReceiveSolRequest(header, objects);
+		return true;
 	}
 }
 
-void OContext::ProcessConfirm(const APDUHeader& header)
+bool OContext::ProcessConfirm(const APDUHeader& header)
 {
 	this->state = &this->state->OnConfirm(*this, header);
+	return true;
 }
 
 void OContext::BeginResponseTx(const Message& message, const AppControlField& control)
@@ -266,7 +272,7 @@ void OContext::CheckForDeferredRequest()
 	}
 }
 
-bool OContext::ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects)
+bool OContext::ProcessDeferredRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	if (header.function == FunctionCode::CONFIRM)
 	{
@@ -434,14 +440,14 @@ IINField OContext::GetDynamicIIN()
 	return ret;
 }
 
-void OContext::ParseHeader(const openpal::RSlice& apdu)
+bool OContext::ProcessMessage(const Message& message)
 {
-	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, apdu, 18, 18);
+	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, message.payload, 18, 18);
 
 	APDUHeader header;
-	if (!APDUHeaderParser::ParseRequest(apdu, header, &this->logger))
+	if (!APDUHeaderParser::ParseRequest(message.payload, header, &this->logger))
 	{
-		return;
+		return false;
 	}
 
 	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
@@ -454,15 +460,21 @@ void OContext::ParseHeader(const openpal::RSlice& apdu)
 	                 FunctionCodeToString(header.function));
 
 	// outstations should only process single fragment messages that don't request confirmation
-	if (!header.control.IsFirAndFin() || header.control.CON)
+	if (!header.control.IsFirAndFin())
 	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Request must be FIR/FIN/!CON");
-		return;
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Requests must have FIR/FIN == 1");
+		return false;
 	}
 
-	auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
+	if (header.control.CON)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Requests cannot request confirmation");
+		return false;
+	}
 
-	this->ProcessAPDU(apdu, header, objects);
+	const auto objects = message.payload.Skip(APDU_REQUEST_HEADER_SIZE);
+
+	return this->ProcessObjects(message.payload, header, objects);
 }
 
 void OContext::CheckForTaskStart()
@@ -489,16 +501,16 @@ DatabaseConfigView OContext::GetConfigView()
 
 //// ----------------------------- function handlers -----------------------------
 
-void OContext::ProcessRequestNoAck(const APDUHeader& header, const openpal::RSlice& objects)
+bool OContext::ProcessRequestNoAck(const APDUHeader& header, const openpal::RSlice& objects)
 {
 	switch (header.function)
 	{
 	case(FunctionCode::DIRECT_OPERATE_NR) :
 		this->HandleDirectOperate(objects, OperateType::DirectOperateNoAck, nullptr); // no object writer, this is a no ack code
-		break;
+		return true;
 	default:
 		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
-		break;
+		return false;
 	}
 }
 
