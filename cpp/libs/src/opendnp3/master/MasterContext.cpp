@@ -119,24 +119,16 @@ bool MContext::OnReceive(const Message& message)
 		return false;
 	}
 
-	APDUResponseHeader header;
-	if (!APDUHeaderParser::ParseResponse(message.payload, header, &this->logger))
+	const auto result = APDUHeaderParser::ParseResponse(message.payload, &this->logger);
+	if (!result.success)
 	{
 		return true;
 	}
 
-	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-	                 header.control.FIR,
-	                 header.control.FIN,
-	                 header.control.CON,
-	                 header.control.UNS,
-	                 header.control.SEQ,
-	                 FunctionCodeToString(header.function),
-	                 header.IIN.LSB,
-	                 header.IIN.MSB);
+	logging::LogHeader(this->logger, flags::APP_HEADER_RX, result.header);
 
-	this->OnParsedHeader(message.payload, header, message.payload.Skip(APDU_RESPONSE_HEADER_SIZE));
+	this->OnParsedHeader(message.payload, result.header, result.objects);
+
 	return true;
 }
 

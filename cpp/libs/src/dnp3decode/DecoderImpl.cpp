@@ -25,7 +25,10 @@
 
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/app/APDULogging.h"
+
 #include "dnp3decode/LoggingHandler.h"
+
 
 #include <openpal/logging/LogMacros.h>
 
@@ -81,61 +84,44 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
 
 	if (IsResponse(data))
 	{
-		APDUResponseHeader header;
-		if (APDUHeaderParser::ParseResponse(data, header, &logger))
+		const auto result = APDUHeaderParser::ParseResponse(data, &logger);
+		if (result.success)
 		{
-			FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-			                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-			                 header.control.FIR,
-			                 header.control.FIN,
-			                 header.control.CON,
-			                 header.control.UNS,
-			                 header.control.SEQ,
-			                 FunctionCodeToString(header.function),
-			                 header.IIN.LSB,
-			                 header.IIN.MSB);
-			if (header.IIN.LSB & 0x01) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.0 - All stations");
-			if (header.IIN.LSB & 0x02) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.1 - Class 1 events");
-			if (header.IIN.LSB & 0x04) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.2 - Class 2 events");
-			if (header.IIN.LSB & 0x08) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.3 - Class 3 events");
-			if (header.IIN.LSB & 0x10) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.4 - Need time");
-			if (header.IIN.LSB & 0x20) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.5 - Local control");
-			if (header.IIN.LSB & 0x40) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.6 - Device trouble");
-			if (header.IIN.LSB & 0x80) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.7 - Device restart");
-			if (header.IIN.MSB & 0x01) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.0 - Function code not supported");
-			if (header.IIN.MSB & 0x02) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.1 - Object unknown");
-			if (header.IIN.MSB & 0x04) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.2 - Parameter error");
-			if (header.IIN.MSB & 0x08) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.3 - Event buffer overflow");
-			if (header.IIN.MSB & 0x10) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.4 - Already executing");
-			if (header.IIN.MSB & 0x20) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.5 - Configuration corrupt");
-			if (header.IIN.MSB & 0x40) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.6 - Reserved 1");
-			if (header.IIN.MSB & 0x80) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.7 - Reserved 2");
+			logging::LogHeader(this->logger, flags::APP_HEADER_RX, result.header);
+
+			if (result.header.IIN.LSB & 0x01) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.0 - All stations");
+			if (result.header.IIN.LSB & 0x02) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.1 - Class 1 events");
+			if (result.header.IIN.LSB & 0x04) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.2 - Class 2 events");
+			if (result.header.IIN.LSB & 0x08) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.3 - Class 3 events");
+			if (result.header.IIN.LSB & 0x10) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.4 - Need time");
+			if (result.header.IIN.LSB & 0x20) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.5 - Local control");
+			if (result.header.IIN.LSB & 0x40) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.6 - Device trouble");
+			if (result.header.IIN.LSB & 0x80) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.7 - Device restart");
+			if (result.header.IIN.MSB & 0x01) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.0 - Function code not supported");
+			if (result.header.IIN.MSB & 0x02) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.1 - Object unknown");
+			if (result.header.IIN.MSB & 0x04) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.2 - Parameter error");
+			if (result.header.IIN.MSB & 0x08) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.3 - Event buffer overflow");
+			if (result.header.IIN.MSB & 0x10) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.4 - Already executing");
+			if (result.header.IIN.MSB & 0x20) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.5 - Configuration corrupt");
+			if (result.header.IIN.MSB & 0x40) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.6 - Reserved 1");
+			if (result.header.IIN.MSB & 0x80) SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.7 - Reserved 2");
 
 			Indent i(*callbacks);
 			LoggingHandler handler(logger, *callbacks);
-			APDUParser::ParseSinglePass(data.Skip(4), &logger, &handler, nullptr, ParserSettings::Default());
+			APDUParser::ParseSinglePass(result.objects, &logger, &handler, nullptr, ParserSettings::Default());
 		}
 	}
 	else
 	{
-		APDUHeader header;
-		if (APDUHeaderParser::ParseRequest(data, header, &logger))
+		const auto result = APDUHeaderParser::ParseRequest(data, &logger);
+		if (result.success)
 		{
-
-			FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-			                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-			                 header.control.FIR,
-			                 header.control.FIN,
-			                 header.control.CON,
-			                 header.control.UNS,
-			                 header.control.SEQ,
-			                 FunctionCodeToString(header.function));
-
+			logging::LogHeader(this->logger, flags::APP_HEADER_RX, result.header);
 
 			Indent i(*callbacks);
 			LoggingHandler handler(logger, *callbacks);
-			auto settings = (header.function == FunctionCode::READ) ? ParserSettings::NoContents() : ParserSettings::Default();
-			APDUParser::ParseSinglePass(data.Skip(2), &logger, &handler, nullptr, settings);
+			auto settings = (result.header.function == FunctionCode::READ) ? ParserSettings::NoContents() : ParserSettings::Default();
+			APDUParser::ParseSinglePass(result.objects, &logger, &handler, nullptr, settings);
 		}
 	}
 }

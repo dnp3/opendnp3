@@ -443,37 +443,28 @@ bool OContext::ProcessMessage(const Message& message)
 {
 	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, message.payload, 18, 18);
 
-	APDUHeader header;
-	if (!APDUHeaderParser::ParseRequest(message.payload, header, &this->logger))
+	const auto result = APDUHeaderParser::ParseRequest(message.payload, &this->logger);
+	if (!result.success)
 	{
 		return false;
 	}
 
-	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-	                 header.control.FIR,
-	                 header.control.FIN,
-	                 header.control.CON,
-	                 header.control.UNS,
-	                 header.control.SEQ,
-	                 FunctionCodeToString(header.function));
+	logging::LogHeader(this->logger, flags::APP_HEADER_RX, result.header);
 
 	// outstations should only process single fragment messages that don't request confirmation
-	if (!header.control.IsFirAndFin())
+	if (!result.header.control.IsFirAndFin())
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Requests must have FIR/FIN == 1");
 		return false;
 	}
 
-	if (header.control.CON)
+	if (result.header.control.CON)
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Requests cannot request confirmation");
 		return false;
 	}
 
-	const auto objects = message.payload.Skip(APDU_REQUEST_HEADER_SIZE);
-
-	return this->ProcessObjects(message.addresses, header, objects);
+	return this->ProcessObjects(message.addresses, result.header, result.objects);
 }
 
 void OContext::CheckForTaskStart()

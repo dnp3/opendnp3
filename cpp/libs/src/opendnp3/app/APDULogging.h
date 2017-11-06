@@ -46,14 +46,19 @@
 #include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
 
+#include "opendnp3/app/APDUHeader.h"
+
 namespace opendnp3
 {
 namespace logging
 {
 
-void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu);
+void LogHeader(openpal::Logger& logger, int32_t flags, const APDUHeader& header);
+void LogHeader(openpal::Logger& logger, int32_t flags, const APDUResponseHeader& header);
 
-void ParseAndLogResponseTx(openpal::Logger logger, const openpal::RSlice& apdu);
+void ParseAndLogRequestTx(openpal::Logger& logger, const openpal::RSlice& apdu);
+void ParseAndLogResponseTx(openpal::Logger& logger, const openpal::RSlice& apdu);
+
 
 }
 }
