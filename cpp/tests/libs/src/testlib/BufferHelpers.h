@@ -33,7 +33,7 @@ class ByteStr : public CopyableBuffer
 
 public:
 	ByteStr(uint32_t length, uint8_t seed = 0);
-	ByteStr(const uint8_t* data, uint32_t length);	
+	ByteStr(const uint8_t* data, uint32_t length);
 	bool operator==(const ByteStr& other) const;
 	std::string ToHex() const;
 };

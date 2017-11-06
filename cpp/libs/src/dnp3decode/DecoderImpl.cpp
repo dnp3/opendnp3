@@ -66,10 +66,10 @@ void DecoderImpl::DecodeTPDU(const openpal::RSlice& data)
 	Indent i(*callbacks);
 	FORMAT_HEX_BLOCK(logger, flags::TRANSPORT_RX, data, 18, 18);
 
-	auto asdu = transportRx.ProcessReceive(data);
-	if (asdu.IsNotEmpty())
+	auto result = transportRx.ProcessReceive(Message(Addresses(), data));
+	if (result.payload.IsNotEmpty())
 	{
-		this->DecodeAPDU(asdu);
+		this->DecodeAPDU(result.payload);
 	}
 }
 

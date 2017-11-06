@@ -20,7 +20,8 @@
  */
 #include "TransportTx.h"
 
-#include "opendnp3/transport/TransportLayer.h"
+#include "TransportHeader.h"
+
 #include "opendnp3/LogLevels.h"
 
 #include <openpal/logging/LogMacros.h>
@@ -38,9 +39,9 @@ TransportTx::TransportTx(const openpal::Logger& logger) : logger(logger)
 
 void TransportTx::Configure(const Message& message)
 {
-	assert(message.payload.IsNotEmpty());	
+	assert(message.payload.IsNotEmpty());
 	txSegment.Clear();
-	this->message = message;	
+	this->message = message;
 	this->tpduCount = 0;
 }
 
@@ -64,7 +65,7 @@ openpal::RSlice TransportTx::GetSegment()
 
 		bool fir = (tpduCount == 0);
 		bool fin = (numToSend == this->message.payload.Size());
-		tpduBuffer()[0] = GetHeader(fir, fin, sequence);
+		tpduBuffer()[0] = TransportHeader::ToByte(fir, fin, sequence);
 
 		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence.Get(), numToSend);
 
@@ -85,26 +86,6 @@ bool TransportTx::Advance()
 	++tpduCount;
 	sequence.Increment();
 	return this->message.payload.IsNotEmpty();
-}
-
-uint8_t TransportTx::GetHeader(bool fir, bool fin, uint8_t sequence)
-{
-	uint8_t hdr = 0;
-
-	if (fir)
-	{
-		hdr |= TL_HDR_FIR;
-	}
-
-	if (fin)
-	{
-		hdr |= TL_HDR_FIN;
-	}
-
-	// Only the lower 6 bits of the sequence number
-	hdr |= TL_HDR_SEQ & sequence;
-
-	return hdr;
 }
 
 }

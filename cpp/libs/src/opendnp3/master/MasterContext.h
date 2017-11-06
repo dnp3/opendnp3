@@ -47,7 +47,7 @@ namespace opendnp3
 /*
 	All of the mutable state and configuration for a master
 */
-class MContext : public IUpperLayer, private IMasterTaskRunner, private openpal::Uncopyable
+class MContext final : public IUpperLayer, private IMasterTaskRunner, private openpal::Uncopyable
 {
 
 public:
@@ -60,7 +60,7 @@ public:
 	};
 
 	MContext(
-		const Addresses& addresses,
+	    const Addresses& addresses,
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<openpal::IExecutor>& executor,
 	    const std::shared_ptr<ILowerLayer>& lower,
@@ -101,7 +101,7 @@ public:
 
 	virtual bool OnLowerLayerDown() override;
 
-	virtual bool OnReceive(const openpal::RSlice& apdu) override final;
+	virtual bool OnReceive(const Message& message) override;
 
 	virtual bool OnTxReady() override final;
 

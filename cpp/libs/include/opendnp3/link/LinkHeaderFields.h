@@ -23,6 +23,8 @@
 
 #include "opendnp3/gen/LinkFunction.h"
 
+#include "opendnp3/link/Addresses.h"
+
 namespace opendnp3
 {
 
@@ -31,6 +33,11 @@ struct LinkHeaderFields
 	LinkHeaderFields();
 
 	LinkHeaderFields(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source);
+
+	Addresses ToAddresses() const
+	{
+		return Addresses(src, dest);
+	}
 
 	LinkFunction func;
 	bool isFromMaster;

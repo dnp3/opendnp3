@@ -84,14 +84,14 @@ bool TransportLayer::BeginTransmit(const Message& message)
 // IUpperLayer
 ///////////////////////////////////////
 
-bool TransportLayer::OnReceive(const RSlice& tpdu)
+bool TransportLayer::OnReceive(const Message& message)
 {
 	if (isOnline)
 	{
-		auto apdu = receiver.ProcessReceive(tpdu);
-		if (apdu.IsNotEmpty() && upper)
+		const auto asdu = receiver.ProcessReceive(message);
+		if (asdu.payload.IsNotEmpty() && upper)
 		{
-			upper->OnReceive(apdu);
+			upper->OnReceive(asdu);
 		}
 		return true;
 	}

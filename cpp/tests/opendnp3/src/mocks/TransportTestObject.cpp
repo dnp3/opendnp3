@@ -23,7 +23,9 @@
 #include <testlib/BufferHelpers.h>
 
 #include <openpal/util/ToHex.h>
-#include <opendnp3/app/AppConstants.h>
+
+#include "opendnp3/app/AppConstants.h"
+#include "opendnp3/transport/TransportHeader.h"
 
 #include <memory>
 #include <sstream>
@@ -77,7 +79,7 @@ std::string TransportTestObject::GeneratePacketSequence(vector< std::string >& a
 		bool fin = i == (aNumPackets - 1);
 		int seq = static_cast<int>(i % 64);
 		uint32_t len = fin ? aLastPacketLength : MAX_TPDU_PAYLOAD;
-		uint8_t hdr = TransportTx::GetHeader(fir, fin, seq);
+		uint8_t hdr = TransportHeader::ToByte(fir, fin, seq);
 		std::string data = this->GetData("", 0, len); //raw data with no header
 		oss << ((i == 0) ? "" : " ") << data; //cache the data in the string stream
 		arVec.push_back(ToHex(&hdr, 1, true) + " " + data);

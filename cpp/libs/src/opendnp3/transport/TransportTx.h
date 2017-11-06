@@ -46,11 +46,9 @@ public:
 
 	void Configure(const Message& message);
 
-	static uint8_t GetHeader(bool fir, bool fin, uint8_t sequence);
-
 	// -------  IBufferSegment ------------
 
-	virtual const Addresses& GetAddresses() const override 
+	virtual const Addresses& GetAddresses() const override
 	{
 		return this->message.addresses;
 	}

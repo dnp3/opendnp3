@@ -29,7 +29,7 @@ namespace opendnp3
 {
 
 class ITransportSegment
-{	
+{
 
 public:
 

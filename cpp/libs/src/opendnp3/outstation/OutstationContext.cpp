@@ -47,7 +47,7 @@ namespace opendnp3
 {
 
 OContext::OContext(
-	const Addresses& addresses,
+    const Addresses& addresses,
     const OutstationConfig& config,
     const DatabaseSizes& dbSizes,
     const openpal::Logger& logger,
@@ -126,7 +126,7 @@ bool OContext::OnTxReady()
 	return true;
 }
 
-bool OContext::OnReceive(const openpal::RSlice& fragment)
+bool OContext::OnReceive(const Message& message)
 {
 	if (!this->isOnline)
 	{
@@ -134,7 +134,7 @@ bool OContext::OnReceive(const openpal::RSlice& fragment)
 		return false;
 	}
 
-	this->ParseHeader(fragment);
+	this->ParseHeader(message.payload);
 	this->CheckForTaskStart();
 	return true;
 }
@@ -352,8 +352,8 @@ void OContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::
 	auto iin = this->HandleNonReadResponse(header, objects, writer);
 	response.SetIIN(iin | this->GetResponseIIN());
 	this->BeginResponseTx(
-		Message(this->addresses, response.ToRSlice()),
-		response.GetControl()
+	    Message(this->addresses, response.ToRSlice()),
+	    response.GetControl()
 	);
 }
 
@@ -370,8 +370,8 @@ OutstationState& OContext::RespondToReadRequest(const APDUHeader& header, const 
 	response.SetControl(result.second);
 	response.SetIIN(result.first | this->GetResponseIIN());
 	this->BeginResponseTx(
-		Message(this->addresses, response.ToRSlice()),
-		response.GetControl()
+	    Message(this->addresses, response.ToRSlice()),
+	    response.GetControl()
 	);
 
 	if (result.second.CON)
@@ -396,8 +396,8 @@ OutstationState& OContext::ContinueMultiFragResponse(const AppSeqNum& seq)
 	response.SetControl(control);
 	response.SetIIN(this->GetResponseIIN());
 	this->BeginResponseTx(
-		Message(this->addresses, response.ToRSlice()),
-		response.GetControl()		
+	    Message(this->addresses, response.ToRSlice()),
+	    response.GetControl()
 	);
 
 	if (control.CON)

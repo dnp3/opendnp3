@@ -56,7 +56,7 @@ public:
 	}
 
 	//these are the NVII delegates
-	virtual bool OnReceive(const openpal::RSlice& buffer) override;
+	virtual bool OnReceive(const Message& message) override;
 	virtual bool OnTxReady() override;
 	virtual bool OnLowerLayerUp() override;
 	virtual bool OnLowerLayerDown() override;

@@ -41,7 +41,7 @@ using namespace openpal;
 namespace opendnp3
 {
 MContext::MContext(
-	const Addresses& addresses,
+    const Addresses& addresses,
     const openpal::Logger& logger,
     const std::shared_ptr<openpal::IExecutor>& executor,
     const std::shared_ptr<ILowerLayer>& lower,
@@ -99,7 +99,7 @@ bool MContext::OnLowerLayerDown()
 	return true;
 }
 
-bool MContext::OnReceive(const openpal::RSlice& apdu)
+bool MContext::OnReceive(const Message& message)
 {
 	if (!this->isOnline)
 	{
@@ -108,11 +108,10 @@ bool MContext::OnReceive(const openpal::RSlice& apdu)
 	}
 
 	APDUResponseHeader header;
-	if (!APDUHeaderParser::ParseResponse(apdu, header, &this->logger))
+	if (!APDUHeaderParser::ParseResponse(message.payload, header, &this->logger))
 	{
 		return true;
 	}
-
 
 	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
 	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
@@ -125,7 +124,7 @@ bool MContext::OnReceive(const openpal::RSlice& apdu)
 	                 header.IIN.LSB,
 	                 header.IIN.MSB);
 
-	this->OnParsedHeader(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+	this->OnParsedHeader(message.payload, header, message.payload.Skip(APDU_RESPONSE_HEADER_SIZE));
 	return true;
 }
 
@@ -278,7 +277,7 @@ void MContext::Transmit(const RSlice& data)
 	assert(!this->isSending);
 	this->isSending = true;
 	this->lower->BeginTransmit(
-		Message(this->addresses, data)
+	    Message(this->addresses, data)
 	);
 }
 

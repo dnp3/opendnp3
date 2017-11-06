@@ -62,7 +62,7 @@ size_t OutstationTestObject::OnTxReady()
 size_t OutstationTestObject::SendToOutstation(const std::string& hex)
 {
 	HexSequence hs(hex);
-	context.OnReceive(hs.ToRSlice());
+	context.OnReceive(Message(Addresses(), hs.ToRSlice()));
 	return exe->RunMany();
 }
 

@@ -33,19 +33,20 @@ class MockLowerLayer : public ILowerLayer, public HasUpperLayer
 {
 public:
 
-	void SendUp(const openpal::RSlice& arBuffer);
-	void SendUp(const std::string&);
+	void SendUp(const openpal::RSlice& data, const Addresses& addresses = Addresses());
+	void SendUp(const std::string& hex, const Addresses& addresses = Addresses());
+
 	void SendComplete();
 	void ThisLayerUp();
 	void ThisLayerDown();
 
-	void EnableAutoSendCallback(bool aIsSuccess);
+	void EnableAutoSendCallback(bool isSuccess);
 	void DisableAutoSendCallback();
 
 	bool HasNoData() const;
 
 	size_t NumWrites() const;
-	openpal::RSlice PopWrite();
+	//openpal::RSlice PopWrite();
 	std::string PopWriteAsHex();
 
 	virtual bool BeginTransmit(const Message& buffer) override final;

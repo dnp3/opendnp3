@@ -18,59 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MockTransportLayer.h"
+#ifndef OPENDNP3_TRANSPORTHEADER_H
+#define OPENDNP3_TRANSPORTHEADER_H
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
-
-#include <openpal/util/ToHex.h>
-
-using namespace openpal;
-using namespace testlib;
+#include <cstdint>
 
 namespace opendnp3
 {
 
-MockTransportLayer::MockTransportLayer() : pLinkLayer(nullptr), isOnline(false)
-{}
-
-void MockTransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
+class TransportHeader
 {
-	this->pLinkLayer = &linkLayer;
-}
 
-bool MockTransportLayer::SendDown(ITransportSegment& segments)
-{
-	return pLinkLayer->Send(segments);
-}
+private:
 
-bool MockTransportLayer::OnReceive(const Message& message)
-{
-	receivedQueue.push_back(ToHex(message.payload));
-	return true;
-}
+	static const uint8_t FIN_MASK = 0x80;
+	static const uint8_t FIR_MASK = 0x40;
+	static const uint8_t SEQ_MASK = 0x3F;
 
-bool MockTransportLayer::OnTxReady()
-{
-	++(this->counters.numTxReady);
-	return true;
-}
+public:
+	static uint8_t ToByte(bool fir, bool fin, uint8_t seq);
 
-bool MockTransportLayer::OnLowerLayerUp()
-{
-	assert(!isOnline);
-	isOnline = true;
-	++counters.numLayerUp;
-	return true;
-}
+	TransportHeader() = delete;
+	TransportHeader(uint8_t byte);
 
-bool MockTransportLayer::OnLowerLayerDown()
-{
-	assert(isOnline);
-	isOnline = false;
-	++counters.numLayerDown;
-	return true;
-}
+	const bool fir;
+	const bool fin;
+	const uint8_t seq;
+};
+
 
 }
+
+#endif
 

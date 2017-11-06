@@ -281,13 +281,15 @@ bool IOHandler::SendToSession(const opendnp3::Route& route, const opendnp3::Link
 {
 	bool accepted = false;
 
-	for (auto& session : sessions) {
-		if (session.enabled) {
+	for (auto& session : sessions)
+	{
+		if (session.enabled)
+		{
 			accepted |= session.OnFrame(header, userdata);
 		}
-	}	
+	}
 
-	return accepted;	
+	return accepted;
 }
 
 bool IOHandler::IsRouteInUse(const Route& route) const

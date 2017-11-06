@@ -99,7 +99,7 @@ public:
 
 	void ResetRetry();
 	bool Retry();
-	void PushDataUp(const openpal::RSlice& data);
+	void PushDataUp(const Message& message);
 	void CompleteSendOperation();
 	void TryStartTransmission();
 	void OnKeepAliveTimeout();

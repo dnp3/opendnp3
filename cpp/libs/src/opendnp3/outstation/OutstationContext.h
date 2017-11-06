@@ -61,14 +61,14 @@ class OContext : public IUpperLayer
 public:
 
 	OContext(
-				const Addresses& addresses,
-				const OutstationConfig& config,
-	            const DatabaseSizes& dbSizes,
-	            const openpal::Logger& logger,
-	            const std::shared_ptr<openpal::IExecutor>& executor,
-	            const std::shared_ptr<ILowerLayer>& lower,
-	            const std::shared_ptr<ICommandHandler>& commandHandler,
-	            const std::shared_ptr<IOutstationApplication>& application
+	    const Addresses& addresses,
+	    const OutstationConfig& config,
+	    const DatabaseSizes& dbSizes,
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<openpal::IExecutor>& executor,
+	    const std::shared_ptr<ILowerLayer>& lower,
+	    const std::shared_ptr<ICommandHandler>& commandHandler,
+	    const std::shared_ptr<IOutstationApplication>& application
 	);
 
 	/// ----- Implement IUpperLayer ------
@@ -79,7 +79,7 @@ public:
 
 	virtual bool OnTxReady() override final;
 
-	virtual bool OnReceive(const openpal::RSlice& fragment) override final;
+	virtual bool OnReceive(const Message& message) override final;
 
 	/// --- Other public members ----
 

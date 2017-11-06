@@ -243,9 +243,9 @@ bool LinkContext::Retry()
 	}
 }
 
-void LinkContext::PushDataUp(const openpal::RSlice& data)
+void LinkContext::PushDataUp(const Message& message)
 {
-	upper->OnReceive(data);
+	upper->OnReceive(message);
 }
 
 void LinkContext::CompleteSendOperation()
@@ -354,7 +354,7 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 
 	if (header.dest != config.LocalAddr)
 	{
-		++statistics.numUnknownDestination;		
+		++statistics.numUnknownDestination;
 		return false;
 	}
 
@@ -392,10 +392,10 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		pSecState = &pSecState->OnRequestLinkStatus(*this);
 		return true;
 	case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
-		pSecState = &pSecState->OnConfirmedUserData(*this, header.fcb, userdata);
+		pSecState = &pSecState->OnConfirmedUserData(*this, header.fcb, Message(header.ToAddresses(), userdata));
 		return true;
 	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
-		this->PushDataUp(userdata);
+		this->PushDataUp(Message(header.ToAddresses(), userdata));
 		return true;
 	default:
 		return false;

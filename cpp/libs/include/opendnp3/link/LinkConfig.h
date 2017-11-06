@@ -66,7 +66,8 @@ struct LinkConfig
 		KeepAliveTimeout(openpal::TimeDuration::Minutes(1))
 	{}
 
-	inline Addresses GetAddresses() const {
+	inline Addresses GetAddresses() const
+	{
 		return Addresses(this->LocalAddr, this->RemoteAddr);
 	}
 

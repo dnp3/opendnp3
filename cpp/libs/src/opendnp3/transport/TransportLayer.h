@@ -37,7 +37,7 @@ namespace opendnp3
 /**
 	Implements the DNP3 transport layer
 */
-class TransportLayer : public IUpperLayer, public ILowerLayer
+class TransportLayer final : public IUpperLayer, public ILowerLayer
 {
 
 public:
@@ -46,14 +46,14 @@ public:
 
 	// ------ ILowerLayer ------
 
-	virtual bool BeginTransmit(const Message& message) override final;
+	virtual bool BeginTransmit(const Message& message) override;
 
 	// ------ IUpperLayer ------
 
-	virtual bool OnReceive(const openpal::RSlice&) override final;
+	virtual bool OnReceive(const Message& message) override;
 	virtual bool OnLowerLayerUp() override final;
-	virtual bool OnLowerLayerDown() override final;
-	virtual bool OnTxReady() override final;
+	virtual bool OnLowerLayerDown() override;
+	virtual bool OnTxReady() override;
 
 	void SetAppLayer(IUpperLayer& upperLayer);
 

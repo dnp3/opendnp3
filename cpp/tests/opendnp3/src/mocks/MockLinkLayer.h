@@ -56,13 +56,12 @@ public:
 		return ret;
 	}
 
-	bool SendUp(const std::string& hex)
+	bool SendUp(const std::string& hex, const Addresses& addresses = Addresses())
 	{
-		testlib::HexSequence hs(hex);
 		if (pUpperLayer)
 		{
-			auto buffer = hs.ToRSlice();
-			return pUpperLayer->OnReceive(buffer);
+			testlib::HexSequence hs(hex);
+			return pUpperLayer->OnReceive(Message(addresses, hs.ToRSlice()));
 		}
 		return false;
 	}

@@ -40,7 +40,7 @@ public:
 	virtual SecStateBase& OnRequestLinkStatus(LinkContext&) = 0;
 
 	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) = 0;
-	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const openpal::RSlice&) = 0;
+	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const Message& message) = 0;
 
 	virtual SecStateBase& OnTxReady(LinkContext& ctx);
 
@@ -66,7 +66,7 @@ public:
 	virtual SecStateBase& OnResetLinkStates(LinkContext&) override final;
 	virtual SecStateBase& OnRequestLinkStatus(LinkContext&) override final;
 	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) override final;
-	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const openpal::RSlice&) override final;
+	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const Message& message) override final;
 };
 
 
@@ -98,7 +98,7 @@ SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTestLinkStatus(LinkContext& ct
 }
 
 template <class NextState>
-SecStateBase& SLLS_TransmitWaitBase<NextState>::OnConfirmedUserData(LinkContext& ctx, bool fcb, const openpal::RSlice&)
+SecStateBase& SLLS_TransmitWaitBase<NextState>::OnConfirmedUserData(LinkContext& ctx, bool fcb, const Message& message)
 {
 	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
 	return *this;
@@ -113,7 +113,7 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);
 
-	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const openpal::RSlice&) override;
+	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const Message& message) override;
 	virtual SecStateBase& OnResetLinkStates(LinkContext&) override;
 	virtual SecStateBase& OnRequestLinkStatus(LinkContext&) override;
 	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) override;
@@ -127,7 +127,7 @@ class SLLS_Reset final : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_Reset);
 
-	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const openpal::RSlice&) override;
+	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const Message& message) override;
 	virtual SecStateBase& OnResetLinkStates(LinkContext&) override;
 	virtual SecStateBase& OnRequestLinkStatus(LinkContext&) override;
 	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) override;

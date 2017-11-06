@@ -40,9 +40,9 @@ namespace asiopal
 *
 */
 class Executor final :
-		public openpal::IExecutor,
-		public std::enable_shared_from_this<Executor>,
-		private openpal::Uncopyable
+	public openpal::IExecutor,
+	public std::enable_shared_from_this<Executor>,
+	private openpal::Uncopyable
 {
 
 public:

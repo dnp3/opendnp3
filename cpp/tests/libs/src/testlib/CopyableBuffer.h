@@ -30,14 +30,14 @@
 namespace testlib
 {
 
-/** 
+/**
 	Implements a dynamic buffer with a safe
 	copy constructor. This makes it easier to compose with
 	classes without requiring an explicit copy constructor
 */
 class CopyableBuffer
 {
-	
+
 public:
 	// Construct null buffer
 	CopyableBuffer();

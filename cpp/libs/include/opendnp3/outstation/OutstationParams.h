@@ -37,7 +37,7 @@ namespace opendnp3
 *	Static configuration parameters for an outstation session
 */
 struct OutstationParams
-{	
+{
 	/// Controls the index mode (defaults to contiguous)
 	IndexMode indexMode = IndexMode::Contiguous;
 

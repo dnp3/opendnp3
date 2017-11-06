@@ -18,59 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MockTransportLayer.h"
+#ifndef OPENDNP3_ADDRESSES_H
+#define OPENDNP3_ADDRESSES_H
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
-
-#include <openpal/util/ToHex.h>
-
-using namespace openpal;
-using namespace testlib;
+#include <cstdint>
 
 namespace opendnp3
 {
 
-MockTransportLayer::MockTransportLayer() : pLinkLayer(nullptr), isOnline(false)
-{}
-
-void MockTransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
+struct Addresses
 {
-	this->pLinkLayer = &linkLayer;
-}
+	Addresses() = default;
 
-bool MockTransportLayer::SendDown(ITransportSegment& segments)
-{
-	return pLinkLayer->Send(segments);
-}
+	Addresses(
+	    uint16_t source,
+	    uint16_t destination
+	) :
+		source(source),
+		destination(destination)
+	{}
 
-bool MockTransportLayer::OnReceive(const Message& message)
-{
-	receivedQueue.push_back(ToHex(message.payload));
-	return true;
-}
+	bool operator==(const Addresses& other) const
+	{
+		return (this->source == other.source) && (this->destination == other.destination);
+	}
 
-bool MockTransportLayer::OnTxReady()
-{
-	++(this->counters.numTxReady);
-	return true;
-}
+	bool operator!=(const Addresses& other) const
+	{
+		return !((*this) == other);
+	}
 
-bool MockTransportLayer::OnLowerLayerUp()
-{
-	assert(!isOnline);
-	isOnline = true;
-	++counters.numLayerUp;
-	return true;
-}
-
-bool MockTransportLayer::OnLowerLayerDown()
-{
-	assert(isOnline);
-	isOnline = false;
-	++counters.numLayerDown;
-	return true;
-}
+	uint16_t source = 0;
+	uint16_t destination = 0;
+};
 
 }
+
+#endif
 

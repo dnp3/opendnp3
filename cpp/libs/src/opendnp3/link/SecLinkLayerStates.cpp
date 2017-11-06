@@ -52,7 +52,7 @@ SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkContext& ctx, bool aFcb)
 	return *this;
 }
 
-SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkContext& ctx, bool aFcb, const openpal::RSlice&)
+SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkContext& ctx, bool aFcb, const Message& message)
 {
 	++ctx.statistics.numUnexpectedFrame;
 	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored: secondary not reset");
@@ -95,14 +95,14 @@ SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkContext& ctx, bool fcb)
 	}
 }
 
-SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkContext& ctx, bool fcb, const openpal::RSlice& data)
+SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkContext& ctx, bool fcb, const Message& message)
 {
 	ctx.QueueAck();
 
 	if (ctx.nextReadFCB == fcb)
 	{
 		ctx.ToggleReadFCB();
-		ctx.PushDataUp(data);
+		ctx.PushDataUp(message);
 	}
 	else
 	{

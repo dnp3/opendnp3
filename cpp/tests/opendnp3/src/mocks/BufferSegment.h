@@ -32,7 +32,7 @@ namespace opendnp3
 class BufferSegment final : public ITransportSegment
 {
 public:
-	
+
 	BufferSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses);
 
 	virtual const Addresses& GetAddresses() const

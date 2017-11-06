@@ -19,7 +19,9 @@
  * to you under the terms of the License.
  */
 #include "TransportRx.h"
+
 #include "TransportConstants.h"
+#include "TransportHeader.h"
 #include "opendnp3/LogLevels.h"
 
 #include <openpal/logging/LogMacros.h>
@@ -43,7 +45,6 @@ TransportRx::TransportRx(const Logger& logger, uint32_t maxRxFragSize) :
 
 void TransportRx::Reset()
 {
-	sequence.Reset();
 	this->ClearRxBuffer();
 }
 
@@ -57,89 +58,92 @@ openpal::WSlice TransportRx::GetAvailable()
 	return rxBuffer.GetWSlice().Skip(numBytesRead);
 }
 
-RSlice TransportRx::ProcessReceive(const RSlice& input)
+Message TransportRx::ProcessReceive(const Message& segment)
 {
 	++statistics.numTransportRx;
 
-	if (input.IsEmpty())
+	if (segment.payload.IsEmpty())
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Received tpdu with no header");
 		++statistics.numTransportErrorRx;
-		return RSlice::Empty();
+		return Message();
 	}
 
-	const uint8_t HDR = input[0];
-	const bool FIR = (HDR & TL_HDR_FIR) != 0;
-	const bool FIN = (HDR & TL_HDR_FIN) != 0;
-	const int SEQ = HDR & TL_HDR_SEQ;
+	const TransportHeader header(segment.payload[0]);
 
-	auto payload = input.Skip(1);
+	const auto payload = segment.payload.Skip(1);
 
-	FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", FIR, FIN, SEQ, payload.Size());
+	FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", header.fir, header.fin, header.seq, payload.Size());
 
-	if (!this->ValidateHeader(FIR, SEQ))
+	if (header.fir && this->numBytesRead > 0)
 	{
-		++statistics.numTransportErrorRx;
-		return RSlice::Empty();
+		++statistics.numTransportDiscard;
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "FIR received mid-fragment, discarding previous bytes");
+		this->numBytesRead = 0;
+		// continue processing
+	}
+
+	// there are special checks we must perform if it isn't the first packet
+	if (!header.fir)
+	{
+		if (this->numBytesRead == 0)
+		{
+			++statistics.numTransportIgnore;
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "non-FIR packet with 0 prior bytes");
+			return Message();	// drop the data
+		}
+
+		if (header.seq != this->expectedSeq)
+		{
+			++statistics.numTransportIgnore;
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Received segment w/ seq: %u, expected: %u", header.seq, this->expectedSeq.Get());
+			return Message();	// drop the data
+		}
+
+		if (segment.addresses != this->lastAddresses)
+		{
+			++statistics.numTransportIgnore;
+			FORMAT_LOG_BLOCK(
+			    logger,
+			    flags::WARN,
+			    "Bad addressing: last { src: %u, dest: %u } received { src: %u, dest: %u}",
+			    this->lastAddresses.source,
+			    this->lastAddresses.destination,
+			    segment.addresses.source,
+			    segment.addresses.destination
+			);
+			return Message();	// drop the data
+		}
 	}
 
 	auto available = this->GetAvailable();
 
 	if (payload.Size() > available.Size())
 	{
+		// transport buffer overflow
 		++statistics.numTransportBufferOverflow;
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Exceeded the buffer size before a complete fragment was read");
-		this->ClearRxBuffer();
-		return RSlice::Empty();
+		this->numBytesRead = 0;
+		return Message();
 	}
 
 	payload.CopyTo(available);
 
 	this->numBytesRead += payload.Size();
-	this->sequence.Increment();
+	this->lastAddresses = segment.addresses;
+	this->expectedSeq = header.seq;
+	this->expectedSeq.Increment();
 
-	if(FIN)
+	if(header.fin)
 	{
-		RSlice ret = rxBuffer.ToRSlice().Take(numBytesRead);
-		this->ClearRxBuffer();
-		return ret;
+		const auto ret = rxBuffer.ToRSlice().Take(numBytesRead);
+		this->numBytesRead = 0;
+		return Message(segment.addresses, ret);
 	}
 	else
 	{
-		return RSlice::Empty();
+		return Message();
 	}
-}
-
-bool TransportRx::ValidateHeader(bool fir, uint8_t sequence_)
-{
-	if(fir)
-	{
-		sequence = sequence_; //always accept the sequence on FIR
-		if (numBytesRead > 0)
-		{
-			++statistics.numTransportDiscard;
-			// drop existing received bytes from segment
-			SIMPLE_LOG_BLOCK(logger, flags::WARN, "FIR received mid-fragment, discarding previous bytes");
-			numBytesRead = 0;
-		}
-		return true;
-	}
-
-	if(numBytesRead == 0)   //non-first packet with 0 prior bytes
-	{
-		++statistics.numTransportIgnore;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "non-FIR packet with 0 prior bytes");
-		return false;
-	}
-
-	if(sequence_ != sequence)
-	{
-		++statistics.numTransportIgnore;
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring bad sequence, got %u, expected %u", sequence_, sequence.Get());
-		return false;
-	}
-
-	return true;
 }
 
 }

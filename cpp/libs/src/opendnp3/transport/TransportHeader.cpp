@@ -18,31 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ADDRESSES_H
-#define OPENDNP3_ADDRESSES_H
 
-#include <cstdint>
+#include "TransportHeader.h"
 
 namespace opendnp3
 {
 
-struct Addresses
+TransportHeader::TransportHeader(uint8_t byte) :
+	fir((byte & FIR_MASK) != 0),
+	fin((byte & FIN_MASK) != 0),
+	seq((byte & SEQ_MASK))
+{}
+
+uint8_t TransportHeader::ToByte(bool fir, bool fin, uint8_t seq)
 {
-	Addresses() = default;
+	uint8_t hdr = 0;
 
-	Addresses(
-	    uint16_t source,
-	    uint16_t destination
-	) :
-		source(source),
-		destination(destination)
-	{}
+	if (fir)
+	{
+		hdr |= FIR_MASK;
+	}
 
-	uint16_t source = 0;
-	uint16_t destination = 0;
-};
+	if (fin)
+	{
+		hdr |= FIN_MASK;
+	}
+
+	// Only the lower 6 bits of the sequence number
+	hdr |= (SEQ_MASK & seq);
+
+	return hdr;
+}
 
 }
 
-#endif
+
 

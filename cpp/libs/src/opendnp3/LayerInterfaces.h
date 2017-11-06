@@ -58,7 +58,7 @@ public:
 
 	// Called by the lower layer when data arrives
 	// return false if the layer is down
-	virtual bool OnReceive(const openpal::RSlice&) = 0;
+	virtual bool OnReceive(const Message& message) = 0;
 
 	// Called by the lower layer when it is ready to transmit more data
 	virtual bool OnTxReady() = 0;

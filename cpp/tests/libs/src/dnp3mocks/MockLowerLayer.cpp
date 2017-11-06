@@ -41,12 +41,14 @@ size_t MockLowerLayer::NumWrites() const
 	return sendQueue.size();
 }
 
+/*
 openpal::RSlice MockLowerLayer::PopWrite()
 {
 	auto ret = sendQueue.front();
 	sendQueue.pop();
 	return ret.payload;
 }
+*/
 
 std::string MockLowerLayer::PopWriteAsHex()
 {
@@ -68,18 +70,18 @@ bool MockLowerLayer::BeginTransmit(const Message& message)
 	return true;
 }
 
-void MockLowerLayer::SendUp(const openpal::RSlice& arBuffer)
+void MockLowerLayer::SendUp(const openpal::RSlice& data, const Addresses& addresses)
 {
 	if(pUpperLayer)
 	{
-		pUpperLayer->OnReceive(arBuffer);
+		pUpperLayer->OnReceive(Message(addresses, data));
 	}
 }
 
-void MockLowerLayer::SendUp(const std::string& arHexData)
+void MockLowerLayer::SendUp(const std::string& arHexData, const Addresses& addresses)
 {
 	HexSequence hs(arHexData);
-	this->SendUp(hs.ToRSlice());
+	this->SendUp(hs.ToRSlice(), addresses);
 }
 
 void MockLowerLayer::SendComplete()

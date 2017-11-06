@@ -80,7 +80,7 @@ TEST_CASE(SUITE("StateReady"))
 	REQUIRE_FALSE(test.transport.OnTxReady());
 }
 
-TEST_CASE(SUITE("AllowsHeaderOnlyFinalFrame"))
+TEST_CASE(SUITE("allows header-only final frame"))
 {
 	TransportTestObject test(true);
 

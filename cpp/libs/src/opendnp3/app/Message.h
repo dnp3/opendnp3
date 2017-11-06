@@ -32,8 +32,8 @@ struct Message
 	Message() = default;
 
 	Message(
-		const Addresses& addresses,
-		const openpal::RSlice& payload
+	    const Addresses& addresses,
+	    const openpal::RSlice& payload
 	) :
 		addresses(addresses),
 		payload(payload)
