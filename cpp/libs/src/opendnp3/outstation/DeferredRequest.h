@@ -21,9 +21,7 @@
 #ifndef OPENDNP3_DEFERREDREQUEST_H
 #define OPENDNP3_DEFERREDREQUEST_H
 
-#include "opendnp3/app/APDUHeader.h"
-
-#include "opendnp3/link/Addresses.h"
+#include "ParsedRequest.h"
 
 #include <openpal/container/Buffer.h>
 #include <openpal/util/Uncopyable.h>
@@ -47,7 +45,7 @@ public:
 
 	FunctionCode GetFunction() const;
 
-	void Set(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
+	void Set(const ParsedRequest& request);
 
 	template <class Handler>
 	bool Process(const Handler& handler);
@@ -69,7 +67,13 @@ bool DeferredRequest::Process(const Handler& handler)
 {
 	if (isSet)
 	{
-		bool processed = handler(this->addresses, this->header, this->objects);
+		bool processed = handler(
+		                     ParsedRequest(
+		                         this->addresses,
+		                         this->header,
+		                         this->objects
+		                     )
+		                 );
 		isSet = !processed;
 		return processed;
 	}

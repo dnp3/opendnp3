@@ -39,6 +39,7 @@
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 #include "opendnp3/outstation/OutstationStates.h"
+#include "opendnp3/outstation/ParsedRequest.h"
 
 #include "opendnp3/outstation/event/EventBuffer.h"
 
@@ -95,39 +96,39 @@ private:
 
 	/// ---- Helper functions that operate on the current state, and may return a new state ----
 
-	OutstationState& ContinueMultiFragResponse(const AppSeqNum& seq);
+	OutstationState& ContinueMultiFragResponse(const Addresses& addresses, const AppSeqNum& seq);
 
-	OutstationState& RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	OutstationState& RespondToReadRequest(const ParsedRequest& request);
 
-	OutstationState& ProcessNewRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
+	OutstationState& ProcessNewRequest(const ParsedRequest& request);
 
-	OutstationState& OnReceiveSolRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
+	OutstationState& OnReceiveSolRequest(const ParsedRequest& request);
 
-	void RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects);
+	void RespondToNonReadRequest(const ParsedRequest& request);
 
 	// ---- Processing functions --------
 
 	bool ProcessMessage(const Message& message);
 
-	bool ProcessObjects(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
+	bool ProcessObjects(const ParsedRequest& request);
 
-	bool ProcessRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
+	bool ProcessRequest(const ParsedRequest& request);
 
-	bool ProcessRequestNoAck(const APDUHeader& header, const openpal::RSlice& objects);
+	bool ProcessRequestNoAck(const ParsedRequest& request);
 
-	bool ProcessConfirm(const APDUHeader& header);
+	bool ProcessConfirm(const ParsedRequest& request);
 
 	// ---- common helper methods ----
 
-	void BeginResponseTx(const Message& message, const AppControlField& control);
+	void BeginResponseTx(uint16_t destination, const openpal::RSlice& data, const AppControlField& control);
 
-	void BeginUnsolTx(const AppControlField& control, const openpal::RSlice& response);
+	void BeginUnsolTx(const AppControlField& control, const openpal::RSlice& unsol);
 
-	void BeginTx(const Message& message);
+	void BeginTx(uint16_t destination, const openpal::RSlice& message);
 
 	void CheckForDeferredRequest();
 
-	bool ProcessDeferredRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects);
+	bool ProcessDeferredRequest(const ParsedRequest& request);
 
 	void RestartConfirmTimer();
 

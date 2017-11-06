@@ -18,40 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "DeferredRequest.h"
+
+#ifndef OPENDNP3_PARSEDEREQUEST_H
+#define OPENDNP3_PARSEDEREQUEST_H
+
+#include "opendnp3/link/Addresses.h"
+#include "opendnp3/app/APDUHeader.h"
+
+#include <openpal/container/RSlice.h>
 
 namespace opendnp3
 {
 
-DeferredRequest::DeferredRequest(uint32_t maxAPDUSize) : isSet(false), buffer(maxAPDUSize)
-{}
-
-void DeferredRequest::Reset()
+struct ParsedRequest
 {
-	isSet = false;
-}
+	ParsedRequest(
+	    const Addresses& addresses,
+	    const APDUHeader& header,
+	    const openpal::RSlice& objects
+	) :
+		addresses(addresses),
+		header(header),
+		objects(objects)
+	{}
 
-bool DeferredRequest::IsSet() const
-{
-	return isSet;
-}
+	ParsedRequest() = default;
 
-FunctionCode DeferredRequest::GetFunction() const
-{
-	return header.function;
-}
-
-void DeferredRequest::Set(const ParsedRequest& request)
-{
-	this->isSet = true;
-
-	this->addresses = request.addresses;
-	this->header = request.header;
-
-	auto dest = buffer.GetWSlice();
-	this->objects = request.objects.CopyTo(dest);
-}
+	const Addresses addresses;
+	const APDUHeader header;
+	const openpal::RSlice objects;
+};
 
 }
 
+#endif
 

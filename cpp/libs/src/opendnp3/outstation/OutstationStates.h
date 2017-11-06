@@ -21,12 +21,9 @@
 #ifndef OPENDNP3_OUTSTATIONSTATES_H
 #define OPENDNP3_OUTSTATIONSTATES_H
 
-#include "opendnp3/app/APDUHeader.h"
-
-#include "opendnp3/link/Addresses.h"
+#include "opendnp3/outstation/ParsedRequest.h"
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/container/RSlice.h>
 
 namespace opendnp3
 {
@@ -47,17 +44,17 @@ public:
 
 	virtual const char* Name() = 0;
 
-	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) = 0;
+	virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) = 0;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) = 0;
 
-	virtual OutstationState& OnNewReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) = 0;
+	virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) = 0;
 
-	virtual OutstationState& OnNewNonReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) = 0;
+	virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) = 0;
 
-	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) = 0;
+	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) = 0;
 
-	virtual OutstationState& OnRepeatReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) = 0;
+	virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) = 0;
 
 
 
@@ -83,17 +80,17 @@ public:
 		return instance;
 	}
 
-	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
+	virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) override;
 
-	virtual OutstationState& OnNewReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnNewNonReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnRepeatReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
 
 private:
 
@@ -122,17 +119,17 @@ public:
 		return "SolicitedConfirmWait";
 	}
 
-	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
+	virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) override;
 
-	virtual OutstationState& OnNewReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnNewNonReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnRepeatReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
 
 private:
 
@@ -159,17 +156,17 @@ public:
 		return "UnsolicitedConfirmWait";
 	}
 
-	virtual OutstationState& OnConfirm(OContext&, const APDUHeader& header) override;
+	virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
 
 	virtual OutstationState& OnConfirmTimeout(OContext&) override;
 
-	virtual OutstationState& OnNewReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnNewNonReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnRepeatReadRequest(OContext&, const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects) override;
+	virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
 
 private:
 
