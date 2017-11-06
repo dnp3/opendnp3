@@ -450,6 +450,16 @@ IINField OContext::GetDynamicIIN()
 
 bool OContext::ProcessMessage(const Message& message)
 {
+	if(message.addresses.destination != this->addresses.source)
+	{
+		return false;
+	}
+
+	if ((message.addresses.source != this->addresses.destination) && !this->params.respondToAnyMaster)
+	{
+		return false;
+	}
+
 	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, message.payload, 18, 18);
 
 	const auto result = APDUHeaderParser::ParseRequest(message.payload, &this->logger);
