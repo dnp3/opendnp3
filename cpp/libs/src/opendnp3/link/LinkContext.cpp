@@ -355,12 +355,14 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 	if (header.dest != config.LocalAddr)
 	{
 		++statistics.numUnknownDestination;
+		this->listener->OnUnknownDestinationAddress(header.dest);
 		return false;
 	}
 
 	if (header.src != config.RemoteAddr && !config.respondToAnySource)
 	{
 		++statistics.numUnknownSource;
+		this->listener->OnUnknownSourceAddress(header.src);
 		return false;
 	}
 
