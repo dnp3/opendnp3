@@ -383,6 +383,7 @@ namespace Automatak
 				params.unsolClassMask = ConvertClassField(config->unsolClassMask);
 				params.unsolConfirmTimeout = ConvertTimespan(config->unsolicitedConfirmTimeout);
 				params.unsolRetryTimeout = ConvertTimespan(config->unsolicitedRetryPeriod);
+				params.respondToAnyMaster = config->respondToAnyMaster;
 				
 				return params;
 			}
