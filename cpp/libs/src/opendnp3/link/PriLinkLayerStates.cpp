@@ -115,7 +115,7 @@ PriStateBase& PLLS_Idle::TrySendConfirmed(LinkContext& ctx, ITransportSegment& s
 	else
 	{
 		ctx.ResetRetry();
-		ctx.QueueResetLinks();
+		ctx.QueueResetLinks(segments.GetAddresses().destination);
 		return PLLS_LinkResetTransmitWait::Instance();
 	}
 }
@@ -123,7 +123,7 @@ PriStateBase& PLLS_Idle::TrySendConfirmed(LinkContext& ctx, ITransportSegment& s
 PriStateBase& PLLS_Idle::TrySendRequestLinkStatus(LinkContext& ctx)
 {
 	ctx.keepAliveTimeout = false;
-	ctx.QueueRequestLinkStatus();
+	ctx.QueueRequestLinkStatus(ctx.config.RemoteAddr);
 	ctx.listener->OnKeepAliveInitiated();
 	return PLLS_RequestLinkStatusTransmitWait::Instance();
 }
@@ -212,7 +212,7 @@ PriStateBase& PLLS_ResetLinkWait::OnTimeout(LinkContext& ctx)
 	if(ctx.Retry())
 	{
 		FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "Link reset timeout, retrying %i remaining", ctx.numRetryRemaining);
-		ctx.QueueResetLinks();
+		ctx.QueueResetLinks(ctx.config.RemoteAddr);
 		return PLLS_LinkResetTransmitWait::Instance();
 	}
 	else
@@ -266,7 +266,7 @@ PriStateBase& PLLS_ConfDataWait::OnNack(LinkContext& ctx, bool rxBuffFull)
 	{
 		ctx.ResetRetry();
 		ctx.CancelTimer();
-		ctx.QueueResetLinks();
+		ctx.QueueResetLinks(ctx.pSegments->GetAddresses().destination);
 		return PLLS_LinkResetTransmitWait::Instance();
 	}
 

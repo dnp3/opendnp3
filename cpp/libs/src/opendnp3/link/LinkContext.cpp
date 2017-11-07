@@ -193,34 +193,34 @@ void LinkContext::QueueTransmit(const RSlice& buffer, bool primary)
 	}
 }
 
-void LinkContext::QueueAck()
+void LinkContext::QueueAck(uint16_t destination)
 {
 	auto dest = secTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatAck(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
+	auto buffer = LinkFrame::FormatAck(dest, config.IsMaster, false, destination, this->config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
 }
 
-void LinkContext::QueueLinkStatus()
+void LinkContext::QueueLinkStatus(uint16_t destination)
 {
 	auto dest = secTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatLinkStatus(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
+	auto buffer = LinkFrame::FormatLinkStatus(dest, config.IsMaster, false, destination, this->config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
 }
 
-void LinkContext::QueueResetLinks()
+void LinkContext::QueueResetLinks(uint16_t destination)
 {
 	auto dest = priTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatResetLinkStates(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+	auto buffer = LinkFrame::FormatResetLinkStates(dest, config.IsMaster, destination, this->config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);
 }
 
-void LinkContext::QueueRequestLinkStatus()
+void LinkContext::QueueRequestLinkStatus(uint16_t destination)
 {
 	auto dest = priTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatRequestLinkStatus(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+	auto buffer = LinkFrame::FormatRequestLinkStatus(dest, config.IsMaster, destination, this->config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);
 }
@@ -383,16 +383,16 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		pPriState = &pPriState->OnNotSupported(*this, header.fcvdfc);
 		return true;
 	case(LinkFunction::PRI_TEST_LINK_STATES) :
-		pSecState = &pSecState->OnTestLinkStatus(*this, header.fcb);
+		pSecState = &pSecState->OnTestLinkStatus(*this, header.src, header.fcb);
 		return true;
 	case(LinkFunction::PRI_RESET_LINK_STATES) :
-		pSecState = &pSecState->OnResetLinkStates(*this);
+		pSecState = &pSecState->OnResetLinkStates(*this, header.src);
 		return true;
 	case(LinkFunction::PRI_REQUEST_LINK_STATUS) :
-		pSecState = &pSecState->OnRequestLinkStatus(*this);
+		pSecState = &pSecState->OnRequestLinkStatus(*this, header.src);
 		return true;
 	case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
-		pSecState = &pSecState->OnConfirmedUserData(*this, header.fcb, Message(header.ToAddresses(), userdata));
+		pSecState = &pSecState->OnConfirmedUserData(*this, header.src, header.fcb, Message(header.ToAddresses(), userdata));
 		return true;
 	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
 		this->PushDataUp(Message(header.ToAddresses(), userdata));

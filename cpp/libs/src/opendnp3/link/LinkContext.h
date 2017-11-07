@@ -95,11 +95,12 @@ public:
 	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const openpal::RSlice& tpdu);
 	openpal::RSlice FormatPrimaryBufferWithConfirmed(const Addresses& addr, const openpal::RSlice& tpdu, bool FCB);
 
-	/// --- Helpers for queueing frames ---
-	void QueueAck();
-	void QueueLinkStatus();
-	void QueueResetLinks();
-	void QueueRequestLinkStatus();
+	// --- Helpers for queueing frames ---
+	void QueueAck(uint16_t destination);
+	void QueueLinkStatus(uint16_t destination);
+	void QueueResetLinks(uint16_t destination);
+	void QueueRequestLinkStatus(uint16_t destination);
+
 	void QueueTransmit(const openpal::RSlice& buffer, bool primary);
 
 	// --- public members ----

@@ -36,11 +36,11 @@ public:
 
 	// Incoming messages to secondary station
 
-	virtual SecStateBase& OnResetLinkStates(LinkContext&) = 0;
-	virtual SecStateBase& OnRequestLinkStatus(LinkContext&) = 0;
+	virtual SecStateBase& OnResetLinkStates(LinkContext&, uint16_t source) = 0;
+	virtual SecStateBase& OnRequestLinkStatus(LinkContext&, uint16_t source) = 0;
 
-	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) = 0;
-	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const Message& message) = 0;
+	virtual SecStateBase& OnTestLinkStatus(LinkContext&, uint16_t source, bool fcb) = 0;
+	virtual SecStateBase& OnConfirmedUserData(LinkContext&, uint16_t source, bool fcb, const Message& message) = 0;
 
 	virtual SecStateBase& OnTxReady(LinkContext& ctx);
 
@@ -63,10 +63,10 @@ protected:
 public:
 
 	virtual SecStateBase& OnTxReady(LinkContext& ctx) override final;
-	virtual SecStateBase& OnResetLinkStates(LinkContext&) override final;
-	virtual SecStateBase& OnRequestLinkStatus(LinkContext&) override final;
-	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) override final;
-	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const Message& message) override final;
+	virtual SecStateBase& OnResetLinkStates(LinkContext&, uint16_t source) override final;
+	virtual SecStateBase& OnRequestLinkStatus(LinkContext&, uint16_t source) override final;
+	virtual SecStateBase& OnTestLinkStatus(LinkContext&, uint16_t source, bool fcb) override final;
+	virtual SecStateBase& OnConfirmedUserData(LinkContext&, uint16_t source, bool fcb, const Message& message) override final;
 };
 
 
@@ -77,28 +77,28 @@ SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTxReady(LinkContext& ctx)
 }
 
 template <class NextState>
-SecStateBase& SLLS_TransmitWaitBase<NextState>::OnResetLinkStates(LinkContext& ctx)
+SecStateBase& SLLS_TransmitWaitBase<NextState>::OnResetLinkStates(LinkContext& ctx, uint16_t source)
 {
 	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
 	return *this;
 }
 
 template <class NextState>
-SecStateBase& SLLS_TransmitWaitBase<NextState>::OnRequestLinkStatus(LinkContext& ctx)
+SecStateBase& SLLS_TransmitWaitBase<NextState>::OnRequestLinkStatus(LinkContext& ctx, uint16_t source)
 {
 	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
 	return *this;
 }
 
 template <class NextState>
-SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTestLinkStatus(LinkContext& ctx, bool fcb)
+SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTestLinkStatus(LinkContext& ctx, uint16_t source, bool fcb)
 {
 	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
 	return *this;
 }
 
 template <class NextState>
-SecStateBase& SLLS_TransmitWaitBase<NextState>::OnConfirmedUserData(LinkContext& ctx, bool fcb, const Message& message)
+SecStateBase& SLLS_TransmitWaitBase<NextState>::OnConfirmedUserData(LinkContext& ctx, uint16_t source, bool fcb, const Message& message)
 {
 	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
 	return *this;
@@ -113,10 +113,10 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);
 
-	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const Message& message) override;
-	virtual SecStateBase& OnResetLinkStates(LinkContext&) override;
-	virtual SecStateBase& OnRequestLinkStatus(LinkContext&) override;
-	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) override;
+	virtual SecStateBase& OnConfirmedUserData(LinkContext&, uint16_t source, bool fcb, const Message& message) override;
+	virtual SecStateBase& OnResetLinkStates(LinkContext&, uint16_t source) override;
+	virtual SecStateBase& OnRequestLinkStatus(LinkContext&, uint16_t source) override;
+	virtual SecStateBase& OnTestLinkStatus(LinkContext&, uint16_t source, bool fcb) override;
 
 };
 
@@ -127,10 +127,10 @@ class SLLS_Reset final : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_Reset);
 
-	virtual SecStateBase& OnConfirmedUserData(LinkContext&, bool fcb, const Message& message) override;
-	virtual SecStateBase& OnResetLinkStates(LinkContext&) override;
-	virtual SecStateBase& OnRequestLinkStatus(LinkContext&) override;
-	virtual SecStateBase& OnTestLinkStatus(LinkContext&, bool fcb) override;
+	virtual SecStateBase& OnConfirmedUserData(LinkContext&, uint16_t source, bool fcb, const Message& message) override;
+	virtual SecStateBase& OnResetLinkStates(LinkContext&, uint16_t source) override;
+	virtual SecStateBase& OnRequestLinkStatus(LinkContext&, uint16_t source) override;
+	virtual SecStateBase& OnTestLinkStatus(LinkContext&, uint16_t source, bool fcb) override;
 };
 
 
