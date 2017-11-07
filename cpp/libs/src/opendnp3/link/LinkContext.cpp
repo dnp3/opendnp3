@@ -361,7 +361,6 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 	if (header.src != config.RemoteAddr && !config.respondToAnySource)
 	{
 		++statistics.numUnknownSource;
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Frame from unknown source: %u", header.src);
 		return false;
 	}
 
@@ -372,34 +371,36 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 	{
 	case(LinkFunction::SEC_ACK) :
 		pPriState = &pPriState->OnAck(*this, header.fcvdfc);
-		return true;
+		break;
 	case(LinkFunction::SEC_NACK) :
 		pPriState = &pPriState->OnNack(*this, header.fcvdfc);
-		return true;
+		break;
 	case(LinkFunction::SEC_LINK_STATUS) :
 		pPriState = &pPriState->OnLinkStatus(*this, header.fcvdfc);
-		return true;
+		break;
 	case(LinkFunction::SEC_NOT_SUPPORTED) :
 		pPriState = &pPriState->OnNotSupported(*this, header.fcvdfc);
-		return true;
+		break;
 	case(LinkFunction::PRI_TEST_LINK_STATES) :
 		pSecState = &pSecState->OnTestLinkStatus(*this, header.src, header.fcb);
-		return true;
+		break;
 	case(LinkFunction::PRI_RESET_LINK_STATES) :
 		pSecState = &pSecState->OnResetLinkStates(*this, header.src);
-		return true;
+		break;
 	case(LinkFunction::PRI_REQUEST_LINK_STATUS) :
 		pSecState = &pSecState->OnRequestLinkStatus(*this, header.src);
-		return true;
+		break;
 	case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
 		pSecState = &pSecState->OnConfirmedUserData(*this, header.src, header.fcb, Message(header.ToAddresses(), userdata));
-		return true;
+		break;
 	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
 		this->PushDataUp(Message(header.ToAddresses(), userdata));
-		return true;
+		break;
 	default:
-		return false;
+		break;
 	}
+
+	return true;
 }
 
 bool LinkContext::TryPendingTx(openpal::Settable<RSlice>& pending, bool primary)
