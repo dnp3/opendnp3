@@ -18,24 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "TransportStack.h"
+#ifndef OPENDNP3_LINKLAYERCONFIG_H
+#define OPENDNP3_LINKLAYERCONFIG_H
 
-using namespace openpal;
+#include "opendnp3/link/LinkConfig.h"
 
 namespace opendnp3
 {
 
-TransportStack::TransportStack(
-    const openpal::Logger& logger,
-    const std::shared_ptr<openpal::IExecutor>& executor,
-    const std::shared_ptr<opendnp3::ILinkListener>& listener,
-    uint32_t maxRxFragSize,
-    const LinkLayerConfig& config
-) :
-	transport(std::make_shared<TransportLayer>(logger, maxRxFragSize)),
-	link(std::make_shared<LinkLayer>(logger, executor, transport, listener, config))
+/**
+	Includes additional parameters that should not be externally configurable
+*/
+struct LinkLayerConfig : public LinkConfig
 {
-	transport->SetLinkLayer(*link);
-}
+	LinkLayerConfig(
+	    const LinkConfig& config,
+	    bool respondToAnySource
+	) :
+		LinkConfig(config),
+		respondToAnySource(respondToAnySource)
+	{}
+
+	/**
+	* If true, the the link-layer will respond to any source address
+	* user data frames will be passed up to transport reassembly for these frames
+	*/
+	bool respondToAnySource;
+};
 
 }
+
+#endif
+

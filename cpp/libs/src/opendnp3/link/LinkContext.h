@@ -31,7 +31,7 @@
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/link/ILinkSession.h"
 #include "opendnp3/link/LinkLayerConstants.h"
-#include "opendnp3/link/LinkConfig.h"
+#include "opendnp3/link/LinkLayerConfig.h"
 #include "opendnp3/link/ILinkListener.h"
 #include "opendnp3/link/ILinkTx.h"
 #include "opendnp3/StackStatistics.h"
@@ -56,7 +56,14 @@ class LinkContext
 
 public:
 
-	LinkContext(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>&, const std::shared_ptr<IUpperLayer>&, const std::shared_ptr<opendnp3::ILinkListener>&, ILinkSession& session, const LinkConfig&);
+	LinkContext(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<openpal::IExecutor>&,
+	    const std::shared_ptr<IUpperLayer>&,
+	    const std::shared_ptr<opendnp3::ILinkListener>&,
+	    ILinkSession& session,
+	    const LinkLayerConfig&
+	);
 
 
 	// ---- helpers for dealing with the FCB bits ----
@@ -120,7 +127,7 @@ public:
 	openpal::Settable<openpal::RSlice> pendingSecTx;
 
 	openpal::Logger logger;
-	const LinkConfig config;
+	const LinkLayerConfig config;
 	ITransportSegment* pSegments;
 	LinkTransmitMode txMode;
 	uint32_t numRetryRemaining;

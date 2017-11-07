@@ -41,9 +41,6 @@ struct OutstationParams
 	/// Controls the index mode (defaults to contiguous)
 	IndexMode indexMode = IndexMode::Contiguous;
 
-	/// If true, the outstation processes responds to any request/confirmation as if it came from the expected master address
-	bool respondToAnyMaster = false;
-
 	/// The maximum number of controls the outstation will attempt to process from a single APDU
 	uint8_t maxControlsPerRequest = 16;
 
@@ -73,6 +70,9 @@ struct OutstationParams
 
 	/// Class mask for unsolicted, default to 0 as unsolicited has to be enabled
 	ClassField unsolClassMask = ClassField::None();
+
+	/// If true, the outstation processes responds to any request/confirmation as if it came from the expected master address
+	bool respondToAnyMaster = false;
 };
 
 }

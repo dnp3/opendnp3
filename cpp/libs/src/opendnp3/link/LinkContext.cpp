@@ -38,7 +38,7 @@ LinkContext::LinkContext(
     const std::shared_ptr<IUpperLayer>& upper,
     const std::shared_ptr<opendnp3::ILinkListener>& listener,
     ILinkSession& session,
-    const LinkConfig& config)
+    const LinkLayerConfig& config)
 	:
 	logger(logger),
 	config(config),

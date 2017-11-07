@@ -450,12 +450,14 @@ IINField OContext::GetDynamicIIN()
 
 bool OContext::ProcessMessage(const Message& message)
 {
+	// is the message addressed to this outstation
 	if(message.addresses.destination != this->addresses.source)
 	{
 		return false;
 	}
 
-	if ((message.addresses.source != this->addresses.destination) && !this->params.respondToAnyMaster)
+	// is the message coming from the expected master?
+	if (!this->params.respondToAnyMaster && (message.addresses.source != this->addresses.destination))
 	{
 		return false;
 	}

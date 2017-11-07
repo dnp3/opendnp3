@@ -43,7 +43,7 @@ MasterStack::MasterStack(
     const std::shared_ptr<asiopal::IResourceManager>& manager,
     const MasterStackConfig& config)
 	:
-	StackBase(logger, executor, application, iohandler, manager, config.master.maxRxFragSize, config.link),
+	StackBase(logger, executor, application, iohandler, manager, config.master.maxRxFragSize, LinkLayerConfig(config.link, false)),
 	mcontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr), logger, executor, tstack.transport, SOEHandler, application, scheduler, config.master)
 {
 	tstack.transport->SetAppLayer(mcontext);

@@ -45,7 +45,7 @@ OutstationStack::OutstationStack(
     const std::shared_ptr<IResourceManager>& manager,
     const OutstationStackConfig& config) :
 
-	StackBase(logger, executor, application, iohandler, manager, config.outstation.params.maxRxFragSize, config.link),
+	StackBase(logger, executor, application, iohandler, manager, config.outstation.params.maxRxFragSize, LinkLayerConfig(config.link, config.outstation.params.respondToAnyMaster)),
 	ocontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr), config.outstation, config.dbConfig.sizes, logger, executor, tstack.transport, commandHandler, application)
 {
 	this->tstack.transport->SetAppLayer(ocontext);

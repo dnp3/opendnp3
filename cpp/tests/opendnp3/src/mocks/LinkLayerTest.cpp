@@ -28,7 +28,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerTest::LinkLayerTest(LinkConfig config) :
+LinkLayerTest::LinkLayerTest(const LinkConfig& config) :
+	LinkLayerTest(LinkLayerConfig(config, false))
+{}
+
+LinkLayerTest::LinkLayerTest(const LinkLayerConfig& config) :
 	log(),
 	exe(std::make_shared<testlib::MockExecutor>()),
 	listener(std::make_shared<MockLinkListener>()),
@@ -74,9 +78,9 @@ void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession&)
 	this->writeQueue.push_back(ToHex(buffer));
 }
 
-LinkConfig LinkLayerTest::DefaultConfig()
+LinkLayerConfig LinkLayerTest::DefaultConfig()
 {
-	return LinkConfig(true, false);
+	return LinkLayerConfig(LinkConfig(true, false), false);
 }
 
 }

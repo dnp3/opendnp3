@@ -33,6 +33,8 @@ namespace opendnp3
 */
 struct LinkConfig
 {
+	LinkConfig() = delete;
+
 	LinkConfig(
 	    bool isMaster,
 	    bool useConfirms,
@@ -47,21 +49,17 @@ struct LinkConfig
 		NumRetry(numRetry),
 		LocalAddr(localAddr),
 		RemoteAddr(remoteAddr),
-		RespondToAnyRemote(false),
 		Timeout(timeout),
 		KeepAliveTimeout(keepAliveTimeout)
 	{}
 
-	LinkConfig(
-	    bool isMaster,
-	    bool useConfirms) :
+	LinkConfig(bool isMaster, bool useConfirms) :
 
 		IsMaster(isMaster),
 		UseConfirms(useConfirms),
 		NumRetry(0),
 		LocalAddr(isMaster ? 1 : 1024),
 		RemoteAddr(isMaster ? 1024 : 1),
-		RespondToAnyRemote(false),
 		Timeout(openpal::TimeDuration::Seconds(1)),
 		KeepAliveTimeout(openpal::TimeDuration::Minutes(1))
 	{}
@@ -86,19 +84,12 @@ struct LinkConfig
 	/// dnp3 address of the remote device
 	uint16_t RemoteAddr;
 
-	/// respond to any source address that uses the address of this device
-	bool RespondToAnyRemote;
-
 	/// the response timeout in milliseconds for confirmed requests
 	openpal::TimeDuration Timeout;
 
 	/// the interval for keep-alive messages (link status requests)
 	/// if set to TimeDuration::Max(), the keep-alive is disabled
 	openpal::TimeDuration KeepAliveTimeout;
-
-private:
-
-	LinkConfig() {}
 };
 
 }

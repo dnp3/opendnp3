@@ -22,6 +22,7 @@
 #define OPENDNP3_LINKLAYER_H
 
 #include "LinkContext.h"
+#include "LinkLayerConfig.h"
 
 namespace opendnp3
 {
@@ -32,7 +33,7 @@ class LinkLayer final : public ILinkLayer, public ILinkSession
 
 public:
 
-	LinkLayer(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>&, const std::shared_ptr<IUpperLayer>& upper, const std::shared_ptr<opendnp3::ILinkListener>&, const LinkConfig&);
+	LinkLayer(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>&, const std::shared_ptr<IUpperLayer>& upper, const std::shared_ptr<opendnp3::ILinkListener>&, const LinkLayerConfig&);
 
 	void SetRouter(ILinkTx&);
 

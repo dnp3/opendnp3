@@ -45,7 +45,7 @@ protected:
 	    const std::shared_ptr<IOHandler>& iohandler,
 	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    uint32_t maxRxFragSize,
-	    const opendnp3::LinkConfig& config) :
+	    const opendnp3::LinkLayerConfig& config) :
 		logger(logger),
 		executor(executor),
 		iohandler(iohandler),

@@ -56,7 +56,7 @@ MasterSessionStack::MasterSessionStack(
 	executor(executor),
 	scheduler(scheduler),
 	session(session),
-	stack(logger, executor, application, config.master.maxRxFragSize, config.link),
+	stack(logger, executor, application, config.master.maxRxFragSize, LinkLayerConfig(config.link, false)),
 	context(Addresses(config.link.LocalAddr, config.link.RemoteAddr), logger, executor, stack.transport, SOEHandler, application, scheduler, config.master)
 {
 	stack.link->SetRouter(linktx);
