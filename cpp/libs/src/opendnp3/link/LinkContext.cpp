@@ -358,10 +358,10 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		return false;
 	}
 
-	if (header.src != config.RemoteAddr)
+	if (header.src != config.RemoteAddr && !config.respondToAnySource)
 	{
 		++statistics.numUnknownSource;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame from unknown source");
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Frame from unknown source: %u", header.src);
 		return false;
 	}
 
