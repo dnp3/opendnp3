@@ -101,6 +101,10 @@ namespace Automatak.DNP3.Interface
         
         void ILinkStatusListener.OnStateChange(LinkStatus value) { }
 
+        void ILinkStatusListener.OnUnknownDestinationAddress(ushort destination) { }
+
+        void ILinkStatusListener.OnUnknownSourceAddress(ushort source) { }
+
         void ILinkStatusListener.OnKeepAliveInitiated() { }
 
         void ILinkStatusListener.OnKeepAliveFailure() { }

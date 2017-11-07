@@ -19,13 +19,9 @@ IMasterSession^ SessionAcceptorAdapter::AcceptSession(
 	)
 {
 	auto id = Conversions::ConvertString(loggerid);
-	auto mconfig = Conversions::ConvertConfig(config);
-	
-	auto handler = std::shared_ptr<SOEHandlerAdapter>(new SOEHandlerAdapter(SOEHandler));
-	
-	auto app = std::shared_ptr<MasterApplicationAdapter<opendnp3::IMasterApplication>>(
-		new MasterApplicationAdapter<opendnp3::IMasterApplication>(application)
-	);
+	auto mconfig = Conversions::ConvertConfig(config);	
+	auto handler = std::shared_ptr<SOEHandlerAdapter>(new SOEHandlerAdapter(SOEHandler));	
+	auto app = std::shared_ptr<MasterApplicationAdapter>(new MasterApplicationAdapter(application));
 	
 	auto session = proxy->AcceptSession(id, handler, app, mconfig);
 

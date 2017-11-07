@@ -19,10 +19,8 @@ namespace Automatak
 	namespace DNP3
 	{
 		namespace Adapter
-		{
-			
-			template <class Interface>
-			private class MasterApplicationAdapter : public Interface
+		{					
+			private class MasterApplicationAdapter final : public opendnp3::IMasterApplication
 			{
 			public:
 
@@ -32,6 +30,16 @@ namespace Automatak
 				virtual void OnStateChange(opendnp3::LinkStatus value) override
 				{
 					proxy->OnStateChange((LinkStatus)value);
+				}
+
+				void OnUnknownDestinationAddress(uint16_t destination)
+				{
+					proxy->OnUnknownDestinationAddress(destination);
+				}
+
+				void OnUnknownSourceAddress(uint16_t source)
+				{
+					proxy->OnUnknownSourceAddress(source);
 				}
 				
 				virtual void OnKeepAliveInitiated() override

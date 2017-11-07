@@ -30,6 +30,12 @@ namespace Automatak.DNP3.Interface
         /// Called when a the reset/unreset status of the link layer changes
         void OnStateChange(LinkStatus value);
 
+        /// Called when the link-layer receives any frame with an unknown destination address
+        void OnUnknownDestinationAddress(ushort destination);
+
+        /// Called when the link-layer receives any frame from an unknown source address
+        void OnUnknownSourceAddress(ushort source);
+
         /// Called when a keep alive message is transmitted
         void OnKeepAliveInitiated();
 
