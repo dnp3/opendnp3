@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNITIMESTAMPMODE_H
-#define OPENDNP3JAVA_JNITIMESTAMPMODE_H
+#ifndef OPENDNP3JAVA_JNIRESTARTMODE_H
+#define OPENDNP3JAVA_JNIRESTARTMODE_H
 
 #include <jni.h>
 
@@ -31,7 +31,7 @@ namespace jni
 
     namespace cache
     {
-        class TimestampMode
+        class RestartMode
         {
             friend struct jni::JCache;
 

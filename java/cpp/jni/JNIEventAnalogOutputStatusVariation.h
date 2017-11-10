@@ -41,16 +41,16 @@ namespace jni
             public:
 
             // methods
-            LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
             jint toType(JNIEnv* env, jobject instance);
+            LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID fromTypeMethod = nullptr;
             jmethodID toTypeMethod = nullptr;
+            jmethodID fromTypeMethod = nullptr;
         };
     }
 }

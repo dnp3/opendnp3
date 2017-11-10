@@ -18,38 +18,38 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "JNICommandPointState.h"
+#include "JNIRestartMode.h"
 
 namespace jni
 {
     namespace cache
     {
-        bool CommandPointState::init(JNIEnv* env)
+        bool RestartMode::init(JNIEnv* env)
         {
-            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/CommandPointState;");
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/RestartMode;");
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
             this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
             if(!this->toTypeMethod) return false;
 
-            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/CommandPointState;");
+            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/RestartMode;");
             if(!this->fromTypeMethod) return false;
 
             return true;
         }
 
-        void CommandPointState::cleanup(JNIEnv* env)
+        void RestartMode::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jint CommandPointState::toType(JNIEnv* env, jobject instance)
+        jint RestartMode::toType(JNIEnv* env, jobject instance)
         {
             return env->CallIntMethod(instance, this->toTypeMethod);
         }
 
-        LocalRef<jobject> CommandPointState::fromType(JNIEnv* env, jint arg0)
+        LocalRef<jobject> RestartMode::fromType(JNIEnv* env, jint arg0)
         {
             return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
         }

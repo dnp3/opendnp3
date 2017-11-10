@@ -30,14 +30,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->recordClassAssignmentMethod = env->GetMethodID(this->clazz, "recordClassAssignment", "(Lcom/automatak/dnp3/enums/AssignClassType;Lcom/automatak/dnp3/enums/PointClass;II)V");
-            if(!this->recordClassAssignmentMethod) return false;
-
-            this->getApplicationIINMethod = env->GetMethodID(this->clazz, "getApplicationIIN", "()Lcom/automatak/dnp3/ApplicationIIN;");
-            if(!this->getApplicationIINMethod) return false;
-
             this->supportsWriteAbsoluteTimeMethod = env->GetMethodID(this->clazz, "supportsWriteAbsoluteTime", "()Z");
             if(!this->supportsWriteAbsoluteTimeMethod) return false;
+
+            this->warmRestartSupportMethod = env->GetMethodID(this->clazz, "warmRestartSupport", "()Lcom/automatak/dnp3/enums/RestartMode;");
+            if(!this->warmRestartSupportMethod) return false;
 
             this->writeAbsoluteTimeMethod = env->GetMethodID(this->clazz, "writeAbsoluteTime", "(J)Z");
             if(!this->writeAbsoluteTimeMethod) return false;
@@ -45,12 +42,47 @@ namespace jni
             this->supportsAssignClassMethod = env->GetMethodID(this->clazz, "supportsAssignClass", "()Z");
             if(!this->supportsAssignClassMethod) return false;
 
+            this->recordClassAssignmentMethod = env->GetMethodID(this->clazz, "recordClassAssignment", "(Lcom/automatak/dnp3/enums/AssignClassType;Lcom/automatak/dnp3/enums/PointClass;II)V");
+            if(!this->recordClassAssignmentMethod) return false;
+
+            this->getApplicationIINMethod = env->GetMethodID(this->clazz, "getApplicationIIN", "()Lcom/automatak/dnp3/ApplicationIIN;");
+            if(!this->getApplicationIINMethod) return false;
+
+            this->coldRestartSupportMethod = env->GetMethodID(this->clazz, "coldRestartSupport", "()Lcom/automatak/dnp3/enums/RestartMode;");
+            if(!this->coldRestartSupportMethod) return false;
+
+            this->coldRestartMethod = env->GetMethodID(this->clazz, "coldRestart", "()I");
+            if(!this->coldRestartMethod) return false;
+
+            this->warmRestartMethod = env->GetMethodID(this->clazz, "warmRestart", "()I");
+            if(!this->warmRestartMethod) return false;
+
             return true;
         }
 
         void OutstationApplication::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
+        }
+
+        jboolean OutstationApplication::supportsWriteAbsoluteTime(JNIEnv* env, jobject instance)
+        {
+            return env->CallBooleanMethod(instance, this->supportsWriteAbsoluteTimeMethod);
+        }
+
+        LocalRef<jobject> OutstationApplication::warmRestartSupport(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->warmRestartSupportMethod));
+        }
+
+        jboolean OutstationApplication::writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0)
+        {
+            return env->CallBooleanMethod(instance, this->writeAbsoluteTimeMethod, arg0);
+        }
+
+        jboolean OutstationApplication::supportsAssignClass(JNIEnv* env, jobject instance)
+        {
+            return env->CallBooleanMethod(instance, this->supportsAssignClassMethod);
         }
 
         void OutstationApplication::recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3)
@@ -63,19 +95,19 @@ namespace jni
             return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->getApplicationIINMethod));
         }
 
-        jboolean OutstationApplication::supportsWriteAbsoluteTime(JNIEnv* env, jobject instance)
+        LocalRef<jobject> OutstationApplication::coldRestartSupport(JNIEnv* env, jobject instance)
         {
-            return env->CallBooleanMethod(instance, this->supportsWriteAbsoluteTimeMethod);
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->coldRestartSupportMethod));
         }
 
-        jboolean OutstationApplication::writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0)
+        jint OutstationApplication::coldRestart(JNIEnv* env, jobject instance)
         {
-            return env->CallBooleanMethod(instance, this->writeAbsoluteTimeMethod, arg0);
+            return env->CallIntMethod(instance, this->coldRestartMethod);
         }
 
-        jboolean OutstationApplication::supportsAssignClass(JNIEnv* env, jobject instance)
+        jint OutstationApplication::warmRestart(JNIEnv* env, jobject instance)
         {
-            return env->CallBooleanMethod(instance, this->supportsAssignClassMethod);
+            return env->CallIntMethod(instance, this->warmRestartMethod);
         }
     }
 }

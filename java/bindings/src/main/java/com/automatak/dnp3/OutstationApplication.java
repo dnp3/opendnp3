@@ -20,6 +20,7 @@ package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.AssignClassType;
 import com.automatak.dnp3.enums.PointClass;
+import com.automatak.dnp3.enums.RestartMode;
 
 /**
  * Outstation application code implements this interface to interface with the stack

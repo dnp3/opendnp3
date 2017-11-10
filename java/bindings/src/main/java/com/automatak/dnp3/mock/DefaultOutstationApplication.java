@@ -19,10 +19,7 @@
 package com.automatak.dnp3.mock;
 
 import com.automatak.dnp3.*;
-import com.automatak.dnp3.enums.AssignClassType;
-import com.automatak.dnp3.enums.LinkStatus;
-import com.automatak.dnp3.enums.MasterTaskType;
-import com.automatak.dnp3.enums.PointClass;
+import com.automatak.dnp3.enums.*;
 
 import java.util.Collections;
 

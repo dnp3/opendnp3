@@ -97,6 +97,7 @@
 #include "JNIPointClass.h"
 #include "JNIQualifierCode.h"
 #include "JNIRange.h"
+#include "JNIRestartMode.h"
 #include "JNISOEHandler.h"
 #include "JNIStack.h"
 #include "JNIStackStatistics.h"
@@ -196,6 +197,7 @@ namespace jni
         static cache::PointClass PointClass;
         static cache::QualifierCode QualifierCode;
         static cache::Range Range;
+        static cache::RestartMode RestartMode;
         static cache::SOEHandler SOEHandler;
         static cache::Stack Stack;
         static cache::StackStatistics StackStatistics;
