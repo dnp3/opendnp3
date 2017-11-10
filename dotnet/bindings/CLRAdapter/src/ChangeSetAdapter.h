@@ -20,7 +20,12 @@ namespace Automatak
 
 				ChangeSetAdapter();
 
-				~ChangeSetAdapter();
+				~ChangeSetAdapter()
+				{
+					this->!ChangeSetAdapter();
+				}
+
+				!ChangeSetAdapter();
 				
 				virtual void Update(Binary^ update, System::UInt16 index, EventMode mode);
 				virtual void Update(DoubleBitBinary^ update, System::UInt16 index, EventMode mode);				
