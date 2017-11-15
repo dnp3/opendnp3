@@ -49,6 +49,7 @@ namespace Automatak
 			public:
 
 				DNP3ManagerAdapter(System::Int32 concurrency, ILogHandler^ logHandler);
+				!DNP3ManagerAdapter();
 				~DNP3ManagerAdapter();
 
 				virtual void Shutdown() sealed;				
