@@ -36,9 +36,14 @@ namespace Automatak
 
 			}
 
-			DNP3ManagerAdapter::~DNP3ManagerAdapter()
+			DNP3ManagerAdapter::!DNP3ManagerAdapter()
 			{
 				delete manager;				
+			}
+
+			DNP3ManagerAdapter::~DNP3ManagerAdapter()
+			{
+				this->!DNP3ManagerAdapter();				
 			}
 
 			void DNP3ManagerAdapter::Shutdown()
