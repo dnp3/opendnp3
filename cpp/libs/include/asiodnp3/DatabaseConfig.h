@@ -43,7 +43,8 @@ public:
 		frozenCounter(sizes.numFrozenCounter),
 		boStatus(sizes.numBinaryOutputStatus),
 		aoStatus(sizes.numAnalogOutputStatus),
-		timeAndInterval(sizes.numTimeAndInterval)
+		timeAndInterval(sizes.numTimeAndInterval),
+		octetString(sizes.numOctetString)
 	{
 		InitIndices(binary);
 		InitIndices(doubleBinary);
@@ -53,6 +54,7 @@ public:
 		InitIndices(boStatus);
 		InitIndices(aoStatus);
 		InitIndices(timeAndInterval);
+		InitIndices(octetString);
 	}
 
 	const opendnp3::DatabaseSizes sizes;
@@ -65,6 +67,7 @@ public:
 	openpal::Array<opendnp3::BOStatusConfig, uint16_t> boStatus;
 	openpal::Array<opendnp3::AOStatusConfig, uint16_t> aoStatus;
 	openpal::Array<opendnp3::TimeAndIntervalConfig, uint16_t> timeAndInterval;
+	openpal::Array<opendnp3::OctetStringConfig, uint16_t> octetString;
 
 private:
 

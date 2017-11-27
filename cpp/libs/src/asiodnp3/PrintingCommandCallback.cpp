@@ -36,9 +36,9 @@ opendnp3::CommandCallbackT PrintingCommandCallback::Get()
 		{
 			std::cout
 			        << "Header: " << res.headerIndex
-			<< " Index: " << res.index
-			<< " State: " << CommandPointStateToString(res.state)
-			<< " Status: " << CommandStatusToString(res.status);
+			        << " Index: " << res.index
+			        << " State: " << CommandPointStateToString(res.state)
+			        << " Status: " << CommandStatusToString(res.status);
 		};
 		result.ForeachItem(print);
 	};

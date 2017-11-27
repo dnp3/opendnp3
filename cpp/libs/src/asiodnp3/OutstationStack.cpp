@@ -61,6 +61,7 @@ OutstationStack::OutstationStack(
 	assign(config.dbConfig.boStatus, view.binaryOutputStatii);
 	assign(config.dbConfig.aoStatus, view.analogOutputStatii);
 	assign(config.dbConfig.timeAndInterval, view.timeAndIntervals);
+	assign(config.dbConfig.octetString, view.octetStrings);
 }
 
 
