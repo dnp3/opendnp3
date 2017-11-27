@@ -106,6 +106,25 @@ std::string QueryDiscontiguousBinary(const std::string& request)
 	return t.lower->PopWriteAsHex();
 }
 
+TEST_CASE(SUITE("octet strings behave as expected with discontiguous indices"))
+{
+	// this will tell the outstation to use discontiguous index mode, but we won't change the address assignments
+	OutstationConfig config;
+	config.eventBufferConfig.maxOctetStringEvents = 2;
+	config.params.indexMode = IndexMode::Discontiguous;
+	OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(2));
+	{
+		auto view = t.context.GetConfigView();
+		view.octetStrings[0].config.vIndex = 1;
+		view.octetStrings[1].config.vIndex = 3;
+	}
+	t.LowerLayerUp();
+
+	t.SendToOutstation(hex::IntegrityPoll(0));
+
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 6E 01 00 01 01 00 6E 01 00 03 03 00");
+}
+
 TEST_CASE(SUITE("ReadDiscontiguousClass0"))
 {
 	REQUIRE(QueryDiscontiguousBinary("C0 01 3C 01 06") == "C0 81 80 00 01 02 00 02 02 81 01 02 00 04 05 01 02");

@@ -232,41 +232,56 @@ StaticWrite<TimeAndIntervalSpec>::func_t StaticWriters::Get(StaticTimeAndInterva
 template <class Iterator>
 uint16_t WriteSomeOctetString(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, Iterator& iterator, Range& range, uint8_t size)
 {
+	const Cell<OctetStringSpec>& start = view[range.start];
+	uint16_t nextIndex = start.config.vIndex;
+
 	uint16_t num_written = 0;
-	while (range.IsValid())
+
+	while (
+	    range.IsValid() &&
+	    view[range.start].selection.value.Size() == size &&
+	    view[range.start].selection.selected &&
+	    (view[range.start].selection.variation == start.selection.variation) &&
+	    (view[range.start].config.vIndex == nextIndex)
+	)
 	{
-		if (view[range.start].selection.value.Size() != size)
+		if (iterator.Write(view[range.start].selection.value))
 		{
-			return num_written;
+			// deselect the value and advance the range
+			view[range.start].selection.selected = false;
+			++num_written;
+			++nextIndex;
+			range.Advance();
 		}
-
-		if (!iterator.Write(view[range.start].selection.value))
+		else
 		{
-			return num_written; // not enough space
+			return false;
 		}
-
-		++num_written;
-		range.Advance();
 	}
+
 	return num_written;
 }
 
 bool StaticWriters::Write(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
-	while (range.IsValid())
+	auto start = view[range.start].config.vIndex;
+	auto stop = view[range.stop].config.vIndex;
+	auto mapped = Range::From(start, stop);
+
+	if (mapped.IsValid())
 	{
 		const uint8_t sizeStartingSize = view[range.start].selection.value.Size();
 		const OctetStringSerializer serializer(false, sizeStartingSize);
 
-		if (range.IsOneByte())
+		if (mapped.IsOneByte())
 		{
-			auto iter = writer.IterateOverRange<UInt8>(QualifierCode::UINT8_START_STOP, serializer, static_cast<uint8_t>(range.start));
+			auto iter = writer.IterateOverRange<UInt8>(QualifierCode::UINT8_START_STOP, serializer, static_cast<uint8_t>(mapped.start));
 			const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
 			if (num_written == 0) return false;
 		}
 		else
 		{
-			auto iter = writer.IterateOverRange<UInt16>(QualifierCode::UINT16_START_STOP, serializer, range.start);
+			auto iter = writer.IterateOverRange<UInt16>(QualifierCode::UINT16_START_STOP, serializer, mapped.start);
 			const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
 			if (num_written == 0) return false;
 		}
