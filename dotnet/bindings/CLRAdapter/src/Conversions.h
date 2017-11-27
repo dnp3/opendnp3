@@ -178,11 +178,21 @@ namespace Automatak
 					static void ApplyConfig(DatabaseTemplate^ lhs, asiodnp3::DatabaseConfig& rhs);
 
 					template <class Info, class Source, class Target>
-					static void ConvertStaticConfig(Source^ source, Target& target)
+					static void ConvertIndexConfig(Source^ source, Target& target)
 					{
 						for (int i = 0; i < source->Count; ++i)
 						{
-							target[i].vIndex = source[i]->index;
+							target[i].vIndex = source[i]->index;							
+						}
+					}
+
+					template <class Info, class Source, class Target>
+					static void ConvertStaticConfig(Source^ source, Target& target)
+					{
+						ConvertIndexConfig<Info>(source, target);
+
+						for (int i = 0; i < source->Count; ++i)
+						{							
 							target[i].svariation = (typename Info::static_variation_t) source[i]->staticVariation;
 						}	
 					}
