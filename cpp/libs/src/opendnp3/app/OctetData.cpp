@@ -42,11 +42,12 @@ OctetData::OctetData(const RSlice& input) :
 
 bool OctetData::Set(const openpal::RSlice& input)
 {
-	if (input.Size() > MAX_SIZE) return false;
+	if ((input.Size() < 1) || (input.Size() > MAX_SIZE)) return false;
 	else
 	{
 		auto dest = buffer.GetWSlice();
 		input.CopyTo(dest);
+		this->size = static_cast<uint8_t>(input.Size());
 		return true;
 	}
 }
