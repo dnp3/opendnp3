@@ -38,7 +38,31 @@ public:
 
 	const static uint8_t MAX_SIZE = 255;
 
+	/**
+	* Construct with default length of 1
+	*/
 	OctetData();
+
+	/**
+	* Construct from a c-style string
+	*
+	* strlen() is used internally to determine the length
+	*
+	* If the length is 0, it is defaulted to 1
+	* If the length is > 255, the first 255 bytes are copied.
+	*
+	* The null terminator is NOT copied as part of buffer
+	*/
+	OctetData(const char* input);
+
+	/**
+	* Construct from read-only buffer slice
+	*
+	*
+	* If the length is 0, it is defaulted to 1
+	* If the length is > 255, the first 255 bytes are copied.
+	*
+	*/
 	OctetData(const openpal::RSlice& input);
 
 	inline uint8_t Size() const
@@ -46,11 +70,32 @@ public:
 		return size;
 	}
 
-	bool Set(const openpal::RSlice&);
+	/**
+	* Set the buffer to the input buffer/length if the input has length in the interval [1,255]
+	*
+	* @param input the input data to copy into this object
+	*
+	* @return true if the input meets the length requirements, false otherwise
+	*/
+	bool Set(const openpal::RSlice& input);
 
+	/**
+	* Set the buffer equal to the supplied c-string if the input string has length in the interval [1,255]
+	*
+	* @param input c-style string to copy into this object
+	*
+	* @return true if the input meets the length requirements, false otherwise
+	*/
+	bool Set(const char* input);
+
+	/**
+	* @return a view of the current data as a read-only slice
+	*/
 	openpal::RSlice ToRSlice() const;
 
 private:
+
+	static openpal::RSlice ToSlice(const char* input);
 
 	openpal::StaticBuffer<MAX_SIZE> buffer;
 	uint8_t size;
