@@ -53,22 +53,27 @@ OctetData::OctetData(const RSlice& input) :
 
 bool OctetData::Set(const openpal::RSlice& input)
 {
-	if ((input.Size() < 1) || (input.Size() > MAX_SIZE)) return false;
-	else
+	if (input.IsEmpty())
 	{
-		auto dest = buffer.GetWSlice();
-		input.CopyTo(dest);
-		this->size = static_cast<uint8_t>(input.Size());
-		return true;
+		this->size = 0;
+		this->buffer.GetWSlice()[0] = 0x00;
+		return false;
 	}
+
+	const bool is_oversized = input.Size() > MAX_SIZE;
+	const uint8_t usable_size = is_oversized ? MAX_SIZE : static_cast<uint8_t>(input.Size());
+
+	auto dest = this->buffer.GetWSlice();
+	input.Take(usable_size).CopyTo(dest);
+	this->size = usable_size;
+	return !is_oversized;
 }
 
 
 bool OctetData::Set(const char* input)
 {
 	const size_t length = strlen(input);
-	if (length > MAX_SIZE) return false;
-	return this->Set(openpal::RSlice(reinterpret_cast<const uint8_t*>(input), static_cast<uint32_t>(length)));
+	return this->Set(openpal::RSlice(reinterpret_cast<const uint8_t*>(input), static_cast<uint32_t>(length > MAX_SIZE ? MAX_SIZE : length)));
 }
 
 openpal::RSlice OctetData::ToRSlice() const

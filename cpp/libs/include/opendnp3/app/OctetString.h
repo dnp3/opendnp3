@@ -34,7 +34,7 @@ class OctetString : public OctetData
 public:
 
 	/**
-	* Construct with default length of 1
+	* Construct with a default value of [0x00] (length == 1)
 	*/
 	OctetString() : OctetData()
 	{}
@@ -50,8 +50,8 @@ public:
 	*
 	* strlen() is used internally to determine the length
 	*
-	* If the length is 0, it is defaulted to 1
-	* If the length is > 255, the first 255 bytes are copied.
+	* If the length is 0, the default value of [0x00] is assigned
+	* If the length is > 255, only the first 255 bytes are copied
 	*
 	* The null terminator is NOT copied as part of buffer
 	*/
@@ -61,8 +61,8 @@ public:
 	/**
 	* Construct from read-only buffer slice
 	*
-	* If the length is 0, it is defaulted to 1
-	* If the length is > 255, the first 255 bytes are copied.
+	* If the length is 0, the default value of [0x00] is assigned
+	* If the length is > 255, only the first 255 bytes are copied
 	*/
 	OctetString(const openpal::RSlice& buffer) : OctetData(buffer)
 	{}

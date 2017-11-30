@@ -39,7 +39,7 @@ public:
 	const static uint8_t MAX_SIZE = 255;
 
 	/**
-	* Construct with default length of 1
+	* Construct with a default value of [0x00] (length == 1)
 	*/
 	OctetData();
 
@@ -48,8 +48,8 @@ public:
 	*
 	* strlen() is used internally to determine the length
 	*
-	* If the length is 0, it is defaulted to 1
-	* If the length is > 255, the first 255 bytes are copied.
+	* If the length is 0, the default value of [0x00] is assigned
+	* If the length is > 255, only the first 255 bytes are copied.
 	*
 	* The null terminator is NOT copied as part of buffer
 	*/
@@ -59,9 +59,10 @@ public:
 	* Construct from read-only buffer slice
 	*
 	*
-	* If the length is 0, it is defaulted to 1
-	* If the length is > 255, the first 255 bytes are copied.
+	* If the length is 0, the default value of [0x00] is assigned
+	* If the length is > 255, only the first 255 bytes are copied.
 	*
+	* The null terminator is NOT copied as part of buffer
 	*/
 	OctetData(const openpal::RSlice& input);
 
@@ -71,7 +72,10 @@ public:
 	}
 
 	/**
-	* Set the buffer to the input buffer/length if the input has length in the interval [1,255]
+	* Set the octet data to the input buffer
+	*
+	* If the length is 0, the default value of [0x00] is assigned
+	* If the length is > 255, only the first 255 bytes are copied
 	*
 	* @param input the input data to copy into this object
 	*
@@ -80,7 +84,10 @@ public:
 	bool Set(const openpal::RSlice& input);
 
 	/**
-	* Set the buffer equal to the supplied c-string if the input string has length in the interval [1,255]
+	* Set the buffer equal to the supplied c-string
+	*
+	* If the length is 0, the default value of [0x00] is assigned
+	* If the length is > 255, only the first 255 bytes are copied
 	*
 	* @param input c-style string to copy into this object
 	*
