@@ -261,6 +261,36 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
 	TestEventRead("C0 01 3C 03 07 01 3C 04 07 01", "E0 81 8E 00 02 01 28 02 00 01 00 81 02 00 81", update, configure);
 }
 
+TEST_CASE(SUITE("reports g22v5 correctly"))
+{
+	auto update = [](IUpdateHandler & db)
+	{
+		db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0);
+	};
+
+	auto configure = [](DatabaseConfigView& db)
+	{
+		db.counters[0].config.evariation = EventCounterVariation::Group22Var5;
+	};
+
+	TestEventRead("C0 01 3C 02 06", "E0 81 80 00 16 05 28 01 00 00 00 01 17 00 00 00 78 E6 B7 2D 60 01", update, configure);
+}
+
+TEST_CASE(SUITE("reports g22v6 correctly"))
+{
+	auto update = [](IUpdateHandler & db)
+	{
+		db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0);
+	};
+
+	auto configure = [](DatabaseConfigView& db)
+	{
+		db.counters[0].config.evariation = EventCounterVariation::Group22Var6;
+	};
+
+	TestEventRead("C0 01 3C 02 06", "E0 81 80 00 16 06 28 01 00 00 00 01 17 00 78 E6 B7 2D 60 01", update, configure);
+}
+
 TEST_CASE(SUITE("ReadGrp2Var0"))
 {
 	auto update = [](IUpdateHandler & db)
