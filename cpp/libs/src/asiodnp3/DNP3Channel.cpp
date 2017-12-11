@@ -136,7 +136,7 @@ template <class T>
 std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, const std::shared_ptr<T>& stack)
 {
 
-	auto create = [stack, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this()]()
+	auto create = [stack, &link, this, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this()]()
 	{
 
 		auto add = [stack, route, self]() -> bool
