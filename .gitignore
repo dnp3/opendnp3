@@ -124,6 +124,7 @@ cpp/demos/outstation/Release
 cpp/unittest.log
 dotnet/bindings.VC.VC.opendb
 dotnet/bindings.VC.db
+dotnet/.vs
 
 #installer
 dotnet/simulator/setup*
