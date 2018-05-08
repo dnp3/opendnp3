@@ -36,10 +36,7 @@ CommandSet::CommandSet(CommandSet&& other) : m_headers(std::move(other.m_headers
 
 CommandSet::~CommandSet()
 {
-	for(auto header : m_headers)
-	{
-		delete header;
-	}
+
 }
 
 CommandSet::CommandSet(std::initializer_list<Indexed<ControlRelayOutputBlock>> items)
@@ -69,35 +66,35 @@ CommandSet::CommandSet(std::initializer_list<Indexed<AnalogOutputDouble64>> item
 
 ICommandCollection<ControlRelayOutputBlock>& CommandSet::StartHeaderCROB()
 {
-	TypedCommandHeader<ControlRelayOutputBlock>* header = new TypedCommandHeader<ControlRelayOutputBlock>(Group12Var1::Inst());
+	const auto header = std::make_shared<TypedCommandHeader<ControlRelayOutputBlock>>(Group12Var1::Inst());
 	this->m_headers.push_back(header);
 	return *header;
 }
 
 ICommandCollection<AnalogOutputInt32>& CommandSet::StartHeaderAOInt32()
 {
-	TypedCommandHeader<AnalogOutputInt32>* header = new TypedCommandHeader<AnalogOutputInt32>(Group41Var1::Inst());
+	const auto header = std::make_shared<TypedCommandHeader<AnalogOutputInt32>>(Group41Var1::Inst());
 	this->m_headers.push_back(header);
 	return *header;
 }
 
 ICommandCollection<AnalogOutputInt16>& CommandSet::StartHeaderAOInt16()
 {
-	TypedCommandHeader<AnalogOutputInt16>* header = new TypedCommandHeader<AnalogOutputInt16>(Group41Var2::Inst());
+	const auto header = std::make_shared<TypedCommandHeader<AnalogOutputInt16>>(Group41Var2::Inst());
 	this->m_headers.push_back(header);
 	return *header;
 }
 
 ICommandCollection<AnalogOutputFloat32>& CommandSet::StartHeaderAOFloat32()
 {
-	TypedCommandHeader<AnalogOutputFloat32>* header = new TypedCommandHeader<AnalogOutputFloat32>(Group41Var3::Inst());
+	const auto header = std::make_shared<TypedCommandHeader<AnalogOutputFloat32>>(Group41Var3::Inst());
 	this->m_headers.push_back(header);
 	return *header;
 }
 
 ICommandCollection<AnalogOutputDouble64>& CommandSet::StartHeaderAODouble64()
 {
-	TypedCommandHeader<AnalogOutputDouble64>* header = new TypedCommandHeader<AnalogOutputDouble64>(Group41Var4::Inst());
+	const auto header = std::make_shared<TypedCommandHeader<AnalogOutputDouble64>>(Group41Var4::Inst());
 	this->m_headers.push_back(header);
 	return *header;
 }

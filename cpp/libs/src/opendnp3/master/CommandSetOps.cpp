@@ -88,7 +88,7 @@ CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set
 		return SelectResult::FAIL_PARSE;
 	}
 
-	auto selected = [](const ICommandHeader * header) -> bool
+	auto selected = [](const std::shared_ptr<ICommandHeader>& header) -> bool
 	{
 		return header->AreAllSelected();
 	};
