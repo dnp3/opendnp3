@@ -171,13 +171,13 @@ void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& head
 void MContext::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
 	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
-	this->ScheduleAdhocTask(CommandTask::CreateDirectOperate(this->tasks.context, std::move(commands), *application, callback, timeout, config, logger));
+	this->ScheduleAdhocTask(CommandTask::CreateDirectOperate(this->tasks.context, std::move(commands), this->params.controlQualifierMode, *application, callback, timeout, config, logger));
 }
 
 void MContext::SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
 {
 	const auto timeout = this->executor->GetTime().Add(params.taskStartTimeout);
-	this->ScheduleAdhocTask(CommandTask::CreateSelectAndOperate(this->tasks.context, std::move(commands), *application, callback, timeout, config, logger));
+	this->ScheduleAdhocTask(CommandTask::CreateSelectAndOperate(this->tasks.context, std::move(commands), this->params.controlQualifierMode, *application, callback, timeout, config, logger));
 }
 
 void MContext::ProcessAPDU(const APDUResponseHeader& header, const RSlice& objects)

@@ -24,6 +24,7 @@
 #include <openpal/executor/TimeDuration.h>
 
 #include "opendnp3/gen/TimeSyncMode.h"
+#include "opendnp3/gen/IndexQualifierMode.h"
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/app/AppConstants.h"
 
@@ -77,6 +78,11 @@ struct MasterParams
 
 	/// maximum APDU rx size in bytes
 	uint32_t maxRxFragSize = DEFAULT_MAX_APDU_SIZE;
+
+	/// Control how the master chooses what qualifier to send when making requests
+	/// The default behavior is to always use two bytes, but the one byte optimization
+	/// can be enabled
+	IndexQualifierMode controlQualifierMode = IndexQualifierMode::always_two_bytes;
 };
 
 }
