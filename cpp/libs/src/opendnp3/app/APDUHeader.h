@@ -43,8 +43,8 @@ struct APDUHeader
 	    const AppControlField& control,
 	    FunctionCode function
 	) :
-		function(function),
-		control(control)
+		control(control),
+		function(function)
 	{}
 
 	bool Equals(const APDUHeader& header) const
