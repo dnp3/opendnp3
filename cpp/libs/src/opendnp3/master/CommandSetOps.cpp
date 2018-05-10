@@ -34,11 +34,6 @@ namespace opendnp3
 template <class T>
 IINField CommandSetOps::ProcessAny(const PrefixHeader& header, const ICollection<Indexed<T>>& values)
 {
-	if (header.GetQualifierCode() != QualifierCode::UINT16_CNT_UINT16_INDEX)
-	{
-		return IINBit::PARAM_ERROR;
-	}
-
 	if (header.headerIndex >= commands->m_headers.size()) // more response headers than request headers
 	{
 		return IINBit::PARAM_ERROR;
@@ -46,11 +41,11 @@ IINField CommandSetOps::ProcessAny(const PrefixHeader& header, const ICollection
 
 	if (mode == Mode::Select)
 	{
-		commands->m_headers[header.headerIndex]->ApplySelectResponse(values);
+		commands->m_headers[header.headerIndex]->ApplySelectResponse(header.GetQualifierCode(), values);
 	}
 	else
 	{
-		commands->m_headers[header.headerIndex]->ApplyOperateResponse(values);
+		commands->m_headers[header.headerIndex]->ApplyOperateResponse(header.GetQualifierCode(), values);
 	}
 
 	return IINField::Empty();
@@ -61,11 +56,11 @@ CommandSetOps::CommandSetOps(Mode mode_, CommandSet& commands_) :
 	commands(&commands_)
 {}
 
-bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer)
+bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer, IndexQualifierMode mode)
 {
 	for(auto& header : set.m_headers)
 	{
-		if (!header->Write(writer))
+		if (!header->Write(writer, mode))
 		{
 			return false;
 		}
@@ -74,7 +69,7 @@ bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer)
 	return true;
 }
 
-void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result, CommandCallbackT& callback)
+void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result, const CommandCallbackT& callback)
 {
 	CommandTaskResult impl(result, set.m_headers);
 	callback(impl);
@@ -83,12 +78,13 @@ void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result,
 CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)
 {
 	CommandSetOps handler(Mode::Select, set);
-	if (APDUParser::Parse(headers, handler, logger) != ParseResult::OK)
+	const auto result = APDUParser::Parse(headers, handler, logger);
+	if (result != ParseResult::OK)
 	{
 		return SelectResult::FAIL_PARSE;
 	}
 
-	auto selected = [](const ICommandHeader * header) -> bool
+	auto selected = [](const std::shared_ptr<ICommandHeader>& header) -> bool
 	{
 		return header->AreAllSelected();
 	};
@@ -103,8 +99,12 @@ CommandSetOps::OperateResult CommandSetOps::ProcessOperateResponse(CommandSet& s
 
 bool CommandSetOps::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
 {
-	if (qc != QualifierCode::UINT16_CNT_UINT16_INDEX)
+	switch (qc)
 	{
+	case(QualifierCode::UINT8_CNT_UINT8_INDEX):
+	case(QualifierCode::UINT16_CNT_UINT16_INDEX):
+		break;
+	default:
 		return false;
 	}
 

@@ -25,6 +25,7 @@
 #include "opendnp3/master/CommandCallbackT.h"
 
 #include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/gen/IndexQualifierMode.h"
 #include "opendnp3/app/parsing/IAPDUHandler.h"
 
 #include <openpal/logging/Logger.h>
@@ -65,10 +66,10 @@ public:
 	};
 
 	/// Write the headers to an ASDU
-	static bool Write(const CommandSet& set, HeaderWriter& writer);
+	static bool Write(const CommandSet& set, HeaderWriter& writer, IndexQualifierMode mode);
 
 	/// Invoke the callback for a response
-	static void InvokeCallback(const CommandSet& set, TaskCompletion result, CommandCallbackT& callback);
+	static void InvokeCallback(const CommandSet& set, TaskCompletion result, const CommandCallbackT& callback);
 
 	/**
 	* parses a response to a select, applying each received header to the command set

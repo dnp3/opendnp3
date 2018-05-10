@@ -200,6 +200,43 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	);
 }
 
+TEST_CASE(SUITE("can select and operate with one byte qualifier optimization enabled"))
+{
+	auto params = NoStartupTasks();
+	params.controlQualifierMode = IndexQualifierMode::allow_one_byte;
+	MasterTestObject t(params);
+	t.context->OnLowerLayerUp();
+
+	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+
+	CommandCallbackQueue queue;
+	t.context->SelectAndOperate(CommandSet({ WithIndex(crob, 7) }), queue.Callback(), TaskConfig::Default());
+	t.exe->RunMany();
+
+	// the expected CROB header w/ 0x17 qualifier
+	const std::string crob_header_hex("0C 01 17 01 07 01 01 64 00 00 00 64 00 00 00 00");
+
+	// check for the select and perform response
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob_header_hex);
+	t.context->OnSendResult(true);
+	t.SendToMaster("C0 81 00 00 " + crob_header_hex);
+	t.exe->RunMany();
+
+	// check for the operate and perform response
+	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + crob_header_hex);
+	t.context->OnSendResult(true);
+	t.SendToMaster("C1 81 00 00 " + crob_header_hex);
+	t.exe->RunMany();
+
+	REQUIRE(t.lower->PopWriteAsHex() == ""); //nore more packets
+	REQUIRE(
+	    queue.PopOnlyEqualValue(
+	        TaskCompletion::SUCCESS,
+	        CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
+	    )
+	);
+}
+
 TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 {
 	auto config = NoStartupTasks();

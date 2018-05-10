@@ -21,15 +21,14 @@
 #ifndef OPENDNP3_COMMANDTASK_H
 #define OPENDNP3_COMMANDTASK_H
 
-
 #include "opendnp3/gen/FunctionCode.h"
+#include "opendnp3/gen/IndexQualifierMode.h"
 
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/ITaskCallback.h"
 #include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/TaskPriority.h"
 #include "opendnp3/master/CommandSet.h"
-
 
 #include <openpal/logging/Logger.h>
 #include <openpal/Configure.h>
@@ -47,10 +46,10 @@ class CommandTask : public IMasterTask
 
 public:
 
-	CommandTask(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
+	CommandTask(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
 
-	static std::shared_ptr<IMasterTask> CreateDirectOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
-	static std::shared_ptr<IMasterTask> CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
+	static std::shared_ptr<IMasterTask> CreateDirectOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
+	static std::shared_ptr<IMasterTask> CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
 
 	virtual char const* Name() const override final
 	{
@@ -100,8 +99,9 @@ private:
 	std::deque<FunctionCode> functionCodes;
 
 	CommandStatus statusResult;
-	CommandCallbackT commandCallback;
+	const CommandCallbackT commandCallback;
 	CommandSet commands;
+	const IndexQualifierMode mode;
 
 };
 

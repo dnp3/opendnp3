@@ -51,7 +51,7 @@ class TypedCommandHeader final : public ICommandHeader, public ICommandCollectio
 
 public:
 
-	TypedCommandHeader(const DNP3Serializer<T>& serializer) : m_serializer(serializer)
+	TypedCommandHeader(const DNP3Serializer<T>& serializer) : serializer(serializer)
 	{}
 
 	// --- Implement ICommandCollection ---
@@ -62,11 +62,11 @@ public:
 
 	virtual bool AreAllSelected() const override;
 
-	virtual bool Write(HeaderWriter&) const override;
+	virtual bool Write(HeaderWriter&, IndexQualifierMode mode) override;
 
-	virtual void ApplySelectResponse(const ICollection<Indexed<T>>& commands) override;
+	virtual void ApplySelectResponse(QualifierCode code, const ICollection<Indexed<T>>& commands) override;
 
-	virtual void ApplyOperateResponse(const ICollection<Indexed<T>>& commands) override;
+	virtual void ApplyOperateResponse(QualifierCode code, const ICollection<Indexed<T>>& commands) override;
 
 	// --- Implement ICollection<Indexed<CommandResponse>> ----
 
@@ -76,50 +76,90 @@ public:
 
 private:
 
-	DNP3Serializer<T> m_serializer;
-	std::vector<Record> m_records;
+	QualifierCode ExpectedQualfier() const
+	{
+		return this->use_single_byte_index ? QualifierCode::UINT8_CNT_UINT8_INDEX : QualifierCode::UINT16_CNT_UINT16_INDEX;
+	}
+
+	bool use_single_byte_index = true;
+	const DNP3Serializer<T> serializer;
+	std::vector<Record> records;
 };
 
 
 template <class T>
 ICommandCollection<T>& TypedCommandHeader<T>::Add(const T& command, uint16_t index)
 {
-	m_records.push_back(WithIndex(command, index));
+	if (index > std::numeric_limits<uint8_t>::max())
+	{
+		this->use_single_byte_index = false;
+	}
+
+	this->records.push_back(WithIndex(command, index));
 	return *this;
 }
 
 template <class T>
 bool TypedCommandHeader<T>::AreAllSelected() const
 {
-	auto isSuccess = [](const Record & rec) -> bool { return rec.state == CommandPointState::SELECT_SUCCESS; };
-	return std::all_of(m_records.begin(), m_records.end(), isSuccess);
+	return std::all_of(
+	           this->records.begin(),
+	           this->records.end(),
+	           [](const Record & rec) -> bool { return rec.state == CommandPointState::SELECT_SUCCESS; }
+	       );
 }
 
 template <class T>
-bool TypedCommandHeader<T>::Write(HeaderWriter& writer) const
+bool TypedCommandHeader<T>::Write(HeaderWriter& writer, IndexQualifierMode mode)
 {
-	if (m_records.empty())
+	if (this->records.empty())
 	{
 		return false;
 	}
 
-	auto iter = writer.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, m_serializer);
+	// allow single byte indices if they're all <= 255 and the optimization is allowed
+	this->use_single_byte_index &= (mode == IndexQualifierMode::allow_one_byte);
 
-	for(auto& rec : m_records)
+	if (this->use_single_byte_index)
 	{
-		if (!iter.Write(rec.command, rec.index))
+		auto iter = writer.IterateOverCountWithPrefix<openpal::UInt8, T>(QualifierCode::UINT8_CNT_UINT8_INDEX, this->serializer);
+
+		for (auto& rec : this->records)
 		{
-			return false;
+			if (!iter.Write(rec.command, static_cast<uint8_t>(rec.index)))
+			{
+				return false;
+			}
 		}
+
+		return iter.IsValid();
+	}
+	else
+	{
+		auto iter = writer.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, this->serializer);
+
+		for (auto& rec : this->records)
+		{
+			if (!iter.Write(rec.command, rec.index))
+			{
+				return false;
+			}
+		}
+
+		return iter.IsValid();
 	}
 
-	return iter.IsValid();
 }
 
 template <class T>
-void TypedCommandHeader<T>::ApplySelectResponse(const ICollection<Indexed<T>>& commands)
+void TypedCommandHeader<T>::ApplySelectResponse(QualifierCode code, const ICollection<Indexed<T>>& commands)
 {
-	if (commands.Count() > m_records.size())
+	if (code != this->ExpectedQualfier())
+	{
+		return;
+	}
+
+	if (commands.Count() > this->records.size())
 	{
 		return;
 	}
@@ -128,7 +168,7 @@ void TypedCommandHeader<T>::ApplySelectResponse(const ICollection<Indexed<T>>& c
 
 	auto visit = [&](const Indexed<T> item) -> void
 	{
-		auto& rec = m_records[index];
+		auto& rec = this->records[index];
 		++index;
 
 		if (item.index != rec.index)
@@ -159,9 +199,14 @@ void TypedCommandHeader<T>::ApplySelectResponse(const ICollection<Indexed<T>>& c
 }
 
 template <class T>
-void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& commands)
+void TypedCommandHeader<T>::ApplyOperateResponse(QualifierCode code, const ICollection<Indexed<T>>& commands)
 {
-	if (commands.Count() > m_records.size())
+	if (code != this->ExpectedQualfier())
+	{
+		return;
+	}
+
+	if (commands.Count() > this->records.size())
 	{
 		return;
 	}
@@ -170,7 +215,7 @@ void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& 
 
 	auto visit = [&](const Indexed<T> item)
 	{
-		auto& rec = m_records[index];
+		auto& rec = this->records[index];
 		++index;
 
 		if (item.index != rec.index)
@@ -194,13 +239,13 @@ void TypedCommandHeader<T>::ApplyOperateResponse(const ICollection<Indexed<T>>& 
 template <class T>
 size_t TypedCommandHeader<T>::Count() const
 {
-	return m_records.size();
+	return this->records.size();
 }
 
 template <class T>
 void TypedCommandHeader<T>::Foreach(IVisitor<CommandState>& visitor) const
 {
-	for(auto& rec : m_records)
+	for(auto& rec : this->records)
 	{
 		visitor.OnValue(rec);
 	}

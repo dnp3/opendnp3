@@ -33,26 +33,27 @@ using namespace openpal;
 namespace opendnp3
 {
 
-std::shared_ptr<IMasterTask> CommandTask::CreateDirectOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
+std::shared_ptr<IMasterTask> CommandTask::CreateDirectOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
 {
-	auto task = std::make_shared<CommandTask>(context, std::move(set), app, callback, startExpiration, config, logger);
+	auto task = std::make_shared<CommandTask>(context, std::move(set), mode, app, callback, startExpiration, config, logger);
 	task->LoadDirectOperate();
 	return task;
 }
 
 
-std::shared_ptr<IMasterTask> CommandTask::CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
+std::shared_ptr<IMasterTask> CommandTask::CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
 {
-	auto task = std::make_shared<CommandTask>(context, std::move(set), app, callback, startExpiration, config, logger);
+	auto task = std::make_shared<CommandTask>(context, std::move(set), mode, app, callback, startExpiration, config, logger);
 	task->LoadSelectAndOperate();
 	return task;
 }
 
-CommandTask::CommandTask(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger) :
+CommandTask::CommandTask(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger) :
 	IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
 	statusResult(CommandStatus::UNDEFINED),
 	commandCallback(callback),
-	commands(std::move(commands))
+	commands(std::move(commands)),
+	mode(mode)
 {
 
 }
@@ -78,7 +79,7 @@ bool CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 		functionCodes.pop_front();
 		request.SetControl(AppControlField::Request(seq));
 		auto writer = request.GetWriter();
-		return CommandSetOps::Write(commands, writer);
+		return CommandSetOps::Write(commands, writer, this->mode);
 	}
 
 	return false;

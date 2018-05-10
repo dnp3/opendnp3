@@ -35,7 +35,7 @@ using namespace opendnp3;
 using namespace openpal;
 using namespace testlib;
 
-std::string WriteToHex(const CommandSet& set);
+std::string WriteToHex(const CommandSet& set, IndexQualifierMode mode);
 
 #define SUITE(name) "TypedCommandHeaderTestSuite - " name
 
@@ -44,7 +44,7 @@ TEST_CASE(SUITE("Can instantiate a CROB header"))
 	TypedCommandHeader<ControlRelayOutputBlock> header(Group12Var1::Inst());
 }
 
-TEST_CASE(SUITE("Formats properly if enough space is available"))
+TEST_CASE(SUITE("Formats two-byte qualifier properly if enough space is available"))
 {
 	TypedCommandHeader<AnalogOutputInt16> header(Group41Var2::Inst());
 	header.Add(AnalogOutputInt16(7), 10);
@@ -55,11 +55,29 @@ TEST_CASE(SUITE("Formats properly if enough space is available"))
 	APDURequest request(dest);
 	auto writer = request.GetWriter();
 
-	REQUIRE(header.Write(writer));
+	REQUIRE(header.Write(writer, IndexQualifierMode::always_two_bytes));
 
 	auto hex = ToHex(request.ToRSlice().Skip(2));
 
 	REQUIRE(hex == "29 02 28 02 00 0A 00 07 00 00 0B 00 08 00 00");
+}
+
+TEST_CASE(SUITE("Formats one-byte qualifier properly if enough space is available"))
+{
+	TypedCommandHeader<AnalogOutputInt16> header(Group41Var2::Inst());
+	header.Add(AnalogOutputInt16(7), 10);
+	header.Add(AnalogOutputInt16(8), 11);
+
+	StaticBuffer<100> buffer;
+	auto dest = buffer.GetWSlice();
+	APDURequest request(dest);
+	auto writer = request.GetWriter();
+
+	REQUIRE(header.Write(writer, IndexQualifierMode::allow_one_byte));
+
+	auto hex = ToHex(request.ToRSlice().Skip(2));
+
+	REQUIRE(hex == "29 02 17 02 0A 07 00 00 0B 08 00 00");
 }
 
 TEST_CASE(SUITE("Does not format if insufficient space"))
@@ -73,7 +91,7 @@ TEST_CASE(SUITE("Does not format if insufficient space"))
 	APDURequest request(dest);
 	auto writer = request.GetWriter();
 
-	REQUIRE_FALSE(header.Write(writer));
+	REQUIRE_FALSE(header.Write(writer, IndexQualifierMode::always_two_bytes));
 }
 
 TEST_CASE(SUITE("Command set can be moved and written"))
@@ -85,17 +103,17 @@ TEST_CASE(SUITE("Command set can be moved and written"))
 
 	CommandSet commands2(std::move(commands));
 
-	REQUIRE(WriteToHex(commands) == "");
-	REQUIRE(WriteToHex(commands2) == "29 02 28 01 00 0A 00 07 00 00 29 01 28 01 00 0B 00 08 00 00 00 00");
+	REQUIRE(WriteToHex(commands, IndexQualifierMode::always_two_bytes) == "");
+	REQUIRE(WriteToHex(commands2, IndexQualifierMode::always_two_bytes) == "29 02 28 01 00 0A 00 07 00 00 29 01 28 01 00 0B 00 08 00 00 00 00");
 }
 
-std::string WriteToHex(const CommandSet& commands)
+std::string WriteToHex(const CommandSet& commands, IndexQualifierMode mode)
 {
 	StaticBuffer<100> buffer;
 	auto dest = buffer.GetWSlice();
 	APDURequest request(dest);
 	auto writer = request.GetWriter();
 
-	REQUIRE(CommandSetOps::Write(commands, writer));
+	REQUIRE(CommandSetOps::Write(commands, writer, mode));
 	return ToHex(request.ToRSlice().Skip(2));
 }

@@ -264,11 +264,11 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
 TEST_CASE(SUITE("reports g22v5 correctly"))
 {
 	auto update = [](IUpdateHandler & db)
-	{		
+	{
 		db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0);
 	};
 
-	auto configure = [](DatabaseConfigView& db)
+	auto configure = [](DatabaseConfigView & db)
 	{
 		db.counters[0].config.evariation = EventCounterVariation::Group22Var5;
 	};
@@ -279,11 +279,11 @@ TEST_CASE(SUITE("reports g22v5 correctly"))
 TEST_CASE(SUITE("reports g22v6 correctly"))
 {
 	auto update = [](IUpdateHandler & db)
-	{		
+	{
 		db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0);
 	};
 
-	auto configure = [](DatabaseConfigView& db)
+	auto configure = [](DatabaseConfigView & db)
 	{
 		db.counters[0].config.evariation = EventCounterVariation::Group22Var6;
 	};

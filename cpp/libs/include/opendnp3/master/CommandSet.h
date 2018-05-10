@@ -29,10 +29,12 @@
 
 #include <vector>
 #include <initializer_list>
+#include <memory>
 
 namespace opendnp3
 {
 
+// don't want this to be part of the public API
 class ICommandHeader;
 
 /**
@@ -45,16 +47,16 @@ class CommandSet final
 
 public:
 
-	typedef std::vector<ICommandHeader*> HeaderVector;
+	typedef std::vector<std::shared_ptr<ICommandHeader>> HeaderVector;
 
 	/// Contrsuct an empty command set
-	CommandSet() {}
+	CommandSet() = default;
+
+	// Put this in impl so we can hide details of ICommandHeader
+	~CommandSet();
 
 	/// Construct a new command set and take ownership of the headers in argument
 	CommandSet(CommandSet&& other);
-
-	/// Destruct the command set and free any referenced headers
-	~CommandSet();
 
 	/// Construct a command set from a list of CROB
 	CommandSet(std::initializer_list<Indexed<ControlRelayOutputBlock>> items);

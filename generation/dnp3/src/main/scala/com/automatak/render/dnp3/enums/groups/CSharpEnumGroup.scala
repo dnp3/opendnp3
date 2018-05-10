@@ -38,7 +38,8 @@ object CSharpEnumGroup {
     StopBits(),
     FlowControl(),
     FlagsType(),
-    ServerAcceptMode()
+    ServerAcceptMode(),
+    IndexQualifierMode()
   ) ::: DefaultVariations.enums ::: QualityMasks.enums
 
 
