@@ -401,6 +401,7 @@ namespace Automatak
 				mp.taskStartTimeout = ConvertTimespan(config->taskStartTimeout);
 				mp.timeSyncMode = (opendnp3::TimeSyncMode) config->timeSyncMode;
 				mp.unsolClassMask = ConvertClassField(config->unsolClassMask);
+				mp.controlQualifierMode = (opendnp3::IndexQualifierMode) config->controlQualifierMode;
 
 				return mp;
 			}

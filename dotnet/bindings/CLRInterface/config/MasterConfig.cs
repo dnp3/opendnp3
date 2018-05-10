@@ -13,71 +13,65 @@ namespace Automatak.DNP3.Interface
     [Serializable]
     public class MasterConfig
     {
-
-        /// <summary>
-        /// Constructor with reasonable defaults
-        /// </summary>
         public MasterConfig()
-        {            
-            timeSyncMode = TimeSyncMode.None;
-            disableUnsolOnStartup = true;
-            unsolClassMask = ClassField.AllEventClasses;
-            startupIntegrityClassMask = ClassField.AllClasses;
-            integrityOnEventOverflowIIN = true;
-            eventScanOnEventsAvailableClassMask = ClassField.None;
-            responseTimeout = TimeSpan.FromSeconds(5);
-            taskRetryPeriod = TimeSpan.FromSeconds(5);
-            taskStartTimeout = TimeSpan.FromSeconds(10);
+        {
+
         }
-        
+
         /// <summary>
         /// If true, the master will do time syncs when it sees the time IIN bit from the outstation
         /// </summary>
-        public TimeSyncMode timeSyncMode;
+        public TimeSyncMode timeSyncMode = TimeSyncMode.None;
 
         /// <summary>
         /// If true, the master will disable unsol on startup for all 3 classes
         /// </summary>
-        public bool disableUnsolOnStartup;
+        public bool disableUnsolOnStartup = true;
 
         /// <summary>
         /// Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
         /// </summary>
-        public ClassField unsolClassMask;
+        public ClassField unsolClassMask = ClassField.AllEventClasses;
 
         /// <summary>
         /// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
         /// A mask equal to 0 means no startup integrity scan will be performed
         /// </summary>
-        public ClassField startupIntegrityClassMask;
+        public ClassField startupIntegrityClassMask = ClassField.AllClasses;
 
         /// <summary>
         /// Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
         /// </summary>
-        public bool integrityOnEventOverflowIIN;
+        public bool integrityOnEventOverflowIIN = true;
 
         /// <summary>
         /// Which classes should be requested in an event scan when detecting corresponding events available IIN
         /// </summary>
-        public ClassField eventScanOnEventsAvailableClassMask;
+        public ClassField eventScanOnEventsAvailableClassMask = ClassField.None;
+
+        /// <summary>
+        /// Control how the master chooses what qualifier to send when making requests.
+        /// The default behavior is to always use two bytes, but the one byte optimization can be enabled.        
+        /// </summary>
+        public IndexQualifierMode controlQualifierMode = IndexQualifierMode.always_two_bytes;
 
         /// <summary>
         /// Application layer response timeout
         /// </summary>
         [XmlIgnore]
-        public TimeSpan responseTimeout;
+        public TimeSpan responseTimeout = TimeSpan.FromSeconds(5);
 
         /// <summary>
         /// Time delay beforce retrying a failed task
         /// </summary>
         [XmlIgnore]
-        public TimeSpan taskRetryPeriod;
+        public TimeSpan taskRetryPeriod = TimeSpan.FromSeconds(5);
 
         /// <summary>
         /// Time delay beforce retrying a failed task
         /// </summary>
         [XmlIgnore]
-        public TimeSpan taskStartTimeout;
+        public TimeSpan taskStartTimeout = TimeSpan.FromSeconds(10);
 
 
         [XmlElement]
@@ -92,7 +86,7 @@ namespace Automatak.DNP3.Interface
                 responseTimeout = TimeSpan.FromMilliseconds(value);
             }
         }
-        
+
 
         [XmlElement]
         public long TaskRetryPeriodMilliseconds
