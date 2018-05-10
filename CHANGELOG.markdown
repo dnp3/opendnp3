@@ -1,3 +1,13 @@
+### 2.3.0-M1 ###
+* :star: Small internal change to support openssl 1.1.x ([pull request](https://github.com/automatak/dnp3/pull/207))
+* :star: :wrench: TCP server channels can now configurably drop or accept. (small *breaking API change* in DNP3Manager::AddTCPServer(..) method).
+* :star: Outstation now supports transmitting octet strings
+* :star: Masters can now optimize control requests for 1-byte index qualifiers. This optimization can be enabled via MasterParams.controlIndexMode.
+* :star: ILinkListener has two additional callbacks for unknown destination / source addresses.
+* :star: Outstations can now queue events w/o updating static values using *EventMode::EventOnly*.
+* :beetle: Fix [integer underflow](https://github.com/automatak/dnp3/commit/827cb6d4e26f14b7bd33f9d71a7f6d507fc5f1c8) w/ discontiguous outstation indices
+* :beetle: Fix [memory leak](https://github.com/automatak/dnp3/issues/214) in C# DNP3ManagerAdapter.
+
 ### 2.2.0 ###
 * No changes from 2.2.0-RC5
 
