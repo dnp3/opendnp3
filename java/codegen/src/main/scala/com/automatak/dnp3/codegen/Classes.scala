@@ -28,6 +28,7 @@ object Classes {
     classOf[PointClass],
     classOf[OperateType],
     classOf[AssignClassType],
+    classOf[IndexQualifierMode],
 
     classOf[StaticBinaryVariation],
     classOf[StaticDoubleBinaryVariation],

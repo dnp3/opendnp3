@@ -18,6 +18,7 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.IndexQualifierMode;
 import com.automatak.dnp3.enums.TimeSyncMode;
 
 import java.time.Duration;
@@ -96,4 +97,10 @@ public class MasterConfig {
      * maximum APDU rx size in bytes
      */
     public int maxRxFragSize = 2048;
+
+    /**
+     * Control how the master chooses what qualifier to send when making requests
+     * The default behavior is to always use two bytes, but the one byte optimization can be enabled
+     */
+    public IndexQualifierMode controlQualifierMode = IndexQualifierMode.always_two_bytes;
 }

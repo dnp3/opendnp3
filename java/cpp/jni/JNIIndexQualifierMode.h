@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNISTACK_H
-#define OPENDNP3JAVA_JNISTACK_H
+#ifndef OPENDNP3JAVA_JNIINDEXQUALIFIERMODE_H
+#define OPENDNP3JAVA_JNIINDEXQUALIFIERMODE_H
 
 #include <jni.h>
 
@@ -31,7 +31,7 @@ namespace jni
 
     namespace cache
     {
-        class Stack
+        class IndexQualifierMode
         {
             friend struct jni::JCache;
 
@@ -41,22 +41,16 @@ namespace jni
             public:
 
             // methods
-            void setLogLevel(JNIEnv* env, jobject instance, jint arg0);
-            LocalRef<jobject> getStatistics(JNIEnv* env, jobject instance);
-            void shutdown(JNIEnv* env, jobject instance);
-            void enable(JNIEnv* env, jobject instance);
-            void disable(JNIEnv* env, jobject instance);
+            LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
+            jint toType(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID setLogLevelMethod = nullptr;
-            jmethodID getStatisticsMethod = nullptr;
-            jmethodID shutdownMethod = nullptr;
-            jmethodID enableMethod = nullptr;
-            jmethodID disableMethod = nullptr;
+            jmethodID fromTypeMethod = nullptr;
+            jmethodID toTypeMethod = nullptr;
         };
     }
 }

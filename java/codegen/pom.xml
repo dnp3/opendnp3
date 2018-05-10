@@ -11,6 +11,47 @@
     <artifactId>opendnp3-codegen</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <scala.version>2.12.6</scala.version>
+        <maven-scala.plugin.version>3.1.3</maven-scala.plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>${maven-scala.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>testCompile</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <args>
+                        <arg>-feature</arg>
+                        <arg>-language:implicitConversions</arg>
+                        <arg>-deprecation</arg>
+                        <arg>-Ywarn-adapted-args</arg>
+                    </args>
+                    <jvmArgs>
+                        <jvmArg>-Xmx1024m</jvmArg>
+                    </jvmArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>com.automatak.dnp3</groupId>
@@ -22,6 +63,12 @@
             <groupId>org.eclipse.jetty.orbit</groupId>
             <artifactId>org.objectweb.asm</artifactId>
             <version>3.3.1.v201105211655</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

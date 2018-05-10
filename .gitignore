@@ -153,3 +153,6 @@ cpp/demos/cover_html/
 
 # out-of-directory builds
 build*
+
+#clion
+/cmake-build-*

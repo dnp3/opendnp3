@@ -55,6 +55,7 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
 	cfg.taskStartTimeout = TimeDuration::Milliseconds(dur.toMillis(env, config.gettaskStartTimeout(env, jcfg)));
 	cfg.maxTxFragSize = config.getmaxTxFragSize(env, jcfg);
 	cfg.maxRxFragSize = config.getmaxRxFragSize(env, jcfg);
+	cfg.controlQualifierMode = static_cast<IndexQualifierMode>(jni::JCache::IndexQualifierMode.toType(env, config.getcontrolQualifierMode(env, jcfg)));
 
 	return cfg;
 }

@@ -66,6 +66,9 @@ namespace jni
             this->maxRxFragSizeField = env->GetFieldID(this->clazz, "maxRxFragSize", "I");
             if(!this->maxRxFragSizeField) return false;
 
+            this->controlQualifierModeField = env->GetFieldID(this->clazz, "controlQualifierMode", "Lcom/automatak/dnp3/enums/IndexQualifierMode;");
+            if(!this->controlQualifierModeField) return false;
+
             return true;
         }
 
@@ -132,6 +135,11 @@ namespace jni
         jint MasterConfig::getmaxRxFragSize(JNIEnv* env, jobject instance)
         {
             return env->GetIntField(instance, this->maxRxFragSizeField);
+        }
+
+        LocalRef<jobject> MasterConfig::getcontrolQualifierMode(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->controlQualifierModeField));
         }
     }
 }

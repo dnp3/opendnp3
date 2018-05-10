@@ -30,12 +30,6 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->recordClassAssignmentMethod = env->GetMethodID(this->clazz, "recordClassAssignment", "(Lcom/automatak/dnp3/enums/AssignClassType;Lcom/automatak/dnp3/enums/PointClass;II)V");
-            if(!this->recordClassAssignmentMethod) return false;
-
-            this->getApplicationIINMethod = env->GetMethodID(this->clazz, "getApplicationIIN", "()Lcom/automatak/dnp3/ApplicationIIN;");
-            if(!this->getApplicationIINMethod) return false;
-
             this->supportsWriteAbsoluteTimeMethod = env->GetMethodID(this->clazz, "supportsWriteAbsoluteTime", "()Z");
             if(!this->supportsWriteAbsoluteTimeMethod) return false;
 
@@ -45,22 +39,18 @@ namespace jni
             this->supportsAssignClassMethod = env->GetMethodID(this->clazz, "supportsAssignClass", "()Z");
             if(!this->supportsAssignClassMethod) return false;
 
+            this->recordClassAssignmentMethod = env->GetMethodID(this->clazz, "recordClassAssignment", "(Lcom/automatak/dnp3/enums/AssignClassType;Lcom/automatak/dnp3/enums/PointClass;II)V");
+            if(!this->recordClassAssignmentMethod) return false;
+
+            this->getApplicationIINMethod = env->GetMethodID(this->clazz, "getApplicationIIN", "()Lcom/automatak/dnp3/ApplicationIIN;");
+            if(!this->getApplicationIINMethod) return false;
+
             return true;
         }
 
         void OutstationApplication::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
-        }
-
-        void OutstationApplication::recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3)
-        {
-            env->CallVoidMethod(instance, this->recordClassAssignmentMethod, arg0, arg1, arg2, arg3);
-        }
-
-        LocalRef<jobject> OutstationApplication::getApplicationIIN(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->getApplicationIINMethod));
         }
 
         jboolean OutstationApplication::supportsWriteAbsoluteTime(JNIEnv* env, jobject instance)
@@ -76,6 +66,16 @@ namespace jni
         jboolean OutstationApplication::supportsAssignClass(JNIEnv* env, jobject instance)
         {
             return env->CallBooleanMethod(instance, this->supportsAssignClassMethod);
+        }
+
+        void OutstationApplication::recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3)
+        {
+            env->CallVoidMethod(instance, this->recordClassAssignmentMethod, arg0, arg1, arg2, arg3);
+        }
+
+        LocalRef<jobject> OutstationApplication::getApplicationIIN(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->getApplicationIINMethod));
         }
     }
 }

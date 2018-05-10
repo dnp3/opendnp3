@@ -76,6 +76,7 @@
 #include "JNIHeaderInfo.h"
 #include "JNIIINField.h"
 #include "JNIIndexMode.h"
+#include "JNIIndexQualifierMode.h"
 #include "JNIIndexedValue.h"
 #include "JNIIterable.h"
 #include "JNIIterator.h"
@@ -175,6 +176,7 @@ namespace jni
         static cache::HeaderInfo HeaderInfo;
         static cache::IINField IINField;
         static cache::IndexMode IndexMode;
+        static cache::IndexQualifierMode IndexQualifierMode;
         static cache::IndexedValue IndexedValue;
         static cache::Iterable Iterable;
         static cache::Iterator Iterator;

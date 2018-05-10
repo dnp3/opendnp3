@@ -53,6 +53,7 @@ namespace jni
             LocalRef<jobject> gettaskStartTimeout(JNIEnv* env, jobject instance);
             jint getmaxTxFragSize(JNIEnv* env, jobject instance);
             jint getmaxRxFragSize(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getcontrolQualifierMode(JNIEnv* env, jobject instance);
 
             private:
 
@@ -71,6 +72,7 @@ namespace jni
             jfieldID taskStartTimeoutField = nullptr;
             jfieldID maxTxFragSizeField = nullptr;
             jfieldID maxRxFragSizeField = nullptr;
+            jfieldID controlQualifierModeField = nullptr;
         };
     }
 }
