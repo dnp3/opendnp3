@@ -31,7 +31,8 @@ StaticBuffers::StaticBuffers(const DatabaseSizes& dbSizes) :
 	frozenCounters(dbSizes.numFrozenCounter),
 	binaryOutputStatii(dbSizes.numBinaryOutputStatus),
 	analogOutputStatii(dbSizes.numAnalogOutputStatus),
-	timeAndIntervals(dbSizes.numTimeAndInterval)
+	timeAndIntervals(dbSizes.numTimeAndInterval),
+	octetStrings(dbSizes.numOctetString)
 {
 	this->SetDefaultIndices<BinarySpec>();
 	this->SetDefaultIndices<DoubleBitBinarySpec>();
@@ -41,6 +42,7 @@ StaticBuffers::StaticBuffers(const DatabaseSizes& dbSizes) :
 	this->SetDefaultIndices<BinaryOutputStatusSpec>();
 	this->SetDefaultIndices<AnalogOutputStatusSpec>();
 	this->SetDefaultIndices<TimeAndIntervalSpec>();
+	this->SetDefaultIndices<OctetStringSpec>();
 }
 
 DatabaseConfigView StaticBuffers::GetView() const
@@ -53,7 +55,8 @@ DatabaseConfigView StaticBuffers::GetView() const
 	           frozenCounters.ToView(),
 	           binaryOutputStatii.ToView(),
 	           analogOutputStatii.ToView(),
-	           timeAndIntervals.ToView()
+	           timeAndIntervals.ToView(),
+	           octetStrings.ToView()
 	       );
 }
 
@@ -103,6 +106,12 @@ template <>
 openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
 	return timeAndIntervals.ToView();
+}
+
+template <>
+openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> StaticBuffers::GetArrayView()
+{
+	return octetStrings.ToView();
 }
 
 }

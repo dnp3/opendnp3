@@ -23,8 +23,6 @@
 
 #include <cstdint>
 
-#include "opendnp3/app/EventType.h"
-
 namespace opendnp3
 {
 
@@ -48,9 +46,6 @@ struct EventBufferConfig
 	*/
 	static EventBufferConfig AllTypes(uint16_t sizes);
 
-	/// Retrieve the number of events using a type enumeration
-	uint16_t GetMaxEventsForType(EventType type) const;
-
 	/**
 		Construct the class specifying the maximum number of events for each type individually.
 	*/
@@ -62,35 +57,35 @@ struct EventBufferConfig
 	    uint16_t maxFrozenCounterEvents = 0,
 	    uint16_t maxBinaryOutputStatusEvents = 0,
 	    uint16_t maxAnalogOutputStatusEvents = 0,
-	    uint16_t maxSecurityStatisticEvents = 0
+	    uint16_t maxOctetStringEvents = 0
 	);
 
-	/// Returns the sum of all event count maximums (number of elements in preallocated buffer)
+	// Returns the sum of all event count maximums (number of elements in preallocated buffer)
 	uint32_t TotalEvents() const;
 
-	/// The number of binary events the outstation will buffer before overflowing
+	// The number of binary events the outstation will buffer before overflowing
 	uint16_t maxBinaryEvents;
 
-	/// The number of double bit binary events the outstation will buffer before overflowing
+	// The number of double bit binary events the outstation will buffer before overflowing
 	uint16_t maxDoubleBinaryEvents;
 
-	/// The number of analog events the outstation will buffer before overflowing
+	// The number of analog events the outstation will buffer before overflowing
 	uint16_t maxAnalogEvents;
 
-	/// The number of counter events the outstation will buffer before overflowing
+	// The number of counter events the outstation will buffer before overflowing
 	uint16_t maxCounterEvents;
 
-	/// The number of frozen counter events the outstation will buffer before overflowing
+	// The number of frozen counter events the outstation will buffer before overflowing
 	uint16_t maxFrozenCounterEvents;
 
-	/// The number of binary output status events the outstation will buffer before overflowing
+	// The number of binary output status events the outstation will buffer before overflowing
 	uint16_t maxBinaryOutputStatusEvents;
 
-	/// The number of analog output status events the outstation will buffer before overflowing
+	// The number of analog output status events the outstation will buffer before overflowing
 	uint16_t maxAnalogOutputStatusEvents;
 
-	/// The number of security statistic events the outstation will buffer before overflowing
-	uint16_t maxSecurityStatisticEvents;
+	// The number of analog output status events the outstation will buffer before overflowing
+	uint16_t maxOctetStringEvents;
 };
 
 }

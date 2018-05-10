@@ -38,7 +38,7 @@ TLSClientIOHandler::TLSClientIOHandler(
     const asiopal::IPEndpoint& remote,
     const std::string& adapter
 ) :
-	IOHandler(logger, listener),
+	IOHandler(logger, false, listener),
 	executor(executor),
 	config(config),
 	retry(retry),

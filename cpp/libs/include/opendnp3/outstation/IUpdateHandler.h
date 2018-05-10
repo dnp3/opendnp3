@@ -22,6 +22,7 @@
 #define OPENDNP3_IUPDATEHANDLER_H
 
 #include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/OctetString.h"
 #include "opendnp3/gen/EventMode.h"
 #include "opendnp3/gen/FlagsType.h"
 
@@ -99,6 +100,14 @@ public:
 	* @return true if the value exists and it was updated
 	*/
 	virtual bool Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
+
+	/**
+	* Update an octet string value
+	* @param meas measurement to be processed
+	* @param index index of the measurement
+	* @return true if the value exists and it was updated
+	*/
+	virtual bool Update(const OctetString& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Update a TimeAndInterval valueindex

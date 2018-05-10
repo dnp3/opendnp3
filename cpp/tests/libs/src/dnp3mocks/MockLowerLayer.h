@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_LOWER_LAYER_H_
-#define __MOCK_LOWER_LAYER_H_
+#ifndef OPENDNP3_MOCKLOWERLAYER_H
+#define OPENDNP3_MOCKLOWERLAYER_H
 
 #include <queue>
 #include <string>
@@ -33,27 +33,23 @@ class MockLowerLayer : public ILowerLayer, public HasUpperLayer
 {
 public:
 
-	void SendUp(const openpal::RSlice& arBuffer);
-	void SendUp(const std::string&);
-	void SendSuccess();
-	void SendFailure();
+	void SendUp(const openpal::RSlice& data, const Addresses& addresses = Addresses());
+	void SendUp(const std::string& hex, const Addresses& addresses = Addresses());
+
+	void SendComplete();
 	void ThisLayerUp();
 	void ThisLayerDown();
-
-	void EnableAutoSendCallback(bool aIsSuccess);
-	void DisableAutoSendCallback();
 
 	bool HasNoData() const;
 
 	size_t NumWrites() const;
-	openpal::RSlice PopWrite();
 	std::string PopWriteAsHex();
 
-	virtual bool BeginTransmit(const openpal::RSlice& arBuffer) override final;
+	virtual bool BeginTransmit(const Message& buffer) override final;
 
 private:
 
-	std::queue<openpal::RSlice> sendQueue;
+	std::queue<Message> sendQueue;
 };
 
 }

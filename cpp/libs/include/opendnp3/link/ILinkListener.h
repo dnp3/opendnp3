@@ -37,6 +37,12 @@ public:
 	/// Called when a the reset/unreset status of the link layer changes
 	virtual void OnStateChange(LinkStatus value) {}
 
+	/// Called when a link-layer frame is received from an unknown destination address
+	virtual void OnUnknownDestinationAddress(uint16_t destination) {}
+
+	/// Called when a link-layer frame is received from an unknown source address
+	virtual void OnUnknownSourceAddress(uint16_t source) {}
+
 	/// Called when the keep alive timer elapses. This doesn't denote a keep-alive failure, it's just a notification
 	virtual void OnKeepAliveInitiated() {}
 

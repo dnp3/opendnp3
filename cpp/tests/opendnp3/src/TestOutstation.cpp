@@ -78,7 +78,7 @@ TEST_CASE(SUITE("ColdRestart"))
 	// try first with support turned off
 	t.SendToOutstation("C0 0D");
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	t.application->coldRestartSupport = RestartMode::SUPPORTED_DELAY_FINE;
 	t.application->coldRestartTimeDelay = 1;
@@ -97,7 +97,7 @@ TEST_CASE(SUITE("WarmRestart"))
 	// try first with support turned off
 	t.SendToOutstation("C0 0E");
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	t.application->warmRestartSupport = RestartMode::SUPPORTED_DELAY_COARSE;
 	t.application->warmRestartTimeDelay = 65535;
@@ -229,7 +229,7 @@ TEST_CASE(SUITE("WriteTimeDateLAN - Rejects write with bad sequence number"))
 
 	t.SendToOutstation("C0 18"); // record current time
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	t.SendToOutstation("C2 02 32 03 07 01 D2 04 00 00 00 00"); // write Grp50Var3, value = 1234 ms after epoch
 	REQUIRE(t.lower->PopWriteAsHex() == "C2 81 80 04");	 // param error
@@ -244,7 +244,7 @@ TEST_CASE(SUITE("WriteTimeDateLAN - Accepts write with correct sequence number")
 	t.AdvanceTime(TimeDuration::Milliseconds(10));
 	t.SendToOutstation("C0 18"); // record current time
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	t.AdvanceTime(TimeDuration::Milliseconds(20));
 	t.SendToOutstation("C1 02 32 03 07 01 D2 04 00 00 00 00"); // write Grp50Var3, value = 1234 ms after epoch
@@ -310,11 +310,33 @@ TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
 {
 	OutstationConfig config;
 	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes().Except(StaticTypeBitmask::DoubleBinaryInput);
-	OutstationTestObject t(config, DatabaseSizes(1, 1, 0, 0, 0, 0, 0, 0)); // 1 binary and 1 double binary
+	OutstationTestObject t(config, DatabaseSizes(1, 1, 0, 0, 0, 0, 0, 0, 0)); // 1 binary and 1 double binary
 
 	t.LowerLayerUp();
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 02 00 00 00 02");
+}
+
+TEST_CASE(SUITE("octet strings can be returned as part of a class 0 scan"))
+{
+	OutstationConfig config;
+	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes();
+	OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(3));
+
+	t.LowerLayerUp();
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 6E 01 00 00 02 00 00 00");
+}
+
+TEST_CASE(SUITE("octet strings can be returned by reading g110v0"))
+{
+	OutstationConfig config;
+	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes();
+	OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(3));
+
+	t.LowerLayerUp();
+	t.SendToOutstation("C0 01 6E 00 06"); // g110v0
+	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 6E 01 00 00 02 00 00 00");
 }
 
 TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
@@ -339,16 +361,16 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 	// Response should be (30,1)x2 per fragment, quality ONLINE, value 0
 	// 4 fragment response, first 3 fragments should be confirmed, last one shouldn't be
 	REQUIRE(t.lower->PopWriteAsHex() == "A0 81 80 00 1E 01 00 00 01 01 00 00 00 00 01 00 00 00 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 	t.SendToOutstation("C0 00");
 	REQUIRE(t.lower->PopWriteAsHex() == "21 81 80 00 1E 01 00 02 03 01 00 00 00 00 01 00 00 00 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 	t.SendToOutstation("C1 00");
 	REQUIRE(t.lower->PopWriteAsHex() == "22 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 	t.SendToOutstation("C2 00");
 	REQUIRE(t.lower->PopWriteAsHex() == "43 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 	t.SendToOutstation("C3 00");
 
 	REQUIRE(t.lower->PopWriteAsHex() == "");

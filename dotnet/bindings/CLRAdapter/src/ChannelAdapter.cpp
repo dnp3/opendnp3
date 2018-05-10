@@ -52,7 +52,7 @@ namespace Automatak
 				std::string stdLoggerId = Conversions::ConvertString(loggerId);				
 
 				auto SOEAdapter = std::shared_ptr<opendnp3::ISOEHandler>(new SOEHandlerAdapter(handler));
-				auto appAdapter = std::shared_ptr<opendnp3::IMasterApplication>(new MasterApplicationAdapter<opendnp3::IMasterApplication>(application));
+				auto appAdapter = std::shared_ptr<opendnp3::IMasterApplication>(new MasterApplicationAdapter(application));
 
 				auto master = (*channel)->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, Conversions::ConvertConfig(config));
 				return master ? gcnew MasterAdapter(master) : nullptr;

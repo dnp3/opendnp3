@@ -21,7 +21,17 @@ namespace Automatak
 			void OutstationApplicationAdapter::OnStateChange(opendnp3::LinkStatus value)
 			{
 				proxy->OnStateChange((LinkStatus)value);
-			}			
+			}
+
+			void OutstationApplicationAdapter::OnUnknownDestinationAddress(uint16_t destination)
+			{
+				proxy->OnUnknownDestinationAddress(destination);
+			}
+
+			void OutstationApplicationAdapter::OnUnknownSourceAddress(uint16_t source)
+			{
+				proxy->OnUnknownSourceAddress(source);
+			}
 
 			void OutstationApplicationAdapter::OnKeepAliveInitiated()
 			{
@@ -79,6 +89,7 @@ namespace Automatak
 				iin.deviceTrouble = indications.deviceTrouble;
 				iin.localControl = indications.localControl;
 				iin.needTime = indications.needTime;
+				iin.eventBufferOverflow = indications.eventBufferOverflow;
 				return iin;
 			}
 

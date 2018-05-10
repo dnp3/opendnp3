@@ -44,23 +44,15 @@ bool MockTransportLayer::SendDown(ITransportSegment& segments)
 	return pLinkLayer->Send(segments);
 }
 
-bool MockTransportLayer::OnReceive(const openpal::RSlice& buffer)
+bool MockTransportLayer::OnReceive(const Message& message)
 {
-	receivedQueue.push_back(ToHex(buffer));
+	receivedQueue.push_back(ToHex(message.payload));
 	return true;
 }
 
-bool MockTransportLayer::OnSendResult(bool isSuccess)
+bool MockTransportLayer::OnTxReady()
 {
-	if (isSuccess)
-	{
-		++state.successCnt;
-	}
-	else
-	{
-		++state.failureCnt;
-	}
-
+	++(this->counters.numTxReady);
 	return true;
 }
 
@@ -68,7 +60,7 @@ bool MockTransportLayer::OnLowerLayerUp()
 {
 	assert(!isOnline);
 	isOnline = true;
-	++state.numLayerUp;
+	++counters.numLayerUp;
 	return true;
 }
 
@@ -76,7 +68,7 @@ bool MockTransportLayer::OnLowerLayerDown()
 {
 	assert(isOnline);
 	isOnline = false;
-	++state.numLayerDown;
+	++counters.numLayerDown;
 	return true;
 }
 

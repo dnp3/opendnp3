@@ -60,6 +60,7 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 		this->SelectAllClass0<AnalogSpec>();
 		this->SelectAllClass0<BinaryOutputStatusSpec>();
 		this->SelectAllClass0<AnalogOutputStatusSpec>();
+		this->SelectAllClass0<OctetStringSpec>();
 		this->SelectAllClass0<TimeAndIntervalSpec>();
 
 		return IINField::Empty();
@@ -139,6 +140,9 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 
 		case(GroupVariation::Group50Var4) :
 			return this->SelectAllUsing<TimeAndIntervalSpec>(StaticTimeAndIntervalVariation::Group50Var4);
+
+		case(GroupVariation::Group110Var0):
+			return this->SelectAll<OctetStringSpec>();
 
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -222,6 +226,9 @@ IINField DatabaseBuffers::SelectRange(GroupVariation gv, const Range& range)
 	case(GroupVariation::Group50Var4) :
 		return this->SelectRangeUsing<TimeAndIntervalSpec>(range, StaticTimeAndIntervalVariation::Group50Var4);
 
+	case(GroupVariation::Group110Var0):
+		return this->SelectRangeUsing<OctetStringSpec>(range, StaticOctetStringVariation::Group110Var0);
+
 	default:
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
@@ -231,7 +238,7 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
 {
 	typedef bool (DatabaseBuffers::*LoadFun)(HeaderWriter & writer);
 
-	const int NUM_TYPE = 8;
+	const int NUM_TYPE = 9;
 
 	LoadFun functions[NUM_TYPE] =
 	{
@@ -242,7 +249,8 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
 		&DatabaseBuffers::LoadType<AnalogSpec>,
 		&DatabaseBuffers::LoadType<BinaryOutputStatusSpec>,
 		&DatabaseBuffers::LoadType<AnalogOutputStatusSpec>,
-		&DatabaseBuffers::LoadType<TimeAndIntervalSpec>
+		&DatabaseBuffers::LoadType<TimeAndIntervalSpec>,
+		&DatabaseBuffers::LoadType<OctetStringSpec>
 	};
 
 	for (int i = 0; i < NUM_TYPE; ++i)

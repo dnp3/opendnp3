@@ -36,7 +36,7 @@ struct StaticTypeBitField
 	StaticTypeBitField() : mask(0)
 	{}
 
-	StaticTypeBitField(uint16_t mask_) : mask(mask_)
+	StaticTypeBitField(uint16_t mask) : mask(mask)
 	{}
 
 	static StaticTypeBitField AllTypes()

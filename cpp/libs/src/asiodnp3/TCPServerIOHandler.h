@@ -28,6 +28,7 @@
 #include "asiopal/IPEndpoint.h"
 #include "asiopal/TCPServer.h"
 
+#include "opendnp3/gen/ServerAcceptMode.h"
 #include "openpal/executor/TimerRef.h"
 
 namespace asiodnp3
@@ -69,16 +70,18 @@ public:
 
 	static std::shared_ptr<TCPServerIOHandler> Create(
 	    const openpal::Logger& logger,
+	    opendnp3::ServerAcceptMode accept_mode,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
 	    std::error_code& ec)
 	{
-		return std::make_shared<TCPServerIOHandler>(logger, listener, executor, endpoint, ec);
+		return std::make_shared<TCPServerIOHandler>(logger, accept_mode, listener, executor, endpoint, ec);
 	}
 
 	TCPServerIOHandler(
 	    const openpal::Logger& logger,
+	    opendnp3::ServerAcceptMode accept_mode,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,

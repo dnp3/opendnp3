@@ -23,6 +23,8 @@
 
 #include <openpal/executor/TimeDuration.h>
 
+#include "Addresses.h"
+
 namespace opendnp3
 {
 
@@ -31,6 +33,8 @@ namespace opendnp3
 */
 struct LinkConfig
 {
+	LinkConfig() = delete;
+
 	LinkConfig(
 	    bool isMaster,
 	    bool useConfirms,
@@ -49,9 +53,7 @@ struct LinkConfig
 		KeepAliveTimeout(keepAliveTimeout)
 	{}
 
-	LinkConfig(
-	    bool isMaster,
-	    bool useConfirms) :
+	LinkConfig(bool isMaster, bool useConfirms) :
 
 		IsMaster(isMaster),
 		UseConfirms(useConfirms),
@@ -61,6 +63,11 @@ struct LinkConfig
 		Timeout(openpal::TimeDuration::Seconds(1)),
 		KeepAliveTimeout(openpal::TimeDuration::Minutes(1))
 	{}
+
+	inline Addresses GetAddresses() const
+	{
+		return Addresses(this->LocalAddr, this->RemoteAddr);
+	}
 
 	/// The master/outstation bit set on all messages
 	bool IsMaster;
@@ -83,10 +90,6 @@ struct LinkConfig
 	/// the interval for keep-alive messages (link status requests)
 	/// if set to TimeDuration::Max(), the keep-alive is disabled
 	openpal::TimeDuration KeepAliveTimeout;
-
-private:
-
-	LinkConfig() {}
 };
 
 }

@@ -18,42 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_UPPER_LAYER_H_
-#define __MOCK_UPPER_LAYER_H_
-
+#ifndef OPENDNP3_MOCKUPPERLAYER_H
+#define OPENDNP3_MOCKUPPERLAYER_H
 
 #include <opendnp3/LayerInterfaces.h>
 
-#include <functional>
-
-#include <testlib/BufferTestObject.h>
+#include "DataSink.h"
 
 namespace opendnp3
 {
 
-class MockUpperLayer : public IUpperLayer, public HasLowerLayer, public testlib::BufferTestObject
+class MockUpperLayer final : public IUpperLayer, public HasLowerLayer
 {
 public:
 
-	typedef std::function<void (const openpal::RSlice&)> OnReceiveHandler;
-
-	struct State
+	struct Counters
 	{
-
-		State()
-		{
-			Reset();
-		}
-
-		size_t mSuccessCnt;
-		size_t mFailureCnt;
-		size_t mNumLayerUp;
-		size_t mNumLayerDown;
-
-		void Reset()
-		{
-			mSuccessCnt = mFailureCnt = mNumLayerUp = mNumLayerDown = 0;
-		}
+		size_t numTxReady = 0;
+		size_t numLayerUp = 0;
+		size_t numLayerDown = 0;
 	};
 
 	MockUpperLayer();
@@ -63,50 +46,26 @@ public:
 		return isOnline;
 	}
 
-	bool SendDown(const std::string&);
-	bool SendDown(const openpal::RSlice& arBuffer);
+	bool SendDown(const std::string& hex, const Addresses& addresses = Addresses());
+	bool SendDown(const openpal::RSlice& data, const Addresses& addresses = Addresses());
 
-	bool CountersEqual(size_t success, size_t failure)
+	const Counters& GetCounters() const
 	{
-		return mState.mSuccessCnt == success && mState.mFailureCnt == failure;
-	}
-
-	bool StateEquals(const State& s)
-	{
-		return (mState.mSuccessCnt == s.mSuccessCnt)
-		       && (mState.mFailureCnt == s.mFailureCnt)
-		       && (mState.mNumLayerUp == s.mNumLayerUp)
-		       && (mState.mNumLayerDown == s.mNumLayerDown);
-	}
-
-	void Reset()
-	{
-		mState.Reset();
-	}
-	State GetState()
-	{
-		return mState;
-	}
-
-	void SetReceiveHandler(const OnReceiveHandler& arHandler)
-	{
-		mOnReceiveHandler = arHandler;
+		return counters;
 	}
 
 	//these are the NVII delegates
-	virtual bool OnReceive(const openpal::RSlice& buffer) override final;
-	virtual bool OnSendResult(bool isSuccess) override final;
-	virtual bool OnLowerLayerUp() override final;
-	virtual bool OnLowerLayerDown() override final;
+	virtual bool OnReceive(const Message& message) override;
+	virtual bool OnTxReady() override;
+	virtual bool OnLowerLayerUp() override;
+	virtual bool OnLowerLayerDown() override;
+
+	DataSink received;
 
 private:
 
 	bool isOnline;
-
-	OnReceiveHandler mOnReceiveHandler;
-	State mState;
-
-
+	Counters counters;
 };
 
 

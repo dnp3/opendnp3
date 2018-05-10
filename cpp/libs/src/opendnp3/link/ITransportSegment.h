@@ -23,6 +23,8 @@
 
 #include <openpal/container/RSlice.h>
 
+#include "opendnp3/link/Addresses.h"
+
 namespace opendnp3
 {
 
@@ -32,6 +34,8 @@ class ITransportSegment
 public:
 
 	virtual ~ITransportSegment() {}
+
+	virtual const Addresses& GetAddresses() const = 0;
 
 	virtual bool HasValue() const = 0;
 

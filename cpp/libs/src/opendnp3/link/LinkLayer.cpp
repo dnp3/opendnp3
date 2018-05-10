@@ -25,7 +25,13 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>& executor, const std::shared_ptr<IUpperLayer>& upper, const std::shared_ptr<opendnp3::ILinkListener>& listener, const LinkConfig& config) :
+LinkLayer::LinkLayer(
+    const openpal::Logger& logger,
+    const std::shared_ptr<openpal::IExecutor>& executor,
+    const std::shared_ptr<IUpperLayer>& upper,
+    const std::shared_ptr<opendnp3::ILinkListener>& listener,
+    const LinkLayerConfig& config
+) :
 	ctx(logger, executor, upper, listener, *this, config)
 {}
 
@@ -70,9 +76,9 @@ bool LinkLayer::OnLowerLayerDown()
 	return ctx.OnLowerLayerDown();
 }
 
-bool LinkLayer::OnTransmitResult(bool success)
+bool LinkLayer::OnTxReady()
 {
-	auto ret = ctx.OnTransmitResult(success);
+	auto ret = ctx.OnTxReady();
 
 	if (ret)
 	{

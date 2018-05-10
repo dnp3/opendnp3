@@ -10,10 +10,12 @@ namespace Automatak.DNP3.Interface
     /// Represents the set of IIN bits that can be controlled by the application
     /// </summary>
     public struct ApplicationIIN
-    {        
+    {
         public bool needTime;
         public bool localControl;
         public bool deviceTrouble;
         public bool configCorrupt;
+        // only for external event buffers that can overflow
+        public bool eventBufferOverflow;
     }
 }

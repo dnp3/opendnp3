@@ -234,6 +234,20 @@ namespace Automatak
 				return opendnp3::AnalogOutputStatus(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
+			opendnp3::OctetString Conversions::ConvertMeas(OctetString^ meas)
+			{				
+				uint8_t bytes[255];
+				const uint8_t length = meas->Bytes->Length > 255 ? 255 : static_cast<uint8_t>(meas->Bytes->Length);
+				for (uint8_t i = 0; i < length; ++i)
+				{
+					bytes[i] = meas->Bytes[i];
+				}
+				
+				opendnp3::OctetString converted(openpal::RSlice(bytes, length));				
+
+				return converted;
+			}
+
 			opendnp3::TimeAndInterval Conversions::ConvertMeas(TimeAndInterval^ meas)
 			{
 				return opendnp3::TimeAndInterval(opendnp3::DNPTime(meas->time), meas->interval, meas->units);
@@ -369,6 +383,7 @@ namespace Automatak
 				params.unsolClassMask = ConvertClassField(config->unsolClassMask);
 				params.unsolConfirmTimeout = ConvertTimespan(config->unsolicitedConfirmTimeout);
 				params.unsolRetryTimeout = ConvertTimespan(config->unsolicitedRetryPeriod);
+				params.respondToAnyMaster = config->respondToAnyMaster;
 				
 				return params;
 			}
@@ -408,7 +423,8 @@ namespace Automatak
 					config->databaseTemplate->frozenCounters->Count,
 					config->databaseTemplate->binaryOutputStatii->Count,
 					config->databaseTemplate->analogOutputStatii->Count,
-					config->databaseTemplate->timeAndIntervals->Count
+					config->databaseTemplate->timeAndIntervals->Count,
+					config->databaseTemplate->octetStrings->Count
 				);
 
 

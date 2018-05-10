@@ -44,7 +44,8 @@ object DNPCppEnumGroup {
     ConfigAuthMode(),
     SecurityStatIndex(),
     RestartType(),
-    OperateType()
+    OperateType(),
+    ServerAcceptMode()
   ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, false, false))
 
   private def stringOnlyEnums = List(

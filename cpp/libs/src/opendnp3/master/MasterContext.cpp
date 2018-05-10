@@ -41,6 +41,7 @@ using namespace openpal;
 namespace opendnp3
 {
 MContext::MContext(
+    const Addresses& addresses,
     const openpal::Logger& logger,
     const std::shared_ptr<openpal::IExecutor>& executor,
     const std::shared_ptr<ILowerLayer>& lower,
@@ -52,6 +53,7 @@ MContext::MContext(
 	logger(logger),
 	executor(executor),
 	lower(lower),
+	addresses(addresses),
 	params(params),
 	SOEHandler(SOEHandler),
 	application(application),
@@ -97,7 +99,7 @@ bool MContext::OnLowerLayerDown()
 	return true;
 }
 
-bool MContext::OnReceive(const openpal::RSlice& apdu)
+bool MContext::OnReceive(const Message& message)
 {
 	if (!this->isOnline)
 	{
@@ -105,29 +107,32 @@ bool MContext::OnReceive(const openpal::RSlice& apdu)
 		return false;
 	}
 
-	APDUResponseHeader header;
-	if (!APDUHeaderParser::ParseResponse(apdu, header, &this->logger))
+	if (message.addresses.destination != this->addresses.source)
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unknown destination address: %u", message.addresses.destination);
+		return false;
+	}
+
+	if (message.addresses.source != this->addresses.destination)
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unexpected message source: %u", message.addresses.source);
+		return false;
+	}
+
+	const auto result = APDUHeaderParser::ParseResponse(message.payload, &this->logger);
+	if (!result.success)
 	{
 		return true;
 	}
 
+	logging::LogHeader(this->logger, flags::APP_HEADER_RX, result.header);
 
-	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-	                 header.control.FIR,
-	                 header.control.FIN,
-	                 header.control.CON,
-	                 header.control.UNS,
-	                 header.control.SEQ,
-	                 FunctionCodeToString(header.function),
-	                 header.IIN.LSB,
-	                 header.IIN.MSB);
+	this->OnParsedHeader(message.payload, result.header, result.objects);
 
-	this->OnParsedHeader(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 	return true;
 }
 
-bool MContext::OnSendResult(bool isSucccess)
+bool MContext::OnTxReady()
 {
 	if (!this->isOnline || !this->isSending)
 	{
@@ -275,7 +280,9 @@ void MContext::Transmit(const RSlice& data)
 	logging::ParseAndLogRequestTx(this->logger, data);
 	assert(!this->isSending);
 	this->isSending = true;
-	this->lower->BeginTransmit(data);
+	this->lower->BeginTransmit(
+	    Message(this->addresses, data)
+	);
 }
 
 void MContext::StartResponseTimer()

@@ -19,6 +19,7 @@
 package com.automatak.dnp3.example;
 
 import com.automatak.dnp3.*;
+import com.automatak.dnp3.enums.ServerAcceptMode;
 import com.automatak.dnp3.impl.DNP3ManagerFactory;
 import com.automatak.dnp3.mock.DefaultOutstationApplication;
 import com.automatak.dnp3.mock.PrintingChannelListener;
@@ -58,7 +59,7 @@ public class OutstationDemo {
         Channel channel = manager.addTCPServer(
                 "client",
                 LogMasks.NORMAL | LogMasks.APP_COMMS,
-                ChannelRetry.getDefault(),
+                ServerAcceptMode.CloseExisting,
                 "127.0.0.1",
                 20000,
                 PrintingChannelListener.getInstance()

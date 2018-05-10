@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_LAYER_TEST_H_
-#define __LINK_LAYER_TEST_H_
+#ifndef OPENDNP3_LINKLAYERTEST_H
+#define OPENDNP3_LINKLAYERTEST_H
 
 #include "MockTransportLayer.h"
 
@@ -41,14 +41,16 @@ class LinkLayerTest : public ILinkTx
 {
 public:
 
-	LinkLayerTest(LinkConfig config = DefaultConfig());
+	LinkLayerTest(const LinkConfig& config);
+
+	LinkLayerTest(const LinkLayerConfig& config = DefaultConfig());
 
 	bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata = openpal::RSlice::Empty());
 
 	//ILinkTx interface
 	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context) override final;
 
-	static LinkConfig DefaultConfig();
+	static LinkLayerConfig DefaultConfig();
 
 	testlib::MockLogHandler log;
 	std::shared_ptr<testlib::MockExecutor> exe;

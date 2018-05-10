@@ -35,7 +35,6 @@
 #include "opendnp3/outstation/CommandActionAdapter.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
 #include "opendnp3/outstation/ConstantCommandAction.h"
-#include "opendnp3/outstation/EventWriter.h"
 
 #include "opendnp3/outstation/ClassBasedRequestHandler.h"
 #include "opendnp3/outstation/AssignClassHandler.h"
@@ -48,6 +47,7 @@ namespace opendnp3
 {
 
 OContext::OContext(
+    const Addresses& addresses,
     const OutstationConfig& config,
     const DatabaseSizes& dbSizes,
     const openpal::Logger& logger,
@@ -56,6 +56,7 @@ OContext::OContext(
     const std::shared_ptr<ICommandHandler>& commandHandler,
     const std::shared_ptr<IOutstationApplication>& application) :
 
+	addresses(addresses),
 	logger(logger),
 	executor(executor),
 	lower(lower),
@@ -113,7 +114,7 @@ bool OContext::OnLowerLayerDown()
 	return true;
 }
 
-bool OContext::OnSendResult(bool isSuccess)
+bool OContext::OnTxReady()
 {
 	if (!isOnline || !isTransmitting)
 	{
@@ -125,7 +126,7 @@ bool OContext::OnSendResult(bool isSuccess)
 	return true;
 }
 
-bool OContext::OnReceive(const openpal::RSlice& fragment)
+bool OContext::OnReceive(const Message& message)
 {
 	if (!this->isOnline)
 	{
@@ -133,109 +134,114 @@ bool OContext::OnReceive(const openpal::RSlice& fragment)
 		return false;
 	}
 
-	this->ParseHeader(fragment);
+	this->ProcessMessage(message);
+
 	this->CheckForTaskStart();
+
 	return true;
 }
 
-OutstationState& OContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::RSlice& objects)
+OutstationState& OContext::OnReceiveSolRequest(const ParsedRequest& request)
 {
 	// analyze this request to see how it compares to the last request
 	if (this->history.HasLastRequest())
 	{
-		if (this->sol.seq.num.Equals(header.control.SEQ))
+		if (this->sol.seq.num.Equals(request.header.control.SEQ))
 		{
-			if (this->history.FullyEqualsLastRequest(header, objects))
+			if (this->history.FullyEqualsLastRequest(request.header, request.objects))
 			{
-				if (header.function == FunctionCode::READ)
+				if (request.header.function == FunctionCode::READ)
 				{
-					return this->state->OnRepeatReadRequest(*this, header, objects);
+					return this->state->OnRepeatReadRequest(*this, request);
 				}
 				else
 				{
-					return this->state->OnRepeatNonReadRequest(*this, header, objects);
+					return this->state->OnRepeatNonReadRequest(*this, request);
 				}
 			}
 			else // new operation with same SEQ
 			{
-				return this->ProcessNewRequest(header, objects);
+				return this->ProcessNewRequest(request);
 			}
 		}
 		else  // completely new sequence #
 		{
-			return this->ProcessNewRequest(header, objects);
+			return this->ProcessNewRequest(request);
 		}
 	}
 	else
 	{
-		return this->ProcessNewRequest(header, objects);
+		return this->ProcessNewRequest(request);
 	}
 }
 
-OutstationState& OContext::ProcessNewRequest(const APDUHeader& header, const openpal::RSlice& objects)
+OutstationState& OContext::ProcessNewRequest(const ParsedRequest& request)
 {
-	this->sol.seq.num = header.control.SEQ;
+	this->sol.seq.num = request.header.control.SEQ;
 
-	if (header.function == FunctionCode::READ)
+	if (request.header.function == FunctionCode::READ)
 	{
-		return this->state->OnNewReadRequest(*this, header, objects);
+		return this->state->OnNewReadRequest(*this, request);
 	}
 	else
 	{
-		return this->state->OnNewNonReadRequest(*this, header, objects);
+		return this->state->OnNewNonReadRequest(*this, request);
 	}
 }
 
-void OContext::ProcessAPDU(const openpal::RSlice& apdu, const APDUHeader& header, const openpal::RSlice& objects)
+bool OContext::ProcessObjects(const ParsedRequest& request)
 {
-	if (Functions::IsNoAckFuncCode(header.function))
+	if (Functions::IsNoAckFuncCode(request.header.function))
 	{
 		// this is the only request we process while we are transmitting
 		// because it doesn't require a response of any kind
-		this->ProcessRequestNoAck(header, objects);
+		return this->ProcessRequestNoAck(request);
 	}
 	else
 	{
 		if (this->isTransmitting)
 		{
-			this->deferred.Set(header, objects);
+			this->deferred.Set(request);
+			return true;
 		}
 		else
 		{
-			if (header.function == FunctionCode::CONFIRM)
+			if (request.header.function == FunctionCode::CONFIRM)
 			{
-				this->ProcessConfirm(header);
+				return this->ProcessConfirm(request);
 			}
 			else
 			{
-				this->ProcessRequest(header, objects);
+				return this->ProcessRequest(request);
 			}
 		}
 	}
 }
 
-
-void OContext::ProcessRequest(const APDUHeader& header, const openpal::RSlice& objects)
+bool OContext::ProcessRequest(const ParsedRequest& request)
 {
-	if (header.control.UNS)
+	if (request.header.control.UNS)
 	{
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(request.header.function));
+		return false;
 	}
 	else
 	{
-		this->state = &this->OnReceiveSolRequest(header, objects);
+		this->state = &this->OnReceiveSolRequest(request);
+		return true;
 	}
 }
 
-void OContext::ProcessConfirm(const APDUHeader& header)
+bool OContext::ProcessConfirm(const ParsedRequest& request)
 {
-	this->state = &this->state->OnConfirm(*this, header);
+	this->state = &this->state->OnConfirm(*this, request);
+	return true;
 }
 
-void OContext::BeginResponseTx(const AppControlField& control, const RSlice& response)
+void OContext::BeginResponseTx(uint16_t destination, const openpal::RSlice& data, const AppControlField& control)
 {
-	this->sol.tx.Record(control, response);
-	this->BeginTx(response);
+	this->sol.tx.Record(control, data);
+	this->BeginTx(destination, data);
 }
 
 void OContext::BeginUnsolTx(const AppControlField& control, const RSlice& response)
@@ -243,42 +249,47 @@ void OContext::BeginUnsolTx(const AppControlField& control, const RSlice& respon
 	this->unsol.tx.Record(control, response);
 	this->unsol.seq.confirmNum = this->unsol.seq.num;
 	this->unsol.seq.num.Increment();
-	this->BeginTx(response);
+	this->BeginTx(this->addresses.destination, response);
 }
 
-void OContext::BeginTx(const openpal::RSlice& response)
+void OContext::BeginTx(uint16_t destination, const openpal::RSlice& message)
 {
-	logging::ParseAndLogResponseTx(this->logger, response);
+	logging::ParseAndLogResponseTx(this->logger, message);
 	this->isTransmitting = true;
-	this->lower->BeginTransmit(response);
+	this->lower->BeginTransmit(
+	    Message(
+	        Addresses(this->addresses.source, destination),
+	        message
+	    )
+	);
 }
 
 void OContext::CheckForDeferredRequest()
 {
 	if (this->CanTransmit() && this->deferred.IsSet())
 	{
-		auto handler = [this](const APDUHeader & header, const RSlice & objects)
+		auto handler = [this](const ParsedRequest & request)
 		{
-			return this->ProcessDeferredRequest(header, objects);
+			return this->ProcessDeferredRequest(request);
 		};
 		this->deferred.Process(handler);
 	}
 }
 
-bool OContext::ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects)
+bool OContext::ProcessDeferredRequest(const ParsedRequest& request)
 {
-	if (header.function == FunctionCode::CONFIRM)
+	if (request.header.function == FunctionCode::CONFIRM)
 	{
-		this->ProcessConfirm(header);
+		this->ProcessConfirm(request);
 		return true;
 	}
 	else
 	{
-		if (header.function == FunctionCode::READ)
+		if (request.header.function == FunctionCode::READ)
 		{
 			if (this->state->IsIdle())
 			{
-				this->ProcessRequest(header, objects);
+				this->ProcessRequest(request);
 				return true;
 			}
 			else
@@ -288,7 +299,7 @@ bool OContext::ProcessDeferredRequest(APDUHeader header, openpal::RSlice objects
 		}
 		else
 		{
-			this->ProcessRequest(header, objects);
+			this->ProcessRequest(request);
 			return true;
 		}
 	}
@@ -340,32 +351,41 @@ void OContext::RestartConfirmTimer()
 	this->confirmTimer.Restart(this->params.unsolConfirmTimeout, timeout);
 }
 
-void OContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::RSlice& objects)
+void OContext::RespondToNonReadRequest(const ParsedRequest& request)
 {
-	this->history.RecordLastProcessedRequest(header, objects);
+	this->history.RecordLastProcessedRequest(request.header, request.objects);
 
 	auto response = this->sol.tx.Start();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
-	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
-	auto iin = this->HandleNonReadResponse(header, objects, writer);
+	response.SetControl(AppControlField(true, true, false, false, request.header.control.SEQ));
+	auto iin = this->HandleNonReadResponse(request.header, request.objects, writer);
 	response.SetIIN(iin | this->GetResponseIIN());
-	this->BeginResponseTx(response.GetControl(), response.ToRSlice());
+	this->BeginResponseTx(
+	    request.addresses.source,
+	    response.ToRSlice(),
+	    response.GetControl()
+	);
 }
 
-OutstationState& OContext::RespondToReadRequest(const APDUHeader& header, const openpal::RSlice& objects)
+OutstationState& OContext::RespondToReadRequest(const ParsedRequest& request)
 {
-	this->history.RecordLastProcessedRequest(header, objects);
+	this->history.RecordLastProcessedRequest(request.header, request.objects);
 
 	auto response = this->sol.tx.Start();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
-	auto result = this->HandleRead(objects, writer);
-	result.second.SEQ = header.control.SEQ;
-	this->sol.seq.confirmNum = header.control.SEQ;
+	auto result = this->HandleRead(request.objects, writer);
+	result.second.SEQ = request.header.control.SEQ;
+	this->sol.seq.confirmNum = request.header.control.SEQ;
 	response.SetControl(result.second);
 	response.SetIIN(result.first | this->GetResponseIIN());
-	this->BeginResponseTx(response.GetControl(), response.ToRSlice());
+
+	this->BeginResponseTx(
+	    request.addresses.source,
+	    response.ToRSlice(),
+	    response.GetControl()
+	);
 
 	if (result.second.CON)
 	{
@@ -378,7 +398,7 @@ OutstationState& OContext::RespondToReadRequest(const APDUHeader& header, const 
 	}
 }
 
-OutstationState& OContext::ContinueMultiFragResponse(const AppSeqNum& seq)
+OutstationState& OContext::ContinueMultiFragResponse(const Addresses& addresses, const AppSeqNum& seq)
 {
 	auto response = this->sol.tx.Start();
 	auto writer = response.GetWriter();
@@ -388,7 +408,11 @@ OutstationState& OContext::ContinueMultiFragResponse(const AppSeqNum& seq)
 	this->sol.seq.confirmNum = seq;
 	response.SetControl(control);
 	response.SetIIN(this->GetResponseIIN());
-	this->BeginResponseTx(response.GetControl(), response.ToRSlice());
+	this->BeginResponseTx(
+	    addresses.source,
+	    response.ToRSlice(),
+	    response.GetControl()
+	);
 
 	if (control.CON)
 	{
@@ -424,35 +448,49 @@ IINField OContext::GetDynamicIIN()
 	return ret;
 }
 
-void OContext::ParseHeader(const openpal::RSlice& apdu)
+bool OContext::ProcessMessage(const Message& message)
 {
-	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, apdu, 18, 18);
-
-	APDUHeader header;
-	if (!APDUHeaderParser::ParseRequest(apdu, header, &this->logger))
+	// is the message addressed to this outstation
+	if(message.addresses.destination != this->addresses.source)
 	{
-		return;
+		return false;
 	}
 
-	FORMAT_LOG_BLOCK(this->logger, flags::APP_HEADER_RX,
-	                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-	                 header.control.FIR,
-	                 header.control.FIN,
-	                 header.control.CON,
-	                 header.control.UNS,
-	                 header.control.SEQ,
-	                 FunctionCodeToString(header.function));
-
-	// outstations should only process single fragment messages that don't request confirmation
-	if (!header.control.IsFirAndFin() || header.control.CON)
+	// is the message coming from the expected master?
+	if (!this->params.respondToAnyMaster && (message.addresses.source != this->addresses.destination))
 	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Request must be FIR/FIN/!CON");
-		return;
+		return false;
 	}
 
-	auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
+	FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, message.payload, 18, 18);
 
-	this->ProcessAPDU(apdu, header, objects);
+	const auto result = APDUHeaderParser::ParseRequest(message.payload, &this->logger);
+	if (!result.success)
+	{
+		return false;
+	}
+
+	logging::LogHeader(this->logger, flags::APP_HEADER_RX, result.header);
+
+	if (!result.header.control.IsFirAndFin())
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Requests must have FIR/FIN == 1");
+		return false;
+	}
+
+	if (result.header.control.CON)
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Ignoring fragment. Requests cannot request confirmation");
+		return false;
+	}
+
+	return this->ProcessObjects(
+	           ParsedRequest(
+	               message.addresses,
+	               result.header,
+	               result.objects
+	           )
+	       );
 }
 
 void OContext::CheckForTaskStart()
@@ -479,16 +517,16 @@ DatabaseConfigView OContext::GetConfigView()
 
 //// ----------------------------- function handlers -----------------------------
 
-void OContext::ProcessRequestNoAck(const APDUHeader& header, const openpal::RSlice& objects)
+bool OContext::ProcessRequestNoAck(const ParsedRequest& request)
 {
-	switch (header.function)
+	switch (request.header.function)
 	{
 	case(FunctionCode::DIRECT_OPERATE_NR) :
-		this->HandleDirectOperate(objects, OperateType::DirectOperateNoAck, nullptr); // no object writer, this is a no ack code
-		break;
+		this->HandleDirectOperate(request.objects, OperateType::DirectOperateNoAck, nullptr); // no object writer, this is a no ack code
+		return true;
 	default:
-		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
-		break;
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(request.header.function));
+		return false;
 	}
 }
 

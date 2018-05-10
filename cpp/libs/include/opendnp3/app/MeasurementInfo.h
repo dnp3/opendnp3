@@ -23,6 +23,7 @@
 
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/SecurityStat.h"
+#include "opendnp3/app/OctetString.h"
 
 #include "opendnp3/app/EventType.h"
 
@@ -34,6 +35,7 @@
 #include "opendnp3/gen/StaticAnalogVariation.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/StaticTimeAndIntervalVariation.h"
+#include "opendnp3/gen/StaticOctetStringVariation.h"
 #include "opendnp3/gen/StaticSecurityStatVariation.h"
 
 #include "opendnp3/gen/EventBinaryVariation.h"
@@ -44,6 +46,7 @@
 #include "opendnp3/gen/EventAnalogVariation.h"
 #include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/EventSecurityStatVariation.h"
+#include "opendnp3/gen/EventOctetStringVariation.h"
 
 #include "opendnp3/gen/StaticTypeBitmask.h"
 #include "opendnp3/gen/BinaryQuality.h"
@@ -92,10 +95,7 @@ public:
 	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
 	static const event_variation_t DefaultEventVariation = EventBinaryOutputStatusVariation::Group11Var1;
 	static const static_variation_t DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
-
-
 };
-
 
 struct AnalogInfo : private openpal::StaticOnly
 {
@@ -149,6 +149,18 @@ struct AnalogOutputStatusInfo : private openpal::StaticOnly
 	static const static_variation_t DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
 };
 
+struct OctetStringInfo : private openpal::StaticOnly
+{
+	typedef OctetString meas_t;
+	typedef EventOctetStringVariation event_variation_t;
+	typedef StaticOctetStringVariation static_variation_t;
+
+	static const EventType EventTypeEnum = EventType::OctetString;
+	static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::OctetString;
+	static const event_variation_t DefaultEventVariation = EventOctetStringVariation::Group111Var0;
+	static const static_variation_t DefaultStaticVariation = StaticOctetStringVariation::Group110Var0;
+};
+
 struct TimeAndIntervalInfo : private openpal::StaticOnly
 {
 	typedef TimeAndInterval meas_t;
@@ -165,7 +177,6 @@ struct SecurityStatInfo : private openpal::StaticOnly
 	typedef EventSecurityStatVariation event_variation_t;
 	typedef StaticSecurityStatVariation static_variation_t;
 
-	const static EventType EventTypeEnum = EventType::SecurityStat;
 	const static event_variation_t DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
 	const static static_variation_t DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
 };

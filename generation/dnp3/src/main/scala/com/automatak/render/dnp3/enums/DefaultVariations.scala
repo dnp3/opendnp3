@@ -19,6 +19,7 @@ object DefaultVariations {
     create("StaticBinaryOutputStatusVariation",group(10)(2)),
     create("StaticAnalogOutputStatusVariation",group(40)(1,2,3,4)),
     create("StaticTimeAndIntervalVariation", group(50)(4)),
+    create("StaticOctetStringVariation", group(110)(0)),
     create("StaticSecurityStatVariation", group(121)(1)),
 
     create("EventBinaryVariation", group(2)(1,2,3)),
@@ -28,6 +29,8 @@ object DefaultVariations {
     create("EventFrozenCounterVariation", group(23)(1,2,5,6)),
     create("EventBinaryOutputStatusVariation",group(11)(1,2)),
     create("EventAnalogOutputStatusVariation",group(42)(1,2,3,4,5,6,7,8)),
+    create("EventOctetStringVariation", group(111)(0)),
     create("EventSecurityStatVariation", group(122)(1,2))
+
   )
 }

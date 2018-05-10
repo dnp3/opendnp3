@@ -27,7 +27,6 @@
 
 #include "opendnp3/app/APDUHeader.h"
 
-
 namespace opendnp3
 {
 
@@ -36,9 +35,40 @@ class APDUHeaderParser : private openpal::StaticOnly
 
 public:
 
-	static bool ParseRequest(const openpal::RSlice& apdu, APDUHeader& header, openpal::Logger* pLogger = nullptr);
+	template <class T>
+	class Result
+	{
+	public:
 
-	static bool ParseResponse(const openpal::RSlice& apdu, APDUResponseHeader& header, openpal::Logger* pLogger = nullptr);
+		const bool success;
+		const T header;
+		const openpal::RSlice objects;
+
+		static Result Ok(const T& header, const openpal::RSlice& objects)
+		{
+			return Result(header, objects);
+		}
+
+		static Result Error()
+		{
+			return Result();
+		}
+
+	private:
+
+		Result(const T& header, const openpal::RSlice& objects) :
+			success(true),
+			header(header),
+			objects(objects)
+		{}
+
+		Result() : success(false)
+		{}
+	};
+
+	static Result<APDUHeader> ParseRequest(const openpal::RSlice& apdu, openpal::Logger* logger = nullptr);
+
+	static Result<APDUResponseHeader> ParseResponse(const openpal::RSlice& apdu, openpal::Logger* logger = nullptr);
 
 };
 

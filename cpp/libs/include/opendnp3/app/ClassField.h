@@ -40,6 +40,8 @@ public:
 
 	explicit ClassField(PointClass pc);
 
+	explicit ClassField(EventClass ec);
+
 	explicit ClassField(uint8_t mask_);
 
 	ClassField(bool class0, bool class1, bool class2, bool class3);

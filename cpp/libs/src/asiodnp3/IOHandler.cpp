@@ -32,8 +32,10 @@ namespace asiodnp3
 
 IOHandler::IOHandler(
     const openpal::Logger& logger,
+    bool close_existing,
     const std::shared_ptr<IChannelListener>& listener
 ) :
+	close_existing(close_existing),
 	logger(logger),
 	listener(listener),
 	parser(logger)
@@ -94,7 +96,7 @@ void IOHandler::OnWriteComplete(const std::error_code& ec, size_t num)
 		{
 			const auto session = this->txQueue.front().session;
 			this->txQueue.pop_front();
-			session->OnTransmitResult(true);
+			session->OnTxReady();
 		}
 
 		this->CheckForSend();
@@ -220,9 +222,17 @@ bool IOHandler::Remove(const std::shared_ptr<opendnp3::ILinkSession>& session)
 
 void IOHandler::OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel)
 {
-	this->Reset();
+	// if we have an active channel, and we're configured to close new channels
+	// close the new channel instead
+	if(this->channel && !this->close_existing)
+	{
+		channel->Shutdown();
+		return;
+	}
 
 	++this->statistics.numOpen;
+
+	this->Reset();
 
 	this->channel = channel;
 
@@ -269,21 +279,17 @@ void IOHandler::CheckForSend()
 
 bool IOHandler::SendToSession(const opendnp3::Route& route, const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
-	auto matches = [route](const Session & session)
-	{
-		return session.enabled && session.Matches(route);
-	};
+	bool accepted = false;
 
-	const auto iter = std::find_if(sessions.begin(), sessions.end(), matches);
+	for (auto& session : sessions)
+	{
+		if (session.enabled)
+		{
+			accepted |= session.OnFrame(header, userdata);
+		}
+	}
 
-	if (iter == sessions.end())
-	{
-		return false;
-	}
-	else
-	{
-		return iter->OnFrame(header, userdata);
-	}
+	return accepted;
 }
 
 bool IOHandler::IsRouteInUse(const Route& route) const

@@ -34,7 +34,7 @@
 #include "opendnp3/outstation/IResponseLoader.h"
 #include "opendnp3/outstation/IStaticSelector.h"
 #include "opendnp3/outstation/IClassAssigner.h"
-#include "opendnp3/outstation/StaticLoadFunctions.h"
+#include "opendnp3/outstation/StaticWriters.h"
 
 namespace opendnp3
 {
@@ -239,7 +239,7 @@ bool DatabaseBuffers::LoadType(HeaderWriter& writer)
 			if (view[range.start].selection.selected)
 			{
 				/// lookup the specific write function based on the reporting variation
-				auto writeFun = GetStaticWriter(view[range.start].selection.variation);
+				auto writeFun = StaticWriters::Get(view[range.start].selection.variation);
 
 				// start writing a header, the invoked function will advance the range appropriately
 				spaceRemaining = writeFun(view, writer, range);

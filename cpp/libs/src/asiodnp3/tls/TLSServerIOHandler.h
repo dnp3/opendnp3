@@ -29,6 +29,7 @@
 #include "asiopal/tls/TLSServer.h"
 
 #include "openpal/executor/TimerRef.h"
+#include "opendnp3/gen/ServerAcceptMode.h"
 
 namespace asiodnp3
 {
@@ -78,17 +79,19 @@ public:
 
 	static std::shared_ptr<TLSServerIOHandler> Create(
 	    const openpal::Logger& logger,
+	    opendnp3::ServerAcceptMode mode,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,
 	    const asiopal::TLSConfig& config,
 	    std::error_code& ec)
 	{
-		return std::make_shared<TLSServerIOHandler>(logger, listener, executor, endpoint, config, ec);
+		return std::make_shared<TLSServerIOHandler>(logger, mode, listener, executor, endpoint, config, ec);
 	}
 
 	TLSServerIOHandler(
 	    const openpal::Logger& logger,
+	    opendnp3::ServerAcceptMode mode,
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::IPEndpoint& endpoint,

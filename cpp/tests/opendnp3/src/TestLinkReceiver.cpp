@@ -240,7 +240,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 	t.WriteData(frame);
 	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLast(LinkFunction::PRI_UNCONFIRMED_USER_DATA, true, 1, 2));
-	REQUIRE(t.sink.BufferEquals(data, data.Size()));
+	REQUIRE(t.sink.received.Equals(data.ToRSlice()));
 }
 
 TEST_CASE(SUITE("ConfirmedUserData"))
@@ -255,7 +255,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 	t.WriteData(frame);
 	REQUIRE(t.sink.m_num_frames == 1);
 	REQUIRE(t.sink.CheckLastWithFCB(LinkFunction::PRI_CONFIRMED_USER_DATA, true, true, 1, 2));
-	REQUIRE(t.sink.BufferEquals(data, data.Size()));
+	REQUIRE(t.sink.received.Equals(data.ToRSlice()));
 }
 
 //////////////////////////////////////////

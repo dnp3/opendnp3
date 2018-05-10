@@ -41,7 +41,8 @@ namespace Automatak.DNP3.Interface
         /// <param name="numCounter">numer of frozen counter values starting at index 0</param>
         /// <param name="numBinaryOutputStatus">numer of control status values starting at index 0</param>
         /// <param name="numAnalogOutputStatus">numer of setpoint status values starting at index 0</param>
-        /// /// <param name="numTimeAndInterval">numer of TimeAndInterval values starting at index 0</param>
+        /// <param name="numTimeAndInterval">numer of TimeAndInterval values starting at index 0</param>
+        /// <param name="numOctetString">numer of OctetString values starting at index 0</param>
         public DatabaseTemplate(  System.UInt16 numBinary,
                                   System.UInt16 numDoubleBinary,
                                   System.UInt16 numAnalog,
@@ -49,7 +50,9 @@ namespace Automatak.DNP3.Interface
                                   System.UInt16 numFrozenCounter,
                                   System.UInt16 numBinaryOutputStatus,
                                   System.UInt16 numAnalogOutputStatus,
-                                  System.UInt16 numTimeAndInterval)
+                                  System.UInt16 numTimeAndInterval,
+                                  System.UInt16 numOctetString
+            )
         {
             this.binaries = Enumerable.Range(0, numBinary).Select(i => new BinaryRecord(Convert.ToUInt16(i))).ToList();
 
@@ -66,12 +69,14 @@ namespace Automatak.DNP3.Interface
             this.analogOutputStatii = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new AnalogOutputStatusRecord(Convert.ToUInt16(i))).ToList();
 
             this.timeAndIntervals = Enumerable.Range(0, numTimeAndInterval).Select(i => new TimeAndIntervalRecord(Convert.ToUInt16(i))).ToList();
-        }
+
+            this.octetStrings = Enumerable.Range(0, numOctetString).Select(i => new OctetStringRecord(Convert.ToUInt16(i))).ToList();
+        }        
 
         /// <summary>
         /// Default constructor that sets every value to the same count
         /// </summary>
-        public DatabaseTemplate(System.UInt16 count) : this(count, count, count, count, count, count, count, count)
+        public DatabaseTemplate(System.UInt16 count) : this(count, count, count, count, count, count, count, count, count)
         { }
 
         /// <summary>
@@ -90,7 +95,8 @@ namespace Automatak.DNP3.Interface
                 CreateTuple(analogs, "analog"),
                 CreateTuple(binaryOutputStatii, "binary output status"),
                 CreateTuple(analogOutputStatii, "analog output status"),
-                CreateTuple(timeAndIntervals, "time and interval")
+                CreateTuple(timeAndIntervals, "time and interval"),
+                CreateTuple(octetStrings, "octet string")
             };
 
             // this can throw an exception if any of the sub lists have bad discontiguous indices
@@ -131,6 +137,10 @@ namespace Automatak.DNP3.Interface
         ///  Modify individual time and interval configuration here
         /// </summary>
         public IReadOnlyList<TimeAndIntervalRecord> timeAndIntervals;
+        /// <summary>
+        ///  Modify individual OctetStrings configuration here
+        /// </summary>
+        public IReadOnlyList<OctetStringRecord> octetStrings;
 
         private Tuple<IReadOnlyList<PointRecord>, string> CreateTuple(IReadOnlyList<PointRecord> list, string name)
         {

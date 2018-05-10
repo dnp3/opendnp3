@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "mocks/MasterTestObject.h"
+#include "mocks/MasterTestFixture.h"
 
 #include <dnp3mocks/APDUHexBuilders.h>
 #include <testlib/HexConversions.h>
@@ -33,7 +33,7 @@ using namespace openpal;
 
 TEST_CASE(SUITE("AssignsClassAfterConnect"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 
 	// configure the mock application to do assign class on startup
 	t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));
@@ -44,7 +44,7 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 16 3C 02 06 03 00 06");
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();
 	t.SendToMaster("C0 81 00 00");
 	t.exe->RunMany();
 
@@ -62,7 +62,7 @@ TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))
 {
 	auto params = NoStartupTasks();
 	params.disableUnsolOnStartup = true;
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 
 	// configure the mock application to do assign class on startup
 	t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));

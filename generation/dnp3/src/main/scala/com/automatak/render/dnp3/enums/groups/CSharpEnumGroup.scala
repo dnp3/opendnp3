@@ -37,7 +37,8 @@ object CSharpEnumGroup {
     Parity(),
     StopBits(),
     FlowControl(),
-    FlagsType()
+    FlagsType(),
+    ServerAcceptMode()
   ) ::: DefaultVariations.enums ::: QualityMasks.enums
 
 

@@ -47,7 +47,7 @@ TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFrag
 // Actions
 ///////////////////////////////////////
 
-bool TransportLayer::BeginTransmit(const RSlice& apdu)
+bool TransportLayer::BeginTransmit(const Message& message)
 {
 	if (!isOnline)
 	{
@@ -55,7 +55,7 @@ bool TransportLayer::BeginTransmit(const RSlice& apdu)
 		return false;
 	}
 
-	if (apdu.IsEmpty())
+	if (message.payload.IsEmpty())
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
 		return false;
@@ -74,7 +74,7 @@ bool TransportLayer::BeginTransmit(const RSlice& apdu)
 	}
 
 	isSending = true;
-	transmitter.Configure(apdu);
+	transmitter.Configure(message);
 	lower->Send(transmitter);
 
 	return true;
@@ -84,14 +84,14 @@ bool TransportLayer::BeginTransmit(const RSlice& apdu)
 // IUpperLayer
 ///////////////////////////////////////
 
-bool TransportLayer::OnReceive(const RSlice& tpdu)
+bool TransportLayer::OnReceive(const Message& message)
 {
 	if (isOnline)
 	{
-		auto apdu = receiver.ProcessReceive(tpdu);
-		if (apdu.IsNotEmpty() && upper)
+		const auto asdu = receiver.ProcessReceive(message);
+		if (asdu.payload.IsNotEmpty() && upper)
 		{
-			upper->OnReceive(apdu);
+			upper->OnReceive(asdu);
 		}
 		return true;
 	}
@@ -102,7 +102,7 @@ bool TransportLayer::OnReceive(const RSlice& tpdu)
 	}
 }
 
-bool TransportLayer::OnSendResult(bool isSuccess)
+bool TransportLayer::OnTxReady()
 {
 	if (!isOnline)
 	{
@@ -120,7 +120,7 @@ bool TransportLayer::OnSendResult(bool isSuccess)
 
 	if (upper)
 	{
-		upper->OnSendResult(isSuccess);
+		upper->OnTxReady();
 	}
 
 	return true;

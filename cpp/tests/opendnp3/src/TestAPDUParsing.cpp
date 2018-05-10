@@ -72,36 +72,34 @@ std::string BufferToString(const RSlice& buff)
 TEST_CASE(SUITE("HeaderParsingEmptySring"))
 {
 	HexSequence buffer("");
-	APDUHeader header;
-	REQUIRE(!APDUHeaderParser::ParseRequest(buffer.ToRSlice(), header));
+	REQUIRE(!APDUHeaderParser::ParseRequest(buffer.ToRSlice()).success);
 }
 
 TEST_CASE(SUITE("HeaderParsesReqeust"))
 {
 	HexSequence buffer("C0 02 AB CD");
-	APDUHeader header;
-	REQUIRE(APDUHeaderParser::ParseRequest(buffer.ToRSlice(), header));
-	REQUIRE(header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
-	REQUIRE(header.function == FunctionCode::WRITE);
-	REQUIRE("AB CD" ==  ToHex(buffer.ToRSlice().Skip(2)));
+	const auto result = APDUHeaderParser::ParseRequest(buffer.ToRSlice());
+	REQUIRE(result.success);
+	REQUIRE(result.header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
+	REQUIRE(result.header.function == FunctionCode::WRITE);
+	REQUIRE("AB CD" ==  ToHex(result.objects));
 }
 
 TEST_CASE(SUITE("ResponseLessThanFour"))
 {
 	HexSequence buffer("C0 02 01");
-	APDUResponseHeader header;
-	REQUIRE(!APDUHeaderParser::ParseResponse(buffer.ToRSlice(), header));
+	REQUIRE(!APDUHeaderParser::ParseResponse(buffer.ToRSlice()).success);
 }
 
 TEST_CASE(SUITE("HeaderParsesResponse"))
 {
 	HexSequence buffer("C0 02 01 02 BE EF");
-	APDUResponseHeader header;
-	REQUIRE(APDUHeaderParser::ParseResponse(buffer.ToRSlice(), header));
-	REQUIRE(header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
-	REQUIRE(header.function == FunctionCode::WRITE);
-	REQUIRE(header.IIN == IINField(01, 02));
-	REQUIRE("BE EF" ==  ToHex(buffer.ToRSlice().Skip(4)));
+	const auto result = APDUHeaderParser::ParseResponse(buffer.ToRSlice());
+	REQUIRE(result.success);
+	REQUIRE(result.header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
+	REQUIRE(result.header.function == FunctionCode::WRITE);
+	REQUIRE(result.header.IIN == IINField(01, 02));
+	REQUIRE("BE EF" ==  ToHex(result.objects));
 }
 
 

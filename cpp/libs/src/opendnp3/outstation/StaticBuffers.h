@@ -69,6 +69,7 @@ private:
 	openpal::Array<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii;
 	openpal::Array<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii;
 	openpal::Array<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals;
+	openpal::Array<Cell<OctetStringSpec>, uint16_t> octetStrings;
 };
 
 }

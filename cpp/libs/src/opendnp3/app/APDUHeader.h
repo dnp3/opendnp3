@@ -28,19 +28,23 @@
 namespace opendnp3
 {
 
-const uint32_t APDU_REQUEST_HEADER_SIZE = 2;
-const uint32_t APDU_RESPONSE_HEADER_SIZE = 4;
-
 struct APDUHeader
 {
+	static const uint32_t REQUEST_SIZE = 2;
+	static const uint32_t RESPONSE_SIZE = 4;
+
 	static APDUHeader SolicitedConfirm(uint8_t seq);
 	static APDUHeader UnsolicitedConfirm(uint8_t seq);
 	static APDUHeader Confirm(uint8_t seq, bool unsolicited);
 
-	APDUHeader() : function(FunctionCode::UNKNOWN), control(true, true, false, false)
-	{}
+	APDUHeader() = default;
 
-	explicit APDUHeader(const AppControlField& control_) : function(FunctionCode::UNKNOWN), control(control_)
+	APDUHeader(
+	    const AppControlField& control,
+	    FunctionCode function
+	) :
+		function(function),
+		control(control)
 	{}
 
 	bool Equals(const APDUHeader& header) const
@@ -48,19 +52,21 @@ struct APDUHeader
 		return (header.function == function) && (header.control.ToByte() == control.ToByte());
 	}
 
-	FunctionCode function;
 	AppControlField control;
+	FunctionCode function = FunctionCode::UNKNOWN;
 };
 
 struct APDUResponseHeader : public APDUHeader
 {
-	APDUResponseHeader(const AppControlField control_, const IINField& iin) : APDUHeader(control_), IIN(iin)
-	{}
+	APDUResponseHeader() = default;
 
-	explicit APDUResponseHeader(const IINField& iin) : IIN(iin)
-	{}
-
-	APDUResponseHeader()
+	APDUResponseHeader(
+	    const AppControlField& control,
+	    FunctionCode function,
+	    const IINField& IIN
+	) :
+		APDUHeader(control, function),
+		IIN(IIN)
 	{}
 
 	IINField IIN;

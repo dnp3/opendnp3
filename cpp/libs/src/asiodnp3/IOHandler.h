@@ -49,6 +49,7 @@ public:
 
 	IOHandler(
 	    const openpal::Logger& logger,
+	    bool closeExisting,
 	    const std::shared_ptr<IChannelListener>& listener
 	);
 
@@ -105,6 +106,7 @@ protected:
 	// Called by the super class when a new channel is available
 	void OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel);
 
+	const bool close_existing;
 	openpal::Logger logger;
 	const std::shared_ptr<IChannelListener> listener;
 	opendnp3::LinkStatistics::Channel statistics;

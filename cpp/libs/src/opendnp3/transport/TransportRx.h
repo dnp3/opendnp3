@@ -24,6 +24,7 @@
 #include "opendnp3/StackStatistics.h"
 #include "opendnp3/transport/TransportConstants.h"
 #include "opendnp3/transport/TransportSeqNum.h"
+#include "opendnp3/app/Message.h"
 
 #include <openpal/container/RSlice.h>
 #include <openpal/container/Buffer.h>
@@ -39,9 +40,10 @@ class TransportRx
 {
 
 public:
+
 	TransportRx(const openpal::Logger&, uint32_t maxRxFragSize);
 
-	openpal::RSlice ProcessReceive(const openpal::RSlice& input);
+	Message ProcessReceive(const Message& segment);
 
 	void Reset();
 
@@ -56,15 +58,14 @@ private:
 
 	void ClearRxBuffer();
 
-	bool ValidateHeader(bool fir, uint8_t sequence);
-
 	openpal::Logger logger;
 	StackStatistics::Transport::Rx statistics;
 
 	openpal::Buffer rxBuffer;
 	uint32_t numBytesRead;
+	Addresses lastAddresses;
 
-	TransportSeqNum sequence;
+	TransportSeqNum expectedSeq;
 };
 
 }

@@ -41,11 +41,16 @@ public:
 	OctetData();
 	OctetData(const openpal::RSlice& input);
 
+	inline uint8_t Size() const
+	{
+		return size;
+	}
+
+	bool Set(const openpal::RSlice&);
+
 	openpal::RSlice ToRSlice() const;
 
 private:
-
-	void Initialize(const openpal::RSlice& buffer);
 
 	openpal::StaticBuffer<MAX_SIZE> buffer;
 	uint8_t size;

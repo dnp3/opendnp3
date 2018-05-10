@@ -30,35 +30,45 @@
 namespace opendnp3
 {
 
-bool APDUHeaderParser::ParseRequest(const openpal::RSlice& apdu, APDUHeader& header, openpal::Logger* pLogger)
+APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const openpal::RSlice& apdu, openpal::Logger* logger)
 {
-	if (apdu.Size() < APDU_REQUEST_HEADER_SIZE)
+	if (apdu.Size() < APDUHeader::REQUEST_SIZE)
 	{
-		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Request fragment  with insufficient size of %u bytes", apdu.Size());
-		return false;
+		FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Request fragment  with insufficient size of %u bytes", apdu.Size());
+		return Result<APDUHeader>::Error();
 	}
 	else
 	{
-		header.control = AppControlField(apdu[0]);
-		header.function = FunctionCodeFromType(apdu[1]);
-		return true;
+		return Result<APDUHeader>::Ok(
+		           APDUHeader(
+		               AppControlField(apdu[0]),
+		               FunctionCodeFromType(apdu[1])
+		           ),
+		           apdu.Skip(APDUHeader::REQUEST_SIZE)
+		       );
 	}
 }
 
-bool APDUHeaderParser::ParseResponse(const openpal::RSlice& apdu, APDUResponseHeader& header, openpal::Logger* pLogger)
+APDUHeaderParser::Result<APDUResponseHeader> APDUHeaderParser::ParseResponse(const openpal::RSlice& apdu, openpal::Logger* logger)
 {
-	if (apdu.Size() < APDU_RESPONSE_HEADER_SIZE)
+	if (apdu.Size() < APDUHeader::RESPONSE_SIZE)
 	{
-		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Response fragment  with insufficient size of %u bytes", apdu.Size());
-		return false;
+		FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %u bytes", apdu.Size());
+		return Result<APDUResponseHeader>::Error();
 	}
 	else
 	{
-		header.control = AppControlField(apdu[0]);
-		header.function = FunctionCodeFromType(apdu[1]);
-		header.IIN.LSB = apdu[2];
-		header.IIN.MSB = apdu[3];
-		return true;
+		return Result<APDUResponseHeader>::Ok(
+		           APDUResponseHeader(
+		               AppControlField(apdu[0]),
+		               FunctionCodeFromType(apdu[1]),
+		               IINField(
+		                   apdu[2],
+		                   apdu[3]
+		               )
+		           ),
+		           apdu.Skip(APDUHeader::RESPONSE_SIZE)
+		       );
 	}
 }
 

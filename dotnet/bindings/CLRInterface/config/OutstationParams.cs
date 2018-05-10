@@ -59,5 +59,10 @@ namespace Automatak.DNP3.Interface
         /// Class mask for unsolicted, default to 0 as unsolicited has to be enabled by master
         /// </summary>
         public ClassField unsolClassMask = ClassField.None;
+
+        /// <summary>
+        /// If true, the outstation and link-layer will respond to any source address
+        /// </summary>
+        public bool respondToAnyMaster = false;
     }  
 }

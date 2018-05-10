@@ -154,7 +154,7 @@ std::shared_ptr<IOutstation> PerformanceStackPair::CreateOutstation(uint32_t lev
 	auto channel = manager.AddTCPServer(
 	                   GetId("server", port).c_str(),
 	                   levels,
-	                   asiopal::ChannelRetry::Default(),
+	                   ServerAcceptMode::CloseExisting,
 	                   "127.0.0.1",
 	                   port,
 	                   listener
@@ -174,6 +174,7 @@ std::string PerformanceStackPair::GetId(const char* name, uint16_t port)
 	oss << name << ":" << port;
 	return oss.str();
 }
+
 }
 
 

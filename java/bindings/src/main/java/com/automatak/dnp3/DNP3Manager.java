@@ -18,6 +18,8 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.ServerAcceptMode;
+
 /**
  * The main entry point for all dnp3 applications. Use this object to create communication channels to which
  * you can then add masters and outstations.
@@ -45,14 +47,14 @@ public interface DNP3Manager {
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
      * @param id An id used for logging purposes
      * @param levels The starting level for logging output
-     * @param retry Retry configuration for the channel
+     * @param mode Describes which TCP session is closed when an active session already exists
      * @param endpoint TThe address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @param listener Optional listener (can be null) for monitoring the state of the channel
      * @return A channel interface
      * @throws DNP3Exception if an error occurs creating the channel
      */
-    Channel addTCPServer(String id, int levels, ChannelRetry retry, String endpoint, int port, ChannelListener listener) throws DNP3Exception;
+    Channel addTCPServer(String id, int levels, ServerAcceptMode mode, String endpoint, int port, ChannelListener listener) throws DNP3Exception;
 
     /**
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
@@ -73,7 +75,7 @@ public interface DNP3Manager {
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
      * @param id An id used for logging purposes
      * @param levels The starting level for logging output
-     * @param retry Retry configuration for the channel
+     * @param mode Describes which TCP session is closed when an active session already exists
      * @param endpoint TThe address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @param config TLS configuration
@@ -81,7 +83,7 @@ public interface DNP3Manager {
      * @return A channel interface
      * @throws DNP3Exception if an error occurs creating the channel
      */
-    Channel addTLSServer(String id, int levels, ChannelRetry retry, String endpoint, int port, TLSConfig config, ChannelListener listener) throws DNP3Exception;
+    Channel addTLSServer(String id, int levels, ServerAcceptMode mode, String endpoint, int port, TLSConfig config, ChannelListener listener) throws DNP3Exception;
 
     /**
      * Add a serial channel. The port does not try to open until you add a stack.

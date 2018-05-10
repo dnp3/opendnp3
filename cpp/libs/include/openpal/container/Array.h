@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_DYNAMICARRAY_H
-#define OPENPAL_DYNAMICARRAY_H
+#ifndef OPENPAL_ARRAY_H
+#define OPENPAL_ARRAY_H
 
 #include "ArrayView.h"
 
@@ -27,7 +27,6 @@
 #include "openpal/util/Uncopyable.h"
 
 #include <assert.h>
-#include <cstdint>
 
 namespace openpal
 {
@@ -35,74 +34,27 @@ namespace openpal
 /**
 * Template type for a dynamically allocated array
 */
-template <class ValueType, class IndexType>
-class Array : public HasSize<IndexType>//, private openpal::Uncopyable
+template <class T, class W>
+class Array : public HasSize<W>
 {
 
 public:
 
-	Array(IndexType size) :
-		HasSize<IndexType>(size),
-		buffer(new ValueType[size]())
+	Array(W size) :
+		HasSize<W>(size),
+		buffer(new T[size]())
 	{}
 
 	Array() :
-		HasSize<IndexType>(0),
+		HasSize<W>(0),
 		buffer(nullptr)
 	{}
 
 	Array(const Array& copy) :
-		HasSize<IndexType>(copy.Size()),
-		buffer(new ValueType[copy.Size()])
+		HasSize<W>(copy.Size()),
+		buffer(new T[copy.Size()])
 	{
-		for(IndexType i = 0; i < copy.Size(); ++i) buffer[i] = copy.buffer[i];
-	}
-
-	ArrayView<ValueType, IndexType> ToView() const
-	{
-		return ArrayView<ValueType, IndexType>(buffer, this->size);
-	}
-
-	inline bool Contains(IndexType index) const
-	{
-		return index < this->size;
-	}
-
-	inline ValueType& operator[](IndexType index)
-	{
-		assert(index < this->size);
-		return buffer[index];
-	}
-
-	const ValueType& operator[](IndexType index) const
-	{
-		assert(index < this->size);
-		return buffer[index];
-	}
-
-	template <class Action>
-	void foreach(const Action& action) const
-	{
-		for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
-	}
-
-	template <class Action>
-	void foreach(const Action& action)
-	{
-		for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
-	}
-
-	template <class Action>
-	void foreachIndex(const Action& action)
-	{
-		for(IndexType i = 0; i < this->size; ++i) action(buffer[i], i);
-	}
-
-
-	template <class Action>
-	void foreachIndex(const Action& action) const
-	{
-		for(uint32_t i = 0; i < this->size; ++i) action(buffer[i], i);
+		for(W i = 0; i < copy.Size(); ++i) buffer[i] = copy.buffer[i];
 	}
 
 	virtual ~Array()
@@ -110,9 +62,31 @@ public:
 		delete[] buffer;
 	}
 
+	ArrayView<T, W> ToView() const
+	{
+		return ArrayView<T, W>(buffer, this->size);
+	}
+
+	inline bool Contains(W index) const
+	{
+		return index < this->size;
+	}
+
+	inline T& operator[](W index)
+	{
+		assert(index < this->size);
+		return buffer[index];
+	}
+
+	const T& operator[](W index) const
+	{
+		assert(index < this->size);
+		return buffer[index];
+	}
+
 protected:
 
-	ValueType* buffer;
+	T* buffer;
 
 private:
 

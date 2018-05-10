@@ -41,12 +41,15 @@ FunctionCode DeferredRequest::GetFunction() const
 	return header.function;
 }
 
-void DeferredRequest::Set(APDUHeader header_, openpal::RSlice objects_)
+void DeferredRequest::Set(const ParsedRequest& request)
 {
 	this->isSet = true;
-	this->header = header_;
+
+	this->addresses = request.addresses;
+	this->header = request.header;
+
 	auto dest = buffer.GetWSlice();
-	this->objects = objects_.CopyTo(dest);
+	this->objects = request.objects.CopyTo(dest);
 }
 
 }

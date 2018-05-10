@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "mocks/MasterTestObject.h"
+#include "mocks/MasterTestFixture.h"
 #include "mocks/MeasurementComparisons.h"
 
 #include <testlib/HexConversions.h>
@@ -41,7 +41,7 @@ TEST_CASE(SUITE("ReceiveUnsolBeforeTransmit"))
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 
 	t.context->OnLowerLayerUp();
 
@@ -50,7 +50,7 @@ TEST_CASE(SUITE("ReceiveUnsolBeforeTransmit"))
 	REQUIRE(t.exe->RunMany());
 
 	REQUIRE(t.lower->PopWriteAsHex() == hex::UnsolConfirm(0));
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();
 
 	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }

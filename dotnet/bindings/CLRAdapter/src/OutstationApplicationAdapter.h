@@ -18,12 +18,16 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			private class OutstationApplicationAdapter : public opendnp3::IOutstationApplication
+			private class OutstationApplicationAdapter final : public opendnp3::IOutstationApplication
 			{
 			public:
 				OutstationApplicationAdapter(Automatak::DNP3::Interface::IOutstationApplication^ proxy);
 
-				virtual void OnStateChange(opendnp3::LinkStatus value) override final;
+				virtual void OnStateChange(opendnp3::LinkStatus value) override;
+				
+				virtual void OnUnknownDestinationAddress(uint16_t destination) override;
+				
+				virtual void OnUnknownSourceAddress(uint16_t source) override;
 
 				virtual void OnKeepAliveInitiated() override final;
 

@@ -31,7 +31,7 @@
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/link/ILinkSession.h"
 #include "opendnp3/link/LinkLayerConstants.h"
-#include "opendnp3/link/LinkConfig.h"
+#include "opendnp3/link/LinkLayerConfig.h"
 #include "opendnp3/link/ILinkListener.h"
 #include "opendnp3/link/ILinkTx.h"
 #include "opendnp3/StackStatistics.h"
@@ -56,10 +56,17 @@ class LinkContext
 
 public:
 
-	LinkContext(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>&, const std::shared_ptr<IUpperLayer>&, const std::shared_ptr<opendnp3::ILinkListener>&, ILinkSession& session, const LinkConfig&);
+	LinkContext(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<openpal::IExecutor>&,
+	    const std::shared_ptr<IUpperLayer>&,
+	    const std::shared_ptr<opendnp3::ILinkListener>&,
+	    ILinkSession& session,
+	    const LinkLayerConfig&
+	);
 
 
-	/// ---- helpers for dealing with the FCB bits ----
+	// ---- helpers for dealing with the FCB bits ----
 
 	void ResetReadFCB()
 	{
@@ -78,29 +85,30 @@ public:
 		nextWriteFCB = !nextWriteFCB;
 	}
 
-	/// --- helpers for dealing with layer state transitations ---
+	// --- helpers for dealing with layer state transitations ---
 	bool OnLowerLayerUp();
 	bool OnLowerLayerDown();
-	bool OnTransmitResult(bool success);
+	bool OnTxReady();
 	bool SetTxSegment(ITransportSegment& segments);
 
-	/// --- helpers for formatting user data messages ---
-	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu);
-	openpal::RSlice FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB);
+	// --- helpers for formatting user data messages ---
+	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const openpal::RSlice& tpdu);
+	openpal::RSlice FormatPrimaryBufferWithConfirmed(const Addresses& addr, const openpal::RSlice& tpdu, bool FCB);
 
-	/// --- Helpers for queueing frames ---
-	void QueueAck();
-	void QueueLinkStatus();
-	void QueueResetLinks();
-	void QueueRequestLinkStatus();
+	// --- Helpers for queueing frames ---
+	void QueueAck(uint16_t destination);
+	void QueueLinkStatus(uint16_t destination);
+	void QueueResetLinks(uint16_t destination);
+	void QueueRequestLinkStatus(uint16_t destination);
+
 	void QueueTransmit(const openpal::RSlice& buffer, bool primary);
 
-	/// --- public members ----
+	// --- public members ----
 
 	void ResetRetry();
 	bool Retry();
-	void PushDataUp(const openpal::RSlice& data);
-	void CompleteSendOperation(bool success);
+	void PushDataUp(const Message& message);
+	void CompleteSendOperation();
 	void TryStartTransmission();
 	void OnKeepAliveTimeout();
 	void OnResponseTimeout();
@@ -110,7 +118,6 @@ public:
 	void FailKeepAlive(bool timeout);
 	void CompleteKeepAlive();
 	bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata);
-	bool Validate(bool isMaster, uint16_t src, uint16_t dest);
 	bool TryPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
 
 	// buffers used for primary and secondary requests
@@ -121,7 +128,7 @@ public:
 	openpal::Settable<openpal::RSlice> pendingSecTx;
 
 	openpal::Logger logger;
-	const LinkConfig config;
+	const LinkLayerConfig config;
 	ITransportSegment* pSegments;
 	LinkTransmitMode txMode;
 	uint32_t numRetryRemaining;

@@ -35,7 +35,11 @@ public enum EventMode
   /**
   * Never produce an event regardless of changes
   */
-  Suppress(0x2);
+  Suppress(0x2),
+  /**
+  * Send an event directly to the event buffer, bypassing the static value completely
+  */
+  EventOnly(0x3);
 
   private final int id;
 
@@ -59,6 +63,8 @@ public enum EventMode
         return Force;
       case(0x2):
         return Suppress;
+      case(0x3):
+        return EventOnly;
       default:
         return Detect;
     }

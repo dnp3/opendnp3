@@ -47,7 +47,7 @@ namespace opendnp3
 /*
 	All of the mutable state and configuration for a master
 */
-class MContext : public IUpperLayer, private IMasterTaskRunner, private openpal::Uncopyable
+class MContext final : public IUpperLayer, private IMasterTaskRunner, private openpal::Uncopyable
 {
 
 public:
@@ -60,6 +60,7 @@ public:
 	};
 
 	MContext(
+	    const Addresses& addresses,
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<openpal::IExecutor>& executor,
 	    const std::shared_ptr<ILowerLayer>& lower,
@@ -74,7 +75,8 @@ public:
 	const std::shared_ptr<ILowerLayer> lower;
 
 	// ------- configuration --------
-	MasterParams params;
+	const Addresses addresses;
+	const MasterParams params;
 	const std::shared_ptr<ISOEHandler> SOEHandler;
 	const std::shared_ptr<IMasterApplication> application;
 	const std::shared_ptr<IMasterScheduler> scheduler;
@@ -99,9 +101,9 @@ public:
 
 	virtual bool OnLowerLayerDown() override;
 
-	virtual bool OnReceive(const openpal::RSlice& apdu) override final;
+	virtual bool OnReceive(const Message& message) override;
 
-	virtual bool OnSendResult(bool isSucccess) override final;
+	virtual bool OnTxReady() override final;
 
 	// additional virtual methods that can be overriden to implement secure authentication
 

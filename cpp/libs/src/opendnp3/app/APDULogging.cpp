@@ -51,7 +51,45 @@ namespace opendnp3
 namespace logging
 {
 
-void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu)
+void LogHeader(openpal::Logger& logger, int32_t flags, const APDUHeader& header)
+{
+#ifndef OPENPAL_STRIP_LOGGING
+
+	FORMAT_LOG_BLOCK(
+	    logger,
+	    flags,
+	    "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
+	    header.control.FIR,
+	    header.control.FIN,
+	    header.control.CON,
+	    header.control.UNS,
+	    header.control.SEQ,
+	    FunctionCodeToString(header.function)
+	);
+
+#endif
+}
+
+void LogHeader(openpal::Logger& logger, int32_t flags, const APDUResponseHeader& header)
+{
+#ifndef OPENPAL_STRIP_LOGGING
+	FORMAT_LOG_BLOCK(
+	    logger,
+	    flags,
+	    "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+	    header.control.FIR,
+	    header.control.FIN,
+	    header.control.CON,
+	    header.control.UNS,
+	    header.control.SEQ,
+	    FunctionCodeToString(header.function),
+	    header.IIN.LSB,
+	    header.IIN.MSB
+	);
+#endif
+}
+
+void ParseAndLogRequestTx(openpal::Logger& logger, const openpal::RSlice& apdu)
 {
 
 #ifndef OPENPAL_STRIP_LOGGING
@@ -60,22 +98,15 @@ void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu)
 
 	if (logger.IsEnabled(flags::APP_HEADER_TX))
 	{
-		APDUHeader header;
-		if (APDUHeaderParser::ParseRequest(apdu, header, &logger))
+		const auto result = APDUHeaderParser::ParseRequest(apdu, &logger);
+		if (result.success)
 		{
-			FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_TX,
-			                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-			                 header.control.FIR,
-			                 header.control.FIN,
-			                 header.control.CON,
-			                 header.control.UNS,
-			                 header.control.SEQ,
-			                 FunctionCodeToString(header.function));
+			LogHeader(logger, flags::APP_HEADER_TX, result.header);
 
 			if (logger.IsEnabled(flags::APP_OBJECT_TX))
 			{
-				auto expectsContents = header.function != FunctionCode::READ;
-				APDUParser::ParseAndLogAll(apdu.Skip(APDU_REQUEST_HEADER_SIZE), &logger, ParserSettings::Create(expectsContents, flags::APP_OBJECT_TX));
+				auto expectsContents = result.header.function != FunctionCode::READ;
+				APDUParser::ParseAndLogAll(result.objects, &logger, ParserSettings::Create(expectsContents, flags::APP_OBJECT_TX));
 			}
 		}
 	}
@@ -84,7 +115,7 @@ void ParseAndLogRequestTx(openpal::Logger logger, const openpal::RSlice& apdu)
 
 }
 
-void ParseAndLogResponseTx(openpal::Logger logger, const openpal::RSlice& apdu)
+void ParseAndLogResponseTx(openpal::Logger& logger, const openpal::RSlice& apdu)
 {
 
 #ifndef OPENPAL_STRIP_LOGGING
@@ -93,23 +124,14 @@ void ParseAndLogResponseTx(openpal::Logger logger, const openpal::RSlice& apdu)
 
 	if (logger.IsEnabled(flags::APP_HEADER_TX))
 	{
-		APDUResponseHeader header;
-		if (APDUHeaderParser::ParseResponse(apdu, header, &logger))
+		const auto result = APDUHeaderParser::ParseResponse(apdu, &logger);
+		if (result.success)
 		{
-			FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_TX,
-			                 "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-			                 header.control.FIR,
-			                 header.control.FIN,
-			                 header.control.CON,
-			                 header.control.UNS,
-			                 header.control.SEQ,
-			                 FunctionCodeToString(header.function),
-			                 header.IIN.LSB,
-			                 header.IIN.MSB);
+			LogHeader(logger, flags::APP_HEADER_TX, result.header);
 
 			if (logger.IsEnabled(flags::APP_OBJECT_TX))
 			{
-				APDUParser::ParseAndLogAll(apdu.Skip(APDU_RESPONSE_HEADER_SIZE), &logger, ParserSettings::Create(true, flags::APP_OBJECT_TX));
+				APDUParser::ParseAndLogAll(result.objects, &logger, ParserSettings::Create(true, flags::APP_OBJECT_TX));
 			}
 		}
 	}
@@ -117,6 +139,8 @@ void ParseAndLogResponseTx(openpal::Logger logger, const openpal::RSlice& apdu)
 #endif
 
 }
+
+
 
 }
 }

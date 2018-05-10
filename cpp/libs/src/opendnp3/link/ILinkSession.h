@@ -33,8 +33,11 @@ public:
 
 	virtual ~ILinkSession() {}
 
-	virtual bool OnTransmitResult(bool success) = 0;
+	// lower layer informs this layer that it is ready to transmit again
+	virtual bool OnTxReady() = 0;
+
 	virtual bool OnLowerLayerUp() = 0;
+
 	virtual bool OnLowerLayerDown() = 0;
 };
 

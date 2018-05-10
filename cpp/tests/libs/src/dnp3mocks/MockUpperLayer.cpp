@@ -38,55 +38,41 @@ MockUpperLayer::MockUpperLayer() : isOnline(false)
 
 }
 
-bool MockUpperLayer::OnReceive(const openpal::RSlice& input)
+bool MockUpperLayer::OnReceive(const Message& message)
 {
-	this->WriteToBuffer(input);
-
-	if (mOnReceiveHandler)
-	{
-		mOnReceiveHandler(input);
-	}
-
+	this->received.Write(message.payload);
 	return true;
 }
 
-bool MockUpperLayer::OnSendResult(bool isSuccess)
+bool MockUpperLayer::OnTxReady()
 {
-	if (isSuccess)
-	{
-		++mState.mSuccessCnt;
-	}
-	else
-	{
-		++mState.mFailureCnt;
-	}
-
+	++counters.numTxReady;
 	return true;
 }
 
 bool MockUpperLayer::OnLowerLayerUp()
 {
 	isOnline = true;
-	++mState.mNumLayerUp;
+	++counters.numLayerUp;
 	return true;
 }
 
 bool MockUpperLayer::OnLowerLayerDown()
 {
 	isOnline = false;
-	++mState.mNumLayerDown;
+	++counters.numLayerDown;
 	return true;
 }
 
-bool MockUpperLayer::SendDown(const openpal::RSlice& buffer)
+bool MockUpperLayer::SendDown(const openpal::RSlice& data, const Addresses& addresses)
 {
-	return this->pLowerLayer ? pLowerLayer->BeginTransmit(buffer) : false;
+	return this->pLowerLayer ? pLowerLayer->BeginTransmit(Message(addresses, data)) : false;
 }
 
-bool MockUpperLayer::SendDown(const std::string& hex)
+bool MockUpperLayer::SendDown(const std::string& hex, const Addresses& addresses)
 {
 	HexSequence hs(hex);
-	return this->SendDown(hs.ToRSlice());
+	return this->SendDown(hs.ToRSlice(), addresses);
 }
 
 }

@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "mocks/MasterTestObject.h"
+#include "mocks/MasterTestFixture.h"
 #include "mocks/MeasurementComparisons.h"
 
 #include <testlib/HexConversions.h>
@@ -38,7 +38,7 @@ using namespace openpal;
 
 TEST_CASE(SUITE("command set ignores empty headers"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
@@ -62,7 +62,7 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 	std::string crobstr = "0C 01 28 02 00 01 00 01 01 64 00 00 00 64 00 00 00 00 07 00 01 01 64 00 00 00 64 00 00 00 00";
 
 
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
@@ -76,7 +76,7 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 
 
 	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 05 " + crobstr); // DO
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();
 	t.SendToMaster("C0 81 00 00 " + crobstr);
 
 	REQUIRE(t.exe->RunMany() > 0);
@@ -101,7 +101,7 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 	std::string headers = crobstr + " " + aostr;
 
 
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
@@ -116,12 +116,12 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + headers); // select
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();
 	t.SendToMaster("C0 81 00 00 " + headers);
 
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + headers); // operate
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();
 	t.SendToMaster("C1 81 00 00 " + headers);
 
 	REQUIRE(t.exe->RunMany() > 0);

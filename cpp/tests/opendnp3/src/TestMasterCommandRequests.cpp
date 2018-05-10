@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "mocks/MasterTestObject.h"
+#include "mocks/MasterTestFixture.h"
 #include "mocks/MeasurementComparisons.h"
 
 #include <testlib/HexConversions.h>
@@ -44,7 +44,7 @@ std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 TEST_CASE(SUITE("ControlExecutionClosedState"))
 {
 	MasterParams params;
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
 	CommandCallbackQueue queue;
@@ -72,13 +72,13 @@ TEST_CASE(SUITE("Controls timeout after start period elapses"))
 	MasterParams params;
 	params.responseTimeout = TimeDuration::Seconds(5000);
 	params.taskStartTimeout = TimeDuration::Milliseconds(100); // significantly less
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 
 	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
-	REQUIRE(t.context->OnSendResult(true));
+	REQUIRE(t.context->OnTxReady());
 
 	// while we're waiting for a reponse, submit a control
 	CommandCallbackQueue queue;
@@ -105,13 +105,13 @@ TEST_CASE(SUITE("Controls timeout after start period elapses"))
 TEST_CASE(SUITE("Layer down while still scheduled"))
 {
 	MasterParams params;
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 
 	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
-	REQUIRE(t.context->OnSendResult(true));
+	REQUIRE(t.context->OnTxReady());
 
 	// while we're waiting for a reponse, submit a control
 	CommandCallbackQueue queue;
@@ -129,7 +129,7 @@ TEST_CASE(SUITE("Layer down while still scheduled"))
 
 TEST_CASE(SUITE("SelectAndOperate"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock command(ControlCode::PULSE_ON);
@@ -143,13 +143,13 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 
 	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 03 " + crob); // SELECT
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 	t.SendToMaster("C0 81 00 00 " + crob);
 
 	t.exe->RunMany();
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + crob); // OPERATE
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 	t.SendToMaster("C1 81 00 00 " + crob);
 
 	t.exe->RunMany();
@@ -164,7 +164,7 @@ TEST_CASE(SUITE("SelectAndOperate"))
 
 TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
@@ -178,16 +178,16 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob); // SELECT
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 	t.SendToMaster("E0 81 00 00 " + crob); // confirm bit set
 	t.exe->RunMany();
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 00"); // confirm
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 	t.exe->RunMany();
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + crob); // OPERATE
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 	t.SendToMaster("C1 81 00 00 " + crob);
 	t.exe->RunMany();
 
@@ -203,7 +203,7 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
@@ -215,7 +215,7 @@ TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 	t.exe->RunMany();
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob); // SELECT
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 
 	t.exe->AdvanceTime(config.responseTimeout);
 	t.exe->RunMany();
@@ -231,7 +231,7 @@ TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
@@ -243,7 +243,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	t.exe->RunMany();
 
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob); // SELECT
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 
 	t.context->OnLowerLayerDown();
 
@@ -256,7 +256,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
@@ -267,7 +267,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 
 	t.exe->RunMany();
 
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
 	t.exe->RunMany();
@@ -281,7 +281,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 TEST_CASE(SUITE("ControlExecutionSelectBadFIRFIN"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
@@ -293,7 +293,7 @@ TEST_CASE(SUITE("ControlExecutionSelectBadFIRFIN"))
 
 	t.exe->RunMany();
 
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 
 	t.SendToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
 
@@ -310,14 +310,14 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
 	params.unsolClassMask = ClassField::None();
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 	t.context->OnLowerLayerUp();
 
 	t.exe->RunMany();
 
 	// check that a read request was made on startup
 	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 
 	//issue a command while the master is waiting for a response from the outstation
 
@@ -337,7 +337,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
@@ -363,7 +363,7 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 
 TEST_CASE(SUITE("ResponseTimeout"))
 {
-	MasterTestObject t(NoStartupTasks());
+	MasterTestFixture t(NoStartupTasks());
 	t.context->OnLowerLayerUp();
 
 	AnalogOutputInt16 ao(100);
@@ -393,13 +393,13 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 {
 	auto params = NoStartupTasks();
 	params.disableUnsolOnStartup = true;
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 	t.context->OnLowerLayerUp();
 
 	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.context->tstate == MContext::TaskState::IDLE);
@@ -432,7 +432,7 @@ template <class T>
 void TestAnalogOutputExecution(const std::string& hex, const T& command)
 {
 	auto config = NoStartupTasks();
-	MasterTestObject t(config);
+	MasterTestFixture t(config);
 	t.context->OnLowerLayerUp();
 
 	CommandCallbackQueue queue;
@@ -441,14 +441,14 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 	REQUIRE(t.exe->RunMany() > 0);
 
 	REQUIRE((t.lower->PopWriteAsHex() == ("C0 03 " + hex)));
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 	REQUIRE(queue.values.empty());
 	t.SendToMaster("C0 81 00 00 " + hex);
 
 	t.exe->RunMany();
 
 	REQUIRE((t.lower->PopWriteAsHex() == ("C1 04 " + hex)));
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();;
 	REQUIRE(queue.values.empty());
 	t.SendToMaster("C1 81 00 00 " + hex);
 

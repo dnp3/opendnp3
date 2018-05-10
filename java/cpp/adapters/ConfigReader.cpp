@@ -93,6 +93,7 @@ OutstationStackConfig ConfigReader::ConvertOutstationStackConfig(JNIEnv* env, jo
 	        static_cast<uint16_t>(list.size(env, db.getfrozenCounter(env, jdb))),
 	        static_cast<uint16_t>(list.size(env, db.getboStatus(env, jdb))),
 	        static_cast<uint16_t>(list.size(env, db.getaoStatus(env, jdb))),
+	        0,
 	        0
 	    )
 	);

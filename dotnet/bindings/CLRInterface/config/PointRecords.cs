@@ -175,4 +175,12 @@ namespace Automatak.DNP3.Interface
 
         public StaticTimeAndIntervalVariation staticVariation;
     };
+
+    public class OctetStringRecord : EventRecord
+    {
+        public OctetStringRecord(System.UInt16 index) : base(index)
+        {
+            
+        }        
+    };
 }

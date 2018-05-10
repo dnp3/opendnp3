@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef TESTLIB_COPYABLEBUFFER_H_
-#define TESTLIB_COPYABLEBUFFER_H_
+#ifndef TESTLIB_COPYABLEBUFFER_H
+#define TESTLIB_COPYABLEBUFFER_H
 
 #include <stddef.h>
 #include <memory>
@@ -30,22 +30,21 @@
 namespace testlib
 {
 
-/** Implements a dynamic buffer with a safe
+/**
+	Implements a dynamic buffer with a safe
 	copy constructor. This makes it easier to compose with
 	classes without requiring an explicit copy constructor
 */
 class CopyableBuffer
 {
-	friend std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff);
-
 
 public:
 	// Construct null buffer
 	CopyableBuffer();
 	// Construct based on starting size of buffer
-	CopyableBuffer(uint32_t aSize);
+	CopyableBuffer(uint32_t size);
 	CopyableBuffer(const openpal::RSlice&);
-	CopyableBuffer(const uint8_t* apBuff, uint32_t aSize);
+	CopyableBuffer(const uint8_t* data, uint32_t size);
 	CopyableBuffer(const CopyableBuffer&);
 	CopyableBuffer& operator=(const CopyableBuffer&);
 	~CopyableBuffer();
@@ -58,31 +57,31 @@ public:
 
 	openpal::RSlice ToRSlice() const
 	{
-		return openpal::RSlice(mpBuff, mSize);
+		return openpal::RSlice(buffer, size);
 	}
 
 	operator const uint8_t* () const
 	{
-		return mpBuff;
+		return buffer;
 	}
 
 	operator uint8_t* ()
 	{
-		return mpBuff;
+		return buffer;
 	}
 
 	uint32_t Size() const
 	{
-		return mSize;
+		return size;
 	}
 
 	void Zero();
 
 protected:
-	uint8_t* mpBuff;
+	uint8_t* buffer;
 
 private:
-	uint32_t mSize;
+	uint32_t size;
 };
 
 }

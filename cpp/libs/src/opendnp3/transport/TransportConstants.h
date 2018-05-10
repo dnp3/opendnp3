@@ -25,15 +25,6 @@
 
 namespace opendnp3
 {
-
-/// Transport header bitmasks
-enum TransportHeader
-{
-	TL_HDR_FIN = 0x80,
-	TL_HDR_FIR = 0x40,
-	TL_HDR_SEQ = 0x3F
-};
-
 /// Maximum TPDU length
 const uint8_t MAX_TPDU_LENGTH = 250;
 /// Maximum TPDU payload size

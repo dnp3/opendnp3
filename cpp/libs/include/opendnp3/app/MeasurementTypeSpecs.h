@@ -24,6 +24,7 @@
 #include "opendnp3/outstation/MeasurementConfig.h"
 #include "opendnp3/app/EventCells.h"
 #include "opendnp3/app/EventTriggers.h"
+#include "opendnp3/app/OctetString.h"
 
 namespace opendnp3
 {
@@ -123,6 +124,17 @@ struct AnalogOutputStatusSpec : public AnalogOutputStatusInfo
 	inline static bool IsEvent(const AnalogOutputStatus& oldValue, const AnalogOutputStatus& newValue, double deadband)
 	{
 		return measurements::IsEvent(newValue, oldValue, deadband);
+	}
+};
+
+struct OctetStringSpec : public OctetStringInfo
+{
+	typedef OctetStringConfig config_t;
+	typedef SimpleEventCell<OctetStringSpec> event_cell_t;
+
+	inline static bool IsEvent(const OctetString& oldValue, const OctetString& newValue)
+	{
+		return !oldValue.ToRSlice().Equals(newValue.ToRSlice());
 	}
 };
 

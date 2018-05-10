@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_EXECUTOR_H_
-#define __MOCK_EXECUTOR_H_
+#ifndef TESTLIB_MOCKEXECUTOR_H
+#define TESTLIB_MOCKEXECUTOR_H
 
 #include <openpal/executor/IExecutor.h>
 

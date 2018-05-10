@@ -19,7 +19,8 @@ object StaticTypeBitmask {
     "AnalogInput",
     "BinaryOutputStatus",
     "AnalogOutputStatus",
-    "TimeAndInterval"
+    "TimeAndInterval",
+    "OctetString"
   )
 
 }

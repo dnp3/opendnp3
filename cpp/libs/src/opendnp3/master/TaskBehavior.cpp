@@ -92,11 +92,11 @@ TaskBehavior::TaskBehavior(
     const openpal::MonotonicTimestamp& startExpiration
 ) :
 	period(period),
-	expiration(expiration),
 	minRetryDelay(minRetryDelay),
 	maxRetryDelay(maxRetryDelay),
-	currentRetryDelay(minRetryDelay),
-	startExpiration(startExpiration)
+	startExpiration(startExpiration),
+	expiration(expiration),
+	currentRetryDelay(minRetryDelay)
 {}
 
 

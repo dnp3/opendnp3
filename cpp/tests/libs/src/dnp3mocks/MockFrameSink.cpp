@@ -42,7 +42,7 @@ bool MockFrameSink::OnLowerLayerDown()
 
 void MockFrameSink::Reset()
 {
-	this->ClearBuffer();
+	this->received.Clear();
 	m_num_frames = 0;
 }
 
@@ -61,7 +61,7 @@ bool MockFrameSink::CheckLastWithDFC(LinkFunction func, bool isMaster, bool aIsR
 	return  (m_last_header.fcvdfc == aIsRcvBuffFull) && CheckLast(func, isMaster, dest, src);
 }
 
-bool MockFrameSink::OnTransmitResult(bool success)
+bool MockFrameSink::OnTxReady()
 {
 	return true;
 }
@@ -74,7 +74,7 @@ bool MockFrameSink::OnFrame(const LinkHeaderFields& header, const openpal::RSlic
 
 	if (userdata.IsNotEmpty())
 	{
-		this->WriteToBuffer(userdata);
+		this->received.Write(userdata);
 	}
 
 	return true;

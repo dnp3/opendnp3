@@ -5,8 +5,6 @@
 
 #include "CommandSetBuilder.h"
 
-#include <openpal/container/SecureBuffer.h>
-
 namespace Automatak
 {
 	namespace DNP3

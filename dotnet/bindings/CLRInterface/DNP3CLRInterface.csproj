@@ -67,6 +67,7 @@
     <Compile Include="config\OutstationParams.cs" />
     <Compile Include="config\PointRecords.cs" />
     <Compile Include="config\StaticTypeBitfield.cs" />
+    <Compile Include="gen\ServerAcceptMode.cs" />
     <Compile Include="Timestamp.cs" />
     <Compile Include="config\EventBufferConfig.cs" />
     <Compile Include="DefaultListenCallbacks.cs" />

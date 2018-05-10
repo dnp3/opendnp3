@@ -107,6 +107,11 @@ namespace Automatak.DNP3.Interface
             updates.Add((IDatabase db) => db.Update(update, index, mode));
         }
 
+        public void Update(OctetString update, ushort index, EventMode mode = EventMode.Detect)
+        {
+            updates.Add((IDatabase db) => db.Update(update, index, mode));
+        }
+
         public void Update(TimeAndInterval update, ushort index)
         {
             updates.Add((IDatabase db) => db.Update(update, index));

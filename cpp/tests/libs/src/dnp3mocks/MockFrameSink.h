@@ -18,15 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_FRAME_SINK_H_
-#define __MOCK_FRAME_SINK_H_
+#ifndef OPENDNP3_MOCKFRAMESINK_H
+#define OPENDNP3_MOCKFRAMESINK_H
 
 #include <opendnp3/link/ILinkSession.h>
 #include <opendnp3/link/LinkLayerConstants.h>
 
-#include <testlib/BufferTestObject.h>
-
 #include <opendnp3/gen/LinkFunction.h>
+
+#include "DataSink.h"
 
 #include <functional>
 #include <queue>
@@ -35,7 +35,7 @@ namespace opendnp3
 {
 
 
-class MockFrameSink : public ILinkSession, public testlib::BufferTestObject
+class MockFrameSink : public ILinkSession
 {
 public:
 
@@ -44,7 +44,7 @@ public:
 	// ILinkSession members
 	bool OnLowerLayerUp() override;
 	bool OnLowerLayerDown() override;
-	bool OnTransmitResult(bool success) override;
+	bool OnTxReady() override;
 
 	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
@@ -64,6 +64,8 @@ public:
 	// Add a function to execute the next time a frame is received
 	// This allows us to test re-entrant behaviors
 	void AddAction(std::function<void ()> fun);
+
+	DataSink received;
 
 private:
 

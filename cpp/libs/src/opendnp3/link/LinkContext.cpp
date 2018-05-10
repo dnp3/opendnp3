@@ -38,7 +38,7 @@ LinkContext::LinkContext(
     const std::shared_ptr<IUpperLayer>& upper,
     const std::shared_ptr<opendnp3::ILinkListener>& listener,
     ILinkSession& session,
-    const LinkConfig& config)
+    const LinkLayerConfig& config)
 	:
 	logger(logger),
 	config(config),
@@ -129,7 +129,7 @@ bool LinkContext::SetTxSegment(ITransportSegment& segments)
 	return true;
 }
 
-bool LinkContext::OnTransmitResult(bool success)
+bool LinkContext::OnTxReady()
 {
 	if (this->txMode == LinkTransmitMode::Idle)
 	{
@@ -147,28 +147,28 @@ bool LinkContext::OnTransmitResult(bool success)
 	// now dispatch the completion event to the correct state handler
 	if (isPrimary)
 	{
-		this->pPriState = &this->pPriState->OnTransmitResult(*this, success);
+		this->pPriState = &this->pPriState->OnTxReady(*this);
 	}
 	else
 	{
-		this->pSecState = &this->pSecState->OnTransmitResult(*this, success);
+		this->pSecState = &this->pSecState->OnTxReady(*this);
 	}
 
 	return true;
 }
 
-openpal::RSlice LinkContext::FormatPrimaryBufferWithConfirmed(const openpal::RSlice& tpdu, bool FCB)
+openpal::RSlice LinkContext::FormatPrimaryBufferWithConfirmed(const Addresses& addr, const openpal::RSlice& tpdu, bool FCB)
 {
 	auto dest = this->priTxBuffer.GetWSlice();
-	auto output = LinkFrame::FormatConfirmedUserData(dest, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
+	auto output = LinkFrame::FormatConfirmedUserData(dest, config.IsMaster, FCB, addr.destination, addr.source, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;
 }
 
-RSlice LinkContext::FormatPrimaryBufferWithUnconfirmed(const openpal::RSlice& tpdu)
+RSlice LinkContext::FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const openpal::RSlice& tpdu)
 {
-	auto dest = this->priTxBuffer.GetWSlice();
-	auto output = LinkFrame::FormatUnconfirmedUserData(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
+	auto buffer = this->priTxBuffer.GetWSlice();
+	auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, addr.destination, addr.source, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;
 }
@@ -193,34 +193,34 @@ void LinkContext::QueueTransmit(const RSlice& buffer, bool primary)
 	}
 }
 
-void LinkContext::QueueAck()
+void LinkContext::QueueAck(uint16_t destination)
 {
 	auto dest = secTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatAck(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
+	auto buffer = LinkFrame::FormatAck(dest, config.IsMaster, false, destination, this->config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
 }
 
-void LinkContext::QueueLinkStatus()
+void LinkContext::QueueLinkStatus(uint16_t destination)
 {
 	auto dest = secTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatLinkStatus(dest, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
+	auto buffer = LinkFrame::FormatLinkStatus(dest, config.IsMaster, false, destination, this->config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
 }
 
-void LinkContext::QueueResetLinks()
+void LinkContext::QueueResetLinks(uint16_t destination)
 {
 	auto dest = priTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatResetLinkStates(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+	auto buffer = LinkFrame::FormatResetLinkStates(dest, config.IsMaster, destination, this->config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);
 }
 
-void LinkContext::QueueRequestLinkStatus()
+void LinkContext::QueueRequestLinkStatus(uint16_t destination)
 {
 	auto dest = priTxBuffer.GetWSlice();
-	auto buffer = LinkFrame::FormatRequestLinkStatus(dest, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+	auto buffer = LinkFrame::FormatRequestLinkStatus(dest, config.IsMaster, destination, this->config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);
 }
@@ -243,18 +243,18 @@ bool LinkContext::Retry()
 	}
 }
 
-void LinkContext::PushDataUp(const openpal::RSlice& data)
+void LinkContext::PushDataUp(const Message& message)
 {
-	upper->OnReceive(data);
+	upper->OnReceive(message);
 }
 
-void LinkContext::CompleteSendOperation(bool success)
+void LinkContext::CompleteSendOperation()
 {
 	this->pSegments = nullptr;
 
-	auto callback = [upper = upper, success]()
+	auto callback = [upper = upper]()
 	{
-		upper->OnSendResult(success);
+		upper->OnTxReady();
 	};
 
 	this->executor->Post(callback);
@@ -345,8 +345,24 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 		return false;
 	}
 
-	if (!this->Validate(header.isFromMaster, header.src, header.dest))
+	if (header.isFromMaster == config.IsMaster)
 	{
+		++statistics.numBadMasterBit;
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, (header.isFromMaster ? "Master frame received for master" : "Outstation frame received for outstation"));
+		return false;
+	}
+
+	if (header.dest != config.LocalAddr)
+	{
+		++statistics.numUnknownDestination;
+		this->listener->OnUnknownDestinationAddress(header.dest);
+		return false;
+	}
+
+	if (header.src != config.RemoteAddr && !config.respondToAnySource)
+	{
+		++statistics.numUnknownSource;
+		this->listener->OnUnknownSourceAddress(header.src);
 		return false;
 	}
 
@@ -357,62 +373,37 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const openpal::RSlice&
 	{
 	case(LinkFunction::SEC_ACK) :
 		pPriState = &pPriState->OnAck(*this, header.fcvdfc);
-		return true;
+		break;
 	case(LinkFunction::SEC_NACK) :
 		pPriState = &pPriState->OnNack(*this, header.fcvdfc);
-		return true;
+		break;
 	case(LinkFunction::SEC_LINK_STATUS) :
 		pPriState = &pPriState->OnLinkStatus(*this, header.fcvdfc);
-		return true;
+		break;
 	case(LinkFunction::SEC_NOT_SUPPORTED) :
 		pPriState = &pPriState->OnNotSupported(*this, header.fcvdfc);
-		return true;
+		break;
 	case(LinkFunction::PRI_TEST_LINK_STATES) :
-		pSecState = &pSecState->OnTestLinkStatus(*this, header.fcb);
-		return true;
+		pSecState = &pSecState->OnTestLinkStatus(*this, header.src, header.fcb);
+		break;
 	case(LinkFunction::PRI_RESET_LINK_STATES) :
-		pSecState = &pSecState->OnResetLinkStates(*this);
-		return true;
+		pSecState = &pSecState->OnResetLinkStates(*this, header.src);
+		break;
 	case(LinkFunction::PRI_REQUEST_LINK_STATUS) :
-		pSecState = &pSecState->OnRequestLinkStatus(*this);
-		return true;
+		pSecState = &pSecState->OnRequestLinkStatus(*this, header.src);
+		break;
 	case(LinkFunction::PRI_CONFIRMED_USER_DATA) :
-		pSecState = &pSecState->OnConfirmedUserData(*this, header.fcb, userdata);
-		return true;
+		pSecState = &pSecState->OnConfirmedUserData(*this, header.src, header.fcb, Message(header.ToAddresses(), userdata));
+		break;
 	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA) :
-		this->PushDataUp(userdata);
-		return true;
+		this->PushDataUp(Message(header.ToAddresses(), userdata));
+		break;
 	default:
-		return false;
-	}
-}
-
-bool LinkContext::Validate(bool isMaster, uint16_t src, uint16_t dest)
-{
-	if (isMaster == config.IsMaster)
-	{
-		++statistics.numBadMasterBit;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, (isMaster ? "Master frame received for master" : "Outstation frame received for outstation"));
-		return false;
-	}
-
-	if (dest != config.LocalAddr)
-	{
-		++statistics.numUnknownDestination;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame for unknown destintation");
-		return false;
-	}
-
-	if (src != config.RemoteAddr)
-	{
-		++statistics.numUnknownSource;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Frame from unknwon source");
-		return false;
+		break;
 	}
 
 	return true;
 }
-
 
 bool LinkContext::TryPendingTx(openpal::Settable<RSlice>& pending, bool primary)
 {

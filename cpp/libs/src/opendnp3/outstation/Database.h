@@ -49,6 +49,7 @@ public:
 	virtual bool Update(const FrozenCounter&, uint16_t, EventMode = EventMode::Detect) override;
 	virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
 	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
+	virtual bool Update(const OctetString& meas, uint16_t index, EventMode mode = EventMode::Detect) override;
 	virtual bool Update(const TimeAndInterval&, uint16_t) override;
 	virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override;
 
@@ -90,6 +91,9 @@ private:
 
 	template <class Spec>
 	bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
+
+	template <class Spec>
+	void TryCreateEvent(Cell<Spec>& cell, const typename Spec::meas_t& value);
 
 	template <class Spec>
 	bool Modify(uint16_t start, uint16_t stop, uint8_t flags);

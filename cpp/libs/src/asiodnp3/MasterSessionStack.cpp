@@ -56,8 +56,8 @@ MasterSessionStack::MasterSessionStack(
 	executor(executor),
 	scheduler(scheduler),
 	session(session),
-	stack(logger, executor, application, config.master.maxRxFragSize, config.link),
-	context(logger, executor, stack.transport, SOEHandler, application, scheduler, config.master)
+	stack(logger, executor, application, config.master.maxRxFragSize, LinkLayerConfig(config.link, false)),
+	context(Addresses(config.link.LocalAddr, config.link.RemoteAddr), logger, executor, stack.transport, SOEHandler, application, scheduler, config.master)
 {
 	stack.link->SetRouter(linktx);
 	stack.transport->SetAppLayer(context);
@@ -81,9 +81,9 @@ bool MasterSessionStack::OnFrame(const LinkHeaderFields& header, const openpal::
 	return stack.link->OnFrame(header, userdata);
 }
 
-void MasterSessionStack::OnTransmitComplete(bool success)
+void MasterSessionStack::OnTxReady()
 {
-	this->stack.link->OnTransmitResult(success);
+	this->stack.link->OnTxReady();
 }
 
 void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)

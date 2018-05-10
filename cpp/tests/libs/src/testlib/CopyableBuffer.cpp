@@ -39,66 +39,61 @@ std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 }
 
 CopyableBuffer::CopyableBuffer() :
-	mpBuff(nullptr),
-	mSize(0)
+	buffer(nullptr),
+	size(0)
 {
 
 }
 
-CopyableBuffer::CopyableBuffer(uint32_t aSize) :
-	mpBuff(new uint8_t[aSize]),
-	mSize(aSize)
+CopyableBuffer::CopyableBuffer(uint32_t size) :
+	buffer(new uint8_t[size]),
+	size(size)
 {
 	this->Zero();
 }
 
-CopyableBuffer::CopyableBuffer(const openpal::RSlice& buffer) :
-	mpBuff(new uint8_t[buffer.Size()]),
-	mSize(buffer.Size())
+CopyableBuffer::CopyableBuffer(const openpal::RSlice& data) :
+	CopyableBuffer(data, data.Size())
 {
-	openpal::WSlice dest(mpBuff, mSize);
-	buffer.CopyTo(dest);
 }
 
-CopyableBuffer::CopyableBuffer(const uint8_t* apBuff, uint32_t aSize) :
-	mpBuff(new uint8_t[aSize]),
-	mSize(aSize)
+CopyableBuffer::CopyableBuffer(const uint8_t* data, uint32_t size) :
+	buffer(new uint8_t[size]),
+	size(size)
 {
-	memcpy(mpBuff, apBuff, aSize);
+	memcpy(buffer, data, size);
 }
 
-CopyableBuffer::CopyableBuffer(const CopyableBuffer& arBuffer) :
-	mpBuff(new uint8_t[arBuffer.Size()]),
-	mSize(arBuffer.Size())
+CopyableBuffer::CopyableBuffer(const CopyableBuffer& other) :
+	CopyableBuffer(other.buffer, other.size)
 {
-	memcpy(mpBuff, arBuffer, mSize);
 }
 
 void CopyableBuffer::Zero()
 {
-	memset(mpBuff, 0, mSize);
+	memset(this->buffer, 0, size);
 }
 
-CopyableBuffer& CopyableBuffer::operator=(const CopyableBuffer& arRHS)
+CopyableBuffer& CopyableBuffer::operator=(const CopyableBuffer& other)
 {
 	//check for assignment to self
-	if(this == &arRHS) return *this;
+	if(this == &other) return *this;
 
-	if(arRHS.Size() != mSize)
+	if(other.Size() != this->size)
 	{
-		mSize = arRHS.Size();
-		delete mpBuff;
-		mpBuff = new uint8_t[mSize];
+		this->size = other.Size();
+		delete [] this->buffer;
+		this->buffer = new uint8_t[this->size];
 	}
 
-	memcpy(mpBuff, arRHS, mSize);
+	memcpy(this->buffer, other.buffer, this->size);
 
 	return *this;
 }
 
 CopyableBuffer::~CopyableBuffer()
 {
-	delete [] mpBuff;
+	delete [] buffer;
 }
 
 bool CopyableBuffer::operator==( const CopyableBuffer& other) const
@@ -108,7 +103,7 @@ bool CopyableBuffer::operator==( const CopyableBuffer& other) const
 	{
 		for(size_t i = 0; i < this->Size(); ++i)
 		{
-			if(this->mpBuff[i] != other.mpBuff[i]) return false;
+			if(this->buffer[i] != other.buffer[i]) return false;
 		}
 
 		return true;

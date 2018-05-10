@@ -28,63 +28,40 @@ EventBufferConfig EventBufferConfig::AllTypes(uint16_t sizes)
 	return EventBufferConfig(sizes, sizes, sizes, sizes, sizes, sizes, sizes, sizes);
 }
 
-uint16_t EventBufferConfig::GetMaxEventsForType(EventType type) const
-{
-	switch (type)
-	{
-	case(EventType::Binary) :
-		return maxBinaryEvents;
-	case(EventType::DoubleBitBinary) :
-		return maxDoubleBinaryEvents;
-	case(EventType::BinaryOutputStatus) :
-		return maxBinaryOutputStatusEvents;
-	case(EventType::Counter) :
-		return maxCounterEvents;
-	case(EventType::FrozenCounter) :
-		return maxFrozenCounterEvents;
-	case(EventType::Analog) :
-		return maxAnalogEvents;
-	case(EventType::AnalogOutputStatus) :
-		return maxAnalogOutputStatusEvents;
-	case(EventType::SecurityStat) :
-		return maxSecurityStatisticEvents;
-	default:
-		return 0;
-	}
-}
-
 EventBufferConfig::EventBufferConfig(
-    uint16_t maxBinaryEvents_,
-    uint16_t maxDoubleBinaryEvents_,
-    uint16_t maxAnalogEvents_,
-    uint16_t maxCounterEvents_,
-    uint16_t maxFrozenCounterEvents_,
-    uint16_t maxBinaryOutputStatusEvents_,
-    uint16_t maxAnalogOutputStatusEvents_,
-    uint16_t maxSecurityStatisticEvents_) :
+    uint16_t maxBinaryEvents,
+    uint16_t maxDoubleBinaryEvents,
+    uint16_t maxAnalogEvents,
+    uint16_t maxCounterEvents,
+    uint16_t maxFrozenCounterEvents,
+    uint16_t maxBinaryOutputStatusEvents,
+    uint16_t maxAnalogOutputStatusEvents,
+    uint16_t maxOctetStringEvents
+) :
 
-	maxBinaryEvents(maxBinaryEvents_),
-	maxDoubleBinaryEvents(maxDoubleBinaryEvents_),
-	maxAnalogEvents(maxAnalogEvents_),
-	maxCounterEvents(maxCounterEvents_),
-	maxFrozenCounterEvents(maxFrozenCounterEvents_),
-	maxBinaryOutputStatusEvents(maxBinaryOutputStatusEvents_),
-	maxAnalogOutputStatusEvents(maxAnalogOutputStatusEvents_),
-	maxSecurityStatisticEvents(maxSecurityStatisticEvents_)
+	maxBinaryEvents(maxBinaryEvents),
+	maxDoubleBinaryEvents(maxDoubleBinaryEvents),
+	maxAnalogEvents(maxAnalogEvents),
+	maxCounterEvents(maxCounterEvents),
+	maxFrozenCounterEvents(maxFrozenCounterEvents),
+	maxBinaryOutputStatusEvents(maxBinaryOutputStatusEvents),
+	maxAnalogOutputStatusEvents(maxAnalogOutputStatusEvents),
+	maxOctetStringEvents(maxOctetStringEvents)
 {
 
 }
 
 uint32_t EventBufferConfig::TotalEvents() const
 {
-	return	maxBinaryEvents +
-	        maxDoubleBinaryEvents +
-	        maxAnalogEvents +
-	        maxCounterEvents +
-	        maxFrozenCounterEvents +
-	        maxBinaryOutputStatusEvents +
-	        maxAnalogOutputStatusEvents +
-	        maxSecurityStatisticEvents;
+	return
+	    maxBinaryEvents +
+	    maxDoubleBinaryEvents +
+	    maxAnalogEvents +
+	    maxCounterEvents +
+	    maxFrozenCounterEvents +
+	    maxBinaryOutputStatusEvents +
+	    maxAnalogOutputStatusEvents +
+	    maxOctetStringEvents;
 }
 
 

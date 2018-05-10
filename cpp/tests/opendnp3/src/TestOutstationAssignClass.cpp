@@ -137,7 +137,7 @@ TEST_CASE(SUITE("AcceptsMultipleAssignsmentPerMessage"))
 	const uint16_t NUM_ANALOG = 10;
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseSizes(NUM_BINARY, 0, NUM_ANALOG, 0, 0, 0, 0, 0));
+	OutstationTestObject t(config, DatabaseSizes(NUM_BINARY, 0, NUM_ANALOG, 0, 0, 0, 0, 0, 0));
 	t.application->supportsAssignClass = true;
 	t.LowerLayerUp();
 

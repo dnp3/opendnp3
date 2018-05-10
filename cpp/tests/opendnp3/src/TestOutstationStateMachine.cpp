@@ -40,7 +40,7 @@ TEST_CASE(SUITE("Responds to repeat READ request with same octets as last repson
 
 	t.SendToOutstation("C0 01 1E 00 06");
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	// change the value in the outstation
 	t.Transaction([](IUpdateHandler & db)
@@ -61,11 +61,11 @@ TEST_CASE(SUITE("Responds to non-READ request while waiting for unsolicited conf
 	t.LowerLayerUp();
 
 	REQUIRE(t.lower->PopWriteAsHex() == "F0 82 80 00");
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	t.SendToOutstation("C0 02"); // empty write
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00"); //null response
-	t.OnSendResult(true);
+	t.OnTxReady();
 
 	REQUIRE(t.lower->PopWriteAsHex() == ""); // shouldn't send anything else
 

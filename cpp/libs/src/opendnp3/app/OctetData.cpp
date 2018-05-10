@@ -28,13 +28,27 @@ using namespace openpal;
 namespace opendnp3
 {
 
-OctetData::OctetData() :  size(0) {}
+OctetData::OctetData() : size(1)
+{
+
+}
 
 OctetData::OctetData(const RSlice& input) :
 	size(openpal::Min<uint32_t>(MAX_SIZE, input.Size()))
 {
 	auto dest = buffer.GetWSlice();
 	input.Take(size).CopyTo(dest);
+}
+
+bool OctetData::Set(const openpal::RSlice& input)
+{
+	if (input.Size() > MAX_SIZE) return false;
+	else
+	{
+		auto dest = buffer.GetWSlice();
+		input.CopyTo(dest);
+		return true;
+	}
 }
 
 openpal::RSlice OctetData::ToRSlice() const

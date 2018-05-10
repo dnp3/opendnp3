@@ -23,8 +23,8 @@
 namespace testlib
 {
 
-RandomizedBuffer::RandomizedBuffer(uint32_t aSize) :
-	testlib::CopyableBuffer(aSize),
+RandomizedBuffer::RandomizedBuffer(uint32_t size) :
+	testlib::CopyableBuffer(size),
 	rand()
 {
 	Randomize();
@@ -32,7 +32,10 @@ RandomizedBuffer::RandomizedBuffer(uint32_t aSize) :
 
 void RandomizedBuffer::Randomize()
 {
-	for (uint32_t i = 0; i < this->Size(); ++i) mpBuff[i] = static_cast<uint8_t>(rand.Next() % 256);
+	for (uint32_t i = 0; i < this->Size(); ++i)
+	{
+		this->buffer[i] = static_cast<uint8_t>(rand.Next() % 256);
+	}
 }
 
 }

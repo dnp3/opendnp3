@@ -30,28 +30,16 @@
 namespace opendnp3
 {
 
-class MockTransportLayer : public IUpperLayer
+class MockTransportLayer final : public IUpperLayer
 {
 
 public:
 
-	struct State
+	struct Counters
 	{
-
-		State()
-		{
-			Reset();
-		}
-
-		uint32_t successCnt;
-		uint32_t failureCnt;
-		uint32_t numLayerUp;
-		uint32_t numLayerDown;
-
-		void Reset()
-		{
-			successCnt = failureCnt = numLayerUp = numLayerDown = 0;
-		}
+		uint32_t numTxReady = 0;
+		uint32_t numLayerUp = 0;
+		uint32_t numLayerDown = 0;
 	};
 
 	MockTransportLayer();
@@ -65,41 +53,30 @@ public:
 		return isOnline;
 	}
 
-	bool CountersEqual(uint32_t success, uint32_t failure)
+	bool CountersEquals(const Counters& other)
 	{
-		return state.successCnt == success && state.failureCnt == failure;
+		return (counters.numTxReady == other.numTxReady)
+		       && (counters.numLayerUp == other.numLayerUp)
+		       && (counters.numLayerDown == other.numLayerDown);
 	}
 
-	bool StateEquals(const State& s)
+	Counters GetCounters() const
 	{
-		return (state.successCnt == s.successCnt)
-		       && (state.failureCnt == s.failureCnt)
-		       && (state.numLayerUp == s.numLayerUp)
-		       && (state.numLayerDown == s.numLayerDown);
-	}
-
-	void Reset()
-	{
-		state.Reset();
-	}
-
-	State GetState()
-	{
-		return state;
+		return counters;
 	}
 
 	// these are the NVII delegates
-	virtual bool OnReceive(const openpal::RSlice& buffer) override final;
-	virtual bool OnSendResult(bool isSuccess) override final;
-	virtual bool OnLowerLayerUp() override final;
-	virtual bool OnLowerLayerDown() override final;
+	virtual bool OnReceive(const Message& message) override;
+	virtual bool OnTxReady() override;
+	virtual bool OnLowerLayerUp() override;
+	virtual bool OnLowerLayerDown() override;
 
 	std::deque<std::string> receivedQueue;
 
 private:
 	ILinkLayer* pLinkLayer;
 	bool isOnline;
-	State state;
+	Counters counters;
 };
 
 
