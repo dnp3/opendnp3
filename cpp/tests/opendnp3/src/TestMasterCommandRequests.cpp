@@ -204,7 +204,7 @@ TEST_CASE(SUITE("can select and operate with one byte qualifier optimization ena
 {
 	auto params = NoStartupTasks();
 	params.controlQualifierMode = IndexQualifierMode::allow_one_byte;
-	MasterTestObject t(params);
+	MasterTestFixture t(params);
 	t.context->OnLowerLayerUp();
 
 	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
@@ -218,13 +218,13 @@ TEST_CASE(SUITE("can select and operate with one byte qualifier optimization ena
 
 	// check for the select and perform response
 	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + crob_header_hex);
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();
 	t.SendToMaster("C0 81 00 00 " + crob_header_hex);
 	t.exe->RunMany();
 
 	// check for the operate and perform response
 	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + crob_header_hex);
-	t.context->OnSendResult(true);
+	t.context->OnTxReady();
 	t.SendToMaster("C1 81 00 00 " + crob_header_hex);
 	t.exe->RunMany();
 
