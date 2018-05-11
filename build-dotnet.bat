@@ -17,14 +17,15 @@ IF ["%OSSL_LIB32_DIR%"]==[] (
 	GOTO :QUIT
 )
 ECHO OSSL_LIB32_DIR is %OSSL_LIB32_DIR%
-IF ["%VS140COMNTOOLS%"]==[] (
-	ECHO VS2015 could not be found
-	GOTO: QUIT
-)
-ECHO VS140COMNTOOLS is %VS140COMNTOOLS%
 
-:BUILD
-CALL "%VS140COMNTOOLS%VsDevCmd.bat"
+for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`) do (
+  set MSBUILD_PATH=%%i
+)
+
+if not exist "%MSBUILD_PATH%\MSBuild\15.0\Bin\MSBuild.exe" (
+  ECHO VS2017 could not be found
+  GOTO :QUIT
+)
 
 IF EXIST build RMDIR build /s /q
 MKDIR build\lib
@@ -33,11 +34,11 @@ CD build
 SET OPENDNP3_DIR=%CD%\lib
 ECHO OPENDNP3_DIR is %OPENDNP3_DIR%
 
-cmake .. -DCMAKE_INSTALL_PREFIX=lib -DDNP3_TEST=ON -DDNP3_TLS=ON -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G"Visual Studio 14 2015"
-msbuild opendnp3.sln /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM%
-msbuild INSTALL.vcxproj /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM%
-msbuild ..\dotnet\bindings.sln /target:Clean
-msbuild ..\dotnet\bindings.sln /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM%
+cmake .. -DCMAKE_INSTALL_PREFIX=lib -DDNP3_TEST=ON -DDNP3_TLS=ON -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G"Visual Studio 15 2017"
+"%MSBUILD_PATH%\MSBuild\15.0\Bin\MSBuild.exe" opendnp3.sln /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM%
+"%MSBUILD_PATH%\MSBuild\15.0\Bin\MSBuild.exe" INSTALL.vcxproj /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM%
+"%MSBUILD_PATH%\MSBuild\15.0\Bin\MSBuild.exe" ..\dotnet\bindings.sln /target:Clean
+"%MSBUILD_PATH%\MSBuild\15.0\Bin\MSBuild.exe" ..\dotnet\bindings.sln /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM%
 
 :QUIT
 ENDLOCAL
