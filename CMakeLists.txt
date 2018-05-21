@@ -250,6 +250,13 @@ if(DNP3_TEST)
   set_target_properties(testasiodnp3 PROPERTIES FOLDER tests)
   add_test(testasiodnp3 testasiodnp3)
 
+  # ----- fuzz tests -----
+  if(DNP3_DECODER)
+    add_executable (fuzzdnp3 ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzdnp3.cpp)
+    target_link_libraries (fuzzdnp3 asiodnp3 dnp3decode ${PTHREAD})
+    set_target_properties(fuzzdnp3 PROPERTIES FOLDER tests)
+  endif()
+
 endif()
 
 add_custom_target(
