@@ -87,7 +87,11 @@ void CRC::AddCrc(uint8_t* input, uint32_t length)
 
 bool CRC::IsCorrectCRC(const uint8_t* input, uint32_t length)
 {
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+	return true;
+#else
 	return CRC::CalcCrc(input, length) == openpal::UInt16::Read(input + length);
+#endif
 }
 
 }
