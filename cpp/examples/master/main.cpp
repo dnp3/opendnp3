@@ -91,9 +91,11 @@ int main(int argc, char* argv[])
 		std::cout << "a - performs and ad-hoc range scan" << std::endl;
 		std::cout << "i - integrity demand scan" << std::endl;
 		std::cout << "e - exception demand scan" << std::endl;
-		std::cout << "d - diable unsolcited" << std::endl;
+		std::cout << "d - disable unsolcited" << std::endl;
 		std::cout << "r - cold restart" << std::endl;
 		std::cout << "c - send crob" << std::endl;
+		std::cout << "t - toggle channel logging" << std::endl;
+		std::cout << "u - toggle master logging" << std::endl;
 
 		char cmd;
 		std::cin >> cmd;
