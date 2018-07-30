@@ -88,10 +88,10 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "Enter a command" << std::endl;
 		std::cout << "x - exits program" << std::endl;
-		std::cout << "a - performs and ad-hoc range scan" << std::endl;
+		std::cout << "a - performs an ad-hoc range scan" << std::endl;
 		std::cout << "i - integrity demand scan" << std::endl;
 		std::cout << "e - exception demand scan" << std::endl;
-		std::cout << "d - disable unsolcited" << std::endl;
+		std::cout << "d - disable unsolicited" << std::endl;
 		std::cout << "r - cold restart" << std::endl;
 		std::cout << "c - send crob" << std::endl;
 		std::cout << "t - toggle channel logging" << std::endl;
