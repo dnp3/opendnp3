@@ -76,7 +76,7 @@ public class MasterDemo {
         // Create a master instance, pass in a simple singleton to print received values to the console
         Master master = channel.addMaster("master", PrintingSOEHandler.getInstance(), DefaultMasterApplication.getInstance(), config);
 
-        // do an integrity scan once per minute
+        // do an integrity scan every 2 seconds
         master.addPeriodicScan(Duration.ofSeconds(2), Header.getIntegrity());
 
         master.enable();
