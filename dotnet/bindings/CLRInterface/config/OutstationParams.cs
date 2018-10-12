@@ -45,6 +45,11 @@ namespace Automatak.DNP3.Interface
         public System.UInt32 maxTxFragSize = 2048;
 
         /// <summary>
+        /// The maximum fragment size the outstation will be able to receive
+        /// </summary>
+        public System.UInt32 maxRxFragSize = 2048;
+
+        /// <summary>
         /// Global enabled / disable for unsolicted messages. If false, the NULL unsolicited message is not even sent
         /// </summary>
         public bool allowUnsolicited = false;

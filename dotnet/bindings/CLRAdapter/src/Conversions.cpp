@@ -378,6 +378,7 @@ namespace Automatak
 				params.typesAllowedInClass0 = opendnp3::StaticTypeBitField(config->typesAllowedInClass0.mask);
 				params.maxControlsPerRequest = config->maxControlsPerRequest;
 				params.maxTxFragSize = config->maxTxFragSize;
+				params.maxRxFragSize = config->maxRxFragSize;
 				params.selectTimeout = ConvertTimespan(config->selectTimeout);
 				params.solConfirmTimeout = ConvertTimespan(config->solicitedConfirmTimeout);
 				params.unsolClassMask = ConvertClassField(config->unsolClassMask);
