@@ -1,7 +1,7 @@
 ### 2.3.0-M1 ###
 * :star: Small internal change to support openssl 1.1.x ([pull request](https://github.com/automatak/dnp3/pull/207))
 * :star: TCP server channels can now configurably drop or accept.
-  * :wrench: This causes a breaking API change by adding a method to DNP3Manager::AddTCPServer(..).
+  * :wrench: This causes a breaking API change by adding a parameter to DNP3Manager::AddTCPServer(..).
 * :star: Outstation now supports transmitting octet strings
 * :star: Masters can now optimize control requests for 1-byte index qualifiers. This optimization can be enabled via MasterParams.controlIndexMode.
 * :star: ILinkListener has two additional callbacks for unknown destination / source addresses.
