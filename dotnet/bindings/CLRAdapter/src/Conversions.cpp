@@ -450,6 +450,7 @@ namespace Automatak
 				ConvertEventConfig<opendnp3::BinaryOutputStatusInfo>(lhs->binaryOutputStatii, rhs.boStatus);
 				ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo>(lhs->analogOutputStatii, rhs.aoStatus);
 				ConvertStaticConfig<opendnp3::TimeAndIntervalInfo>(lhs->timeAndIntervals, rhs.timeAndInterval);
+				ConvertIndexConfig<opendnp3::OctetStringInfo>(lhs->octetStrings, rhs.octetString);
 			}			
 
 			opendnp3::GroupVariationID Conversions::Convert(PointClass clazz)
