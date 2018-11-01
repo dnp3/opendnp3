@@ -1,4 +1,4 @@
-### 2.3.0-M1 (pending) ###
+### 2.3.0-M1 ###
 * :star: Small internal change to support openssl 1.1.x ([pull request](https://github.com/automatak/dnp3/pull/207))
 * :star: TCP server channels can now configurably drop or accept.
   * :wrench: This causes a breaking API change by adding a method to DNP3Manager::AddTCPServer(..).
