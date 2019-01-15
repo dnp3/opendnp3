@@ -98,6 +98,8 @@ void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)
 
 void MasterSessionStack::BeginShutdown()
 {
+	if(!session) return;
+
 	auto shutdown = [session = session]()
 	{
 		session->Shutdown();
