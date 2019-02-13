@@ -168,7 +168,7 @@ if(DNP3_DEMO)
   set_target_properties(master-demo PROPERTIES FOLDER demos)
 
   # ----- master demo executable -----
-  add_executable(master-gprs-demo ./cpp/examples/master-gprs/main.cpp)
+  add_executable(master-gprs-demo ./cpp/examples/master-gprs/main.cpp ./cpp/examples/master-gprs/ExampleListenCallbacks.cpp)
   target_link_libraries (master-gprs-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(master-gprs-demo PROPERTIES FOLDER demos)
 

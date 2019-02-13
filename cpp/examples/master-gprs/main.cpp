@@ -20,11 +20,12 @@
  */
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DefaultListenCallbacks.h>
 
 #include <opendnp3/LogLevels.h>
 #include <iostream>
 #include <thread>
+
+#include "ExampleListenCallbacks.h"
 
 using namespace std;
 using namespace openpal;
@@ -40,13 +41,13 @@ int main(int argc, char* argv[])
 
 	const auto NUM_THREAD = std::thread::hardware_concurrency();
 
-	auto callbacks = std::make_shared<DefaultListenCallbacks>();
+	const auto callbacks = std::make_shared<ExampleListenCallbacks>();
 
 	// This is the main point of interaction with the stack
 	DNP3Manager manager(NUM_THREAD, ConsoleLogger::Create());
 
 	std::error_code ec;
-	auto server1 = manager.CreateListener("server-20000", FILTERS, IPEndpoint::AllAdapters(20000), callbacks, ec);
+	const auto server1 = manager.CreateListener("server-20000", FILTERS, IPEndpoint::AllAdapters(20000), callbacks, ec);
 
 	if (ec)
 	{
