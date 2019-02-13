@@ -123,6 +123,7 @@ void init_handlers(command_handler_map_t& map)
 		std::cout << "help" << " - prints this message" << std::endl;
 		std::cout << "exit" << " - exits the programhel" << std::endl;
 		std::cout << "latch_on <address> <index>" << " - sends a CROB w/ LATCH_ON to the specified outstation address" << std::endl;
+		std::cout << "integrity <address>" << " - perform an integrity (class 3/2/1/0) on the specified outstation address" << std::endl;
 	};
 
 	map["latch_on"] = [](ExampleListenCallbacks& callbacks, const vector<string>& commands) {
@@ -139,6 +140,24 @@ void init_handlers(command_handler_map_t& map)
 					ControlRelayOutputBlock(ControlCode::LATCH_ON),
 					index,
 					[](const ICommandTaskResult&) {} // normally you would handle the result in some fashion
+			);
+		}
+		else {
+			throw std::runtime_error("Unknown outstation address");
+		}
+	};
+
+	map["integrity"] = [](ExampleListenCallbacks& callbacks, const vector<string>& commands) {
+		if(commands.size() != 2) {
+			throw std::runtime_error("integrity expects exactly 1 argument");
+		}
+
+		const auto address = parse_uint16(commands[1]);
+
+		const auto session = callbacks.get_outstation_session(address);
+		if(session) {
+			session->ScanClasses(
+					ClassField::AllClasses()
 			);
 		}
 		else {
