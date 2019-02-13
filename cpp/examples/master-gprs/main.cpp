@@ -127,7 +127,7 @@ void init_handlers(command_handler_map_t& map)
 
 	map["latch_on"] = [](ExampleListenCallbacks& callbacks, const vector<string>& commands) {
 		if(commands.size() != 3) {
-			throw std::exception("latch_on expects exactly 2 arguments");
+			throw std::runtime_error("latch_on expects exactly 2 arguments");
 		}
 
 		const auto address = parse_uint16(commands[1]);
@@ -142,7 +142,7 @@ void init_handlers(command_handler_map_t& map)
 			);
 		}
 		else {
-			throw std::exception("Unknown outstation address");
+			throw std::runtime_error("Unknown outstation address");
 		}
 	};
 }

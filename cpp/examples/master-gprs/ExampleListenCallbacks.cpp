@@ -158,7 +158,7 @@ void ExampleListenCallbacks::OnFirstFrame(uint64_t sessionid, const opendnp3::Li
 	// add to the list
 	this->sessions.emplace_back(SessionInfo{sessionid, header.src, session});
 
-	std::cout << "Outstation session start: " << iter->address << std::endl;
+	std::cout << "Outstation session start: " << header.src << std::endl;
 }
 
 void ExampleListenCallbacks::OnConnectionClose(uint64_t sessionid, const std::shared_ptr<asiodnp3::IMasterSession>& session)
