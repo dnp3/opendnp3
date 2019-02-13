@@ -157,15 +157,18 @@ void ExampleListenCallbacks::OnFirstFrame(uint64_t sessionid, const opendnp3::Li
 
 	// add to the list
 	this->sessions.emplace_back(SessionInfo{sessionid, header.src, session});
+
+	std::cout << "Outstation session start: " << iter->address << std::endl;
 }
 
 void ExampleListenCallbacks::OnConnectionClose(uint64_t sessionid, const std::shared_ptr<asiodnp3::IMasterSession>& session)
 {
     std::lock_guard<std::mutex> lock(this->mutex);
 	const auto iter = std::find_if(this->sessions.begin(), this->sessions.end(), [=](const auto& item) { return item.id == sessionid; });
-    if(iter != this->sessions.end()) {
-        this->sessions.erase(iter);
-    }
+	if(iter != this->sessions.end()) {
+		std::cout << "Outstation session close: " << iter->address << std::endl;
+		this->sessions.erase(iter);
+	}
 }
 
 void ExampleListenCallbacks::OnCertificateError(uint64_t sessionid, const asiodnp3::X509Info& info, int error)

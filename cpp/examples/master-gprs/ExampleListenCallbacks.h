@@ -18,8 +18,6 @@ class ExampleListenCallbacks final : public asiodnp3::IListenCallbacks
 
 public:
 
-
-
     // ------ Retrieve a (possibly nullptr) master session reference to control a particular outstation --------
 
     std::shared_ptr<asiodnp3::IMasterSession> get_outstation_session(uint16_t address);
