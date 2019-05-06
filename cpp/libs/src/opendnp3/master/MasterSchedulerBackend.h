@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-class MasterSchedulerBackend final : public IMasterScheduler
+class MasterSchedulerBackend final : public IMasterScheduler, public std::enable_shared_from_this<MasterSchedulerBackend>
 {
 
 	// Tasks are associated with a particular runner

@@ -100,7 +100,7 @@ bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner)
 
 void MasterSchedulerBackend::Demand(const std::shared_ptr<IMasterTask>& task)
 {
-	auto callback = [this, task]()
+	auto callback = [this, task, self = shared_from_this()]()
 	{
 		task->SetMinExpiration();
 		this->CheckForTaskRun();
@@ -119,7 +119,7 @@ void MasterSchedulerBackend::PostCheckForTaskRun()
 	if (!this->taskCheckPending)
 	{
 		this->taskCheckPending = true;
-		this->executor->Post([this]()
+		this->executor->Post([this, self = shared_from_this()]()
 		{
 			this->CheckForTaskRun();
 		});
@@ -164,7 +164,7 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 	}
 	else
 	{
-		auto callback = [this]()
+		auto callback = [this, self = shared_from_this()]()
 		{
 			this->CheckForTaskRun();
 		};
@@ -187,10 +187,17 @@ void MasterSchedulerBackend::RestartTimeoutTimer()
 		}
 	}
 
-	this->taskStartTimeout.Restart(min, [this]()
-	{
-		this->TimeoutTasks();
-	});
+    if (min.IsMax())
+    {
+        this->taskStartTimeout.Cancel();
+    }
+    else
+    {
+        this->taskStartTimeout.Restart(min, [this, self = shared_from_this()]()
+        {
+            this->TimeoutTasks();
+        });
+    }
 }
 
 void MasterSchedulerBackend::TimeoutTasks()
