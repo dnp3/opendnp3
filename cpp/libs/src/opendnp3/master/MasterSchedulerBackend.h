@@ -73,7 +73,7 @@ public:
 
 	explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);
 
-	void Shutdown();
+	virtual void Shutdown() override;
 
 	// ------- implement IMasterScheduler --------
 
@@ -88,7 +88,7 @@ public:
 	virtual void Evaluate() override;
 
 private:
-
+    bool isShutdown = false;
 	bool taskCheckPending = false;
 
 	Record current;

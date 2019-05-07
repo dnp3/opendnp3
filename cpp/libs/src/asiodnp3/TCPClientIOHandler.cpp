@@ -96,7 +96,10 @@ bool TCPClientIOHandler::StartConnect(const openpal::TimeDuration& delay)
 		{
 			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connected to: %s", this->remote.address.c_str());
 
-			this->OnNewChannel(SocketChannel::Create(executor, std::move(socket)));
+			if (client)
+			{
+				this->OnNewChannel(SocketChannel::Create(executor, std::move(socket)));
+			}
 		}
 
 	};

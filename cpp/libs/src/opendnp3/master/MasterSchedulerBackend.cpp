@@ -37,6 +37,7 @@ MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IE
 
 void MasterSchedulerBackend::Shutdown()
 {
+	this->isShutdown = true;
 	this->tasks.clear();
 	this->current.Clear();
 	this->taskTimer.Cancel();
@@ -45,6 +46,8 @@ void MasterSchedulerBackend::Shutdown()
 
 void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner)
 {
+	if (isShutdown) return;
+	
 	this->tasks.push_back(Record(task, runner));
 	this->PostCheckForTaskRun();
 }
@@ -128,6 +131,8 @@ void MasterSchedulerBackend::PostCheckForTaskRun()
 
 bool MasterSchedulerBackend::CheckForTaskRun()
 {
+    if (this->isShutdown) return false;
+
 	this->taskCheckPending = false;
 
 	this->RestartTimeoutTimer();
@@ -177,6 +182,8 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 
 void MasterSchedulerBackend::RestartTimeoutTimer()
 {
+	if (isShutdown) return;
+
 	auto min = MonotonicTimestamp::Max();
 
 	for (auto& record : this->tasks)
@@ -202,6 +209,8 @@ void MasterSchedulerBackend::RestartTimeoutTimer()
 
 void MasterSchedulerBackend::TimeoutTasks()
 {
+	if (isShutdown) return;
+
 	// find the minimum start timeout value
 	auto isTimedOut = [now = this->executor->GetTime()](const Record & record) -> bool
 	{

@@ -84,7 +84,7 @@ private:
 
 	openpal::Logger logger;
 	const std::shared_ptr<asiopal::Executor> executor;
-	const std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
+	std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
 
 	std::shared_ptr<IOHandler> iohandler;
 	std::shared_ptr<asiopal::IResourceManager> manager;
