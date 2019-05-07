@@ -91,8 +91,3 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		components.Enable();
 	}
 }
-
-
-
-
-

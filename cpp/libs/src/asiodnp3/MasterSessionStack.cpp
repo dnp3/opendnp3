@@ -72,6 +72,8 @@ void MasterSessionStack::OnLowerLayerDown()
 {
 	stack.link->OnLowerLayerDown();
 
+	scheduler->Shutdown();
+
 	// now we can release the socket session
 	session.reset();
 }

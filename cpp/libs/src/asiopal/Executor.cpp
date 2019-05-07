@@ -59,6 +59,12 @@ ITimer* Executor::Start(const MonotonicTimestamp& time, const action_t& runnable
 
 openpal::ITimer* Executor::Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable)
 {
+	//auto duration = expiration - std::chrono::steady_clock::now();
+	//if(duration > std::chrono::minutes(1))
+	//{
+	//	auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
+	//}
+
 	auto timer = std::make_shared<Timer>(this->strand.get_io_service());
 
 	timer->timer.expires_at(expiration);

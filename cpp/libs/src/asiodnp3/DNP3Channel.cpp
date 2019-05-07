@@ -75,12 +75,8 @@ void DNP3Channel::ShutdownImpl()
 	this->iohandler->Shutdown();
 	this->iohandler.reset();
 
-	this->executor->Post([self = shared_from_this()]() {
-		// This must be ran inside the strand
-		// to ensure synchronisation
-		self->scheduler->Shutdown();
-		self->scheduler.reset();
-	});
+	this->scheduler->Shutdown();
+	this->scheduler.reset();
 
 	// shutdown any remaining stacks
 	this->resources->Shutdown();
