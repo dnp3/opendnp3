@@ -71,11 +71,6 @@ void MasterSessionStack::OnLowerLayerUp()
 void MasterSessionStack::OnLowerLayerDown()
 {
 	stack.link->OnLowerLayerDown();
-
-	scheduler->Shutdown();
-
-	// now we can release the socket session
-	session.reset();
 }
 
 bool MasterSessionStack::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
@@ -100,9 +95,13 @@ void MasterSessionStack::SetLogFilters(const openpal::LogFilters& filters)
 
 void MasterSessionStack::BeginShutdown()
 {
-	auto shutdown = [session = session]()
+	auto shutdown = [this]()
 	{
+		scheduler->Shutdown();
+
+		// now we can release the socket session
 		session->Shutdown();
+		session.reset();
 	};
 
 	executor->strand.post(shutdown);
