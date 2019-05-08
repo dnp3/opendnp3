@@ -46,7 +46,7 @@ void MasterSchedulerBackend::Shutdown()
 
 void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner)
 {
-	if (isShutdown) return;
+	if (this->isShutdown) return;
 	
 	this->tasks.push_back(Record(task, runner));
 	this->PostCheckForTaskRun();
@@ -131,7 +131,7 @@ void MasterSchedulerBackend::PostCheckForTaskRun()
 
 bool MasterSchedulerBackend::CheckForTaskRun()
 {
-    if (this->isShutdown) return false;
+	if (this->isShutdown) return false;
 
 	this->taskCheckPending = false;
 
@@ -182,7 +182,7 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 
 void MasterSchedulerBackend::RestartTimeoutTimer()
 {
-	if (isShutdown) return;
+	if (this->isShutdown) return;
 
 	auto min = MonotonicTimestamp::Max();
 
@@ -194,22 +194,22 @@ void MasterSchedulerBackend::RestartTimeoutTimer()
 		}
 	}
 
-    if (min.IsMax())
-    {
-        this->taskStartTimeout.Cancel();
-    }
-    else
-    {
-        this->taskStartTimeout.Restart(min, [this, self = shared_from_this()]()
-        {
-            this->TimeoutTasks();
-        });
-    }
+	if (min.IsMax())
+	{
+		this->taskStartTimeout.Cancel();
+	}
+	else
+	{
+		this->taskStartTimeout.Restart(min, [this, self = shared_from_this()]()
+		{
+			this->TimeoutTasks();
+		});
+	}
 }
 
 void MasterSchedulerBackend::TimeoutTasks()
 {
-	if (isShutdown) return;
+	if (this->isShutdown) return;
 
 	// find the minimum start timeout value
 	auto isTimedOut = [now = this->executor->GetTime()](const Record & record) -> bool
