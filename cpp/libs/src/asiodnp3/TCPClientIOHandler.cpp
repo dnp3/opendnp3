@@ -84,7 +84,7 @@ bool TCPClientIOHandler::StartConnect(const openpal::TimeDuration& delay)
 
 			if (client)
 			{
-				auto retry_cb = [=, self]()
+				auto retry_cb = [self, newDelay, this]()
 				{
 					this->StartConnect(newDelay);
 				};
