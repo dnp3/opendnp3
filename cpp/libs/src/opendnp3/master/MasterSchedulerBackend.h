@@ -88,7 +88,7 @@ public:
 	virtual void Evaluate() override;
 
 private:
-    bool isShutdown = false;
+	bool isShutdown = false;
 	bool taskCheckPending = false;
 
 	Record current;
