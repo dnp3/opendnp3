@@ -42,6 +42,7 @@ void MasterSchedulerBackend::Shutdown()
 	this->current.Clear();
 	this->taskTimer.Cancel();
 	this->taskStartTimeout.Cancel();
+	this->executor.reset();
 }
 
 void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner)

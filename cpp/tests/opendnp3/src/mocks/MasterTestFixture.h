@@ -49,6 +49,7 @@ public:
 	    const std::shared_ptr<testlib::MockExecutor>& executor = nullptr,
 	    const std::shared_ptr<IMasterScheduler>& scheduler = nullptr
 	);
+	virtual ~MasterTestFixture();
 
 	bool SendToMaster(const std::string& hex);
 

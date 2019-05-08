@@ -102,7 +102,7 @@ private:
 
 	void TimeoutTasks();
 
-	const std::shared_ptr<openpal::IExecutor> executor;
+	std::shared_ptr<openpal::IExecutor> executor;
 	openpal::TimerRef taskTimer;
 	openpal::TimerRef taskStartTimeout;
 
