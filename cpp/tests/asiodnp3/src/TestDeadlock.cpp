@@ -39,7 +39,7 @@ TEST_CASE("TestDeadlock")
 	{
 		if(i % 100 == 0)
 		{
-			std::cout << "start iteration: " << i << std::endl;
+			INFO("start iteration: " << i);
 		}
 
 		DNP3Manager manager2(NUM_THREADS);

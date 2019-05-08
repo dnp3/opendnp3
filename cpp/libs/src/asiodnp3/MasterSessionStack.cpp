@@ -98,6 +98,7 @@ void MasterSessionStack::BeginShutdown()
 	auto shutdown = [this]()
 	{
 		scheduler->Shutdown();
+		scheduler.reset();
 
 		// now we can release the socket session
 		session->Shutdown();

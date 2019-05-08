@@ -107,7 +107,7 @@ private:
 	opendnp3::StackStatistics CreateStatistics() const;
 
 	const std::shared_ptr<asiopal::Executor> executor;
-	const std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
+	std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
 
 	std::shared_ptr<LinkSession> session;
 
