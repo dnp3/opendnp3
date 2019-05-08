@@ -52,7 +52,7 @@ TEST_CASE(SUITE("PointsPerSecond"))
 	// run with at least a concurrency of 2, but more if there are more cores
 	const auto concurrency = std::max<unsigned int>(std::thread::hardware_concurrency(), 2);
 
-	std::cout << "Concurrency: " << concurrency << std::endl;
+	INFO("Concurrency: " << concurrency);
 
 	DNP3Manager manager(concurrency);
 
