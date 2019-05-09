@@ -40,6 +40,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 namespace asiodnp3
 {

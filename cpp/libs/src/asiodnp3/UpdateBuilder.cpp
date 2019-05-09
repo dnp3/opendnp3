@@ -26,7 +26,7 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-Updates UpdateBuilder::Build() const
+Updates UpdateBuilder::Build()
 {
 	return Updates(std::move(this->updates));
 }

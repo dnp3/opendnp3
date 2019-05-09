@@ -18,49 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_UPDATES_H
-#define ASIODNP3_UPDATES_H
+#include <catch.hpp>
 
-#include <vector>
-#include <memory>
-#include <functional>
+#include <asiodnp3/UpdateBuilder.h>
 
-#include "opendnp3/outstation/IUpdateHandler.h"
+using namespace opendnp3;
+using namespace asiodnp3;
 
-namespace asiodnp3
+#define SUITE(name) "UpdateBuilderTestSuite - " name
+
+TEST_CASE(SUITE("builder is cleared after building"))
 {
+    UpdateBuilder builder;
+    builder.Update(Counter(42), 0);
 
-typedef std::function<void(opendnp3::IUpdateHandler&)> update_func_t;
-typedef std::vector<update_func_t> shared_updates_t;
+    {
+        const auto updates = builder.Build();
+        REQUIRE_FALSE(updates.IsEmpty());
+    }
 
-class Updates
-{
-	friend class UpdateBuilder;
-
-public:
-
-	void Apply(opendnp3::IUpdateHandler& handler) const
-	{
-		if (!updates) return;
-
-		for(auto& update : *updates)
-		{
-			update(handler);
-		}
-	}
-
-	bool IsEmpty() const
-	{
-		return updates ? updates->empty() : true;
-	}
-
-private:
-
-	Updates(std::shared_ptr<shared_updates_t> updates) : updates(std::move(updates)) {}
-
-	const std::shared_ptr<shared_updates_t> updates;
-};
-
+    {
+        const auto updates = builder.Build();
+        REQUIRE(updates.IsEmpty());
+    }
 }
 
-#endif
+
+
+
+
+
