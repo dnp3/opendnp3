@@ -42,7 +42,7 @@ public:
 	UpdateBuilder& Update(const opendnp3::TimeAndInterval& meas, uint16_t index);
 	UpdateBuilder& Modify(opendnp3::FlagsType type, uint16_t start, uint16_t stop, uint8_t flags);
 
-	Updates Build() const;
+	Updates Build();
 
 private:
 
