@@ -72,6 +72,7 @@ void LinkSession::ShutdownImpl()
 	if (this->stack)
 	{
 		this->stack->OnLowerLayerDown();
+		this->stack->BeginShutdown();
 	}
 
 	this->first_frame_timer.Cancel();

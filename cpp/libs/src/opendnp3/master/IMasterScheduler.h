@@ -37,6 +37,8 @@ public:
 
 	virtual ~IMasterScheduler() {}
 
+	virtual void Shutdown() = 0;
+
 	/**
 	* Add a single task to the scheduler. The tasks will be started asynchronously,
 	* i.e. not by the call to this method
