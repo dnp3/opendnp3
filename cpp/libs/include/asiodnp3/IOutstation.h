@@ -34,11 +34,10 @@ namespace asiodnp3
 */
 class IOutstation : public IStack
 {
-	friend class MeasUpdate;
 
 public:
 
-	virtual ~IOutstation() {}
+	~IOutstation() override = default;
 
 	/**
 	*  @param filters Adjust the filters to this value
