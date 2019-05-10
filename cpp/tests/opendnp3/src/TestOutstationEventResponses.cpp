@@ -329,7 +329,23 @@ TEST_CASE(SUITE("ReadGrp32Var7"))
 		db.Update(Analog(0.0, 0x01, DNPTime(0x010203040506)), 0);
 	};
 
-	TestEventRead("C0 01 20 07 06", "E0 81 80 00 20 07 28 01 00 00 00 01 00 00 00 00 06 05 04 03 02 01", update);
+	const auto response = "E0 81 80 00 20 07 28 01 00 00 00 01 00 00 00 00 06 05 04 03 02 01";
+
+	// specifically read this variation, but let the default be something else
+	TestEventRead("C0 01 20 07 06", response, update,
+		[](DatabaseConfigView & db)
+		{
+			db.analogs[0].config.evariation = EventAnalogVariation::Group32Var1;
+		}
+	);
+
+	// configure this as the default variation and ask for variation 0
+	TestEventRead("C0 01 20 00 06", response, update, 
+		[](DatabaseConfigView & db)
+		{
+			db.analogs[0].config.evariation = EventAnalogVariation::Group32Var7;
+		}
+	);
 }
 
 TEST_CASE(SUITE("ReadGrp32Var5"))
@@ -339,7 +355,23 @@ TEST_CASE(SUITE("ReadGrp32Var5"))
 		db.Update(Analog(0.0, 0x01, DNPTime(0x010203040506)), 0);
 	};
 
-	TestEventRead("C0 01 20 05 06", "E0 81 80 00 20 05 28 01 00 00 00 01 00 00 00 00", update);
+	const auto response = "E0 81 80 00 20 05 28 01 00 00 00 01 00 00 00 00";
+
+	// specifically read this variation, but let the default be something else
+	TestEventRead("C0 01 20 05 06", response, update,
+		[](DatabaseConfigView & db)
+		{
+			db.analogs[0].config.evariation = EventAnalogVariation::Group32Var1;
+		}
+	);
+
+	// configure this as the default variation and ask for variation 0
+	TestEventRead("C0 01 20 00 06", response, update,
+		[](DatabaseConfigView & db)
+		{
+			db.analogs[0].config.evariation = EventAnalogVariation::Group32Var5;
+		}
+	);	
 }
 
 TEST_CASE(SUITE("ReadGrp2Var1"))
