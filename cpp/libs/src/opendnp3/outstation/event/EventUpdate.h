@@ -46,7 +46,7 @@ bool EventUpdate::Update(EventLists& lists, const Event<T>& event)
 	bool overflow = false;
 
 
-	if (list.IsFull())
+	if (list.IsFullAndCapacityNotZero())
 	{
 		// we must make space
 
