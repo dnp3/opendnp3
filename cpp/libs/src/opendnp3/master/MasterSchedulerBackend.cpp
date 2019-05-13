@@ -55,6 +55,8 @@ void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMast
 
 void MasterSchedulerBackend::SetRunnerOffline(const IMasterTaskRunner& runner)
 {
+	if (this->isShutdown) return;
+
 	const auto now = this->executor->GetTime();
 
 	auto checkForOwnership = [now, &runner](const Record & record) -> bool
