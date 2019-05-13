@@ -233,28 +233,4 @@ void EventBuffer::ClearWritten()
 	this->storage.ClearWritten();
 }
 
-/*
-bool EventBuffer::IsTypeOverflown(EventType type) const
-{
-	auto max = config.GetMaxEventsForType(type);
-	return  (max > 0) ? (totalCounts.NumOfType(type) >= max) : false;
-}
-
-bool EventBuffer::IsAnyTypeOverflown() const
-{
-	return	IsTypeOverflown(EventType::Binary) ||
-	        IsTypeOverflown(EventType::DoubleBitBinary) ||
-	        IsTypeOverflown(EventType::BinaryOutputStatus) ||
-	        IsTypeOverflown(EventType::Counter) ||
-	        IsTypeOverflown(EventType::FrozenCounter) ||
-	        IsTypeOverflown(EventType::Analog) ||
-	        IsTypeOverflown(EventType::AnalogOutputStatus);
-}
-
-bool EventBuffer::HasEnoughSpaceToClearOverflow() const
-{
-	return !(events.IsFull() || IsAnyTypeOverflown());
-}
-*/
-
 }

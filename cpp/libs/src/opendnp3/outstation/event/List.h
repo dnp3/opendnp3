@@ -130,7 +130,7 @@ public:
 
 	void Remove(Node<T>* node);
 
-	inline bool IsFull() const;
+	inline bool IsFullAndCapacityNotZero() const;
 
 private:
 
@@ -257,9 +257,9 @@ void List<T>::Remove(Node<T>* node)
 }
 
 template <class T>
-bool List<T>::IsFull() const
+bool List<T>::IsFullAndCapacityNotZero() const
 {
-	return !(this->free);
+	return !(this->free) && Capacity() > 0;
 }
 
 template <class T>
