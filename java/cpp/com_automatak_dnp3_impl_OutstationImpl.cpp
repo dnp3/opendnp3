@@ -34,8 +34,8 @@ JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_get_1stati
 (JNIEnv* env, jobject, jlong native)
 {
 	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	auto stats = (*outstation)->GetStackStatistics();	
-	return Conversions::ConvertStackStatistics(env, stats);
+	auto stats = (*outstation)->GetStackStatistics();
+	return env->NewGlobalRef(Conversions::ConvertStackStatistics(env, stats));
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_enable_1native
