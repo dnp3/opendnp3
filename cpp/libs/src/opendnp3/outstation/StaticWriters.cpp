@@ -190,6 +190,11 @@ StaticWrite<FrozenCounterSpec>::func_t StaticWriters::Get(StaticFrozenCounterVar
 	switch (variation)
 	{
 	case(StaticFrozenCounterVariation::Group21Var1): return &WriteWithSerializer<FrozenCounterSpec, Group21Var1>;
+	case(StaticFrozenCounterVariation::Group21Var2): return &WriteWithSerializer<FrozenCounterSpec, Group21Var2>;
+	case(StaticFrozenCounterVariation::Group21Var5): return &WriteWithSerializer<FrozenCounterSpec, Group21Var5>;
+	case(StaticFrozenCounterVariation::Group21Var6): return &WriteWithSerializer<FrozenCounterSpec, Group21Var6>;
+	case(StaticFrozenCounterVariation::Group21Var9): return &WriteWithSerializer<FrozenCounterSpec, Group21Var9>;
+	case(StaticFrozenCounterVariation::Group21Var10): return &WriteWithSerializer<FrozenCounterSpec, Group21Var10>;
 	default:
 		return &WriteWithSerializer<FrozenCounterSpec, Group21Var1>;
 	}
