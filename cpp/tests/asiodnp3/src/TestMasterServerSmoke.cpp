@@ -96,6 +96,8 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 class DoubleShutdownListenCallbacks final : public IListenCallbacks
 {
 public:
+        DoubleShutdownListenCallbacks() : hasDoubleShutdown(false) {}
+
 	bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) override
 	{
 		return true;
@@ -139,7 +141,7 @@ public:
 	}
 
 private:
-	std::atomic<bool> hasDoubleShutdown = false;
+	std::atomic<bool> hasDoubleShutdown;
 };
 
 TEST_CASE(SUITE("Double BeginShutdown"))
