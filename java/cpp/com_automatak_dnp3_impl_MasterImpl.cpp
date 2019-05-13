@@ -40,7 +40,7 @@ JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1statistic
 {
 	const auto master = (std::shared_ptr<asiodnp3::IMaster>*) native;
 	auto stats = (*master)->GetStackStatistics();
-	return Conversions::ConvertStackStatistics(env, stats);
+	return env->NewGlobalRef(Conversions::ConvertStackStatistics(env, stats));
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_enable_1native
