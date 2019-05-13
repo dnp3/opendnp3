@@ -49,6 +49,15 @@ TEST_CASE(SUITE("AddsUntilFull"))
 	REQUIRE_FALSE(list.Add(4));
 }
 
+TEST_CASE(SUITE("IsFull for list of capacity 0 return false"))
+{
+	List<int> list(0);
+
+	REQUIRE_FALSE(list.Add(1));
+
+	REQUIRE_FALSE(list.IsFull());
+}
+
 TEST_CASE(SUITE("CanRemoveHead"))
 {
 	List<int> list(3);

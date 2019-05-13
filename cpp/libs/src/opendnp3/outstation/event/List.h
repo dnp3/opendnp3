@@ -259,7 +259,7 @@ void List<T>::Remove(Node<T>* node)
 template <class T>
 bool List<T>::IsFull() const
 {
-	return !(this->free);
+	return Capacity() > 0 && !(this->free);
 }
 
 template <class T>
