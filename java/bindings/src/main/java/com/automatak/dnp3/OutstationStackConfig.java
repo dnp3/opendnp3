@@ -43,6 +43,7 @@ public class OutstationStackConfig {
     /**
      * Constructor for an outstation stack with sensible defaults
      * @param databaseConfig Database layout for the outstation
+     * @param eventBufferConfig Configuration of the event buffer
      */
     public OutstationStackConfig(DatabaseConfig databaseConfig, EventBufferConfig eventBufferConfig)
     {

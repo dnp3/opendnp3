@@ -25,7 +25,7 @@ public interface Stack {
 
     /**
      * Set the active log levels for the stack
-     * @param levels
+     * @param levels bit-field representing enabled log levels
      */
     void setLogLevel(int levels);
 

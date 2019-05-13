@@ -31,7 +31,7 @@ public interface Channel {
 
     /**
      * Set the active log levels for the channel's logger
-     * @param levels
+     * @param levels bit-field representing enabled log levels
      */
     void setLogLevel(int levels);
 
