@@ -25,6 +25,7 @@ option(DNP3_DEMO "Build demo applications" OFF)
 option(DNP3_DECODER "Build the decoder library" OFF)
 option(DNP3_TLS "Build TLS client/server support" OFF)
 option(DNP3_JAVA "Build the Java bindings" OFF)
+option(DNP3_FUZZING "Build the OSSFuzz integration" OFF)
 
 # other options off-by-default that you can enable
 option(WERROR "Set all warnings to errors" OFF)
@@ -39,7 +40,8 @@ if(DNP3_ALL)
 	set(DNP3_TEST ON)
 	set(DNP3_TLS ON)
 	set(DNP3_DECODER ON)
-	set(DNP3_JAVA ON)
+  set(DNP3_JAVA ON)
+  set(DNP3_FUZZING ON)
 endif()
 
 if(DNP3_JAVA)
@@ -255,17 +257,17 @@ if(DNP3_TEST)
   set_target_properties(testasiodnp3 PROPERTIES FOLDER tests)
   add_test(testasiodnp3 testasiodnp3)
 
-  # ----- fuzz tests -----
-  if(DNP3_DECODER)
-    add_executable (fuzzdnp3 ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzdnp3.cpp)
-    target_link_libraries (fuzzdnp3 asiodnp3 dnp3decode ${PTHREAD})
-    set_target_properties(fuzzdnp3 PROPERTIES FOLDER tests)
+endif()
 
-    add_executable (fuzzoutstation ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzoutstation.cpp ./cpp/tests/fuzz/OutstationTestObject.cpp)
-    target_link_libraries (fuzzoutstation dnp3mocks ${PTHREAD})
-    set_target_properties(fuzzoutstation PROPERTIES FOLDER tests)
-  endif()
+# ----- fuzz tests -----
+if(DNP3_FUZZING)
+  add_executable (fuzzdnp3 ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzdnp3.cpp)
+  target_link_libraries (fuzzdnp3 asiodnp3 dnp3decode ${PTHREAD})
+  set_target_properties(fuzzdnp3 PROPERTIES FOLDER tests)
 
+  add_executable (fuzzoutstation ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzoutstation.cpp ./cpp/tests/fuzz/OutstationTestObject.cpp)
+  target_link_libraries (fuzzoutstation dnp3mocks ${PTHREAD})
+  set_target_properties(fuzzoutstation PROPERTIES FOLDER tests)
 endif()
 
 add_custom_target(

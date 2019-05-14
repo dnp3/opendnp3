@@ -54,4 +54,3 @@ size_t OutstationTestObject::SendToOutstation(const openpal::RSlice& buffer)
 }
 
 }
-

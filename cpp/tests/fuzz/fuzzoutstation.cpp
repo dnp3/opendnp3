@@ -8,7 +8,6 @@ using namespace opendnp3;
 using namespace openpal;
 using namespace testlib;
 
-
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
     RSlice buffer(Data, Size);
     OutstationConfig config;
