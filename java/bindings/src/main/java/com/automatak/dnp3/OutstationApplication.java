@@ -59,12 +59,12 @@ public interface OutstationApplication extends LinkStatusListener {
     ApplicationIIN getApplicationIIN();
 
     /**
-     * Query the outstation for the cold restart mode it supports
+     * @return cold restart mode supported
      */
     RestartMode coldRestartSupport();
 
     /**
-     * Query the outstation for the warm restart mode it supports
+     * @return warm restart mode it supported
      */
     RestartMode warmRestartSupport();
 
