@@ -1,14 +1,14 @@
 package com.automatak.dnp3.codegen
 
-import java.nio.file.FileSystems
+import java.nio.file.{FileSystems, Path}
 
 object Generator {
 
-  val javaJNIPath = FileSystems.getDefault.getPath("./cpp/jni/");
+  val javaJNIPath : Path = FileSystems.getDefault.getPath("./cpp/jni/")
 
   def main(args: Array[String]): Unit = {
 
-    implicit val indent = CppIndentation
+    implicit val indent : Indentation = CppIndentation
 
     Classes.all.foreach { c =>
 
