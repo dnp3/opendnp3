@@ -31,6 +31,7 @@ option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
 option(COVERAGE "Builds the libraries with coverage info for gcov (gcc only)" OFF)
 option(PROFILE "Builds the libraries with profiling support (gcc only)" OFF)
+option(FLOCK "Builds the libraries with lock serial port (flock, Linux and BSD)" OFF)
 
 if(DNP3_ALL)
 	message("enabling all optional components")
@@ -129,6 +130,10 @@ target_link_libraries(asiopal ${asiopal_link_libraries})
 install(TARGETS asiopal DESTINATION lib)
 set_target_properties(asiopal PROPERTIES FOLDER libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
 
+if(FLOCK)
+  add_definitions(-DUSE_FLOCK)
+endif()
+
 # ---- asiodnp3 library ----
 file(GLOB_RECURSE asiodnp3_HPP ./cpp/libs/src/asiodnp3/*.h ./cpp/libs/include/asiodnp3/*.h)
 if(DNP3_TLS)
@@ -163,7 +168,7 @@ if(DNP3_DEMO)
   set_target_properties(master-demo PROPERTIES FOLDER demos)
 
   # ----- master demo executable -----
-  add_executable(master-gprs-demo ./cpp/examples/master-gprs/main.cpp)
+  add_executable(master-gprs-demo ./cpp/examples/master-gprs/main.cpp ./cpp/examples/master-gprs/ExampleListenCallbacks.cpp)
   target_link_libraries (master-gprs-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(master-gprs-demo PROPERTIES FOLDER demos)
 

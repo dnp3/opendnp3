@@ -56,7 +56,7 @@ public:
 
 private:
 
-	Updates(const std::shared_ptr<shared_updates_t>& updates) : updates(updates) {}
+	Updates(std::shared_ptr<shared_updates_t> updates) : updates(std::move(updates)) {}
 
 	const std::shared_ptr<shared_updates_t> updates;
 };

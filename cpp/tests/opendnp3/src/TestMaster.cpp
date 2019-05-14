@@ -113,7 +113,7 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 
 	t.exe->RunMany();
 
-	REQUIRE(t.exe->NumPendingTimers() == 2);
+	REQUIRE(t.exe->NumPendingTimers() == 1);
 }
 
 TEST_CASE(SUITE("TimeoutDuringStartup"))
@@ -153,7 +153,7 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.exe->NumPendingTimers() == 2);
+	REQUIRE(t.exe->NumPendingTimers() == 1);
 	REQUIRE(t.exe->AdvanceToNextTimer());
 	REQUIRE(t.exe->RunMany() > 0);
 	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(1));
@@ -232,7 +232,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 	t.exe->RunMany();
 
 	// 2nd poll
-	REQUIRE(t.exe->NumPendingTimers() == 2);
+	REQUIRE(t.exe->NumPendingTimers() == 1);
 	REQUIRE(t.exe->NextTimerExpiration().milliseconds == 10000);
 	t.exe->AdvanceTime(TimeDuration::Seconds(10));
 	REQUIRE(t.exe->RunMany() > 0);

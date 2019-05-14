@@ -378,6 +378,7 @@ namespace Automatak
 				params.typesAllowedInClass0 = opendnp3::StaticTypeBitField(config->typesAllowedInClass0.mask);
 				params.maxControlsPerRequest = config->maxControlsPerRequest;
 				params.maxTxFragSize = config->maxTxFragSize;
+				params.maxRxFragSize = config->maxRxFragSize;
 				params.selectTimeout = ConvertTimespan(config->selectTimeout);
 				params.solConfirmTimeout = ConvertTimespan(config->solicitedConfirmTimeout);
 				params.unsolClassMask = ConvertClassField(config->unsolClassMask);
@@ -450,6 +451,7 @@ namespace Automatak
 				ConvertEventConfig<opendnp3::BinaryOutputStatusInfo>(lhs->binaryOutputStatii, rhs.boStatus);
 				ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo>(lhs->analogOutputStatii, rhs.aoStatus);
 				ConvertStaticConfig<opendnp3::TimeAndIntervalInfo>(lhs->timeAndIntervals, rhs.timeAndInterval);
+				ConvertIndexConfig<opendnp3::OctetStringInfo>(lhs->octetStrings, rhs.octetString);
 			}			
 
 			opendnp3::GroupVariationID Conversions::Convert(PointClass clazz)

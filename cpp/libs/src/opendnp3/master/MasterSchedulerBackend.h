@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-class MasterSchedulerBackend final : public IMasterScheduler
+class MasterSchedulerBackend final : public IMasterScheduler, public std::enable_shared_from_this<MasterSchedulerBackend>
 {
 
 	// Tasks are associated with a particular runner
@@ -73,7 +73,7 @@ public:
 
 	explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);
 
-	void Shutdown();
+	virtual void Shutdown() override;
 
 	// ------- implement IMasterScheduler --------
 
@@ -88,7 +88,7 @@ public:
 	virtual void Evaluate() override;
 
 private:
-
+	bool isShutdown = false;
 	bool taskCheckPending = false;
 
 	Record current;
@@ -102,7 +102,7 @@ private:
 
 	void TimeoutTasks();
 
-	const std::shared_ptr<openpal::IExecutor> executor;
+	std::shared_ptr<openpal::IExecutor> executor;
 	openpal::TimerRef taskTimer;
 	openpal::TimerRef taskStartTimeout;
 

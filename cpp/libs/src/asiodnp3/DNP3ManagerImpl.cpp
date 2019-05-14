@@ -71,7 +71,7 @@ void DNP3ManagerImpl::Shutdown()
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
     const std::string& id,
-    uint32_t levels,
+	int32_t levels,
     const ChannelRetry& retry,
     const std::string& host,
     const std::string& local,
@@ -91,7 +91,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
     const std::string& id,
-    uint32_t levels,
+    int32_t levels,
     ServerAcceptMode mode,
     const std::string& endpoint,
     uint16_t port,
@@ -111,7 +111,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddSerial(
     const std::string& id,
-    uint32_t levels,
+    int32_t levels,
     const ChannelRetry& retry,
     SerialSettings settings,
     std::shared_ptr<IChannelListener> listener)
@@ -129,7 +129,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddSerial(
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(
     const std::string& id,
-    uint32_t levels,
+    int32_t levels,
     const ChannelRetry& retry,
     const std::string& host,
     const std::string& local,
@@ -165,7 +165,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(
     const std::string& id,
-    uint32_t levels,
+    int32_t levels,
     ServerAcceptMode mode,
     const std::string& endpoint,
     uint16_t port,

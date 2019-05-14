@@ -24,8 +24,7 @@ import com.automatak.dnp3.enums.StaticBinaryVariation;
 public class BinaryConfig extends EventConfig {
 
     /**
-     *
-     * @param index
+     * @param index The index of the binary configuration
      */
     public BinaryConfig(int index) {
         super(index);

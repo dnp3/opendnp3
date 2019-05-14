@@ -29,7 +29,7 @@ public enum IndexQualifierMode
   */
   allow_one_byte(0x0),
   /**
-  * Always use two byte qualifiers even if the index is <= 255
+  * Always use two byte qualifiers even if the index is {@literal <=} 255
   */
   always_two_bytes(0x1);
 

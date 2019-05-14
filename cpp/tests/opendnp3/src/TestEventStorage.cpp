@@ -126,6 +126,10 @@ TEST_CASE(SUITE("zero-size doesn't overflow"))
 	REQUIRE_FALSE(
 	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
 	);
+
+	REQUIRE_FALSE(storage.IsAnyTypeFull());
+	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
+	REQUIRE(storage.NumSelected() == 0);
 }
 
 TEST_CASE(SUITE("overflows as expected"))
@@ -133,12 +137,14 @@ TEST_CASE(SUITE("overflows as expected"))
 	EventStorage storage(EventBufferConfig::AllTypes(1));
 
 	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
+	REQUIRE_FALSE(storage.IsAnyTypeFull());
 
 	REQUIRE_FALSE(
 	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
 	);
 
 	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 1);
+	REQUIRE(storage.IsAnyTypeFull());
 	REQUIRE(storage.NumSelected() == 0);
 
 	REQUIRE(

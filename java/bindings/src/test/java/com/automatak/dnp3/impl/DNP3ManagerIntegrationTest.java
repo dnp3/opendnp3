@@ -46,20 +46,12 @@ public class DNP3ManagerIntegrationTest extends TestCase {
 
     static void withManager(int numThreads, Consumer<DNP3Manager> func)
     {
-        DNP3Manager manager= null;
+        final DNP3Manager manager = DNP3ManagerFactory.createManager(numThreads, new NullLogHandler());
         try {
-            manager = DNP3ManagerFactory.createManager(numThreads, new NullLogHandler());
             func.accept(manager);
         }
-        catch(DNP3Exception ex)
-        {
-            throw new RuntimeException(ex);
-        }
         finally {
-            if(manager != null) {
-                manager.shutdown();
-            }
-
+            manager.shutdown();
         }
     }
     

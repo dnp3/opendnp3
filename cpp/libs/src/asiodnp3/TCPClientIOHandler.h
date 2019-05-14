@@ -66,7 +66,7 @@ protected:
 
 private:
 
-	void StartConnect(const std::shared_ptr<asiopal::TCPClient>& client, const openpal::TimeDuration& delay);
+	bool StartConnect(const openpal::TimeDuration& delay);
 
 	void ResetState();
 

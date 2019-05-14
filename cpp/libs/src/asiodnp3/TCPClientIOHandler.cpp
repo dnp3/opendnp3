@@ -52,7 +52,7 @@ void TCPClientIOHandler::ShutdownImpl()
 void TCPClientIOHandler::BeginChannelAccept()
 {
 	this->client = TCPClient::Create(logger, executor, remote, adapter);
-	this->StartConnect(this->client, this->retry.minOpenRetry);
+	this->StartConnect(this->retry.minOpenRetry);
 }
 
 void TCPClientIOHandler::SuspendChannelAccept()
@@ -65,11 +65,14 @@ void TCPClientIOHandler::OnChannelShutdown()
 	this->BeginChannelAccept();
 }
 
-void TCPClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TCPClient>& client, const openpal::TimeDuration& delay)
+bool TCPClientIOHandler::StartConnect(const openpal::TimeDuration& delay)
 {
-	FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connecting to: %s", this->remote.address.c_str());
+	if (!client)
+	{
+		return false;
+	}
 
-	auto cb = [ =, self = shared_from_this()](const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
+	auto cb = [=, self = shared_from_this()](const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code & ec) -> void
 	{
 		if (ec)
 		{
@@ -79,23 +82,33 @@ void TCPClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TCPClient>&
 
 			const auto newDelay = this->retry.NextDelay(delay);
 
-			auto cb = [self, newDelay, client, this]()
+			if (client)
 			{
-				this->StartConnect(client, newDelay);
-			};
+				auto retry_cb = [self, newDelay, this]()
+				{
+					this->StartConnect(newDelay);
+				};
 
-			this->retrytimer.Start(delay, cb);
+				this->retrytimer.Start(delay, retry_cb);
+			}
 		}
 		else
 		{
 			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connected to: %s", this->remote.address.c_str());
 
-			this->OnNewChannel(SocketChannel::Create(executor, std::move(socket)));
+			if (client)
+			{
+				this->OnNewChannel(SocketChannel::Create(executor, std::move(socket)));
+			}
 		}
 
 	};
 
+	FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connecting to: %s", this->remote.address.c_str());
+
 	this->client->BeginConnect(cb);
+
+	return true;
 }
 
 void TCPClientIOHandler::ResetState()

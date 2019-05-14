@@ -227,39 +227,33 @@ template <class T>
 bool DatabaseBuffers::LoadType(HeaderWriter& writer)
 {
 	auto range = ranges.Get<T>();
-	if (range.IsValid())
+	if (!range.IsValid()) return true; // no data to load
+
+	auto view = buffers.GetArrayView<T>();
+
+	bool spaceRemaining = true;
+
+	// ... load values, manipulate the range
+	while (spaceRemaining && range.IsValid())
 	{
-		auto view = buffers.GetArrayView<T>();
-
-		bool spaceRemaining = true;
-
-		// ... load values, manipulate the range
-		while (spaceRemaining && range.IsValid())
+		if (view[range.start].selection.selected)
 		{
-			if (view[range.start].selection.selected)
-			{
-				/// lookup the specific write function based on the reporting variation
-				auto writeFun = StaticWriters::Get(view[range.start].selection.variation);
+			/// lookup the specific write function based on the reporting variation
+			auto writeFun = StaticWriters::Get(view[range.start].selection.variation);
 
-				// start writing a header, the invoked function will advance the range appropriately
-				spaceRemaining = writeFun(view, writer, range);
-			}
-			else
-			{
-				// just skip over values that are not selected
-				range.Advance();
-			}
+			// start writing a header, the invoked function will advance the range appropriately
+			spaceRemaining = writeFun(view, writer, range);
 		}
-
-		ranges.Set<T>(range);
-
-		return spaceRemaining;
+		else
+		{
+			// just skip over values that are not selected
+			range.Advance();
+		}
 	}
-	else
-	{
-		// no data to load
-		return true;
-	}
+
+	ranges.Set<T>(range);
+
+	return spaceRemaining;
 }
 
 template <class Spec>

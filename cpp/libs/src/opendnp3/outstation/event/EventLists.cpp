@@ -39,14 +39,14 @@ EventLists::EventLists(const EventBufferConfig& config) :
 bool EventLists::IsAnyTypeFull() const
 {
 	return
-	    this->binary.IsFull() ||
-	    this->doubleBinary.IsFull() ||
-	    this->counter.IsFull() ||
-	    this->frozenCounter.IsFull() ||
-	    this->analog.IsFull() ||
-	    this->binaryOutputStatus.IsFull() ||
-	    this->analogOutputStatus.IsFull() ||
-	    this->octetString.IsFull();
+	    this->binary.IsFullAndCapacityNotZero() ||
+	    this->doubleBinary.IsFullAndCapacityNotZero() ||
+	    this->counter.IsFullAndCapacityNotZero() ||
+	    this->frozenCounter.IsFullAndCapacityNotZero() ||
+	    this->analog.IsFullAndCapacityNotZero() ||
+	    this->binaryOutputStatus.IsFullAndCapacityNotZero() ||
+	    this->analogOutputStatus.IsFullAndCapacityNotZero() ||
+	    this->octetString.IsFullAndCapacityNotZero();
 }
 
 template <>

@@ -75,6 +75,9 @@ void DNP3Channel::ShutdownImpl()
 	this->iohandler->Shutdown();
 	this->iohandler.reset();
 
+	this->scheduler->Shutdown();
+	this->scheduler.reset();
+
 	// shutdown any remaining stacks
 	this->resources->Shutdown();
 	this->resources.reset();

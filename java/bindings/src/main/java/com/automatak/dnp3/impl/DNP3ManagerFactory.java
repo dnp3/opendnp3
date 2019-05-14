@@ -38,7 +38,7 @@ import com.automatak.dnp3.LogHandler;
  * }
  * </pre>
  */
-public class DNP3ManagerFactory {
+public class DNP3ManagerFactory {cd ..
 
     static {
         if(System.getProperty("com.automatak.dnp3.nostaticload") == null)
@@ -53,8 +53,9 @@ public class DNP3ManagerFactory {
      * @param concurrency The number of threads that will be allocated to the underlying thread pool
      * @param handler logging callback interface
      * @return Root management interface from which the entire class hierarchy is retrieved
+     *
      */
-    public static DNP3Manager createManager(int concurrency, LogHandler handler) throws DNP3Exception
+    public static DNP3Manager createManager(int concurrency, LogHandler handler)
     {
         return new ManagerImpl(concurrency, handler);
     }
@@ -66,7 +67,7 @@ public class DNP3ManagerFactory {
      *
      * @return Root management interface from which the entire class hierarchy is retrieved
      */
-    public static DNP3Manager createManager(LogHandler handler) throws DNP3Exception
+    public static DNP3Manager createManager(LogHandler handler)
     {
         return createManager(Runtime.getRuntime().availableProcessors(), handler);
     }

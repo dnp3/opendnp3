@@ -37,20 +37,26 @@ MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IE
 
 void MasterSchedulerBackend::Shutdown()
 {
+	this->isShutdown = true;
 	this->tasks.clear();
 	this->current.Clear();
 	this->taskTimer.Cancel();
 	this->taskStartTimeout.Cancel();
+	this->executor.reset();
 }
 
 void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner)
 {
+	if (this->isShutdown) return;
+	
 	this->tasks.push_back(Record(task, runner));
 	this->PostCheckForTaskRun();
 }
 
 void MasterSchedulerBackend::SetRunnerOffline(const IMasterTaskRunner& runner)
 {
+	if (this->isShutdown) return;
+
 	const auto now = this->executor->GetTime();
 
 	auto checkForOwnership = [now, &runner](const Record & record) -> bool
@@ -100,7 +106,7 @@ bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner)
 
 void MasterSchedulerBackend::Demand(const std::shared_ptr<IMasterTask>& task)
 {
-	auto callback = [this, task]()
+	auto callback = [this, task, self = shared_from_this()]()
 	{
 		task->SetMinExpiration();
 		this->CheckForTaskRun();
@@ -119,7 +125,7 @@ void MasterSchedulerBackend::PostCheckForTaskRun()
 	if (!this->taskCheckPending)
 	{
 		this->taskCheckPending = true;
-		this->executor->Post([this]()
+		this->executor->Post([this, self = shared_from_this()]()
 		{
 			this->CheckForTaskRun();
 		});
@@ -128,6 +134,8 @@ void MasterSchedulerBackend::PostCheckForTaskRun()
 
 bool MasterSchedulerBackend::CheckForTaskRun()
 {
+	if (this->isShutdown) return false;
+
 	this->taskCheckPending = false;
 
 	this->RestartTimeoutTimer();
@@ -164,7 +172,7 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 	}
 	else
 	{
-		auto callback = [this]()
+		auto callback = [this, self = shared_from_this()]()
 		{
 			this->CheckForTaskRun();
 		};
@@ -177,6 +185,8 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 
 void MasterSchedulerBackend::RestartTimeoutTimer()
 {
+	if (this->isShutdown) return;
+
 	auto min = MonotonicTimestamp::Max();
 
 	for (auto& record : this->tasks)
@@ -187,14 +197,23 @@ void MasterSchedulerBackend::RestartTimeoutTimer()
 		}
 	}
 
-	this->taskStartTimeout.Restart(min, [this]()
+	if (min.IsMax())
 	{
-		this->TimeoutTasks();
-	});
+		this->taskStartTimeout.Cancel();
+	}
+	else
+	{
+		this->taskStartTimeout.Restart(min, [this, self = shared_from_this()]()
+		{
+			this->TimeoutTasks();
+		});
+	}
 }
 
 void MasterSchedulerBackend::TimeoutTasks()
 {
+	if (this->isShutdown) return;
+
 	// find the minimum start timeout value
 	auto isTimedOut = [now = this->executor->GetTime()](const Record & record) -> bool
 	{

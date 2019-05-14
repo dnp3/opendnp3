@@ -23,6 +23,10 @@
 
 #include "asiopal/ASIOSerialHelpers.h"
 
+#ifdef USE_FLOCK
+	#include <sys/file.h>
+	#include <cerrno>
+#endif
 
 namespace asiopal
 {
@@ -34,6 +38,15 @@ bool SerialChannel::Open(const SerialSettings& settings, std::error_code& ec)
 {
 	port.open(settings.deviceName, ec);
 	if (ec) return false;
+
+#ifdef USE_FLOCK
+	auto r = flock(port.native_handle(), LOCK_EX | LOCK_NB);
+	if (r < 0)
+	{
+		ec = std::make_error_code(std::errc::device_or_resource_busy) ;
+		return false;
+	}
+#endif
 
 	Configure(settings, port, ec);
 
@@ -69,6 +82,10 @@ void SerialChannel::BeginWriteImpl(const openpal::RSlice& buffer)
 void SerialChannel::ShutdownImpl()
 {
 	std::error_code ec;
+#ifdef USE_FLOCK
+	/* Explicitly unlock serial device handler before exiting.*/
+	flock(port.native_handle(), LOCK_UN);
+#endif
 	port.close(ec);
 }
 

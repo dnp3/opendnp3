@@ -31,7 +31,7 @@ TEST_CASE(SUITE("CorrectInitialState"))
 	List<int> list(3);
 
 	REQUIRE(list.IsEmpty());
-	REQUIRE(!list.IsFull());
+	REQUIRE(!list.IsFullAndCapacityNotZero());
 	REQUIRE(0 == list.Size());
 }
 
@@ -43,10 +43,19 @@ TEST_CASE(SUITE("AddsUntilFull"))
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(3));
 
-	REQUIRE(list.IsFull());
+	REQUIRE(list.IsFullAndCapacityNotZero());
 
 	// adding to a full list returns a nullptr
 	REQUIRE_FALSE(list.Add(4));
+}
+
+TEST_CASE(SUITE("IsFullAndCapacityNotZero for list of capacity 0 return false"))
+{
+	List<int> list(0);
+
+	REQUIRE_FALSE(list.Add(1));
+
+	REQUIRE_FALSE(list.IsFullAndCapacityNotZero());
 }
 
 TEST_CASE(SUITE("CanRemoveHead"))

@@ -18,45 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_IOUTSTATION_H
-#define ASIODNP3_IOUTSTATION_H
+#include <catch.hpp>
 
-#include "asiodnp3/IStack.h"
-#include "asiodnp3/Updates.h"
+#include <asiodnp3/UpdateBuilder.h>
 
-#include <openpal/logging/LogFilters.h>
+using namespace opendnp3;
+using namespace asiodnp3;
 
-namespace asiodnp3
+#define SUITE(name) "UpdateBuilderTestSuite - " name
+
+TEST_CASE(SUITE("builder is cleared after building"))
 {
+    UpdateBuilder builder;
+    builder.Update(Counter(42), 0);
 
-/**
-* Interface representing a running outstation.
-*/
-class IOutstation : public IStack
-{
+    {
+        const auto updates = builder.Build();
+        REQUIRE_FALSE(updates.IsEmpty());
+    }
 
-public:
-
-	~IOutstation() override = default;
-
-	/**
-	*  @param filters Adjust the filters to this value
-	*/
-	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
-
-	/**
-	* Sets the restart IIN bit. Normally applications should not
-	* touch this bit, but it is provided for simulating restarts.
-	*/
-	virtual void SetRestartIIN() = 0;
-
-	/**
-	* Apply a set of measurement updates to the outstation
-	*/
-	virtual void Apply(const Updates& updates) = 0;
-
-};
-
+    {
+        const auto updates = builder.Build();
+        REQUIRE(updates.IsEmpty());
+    }
 }
 
-#endif
+
+
+
+
+

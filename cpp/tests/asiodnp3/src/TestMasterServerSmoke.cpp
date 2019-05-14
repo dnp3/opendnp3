@@ -33,6 +33,7 @@
 #include "asiodnp3/ConsoleLogger.h"
 #include "dnp3mocks/NullSOEHandler.h"
 
+#include <atomic>
 #include <thread>
 
 using namespace opendnp3;
@@ -92,7 +93,73 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 	}
 }
 
+class DoubleShutdownListenCallbacks final : public IListenCallbacks
+{
+public:
+        DoubleShutdownListenCallbacks() : hasDoubleShutdown(false) {}
 
+	bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) override
+	{
+		return true;
+	}
 
+	bool AcceptCertificate(uint64_t sessionid, const X509Info& info) override
+	{
+		return true;
+	}
 
+	openpal::TimeDuration GetFirstFrameTimeout() override
+	{
+		return openpal::TimeDuration::Seconds(30);
+	}
 
+	void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override
+	{
+		MasterStackConfig config;
+		config.link.LocalAddr = header.dest;
+		config.link.RemoteAddr = header.src;
+		auto soe = std::make_shared<PrintingSOEHandler>();
+		auto app = std::make_shared<DefaultMasterApplication>();
+
+		auto masterSession = acceptor.AcceptSession(std::to_string(sessionid), soe, app, config);
+
+		// Double shutdown behaviour here
+		hasDoubleShutdown = true;
+		masterSession->BeginShutdown();
+		masterSession->BeginShutdown();
+	}
+
+	void OnConnectionClose(uint64_t sessionid, const std::shared_ptr<IMasterSession>& session) override {}
+	void OnCertificateError(uint64_t sessionid, const X509Info& info, int error) override {}
+
+	void waitForDoubleShutdown()
+	{
+		while(!hasDoubleShutdown)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		}
+	}
+
+private:
+	std::atomic<bool> hasDoubleShutdown;
+};
+
+TEST_CASE(SUITE("Double BeginShutdown"))
+{
+	DNP3Manager manager(std::thread::hardware_concurrency());
+
+	// Master listener creation
+	std::error_code ec;
+	auto listenCallbacks = std::make_shared<DoubleShutdownListenCallbacks>();
+	auto listener = manager.CreateListener("listener", levels::ALL, IPEndpoint::Localhost(20000), listenCallbacks, ec);
+
+	// Outstation
+	OutstationStackConfig outstationConfig(DatabaseSizes::Empty());
+	outstationConfig.outstation.params.allowUnsolicited = true;
+	auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr);
+	auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), outstationConfig);
+
+	outstation->Enable();
+
+	listenCallbacks->waitForDoubleShutdown();
+}

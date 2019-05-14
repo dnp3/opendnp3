@@ -56,6 +56,11 @@ MasterTestFixture::MasterTestFixture(
 	context(std::make_shared<MContext>(addresses, openpal::Logger(log, id, ~0), exe, lower, meas, application, this->scheduler, params))
 {}
 
+MasterTestFixture::~MasterTestFixture()
+{
+	this->scheduler->Shutdown();
+}
+
 bool MasterTestFixture::SendToMaster(const std::string& hex)
 {
 	HexSequence hs(hex);
