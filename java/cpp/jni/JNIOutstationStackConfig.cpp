@@ -50,16 +50,6 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> OutstationStackConfig::getlinkConfig(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->linkConfigField));
-        }
-
-        LocalRef<jobject> OutstationStackConfig::getoutstationConfig(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->outstationConfigField));
-        }
-
         LocalRef<jobject> OutstationStackConfig::getdatabaseConfig(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->databaseConfigField));
@@ -68,6 +58,16 @@ namespace jni
         LocalRef<jobject> OutstationStackConfig::geteventBufferConfig(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventBufferConfigField));
+        }
+
+        LocalRef<jobject> OutstationStackConfig::getlinkConfig(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->linkConfigField));
+        }
+
+        LocalRef<jobject> OutstationStackConfig::getoutstationConfig(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->outstationConfigField));
         }
     }
 }

@@ -52,14 +52,14 @@ namespace jni
             return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
         }
 
-        jint AnalogOutputInt32::getvalue(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->valueField);
-        }
-
         LocalRef<jobject> AnalogOutputInt32::getstatus(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->statusField));
+        }
+
+        jint AnalogOutputInt32::getvalue(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->valueField);
         }
     }
 }

@@ -41,10 +41,10 @@ namespace jni
             public:
 
             // field getter methods
-            jboolean getneedTime(JNIEnv* env, jobject instance);
-            jboolean getlocalControl(JNIEnv* env, jobject instance);
-            jboolean getdeviceTrouble(JNIEnv* env, jobject instance);
             jboolean getconfigCorrupt(JNIEnv* env, jobject instance);
+            jboolean getdeviceTrouble(JNIEnv* env, jobject instance);
+            jboolean getlocalControl(JNIEnv* env, jobject instance);
+            jboolean getneedTime(JNIEnv* env, jobject instance);
 
             private:
 

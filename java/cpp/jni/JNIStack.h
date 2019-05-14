@@ -41,22 +41,22 @@ namespace jni
             public:
 
             // methods
-            void setLogLevel(JNIEnv* env, jobject instance, jint arg0);
-            LocalRef<jobject> getStatistics(JNIEnv* env, jobject instance);
-            void shutdown(JNIEnv* env, jobject instance);
-            void enable(JNIEnv* env, jobject instance);
             void disable(JNIEnv* env, jobject instance);
+            void enable(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getStatistics(JNIEnv* env, jobject instance);
+            void setLogLevel(JNIEnv* env, jobject instance, jint arg0);
+            void shutdown(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID setLogLevelMethod = nullptr;
-            jmethodID getStatisticsMethod = nullptr;
-            jmethodID shutdownMethod = nullptr;
-            jmethodID enableMethod = nullptr;
             jmethodID disableMethod = nullptr;
+            jmethodID enableMethod = nullptr;
+            jmethodID getStatisticsMethod = nullptr;
+            jmethodID setLogLevelMethod = nullptr;
+            jmethodID shutdownMethod = nullptr;
         };
     }
 }

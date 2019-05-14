@@ -43,8 +43,8 @@ namespace jni
             // methods
             LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
             jint toType(JNIEnv* env, jobject instance);
-            LocalRef<jobject> values(JNIEnv* env);
             LocalRef<jobject> valueOf(JNIEnv* env, jstring arg0);
+            LocalRef<jobject> values(JNIEnv* env);
 
             private:
 
@@ -53,8 +53,8 @@ namespace jni
             // method ids
             jmethodID fromTypeMethod = nullptr;
             jmethodID toTypeMethod = nullptr;
-            jmethodID valuesMethod = nullptr;
             jmethodID valueOfMethod = nullptr;
+            jmethodID valuesMethod = nullptr;
         };
     }
 }

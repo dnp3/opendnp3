@@ -41,14 +41,14 @@ namespace jni
             public:
 
             // field getter methods
-            LocalRef<jstring> getpeerCertFilePath(JNIEnv* env, jobject instance);
-            LocalRef<jstring> getlocalCertFilePath(JNIEnv* env, jobject instance);
-            LocalRef<jstring> getprivateKeyFilePath(JNIEnv* env, jobject instance);
-            jint getmaxVerifyDepth(JNIEnv* env, jobject instance);
             jboolean getallowTLSv10(JNIEnv* env, jobject instance);
             jboolean getallowTLSv11(JNIEnv* env, jobject instance);
             jboolean getallowTLSv12(JNIEnv* env, jobject instance);
             LocalRef<jstring> getcipherList(JNIEnv* env, jobject instance);
+            LocalRef<jstring> getlocalCertFilePath(JNIEnv* env, jobject instance);
+            jint getmaxVerifyDepth(JNIEnv* env, jobject instance);
+            LocalRef<jstring> getpeerCertFilePath(JNIEnv* env, jobject instance);
+            LocalRef<jstring> getprivateKeyFilePath(JNIEnv* env, jobject instance);
 
             private:
 

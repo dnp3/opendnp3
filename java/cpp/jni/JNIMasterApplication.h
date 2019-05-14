@@ -41,28 +41,28 @@ namespace jni
             public:
 
             // methods
-            void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
-            jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
-            void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
-            void onOpen(JNIEnv* env, jobject instance);
-            void onClose(JNIEnv* env, jobject instance);
             jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
             LocalRef<jobject> getClassAssignments(JNIEnv* env, jobject instance);
+            jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
+            void onClose(JNIEnv* env, jobject instance);
+            void onOpen(JNIEnv* env, jobject instance);
+            void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
+            void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
+            void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID onReceiveIINMethod = nullptr;
-            jmethodID getMillisecondsSinceEpochMethod = nullptr;
-            jmethodID onTaskStartMethod = nullptr;
-            jmethodID onTaskCompleteMethod = nullptr;
-            jmethodID onOpenMethod = nullptr;
-            jmethodID onCloseMethod = nullptr;
             jmethodID assignClassDuringStartupMethod = nullptr;
             jmethodID getClassAssignmentsMethod = nullptr;
+            jmethodID getMillisecondsSinceEpochMethod = nullptr;
+            jmethodID onCloseMethod = nullptr;
+            jmethodID onOpenMethod = nullptr;
+            jmethodID onReceiveIINMethod = nullptr;
+            jmethodID onTaskCompleteMethod = nullptr;
+            jmethodID onTaskStartMethod = nullptr;
         };
     }
 }

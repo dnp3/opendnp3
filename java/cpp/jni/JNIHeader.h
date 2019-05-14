@@ -41,12 +41,12 @@ namespace jni
             public:
 
             // field getter methods
-            jbyte getgroup(JNIEnv* env, jobject instance);
-            jbyte getvariation(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getqualifier(JNIEnv* env, jobject instance);
             jint getcount(JNIEnv* env, jobject instance);
+            jbyte getgroup(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getqualifier(JNIEnv* env, jobject instance);
             jint getstart(JNIEnv* env, jobject instance);
             jint getstop(JNIEnv* env, jobject instance);
+            jbyte getvariation(JNIEnv* env, jobject instance);
 
             private:
 
