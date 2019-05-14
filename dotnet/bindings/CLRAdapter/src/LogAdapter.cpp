@@ -1,4 +1,3 @@
-
 #include "LogAdapter.h"
 
 #include "Conversions.h"
@@ -9,7 +8,6 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
-
 
 			LogAdapter::LogAdapter(Automatak::DNP3::Interface::ILogHandler^ proxy) : proxy(proxy)
 			{}
@@ -29,7 +27,7 @@ namespace Automatak
 				Automatak::DNP3::Interface::LogEntry^ le = gcnew Automatak::DNP3::Interface::LogEntry(entry.filters.GetBitfield(), alias, location, message);
 
 				proxy->Log(le);
-			}			
+			}
 
 		}
 	}

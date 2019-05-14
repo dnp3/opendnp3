@@ -1,10 +1,9 @@
-
-#ifndef CHANNEL_LISTENER_ADAPTER_H
-#define CHANNEL_LISTENER_ADAPTER_H
-
-#include <vcclr.h>
+#ifndef OPENDNP3CLR_CHANNEL_LISTENER_ADAPTER_H
+#define OPENDNP3CLR_CHANNEL_LISTENER_ADAPTER_H
 
 #include <asiodnp3/IChannelListener.h>
+
+#include <vcclr.h>
 
 using namespace Automatak::DNP3::Interface;
 
@@ -30,7 +29,6 @@ namespace Automatak
 
 				gcroot < Automatak::DNP3::Interface::IChannelListener^ > proxy;
 			};
-
 
 		}
 	}

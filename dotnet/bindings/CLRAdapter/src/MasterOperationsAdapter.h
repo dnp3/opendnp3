@@ -1,23 +1,24 @@
 #ifndef OPENDNP3CLR_MASTER_OPERATIONS_ADAPTER_H
 #define OPENDNP3CLR_MASTER_OPERATIONS_ADAPTER_H
 
-using namespace System::Collections::ObjectModel;
-using namespace System::Collections::Generic;
-
-#include <asiodnp3/IMasterOperations.h>
-
 #include "CallbackAdapters.h"
 #include "MasterConversions.h"
 #include "MasterScanAdapter.h"
 
+#include <asiodnp3/IMasterOperations.h>
+
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::ObjectModel;
+using namespace System::Collections::Generic;
 
 namespace Automatak
 {
 	namespace DNP3
 	{
 		namespace Adapter
-		{			
+		{
+
 			private ref class MasterOperationsAdapter abstract
 			{
 			public:
@@ -74,4 +75,5 @@ namespace Automatak
 		}
 	}
 }
+
 #endif

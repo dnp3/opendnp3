@@ -1,5 +1,5 @@
-#ifndef __CHANGESET_ADAPTER_H_
-#define __CHANGESET_ADAPTER_H_
+#ifndef OPENDNP3CLR_CHANGESET_ADAPTER_H
+#define OPENDNP3CLR_CHANGESET_ADAPTER_H
 
 #include <asiodnp3/IOutstation.h>
 #include <asiodnp3/UpdateBuilder.h>
@@ -14,17 +14,14 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			private ref class ChangeSetAdapter : public Automatak::DNP3::Interface::IDatabase
 			{
 			public:
 
 				ChangeSetAdapter();
 
-				~ChangeSetAdapter()
-				{
-					this->!ChangeSetAdapter();
-				}
-
+                ~ChangeSetAdapter();
 				!ChangeSetAdapter();
 				
 				virtual void Update(Binary^ update, System::UInt16 index, EventMode mode);
@@ -43,8 +40,7 @@ namespace Automatak
 				
 				asiodnp3::UpdateBuilder* builder;
 			};
-								
-			
+
 		}
 	}
 }

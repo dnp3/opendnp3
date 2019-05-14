@@ -1,9 +1,6 @@
-
-
 #include "MasterAdapter.h"
-#include "Conversions.h"
 
-using namespace Automatak::DNP3::Interface;
+#include "Conversions.h"
 
 namespace Automatak
 {
@@ -11,6 +8,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			MasterAdapter::MasterAdapter(const std::shared_ptr<asiodnp3::IMaster>& master) : 
 				MasterOperationsAdapter(master.get()), 
 				master(new std::shared_ptr<asiodnp3::IMaster>(master))
@@ -40,7 +38,7 @@ namespace Automatak
 			{
 				return Conversions::ConvertStackStats((*master)->GetStackStatistics());
 			}
+
 		}
 	}
 }
-

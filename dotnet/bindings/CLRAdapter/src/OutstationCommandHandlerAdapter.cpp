@@ -1,7 +1,6 @@
-
 #include "OutstationCommandHandlerAdapter.h"
-#include "Conversions.h"
 
+#include "Conversions.h"
 
 namespace Automatak
 {
@@ -78,4 +77,3 @@ namespace Automatak
 		}
 	}
 }
-

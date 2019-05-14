@@ -1,5 +1,3 @@
-
-
 #include "OutstationAdapter.h"
 
 #include "ChangeSetAdapter.h"
@@ -31,7 +29,8 @@ namespace Automatak
 				auto adapter = gcnew ChangeSetAdapter();
 				changes->Apply(adapter);
 				adapter->Apply(**outstation);
-			}			
+				delete adapter;
+			}
 
 			void OutstationAdapter::SetRestartIIN()
 			{

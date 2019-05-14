@@ -1,8 +1,6 @@
-
-
 #include "ChangeSetAdapter.h"
-#include "Conversions.h"
 
+#include "Conversions.h"
 
 namespace Automatak
 {
@@ -10,8 +8,14 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			ChangeSetAdapter::ChangeSetAdapter() : builder(new asiodnp3::UpdateBuilder())
 			{}
+
+            ChangeSetAdapter::~ChangeSetAdapter()
+            {
+                this->!ChangeSetAdapter();
+            }
 
 			ChangeSetAdapter::!ChangeSetAdapter()
 			{
@@ -66,7 +70,8 @@ namespace Automatak
 			void ChangeSetAdapter::Update(TimeAndInterval^ update, System::UInt16 index)
 			{
 				builder->Update(Conversions::ConvertMeas(update), index);
-			}			
+			}
+
 		}
 	}
 }

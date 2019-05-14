@@ -1,12 +1,12 @@
-#ifndef DNP3ADAPTER_COMMAND_SET_BUILDER_H
-#define DNP3ADAPTER_COMMAND_SET_BUILDER_H
+#ifndef OPENDNP3CLR_COMMAND_SET_BUILDER_H
+#define OPENDNP3CLR_COMMAND_SET_BUILDER_H
 
-using namespace System::Collections::ObjectModel;
-using namespace System::Collections::Generic;
+#include <opendnp3/master/CommandSet.h>
 
 using namespace Automatak::DNP3::Interface;
 
-#include <opendnp3/master/CommandSet.h>
+using namespace System::Collections::ObjectModel;
+using namespace System::Collections::Generic;
 
 namespace Automatak
 {
@@ -35,4 +35,5 @@ namespace Automatak
 		}
 	}
 }
+
 #endif

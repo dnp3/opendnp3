@@ -1,12 +1,11 @@
-
 #include "DNP3ManagerAdapter.h"
 
-#include "Conversions.h"
-#include "LogAdapter.h"
 #include "ChannelAdapter.h"
 #include "ChannelListenerAdapter.h"
+#include "Conversions.h"
 #include "ListenCallbacksAdapter.h"
 #include "ListenerAdapter.h"
+#include "LogAdapter.h"
 
 #include <asiodnp3/DNP3Manager.h>
 

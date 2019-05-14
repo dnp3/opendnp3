@@ -1,16 +1,16 @@
-#ifndef __TASK_CALLBACK_ADAPTER_H_
-#define __TASK_CALLBACK_ADAPTER_H_
+#ifndef OPENDNP3CLR_TASK_CALLBACK_ADAPTER_H
+#define OPENDNP3CLR_TASK_CALLBACK_ADAPTER_H
 
-using namespace System::Collections::ObjectModel;
-
-#include <vcclr.h>
+#include "Conversions.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <opendnp3/master/ITaskCallback.h>
 
-#include "Conversions.h"
+#include <vcclr.h>
 
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {

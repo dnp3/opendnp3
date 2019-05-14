@@ -1,12 +1,13 @@
-#ifndef __SOE_HANDLER_ADAPTER_H_
-#define __SOE_HANDLER_ADAPTER_H_
-
-using namespace System::Collections::ObjectModel;
+#ifndef OPENDNP3CLR_SOE_HANDLER_ADAPTER_H
+#define OPENDNP3CLR_SOE_HANDLER_ADAPTER_H
 
 #include <opendnp3/master/ISOEHandler.h>
+
 #include <vcclr.h>
 
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {

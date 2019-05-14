@@ -1,5 +1,5 @@
-#ifndef __CONVERSIONS_H_
-#define __CONVERSIONS_H_
+#ifndef OPENDNP3CLR_CONVERSIONS_H
+#define OPENDNP3CLR_CONVERSIONS_H
 
 #include <string>
 
@@ -39,8 +39,9 @@
 #include <asiopal/TLSConfig.h>
 #include <asiodnp3/X509Info.h>
 
-using namespace System::Collections::Generic;
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::Generic;
 
 namespace Automatak
 {
@@ -225,4 +226,3 @@ namespace Automatak
 }
 
 #endif
-

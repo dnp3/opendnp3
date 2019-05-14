@@ -1,9 +1,6 @@
-
 #include "OutstationApplicationAdapter.h"
 
 #include "Conversions.h"
-
-using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
 {

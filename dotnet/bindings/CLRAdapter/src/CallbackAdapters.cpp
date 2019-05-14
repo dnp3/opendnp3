@@ -1,5 +1,3 @@
-
-
 #include "CallbackAdapters.h"
 
 #include "Conversions.h"
@@ -39,5 +37,3 @@ namespace Automatak
 		}
 	}
 }
-
-

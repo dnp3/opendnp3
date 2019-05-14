@@ -1,11 +1,11 @@
-#ifndef __OUTSTATION_ADAPTER_H_
-#define __OUTSTATION_ADAPTER_H_
-
-using namespace System::Collections::ObjectModel;
+#ifndef OPENDNP3CLR_OUTSTATION_ADAPTER_H
+#define OPENDNP3CLR_OUTSTATION_ADAPTER_H
 
 #include <asiodnp3/IOutstation.h>
 
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {
@@ -13,6 +13,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			private ref class OutstationAdapter : IOutstation
 			{
 			public:

@@ -1,11 +1,12 @@
-#ifndef __CLR_DNP3_MANAGER_ADAPTER_H_
-#define __CLR_DNP3_MANAGER_ADAPTER_H_
-
-using namespace System;
-using namespace Automatak::DNP3::Interface;
+#ifndef OPENDNP3CLR_DNP3_MANAGER_ADAPTER_H
+#define OPENDNP3CLR_DNP3_MANAGER_ADAPTER_H
 
 #include <asiopal/ChannelRetry.h>
 #include <asiopal/TLSConfig.h>
+
+using namespace Automatak::DNP3::Interface;
+
+using namespace System;
 
 namespace asiodnp3
 {
@@ -18,6 +19,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			/// <summary>
 			/// Factory class used to get the root DNP3 object
 			/// </summary>
@@ -42,7 +44,6 @@ namespace Automatak
 			private:
 				DNP3ManagerFactory() {}
 			};
-
 
 			ref class DNP3ManagerAdapter : public Automatak::DNP3::Interface::IDNP3Manager
 			{

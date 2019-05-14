@@ -1,9 +1,6 @@
-
 #include "Conversions.h"
 
-#include <msclr\marshal_cppstd.h>
-
-using namespace Automatak::DNP3::Interface;
+#include <msclr/marshal_cppstd.h>
 
 namespace Automatak
 {

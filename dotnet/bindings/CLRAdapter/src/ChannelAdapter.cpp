@@ -1,16 +1,13 @@
-
 #include "ChannelAdapter.h"
 
 #include "Conversions.h"
-#include "SOEHandlerAdapter.h"
-#include "OutstationCommandHandlerAdapter.h"
-#include "OutstationApplicationAdapter.h"
-#include "MasterApplicationAdapter.h"
-
-#include "OutstationAdapter.h"
-#include "MasterAdapter.h"
-
 #include "EventConverter.h"
+#include "SOEHandlerAdapter.h"
+#include "OutstationAdapter.h"
+#include "OutstationApplicationAdapter.h"
+#include "OutstationCommandHandlerAdapter.h"
+#include "MasterAdapter.h"
+#include "MasterApplicationAdapter.h"
 
 #include <asiopal/UTCTimeSource.h>
 #include <functional>
@@ -23,6 +20,19 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
+            ChannelAdapter::ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel) : channel(new std::shared_ptr<asiodnp3::IChannel>(channel))
+            {}
+
+            ChannelAdapter::~ChannelAdapter()
+            {
+                this ->!ChannelAdapter();
+            }
+
+            ChannelAdapter::!ChannelAdapter()
+            {
+                delete channel;
+            }
 
 			LogFilter ChannelAdapter::GetLogFilters()
 			{

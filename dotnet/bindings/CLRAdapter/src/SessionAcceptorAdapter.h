@@ -1,12 +1,12 @@
+#ifndef OPENDNP3CLR_SESSION_ACCEPTOR_ADAPTER_H
+#define	OPENDNP3CLR_SESSION_ACCEPTOR_ADAPTER_H
 
-#ifndef CLR_DNP3_SESSION_ACCEPTOR_ADAPTER_H
-#define	CLR_DNP3_SESSION_ACCEPTOR_ADAPTER_H
+#include <asiodnp3/ISessionAcceptor.h>
+
+#include <vcclr.h>
 
 using namespace System;
 using namespace Automatak::DNP3::Interface;
-
-#include <asiodnp3/ISessionAcceptor.h>
-#include <vcclr.h>
 
 namespace Automatak
 {
@@ -14,6 +14,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			private ref class SessionAcceptorAdapter sealed : public ISessionAcceptor
 			{
 			public:
@@ -27,7 +28,6 @@ namespace Automatak
 					MasterStackConfig^ config
 				);
 				
-
 			private:
 								
 				asiodnp3::ISessionAcceptor* proxy;

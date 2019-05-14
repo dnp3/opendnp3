@@ -1,5 +1,5 @@
-
 #include "SOEHandlerAdapter.h"
+
 #include "Conversions.h"
 
 namespace Automatak

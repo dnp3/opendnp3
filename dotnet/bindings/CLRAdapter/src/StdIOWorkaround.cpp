@@ -1,4 +1,3 @@
-
 #include "StdIOWorkaround.h"
 
 #if (_MSC_VER >= 1900)

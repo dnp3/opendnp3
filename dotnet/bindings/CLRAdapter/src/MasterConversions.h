@@ -1,20 +1,20 @@
-#ifndef __MASTER_CONVERSIONS_H_
-#define __MASTER_CONVERSIONS_H_
+#ifndef OPENDNP3CLR_MASTER_CONVERSIONS_H
+#define OPENDNP3CLR_MASTER_CONVERSIONS_H
 
-using namespace System::Collections::ObjectModel;
-using namespace System::Collections::Generic;
-
-#include "TaskCallbackAdapter.h"
 #include "ICommandHeaderWorkAround.h"
-
-#include <vector>
+#include "TaskCallbackAdapter.h"
 
 #include <opendnp3/master/HeaderTypes.h>
 #include <opendnp3/master/TaskConfig.h>
 #include <opendnp3/master/TaskInfo.h>
 #include <opendnp3/master/CommandSet.h>
 
+#include <vector>
+
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::ObjectModel;
+using namespace System::Collections::Generic;
 
 namespace Automatak
 {
@@ -54,4 +54,5 @@ namespace Automatak
 		}
 	}
 }
+
 #endif
