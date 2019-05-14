@@ -74,5 +74,24 @@ public class StackStatisticsTest extends TestCase {
         assertNotNull(outstation.getStatistics().link);
         assertNotNull(outstation.getStatistics().transport);
     }
+
+    @Test
+    public void testGetChannelStatistics() throws DNP3Exception {
+        DNP3Manager manager = DNP3ManagerFactory.createManager(4, new NullLogHandler());
+
+        Channel channel = manager.addTCPClient(
+                "client",
+                LogMasks.NORMAL | LogMasks.APP_COMMS,
+                ChannelRetry.getDefault(),
+                "127.0.0.1",
+                "0.0.0.0",
+                20000,
+                PrintingChannelListener.getInstance()
+        );
+
+        // This used to return nullptr, see issue #268
+        assertNotNull(channel.getStatistics().channel);
+        assertNotNull(channel.getStatistics().parser);
+    }
 }
 
