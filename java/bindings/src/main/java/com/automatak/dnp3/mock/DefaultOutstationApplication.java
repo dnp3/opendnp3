@@ -19,10 +19,7 @@
 package com.automatak.dnp3.mock;
 
 import com.automatak.dnp3.*;
-import com.automatak.dnp3.enums.AssignClassType;
-import com.automatak.dnp3.enums.LinkStatus;
-import com.automatak.dnp3.enums.MasterTaskType;
-import com.automatak.dnp3.enums.PointClass;
+import com.automatak.dnp3.enums.*;
 
 import java.util.Collections;
 
@@ -46,22 +43,50 @@ public class DefaultOutstationApplication implements OutstationApplication
     public boolean supportsAssignClass(){ return false; }
 
     @Override
-    public void recordClassAssignment(AssignClassType type, PointClass clazz, int start, int stop) {}
+    public void recordClassAssignment(AssignClassType type, PointClass clazz, int start, int stop) {
+        // do nothing in the default implementation
+    }
 
     @Override
     public ApplicationIIN getApplicationIIN() { return ApplicationIIN.none(); }
 
     @Override
-    public void onStateChange(LinkStatus value) {}
+    public void onStateChange(LinkStatus value) {
+        // do nothing in the default implementation
+    }
 
     @Override
-    public void onKeepAliveInitiated() {}
+    public void onKeepAliveInitiated() {
+        // do nothing in the default implementation
+    }
 
     @Override
-    public void onKeepAliveFailure(){}
+    public void onKeepAliveFailure() {
+        // do nothing in the default implementation
+    }
 
     @Override
-    public void onKeepAliveSuccess(){}
+    public void onKeepAliveSuccess() {
+        // do nothing in the default implementation
+    }
 
+    @Override
+    public RestartMode coldRestartSupport() {
+        return RestartMode.UNSUPPORTED;
+    }
 
+    @Override
+    public RestartMode warmRestartSupport() {
+        return RestartMode.UNSUPPORTED;
+    }
+
+    @Override
+    public int coldRestart() {
+        return 65535;
+    }
+
+    @Override
+    public int warmRestart() {
+        return 65535;
+    }
 }

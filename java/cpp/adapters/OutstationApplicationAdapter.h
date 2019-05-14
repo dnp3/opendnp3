@@ -29,15 +29,23 @@ public:
 
 	OutstationApplicationAdapter(jobject proxy) : proxy(proxy) {}
 
-	virtual bool SupportsWriteAbsoluteTime() override;
+	bool SupportsWriteAbsoluteTime() override;
 
-	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override;
+	bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override;
 
-	virtual bool SupportsAssignClass() override;
+	bool SupportsAssignClass() override;
 
-	virtual void RecordClassAssignment(opendnp3::AssignClassType type, opendnp3::PointClass clazz, uint16_t start, uint16_t stop) override;
+	void RecordClassAssignment(opendnp3::AssignClassType type, opendnp3::PointClass clazz, uint16_t start, uint16_t stop) override;
 
-	virtual opendnp3::ApplicationIIN GetApplicationIIN() const override;
+	opendnp3::ApplicationIIN GetApplicationIIN() const override;
+	
+	opendnp3::RestartMode ColdRestartSupport() const override;
+	
+	opendnp3::RestartMode WarmRestartSupport() const override;
+	
+	uint16_t ColdRestart() override;
+	
+	uint16_t WarmRestart() override;
 
 private:
 

@@ -30,6 +30,12 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
+            this->coldRestartMethod = env->GetMethodID(this->clazz, "coldRestart", "()I");
+            if(!this->coldRestartMethod) return false;
+
+            this->coldRestartSupportMethod = env->GetMethodID(this->clazz, "coldRestartSupport", "()Lcom/automatak/dnp3/enums/RestartMode;");
+            if(!this->coldRestartSupportMethod) return false;
+
             this->getApplicationIINMethod = env->GetMethodID(this->clazz, "getApplicationIIN", "()Lcom/automatak/dnp3/ApplicationIIN;");
             if(!this->getApplicationIINMethod) return false;
 
@@ -42,6 +48,12 @@ namespace jni
             this->supportsWriteAbsoluteTimeMethod = env->GetMethodID(this->clazz, "supportsWriteAbsoluteTime", "()Z");
             if(!this->supportsWriteAbsoluteTimeMethod) return false;
 
+            this->warmRestartMethod = env->GetMethodID(this->clazz, "warmRestart", "()I");
+            if(!this->warmRestartMethod) return false;
+
+            this->warmRestartSupportMethod = env->GetMethodID(this->clazz, "warmRestartSupport", "()Lcom/automatak/dnp3/enums/RestartMode;");
+            if(!this->warmRestartSupportMethod) return false;
+
             this->writeAbsoluteTimeMethod = env->GetMethodID(this->clazz, "writeAbsoluteTime", "(J)Z");
             if(!this->writeAbsoluteTimeMethod) return false;
 
@@ -51,6 +63,16 @@ namespace jni
         void OutstationApplication::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
+        }
+
+        jint OutstationApplication::coldRestart(JNIEnv* env, jobject instance)
+        {
+            return env->CallIntMethod(instance, this->coldRestartMethod);
+        }
+
+        LocalRef<jobject> OutstationApplication::coldRestartSupport(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->coldRestartSupportMethod));
         }
 
         LocalRef<jobject> OutstationApplication::getApplicationIIN(JNIEnv* env, jobject instance)
@@ -71,6 +93,16 @@ namespace jni
         jboolean OutstationApplication::supportsWriteAbsoluteTime(JNIEnv* env, jobject instance)
         {
             return env->CallBooleanMethod(instance, this->supportsWriteAbsoluteTimeMethod);
+        }
+
+        jint OutstationApplication::warmRestart(JNIEnv* env, jobject instance)
+        {
+            return env->CallIntMethod(instance, this->warmRestartMethod);
+        }
+
+        LocalRef<jobject> OutstationApplication::warmRestartSupport(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->warmRestartSupportMethod));
         }
 
         jboolean OutstationApplication::writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0)
