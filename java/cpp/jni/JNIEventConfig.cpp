@@ -44,14 +44,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jint EventConfig::getvIndex(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->vIndexField);
-        }
-
         LocalRef<jobject> EventConfig::getclazz(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->clazzField));
+        }
+
+        jint EventConfig::getvIndex(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->vIndexField);
         }
     }
 }

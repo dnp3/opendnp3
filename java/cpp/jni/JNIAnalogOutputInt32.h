@@ -44,8 +44,8 @@ namespace jni
             LocalRef<jobject> init2(JNIEnv* env, jint arg0, jobject arg1);
 
             // field getter methods
-            jint getvalue(JNIEnv* env, jobject instance);
             LocalRef<jobject> getstatus(JNIEnv* env, jobject instance);
+            jint getvalue(JNIEnv* env, jobject instance);
 
             private:
 

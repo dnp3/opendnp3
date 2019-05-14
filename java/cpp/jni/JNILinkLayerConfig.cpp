@@ -64,19 +64,19 @@ namespace jni
             return env->GetBooleanField(instance, this->isMasterField);
         }
 
-        jboolean LinkLayerConfig::getuseConfirms(JNIEnv* env, jobject instance)
+        LocalRef<jobject> LinkLayerConfig::getkeepAliveTimeout(JNIEnv* env, jobject instance)
         {
-            return env->GetBooleanField(instance, this->useConfirmsField);
-        }
-
-        jint LinkLayerConfig::getnumRetry(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->numRetryField);
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->keepAliveTimeoutField));
         }
 
         jint LinkLayerConfig::getlocalAddr(JNIEnv* env, jobject instance)
         {
             return env->GetIntField(instance, this->localAddrField);
+        }
+
+        jint LinkLayerConfig::getnumRetry(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->numRetryField);
         }
 
         jint LinkLayerConfig::getremoteAddr(JNIEnv* env, jobject instance)
@@ -89,9 +89,9 @@ namespace jni
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->responseTimeoutField));
         }
 
-        LocalRef<jobject> LinkLayerConfig::getkeepAliveTimeout(JNIEnv* env, jobject instance)
+        jboolean LinkLayerConfig::getuseConfirms(JNIEnv* env, jobject instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->keepAliveTimeoutField));
+            return env->GetBooleanField(instance, this->useConfirmsField);
         }
     }
 }

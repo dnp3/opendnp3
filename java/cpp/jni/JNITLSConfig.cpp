@@ -62,26 +62,6 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jstring> TLSConfig::getpeerCertFilePath(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->peerCertFilePathField));
-        }
-
-        LocalRef<jstring> TLSConfig::getlocalCertFilePath(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->localCertFilePathField));
-        }
-
-        LocalRef<jstring> TLSConfig::getprivateKeyFilePath(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->privateKeyFilePathField));
-        }
-
-        jint TLSConfig::getmaxVerifyDepth(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->maxVerifyDepthField);
-        }
-
         jboolean TLSConfig::getallowTLSv10(JNIEnv* env, jobject instance)
         {
             return env->GetBooleanField(instance, this->allowTLSv10Field);
@@ -100,6 +80,26 @@ namespace jni
         LocalRef<jstring> TLSConfig::getcipherList(JNIEnv* env, jobject instance)
         {
             return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->cipherListField));
+        }
+
+        LocalRef<jstring> TLSConfig::getlocalCertFilePath(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->localCertFilePathField));
+        }
+
+        jint TLSConfig::getmaxVerifyDepth(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->maxVerifyDepthField);
+        }
+
+        LocalRef<jstring> TLSConfig::getpeerCertFilePath(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->peerCertFilePathField));
+        }
+
+        LocalRef<jstring> TLSConfig::getprivateKeyFilePath(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->privateKeyFilePathField));
         }
     }
 }

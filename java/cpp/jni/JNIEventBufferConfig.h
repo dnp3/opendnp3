@@ -41,13 +41,13 @@ namespace jni
             public:
 
             // field getter methods
-            jint getmaxBinaryEvents(JNIEnv* env, jobject instance);
-            jint getmaxDoubleBinaryEvents(JNIEnv* env, jobject instance);
             jint getmaxAnalogEvents(JNIEnv* env, jobject instance);
-            jint getmaxCounterEvents(JNIEnv* env, jobject instance);
-            jint getmaxFrozenCounterEvents(JNIEnv* env, jobject instance);
-            jint getmaxBinaryOutputStatusEvents(JNIEnv* env, jobject instance);
             jint getmaxAnalogOutputStatusEvents(JNIEnv* env, jobject instance);
+            jint getmaxBinaryEvents(JNIEnv* env, jobject instance);
+            jint getmaxBinaryOutputStatusEvents(JNIEnv* env, jobject instance);
+            jint getmaxCounterEvents(JNIEnv* env, jobject instance);
+            jint getmaxDoubleBinaryEvents(JNIEnv* env, jobject instance);
+            jint getmaxFrozenCounterEvents(JNIEnv* env, jobject instance);
 
             private:
 

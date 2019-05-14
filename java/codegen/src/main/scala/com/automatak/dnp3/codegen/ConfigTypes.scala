@@ -14,24 +14,18 @@ trait MethodFilter {
 
 object MethodFilter {
 
-  def acceptsAny = new MethodFilter {
-    override def matches(method: Method): Boolean = true
+  def acceptsAny : MethodFilter = _ => true
+
+  def nameEquals(string: String, args: Option[Int] = None) : MethodFilter =  {
+    method: Method => method.getName == string && args.forall(_ == method.getParameterCount)
   }
 
-  def nameEquals(string: String, args: Option[Int] = None) = new MethodFilter {
-    override def matches(method: Method): Boolean = {
-      method.getName == string && args.map(_ == method.getParameterCount).getOrElse(true)
-    }
+  def any(filters: MethodFilter*) : MethodFilter =  {
+    method: Method => filters.exists(_.matches(method))
   }
 
-  def any(filters: MethodFilter*) : MethodFilter = new MethodFilter {
-    override def matches(method: Method): Boolean = filters.exists(_.matches(method))
-  }
-
-  def equalsAny(names: String*) = new MethodFilter {
-    override def matches(method: Method): Boolean = {
-      names.exists(_ == method.getName)
-    }
+  def equalsAny(names: String*) : MethodFilter = {
+    method: Method => names.contains(method.getName)
   }
 }
 
@@ -41,15 +35,12 @@ trait ConstructorFilter {
 
 object ConstructorFilter {
 
-  def acceptsAny = new ConstructorFilter {
-    override def matches(c: Constructor[_]): Boolean = true
+  def acceptsAny : ConstructorFilter = (c: Constructor[_]) => true
+
+  def withParamTypes(params : List[String]) : ConstructorFilter = {
+    c: Constructor[_] => c.getParameters.map(p => p.getType.getName).toList == params
   }
 
-  def withParamTypes(params : List[String]) = new ConstructorFilter {
-    override def matches(c: Constructor[_]): Boolean = {
-      c.getParameters.map(p => p.getType.getName).toList == params
-    }
-  }
 }
 
 case class ClassConfig(clazz: Class[_], features : Set[Features.Value], mfilter: MethodFilter = MethodFilter.acceptsAny, cfilter: ConstructorFilter = ConstructorFilter.acceptsAny) {
@@ -62,10 +53,10 @@ case class ClassConfig(clazz: Class[_], features : Set[Features.Value], mfilter:
     }
   }
 
-  def methods : Array[Method] = clazz.getDeclaredMethods.filter(mfilter.matches)
+  def methods : Array[Method] = clazz.getDeclaredMethods.filter(mfilter.matches).sortWith(_.getName < _.getName)
 
-  def constructors : Array[Constructor[_]] = clazz.getConstructors.filter(cfilter.matches)
+  def constructors : Array[Constructor[_]] = clazz.getConstructors.filter(cfilter.matches).sortWith(_.getName < _.getName)
 
-  def fields : Array[Field] = clazz.getDeclaredFields.filter(f => !Modifier.isStatic(f.getModifiers))
+  def fields : Array[Field] = clazz.getDeclaredFields.filter(f => !Modifier.isStatic(f.getModifiers)).sortWith(_.getName < _.getName)
 }
 

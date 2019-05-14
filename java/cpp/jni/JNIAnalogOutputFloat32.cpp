@@ -52,14 +52,14 @@ namespace jni
             return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
         }
 
-        jfloat AnalogOutputFloat32::getvalue(JNIEnv* env, jobject instance)
-        {
-            return env->GetFloatField(instance, this->valueField);
-        }
-
         LocalRef<jobject> AnalogOutputFloat32::getstatus(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->statusField));
+        }
+
+        jfloat AnalogOutputFloat32::getvalue(JNIEnv* env, jobject instance)
+        {
+            return env->GetFloatField(instance, this->valueField);
         }
     }
 }

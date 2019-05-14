@@ -41,10 +41,10 @@ namespace jni
             public:
 
             // field getter methods
-            jbyte getgroup(JNIEnv* env, jobject instance);
-            jbyte getvariation(JNIEnv* env, jobject instance);
             LocalRef<jobject> getclazz(JNIEnv* env, jobject instance);
+            jbyte getgroup(JNIEnv* env, jobject instance);
             LocalRef<jobject> getrange(JNIEnv* env, jobject instance);
+            jbyte getvariation(JNIEnv* env, jobject instance);
 
             private:
 

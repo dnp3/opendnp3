@@ -42,12 +42,12 @@ namespace jni
 
             // field getter methods
             jboolean getisMaster(JNIEnv* env, jobject instance);
-            jboolean getuseConfirms(JNIEnv* env, jobject instance);
-            jint getnumRetry(JNIEnv* env, jobject instance);
+            LocalRef<jobject> getkeepAliveTimeout(JNIEnv* env, jobject instance);
             jint getlocalAddr(JNIEnv* env, jobject instance);
+            jint getnumRetry(JNIEnv* env, jobject instance);
             jint getremoteAddr(JNIEnv* env, jobject instance);
             LocalRef<jobject> getresponseTimeout(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getkeepAliveTimeout(JNIEnv* env, jobject instance);
+            jboolean getuseConfirms(JNIEnv* env, jobject instance);
 
             private:
 

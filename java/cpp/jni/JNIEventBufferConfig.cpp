@@ -59,29 +59,19 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jint EventBufferConfig::getmaxBinaryEvents(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->maxBinaryEventsField);
-        }
-
-        jint EventBufferConfig::getmaxDoubleBinaryEvents(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->maxDoubleBinaryEventsField);
-        }
-
         jint EventBufferConfig::getmaxAnalogEvents(JNIEnv* env, jobject instance)
         {
             return env->GetIntField(instance, this->maxAnalogEventsField);
         }
 
-        jint EventBufferConfig::getmaxCounterEvents(JNIEnv* env, jobject instance)
+        jint EventBufferConfig::getmaxAnalogOutputStatusEvents(JNIEnv* env, jobject instance)
         {
-            return env->GetIntField(instance, this->maxCounterEventsField);
+            return env->GetIntField(instance, this->maxAnalogOutputStatusEventsField);
         }
 
-        jint EventBufferConfig::getmaxFrozenCounterEvents(JNIEnv* env, jobject instance)
+        jint EventBufferConfig::getmaxBinaryEvents(JNIEnv* env, jobject instance)
         {
-            return env->GetIntField(instance, this->maxFrozenCounterEventsField);
+            return env->GetIntField(instance, this->maxBinaryEventsField);
         }
 
         jint EventBufferConfig::getmaxBinaryOutputStatusEvents(JNIEnv* env, jobject instance)
@@ -89,9 +79,19 @@ namespace jni
             return env->GetIntField(instance, this->maxBinaryOutputStatusEventsField);
         }
 
-        jint EventBufferConfig::getmaxAnalogOutputStatusEvents(JNIEnv* env, jobject instance)
+        jint EventBufferConfig::getmaxCounterEvents(JNIEnv* env, jobject instance)
         {
-            return env->GetIntField(instance, this->maxAnalogOutputStatusEventsField);
+            return env->GetIntField(instance, this->maxCounterEventsField);
+        }
+
+        jint EventBufferConfig::getmaxDoubleBinaryEvents(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->maxDoubleBinaryEventsField);
+        }
+
+        jint EventBufferConfig::getmaxFrozenCounterEvents(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->maxFrozenCounterEventsField);
         }
     }
 }
