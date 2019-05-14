@@ -77,9 +77,7 @@ if(DNP3_TLS)
 
 	find_package(OpenSSL REQUIRED)
 	message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
-	if(WIN32)
-		include_directories(${OPENSSL_INCLUDE_DIR})
-	endif()
+	include_directories(${OPENSSL_INCLUDE_DIR})
 endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
