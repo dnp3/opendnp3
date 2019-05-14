@@ -44,6 +44,12 @@ if(DNP3_ALL)
   set(DNP3_FUZZING ON)
 endif()
 
+if(DNP3_FUZZING)
+  # Fuzzing depends on test lib and the decoder library
+  set(DNP3_TEST ON)
+  set(DNP3_DECODER ON)
+endif()
+
 if(DNP3_JAVA)
 	find_package(Java COMPONENTS Development)
 	find_package(JNI REQUIRED)
