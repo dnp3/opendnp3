@@ -18,21 +18,17 @@
  */
 package com.automatak.dnp3.impl;
 
-import com.automatak.dnp3.DNP3Exception;
 import com.automatak.dnp3.DNP3Manager;
 import com.automatak.dnp3.impl.mocks.NullLogHandler;
 import com.automatak.dnp3.impl.mocks.StackPair;
-import junit.framework.*;
-import org.junit.Ignore;
+import junit.framework.TestCase;
 import org.junit.Test;
-
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-@Ignore
 public class DNP3ManagerIntegrationTest extends TestCase {
 
     static final int NUM_STACKS = 10;
