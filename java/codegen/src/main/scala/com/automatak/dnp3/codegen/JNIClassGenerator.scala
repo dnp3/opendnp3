@@ -83,7 +83,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
           }
         }
 
-        cfg.constructors.toIterator.map(lines).flatten
+        cfg.constructors.toIterator.flatMap(lines)
       }
 
       def methodInit : Iterator[String] = cfg.ifEnabled(Features.Methods) {
@@ -97,7 +97,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
           }
         }
 
-        cfg.methods.toIterator.map(lines).flatten
+        cfg.methods.toIterator.flatMap(lines)
       }
 
       def fieldInit : Iterator[String] = cfg.ifEnabled(Features.Fields) {
@@ -108,7 +108,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
           }
         }
 
-        cfg.clazz.getFields.toIterator.map(lines).flatten
+        cfg.clazz.getFields.toIterator.flatMap(lines)
       }
 
       "bool %s::init(JNIEnv* env)".format(cfg.clazz.getSimpleName).iter ++ bracket {
