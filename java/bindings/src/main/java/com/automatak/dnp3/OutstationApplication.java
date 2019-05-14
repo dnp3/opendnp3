@@ -20,6 +20,7 @@ package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.AssignClassType;
 import com.automatak.dnp3.enums.PointClass;
+import com.automatak.dnp3.enums.RestartMode;
 
 /**
  * Outstation application code implements this interface to interface with the stack
@@ -56,4 +57,32 @@ public interface OutstationApplication extends LinkStatusListener {
      * @return Application controlled IIN bits
      */
     ApplicationIIN getApplicationIIN();
+
+    /**
+     * @return cold restart mode supported
+     */
+    RestartMode coldRestartSupport();
+
+    /**
+     * @return warm restart mode it supported
+     */
+    RestartMode warmRestartSupport();
+
+    /**
+     * The outstation should perform a complete restart. See the DNP3 specification for
+     * a complete description of normal behavior
+     *
+     * @return number of seconds or milliseconds until restart is complete. The value
+     * is interpreted based on the Restart Mode returned from ColdRestartSupport()
+     */
+    int coldRestart();
+
+    /**
+     * The outstation should perform a partial restart of only the DNP3 application.
+     * See the DNP3 specification for a complete descripton of normal behavior
+     *
+     * @return number of seconds or milliseconds until restart is complete. The value
+     * is interpreted based on the Restart Mode returned from ColdRestartSupport()
+     */
+    int warmRestart();
 }

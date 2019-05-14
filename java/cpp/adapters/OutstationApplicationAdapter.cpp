@@ -63,3 +63,31 @@ ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 	iin.needTime = !!JCache::ApplicationIIN.getneedTime(env, jiin);
 	return iin;
 }
+
+RestartMode OutstationApplicationAdapter::ColdRestartSupport() const
+{
+	const auto env = JNI::GetEnv();
+	const auto jmode = JCache::OutstationApplication.coldRestartSupport(env, proxy);
+	const auto jvalue = JCache::RestartMode.toType(env, jmode);
+	return static_cast<RestartMode>(jvalue);
+}
+
+RestartMode OutstationApplicationAdapter::WarmRestartSupport() const
+{
+	const auto env = JNI::GetEnv();
+	const auto jmode = JCache::OutstationApplication.warmRestartSupport(env, proxy);
+	const auto jvalue = JCache::RestartMode.toType(env, jmode);
+	return static_cast<RestartMode>(jvalue);
+}
+
+uint16_t OutstationApplicationAdapter::ColdRestart()
+{
+	const auto env = JNI::GetEnv();
+	return static_cast<uint16_t>(JCache::OutstationApplication.coldRestart(env, proxy));
+}
+
+uint16_t OutstationApplicationAdapter::WarmRestart()
+{
+	const auto env = JNI::GetEnv();
+	return static_cast<uint16_t>(JCache::OutstationApplication.warmRestart(env, proxy));
+}
