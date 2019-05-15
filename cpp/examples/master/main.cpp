@@ -55,7 +55,6 @@ int main(int argc, char* argv[])
 	// in this example, we've change the application layer timeout to 2 seconds
 	stackConfig.master.responseTimeout = TimeDuration::Seconds(2);
 	stackConfig.master.disableUnsolOnStartup = true;
-	stackConfig.master.startupIntegrityClassMask = ClassField::AllClasses();
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
@@ -74,10 +73,10 @@ int main(int argc, char* argv[])
 
 
 	// do an integrity poll (Class 3/2/1/0) once per minute
-	//auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
+	auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
 
 	// do a Class 1 exception poll every 5 seconds
-	//auto exceptionScan = master->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(2));
+	auto exceptionScan = master->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(2));
 
 	// Enable the master. This will start communications.
 	master->Enable();
@@ -130,10 +129,10 @@ int main(int argc, char* argv[])
 			// C++ destructor on DNP3Manager cleans everything up for you
 			return 0;
 		case('i'):
-			//integrityScan->Demand();
+			integrityScan->Demand();
 			break;
 		case('e'):
-			//exceptionScan->Demand();
+			exceptionScan->Demand();
 			break;
 		case('c'):
 			{
