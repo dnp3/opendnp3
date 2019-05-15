@@ -3,11 +3,9 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/OutstationContext.h>
 
-#include <testlib/HexConversions.h>
 #include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
 
-#include <dnp3mocks/APDUHexBuilders.h>
 #include <dnp3mocks/MockCommandHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockOutstationApplication.h>
