@@ -271,7 +271,7 @@ if(DNP3_FUZZING)
   target_link_libraries (fuzzdnp3 asiodnp3 dnp3decode ${PTHREAD})
   set_target_properties(fuzzdnp3 PROPERTIES FOLDER tests)
 
-  add_executable (fuzzoutstation ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzoutstation.cpp ./cpp/tests/fuzz/OutstationTestObject.cpp)
+  add_executable (fuzzoutstation ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzoutstation.cpp)
   target_link_libraries (fuzzoutstation dnp3mocks ${PTHREAD})
   set_target_properties(fuzzoutstation PROPERTIES FOLDER tests)
 endif()
