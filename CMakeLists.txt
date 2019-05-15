@@ -8,8 +8,7 @@ set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPEND
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING
-      "Choose the type of build, options are: Debug Release
-RelWithDebInfo MinSizeRel."
+      "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
 endif()
 
@@ -35,11 +34,11 @@ option(PROFILE "Builds the libraries with profiling support (gcc only)" OFF)
 option(FLOCK "Builds the libraries with lock serial port (flock, Linux and BSD)" OFF)
 
 if(DNP3_ALL)
-	message("enabling all optional components")
-	set(DNP3_DEMO ON)
-	set(DNP3_TEST ON)
-	set(DNP3_TLS ON)
-	set(DNP3_DECODER ON)
+  message("enabling all optional components")
+  set(DNP3_DEMO ON)
+  set(DNP3_TEST ON)
+  set(DNP3_TLS ON)
+  set(DNP3_DECODER ON)
   set(DNP3_JAVA ON)
   set(DNP3_FUZZING ON)
 endif()
@@ -51,9 +50,9 @@ if(DNP3_FUZZING)
 endif()
 
 if(DNP3_JAVA)
-	find_package(Java COMPONENTS Development)
-	find_package(JNI REQUIRED)
-	include_directories(${JNI_INCLUDE_DIRS})
+  find_package(Java COMPONENTS Development)
+  find_package(JNI REQUIRED)
+  include_directories(${JNI_INCLUDE_DIRS})
 endif()
 
 SET(ASIO_SUBMODULE_DIR "${PROJECT_SOURCE_DIR}/deps/asio/asio/include")
@@ -61,33 +60,33 @@ SET(ASIO_SUBMODULE_DIR "${PROJECT_SOURCE_DIR}/deps/asio/asio/include")
 # detection stuff for ASIO
 if (EXISTS "${ASIO_SUBMODULE_DIR}/asio.hpp")
     message("ASIO has been checked out as a git submodule: ${ASIO_SUBMODULE_DIR}")
-	include_directories(${ASIO_SUBMODULE_DIR})
+  include_directories(${ASIO_SUBMODULE_DIR})
 else()
-	message("ASIO has NOT been checked out as a git submodule...")
-	if (ASIO_HOME)
-		message("ASIO_HOME defined in cache: ${ASIO_HOME}")
-		include_directories(${ASIO_HOME})  
-	else()
-		if(DEFINED ENV{ASIO_HOME})
-			message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")  
-			include_directories($ENV{ASIO_HOME})    
-		else()
-			message("ASIO_HOME was not defined. ASIO expected to be on include path")  
-		endif()
-	endif()
+  message("ASIO has NOT been checked out as a git submodule...")
+  if (ASIO_HOME)
+    message("ASIO_HOME defined in cache: ${ASIO_HOME}")
+    include_directories(${ASIO_HOME})  
+  else()
+    if(DEFINED ENV{ASIO_HOME})
+      message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")  
+      include_directories($ENV{ASIO_HOME})    
+    else()
+      message("ASIO_HOME was not defined. ASIO expected to be on include path")  
+    endif()
+  endif()
 endif()
 
 # required for ASIO in C++11 only mode
 add_definitions(-DASIO_STANDALONE)
 
 if(DNP3_TLS)
-	add_definitions(-DOPENDNP3_USE_TLS)
+  add_definitions(-DOPENDNP3_USE_TLS)
 
-	find_package(OpenSSL REQUIRED)
-	message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
-	if(WIN32)
-		include_directories(${OPENSSL_INCLUDE_DIR})
-	endif()
+  find_package(OpenSSL REQUIRED)
+  message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+  if(WIN32)
+    include_directories(${OPENSSL_INCLUDE_DIR})
+  endif()
 endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
@@ -196,20 +195,20 @@ if(DNP3_DEMO)
 
   if(DNP3_TLS)
 
-	# ----- master tls executable -----
-	add_executable(master-tls-demo ./cpp/examples/tls/master/main.cpp)
-	target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-	set_target_properties(master-tls-demo PROPERTIES FOLDER demos/tls)
+  # ----- master tls executable -----
+  add_executable(master-tls-demo ./cpp/examples/tls/master/main.cpp)
+  target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  set_target_properties(master-tls-demo PROPERTIES FOLDER demos/tls)
 
-	# ----- outstation tls executable -----
-	add_executable(outstation-tls-demo ./cpp/examples/tls/outstation/main.cpp)
-	target_link_libraries (outstation-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-	set_target_properties(outstation-tls-demo PROPERTIES FOLDER demos/tls)
+  # ----- outstation tls executable -----
+  add_executable(outstation-tls-demo ./cpp/examples/tls/outstation/main.cpp)
+  target_link_libraries (outstation-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  set_target_properties(outstation-tls-demo PROPERTIES FOLDER demos/tls)
 
-	# ----- master-gprs tls executable -----
-	add_executable(master-gprs-tls-demo ./cpp/examples/tls/master-gprs/main.cpp)
-	target_link_libraries (master-gprs-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-	set_target_properties(master-gprs-tls-demo PROPERTIES FOLDER demos/tls)
+  # ----- master-gprs tls executable -----
+  add_executable(master-gprs-tls-demo ./cpp/examples/tls/master-gprs/main.cpp)
+  target_link_libraries (master-gprs-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+  set_target_properties(master-gprs-tls-demo PROPERTIES FOLDER demos/tls)
 
    endif()
 
@@ -281,8 +280,8 @@ if(DNP3_FUZZING)
 endif()
 
 add_custom_target(
-	format
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	COMMAND astyle -R ./cpp/*.h ./cpp/*.cpp --options=./config/astyle.cfg --exclude=./cpp/libs/include/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/objects
-	COMMAND astyle -R ./java/cpp/adapters/*.h ./java/cpp/adapters/*.cpp --options=./config/astyle.cfg
+  format
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMAND astyle -R ./cpp/*.h ./cpp/*.cpp --options=./config/astyle.cfg --exclude=./cpp/libs/include/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/objects
+  COMMAND astyle -R ./java/cpp/adapters/*.h ./java/cpp/adapters/*.cpp --options=./config/astyle.cfg
 )
