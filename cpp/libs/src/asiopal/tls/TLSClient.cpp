@@ -34,7 +34,6 @@ namespace asiopal
 TLSClient::TLSClient(
     const Logger& logger,
     const std::shared_ptr<Executor>& executor,
-    const IPEndpoint& remote,
     const std::string& adapter,
     const TLSConfig& config,
     std::error_code& ec)
@@ -42,10 +41,8 @@ TLSClient::TLSClient(
 	logger(logger),
 	condition(logger),
 	executor(executor),
-	host(remote.address),
 	adapter(adapter),
 	ctx(logger, false, config, ec),
-	remoteEndpoint(asio::ip::tcp::v4(), remote.port),
 	localEndpoint(),
 	resolver(executor->strand.get_io_service())
 {
@@ -65,7 +62,7 @@ bool TLSClient::Cancel()
 	return true;
 }
 
-bool TLSClient::BeginConnect(const connect_callback_t& callback)
+bool TLSClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t& callback)
 {
 	if (canceled) return false;
 
@@ -110,7 +107,7 @@ bool TLSClient::BeginConnect(const connect_callback_t& callback)
 		return true;
 	}
 
-	const auto address = asio::ip::address::from_string(this->host, ec);
+	const auto address = asio::ip::address::from_string(remote.address, ec);
 	auto self = this->shared_from_this();
 	if (ec)
 	{
@@ -121,10 +118,10 @@ bool TLSClient::BeginConnect(const connect_callback_t& callback)
 		};
 
 		std::stringstream portstr;
-		portstr << remoteEndpoint.port();
+		portstr << remote.port;
 
 		resolver.async_resolve(
-		    asio::ip::tcp::resolver::query(host, portstr.str()),
+		    asio::ip::tcp::resolver::query(remote.address, portstr.str()),
 		    executor->strand.wrap(cb)
 		);
 
@@ -132,7 +129,7 @@ bool TLSClient::BeginConnect(const connect_callback_t& callback)
 	}
 	else
 	{
-		remoteEndpoint.address(address);
+		asio::ip::tcp::endpoint remoteEndpoint(address, remote.port);
 		auto cb = [self, stream, callback](const std::error_code & ec)
 		{
 			self->HandleConnectResult(callback, stream, ec);

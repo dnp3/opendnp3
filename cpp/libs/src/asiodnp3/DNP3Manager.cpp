@@ -59,7 +59,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(
     const std::string& id,
     int32_t levels,
     const asiopal::ChannelRetry& retry,
-    std::vector<asiopal::IPEndpoint> hosts,
+    const std::vector<asiopal::IPEndpoint>& hosts,
     const std::string& local,
     std::shared_ptr<IChannelListener> listener)
 {
@@ -98,7 +98,20 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(
     std::shared_ptr<IChannelListener> listener,
     std::error_code& ec)
 {
-	return this->impl->AddTLSClient(id, levels, retry, host, local, port, config, listener, ec);
+	return this->impl->AddTLSClient(id, levels, retry, { asiopal::IPEndpoint(host, port) }, local, config, listener, ec);
+}
+
+std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(
+    const std::string& id,
+    int32_t levels,
+    const asiopal::ChannelRetry& retry,
+    const std::vector<asiopal::IPEndpoint>& hosts,
+    const std::string& local,
+    const asiopal::TLSConfig& config,
+    std::shared_ptr<IChannelListener> listener,
+    std::error_code& ec)
+{
+	return this->impl->AddTLSClient(id, levels, retry, hosts, local, config, listener, ec);
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(
