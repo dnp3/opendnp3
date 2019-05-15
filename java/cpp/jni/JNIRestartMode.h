@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3JAVA_JNICONTROLRELAYOUTPUTBLOCK_H
-#define OPENDNP3JAVA_JNICONTROLRELAYOUTPUTBLOCK_H
+#ifndef OPENDNP3JAVA_JNIRESTARTMODE_H
+#define OPENDNP3JAVA_JNIRESTARTMODE_H
 
 #include <jni.h>
 
@@ -31,7 +31,7 @@ namespace jni
 
     namespace cache
     {
-        class ControlRelayOutputBlock
+        class RestartMode
         {
             friend struct jni::JCache;
 
@@ -40,29 +40,17 @@ namespace jni
 
             public:
 
-            // constructor methods
-            LocalRef<jobject> init5(JNIEnv* env, jobject arg0, jshort arg1, jlong arg2, jlong arg3, jobject arg4);
-
-            // field getter methods
-            jshort getcount(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getfunction(JNIEnv* env, jobject instance);
-            jlong getoffTimeMs(JNIEnv* env, jobject instance);
-            jlong getonTimeMs(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getstatus(JNIEnv* env, jobject instance);
+            // methods
+            LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
+            jint toType(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
-            // constructor method ids
-            jmethodID init5Constructor = nullptr;
-
-            // field ids
-            jfieldID functionField = nullptr;
-            jfieldID countField = nullptr;
-            jfieldID onTimeMsField = nullptr;
-            jfieldID offTimeMsField = nullptr;
-            jfieldID statusField = nullptr;
+            // method ids
+            jmethodID fromTypeMethod = nullptr;
+            jmethodID toTypeMethod = nullptr;
         };
     }
 }

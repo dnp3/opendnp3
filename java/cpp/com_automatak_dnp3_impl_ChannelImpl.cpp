@@ -68,7 +68,7 @@ JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1statisti
 		stats.channel.numLinkFrameTx
 	);
 
-	return jni::JCache::LinkStatistics.init2(env, channelStats, parserStats);
+	return env->NewGlobalRef(jni::JCache::LinkStatistics.init2(env, channelStats, parserStats));
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native

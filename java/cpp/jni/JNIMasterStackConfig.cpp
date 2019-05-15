@@ -44,14 +44,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> MasterStackConfig::getmaster(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->masterField));
-        }
-
         LocalRef<jobject> MasterStackConfig::getlink(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->linkField));
+        }
+
+        LocalRef<jobject> MasterStackConfig::getmaster(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->masterField));
         }
     }
 }

@@ -41,22 +41,30 @@ namespace jni
             public:
 
             // methods
-            jboolean supportsWriteAbsoluteTime(JNIEnv* env, jobject instance);
-            jboolean writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0);
-            jboolean supportsAssignClass(JNIEnv* env, jobject instance);
-            void recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3);
+            jint coldRestart(JNIEnv* env, jobject instance);
+            LocalRef<jobject> coldRestartSupport(JNIEnv* env, jobject instance);
             LocalRef<jobject> getApplicationIIN(JNIEnv* env, jobject instance);
+            void recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3);
+            jboolean supportsAssignClass(JNIEnv* env, jobject instance);
+            jboolean supportsWriteAbsoluteTime(JNIEnv* env, jobject instance);
+            jint warmRestart(JNIEnv* env, jobject instance);
+            LocalRef<jobject> warmRestartSupport(JNIEnv* env, jobject instance);
+            jboolean writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID supportsWriteAbsoluteTimeMethod = nullptr;
-            jmethodID writeAbsoluteTimeMethod = nullptr;
-            jmethodID supportsAssignClassMethod = nullptr;
-            jmethodID recordClassAssignmentMethod = nullptr;
+            jmethodID coldRestartMethod = nullptr;
+            jmethodID coldRestartSupportMethod = nullptr;
             jmethodID getApplicationIINMethod = nullptr;
+            jmethodID recordClassAssignmentMethod = nullptr;
+            jmethodID supportsAssignClassMethod = nullptr;
+            jmethodID supportsWriteAbsoluteTimeMethod = nullptr;
+            jmethodID warmRestartMethod = nullptr;
+            jmethodID warmRestartSupportMethod = nullptr;
+            jmethodID writeAbsoluteTimeMethod = nullptr;
         };
     }
 }

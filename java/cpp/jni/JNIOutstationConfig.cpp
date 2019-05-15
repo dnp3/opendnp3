@@ -62,6 +62,11 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
+        jboolean OutstationConfig::getallowUnsolicited(JNIEnv* env, jobject instance)
+        {
+            return env->GetBooleanField(instance, this->allowUnsolicitedField);
+        }
+
         LocalRef<jobject> OutstationConfig::getindexMode(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->indexModeField));
@@ -70,6 +75,16 @@ namespace jni
         jshort OutstationConfig::getmaxControlsPerRequest(JNIEnv* env, jobject instance)
         {
             return env->GetShortField(instance, this->maxControlsPerRequestField);
+        }
+
+        jint OutstationConfig::getmaxRxFragSize(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->maxRxFragSizeField);
+        }
+
+        jint OutstationConfig::getmaxTxFragSize(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->maxTxFragSizeField);
         }
 
         LocalRef<jobject> OutstationConfig::getselectTimeout(JNIEnv* env, jobject instance)
@@ -85,21 +100,6 @@ namespace jni
         LocalRef<jobject> OutstationConfig::getunsolRetryTimeout(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->unsolRetryTimeoutField));
-        }
-
-        jint OutstationConfig::getmaxTxFragSize(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->maxTxFragSizeField);
-        }
-
-        jint OutstationConfig::getmaxRxFragSize(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->maxRxFragSizeField);
-        }
-
-        jboolean OutstationConfig::getallowUnsolicited(JNIEnv* env, jobject instance)
-        {
-            return env->GetBooleanField(instance, this->allowUnsolicitedField);
         }
     }
 }

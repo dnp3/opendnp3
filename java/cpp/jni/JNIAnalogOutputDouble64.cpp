@@ -52,14 +52,14 @@ namespace jni
             return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
         }
 
-        jdouble AnalogOutputDouble64::getvalue(JNIEnv* env, jobject instance)
-        {
-            return env->GetDoubleField(instance, this->valueField);
-        }
-
         LocalRef<jobject> AnalogOutputDouble64::getstatus(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->statusField));
+        }
+
+        jdouble AnalogOutputDouble64::getvalue(JNIEnv* env, jobject instance)
+        {
+            return env->GetDoubleField(instance, this->valueField);
         }
     }
 }

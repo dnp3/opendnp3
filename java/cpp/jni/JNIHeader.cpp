@@ -56,24 +56,19 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
+        jint Header::getcount(JNIEnv* env, jobject instance)
+        {
+            return env->GetIntField(instance, this->countField);
+        }
+
         jbyte Header::getgroup(JNIEnv* env, jobject instance)
         {
             return env->GetByteField(instance, this->groupField);
         }
 
-        jbyte Header::getvariation(JNIEnv* env, jobject instance)
-        {
-            return env->GetByteField(instance, this->variationField);
-        }
-
         LocalRef<jobject> Header::getqualifier(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->qualifierField));
-        }
-
-        jint Header::getcount(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->countField);
         }
 
         jint Header::getstart(JNIEnv* env, jobject instance)
@@ -84,6 +79,11 @@ namespace jni
         jint Header::getstop(JNIEnv* env, jobject instance)
         {
             return env->GetIntField(instance, this->stopField);
+        }
+
+        jbyte Header::getvariation(JNIEnv* env, jobject instance)
+        {
+            return env->GetByteField(instance, this->variationField);
         }
     }
 }

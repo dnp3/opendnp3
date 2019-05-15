@@ -38,7 +38,7 @@ import com.automatak.dnp3.LogHandler;
  * }
  * </pre>
  */
-public class DNP3ManagerFactory {cd ..
+public class DNP3ManagerFactory {
 
     static {
         if(System.getProperty("com.automatak.dnp3.nostaticload") == null)
