@@ -12,10 +12,10 @@ namespace Automatak
 			ChangeSetAdapter::ChangeSetAdapter() : builder(new asiodnp3::UpdateBuilder())
 			{}
 
-            ChangeSetAdapter::~ChangeSetAdapter()
-            {
-                this->!ChangeSetAdapter();
-            }
+			ChangeSetAdapter::~ChangeSetAdapter()
+			{
+				this->!ChangeSetAdapter();
+			}
 
 			ChangeSetAdapter::!ChangeSetAdapter()
 			{

@@ -29,7 +29,7 @@ namespace Automatak
 				);
 				
 			private:
-								
+
 				asiodnp3::ISessionAcceptor* proxy;
 			};
 

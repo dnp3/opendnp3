@@ -18,13 +18,13 @@ namespace Automatak
 		namespace Adapter
 		{
 
-            class CallbackAdapters : private openpal::StaticOnly
-            {
-            public:
+			class CallbackAdapters : private openpal::StaticOnly
+			{
+			public:
 
-                static opendnp3::CommandCallbackT Get(TaskCompletionSource<CommandTaskResult^>^ tcs);
-                static opendnp3::RestartOperationCallbackT Get(TaskCompletionSource<RestartResultType^>^ tcs);
-            };
+				static opendnp3::CommandCallbackT Get(TaskCompletionSource<CommandTaskResult^>^ tcs);
+				static opendnp3::RestartOperationCallbackT Get(TaskCompletionSource<RestartResultType^>^ tcs);
+			};
 
 		}
 	}

@@ -18,7 +18,7 @@ public:
 
 private:
 
-    Object^ m_pObject;
+	Object^ m_pObject;
 };
 
 #endif

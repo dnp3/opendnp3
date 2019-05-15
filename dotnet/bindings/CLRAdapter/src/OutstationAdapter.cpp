@@ -20,7 +20,7 @@ namespace Automatak
 			}
 
 			void OutstationAdapter::SetLogFilters(LogFilter filters)
-			{				
+			{
 				(*outstation)->SetLogFilters(filters.Flags);
 			}
 

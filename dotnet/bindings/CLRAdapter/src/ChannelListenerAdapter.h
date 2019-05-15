@@ -13,7 +13,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
-						
+
 			private class ChannelListenerAdapter final : public asiodnp3::IChannelListener
 			{
 			public:
@@ -25,7 +25,7 @@ namespace Automatak
 					this->proxy->OnStateChange((Interface::ChannelState) state);
 				}
 
-			private:				
+			private:
 
 				gcroot < Automatak::DNP3::Interface::IChannelListener^ > proxy;
 			};

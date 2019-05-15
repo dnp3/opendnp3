@@ -7,10 +7,10 @@ namespace Automatak
 	namespace DNP3
 	{
 		namespace Adapter
-		{				
+		{
 
 			MasterOperationsAdapter::MasterOperationsAdapter(asiodnp3::IMasterOperations* operations) : operations(operations)
-			{}				
+			{}
 			
 			void MasterOperationsAdapter::SetLogFilters(LogFilter flags)
 			{
@@ -98,10 +98,10 @@ namespace Automatak
 				auto scan = operations->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
 				return gcnew MasterScanAdapter(scan);
 			}
-												
+
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::SelectAndOperate(ICommandHeaders^ headers, TaskConfig^ config)
 			{
-				auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();					
+				auto tcs = gcnew TaskCompletionSource<CommandTaskResult^>();
 				operations->SelectAndOperate(MasterConversions::Convert(headers), CallbackAdapters::Get(tcs), MasterConversions::Convert(config));
 				return tcs->Task;
 			}
@@ -116,43 +116,43 @@ namespace Automatak
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt16 index, TaskConfig^ config)
 			{
 				ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-				return this->SelectAndOperate(headers, config);					
+				return this->SelectAndOperate(headers, config);
 			}
 
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::SelectAndOperate(AnalogOutputInt16^ command, System::UInt16 index, TaskConfig^ config)
 			{
 				ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-				return this->SelectAndOperate(headers, config);					
+				return this->SelectAndOperate(headers, config);
 			}
 
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::SelectAndOperate(AnalogOutputInt32^ command, System::UInt16 index, TaskConfig^ config)
 			{
 				ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-				return this->SelectAndOperate(headers, config);					
+				return this->SelectAndOperate(headers, config);
 			}
 
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::SelectAndOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config)
 			{
 				ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-				return this->SelectAndOperate(headers, config);					
+				return this->SelectAndOperate(headers, config);
 			}
 
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::SelectAndOperate(AnalogOutputDouble64^ command, System::UInt16 index, TaskConfig^ config)
 			{
 				ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-				return this->SelectAndOperate(headers, config);					
+				return this->SelectAndOperate(headers, config);
 			}
 
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::DirectOperate(ControlRelayOutputBlock^ command, System::UInt16 index, TaskConfig^ config)
 			{
 				ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-				return this->DirectOperate(headers, config);					
+				return this->DirectOperate(headers, config);
 			}
 
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::DirectOperate(AnalogOutputDouble64^ command, System::UInt16 index, TaskConfig^ config)
 			{
 				ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-				return this->DirectOperate(headers, config);					
+				return this->DirectOperate(headers, config);
 			}
 				
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::DirectOperate(AnalogOutputInt16^ command, System::UInt16 index, TaskConfig^ config)
@@ -164,13 +164,13 @@ namespace Automatak
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::DirectOperate(AnalogOutputInt32^ command, System::UInt16 index, TaskConfig^ config)
 			{
 				ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-				return this->DirectOperate(headers, config);					
+				return this->DirectOperate(headers, config);
 			}
 
 			Task<CommandTaskResult^>^ MasterOperationsAdapter::DirectOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config)
 			{
 				ICommandHeaders^ headers = CommandHeader::From(IndexedValue::From(command, index));
-				return this->DirectOperate(headers, config);					
+				return this->DirectOperate(headers, config);
 			}
 
 		}

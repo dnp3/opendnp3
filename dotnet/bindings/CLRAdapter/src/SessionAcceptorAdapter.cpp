@@ -7,37 +7,37 @@
 
 namespace Automatak
 {
-    namespace DNP3
-    {
-        namespace Adapter
-        {
+	namespace DNP3
+	{
+		namespace Adapter
+		{
 
-            SessionAcceptorAdapter::SessionAcceptorAdapter(asiodnp3::ISessionAcceptor& proxy) :	
-	            proxy(&proxy)
-            {}
+			SessionAcceptorAdapter::SessionAcceptorAdapter(asiodnp3::ISessionAcceptor& proxy) :
+				proxy(&proxy)
+			{}
 
-            IMasterSession^ SessionAcceptorAdapter::AcceptSession(
-	            System::String^ loggerid,
-	            ISOEHandler^ SOEHandler,
-	            IMasterApplication^ application,
-	            MasterStackConfig^ config
-	            )
-            {
-	            auto id = Conversions::ConvertString(loggerid);
-	            auto mconfig = Conversions::ConvertConfig(config);	
-	            auto handler = std::shared_ptr<SOEHandlerAdapter>(new SOEHandlerAdapter(SOEHandler));	
-	            auto app = std::shared_ptr<MasterApplicationAdapter>(new MasterApplicationAdapter(application));
+			IMasterSession^ SessionAcceptorAdapter::AcceptSession(
+				System::String^ loggerid,
+				ISOEHandler^ SOEHandler,
+				IMasterApplication^ application,
+				MasterStackConfig^ config
+				)
+			{
+				auto id = Conversions::ConvertString(loggerid);
+				auto mconfig = Conversions::ConvertConfig(config);	
+				auto handler = std::shared_ptr<SOEHandlerAdapter>(new SOEHandlerAdapter(SOEHandler));
+				auto app = std::shared_ptr<MasterApplicationAdapter>(new MasterApplicationAdapter(application));
 	
-	            auto session = proxy->AcceptSession(id, handler, app, mconfig);
+				auto session = proxy->AcceptSession(id, handler, app, mconfig);
 
-	            if (!session)
-	            {
-		            return nullptr;
-	            }	
+				if (!session)
+				{
+					return nullptr;
+				}
 	
-	            return gcnew MasterSessionAdapter(session);
-            }
+				return gcnew MasterSessionAdapter(session);
+			}
 
-        }
-    }
+		}
+	}
 }

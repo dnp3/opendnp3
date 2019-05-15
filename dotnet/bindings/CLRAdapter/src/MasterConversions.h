@@ -25,7 +25,7 @@ namespace Automatak
 
 			private class MasterConversions
 			{
-			public:				
+			public:
 
 				static std::vector<opendnp3::Header> ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers);
 
@@ -38,7 +38,7 @@ namespace Automatak
 				static opendnp3::Header ConvertRange16(RangeHeader^ header);
 
 				static opendnp3::TaskConfig Convert(TaskConfig^ config, ITaskCallback^ wrapper);
-				static opendnp3::TaskConfig Convert(TaskConfig^ config);				
+				static opendnp3::TaskConfig Convert(TaskConfig^ config);
 
 				static opendnp3::CommandSet Convert(ICommandHeaders^ headers);
 								

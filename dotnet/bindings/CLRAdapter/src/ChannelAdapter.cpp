@@ -21,18 +21,18 @@ namespace Automatak
 		namespace Adapter
 		{
 
-            ChannelAdapter::ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel) : channel(new std::shared_ptr<asiodnp3::IChannel>(channel))
-            {}
+			ChannelAdapter::ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel) : channel(new std::shared_ptr<asiodnp3::IChannel>(channel))
+			{}
 
-            ChannelAdapter::~ChannelAdapter()
-            {
-                this ->!ChannelAdapter();
-            }
+			ChannelAdapter::~ChannelAdapter()
+			{
+				this->!ChannelAdapter();
+			}
 
-            ChannelAdapter::!ChannelAdapter()
-            {
-                delete channel;
-            }
+			ChannelAdapter::!ChannelAdapter()
+			{
+				delete channel;
+			}
 
 			LogFilter ChannelAdapter::GetLogFilters()
 			{
@@ -49,7 +49,7 @@ namespace Automatak
 			{
 				openpal::LogFilters flags(filters.Flags);
 				(*channel)->SetLogFilters(flags);
-			}			
+			}
 
 			void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)
 			{
@@ -66,7 +66,7 @@ namespace Automatak
 
 				auto master = (*channel)->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, Conversions::ConvertConfig(config));
 				return master ? gcnew MasterAdapter(master) : nullptr;
-			}	
+			}
 
 			IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config)
 			{
@@ -77,7 +77,7 @@ namespace Automatak
 
 				auto outstation = (*channel)->AddOutstation(stdLoggerId.c_str(), commandAdapter, appAdapter, Conversions::ConvertConfig(config));
 				return outstation ? gcnew OutstationAdapter(outstation) : nullptr;
-			}			
+			}
 
 			void ChannelAdapter::Shutdown()
 			{

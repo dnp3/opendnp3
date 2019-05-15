@@ -97,19 +97,19 @@ namespace Automatak
 				{
 					auto assignments = proxy->GetClassAssignments();
 					for each(auto a in assignments)
-					{												
+					{
 						if (a.range.IsAllObjects())
-						{							
+						{
 							writer(opendnp3::Header::AllObjects(a.group, a.variation));
 						}
 						else
 						{
-							writer(opendnp3::Header::Range16(a.group, a.variation, a.range.start, a.range.stop));							
+							writer(opendnp3::Header::Range16(a.group, a.variation, a.range.start, a.range.stop));
 						}
 					}
 				}
 
-			private:				
+			private:
 
 				gcroot < Automatak::DNP3::Interface::IMasterApplication^ > proxy;
 			};

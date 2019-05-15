@@ -183,7 +183,7 @@ namespace Automatak
 					{
 						for (int i = 0; i < source->Count; ++i)
 						{
-							target[i].vIndex = source[i]->index;							
+							target[i].vIndex = source[i]->index;
 						}
 					}
 
@@ -193,9 +193,9 @@ namespace Automatak
 						ConvertIndexConfig<Info>(source, target);
 
 						for (int i = 0; i < source->Count; ++i)
-						{							
+						{
 							target[i].svariation = (typename Info::static_variation_t) source[i]->staticVariation;
-						}	
+						}
 					}
 
 					template <class Info, class Source, class Target>
@@ -204,7 +204,7 @@ namespace Automatak
 						ConvertStaticConfig<Info>(source, target);
 
 						for (int i = 0; i < source->Count; ++i)
-						{							
+						{
 							target[i].evariation = (typename Info::event_variation_t) source[i]->eventVariation;
 						}
 					}

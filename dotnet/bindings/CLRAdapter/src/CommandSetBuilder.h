@@ -17,7 +17,7 @@ namespace Automatak
 
 			private ref class CommandSetBuilder : ICommandBuilder
 			{
-			public:				
+			public:
 
 				CommandSetBuilder(opendnp3::CommandSet& commands);
 
@@ -28,7 +28,7 @@ namespace Automatak
 				virtual void Add(IEnumerable<IndexedValue<AnalogOutputDouble64^>^>^ commands);
 
 			private:
-				
+
 				opendnp3::CommandSet* commands;
 			};
 

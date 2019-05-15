@@ -23,9 +23,9 @@ namespace Automatak
 			{
 			public:
 
-				MasterOperationsAdapter(asiodnp3::IMasterOperations* operations);						
+				MasterOperationsAdapter(asiodnp3::IMasterOperations* operations);
 
-				virtual void SetLogFilters(LogFilter flags);				
+				virtual void SetLogFilters(LogFilter flags);
 			
 				virtual Task<TaskCompletion>^ Scan(IEnumerable<Header^>^ headers, TaskConfig^ config);
 
@@ -67,7 +67,7 @@ namespace Automatak
 				virtual Task<CommandTaskResult^>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config);
 				
 
-			private:				
+			private:
 				
 				asiodnp3::IMasterOperations* operations;
 			};

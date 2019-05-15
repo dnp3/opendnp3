@@ -53,7 +53,7 @@ namespace Automatak
 				!DNP3ManagerAdapter();
 				~DNP3ManagerAdapter();
 
-				virtual void Shutdown() sealed;				
+				virtual void Shutdown() sealed;
 
 				virtual IChannel^ AddTCPClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ address, System::UInt16 port, Interface::IChannelListener^ listener)  sealed;
 				virtual IChannel^ AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, System::String^ endpoint, System::UInt16 port, Interface::IChannelListener^ listener) sealed;
@@ -67,11 +67,11 @@ namespace Automatak
 
 				virtual Interface::IListener^ CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, IListenCallbacks^ callbacks) sealed;
 
-			private:			
+			private:
 
-				asiodnp3::DNP3Manager* manager;								
+				asiodnp3::DNP3Manager* manager;
 
-				static asiopal::ChannelRetry Convert(Interface::ChannelRetry^ retry);				
+				static asiopal::ChannelRetry Convert(Interface::ChannelRetry^ retry);
 			};
 
 		}

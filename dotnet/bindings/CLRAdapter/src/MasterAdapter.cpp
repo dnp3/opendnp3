@@ -16,22 +16,22 @@ namespace Automatak
 
 			MasterAdapter::!MasterAdapter()
 			{
-				delete master;				
+				delete master;
 			}
 
 			void MasterAdapter::Enable()
 			{
-				(*master)->Enable();				
+				(*master)->Enable();
 			}
 
 			void MasterAdapter::Disable()
 			{
-				(*master)->Disable();				
+				(*master)->Disable();
 			}
 
 			void MasterAdapter::Shutdown()
 			{
-				(*master)->Shutdown();				
+				(*master)->Shutdown();
 			}
 
 			Interface::IStackStatistics^ MasterAdapter::GetStackStatistics()

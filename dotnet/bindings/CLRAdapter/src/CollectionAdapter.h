@@ -20,9 +20,10 @@ namespace Automatak
 			class CollectionAdapter : public opendnp3::IVisitor<Source>
 			{
 			public:
+
 				CollectionAdapter(const Convert& convert_) : list(gcnew List<Target>()), convert(convert_)
 				{
-						
+
 				}
 
 				virtual void OnValue(const Source& value) override final

@@ -21,7 +21,7 @@ namespace Automatak
 
 				ChangeSetAdapter();
 
-                ~ChangeSetAdapter();
+				~ChangeSetAdapter();
 				!ChangeSetAdapter();
 				
 				virtual void Update(Binary^ update, System::UInt16 index, EventMode mode);
@@ -35,7 +35,7 @@ namespace Automatak
 				virtual void Update(TimeAndInterval^ update, System::UInt16 index);				
 
 				void Apply(asiodnp3::IOutstation& proxy);
-								
+				
 			private:
 				
 				asiodnp3::UpdateBuilder* builder;

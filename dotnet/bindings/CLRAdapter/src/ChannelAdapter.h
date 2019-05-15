@@ -21,10 +21,10 @@ namespace Automatak
 			{
 			public:
 
-                ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel);
+				ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel);
 
-                ~ChannelAdapter();
-                !ChannelAdapter();
+				~ChannelAdapter();
+				!ChannelAdapter();
 
 				virtual LogFilter GetLogFilters() sealed;
 

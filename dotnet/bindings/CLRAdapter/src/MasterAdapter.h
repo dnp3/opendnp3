@@ -31,9 +31,9 @@ namespace Automatak
 
 				virtual Interface::IStackStatistics^ GetStackStatistics();
 
-			private:				
-				
-				std::shared_ptr<asiodnp3::IMaster>* master;				
+			private:
+
+				std::shared_ptr<asiodnp3::IMaster>* master;
 			};
 
 		}

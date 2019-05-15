@@ -30,8 +30,8 @@ namespace Automatak
 				virtual void OnCertificateError(uint64_t sessionid, const asiodnp3::X509Info& info, int err) override;
 
 			private:
-				
-				gcroot < Interface::IListenCallbacks^ > m_proxy;				
+
+				gcroot < Interface::IListenCallbacks^ > m_proxy;
 			};
 
 		}
