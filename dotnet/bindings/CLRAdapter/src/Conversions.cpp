@@ -1,9 +1,6 @@
-
 #include "Conversions.h"
 
-#include <msclr\marshal_cppstd.h>
-
-using namespace Automatak::DNP3::Interface;
+#include <msclr/marshal_cppstd.h>
 
 namespace Automatak
 {
@@ -235,7 +232,7 @@ namespace Automatak
 			}
 
 			opendnp3::OctetString Conversions::ConvertMeas(OctetString^ meas)
-			{				
+			{
 				uint8_t bytes[255];
 				const uint8_t length = meas->Bytes->Length > 255 ? 255 : static_cast<uint8_t>(meas->Bytes->Length);
 				for (uint8_t i = 0; i < length; ++i)
@@ -307,7 +304,7 @@ namespace Automatak
 			openpal::TimeDuration Conversions::ConvertTimespan(System::TimeSpan ts)
 			{
 				return ConvertMilliseconds(ts.Ticks / System::TimeSpan::TicksPerMillisecond);
-			}		
+			}
 
 			System::TimeSpan Conversions::ConvertTimeDuration(const openpal::TimeDuration& duration)
 			{
@@ -320,7 +317,7 @@ namespace Automatak
 			}
 			
 			asiopal::TLSConfig Conversions::Convert(TLSConfig^ config)
-			{				
+			{
 				return asiopal::TLSConfig(
 					Conversions::ConvertString(config->peerCertFilePath),
 					Conversions::ConvertString(config->localCertFilePath),
@@ -364,10 +361,10 @@ namespace Automatak
 				opendnp3::OutstationConfig oc;				
 
 				oc.params = ConvertConfig(config->config, indexMode);
-				oc.eventBufferConfig = ConvertConfig(config->buffer);				
+				oc.eventBufferConfig = ConvertConfig(config->buffer);
 
 				return oc;
-			}			
+			}
 
 			opendnp3::OutstationParams Conversions::ConvertConfig(OutstationParams^ config, opendnp3::IndexMode indexMode)
 			{
@@ -416,7 +413,7 @@ namespace Automatak
 			}
 
 			asiodnp3::OutstationStackConfig Conversions::ConvertConfig(OutstationStackConfig^ config)
-			{										
+			{
 				opendnp3::DatabaseSizes sizes(
 					config->databaseTemplate->binaries->Count,
 					config->databaseTemplate->doubleBinaries->Count,
@@ -436,7 +433,7 @@ namespace Automatak
 
 				IndexMode indexMode = config->databaseTemplate->GetIndexMode();
 				cfg.outstation = ConvertConfig(config->outstation, (opendnp3::IndexMode) indexMode);
-				cfg.link = ConvertConfig(config->link);				
+				cfg.link = ConvertConfig(config->link);
 
 				return cfg;
 			}
@@ -452,7 +449,7 @@ namespace Automatak
 				ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo>(lhs->analogOutputStatii, rhs.aoStatus);
 				ConvertStaticConfig<opendnp3::TimeAndIntervalInfo>(lhs->timeAndIntervals, rhs.timeAndInterval);
 				ConvertIndexConfig<opendnp3::OctetStringInfo>(lhs->octetStrings, rhs.octetString);
-			}			
+			}
 
 			opendnp3::GroupVariationID Conversions::Convert(PointClass clazz)
 			{
@@ -496,7 +493,7 @@ namespace Automatak
 				}
 
 				return ret;
-			}			
+			}
 
 		}
 	}

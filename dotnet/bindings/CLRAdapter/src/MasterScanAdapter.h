@@ -1,23 +1,25 @@
-#ifndef OPENDNP3NET_MASTERSCANADAPTER_H_
-#define OPENDNP3NET_MASTERSCANADAPTER_H_
-
-using namespace System::Collections::ObjectModel;
+#ifndef OPENDNP3CLR_MASTERSCANADAPTER_H
+#define OPENDNP3CLR_MASTERSCANADAPTER_H
 
 #include <asiodnp3/IMasterScan.h>
+
 #include <vcclr.h>
 
 using namespace Automatak::DNP3::Interface;
+
 using namespace System::Collections::Generic;
+using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {
 	namespace DNP3
 	{
 		namespace Adapter
-		{			
+		{
+
 			private ref class MasterScanAdapter : IMasterScan
 			{
-				public:
+			public:
 
 				MasterScanAdapter(const std::shared_ptr<asiodnp3::IMasterScan>& scan) : 
 						scan(new std::shared_ptr <asiodnp3::IMasterScan>(scan))
@@ -38,7 +40,7 @@ namespace Automatak
 					(*this->scan)->Demand();
 				}
 
-				private:
+			private:
 
 				std::shared_ptr <asiodnp3::IMasterScan>* scan;
 			};

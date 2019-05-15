@@ -1,15 +1,15 @@
-#ifndef DNP3CLR_LOG_ADAPTER_H
-#define DNP3CLR_LOG_ADAPTER_H
-
-using namespace System::Collections::ObjectModel;
+#ifndef OPENDNP3CLR_LOG_ADAPTER_H
+#define OPENDNP3CLR_LOG_ADAPTER_H
 
 #include <openpal/logging/ILogHandler.h>
+
 #include <memory>
 
 #include <vcclr.h>
-#include <memory>
 
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {

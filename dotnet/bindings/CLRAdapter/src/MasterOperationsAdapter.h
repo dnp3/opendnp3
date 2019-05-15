@@ -1,30 +1,31 @@
 #ifndef OPENDNP3CLR_MASTER_OPERATIONS_ADAPTER_H
 #define OPENDNP3CLR_MASTER_OPERATIONS_ADAPTER_H
 
-using namespace System::Collections::ObjectModel;
-using namespace System::Collections::Generic;
-
-#include <asiodnp3/IMasterOperations.h>
-
 #include "CallbackAdapters.h"
 #include "MasterConversions.h"
 #include "MasterScanAdapter.h"
 
+#include <asiodnp3/IMasterOperations.h>
+
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::ObjectModel;
+using namespace System::Collections::Generic;
 
 namespace Automatak
 {
 	namespace DNP3
 	{
 		namespace Adapter
-		{			
+		{
+
 			private ref class MasterOperationsAdapter abstract
 			{
 			public:
 
-				MasterOperationsAdapter(asiodnp3::IMasterOperations* operations);						
+				MasterOperationsAdapter(asiodnp3::IMasterOperations* operations);
 
-				virtual void SetLogFilters(LogFilter flags);				
+				virtual void SetLogFilters(LogFilter flags);
 			
 				virtual Task<TaskCompletion>^ Scan(IEnumerable<Header^>^ headers, TaskConfig^ config);
 
@@ -66,7 +67,7 @@ namespace Automatak
 				virtual Task<CommandTaskResult^>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt16 index, TaskConfig^ config);
 				
 
-			private:				
+			private:
 				
 				asiodnp3::IMasterOperations* operations;
 			};
@@ -74,4 +75,5 @@ namespace Automatak
 		}
 	}
 }
+
 #endif

@@ -1,13 +1,14 @@
-#ifndef __CHANNEL_ADAPTER_H_
-#define __CHANNEL_ADAPTER_H_
-
-using namespace System::Collections::Generic;
-using namespace System::Collections::ObjectModel;
+#ifndef OPENDNP3CLR_CHANNEL_ADAPTER_H
+#define OPENDNP3CLR_CHANNEL_ADAPTER_H
 
 #include <asiodnp3/IChannel.h>
+
 #include <vcclr.h>
 
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::Generic;
+using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {
@@ -20,15 +21,10 @@ namespace Automatak
 			{
 			public:
 
-				ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel) : channel(new std::shared_ptr<asiodnp3::IChannel>(channel))
-				{}			
+				ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel);
 
-				~ChannelAdapter() { this ->!ChannelAdapter(); }
-
-				!ChannelAdapter()
-				{
-					delete channel;
-				}
+				~ChannelAdapter();
+				!ChannelAdapter();
 
 				virtual LogFilter GetLogFilters() sealed;
 
@@ -45,9 +41,6 @@ namespace Automatak
 			private:
 
 				std::shared_ptr<asiodnp3::IChannel>* channel;
-
-				
-				
 			};
 
 		}

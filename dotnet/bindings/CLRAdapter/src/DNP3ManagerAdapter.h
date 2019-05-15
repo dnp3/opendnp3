@@ -1,11 +1,12 @@
-#ifndef __CLR_DNP3_MANAGER_ADAPTER_H_
-#define __CLR_DNP3_MANAGER_ADAPTER_H_
-
-using namespace System;
-using namespace Automatak::DNP3::Interface;
+#ifndef OPENDNP3CLR_DNP3_MANAGER_ADAPTER_H
+#define OPENDNP3CLR_DNP3_MANAGER_ADAPTER_H
 
 #include <asiopal/ChannelRetry.h>
 #include <asiopal/TLSConfig.h>
+
+using namespace Automatak::DNP3::Interface;
+
+using namespace System;
 
 namespace asiodnp3
 {
@@ -18,6 +19,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			/// <summary>
 			/// Factory class used to get the root DNP3 object
 			/// </summary>
@@ -43,7 +45,6 @@ namespace Automatak
 				DNP3ManagerFactory() {}
 			};
 
-
 			ref class DNP3ManagerAdapter : public Automatak::DNP3::Interface::IDNP3Manager
 			{
 			public:
@@ -52,7 +53,7 @@ namespace Automatak
 				!DNP3ManagerAdapter();
 				~DNP3ManagerAdapter();
 
-				virtual void Shutdown() sealed;				
+				virtual void Shutdown() sealed;
 
 				virtual IChannel^ AddTCPClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ address, System::UInt16 port, Interface::IChannelListener^ listener)  sealed;
 				virtual IChannel^ AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, System::String^ endpoint, System::UInt16 port, Interface::IChannelListener^ listener) sealed;
@@ -66,11 +67,11 @@ namespace Automatak
 
 				virtual Interface::IListener^ CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, IListenCallbacks^ callbacks) sealed;
 
-			private:			
+			private:
 
-				asiodnp3::DNP3Manager* manager;								
+				asiodnp3::DNP3Manager* manager;
 
-				static asiopal::ChannelRetry Convert(Interface::ChannelRetry^ retry);				
+				static asiopal::ChannelRetry Convert(Interface::ChannelRetry^ retry);
 			};
 
 		}
