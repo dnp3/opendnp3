@@ -42,7 +42,7 @@ namespace opendnp3
 /**
 The database coordinates all updates of measurement data
 */
-class DatabaseBuffers : public IStaticSelector, public IResponseLoader, public IClassAssigner, private openpal::Uncopyable
+class DatabaseBuffers final : public IStaticSelector, public IResponseLoader, public IClassAssigner, private openpal::Uncopyable
 {
 public:
 
@@ -50,24 +50,24 @@ public:
 
 	// ------- IStaticSelector -------------
 
-	virtual IINField SelectAll(GroupVariation gv) override final;
-	virtual IINField SelectRange(GroupVariation gv, const Range& range) override final;
+	IINField SelectAll(GroupVariation gv) override;
+	IINField SelectRange(GroupVariation gv, const Range& range) override;
 
 	// ------- IResponseLoader -------------
 
-	virtual bool Load(HeaderWriter& writer) override final;
-	virtual bool HasAnySelection() const override final
+	bool Load(HeaderWriter& writer) override;
+	bool HasAnySelection() const override
 	{
 		return ranges.HasAnySelection();
 	}
 
 	// ------- IClassAssigner -------------
 
-	virtual Range AssignClassToAll(AssignClassType type, PointClass clazz) override final;
-	virtual Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override final;
+	Range AssignClassToAll(AssignClassType type, PointClass clazz) override;
+	Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override;
 
 	//used to unselect selected points
-	void Unselect();
+	void Unselect() override;
 
 	// stores the most revent values and event information
 	StaticBuffers buffers;

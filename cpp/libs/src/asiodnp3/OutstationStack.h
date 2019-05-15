@@ -68,37 +68,37 @@ public:
 
 	// --------- Implement IStack ---------
 
-	virtual bool Enable() override;
+	bool Enable() override;
 
-	virtual bool Disable() override;
+	bool Disable() override;
 
-	virtual void Shutdown() override;
+	void Shutdown() override;
 
-	virtual opendnp3::StackStatistics GetStackStatistics() override;
+	opendnp3::StackStatistics GetStackStatistics() override;
 
 	// --------- Implement ILinkSession ---------
 
-	virtual bool OnTxReady() override
+	bool OnTxReady() override
 	{
 		return this->tstack.link->OnTxReady();
 	}
 
-	virtual bool OnLowerLayerUp() override
+	bool OnLowerLayerUp() override
 	{
 		return this->tstack.link->OnLowerLayerUp();
 	}
 
-	virtual bool OnLowerLayerDown() override
+	bool OnLowerLayerDown() override
 	{
 		return this->tstack.link->OnLowerLayerDown();
 	}
 
-	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
+	bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override
 	{
 		return this->tstack.link->OnFrame(header, userdata);
 	}
 
-	virtual void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& context)
+	void BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& context) override
 	{
 		this->iohandler->BeginTransmit(shared_from_this(), buffer);
 	}
@@ -106,11 +106,11 @@ public:
 	// --------- Implement IOutstation ---------
 
 
-	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
+	void SetLogFilters(const openpal::LogFilters& filters) override;
 
-	virtual void SetRestartIIN() override;
+	void SetRestartIIN() override;
 
-	virtual void Apply(const Updates& updates) override;
+	void Apply(const Updates& updates) override;
 
 private:
 

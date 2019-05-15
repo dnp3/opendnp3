@@ -65,22 +65,22 @@ public:
 		return server;
 	}
 
-	virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override
+	bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override
 	{
 		return true;
 	}
 
-	virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx)
+	bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override
 	{
 		return preverified;
 	}
 
-	virtual void AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
+	void AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override
 	{
 		channels.push_back(TLSStreamChannel::Create(executor, stream));
 	}
 
-	virtual void OnShutdown() {}
+	void OnShutdown() override {}
 
 
 	~MockTLSServer()

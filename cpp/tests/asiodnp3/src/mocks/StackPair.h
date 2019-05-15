@@ -40,7 +40,6 @@ namespace asiodnp3
 class StackPair final : openpal::Uncopyable
 {
 	const uint16_t PORT;
-	const uint16_t NUM_POINTS_PER_TYPE;
 	const uint32_t EVENTS_PER_ITERATION;
 	const std::shared_ptr<opendnp3::QueuingSOEHandler> soeHandler;
 
