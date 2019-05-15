@@ -1,9 +1,8 @@
-#include <stdint.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdint>
+#include <cstdlib>
+#include <cstdio>
 
-int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size);
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size);
 
 int main(int argc, char** argv)
 {
