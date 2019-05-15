@@ -73,16 +73,15 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(
     const std::string& id,
 	int32_t levels,
     const ChannelRetry& retry,
-    const std::string& host,
+    std::vector<asiopal::IPEndpoint> hosts,
     const std::string& local,
-    uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
 	auto create = [&]() -> std::shared_ptr<IChannel>
 	{
 		auto clogger = this->logger.Detach(id, levels);
 		auto executor = Executor::Create(this->io);
-		auto iohandler = TCPClientIOHandler::Create(clogger, listener, executor, retry, IPEndpoint(host, port), local);
+		auto iohandler = TCPClientIOHandler::Create(clogger, listener, executor, retry, IPEndpointsList(hosts), local);
 		return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
 	};
 

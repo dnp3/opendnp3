@@ -21,16 +21,16 @@
 #ifndef ASIOPAL_IPENDPOINT_H
 #define ASIOPAL_IPENDPOINT_H
 
+#include <openpal/util/Uncopyable.h>
+
 #include <string>
 #include <cstdint>
 
 namespace asiopal
 {
-class IPEndpoint
+
+struct IPEndpoint
 {
-
-public:
-
 	IPEndpoint(const std::string& address, uint16_t port) :
 		address(address),
 		port(port)

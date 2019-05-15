@@ -29,15 +29,12 @@ namespace asiopal
 TCPClient::TCPClient(
     const openpal::Logger& logger,
     const std::shared_ptr<Executor>& executor,
-    const IPEndpoint& remote,
     const std::string& adapter
 ) :
 	condition(logger),
 	executor(executor),
-	host(remote.address),
 	adapter(adapter),
 	socket(executor->strand.get_io_service()),
-	remoteEndpoint(asio::ip::tcp::v4(), remote.port),
 	localEndpoint(),
 	resolver(executor->strand.get_io_service())
 {}
@@ -57,7 +54,7 @@ bool TCPClient::Cancel()
 	return true;
 }
 
-bool TCPClient::BeginConnect(const connect_callback_t& callback)
+bool TCPClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t& callback)
 {
 	if (connecting || canceled) return false;
 
@@ -71,7 +68,7 @@ bool TCPClient::BeginConnect(const connect_callback_t& callback)
 		return this->PostConnectError(callback, ec);
 	}
 
-	const auto address = asio::ip::address::from_string(this->host, ec);
+	const auto address = asio::ip::address::from_string(remote.address, ec);
 	auto self = this->shared_from_this();
 	if (ec)
 	{
@@ -82,10 +79,10 @@ bool TCPClient::BeginConnect(const connect_callback_t& callback)
 		};
 
 		std::stringstream portstr;
-		portstr << remoteEndpoint.port();
+		portstr << remote.port;
 
 		resolver.async_resolve(
-		    asio::ip::tcp::resolver::query(host, portstr.str()),
+		    asio::ip::tcp::resolver::query(remote.address, portstr.str()),
 		    executor->strand.wrap(cb)
 		);
 
@@ -93,7 +90,7 @@ bool TCPClient::BeginConnect(const connect_callback_t& callback)
 	}
 	else
 	{
-		remoteEndpoint.address(address);
+		asio::ip::tcp::endpoint remoteEndpoint(address, remote.port);
 		auto cb = [self, callback](const std::error_code & ec)
 		{
 			self->connecting = false;

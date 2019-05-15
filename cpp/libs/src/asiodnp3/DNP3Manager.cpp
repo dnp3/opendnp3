@@ -52,7 +52,18 @@ std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(
     uint16_t port,
     std::shared_ptr<IChannelListener> listener)
 {
-	return this->impl->AddTCPClient(id, levels, retry, host, local, port, listener);
+	return this->impl->AddTCPClient(id, levels, retry, { asiopal::IPEndpoint(host, port) }, local, listener);
+}
+
+std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(
+    const std::string& id,
+    int32_t levels,
+    const asiopal::ChannelRetry& retry,
+    std::vector<asiopal::IPEndpoint> hosts,
+    const std::string& local,
+    std::shared_ptr<IChannelListener> listener)
+{
+	return this->impl->AddTCPClient(id, levels, retry, hosts, local, listener);
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTCPServer(
