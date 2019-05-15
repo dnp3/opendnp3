@@ -8,7 +8,7 @@ if (UNIX)
 	endif()
 	
         # retrieve any additional flags from an environment variable of the same name
-	set(CMAKE_CXX_FLAGS "$ENV{CMAKE_CXX_FLAGS} -Wall -Wno-multichar -Wunused-variable -Wno-unused-parameter -Wunused-function -Wunused -Wno-system-headers -Wwrite-strings -save-temps")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-multichar -Wunused-variable -Wno-unused-parameter -Wunused-function -Wunused -Wno-system-headers -Wwrite-strings -save-temps")
 
 	if (${CYGWIN})
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
