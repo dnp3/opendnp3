@@ -1,13 +1,13 @@
-#ifndef CLR_DNP3_LISTENER_ADAPTER_H
-#define	CLR_DNP3_LISTENER_ADAPTER_H
+#ifndef OPENDNP3CLR_LISTENER_ADAPTER_H
+#define	OPENDNP3CLR_LISTENER_ADAPTER_H
+
+#include <asiopal/IListener.h>
+
+using namespace Automatak::DNP3::Interface;
 
 using namespace System;
 using namespace System::Collections::Generic;
 using namespace System::Threading::Tasks;
-
-using namespace Automatak::DNP3::Interface;
-
-#include <asiopal/IListener.h>
 
 namespace Automatak
 {
@@ -15,6 +15,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			private ref class ListenerAdapter sealed : Interface::IListener
 			{
 			public:

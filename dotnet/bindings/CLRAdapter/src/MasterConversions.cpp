@@ -1,9 +1,7 @@
-
 #include "MasterConversions.h"
 
-#include "TaskCallbackAdapter.h"
-
 #include "CommandSetBuilder.h"
+#include "TaskCallbackAdapter.h"
 
 namespace Automatak
 {
@@ -11,6 +9,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			std::vector<opendnp3::Header> MasterConversions::ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers)
 			{
 				std::vector<opendnp3::Header> ret;
@@ -156,6 +155,7 @@ namespace Automatak
 			{
 				return (callback == nullptr) ? nullptr : TaskCallbackAdapter::Create(callback);
 			}
+
 		}
 	}
 }

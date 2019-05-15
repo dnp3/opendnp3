@@ -8,8 +8,7 @@ set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPEND
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING
-      "Choose the type of build, options are: Debug Release
-RelWithDebInfo MinSizeRel."
+      "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
 endif()
 
@@ -26,6 +25,7 @@ option(DNP3_DEMO "Build demo applications" OFF)
 option(DNP3_DECODER "Build the decoder library" OFF)
 option(DNP3_TLS "Build TLS client/server support" OFF)
 option(DNP3_JAVA "Build the Java bindings" OFF)
+option(DNP3_FUZZING "Build the OSSFuzz integration" OFF)
 
 # other options off-by-default that you can enable
 option(WERROR "Set all warnings to errors" OFF)
@@ -35,18 +35,25 @@ option(PROFILE "Builds the libraries with profiling support (gcc only)" OFF)
 option(FLOCK "Builds the libraries with lock serial port (flock, Linux and BSD)" OFF)
 
 if(DNP3_ALL)
-	message("enabling all optional components")
-	set(DNP3_DEMO ON)
-	set(DNP3_TEST ON)
-	set(DNP3_TLS ON)
-	set(DNP3_DECODER ON)
-	set(DNP3_JAVA ON)
+  message("enabling all optional components")
+  set(DNP3_DEMO ON)
+  set(DNP3_TEST ON)
+  set(DNP3_TLS ON)
+  set(DNP3_DECODER ON)
+  set(DNP3_JAVA ON)
+  set(DNP3_FUZZING ON)
+endif()
+
+if(DNP3_FUZZING)
+  # Fuzzing depends on test lib and the decoder library
+  set(DNP3_TEST ON)
+  set(DNP3_DECODER ON)
 endif()
 
 if(DNP3_JAVA)
-	find_package(Java COMPONENTS Development)
-	find_package(JNI REQUIRED)
-	include_directories(${JNI_INCLUDE_DIRS})
+  find_package(Java COMPONENTS Development)
+  find_package(JNI REQUIRED)
+  include_directories(${JNI_INCLUDE_DIRS})
 endif()
 
 SET(ASIO_SUBMODULE_DIR "${PROJECT_SOURCE_DIR}/deps/asio/asio/include")
@@ -54,31 +61,31 @@ SET(ASIO_SUBMODULE_DIR "${PROJECT_SOURCE_DIR}/deps/asio/asio/include")
 # detection stuff for ASIO
 if (EXISTS "${ASIO_SUBMODULE_DIR}/asio.hpp")
     message("ASIO has been checked out as a git submodule: ${ASIO_SUBMODULE_DIR}")
-	include_directories(${ASIO_SUBMODULE_DIR})
+  include_directories(${ASIO_SUBMODULE_DIR})
 else()
-	message("ASIO has NOT been checked out as a git submodule...")
-	if (ASIO_HOME)
-		message("ASIO_HOME defined in cache: ${ASIO_HOME}")
-		include_directories(${ASIO_HOME})  
-	else()
-		if(DEFINED ENV{ASIO_HOME})
-			message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")  
-			include_directories($ENV{ASIO_HOME})    
-		else()
-			message("ASIO_HOME was not defined. ASIO expected to be on include path")  
-		endif()
-	endif()
+  message("ASIO has NOT been checked out as a git submodule...")
+  if (ASIO_HOME)
+    message("ASIO_HOME defined in cache: ${ASIO_HOME}")
+    include_directories(${ASIO_HOME})  
+  else()
+    if(DEFINED ENV{ASIO_HOME})
+      message("ASIO_HOME defined in environment: $ENV{ASIO_HOME}")  
+      include_directories($ENV{ASIO_HOME})    
+    else()
+      message("ASIO_HOME was not defined. ASIO expected to be on include path")  
+    endif()
+  endif()
 endif()
 
 # required for ASIO in C++11 only mode
 add_definitions(-DASIO_STANDALONE)
 
 if(DNP3_TLS)
-	add_definitions(-DOPENDNP3_USE_TLS)
+  add_definitions(-DOPENDNP3_USE_TLS)
 
-	find_package(OpenSSL REQUIRED)
-	message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
-	include_directories(${OPENSSL_INCLUDE_DIR})
+  find_package(OpenSSL REQUIRED)
+  message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+  include_directories(${OPENSSL_INCLUDE_DIR})
 endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
@@ -218,8 +225,6 @@ if(DNP3_DECODER)
 
 endif()
 
-  
-
 if(DNP3_TEST)
 
   enable_testing()
@@ -274,14 +279,24 @@ if(DNP3_TEST)
   clang_format(testasiodnp3)
   add_test(testasiodnp3 testasiodnp3)
 
-  # ----- fuzz tests -----
-  if(DNP3_DECODER)
-    add_executable (fuzzdnp3 ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzdnp3.cpp)
-    target_link_libraries (fuzzdnp3 asiodnp3 dnp3decode ${PTHREAD})
-    set_target_properties(fuzzdnp3 PROPERTIES FOLDER tests)
-    clang_format(fuzzdnp3)
-  endif()
+endif()
 
+# ----- fuzz tests -----
+if(DNP3_FUZZING)
+  add_executable (fuzzdecoder ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzdecoder.cpp)
+  target_link_libraries (fuzzdecoder asiodnp3 dnp3decode ${PTHREAD})
+  set_target_properties(fuzzdecoder PROPERTIES FOLDER tests)
+  clang_format(fuzzdecoder)
+
+  add_executable (fuzzoutstation ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzoutstation.cpp)
+  target_link_libraries (fuzzoutstation dnp3mocks ${PTHREAD})
+  set_target_properties(fuzzoutstation PROPERTIES FOLDER tests)
+  clang_format(fuzzoutstation)
+
+  add_executable (fuzzmaster ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzmaster.cpp)
+  target_link_libraries (fuzzmaster dnp3mocks ${PTHREAD})
+  set_target_properties(fuzzmaster PROPERTIES FOLDER tests)
+  clang_format(fuzzmaster)
 endif()
 
 #add_custom_target(

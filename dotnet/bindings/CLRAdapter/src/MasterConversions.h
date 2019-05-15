@@ -1,20 +1,20 @@
-#ifndef __MASTER_CONVERSIONS_H_
-#define __MASTER_CONVERSIONS_H_
+#ifndef OPENDNP3CLR_MASTER_CONVERSIONS_H
+#define OPENDNP3CLR_MASTER_CONVERSIONS_H
 
-using namespace System::Collections::ObjectModel;
-using namespace System::Collections::Generic;
-
-#include "TaskCallbackAdapter.h"
 #include "ICommandHeaderWorkAround.h"
-
-#include <vector>
+#include "TaskCallbackAdapter.h"
 
 #include <opendnp3/master/HeaderTypes.h>
 #include <opendnp3/master/TaskConfig.h>
 #include <opendnp3/master/TaskInfo.h>
 #include <opendnp3/master/CommandSet.h>
 
+#include <vector>
+
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::ObjectModel;
+using namespace System::Collections::Generic;
 
 namespace Automatak
 {
@@ -25,7 +25,7 @@ namespace Automatak
 
 			private class MasterConversions
 			{
-			public:				
+			public:
 
 				static std::vector<opendnp3::Header> ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers);
 
@@ -38,7 +38,7 @@ namespace Automatak
 				static opendnp3::Header ConvertRange16(RangeHeader^ header);
 
 				static opendnp3::TaskConfig Convert(TaskConfig^ config, ITaskCallback^ wrapper);
-				static opendnp3::TaskConfig Convert(TaskConfig^ config);				
+				static opendnp3::TaskConfig Convert(TaskConfig^ config);
 
 				static opendnp3::CommandSet Convert(ICommandHeaders^ headers);
 								
@@ -54,4 +54,5 @@ namespace Automatak
 		}
 	}
 }
+
 #endif

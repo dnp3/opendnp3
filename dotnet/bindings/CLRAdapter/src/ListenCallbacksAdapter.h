@@ -1,12 +1,13 @@
-
-#ifndef CLR_DNP3_LISTEN_CALLBACKS_ADAPTER_H
-#define	CLR_DNP3_LISTEN_CALLBACKS_ADAPTER_H
-
-using namespace System;
-using namespace Automatak::DNP3::Interface;
+#ifndef OPENDNP3CLR_LISTEN_CALLBACKS_ADAPTER_H
+#define	OPENDNP3CLR_LISTEN_CALLBACKS_ADAPTER_H
 
 #include <asiodnp3/IListenCallbacks.h>
+
 #include <vcclr.h>
+
+using namespace Automatak::DNP3::Interface;
+
+using namespace System;
 
 namespace Automatak
 {
@@ -14,6 +15,7 @@ namespace Automatak
 	{
 		namespace Adapter
 		{
+
 			private class ListenCallbacksAdapter final : public asiodnp3::IListenCallbacks
 			{
 			public:
@@ -28,8 +30,8 @@ namespace Automatak
 				virtual void OnCertificateError(uint64_t sessionid, const asiodnp3::X509Info& info, int err) override;
 
 			private:
-				
-				gcroot < Interface::IListenCallbacks^ > m_proxy;				
+
+				gcroot < Interface::IListenCallbacks^ > m_proxy;
 			};
 
 		}

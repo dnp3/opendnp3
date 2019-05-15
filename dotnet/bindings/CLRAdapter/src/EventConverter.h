@@ -1,11 +1,12 @@
-#ifndef __EVENT_CONVERTER_H_
-#define __EVENT_CONVERTER_H_
+#ifndef OPENDNP3CLR_EVENT_CONVERTER_H
+#define OPENDNP3CLR_EVENT_CONVERTER_H
+
+#include <functional>
+#include <vector>
+
+#include <vcclr.h>
 
 using namespace System::Collections::ObjectModel;
-
-#include <vector>
-#include <functional>
-#include <vcclr.h>
 
 namespace Automatak
 {
@@ -17,9 +18,7 @@ namespace Automatak
 			template <class T, class U>
 			private class EventConverter
 			{
-
 			public:
-
 
 				EventConverter(const std::function<U(T)>& convert_, System::Action<U>^ listener) :
 					convert(convert_),

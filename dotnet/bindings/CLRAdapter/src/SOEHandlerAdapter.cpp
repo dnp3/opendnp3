@@ -1,5 +1,5 @@
-
 #include "SOEHandlerAdapter.h"
+
 #include "Conversions.h"
 
 namespace Automatak
@@ -23,7 +23,7 @@ namespace Automatak
 			}
 
 			HeaderInfo^ SOEHandlerAdapter::GetInfo(const opendnp3::HeaderInfo& info)
-			{				
+			{
 				return gcnew HeaderInfo(
 					(GroupVariation)info.gv, 
 					(QualifierCode)info.qualifier, 
@@ -50,7 +50,6 @@ namespace Automatak
 			{
 				auto enumerable = Conversions::ToIndexedEnumerable<Analog^>(values);
 				proxy->Process(GetInfo(info), enumerable);
-
 			}
 
 			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values)
@@ -105,7 +104,7 @@ namespace Automatak
 			{
 				auto enumerable = Conversions::ToIndexedEnumerable<SecurityStat^>(values);
 				proxy->Process(GetInfo(info), enumerable);
-			}			
+			}
 
 		}
 	}

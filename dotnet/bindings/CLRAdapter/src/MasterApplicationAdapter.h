@@ -1,25 +1,24 @@
-
-
-#ifndef __MASTER_APPLICATION_ADAPTER_H_
-#define __MASTER_APPLICATION_ADAPTER_H_
-
-using namespace System::Collections::ObjectModel;
-
-#include <vcclr.h>
-
-#include <opendnp3/master/IMasterApplication.h>
+#ifndef OPENDNP3CLR_MASTER_APPLICATION_ADAPTER_H
+#define OPENDNP3CLR_MASTER_APPLICATION_ADAPTER_H
 
 #include "Conversions.h"
 #include "MasterConversions.h"
 
+#include <opendnp3/master/IMasterApplication.h>
+
+#include <vcclr.h>
+
 using namespace Automatak::DNP3::Interface;
+
+using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {
 	namespace DNP3
 	{
 		namespace Adapter
-		{					
+		{
+
 			private class MasterApplicationAdapter final : public opendnp3::IMasterApplication
 			{
 			public:
@@ -98,23 +97,22 @@ namespace Automatak
 				{
 					auto assignments = proxy->GetClassAssignments();
 					for each(auto a in assignments)
-					{												
+					{
 						if (a.range.IsAllObjects())
-						{							
+						{
 							writer(opendnp3::Header::AllObjects(a.group, a.variation));
 						}
 						else
 						{
-							writer(opendnp3::Header::Range16(a.group, a.variation, a.range.start, a.range.stop));							
+							writer(opendnp3::Header::Range16(a.group, a.variation, a.range.start, a.range.stop));
 						}
 					}
 				}
 
-			private:				
+			private:
 
 				gcroot < Automatak::DNP3::Interface::IMasterApplication^ > proxy;
 			};
-
 
 		}
 	}
