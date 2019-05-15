@@ -267,13 +267,17 @@ endif()
 
 # ----- fuzz tests -----
 if(DNP3_FUZZING)
-  add_executable (fuzzdnp3 ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzdnp3.cpp)
-  target_link_libraries (fuzzdnp3 asiodnp3 dnp3decode ${PTHREAD})
-  set_target_properties(fuzzdnp3 PROPERTIES FOLDER tests)
+  add_executable (fuzzdecoder ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzdecoder.cpp)
+  target_link_libraries (fuzzdecoder asiodnp3 dnp3decode ${PTHREAD})
+  set_target_properties(fuzzdecoder PROPERTIES FOLDER tests)
 
   add_executable (fuzzoutstation ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzoutstation.cpp)
   target_link_libraries (fuzzoutstation dnp3mocks ${PTHREAD})
   set_target_properties(fuzzoutstation PROPERTIES FOLDER tests)
+
+  add_executable (fuzzmaster ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzmaster.cpp)
+  target_link_libraries (fuzzmaster dnp3mocks ${PTHREAD})
+  set_target_properties(fuzzmaster PROPERTIES FOLDER tests)
 endif()
 
 add_custom_target(
