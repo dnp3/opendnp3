@@ -221,7 +221,7 @@ if(DNP3_DECODER)
   add_executable(decoder ./cpp/examples/decoder/main.cpp)
   target_link_libraries (decoder asiodnp3 dnp3decode ${PTHREAD})
   set_target_properties(decoder PROPERTIES FOLDER demos)
-  clang_format(outstation-demo)
+  clang_format(decoder)
 
 endif()
 
