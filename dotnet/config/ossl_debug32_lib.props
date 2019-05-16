@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>libeay32MDd.lib;ssleay32MDd.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcrypto32MDd.lib;libssl32MDd.lib%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

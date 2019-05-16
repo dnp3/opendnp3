@@ -65,9 +65,8 @@ int main(int argc, char* argv[])
 	                   "tls-client",
 	                   FILTERS,
 	                   ChannelRetry::Default(),
-	                   "127.0.0.1",
-	                   "0.0.0.0",
-	                   20001,
+                       { IPEndpoint("127.0.0.1", 20001) },
+                       "0.0.0.0",
 	                   TLSConfig(peerCertificate, privateKey, privateKey),
 	                   PrintingChannelListener::Create(),
 	                   ec
