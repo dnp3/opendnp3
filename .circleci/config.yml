@@ -1,33 +1,54 @@
 version: 2
+aliases:
+  - run: &install_deps
+      name: Install dependencies
+      command: apt-get update && apt-get install -y git cmake g++ default-jdk libssl-dev
+  - run: &print_versions
+      name: Print versions
+      command: g++ -v && cmake -version && openssl version && java --version
+  - run: &init_submodules
+      name: Initialize submodules
+      command: git submodule update --init
+  - run: &build
+      name: Build
+      command: cmake --build .
+      working_directory: build
+  - run: &test
+      name: Test
+      command: ctest -VV .
+      working_directory: build
 jobs:
   build-gcc-debug:
     docker:
       - image: ubuntu:latest
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: apt-get update && apt-get install -yq git cmake g++ default-jdk libssl-dev
-      - run:
-          name: Print versions
-          command: g++ -v && cmake -version && openssl version && java --version
-      - run:
-          name: Initialize submodules
-          command: git submodule update --init
+      - run: *install_deps
+      - run: *print_versions
+      - run: *init_submodules
       - run:
           name: Configure
           command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall" -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
+      - run: *build
+      - run: *test
+  build-gcc-release:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - checkout
+      - run: *install_deps
+      - run: *print_versions
+      - run: *init_submodules
       - run:
-          name: Build
-          command: cmake --build .
+          name: Configure
+          command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall" -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
-      - run:
-          name: Test
-          command: ctest -VV .
-          working_directory: build
+      - run: *build
+      - run: *test
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build-gcc-debug
+      - build-gcc-release
