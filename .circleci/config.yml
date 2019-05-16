@@ -1,11 +1,17 @@
 version: 2
 aliases:
-  - run: &install_deps
+  - run: &install_deps_gcc
       name: Install dependencies
       command: apt-get update && apt-get install -y git cmake g++ default-jdk libssl-dev
-  - run: &print_versions
+  - run: &install_deps_clang
+      name: Install dependencies
+      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev default-jdk libssl-dev
+  - run: &print_versions_gcc
       name: Print versions
       command: g++ -v && cmake -version && openssl version && java --version
+  - run: &print_versions_clang
+      name: Print versions
+      command: clang --version && cmake -version && openssl version && java --version
   - run: &init_submodules
       name: Initialize submodules
       command: git submodule update --init
@@ -23,8 +29,8 @@ jobs:
       - image: ubuntu:latest
     steps:
       - checkout
-      - run: *install_deps
-      - run: *print_versions
+      - run: *install_deps_gcc
+      - run: *print_versions_gcc
       - run: *init_submodules
       - run:
           name: Configure
@@ -37,8 +43,36 @@ jobs:
       - image: ubuntu:latest
     steps:
       - checkout
-      - run: *install_deps
-      - run: *print_versions
+      - run: *install_deps_gcc
+      - run: *print_versions_gcc
+      - run: *init_submodules
+      - run:
+          name: Configure
+          command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall" -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          working_directory: build
+      - run: *build
+      - run: *test
+  build-clang-debug:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - checkout
+      - run: *install_deps_clang
+      - run: *print_versions_clang
+      - run: *init_submodules
+      - run:
+          name: Configure
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall" -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          working_directory: build
+      - run: *build
+      - run: *test
+  build-clang-release:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - checkout
+      - run: *install_deps_clang
+      - run: *print_versions_clang
       - run: *init_submodules
       - run:
           name: Configure
@@ -52,3 +86,5 @@ workflows:
     jobs:
       - build-gcc-debug
       - build-gcc-release
+      - build-clang-debug
+      - build-clang-release
