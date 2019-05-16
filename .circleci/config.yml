@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  build-gcc-debug:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: apt-get update && apt-get install -yq git cmake g++ default-jdk libssl-dev
+      - run:
+          name: Print versions
+          command: g++ -v && cmake -version && openssl version && java --version
+      - run:
+          name: Initialize submodules
+          command: git submodule update --init
+      - run:
+          name: Configure
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall" -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          working_directory: build
+      - run:
+          name: Build
+          command: cmake --build .
+          working_directory: build
+      - run:
+          name: Test
+          command: ctest -VV .
+          working_directory: build
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build-gcc-debug
