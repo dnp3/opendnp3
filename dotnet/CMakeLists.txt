@@ -2,6 +2,9 @@ cmake_minimum_required (VERSION 3.8.2)
 
 enable_language(CSharp)
 
+#set(DOTNET_TARGET_FRAMEWORK_VERSION "v4.5.2")
+#message("default version: ${DOTNET_TARGET_FRAMEWORK_VERSION}")
+
 add_library(DNP3CLRInterface SHARED
 bindings/CLRInterface/ApplicationIIN.cs
 bindings/CLRInterface/BaseMeasurementTypes.cs
@@ -132,5 +135,5 @@ bindings/CLRInterface/gen/UserRole.cs
 
 set_target_properties(DNP3CLRInterface PROPERTIES FOLDER dotnet)
 set_property(TARGET DNP3CLRInterface PROPERTY VS_DOTNET_REFERENCES "System.Xml")
-set_property(TARGET DNP3CLRInterface PROPERTY VS_GLOBAL_TargetFramework "netstandard1.4")
-set_property(TARGET DNP3CLRInterface PROPERTY VS_GLOBAL_LangVersion "6")
+set_property(TARGET DNP3CLRInterface PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION "v4.5.2")
+target_compile_options(DNP3CLRInterface PRIVATE "/langversion:6")
