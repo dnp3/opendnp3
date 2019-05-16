@@ -63,31 +63,13 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_
 	return (jlong) new DNP3Manager(concurreny, adapter, attach, detach);	
 }
 
-
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_shutdown_1native_1manager
 (JNIEnv*, jobject, jlong pointer)
 {
 	delete (DNP3Manager*) pointer;
 }
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client__JLjava_lang_String_2IJJLjava_lang_String_2Ljava_lang_String_2ILcom_automatak_dnp3_ChannelListener_2
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jhost, jstring jadapter, jint jport, jobject jlistener)
-{
-	const auto manager = (DNP3Manager*) native;
-
-	CString id(env, jid);
-	CString host(env, jhost);
-	CString adapter(env, jadapter);
-	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
-
-	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
-
-	auto channel = manager->AddTCPClient(id.str(), jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), listener);
-
-	return (jlong) new std::shared_ptr<IChannel>(channel);
-}
-
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client__JLjava_lang_String_2IJJLjava_util_List_2Ljava_lang_String_2Lcom_automatak_dnp3_ChannelListener_2
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
 (JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jobject jremotes, jstring jadapter, jobject jlistener)
 {
 	const auto manager = (DNP3Manager*) native;
@@ -128,28 +110,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	return (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client__JLjava_lang_String_2IJJLjava_lang_String_2Ljava_lang_String_2ILcom_automatak_dnp3_TLSConfig_2Lcom_automatak_dnp3_ChannelListener_2
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jhost, jstring jadapter, jint jport, jobject jtlsconfig, jobject jlistener)
-{
-	const auto manager = (DNP3Manager*)native;
-
-	CString id(env, jid);
-	CString host(env, jhost);
-	CString adapter(env, jadapter);
-	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
-
-	auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
-
-	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
-
-	std::error_code ec;
-
-	auto channel = manager->AddTLSClient(id.str(), jlevels, retry, host.str(), adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
-
-	return (jlong) new std::shared_ptr<IChannel>(channel);
-}
-
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client__JLjava_lang_String_2IJJLjava_util_List_2Ljava_lang_String_2Lcom_automatak_dnp3_TLSConfig_2Lcom_automatak_dnp3_ChannelListener_2
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client
 (JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jobject jremotes, jstring jadapter, jobject jtlsconfig, jobject jlistener)
 {
 	const auto manager = (DNP3Manager*)native;
@@ -221,7 +182,3 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 	return (jlong) new std::shared_ptr<IChannel>(channel);
 }
-
-
-
-

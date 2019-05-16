@@ -26,17 +26,9 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_shutdown_1native
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    get_native_channel_tcp_client
- * Signature: (JLjava/lang/String;IJJLjava/lang/String;Ljava/lang/String;ILcom/automatak/dnp3/ChannelListener;)J
- */
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client__JLjava_lang_String_2IJJLjava_lang_String_2Ljava_lang_String_2ILcom_automatak_dnp3_ChannelListener_2
-  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jstring, jint, jobject);
-
-/*
- * Class:     com_automatak_dnp3_impl_ManagerImpl
- * Method:    get_native_channel_tcp_client
  * Signature: (JLjava/lang/String;IJJLjava/util/List;Ljava/lang/String;Lcom/automatak/dnp3/ChannelListener;)J
  */
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client__JLjava_lang_String_2IJJLjava_util_List_2Ljava_lang_String_2Lcom_automatak_dnp3_ChannelListener_2
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
   (JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jobject, jstring, jobject);
 
 /*
@@ -50,17 +42,9 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    get_native_channel_tls_client
- * Signature: (JLjava/lang/String;IJJLjava/lang/String;Ljava/lang/String;ILcom/automatak/dnp3/TLSConfig;Lcom/automatak/dnp3/ChannelListener;)J
- */
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client__JLjava_lang_String_2IJJLjava_lang_String_2Ljava_lang_String_2ILcom_automatak_dnp3_TLSConfig_2Lcom_automatak_dnp3_ChannelListener_2
-  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jstring, jstring, jint, jobject, jobject);
-
-/*
- * Class:     com_automatak_dnp3_impl_ManagerImpl
- * Method:    get_native_channel_tls_client
  * Signature: (JLjava/lang/String;IJJLjava/util/List;Ljava/lang/String;Lcom/automatak/dnp3/TLSConfig;Lcom/automatak/dnp3/ChannelListener;)J
  */
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client__JLjava_lang_String_2IJJLjava_util_List_2Ljava_lang_String_2Lcom_automatak_dnp3_TLSConfig_2Lcom_automatak_dnp3_ChannelListener_2
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client
   (JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jobject, jstring, jobject, jobject);
 
 /*
