@@ -277,6 +277,10 @@ if(DNP3_FUZZING)
   set_target_properties(fuzzmaster PROPERTIES FOLDER tests)
 endif()
 
+if(WIN32)
+  add_subdirectory(./dotnet)
+endif()
+
 add_custom_target(
   format
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
