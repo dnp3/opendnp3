@@ -33,13 +33,13 @@ TCPClientIOHandler::TCPClientIOHandler(
     const std::shared_ptr<IChannelListener>& listener,
     const std::shared_ptr<asiopal::Executor>& executor,
     const asiopal::ChannelRetry& retry,
-    const asiopal::IPEndpoint& remote,
+    const asiodnp3::IPEndpointsList& remotes,
     const std::string& adapter
 ) :
 	IOHandler(logger, false, listener),
 	executor(executor),
 	retry(retry),
-	remote(remote),
+	remotes(remotes),
 	adapter(adapter),
 	retrytimer(*executor)
 {}
@@ -51,7 +51,7 @@ void TCPClientIOHandler::ShutdownImpl()
 
 void TCPClientIOHandler::BeginChannelAccept()
 {
-	this->client = TCPClient::Create(logger, executor, remote, adapter);
+	this->client = TCPClient::Create(logger, executor, adapter);
 	this->StartConnect(this->retry.minOpenRetry);
 }
 
@@ -86,6 +86,7 @@ bool TCPClientIOHandler::StartConnect(const openpal::TimeDuration& delay)
 			{
 				auto retry_cb = [self, newDelay, this]()
 				{
+					this->remotes.Next();
 					this->StartConnect(newDelay);
 				};
 
@@ -94,7 +95,9 @@ bool TCPClientIOHandler::StartConnect(const openpal::TimeDuration& delay)
 		}
 		else
 		{
-			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connected to: %s", this->remote.address.c_str());
+			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connected to: %s, port %u",
+				this->remotes.GetCurrentEndpoint().address.c_str(),
+				this->remotes.GetCurrentEndpoint().port);
 
 			if (client)
 			{
@@ -104,9 +107,11 @@ bool TCPClientIOHandler::StartConnect(const openpal::TimeDuration& delay)
 
 	};
 
-	FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connecting to: %s", this->remote.address.c_str());
+	FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connecting to: %s, port %u",
+		this->remotes.GetCurrentEndpoint().address.c_str(),
+		this->remotes.GetCurrentEndpoint().port);
 
-	this->client->BeginConnect(cb);
+	this->client->BeginConnect(this->remotes.GetCurrentEndpoint(), cb);
 
 	return true;
 }
@@ -119,10 +124,9 @@ void TCPClientIOHandler::ResetState()
 		this->client.reset();
 	}
 
+	this->remotes.Reset();
+
 	retrytimer.Cancel();
 }
 
 }
-
-
-

@@ -75,6 +75,7 @@
 #include "JNIHeader.h"
 #include "JNIHeaderInfo.h"
 #include "JNIIINField.h"
+#include "JNIIPEndpoint.h"
 #include "JNIIndexMode.h"
 #include "JNIIndexQualifierMode.h"
 #include "JNIIndexedValue.h"
@@ -176,6 +177,7 @@ namespace jni
         static cache::Header Header;
         static cache::HeaderInfo HeaderInfo;
         static cache::IINField IINField;
+        static cache::IPEndpoint IPEndpoint;
         static cache::IndexMode IndexMode;
         static cache::IndexQualifierMode IndexQualifierMode;
         static cache::IndexedValue IndexedValue;

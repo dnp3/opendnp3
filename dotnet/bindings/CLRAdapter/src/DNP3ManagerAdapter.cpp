@@ -52,15 +52,27 @@ namespace Automatak
 
 			IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ address, System::UInt16 port, Automatak::DNP3::Interface::IChannelListener^ listener)
 			{
-				std::string stdName = Conversions::ConvertString(id);
-				std::string stdAddress = Conversions::ConvertString(address);
-
-				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
-
-				auto channel = this->manager->AddTCPClient(stdName.c_str(), filters, Convert(retry), stdAddress, "", port, listenAdapter);
-
-				return channel ? gcnew ChannelAdapter(channel) : nullptr;
+                auto endpoints = gcnew List<Interface::IPEndpoint^>();
+                endpoints->Add(gcnew Interface::IPEndpoint(address, port));
+                return AddTCPClient(id, filters, retry, endpoints, listener);
 			}
+
+            IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Automatak::DNP3::Interface::IChannelListener^ listener)
+            {
+                std::string stdName = Conversions::ConvertString(id);
+
+                std::vector<asiopal::IPEndpoint> endpoints;
+                for each(auto remote in remotes)
+                {
+                    endpoints.push_back(Conversions::Convert(remote));
+                }
+
+                auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
+
+                auto channel = this->manager->AddTCPClient(stdName.c_str(), filters, Convert(retry), endpoints, "", listenAdapter);
+
+                return channel ? gcnew ChannelAdapter(channel) : nullptr;
+            }
 
 			IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::IChannelListener^ listener)
 			{
@@ -76,22 +88,34 @@ namespace Automatak
 
 			IChannel^ DNP3ManagerAdapter::AddTLSClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::String^ address, System::UInt16 port, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
 			{
-				std::string stdName = Conversions::ConvertString(id);
-				std::string stdAddress = Conversions::ConvertString(address);
-
-				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
-
-				std::error_code ec;
-				auto channel = this->manager->AddTLSClient(stdName.c_str(), filters, Convert(retry), stdAddress, "", port, Conversions::Convert(config), listenAdapter, ec);
-				if (ec)
-				{
-					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
-				}
-				else
-				{
-					return channel ? gcnew ChannelAdapter(channel) : nullptr;
-				}
+                auto endpoints = gcnew List<Interface::IPEndpoint^>();
+                endpoints->Add(gcnew Interface::IPEndpoint(address, port));
+                return AddTLSClient(id, filters, retry, endpoints, config, listener);
 			}
+
+            IChannel^ DNP3ManagerAdapter::AddTLSClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
+            {
+                std::string stdName = Conversions::ConvertString(id);
+
+                std::vector<asiopal::IPEndpoint> endpoints;
+                for each(auto remote in remotes)
+                {
+                    endpoints.push_back(Conversions::Convert(remote));
+                }
+
+                auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
+
+                std::error_code ec;
+                auto channel = this->manager->AddTLSClient(stdName.c_str(), filters, Convert(retry), endpoints, "", Conversions::Convert(config), listenAdapter, ec);
+                if (ec)
+                {
+                    throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
+                }
+                else
+                {
+                    return channel ? gcnew ChannelAdapter(channel) : nullptr;
+                }
+            }
 			
 			IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, System::String^ endpoint, System::UInt16 port, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
 			{

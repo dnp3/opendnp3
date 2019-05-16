@@ -35,14 +35,14 @@ TLSClientIOHandler::TLSClientIOHandler(
     const std::shared_ptr<asiopal::Executor>& executor,
     const asiopal::TLSConfig& config,
     const asiopal::ChannelRetry& retry,
-    const asiopal::IPEndpoint& remote,
+    const asiodnp3::IPEndpointsList& remotes,
     const std::string& adapter
 ) :
 	IOHandler(logger, false, listener),
 	executor(executor),
 	config(config),
 	retry(retry),
-	remote(remote),
+	remotes(remotes),
 	adapter(adapter),
 	retrytimer(*executor)
 {}
@@ -56,7 +56,7 @@ void TLSClientIOHandler::BeginChannelAccept()
 {
 	std::error_code ec;
 
-	this->client = TLSClient::Create(logger, executor, remote, adapter, config, ec);
+	this->client = TLSClient::Create(logger, executor, adapter, config, ec);
 
 	if (ec)
 	{
@@ -92,6 +92,7 @@ void TLSClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TLSClient>&
 
 			auto cb = [self, newDelay, client, this]()
 			{
+				this->remotes.Next();
 				this->StartConnect(client, newDelay);
 			};
 
@@ -99,14 +100,20 @@ void TLSClientIOHandler::StartConnect(const std::shared_ptr<asiopal::TLSClient>&
 		}
 		else
 		{
-			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connected to: %s", this->remote.address.c_str());
+			FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connected to: %s, port %u",
+				this->remotes.GetCurrentEndpoint().address.c_str(),
+				this->remotes.GetCurrentEndpoint().port);
 
 			this->OnNewChannel(TLSStreamChannel::Create(executor, stream));
 		}
 
 	};
 
-	this->client->BeginConnect(cb);
+	FORMAT_LOG_BLOCK(this->logger, openpal::logflags::INFO, "Connecting to: %s, port %u",
+		this->remotes.GetCurrentEndpoint().address.c_str(),
+		this->remotes.GetCurrentEndpoint().port);
+
+	this->client->BeginConnect(this->remotes.GetCurrentEndpoint(), cb);
 }
 
 void TLSClientIOHandler::ResetState()
@@ -116,6 +123,8 @@ void TLSClientIOHandler::ResetState()
 		this->client->Cancel();
 		this->client.reset();
 	}
+
+	this->remotes.Reset();
 
 	retrytimer.Cancel();
 }

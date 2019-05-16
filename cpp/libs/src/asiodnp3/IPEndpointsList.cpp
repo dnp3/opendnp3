@@ -18,51 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include "asiodnp3/IPEndpointsList.h"
 
-#ifndef ASIOPAL_MOCKTCPPAIR_H
-#define ASIOPAL_MOCKTCPPAIR_H
+#include <cassert>
 
-#include "MockIO.h"
-#include "MockTCPClientHandler.h"
-#include "MockTCPServer.h"
-
-#include "asiopal/TCPClient.h"
-
-#include "testlib/MockLogHandler.h"
-
-namespace asiopal
+namespace asiodnp3
 {
 
-class MockTCPPair
+IPEndpointsList::IPEndpointsList(const std::vector<asiopal::IPEndpoint>& endpoints)
+	: endpoints(endpoints),
+	  currentEndpoint(this->endpoints.begin())
 {
+	assert(!endpoints.empty());
+}
 
-public:
-
-	MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec = std::error_code());
-
-	~MockTCPPair();
-
-	void Connect(size_t num = 1);
-
-	bool NumConnectionsEqual(size_t num) const;
-
-private:
-
-	testlib::MockLogHandler log;
-	std::shared_ptr<MockIO> io;
-	uint16_t port;
-	std::shared_ptr<MockTCPClientHandler> chandler;
-	std::shared_ptr<TCPClient> client;
-	std::shared_ptr<MockTCPServer> server;
-};
+IPEndpointsList::IPEndpointsList(const IPEndpointsList& rhs)
+	: endpoints(rhs.endpoints),
+	  currentEndpoint(this->endpoints.begin())
+{
 
 }
 
-#endif
+const asiopal::IPEndpoint& IPEndpointsList::GetCurrentEndpoint()
+{
+	return *this->currentEndpoint;
+}
 
+void IPEndpointsList::Next()
+{
+	++this->currentEndpoint;
+	if (this->currentEndpoint == this->endpoints.end())
+	{
+		Reset();
+	}
+}
 
+void IPEndpointsList::Reset()
+{
+	this->currentEndpoint = this->endpoints.begin();
+}
 
-
-
-
-
+}

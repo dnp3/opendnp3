@@ -51,6 +51,17 @@ namespace Automatak.DNP3.Interface
         IChannel AddTCPClient(String id, UInt32 filters, ChannelRetry retry, String address, UInt16 port, IChannelListener listener);
 
         /// <summary>
+        /// Add a TCP client channel. The channel does not try to connect until you add a stack.
+		/// </summary>
+        /// <param name="id">An id used for logging purposes</param>
+        /// <param name="filters">The starting level for logging output</param>
+        /// <param name="retry">Retry configuration for the channel</param>
+        /// <param name="remotes">The endpoints to try to connect to. The address may be an INET address i.e. "127.0.0.1" or a name "www.google.com"</param>
+        /// <param name="listener">Callback interface for the channel</param>
+        /// <returns>A channel interface</returns>
+        IChannel AddTCPClient(String id, UInt32 filters, ChannelRetry retry, IList<IPEndpoint> remotes, IChannelListener listener);
+
+        /// <summary>
         /// Add a TCP server channel. The channel does not try to listen until you add a stack.
         /// </summary>
         /// <param name="id">An id used for logging purposes</param>
@@ -77,6 +88,21 @@ namespace Automatak.DNP3.Interface
         /// <param name="listener">Callback interface for the channel</param>
         /// <returns>A channel interface</returns>
         IChannel AddTLSClient(String id, UInt32 filters, ChannelRetry retry, String address, UInt16 port, TLSConfig config, IChannelListener listener);
+
+        /// <summary>
+        /// Add a TLS client channel. The channel does not try to connect until you add a stack.
+        /// </summary>
+        /// 
+        /// <exception cref="System.ArgumentException">If the TLS certificate/key information is invalid</exception>
+        /// 
+        /// <param name="id">An id used for logging purposes</param>
+        /// <param name="filters">The starting level for logging output</param>
+        /// <param name="retry">Retry configuration for the channel</param>
+        /// <param name="remotes">The endpoints to try to connect to. The address may be an INET address i.e. "127.0.0.1" or a name "www.google.com"</param>
+        /// <param name="config">TLS configuration information</param>
+        /// <param name="listener">Callback interface for the channel</param>
+        /// <returns>A channel interface</returns>
+        IChannel AddTLSClient(String id, UInt32 filters, ChannelRetry retry, IList<IPEndpoint> remotes, TLSConfig config, IChannelListener listener);
 
         /// <summary>
         /// Add a TLS server channel. The channel does not try to listen until you add a stack.

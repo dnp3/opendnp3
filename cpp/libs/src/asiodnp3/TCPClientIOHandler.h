@@ -21,6 +21,7 @@
 #ifndef ASIOPAL_TCPCLIENTIOHANDLER_H
 #define ASIOPAL_TCPCLIENTIOHANDLER_H
 
+#include "asiodnp3/IPEndpointsList.h"
 #include "asiodnp3/IOHandler.h"
 
 #include "asiopal/ChannelRetry.h"
@@ -42,10 +43,10 @@ public:
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::ChannelRetry& retry,
-	    const asiopal::IPEndpoint& remote,
+	    const asiodnp3::IPEndpointsList& remotes,
 	    const std::string& adapter)
 	{
-		return std::make_shared<TCPClientIOHandler>(logger, listener, executor, retry, remote, adapter);
+		return std::make_shared<TCPClientIOHandler>(logger, listener, executor, retry, remotes, adapter);
 	}
 
 	TCPClientIOHandler(
@@ -53,7 +54,7 @@ public:
 	    const std::shared_ptr<IChannelListener>& listener,
 	    const std::shared_ptr<asiopal::Executor>& executor,
 	    const asiopal::ChannelRetry& retry,
-	    const asiopal::IPEndpoint& remote,
+	    const asiodnp3::IPEndpointsList& remotes,
 	    const std::string& adapter
 	);
 
@@ -72,7 +73,7 @@ private:
 
 	const std::shared_ptr<asiopal::Executor> executor;
 	const asiopal::ChannelRetry retry;
-	const asiopal::IPEndpoint remote;
+	asiodnp3::IPEndpointsList remotes;
 	const std::string adapter;
 
 	// current value of the client

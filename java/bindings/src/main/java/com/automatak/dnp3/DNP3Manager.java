@@ -20,6 +20,8 @@ package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.ServerAcceptMode;
 
+import java.util.List;
+
 /**
  * The main entry point for all dnp3 applications. Use this object to create communication channels to which
  * you can then add masters and outstations.
@@ -47,8 +49,21 @@ public interface DNP3Manager {
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
      * @param id An id used for logging purposes
      * @param levels The starting level for logging output
+     * @param retry Retry configuration for the channel
+     * @param remotes List of IP endpoints to try to connect to. The address can be an IP "127.0.0.1" or name "www.google.com"
+     * @param adapter The local adapter to use. "0.0.0.0* means "any adapter'.
+     * @param listener Optional listener (can be null) for monitoring the state of the channel
+     * @return A channel interface
+     * @throws DNP3Exception if an error occurs creating the channel
+     */
+    Channel addTCPClient(String id, int levels, ChannelRetry retry, List<IPEndpoint> remotes, String adapter, ChannelListener listener) throws DNP3Exception;
+
+    /**
+     * Add a TCP client channel. The channel does not try to connect until you add a stack.
+     * @param id An id used for logging purposes
+     * @param levels The starting level for logging output
      * @param mode Describes which TCP session is closed when an active session already exists
-     * @param endpoint TThe address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
+     * @param endpoint The address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @param listener Optional listener (can be null) for monitoring the state of the channel
      * @return A channel interface
@@ -75,8 +90,22 @@ public interface DNP3Manager {
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
      * @param id An id used for logging purposes
      * @param levels The starting level for logging output
+     * @param retry Retry configuration for the channel
+     * @param remotes List of IP endpoints to try to connect to. The address can be an IP "127.0.0.1" or name "www.google.com"
+     * @param adapter The local adapter to use. "0.0.0.0* means "any adapter'.
+     * @param config TLS configuration
+     * @param listener Optional listener (can be null) for monitoring the state of the channel
+     * @return A channel interface
+     * @throws DNP3Exception if an error occurs creating the channel
+     */
+    Channel addTLSClient(String id, int levels, ChannelRetry retry, List<IPEndpoint> remotes, String adapter, TLSConfig config, ChannelListener listener) throws DNP3Exception;
+
+    /**
+     * Add a TCP client channel. The channel does not try to connect until you add a stack.
+     * @param id An id used for logging purposes
+     * @param levels The starting level for logging output
      * @param mode Describes which TCP session is closed when an active session already exists
-     * @param endpoint TThe address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
+     * @param endpoint The address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
      * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
      * @param config TLS configuration
      * @param listener Optional listener (can be null) for monitoring the state of the channel

@@ -39,6 +39,7 @@
 
 #include <memory>
 #include <system_error>
+#include <vector>
 
 namespace asiodnp3
 {
@@ -63,10 +64,10 @@ public:
 	*	@param onThreadExit Action to run just before a thread pool thread exits
 	*/
 	DNP3Manager(
-	    uint32_t concurrencyHint,
-	    std::shared_ptr<openpal::ILogHandler> handler = std::shared_ptr<openpal::ILogHandler>(),
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
+		uint32_t concurrencyHint,
+		std::shared_ptr<openpal::ILogHandler> handler = std::shared_ptr<openpal::ILogHandler>(),
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
 	);
 
 	~DNP3Manager();
@@ -97,6 +98,25 @@ public:
 	    const std::string& host,
 	    const std::string& local,
 	    uint16_t port,
+	    std::shared_ptr<IChannelListener> listener);
+
+	/**
+	* Add a persistent TCP client channel. Automatically attempts to reconnect.
+	*
+	* @param id Alias that will be used for logging purposes with this channel
+	* @param levels Bitfield that describes the logging level for this channel and associated sessions
+	* @param retry Retry parameters for failed channels
+	* @param hosts List of host addresses to use to connect to the remote outstation (i.e. 127.0.0.1 or www.google.com)
+	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
+	* @param listener optional callback interface (can be nullptr) for info about the running channel
+	* @return shared_ptr to a channel interface
+	*/
+	std::shared_ptr<IChannel> AddTCPClient(
+	    const std::string& id,
+	    int32_t levels,
+	    const asiopal::ChannelRetry& retry,
+	    const std::vector<asiopal::IPEndpoint>& hosts,
+	    const std::string& local,
 	    std::shared_ptr<IChannelListener> listener);
 
 	/**
@@ -144,9 +164,8 @@ public:
 	* @param id Alias that will be used for logging purposes with this channel
 	* @param levels Bitfield that describes the logging level for this channel and associated sessions
 	* @param retry Retry parameters for failed channels
-	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
+	* @param hosts List of host addresses to use to connect to the remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
-	* @param port Port of remote outstation is listening on
 	* @param config TLS configuration information
 	* @param listener optional callback interface (can be nullptr) for info about the running channel
 	* @param ec An error code. If set, a nullptr will be returned
@@ -159,6 +178,32 @@ public:
 	    const std::string& host,
 	    const std::string& local,
 	    uint16_t port,
+	    const asiopal::TLSConfig& config,
+	    std::shared_ptr<IChannelListener> listener,
+	    std::error_code& ec);
+
+	/**
+	* Add a TLS client channel
+	*
+	* @throw std::system_error Throws underlying ASIO exception of TLS configuration is invalid
+	*
+	* @param id Alias that will be used for logging purposes with this channel
+	* @param levels Bitfield that describes the logging level for this channel and associated sessions
+	* @param retry Retry parameters for failed channels
+	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
+	* @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
+	* @param port Port of remote outstation is listening on
+	* @param config TLS configuration information
+	* @param listener optional callback interface (can be nullptr) for info about the running channel
+	* @param ec An error code. If set, a nullptr will be returned
+	* @return shared_ptr to a channel interface
+	*/
+	std::shared_ptr<IChannel> AddTLSClient(
+	    const std::string& id,
+	    int32_t levels,
+	    const asiopal::ChannelRetry& retry,
+	    const std::vector<asiopal::IPEndpoint>& hosts,
+	    const std::string& local,
 	    const asiopal::TLSConfig& config,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
