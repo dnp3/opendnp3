@@ -21,6 +21,8 @@ package com.automatak.dnp3.impl;
 import com.automatak.dnp3.*;
 import com.automatak.dnp3.enums.ServerAcceptMode;
 
+import java.util.List;
+
 class ManagerImpl implements DNP3Manager {
 
     private long pointer;
@@ -54,6 +56,23 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
+    public synchronized Channel addTCPClient(String id, int levels, ChannelRetry retry, List<IPEndpoint> remotes, String adapter, ChannelListener listener) throws DNP3Exception
+    {
+        if(this.pointer == 0)
+        {
+            throw new DNP3Exception("Manager has been shutdown");
+        }
+
+        long ptr = get_native_channel_tcp_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), remotes, adapter, listener);
+
+        if(ptr == 0) {
+            throw new DNP3Exception("Unable to create channel");
+        }
+
+        return new ChannelImpl(ptr);
+    }
+
+    @Override
     public synchronized Channel addTCPServer(String id, int levels, ServerAcceptMode mode, String endpoint, int port, ChannelListener listener) throws DNP3Exception
     {
         if(this.pointer == 0)
@@ -79,6 +98,23 @@ class ManagerImpl implements DNP3Manager {
         }
 
         long ptr = get_native_channel_tls_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), address, adapter, port, config, listener);
+
+        if(ptr == 0) {
+            throw new DNP3Exception("Unable to create TLS client. Did you compile opendnp3 w/ TLS support?");
+        }
+
+        return new ChannelImpl(ptr);
+    }
+
+    @Override
+    public synchronized Channel addTLSClient(String id, int levels, ChannelRetry retry, List<IPEndpoint> remotes, String adapter, TLSConfig config, ChannelListener listener) throws DNP3Exception
+    {
+        if(this.pointer == 0)
+        {
+            throw new DNP3Exception("Manager has been shutdown");
+        }
+
+        long ptr = get_native_channel_tls_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), remotes, adapter, config, listener);
 
         if(ptr == 0) {
             throw new DNP3Exception("Unable to create TLS client. Did you compile opendnp3 w/ TLS support?");
@@ -148,8 +184,10 @@ class ManagerImpl implements DNP3Manager {
     private native void shutdown_native_manager(long nativePointer);
 
     private native long get_native_channel_tcp_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String address, String adapter, int port, ChannelListener listener);
+    private native long get_native_channel_tcp_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, List<IPEndpoint> remotes, String adapter, ChannelListener listener);
     private native long get_native_channel_tcp_server(long nativePointer, String id, int level, int acceptMode, String endpoint, int port, ChannelListener listener);
     private native long get_native_channel_tls_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String address, String adapter, int port, TLSConfig config, ChannelListener listener);
+    private native long get_native_channel_tls_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, List<IPEndpoint> remotes, String adapter, TLSConfig config, ChannelListener listener);
     private native long get_native_channel_tls_server(long nativePointer, String id, int level, int acceptMode, String endpoint, int port, TLSConfig config, ChannelListener listener);
     private native long get_native_channel_serial(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl, ChannelListener listener);
 

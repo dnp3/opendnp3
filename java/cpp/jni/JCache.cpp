@@ -74,6 +74,7 @@ namespace jni
     cache::Header JCache::Header;
     cache::HeaderInfo JCache::HeaderInfo;
     cache::IINField JCache::IINField;
+    cache::IPEndpoint JCache::IPEndpoint;
     cache::IndexMode JCache::IndexMode;
     cache::IndexQualifierMode JCache::IndexQualifierMode;
     cache::IndexedValue JCache::IndexedValue;
@@ -170,6 +171,7 @@ namespace jni
         && Header.init(env)
         && HeaderInfo.init(env)
         && IINField.init(env)
+        && IPEndpoint.init(env)
         && IndexMode.init(env)
         && IndexQualifierMode.init(env)
         && IndexedValue.init(env)
@@ -268,6 +270,7 @@ namespace jni
         Header.cleanup(env);
         HeaderInfo.cleanup(env);
         IINField.cleanup(env);
+        IPEndpoint.cleanup(env);
         IndexMode.cleanup(env);
         IndexQualifierMode.cleanup(env);
         IndexedValue.cleanup(env);
