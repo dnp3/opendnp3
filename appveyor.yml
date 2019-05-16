@@ -2,12 +2,12 @@ version: 2.0.{build}
 branches:
   only:
   - 2.0.x
-os: Visual Studio 2017
+os: Visual Studio 2019
 configuration: Release
 platform: x86
 clone_folder: C:\projects\dnp3
 environment:
-  OSSL_LIB32_DIR: C:\OpenSSL-Win32\lib\VC
+  OSSL_LIB32_DIR: C:\OpenSSL-v111-Win32\lib\VC
   OPENDNP3_DIR: C:\projects\dnp3\build\lib
 install:
 - git describe --tags --exact-match & cmd /c exit 0
