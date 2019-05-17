@@ -128,7 +128,7 @@ src/gen/UserOperation.cs
 src/gen/UserRole.cs
 )
 
-set_target_properties(DNP3CLRInterface PROPERTIES FOLDER dotnet)
+set_target_properties(DNP3CLRInterface PROPERTIES FOLDER "dotnet/libs")
 set_property(TARGET DNP3CLRInterface PROPERTY VS_DOTNET_REFERENCES "System.Xml")
 set_property(TARGET DNP3CLRInterface PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION ${CLR_VERSION})
 target_compile_options(DNP3CLRInterface PRIVATE "/langversion:6")
