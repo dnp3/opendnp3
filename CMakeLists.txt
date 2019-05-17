@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.8.2)
 
 project (opendnp3)
 set(OPENDNP3_MAJOR_VERSION 2)
@@ -278,7 +278,10 @@ if(DNP3_FUZZING)
 endif()
 
 if(WIN32)
-  add_subdirectory(./dotnet)
+  # TODO - get this from environment or command line?
+  set(CLR_VERSION "v4.5.2")
+  add_subdirectory(./dotnet/CLRInterface)
+  add_subdirectory(./dotnet/CLRAdapter)
 endif()
 
 add_custom_target(
