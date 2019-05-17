@@ -185,6 +185,6 @@ bindings/CLRAdapter/src/StdIOWorkaround.h
 bindings/CLRAdapter/src/TaskCallbackAdapter.h
 )
 
-set_target_properties(DNP3CLRAdapter PROPERTIES FOLDER dotnet COMMON_LANGUAGE_RUNTIME pure)
+set_target_properties(DNP3CLRAdapter PROPERTIES FOLDER dotnet COMMON_LANGUAGE_RUNTIME "")
 set_property(TARGET DNP3CLRAdapter PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION ${CLR_VERSION})
 target_link_libraries(DNP3CLRAdapter DNP3CLRInterface asiodnp3)
