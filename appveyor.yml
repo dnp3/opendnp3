@@ -13,7 +13,7 @@ install:
 build_script:
 - cmd: MKDIR build
 - cmd: CD build
-- cmd: cmake .. -DCMAKE_BUILD_TYPE=Release -DDNP3_TEST=ON -DDNP3_TLS=ON -DNP3_DOTNET=ON
+- cmd: cmake .. -DCMAKE_BUILD_TYPE=Release -DDNP3_TEST=ON -DDNP3_TLS=ON -DDNP3_DOTNET=ON
 - cmd: msbuild opendnp3.sln /p:Configuration=Release /p:Platform=Win32
 after_build:
 - ps: >-
