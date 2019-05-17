@@ -2,8 +2,7 @@ cmake_minimum_required (VERSION 3.8.2)
 
 enable_language(CSharp)
 
-#set(DOTNET_TARGET_FRAMEWORK_VERSION "v4.5.2")
-#message("default version: ${DOTNET_TARGET_FRAMEWORK_VERSION}")
+set(CLR_VERSION "v4.5.2")
 
 add_library(DNP3CLRInterface SHARED
 bindings/CLRInterface/ApplicationIIN.cs
@@ -135,5 +134,57 @@ bindings/CLRInterface/gen/UserRole.cs
 
 set_target_properties(DNP3CLRInterface PROPERTIES FOLDER dotnet)
 set_property(TARGET DNP3CLRInterface PROPERTY VS_DOTNET_REFERENCES "System.Xml")
-set_property(TARGET DNP3CLRInterface PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION "v4.5.2")
+set_property(TARGET DNP3CLRInterface PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION ${CLR_VERSION})
 target_compile_options(DNP3CLRInterface PRIVATE "/langversion:6")
+
+add_library(DNP3CLRAdapter SHARED
+bindings/CLRAdapter/src/CallbackAdapters.cpp
+bindings/CLRAdapter/src/CallbackAdapters.h
+bindings/CLRAdapter/src/ChangeSetAdapter.cpp
+bindings/CLRAdapter/src/ChangeSetAdapter.h
+bindings/CLRAdapter/src/ChannelAdapter.cpp
+bindings/CLRAdapter/src/ChannelAdapter.h
+bindings/CLRAdapter/src/ChannelListenerAdapter.h
+bindings/CLRAdapter/src/CollectionAdapter.h
+bindings/CLRAdapter/src/CommandSetBuilder.cpp
+bindings/CLRAdapter/src/CommandSetBuilder.h
+bindings/CLRAdapter/src/Conversions.cpp
+bindings/CLRAdapter/src/Conversions.h
+bindings/CLRAdapter/src/DNP3ManagerAdapter.cpp
+bindings/CLRAdapter/src/DNP3ManagerAdapter.h
+bindings/CLRAdapter/src/EventConverter.h
+bindings/CLRAdapter/src/ICommandHeaderWorkAround.h
+bindings/CLRAdapter/src/ListenCallbacksAdapter.cpp
+bindings/CLRAdapter/src/ListenCallbacksAdapter.h
+bindings/CLRAdapter/src/ListenerAdapter.h
+bindings/CLRAdapter/src/Lock.h
+bindings/CLRAdapter/src/LogAdapter.cpp
+bindings/CLRAdapter/src/LogAdapter.h
+bindings/CLRAdapter/src/MasterAdapter.cpp
+bindings/CLRAdapter/src/MasterAdapter.h
+bindings/CLRAdapter/src/MasterApplicationAdapter.h
+bindings/CLRAdapter/src/MasterConversions.cpp
+bindings/CLRAdapter/src/MasterConversions.h
+bindings/CLRAdapter/src/MasterOperationsAdapter.cpp
+bindings/CLRAdapter/src/MasterOperationsAdapter.h
+bindings/CLRAdapter/src/MasterScanAdapter.h
+bindings/CLRAdapter/src/MasterSessionAdapter.cpp
+bindings/CLRAdapter/src/MasterSessionAdapter.h
+bindings/CLRAdapter/src/OutstationAdapter.cpp
+bindings/CLRAdapter/src/OutstationAdapter.h
+bindings/CLRAdapter/src/OutstationApplicationAdapter.cpp
+bindings/CLRAdapter/src/OutstationApplicationAdapter.h
+bindings/CLRAdapter/src/OutstationCommandHandlerAdapter.cpp
+bindings/CLRAdapter/src/OutstationCommandHandlerAdapter.h
+bindings/CLRAdapter/src/SOEHandlerAdapter.cpp
+bindings/CLRAdapter/src/SOEHandlerAdapter.h
+bindings/CLRAdapter/src/SessionAcceptorAdapter.cpp
+bindings/CLRAdapter/src/SessionAcceptorAdapter.h
+bindings/CLRAdapter/src/StdIOWorkaround.cpp
+bindings/CLRAdapter/src/StdIOWorkaround.h
+bindings/CLRAdapter/src/TaskCallbackAdapter.h
+)
+
+set_target_properties(DNP3CLRAdapter PROPERTIES FOLDER dotnet COMMON_LANGUAGE_RUNTIME pure)
+set_property(TARGET DNP3CLRAdapter PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION ${CLR_VERSION})
+target_link_libraries(DNP3CLRAdapter DNP3CLRInterface asiodnp3)
