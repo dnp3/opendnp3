@@ -6,21 +6,15 @@ os: Visual Studio 2017
 configuration: Release
 platform: x86
 clone_folder: C:\projects\dnp3
-environment:
-  OSSL_LIB32_DIR: C:\OpenSSL-Win32\lib\VC
-  OPENDNP3_DIR: C:\projects\dnp3\build\lib
+environment: {}
 install:
 - git describe --tags --exact-match & cmd /c exit 0
 - git submodule update --init --recursive
 build_script:
 - cmd: MKDIR build
 - cmd: CD build
-- cmd: MKDIR lib
-- cmd: cmake .. -DCMAKE_INSTALL_PREFIX=lib -DDNP3_TEST=ON -DDNP3_TLS=ON -DCMAKE_BUILD_TYPE=Release
+- cmd: cmake .. -DCMAKE_BUILD_TYPE=Release -DDNP3_TEST=ON -DDNP3_TLS=ON -DDNP3_DOTNET=ON
 - cmd: msbuild opendnp3.sln /p:Configuration=Release /p:Platform=Win32
-- cmd: msbuild INSTALL.vcxproj /p:Configuration=Release /p:Platform=Win32
-- cmd: cd ..
-- cmd: msbuild dotnet\bindings.sln /p:Configuration=Release /p:Platform=Win32
 after_build:
 - ps: >-
     if ($env:APPVEYOR_REPO_TAG -eq "true"){
