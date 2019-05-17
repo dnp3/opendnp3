@@ -6,7 +6,7 @@ os: Visual Studio 2017
 configuration: Release
 platform: x86
 clone_folder: C:\projects\dnp3
-environment:
+environment: {}
 install:
 - git describe --tags --exact-match & cmd /c exit 0
 - git submodule update --init --recursive
