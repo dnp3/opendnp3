@@ -59,7 +59,7 @@ ITimer* Executor::Start(const MonotonicTimestamp& time, const action_t& runnable
 
 openpal::ITimer* Executor::Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable)
 {
-	auto timer = std::make_shared<Timer>(this->strand.get_io_service());
+	auto timer = std::make_shared<Timer>(this->strand.get_io_context());
 
 	timer->timer.expires_at(expiration);
 

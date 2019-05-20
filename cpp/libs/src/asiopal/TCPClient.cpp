@@ -34,9 +34,9 @@ TCPClient::TCPClient(
 	condition(logger),
 	executor(executor),
 	adapter(adapter),
-	socket(executor->strand.get_io_service()),
+	socket(executor->strand.get_io_context()),
 	localEndpoint(),
-	resolver(executor->strand.get_io_service())
+	resolver(executor->strand.get_io_context())
 {}
 
 
