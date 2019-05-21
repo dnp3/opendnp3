@@ -23,6 +23,13 @@ aliases:
       name: Test
       command: ctest -VV .
       working_directory: build
+  - run: &package
+      name: Package
+      command: cpack -G ZIP
+      working_directory: build
+  - store_artifacts: &store_artifacts
+      path: build/opendnp3-*.zip
+      destination: /
 jobs:
   build-gcc-debug:
     docker:
@@ -38,6 +45,8 @@ jobs:
           working_directory: build
       - run: *build
       - run: *test
+      - run: *package
+      - store_artifacts: *store_artifacts
   build-gcc-release:
     docker:
       - image: ubuntu:latest
@@ -52,6 +61,8 @@ jobs:
           working_directory: build
       - run: *build
       - run: *test
+      - run: *package
+      - store_artifacts: *store_artifacts
   build-clang-debug:
     docker:
       - image: ubuntu:latest
@@ -66,6 +77,8 @@ jobs:
           working_directory: build
       - run: *build
       - run: *test
+      - run: *package
+      - store_artifacts: *store_artifacts
   build-clang-release:
     docker:
       - image: ubuntu:latest
@@ -80,6 +93,8 @@ jobs:
           working_directory: build
       - run: *build
       - run: *test
+      - run: *package
+      - store_artifacts: *store_artifacts
 workflows:
   version: 2
   build_and_test:

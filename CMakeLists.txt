@@ -1,10 +1,10 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.8)
 
-project (opendnp3)
 set(OPENDNP3_MAJOR_VERSION 2)
 set(OPENDNP3_MINOR_VERSION 2)
 set(OPENDNP3_MICRO_VERSION 1)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
+project (opendnp3 VERSION ${OPENDNP3_VERSION})
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING
@@ -283,3 +283,6 @@ add_custom_target(
   COMMAND astyle -R ./cpp/*.h ./cpp/*.cpp --options=./config/astyle.cfg --exclude=./cpp/libs/include/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/objects
   COMMAND astyle -R ./java/cpp/adapters/*.h ./java/cpp/adapters/*.cpp --options=./config/astyle.cfg
 )
+
+# Packaging
+include(CPack)
