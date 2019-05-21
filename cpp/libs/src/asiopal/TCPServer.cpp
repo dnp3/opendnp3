@@ -111,6 +111,14 @@ void TCPServer::StartAccept()
 		}
 		else
 		{
+			// For an unknown reason, the socket may not be properly opened when accepted.
+			// We simply ignore it.
+			if(!self->socket.is_open())
+			{
+				self->StartAccept();
+				return;
+			}
+
 			const auto ID = self->session_id;
 			++self->session_id;
 
