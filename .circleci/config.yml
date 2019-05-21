@@ -2,10 +2,10 @@ version: 2
 aliases:
   - run: &install_deps_gcc
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake g++ default-jdk libssl-dev
+      command: apt-get update && apt-get install -y git cmake g++ default-jdk libssl-dev maven
   - run: &install_deps_clang
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev default-jdk libssl-dev
+      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev default-jdk libssl-dev maven
   - run: &print_versions_gcc
       name: Print versions
       command: g++ -v && cmake -version && openssl version && java --version
@@ -23,6 +23,14 @@ aliases:
       name: Test
       command: ctest -VV .
       working_directory: build
+  - run: &build_java
+      name: Prepare Java bindings
+      command: cmake -DCMAKE_INSTALL_PREFIX="/usr" . && cmake --build . --target install
+      working_directory: build
+  - run: &test_java
+      name: Test Java bindings
+      command: mvn verify -Dmaven.javadoc.skip=true
+      working_directory: java
   - run: &package
       name: Package
       command: cpack -G ZIP -D CPACK_PACKAGE_FILE_NAME="opendnp3"
@@ -44,6 +52,8 @@ jobs:
           working_directory: build
       - run: *build
       - run: *test
+      - run: *build_java
+      - run: *test_java
       - run: *package
       - store_artifacts: *store_artifacts
   build-gcc-release:
@@ -60,6 +70,8 @@ jobs:
           working_directory: build
       - run: *build
       - run: *test
+      - run: *build_java
+      - run: *test_java
       - run: *package
       - store_artifacts: *store_artifacts
   build-clang-debug:
@@ -76,6 +88,8 @@ jobs:
           working_directory: build
       - run: *build
       - run: *test
+      - run: *build_java
+      - run: *test_java
       - run: *package
       - store_artifacts: *store_artifacts
   build-clang-release:
@@ -92,6 +106,8 @@ jobs:
           working_directory: build
       - run: *build
       - run: *test
+      - run: *build_java
+      - run: *test_java
       - run: *package
       - store_artifacts: *store_artifacts
 workflows:
