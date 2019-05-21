@@ -25,15 +25,14 @@ aliases:
       working_directory: build
   - run: &package
       name: Package
-      command: cpack -G ZIP
+      command: cpack -G ZIP -D CPACK_PACKAGE_FILE_NAME="opendnp3"
       working_directory: build
   - store_artifacts: &store_artifacts
-      path: build/opendnp3-*.zip
-      destination: /
+      path: build/opendnp3.zip
 jobs:
   build-gcc-debug:
     docker:
-      - image: ubuntu:latest
+      - image: ubuntu:18.04
     steps:
       - checkout
       - run: *install_deps_gcc
@@ -41,7 +40,7 @@ jobs:
       - run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall" -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
       - run: *test
@@ -49,7 +48,7 @@ jobs:
       - store_artifacts: *store_artifacts
   build-gcc-release:
     docker:
-      - image: ubuntu:latest
+      - image: ubuntu:18.04
     steps:
       - checkout
       - run: *install_deps_gcc
@@ -57,7 +56,7 @@ jobs:
       - run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall" -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
       - run: *test
@@ -65,7 +64,7 @@ jobs:
       - store_artifacts: *store_artifacts
   build-clang-debug:
     docker:
-      - image: ubuntu:latest
+      - image: ubuntu:18.04
     steps:
       - checkout
       - run: *install_deps_clang
@@ -73,7 +72,7 @@ jobs:
       - run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall" -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
       - run: *test
@@ -81,7 +80,7 @@ jobs:
       - store_artifacts: *store_artifacts
   build-clang-release:
     docker:
-      - image: ubuntu:latest
+      - image: ubuntu:18.04
     steps:
       - checkout
       - run: *install_deps_clang
@@ -89,7 +88,7 @@ jobs:
       - run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall" -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
       - run: *test

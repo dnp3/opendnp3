@@ -93,8 +93,6 @@ if(DNP3_TLS)
   include_directories(${OPENSSL_INCLUDE_DIR})
 endif()
 
-set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
-
 # include paths for all the local libraries
 include_directories(./cpp/libs/src)
 include_directories(./cpp/libs/include)
@@ -305,4 +303,7 @@ add_custom_target(
 )
 
 # Packaging
+set(CPACK_PACKAGE_VERSION_MAJOR ${OPENDNP3_MAJOR_VERSION})
+set(CPACK_PACKAGE_VERSION_MINOR ${OPENDNP3_MINOR_VERSION})
+set(CPACK_PACKAGE_VERSION_PATCH ${OPENDNP3_MICRO_VERSION})
 include(CPack)
