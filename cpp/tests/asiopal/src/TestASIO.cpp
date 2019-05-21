@@ -49,7 +49,7 @@ TEST_CASE(SUITE("TimerCancel"))
 {
 	bool flag = false;
 
-	io_service io;
+	io_context io;
 	steady_timer t1(io, std::chrono::seconds(0));
 	steady_timer t2(io, std::chrono::seconds(1));
 

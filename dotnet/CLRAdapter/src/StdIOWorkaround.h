@@ -8,6 +8,6 @@ http://stackoverflow.com/questions/30412951/unresolved-external-symbol-imp-fprin
 
 #include <cstdio>
 
-extern "C" FILE * __cdecl __iob_func(void);
+//extern "C" FILE * __cdecl __iob_func(void);
 
 #endif

@@ -43,7 +43,7 @@ class Timer final : public openpal::ITimer, private openpal::Uncopyable
 
 public:
 
-	Timer(asio::io_service& service);
+	Timer(asio::io_context& service);
 
 	virtual void Cancel() override;
 

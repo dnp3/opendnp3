@@ -43,19 +43,17 @@ public:
 	static std::shared_ptr<TLSClient> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<Executor>& executor,
-	    const IPEndpoint& remote,
 	    const std::string& adapter,
 	    const TLSConfig& config,
 	    std::error_code& ec)
 	{
-		auto ret = std::make_shared<TLSClient>(logger, executor, remote, adapter, config, ec);
+		auto ret = std::make_shared<TLSClient>(logger, executor, adapter, config, ec);
 		return ec ? nullptr : ret;
 	}
 
 	TLSClient(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<Executor>& executor,
-	    const IPEndpoint& remote,
 	    const std::string& adapter,
 	    const TLSConfig& config,
 	    std::error_code& ec
@@ -63,7 +61,7 @@ public:
 
 	bool Cancel();
 
-	bool BeginConnect(const connect_callback_t& callback);
+	bool BeginConnect(const IPEndpoint& remote, const connect_callback_t& callback);
 
 private:
 
@@ -87,10 +85,8 @@ private:
 	openpal::Logger logger;
 	LoggingConnectionCondition condition;
 	const std::shared_ptr<Executor> executor;
-	const std::string host;
 	const std::string adapter;
 	SSLContext ctx;
-	asio::ip::tcp::endpoint remoteEndpoint;
 	asio::ip::tcp::endpoint localEndpoint;
 	asio::ip::tcp::resolver resolver;
 };

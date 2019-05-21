@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -64,9 +65,8 @@ public class MasterDemo {
                 "client",
                 LogMasks.NORMAL | LogMasks.APP_COMMS,
                 ChannelRetry.getDefault(),
-                "127.0.0.1",
+                Collections.singletonList(new IPEndpoint("127.0.0.1", 20000)),
                 "0.0.0.0",
-                20000,
                 PrintingChannelListener.getInstance()
         );
 

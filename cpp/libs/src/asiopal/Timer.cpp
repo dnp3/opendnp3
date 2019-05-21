@@ -39,7 +39,7 @@ MonotonicTimestamp Timer::ExpiresAt()
 	return MonotonicTimestamp(millisec);
 }
 
-Timer::Timer(asio::io_service& service) : timer(service)
+Timer::Timer(asio::io_context& service) : timer(service)
 {}
 
 }

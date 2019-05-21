@@ -28,8 +28,9 @@ namespace asiopal
 MockTLSPair::MockTLSPair(std::shared_ptr<MockIO> io, uint16_t port, const TLSConfig& client, const TLSConfig& server, std::error_code ec) :
 	log(),
 	io(io),
+	port(port),
 	chandler(std::make_shared<MockTLSClientHandler>()),
-	client(TLSClient::Create(log.logger, io->GetExecutor(), IPEndpoint::Localhost(port), "127.0.0.1", client, ec)),
+	client(TLSClient::Create(log.logger, io->GetExecutor(), "127.0.0.1", client, ec)),
 	server(ec ? nullptr : MockTLSServer::Create(log.logger, io->GetExecutor(), IPEndpoint::Localhost(port), server, ec))
 {
 	if (ec)
@@ -54,7 +55,7 @@ void MockTLSPair::Connect(size_t num)
 		handler->OnConnect(executor, stream, ec);
 	};
 
-	if (!this->client->BeginConnect(callback))
+	if (!this->client->BeginConnect(IPEndpoint::Localhost(this->port), callback))
 	{
 		throw std::logic_error("BeginConnect returned false");
 	}

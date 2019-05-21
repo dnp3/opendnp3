@@ -50,7 +50,7 @@ private:
 	virtual void BeginWriteImpl(const openpal::RSlice& buffer)  override;
 	virtual void ShutdownImpl()  override;
 
-	asio::basic_serial_port<> port;
+	asio::serial_port port;
 
 };
 

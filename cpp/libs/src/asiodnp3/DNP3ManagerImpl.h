@@ -64,9 +64,8 @@ public:
 	    const std::string& id,
 	    int32_t levels,
 	    const asiopal::ChannelRetry& retry,
-	    const std::string& host,
+	    const std::vector<asiopal::IPEndpoint>& hosts,
 	    const std::string& local,
-	    uint16_t port,
 	    std::shared_ptr<IChannelListener> listener);
 
 	std::shared_ptr<IChannel> AddTCPServer(
@@ -88,9 +87,8 @@ public:
 	    const std::string& id,
 		int32_t levels,
 	    const asiopal::ChannelRetry& retry,
-	    const std::string& host,
+	    const std::vector<asiopal::IPEndpoint>& hosts,
 	    const std::string& local,
-	    uint16_t port,
 	    const asiopal::TLSConfig& config,
 	    std::shared_ptr<IChannelListener> listener,
 	    std::error_code& ec);
@@ -123,7 +121,6 @@ public:
 	);
 
 private:
-
 	openpal::Logger logger;
 	const std::shared_ptr<asiopal::IO> io;
 	asiopal::ThreadPool threadpool;

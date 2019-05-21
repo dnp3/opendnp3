@@ -27,8 +27,9 @@ namespace asiopal
 MockTCPPair::MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec) :
 	log(),
 	io(io),
+	port(port),
 	chandler(std::make_shared<MockTCPClientHandler>()),
-	client(TCPClient::Create(log.logger, io->GetExecutor(), IPEndpoint::Localhost(port), "127.0.0.1")),
+	client(TCPClient::Create(log.logger, io->GetExecutor(), "127.0.0.1")),
 	server(MockTCPServer::Create(log.logger, io->GetExecutor(), IPEndpoint::Localhost(20000), ec))
 {
 	if (ec)
@@ -50,7 +51,7 @@ void MockTCPPair::Connect(size_t num)
 		handler->OnConnect(executor, std::move(socket), ec);
 	};
 
-	if (!this->client->BeginConnect(callback))
+	if (!this->client->BeginConnect(IPEndpoint::Localhost(this->port), callback))
 	{
 		throw std::logic_error("BeginConnect returned false");
 	}

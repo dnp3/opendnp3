@@ -81,7 +81,7 @@ public:
 		return Create(this->io);
 	}
 
-	asio::strand strand;
+	asio::io_context::strand strand;
 
 private:
 

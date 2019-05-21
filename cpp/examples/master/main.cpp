@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 	DNP3Manager manager(1, ConsoleLogger::Create());
 
 	// Connect via a TCPClient socket to a outstation
-	auto channel = manager.AddTCPClient("tcpclient", FILTERS, ChannelRetry::Default(), "127.0.0.1", "0.0.0.0", 20000, PrintingChannelListener::Create());
+	auto channel = manager.AddTCPClient("tcpclient", FILTERS, ChannelRetry::Default(), { IPEndpoint("127.0.0.1", 20000) }, "0.0.0.0", PrintingChannelListener::Create());
 
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
