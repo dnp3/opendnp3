@@ -1,6 +1,6 @@
 ### 2.3.0-RC1 ###
 * :beetle: Fixes for issues #268, #262, #259, #257, #255, #251, #228, #216.
-* :star: #277 - Added overloaded methods for TCP and TLS clients to support outstation redundancy.
+* :star: Added overloaded methods for TCP and TLS clients to support outstation redundancy (#277).
 * :star: .NET bindings can now be configured and built using Cmake (requires CMake >= 3.8).
 * :star: Expanded fuzzing support from Google OSS Fuzz to the master and outstation handlers.
 * :star: Added support for cold/warm restart in Java OutstationApplication interface.
