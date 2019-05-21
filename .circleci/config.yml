@@ -2,10 +2,10 @@ version: 2
 aliases:
   - run: &install_deps_gcc
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake g++ default-jdk libssl-dev maven
+      command: apt-get update && apt-get install -y git cmake g++ libssl-dev default-jdk maven
   - run: &install_deps_clang
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev default-jdk libssl-dev maven
+      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev libssl-dev default-jdk maven
   - run: &print_versions_gcc
       name: Print versions
       command: g++ -v && cmake -version && openssl version && java --version
@@ -24,10 +24,14 @@ aliases:
       command: ctest -VV .
       working_directory: build
   - run: &build_java
+      # I was not able to set java.library.path to the build directory, so we just
+      # install the target to a system directory.
       name: Prepare Java bindings
       command: cmake -DCMAKE_INSTALL_PREFIX="/usr" . && cmake --build . --target install
       working_directory: build
   - run: &test_java
+      # The javadocs fails for some obscure reasons, but it looks like a bug
+      # from upstream, not us.
       name: Test Java bindings
       command: mvn verify -Dmaven.javadoc.skip=true
       working_directory: java

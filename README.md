@@ -6,10 +6,19 @@ of the [DNP3](https//www.dnp.org) protocol stack written in C++11. The library
 is designed for high-performance applications like many concurrent TCP
 sessions or huge device simulations. It also embeds with a small footprint on Linux.
 
+Build status
+============
+
+| Branch  | Ubuntu 18.04 | Windows |
+| ------- | ------------ | ------- |
+| master  | [![CircleCI](https://circleci.com/gh/dnp3/opendnp3/tree/master.svg?style=svg)](https://circleci.com/gh/dnp3/opendnp3/tree/master) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/971s9e53c9uoge4k/branch/master?svg=true)](https://ci.appveyor.com/project/jadamcrain/dnp3?branch=master) |
+| 2.0.x   | [![CircleCI](https://circleci.com/gh/dnp3/opendnp3/tree/2.0.x.svg?style=svg)](https://circleci.com/gh/dnp3/opendnp3/tree/2.0.x) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/971s9e53c9uoge4k/branch/2.0.x?svg=true)](https://ci.appveyor.com/project/jadamcrain/dnp3?branch=2.0.x) |
+
+
 Documentation
 =============
 
-The documentation can be found on the [project homepage](http://dnp3.githun.io/#documentation).
+The documentation can be found on the [project homepage](http://dnp3.github.io/#documentation).
 
 If you want to help contribute to the official guide its in [this repo](https://github.com/dnp3/opendnp3-guide).
 
