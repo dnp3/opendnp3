@@ -111,7 +111,7 @@ add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(opendnp3 openpal)
 install(TARGETS opendnp3 DESTINATION lib)
 set_target_properties(opendnp3 PROPERTIES FOLDER cpp/libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
-clang_format(opendnp3)
+clang_format(opendnp3 EXCLUDES ".*/gen/.*")
 
 if(DNP3_DECODER)
   file(GLOB_RECURSE dnp3decode_SRC ./cpp/libs/src/dnp3decode/*.cpp ./cpp/libs/src/dnp3decode/*.h ./cpp/libs/include/dnp3decode/*.h)
@@ -164,6 +164,7 @@ if(DNP3_JAVA)
   target_link_libraries(opendnp3java asiodnp3)
   install(TARGETS opendnp3java DESTINATION lib)
   set_target_properties(opendnp3java PROPERTIES FOLDER java VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
+  clang_format(opendnp3java EXCLUDES ".*/jni/.*" "com_automatak_.*\.h")
 endif()
 
 # ----- install -----

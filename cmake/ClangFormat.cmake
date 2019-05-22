@@ -16,16 +16,15 @@ function(clang_format target)
 
         foreach(file ${source_files})
 
-            unset(excluded)
+            set(excluded FALSE)
 
             foreach(exclude ${clang_format_EXCLUDES})
-                STRING(FIND ${file} ${exclude} position)
-                if(NOT ${position} EQUAL -1)
-                    set(excluded true)
+                if(${file} MATCHES ${exclude})
+                    set(excluded TRUE)
                 endif()
             endforeach()
 
-            if(NOT DEFINED excluded)
+            if(NOT ${excluded})
                 get_filename_component(relative_file ${file} ABSOLUTE)
                 list(APPEND all_source_files ${relative_file})
             endif()
