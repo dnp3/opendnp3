@@ -64,6 +64,8 @@
                 <version>${maven-release-plugin.version}</version>
                 <configuration>
                     <pushChanges>false</pushChanges>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                    <scmCommentPrefix></scmCommentPrefix>
                 </configuration>
             </plugin>
             <plugin>
