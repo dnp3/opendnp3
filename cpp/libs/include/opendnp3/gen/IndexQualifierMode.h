@@ -43,7 +43,7 @@ enum class IndexQualifierMode : uint8_t
 {
   /// Use a one byte qualifier if possible
   allow_one_byte = 0x0,
-  /// Always use two byte qualifiers even if the index is <= 255
+  /// Always use two byte qualifiers even if the index is less than or equal to 255
   always_two_bytes = 0x1
 };
 
