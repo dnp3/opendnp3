@@ -30,7 +30,7 @@ object IndexQualifierMode {
 
   private val codes = List(
     EnumValue("allow_one_byte", 0, "Use a one byte qualifier if possible"),
-    EnumValue("always_two_bytes", 1, "Always use two byte qualifiers even if the index is <= 255")
+    EnumValue("always_two_bytes", 1, "Always use two byte qualifiers even if the index is less than or equal to 255")
   )
 
 }

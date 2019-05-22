@@ -41,7 +41,7 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     allow_one_byte = 0x0,
     /// <summary>
-    /// Always use two byte qualifiers even if the index is <= 255
+    /// Always use two byte qualifiers even if the index is less than or equal to 255
     /// </summary>
     always_two_bytes = 0x1
   }
