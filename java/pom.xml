@@ -65,7 +65,7 @@
                 <configuration>
                     <pushChanges>false</pushChanges>
                     <tagNameFormat>@{project.version}</tagNameFormat>
-                    <scmCommentPrefix>""</scmCommentPrefix>
+                    <scmCommentPrefix></scmCommentPrefix>
                 </configuration>
             </plugin>
             <plugin>
