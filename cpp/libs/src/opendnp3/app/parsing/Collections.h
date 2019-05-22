@@ -22,6 +22,8 @@
 
 #include "opendnp3/app/parsing/ICollection.h"
 
+#include <cstdint>
+
 namespace opendnp3
 {
 
