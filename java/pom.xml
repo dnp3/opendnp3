@@ -92,7 +92,6 @@
                       <exclude>**/enums/*.java</exclude>
                     </excludes>
                     <includes>
-			<!-- THIS IS BROKEN. The above exclude isn't working. Disable this for the moment -->
                         <include>**/*.java</include>
                         <include>cpp/*.cpp</include>
                         <include>cpp/*.hpp</include>
