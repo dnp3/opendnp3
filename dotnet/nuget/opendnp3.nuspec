@@ -5,7 +5,7 @@
         <version>$version$</version>
         <title>opendnp3</title>
         <authors>Adam Crain and contributors</authors>
-        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+        <license type="expression">Apache-2.0</license>
         <projectUrl>https://www.automatak.com/opendnp3</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>See the release notes for dependency info.</description>
