@@ -34,59 +34,57 @@ class SerialTimeSyncTask : public IMasterTask
 {
 
 public:
-	SerialTimeSyncTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, openpal::Logger logger);
+    SerialTimeSyncTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, openpal::Logger logger);
 
-	virtual char const* Name() const override final
-	{
-		return "serial time sync";
-	}
+    virtual char const* Name() const override final
+    {
+        return "serial time sync";
+    }
 
-	virtual int Priority() const override final
-	{
-		return priority::TIME_SYNC;
-	}
+    virtual int Priority() const override final
+    {
+        return priority::TIME_SYNC;
+    }
 
-	virtual bool BlocksLowerPriority() const override final
-	{
-		return true;
-	}
+    virtual bool BlocksLowerPriority() const override final
+    {
+        return true;
+    }
 
-	virtual bool IsRecurring() const override final
-	{
-		return true;
-	}
+    virtual bool IsRecurring() const override final
+    {
+        return true;
+    }
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 private:
+    virtual MasterTaskType GetTaskType() const override final
+    {
+        return MasterTaskType::NON_LAN_TIME_SYNC;
+    }
 
-	virtual MasterTaskType GetTaskType() const override final
-	{
-		return MasterTaskType::NON_LAN_TIME_SYNC;
-	}
+    virtual bool IsEnabled() const override final
+    {
+        return true;
+    }
 
-	virtual bool IsEnabled() const override final
-	{
-		return true;
-	}
+    virtual ResponseResult ProcessResponse(const APDUResponseHeader& response,
+                                           const openpal::RSlice& objects) override final;
 
+    ResponseResult OnResponseDelayMeas(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
+    ResponseResult OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& header, const openpal::RSlice& objects);
+    virtual void Initialize() override final;
 
-	ResponseResult OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
+    // < 0 implies the delay measure hasn't happened yet
+    int64_t delay;
 
-	virtual void Initialize() override final;
-
-	// < 0 implies the delay measure hasn't happened yet
-	int64_t delay;
-
-	// what time we sent the delay meas
-	openpal::UTCTimestamp start;
+    // what time we sent the delay meas
+    openpal::UTCTimestamp start;
 };
 
-} //ens ns
+} // namespace opendnp3
 
 #endif
-

@@ -21,60 +21,60 @@
 #ifndef OPENDNP3_IMASTERSCHEDULER_H
 #define OPENDNP3_IMASTERSCHEDULER_H
 
-#include "opendnp3/master/IMasterTask.h"
 #include "IMasterTaskRunner.h"
+
+#include "opendnp3/master/IMasterTask.h"
 
 namespace opendnp3
 {
 
 /**
-* Interface used by master sessions to schedule tasks
-*/
+ * Interface used by master sessions to schedule tasks
+ */
 class IMasterScheduler
 {
 
 public:
+    virtual ~IMasterScheduler() {}
 
-	virtual ~IMasterScheduler() {}
+    virtual void Shutdown() = 0;
 
-	virtual void Shutdown() = 0;
+    /**
+     * Add a single task to the scheduler. The tasks will be started asynchronously,
+     * i.e. not by the call to this method
+     */
+    virtual void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) = 0;
 
-	/**
-	* Add a single task to the scheduler. The tasks will be started asynchronously,
-	* i.e. not by the call to this method
-	*/
-	virtual void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) = 0;
+    /**
+     * Remove all tasks associated with this context, including the running one
+     */
+    virtual void SetRunnerOffline(const IMasterTaskRunner& runner) = 0;
 
-	/**
-	* Remove all tasks associated with this context, including the running one
-	*/
-	virtual void SetRunnerOffline(const IMasterTaskRunner& runner) = 0;
+    /**
+     *
+     */
+    virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) = 0;
 
-	/**
-	*
-	*/
-	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) = 0;
+    /**
+     *  Called if task changes in such a way that it might be runnable sooner than scheduled
+     */
+    virtual void Evaluate() = 0;
 
-	/**
-	*  Called if task changes in such a way that it might be runnable sooner than scheduled
-	*/
-	virtual void Evaluate() = 0;
+    /**
+     * Run a task as soon as possible
+     */
+    virtual void Demand(const std::shared_ptr<IMasterTask>& task) = 0;
 
-	/**
-	* Run a task as soon as possible
-	*/
-	virtual void Demand(const std::shared_ptr<IMasterTask>& task) = 0;
-
-	/**
-	* Add multiple tasks in one call
-	*/
-	void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks, IMasterTaskRunner& runner)
-	{
-		for (auto& task : tasks) this->Add(task, runner);
-	}
-
+    /**
+     * Add multiple tasks in one call
+     */
+    void Add(std::initializer_list<std::shared_ptr<IMasterTask>> tasks, IMasterTaskRunner& runner)
+    {
+        for (auto& task : tasks)
+            this->Add(task, runner);
+    }
 };
 
-}
+} // namespace opendnp3
 
 #endif

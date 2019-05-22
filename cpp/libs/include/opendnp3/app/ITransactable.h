@@ -32,14 +32,12 @@ namespace opendnp3
 class ITransactable
 {
 public:
-
-	friend class Transaction;
-	virtual ~ITransactable() {}
+    friend class Transaction;
+    virtual ~ITransactable() {}
 
 protected:
-
-	virtual void Start() = 0;
-	virtual void End() = 0;
+    virtual void Start() = 0;
+    virtual void End() = 0;
 };
 
 /**
@@ -48,55 +46,53 @@ protected:
 class Transaction : private openpal::Uncopyable
 {
 public:
+    Transaction(ITransactable& transactable) : pTransactable(&transactable)
+    {
+        pTransactable->Start();
+    }
 
-	Transaction(ITransactable& transactable) : pTransactable(&transactable)
-	{
-		pTransactable->Start();
-	}
+    Transaction(ITransactable* pTransactable_) : pTransactable(pTransactable_)
+    {
+        if (pTransactable)
+        {
+            pTransactable->Start();
+        }
+    }
 
-	Transaction(ITransactable* pTransactable_) : pTransactable(pTransactable_)
-	{
-		if (pTransactable)
-		{
-			pTransactable->Start();
-		}
-	}
+    ~Transaction()
+    {
+        if (pTransactable)
+        {
+            pTransactable->End();
+        }
+    }
 
-	~Transaction()
-	{
-		if (pTransactable)
-		{
-			pTransactable->End();
-		}
-	}
+    static void Start(ITransactable* t)
+    {
+        if (t)
+        {
+            t->Start();
+        }
+    }
+    static void End(ITransactable* t)
+    {
+        if (t)
+        {
+            t->End();
+        }
+    }
 
-	static void Start(ITransactable* t)
-	{
-		if (t)
-		{
-			t->Start();
-		}
-	}
-	static void End(ITransactable* t)
-	{
-		if (t)
-		{
-			t->End();
-		}
-	}
-
-	template <class ReturnType, class TransactionType, class Fun>
-	static ReturnType Apply(TransactionType& transactable, const Fun& fun)
-	{
-		Transaction t(transactable);
-		return fun(transactable);
-	}
+    template<class ReturnType, class TransactionType, class Fun>
+    static ReturnType Apply(TransactionType& transactable, const Fun& fun)
+    {
+        Transaction t(transactable);
+        return fun(transactable);
+    }
 
 private:
-	ITransactable* pTransactable;
-
+    ITransactable* pTransactable;
 };
 
-}
+} // namespace opendnp3
 
 #endif

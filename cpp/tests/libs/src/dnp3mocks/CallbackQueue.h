@@ -21,30 +21,23 @@
 #ifndef DNP3MOCKS_CALLBACK_QUEUE_H
 #define DNP3MOCKS_CALLBACK_QUEUE_H
 
-#include <queue>
 #include <functional>
+#include <queue>
 
 namespace opendnp3
 {
 
-template <class T>
-class CallbackQueue
+template<class T> class CallbackQueue
 {
 public:
+    std::function<void(const T&)> Callback()
+    {
+        return [this](const T& rsp) -> void { responses.push_back(rsp); };
+    }
 
-	std::function<void (const T&)> Callback()
-	{
-		return [this](const T & rsp) -> void
-		{
-			responses.push_back(rsp);
-		};
-	}
-
-	std::deque<T> responses;
-
+    std::deque<T> responses;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

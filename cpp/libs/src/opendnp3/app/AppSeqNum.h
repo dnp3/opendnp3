@@ -21,15 +21,14 @@
 #ifndef OPENDNP3_APPSEQNUM_H
 #define OPENDNP3_APPSEQNUM_H
 
-#include <cstdint>
-
 #include <openpal/util/SequenceNum.h>
+
+#include <cstdint>
 
 namespace opendnp3
 {
 
 typedef openpal::SequenceNum<uint8_t, 16> AppSeqNum;
-
 }
 
 #endif

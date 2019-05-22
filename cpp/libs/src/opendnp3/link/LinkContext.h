@@ -21,20 +21,20 @@
 #ifndef OPENDNP3_LINK_CONTEXT_H
 #define OPENDNP3_LINK_CONTEXT_H
 
-#include <openpal/logging/Logger.h>
-#include <openpal/executor/IExecutor.h>
-#include <openpal/executor/TimerRef.h>
 #include <openpal/container/Settable.h>
 #include <openpal/container/StaticBuffer.h>
+#include <openpal/executor/IExecutor.h>
+#include <openpal/executor/TimerRef.h>
+#include <openpal/logging/Logger.h>
 
+#include "opendnp3/StackStatistics.h"
 #include "opendnp3/gen/LinkStatus.h"
 #include "opendnp3/link/ILinkLayer.h"
-#include "opendnp3/link/ILinkSession.h"
-#include "opendnp3/link/LinkLayerConstants.h"
-#include "opendnp3/link/LinkLayerConfig.h"
 #include "opendnp3/link/ILinkListener.h"
+#include "opendnp3/link/ILinkSession.h"
 #include "opendnp3/link/ILinkTx.h"
-#include "opendnp3/StackStatistics.h"
+#include "opendnp3/link/LinkLayerConfig.h"
+#include "opendnp3/link/LinkLayerConstants.h"
 
 namespace opendnp3
 {
@@ -44,119 +44,113 @@ class SecStateBase;
 
 enum class LinkTransmitMode : uint8_t
 {
-	Idle,
-	Primary,
-	Secondary
+    Idle,
+    Primary,
+    Secondary
 };
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
 class LinkContext
 {
 
-
 public:
+    LinkContext(const openpal::Logger& logger,
+                const std::shared_ptr<openpal::IExecutor>&,
+                const std::shared_ptr<IUpperLayer>&,
+                const std::shared_ptr<opendnp3::ILinkListener>&,
+                ILinkSession& session,
+                const LinkLayerConfig&);
 
-	LinkContext(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<openpal::IExecutor>&,
-	    const std::shared_ptr<IUpperLayer>&,
-	    const std::shared_ptr<opendnp3::ILinkListener>&,
-	    ILinkSession& session,
-	    const LinkLayerConfig&
-	);
+    // ---- helpers for dealing with the FCB bits ----
 
+    void ResetReadFCB()
+    {
+        nextReadFCB = true;
+    }
+    void ResetWriteFCB()
+    {
+        nextWriteFCB = true;
+    }
+    void ToggleReadFCB()
+    {
+        nextReadFCB = !nextReadFCB;
+    }
+    void ToggleWriteFCB()
+    {
+        nextWriteFCB = !nextWriteFCB;
+    }
 
-	// ---- helpers for dealing with the FCB bits ----
+    // --- helpers for dealing with layer state transitations ---
+    bool OnLowerLayerUp();
+    bool OnLowerLayerDown();
+    bool OnTxReady();
+    bool SetTxSegment(ITransportSegment& segments);
 
-	void ResetReadFCB()
-	{
-		nextReadFCB = true;
-	}
-	void ResetWriteFCB()
-	{
-		nextWriteFCB = true;
-	}
-	void ToggleReadFCB()
-	{
-		nextReadFCB = !nextReadFCB;
-	}
-	void ToggleWriteFCB()
-	{
-		nextWriteFCB = !nextWriteFCB;
-	}
+    // --- helpers for formatting user data messages ---
+    openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const openpal::RSlice& tpdu);
+    openpal::RSlice FormatPrimaryBufferWithConfirmed(const Addresses& addr, const openpal::RSlice& tpdu, bool FCB);
 
-	// --- helpers for dealing with layer state transitations ---
-	bool OnLowerLayerUp();
-	bool OnLowerLayerDown();
-	bool OnTxReady();
-	bool SetTxSegment(ITransportSegment& segments);
+    // --- Helpers for queueing frames ---
+    void QueueAck(uint16_t destination);
+    void QueueLinkStatus(uint16_t destination);
+    void QueueResetLinks(uint16_t destination);
+    void QueueRequestLinkStatus(uint16_t destination);
 
-	// --- helpers for formatting user data messages ---
-	openpal::RSlice FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const openpal::RSlice& tpdu);
-	openpal::RSlice FormatPrimaryBufferWithConfirmed(const Addresses& addr, const openpal::RSlice& tpdu, bool FCB);
+    void QueueTransmit(const openpal::RSlice& buffer, bool primary);
 
-	// --- Helpers for queueing frames ---
-	void QueueAck(uint16_t destination);
-	void QueueLinkStatus(uint16_t destination);
-	void QueueResetLinks(uint16_t destination);
-	void QueueRequestLinkStatus(uint16_t destination);
+    // --- public members ----
 
-	void QueueTransmit(const openpal::RSlice& buffer, bool primary);
+    void ResetRetry();
+    bool Retry();
+    void PushDataUp(const Message& message);
+    void CompleteSendOperation();
+    void TryStartTransmission();
+    void OnKeepAliveTimeout();
+    void OnResponseTimeout();
+    void StartResponseTimer();
+    void StartKeepAliveTimer(const openpal::MonotonicTimestamp& expiration);
+    void CancelTimer();
+    void FailKeepAlive(bool timeout);
+    void CompleteKeepAlive();
+    bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata);
+    bool TryPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
 
-	// --- public members ----
+    // buffers used for primary and secondary requests
+    openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> priTxBuffer;
+    openpal::StaticBuffer<LPDU_HEADER_SIZE> secTxBuffer;
 
-	void ResetRetry();
-	bool Retry();
-	void PushDataUp(const Message& message);
-	void CompleteSendOperation();
-	void TryStartTransmission();
-	void OnKeepAliveTimeout();
-	void OnResponseTimeout();
-	void StartResponseTimer();
-	void StartKeepAliveTimer(const openpal::MonotonicTimestamp& expiration);
-	void CancelTimer();
-	void FailKeepAlive(bool timeout);
-	void CompleteKeepAlive();
-	bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata);
-	bool TryPendingTx(openpal::Settable<openpal::RSlice>& pending, bool primary);
+    openpal::Settable<openpal::RSlice> pendingPriTx;
+    openpal::Settable<openpal::RSlice> pendingSecTx;
 
-	// buffers used for primary and secondary requests
-	openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> priTxBuffer;
-	openpal::StaticBuffer<LPDU_HEADER_SIZE> secTxBuffer;
+    openpal::Logger logger;
+    const LinkLayerConfig config;
+    ITransportSegment* pSegments;
+    LinkTransmitMode txMode;
+    uint32_t numRetryRemaining;
 
-	openpal::Settable<openpal::RSlice> pendingPriTx;
-	openpal::Settable<openpal::RSlice> pendingSecTx;
+    const std::shared_ptr<openpal::IExecutor> executor;
 
-	openpal::Logger logger;
-	const LinkLayerConfig config;
-	ITransportSegment* pSegments;
-	LinkTransmitMode txMode;
-	uint32_t numRetryRemaining;
+    openpal::TimerRef rspTimeoutTimer;
+    openpal::TimerRef keepAliveTimer;
+    bool nextReadFCB;
+    bool nextWriteFCB;
+    bool isOnline;
+    bool isRemoteReset;
+    bool keepAliveTimeout;
+    openpal::MonotonicTimestamp lastMessageTimestamp;
+    StackStatistics::Link statistics;
 
-	const std::shared_ptr<openpal::IExecutor> executor;
+    ILinkTx* linktx = nullptr;
 
-	openpal::TimerRef rspTimeoutTimer;
-	openpal::TimerRef keepAliveTimer;
-	bool nextReadFCB;
-	bool nextWriteFCB;
-	bool isOnline;
-	bool isRemoteReset;
-	bool keepAliveTimeout;
-	openpal::MonotonicTimestamp lastMessageTimestamp;
-	StackStatistics::Link statistics;
+    PriStateBase* pPriState;
+    SecStateBase* pSecState;
 
-	ILinkTx* linktx = nullptr;
+    const std::shared_ptr<opendnp3::ILinkListener> listener;
+    const std::shared_ptr<IUpperLayer> upper;
 
-	PriStateBase* pPriState;
-	SecStateBase* pSecState;
-
-	const std::shared_ptr<opendnp3::ILinkListener> listener;
-	const std::shared_ptr<IUpperLayer> upper;
-
-	ILinkSession* pSession;
+    ILinkSession* pSession;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

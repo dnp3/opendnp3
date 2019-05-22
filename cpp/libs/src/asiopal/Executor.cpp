@@ -20,9 +20,9 @@
  */
 
 #include "asiopal/Executor.h"
-#include "asiopal/Timer.h"
 
 #include "asiopal/TimeConversions.h"
+#include "asiopal/Timer.h"
 
 #include <chrono>
 
@@ -31,88 +31,80 @@ using namespace openpal;
 namespace asiopal
 {
 
-Executor::Executor(const std::shared_ptr<IO>& io) :
-	io(io),
-	strand(io->service)
-{
-
-}
+Executor::Executor(const std::shared_ptr<IO>& io) : io(io), strand(io->service) {}
 
 MonotonicTimestamp Executor::GetTime()
 {
-	return TimeConversions::Convert(steady_clock_t::now());
+    return TimeConversions::Convert(steady_clock_t::now());
 }
 
 ITimer* Executor::Start(const TimeDuration& delay, const action_t& runnable)
 {
-	const auto now = steady_clock_t::now();
-	const auto max_ms = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::time_point::max() - now).count();
-	const auto expiration = (delay.milliseconds > max_ms) ? steady_clock_t::time_point::max() : (now + std::chrono::milliseconds(delay.milliseconds));
+    const auto now = steady_clock_t::now();
+    const auto max_ms
+        = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::time_point::max() - now).count();
+    const auto expiration = (delay.milliseconds > max_ms) ? steady_clock_t::time_point::max()
+                                                          : (now + std::chrono::milliseconds(delay.milliseconds));
 
-	return Start(expiration, runnable);
+    return Start(expiration, runnable);
 }
 
 ITimer* Executor::Start(const MonotonicTimestamp& time, const action_t& runnable)
 {
-	return Start(TimeConversions::Convert(time), runnable);
+    return Start(TimeConversions::Convert(time), runnable);
 }
 
 openpal::ITimer* Executor::Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable)
 {
-	auto timer = std::make_shared<Timer>(this->strand.get_io_context());
+    auto timer = std::make_shared<Timer>(this->strand.get_io_context());
 
-	timer->timer.expires_at(expiration);
+    timer->timer.expires_at(expiration);
 
-	// neither the executor nor the timer can be deleted while the timer is still active
-	auto callback = [timer, runnable, self = shared_from_this()](const std::error_code & ec)
-	{
-		if (!ec)   // an error indicate timer was canceled
-		{
-			runnable();
-		}
-	};
+    // neither the executor nor the timer can be deleted while the timer is still active
+    auto callback = [timer, runnable, self = shared_from_this()](const std::error_code& ec) {
+        if (!ec) // an error indicate timer was canceled
+        {
+            runnable();
+        }
+    };
 
-	timer->timer.async_wait(strand.wrap(callback));
+    timer->timer.async_wait(strand.wrap(callback));
 
-	return timer.get();
+    return timer.get();
 }
 
 void Executor::Post(const action_t& runnable)
 {
-	auto callback = [runnable, self = shared_from_this()]()
-	{
-		runnable();
-	};
-	strand.post(callback);
+    auto callback = [runnable, self = shared_from_this()]() { runnable(); };
+    strand.post(callback);
 }
 
 void Executor::BlockUntil(const std::function<void()>& action)
 {
-	if (strand.running_in_this_thread())
-	{
-		action();
-		return;
-	}
+    if (strand.running_in_this_thread())
+    {
+        action();
+        return;
+    }
 
-	std::promise<bool> ready;
+    std::promise<bool> ready;
 
-	auto future = ready.get_future();
+    auto future = ready.get_future();
 
-	auto run = [&]
-	{
-		action();
-		ready.set_value(true);
-	};
+    auto run = [&] {
+        action();
+        ready.set_value(true);
+    };
 
-	strand.post(run);
+    strand.post(run);
 
-	future.wait();
+    future.wait();
 }
 
 void Executor::BlockUntilAndFlush(const std::function<void()>& action)
 {
-	this->BlockUntil(action);
-	this->BlockUntil([]() {});
+    this->BlockUntil(action);
+    this->BlockUntil([]() {});
 }
 
-}
+} // namespace asiopal

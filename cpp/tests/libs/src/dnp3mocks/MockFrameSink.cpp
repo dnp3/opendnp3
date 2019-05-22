@@ -25,75 +25,74 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockFrameSink::MockFrameSink() : m_num_frames(0), mLowerOnline(false)
-{}
+MockFrameSink::MockFrameSink() : m_num_frames(0), mLowerOnline(false) {}
 
 bool MockFrameSink::OnLowerLayerUp()
 {
-	mLowerOnline = true;
-	return true;
+    mLowerOnline = true;
+    return true;
 }
 
 bool MockFrameSink::OnLowerLayerDown()
 {
-	mLowerOnline = false;
-	return true;
+    mLowerOnline = false;
+    return true;
 }
 
 void MockFrameSink::Reset()
 {
-	this->received.Clear();
-	m_num_frames = 0;
+    this->received.Clear();
+    m_num_frames = 0;
 }
 
 bool MockFrameSink::CheckLast(LinkFunction func, bool isMaster, uint16_t dest, uint16_t src)
 {
-	return (m_last_header.func == func) && (isMaster == m_last_header.isFromMaster) && (m_last_header.src == src) && (m_last_header.dest == dest);
+    return (m_last_header.func == func) && (isMaster == m_last_header.isFromMaster) && (m_last_header.src == src)
+        && (m_last_header.dest == dest);
 }
 
 bool MockFrameSink::CheckLastWithFCB(LinkFunction func, bool isMaster, bool aFcb, uint16_t dest, uint16_t src)
 {
-	return (m_last_header.fcb == aFcb) && CheckLast(func, isMaster, dest, src);
+    return (m_last_header.fcb == aFcb) && CheckLast(func, isMaster, dest, src);
 }
 
 bool MockFrameSink::CheckLastWithDFC(LinkFunction func, bool isMaster, bool aIsRcvBuffFull, uint16_t dest, uint16_t src)
 {
-	return  (m_last_header.fcvdfc == aIsRcvBuffFull) && CheckLast(func, isMaster, dest, src);
+    return (m_last_header.fcvdfc == aIsRcvBuffFull) && CheckLast(func, isMaster, dest, src);
 }
 
 bool MockFrameSink::OnTxReady()
 {
-	return true;
+    return true;
 }
 
 bool MockFrameSink::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
-	++m_num_frames;
+    ++m_num_frames;
 
-	this->m_last_header = header;
+    this->m_last_header = header;
 
-	if (userdata.IsNotEmpty())
-	{
-		this->received.Write(userdata);
-	}
+    if (userdata.IsNotEmpty())
+    {
+        this->received.Write(userdata);
+    }
 
-	return true;
+    return true;
 }
 
-void MockFrameSink::AddAction(std::function<void ()> fun)
+void MockFrameSink::AddAction(std::function<void()> fun)
 {
-	m_actions.push_back(fun);
+    m_actions.push_back(fun);
 }
 
 void MockFrameSink::ExecuteAction()
 {
-	if(m_actions.size() > 0)
-	{
-		auto f = m_actions.front();
-		m_actions.pop_front();
-		f();
-	}
+    if (m_actions.size() > 0)
+    {
+        auto f = m_actions.front();
+        m_actions.pop_front();
+        f();
+    }
 }
 
-}
-
+} // namespace opendnp3

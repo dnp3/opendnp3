@@ -28,43 +28,38 @@
 namespace opendnp3
 {
 
-
 class MockLinkListener final : public ILinkListener
 {
 public:
+    MockLinkListener() : numKeepAliveTransmissions(0), numKeepAliveFailure(0), numKeepAliveReplys(0) {}
 
-	MockLinkListener() : numKeepAliveTransmissions(0), numKeepAliveFailure(0), numKeepAliveReplys(0)
-	{}
+    virtual void OnStateChange(LinkStatus value) override
+    {
+        statusValues.push_back(value);
+    }
 
-	virtual void OnStateChange(LinkStatus value) override
-	{
-		statusValues.push_back(value);
-	}
+    virtual void OnKeepAliveInitiated() override
+    {
+        ++numKeepAliveTransmissions;
+    }
 
-	virtual void OnKeepAliveInitiated() override
-	{
-		++numKeepAliveTransmissions;
-	}
+    virtual void OnKeepAliveFailure() override
+    {
+        ++numKeepAliveFailure;
+    }
 
-	virtual void OnKeepAliveFailure() override
-	{
-		++numKeepAliveFailure;
-	}
+    virtual void OnKeepAliveSuccess() override
+    {
+        ++numKeepAliveReplys;
+    }
 
-	virtual void OnKeepAliveSuccess() override
-	{
-		++numKeepAliveReplys;
-	}
+    uint32_t numKeepAliveTransmissions;
+    uint32_t numKeepAliveFailure;
+    uint32_t numKeepAliveReplys;
 
-	uint32_t numKeepAliveTransmissions;
-	uint32_t numKeepAliveFailure;
-	uint32_t numKeepAliveReplys;
-
-	std::vector< LinkStatus > statusValues;
-
+    std::vector<LinkStatus> statusValues;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

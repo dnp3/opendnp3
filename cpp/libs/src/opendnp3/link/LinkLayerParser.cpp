@@ -20,323 +20,311 @@
  */
 #include "LinkLayerParser.h"
 
-#include "opendnp3/link/CRC.h"
-#include "opendnp3/link/IFrameSink.h"
+#include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
-
-#include <openpal/logging/LogMacros.h>
+#include "opendnp3/link/CRC.h"
+#include "opendnp3/link/IFrameSink.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-LinkLayerParser::LinkLayerParser(const Logger& logger) :
-	logger(logger),
-	state(State::FindSync),
-	frameSize(0),
-	buffer(rxBuffer, LPDU_MAX_FRAME_SIZE)
+LinkLayerParser::LinkLayerParser(const Logger& logger)
+    : logger(logger), state(State::FindSync), frameSize(0), buffer(rxBuffer, LPDU_MAX_FRAME_SIZE)
 {
-
 }
 
 void LinkLayerParser::Reset()
 {
-	state = State::FindSync;
-	frameSize = 0;
-	buffer.Reset();
+    state = State::FindSync;
+    frameSize = 0;
+    buffer.Reset();
 }
 
 WSlice LinkLayerParser::WriteBuff() const
 {
-	return WSlice(buffer.WriteBuff(), buffer.NumWriteBytes());
+    return WSlice(buffer.WriteBuff(), buffer.NumWriteBytes());
 }
 
 void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink& sink)
 {
-	buffer.AdvanceWrite(numBytes);
+    buffer.AdvanceWrite(numBytes);
 
-	while (ParseUntilComplete() == State::Complete)
-	{
-		++statistics.numLinkFrameRx;
-		this->PushFrame(sink);
-		state = State::FindSync;
-	}
+    while (ParseUntilComplete() == State::Complete)
+    {
+        ++statistics.numLinkFrameRx;
+        this->PushFrame(sink);
+        state = State::FindSync;
+    }
 
-	buffer.Shift();
+    buffer.Shift();
 }
 
 LinkLayerParser::State LinkLayerParser::ParseUntilComplete()
 {
-	auto lastState = this->state;
-	// continue as long as we're making progress, i.e. a state change
-	while ((this->state = ParseOneStep()) != lastState)
-	{
-		lastState = state;
-	}
-	return state;
+    auto lastState = this->state;
+    // continue as long as we're making progress, i.e. a state change
+    while ((this->state = ParseOneStep()) != lastState)
+    {
+        lastState = state;
+    }
+    return state;
 }
 
 LinkLayerParser::State LinkLayerParser::ParseOneStep()
 {
-	switch (state)
-	{
-	case(State::FindSync) :
-		return ParseSync();
-	case(State::ReadHeader) :
-		return ParseHeader();
-	case(State::ReadBody) :
-		return ParseBody();
-	default:
-		return state;
-	}
+    switch (state)
+    {
+    case (State::FindSync):
+        return ParseSync();
+    case (State::ReadHeader):
+        return ParseHeader();
+    case (State::ReadBody):
+        return ParseBody();
+    default:
+        return state;
+    }
 }
 
 LinkLayerParser::State LinkLayerParser::ParseSync()
 {
-	if (this->buffer.NumBytesRead() >= 10)// && buffer.Sync())
-	{
-		uint32_t skipCount = 0;
-		const auto synced = buffer.Sync(skipCount);
-		if (skipCount > 0)
-		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Skipped %u bytes seaching for start bytes", skipCount);
-		}
+    if (this->buffer.NumBytesRead() >= 10) // && buffer.Sync())
+    {
+        uint32_t skipCount = 0;
+        const auto synced = buffer.Sync(skipCount);
+        if (skipCount > 0)
+        {
+            FORMAT_LOG_BLOCK(logger, flags::WARN, "Skipped %u bytes seaching for start bytes", skipCount);
+        }
 
-		return synced ? State::ReadHeader : State::FindSync;
-	}
-	else
-	{
-		return State::FindSync;
-	}
+        return synced ? State::ReadHeader : State::FindSync;
+    }
+    else
+    {
+        return State::FindSync;
+    }
 }
 
 LinkLayerParser::State LinkLayerParser::ParseHeader()
 {
-	if (this->buffer.NumBytesRead() >= 10)
-	{
-		if (this->ReadHeader())
-		{
-			return State::ReadBody;
-		}
-		else
-		{
-			this->FailFrame();
-			return State::FindSync;
-		}
-	}
-	else
-	{
-		return State::ReadHeader;
-	}
+    if (this->buffer.NumBytesRead() >= 10)
+    {
+        if (this->ReadHeader())
+        {
+            return State::ReadBody;
+        }
+        else
+        {
+            this->FailFrame();
+            return State::FindSync;
+        }
+    }
+    else
+    {
+        return State::ReadHeader;
+    }
 }
 
 LinkLayerParser::State LinkLayerParser::ParseBody()
 {
-	if (buffer.NumBytesRead() < this->frameSize)
-	{
-		return State::ReadBody;
-	}
-	else
-	{
-		if(this->ValidateBody())
-		{
-			this->TransferUserData();
-			return State::Complete;
-		}
-		else
-		{
-			this->FailFrame();
-			return State::FindSync;
-		}
-	}
+    if (buffer.NumBytesRead() < this->frameSize)
+    {
+        return State::ReadBody;
+    }
+    else
+    {
+        if (this->ValidateBody())
+        {
+            this->TransferUserData();
+            return State::Complete;
+        }
+        else
+        {
+            this->FailFrame();
+            return State::FindSync;
+        }
+    }
 }
-
-
 
 void LinkLayerParser::PushFrame(IFrameSink& sink)
 {
-	LinkHeaderFields fields(
-	    header.GetFuncEnum(),
-	    header.IsFromMaster(),
-	    header.IsFcbSet(),
-	    header.IsFcvDfcSet(),
-	    header.GetDest(),
-	    header.GetSrc()
-	);
+    LinkHeaderFields fields(header.GetFuncEnum(), header.IsFromMaster(), header.IsFcbSet(), header.IsFcvDfcSet(),
+                            header.GetDest(), header.GetSrc());
 
-	sink.OnFrame(fields, userData);
+    sink.OnFrame(fields, userData);
 
-	buffer.AdvanceRead(frameSize);
+    buffer.AdvanceRead(frameSize);
 }
 
 void LinkLayerParser::TransferUserData()
 {
-	uint32_t len = header.GetLength() - LPDU_MIN_LENGTH;
-	LinkFrame::ReadUserData(buffer.ReadBuffer() + LPDU_HEADER_SIZE, rxBuffer, len);
-	userData = RSlice(rxBuffer, len);
+    uint32_t len = header.GetLength() - LPDU_MIN_LENGTH;
+    LinkFrame::ReadUserData(buffer.ReadBuffer() + LPDU_HEADER_SIZE, rxBuffer, len);
+    userData = RSlice(rxBuffer, len);
 }
 
 bool LinkLayerParser::ReadHeader()
 {
-	header.Read(buffer.ReadBuffer());
-	if (CRC::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
-	{
-		if (ValidateHeaderParameters())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	else
-	{
-		++statistics.numHeaderCrcError;
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "CRC failure in header");
-		return false;
-	}
+    header.Read(buffer.ReadBuffer());
+    if (CRC::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
+    {
+        if (ValidateHeaderParameters())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        ++statistics.numHeaderCrcError;
+        SIMPLE_LOG_BLOCK(logger, flags::WARN, "CRC failure in header");
+        return false;
+    }
 }
 
 bool LinkLayerParser::ValidateBody()
 {
-	uint32_t len = header.GetLength() - LPDU_MIN_LENGTH;
-	if (LinkFrame::ValidateBodyCRC(buffer.ReadBuffer() + LPDU_HEADER_SIZE, len))
-	{
-		FORMAT_LOG_BLOCK(logger, flags::LINK_RX,
-		                 "Function: %s Dest: %u Source: %u Length: %u",
-		                 LinkFunctionToString(header.GetFuncEnum()),
-		                 header.GetDest(),
-		                 header.GetSrc(),
-		                 header.GetLength());
+    uint32_t len = header.GetLength() - LPDU_MIN_LENGTH;
+    if (LinkFrame::ValidateBodyCRC(buffer.ReadBuffer() + LPDU_HEADER_SIZE, len))
+    {
+        FORMAT_LOG_BLOCK(logger, flags::LINK_RX, "Function: %s Dest: %u Source: %u Length: %u",
+                         LinkFunctionToString(header.GetFuncEnum()), header.GetDest(), header.GetSrc(),
+                         header.GetLength());
 
-		FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer.ReadBuffer().Take(frameSize), 10, 18);
+        FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer.ReadBuffer().Take(frameSize), 10, 18);
 
-		return true;
-	}
-	else
-	{
-		++this->statistics.numBodyCrcError;
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "CRC failure in body");
-		return false;
-	}
+        return true;
+    }
+    else
+    {
+        ++this->statistics.numBodyCrcError;
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "CRC failure in body");
+        return false;
+    }
 }
 
 bool LinkLayerParser::ValidateHeaderParameters()
 {
-	if(!header.ValidLength())
-	{
-		++statistics.numBadLength;
-		FORMAT_LOG_BLOCK(logger, flags::ERR, "LENGTH out of range [5,255]: %i", header.GetLength());
-		return false;
-	}
+    if (!header.ValidLength())
+    {
+        ++statistics.numBadLength;
+        FORMAT_LOG_BLOCK(logger, flags::ERR, "LENGTH out of range [5,255]: %i", header.GetLength());
+        return false;
+    }
 
-	//Now make sure that the function code is known and that the FCV is appropriate
-	if (!this->ValidateFunctionCode())
-	{
-		return false;
-	}
+    // Now make sure that the function code is known and that the FCV is appropriate
+    if (!this->ValidateFunctionCode())
+    {
+        return false;
+    }
 
-	uint8_t user_data_length = header.GetLength() - LPDU_MIN_LENGTH;
-	frameSize = LinkFrame::CalcFrameSize(user_data_length);
-	LinkFunction func = header.GetFuncEnum();
+    uint8_t user_data_length = header.GetLength() - LPDU_MIN_LENGTH;
+    frameSize = LinkFrame::CalcFrameSize(user_data_length);
+    LinkFunction func = header.GetFuncEnum();
 
-	const bool has_payload = user_data_length > 0;
-	const bool should_have_payload = (func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA);
+    const bool has_payload = user_data_length > 0;
+    const bool should_have_payload
+        = (func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA);
 
-	// make sure that the presence/absence of user data matches the function code
-	if(should_have_payload && !has_payload)
-	{
-		++statistics.numBadLength;
-		FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s", LinkFunctionToString(func));
-		return false;
-	}
+    // make sure that the presence/absence of user data matches the function code
+    if (should_have_payload && !has_payload)
+    {
+        ++statistics.numBadLength;
+        FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s", LinkFunctionToString(func));
+        return false;
+    }
 
-	if (!should_have_payload && has_payload)
-	{
-		++statistics.numBadLength;
-		FORMAT_LOG_BLOCK(logger, flags::ERR, "Unexpected LENGTH in frame: %i with FUNCTION: %s", user_data_length, LinkFunctionToString(func));
-		return false;
-	}
+    if (!should_have_payload && has_payload)
+    {
+        ++statistics.numBadLength;
+        FORMAT_LOG_BLOCK(logger, flags::ERR, "Unexpected LENGTH in frame: %i with FUNCTION: %s", user_data_length,
+                         LinkFunctionToString(func));
+        return false;
+    }
 
-	// calculate the total frame size
-	frameSize = LinkFrame::CalcFrameSize(user_data_length);
+    // calculate the total frame size
+    frameSize = LinkFrame::CalcFrameSize(user_data_length);
 
-	return true;
+    return true;
 }
 
 void LinkLayerParser::FailFrame()
 {
-	// All you have to do is advance the reader by one, when the resync happens the data will disappear
-	buffer.AdvanceRead(1);
+    // All you have to do is advance the reader by one, when the resync happens the data will disappear
+    buffer.AdvanceRead(1);
 }
 
 bool LinkLayerParser::ValidateFunctionCode()
 {
-	//Now make sure that the function code is known and that the FCV is appropriate
-	if(header.IsPriToSec())
-	{
-		bool fcv_set = false;
+    // Now make sure that the function code is known and that the FCV is appropriate
+    if (header.IsPriToSec())
+    {
+        bool fcv_set = false;
 
-		switch(header.GetFuncEnum())
-		{
-		case(LinkFunction::PRI_CONFIRMED_USER_DATA):
-		case(LinkFunction::PRI_TEST_LINK_STATES):
-			fcv_set = true;
-			break;
-		case(LinkFunction::PRI_REQUEST_LINK_STATUS):
-		case(LinkFunction::PRI_RESET_LINK_STATES):
-		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
-			break;
-		default:
-			{
-				++statistics.numBadFunctionCode;
-				FORMAT_LOG_BLOCK(logger, flags::WARN, "Unknown PriToSec FUNCTION: %s", LinkFunctionToString(header.GetFuncEnum()));
-				return false;
-			}
-		}
+        switch (header.GetFuncEnum())
+        {
+        case (LinkFunction::PRI_CONFIRMED_USER_DATA):
+        case (LinkFunction::PRI_TEST_LINK_STATES):
+            fcv_set = true;
+            break;
+        case (LinkFunction::PRI_REQUEST_LINK_STATUS):
+        case (LinkFunction::PRI_RESET_LINK_STATES):
+        case (LinkFunction::PRI_UNCONFIRMED_USER_DATA):
+            break;
+        default:
+        {
+            ++statistics.numBadFunctionCode;
+            FORMAT_LOG_BLOCK(logger, flags::WARN, "Unknown PriToSec FUNCTION: %s",
+                             LinkFunctionToString(header.GetFuncEnum()));
+            return false;
+        }
+        }
 
-		//now check the fcv
-		if(fcv_set != header.IsFcvDfcSet())
-		{
-			++statistics.numBadFCV;
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Bad FCV for FUNCTION: %s", LinkFunctionToString(header.GetFuncEnum()));
-			return false;
-		}
+        // now check the fcv
+        if (fcv_set != header.IsFcvDfcSet())
+        {
+            ++statistics.numBadFCV;
+            FORMAT_LOG_BLOCK(logger, flags::WARN, "Bad FCV for FUNCTION: %s",
+                             LinkFunctionToString(header.GetFuncEnum()));
+            return false;
+        }
 
-		//if fcv isn't expected to be set, fcb can be either 1 or 0, doesn't matter
+        // if fcv isn't expected to be set, fcb can be either 1 or 0, doesn't matter
+    }
+    else // SecToPri - just validate the function codes and that FCB is 0
+    {
+        switch (header.GetFuncEnum())
+        {
+        case (LinkFunction::SEC_ACK):
+        case (LinkFunction::SEC_NACK):
+        case (LinkFunction::SEC_LINK_STATUS):
+        case (LinkFunction::SEC_NOT_SUPPORTED):
+            break;
+        default:
+        {
+            ++statistics.numBadFunctionCode;
+            FORMAT_LOG_BLOCK(logger, flags::ERR, "Unknown SecToPri FUNCTION: %s",
+                             LinkFunctionToString(header.GetFuncEnum()));
+            return false;
+        }
+        }
 
-	}
-	else   // SecToPri - just validate the function codes and that FCB is 0
-	{
-		switch(header.GetFuncEnum())
-		{
-		case(LinkFunction::SEC_ACK):
-		case(LinkFunction::SEC_NACK):
-		case(LinkFunction::SEC_LINK_STATUS):
-		case(LinkFunction::SEC_NOT_SUPPORTED):
-			break;
-		default:
-			{
-				++statistics.numBadFunctionCode;
-				FORMAT_LOG_BLOCK(logger, flags::ERR, "Unknown SecToPri FUNCTION: %s", LinkFunctionToString(header.GetFuncEnum()));
-				return false;
-			}
-		}
+        // now check the fcb, it should always be zero
+        if (header.IsFcbSet())
+        {
+            ++statistics.numBadFCB;
+            FORMAT_LOG_BLOCK(logger, flags::ERR, "FCB set for SecToPri FUNCTION: %s",
+                             LinkFunctionToString(header.GetFuncEnum()));
+            return false;
+        }
+    }
 
-		//now check the fcb, it should always be zero
-		if(header.IsFcbSet())
-		{
-			++statistics.numBadFCB;
-			FORMAT_LOG_BLOCK(logger, flags::ERR, "FCB set for SecToPri FUNCTION: %s", LinkFunctionToString(header.GetFuncEnum()));
-			return false;
-		}
-	}
-
-	return true; //valid!
+    return true; // valid!
 }
 
-}
-
+} // namespace opendnp3

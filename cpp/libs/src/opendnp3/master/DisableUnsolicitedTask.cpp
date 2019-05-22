@@ -20,32 +20,33 @@
  */
 #include "DisableUnsolicitedTask.h"
 
-#include "opendnp3/app/APDUBuilders.h"
-
 #include "MasterTasks.h"
+
+#include "opendnp3/app/APDUBuilders.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-DisableUnsolicitedTask::DisableUnsolicitedTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger) :
-	IMasterTask(context, application, behavior, logger, TaskConfig::Default())
+DisableUnsolicitedTask::DisableUnsolicitedTask(const std::shared_ptr<TaskContext>& context,
+                                               IMasterApplication& application,
+                                               const TaskBehavior& behavior,
+                                               openpal::Logger logger)
+    : IMasterTask(context, application, behavior, logger, TaskConfig::Default())
 {
-
 }
 
 bool DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	build::DisableUnsolicited(request, seq);
-	return true;
+    build::DisableUnsolicited(request, seq);
+    return true;
 }
 
-IMasterTask::ResponseResult DisableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
+IMasterTask::ResponseResult DisableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+                                                                    const openpal::RSlice& objects)
 {
-	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+    return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-
-} //end ns
-
+} // namespace opendnp3

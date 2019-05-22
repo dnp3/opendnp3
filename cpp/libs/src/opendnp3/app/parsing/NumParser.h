@@ -21,11 +21,11 @@
 #ifndef OPENDNP3_NUMPARSER_H
 #define OPENDNP3_NUMPARSER_H
 
-#include <openpal/logging/Logger.h>
 #include <openpal/container/RSlice.h>
+#include <openpal/logging/Logger.h>
 
-#include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/Range.h"
+#include "opendnp3/app/parsing/ParseResult.h"
 
 namespace opendnp3
 {
@@ -33,37 +33,35 @@ namespace opendnp3
 // A one or two byte unsigned integer parser
 class NumParser
 {
-	// a function that consumes bytes from a buffer and returns a uint16_t count
-	typedef uint16_t(*ReadFun)(openpal::RSlice& buffer);
+    // a function that consumes bytes from a buffer and returns a uint16_t count
+    typedef uint16_t (*ReadFun)(openpal::RSlice& buffer);
 
 public:
+    uint8_t NumBytes() const;
 
-	uint8_t NumBytes() const;
+    ParseResult ParseCount(openpal::RSlice& buffer, uint16_t& count, openpal::Logger* pLogger) const;
+    ParseResult ParseRange(openpal::RSlice& buffer, Range& range, openpal::Logger* pLogger) const;
 
-	ParseResult ParseCount(openpal::RSlice& buffer, uint16_t& count, openpal::Logger* pLogger) const;
-	ParseResult ParseRange(openpal::RSlice& buffer, Range& range, openpal::Logger* pLogger) const;
+    uint16_t ReadNum(openpal::RSlice& buffer) const;
 
-	uint16_t ReadNum(openpal::RSlice& buffer) const;
-
-	static NumParser OneByte();
-	static NumParser TwoByte();
+    static NumParser OneByte();
+    static NumParser TwoByte();
 
 private:
+    // read the number, consuming from the buffer
+    // return true if there is enough bytes, false otherwise
+    bool Read(uint16_t& num, openpal::RSlice& buffer) const;
 
-	// read the number, consuming from the buffer
-	// return true if there is enough bytes, false otherwise
-	bool Read(uint16_t& num, openpal::RSlice& buffer) const;
+    static uint16_t ReadByte(openpal::RSlice& buffer);
 
-	static uint16_t ReadByte(openpal::RSlice& buffer);
+    NumParser(ReadFun pReadFun, uint8_t size);
 
-	NumParser(ReadFun pReadFun, uint8_t size);
+    ReadFun pReadFun;
+    uint8_t size;
 
-	ReadFun pReadFun;
-	uint8_t size;
-
-	NumParser() = delete;
+    NumParser() = delete;
 };
 
-}
+} // namespace opendnp3
 
 #endif

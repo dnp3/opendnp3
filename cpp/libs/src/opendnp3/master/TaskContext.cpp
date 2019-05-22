@@ -28,24 +28,24 @@ namespace opendnp3
 
 void TaskContext::AddBlock(const IMasterTask& task)
 {
-	this->blocking_tasks.insert(&task);
+    this->blocking_tasks.insert(&task);
 }
 
 void TaskContext::RemoveBlock(const IMasterTask& task)
 {
-	this->blocking_tasks.erase(&task);
+    this->blocking_tasks.erase(&task);
 }
 
 bool TaskContext::IsBlocked(const IMasterTask& task) const
 {
-	for (auto& blocking : this->blocking_tasks)
-	{
-		// is there a block with better priority that's not the same task?
-		if (blocking->Priority() < task.Priority() && (blocking != &task)) return true;
-	}
+    for (auto& blocking : this->blocking_tasks)
+    {
+        // is there a block with better priority that's not the same task?
+        if (blocking->Priority() < task.Priority() && (blocking != &task))
+            return true;
+    }
 
-	return false;
+    return false;
 }
 
-}
-
+} // namespace opendnp3

@@ -21,10 +21,10 @@
 #ifndef OPENDNP3_MOCKLOWERLAYER_H
 #define OPENDNP3_MOCKLOWERLAYER_H
 
+#include <opendnp3/LayerInterfaces.h>
+
 #include <queue>
 #include <string>
-
-#include <opendnp3/LayerInterfaces.h>
 
 namespace opendnp3
 {
@@ -32,26 +32,24 @@ namespace opendnp3
 class MockLowerLayer : public ILowerLayer, public HasUpperLayer
 {
 public:
+    void SendUp(const openpal::RSlice& data, const Addresses& addresses = Addresses());
+    void SendUp(const std::string& hex, const Addresses& addresses = Addresses());
 
-	void SendUp(const openpal::RSlice& data, const Addresses& addresses = Addresses());
-	void SendUp(const std::string& hex, const Addresses& addresses = Addresses());
+    void SendComplete();
+    void ThisLayerUp();
+    void ThisLayerDown();
 
-	void SendComplete();
-	void ThisLayerUp();
-	void ThisLayerDown();
+    bool HasNoData() const;
 
-	bool HasNoData() const;
+    size_t NumWrites() const;
+    std::string PopWriteAsHex();
 
-	size_t NumWrites() const;
-	std::string PopWriteAsHex();
-
-	virtual bool BeginTransmit(const Message& buffer) override final;
+    virtual bool BeginTransmit(const Message& buffer) override final;
 
 private:
-
-	std::queue<Message> sendQueue;
+    std::queue<Message> sendQueue;
 };
 
-}
+} // namespace opendnp3
 
 #endif

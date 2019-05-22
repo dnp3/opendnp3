@@ -21,9 +21,9 @@
 #ifndef OPENPAL_DOUBLE_FLOAT_H
 #define OPENPAL_DOUBLE_FLOAT_H
 
-#include "openpal/util/Uncopyable.h"
 #include "openpal/container/RSlice.h"
 #include "openpal/container/WSlice.h"
+#include "openpal/util/Uncopyable.h"
 
 #include <cstddef>
 
@@ -33,22 +33,21 @@ namespace openpal
 class DoubleFloat : private StaticOnly
 {
 public:
+    static_assert(sizeof(double) == 8, "Unexpected size of double float");
 
-	static_assert(sizeof(double) == 8, "Unexpected size of double float");
+    typedef double Type;
 
-	typedef double Type;
+    static double ReadBuffer(RSlice& buffer);
+    static void WriteBuffer(WSlice& buffer, double value);
 
-	static double ReadBuffer(RSlice& buffer);
-	static void WriteBuffer(WSlice& buffer, double value);
+    static double Read(const uint8_t* data);
+    static void Write(uint8_t* data, double value);
 
-	static double Read(const uint8_t* data);
-	static void Write(uint8_t* data, double value);
-
-	const static std::size_t SIZE = sizeof(double);
-	const static double Max;
-	const static double Min;
+    const static std::size_t SIZE = sizeof(double);
+    const static double Max;
+    const static double Min;
 };
 
-}
+} // namespace openpal
 
 #endif

@@ -20,110 +20,109 @@
  */
 #include "APDUBuilders.h"
 
-#include "opendnp3/objects/Group60.h"
-#include "opendnp3/app/IINField.h"
-
 #include <openpal/serialization/Serialization.h>
 
+#include "opendnp3/app/IINField.h"
+#include "opendnp3/objects/Group60.h"
 
 namespace opendnp3
 {
 namespace build
 {
 
-void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq)
-{
-	ClassRequest(request, FunctionCode::READ, classes, seq);
-}
+    void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq)
+    {
+        ClassRequest(request, FunctionCode::READ, classes, seq);
+    }
 
-void ReadAllObjects(APDURequest& request, GroupVariationID gvId, uint8_t seq)
-{
-	request.SetControl(AppControlField(true, true, false, false, seq));
-	request.SetFunction(FunctionCode::READ);
-	auto writer = request.GetWriter();
-	writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
-}
+    void ReadAllObjects(APDURequest& request, GroupVariationID gvId, uint8_t seq)
+    {
+        request.SetControl(AppControlField(true, true, false, false, seq));
+        request.SetFunction(FunctionCode::READ);
+        auto writer = request.GetWriter();
+        writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
+    }
 
-void ClassRequest(APDURequest& request, FunctionCode fc, const ClassField& classes, uint8_t seq)
-{
-	request.SetControl(AppControlField(true, true, false, false, seq));
-	request.SetFunction(fc);
-	auto writer = request.GetWriter();
-	WriteClassHeaders(writer, classes);
-}
+    void ClassRequest(APDURequest& request, FunctionCode fc, const ClassField& classes, uint8_t seq)
+    {
+        request.SetControl(AppControlField(true, true, false, false, seq));
+        request.SetFunction(fc);
+        auto writer = request.GetWriter();
+        WriteClassHeaders(writer, classes);
+    }
 
-bool WriteClassHeaders(HeaderWriter& writer, const ClassField& classes)
-{
-	if (classes.HasClass1())
-	{
-		if (!writer.WriteHeader(Group60Var2::ID(), QualifierCode::ALL_OBJECTS))
-		{
-			return false;
-		}
-	}
-	if (classes.HasClass2())
-	{
-		if (!writer.WriteHeader(Group60Var3::ID(), QualifierCode::ALL_OBJECTS))
-		{
-			return false;
-		}
-	}
-	if (classes.HasClass3())
-	{
-		if (!writer.WriteHeader(Group60Var4::ID(), QualifierCode::ALL_OBJECTS))
-		{
-			return false;
-		}
-	}
-	if (classes.HasClass0())
-	{
-		if (!writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS))
-		{
-			return false;
-		}
-	}
+    bool WriteClassHeaders(HeaderWriter& writer, const ClassField& classes)
+    {
+        if (classes.HasClass1())
+        {
+            if (!writer.WriteHeader(Group60Var2::ID(), QualifierCode::ALL_OBJECTS))
+            {
+                return false;
+            }
+        }
+        if (classes.HasClass2())
+        {
+            if (!writer.WriteHeader(Group60Var3::ID(), QualifierCode::ALL_OBJECTS))
+            {
+                return false;
+            }
+        }
+        if (classes.HasClass3())
+        {
+            if (!writer.WriteHeader(Group60Var4::ID(), QualifierCode::ALL_OBJECTS))
+            {
+                return false;
+            }
+        }
+        if (classes.HasClass0())
+        {
+            if (!writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS))
+            {
+                return false;
+            }
+        }
 
-	return true;
-}
+        return true;
+    }
 
-void DisableUnsolicited(APDURequest& request, uint8_t seq)
-{
-	ClassRequest(request, FunctionCode::DISABLE_UNSOLICITED, ClassField::AllEventClasses(), seq);
-}
+    void DisableUnsolicited(APDURequest& request, uint8_t seq)
+    {
+        ClassRequest(request, FunctionCode::DISABLE_UNSOLICITED, ClassField::AllEventClasses(), seq);
+    }
 
-void EnableUnsolicited(APDURequest& request, const ClassField& classes, uint8_t seq)
-{
-	ClassRequest(request, FunctionCode::ENABLE_UNSOLICITED, classes, seq);
-}
+    void EnableUnsolicited(APDURequest& request, const ClassField& classes, uint8_t seq)
+    {
+        ClassRequest(request, FunctionCode::ENABLE_UNSOLICITED, classes, seq);
+    }
 
-void ClearRestartIIN(APDURequest& request, uint8_t seq)
-{
-	request.SetFunction(FunctionCode::WRITE);
-	request.SetControl(AppControlField(true, true, false, false, seq));
-	auto writer = request.GetWriter();
-	auto iter = writer.IterateOverSingleBitfield<openpal::UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, static_cast<uint8_t>(IINBit::DEVICE_RESTART));
-	iter.Write(false);
-}
+    void ClearRestartIIN(APDURequest& request, uint8_t seq)
+    {
+        request.SetFunction(FunctionCode::WRITE);
+        request.SetControl(AppControlField(true, true, false, false, seq));
+        auto writer = request.GetWriter();
+        auto iter = writer.IterateOverSingleBitfield<openpal::UInt8>(
+            GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, static_cast<uint8_t>(IINBit::DEVICE_RESTART));
+        iter.Write(false);
+    }
 
-void MeasureDelay(APDURequest& request, uint8_t seq)
-{
-	request.SetFunction(FunctionCode::DELAY_MEASURE);
-	request.SetControl(AppControlField::Request(seq));
-}
+    void MeasureDelay(APDURequest& request, uint8_t seq)
+    {
+        request.SetFunction(FunctionCode::DELAY_MEASURE);
+        request.SetControl(AppControlField::Request(seq));
+    }
 
-void RecordCurrentTime(APDURequest& request, uint8_t seq)
-{
-	request.SetFunction(FunctionCode::RECORD_CURRENT_TIME);
-	request.SetControl(AppControlField::Request(seq));
-}
+    void RecordCurrentTime(APDURequest& request, uint8_t seq)
+    {
+        request.SetFunction(FunctionCode::RECORD_CURRENT_TIME);
+        request.SetControl(AppControlField::Request(seq));
+    }
 
-void NullUnsolicited(APDUResponse& response, uint8_t seq, const IINField& iin)
-{
-	response.SetControl(AppControlField(true, true, true, true, seq));
-	response.SetFunction(FunctionCode::UNSOLICITED_RESPONSE);
-	response.SetIIN(iin);
-}
+    void NullUnsolicited(APDUResponse& response, uint8_t seq, const IINField& iin)
+    {
+        response.SetControl(AppControlField(true, true, true, true, seq));
+        response.SetFunction(FunctionCode::UNSOLICITED_RESPONSE);
+        response.SetIIN(iin);
+    }
 
-}
-}
-
+} // namespace build
+} // namespace opendnp3

@@ -21,61 +21,57 @@
 #ifndef OPENPAL_SERIALIZER_H
 #define OPENPAL_SERIALIZER_H
 
-#include <cstdint>
-
 #include "openpal/container/RSlice.h"
 #include "openpal/container/WSlice.h"
+
+#include <cstdint>
 
 namespace openpal
 {
 
-template <class T>
-class Serializer
+template<class T> class Serializer
 {
 public:
+    typedef bool (*ReadFunc)(RSlice& buffer, T& output);
+    typedef bool (*WriteFunc)(const T& value, WSlice& buffer);
 
-	typedef bool (*ReadFunc)(RSlice& buffer, T& output);
-	typedef bool (*WriteFunc)(const T& value, WSlice& buffer);
+    Serializer() : size(0), pReadFunc(nullptr), pWriteFunc(nullptr) {}
 
-	Serializer() : size(0), pReadFunc(nullptr), pWriteFunc(nullptr)
-	{}
+    Serializer(uint32_t size_, ReadFunc pReadFunc_, WriteFunc pWriteFunc_)
+        : size(size_), pReadFunc(pReadFunc_), pWriteFunc(pWriteFunc_)
+    {
+    }
 
-	Serializer(uint32_t size_, ReadFunc pReadFunc_, WriteFunc pWriteFunc_) :
-		size(size_), pReadFunc(pReadFunc_), pWriteFunc(pWriteFunc_)
-	{}
+    /**
+     * @return The size (in bytes) required for every call to read/write
+     */
+    uint32_t Size() const
+    {
+        return size;
+    }
 
-	/**
-	* @return The size (in bytes) required for every call to read/write
-	*/
-	uint32_t Size() const
-	{
-		return size;
-	}
+    /**
+     * reads the value and advances the read buffer
+     */
+    bool Read(RSlice& buffer, T& output) const
+    {
+        return (*pReadFunc)(buffer, output);
+    }
 
-	/**
-	* reads the value and advances the read buffer
-	*/
-	bool Read(RSlice& buffer, T& output) const
-	{
-		return (*pReadFunc)(buffer, output);
-	}
-
-	/**
-	* writes the value and advances the write buffer
-	*/
-	bool Write(const T& value, WSlice& buffer) const
-	{
-		return (*pWriteFunc)(value, buffer);
-	}
+    /**
+     * writes the value and advances the write buffer
+     */
+    bool Write(const T& value, WSlice& buffer) const
+    {
+        return (*pWriteFunc)(value, buffer);
+    }
 
 private:
-
-	uint32_t size;
-	ReadFunc pReadFunc;
-	WriteFunc pWriteFunc;
-
+    uint32_t size;
+    ReadFunc pReadFunc;
+    WriteFunc pWriteFunc;
 };
 
-}
+} // namespace openpal
 
 #endif

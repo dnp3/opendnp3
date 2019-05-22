@@ -19,21 +19,19 @@
 #ifndef OPENDNP3_LOG_HANDLER_ADAPTER_H
 #define OPENDNP3_LOG_HANDLER_ADAPTER_H
 
-#include <openpal/logging/ILogHandler.h>
-
 #include "GlobalRef.h"
+
+#include <openpal/logging/ILogHandler.h>
 
 class LogHandlerAdapter : public openpal::ILogHandler
 {
 public:
+    LogHandlerAdapter(jobject proxy);
 
-	LogHandlerAdapter(jobject proxy);
-
-	virtual void Log(const openpal::LogEntry& entry);
+    virtual void Log(const openpal::LogEntry& entry);
 
 private:
-
-	GlobalRef proxy;
+    GlobalRef proxy;
 };
 
 #endif

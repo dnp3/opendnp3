@@ -32,81 +32,74 @@ namespace opendnp3
 class Flags
 {
 public:
+    Flags() : value(0) {}
 
-	Flags() : value(0)
-	{}
+    Flags(uint8_t value) : value(value) {}
 
-	Flags(uint8_t value) : value(value)
-	{}
+    inline bool IsSet(BinaryQuality flag) const
+    {
+        return IsSetAny(flag);
+    }
+    inline bool IsSet(AnalogQuality flag) const
+    {
+        return IsSetAny(flag);
+    }
+    inline bool IsSet(CounterQuality flag) const
+    {
+        return IsSetAny(flag);
+    }
+    inline bool IsSet(FrozenCounterQuality flag) const
+    {
+        return IsSetAny(flag);
+    }
+    inline bool IsSet(BinaryOutputStatusQuality flag) const
+    {
+        return IsSetAny(flag);
+    }
+    inline bool IsSet(AnalogOutputStatusQuality flag) const
+    {
+        return IsSetAny(flag);
+    }
 
-	inline bool IsSet(BinaryQuality flag) const
-	{
-		return IsSetAny(flag);
-	}
-	inline bool IsSet(AnalogQuality flag) const
-	{
-		return IsSetAny(flag);
-	}
-	inline bool IsSet(CounterQuality flag) const
-	{
-		return IsSetAny(flag);
-	}
-	inline bool IsSet(FrozenCounterQuality flag) const
-	{
-		return IsSetAny(flag);
-	}
-	inline bool IsSet(BinaryOutputStatusQuality flag) const
-	{
-		return IsSetAny(flag);
-	}
-	inline bool IsSet(AnalogOutputStatusQuality flag) const
-	{
-		return IsSetAny(flag);
-	}
+    inline void Set(BinaryQuality flag)
+    {
+        SetAny(flag);
+    }
+    inline void Set(AnalogQuality flag)
+    {
+        SetAny(flag);
+    }
+    inline void Set(CounterQuality flag)
+    {
+        SetAny(flag);
+    }
+    inline void Set(FrozenCounterQuality flag)
+    {
+        SetAny(flag);
+    }
+    inline void Set(BinaryOutputStatusQuality flag)
+    {
+        SetAny(flag);
+    }
+    inline void Set(AnalogOutputStatusQuality flag)
+    {
+        SetAny(flag);
+    }
 
-	inline void Set(BinaryQuality flag)
-	{
-		SetAny(flag);
-	}
-	inline void Set(AnalogQuality flag)
-	{
-		SetAny(flag);
-	}
-	inline void Set(CounterQuality flag)
-	{
-		SetAny(flag);
-	}
-	inline void Set(FrozenCounterQuality flag)
-	{
-		SetAny(flag);
-	}
-	inline void Set(BinaryOutputStatusQuality flag)
-	{
-		SetAny(flag);
-	}
-	inline void Set(AnalogOutputStatusQuality flag)
-	{
-		SetAny(flag);
-	}
-
-	uint8_t value;
+    uint8_t value;
 
 protected:
+    template<class T> bool IsSetAny(T flag) const
+    {
+        return (value & static_cast<uint8_t>(flag)) != 0;
+    }
 
-	template <class T>
-	bool IsSetAny(T flag) const
-	{
-		return (value & static_cast<uint8_t>(flag)) != 0;
-	}
-
-	template <class T>
-	void SetAny(T flag)
-	{
-		value |= static_cast<uint8_t>(flag);
-	}
+    template<class T> void SetAny(T flag)
+    {
+        value |= static_cast<uint8_t>(flag);
+    }
 };
 
-}
-
+} // namespace opendnp3
 
 #endif

@@ -18,17 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
+#include <opendnp3/link/CRC.h>
 
 #include <testlib/BufferHelpers.h>
 
-#include <opendnp3/link/CRC.h>
+#include <catch.hpp>
 
 #include <iostream>
-#include <vector>
-#include <string>
 #include <sstream>
+#include <string>
+#include <vector>
 
 using namespace std;
 using namespace opendnp3;
@@ -38,9 +37,7 @@ using namespace testlib;
 
 TEST_CASE(SUITE("CrcTest"))
 {
-	HexSequence hs("05 64 05 C0 01 00 00 04 E9 21");
-	REQUIRE(hs.Size() ==  10);
-	REQUIRE(CRC::CalcCrc(hs, 8) == 0x21E9);
+    HexSequence hs("05 64 05 C0 01 00 00 04 E9 21");
+    REQUIRE(hs.Size() == 10);
+    REQUIRE(CRC::CalcCrc(hs, 8) == 0x21E9);
 }
-
-

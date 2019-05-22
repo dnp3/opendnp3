@@ -24,104 +24,103 @@
 
 #include "opendnp3/master/ISOEHandler.h"
 
-#include <mutex>
 #include <condition_variable>
+#include <mutex>
 
 namespace opendnp3
 {
 
 class CountingSOEHandler final : public opendnp3::ISOEHandler
 {
-	std::mutex mutex;
-	std::condition_variable cv;
-	size_t count = 0;
+    std::mutex mutex;
+    std::condition_variable cv;
+    size_t count = 0;
 
 public:
+    void WaitForCount(size_t num, std::chrono::steady_clock::duration timeout)
+    {
+        std::unique_lock<std::mutex> lock(mutex);
+        auto equals_num = [this, num]() -> bool { return this->count == num; };
 
-	void WaitForCount(size_t num, std::chrono::steady_clock::duration timeout)
-	{
-		std::unique_lock<std::mutex> lock(mutex);
-		auto equals_num = [this, num]() -> bool { return this->count == num; };
+        if (!cv.wait_for(lock, timeout, equals_num))
+        {
+            throw std::logic_error("timeout waiting for count");
+        }
+        count -= num;
+    }
 
-		if (!cv.wait_for(lock, timeout, equals_num))
-		{
-			throw std::logic_error("timeout waiting for count");
-		}
-		count -= num;
-	}
+    virtual void Start() override
+    {
+        mutex.lock();
+    }
 
-	virtual void Start() override
-	{
-		mutex.lock();
-	}
+    virtual void End() override
+    {
+        mutex.unlock();
+        cv.notify_all();
+    }
 
-	virtual void End() override
-	{
-		mutex.unlock();
-		cv.notify_all();
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override
+    {
+        count += values.Count();
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override
+    {
+        count += values.Count();
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override
+    {
+        count += values.Count();
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override
+    {
+        count += values.Count();
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override
+    {
+        count += values.Count();
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override
+    {
+        count += values.Count();
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override
+    {
+        count += values.Count();
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override
-	{
-		count += values.Count();
-	}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override
-	{
-		count += values.Count();
-	}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override
-	{
-		count += values.Count();
-	}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override
-	{
-		count += values.Count();
-	}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override
-	{
-		count += values.Count();
-	}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override
-	{
-		count += values.Count();
-	}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override
-	{
-		count += values.Count();
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override
+    {
+        count += values.Count();
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override
-	{
-		count += values.Count();
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override
+    {
+        count += values.Count();
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override
-	{
-		count += values.Count();
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override
+    {
+        count += values.Count();
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override
-	{
-		count += values.Count();
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override
+    {
+        count += values.Count();
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override
-	{
-		count += values.Count();
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override
+    {
+        count += values.Count();
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override
-	{
-		count += values.Count();
-	}
-
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override
-	{
-		count += values.Count();
-	}
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::DNPTime>& values) override
+    {
+        count += values.Count();
+    }
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

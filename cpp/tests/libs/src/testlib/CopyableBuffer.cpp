@@ -22,10 +22,10 @@
 
 #include "HexConversions.h"
 
-#include <memory.h>
-
-#include <openpal/util/ToHex.h>
 #include <openpal/container/WSlice.h>
+#include <openpal/util/ToHex.h>
+
+#include <memory.h>
 
 using namespace testlib;
 
@@ -34,80 +34,68 @@ namespace testlib
 
 std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 {
-	output << "[" << ToHex(arBuff.ToRSlice(), true) << "]";
-	return output;
+    output << "[" << ToHex(arBuff.ToRSlice(), true) << "]";
+    return output;
 }
 
-CopyableBuffer::CopyableBuffer() :
-	buffer(nullptr),
-	size(0)
+CopyableBuffer::CopyableBuffer() : buffer(nullptr), size(0) {}
+
+CopyableBuffer::CopyableBuffer(uint32_t size) : buffer(new uint8_t[size]), size(size)
 {
-
+    this->Zero();
 }
 
-CopyableBuffer::CopyableBuffer(uint32_t size) :
-	buffer(new uint8_t[size]),
-	size(size)
+CopyableBuffer::CopyableBuffer(const openpal::RSlice& data) : CopyableBuffer(data, data.Size()) {}
+
+CopyableBuffer::CopyableBuffer(const uint8_t* data, uint32_t size) : buffer(new uint8_t[size]), size(size)
 {
-	this->Zero();
+    memcpy(buffer, data, size);
 }
 
-CopyableBuffer::CopyableBuffer(const openpal::RSlice& data) :
-	CopyableBuffer(data, data.Size())
-{
-}
-
-CopyableBuffer::CopyableBuffer(const uint8_t* data, uint32_t size) :
-	buffer(new uint8_t[size]),
-	size(size)
-{
-	memcpy(buffer, data, size);
-}
-
-CopyableBuffer::CopyableBuffer(const CopyableBuffer& other) :
-	CopyableBuffer(other.buffer, other.size)
-{
-}
+CopyableBuffer::CopyableBuffer(const CopyableBuffer& other) : CopyableBuffer(other.buffer, other.size) {}
 
 void CopyableBuffer::Zero()
 {
-	memset(this->buffer, 0, size);
+    memset(this->buffer, 0, size);
 }
 
 CopyableBuffer& CopyableBuffer::operator=(const CopyableBuffer& other)
 {
-	//check for assignment to self
-	if(this == &other) return *this;
+    // check for assignment to self
+    if (this == &other)
+        return *this;
 
-	if(other.Size() != this->size)
-	{
-		this->size = other.Size();
-		delete [] this->buffer;
-		this->buffer = new uint8_t[this->size];
-	}
+    if (other.Size() != this->size)
+    {
+        this->size = other.Size();
+        delete[] this->buffer;
+        this->buffer = new uint8_t[this->size];
+    }
 
-	memcpy(this->buffer, other.buffer, this->size);
+    memcpy(this->buffer, other.buffer, this->size);
 
-	return *this;
+    return *this;
 }
 
 CopyableBuffer::~CopyableBuffer()
 {
-	delete [] buffer;
+    delete[] buffer;
 }
 
-bool CopyableBuffer::operator==( const CopyableBuffer& other) const
+bool CopyableBuffer::operator==(const CopyableBuffer& other) const
 {
-	if(other.Size() != this->Size()) return false;
-	else
-	{
-		for(size_t i = 0; i < this->Size(); ++i)
-		{
-			if(this->buffer[i] != other.buffer[i]) return false;
-		}
+    if (other.Size() != this->Size())
+        return false;
+    else
+    {
+        for (size_t i = 0; i < this->Size(); ++i)
+        {
+            if (this->buffer[i] != other.buffer[i])
+                return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }
 
-}
+} // namespace testlib

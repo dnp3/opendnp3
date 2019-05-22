@@ -26,14 +26,12 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/OutstationContext.h>
 
-#include <functional>
-
-#include <testlib/MockExecutor.h>
-#include <testlib/MockLogHandler.h>
-
 #include <dnp3mocks/MockCommandHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockOutstationApplication.h>
+
+#include <testlib/MockExecutor.h>
+#include <testlib/MockLogHandler.h>
 
 #include <functional>
 
@@ -44,45 +42,41 @@ class OutstationTestObject
 {
 
 public:
-	OutstationTestObject(const OutstationConfig& config, const DatabaseSizes& dbSizes = DatabaseSizes::Empty());
+    OutstationTestObject(const OutstationConfig& config, const DatabaseSizes& dbSizes = DatabaseSizes::Empty());
 
+    size_t SendToOutstation(const std::string& hex);
 
-	size_t SendToOutstation(const std::string& hex);
+    size_t LowerLayerUp();
 
-	size_t LowerLayerUp();
+    size_t LowerLayerDown();
 
-	size_t LowerLayerDown();
+    size_t OnTxReady();
 
-	size_t OnTxReady();
+    size_t NumPendingTimers() const;
 
-	size_t NumPendingTimers() const;
+    bool AdvanceToNextTimer();
 
-	bool AdvanceToNextTimer();
+    size_t AdvanceTime(const openpal::TimeDuration& td);
 
-	size_t AdvanceTime(const openpal::TimeDuration& td);
+    testlib::MockLogHandler log;
 
-	testlib::MockLogHandler log;
-
-	void Transaction(const std::function<void (IUpdateHandler&)>& apply)
-	{
-		//auto& handler = context.GetUpdateHandler();
-		apply(context.GetUpdateHandler());
-		context.CheckForTaskStart();
-	}
+    void Transaction(const std::function<void(IUpdateHandler&)>& apply)
+    {
+        // auto& handler = context.GetUpdateHandler();
+        apply(context.GetUpdateHandler());
+        context.CheckForTaskStart();
+    }
 
 private:
-
-	const std::shared_ptr<testlib::MockExecutor> exe;
+    const std::shared_ptr<testlib::MockExecutor> exe;
 
 public:
-
-	const std::shared_ptr<MockLowerLayer> lower;
-	const std::shared_ptr<MockCommandHandler> cmdHandler;
-	const std::shared_ptr<MockOutstationApplication> application;
-	OContext context;
+    const std::shared_ptr<MockLowerLayer> lower;
+    const std::shared_ptr<MockCommandHandler> cmdHandler;
+    const std::shared_ptr<MockOutstationApplication> application;
+    OContext context;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

@@ -18,41 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include "mocks/MasterTestFixture.h"
 #include "mocks/MeasurementComparisons.h"
 
+#include <opendnp3/app/APDUBuilders.h>
+#include <opendnp3/app/APDUResponse.h>
+
+#include <dnp3mocks/APDUHexBuilders.h>
+#include <dnp3mocks/CallbackQueue.h>
+
 #include <testlib/HexConversions.h>
 
-#include <dnp3mocks/CallbackQueue.h>
-#include <dnp3mocks/APDUHexBuilders.h>
-
-#include <opendnp3/app/APDUResponse.h>
-#include <opendnp3/app/APDUBuilders.h>
+#include <catch.hpp>
 
 using namespace openpal;
 using namespace opendnp3;
-
 
 #define SUITE(name) "MasterUnsolTestSuite - " name
 
 TEST_CASE(SUITE("ReceiveUnsolBeforeTransmit"))
 {
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	MasterTestFixture t(params);
+    MasterParams params;
+    params.disableUnsolOnStartup = false;
+    MasterTestFixture t(params);
 
-	t.context->OnLowerLayerUp();
+    t.context->OnLowerLayerUp();
 
-	t.SendToMaster(hex::NullUnsolicited(0, IINField::Empty()));
+    t.SendToMaster(hex::NullUnsolicited(0, IINField::Empty()));
 
-	REQUIRE(t.exe->RunMany());
+    REQUIRE(t.exe->RunMany());
 
-	REQUIRE(t.lower->PopWriteAsHex() == hex::UnsolConfirm(0));
-	t.context->OnTxReady();
+    REQUIRE(t.lower->PopWriteAsHex() == hex::UnsolConfirm(0));
+    t.context->OnTxReady();
 
-	REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+    REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }
-
-

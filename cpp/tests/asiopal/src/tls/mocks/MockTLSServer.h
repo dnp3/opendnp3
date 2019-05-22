@@ -22,8 +22,8 @@
 #ifndef ASIOPAL_MOCKTLSSERVER_H
 #define ASIOPAL_MOCKTLSSERVER_H
 
-#include "asiopal/tls/TLSServer.h"
 #include "asiopal/IAsyncChannel.h"
+#include "asiopal/tls/TLSServer.h"
 #include "asiopal/tls/TLSStreamChannel.h"
 
 #include <deque>
@@ -35,73 +35,64 @@ class MockTLSServer final : public TLSServer
 {
 
 public:
+    MockTLSServer(const openpal::Logger& logger,
+                  std::shared_ptr<Executor> executor,
+                  IPEndpoint endpoint,
+                  const TLSConfig& config,
+                  std::error_code& ec)
+        : TLSServer(logger, executor, endpoint, config, ec)
+    {
+    }
 
-	MockTLSServer(
-	    const openpal::Logger& logger,
-	    std::shared_ptr<Executor> executor,
-	    IPEndpoint endpoint,
-	    const TLSConfig& config,
-	    std::error_code& ec
-	) : TLSServer(logger, executor, endpoint, config, ec)
-	{
+    static std::shared_ptr<MockTLSServer> Create(const openpal::Logger& logger,
+                                                 std::shared_ptr<Executor> executor,
+                                                 IPEndpoint endpoint,
+                                                 const TLSConfig& config,
+                                                 std::error_code& ec)
+    {
+        auto server = std::make_shared<MockTLSServer>(logger, executor, endpoint, config, ec);
 
-	}
+        if (ec)
+            return nullptr;
 
-	static std::shared_ptr<MockTLSServer> Create(
-	    const openpal::Logger& logger,
-	    std::shared_ptr<Executor> executor,
-	    IPEndpoint endpoint,
-	    const TLSConfig& config,
-	    std::error_code& ec)
-	{
-		auto server = std::make_shared<MockTLSServer>(logger, executor, endpoint, config, ec);
+        server->StartAccept(ec);
 
-		if (ec) return nullptr;
+        if (ec)
+            return nullptr;
 
-		server->StartAccept(ec);
+        return server;
+    }
 
-		if (ec) return nullptr;
+    bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override
+    {
+        return true;
+    }
 
-		return server;
-	}
+    bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override
+    {
+        return preverified;
+    }
 
-	bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override
-	{
-		return true;
-	}
+    void AcceptStream(uint64_t sessionid,
+                      const std::shared_ptr<Executor>& executor,
+                      std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override
+    {
+        channels.push_back(TLSStreamChannel::Create(executor, stream));
+    }
 
-	bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override
-	{
-		return preverified;
-	}
+    void OnShutdown() override {}
 
-	void AcceptStream(uint64_t sessionid, const std::shared_ptr<Executor>& executor, std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override
-	{
-		channels.push_back(TLSStreamChannel::Create(executor, stream));
-	}
+    ~MockTLSServer()
+    {
+        for (auto& channel : channels)
+        {
+            channel->Shutdown();
+        }
+    }
 
-	void OnShutdown() override {}
-
-
-	~MockTLSServer()
-	{
-		for (auto& channel : channels)
-		{
-			channel->Shutdown();
-		}
-	}
-
-	std::deque<std::shared_ptr<IAsyncChannel>> channels;
+    std::deque<std::shared_ptr<IAsyncChannel>> channels;
 };
 
-}
+} // namespace asiopal
 
 #endif
-
-
-
-
-
-
-
-

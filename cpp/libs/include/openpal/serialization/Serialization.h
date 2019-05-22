@@ -21,24 +21,22 @@
 #ifndef OPENPAL_SERIALIZATION_H
 #define OPENPAL_SERIALIZATION_H
 
-#include "UInt48LE.h"
-#include "SerializationTemplatesLE.h"
 #include "ByteSerialization.h"
-
-#include "SingleFloat.h"
 #include "DoubleFloat.h"
+#include "SerializationTemplatesLE.h"
+#include "SingleFloat.h"
+#include "UInt48LE.h"
 
 namespace openpal
 {
 
-typedef Bit16LE<int16_t>	Int16;
-typedef Bit16LE<uint16_t>	UInt16;
-typedef Bit32LE<int32_t>	Int32;
-typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
-typedef UInt8Simple			UInt8;
+typedef Bit16LE<int16_t> Int16;
+typedef Bit16LE<uint16_t> UInt16;
+typedef Bit32LE<int32_t> Int32;
+typedef Bit32LE<uint32_t> UInt32;
+typedef UInt48LE UInt48;
+typedef UInt8Simple UInt8;
 
-
-}
+} // namespace openpal
 
 #endif

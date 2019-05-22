@@ -37,53 +37,45 @@ namespace opendnp3
 class ControlRelayOutputBlock
 {
 public:
+    // primary constructor where the control code is set by enumeration
+    ControlRelayOutputBlock(ControlCode code = ControlCode::LATCH_ON,
+                            uint8_t count = 1,
+                            uint32_t onTime = 100,
+                            uint32_t offTime = 100,
+                            CommandStatus status = CommandStatus::SUCCESS);
 
-	// primary constructor where the control code is set by enumeration
-	ControlRelayOutputBlock(
-	    ControlCode code = ControlCode::LATCH_ON,
-	    uint8_t count = 1,
-	    uint32_t onTime = 100,
-	    uint32_t offTime = 100,
-	    CommandStatus status = CommandStatus::SUCCESS);
+    // overloaded constructor that allows the user to set a raw control code for non-standard codes
+    ControlRelayOutputBlock(uint8_t rawCode,
+                            uint8_t count = 1,
+                            uint32_t onTime = 100,
+                            uint32_t offTime = 100,
+                            CommandStatus status = CommandStatus::SUCCESS);
 
-	// overloaded constructor that allows the user to set a raw control code for non-standard codes
-	ControlRelayOutputBlock(
-	    uint8_t rawCode,
-	    uint8_t count = 1,
-	    uint32_t onTime = 100,
-	    uint32_t offTime = 100,
-	    CommandStatus status = CommandStatus::SUCCESS);
+    /// allows matching of exact code
+    ControlCode functionCode;
+    /// The raw code in bytes
+    uint8_t rawCode;
+    /// the number of times to repeat the operation
+    uint8_t count;
+    /// the 'on' time for the pulse train
+    uint32_t onTimeMS;
+    /// the 'off' time for the pulse train
+    uint32_t offTimeMS;
+    /// status of the resulting operation
+    CommandStatus status;
 
-	/// allows matching of exact code
-	ControlCode functionCode;
-	/// The raw code in bytes
-	uint8_t rawCode;
-	/// the number of times to repeat the operation
-	uint8_t count;
-	/// the 'on' time for the pulse train
-	uint32_t onTimeMS;
-	/// the 'off' time for the pulse train
-	uint32_t offTimeMS;
-	/// status of the resulting operation
-	CommandStatus status;
+    bool ValuesEqual(const ControlRelayOutputBlock& lhs) const
+    {
+        return (functionCode == lhs.functionCode) && (count == lhs.count) && (onTimeMS == lhs.onTimeMS)
+            && (offTimeMS == lhs.offTimeMS);
+    }
 
-	bool ValuesEqual(const ControlRelayOutputBlock& lhs) const
-	{
-		return (functionCode == lhs.functionCode) &&
-		       (count == lhs.count) &&
-		       (onTimeMS == lhs.onTimeMS) &&
-		       (offTimeMS == lhs.offTimeMS);
-	}
-
-	bool operator==(const ControlRelayOutputBlock& lhs) const
-	{
-		return this->ValuesEqual(lhs) && (this->status == lhs.status);
-	}
+    bool operator==(const ControlRelayOutputBlock& lhs) const
+    {
+        return this->ValuesEqual(lhs) && (this->status == lhs.status);
+    }
 };
 
-
-}
-
-
+} // namespace opendnp3
 
 #endif

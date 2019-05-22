@@ -24,12 +24,10 @@
 namespace openpal
 {
 
-template <class T>
-T MinValue();
+template<class T> T MinValue();
 
-template <class T>
-T MaxValue();
+template<class T> T MaxValue();
 
-}
+} // namespace openpal
 
 #endif

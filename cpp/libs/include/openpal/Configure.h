@@ -36,10 +36,9 @@ namespace openpal
 namespace sizes
 {
 
-static const uint16_t MAX_ERASURE_SIZE = OPENPAL_ERASURE_MULTIPLE * sizeof(void*);
-
+    static const uint16_t MAX_ERASURE_SIZE = OPENPAL_ERASURE_MULTIPLE * sizeof(void*);
 }
-}
+} // namespace openpal
 
 #ifdef AVR
 
@@ -48,27 +47,27 @@ static const uint16_t MAX_ERASURE_SIZE = OPENPAL_ERASURE_MULTIPLE * sizeof(void*
 
 inline void* operator new(size_t, void* p)
 {
-	return p;
+    return p;
 }
 
 inline void* operator new(size_t size)
 {
-	return malloc(size);
+    return malloc(size);
 }
 
 inline void operator delete(void* ptr)
 {
-	free(ptr);
+    free(ptr);
 }
 
 inline void* operator new[](size_t size)
 {
-	return malloc(size);
+    return malloc(size);
 }
 
 inline void operator delete[](void* ptr)
 {
-	free(ptr);
+    free(ptr);
 }
 
 extern "C" void abort();
@@ -80,4 +79,3 @@ extern "C" void abort();
 #endif
 
 #endif
-

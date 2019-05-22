@@ -37,32 +37,23 @@ class MockTCPPair
 {
 
 public:
+    MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec = std::error_code());
 
-	MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec = std::error_code());
+    ~MockTCPPair();
 
-	~MockTCPPair();
+    void Connect(size_t num = 1);
 
-	void Connect(size_t num = 1);
-
-	bool NumConnectionsEqual(size_t num) const;
+    bool NumConnectionsEqual(size_t num) const;
 
 private:
-
-	testlib::MockLogHandler log;
-	std::shared_ptr<MockIO> io;
-	uint16_t port;
-	std::shared_ptr<MockTCPClientHandler> chandler;
-	std::shared_ptr<TCPClient> client;
-	std::shared_ptr<MockTCPServer> server;
+    testlib::MockLogHandler log;
+    std::shared_ptr<MockIO> io;
+    uint16_t port;
+    std::shared_ptr<MockTCPClientHandler> chandler;
+    std::shared_ptr<TCPClient> client;
+    std::shared_ptr<MockTCPServer> server;
 };
 
-}
+} // namespace asiopal
 
 #endif
-
-
-
-
-
-
-

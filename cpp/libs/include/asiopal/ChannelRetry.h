@@ -25,7 +25,6 @@
 
 #include "asiopal/IOpenDelayStrategy.h"
 
-
 namespace asiopal
 {
 
@@ -34,39 +33,34 @@ class ChannelRetry
 {
 
 public:
+    /*
+     * Construct a channel retry config class
+     *
+     * @param minOpenRetry minimum connection retry interval on failure
+     * @param maxOpenRetry maximum connection retry interval on failure
+     */
+    ChannelRetry(openpal::TimeDuration minOpenRetry,
+                 openpal::TimeDuration maxOpenRetry,
+                 IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance());
 
-	/*
-	* Construct a channel retry config class
-	*
-	* @param minOpenRetry minimum connection retry interval on failure
-	* @param maxOpenRetry maximum connection retry interval on failure
-	*/
-	ChannelRetry(
-	    openpal::TimeDuration minOpenRetry,
-	    openpal::TimeDuration maxOpenRetry,
-	    IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance()
-	);
+    /// Return the default configuration of exponential backoff from 1 sec to 1 minute
+    static ChannelRetry Default();
 
-	/// Return the default configuration of exponential backoff from 1 sec to 1 minute
-	static ChannelRetry Default();
+    /// minimum connection retry interval on failure
+    openpal::TimeDuration minOpenRetry;
+    /// maximum connection retry interval on failure
+    openpal::TimeDuration maxOpenRetry;
 
-	/// minimum connection retry interval on failure
-	openpal::TimeDuration minOpenRetry;
-	/// maximum connection retry interval on failure
-	openpal::TimeDuration maxOpenRetry;
-
-	openpal::TimeDuration NextDelay(const openpal::TimeDuration& current) const
-	{
-		return strategy.GetNextDelay(current, maxOpenRetry);
-	}
+    openpal::TimeDuration NextDelay(const openpal::TimeDuration& current) const
+    {
+        return strategy.GetNextDelay(current, maxOpenRetry);
+    }
 
 private:
-
-	//// Strategy to use (default to exponential backoff)
-	IOpenDelayStrategy& strategy;
-
+    //// Strategy to use (default to exponential backoff)
+    IOpenDelayStrategy& strategy;
 };
 
-}
+} // namespace asiopal
 
 #endif

@@ -21,8 +21,9 @@
 #ifndef __BUFFER_SEGMENT_H_
 #define __BUFFER_SEGMENT_H_
 
-#include <testlib/BufferHelpers.h>
 #include <opendnp3/link/ITransportSegment.h>
+
+#include <testlib/BufferHelpers.h>
 
 #include <string>
 
@@ -32,30 +33,28 @@ namespace opendnp3
 class BufferSegment final : public ITransportSegment
 {
 public:
+    BufferSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses);
 
-	BufferSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses);
+    const Addresses& GetAddresses() const override
+    {
+        return this->addresses;
+    }
 
-	const Addresses& GetAddresses() const override
-	{
-		return this->addresses;
-	}
+    bool HasValue() const override;
 
-	bool HasValue() const override;
+    openpal::RSlice GetSegment() override;
 
-	openpal::RSlice GetSegment() override;
+    bool Advance() override;
 
-	bool Advance() override;
-
-	void Reset();
+    void Reset();
 
 private:
-	const Addresses addresses;
-	uint32_t segmentSize;
-	testlib::HexSequence hs;
-	openpal::RSlice remainder;
+    const Addresses addresses;
+    uint32_t segmentSize;
+    testlib::HexSequence hs;
+    openpal::RSlice remainder;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

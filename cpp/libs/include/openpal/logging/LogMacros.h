@@ -41,34 +41,39 @@
 
 #else
 
-#define SIMPLE_LOG_BLOCK(logger, filters, message) \
-		if(logger.IsEnabled(filters)){ \
-			logger.Log(filters, LOCATION, message); \
-		}
+#define SIMPLE_LOG_BLOCK(logger, filters, message)                                                                     \
+    if (logger.IsEnabled(filters))                                                                                     \
+    {                                                                                                                  \
+        logger.Log(filters, LOCATION, message);                                                                        \
+    }
 
-#define SIMPLE_LOGGER_BLOCK(pLogger, filters, message) \
-		if(pLogger && pLogger->IsEnabled(filters)){ \
-			pLogger->Log(filters, LOCATION, message); \
-		}
+#define SIMPLE_LOGGER_BLOCK(pLogger, filters, message)                                                                 \
+    if (pLogger && pLogger->IsEnabled(filters))                                                                        \
+    {                                                                                                                  \
+        pLogger->Log(filters, LOCATION, message);                                                                      \
+    }
 
-#define FORMAT_LOG_BLOCK(logger, filters, format, ...) \
-	if(logger.IsEnabled(filters)){ \
-		char format_message_buffer[openpal::MAX_LOG_ENTRY_SIZE]; \
-		SAFE_STRING_FORMAT(format_message_buffer, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
-		logger.Log(filters, LOCATION, format_message_buffer); \
-	}
+#define FORMAT_LOG_BLOCK(logger, filters, format, ...)                                                                 \
+    if (logger.IsEnabled(filters))                                                                                     \
+    {                                                                                                                  \
+        char format_message_buffer[openpal::MAX_LOG_ENTRY_SIZE];                                                       \
+        SAFE_STRING_FORMAT(format_message_buffer, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__);                 \
+        logger.Log(filters, LOCATION, format_message_buffer);                                                          \
+    }
 
-#define FORMAT_LOGGER_BLOCK(pLogger, filters, format, ...) \
-	if(pLogger && pLogger->IsEnabled(filters)){ \
-		char format_message_buffer[openpal::MAX_LOG_ENTRY_SIZE]; \
-		SAFE_STRING_FORMAT(format_message_buffer, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
-		pLogger->Log(filters, LOCATION, format_message_buffer); \
-	}
+#define FORMAT_LOGGER_BLOCK(pLogger, filters, format, ...)                                                             \
+    if (pLogger && pLogger->IsEnabled(filters))                                                                        \
+    {                                                                                                                  \
+        char format_message_buffer[openpal::MAX_LOG_ENTRY_SIZE];                                                       \
+        SAFE_STRING_FORMAT(format_message_buffer, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__);                 \
+        pLogger->Log(filters, LOCATION, format_message_buffer);                                                        \
+    }
 
-#define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize) \
-	if(logger.IsEnabled(filters)){ \
-		LogHex(logger, filters, buffer, firstSize, otherSize); \
-	}
+#define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize)                                                \
+    if (logger.IsEnabled(filters))                                                                                     \
+    {                                                                                                                  \
+        LogHex(logger, filters, buffer, firstSize, otherSize);                                                         \
+    }
 
 #endif
 

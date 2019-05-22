@@ -30,18 +30,16 @@ namespace asiopal
 
 void Timer::Cancel()
 {
-	timer.cancel();
+    timer.cancel();
 }
 
 MonotonicTimestamp Timer::ExpiresAt()
 {
-	auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(timer.expires_at().time_since_epoch()).count();
-	return MonotonicTimestamp(millisec);
+    auto millisec
+        = std::chrono::duration_cast<std::chrono::milliseconds>(timer.expires_at().time_since_epoch()).count();
+    return MonotonicTimestamp(millisec);
 }
 
-Timer::Timer(asio::io_context& service) : timer(service)
-{}
+Timer::Timer(asio::io_context& service) : timer(service) {}
 
-}
-
-
+} // namespace asiopal

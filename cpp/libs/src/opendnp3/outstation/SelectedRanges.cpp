@@ -28,79 +28,59 @@ namespace opendnp3
 
 bool SelectedRanges::HasAnySelection() const
 {
-	return
-	    binaries.IsValid() ||
-	    doubleBinaries.IsValid() ||
-	    analogs.IsValid() ||
-	    counters.IsValid() ||
-	    frozenCounters.IsValid() ||
-	    binaryOutputStatii.IsValid() ||
-	    analogOutputStatii.IsValid() ||
-	    timeAndIntervals.IsValid() ||
-	    octetString.IsValid() ||
-	    securityStats.IsValid();
+    return binaries.IsValid() || doubleBinaries.IsValid() || analogs.IsValid() || counters.IsValid()
+        || frozenCounters.IsValid() || binaryOutputStatii.IsValid() || analogOutputStatii.IsValid()
+        || timeAndIntervals.IsValid() || octetString.IsValid() || securityStats.IsValid();
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<BinarySpec>()
+template<> Range& SelectedRanges::GetRangeRef<BinarySpec>()
 {
-	return binaries;
+    return binaries;
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<DoubleBitBinarySpec>()
+template<> Range& SelectedRanges::GetRangeRef<DoubleBitBinarySpec>()
 {
-	return doubleBinaries;
+    return doubleBinaries;
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<AnalogSpec>()
+template<> Range& SelectedRanges::GetRangeRef<AnalogSpec>()
 {
-	return analogs;
+    return analogs;
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<CounterSpec>()
+template<> Range& SelectedRanges::GetRangeRef<CounterSpec>()
 {
-	return counters;
+    return counters;
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<FrozenCounterSpec>()
+template<> Range& SelectedRanges::GetRangeRef<FrozenCounterSpec>()
 {
-	return frozenCounters;
+    return frozenCounters;
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<BinaryOutputStatusSpec>()
+template<> Range& SelectedRanges::GetRangeRef<BinaryOutputStatusSpec>()
 {
-	return binaryOutputStatii;
+    return binaryOutputStatii;
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<AnalogOutputStatusSpec>()
+template<> Range& SelectedRanges::GetRangeRef<AnalogOutputStatusSpec>()
 {
-	return analogOutputStatii;
+    return analogOutputStatii;
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<TimeAndIntervalSpec>()
+template<> Range& SelectedRanges::GetRangeRef<TimeAndIntervalSpec>()
 {
-	return timeAndIntervals;
+    return timeAndIntervals;
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<SecurityStatSpec>()
+template<> Range& SelectedRanges::GetRangeRef<SecurityStatSpec>()
 {
-	return securityStats;
+    return securityStats;
 }
 
-template <>
-Range& SelectedRanges::GetRangeRef<OctetStringSpec>()
+template<> Range& SelectedRanges::GetRangeRef<OctetStringSpec>()
 {
-	return octetString;
+    return octetString;
 }
 
-}
-
-
+} // namespace opendnp3

@@ -26,117 +26,110 @@
 namespace asiopal
 {
 
-MockIO::Timeout::Timeout(asio::io_context& service, std::chrono::steady_clock::duration timeout) :
-	timer(std::make_shared<asio::basic_waitable_timer<std::chrono::steady_clock>>(service, timeout))
+MockIO::Timeout::Timeout(asio::io_context& service, std::chrono::steady_clock::duration timeout)
+    : timer(std::make_shared<asio::basic_waitable_timer<std::chrono::steady_clock>>(service, timeout))
 {
-	auto callback = [t = timer](const std::error_code & ec)
-	{
-		if (!ec)
-		{
-			throw std::logic_error("timeout before completion");
-		}
-	};
+    auto callback = [t = timer](const std::error_code& ec) {
+        if (!ec)
+        {
+            throw std::logic_error("timeout before completion");
+        }
+    };
 
-	this->timer->async_wait(callback);
+    this->timer->async_wait(callback);
 }
 
 MockIO::Timeout::~Timeout()
 {
-	this->timer->cancel();
+    this->timer->cancel();
 }
 
 size_t MockIO::RunUntilTimeout(const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout)
 {
-	size_t iterations = 0;
-	Timeout to(this->service, timeout);
+    size_t iterations = 0;
+    Timeout to(this->service, timeout);
 
-	while (!condition())
-	{
-		std::error_code ec;
-		const auto num = this->service.run_one(ec);
-		if (ec) throw std::logic_error(ec.message());
-		if (num == 0)
-		{
-			std::ostringstream oss;
-			oss << "Ran out of work after " << iterations << " iterations";
-			throw std::logic_error(oss.str());
-		}
+    while (!condition())
+    {
+        std::error_code ec;
+        const auto num = this->service.run_one(ec);
+        if (ec)
+            throw std::logic_error(ec.message());
+        if (num == 0)
+        {
+            std::ostringstream oss;
+            oss << "Ran out of work after " << iterations << " iterations";
+            throw std::logic_error(oss.str());
+        }
 
-		++iterations;
+        ++iterations;
 
-		this->service.reset();
-	}
+        this->service.reset();
+    }
 
-	return iterations;
+    return iterations;
 }
 
-void MockIO::CompleteInXIterations(size_t expectedIterations, const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout)
+void MockIO::CompleteInXIterations(size_t expectedIterations,
+                                   const std::function<bool()>& condition,
+                                   std::chrono::steady_clock::duration timeout)
 {
-	size_t iterations = 0;
+    size_t iterations = 0;
 
-	Timeout to(this->service, timeout);
+    Timeout to(this->service, timeout);
 
-	while (!condition())
-	{
-		if (iterations == expectedIterations)
-		{
-			std::ostringstream oss;
-			oss << "not complete after " << iterations << " iterations";
-			throw std::logic_error(oss.str());
-		}
+    while (!condition())
+    {
+        if (iterations == expectedIterations)
+        {
+            std::ostringstream oss;
+            oss << "not complete after " << iterations << " iterations";
+            throw std::logic_error(oss.str());
+        }
 
-		std::error_code ec;
-		const auto num = this->service.run_one(ec);
-		if (ec) throw std::logic_error(ec.message());
-		if (num == 0)
-		{
-			std::ostringstream oss;
-			oss << "Ran out of work after " << iterations << " iterations";
-			throw std::logic_error(oss.str());
-		}
+        std::error_code ec;
+        const auto num = this->service.run_one(ec);
+        if (ec)
+            throw std::logic_error(ec.message());
+        if (num == 0)
+        {
+            std::ostringstream oss;
+            oss << "Ran out of work after " << iterations << " iterations";
+            throw std::logic_error(oss.str());
+        }
 
-		++iterations;
-		this->service.reset();
-	}
+        ++iterations;
+        this->service.reset();
+    }
 
-	if (iterations != expectedIterations)
-	{
-		std::ostringstream oss;
-		oss << "completed after " << iterations << " iterations, (expected " << expectedIterations << ")";
-		throw std::logic_error(oss.str());
-	}
-
+    if (iterations != expectedIterations)
+    {
+        std::ostringstream oss;
+        oss << "completed after " << iterations << " iterations, (expected " << expectedIterations << ")";
+        throw std::logic_error(oss.str());
+    }
 }
 
 size_t MockIO::RunUntilOutOfWork()
 {
-	size_t iterations = 0;
+    size_t iterations = 0;
 
-	while (true)
-	{
-		std::error_code ec;
-		const auto num = this->service.poll_one(ec);
-		if (ec) throw std::logic_error(ec.message());
+    while (true)
+    {
+        std::error_code ec;
+        const auto num = this->service.poll_one(ec);
+        if (ec)
+            throw std::logic_error(ec.message());
 
-		if (num == 0)
-		{
-			return iterations;
-		}
+        if (num == 0)
+        {
+            return iterations;
+        }
 
-		++iterations;
+        ++iterations;
 
-		this->service.reset();
-	}
+        this->service.reset();
+    }
 }
 
-
-}
-
-
-
-
-
-
-
-
-
+} // namespace asiopal

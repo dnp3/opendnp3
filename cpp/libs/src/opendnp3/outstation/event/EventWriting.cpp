@@ -22,7 +22,6 @@
 #include "EventWriting.h"
 
 #include "EventCollection.h"
-
 #include "IEventType.h"
 
 namespace opendnp3
@@ -30,62 +29,58 @@ namespace opendnp3
 
 uint32_t EventWriting::Write(EventLists& lists, IEventWriteHandler& handler)
 {
-	uint32_t total_num_written = 0;
+    uint32_t total_num_written = 0;
 
-	auto iterator = lists.events.Iterate();
+    auto iterator = lists.events.Iterate();
 
-	while (true)
-	{
-		// continue calling WriteSome(..) until it fails to make progress
-		auto num_written = WriteSome(iterator, lists, handler);
+    while (true)
+    {
+        // continue calling WriteSome(..) until it fails to make progress
+        auto num_written = WriteSome(iterator, lists, handler);
 
-		if (num_written == 0)
-		{
-			return total_num_written;
-		}
-		else
-		{
-			total_num_written += num_written;
-		}
-	}
+        if (num_written == 0)
+        {
+            return total_num_written;
+        }
+        else
+        {
+            total_num_written += num_written;
+        }
+    }
 }
 
 EventRecord* EventWriting::FindNextSelected(event_iter_t& iter, EventType type)
 {
-	while (true)
-	{
-		auto current = iter.CurrentValue();
-		if (!current) return nullptr;
+    while (true)
+    {
+        auto current = iter.CurrentValue();
+        if (!current)
+            return nullptr;
 
-		if (current->state == EventState::selected)
-		{
-			// we terminate here since the type has changed
-			return current->type->IsEqual(type) ? current : nullptr;
-		}
-		else
-		{
-			iter.Next();
-		}
-	}
+        if (current->state == EventState::selected)
+        {
+            // we terminate here since the type has changed
+            return current->type->IsEqual(type) ? current : nullptr;
+        }
+        else
+        {
+            iter.Next();
+        }
+    }
 }
 
 uint16_t EventWriting::WriteSome(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler)
 {
-	// don't bother searching
-	if (lists.counters.selected == 0) return 0;
+    // don't bother searching
+    if (lists.counters.selected == 0)
+        return 0;
 
-	const auto value = iterator.Find([](const EventRecord & record)
-	{
-		return record.state == EventState::selected;
-	});
+    const auto value = iterator.Find([](const EventRecord& record) { return record.state == EventState::selected; });
 
-	if (!value) return 0; // no match
+    if (!value)
+        return 0; // no match
 
-	return value->type->WriteSome(iterator, lists, handler);
+    return value->type->WriteSome(iterator, lists, handler);
 }
 
-
-}
-
-
-
+} // namespace opendnp3

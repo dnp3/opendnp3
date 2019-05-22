@@ -21,12 +21,9 @@
 #ifndef OPENDNP3_ENABLEUNSOLICITEDTASK_H
 #define OPENDNP3_ENABLEUNSOLICITEDTASK_H
 
-
 #include "opendnp3/app/ClassField.h"
-
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
-
 
 namespace openpal
 {
@@ -37,54 +34,55 @@ namespace opendnp3
 {
 
 /**
-* Base class for tasks that only require a single response
-*/
+ * Base class for tasks that only require a single response
+ */
 
 class EnableUnsolicitedTask final : public IMasterTask
 {
 
 public:
+    EnableUnsolicitedTask(const std::shared_ptr<TaskContext>& context,
+                          IMasterApplication& app,
+                          const TaskBehavior& behavior,
+                          ClassField enabledClasses,
+                          openpal::Logger logger);
 
-	EnableUnsolicitedTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const TaskBehavior& behavior, ClassField enabledClasses, openpal::Logger logger);
+    virtual bool IsRecurring() const override
+    {
+        return true;
+    }
 
-	virtual bool IsRecurring() const override
-	{
-		return true;
-	}
+    virtual char const* Name() const override
+    {
+        return "Enable Unsolicited";
+    }
 
-	virtual char const* Name() const override
-	{
-		return "Enable Unsolicited";
-	}
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+    virtual int Priority() const override
+    {
+        return priority::ENABLE_UNSOLICITED;
+    }
 
-	virtual int Priority() const override
-	{
-		return priority::ENABLE_UNSOLICITED;
-	}
-
-	virtual bool BlocksLowerPriority() const override
-	{
-		return true;
-	}
+    virtual bool BlocksLowerPriority() const override
+    {
+        return true;
+    }
 
 private:
+    ClassField enabledClasses;
 
-	ClassField enabledClasses;
+    virtual MasterTaskType GetTaskType() const override
+    {
+        return MasterTaskType::ENABLE_UNSOLICITED;
+    }
 
-	virtual MasterTaskType GetTaskType() const override
-	{
-		return MasterTaskType::ENABLE_UNSOLICITED;
-	}
+    virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header,
+                                           const openpal::RSlice& objects) override;
 
-	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
-
-	virtual bool IsEnabled() const override;
-
+    virtual bool IsEnabled() const override;
 };
 
-} //end ns
-
+} // namespace opendnp3
 
 #endif

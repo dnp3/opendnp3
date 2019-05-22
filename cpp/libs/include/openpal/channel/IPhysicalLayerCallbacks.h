@@ -30,28 +30,27 @@ class IPhysicalLayerCallbacks
 {
 
 public:
-	virtual ~IPhysicalLayerCallbacks() {}
+    virtual ~IPhysicalLayerCallbacks() {}
 
-	// Called by a lower Layer when it is available to this layer
-	virtual void OnLowerLayerUp() = 0;
+    // Called by a lower Layer when it is available to this layer
+    virtual void OnLowerLayerUp() = 0;
 
-	// Called by a lower layer when it is no longer available to this layer
-	virtual void OnLowerLayerDown() = 0;
+    // Called by a lower layer when it is no longer available to this layer
+    virtual void OnLowerLayerDown() = 0;
 
-	// In addition to all of the IUpperLayer functions, provide a mechanism to receive open failures
-	// For consistency sake, use NVII pattern in case we want pre/post conditions in the future
-	virtual void OnOpenFailure() = 0;
+    // In addition to all of the IUpperLayer functions, provide a mechanism to receive open failures
+    // For consistency sake, use NVII pattern in case we want pre/post conditions in the future
+    virtual void OnOpenFailure() = 0;
 
-	// Called by the physical layer when data arrives
-	virtual void OnReceive(const RSlice&) = 0;
+    // Called by the physical layer when data arrives
+    virtual void OnReceive(const RSlice&) = 0;
 
-	// Called by lower layer when a previously requested send operation succeeds or fails.
-	// Layers can only have 1 outstanding send operation. The callback is guaranteed
-	// unless the the OnLowerLayerDown() function is called beforehand
-	virtual void OnSendResult(bool isSucccess) = 0;
-
+    // Called by lower layer when a previously requested send operation succeeds or fails.
+    // Layers can only have 1 outstanding send operation. The callback is guaranteed
+    // unless the the OnLowerLayerDown() function is called beforehand
+    virtual void OnSendResult(bool isSucccess) = 0;
 };
 
-}
+} // namespace openpal
 
 #endif

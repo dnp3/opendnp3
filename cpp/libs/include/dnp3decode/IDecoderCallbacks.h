@@ -27,15 +27,12 @@ namespace opendnp3
 {
 class IDecoderCallbacks : openpal::Uncopyable
 {
-	friend class Indent;
+    friend class Indent;
 
 protected:
-
-	virtual void PushIndent() {};
-	virtual void PopIndent() {};
+    virtual void PushIndent(){};
+    virtual void PopIndent(){};
 };
-}
+} // namespace opendnp3
 
 #endif
-
-

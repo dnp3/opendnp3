@@ -32,20 +32,19 @@ class ITransportSegment
 {
 
 public:
+    virtual ~ITransportSegment() {}
 
-	virtual ~ITransportSegment() {}
+    virtual const Addresses& GetAddresses() const = 0;
 
-	virtual const Addresses& GetAddresses() const = 0;
+    virtual bool HasValue() const = 0;
 
-	virtual bool HasValue() const = 0;
+    // Read the current segment with a specified max size
+    virtual openpal::RSlice GetSegment() = 0;
 
-	// Read the current segment with a specified max size
-	virtual openpal::RSlice GetSegment() = 0;
-
-	// move to the next segment, true if more segments available
-	virtual bool Advance() = 0;
+    // move to the next segment, true if more segments available
+    virtual bool Advance() = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif

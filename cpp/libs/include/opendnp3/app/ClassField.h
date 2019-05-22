@@ -21,75 +21,72 @@
 #ifndef OPENDNP3_CLASSFIELD_H
 #define OPENDNP3_CLASSFIELD_H
 
-#include <cstdint>
-
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/gen/PointClass.h"
+
+#include <cstdint>
 
 namespace opendnp3
 {
 
 /**
-* Specifies a set of event classes e.g. some subset of {0, 1, 2, 3}
-*/
+ * Specifies a set of event classes e.g. some subset of {0, 1, 2, 3}
+ */
 class ClassField
 {
 public:
+    ClassField();
 
-	ClassField();
+    explicit ClassField(PointClass pc);
 
-	explicit ClassField(PointClass pc);
+    explicit ClassField(EventClass ec);
 
-	explicit ClassField(EventClass ec);
+    explicit ClassField(uint8_t mask_);
 
-	explicit ClassField(uint8_t mask_);
+    ClassField(bool class0, bool class1, bool class2, bool class3);
 
-	ClassField(bool class0, bool class1, bool class2, bool class3);
+    bool IsEmpty() const;
 
-	bool IsEmpty() const;
+    bool Intersects(const ClassField& other) const;
 
-	bool Intersects(const ClassField& other) const;
+    uint8_t GetBitfield() const
+    {
+        return bitfield;
+    };
 
-	uint8_t GetBitfield() const
-	{
-		return bitfield;
-	};
+    ClassField OnlyEventClasses() const;
 
-	ClassField OnlyEventClasses() const;
+    void Clear(const ClassField& field);
 
-	void Clear(const ClassField& field);
+    void Set(const ClassField& field);
 
-	void Set(const ClassField& field);
+    void Set(PointClass pc);
 
-	void Set(PointClass pc);
+    static const uint8_t CLASS_0 = static_cast<uint8_t>(PointClass::Class0);
+    static const uint8_t CLASS_1 = static_cast<uint8_t>(PointClass::Class1);
+    static const uint8_t CLASS_2 = static_cast<uint8_t>(PointClass::Class2);
+    static const uint8_t CLASS_3 = static_cast<uint8_t>(PointClass::Class3);
+    static const uint8_t EVENT_CLASSES = CLASS_1 | CLASS_2 | CLASS_3;
+    static const uint8_t ALL_CLASSES = EVENT_CLASSES | CLASS_0;
 
-	static const uint8_t CLASS_0 = static_cast<uint8_t>(PointClass::Class0);
-	static const uint8_t CLASS_1 = static_cast<uint8_t>(PointClass::Class1);
-	static const uint8_t CLASS_2 = static_cast<uint8_t>(PointClass::Class2);
-	static const uint8_t CLASS_3 = static_cast<uint8_t>(PointClass::Class3);
-	static const uint8_t EVENT_CLASSES = CLASS_1 | CLASS_2 | CLASS_3;
-	static const uint8_t ALL_CLASSES = EVENT_CLASSES | CLASS_0;
+    bool HasEventType(EventClass ec) const;
 
-	bool HasEventType(EventClass ec) const;
+    bool HasClass0() const;
+    bool HasClass1() const;
+    bool HasClass2() const;
+    bool HasClass3() const;
 
-	bool HasClass0() const;
-	bool HasClass1() const;
-	bool HasClass2() const;
-	bool HasClass3() const;
+    bool HasEventClass() const;
+    bool HasAnyClass() const;
 
-	bool HasEventClass() const;
-	bool HasAnyClass() const;
-
-	static ClassField None();
-	static ClassField AllClasses();
-	static ClassField AllEventClasses();
+    static ClassField None();
+    static ClassField AllClasses();
+    static ClassField AllEventClasses();
 
 private:
-	uint8_t bitfield;
+    uint8_t bitfield;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif
-

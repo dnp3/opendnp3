@@ -22,7 +22,6 @@
 #define OPENDNP3_LINK_HEADER_FIELDS_H
 
 #include "opendnp3/gen/LinkFunction.h"
-
 #include "opendnp3/link/Addresses.h"
 
 namespace opendnp3
@@ -30,24 +29,23 @@ namespace opendnp3
 
 struct LinkHeaderFields
 {
-	LinkHeaderFields();
+    LinkHeaderFields();
 
-	LinkHeaderFields(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source);
+    LinkHeaderFields(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source);
 
-	Addresses ToAddresses() const
-	{
-		return Addresses(src, dest);
-	}
+    Addresses ToAddresses() const
+    {
+        return Addresses(src, dest);
+    }
 
-	LinkFunction func;
-	bool isFromMaster;
-	bool fcb;
-	bool fcvdfc;
-	uint16_t dest;
-	uint16_t src;
+    LinkFunction func;
+    bool isFromMaster;
+    bool fcb;
+    bool fcvdfc;
+    uint16_t dest;
+    uint16_t src;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

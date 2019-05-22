@@ -28,40 +28,32 @@ namespace opendnp3
 
 struct Evented
 {
-	Evented(uint16_t index_, EventClass clazz_) : index(index_), clazz(clazz_)
-	{}
+    Evented(uint16_t index_, EventClass clazz_) : index(index_), clazz(clazz_) {}
 
-	Evented() : clazz(EventClass::EC1)
-	{}
+    Evented() : clazz(EventClass::EC1) {}
 
-	uint16_t index;
-	EventClass clazz;	// class of the event (CLASS<1-3>)
+    uint16_t index;
+    EventClass clazz; // class of the event (CLASS<1-3>)
 };
 
 /**
  * Record of an event that includes value, index, and class
  */
-template <typename Spec>
-struct Event : public Evented
+template<typename Spec> struct Event : public Evented
 {
-	typedef typename Spec::meas_t meas_type_t;
+    typedef typename Spec::meas_t meas_type_t;
 
-	Event(const meas_type_t& value, uint16_t index, EventClass clazz, typename Spec::event_variation_t variation) :
-		Evented(index, clazz),
-		value(value),
-		variation(variation)
-	{}
+    Event(const meas_type_t& value, uint16_t index, EventClass clazz, typename Spec::event_variation_t variation)
+        : Evented(index, clazz), value(value), variation(variation)
+    {
+    }
 
-	Event() : Evented(), value(), variation()
-	{}
+    Event() : Evented(), value(), variation() {}
 
-	meas_type_t value;
-	typename Spec::event_variation_t variation;
+    meas_type_t value;
+    typename Spec::event_variation_t variation;
 };
 
-} //end namespace
-
-
+} // namespace opendnp3
 
 #endif
-

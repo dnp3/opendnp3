@@ -37,27 +37,30 @@ class PollTaskBase : public IMasterTask
 {
 
 public:
+    PollTaskBase(const std::shared_ptr<TaskContext>& context,
+                 IMasterApplication& application,
+                 ISOEHandler& handler,
+                 const TaskBehavior& behavior,
+                 openpal::Logger logger,
+                 TaskConfig config);
 
-	PollTaskBase(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config);
-
-	virtual const char* Name() const override
-	{
-		return "Application Poll";
-	};
+    virtual const char* Name() const override
+    {
+        return "Application Poll";
+    };
 
 protected:
+    virtual ResponseResult ProcessResponse(const APDUResponseHeader& response,
+                                           const openpal::RSlice& objects) override final;
 
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
+    ResponseResult ProcessMeasurements(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	ResponseResult ProcessMeasurements(const APDUResponseHeader& header, const openpal::RSlice& objects);
+    virtual void Initialize() override final;
 
-	virtual void Initialize() override final;
-
-	uint32_t rxCount = 0;
-	ISOEHandler* const handler;
+    uint32_t rxCount = 0;
+    ISOEHandler* const handler;
 };
 
-} //end ns
-
+} // namespace opendnp3
 
 #endif

@@ -26,35 +26,32 @@
 namespace opendnp3
 {
 
-
-
 /**
-	SA security statistic object as used by the API.
+    SA security statistic object as used by the API.
 */
 class SecurityStat
 {
 public:
+    // this is the easiest way to make the SecurityStats look like other types
+    struct Value
+    {
+        uint16_t assocId;
+        uint32_t count;
+    };
 
-	// this is the easiest way to make the SecurityStats look like other types
-	struct Value
-	{
-		uint16_t assocId;
-		uint32_t count;
-	};
+    SecurityStat();
 
-	SecurityStat();
+    SecurityStat(Value value, uint8_t quality, DNPTime time);
 
-	SecurityStat(Value value, uint8_t quality, DNPTime time);
+    SecurityStat(uint8_t quality, uint16_t assocId, uint32_t count);
 
-	SecurityStat(uint8_t quality, uint16_t assocId, uint32_t count);
+    SecurityStat(uint8_t quality, uint16_t assocId, uint32_t count, DNPTime time);
 
-	SecurityStat(uint8_t quality, uint16_t assocId, uint32_t count, DNPTime time);
-
-	uint8_t quality;	//	bitfield that stores type specific quality flags
-	Value value;		//	assocId and count
-	DNPTime time;		//	timestamp associated with the measurement (may not be set)
+    uint8_t quality; //	bitfield that stores type specific quality flags
+    Value value;     //	assocId and count
+    DNPTime time;    //	timestamp associated with the measurement (may not be set)
 };
 
-}
+} // namespace opendnp3
 
 #endif

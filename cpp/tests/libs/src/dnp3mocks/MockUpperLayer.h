@@ -21,9 +21,9 @@
 #ifndef OPENDNP3_MOCKUPPERLAYER_H
 #define OPENDNP3_MOCKUPPERLAYER_H
 
-#include <opendnp3/LayerInterfaces.h>
-
 #include "DataSink.h"
+
+#include <opendnp3/LayerInterfaces.h>
 
 namespace opendnp3
 {
@@ -31,45 +31,41 @@ namespace opendnp3
 class MockUpperLayer final : public IUpperLayer, public HasLowerLayer
 {
 public:
+    struct Counters
+    {
+        size_t numTxReady = 0;
+        size_t numLayerUp = 0;
+        size_t numLayerDown = 0;
+    };
 
-	struct Counters
-	{
-		size_t numTxReady = 0;
-		size_t numLayerUp = 0;
-		size_t numLayerDown = 0;
-	};
+    MockUpperLayer();
 
-	MockUpperLayer();
+    bool IsOnline() const
+    {
+        return isOnline;
+    }
 
-	bool IsOnline() const
-	{
-		return isOnline;
-	}
+    bool SendDown(const std::string& hex, const Addresses& addresses = Addresses());
+    bool SendDown(const openpal::RSlice& data, const Addresses& addresses = Addresses());
 
-	bool SendDown(const std::string& hex, const Addresses& addresses = Addresses());
-	bool SendDown(const openpal::RSlice& data, const Addresses& addresses = Addresses());
+    const Counters& GetCounters() const
+    {
+        return counters;
+    }
 
-	const Counters& GetCounters() const
-	{
-		return counters;
-	}
+    // these are the NVII delegates
+    virtual bool OnReceive(const Message& message) override;
+    virtual bool OnTxReady() override;
+    virtual bool OnLowerLayerUp() override;
+    virtual bool OnLowerLayerDown() override;
 
-	//these are the NVII delegates
-	virtual bool OnReceive(const Message& message) override;
-	virtual bool OnTxReady() override;
-	virtual bool OnLowerLayerUp() override;
-	virtual bool OnLowerLayerDown() override;
-
-	DataSink received;
+    DataSink received;
 
 private:
-
-	bool isOnline;
-	Counters counters;
+    bool isOnline;
+    Counters counters;
 };
 
-
-
-}
+} // namespace opendnp3
 
 #endif

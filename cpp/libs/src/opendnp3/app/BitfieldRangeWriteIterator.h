@@ -27,95 +27,92 @@ namespace opendnp3
 {
 
 // A facade for writing APDUs to an external buffer
-template <class IndexType>
-class BitfieldRangeWriteIterator
+template<class IndexType> class BitfieldRangeWriteIterator
 {
 public:
+    static BitfieldRangeWriteIterator Null()
+    {
+        auto buffer = openpal::WSlice::Empty();
+        return BitfieldRangeWriteIterator(0, buffer);
+    }
 
-	static BitfieldRangeWriteIterator Null()
-	{
-		auto buffer = openpal::WSlice::Empty();
-		return BitfieldRangeWriteIterator(0, buffer);
-	}
+    BitfieldRangeWriteIterator(typename IndexType::Type start_, openpal::WSlice& position_)
+        : start(start_),
+          count(0),
+          maxCount(0),
+          isValid(position_.Size() >= (2 * IndexType::SIZE)),
+          range(position_),
+          pPosition(&position_)
+    {
+        if (isValid)
+        {
+            openpal::Format::Write(range, start_);
+            pPosition->Advance(2 * IndexType::SIZE);
+            maxCount = pPosition->Size() * 8;
+        }
+    }
 
-	BitfieldRangeWriteIterator(typename IndexType::Type start_, openpal::WSlice& position_) :
-		start(start_),
-		count(0),
-		maxCount(0),
-		isValid(position_.Size() >= (2 * IndexType::SIZE)),
-		range(position_),
-		pPosition(&position_)
-	{
-		if(isValid)
-		{
-			openpal::Format::Write(range, start_);
-			pPosition->Advance(2 * IndexType::SIZE);
-			maxCount = pPosition->Size() * 8;
-		}
-	}
+    ~BitfieldRangeWriteIterator()
+    {
+        if (isValid && count > 0)
+        {
+            typename IndexType::Type stop = start + count - 1;
+            openpal::Format::Write(range, stop);
 
-	~BitfieldRangeWriteIterator()
-	{
-		if (isValid && count > 0)
-		{
-			typename IndexType::Type stop = start + count - 1;
-			openpal::Format::Write(range, stop);
+            auto num = count / 8;
 
-			auto num = count / 8;
+            if ((count % 8) > 0)
+            {
+                ++num;
+            }
 
-			if ((count % 8) > 0)
-			{
-				++num;
-			}
+            pPosition->Advance(num);
+        }
+    }
 
-			pPosition->Advance(num);
-		}
-	}
+    bool Write(bool value)
+    {
+        if (isValid && count < maxCount)
+        {
+            auto byte = count / 8;
+            auto bit = count % 8;
 
-	bool Write(bool value)
-	{
-		if (isValid && count < maxCount)
-		{
-			auto byte = count / 8;
-			auto bit = count % 8;
+            if (bit == 0)
+            {
+                (*pPosition)[byte] = 0; // initialize byte to 0
+            }
 
-			if (bit == 0)
-			{
-				(*pPosition)[byte] = 0; // initialize byte to 0
-			}
+            if (value)
+            {
+                (*pPosition)[byte] = ((*pPosition)[byte] | (1 << bit));
+            }
 
-			if (value)
-			{
-				(*pPosition)[byte] = ((*pPosition)[byte] | (1 << bit));
-			}
+            ++count;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-			++count;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	bool IsValid() const
-	{
-		return isValid;
-	}
+    bool IsValid() const
+    {
+        return isValid;
+    }
 
 private:
+    typename IndexType::Type start;
+    typename IndexType::Type count;
 
-	typename IndexType::Type start;
-	typename IndexType::Type count;
+    uint32_t maxCount;
 
-	uint32_t maxCount;
+    bool isValid;
 
-	bool isValid;
-
-	openpal::WSlice range;  // make a copy to record where we write the range
-	openpal::WSlice* pPosition;
+    openpal::WSlice range; // make a copy to record where we write the range
+    openpal::WSlice* pPosition;
 };
 
-}
+} // namespace opendnp3
 
 #endif

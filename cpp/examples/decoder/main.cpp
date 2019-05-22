@@ -19,12 +19,14 @@
  * to you under the terms of the License.
  */
 
-#include <openpal/logging/Logger.h>
 #include <openpal/container/Buffer.h>
+#include <openpal/logging/Logger.h>
+
+#include <opendnp3/LogLevels.h>
+
+#include <asiodnp3/ConsoleLogger.h>
 
 #include <dnp3decode/Decoder.h>
-#include <opendnp3/LogLevels.h>
-#include <asiodnp3/ConsoleLogger.h>
 
 using namespace std;
 using namespace openpal;
@@ -33,60 +35,59 @@ using namespace asiodnp3;
 
 enum class Mode
 {
-	Link,
-	Transport,
-	App
+    Link,
+    Transport,
+    App
 };
 
 Mode GetMode(const std::string& mode)
 {
-	if (mode == "link")
-	{
-		return Mode::Link;
-	}
-	else if (mode == "transport")
-	{
-		return Mode::Transport;
-	}
-	else
-	{
-		return Mode::App;
-	}
+    if (mode == "link")
+    {
+        return Mode::Link;
+    }
+    else if (mode == "transport")
+    {
+        return Mode::Transport;
+    }
+    else
+    {
+        return Mode::App;
+    }
 }
 
 int main(int argc, char* argv[])
 {
-	openpal::Logger logger(ConsoleLogger::Create(), "decoder", LogFilters(~0));
-	IDecoderCallbacks callback;
-	Decoder decoder(callback, logger);
+    openpal::Logger logger(ConsoleLogger::Create(), "decoder", LogFilters(~0));
+    IDecoderCallbacks callback;
+    Decoder decoder(callback, logger);
 
-	Buffer buffer(4096);
+    Buffer buffer(4096);
 
-	const Mode MODE = (argc > 1) ? GetMode(argv[1]) : Mode::Link;
+    const Mode MODE = (argc > 1) ? GetMode(argv[1]) : Mode::Link;
 
-	while (true)
-	{
-		const size_t NUM_READ = fread(buffer(), 1, buffer.Size(), stdin);
+    while (true)
+    {
+        const size_t NUM_READ = fread(buffer(), 1, buffer.Size(), stdin);
 
-		if (NUM_READ == 0)
-		{
-			return 0;
-		}
+        if (NUM_READ == 0)
+        {
+            return 0;
+        }
 
-		switch (MODE)
-		{
-		case(Mode::Link):
-			decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
-			break;
-		case(Mode::Transport) :
-			decoder.DecodeTPDU(buffer.ToRSlice().Take(NUM_READ));
-			break;
-		default:
-			decoder.DecodeAPDU(buffer.ToRSlice().Take(NUM_READ));
-			break;
-		}
-	}
+        switch (MODE)
+        {
+        case (Mode::Link):
+            decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
+            break;
+        case (Mode::Transport):
+            decoder.DecodeTPDU(buffer.ToRSlice().Take(NUM_READ));
+            break;
+        default:
+            decoder.DecodeAPDU(buffer.ToRSlice().Take(NUM_READ));
+            break;
+        }
+    }
 
-	return 0;
+    return 0;
 }
-

@@ -20,12 +20,14 @@
 #ifndef OPENDNP3_JNI_H
 #define OPENDNP3_JNI_H
 
-#include <jni.h>
-#include <string>
-#include <functional>
+#include "LocalRef.h"
+
 #include <openpal/util/Uncopyable.h>
 
-#include "LocalRef.h"
+#include <jni.h>
+
+#include <functional>
+#include <string>
 
 #define OPENDNP3_JNI_VERSION JNI_VERSION_1_8
 
@@ -33,27 +35,25 @@ class JNI : private openpal::StaticOnly
 {
 
 public:
+    // called once during JNI_OnLoad
+    static void Initialize(JavaVM* vm);
 
-	// called once during JNI_OnLoad
-	static void Initialize(JavaVM* vm);
+    static JNIEnv* GetEnv();
 
-	static JNIEnv* GetEnv();
+    static bool AttachCurrentThread();
+    static bool DetachCurrentThread();
 
-	static bool AttachCurrentThread();
-	static bool DetachCurrentThread();
+    static jobject CreateGlobalRef(jobject ref);
+    static void DeleteGlobalRef(jobject ref);
 
-	static jobject CreateGlobalRef(jobject ref);
-	static void DeleteGlobalRef(jobject ref);
+    static void Iterate(JNIEnv* env, jobject iterable, const std::function<void(LocalRef<jobject>)>& callback);
 
-	static void Iterate(JNIEnv* env, jobject iterable, const std::function<void(LocalRef<jobject>)>& callback);
-
-	static void IterateWithIndex(JNIEnv* env, jobject iterable, const std::function<void(LocalRef<jobject>, int)>& callback);
-
+    static void IterateWithIndex(JNIEnv* env,
+                                 jobject iterable,
+                                 const std::function<void(LocalRef<jobject>, int)>& callback);
 
 private:
-
-	static JavaVM* vm;
+    static JavaVM* vm;
 };
 
 #endif
-

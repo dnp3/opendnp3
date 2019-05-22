@@ -30,111 +30,92 @@ namespace opendnp3
 
 TaskBehavior TaskBehavior::SingleExecutionNoRetry()
 {
-	return SingleExecutionNoRetry(MonotonicTimestamp::Max()); // no start expiration
+    return SingleExecutionNoRetry(MonotonicTimestamp::Max()); // no start expiration
 }
 
 TaskBehavior TaskBehavior::SingleExecutionNoRetry(const openpal::MonotonicTimestamp startExpiration)
 {
-	return TaskBehavior(
-	           TimeDuration::Min(),			// not periodic
-	           MonotonicTimestamp::Min(),		// run immediately
-	           TimeDuration::Max(),
-	           TimeDuration::Max(),
-	           startExpiration
-	       );
+    return TaskBehavior(TimeDuration::Min(),       // not periodic
+                        MonotonicTimestamp::Min(), // run immediately
+                        TimeDuration::Max(), TimeDuration::Max(), startExpiration);
 }
 
-TaskBehavior TaskBehavior::ImmediatePeriodic(
-    const openpal::TimeDuration& period,
-    const openpal::TimeDuration& minRetryDelay,
-    const openpal::TimeDuration& maxRetryDelay
-)
+TaskBehavior TaskBehavior::ImmediatePeriodic(const openpal::TimeDuration& period,
+                                             const openpal::TimeDuration& minRetryDelay,
+                                             const openpal::TimeDuration& maxRetryDelay)
 {
-	return TaskBehavior(
-	           period,
-	           MonotonicTimestamp::Min(),		// run immediately
-	           minRetryDelay,
-	           maxRetryDelay,
-	           MonotonicTimestamp::Max()		// no start expiraion
-	       );
+    return TaskBehavior(period,
+                        MonotonicTimestamp::Min(), // run immediately
+                        minRetryDelay, maxRetryDelay,
+                        MonotonicTimestamp::Max() // no start expiraion
+    );
 }
 
-TaskBehavior TaskBehavior::SingleImmediateExecutionWithRetry(
-    const TimeDuration& minRetryDelay,
-    const TimeDuration& maxRetryDelay
-)
+TaskBehavior TaskBehavior::SingleImmediateExecutionWithRetry(const TimeDuration& minRetryDelay,
+                                                             const TimeDuration& maxRetryDelay)
 {
-	return TaskBehavior(
-	           TimeDuration::Min(),			// not periodic
-	           MonotonicTimestamp::Min(),		// run immediatey
-	           minRetryDelay,
-	           maxRetryDelay,
-	           MonotonicTimestamp::Max()
-	       );
+    return TaskBehavior(TimeDuration::Min(),       // not periodic
+                        MonotonicTimestamp::Min(), // run immediatey
+                        minRetryDelay, maxRetryDelay, MonotonicTimestamp::Max());
 }
 
 TaskBehavior TaskBehavior::ReactsToIINOnly()
 {
-	return TaskBehavior(
-	           TimeDuration::Min(),			// not periodic
-	           MonotonicTimestamp::Max(),		// only run when needed
-	           TimeDuration::Max(),			// never retry
-	           TimeDuration::Max(),
-	           MonotonicTimestamp::Max()
-	       );
+    return TaskBehavior(TimeDuration::Min(),       // not periodic
+                        MonotonicTimestamp::Max(), // only run when needed
+                        TimeDuration::Max(),       // never retry
+                        TimeDuration::Max(), MonotonicTimestamp::Max());
 }
 
-TaskBehavior::TaskBehavior(
-    const TimeDuration& period,
-    const MonotonicTimestamp& expiration,
-    const TimeDuration& minRetryDelay,
-    const TimeDuration& maxRetryDelay,
-    const openpal::MonotonicTimestamp& startExpiration
-) :
-	period(period),
-	minRetryDelay(minRetryDelay),
-	maxRetryDelay(maxRetryDelay),
-	startExpiration(startExpiration),
-	expiration(expiration),
-	currentRetryDelay(minRetryDelay)
-{}
-
+TaskBehavior::TaskBehavior(const TimeDuration& period,
+                           const MonotonicTimestamp& expiration,
+                           const TimeDuration& minRetryDelay,
+                           const TimeDuration& maxRetryDelay,
+                           const openpal::MonotonicTimestamp& startExpiration)
+    : period(period),
+      minRetryDelay(minRetryDelay),
+      maxRetryDelay(maxRetryDelay),
+      startExpiration(startExpiration),
+      expiration(expiration),
+      currentRetryDelay(minRetryDelay)
+{
+}
 
 void TaskBehavior::OnSuccess(const openpal::MonotonicTimestamp& now)
 {
-	this->currentRetryDelay = this->minRetryDelay;
-	this->expiration = this->period.IsNegative() ? openpal::MonotonicTimestamp::Max() : now.Add(this->period);
+    this->currentRetryDelay = this->minRetryDelay;
+    this->expiration = this->period.IsNegative() ? openpal::MonotonicTimestamp::Max() : now.Add(this->period);
 }
 
 void TaskBehavior::OnResponseTimeout(const MonotonicTimestamp& now)
 {
-	this->expiration = now.Add(this->currentRetryDelay);
-	this->currentRetryDelay = this->CalcNextRetryTimeout();
+    this->expiration = now.Add(this->currentRetryDelay);
+    this->currentRetryDelay = this->CalcNextRetryTimeout();
 }
 
 void TaskBehavior::Reset()
 {
-	this->disabled = false;
-	this->expiration = MonotonicTimestamp::Min();
-	this->currentRetryDelay = this->minRetryDelay;
+    this->disabled = false;
+    this->expiration = MonotonicTimestamp::Min();
+    this->currentRetryDelay = this->minRetryDelay;
 }
 
 void TaskBehavior::Disable()
 {
-	this->disabled = true;
-	this->expiration = MonotonicTimestamp::Max();
+    this->disabled = true;
+    this->expiration = MonotonicTimestamp::Max();
 }
 
 TimeDuration TaskBehavior::CalcNextRetryTimeout() const
 {
-	const bool doubling_would_cause_mult_overflow = this->currentRetryDelay.milliseconds >= (std::numeric_limits<int64_t>::max() / 2);
+    const bool doubling_would_cause_mult_overflow
+        = this->currentRetryDelay.milliseconds >= (std::numeric_limits<int64_t>::max() / 2);
 
-	const auto doubled = doubling_would_cause_mult_overflow ? this->maxRetryDelay : TimeDuration::Milliseconds(2 * this->currentRetryDelay.milliseconds);
+    const auto doubled = doubling_would_cause_mult_overflow
+        ? this->maxRetryDelay
+        : TimeDuration::Milliseconds(2 * this->currentRetryDelay.milliseconds);
 
-	return (doubled > this->maxRetryDelay) ? this->maxRetryDelay : doubled;
+    return (doubled > this->maxRetryDelay) ? this->maxRetryDelay : doubled;
 }
 
-}
-
-
-
+} // namespace opendnp3

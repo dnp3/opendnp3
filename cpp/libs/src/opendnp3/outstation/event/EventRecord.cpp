@@ -24,16 +24,12 @@
 namespace opendnp3
 {
 
-EventRecord::EventRecord(
-    uint16_t index,
-    EventClass clazz
-) :
+EventRecord::EventRecord(uint16_t index, EventClass clazz)
+    :
 
-	index(index),
-	clazz(clazz)
-{}
-
+      index(index),
+      clazz(clazz)
+{
 }
 
-
-
+} // namespace opendnp3

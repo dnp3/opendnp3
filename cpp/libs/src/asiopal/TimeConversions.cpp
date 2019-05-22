@@ -26,14 +26,15 @@ namespace asiopal
 
 steady_clock_t::time_point TimeConversions::Convert(const openpal::MonotonicTimestamp& timestamp)
 {
-	return (timestamp.milliseconds > MAX_MILLISECONDS) ? steady_clock_t::time_point::max() : steady_clock_t::time_point(std::chrono::milliseconds(timestamp.milliseconds));
+    return (timestamp.milliseconds > MAX_MILLISECONDS)
+        ? steady_clock_t::time_point::max()
+        : steady_clock_t::time_point(std::chrono::milliseconds(timestamp.milliseconds));
 }
 
 openpal::MonotonicTimestamp TimeConversions::Convert(const steady_clock_t::time_point& timestamp)
 {
-	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(timestamp.time_since_epoch()).count();
-	return openpal::MonotonicTimestamp(ms);
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(timestamp.time_since_epoch()).count();
+    return openpal::MonotonicTimestamp(ms);
 }
 
-}
-
+} // namespace asiopal

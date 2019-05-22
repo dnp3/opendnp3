@@ -27,17 +27,15 @@
 
 namespace opendnp3
 {
-template <class T>
-struct TypedStorage : private openpal::StaticOnly
+template<class T> struct TypedStorage : private openpal::StaticOnly
 {
 
-	static inline Node<TypedEventRecord<T>>* Retrieve(EventRecord& record)
-	{
-		return reinterpret_cast<Node<TypedEventRecord<T>>*>(record.storage_node);
-	}
+    static inline Node<TypedEventRecord<T>>* Retrieve(EventRecord& record)
+    {
+        return reinterpret_cast<Node<TypedEventRecord<T>>*>(record.storage_node);
+    }
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

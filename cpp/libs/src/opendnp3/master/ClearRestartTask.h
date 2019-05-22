@@ -28,54 +28,52 @@ namespace opendnp3
 {
 
 /**
-* Clear the IIN restart bit
-*/
+ * Clear the IIN restart bit
+ */
 class ClearRestartTask final : public IMasterTask
 {
 
 public:
+    ClearRestartTask(const std::shared_ptr<TaskContext>& context,
+                     IMasterApplication& application,
+                     openpal::Logger logger);
 
-	ClearRestartTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, openpal::Logger logger);
+    virtual char const* Name() const override
+    {
+        return "Clear Restart IIN";
+    }
 
-	virtual char const* Name() const override
-	{
-		return "Clear Restart IIN";
-	}
+    virtual bool IsRecurring() const override
+    {
+        return true;
+    }
 
-	virtual bool IsRecurring() const override
-	{
-		return true;
-	}
+    virtual int Priority() const override
+    {
+        return priority::CLEAR_RESTART;
+    }
 
-	virtual int Priority() const override
-	{
-		return priority::CLEAR_RESTART;
-	}
+    virtual bool BlocksLowerPriority() const override
+    {
+        return true;
+    }
 
-	virtual bool BlocksLowerPriority() const override
-	{
-		return true;
-	}
-
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
 private:
+    virtual MasterTaskType GetTaskType() const override
+    {
+        return MasterTaskType::CLEAR_RESTART;
+    }
 
-	virtual MasterTaskType GetTaskType() const override
-	{
-		return MasterTaskType::CLEAR_RESTART;
-	}
+    virtual bool IsEnabled() const override
+    {
+        return true;
+    }
 
-	virtual bool IsEnabled() const override
-	{
-		return true;
-	}
-
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override;
-
+    virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override;
 };
 
-} //end ns
-
+} // namespace opendnp3
 
 #endif

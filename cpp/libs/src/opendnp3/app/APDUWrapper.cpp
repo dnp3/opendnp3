@@ -20,74 +20,71 @@
  */
 #include "APDUWrapper.h"
 
-#include <openpal/Configure.h>
-#include <assert.h>
-
 #include "AppControlField.h"
+
+#include <openpal/Configure.h>
+
+#include <assert.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-APDUWrapper::APDUWrapper() : valid(false)
-{
-
-}
+APDUWrapper::APDUWrapper() : valid(false) {}
 
 APDUWrapper::APDUWrapper(const openpal::WSlice& buffer_) : valid(true), buffer(buffer_), remaining(buffer_)
 {
-	assert(buffer.Size() >= 2); // need a control & function at a minimum
-	remaining.Advance(2);
+    assert(buffer.Size() >= 2); // need a control & function at a minimum
+    remaining.Advance(2);
 }
 
 bool APDUWrapper::IsValid() const
 {
-	return valid;
+    return valid;
 }
 
 HeaderWriter APDUWrapper::GetWriter()
 {
-	return HeaderWriter(&remaining);
+    return HeaderWriter(&remaining);
 }
 
 uint32_t APDUWrapper::Remaining() const
 {
-	return remaining.Size();
+    return remaining.Size();
 }
 
 void APDUWrapper::SetFunction(FunctionCode code)
 {
-	assert(buffer.IsNotEmpty());
-	buffer[1] = FunctionCodeToType(code);
+    assert(buffer.IsNotEmpty());
+    buffer[1] = FunctionCodeToType(code);
 }
 
 FunctionCode APDUWrapper::GetFunction() const
 {
-	assert(buffer.IsNotEmpty());
-	return FunctionCodeFromType(buffer[1]);
+    assert(buffer.IsNotEmpty());
+    return FunctionCodeFromType(buffer[1]);
 }
 
 AppControlField APDUWrapper::GetControl() const
 {
-	assert(buffer.IsNotEmpty());
-	return AppControlField(buffer[0]);
+    assert(buffer.IsNotEmpty());
+    return AppControlField(buffer[0]);
 }
 
 void APDUWrapper::SetControl(AppControlField control)
 {
-	buffer[0] = control.ToByte();
+    buffer[0] = control.ToByte();
 }
 
 uint32_t APDUWrapper::Size() const
 {
-	return buffer.Size() - remaining.Size();
+    return buffer.Size() - remaining.Size();
 }
 
 openpal::RSlice APDUWrapper::ToRSlice() const
 {
-	return buffer.ToRSlice().Take(this->Size());
+    return buffer.ToRSlice().Take(this->Size());
 }
 
-}
-
+} // namespace opendnp3

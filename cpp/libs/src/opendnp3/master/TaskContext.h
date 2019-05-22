@@ -39,18 +39,16 @@ class IMasterTask; // break circular dependency
  */
 class TaskContext : private openpal::Uncopyable
 {
-	std::set<const IMasterTask*> blocking_tasks;
+    std::set<const IMasterTask*> blocking_tasks;
 
 public:
+    void AddBlock(const IMasterTask& task);
 
-	void AddBlock(const IMasterTask& task);
+    void RemoveBlock(const IMasterTask& task);
 
-	void RemoveBlock(const IMasterTask& task);
-
-	bool IsBlocked(const IMasterTask& task) const;
-
+    bool IsBlocked(const IMasterTask& task) const;
 };
 
-}
+} // namespace opendnp3
 
 #endif

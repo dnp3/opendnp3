@@ -18,15 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#include <openpal/container/Buffer.h>
+#include <openpal/util/ToHex.h>
+
+#include <opendnp3/objects/Group120.h>
 
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
-#include <opendnp3/objects/Group120.h>
-
-#include <openpal/util/ToHex.h>
-#include <openpal/container/Buffer.h>
+#include <catch.hpp>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -36,37 +36,37 @@ using namespace testlib;
 
 TEST_CASE(SUITE("Parser rejects empty buffer"))
 {
-	HexSequence buffer("");
+    HexSequence buffer("");
 
-	Group120Var2 output;
-	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    Group120Var2 output;
+    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Parser identifies data field"))
 {
-	HexSequence buffer("04 00 00 00 09 01 AB BA");
+    HexSequence buffer("04 00 00 00 09 01 AB BA");
 
-	Group120Var2 output;
-	REQUIRE(output.Read(buffer.ToRSlice()));
-	REQUIRE(output.challengeSeqNum == 4);
-	REQUIRE(output.userNum == 265);
-	REQUIRE(ToHex(output.hmacValue) == "AB BA");
+    Group120Var2 output;
+    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(output.challengeSeqNum == 4);
+    REQUIRE(output.userNum == 265);
+    REQUIRE(ToHex(output.hmacValue) == "AB BA");
 }
 
 TEST_CASE(SUITE("Parser allows empty data field"))
 {
-	HexSequence buffer("04 00 00 00 09 01");
+    HexSequence buffer("04 00 00 00 09 01");
 
-	Group120Var2 output;
-	REQUIRE(output.Read(buffer.ToRSlice()));
-	REQUIRE(output.challengeSeqNum == 4);
-	REQUIRE(output.userNum == 265);
-	REQUIRE(output.hmacValue.IsEmpty());
+    Group120Var2 output;
+    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(output.challengeSeqNum == 4);
+    REQUIRE(output.userNum == 265);
+    REQUIRE(output.hmacValue.IsEmpty());
 }
 
 TEST_CASE(SUITE("Parser rejects one less than min length"))
 {
-	HexSequence buffer("04 00 00 00 09");
-	Group120Var2 output;
-	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    HexSequence buffer("04 00 00 00 09");
+    Group120Var2 output;
+    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }

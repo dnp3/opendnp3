@@ -22,6 +22,7 @@
 #define OPENDNP3_TXBUFFER_H
 
 #include <openpal/container/Buffer.h>
+
 #include <opendnp3/app/APDUResponse.h>
 
 namespace opendnp3
@@ -30,43 +31,37 @@ namespace opendnp3
 class TxBuffer
 {
 public:
+    TxBuffer(uint32_t maxTxSize) : buffer(maxTxSize) {}
 
-	TxBuffer(uint32_t maxTxSize) : buffer(maxTxSize)
-	{}
+    APDUResponse Start()
+    {
+        APDUResponse response(buffer.GetWSlice());
+        return response;
+    }
 
-	APDUResponse Start()
-	{
-		APDUResponse response(buffer.GetWSlice());
-		return response;
-	}
+    void Record(const AppControlField& control, const openpal::RSlice& view)
+    {
+        this->control = control;
+        this->lastResponse = view;
+    }
 
-	void Record(const AppControlField& control, const openpal::RSlice& view)
-	{
-		this->control = control;
-		this->lastResponse = view;
-	}
+    const openpal::RSlice& GetLastResponse() const
+    {
+        return lastResponse;
+    }
 
-	const openpal::RSlice& GetLastResponse() const
-	{
-		return lastResponse;
-	}
-
-	const AppControlField& GetLastControl() const
-	{
-		return control;
-	}
+    const AppControlField& GetLastControl() const
+    {
+        return control;
+    }
 
 private:
+    openpal::RSlice lastResponse;
+    AppControlField control;
 
-	openpal::RSlice lastResponse;
-	AppControlField control;
-
-	openpal::Buffer buffer;
+    openpal::Buffer buffer;
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

@@ -23,85 +23,81 @@
 namespace openpal
 {
 
-TimerRef::TimerRef(openpal::IExecutor& executor) : pExecutor(&executor), pTimer(nullptr)
-{}
+TimerRef::TimerRef(openpal::IExecutor& executor) : pExecutor(&executor), pTimer(nullptr) {}
 
 TimerRef::~TimerRef()
 {
-	this->Cancel();
+    this->Cancel();
 }
-
 
 bool TimerRef::IsActive() const
 {
-	return (pTimer != nullptr);
+    return (pTimer != nullptr);
 }
 
 MonotonicTimestamp TimerRef::ExpiresAt() const
 {
-	return pTimer ? pTimer->ExpiresAt() : MonotonicTimestamp::Max();
+    return pTimer ? pTimer->ExpiresAt() : MonotonicTimestamp::Max();
 }
 
 bool TimerRef::Cancel()
 {
-	if (pTimer)
-	{
-		pTimer->Cancel();
-		pTimer = nullptr;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    if (pTimer)
+    {
+        pTimer->Cancel();
+        pTimer = nullptr;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool TimerRef::StartAction(const TimeDuration& timeout, const action_t& action)
 {
-	if (pTimer)
-	{
-		return false;
-	}
-	else
-	{
-		pTimer = pExecutor->Start(timeout, action);
-		return true;
-	}
+    if (pTimer)
+    {
+        return false;
+    }
+    else
+    {
+        pTimer = pExecutor->Start(timeout, action);
+        return true;
+    }
 }
 
 bool TimerRef::StartAction(const MonotonicTimestamp& expiration, const action_t& action)
 {
-	if (pTimer)
-	{
-		return false;
-	}
-	else
-	{
-		pTimer = pExecutor->Start(expiration, action);
-		return true;
-	}
+    if (pTimer)
+    {
+        return false;
+    }
+    else
+    {
+        pTimer = pExecutor->Start(expiration, action);
+        return true;
+    }
 }
 
 void TimerRef::RestartAction(const TimeDuration& timeout, const action_t& action)
 {
-	if (pTimer)
-	{
-		pTimer->Cancel();
-	}
+    if (pTimer)
+    {
+        pTimer->Cancel();
+    }
 
-	pTimer = pExecutor->Start(timeout, action);
+    pTimer = pExecutor->Start(timeout, action);
 }
 
 void TimerRef::RestartAction(const MonotonicTimestamp& expiration, const action_t& action)
 {
-	if (pTimer)
-	{
-		pTimer->Cancel();
-	}
+    if (pTimer)
+    {
+        pTimer->Cancel();
+    }
 
-	pTimer = pExecutor->Start(expiration, action);
+    pTimer = pExecutor->Start(expiration, action);
 }
 
-}
-
-
+} // namespace openpal

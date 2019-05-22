@@ -27,39 +27,35 @@ namespace openpal
 {
 
 /**
-* Strongly typed wrapper for flags bitfield
-*/
+ * Strongly typed wrapper for flags bitfield
+ */
 class LogFilters
 {
 
 public:
+    LogFilters() : filters(0) {}
 
-	LogFilters() : filters(0)
-	{}
+    LogFilters(int32_t filters_) : filters(filters_) {}
 
-	LogFilters(int32_t filters_) : filters(filters_)
-	{}
+    inline bool IsSet(int32_t levels) const
+    {
+        return (levels & filters) != 0;
+    }
 
-	inline bool IsSet(int32_t levels) const
-	{
-		return (levels & filters) != 0;
-	}
+    bool operator&(const LogFilters& rhs) const
+    {
+        return IsSet(rhs.filters);
+    }
 
-	bool operator &(const LogFilters& rhs) const
-	{
-		return IsSet(rhs.filters);
-	}
-
-	int32_t GetBitfield() const
-	{
-		return filters;
-	}
+    int32_t GetBitfield() const
+    {
+        return filters;
+    }
 
 private:
-
-	int32_t	filters;
+    int32_t filters;
 };
 
-}
+} // namespace openpal
 
 #endif

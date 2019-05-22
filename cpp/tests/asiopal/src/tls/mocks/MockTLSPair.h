@@ -37,33 +37,28 @@ class MockTLSPair
 {
 
 public:
+    MockTLSPair(std::shared_ptr<MockIO> io,
+                uint16_t port,
+                const TLSConfig& client,
+                const TLSConfig& server,
+                std::error_code ec = std::error_code());
 
-	MockTLSPair(std::shared_ptr<MockIO> io, uint16_t port, const TLSConfig& client, const TLSConfig& server, std::error_code ec = std::error_code());
+    ~MockTLSPair();
 
-	~MockTLSPair();
+    void Connect(size_t num = 1);
 
-	void Connect(size_t num = 1);
+    bool NumConnectionsEqual(size_t num) const;
 
-	bool NumConnectionsEqual(size_t num) const;
-
-	testlib::MockLogHandler log;
+    testlib::MockLogHandler log;
 
 private:
-
-	std::shared_ptr<MockIO> io;
-	uint16_t port;
-	std::shared_ptr<MockTLSClientHandler> chandler;
-	std::shared_ptr<TLSClient> client;
-	std::shared_ptr<MockTLSServer> server;
+    std::shared_ptr<MockIO> io;
+    uint16_t port;
+    std::shared_ptr<MockTLSClientHandler> chandler;
+    std::shared_ptr<TLSClient> client;
+    std::shared_ptr<MockTLSServer> server;
 };
 
-}
+} // namespace asiopal
 
 #endif
-
-
-
-
-
-
-

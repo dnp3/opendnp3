@@ -21,13 +21,13 @@
 #ifndef OPENDNP3_APDUPARSER_H
 #define OPENDNP3_APDUPARSER_H
 
-#include <openpal/util/Uncopyable.h>
 #include <openpal/container/RSlice.h>
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "opendnp3/app/parsing/NumParser.h"
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/parsing/ParserSettings.h"
-#include "opendnp3/app/parsing/NumParser.h"
 
 namespace opendnp3
 {
@@ -35,31 +35,56 @@ namespace opendnp3
 class APDUParser : private openpal::StaticOnly
 {
 public:
+    static ParseResult Parse(const openpal::RSlice& buffer,
+                             IAPDUHandler& handler,
+                             openpal::Logger& logger,
+                             ParserSettings settings = ParserSettings::Default());
 
-	static ParseResult Parse(const openpal::RSlice& buffer, IAPDUHandler& handler, openpal::Logger& logger, ParserSettings settings = ParserSettings::Default());
+    static ParseResult Parse(const openpal::RSlice& buffer,
+                             IAPDUHandler& handler,
+                             openpal::Logger* pLogger,
+                             ParserSettings settings = ParserSettings::Default());
 
-	static ParseResult Parse(const openpal::RSlice& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
+    static ParseResult ParseAndLogAll(const openpal::RSlice& buffer,
+                                      openpal::Logger* pLogger,
+                                      ParserSettings settings = ParserSettings::Default());
 
-	static ParseResult ParseAndLogAll(const openpal::RSlice& buffer, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
-
-	static ParseResult ParseSinglePass(const openpal::RSlice& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, IWhiteList* pWhiteList, const ParserSettings& settings);
+    static ParseResult ParseSinglePass(const openpal::RSlice& buffer,
+                                       openpal::Logger* pLogger,
+                                       IAPDUHandler* pHandler,
+                                       IWhiteList* pWhiteList,
+                                       const ParserSettings& settings);
 
 private:
+    static bool AllowAll(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
+    {
+        return true;
+    }
 
-	static bool AllowAll(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
-	{
-		return true;
-	}
+    static ParseResult ParseHeaders(const openpal::RSlice& buffer,
+                                    openpal::Logger* pLogger,
+                                    const ParserSettings& settings,
+                                    IAPDUHandler* pHandler);
 
-	static ParseResult ParseHeaders(const openpal::RSlice& buffer, openpal::Logger* pLogger, const ParserSettings& settings, IAPDUHandler* pHandler);
+    static ParseResult ParseHeader(openpal::RSlice& buffer,
+                                   openpal::Logger* pLogger,
+                                   uint32_t count,
+                                   const ParserSettings& settings,
+                                   IAPDUHandler* pHandler,
+                                   IWhiteList* pWhiteList);
 
-	static ParseResult ParseHeader(openpal::RSlice& buffer, openpal::Logger* pLogger, uint32_t count, const ParserSettings& settings, IAPDUHandler* pHandler, IWhiteList* pWhiteList);
+    static ParseResult ParseQualifier(openpal::RSlice& buffer,
+                                      openpal::Logger* pLogger,
+                                      const HeaderRecord& record,
+                                      const ParserSettings& settings,
+                                      IAPDUHandler* pHandler);
 
-	static ParseResult ParseQualifier(openpal::RSlice& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
-
-	static ParseResult HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
+    static ParseResult HandleAllObjectsHeader(openpal::Logger* pLogger,
+                                              const HeaderRecord& record,
+                                              const ParserSettings& settings,
+                                              IAPDUHandler* pHandler);
 };
 
-}
+} // namespace opendnp3
 
 #endif

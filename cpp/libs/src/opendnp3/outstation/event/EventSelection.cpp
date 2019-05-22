@@ -26,27 +26,24 @@ namespace opendnp3
 
 uint32_t EventSelection::SelectByClass(EventLists& lists, const ClassField& clazz, uint32_t max)
 {
-	uint32_t num_selected = 0;
-	auto iter = lists.events.Iterate();
+    uint32_t num_selected = 0;
+    auto iter = lists.events.Iterate();
 
-	while (iter.HasNext() && num_selected < max)
-	{
-		auto node = iter.Next();
-		if (node->value.state == EventState::unselected && clazz.HasEventType(node->value.clazz))
-		{
-			// if not previously selected
-			node->value.state = EventState::selected;
-			// TODO - set the storage to use the default variation
-			//node->value.selectedVariation = useDefaultVariation ? node->value.defaultVariation : variation;
-			++num_selected;
-			lists.counters.OnSelect();
-		}
-	}
+    while (iter.HasNext() && num_selected < max)
+    {
+        auto node = iter.Next();
+        if (node->value.state == EventState::unselected && clazz.HasEventType(node->value.clazz))
+        {
+            // if not previously selected
+            node->value.state = EventState::selected;
+            // TODO - set the storage to use the default variation
+            // node->value.selectedVariation = useDefaultVariation ? node->value.defaultVariation : variation;
+            ++num_selected;
+            lists.counters.OnSelect();
+        }
+    }
 
-	return num_selected;
+    return num_selected;
 }
 
-}
-
-
-
+} // namespace opendnp3

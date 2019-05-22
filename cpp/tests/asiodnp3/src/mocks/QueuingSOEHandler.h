@@ -22,11 +22,10 @@
 #ifndef OPENDNP3_QUEUINGSOEHANDLER_H
 #define OPENDNP3_QUEUINGSOEHANDLER_H
 
-#include "opendnp3/master/ISOEHandler.h"
-
 #include "ExpectedValue.h"
-
 #include "SynchronizedQueue.h"
+
+#include "opendnp3/master/ISOEHandler.h"
 
 #include <mutex>
 #include <vector>
@@ -36,81 +35,78 @@ namespace opendnp3
 
 class QueuingSOEHandler final : public opendnp3::ISOEHandler
 {
-	std::mutex mutex;
-	std::vector<ExpectedValue> temp;
+    std::mutex mutex;
+    std::vector<ExpectedValue> temp;
 
-	template <class T>
-	void ProcessAny(const ICollection<Indexed<T>>& values)
-	{
-		auto add = [this](const Indexed<T>& item)
-		{
-			temp.push_back(ExpectedValue(item.value, item.index));
-		};
+    template<class T> void ProcessAny(const ICollection<Indexed<T>>& values)
+    {
+        auto add = [this](const Indexed<T>& item) { temp.push_back(ExpectedValue(item.value, item.index)); };
 
-		values.ForeachItem(add);
-	}
+        values.ForeachItem(add);
+    }
 
 public:
+    asiodnp3::SynchronizedQueue<opendnp3::ExpectedValue> values;
 
-	asiodnp3::SynchronizedQueue<opendnp3::ExpectedValue> values;
+    virtual void Start() override
+    {
+        mutex.lock();
+    }
 
-	virtual void Start() override
-	{
-		mutex.lock();
-	}
+    virtual void End() override
+    {
+        values.AddMany(temp);
+        temp.clear();
+        mutex.unlock();
+    }
 
-	virtual void End() override
-	{
-		values.AddMany(temp);
-		temp.clear();
-		mutex.unlock();
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override
+    {
+        this->ProcessAny(values);
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override
-	{
-		this->ProcessAny(values);
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override
+    {
+        this->ProcessAny(values);
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override
-	{
-		this->ProcessAny(values);
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override
+    {
+        this->ProcessAny(values);
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override
-	{
-		this->ProcessAny(values);
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override
+    {
+        this->ProcessAny(values);
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override
-	{
-		this->ProcessAny(values);
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override
+    {
+        this->ProcessAny(values);
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override
-	{
-		this->ProcessAny(values);
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override
+    {
+        this->ProcessAny(values);
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override
-	{
-		this->ProcessAny(values);
-	}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override
+    {
+        this->ProcessAny(values);
+    }
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override
-	{
-		this->ProcessAny(values);
-	}
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::DNPTime>& values) override
+    {
+    }
 
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override {}
-
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override {}
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

@@ -24,36 +24,31 @@
 namespace openpal
 {
 
-template <class W>
-class HasSize
+template<class W> class HasSize
 {
 
 public:
+    HasSize(W size) : size(size) {}
 
-	HasSize(W size) : size(size)
-	{}
+    W Size() const
+    {
+        return size;
+    }
 
-	W Size() const
-	{
-		return size;
-	}
+    bool IsEmpty() const
+    {
+        return size == 0;
+    }
 
-	bool IsEmpty() const
-	{
-		return size == 0;
-	}
-
-	bool IsNotEmpty() const
-	{
-		return size != 0;
-	}
+    bool IsNotEmpty() const
+    {
+        return size != 0;
+    }
 
 protected:
-
-	W size;
-
+    W size;
 };
 
-}
+} // namespace openpal
 
 #endif

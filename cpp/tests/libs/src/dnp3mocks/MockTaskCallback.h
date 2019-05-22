@@ -22,6 +22,7 @@
 #define __MOCK_COMMAND_CALLBACK_H_
 
 #include <opendnp3/master/ITaskCallback.h>
+
 #include <queue>
 
 namespace opendnp3
@@ -30,31 +31,28 @@ namespace opendnp3
 class MockTaskCallback : public ITaskCallback
 {
 public:
+    virtual void OnStart() override final
+    {
+        ++numStart;
+    }
 
-	virtual void OnStart() override final
-	{
-		++numStart;
-	}
+    virtual void OnComplete(TaskCompletion result) override final
+    {
+        results.push_back(result);
+    }
 
-	virtual void OnComplete(TaskCompletion result) override final
-	{
-		results.push_back(result);
-	}
+    virtual void OnDestroyed() override final
+    {
+        ++numDestroyed;
+    }
 
-	virtual void OnDestroyed() override final
-	{
-		++numDestroyed;
-	}
+    uint32_t numStart = 0;
 
-	uint32_t numStart = 0;
+    uint32_t numDestroyed = 0;
 
-	uint32_t numDestroyed = 0;
-
-	std::deque<TaskCompletion> results;
-
+    std::deque<TaskCompletion> results;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

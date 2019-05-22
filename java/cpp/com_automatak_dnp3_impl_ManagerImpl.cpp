@@ -18,13 +18,12 @@
  */
 #include "com_automatak_dnp3_impl_ManagerImpl.h"
 
-#include <asiodnp3/DNP3Manager.h>
-
 #include "adapters/CString.h"
-#include "adapters/LogHandlerAdapter.h"
 #include "adapters/ChannelListenerAdapter.h"
-
+#include "adapters/LogHandlerAdapter.h"
 #include "jni/JCache.h"
+
+#include <asiodnp3/DNP3Manager.h>
 
 using namespace openpal;
 using namespace asiopal;
@@ -33,152 +32,194 @@ using namespace opendnp3;
 
 asiopal::TLSConfig ConvertTLSConfig(JNIEnv* env, jobject jconfig)
 {
-	auto& ref = jni::JCache::TLSConfig;
+    auto& ref = jni::JCache::TLSConfig;
 
-	CString peerCertFilePath(env, ref.getpeerCertFilePath(env, jconfig));
-	CString localCertFilePath(env, ref.getlocalCertFilePath(env, jconfig));
-	CString privateKeyFilePath(env, ref.getprivateKeyFilePath(env, jconfig));
-	CString cipherList(env, ref.getcipherList(env, jconfig));
+    CString peerCertFilePath(env, ref.getpeerCertFilePath(env, jconfig));
+    CString localCertFilePath(env, ref.getlocalCertFilePath(env, jconfig));
+    CString privateKeyFilePath(env, ref.getprivateKeyFilePath(env, jconfig));
+    CString cipherList(env, ref.getcipherList(env, jconfig));
 
-	return asiopal::TLSConfig(
-		peerCertFilePath.str(),
-		localCertFilePath.str(),
-		privateKeyFilePath.str(),
-		ref.getmaxVerifyDepth(env, jconfig),
-		!!ref.getallowTLSv10(env, jconfig),
-		!!ref.getallowTLSv11(env, jconfig),
-		!!ref.getallowTLSv12(env, jconfig),
-		cipherList.str()
-	);
+    return asiopal::TLSConfig(peerCertFilePath.str(), localCertFilePath.str(), privateKeyFilePath.str(),
+                              ref.getmaxVerifyDepth(env, jconfig), !!ref.getallowTLSv10(env, jconfig),
+                              !!ref.getallowTLSv11(env, jconfig), !!ref.getallowTLSv12(env, jconfig), cipherList.str());
 }
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager
-(JNIEnv* env, jobject, jint concurreny, jobject loghandler)
-{			
-	auto attach = []() { JNI::AttachCurrentThread(); };
-	auto detach = []() { JNI::DetachCurrentThread(); };
-
-	auto adapter = std::make_shared<LogHandlerAdapter>(loghandler);	
-
-	return (jlong) new DNP3Manager(concurreny, adapter, attach, detach);	
-}
-
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_shutdown_1native_1manager
-(JNIEnv*, jobject, jlong pointer)
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager(JNIEnv* env,
+                                                                                         jobject,
+                                                                                         jint concurreny,
+                                                                                         jobject loghandler)
 {
-	delete (DNP3Manager*) pointer;
+    auto attach = []() { JNI::AttachCurrentThread(); };
+    auto detach = []() { JNI::DetachCurrentThread(); };
+
+    auto adapter = std::make_shared<LogHandlerAdapter>(loghandler);
+
+    return (jlong) new DNP3Manager(concurreny, adapter, attach, detach);
 }
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jobject jremotes, jstring jadapter, jobject jlistener)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_shutdown_1native_1manager(JNIEnv*,
+                                                                                          jobject,
+                                                                                          jlong pointer)
 {
-	const auto manager = (DNP3Manager*) native;
-
-	CString id(env, jid);
-	CString adapter(env, jadapter);
-	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
-	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
-
-	// Convert endpoints
-	std::vector<asiopal::IPEndpoint> endpoints;
-	auto process = [&](LocalRef<jobject> jendpoint) {
-		const auto jaddress = jni::JCache::IPEndpoint.getaddress(env, jendpoint);
-		CString address(env, jaddress);
-		const auto port = jni::JCache::IPEndpoint.getport(env, jendpoint);
-		asiopal::IPEndpoint endpoint(address.str(), static_cast<uint16_t>(port));
-		endpoints.push_back(endpoint);
-	};
-	JNI::Iterate(env, jremotes, process);
-
-	auto channel = manager->AddTCPClient(id.str(), jlevels, retry, endpoints, adapter.str(), listener);
-
-	return (jlong) new std::shared_ptr<IChannel>(channel);
+    delete (DNP3Manager*)pointer;
 }
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jint jmode, jstring jadapter, jint jport, jobject jlistener)
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client(JNIEnv* env,
+                                                                                                   jobject,
+                                                                                                   jlong native,
+                                                                                                   jstring jid,
+                                                                                                   jint jlevels,
+                                                                                                   jlong jminRetry,
+                                                                                                   jlong jmaxRetry,
+                                                                                                   jobject jremotes,
+                                                                                                   jstring jadapter,
+                                                                                                   jobject jlistener)
 {
-	const auto manager = (DNP3Manager*) native;
+    const auto manager = (DNP3Manager*)native;
 
-	CString id(env, jid);	
-	CString adapter(env, jadapter);	
+    CString id(env, jid);
+    CString adapter(env, jadapter);
+    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+    // Convert endpoints
+    std::vector<asiopal::IPEndpoint> endpoints;
+    auto process = [&](LocalRef<jobject> jendpoint) {
+        const auto jaddress = jni::JCache::IPEndpoint.getaddress(env, jendpoint);
+        CString address(env, jaddress);
+        const auto port = jni::JCache::IPEndpoint.getport(env, jendpoint);
+        asiopal::IPEndpoint endpoint(address.str(), static_cast<uint16_t>(port));
+        endpoints.push_back(endpoint);
+    };
+    JNI::Iterate(env, jremotes, process);
 
-	auto channel = manager->AddTCPServer(id.str(), jlevels, static_cast<ServerAcceptMode>(jmode), adapter.str(), static_cast<uint16_t>(jport), listener);
+    auto channel = manager->AddTCPClient(id.str(), jlevels, retry, endpoints, adapter.str(), listener);
 
-	return (jlong) new std::shared_ptr<IChannel>(channel);
+    return (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jobject jremotes, jstring jadapter, jobject jtlsconfig, jobject jlistener)
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server(JNIEnv* env,
+                                                                                                   jobject,
+                                                                                                   jlong native,
+                                                                                                   jstring jid,
+                                                                                                   jint jlevels,
+                                                                                                   jint jmode,
+                                                                                                   jstring jadapter,
+                                                                                                   jint jport,
+                                                                                                   jobject jlistener)
 {
-	const auto manager = (DNP3Manager*)native;
+    const auto manager = (DNP3Manager*)native;
 
-	CString id(env, jid);
-	CString adapter(env, jadapter);
-	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
-	auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
-	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+    CString id(env, jid);
+    CString adapter(env, jadapter);
 
-	// Convert endpoints
-	std::vector<asiopal::IPEndpoint> endpoints;
-	auto process = [&](LocalRef<jobject> jendpoint) {
-		const auto jaddress = jni::JCache::IPEndpoint.getaddress(env, jendpoint);
-		CString address(env, jaddress);
-		const auto port = jni::JCache::IPEndpoint.getport(env, jendpoint);
-		asiopal::IPEndpoint endpoint(address.str(), static_cast<uint16_t>(port));
-		endpoints.push_back(endpoint);
-	};
-	JNI::Iterate(env, jremotes, process);
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	std::error_code ec;
+    auto channel = manager->AddTCPServer(id.str(), jlevels, static_cast<ServerAcceptMode>(jmode), adapter.str(),
+                                         static_cast<uint16_t>(jport), listener);
 
-	auto channel = manager->AddTLSClient(id.str(), jlevels, retry, endpoints, adapter.str(), tlsconf, listener, ec);
-
-	return (jlong) new std::shared_ptr<IChannel>(channel);
+    return (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1server
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jint jmode, jstring jadapter, jint jport, jobject jtlsconfig, jobject jlistener)
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client(JNIEnv* env,
+                                                                                                   jobject,
+                                                                                                   jlong native,
+                                                                                                   jstring jid,
+                                                                                                   jint jlevels,
+                                                                                                   jlong jminRetry,
+                                                                                                   jlong jmaxRetry,
+                                                                                                   jobject jremotes,
+                                                                                                   jstring jadapter,
+                                                                                                   jobject jtlsconfig,
+                                                                                                   jobject jlistener)
 {
-	const auto manager = (DNP3Manager*)native;
+    const auto manager = (DNP3Manager*)native;
 
-	CString id(env, jid);
-	CString adapter(env, jadapter);	
+    CString id(env, jid);
+    CString adapter(env, jadapter);
+    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+    auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
+    // Convert endpoints
+    std::vector<asiopal::IPEndpoint> endpoints;
+    auto process = [&](LocalRef<jobject> jendpoint) {
+        const auto jaddress = jni::JCache::IPEndpoint.getaddress(env, jendpoint);
+        CString address(env, jaddress);
+        const auto port = jni::JCache::IPEndpoint.getport(env, jendpoint);
+        asiopal::IPEndpoint endpoint(address.str(), static_cast<uint16_t>(port));
+        endpoints.push_back(endpoint);
+    };
+    JNI::Iterate(env, jremotes, process);
 
-	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+    std::error_code ec;
 
-	std::error_code ec;
+    auto channel = manager->AddTLSClient(id.str(), jlevels, retry, endpoints, adapter.str(), tlsconf, listener, ec);
 
-	auto channel = manager->AddTLSServer(id.str(), jlevels, static_cast<ServerAcceptMode>(jmode), adapter.str(), static_cast<uint16_t>(jport), tlsconf, listener, ec);
-
-	return ec ? 0 : (jlong) new std::shared_ptr<IChannel>(channel);
+    return (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
-(JNIEnv* env, jobject, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jstring jsdevice, jint jbaudRate, jint jdatabits, jint jparity, jint jstopbits, jint jflowcontrol, jobject jlistener)
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1server(JNIEnv* env,
+                                                                                                   jobject,
+                                                                                                   jlong native,
+                                                                                                   jstring jid,
+                                                                                                   jint jlevels,
+                                                                                                   jint jmode,
+                                                                                                   jstring jadapter,
+                                                                                                   jint jport,
+                                                                                                   jobject jtlsconfig,
+                                                                                                   jobject jlistener)
 {
-	const auto manager = (DNP3Manager*)native;
+    const auto manager = (DNP3Manager*)native;
 
-	CString id(env, jid);
-	ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
-	CString sdevice(env, jsdevice);
+    CString id(env, jid);
+    CString adapter(env, jadapter);
 
-	asiopal::SerialSettings settings;
-	settings.asyncOpenDelay = openpal::TimeDuration::Milliseconds(100);
-	settings.baud = jbaudRate;
-	settings.dataBits = jdatabits;
-	settings.deviceName = sdevice;
-	settings.flowType = opendnp3::FlowControlFromType(static_cast<uint8_t>(jflowcontrol));
-	settings.parity = opendnp3::ParityFromType(static_cast<uint8_t>(jparity));
-	settings.stopBits = opendnp3::StopBitsFromType(static_cast<uint8_t>(jstopbits));
+    auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
 
-	auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-	auto channel = manager->AddSerial(id.str(), jlevels, retry, settings, listener);
+    std::error_code ec;
 
-	return (jlong) new std::shared_ptr<IChannel>(channel);
+    auto channel = manager->AddTLSServer(id.str(), jlevels, static_cast<ServerAcceptMode>(jmode), adapter.str(),
+                                         static_cast<uint16_t>(jport), tlsconf, listener, ec);
+
+    return ec ? 0 : (jlong) new std::shared_ptr<IChannel>(channel);
+}
+
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial(JNIEnv* env,
+                                                                                              jobject,
+                                                                                              jlong native,
+                                                                                              jstring jid,
+                                                                                              jint jlevels,
+                                                                                              jlong jminRetry,
+                                                                                              jlong jmaxRetry,
+                                                                                              jstring jsdevice,
+                                                                                              jint jbaudRate,
+                                                                                              jint jdatabits,
+                                                                                              jint jparity,
+                                                                                              jint jstopbits,
+                                                                                              jint jflowcontrol,
+                                                                                              jobject jlistener)
+{
+    const auto manager = (DNP3Manager*)native;
+
+    CString id(env, jid);
+    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+    CString sdevice(env, jsdevice);
+
+    asiopal::SerialSettings settings;
+    settings.asyncOpenDelay = openpal::TimeDuration::Milliseconds(100);
+    settings.baud = jbaudRate;
+    settings.dataBits = jdatabits;
+    settings.deviceName = sdevice;
+    settings.flowType = opendnp3::FlowControlFromType(static_cast<uint8_t>(jflowcontrol));
+    settings.parity = opendnp3::ParityFromType(static_cast<uint8_t>(jparity));
+    settings.stopBits = opendnp3::StopBitsFromType(static_cast<uint8_t>(jstopbits));
+
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+
+    auto channel = manager->AddSerial(id.str(), jlevels, retry, settings, listener);
+
+    return (jlong) new std::shared_ptr<IChannel>(channel);
 }

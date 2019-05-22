@@ -7,14 +7,14 @@
 // |_| \_|\___/  |______\__,_|_|\__|_|_| |_|\__, (_|_|_)
 //                                           __/ |
 //                                          |___/
-// 
+//
 // This file is auto-generated. Do not edit manually
-// 
+//
 // Copyright 2013 Automatak LLC
-// 
+//
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -23,15 +23,18 @@
 
 #include "opendnp3/app/GroupVariationID.h"
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
 // Internal Indications - Packed Format
 struct Group80Var1
 {
-  static GroupVariationID ID() { return GroupVariationID(80,1); }
+    static GroupVariationID ID()
+    {
+        return GroupVariationID(80, 1);
+    }
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

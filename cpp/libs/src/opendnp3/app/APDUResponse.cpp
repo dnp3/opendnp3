@@ -21,6 +21,7 @@
 #include "APDUResponse.h"
 
 #include <openpal/Configure.h>
+
 #include <assert.h>
 
 using namespace openpal;
@@ -30,19 +31,19 @@ namespace opendnp3
 
 APDUResponse::APDUResponse(const openpal::WSlice& buffer) : APDUWrapper(buffer)
 {
-	assert(buffer.Size() >= 4);
-	remaining.Advance(2);
+    assert(buffer.Size() >= 4);
+    remaining.Advance(2);
 }
 
 void APDUResponse::SetIIN(const IINField& indications)
 {
-	buffer[2] = indications.LSB;
-	buffer[3] = indications.MSB;
+    buffer[2] = indications.LSB;
+    buffer[3] = indications.MSB;
 }
 
 IINField APDUResponse::GetIIN() const
 {
-	return IINField(buffer[2], buffer[3]);
+    return IINField(buffer[2], buffer[3]);
 }
 
-}
+} // namespace opendnp3

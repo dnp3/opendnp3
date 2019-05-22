@@ -22,42 +22,41 @@
 #define ASIOPAL_IOPENDELAYSTRATEGY_H
 
 #include <openpal/executor/TimeDuration.h>
-
 #include <openpal/util/Uncopyable.h>
 
 namespace asiopal
 {
 
 /**
-* A strategy interface for controlling how connection are retried
-*/
+ * A strategy interface for controlling how connection are retried
+ */
 class IOpenDelayStrategy
 {
 
 public:
+    virtual ~IOpenDelayStrategy() {}
 
-	virtual ~IOpenDelayStrategy() {}
-
-	/**
-	* The the next delay based on the current and the maximum.
-	*/
-	virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const = 0;
+    /**
+     * The the next delay based on the current and the maximum.
+     */
+    virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current,
+                                               const openpal::TimeDuration& max) const = 0;
 };
 
 /**
-* Implements IOpenDelayStrategy using exponential-backoff.
-*/
+ * Implements IOpenDelayStrategy using exponential-backoff.
+ */
 class ExponentialBackoffStrategy : public IOpenDelayStrategy, private openpal::Uncopyable
 {
-	static ExponentialBackoffStrategy instance;
+    static ExponentialBackoffStrategy instance;
 
 public:
+    static IOpenDelayStrategy& Instance();
 
-	static IOpenDelayStrategy& Instance();
-
-	virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const override final;
+    virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current,
+                                               const openpal::TimeDuration& max) const override final;
 };
 
-}
+} // namespace asiopal
 
 #endif

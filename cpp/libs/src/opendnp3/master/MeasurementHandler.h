@@ -21,16 +21,16 @@
 #ifndef OPENDNP3_MEASUREMENTHANDLER_H
 #define OPENDNP3_MEASUREMENTHANDLER_H
 
-#include <openpal/logging/Logger.h>
 #include <openpal/logging/LogMacros.h>
+#include <openpal/logging/Logger.h>
 
-#include "opendnp3/master/ISOEHandler.h"
-#include "opendnp3/app/APDUHeader.h"
-#include "opendnp3/app/parsing/ParseResult.h"
-#include "opendnp3/app/parsing/IAPDUHandler.h"
-#include "opendnp3/app/parsing/Collections.h"
-#include "opendnp3/gen/Attributes.h"
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/app/parsing/Collections.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "opendnp3/app/parsing/ParseResult.h"
+#include "opendnp3/gen/Attributes.h"
+#include "opendnp3/master/ISOEHandler.h"
 
 namespace opendnp3
 {
@@ -42,137 +42,126 @@ class MeasurementHandler final : public IAPDUHandler
 {
 
 public:
+    /**
+     * Static helper function for interpreting a response as a measurement response
+     */
+    static ParseResult ProcessMeasurements(const openpal::RSlice& objects,
+                                           openpal::Logger& logger,
+                                           ISOEHandler* pHandler);
 
-	/**
-	* Static helper function for interpreting a response as a measurement response
-	*/
-	static ParseResult ProcessMeasurements(const openpal::RSlice& objects, openpal::Logger& logger, ISOEHandler* pHandler);
+    // TODO
+    virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override
+    {
+        return true;
+    };
 
-	// TODO
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override
-	{
-		return true;
-	};
+    /**
+     * Creates a new ResponseLoader instance.
+     *
+     * @param logger	the Logger that the loader should use for message reporting
+     */
+    MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler);
 
-	/**
-	* Creates a new ResponseLoader instance.
-	*
-	* @param logger	the Logger that the loader should use for message reporting
-	*/
-	MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler);
-
-	~MeasurementHandler();
+    ~MeasurementHandler();
 
 private:
+    openpal::Logger logger;
 
-	openpal::Logger logger;
+    static TimestampMode ModeFromType(GroupVariation gv);
 
-	static TimestampMode ModeFromType(GroupVariation gv);
+    IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values) override;
 
+    // Handle the CTO objects
+    IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& cto) override;
+    IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& cto) override;
 
-	IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values) override;
 
-	// Handle the CTO objects
-	IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& cto) override;
-	IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& cto) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values) override;
 
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override;
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override;
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override;
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values) override;
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override;
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) override;
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override;
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override;
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override;
-	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values) override;
+    template<class Target, class Source>
+    IINField LoadValuesWithTransformTo(const HeaderRecord& record, const ICollection<Indexed<Source>>& values)
+    {
+        auto transform = [](const Indexed<Source>& input) -> Indexed<Target> { return Convert<Source, Target>(input); };
 
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values) override;
-	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values) override;
+        auto collection = Map<Indexed<Source>, Indexed<Target>>(values, transform);
 
+        return this->LoadValues(record, ModeFromType(record.enumeration), collection);
+    }
 
-	template <class Target, class Source>
-	IINField LoadValuesWithTransformTo(const HeaderRecord& record, const ICollection<Indexed<Source>>& values)
-	{
-		auto transform = [](const Indexed<Source>& input) -> Indexed<Target>
-		{
-			return Convert<Source, Target>(input);
-		};
+    template<class T>
+    IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, const ICollection<Indexed<T>>& values)
+    {
+        this->CheckForTxStart();
+        HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerIndex);
+        this->pSOEHandler->Process(info, values);
+        return IINField();
+    }
 
-		auto collection = Map<Indexed<Source>, Indexed<Target>>(values, transform);
+    template<class T> IINField ProcessWithCTO(const HeaderRecord& record, const ICollection<Indexed<T>>& values);
 
-		return this->LoadValues(record, ModeFromType(record.enumeration), collection);
-	}
+    bool txInitiated;
+    ISOEHandler* pSOEHandler;
 
-	template <class T>
-	IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, const ICollection<Indexed<T>>& values)
-	{
-		this->CheckForTxStart();
-		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerIndex);
-		this->pSOEHandler->Process(info, values);
-		return IINField();
-	}
+    TimestampMode ctoMode;
+    DNPTime commonTimeOccurence;
 
-	template <class T>
-	IINField ProcessWithCTO(const HeaderRecord& record, const ICollection<Indexed<T>>& values);
+    void CheckForTxStart();
 
-	bool txInitiated;
-	ISOEHandler* pSOEHandler;
+    static SecurityStat Convert(const Group121Var1& value);
+    static SecurityStat Convert(const Group122Var1& value);
+    static SecurityStat Convert(const Group122Var2& value);
 
-	TimestampMode ctoMode;
-	DNPTime commonTimeOccurence;
-
-	void CheckForTxStart();
-
-	static SecurityStat Convert(const Group121Var1& value);
-	static SecurityStat Convert(const Group122Var1& value);
-	static SecurityStat Convert(const Group122Var2& value);
-
-	template <class T, class U>
-	static Indexed<U> Convert(const Indexed<T>& input)
-	{
-		return WithIndex(Convert(input.value), input.index);
-	}
-
+    template<class T, class U> static Indexed<U> Convert(const Indexed<T>& input)
+    {
+        return WithIndex(Convert(input.value), input.index);
+    }
 };
 
-template <class T>
+template<class T>
 IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const ICollection<Indexed<T>>& values)
 {
-	if (ctoMode == TimestampMode::INVALID)
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior CTO objects for %s", GroupVariationToString(record.enumeration));
-		return IINField(IINBit::PARAM_ERROR);
-	}
+    if (ctoMode == TimestampMode::INVALID)
+    {
+        FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior CTO objects for %s",
+                         GroupVariationToString(record.enumeration));
+        return IINField(IINBit::PARAM_ERROR);
+    }
 
-	const auto MODE = this->ctoMode;
-	const auto cto = this->commonTimeOccurence;
+    const auto MODE = this->ctoMode;
+    const auto cto = this->commonTimeOccurence;
 
-	auto transform = [cto](const Indexed<T>& input) -> Indexed<T>
-	{
-		Indexed<T> copy(input);
-		copy.value.time = DNPTime(input.value.time + cto);
-		return copy;
-	};
+    auto transform = [cto](const Indexed<T>& input) -> Indexed<T> {
+        Indexed<T> copy(input);
+        copy.value.time = DNPTime(input.value.time + cto);
+        return copy;
+    };
 
-	auto adjusted = Map<Indexed<T>, Indexed<T>>(values, transform);
+    auto adjusted = Map<Indexed<T>, Indexed<T>>(values, transform);
 
-	return this->LoadValues(record, MODE, adjusted);
+    return this->LoadValues(record, MODE, adjusted);
 }
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

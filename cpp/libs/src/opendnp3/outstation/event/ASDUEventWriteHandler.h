@@ -21,12 +21,12 @@
 #ifndef OPENDNP3_ASDUEVENTWRITEHANDLER_H
 #define OPENDNP3_ASDUEVENTWRITEHANDLER_H
 
-#include "opendnp3/app/HeaderWriter.h"
-#include "opendnp3/app/DNP3Serializer.h"
+#include "IEventWriteHandler.h"
 
 #include "openpal/util/Uncopyable.h"
 
-#include "IEventWriteHandler.h"
+#include "opendnp3/app/DNP3Serializer.h"
+#include "opendnp3/app/HeaderWriter.h"
 
 namespace opendnp3
 {
@@ -35,24 +35,37 @@ class ASDUEventWriteHandler final : public IEventWriteHandler, private openpal::
 {
 
 public:
+    explicit ASDUEventWriteHandler(const HeaderWriter& writer) : writer(writer) {}
 
-	explicit ASDUEventWriteHandler(const HeaderWriter& writer) : writer(writer) {}
-
-	virtual uint16_t Write(EventBinaryVariation variation, const Binary& first, IEventCollection<Binary>& items) override;
-	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DoubleBitBinary& first, IEventCollection<DoubleBitBinary>& items) override;
-	virtual uint16_t Write(EventCounterVariation variation, const Counter& first, IEventCollection<Counter>& items) override;
-	virtual uint16_t Write(EventFrozenCounterVariation variation, const FrozenCounter& first, IEventCollection<FrozenCounter>& items) override;
-	virtual uint16_t Write(EventAnalogVariation variation, const Analog& first, IEventCollection<Analog>& items) override;
-	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const BinaryOutputStatus& first, IEventCollection<BinaryOutputStatus>& items) override;
-	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const AnalogOutputStatus& first, IEventCollection<AnalogOutputStatus>& items) override;
-	virtual uint16_t Write(EventOctetStringVariation variation, const OctetString& first, IEventCollection<OctetString>& items) override;
+    virtual uint16_t Write(EventBinaryVariation variation,
+                           const Binary& first,
+                           IEventCollection<Binary>& items) override;
+    virtual uint16_t Write(EventDoubleBinaryVariation variation,
+                           const DoubleBitBinary& first,
+                           IEventCollection<DoubleBitBinary>& items) override;
+    virtual uint16_t Write(EventCounterVariation variation,
+                           const Counter& first,
+                           IEventCollection<Counter>& items) override;
+    virtual uint16_t Write(EventFrozenCounterVariation variation,
+                           const FrozenCounter& first,
+                           IEventCollection<FrozenCounter>& items) override;
+    virtual uint16_t Write(EventAnalogVariation variation,
+                           const Analog& first,
+                           IEventCollection<Analog>& items) override;
+    virtual uint16_t Write(EventBinaryOutputStatusVariation variation,
+                           const BinaryOutputStatus& first,
+                           IEventCollection<BinaryOutputStatus>& items) override;
+    virtual uint16_t Write(EventAnalogOutputStatusVariation variation,
+                           const AnalogOutputStatus& first,
+                           IEventCollection<AnalogOutputStatus>& items) override;
+    virtual uint16_t Write(EventOctetStringVariation variation,
+                           const OctetString& first,
+                           IEventCollection<OctetString>& items) override;
 
 private:
-
-	HeaderWriter writer;
+    HeaderWriter writer;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

@@ -30,22 +30,18 @@ class RandomDouble
 {
 
 public:
-	RandomDouble() :
-		rng(),
-		dist(0.0, 1.0)
-	{}
+    RandomDouble() : rng(), dist(0.0, 1.0) {}
 
-	double Next()
-	{
-		return dist(rng);
-	}
+    double Next()
+    {
+        return dist(rng);
+    }
 
 private:
-	std::mt19937 rng;
-	std::uniform_real_distribution<double> dist;
+    std::mt19937 rng;
+    std::uniform_real_distribution<double> dist;
 };
 
-}
+} // namespace testlib
 
 #endif
-

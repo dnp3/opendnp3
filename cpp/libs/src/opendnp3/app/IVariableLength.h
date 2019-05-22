@@ -32,22 +32,20 @@ class IVariableLength
 {
 
 public:
+    virtual ~IVariableLength() {}
 
-	virtual ~IVariableLength() {}
+    virtual GroupVariationID InstanceID() const = 0;
 
-	virtual GroupVariationID InstanceID() const = 0;
+    // The size of the object in its current configuration
+    virtual uint32_t Size() const = 0;
 
-	// The size of the object in its current configuration
-	virtual uint32_t Size() const = 0;
+    // attempt to write the object to the destination buffer
+    virtual bool Write(openpal::WSlice& dest) const = 0;
 
-	// attempt to write the object to the destination buffer
-	virtual bool Write(openpal::WSlice& dest) const = 0;
-
-	// attempt to read the object from the input buffer
-	virtual bool Read(const openpal::RSlice& input) = 0;
-
+    // attempt to read the object from the input buffer
+    virtual bool Read(const openpal::RSlice& input) = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif

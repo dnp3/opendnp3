@@ -21,19 +21,26 @@
 #ifndef OPENDNP3_SINGLETON_H
 #define OPENDNP3_SINGLETON_H
 
-#define MACRO_SINGLETON_INSTANCE(type) \
-	private:\
-		static type instance;\
-	protected: \
-		type(){}; \
-	public:\
-		static type& Instance(){ return instance; }
+#define MACRO_SINGLETON_INSTANCE(type)                                                                                 \
+private:                                                                                                               \
+    static type instance;                                                                                              \
+                                                                                                                       \
+protected:                                                                                                             \
+    type(){};                                                                                                          \
+                                                                                                                       \
+public:                                                                                                                \
+    static type& Instance()                                                                                            \
+    {                                                                                                                  \
+        return instance;                                                                                               \
+    }
 
-#define MACRO_NAME_SINGLETON_INSTANCE(type) \
-	MACRO_SINGLETON_INSTANCE(type) \
-	char const* Name() const override { return #type; }
+#define MACRO_NAME_SINGLETON_INSTANCE(type)                                                                            \
+    MACRO_SINGLETON_INSTANCE(type)                                                                                     \
+    char const* Name() const override                                                                                  \
+    {                                                                                                                  \
+        return #type;                                                                                                  \
+    }
 
 #define MACRO_STATE_SINGLETON_INSTANCE(type) MACRO_NAME_SINGLETON_INSTANCE(type)
 
 #endif
-

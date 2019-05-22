@@ -23,47 +23,57 @@
 
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/OctetString.h"
-
-#include "opendnp3/gen/EventBinaryVariation.h"
-#include "opendnp3/gen/EventDoubleBinaryVariation.h"
-#include "opendnp3/gen/EventCounterVariation.h"
-#include "opendnp3/gen/EventFrozenCounterVariation.h"
+#include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/EventAnalogVariation.h"
 #include "opendnp3/gen/EventBinaryOutputStatusVariation.h"
-#include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
+#include "opendnp3/gen/EventBinaryVariation.h"
+#include "opendnp3/gen/EventCounterVariation.h"
+#include "opendnp3/gen/EventDoubleBinaryVariation.h"
+#include "opendnp3/gen/EventFrozenCounterVariation.h"
 #include "opendnp3/gen/EventOctetStringVariation.h"
 
 namespace opendnp3
 {
 
-template <class T>
-class IEventWriter
+template<class T> class IEventWriter
 {
 public:
-	virtual bool Write(const T& meas, uint16_t index) = 0;
+    virtual bool Write(const T& meas, uint16_t index) = 0;
 };
 
-template <class T>
-class IEventCollection
+template<class T> class IEventCollection
 {
 public:
-	virtual uint16_t WriteSome(IEventWriter<T>& handler) = 0;
+    virtual uint16_t WriteSome(IEventWriter<T>& handler) = 0;
 };
 
 class IEventWriteHandler
 {
 public:
-	virtual uint16_t Write(EventBinaryVariation variation, const Binary& first, IEventCollection<Binary>& items) = 0;
-	virtual uint16_t Write(EventDoubleBinaryVariation variation, const DoubleBitBinary& first, IEventCollection<DoubleBitBinary>& items) = 0;
-	virtual uint16_t Write(EventCounterVariation variation, const Counter& first, IEventCollection<Counter>& items) = 0;
-	virtual uint16_t Write(EventFrozenCounterVariation variation, const FrozenCounter& first, IEventCollection<FrozenCounter>& items) = 0;
-	virtual uint16_t Write(EventAnalogVariation variation, const Analog& first, IEventCollection<Analog>& items) = 0;
-	virtual uint16_t Write(EventBinaryOutputStatusVariation variation, const BinaryOutputStatus& first, IEventCollection<BinaryOutputStatus>& items) = 0;
-	virtual uint16_t Write(EventAnalogOutputStatusVariation variation, const AnalogOutputStatus& first, IEventCollection<AnalogOutputStatus>& items) = 0;
-	virtual uint16_t Write(EventOctetStringVariation variation, const OctetString& first, IEventCollection<OctetString>& items) = 0;
-
+    virtual uint16_t Write(EventBinaryVariation variation, const Binary& first, IEventCollection<Binary>& items) = 0;
+    virtual uint16_t Write(EventDoubleBinaryVariation variation,
+                           const DoubleBitBinary& first,
+                           IEventCollection<DoubleBitBinary>& items)
+        = 0;
+    virtual uint16_t Write(EventCounterVariation variation, const Counter& first, IEventCollection<Counter>& items) = 0;
+    virtual uint16_t Write(EventFrozenCounterVariation variation,
+                           const FrozenCounter& first,
+                           IEventCollection<FrozenCounter>& items)
+        = 0;
+    virtual uint16_t Write(EventAnalogVariation variation, const Analog& first, IEventCollection<Analog>& items) = 0;
+    virtual uint16_t Write(EventBinaryOutputStatusVariation variation,
+                           const BinaryOutputStatus& first,
+                           IEventCollection<BinaryOutputStatus>& items)
+        = 0;
+    virtual uint16_t Write(EventAnalogOutputStatusVariation variation,
+                           const AnalogOutputStatus& first,
+                           IEventCollection<AnalogOutputStatus>& items)
+        = 0;
+    virtual uint16_t Write(EventOctetStringVariation variation,
+                           const OctetString& first,
+                           IEventCollection<OctetString>& items)
+        = 0;
 };
-}
+} // namespace opendnp3
 
 #endif
-

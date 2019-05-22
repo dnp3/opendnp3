@@ -35,49 +35,46 @@ namespace opendnp3
 {
 
 /**
-	Implements the DNP3 transport layer
+    Implements the DNP3 transport layer
 */
 class TransportLayer final : public IUpperLayer, public ILowerLayer
 {
 
 public:
+    TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize);
 
-	TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize);
+    // ------ ILowerLayer ------
 
-	// ------ ILowerLayer ------
+    virtual bool BeginTransmit(const Message& message) override;
 
-	virtual bool BeginTransmit(const Message& message) override;
+    // ------ IUpperLayer ------
 
-	// ------ IUpperLayer ------
+    virtual bool OnReceive(const Message& message) override;
+    virtual bool OnLowerLayerUp() override final;
+    virtual bool OnLowerLayerDown() override;
+    virtual bool OnTxReady() override;
 
-	virtual bool OnReceive(const Message& message) override;
-	virtual bool OnLowerLayerUp() override final;
-	virtual bool OnLowerLayerDown() override;
-	virtual bool OnTxReady() override;
+    void SetAppLayer(IUpperLayer& upperLayer);
 
-	void SetAppLayer(IUpperLayer& upperLayer);
+    void SetLinkLayer(ILinkLayer& linkLayer);
 
-	void SetLinkLayer(ILinkLayer& linkLayer);
-
-	StackStatistics::Transport GetStatistics() const;
+    StackStatistics::Transport GetStatistics() const;
 
 private:
+    openpal::Logger logger;
 
-	openpal::Logger logger;
+    IUpperLayer* upper = nullptr;
+    ILinkLayer* lower = nullptr;
 
-	IUpperLayer* upper = nullptr;
-	ILinkLayer* lower = nullptr;
+    // ---- state ----
+    bool isOnline = false;
+    bool isSending = false;
 
-	// ---- state ----
-	bool isOnline = false;
-	bool isSending = false;
-
-	// ----- Transmitter and Receiver Classes ------
-	TransportRx receiver;
-	TransportTx transmitter;
+    // ----- Transmitter and Receiver Classes ------
+    TransportRx receiver;
+    TransportTx transmitter;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

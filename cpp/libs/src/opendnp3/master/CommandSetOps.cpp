@@ -21,130 +21,130 @@
 
 #include "CommandSetOps.h"
 
-#include "opendnp3/master/ICommandHeader.h"
-#include "opendnp3/master/CommandTaskResult.h"
-
 #include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/master/CommandTaskResult.h"
+#include "opendnp3/master/ICommandHeader.h"
 
 #include <algorithm>
 
 namespace opendnp3
 {
 
-template <class T>
-IINField CommandSetOps::ProcessAny(const PrefixHeader& header, const ICollection<Indexed<T>>& values)
+template<class T> IINField CommandSetOps::ProcessAny(const PrefixHeader& header, const ICollection<Indexed<T>>& values)
 {
-	if (header.headerIndex >= commands->m_headers.size()) // more response headers than request headers
-	{
-		return IINBit::PARAM_ERROR;
-	}
+    if (header.headerIndex >= commands->m_headers.size()) // more response headers than request headers
+    {
+        return IINBit::PARAM_ERROR;
+    }
 
-	if (mode == Mode::Select)
-	{
-		commands->m_headers[header.headerIndex]->ApplySelectResponse(header.GetQualifierCode(), values);
-	}
-	else
-	{
-		commands->m_headers[header.headerIndex]->ApplyOperateResponse(header.GetQualifierCode(), values);
-	}
+    if (mode == Mode::Select)
+    {
+        commands->m_headers[header.headerIndex]->ApplySelectResponse(header.GetQualifierCode(), values);
+    }
+    else
+    {
+        commands->m_headers[header.headerIndex]->ApplyOperateResponse(header.GetQualifierCode(), values);
+    }
 
-	return IINField::Empty();
+    return IINField::Empty();
 }
 
-CommandSetOps::CommandSetOps(Mode mode_, CommandSet& commands_) :
-	mode(mode_),
-	commands(&commands_)
-{}
+CommandSetOps::CommandSetOps(Mode mode_, CommandSet& commands_) : mode(mode_), commands(&commands_) {}
 
 bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer, IndexQualifierMode mode)
 {
-	for(auto& header : set.m_headers)
-	{
-		if (!header->Write(writer, mode))
-		{
-			return false;
-		}
-	}
+    for (auto& header : set.m_headers)
+    {
+        if (!header->Write(writer, mode))
+        {
+            return false;
+        }
+    }
 
-	return true;
+    return true;
 }
 
 void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result, const CommandCallbackT& callback)
 {
-	CommandTaskResult impl(result, set.m_headers);
-	callback(impl);
+    CommandTaskResult impl(result, set.m_headers);
+    callback(impl);
 }
 
-CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)
+CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set,
+                                                                 const openpal::RSlice& headers,
+                                                                 openpal::Logger* logger)
 {
-	CommandSetOps handler(Mode::Select, set);
-	const auto result = APDUParser::Parse(headers, handler, logger);
-	if (result != ParseResult::OK)
-	{
-		return SelectResult::FAIL_PARSE;
-	}
+    CommandSetOps handler(Mode::Select, set);
+    const auto result = APDUParser::Parse(headers, handler, logger);
+    if (result != ParseResult::OK)
+    {
+        return SelectResult::FAIL_PARSE;
+    }
 
-	auto selected = [](const std::shared_ptr<ICommandHeader>& header) -> bool
-	{
-		return header->AreAllSelected();
-	};
-	return std::all_of(set.m_headers.begin(), set.m_headers.end(), selected) ? SelectResult::OK : SelectResult::FAIL_SELECT;
+    auto selected = [](const std::shared_ptr<ICommandHeader>& header) -> bool { return header->AreAllSelected(); };
+    return std::all_of(set.m_headers.begin(), set.m_headers.end(), selected) ? SelectResult::OK
+                                                                             : SelectResult::FAIL_SELECT;
 }
 
-CommandSetOps::OperateResult CommandSetOps::ProcessOperateResponse(CommandSet& set, const openpal::RSlice& headers, openpal::Logger* logger)
+CommandSetOps::OperateResult CommandSetOps::ProcessOperateResponse(CommandSet& set,
+                                                                   const openpal::RSlice& headers,
+                                                                   openpal::Logger* logger)
 {
-	CommandSetOps handler(Mode::Operate, set);
-	return (APDUParser::Parse(headers, handler, logger) == ParseResult::OK) ? OperateResult::OK : OperateResult::FAIL_PARSE;
+    CommandSetOps handler(Mode::Operate, set);
+    return (APDUParser::Parse(headers, handler, logger) == ParseResult::OK) ? OperateResult::OK
+                                                                            : OperateResult::FAIL_PARSE;
 }
 
 bool CommandSetOps::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
 {
-	switch (qc)
-	{
-	case(QualifierCode::UINT8_CNT_UINT8_INDEX):
-	case(QualifierCode::UINT16_CNT_UINT16_INDEX):
-		break;
-	default:
-		return false;
-	}
+    switch (qc)
+    {
+    case (QualifierCode::UINT8_CNT_UINT8_INDEX):
+    case (QualifierCode::UINT16_CNT_UINT16_INDEX):
+        break;
+    default:
+        return false;
+    }
 
-	switch (gv)
-	{
-	case(GroupVariation::Group12Var1) : //	CROB
-	case(GroupVariation::Group41Var1) : //	4 kinds of AO
-	case(GroupVariation::Group41Var2) :
-	case(GroupVariation::Group41Var3) :
-	case(GroupVariation::Group41Var4) :
-		return true;
-	default:
-		return false;
-	}
+    switch (gv)
+    {
+    case (GroupVariation::Group12Var1): //	CROB
+    case (GroupVariation::Group41Var1): //	4 kinds of AO
+    case (GroupVariation::Group41Var2):
+    case (GroupVariation::Group41Var3):
+    case (GroupVariation::Group41Var4):
+        return true;
+    default:
+        return false;
+    }
 }
 
-IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
+IINField CommandSetOps::ProcessHeader(const PrefixHeader& header,
+                                      const ICollection<Indexed<ControlRelayOutputBlock>>& values)
 {
-	return this->ProcessAny(header, values);
+    return this->ProcessAny(header, values);
 }
 
 IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values)
 {
-	return this->ProcessAny(header, values);
+    return this->ProcessAny(header, values);
 }
 
 IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values)
 {
-	return this->ProcessAny(header, values);
+    return this->ProcessAny(header, values);
 }
 
-IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values)
+IINField CommandSetOps::ProcessHeader(const PrefixHeader& header,
+                                      const ICollection<Indexed<AnalogOutputFloat32>>& values)
 {
-	return this->ProcessAny(header, values);
+    return this->ProcessAny(header, values);
 }
 
-IINField CommandSetOps::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values)
+IINField CommandSetOps::ProcessHeader(const PrefixHeader& header,
+                                      const ICollection<Indexed<AnalogOutputDouble64>>& values)
 {
-	return this->ProcessAny(header, values);
+    return this->ProcessAny(header, values);
 }
 
-
-}
+} // namespace opendnp3

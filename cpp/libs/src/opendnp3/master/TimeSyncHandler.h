@@ -21,12 +21,11 @@
 #ifndef OPENDNP3_TIMESYNCHANDLER_H
 #define OPENDNP3_TIMESYNCHANDLER_H
 
-#include "opendnp3/app/parsing/IAPDUHandler.h"
-
-#include "opendnp3/LogLevels.h"
-
 #include <openpal/logging/LogMacros.h>
 #include <openpal/util/Uncopyable.h>
+
+#include "opendnp3/LogLevels.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 
 namespace opendnp3
 {
@@ -38,58 +37,49 @@ class TimeSyncHandler : public IAPDUHandler, private openpal::Uncopyable
 {
 
 public:
+    TimeSyncHandler() : m_valid(false), m_time(0) {}
 
-	TimeSyncHandler() :
-		m_valid(false),
-		m_time(0)
-	{}
+    bool GetTimeDelay(uint16_t& time)
+    {
+        if (this->Errors().Any())
+        {
+            return false;
+        }
+        else
+        {
+            if (m_valid)
+            {
+                time = m_time;
+            }
+            return m_valid;
+        }
+    }
 
-	bool GetTimeDelay(uint16_t& time)
-	{
-		if (this->Errors().Any())
-		{
-			return false;
-		}
-		else
-		{
-			if (m_valid)
-			{
-				time = m_time;
-			}
-			return m_valid;
-		}
-	}
-
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
-	{
-		return (headerCount == 0) && (gv == GroupVariation::Group52Var2);
-	}
+    virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+    {
+        return (headerCount == 0) && (gv == GroupVariation::Group52Var2);
+    }
 
 private:
+    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& times) override final
+    {
+        Group52Var2 value;
+        if (times.ReadOnlyValue(value))
+        {
+            m_valid = true;
+            m_time = value.time;
+            return IINField::Empty();
+        }
+        else
+        {
+            return IINBit::PARAM_ERROR;
+        }
+    }
 
-	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& times) override final
-	{
-		Group52Var2 value;
-		if (times.ReadOnlyValue(value))
-		{
-			m_valid = true;
-			m_time = value.time;
-			return IINField::Empty();
-		}
-		else
-		{
-			return IINBit::PARAM_ERROR;
-		}
-	}
-
-	bool m_valid;
-	uint16_t m_time;
-
+    bool m_valid;
+    uint16_t m_time;
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

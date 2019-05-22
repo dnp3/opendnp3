@@ -18,11 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiodnp3/DNP3Manager.h>
+#include <opendnp3/LogLevels.h>
+
 #include <asiodnp3/ConsoleLogger.h>
+#include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/DefaultListenCallbacks.h>
 
-#include <opendnp3/LogLevels.h>
 #include <iostream>
 #include <thread>
 
@@ -34,71 +35,57 @@ using namespace opendnp3;
 
 int main(int argc, char* argv[])
 {
-	if (argc != 4)
-	{
-		std::cout << "usage: master-gprs-tls-demo <ca certificate> <certificate chain> <private key>" << std::endl;
-		return -1;
-	}
+    if (argc != 4)
+    {
+        std::cout << "usage: master-gprs-tls-demo <ca certificate> <certificate chain> <private key>" << std::endl;
+        return -1;
+    }
 
-	std::string caCertificate(argv[1]);
-	std::string certificateChain(argv[2]);
-	std::string privateKey(argv[3]);
+    std::string caCertificate(argv[1]);
+    std::string certificateChain(argv[2]);
+    std::string privateKey(argv[3]);
 
+    std::cout << "Using CA certificate: " << caCertificate << std::endl;
+    std::cout << "Using certificate chain: " << certificateChain << std::endl;
+    std::cout << "Using private key file: " << privateKey << std::endl;
 
-	std::cout << "Using CA certificate: " << caCertificate << std::endl;
-	std::cout << "Using certificate chain: " << certificateChain << std::endl;
-	std::cout << "Using private key file: " << privateKey << std::endl;
+    // Specify what log levels to use. NORMAL is warning and above
+    // You can add all the comms logging by uncommenting below
+    const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
 
-	// Specify what log levels to use. NORMAL is warning and above
-	// You can add all the comms logging by uncommenting below
-	const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
+    const auto NUM_THREAD = std::thread::hardware_concurrency();
 
-	const auto NUM_THREAD = std::thread::hardware_concurrency();
+    auto callbacks = std::make_shared<DefaultListenCallbacks>();
 
-	auto callbacks = std::make_shared<DefaultListenCallbacks>();
+    // This is the main point of interaction with the stack
+    DNP3Manager manager(NUM_THREAD, ConsoleLogger::Create());
 
-	// This is the main point of interaction with the stack
-	DNP3Manager manager(NUM_THREAD, ConsoleLogger::Create());
+    std::error_code ec;
+    auto server1 = manager.CreateListener("server-20001", FILTERS, IPEndpoint::AllAdapters(20001),
+                                          TLSConfig(caCertificate, certificateChain, privateKey, 2), callbacks, ec);
 
-	std::error_code ec;
-	auto server1 = manager.CreateListener(
-	                   "server-20001",
-	                   FILTERS,
-	                   IPEndpoint::AllAdapters(20001),
-	                   TLSConfig(
-	                       caCertificate,
-	                       certificateChain,
-	                       privateKey,
-	                       2
-	                   ),
-	                   callbacks,
-	                   ec
-	               );
+    if (ec)
+    {
+        std::cout << ec.message() << std::endl;
+        return ec.value();
+    }
 
-	if (ec)
-	{
-		std::cout << ec.message() << std::endl;
-		return ec.value();
-	}
+    do
+    {
+        std::cout << "Enter a command" << std::endl;
+        std::cout << "x - exits program" << std::endl;
 
-	do
-	{
-		std::cout << "Enter a command" << std::endl;
-		std::cout << "x - exits program" << std::endl;
+        char cmd;
+        std::cin >> cmd;
+        switch (cmd)
+        {
+        case ('x'):
+            return 0;
+        default:
+            std::cout << "Unknown action: " << cmd << std::endl;
+            break;
+        }
+    } while (true);
 
-		char cmd;
-		std::cin >> cmd;
-		switch(cmd)
-		{
-		case('x'):
-			return 0;
-		default:
-			std::cout << "Unknown action: " << cmd << std::endl;
-			break;
-		}
-	}
-	while(true);
-
-	return 0;
+    return 0;
 }
-

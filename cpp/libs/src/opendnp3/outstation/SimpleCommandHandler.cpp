@@ -23,86 +23,84 @@
 namespace opendnp3
 {
 
-SimpleCommandHandler::SimpleCommandHandler(CommandStatus status_) : status(status_), numOperate(0), numSelect(0), numStart(0), numEnd(0)
+SimpleCommandHandler::SimpleCommandHandler(CommandStatus status_)
+    : status(status_), numOperate(0), numSelect(0), numStart(0), numEnd(0)
 {
-
 }
 
 CommandStatus SimpleCommandHandler::Select(const ControlRelayOutputBlock& command, uint16_t index)
 {
-	this->DoSelect(command, index);
-	++numSelect;
-	return status;
+    this->DoSelect(command, index);
+    ++numSelect;
+    return status;
 }
 CommandStatus SimpleCommandHandler::Operate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index, opType);
-	++numOperate;
-	return status;
+    this->DoOperate(command, index, opType);
+    ++numOperate;
+    return status;
 }
 
 CommandStatus SimpleCommandHandler::Select(const AnalogOutputInt16& command, uint16_t index)
 {
-	this->DoSelect(command, index);
-	++numSelect;
-	return status;
+    this->DoSelect(command, index);
+    ++numSelect;
+    return status;
 }
 CommandStatus SimpleCommandHandler::Operate(const AnalogOutputInt16& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index, opType);
-	++numOperate;
-	return status;
+    this->DoOperate(command, index, opType);
+    ++numOperate;
+    return status;
 }
 
 CommandStatus SimpleCommandHandler::Select(const AnalogOutputInt32& command, uint16_t index)
 {
-	this->DoSelect(command, index);
-	++numSelect;
-	return status;
+    this->DoSelect(command, index);
+    ++numSelect;
+    return status;
 }
 CommandStatus SimpleCommandHandler::Operate(const AnalogOutputInt32& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index, opType);
-	++numOperate;
-	return status;
+    this->DoOperate(command, index, opType);
+    ++numOperate;
+    return status;
 }
 
 CommandStatus SimpleCommandHandler::Select(const AnalogOutputFloat32& command, uint16_t index)
 {
-	this->DoSelect(command, index);
-	++numSelect;
-	return status;
+    this->DoSelect(command, index);
+    ++numSelect;
+    return status;
 }
 CommandStatus SimpleCommandHandler::Operate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index, opType);
-	++numOperate;
-	return status;
+    this->DoOperate(command, index, opType);
+    ++numOperate;
+    return status;
 }
 
 CommandStatus SimpleCommandHandler::Select(const AnalogOutputDouble64& command, uint16_t index)
 {
-	this->DoSelect(command, index);
-	++numSelect;
-	return status;
+    this->DoSelect(command, index);
+    ++numSelect;
+    return status;
 }
 CommandStatus SimpleCommandHandler::Operate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType)
 {
-	this->DoOperate(command, index, opType);
-	++numOperate;
-	return status;
+    this->DoOperate(command, index, opType);
+    ++numOperate;
+    return status;
 }
 
 void SimpleCommandHandler::Start()
 {
-	++numStart;
+    ++numStart;
 }
 
 void SimpleCommandHandler::End()
 {
-	++numEnd;
+    ++numEnd;
 }
 
-}
-
-
+} // namespace opendnp3

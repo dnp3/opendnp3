@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include <asiodnp3/UpdateBuilder.h>
+
+#include <catch.hpp>
 
 using namespace opendnp3;
 using namespace asiodnp3;
@@ -42,9 +42,3 @@ TEST_CASE(SUITE("builder is cleared after building"))
         REQUIRE(updates.IsEmpty());
     }
 }
-
-
-
-
-
-

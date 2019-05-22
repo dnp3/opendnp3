@@ -30,20 +30,16 @@ class MockUTCTimeSource : public openpal::IUTCTimeSource
 {
 
 public:
+    MockUTCTimeSource() : time(0) {}
 
-	MockUTCTimeSource() : time(0)
-	{}
+    virtual openpal::UTCTimestamp Now() override final
+    {
+        return openpal::UTCTimestamp(time);
+    }
 
-	virtual openpal::UTCTimestamp Now() override final
-	{
-		return openpal::UTCTimestamp(time);
-	}
-
-	uint64_t time;
+    uint64_t time;
 };
 
-
-}
+} // namespace testlib
 
 #endif
-

@@ -21,11 +21,11 @@
 #ifndef OPENDNP3_EVENTSTORAGE_H
 #define OPENDNP3_EVENTSTORAGE_H
 
-#include "opendnp3/outstation/Event.h"
-#include "opendnp3/app/ClassField.h"
-
-#include "IEventWriteHandler.h"
 #include "EventLists.h"
+#include "IEventWriteHandler.h"
+
+#include "opendnp3/app/ClassField.h"
+#include "opendnp3/outstation/Event.h"
 
 #include <limits>
 
@@ -33,74 +33,71 @@ namespace opendnp3
 {
 
 /*
-	Data-stucture for holding events.
+    Data-stucture for holding events.
 
-	* Only performs dynamic allocation at initialization
-	* Maintains distinct lists for each type of event to optimize memory usage
+    * Only performs dynamic allocation at initialization
+    * Maintains distinct lists for each type of event to optimize memory usage
 */
 
 class EventStorage
 {
 
 public:
+    explicit EventStorage(const EventBufferConfig& config);
 
-	explicit EventStorage(const EventBufferConfig& config);
+    bool IsAnyTypeFull() const;
 
-	bool IsAnyTypeFull() const;
+    // number selected
+    uint32_t NumSelected() const;
 
-	// number selected
-	uint32_t NumSelected() const;
+    // unselected/selected but not already written
+    uint32_t NumUnwritten(EventClass clazz) const;
 
-	// unselected/selected but not already written
-	uint32_t NumUnwritten(EventClass clazz) const;
+    // write selected events to some handler
+    uint32_t Write(IEventWriteHandler& handler);
 
-	// write selected events to some handler
-	uint32_t Write(IEventWriteHandler& handler);
+    // all written events go back to unselected state
+    uint32_t ClearWritten();
 
-	// all written events go back to unselected state
-	uint32_t ClearWritten();
+    // all written and selected events are reverted to unselected state
+    void Unselect();
 
-	// all written and selected events are reverted to unselected state
-	void Unselect();
+    // ---- these functions return true if an overflow occurs ----
 
-	// ---- these functions return true if an overflow occurs ----
+    bool Update(const Event<BinarySpec>& evt);
+    bool Update(const Event<DoubleBitBinarySpec>& evt);
+    bool Update(const Event<AnalogSpec>& evt);
+    bool Update(const Event<CounterSpec>& evt);
+    bool Update(const Event<FrozenCounterSpec>& evt);
+    bool Update(const Event<BinaryOutputStatusSpec>& evt);
+    bool Update(const Event<AnalogOutputStatusSpec>& evt);
+    bool Update(const Event<OctetStringSpec>& evt);
 
-	bool Update(const Event<BinarySpec>& evt);
-	bool Update(const Event<DoubleBitBinarySpec>& evt);
-	bool Update(const Event<AnalogSpec>& evt);
-	bool Update(const Event<CounterSpec>& evt);
-	bool Update(const Event<FrozenCounterSpec>& evt);
-	bool Update(const Event<BinaryOutputStatusSpec>& evt);
-	bool Update(const Event<AnalogOutputStatusSpec>& evt);
-	bool Update(const Event<OctetStringSpec>& evt);
+    // ---- function used to select distinct types ----
 
-	// ---- function used to select distinct types ----
+    uint32_t SelectByType(EventBinaryVariation variation, uint32_t max);
+    uint32_t SelectByType(EventDoubleBinaryVariation variation, uint32_t max);
+    uint32_t SelectByType(EventAnalogVariation variation, uint32_t max);
+    uint32_t SelectByType(EventCounterVariation variation, uint32_t max);
+    uint32_t SelectByType(EventFrozenCounterVariation variation, uint32_t max);
+    uint32_t SelectByType(EventBinaryOutputStatusVariation variation, uint32_t max);
+    uint32_t SelectByType(EventAnalogOutputStatusVariation variation, uint32_t max);
+    uint32_t SelectByType(EventOctetStringVariation variation, uint32_t max);
 
-	uint32_t SelectByType(EventBinaryVariation variation, uint32_t max);
-	uint32_t SelectByType(EventDoubleBinaryVariation variation, uint32_t max);
-	uint32_t SelectByType(EventAnalogVariation variation, uint32_t max);
-	uint32_t SelectByType(EventCounterVariation variation, uint32_t max);
-	uint32_t SelectByType(EventFrozenCounterVariation variation, uint32_t max);
-	uint32_t SelectByType(EventBinaryOutputStatusVariation variation, uint32_t max);
-	uint32_t SelectByType(EventAnalogOutputStatusVariation variation, uint32_t max);
-	uint32_t SelectByType(EventOctetStringVariation variation, uint32_t max);
+    uint32_t SelectByType(EventType type, uint32_t max);
 
-	uint32_t SelectByType(EventType type, uint32_t max);
+    // ---- function used to select by event class ----
 
-	// ---- function used to select by event class ----
+    uint32_t SelectByClass(const EventClass& clazz);
+    uint32_t SelectByClass(const EventClass& clazz, uint32_t max);
 
-	uint32_t SelectByClass(const EventClass& clazz);
-	uint32_t SelectByClass(const EventClass& clazz, uint32_t max);
-
-	uint32_t SelectByClass(const ClassField& clazz);
-	uint32_t SelectByClass(const ClassField& clazz, uint32_t max);
+    uint32_t SelectByClass(const ClassField& clazz);
+    uint32_t SelectByClass(const ClassField& clazz, uint32_t max);
 
 private:
-
-	EventLists state;
+    EventLists state;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

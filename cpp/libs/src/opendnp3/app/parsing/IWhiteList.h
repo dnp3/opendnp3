@@ -33,13 +33,9 @@ namespace opendnp3
 class IWhiteList
 {
 public:
-
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) = 0;
+    virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) = 0;
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

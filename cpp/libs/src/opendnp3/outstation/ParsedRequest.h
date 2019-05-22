@@ -22,34 +22,28 @@
 #ifndef OPENDNP3_PARSEDEREQUEST_H
 #define OPENDNP3_PARSEDEREQUEST_H
 
-#include "opendnp3/link/Addresses.h"
-#include "opendnp3/app/APDUHeader.h"
-
 #include <openpal/container/RSlice.h>
+
+#include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/link/Addresses.h"
 
 namespace opendnp3
 {
 
 struct ParsedRequest
 {
-	ParsedRequest(
-	    const Addresses& addresses,
-	    const APDUHeader& header,
-	    const openpal::RSlice& objects
-	) :
-		addresses(addresses),
-		header(header),
-		objects(objects)
-	{}
+    ParsedRequest(const Addresses& addresses, const APDUHeader& header, const openpal::RSlice& objects)
+        : addresses(addresses), header(header), objects(objects)
+    {
+    }
 
-	ParsedRequest() = default;
+    ParsedRequest() = default;
 
-	const Addresses addresses;
-	const APDUHeader header;
-	const openpal::RSlice objects;
+    const Addresses addresses;
+    const APDUHeader header;
+    const openpal::RSlice objects;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

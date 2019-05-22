@@ -21,17 +21,16 @@
 #ifndef OPENDNP3_IMASTERTASK_H
 #define OPENDNP3_IMASTERTASK_H
 
-#include <openpal/logging/Logger.h>
-#include <openpal/executor/MonotonicTimestamp.h>
 #include <openpal/executor/IExecutor.h>
+#include <openpal/executor/MonotonicTimestamp.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
-
-#include "opendnp3/master/TaskContext.h"
-#include "opendnp3/master/TaskConfig.h"
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/TaskBehavior.h"
+#include "opendnp3/master/TaskConfig.h"
+#include "opendnp3/master/TaskContext.h"
 
 namespace opendnp3
 {
@@ -43,155 +42,157 @@ class IMasterTask : private openpal::Uncopyable
 {
 
 public:
+    enum class ResponseResult : uint8_t
+    {
+        /// The response was bad, the task has failed
+        ERROR_BAD_RESPONSE,
 
-	enum class ResponseResult : uint8_t
-	{
-		/// The response was bad, the task has failed
-		ERROR_BAD_RESPONSE,
+        /// The response was good and the task is complete
+        OK_FINAL,
 
-		/// The response was good and the task is complete
-		OK_FINAL,
+        /// The response was good and the task should repeat the format, transmit, and await response sequence
+        OK_REPEAT,
 
-		/// The response was good and the task should repeat the format, transmit, and await response sequence
-		OK_REPEAT,
+        /// The response was good and the task should continue executing. Restart the response timer, and increment
+        /// expected SEQ#.
+        OK_CONTINUE
+    };
 
-		/// The response was good and the task should continue executing. Restart the response timer, and increment expected SEQ#.
-		OK_CONTINUE
-	};
+    IMasterTask(const std::shared_ptr<TaskContext>& context,
+                IMasterApplication& app,
+                const TaskBehavior& behavior,
+                const openpal::Logger& logger,
+                TaskConfig config);
 
-	IMasterTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const TaskBehavior& behavior, const openpal::Logger& logger, TaskConfig config);
+    virtual ~IMasterTask();
 
-	virtual ~IMasterTask();
+    /**
+     *
+     * @return	the name of the task
+     */
+    virtual char const* Name() const = 0;
 
-	/**
-	*
-	* @return	the name of the task
-	*/
-	virtual char const* Name() const = 0;
+    /**
+     * The task's priority. Lower numbers are higher priority.
+     */
+    virtual int Priority() const = 0;
 
-	/**
-	* The task's priority. Lower numbers are higher priority.
-	*/
-	virtual int Priority() const = 0;
+    /**
+     * Indicates if the task should be rescheduled (true) or discarded
+     * after a single execution (false)
+     */
+    virtual bool IsRecurring() const = 0;
 
-	/**
-	* Indicates if the task should be rescheduled (true) or discarded
-	* after a single execution (false)
-	*/
-	virtual bool IsRecurring() const = 0;
+    /**
+     * The time when this task can run again.
+     */
+    openpal::MonotonicTimestamp ExpirationTime() const;
 
-	/**
-	* The time when this task can run again.
-	*/
-	openpal::MonotonicTimestamp ExpirationTime() const;
+    /**
+     * Helper to test if the task is expired
+     */
+    bool IsExpired(const openpal::MonotonicTimestamp& now) const
+    {
+        return now.milliseconds >= this->ExpirationTime().milliseconds;
+    }
 
-	/**
-	* Helper to test if the task is expired
-	*/
-	bool IsExpired(const openpal::MonotonicTimestamp& now) const
-	{
-		return now.milliseconds >= this->ExpirationTime().milliseconds;
-	}
+    /**
+     * The time when this task expires if it is unable to start
+     */
+    openpal::MonotonicTimestamp StartExpirationTime() const;
 
-	/**
-	* The time when this task expires if it is unable to start
-	*/
-	openpal::MonotonicTimestamp StartExpirationTime() const;
+    /**
+     * Build a request APDU.
+     *
+     * Return false if some kind of internal error prevents the task for formatting the request.
+     */
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) = 0;
 
-	/**
-	 * Build a request APDU.
-	 *
-	 * Return false if some kind of internal error prevents the task for formatting the request.
-	 */
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) = 0;
+    /**
+     * Handler for responses
+     */
+    ResponseResult OnResponse(const APDUResponseHeader& response,
+                              const openpal::RSlice& objects,
+                              openpal::MonotonicTimestamp now);
 
-	/**
-	 * Handler for responses
-	 */
-	ResponseResult OnResponse(const APDUResponseHeader& response, const openpal::RSlice& objects, openpal::MonotonicTimestamp now);
+    /**
+     * Called when a response times out
+     */
+    void OnResponseTimeout(openpal::MonotonicTimestamp now);
 
-	/**
-	 * Called when a response times out
-	 */
-	void OnResponseTimeout(openpal::MonotonicTimestamp now);
+    /**
+     * Called when the layer closes while the task is executing.
+     */
+    void OnLowerLayerClose(openpal::MonotonicTimestamp now);
 
-	/**
-	* Called when the layer closes while the task is executing.
-	*/
-	void OnLowerLayerClose(openpal::MonotonicTimestamp now);
+    /**
+     * The start timeout expired before the task could be run
+     */
+    void OnStartTimeout(openpal::MonotonicTimestamp now);
 
-	/**
-	* The start timeout expired before the task could be run
-	*/
-	void OnStartTimeout(openpal::MonotonicTimestamp now);
+    /**
+     * Called when the master is unable to format the request associated with the task
+     */
+    void OnMessageFormatError(openpal::MonotonicTimestamp now);
 
-	/**
-	* Called when the master is unable to format the request associated with the task
-	*/
-	void OnMessageFormatError(openpal::MonotonicTimestamp now);
+    /**
+     * Called when the task first starts, before the first request is formatted
+     */
+    void OnStart();
 
-	/**
-	* Called when the task first starts, before the first request is formatted
-	*/
-	void OnStart();
+    /**
+     * Set the expiration time to minimum. The scheduler must also be informed
+     */
+    void SetMinExpiration();
 
-	/**
-	* Set the expiration time to minimum. The scheduler must also be informed
-	*/
-	void SetMinExpiration();
-
-	/**
-	* Check if the task is blocked from executing by another task
-	*/
-	bool IsBlocked() const
-	{
-		return this->context->IsBlocked(*this);
-	}
+    /**
+     * Check if the task is blocked from executing by another task
+     */
+    bool IsBlocked() const
+    {
+        return this->context->IsBlocked(*this);
+    }
 
 protected:
+    // called during OnStart() to initialize any state for a new run
+    virtual void Initialize() {}
 
-	// called during OnStart() to initialize any state for a new run
-	virtual void Initialize() {}
+    virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) = 0;
 
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) = 0;
+    void CompleteTask(TaskCompletion completion, openpal::MonotonicTimestamp now);
 
-	void CompleteTask(TaskCompletion completion, openpal::MonotonicTimestamp now);
+    virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) {}
 
-	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) {}
+    virtual bool IsEnabled() const
+    {
+        return true;
+    }
 
-	virtual bool IsEnabled() const
-	{
-		return true;
-	}
+    virtual MasterTaskType GetTaskType() const = 0;
 
-	virtual MasterTaskType GetTaskType() const = 0;
+    const std::shared_ptr<TaskContext> context;
+    IMasterApplication* const application;
+    openpal::Logger logger;
 
-	const std::shared_ptr<TaskContext> context;
-	IMasterApplication* const application;
-	openpal::Logger logger;
-
-	// Validation helpers for various behaviors to avoid deep inheritance
-	bool ValidateSingleResponse(const APDUResponseHeader& header);
-	bool ValidateNullResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
-	bool ValidateNoObjects(const openpal::RSlice& objects);
-	bool ValidateInternalIndications(const APDUResponseHeader& header);
-
+    // Validation helpers for various behaviors to avoid deep inheritance
+    bool ValidateSingleResponse(const APDUResponseHeader& header);
+    bool ValidateNullResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
+    bool ValidateNoObjects(const openpal::RSlice& objects);
+    bool ValidateInternalIndications(const APDUResponseHeader& header);
 
 private:
+    /**
+     * Allows tasks to enter a blocking mode where lower priority
+     * tasks cannot run until this task completes
+     */
+    virtual bool BlocksLowerPriority() const = 0;
 
-	/**
-	* Allows tasks to enter a blocking mode where lower priority
-	* tasks cannot run until this task completes
-	*/
-	virtual bool BlocksLowerPriority() const = 0;
+    IMasterTask();
 
-	IMasterTask();
-
-	TaskConfig config;
-	TaskBehavior behavior;
-
+    TaskConfig config;
+    TaskBehavior behavior;
 };
 
-}
+} // namespace opendnp3
 
 #endif

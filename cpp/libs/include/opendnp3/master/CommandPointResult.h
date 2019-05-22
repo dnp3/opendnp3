@@ -22,8 +22,8 @@
 #ifndef OPENDNP3_COMMAND_POINT_RESULT_H
 #define OPENDNP3_COMMAND_POINT_RESULT_H
 
-#include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/gen/CommandPointState.h"
+#include "opendnp3/gen/CommandStatus.h"
 
 namespace opendnp3
 {
@@ -33,37 +33,32 @@ class CommandPointResult
 {
 
 public:
+    /// Fully construct based on all members
+    CommandPointResult(uint32_t headerIndex_, uint16_t index_, CommandPointState state_, CommandStatus status_)
+        : headerIndex(headerIndex_), index(index_), state(state_), status(status_)
+    {
+    }
 
-	/// Fully construct based on all members
-	CommandPointResult(uint32_t headerIndex_, uint16_t index_, CommandPointState state_, CommandStatus status_) :
-		headerIndex(headerIndex_),
-		index(index_),
-		state(state_),
-		status(status_)
-	{}
+    /// Check the result for equality against another value
+    bool Equals(const CommandPointResult& other) const
+    {
+        return (headerIndex == other.headerIndex) && (index == other.index) && (state == other.state)
+            && (status == other.status);
+    }
 
-	/// Check the result for equality against another value
-	bool Equals(const CommandPointResult& other) const
-	{
-		return	(headerIndex == other.headerIndex) &&
-		        (index == other.index) &&
-		        (state == other.state) &&
-		        (status == other.status);
-	}
+    /// The index of the header when request was made (0-based)
+    uint32_t headerIndex;
 
-	/// The index of the header when request was made (0-based)
-	uint32_t headerIndex;
+    /// The index of the command that was requested
+    uint16_t index;
 
-	/// The index of the command that was requested
-	uint16_t index;
+    /// The final state of the command operation on this point
+    CommandPointState state;
 
-	/// The final state of the command operation on this point
-	CommandPointState state;
-
-	/// The response value. This is only valid if state == SUCCESS or state == SELECT_FAIL
-	CommandStatus status;
+    /// The response value. This is only valid if state == SUCCESS or state == SELECT_FAIL
+    CommandStatus status;
 };
 
-}
+} // namespace opendnp3
 
 #endif

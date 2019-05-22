@@ -25,15 +25,15 @@ namespace opendnp3
 
 IINField IINFromParseResult(ParseResult result)
 {
-	switch(result)
-	{
-	case(ParseResult::OK):
-		return IINField::Empty();
-	case(ParseResult::UNKNOWN_OBJECT):
-		return IINField(IINBit::OBJECT_UNKNOWN);
-	default:
-		return IINField(IINBit::PARAM_ERROR);
-	}
+    switch (result)
+    {
+    case (ParseResult::OK):
+        return IINField::Empty();
+    case (ParseResult::UNKNOWN_OBJECT):
+        return IINField(IINBit::OBJECT_UNKNOWN);
+    default:
+        return IINField(IINBit::PARAM_ERROR);
+    }
 }
 
-}
+} // namespace opendnp3

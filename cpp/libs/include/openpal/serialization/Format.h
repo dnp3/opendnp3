@@ -21,8 +21,8 @@
 #ifndef OPENPAL_FORMAT_H
 #define OPENPAL_FORMAT_H
 
-#include "openpal/serialization/UInt48Type.h"
 #include "openpal/container/WSlice.h"
+#include "openpal/serialization/UInt48Type.h"
 #include "openpal/util/Uncopyable.h"
 
 namespace openpal
@@ -30,33 +30,30 @@ namespace openpal
 class Format : private StaticOnly
 {
 public:
+    static bool Write(WSlice& dest, const uint8_t& value);
+    static bool Write(WSlice& dest, const uint16_t& value);
 
-	static bool Write(WSlice& dest, const uint8_t& value);
-	static bool Write(WSlice& dest, const uint16_t& value);
+    static bool Write(WSlice& dest, const uint32_t& value);
+    static bool Write(WSlice& dest, const UInt48Type& value);
 
-	static bool Write(WSlice& dest, const uint32_t& value);
-	static bool Write(WSlice& dest, const UInt48Type& value);
+    static bool Write(WSlice& dest, const int16_t& value);
+    static bool Write(WSlice& dest, const int32_t& value);
 
-	static bool Write(WSlice& dest, const int16_t& value);
-	static bool Write(WSlice& dest, const int32_t& value);
+    static bool Write(WSlice& dest, const double& value);
+    static bool Write(WSlice& dest, const float& value);
 
-	static bool Write(WSlice& dest, const double& value);
-	static bool Write(WSlice& dest, const float& value);
-
-	template <typename T, typename... Args>
-	static bool Many(WSlice& dest, const T& value, const Args& ... args)
-	{
-		return Write(dest, value) && Many(dest, args...);
-	}
+    template<typename T, typename... Args> static bool Many(WSlice& dest, const T& value, const Args&... args)
+    {
+        return Write(dest, value) && Many(dest, args...);
+    }
 
 private:
-
-	static bool Many(WSlice& input)
-	{
-		return true;
-	}
+    static bool Many(WSlice& input)
+    {
+        return true;
+    }
 };
 
-}
+} // namespace openpal
 
 #endif

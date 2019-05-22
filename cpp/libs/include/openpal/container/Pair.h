@@ -24,19 +24,16 @@
 namespace openpal
 {
 
-template <class A, class B>
-class Pair
+template<class A, class B> class Pair
 {
 
 public:
+    Pair(const A& first_, const B& second_) : first(first_), second(second_) {}
 
-	Pair(const A& first_, const B& second_) : first(first_), second(second_)
-	{}
-
-	A first;
-	B second;
+    A first;
+    B second;
 };
 
-}
+} // namespace openpal
 
 #endif

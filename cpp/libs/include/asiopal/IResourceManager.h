@@ -27,31 +27,27 @@ namespace asiopal
 {
 
 /**
-*	Anything that can be shutdown
-*/
+ *	Anything that can be shutdown
+ */
 struct IResource
 {
 public:
+    virtual ~IResource() {}
 
-	virtual ~IResource() {}
-
-	virtual void Shutdown() = 0;
-
+    virtual void Shutdown() = 0;
 };
 
 struct IResourceManager
 {
 
 public:
+    virtual ~IResourceManager() {}
 
-	virtual ~IResourceManager() {}
-
-	/// notify the handler that the resource is shutting down, and it doesn't
-	/// have to track it anymore
-	virtual void Detach(const std::shared_ptr<IResource>& resource) = 0;
-
+    /// notify the handler that the resource is shutting down, and it doesn't
+    /// have to track it anymore
+    virtual void Detach(const std::shared_ptr<IResource>& resource) = 0;
 };
 
-}
+} // namespace asiopal
 
 #endif

@@ -27,21 +27,19 @@ namespace asiodnp3
 {
 
 /**
-* Callback interface for receiving information about a running channel
-*/
+ * Callback interface for receiving information about a running channel
+ */
 class IChannelListener
 {
 public:
+    virtual ~IChannelListener() {}
 
-	virtual ~IChannelListener() {}
-
-	/*
-	* Receive callbacks for state transitions on the channels executor
-	*/
-	virtual void OnStateChange(opendnp3::ChannelState state) = 0;
-
+    /*
+     * Receive callbacks for state transitions on the channels executor
+     */
+    virtual void OnStateChange(opendnp3::ChannelState state) = 0;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

@@ -22,9 +22,9 @@
 #ifndef OPENDNP3_IEVENTTYPE_H
 #define OPENDNP3_IEVENTTYPE_H
 
-#include "opendnp3/app/EventType.h"
-
 #include "List.h"
+
+#include "opendnp3/app/EventType.h"
 
 namespace opendnp3
 {
@@ -37,33 +37,31 @@ class IEventType
 {
 
 public:
-	const EventType value;
+    const EventType value;
 
-	inline bool IsEqual(EventType type) const
-	{
-		return type == value;
-	}
+    inline bool IsEqual(EventType type) const
+    {
+        return type == value;
+    }
 
-	inline bool IsNotEqual(EventType type) const
-	{
-		return type != value;
-	}
+    inline bool IsNotEqual(EventType type) const
+    {
+        return type != value;
+    }
 
 protected:
-	IEventType(EventType value) : value(value)
-	{}
+    IEventType(EventType value) : value(value) {}
 
 public:
+    virtual void SelectDefaultVariation(EventRecord& record) const = 0;
 
-	virtual void SelectDefaultVariation(EventRecord& record) const = 0;
+    virtual uint16_t WriteSome(List<EventRecord>::Iterator& iterator,
+                               EventLists& lists,
+                               IEventWriteHandler& handler) const = 0;
 
-	virtual uint16_t WriteSome(List<EventRecord>::Iterator& iterator, EventLists& lists, IEventWriteHandler& handler) const = 0;
-
-	virtual void RemoveTypeFromStorage(EventRecord& record, EventLists& lists) const = 0;
-
+    virtual void RemoveTypeFromStorage(EventRecord& record, EventLists& lists) const = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

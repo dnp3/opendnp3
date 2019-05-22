@@ -29,59 +29,53 @@ namespace openpal
 {
 
 /**
-* Acts as a safe facade around an underlying array
-*/
-template <class T, class W>
-class ArrayView : public HasSize<W>
+ * Acts as a safe facade around an underlying array
+ */
+template<class T, class W> class ArrayView : public HasSize<W>
 {
 
 public:
+    static ArrayView<T, W> Empty()
+    {
+        return ArrayView(nullptr, 0);
+    }
 
-	static ArrayView<T, W> Empty()
-	{
-		return ArrayView(nullptr, 0);
-	}
+    ArrayView(T* start, W size) : HasSize<W>(size), buffer(start) {}
 
-	ArrayView(T* start, W size) : HasSize<W>(size), buffer(start)
-	{}
+    inline bool Contains(W index) const
+    {
+        return index < this->size;
+    }
 
-	inline bool Contains(W index) const
-	{
-		return index < this->size;
-	}
+    inline bool Contains(W start, W stop) const
+    {
+        return (start < stop) && Contains(stop);
+    }
 
-	inline bool Contains(W start, W stop) const
-	{
-		return (start < stop) && Contains(stop);
-	}
+    inline T& operator[](W index)
+    {
+        assert(index < this->size);
+        return buffer[index];
+    }
 
-	inline T& operator[](W index)
-	{
-		assert(index < this->size);
-		return buffer[index];
-	}
+    inline const T& operator[](W index) const
+    {
+        assert(index < this->size);
+        return buffer[index];
+    }
 
-	inline const T& operator[](W index) const
-	{
-		assert(index < this->size);
-		return buffer[index];
-	}
-
-	template <class Action>
-	void foreach(const Action& action)
-	{
-		for (W i = 0; i < this->size; ++i)
-		{
-			action(buffer[i]);
-		}
-	}
+    template<class Action> void foreach (const Action& action)
+    {
+        for (W i = 0; i < this->size; ++i)
+        {
+            action(buffer[i]);
+        }
+    }
 
 private:
-	T* buffer;
+    T* buffer;
 };
 
-
-
-}
+} // namespace openpal
 
 #endif

@@ -23,43 +23,40 @@
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(IResponseLoader& staticLoader, IResponseLoader& eventLoader) :
-	fragmentCount(0),
-	pStaticLoader(&staticLoader),
-	pEventLoader(&eventLoader)
+ResponseContext::ResponseContext(IResponseLoader& staticLoader, IResponseLoader& eventLoader)
+    : fragmentCount(0), pStaticLoader(&staticLoader), pEventLoader(&eventLoader)
 {
-
 }
 
 bool ResponseContext::HasSelection() const
 {
-	return pStaticLoader->HasAnySelection() || pEventLoader->HasAnySelection();
+    return pStaticLoader->HasAnySelection() || pEventLoader->HasAnySelection();
 }
 
 void ResponseContext::Reset()
 {
-	fragmentCount = 0;
+    fragmentCount = 0;
 }
 
 AppControlField ResponseContext::LoadResponse(HeaderWriter& writer)
 {
-	bool fir = fragmentCount == 0;
-	++fragmentCount;
+    bool fir = fragmentCount == 0;
+    ++fragmentCount;
 
-	uint32_t startingSize = writer.Remaining();
-	bool notFull = pEventLoader->Load(writer);
-	bool someEventsWritten = writer.Remaining() < startingSize;
+    uint32_t startingSize = writer.Remaining();
+    bool notFull = pEventLoader->Load(writer);
+    bool someEventsWritten = writer.Remaining() < startingSize;
 
-	if (notFull)
-	{
-		auto fin = pStaticLoader->Load(writer);
-		auto con = !fin || someEventsWritten;
-		return AppControlField(fir, fin, con, false);
-	}
-	else
-	{
-		return AppControlField(fir, false, true, false);
-	}
+    if (notFull)
+    {
+        auto fin = pStaticLoader->Load(writer);
+        auto con = !fin || someEventsWritten;
+        return AppControlField(fir, fin, con, false);
+    }
+    else
+    {
+        return AppControlField(fir, false, true, false);
+    }
 }
 
-}
+} // namespace opendnp3

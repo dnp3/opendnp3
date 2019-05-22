@@ -20,44 +20,44 @@
  */
 #include "AssignClassTask.h"
 
-#include "opendnp3/master/IMasterApplication.h"
-
 #include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/master/IMasterApplication.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-AssignClassTask::AssignClassTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger) :
-	IMasterTask(context, application, behavior, logger, TaskConfig::Default())
-{}
+AssignClassTask::AssignClassTask(const std::shared_ptr<TaskContext>& context,
+                                 IMasterApplication& application,
+                                 const TaskBehavior& behavior,
+                                 openpal::Logger logger)
+    : IMasterTask(context, application, behavior, logger, TaskConfig::Default())
+{
+}
 
 bool AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	request.SetControl(AppControlField(true, true, false, false, seq));
-	request.SetFunction(FunctionCode::ASSIGN_CLASS);
-	auto writer = request.GetWriter();
+    request.SetControl(AppControlField(true, true, false, false, seq));
+    request.SetFunction(FunctionCode::ASSIGN_CLASS);
+    auto writer = request.GetWriter();
 
-	bool success = true;
-	auto writeFun = [&](const Header & header)
-	{
-		success &= header.WriteTo(writer);
-	};
+    bool success = true;
+    auto writeFun = [&](const Header& header) { success &= header.WriteTo(writer); };
 
-	this->application->ConfigureAssignClassRequest(writeFun);
-	return success;
+    this->application->ConfigureAssignClassRequest(writeFun);
+    return success;
 }
 
 bool AssignClassTask::IsEnabled() const
 {
-	return this->application->AssignClassDuringStartup();
+    return this->application->AssignClassDuringStartup();
 }
 
-IMasterTask::ResponseResult AssignClassTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
+IMasterTask::ResponseResult AssignClassTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+                                                             const openpal::RSlice& objects)
 {
-	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+    return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-} //end ns
-
+} // namespace opendnp3

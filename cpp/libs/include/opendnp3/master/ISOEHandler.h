@@ -21,52 +21,49 @@
 #ifndef OPENDNP3_ISOEHANDLER_H
 #define OPENDNP3_ISOEHANDLER_H
 
-#include "opendnp3/app/ITransactable.h"
+#include "openpal/executor/UTCTimestamp.h"
 
-#include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/BinaryCommandEvent.h"
 #include "opendnp3/app/AnalogCommandEvent.h"
+#include "opendnp3/app/BinaryCommandEvent.h"
+#include "opendnp3/app/ITransactable.h"
+#include "opendnp3/app/Indexed.h"
+#include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/OctetString.h"
 #include "opendnp3/app/SecurityStat.h"
-
-#include "opendnp3/app/Indexed.h"
 #include "opendnp3/app/parsing/ICollection.h"
-
 #include "opendnp3/master/HeaderInfo.h"
-#include "openpal/executor/UTCTimestamp.h"
 
 namespace opendnp3
 {
 
 /**
-* An interface for Sequence-Of-Events (SOE) callbacks from a master stack to
-* the application layer.
-*
-* A call is made to the appropriate member method for every measurement value in an ASDU.
-* The HeaderInfo class provides information about the object header associated with the value.
-*
-*/
+ * An interface for Sequence-Of-Events (SOE) callbacks from a master stack to
+ * the application layer.
+ *
+ * A call is made to the appropriate member method for every measurement value in an ASDU.
+ * The HeaderInfo class provides information about the object header associated with the value.
+ *
+ */
 class ISOEHandler : public ITransactable
 {
 public:
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) = 0;
+    virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) = 0;
 
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) = 0;
-	virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) = 0;
-
-	virtual ~ISOEHandler() {}
+    virtual ~ISOEHandler() {}
 };
 
-}
+} // namespace opendnp3
 
 #endif

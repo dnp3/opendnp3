@@ -21,9 +21,9 @@
 #ifndef OPENDNP3_ISTATICSELECTOR_H
 #define OPENDNP3_ISTATICSELECTOR_H
 
-#include "opendnp3/app/Range.h"
-#include "opendnp3/app/IINField.h"
 #include "opendnp3/app/GroupVariationRecord.h"
+#include "opendnp3/app/IINField.h"
+#include "opendnp3/app/Range.h"
 
 namespace opendnp3
 {
@@ -31,17 +31,13 @@ namespace opendnp3
 class IStaticSelector
 {
 public:
+    virtual IINField SelectAll(GroupVariation gv) = 0;
 
-	virtual IINField SelectAll(GroupVariation gv) = 0;
+    virtual IINField SelectRange(GroupVariation gv, const Range& range) = 0;
 
-	virtual IINField SelectRange(GroupVariation gv, const Range& range) = 0;
-
-	virtual void Unselect() = 0;
+    virtual void Unselect() = 0;
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

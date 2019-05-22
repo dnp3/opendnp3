@@ -19,31 +19,28 @@
 #ifndef OPENDNP3_MASTERAPPLICATIONADAPTER_H
 #define OPENDNP3_MASTERAPPLICATIONADAPTER_H
 
-#include <opendnp3/master/IMasterApplication.h>
+#include "GlobalRef.h"
 
 #include "opendnp3/gen/PointClass.h"
-
-#include "GlobalRef.h"
+#include <opendnp3/master/IMasterApplication.h>
 
 class MasterApplicationAdapter : public opendnp3::IMasterApplication
 {
 public:
+    MasterApplicationAdapter(jobject proxy) : proxy(proxy) {}
 
-	MasterApplicationAdapter(jobject proxy) : proxy(proxy) {}
+    virtual openpal::UTCTimestamp Now() override;
 
-	virtual openpal::UTCTimestamp Now() override;
-
-	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override;
-	virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override;
-	virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override;
-	virtual void OnOpen() override;
-	virtual void OnClose() override;
-	virtual bool AssignClassDuringStartup() override;
-	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun)  override;
+    virtual void OnReceiveIIN(const opendnp3::IINField& iin) override;
+    virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override;
+    virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override;
+    virtual void OnOpen() override;
+    virtual void OnClose() override;
+    virtual bool AssignClassDuringStartup() override;
+    virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override;
 
 private:
-
-	GlobalRef proxy;
+    GlobalRef proxy;
 };
 
 #endif

@@ -29,24 +29,20 @@ namespace opendnp3
 class IResponseLoader
 {
 public:
+    /**
+     * @ return True if there is any data selected for reporting
+     */
+    virtual bool HasAnySelection() const = 0;
 
-	/**
-	* @ return True if there is any data selected for reporting
-	*/
-	virtual bool HasAnySelection() const = 0;
-
-	/**
-	* Loads static data into a response APDU
-	*
-	* @param writer The HeaderWriter instance used to place data in the APDU
-	* @return True if all data was loaded, false if there is no more space
-	*/
-	virtual bool Load(HeaderWriter& writer) = 0;
+    /**
+     * Loads static data into a response APDU
+     *
+     * @param writer The HeaderWriter instance used to place data in the APDU
+     * @return True if all data was loaded, false if there is no more space
+     */
+    virtual bool Load(HeaderWriter& writer) = 0;
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

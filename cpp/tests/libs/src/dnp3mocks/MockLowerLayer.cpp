@@ -33,69 +33,69 @@ namespace opendnp3
 
 bool MockLowerLayer::HasNoData() const
 {
-	return sendQueue.empty();
+    return sendQueue.empty();
 }
 
 size_t MockLowerLayer::NumWrites() const
 {
-	return sendQueue.size();
+    return sendQueue.size();
 }
 
 std::string MockLowerLayer::PopWriteAsHex()
 {
-	if (sendQueue.empty())
-	{
-		return "";
-	}
-	else
-	{
-		auto ret = sendQueue.front();
-		sendQueue.pop();
-		return ToHex(ret.payload);
-	}
+    if (sendQueue.empty())
+    {
+        return "";
+    }
+    else
+    {
+        auto ret = sendQueue.front();
+        sendQueue.pop();
+        return ToHex(ret.payload);
+    }
 }
 
 bool MockLowerLayer::BeginTransmit(const Message& message)
 {
-	this->sendQueue.push(message);
-	return true;
+    this->sendQueue.push(message);
+    return true;
 }
 
 void MockLowerLayer::SendUp(const openpal::RSlice& data, const Addresses& addresses)
 {
-	if(pUpperLayer)
-	{
-		pUpperLayer->OnReceive(Message(addresses, data));
-	}
+    if (pUpperLayer)
+    {
+        pUpperLayer->OnReceive(Message(addresses, data));
+    }
 }
 
 void MockLowerLayer::SendUp(const std::string& arHexData, const Addresses& addresses)
 {
-	HexSequence hs(arHexData);
-	this->SendUp(hs.ToRSlice(), addresses);
+    HexSequence hs(arHexData);
+    this->SendUp(hs.ToRSlice(), addresses);
 }
 
 void MockLowerLayer::SendComplete()
 {
-	if (pUpperLayer)
-	{
-		pUpperLayer->OnTxReady();
-	}
+    if (pUpperLayer)
+    {
+        pUpperLayer->OnTxReady();
+    }
 }
 
 void MockLowerLayer::ThisLayerUp()
 {
-	if (pUpperLayer)
-	{
-		pUpperLayer->OnLowerLayerUp();
-	}
+    if (pUpperLayer)
+    {
+        pUpperLayer->OnLowerLayerUp();
+    }
 }
 void MockLowerLayer::ThisLayerDown()
 {
-	if (pUpperLayer)
-	{
-		pUpperLayer->OnLowerLayerDown();
-	}
+    if (pUpperLayer)
+    {
+        pUpperLayer->OnLowerLayerDown();
+    }
 }
 
-}
+} // namespace opendnp3

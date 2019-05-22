@@ -25,53 +25,49 @@ namespace opendnp3
 
 const AppControlField AppControlField::DEFAULT(true, true, false, false, 0);
 
-AppControlField::AppControlField(uint8_t byte) :
-	FIR((byte & FIR_MASK) != 0),
-	FIN((byte & FIN_MASK) != 0),
-	CON((byte & CON_MASK) != 0),
-	UNS((byte & UNS_MASK) != 0),
-	SEQ(byte & SEQ_MASK)
+AppControlField::AppControlField(uint8_t byte)
+    : FIR((byte & FIR_MASK) != 0),
+      FIN((byte & FIN_MASK) != 0),
+      CON((byte & CON_MASK) != 0),
+      UNS((byte & UNS_MASK) != 0),
+      SEQ(byte & SEQ_MASK)
 {
 }
 
 AppControlField AppControlField::Request(uint8_t seq)
 {
-	return AppControlField(true, true, false, false, seq);
+    return AppControlField(true, true, false, false, seq);
 }
 
-AppControlField::AppControlField(bool fir, bool fin, bool con, bool uns, uint8_t seq) :
-	FIR(fir),
-	FIN(fin),
-	CON(con),
-	UNS(uns),
-	SEQ(seq)
-{}
+AppControlField::AppControlField(bool fir, bool fin, bool con, bool uns, uint8_t seq)
+    : FIR(fir), FIN(fin), CON(con), UNS(uns), SEQ(seq)
+{
+}
 
 uint8_t AppControlField::ToByte() const
 {
-	uint8_t ret = 0;
+    uint8_t ret = 0;
 
-	if (FIR)
-	{
-		ret |= FIR_MASK;
-	}
-	if (FIN)
-	{
-		ret |= FIN_MASK;
-	}
-	if (CON)
-	{
-		ret |= CON_MASK;
-	}
-	if (UNS)
-	{
-		ret |= UNS_MASK;
-	}
+    if (FIR)
+    {
+        ret |= FIR_MASK;
+    }
+    if (FIN)
+    {
+        ret |= FIN_MASK;
+    }
+    if (CON)
+    {
+        ret |= CON_MASK;
+    }
+    if (UNS)
+    {
+        ret |= UNS_MASK;
+    }
 
-	uint8_t seq = SEQ % 16;
+    uint8_t seq = SEQ % 16;
 
-	return ret | seq;
+    return ret | seq;
 }
 
-}
-
+} // namespace opendnp3

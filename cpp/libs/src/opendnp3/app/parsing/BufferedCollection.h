@@ -26,46 +26,43 @@
 namespace opendnp3
 {
 
-template <class T, class ReadFunc>
-class BufferedCollection : public ICollection<T>
+template<class T, class ReadFunc> class BufferedCollection : public ICollection<T>
 {
 public:
+    BufferedCollection(const openpal::RSlice& buffer, size_t count, const ReadFunc& readFunc)
+        : buffer(buffer), COUNT(count), readFunc(readFunc)
+    {
+    }
 
-	BufferedCollection(const openpal::RSlice& buffer, size_t count, const ReadFunc& readFunc) :
-		buffer(buffer),
-		COUNT(count),
-		readFunc(readFunc)
-	{}
+    virtual size_t Count() const override final
+    {
+        return COUNT;
+    }
 
-	virtual size_t Count() const override final
-	{
-		return COUNT;
-	}
+    virtual void Foreach(IVisitor<T>& visitor) const final
+    {
+        openpal::RSlice copy(buffer);
 
-
-	virtual void Foreach(IVisitor<T>& visitor) const final
-	{
-		openpal::RSlice copy(buffer);
-
-		for (uint32_t pos = 0; pos < COUNT; ++pos)
-		{
-			visitor.OnValue(readFunc(copy, pos));
-		}
-	}
+        for (uint32_t pos = 0; pos < COUNT; ++pos)
+        {
+            visitor.OnValue(readFunc(copy, pos));
+        }
+    }
 
 private:
-
-	openpal::RSlice buffer;
-	const size_t COUNT;
-	ReadFunc readFunc;
+    openpal::RSlice buffer;
+    const size_t COUNT;
+    ReadFunc readFunc;
 };
 
-template <class T, class ReadFunc>
-BufferedCollection<T, ReadFunc> CreateBufferedCollection(const openpal::RSlice& buffer, uint32_t count, const ReadFunc& readFunc)
+template<class T, class ReadFunc>
+BufferedCollection<T, ReadFunc> CreateBufferedCollection(const openpal::RSlice& buffer,
+                                                         uint32_t count,
+                                                         const ReadFunc& readFunc)
 {
-	return BufferedCollection<T, ReadFunc>(buffer, count, readFunc);
+    return BufferedCollection<T, ReadFunc>(buffer, count, readFunc);
 }
 
-}
+} // namespace opendnp3
 
 #endif

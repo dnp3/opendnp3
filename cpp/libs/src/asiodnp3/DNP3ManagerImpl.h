@@ -25,13 +25,13 @@
 #include "openpal/logging/Logger.h"
 #include "openpal/util/Uncopyable.h"
 
-#include "asiopal/ThreadPool.h"
-#include "asiopal/SerialTypes.h"
-#include "asiopal/TLSConfig.h"
 #include "asiopal/ChannelRetry.h"
-#include "asiopal/ResourceManager.h"
 #include "asiopal/IListener.h"
 #include "asiopal/IPEndpoint.h"
+#include "asiopal/ResourceManager.h"
+#include "asiopal/SerialTypes.h"
+#include "asiopal/TLSConfig.h"
+#include "asiopal/ThreadPool.h"
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/gen/ServerAcceptMode.h"
@@ -40,7 +40,6 @@
 #include "asiodnp3/IChannelListener.h"
 #include "asiodnp3/IListenCallbacks.h"
 
-
 namespace asiodnp3
 {
 
@@ -48,86 +47,73 @@ class DNP3ManagerImpl : private openpal::Uncopyable
 {
 
 public:
+    DNP3ManagerImpl(uint32_t concurrencyHint,
+                    std::shared_ptr<openpal::ILogHandler> handler,
+                    std::function<void()> onThreadStart,
+                    std::function<void()> onThreadExit);
 
-	DNP3ManagerImpl(
-	    uint32_t concurrencyHint,
-	    std::shared_ptr<openpal::ILogHandler> handler,
-	    std::function<void()> onThreadStart,
-	    std::function<void()> onThreadExit
-	);
+    ~DNP3ManagerImpl();
 
-	~DNP3ManagerImpl();
+    void Shutdown();
 
-	void Shutdown();
+    std::shared_ptr<IChannel> AddTCPClient(const std::string& id,
+                                           int32_t levels,
+                                           const asiopal::ChannelRetry& retry,
+                                           const std::vector<asiopal::IPEndpoint>& hosts,
+                                           const std::string& local,
+                                           std::shared_ptr<IChannelListener> listener);
 
-	std::shared_ptr<IChannel> AddTCPClient(
-	    const std::string& id,
-	    int32_t levels,
-	    const asiopal::ChannelRetry& retry,
-	    const std::vector<asiopal::IPEndpoint>& hosts,
-	    const std::string& local,
-	    std::shared_ptr<IChannelListener> listener);
+    std::shared_ptr<IChannel> AddTCPServer(const std::string& id,
+                                           int32_t levels,
+                                           opendnp3::ServerAcceptMode mode,
+                                           const std::string& endpoint,
+                                           uint16_t port,
+                                           std::shared_ptr<IChannelListener> listener);
 
-	std::shared_ptr<IChannel> AddTCPServer(
-	    const std::string& id,
-		int32_t levels,
-	    opendnp3::ServerAcceptMode mode,
-	    const std::string& endpoint,
-	    uint16_t port,
-	    std::shared_ptr<IChannelListener> listener);
+    std::shared_ptr<IChannel> AddSerial(const std::string& id,
+                                        int32_t levels,
+                                        const asiopal::ChannelRetry& retry,
+                                        asiopal::SerialSettings settings,
+                                        std::shared_ptr<IChannelListener> listener);
 
-	std::shared_ptr<IChannel> AddSerial(
-	    const std::string& id,
-		int32_t levels,
-	    const asiopal::ChannelRetry& retry,
-	    asiopal::SerialSettings settings,
-	    std::shared_ptr<IChannelListener> listener);
+    std::shared_ptr<IChannel> AddTLSClient(const std::string& id,
+                                           int32_t levels,
+                                           const asiopal::ChannelRetry& retry,
+                                           const std::vector<asiopal::IPEndpoint>& hosts,
+                                           const std::string& local,
+                                           const asiopal::TLSConfig& config,
+                                           std::shared_ptr<IChannelListener> listener,
+                                           std::error_code& ec);
 
-	std::shared_ptr<IChannel> AddTLSClient(
-	    const std::string& id,
-		int32_t levels,
-	    const asiopal::ChannelRetry& retry,
-	    const std::vector<asiopal::IPEndpoint>& hosts,
-	    const std::string& local,
-	    const asiopal::TLSConfig& config,
-	    std::shared_ptr<IChannelListener> listener,
-	    std::error_code& ec);
+    std::shared_ptr<IChannel> AddTLSServer(const std::string& id,
+                                           int32_t levels,
+                                           opendnp3::ServerAcceptMode mode,
+                                           const std::string& endpoint,
+                                           uint16_t port,
+                                           const asiopal::TLSConfig& config,
+                                           std::shared_ptr<IChannelListener> listener,
+                                           std::error_code& ec);
 
-	std::shared_ptr<IChannel> AddTLSServer(
-	    const std::string& id,
-		int32_t levels,
-	    opendnp3::ServerAcceptMode mode,
-	    const std::string& endpoint,
-	    uint16_t port,
-	    const asiopal::TLSConfig& config,
-	    std::shared_ptr<IChannelListener> listener,
-	    std::error_code& ec);
+    std::shared_ptr<asiopal::IListener> CreateListener(std::string loggerid,
+                                                       openpal::LogFilters loglevel,
+                                                       asiopal::IPEndpoint endpoint,
+                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
+                                                       std::error_code& ec);
 
-	std::shared_ptr<asiopal::IListener> CreateListener(
-	    std::string loggerid,
-	    openpal::LogFilters loglevel,
-	    asiopal::IPEndpoint endpoint,
-	    const std::shared_ptr<IListenCallbacks>& callbacks,
-	    std::error_code& ec
-	);
-
-	std::shared_ptr<asiopal::IListener> CreateListener(
-	    std::string loggerid,
-	    openpal::LogFilters loglevel,
-	    asiopal::IPEndpoint endpoint,
-	    const asiopal::TLSConfig& config,
-	    const std::shared_ptr<IListenCallbacks>& callbacks,
-	    std::error_code& ec
-	);
+    std::shared_ptr<asiopal::IListener> CreateListener(std::string loggerid,
+                                                       openpal::LogFilters loglevel,
+                                                       asiopal::IPEndpoint endpoint,
+                                                       const asiopal::TLSConfig& config,
+                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
+                                                       std::error_code& ec);
 
 private:
-	openpal::Logger logger;
-	const std::shared_ptr<asiopal::IO> io;
-	asiopal::ThreadPool threadpool;
-	std::shared_ptr<asiopal::ResourceManager> resources;
-
+    openpal::Logger logger;
+    const std::shared_ptr<asiopal::IO> io;
+    asiopal::ThreadPool threadpool;
+    std::shared_ptr<asiopal::ResourceManager> resources;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

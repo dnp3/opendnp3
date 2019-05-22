@@ -22,10 +22,11 @@
 #define OPENDNP3_RANGE_H
 
 #include <openpal/Configure.h>
-#include <cstdint>
+#include <openpal/util/Comparisons.h>
+
 #include <assert.h>
 
-#include <openpal/util/Comparisons.h>
+#include <cstdint>
 
 namespace opendnp3
 {
@@ -33,97 +34,82 @@ namespace opendnp3
 class Range
 {
 public:
+    static Range From(uint16_t start, uint16_t stop)
+    {
+        return Range(start, stop);
+    }
 
-	static Range From(uint16_t start, uint16_t stop)
-	{
-		return Range(start, stop);
-	}
+    static Range Invalid()
+    {
+        return Range(1, 0);
+    }
 
-	static Range Invalid()
-	{
-		return Range(1, 0);
-	}
+    Range() : start(1), stop(0) {}
 
-	Range() : start(1), stop(0)
-	{}
+    uint32_t Count() const
+    {
+        return IsValid() ? (static_cast<uint32_t>(stop) - static_cast<uint32_t>(start) + 1) : 0;
+    }
 
-	uint32_t Count() const
-	{
-		return IsValid() ? (static_cast<uint32_t>(stop) - static_cast<uint32_t>(start) + 1) : 0;
-	}
+    bool Advance()
+    {
+        if (this->IsValid())
+        {
+            if (start < stop)
+            {
+                ++start;
+            }
+            else
+            {
+                // make the range invalid
+                start = 1;
+                stop = 0;
+            }
 
-	bool Advance()
-	{
-		if (this->IsValid())
-		{
-			if (start < stop)
-			{
-				++start;
-			}
-			else
-			{
-				// make the range invalid
-				start = 1;
-				stop = 0;
-			}
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    /// @return A new range with only values found in both ranges
+    Range Intersection(const Range& other) const
+    {
+        return Range(openpal::Max<uint16_t>(start, other.start), openpal::Min<uint16_t>(stop, other.stop));
+    }
 
-	/// @return A new range with only values found in both ranges
-	Range Intersection(const Range& other) const
-	{
-		return Range(
-		           openpal::Max<uint16_t>(start, other.start),
-		           openpal::Min<uint16_t>(stop, other.stop)
-		       );
-	}
+    /// @return A new range with min start and the max stop of both ranges
+    Range Union(const Range& other) const
+    {
+        return Range(openpal::Min<uint16_t>(start, other.start), openpal::Max<uint16_t>(stop, other.stop));
+    }
 
-	/// @return A new range with min start and the max stop of both ranges
-	Range Union(const Range& other) const
-	{
-		return Range(
-		           openpal::Min<uint16_t>(start, other.start),
-		           openpal::Max<uint16_t>(stop, other.stop)
-		       );
-	}
+    bool Equals(const Range& other) const
+    {
+        return (other.start == start) && (other.stop == stop);
+    }
 
-	bool Equals(const Range& other) const
-	{
-		return (other.start == start) && (other.stop == stop);
-	}
+    bool IsValid() const
+    {
+        return start <= stop;
+    }
 
-	bool IsValid() const
-	{
-		return start <= stop;
-	}
+    bool IsOneByte() const
+    {
+        return IsValid() && (start <= 255) && (stop <= 255);
+    }
 
-	bool IsOneByte() const
-	{
-		return IsValid() && (start <= 255) && (stop <= 255);
-	}
-
-	uint16_t start;
-	uint16_t stop;
+    uint16_t start;
+    uint16_t stop;
 
 private:
+    Range(uint16_t index_) : start(index_), stop(index_) {}
 
-	Range(uint16_t index_) :
-		start(index_),
-		stop(index_)
-	{}
-
-	Range(uint16_t start_, uint16_t stop_) :
-		start(start_),
-		stop(stop_)
-	{}
+    Range(uint16_t start_, uint16_t stop_) : start(start_), stop(stop_) {}
 };
 
-}
+} // namespace opendnp3
 
 #endif

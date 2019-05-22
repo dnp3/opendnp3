@@ -26,36 +26,33 @@ namespace asiodnp3
 {
 
 IPEndpointsList::IPEndpointsList(const std::vector<asiopal::IPEndpoint>& endpoints)
-	: endpoints(endpoints),
-	  currentEndpoint(this->endpoints.begin())
+    : endpoints(endpoints), currentEndpoint(this->endpoints.begin())
 {
-	assert(!endpoints.empty());
+    assert(!endpoints.empty());
 }
 
 IPEndpointsList::IPEndpointsList(const IPEndpointsList& rhs)
-	: endpoints(rhs.endpoints),
-	  currentEndpoint(this->endpoints.begin())
+    : endpoints(rhs.endpoints), currentEndpoint(this->endpoints.begin())
 {
-
 }
 
 const asiopal::IPEndpoint& IPEndpointsList::GetCurrentEndpoint()
 {
-	return *this->currentEndpoint;
+    return *this->currentEndpoint;
 }
 
 void IPEndpointsList::Next()
 {
-	++this->currentEndpoint;
-	if (this->currentEndpoint == this->endpoints.end())
-	{
-		Reset();
-	}
+    ++this->currentEndpoint;
+    if (this->currentEndpoint == this->endpoints.end())
+    {
+        Reset();
+    }
 }
 
 void IPEndpointsList::Reset()
 {
-	this->currentEndpoint = this->endpoints.begin();
+    this->currentEndpoint = this->endpoints.begin();
 }
 
-}
+} // namespace asiodnp3

@@ -27,14 +27,13 @@ namespace opendnp3
 {
 
 /**
-* A struct to hold status information about a particular poll/scan
-*/
+ * A struct to hold status information about a particular poll/scan
+ */
 struct ScanResult
 {
-	ScanStatus status;
+    ScanStatus status;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

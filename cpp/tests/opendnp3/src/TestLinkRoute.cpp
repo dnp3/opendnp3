@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include <opendnp3/Route.h>
+
+#include <catch.hpp>
 
 using namespace std;
 using namespace opendnp3;
@@ -29,12 +29,10 @@ using namespace opendnp3;
 
 TEST_CASE(SUITE("LinkRouteEqualityComparison"))
 {
-	Route lr1(1, 2);
-	Route lr2(1, 3);
-	Route lr3(1, 3);
+    Route lr1(1, 2);
+    Route lr2(1, 3);
+    Route lr3(1, 3);
 
-	REQUIRE(!(lr1.Equals(lr2)));
-	REQUIRE(lr3.Equals(lr2));
-
+    REQUIRE(!(lr1.Equals(lr2)));
+    REQUIRE(lr3.Equals(lr2));
 }
-

@@ -29,162 +29,149 @@
 
 namespace opendnp3
 {
-template <class Target, class Source>
-struct ConvertQ : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertQ : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.flags = src.flags.value;
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.flags = src.flags.value;
+        return t;
+    }
 };
 
-template <class Target, class Source>
-struct ConvertQV : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertQV : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.value = src.value;
-		t.flags = src.flags.value;
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.value = src.value;
+        t.flags = src.flags.value;
+        return t;
+    }
 };
 
-template <class Target, class Source>
-struct ConvertV : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertV : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.value = src.value;
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.value = src.value;
+        return t;
+    }
 };
 
-template <class Target, class Source>
-struct ConvertVandTruncate : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertVandTruncate : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.value = static_cast<typename Target::ValueType>(src.value);
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.value = static_cast<typename Target::ValueType>(src.value);
+        return t;
+    }
 };
 
-template <class Target, class Source>
-struct ConvertVRangeCheck : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertVRangeCheck : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
+        return t;
+    }
 };
 
-template <class Target, class Source, uint8_t Overrange>
-struct ConvertQVRangeCheck : private openpal::StaticOnly
+template<class Target, class Source, uint8_t Overrange> struct ConvertQVRangeCheck : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
-		t.flags = overrange ? Overrange : 0;
-		t.flags |= src.flags.value;
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
+        t.flags = overrange ? Overrange : 0;
+        t.flags |= src.flags.value;
+        return t;
+    }
 };
 
-template <class Target, class Source>
-struct ConvertQVandTruncate : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertQVandTruncate : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.flags = src.flags.value;
-		t.value = static_cast<typename Target::ValueType>(src.value);
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.flags = src.flags.value;
+        t.value = static_cast<typename Target::ValueType>(src.value);
+        return t;
+    }
 };
 
-template <class Target, class Source>
-struct ConvertQVT : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertQVT : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.flags = src.flags.value;
-		t.value = src.value;
-		t.time = src.time;
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.flags = src.flags.value;
+        t.value = src.value;
+        t.time = src.time;
+        return t;
+    }
 };
 
-template <class Target, class Source>
-struct ConvertQVTandTruncate : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertQVTandTruncate : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.flags = src.flags.value;
-		t.value = static_cast<typename Target::ValueType>(src.value);
-		t.time = src.time;
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.flags = src.flags.value;
+        t.value = static_cast<typename Target::ValueType>(src.value);
+        t.time = src.time;
+        return t;
+    }
 };
 
-template <class Target, class Source, uint8_t Overrange>
-struct ConvertQVTRangeCheck : private openpal::StaticOnly
+template<class Target, class Source, uint8_t Overrange> struct ConvertQVTRangeCheck : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
-		t.flags = overrange ? Overrange : 0;
-		t.flags |= src.flags.value;
-		t.time = src.time;
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
+        t.flags = overrange ? Overrange : 0;
+        t.flags |= src.flags.value;
+        t.time = src.time;
+        return t;
+    }
 };
 
-template <class Target, class Source>
-struct ConvertQT : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertQT : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.flags = src.flags.value;
-		t.time = src.time;
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.flags = src.flags.value;
+        t.time = src.time;
+        return t;
+    }
 };
 
-template <class Target, class Source, class Downcast>
-struct ConvertQTDowncast : private openpal::StaticOnly
+template<class Target, class Source, class Downcast> struct ConvertQTDowncast : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.flags = src.flags.value;
-		t.time = static_cast<Downcast>(src.time);
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.flags = src.flags.value;
+        t.time = static_cast<Downcast>(src.time);
+        return t;
+    }
 };
 
-template <class Target, class Source>
-struct ConvertQS : private openpal::StaticOnly
+template<class Target, class Source> struct ConvertQS : private openpal::StaticOnly
 {
-	static Target Apply(const Source& src)
-	{
-		Target t;
-		t.value = src.value;
-		t.status = CommandStatusToType(src.status);
-		return t;
-	}
+    static Target Apply(const Source& src)
+    {
+        Target t;
+        t.value = src.value;
+        t.status = CommandStatusToType(src.status);
+        return t;
+    }
 };
-}
+} // namespace opendnp3
 
 #endif

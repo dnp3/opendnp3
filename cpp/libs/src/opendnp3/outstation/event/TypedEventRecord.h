@@ -27,30 +27,24 @@ namespace opendnp3
 {
 
 /**
-* Event details that vary by type
-*/
-template <class T>
-struct TypedEventRecord
+ * Event details that vary by type
+ */
+template<class T> struct TypedEventRecord
 {
-	TypedEventRecord() = default;
+    TypedEventRecord() = default;
 
-	TypedEventRecord(
-	    typename T::meas_t value,
-	    typename T::event_variation_t defaultVariation,
-	    Node<EventRecord>* record
-	) :
-		value(value),
-		defaultVariation(defaultVariation),
-		selectedVariation(defaultVariation),
-		record(record)
-	{}
+    TypedEventRecord(typename T::meas_t value,
+                     typename T::event_variation_t defaultVariation,
+                     Node<EventRecord>* record)
+        : value(value), defaultVariation(defaultVariation), selectedVariation(defaultVariation), record(record)
+    {
+    }
 
-	typename T::meas_t value;
-	typename T::event_variation_t defaultVariation;
-	typename T::event_variation_t selectedVariation;
-	Node<EventRecord>* record = nullptr;
+    typename T::meas_t value;
+    typename T::event_variation_t defaultVariation;
+    typename T::event_variation_t selectedVariation;
+    Node<EventRecord>* record = nullptr;
 };
-}
+} // namespace opendnp3
 
 #endif
-

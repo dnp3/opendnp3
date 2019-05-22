@@ -27,14 +27,12 @@ namespace opendnp3
 {
 
 /// A collection type for command to which the user can add by type and index
-template <class T>
-class ICommandCollection
+template<class T> class ICommandCollection
 {
 public:
-
-	virtual ICommandCollection& Add(const T& command, uint16_t index) = 0;
+    virtual ICommandCollection& Add(const T& command, uint16_t index) = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif

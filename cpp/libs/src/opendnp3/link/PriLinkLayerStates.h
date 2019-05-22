@@ -29,40 +29,37 @@ namespace opendnp3
 class LinkContext;
 class ITransportSegment;
 
-
 class PriStateBase
 {
 public:
+    // Incoming messages for primary station
+    virtual PriStateBase& OnAck(LinkContext&, bool receiveBuffFull);
+    virtual PriStateBase& OnNack(LinkContext&, bool receiveBuffFull);
+    virtual PriStateBase& OnLinkStatus(LinkContext&, bool receiveBuffFull);
+    virtual PriStateBase& OnNotSupported(LinkContext&, bool receiveBuffFull);
 
-	// Incoming messages for primary station
-	virtual PriStateBase& OnAck(LinkContext&, bool receiveBuffFull);
-	virtual PriStateBase& OnNack(LinkContext&, bool receiveBuffFull);
-	virtual PriStateBase& OnLinkStatus(LinkContext&, bool receiveBuffFull);
-	virtual PriStateBase& OnNotSupported(LinkContext&, bool receiveBuffFull);
+    virtual PriStateBase& OnTxReady(LinkContext&);
 
-	virtual PriStateBase& OnTxReady(LinkContext&);
+    virtual PriStateBase& OnTimeout(LinkContext&);
 
-	virtual PriStateBase& OnTimeout(LinkContext&);
+    // transmission events to handle
+    virtual PriStateBase& TrySendConfirmed(LinkContext&, ITransportSegment& segments);
+    virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments);
+    virtual PriStateBase& TrySendRequestLinkStatus(LinkContext&);
 
-	// transmission events to handle
-	virtual PriStateBase& TrySendConfirmed(LinkContext&, ITransportSegment& segments);
-	virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments);
-	virtual PriStateBase& TrySendRequestLinkStatus(LinkContext&);
-
-	//every concrete state implements this for logging purposes
-	virtual char const* Name() const = 0;
+    // every concrete state implements this for logging purposes
+    virtual char const* Name() const = 0;
 };
 
 //	@section desc Entry state for primary station
 class PLLS_Idle final : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_Idle);
+    MACRO_STATE_SINGLETON_INSTANCE(PLLS_Idle);
 
-	virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments) override;
-	virtual PriStateBase& TrySendConfirmed(LinkContext&, ITransportSegment& segments) override;
-	virtual PriStateBase& TrySendRequestLinkStatus(LinkContext&) override;
+    virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments) override;
+    virtual PriStateBase& TrySendConfirmed(LinkContext&, ITransportSegment& segments) override;
+    virtual PriStateBase& TrySendRequestLinkStatus(LinkContext&) override;
 };
-
 
 /////////////////////////////////////////////////////////////////////////////
 //  template wait state for send unconfirmed data
@@ -70,11 +67,10 @@ class PLLS_Idle final : public PriStateBase
 
 class PLLS_SendUnconfirmedTransmitWait final : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait);
+    MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait);
 
-	virtual PriStateBase& OnTxReady(LinkContext& link) override;
+    virtual PriStateBase& OnTxReady(LinkContext& link) override;
 };
-
 
 /////////////////////////////////////////////////////////////////////////////
 //  Wait for the link layer to transmit the reset links
@@ -82,9 +78,9 @@ class PLLS_SendUnconfirmedTransmitWait final : public PriStateBase
 
 class PLLS_LinkResetTransmitWait : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkResetTransmitWait);
+    MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkResetTransmitWait);
 
-	virtual PriStateBase& OnTxReady(LinkContext& link) override;
+    virtual PriStateBase& OnTxReady(LinkContext& link) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -93,9 +89,9 @@ class PLLS_LinkResetTransmitWait : public PriStateBase
 
 class PLLS_ConfUserDataTransmitWait : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfUserDataTransmitWait);
+    MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfUserDataTransmitWait);
 
-	virtual PriStateBase& OnTxReady(LinkContext& link) override;
+    virtual PriStateBase& OnTxReady(LinkContext& link) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -104,9 +100,9 @@ class PLLS_ConfUserDataTransmitWait : public PriStateBase
 
 class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait);
+    MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait);
 
-	virtual PriStateBase& OnTxReady(LinkContext& link) override;
+    virtual PriStateBase& OnTxReady(LinkContext& link) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -116,27 +112,27 @@ class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
 //	@section desc As soon as we get an ACK, send the delayed pri frame
 class PLLS_ResetLinkWait final : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ResetLinkWait);
+    MACRO_STATE_SINGLETON_INSTANCE(PLLS_ResetLinkWait);
 
-	PriStateBase& OnAck(LinkContext&, bool aIsRcvBuffFull) override;
+    PriStateBase& OnAck(LinkContext&, bool aIsRcvBuffFull) override;
 
-	PriStateBase& OnNack(LinkContext&  link, bool)  override
-	{
-		return Failure(link);
-	}
-	PriStateBase& OnLinkStatus(LinkContext& link, bool) override
-	{
-		return Failure(link);
-	}
-	PriStateBase& OnNotSupported(LinkContext&  link, bool)  override
-	{
-		return Failure(link);
-	}
+    PriStateBase& OnNack(LinkContext& link, bool) override
+    {
+        return Failure(link);
+    }
+    PriStateBase& OnLinkStatus(LinkContext& link, bool) override
+    {
+        return Failure(link);
+    }
+    PriStateBase& OnNotSupported(LinkContext& link, bool) override
+    {
+        return Failure(link);
+    }
 
-	PriStateBase& OnTimeout(LinkContext&) override;
+    PriStateBase& OnTimeout(LinkContext&) override;
 
 private:
-	PriStateBase& Failure(LinkContext&);
+    PriStateBase& Failure(LinkContext&);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -146,23 +142,23 @@ private:
 //	@section desc As soon as we get an ACK, send the delayed pri frame
 class PLLS_ConfDataWait final : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfDataWait);
+    MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfDataWait);
 
-	PriStateBase& OnAck(LinkContext&, bool aIsRcvBuffFull) override;
-	PriStateBase& OnNack(LinkContext& link, bool) override;
-	PriStateBase& OnLinkStatus(LinkContext& link, bool) override
-	{
-		return Failure(link);
-	}
-	PriStateBase& OnNotSupported(LinkContext& link, bool)  override
-	{
-		return Failure(link);
-	}
+    PriStateBase& OnAck(LinkContext&, bool aIsRcvBuffFull) override;
+    PriStateBase& OnNack(LinkContext& link, bool) override;
+    PriStateBase& OnLinkStatus(LinkContext& link, bool) override
+    {
+        return Failure(link);
+    }
+    PriStateBase& OnNotSupported(LinkContext& link, bool) override
+    {
+        return Failure(link);
+    }
 
-	PriStateBase& OnTimeout(LinkContext&) override;
+    PriStateBase& OnTimeout(LinkContext&) override;
 
 private:
-	PriStateBase& Failure(LinkContext&);
+    PriStateBase& Failure(LinkContext&);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -172,15 +168,14 @@ private:
 //	@section desc As soon as we get an ACK, send the delayed pri frame
 class PLLS_RequestLinkStatusWait final : public PriStateBase
 {
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusWait);
+    MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusWait);
 
-	PriStateBase& OnNack(LinkContext& link, bool) override;
-	PriStateBase& OnLinkStatus(LinkContext& link, bool) override;
-	PriStateBase& OnNotSupported(LinkContext& link, bool)  override;
-	PriStateBase& OnTimeout(LinkContext&) override;
+    PriStateBase& OnNack(LinkContext& link, bool) override;
+    PriStateBase& OnLinkStatus(LinkContext& link, bool) override;
+    PriStateBase& OnNotSupported(LinkContext& link, bool) override;
+    PriStateBase& OnTimeout(LinkContext&) override;
 };
 
-} //end namepsace
+} // namespace opendnp3
 
 #endif
-

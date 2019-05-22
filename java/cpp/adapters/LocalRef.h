@@ -20,58 +20,46 @@
 #ifndef OPENDNP3JAVA_LOCALREF_H
 #define OPENDNP3JAVA_LOCALREF_H
 
-#include <jni.h>
 #include <assert.h>
+#include <jni.h>
 
 // RAII class for automatically disposing of local refs
-template <class T>
-class LocalRef
+template<class T> class LocalRef
 {
-	JNIEnv* const env;
-	T ref;
+    JNIEnv* const env;
+    T ref;
 
-	LocalRef(LocalRef&) = delete;
+    LocalRef(LocalRef&) = delete;
 
-	LocalRef& operator=(LocalRef&) = delete;
+    LocalRef& operator=(LocalRef&) = delete;
 
 public:
+    LocalRef(JNIEnv* env, T ref) : env(env), ref(ref) {}
 
-	LocalRef(JNIEnv* env, T ref) : env(env), ref(ref)
-	{
+    ~LocalRef()
+    {
+        if (ref != nullptr)
+        {
+            env->DeleteLocalRef(ref);
+        }
+    }
 
-	}
+    LocalRef(LocalRef&& other) : env(other.env), ref(other.ref)
+    {
+        other.ref = nullptr;
+    }
 
-	~LocalRef()
-	{
-		if (ref != nullptr)
-		{
-			env->DeleteLocalRef(ref);
-		}
-	}
-
-	LocalRef(LocalRef&& other) : env(other.env), ref(other.ref)
-	{
-		other.ref = nullptr;
-	}
-
-	inline operator const T& () const
-	{
-		return ref;
-	}
-
+    inline operator const T&() const
+    {
+        return ref;
+    }
 };
 
 class LocalJString : public LocalRef<jstring>
 {
 
 public:
-
-	LocalJString(JNIEnv* env, const char* cstring) : LocalRef<jstring>(env, env->NewStringUTF(cstring))
-	{
-
-	}
-
+    LocalJString(JNIEnv* env, const char* cstring) : LocalRef<jstring>(env, env->NewStringUTF(cstring)) {}
 };
 
 #endif
-

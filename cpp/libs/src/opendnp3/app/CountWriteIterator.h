@@ -28,70 +28,66 @@ namespace opendnp3
 {
 
 // A facade for writing APDUs to an external buffer
-template <class CountType, class WriteType>
-class CountWriteIterator
+template<class CountType, class WriteType> class CountWriteIterator
 {
 public:
+    static CountWriteIterator Null()
+    {
+        return CountWriteIterator();
+    }
 
-	static CountWriteIterator Null()
-	{
-		return CountWriteIterator();
-	}
+    CountWriteIterator() : count(0), isValid(false), pPosition(nullptr) {}
 
-	CountWriteIterator() : count(0), isValid(false), pPosition(nullptr)
-	{}
+    CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position)
+        : count(0),
+          serializer(serializer_),
+          isValid(position.Size() >= CountType::SIZE),
+          countPosition(position),
+          pPosition(&position)
+    {
+        if (isValid)
+        {
+            position.Advance(CountType::SIZE);
+        }
+    }
 
-	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position) :
-		count(0),
-		serializer(serializer_),
-		isValid(position.Size() >= CountType::SIZE),
-		countPosition(position),
-		pPosition(&position)
-	{
-		if(isValid)
-		{
-			position.Advance(CountType::SIZE);
-		}
-	}
+    ~CountWriteIterator()
+    {
+        if (isValid)
+        {
+            openpal::Format::Write(countPosition, count);
+        }
+    }
 
-	~CountWriteIterator()
-	{
-		if (isValid)
-		{
-			openpal::Format::Write(countPosition, count);
-		}
-	}
+    bool Write(const WriteType& value)
+    {
+        if (isValid && (serializer.Size() <= pPosition->Size()) && (count < CountType::Max))
+        {
+            serializer.Write(value, *this->pPosition);
+            ++count;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	bool Write(const WriteType& value)
-	{
-		if (isValid && (serializer.Size() <= pPosition->Size()) && (count < CountType::Max))
-		{
-			serializer.Write(value, *this->pPosition);
-			++count;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	bool IsValid() const
-	{
-		return isValid;
-	}
+    bool IsValid() const
+    {
+        return isValid;
+    }
 
 private:
+    typename CountType::Type count;
+    openpal::Serializer<WriteType> serializer;
 
-	typename CountType::Type count;
-	openpal::Serializer<WriteType> serializer;
+    bool isValid;
 
-	bool isValid;
-
-	openpal::WSlice countPosition;  // make a copy to record where we write the count
-	openpal::WSlice* pPosition;
+    openpal::WSlice countPosition; // make a copy to record where we write the count
+    openpal::WSlice* pPosition;
 };
 
-}
+} // namespace opendnp3
 
 #endif

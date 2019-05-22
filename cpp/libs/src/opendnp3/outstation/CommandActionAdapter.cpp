@@ -25,53 +25,51 @@
 namespace opendnp3
 {
 
-CommandActionAdapter::CommandActionAdapter(ICommandHandler* handler, bool isSelect, OperateType opType) :
-	m_handler(handler),
-	m_isSelect(isSelect),
-	m_opType(opType),
-	m_isStarted(false)
-{}
+CommandActionAdapter::CommandActionAdapter(ICommandHandler* handler, bool isSelect, OperateType opType)
+    : m_handler(handler), m_isSelect(isSelect), m_opType(opType), m_isStarted(false)
+{
+}
 
 CommandActionAdapter::~CommandActionAdapter()
 {
-	if (m_isStarted)
-	{
-		Transaction::End(m_handler);
-	}
+    if (m_isStarted)
+    {
+        Transaction::End(m_handler);
+    }
 }
 
 void CommandActionAdapter::CheckStart()
 {
-	if (!m_isStarted)
-	{
-		m_isStarted = true;
-		Transaction::Start(m_handler);
-	}
+    if (!m_isStarted)
+    {
+        m_isStarted = true;
+        Transaction::Start(m_handler);
+    }
 }
 
 CommandStatus CommandActionAdapter::Action(const ControlRelayOutputBlock& command, uint16_t index)
 {
-	return this->ActionT(command, index);
+    return this->ActionT(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputInt16& command, uint16_t index)
 {
-	return this->ActionT(command, index);
+    return this->ActionT(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputInt32& command, uint16_t index)
 {
-	return this->ActionT(command, index);
+    return this->ActionT(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputFloat32& command, uint16_t index)
 {
-	return this->ActionT(command, index);
+    return this->ActionT(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputDouble64& command, uint16_t index)
 {
-	return this->ActionT(command, index);
+    return this->ActionT(command, index);
 }
 
-}
+} // namespace opendnp3

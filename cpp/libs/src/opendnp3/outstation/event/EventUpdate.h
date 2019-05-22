@@ -21,76 +21,60 @@
 #ifndef OPENDNP3_EVENTUPDATE_H
 #define OPENDNP3_EVENTUPDATE_H
 
-#include "opendnp3/outstation/Event.h"
-
 #include "EventLists.h"
 #include "EventTypeImpl.h"
+
+#include "opendnp3/outstation/Event.h"
 
 namespace opendnp3
 {
 
 struct EventUpdate : private openpal::StaticOnly
 {
-	template <class T>
-	static bool Update(EventLists& lists, const Event<T>& event);
+    template<class T> static bool Update(EventLists& lists, const Event<T>& event);
 };
 
-template <class T>
-bool EventUpdate::Update(EventLists& lists, const Event<T>& event)
+template<class T> bool EventUpdate::Update(EventLists& lists, const Event<T>& event)
 {
-	auto& list = lists.GetList<T>();
+    auto& list = lists.GetList<T>();
 
-	// lists with no capacity don't cause "buffer overflow"
-	if (list.Capacity() == 0) return false;
+    // lists with no capacity don't cause "buffer overflow"
+    if (list.Capacity() == 0)
+        return false;
 
-	bool overflow = false;
+    bool overflow = false;
 
+    if (list.IsFullAndCapacityNotZero())
+    {
+        // we must make space
 
-	if (list.IsFullAndCapacityNotZero())
-	{
-		// we must make space
+        overflow = true;
+        const auto first = list.Head();
+        const auto record_node = first->value.record;
 
-		overflow = true;
-		const auto first = list.Head();
-		const auto record_node = first->value.record;
+        // remove the generic record
+        lists.counters.OnRemove(record_node->value.clazz, record_node->value.state);
+        lists.events.Remove(first->value.record);
 
-		// remove the generic record
-		lists.counters.OnRemove(record_node->value.clazz, record_node->value.state);
-		lists.events.Remove(first->value.record);
+        // remove the type specific record
+        list.Remove(first);
+    }
 
-		// remove the type specific record
-		list.Remove(first);
-	}
+    // now that we know that space exists, create the generic record
+    const auto record_node = lists.events.Add(EventRecord(event.index, event.clazz));
 
-	// now that we know that space exists, create the generic record
-	const auto record_node = lists.events.Add(
-	                             EventRecord(
-	                                 event.index,
-	                                 event.clazz
-	                             )
-	                         );
+    // followed by the typed record
+    const auto typed_node = list.Add(TypedEventRecord<T>(event.value, event.variation, record_node));
 
-	// followed by the typed record
-	const auto typed_node = list.Add(
-	                            TypedEventRecord<T>(
-	                                event.value,
-	                                event.variation,
-	                                record_node
-	                            )
-	                        );
+    // configure the typed storage
+    record_node->value.type = EventTypeImpl<T>::Instance();
+    record_node->value.storage_node = typed_node;
 
-	// configure the typed storage
-	record_node->value.type = EventTypeImpl<T>::Instance();
-	record_node->value.storage_node = typed_node;
+    lists.counters.OnAdd(event.clazz);
 
-	lists.counters.OnAdd(event.clazz);
-
-	return overflow;
+    return overflow;
 }
 
-
-
-}
+} // namespace opendnp3
 
 #endif
-

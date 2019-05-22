@@ -21,10 +21,10 @@
 #ifndef OPENDNP3_DECODER_H
 #define OPENDNP3_DECODER_H
 
+#include "IDecoderCallbacks.h"
+
 #include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
-
-#include "IDecoderCallbacks.h"
 
 namespace opendnp3
 {
@@ -34,22 +34,17 @@ class DecoderImpl;
 class Decoder
 {
 public:
+    Decoder(IDecoderCallbacks& callbacks, openpal::Logger logger);
+    ~Decoder();
 
-	Decoder(IDecoderCallbacks& callbacks, openpal::Logger logger);
-	~Decoder();
-
-	void DecodeLPDU(const openpal::RSlice& data);
-	void DecodeTPDU(const openpal::RSlice& data);
-	void DecodeAPDU(const openpal::RSlice& data);
-
-
+    void DecodeLPDU(const openpal::RSlice& data);
+    void DecodeTPDU(const openpal::RSlice& data);
+    void DecodeAPDU(const openpal::RSlice& data);
 
 private:
-
-	DecoderImpl* impl;
+    DecoderImpl* impl;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

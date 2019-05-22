@@ -20,32 +20,29 @@
  */
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 
-
 namespace opendnp3
 {
 
-ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode code_, uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_) :
-	functionCode(code_),
-	rawCode(ControlCodeToType(code_)),
-	count(count_),
-	onTimeMS(onTime_),
-	offTimeMS(offTime_),
-	status(status_)
+ControlRelayOutputBlock::ControlRelayOutputBlock(
+    ControlCode code_, uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_)
+    : functionCode(code_),
+      rawCode(ControlCodeToType(code_)),
+      count(count_),
+      onTimeMS(onTime_),
+      offTimeMS(offTime_),
+      status(status_)
 {
-
 }
 
-ControlRelayOutputBlock::ControlRelayOutputBlock(uint8_t rawCode_, uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_) :
-	functionCode(ControlCodeFromType((rawCode_))),
-	rawCode(rawCode_),
-	count(count_),
-	onTimeMS(onTime_),
-	offTimeMS(offTime_),
-	status(status_)
+ControlRelayOutputBlock::ControlRelayOutputBlock(
+    uint8_t rawCode_, uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_)
+    : functionCode(ControlCodeFromType((rawCode_))),
+      rawCode(rawCode_),
+      count(count_),
+      onTimeMS(onTime_),
+      offTimeMS(offTime_),
+      status(status_)
 {
-
 }
 
-
-}
-
+} // namespace opendnp3

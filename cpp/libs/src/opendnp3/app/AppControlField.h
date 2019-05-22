@@ -27,41 +27,40 @@ namespace opendnp3
 {
 
 /** Represents the first byte in every APDU
-*/
+ */
 struct AppControlField
 {
-	const static AppControlField DEFAULT;
+    const static AppControlField DEFAULT;
 
-	static AppControlField Request(uint8_t seq);
+    static AppControlField Request(uint8_t seq);
 
-	AppControlField() = default;
+    AppControlField() = default;
 
-	explicit AppControlField(uint8_t byte);
+    explicit AppControlField(uint8_t byte);
 
-	AppControlField(bool fir, bool fin, bool con, bool uns, uint8_t seq = 0);
+    AppControlField(bool fir, bool fin, bool con, bool uns, uint8_t seq = 0);
 
-	uint8_t ToByte() const;
+    uint8_t ToByte() const;
 
-	bool IsFirAndFin() const
-	{
-		return FIR && FIN;
-	}
+    bool IsFirAndFin() const
+    {
+        return FIR && FIN;
+    }
 
-	bool FIR = true;
-	bool FIN = true;
-	bool CON = false;
-	bool UNS = false;
-	uint8_t  SEQ = 0;
+    bool FIR = true;
+    bool FIN = true;
+    bool CON = false;
+    bool UNS = false;
+    uint8_t SEQ = 0;
 
 private:
-
-	static const uint8_t FIR_MASK = 0x80;
-	static const uint8_t FIN_MASK = 0x40;
-	static const uint8_t CON_MASK = 0x20;
-	static const uint8_t UNS_MASK = 0x10;
-	static const uint8_t SEQ_MASK = 0x0F;
+    static const uint8_t FIR_MASK = 0x80;
+    static const uint8_t FIN_MASK = 0x40;
+    static const uint8_t CON_MASK = 0x20;
+    static const uint8_t UNS_MASK = 0x10;
+    static const uint8_t SEQ_MASK = 0x0F;
 };
 
-}
+} // namespace opendnp3
 
 #endif

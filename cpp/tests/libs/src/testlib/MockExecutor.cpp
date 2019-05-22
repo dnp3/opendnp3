@@ -27,182 +27,169 @@ using namespace openpal;
 namespace testlib
 {
 
-MockExecutor::MockExecutor() :
-	mPostIsSynchronous(false),
-	mCurrentTime(0)
-{
-
-}
+MockExecutor::MockExecutor() : mPostIsSynchronous(false), mCurrentTime(0) {}
 
 MockExecutor::~MockExecutor()
 {
-	for(auto pTimer : timers) delete pTimer;
+    for (auto pTimer : timers)
+        delete pTimer;
 }
 
 openpal::MonotonicTimestamp MockExecutor::NextTimerExpiration()
 {
-	auto lt = [](MockTimer * pLHS, MockTimer * pRHS)
-	{
-		return pLHS->ExpiresAt() < pRHS->ExpiresAt();
-	};
-	auto min = std::min_element(timers.begin(), timers.end(), lt);
-	if (min == timers.end())
-	{
-		return MonotonicTimestamp::Max();
-	}
-	else
-	{
-		return (*min)->ExpiresAt();
-	}
+    auto lt = [](MockTimer* pLHS, MockTimer* pRHS) { return pLHS->ExpiresAt() < pRHS->ExpiresAt(); };
+    auto min = std::min_element(timers.begin(), timers.end(), lt);
+    if (min == timers.end())
+    {
+        return MonotonicTimestamp::Max();
+    }
+    else
+    {
+        return (*min)->ExpiresAt();
+    }
 }
 
 size_t MockExecutor::CheckForExpiredTimers()
 {
-	size_t count = 0;
-	while (FindExpiredTimer())
-	{
-		++count;
-	}
-	return count;
+    size_t count = 0;
+    while (FindExpiredTimer())
+    {
+        ++count;
+    }
+    return count;
 }
 
 bool MockExecutor::FindExpiredTimer()
 {
-	auto expired = [this](MockTimer * pTimer)
-	{
-		return pTimer->ExpiresAt().milliseconds <= this->mCurrentTime.milliseconds;
-	};
-	auto iter = std::find_if(timers.begin(), timers.end(), expired);
-	if (iter == timers.end())
-	{
-		return false;
-	}
-	else
-	{
-		this->postQueue.push_back((*iter)->runnable);
-		delete (*iter);
-		timers.erase(iter);
-		return true;
-	}
+    auto expired
+        = [this](MockTimer* pTimer) { return pTimer->ExpiresAt().milliseconds <= this->mCurrentTime.milliseconds; };
+    auto iter = std::find_if(timers.begin(), timers.end(), expired);
+    if (iter == timers.end())
+    {
+        return false;
+    }
+    else
+    {
+        this->postQueue.push_back((*iter)->runnable);
+        delete (*iter);
+        timers.erase(iter);
+        return true;
+    }
 }
 
 size_t MockExecutor::AdvanceTime(TimeDuration aDuration)
 {
-	this->AddTime(aDuration);
-	return this->CheckForExpiredTimers();
+    this->AddTime(aDuration);
+    return this->CheckForExpiredTimers();
 }
 
 // doesn't check timers
 void MockExecutor::AddTime(openpal::TimeDuration aDuration)
 {
-	mCurrentTime = mCurrentTime.Add(aDuration);
+    mCurrentTime = mCurrentTime.Add(aDuration);
 }
 
 bool MockExecutor::AdvanceToNextTimer()
 {
-	if (timers.empty())
-	{
-		return false;
-	}
-	else
-	{
-		auto timestamp = NextTimerExpiration();
-		if (timestamp > mCurrentTime)
-		{
-			mCurrentTime = timestamp;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    if (timers.empty())
+    {
+        return false;
+    }
+    else
+    {
+        auto timestamp = NextTimerExpiration();
+        if (timestamp > mCurrentTime)
+        {
+            mCurrentTime = timestamp;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 
 bool MockExecutor::RunOne()
 {
-	this->CheckForExpiredTimers();
+    this->CheckForExpiredTimers();
 
-	if(postQueue.size() > 0)
-	{
-		postQueue.front()();
-		postQueue.pop_front();
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    if (postQueue.size() > 0)
+    {
+        postQueue.front()();
+        postQueue.pop_front();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 size_t MockExecutor::RunMany(size_t aMaximum)
 {
-	size_t num = 0;
-	while(num < aMaximum && this->RunOne()) ++num;
-	return num;
+    size_t num = 0;
+    while (num < aMaximum && this->RunOne())
+        ++num;
+    return num;
 }
 
 void MockExecutor::Post(const openpal::action_t& runnable)
 {
-	if (mPostIsSynchronous)
-	{
-		runnable();
-	}
-	else
-	{
-		postQueue.push_back(runnable);
-	}
+    if (mPostIsSynchronous)
+    {
+        runnable();
+    }
+    else
+    {
+        postQueue.push_back(runnable);
+    }
 }
 
 openpal::MonotonicTimestamp MockExecutor::GetTime()
 {
-	return mCurrentTime;
+    return mCurrentTime;
 }
 
 ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const openpal::action_t& runnable)
 {
-	auto expiration = mCurrentTime.Add(aDelay);
-	return Start(expiration, runnable);
+    auto expiration = mCurrentTime.Add(aDelay);
+    return Start(expiration, runnable);
 }
 
 ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::action_t& runnable)
 {
-	MockTimer* pTimer = new MockTimer(this, arTime, runnable);
-	timers.push_back(pTimer);
-	return pTimer;
+    MockTimer* pTimer = new MockTimer(this, arTime, runnable);
+    timers.push_back(pTimer);
+    return pTimer;
 }
 
 void MockExecutor::Cancel(ITimer* pTimer)
 {
-	for (TimerVector::iterator i = timers.begin(); i != timers.end(); ++i)
-	{
-		if(*i == pTimer)
-		{
-			delete pTimer;
-			timers.erase(i);
-			return;
-		}
-	}
+    for (TimerVector::iterator i = timers.begin(); i != timers.end(); ++i)
+    {
+        if (*i == pTimer)
+        {
+            delete pTimer;
+            timers.erase(i);
+            return;
+        }
+    }
 }
 
-MockTimer::MockTimer(MockExecutor* source, const openpal::MonotonicTimestamp& time, const openpal::action_t& runnable) :
-	mTime(time),
-	mpSource(source),
-	runnable(runnable)
+MockTimer::MockTimer(MockExecutor* source, const openpal::MonotonicTimestamp& time, const openpal::action_t& runnable)
+    : mTime(time), mpSource(source), runnable(runnable)
 {
-
 }
 
 void MockTimer::Cancel()
 {
-	mpSource->Cancel(this);
+    mpSource->Cancel(this);
 }
 
 openpal::MonotonicTimestamp MockTimer::ExpiresAt()
 {
-	return mTime;
+    return mTime;
 }
 
-}
-
-
+} // namespace testlib

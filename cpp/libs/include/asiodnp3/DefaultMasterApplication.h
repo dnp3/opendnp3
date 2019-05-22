@@ -31,33 +31,31 @@ namespace asiodnp3
 class DefaultMasterApplication : public opendnp3::IMasterApplication
 {
 public:
+    DefaultMasterApplication() {}
 
-	DefaultMasterApplication() {}
+    static std::shared_ptr<IMasterApplication> Create()
+    {
+        return std::make_shared<DefaultMasterApplication>();
+    }
 
-	static std::shared_ptr<IMasterApplication> Create()
-	{
-		return std::make_shared<DefaultMasterApplication>();
-	}
+    virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final {}
 
-	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final {}
+    virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override final {}
 
-	virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override final {}
+    virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override final {}
 
-	virtual void OnTaskComplete(const opendnp3::TaskInfo& info) override final {}
+    virtual bool AssignClassDuringStartup() override final
+    {
+        return false;
+    }
 
-	virtual bool AssignClassDuringStartup() override final
-	{
-		return false;
-	}
+    virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override final {}
 
-	virtual void ConfigureAssignClassRequest(const opendnp3::WriteHeaderFunT& fun) override final {}
+    virtual openpal::UTCTimestamp Now() override final;
 
-	virtual openpal::UTCTimestamp Now() override final;
-
-	virtual void OnStateChange(opendnp3::LinkStatus value) override final {}
-
+    virtual void OnStateChange(opendnp3::LinkStatus value) override final {}
 };
 
-}
+} // namespace asiodnp3
 
 #endif

@@ -22,7 +22,6 @@
 #define OPENDNP3_EVENTSCANTASK_H
 
 #include "opendnp3/app/ClassField.h"
-
 #include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/TaskPriority.h"
 
@@ -31,47 +30,46 @@ namespace opendnp3
 class ISOEHandler;
 
 /**
-* An auto event scan task that happens when the master sees the event IIN bits
-*/
+ * An auto event scan task that happens when the master sees the event IIN bits
+ */
 class EventScanTask final : public PollTaskBase
 {
 
 public:
+    EventScanTask(const std::shared_ptr<TaskContext>& context,
+                  IMasterApplication& application,
+                  ISOEHandler& soeHandler,
+                  ClassField classes,
+                  openpal::Logger logger);
 
-	EventScanTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::Logger logger);
+    virtual bool IsRecurring() const override
+    {
+        return true;
+    }
 
-	virtual bool IsRecurring() const override
-	{
-		return true;
-	}
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+    virtual int Priority() const override
+    {
+        return priority::EVENT_SCAN;
+    }
 
-	virtual int Priority() const override
-	{
-		return priority::EVENT_SCAN;
-	}
-
-	virtual bool BlocksLowerPriority() const override
-	{
-		return true;
-	}
+    virtual bool BlocksLowerPriority() const override
+    {
+        return true;
+    }
 
 private:
+    const ClassField classes;
 
-	const ClassField classes;
+    virtual MasterTaskType GetTaskType() const override
+    {
+        return MasterTaskType::AUTO_EVENT_SCAN;
+    }
 
-	virtual MasterTaskType GetTaskType() const override
-	{
-		return MasterTaskType::AUTO_EVENT_SCAN;
-	}
-
-	virtual bool IsEnabled() const override;
-
+    virtual bool IsEnabled() const override;
 };
 
-
-} //end ns
-
+} // namespace opendnp3
 
 #endif

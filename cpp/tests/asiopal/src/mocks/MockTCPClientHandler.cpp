@@ -26,35 +26,27 @@
 namespace asiopal
 {
 
-void MockTCPClientHandler::OnConnect(const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec)
+void MockTCPClientHandler::OnConnect(const std::shared_ptr<Executor>& executor,
+                                     asio::ip::tcp::socket socket,
+                                     const std::error_code& ec)
 {
-	if (ec)
-	{
-		++this->num_error;
-		throw std::logic_error(ec.message());
-	}
-	else
-	{
-		this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
-	}
+    if (ec)
+    {
+        ++this->num_error;
+        throw std::logic_error(ec.message());
+    }
+    else
+    {
+        this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
+    }
 }
 
 MockTCPClientHandler::~MockTCPClientHandler()
 {
-	for (auto& channel : channels)
-	{
-		channel->Shutdown();
-	}
+    for (auto& channel : channels)
+    {
+        channel->Shutdown();
+    }
 }
 
-}
-
-
-
-
-
-
-
-
-
-
+} // namespace asiopal

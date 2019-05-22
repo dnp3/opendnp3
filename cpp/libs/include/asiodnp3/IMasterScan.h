@@ -25,19 +25,17 @@ namespace asiodnp3
 {
 
 /**
-* Interface for interacting w/ a permanently bound scan
-*/
+ * Interface for interacting w/ a permanently bound scan
+ */
 class IMasterScan
 {
 public:
+    virtual ~IMasterScan() {}
 
-	virtual ~IMasterScan() {}
-
-	// Request that the scan be performed as soon as possible
-	virtual void Demand() = 0;
-
+    // Request that the scan be performed as soon as possible
+    virtual void Demand() = 0;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

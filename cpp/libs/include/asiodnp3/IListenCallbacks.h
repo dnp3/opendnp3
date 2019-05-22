@@ -22,6 +22,7 @@
 #define ASIODNP3_ILISTENCALLBACKS_H
 
 #include <openpal/executor/TimeDuration.h>
+
 #include <opendnp3/link/LinkHeaderFields.h>
 
 #include "asiodnp3/ISessionAcceptor.h"
@@ -31,64 +32,60 @@ namespace asiodnp3
 {
 
 /**
-* Callback interface invoked when a new connection is accepted
-*/
+ * Callback interface invoked when a new connection is accepted
+ */
 class IListenCallbacks
 {
 public:
+    virtual ~IListenCallbacks() {}
 
-	virtual ~IListenCallbacks() {}
+    /**
+     * Ask user code if the following connection should be accepted
+     *
+     * @param sessionid Incrementing id used to uniquely identify the session
+     * @param ipaddress The IP address of the connecting host. Can optionally be used for connection filtering
+     *
+     * @return If true, the connection is accepted and a link frame parser is created to handle incoming frame data
+     */
+    virtual bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) = 0;
 
-	/**
-	* Ask user code if the following connection should be accepted
-	*
-	* @param sessionid Incrementing id used to uniquely identify the session
-	* @param ipaddress The IP address of the connecting host. Can optionally be used for connection filtering
-	*
-	* @return If true, the connection is accepted and a link frame parser is created to handle incoming frame data
-	*/
-	virtual bool AcceptConnection(uint64_t sessionid, const std::string& ipaddress) = 0;
+    /**
+     * Ask user code if the following preverified certificate should be accepted
+     *
+     * @param sessionid Incrementing id used to uniquely identify the session
+     * @param info Information from the x509 certificate
+     *
+     * @return If true, if the certificate should be accepted, false otherwise.
+     */
+    virtual bool AcceptCertificate(uint64_t sessionid, const X509Info& info) = 0;
 
-	/**
-	* Ask user code if the following preverified certificate should be accepted
-	*
-	* @param sessionid Incrementing id used to uniquely identify the session
-	* @param info Information from the x509 certificate
-	*
-	* @return If true, if the certificate should be accepted, false otherwise.
-	*/
-	virtual bool AcceptCertificate(uint64_t sessionid, const X509Info& info) = 0;
+    /// return the amount of time the session should wait for the first frame
+    virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;
 
-	/// return the amount of time the session should wait for the first frame
-	virtual openpal::TimeDuration GetFirstFrameTimeout() = 0;
+    /**
+     * Called when the first link-layer frame is received for a session
+     */
+    virtual void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor)
+        = 0;
 
-	/**
-	* Called when the first link-layer frame is received for a session
-	*/
-	virtual void OnFirstFrame(
-	    uint64_t sessionid,
-	    const opendnp3::LinkHeaderFields& header,
-	    ISessionAcceptor& acceptor
-	) = 0;
+    /**
+     * Called when a socket closes
+     *
+     * @param sessionid Incrementing id used to uniquely identify the session
+     * @param session Possibly NULL shared_ptr to the master session if it was created
+     */
+    virtual void OnConnectionClose(uint64_t sessionid, const std::shared_ptr<IMasterSession>& session) = 0;
 
-	/**
-	* Called when a socket closes
-	*
-	* @param sessionid Incrementing id used to uniquely identify the session
-	* @param session Possibly NULL shared_ptr to the master session if it was created
-	*/
-	virtual void OnConnectionClose(uint64_t sessionid, const std::shared_ptr<IMasterSession>& session) = 0;
-
-	/**
-	* Called when a certificate fails verification
-	*
-	* @param sessionid Incrementing id used to uniquely identify the session
-	* @param info Information from the x509 certificate
-	* @param error Error code with reason for failed verification
-	*/
-	virtual void OnCertificateError(uint64_t sessionid, const X509Info& info, int error) = 0;
+    /**
+     * Called when a certificate fails verification
+     *
+     * @param sessionid Incrementing id used to uniquely identify the session
+     * @param info Information from the x509 certificate
+     * @param error Error code with reason for failed verification
+     */
+    virtual void OnCertificateError(uint64_t sessionid, const X509Info& info, int error) = 0;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

@@ -21,9 +21,9 @@
 #ifndef OPENDNP3_RESTART_OPERATION_RESULT_H
 #define OPENDNP3_RESTART_OPERATION_RESULT_H
 
-#include "opendnp3/gen/TaskCompletion.h"
-
 #include <openpal/executor/TimeDuration.h>
+
+#include "opendnp3/gen/TaskCompletion.h"
 
 #include <cstdint>
 #include <functional>
@@ -34,24 +34,22 @@ namespace opendnp3
 class RestartOperationResult
 {
 public:
+    RestartOperationResult() : summary(TaskCompletion::FAILURE_NO_COMMS) {}
 
-	RestartOperationResult() : summary(TaskCompletion::FAILURE_NO_COMMS)
-	{}
+    RestartOperationResult(TaskCompletion summary_, openpal::TimeDuration restartTime_)
+        : summary(summary_), restartTime(restartTime_)
+    {
+    }
 
-	RestartOperationResult(TaskCompletion summary_, openpal::TimeDuration restartTime_) :
-		summary(summary_), restartTime(restartTime_)
-	{}
+    /// The result of the task as a whole.
+    TaskCompletion summary;
 
-	/// The result of the task as a whole.
-	TaskCompletion summary;
-
-	/// Time delay until restart
-	openpal::TimeDuration restartTime;
+    /// Time delay until restart
+    openpal::TimeDuration restartTime;
 };
 
 typedef std::function<void(const RestartOperationResult&)> RestartOperationCallbackT;
 
-} //end ns
-
+} // namespace opendnp3
 
 #endif

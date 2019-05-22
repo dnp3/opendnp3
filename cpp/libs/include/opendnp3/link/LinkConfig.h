@@ -21,78 +21,80 @@
 #ifndef OPENDNP3_LINKCONFIG_H
 #define OPENDNP3_LINKCONFIG_H
 
-#include <openpal/executor/TimeDuration.h>
-
 #include "Addresses.h"
+
+#include <openpal/executor/TimeDuration.h>
 
 namespace opendnp3
 {
 
 /**
-	Configuration for the dnp3 link layer
+    Configuration for the dnp3 link layer
 */
 struct LinkConfig
 {
-	LinkConfig() = delete;
+    LinkConfig() = delete;
 
-	LinkConfig(
-	    bool isMaster,
-	    bool useConfirms,
-	    uint32_t numRetry,
-	    uint16_t localAddr,
-	    uint16_t remoteAddr,
-	    openpal::TimeDuration timeout,
-	    openpal::TimeDuration keepAliveTimeout) :
+    LinkConfig(bool isMaster,
+               bool useConfirms,
+               uint32_t numRetry,
+               uint16_t localAddr,
+               uint16_t remoteAddr,
+               openpal::TimeDuration timeout,
+               openpal::TimeDuration keepAliveTimeout)
+        :
 
-		IsMaster(isMaster),
-		UseConfirms(useConfirms),
-		NumRetry(numRetry),
-		LocalAddr(localAddr),
-		RemoteAddr(remoteAddr),
-		Timeout(timeout),
-		KeepAliveTimeout(keepAliveTimeout)
-	{}
+          IsMaster(isMaster),
+          UseConfirms(useConfirms),
+          NumRetry(numRetry),
+          LocalAddr(localAddr),
+          RemoteAddr(remoteAddr),
+          Timeout(timeout),
+          KeepAliveTimeout(keepAliveTimeout)
+    {
+    }
 
-	LinkConfig(bool isMaster, bool useConfirms) :
+    LinkConfig(bool isMaster, bool useConfirms)
+        :
 
-		IsMaster(isMaster),
-		UseConfirms(useConfirms),
-		NumRetry(0),
-		LocalAddr(isMaster ? 1 : 1024),
-		RemoteAddr(isMaster ? 1024 : 1),
-		Timeout(openpal::TimeDuration::Seconds(1)),
-		KeepAliveTimeout(openpal::TimeDuration::Minutes(1))
-	{}
+          IsMaster(isMaster),
+          UseConfirms(useConfirms),
+          NumRetry(0),
+          LocalAddr(isMaster ? 1 : 1024),
+          RemoteAddr(isMaster ? 1024 : 1),
+          Timeout(openpal::TimeDuration::Seconds(1)),
+          KeepAliveTimeout(openpal::TimeDuration::Minutes(1))
+    {
+    }
 
-	inline Addresses GetAddresses() const
-	{
-		return Addresses(this->LocalAddr, this->RemoteAddr);
-	}
+    inline Addresses GetAddresses() const
+    {
+        return Addresses(this->LocalAddr, this->RemoteAddr);
+    }
 
-	/// The master/outstation bit set on all messages
-	bool IsMaster;
+    /// The master/outstation bit set on all messages
+    bool IsMaster;
 
-	/// If true, the link layer will send data requesting confirmation
-	bool UseConfirms;
+    /// If true, the link layer will send data requesting confirmation
+    bool UseConfirms;
 
-	/// The number of retry attempts the link will attempt after the initial try
-	uint32_t NumRetry;
+    /// The number of retry attempts the link will attempt after the initial try
+    uint32_t NumRetry;
 
-	/// dnp3 address of the local device
-	uint16_t LocalAddr;
+    /// dnp3 address of the local device
+    uint16_t LocalAddr;
 
-	/// dnp3 address of the remote device
-	uint16_t RemoteAddr;
+    /// dnp3 address of the remote device
+    uint16_t RemoteAddr;
 
-	/// the response timeout in milliseconds for confirmed requests
-	openpal::TimeDuration Timeout;
+    /// the response timeout in milliseconds for confirmed requests
+    openpal::TimeDuration Timeout;
 
-	/// the interval for keep-alive messages (link status requests)
-	/// if set to TimeDuration::Max(), the keep-alive is disabled
-	openpal::TimeDuration KeepAliveTimeout;
+    /// the interval for keep-alive messages (link status requests)
+    /// if set to TimeDuration::Max(), the keep-alive is disabled
+    openpal::TimeDuration KeepAliveTimeout;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

@@ -21,10 +21,10 @@
 #ifndef ASIOPAL_ASIOSERIALHELPERS_H
 #define ASIOPAL_ASIOSERIALHELPERS_H
 
+#include "SerialTypes.h"
+
 #include <asio.hpp>
 #include <asio/basic_serial_port.hpp>
-
-#include "SerialTypes.h"
 
 namespace asiopal
 {
@@ -32,6 +32,6 @@ namespace asiopal
 // Serial port configuration functions "free" to keep the classes simple.
 bool Configure(const SerialSettings& settings, asio::serial_port& port, std::error_code& ec);
 
-}
+} // namespace asiopal
 
 #endif

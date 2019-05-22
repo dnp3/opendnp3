@@ -27,16 +27,15 @@ namespace opendnp3
 {
 
 /*
-* The states of events in the event buffer
-*/
+ * The states of events in the event buffer
+ */
 enum class EventState : uint8_t
 {
-	unselected,
-	selected,
-	written
+    unselected,
+    selected,
+    written
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

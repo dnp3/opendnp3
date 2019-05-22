@@ -26,68 +26,71 @@ using namespace opendnp3;
 
 bool OutstationApplicationAdapter::SupportsWriteAbsoluteTime()
 {
-	const auto env = JNI::GetEnv();
-	return !!JCache::OutstationApplication.supportsWriteAbsoluteTime(env, proxy);
+    const auto env = JNI::GetEnv();
+    return !!JCache::OutstationApplication.supportsWriteAbsoluteTime(env, proxy);
 }
 
 bool OutstationApplicationAdapter::WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp)
 {
-	const auto env = JNI::GetEnv();
-	return !!JCache::OutstationApplication.writeAbsoluteTime(env, proxy, timestamp.msSinceEpoch);
+    const auto env = JNI::GetEnv();
+    return !!JCache::OutstationApplication.writeAbsoluteTime(env, proxy, timestamp.msSinceEpoch);
 }
 
 bool OutstationApplicationAdapter::SupportsAssignClass()
 {
-	const auto env = JNI::GetEnv();
-	return !!JCache::OutstationApplication.supportsAssignClass(env, proxy);
+    const auto env = JNI::GetEnv();
+    return !!JCache::OutstationApplication.supportsAssignClass(env, proxy);
 }
 
-void OutstationApplicationAdapter::RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop)
+void OutstationApplicationAdapter::RecordClassAssignment(AssignClassType type,
+                                                         PointClass clazz,
+                                                         uint16_t start,
+                                                         uint16_t stop)
 {
-	const auto env = JNI::GetEnv();
+    const auto env = JNI::GetEnv();
 
-	auto jtype = JCache::AssignClassType.fromType(env, static_cast<jint>(type));
-	auto jclazz = JCache::PointClass.fromType(env, static_cast<jint>(clazz));
+    auto jtype = JCache::AssignClassType.fromType(env, static_cast<jint>(type));
+    auto jclazz = JCache::PointClass.fromType(env, static_cast<jint>(clazz));
 
-	JCache::OutstationApplication.recordClassAssignment(env, proxy, jtype, jclazz, start, stop);
+    JCache::OutstationApplication.recordClassAssignment(env, proxy, jtype, jclazz, start, stop);
 }
 
 ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 {
-	const auto env = JNI::GetEnv();
-	auto jiin = JCache::OutstationApplication.getApplicationIIN(env, proxy);
-	ApplicationIIN iin;
-	iin.configCorrupt = !!JCache::ApplicationIIN.getconfigCorrupt(env, jiin);
-	iin.deviceTrouble = !!JCache::ApplicationIIN.getdeviceTrouble(env, jiin);
-	iin.localControl = !!JCache::ApplicationIIN.getlocalControl(env, jiin);
-	iin.needTime = !!JCache::ApplicationIIN.getneedTime(env, jiin);
-	return iin;
+    const auto env = JNI::GetEnv();
+    auto jiin = JCache::OutstationApplication.getApplicationIIN(env, proxy);
+    ApplicationIIN iin;
+    iin.configCorrupt = !!JCache::ApplicationIIN.getconfigCorrupt(env, jiin);
+    iin.deviceTrouble = !!JCache::ApplicationIIN.getdeviceTrouble(env, jiin);
+    iin.localControl = !!JCache::ApplicationIIN.getlocalControl(env, jiin);
+    iin.needTime = !!JCache::ApplicationIIN.getneedTime(env, jiin);
+    return iin;
 }
 
 RestartMode OutstationApplicationAdapter::ColdRestartSupport() const
 {
-	const auto env = JNI::GetEnv();
-	const auto jmode = JCache::OutstationApplication.coldRestartSupport(env, proxy);
-	const auto jvalue = JCache::RestartMode.toType(env, jmode);
-	return static_cast<RestartMode>(jvalue);
+    const auto env = JNI::GetEnv();
+    const auto jmode = JCache::OutstationApplication.coldRestartSupport(env, proxy);
+    const auto jvalue = JCache::RestartMode.toType(env, jmode);
+    return static_cast<RestartMode>(jvalue);
 }
 
 RestartMode OutstationApplicationAdapter::WarmRestartSupport() const
 {
-	const auto env = JNI::GetEnv();
-	const auto jmode = JCache::OutstationApplication.warmRestartSupport(env, proxy);
-	const auto jvalue = JCache::RestartMode.toType(env, jmode);
-	return static_cast<RestartMode>(jvalue);
+    const auto env = JNI::GetEnv();
+    const auto jmode = JCache::OutstationApplication.warmRestartSupport(env, proxy);
+    const auto jvalue = JCache::RestartMode.toType(env, jmode);
+    return static_cast<RestartMode>(jvalue);
 }
 
 uint16_t OutstationApplicationAdapter::ColdRestart()
 {
-	const auto env = JNI::GetEnv();
-	return static_cast<uint16_t>(JCache::OutstationApplication.coldRestart(env, proxy));
+    const auto env = JNI::GetEnv();
+    return static_cast<uint16_t>(JCache::OutstationApplication.coldRestart(env, proxy));
 }
 
 uint16_t OutstationApplicationAdapter::WarmRestart()
 {
-	const auto env = JNI::GetEnv();
-	return static_cast<uint16_t>(JCache::OutstationApplication.warmRestart(env, proxy));
+    const auto env = JNI::GetEnv();
+    return static_cast<uint16_t>(JCache::OutstationApplication.warmRestart(env, proxy));
 }

@@ -21,65 +21,66 @@
 #ifndef OPENDNP3_EVENTSELECTION_H
 #define OPENDNP3_EVENTSELECTION_H
 
-#include "opendnp3/app/ClassField.h"
-
 #include "EventLists.h"
+
+#include "opendnp3/app/ClassField.h"
 
 namespace opendnp3
 {
 
 struct EventSelection : private openpal::StaticOnly
 {
-	template <class T>
-	static uint32_t SelectByType(EventLists& lists, uint32_t max)
-	{
-		return SelectByTypeGeneric<T>(lists, true, static_cast<typename T::event_variation_t>(0), max);
-	}
+    template<class T> static uint32_t SelectByType(EventLists& lists, uint32_t max)
+    {
+        return SelectByTypeGeneric<T>(lists, true, static_cast<typename T::event_variation_t>(0), max);
+    }
 
-	template <class T>
-	static uint32_t SelectByType(EventLists& lists, typename T::event_variation_t variation, uint32_t max)
-	{
-		return SelectByTypeGeneric<T>(lists, false, variation, max);
-	}
+    template<class T>
+    static uint32_t SelectByType(EventLists& lists, typename T::event_variation_t variation, uint32_t max)
+    {
+        return SelectByTypeGeneric<T>(lists, false, variation, max);
+    }
 
-	static uint32_t SelectByClass(EventLists& lists, const ClassField& clazz, uint32_t max);
+    static uint32_t SelectByClass(EventLists& lists, const ClassField& clazz, uint32_t max);
 
 private:
-
-	template <class T>
-	static uint32_t SelectByTypeGeneric(EventLists& lists, bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max);
-
+    template<class T>
+    static uint32_t SelectByTypeGeneric(EventLists& lists,
+                                        bool useDefaultVariation,
+                                        typename T::event_variation_t variation,
+                                        uint32_t max);
 };
 
-template <class T>
-uint32_t EventSelection::SelectByTypeGeneric(EventLists& lists, bool useDefaultVariation, typename T::event_variation_t variation, uint32_t max)
+template<class T>
+uint32_t EventSelection::SelectByTypeGeneric(EventLists& lists,
+                                             bool useDefaultVariation,
+                                             typename T::event_variation_t variation,
+                                             uint32_t max)
 {
-	auto& list = lists.GetList<T>();
+    auto& list = lists.GetList<T>();
 
-	uint32_t num_selected = 0;
+    uint32_t num_selected = 0;
 
-	auto select = [&](TypedEventRecord<T>& node) -> bool
-	{
-		if (num_selected == max) return false;
+    auto select = [&](TypedEventRecord<T>& node) -> bool {
+        if (num_selected == max)
+            return false;
 
-		if (node.record->value.state == EventState::unselected)
-		{
-			node.record->value.state = EventState::selected;
-			node.selectedVariation = useDefaultVariation ? node.defaultVariation : variation;
-			lists.counters.OnSelect();
-			++num_selected;
-		}
+        if (node.record->value.state == EventState::unselected)
+        {
+            node.record->value.state = EventState::selected;
+            node.selectedVariation = useDefaultVariation ? node.defaultVariation : variation;
+            lists.counters.OnSelect();
+            ++num_selected;
+        }
 
-		return true;
-	};
+        return true;
+    };
 
-	list.ForeachWhile(select);
+    list.ForeachWhile(select);
 
-	return num_selected;
+    return num_selected;
 }
 
-
-}
+} // namespace opendnp3
 
 #endif
-

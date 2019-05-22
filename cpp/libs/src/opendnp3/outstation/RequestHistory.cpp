@@ -25,45 +25,35 @@
 namespace opendnp3
 {
 
-RequestHistory::RequestHistory() :
-	hasLast(false),
-	lastDigest(0),
-	lastObjectsLength(0)
-{
-
-}
+RequestHistory::RequestHistory() : hasLast(false), lastDigest(0), lastObjectsLength(0) {}
 
 void RequestHistory::Reset()
 {
-	hasLast = false;
+    hasLast = false;
 }
 
 void RequestHistory::RecordLastProcessedRequest(const APDUHeader& header, const openpal::RSlice& objects)
 {
-	hasLast = true;
-	lastHeader = header;
-	lastObjectsLength = objects.Size();
-	lastDigest = CRC::CalcCrc(objects);
+    hasLast = true;
+    lastHeader = header;
+    lastObjectsLength = objects.Size();
+    lastDigest = CRC::CalcCrc(objects);
 }
 
 bool RequestHistory::FullyEqualsLastRequest(const APDUHeader& header, const openpal::RSlice& objects) const
 {
-	return lastHeader.Equals(header) && EqualsLastObjects(objects);
+    return lastHeader.Equals(header) && EqualsLastObjects(objects);
 }
 
 APDUHeader RequestHistory::GetLastHeader() const
 {
-	return hasLast ? lastHeader : APDUHeader();
+    return hasLast ? lastHeader : APDUHeader();
 }
 
 bool RequestHistory::EqualsLastObjects(const openpal::RSlice& objects) const
 {
 
-	return	hasLast &&
-	        (lastObjectsLength == objects.Size()) &&
-	        (lastDigest == CRC::CalcCrc(objects));
+    return hasLast && (lastObjectsLength == objects.Size()) && (lastDigest == CRC::CalcCrc(objects));
 }
 
-}
-
-
+} // namespace opendnp3

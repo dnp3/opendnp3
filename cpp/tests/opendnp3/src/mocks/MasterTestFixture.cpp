@@ -31,41 +31,40 @@ namespace opendnp3
 
 MasterParams NoStartupTasks()
 {
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	params.startupIntegrityClassMask = ClassField::None();
-	params.unsolClassMask = ClassField::None();
-	return params;
+    MasterParams params;
+    params.disableUnsolOnStartup = false;
+    params.startupIntegrityClassMask = ClassField::None();
+    params.unsolClassMask = ClassField::None();
+    return params;
 }
 
-MasterTestFixture::MasterTestFixture(
-    const MasterParams& params,
-    const Addresses& addresses,
-    const std::string& id,
-    const std::shared_ptr <openpal::ILogHandler >& log,
-    const std::shared_ptr<testlib::MockExecutor>& executor,
-    const std::shared_ptr<IMasterScheduler>& scheduler
-) :
-	addresses(addresses),
-	log(log),
-	exe(executor ? executor : std::make_shared<MockExecutor>()),
-	meas(std::make_shared<MockSOEHandler>()),
-	lower(std::make_shared<MockLowerLayer>()),
-	application(std::make_shared<MockMasterApplication>()),
-	scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
-	context(std::make_shared<MContext>(addresses, openpal::Logger(log, id, ~0), exe, lower, meas, application, this->scheduler, params))
-{}
+MasterTestFixture::MasterTestFixture(const MasterParams& params,
+                                     const Addresses& addresses,
+                                     const std::string& id,
+                                     const std::shared_ptr<openpal::ILogHandler>& log,
+                                     const std::shared_ptr<testlib::MockExecutor>& executor,
+                                     const std::shared_ptr<IMasterScheduler>& scheduler)
+    : addresses(addresses),
+      log(log),
+      exe(executor ? executor : std::make_shared<MockExecutor>()),
+      meas(std::make_shared<MockSOEHandler>()),
+      lower(std::make_shared<MockLowerLayer>()),
+      application(std::make_shared<MockMasterApplication>()),
+      scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
+      context(std::make_shared<MContext>(
+          addresses, openpal::Logger(log, id, ~0), exe, lower, meas, application, this->scheduler, params))
+{
+}
 
 MasterTestFixture::~MasterTestFixture()
 {
-	this->scheduler->Shutdown();
+    this->scheduler->Shutdown();
 }
 
 bool MasterTestFixture::SendToMaster(const std::string& hex)
 {
-	HexSequence hs(hex);
-	return context->OnReceive(Message(this->addresses.Reverse(), hs.ToRSlice()));
+    HexSequence hs(hex);
+    return context->OnReceive(Message(this->addresses.Reverse(), hs.ToRSlice()));
 }
 
-}
-
+} // namespace opendnp3

@@ -22,13 +22,13 @@
 #ifndef OPENDNP3_EVENTWRITERS_H
 #define OPENDNP3_EVENTWRITERS_H
 
+#include "IEventWriteHandler.h"
+
 #include "openpal/serialization/Serialization.h"
 
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/objects/Group51.h"
-
-#include "IEventWriteHandler.h"
 
 namespace opendnp3
 {
@@ -37,86 +37,82 @@ class EventWriters
 {
 
 public:
+    template<class T>
+    static uint16_t Write(HeaderWriter& writer, IEventCollection<T>& items, const DNP3Serializer<T>& serializer)
+    {
+        BasicEventWriter<T> handler(writer, serializer);
+        return items.WriteSome(handler);
+    }
 
-	template <class T>
-	static uint16_t Write(HeaderWriter& writer, IEventCollection<T>& items, const DNP3Serializer<T>& serializer)
-	{
-		BasicEventWriter<T> handler(writer, serializer);
-		return items.WriteSome(handler);
-	}
+    template<class T>
+    static uint16_t WriteWithCTO(const DNPTime& cto,
+                                 HeaderWriter& writer,
+                                 IEventCollection<T>& items,
+                                 const DNP3Serializer<T>& serializer)
+    {
+        Group51Var1 value;
+        value.time = cto;
+        CTOEventWriter<T, Group51Var1> handler(value, writer, serializer);
+        return items.WriteSome(handler);
+    }
 
-	template <class T>
-	static uint16_t WriteWithCTO(const DNPTime& cto, HeaderWriter& writer, IEventCollection<T>& items, const DNP3Serializer<T>& serializer)
-	{
-		Group51Var1 value;
-		value.time = cto;
-		CTOEventWriter<T, Group51Var1> handler(value, writer, serializer);
-		return items.WriteSome(handler);
-	}
-
-	static uint16_t Write(uint8_t firstSize, HeaderWriter& writer, IEventCollection<OctetString>& items);
+    static uint16_t Write(uint8_t firstSize, HeaderWriter& writer, IEventCollection<OctetString>& items);
 
 private:
+    template<class T> class BasicEventWriter final : public IEventWriter<T>
+    {
+        PrefixedWriteIterator<openpal::UInt16, T> iterator;
 
-	template <class T>
-	class BasicEventWriter final : public IEventWriter<T>
-	{
-		PrefixedWriteIterator<openpal::UInt16, T> iterator;
+    public:
+        BasicEventWriter(HeaderWriter& writer, const DNP3Serializer<T>& serializer)
+            : iterator(writer.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX,
+                                                                             serializer))
+        {
+        }
 
-	public:
+        virtual bool Write(const T& meas, uint16_t index) override
+        {
+            return iterator.IsValid() ? iterator.Write(meas, index) : false;
+        }
+    };
 
-		BasicEventWriter(HeaderWriter& writer, const DNP3Serializer<T>& serializer) :
-			iterator(
-			    writer.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer)
-			)
-		{
+    template<class T, class U> class CTOEventWriter final : public IEventWriter<T>
+    {
+        const DNPTime cto;
+        PrefixedWriteIterator<openpal::UInt16, T> iterator;
 
-		}
+    public:
+        CTOEventWriter(const U& cto, HeaderWriter& writer, const DNP3Serializer<T>& serializer)
+            : cto(cto.time),
+              iterator(writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, T, U>(
+                  QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto))
+        {
+        }
 
-		virtual bool Write(const T& meas, uint16_t index) override
-		{
-			return iterator.IsValid() ? iterator.Write(meas, index) : false;
-		}
-	};
+        virtual bool Write(const T& meas, uint16_t index) override
+        {
 
-	template <class T, class U>
-	class CTOEventWriter final : public IEventWriter<T>
-	{
-		const DNPTime cto;
-		PrefixedWriteIterator<openpal::UInt16, T> iterator;
+            if (!this->iterator.IsValid())
+                return false;
 
-	public:
+            // can't encode timestamps that go backwards
+            if (meas.time < this->cto.value)
+                return false;
 
-		CTOEventWriter(const U& cto, HeaderWriter& writer, const DNP3Serializer<T>& serializer) :
-			cto(cto.time),
-			iterator(
-			    writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, T, U>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto)
-			)
-		{
+            const auto diff = meas.time - this->cto.value;
 
-		}
+            // can't encode timestamps where the diff is greater than uint16_t
+            if (diff > openpal::UInt16::Max)
+                return false;
 
-		virtual bool Write(const T& meas, uint16_t index) override
-		{
+            auto copy = meas;
+            copy.time.value = diff;
 
-			if (!this->iterator.IsValid()) return false;
-
-			// can't encode timestamps that go backwards
-			if (meas.time < this->cto.value) return false;
-
-			const auto diff = meas.time - this->cto.value;
-
-			// can't encode timestamps where the diff is greater than uint16_t
-			if (diff > openpal::UInt16::Max) return false;
-
-			auto copy = meas;
-			copy.time.value = diff;
-
-			return this->iterator.Write(copy, index);
-		}
-	};
+            return this->iterator.Write(copy, index);
+        }
+    };
 };
 
-}
+} // namespace opendnp3
 
 #endif

@@ -30,24 +30,21 @@ class TransportHeader
 {
 
 private:
-
-	static const uint8_t FIN_MASK = 0x80;
-	static const uint8_t FIR_MASK = 0x40;
-	static const uint8_t SEQ_MASK = 0x3F;
+    static const uint8_t FIN_MASK = 0x80;
+    static const uint8_t FIR_MASK = 0x40;
+    static const uint8_t SEQ_MASK = 0x3F;
 
 public:
-	static uint8_t ToByte(bool fir, bool fin, uint8_t seq);
+    static uint8_t ToByte(bool fir, bool fin, uint8_t seq);
 
-	TransportHeader() = delete;
-	TransportHeader(uint8_t byte);
+    TransportHeader() = delete;
+    TransportHeader(uint8_t byte);
 
-	const bool fir;
-	const bool fin;
-	const uint8_t seq;
+    const bool fir;
+    const bool fin;
+    const uint8_t seq;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif
-

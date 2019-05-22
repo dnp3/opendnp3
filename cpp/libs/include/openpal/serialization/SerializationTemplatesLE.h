@@ -21,111 +21,100 @@
 #ifndef OPENPAL_SERIALIZATIONTEMPLATESLE_H
 #define OPENPAL_SERIALIZATIONTEMPLATESLE_H
 
-#include <cstdint>
-#include <cstring>
-
 #include "openpal/container/RSlice.h"
 #include "openpal/container/WSlice.h"
-
 #include "openpal/util/Limits.h"
+
+#include <cstdint>
+#include <cstring>
 
 namespace openpal
 {
 
-template <class T>
-class Bit16LE
+template<class T> class Bit16LE
 {
 public:
+    static T Read(const uint8_t* data)
+    {
+        return (static_cast<T>(data[0]) << 0) | (static_cast<T>(data[1]) << 8);
+    }
 
-	static T Read(const uint8_t* data)
-	{
-		return (static_cast<T>(data[0]) << 0) | (static_cast<T>(data[1]) << 8);
-	}
+    static void Write(uint8_t* data, T value)
+    {
+        data[0] = static_cast<uint8_t>(value & 0xFF);
+        data[1] = static_cast<uint8_t>((value >> 8) & 0xFF);
+    }
 
-	static void Write(uint8_t* data, T value)
-	{
-		data[0] = static_cast<uint8_t>(value & 0xFF);
-		data[1] = static_cast<uint8_t>((value >> 8) & 0xFF);
-	}
+    static void WriteBuffer(WSlice& buffer, T aValue)
+    {
+        Write(buffer, aValue);
+        buffer.Advance(SIZE);
+    }
 
-	static void WriteBuffer(WSlice& buffer, T aValue)
-	{
-		Write(buffer, aValue);
-		buffer.Advance(SIZE);
-	}
+    inline static T ReadBuffer(RSlice& arBuffer)
+    {
+        auto ret = Read(arBuffer);
+        arBuffer.Advance(SIZE);
+        return ret;
+    }
 
-	inline static T ReadBuffer(RSlice& arBuffer)
-	{
-		auto ret = Read(arBuffer);
-		arBuffer.Advance(SIZE);
-		return ret;
-	}
+    typedef T Type;
 
-	typedef T Type;
-
-	const static size_t SIZE = sizeof(T);
-	const static T Max;
-	const static T Min;
+    const static size_t SIZE = sizeof(T);
+    const static T Max;
+    const static T Min;
 };
 
-template <class T>
-const T Bit16LE<T>::Max = openpal::MaxValue<T>();
+template<class T> const T Bit16LE<T>::Max = openpal::MaxValue<T>();
 
-template <class T>
-const T Bit16LE<T>::Min = openpal::MinValue<T>();
+template<class T> const T Bit16LE<T>::Min = openpal::MinValue<T>();
 
-template <class T>
-class Bit32LE
+template<class T> class Bit32LE
 {
 public:
+    // Endianness doesn't apply to everything. If you do bitwise or bitshift operations on an int, you don't notice the
+    // endianness. The machine arranges the multiple bytes, so the least significant byte is still the least significant
+    // byte, and the most significant byte is still the most significant byte
 
-	// Endianness doesn't apply to everything. If you do bitwise or bitshift operations on an int, you don't notice the endianness.
-	// The machine arranges the multiple bytes, so the least significant byte is still the least significant byte, and the most
-	// significant byte is still the most significant byte
+    // This is endian independent of the machine order
+    static T Read(const uint8_t* data)
+    {
+        return (static_cast<T>(data[0]) << 0) | (static_cast<T>(data[1]) << 8) | (static_cast<T>(data[2]) << 16)
+            | (static_cast<T>(data[3]) << 24);
+    }
 
-	// This is endian independent of the machine order
-	static T Read(const uint8_t* data)
-	{
-		return	(static_cast<T>(data[0]) << 0)	|
-		        (static_cast<T>(data[1]) << 8)	|
-		        (static_cast<T>(data[2]) << 16) |
-		        (static_cast<T>(data[3]) << 24);
-	}
+    static void Write(uint8_t* data, T value)
+    {
+        data[0] = static_cast<uint8_t>(value & 0xFF);
+        data[1] = static_cast<uint8_t>((value >> 8) & 0xFF);
+        data[2] = static_cast<uint8_t>((value >> 16) & 0xFF);
+        data[3] = static_cast<uint8_t>((value >> 24) & 0xFF);
+    }
 
-	static void Write(uint8_t* data, T value)
-	{
-		data[0] = static_cast<uint8_t>(value & 0xFF);
-		data[1] = static_cast<uint8_t>((value >> 8) & 0xFF);
-		data[2] = static_cast<uint8_t>((value >> 16) & 0xFF);
-		data[3] = static_cast<uint8_t>((value >> 24) & 0xFF);
-	}
+    static void WriteBuffer(WSlice& buffer, T aValue)
+    {
+        Write(buffer, aValue);
+        buffer.Advance(SIZE);
+    }
 
-	static void WriteBuffer(WSlice& buffer, T aValue)
-	{
-		Write(buffer, aValue);
-		buffer.Advance(SIZE);
-	}
+    inline static T ReadBuffer(RSlice& buffer)
+    {
+        auto ret = Read(buffer);
+        buffer.Advance(SIZE);
+        return ret;
+    }
 
-	inline static T ReadBuffer(RSlice& buffer)
-	{
-		auto ret = Read(buffer);
-		buffer.Advance(SIZE);
-		return ret;
-	}
+    typedef T Type;
 
-	typedef T Type;
-
-	const static size_t SIZE = sizeof(T);
-	const static T Max;
-	const static T Min;
+    const static size_t SIZE = sizeof(T);
+    const static T Max;
+    const static T Min;
 };
 
-template <class T>
-const T Bit32LE<T>::Max = openpal::MaxValue<T>();
+template<class T> const T Bit32LE<T>::Max = openpal::MaxValue<T>();
 
-template <class T>
-const T Bit32LE<T>::Min = openpal::MinValue<T>();
+template<class T> const T Bit32LE<T>::Min = openpal::MinValue<T>();
 
-}
+} // namespace openpal
 
 #endif

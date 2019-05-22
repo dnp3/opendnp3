@@ -21,11 +21,11 @@
 #ifndef ASIODNP3_ISESSION_ACCEPTOR_H
 #define ASIODNP3_ISESSION_ACCEPTOR_H
 
-#include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/master/IMasterApplication.h>
+#include <opendnp3/master/ISOEHandler.h>
 
-#include "asiodnp3/MasterStackConfig.h"
 #include "asiodnp3/IMasterSession.h"
+#include "asiodnp3/MasterStackConfig.h"
 
 #include <memory>
 
@@ -33,22 +33,20 @@ namespace asiodnp3
 {
 
 /**
-* Callback interface invoked when a new connection is accepted
-*/
+ * Callback interface invoked when a new connection is accepted
+ */
 class ISessionAcceptor
 {
 public:
+    virtual ~ISessionAcceptor() {}
 
-	virtual ~ISessionAcceptor() {}
-
-	virtual std::shared_ptr<IMasterSession> AcceptSession(
-	    const std::string& sessionid,
-	    std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-	    std::shared_ptr<opendnp3::IMasterApplication> application,
-	    const MasterStackConfig& config
-	) = 0;
+    virtual std::shared_ptr<IMasterSession> AcceptSession(const std::string& sessionid,
+                                                          std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+                                                          std::shared_ptr<opendnp3::IMasterApplication> application,
+                                                          const MasterStackConfig& config)
+        = 0;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

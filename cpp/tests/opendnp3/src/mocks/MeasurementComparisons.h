@@ -21,44 +21,33 @@
 #ifndef __MEASUREMENT_COMPARISONS_H_
 #define __MEASUREMENT_COMPARISONS_H_
 
-#include <opendnp3/outstation/Event.h>
 #include <opendnp3/app/Indexed.h>
-
 #include <opendnp3/app/MeasurementTypes.h>
+#include <opendnp3/outstation/Event.h>
 
-template<class T>
-bool Equals(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
+template<class T> bool Equals(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
 {
-	return
-	    (lhs.flags.value == rhs.flags.value) &&
-	    (lhs.value == rhs.value) &&
-	    (lhs.time == rhs.time);
+    return (lhs.flags.value == rhs.flags.value) && (lhs.value == rhs.value) && (lhs.time == rhs.time);
 }
 
-template<class T>
-bool operator==(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
+template<class T> bool operator==(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
 {
-	return Equals(lhs, rhs);
+    return Equals(lhs, rhs);
 }
 
-template<class T>
-bool operator!=(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
+template<class T> bool operator!=(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
 {
-	return !Equals(lhs, rhs);
+    return !Equals(lhs, rhs);
 }
 
-template<class T>
-bool operator==(const opendnp3::Indexed<T>& lhs, const opendnp3::Indexed<T>& rhs)
+template<class T> bool operator==(const opendnp3::Indexed<T>& lhs, const opendnp3::Indexed<T>& rhs)
 {
-	return (lhs.value == rhs.value) && (lhs.index == rhs.index);
+    return (lhs.value == rhs.value) && (lhs.index == rhs.index);
 }
 
-template<class T>
-bool operator==(const opendnp3::Event<T>& lhs, const opendnp3::Event<T>& rhs)
+template<class T> bool operator==(const opendnp3::Event<T>& lhs, const opendnp3::Event<T>& rhs)
 {
-	return (lhs.clazz == rhs.clazz) && (lhs.value == rhs.value) && (lhs.index == rhs.index);
+    return (lhs.clazz == rhs.clazz) && (lhs.value == rhs.value) && (lhs.index == rhs.index);
 }
-
-
 
 #endif

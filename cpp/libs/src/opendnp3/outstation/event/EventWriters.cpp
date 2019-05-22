@@ -28,30 +28,30 @@ namespace opendnp3
 
 class OctetStringEventWriter : public IEventWriter<OctetString>
 {
-	const OctetStringSerializer serializer;
-	PrefixedWriteIterator<openpal::UInt16, OctetString> iterator;
+    const OctetStringSerializer serializer;
+    PrefixedWriteIterator<openpal::UInt16, OctetString> iterator;
 
 public:
+    OctetStringEventWriter(HeaderWriter& writer, uint8_t size)
+        : serializer(true, size),
+          iterator(
+              writer.IterateOverCountWithPrefix<openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer))
+    {
+    }
 
-	OctetStringEventWriter(HeaderWriter& writer, uint8_t size) :
-		serializer(true, size),
-		iterator(writer.IterateOverCountWithPrefix<openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer))
-	{}
+    virtual bool Write(const OctetString& meas, uint16_t index) override
+    {
+        if (meas.Size() != this->serializer.Size())
+            return false;
 
-	virtual bool Write(const OctetString& meas, uint16_t index) override
-	{
-		if (meas.Size() != this->serializer.Size()) return false;
-
-		return iterator.Write(meas, index);
-	}
+        return iterator.Write(meas, index);
+    }
 };
 
 uint16_t EventWriters::Write(uint8_t firstSize, HeaderWriter& writer, IEventCollection<OctetString>& items)
 {
-	OctetStringEventWriter handler(writer, firstSize);
-	return items.WriteSome(handler);
+    OctetStringEventWriter handler(writer, firstSize);
+    return items.WriteSome(handler);
 }
 
-}
-
-
+} // namespace opendnp3

@@ -27,21 +27,20 @@ namespace opendnp3
 {
 namespace measurements
 {
-template <class T, class U>
-bool IsEvent(const T& val1, const T& val2, T deadband)
-{
-	// T can be unsigned data type so std::abs won't work since it only directly supports signed data types
-	// If one uses std::abs and T is unsigned one will get an ambiguous override error.
+    template<class T, class U> bool IsEvent(const T& val1, const T& val2, T deadband)
+    {
+        // T can be unsigned data type so std::abs won't work since it only directly supports signed data types
+        // If one uses std::abs and T is unsigned one will get an ambiguous override error.
 
-	U diff = (val2 > val1) ? (static_cast<U>(val2) - static_cast<U>(val1)) : (static_cast<U>(val1) - static_cast<U>(val2));
+        U diff = (val2 > val1) ? (static_cast<U>(val2) - static_cast<U>(val1))
+                               : (static_cast<U>(val1) - static_cast<U>(val2));
 
-	return diff > deadband;
-}
+        return diff > deadband;
+    }
 
+    bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<double>& oldMeas, double deadband);
 
-bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<double>& oldMeas, double deadband);
-
-}
-}
+} // namespace measurements
+} // namespace opendnp3
 
 #endif

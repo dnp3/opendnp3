@@ -25,41 +25,38 @@ namespace opendnp3
 {
 
 /**
-* Interface that represents a running master.
-*/
+ * Interface that represents a running master.
+ */
 class TaskId
 {
 public:
+    static TaskId Defined(int id)
+    {
+        return TaskId(id, true);
+    }
+    static TaskId Undefined()
+    {
+        return TaskId(-1, false);
+    }
 
-	static TaskId Defined(int id)
-	{
-		return TaskId(id, true);
-	}
-	static TaskId Undefined()
-	{
-		return TaskId(-1, false);
-	}
-
-	int GetId() const
-	{
-		return id;
-	}
-	bool IsDefined() const
-	{
-		return isDefined;
-	}
+    int GetId() const
+    {
+        return id;
+    }
+    bool IsDefined() const
+    {
+        return isDefined;
+    }
 
 private:
+    TaskId() = delete;
 
-	TaskId() = delete;
+    TaskId(int id_, bool isDefined_) : id(id_), isDefined(isDefined_) {}
 
-	TaskId(int id_, bool isDefined_) : id(id_), isDefined(isDefined_) {}
-
-	int id;
-	bool isDefined;
+    int id;
+    bool isDefined;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

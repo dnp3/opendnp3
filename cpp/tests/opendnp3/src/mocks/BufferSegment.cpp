@@ -24,11 +24,12 @@
 
 #include <testlib/HexConversions.h>
 
-#include <memory.h>
-#include <sstream>
 #include <assert.h>
+#include <memory.h>
+
 #include <algorithm>
 #include <exception>
+#include <sstream>
 
 using namespace std;
 using namespace openpal;
@@ -37,39 +38,34 @@ using namespace testlib;
 namespace opendnp3
 {
 
-BufferSegment::BufferSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses) :
-	addresses(addresses),
-	segmentSize(segmentSize),
-	hs(hex),
-	remainder(hs.ToRSlice())
+BufferSegment::BufferSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses)
+    : addresses(addresses), segmentSize(segmentSize), hs(hex), remainder(hs.ToRSlice())
 {
-	assert(segmentSize > 0);
+    assert(segmentSize > 0);
 }
 
 void BufferSegment::Reset()
 {
-	remainder = hs.ToRSlice();
+    remainder = hs.ToRSlice();
 }
 
 bool BufferSegment::HasValue() const
 {
-	return remainder.Size() > 0;
+    return remainder.Size() > 0;
 }
 
 openpal::RSlice BufferSegment::GetSegment()
 {
-	auto size = std::min(segmentSize, remainder.Size());
-	auto chunk = remainder.Take(size);
-	return chunk;
+    auto size = std::min(segmentSize, remainder.Size());
+    auto chunk = remainder.Take(size);
+    return chunk;
 }
 
 bool BufferSegment::Advance()
 {
-	auto size = std::min(segmentSize, remainder.Size());
-	remainder.Advance(size);
-	return remainder.IsNotEmpty();
+    auto size = std::min(segmentSize, remainder.Size());
+    remainder.Advance(size);
+    return remainder.IsNotEmpty();
 }
 
-}
-
-
+} // namespace opendnp3

@@ -28,21 +28,17 @@ ErrorCategory ErrorCategory::instance;
 
 std::string ErrorCategory::message(int ev) const
 {
-	switch (ev)
-	{
-	case(static_cast<int>(Error::SHUTTING_DOWN)) :
-		return "The operation was requested while the resource was shutting down";
-	case(static_cast<int>(Error::NO_TLS_SUPPORT)) :
-		return "Not built with TLS support";
-	case(static_cast<int>(Error::NO_SERIAL_SUPPORT)):
-		return "Not built with serial support";
-	default:
-		return "unknown error";
-	};
+    switch (ev)
+    {
+    case (static_cast<int>(Error::SHUTTING_DOWN)):
+        return "The operation was requested while the resource was shutting down";
+    case (static_cast<int>(Error::NO_TLS_SUPPORT)):
+        return "Not built with TLS support";
+    case (static_cast<int>(Error::NO_SERIAL_SUPPORT)):
+        return "Not built with serial support";
+    default:
+        return "unknown error";
+    };
 }
 
-}
-
-
-
-
+} // namespace asiodnp3

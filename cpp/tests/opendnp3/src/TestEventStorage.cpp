@@ -18,11 +18,11 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#include "mocks/MockEventWriteHandler.h"
 
 #include "opendnp3/outstation/event/EventStorage.h"
 
-#include "mocks/MockEventWriteHandler.h"
+#include <catch.hpp>
 
 using namespace opendnp3;
 
@@ -30,148 +30,128 @@ using namespace opendnp3;
 
 TEST_CASE(SUITE("can construct"))
 {
-	EventStorage storage(
-	    EventBufferConfig::AllTypes(10)
-	);
+    EventStorage storage(EventBufferConfig::AllTypes(10));
 }
 
 TEST_CASE(SUITE("calls write multiple times for different variations"))
 {
-	EventStorage storage(EventBufferConfig::AllTypes(10));
+    EventStorage storage(EventBufferConfig::AllTypes(10));
 
-	REQUIRE_FALSE(
-	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
-	);
-	REQUIRE_FALSE(
-	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var2))
-	);
+    REQUIRE_FALSE(
+        storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1)));
+    REQUIRE_FALSE(
+        storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var2)));
 
-	// select events by class
-	REQUIRE(storage.SelectByClass(EventClass::EC1) == 2);
+    // select events by class
+    REQUIRE(storage.SelectByClass(EventClass::EC1) == 2);
 
-	REQUIRE(storage.NumSelected() == 2);
+    REQUIRE(storage.NumSelected() == 2);
 
-	// set up the expected order
-	MockEventWriteHandler handler;
-	handler.Expect(EventBinaryVariation::Group2Var1, 1);
-	handler.Expect(EventBinaryVariation::Group2Var2, 1);
+    // set up the expected order
+    MockEventWriteHandler handler;
+    handler.Expect(EventBinaryVariation::Group2Var1, 1);
+    handler.Expect(EventBinaryVariation::Group2Var2, 1);
 
-	REQUIRE(storage.Write(handler) == 2);
+    REQUIRE(storage.Write(handler) == 2);
 
-	REQUIRE(storage.NumSelected() == 0);
-	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
+    REQUIRE(storage.NumSelected() == 0);
+    REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
 
-	handler.AssertEmpty();
+    handler.AssertEmpty();
 }
 
 TEST_CASE(SUITE("calls write one time for same variation"))
 {
-	EventStorage storage(EventBufferConfig::AllTypes(10));
+    EventStorage storage(EventBufferConfig::AllTypes(10));
 
-	REQUIRE_FALSE(
-	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
-	);
-	REQUIRE_FALSE(
-	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
-	);
+    REQUIRE_FALSE(
+        storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1)));
+    REQUIRE_FALSE(
+        storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1)));
 
-	// select events by class
-	REQUIRE(storage.SelectByClass(EventClass::EC1) == 2);
-	REQUIRE(storage.NumSelected() == 2);
-	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 2);
+    // select events by class
+    REQUIRE(storage.SelectByClass(EventClass::EC1) == 2);
+    REQUIRE(storage.NumSelected() == 2);
+    REQUIRE(storage.NumUnwritten(EventClass::EC1) == 2);
 
-	// set up the expected order
-	MockEventWriteHandler handler;
-	handler.Expect(EventBinaryVariation::Group2Var1, 2);
+    // set up the expected order
+    MockEventWriteHandler handler;
+    handler.Expect(EventBinaryVariation::Group2Var1, 2);
 
-	REQUIRE(storage.Write(handler) == 2);
-	REQUIRE(storage.NumSelected() == 0);
-	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
+    REQUIRE(storage.Write(handler) == 2);
+    REQUIRE(storage.NumSelected() == 0);
+    REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
 
-	handler.AssertEmpty();
+    handler.AssertEmpty();
 }
 
 TEST_CASE(SUITE("calls write multiple times for different types"))
 {
-	EventStorage storage(EventBufferConfig::AllTypes(10));
+    EventStorage storage(EventBufferConfig::AllTypes(10));
 
-	REQUIRE_FALSE(
-	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
-	);
-	REQUIRE_FALSE(
-	    storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1))
-	);
-	REQUIRE_FALSE(
-	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
-	);
+    REQUIRE_FALSE(
+        storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1)));
+    REQUIRE_FALSE(
+        storage.Update(Event<BinarySpec>(Binary(true), 0, EventClass::EC1, EventBinaryVariation::Group2Var1)));
+    REQUIRE_FALSE(
+        storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1)));
 
-	// select events by class
-	REQUIRE(storage.SelectByClass(EventClass::EC1) == 3);
+    // select events by class
+    REQUIRE(storage.SelectByClass(EventClass::EC1) == 3);
 
-	// set up the expected order
-	MockEventWriteHandler handler;
-	handler.Expect(EventAnalogVariation::Group32Var1, 1);
-	handler.Expect(EventBinaryVariation::Group2Var1, 1);
-	handler.Expect(EventAnalogVariation::Group32Var1, 1);
+    // set up the expected order
+    MockEventWriteHandler handler;
+    handler.Expect(EventAnalogVariation::Group32Var1, 1);
+    handler.Expect(EventBinaryVariation::Group2Var1, 1);
+    handler.Expect(EventAnalogVariation::Group32Var1, 1);
 
-	REQUIRE(storage.Write(handler) == 3);
+    REQUIRE(storage.Write(handler) == 3);
 
-	handler.AssertEmpty();
+    handler.AssertEmpty();
 }
 
 TEST_CASE(SUITE("zero-size doesn't overflow"))
 {
-	EventStorage storage(EventBufferConfig::AllTypes(0));
+    EventStorage storage(EventBufferConfig::AllTypes(0));
 
-	REQUIRE_FALSE(
-	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
-	);
+    REQUIRE_FALSE(
+        storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1)));
 
-	REQUIRE_FALSE(storage.IsAnyTypeFull());
-	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
-	REQUIRE(storage.NumSelected() == 0);
+    REQUIRE_FALSE(storage.IsAnyTypeFull());
+    REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
+    REQUIRE(storage.NumSelected() == 0);
 }
 
 TEST_CASE(SUITE("overflows as expected"))
 {
-	EventStorage storage(EventBufferConfig::AllTypes(1));
+    EventStorage storage(EventBufferConfig::AllTypes(1));
 
-	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
-	REQUIRE_FALSE(storage.IsAnyTypeFull());
+    REQUIRE(storage.NumUnwritten(EventClass::EC1) == 0);
+    REQUIRE_FALSE(storage.IsAnyTypeFull());
 
-	REQUIRE_FALSE(
-	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
-	);
+    REQUIRE_FALSE(
+        storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1)));
 
-	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 1);
-	REQUIRE(storage.IsAnyTypeFull());
-	REQUIRE(storage.NumSelected() == 0);
+    REQUIRE(storage.NumUnwritten(EventClass::EC1) == 1);
+    REQUIRE(storage.IsAnyTypeFull());
+    REQUIRE(storage.NumSelected() == 0);
 
-	REQUIRE(
-	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
-	);
+    REQUIRE(storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1)));
 
-	REQUIRE(storage.NumUnwritten(EventClass::EC1) == 1);
+    REQUIRE(storage.NumUnwritten(EventClass::EC1) == 1);
 }
 
 TEST_CASE(SUITE("selected events discarded on overflow"))
 {
-	EventStorage storage(EventBufferConfig::AllTypes(1));
+    EventStorage storage(EventBufferConfig::AllTypes(1));
 
-	REQUIRE_FALSE(
-	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
-	);
+    REQUIRE_FALSE(
+        storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1)));
 
-	REQUIRE(storage.SelectByClass(EventClass::EC1) == 1);
+    REQUIRE(storage.SelectByClass(EventClass::EC1) == 1);
 
-	REQUIRE(
-	    storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1))
-	);
+    REQUIRE(storage.Update(Event<AnalogSpec>(Analog(1.0), 0, EventClass::EC1, EventAnalogVariation::Group32Var1)));
 
-	MockEventWriteHandler handler;
-	REQUIRE(storage.Write(handler) == 0);
+    MockEventWriteHandler handler;
+    REQUIRE(storage.Write(handler) == 0);
 }
-
-
-
-

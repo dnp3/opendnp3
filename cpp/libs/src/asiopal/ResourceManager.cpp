@@ -26,29 +26,28 @@ namespace asiopal
 
 void ResourceManager::Detach(const std::shared_ptr<IResource>& resource)
 {
-	std::lock_guard <std::mutex> lock(this->mutex);
-	this->resources.erase(resource);
+    std::lock_guard<std::mutex> lock(this->mutex);
+    this->resources.erase(resource);
 }
 
 void ResourceManager::Shutdown()
 {
-	std::set<std::shared_ptr<asiopal::IResource>> copy;
+    std::set<std::shared_ptr<asiopal::IResource>> copy;
 
-	{
-		std::lock_guard <std::mutex> lock(this->mutex);
-		this->is_shutting_down = true;
-		for (auto& resource : this->resources)
-		{
-			copy.insert(resource);
-		}
-		resources.clear();
-	}
+    {
+        std::lock_guard<std::mutex> lock(this->mutex);
+        this->is_shutting_down = true;
+        for (auto& resource : this->resources)
+        {
+            copy.insert(resource);
+        }
+        resources.clear();
+    }
 
-	for (auto& resource : copy)
-	{
-		resource->Shutdown();
-	}
+    for (auto& resource : copy)
+    {
+        resource->Shutdown();
+    }
 }
 
-}
-
+} // namespace asiopal

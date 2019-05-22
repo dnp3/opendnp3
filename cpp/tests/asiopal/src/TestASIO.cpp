@@ -18,12 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include <asio.hpp>
 #include <catch.hpp>
 
-#include <iostream>
-#include <asio.hpp>
-#include <functional>
 #include <chrono>
+#include <functional>
+#include <iostream>
 
 using namespace std;
 using namespace asio;
@@ -35,31 +35,29 @@ typedef asio::basic_waitable_timer<std::chrono::steady_clock> steady_timer;
 
 void AssertCanceled(bool* apFlag, const std::error_code& ec)
 {
-	if(ec) *apFlag = true;
+    if (ec)
+        *apFlag = true;
 }
 
 void Cancel(asio::basic_waitable_timer<std::chrono::steady_clock>* aptimer)
 {
-	aptimer->cancel();
+    aptimer->cancel();
 }
 
 #define SUITE(name) "TestBoostASIO - " name
 
 TEST_CASE(SUITE("TimerCancel"))
 {
-	bool flag = false;
+    bool flag = false;
 
-	io_context io;
-	steady_timer t1(io, std::chrono::seconds(0));
-	steady_timer t2(io, std::chrono::seconds(1));
+    io_context io;
+    steady_timer t1(io, std::chrono::seconds(0));
+    steady_timer t2(io, std::chrono::seconds(1));
 
-	t1.async_wait(std::bind(Cancel, &t2));
-	t2.async_wait(std::bind(AssertCanceled, &flag, std::placeholders::_1));
+    t1.async_wait(std::bind(Cancel, &t2));
+    t2.async_wait(std::bind(AssertCanceled, &flag, std::placeholders::_1));
 
-	io.run();
+    io.run();
 
-	REQUIRE(flag);
+    REQUIRE(flag);
 }
-
-
-

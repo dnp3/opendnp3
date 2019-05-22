@@ -19,37 +19,38 @@
 #ifndef OPENDNP3_OUTSTATIONAPPLICATIONADAPTER_H
 #define OPENDNP3_OUTSTATIONAPPLICATIONADAPTER_H
 
-#include <opendnp3/outstation/IOutstationApplication.h>
-
 #include "GlobalRef.h"
+
+#include <opendnp3/outstation/IOutstationApplication.h>
 
 class OutstationApplicationAdapter : public opendnp3::IOutstationApplication
 {
 public:
+    OutstationApplicationAdapter(jobject proxy) : proxy(proxy) {}
 
-	OutstationApplicationAdapter(jobject proxy) : proxy(proxy) {}
+    bool SupportsWriteAbsoluteTime() override;
 
-	bool SupportsWriteAbsoluteTime() override;
+    bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override;
 
-	bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override;
+    bool SupportsAssignClass() override;
 
-	bool SupportsAssignClass() override;
+    void RecordClassAssignment(opendnp3::AssignClassType type,
+                               opendnp3::PointClass clazz,
+                               uint16_t start,
+                               uint16_t stop) override;
 
-	void RecordClassAssignment(opendnp3::AssignClassType type, opendnp3::PointClass clazz, uint16_t start, uint16_t stop) override;
+    opendnp3::ApplicationIIN GetApplicationIIN() const override;
 
-	opendnp3::ApplicationIIN GetApplicationIIN() const override;
-	
-	opendnp3::RestartMode ColdRestartSupport() const override;
-	
-	opendnp3::RestartMode WarmRestartSupport() const override;
-	
-	uint16_t ColdRestart() override;
-	
-	uint16_t WarmRestart() override;
+    opendnp3::RestartMode ColdRestartSupport() const override;
+
+    opendnp3::RestartMode WarmRestartSupport() const override;
+
+    uint16_t ColdRestart() override;
+
+    uint16_t WarmRestart() override;
 
 private:
-
-	GlobalRef proxy;
+    GlobalRef proxy;
 };
 
 #endif

@@ -25,93 +25,80 @@ namespace openpal
 {
 
 // utility class for representing a value that may or may not be set
-template <class T>
-class Settable
+template<class T> class Settable
 {
 public:
+    Settable() : valueIsSet(false) {}
 
-	Settable() : valueIsSet(false)
-	{}
+    bool IsSet() const
+    {
+        return valueIsSet;
+    }
 
-	bool IsSet() const
-	{
-		return valueIsSet;
-	}
+    bool IsEmpty() const
+    {
+        return !valueIsSet;
+    }
 
-	bool IsEmpty() const
-	{
-		return !valueIsSet;
-	}
+    T Get() const
+    {
+        return value;
+    }
 
-	T Get() const
-	{
-		return value;
-	}
+    bool Pop(T& output)
+    {
+        if (valueIsSet)
+        {
+            valueIsSet = false;
+            output = value;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	bool Pop(T& output)
-	{
-		if (valueIsSet)
-		{
-			valueIsSet = false;
-			output = value;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    void Clear()
+    {
+        valueIsSet = false;
+    }
 
-	void Clear()
-	{
-		valueIsSet = false;
-	}
+    void Set(const T& value_)
+    {
+        value = value_;
+        valueIsSet = true;
+    }
 
-	void Set(const T& value_)
-	{
-		value = value_;
-		valueIsSet = true;
-	}
+    template<class Action> bool IsSetAnd(Action action);
 
-	template <class Action>
-	bool IsSetAnd(Action action);
-
-	template <class Action>
-	void Foreach(Action action);
-
+    template<class Action> void Foreach(Action action);
 
 private:
-
-	bool valueIsSet;
-	T value;
+    bool valueIsSet;
+    T value;
 };
 
-template <class T>
-template <class Action>
-bool Settable<T>::IsSetAnd(Action action)
+template<class T> template<class Action> bool Settable<T>::IsSetAnd(Action action)
 {
-	if (valueIsSet)
-	{
-		return action(value);
-	}
-	else
-	{
-		return false;
-	}
+    if (valueIsSet)
+    {
+        return action(value);
+    }
+    else
+    {
+        return false;
+    }
 }
 
-template <class T>
-template <class Action>
-void Settable<T>::Foreach(Action action)
+template<class T> template<class Action> void Settable<T>::Foreach(Action action)
 {
-	if (valueIsSet)
-	{
-		action(value);
-	}
+    if (valueIsSet)
+    {
+        action(value);
+    }
 }
 
-}
-
+} // namespace openpal
 
 #endif
-

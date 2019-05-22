@@ -28,114 +28,99 @@ namespace asiodnp3
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
-	return PrintAll(info, values);
+    return PrintAll(info, values);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-	return PrintAll(info, values);
+    return PrintAll(info, values);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values)
 {
-	return PrintAll(info, values);
+    return PrintAll(info, values);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values)
 {
-	return PrintAll(info, values);
+    return PrintAll(info, values);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	return PrintAll(info, values);
+    return PrintAll(info, values);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	return PrintAll(info, values);
+    return PrintAll(info, values);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	return PrintAll(info, values);
+    return PrintAll(info, values);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values)
 {
-	auto print = [](const Indexed<OctetString>& pair)
-	{
-		std::cout << "OctetString " << " [" << pair.index << "] : Size : " << pair.value.ToRSlice().Size() << std::endl;
-	};
+    auto print = [](const Indexed<OctetString>& pair) {
+        std::cout << "OctetString "
+                  << " [" << pair.index << "] : Size : " << pair.value.ToRSlice().Size() << std::endl;
+    };
 
-	values.ForeachItem(print);
+    values.ForeachItem(print);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	auto print = [](const Indexed<TimeAndInterval>& pair)
-	{
-		std::cout << "TimeAndInterval: " <<
-		          "[" << pair.index << "] : " <<
-		          pair.value.time << " : " <<
-		          pair.value.interval << " : " <<
-		          IntervalUnitsToString(pair.value.GetUnitsEnum()) << std::endl;
-	};
+    auto print = [](const Indexed<TimeAndInterval>& pair) {
+        std::cout << "TimeAndInterval: "
+                  << "[" << pair.index << "] : " << pair.value.time << " : " << pair.value.interval << " : "
+                  << IntervalUnitsToString(pair.value.GetUnitsEnum()) << std::endl;
+    };
 
-	values.ForeachItem(print);
+    values.ForeachItem(print);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values)
 {
-	auto print = [](const Indexed<BinaryCommandEvent>& pair)
-	{
-		std::cout << "BinaryCommandEvent: " <<
-		          "[" << pair.index << "] : " <<
-		          pair.value.time << " : " <<
-		          pair.value.value << " : " <<
-		          CommandStatusToString(pair.value.status) << std::endl;
-	};
+    auto print = [](const Indexed<BinaryCommandEvent>& pair) {
+        std::cout << "BinaryCommandEvent: "
+                  << "[" << pair.index << "] : " << pair.value.time << " : " << pair.value.value << " : "
+                  << CommandStatusToString(pair.value.status) << std::endl;
+    };
 
-	values.ForeachItem(print);
+    values.ForeachItem(print);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values)
 {
-	auto print = [](const Indexed<AnalogCommandEvent>& pair)
-	{
-		std::cout << "AnalogCommandEvent: " <<
-		          "[" << pair.index << "] : " <<
-		          pair.value.time << " : " <<
-		          pair.value.value << " : " <<
-		          CommandStatusToString(pair.value.status) << std::endl;
-	};
+    auto print = [](const Indexed<AnalogCommandEvent>& pair) {
+        std::cout << "AnalogCommandEvent: "
+                  << "[" << pair.index << "] : " << pair.value.time << " : " << pair.value.value << " : "
+                  << CommandStatusToString(pair.value.status) << std::endl;
+    };
 
-	values.ForeachItem(print);
+    values.ForeachItem(print);
 }
 
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values)
 {
-	auto print = [](const Indexed<SecurityStat>& pair)
-	{
-		std::cout << "SecurityStat: " <<
-		          "[" << pair.index << "] : " <<
-		          pair.value.time << " : " <<
-		          pair.value.value.count << " : " <<
-		          static_cast<int>(pair.value.quality) << " : " <<
-		          pair.value.value.assocId << std::endl;
-	};
+    auto print = [](const Indexed<SecurityStat>& pair) {
+        std::cout << "SecurityStat: "
+                  << "[" << pair.index << "] : " << pair.value.time << " : " << pair.value.value.count << " : "
+                  << static_cast<int>(pair.value.quality) << " : " << pair.value.value.assocId << std::endl;
+    };
 
-	values.ForeachItem(print);
+    values.ForeachItem(print);
 }
 
-void PrintingSOEHandler::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values)
+void PrintingSOEHandler::Process(const opendnp3::HeaderInfo& info,
+                                 const opendnp3::ICollection<opendnp3::DNPTime>& values)
 {
-	auto print = [](const DNPTime & value)
-	{
-		std::cout << "DNPTime: " << value.value << std::endl;
-	};
+    auto print = [](const DNPTime& value) { std::cout << "DNPTime: " << value.value << std::endl; };
 
-	values.ForeachItem(print);
+    values.ForeachItem(print);
 }
 
-}
+} // namespace asiodnp3

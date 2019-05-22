@@ -30,51 +30,42 @@ namespace opendnp3
 /// A null object for types that have no metadata
 struct EmptyEventCell
 {
-
 };
 
 /// Base class for different types of event metadata
-template <class Spec>
-struct EventCellBase
+template<class Spec> struct EventCellBase
 {
-	PointClass clazz;
-	typename Spec::meas_t lastEvent;
-	typename Spec::event_variation_t evariation;
+    PointClass clazz;
+    typename Spec::meas_t lastEvent;
+    typename Spec::event_variation_t evariation;
 
-	void SetEventValue(const typename Spec::meas_t& value)
-	{
-		lastEvent = value;
-	}
+    void SetEventValue(const typename Spec::meas_t& value)
+    {
+        lastEvent = value;
+    }
 
 protected:
-
-	EventCellBase() : clazz(PointClass::Class1), lastEvent(), evariation(Spec::DefaultEventVariation)
-	{}
+    EventCellBase() : clazz(PointClass::Class1), lastEvent(), evariation(Spec::DefaultEventVariation) {}
 };
 
 /// Metatype w/o a deadband
-template <class Spec>
-struct SimpleEventCell : EventCellBase<Spec>
+template<class Spec> struct SimpleEventCell : EventCellBase<Spec>
 {
-	bool IsEvent(const typename Spec::config_t& config, const typename Spec::meas_t& newValue) const
-	{
-		return Spec::IsEvent(this->lastEvent, newValue);
-	}
+    bool IsEvent(const typename Spec::config_t& config, const typename Spec::meas_t& newValue) const
+    {
+        return Spec::IsEvent(this->lastEvent, newValue);
+    }
 };
 
 /// Structure for holding metadata information on points that have support deadbanding
-template <class Spec>
-struct DeadbandEventCell : SimpleEventCell<Spec>
+template<class Spec> struct DeadbandEventCell : SimpleEventCell<Spec>
 {
-	bool IsEvent(const typename Spec::config_t& config, const typename Spec::meas_t& newValue) const
-	{
-		return Spec::IsEvent(this->lastEvent, newValue, config.deadband);
-	}
+    bool IsEvent(const typename Spec::config_t& config, const typename Spec::meas_t& newValue) const
+    {
+        return Spec::IsEvent(this->lastEvent, newValue, config.deadband);
+    }
 };
 
-
-} //end namespace
-
-
+} // namespace opendnp3
 
 #endif

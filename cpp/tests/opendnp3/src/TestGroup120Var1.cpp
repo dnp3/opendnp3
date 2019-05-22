@@ -18,15 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#include <openpal/container/Buffer.h>
+#include <openpal/util/ToHex.h>
+
+#include <opendnp3/objects/Group120.h>
 
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
-#include <opendnp3/objects/Group120.h>
-
-#include <openpal/util/ToHex.h>
-#include <openpal/container/Buffer.h>
+#include <catch.hpp>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -36,69 +36,69 @@ using namespace testlib;
 
 TEST_CASE(SUITE("Parser rejects empty buffer"))
 {
-	HexSequence buffer("");
+    HexSequence buffer("");
 
-	Group120Var1 output;
-	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    Group120Var1 output;
+    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Parser correctly interprets challenge data"))
 {
-	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge = 0xDEADBEEF
-	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE EF");
+    // SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge = 0xDEADBEEF
+    HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE EF");
 
-	Group120Var1 output;
-	REQUIRE(output.Read(buffer.ToRSlice()));
-	REQUIRE(output.challengeSeqNum == 1);
-	REQUIRE(output.userNum == 7);
-	REQUIRE(output.hmacAlgo == HMACType::HMAC_SHA1_TRUNC_8);
-	REQUIRE(output.challengeReason == ChallengeReason::CRITICAL);
-	REQUIRE(ToHex(output.challengeData) == "DE AD BE EF");
+    Group120Var1 output;
+    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(output.challengeSeqNum == 1);
+    REQUIRE(output.userNum == 7);
+    REQUIRE(output.hmacAlgo == HMACType::HMAC_SHA1_TRUNC_8);
+    REQUIRE(output.challengeReason == ChallengeReason::CRITICAL);
+    REQUIRE(ToHex(output.challengeData) == "DE AD BE EF");
 }
 
 TEST_CASE(SUITE("Parser accepts empty challenge data"))
 {
-	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge length of 3
-	HexSequence buffer("01 00 00 00 07 00 05 01");
+    // SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge length of 3
+    HexSequence buffer("01 00 00 00 07 00 05 01");
 
-	Group120Var1 output;
-	REQUIRE(output.Read(buffer.ToRSlice()));
-	REQUIRE(output.challengeData.Size() == 0);
+    Group120Var1 output;
+    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(output.challengeData.Size() == 0);
 }
 
 TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
 {
-	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = ???? missing
-	HexSequence buffer("01 00 00 00 07 00 05");
+    // SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = ???? missing
+    HexSequence buffer("01 00 00 00 07 00 05");
 
-	Group120Var1 output;
-	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    Group120Var1 output;
+    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 {
-	HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
+    HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 
-	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSlice());
-	const uint32_t SIZE = challenge.Size();
+    Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSlice());
+    const uint32_t SIZE = challenge.Size();
 
-	Buffer output(64);
-	auto dest = output.GetWSlice();
-	REQUIRE(challenge.Write(dest));
-	auto written = output.Size() - dest.Size();
+    Buffer output(64);
+    auto dest = output.GetWSlice();
+    REQUIRE(challenge.Write(dest));
+    auto written = output.Size() - dest.Size();
 
-	REQUIRE(written == SIZE);
-	REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
+    REQUIRE(written == SIZE);
+    REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
 }
 
 TEST_CASE(SUITE("Formatter return false when insufficient space"))
 {
-	HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
+    HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 
-	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSlice());
-	const uint32_t SIZE = challenge.Size();
+    Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSlice());
+    const uint32_t SIZE = challenge.Size();
 
-	Buffer output(SIZE - 1);
-	auto dest = output.GetWSlice();
-	REQUIRE_FALSE(challenge.Write(dest));
+    Buffer output(SIZE - 1);
+    auto dest = output.GetWSlice();
+    REQUIRE_FALSE(challenge.Write(dest));
 }

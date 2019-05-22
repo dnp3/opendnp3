@@ -31,48 +31,47 @@ class AssignClassTask final : public IMasterTask
 {
 
 public:
+    AssignClassTask(const std::shared_ptr<TaskContext>& context,
+                    IMasterApplication& application,
+                    const TaskBehavior& behavior,
+                    openpal::Logger logger);
 
-	AssignClassTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, const TaskBehavior& behavior, openpal::Logger logger);
+    virtual char const* Name() const override
+    {
+        return "Assign Class";
+    }
 
-	virtual char const* Name() const override
-	{
-		return "Assign Class";
-	}
+    virtual bool IsRecurring() const override
+    {
+        return true;
+    }
 
-	virtual bool IsRecurring() const override
-	{
-		return true;
-	}
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+    virtual int Priority(void) const override
+    {
+        return priority::ASSIGN_CLASS;
+    }
 
-	virtual int Priority(void) const override
-	{
-		return priority::ASSIGN_CLASS;
-	}
-
-	virtual bool BlocksLowerPriority() const override
-	{
-		return true;
-	}
+    virtual bool BlocksLowerPriority() const override
+    {
+        return true;
+    }
 
 private:
+    openpal::TimeDuration retryPeriod;
 
-	openpal::TimeDuration retryPeriod;
+    virtual MasterTaskType GetTaskType() const override
+    {
+        return MasterTaskType::ASSIGN_CLASS;
+    }
 
-	virtual MasterTaskType GetTaskType() const override
-	{
-		return MasterTaskType::ASSIGN_CLASS;
-	}
+    virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header,
+                                           const openpal::RSlice& objects) override;
 
-	virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
-
-	virtual bool IsEnabled() const override;
-
+    virtual bool IsEnabled() const override;
 };
 
-
-} //end ns
-
+} // namespace opendnp3
 
 #endif

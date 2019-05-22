@@ -20,9 +20,9 @@
  */
 #include "TransportLayer.h"
 
-#include <openpal/logging/LogMacros.h>
-
 #include "TransportConstants.h"
+
+#include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 
@@ -34,13 +34,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-
-TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize) :
-	logger(logger),
-	receiver(logger, maxRxFragSize),
-	transmitter(logger)
+TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize)
+    : logger(logger), receiver(logger, maxRxFragSize), transmitter(logger)
 {
-
 }
 
 ///////////////////////////////////////
@@ -49,35 +45,35 @@ TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFrag
 
 bool TransportLayer::BeginTransmit(const Message& message)
 {
-	if (!isOnline)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
-		return false;
-	}
+    if (!isOnline)
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
+        return false;
+    }
 
-	if (message.payload.IsEmpty())
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
-		return false;
-	}
+    if (message.payload.IsEmpty())
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
+        return false;
+    }
 
-	if (isSending)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
-		return false;
-	}
+    if (isSending)
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
+        return false;
+    }
 
-	if (!lower)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
-		return false;
-	}
+    if (!lower)
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
+        return false;
+    }
 
-	isSending = true;
-	transmitter.Configure(message);
-	lower->Send(transmitter);
+    isSending = true;
+    transmitter.Configure(message);
+    lower->Send(transmitter);
 
-	return true;
+    return true;
 }
 
 ///////////////////////////////////////
@@ -86,102 +82,101 @@ bool TransportLayer::BeginTransmit(const Message& message)
 
 bool TransportLayer::OnReceive(const Message& message)
 {
-	if (isOnline)
-	{
-		const auto asdu = receiver.ProcessReceive(message);
-		if (asdu.payload.IsNotEmpty() && upper)
-		{
-			upper->OnReceive(asdu);
-		}
-		return true;
-	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
-		return false;
-	}
+    if (isOnline)
+    {
+        const auto asdu = receiver.ProcessReceive(message);
+        if (asdu.payload.IsNotEmpty() && upper)
+        {
+            upper->OnReceive(asdu);
+        }
+        return true;
+    }
+    else
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
+        return false;
+    }
 }
 
 bool TransportLayer::OnTxReady()
 {
-	if (!isOnline)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
-		return false;
-	}
+    if (!isOnline)
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
+        return false;
+    }
 
-	if (!isSending)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid send callback");
-		return false;
-	}
+    if (!isSending)
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid send callback");
+        return false;
+    }
 
-	isSending = false;
+    isSending = false;
 
-	if (upper)
-	{
-		upper->OnTxReady();
-	}
+    if (upper)
+    {
+        upper->OnTxReady();
+    }
 
-	return true;
+    return true;
 }
 
 void TransportLayer::SetAppLayer(IUpperLayer& upperLayer)
 {
-	assert(!upper);
-	upper = &upperLayer;
+    assert(!upper);
+    upper = &upperLayer;
 }
 
 void TransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
 {
-	assert(!lower);
-	lower = &linkLayer;
+    assert(!lower);
+    lower = &linkLayer;
 }
 
 StackStatistics::Transport TransportLayer::GetStatistics() const
 {
-	return StackStatistics::Transport(this->receiver.Statistics(), this->transmitter.Statistics());
+    return StackStatistics::Transport(this->receiver.Statistics(), this->transmitter.Statistics());
 }
 
 bool TransportLayer::OnLowerLayerUp()
 {
-	if (isOnline)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
-		return false;
-	}
+    if (isOnline)
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
+        return false;
+    }
 
-	isOnline = true;
-	if (upper)
-	{
-		upper->OnLowerLayerUp();
-	}
-	return true;
+    isOnline = true;
+    if (upper)
+    {
+        upper->OnLowerLayerUp();
+    }
+    return true;
 }
 
 bool TransportLayer::OnLowerLayerDown()
 {
-	if (!isOnline)
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already offline");
-		return false;
-	}
+    if (!isOnline)
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already offline");
+        return false;
+    }
 
-	isOnline = false;
-	isSending = false;
-	receiver.Reset();
+    isOnline = false;
+    isSending = false;
+    receiver.Reset();
 
-	if (upper)
-	{
-		upper->OnLowerLayerDown();
-	}
+    if (upper)
+    {
+        upper->OnLowerLayerDown();
+    }
 
-	return true;
+    return true;
 }
 
 ///////////////////////////////////////
 // Helpers
 ///////////////////////////////////////
 
-} //end namespace
-
+} // namespace opendnp3

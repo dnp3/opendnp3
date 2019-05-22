@@ -24,9 +24,9 @@
 
 #include <openpal/logging/Logger.h>
 
-#include <string>
-#include <queue>
 #include <mutex>
+#include <queue>
+#include <string>
 
 namespace testlib
 {
@@ -34,58 +34,45 @@ namespace testlib
 class LogRecord
 {
 public:
+    LogRecord() = default;
+    LogRecord(const openpal::LogEntry& entry);
 
-	LogRecord() = default;
-	LogRecord(const openpal::LogEntry& entry);
-
-	std::string		id;
-	openpal::LogFilters		filters = 0;
-	std::string		location;
-	std::string		message;
+    std::string id;
+    openpal::LogFilters filters = 0;
+    std::string location;
+    std::string message;
 };
 
 struct MockLogHandlerImpl : public openpal::ILogHandler
 {
-	virtual void Log(const openpal::LogEntry& entry) override;
+    virtual void Log(const openpal::LogEntry& entry) override;
 
-	std::mutex mutex;
-	bool outputToStdIO = false;
-	std::deque<LogRecord> messages;
+    std::mutex mutex;
+    bool outputToStdIO = false;
+    std::deque<LogRecord> messages;
 };
 
 class MockLogHandler
 {
 
 public:
+    MockLogHandler() : impl(std::make_shared<MockLogHandlerImpl>()), logger(impl, "test", ~0) {}
 
-	MockLogHandler() :
-		impl(std::make_shared<MockLogHandlerImpl>()),
-		logger(impl, "test", ~0)
-	{}
+    void WriteToStdIo();
 
-	void WriteToStdIo();
+    void Log(const std::string& location, const std::string& message);
 
-	void Log(const std::string& location, const std::string& message);
+    void ClearLog();
 
-	void ClearLog();
-
-	bool GetNextEntry(LogRecord& record);
+    bool GetNextEntry(LogRecord& record);
 
 private:
-
-	std::shared_ptr<MockLogHandlerImpl> impl;
+    std::shared_ptr<MockLogHandlerImpl> impl;
 
 public:
-
-	openpal::Logger logger;
-
+    openpal::Logger logger;
 };
 
-
-
-
-
-
-}
+} // namespace testlib
 
 #endif

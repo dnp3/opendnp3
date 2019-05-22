@@ -31,19 +31,19 @@ namespace asiodnp3
 class IPEndpointsList final
 {
 public:
-	IPEndpointsList(const std::vector<asiopal::IPEndpoint>& endpoints);
-	IPEndpointsList(const IPEndpointsList& rhs);
-	~IPEndpointsList() = default;
+    IPEndpointsList(const std::vector<asiopal::IPEndpoint>& endpoints);
+    IPEndpointsList(const IPEndpointsList& rhs);
+    ~IPEndpointsList() = default;
 
-	const asiopal::IPEndpoint& GetCurrentEndpoint();
-	void Next();
-	void Reset();
+    const asiopal::IPEndpoint& GetCurrentEndpoint();
+    void Next();
+    void Reset();
 
 private:
-	const std::vector<asiopal::IPEndpoint> endpoints;
-	std::vector<asiopal::IPEndpoint>::const_iterator currentEndpoint;
+    const std::vector<asiopal::IPEndpoint> endpoints;
+    std::vector<asiopal::IPEndpoint>::const_iterator currentEndpoint;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

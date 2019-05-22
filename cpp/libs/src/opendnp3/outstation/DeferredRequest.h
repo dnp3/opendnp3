@@ -30,59 +30,48 @@ namespace opendnp3
 {
 
 /**
-* Records metadata about deferred requests
-*/
+ * Records metadata about deferred requests
+ */
 class DeferredRequest : private openpal::Uncopyable
 {
 
 public:
+    explicit DeferredRequest(uint32_t maxAPDUSize);
 
-	explicit DeferredRequest(uint32_t maxAPDUSize);
+    void Reset();
 
-	void Reset();
+    bool IsSet() const;
 
-	bool IsSet() const;
+    FunctionCode GetFunction() const;
 
-	FunctionCode GetFunction() const;
+    void Set(const ParsedRequest& request);
 
-	void Set(const ParsedRequest& request);
-
-	template <class Handler>
-	bool Process(const Handler& handler);
+    template<class Handler> bool Process(const Handler& handler);
 
 private:
+    DeferredRequest() = delete;
 
-	DeferredRequest() = delete;
-
-	bool isSet;
-	Addresses addresses;
-	APDUHeader header;
-	openpal::RSlice objects;
-	openpal::Buffer buffer;
-
+    bool isSet;
+    Addresses addresses;
+    APDUHeader header;
+    openpal::RSlice objects;
+    openpal::Buffer buffer;
 };
 
-template <class Handler>
-bool DeferredRequest::Process(const Handler& handler)
+template<class Handler> bool DeferredRequest::Process(const Handler& handler)
 {
-	if (isSet)
-	{
-		bool processed = handler(
-		                     ParsedRequest(
-		                         this->addresses,
-		                         this->header,
-		                         this->objects
-		                     )
-		                 );
-		isSet = !processed;
-		return processed;
-	}
-	else
-	{
-		return false;
-	}
+    if (isSet)
+    {
+        bool processed = handler(ParsedRequest(this->addresses, this->header, this->objects));
+        isSet = !processed;
+        return processed;
+    }
+    else
+    {
+        return false;
+    }
 }
 
-}
+} // namespace opendnp3
 
 #endif

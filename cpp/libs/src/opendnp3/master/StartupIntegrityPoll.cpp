@@ -22,40 +22,39 @@
 
 #include "MasterTasks.h"
 
-#include "opendnp3/app/parsing/APDUParser.h"
-#include "opendnp3/app/APDUBuilders.h"
-
-#include "opendnp3/master/MeasurementHandler.h"
+#include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
-
-#include <openpal/logging/LogMacros.h>
+#include "opendnp3/app/APDUBuilders.h"
+#include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/master/MeasurementHandler.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-StartupIntegrityPoll::StartupIntegrityPoll(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, const TaskBehavior& behavior, openpal::Logger logger) :
-	PollTaskBase(context, app, soeHandler, behavior, logger, TaskConfig::Default()),
-	classes(classes)
+StartupIntegrityPoll::StartupIntegrityPoll(const std::shared_ptr<TaskContext>& context,
+                                           IMasterApplication& app,
+                                           ISOEHandler& soeHandler,
+                                           ClassField classes,
+                                           const TaskBehavior& behavior,
+                                           openpal::Logger logger)
+    : PollTaskBase(context, app, soeHandler, behavior, logger, TaskConfig::Default()), classes(classes)
 {
-
 }
 
 bool StartupIntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	build::ReadIntegrity(request, classes, seq);
-	request.SetFunction(FunctionCode::READ);
-	request.SetControl(AppControlField::Request(seq));
-	return true;
+    build::ReadIntegrity(request, classes, seq);
+    request.SetFunction(FunctionCode::READ);
+    request.SetControl(AppControlField::Request(seq));
+    return true;
 }
 
 bool StartupIntegrityPoll::IsEnabled() const
 {
-	return classes.HasAnyClass();
+    return classes.HasAnyClass();
 }
 
-} //end ns
-
-
+} // namespace opendnp3

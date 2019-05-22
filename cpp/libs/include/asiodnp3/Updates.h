@@ -21,11 +21,11 @@
 #ifndef ASIODNP3_UPDATES_H
 #define ASIODNP3_UPDATES_H
 
-#include <vector>
-#include <memory>
-#include <functional>
-
 #include "opendnp3/outstation/IUpdateHandler.h"
+
+#include <functional>
+#include <memory>
+#include <vector>
 
 namespace asiodnp3
 {
@@ -35,32 +35,31 @@ typedef std::vector<update_func_t> shared_updates_t;
 
 class Updates
 {
-	friend class UpdateBuilder;
+    friend class UpdateBuilder;
 
 public:
+    void Apply(opendnp3::IUpdateHandler& handler) const
+    {
+        if (!updates)
+            return;
 
-	void Apply(opendnp3::IUpdateHandler& handler) const
-	{
-		if (!updates) return;
+        for (auto& update : *updates)
+        {
+            update(handler);
+        }
+    }
 
-		for(auto& update : *updates)
-		{
-			update(handler);
-		}
-	}
-
-	bool IsEmpty() const
-	{
-		return updates ? updates->empty() : true;
-	}
+    bool IsEmpty() const
+    {
+        return updates ? updates->empty() : true;
+    }
 
 private:
+    Updates(std::shared_ptr<shared_updates_t> updates) : updates(std::move(updates)) {}
 
-	Updates(std::shared_ptr<shared_updates_t> updates) : updates(std::move(updates)) {}
-
-	const std::shared_ptr<shared_updates_t> updates;
+    const std::shared_ptr<shared_updates_t> updates;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

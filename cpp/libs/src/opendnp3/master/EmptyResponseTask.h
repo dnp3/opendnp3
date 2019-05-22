@@ -21,10 +21,9 @@
 #ifndef OPENDNP3_EMPTY_RESPONSE_TASK_H
 #define OPENDNP3_EMPTY_RESPONSE_TASK_H
 
-#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/HeaderBuilder.h"
+#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
-
 
 #include <string>
 
@@ -35,48 +34,52 @@ class EmptyResponseTask final : public IMasterTask
 {
 
 public:
+    EmptyResponseTask(const std::shared_ptr<TaskContext>& context,
+                      IMasterApplication& app,
+                      const std::string& name,
+                      FunctionCode func,
+                      const HeaderBuilderT& format,
+                      openpal::MonotonicTimestamp startExpiration,
+                      openpal::Logger logger,
+                      const TaskConfig& config);
 
-	EmptyResponseTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const std::string& name, FunctionCode func, const HeaderBuilderT& format, openpal::MonotonicTimestamp startExpiration, openpal::Logger logger, const TaskConfig& config);
+    bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	bool BuildRequest(APDURequest& request, uint8_t seq) override;
+    char const* Name() const override
+    {
+        return name.c_str();
+    }
 
-	char const* Name() const override
-	{
-		return name.c_str();
-	}
+    bool IsRecurring() const override
+    {
+        return false;
+    }
 
-	bool IsRecurring() const override
-	{
-		return false;
-	}
+    int Priority() const override
+    {
+        return priority::USER_REQUEST;
+    }
 
-	int Priority() const override
-	{
-		return priority::USER_REQUEST;
-	}
-
-	bool BlocksLowerPriority() const override
-	{
-		return false;
-	}
+    bool BlocksLowerPriority() const override
+    {
+        return false;
+    }
 
 private:
+    MasterTaskType GetTaskType() const override
+    {
+        return MasterTaskType::USER_TASK;
+    }
 
-	MasterTaskType GetTaskType() const override
-	{
-		return MasterTaskType::USER_TASK;
-	}
+    const std::string name;
 
-	const std::string name;
+    FunctionCode func;
+    HeaderBuilderT format;
 
-	FunctionCode func;
-	HeaderBuilderT format;
-
-	IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override final;
-
+    IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header,
+                                                const openpal::RSlice& objects) override final;
 };
 
-} //end ns
-
+} // namespace opendnp3
 
 #endif

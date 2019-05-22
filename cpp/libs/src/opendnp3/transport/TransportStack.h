@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_TRANSPORTSTACK_H
 #define OPENDNP3_TRANSPORTSTACK_H
 
-#include "opendnp3/link/LinkLayer.h"
 #include "opendnp3/link/ILinkListener.h"
+#include "opendnp3/link/LinkLayer.h"
 #include "opendnp3/transport/TransportLayer.h"
 
 namespace opendnp3
@@ -32,19 +32,16 @@ class TransportStack
 {
 
 public:
+    TransportStack(const openpal::Logger& logger,
+                   const std::shared_ptr<openpal::IExecutor>& executor,
+                   const std::shared_ptr<opendnp3::ILinkListener>& listener,
+                   uint32_t maxRxFragSize,
+                   const LinkLayerConfig& config);
 
-	TransportStack(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<openpal::IExecutor>& executor,
-	    const std::shared_ptr<opendnp3::ILinkListener>& listener,
-	    uint32_t maxRxFragSize,
-	    const LinkLayerConfig& config
-	);
-
-	std::shared_ptr<TransportLayer> transport;
-	std::shared_ptr<LinkLayer> link;
+    std::shared_ptr<TransportLayer> transport;
+    std::shared_ptr<LinkLayer> link;
 };
 
-}
+} // namespace opendnp3
 
 #endif

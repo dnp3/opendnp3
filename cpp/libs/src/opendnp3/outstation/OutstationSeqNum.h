@@ -21,9 +21,9 @@
 #ifndef OPENDNP3_OUTSTATIONSEQNUM_H
 #define OPENDNP3_OUTSTATIONSEQNUM_H
 
-#include <cstdint>
-
 #include "opendnp3/app/AppSeqNum.h"
+
+#include <cstdint>
 
 namespace opendnp3
 {
@@ -34,15 +34,12 @@ namespace opendnp3
 class OutstationSeqNum
 {
 public:
+    OutstationSeqNum() {}
 
-	OutstationSeqNum()
-	{}
-
-	AppSeqNum num;
-	AppSeqNum confirmNum;
+    AppSeqNum num;
+    AppSeqNum confirmNum;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

@@ -20,39 +20,35 @@
 #ifndef OPENDNP3_GLOBALREF_H
 #define OPENDNP3_GLOBALREF_H
 
-#include <jni.h>
+#include "JNI.h"
 
 #include <openpal/util/Uncopyable.h>
 
-#include "JNI.h"
+#include <jni.h>
 
 // RAII class for JNI global refs
 class GlobalRef : private openpal::Uncopyable
 {
-	jobject reference;
+    jobject reference;
 
 public:
+    GlobalRef(jobject reference) : reference(JNI::CreateGlobalRef(reference)) {}
 
-	GlobalRef(jobject reference) : reference(JNI::CreateGlobalRef(reference))
-	{}
+    ~GlobalRef()
+    {
+        JNI::DeleteGlobalRef(reference);
+    }
 
-	~GlobalRef()
-	{
-		JNI::DeleteGlobalRef(reference);
-	}
-
-	operator const jobject& () const
-	{
-		return reference;
-	}
-	/*
-		operator jobject& ()
-		{
-			return reference;
-		}
-	*/
-
+    operator const jobject&() const
+    {
+        return reference;
+    }
+    /*
+        operator jobject& ()
+        {
+            return reference;
+        }
+    */
 };
 
 #endif
-

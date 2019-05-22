@@ -21,11 +21,11 @@
 #ifndef OPENDNP3_DATASINK_H
 #define OPENDNP3_DATASINK_H
 
+#include <openpal/container/RSlice.h>
+
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
-
-#include <openpal/container/RSlice.h>
 
 namespace opendnp3
 {
@@ -33,33 +33,30 @@ namespace opendnp3
 class DataSink final
 {
 public:
+    DataSink() = default;
 
-	DataSink() = default;
+    void Write(const openpal::RSlice& data);
 
-	void Write(const openpal::RSlice& data);
+    bool Equals(const openpal::RSlice& data) const;
 
-	bool Equals(const openpal::RSlice& data) const;
+    std::string AsHex(bool spaced = true) const;
 
-	std::string AsHex(bool spaced = true) const;
+    inline bool IsEmpty() const
+    {
+        return buffer.size() == 0;
+    }
 
-	inline bool IsEmpty() const
-	{
-		return buffer.size() == 0;
-	}
+    void Clear();
 
-	void Clear();
-
-	size_t Size() const
-	{
-		return buffer.size();
-	}
+    size_t Size() const
+    {
+        return buffer.size();
+    }
 
 private:
-
-	std::vector<uint8_t> buffer;
+    std::vector<uint8_t> buffer;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

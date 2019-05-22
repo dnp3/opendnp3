@@ -20,8 +20,8 @@
  */
 #include "openpal/serialization/DoubleFloat.h"
 
-#include "openpal/util/Limits.h"
 #include "openpal/serialization/FloatByteOrder.h"
+#include "openpal/util/Limits.h"
 
 #include <cstring>
 
@@ -32,49 +32,48 @@ const double DoubleFloat::Min(openpal::MinValue<double>());
 
 union DoubleFloatUnion
 {
-	uint8_t bytes[8];
-	double value;
+    uint8_t bytes[8];
+    double value;
 };
 
 double DoubleFloat::ReadBuffer(RSlice& buffer)
 {
-	auto ret = Read(buffer);
-	buffer.Advance(SIZE);
-	return ret;
+    auto ret = Read(buffer);
+    buffer.Advance(SIZE);
+    return ret;
 }
 
 void DoubleFloat::WriteBuffer(WSlice& buffer, double value)
 {
-	Write(buffer, value);
-	buffer.Advance(SIZE);
+    Write(buffer, value);
+    buffer.Advance(SIZE);
 }
 
 double DoubleFloat::Read(const uint8_t* data)
 {
-	if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
-	{
-		DoubleFloatUnion x = {{ data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7] }};
-		return x.value;
-	}
-	else
-	{
-		DoubleFloatUnion x = {{ data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] }};
-		return x.value;
-	}
+    if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
+    {
+        DoubleFloatUnion x = {{data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]}};
+        return x.value;
+    }
+    else
+    {
+        DoubleFloatUnion x = {{data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0]}};
+        return x.value;
+    }
 }
 
 void DoubleFloat::Write(uint8_t* dest, double value)
 {
-	if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
-	{
-		memcpy(dest, &value, SIZE);
-	}
-	else
-	{
-		auto data = reinterpret_cast<uint8_t*>(&value);
-		uint8_t bytes[8] = { data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0] };
-		memcpy(dest, bytes, SIZE);
-	}
+    if (FloatByteOrder::ORDER == FloatByteOrder::Value::NORMAL)
+    {
+        memcpy(dest, &value, SIZE);
+    }
+    else
+    {
+        auto data = reinterpret_cast<uint8_t*>(&value);
+        uint8_t bytes[8] = {data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0]};
+        memcpy(dest, bytes, SIZE);
+    }
 }
-}
-
+} // namespace openpal

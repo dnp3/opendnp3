@@ -21,9 +21,8 @@
 #ifndef OPENDNP3_ILINKLAYER_H
 #define OPENDNP3_ILINKLAYER_H
 
-#include "opendnp3/link/ITransportSegment.h"
-
 #include "opendnp3/LayerInterfaces.h"
+#include "opendnp3/link/ITransportSegment.h"
 
 #include <assert.h>
 
@@ -34,14 +33,12 @@ class ILinkLayer
 {
 
 public:
+    virtual ~ILinkLayer() {}
 
-	virtual ~ILinkLayer() {}
-
-	/// Transmit a buffer that can be iterated over in no greater than 250 byte segments
-	virtual bool Send(ITransportSegment& segment) = 0;
-
+    /// Transmit a buffer that can be iterated over in no greater than 250 byte segments
+    virtual bool Send(ITransportSegment& segment) = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif

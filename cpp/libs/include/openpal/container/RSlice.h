@@ -31,42 +31,40 @@ namespace openpal
 class WSlice;
 
 /**
-*	Represents a readonly slice of a buffer located elsewhere. Mediates reading from the buffer
-*	to prevent overreads and other errors.
-*/
+ *	Represents a readonly slice of a buffer located elsewhere. Mediates reading from the buffer
+ *	to prevent overreads and other errors.
+ */
 class RSlice : public HasSize<uint32_t>
 {
 
 public:
+    static RSlice Empty();
 
-	static RSlice Empty();
+    RSlice();
 
-	RSlice();
+    RSlice(uint8_t const* pBuffer, uint32_t size);
 
-	RSlice(uint8_t const* pBuffer, uint32_t size);
+    void Clear();
 
-	void Clear();
+    RSlice CopyTo(WSlice&) const;
 
-	RSlice CopyTo(WSlice&) const;
+    RSlice Take(uint32_t count) const;
 
-	RSlice Take(uint32_t count) const;
+    RSlice Skip(uint32_t count) const;
 
-	RSlice Skip(uint32_t count) const;
+    bool Equals(const RSlice& rhs) const;
 
-	bool Equals(const RSlice& rhs) const;
+    void Advance(uint32_t count);
 
-	void Advance(uint32_t count);
-
-	operator uint8_t const* () const
-	{
-		return pBuffer;
-	}
+    operator uint8_t const*() const
+    {
+        return pBuffer;
+    }
 
 private:
-	uint8_t const* pBuffer;
-
+    uint8_t const* pBuffer;
 };
 
-}
+} // namespace openpal
 
 #endif

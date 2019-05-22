@@ -26,48 +26,36 @@
 namespace opendnp3
 {
 
-CommandTaskResult::CommandTaskResult(TaskCompletion result, const CommandSet::HeaderVector& vector) :
-	ICommandTaskResult(result),
-	m_vector(&vector)
+CommandTaskResult::CommandTaskResult(TaskCompletion result, const CommandSet::HeaderVector& vector)
+    : ICommandTaskResult(result), m_vector(&vector)
 {
-
 }
 
 /// --- Implement ICollection<CommandResult> ----
 
 size_t CommandTaskResult::Count() const
 {
-	size_t count = 0;
-	for (auto& header : *m_vector)
-	{
-		count += header->Count();
-	}
-	return count;
+    size_t count = 0;
+    for (auto& header : *m_vector)
+    {
+        count += header->Count();
+    }
+    return count;
 }
 
 void CommandTaskResult::Foreach(IVisitor<CommandPointResult>& visitor) const
 {
-	uint32_t headerIndex = 0;
+    uint32_t headerIndex = 0;
 
-	for (auto& header : *m_vector)
-	{
-		auto visit = [&](const CommandState & state)
-		{
-			visitor.OnValue(
-			    CommandPointResult(
-			        headerIndex,
-			        state.index,
-			        state.state,
-			        state.status
-			    )
-			);
-		};
+    for (auto& header : *m_vector)
+    {
+        auto visit = [&](const CommandState& state) {
+            visitor.OnValue(CommandPointResult(headerIndex, state.index, state.state, state.status));
+        };
 
-		header->ForeachItem(visit);
-		++headerIndex;
-	}
+        header->ForeachItem(visit);
+        ++headerIndex;
+    }
 }
 
-}
-
-
+} // namespace opendnp3

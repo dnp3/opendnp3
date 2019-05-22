@@ -32,10 +32,10 @@ class ByteStr : public CopyableBuffer
 {
 
 public:
-	ByteStr(uint32_t length, uint8_t seed = 0);
-	ByteStr(const uint8_t* data, uint32_t length);
-	bool operator==(const ByteStr& other) const;
-	std::string ToHex() const;
+    ByteStr(uint32_t length, uint8_t seed = 0);
+    ByteStr(const uint8_t* data, uint32_t length);
+    bool operator==(const ByteStr& other) const;
+    std::string ToHex() const;
 };
 
 /**
@@ -44,19 +44,19 @@ public:
 class HexSequence : public ByteStr
 {
 public:
-	HexSequence(const std::string& hex);
+    HexSequence(const std::string& hex);
 
-	operator openpal::RSlice()
-	{
-		return this->ToRSlice();
-	}
+    operator openpal::RSlice()
+    {
+        return this->ToRSlice();
+    }
 
 private:
-	std::string RemoveSpaces(const std::string& hex);
-	void RemoveSpacesInPlace(std::string& hex);
-	static uint32_t Validate(const std::string& hex);
+    std::string RemoveSpaces(const std::string& hex);
+    void RemoveSpacesInPlace(std::string& hex);
+    static uint32_t Validate(const std::string& hex);
 };
 
-}
+} // namespace testlib
 
 #endif

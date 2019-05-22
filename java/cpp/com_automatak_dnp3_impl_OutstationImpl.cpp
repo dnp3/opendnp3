@@ -23,54 +23,54 @@
 #include "asiodnp3/IOutstation.h"
 #include "asiodnp3/UpdateBuilder.h"
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_set_1log_1level_1native
-(JNIEnv* env, jobject, jlong native, jint levels)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_set_1log_1level_1native(JNIEnv* env,
+                                                                                           jobject,
+                                                                                           jlong native,
+                                                                                           jint levels)
 {
-	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	(*outstation)->SetLogFilters(levels);	
+    auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*)native;
+    (*outstation)->SetLogFilters(levels);
 }
 
-JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_get_1statistics_1native
-(JNIEnv* env, jobject, jlong native)
+JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_get_1statistics_1native(JNIEnv* env,
+                                                                                              jobject,
+                                                                                              jlong native)
 {
-	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	auto stats = (*outstation)->GetStackStatistics();
-	return env->NewGlobalRef(Conversions::ConvertStackStatistics(env, stats));
+    auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*)native;
+    auto stats = (*outstation)->GetStackStatistics();
+    return env->NewGlobalRef(Conversions::ConvertStackStatistics(env, stats));
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_enable_1native
-(JNIEnv* env, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_enable_1native(JNIEnv* env, jobject, jlong native)
 {
-	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	(*outstation)->Enable();
+    auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*)native;
+    (*outstation)->Enable();
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_disable_1native
-(JNIEnv* env, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_disable_1native(JNIEnv* env, jobject, jlong native)
 {
-	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	(*outstation)->Disable();
+    auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*)native;
+    (*outstation)->Disable();
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_shutdown_1native
-(JNIEnv* env, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_shutdown_1native(JNIEnv* env, jobject, jlong native)
 {
-	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	(*outstation)->Shutdown();
+    auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*)native;
+    (*outstation)->Shutdown();
 }
 
-
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_destroy_1native
-(JNIEnv *, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_destroy_1native(JNIEnv*, jobject, jlong native)
 {
-	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;	
-	delete outstation;
+    auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*)native;
+    delete outstation;
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_apply_1native
-(JNIEnv* env, jobject, jlong native, jlong nativeChangeSet)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_apply_1native(JNIEnv* env,
+                                                                                 jobject,
+                                                                                 jlong native,
+                                                                                 jlong nativeChangeSet)
 {
-	auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*) native;
-	auto builder = (asiodnp3::UpdateBuilder*) nativeChangeSet;
-	(*outstation)->Apply(builder->Build());
+    auto outstation = (std::shared_ptr<asiodnp3::IOutstation>*)native;
+    auto builder = (asiodnp3::UpdateBuilder*)nativeChangeSet;
+    (*outstation)->Apply(builder->Build());
 }

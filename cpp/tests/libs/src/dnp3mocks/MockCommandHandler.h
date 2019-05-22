@@ -28,87 +28,73 @@
 namespace opendnp3
 {
 
-template <class T>
-class Operation : public Indexed<T>
+template<class T> class Operation : public Indexed<T>
 {
 public:
+    Operation(T value, uint16_t index, OperateType opType_) : Indexed<T>(value, index), opType(opType_) {}
 
-	Operation(T value, uint16_t index, OperateType opType_) :
-		Indexed<T>(value, index),
-		opType(opType_)
-	{
-
-	}
-
-	OperateType opType;
+    OperateType opType;
 };
-
 
 class MockCommandHandler final : public SimpleCommandHandler
 {
 public:
+    MockCommandHandler(CommandStatus status = CommandStatus::SUCCESS) : SimpleCommandHandler(status) {}
 
-	MockCommandHandler(CommandStatus status = CommandStatus::SUCCESS) : SimpleCommandHandler(status)
-	{}
+    void SetResponse(CommandStatus status_)
+    {
+        status = status_;
+    }
 
-	void SetResponse(CommandStatus status_)
-	{
-		status = status_;
-	}
+    uint32_t NumInvocations() const
+    {
+        return numSelect + numOperate;
+    }
 
-	uint32_t NumInvocations() const
-	{
-		return numSelect + numOperate;
-	}
+    uint32_t NumSelect() const
+    {
+        return numSelect;
+    }
 
-	uint32_t NumSelect() const
-	{
-		return numSelect;
-	}
-
-	uint32_t NumOperate() const
-	{
-		return numOperate;
-	}
+    uint32_t NumOperate() const
+    {
+        return numOperate;
+    }
 
 protected:
+    virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) override
+    {
+        this->crobOps.push_back(Operation<ControlRelayOutputBlock>(command, index, opType));
+    }
 
-	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) override
-	{
-		this->crobOps.push_back(Operation<ControlRelayOutputBlock>(command, index, opType));
-	}
+    virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) override
+    {
+        this->aoInt16Ops.push_back(Operation<AnalogOutputInt16>(command, index, opType));
+    }
 
-	virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) override
-	{
-		this->aoInt16Ops.push_back(Operation<AnalogOutputInt16>(command, index, opType));
-	}
+    virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) override
+    {
+        this->aoInt32Ops.push_back(Operation<AnalogOutputInt32>(command, index, opType));
+    }
 
-	virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) override
-	{
-		this->aoInt32Ops.push_back(Operation<AnalogOutputInt32>(command, index, opType));
-	}
+    virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) override
+    {
+        this->aoFloat32Ops.push_back(Operation<AnalogOutputFloat32>(command, index, opType));
+    }
 
-	virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) override
-	{
-		this->aoFloat32Ops.push_back(Operation<AnalogOutputFloat32>(command, index, opType));
-	}
-
-	virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) override
-	{
-		this->aoDouble64Ops.push_back(Operation<AnalogOutputDouble64>(command, index, opType));
-	}
+    virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) override
+    {
+        this->aoDouble64Ops.push_back(Operation<AnalogOutputDouble64>(command, index, opType));
+    }
 
 public:
-
-	std::vector<Operation<ControlRelayOutputBlock>> crobOps;
-	std::vector<Operation<AnalogOutputInt16>> aoInt16Ops;
-	std::vector<Operation<AnalogOutputInt32>> aoInt32Ops;
-	std::vector<Operation<AnalogOutputFloat32>> aoFloat32Ops;
-	std::vector<Operation<AnalogOutputDouble64>> aoDouble64Ops;
-
+    std::vector<Operation<ControlRelayOutputBlock>> crobOps;
+    std::vector<Operation<AnalogOutputInt16>> aoInt16Ops;
+    std::vector<Operation<AnalogOutputInt32>> aoInt32Ops;
+    std::vector<Operation<AnalogOutputFloat32>> aoFloat32Ops;
+    std::vector<Operation<AnalogOutputDouble64>> aoDouble64Ops;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

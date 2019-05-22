@@ -18,18 +18,18 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include "mocks/MasterTestFixture.h"
 #include "mocks/MeasurementComparisons.h"
 
+#include <opendnp3/app/APDUBuilders.h>
+#include <opendnp3/app/APDUResponse.h>
+
+#include <dnp3mocks/APDUHexBuilders.h>
+#include <dnp3mocks/CommandCallbackQueue.h>
+
 #include <testlib/HexConversions.h>
 
-#include <dnp3mocks/CommandCallbackQueue.h>
-#include <dnp3mocks/APDUHexBuilders.h>
-
-#include <opendnp3/app/APDUResponse.h>
-#include <opendnp3/app/APDUBuilders.h>
+#include <catch.hpp>
 
 using namespace opendnp3;
 using namespace openpal;
@@ -38,103 +38,92 @@ using namespace openpal;
 
 TEST_CASE(SUITE("command set ignores empty headers"))
 {
-	MasterTestFixture t(NoStartupTasks());
-	t.context->OnLowerLayerUp();
+    MasterTestFixture t(NoStartupTasks());
+    t.context->OnLowerLayerUp();
 
-	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+    ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
 
-	CommandSet commands;
-	commands.Add<ControlRelayOutputBlock>({});
-	commands.Add<ControlRelayOutputBlock>({ WithIndex(crob, 1) });
+    CommandSet commands;
+    commands.Add<ControlRelayOutputBlock>({});
+    commands.Add<ControlRelayOutputBlock>({WithIndex(crob, 1)});
 
-	CommandCallbackQueue queue;
-	t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+    CommandCallbackQueue queue;
+    t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 
-	REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->RunMany() > 0);
 
-	// writes just the 2nd call to Add()
-	REQUIRE(t.lower->PopWriteAsHex() == "C0 05 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
+    // writes just the 2nd call to Add()
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 05 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
 }
 
 TEST_CASE(SUITE("DirectOperateTwoCROB"))
 {
-	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
-	std::string crobstr = "0C 01 28 02 00 01 00 01 01 64 00 00 00 64 00 00 00 00 07 00 01 01 64 00 00 00 64 00 00 00 00";
+    // Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
+    std::string crobstr
+        = "0C 01 28 02 00 01 00 01 01 64 00 00 00 64 00 00 00 00 07 00 01 01 64 00 00 00 64 00 00 00 00";
 
+    MasterTestFixture t(NoStartupTasks());
+    t.context->OnLowerLayerUp();
 
-	MasterTestFixture t(NoStartupTasks());
-	t.context->OnLowerLayerUp();
+    ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
 
-	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+    CommandSet commands;
+    commands.Add<ControlRelayOutputBlock>({WithIndex(crob, 1), WithIndex(crob, 7)});
 
-	CommandSet commands;
-	commands.Add<ControlRelayOutputBlock>({ WithIndex(crob, 1), WithIndex(crob, 7) });
+    CommandCallbackQueue queue;
+    t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+    REQUIRE(t.exe->RunMany() > 0);
 
-	CommandCallbackQueue queue;
-	t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
-	REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 05 " + crobstr); // DO
+    t.context->OnTxReady();
+    t.SendToMaster("C0 81 00 00 " + crobstr);
 
+    REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower->PopWriteAsHex() ==  "C0 05 " + crobstr); // DO
-	t.context->OnTxReady();
-	t.SendToMaster("C0 81 00 00 " + crobstr);
+    REQUIRE(t.lower->PopWriteAsHex() == ""); // nore more packets
 
-	REQUIRE(t.exe->RunMany() > 0);
-
-	REQUIRE(t.lower->PopWriteAsHex() == ""); //nore more packets
-
-	REQUIRE(queue.PopOnlyEqualValue(
-	            TaskCompletion::SUCCESS,
-	{
-		CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
-		CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
-	}
-	        ));
+    REQUIRE(queue.PopOnlyEqualValue(TaskCompletion::SUCCESS,
+                                    {CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
+                                     CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS)}));
 }
 
 TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 {
-	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
-	// Group 41 Var2 - index 8, value 0x1234
-	std::string crobstr = "0C 01 28 02 00 01 00 01 01 64 00 00 00 64 00 00 00 00 07 00 01 01 64 00 00 00 64 00 00 00 00";
-	std::string aostr = "29 02 28 01 00 08 00 34 12 00";
-	std::string headers = crobstr + " " + aostr;
+    // Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
+    // Group 41 Var2 - index 8, value 0x1234
+    std::string crobstr
+        = "0C 01 28 02 00 01 00 01 01 64 00 00 00 64 00 00 00 00 07 00 01 01 64 00 00 00 64 00 00 00 00";
+    std::string aostr = "29 02 28 01 00 08 00 34 12 00";
+    std::string headers = crobstr + " " + aostr;
 
+    MasterTestFixture t(NoStartupTasks());
+    t.context->OnLowerLayerUp();
 
-	MasterTestFixture t(NoStartupTasks());
-	t.context->OnLowerLayerUp();
+    ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+    AnalogOutputInt16 ao(0x1234);
 
-	ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
-	AnalogOutputInt16 ao(0x1234);
+    CommandSet commands;
+    commands.Add<ControlRelayOutputBlock>({WithIndex(crob, 1), WithIndex(crob, 7)});
+    commands.Add<AnalogOutputInt16>({WithIndex(ao, 8)});
 
-	CommandSet commands;
-	commands.Add<ControlRelayOutputBlock>({ WithIndex(crob, 1), WithIndex(crob, 7) });
-	commands.Add<AnalogOutputInt16>({ WithIndex(ao, 8) });
+    CommandCallbackQueue queue;
+    t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
+    REQUIRE(t.exe->RunMany() > 0);
 
-	CommandCallbackQueue queue;
-	t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
-	REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + headers); // select
+    t.context->OnTxReady();
+    t.SendToMaster("C0 81 00 00 " + headers);
 
-	REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + headers); // select
-	t.context->OnTxReady();
-	t.SendToMaster("C0 81 00 00 " + headers);
+    REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + headers); // operate
+    t.context->OnTxReady();
+    t.SendToMaster("C1 81 00 00 " + headers);
 
+    REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower->PopWriteAsHex() == "C1 04 " + headers); // operate
-	t.context->OnTxReady();
-	t.SendToMaster("C1 81 00 00 " + headers);
+    REQUIRE(t.lower->PopWriteAsHex() == ""); // nore more packets
 
-	REQUIRE(t.exe->RunMany() > 0);
-
-	REQUIRE(t.lower->PopWriteAsHex() == ""); //nore more packets
-
-	REQUIRE(queue.PopOnlyEqualValue(
-	            TaskCompletion::SUCCESS,
-	{
-		CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
-		CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
-		CommandPointResult(1, 8, CommandPointState::SUCCESS, CommandStatus::SUCCESS)
-	}
-	        ));
+    REQUIRE(queue.PopOnlyEqualValue(TaskCompletion::SUCCESS,
+                                    {CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
+                                     CommandPointResult(0, 7, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
+                                     CommandPointResult(1, 8, CommandPointState::SUCCESS, CommandStatus::SUCCESS)}));
 }
-

@@ -23,8 +23,8 @@
 
 #include "Array.h"
 
-#include "openpal/container/WSlice.h"
 #include "openpal/container/RSlice.h"
+#include "openpal/container/WSlice.h"
 
 #include <cstdint>
 
@@ -35,33 +35,32 @@ class Buffer : public Array<uint8_t, uint32_t>
 {
 
 public:
+    Buffer();
 
-	Buffer();
+    Buffer(uint32_t size);
 
-	Buffer(uint32_t size);
+    // initialize with the exact size and contents of the view
+    Buffer(const RSlice& input);
 
-	// initialize with the exact size and contents of the view
-	Buffer(const RSlice& input);
+    virtual ~Buffer() {}
 
-	virtual ~Buffer() {}
+    RSlice ToRSlice() const;
 
-	RSlice ToRSlice() const;
+    WSlice GetWSlice();
 
-	WSlice GetWSlice();
+    WSlice GetWSlice(uint32_t maxSize);
 
-	WSlice GetWSlice(uint32_t maxSize);
+    const uint8_t* operator()() const
+    {
+        return buffer;
+    }
 
-	const uint8_t* operator()() const
-	{
-		return buffer;
-	}
-
-	uint8_t* operator()()
-	{
-		return buffer;
-	}
+    uint8_t* operator()()
+    {
+        return buffer;
+    }
 };
 
-}
+} // namespace openpal
 
 #endif

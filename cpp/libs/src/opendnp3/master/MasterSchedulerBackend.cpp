@@ -27,302 +27,299 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor) :
-	executor(executor),
-	taskTimer(*executor),
-	taskStartTimeout(*executor)
+MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor)
+    : executor(executor), taskTimer(*executor), taskStartTimeout(*executor)
 {
-
 }
 
 void MasterSchedulerBackend::Shutdown()
 {
-	this->isShutdown = true;
-	this->tasks.clear();
-	this->current.Clear();
-	this->taskTimer.Cancel();
-	this->taskStartTimeout.Cancel();
-	this->executor.reset();
+    this->isShutdown = true;
+    this->tasks.clear();
+    this->current.Clear();
+    this->taskTimer.Cancel();
+    this->taskStartTimeout.Cancel();
+    this->executor.reset();
 }
 
 void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner)
 {
-	if (this->isShutdown) return;
-	
-	this->tasks.push_back(Record(task, runner));
-	this->PostCheckForTaskRun();
+    if (this->isShutdown)
+        return;
+
+    this->tasks.push_back(Record(task, runner));
+    this->PostCheckForTaskRun();
 }
 
 void MasterSchedulerBackend::SetRunnerOffline(const IMasterTaskRunner& runner)
 {
-	if (this->isShutdown) return;
+    if (this->isShutdown)
+        return;
 
-	const auto now = this->executor->GetTime();
+    const auto now = this->executor->GetTime();
 
-	auto checkForOwnership = [now, &runner](const Record & record) -> bool
-	{
-		if (record.BelongsTo(runner))
-		{
-			if (!record.task->IsRecurring())
-			{
-				record.task->OnLowerLayerClose(now);
-			}
+    auto checkForOwnership = [now, &runner](const Record& record) -> bool {
+        if (record.BelongsTo(runner))
+        {
+            if (!record.task->IsRecurring())
+            {
+                record.task->OnLowerLayerClose(now);
+            }
 
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	};
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    };
 
-	if (this->current && checkForOwnership(this->current)) this->current.Clear();
+    if (this->current && checkForOwnership(this->current))
+        this->current.Clear();
 
-	// move erase idiom
-	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), checkForOwnership), this->tasks.end());
+    // move erase idiom
+    this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), checkForOwnership), this->tasks.end());
 
-	this->PostCheckForTaskRun();
+    this->PostCheckForTaskRun();
 }
 
 bool MasterSchedulerBackend::CompleteCurrentFor(const IMasterTaskRunner& runner)
 {
-	// no active task
-	if (!this->current) return false;
+    // no active task
+    if (!this->current)
+        return false;
 
-	// active task not for this runner
-	if (!this->current.BelongsTo(runner)) return false;
+    // active task not for this runner
+    if (!this->current.BelongsTo(runner))
+        return false;
 
-	if (this->current.task->IsRecurring())
-	{
-		this->Add(this->current.task, *this->current.runner);
-	}
+    if (this->current.task->IsRecurring())
+    {
+        this->Add(this->current.task, *this->current.runner);
+    }
 
-	this->current.Clear();
+    this->current.Clear();
 
-	this->PostCheckForTaskRun();
+    this->PostCheckForTaskRun();
 
-	return true;
+    return true;
 }
 
 void MasterSchedulerBackend::Demand(const std::shared_ptr<IMasterTask>& task)
 {
-	auto callback = [this, task, self = shared_from_this()]()
-	{
-		task->SetMinExpiration();
-		this->CheckForTaskRun();
-	};
+    auto callback = [this, task, self = shared_from_this()]() {
+        task->SetMinExpiration();
+        this->CheckForTaskRun();
+    };
 
-	this->executor->Post(callback);
+    this->executor->Post(callback);
 }
 
 void MasterSchedulerBackend::Evaluate()
 {
-	this->PostCheckForTaskRun();
+    this->PostCheckForTaskRun();
 }
 
 void MasterSchedulerBackend::PostCheckForTaskRun()
 {
-	if (!this->taskCheckPending)
-	{
-		this->taskCheckPending = true;
-		this->executor->Post([this, self = shared_from_this()]()
-		{
-			this->CheckForTaskRun();
-		});
-	}
+    if (!this->taskCheckPending)
+    {
+        this->taskCheckPending = true;
+        this->executor->Post([this, self = shared_from_this()]() { this->CheckForTaskRun(); });
+    }
 }
 
 bool MasterSchedulerBackend::CheckForTaskRun()
 {
-	if (this->isShutdown) return false;
+    if (this->isShutdown)
+        return false;
 
-	this->taskCheckPending = false;
+    this->taskCheckPending = false;
 
-	this->RestartTimeoutTimer();
+    this->RestartTimeoutTimer();
 
-	if (this->current) return false;
+    if (this->current)
+        return false;
 
-	const auto now = this->executor->GetTime();
+    const auto now = this->executor->GetTime();
 
-	// try to find a task that can run
-	auto current = this->tasks.begin();
-	auto best_task = current;
-	if (current == this->tasks.end()) return false;
-	++current;
+    // try to find a task that can run
+    auto current = this->tasks.begin();
+    auto best_task = current;
+    if (current == this->tasks.end())
+        return false;
+    ++current;
 
-	while (current != this->tasks.end())
-	{
-		if (GetBestTaskToRun(now, *best_task, *current) == Comparison::RIGHT)
-		{
-			best_task = current;
-		}
+    while (current != this->tasks.end())
+    {
+        if (GetBestTaskToRun(now, *best_task, *current) == Comparison::RIGHT)
+        {
+            best_task = current;
+        }
 
-		++current;
-	}
+        ++current;
+    }
 
-	// is the task runnable now?
-	const auto IS_EXPIRED = now.milliseconds >= best_task->task->ExpirationTime().milliseconds;
-	if (IS_EXPIRED)
-	{
-		this->current = *best_task;
-		this->tasks.erase(best_task);
-		this->current.runner->Run(this->current.task);
+    // is the task runnable now?
+    const auto IS_EXPIRED = now.milliseconds >= best_task->task->ExpirationTime().milliseconds;
+    if (IS_EXPIRED)
+    {
+        this->current = *best_task;
+        this->tasks.erase(best_task);
+        this->current.runner->Run(this->current.task);
 
-		return true;
-	}
-	else
-	{
-		auto callback = [this, self = shared_from_this()]()
-		{
-			this->CheckForTaskRun();
-		};
+        return true;
+    }
+    else
+    {
+        auto callback = [this, self = shared_from_this()]() { this->CheckForTaskRun(); };
 
-		this->taskTimer.Restart(best_task->task->ExpirationTime(), callback);
+        this->taskTimer.Restart(best_task->task->ExpirationTime(), callback);
 
-		return false;
-	}
+        return false;
+    }
 }
 
 void MasterSchedulerBackend::RestartTimeoutTimer()
 {
-	if (this->isShutdown) return;
+    if (this->isShutdown)
+        return;
 
-	auto min = MonotonicTimestamp::Max();
+    auto min = MonotonicTimestamp::Max();
 
-	for (auto& record : this->tasks)
-	{
-		if (!record.task->IsRecurring() && (record.task->StartExpirationTime() < min))
-		{
-			min = record.task->StartExpirationTime();
-		}
-	}
+    for (auto& record : this->tasks)
+    {
+        if (!record.task->IsRecurring() && (record.task->StartExpirationTime() < min))
+        {
+            min = record.task->StartExpirationTime();
+        }
+    }
 
-	if (min.IsMax())
-	{
-		this->taskStartTimeout.Cancel();
-	}
-	else
-	{
-		this->taskStartTimeout.Restart(min, [this, self = shared_from_this()]()
-		{
-			this->TimeoutTasks();
-		});
-	}
+    if (min.IsMax())
+    {
+        this->taskStartTimeout.Cancel();
+    }
+    else
+    {
+        this->taskStartTimeout.Restart(min, [this, self = shared_from_this()]() { this->TimeoutTasks(); });
+    }
 }
 
 void MasterSchedulerBackend::TimeoutTasks()
 {
-	if (this->isShutdown) return;
+    if (this->isShutdown)
+        return;
 
-	// find the minimum start timeout value
-	auto isTimedOut = [now = this->executor->GetTime()](const Record & record) -> bool
-	{
-		if (record.task->IsRecurring() || record.task->StartExpirationTime() > now)
-		{
-			return false;
-		}
+    // find the minimum start timeout value
+    auto isTimedOut = [now = this->executor->GetTime()](const Record& record) -> bool {
+        if (record.task->IsRecurring() || record.task->StartExpirationTime() > now)
+        {
+            return false;
+        }
 
-		record.task->OnStartTimeout(now);
+        record.task->OnStartTimeout(now);
 
-		return true;
-	};
+        return true;
+    };
 
-	// erase-remove idion (https://en.wikipedia.org/wiki/Erase-remove_idiom)
-	this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), isTimedOut), this->tasks.end());
+    // erase-remove idion (https://en.wikipedia.org/wiki/Erase-remove_idiom)
+    this->tasks.erase(std::remove_if(this->tasks.begin(), this->tasks.end(), isTimedOut), this->tasks.end());
 
-	this->RestartTimeoutTimer();
+    this->RestartTimeoutTimer();
 }
 
-MasterSchedulerBackend::Comparison MasterSchedulerBackend::GetBestTaskToRun(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right)
+MasterSchedulerBackend::Comparison MasterSchedulerBackend::GetBestTaskToRun(const openpal::MonotonicTimestamp& now,
+                                                                            const Record& left,
+                                                                            const Record& right)
 {
-	const auto BEST_ENABLED_STATUS = CompareEnabledStatus(left, right);
+    const auto BEST_ENABLED_STATUS = CompareEnabledStatus(left, right);
 
-	if(BEST_ENABLED_STATUS != Comparison::SAME)
-	{
-		// if one task is disabled, return the other task
-		return BEST_ENABLED_STATUS;
-	}
+    if (BEST_ENABLED_STATUS != Comparison::SAME)
+    {
+        // if one task is disabled, return the other task
+        return BEST_ENABLED_STATUS;
+    }
 
-	const auto BEST_BLOCKED_STATUS = CompareBlockedStatus(left, right);
+    const auto BEST_BLOCKED_STATUS = CompareBlockedStatus(left, right);
 
-	if (BEST_BLOCKED_STATUS != Comparison::SAME)
-	{
-		// if one task is blocked and the other isn't, return the unblocked task
-		return BEST_BLOCKED_STATUS;
-	}
+    if (BEST_BLOCKED_STATUS != Comparison::SAME)
+    {
+        // if one task is blocked and the other isn't, return the unblocked task
+        return BEST_BLOCKED_STATUS;
+    }
 
-	const auto EARLIEST_EXPIRATION = CompareTime(now, left, right);
-	const auto BEST_PRIORITY = ComparePriority(left, right);
+    const auto EARLIEST_EXPIRATION = CompareTime(now, left, right);
+    const auto BEST_PRIORITY = ComparePriority(left, right);
 
-	// if the expiration times are the same, break based on priority, otherwise go with the expiration time
-	return (EARLIEST_EXPIRATION == Comparison::SAME) ? BEST_PRIORITY : EARLIEST_EXPIRATION;
+    // if the expiration times are the same, break based on priority, otherwise go with the expiration time
+    return (EARLIEST_EXPIRATION == Comparison::SAME) ? BEST_PRIORITY : EARLIEST_EXPIRATION;
 }
 
-MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareTime(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right)
+MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareTime(const openpal::MonotonicTimestamp& now,
+                                                                       const Record& left,
+                                                                       const Record& right)
 {
-	// if tasks are already expired, the effective expiration time is NOW
-	const auto leftTime = left.task->IsExpired(now) ? now : left.task->ExpirationTime();
-	const auto rightTime = right.task->IsExpired(now) ? now : right.task->ExpirationTime();
+    // if tasks are already expired, the effective expiration time is NOW
+    const auto leftTime = left.task->IsExpired(now) ? now : left.task->ExpirationTime();
+    const auto rightTime = right.task->IsExpired(now) ? now : right.task->ExpirationTime();
 
-	if (leftTime < rightTime)
-	{
-		return Comparison::LEFT;
-	}
-	else if (rightTime < leftTime)
-	{
-		return Comparison::RIGHT;
-	}
-	else
-	{
-		return Comparison::SAME;
-	}
+    if (leftTime < rightTime)
+    {
+        return Comparison::LEFT;
+    }
+    else if (rightTime < leftTime)
+    {
+        return Comparison::RIGHT;
+    }
+    else
+    {
+        return Comparison::SAME;
+    }
 }
 
 MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareEnabledStatus(const Record& left, const Record& right)
 {
-	if (left.task->ExpirationTime().IsMax()) // left is disabled, check the right
-	{
-		return right.task->ExpirationTime().IsMax() ? Comparison::SAME : Comparison::RIGHT;
-	}
-	else if(right.task->ExpirationTime().IsMax()) // left is enabled, right is disabled
-	{
-		return Comparison::LEFT;
-	}
-	else
-	{
-		// both tasks are enabled
-		return Comparison::SAME;
-	}
+    if (left.task->ExpirationTime().IsMax()) // left is disabled, check the right
+    {
+        return right.task->ExpirationTime().IsMax() ? Comparison::SAME : Comparison::RIGHT;
+    }
+    else if (right.task->ExpirationTime().IsMax()) // left is enabled, right is disabled
+    {
+        return Comparison::LEFT;
+    }
+    else
+    {
+        // both tasks are enabled
+        return Comparison::SAME;
+    }
 }
 
 MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareBlockedStatus(const Record& left, const Record& right)
 {
-	if (left.task->IsBlocked())
-	{
-		return right.task->IsBlocked() ? Comparison::SAME : Comparison::RIGHT;
-	}
-	else
-	{
-		return right.task->IsBlocked() ? Comparison::LEFT : Comparison::SAME;
-	}
+    if (left.task->IsBlocked())
+    {
+        return right.task->IsBlocked() ? Comparison::SAME : Comparison::RIGHT;
+    }
+    else
+    {
+        return right.task->IsBlocked() ? Comparison::LEFT : Comparison::SAME;
+    }
 }
 
 MasterSchedulerBackend::Comparison MasterSchedulerBackend::ComparePriority(const Record& left, const Record& right)
 {
-	if (left.task->Priority() < right.task->Priority())
-	{
-		return Comparison::LEFT;
-	}
-	else if (right.task->Priority() < left.task->Priority())
-	{
-		return Comparison::RIGHT;
-	}
-	else
-	{
-		return Comparison::SAME;
-	}
+    if (left.task->Priority() < right.task->Priority())
+    {
+        return Comparison::LEFT;
+    }
+    else if (right.task->Priority() < left.task->Priority())
+    {
+        return Comparison::RIGHT;
+    }
+    else
+    {
+        return Comparison::SAME;
+    }
 }
 
-}
-
-
+} // namespace opendnp3

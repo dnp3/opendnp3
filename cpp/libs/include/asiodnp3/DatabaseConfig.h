@@ -21,11 +21,10 @@
 #ifndef ASIODNP3_DATABASECONFIG_H
 #define ASIODNP3_DATABASECONFIG_H
 
-#include "opendnp3/outstation/MeasurementConfig.h"
+#include "openpal/container/Array.h"
 
 #include "opendnp3/outstation/DatabaseSizes.h"
-
-#include "openpal/container/Array.h"
+#include "opendnp3/outstation/MeasurementConfig.h"
 
 namespace asiodnp3
 {
@@ -33,54 +32,51 @@ namespace asiodnp3
 class DatabaseConfig
 {
 public:
+    DatabaseConfig(const opendnp3::DatabaseSizes& sizes)
+        : sizes(sizes),
+          binary(sizes.numBinary),
+          doubleBinary(sizes.numDoubleBinary),
+          analog(sizes.numAnalog),
+          counter(sizes.numCounter),
+          frozenCounter(sizes.numFrozenCounter),
+          boStatus(sizes.numBinaryOutputStatus),
+          aoStatus(sizes.numAnalogOutputStatus),
+          timeAndInterval(sizes.numTimeAndInterval),
+          octetString(sizes.numOctetString)
+    {
+        InitIndices(binary);
+        InitIndices(doubleBinary);
+        InitIndices(analog);
+        InitIndices(counter);
+        InitIndices(frozenCounter);
+        InitIndices(boStatus);
+        InitIndices(aoStatus);
+        InitIndices(timeAndInterval);
+        InitIndices(octetString);
+    }
 
-	DatabaseConfig(const opendnp3::DatabaseSizes& sizes) :
-		sizes(sizes),
-		binary(sizes.numBinary),
-		doubleBinary(sizes.numDoubleBinary),
-		analog(sizes.numAnalog),
-		counter(sizes.numCounter),
-		frozenCounter(sizes.numFrozenCounter),
-		boStatus(sizes.numBinaryOutputStatus),
-		aoStatus(sizes.numAnalogOutputStatus),
-		timeAndInterval(sizes.numTimeAndInterval),
-		octetString(sizes.numOctetString)
-	{
-		InitIndices(binary);
-		InitIndices(doubleBinary);
-		InitIndices(analog);
-		InitIndices(counter);
-		InitIndices(frozenCounter);
-		InitIndices(boStatus);
-		InitIndices(aoStatus);
-		InitIndices(timeAndInterval);
-		InitIndices(octetString);
-	}
+    const opendnp3::DatabaseSizes sizes;
 
-	const opendnp3::DatabaseSizes sizes;
-
-	openpal::Array<opendnp3::BinaryConfig, uint16_t> binary;
-	openpal::Array<opendnp3::DoubleBitBinaryConfig, uint16_t> doubleBinary;
-	openpal::Array<opendnp3::AnalogConfig, uint16_t> analog;
-	openpal::Array<opendnp3::CounterConfig, uint16_t> counter;
-	openpal::Array<opendnp3::FrozenCounterConfig, uint16_t> frozenCounter;
-	openpal::Array<opendnp3::BOStatusConfig, uint16_t> boStatus;
-	openpal::Array<opendnp3::AOStatusConfig, uint16_t> aoStatus;
-	openpal::Array<opendnp3::TimeAndIntervalConfig, uint16_t> timeAndInterval;
-	openpal::Array<opendnp3::OctetStringConfig, uint16_t> octetString;
+    openpal::Array<opendnp3::BinaryConfig, uint16_t> binary;
+    openpal::Array<opendnp3::DoubleBitBinaryConfig, uint16_t> doubleBinary;
+    openpal::Array<opendnp3::AnalogConfig, uint16_t> analog;
+    openpal::Array<opendnp3::CounterConfig, uint16_t> counter;
+    openpal::Array<opendnp3::FrozenCounterConfig, uint16_t> frozenCounter;
+    openpal::Array<opendnp3::BOStatusConfig, uint16_t> boStatus;
+    openpal::Array<opendnp3::AOStatusConfig, uint16_t> aoStatus;
+    openpal::Array<opendnp3::TimeAndIntervalConfig, uint16_t> timeAndInterval;
+    openpal::Array<opendnp3::OctetStringConfig, uint16_t> octetString;
 
 private:
-
-	template <class T>
-	void InitIndices(T& values)
-	{
-		for (auto i = 0; i < values.Size(); ++i)
-		{
-			values[i].vIndex = i;
-		}
-	}
+    template<class T> void InitIndices(T& values)
+    {
+        for (auto i = 0; i < values.Size(); ++i)
+        {
+            values[i].vIndex = i;
+        }
+    }
 };
 
-}
+} // namespace asiodnp3
 
 #endif

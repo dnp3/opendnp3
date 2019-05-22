@@ -23,155 +23,151 @@
 namespace opendnp3
 {
 
-GroupVariationRecord::GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_) :
-	enumeration(enumeration_),
-	type(type_),
-	group(group_),
-	variation(variation_)
+GroupVariationRecord::GroupVariationRecord(uint8_t group_,
+                                           uint8_t variation_,
+                                           GroupVariation enumeration_,
+                                           GroupVariationType type_)
+    : enumeration(enumeration_), type(type_), group(group_), variation(variation_)
 {
-
 }
 
-HeaderRecord::HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier_, uint32_t headerIndex_) :
-	GroupVariationRecord(gv),
-	qualifier(qualifier_),
-	headerIndex(headerIndex_)
+HeaderRecord::HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier_, uint32_t headerIndex_)
+    : GroupVariationRecord(gv), qualifier(qualifier_), headerIndex(headerIndex_)
 {
-
 }
 
 QualifierCode HeaderRecord::GetQualifierCode() const
 {
-	return QualifierCodeFromType(qualifier);
+    return QualifierCodeFromType(qualifier);
 }
 
 GroupVariationRecord GroupVariationRecord::GetRecord(uint8_t group, uint8_t variation)
 {
-	auto pair = GetEnumAndType(group, variation);
-	return GroupVariationRecord(group, variation, pair.enumeration, pair.type);
+    auto pair = GetEnumAndType(group, variation);
+    return GroupVariationRecord(group, variation, pair.enumeration, pair.type);
 }
 
 uint16_t GroupVariationRecord::GetGroupVar(uint8_t group, uint8_t variation)
 {
-	return (group << 8) | variation;
+    return (group << 8) | variation;
 }
 
 EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variation)
 {
-	auto type = GetType(group, variation);
-	auto enumeration = GroupVariationFromType(GetGroupVar(group, variation));
+    auto type = GetType(group, variation);
+    auto enumeration = GroupVariationFromType(GetGroupVar(group, variation));
 
-	if (enumeration == GroupVariation::UNKNOWN)
-	{
-		switch (group)
-		{
-		case(110) :
-			enumeration = GroupVariation::Group110Var0;
-			break;
-		case(111) :
-			enumeration = GroupVariation::Group111Var0;
-			break;
-		case(112) :
-			enumeration = GroupVariation::Group112Var0;
-			break;
-		case(113) :
-			enumeration = GroupVariation::Group113Var0;
-			break;
-		default:
-			break;
-		}
-	}
+    if (enumeration == GroupVariation::UNKNOWN)
+    {
+        switch (group)
+        {
+        case (110):
+            enumeration = GroupVariation::Group110Var0;
+            break;
+        case (111):
+            enumeration = GroupVariation::Group111Var0;
+            break;
+        case (112):
+            enumeration = GroupVariation::Group112Var0;
+            break;
+        case (113):
+            enumeration = GroupVariation::Group113Var0;
+            break;
+        default:
+            break;
+        }
+    }
 
-	return EnumAndType(enumeration, type);
+    return EnumAndType(enumeration, type);
 }
 
 GroupVariationType GroupVariationRecord::GetType(uint8_t group, uint8_t variation)
 {
-	switch (group)
-	{
-	case(1) :
-		return GroupVariationType::STATIC;
+    switch (group)
+    {
+    case (1):
+        return GroupVariationType::STATIC;
 
-	case(2) :
-		return GroupVariationType::EVENT;
+    case (2):
+        return GroupVariationType::EVENT;
 
-	case(3) :
-		return GroupVariationType::STATIC;
+    case (3):
+        return GroupVariationType::STATIC;
 
-	case(4) :
-		return GroupVariationType::EVENT;
+    case (4):
+        return GroupVariationType::EVENT;
 
-	case(10) :
-		return GroupVariationType::STATIC;
+    case (10):
+        return GroupVariationType::STATIC;
 
-	case(11) :
-		return GroupVariationType::EVENT;
+    case (11):
+        return GroupVariationType::EVENT;
 
-	case(13) :
-		return GroupVariationType::EVENT;
+    case (13):
+        return GroupVariationType::EVENT;
 
-	case(20) :
-		return GroupVariationType::STATIC;
+    case (20):
+        return GroupVariationType::STATIC;
 
-	case(21) :
-		return GroupVariationType::STATIC;
+    case (21):
+        return GroupVariationType::STATIC;
 
-	case(22) :
-		return GroupVariationType::EVENT;
+    case (22):
+        return GroupVariationType::EVENT;
 
-	case(23) :
-		return GroupVariationType::EVENT;
+    case (23):
+        return GroupVariationType::EVENT;
 
-	case(30) :
-		return GroupVariationType::STATIC;
+    case (30):
+        return GroupVariationType::STATIC;
 
-	case(32) :
-		return GroupVariationType::EVENT;
+    case (32):
+        return GroupVariationType::EVENT;
 
-	case(40) :
-		return GroupVariationType::STATIC;
+    case (40):
+        return GroupVariationType::STATIC;
 
-	case(41) :
-		return GroupVariationType::EVENT;
+    case (41):
+        return GroupVariationType::EVENT;
 
-	case(42) :
-		return GroupVariationType::EVENT;
+    case (42):
+        return GroupVariationType::EVENT;
 
-	case(43) :
-		return GroupVariationType::EVENT;
+    case (43):
+        return GroupVariationType::EVENT;
 
-	case(50) :
-		switch (variation)
-		{
-		case(4) :
-			return GroupVariationType::STATIC;
-		default:
-			return GroupVariationType::OTHER;
-		}
+    case (50):
+        switch (variation)
+        {
+        case (4):
+            return GroupVariationType::STATIC;
+        default:
+            return GroupVariationType::OTHER;
+        }
 
-	case(60):
-		switch (variation)
-		{
-		case(1) :
-			return GroupVariationType::STATIC;
-		default:
-			return GroupVariationType::EVENT;
-		}
+    case (60):
+        switch (variation)
+        {
+        case (1):
+            return GroupVariationType::STATIC;
+        default:
+            return GroupVariationType::EVENT;
+        }
 
-	case(110):
-		return GroupVariationType::STATIC;
+    case (110):
+        return GroupVariationType::STATIC;
 
-	case(111):
-		return GroupVariationType::EVENT;
+    case (111):
+        return GroupVariationType::EVENT;
 
-	case(121) :
-		return GroupVariationType::STATIC;
-	case(122) :
-		return GroupVariationType::EVENT;
+    case (121):
+        return GroupVariationType::STATIC;
+    case (122):
+        return GroupVariationType::EVENT;
 
-	default:
-		return GroupVariationType::OTHER;
-	}
+    default:
+        return GroupVariationType::OTHER;
+    }
 }
 
-} //end ns
+} // namespace opendnp3

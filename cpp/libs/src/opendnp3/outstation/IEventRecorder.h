@@ -29,12 +29,11 @@ namespace opendnp3
 class IEventRecorder
 {
 public:
+    virtual bool HasMoreUnwrittenEvents() const = 0;
 
-	virtual bool HasMoreUnwrittenEvents() const = 0;
-
-	virtual void RecordWritten(EventClass ec, EventType et) = 0;
+    virtual void RecordWritten(EventClass ec, EventType et) = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif

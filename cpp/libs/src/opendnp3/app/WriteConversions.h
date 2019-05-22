@@ -23,28 +23,27 @@
 
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/WriteConversionTemplates.h"
-
 #include "opendnp3/objects/Group1.h"
-#include "opendnp3/objects/Group2.h"
-#include "opendnp3/objects/Group3.h"
-#include "opendnp3/objects/Group4.h"
 #include "opendnp3/objects/Group10.h"
 #include "opendnp3/objects/Group11.h"
 #include "opendnp3/objects/Group12.h"
+#include "opendnp3/objects/Group121.h"
+#include "opendnp3/objects/Group122.h"
 #include "opendnp3/objects/Group13.h"
+#include "opendnp3/objects/Group2.h"
 #include "opendnp3/objects/Group20.h"
 #include "opendnp3/objects/Group21.h"
 #include "opendnp3/objects/Group22.h"
 #include "opendnp3/objects/Group23.h"
+#include "opendnp3/objects/Group3.h"
 #include "opendnp3/objects/Group30.h"
 #include "opendnp3/objects/Group32.h"
+#include "opendnp3/objects/Group4.h"
 #include "opendnp3/objects/Group40.h"
 #include "opendnp3/objects/Group41.h"
 #include "opendnp3/objects/Group42.h"
 #include "opendnp3/objects/Group43.h"
 #include "opendnp3/objects/Group50.h"
-#include "opendnp3/objects/Group121.h"
-#include "opendnp3/objects/Group122.h"
 
 namespace opendnp3
 {
@@ -75,38 +74,38 @@ typedef ConvertQT<Group11Var2, BinaryOutputStatus> ConvertGroup11Var2;
 // Group 12
 struct ConvertGroup12Var1 : private openpal::StaticOnly
 {
-	static Group12Var1 Apply(const ControlRelayOutputBlock& crob)
-	{
-		Group12Var1 ret;
-		ret.code = crob.rawCode;
-		ret.count = crob.count;
-		ret.onTime = crob.onTimeMS;
-		ret.offTime = crob.offTimeMS;
-		ret.status = CommandStatusToType(crob.status);
-		return ret;
-	}
+    static Group12Var1 Apply(const ControlRelayOutputBlock& crob)
+    {
+        Group12Var1 ret;
+        ret.code = crob.rawCode;
+        ret.count = crob.count;
+        ret.onTime = crob.onTimeMS;
+        ret.offTime = crob.offTimeMS;
+        ret.status = CommandStatusToType(crob.status);
+        return ret;
+    }
 };
 
 // Group 13
 struct ConvertGroup13Var1 : private openpal::StaticOnly
 {
-	static Group13Var1 Apply(const BinaryCommandEvent& ev)
-	{
-		Group13Var1 ret;
-		ret.flags = ev.GetFlags().value;
-		return ret;
-	}
+    static Group13Var1 Apply(const BinaryCommandEvent& ev)
+    {
+        Group13Var1 ret;
+        ret.flags = ev.GetFlags().value;
+        return ret;
+    }
 };
 
 struct ConvertGroup13Var2 : private openpal::StaticOnly
 {
-	static Group13Var2 Apply(const BinaryCommandEvent& ev)
-	{
-		Group13Var2 ret;
-		ret.flags = ev.GetFlags().value;
-		ret.time = ev.time;
-		return ret;
-	}
+    static Group13Var2 Apply(const BinaryCommandEvent& ev)
+    {
+        Group13Var2 ret;
+        ret.flags = ev.GetFlags().value;
+        ret.time = ev.time;
+        return ret;
+    }
 };
 
 // Group 20
@@ -179,29 +178,27 @@ typedef ConvertQVTRangeCheck<Group42Var7, AnalogOutputStatus, 0x20> ConvertGroup
 typedef ConvertQVT<Group42Var8, AnalogOutputStatus> ConvertGroup42Var8;
 
 // Group 43
-template <class Target>
-struct ConvertGroup43RangeCheck : private openpal::StaticOnly
+template<class Target> struct ConvertGroup43RangeCheck : private openpal::StaticOnly
 {
-	static Target Apply(const AnalogCommandEvent& src)
-	{
-		Target t;
-		DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
-		t.status = CommandStatusToType(src.status);
-		return t;
-	}
+    static Target Apply(const AnalogCommandEvent& src)
+    {
+        Target t;
+        DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
+        t.status = CommandStatusToType(src.status);
+        return t;
+    }
 };
 
-template <class Target>
-struct ConvertGroup43WithTimeRangeCheck : private openpal::StaticOnly
+template<class Target> struct ConvertGroup43WithTimeRangeCheck : private openpal::StaticOnly
 {
-	static Target Apply(const AnalogCommandEvent& src)
-	{
-		Target t;
-		DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
-		t.status = CommandStatusToType(src.status);
-		t.time = src.time;
-		return t;
-	}
+    static Target Apply(const AnalogCommandEvent& src)
+    {
+        Target t;
+        DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
+        t.status = CommandStatusToType(src.status);
+        t.time = src.time;
+        return t;
+    }
 };
 
 typedef ConvertGroup43RangeCheck<Group43Var1> ConvertGroup43Var1;
@@ -212,82 +209,81 @@ typedef ConvertGroup43RangeCheck<Group43Var5> ConvertGroup43Var5;
 
 struct ConvertGroup43Var6 : private openpal::StaticOnly
 {
-	static Group43Var6 Apply(const AnalogCommandEvent& src)
-	{
-		Group43Var6 t;
-		t.value = src.value;
-		t.status = CommandStatusToType(src.status);
-		return t;
-	}
+    static Group43Var6 Apply(const AnalogCommandEvent& src)
+    {
+        Group43Var6 t;
+        t.value = src.value;
+        t.status = CommandStatusToType(src.status);
+        return t;
+    }
 };
 
 typedef ConvertGroup43WithTimeRangeCheck<Group43Var7> ConvertGroup43Var7;
 
 struct ConvertGroup43Var8 : private openpal::StaticOnly
 {
-	static Group43Var8 Apply(const AnalogCommandEvent& src)
-	{
-		Group43Var8 t;
-		t.value = src.value;
-		t.status = CommandStatusToType(src.status);
-		t.time = src.time;
-		return t;
-	}
+    static Group43Var8 Apply(const AnalogCommandEvent& src)
+    {
+        Group43Var8 t;
+        t.value = src.value;
+        t.status = CommandStatusToType(src.status);
+        t.time = src.time;
+        return t;
+    }
 };
 
 // Group 50
 struct ConvertGroup50Var4 : private openpal::StaticOnly
 {
-	static Group50Var4 Apply(const TimeAndInterval& value)
-	{
-		Group50Var4 ret;
-		ret.time = value.time;
-		ret.interval = value.interval;
-		ret.units = value.units;
-		return ret;
-	}
+    static Group50Var4 Apply(const TimeAndInterval& value)
+    {
+        Group50Var4 ret;
+        ret.time = value.time;
+        ret.interval = value.interval;
+        ret.units = value.units;
+        return ret;
+    }
 };
 
 // Group 121
 struct ConvertGroup121Var1 : private openpal::StaticOnly
 {
-	static Group121Var1 Apply(const SecurityStat& value)
-	{
-		Group121Var1 ret;
-		ret.flags = value.quality;
-		ret.assocId = value.value.assocId;
-		ret.value = value.value.count;
-		return ret;
-	}
+    static Group121Var1 Apply(const SecurityStat& value)
+    {
+        Group121Var1 ret;
+        ret.flags = value.quality;
+        ret.assocId = value.value.assocId;
+        ret.value = value.value.count;
+        return ret;
+    }
 };
 
 // Group 122
 struct ConvertGroup122Var1 : private openpal::StaticOnly
 {
-	static Group122Var1 Apply(const SecurityStat& value)
-	{
-		Group122Var1 ret;
-		ret.flags = value.quality;
-		ret.assocId = value.value.assocId;
-		ret.value = value.value.count;
-		return ret;
-	}
+    static Group122Var1 Apply(const SecurityStat& value)
+    {
+        Group122Var1 ret;
+        ret.flags = value.quality;
+        ret.assocId = value.value.assocId;
+        ret.value = value.value.count;
+        return ret;
+    }
 };
 
 struct ConvertGroup122Var2 : private openpal::StaticOnly
 {
-	static Group122Var2 Apply(const SecurityStat& value)
-	{
-		Group122Var2 ret;
-		ret.flags = value.quality;
-		ret.assocId = value.value.assocId;
-		ret.value = value.value.count;
-		ret.time = value.time;
-		return ret;
-	}
+    static Group122Var2 Apply(const SecurityStat& value)
+    {
+        Group122Var2 ret;
+        ret.flags = value.quality;
+        ret.assocId = value.value.assocId;
+        ret.value = value.value.count;
+        ret.time = value.time;
+        return ret;
+    }
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

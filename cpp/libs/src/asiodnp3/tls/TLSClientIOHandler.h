@@ -1,28 +1,27 @@
 /*
-* Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
-* more contributor license agreements. See the NOTICE file distributed
-* with this work for additional information regarding copyright ownership.
-* Green Energy Corp licenses this file to you under the Apache License,
-* Version 2.0 (the "License"); you may not use this file except in
-* compliance with the License.  You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-* This project was forked on 01/01/2013 by Automatak, LLC and modifications
-* may have been made to this file. Automatak, LLC licenses these modifications
-* to you under the terms of the License.
-*/
+ * Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
+ * more contributor license agreements. See the NOTICE file distributed
+ * with this work for additional information regarding copyright ownership.
+ * Green Energy Corp licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This project was forked on 01/01/2013 by Automatak, LLC and modifications
+ * may have been made to this file. Automatak, LLC licenses these modifications
+ * to you under the terms of the License.
+ */
 #ifndef ASIOPAL_TLSCLIENTIOHANDLER_H
 #define ASIOPAL_TLSCLIENTIOHANDLER_H
 
-#include "asiodnp3/IPEndpointsList.h"
-#include "asiodnp3/IOHandler.h"
+#include "openpal/executor/TimerRef.h"
 
 #include "asiopal/ChannelRetry.h"
 #include "asiopal/IPEndpoint.h"
@@ -30,7 +29,8 @@
 #include "asiopal/TLSConfig.h"
 #include "asiopal/tls/TLSClient.h"
 
-#include "openpal/executor/TimerRef.h"
+#include "asiodnp3/IOHandler.h"
+#include "asiodnp3/IPEndpointsList.h"
 
 namespace asiodnp3
 {
@@ -39,55 +39,49 @@ class TLSClientIOHandler final : public IOHandler
 {
 
 public:
+    static std::shared_ptr<TLSClientIOHandler> Create(const openpal::Logger& logger,
+                                                      const std::shared_ptr<IChannelListener>& listener,
+                                                      const std::shared_ptr<asiopal::Executor>& executor,
+                                                      const asiopal::TLSConfig& config,
+                                                      const asiopal::ChannelRetry& retry,
+                                                      const asiodnp3::IPEndpointsList& remotes,
+                                                      const std::string& adapter)
+    {
+        return std::make_shared<TLSClientIOHandler>(logger, listener, executor, config, retry, remotes, adapter);
+    }
 
-	static std::shared_ptr<TLSClientIOHandler> Create(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<IChannelListener>& listener,
-	    const std::shared_ptr<asiopal::Executor>& executor,
-	    const asiopal::TLSConfig& config,
-	    const asiopal::ChannelRetry& retry,
-	    const asiodnp3::IPEndpointsList& remotes,
-	    const std::string& adapter)
-	{
-		return std::make_shared<TLSClientIOHandler>(logger, listener, executor, config, retry, remotes, adapter);
-	}
-
-	TLSClientIOHandler(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<IChannelListener>& listener,
-	    const std::shared_ptr<asiopal::Executor>& executor,
-	    const asiopal::TLSConfig& config,
-	    const asiopal::ChannelRetry& retry,
-	    const asiodnp3::IPEndpointsList& remotes,
-	    const std::string& adapter
-	);
+    TLSClientIOHandler(const openpal::Logger& logger,
+                       const std::shared_ptr<IChannelListener>& listener,
+                       const std::shared_ptr<asiopal::Executor>& executor,
+                       const asiopal::TLSConfig& config,
+                       const asiopal::ChannelRetry& retry,
+                       const asiodnp3::IPEndpointsList& remotes,
+                       const std::string& adapter);
 
 protected:
-
-	virtual void ShutdownImpl() override;
-	virtual void BeginChannelAccept() override;
-	virtual void SuspendChannelAccept() override;
-	virtual void OnChannelShutdown() override;
+    virtual void ShutdownImpl() override;
+    virtual void BeginChannelAccept() override;
+    virtual void SuspendChannelAccept() override;
+    virtual void OnChannelShutdown() override;
 
 private:
+    void StartConnect(const std::shared_ptr<asiopal::TLSClient>& client, const openpal::TimeDuration& delay);
 
-	void StartConnect(const std::shared_ptr<asiopal::TLSClient>& client, const openpal::TimeDuration& delay);
+    void ResetState();
 
-	void ResetState();
+    const std::shared_ptr<asiopal::Executor> executor;
+    const asiopal::TLSConfig config;
+    const asiopal::ChannelRetry retry;
+    asiodnp3::IPEndpointsList remotes;
+    const std::string adapter;
 
-	const std::shared_ptr<asiopal::Executor> executor;
-	const asiopal::TLSConfig config;
-	const asiopal::ChannelRetry retry;
-	asiodnp3::IPEndpointsList remotes;
-	const std::string adapter;
+    // current value of the client
+    std::shared_ptr<asiopal::TLSClient> client;
 
-	// current value of the client
-	std::shared_ptr<asiopal::TLSClient> client;
-
-	// connection retry timer
-	openpal::TimerRef retrytimer;
+    // connection retry timer
+    openpal::TimerRef retrytimer;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

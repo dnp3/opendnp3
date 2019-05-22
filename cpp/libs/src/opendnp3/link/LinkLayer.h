@@ -32,32 +32,32 @@ class LinkLayer final : public ILinkLayer, public ILinkSession
 {
 
 public:
+    LinkLayer(const openpal::Logger& logger,
+              const std::shared_ptr<openpal::IExecutor>&,
+              const std::shared_ptr<IUpperLayer>& upper,
+              const std::shared_ptr<opendnp3::ILinkListener>&,
+              const LinkLayerConfig&);
 
-	LinkLayer(const openpal::Logger& logger, const std::shared_ptr<openpal::IExecutor>&, const std::shared_ptr<IUpperLayer>& upper, const std::shared_ptr<opendnp3::ILinkListener>&, const LinkLayerConfig&);
+    void SetRouter(ILinkTx&);
 
-	void SetRouter(ILinkTx&);
+    // ---- Events from below: ILinkSession / IFrameSink  ----
 
-	// ---- Events from below: ILinkSession / IFrameSink  ----
+    virtual bool OnLowerLayerUp() override;
+    virtual bool OnLowerLayerDown() override;
+    virtual bool OnTxReady() override;
+    virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
 
-	virtual bool OnLowerLayerUp() override;
-	virtual bool OnLowerLayerDown() override;
-	virtual bool OnTxReady() override;
-	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
+    // ---- Events from above: ILinkLayer ----
 
-	// ---- Events from above: ILinkLayer ----
+    virtual bool Send(ITransportSegment& segments) override;
 
-	virtual bool Send(ITransportSegment& segments) override;
-
-	const StackStatistics::Link& GetStatistics() const;
+    const StackStatistics::Link& GetStatistics() const;
 
 private:
-
-	// The full state
-	LinkContext ctx;
-
+    // The full state
+    LinkContext ctx;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

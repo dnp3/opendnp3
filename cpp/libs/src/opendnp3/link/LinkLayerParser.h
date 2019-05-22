@@ -21,15 +21,14 @@
 #ifndef OPENDNP3_LINKLAYERPARSER_H
 #define OPENDNP3_LINKLAYERPARSER_H
 
-
 #include <openpal/container/WSlice.h>
 #include <openpal/logging/Logger.h>
 
-#include "opendnp3/link/ShiftableBuffer.h"
+#include "opendnp3/link/IFrameSink.h"
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/link/LinkHeader.h"
 #include "opendnp3/link/LinkStatistics.h"
-#include "opendnp3/link/IFrameSink.h"
+#include "opendnp3/link/ShiftableBuffer.h"
 
 namespace opendnp3
 {
@@ -37,71 +36,68 @@ namespace opendnp3
 /// Parses FT3 frames
 class LinkLayerParser
 {
-	enum class State
-	{
-		FindSync,
-		ReadHeader,
-		ReadBody,
-		Complete
-	};
+    enum class State
+    {
+        FindSync,
+        ReadHeader,
+        ReadBody,
+        Complete
+    };
 
 public:
+    /// @param logger_ Logger that the receiver is to use.
+    /// @param pSink_ Completely parsed frames are sent to this interface
+    LinkLayerParser(const openpal::Logger& logger);
 
-	/// @param logger_ Logger that the receiver is to use.
-	/// @param pSink_ Completely parsed frames are sent to this interface
-	LinkLayerParser(const openpal::Logger& logger);
+    /// Called when valid data has been written to the current buffer write position
+    /// Parses the new data and calls the specified frame sink
+    /// @param numBytes Number of bytes written
+    void OnRead(uint32_t numBytes, IFrameSink& sink);
 
-	/// Called when valid data has been written to the current buffer write position
-	/// Parses the new data and calls the specified frame sink
-	/// @param numBytes Number of bytes written
-	void OnRead(uint32_t numBytes, IFrameSink& sink);
+    /// @return Buffer that can currently be used for writing
+    openpal::WSlice WriteBuff() const;
 
-	/// @return Buffer that can currently be used for writing
-	openpal::WSlice WriteBuff() const;
+    /// Resets the state of parser
+    void Reset();
 
-	/// Resets the state of parser
-	void Reset();
-
-	const LinkStatistics::Parser& Statistics() const
-	{
-		return this->statistics;
-	}
+    const LinkStatistics::Parser& Statistics() const
+    {
+        return this->statistics;
+    }
 
 private:
+    State ParseUntilComplete();
+    State ParseOneStep();
+    State ParseSync();
+    State ParseHeader();
+    State ParseBody();
 
-	State ParseUntilComplete();
-	State ParseOneStep();
-	State ParseSync();
-	State ParseHeader();
-	State ParseBody();
+    void PushFrame(IFrameSink& sink);
 
-	void PushFrame(IFrameSink& sink);
+    bool ReadHeader();
+    bool ValidateBody();
+    bool ValidateHeaderParameters();
+    bool ValidateFunctionCode();
+    void FailFrame();
 
-	bool ReadHeader();
-	bool ValidateBody();
-	bool ValidateHeaderParameters();
-	bool ValidateFunctionCode();
-	void FailFrame();
+    void TransferUserData();
 
-	void TransferUserData();
+    openpal::Logger logger;
+    LinkStatistics::Parser statistics;
 
-	openpal::Logger logger;
-	LinkStatistics::Parser statistics;
+    LinkHeader header;
 
-	LinkHeader header;
+    State state;
+    uint32_t frameSize;
+    openpal::RSlice userData;
 
-	State state;
-	uint32_t frameSize;
-	openpal::RSlice userData;
+    // buffer where received data is written
+    uint8_t rxBuffer[LPDU_MAX_FRAME_SIZE];
 
-	// buffer where received data is written
-	uint8_t rxBuffer[LPDU_MAX_FRAME_SIZE];
-
-	// facade over the rxBuffer that provides ability to "shift" as data is read
-	ShiftableBuffer buffer;
+    // facade over the rxBuffer that provides ability to "shift" as data is read
+    ShiftableBuffer buffer;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

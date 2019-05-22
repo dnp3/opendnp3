@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_TASKCONFIG_H
 #define OPENDNP3_TASKCONFIG_H
 
-#include "TaskId.h"
 #include "ITaskCallback.h"
+#include "TaskId.h"
 
 #include <openpal/executor/TimeDuration.h>
 
@@ -30,38 +30,32 @@ namespace opendnp3
 {
 
 /**
-*	Object containing multiple fields for configuring tasks
-*/
+ *	Object containing multiple fields for configuring tasks
+ */
 class TaskConfig
 {
 public:
+    TaskConfig(TaskId taskId, ITaskCallback* pCallback) : taskId(taskId), pCallback(pCallback) {}
 
-	TaskConfig(TaskId taskId, ITaskCallback* pCallback) :
-		taskId(taskId),
-		pCallback(pCallback)
-	{}
+    static TaskConfig Default()
+    {
+        return TaskConfig(TaskId::Undefined(), nullptr);
+    }
 
-	static TaskConfig Default()
-	{
-		return TaskConfig(TaskId::Undefined(), nullptr);
-	}
+    ///  --- syntax sugar for building configs -----
 
-	///  --- syntax sugar for building configs -----
+    static TaskConfig With(ITaskCallback& callback)
+    {
+        return TaskConfig(TaskId::Undefined(), &callback);
+    }
 
-	static TaskConfig With(ITaskCallback& callback)
-	{
-		return TaskConfig(TaskId::Undefined(), &callback);
-	}
-
-	TaskConfig() = delete;
+    TaskConfig() = delete;
 
 public:
-
-	TaskId taskId;
-	ITaskCallback* pCallback;
+    TaskId taskId;
+    ITaskCallback* pCallback;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

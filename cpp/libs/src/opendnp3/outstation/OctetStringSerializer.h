@@ -30,12 +30,11 @@ namespace opendnp3
 
 struct OctetStringSerializer : public DNP3Serializer<OctetString>
 {
-	OctetStringSerializer(bool isEvent, uint8_t size);
+    OctetStringSerializer(bool isEvent, uint8_t size);
 
-	static bool Write(const OctetString& value, openpal::WSlice& buffer);
+    static bool Write(const OctetString& value, openpal::WSlice& buffer);
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

@@ -21,14 +21,14 @@
 #ifndef OPENDNP3_TRANSPORTRX_H
 #define OPENDNP3_TRANSPORTRX_H
 
+#include <openpal/container/Buffer.h>
+#include <openpal/container/RSlice.h>
+#include <openpal/logging/Logger.h>
+
 #include "opendnp3/StackStatistics.h"
+#include "opendnp3/app/Message.h"
 #include "opendnp3/transport/TransportConstants.h"
 #include "opendnp3/transport/TransportSeqNum.h"
-#include "opendnp3/app/Message.h"
-
-#include <openpal/container/RSlice.h>
-#include <openpal/container/Buffer.h>
-#include <openpal/logging/Logger.h>
 
 namespace opendnp3
 {
@@ -40,35 +40,32 @@ class TransportRx
 {
 
 public:
+    TransportRx(const openpal::Logger&, uint32_t maxRxFragSize);
 
-	TransportRx(const openpal::Logger&, uint32_t maxRxFragSize);
+    Message ProcessReceive(const Message& segment);
 
-	Message ProcessReceive(const Message& segment);
+    void Reset();
 
-	void Reset();
-
-	const StackStatistics::Transport::Rx& Statistics() const
-	{
-		return statistics;
-	}
+    const StackStatistics::Transport::Rx& Statistics() const
+    {
+        return statistics;
+    }
 
 private:
+    openpal::WSlice GetAvailable();
 
-	openpal::WSlice GetAvailable();
+    void ClearRxBuffer();
 
-	void ClearRxBuffer();
+    openpal::Logger logger;
+    StackStatistics::Transport::Rx statistics;
 
-	openpal::Logger logger;
-	StackStatistics::Transport::Rx statistics;
+    openpal::Buffer rxBuffer;
+    uint32_t numBytesRead;
+    Addresses lastAddresses;
 
-	openpal::Buffer rxBuffer;
-	uint32_t numBytesRead;
-	Addresses lastAddresses;
-
-	TransportSeqNum expectedSeq;
+    TransportSeqNum expectedSeq;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

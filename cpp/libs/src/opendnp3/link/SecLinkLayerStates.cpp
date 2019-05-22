@@ -22,8 +22,8 @@
 
 #include "openpal/logging/LogMacros.h"
 
-#include "opendnp3/link/LinkLayer.h"
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/link/LinkLayer.h"
 
 using namespace openpal;
 
@@ -36,8 +36,8 @@ namespace opendnp3
 
 SecStateBase& SecStateBase::OnTxReady(LinkContext& ctx)
 {
-	FORMAT_LOG_BLOCK(ctx.logger, flags::ERR, "Invalid event for state: %s", this->Name());
-	return *this;
+    FORMAT_LOG_BLOCK(ctx.logger, flags::ERR, "Invalid event for state: %s", this->Name());
+    return *this;
 }
 
 ////////////////////////////////////////////////////////
@@ -47,29 +47,29 @@ SLLS_NotReset SLLS_NotReset::instance;
 
 SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkContext& ctx, uint16_t source, bool fcb)
 {
-	++ctx.statistics.numUnexpectedFrame;
-	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "TestLinkStatus ignored");
-	return *this;
+    ++ctx.statistics.numUnexpectedFrame;
+    SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "TestLinkStatus ignored");
+    return *this;
 }
 
 SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkContext& ctx, uint16_t source, bool fcb, const Message& message)
 {
-	++ctx.statistics.numUnexpectedFrame;
-	SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored: secondary not reset");
-	return *this;
+    ++ctx.statistics.numUnexpectedFrame;
+    SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored: secondary not reset");
+    return *this;
 }
 
 SecStateBase& SLLS_NotReset::OnResetLinkStates(LinkContext& ctx, uint16_t source)
 {
-	ctx.QueueAck(source);
-	ctx.ResetReadFCB();
-	return SLLS_TransmitWaitReset::Instance();
+    ctx.QueueAck(source);
+    ctx.ResetReadFCB();
+    return SLLS_TransmitWaitReset::Instance();
 }
 
 SecStateBase& SLLS_NotReset::OnRequestLinkStatus(LinkContext& ctx, uint16_t source)
 {
-	ctx.QueueLinkStatus(source);
-	return SLLS_TransmitWaitNotReset::Instance();
+    ctx.QueueLinkStatus(source);
+    return SLLS_TransmitWaitNotReset::Instance();
 }
 
 ////////////////////////////////////////////////////////
@@ -79,50 +79,50 @@ SLLS_Reset SLLS_Reset::instance;
 
 SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkContext& ctx, uint16_t source, bool fcb)
 {
-	if(ctx.nextReadFCB == fcb)
-	{
-		ctx.QueueAck(source);
-		ctx.ToggleReadFCB();
-		return SLLS_TransmitWaitReset::Instance();
-	}
-	else
-	{
-		// "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
-		// This is a PITA implement
-		// TODO - see if this function is deprecated or not
-		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Received TestLinkStatus with invalid FCB");
-		return *this;
-	}
+    if (ctx.nextReadFCB == fcb)
+    {
+        ctx.QueueAck(source);
+        ctx.ToggleReadFCB();
+        return SLLS_TransmitWaitReset::Instance();
+    }
+    else
+    {
+        // "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
+        // This is a PITA implement
+        // TODO - see if this function is deprecated or not
+        SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Received TestLinkStatus with invalid FCB");
+        return *this;
+    }
 }
 
 SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkContext& ctx, uint16_t source, bool fcb, const Message& message)
 {
-	ctx.QueueAck(source);
+    ctx.QueueAck(source);
 
-	if (ctx.nextReadFCB == fcb)
-	{
-		ctx.ToggleReadFCB();
-		ctx.PushDataUp(message);
-	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored: unexpected frame count bit (FCB)");
-	}
+    if (ctx.nextReadFCB == fcb)
+    {
+        ctx.ToggleReadFCB();
+        ctx.PushDataUp(message);
+    }
+    else
+    {
+        SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored: unexpected frame count bit (FCB)");
+    }
 
-	return SLLS_TransmitWaitReset::Instance();
+    return SLLS_TransmitWaitReset::Instance();
 }
 
 SecStateBase& SLLS_Reset::OnResetLinkStates(LinkContext& ctx, uint16_t source)
 {
-	ctx.QueueAck(source);
-	ctx.ResetReadFCB();
-	return SLLS_TransmitWaitReset::Instance();
+    ctx.QueueAck(source);
+    ctx.ResetReadFCB();
+    return SLLS_TransmitWaitReset::Instance();
 }
 
 SecStateBase& SLLS_Reset::OnRequestLinkStatus(LinkContext& ctx, uint16_t source)
 {
-	ctx.QueueLinkStatus(source);
-	return SLLS_TransmitWaitReset::Instance();
+    ctx.QueueLinkStatus(source);
+    return SLLS_TransmitWaitReset::Instance();
 }
 
 ////////////////////////////////////////////////////////
@@ -135,5 +135,4 @@ SLLS_TransmitWaitReset SLLS_TransmitWaitReset::instance;
 ////////////////////////////////////////////////////////
 SLLS_TransmitWaitNotReset SLLS_TransmitWaitNotReset::instance;
 
-} //end namepsace
-
+} // namespace opendnp3

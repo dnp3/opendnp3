@@ -27,22 +27,21 @@ namespace openpal
 {
 
 /**
-* Callback interface for log messages
-*/
+ * Callback interface for log messages
+ */
 class ILogHandler
 {
 public:
-	virtual ~ILogHandler() {}
+    virtual ~ILogHandler() {}
 
-	/**
-	* Callback method for log messages
-	*
-	* @param entry the log message to handle
-	*/
-	virtual void Log( const LogEntry& entry ) = 0;
+    /**
+     * Callback method for log messages
+     *
+     * @param entry the log message to handle
+     */
+    virtual void Log(const LogEntry& entry) = 0;
 };
 
-}
+} // namespace openpal
 
 #endif
-

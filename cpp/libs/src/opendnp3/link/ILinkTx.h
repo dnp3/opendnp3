@@ -29,22 +29,19 @@ namespace opendnp3
 {
 
 /**
-* Interface the link layer uses to transmit data
-*/
+ * Interface the link layer uses to transmit data
+ */
 class ILinkTx
 {
 public:
+    virtual ~ILinkTx() {}
 
-	virtual ~ILinkTx() {}
-
-	/**
-	* Begin transmission of a frame. Callback happens OFF the call stack (via executor)
-	*/
-	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context) = 0;
-
+    /**
+     * Begin transmission of a frame. Callback happens OFF the call stack (via executor)
+     */
+    virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context) = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

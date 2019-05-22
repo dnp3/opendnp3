@@ -20,41 +20,36 @@
 #ifndef OPENDNP3_CSTRING_H
 #define OPENDNP3_CSTRING_H
 
-#include <jni.h>
 #include <openpal/util/Uncopyable.h>
+
+#include <jni.h>
+
 #include <string>
 
 // RAII class for java <=> cstring
 class CString : private openpal::Uncopyable
 {
-	JNIEnv* env;
-	jstring jstr;
-	const char* cstr;
+    JNIEnv* env;
+    jstring jstr;
+    const char* cstr;
 
 public:
+    CString(JNIEnv* env, jstring jstr) : env(env), jstr(jstr), cstr(env->GetStringUTFChars(jstr, nullptr)) {}
 
-	CString(JNIEnv* env, jstring jstr) :
-		env(env),
-		jstr(jstr),
-		cstr(env->GetStringUTFChars(jstr, nullptr))
-	{}
+    ~CString()
+    {
+        env->ReleaseStringUTFChars(jstr, cstr);
+    }
 
-	~CString()
-	{
-		env->ReleaseStringUTFChars(jstr, cstr);
-	}
+    std::string str() const
+    {
+        return std::string(cstr);
+    }
 
-	std::string str() const
-	{
-		return std::string(cstr);
-	}
-
-	operator const char* () const
-	{
-		return cstr;
-	}
-
+    operator const char*() const
+    {
+        return cstr;
+    }
 };
 
 #endif
-

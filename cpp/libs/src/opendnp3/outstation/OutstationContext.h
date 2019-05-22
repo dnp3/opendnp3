@@ -21,31 +21,27 @@
 #ifndef OPENDNP3_OUTSTATIONCONTEXT_H
 #define OPENDNP3_OUTSTATIONCONTEXT_H
 
-#include "opendnp3/LayerInterfaces.h"
-
-#include "opendnp3/gen/SecurityStatIndex.h"
-
-#include "opendnp3/link/Addresses.h"
-
-#include "opendnp3/outstation/OutstationConfig.h"
-#include "opendnp3/outstation/RequestHistory.h"
-#include "opendnp3/outstation/DeferredRequest.h"
-#include "opendnp3/outstation/OutstationChannelStates.h"
-#include "opendnp3/outstation/ControlState.h"
-#include "opendnp3/outstation/TimeSyncState.h"
-#include "opendnp3/outstation/OutstationSeqNum.h"
-#include "opendnp3/outstation/Database.h"
-#include "opendnp3/outstation/ResponseContext.h"
-#include "opendnp3/outstation/ICommandHandler.h"
-#include "opendnp3/outstation/IOutstationApplication.h"
-#include "opendnp3/outstation/OutstationStates.h"
-#include "opendnp3/outstation/ParsedRequest.h"
-
-#include "opendnp3/outstation/event/EventBuffer.h"
-
+#include <openpal/container/Pair.h>
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/Logger.h>
-#include <openpal/container/Pair.h>
+
+#include "opendnp3/LayerInterfaces.h"
+#include "opendnp3/gen/SecurityStatIndex.h"
+#include "opendnp3/link/Addresses.h"
+#include "opendnp3/outstation/ControlState.h"
+#include "opendnp3/outstation/Database.h"
+#include "opendnp3/outstation/DeferredRequest.h"
+#include "opendnp3/outstation/ICommandHandler.h"
+#include "opendnp3/outstation/IOutstationApplication.h"
+#include "opendnp3/outstation/OutstationChannelStates.h"
+#include "opendnp3/outstation/OutstationConfig.h"
+#include "opendnp3/outstation/OutstationSeqNum.h"
+#include "opendnp3/outstation/OutstationStates.h"
+#include "opendnp3/outstation/ParsedRequest.h"
+#include "opendnp3/outstation/RequestHistory.h"
+#include "opendnp3/outstation/ResponseContext.h"
+#include "opendnp3/outstation/TimeSyncState.h"
+#include "opendnp3/outstation/event/EventBuffer.h"
 
 namespace opendnp3
 {
@@ -55,152 +51,147 @@ namespace opendnp3
 ///
 class OContext : public IUpperLayer
 {
-	friend class StateIdle;
-	friend class StateSolicitedConfirmWait;
-	friend class StateUnsolicitedConfirmWait;
+    friend class StateIdle;
+    friend class StateSolicitedConfirmWait;
+    friend class StateUnsolicitedConfirmWait;
 
 public:
+    OContext(const Addresses& addresses,
+             const OutstationConfig& config,
+             const DatabaseSizes& dbSizes,
+             const openpal::Logger& logger,
+             const std::shared_ptr<openpal::IExecutor>& executor,
+             const std::shared_ptr<ILowerLayer>& lower,
+             const std::shared_ptr<ICommandHandler>& commandHandler,
+             const std::shared_ptr<IOutstationApplication>& application);
 
-	OContext(
-	    const Addresses& addresses,
-	    const OutstationConfig& config,
-	    const DatabaseSizes& dbSizes,
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<openpal::IExecutor>& executor,
-	    const std::shared_ptr<ILowerLayer>& lower,
-	    const std::shared_ptr<ICommandHandler>& commandHandler,
-	    const std::shared_ptr<IOutstationApplication>& application
-	);
+    /// ----- Implement IUpperLayer ------
 
-	/// ----- Implement IUpperLayer ------
+    virtual bool OnLowerLayerUp() override;
 
-	virtual bool OnLowerLayerUp() override;
+    virtual bool OnLowerLayerDown() override;
 
-	virtual bool OnLowerLayerDown() override;
+    virtual bool OnTxReady() override final;
 
-	virtual bool OnTxReady() override final;
+    virtual bool OnReceive(const Message& message) override final;
 
-	virtual bool OnReceive(const Message& message) override final;
+    /// --- Other public members ----
 
-	/// --- Other public members ----
+    void CheckForTaskStart();
 
-	void CheckForTaskStart();
+    IUpdateHandler& GetUpdateHandler();
 
-	IUpdateHandler& GetUpdateHandler();
+    DatabaseConfigView GetConfigView();
 
-	DatabaseConfigView GetConfigView();
-
-	void SetRestartIIN();
+    void SetRestartIIN();
 
 private:
+    /// ---- Helper functions that operate on the current state, and may return a new state ----
 
-	/// ---- Helper functions that operate on the current state, and may return a new state ----
+    OutstationState& ContinueMultiFragResponse(const Addresses& addresses, const AppSeqNum& seq);
 
-	OutstationState& ContinueMultiFragResponse(const Addresses& addresses, const AppSeqNum& seq);
+    OutstationState& RespondToReadRequest(const ParsedRequest& request);
 
-	OutstationState& RespondToReadRequest(const ParsedRequest& request);
+    OutstationState& ProcessNewRequest(const ParsedRequest& request);
 
-	OutstationState& ProcessNewRequest(const ParsedRequest& request);
+    OutstationState& OnReceiveSolRequest(const ParsedRequest& request);
 
-	OutstationState& OnReceiveSolRequest(const ParsedRequest& request);
+    void RespondToNonReadRequest(const ParsedRequest& request);
 
-	void RespondToNonReadRequest(const ParsedRequest& request);
+    // ---- Processing functions --------
 
-	// ---- Processing functions --------
+    bool ProcessMessage(const Message& message);
 
-	bool ProcessMessage(const Message& message);
+    bool ProcessObjects(const ParsedRequest& request);
 
-	bool ProcessObjects(const ParsedRequest& request);
+    bool ProcessRequest(const ParsedRequest& request);
 
-	bool ProcessRequest(const ParsedRequest& request);
+    bool ProcessRequestNoAck(const ParsedRequest& request);
 
-	bool ProcessRequestNoAck(const ParsedRequest& request);
+    bool ProcessConfirm(const ParsedRequest& request);
 
-	bool ProcessConfirm(const ParsedRequest& request);
+    // ---- common helper methods ----
 
-	// ---- common helper methods ----
+    void BeginResponseTx(uint16_t destination, const openpal::RSlice& data, const AppControlField& control);
 
-	void BeginResponseTx(uint16_t destination, const openpal::RSlice& data, const AppControlField& control);
+    void BeginUnsolTx(const AppControlField& control, const openpal::RSlice& unsol);
 
-	void BeginUnsolTx(const AppControlField& control, const openpal::RSlice& unsol);
+    void BeginTx(uint16_t destination, const openpal::RSlice& message);
 
-	void BeginTx(uint16_t destination, const openpal::RSlice& message);
+    void CheckForDeferredRequest();
 
-	void CheckForDeferredRequest();
+    bool ProcessDeferredRequest(const ParsedRequest& request);
 
-	bool ProcessDeferredRequest(const ParsedRequest& request);
+    void RestartConfirmTimer();
 
-	void RestartConfirmTimer();
+    void CheckForUnsolicited();
 
-	void CheckForUnsolicited();
+    bool CanTransmit() const;
 
-	bool CanTransmit() const;
+    IINField GetResponseIIN();
 
-	IINField GetResponseIIN();
+    IINField GetDynamicIIN();
 
-	IINField GetDynamicIIN();
+    /// --- methods for handling app-layer functions ---
 
-	/// --- methods for handling app-layer functions ---
+    /// Handles non-read function codes that require a response. builds the response using the supplied writer.
+    /// @return An IIN field indicating the validity of the request, and to be returned in the response.
+    IINField HandleNonReadResponse(const APDUHeader& header, const openpal::RSlice& objects, HeaderWriter& writer);
 
-	/// Handles non-read function codes that require a response. builds the response using the supplied writer.
-	/// @return An IIN field indicating the validity of the request, and to be returned in the response.
-	IINField HandleNonReadResponse(const APDUHeader& header, const openpal::RSlice& objects, HeaderWriter& writer);
+    /// Handles read function codes. May trigger an unsolicited response
+    /// @return an IIN field and a partial AppControlField (missing sequence info)
+    openpal::Pair<IINField, AppControlField> HandleRead(const openpal::RSlice& objects, HeaderWriter& writer);
 
-	/// Handles read function codes. May trigger an unsolicited response
-	/// @return an IIN field and a partial AppControlField (missing sequence info)
-	openpal::Pair<IINField, AppControlField> HandleRead(const openpal::RSlice& objects, HeaderWriter& writer);
+    // ------ Function Handlers ------
 
-	// ------ Function Handlers ------
+    IINField HandleWrite(const openpal::RSlice& objects);
+    IINField HandleSelect(const openpal::RSlice& objects, HeaderWriter& writer);
+    IINField HandleOperate(const openpal::RSlice& objects, HeaderWriter& writer);
+    IINField HandleDirectOperate(const openpal::RSlice& objects, OperateType opType, HeaderWriter* pWriter);
+    IINField HandleDelayMeasure(const openpal::RSlice& objects, HeaderWriter& writer);
+    IINField HandleRecordCurrentTime();
+    IINField HandleRestart(const openpal::RSlice& objects, bool isWarmRestart, HeaderWriter* pWriter);
+    IINField HandleAssignClass(const openpal::RSlice& objects);
+    IINField HandleDisableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer);
+    IINField HandleEnableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer);
+    IINField HandleCommandWithConstant(const openpal::RSlice& objects, HeaderWriter& writer, CommandStatus status);
 
-	IINField HandleWrite(const openpal::RSlice& objects);
-	IINField HandleSelect(const openpal::RSlice& objects, HeaderWriter& writer);
-	IINField HandleOperate(const openpal::RSlice& objects, HeaderWriter& writer);
-	IINField HandleDirectOperate(const openpal::RSlice& objects, OperateType opType, HeaderWriter* pWriter);
-	IINField HandleDelayMeasure(const openpal::RSlice& objects, HeaderWriter& writer);
-	IINField HandleRecordCurrentTime();
-	IINField HandleRestart(const openpal::RSlice& objects, bool isWarmRestart, HeaderWriter* pWriter);
-	IINField HandleAssignClass(const openpal::RSlice& objects);
-	IINField HandleDisableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer);
-	IINField HandleEnableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer);
-	IINField HandleCommandWithConstant(const openpal::RSlice& objects, HeaderWriter& writer, CommandStatus status);
+    // ------ resources --------
+    const Addresses addresses;
+    openpal::Logger logger;
+    const std::shared_ptr<openpal::IExecutor> executor;
+    const std::shared_ptr<ILowerLayer> lower;
+    const std::shared_ptr<ICommandHandler> commandHandler;
+    const std::shared_ptr<IOutstationApplication> application;
 
-	// ------ resources --------
-	const Addresses addresses;
-	openpal::Logger logger;
-	const std::shared_ptr<openpal::IExecutor> executor;
-	const std::shared_ptr<ILowerLayer> lower;
-	const std::shared_ptr<ICommandHandler> commandHandler;
-	const std::shared_ptr<IOutstationApplication> application;
+    // ------ Database, event buffer, and response tracking
+    EventBuffer eventBuffer;
+    Database database;
+    ResponseContext rspContext;
 
-	// ------ Database, event buffer, and response tracking
-	EventBuffer eventBuffer;
-	Database database;
-	ResponseContext rspContext;
+    // ------ Static configuration -------
+    OutstationParams params;
 
-	// ------ Static configuration -------
-	OutstationParams params;
+    // ------ Shared dynamic state --------
+    bool isOnline;
+    bool isTransmitting;
+    IINField staticIIN;
+    openpal::TimerRef confirmTimer;
+    RequestHistory history;
+    DeferredRequest deferred;
 
-	// ------ Shared dynamic state --------
-	bool isOnline;
-	bool isTransmitting;
-	IINField staticIIN;
-	openpal::TimerRef confirmTimer;
-	RequestHistory history;
-	DeferredRequest deferred;
+    // ------ Dynamic state related to controls ------
+    ControlState control;
 
-	// ------ Dynamic state related to controls ------
-	ControlState control;
+    // ------ Dynamic state related to time synchronization ------
+    TimeSyncState time;
 
-	// ------ Dynamic state related to time synchronization ------
-	TimeSyncState time;
-
-	// ------ Dynamic state related to solicited and unsolicited modes ------
-	OutstationSolState  sol;
-	OutstationUnsolState unsol;
-	OutstationState* state = &StateIdle::Inst();
+    // ------ Dynamic state related to solicited and unsolicited modes ------
+    OutstationSolState sol;
+    OutstationUnsolState unsol;
+    OutstationState* state = &StateIdle::Inst();
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

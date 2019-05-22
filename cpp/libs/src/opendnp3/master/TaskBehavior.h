@@ -28,97 +28,87 @@ namespace opendnp3
 {
 
 /**
-*   All of the configuration parameters that control how the task wil behave
-*/
+ *   All of the configuration parameters that control how the task wil behave
+ */
 class TaskBehavior
 {
 
 public:
+    static TaskBehavior SingleExecutionNoRetry();
 
-	static TaskBehavior SingleExecutionNoRetry();
+    static TaskBehavior SingleExecutionNoRetry(const openpal::MonotonicTimestamp startExpiration);
 
-	static TaskBehavior SingleExecutionNoRetry(const openpal::MonotonicTimestamp startExpiration);
+    static TaskBehavior ImmediatePeriodic(const openpal::TimeDuration& period,
+                                          const openpal::TimeDuration& minRetryDelay,
+                                          const openpal::TimeDuration& maxRetryDelay);
 
+    static TaskBehavior SingleImmediateExecutionWithRetry(const openpal::TimeDuration& minRetryDelay,
+                                                          const openpal::TimeDuration& maxRetryDelay);
 
-	static TaskBehavior ImmediatePeriodic(
-	    const openpal::TimeDuration& period,
-	    const openpal::TimeDuration& minRetryDelay,
-	    const openpal::TimeDuration& maxRetryDelay
-	);
+    static TaskBehavior ReactsToIINOnly();
 
-	static TaskBehavior SingleImmediateExecutionWithRetry(
-	    const openpal::TimeDuration& minRetryDelay,
-	    const openpal::TimeDuration& maxRetryDelay
-	);
+    /**
+     * Called when the task succeeds. Resets the retry timeout to the minimum, and returns the new expiration time
+     */
+    void OnSuccess(const openpal::MonotonicTimestamp& now);
 
-	static TaskBehavior ReactsToIINOnly();
+    /**
+     * Called when the task fails due to a response timeout
+     */
+    void OnResponseTimeout(const openpal::MonotonicTimestamp& now);
 
-	/**
-	* Called when the task succeeds. Resets the retry timeout to the minimum, and returns the new expiration time
-	*/
-	void OnSuccess(const openpal::MonotonicTimestamp& now);
+    /**
+     * return the current expiration time
+     */
+    openpal::MonotonicTimestamp GetExpiration() const
+    {
+        return expiration;
+    }
 
-	/**
-	* Called when the task fails due to a response timeout
-	*/
-	void OnResponseTimeout(const openpal::MonotonicTimestamp& now);
+    /**
+     * return the time after which the task should fail if it hasn't start running
+     */
+    openpal::MonotonicTimestamp GetStartExpiration() const
+    {
+        return startExpiration;
+    }
 
-	/**
-	* return the current expiration time
-	*/
-	openpal::MonotonicTimestamp GetExpiration() const
-	{
-		return expiration;
-	}
+    /**
+     * reset to the initial state
+     */
+    void Reset();
 
-	/**
-	* return the time after which the task should fail if it hasn't start running
-	*/
-	openpal::MonotonicTimestamp GetStartExpiration() const
-	{
-		return startExpiration;
-	}
-
-	/**
-	* reset to the initial state
-	*/
-	void Reset();
-
-	/**
-	* Disable the task
-	*/
-	void Disable();
+    /**
+     * Disable the task
+     */
+    void Disable();
 
 private:
+    openpal::TimeDuration CalcNextRetryTimeout() const;
 
-	openpal::TimeDuration CalcNextRetryTimeout() const;
+    TaskBehavior() = delete;
 
-	TaskBehavior() = delete;
+    TaskBehavior(const openpal::TimeDuration& period,
+                 const openpal::MonotonicTimestamp& expiration,
+                 const openpal::TimeDuration& minRetryDelay,
+                 const openpal::TimeDuration& maxRetryDelay,
+                 const openpal::MonotonicTimestamp& startExpiration);
 
-	TaskBehavior(
-	    const openpal::TimeDuration& period,
-	    const openpal::MonotonicTimestamp& expiration,
-	    const openpal::TimeDuration& minRetryDelay,
-	    const openpal::TimeDuration& maxRetryDelay,
-	    const openpal::MonotonicTimestamp& startExpiration
-	);
+    const openpal::TimeDuration period;
+    const openpal::TimeDuration minRetryDelay;
+    const openpal::TimeDuration maxRetryDelay;
+    const openpal::MonotonicTimestamp startExpiration;
 
-	const openpal::TimeDuration period;
-	const openpal::TimeDuration minRetryDelay;
-	const openpal::TimeDuration maxRetryDelay;
-	const openpal::MonotonicTimestamp startExpiration;
+    // permanently disable the task
+    bool disabled = false;
 
-	// permanently disable the task
-	bool disabled = false;
+    // The tasks current expiration time
+    openpal::MonotonicTimestamp expiration;
 
-	// The tasks current expiration time
-	openpal::MonotonicTimestamp expiration;
-
-	// The current retry delay
-	openpal::TimeDuration currentRetryDelay;
+    // The current retry delay
+    openpal::TimeDuration currentRetryDelay;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

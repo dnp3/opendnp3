@@ -20,10 +20,10 @@
  */
 #include "openpal/logging/StringFormatting.h"
 
+#include "openpal/Configure.h"
+#include "openpal/container/RSlice.h"
 #include "openpal/logging/LogMacros.h"
 #include "openpal/util/ToHex.h"
-#include "openpal/container/RSlice.h"
-#include "openpal/Configure.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -33,55 +33,58 @@ namespace openpal
 {
 char* AllocateCopy(char const* src)
 {
-	auto size = strlen(src) + 1;
-	char* tmp = new char[size];
+    auto size = strlen(src) + 1;
+    char* tmp = new char[size];
 #ifdef WIN32
-	strcpy_s(tmp, size, src);
+    strcpy_s(tmp, size, src);
 #else
-	strcpy(tmp, src);
+    strcpy(tmp, src);
 #endif
-	return tmp;
+    return tmp;
 }
 
-void LogHex(Logger& logger, const openpal::LogFilters& filters, const openpal::RSlice& source, uint32_t firstRowSize, uint32_t otherRowSize)
+void LogHex(Logger& logger,
+            const openpal::LogFilters& filters,
+            const openpal::RSlice& source,
+            uint32_t firstRowSize,
+            uint32_t otherRowSize)
 {
-	char buffer[MAX_LOG_ENTRY_SIZE];
-	RSlice copy(source);
-	uint32_t rowCount = 0;
-	while (copy.IsNotEmpty())
-	{
-		uint32_t rowSize = (copy.Size() < MAX_HEX_PER_LINE) ? copy.Size() : MAX_HEX_PER_LINE;
-		if (rowCount == 0)
-		{
-			if (firstRowSize < rowSize)
-			{
-				rowSize = firstRowSize;
-			}
-		}
-		else
-		{
-			if (otherRowSize < rowSize)
-			{
-				rowSize = otherRowSize;
-			}
-		}
-		auto region = copy.Take(rowSize);
-		auto pLocation = buffer;
-		for (uint32_t pos = 0; pos < rowSize; ++pos)
-		{
-			pLocation[0] = ToHexChar((region[pos] & 0xf0) >> 4);
-			pLocation[1] = ToHexChar(region[pos] & 0xf);
-			pLocation[2] = ' ';
-			pLocation += 3;
-		}
-		buffer[3 * rowSize] = '\0';
-		copy.Advance(rowSize);
+    char buffer[MAX_LOG_ENTRY_SIZE];
+    RSlice copy(source);
+    uint32_t rowCount = 0;
+    while (copy.IsNotEmpty())
+    {
+        uint32_t rowSize = (copy.Size() < MAX_HEX_PER_LINE) ? copy.Size() : MAX_HEX_PER_LINE;
+        if (rowCount == 0)
+        {
+            if (firstRowSize < rowSize)
+            {
+                rowSize = firstRowSize;
+            }
+        }
+        else
+        {
+            if (otherRowSize < rowSize)
+            {
+                rowSize = otherRowSize;
+            }
+        }
+        auto region = copy.Take(rowSize);
+        auto pLocation = buffer;
+        for (uint32_t pos = 0; pos < rowSize; ++pos)
+        {
+            pLocation[0] = ToHexChar((region[pos] & 0xf0) >> 4);
+            pLocation[1] = ToHexChar(region[pos] & 0xf);
+            pLocation[2] = ' ';
+            pLocation += 3;
+        }
+        buffer[3 * rowSize] = '\0';
+        copy.Advance(rowSize);
 
-		logger.Log(filters, "", buffer);
+        logger.Log(filters, "", buffer);
 
-		++rowCount;
-	}
+        ++rowCount;
+    }
 }
 
-}
-
+} // namespace openpal

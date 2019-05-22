@@ -25,35 +25,28 @@ namespace opendnp3
 {
 
 /**
-* Type used to record whether a value is requested in a response
-*/
-template <class Spec>
-struct SelectedValue
+ * Type used to record whether a value is requested in a response
+ */
+template<class Spec> struct SelectedValue
 {
-	SelectedValue() : selected(false), value(), variation(Spec::DefaultStaticVariation)
-	{}
+    SelectedValue() : selected(false), value(), variation(Spec::DefaultStaticVariation) {}
 
-	bool selected;
-	typename Spec::meas_t value;
-	typename Spec::static_variation_t variation;
+    bool selected;
+    typename Spec::meas_t value;
+    typename Spec::static_variation_t variation;
 };
 
 /**
-* Holds particular measurement type in the database.
-*/
-template <class Spec>
-struct Cell
+ * Holds particular measurement type in the database.
+ */
+template<class Spec> struct Cell
 {
-	typename Spec::meas_t value;			// current value
-	typename Spec::config_t config;			// configuration
-	typename Spec::event_cell_t event;		// event cell
-	SelectedValue<Spec> selection;			// selected value
+    typename Spec::meas_t value;       // current value
+    typename Spec::config_t config;    // configuration
+    typename Spec::event_cell_t event; // event cell
+    SelectedValue<Spec> selection;     // selected value
 };
 
-
-
-
-
-}
+} // namespace opendnp3
 
 #endif

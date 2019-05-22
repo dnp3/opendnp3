@@ -19,44 +19,66 @@
 #ifndef OPENDNP3_SOEHANDLERADAPTER_H
 #define OPENDNP3_SOEHANDLERADAPTER_H
 
-#include <opendnp3/master/ISOEHandler.h>
-
 #include "GlobalRef.h"
 #include "LocalRef.h"
+
+#include <opendnp3/master/ISOEHandler.h>
 
 class SOEHandlerAdapter : public opendnp3::ISOEHandler
 {
 public:
+    SOEHandlerAdapter(jobject proxy) : proxy(proxy) {}
 
-	SOEHandlerAdapter(jobject proxy) : proxy(proxy) {}
+    virtual void Start() override;
+    virtual void End() override;
 
-	virtual void Start() override;
-	virtual void End() override;
-
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override {}
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override {}
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) override {}
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override {}
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override {}
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override;
-
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override
+    {
+    }
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override
+    {
+    }
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) override
+    {
+    }
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override
+    {
+    }
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override
+    {
+    }
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::DNPTime>& values) override;
 
 private:
+    template<class T, class CreateMeas, class CallProxy>
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<T>>& values,
+                 const CreateMeas& createMeas,
+                 const CallProxy& callProxy);
 
-	template <class T, class CreateMeas, class CallProxy>
-	void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<T>>& values, const CreateMeas& createMeas, const CallProxy& callProxy);
+    static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
 
-	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
-
-	GlobalRef proxy;
-
+    GlobalRef proxy;
 };
 
 #endif

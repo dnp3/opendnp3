@@ -21,13 +21,13 @@
 #ifndef OPENPAL_UINT48LE_H
 #define OPENPAL_UINT48LE_H
 
-#include <cstdint>
-#include <cstring>
-
 #include "UInt48Type.h"
 
-#include "openpal/container/WSlice.h"
 #include "openpal/container/RSlice.h"
+#include "openpal/container/WSlice.h"
+
+#include <cstdint>
+#include <cstring>
 
 namespace openpal
 {
@@ -35,29 +35,28 @@ namespace openpal
 class UInt48LE
 {
 public:
+    static UInt48Type Read(const uint8_t* data);
 
-	static UInt48Type Read(const uint8_t* data);
+    static void Write(uint8_t* data, UInt48Type value);
 
-	static void Write(uint8_t* data, UInt48Type value);
+    inline static UInt48Type ReadBuffer(RSlice& buffer)
+    {
+        auto ret = Read(buffer);
+        buffer.Advance(SIZE);
+        return ret;
+    }
 
-	inline static UInt48Type ReadBuffer(RSlice& buffer)
-	{
-		auto ret = Read(buffer);
-		buffer.Advance(SIZE);
-		return ret;
-	}
+    static void WriteBuffer(WSlice& buffer, UInt48Type value)
+    {
+        Write(buffer, value);
+        buffer.Advance(SIZE);
+    }
 
-	static void WriteBuffer(WSlice& buffer, UInt48Type value)
-	{
-		Write(buffer, value);
-		buffer.Advance(SIZE);
-	}
-
-	const static int64_t MAX = 281474976710655ULL; // 2^48 -1
-	const static size_t SIZE = 6;
-	typedef UInt48Type Type;
+    const static int64_t MAX = 281474976710655ULL; // 2^48 -1
+    const static size_t SIZE = 6;
+    typedef UInt48Type Type;
 };
 
-}
+} // namespace openpal
 
 #endif

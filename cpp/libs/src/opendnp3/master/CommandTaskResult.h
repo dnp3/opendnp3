@@ -22,11 +22,10 @@
 #ifndef OPENDNP3_COMMAND_TASK_RESULT_H
 #define OPENDNP3_COMMAND_TASK_RESULT_H
 
-#include "opendnp3/master/ICommandTaskResult.h"
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/master/CommandSet.h"
-
-#include <openpal/util/Uncopyable.h>
+#include "opendnp3/master/ICommandTaskResult.h"
 
 namespace opendnp3
 {
@@ -34,23 +33,19 @@ namespace opendnp3
 class CommandTaskResult final : public ICommandTaskResult, private openpal::Uncopyable
 {
 public:
+    CommandTaskResult(TaskCompletion result, const CommandSet::HeaderVector& vector);
 
-	CommandTaskResult(TaskCompletion result, const CommandSet::HeaderVector& vector);
+    /// --- Implement ICollection<CommandResult> ----
 
-	/// --- Implement ICollection<CommandResult> ----
-
-	virtual size_t Count() const override;
-	virtual void Foreach(IVisitor<CommandPointResult>& visitor) const override;
+    virtual size_t Count() const override;
+    virtual void Foreach(IVisitor<CommandPointResult>& visitor) const override;
 
 private:
+    CommandTaskResult() = delete;
 
-	CommandTaskResult() = delete;
-
-	const CommandSet::HeaderVector* m_vector;
+    const CommandSet::HeaderVector* m_vector;
 };
 
-
-
-}
+} // namespace opendnp3
 
 #endif

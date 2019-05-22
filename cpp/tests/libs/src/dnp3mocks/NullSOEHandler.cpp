@@ -25,5 +25,4 @@ namespace opendnp3
 {
 
 NullSOEHandler NullSOEHandler::instance;
-
 }

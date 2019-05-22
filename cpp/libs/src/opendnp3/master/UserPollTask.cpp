@@ -25,31 +25,25 @@ using namespace openpal;
 namespace opendnp3
 {
 
-UserPollTask::UserPollTask(
-    const std::shared_ptr<TaskContext>& context,
-    const HeaderBuilderT& builder,
-    const TaskBehavior& behavior,
-    bool recurring,
-    IMasterApplication& app,
-    ISOEHandler& soeHandler,
-    openpal::Logger logger,
-    TaskConfig config
-) :
-	PollTaskBase(context, app, soeHandler, behavior, logger, config),
-	builder(builder),
-	recurring(recurring)
-{}
+UserPollTask::UserPollTask(const std::shared_ptr<TaskContext>& context,
+                           const HeaderBuilderT& builder,
+                           const TaskBehavior& behavior,
+                           bool recurring,
+                           IMasterApplication& app,
+                           ISOEHandler& soeHandler,
+                           openpal::Logger logger,
+                           TaskConfig config)
+    : PollTaskBase(context, app, soeHandler, behavior, logger, config), builder(builder), recurring(recurring)
+{
+}
 
 bool UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	this->rxCount = 0;
-	request.SetFunction(FunctionCode::READ);
-	request.SetControl(AppControlField::Request(seq));
-	auto writer = request.GetWriter();
-	return builder(writer);
+    this->rxCount = 0;
+    request.SetFunction(FunctionCode::READ);
+    request.SetControl(AppControlField::Request(seq));
+    auto writer = request.GetWriter();
+    return builder(writer);
 }
 
-} //end ns
-
-
-
+} // namespace opendnp3

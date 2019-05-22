@@ -21,42 +21,38 @@
 #ifndef OPENDNP3_IEVENTRECEIVER_H
 #define OPENDNP3_IEVENTRECEIVER_H
 
-#include "opendnp3/outstation/Event.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/app/SecurityStat.h"
+#include "opendnp3/outstation/Event.h"
 
 namespace opendnp3
 {
 
 /**
-* Transactional interface that receives events
-*/
+ * Transactional interface that receives events
+ */
 class IEventReceiver
 {
 public:
+    virtual ~IEventReceiver() {}
 
-	virtual ~IEventReceiver() {}
+    virtual void Update(const Event<BinarySpec>& evt) = 0;
 
-	virtual void Update(const Event<BinarySpec>& evt) = 0;
+    virtual void Update(const Event<DoubleBitBinarySpec>& evt) = 0;
 
-	virtual void Update(const Event<DoubleBitBinarySpec>& evt) = 0;
+    virtual void Update(const Event<AnalogSpec>& evt) = 0;
 
-	virtual void Update(const Event<AnalogSpec>& evt) = 0;
+    virtual void Update(const Event<CounterSpec>& evt) = 0;
 
-	virtual void Update(const Event<CounterSpec>& evt) = 0;
+    virtual void Update(const Event<FrozenCounterSpec>& evt) = 0;
 
-	virtual void Update(const Event<FrozenCounterSpec>&  evt) = 0;
+    virtual void Update(const Event<BinaryOutputStatusSpec>& evt) = 0;
 
-	virtual void Update(const Event<BinaryOutputStatusSpec>& evt) = 0;
+    virtual void Update(const Event<AnalogOutputStatusSpec>& evt) = 0;
 
-	virtual void Update(const Event<AnalogOutputStatusSpec>& evt) = 0;
-
-	virtual void Update(const Event<OctetStringSpec>& evt) = 0;
-
+    virtual void Update(const Event<OctetStringSpec>& evt) = 0;
 };
 
-}
-
+} // namespace opendnp3
 
 #endif
-

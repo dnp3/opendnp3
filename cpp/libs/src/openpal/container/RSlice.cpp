@@ -20,9 +20,8 @@
  */
 #include "openpal/container/RSlice.h"
 
-#include "openpal/util/Comparisons.h"
-
 #include "openpal/container/WSlice.h"
+#include "openpal/util/Comparisons.h"
 
 #include <cstring>
 
@@ -31,66 +30,62 @@ namespace openpal
 
 RSlice RSlice::Empty()
 {
-	return RSlice();
+    return RSlice();
 }
 
-RSlice::RSlice(): HasSize(0), pBuffer(nullptr)
-{}
+RSlice::RSlice() : HasSize(0), pBuffer(nullptr) {}
 
-RSlice::RSlice(uint8_t const* pBuffer, uint32_t size) :
-	HasSize(size),
-	pBuffer(pBuffer)
-{}
+RSlice::RSlice(uint8_t const* pBuffer, uint32_t size) : HasSize(size), pBuffer(pBuffer) {}
 
 RSlice RSlice::CopyTo(WSlice& dest) const
 {
-	if (dest.Size() < size)
-	{
-		return RSlice::Empty();
-	}
-	else
-	{
-		WSlice copy(dest);
-		memcpy(dest, pBuffer, size);
-		dest.Advance(size);
-		return copy.ToRSlice().Take(size);
-	}
+    if (dest.Size() < size)
+    {
+        return RSlice::Empty();
+    }
+    else
+    {
+        WSlice copy(dest);
+        memcpy(dest, pBuffer, size);
+        dest.Advance(size);
+        return copy.ToRSlice().Take(size);
+    }
 }
 
 RSlice RSlice::Take(uint32_t count) const
 {
-	return RSlice(pBuffer, openpal::Min(size, count));
+    return RSlice(pBuffer, openpal::Min(size, count));
 }
 
 RSlice RSlice::Skip(uint32_t count) const
 {
-	auto num = openpal::Min(size, count);
-	return RSlice(pBuffer + num, size - num);
+    auto num = openpal::Min(size, count);
+    return RSlice(pBuffer + num, size - num);
 }
 
 void RSlice::Clear()
 {
-	pBuffer = nullptr;
-	size = 0;
+    pBuffer = nullptr;
+    size = 0;
 }
 
 bool RSlice::Equals(const RSlice& rhs) const
 {
-	if (this->Size() == rhs.Size())
-	{
-		return memcmp(pBuffer, rhs.pBuffer, Size()) == 0;
-	}
-	else
-	{
-		return false;
-	}
+    if (this->Size() == rhs.Size())
+    {
+        return memcmp(pBuffer, rhs.pBuffer, Size()) == 0;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void RSlice::Advance(uint32_t count)
 {
-	auto num = openpal::Min(size, count);
-	pBuffer += num;
-	size -= num;
+    auto num = openpal::Min(size, count);
+    pBuffer += num;
+    size -= num;
 }
 
-}
+} // namespace openpal

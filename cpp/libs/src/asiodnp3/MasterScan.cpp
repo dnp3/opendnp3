@@ -21,8 +21,9 @@
 #include "asiodnp3/MasterScan.h"
 
 #include "openpal/executor/IExecutor.h"
-#include "opendnp3/master/MasterContext.h"
+
 #include "opendnp3/master/IMasterTask.h"
+#include "opendnp3/master/MasterContext.h"
 
 using namespace openpal;
 using namespace opendnp3;
@@ -30,16 +31,15 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-MasterScan::MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<IMasterScheduler>& scheduler) :
-	task(task),
-	scheduler(scheduler)
+MasterScan::MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task,
+                       const std::shared_ptr<IMasterScheduler>& scheduler)
+    : task(task), scheduler(scheduler)
 {
-
 }
 
-void  MasterScan::Demand()
+void MasterScan::Demand()
 {
-	scheduler->Demand(task);
+    scheduler->Demand(task);
 }
 
-}
+} // namespace asiodnp3

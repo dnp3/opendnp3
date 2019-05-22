@@ -21,12 +21,11 @@
 #ifndef OPENDNP3_DATABASE_H
 #define OPENDNP3_DATABASE_H
 
-#include "opendnp3/gen/IndexMode.h"
 #include "opendnp3/gen/AssignClassType.h"
-
+#include "opendnp3/gen/IndexMode.h"
+#include "opendnp3/outstation/DatabaseBuffers.h"
 #include "opendnp3/outstation/IDatabase.h"
 #include "opendnp3/outstation/IEventReceiver.h"
-#include "opendnp3/outstation/DatabaseBuffers.h"
 
 namespace opendnp3
 {
@@ -37,74 +36,67 @@ The database coordinates all updates of measurement data
 class Database final : public IDatabase, private openpal::Uncopyable
 {
 public:
+    Database(const DatabaseSizes&,
+             IEventReceiver& eventReceiver,
+             IndexMode indexMode,
+             StaticTypeBitField allowedClass0Types);
 
-	Database(const DatabaseSizes&, IEventReceiver& eventReceiver, IndexMode indexMode, StaticTypeBitField allowedClass0Types);
+    // ------- IDatabase --------------
 
-	// ------- IDatabase --------------
+    virtual bool Update(const Binary&, uint16_t, EventMode = EventMode::Detect) override;
+    virtual bool Update(const DoubleBitBinary&, uint16_t, EventMode = EventMode::Detect) override;
+    virtual bool Update(const Analog&, uint16_t, EventMode = EventMode::Detect) override;
+    virtual bool Update(const Counter&, uint16_t, EventMode = EventMode::Detect) override;
+    virtual bool Update(const FrozenCounter&, uint16_t, EventMode = EventMode::Detect) override;
+    virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
+    virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
+    virtual bool Update(const OctetString& meas, uint16_t index, EventMode mode = EventMode::Detect) override;
+    virtual bool Update(const TimeAndInterval&, uint16_t) override;
+    virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override;
 
-	virtual bool Update(const Binary&, uint16_t, EventMode = EventMode::Detect) override;
-	virtual bool Update(const DoubleBitBinary&, uint16_t, EventMode = EventMode::Detect) override;
-	virtual bool Update(const Analog&, uint16_t, EventMode = EventMode::Detect) override;
-	virtual bool Update(const Counter&, uint16_t, EventMode = EventMode::Detect) override;
-	virtual bool Update(const FrozenCounter&, uint16_t, EventMode = EventMode::Detect) override;
-	virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
-	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
-	virtual bool Update(const OctetString& meas, uint16_t index, EventMode mode = EventMode::Detect) override;
-	virtual bool Update(const TimeAndInterval&, uint16_t) override;
-	virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override;
+    // ------- Misc ---------------
 
-	// ------- Misc ---------------
+    IResponseLoader& GetResponseLoader() override final
+    {
+        return buffers;
+    }
+    IStaticSelector& GetStaticSelector() override final
+    {
+        return buffers;
+    }
+    IClassAssigner& GetClassAssigner() override final
+    {
+        return buffers;
+    }
 
-	IResponseLoader& GetResponseLoader() override final
-	{
-		return buffers;
-	}
-	IStaticSelector& GetStaticSelector() override final
-	{
-		return buffers;
-	}
-	IClassAssigner& GetClassAssigner() override final
-	{
-		return buffers;
-	}
-
-	/**
-	* @return A view of all the static data for configuration purposes
-	*/
-	DatabaseConfigView GetConfigView()
-	{
-		return buffers.buffers.GetView();
-	}
+    /**
+     * @return A view of all the static data for configuration purposes
+     */
+    DatabaseConfigView GetConfigView()
+    {
+        return buffers.buffers.GetView();
+    }
 
 private:
+    template<class Spec> uint16_t GetRawIndex(uint16_t index);
 
-	template <class Spec>
-	uint16_t GetRawIndex(uint16_t index);
+    IEventReceiver* eventReceiver;
+    IndexMode indexMode;
 
-	IEventReceiver* eventReceiver;
-	IndexMode indexMode;
+    static bool ConvertToEventClass(PointClass pc, EventClass& ec);
 
-	static bool ConvertToEventClass(PointClass pc, EventClass& ec);
+    template<class Spec> bool UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode);
 
-	template <class Spec>
-	bool UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode);
+    template<class Spec> bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
 
-	template <class Spec>
-	bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
+    template<class Spec> void TryCreateEvent(Cell<Spec>& cell, const typename Spec::meas_t& value);
 
-	template <class Spec>
-	void TryCreateEvent(Cell<Spec>& cell, const typename Spec::meas_t& value);
+    template<class Spec> bool Modify(uint16_t start, uint16_t stop, uint8_t flags);
 
-	template <class Spec>
-	bool Modify(uint16_t start, uint16_t stop, uint8_t flags);
-
-	// stores the most recent values, selected values, and metadata
-	DatabaseBuffers buffers;
+    // stores the most recent values, selected values, and metadata
+    DatabaseBuffers buffers;
 };
 
-
-
-}
+} // namespace opendnp3
 
 #endif
-

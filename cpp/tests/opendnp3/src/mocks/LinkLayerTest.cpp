@@ -28,60 +28,63 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerTest::LinkLayerTest(const LinkConfig& config) :
-	LinkLayerTest(LinkLayerConfig(config, false))
-{}
+LinkLayerTest::LinkLayerTest(const LinkConfig& config) : LinkLayerTest(LinkLayerConfig(config, false)) {}
 
-LinkLayerTest::LinkLayerTest(const LinkLayerConfig& config) :
-	log(),
-	exe(std::make_shared<testlib::MockExecutor>()),
-	listener(std::make_shared<MockLinkListener>()),
-	upper(std::make_shared<MockTransportLayer>()),
-	link(log.logger, exe, upper, listener, config),
-	numTotalWrites(0)
+LinkLayerTest::LinkLayerTest(const LinkLayerConfig& config)
+    : log(),
+      exe(std::make_shared<testlib::MockExecutor>()),
+      listener(std::make_shared<MockLinkListener>()),
+      upper(std::make_shared<MockTransportLayer>()),
+      link(log.logger, exe, upper, listener, config),
+      numTotalWrites(0)
 {
-	upper->SetLinkLayer(link);
-	link.SetRouter(*this);
+    upper->SetLinkLayer(link);
+    link.SetRouter(*this);
 }
 
-bool LinkLayerTest::OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata)
+bool LinkLayerTest::OnFrame(LinkFunction func,
+                            bool isMaster,
+                            bool fcb,
+                            bool fcvdfc,
+                            uint16_t dest,
+                            uint16_t source,
+                            const openpal::RSlice& userdata)
 {
-	LinkHeaderFields fields(func, isMaster, fcb, fcvdfc, dest, source);
-	return link.OnFrame(fields, userdata);
+    LinkHeaderFields fields(func, isMaster, fcb, fcvdfc, dest, source);
+    return link.OnFrame(fields, userdata);
 }
 
 std::string LinkLayerTest::PopLastWriteAsHex()
 {
-	if (writeQueue.empty())
-	{
-		return "";
-	}
+    if (writeQueue.empty())
+    {
+        return "";
+    }
 
-	while (writeQueue.size() > 1)
-	{
-		writeQueue.pop_front();
-	}
+    while (writeQueue.size() > 1)
+    {
+        writeQueue.pop_front();
+    }
 
-	auto ret = writeQueue.front();
-	writeQueue.pop_front();
-	return ret;
+    auto ret = writeQueue.front();
+    writeQueue.pop_front();
+    return ret;
 }
 
 uint32_t LinkLayerTest::NumTotalWrites()
 {
-	return numTotalWrites;
+    return numTotalWrites;
 }
 
 void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession&)
 {
-	++numTotalWrites;
-	this->writeQueue.push_back(ToHex(buffer));
+    ++numTotalWrites;
+    this->writeQueue.push_back(ToHex(buffer));
 }
 
 LinkLayerConfig LinkLayerTest::DefaultConfig()
 {
-	return LinkLayerConfig(LinkConfig(true, false), false);
+    return LinkLayerConfig(LinkConfig(true, false), false);
 }
 
-}
-
+} // namespace opendnp3

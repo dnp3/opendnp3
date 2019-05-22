@@ -29,46 +29,41 @@ namespace opendnp3
 {
 
 /**
-* Interface used to dispatch an abstract action using a command
-*/
+ * Interface used to dispatch an abstract action using a command
+ */
 class CommandActionAdapter : public ICommandAction
 {
 
 public:
+    CommandActionAdapter(ICommandHandler* handler, bool isSelect, OperateType opType);
 
-	CommandActionAdapter(ICommandHandler* handler, bool isSelect, OperateType opType);
+    ~CommandActionAdapter();
 
-	~CommandActionAdapter();
+    virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t index) final;
 
-	virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t index) final;
+    virtual CommandStatus Action(const AnalogOutputInt16& command, uint16_t index) final;
 
-	virtual CommandStatus Action(const AnalogOutputInt16& command, uint16_t index) final;
+    virtual CommandStatus Action(const AnalogOutputInt32& command, uint16_t index) final;
 
-	virtual CommandStatus Action(const AnalogOutputInt32& command, uint16_t index) final;
+    virtual CommandStatus Action(const AnalogOutputFloat32& command, uint16_t index) final;
 
-	virtual CommandStatus Action(const AnalogOutputFloat32& command, uint16_t index) final;
-
-	virtual CommandStatus Action(const AnalogOutputDouble64& command, uint16_t index) final;
+    virtual CommandStatus Action(const AnalogOutputDouble64& command, uint16_t index) final;
 
 private:
+    template<class T> CommandStatus ActionT(const T& command, uint16_t index)
+    {
+        this->CheckStart();
+        return m_isSelect ? m_handler->Select(command, index) : m_handler->Operate(command, index, m_opType);
+    }
 
-	template <class T>
-	CommandStatus ActionT(const T& command, uint16_t index)
-	{
-		this->CheckStart();
-		return m_isSelect ? m_handler->Select(command, index) : m_handler->Operate(command, index, m_opType);
-	}
+    void CheckStart();
 
-	void CheckStart();
-
-	ICommandHandler* m_handler;
-	bool m_isSelect;
-	OperateType m_opType;
-	bool m_isStarted;
-
+    ICommandHandler* m_handler;
+    bool m_isSelect;
+    OperateType m_opType;
+    bool m_isStarted;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

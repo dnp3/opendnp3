@@ -23,14 +23,14 @@
 
 #include "MockTransportLayer.h"
 
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/link/ILinkTx.h>
+#include <opendnp3/link/LinkLayer.h>
+
 #include <dnp3mocks/MockLinkListener.h>
 
 #include "testlib/MockExecutor.h"
 #include "testlib/MockLogHandler.h"
-
-#include <opendnp3/link/LinkLayer.h>
-#include <opendnp3/link/ILinkTx.h>
-#include <opendnp3/LogLevels.h>
 
 #include <queue>
 
@@ -40,36 +40,39 @@ namespace opendnp3
 class LinkLayerTest : public ILinkTx
 {
 public:
+    LinkLayerTest(const LinkConfig& config);
 
-	LinkLayerTest(const LinkConfig& config);
+    LinkLayerTest(const LinkLayerConfig& config = DefaultConfig());
 
-	LinkLayerTest(const LinkLayerConfig& config = DefaultConfig());
+    bool OnFrame(LinkFunction func,
+                 bool isMaster,
+                 bool fcb,
+                 bool fcvdfc,
+                 uint16_t dest,
+                 uint16_t source,
+                 const openpal::RSlice& userdata = openpal::RSlice::Empty());
 
-	bool OnFrame(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t source, const openpal::RSlice& userdata = openpal::RSlice::Empty());
+    // ILinkTx interface
+    virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context) override final;
 
-	//ILinkTx interface
-	virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context) override final;
+    static LinkLayerConfig DefaultConfig();
 
-	static LinkLayerConfig DefaultConfig();
+    testlib::MockLogHandler log;
+    std::shared_ptr<testlib::MockExecutor> exe;
+    std::shared_ptr<MockLinkListener> listener;
+    std::shared_ptr<MockTransportLayer> upper;
 
-	testlib::MockLogHandler log;
-	std::shared_ptr<testlib::MockExecutor> exe;
-	std::shared_ptr<MockLinkListener> listener;
-	std::shared_ptr<MockTransportLayer> upper;
+    LinkLayer link;
 
-	LinkLayer link;
-
-	std::string PopLastWriteAsHex();
-	uint32_t NumTotalWrites();
+    std::string PopLastWriteAsHex();
+    uint32_t NumTotalWrites();
 
 private:
+    uint32_t numTotalWrites;
 
-	uint32_t numTotalWrites;
-
-	std::deque<std::string> writeQueue;
+    std::deque<std::string> writeQueue;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

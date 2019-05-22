@@ -21,10 +21,10 @@
 #ifndef DNP3MOCKS_COMMAND_CALLBACK_QUEUE_H
 #define DNP3MOCKS_COMMAND_CALLBACK_QUEUE_H
 
-#include <queue>
-#include <functional>
-
 #include <opendnp3/master/CommandPointResult.h>
+
+#include <functional>
+#include <queue>
 
 namespace opendnp3
 {
@@ -32,80 +32,75 @@ namespace opendnp3
 class MockCommandResultType final : public IVisitor<CommandPointResult>
 {
 public:
+    MockCommandResultType(TaskCompletion result_) : summary(result_) {}
 
-	MockCommandResultType(TaskCompletion result_) : summary(result_)
-	{}
+    virtual void OnValue(const CommandPointResult& value) override
+    {
+        results.push_back(value);
+    }
 
-	virtual void OnValue(const CommandPointResult& value) override
-	{
-		results.push_back(value);
-	}
+    bool Equals(TaskCompletion summary_, CommandPointResult result) const
+    {
+        return (results.size() == 1) && (summary_ == summary) && result.Equals(results.front());
+    }
 
-	bool Equals(TaskCompletion summary_, CommandPointResult result) const
-	{
-		return (results.size() == 1) && (summary_ == summary) && result.Equals(results.front());
-	}
-
-	TaskCompletion summary;
-	std::vector<opendnp3::CommandPointResult> results;
+    TaskCompletion summary;
+    std::vector<opendnp3::CommandPointResult> results;
 };
 
 class CommandCallbackQueue
 {
 public:
+    std::function<void(const ICommandTaskResult&)> Callback()
+    {
+        return [this](const ICommandTaskResult& rsp) -> void {
+            MockCommandResultType result(rsp.summary);
+            rsp.Foreach(result);
+            values.push_back(result);
+        };
+    }
 
-	std::function<void(const ICommandTaskResult&)> Callback()
-	{
-		return [this](const ICommandTaskResult & rsp) -> void
-		{
-			MockCommandResultType result(rsp.summary);
-			rsp.Foreach(result);
-			values.push_back(result);
-		};
-	}
+    bool PopOnlyEqualValue(TaskCompletion summary, CommandPointResult item)
+    {
+        return PopOnlyEqualValue(summary, {item});
+    }
 
-	bool PopOnlyEqualValue(TaskCompletion summary, CommandPointResult item)
-	{
-		return PopOnlyEqualValue(summary, { item });
-	}
+    bool PopOnlyEqualValue(TaskCompletion summary, std::initializer_list<CommandPointResult> list)
+    {
+        if (values.size() != 1)
+            return false;
 
-	bool PopOnlyEqualValue(TaskCompletion summary, std::initializer_list<CommandPointResult> list)
-	{
-		if (values.size() != 1) return false;
+        auto value = values.front();
+        values.pop_front();
 
-		auto value = values.front();
-		values.pop_front();
+        if (value.summary != summary)
+        {
+            return false;
+        }
 
-		if (value.summary != summary)
-		{
-			return false;
-		}
+        if (list.size() != value.results.size())
+        {
+            return false;
+        }
 
-		if (list.size() != value.results.size())
-		{
-			return false;
-		}
+        uint32_t i = 0;
 
-		uint32_t i = 0;
+        for (auto& item : list)
+        {
+            if (!value.results[i].Equals(item))
+            {
+                return false;
+            }
 
-		for (auto& item : list)
-		{
-			if (!value.results[i].Equals(item))
-			{
-				return false;
-			}
+            ++i;
+        }
 
-			++i;
-		}
+        return true;
+    }
 
-		return true;
-	}
-
-	std::deque<MockCommandResultType> values;
-
+    std::deque<MockCommandResultType> values;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

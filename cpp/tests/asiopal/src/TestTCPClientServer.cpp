@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include "mocks/MockTCPPair.h"
+
+#include <catch.hpp>
 
 #include <iostream>
 
@@ -28,41 +28,28 @@ using namespace asiopal;
 
 #define SUITE(name) "TCPClientServerSuite - " name
 
-template <class F>
-void WithIO(const F& fun)
+template<class F> void WithIO(const F& fun)
 {
-	auto io = std::make_shared<MockIO>();
-	fun(io);
-	io->RunUntilOutOfWork();
+    auto io = std::make_shared<MockIO>();
+    fun(io);
+    io->RunUntilOutOfWork();
 }
 
 TEST_CASE(SUITE("Client and server can connect"))
 {
-	auto iteration = []()
-	{
-		auto test = [](const std::shared_ptr<MockIO>& io)
-		{
-			MockTCPPair pair(io, 20000);
-			pair.Connect(1);
-		};
+    auto iteration = []() {
+        auto test = [](const std::shared_ptr<MockIO>& io) {
+            MockTCPPair pair(io, 20000);
+            pair.Connect(1);
+        };
 
-		WithIO(test);
-	};
+        WithIO(test);
+    };
 
-	// run multiple times to ensure the test is cleaning up after itself in terms of system resources
-	for (int i = 0; i < 5; ++i)
-	{
-		iteration();
-		//std::cout << "iteration: " << i << " complete" << std::endl;
-	}
+    // run multiple times to ensure the test is cleaning up after itself in terms of system resources
+    for (int i = 0; i < 5; ++i)
+    {
+        iteration();
+        // std::cout << "iteration: " << i << " complete" << std::endl;
+    }
 }
-
-
-
-
-
-
-
-
-
-
