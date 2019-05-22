@@ -4,7 +4,7 @@
 
     <groupId>com.automatak.dnp3</groupId>
     <artifactId>opendnp3-parent</artifactId>
-    <version>2.2.1-SNAPSHOT</version>
+    <version>2.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>opendnp3</name>
@@ -19,10 +19,9 @@
 
     <properties>
         <junit.version>4.9</junit.version>
-        <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <maven-javadoc-plugin.version>2.9</maven-javadoc-plugin.version>
         <maven-source-plugin.version>2.1.2</maven-source-plugin.version>
-        <opendnp3.version>2.2.1-SNAPSHOT</opendnp3.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <surefire-plugin.version>2.12.4</surefire-plugin.version>
     </properties>
@@ -61,6 +60,14 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven-release-plugin.version}</version>
+                <configuration>
+                    <pushChanges>false</pushChanges>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>
                 <configuration>
@@ -73,40 +80,6 @@
                         -Werror
                     </compilerArgument>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>${license-maven-plugin.version}</version>
-                <configuration>
-                    <strictCheck>true</strictCheck>
-                    <failIfMissing>true</failIfMissing>
-                    <header>AUTOMATAK_FILE_HEADER</header>
-                    <mapping>
-                        <h>SLASHSTAR_STYLE</h>
-                        <hpp>SLASHSTAR_STYLE</hpp>
-                        <cpp>SLASHSTAR_STYLE</cpp>
-                        <application>JAVADOC_STYLE</application>
-                    </mapping>
-		    <excludes>
-                      <exclude>*/enums/*.java</exclude>
-                    </excludes>
-                    <includes>
-			<!-- THIS IS BROKEN. The above exclude isn't working. Disable this for the moment -->
-                        <!--<include>**/*.java</include>-->
-                        <include>cpp/*.cpp</include>
-                        <include>cpp/*.hpp</include>
-                    </includes>                    
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>check-headers</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
