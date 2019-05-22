@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <name>opendnp3</name>
-    <url>http://www.github.com/automatak/dnp3</url>
+    <url>https://dnp3.github.io</url>
     <description>JNI bindings for opendnp3. A companion shared library (so/dll) is required.</description>
 
     <modules>
@@ -36,7 +36,7 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/automatak/dnp3.git</url>
+        <url>https://github.com/dnp3/opendnp3.git</url>
         <connection></connection>
     </scm>
 
@@ -88,12 +88,12 @@
                         <cpp>SLASHSTAR_STYLE</cpp>
                         <application>JAVADOC_STYLE</application>
                     </mapping>
-		    <excludes>
-                      <exclude>*/enums/*.java</exclude>
+                    <excludes>
+                      <exclude>**/enums/*.java</exclude>
                     </excludes>
                     <includes>
 			<!-- THIS IS BROKEN. The above exclude isn't working. Disable this for the moment -->
-                        <!--<include>**/*.java</include>-->
+                        <include>**/*.java</include>
                         <include>cpp/*.cpp</include>
                         <include>cpp/*.hpp</include>
                     </includes>                    
