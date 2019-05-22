@@ -19,7 +19,6 @@
 
     <properties>
         <junit.version>4.9</junit.version>
-        <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <maven-javadoc-plugin.version>2.9</maven-javadoc-plugin.version>
         <maven-source-plugin.version>2.1.2</maven-source-plugin.version>
         <opendnp3.version>2.2.1-SNAPSHOT</opendnp3.version>
@@ -73,40 +72,6 @@
                         -Werror
                     </compilerArgument>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>${license-maven-plugin.version}</version>
-                <configuration>
-                    <strictCheck>true</strictCheck>
-                    <failIfMissing>true</failIfMissing>
-                    <header>AUTOMATAK_FILE_HEADER</header>
-                    <mapping>
-                        <h>SLASHSTAR_STYLE</h>
-                        <hpp>SLASHSTAR_STYLE</hpp>
-                        <cpp>SLASHSTAR_STYLE</cpp>
-                        <application>JAVADOC_STYLE</application>
-                    </mapping>
-		    <excludes>
-                      <exclude>*/enums/*.java</exclude>
-                    </excludes>
-                    <includes>
-			<!-- THIS IS BROKEN. The above exclude isn't working. Disable this for the moment -->
-                        <!--<include>**/*.java</include>-->
-                        <include>cpp/*.cpp</include>
-                        <include>cpp/*.hpp</include>
-                    </includes>                    
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>check-headers</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
