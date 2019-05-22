@@ -23,7 +23,6 @@
         <maven-javadoc-plugin.version>2.9</maven-javadoc-plugin.version>
         <maven-source-plugin.version>2.1.2</maven-source-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-        <opendnp3.version>2.2.1-SNAPSHOT</opendnp3.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <surefire-plugin.version>2.12.4</surefire-plugin.version>
     </properties>
