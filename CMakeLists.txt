@@ -164,7 +164,7 @@ if(DNP3_JAVA)
   target_link_libraries(opendnp3java asiodnp3)
   install(TARGETS opendnp3java DESTINATION lib)
   set_target_properties(opendnp3java PROPERTIES FOLDER java VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
-  clang_format(opendnp3java EXCLUDES ".*/jni/.*" "com_automatak_.*\.h")
+  clang_format(opendnp3java EXCLUDES ".*/jni/.*" "com_automatak_.*h$")
 endif()
 
 # ----- install -----
