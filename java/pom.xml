@@ -38,7 +38,7 @@
 
     <scm>
         <url>https://github.com/dnp3/opendnp3.git</url>
-        <connection></connection>
+        <developerConnection>scm:git:git@github.com:dnp3/opendnp3.git</developerConnection>
     </scm>
 
     <developers>
