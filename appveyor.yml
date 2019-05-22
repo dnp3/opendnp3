@@ -11,11 +11,11 @@ build_script:
 - cmd: MKDIR build
 - cmd: CD build
 - cmd: cmake .. -DCMAKE_BUILD_TYPE=Release -DDNP3_TEST=ON -DDNP3_TLS=ON -DDNP3_DOTNET=ON
-- cmd: msbuild opendnp3.sln /p:Configuration=Release /p:Platform=Win32
+- cmd: cmake --build . --config Release
 after_build:
 - ps: >-
     if ($env:APPVEYOR_REPO_TAG -eq "true"){
-      nuget pack dotnet\nuget\opendnp3.nuspec -Version "$env:APPVEYOR_REPO_TAG_NAME"
+      nuget pack c:\projects\dnp3\build\Release\opendnp3.nuspec -Version "$env:APPVEYOR_REPO_TAG_NAME"
     }
 test_script:
 - cmd: c:\projects\dnp3\build\Release\testasiodnp3.exe

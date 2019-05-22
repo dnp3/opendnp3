@@ -23,7 +23,7 @@ It depends on:
         <tags>dnp3 SCADA protocol</tags>
     </metadata>
 	<files>
-	  <file src="..\bindings\CLRAdapter\Release\Win32\*.dll" target="lib\net45" />
-	  <file src="..\bindings\CLRAdapter\Release\Win32\*.pdb" target="lib\net45" />
+	  <file src="*.dll" target="lib\net45" />
+	  <file src="*.pdb" target="lib\net45" />
 	</files>
 </package>
